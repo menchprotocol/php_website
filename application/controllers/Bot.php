@@ -17,6 +17,18 @@ class Bot extends CI_Controller {
     }
 
 
+    function lalala(){
+        echo 'aaa';
+        $this->Db_model->b_create(array(
+            'b_fp_id' => 4, //Assign Mench Facebook Page for our team
+            'b_url_key' => 'sdfsdfsdfsdfsdf',
+            'b_outbound_c_id' => 156,
+            'b_prerequisites' => null,
+            'b_is_parent' => 0,
+        ));
+
+
+    }
 
     function url($smallest_i_id=0,$limit=1){
 
@@ -310,17 +322,17 @@ class Bot extends CI_Controller {
                     */
 
                     if($eng_data['e_inbound_u_id']){
-                        //See if this student has any admissions:
-                        $admissions = $this->Db_model->ru_fetch(array(
-                            'r.r_status >='	   => 1, //Open for admission
+                        //See if this student has any enrollments:
+                        $enrollments = $this->Db_model->ru_fetch(array(
+                            'r.r_status >='	   => 1, //Open for enrollment
                             'r.r_status <='	   => 2, //Running
                             'ru.ru_status >='  => 0, //Initiated or higher as long as Bootcamp is running!
                             'ru.ru_outbound_u_id'	   => $eng_data['e_inbound_u_id'],
                         ));
-                        if(count($admissions)>0){
+                        if(count($enrollments)>0){
                             //Append Bootcamp & Class ID to engagement:
-                            $eng_data['e_b_id'] = $admissions[0]['r_b_id'];
-                            $eng_data['e_r_id'] = $admissions[0]['r_id'];
+                            $eng_data['e_b_id'] = $enrollments[0]['r_b_id'];
+                            $eng_data['e_r_id'] = $enrollments[0]['r_id'];
                         }
                     }
 
@@ -455,20 +467,20 @@ class Bot extends CI_Controller {
 
             //Seems like a valid Paypal IPN Call:
             //Fetch Enrollment row:
-            $admissions = $this->Db_model->ru_fetch(array(
+            $enrollments = $this->Db_model->ru_fetch(array(
                 'ru.ru_id' => intval($_POST['item_number']),
             ));
 
-            if(count($admissions)==1){
+            if(count($enrollments)==1){
 
                 $payment_received = doubleval(( $_POST['payment_gross']>$_POST['mc_gross'] ? $_POST['payment_gross'] : $_POST['mc_gross'] ));
 
                 //Save this new transaction:
                 $transaction = $this->Db_model->t_create(array(
-                    't_ru_id' => $admissions[0]['ru_id'],
-                    't_r_id' => $admissions[0]['ru_r_id'],
-                    't_b_id' => $admissions[0]['ru_b_id'],
-                    't_inbound_u_id' => $admissions[0]['ru_outbound_u_id'],
+                    't_ru_id' => $enrollments[0]['ru_id'],
+                    't_r_id' => $enrollments[0]['ru_r_id'],
+                    't_b_id' => $enrollments[0]['ru_b_id'],
+                    't_inbound_u_id' => $enrollments[0]['ru_outbound_u_id'],
                     't_status' => 1, //Payment received from Student
                     't_timestamp' => date("Y-m-d H:i:s"),
                     't_paypal_id' => $_POST['txn_id'],
@@ -479,10 +491,10 @@ class Bot extends CI_Controller {
                     't_fees' => doubleval(( $_POST['payment_fee']>$_POST['mc_fee'] ? $_POST['payment_fee'] : $_POST['mc_fee'] )),
                 ));
 
-                if($payment_received>=$admissions[0]['ru_upfront_pay']){
+                if($payment_received>=$enrollments[0]['ru_upfront_pay']){
 
-                    //Finalize their Admission:
-                    $this->Db_model->ru_finalize($admissions[0]['ru_id']);
+                    //Finalize their Enrollment:
+                    $this->Db_model->ru_finalize($enrollments[0]['ru_id']);
 
                 } else {
 
@@ -502,7 +514,7 @@ class Bot extends CI_Controller {
     function deauthorize(){
         //Called when someone de-authorizes our page
         $this->Db_model->e_create(array(
-            'e_text_value' => 'deauthorize() was called because instructor revoked some/all permission. Look at e_json log file for more information.',
+            'e_text_value' => 'deauthorize() was called because coach revoked some/all permission. Look at e_json log file for more information.',
             'e_json' => array(
                 'POST' => $_POST,
                 'parse_signed_request' => parse_signed_request($_POST['signed_request']),

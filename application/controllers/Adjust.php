@@ -15,7 +15,7 @@ class Adjust extends CI_Controller {
     function rsync(){
 
         $bs = $this->Db_model->b_fetch(array(
-            'b_is_parent' => 1,
+            'c_level' => 1,
         ));
 
         $created = 0;
@@ -37,7 +37,7 @@ class Adjust extends CI_Controller {
     }
 
 
-    function resync_class_actionplans_and_message_instructors(){
+    function resync_class_actionplans_and_message_coaches(){
 
         //First delete old caches:
         $this->db->query("DELETE FROM v5_engagements WHERE e_inbound_c_id=70");
@@ -79,23 +79,66 @@ class Adjust extends CI_Controller {
         }
     }
 
+    function c_level(){
+
+        $bs = $this->Db_model->b_fetch(array(
+            'c.c_level IS NULL' => null,
+        ));
+
+        foreach($bs as $b){
+
+            //Update this
+            $this->Db_model->c_update($b['b_outbound_c_id'], array(
+                'c_level' => $b['c_level'],
+            ));
+
+            //Now go through the children:
+            $cs = $this->Db_model->cr_outbound_fetch(array(
+                'cr.cr_inbound_c_id' => $b['b_outbound_c_id'],
+                'c.c_level IS NULL' => null,
+            ));
+
+            $next_level = ( $b['c_level'] ? 0 : 2 );
+            foreach($cs as $c){
+                //Update this
+                $this->Db_model->c_update($c['c_id'], array(
+                    'c_level' => $next_level,
+                ));
+
+                //Do children of children:
+                $cs2 = $this->Db_model->cr_outbound_fetch(array(
+                    'cr.cr_inbound_c_id' => $c['c_id'],
+                    'c.c_level IS NULL' => null,
+                ));
+
+                foreach($cs2 as $c2){
+                    //Update this
+                    $this->Db_model->c_update($c2['c_id'], array(
+                        'c_level' => ( $next_level==0 ? 2 : 3 ),
+                    ));
+                }
+            }
+
+        }
+    }
+
     function ru_b_id(){
 
-        $admissions = $this->Db_model->ru_fetch(array(
+        $enrollments = $this->Db_model->ru_fetch(array(
             'ru_r_id > 0' 	    => null,
             'ru_b_id' 	        => 0,
         ));
 
         $counter = 0;
-        foreach($admissions as $admission){
+        foreach($enrollments as $enrollment){
 
             //Fetch Bootcamp ID:
             $classes = $this->Db_model->r_fetch(array(
-                'r_id' => $admission['ru_r_id'],
+                'r_id' => $enrollment['ru_r_id'],
             ));
 
             if(count($classes)==1){
-                $this->Db_model->ru_update( $admission['ru_id'] , array(
+                $this->Db_model->ru_update( $enrollment['ru_id'] , array(
                     'ru_b_id' => $classes[0]['r_b_id'],
                 ));
                 $counter++;
@@ -109,7 +152,7 @@ class Adjust extends CI_Controller {
 
     function sync_student_progress(){
 
-        //Go through all admissions for running classes and updates the student positions in those classes:
+        //Go through all enrollments for running classes and updates the student positions in those classes:
         $classes = $this->Db_model->r_fetch(array(
             'r.r_status >=' => 2,
         ));
@@ -130,12 +173,12 @@ class Adjust extends CI_Controller {
             ));
 
             $stats[$class['r_id']] = 0;
-            foreach($class['students'] as $admission){
+            foreach($class['students'] as $enrollment){
 
                 //Fetch all their submissions so far:
                 $us_data = $this->Db_model->e_fetch(array(
                     'e_inbound_c_id' => 33, //Completion Report
-                    'e_inbound_u_id' => $admission['u_id'], //by this Student
+                    'e_inbound_u_id' => $enrollment['u_id'], //by this Student
                     'e_r_id' => $class['r_id'], //For this Class
                     'e_replaced_e_id' => 0, //Data has not been replaced
                     'e_status !=' => -3, //Should not be rejected
@@ -150,7 +193,7 @@ class Adjust extends CI_Controller {
                 $done_steps = 0;
 
                 //Find the Step that is after the very last Step done
-                //Note that some Steps could be done, but then rejected by the instructor...
+                //Note that some Steps could be done, but then rejected by the coach...
                 foreach($bs[0]['c__child_intents'] as $task){
                     if($task['c_status']==1){
                         $total_steps++;
@@ -183,10 +226,10 @@ class Adjust extends CI_Controller {
                 }
 
                 //Do we need to update?
-                if(!($admission['ru_cache__current_task']==$ru_cache__current_task) || !($admission['ru_cache__completion_rate']==$ru_cache__completion_rate)){
+                if(!($enrollment['ru_cache__current_task']==$ru_cache__current_task) || !($enrollment['ru_cache__completion_rate']==$ru_cache__completion_rate)){
 
                     //Update DB:
-                    $this->Db_model->ru_update( $admission['ru_id'] , array(
+                    $this->Db_model->ru_update( $enrollment['ru_id'] , array(
                         'ru_cache__completion_rate' => $ru_cache__completion_rate,
                         'ru_cache__current_task' => $ru_cache__current_task,
                     ));

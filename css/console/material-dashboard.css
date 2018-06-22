@@ -4762,7 +4762,7 @@ footer .btn {
     left: auto;
     z-index: 1032;
     visibility: visible;
-    background-color: #E5E5E5;
+    background-color: #EFEFEF;
     overflow-y: visible;
     border-top: none;
     text-align: left;
@@ -4794,7 +4794,7 @@ footer .btn {
     height: 100%;
     width: 100%;
     position: absolute;
-    background-color: #E5E5E5;
+    background-color: #EFEFEF;
     display: block;
     content: "";
     z-index: 1;

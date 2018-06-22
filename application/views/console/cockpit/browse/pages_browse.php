@@ -22,7 +22,7 @@ $pages = $this->Db_model->fp_fetch(array(
             <th>Facebook Page</th>
             <th>FP ID</th>
             <th> </th>
-            <th>Instructor</th>
+            <th>Coach</th>
             <th>Page Updated</th>
             <th>Status</th>
         </tr>

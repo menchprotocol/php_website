@@ -1,10 +1,10 @@
 <?php
 
 //Do they have a local session? (i.e. Browser login):
-$uadmission = $this->session->userdata('uadmission');
+$uenrollment = $this->session->userdata('uenrollment');
 $fb_settings = $this->config->item('fb_settings');
 
-if(isset($uadmission) && count($uadmission)>0){
+if(isset($uenrollment) && count($uenrollment)>0){
 
     //Include header:
     $this->load->view('front/shared/student_nav' , array(
@@ -14,7 +14,7 @@ if(isset($uadmission) && count($uadmission)>0){
     //Fetch page instantly as we know who this is:
     ?>
     <script>
-        $.post("/my/display_actionplan/0/<?= (isset($b_id) ? intval($b_id) : $uadmission['b_id']) ?>/<?= ( isset($c_id) ? intval($c_id) : $uadmission['b_outbound_c_id']) ?>", {}, function(data) {
+        $.post("/my/display_actionplan/0/<?= (isset($b_id) ? intval($b_id) : $uenrollment['b_id']) ?>/<?= ( isset($c_id) ? intval($c_id) : $uenrollment['b_outbound_c_id']) ?>", {}, function(data) {
             $( "#page_content").html(data);
         });
     </script>

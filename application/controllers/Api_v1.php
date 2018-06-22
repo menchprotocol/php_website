@@ -99,7 +99,7 @@ class Api_v1 extends CI_Controller {
 
     function fb_connect(){
 
-	    //Responsible to connect and disconnect the Facebook pages when instructors explicitly request this:
+	    //Responsible to connect and disconnect the Facebook pages when coaches explicitly request this:
         if(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
 
             echo_json(array(
@@ -293,7 +293,7 @@ class Api_v1 extends CI_Controller {
                 $other_bs = $this->Db_model->b_fetch(array(
                     'b.b_fp_id' => $page['fp_id'],
                     'b.b_id !=' => $_POST['b_id'],
-                ),array('c'));
+                ));
 
                 $pages_list_ui .= '<li class="list-group-item">';
 
@@ -430,7 +430,7 @@ class Api_v1 extends CI_Controller {
     }
 
     /* ******************************
-     * Admission
+     * Enrollment
      ****************************** */
 
     function ru_date_selector(){
@@ -440,7 +440,7 @@ class Api_v1 extends CI_Controller {
         $application_status_salt = $this->config->item('application_status_salt');
         $class_settings = $this->config->item('class_settings');
 
-        if(!isset($_POST['support_level']) || !in_array(intval($_POST['support_level']),array(1,2,3)) || !isset($_POST['ru_id']) || intval($_POST['ru_id'])<1 || !isset($_POST['u_key']) || !isset($_POST['u_id']) || intval($_POST['u_id'])<1 || !(md5($_POST['u_id'].$application_status_salt)==$_POST['u_key'])){
+        if(!isset($_POST['ru_support_package']) || !in_array(intval($_POST['ru_support_package']),array(1,2,3)) || !isset($_POST['ru_id']) || intval($_POST['ru_id'])<1 || !isset($_POST['u_key']) || !isset($_POST['u_id']) || intval($_POST['u_id'])<1 || !(md5($_POST['u_id'].$application_status_salt)==$_POST['u_key'])){
 
             //Log engagement:
             $this->Db_model->e_create(array(
@@ -454,40 +454,41 @@ class Api_v1 extends CI_Controller {
             die('<span style="color:#FF0000;">Error: Missing Core Inputs. Report Logged for Admin to review.</span>');
         }
 
-        //Fetch admission:
-        $_POST['support_level'] = intval($_POST['support_level']);
-        $admissions = $this->Db_model->remix_admissions(array(
+        //Fetch enrollment:
+        $_POST['ru_support_package'] = intval($_POST['ru_support_package']);
+        $enrollments = $this->Db_model->remix_enrollments(array(
             'ru.ru_id'	=> intval($_POST['ru_id']),
         ));
 
         //Make sure we got all this data:
-        if(!(count($admissions)==1) || !isset($admissions[0]['b_id'])){
+        if(!(count($enrollments)==1) || !isset($enrollments[0]['b_id'])){
 
             //Log this error:
             $this->Db_model->e_create(array(
                 'e_inbound_u_id' => $_POST['u_id'],
-                'e_text_value' => 'ru_date_selector() failed to fetch admission data for ru_id=['.$_POST['ru_id'].'].',
+                'e_text_value' => 'ru_date_selector() failed to fetch enrollment data for ru_id=['.$_POST['ru_id'].'].',
                 'e_json' => $_POST,
                 'e_inbound_c_id' => 8, //Platform Error
             ));
 
             //Error:
-            die('<span style="color:#FF0000;">Error: Failed to fetch admission data. Report Logged for Admin to review.</span>');
+            die('<span style="color:#FF0000;">Error: Failed to fetch enrollment data. Report Logged for Admin to review.</span>');
         }
 
 
 
         //Now loadup the dates based on Class:
-        echo '<option value="">Choose Class Dates...</option>';
+        //echo '<option value="">Choose Class Dates...</option>';
         //Access Classes for this Bootcamp and show available options:
         $classes = $this->Db_model->r_fetch(array(
-            'r.r_b_id' => $admissions[0]['b_id'],
+            'r.r_b_id' => $enrollments[0]['b_id'],
             'r.r_status IN (0,1)' => null,
+            'r_start_date >' => date("Y-m-d"),
         ), null, 'ASC', $class_settings['students_show_max']);
 
         foreach($classes as $class){
 
-            if($_POST['support_level']>1){
+            if($_POST['ru_support_package']>1){
 
                 if($class['r_status']==0){
                     continue;
@@ -496,7 +497,7 @@ class Api_v1 extends CI_Controller {
                 //Are all child classes available for this Multi-week Bootcamp?
                 //Now go through all Bootcamps and see if their Classes are available with this start date
                 $not_available_reason = null;
-                foreach($admissions[0]['c__child_intents'] as $key=>$b7d){
+                foreach($enrollments[0]['c__child_intents'] as $key=>$b7d){
                     //Fetch corresponding Class:
                     $validate_classes = $this->Db_model->r_fetch(array(
                         'r.r_b_id' => $b7d['b_id'],
@@ -516,7 +517,7 @@ class Api_v1 extends CI_Controller {
             }
 
             echo '<option value="'.$class['r_id'].'">';
-            echo echo_time($class['r_start_date'],5) .' - '. echo_time($class['r_start_date'],5, (($admissions[0]['b__week_count']*7*24*3600)-(8*3600)));
+            echo echo_time($class['r_start_date'],5) .' - '. echo_time($class['r_start_date'],5, (($enrollments[0]['b__week_count']*7*24*3600)-(8*3600)));
             echo '</option>';
         }
 
@@ -607,13 +608,13 @@ class Api_v1 extends CI_Controller {
             $duplicate_registries = $this->Db_model->ru_fetch(array(
                 'ru.ru_outbound_u_id'	            => $udata['u_id'],
                 'ru.ru_b_id'	            => $b['b_id'],
-                'ru.ru_parent_ru_id'	    => 0, //We only care about the main admission
+                'ru.ru_parent_ru_id'	    => 0, //We only care about the main enrollment
                 'ru.ru_status IN (0,4,7)'   => null,
             ), array('ru.ru_status' => 'DESC'));
 
             if(count($duplicate_registries)>0){
 
-                //Send the email to their admission page:
+                //Send the email to their enrollment page:
                 $this->Comm_model->foundation_message(array(
                     'e_inbound_u_id' => 0,
                     'e_outbound_u_id' => $udata['u_id'],
@@ -625,10 +626,18 @@ class Api_v1 extends CI_Controller {
 
                 if($duplicate_registries[0]['ru_status']==0){
 
+                    if($b['b_requires_assessment'] && $duplicate_registries[0]['ru_assessment_result']<1){
+                        //Take them to assessment as they have not yet taken it or have failed it:
+                        $redirect_url = '/'.$b['b_url_key'].'/assessment?u_email='.$udata['u_email'];
+                    } else {
+                        //Take them to complete their checkout:
+                        $redirect_url = '/'.$b['b_url_key'].'/checkout?u_email='.$udata['u_email'];
+                    }
+
                     //Redirect to application so they can continue:
                     die(echo_json(array(
                         'status' => 1,
-                        'hard_redirect' => '/my/checkout_complete/'.$duplicate_registries[0]['ru_id'].'?u_key='.md5($udata['u_id'] . $application_status_salt).'&u_id='.$udata['u_id'],
+                        'hard_redirect' => $redirect_url,
                     )));
 
                 } else {
@@ -636,7 +645,7 @@ class Api_v1 extends CI_Controller {
                     //Show them an error:
                     die(echo_json(array(
                         'status' => 0,
-                        'error_message' => '<div class="alert alert-danger" role="alert"><i class="fas fa-exclamation-triangle"></i> You have already enrolled in this Bootcampd. Your admission status is ['.trim(strip_tags(echo_status('ru',$duplicate_registries[0]['ru_status']))).']. '.($duplicate_registries[0]['ru_status']==-2 ? '<a href="/contact"><u>Contact us</u></a> if you like to restart your application.' : 'We emailed you a link to manage your admissions. Check your email to continue.').'</div>',
+                        'error_message' => '<div class="alert alert-danger" role="alert"><i class="fas fa-exclamation-triangle"></i> You have already enrolled in this Bootcamp. Your enrollment status is ['.trim(strip_tags(echo_status('ru',$duplicate_registries[0]['ru_status']))).']. '.($duplicate_registries[0]['ru_status']==-2 ? '<a href="/contact"><u>Contact us</u></a> if you like to restart your application.' : 'We emailed you a link to manage your enrollments. Check your email to continue.').'</div>',
                     )));
 
                 }
@@ -654,67 +663,26 @@ class Api_v1 extends CI_Controller {
             }
         }
 
-        //Lets start their admission application:
-        $admissions[0] = $this->Db_model->ru_create(array(
-            'ru_b_id' 	        => $b['b_id'],
-            'ru_status'         => 0, //Pending
-            'ru_outbound_u_id' 	=> $udata['u_id'],
-            'ru_fp_id'          => ( $b['b_is_parent'] ? 0 : $b['b_fp_id'] ), //Current Page that the student should connect to
-        ));
+
+        //Admit student:
+        $enrollments[0] = $this->Db_model->enroll_student($udata['u_id'],$b);
 
 
-        if(isset($admissions[0]['ru_id']) && intval($admissions[0]['ru_id'])>0){
-
-            //Log engagement for Application Started:
-            $this->Db_model->e_create(array(
-                'e_inbound_u_id' => $udata['u_id'],
-                'e_json' => array(
-                    'input' => $_POST,
-                    'udata' => $udata,
-                    'rudata' => $admissions[0],
-                ),
-                'e_inbound_c_id' => 29, //Application Started
-                'e_b_id' => $b['b_id'],
-            ));
-
-            //Send the email to their admission page:
-            $this->Comm_model->foundation_message(array(
-                'e_inbound_u_id' => 0,
-                'e_outbound_u_id' => $udata['u_id'],
-                'e_outbound_c_id' => 2697,
-                'depth' => 0,
-                'e_b_id' => $b['b_id'],
-            ), true);
-
-            //Redirect to application:
-            die(echo_json(array(
-                'status' => 1,
-                'hard_redirect' => '/my/checkout_complete/'.$admissions[0]['ru_id'].'?u_key='.md5($udata['u_id'] . $application_status_salt).'&u_id='.$udata['u_id'],
-            )));
-
+        //Determie where to redirect depending on whether the Bootcamp has a assessment or not:
+        if($b['b_requires_assessment'] && $enrollments[0]['ru_assessment_result']<1){
+            //Take them to assessment as they have not yet taken it or have failed it:
+            $redirect_url = '/'.$b['b_url_key'].'/assessment?u_email='.$udata['u_email'];
         } else {
-
-            //Should never happen, Log error:
-            $message = 'Unknown admission error has been reported to Mench admin';
-            $this->Db_model->e_create(array(
-                'e_inbound_u_id' => $udata['u_id'],
-                'e_text_value' => $message,
-                'e_json' => array(
-                    'input' => $_POST,
-                    'udata' => $udata,
-                    'rudata' => $admissions[0],
-                ),
-                'e_inbound_c_id' => 8, //Error
-                'e_b_id' => $b['b_id'],
-            ));
-
-            //Show them an error:
-            die(echo_json(array(
-                'status' => 0,
-                'error_message' => '<div class="alert alert-danger" role="alert"><i class="fas fa-exclamation-triangle"></i> '.$message.'</div>',
-            )));
-
+            //Take them to complete their checkout:
+            $redirect_url = '/'.$b['b_url_key'].'/checkout?u_email='.$udata['u_email'];
         }
+
+        //Redirect to application:
+        die(echo_json(array(
+            'status' => 1,
+            'hard_redirect' => $redirect_url,
+        )));
+
     }
 
 
@@ -722,9 +690,9 @@ class Api_v1 extends CI_Controller {
 
         //When students complete the checkout process:
         $application_status_salt = $this->config->item('application_status_salt');
-        $_POST['support_level'] = intval($_POST['support_level']);
+        $_POST['ru_support_package'] = intval($_POST['ru_support_package']);
 
-        if(!isset($_POST['r_id']) || intval($_POST['r_id'])<1 || !isset($_POST['support_level']) || !in_array($_POST['support_level'],array(1,2,3)) || !isset($_POST['ru_id']) || intval($_POST['ru_id'])<1 || !isset($_POST['u_key']) || !isset($_POST['u_id']) || intval($_POST['u_id'])<1 || !(md5($_POST['u_id'].$application_status_salt)==$_POST['u_key'])){
+        if(!isset($_POST['r_id']) || !isset($_POST['ru_network_level']) || !isset($_POST['ru_inbound_u_id']) || intval($_POST['r_id'])<1 || !isset($_POST['ru_support_package']) || !in_array($_POST['ru_support_package'],array(1,2,3)) || !isset($_POST['ru_id']) || intval($_POST['ru_id'])<1 || !isset($_POST['u_key']) || !isset($_POST['u_id']) || intval($_POST['u_id'])<1 || !(md5($_POST['u_id'].$application_status_salt)==$_POST['u_key'])){
 
             //Log engagement:
             $this->Db_model->e_create(array(
@@ -738,46 +706,46 @@ class Api_v1 extends CI_Controller {
             die('<span style="color:#FF0000;">Error: Missing Core Inputs. Report Logged for Admin to review.</span>');
         }
 
-        //Fetch their admission:
-        $admissions = $this->Db_model->remix_admissions(array(
+        //Fetch their enrollment:
+        $enrollments = $this->Db_model->remix_enrollments(array(
             'ru.ru_id'	=> intval($_POST['ru_id']),
         ));
 
         //Fetch selected Class:
         $chosen_classes = $this->Db_model->r_fetch(array(
             'r.r_id' => $_POST['r_id'],
-            'r.r_status >=' => ( $_POST['support_level']>=2 ? 1 : 0 ),
+            'r.r_status >=' => ( $_POST['ru_support_package']>=2 ? 1 : 0 ),
         ), null, 'DESC', 1, array('b'));
 
 
         //Make sure we got all this data:
-        if(!(count($admissions)==1) || !isset($admissions[0]['b_id'])){
+        if(!(count($enrollments)==1) || !isset($enrollments[0]['b_id'])){
 
             //Log this error:
             $this->Db_model->e_create(array(
                 'e_inbound_u_id' => $_POST['u_id'],
-                'e_text_value' => 'ru_checkout_complete() failed to fetch admission data.',
+                'e_text_value' => 'ru_checkout_complete() failed to fetch enrollment data.',
                 'e_json' => $_POST,
                 'e_inbound_c_id' => 8, //Platform Error
             ));
 
             //Error:
-            die('<span style="color:#FF0000;">Error: Failed to fetch admission data. Report Logged for Admin to review.</span>');
+            die('<span style="color:#FF0000;">Error: Failed to fetch enrollment data. Report Logged for Admin to review.</span>');
 
-        } elseif($admissions[0]['b_is_parent']){
+        } elseif($enrollments[0]['c_level']){
 
-            //Delete all existing child Admissions, which IF exist, would be from the last submission:
+            //Delete all existing child Enrollments, which IF exist, would be from the last submission:
             $this->db->query("DELETE FROM v5_class_students WHERE ru_parent_ru_id=".$_POST['ru_id']);
 
             //Now go through all Bootcamps and see if their Classes are available with this start date
             $not_available_reason = null;
-            foreach($admissions[0]['c__child_intents'] as $key=>$b7d){
+            foreach($enrollments[0]['c__child_intents'] as $key=>$b7d){
 
                 //Fetch corresponding Class:
                 $validate_classes = $this->Db_model->r_fetch(array(
                     'r.r_b_id' => $b7d['b_id'],
                     'r.r_start_date' => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+($key*7*24*3600)+(12*3600)  /* For GMT/timezone adjustments */ )),
-                    'r.r_status >=' => ( $_POST['support_level']>=2 ? 1 : 0 ),
+                    'r.r_status >=' => ( $_POST['ru_support_package']>=2 ? 1 : 0 ),
                 ), null, 'DESC', 1, array('b'));
 
 
@@ -786,22 +754,22 @@ class Api_v1 extends CI_Controller {
                     $not_available_reason = 'Not Found';
                     break;
                 } else {
-                    //Create student admission:
+                    //Create student enrollment:
                     $this->Db_model->ru_create(array(
                         'ru_b_id' 	        => $validate_classes[0]['b_id'],
                         'ru_r_id' 	        => $validate_classes[0]['r_id'],
-                        'ru_outbound_u_id' 	=> $admissions[0]['u_id'],
-                        'ru_status'         => ( $_POST['support_level']>=2 ? 0 /* Pending Payment*/ : 4 ),
-                        'ru_fp_id'          => $admissions[0]['b_fp_id'],
-                        'ru_fp_psid'        => ( $admissions[0]['b_fp_id']==$admissions[0]['u_cache__fp_id'] ? $admissions[0]['u_cache__fp_psid'] : 0 ),
+                        'ru_outbound_u_id' 	=> $enrollments[0]['u_id'],
+                        'ru_status'         => ( $_POST['ru_support_package']>=2 ? 0 /* Pending Payment*/ : 4 ),
+                        'ru_fp_id'          => $enrollments[0]['b_fp_id'],
+                        'ru_fp_psid'        => ( $enrollments[0]['b_fp_id']==$enrollments[0]['u_cache__fp_id'] ? $enrollments[0]['u_cache__fp_psid'] : 0 ),
                         'ru_parent_ru_id'   => $_POST['ru_id'], //To indicate the Parent of this Bootcamp
 
-                        'ru_upfront_pay'    => ( $_POST['support_level']==3 ? ($admissions[0]['b_weekly_coaching_rate'] * $admissions[0]['b_deferred_rate'] * $admissions[0]['b_deferred_deposit']) : ( $_POST['support_level']==2 ? ($admissions[0]['b_weekly_coaching_rate']) : 0 ) ),
-                        'ru_deferred_pay'   => ( $_POST['support_level']==3 ? ($admissions[0]['b_weekly_coaching_rate'] * $admissions[0]['b_deferred_rate'] * (1-$admissions[0]['b_deferred_deposit'])) : 0 ),
+                        'ru_upfront_pay'    => ( $_POST['ru_support_package']==3 ? ($enrollments[0]['b_weekly_coaching_rate'] * $enrollments[0]['b_deferred_rate'] * $enrollments[0]['b_deferred_deposit']) : ( $_POST['ru_support_package']==2 ? ($enrollments[0]['b_weekly_coaching_rate']) : 0 ) ),
+                        'ru_deferred_pay'   => ( $_POST['ru_support_package']==3 ? ($enrollments[0]['b_weekly_coaching_rate'] * $enrollments[0]['b_deferred_rate'] * (1-$enrollments[0]['b_deferred_deposit'])) : 0 ),
 
                         'ru_start_time'     => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+($key*7*24*3600)+(12*3600)  /* For GMT/timezone adjustments */ )).' 00:00:00',
                         'ru_end_time'       => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+(($key+1)*7*24*3600)-(12*3600)  /* For GMT/timezone adjustments */ )).' 23:59:59',
-                        'ru_outcome_time'   => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+(($admissions[0]['b__week_count']+$admissions[0]['b_guarantee_weeks'])*7*24*3600)-(12*3600))).' 23:59:59',
+                        'ru_outcome_time'   => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+(($enrollments[0]['b__week_count']+$enrollments[0]['b_guarantee_weeks'])*7*24*3600)-(12*3600))).' 23:59:59',
                     ));
                 }
             }
@@ -815,11 +783,11 @@ class Api_v1 extends CI_Controller {
                     'e_inbound_c_id' => 8, //Platform Error
                 ));
 
-                //Delete all existing child Admissions again:
+                //Delete all existing child Enrollments again:
                 $this->db->query("DELETE FROM v5_class_students WHERE ru_parent_ru_id=".$_POST['ru_id']);
 
                 //Error:
-                die('<span style="color:#FF0000;">Error: Failed to admit you to this multi-week Bootcamp starting ['.date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+($key*7*24*3600)+(12*3600))).'].</span>');
+                die('<span style="color:#FF0000;">Error: Failed to enroll you to this multi-week Bootcamp starting ['.date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+($key*7*24*3600)+(12*3600))).'].</span>');
             }
 
         }
@@ -830,46 +798,45 @@ class Api_v1 extends CI_Controller {
             'e_inbound_u_id' => $_POST['u_id'],
             'e_json' => $_POST,
             'e_inbound_c_id' => 26, //Checkout Submitted (Pending Payment)
-            'e_b_id' => $admissions[0]['b_id'],
+            'e_b_id' => $enrollments[0]['b_id'],
             'e_r_id' => $_POST['r_id'],
         ));
 
         //Set updating data and calculate the final price:
-        $next_url = '/my/applications?pay_ru_id='.$admissions[0]['ru_id'].'&u_key='.$_POST['u_key'].'&u_id='.$_POST['u_id'];
+        $next_url = '/my/applications?pay_ru_id='.$enrollments[0]['ru_id'].'&u_key='.$_POST['u_key'].'&u_id='.$_POST['u_id'];
 
 
         //Save checkout preferences (Still not finalized):
         $this->Db_model->ru_update( intval($_POST['ru_id']) , array(
             'ru_r_id'           => $_POST['r_id'],
-            'ru_fp_id'          => $admissions[0]['b_fp_id'],
-            'ru_fp_psid'        => ( $admissions[0]['b_fp_id']==$admissions[0]['u_cache__fp_id'] ? $admissions[0]['u_cache__fp_psid'] : 0 ),
+            'ru_fp_id'          => $enrollments[0]['b_fp_id'],
+            'ru_fp_psid'        => ( $enrollments[0]['b_fp_id']==$enrollments[0]['u_cache__fp_id'] ? $enrollments[0]['u_cache__fp_psid'] : 0 ),
 
-            'ru_upfront_pay'    => ( $_POST['support_level']==3 ? ($admissions[0]['b_weekly_coaching_rate'] * $admissions[0]['b__week_count'] * $admissions[0]['b_deferred_rate'] * $admissions[0]['b_deferred_deposit']) : ( $_POST['support_level']==2 ? ($admissions[0]['b_weekly_coaching_rate'] * $admissions[0]['b__week_count']) : 0 ) ),
-            'ru_deferred_pay'   => ( $_POST['support_level']==3 ? ($admissions[0]['b_weekly_coaching_rate'] * $admissions[0]['b__week_count'] * $admissions[0]['b_deferred_rate'] * (1-$admissions[0]['b_deferred_deposit'])) : 0 ),
+            'ru_upfront_pay'    => ( $_POST['ru_support_package']==3 ? ($enrollments[0]['b_weekly_coaching_rate'] * $enrollments[0]['b__week_count'] * $enrollments[0]['b_deferred_rate'] * $enrollments[0]['b_deferred_deposit']) : ( $_POST['ru_support_package']==2 ? ($enrollments[0]['b_weekly_coaching_rate'] * $enrollments[0]['b__week_count']) : 0 ) ),
+            'ru_deferred_pay'   => ( $_POST['ru_support_package']==3 ? ($enrollments[0]['b_weekly_coaching_rate'] * $enrollments[0]['b__week_count'] * $enrollments[0]['b_deferred_rate'] * (1-$enrollments[0]['b_deferred_deposit'])) : 0 ),
 
             'ru_start_time'     => $chosen_classes[0]['r_start_date'].' 00:00:00',
-            'ru_end_time'       => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+($admissions[0]['b__week_count']*7*24*3600)-(12*3600))).' 23:59:59',
-            'ru_outcome_time'   => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+(($admissions[0]['b__week_count']+$admissions[0]['b_guarantee_weeks'])*7*24*3600)-(12*3600))).' 23:59:59',
+            'ru_end_time'       => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+($enrollments[0]['b__week_count']*7*24*3600)-(12*3600))).' 23:59:59',
+            'ru_outcome_time'   => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+(($enrollments[0]['b__week_count']+$enrollments[0]['b_guarantee_weeks'])*7*24*3600)-(12*3600))).' 23:59:59',
         ));
 
 
         //Is this a free DIY Bootcamp? If so, we can fast forward the payment step...
-        if($_POST['support_level']==1){
+        if($_POST['ru_support_package']==1){
 
-            //Update the admission as its now paid:
+            //Update the enrollment as its now paid:
             $this->Db_model->ru_finalize($_POST['ru_id']);
 
             //Do they have a custom URL?
-            if(strlen($admissions[0]['b_thankyou_url'])>0){
-                //Override with Instructor's Thank You URL
-                $next_url = $admissions[0]['b_thankyou_url'];
+            if(strlen($enrollments[0]['b_post_enrollment_url_diy'])>0){
+                $next_url = $enrollments[0]['b_post_enrollment_url_diy'];
             }
         }
 
         //We're good now, lets redirect to application status page and MAYBE send them to paypal asap:
         //Show message & redirect:
         echo '<script> setTimeout(function() { window.location = "'.$next_url.'" }, 1000); </script>';
-        echo '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span><div>'.( $_POST['support_level']>=2 ? 'Redirecting to Paypal...​' : 'Successfully Joined 🙌​').'</div>';
+        echo '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span><div>'.( $_POST['ru_support_package']>=2 ? 'Redirecting to Paypal...​' : 'Successfully Enrolled 🙌​').'</div>';
 
     }
 
@@ -886,28 +853,28 @@ class Api_v1 extends CI_Controller {
         } else {
 
             //Attempt to withdraw user:
-            $admissions = $this->Db_model->ru_fetch(array(
+            $enrollments = $this->Db_model->ru_fetch(array(
                 'ru.ru_status <='  => 4, //Initiated or higher as long as Bootcamp is running!
                 'ru.ru_outbound_u_id'	=> $_POST['u_id'],
                 'ru.ru_id'	    => $_POST['ru_id'],
             ));
 
-            if(count($admissions)==1){
+            if(count($enrollments)==1){
 
                 //All good, withdraw:
                 $this->Db_model->ru_update( $_POST['ru_id'] , array(
                     'ru_status' => -2,
                 ));
 
-                //Also withdraw from any potential child admissions:
+                //Also withdraw from any potential child enrollments:
                 $this->db->query("UPDATE v5_class_students SET ru_status=-2 WHERE ru_parent_ru_id=".$_POST['ru_id']);
 
                 //Log Engagement:
                 $this->Db_model->e_create(array(
-                    'e_inbound_u_id' => $admissions[0]['u_id'], //System
+                    'e_inbound_u_id' => $enrollments[0]['u_id'], //System
                     'e_inbound_c_id' => 66, //Application Withdraw
-                    'e_b_id' => $admissions[0]['ru_b_id'],
-                    'e_r_id' => $admissions[0]['r_id'],
+                    'e_b_id' => $enrollments[0]['ru_b_id'],
+                    'e_r_id' => $enrollments[0]['r_id'],
                 ));
 
                 //Inform User:
@@ -930,26 +897,26 @@ class Api_v1 extends CI_Controller {
 
     function ru_save_review(){
         if(!isset($_POST['ru_id']) || !isset($_POST['ru_key']) || intval($_POST['ru_id'])<1 || !($_POST['ru_key']==substr(md5($_POST['ru_id'].'r3vi3wS@lt'),0,6))){
-            die('<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Invalid Admission Data.</div>');
+            die('<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Invalid Enrollment Data.</div>');
         } elseif(!isset($_POST['ru_review_score']) || intval($_POST['ru_review_score'])<1 || intval($_POST['ru_review_score'])>10){
             die('<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Review Score must be between 1-10.</div>');
         }
 
-        //Validate Admission:
-        $admissions = $this->Db_model->ru_fetch(array(
+        //Validate Enrollment:
+        $enrollments = $this->Db_model->ru_fetch(array(
             'ru_id' => intval($_POST['ru_id']),
         ));
-        if(count($admissions)<1){
+        if(count($enrollments)<1){
             $this->Db_model->e_create(array(
                 'e_inbound_u_id' => 0, //System
-                'e_text_value' => 'Validated review submission call failed to fetch admission data',
+                'e_text_value' => 'Validated review submission call failed to fetch enrollment data',
                 'e_inbound_c_id' => 8, //System Error
             ));
-            die('<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Unable to locate your Admission.</div>');
+            die('<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Unable to locate your Enrollment.</div>');
         }
 
         //Is this a new review, or updating an existing one?
-        $new_review = ( intval($admissions[0]['ru_review_score'])<0 );
+        $new_review = ( intval($enrollments[0]['ru_review_score'])<0 );
         $has_text = ( strlen($_POST['ru_review_public_note'])>0 || strlen($_POST['ru_review_private_note'])>0 );
         $update_data = array(
             'ru_review_time' => date("Y-m-d H:i:s"),
@@ -958,30 +925,30 @@ class Api_v1 extends CI_Controller {
             'ru_review_private_note' => $_POST['ru_review_private_note'],
         );
 
-        //Save Engagement that is visible to instructor:
+        //Save Engagement that is visible to coach:
         $this->Db_model->e_create(array(
-            'e_inbound_u_id' => $admissions[0]['u_id'],
+            'e_inbound_u_id' => $enrollments[0]['u_id'],
             'e_text_value' => ( $new_review ? 'Student rated your Class ' : 'Student updated their rating for your Class to ' ).intval($_POST['ru_review_score']).'/10 with the following review: '.( strlen($_POST['ru_review_public_note'])>0 ? $_POST['ru_review_public_note'] : 'No Review' ),
             'e_json' => $update_data,
             'e_inbound_c_id' => 72, //Student Reviewed Class
-            'e_b_id' => $admissions[0]['ru_b_id'],
-            'e_r_id' => $admissions[0]['r_id'],
+            'e_b_id' => $enrollments[0]['ru_b_id'],
+            'e_r_id' => $enrollments[0]['r_id'],
         ));
 
         //Do they have a Private Feedback? Log a need attention Engagement to Mench team reads instantly:
         if(strlen($_POST['ru_review_private_note'])>0){
             $this->Db_model->e_create(array(
-                'e_inbound_u_id' => $admissions[0]['u_id'],
+                'e_inbound_u_id' => $enrollments[0]['u_id'],
                 'e_text_value' => 'Received the following private/anonymous feedback: '.$_POST['ru_review_private_note'],
                 'e_json' => $update_data,
                 'e_inbound_c_id' => 9, //Support Needing Graceful Errors
-                'e_b_id' => $admissions[0]['ru_b_id'],
-                'e_r_id' => $admissions[0]['r_id'],
+                'e_b_id' => $enrollments[0]['ru_b_id'],
+                'e_r_id' => $enrollments[0]['r_id'],
             ));
         }
 
         //Update data:
-        $this->Db_model->ru_update($admissions[0]['ru_id'], $update_data);
+        $this->Db_model->ru_update($enrollments[0]['ru_id'], $update_data);
 
         //Show success and thank student:
         echo '<div class="alert alert-success">Thanks for '.($new_review?'submitting':'updating').' your review 👌'.( $has_text ? ' We read every single review and use your feedback to continuously improve 🙌​' : '' ).'</div>';
@@ -1003,13 +970,13 @@ class Api_v1 extends CI_Controller {
         }
 
         //Fetch student name and details:
-        $matching_admissions = $this->Db_model->ru_fetch(array(
+        $matching_enrollments = $this->Db_model->ru_fetch(array(
             'ru_outbound_u_id' => intval($_POST['u_id']),
             'ru_r_id' => intval($_POST['r_id']),
             'ru_status >=' => 4, //Only Active students can submit Steps
         ));
 
-        if(!(count($matching_admissions)==1)){
+        if(!(count($matching_enrollments)==1)){
             die('<span style="color:#FF0000;">Error: You are no longer an active Student of this Bootcamp</span>');
         }
 
@@ -1035,7 +1002,7 @@ class Api_v1 extends CI_Controller {
         $already_submitted = $this->Db_model->e_fetch(array(
             'e_inbound_c_id' => 33, //Completion Report
             'e_outbound_c_id' => intval($_POST['c_id']), //For this item
-            'e_inbound_u_id' => $matching_admissions[0]['u_id'], //by this Student
+            'e_inbound_u_id' => $matching_enrollments[0]['u_id'], //by this Student
             'e_r_id' => intval($_POST['r_id']), //For this Class
             'e_replaced_e_id' => 0, //Data has not been replaced
             'e_status !=' => -3, //Should not be rejected
@@ -1046,23 +1013,23 @@ class Api_v1 extends CI_Controller {
         }
 
         //Do we need to send any notifications to Instuctor for Coaching Students?
-        if($matching_admissions[0]['ru_upfront_pay']>0 && strlen(trim($_POST['us_notes']))>0 && !($matching_admissions[0]['u_id']==1) /* Shervin does a lot of testing...*/ ){
+        if($matching_enrollments[0]['ru_upfront_pay']>0 && strlen(trim($_POST['us_notes']))>0 && !($matching_enrollments[0]['u_id']==1) /* Shervin does a lot of testing...*/ ){
 
-            //Send email to all instructors of this Bootcamp:
-            $b_instructors = $this->Db_model->ba_fetch(array(
+            //Send email to all coaches of this Bootcamp:
+            $b_coaches = $this->Db_model->ba_fetch(array(
                 'ba.ba_b_id' => intval($_POST['b_id']),
-                'ba.ba_status >=' => 2, //co-instructors & lead instructor
+                'ba.ba_status >=' => 2, //co-coaches & Lead Coach
                 'u.u_status' => 1,
             ));
 
-            $student_name = ( isset($matching_admissions[0]['u_full_name']) && strlen($matching_admissions[0]['u_full_name'])>0 ? $matching_admissions[0]['u_full_name'] : 'System' );
+            $student_name = ( isset($matching_enrollments[0]['u_full_name']) && strlen($matching_enrollments[0]['u_full_name'])>0 ? $matching_enrollments[0]['u_full_name'] : 'System' );
 
             $subject = '⚠️ Review Task Completion '.( strlen(trim($_POST['us_notes']))>0 ? 'Comment' : '(Without Comment)' ).' by '.$student_name;
             $div_style = ' style="padding:5px 0; font-family: Lato, Helvetica, sans-serif; font-size:16px;"';
 
-            //Send notifications to current instructor
-            foreach($b_instructors as $bi){
-                //Make sure this instructor has an email on file
+            //Send notifications to current coach
+            foreach($b_coaches as $bi){
+                //Make sure this coach has an email on file
                 if(strlen($bi['u_email'])>0){
                     //Step Completion Email:
                     //Draft HTML message for this:
@@ -1083,7 +1050,7 @@ class Api_v1 extends CI_Controller {
                     $html_message .= '<div><img src="https://s3foundation.s3-us-west-2.amazonaws.com/c65a5ea7c0dd911074518921e3320439.png" /></div>';
                     //Send Email:
                     $this->Comm_model->send_email(array($bi['u_email']), $subject, $html_message, array(
-                        'e_inbound_u_id' => ( isset($matching_admissions[0]['u_id']) ? $matching_admissions[0]['u_id'] : 0 ), //Student who made submission
+                        'e_inbound_u_id' => ( isset($matching_enrollments[0]['u_id']) ? $matching_enrollments[0]['u_id'] : 0 ), //Student who made submission
                         'e_outbound_u_id' => $bi['u_id'], //The admin
                         'e_text_value' => $subject,
                         'e_json' => array(
@@ -1112,7 +1079,7 @@ class Api_v1 extends CI_Controller {
             } elseif($i['i_status']==3){
                 array_push($on_complete_text_values, array_merge($i , array(
                     'e_inbound_u_id' => 0,
-                    'e_outbound_u_id' => $matching_admissions[0]['u_id'],
+                    'e_outbound_u_id' => $matching_enrollments[0]['u_id'],
                     'i_outbound_c_id' => $i['i_outbound_c_id'],
                     'e_b_id' => intval($_POST['b_id']),
                     'e_r_id' => intval($_POST['r_id']),
@@ -1128,7 +1095,7 @@ class Api_v1 extends CI_Controller {
                 if($i['i_status']==3){
                     array_push($on_complete_text_values, array_merge($i , array(
                         'e_inbound_u_id' => 0,
-                        'e_outbound_u_id' => $matching_admissions[0]['u_id'],
+                        'e_outbound_u_id' => $matching_enrollments[0]['u_id'],
                         'i_outbound_c_id' => $i['i_outbound_c_id'],
                         'e_b_id' => intval($_POST['b_id']),
                         'e_r_id' => intval($_POST['r_id']),
@@ -1143,7 +1110,7 @@ class Api_v1 extends CI_Controller {
             $this->Comm_model->send_message($on_complete_text_values);
         }
 
-        //Any Drip Messages? Schedule them if we have some:
+        //Any Drip Messages? Set triggers:
         if(count($drip_messages)>0){
 
             $start_time = time();
@@ -1156,7 +1123,7 @@ class Api_v1 extends CI_Controller {
                 $this->Db_model->e_create(array(
 
                     'e_inbound_u_id' => 0, //System
-                    'e_outbound_u_id' => $matching_admissions[0]['u_id'],
+                    'e_outbound_u_id' => $matching_enrollments[0]['u_id'],
                     'e_timestamp' => date("Y-m-d H:i:s" , $drip_time ), //Used by Cron Job to fetch this Drip when due
                     'e_json' => array(
                         'created_time' => date("Y-m-d H:i:s" , $start_time ),
@@ -1178,7 +1145,7 @@ class Api_v1 extends CI_Controller {
 
         //Save student completion report:
         $us_eng = $this->Db_model->e_create(array(
-            'e_inbound_u_id' => $matching_admissions[0]['u_id'],
+            'e_inbound_u_id' => $matching_enrollments[0]['u_id'],
             'e_status' => -1, //Auto approved
             'e_text_value' => trim($_POST['us_notes']),
             'e_time_estimate' => $intent_data['intent']['c_time_estimate'], //Estimate time spent on this item
@@ -1204,14 +1171,14 @@ class Api_v1 extends CI_Controller {
         if($intent_data['next_level']==1){
 
             //The next level is the Bootcamp, which means this was the last Step:
-            $this->Db_model->ru_update( $matching_admissions[0]['ru_id'] , array(
+            $this->Db_model->ru_update( $matching_enrollments[0]['ru_id'] , array(
                 'ru_cache__completion_rate' => 1, //Student is 100% complete
                 'ru_cache__current_task' => ($focus_class['r__total_tasks']+1), //Go 1 Task after the total Tasks to indicate completion
             ));
 
             //Change their entity Group
-            if(in_array($matching_admissions[0]['u_inbound_u_id'],array(1304,1282,1279))){
-                $this->Db_model->u_update( $matching_admissions[0]['u_id'] , array(
+            if(in_array($matching_enrollments[0]['u_inbound_u_id'],array(1304,1282,1279))){
+                $this->Db_model->u_update( $matching_enrollments[0]['u_id'] , array(
                     'u_inbound_u_id' => 1307, //Graduate
                 ));
             }
@@ -1229,8 +1196,8 @@ class Api_v1 extends CI_Controller {
 
             //We have a next Task:
             //We also need to change ru_cache__current_task to reflect this advancement:
-            $this->Db_model->ru_update( $matching_admissions[0]['ru_id'] , array(
-                'ru_cache__completion_rate' => number_format( ( $matching_admissions[0]['ru_cache__completion_rate'] + ($intent_data['intent']['c_time_estimate']/$bs[0]['c__estimated_hours']) ),8),
+            $this->Db_model->ru_update( $matching_enrollments[0]['ru_id'] , array(
+                'ru_cache__completion_rate' => number_format( ( $matching_enrollments[0]['ru_cache__completion_rate'] + ($intent_data['intent']['c_time_estimate']/$bs[0]['c__estimated_hours']) ),8),
                 'ru_cache__current_task' => $intent_data['next_intent']['cr_outbound_rank'],
             ));
 
@@ -1284,12 +1251,12 @@ class Api_v1 extends CI_Controller {
 
 
         //Fetch all Studnets:
-        $admissions = $this->Db_model->ru_fetch(array(
-            'r.r_id'	   => $r_id, //Open for admission
+        $enrollments = $this->Db_model->ru_fetch(array(
+            'r.r_id'	   => $r_id, //Open for enrollment
             'ru.ru_status >='  => 4, //Initiated or higher as long as Bootcamp is running!
         ));
 
-        if(count($admissions)==0){
+        if(count($enrollments)==0){
             die('<span style="color:#FF0000;">Error: Class has no Students.</span>');
         }
 
@@ -1303,7 +1270,7 @@ class Api_v1 extends CI_Controller {
 
         //Echo the export file:
         header("Content-type: application/octet-stream");
-        header("Content-Disposition: attachment; filename=".$classes[0]['c_outcome']." - Class of ".echo_time($classes[0]['r_start_date'],1)." Student List (".count($admissions).").xls");
+        header("Content-Disposition: attachment; filename=".$classes[0]['c_outcome']." - Class of ".echo_time($classes[0]['r_start_date'],1)." Student List (".count($enrollments).").xls");
         header("Pragma: no-cache");
         header("Expires: 0");
 
@@ -1318,25 +1285,25 @@ class Api_v1 extends CI_Controller {
         echo "\r\n";
 
         $counter = 0;
-        foreach($admissions as $admission){
+        foreach($enrollments as $enrollment){
 
             $counter++;
             echo $counter;
-            echo "\t".$admission['u_full_name'];
-            echo "\t".$admission['u_email'];
+            echo "\t".$enrollment['u_full_name'];
+            echo "\t".$enrollment['u_email'];
             echo "\t";
-                if($admission['u_cache__fp_psid']>0){
+                if($enrollment['u_cache__fp_psid']>0){
                     echo 'Messenger';
                 } else {
                     echo 'Email';
                 }
-                if(strlen($admission['u_password'])>0){
-                    echo ', Student Portal';
+                if(strlen($enrollment['u_password'])>0){
+                    echo ', Student Hub';
                 }
-            echo "\t".$admission['u_timezone'];
-            echo "\t".$admission['u_gender'];
-            echo "\t".$admission['u_language'];
-            echo "\t".trim(strip_tags(echo_status('ru',$admission['ru_status'])));
+            echo "\t".$enrollment['u_timezone'];
+            echo "\t".$enrollment['u_gender'];
+            echo "\t".$enrollment['u_language'];
+            echo "\t".trim(strip_tags(echo_status('ru',$enrollment['ru_status'])));
             echo "\r\n";
         }
     }
@@ -1412,17 +1379,17 @@ class Api_v1 extends CI_Controller {
         if(!$_POST['r_new_status']){
 
             //Let's make sure this Class has NOT sold any seats:
-            $coaching_admissions = count($this->Db_model->ru_fetch(array(
+            $coaching_enrollments = count($this->Db_model->ru_fetch(array(
                 'ru_r_id' => $_POST['r_id'],
                 'ru_status >=' => 4,
                 'ru_upfront_pay >' => 0,
             )));
-            if($coaching_admissions>0){
+            if($coaching_enrollments>0){
 
                 //Inform Admin:
                 $this->Db_model->e_create(array(
                     'e_inbound_u_id' => $udata['u_id'],
-                    'e_text_value' => $udata['u_full_name'].' (Lead Instructor) is trying to disable coaching for the week of ['.$classes[0]['r_start_date'].'] that they have already sold ['.$coaching_admissions.'] coaching packages. Reach out to see if they need any help with this.',
+                    'e_text_value' => $udata['u_full_name'].' (Lead Coach) is trying to disable coaching for the week of ['.$classes[0]['r_start_date'].'] that they have already sold ['.$coaching_enrollments.'] coaching packages. Reach out to see if they need any help with this.',
                     'e_inbound_c_id' => 9, //Support Needed
                     'e_b_id' => $classes[0]['r_b_id'],
                     'e_r_id' => $classes[0]['r_id'],
@@ -1430,7 +1397,7 @@ class Api_v1 extends CI_Controller {
 
                 echo_json(array(
                     'status' => 0,
-                    'message' => $coaching_admissions.' Student'.echo__s($coaching_admissions).' have already paid for your Classroom for this Week for 1 or more of the Bootcamps you lead, so you cannot disable support until those Students are refunded. Contact Mench support if you need to disable support.',
+                    'message' => $coaching_enrollments.' Student'.echo__s($coaching_enrollments).' have already paid for your Classroom for this Week for 1 or more of the Bootcamps you lead, so you cannot disable support until those Students are refunded. Contact Mench support if you need to disable support.',
                 ));
                 exit;
 
@@ -1479,7 +1446,7 @@ class Api_v1 extends CI_Controller {
                 'message' => 'Outcome must be 2 characters or longer.',
             ));
             return false;
-        } elseif(!isset($_POST['b_is_parent']) || !in_array(intval($_POST['b_is_parent']),array(0,1))){
+        } elseif(!isset($_POST['c_level']) || !in_array(intval($_POST['c_level']),array(0,1))){
             echo_json(array(
                 'status' => 0,
                 'message' => 'Outcome must be 2 characters or longer.',
@@ -1492,6 +1459,7 @@ class Api_v1 extends CI_Controller {
         $intent = $this->Db_model->c_create(array(
             'c_inbound_u_id' => $udata['u_id'],
             'c_outcome' => trim($_POST['c_outcome']),
+            'c_level' => intval($_POST['c_level']),
         ));
         if(intval($intent['c_id'])<=0){
             //Log this error:
@@ -1530,11 +1498,11 @@ class Api_v1 extends CI_Controller {
 
         //Create new Bootcamp:
         $b = $this->Db_model->b_create(array(
-            'b_fp_id' => ( !intval($_POST['b_is_parent']) && in_array($udata['u_id'],$mench_support_team) ? 4 : 0), //Assign Mench Facebook Page for our team
+            'b_fp_id' => ( !intval($_POST['c_level']) && in_array($udata['u_id'],$mench_support_team) ? 4 : 0), //Assign Mench Facebook Page for our team
             'b_url_key' => $generated_key,
             'b_outbound_c_id' => $intent['c_id'],
-            'b_prerequisites' => ( intval($_POST['b_is_parent']) ? null : json_encode($default_class_prerequisites) ),
-            'b_is_parent' => intval($_POST['b_is_parent']),
+            'b_prerequisites' => ( intval($_POST['c_level']) ? null : json_encode($default_class_prerequisites) ),
+            'c_level' => intval($_POST['c_level']),
         ));
 
         if(intval($b['b_id'])<=0 || intval($b['b_outbound_c_id'])<=0){
@@ -1721,7 +1689,7 @@ class Api_v1 extends CI_Controller {
         } elseif(!isset($_POST['b_status'])){
             echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Publish Status',
+                'message' => 'Missing Bootcamp Status',
             ));
             return false;
         } elseif($_POST['level1_c_id']>0 && $_POST['level2_c_id']==0){
@@ -1730,40 +1698,52 @@ class Api_v1 extends CI_Controller {
                 'message' => 'Select Category',
             ));
             return false;
-        } elseif(strlen($_POST['b_thankyou_url'])>0 && !filter_var($_POST['b_thankyou_url'], FILTER_VALIDATE_URL)){
+        } elseif(strlen($_POST['b_post_enrollment_url_diy'])>0 && !filter_var($_POST['b_post_enrollment_url_diy'], FILTER_VALIDATE_URL)){
             echo_json(array(
                 'status' => 0,
-                'message' => 'Enter Valid Thank You URL',
+                'message' => 'Enter Valid Post-Enrollment URL',
             ));
             return false;
-        } elseif(strlen($_POST['b_apply_url'])>0 && !filter_var($_POST['b_apply_url'], FILTER_VALIDATE_URL)){
+        } elseif(!isset($_POST['b_offers_diy']) || !isset($_POST['b_offers_coaching'])){
             echo_json(array(
                 'status' => 0,
-                'message' => 'Enter Valid Apply URL',
+                'message' => 'Missing enrollment data',
             ));
             return false;
-        } elseif(!isset($_POST['b_offers_diy']) || !isset($_POST['coaching_package_check'])){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Missing admission data',
-            ));
-            return false;
-        } elseif(intval($_POST['coaching_package_check']) && (doubleval($_POST['b_weekly_coaching_hours'])<=0 || doubleval($_POST['b_weekly_coaching_rate'])<=0)){
+        } elseif(intval($_POST['b_offers_coaching']) && (doubleval($_POST['b_weekly_coaching_hours'])<=0 || doubleval($_POST['b_weekly_coaching_rate'])<=0)){
             echo_json(array(
                 'status' => 0,
                 'message' => 'Coaching hours and rate are required to offer a coaching package',
             ));
             return false;
-        } elseif(intval($_POST['coaching_package_check']) && (doubleval($_POST['b_weekly_coaching_hours'])<=0 || doubleval($_POST['b_weekly_coaching_rate'])<=0)){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Coaching hours and rate are required to offer a coaching package',
-            ));
-            return false;
-        } elseif(intval($_POST['coaching_package_check']) && (doubleval($_POST['b_weekly_coaching_hours'])<0.5 || doubleval($_POST['b_weekly_coaching_rate'])<30)){
+        } elseif(intval($_POST['b_offers_coaching']) && (doubleval($_POST['b_weekly_coaching_hours'])<0.5 || doubleval($_POST['b_weekly_coaching_rate'])<30)){
             echo_json(array(
                 'status' => 0,
                 'message' => 'Coaching packages must have at-least half an hour of coaching at a minimum of $30 USD ($1/minute)',
+            ));
+            return false;
+        } elseif(!isset($_POST['b_requires_assessment']) || !in_array($_POST['b_requires_assessment'],array(0,1))){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Call to Action Settings',
+            ));
+            return false;
+        } elseif($_POST['b_requires_assessment']==1 && (strlen($_POST['b_assessment_url'])<1 || !filter_var($_POST['b_assessment_url'], FILTER_VALIDATE_URL))){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'A valid Assessment Embed URL is required to enable the instant assessment.',
+            ));
+            return false;
+        } elseif($_POST['b_requires_assessment']==1 && (intval($_POST['b_assessment_minutes'])<0 || intval($_POST['b_assessment_minutes'])>120)){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Assessment time must be between 0 (which means Disabled) to 120 Minutes long. ['.$_POST['b_assessment_minutes'].'] does not fall within that range.',
+            ));
+            return false;
+        } elseif($_POST['b_offers_deferred'] && !$_POST['b_offers_job']){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'This Bootcamp must offer a Job in order to be eligible for the deferred payment program',
             ));
             return false;
         }
@@ -1772,7 +1752,6 @@ class Api_v1 extends CI_Controller {
 
         //Fetch config variables:
         $reserved_hashtags = $this->config->item('reserved_hashtags');
-        $deferred_pay_defaults = $this->config->item('deferred_pay_defaults');
 
 
         //Validate URL Key to be unique:
@@ -1827,23 +1806,41 @@ class Api_v1 extends CI_Controller {
             'b_status' => intval($_POST['b_status']),
             'b_url_key' => $_POST['b_url_key'],
             'b_fb_pixel_id' => ( strlen($_POST['b_fb_pixel_id'])>0 ? bigintval($_POST['b_fb_pixel_id']) : NULL ),
-            'b_thankyou_url' => $_POST['b_thankyou_url'],
+            'b_post_enrollment_url_diy' => $_POST['b_post_enrollment_url_diy'],
 
             'b_offers_diy' => intval($_POST['b_offers_diy']),
 
-            'b_weekly_coaching_hours' => ( intval($_POST['coaching_package_check']) ? doubleval($_POST['b_weekly_coaching_hours']) : 0 ),
-            'b_weekly_coaching_rate' => ( intval($_POST['coaching_package_check']) ? doubleval($_POST['b_weekly_coaching_rate']) : 0 ),
+            'b_offers_coaching' => intval($_POST['b_offers_coaching']),
+            'b_weekly_coaching_hours' => doubleval($_POST['b_weekly_coaching_hours']),
+            'b_weekly_coaching_rate' => doubleval($_POST['b_weekly_coaching_rate']),
 
-            'b_deferred_rate' => ( intval($_POST['coaching_package_check']) && intval($_POST['offer_deferred']) ? $deferred_pay_defaults['b_deferred_rate'] : 0 ),
-            'b_deferred_deposit' => ( intval($_POST['coaching_package_check']) && intval($_POST['offer_deferred']) ? $deferred_pay_defaults['b_deferred_deposit'] : 0 ),
-            'b_deferred_payback' => ( intval($_POST['coaching_package_check']) && intval($_POST['offer_deferred']) ? $deferred_pay_defaults['b_deferred_payback'] : 0 ),
+
+            'b_offers_job' => intval($_POST['b_offers_job']),
+            'b_offers_deferred' => intval($_POST['b_offers_deferred']),
 
             'b_guarantee_weeks' => intval($_POST['b_guarantee_weeks']),
-            'b_apply_url' => ( intval($_POST['coaching_package_check']) ? $_POST['b_apply_url'] : null ), //Only applicable for coaching
+
+            'b_requires_assessment' => intval($_POST['b_requires_assessment']),
+            'b_assessment_url' => $_POST['b_assessment_url'],
+            'b_assessment_minutes' => intval($_POST['b_assessment_minutes']),
         );
+
+        //Only update
+        if(!$bs[0]['b_offers_deferred'] && $_POST['b_offers_deferred'] && !$bs[0]['b_deferred_rate']){
+            //Set default deferred rate for this Bootcamp:
+            $deferred_pay_defaults = $this->config->item('deferred_pay_defaults');
+            $b_update['b_deferred_rate'] = $deferred_pay_defaults['b_deferred_rate'];
+            $b_update['b_deferred_deposit'] = $deferred_pay_defaults['b_deferred_deposit'];
+            $b_update['b_deferred_payback'] = $deferred_pay_defaults['b_deferred_payback'];
+        }
 
 
         $this->Db_model->b_update( intval($_POST['b_id']) , $b_update );
+
+        //Do we need to change the public status of intents?
+        if(!($b_update['b_offers_diy']==$bs[0]['b_offers_diy'])){
+            //TODO the value has changed! Let's update...
+        }
 
 
         //Check to see what Category this Bootcamp Belongs to:
@@ -1931,9 +1928,14 @@ class Api_v1 extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID.</span>');
 	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0){
 	        die('<span style="color:#FF0000;">Error: Invalid Intent ID.</span>');
-	    } elseif(!isset($_POST['c_outcome']) || strlen($_POST['c_outcome'])<=0){
-	        die('<span style="color:#FF0000;">Error: Missing Intent Outcome.</span>');
+        } elseif(!isset($_POST['c_outcome']) || strlen($_POST['c_outcome'])<=0){
+            die('<span style="color:#FF0000;">Error: Missing Intent Outcome.</span>');
+        } elseif(!isset($_POST['link_c_id'])){
+            die('<span style="color:#FF0000;">Error: Missing Link Intent ID.</span>');
 	    }
+
+
+        $_POST['link_c_id'] = intval($_POST['link_c_id']);
 
 	    //Validate Original intent:
 	    $inbound_intents = $this->Db_model->c_fetch(array(
@@ -1951,26 +1953,38 @@ class Api_v1 extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID.</span>');
 	    }
 
-	    //Create intent:
-	    $new_intent = $this->Db_model->c_create(array(
-	        'c_inbound_u_id' => $udata['u_id'],
-            'c_outcome' => trim($_POST['c_outcome']),
-            'c_time_estimate' => ( $_POST['next_level']>=2 ? '0.05' : '0' ), //3 min default Step
-	    ));
+	    if(!$_POST['link_c_id']){
+            //Create intent:
+            $new_intent = $this->Db_model->c_create(array(
+                'c_inbound_u_id' => $udata['u_id'],
+                'c_outcome' => trim($_POST['c_outcome']),
+                'c_time_estimate' => ( $_POST['next_level']>=2 ? '0.05' : '0' ), //3 min default Step
+                'c_level' => $_POST['next_level'], //Either 2 (Task) or 3 (Step)
+            ));
 
-	    //Log Engagement for New Intent:
-	    $this->Db_model->e_create(array(
-	        'e_inbound_u_id' => $udata['u_id'],
-	        'e_text_value' => 'Intent ['.$new_intent['c_outcome'].'] created',
-	        'e_json' => array(
-	            'input' => $_POST,
-	            'before' => null,
-	            'after' => $new_intent,
-	        ),
-	        'e_inbound_c_id' => 20, //New Intent
-	        'e_b_id' => intval($_POST['b_id']),
-	        'e_outbound_c_id' => $new_intent['c_id'],
-	    ));
+            //Log Engagement for New Intent:
+            $this->Db_model->e_create(array(
+                'e_inbound_u_id' => $udata['u_id'],
+                'e_text_value' => 'Intent ['.$new_intent['c_outcome'].'] created',
+                'e_json' => array(
+                    'input' => $_POST,
+                    'before' => null,
+                    'after' => $new_intent,
+                ),
+                'e_inbound_c_id' => 20, //New Intent
+                'e_b_id' => intval($_POST['b_id']),
+                'e_outbound_c_id' => $new_intent['c_id'],
+            ));
+
+        } else {
+            $new_intents = $this->Db_model->c_fetch(array(
+                'c_id' => $_POST['link_c_id'],
+            ));
+            if(count($new_intents)<=0){
+                die('<span style="color:#FF0000;">Error: Invalid Linked Intent ID.</span>');
+            }
+            $new_intent = $new_intents[0];
+        }
 
 	    //Create Link:
 	    $relation = $this->Db_model->cr_create(array(
@@ -2044,7 +2058,7 @@ class Api_v1 extends CI_Controller {
         //Validate Bootcamp ID:
         $inbound_bs = $this->Db_model->b_fetch(array(
             'b.b_id' => intval($_POST['current_b_id']),
-        ),array('c'));
+        ));
 
         $bs = $this->Db_model->remix_bs(array(
             'b.b_id' => $_POST['delete_b_id'],
@@ -2136,10 +2150,10 @@ class Api_v1 extends CI_Controller {
 	    //Validate Bootcamp ID:
         $inbound_bs = $this->Db_model->b_fetch(array(
             'b.b_id' => intval($_POST['current_b_id']),
-        ),array('c'));
+        ));
         $outbound_bs = $this->Db_model->b_fetch(array(
             'b.b_id' => intval($_POST['new_b_id']),
-        ),array('c'));
+        ));
         if(count($inbound_bs)<1){
             echo_json(array(
                 'status' => 0,
@@ -2152,13 +2166,13 @@ class Api_v1 extends CI_Controller {
                 'message' => 'Invalid New Bootcamp ID',
             ));
             return false;
-        } elseif(!$inbound_bs[0]['b_is_parent']){
+        } elseif(!$inbound_bs[0]['c_level']){
             echo_json(array(
                 'status' => 0,
                 'message' => 'Current Bootcamp is not Multi-Week',
             ));
             return false;
-        } elseif($outbound_bs[0]['b_is_parent']){
+        } elseif($outbound_bs[0]['c_level']){
             echo_json(array(
                 'status' => 0,
                 'message' => 'New Bootcamp is not Single-Week',
@@ -2341,7 +2355,7 @@ class Api_v1 extends CI_Controller {
                 'message' => 'Invalid Intent ID',
             ));
             return false;
-        } elseif(!isset($_POST['level']) || intval($_POST['level'])<=0){
+        } elseif(!isset($_POST['level']) || intval($_POST['level'])<0){
             echo_json(array(
                 'status' => 0,
                 'message' => 'Missing level',
@@ -2399,7 +2413,7 @@ class Api_v1 extends CI_Controller {
 
 
         //Process data based on level:
-        if($_POST['level']==1){
+        if($_POST['level']<=1){
 
             //Did the Bootcamp's Intent Outcome change?
             if(!(trim($_POST['c_outcome'])==$original_intents[0]['c_outcome'])){
@@ -2604,7 +2618,7 @@ class Api_v1 extends CI_Controller {
                 if(isset($task['c__child_intents'])){
                     //Give a single/total option:
                     array_push($import_items,array(
-                        'name' => '<i class="fas fa-clipboard-check"></i> Tasks form ['.$task['c_outcome'].']',
+                        'name' => '<i class="fas fa-check-square"></i> Tasks form ['.$task['c_outcome'].']',
                         'id' => 'b_outbound_c_ids',
                         'value' => $task['c_id'],
                         'count' => count($task['c__child_intents']),
@@ -2615,7 +2629,7 @@ class Api_v1 extends CI_Controller {
         } else {
 
             array_push($import_items,array(
-                'name' => '<i class="fas fa-clipboard-check"></i> Tasks in Action Plan',
+                'name' => '<i class="fas fa-check-square"></i> Tasks in Action Plan',
                 'id' => 'b_outbound_c_ids',
                 'value' => $bs[0]['b_outbound_c_id'],
                 'count' => count($bs[0]['c__child_intents']),
@@ -3263,7 +3277,7 @@ class Api_v1 extends CI_Controller {
                 $this->Db_model->i_update( intval($_POST['i_id']) , array(
                     'i_inbound_u_id' => $udata['u_id'],
                     'i_timestamp' => date("Y-m-d H:i:s"),
-                    'i_status' => -1, //Deleted by instructor
+                    'i_status' => -1, //Deleted by coach
                 ));
 
                 //Log engagement:

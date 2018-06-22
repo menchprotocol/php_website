@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => '3.7',
+    'version' => '3.95',
     'name' => 'Mench',
     'url' => 'https://mench.com/', //Important to end with "/" as other links depend on this.
     'email' => 'shervin@mench.com',
@@ -20,7 +20,7 @@ $config['fb_settings'] = array(
 
 $config['class_settings'] = array(
     'create_weeks_ahead'        => 55, //How many weeks ahead should we create classes?
-    'instructor_show_default'   => 10, //Visible by default in Console for Instructors
+    'coach_show_default'   => 10, //Visible by default in Console for Coaches
     'landing_page_visible'      => 5, //Classes & Tasks visible in the Landing Page by default
     'students_show_max'         => 13, //Maximum available for students to see
 );
@@ -44,7 +44,7 @@ $config['required_fb_permissions'] = array(
 $config['application_status_salt'] = 'SALTs3cr3t777';
 $config['bot_activation_salt'] = 'S@LTB0Ts3cr3t4';
 $config['file_limit_mb'] = 25; //Server setting is 32MB. see here: mench.com/ses
-$config['message_max'] = 420; //Max number of characters allowed in messages
+$config['message_max'] = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
 
 //Learn more: https://console.aws.amazon.com/iam/home?region=us-west-2#/users/foundation?section=security_credentials
 $config['aws_credentials'] = [
@@ -54,22 +54,22 @@ $config['aws_credentials'] = [
 
 $config['mench_support_team'] = array(1,2); //Miguel and Shervin @ This Time
 
-//The engagements that instructors are subscribed to:
-$config['instructor_subscriptions'] = array(57,60,68,69,70,72,6997);
+//The engagements that coaches are subscribed to:
+$config['coach_subscriptions'] = array(57,60,68,69,70,72,7093);
 
 //Email-based engagements subscriptions:
 $config['engagement_subscriptions'] = array(
     array(
         'admin_emails' => array('miguel@mench.com'),
-        'subscription' => array(9,15,60,65,68,72,73,75,88 ),
+        'subscription' => array(9,15,60,65,68,72,73,75,88,7084 ),
     ),
     array(
         'admin_emails' => array('shervin@mench.com'),
-        'subscription' => array(9,15,60,65,68,72,73,75,88,    8,84,6909),
+        'subscription' => array(9,15,60,65,68,72,73,75,88,7084    ,8,84,6909),
     ),
 );
 
-//Define what counts as a meaningful Bootcamp engagement by the instructor team:
+//Define what counts as a meaningful Bootcamp engagement by the coach team:
 $config['meaningful_b_engagements']  = array(14,15,16,17,18,19,20,21,22,23,34,35,36,38,39,43,44,73,74,75);
 
 //based on the fibonacci sequence for more realistic estimates
@@ -86,12 +86,12 @@ $config['object_statuses'] = array(
             's_name'  => 'Archived',
             's_desc'  => 'Entity has been removed',
             'limit_u_inbounds'  => array(1281), //Only admins can delete user accounts, or the user for their own account
-            's_mini_icon' => 'fas fa-user-times',
+            's_icon' => 'fas fa-user-times',
         ),
         1 => array(
             's_name'  => 'Active',
             's_desc'  => 'Active entity',
-            's_mini_icon' => 'fas fa-user',
+            's_icon' => 'fas fa-user-check',
             'limit_u_inbounds'  => array(1281), //Only admins can downgrade users from a leader status
         ),
     ),
@@ -100,38 +100,38 @@ $config['object_statuses'] = array(
         -1 => array(
             's_name'  => 'Archived',
             's_desc'  => 'Bootcamp no longer active',
-            's_mini_icon' => 'fas fa-trash-alt',
+            's_icon' => 'fas fa-trash-alt',
         ),
 
         //The following two status ICONS are hard-coded in console.js for Algolia search
         2 => array(
             's_name'  => 'Unlisted',
-            's_desc'  => 'Bootcamp open for admission for students who receive the private landing page URL',
+            's_desc'  => 'Bootcamp open for enrollment for students who receive the private landing page URL',
             'limit_u_inbounds'  => array(1281), //Can only be done by admin
-            's_mini_icon' => 'fas fa-link',
+            's_icon' => 'fas fa-link',
         ),
         3 => array(
             's_name'  => 'Public',
             's_desc'  => 'Bootcamp published on Mench.com Marketplace',
             'limit_u_inbounds'  => array(1281), //Can only be done by admin
-            's_mini_icon' => 'fas fa-bullhorn',
+            's_icon' => 'fas fa-bullhorn',
         ),
     ),
     'df' => array(
         1 => array(
             's_name'  => 'Beginner',
             's_desc'  => 'No experience needed',
-            's_mini_icon' => 'fas fa-thermometer-empty',
+            's_icon' => 'fas fa-thermometer-empty',
         ),
         2 => array(
             's_name'  => 'Intermediate',
             's_desc'  => 'Basic experience required',
-            's_mini_icon' => 'fas fa-thermometer-half',
+            's_icon' => 'fas fa-thermometer-half',
         ),
         3 => array(
             's_name'  => 'Advanced',
             's_desc'  => 'Practical experience required',
-            's_mini_icon' => 'fas fa-thermometer-full',
+            's_icon' => 'fas fa-thermometer-full',
         ),
     ),
 
@@ -139,135 +139,176 @@ $config['object_statuses'] = array(
         -1 => array(
             's_name'  => 'Revoked',
             's_desc'  => 'Bootcamp access revoked',
-            's_mini_icon' => 'fas fa-trash-alt',
+            's_icon' => 'fas fa-trash-alt',
         ),
         2 => array(
             's_name'  => 'Coach',
             's_desc'  => 'Supports the lead coach in supporting Bootcamp students',
-            's_mini_icon' => 'fas fa-whistle',
+            's_icon' => 'fas fa-user-friends',
         ),
         3 => array(
             's_name'  => 'Lead Coach',
             's_desc'  => 'The Bootcamp CEO who is responsible for the Bootcamp performance measured by its completion rate',
-            's_mini_icon' => 'fas fa-star',
+            's_icon' => 'fas fa-star',
         ),
     ),
     'i' => array(
         -1 => array(
             's_name'  => 'Delete',
             's_desc'  => 'Message removed.',
-            's_mini_icon' => 'fas fa-trash-alt',
+            's_icon' => 'fas fa-trash-alt',
         ),
         //No drafting for messages as it over-complicates things
         1 => array(
             's_name'  => 'On-Start',
             's_desc'  => 'Initial messages giving students instructions on how to effectively execute and complete this item',
-            's_mini_icon' => 'fas fa-bolt',
+            's_icon' => 'fas fa-bolt',
         ),
         3 => array(
             's_name'  => 'On-Complete',
             's_desc'  => 'Messages sent when students complete this item. Re-iterate key insights to help students retain learnings',
-            's_mini_icon' => 'fas fa-check-circle',
+            's_icon' => 'fas fa-check-circle',
         ),
         2 => array(
             's_name'  => 'Drip',
             's_desc'  => 'Messages sent in intervals after students complete this item but before their Class ends. Re-iterate key insights to help students retain learnings',
-            's_mini_icon' => 'fas fa-tint',
+            's_icon' => 'fas fa-tint',
         ),
     ),
     'c' => array(
         -1 => array(
             's_name'  => 'Delete',
             's_desc'  => 'Item removed',
-            's_mini_icon' => 'fas fa-minus-circle',
+            's_icon' => 'fas fa-minus-circle',
         ),
         0 => array(
             's_name'  => 'Drafting',
             's_desc'  => 'Step being drafted and not accessible by students until published live',
-            's_mini_icon' => 'fas fa-pause-circle',
+            's_icon' => 'fas fa-pause-circle',
         ),
         1 => array(
             's_name'  => 'Published',
             's_desc'  => 'Step is active and accessible by students',
-            's_mini_icon' => 'fas fa-clipboard-check',
+            's_icon' => 'fas fa-check-square',
         ),
     ),
     'c_level' => array(
         0 => array(
             's_name'  => 'Weekly Bootcamp',
             's_desc'  => 'The core unit of education at Mench. Weekly Bootcamps are a bucket of tasks to be executed within 7-days',
-            's_mini_icon' => 'fas fa-cube',
+            's_icon' => 'fas fa-cube',
         ),
         1 => array(
             's_name'  => 'Multi-Week Bootcamp',
             's_desc'  => 'A collection of weekly Bootcamps designed for accomplishing larger intents',
-            's_mini_icon' => 'fas fa-cubes',
+            's_icon' => 'fas fa-cubes',
         ),
         2 => array(
             's_name'  => 'Task',
             's_desc'  => 'An executable unit of execution to be completed in less than 5 hours',
-            's_mini_icon' => 'fas fa-clipboard-check',
+            's_icon' => 'fas fa-check-square',
         ),
         3 => array(
             's_name'  => 'Steps',
             's_desc'  => 'Breaks tasks down into smaller execution to be completed in less than 30 minutes',
-            's_mini_icon' => 'fal fa-clipboard-check',
+            's_icon' => 'fal fa-clipboard-check',
         ),
     ),
     'b_guarantee_weeks' => array(
         0 => array(
             's_name'  => 'Before Class Ends',
             's_desc'  => 'Bootcamp offers tuition reimbursement for students that complete all weekly tasks on-time but fail to accomplish the outcome before their class ends',
-            's_mini_icon' => 'fas fa-bolt',
+            's_icon' => 'fas fa-bolt',
         ),
         1 => array(
             's_name'  => '1 Week After Class Ends',
             's_desc'  => 'Bootcamp offers tuition reimbursement for students that complete all weekly tasks on-time but fail to accomplish the outcome within 1 week after their class ends',
-            's_mini_icon' => 'fas fa-alarm-clock',
+            's_icon' => 'fas fa-clock',
         ),
         2 => array(
             's_name'  => '2 Weeks After Class Ends',
             's_desc'  => 'Bootcamp offers tuition reimbursement for students that complete all weekly tasks on-time but fail to accomplish the outcome within 2 weeks after their class ends',
-            's_mini_icon' => 'fas fa-alarm-clock',
+            's_icon' => 'fas fa-clock',
         ),
         3 => array(
             's_name'  => '3 Weeks After Class Ends',
             's_desc'  => 'Bootcamp offers tuition reimbursement for students that complete all weekly tasks on-time but fail to accomplish the outcome within 3 weeks after their class ends',
-            's_mini_icon' => 'fas fa-alarm-clock',
+            's_icon' => 'fas fa-clock',
         ),
         4 => array(
             's_name'  => '4 Weeks After Class Ends',
             's_desc'  => 'Bootcamp offers tuition reimbursement for students that complete all weekly tasks on-time but fail to accomplish the outcome within 4 weeks after their class ends',
-            's_mini_icon' => 'fas fa-alarm-clock',
+            's_icon' => 'fas fa-clock',
         ),
     ),
     'cr' => array(
         -1 => array(
             's_name'  => 'Archived Link',
             's_desc'  => 'Step link removed',
-            's_mini_icon' => 'fas fa-unlink',
+            's_icon' => 'fas fa-unlink',
         ),
         1 => array(
             's_name'  => 'Active Link',
             's_desc'  => 'Step link is active',
-            's_mini_icon' => 'fas fa-link',
+            's_icon' => 'fas fa-link',
         ),
     ),
     'ex' => array(
         0 => array(
             's_name'  => 'Self',
             's_desc'  => 'Task does not have any child Steps and is complete when the Task its self is marked as complete',
-            's_mini_icon' => 'fas fa-clipboard-check',
+            's_icon' => 'fas fa-check-square',
         ),
         1 => array(
             's_name'  => 'All Children',
             's_desc'  => 'Task is complete when all child Steps are completed',
-            's_mini_icon' => 'fas fa-sitemap',
+            's_icon' => 'fas fa-sitemap',
         ),
         2 => array(
             's_name'  => 'Any Child',
             's_desc'  => 'Task is complete when any child Step is completed',
-            's_mini_icon' => 'fas fa-code-branch',
+            's_icon' => 'fas fa-code-branch',
+        ),
+    ),
+
+    'ru_support_package' => array(
+        0 => array(
+            's_name'  => 'Not Selected Yet',
+            's_desc'  => 'Student has not selected their support package yet',
+            's_icon' => 'fas fa-question-circle',
+        ),
+        1 => array(
+            's_name'  => 'Do It Yourself',
+            's_desc'  => 'Student will complete the Bootcamp on their own without any coaching',
+            's_icon' => 'fas fa-user',
+        ),
+        2 => array(
+            's_name'  => '1-on-1 Coaching - Upfront',
+            's_desc'  => 'Student will receive 1-on-1 coaching and will pay for it up-front',
+            's_icon' => 'fas fa-users',
+        ),
+        3 => array(
+            's_name'  => '1-on-1 Coaching - Deferred',
+            's_desc'  => 'Student will receive 1-on-1 coaching using deferred payments',
+            's_icon' => 'fas fa-users',
+        ),
+    ),
+
+    'ru_assessment_result' => array(
+        -1 => array(
+            's_name'  => 'Assessment Not Taken',
+            's_desc'  => 'Student has not taken the assessment yet',
+            's_icon' => 'fas fa-question-circle',
+        ),
+        0 => array(
+            's_name'  => 'Assessment Failed',
+            's_desc'  => 'Student did not score the minimum marks required to pass',
+            's_icon' => 'fas fa-times-circle',
+        ),
+        1 => array(
+            's_name'  => 'Assessment Passed',
+            's_desc'  => 'Student scored above the minimum points and passed the assessment',
+            's_icon' => 'fas fa-check-circle',
         ),
     ),
 
@@ -275,96 +316,70 @@ $config['object_statuses'] = array(
         -4 => array( //This does not exist in the DB and is manually invoked if item is not found in DB
             's_name'  => 'Pending Completion',
             's_desc'  => 'Item not yet completed',
-            's_mini_icon' => 'fal fa-circle',
+            's_icon' => 'fal fa-circle',
         ),
         -3 => array(
             's_name'  => 'Rejected',
             's_desc'  => 'Item was reviewed and rejected as it did not meet Mench guidelines',
-            's_mini_icon' => 'fas fa-exclamation-circle',
+            's_icon' => 'fas fa-exclamation-circle',
         ),
         -2 => array(
             's_name'  => 'Processing',
             's_desc'  => 'Temporary status to prevent duplicate processing',
-            's_mini_icon' => 'fas fa-spinner fa-spin',
+            's_icon' => 'fas fa-spinner fa-spin',
         ),
         -1 => array(
             's_name'  => 'Auto Verified',
             's_desc'  => 'Item has been auto approved',
-            's_mini_icon' => 'fal fa-check-circle',
+            's_icon' => 'fal fa-check-circle',
         ),
         0 => array(
             's_name'  => 'Submitted',
             's_desc'  => 'Item submitted and pending verification',
-            's_mini_icon' => 'fal fa-check-circle',
+            's_icon' => 'fal fa-check-circle',
         ),
         1 => array(
             's_name'  => 'Verified',
             's_desc'  => 'Item has been processed and is now complete',
-            's_mini_icon' => 'fas fa-check-circle',
+            's_icon' => 'fas fa-check-circle',
         ),
     ),
 
     'r' => array(
         -3 => array(
             's_name'  => 'Cancelled',
-            's_desc'  => 'Class cancelled after it had started, likely for reasons beyond the instructors control',
+            's_desc'  => 'Class cancelled after it had started, likely for reasons beyond the coaches control',
             'limit_u_inbounds'  => array(1281),
-            's_mini_icon' => 'fas fa-times-circle',
+            's_icon' => 'fas fa-times-circle',
         ),
         -2 => array(
             's_name'  => 'Expired',
-            's_desc'  => 'Class start time passed without meeting the minimum student admission requirement',
+            's_desc'  => 'Class start time passed without meeting the minimum student enrollment requirement',
             'limit_u_inbounds'  => array(1281),
-            's_mini_icon' => 'fas fa-times-circle',
+            's_icon' => 'fas fa-times-circle',
         ),
         0 => array(
             's_name'  => 'Coaching Unavailable',
-            's_desc'  => 'Class is not available for coaching admissions this week',
-            's_mini_icon' => 'fas fa-minus-circle',
+            's_desc'  => 'Class is not available for coaching enrollments this week',
+            's_icon' => 'fas fa-user',
         ),
         1 => array(
             's_name'  => 'Coaching Available',
-            's_desc'  => 'Class is open for coaching admission',
-            's_mini_icon' => 'fas fa-whistle',
+            's_desc'  => 'Class is open for coaching enrollment',
+            's_icon' => 'fas fa-user-friends',
         ),
         2 => array(
             's_name'  => 'Class Running',
-            's_desc'  => 'Class has admitted students and is currently running',
+            's_desc'  => 'Class has enrolled students and is currently running',
             'limit_u_inbounds'  => array(1281),
-            's_mini_icon' => 'fas fa-play-circle',
+            's_icon' => 'fas fa-play-circle',
         ),
         3 => array(
             's_name'  => 'Class Completed',
             's_desc'  => 'Class was operated completely until its last day',
             'limit_u_inbounds'  => array(1281),
-            's_mini_icon' => 'fas fa-check-circle',
+            's_icon' => 'fas fa-check-circle',
         ),
-    ),
-    'rs' => array(
-        1 => array(
-            's_name'  => 'Do It Yourself',
-            's_desc'  => '- Step by Step Action Plan
-- Peer Chat & Networking
-- Notification & Reminders',
-            's_mini_icon' => 'fas fa-wrench',
-        ),
-        2 => array(
-            's_name'  => '1-on-1 Coaching (Upfront Payment)',
-            's_desc'  => '- Get coaching from an Industry Expert
-- 1-on-1 Chat Line & Email Support
-- Assignment Review & Feedback
-- Completion Certificate & LinkedIn Recommendation',
-            's_mini_icon' => 'fas fa-whistle',
-        ),
-        3 => array(
-            's_name'  => '1-on-1 Coaching (Deferred Payment)',
-            's_desc'  => '- Get coaching from an Industry Expert
-- 1-on-1 Chat Line & Email Support
-- Assignment Review & Feedback
-- Completion Certificate & LinkedIn Recommendation',
-            's_mini_icon' => 'fas fa-whistle',
-        ),
-
     ),
 
     'x_type' => array(
@@ -372,37 +387,37 @@ $config['object_statuses'] = array(
             's_name'  => 'Web Page',
             's_fb_key'  => 'text',
             's_desc'  => 'URL point to a generic website on the internet',
-            's_mini_icon' => 'fas fa-link',
+            's_icon' => 'fas fa-link',
         ),
         1 => array(
             's_name'  => 'Embeddable',
             's_fb_key'  => 'text',
             's_desc'  => 'A recognized URL with an embeddable widget',
-            's_mini_icon' => 'fas fa-file-code',
+            's_icon' => 'fas fa-file-code',
         ),
         2 => array(
             's_name'  => 'Video File',
             's_fb_key'  => 'video',
             's_desc'  => 'URL of a raw video file',
-            's_mini_icon' => 'fas fa-file-video',
+            's_icon' => 'fas fa-file-video',
         ),
         3 => array(
             's_name'  => 'Audio File',
             's_fb_key'  => 'audio',
             's_desc'  => 'URL of a raw audio file',
-            's_mini_icon' => 'fas fa-file-audio',
+            's_icon' => 'fas fa-file-audio',
         ),
         4 => array(
             's_name'  => 'Image File',
             's_fb_key'  => 'image',
             's_desc'  => 'URL of a raw image file',
-            's_mini_icon' => 'fas fa-file-image',
+            's_icon' => 'fas fa-file-image',
         ),
         5 => array(
             's_name'  => 'Generic File',
             's_fb_key'  => 'file',
             's_desc'  => 'URL of a raw generic file',
-            's_mini_icon' => 'fas fa-file-pdf',
+            's_icon' => 'fas fa-file-pdf',
         ),
     ),
 
@@ -410,22 +425,22 @@ $config['object_statuses'] = array(
         -2 => array(
             's_name'  => 'Deleted',
             's_desc'  => 'URL removed by User',
-            's_mini_icon' => 'fas fa-trash-alt',
+            's_icon' => 'fas fa-trash-alt',
         ),
         -1 => array(
             's_name'  => 'Broken',
             's_desc'  => 'URL detected broken by MenchBot after several tries',
-            's_mini_icon' => 'fas fa-unlink',
+            's_icon' => 'fas fa-unlink',
         ),
         1 => array(
             's_name'  => 'Seems Broken',
             's_desc'  => 'URL detected broken by MenchBot but not fully sure as we need to check again',
-            's_mini_icon' => 'fas fa-unlink',
+            's_icon' => 'fas fa-unlink',
         ),
         2 => array(
             's_name'  => 'Live',
             's_desc'  => 'A URL Associated to the Entity',
-            's_mini_icon' => 'fas fa-check-circle',
+            's_icon' => 'fas fa-check-circle',
         ),
     ),
 
@@ -435,90 +450,114 @@ $config['object_statuses'] = array(
         //Withrew after course has started:
         -3 => array(
             's_name'  => 'Student Removed',
-            's_desc'  => 'Student removed from Class post-admission',
-            's_mini_icon' => 'fas fa-times-hexagon',
+            's_desc'  => 'Student removed from Class post-enrollment',
+            's_icon' => 'fas fa-times-hexagon',
         ),
         //Withrew prior to course has started:
         -2 => array(
             's_name'  => 'Student Withdrew',
             's_desc'  => 'Student withdrew before Class started',
-            's_mini_icon' => 'fas fa-times-hexagon',
+            's_icon' => 'fas fa-times-hexagon',
         ),
 
         0 => array(
-            's_name'  => 'Admission Initiated',
+            's_name'  => 'Enrollment Initiated',
             's_desc'  => 'Student initiated application but had not completed the checkout process',
-            's_mini_icon' => 'fas fa-question-circle',
+            's_icon' => 'fas fa-question-circle',
         ),
         4 => array(
-            's_name'  => 'Admitted',
+            's_name'  => 'Enrolled',
             's_desc'  => 'Student joined Class',
-            's_mini_icon' => 'fas fa-user-circle',
+            's_icon' => 'fas fa-user-circle',
         ),
 
         //Upon Class End Time:
         6 => array(
             's_name'  => 'Incomplete',
             's_desc'  => 'Student did not complete all Tasks by the last day of the Bootcamp',
-            's_mini_icon' => 'fas fa-times-circle',
+            's_icon' => 'fas fa-times-circle',
         ),
         7 => array(
             's_name'  => 'Completed',
             's_desc'  => 'Student successfully completed all Tasks by the Class end time and became a Bootcamp graduate',
-            's_mini_icon' => 'fas fa-check-circle',
+            's_icon' => 'fas fa-check-circle',
+        ),
+    ),
+
+    'ru_network_level' => array(
+
+        0 => array(
+            's_name'  => 'Not Selected',
+            's_desc'  => 'Student has not yet selected their networking preference.' ,
+            's_icon' => 'fas fa-question-circle',
+        ),
+        1 => array(
+            's_name'  => 'Solo',
+            's_desc'  => 'Complete bootcamp on your own, without connecting to your classmates. We highly encourage networking as a framework to apply your learnings.' ,
+            's_icon' => 'fas fa-user',
+        ),
+        2 => array(
+            's_name'  => 'Networking',
+            's_desc'  => 'Connect with fellow classmates and setup video calls to share best-practices and key insights. Considering that all your classmates share the same end goal as you so its likely that you will find more in common!',
+            's_icon' => 'fas fa-users',
+        ),
+        3 => array(
+            's_name'  => 'Networking + Interview Practice',
+            's_desc'  => 'On top of networking you will further prepare for your interviews by setting up additional video calls with fellow classmates to practice interviews. We will provide the framework of your call so you can focus on applying the best-practices you learned in a real world scenario.',
+            's_icon' => 'fas fa-users',
         ),
     ),
 
     't' => array(
         -2 => array(
-            's_name'  => 'Instructor Payout',
-            's_desc'  => 'Payment sent to instructors and affiliates',
-            's_mini_icon' => 'fas fa-usd-circle',
+            's_name'  => 'Coach Payout',
+            's_desc'  => 'Payment sent to coaches and affiliates',
+            's_icon' => 'fas fa-usd-circle',
         ),
         -1 => array(
             's_name'  => 'Refund Payout',
             's_desc'  => 'Transaction hold the exact amount of refund issues to the student',
-            's_mini_icon' => 'fas fa-usd-circle',
+            's_icon' => 'fas fa-usd-circle',
         ),
         0 => array(
             's_name'  => 'Transaction Refunded',
             's_desc'  => 'Payment has been fully or partially refunded and a new transaction has been added to reflect the exact refund',
-            's_mini_icon' => 'fas fa-usd-circle',
+            's_icon' => 'fas fa-usd-circle',
         ),
         1 => array(
             's_name'  => 'Payment Received',
-            's_desc'  => 'Payment received from students for a class admission',
-            's_mini_icon' => 'fas fa-usd-circle',
+            's_desc'  => 'Payment received from students for a class enrollment',
+            's_icon' => 'fas fa-usd-circle',
         ),
     ),
     'fp' => array(
         -1 => array(
             's_name'  => 'Archived',
             's_desc'  => 'Facebook Page not accessible by Mench',
-            's_mini_icon' => 'fas fa-trash-alt',
+            's_icon' => 'fas fa-trash-alt',
         ),
         0 => array(
             's_name'  => 'Available',
             's_desc'  => 'Facebook Page available but not connected to a Mench Bootcamp yet',
-            's_mini_icon' => 'fal fa-plug',
+            's_icon' => 'fal fa-plug',
         ),
         1 => array(
             's_name'  => 'Connected',
             's_desc'  => 'Facebook Page connected to a Mench Bootcamp',
-            's_mini_icon' => 'fas fa-plug',
+            's_icon' => 'fas fa-plug',
         ),
     ),
     //0=Weekly, 1=Multiweek, 2=Task, 3=Step
     'fs' => array(
         -1 => array(
             's_name'  => 'Access Revoked',
-            's_desc'  => 'Instructor is not authorized as the Facebook Page administrator',
-            's_mini_icon' => 'fal fa-bookmark',
+            's_desc'  => 'Coach is not authorized as the Facebook Page administrator',
+            's_icon' => 'fal fa-bookmark',
         ),
         1 => array(
             's_name'  => 'Access Authorized',
-            's_desc'  => 'Instructor is an authorized Facebook Page administrator',
-            's_mini_icon' => 'fas fa-bookmark',
+            's_desc'  => 'Coach is an authorized Facebook Page administrator',
+            's_icon' => 'fas fa-bookmark',
         ),
     ),
 );
@@ -530,8 +569,30 @@ $config['social_urls'] =array(
     'https://twitter.com/'              => 'fab fa-twitter',
     'https://www.instagram.com/'        => 'fab fa-instagram',
     'https://www.facebook.com/'         => 'fab fa-facebook',
+    'https://m.me/'                     => 'fab fa-facebook-messenger',
     'https://join.skype.com/'           => 'fab fa-skype',
     'https://github.com/'               => 'fab fa-github',
+    'https://soundcloud.com/'           => 'fab fa-soundcloud',
+    'https://medium.com/'               => 'fab fa-medium',
+    'https://www.kickstarter.com/'      => 'fab fa-kickstarter',
+    'https://www.quora.com/'            => 'fab fa-quora',
+    'https://www.reddit.com/'           => 'fab fa-reddit',
+    'https://slack.com/'                => 'fab fa-slack',
+    'https://www.pinterest.'            => 'fab fa-pinterest',
+    'https://plus.google.com/'          => 'fab fa-google-plus',
+    'https://dribbble.com/'             => 'fab fa-dribbble',
+    'https://discordapp.com/'           => 'fab fa-discord',
+
+    //Education websites:
+    'https://www.udemy.com/'            => 'fas fa-graduation-cap',
+    'https://www.udacity.com/'          => 'fas fa-graduation-cap',
+    'https://www.thinkific.com/'        => 'fas fa-graduation-cap',
+    'https://teachable.com/'            => 'fas fa-graduation-cap',
+    'https://www.coursera.org/'         => 'fas fa-graduation-cap',
+    'https://www.edx.org/'              => 'fas fa-graduation-cap',
+    'https://www.khanacademy.org/'      => 'fas fa-graduation-cap',
+    'https://www.lynda.com/'            => 'fas fa-graduation-cap',
+    'https://www.skillshare.com/'       => 'fas fa-graduation-cap',
 );
 
 
@@ -563,8 +624,8 @@ $config['reserved_hashtags'] = array(
     'console',
     'help',
     'hashtag',
-    'instructor',
-    'instructors',
+    'coach',
+    'coaches',
     'student',
     'students',
 );

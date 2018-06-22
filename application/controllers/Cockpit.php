@@ -40,7 +40,7 @@ class Cockpit extends CI_Controller {
 
 	    if(isset($_GET['cat'])){
 	        
-	        //Load instructor list:
+	        //Load coach list:
 	        $this->load->view('console/console_header', array(
 	            'title' => urldecode($_GET['cat']).' Udemy Community',
 	            'breadcrumb' => array(

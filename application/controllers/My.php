@@ -27,7 +27,7 @@ class My extends CI_Controller {
      * Signup
      ****************************** */
 
-    function apply_form($b_url_key){
+    function checkout_start($b_url_key){
         //The start of the funnel for email, first name & last name
 
         //Fetch data:
@@ -36,37 +36,10 @@ class My extends CI_Controller {
             'LOWER(b.b_url_key)' => strtolower($b_url_key),
         ));
 
-        //Validate Bootcamp:
-        if(!isset($bs[0])){
-            //Invalid key, redirect back:
-            redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Bootcamp URL.</div>');
-        } elseif($bs[0]['b_status']<2){
-            //Here we don't even let instructors move forward to apply!
-            redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp is Archived.</div>');
-        } elseif($bs[0]['b_fp_id']<=0){
-            redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp not connected to a Facebook Page yet.</div>');
-        } elseif(strlen($bs[0]['b_apply_url'])<1){
-            redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp missing Application URL.</div>');
-        } else {
-            //All good, redirect to apply:
-            redirect_message($bs[0]['b_apply_url']);
-        }
-    }
-
-
-    function checkout_start($b_url_key,$autoload_u_id=0){
-        //The start of the funnel for email, first name & last name
-
-        //Fetch data:
-        $udata = $this->session->userdata('user');
-        $bs = $this->Db_model->remix_bs(array(
-            'LOWER(b.b_url_key)' => strtolower($b_url_key),
-        ));
-
-        if($autoload_u_id){
-            //Fetch user:
+        //Do we need to auto load a user?
+        if(isset($_GET['u_email'])){
             $us = $this->Db_model->u_fetch(array(
-                'u_id' => $autoload_u_id,
+                'u_email' => $_GET['u_email'],
             ));
         }
 
@@ -75,17 +48,17 @@ class My extends CI_Controller {
             //Invalid key, redirect back:
             redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Bootcamp URL.</div>');
         } elseif($bs[0]['b_status']<2){
-            //Here we don't even let instructors move forward to apply!
+            //Here we don't even let coaches move forward to apply!
             redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp is Archived.</div>');
         } elseif($bs[0]['b_fp_id']<=0){
             redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp not connected to a Facebook Page yet.</div>');
-        } elseif(!(intval($bs[0]['b_offers_diy']) || doubleval($bs[0]['b_weekly_coaching_hours']))){
-            redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp does not offer any admission packages yet.</div>');
+        } elseif(!$bs[0]['b_offers_diy'] && !$bs[0]['b_offers_coaching']){
+            redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp not yet open for enrollment.</div>');
         }
 
         $data = array(
             'title' => $bs[0]['c_outcome'],
-            'u' => ( isset($us[0]) ? $us[0] : $udata ),
+            'u' => ( isset($us[0]) ? $us[0] : ( isset($udata) && count($udata)>0 ? $udata : array() ) ),
             'b' => $bs[0],
             'b_fb_pixel_id' => $bs[0]['b_fb_pixel_id'], //Will insert pixel code in header
         );
@@ -96,37 +69,44 @@ class My extends CI_Controller {
         $this->load->view('front/shared/p_footer');
     }
 
-    function checkout_complete($ru_id){
+    function checkout_complete($b_url_key){
 
-        //List student applications
-        $application_status_salt = $this->config->item('application_status_salt');
-        if(intval($ru_id)<1 || !isset($_GET['u_key']) || !isset($_GET['u_id']) || intval($_GET['u_id'])<1 || !(md5($_GET['u_id'].$application_status_salt)==$_GET['u_key'])){
-            //Log this error:
-            redirect_message('/','<div class="alert alert-danger" role="alert">Invalid URL. Choose your Bootcamp and re-apply to receive an email with your application status url.</div>');
-            exit;
+        //Validate Bootcamp:
+        $bs = $this->Db_model->b_fetch(array(
+            'b_url_key' => $b_url_key,
+        ));
+        if(count($bs)<1){
+            redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Bootcamp URL.</div>');
         }
 
-        //Fetch all their addmissions:
-        $admissions = $this->Db_model->remix_admissions(array(
-            'ru.ru_id'	   => $ru_id, //Loading a very specific Admission ID for this Student
-            'ru.ru_outbound_u_id'   => intval($_GET['u_id']),
-        ));
+        //Validate email:
+        if(isset($_GET['u_email']) && filter_var($_GET['u_email'], FILTER_VALIDATE_EMAIL)){
 
-        //Did we find at-least one?
-        if(count($admissions)<1){
-            //Log this error:
-            redirect_message('/my/applications?u_key='.$_GET['u_key'].'&u_id='.$_GET['u_id'],'<div class="alert alert-danger" role="alert">No Active Bootcamps.</div>');
-            exit;
+            $enrollments = $this->Db_model->remix_enrollments(array(
+                'u_email' =>strtolower($_GET['u_email']),
+                'ru_b_id' => $bs[0]['b_id'],
+            ));
+
+            if(count($enrollments)<1){
+                return redirect_message('/'.$b_url_key,'<div class="alert alert-danger" role="alert">Enrollment not found.</div>');
+            } elseif($bs[0]['b_requires_assessment'] && $enrollments[0]['ru_assessment_result']<1){
+                //Send them back to assessment as they have not yet passed that:
+                return redirect_message('/'.$b_url_key.'/assessment?u_email='.$_GET['u_email'],'<div class="alert alert-danger" role="alert">You are required to complete the assessment before joining this Bootcamp.</div>');
+            }
+
+        } else {
+            redirect_message('/'.$b_url_key,'<div class="alert alert-danger" role="alert">Missing email.</div>');
         }
 
         //Assemble the data:
+        $application_status_salt = $this->config->item('application_status_salt');
         $data = array(
-            'title' => 'Join '.$admissions[0]['c_outcome'].' - Starting '.echo_time($admissions[0]['r_start_date'],4),
-            'ru_id' => $ru_id,
-            'u_id' => $_GET['u_id'],
-            'u_key' => $_GET['u_key'],
-            'admission' => $admissions[0],
-            'b_fb_pixel_id' => $admissions[0]['b_fb_pixel_id'], //Will insert pixel code in header
+            'title' => 'Enroll to '.$enrollments[0]['c_outcome'],
+            'ru_id' => $enrollments[0]['ru_id'],
+            'u_id' => $enrollments[0]['u_id'],
+            'u_key' => md5($enrollments[0]['u_id'].$application_status_salt),
+            'enrollment' => $enrollments[0],
+            'b_fb_pixel_id' => $bs[0]['b_fb_pixel_id'], //Will insert pixel code in header
         );
 
         //Load apply page:
@@ -145,16 +125,6 @@ class My extends CI_Controller {
             redirect_message('/','<div class="alert alert-danger" role="alert">Invalid URL. Choose your Bootcamp and re-apply to receive an email with your application status url.</div>');
         }
 
-        //Is this a paypal success?
-        $purchase_value = 0;
-        if(isset($_GET['status']) && intval($_GET['status'])==1){
-            //Give the PayPal webhook enough time to update the DB status:
-            sleep(2);
-
-            //Capture Facebook Conversion:
-            //TODO This would capture again upon refresh, fix later...
-            $purchase_value = doubleval($_GET['purchase_value']);
-        }
 
         //Search for class using form ID:
         $users = $this->Db_model->u_fetch(array(
@@ -162,22 +132,37 @@ class My extends CI_Controller {
         ));
 
         //Fetch all their addmissions:
-        $admissions = $this->Db_model->ru_fetch(array(
+        $enrollments = $this->Db_model->ru_fetch(array(
             'ru_outbound_u_id'	=> @$users[0]['u_id'],
-            'ru_parent_ru_id'	=> 0, //Child admissions are fetched within the child row
+            'ru_parent_ru_id'	=> 0, //Child enrollments are fetched within the child row
         ),array(
             'ru.ru_timestamp' => 'DESC',
         ));
 
-        if(count($users)==1 && count($admissions)>0){
+        if(count($users)==1 && count($enrollments)>0){
             $udata = $users[0];
         } else {
             redirect_message('/','<div class="alert alert-danger" role="alert">Invalid URL. Choose your Bootcamp and re-apply to receive an email with your application status url.</div>');
         }
 
         $bs = $this->Db_model->b_fetch(array(
-            'b_id'	=> ( $admissions[0]['ru_b_id'] ),
+            'b_id'	=> ( $enrollments[0]['ru_b_id'] ),
         ));
+
+
+        //Is this a paypal success?
+        if(isset($_GET['status']) && intval($_GET['status'])==1){
+            //Give the PayPal webhook enough time to update the DB status:
+            sleep(2);
+
+            //Capture Facebook Conversion:
+            //TODO This would capture again upon refresh, fix later...
+            $purchase_value = doubleval($_GET['purchase_value']);
+
+        } else {
+            //Set defaults:
+            $purchase_value = 0;
+        }
 
         //Validate Class ID that it's still the latest:
         $data = array(
@@ -185,9 +170,9 @@ class My extends CI_Controller {
             'udata' => $udata,
             'u_id' => $_GET['u_id'],
             'u_key' => $_GET['u_key'],
-            'b_thankyou_url' => $bs[0]['b_thankyou_url'],
+            'b_enrollment_redirect_url' => null,
             'purchase_value' => $purchase_value, //Capture via Facebook Pixel
-            'admissions' => $admissions,
+            'enrollments' => $enrollments,
             'hm' => ( isset($_GET['status']) && isset($_GET['message']) ? '<div class="alert alert-'.( intval($_GET['status']) ? 'success' : 'danger').'" role="alert">'.( intval($_GET['status']) ? 'Success' : 'Error').': '.$_GET['message'].'</div>' : '' ),
         );
 
@@ -217,53 +202,53 @@ class My extends CI_Controller {
     }
     function display_actionplan($ru_fp_psid,$b_id=0,$c_id=0){
 
-        $uadmission = array();
+        $uenrollment = array();
         if(!$ru_fp_psid){
-            $uadmission = $this->session->userdata('uadmission');
+            $uenrollment = $this->session->userdata('uenrollment');
         }
 
         //Fetch Bootcamps for this user:
-        if(!$ru_fp_psid && count($uadmission)<1){
+        if(!$ru_fp_psid && count($uenrollment)<1){
             //There is an issue here!
             die('<div class="alert alert-danger" role="alert">Invalid Credentials</div>');
-        } elseif(count($uadmission)<1 && !is_dev() && isset($_GET['sr']) && !parse_signed_request($_GET['sr'])){
+        } elseif(count($uenrollment)<1 && !is_dev() && isset($_GET['sr']) && !parse_signed_request($_GET['sr'])){
             die('<div class="alert alert-danger" role="alert">Unable to authenticate your origin.</div>');
         }
 
-        //Set admission filters:
+        //Set enrollment filters:
         $ru_filter = array(
-            'ru.ru_status >=' => 4, //Admitted
-            'r.r_status >=' => 1, //Open for Admission or Higher
+            'ru.ru_status >=' => 4, //Enrolled
+            'r.r_status >=' => 1, //Open for Enrollment or Higher
         );
 
         //Define user identifier based on origin (Desktop login vs Messenger Webview):
-        if(count($uadmission)>0 && $uadmission['u_id']>0){
-            $ru_filter['u.u_id'] = $uadmission['u_id'];
+        if(count($uenrollment)>0 && $uenrollment['u_id']>0){
+            $ru_filter['u.u_id'] = $uenrollment['u_id'];
         } else {
             $ru_filter['(ru.ru_fp_psid = '.$ru_fp_psid.' OR u.u_cache__fp_psid = '.$ru_fp_psid.')'] = null;
         }
 
-        //Fetch all their admissions:
+        //Fetch all their enrollments:
         if($b_id>0){
             //Enhance our search and make it specific to this $b_id:
             $ru_filter['ru.ru_b_id'] = $b_id;
         }
 
-        $admissions = $this->Db_model->remix_admissions($ru_filter);
+        $enrollments = $this->Db_model->remix_enrollments($ru_filter);
 
-        if(count($admissions)==1){
+        if(count($enrollments)==1){
 
             //Only have a single option:
-            $focus_admission = $admissions[0];
+            $focus_enrollment = $enrollments[0];
 
-        } elseif(count($admissions)>1){
+        } elseif(count($enrollments)>1){
 
-            //We'd need to see which admission to load now as the Student has not specified:
-            $focus_admission = detect_active_admission($admissions);
+            //We'd need to see which enrollment to load now as the Student has not specified:
+            $focus_enrollment = detect_active_enrollment($enrollments);
 
         } else {
 
-            //No admissions found:
+            //No enrollments found:
             die('<div class="alert alert-danger" role="alert">You have not joined any Bootcamps yet</div>');
 
         }
@@ -273,16 +258,16 @@ class My extends CI_Controller {
 
             //Log Engagement for opening the Action Plan, which happens without $b_id & $c_id
             $this->Db_model->e_create(array(
-                'e_inbound_u_id' => $focus_admission['u_id'],
-                'e_json' => $admissions,
+                'e_inbound_u_id' => $focus_enrollment['u_id'],
+                'e_json' => $enrollments,
                 'e_inbound_c_id' => 32, //actionplan Opened
-                'e_b_id' => $focus_admission['b_id'],
-                'e_r_id' => $focus_admission['r_id'],
-                'e_outbound_c_id' => $focus_admission['c_id'],
+                'e_b_id' => $focus_enrollment['b_id'],
+                'e_r_id' => $focus_enrollment['r_id'],
+                'e_outbound_c_id' => $focus_enrollment['c_id'],
             ));
 
             //Reload with specific directions:
-            $this->display_actionplan($ru_fp_psid,$focus_admission['b_id'],$focus_admission['c_id']);
+            $this->display_actionplan($ru_fp_psid,$focus_enrollment['b_id'],$focus_enrollment['c_id']);
 
             //Reload this function, this time with specific instructions on what to load:
             return true;
@@ -290,7 +275,7 @@ class My extends CI_Controller {
 
 
         //Fetch full Bootcamp/Class data for this:
-        $bs = fetch_action_plan_copy($b_id,$focus_admission['r_id']);
+        $bs = fetch_action_plan_copy($b_id,$focus_enrollment['r_id']);
         $class = $bs[0]['this_class'];
 
 
@@ -301,12 +286,12 @@ class My extends CI_Controller {
 
             //Append more data:
             $view_data['class'] = $class;
-            $view_data['admissions'] = $admissions;
-            $view_data['admission'] = $focus_admission;
+            $view_data['enrollments'] = $enrollments;
+            $view_data['enrollment'] = $focus_enrollment;
             $view_data['us_data'] = $this->Db_model->e_fetch(array(
                 'e_inbound_c_id' => 33, //Completion Report
-                'e_inbound_u_id' => $focus_admission['u_id'], //by this Student
-                'e_r_id' => $focus_admission['r_id'], //For this Class
+                'e_inbound_u_id' => $focus_enrollment['u_id'], //by this Student
+                'e_r_id' => $focus_enrollment['r_id'], //For this Class
                 'e_replaced_e_id' => 0, //Data has not been replaced
             ), 1000, array(), 'e_outbound_c_id');
 
@@ -327,7 +312,7 @@ class My extends CI_Controller {
         $this->load->view('front/student/actionplan_ui.php' , $view_data);
 
     }
-    function all_admissions(){
+    function all_enrollments(){
 
         //Validate their origin:
         $application_status_salt = $this->config->item('application_status_salt');
@@ -336,17 +321,17 @@ class My extends CI_Controller {
             die('<div class="alert alert-danger" role="alert">Invalid ID</div>');
         }
 
-        //Fetch all their admissions:
-        $admissions = $this->Db_model->remix_admissions(array(
+        //Fetch all their enrollments:
+        $enrollments = $this->Db_model->remix_enrollments(array(
             'ru.ru_outbound_u_id' => $_POST['u_id'],
-            'ru.ru_status >=' => 4, //Admitted
-            'r.r_status >=' => 1, //Open for Admission or Higher
+            'ru.ru_status >=' => 4, //Enrolled
+            'r.r_status >=' => 1, //Open for Enrollment or Higher
         ));
 
 
-        if(count($admissions)<=1){
+        if(count($enrollments)<=1){
 
-            //No other admissions found:
+            //No other enrollments found:
             die('<div class="alert alert-info" role="alert"><i class="fas fa-exclamation-triangle"></i> Error: You must be part of at-least 2 Bootcamps to be able to switch between them.<div style="margin-top: 15px;"><a href="/">Browse Bootcamps &raquo;</a></div></div>');
 
         } else {
@@ -354,9 +339,9 @@ class My extends CI_Controller {
             //Student is in multiple Bootcamps, give them option to switch:
             echo '<div class="list-group maxout">';
 
-            foreach($admissions as $other_admission){
+            foreach($enrollments as $other_enrollment){
 
-                $is_current = ($_POST['current_r_id']==$other_admission['r_id']);
+                $is_current = ($_POST['current_r_id']==$other_enrollment['r_id']);
 
                 if($is_current){
 
@@ -366,15 +351,15 @@ class My extends CI_Controller {
 
                 } else {
 
-                    echo '<a href="/my/actionplan/'.$other_admission['b_id'].'/'.$other_admission['b_outbound_c_id'].'" class="list-group-item">';
+                    echo '<a href="/my/actionplan/'.$other_enrollment['b_id'].'/'.$other_enrollment['b_outbound_c_id'].'" class="list-group-item">';
                     echo '<span class="pull-right"><span class="badge badge-primary" style="margin-top: -7px;"><i class="fas fa-chevron-right"></i></span></span>';
 
                 }
 
-                echo '<i class="fas fa-cube"></i> <b>'.$other_admission['c_outcome'].'</b>';
-                echo ' <span style="display:inline-block;"><i class="fas fa-calendar"></i> '.echo_time($other_admission['r_start_date'],2).'</span>';
+                echo '<i class="fas fa-cube"></i> <b>'.$other_enrollment['c_outcome'].'</b>';
+                echo ' <span style="display:inline-block;"><i class="fas fa-calendar"></i> '.echo_time($other_enrollment['r_start_date'],2).'</span>';
 
-                if(time()>$other_admission['r__class_start_time'] && time()<$other_admission['r__class_end_time']){
+                if(time()>$other_enrollment['r__class_start_time'] && time()<$other_enrollment['r__class_end_time']){
                     echo ' <span class="badge badge-primary grey" style="padding: 2px 9px;">RUNNING</span>';
                 }
 
@@ -399,23 +384,23 @@ class My extends CI_Controller {
 
         $b_id = 0;
         $r_id = 0;
-        $is_instructor = 0;
+        $is_coach = 0;
 
         //Function called form /MY/classmates (student Messenger)
         if(isset($_POST['psid'])){
 
             $ru_filter = array(
-                'ru.ru_status >=' => 4, //Admitted
-                'r.r_status >=' => 1, //Open for Admission or Higher
+                'ru.ru_status >=' => 4, //Enrolled
+                'r.r_status >=' => 1, //Open for Enrollment or Higher
             );
 
             if($_POST['psid']==0){
 
                 //Data is supposed to be in the session:
-                $uadmission = $this->session->userdata('uadmission');
+                $uenrollment = $this->session->userdata('uenrollment');
 
-                if($uadmission){
-                    $focus_admission = $uadmission;
+                if($uenrollment){
+                    $focus_enrollment = $uenrollment;
                 } else {
                     die('<div class="alert alert-info" role="alert" style="line-height:110%;"><i class="fas fa-exclamation-triangle"></i> To access your Classroom you need to <a href="https://mench.com/login?url='.urlencode($_SERVER['REQUEST_URI']).'" style="font-weight:bold;">Login</a>. Use [Forgot Password] if you never logged in before.</div>');
                 }
@@ -424,14 +409,14 @@ class My extends CI_Controller {
 
                 $ru_filter['(ru.ru_fp_psid = '.$_POST['psid'].' OR u.u_cache__fp_psid = '.$_POST['psid'].')'] = null;
 
-                //Fetch all their admissions:
-                $admissions = $this->Db_model->remix_admissions($ru_filter);
-                $focus_admission = detect_active_admission($admissions); //We'd need to see which admission to load
+                //Fetch all their enrollments:
+                $enrollments = $this->Db_model->remix_enrollments($ru_filter);
+                $focus_enrollment = detect_active_enrollment($enrollments); //We'd need to see which enrollment to load
 
             }
 
 
-            if(!$focus_admission){
+            if(!$focus_enrollment){
 
                 //Ooops, they dont have anything!
                 die('<div class="alert alert-danger" role="alert">You have not joined any Bootcamps yet</div>');
@@ -439,12 +424,12 @@ class My extends CI_Controller {
             } else {
 
                 //Show Classroom:
-                $b_id = $focus_admission['b_id'];
-                $r_id = $focus_admission['r_id'];
+                $b_id = $focus_enrollment['b_id'];
+                $r_id = $focus_enrollment['r_id'];
 
                 //Log Engagement for opening the classmates:
                 $this->Db_model->e_create(array(
-                    'e_inbound_u_id' => $focus_admission['u_id'],
+                    'e_inbound_u_id' => $focus_enrollment['u_id'],
                     'e_inbound_c_id' => 54, //classmates Opened
                     'e_b_id' => $b_id,
                     'e_r_id' => $r_id,
@@ -453,7 +438,7 @@ class My extends CI_Controller {
 
         } elseif(isset($_POST['r_id'])){
 
-            //Validate the Class and Instructor status:
+            //Validate the Class and Coach status:
             $classes = $this->Db_model->r_fetch(array(
                 'r.r_id' => $_POST['r_id'],
             ));
@@ -468,10 +453,10 @@ class My extends CI_Controller {
                 die('<span style="color:#FF0000;">Error: Session Expired.</span>');
             }
 
-            //Show Leaderboard for Instructor:
+            //Show Leaderboard for Coach:
             $b_id = $classes[0]['r_b_id'];
             $r_id = $classes[0]['r_id'];
-            $is_instructor = 1;
+            $is_coach = 1;
 
         }
 
@@ -500,10 +485,10 @@ class My extends CI_Controller {
         ));
         $countries_all = $this->config->item('countries_all');
         $udata = $this->session->userdata('user');
-        $show_top = 0.2; //The rest are not ranked based on points on the student side, instructors will still see entire ranking
+        $show_top = 0.2; //The rest are not ranked based on points on the student side, coaches will still see entire ranking
         $show_ranking_top = ceil(count($loadboard_students) * $show_top );
 
-        if($is_instructor){
+        if($is_coach){
 
             //Fetch the most recent cached Action Plans:
             $cache_action_plans = $this->Db_model->e_fetch(array(
@@ -550,7 +535,7 @@ class My extends CI_Controller {
                 echo '<div class="help_body maxout" id="content_3267"></div>';
 
                 //Show Action Plan:
-                echo '<div id="bootcamp-objective" class="list-group maxout">';
+                echo '<div id="bootcamp-objective" class="list-group">';
                 echo echo_cr($b,$b,1,0,false);
                 echo '</div>';
 
@@ -604,19 +589,19 @@ class My extends CI_Controller {
 
 
 
-        echo '<table class="table table-condensed maxout ap_toggle" style="background-color:#E0E0E0; font-size:18px; '.( $is_instructor ? 'margin-bottom:12px;' : 'max-width:420px; margin:0 auto;' ).'">';
+        echo '<table class="table table-condensed maxout ap_toggle" style="background-color:#E0E0E0; font-size:18px; '.( $is_coach ? 'margin-bottom:12px;' : 'max-width:420px; margin:0 auto;' ).'">';
 
         //Now its header:
         echo '<tr class="bg-col-h">';
-            if($is_instructor){
+            if($is_coach){
                 echo '<td style="width:38px;">#</td>';
                 echo '<td style="width:43px;">Rank</td>';
             } else {
                 echo '<td style="width:50px;">&nbsp;</td>';
             }
 
-            //Fixed columns for both Instructors/Students:
-            $intent_count_enabled = ($is_instructor && isset($bs[0]['b_old_format']) && !$bs[0]['b_old_format']);
+            //Fixed columns for both Coaches/Students:
+            $intent_count_enabled = ($is_coach && isset($bs[0]['b_old_format']) && !$bs[0]['b_old_format']);
             echo '<td style="text-align:left; padding-left:30px;">Student</td>';
             echo '<td style="text-align:left; width:'.($intent_count_enabled?120:90).'px;" colspan="'.($intent_count_enabled?3:2).'">Progress</td>';
 
@@ -632,9 +617,9 @@ class My extends CI_Controller {
             $counter = 0; //Keeps track of student counts
             $top_ranking_shown = false;
 
-            foreach($loadboard_students as $key=>$admission){
+            foreach($loadboard_students as $key=>$enrollment){
 
-                if($show_ranking_top<=$counter && !$top_ranking_shown && $admission['ru_cache__current_task']<=$class['r__total_tasks']){
+                if($show_ranking_top<=$counter && !$top_ranking_shown && $enrollment['ru_cache__current_task']<=$class['r__total_tasks']){
                     echo '<tr class="bg-col-h">';
                     echo '<td colspan="6">';
                     if($show_ranking_top==$counter){
@@ -648,16 +633,16 @@ class My extends CI_Controller {
                 }
 
                 $counter++;
-                if($key>0 && $admission['ru_cache__completion_rate']<$loadboard_students[($key-1)]['ru_cache__completion_rate']){
+                if($key>0 && $enrollment['ru_cache__completion_rate']<$loadboard_students[($key-1)]['ru_cache__completion_rate']){
                     $rank++;
                 }
 
                 //Should we show this ranking?
-                $ranking_visible = ($is_instructor || (isset($_POST['psid']) && isset($focus_admission) && $focus_admission['u_id']==$admission['u_id']) || $counter<=$show_ranking_top || $admission['ru_cache__current_task']>$class['r__total_tasks']);
+                $ranking_visible = ($is_coach || (isset($_POST['psid']) && isset($focus_enrollment) && $focus_enrollment['u_id']==$enrollment['u_id']) || $counter<=$show_ranking_top || $enrollment['ru_cache__current_task']>$class['r__total_tasks']);
 
 
                 echo '<tr class="bg-col-'.fmod($counter,2).'">';
-                if($is_instructor){
+                if($is_coach){
                     echo '<td valign="top" style="text-align:center; vertical-align:top;">'.$counter.'</td>';
                     echo '<td valign="top" style="vertical-align:top; text-align:center; vertical-align:top;">'.( $ranking_visible ? echo_rank($rank) : '' ).'</td>';
                 } else {
@@ -667,14 +652,14 @@ class My extends CI_Controller {
 
 
 
-                echo '<td colspan="'.( $admission['ru_cache__completion_rate']<1 && !$ranking_visible ? 2 : 1 ).'" valign="top" style="text-align:left; vertical-align:top;">';
-                $student_name = echo_cover($admission,'micro-image', true).' '.$admission['u_full_name'];
+                echo '<td colspan="'.( $enrollment['ru_cache__completion_rate']<1 && !$ranking_visible ? 2 : 1 ).'" valign="top" style="text-align:left; vertical-align:top;">';
+                $student_name = echo_cover($enrollment,'micro-image', true).' '.$enrollment['u_full_name'];
 
 
-                if($is_instructor){
+                if($is_coach){
 
-                    echo '<a href="javascript:view_el('.$admission['u_id'].','.$bs[0]['c_id'].')" class="plain">';
-                    echo '<i class="pointer fas fa-caret-right" id="pointer_'.$admission['u_id'].'_'.$bs[0]['c_id'].'"></i> ';
+                    echo '<a href="javascript:view_el('.$enrollment['u_id'].','.$bs[0]['c_id'].')" class="plain">';
+                    echo '<i class="pointer fas fa-caret-right" id="pointer_'.$enrollment['u_id'].'_'.$bs[0]['c_id'].'"></i> ';
                     echo $student_name;
                     echo '</a>';
 
@@ -688,7 +673,7 @@ class My extends CI_Controller {
 
 
                 //Progress, Task & Steps:
-                if($admission['ru_cache__completion_rate']>=1){
+                if($enrollment['ru_cache__completion_rate']>=1){
 
                     //They have completed it all, show them as winners!
                     echo '<td valign="top" colspan="'.($intent_count_enabled?'2':'1').'" style="text-align:left; vertical-align:top;">';
@@ -700,7 +685,7 @@ class My extends CI_Controller {
                     //Progress:
                     if($ranking_visible){
                         echo '<td valign="top" style="text-align:left; vertical-align:top;">';
-                        echo '<span>'.round( $admission['ru_cache__completion_rate']*100 ).'%</span>';
+                        echo '<span>'.round( $enrollment['ru_cache__completion_rate']*100 ).'%</span>';
                         echo '</td>';
                     }
 
@@ -708,7 +693,7 @@ class My extends CI_Controller {
                         //Task:
                         echo '<td valign="top" style="text-align:left; vertical-align:top;">';
                         if($ranking_visible){
-                            echo $admission['ru_cache__current_task'];
+                            echo $enrollment['ru_cache__current_task'];
                         }
                         echo '</td>';
                     }
@@ -716,14 +701,14 @@ class My extends CI_Controller {
 
 
 
-                echo '<td valign="top" style="text-align:left; vertical-align:top;">'.( isset($countries_all[strtoupper($admission['u_country_code'])]) ? '<img data-toggle="tooltip" data-placement="left" title="'.$countries_all[strtoupper($admission['u_country_code'])].'" src="/img/flags/'.strtolower($admission['u_country_code']).'.png" class="flag" style="margin-top:-3px;" />' : '' ).'</td>';
+                echo '<td valign="top" style="text-align:left; vertical-align:top;">'.( isset($countries_all[strtoupper($enrollment['u_country_code'])]) ? '<img data-toggle="tooltip" data-placement="left" title="'.$countries_all[strtoupper($enrollment['u_country_code'])].'" src="/img/flags/'.strtolower($enrollment['u_country_code']).'.png" class="flag" style="margin-top:-3px;" />' : '' ).'</td>';
 
                 echo '</tr>';
 
 
-                if($is_instructor){
+                if($is_coach){
 
-                    echo '<tr id="c_el_'.$admission['u_id'].'_'.$bs[0]['c_id'].'" class="hidden bg-col-'.fmod($counter,2).'">';
+                    echo '<tr id="c_el_'.$enrollment['u_id'].'_'.$bs[0]['c_id'].'" class="hidden bg-col-'.fmod($counter,2).'">';
                     echo '<td>&nbsp;</td>';
                     echo '<td>&nbsp;</td>';
                     echo '<td colspan="4" class="us_c_list">';
@@ -731,7 +716,7 @@ class My extends CI_Controller {
                         //Fetch student submissions so far:
                         $us_data = $this->Db_model->e_fetch(array(
                             'e_inbound_c_id' => 33, //Completion Report
-                            'e_inbound_u_id' => $admission['u_id'], //by this Student
+                            'e_inbound_u_id' => $enrollment['u_id'], //by this Student
                             'e_r_id' => $class['r_id'], //For this Class
                             'e_replaced_e_id' => 0, //Data has not been replaced
                             'e_status !=' => -3, //Should not be rejected
@@ -746,15 +731,15 @@ class My extends CI_Controller {
 
                                 //Title:
                                 echo '<div class="us_c_title">';
-                                echo '<a href="javascript:view_el('.$admission['u_id'].','.$intent['c_id'].')" class="plain">';
-                                echo '<i class="pointer fas fa-caret-right" id="pointer_'.$admission['u_id'].'_'.$intent['c_id'].'"></i> ';
+                                echo '<a href="javascript:view_el('.$enrollment['u_id'].','.$intent['c_id'].')" class="plain">';
+                                echo '<i class="pointer fas fa-caret-right" id="pointer_'.$enrollment['u_id'].'_'.$intent['c_id'].'"></i> ';
                                 echo echo_status('e_status',( $intent_submitted ? $us_data[$intent['c_id']]['e_status'] : -4 /* Not completed yet */ ),1,'right').'#'.$intent['cr_outbound_rank'].' '.$intent['c_outcome'];
                                 echo '</a>';
                                 echo '</div>';
 
 
                                 //Submission Details:
-                                echo '<div id="c_el_'.$admission['u_id'].'_'.$intent['c_id'].'" class="homework hidden">';
+                                echo '<div id="c_el_'.$enrollment['u_id'].'_'.$intent['c_id'].'" class="homework hidden">';
                                 if($intent_submitted){
                                     echo '<p>'.( strlen($us_data[$intent['c_id']]['e_text_value'])>0 ? echo_link($us_data[$intent['c_id']]['e_text_value']) : '<i class="fas fa-comment-alt-times"></i> No completion notes by Student' ).'</p>';
                                 } else {
@@ -776,9 +761,9 @@ class My extends CI_Controller {
 
         } else {
 
-            //No students admitted yet:
+            //No students enrolled yet:
             echo '<tr style="font-weight:bold; ">';
-            echo '<td colspan="7" style="font-size:1.2em; padding:15px 0; text-align:center;"><i class="fas fa-exclamation-triangle"></i>  No Students Admitted Yet</td>';
+            echo '<td colspan="7" style="font-size:1.2em; padding:15px 0; text-align:center;"><i class="fas fa-exclamation-triangle"></i>  No Students Enrolled Yet</td>';
             echo '</tr>';
 
         }
@@ -788,7 +773,7 @@ class My extends CI_Controller {
 
 
         //TODO Later add broadcasting and Action Plan UI
-        if($is_instructor && 0){
+        if($is_coach && 0){
 
             $message_max = $this->config->item('message_max');
 
@@ -824,31 +809,199 @@ class My extends CI_Controller {
      * User Functions
      ****************************** */
 
-    function quiz($u_id=0){
+    function update_assessment($b_url_key,$ru_assessment_result){
 
+        //Validate Bootcamp:
+        $bs = $this->Db_model->b_fetch(array(
+            'b_url_key' => $b_url_key,
+        ));
+        if(count($bs)<1){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Bootcamp Key',
+            ));
+        }
+
+
+        //Validate & Prepare new status
+        $ru_assessment_result = intval($ru_assessment_result);
+        if(!in_array($ru_assessment_result,array(0,1))) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Status can be either 0 or 1',
+            ));
+        }
+        $new_status = ( $ru_assessment_result ? 'PASSED' : 'FAILED' );
+
+
+        //Check user email:
+        if(isset($_GET['u_email']) && filter_var($_GET['u_email'], FILTER_VALIDATE_EMAIL)){
+
+            $enrollments = $this->Db_model->remix_enrollments(array(
+                'u_email' =>strtolower($_GET['u_email']),
+                'ru_b_id' => $bs[0]['b_id'],
+            ));
+
+            if(count($enrollments)<1){
+                //Missing core variables:
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => 'Student enrollment not found for this Bootcamp',
+                ));
+            } elseif($ru_assessment_result==$enrollments[0]['ru_assessment_result']){
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => 'Assessment status is already set to ['.$new_status.'].',
+                ));
+            }
+
+        } else {
+            //Missing core variables:
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Session. Refresh the page and try again.',
+            ));
+        }
+
+        //All good, Update their enrollment:
+        $this->Db_model->ru_update( $enrollments[0]['ru_id'] , array(
+                'ru_assessment_result' => $ru_assessment_result,
+        ));
+
+        //Log engagement:
+        $this->Db_model->e_create(array(
+            'e_inbound_u_id' => $enrollments[0]['u_id'],
+            'e_inbound_c_id' => 7084, //Assessment Status Update API Call
+            'e_text_value' => 'Student '.$new_status.' Assessment',
+            'e_b_id' => $enrollments[0]['b_id'],
+            'e_r_id' => $enrollments[0]['r_id'],
+        ));
+
+        //Return result:
+        return echo_json(array(
+            'status' => 1,
+            'message' => 'Update student assessment status to ['.$new_status.']',
+        ));
+    }
+
+
+
+    function checkout_pay($b_url_key){
+
+        //Validate Bootcamp ID:
+        $bs = $this->Db_model->remix_bs(array(
+            'b.b_url_key' => $b_url_key,
+        ));
+        if(count($bs)<1) {
+            //Not valid:
+            redirect_message('/', '<div class="alert alert-danger" role="alert">Invalid Bootcamp key.</div>');
+        }
+
+
+        //Validate User Email:
+        $us = array();
         if(isset($_GET['u_email'])){
             //Fetch this user:
             $us = $this->Db_model->u_fetch(array(
                 'u_email' => $_GET['u_email'],
             ));
+            //Did we find them?
             if(count($us)<1){
-                redirect_message('/','<div class="alert alert-danger" role="alert">User not found.</div>');
+                redirect_message('/'.$b_url_key,'<div class="alert alert-danger" role="alert">User not found.</div>');
             }
         } else {
-            redirect_message('/','<div class="alert alert-danger" role="alert">Missing inputs.</div>');
+            redirect_message('/'.$b_url_key,'<div class="alert alert-danger" role="alert">Missing student email.</div>');
         }
 
-        $this->load->view('front/shared/p_header' , array(
-            'title' => $us[0]['u_full_name'].' Technical Quiz @ Mench',
+
+        //Do they have an enrollment?
+        $enrollments = $this->Db_model->remix_enrollments(array(
+            'ru_outbound_u_id' => $us[0]['u_id'],
+            'ru_b_id' => $bs[0]['b_id'],
         ));
-        $this->load->view('front/student/technical_quiz' , array(
+        if(count($enrollments)<1){
+            redirect_message('/'.$b_url_key,'<div class="alert alert-danger" role="alert">Cannot accept your payment as we could not find an application for '.$us[0]['u_full_name'].'</div>');
+        }
+
+
+        //Load views:
+        $this->load->view('front/shared/p_header' , array(
+            'title' => 'Pay Coaching Tuition to '.$bs[0]['c_outcome'],
+        ));
+        $this->load->view('front/student/pay_tuition' , array(
             'u' => $us[0],
+            'b' => $bs[0],
+            'enrollment' => $enrollments[0],
+        ));
+        $this->load->view('front/shared/p_footer');
+    }
+
+
+    function checkout_assessment($b_url_key='JuniorFullStack' /* Junior FSD Job Placement */){
+
+
+        //Validate Bootcamp ID:
+        $bs = $this->Db_model->remix_bs(array(
+            'b.b_url_key' => $b_url_key,
+        ));
+        if(count($bs)<1){
+            //Not valid:
+            return redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Bootcamp key.</div>');
+        } elseif(!$bs[0]['b_requires_assessment']){
+            //Does not need assessment, take them to enrollments:
+            return redirect_message('/'.$bs[0]['b_url_key'].'/checkout?u_email='.(@$_GET['u_email']),'<div class="alert alert-info" role="alert">Bootcamp does not require an instant assessment.</div>');
+        }
+
+
+        //Validate User Email:
+        $us = array();
+        if(isset($_GET['u_email'])){
+            //Fetch this user:
+            $us = $this->Db_model->u_fetch(array(
+                'u_email' => $_GET['u_email'],
+            ));
+
+            //Did we find them?
+            if(count($us)<1){
+                return redirect_message('/','<div class="alert alert-danger" role="alert">User not found.</div>');
+            } else {
+                //Do they have an enrollment? If not, make one:
+                $enrollments = $this->Db_model->remix_enrollments(array(
+                    'ru_outbound_u_id' => $us[0]['u_id'],
+                ));
+                if(count($enrollments)<1){
+                    //Admit student:
+                    $new_enrollment = $this->Db_model->enroll_student($us[0]['u_id'],$bs[0]);
+
+                    //Fetch full-data:
+                    $enrollments = $this->Db_model->remix_enrollments(array(
+                        'ru_id' => $new_enrollment['ru_id'],
+                    ));
+                } elseif($enrollments[0]['ru_assessment_result']==1){
+                    //Student has passed this assessment already! Redirect to next step:
+                    return redirect_message('/'.$bs[0]['b_url_key'].'/checkout?u_email='.$_GET['u_email'],'<div class="alert alert-info" role="alert">You have passed this assessment. Continue your enrollment below.</div>');
+                }
+            }
+        } else {
+            return redirect_message('/','<div class="alert alert-danger" role="alert">Missing student email.</div>');
+        }
+
+
+        //Load views:
+        $this->load->view('front/shared/p_header' , array(
+            'title' => 'Instant Assessment To '.$bs[0]['c_outcome'],
+        ));
+        $this->load->view('front/student/technical_assessment' , array(
+            'u' => $us[0],
+            'b' => $bs[0],
+            'enrollment' => $enrollments[0],
             'attempts' => $this->Db_model->e_fetch(array(
-                'e_inbound_c_id' => 6997, //Technical Quiz Attempts
+                'e_inbound_c_id' => 6997, //Instant Assessment Attempts
                 'e_inbound_u_id' => $us[0]['u_id'], //This student
             ), 1000),
         ));
         $this->load->view('front/shared/p_footer');
+
     }
 
 
@@ -870,38 +1023,38 @@ class My extends CI_Controller {
         }
 
         //Student is validated, loadup their Reivew portal:
-        $admissions = $this->Db_model->remix_admissions(array(
+        $enrollments = $this->Db_model->remix_enrollments(array(
             'ru.ru_id'     => $ru_id,
         ));
 
         //Should never happen:
-        if(count($admissions)<1){
+        if(count($enrollments)<1){
 
             $this->Db_model->e_create(array(
                 'e_inbound_u_id' => 0, //System
-                'e_text_value' => 'Validated review URL failed to fetch admission data',
+                'e_text_value' => 'Validated review URL failed to fetch enrollment data',
                 'e_inbound_c_id' => 8, //System Error
             ));
 
             //There is an issue with the key, show error to user:
-            redirect_message('/','<div class="alert alert-danger" role="alert">Admission not found for placing a review.</div>');
+            redirect_message('/','<div class="alert alert-danger" role="alert">Enrollment not found for placing a review.</div>');
             exit;
         }
 
 
-        $lead_instructor = $admissions[0]['b__admins'][0]['u_full_name'];
+        $lead_coach = $enrollments[0]['b__coaches'][0]['u_full_name'];
 
         //Assemble the data:
         $data = array(
-            'title' => 'Review '.$lead_instructor.' - '.$admissions[0]['c_outcome'],
-            'lead_instructor' => $lead_instructor,
-            'admission' => $admissions[0],
+            'title' => 'Review '.$lead_coach.' - '.$enrollments[0]['c_outcome'],
+            'lead_coach' => $lead_coach,
+            'enrollment' => $enrollments[0],
             'ru_key' => $ru_key,
             'ru_id' => $ru_id,
         );
 
         if(isset($_GET['raw'])){
-            echo_json($admissions[0]);
+            echo_json($enrollments[0]);
             exit;
         }
 

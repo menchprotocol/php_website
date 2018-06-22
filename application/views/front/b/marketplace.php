@@ -49,7 +49,7 @@ if(count($bs)>0){
 
         echo '<h6 class="category text-muted">';
 
-        echo '<span class="line_1" data-toggle="tooltip" data-placement="top" title="Complete '.( $b['b_is_parent'] ? $b['c__child_child_count'] : $b['c__child_count'] ).' tasks totalling '.echo_hours($b['c__estimated_hours'],false).' anytime during this '.$b['b__week_count'].' week'.echo__s($b['b__week_count']).' Bootcamp"><i class="fas fa-clock"></i> '.$b['b__week_count'].' Week'.echo__s($b['b__week_count']).' @ '.echo_hours(($b['c__estimated_hours']/$b['b__week_count']),false).'/Week</span>';
+        echo '<span class="line_1" data-toggle="tooltip" data-placement="top" title="Complete '.( $b['c_level'] ? $b['c__child_child_count'] : $b['c__child_count'] ).' tasks totalling '.echo_hours($b['c__estimated_hours'],false).' anytime during this '.$b['b__week_count'].' week'.echo__s($b['b__week_count']).' Bootcamp"><i class="fas fa-clock"></i> '.$b['b__week_count'].' Week'.echo__s($b['b__week_count']).' @ '.echo_hours(($b['c__estimated_hours']/$b['b__week_count']),false).'/Week</span>';
 
         echo '</h6>';
 
@@ -58,7 +58,7 @@ if(count($bs)>0){
         /*
         echo '<div class="card-description">';
         //Print lead admin:
-        foreach($b['b__admins'] as $admin){
+        foreach($b['b__coaches'] as $admin){
             if($admin['ba_status']==3){
                 echo '<span style="display:inline-block; width:100%;">By '.echo_cover($admin,'inline_block').' '.$admin['u_full_name'].'</span>';
             }
@@ -73,7 +73,7 @@ if(count($bs)>0){
     echo '</div>';
 } else {
     //No Bootcamps, show message:
-    echo '<div class="alert alert-info" style="margin:30px 0 100px; font-size:1.3em;"><i class="fas fa-bullhorn"></i> Bootcamps are cooking. If hungry you can <a href="https://m.me/menchbot">connect to MenchBot</a> to be notified when food is ready.</div>';
+    echo '<div class="alert alert-info" style="margin:30px 0 100px; font-size:1.3em;"><i class="fas fa-bullhorn"></i> Bootcamps are cooking. If hungry you can <a href="https://m.me/askmench">connect to MenchBot</a> to be notified when food is ready.</div>';
 }
 ?>
 </div>
@@ -89,4 +89,3 @@ if(count($bs)>0){
     <div class="container">
 
         <?php $this->load->view('front/b/bs_include'); ?>
-        <br /><br />

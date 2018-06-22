@@ -18,6 +18,7 @@ $route['info'] 						= "front/info"; //PHP Info
 $route['login']						= "front/login"; //Bootcamp Operator login
 $route['logout']				    = "entities/logout"; //Logout from entites
 
+
 /* ******************************
  * Student Semi-Private URLs
  ****************************** */
@@ -43,19 +44,21 @@ $route['entities/(:num)/modify'] 			           = "entities/entity_edit/$1";
 $route['entities/(:num)'] 			                   = "entities/entity_browse/$1";
 $route['entities'] 			                           = "entities/entity_browse";
 
-$route['intents/(:num)/modify'] 			               = "console/intent_edit/$1";
-$route['intents/(:num)'] 			                   = "console/intents/$1";
-$route['intents'] 			                           = "console/intents";
+//$route['intents/(:num)']	                            = "front/index/$1"; //Landing Page with specific c_id as Parent Focus
+
+$route['tasks/(:num)'] 			                       = "intents/intents_list/$1";
+$route['tasks'] 			                           = "intents/intents_list/0";
 
 //Affiliate Links:
-$route['a/(:num)/(:num)/enroll'] 	                   = "front/affiliate_click/$1/$2/1"; //Start of application funnel for Email, first & last name
-$route['a/(:num)/(:num)'] 	                           = "front/affiliate_click/$1/$2/0"; //Start of application funnel for Email, first & last name
+//$route['a/(:num)/(:num)/enroll'] 	                   = "front/affiliate_click/$1/$2/1"; //Start of application funnel for Email, first & last name
+//$route['a/(:num)/(:num)'] 	                           = "front/affiliate_click/$1/$2/0"; //Start of application funnel for Email, first & last name
 
 
-//Three steps of the signup process:
-$route['(:any)/apply'] 	                    = "my/apply_form/$1"; //Redirect to Apply URL set by lead instructor
-$route['(:any)/enroll/(:num)'] 	            = "my/checkout_start/$1/$2"; //Start of application funnel for Email, first & last name
-$route['(:any)/enroll'] 	                = "my/checkout_start/$1"; //Start of application funnel for Email, first & last name
-$route['(:num)']	                        = "front/index/$1"; //Landing Page with specific c_id as Parent Focus
-$route['(:any)']	                        = "front/landing_page/$1"; //Load specific Bootcamp
+//Checkout process:
+$route['(:any)/enroll'] 	                = "my/checkout_start/$1"; //Start application
+$route['(:any)/assessment/(:num)'] 	            = "my/update_assessment/$1/$2"; //If required, take the assessment. checkout URL would be emailed to you
+$route['(:any)/assessment'] 	                    = "my/checkout_assessment/$1"; //If required, take the assessment. checkout URL would be emailed to you
+$route['(:any)/checkout'] 	                = "my/checkout_complete/$1"; //Review Prereqs. & choose support package
+$route['(:any)/pay'] 	                    = "my/checkout_pay/$1"; //Pay for coaching
+$route['(:any)']	                        = "front/landing_page/$1"; //Landing page
 

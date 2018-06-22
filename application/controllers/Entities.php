@@ -16,7 +16,7 @@ class Entities extends CI_Controller {
     }
 
 
-    function new_student_api($b_id=354 /*Get Hired As A Junior Full-Stack Developer*/, $support_level=0 /*Same as checkout 1,2,3*/){
+    function new_student_api($b_id=354 /*Get Hired As A Junior Full-Stack Developer*/, $ru_support_package=0 /*Same as checkout 1,2,3*/){
 
         //And API call that get's POST variables for email and name and creates a new user
 
@@ -70,14 +70,14 @@ class Entities extends CI_Controller {
         ));
 
         //Also enroll them in the Bootcamp if set and IF offers coaching:
-        if($b_id && in_array($support_level,array(1,2,3))){
+        if($b_id && in_array($ru_support_package,array(1,2,3))){
 
             //Fetch Bootcamp:
             $bs = $this->Db_model->b_fetch(array(
                 'b_id' => $b_id,
             ));
 
-            if(count($bs)==1 && (($support_level==1 && $bs[0]['b_offers_diy']>0) || ($support_level==2 && $bs[0]['b_weekly_coaching_hours']>0) || ($support_level==3 && $bs[0]['b_deferred_rate']>0))){
+            if(count($bs)==1 && (($ru_support_package==1 && $bs[0]['b_offers_diy']>0) || ($ru_support_package==2 && $bs[0]['b_offers_coaching']) || ($ru_support_package==3 && $bs[0]['b_offers_deferred']))){
 
                 //Find the next coaching class:
                 $classes = $this->Db_model->r_fetch(array(
@@ -87,22 +87,22 @@ class Entities extends CI_Controller {
 
                 if(count($classes)==1){
 
-                    //Create student admission:
+                    //Create student enrollment:
                     $this->Db_model->ru_create(array(
                         'ru_b_id' 	        => $b_id,
                         'ru_r_id' 	        => $classes[0]['r_id'],
                         'ru_outbound_u_id' 	=> $new_u['u_id'],
                         'ru_status'         => 0, //Pending Payment...
-                        'ru_fp_id'          => $admissions[0]['b_fp_id'],
-                        'ru_fp_psid'        => ( $admissions[0]['b_fp_id']==$admissions[0]['u_cache__fp_id'] ? $admissions[0]['u_cache__fp_psid'] : 0 ),
+                        'ru_fp_id'          => $enrollments[0]['b_fp_id'],
+                        'ru_fp_psid'        => ( $enrollments[0]['b_fp_id']==$enrollments[0]['u_cache__fp_id'] ? $enrollments[0]['u_cache__fp_psid'] : 0 ),
                         'ru_parent_ru_id'   => $_POST['ru_id'], //To indicate the Parent of this Bootcamp
 
-                        'ru_upfront_pay'    => ( $_POST['support_level']==3 ? ($admissions[0]['b_weekly_coaching_rate'] * $admissions[0]['b_deferred_rate'] * $admissions[0]['b_deferred_deposit']) : ( $_POST['support_level']==2 ? ($admissions[0]['b_weekly_coaching_rate']) : 0 ) ),
-                        'ru_deferred_pay'   => ( $_POST['support_level']==3 ? ($admissions[0]['b_weekly_coaching_rate'] * $admissions[0]['b_deferred_rate'] * (1-$admissions[0]['b_deferred_deposit'])) : 0 ),
+                        'ru_upfront_pay'    => ( $_POST['ru_support_package']==3 ? ($enrollments[0]['b_weekly_coaching_rate'] * $enrollments[0]['b_deferred_rate'] * $enrollments[0]['b_deferred_deposit']) : ( $_POST['ru_support_package']==2 ? ($enrollments[0]['b_weekly_coaching_rate']) : 0 ) ),
+                        'ru_deferred_pay'   => ( $_POST['ru_support_package']==3 ? ($enrollments[0]['b_weekly_coaching_rate'] * $enrollments[0]['b_deferred_rate'] * (1-$enrollments[0]['b_deferred_deposit'])) : 0 ),
 
                         'ru_start_time'     => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+($key*7*24*3600)+(12*3600)  /* For GMT/timezone adjustments */ )).' 00:00:00',
                         'ru_end_time'       => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+(($key+1)*7*24*3600)-(12*3600)  /* For GMT/timezone adjustments */ )).' 23:59:59',
-                        'ru_outcome_time'   => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+(($admissions[0]['b__week_count']+$admissions[0]['b_guarantee_weeks'])*7*24*3600)-(12*3600))).' 23:59:59',
+                        'ru_outcome_time'   => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+(($enrollments[0]['b__week_count']+$enrollments[0]['b_guarantee_weeks'])*7*24*3600)-(12*3600))).' 23:59:59',
                     ));
 
 
@@ -121,34 +121,9 @@ class Entities extends CI_Controller {
     //Lists entities
     function entity_browse($inbound_u_id=0){
 
-        //Authenticate contributor, redirect if not:
-        //$udata = auth(array(1308,1280),1);
-
-        $udata = $this->session->userdata('user');
-        if(!isset($udata['u_id'])){
-
-            //This is not an admin, so they cannot edit this:
-            redirect_message( '/','<div class="alert alert-danger" role="alert">You must login to browse entities.</div>');
-
-        } elseif(!($udata['u_id']==$inbound_u_id || $udata['u_inbound_u_id']==1281)){
-
-            //This is not an admin, so they cannot edit this:
-            redirect_message(( isset($udata['u_id']) && $udata['u_id']>0 ? '/console' : '/entities/'.$inbound_u_id ),'<div class="alert alert-danger" role="alert">You can only view <a href="/entities/'.$udata['u_id'].'">your own entity</a>.</div>');
-
-        }
-
+        $udata = auth(null,1); //Just be logged in to browse
         $entities_per_page = 100;
         $entity_tree = fetch_entity_tree($inbound_u_id);
-
-        //Adjust Breadcrumb for non-admins
-        if(!($udata['u_inbound_u_id']==1281)){
-            $entity_tree['breadcrumb'] = array(
-                array(
-                    'link' => null,
-                    'anchor' => 'My Account',
-                ),
-            );
-        }
 
         //Fetch core data:
         $view_data = array_merge( $entity_tree , array(
@@ -182,6 +157,13 @@ class Entities extends CI_Controller {
 
     function entity_load_more($inbound_u_id,$limit,$page){
 
+        $udata = auth(null); //Just be logged in to browse
+
+        if(!$udata){
+            echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle" style="margin:0 8px 0 2px;"></i> Session expired. Refresh the page and try again.</div>';
+            return false;
+        }
+
         //Fetch entitie itself:
         $parent_entities = $this->Db_model->u_fetch(array(
             'u_id' => $inbound_u_id,
@@ -209,11 +191,8 @@ class Entities extends CI_Controller {
 
         //Authenticate user:
         $udata = $this->session->userdata('user');
-        if(!($udata['u_id']==$u_id || $udata['u_inbound_u_id']==1281)){
-            //This is not an admin, so they cannot edit this:
-            redirect_message('/entities/'.$u_id,'<div class="alert alert-danger" role="alert">You can only edit <a href="/entities/'.$udata['u_id'].'">your own entity</a>.</div>');
-        }
 
+        $udata = auth(array(1308,1280),1,0, $u_id);
         $entity_tree = fetch_entity_tree($u_id,true);
 
         //Adjust Breadcrumb for non-admins
@@ -355,6 +334,8 @@ class Entities extends CI_Controller {
             die('<span style="color:#FF0000;">Error: Initial email was ['.$u_current[0]['u_email'].']. Email required once set. Try again.</span>');
         } elseif(strlen($_POST['u_paypal_email'])>0 && !filter_var($_POST['u_paypal_email'], FILTER_VALIDATE_EMAIL)){
             die('<span style="color:#FF0000;">Error: Invalid Paypal Email. Try again.</span>');
+        } elseif(strlen($_POST['u_bio'])>0 && !(strip_tags($_POST['u_bio'])==$_POST['u_bio'])){
+            die('<span style="color:#FF0000;">Error: Cannot include code in your bio.</span>');
         } elseif(strlen($_POST['u_bio'])>$message_max){
             die('<span style="color:#FF0000;">Error: Introductory Message should be less than '.$message_max.' characters. Try again.</span>');
         }
@@ -488,17 +469,17 @@ class Entities extends CI_Controller {
             'u_email' => strtolower($_POST['u_email']),
         ));
 
-        //See if they have any active admissions:
-        $active_admission = null;
+        //See if they have any active enrollments:
+        $active_enrollment = null;
 
         if(count($users)==1){
 
-            $admissions = $this->Db_model->remix_admissions(array(
+            $enrollments = $this->Db_model->remix_enrollments(array(
                 'ru_outbound_u_id' => $users[0]['u_id'],
                 'ru_status >=' => 4,
             ));
-            //We'd need to see which admission to load now:
-            $active_admission = detect_active_admission($admissions);
+            //We'd need to see which enrollment to load now:
+            $active_enrollment = detect_active_enrollment($enrollments);
 
         }
 
@@ -528,10 +509,10 @@ class Entities extends CI_Controller {
 
         }
 
-        $co_instructors = array();
+        $co_coaches = array();
         if(!in_array($users[0]['u_inbound_u_id'], array(1280,1308,1281))){
-            //Regular user, see if they are assigned to any Bootcamp as co-instructor
-            $co_instructors = $this->Db_model->instructor_bs(array(
+            //Regular user, see if they are assigned to any Bootcamp as co-coach
+            $co_coaches = $this->Db_model->coach_bs(array(
                 'ba.ba_outbound_u_id' => $users[0]['u_id'],
                 'ba.ba_status >=' => 1,
                 'b.b_status >=' => 2,
@@ -540,13 +521,13 @@ class Entities extends CI_Controller {
 
         $session_data = array();
         $is_chrome = (strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome')!==false || strpos($_SERVER['HTTP_USER_AGENT'], 'CriOS')!==false);
-        $is_instructor = false;
+        $is_coach = false;
         $is_student = false;
 
         //Are they a student?
-        if($active_admission){
+        if($active_enrollment){
             //They have admin rights:
-            $session_data['uadmission'] = $active_admission;
+            $session_data['uenrollment'] = $active_enrollment;
             $is_student = true;
         }
 
@@ -554,17 +535,17 @@ class Entities extends CI_Controller {
         if(in_array($users[0]['u_inbound_u_id'], array(1280,1308,1281))){
             //They have admin rights:
             $session_data['user'] = $users[0];
-            $is_instructor = true;
+            $is_coach = true;
         }
 
 
-        //Applicable for instructors only:
+        //Applicable for coaches only:
         if(!$is_chrome){
 
             if($is_student){
 
-                //Remove instructor privileges as they cannot use the Console with non-chrome Browser:
-                $is_instructor = false;
+                //Remove coach privileges as they cannot use the Console with non-chrome Browser:
+                $is_coach = false;
                 unset($session_data['user']);
 
             } else {
@@ -574,10 +555,10 @@ class Entities extends CI_Controller {
 
             }
 
-        } elseif(!$is_instructor && !$is_student){
+        } elseif(!$is_coach && !$is_student){
 
             //We assume this is a student request:
-            redirect_message('/login','<div class="alert alert-danger" role="alert">Error: You have not been admitted to any Bootcamps yet. You can only login as a student after you have been approved by your instructor.</div>');
+            redirect_message('/login','<div class="alert alert-danger" role="alert">Error: You have not been enrolled to any Bootcamps yet. You can only login as a student after you have been approved by your coach.</div>');
             return false;
 
         }
@@ -609,8 +590,8 @@ class Entities extends CI_Controller {
             header( 'Location: '.$_POST['url'] );
         } else {
             //Default:
-            if($is_instructor){
-                //Instructor default:
+            if($is_coach){
+                //Coach default:
                 header( 'Location: /console' );
             } else {
                 //Student default:

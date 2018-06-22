@@ -14,7 +14,7 @@
 /* SHADOWS */
 /* Shadows (from mdl http://www.getmdl.io/) */
 body {
-  background-color: #E5E5E5;
+  background-color: #EFEFEF;
   color: #3C4858;
 }
 body.inverse {
@@ -245,7 +245,7 @@ input[type="file"] > input[type="button"]::-moz-focus-inner {
 .navbar .navbar-nav > li > a.btn.btn-default.dropdown-toggle, .open >
 .navbar .navbar-nav > li > a.btn.btn-default.dropdown-toggle:focus, .open >
 .navbar .navbar-nav > li > a.btn.btn-default.dropdown-toggle:hover {
-  background-color: #E5E5E5;
+  background-color: #EFEFEF;
   color: #3C4858;
 }
 .btn:focus, .btn:active, .btn:hover, .btn.btn-default:focus, .btn.btn-default:active, .btn.btn-default:hover,
@@ -2971,7 +2971,7 @@ select.form-control[multiple], .form-group.is-focused select.form-control[multip
   color: #ffffff;
 }
 .alert.alert-info {
-  background-color: #e5e5e5;
+  background-color: #EFEFEF;
   color: #3C4858;
 }
 .alert.alert-info a, .alert.alert-info .alert-link {
@@ -3356,7 +3356,7 @@ h2.title {
   margin-bottom: 50px;
   border-radius: 6px;
   color: rgba(0,0,0, 0.87);
-  background: #E5E5E5;
+  background: #EFEFEF;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
 }
 .card .card-height-indicator {
@@ -3760,7 +3760,7 @@ h2.title {
 }
 .card-pricing .icon i {
   font-size: 55px;
-  border: 1px solid #E5E5E5;
+  border: 1px solid #EFEFEF;
   border-radius: 50%;
   width: 130px;
   line-height: 130px;
@@ -5608,11 +5608,11 @@ select[data-dropdownjs][disabled] + .dropdownjs > input[readonly] {
 
 .section-white-to-gray {
   background-color: #fff;
-  background: transparent linear-gradient(0deg, #e5e5e5 0%, #fff 100%) repeat scroll 0 0;
+  background: transparent linear-gradient(0deg, #EFEFEF 0%, #fff 100%) repeat scroll 0 0;
 }
 
 .section-gray {
-  background: #E5E5E5;
+  background: #EFEFEF;
 }
 
 .section-light-gray {
@@ -8380,7 +8380,7 @@ select.selectpicker {
     display: block;
     height: 1px;
     margin-left: 15px;
-    background-color: #e5e5e5;
+    background-color: #EFEFEF;
   }
   .navbar-collapse .nav > li:last-child:after {
     display: none;

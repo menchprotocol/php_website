@@ -218,14 +218,14 @@ function join_keys($input_array,$joiner=','){
 
 
 
-function detect_active_admission($admissions){
+function detect_active_enrollment($enrollments){
 
-    //Determines the active admission of a student, especially useful if they have multiple admissions
-    if(count($admissions)<1){
+    //Determines the active enrollment of a student, especially useful if they have multiple enrollments
+    if(count($enrollments)<1){
 
         return false;
 
-    } elseif(count($admissions)>1){
+    } elseif(count($enrollments)>1){
 
         /*
          * Ohh, let's try to figure this out. There are a few scenarios:
@@ -243,41 +243,41 @@ function detect_active_admission($admissions){
         //Should think further about priorities and various use cases of this function
         //So i'm leaving it as is to be tested further @ later date (Mar 6th 2018)
 
-        $active_admission = null;
+        $active_enrollment = null;
 
-        foreach($admissions as $admission){
+        foreach($enrollments as $enrollment){
 
             //Now see whatssup:
-            if($admission['ru_status']>4 || $admission['r_status']>2){
+            if($enrollment['ru_status']>4 || $enrollment['r_status']>2){
 
                 //This is a completed Class:
-                $active_admission = $admission;
+                $active_enrollment = $enrollment;
 
-            } elseif($admission['ru_status']==4 && $admission['r_status']<2){
+            } elseif($enrollment['ru_status']==4 && $enrollment['r_status']<2){
 
                 //Class is not started yet:
-                $active_admission = $admission;
+                $active_enrollment = $enrollment;
 
-            } elseif($admission['ru_status']==4 && $admission['r_status']==2){
+            } elseif($enrollment['ru_status']==4 && $enrollment['r_status']==2){
 
                 //Active class has highest priority, break after:
-                $active_admission = $admission;
+                $active_enrollment = $enrollment;
                 break; //This is what we care about the most, so make it have the last say
 
-            } elseif(!$active_admission){
+            } elseif(!$active_enrollment){
 
                 //Not sure what this could be:
-                $active_admission = $admission;
+                $active_enrollment = $enrollment;
 
             }
         }
 
-        return $active_admission;
+        return $active_enrollment;
 
-    } elseif(count($admissions)==1){
+    } elseif(count($enrollments)==1){
 
-        //This is typical, treat this as their Active Admission since its the only one they got:
-        return $admissions[0];
+        //This is typical, treat this as their Active Enrollment since its the only one they got:
+        return $enrollments[0];
 
     }
 }
@@ -376,7 +376,7 @@ function extract_level($b,$c_id){
                 $view_data['breadcrumb_p'] = array(
                     array(
                         'link' => '/my/actionplan/'.$b['b_id'].'/'.$b['b_outbound_c_id'],
-                        'anchor' => $CI->lang->line('level_'.( isset($b['b_is_parent']) ? $b['b_is_parent'] : 0 ).'_icon').' '.$b['c_outcome'],
+                        'anchor' => $CI->lang->line('level_'.( isset($b['c_level']) ? $b['c_level'] : 0 ).'_icon').' '.$b['c_outcome'],
                     ),
                     array(
                         'link' => null,
@@ -441,7 +441,7 @@ function extract_level($b,$c_id){
                         $view_data['breadcrumb_p'] = array(
                             array(
                                 'link' => '/my/actionplan/'.$b['b_id'].'/'.$b['b_outbound_c_id'],
-                                'anchor' => $CI->lang->line('level_'.$b['b_is_parent'].'_icon').' '.$b['c_outcome'],
+                                'anchor' => $CI->lang->line('level_'.$b['c_level'].'_icon').' '.$b['c_outcome'],
                             ),
                             array(
                                 'link' => '/my/actionplan/'.$b['b_id'].'/'.$intent['c_id'],
@@ -582,11 +582,18 @@ function b_aggregate($b,$skip_parent=false){
 
 
 function prep_prerequisites($b){
+
     //Appends system-enforced prerequisites based on Bootcamp settings:
     $pre_req_array = ( strlen($b['b_prerequisites'])>0 ? json_decode($b['b_prerequisites']) : array() );
     if($b['c__estimated_hours']>0){
-        array_unshift($pre_req_array, 'Commitment to invest at-least <i class="fas fa-alarm-clock"></i> <b>'.echo_hours($b['c__estimated_hours']/($b['b__week_count'])).'/Week</b> during this '.$b['b__week_count'].' week Bootcamp');
+        array_unshift($pre_req_array, '~'.echo_hours($b['c__estimated_hours']/($b['b__week_count'])).'/Week to complete all tasks of this '.$b['b__week_count'].' week bootcamp');
     }
+
+    //Does this Bootcamp require an assessment?
+    if($b['b_requires_assessment']){
+        array_unshift($pre_req_array, 'Pass this bootcamp\'s '.( $b['b_assessment_minutes']>0 ? $b['b_assessment_minutes'].'-minute' : 'free' ).' instant assessment'.( isset($b['ru_assessment_result'])  ? ' '.echo_status('ru_assessment_result', $b['ru_assessment_result']) : '' ));
+    }
+
     return $pre_req_array;
 }
 
@@ -597,7 +604,7 @@ function b_progress($b){
     $udata = $CI->session->userdata('user');
 
     //This must exist:
-    $bl = ( isset($b['b__admins'][0]) ? $b['b__admins'][0] : null );
+    $bl = ( isset($b['b__coaches'][0]) ? $b['b__coaches'][0] : null );
 
     //A function used on the dashboard to indicate what is left before launching the Bootcamp
     $progress_possible = 0; //Total points of progress
@@ -621,8 +628,8 @@ function b_progress($b){
 
     //Do we have enough Children?
     $estimated_minutes = 60;
-    $required_children = ( $b['b_is_parent'] ? 2 : 3 );
-    $child_name = ( $b['b_is_parent'] ? 'Bootcamp' : 'Task' );
+    $required_children = ( $b['c_level'] ? 2 : 3 );
+    $child_name = ( $b['c_level'] ? 'Bootcamp' : 'Task' );
     $progress_possible += $estimated_minutes;
     $e_status = ( count($b['c__child_intents'])>=$required_children ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
     $progress_gained += ( $e_status==1 ? $estimated_minutes : (count($b['c__child_intents'])/$required_children)*$estimated_minutes );
@@ -635,7 +642,7 @@ function b_progress($b){
 
     
     
-    if(count($b['c__child_intents'])>0 && !$b['b_is_parent']){
+    if(count($b['c__child_intents'])>0 && !$b['c_level']){
         //Now check each Task and its Step List:
         foreach($b['c__child_intents'] as $intent_num=>$c){
 
@@ -696,7 +703,7 @@ function b_progress($b){
 
 
 
-    if(!$b['b_is_parent'] || 1){
+    if(!$b['c_level'] || 1){
         //Prerequisites
         $estimated_minutes = 30;
         $progress_possible += $estimated_minutes;
@@ -771,10 +778,32 @@ function b_progress($b){
         $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
         array_push( $checklist , array(
             'href' => $account_href.'#references',
-            'anchor' => '<b>Add a Calendly or HubSpot Booking URL</b> in '.$account_anchor,
+            'anchor' => '<b>Add a Booking URL from calendly.com or hubspot.com</b> in '.$account_anchor,
             'e_status' => $e_status,
             'time_min' => $estimated_minutes,
         ));
+
+        if($b['b_offers_coaching']) {
+            //Do all other coaches have a valid Booking URL?
+            $coaches = $CI->Db_model->ba_fetch(array(
+                'ba.ba_b_id' => $bl['ba_b_id'],
+                'ba.ba_status' => 2, //Other coaches (Lead-Coach status is always 3)
+            ));
+            foreach($coaches as $coach){
+
+                //Use same $estimated_minutes as before for lead coach
+                $progress_possible += $estimated_minutes;
+                $e_status = ( intval($coach['u_booking_x_id'])>0 ? 1 /*Has Booking URL*/ : -4 /*Pending Completion*/ );
+                $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
+                array_push( $checklist , array(
+                    'href' => '/entities/'.$coach['u_id'].'/#references',
+                    'anchor' => '<b>Add a Booking URL from calendly.com or hubspot.com</b> for '.$coach['u_full_name'],
+                    'e_status' => $e_status,
+                    'time_min' => $estimated_minutes,
+                ));
+
+            }
+        }
 
 
         //Profile counter:
@@ -863,7 +892,7 @@ function b_progress($b){
             $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
             array_push( $checklist , array(
                 'href' => ( $account_href ? $account_href.'#details' : null ),
-                'anchor' => '<b>Check Instructor Agreement</b> in '.$account_anchor,
+                'anchor' => '<b>Check Coach Agreement</b> in '.$account_anchor,
                 'e_status' => $e_status,
                 'time_min' => $estimated_minutes,
             ));
@@ -878,22 +907,21 @@ function b_progress($b){
      *******************************/
 
 
-    //Admission package
+    //Enrollment package
     $estimated_minutes = 50;
     $progress_possible += $estimated_minutes;
-    $e_status = ( intval($b['b_offers_diy']) || doubleval($b['b_weekly_coaching_hours']) ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
+    $e_status = ( $b['b_offers_diy'] || $b['b_offers_coaching'] ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
     $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
     array_push( $checklist , array(
-        'href' => '/console/'.$b['b_id'].'/settings#admission',
-        'anchor' => '<b>Choose at-least 1 Admission Package</b> in Settings',
+        'href' => '/console/'.$b['b_id'].'/settings#enrollment',
+        'anchor' => '<b>Choose at-least 1 Enrollment Package</b> in Settings',
         'e_status' => $e_status,
         'time_min' => $estimated_minutes,
     ));
 
 
     //Does it offer coaching?
-    if(doubleval($b['b_weekly_coaching_hours'])){
-
+    if($b['b_offers_coaching']){
         //Do we have at-least one active Class?
         $classes = $CI->Db_model->r_fetch(array(
             'r_b_id' => $b['b_id'],
@@ -1036,7 +1064,7 @@ function filter($array,$ikey,$ivalue){
 }
 
 
-function auth($entity_groups=null,$force_redirect=0,$b_id=0){
+function auth($entity_groups=null,$force_redirect=0,$b_id=0,$u_id=0){
 	
 	$CI =& get_instance();
 	$udata = $CI->session->userdata('user');
@@ -1046,26 +1074,31 @@ function auth($entity_groups=null,$force_redirect=0,$b_id=0){
 	    
 	    //No minimum level required, grant access IF logged in:
 	    return $udata;
-	    
-	} elseif(isset($udata['u_inbound_u_id']) && $udata['u_inbound_u_id']==1281){
-	    
-	    //Always grant access to Admins:
-	    return $udata;
+
+    } elseif(isset($udata['u_inbound_u_id']) && $udata['u_inbound_u_id']==1281){
+
+        //Always grant access to Admins:
+        return $udata;
+
+    } elseif($u_id>0 && $udata['u_id']==$u_id){
+
+        //Always grant access to the user variable:
+        return $udata;
 	    
 	} elseif(isset($udata['u_id']) && $b_id){
 	    
 	    //Fetch Bootcamp admins and see if they have access to this:
-	    $b_instructors = $CI->Db_model->ba_fetch(array(
+	    $b_coaches = $CI->Db_model->ba_fetch(array(
 	        'ba.ba_b_id' => $b_id,
 	        'ba.ba_status >=' => 1, //Actively assigned team member
 	        'u.u_status' => 1, //Active entity
 	        'u.u_id' => $udata['u_id'],
 	    ));
 	    
-	    if(count($b_instructors)>0){
+	    if(count($b_coaches)>0){
 	        //Append permissions here:
-	        $udata['project_permissions'] = $b_instructors[0];
-	        //Instructor is part of the Bootcamp:
+	        $udata['project_permissions'] = $b_coaches[0];
+	        //Coach is part of the Bootcamp:
 	        return $udata;
 	    }
 	    

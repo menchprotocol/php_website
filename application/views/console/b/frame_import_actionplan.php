@@ -2,11 +2,11 @@
 $udata = $this->session->userdata('user');
 
 //Fetch this user's Bootcamps:
-$bs = $this->Db_model->instructor_bs(array(
+$bs = $this->Db_model->coach_bs(array(
     'ba.ba_outbound_u_id' => $udata['u_id'],
     'ba.ba_status >=' => 0,
     'b.b_status >=' => 2,
-    'b.b_is_parent' => 0, //Can only import from child Bootcamps
+    'c.c_level' => 0, //Can only import from child Bootcamps
     'b.b_id !=' => $b['b_id'], //Can't import from current Bootcamp
 ), array(
     'b_old_format' => 'DESC',

@@ -135,7 +135,7 @@ function r_sync_c(b_id,r_id){
                     <?php
                     $active_classes = $this->Db_model->r_fetch(array(
                         'r.r_b_id'	        => $b['b_id'],
-                        'r.r_status >='	    => 0, //Open Admission or higher
+                        'r.r_status >='	    => 0, //Open Enrollment or higher
                         'r.r_status <='	    => 2, //Running
                     ), $b, 'ASC');
 
@@ -147,9 +147,9 @@ function r_sync_c(b_id,r_id){
                             if($class['r_status']==1){
                                 $upcoming_classes++;
                             }
-                            echo_r($b,$class,( $key>=$class_settings['instructor_show_default']?' active_extra hidden ':'').( $upcoming_classes<=$class_settings['students_show_max'] ? ' is_public ' : ''));
+                            echo_r($b,$class,( $key>=$class_settings['coach_show_default']?' active_extra hidden ':'').( $upcoming_classes<=$class_settings['students_show_max'] ? ' is_public ' : ''));
                         }
-                        if(count($active_classes)>$class_settings['instructor_show_default']){
+                        if(count($active_classes)>$class_settings['coach_show_default']){
                             echo '<a href="javascript:void(0);" onclick="toggle_hidden_class(\'active_extra\')" data-toggle="tooltip" data-placement="top" title="Classes are automatically created for the next '.$class_settings['create_weeks_ahead'].' Weeks" class="list-group-item active_extra" style="text-decoration:none;"><i class="fal fa-plus-circle" style="margin: 0 6px 0 4px; font-size: 19px;"></i> See All Classes</a>';
                         }
                         echo '</div>';
@@ -170,9 +170,9 @@ function r_sync_c(b_id,r_id){
                     if(count($complete_classes)>0){
                         echo '<div class="list-group maxout">';
                         foreach($complete_classes as $key=>$class){
-                            echo_r($b,$class,($key>=$class_settings['instructor_show_default']?'past_extra hidden':'').' is_public');
+                            echo_r($b,$class,($key>=$class_settings['coach_show_default']?'past_extra hidden':'').' is_public');
                         }
-                        if(count($complete_classes)>$class_settings['instructor_show_default']){
+                        if(count($complete_classes)>$class_settings['coach_show_default']){
                             echo '<a href="javascript:void(0);" onclick="toggle_hidden_class(\'past_extra\')" class="list-group-item past_extra" style="text-decoration:none;"><i class="fal fa-plus-circle" style="margin: 0 6px 0 4px; font-size: 19px;"></i> See all '.count($complete_classes).'</a>';
                         }
                         echo '</div>';

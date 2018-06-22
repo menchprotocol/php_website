@@ -1,13 +1,14 @@
 <?php 
 //Calculate office hours:
 $class_settings = $this->config->item('class_settings');
-$child_name = ( $b['b_is_parent'] ? 'Week' : $this->lang->line('level_2_name') );
+$child_name = ( $b['c_level'] ? 'Week' : $this->lang->line('level_2_name') );
 $udata = $this->session->userdata('user');
-$b = ( $b['b_is_parent'] && count($b['c__child_intents'])>0 ? b_aggregate($b) : $b ); //Replace $b with the new aggregated $b
+$b = ( $b['c_level'] && count($b['c__child_intents'])>0 ? b_aggregate($b) : $b ); //Replace $b with the new aggregated $b
 ?>
 
 <style>
-    .msg { font-size:18px !important; font-weight:300 !important; margin-top:6px !important }
+    .body-container .msg, .body-container li, p, .body-container a { font-size:1.1em !important; }
+    .msg { margin-top:10px !important; font-weight:300 !important; line-height: 120%; }
     .msg a { max-width: none; }
 </style>
 
@@ -50,78 +51,6 @@ $( document ).ready(function() {
 <h1 style="margin-bottom:30px;"><?= $b['c_outcome'] ?></h1>
 
 <div class="row" id="landing_page">
-
-	<div class="col-md-4">
-        <div id="sidebar">
-        	
-        	<h3 style="margin-top:0;">Bootcamp Overview</h3>
-
-            <div style="margin-left:0; padding:5px 10px; background-color:#E5E5E5; border-radius:5px;">
-                <?php
-
-                //Duration/Commitment
-                echo '<div class="dash-label"><span class="icon-left"><i class="fas fa-clock"></i></span> '.$b['b__week_count'].' Week'.echo__s($b['b__week_count']).' @ '.echo_hours($b['c__estimated_hours']/(( $b['b_is_parent'] && count($b['c__child_intents'])>0 ? count($b['c__child_intents']) : 1 ))).'/Week</div>';
-
-                //Next class?
-                echo '<div class="dash-label"><span class="icon-left"><i class="fas fa-calendar"></i></span> '.echo_time($next_classes[0]['r_start_date'],5).' - '.echo_time($next_classes[0]['r_start_date'],5, (($b['b__week_count']*7*24*3600)-(4*3600))).'</div>';
-
-                if($b['b_weekly_coaching_hours']){
-                    //Coaching hours:
-                    echo '<div class="dash-label"><span class="icon-left"><i class="fas fa-whistle"></i></span> '.echo_hours($b['b_weekly_coaching_hours']).' of Weekly Coaching <i class="fas fa-info-circle" data-toggle="tooltip" title="'.echo_hours($b['b_weekly_coaching_hours']*$b['b__week_count']).' of 1-on-1 coaching in '.$b['b__week_count'].' week'.echo__s($b['b__week_count']).' with a direct chat line & weekly video calls"></i></div>';
-                }
-
-
-
-                //To be replaced with real data soon
-                if($b['b_id']==354 && 0){
-                    echo ' <div class="dash-label"><span class="icon-left"><i class="fas fa-lightbulb"></i></span> '.$b['c__message_tree_count'].' Insight'. echo__s($b['c__message_tree_count']).' <i class="fas fa-info-circle" data-toggle="tooltip" title="'.$b['c__message_tree_count'].' curated messages with best-practices on how to '.strtolower($b['c_outcome']).'"></i></div>';
-
-                    echo ' <div class="dash-label"><span class="icon-left"><i class="fas fa-book"></i></span> 32 Referenced Sources <i class="fas fa-info-circle" data-toggle="tooltip" title="Messages reference 32 external sources (like books, videos, blog posts and podcasts)"></i></div>';
-                    echo ' <div class="dash-label"><span class="icon-left"><i class="fas fa-user-graduate"></i></span> 17 Industry Experts <i class="fas fa-info-circle" data-toggle="tooltip" title="References are authored by 17 industry experts with first-hand experience to '.strtolower($b['c_outcome']).'"></i></div>';
-                }
-
-
-
-                if($b['b_weekly_coaching_hours']){
-
-                    $guarantee_date = echo_time($next_classes[0]['r_start_date'],8, ((($b['b__week_count']+$b['b_guarantee_weeks'])*7*24*3600)-(4*3600)));
-
-                    //Coaching Rate:
-                    echo '<div class="dash-label"><span class="icon-left"><i class="fas fa-dollar-sign"></i></span> '.number_format(($b['b_weekly_coaching_rate']*$b['b__week_count']),0).' USD Coaching Tuition <i class="fas fa-info-circle" data-toggle="tooltip" title="Tuition covers the 1-on-1 coaching you will receive during this '.$b['b__week_count'].' week Bootcamp"></i></div>';
-
-                    if($b['b_deferred_rate']){
-                        //Deferred payment also available
-                        echo '<div class="dash-label"><span class="icon-left"><i class="fas fa-credit-card"></i></span> Deferred Payments Available <i class="fas fa-info-circle" data-toggle="tooltip" title="Pay a non-refundable deposit of $'.number_format(($b['b_weekly_coaching_rate']*$b['b__week_count']*$b['b_deferred_rate']*$b['b_deferred_deposit']),0).' up-front and pay $'.number_format(($b['b_weekly_coaching_rate']*$b['b__week_count']*$b['b_deferred_rate']*(1-$b['b_deferred_deposit'])),0).' after you get hired from '.($b['b_deferred_payback']*100).'% of each paycheck"></i></div>';
-                    }
-
-                    //What's the guarantee?
-                    echo '<div class="dash-label"><span class="icon-left"><i class="fas fa-smile"></i></span> <a href="https://support.mench.com/hc/en-us/articles/115002080031" style="border-bottom:1px dashed #3C4858;" data-toggle="tooltip" title="Click to lean more about our signature tuition reimbursement guarantee">Outcome Guarantee</a> by '.$guarantee_date.' <i class="fas fa-info-circle" data-toggle="tooltip" title="Receive a full refund if you do not '.strtolower($b['c_outcome']).( $b['b_guarantee_weeks'] ? ' within '.$b['b_guarantee_weeks'].' week'.echo__s($b['b_guarantee_weeks']).' after your class ends' : ' before your class ends' ).' ['.$guarantee_date.'] as long as you complete all assigned weekly tasks on-time"></i></div>';
-
-                }
-
-                if($b['b_offers_diy']){
-                    echo '<div class="dash-label"><span class="icon-left"><i class="fas fa-wrench"></i></span> Offers Do It Yourself for FREE <i class="fas fa-info-circle" data-toggle="tooltip" title="Bootcamp offers a Free Do It Yourself admission where you get access to the Action Plan to complete all tasks on your own without any coaching"></i></div>';
-                }
-                ?>
-            </div>
-            
-            <div style="padding:10px 0 0; text-align:center;">
-                <div class="lp_action"><a href="<?= '/'.$b['b_url_key'].( strlen($b['b_apply_url'])>0 ? '/apply' : '/enroll' ) ?>" class="btn btn-primary btn-round"><?= ( strlen($b['b_apply_url'])>0 ? 'Apply' : 'Enroll' ) ?> &nbsp;<i class="fas fa-chevron-right"></i></a></div>
-
-                <div style="margin:10px 0 !important;" class="btn btn-primary btn-round countdown"><div>NEXT CLASS IN:</div><span class="next_start_date"></span></div>
-            </div>
-
-
-
-            <?php if($b['b_id']==354){ ?>
-            <div class="list-group" style="width: 267px; margin:12px auto 30px auto;">
-                <a href="https://support.mench.com/hc/en-us/articles/360004312611" class="list-group-item"><span class="pull-right"><span class="badge badge-primary"><i class="fas fa-chevron-right"></i></span></span> Program FAQ</a>
-                <a href="https://support.mench.com/hc/en-us/articles/115002079731" class="list-group-item"><span class="pull-right"><span class="badge badge-primary"><i class="fas fa-chevron-right"></i></span></span> Student Testimonials</a>
-            </div>
-            <?php } ?>
-
-        </div>
-    </div>
     
     <div class="col-md-8">
     
@@ -134,8 +63,9 @@ $( document ).ready(function() {
         }
         ?>
 
+
         <h3><i class="fas fa-trophy"></i> Skills You Will Gain</h3>
-        <div id="b_transformations"><?= ( strlen($b['b_transformations'])>0 ? '<ol><li>'.join('</li><li>',json_decode($b['b_transformations'])).'</li></ol>' : 'Not Set Yet' ) ?></div>
+        <div id="b_transformations"><?= ( strlen($b['b_transformations'])>0 ? '<ul><li>'.join('</li><li>',json_decode($b['b_transformations'])).'</li></ul>' : 'Not Set Yet' ) ?></div>
 
         <h3><i class="fas fa-shield-check"></i> Prerequisites</h3>
         <?php $pre_req_array = prep_prerequisites($b); ?>
@@ -146,14 +76,14 @@ $( document ).ready(function() {
         <h3><i class="fas fa-flag"></i> Action Plan</h3>
         <div id="c_tasks_list">
             <?php
-            if($b['b_is_parent']){
+            if($b['c_level']){
 
                 foreach($b['c__child_intents'] as $key=>$b7d){
 
                     echo '<div id="c_'.$key.'">';
                     echo '<h4><a href="javascript:toggleview(\'c_'.$key.'\');" style="font-weight: normal;"><i class="pointer fas fa-caret-right"></i> Week '.$b7d['cr_outbound_rank'].': '.$b7d['c_outcome'];
                     if($b7d['c__estimated_hours']>0){
-                        echo ' &nbsp;<i class="fas fa-alarm-clock"></i> <span style="border-bottom:1px dotted #999;" data-toggle="tooltip" data-placement="top" title="This week is estimated to need '.echo_hours($b7d['c__estimated_hours'],0).' to complete all Tasks">'.echo_hours($b7d['c__estimated_hours'],1).'</span> &nbsp; ';
+                        echo ' &nbsp;<i class="fas fa-clock"></i> <span style="border-bottom:1px dotted #999;" data-toggle="tooltip" data-placement="top" title="This week is estimated to need '.echo_hours($b7d['c__estimated_hours'],0).' to complete all Tasks">'.echo_hours($b7d['c__estimated_hours'],1).'</span> &nbsp; ';
                     }
                     echo '</a></h4>';
                     echo '<div class="toggleview c_'.$key.'" style="display:none;">';
@@ -188,7 +118,7 @@ $( document ).ready(function() {
                         }
                         echo '<li class="list-group-item '.( $counter>=$class_settings['landing_page_visible'] ? 'show_full_list" style="display:none;"' : '"' ).'>';
                         //echo '<span class="pull-right">'.($child_intent['c__estimated_hours']>0 ? echo_estimated_time($child_intent['c__estimated_hours'],1) : '').'</span>';
-                        echo ( $b['b_is_parent'] ? $this->lang->line('level_0_icon') : $this->lang->line('level_2_icon') ).' ';
+                        echo ( $b['c_level'] ? $this->lang->line('level_0_icon') : $this->lang->line('level_2_icon') ).' ';
                         echo $child_name.' '.$child_intent['cr_outbound_rank'].': '.$child_intent['c_outcome'];
                         echo '</li>';
                         $counter++;
@@ -199,64 +129,67 @@ $( document ).ready(function() {
             }
             ?>
         </div>
-        <div class="show_full_list" style="display: none;"><a href="<?= '/'.$b['b_url_key'].( strlen($b['b_apply_url'])>0 ? '/apply' : '/enroll' ) ?>" class="btn btn-primary btn-round"><?= ( strlen($b['b_apply_url'])>0 ? 'Apply' : 'Enroll' ) ?> &nbsp;<i class="fas fa-chevron-right"></i></a></div>
 
-    		
-    		
+        <!--<div class="show_full_list" style="display: none;"><a href="<?= '/'.$b['b_url_key'].'/enroll' ?>" class="btn btn-primary btn-round">Enroll &nbsp;<i class="fas fa-chevron-right"></i></a></div>-->
+
 
         <?php
-        if($b['b_weekly_coaching_hours'] && count($b['b__admins'])>0){
+        if($b['b_offers_coaching']){
             echo '<h3><i class="fas fa-whistle"></i> Coaches</h3>';
-            $admin_count = 0;
-            $leader_fname = '';
-            foreach($b['b__admins'] as $admin){
-                if($admin_count>0){
-                    echo '<hr />';
+
+            echo '<div class="row">';
+
+            $count = 0;
+            foreach($b['b__coaches'] as $coach){
+                if(!$coach['u_booking_x_id']){
+                    //Coach does not have their Booking ID, which is required to be listed:
+                    continue;
                 }
 
-                if($admin['ba_status']==3){
-                    $leader_fname = one_two_explode('', ' ', $admin['u_full_name']);
+                if($count>0 && fmod($count,2)==0){
+                    //A new row:
+                    echo '</div><div class="row">';
                 }
-                echo '<h4 class="userheader">'.echo_cover($admin).' '.( $udata['u_inbound_u_id']==1281 ? ' <a href="/entities/'.$admin['u_id'].'/modify">'.$admin['u_full_name'].' <i class="fas fa-cog"></i></a>' : $admin['u_full_name'] ).'<span><img src="/img/flags/'.strtolower($admin['u_country_code']).'.png" class="flag" style="margin-top:-4px;" /> '.$admin['u_current_city'].'</span></h4>';
-                echo '<p id="u_bio">'.$admin['u_bio'].'</p>';
-
-                //Any languages other than English?
-                if(strlen($admin['u_language'])>0 && $admin['u_language']!=='en'){
-                    $all_languages = $this->config->item('languages');
-                    //They know more than enligh!
-                    $langs = explode(',',$admin['u_language']);
-                    echo '<i class="fas fa-language ic-lrg"></i>Fluent in ';
-                    $count = 0;
-                    foreach($langs as $lang){
-                        if($count>0){
-                            echo ', ';
-                        }
-                        echo $all_languages[$lang];
-                        $count++;
-                    }
-                }
-
-                //Public profiles:
-                echo '<div class="public-profiles" style="margin-top:10px;">';
-                echo echo_social_profiles($this->Db_model->x_social_fetch($admin['u_id']));
-                echo '</div>';
-
-                $admin_count++;
+                echo_coach($coach, $b,1);
+                $count++;
             }
+
+            echo '</div>';
         }
         ?>
 
-        <hr />
-        <p>Ready to unleash your full potential?</p>
+        <br />
+    </div>
 
+    <div class="col-md-4">
+        <div id="sidebar">
+
+            <h3 style="margin-top:5px;"><i class="fas fa-shopping-cart"></i> Enrollment</h3>
+
+            <?php
+
+            if($b['b_requires_assessment']){
+                echo '<div class="price-box">';
+                echo '<p><i class="fas fa-tachometer"></i> Bootcamp offers a free instant assessment by simply answering a few multiple-choice questions.</p>';
+                //echo '<a href="/'.$b['b_url_key'].'/enroll?start=assessment" class="btn btn-primary" style="margin-top: 15px !important;">Start Free Assessment <i class="fas fa-chevron-right"></i></a>';
+                echo '</div>';
+            }
+
+            echo_package($b,1,1);
+            echo_package($b,0,1);
+
+            ?>
+            <div style="padding:0; text-align:center; width: 100%;">
+                <div style="margin:0px 0 15px !important; width: 100%;" class="btn btn-primary btn-round countdown"><div>NEXT CLASS IN:</div><span class="next_start_date"></span></div>
+            </div>
+
+        </div>
     </div>
 </div>
 
 
 
-<div style="padding:20px 0 30px; text-align:center;">
-    <div class="lp_action"><a href="<?= '/'.$b['b_url_key'].( strlen($b['b_apply_url'])>0 ? '/apply' : '/enroll' ) ?>" class="btn btn-primary btn-round"><?= ( strlen($b['b_apply_url'])>0 ? 'Apply' : 'Enroll' ) ?> &nbsp;<i class="fas fa-chevron-right"></i></a></div>
-</div>
+<!--<div style="padding:20px 0 30px; text-align:center;"><div class="lp_action"><a href="<?= '/'.$b['b_url_key'].'/enroll' ?>" class="btn btn-primary btn-round">Enroll &nbsp;<i class="fas fa-chevron-right"></i></a></div></div>-->
 
 
 </div>
@@ -267,6 +200,5 @@ $( document ).ready(function() {
 <div class="container">
 	
 <?php $this->load->view('front/b/bs_include'); ?>
-<br /><br />
 
 

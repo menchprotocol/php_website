@@ -166,23 +166,23 @@ class Scraper extends CI_Controller {
 	    
 	    //Go through all the results of this page:
 	    foreach($results['results'] as $result){
-	        //GO through all the instructors of this course:
-	        foreach($result['visible_instructors'] as $instructor){
+	        //GO through all the coaches of this course:
+	        foreach($result['visible_coaches'] as $coach){
 	            //See if they eixist in DB or not:
 	            $already_exists = $this->Db_model->il_fetch(array(
-	                'il_udemy_user_id' => $instructor['id'],
+	                'il_udemy_user_id' => $coach['id'],
 	            ));
 	            if(count($already_exists)>0){
 	                //Exists already!
 	                $stats['already_existed']++;
 	            } else {
 	                $stats['newly_added']++;
-	                $names = explode(' ',$instructor['display_name'],2);
+	                $names = explode(' ',$coach['display_name'],2);
 	                
 	                $this->Db_model->il_create(array(
-	                    'il_udemy_user_id' => $instructor['id'],
-	                    'il_url' => 'https://www.udemy.com'.$instructor['url'],
-	                    'il_overview' => $instructor['job_title'],
+	                    'il_udemy_user_id' => $coach['id'],
+	                    'il_url' => 'https://www.udemy.com'.$coach['url'],
+	                    'il_overview' => $coach['job_title'],
 	                    'il_first_name' => $names[0],
 	                    'il_last_name' => ( isset($names[1]) ? $names[1] : '' ),
 	                    'il_udemy_category' => $stats['category'],
@@ -222,14 +222,14 @@ class Scraper extends CI_Controller {
 	        $update_data = array(
 	            'il_timestamp' => date("Y-m-d H:i:s"),
 	            'il_overview' => ( strlen($tu['il_overview'])>0 ? $tu['il_overview']."\n\n" : '' ).preg_replace('/\s+/', ' ',strip_tags(one_two_explode('<div class="js-simple-collapse-inner">','</div>',$html))),
-	            'il_review_count' => intval(str_replace(',','',strip_tags(one_two_explode('Reviews','</li>',one_two_explode('<ul class="instructor__stats">','</ul>',$html))))),
-	            'il_course_count' => intval(str_replace(',','',strip_tags(one_two_explode('Courses','</li>',one_two_explode('<ul class="instructor__stats">','</ul>',$html))))),
-	            'il_student_count' => intval(str_replace(',','',strip_tags(one_two_explode('Students','</li>',one_two_explode('<ul class="instructor__stats">','</ul>',$html))))),
-	            'il_website' => (substr_count($html,'<i class="udi udi-globe"></i>')==1 ? one_two_explode('href="','"',one_two_explode('<div class="instructor__social">','<i class="udi udi-globe"></i>',$html)) : null),
-	            'il_facebook' => (substr_count($html,'<i class="udi udi-facebook-f"></i>')==1 ? 'https://www.facebook.com'.one_two_explode('href="https://www.facebook.com','"',one_two_explode('<div class="instructor__social">','<i class="udi udi-facebook-f"></i>',$html)) : null),
-	            'il_twitter' => (substr_count($html,'<i class="udi udi-twitter"></i>')==1 ? 'https://twitter.com'.one_two_explode('href="https://twitter.com','"',one_two_explode('<div class="instructor__social">','<i class="udi udi-twitter"></i>',$html)) : null),
-	            'il_youtube' => (substr_count($html,'<i class="udi udi-youtube"></i>')==1 ? 'https://www.youtube.com'.one_two_explode('href="https://www.youtube.com','"',one_two_explode('<div class="instructor__social">','<i class="udi udi-youtube"></i>',$html)) : null),
-	            'il_linkedin' => (substr_count($html,'<i class="udi udi-linkedin"></i>')==1 ? 'https://linkedin.com'.one_two_explode('href="https://linkedin.com','"',one_two_explode('<div class="instructor__social">','<i class="udi udi-linkedin"></i>',$html)) : null),
+	            'il_review_count' => intval(str_replace(',','',strip_tags(one_two_explode('Reviews','</li>',one_two_explode('<ul class="coach__stats">','</ul>',$html))))),
+	            'il_course_count' => intval(str_replace(',','',strip_tags(one_two_explode('Courses','</li>',one_two_explode('<ul class="coach__stats">','</ul>',$html))))),
+	            'il_student_count' => intval(str_replace(',','',strip_tags(one_two_explode('Students','</li>',one_two_explode('<ul class="coach__stats">','</ul>',$html))))),
+	            'il_website' => (substr_count($html,'<i class="udi udi-globe"></i>')==1 ? one_two_explode('href="','"',one_two_explode('<div class="coach__social">','<i class="udi udi-globe"></i>',$html)) : null),
+	            'il_facebook' => (substr_count($html,'<i class="udi udi-facebook-f"></i>')==1 ? 'https://www.facebook.com'.one_two_explode('href="https://www.facebook.com','"',one_two_explode('<div class="coach__social">','<i class="udi udi-facebook-f"></i>',$html)) : null),
+	            'il_twitter' => (substr_count($html,'<i class="udi udi-twitter"></i>')==1 ? 'https://twitter.com'.one_two_explode('href="https://twitter.com','"',one_two_explode('<div class="coach__social">','<i class="udi udi-twitter"></i>',$html)) : null),
+	            'il_youtube' => (substr_count($html,'<i class="udi udi-youtube"></i>')==1 ? 'https://www.youtube.com'.one_two_explode('href="https://www.youtube.com','"',one_two_explode('<div class="coach__social">','<i class="udi udi-youtube"></i>',$html)) : null),
+	            'il_linkedin' => (substr_count($html,'<i class="udi udi-linkedin"></i>')==1 ? 'https://linkedin.com'.one_two_explode('href="https://linkedin.com','"',one_two_explode('<div class="coach__social">','<i class="udi udi-linkedin"></i>',$html)) : null),
 	        );
 	        $this->Db_model->il_update( $tu['il_id'] , $update_data );
 	        

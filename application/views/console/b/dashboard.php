@@ -28,16 +28,16 @@ echo '<div id="marketplace_b_url" style="display:none;">'.$website['url'].$b['b_
 
 <?php
 
-echo '<div class="dash-label"><span class="icon-left"><i class="fas fa-clock"></i></span> '.$b['b__week_count'].' Week'.echo__s($b['b__week_count']).' @ '.echo_hours($b['c__estimated_hours']/(( $b['b_is_parent'] && count($b['c__child_intents'])>0 ? count($b['c__child_intents']) : 1 ))).'/Week</div>';
+echo '<div class="dash-label"><span class="icon-left"><i class="fas fa-clock"></i></span> '.$b['b__week_count'].' Week'.echo__s($b['b__week_count']).' @ '.echo_hours($b['c__estimated_hours']/(( $b['c_level'] && count($b['c__child_intents'])>0 ? count($b['c__child_intents']) : 1 ))).'/Week</div>';
 
-if($b['b_is_parent']) {
+if($b['c_level']) {
 
     //Show total tasks:
-    echo '<div class="dash-label"><span class="icon-left"><i class="fas fa-clipboard-check"></i></span> ' . $b['c__child_child_count'] . ' Task' . echo__s($b['c__child_child_count']) . '</div>';
+    echo '<div class="dash-label"><span class="icon-left"><i class="fas fa-check-square"></i></span> ' . $b['c__child_child_count'] . ' Task' . echo__s($b['c__child_child_count']) . '</div>';
 
 } else {
     //Total Tasks for weekly Bootcamps:
-    echo '<div class="dash-label"><span class="icon-left"><i class="fas fa-clipboard-check"></i></span> '.$b['c__child_count'].' Task'.echo__s($b['c__child_count']) .'</div>';
+    echo '<div class="dash-label"><span class="icon-left"><i class="fas fa-check-square"></i></span> '.$b['c__child_count'].' Task'.echo__s($b['c__child_count']) .'</div>';
     if($b['c__child_child_count']>0){
         echo '<div class="dash-label"><span class="icon-left"><i class="fal fa-clipboard-check"></i></span> '.$b['c__child_child_count'].' Step'.echo__s($b['c__child_child_count']).'</div>';
     }
@@ -56,7 +56,7 @@ echo ' <div class="dash-label"><span class="icon-left"><i class="fas fa-comment-
 
 echo '<div class="title" style="margin-top:40px;"><h4><a href="/console/'.$b['b_id'].'/classes" class="badge badge-primary badge-msg"><b><i class="fas fa-users"></i> Classes <i class="fas fa-arrow-right"></i></b></a> <span id="hb_2274" class="help_button" intent-id="2274"></span></h4></div><div class="help_body maxout" id="content_2274"></div>';
 
-//Fetch admission stats:
+//Fetch enrollment stats:
 $student_funnel = array(
     0 => count($this->Db_model->ru_fetch(array(
         'ru.ru_b_id'	   => $b['b_id'],
@@ -88,16 +88,16 @@ foreach($student_funnel as $ru_status=>$count){
 
 <?php
 echo '<div>Coaches: ';
-foreach($b['b__admins'] as $key=>$instructor){
+foreach($b['b__coaches'] as $key=>$coach){
     if($key>0){
         echo ', ';
     }
-    echo $instructor['u_full_name'];
+    echo $coach['u_full_name'];
 }
 echo '</div>';
 ?>
 <div style="margin-top:-5px;">Landing Page: <a href="/<?= $b['b_url_key'] ?>"><u><?= $website['url'] . $b['b_url_key'] ?></u></a> <a href="#" class="btn btn-sm btn-default marketplace_b_url copy-btn">Copy&nbsp;<i class="fas fa-clone" style="font-size:1em;"></i></a></div>
-<div style="margin-top:-5px;">Publish Status: <?= echo_status('b',$b['b_status'],0,'right') ?></div>
+<div style="margin-top:-5px;">Bootcamp Status: <?= echo_status('b',$b['b_status'],0,'right') ?></div>
 
 
 
@@ -105,7 +105,7 @@ echo '</div>';
 
 
 <?php
-if(!$b['b_is_parent']){
+if(!$b['c_level']){
 
 
     //Show Potential parent Bootcamps:

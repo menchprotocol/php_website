@@ -47,7 +47,7 @@
 <?php
 
 //See if they have already placed a review, and if so, load that data into view:
-$has_reviewed = ( intval($admission['ru_review_score'])>0 );
+$has_reviewed = ( intval($enrollment['ru_review_score'])>0 );
 $review_score_options = array(
     1 => '1 Not Likely At All :(',
     2 => '2',
@@ -65,24 +65,24 @@ $review_score_options = array(
 //Show Overview:
 echo '<div style="font-size:0.7em;">';
 
-echo '<div class="maxout" style="padding-bottom:7px;"><b>Lead Instructor</b>: '.echo_cover($admission['b__admins'][0],'mini-image').' '.$lead_instructor.'</div>';
-if(count($admission['b__admins'])>1){
-    echo '<div class="maxout" style="padding-bottom:7px;"><b>Co-Instructor'.echo__s((count($admission['b__admins'])-1)).'</b>: ';
-    //We have assistant instructors, list them here:
-    foreach($admission['b__admins'] as $key=>$assistant){
+echo '<div class="maxout" style="padding-bottom:7px;"><b>Lead Coach</b>: '.echo_cover($enrollment['b__coaches'][0],'mini-image').' '.$lead_coach.'</div>';
+if(count($enrollment['b__coaches'])>1){
+    echo '<div class="maxout" style="padding-bottom:7px;"><b>Co-Coach'.echo__s((count($enrollment['b__coaches'])-1),1).'</b>: ';
+    //We have assistant coaches, list them here:
+    foreach($enrollment['b__coaches'] as $key=>$assistant){
         if($key==0){
-            //Skip this lead instructor:
+            //Skip this Lead Coach:
             continue;
         } elseif($key>1){
-            //Skip this lead instructor:
+            //Skip this Lead Coach:
             echo ', ';
         }
         echo echo_cover($assistant,'mini-image').' '.$assistant['u_full_name'];
     }
     echo '</div>';
 }
-echo '<div class="maxout" style="padding-bottom:7px;"><b>Bootcamp</b>: '.$admission['c_outcome'].'</div>';
-echo '<div class="maxout" style="padding-bottom:7px;"><b>Class</b>: '.echo_time($admission['r_start_date'],2).'</div>';
+echo '<div class="maxout" style="padding-bottom:7px;"><b>Bootcamp</b>: '.$enrollment['c_outcome'].'</div>';
+echo '<div class="maxout" style="padding-bottom:7px;"><b>Class</b>: '.echo_time($enrollment['r_start_date'],2).'</div>';
 echo '<div style="border-bottom:2px solid #3C4858; margin:0 0 25px;">&nbsp;</div>';
 
 
@@ -98,19 +98,19 @@ echo '<div id="save_review">';
         echo '<option value="0">Choose Score...</option>';
     }
     foreach($review_score_options as $val=>$name){
-        echo '<option value="'.$val.'" '.( $admission['ru_review_score']==$val ? 'selected="selected"' : '' ).'>'.$name.'</option>';
+        echo '<option value="'.$val.'" '.( $enrollment['ru_review_score']==$val ? 'selected="selected"' : '' ).'>'.$name.'</option>';
     }
     echo '</select>';
 
 
     echo '<div id="hide_before_score" style="display:'.( !$has_reviewed ? 'none' : 'block' ).';">';
 
-        echo '<div style="margin-top:25px;" class="maxout"><b><i class="fas fa-user-secret"></i> Private & Anonymous Feedback (Optional)</b><br />Share your thoughts/suggestions on how '.$lead_instructor.' can improve future Classes:</div>';
-        echo '<textarea id="ru_review_private_note" class="form-textarea maxout">'.$admission['ru_review_private_note'].'</textarea>';
+        echo '<div style="margin-top:25px;" class="maxout"><b><i class="fas fa-user-secret"></i> Private & Anonymous Feedback (Optional)</b><br />Share your thoughts/suggestions on how '.$lead_coach.' can improve future Classes:</div>';
+        echo '<textarea id="ru_review_private_note" class="form-textarea maxout">'.$enrollment['ru_review_private_note'].'</textarea>';
 
 
-        echo '<div style="margin-top:25px;" class="maxout"><b><i class="fas fa-comment-dots"></i> Public Review (Optional)</b><br />Write a review for '.$lead_instructor.' to let his future/potential students know about your experience and what to expect:</div>';
-        echo '<textarea id="ru_review_public_note" class="form-textarea maxout">'.$admission['ru_review_public_note'].'</textarea>';
+        echo '<div style="margin-top:25px;" class="maxout"><b><i class="fas fa-comment-dots"></i> Public Review (Optional)</b><br />Write a review for '.$lead_coach.' to let his future/potential students know about your experience and what to expect:</div>';
+        echo '<textarea id="ru_review_public_note" class="form-textarea maxout">'.$enrollment['ru_review_public_note'].'</textarea>';
 
     echo '</div>';
 

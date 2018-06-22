@@ -4,6 +4,7 @@
 client = algoliasearch('49OCX1ZXLJ', 'ca3cf5f541daee514976bc49f8399716');
 algolia_b_index = client.initIndex('alg_bootcamps');
 algolia_u_index = client.initIndex('alg_entities');
+algolia_c_index = client.initIndex('alg_intents');
 
 
 //To update fancy dropdown which is usually used for STATUS updates:
@@ -111,21 +112,21 @@ function view_el(u_id,c_id){
     }
 }
 
-function ms_toggle(c_id,new_state=-1){
+function ms_toggle(cr_id,new_state=-1){
 
     if(new_state<0){
         //Detect new state:
-        new_state = ( $('#list-outbound-'+c_id).hasClass('hidden') ? 1 : 0 );
+        new_state = ( $('.cr-class-'+cr_id).hasClass('hidden') ? 1 : 0 );
     }
 
     if(new_state){
         //open:
-        $('#list-outbound-'+c_id).removeClass('hidden');
-        $('#handle-'+c_id).removeClass('fa-plus-square').addClass('fa-minus-square');
+        $('.cr-class-'+cr_id).removeClass('hidden');
+        $('#handle-'+cr_id).removeClass('fa-plus-square').addClass('fa-minus-square');
     } else {
         //Close:
-        $('#list-outbound-'+c_id).addClass('hidden');
-        $('#handle-'+c_id).removeClass('fa-minus-square').addClass('fa-plus-square');
+        $('.cr-class-'+cr_id).addClass('hidden');
+        $('#handle-'+cr_id).removeClass('fa-minus-square').addClass('fa-plus-square');
     }
 }
 
@@ -168,7 +169,7 @@ $(document).ready(function() {
             displayKey: function(suggestion) { return "" },
             templates: {
                 suggestion: function(suggestion) {
-                    return '<i class="fas '+( parseInt(suggestion.b_is_parent)==0 ? 'fa-cube' : 'fa-cubes' )+'"></i> '+ suggestion.c_b_outcome;
+                    return '<i class="fas '+( parseInt(suggestion.c_level)==0 ? 'fa-cube' : 'fa-cubes' )+'"></i> '+ suggestion.c_b_outcome;
                 },
             }
         },
@@ -177,7 +178,7 @@ $(document).ready(function() {
                 algolia_u_index.search(q, {
 
                     hitsPerPage: 7,
-                    filters: ( parseInt($('#u_inbound_u_id').val())==1281 ? '' : 'u_id='+$('#u_id').val() ),
+                    filters: ( parseInt($('#u_inbound_u_id').val())==1281 ? '' : '' ),
 
                 }, function(error, content) {
                     if (error) {
@@ -199,12 +200,12 @@ $(document).ready(function() {
     //Watch the expand/close all buttons:
     $('#task_view .expand_all').click(function (e) {
         $( "#list-outbound>.is_sortable" ).each(function() {
-            ms_toggle($( this ).attr('intent-id'),1);
+            ms_toggle($( this ).attr('data-link-id'),1);
         });
     });
     $('#task_view .close_all').click(function (e) {
         $( "#list-outbound>.is_sortable" ).each(function() {
-            ms_toggle($( this ).attr('intent-id'),0);
+            ms_toggle($( this ).attr('data-link-id'),0);
         });
     });
 

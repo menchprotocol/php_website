@@ -9,7 +9,7 @@
 //We only want classes with some sort of an acticity:
 
 $classes = $this->Db_model->r_fetch(array(
-    'r_status >=' => 1, //Admission Open
+    'r_status >=' => 1, //Enrollment Open
 ),null,'ASC',0,array('ru'));
 
 
@@ -20,7 +20,7 @@ $classes = $this->Db_model->r_fetch(array(
         <tr>
             <th style="width:40px;">#</th>
             <th>Bootcamp</th>
-            <th>Lead Instructor</th>
+            <th>Lead Coach</th>
             <th>Class Start Time</th>
             <th>Elapsed</th>
             <th>Progress</th>
@@ -34,7 +34,7 @@ foreach($classes as $key=>$class) {
     //Fetch Full Bootcamp:
     $bs = $this->Db_model->b_fetch(array(
         'b.b_id' => $class['r_b_id'],
-    ), array('c','fp'));
+    ), array('fp'));
 
     if($class['r_status']>=2){
         //Fetch Bootcamp from Action Plan Copy:
@@ -43,7 +43,7 @@ foreach($classes as $key=>$class) {
     }
 
     //Fetch Leader:
-    $leaders = $this->Db_model->ba_fetch(array(
+    $coaches = $this->Db_model->ba_fetch(array(
         'ba.ba_b_id' => $class['r_b_id'],
         'ba.ba_status' => 3,
     ));
@@ -52,7 +52,7 @@ foreach($classes as $key=>$class) {
     echo '<td>'.($key+1).'</td>';
 
     echo '<td><a href="/console/'.$class['r_b_id'].'">'.$bs[0]['c_outcome'].'</a></td>';
-    echo '<td><a href="/entities/'.$leaders[0]['u_id'].'">'.$leaders[0]['u_full_name'].'</a></td>';
+    echo '<td><a href="/entities/'.$coaches[0]['u_id'].'">'.$coaches[0]['u_full_name'].'</a></td>';
     echo '<td><a href="/console/'.$class['r_b_id'].'/classes#class-'.$class['r_id'].'">'.echo_time(strtotime($class['r_start_date']),2).'</a></td>';
     echo '<td><span data-toggle="tooltip" title="% of Class Elapsed Time">';
     if($class['r_status']==3){
@@ -92,8 +92,8 @@ foreach($classes as $key=>$class) {
             'ru.ru_cache__current_task >'  => $class['r__total_tasks'],
         )));
 
-        echo '<span data-toggle="tooltip" title="Completion Rate (Total Admitted Students who Activated Messenger)">';
-        echo '<b>'.($class['r__current_admissions']>0 ? round($completed/$class['r__current_admissions']*100) : '0').'%</b> Completed ('.$class['r__current_admissions'].')';
+        echo '<span data-toggle="tooltip" title="Completion Rate (Total Enrolled Students who Activated Messenger)">';
+        echo '<b>'.($class['r__current_enrollments']>0 ? round($completed/$class['r__current_enrollments']*100) : '0').'%</b> Completed ('.$class['r__current_enrollments'].')';
         echo '</span>';
 
     } else {
@@ -104,14 +104,14 @@ foreach($classes as $key=>$class) {
             'ru_status' => 0,
         )));
 
-        $guided_admissions = count($this->Db_model->ru_fetch(array(
+        $guided_enrollments = count($this->Db_model->ru_fetch(array(
             'ru_r_id' => $class['r_id'],
             'ru_status >=' => 4,
             'ru_upfront_pay >' => 0,
         )));
 
-        echo '<span data-toggle="tooltip" title="Pending &raquo; Joined Student &raquo; Guided-Seats">';
-        echo $pending_completion.' &raquo; <b>'.$class['r__current_admissions'].'</b>'.( $guided_admissions>0 ? ' (<b>'.$guided_admissions.'</b>)' : '' );
+        echo '<span data-toggle="tooltip" title="Pending &raquo; Enrolled Student &raquo; Guided-Seats">';
+        echo $pending_completion.' &raquo; <b>'.$class['r__current_enrollments'].'</b>'.( $guided_enrollments>0 ? ' (<b>'.$guided_enrollments.'</b>)' : '' );
         echo '</span>';
 
     }

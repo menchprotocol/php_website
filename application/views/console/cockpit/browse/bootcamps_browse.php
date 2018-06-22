@@ -17,7 +17,7 @@ function echo_row($b,$counter){
 
     echo '<td><a href="https://www.facebook.com/'.$b['fp_fb_id'].'">'.$b['fp_name'].'</a></td>';
 
-    echo '<td>'.( isset($b['leaders'][0]) ? '<a href="/entities/'.$b['leaders'][0]['u_id'].'" title="User ID '.$b['leaders'][0]['u_id'].'">'.$b['leaders'][0]['u_full_name'].'</a>' : '' ).'</td>';
+    echo '<td>'.( isset($b['coaches'][0]) ? '<a href="/entities/'.$b['coaches'][0]['u_id'].'" title="User ID '.$b['coaches'][0]['u_id'].'">'.$b['coaches'][0]['u_full_name'].'</a>' : '' ).'</td>';
 
     //Pricing:
     echo '<td>$'.($b['b_weekly_coaching_rate']).'</td>';
@@ -26,7 +26,7 @@ function echo_row($b,$counter){
 
     echo '<td>';
     if($b['student_funnel'][0]>0 || $b['student_funnel'][4]>0){
-        echo '<span data-toggle="tooltip" title="Initiated Admission -> Completed Admission">';
+        echo '<span data-toggle="tooltip" title="Initiated Enrollment -> Completed Enrollment">';
         echo $b['student_funnel'][0].' &raquo; <b>'.$b['student_funnel'][4].'</b>';
         echo '</span>';
     }
@@ -43,7 +43,7 @@ function echo_row($b,$counter){
 //User Bootcamps:
 $bs = $this->Db_model->b_fetch(array(
     'b.b_status >=' => 2,
-),array('c','fp'),'b_status');
+),array('fp'),'b_status');
 
 //Did we find any?
 $meaningful_b_engagements = $this->config->item('meaningful_b_engagements');
@@ -51,7 +51,7 @@ $meaningful_b_engagements = $this->config->item('meaningful_b_engagements');
 
 foreach($bs as $key=>$mb){
     //Fetch Leader:
-    $bs[$key]['leaders'] = $this->Db_model->ba_fetch(array(
+    $bs[$key]['coaches'] = $this->Db_model->ba_fetch(array(
         'ba.ba_b_id' => $mb['b_id'],
         'ba.ba_status' => 3,
     ));
@@ -85,9 +85,9 @@ foreach($bs as $key=>$mb){
         <th>Bootcamp</th>
         <th><i class="fas fa-plug"></i> Facebook Page</th>
         <th>&nbsp;</th>
-        <th>Lead Instructor</th>
+        <th>Lead Coach</th>
         <th colspan="3" style="width: 300px;">Pricing</th>
-        <th>Admission Funnel</th>
+        <th>Enrollment Funnel</th>
         <th>Activity (Last)</th>
     </tr>
     </thead>
@@ -96,23 +96,23 @@ foreach($bs as $key=>$mb){
 
     $b_groups = array(
         'mench_team' => array(),
-        'instructor' => array(),
+        'coach' => array(),
     );
     $counter = 0;
 
     foreach($bs as $b){
         $is_mench_team = false;
-        foreach($b['leaders'] as $key=>$instructor){
-            if(in_array($instructor['u_inbound_u_id'], array(1281))){
+        foreach($b['coaches'] as $key=>$coach){
+            if(in_array($coach['u_inbound_u_id'], array(1281))){
                 $is_mench_team = true;
                 break;
             }
         }
         //Group based on who is the admin:
-        array_push($b_groups[( $is_mench_team ? 'mench_team' : 'instructor' )],$b);
+        array_push($b_groups[( $is_mench_team ? 'mench_team' : 'coach' )],$b);
     }
 
-    foreach($b_groups['instructor'] as $b){
+    foreach($b_groups['coach'] as $b){
         $counter++;
         echo_row($b,$counter);
     }
@@ -127,9 +127,9 @@ foreach($bs as $key=>$mb){
         <th>Bootcamp</th>
         <th><i class="fas fa-plug"></i> Facebook Page</th>
         <th>&nbsp;</th>
-        <th>Lead Instructor</th>
+        <th>Lead Coach</th>
         <th colspan="3" style="width:300px;">Pricing</th>
-        <th>Admission Funnel</th>
+        <th>Enrollment Funnel</th>
         <th>Activity (Last)</th>
     </tr>
     </thead>

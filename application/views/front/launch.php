@@ -30,7 +30,7 @@ $udata = $this->session->userdata('user');
         <div class="info">
             <div class="icon icon-default mtweak"><i class="fas fa-handshake-alt"></i></div>
             <h3 class="info-title">Support</h3>
-            <p>We work closely with our partner instructors to share best-practices for organizing their expertise into an effective "Action Plan". We share everything you need to know to build an amazing Bootcamp.</p>
+            <p>We work closely with our partner coaches to share best-practices for organizing their expertise into an effective "Action Plan". We share everything you need to know to build an amazing Bootcamp.</p>
         </div>
     </div>
 </div>
@@ -56,7 +56,7 @@ $udata = $this->session->userdata('user');
 		<div class="row">
 			<div class="col-md-4">
 				<div class="info">
-					<div class="icon icon-default mtweak"><i class="fas fa-wrench"></i></div>
+					<div class="icon icon-default mtweak"><i class="fas fa-user"></i></div>
 					<h3 class="info-title">1. Build</h3>
 					<p>Do you have an in-demand skill that many are looking to learn? Like launching a website, podcast or Youtube channel? Build a weekly Bootcamp that would help Students make it happen once and for all.</p>
 				</div>
@@ -100,7 +100,7 @@ $udata = $this->session->userdata('user');
                 <div class="col-md-4">
                     <div class="info">
                         <div class="icon icon-default mtweak"><i class="fas fa-graduation-cap"></i></div>
-                        <h3 class="info-title">Online Instructors</h3>
+                        <h3 class="info-title">Online Coaches</h3>
                         <p style="min-height:200px;">Upgrade your online courses into Bootcamps to empower your students to gain valuable skills by taking action. Earn ~50x or more per student by bundling personalized support with your content to dramatically increase student engagement.</p>
                     </div>
                 </div>
@@ -168,7 +168,7 @@ $udata = $this->session->userdata('user');
 	    		if(isset($udata['u_id'])){
 	    			echo '<a href="/console" class="btn btn-danger btn-raised btn-lg bg-glow">Console <i class="fas fa-chevron-circle-right" style="font-size:1.2em;"></i></a>';
 	    		} else {
-	    		    echo '<a href="https://mench.typeform.com/to/nh4s2u" class="btn btn-danger btn-raised btn-lg bg-glow glow">Signup As Instructor <i class="fas fa-sign-in" style="font-size:1.2em;"></i><div class="ripple-container"></div></a>';
+	    		    echo '<a href="https://mench.typeform.com/to/nh4s2u" class="btn btn-danger btn-raised btn-lg bg-glow glow">Signup As Coach <i class="fas fa-sign-in" style="font-size:1.2em;"></i><div class="ripple-container"></div></a>';
 	    		    echo '<p class="sub-button"><a href="#testimonials" class="testimonials" onclick="$(\'.testimonials\').toggle()">Read Student Testimonials</a> or <a href="/login">Login</a></p>';
 	    		}
 	    		?>

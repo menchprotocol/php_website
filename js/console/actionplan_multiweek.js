@@ -11,7 +11,7 @@ $(document).ready(function() {
         source: function(q, cb) {
             algolia_b_index.search(q, {
                 hitsPerPage: 7,
-                filters: '(b_is_parent=0) AND (b_old_format=0) AND (b_status>=2)' + ( parseInt($('#u_inbound_u_id').val())==1281 ? '' : ' AND (b_status=3 OR b_inbound_u_id=' + $('#u_id').val() + ')' ),
+                filters: '(c_level=0) AND (b_old_format=0) AND (b_status>=2)' + ( parseInt($('#u_inbound_u_id').val())==1281 ? '' : ' AND (b_status=3 OR b_inbound_u_id=' + $('#u_id').val() + ')' ),
             }, function(error, content) {
                 if (error) {
                     cb([]);
@@ -29,7 +29,49 @@ $(document).ready(function() {
         }
     }]);
 
+
+    //Load Algolia:
+    $( ".tasknewintent" ).on('autocomplete:selected', function(event, suggestion, dataset) {
+
+        new_intent($(this).attr('intent-id'), 2, suggestion.c_id);
+
+    }).autocomplete({ hint: false, keyboardShortcuts: ['a'] }, [{
+
+        source: function(q, cb) {
+            algolia_c_index.search(q, {
+                hitsPerPage: 7,
+                filters: '(c_level=2)' + ( parseInt($('#u_inbound_u_id').val())==1281 ? '' : ' AND (c_inbound_u_id=' + $('#u_id').val() + ' OR c_is_public=1)' ),
+            }, function(error, content) {
+                if (error) {
+                    cb([]);
+                    return;
+                }
+                cb(content.hits, content);
+            });
+        },
+        displayKey: function(suggestion) { return "" },
+        templates: {
+            suggestion: function(suggestion) {
+                return '<span class="suggest-prefix"><i class="fas fa-check-square"></i></span> '+ suggestion._highlightResult.c_outcome.value;
+            },
+            header: function(data) {
+                if(!data.isEmpty){
+                    return '<a href="javascript:new_intent(\''+$(this).attr('intent-id')+'\',2)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create Task </span> "'+data.query+'"</a>';
+                }
+            },
+            empty: function(data) {
+                return '<a href="javascript:new_intent(\''+$(this).attr('intent-id')+'\',2)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create Task</span> "'+data.query+'"</a>';
+            },
+        }
+    }]).keypress(function (e) {
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if ((code == 13) || (e.ctrlKey && code == 13)) {
+            return new_intent($(this).attr('intent-id'),2);
+        }
+    });
+
 });
+
 
 function delete_b(b_id,cr_id){
 
@@ -49,10 +91,15 @@ function delete_b(b_id,cr_id){
             //Update UI to confirm with user:
             $( "#temp_b_"+cr_id ).remove();
 
+
+
             if(data.status){
 
                 //Show fadeout effect:
                 $('#cr_'+cr_id).removeClass('hidden').html(data.message);
+
+                //Close edit box:
+                $('#modifybox').addClass('hidden');
 
                 setTimeout(function(){
 

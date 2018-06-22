@@ -22,54 +22,54 @@ WHERE ru.ru_status >= 4
 	 * Remix functions that fetch a bunch of existing data:
 	 ****************************** */
 	
-	function remix_admissions($matching_criteria,$order_columns=array(
+	function remix_enrollments($matching_criteria,$order_columns=array(
         'ru.ru_id' => 'DESC',
     )){
 
-	    $admissions = $this->Db_model->ru_fetch($matching_criteria,$order_columns);
+	    $enrollments = $this->Db_model->ru_fetch($matching_criteria,$order_columns);
 
-	    //Fetch more data for each admission:
-	    foreach($admissions as $key=>$admission){
+	    //Fetch more data for each enrollment:
+	    foreach($enrollments as $key=>$enrollment){
 
             //Fetch Bootcamp:
             $bs = $this->Db_model->remix_bs(array(
-                'b.b_id' => $admission['ru_b_id'],
+                'b.b_id' => $enrollment['ru_b_id'],
             ));
 
             if(count($bs)<=0){
                 $this->Db_model->e_create(array(
-                    'e_text_value' => 'remix_admissions() had invalid [ru_b_id]='.$admission['ru_b_id'],
+                    'e_text_value' => 'remix_enrollments() had invalid [ru_b_id]='.$enrollment['ru_b_id'],
                     'e_json' => $matching_criteria,
                     'e_inbound_c_id' => 8, //Platform Error
                 ));
-                unset($admissions[$key]);
+                unset($enrollments[$key]);
                 continue;
             } else {
                 //Merge in:
-                $admissions[$key] = array_merge($admissions[$key] , $bs[0]);
+                $enrollments[$key] = array_merge($enrollments[$key] , $bs[0]);
             }
 
             //Fetch Class:
-            if($admission['ru_r_id']>0){
+            if($enrollment['ru_r_id']>0){
                 $classes = $this->Db_model->r_fetch(array(
-                    'r.r_id' => $admission['ru_r_id'],
+                    'r.r_id' => $enrollment['ru_r_id'],
                 ));
                 if(count($classes)<1){
                     $this->Db_model->e_create(array(
-                        'e_text_value' => 'remix_admissions() had invalid [r_id]='.$admission['ru_r_id'],
+                        'e_text_value' => 'remix_enrollments() had invalid [r_id]='.$enrollment['ru_r_id'],
                         'e_json' => $matching_criteria,
                         'e_inbound_c_id' => 8, //Platform Error
                     ));
-                    unset($admissions[$key]);
+                    unset($enrollments[$key]);
                     continue;
                 }
 
                 //Merge in:
-                $admissions[$key] = array_merge($admissions[$key] , $classes[0]);
+                $enrollments[$key] = array_merge($enrollments[$key] , $classes[0]);
             }
 	    }
 
-	    return $admissions;
+	    return $enrollments;
 	}
 
     function remix_bs($match_columns, $join_objects=array()){
@@ -140,7 +140,7 @@ WHERE ru.ru_status >= 4
 
             //Fetch team:
             if(count($join_objects)==0 || in_array('ba',$join_objects)){
-                $bs[$key]['b__admins'] = $this->Db_model->ba_fetch(array(
+                $bs[$key]['b__coaches'] = $this->Db_model->ba_fetch(array(
                     'ba.ba_b_id' => $c['b_id'],
                     'ba.ba_status >=' => 0,
                     'u.u_status' => 1,
@@ -259,12 +259,12 @@ WHERE ru.ru_status >= 4
 	
 	function il_overview_fetch(){
 	    //Fetches an overview of Udemy Community
-	    $this->db->select('COUNT(il_id) as total_instructors, SUM(il_course_count) as total_courses, SUM(il_student_count) as total_students, SUM(il_review_count) as total_reviews, il_udemy_category');
+	    $this->db->select('COUNT(il_id) as total_coaches, SUM(il_course_count) as total_courses, SUM(il_student_count) as total_students, SUM(il_review_count) as total_reviews, il_udemy_category');
 	    $this->db->from('v5_leads il');
 	    $this->db->where('il_udemy_user_id>0');
 	    $this->db->where('il_student_count>0'); //Need for Engagement Rate
 	    $this->db->group_by('il_udemy_category');
-	    $this->db->order_by('total_instructors DESC');
+	    $this->db->order_by('total_coaches DESC');
 	    $q = $this->db->get();
 	    return $q->result_array();
 	}
@@ -333,6 +333,9 @@ WHERE ru.ru_status >= 4
         }
         if(!isset($insert_columns['ru_parent_ru_id'])){
             $insert_columns['ru_parent_ru_id'] = 0;
+        }
+        if(!isset($insert_columns['ru_assessment_result'])){
+            $insert_columns['ru_assessment_result'] = -1;
         }
 	    
 	    //Lets now add:
@@ -409,16 +412,16 @@ WHERE ru.ru_status >= 4
             );
         }
 
-        //Check admissions:
-        $admissions = $this->Db_model->ru_fetch(array(
+        //Check enrollments:
+        $enrollments = $this->Db_model->ru_fetch(array(
             'ru.ru_outbound_u_id' => $u_id,
         ));
-        if(count($admissions)>0){
-            foreach($admissions as $admission){
-                if($admission['ru_status']==4){
+        if(count($enrollments)>0){
+            foreach($enrollments as $enrollment){
+                if($enrollment['ru_status']==4){
                     return array(
                         'status' => 0,
-                        'message' => 'Cannot delete because they have active admission',
+                        'message' => 'Cannot delete because they have active enrollment',
                         'user' => $users[0],
                     );
                 }
@@ -526,7 +529,7 @@ WHERE ru.ru_status >= 4
 	}
 	
 	
-	function instructor_bs($match_columns, $order_columns=array(
+	function coach_bs($match_columns, $order_columns=array(
         'b_id' => 'ASC',
     )){
 	    $this->db->select('*');
@@ -839,36 +842,36 @@ WHERE ru.ru_status >= 4
 
 	function ru_finalize($ru_id){
 
-	    //Students complete their registration in 2 ways: Join a Free Bootcamp or Pay for a Paid Bootcamps
-        //This function finalizes the admission when either of these 2 situations happen
+	    //Students complete their registration in 2 ways: Enroll in a Free Bootcamp or Pay for Coaching
+        //This function finalizes the enrollment when either of these 2 situations happen
 
-        $admissions = $this->Db_model->remix_admissions(array(
+        $enrollments = $this->Db_model->remix_enrollments(array(
             'ru.ru_id'	=> $ru_id,
         ));
 
-        if(count($admissions)==1){
+        if(count($enrollments)==1){
 
-            $admissions_updated = 1;
+            $enrollments_updated = 1;
 
             //Inform the Student:
             $this->Comm_model->foundation_message(array(
                 'e_inbound_u_id' => 0,
-                'e_outbound_u_id' => $admissions[0]['u_id'],
+                'e_outbound_u_id' => $enrollments[0]['u_id'],
                 'e_outbound_c_id' => 2698,
                 'depth' => 0,
-                'e_b_id' => $admissions[0]['ru_b_id'],
-                'e_r_id' => $admissions[0]['ru_r_id'],
+                'e_b_id' => $enrollments[0]['ru_b_id'],
+                'e_r_id' => $enrollments[0]['ru_r_id'],
             ), true);
 
 
             //Log Engagement
             $this->Db_model->e_create(array(
-                'e_inbound_u_id' => $admissions[0]['u_id'],
-                'e_text_value' => ($admissions[0]['ru_upfront_pay']>0 ? 'Received $'.$admissions[0]['ru_upfront_pay'].' USD via PayPal.' : 'Student Joined FREE Bootcamp' ),
+                'e_inbound_u_id' => $enrollments[0]['u_id'],
+                'e_text_value' => ($enrollments[0]['ru_upfront_pay']>0 ? 'Received $'.$enrollments[0]['ru_upfront_pay'].' USD Coaching Tuition via PayPal' : 'Student Enrolled to Do It Yourself for Free' ),
                 'e_json' => $_POST,
                 'e_inbound_c_id' => 30,
-                'e_b_id' => $admissions[0]['ru_b_id'],
-                'e_r_id' => $admissions[0]['ru_r_id'],
+                'e_b_id' => $enrollments[0]['ru_b_id'],
+                'e_r_id' => $enrollments[0]['ru_r_id'],
             ));
 
             //Update student's payment status:
@@ -876,26 +879,26 @@ WHERE ru.ru_status >= 4
                 'ru_status' => 4,
             ));
 
-            if($admissions[0]['c_level']){
-                //This is a Parent Bootcamp, so we also need to update the Child admissions:
-                $child_admissions = $this->Db_model->ru_fetch(array(
+            if($enrollments[0]['c_level']){
+                //This is a Parent Bootcamp, so we also need to update the Child enrollments:
+                $child_enrollments = $this->Db_model->ru_fetch(array(
                     'ru_parent_ru_id' => $ru_id,
                 ));
 
-                foreach($child_admissions as $ru){
-                    $admissions_updated++;
+                foreach($child_enrollments as $ru){
+                    $enrollments_updated++;
                     $this->Db_model->ru_update( $ru['ru_id'] , array(
                         'ru_status' => 4,
                     ));
                 }
             }
 
-            return $admissions_updated;
+            return $enrollments_updated;
         }
 
         //Log Error:
         $this->Db_model->e_create(array(
-            'e_text_value' => 'ru_finalize() failed to update admission for ru_id=['.$ru_id.']',
+            'e_text_value' => 'ru_finalize() failed to update enrollment for ru_id=['.$ru_id.']',
             'e_inbound_c_id' => 8,
         ));
 
@@ -935,7 +938,7 @@ WHERE ru.ru_status >= 4
                 $this->Db_model->r_create(array(
                     'r_b_id' => $b_id,
                     'r_start_date' => $r_start_date,
-                    'r_status' => 1, //Open for Admission
+                    'r_status' => 1, //Open for Enrollment
                 ));
             }
         }
@@ -946,7 +949,7 @@ WHERE ru.ru_status >= 4
 	function r_fetch($match_columns , $b=null /* Passing this would load extra variables for the class as well! */, $sorting='DESC', $limit=0, $join_objects=array() ){
 
         if(in_array('ru',$join_objects)){
-            $this->db->select('r.*, COUNT(ru_id) as total_admissions');
+            $this->db->select('r.*, COUNT(ru_id) as total_enrollments');
         } elseif(in_array('b',$join_objects)){
             $this->db->select('*');
         } else {
@@ -975,7 +978,7 @@ WHERE ru.ru_status >= 4
         $this->db->order_by('r.r_start_date',$sorting); //Most recent class at top
 
         if(in_array('ru',$join_objects)){
-            $this->db->order_by('total_admissions','DESC'); //Most recent class at top
+            $this->db->order_by('total_enrollments','DESC'); //Most recent class at top
             $this->db->group_by('r.r_id');
         }
 
@@ -994,9 +997,9 @@ WHERE ru.ru_status >= 4
             $runs[$key]['r__class_end_time'] = $runs[$key]['r__class_start_time'] + (7 * 24 * 3600) - (60); //Ends Sunday 11:59PM
 
             if(in_array('ru',$join_objects)){
-                $runs[$key]['r__current_admissions'] = $class['total_admissions'];
+                $runs[$key]['r__current_enrollments'] = $class['total_enrollments'];
             } else {
-                $runs[$key]['r__current_admissions'] = count($this->Db_model->ru_fetch(array(
+                $runs[$key]['r__current_enrollments'] = count($this->Db_model->ru_fetch(array(
                     'ru_r_id' => $class['r_id'],
                     'ru_status >=' => 4,
                 )));
@@ -1374,10 +1377,52 @@ WHERE ru.ru_status >= 4
 	    $insert_columns['r_id'] = $this->db->insert_id();
 	    return $insert_columns;
 	}
+
+	function enroll_student($u_id,$b){
+
+        //Lets start their enrollment application:
+        $enrollments[0] = $this->Db_model->ru_create(array(
+            'ru_b_id' 	        => $b['b_id'],
+            'ru_status'         => 0, //Pending
+            'ru_outbound_u_id' 	=> $u_id,
+            'ru_fp_id'          => ( $b['c_level'] ? 0 : $b['b_fp_id'] ), //Current Page that the student should connect to
+        ));
+
+        //Log engagement for Application Started:
+        $this->Db_model->e_create(array(
+            'e_inbound_u_id' => $u_id,
+            'e_json' => array(
+                'rudata' => $enrollments[0],
+            ),
+            'e_inbound_c_id' => 29, //Application Started
+            'e_b_id' => $b['b_id'],
+        ));
+
+        //Send the email to their enrollment page:
+        $this->Comm_model->foundation_message(array(
+            'e_inbound_u_id' => 0,
+            'e_outbound_u_id' => $u_id,
+            'e_outbound_c_id' => 2697,
+            'depth' => 0,
+            'e_b_id' => $b['b_id'],
+        ), true);
+
+        //Return enrollment data:
+        return $enrollments[0];
+
+    }
 	
 	function b_create($insert_columns){
 
-        if(missing_required_db_fields($insert_columns,array('b_outbound_c_id','b_url_key','c_level'))){
+        if(missing_required_db_fields($insert_columns,array('b_outbound_c_id','b_url_key'))){
+            return false;
+        }
+
+        //TODO this is a hack until b_is_parent is removed:
+        if(isset($insert_columns['c_level'])){
+            $insert_columns['b_is_parent'] = $insert_columns['c_level'];
+            unset($insert_columns['c_level']);
+        } elseif(!isset($insert_columns['b_is_parent'])){
             return false;
         }
 
@@ -1405,6 +1450,72 @@ WHERE ru.ru_status >= 4
 	    
 	    return $insert_columns;
 	}
+
+    function c_visibility($b_id,$u_id,$is_public){
+
+        //The main counter:
+        $items_updated = 0;
+
+        //Fetch all Bootcamp data:
+        $bs = $this->Db_model->remix_bs(array(
+            'b.b_id' => $b_id,
+        ));
+        if(count($bs)<1){
+            //Not found!
+            return $items_updated;
+        } elseif(!in_array($is_public,array(0,1))) {
+            //Invalid new status
+            return $items_updated;
+        } elseif(!($bs[0]['b__coaches'][0]['u_id']==$u_id)) {
+            //User is not the lead coach
+            return $items_updated;
+        }
+
+
+        //Either Update top visibility:
+        $items_updated += $this->Db_model->c_update( $bs[0]['b_outbound_c_id'], array(
+            'c_is_public' => $is_public,
+        ));
+
+        //What type of Bootcamp is this?
+        if($bs[0]['b_is_parent']){
+
+            //We need to run this for all it's child Bootcamps:
+            foreach($bs[0]['c__child_intents'] as $c1){
+                $items_updated += $this->Db_model->c_visibility($c1['b_id'], $is_public);
+            }
+
+        } else {
+
+            //This isa child Bootcamp, update Tasks and Steps:
+            foreach($bs[0]['c__child_intents'] as $c1){
+
+                //Update visibility:
+                $items_updated += $this->Db_model->c_update( $c1['c_id'], array(
+                    'c_is_public' => $is_public,
+                ));
+
+                foreach($c1['c__child_intents'] as $c2){
+                    $items_updated += $this->Db_model->c_update( $c2['c_id'], array(
+                        'c_is_public' => $is_public,
+                    ));
+                }
+            }
+
+        }
+
+        //Log Engagement for this Bootcamp:
+        $this->Db_model->e_create(array(
+            'e_text_value' => 'Successfully updated the visibility of ['.$items_updated.'] intents to ['.( $is_public ? 'Public' : 'Private' ).'] for the Bootcamp ['.$bs[0]['c_outcome'].']',
+            'e_json' => $bs[0],
+            'e_inbound_c_id' => 7093, //Bootcamp Public Visibility Toggled
+            'e_b_id' => $b_id,
+        ));
+
+
+        //Retuern all items:
+        return $items_updated;
+    }
 	
 	function c_create($insert_columns){
 
@@ -1615,7 +1726,7 @@ WHERE ru.ru_status >= 4
         }
 
         //Remove unnecessary fields:
-        unset($bs[0]['b__admins']);
+        unset($bs[0]['b__coaches']);
 
         //Also Update Class end Date:
         //Fetch Class Details:
@@ -1769,13 +1880,13 @@ WHERE ru.ru_status >= 4
 
             //Notify relevant subscribers about this notification:
             $engagement_subscriptions = $this->config->item('engagement_subscriptions');
-            $instructor_subscriptions = $this->config->item('instructor_subscriptions');
+            $coach_subscriptions = $this->config->item('coach_subscriptions');
             $engagement_references = $this->config->item('engagement_references');
 
-            //Email: The [33] Engagement ID corresponding to Step completion is a email system for instructors to give them more context on certain activities
+            //Email: The [33] Engagement ID corresponding to Step completion is a email system for coaches to give them more context on certain activities
 
-            //Do we have any instructor subscription:
-            if($insert_columns['e_b_id']>0 && in_array($insert_columns['e_inbound_c_id'],$instructor_subscriptions)){
+            //Do we have any coach subscription:
+            if($insert_columns['e_b_id']>0 && in_array($insert_columns['e_inbound_c_id'],$coach_subscriptions)){
 
                 //Just do this one:
                 if(!isset($engagements[0])){
@@ -1788,10 +1899,10 @@ WHERE ru.ru_status >= 4
                 //Did we find it? We should have:
                 if(isset($engagements[0])){
 
-                    //Fetch all Goal Instructors and Notify them:
-                    $b_instructors = $this->Db_model->ba_fetch(array(
+                    //Fetch all Goal Coaches and Notify them:
+                    $b_coaches = $this->Db_model->ba_fetch(array(
                         'ba.ba_b_id' => $insert_columns['e_b_id'],
-                        'ba.ba_status >=' => 2, //co-instructors & lead instructor
+                        'ba.ba_status >=' => 2, //co-coaches & Lead Coach
                         'u.u_status' => 1,
                     ));
 
@@ -1800,9 +1911,9 @@ WHERE ru.ru_status >= 4
 
                     $body = trim(strip_tags($insert_columns['e_text_value']));
 
-                    //Send notifications to current instructor
-                    foreach($b_instructors as $bi){
-                        if(in_array($insert_columns['e_inbound_c_id'],$instructor_subscriptions)){
+                    //Send notifications to current coach
+                    foreach($b_coaches as $bi){
+                        if(in_array($insert_columns['e_inbound_c_id'],$coach_subscriptions)){
 
                             //Mench notifications:
                             $this->Comm_model->send_message(array(

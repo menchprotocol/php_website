@@ -5,7 +5,7 @@ function start_application(){
     //Show loader:
     $('#submit_button').addClass('hidden');
     $('#start_result').html('<span><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
-    $(".form-el").prop('disabled', true).css('background-color','#E5E5E5');
+    $(".form-el").prop('disabled', true).css('background-color','#EFEFEF');
 
     //Send data for processing:
     $.post("/api_v1/ru_checkout_initiate", {
@@ -37,35 +37,23 @@ $( document ).ready(function() {
 	//Make focus:
 	$('#u_full_name').focus(); //Focus on input
 
-    <?php
-    //Do we have a user to be loaded here?
-    if(isset($_GET['u_email'])){
-        $us = $this->Db_model->u_fetch(array(
-            'u_email' => $_GET['u_email'],
-        ));
-        if(count($us)==1){
-            echo '$(\'#u_full_name\').val(\''.$us[0]['u_full_name'].'\'); ';
-            echo '$(\'#u_email\').val(\''.$us[0]['u_email'].'\'); ';
-            echo 'start_application(); ';
-        }
-    }
-    ?>
+    //Auto submit only if user email is passed via URL:
+    <?= ( count($u)>0 && isset($_GET['u_email']) ? 'start_application();' : '') ?>
 });
 
 </script>
 
-<p style="border-bottom:4px solid #3C4858; font-weight:bold; padding-bottom:10px; margin-bottom:20px; display:block;"><i class="fas fa-cube"></i> <?= $b['c_outcome'] ?><span style="font-weight: 500; display: block; padding-top:5px; font-size:0.9em;"><?= '<i class="fas fa-clock"></i> '.$b['b__week_count'].' Week'.echo__s($b['b__week_count']).' @ '.echo_hours(($b['c__estimated_hours']/$b['b__week_count']),false).'/Week' ?></span></p>
-
+<?= echo_b_header($b); ?>
 
 <div class="section">
     <div class="row" style="max-width:330px; padding-left:10px;">
         <div class="col-xs-12">
             <p>Full Name:</p>
-            <p><input type="text" id="u_full_name" value="<?= ( isset($u['u_full_name']) && !isset($_GET['u_email']) ? $u['u_full_name'] : '' ) ?>" class="form-el" /></p>
+            <p><input type="text" id="u_full_name" value="<?= ( isset($u['u_full_name']) ? $u['u_full_name'] : '' ) ?>" class="form-el" /></p>
         </div>
         <div class="col-xs-12">
             <p>Email:</p>
-            <p><input type="email" id="u_email" value="<?= ( isset($u['u_email']) && !isset($_GET['u_email']) ? $u['u_email'] : '' ) ?>" style="text-transform: lowercase;" class="form-el" /></p>
+            <p><input type="email" id="u_email" value="<?= ( isset($u['u_email']) ? $u['u_email'] : '' ) ?>" style="text-transform: lowercase;" class="form-el" /></p>
         </div>
     </div>
     <div class="row maxout" style="padding-left:10px;">

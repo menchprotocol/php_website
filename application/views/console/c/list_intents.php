@@ -1,0 +1,1 @@
+<div class="alert alert-info"><i class="fas fa-bullhorn"></i> <b>Coming Soon:</b> Centrally browse all tasks across all Bootcamps and easily link existing tasks to new Bootcamp.</div>

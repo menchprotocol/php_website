@@ -1,13 +1,6 @@
 <?php
 $udata = $this->session->userdata('user');
-
-
-//Show logout button if user viewing their own entity:
-if($entity['u_id']==$udata['u_id']){
-    echo '<p style="float:right; margin-top:-75px;">
-    <a href="/logout" class="btn btn-sm btn-primary"><i class="fas fa-power-off"></i><span> Logout</span></a>
-</p>';
-}
+$can_edit = ($udata['u_id']==$entity['u_id'] || $udata['u_inbound_u_id']==1281);
 ?>
 <script>
     
@@ -273,7 +266,9 @@ if(!$inbound_u_id){
     //Right content:
     echo '<span class="pull-right">';
     echo echo_score($entity['u_e_score']);
-    echo '<a class="badge badge-primary" onclick="load_modify('.$entity['u_id'].')" href="/entities/'.$entity['u_id'].'/modify"><i class="fas fa-cog"></i></a>';
+    if($can_edit){
+        echo '<a class="badge badge-primary" href="/entities/'.$entity['u_id'].'/modify"><i class="fas fa-cog"></i></a>';
+    }
     echo '</span>';
 
     //Regular section:
@@ -285,7 +280,7 @@ if(!$inbound_u_id){
     echo echo_social_profiles($this->Db_model->x_social_fetch($entity['u_id']));
 
     //Check last engagement ONLY IF admin:
-    if($udata['u_inbound_u_id']==1281){
+    if($can_edit){
 
         //Check last engagement:
         $last_eng = $this->Db_model->e_fetch(array(
@@ -305,7 +300,7 @@ if(!$inbound_u_id){
 
 
 //Start fetching related objects:
-$admissions = $this->Db_model->ru_fetch(array(
+$enrollments = $this->Db_model->ru_fetch(array(
     'ru_outbound_u_id' => $inbound_u_id,
 ), array(
     'ru.ru_id' => 'DESC',
@@ -336,11 +331,12 @@ $outbound_us = $this->Db_model->e_fetch(array(
 $show_tabs = array(
     'list'       => ( count($child_entities)>0 || $entity['u_id']==1326 ? '<li id="nav_list"><a href="#list"><i class="fas fa-at"></i> List</a></li>' : false ),
     'references' => ( !in_array($entity['u_inbound_u_id'],array(0,1278)) ? '<li id="nav_references"><a href="#references"><i class="fas fa-link"></i> References</a></li>' : false ),
-    'coach'      => ( count($b_team_member)>0 ? '<li id="nav_coach"><a href="#coach"><i class="fas fa-whistle"></i> Coach</a></li>' : false ),
-    'student'    => ( count($admissions)>0 ? '<li id="nav_student"><a href="#student"><i class="fas fa-graduation-cap"></i> Student</a></li>' : false ),
-    'payments'   => ( count($payments)>0 ? '<li id="nav_payments"><a href="#payments"><i class="fab fa-paypal"></i> Payments</a></li>' : false ),
+    'coach'      => ( count($b_team_member)>0 ? '<li id="nav_coach"><a href="#coach"><i class="fas fa-user-friends"></i> Coach</a></li>' : false ),
+    'student'    => ( count($enrollments)>0 ? '<li id="nav_student"><a href="#student"><i class="fas fa-graduation-cap"></i> Student</a></li>' : false ),
+    'payments'   => ( count($payments)>0 && auth(array(1281),0, 0, $entity['u_id']) ? '<li id="nav_payments"><a href="#payments"><i class="fab fa-paypal"></i> Payments</a></li>' : false ),
     'authors'    => ( $entity['u_inbound_u_id']==1326 ? '<li id="nav_authors"><a href="#authors"><i class="fas fa-at"></i> Authors</a></li>' : false ),
     'content'    => ( !in_array($entity['u_inbound_u_id'],array(0,1278,1326)) ? '<li id="nav_content"><a href="#content"><i class="fas fa-at"></i> Content</a></li>' : false ),
+    //'subscriptions'    => ( !in_array($entity['u_inbound_u_id'],array(0,1278,1326)) ? '<li id="nav_subscriptions"><a href="#subscriptions"><i class="fas fa-hashtag"></i> Subscriptions</a></li>' : false ),
     'intents'    => ( $entity['u_inbound_u_id']==1326 ? '<li id="nav_intents"><a href="#intents"><i class="fas fa-hashtag"></i> Intents</a></li>' : false ),
 );
 ?>
@@ -382,7 +378,7 @@ $show_tabs = array(
                 echo_next_u(1, $entities_per_page, $entity['u__outbound_count']);
             }
 
-            if($entity['u_id']==1326){
+            if($can_edit && $entity['u_id']==1326){
                 ?>
                 <script>
 
@@ -442,6 +438,7 @@ $show_tabs = array(
                     });
 
                 </script>
+
                 <div class="list-group-item list_input grey-input">
                     <div class="input-group">
                         <div class="form-group is-empty"><input type="url" class="form-control" id="url_for_source" placeholder="Paste URL here..."></div>
@@ -450,8 +447,9 @@ $show_tabs = array(
                         </span>
                     </div>
                 </div>
+
                 <?php
-            } elseif($entity['u_id']==1278 && 0){
+            } elseif($can_edit && $entity['u_id']==1278 && 0){
                 ?>
                 <script>
                     function add_person_by_email(){
@@ -492,12 +490,13 @@ $show_tabs = array(
                     echo echo_x($entity,$x);
                 }
             } else {
-                echo '<div class="list-group-item alert alert-info no-b-div-1" style="padding: 15px 10px;"><i class="fas fa-exclamation-triangle" style="margin:0 8px 0 2px;"></i> No references added yet. Add your first Reference by pasting a URL below.</div>';
+                echo '<div class="list-group-item alert alert-info no-b-div-1" style="padding: 15px 10px;"><i class="fas fa-exclamation-triangle" style="margin:0 8px 0 2px;"></i> No references added yet</div>';
             }
 
 
             //Add new Reference:
-            echo '<div class="list-group-item list_input grey-input">
+            if($can_edit){
+                echo '<div class="list-group-item list_input grey-input">
                     <div class="input-group">
                         <div class="form-group is-empty"><input type="url" class="form-control" id="add_url_input" placeholder="Paste URL here..."></div>
                         <span class="input-group-addon">
@@ -505,6 +504,8 @@ $show_tabs = array(
                         </span>
                     </div>
                 </div>';
+            }
+
 
             echo '</div>';
 
@@ -524,7 +525,7 @@ $show_tabs = array(
 
             echo '<div class="tab-pane" id="tabstudent">';
             echo '<div id="list-student" class="list-group maxout grey-list">';
-            foreach($admissions as $ru){
+            foreach($enrollments as $ru){
                 echo_ru($ru);
             }
             echo '</div>';
@@ -550,18 +551,22 @@ $show_tabs = array(
                         $us = $this->Db_model->u_fetch(array(
                             'u_id' => $e['e_outbound_u_id'],
                         ), array('count_child'));
-                        echo echo_u($us[0]);
+                        if(count($us)>0){
+                            echo echo_u($us[0]);
+                        }
                     }
 
                     //Input to add new authors:
-                    echo '<div class="list-group-item list_input grey-input">
-                            <div class="input-group">
-                                <div class="form-group is-empty"><input type="text" class="form-control" id="add_authors_input" placeholder="Add Author..."></div>
-                                <span class="input-group-addon">
-                                    <a class="badge badge-primary" id="add_authors_btn" href="javascript:add_u_link(0, $(\'#add_authors_input\').val(), \'inbound\');">ADD</a>
-                                </span>
-                            </div>
-                        </div>';
+                    if($can_edit) {
+                        echo '<div class="list-group-item list_input grey-input">
+                                    <div class="input-group">
+                                        <div class="form-group is-empty"><input type="text" class="form-control" id="add_authors_input" placeholder="Add Author..."></div>
+                                        <span class="input-group-addon">
+                                            <a class="badge badge-primary" id="add_authors_btn" href="javascript:add_u_link(0, $(\'#add_authors_input\').val(), \'inbound\');">ADD</a>
+                                        </span>
+                                    </div>
+                                </div>';
+                    }
 
                 echo '</div>';
             echo '</div>';
@@ -571,14 +576,27 @@ $show_tabs = array(
             echo '<div class="tab-pane" id="tabcontent">';
             echo '<div id="list-content" class="list-group maxout grey-list">';
 
-            foreach($outbound_us as $e){
-                //Fetch the U:
-                $us = $this->Db_model->u_fetch(array(
-                    'u_id' => $e['e_inbound_u_id'],
-                ), array('count_child'));
-                echo echo_u($us[0]);
+            if(count($outbound_us)>0){
+                foreach($outbound_us as $e){
+                    //Fetch the U:
+                    $us = $this->Db_model->u_fetch(array(
+                        'u_id' => $e['e_inbound_u_id'],
+                    ), array('count_child'));
+                    echo echo_u($us[0]);
+                }
+            } else {
+                echo '<div class="list-group-item alert alert-info no-b-div-1" style="padding: 15px 10px;"><i class="fas fa-exclamation-triangle" style="margin:0 8px 0 2px;"></i> No content added yet</div>';
             }
 
+            echo '</div>';
+            echo '</div>';
+
+        } elseif($item=='subscriptions'){
+
+            echo '<div class="tab-pane" id="tabsubscriptions">';
+            echo '<div id="list-subscriptions" class="list-group maxout grey-list">';
+
+            echo '<div>Upcoming feature...</div>';
 
             echo '</div>';
             echo '</div>';

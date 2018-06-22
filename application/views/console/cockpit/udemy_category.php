@@ -2,13 +2,13 @@
 <table class="table table-condensed table-striped">
 <tr style="font-weight: bold;">
 	<td>#</td>
-	<td style="width:300px; text-align:left;">Instructor</td>
+	<td style="width:300px; text-align:left;">Coach</td>
 	<td>Courses</td>
 	<td>Students</td>
 	<td>Engagement</td>
 	<td>Email</td>
 	<td>Is Company</td>
-	<td style="width:140px; text-align:right;">Instructor Profiles</td>
+	<td style="width:140px; text-align:right;">Coach Profiles</td>
 </tr>
 <?php
 $totals = array(0,0,0);
@@ -47,7 +47,7 @@ foreach($il_category as $i=>$ilo){
 
 echo '<tr style="font-weight: bold;">';
 echo '<td>'.number_format(count($il_category),0).'</td>';
-echo '<td style="width:300px; text-align:left;">Total Instructors</td>';
+echo '<td style="width:300px; text-align:left;">Total Coaches</td>';
 echo '<td>'.number_format($totals[0],0).'</td>';
 echo '<td>'.number_format($totals[1],0).'</td>';
     echo '<td>'.number_format(( $totals[1]>0 ? ( $totals[2]/$totals[1]*100 ) : 0 ),1).'%</td>';

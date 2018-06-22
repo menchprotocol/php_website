@@ -14,7 +14,7 @@ $udata = $this->session->userdata('user');
 				<div class="col-sm-9">
                     <h1 class="home-p" style="margin-top:80px;">Run Bootcamps. Online.</h1>
                     <p style="font-size: 1.6em; color:#3C4858; font-weight: 300; line-height: 110%;">Organize and distribute your industry experience at scale.</p>
-                    <p style="font-size: 1.6em; color:#3C4858; font-weight: 300; line-height: 110%;">Empower students to gain in-demand skills with weekly Bootcamps.</p>
+                    <p style="font-size: 1.6em; color:#3C4858; font-weight: 300; line-height: 110%;">Empower students to gain money making skills with weekly Bootcamps.</p>
 				</div>
 				<div class="col-sm-3">&nbsp;</div>
             </div>

@@ -1,7 +1,7 @@
 <?php 
 //Attempt to fetch session variables:
 $udata = $this->session->userdata('user');
-$uadmission = $this->session->userdata('uadmission');
+$uenrollment = $this->session->userdata('uenrollment');
 $website = $this->config->item('website');
 $uri_segment_1 = $this->uri->segment(1);
 $uri_segment_2 = $this->uri->segment(2);
@@ -39,7 +39,7 @@ $uri_segment_2 = $this->uri->segment(2);
 
 <body id="console_body">
 
-    <!-- Require Facebook Chat for Logged-in Instructors -->
+    <!-- Require Facebook Chat for Logged-in Coaches -->
     <div class="fb-customerchat" minimized="true" greeting_dialog_display="hide" <?= ( $udata['u_cache__fp_psid']>0 ? '' : ' ref="'.$this->Comm_model->fb_activation_url($udata['u_id'],4,true).'" ' ) ?> theme_color="#3C4858" page_id="381488558920384"></div>
 
 	<div class="wrapper" id="console">
@@ -58,7 +58,7 @@ $uri_segment_2 = $this->uri->segment(2);
                         <table style="width: 100%; border:0; padding:0; margin:0;">
                             <tr>
                                 <td style="width:40px;"><a href="/console"><img src="/img/bp_128.png" /></a></td>
-                                <td><input type="text" id="console_search" data-lpignore="true" placeholder="Search Bootcamps..."></td>
+                                <td><input type="text" id="console_search" data-lpignore="true" placeholder="Search..."></td>
                             </tr>
                         </table>
 					</span>
@@ -67,26 +67,27 @@ $uri_segment_2 = $this->uri->segment(2);
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-main navbar-right">
 
-                        <?php /* <li <?= ( $uri_segment_1=='console' && ( !$uri_segment_2 || intval($uri_segment_2)>0 ) ? 'class="active"' : '' ) ?> data-toggle="tooltip" data-placement="bottom" title="Manage Bootcamps & Tasks"><a href="/console<?= ( isset($b) && $b['b_is_parent'] ? '#multiweek' : '' ) ?>"><i class="fas fa-hashtag"></i> Intents</a></li> */ ?>
+                        <li <?= ( $uri_segment_1=='console' && ( !$uri_segment_2 || intval($uri_segment_2)>0 ) ? 'class="active"' : '' ) ?> data-toggle="tooltip" data-placement="bottom" title="Manage Bootcamps & Tasks"><a href="/console<?= ( isset($b) && $b['c_level'] ? '#multiweek' : '' ) ?>"><i class="fas fa-cube"></i> Bootcamps</a></li>
+                        <li <?= ( $uri_segment_1=='entities' ? 'class="active"' : '' ) ?> data-toggle="tooltip" data-placement="bottom" title="All platform objects like people, organizations and content"><a href="/entities/1278"><i class="fas fa-at"></i> Entities</a></li>
+                        <li>
+                            <a href="javascript:void(0);" class="dropdown-toggle" id="extraMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                <i class="fas fa-ellipsis-h" style="color:#3C4858;"></i> More
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="extraMenu">
 
-                        <li <?= ( $uri_segment_1=='console' && ( !$uri_segment_2 || intval($uri_segment_2)>0 ) ? 'class="active"' : '' ) ?> data-toggle="tooltip" data-placement="bottom" title="Manage your Bootcamps"><a href="/console<?= ( isset($b) && $b['b_is_parent'] ? '#multiweek' : '' ) ?>"><i class="fas fa-cube"></i> Bootcamps</a></li>
+                                <li><a href="/entities/<?= $udata['u_id'] ?>"><span class="icon-left"><i class="fas fa-user-circle"></i></span> My Account</a></li>
 
-                        <?php if($udata['u_inbound_u_id']==1281){ ?>
-                            <!-- <li <?= ( $uri_segment_1=='intents' ? 'class="active"' : '' ) ?> data-toggle="tooltip" data-placement="bottom" title="Intents are outcomes that related to one another"><a href="/intents"><i class="fas fa-hashtag"></i> Intents</a></li> -->
-                            <li <?= ( $uri_segment_1=='entities' ? 'class="active"' : '' ) ?> data-toggle="tooltip" data-placement="bottom" title="All platform objects like people, organizations and content"><a href="/entities/1278"><i class="fas fa-at"></i> Entities</a></li>
-                            <li <?= ( $uri_segment_1=='cockpit' ? 'class="active"' : '' ) ?> data-toggle="tooltip" data-placement="bottom" title="Tools to overview and manage the Mench platform"><a href="/cockpit/browse/engagements"><i class="fas fa-tachometer"></i> Cockpit</a></li>
-                        <?php } else { ?>
-                            <li <?= ( $uri_segment_1=='entities' && $uri_segment_2==$udata['u_id'] ? 'class="active"' : '' ) ?> data-toggle="tooltip" data-placement="bottom" title="Manage my profile settings"><a href="/entities/<?= $udata['u_id'] ?>"><i class="fas fa-user-circle"></i> My Account</a></li>
-                        <?php } ?>
+                                <?php if(isset($uenrollment) && count($uenrollment)>0){ ?>
+                                    <li><a href="/my/actionplan"><span class="icon-left"><i class="fas fa-check-square"></i></span> Student Hub</a></li>
+                                <?php } ?>
 
+                                <?php if($udata['u_inbound_u_id']==1281){ ?>
+                                    <li><a href="/cockpit/browse/engagements"><span class="icon-left"><i class="fas fa-tachometer"></i></span> Admin Cockpit</a></li>
+                                <?php } ?>
 
-
-                        <?php
-                        //NOTE: For some reason we NEED the next <li> otherwise the page orientation breaks!
-                        if(isset($uadmission) && count($uadmission)>0){ ?>
-                            <li data-toggle="tooltip" data-placement="bottom" title="Access your Action Plan as a student (not instructor!) and complete your Tasks"><a href="/my/actionplan"><i class="fas fa-chevron-circle-right"></i> Student Portal</a></li>
-                        <?php } ?>
-
+                                <li><a href="/logout"><span class="icon-left"><i class="fas fa-power-off"></i></span> Logout</a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
 				
@@ -98,21 +99,25 @@ $uri_segment_2 = $this->uri->segment(2);
 
 	    		<?php
 
-                echo '<div class="left-li-title">';
-	    		if(isset($b)){
-	    		    echo '<i class="fas '.( $b['b_is_parent'] ? 'fa-cubes' : 'fa-cube' ).'" style="margin-right:3px;"></i><span class="c_outcome_'.$b['b_outbound_c_id'].'">'.$b['c_outcome'].'</span>';
+                if(isset($b)){
+                    echo '<div class="left-li-title">';
+	    		    echo '<i class="fas '.( $b['c_level'] ? 'fa-cubes' : 'fa-cube' ).'" style="margin-right:3px;"></i><span class="c_outcome_'.$b['b_outbound_c_id'].'">'.$b['c_outcome'].'</span>';
                     if($b['b_old_format']){
                         echo ' <i class="fas fa-lock" style="margin-right:3px; color:#FF0000;" data-toggle="tooltip" data-placement="bottom" title="This Bootcamp was created with an older version of Mench. You can import the Action Plan into a new Weekly Bootcamp."></i>';
                     }
-	    		} elseif($uri_segment_1=='cockpit'){
-                    echo '<i class="fas fa-tachometer" style="margin-right:3px;"></i> Cockpit';
+                    echo '</div>';
+                } elseif($uri_segment_1=='cockpit'){
+                    echo '<div class="left-li-title">';
+                    echo '<i class="fas fa-tachometer" style="margin-right:3px;"></i> Admin Cockpit';
+                    echo '</div>';
+                } else {
+                    //We need this empty placeholder for the collapse menu to work
+                    echo '<div class="left-li-title" style="margin-bottom:-20px;">';
+                    echo '</div>';
                 }
 
-	    		echo '</div>';
 
-
-
-                echo '<ul class="nav navbar-main" style="margin-top: 0;">';
+                echo '<ul class="nav navbar-main" style="margin-top:7px;">';
             	if(isset($b)){
 
             	    echo '<li class="li-sep '.( in_array($_SERVER['REQUEST_URI'],array('/console/'.$b['b_id'],'/console/'.$b['b_id'].'/')) ? 'active' : '' ).'"><a href="/console/'.$b['b_id'].'"><i class="fas fa-tachometer"></i><p>Dashboard</p></a></li>';
@@ -127,7 +132,7 @@ $uri_segment_2 = $this->uri->segment(2);
             	    //Is it connected to a Facebook Page?
                     if($b['b_fp_id']>0){
 
-                        if(!$b['b_is_parent'] && ( !($b['b_fp_id']==4) || $udata['u_inbound_u_id']==1281 )){
+                        if(!$b['c_level'] && ( !($b['b_fp_id']==4) || $udata['u_inbound_u_id']==1281 )){
                             //Facebook Chat Inbox:
                             echo '<li><a data-toggle="tooltip" data-placement="top" title="Chat with Students who Purchased Coaching using Facebook Page Inbox" href="/api_v1/fp_redirect/'.$b['b_fp_id'].'/'.md5($b['b_fp_id'].'pageLinkHash000').'" target="_blank"><i class="fab fa-facebook"></i><p>Chat Inbox &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
                         }
@@ -137,24 +142,23 @@ $uri_segment_2 = $this->uri->segment(2);
 
                     }
 
-                } elseif($uri_segment_1=='entities' && $udata['u_inbound_u_id']==1281){
+                } elseif($uri_segment_1=='entities'){
 
-                    echo '<li class="li-sep '.( $uri_segment_1=='entities' && $uri_segment_2==1278 ? 'active' : '' ).'"><a href="/entities/1278"><i class="fas fa-at"></i><p>People</p></a></li>';
+                    echo '<li class="li-sep '.( $uri_segment_1=='entities' && $uri_segment_2==1278 ? 'active' : '' ).'"><a href="/entities/1278"><i class="fas fa-users"></i><p>People</p></a></li>';
 
-                    echo '<li class="li-sep '.( $uri_segment_1=='entities' && $uri_segment_2==1326 ? 'active' : '' ).'"><a href="/entities/1326"><i class="fas fa-at"></i><p>Content</p></a></li>';
+                    echo '<li class="li-sep '.( $uri_segment_1=='entities' && $uri_segment_2==1326 ? 'active' : '' ).'"><a href="/entities/1326"><i class="fas fa-book"></i><p>Content</p></a></li>';
 
-                    echo '<li class="li-sep '.( $uri_segment_1=='entities' && $uri_segment_2==$udata['u_id'] ? 'active' : '' ).'"><a href="/entities/'.$udata['u_id'].'"><i class="fas fa-at"></i><p>'.$udata['u_full_name'].'</p></a></li>';
+                    echo '<li class="li-sep '.( $uri_segment_1=='entities' && $uri_segment_2==$udata['u_id'] ? 'active' : '' ).'"><a href="/entities/'.$udata['u_id'].'"><i class="fas fa-user-circle"></i><p>'.$udata['u_full_name'].'</p></a></li>';
 
                     //echo '<li class="li-sep"><a href="/logout"><i class="fas fa-power-off"></i><p>Logout '.one_two_explode('',' ',$udata['u_full_name']).'</p></a></li>';
 
                 } elseif(in_array($uri_segment_1,array('console','tasks')) && 0){
 
-            	    $c_level = echo_status('c_level', null);
+                    $c_level = echo_status('c_level', null);
+                    echo '<li class="li-sep '.( $uri_segment_1=='console' ? 'active' : '' ).'"><a href="/console"><i class="'.$c_level[0]['s_icon'].'"></i><p>Bootcamps</p></a></li>';
+                    echo '<li class="li-sep '.( $uri_segment_1=='tasks' ? 'active' : '' ).'"><a href="/tasks"><i class="'.$c_level[2]['s_icon'].'"></i><p>Tasks</p></a></li>';
 
-                    echo '<li class="li-sep '.( $uri_segment_1=='console' ? 'active' : '' ).'"><a href="/console"><i class="'.$c_level[0]['s_mini_icon'].'"></i><p>Bootcamps</p></a></li>';
-                    echo '<li class="li-sep '.( $uri_segment_1=='tasks' ? 'active' : '' ).'"><a href="/tasks"><i class="'.$c_level[2]['s_mini_icon'].'"></i><p>Tasks</p></a></li>';
-
-                } elseif($uri_segment_1=='cockpit' && $udata['u_inbound_u_id']==1281){
+                } else if($uri_segment_1=='cockpit' && $udata['u_inbound_u_id']==1281){
 
             	    //The the Cockpit Menu for the Mench team:
                     echo '<li class="li-sep '.( $uri_segment_2=='browse' ? 'active' : '' ).'"><a href="/cockpit/browse/engagements"><i class="fas fa-search"></i><p>Browse</p></a></li>';
@@ -167,7 +171,7 @@ $uri_segment_2 = $this->uri->segment(2);
                     //External Tools:
                     echo '<li><a href="https://github.com/menchco/mench-web-app/milestones?direction=asc&sort=due_date&state=open" target="_blank"><i class="fab fa-github"></i><p>Team Milestones &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
 
-                    echo '<li><a href="https://www.facebook.com/menchbot/inbox" target="_blank"><i class="fab fa-facebook-messenger"></i><p>Facebook Chat &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
+                    echo '<li><a href="https://www.facebook.com/askmench/inbox" target="_blank"><i class="fab fa-facebook-messenger"></i><p>Facebook Chat &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
 
                     echo '<li><a href="https://support.mench.com/chat/agent" target="_blank"><i class="fas fa-comment-dots"></i><p>Zendesk Chat &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
 
@@ -185,6 +189,7 @@ $uri_segment_2 = $this->uri->segment(2);
                     echo '<li><a href="https://www.youtube.com/channel/UCOH64HiAIfJlz73tTSI8n-g" target="_blank"><i class="fab fa-youtube"></i><p>YouTube Channel &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
 
                 }
+
                 echo '</ul>';
 
             	?>

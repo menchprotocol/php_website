@@ -300,9 +300,9 @@ function insert_gravatar(){
 
         <div class="is-mediator">
             <div>
-                <div class="title" style="margin-top:20px;"><h4><i class="fas fa-badge-check"></i> Instructor Agreement</h4></div>
+                <div class="title" style="margin-top:20px;"><h4><i class="fas fa-badge-check"></i> Coach Agreement</h4></div>
                 <ul>
-                    <li>I have read and understood how <a href="https://support.mench.com/hc/en-us/articles/115002473111" target="_blank"><u>Instructor Earning & Payouts <i class="fas fa-external-link-square" style="font-size: 0.8em;"></i></u></a> work.</li>
+                    <li>I have read and understood how <a href="https://support.mench.com/hc/en-us/articles/115002473111" target="_blank"><u>Coach Earning & Payouts <i class="fas fa-external-link-square" style="font-size: 0.8em;"></i></u></a> work.</li>
                     <li>I have read and understood the <a href="https://support.mench.com/hc/en-us/articles/115002096752" target="_blank"><u>Mench Code of Conduct <i class="fas fa-external-link-square" style="font-size: 0.8em;"></i></u></a>.</li>
                     <li>I have read and understood the <a href="https://support.mench.com/hc/en-us/articles/115002096732" target="_blank"><u>Mench Honor Code <i class="fas fa-external-link-square" style="font-size: 0.8em;"></i></u></a>.</li>
                     <li>I have read and agreed to Mench's <a href="/terms" target="_blank"><u>Terms of Service & Privacy Policy <i class="fas fa-external-link-square" style="font-size: 0.8em;"></i></u></a>.</li>

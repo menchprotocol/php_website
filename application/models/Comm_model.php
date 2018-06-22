@@ -284,7 +284,7 @@ class Comm_model extends CI_Model {
 
                     }
 
-                    //Is instructor assigned as its admin?
+                    //Is coach assigned as its admin?
                     $admin_pages = $this->Db_model->fp_fetch(array(
                         'fs_inbound_u_id' => $u_id,
                         'fs_fp_id' => $fp['fp_id'],
@@ -297,14 +297,14 @@ class Comm_model extends CI_Model {
 
                     } else {
 
-                        //yes, instructor is assigned as its admin
+                        //yes, coach is assigned as its admin
                         $add_admin = false;
                         $fs = $admin_pages[0];
 
                         //Does the user permissions associated to the Page need updating?
                         if(!($fs['fs_access_token']==$fb_page['access_token']) || !($fs['fs_status']==1)){
 
-                            //Update instructor admin status, as this happens frequently...
+                            //Update coach admin status, as this happens frequently...
                             $this->Db_model->fs_update( $fs['fs_id'] , array(
                                 'fs_access_token' => $fb_page['access_token'],
                                 'fs_status' => 1, //Authorized
@@ -365,14 +365,14 @@ class Comm_model extends CI_Model {
 
         if(count($admin_lost_pages)>0){
 
-            //Oho, we seem to have some pages that this instructor no longer has access to:
+            //Oho, we seem to have some pages that this coach no longer has access to:
             foreach($admin_lost_pages as $fp){
 
                 //Update the status of this admin:
                 $this->Db_model->fs_update( $fp['fs_id'] , array(
                     'fs_timestamp' => date("Y-m-d H:i:s"), //The most recent updated time
                     'fs_access_token' => null, //No more access token
-                    'fs_status' => -1, //Revoked access for this Instructor
+                    'fs_status' => -1, //Revoked access for this Coach
                 ));
 
                 //Log Engagement:
@@ -383,9 +383,9 @@ class Comm_model extends CI_Model {
                     'e_b_id' => $b_id,
                 ));
 
-                //Does any other Mench instructor have access to this page? If not, make the page Unavailable:
+                //Does any other Mench coach have access to this page? If not, make the page Unavailable:
                 $admin_access_points = $this->Db_model->fp_fetch(array(
-                    'fs_inbound_u_id !=' => $u_id, //Not this instructor
+                    'fs_inbound_u_id !=' => $u_id, //Not this coach
                     'fs_fp_id' => $fp['fp_id'],
                     'fs_status' => 1, //Authorized Access
                 ), array('fs'));
@@ -426,7 +426,7 @@ class Comm_model extends CI_Model {
                                 'e_fp_id' => $fp['fp_id'],
                                 'e_inbound_c_id' => 9, //Support team look into this
                                 'e_b_id' => $b['b_id'],
-                                'e_text_value' => 'Bootcamp was connected to this Facebook Page, but lost its connection as Instructor permissions were revoked in the most recent graph call. Review this case to ensure this disconnection would not impact the current students of any possible Action Classes for this Bootcamp.',
+                                'e_text_value' => 'Bootcamp was connected to this Facebook Page, but lost its connection as Coach permissions were revoked in the most recent graph call. Review this case to ensure this disconnection would not impact the current students of any possible Action Classes for this Bootcamp.',
                             ));
 
                         }
@@ -810,12 +810,12 @@ class Comm_model extends CI_Model {
 
         }
 
-        //See if we can find it in the admission table:
-        $admissions = $this->Db_model->ru_fetch($ru_filter);
-        $active_admission = detect_active_admission($admissions); //We'd need to see which admission to load now
-        if($active_admission){
+        //See if we can find it in the enrollment table:
+        $enrollments = $this->Db_model->ru_fetch($ru_filter);
+        $active_enrollment = detect_active_enrollment($enrollments); //We'd need to see which enrollment to load now
+        if($active_enrollment){
             //Override with more complete $u object:
-            $u = $active_admission;
+            $u = $active_enrollment;
         }
 
 
@@ -908,14 +908,14 @@ class Comm_model extends CI_Model {
                 //Set user object:
                 $u = $matching_users[0];
 
-                //See if we can find it in the admission table:
-                $admissions = $this->Db_model->ru_fetch(array(
+                //See if we can find it in the enrollment table:
+                $enrollments = $this->Db_model->ru_fetch(array(
                     'ru.ru_outbound_u_id' => $u['u_id'],
                 ));
-                $active_admission = detect_active_admission($admissions); //We'd need to see which admission to load now
-                if($active_admission){
+                $active_enrollment = detect_active_enrollment($enrollments); //We'd need to see which enrollment to load now
+                if($active_enrollment){
                     //Override with more complete $u object:
-                    $u = $active_admission;
+                    $u = $active_enrollment;
                 }
 
 
@@ -995,14 +995,14 @@ class Comm_model extends CI_Model {
                 ));
 
 
-                //Go through all their admissions and update their Messenger PSID:
-                $admissions = $this->Db_model->ru_fetch(array(
+                //Go through all their enrollments and update their Messenger PSID:
+                $enrollments = $this->Db_model->ru_fetch(array(
                     'ru_outbound_u_id' => $u['u_id'],
                     'ru_fp_id' => $fp['fp_id'], //Already set to this
                     'ru_fp_psid' => null, //Not activated yet...
                 ));
-                foreach($admissions as $admission){
-                    $this->Db_model->ru_update($admission['ru_id'], array(
+                foreach($enrollments as $enrollment){
+                    $this->Db_model->ru_update($enrollment['ru_id'], array(
                         'ru_fp_psid' => $fp_psid,
                     ));
                 }
@@ -1012,7 +1012,7 @@ class Comm_model extends CI_Model {
                 $activation_msg = $this->Comm_model->foundation_message(array(
                     'e_outbound_u_id' => $u['u_id'],
                     'e_fp_id' => $fp['fp_id'],
-                    'e_outbound_c_id' => ( in_array($u['u_inbound_u_id'], array(1280,1308)) ? 918 /*Instructor*/ : 926),
+                    'e_outbound_c_id' => ( in_array($u['u_inbound_u_id'], array(1280,1308)) ? 918 /*Coach*/ : 926),
                     'depth' => 0,
                     'e_b_id' => ( isset($u['ru_b_id']) ? $u['ru_b_id'] : 0 ),
                     'e_r_id' => ( isset($u['r_id']) ? $u['r_id'] : 0 ),
@@ -1092,7 +1092,7 @@ class Comm_model extends CI_Model {
                     'e_inbound_c_id' => 7001, //Cover Photo Save
                 ));
 
-                //New Student Without Admission:
+                //New Student Without Enrollment:
                 $this->Comm_model->foundation_message(array(
                     'e_outbound_u_id' => $u['u_id'],
                     'e_fp_id' => $fp['fp_id'],
@@ -1144,7 +1144,7 @@ class Comm_model extends CI_Model {
                 //Fetch user communication preferences:
                 $users = array();
                 if(!$force_email && isset($message['e_r_id']) && $message['e_r_id']>0){
-                    //Fetch admission to class:
+                    //Fetch enrollment to class:
                     $users = $this->Db_model->ru_fetch(array(
                         'ru_outbound_u_id' => $message['e_outbound_u_id'],
                         'ru_r_id' => $message['e_r_id'],
@@ -1179,12 +1179,12 @@ class Comm_model extends CI_Model {
                     $u = array();
 
                     if(!$force_email && isset($users[0]['ru_fp_id']) && isset($users[0]['ru_fp_psid']) && $users[0]['ru_fp_id']>0 && $users[0]['ru_fp_psid']>0){
-                        //We fetched an admission with an active Messenger connection:
+                        //We fetched an enrollment with an active Messenger connection:
                         $dispatch_fp_id = $users[0]['ru_fp_id'];
                         $dispatch_fp_psid = $users[0]['ru_fp_psid'];
                         $u = $users[0];
                     } elseif(!$force_email && $users[0]['u_cache__fp_id']>0 && $users[0]['u_cache__fp_psid']>0){
-                        //We fetched an admission with an active Messenger connection:
+                        //We fetched an enrollment with an active Messenger connection:
                         $dispatch_fp_id = $users[0]['u_cache__fp_id'];
                         $dispatch_fp_psid = $users[0]['u_cache__fp_psid'];
                         $u = $users[0];
@@ -1198,7 +1198,6 @@ class Comm_model extends CI_Model {
                         $failed_count++;
                         $this->Db_model->e_create(array(
                             'e_outbound_u_id' => $message['e_outbound_u_id'],
-                            'e_fp_id' => $message['e_fp_id'],
                             'e_json' => $message,
                             'e_inbound_c_id' => 8, //Platform error
                             'e_text_value' => 'send_message() detected user without an active email/Messenger with $force_email=['.($force_email?'1':'0').']',

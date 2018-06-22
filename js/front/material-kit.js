@@ -202,7 +202,7 @@ var big_image;
      initFormExtendedDatetimepickers: function(){
          $('.datetimepicker').datetimepicker({
              icons: {
-                 time: "fas fa-alarm-clock",
+                 time: "fas fa-clock",
                  date: "fas fa-calendar",
                  up: "fas fa-chevron-up",
                  down: "fas fa-chevron-down",
@@ -218,7 +218,7 @@ var big_image;
           $('.datepicker').datetimepicker({
              format: 'MM/DD/YYYY',
              icons: {
-                 time: "fas fa-alarm-clock",
+                 time: "fas fa-clock",
                  date: "fas fa-calendar",
                  up: "fas fa-chevron-up",
                  down: "fas fa-chevron-down",
@@ -235,7 +235,7 @@ var big_image;
  //          format: 'H:mm',    // use this format if you want the 24hours timepicker
              format: 'h:mm A',    //use this format if you want the 12hours timpiecker with AM/PM toggle
              icons: {
-                 time: "fas fa-alarm-clock",
+                 time: "fas fa-clock",
                  date: "fas fa-calendar",
                  up: "fas fa-chevron-up",
                  down: "fas fa-chevron-down",

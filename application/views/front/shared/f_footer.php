@@ -8,13 +8,17 @@ $website = $this->config->item('website');
  	<footer class="footer">
         <div class="container">
             <nav>
-                <ul class="pull-left">
+                <ul class="pull-center">
                     <li><a href="/terms">Terms</a></li>
-                    <li><a href="/contact">Contact</a></li>
-				</ul>
-				<ul class="pull-right">
-                    <!--<li class="legal-name bg-glow"><i><img src="/img/bp_128.png" /><?= $website['name'] ?></i></li>-->
-                    <li><i>V<?= $website['version'] ?></i></li>
+                    <li><a href="/contact">Contact Us</a></li>
+                    <li class="social-li">
+                        <a href="https://www.youtube.com/channel/UCOH64HiAIfJlz73tTSI8n-g" target="_blank" class="social-link"><i class="fab fa-youtube"></i></a>
+                        <a href="https://www.facebook.com/askmench" target="_blank" class="social-link"><i class="fab fa-facebook"></i></a>
+                        <a href="https://www.linkedin.com/company/askmench/" target="_blank" class="social-link"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://twitter.com/askmench" target="_blank" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="https://www.instagram.com/askmench/" target="_blank" class="social-link"><i class="fab fa-instagram"></i></a>
+                    </li>
+                    <li class="legal-name bg-glow"><i><img src="/img/bp_128.png" />v<?= $website['version'] ?></i></li>
                 </ul>
             </nav>
         </div>

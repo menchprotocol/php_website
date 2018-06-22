@@ -55,16 +55,16 @@ function start_report(){
     $('#us_notes').focus();
 }
 
-function all_admissions(){
+function all_enrollments(){
 
-    //Loads the list of all Student admissions so they can switch their Action Plan
+    //Loads the list of all Student enrollments so they can switch their Action Plan
 
     //Show tem loader:
-    $('#all_admissions').show().html('<div style="font-size: 0.8em;"><img src="/img/round_load.gif" class="loader" /> Loading Bootcamps...</div>');
+    $('#all_enrollments').show().html('<div style="font-size: 0.8em;"><img src="/img/round_load.gif" class="loader" /> Loading Bootcamps...</div>');
     $('.ab_btn').hide();
 
     //Load the frame:
-    $.post("/my/all_admissions", {
+    $.post("/my/all_enrollments", {
 
         u_id:$('#u_id').val(),
         u_key:$('#u_key').val(),
@@ -73,7 +73,7 @@ function all_admissions(){
     }, function(data) {
 
         //Empty Inputs Fields if success:
-        $('#all_admissions').html(data);
+        $('#all_enrollments').html(data);
 
         //SHow inner tooltips:
         $('[data-toggle="tooltip"]').tooltip();
@@ -84,26 +84,26 @@ function all_admissions(){
 
 </script>
 
-<input type="hidden" id="b_id" value="<?= $admission['b_id'] ?>" />
-<input type="hidden" id="r_id" value="<?= $admission['r_id'] ?>" />
+<input type="hidden" id="b_id" value="<?= $enrollment['b_id'] ?>" />
+<input type="hidden" id="r_id" value="<?= $enrollment['r_id'] ?>" />
 <input type="hidden" id="c_id" value="<?= $intent['c_id'] ?>" />
-<input type="hidden" id="u_id" value="<?= $admission['u_id'] ?>" />
-<input type="hidden" id="u_key" value="<?= md5($admission['u_id'].$application_status_salt) ?>" />
-<input type="hidden" id="s_key" value="<?= md5($intent['c_id'].$page_load_time.'pag3l0aDSla7'.$admission['u_id']) ?>" />
+<input type="hidden" id="u_id" value="<?= $enrollment['u_id'] ?>" />
+<input type="hidden" id="u_key" value="<?= md5($enrollment['u_id'].$application_status_salt) ?>" />
+<input type="hidden" id="s_key" value="<?= md5($intent['c_id'].$page_load_time.'pag3l0aDSla7'.$enrollment['u_id']) ?>" />
 
 <?php
 
 /* ******************************
  * Breadcrumb
  ****************************** */
-echo '<div id="all_admissions"></div>';
+echo '<div id="all_enrollments"></div>';
 echo '<ol class="breadcrumb">';
 foreach($breadcrumb_p as $position=>$link){
     echo '<li>';
     echo ( $link['link'] ? '<a href="'.$link['link'].'">'.$link['anchor'].'</a>' : $link['anchor'] );
     if($position==0){
         //Show the Bootcamp switcher next to the Bootcamp title:
-        echo ' <a href="javascript:void(0);" onclick="all_admissions()" class="ab_btn" title="Switch Between Bootcamps">(switch)</a>';
+        echo ' <a href="javascript:void(0);" onclick="all_enrollments()" class="ab_btn" title="Switch Between Bootcamps">(switch)</a>';
     }
     echo '</li>';
 }
@@ -157,7 +157,7 @@ if(count($intent['c__messages'])>0){
     }
 }
 if($displayed_messages>0){
-    $uadmission = $this->session->userdata('uadmission');
+    $uenrollment = $this->session->userdata('uenrollment');
 
     //Only load the 3rd Level Step messages that are not yet complete by default, because everything else has already been communicated to the student
     $load_open = ( $level>=2 ); //&& !isset($us_data[$intent['c_id']])
@@ -169,10 +169,10 @@ if($displayed_messages>0){
         if($i['i_status']==1){
             echo '<div class="tip_bubble">';
             echo echo_i( array_merge( $i , array(
-                ( isset($uadmission) && count($uadmission)>0 ? 'noshow' : 'show_new_window' ) => 1, //TO embed the video
-                'e_b_id'=>$admission['b_id'],
-                'e_outbound_u_id'=>$admission['u_id'],
-            )) , $admission['u_full_name'] );
+                ( isset($uenrollment) && count($uenrollment)>0 ? 'noshow' : 'show_new_window' ) => 1, //TO embed the video
+                'e_b_id'=>$enrollment['b_id'],
+                'e_outbound_u_id'=>$enrollment['u_id'],
+            )) , $enrollment['u_full_name'] );
             echo '</div>';
         }
     }
@@ -207,16 +207,16 @@ if($level==2){
 
             if($intent['c_complete_url_required']=='t' && $intent['c_complete_notes_required']=='t'){
                 $red_note = 'a URL & completion notes';
-                $textarea_note = 'Include a URL & completion notes (and optional instructor feedback) to mark as complete';
+                $textarea_note = 'Include a URL & completion notes (and optional coach feedback) to mark as complete';
             } elseif($intent['c_complete_url_required']=='t'){
                 $red_note = 'a URL';
-                $textarea_note = 'Include a URL (and optional instructor feedback) to mark as complete';
+                $textarea_note = 'Include a URL (and optional coach feedback) to mark as complete';
             } elseif($intent['c_complete_notes_required']=='t'){
                 $red_note = 'completion notes';
-                $textarea_note = 'Include completion notes (and optional instructor feedback) to mark as complete';
+                $textarea_note = 'Include completion notes (and optional coach feedback) to mark as complete';
             } else {
                 $red_note = null;
-                $textarea_note = 'Include optional feedback for your instructor';
+                $textarea_note = 'Include optional feedback for your coach';
             }
 
             echo '<div>Estimated time to complete: '.echo_estimated_time($intent['c_time_estimate'],1).'</div>';
@@ -248,7 +248,7 @@ if($level==2){
                         });
                     });
                 </script>
-                <div><i class="fas fa-alarm-clock"></i> Due in <span id="ontime_dueby"></span></div>
+                <div><i class="fas fa-clock"></i> Due in <span id="ontime_dueby"></span></div>
                 <?php
             }
 
@@ -268,10 +268,10 @@ if($level==2){
         echo '<h4 class="maxout"><i class="fas fa-arrows"></i> Navigation</h4>';
         echo '<div style="font-size:0.8em;">';
         if($previous_on){
-            echo '<a href="/my/actionplan/'.$admission['b_id'].'/'.$previous_intent['c_id'].'" class="btn btn-tight btn-black" style="margin:0;"><i class="fas fa-arrow-left"></i> Previous</a>';
+            echo '<a href="/my/actionplan/'.$enrollment['b_id'].'/'.$previous_intent['c_id'].'" class="btn btn-tight btn-black" style="margin:0;"><i class="fas fa-arrow-left"></i> Previous</a>';
         }
         if($next_on){
-            echo '<a href="/my/actionplan/'.$admission['b_id'].'/'.$next_intent['c_id'].'" class="btn btn-tight btn-black" style="margin:0 0 0 8px;">Next <i class="fas fa-arrow-right"></i></a>';
+            echo '<a href="/my/actionplan/'.$enrollment['b_id'].'/'.$next_intent['c_id'].'" class="btn btn-tight btn-black" style="margin:0 0 0 8px;">Next <i class="fas fa-arrow-right"></i></a>';
         }
         echo '</div>';
     }
@@ -292,7 +292,7 @@ if($level==1){
 
     echo '<h4 class="maxout">';
         if($level==1){
-            echo '<i class="fas fa-clipboard-check"></i> Tasks';
+            echo '<i class="fas fa-check-square"></i> Tasks';
         } elseif($level==2){
             echo '<i class="fal fa-clipboard-check"></i> Steps';
         }
@@ -327,7 +327,7 @@ if($level==1){
 
         //Now determine the lock status of this item...
 
-        //Used in $unlocked_item logic in case instructor modifies Action Plan and Adds items before previously completed items:
+        //Used in $unlocked_item logic in case coach modifies Action Plan and Adds items before previously completed items:
         $this_item_complete = ( $this_item_e_status>=-2 );
 
         //See Status:
@@ -337,7 +337,7 @@ if($level==1){
         if($unlocked_item){
 
             //Show link to enter this item:
-            $ui = '<a href="/my/actionplan/'.$admission['b_id'].'/'.$this_intent['c_id'].'" class="list-group-item">';
+            $ui = '<a href="/my/actionplan/'.$enrollment['b_id'].'/'.$this_intent['c_id'].'" class="list-group-item">';
             $ui .= '<span class="pull-right"><span class="badge badge-primary" style="margin-top:-5px;"><i class="fas fa-chevron-right"></i></span></span>';
             $ui .= echo_status('e_status',$this_item_e_status,1).' ';
 

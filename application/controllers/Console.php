@@ -16,19 +16,6 @@ class Console extends CI_Controller {
     }
 
 
-    /* ******************************
-       #Intents
-     ****************************** */
-
-    function intent_edit($c_id=0){
-        //TODO complete
-    }
-
-    function intents($inbound_c_id=0){
-        //TODO complete
-    }
-
-
 	
 	/* ******************************
 	 * Bootcamps
@@ -39,7 +26,7 @@ class Console extends CI_Controller {
 		//Authenticate level 2 or higher, redirect if not:
 		$udata = auth(array(1308,1280),1);
 
-		$title = 'My Bootcamps';
+		$title = 'Bootcamps';
 
 		//Load view
 		$this->load->view('console/console_header' , array(
@@ -55,17 +42,17 @@ class Console extends CI_Controller {
         //Have they activated their Bot yet?
         //Yes, show them their Bootcamps:
         $this->load->view('console/b/bootcamps_my' , array(
-            'bs' => $this->Db_model->instructor_bs(array(
+            'bs' => $this->Db_model->coach_bs(array(
                 'ba.ba_outbound_u_id' => $udata['u_id'],
                 'ba.ba_status >=' => 0,
                 'b.b_status >=' => 2,
-                'b.b_is_parent' => 0,
+                'c.c_level' => 0,
             )),
-            'bsp' => $this->Db_model->instructor_bs(array(
+            'bsp' => $this->Db_model->coach_bs(array(
                 'ba.ba_outbound_u_id' => $udata['u_id'],
                 'ba.ba_status >=' => 0,
                 'b.b_status >=' => 2,
-                'b.b_is_parent' => 1,
+                'c.c_level' => 1,
             )),
             'udata' => $udata,
         ));
@@ -142,7 +129,7 @@ class Console extends CI_Controller {
             $view_data['breadcrumb'] = array(
                 array(
                     'link' => null,
-                    'anchor' => 'Action Plan <span id="hb_2272" class="help_button" intent-id="2272"></span>'.( !$bs[0]['b_old_format'] && !$bs[0]['b_is_parent'] ? ' <a href="#" data-toggle="modal" data-target="#importActionPlan" class="tipbtn"><span class="badge tip-badge" title="Import some part or all of prerequisites, Tasks and/or Outcomes from another Bootcamp you manage" data-toggle="tooltip" data-placement="bottom"><i class="fas fa-download"></i></span></a>' : ''),
+                    'anchor' => 'Action Plan <span id="hb_2272" class="help_button" intent-id="2272"></span>'.( !$bs[0]['b_old_format'] && !$bs[0]['c_level'] ? ' <a href="#" data-toggle="modal" data-target="#importActionPlan" class="tipbtn"><span class="badge tip-badge" title="Import some part or all of prerequisites, Tasks and/or Outcomes from another Bootcamp you manage" data-toggle="tooltip" data-placement="bottom"><i class="fas fa-download"></i></span></a>' : ''),
                 ),
             );
         }
@@ -181,7 +168,7 @@ class Console extends CI_Controller {
 	            array(
 	                'link' => null,
 	                'anchor' => 'Classes'
-                        .($bs[0]['b__admins'][0]['u_id']==$udata['u_id'] ? '' : '<i class="fas fa-lock" style="font-size:0.8em; margin:0 0 0 5px;" data-toggle="tooltip" data-placement="bottom" title="Support settings locked because you are not the lead instructor of this Bootcamp"></i>')
+                        .($bs[0]['b__coaches'][0]['u_id']==$udata['u_id'] ? '' : '<i class="fas fa-lock" style="font-size:0.8em; margin:0 0 0 5px;" data-toggle="tooltip" data-placement="bottom" title="Support settings locked because you are not the Lead Coach of this Bootcamp"></i>')
                         .' <span id="hb_2274" class="help_button" intent-id="2274"></span>',
 	            ),
 	        ),

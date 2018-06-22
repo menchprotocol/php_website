@@ -1,9 +1,9 @@
 <?php
-$uadmission = $this->session->userdata('uadmission');
+$uenrollment = $this->session->userdata('uenrollment');
 $fb_settings = $this->config->item('fb_settings');
 
 
-if(isset($uadmission) && count($uadmission)>0) {
+if(isset($uenrollment) && count($uenrollment)>0) {
 
     //Include header:
     $this->load->view('front/shared/student_nav' , array(

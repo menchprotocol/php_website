@@ -1,7 +1,7 @@
 <?php 
 //Attempt to fetch session variables:
 $udata = $this->session->userdata('user');
-$uadmission = $this->session->userdata('uadmission');
+$uenrollment = $this->session->userdata('uenrollment');
 $website = $this->config->item('website');
 $url_part_1 = $this->uri->segment(1);
 ?><!doctype html>
@@ -65,8 +65,8 @@ $url_part_1 = $this->uri->segment(1);
 
                         echo '<li id="isloggedin"><a href="/console">Console <i class="fas fa-chevron-circle-right"></i></a></li>';
 
-                    } elseif(isset($uadmission['u_id'])){
-                        echo '<li id="isloggedin"><a href="/my/actionplan">Student Portal <i class="fas fa-chevron-circle-right"></i></a></li>';
+                    } elseif(isset($uenrollment['u_id'])){
+                        echo '<li id="isloggedin"><a href="/my/actionplan">Student Hub <i class="fas fa-chevron-circle-right"></i></a></li>';
                     } else {
                         if(!($url_part_1=='launch')) {
                             echo '<li><a href="/launch"><i class="fas fa-rocket"></i> Launch</a></li>';

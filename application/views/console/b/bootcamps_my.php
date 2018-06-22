@@ -39,15 +39,15 @@ $website = $this->config->item('website');
 
 
     var processing_b = 0;
-    function b_create(b_is_parent){
+    function b_create(c_level){
 
         if(processing_b){
             //Do nothing while processing a current b:
             return false;
         }
 
-        var obj = $('#b_c_outcome_'+b_is_parent);
-        var plc = $('.li'+b_is_parent);
+        var obj = $('#b_c_outcome_'+c_level);
+        var plc = $('.li'+c_level);
 
         if(obj.val().length<2){
             alert('Hint: Enter your Bootcamp Title in the input field and then press ADD');
@@ -58,7 +58,7 @@ $website = $this->config->item('website');
         //Show loader:
         processing_b = 1;
         var c_outcome = obj.val();
-        $('.no-b-div-'+b_is_parent).remove(); //It may exist...
+        $('.no-b-div-'+c_level).remove(); //It may exist...
         obj.val('').prop('disabled',true);
         $('.new-b').hide();
 
@@ -66,7 +66,7 @@ $website = $this->config->item('website');
 
         $.post("/api_v1/b_create", {
             c_outcome:c_outcome,
-            b_is_parent:b_is_parent,
+            c_level:c_level,
         }, function(data) {
 
             //Processing is done:

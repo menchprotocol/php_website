@@ -85,7 +85,7 @@ class Front extends CI_Controller {
 	function launch(){
 	    $this->load->view('front/shared/f_header' , array(
             'title' => 'Guide Students to Success',
-            'landing_page' => 'front/splash/instructors_why',
+            'landing_page' => 'front/splash/coaches_why',
 	    ));
 	    $this->load->view('front/launch');
 	    $this->load->view('front/shared/f_footer');
@@ -96,7 +96,7 @@ class Front extends CI_Controller {
 	 * Bootcamp PUBLIC
 	 ****************************** */
 
-
+    /*
     function affiliate_click($b_id,$u_id=0,$goto_apply=0){
 	    //DEPRECATED: Just keeping for Jason Cannon's Link to His Bootcamp
         $bs = $this->Db_model->b_fetch(array(
@@ -110,7 +110,7 @@ class Front extends CI_Controller {
             redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Bootcamp ID.</div>');
         }
     }
-	
+	*/
 	
 	function landing_page($b_url_key){
 	    
@@ -128,8 +128,8 @@ class Front extends CI_Controller {
             redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp is archived.</div>');
         } elseif($bs[0]['b_fp_id']<=0){
             redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp not connected to a Facebook Page.</div>');
-        } elseif(!(intval($bs[0]['b_offers_diy']) || doubleval($bs[0]['b_weekly_coaching_hours']))){
-            redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp does not offer any admission packages yet.</div>');
+        } elseif(!$bs[0]['b_offers_diy'] && !$bs[0]['b_offers_coaching']){
+            redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp not yet open for enrollment.</div>');
         } elseif(!(strcmp($bs[0]['b_url_key'], $b_url_key)==0)){
             //URL Case sensitivity redirect:
             redirect_message('/'.$bs[0]['b_url_key']);

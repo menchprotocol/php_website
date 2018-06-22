@@ -4,13 +4,13 @@ $message_max = $this->config->item('message_max');
 $website = $this->config->item('website');
 $intent_statuses = echo_status('c');
 $udata = $this->session->userdata('user');
-if($b['b_is_parent']){
+if($b['c_level']==1){
     //For the list of prerequisites and skills:
     $agg_b = b_aggregate($b,true);
 }
 ?>
 <style> .breadcrumb li { display:block; } </style>
-<script src="/js/console/<?= ( $b['b_is_parent'] ? 'actionplan_multiweek.js' : 'actionplan_7day.js' ).'?v='.$website['version'] ?>" type="text/javascript"></script>
+<script src="/js/console/<?= ( $b['c_level'] ? 'actionplan_multiweek.js' : 'actionplan_7day.js' ).'?v='.$website['version'] ?>" type="text/javascript"></script>
 
 <input type="hidden" id="b_id" value="<?= $b['b_id'] ?>" />
 <input type="hidden" id="pid" value="<?= $intent['c_id'] ?>" />
@@ -21,7 +21,7 @@ if($b['b_is_parent']){
 //This functions updates the input placeholders to refect the next item to be added:
 function update_tree_input(){
     //First update the number of Tasks in main input field:
-    $('#addintent').attr("placeholder", "<?= ( $b['b_is_parent'] ? 'Week' : $this->lang->line('level_2_name')) ?> #"+($("#list-outbound").children().length)+"<?= ( $b['b_is_parent'] ? ' Bootcamp Search' : '') ?>");
+    $('#addintent').attr("placeholder", "<?= ( $b['c_level'] ? 'Week' : $this->lang->line('level_2_name')) ?> #"+($("#list-outbound").children().length)+"<?= ( $b['c_level'] ? ' Bootcamp Search' : '') ?>");
 
     //Now go through each Step list and see whatsupp:
     if($('.step-group').length){
@@ -71,6 +71,18 @@ $(document).ready(function() {
     });
 
 
+
+    //Deletion warning for status change:
+    $('#c_status_input').change(function() {
+        if(parseInt($(this).val())<0){
+            //Delete has been selected!
+            $('#delete_warning').html('<span style="color:#FF0000;"><i class="fas fa-trash-alt"></i> You are about to permanently delete this item and its messages.</span>');
+        } else {
+            $('#delete_warning').html('');
+        }
+    });
+
+
     //addintent
     if(window.location.hash) {
         var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
@@ -106,6 +118,37 @@ $(document).ready(function() {
 
 	//Load Sortable:
 	load_intent_sort($("#pid").val(),"2");
+
+
+
+
+    //Activate sorting for Steps:
+    if($('.step-group').length){
+
+        $( ".step-group" ).each(function() {
+
+            var intent_id = $( this ).attr('intent-id');
+
+            //Load sorting:
+            load_intent_sort(intent_id,"3");
+
+            //Load time:
+            $('#t_estimate_'+intent_id).text(echo_hours($('#t_estimate_'+intent_id).attr('current-hours')));
+
+        });
+
+        if($('.is_step_sortable').length){
+            //Goo through all Steps:
+            $( ".is_step_sortable" ).each(function() {
+                var intent_id = $(this).attr('intent-id');
+                if(intent_id){
+                    //Load time:
+                    $('#t_estimate_'+intent_id).text(echo_hours($('#t_estimate_'+intent_id).attr('current-hours')));
+                }
+            });
+        }
+
+    }
 
 
 	//Intent Search/Add
@@ -184,7 +227,7 @@ function c_sort(c_id,level){
             var pid = parseInt($(this).attr('intent-id'));
             var cr_id = parseInt($( this ).attr('data-link-id'));
             var status = parseInt($('.c_outcome_'+pid).attr('current-status'));
-            var prefix = ( level==2 ? '<?= ( $b['b_is_parent'] ? $this->lang->line('level_0_icon') : $this->lang->line('level_2_icon')) ?>' : '<?= $this->lang->line('level_3_icon') ?>' ); //The default for all intents
+            var prefix = ( level==2 ? '<?= ( $b['c_level']==1 ? $this->lang->line('level_0_icon') : $this->lang->line('level_2_icon')) ?>' : '<?= ( $b['c_level']==1 ? $this->lang->line('level_2_icon') : $this->lang->line('level_3_icon')) ?>' ); //The default for all intents
 
             if(status>=1){
 
@@ -402,6 +445,8 @@ function load_modify(c_id, level){
     //$('.levelz, #modifybox').removeClass('hidden');
     var modify_focus_pid = ( $('#modifybox').hasClass('hidden') ? 0 : parseInt($('#modifybox').attr('intent-id')) );
     var modify_focus_level = ( $('#modifybox').hasClass('hidden') ? 0 : parseInt($('#modifybox').attr('level')) );
+    var cr_id = $('.intent_line_'+c_id).attr('data-link-id');
+    var croutbound_b_id = $('.intent_line_'+c_id).attr('data-b-id');
 
     //Do we already have this loaded? Then we should close it:
     if(modify_focus_pid==c_id){
@@ -412,13 +457,20 @@ function load_modify(c_id, level){
 
     } else {
 
+        //Always set title:
+        $('.c_outcome_input').val($(".c_outcome_"+c_id+":first").text());
+
+        //Load the remove button:
+        if(level==0 && croutbound_b_id>0 && cr_id>0){
+            $('#remove_b_link').html('<a href="javascript:void(0)" onclick="delete_b('+croutbound_b_id+','+cr_id+')"><i class="fas fa-trash-alt"></i> Delete this Week</a>');
+        }
+
         //Loadup variables for Tasks & Steps:
         if(level>=2){
 
-            $('#c_outcome'+level+' .c_outcome_input').val($(".c_outcome_"+c_id).html());
+            //Status:
+            $('#modifybox #c_status_input').val($('.c_outcome_'+c_id).attr('current-status'));
 
-            //Fetch current status
-            $('#modifybox #c_status_'+level).val($('.c_outcome_'+c_id).attr('current-status'));
 
             //Update Timer:
             $('.timer_'+level).val($('#t_estimate_'+c_id).attr('current-hours'));
@@ -426,7 +478,6 @@ function load_modify(c_id, level){
             //Completion settings:
             document.getElementById("c_complete_url_required").checked = parseInt($('.c_outcome_'+c_id).attr('c_complete_url_required'));
             document.getElementById("c_complete_notes_required").checked = parseInt($('.c_outcome_'+c_id).attr('c_complete_notes_required'));
-
         }
 
         //Make the frame visible:
@@ -443,7 +494,6 @@ function load_modify(c_id, level){
         //Update variables:
         $('#modifybox').attr('intent-id',c_id);
         $('#modifybox').attr('level',level);
-
     }
 }
 
@@ -452,7 +502,8 @@ function load_modify(c_id, level){
 
 
 
-function c_save_settings(){
+function save_modify(){
+
 
     //Define shared data for all 3 levels:
     var modify_data = {
@@ -461,31 +512,28 @@ function c_save_settings(){
         level:( $('#modifybox').hasClass('hidden') ? 0 : parseInt($('#modifybox').attr('level')) ),
     };
 
-    if(!modify_data['pid'] || !modify_data['level']){
+    if(!modify_data['pid']){
 
         //Oops, this should not happen!
         return false;
 
     } else {
 
+        //Always set title:
+        modify_data['c_outcome'] = $('.c_outcome_input').val();
+
         //Now append more based on levels and take action:
-        if(modify_data['level']==1){
-
-            modify_data['c_outcome'] = $('#c_outcome1 .c_outcome_input').val();
-
-        } else if(modify_data['level']>=2){
+        if(modify_data['level']>=2){
 
             if(modify_data['level']==2){
                 //TODO TO be implemented
                 modify_data['c_completion_rule'] = parseInt($('.c_outcome_'+modify_data['pid']).attr('completion-rule'));
             }
 
-            modify_data['c_outcome'] = $('#c_outcome'+modify_data['level']+' .c_outcome_input').val();
-            modify_data['c_status'] = $('#c_status_'+modify_data['level']).val();
+            modify_data['c_status'] = $('#c_status_input').val();
             modify_data['c_time_estimate'] = $('#c_time_estimate').val();
             modify_data['c_complete_url_required'] = (document.getElementById('c_complete_url_required').checked ? 1 : 0);
             modify_data['c_complete_notes_required'] = (document.getElementById('c_complete_notes_required').checked ? 1 : 0);
-
         }
 
         //Show spinner:
@@ -499,6 +547,7 @@ function c_save_settings(){
 
                 //Always update title for all 3 levels:
                 $(".c_outcome_"+modify_data['pid']).html(modify_data['c_outcome']);
+                var parent_c_id = parseInt($('.maplevel'+modify_data['pid']).attr('parent-intent-id'));
 
                 //Update page variables:
                 if(modify_data['level']==2){
@@ -561,7 +610,14 @@ function c_save_settings(){
                         //Adjust 3 levels of hours:
                         var current_c_status = parseInt($('.c_outcome_'+modify_data['pid']).attr('current-status'));
                         var current_c_hours = parseFloat($('#t_estimate_'+modify_data['pid']).attr('current-hours'));
+                        var parent_c_hours = parseFloat($('#t_estimate_'+parent_c_id).attr('current-hours'));
                         var current_b_hours = parseFloat($('.hours_level_1').attr('current-hours'));
+
+                        //Might need to update weekly Bootcamp in Multi-week Bootcamps:
+                        if(modify_data['level']==2){
+                            var new_parent_c_hours = parent_c_hours + hours_deficit;
+                            $('#t_estimate_'+parent_c_id).attr('current-hours',new_parent_c_hours).text(echo_hours(new_parent_c_hours));
+                        }
 
                         //Only update Bootcamp if Task+Step are Active:
                         if(current_c_status>0){
@@ -580,7 +636,6 @@ function c_save_settings(){
                     //Update time?
                     var current_hours_step = parseFloat($('#t_estimate_'+modify_data['pid']).attr('current-hours'));
                     var step_deficit = modify_data['c_time_estimate'] - current_hours_step;
-                    var parent_c_id = parseInt($('.maplevel'+modify_data['pid']).attr('parent-intent-id'));
 
                     //Update Completion Settings (All the time):
                     $('.c_outcome_'+modify_data['pid']).attr('c_complete_url_required'    , modify_data['c_complete_url_required']);
@@ -670,6 +725,112 @@ function c_save_settings(){
     }
 }
 
+
+
+
+
+
+function tree_message(c_id,u_id){
+
+    //Show loading:
+    $('#simulate_'+c_id).attr('href','#').html('<span><img src="/img/round_load.gif" style="width:16px; height:16px; margin-top:-2px;" class="loader" /></span>');
+
+    //Disapper in a while:
+    setTimeout(function() {
+        //Hide the editor & saving results:
+        $.post("/api_v1/i_dispatch", {
+            c_id:c_id,
+            depth:1,
+            b_id:$('#b_id').val(),
+            u_id:u_id,
+        }, function(data) {
+            //Show success:
+            $('#simulate_'+c_id).html(data);
+        });
+    }, 334);
+
+}
+
+
+function new_intent(pid,next_level,link_c_id=0){
+
+    //If link_c_id>0 this means we're only linking
+    //Set variables mostly based on level:
+    if(next_level==2){
+        var input_field = $('#addintent');
+        var sort_list_id = "list-outbound";
+        var sort_handler = ".is_sortable";
+    } else if(next_level==3){
+        var input_field = $('#addintent'+pid);
+        var sort_list_id = "list-outbound-"+pid;
+        var sort_handler = ".is_step_sortable";
+    } else {
+        alert('Invalid next_level value');
+        return false;
+    }
+
+    var b_id = $('#b_id').val();
+    var intent_name = input_field.val();
+
+    if(!link_c_id && intent_name.length<1){
+        alert('Error: Missing Outcome. Try Again...');
+        input_field.focus();
+        return false;
+    }
+
+    //Set processing status:
+    add_to_list(sort_list_id,sort_handler,'<div id="temp'+next_level+'" class="list-group-item"><img src="/img/round_load.gif" class="loader" /> Adding... </div>');
+
+    //Empty Input:
+    input_field.val("").focus();
+
+    //Update backend:
+    $.post("/api_v1/c_new", {b_id:b_id, pid:pid, c_outcome:intent_name, next_level:next_level, link_c_id:link_c_id}, function(data) {
+
+        //Update UI to confirm with user:
+        $( "#temp"+next_level ).remove();
+
+        //Add new
+        add_to_list(sort_list_id,sort_handler,data.html);
+
+        //Re-adjust sorting:
+        load_intent_sort(pid,next_level);
+
+        if(next_level==2){
+
+            //Adjust the Task count:
+            c_sort(0,2);
+
+            //Re-adjust sorting for inner Steps:
+            load_intent_sort(data.c_id,3);
+
+        } else {
+            //Adjust Step sorting:
+            c_sort(pid,next_level);
+        }
+
+        //Tooltips:
+        $('[data-toggle="tooltip"]').tooltip();
+
+        //Add the new time:
+        var step_deficit = 0.05; //3 minutes is the default for new Tasks/Steps
+        var current_b_hours = parseFloat($('.hours_level_1').attr('current-hours'));
+        var current_task_hours = parseFloat($('#t_estimate_'+pid).attr('current-hours'));
+        var current_task_status = parseInt($('.c_outcome_'+pid).attr('current-status'));
+
+        //Update Miletsone:
+        $('#t_estimate_'+pid).attr('current-hours',(current_task_hours + step_deficit)).text(echo_hours((current_task_hours + step_deficit)));
+
+        //Only update Bootcamp if Task is active:
+        if(current_task_status>0){
+            $('.hours_level_1').attr('current-hours',(current_b_hours + step_deficit)).text(echo_hours((current_b_hours + step_deficit)));
+        }
+
+    });
+
+    //Prevent form submission:
+    return false;
+}
 
 
 
@@ -842,7 +1003,7 @@ function add_item(group_id,prefix,current_value){
             echo_tip(602);
         }
         */
-        echo '<div id="bootcamp-objective" class="list-group maxout">';
+        echo '<div id="bootcamp-objective" class="list-group">';
             echo echo_cr($b,$b,$level);
         echo '</div>';
 
@@ -852,24 +1013,24 @@ function add_item(group_id,prefix,current_value){
 
         <ul id="topnav" class="nav nav-pills nav-pills-primary">
             <li id="nav_prerequisites"><a href="#prerequisites"><i class="fas fa-shield-check"></i> Prerequisites</a></li>
-            <li id="nav_list" class="active"><a href="#list"><?= ($b['b_is_parent'] ? $this->lang->line('level_0_icon').' Bootcamps' : $this->lang->line('level_2_icon').' '.$this->lang->line('level_2_name').'s') ?></a></li>
+            <li id="nav_list" class="active"><a href="#list"><?= ($b['c_level'] ? $this->lang->line('level_0_icon').' Bootcamps' : $this->lang->line('level_2_icon').' '.$this->lang->line('level_2_name').'s') ?></a></li>
             <li id="nav_skills"><a href="#skills"><i class="fas fa-trophy"></i> Skills</a></li>
         </ul>
 
 
         <div class="tab-content tab-space">
 
-            <div class="tab-pane active" id="tablist">
+            <div class="tab-pane active" id="tablist" style="max-width: none !important;">
 
                 <?php
 
-                if(!$b['b_is_parent']){
+                if(!$b['c_level']){
                     //Show tip for Tasks:
                     echo_tip(602);
                 }
 
                 //Task Expand/Contract all if more than 2
-                if(count($intent['c__child_intents'])>0 && ($b['b_old_format'] || $b['b_is_parent'])){
+                if(count($intent['c__child_intents'])>0 && ($b['b_old_format'] || $b['c_level'])){
                     echo '<div id="task_view">';
                     echo '<i class="fas fa-plus-square expand_all"></i> &nbsp;';
                     echo '<i class="fas fa-minus-square close_all"></i>';
@@ -887,12 +1048,12 @@ function add_item(group_id,prefix,current_value){
 
                 if(!$b['b_old_format'] || $udata['u_inbound_u_id']==1281){
                     ?>
-                    <div class="list-group-item list_input">
+                    <div class="list-group-item list_input searchable">
                         <div class="input-group">
-                            <div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control autosearch" maxlength="70" id="addintent" placeholder=""></div>
+                            <div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control" maxlength="70" id="addintent" placeholder=""></div>
                             <span class="input-group-addon" style="padding-right:8px;">
 
-                            <?php if(!$b['b_is_parent']){ ?>
+                            <?php if(!$b['c_level']){ ?>
                             <span id="dir_handle" data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" class="badge badge-primary pull-right" style="cursor:pointer; margin: 1px 3px 0 6px;">
                                 <div><i class="fas fa-plus"></i></div>
                             </span>
@@ -923,7 +1084,7 @@ function add_item(group_id,prefix,current_value){
 
 
                 <?php
-                if($b['b_is_parent'] && strlen($agg_b['b_prerequisites'])>0){
+                if($b['c_level'] && strlen($agg_b['b_prerequisites'])>0){
                     $all_items = json_decode($agg_b['b_prerequisites']);
                     if(count($all_items)>0){
                         echo '<p>Here are the prerequisites of the '.$this->lang->line('level_0_name').':</p>';
@@ -951,7 +1112,7 @@ function add_item(group_id,prefix,current_value){
                 <div id="b_transformations" class="list-group grey-list"></div>
 
                 <?php
-                if($b['b_is_parent'] && strlen($agg_b['b_transformations'])>0){
+                if($b['c_level'] && strlen($agg_b['b_transformations'])>0){
                     $all_items = json_decode($agg_b['b_transformations']);
                     if(count($all_items)>0){
 
@@ -978,30 +1139,44 @@ function add_item(group_id,prefix,current_value){
 
             <div style="text-align:right; font-size: 22px; margin: -5px 0 -20px 0;"><a href="javascript:void(0)" onclick="$('#modifybox').addClass('hidden')"><i class="fas fa-times"></i></a></div>
 
-            <div id="c_outcome1" class="levelz level1 hidden">
-                <?php $this->load->view('console/b/frame_c_outcome' , array(
-                    'c_outcome' => $b['c_outcome'],
-                    'level' => $b['b_is_parent'], //Either 0 or 1 depending which type of Bootcamp
-                )); ?>
-            </div>
-            <div id="c_outcome2" class="levelz level2 hidden">
-                <?php $this->load->view('console/b/frame_c_outcome' , array(
-                    'c_outcome' => null,
-                    'level' => 2,
-                )); ?>
-            </div>
-            <div id="c_outcome3" class="levelz level3 hidden">
-                <?php $this->load->view('console/b/frame_c_outcome' , array(
-                    'c_outcome' => null,
-                    'level' => 3,
-                )); ?>
+
+
+            <div class="levelz level0 level1 level2 level3 hidden">
+                <div class="title"><h4><i class="fas fa-dot-circle"></i> Outcome <span id="hb_598" class="help_button" intent-id="598"></span></h4></div>
+                <div class="help_body maxout" id="content_598"></div>
+
+                <div class="form-group label-floating is-empty">
+                    <div class="input-group border">
+                        <span class="input-group-addon addon-lean" style="color:#3C4858; font-weight: 300;">To</span>
+                        <input style="padding-left:0;" type="text" id="c_outcome" maxlength="70" value="" class="form-control c_outcome_input">
+                    </div>
+                </div>
             </div>
 
+
+            <div class="levelz level2 level3 hidden" style="margin-top:15px;">
+                <div class="title"><h4><i class="fas fa-sliders-h"></i> Status</h4></div>
+                <div class="form-group label-floating is-empty">
+                    <select class="form-control input-mini border" id="c_status_input">
+                        <?php
+                        foreach($intent_statuses as $status_id=>$status){
+                            echo '<option value="'.$status_id.'">'.$status['s_name'].'</option>';
+                        }
+                        ?>
+                    </select>
+                </div>
+                <div id="delete_warning"></div>
+            </div>
+
+
+            <div class="levelz level0 hidden" id="remove_b_link" style="margin-top:15px;">
+
+            </div>
 
 
             <div class="levelz level3 level2 hidden" style="margin-top:15px;">
                 <?php $times = $this->config->item('c_time_options'); ?>
-                <div class="title"><h4><i class="fas fa-alarm-clock"></i> Time Estimate <span id="hb_609" class="help_button" intent-id="609"></span></h4></div>
+                <div class="title"><h4><i class="fas fa-clock"></i> Time Estimate <span id="hb_609" class="help_button" intent-id="609"></span></h4></div>
                 <div class="help_body maxout" id="content_609"></div>
                 <select class="form-control input-mini border timer_2 timer_3" id="c_time_estimate">
                     <?php
@@ -1027,42 +1202,11 @@ function add_item(group_id,prefix,current_value){
 
 
 
-            <div class="levelz level2 hidden" style="margin-top:15px;">
-                <div class="title"><h4><i class="fas fa-sliders-h"></i> Task Status</h4></div>
-                <div class="form-group label-floating is-empty">
-                    <select class="form-control input-mini border" id="c_status_2">
-                        <?php
-                        foreach($intent_statuses as $status_id=>$status){
-                            echo '<option value="'.$status_id.'">'.$status['s_name'].'</option>';
-                        }
-                        ?>
-                    </select>
-                </div>
-            </div>
-
-
-            <div class="levelz level3 hidden" style="margin-top:15px;">
-                <div class="title"><h4><i class="fas fa-sliders-h"></i> Step Status</h4></div>
-                <div class="form-group label-floating is-empty">
-                    <select class="form-control input-mini border" id="c_status_3">
-                        <?php
-                        foreach($intent_statuses as $status_id=>$status){
-                            echo '<option value="'.$status_id.'">'.$status['s_name'].'</option>';
-                        }
-                        ?>
-                    </select>
-                </div>
-            </div>
-
-            <div id="delete_warning"></div>
 
 
 
 
-
-
-
-            <table width="100%" style="margin-top:10px;"><tr><td class="save-td"><a href="javascript:c_save_settings();" class="btn btn-primary">Save</a></td><td><span class="save_setting_results"></span></td></tr></table>
+            <table width="100%" style="margin-top:10px;"><tr><td class="save-td"><a href="javascript:save_modify();" class="btn btn-primary">Save</a></td><td><span class="save_setting_results"></span></td></tr></table>
         </div>
 
 
