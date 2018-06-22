@@ -1,3 +1,4 @@
+<?php /*
 <h2 class="title" style="text-align:center; margin-top:50px;">All Bootcamps Offer:</h2>
 
 <div class="features text-center">
@@ -83,3 +84,4 @@
 </div>
 
 <br /><br />
+ */ ?>

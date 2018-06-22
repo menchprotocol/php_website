@@ -69,25 +69,20 @@ $uri_segment_2 = $this->uri->segment(2);
 
                         <li <?= ( $uri_segment_1=='console' && ( !$uri_segment_2 || intval($uri_segment_2)>0 ) ? 'class="active"' : '' ) ?> data-toggle="tooltip" data-placement="bottom" title="Manage Bootcamps & Tasks"><a href="/console<?= ( isset($b) && $b['c_level'] ? '#multiweek' : '' ) ?>"><i class="fas fa-cube"></i> Bootcamps</a></li>
                         <li <?= ( $uri_segment_1=='entities' ? 'class="active"' : '' ) ?> data-toggle="tooltip" data-placement="bottom" title="All platform objects like people, organizations and content"><a href="/entities/1278"><i class="fas fa-at"></i> Entities</a></li>
-                        <li>
-                            <a href="javascript:void(0);" class="dropdown-toggle" id="extraMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                <i class="fas fa-ellipsis-h" style="color:#3C4858;"></i> More
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="extraMenu">
 
-                                <li><a href="/entities/<?= $udata['u_id'] ?>"><span class="icon-left"><i class="fas fa-user-circle"></i></span> My Account</a></li>
 
-                                <?php if(isset($uenrollment) && count($uenrollment)>0){ ?>
-                                    <li><a href="/my/actionplan"><span class="icon-left"><i class="fas fa-check-square"></i></span> Student Hub</a></li>
-                                <?php } ?>
+                        <li class="extra-toggle"><a href="javascript:void(0);" onclick="$('.extra-toggle').toggle();"><i class="fas fa-ellipsis-h" style="color:#3C4858;"></i> More</a></li>
+                        <li class="extra-toggle" style="display: none;"><a href="/entities/<?= $udata['u_id'] ?>"><span class="icon-left"><i class="fas fa-user-circle"></i></span> My Account</a></li>
 
-                                <?php if($udata['u_inbound_u_id']==1281){ ?>
-                                    <li><a href="/cockpit/browse/engagements"><span class="icon-left"><i class="fas fa-tachometer"></i></span> Admin Cockpit</a></li>
-                                <?php } ?>
+                        <?php if(isset($uenrollment) && count($uenrollment)>0){ ?>
+                            <li class="extra-toggle" style="display: none;"><a href="/my/actionplan"><span class="icon-left"><i class="fas fa-check-square"></i></span> Student Hub</a></li>
+                        <?php } ?>
 
-                                <li><a href="/logout"><span class="icon-left"><i class="fas fa-power-off"></i></span> Logout</a></li>
-                            </ul>
-                        </li>
+                        <?php if($udata['u_inbound_u_id']==1281){ ?>
+                            <li class="extra-toggle" style="display: none;"><a href="/cockpit/browse/engagements"><span class="icon-left"><i class="fas fa-tachometer"></i></span> Admin Cockpit</a></li>
+                        <?php } ?>
+                        <li class="extra-toggle" style="display: none;"><a href="/logout"><span class="icon-left"><i class="fas fa-power-off"></i></span> Logout</a></li>
+
                     </ul>
                 </div>
 				
