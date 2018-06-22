@@ -85,7 +85,7 @@ if(count($bs)>0){
 </div>
 </div>
 
-<div class="main main-raised main-plain">
+<div class="main main-raised main-plain main-footer">
     <div class="container">
 
         <?php $this->load->view('front/b/bs_include'); ?>

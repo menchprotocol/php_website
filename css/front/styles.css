@@ -676,7 +676,11 @@ h5, .h5 {
 .crossout{
     text-decoration: line-through;
 }
-
+.main-footer{
+    background-color: transparent;
+    padding-top: 0;
+    box-shadow: none;
+}
 .ix-tip{
     line-height: 110%;
     font-size: 16px;
