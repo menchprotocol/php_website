@@ -27,24 +27,12 @@ echo '<div id="marketplace_b_url" style="display:none;">'.$website['url'].$b['b_
 <div class="help_body maxout" id="content_2272"></div>
 
 <?php
-
-echo '<div class="dash-label"><span class="icon-left"><i class="fas fa-clock"></i></span> '.$b['b__week_count'].' Week'.echo__s($b['b__week_count']).' @ '.echo_hours($b['c__estimated_hours']/(( $b['c_level'] && count($b['c__child_intents'])>0 ? count($b['c__child_intents']) : 1 ))).'/Week</div>';
-
-if($b['c_level']) {
-
-    //Show total tasks:
-    echo '<div class="dash-label"><span class="icon-left"><i class="fas fa-check-square"></i></span> ' . $b['c__child_child_count'] . ' Task' . echo__s($b['c__child_child_count']) . '</div>';
-
-} else {
-    //Total Tasks for weekly Bootcamps:
-    echo '<div class="dash-label"><span class="icon-left"><i class="fas fa-check-square"></i></span> '.$b['c__child_count'].' Task'.echo__s($b['c__child_count']) .'</div>';
-    if($b['c__child_child_count']>0){
-        echo '<div class="dash-label"><span class="icon-left"><i class="fal fa-clipboard-check"></i></span> '.$b['c__child_child_count'].' Step'.echo__s($b['c__child_child_count']).'</div>';
-    }
-}
-
+echo '<div class="dash-label"><span class="icon-left"><i class="fas fa-cube"></i></span> '.$b['b__week_count'].' Week'.echo__s($b['b__week_count']).'</div>';
+echo '<div class="dash-label"><span class="icon-left"><i class="fas fa-clock"></i></span> '.echo_hours($b['c__estimated_hours']/(( $b['c_level'] && count($b['c__child_intents'])>0 ? count($b['c__child_intents']) : 1 ))).'/Week</div>';
+//Show all intents:
+$all_intents =  ( isset($b['c__child_count']) ? $b['c__child_count'] : 0 ) + ( isset($b['c__child_child_count']) ? $b['c__child_child_count'] : 0 );
+echo '<div class="dash-label"><span class="icon-left"><i class="fas fa-hashtag"></i></span> ' .$all_intents. ' Intent' . echo__s($all_intents) . '</div>';
 echo ' <div class="dash-label"><span class="icon-left"><i class="fas fa-comment-dots"></i></span> '.$b['c__message_tree_count'].' Message'. echo__s($b['c__message_tree_count']).'</div>';
-
 ?>
 
 

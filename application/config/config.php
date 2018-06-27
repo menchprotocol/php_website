@@ -254,23 +254,6 @@ $config['object_statuses'] = array(
             's_icon' => 'fas fa-link',
         ),
     ),
-    'ex' => array(
-        0 => array(
-            's_name'  => 'Self',
-            's_desc'  => 'Task does not have any child Steps and is complete when the Task its self is marked as complete',
-            's_icon' => 'fas fa-check-square',
-        ),
-        1 => array(
-            's_name'  => 'All Children',
-            's_desc'  => 'Task is complete when all child Steps are completed',
-            's_icon' => 'fas fa-sitemap',
-        ),
-        2 => array(
-            's_name'  => 'Any Child',
-            's_desc'  => 'Task is complete when any child Step is completed',
-            's_icon' => 'fas fa-code-branch',
-        ),
-    ),
 
     'ru_support_package' => array(
         0 => array(
@@ -462,7 +445,7 @@ $config['object_statuses'] = array(
         ),
 
         0 => array(
-            's_name'  => 'Enrollment Initiated',
+            's_name'  => 'Interested',
             's_desc'  => 'Student initiated application but had not completed the checkout process',
             's_icon' => 'fas fa-question-circle',
         ),

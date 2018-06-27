@@ -319,13 +319,12 @@ $(document).ready(function() {
 
 <div class="wizard-box" id="confirm_details">
     <p>Review and confirm your enrollment details:</p>
-    <ul>
-        <li>Target Outcome: <b><?= $b['c_outcome'] ?></b></li>
-        <li>Your Commitment: <b><?= $b['b__week_count'].' Week'.echo__s($b['b__week_count']).' @ '.echo_hours(($b['c__estimated_hours']/$b['b__week_count']),false).'/Week' ?></b></li>
-        <li>Class Dates: <b id="class_dates"></b></li>
-        <li>Classmate Interactions: <b id="networking_level"></b></li>
-        <li>Support Package: <b id="confirm_support"></b></li>
-    </ul>
+
+    <div class="review-item">Target Outcome<b><?= $b['c_outcome'] ?></b></div>
+    <div class="review-item">Your Commitment: <b><?= $b['b__week_count'].' Week'.echo__s($b['b__week_count']).' @ '.echo_hours(($b['c__estimated_hours']/$b['b__week_count']),false).'/Week' ?></b></div>
+    <div class="review-item">Class Dates: <b id="class_dates"></b></div>
+    <div class="review-item">Classmate Interactions: <b id="networking_level"></b></div>
+    <div class="review-item">Support Package: <b id="confirm_support"></b></div>
     <br />
 </div>
 

@@ -1811,7 +1811,7 @@ class Api_v1 extends CI_Controller {
         echo_json(array(
             'status' => 1,
             'c_id' => $new_intent['c_id'],
-            'html' => echo_cr($bs[0],$relations[0],$_POST['next_level'],intval($_POST['pid'])),
+            'html' => echo_actionplan($bs[0],$relations[0],$_POST['next_level'],intval($_POST['pid'])),
         ));
 	}
 
@@ -2030,7 +2030,7 @@ class Api_v1 extends CI_Controller {
         echo_json(array(
             'status' => 1,
             'new_hours' => $bs[0]['c__estimated_hours'],
-            'html' => echo_cr($inbound_bs[0],array_merge($bs[0],$relations[0]),2, $inbound_bs[0]['b_outbound_c_id']),
+            'html' => echo_actionplan($inbound_bs[0],array_merge($bs[0],$relations[0]),2, $inbound_bs[0]['b_outbound_c_id']),
         ));
 
 	}

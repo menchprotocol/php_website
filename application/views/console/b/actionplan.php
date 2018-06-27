@@ -227,7 +227,7 @@ function c_sort(c_id,level){
             var pid = parseInt($(this).attr('intent-id'));
             var cr_id = parseInt($( this ).attr('data-link-id'));
             var status = parseInt($('.c_outcome_'+pid).attr('current-status'));
-            var prefix = ( level==2 ? '<?= ( $b['c_level']==1 ? $this->lang->line('level_0_icon') : $this->lang->line('level_2_icon')) ?>' : '<?= ( $b['c_level']==1 ? $this->lang->line('level_2_icon') : $this->lang->line('level_3_icon')) ?>' ); //The default for all intents
+            var prefix = ( level==2 ? '<?= ( $b['c_level']==1 ? $this->lang->line('level_0_icon') : '') ?>' : '' ); //The default for all intents
 
             if(status>=1){
 
@@ -1004,7 +1004,7 @@ function add_item(group_id,prefix,current_value){
         }
         */
         echo '<div id="bootcamp-objective" class="list-group">';
-            echo echo_cr($b,$b,$level);
+            echo echo_actionplan($b,$b,$level);
         echo '</div>';
 
         ?>
@@ -1043,7 +1043,7 @@ function add_item(group_id,prefix,current_value){
                 echo '<div id="list-outbound" class="list-group">';
 
                 foreach($intent['c__child_intents'] as $key=>$sub_intent){
-                    echo echo_cr($b,$sub_intent, ($level+1),$b['b_id']);
+                    echo echo_actionplan($b,$sub_intent, ($level+1),$b['b_id']);
                 }
 
                 if(!$b['b_old_format'] || $udata['u_inbound_u_id']==1281){

@@ -1167,7 +1167,7 @@ function echo_score($score){
 }
 
 
-function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
+function echo_actionplan($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
 
     $CI =& get_instance();
     $udata = $CI->session->userdata('user');
@@ -1268,7 +1268,7 @@ function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
     } elseif ($level==3){
 
         //Steps
-        $ui .= '<span class="inline-level inline-level-'.$level.'">'.( $intent['c_status']==1 ? $CI->lang->line('level_'.( $intent['c_level'] ? '2' : '3' ).'_icon').' #'.$intent['cr_outbound_rank'] : '<b><i class="fas fa-pen-square"></i></b>' ).'</span><span id="title_'.$intent['cr_id'].'" class="c_outcome_'.$intent['c_id'].'" current-status="'.$intent['c_status'].'" outbound-rank="'.$intent['cr_outbound_rank'].'" c_complete_url_required="'.($intent['c_complete_url_required']=='t'?1:0).'"  c_complete_notes_required="'.($intent['c_complete_notes_required']=='t'?1:0).'">'.$intent['c_outcome'].'</span> ';
+        $ui .= '<span class="inline-level inline-level-'.$level.'">'.( $intent['c_status']==1 ? ' #'.$intent['cr_outbound_rank'] : '<b><i class="fas fa-pen-square"></i></b>' ).'</span><span id="title_'.$intent['cr_id'].'" class="c_outcome_'.$intent['c_id'].'" current-status="'.$intent['c_status'].'" outbound-rank="'.$intent['cr_outbound_rank'].'" c_complete_url_required="'.($intent['c_complete_url_required']=='t'?1:0).'"  c_complete_notes_required="'.($intent['c_complete_notes_required']=='t'?1:0).'">'.$intent['c_outcome'].'</span> ';
 
     }
 
@@ -1290,7 +1290,7 @@ function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
         $ui .= '<div class="is_step_sortable dropin-box" style="height:1px;">&nbsp;</div>';
         if(isset($intent['c__child_intents']) && count($intent['c__child_intents'])>0){
             foreach($intent['c__child_intents'] as $sub_intent){
-                $ui .= echo_cr($b,$sub_intent,($level+1),$intent['c_id'],$editing_enabled);
+                $ui .= echo_actionplan($b,$sub_intent,($level+1),$intent['c_id'],$editing_enabled);
             }
         }
 

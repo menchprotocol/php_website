@@ -129,7 +129,7 @@ class Console extends CI_Controller {
             $view_data['breadcrumb'] = array(
                 array(
                     'link' => null,
-                    'anchor' => 'Action Plan <span id="hb_2272" class="help_button" intent-id="2272"></span>'.( !$bs[0]['b_old_format'] && !$bs[0]['c_level'] ? ' <a href="#" data-toggle="modal" data-target="#importActionPlan" class="tipbtn"><span class="badge tip-badge" title="Import some part or all of prerequisites, Tasks and/or Outcomes from another Bootcamp you manage" data-toggle="tooltip" data-placement="bottom"><i class="fas fa-download"></i></span></a>' : ''),
+                    'anchor' => 'Action Plan <span id="hb_2272" class="help_button" intent-id="2272"></span>'.( !$bs[0]['b_old_format'] && !$bs[0]['c_level'] && 0 ? ' <a href="#" data-toggle="modal" data-target="#importActionPlan" class="tipbtn"><span class="badge tip-badge" title="Import some part or all of prerequisites, Tasks and/or Outcomes from another Bootcamp you manage" data-toggle="tooltip" data-placement="bottom"><i class="fas fa-download"></i></span></a>' : ''),
                 ),
             );
         }
@@ -142,10 +142,8 @@ class Console extends CI_Controller {
 		
 		//Load views:
 		$this->load->view('console/console_header' , $view_data);
-		$this->load->view('console/b/actionplan' , $view_data);
-		$this->load->view('console/console_footer' , array(
-            'load_view' => 'console/b/frame_import_actionplan',
-        ));
+		$this->load->view('console/b/actionplan_v2' , $view_data);
+		$this->load->view('console/console_footer'); //array('load_view' => 'console/b/frame_import_actionplan')
 		
 	}
 	

@@ -17,17 +17,9 @@ class Bot extends CI_Controller {
     }
 
 
-    function lalala(){
-        echo 'aaa';
-        $this->Db_model->b_create(array(
-            'b_fp_id' => 4, //Assign Mench Facebook Page for our team
-            'b_url_key' => 'sdfsdfsdfsdfsdf',
-            'b_outbound_c_id' => 156,
-            'b_prerequisites' => null,
-            'b_is_parent' => 0,
-        ));
-
-
+    function t($c_id){
+        ini_set('max_execution_time', 8);
+        echo_json($this->Db_model->c_recursive_fetch($c_id));
     }
 
     function url($smallest_i_id=0,$limit=1){

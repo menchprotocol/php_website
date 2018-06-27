@@ -72,17 +72,18 @@ $uri_segment_2 = $this->uri->segment(2);
 
 
                         <li class="extra-toggle"><a href="javascript:void(0);" onclick="$('.extra-toggle').toggle();"><i class="fas fa-ellipsis-h" style="color:#3C4858;"></i> More</a></li>
-                        <li class="extra-toggle" style="display: none;"><a href="/entities/<?= $udata['u_id'] ?>"><span class="icon-left"><i class="fas fa-user-circle"></i></span> My Account</a></li>
+
 
                         <?php if(isset($uenrollment) && count($uenrollment)>0){ ?>
                             <li class="extra-toggle" style="display: none;"><a href="/my/actionplan"><span class="icon-left"><i class="fas fa-check-square"></i></span> Student Hub</a></li>
                         <?php } ?>
 
                         <?php if($udata['u_inbound_u_id']==1281){ ?>
-                            <li class="extra-toggle" style="display: none;"><a href="/cockpit/browse/engagements"><span class="icon-left"><i class="fas fa-tachometer"></i></span> Admin Cockpit</a></li>
+                            <li class="extra-toggle" style="display: none;"><a href="/cockpit/browse/engagements"><span class="icon-left"><i class="fas fa-tachometer"></i></span> Admin Hub</a></li>
                         <?php } ?>
-                        <li class="extra-toggle" style="display: none;"><a href="/logout"><span class="icon-left"><i class="fas fa-power-off"></i></span> Logout</a></li>
 
+                        <li class="extra-toggle" style="display: none;"><a href="/entities/<?= $udata['u_id'] ?>"><span class="icon-left"><i class="fas fa-user-circle"></i></span> My Account</a></li>
+                        <li class="extra-toggle" style="display: none;"><a href="/logout"><span class="icon-left"><i class="fas fa-power-off"></i></span> Logout</a></li>
                     </ul>
                 </div>
 				
@@ -103,7 +104,7 @@ $uri_segment_2 = $this->uri->segment(2);
                     echo '</div>';
                 } elseif($uri_segment_1=='cockpit'){
                     echo '<div class="left-li-title">';
-                    echo '<i class="fas fa-tachometer" style="margin-right:3px;"></i> Admin Cockpit';
+                    echo '<i class="fas fa-tachometer" style="margin-right:3px;"></i> Admin Hub';
                     echo '</div>';
                 } else {
                     //We need this empty placeholder for the collapse menu to work

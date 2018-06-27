@@ -536,7 +536,7 @@ class My extends CI_Controller {
 
                 //Show Action Plan:
                 echo '<div id="bootcamp-objective" class="list-group">';
-                echo echo_cr($b,$b,1,0,false);
+                echo echo_actionplan($b,$b,1,0,false);
                 echo '</div>';
 
                 //Task Expand/Contract all if more than 2
@@ -552,7 +552,7 @@ class My extends CI_Controller {
                 //Tasks List:
                 echo '<div id="list-outbound" class="list-group maxout">';
                 foreach($b['c__child_intents'] as $key=>$sub_intent){
-                    echo echo_cr($b,$sub_intent,2,$b['b_id'],0,false);
+                    echo echo_actionplan($b,$sub_intent,2,$b['b_id'],0,false);
                 }
                 echo '</div>';
 

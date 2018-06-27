@@ -1989,6 +1989,65 @@ WHERE ru.ru_status >= 4
 	}
 
 
+	function c_recursive_fetch($c_id,$recursive_children=null){
+
+	    //Get core data:
+        $immediate_children = array(
+            'infinity_error' => 0,
+            'c_total_c_count' => 0,
+            'c_total_c_hours' => 0,
+            'c_child_c_ids' => array(),
+            'c_child_cs' => array(),
+        );
+
+        if(!$recursive_children){
+            $recursive_children = $immediate_children;
+        }
+
+	    //A recursive function to fetch all child intents for a given intent
+        $child_cs = $this->Db_model->cr_outbound_fetch(array(
+            'cr.cr_inbound_c_id' => $c_id,
+            'cr.cr_status >=' => 0,
+            'c.c_status >=' => 0,
+        ));
+
+        if(count($child_cs)>0){
+            foreach($child_cs as $c){
+                if(in_array($c['c_id'],$recursive_children['c_child_c_ids'])){
+                    //Ooooops, this has an error as it would result in an infinite loop:
+                    $immediate_children['infinity_error'] = 1;
+                } else {
+                    //Fetch children for this intent, if any:
+                    $granchildren = $this->Db_model->c_recursive_fetch($c['c_id'], $immediate_children);
+
+                    //Addup children if any:
+                    $immediate_children['infinity_error'] += $granchildren['infinity_error'];
+                    $immediate_children['c_total_c_count'] += $granchildren['c_total_c_count'];
+                    $immediate_children['c_total_c_hours'] += $granchildren['c_total_c_hours'];
+                    array_push($immediate_children['c_child_c_ids'],$granchildren['c_child_c_ids']);
+                    array_push($immediate_children['c_child_cs'],$granchildren['c_child_cs']);
+                }
+            }
+        }
+
+
+        //Fetch & add this item itself:
+        $cs = $this->Db_model->c_fetch(array(
+            'c.c_id' => $c_id,
+        ));
+        $immediate_children['c_total_c_count'] += 1;
+        $immediate_children['c_total_c_hours'] += $cs[0]['c_time_estimate'];
+        array_push($immediate_children['c_child_c_ids'],intval($c_id));
+        array_push($immediate_children['c_child_cs'],$cs[0]);
+
+        //Flatten array:
+        $result = array();
+        array_walk_recursive($immediate_children['c_child_c_ids'],function($v, $k) use (&$result){ $result[] = $v; });
+        $immediate_children['c_child_c_ids'] = $result;
+
+        //Return data:
+        return $immediate_children;
+    }
 
 
     function algolia_sync($obj,$obj_id=0){
@@ -2184,6 +2243,12 @@ WHERE ru.ru_status >= 4
                 $new_item['c_e_score'] = intval($item['c_e_score']);
                 $new_item['c_outcome'] = $item['c_outcome'];
                 $new_item['c_keywords'] = ( strlen($item['c_trigger_statements'])>0 ? join(' ',json_decode($item['c_trigger_statements'])) : '' );
+
+
+                //See what type of children this has:
+                $child_cs = $this->Db_model->c_recursive_fetch($item['c_id']);
+                $new_item['c_total_c_count'] = $child_cs['c_total_c_count'];
+                $new_item['c_total_c_hours'] = $child_cs['c_total_c_hours'];
 
                 //Fetch all Messages:
                 $messages = $this->Db_model->i_fetch(array(

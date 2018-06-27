@@ -9,7 +9,9 @@
 .navbar {margin-bottom:0; padding:0 !important; height:60px !important; }
 .navbar-right { margin-right:0; margin-top:5px; }
 .nav-open .sidebar { box-shadow:none; }
-.wizard-box{ display:none;}
+.wizard-box{ display:none; }
+.wizard-box p { padding: 0 10px;}
+.wizard-box select { margin-left: 10px; }
 .wizard-box p, .wizard-box li { font-weight: 300;}
 .badge-primary {
     background-color:#fedd16;
@@ -20,6 +22,21 @@
     padding-bottom: 5px;
     margin-top: -3px;
     border:1px solid #FFF;
+}
+
+.review-item{
+    font-size: 0.9em;
+    font-weight: 300;
+    text-transform: uppercase;
+    padding-top:20px;
+    margin-left: 12px;
+}
+.review-item b{
+    font-size: 1.1em;
+    font-weight: bold;
+    text-transform: none;
+    display: block;
+    padding:5px 0 0 0;
 }
 a.badge-primary {
     cursor:pointer;

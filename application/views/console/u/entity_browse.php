@@ -302,6 +302,8 @@ if(!$inbound_u_id){
 //Start fetching related objects:
 $enrollments = $this->Db_model->ru_fetch(array(
     'ru_outbound_u_id' => $inbound_u_id,
+    'ru_parent_ru_id' => 0,
+    'ru_status >=' => 4, //Enrolled
 ), array(
     'ru.ru_id' => 'DESC',
 ), array('b'));
@@ -331,11 +333,11 @@ $outbound_us = $this->Db_model->e_fetch(array(
 $show_tabs = array(
     'list'       => ( count($child_entities)>0 || $entity['u_id']==1326 ? '<li id="nav_list"><a href="#list"><i class="fas fa-at"></i> List</a></li>' : false ),
     'references' => ( !in_array($entity['u_inbound_u_id'],array(0,1278)) ? '<li id="nav_references"><a href="#references"><i class="fas fa-link"></i> References</a></li>' : false ),
-    'coach'      => ( count($b_team_member)>0 ? '<li id="nav_coach"><a href="#coach"><i class="fas fa-user-friends"></i> Coach</a></li>' : false ),
+    'coach'      => ( count($b_team_member)>0 ? '<li id="nav_coach"><a href="#coach"><i class="fas fa-whistle"></i> Coach</a></li>' : false ),
     'student'    => ( count($enrollments)>0 ? '<li id="nav_student"><a href="#student"><i class="fas fa-graduation-cap"></i> Student</a></li>' : false ),
     'payments'   => ( count($payments)>0 && auth(array(1281),0, 0, $entity['u_id']) ? '<li id="nav_payments"><a href="#payments"><i class="fab fa-paypal"></i> Payments</a></li>' : false ),
     'authors'    => ( $entity['u_inbound_u_id']==1326 ? '<li id="nav_authors"><a href="#authors"><i class="fas fa-at"></i> Authors</a></li>' : false ),
-    'content'    => ( !in_array($entity['u_inbound_u_id'],array(0,1278,1326)) ? '<li id="nav_content"><a href="#content"><i class="fas fa-at"></i> Content</a></li>' : false ),
+    'content'    => ( !in_array($entity['u_inbound_u_id'],array(0,1278,1326)) ? '<li id="nav_content"><a href="#content"><i class="fas fa-book"></i> Content</a></li>' : false ),
     //'subscriptions'    => ( !in_array($entity['u_inbound_u_id'],array(0,1278,1326)) ? '<li id="nav_subscriptions"><a href="#subscriptions"><i class="fas fa-hashtag"></i> Subscriptions</a></li>' : false ),
     'intents'    => ( $entity['u_inbound_u_id']==1326 ? '<li id="nav_intents"><a href="#intents"><i class="fas fa-hashtag"></i> Intents</a></li>' : false ),
 );

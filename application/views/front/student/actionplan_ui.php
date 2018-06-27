@@ -316,7 +316,7 @@ if($level==1){
             //Task completion status;
             $this_item_e_status = ( isset($us_data[$this_intent['c_id']]) ? $us_data[$this_intent['c_id']]['e_status'] : -4 );
 
-            //TODO Optimize this based on c_completion_rule value
+            //TODO Optimize this based on c_is_any value
 
         } elseif($level==2){
 
