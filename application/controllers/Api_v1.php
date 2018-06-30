@@ -685,6 +685,44 @@ class Api_v1 extends CI_Controller {
 
     }
 
+    function load_inbound_c(){
+
+        $udata = auth(array(1308,1280),0,$_POST['b_id']);
+        if(!$udata){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Session expired. Login to continue.',
+            ));
+        } elseif(!isset($_POST['c_id']) || intval($_POST['c_id'])<=0){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Intent ID.',
+            ));
+        }
+
+        //Show Potential parent Bootcamps:
+        $parent_bs = $this->Db_model->cr_inbound_fetch(array(
+            'cr.cr_outbound_b_id' => $b['b_id'],
+            'cr.cr_status >=' => 1,
+            'b.b_status >=' => 2, //Published in some way
+        ),array('b'));
+
+
+        //Did we find anything?
+        if(count($parent_bs)>0){
+            echo '<div class="title" style="margin-top:30px;"><h4><b><i class="fas fa-cubes"></i> Parent Bootcamps</b></a></h4></div>';
+            echo '<div class="list-group maxout">';
+            foreach ($parent_bs as $parent_b){
+                echo '<a href="/console/'.$parent_b['b_id'].'/actionplan" class="list-group-item">';
+                echo '<span class="pull-right"><span class="badge badge-primary" style="margin-top:-5px;"><i class="fas fa-chevron-right"></i></span></span>';
+                echo '<i class="fas fa-cubes"></i> ';
+                echo $parent_b['c_outcome'];
+                echo '</a>';
+            }
+            echo '</div>';
+        }
+    }
+
 
     function ru_save_review(){
         if(!isset($_POST['ru_id']) || !isset($_POST['ru_key']) || intval($_POST['ru_id'])<1 || !($_POST['ru_key']==substr(md5($_POST['ru_id'].'r3vi3wS@lt'),0,6))){
@@ -1237,10 +1275,10 @@ class Api_v1 extends CI_Controller {
                 'message' => 'Outcome must be 2 characters or longer.',
             ));
             return false;
-        } elseif(!isset($_POST['c_level']) || !in_array(intval($_POST['c_level']),array(0,1))){
+        } elseif(!isset($_POST['b_is_parent']) || !in_array(intval($_POST['b_is_parent']),array(0,1))){
             echo_json(array(
                 'status' => 0,
-                'message' => 'Outcome must be 2 characters or longer.',
+                'message' => 'Missing Bootcamp type',
             ));
             return false;
 	    }
@@ -1250,7 +1288,6 @@ class Api_v1 extends CI_Controller {
         $intent = $this->Db_model->c_create(array(
             'c_inbound_u_id' => $udata['u_id'],
             'c_outcome' => trim($_POST['c_outcome']),
-            'c_level' => intval($_POST['c_level']),
         ));
         if(intval($intent['c_id'])<=0){
             //Log this error:
@@ -1289,11 +1326,11 @@ class Api_v1 extends CI_Controller {
 
         //Create new Bootcamp:
         $b = $this->Db_model->b_create(array(
-            'b_fp_id' => ( !intval($_POST['c_level']) && in_array($udata['u_id'],$mench_support_team) ? 4 : 0), //Assign Mench Facebook Page for our team
+            'b_fp_id' => ( in_array($udata['u_id'],$mench_support_team) ? 4 : 0 ), //Assign Mench Facebook Page for our team
             'b_url_key' => $generated_key,
             'b_outbound_c_id' => $intent['c_id'],
-            'b_prerequisites' => ( intval($_POST['c_level']) ? null : json_encode($default_class_prerequisites) ),
-            'c_level' => intval($_POST['c_level']),
+            'b_prerequisites' => json_encode($default_class_prerequisites),
+            'b_is_parent' => intval($_POST['b_is_parent']),
         ));
 
         if(intval($b['b_id'])<=0 || intval($b['b_outbound_c_id'])<=0){
@@ -1411,7 +1448,7 @@ class Api_v1 extends CI_Controller {
                 'status' => 0,
                 'message' => 'Invalid Session. Login again to Continue.',
             ));
-        } elseif(!isset($_POST['group_id']) || !in_array($_POST['group_id'],array('b_prerequisites','b_transformations'))){
+        } elseif(!isset($_POST['group_id']) || !in_array($_POST['group_id'],array('b_prerequisites','b_transformations','b_coaching_services'))){
             echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Group ID',
@@ -1750,7 +1787,6 @@ class Api_v1 extends CI_Controller {
                 'c_inbound_u_id' => $udata['u_id'],
                 'c_outcome' => trim($_POST['c_outcome']),
                 'c_time_estimate' => ( $_POST['next_level']>=2 ? '0.05' : '0' ), //3 min default Step
-                'c_level' => $_POST['next_level'], //Either 2 (Task) or 3 (Step)
             ));
 
             //Log Engagement for New Intent:
@@ -1815,225 +1851,6 @@ class Api_v1 extends CI_Controller {
         ));
 	}
 
-	function delete_b_link(){
-
-        $udata = auth(array(1308,1280));
-
-        if(!$udata){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid Session. Refresh the Page to Continue',
-            ));
-            return false;
-        } elseif(!isset($_POST['current_b_id']) || intval($_POST['current_b_id'])<=0){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Current Bootcamp ID',
-            ));
-            return false;
-        } elseif(!isset($_POST['delete_b_id']) || intval($_POST['delete_b_id'])<=0){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Delete Bootcamp ID',
-            ));
-            return false;
-        } elseif(!isset($_POST['delete_cr_id']) || intval($_POST['delete_cr_id'])<=0){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Delete Link ID',
-            ));
-            return false;
-        }
-
-
-        //Validate Bootcamp ID:
-        $inbound_bs = $this->Db_model->b_fetch(array(
-            'b.b_id' => intval($_POST['current_b_id']),
-        ));
-
-        $bs = $this->Db_model->remix_bs(array(
-            'b.b_id' => $_POST['delete_b_id'],
-        ));
-
-        //Validate existing link:
-        $cr_validation = $this->Db_model->cr_outbound_fetch(array(
-            'cr_id' => $_POST['delete_cr_id'],
-            'cr_status >' => 0,
-            'cr_inbound_c_id' => $inbound_bs[0]['b_outbound_c_id'],
-            'cr_outbound_c_id' => $bs[0]['b_outbound_c_id'],
-            'cr_outbound_b_id' => $_POST['delete_b_id'],
-        ));
-
-        if(count($inbound_bs)<1){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid Current Bootcamp ID',
-            ));
-            return false;
-        } elseif(count($bs)<1){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid Delete Bootcamp ID',
-            ));
-            return false;
-        } elseif(count($cr_validation)!=1){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid Deletion Link',
-            ));
-            return false;
-        }
-
-        //All good, delete this link:
-        $this->Db_model->cr_update( $_POST['delete_cr_id'] , array(
-            'cr_inbound_u_id' => $udata['u_id'],
-            'cr_timestamp' => date("Y-m-d H:i:s"),
-            'cr_status' => -1, //Archived
-        ));
-
-        //Log engagement:
-        $this->Db_model->e_create(array(
-            'e_inbound_u_id' => $udata['u_id'],
-            'e_inbound_c_id' => 89, //Intent link archived
-            'e_b_id' => $_POST['current_b_id'],
-            'e_outbound_c_id' => $bs[0]['b_outbound_c_id'],
-            'e_cr_id' => $_POST['delete_cr_id'],
-        ));
-
-        echo_json(array(
-            'status' => 1,
-            'message' => '<i class="fas fa-trash-alt"></i> Deleted',
-            'deleted_hours' => $bs[0]['c__estimated_hours'],
-        ));
-
-    }
-
-	function link_b(){
-
-	    $udata = auth(array(1308,1280));
-
-	    if(!$udata){
-
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid Session. Refresh the Page to Continue',
-            ));
-            return false;
-
-	    } elseif(!isset($_POST['current_b_id']) || intval($_POST['current_b_id'])<=0){
-
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Current Bootcamp ID',
-            ));
-            return false;
-
-	    } elseif(!isset($_POST['new_b_id']) || intval($_POST['new_b_id'])<=0){
-
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Missing New Bootcamp ID',
-            ));
-            return false;
-
-	    }
-
-	    //Validate Bootcamp ID:
-        $inbound_bs = $this->Db_model->b_fetch(array(
-            'b.b_id' => intval($_POST['current_b_id']),
-        ));
-        $outbound_bs = $this->Db_model->b_fetch(array(
-            'b.b_id' => intval($_POST['new_b_id']),
-        ));
-        if(count($inbound_bs)<1){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid Current Bootcamp ID',
-            ));
-            return false;
-        } elseif(count($outbound_bs)<1){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid New Bootcamp ID',
-            ));
-            return false;
-        } elseif(!$inbound_bs[0]['c_level']){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Current Bootcamp is not Multi-Week',
-            ));
-            return false;
-        } elseif($outbound_bs[0]['c_level']){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'New Bootcamp is not Single-Week',
-            ));
-            return false;
-        }
-
-
-	    //Check to make sure not a duplicate link:
-        /*
-	    $current_outbounds = $this->Db_model->cr_outbound_fetch(array(
-            'cr.cr_inbound_c_id' => $inbound_bs[0]['b_outbound_c_id'],
-            'cr.cr_outbound_c_id' => $outbound_bs[0]['b_outbound_c_id'],
-	        'cr.cr_status >=' => 1,
-	    ));
-        if(count($current_outbounds)>0){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Cannot add a Bootcamp more than once. This Bootcamp is already added',
-            ));
-            return false;
-        }
-        */
-
-	    //Create Link:
-	    $relation = $this->Db_model->cr_create(array(
-	        'cr_inbound_u_id' => $udata['u_id'],
-	        'cr_inbound_c_id'  => $inbound_bs[0]['b_outbound_c_id'],
-            'cr_outbound_c_id' => $outbound_bs[0]['b_outbound_c_id'],
-            'cr_outbound_b_id' => $outbound_bs[0]['b_id'],
-	        'cr_outbound_rank' => 1 + $this->Db_model->max_value('v5_intent_links','cr_outbound_rank', array(
-	            'cr_status >=' => 1,
-                'c_status >=' => 1,
-	            'cr_inbound_c_id' => $inbound_bs[0]['b_outbound_c_id'],
-	        )),
-	    ));
-
-
-	    //Log Engagement for New Intent Link:
-	    $this->Db_model->e_create(array(
-	        'e_inbound_u_id' => $udata['u_id'],
-	        'e_text_value' => 'Linked intent ['.$outbound_bs[0]['c_outcome'].'] as a child intent of ['.$inbound_bs[0]['c_outcome'].']',
-	        'e_json' => array(
-	            'input' => $_POST,
-	            'after' => $relation,
-	        ),
-	        'e_inbound_c_id' => 23, //New Intent Link
-            'e_b_id' => $inbound_bs[0]['b_id'],
-            'e_outbound_c_id' => $inbound_bs[0]['b_outbound_c_id'],
-	        'e_cr_id' => $relation['cr_id'],
-	    ));
-
-
-
-	    $relations = $this->Db_model->cr_outbound_fetch(array(
-	        'cr.cr_id' => $relation['cr_id'],
-	    ));
-
-        $bs = $this->Db_model->remix_bs(array(
-            'b.b_id' => $outbound_bs[0]['b_id'],
-        ));
-
-	    //Return result:
-        echo_json(array(
-            'status' => 1,
-            'new_hours' => $bs[0]['c__estimated_hours'],
-            'html' => echo_actionplan($inbound_bs[0],array_merge($bs[0],$relations[0]),2, $inbound_bs[0]['b_outbound_c_id']),
-        ));
-
-	}
 
 	function c_move_c(){
 

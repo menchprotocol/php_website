@@ -1,9 +1,8 @@
 <?php 
 //Calculate office hours:
 $class_settings = $this->config->item('class_settings');
-$child_name = ( $b['c_level'] ? 'Week' : $this->lang->line('level_2_name') );
+$child_name = ( $b['b_is_parent'] ? 'Week' : $this->lang->line('level_2_name') );
 $udata = $this->session->userdata('user');
-$b = ( $b['c_level'] && count($b['c__child_intents'])>0 ? b_aggregate($b) : $b ); //Replace $b with the new aggregated $b
 ?>
 
 <style>
@@ -64,8 +63,11 @@ $( document ).ready(function() {
         ?>
 
 
+
+
         <h3><i class="fas fa-trophy"></i> Skills You Will Gain</h3>
         <div id="b_transformations"><?= ( strlen($b['b_transformations'])>0 ? '<ol><li>'.join('</li><li>',json_decode($b['b_transformations'])).'</li></ol>' : 'Not Set Yet' ) ?></div>
+
 
 
         <h3><i class="fas fa-shield-check"></i> Prerequisites</h3>
@@ -77,7 +79,7 @@ $( document ).ready(function() {
         <h3><i class="fas fa-flag"></i> Action Plan</h3>
         <div id="c_tasks_list">
             <?php
-            if($b['c_level']){
+            if($b['b_is_parent']){
 
                 foreach($b['c__child_intents'] as $key=>$b7d){
 
@@ -136,17 +138,15 @@ $( document ).ready(function() {
                 echo '<div class="list-group actionplan_list">';
                 $counter = 0;
                 foreach($b['c__child_intents'] as $child_intent){
-                    if($child_intent['c_status']>=1){
-                        if($counter==$class_settings['landing_page_visible']){
-                            echo '<a href="javascript:void(0);" onclick="$(\'.show_full_list\').toggle();" class="show_full_list list-group-item"><i class="fas fa-plus-circle" style="margin: 0 4px 0 2px; color:#999;"></i> See All '.$child_name.'s</a>';
-                        }
-                        echo '<li class="list-group-item '.( $counter>=$class_settings['landing_page_visible'] ? 'show_full_list" style="display:none;"' : '"' ).'>';
-                        //echo '<span class="pull-right">'.($child_intent['c__estimated_hours']>0 ? echo_estimated_time($child_intent['c__estimated_hours'],1) : '').'</span>';
-                        echo ( $b['c_level'] ? $this->lang->line('level_0_icon') : $this->lang->line('level_2_icon') ).' ';
-                        echo $child_name.' '.$child_intent['cr_outbound_rank'].': '.$child_intent['c_outcome'];
-                        echo '</li>';
-                        $counter++;
+                    if($counter==$class_settings['landing_page_visible']){
+                        echo '<a href="javascript:void(0);" onclick="$(\'.show_full_list\').toggle();" class="show_full_list list-group-item"><i class="fas fa-plus-circle" style="margin: 0 4px 0 2px; color:#999;"></i> See All '.$child_name.'s</a>';
                     }
+                    echo '<li class="list-group-item '.( $counter>=$class_settings['landing_page_visible'] ? 'show_full_list" style="display:none;"' : '"' ).'>';
+                    //echo '<span class="pull-right">'.($child_intent['c__estimated_hours']>0 ? echo_estimated_time($child_intent['c__estimated_hours'],1) : '').'</span>';
+                    echo $this->lang->line('level_2_icon').' ';
+                    echo $child_name.' '.$child_intent['cr_outbound_rank'].': '.$child_intent['c_outcome'];
+                    echo '</li>';
+                    $counter++;
                 }
                 echo '</div>';
 
@@ -179,9 +179,13 @@ $( document ).ready(function() {
             }
 
             echo '</div>';
+
+            if(strlen($b['b_coaching_services'])>0){ ?>
+                <h3><i class="fas fa-concierge-bell"></i> Coaching Services</h3>
+                <div id="b_coaching_services"><?= '<ol><li>'.join('</li><li>',json_decode($b['b_coaching_services'])).'</li></ol>' ?></div>
+            <?php }
         }
         ?>
-
         <br />
     </div>
 

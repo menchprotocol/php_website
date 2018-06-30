@@ -1038,7 +1038,7 @@ class My extends CI_Controller {
 
         } elseif($_POST['ru_support_package']==2){
 
-            //They requested to Book a Free Consultation Call:
+            //They requested to Book their Free Coaching Call:
             $us_coach = $this->Db_model->u_fetch(array(
                 'u_id' => $_POST['ru_inbound_u_id'],
             ), array('u_booking_x_id'));
@@ -1050,7 +1050,7 @@ class My extends CI_Controller {
                 $this->Db_model->e_create(array(
                     'e_inbound_u_id' => $enrollments[0]['ru_outbound_u_id'],
                     'e_outbound_u_id' => $_POST['ru_inbound_u_id'],
-                    'e_inbound_c_id' => 7098, //Redirected to Book Free Consultation Call
+                    'e_inbound_c_id' => 7098, //Redirected to Book Free Coaching Call
                     'e_text_value' => 'To book a call with ['.$us_coach[0]['u_full_name'].'] as their coach',
                     'e_b_id' => $enrollments[0]['b_id'],
                     'e_r_id' => $_POST['r_id'],

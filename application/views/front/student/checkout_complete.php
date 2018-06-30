@@ -1,6 +1,6 @@
 <?php
 //Expand Prerequisites:
-$b = ( $enrollment['c_level'] ? b_aggregate($enrollment) : $enrollment );
+$b = $enrollment;
 $pre_req_array = prep_prerequisites($b);
 ?>
 <script>
@@ -252,7 +252,7 @@ $(document).ready(function() {
 
 
 <div class="wizard-box" id="date_selection">
-    <p>Choose the best <?= $b['b__week_count'] ?>-week timeframe for you to join and <?= strtolower($b['c_outcome']) ?>:</p>
+    <p>Choose your <?= $b['b__week_count'] ?>-week class:</p>
     <div id="select_dates"></div>
     <br /><br /><br />
 </div>
@@ -261,7 +261,7 @@ $(document).ready(function() {
 
 
 <div class="wizard-box" id="coach_selection">
-    <p>Choose your coach by checking each person's biography, LinkedIn and other social profiles:</p>
+    <p>Choose your coach:</p>
     <div class="row">
         <?php
         if($b['b_offers_coaching']){
@@ -289,7 +289,7 @@ $(document).ready(function() {
 
 
 <div class="wizard-box" id="networking_selection">
-    <p>Choose your desired level of interaction and collaboration with fellow classmates:</p>
+    <p>Choose interaction level with your classmates:</p>
     <div class="row">
         <?php
         $ru_network_levels = echo_status('ru_network_level');
@@ -318,12 +318,12 @@ $(document).ready(function() {
 
 
 <div class="wizard-box" id="confirm_details">
-    <p>Review and confirm your enrollment details:</p>
+    <p>Review and confirm your enrollment:</p>
 
-    <div class="review-item">Target Outcome<b><?= $b['c_outcome'] ?></b></div>
+    <div class="review-item">Target Outcome: <b><?= $b['c_outcome'] ?></b></div>
     <div class="review-item">Your Commitment: <b><?= $b['b__week_count'].' Week'.echo__s($b['b__week_count']).' @ '.echo_hours(($b['c__estimated_hours']/$b['b__week_count']),false).'/Week' ?></b></div>
     <div class="review-item">Class Dates: <b id="class_dates"></b></div>
-    <div class="review-item">Classmate Interactions: <b id="networking_level"></b></div>
+    <div class="review-item">Classmate Interaction Level: <b id="networking_level"></b></div>
     <div class="review-item">Support Package: <b id="confirm_support"></b></div>
     <br />
 </div>

@@ -32,7 +32,3 @@ $lang['obj_us_name'] = 'Task Status';
 $lang['obj_ba_name'] = 'Bootcamp Team';
 $lang['obj_fp_name'] = 'Facebook Page';
 $lang['obj_fs_name'] = 'Facebook Page Admin';
-
-//None Database Objects:
-$lang['obj_ex_name'] = 'Intent Completion Rule';
-$lang['obj_df_name'] = 'Bootcamp Difficulty Level';

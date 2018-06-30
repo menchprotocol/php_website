@@ -142,7 +142,7 @@ class Console extends CI_Controller {
 		
 		//Load views:
 		$this->load->view('console/console_header' , $view_data);
-		$this->load->view('console/b/actionplan_v2' , $view_data);
+		$this->load->view('console/b/actionplan' , $view_data);
 		$this->load->view('console/console_footer'); //array('load_view' => 'console/b/frame_import_actionplan')
 		
 	}

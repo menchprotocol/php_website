@@ -687,11 +687,11 @@ WHERE ru.ru_status >= 4
 		return $this->db->affected_rows();
 	}
 
-    function i_replicate($u_id,$c__messages,$c_id){
-        //This function strips and copies all $c__messages to $c_id recorded as $u_id
+    function i_replicate($u_id,$c_messages,$c_id){
+        //This function strips and copies all $c_messages to $c_id recorded as $u_id
         $newly_created_messages = array();
 
-        foreach($c__messages as $i){
+        foreach($c_messages as $i){
 
             if($i['i_status']<=0){
                 continue; //Only do active messages, should not happen...
@@ -1419,15 +1419,7 @@ WHERE ru.ru_status >= 4
 	
 	function b_create($insert_columns){
 
-        if(missing_required_db_fields($insert_columns,array('b_outbound_c_id','b_url_key'))){
-            return false;
-        }
-
-        //TODO this is a hack until b_is_parent is removed:
-        if(isset($insert_columns['c_level'])){
-            $insert_columns['b_is_parent'] = $insert_columns['c_level'];
-            unset($insert_columns['c_level']);
-        } elseif(!isset($insert_columns['b_is_parent'])){
+        if(missing_required_db_fields($insert_columns,array('b_outbound_c_id','b_url_key','b_is_parent'))){
             return false;
         }
 
@@ -2138,9 +2130,8 @@ WHERE ru.ru_status >= 4
                 $new_item['b_status'] = intval($item['b_status']);
                 $new_item['b_old_format'] = intval($item['b_old_format']);
                 $new_item['c_b_outcome'] = $item['c_outcome'];
-                $new_item['c_level'] = intval($item['c_level']);
                 $new_item['b_e_score'] = intval($item['b_e_score']);
-                $new_item['b_is_parent'] = intval($item['c_level']); //TODO Remove later...
+                $new_item['b_is_parent'] = intval($item['b_is_parent']);
                 $new_item['b_inbound_u_id'] = intval($item['u_id']);
                 $new_item['b_keywords'] = '';
 
@@ -2151,6 +2142,12 @@ WHERE ru.ru_status >= 4
                 if(strlen($item['b_transformations'])>0){
                     $new_item['b_keywords'] .= join(' ',json_decode($item['b_transformations'])).' ';
                 }
+
+                if(strlen($item['b_coaching_services'])>0){
+                    $new_item['b_keywords'] .= join(' ',json_decode($item['b_coaching_services'])).' ';
+                }
+
+
 
                 //Fetch all text messages for description:
                 $i_messages = $this->Db_model->i_fetch(array(

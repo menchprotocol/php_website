@@ -169,7 +169,7 @@ $(document).ready(function() {
             displayKey: function(suggestion) { return "" },
             templates: {
                 suggestion: function(suggestion) {
-                    return '<i class="fas '+( parseInt(suggestion.c_level)==0 ? 'fa-cube' : 'fa-cubes' )+'"></i> '+ suggestion.c_b_outcome;
+                    return '<i class="fas '+( parseInt(suggestion.b_is_parent)==0 ? 'fa-cube' : 'fa-cubes' )+'"></i> '+ suggestion.c_b_outcome;
                 },
             }
         },

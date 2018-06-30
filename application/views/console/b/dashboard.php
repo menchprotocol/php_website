@@ -28,7 +28,7 @@ echo '<div id="marketplace_b_url" style="display:none;">'.$website['url'].$b['b_
 
 <?php
 echo '<div class="dash-label"><span class="icon-left"><i class="fas fa-cube"></i></span> '.$b['b__week_count'].' Week'.echo__s($b['b__week_count']).'</div>';
-echo '<div class="dash-label"><span class="icon-left"><i class="fas fa-clock"></i></span> '.echo_hours($b['c__estimated_hours']/(( $b['c_level'] && count($b['c__child_intents'])>0 ? count($b['c__child_intents']) : 1 ))).'/Week</div>';
+echo '<div class="dash-label"><span class="icon-left"><i class="fas fa-clock"></i></span> '.echo_hours($b['c__estimated_hours']/(( $b['b_is_parent'] && count($b['c__child_intents'])>0 ? count($b['c__child_intents']) : 1 ))).'/Week</div>';
 //Show all intents:
 $all_intents =  ( isset($b['c__child_count']) ? $b['c__child_count'] : 0 ) + ( isset($b['c__child_child_count']) ? $b['c__child_child_count'] : 0 );
 echo '<div class="dash-label"><span class="icon-left"><i class="fas fa-hashtag"></i></span> ' .$all_intents. ' Intent' . echo__s($all_intents) . '</div>';
@@ -88,37 +88,6 @@ echo '</div>';
 <div style="margin-top:-5px;">Bootcamp Status: <?= echo_status('b',$b['b_status'],0,'right') ?></div>
 
 
-
-
-
-
-<?php
-if(!$b['c_level']){
-
-
-    //Show Potential parent Bootcamps:
-    $parent_bs = $this->Db_model->cr_inbound_fetch(array(
-        'cr.cr_outbound_b_id' => $b['b_id'],
-        'cr.cr_status >=' => 1,
-        'b.b_status >=' => 2, //Published in some way
-    ),array('b'));
-
-
-    //Did we find anything?
-    if(count($parent_bs)>0){
-        echo '<div class="title" style="margin-top:30px;"><h4><b><i class="fas fa-cubes"></i> Parent Bootcamps</b></a></h4></div>';
-        echo '<div class="list-group maxout">';
-        foreach ($parent_bs as $parent_b){
-            echo '<a href="/console/'.$parent_b['b_id'].'/actionplan" class="list-group-item">';
-            echo '<span class="pull-right"><span class="badge badge-primary" style="margin-top:-5px;"><i class="fas fa-chevron-right"></i></span></span>';
-            echo '<i class="fas fa-cubes"></i> ';
-            echo $parent_b['c_outcome'];
-            echo '</a>';
-        }
-        echo '</div>';
-    }
-}
-?>
 
 
 

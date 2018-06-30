@@ -567,7 +567,7 @@ if(!isset($intents[0])){
 
 
 
-<div class="iphone-title"><?= $this->lang->line('level_'.( $level<=1 ? $bs[0]['c_level'] : $level ).'_icon').' '.$this->lang->line('level_'.( $level<=1 ? $bs[0]['c_level'] : $level ).'_name').': '.$intents[0]['c_outcome'] ?></div>
+<div class="iphone-title"><i class="fas fa-hashtag"></i> <?= $intents[0]['c_outcome'] ?></div>
 
 <ul class="nav nav-tabs iphone-nav-tabs">
     <li role="presentation" class="nav_1 active"><a href="#messages-<?= $c_id ?>-1"><?= echo_status('i',1, false, null) ?></a></li>
@@ -586,14 +586,13 @@ if(!isset($intents[0])){
     $i_desc = echo_status('i');
     echo '<div class="ix-tip all_msg msg_1">';
     echo '<i class="fas fa-info-circle"></i> ';
-    echo str_replace('item',$this->lang->line('level_'.( $level<=1 ? $bs[0]['c_level'] : $level ).'_name'),$i_desc[1]['s_desc']).'.';
+    echo $i_desc[1]['s_desc'].'.';
     if($level==2){
         echo ' <a id="simulate_'.$c_id.'" href="javascript:void(0)" onclick="tree_message('.$c_id.','.$udata['u_id'].')" data-toggle="tooltip" title="Simulate messages sent to students when Task starts" data-placement="bottom">Send Test Message <i class="fas fa-mobile"></i></a>';
     }
     echo '</div>';
-    echo '<div class="ix-tip all_msg msg_2 hidden"><i class="fas fa-info-circle"></i> '.str_replace('item',$this->lang->line('level_'.( $level<=1 ? $bs[0]['c_level'] : $level ).'_name'),$i_desc[2]['s_desc']).'.</div>';
-
-    echo '<div class="ix-tip all_msg msg_3 hidden"><i class="fas fa-info-circle"></i> '.str_replace('item',$this->lang->line('level_'.( $level<=1 ? $bs[0]['c_level'] : $level ).'_name'),$i_desc[3]['s_desc']).'.</div>';
+    echo '<div class="ix-tip all_msg msg_2 hidden"><i class="fas fa-info-circle"></i> '.$i_desc[2]['s_desc'].'.</div>';
+    echo '<div class="ix-tip all_msg msg_3 hidden"><i class="fas fa-info-circle"></i> '.$i_desc[3]['s_desc'].'.</div>';
 
     $message_count_1 = 0;
     $message_count_2 = 0;

@@ -535,50 +535,7 @@ function mime_type($mime){
     }
 }
 
-function b_aggregate($b,$skip_parent=false){
 
-    //Aggregate this from child-Bootcamps:
-    $b_agg = array(
-        'b_prerequisites'   => ( strlen($b['b_prerequisites'])>0 && !$skip_parent ? json_decode($b['b_prerequisites']) : array() ),
-        'b_transformations' => ( strlen($b['b_transformations'])>0 && !$skip_parent ? json_decode($b['b_transformations']) : array() ),
-    );
-
-    $CI =& get_instance();
-
-    //Fetch all child Bootcamp details:
-    foreach($b['c__child_intents'] as $b7d){
-
-        //Fetch Bootcamp URL key:
-        $bs = $CI->Db_model->b_fetch(array(
-            'b.b_id' => $b7d['cr_outbound_b_id'],
-        ));
-
-        if(count($bs)<1){
-            continue;
-        }
-
-        if(strlen($bs[0]['b_transformations'])>0){
-            foreach (json_decode($bs[0]['b_transformations']) as $item){
-                if(!in_array($item,$b_agg['b_transformations'])){
-                    array_push($b_agg['b_transformations'],$item);
-                }
-            }
-        }
-        if(strlen($bs[0]['b_prerequisites'])>0){
-            foreach (json_decode($bs[0]['b_prerequisites']) as $item){
-                if(!in_array($item,$b_agg['b_prerequisites'])){
-                    array_push($b_agg['b_prerequisites'],$item);
-                }
-            }
-        }
-    }
-
-    //Encode like original data:
-    $b['b_transformations'] = ( count($b_agg['b_transformations'])>0 ? json_encode($b_agg['b_transformations']) : null);
-    $b['b_prerequisites'] = ( count($b_agg['b_prerequisites'])>0 ? json_encode($b_agg['b_prerequisites']) : null);
-
-    return $b;
-}
 
 
 function prep_prerequisites($b){
@@ -703,34 +660,44 @@ function b_progress($b){
 
 
 
-    if(!$b['c_level'] || 1){
-        //Prerequisites
-        $estimated_minutes = 30;
-        $progress_possible += $estimated_minutes;
-        $e_status = ( strlen($b['b_prerequisites'])>0 ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
-        $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
-        array_push( $checklist , array(
-            'href' => '/console/'.$b['b_id'].'/actionplan#prerequisites',
-            'anchor' => '<b>Set 1 or more Prerequisites</b> for your Bootcamp in Action Plan',
-            'e_status' => $e_status,
-            'time_min' => $estimated_minutes,
-        ));
+    //Prerequisites
+    $estimated_minutes = 30;
+    $progress_possible += $estimated_minutes;
+    $e_status = ( strlen($b['b_prerequisites'])>0 ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
+    $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
+    array_push( $checklist , array(
+        'href' => '/console/'.$b['b_id'].'/actionplan#prerequisites',
+        'anchor' => '<b>Set 1 or more Prerequisites</b> for your Bootcamp in Action Plan',
+        'e_status' => $e_status,
+        'time_min' => $estimated_minutes,
+    ));
 
 
-        //Skills You Will Gain
-        $estimated_minutes = 30;
+    //Skills You Will Gain
+    $estimated_minutes = 30;
+    $progress_possible += $estimated_minutes;
+    $e_status = ( strlen($b['b_transformations'])>0 ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
+    $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
+    array_push( $checklist , array(
+        'href' => '/console/'.$b['b_id'].'/actionplan#skills',
+        'anchor' => '<b>Define Skills You Will Gain</b> in Action Plan',
+        'e_status' => $e_status,
+        'time_min' => $estimated_minutes,
+    ));
+
+    //Coaching Services
+    if($b['b_offers_coaching']){
+        $estimated_minutes = 50;
         $progress_possible += $estimated_minutes;
-        $e_status = ( strlen($b['b_transformations'])>0 ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
+        $e_status = ( strlen($b['b_coaching_services'])>0 ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
         $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
         array_push( $checklist , array(
-            'href' => '/console/'.$b['b_id'].'/actionplan#skills',
-            'anchor' => '<b>Define Skills You Will Gain</b> in Action Plan',
+            'href' => '/console/'.$b['b_id'].'/actionplan#services',
+            'anchor' => '<b>Define Coaching Services</b> in Action Plan',
             'e_status' => $e_status,
             'time_min' => $estimated_minutes,
         ));
     }
-
-
 
 
 

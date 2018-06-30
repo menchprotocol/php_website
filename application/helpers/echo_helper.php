@@ -138,7 +138,7 @@ function echo_ru($ru){
     echo '</span>';
 
     //Regular section:
-    echo $CI->lang->line('level_'.$ru['c_level'].'_icon').' '.$ru['c_outcome'];
+    echo $CI->lang->line('level_'.$ru['b_is_parent'].'_icon').' '.$ru['c_outcome'];
 
     echo '</div>';
 }
@@ -160,7 +160,7 @@ function echo_ba($ba){
     echo '</span>';
 
     //Regular section:
-    echo $CI->lang->line('level_'.$ba['c_level'].'_icon').' '.$ba['c_outcome'];
+    echo $CI->lang->line('level_'.$ba['b_is_parent'].'_icon').' '.$ba['c_outcome'];
 
     echo '</div>';
 }
@@ -226,13 +226,17 @@ function echo_content_url($x_clean_url,$x_type){
     }
 }
 
-function echo_embed($url,$full_message,$require_image=false,$return_array=false){
+function echo_embed($url,$full_message=null,$require_image=false,$return_array=false){
 
     //$require_image is for Finding the cover photo in YouTube content
 
     $clean_url = null;
     $embed_code = null;
     $prefix_message = null;
+
+    if(!$full_message){
+        $full_message = $url;
+    }
 
     //See if $url has a valid embed video in it, and transform it if it does:
     if(substr_count($url,'youtube.com/watch?v=')==1 || substr_count($url,'youtu.be/')==1 || substr_count($url,'youtube.com/embed/')==1){
@@ -712,7 +716,7 @@ function echo_diy($b){
     <div class="dash-label"><span class="icon-left"><i class="fas fa-shield-alt"></i></span> Curated from Industry Experts</div>
     <div class="dash-label"><span class="icon-left"><i class="fas fa-clock"></i></span> ~<?= echo_hours(($b['c__estimated_hours']/$b['b__week_count']),false) ?>/Week to Complete</div>
     <!--<div class="dash-label"><span class="icon-left"><i class="fas fa-comments"></i></span> Peer Chat & Networking</div>-->
-    <div class="dash-label"><span class="icon-left"><i class="fas fa-bell"></i></span> Notification & Reminders</div>
+    <div class="dash-label"><span class="icon-left"><i class="fas fa-comments"></i></span> Peer Networking Practice</div>
     <?php
 }
 
@@ -799,7 +803,7 @@ function echo_package($b,$is_diy,$is_landing_page,$enrollment=array()){
         <div class="price-box">
             <i class="fas fa-user-friends"></i>
             <h3>1-on-1 Coaching</h3>
-            <span id="p_name_2" data-price="<?= $coaching_price ?>" class="hidden">Free Consultation Call<!-- For Final Confirmation Text, injected by JS --></span>
+            <span id="p_name_2" data-price="<?= $coaching_price ?>" class="hidden">Do It Yourself + 1 Free Coaching Call​<!-- For Final Confirmation Text, injected by JS --></span>
             <?= ( $b['b_offers_diy'] && !count($enrollment) ? '<p class="bold-box">Everything in Do It Yourself plus:</p>' : '' ) ?>
 
 
@@ -809,18 +813,29 @@ function echo_package($b,$is_diy,$is_landing_page,$enrollment=array()){
 
                 <div class="dash-label"><span class="icon-left"><i class="fas fa-hands-helping"></i></span> Team-Up with an Industry Expert</div>
                 <div class="dash-label"><span class="icon-left"><i class="fas fa-whistle"></i></span> <?= echo_hours($b['b_weekly_coaching_hours']*$b['b__week_count'], false, true) ?> Coaching in <?= $b['b__week_count'].' Week'.echo__s($b['b__week_count']) ?></div>
-                <div class="dash-label"><span class="icon-left"><i class="fas fa-route"></i></span> Personalized Tasks & Feedback</div>
+
+
+
+                <?php if(strlen($b['b_coaching_services'])>0){
+                    $service_count = count(json_decode($b['b_coaching_services']));
+                    ?>
+                    <div class="dash-label"><span class="icon-left"><i class="fas fa-concierge-bell"></i></span> <span title="Your coach will offer you <?= ( $service_count==1 ? '' : 'these '.$service_count.' services: ' ).strip_tags(join(', ',json_decode($b['b_coaching_services']))) ?>" data-toggle="tooltip" data-placement="top"><?= $service_count ?> Coaching Service<?= echo__s($service_count) ?> <i class="fas fa-info-circle"></i></span></div>
+                <?php } else { ?>
+                    <div class="dash-label"><span class="icon-left"><i class="fas fa-route"></i></span> Personalized Tasks & Feedback</div>
+                <?php } ?>
+
+
                 <!--<div class="dash-label"><span class="icon-left"><i class="fas fa-lightbulb"></i></span> Weekly Brainstorming Calls</div>
                 <div class="dash-label"><span class="icon-left"><i class="fab fa-facebook-messenger"></i></span> 1-on-1 Chat & Email Support</div>-->
 
-                <div class="dash-label"><span class="icon-left"><i class="fas fa-smile"></i></span> <a href="https://support.mench.com/hc/en-us/articles/115002080031" target="_blank" style="text-decoration: underline !important;"><?= ($b['b__week_count']+$b['b_guarantee_weeks']) ?> Week Outcome Guarantee</a> <i class="fas fa-info-circle" title="We guarantee you will <?= strtolower($b['c_outcome']) . ( $b['b_guarantee_weeks']>0 ? ' within '.$b['b_guarantee_weeks'].' week'.echo__s($b['b_guarantee_weeks']).' after the end of this '.$b['b__week_count'].' week Bootcamp' : '') ?> as long as you complete all weekly tasks assigned to you by your coach. You will receive a full refund if you do the work but do not <?= strtolower($b['c_outcome']) ?>. Click to learn more." data-toggle="tooltip" data-placement="left"></i></div>
+                <div class="dash-label"><span class="icon-left"><i class="fas fa-smile"></i></span> <a href="https://support.mench.com/hc/en-us/articles/115002080031" target="_blank" style="text-decoration: underline !important; font-size:1em !important;" title="We guarantee you will <?= strtolower($b['c_outcome']) . ( $b['b_guarantee_weeks']>0 ? ' within '.$b['b_guarantee_weeks'].' week'.echo__s($b['b_guarantee_weeks']).' after the end of this '.$b['b__week_count'].' week Bootcamp' : '') ?> as long as you complete all weekly tasks assigned to you by your coach. You will receive a full refund if you do the work but do not <?= strtolower($b['c_outcome']) ?>. Click to learn more." data-toggle="tooltip" data-placement="top"><?= ($b['b__week_count']+$b['b_guarantee_weeks']) ?> Week Outcome Guarantee <i class="fas fa-info-circle"></i></a></div>
 
 
                 <?php if(!count($enrollment)){ ?>
-                <div class="dash-label"><span class="icon-left"><i class="fas fa-dollar-sign"></i></span> <?= ( $b['b_offers_deferred'] ? 'Starting from $'.number_format($deferred_deposit,0).' USD' : 'A 1-time Payment of $'.number_format($coaching_price,0).' USD') //After your free strategy session if you decided that coaching is the right support framework for you, then you get to choose to pay either $'.$coaching_price.' up-front as full payment OR pay a non-refundable deposit of $'.$deferred_deposit.' USD up-front and $'.$deferred_remainder.' USD later from '.($b['b_deferred_payback']*100).'% of each paycheck when (and only if) you '.strtolower($b['c_outcome']).' ?></div>
+                <div class="dash-label"><span class="icon-left"><i class="fas fa-dollar-sign"></i></span> <?= ( $b['b_offers_deferred'] ? 'Starting from $'.number_format($deferred_deposit/$b['b__week_count'],0).' per Week' : 'A 1-time Payment of $'.number_format($coaching_price,0).' USD') //After your free strategy session if you decided that coaching is the right support framework for you, then you get to choose to pay either $'.$coaching_price.' up-front as full payment OR pay a non-refundable deposit of $'.$deferred_deposit.' USD up-front and $'.$deferred_remainder.' USD later from '.($b['b_deferred_payback']*100).'% of each paycheck when (and only if) you '.strtolower($b['c_outcome']).' ?></div>
                 <?php } ?>
 
-                <div class="dash-label"><span class="icon-left"><i class="fas fa-gift"></i></span> Free Consultation Call</div>
+                <div class="dash-label"><span class="icon-left"><i class="fas fa-gift"></i></span> First Call Free (No Credit Card)​</div>
 
             </div>
 
@@ -828,7 +843,7 @@ function echo_package($b,$is_diy,$is_landing_page,$enrollment=array()){
             <?php if(count($enrollment)){ ?>
                 <a href="/<?= $b['b_url_key'] ?>/pay?u_email=shervin@mench.com&payment=<?= $coaching_price ?>" class="btn btn-primary"><?= 'Pay $'.$coaching_price.' USD'.( $b['b_offers_deferred'] ? ' Up-front' : ''  ).' <i class="fas fa-chevron-right"></i>' ?></a>
             <?php } else { ?>
-            <a <?= ( $is_landing_page ? 'href="/'.$b['b_url_key'].'/enroll?package_id=2" class="btn btn-primary"' : 'href="javascript:void(0);" onclick="set_package(2);"' ) ?>><?= ( $b['b_requires_assessment'] && $is_landing_page ? 'Continue' : 'Book Free Consultation' ) ?> <i class="fas fa-chevron-right"></i></a>
+            <a <?= ( $is_landing_page ? 'href="/'.$b['b_url_key'].'/enroll?package_id=2" class="btn btn-primary"' : 'href="javascript:void(0);" onclick="set_package(2);"' ) ?>><?= ( $b['b_requires_assessment'] && $is_landing_page ? 'Continue' : 'Book Free Coaching Call' ) ?> <i class="fas fa-chevron-right"></i></a>
             <?php } ?>
 
 
@@ -840,7 +855,16 @@ function echo_package($b,$is_diy,$is_landing_page,$enrollment=array()){
 
             <?php } ?>
 
+
+            <?php if(!$is_landing_page){ ?>
+
+                <div style="font-size:0.9em; margin-top:15px; font-weight: 300;"><i class="fas fa-lightbulb" style="margin: 0 2px;"></i> <?= echo_embed('https://www.youtube.com/watch?v=kngyyeMel5c', 'Tip by Eric Schmidt [Ex-Google-CEO]: https://www.youtube.com/watch?v=kngyyeMel5c'); ?></div>
+
+            <?php } ?>
+
         </div>
+
+
         <?= ( !$is_landing_page && !count($enrollment) ? '</div>' : '' ) ?>
         <?php
     }
@@ -1107,7 +1131,7 @@ function echo_estimated_time($c_time_estimate,$show_icon=1,$micro=false,$c_id=0,
 
         if($c_id){
 
-            $ui .= '<span class="slim-time'.( $level<=2?' hours_level_'.$level:'').( $c_status==1 ? '': ' crossout').'" id="t_estimate_'.$c_id.'" current-hours="'.$c_time_estimate.'">'.echo_hours( $c_time_estimate,true).'</span>';
+            $ui .= '<span class="slim-time'.( $level<=2?' hours_level_'.$level:'').'" id="t_estimate_'.$c_id.'" current-hours="'.$c_time_estimate.'">'.echo_hours( $c_time_estimate,true).'</span>';
             $ui .= ' <i class="fas fa-clock"></i>';
 
         } else {
@@ -1171,12 +1195,7 @@ function echo_actionplan($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=tru
 
     $CI =& get_instance();
     $udata = $CI->session->userdata('user');
-    $clean_title = preg_replace("/[^A-Za-z0-9 ]/", "", $intent['c_outcome']);
-    $clean_title = (strlen($clean_title)>0 ? $clean_title : 'This Intent');
-    $default_time = ( $intent['c_level'] ? 0 : 0.05 );
-    $intent['c__estimated_hours'] = ( isset($intent['c__estimated_hours']) ? $intent['c__estimated_hours'] : $intent['c_time_estimate'] );
-    $intent['c__estimated_hours'] = ( $level>1 && $intent['c__estimated_hours']==0 ? $default_time : $intent['c__estimated_hours'] );
-    $child_enabled = ((isset($intent['c__child_intents']) && count($intent['c__child_intents'])>0) || !isset($b['b_old_format']) || ($udata['u_inbound_u_id']==1281 && $b['b_old_format']));
+    $child_cs = $CI->Db_model->c_recursive_fetch($intent['c_id']);
 
     if(!isset($intent['c__messages'])){
         //Fetch this:
@@ -1184,11 +1203,6 @@ function echo_actionplan($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=tru
             'i_status >' => 0,
             'i_outbound_c_id' => $intent['c_id'],
         ));
-    }
-
-    if(!$editing_enabled && $intent['c_status']<1){
-        //Do not show drafting items in read-only mode:
-        return false;
     }
 
     if($level==1){
@@ -1202,26 +1216,24 @@ function echo_actionplan($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=tru
 
         //CHANGE WITH CAUTION!
 
-        $ui = '<div id="cr_'.$intent['cr_id'].'" data-link-id="'.$intent['cr_id'].'" data-b-id="'.$intent['cr_outbound_b_id'].'" intent-id="'.$intent['c_id'].'" class="list-group-item '.( $level>2 ? 'is_step_sortable' : 'is_sortable' ).' intent_line_'.$intent['c_id'].'">';
+        $ui = '<div id="cr_'.$intent['cr_id'].'" data-link-id="'.$intent['cr_id'].'" intent-id="'.$intent['c_id'].'" class="list-group-item '.( $level>2 ? 'is_step_sortable' : 'is_sortable' ).' intent_line_'.$intent['c_id'].'">';
 
     }
 
 
 
     //Right content
-    $ui .= '<span class="pull-right maplevel'.$intent['c_id'].'" level-id="'.$intent['c_level'].'" parent-intent-id="'.$parent_c_id.'" style="'.( $level<3 ? 'margin-right: 8px;' : '' ).'">';
-
-        //Enable total hours/Task reporting...
-        if($level<=2){
-            $ui .= echo_estimated_time($intent['c__estimated_hours'],1,1, $intent['c_id'], $level, $intent['c_status']);
-        } else {
-            $ui .= echo_estimated_time($intent['c_time_estimate'],1,1, $intent['c_id'], $level, $intent['c_status']);
-        }
+    $ui .= '<span class="pull-right maplevel'.$intent['c_id'].'" parent-intent-id="'.$parent_c_id.'" style="'.( $level<3 ? 'margin-right: 8px;' : '' ).'">';
 
 
-        if($editing_enabled){
+
+    //Enable total hours/Task reporting...
+    $ui .= echo_estimated_time($child_cs['c_total_c_hours'],1,1, $intent['c_id'], $level, $intent['c_status']);
+
+
+    if($editing_enabled){
             if(!$b['b_old_format'] || $udata['u_inbound_u_id']==1281){
-                $ui .= '<a class="badge badge-primary" onclick="load_modify('.$intent['c_id'].','.$intent['c_level'].')" style="margin-right: -1px;" href="#modify-'.$intent['c_id'].'"><i class="fas fa-cog"></i></a> &nbsp;';
+                $ui .= '<a class="badge badge-primary" onclick="load_modify('.$intent['c_id'].','.$level.')" style="margin-right: -1px;" href="#modify-'.$intent['c_id'].'"><i class="fas fa-cog"></i></a> &nbsp;';
             }
 
             $ui .= '<a href="#messages-'.$intent['c_id'].'" onclick="i_load_frame('.$intent['c_id'].','.$level.')" class="badge badge-primary badge-msg"><span id="messages-counter-'.$intent['c_id'].'">'.count($intent['c__messages']).'</span> <i class="fas fa-comment-dots"></i></a>';
@@ -1248,7 +1260,7 @@ function echo_actionplan($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=tru
     if($level==1){
 
         //Bootcamp Outcome:
-        $ui .= '<span><b id="b_objective" style="font-size: 1.3em;">'.echo_status('c_level',$intent['c_level'],1, null).'<span class="c_outcome_'.$intent['c_id'].'">'.$intent['c_outcome'].'</span></b></span>';
+        $ui .= '<span><b id="b_objective" style="font-size: 1.3em;">'.$CI->lang->line('level_'.$b['b_is_parent'].'_icon').'<span class="c_outcome_'.$intent['c_id'].'">'.$intent['c_outcome'].'</span></b></span>';
 
     } elseif($level==2){
 
@@ -1256,19 +1268,17 @@ function echo_actionplan($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=tru
         //( !(level==2) || increments<=1 ? sort_rank : sort_rank+'-'+(sort_rank + increments - 1))
         $ui .= '<span class="inline-level">';
 
-        if($child_enabled){
-            $ui .= '<a href="javascript:ms_toggle('.$intent['cr_id'].');"><i id="handle-'.$intent['cr_id'].'" class="fal fa-plus-square"></i></a> &nbsp;';
-        }
+        $ui .= '<a href="javascript:ms_toggle('.$intent['cr_id'].');"><i id="handle-'.$intent['cr_id'].'" class="fal fa-plus-square"></i></a> &nbsp;';
 
-        $ui .= '<span class="inline-level-'.$level.'">'.echo_status('c_level',$intent['c_level'],1, null).' #'.$intent['cr_outbound_rank'].'</span>';
+        $ui .= '<span class="inline-level-'.$level.'">'.( $b['b_is_parent']==1 ? 'Week ' : '' ).'#'.$intent['cr_outbound_rank'].'</span>';
         $ui .= '</span>';
 
-        $ui .= '<b id="title_'.$intent['cr_id'].'" class="cdr_crnt c_outcome_'.$intent['c_id'].'" completion-rule="'.@$intent['c_completion_rule'].'" parent-intent-id="" outbound-rank="'.$intent['cr_outbound_rank'].'" current-status="'.$intent['c_status'].'" c_complete_url_required="'.($intent['c_complete_url_required']=='t'?1:0).'"  c_complete_notes_required="'.($intent['c_complete_notes_required']=='t'?1:0).'">'.$intent['c_outcome'].'</b> ';
+        $ui .= '<b id="title_'.$intent['cr_id'].'" class="cdr_crnt c_outcome_'.$intent['c_id'].'" completion-rule="'.@$intent['c_completion_rule'].'" parent-intent-id="" outbound-rank="'.$intent['cr_outbound_rank'].'" c_complete_url_required="'.($intent['c_complete_url_required']=='t'?1:0).'"  c_complete_notes_required="'.($intent['c_complete_notes_required']=='t'?1:0).'">'.$intent['c_outcome'].'</b> ';
 
     } elseif ($level==3){
 
         //Steps
-        $ui .= '<span class="inline-level inline-level-'.$level.'">'.( $intent['c_status']==1 ? ' #'.$intent['cr_outbound_rank'] : '<b><i class="fas fa-pen-square"></i></b>' ).'</span><span id="title_'.$intent['cr_id'].'" class="c_outcome_'.$intent['c_id'].'" current-status="'.$intent['c_status'].'" outbound-rank="'.$intent['cr_outbound_rank'].'" c_complete_url_required="'.($intent['c_complete_url_required']=='t'?1:0).'"  c_complete_notes_required="'.($intent['c_complete_notes_required']=='t'?1:0).'">'.$intent['c_outcome'].'</span> ';
+        $ui .= '<span class="inline-level inline-level-'.$level.'">#'.$intent['cr_outbound_rank'].'</span><span id="title_'.$intent['cr_id'].'" class="c_outcome_'.$intent['c_id'].'" outbound-rank="'.$intent['cr_outbound_rank'].'" c_complete_url_required="'.($intent['c_complete_url_required']=='t'?1:0).'"  c_complete_notes_required="'.($intent['c_complete_notes_required']=='t'?1:0).'">'.$intent['c_outcome'].'</span> ';
 
     }
 
@@ -1295,11 +1305,11 @@ function echo_actionplan($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=tru
         }
 
         //Step Input field:
-        if($editing_enabled && $child_enabled){
-            $next_level = ( $intent['c_level'] ? 2 : 3 );
+        if($editing_enabled){
+            $next_level = ( $b['b_is_parent']==1 ? 2 : 3 );
             $ui .= '<div class="list-group-item list_input new-step-input">
                 <div class="input-group">
-                    <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="new_intent('.$intent['c_id'].','.$next_level.');" intent-id="'.$intent['c_id'].'"><input type="text" class="form-control autosearch tasknewintent" next-level="'.$next_level.'" maxlength="70" id="addintent'.$intent['c_id'].'" placeholder=""></form></div>
+                    <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="new_intent('.$intent['c_id'].','.$next_level.');" intent-id="'.$intent['c_id'].'"><input type="text" class="form-control autosearch intentadder" next-level="'.$next_level.'" maxlength="70" id="addintent'.$intent['c_id'].'" intent-id="'.$intent['c_id'].'" placeholder="Add #Intent"></form></div>
                     <span class="input-group-addon" style="padding-right:8px;">
                         <span data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" onclick="new_intent('.$intent['c_id'].','.($level+1).');" class="badge badge-primary pull-right" intent-id="'.$intent['c_id'].'" style="cursor:pointer; margin: 13px -6px 1px 13px;">
                             <div><i class="fas fa-plus"></i></div>
@@ -1331,7 +1341,7 @@ function echo_b($b){
     $b_ui = null;
     $b_ui .= '<a href="/console/'.$b['b_id'].'" class="list-group-item">';
     $b_ui .= '<span class="pull-right"><span class="badge badge-primary"><i class="fas fa-chevron-right"></i></span></span>';
-    $b_ui .= '<i class="'.( $b['c_level'] ? 'fas fa-cubes' : 'fas fa-cube' ).'" style="margin: 0 8px 0 2px; color:#3C4858;"></i> ';
+    $b_ui .= '<i class="'.( $b['b_is_parent']==1 ? 'fas fa-cubes' : 'fas fa-cube' ).'" style="margin: 0 8px 0 2px; color:#3C4858;"></i> ';
     $b_ui .= $b['c_outcome'];
 
     if($all_students>0){
@@ -1389,7 +1399,7 @@ function echo_r($b,$class,$append_class=null){
     } else {
 
         //Can still change:
-        echo '<a href="javascript:void(0);" onclick="toggle_support('.$class['r_id'].')" id="support_toggle_'.$class['r_id'].'" class="badge badge-primary '.( $class['r_status']==0 ? 'grey' : '' ).'" style="text-decoration: none;" current-status="'.$class['r_status'].'" data-toggle="tooltip" data-placement="right" title="Click to toggle availability for the week of ['.echo_time($class['r_start_date'],4).'] Yellow = Offer Coaching Grey = Disable Coaching">'.echo_status('r',$class['r_status'],true, null).'</a>';
+        echo '<a href="javascript:void(0);" onclick="toggle_support('.$class['r_id'].')" id="support_toggle_'.$class['r_id'].'" class="badge badge-primary '.( $class['r_status']==0 ? 'grey' : '' ).'" style="text-decoration: none;" current-r-status="'.$class['r_status'].'" data-toggle="tooltip" data-placement="right" title="Click to toggle availability for the week of ['.echo_time($class['r_start_date'],4).'] Yellow = Offer Coaching Grey = Disable Coaching">'.echo_status('r',$class['r_status'],true, null).'</a>';
 
 
     }

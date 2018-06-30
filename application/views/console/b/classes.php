@@ -40,7 +40,7 @@ function load_class(r_id){
 function toggle_support(r_id){
 
     //Show spinner:
-    var r_status = parseInt($('#support_toggle_'+r_id).attr('current-status'));
+    var r_status = parseInt($('#support_toggle_'+r_id).attr('current-r-status'));
     if(r_status==1){
         var r_new_status = 0;
     } else if(r_status==0){
@@ -66,7 +66,7 @@ function toggle_support(r_id){
             $('#support_toggle_'+r_id).html(data.message);
 
             //Update UI to confirm with user:
-            $('#support_toggle_'+r_id).attr('current-status',r_new_status);
+            $('#support_toggle_'+r_id).attr('current-r-status',r_new_status);
 
             if(r_new_status){
                 $('#support_toggle_'+r_id).removeClass('grey');

@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => '3.96',
+    'version' => '4.1',
     'name' => 'Mench',
     'url' => 'https://mench.com/', //Important to end with "/" as other links depend on this.
     'email' => 'shervin@mench.com',
@@ -74,7 +74,7 @@ $config['engagement_subscriptions'] = array(
 $config['meaningful_b_engagements']  = array(14,15,16,17,18,19,20,21,22,23,34,35,36,38,39,43,44,73,74,75);
 
 //based on the fibonacci sequence for more realistic estimates
-$config['c_time_options'] = array(0.05,0.116667,0.25,0.5,0.75,1,2,3,5); //,8,13
+$config['c_time_options'] = array(0,0.05,0.116667,0.25,0.5,0.75,1,2,3,5); //,8,13
 
 $config['default_class_prerequisites'] = array(
     'An internet-connected computer or smart-phone',
@@ -116,23 +116,6 @@ $config['object_statuses'] = array(
             's_desc'  => 'Bootcamp published on Mench.com Marketplace',
             'limit_u_inbounds'  => array(1281), //Can only be done by admin
             's_icon' => 'fas fa-bullhorn',
-        ),
-    ),
-    'df' => array(
-        1 => array(
-            's_name'  => 'Beginner',
-            's_desc'  => 'No experience needed',
-            's_icon' => 'fas fa-thermometer-empty',
-        ),
-        2 => array(
-            's_name'  => 'Intermediate',
-            's_desc'  => 'Basic experience required',
-            's_icon' => 'fas fa-thermometer-half',
-        ),
-        3 => array(
-            's_name'  => 'Advanced',
-            's_desc'  => 'Practical experience required',
-            's_icon' => 'fas fa-thermometer-full',
         ),
     ),
 
@@ -178,19 +161,14 @@ $config['object_statuses'] = array(
     ),
     'c' => array(
         -1 => array(
-            's_name'  => 'Delete',
-            's_desc'  => 'Item removed',
-            's_icon' => 'fas fa-minus-circle',
-        ),
-        0 => array(
-            's_name'  => 'Drafting',
-            's_desc'  => 'Step being drafted and not accessible by students until published live',
-            's_icon' => 'fas fa-pause-circle',
+            's_name'  => 'Archived',
+            's_desc'  => 'Intent has been archived and all its links has been removed',
+            's_icon' => 'fas fa-trash-alt',
         ),
         1 => array(
             's_name'  => 'Published',
-            's_desc'  => 'Step is active and accessible by students',
-            's_icon' => 'fas fa-check-square',
+            's_desc'  => 'Intent is published live',
+            's_icon' => 'fas fa-hashtag',
         ),
     ),
     'c_level' => array(
@@ -473,22 +451,22 @@ $config['object_statuses'] = array(
         0 => array(
             's_name'  => 'Not Selected',
             's_desc'  => 'Student has not yet selected their networking preference.' ,
-            's_icon' => 'fas fa-question-circle',
+            's_icon' => 'fas fa-comment-exclamation',
         ),
         1 => array(
             's_name'  => 'Solo',
             's_desc'  => 'Complete bootcamp on your own, without connecting to your classmates. We highly encourage networking as a framework to apply your learnings.' ,
-            's_icon' => 'fas fa-user',
+            's_icon' => 'fas fa-comment-minus',
         ),
         2 => array(
             's_name'  => 'Networking',
             's_desc'  => 'Connect with fellow classmates and setup video calls to share best-practices and key insights. Considering that all your classmates share the same end goal as you so its likely that you will find more in common!',
-            's_icon' => 'fas fa-users',
+            's_icon' => 'fas fa-comment',
         ),
         3 => array(
             's_name'  => 'Networking + Interview Practice',
-            's_desc'  => 'On top of networking you will further prepare for your interviews by setting up additional video calls with fellow classmates to practice interviews. We will provide the framework of your call so you can focus on applying the best-practices you learned in a real world scenario.',
-            's_icon' => 'fas fa-users',
+            's_desc'  => 'On top of networking you will further prepare for your interviews by setting up additional practice video calls with fellow classmates. We will provide the framework of your call so you can focus on applying the best-practices you learned in a real world scenario.',
+            's_icon' => 'fas fa-comment-plus',
         ),
     ),
 

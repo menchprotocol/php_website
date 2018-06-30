@@ -278,7 +278,6 @@ function b_save_settings(){
         b_weekly_coaching_rate:$('#b_weekly_coaching_rate').val(),
         b_guarantee_weeks:$('#b_guarantee_weeks').val(),
 
-
     };
 
     //Save the rest of the content:
