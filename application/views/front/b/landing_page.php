@@ -1,7 +1,6 @@
 <?php 
 //Calculate office hours:
 $class_settings = $this->config->item('class_settings');
-$child_name = ( $b['b_is_parent'] ? 'Week' : $this->lang->line('level_2_name') );
 $udata = $this->session->userdata('user');
 ?>
 
@@ -79,35 +78,33 @@ $( document ).ready(function() {
         <h3><i class="fas fa-flag"></i> Action Plan</h3>
         <div id="c_tasks_list">
             <?php
-            if($b['b_is_parent']){
+            foreach($b['c__child_intents'] as $key=>$b7d){
 
-                foreach($b['c__child_intents'] as $key=>$b7d){
-
-                    echo '<div id="c_'.$key.'">';
-                    echo '<h4><a href="javascript:toggleview(\'c_'.$key.'\');" style="font-weight: normal;"><i class="pointer fas fa-caret-right"></i> Week '.$b7d['cr_outbound_rank'].': '.$b7d['c_outcome'];
-                    if($b7d['c__estimated_hours']>0){
-                        echo ' &nbsp;<i class="fas fa-clock"></i> <span style="border-bottom:1px dotted #999;" data-toggle="tooltip" data-placement="top" title="This week is estimated to need '.echo_hours($b7d['c__estimated_hours'],0).' to complete all Tasks">'.echo_hours($b7d['c__estimated_hours'],1).'</span> &nbsp; ';
-                    }
-                    echo '</a></h4>';
+                echo '<div id="c_'.$key.'">';
+                echo '<h4><a href="javascript:toggleview(\'c_'.$key.'\');" style="font-weight: normal;"><i class="pointer fas fa-caret-right"></i> Week '.$b7d['cr_outbound_rank'].': '.$b7d['c_outcome'];
+                if($b7d['c__estimated_hours']>0){
+                    echo ' &nbsp;<i class="fas fa-clock"></i> <span style="border-bottom:1px dotted #999;" data-toggle="tooltip" data-placement="top" title="This week is estimated to need '.echo_hours($b7d['c__estimated_hours'],0).' to complete all Tasks">'.echo_hours($b7d['c__estimated_hours'],1).'</span> &nbsp; ';
+                }
+                echo '</a></h4>';
 
 
+                echo '<div class="toggleview c_'.$key.'" style="display:none;">';
 
-
-                    echo '<div class="toggleview c_'.$key.'" style="display:none;">';
-                        //First show all messages for this Bootcamp:
-                        foreach($b7d['c__messages'] as $i){
-                            if($i['i_status']==1){
-                                echo '<div class="tip_bubble">';
-                                echo echo_i( array_merge( $i , array(
-                                    'noshow' => 1,
-                                    'e_b_id'=>$b['b_id'],
-                                )) , 'Dear Student' ); //As they are a guest at this point
-                                echo '</div>';
-                            }
+                    //First show all messages for this Bootcamp:
+                    foreach($b7d['c__messages'] as $i){
+                        if($i['i_status']==1){
+                            echo '<div class="tip_bubble">';
+                            echo echo_i( array_merge( $i , array(
+                                'noshow' => 1,
+                                'e_b_id'=>$b['b_id'],
+                            )) , 'Dear Student' ); //As they are a guest at this point
+                            echo '</div>';
                         }
+                    }
 
 
-                        //Regular weekly Bootcamp:
+
+                    if(count($b7d['c__child_intents'])>0){
                         echo '<div class="list-group actionplan_list">';
                         $counter = 0;
                         foreach($b7d['c__child_intents'] as $child_intent){
@@ -124,37 +121,14 @@ $( document ).ready(function() {
                             }
                         }
                         echo '</div>';
-                    echo '</div>';
-
-
-
-
-                    echo '</div>';
-                }
-
-            } else {
-
-                //Regular weekly Bootcamp:
-                echo '<div class="list-group actionplan_list">';
-                $counter = 0;
-                foreach($b['c__child_intents'] as $child_intent){
-                    if($counter==$class_settings['landing_page_visible']){
-                        echo '<a href="javascript:void(0);" onclick="$(\'.show_full_list\').toggle();" class="show_full_list list-group-item"><i class="fas fa-plus-circle" style="margin: 0 4px 0 2px; color:#999;"></i> See All '.$child_name.'s</a>';
                     }
-                    echo '<li class="list-group-item '.( $counter>=$class_settings['landing_page_visible'] ? 'show_full_list" style="display:none;"' : '"' ).'>';
-                    //echo '<span class="pull-right">'.($child_intent['c__estimated_hours']>0 ? echo_estimated_time($child_intent['c__estimated_hours'],1) : '').'</span>';
-                    echo $this->lang->line('level_2_icon').' ';
-                    echo $child_name.' '.$child_intent['cr_outbound_rank'].': '.$child_intent['c_outcome'];
-                    echo '</li>';
-                    $counter++;
-                }
+
                 echo '</div>';
 
+                echo '</div>';
             }
             ?>
         </div>
-
-        <!--<div class="show_full_list" style="display: none;"><a href="<?= '/'.$b['b_url_key'].'/enroll' ?>" class="btn btn-primary btn-round">Enroll &nbsp;<i class="fas fa-chevron-right"></i></a></div>-->
 
 
         <?php

@@ -157,8 +157,6 @@ WHERE ru.ru_status >= 4
                 'cr.cr_status >=' => 0,
                 'c.c_status >=' => 0,
             ));
-            $bs[$key]['b__week_count'] = ( $c['c_level'] ? count($bs[$key]['c__child_intents']) : 1 );
-
 
             foreach($bs[$key]['c__child_intents'] as $intent_key=>$intent){
 
@@ -884,20 +882,6 @@ WHERE ru.ru_status >= 4
                 'ru_status' => 4,
             ));
 
-            if($enrollments[0]['c_level']){
-                //This is a Parent Bootcamp, so we also need to update the Child enrollments:
-                $child_enrollments = $this->Db_model->ru_fetch(array(
-                    'ru_parent_ru_id' => $ru_id,
-                ));
-
-                foreach($child_enrollments as $ru){
-                    $enrollments_updated++;
-                    $this->Db_model->ru_update( $ru['ru_id'] , array(
-                        'ru_status' => 4,
-                    ));
-                }
-            }
-
             return $enrollments_updated;
         }
 
@@ -925,7 +909,7 @@ WHERE ru.ru_status >= 4
         //Let's see which Classes we have already?
         $classes = $this->Db_model->r_fetch(array(
             'r_b_id' => $b_id,
-            'r_status >=' => 1,
+            'r_status >=' => 0,
             'r_start_date IN (\''.join('\',\'',$dates_needed).'\')' => null,
         ));
 
@@ -943,7 +927,7 @@ WHERE ru.ru_status >= 4
                 $this->Db_model->r_create(array(
                     'r_b_id' => $b_id,
                     'r_start_date' => $r_start_date,
-                    'r_status' => 1, //Open for Enrollment
+                    'r_status' => 1, //Offers Coaching
                 ));
             }
         }
@@ -1390,7 +1374,7 @@ WHERE ru.ru_status >= 4
             'ru_b_id' 	        => $b['b_id'],
             'ru_status'         => 0, //Pending
             'ru_outbound_u_id' 	=> $u_id,
-            'ru_fp_id'          => ( $b['c_level'] ? 0 : $b['b_fp_id'] ), //Current Page that the student should connect to
+            'ru_fp_id'          => $b['b_fp_id'], //Current Page that the student should connect to
         ));
 
         //Log engagement for Application Started:
@@ -1419,7 +1403,7 @@ WHERE ru.ru_status >= 4
 	
 	function b_create($insert_columns){
 
-        if(missing_required_db_fields($insert_columns,array('b_outbound_c_id','b_url_key','b_is_parent'))){
+        if(missing_required_db_fields($insert_columns,array('b_outbound_c_id','b_url_key'))){
             return false;
         }
 
@@ -1434,9 +1418,6 @@ WHERE ru.ru_status >= 4
         }
         if(!isset($insert_columns['b_fp_id'])){
             $insert_columns['b_fp_id'] = 0;
-        }
-        if(!isset($insert_columns['b_old_format'])){
-            $insert_columns['b_old_format'] = 0;
         }
 
         //Lets now add:
@@ -1474,32 +1455,7 @@ WHERE ru.ru_status >= 4
             'c_is_public' => $is_public,
         ));
 
-        //What type of Bootcamp is this?
-        if($bs[0]['b_is_parent']){
-
-            //We need to run this for all it's child Bootcamps:
-            foreach($bs[0]['c__child_intents'] as $c1){
-                $items_updated += $this->Db_model->c_visibility($c1['b_id'], $is_public);
-            }
-
-        } else {
-
-            //This isa child Bootcamp, update Tasks and Steps:
-            foreach($bs[0]['c__child_intents'] as $c1){
-
-                //Update visibility:
-                $items_updated += $this->Db_model->c_update( $c1['c_id'], array(
-                    'c_is_public' => $is_public,
-                ));
-
-                foreach($c1['c__child_intents'] as $c2){
-                    $items_updated += $this->Db_model->c_update( $c2['c_id'], array(
-                        'c_is_public' => $is_public,
-                    ));
-                }
-            }
-
-        }
+        //TODO Update visibility for all child Bootcamps owned by this user
 
         //Log Engagement for this Bootcamp:
         $this->Db_model->e_create(array(
@@ -1508,7 +1464,6 @@ WHERE ru.ru_status >= 4
             'e_inbound_c_id' => 7093, //Bootcamp Public Visibility Toggled
             'e_b_id' => $b_id,
         ));
-
 
         //Retuern all items:
         return $items_updated;
@@ -2131,7 +2086,6 @@ WHERE ru.ru_status >= 4
                 $new_item['b_old_format'] = intval($item['b_old_format']);
                 $new_item['c_b_outcome'] = $item['c_outcome'];
                 $new_item['b_e_score'] = intval($item['b_e_score']);
-                $new_item['b_is_parent'] = intval($item['b_is_parent']);
                 $new_item['b_inbound_u_id'] = intval($item['u_id']);
                 $new_item['b_keywords'] = '';
 
@@ -2236,7 +2190,6 @@ WHERE ru.ru_status >= 4
                 $new_item['c_id'] = intval($item['c_id']);
                 $new_item['c_inbound_u_id'] = intval($item['c_inbound_u_id']);
                 $new_item['c_is_public'] = intval($item['c_is_public']);
-                $new_item['c_level'] = intval($item['c_level']);
                 $new_item['c_e_score'] = intval($item['c_e_score']);
                 $new_item['c_outcome'] = $item['c_outcome'];
                 $new_item['c_keywords'] = ( strlen($item['c_trigger_statements'])>0 ? join(' ',json_decode($item['c_trigger_statements'])) : '' );

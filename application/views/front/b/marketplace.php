@@ -12,11 +12,6 @@
 </script>
 
 
-
-
-
-
-<!-- <div class="col-sm-4"><?php // echo tree_menu(4793,array(4793)) ?></div> -->
 <?php
 
 echo '<h1 class="center">'.$title.'</h1>';
@@ -30,7 +25,6 @@ echo '<br />';
 $bs = $this->Db_model->remix_bs(array(
     'b.b_status' => 3,
     'b.b_fp_id >' => 0,
-    'b.b_old_format' => 0,
 ),array('ba','ihm'));
 
 if(count($bs)>0){
@@ -49,7 +43,7 @@ if(count($bs)>0){
 
         echo '<h6 class="category text-muted">';
 
-        echo '<span class="line_1" data-toggle="tooltip" data-placement="top" title="Complete '.( $b['c_level'] ? $b['c__child_child_count'] : $b['c__child_count'] ).' tasks totalling '.echo_hours($b['c__estimated_hours'],false).' anytime during this '.$b['b__week_count'].' week'.echo__s($b['b__week_count']).' Bootcamp"><i class="fas fa-clock"></i> '.$b['b__week_count'].' Week'.echo__s($b['b__week_count']).' @ '.echo_hours(($b['c__estimated_hours']/$b['b__week_count']),false).'/Week</span>';
+        echo '<span class="line_1" data-toggle="tooltip" data-placement="top" title="Complete all tasks totalling '.echo_hours($b['c__estimated_hours'],false).' anytime during this '.$b['b_weeks_count'].' week'.echo__s($b['b_weeks_count']).' Bootcamp"><i class="fas fa-clock"></i> '.$b['b_weeks_count'].' Week'.echo__s($b['b_weeks_count']).' @ '.echo_hours(($b['c__estimated_hours']/$b['b_weeks_count']),false).'/Week</span>';
 
         echo '</h6>';
 

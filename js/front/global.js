@@ -112,15 +112,6 @@ function toggle_hidden_class(class_name){
 
 $(document).ready(function() {
 
-    //This is necessary (!) for the Facebook Messenger Chat button to work:
-    /*
-    if($('.bg-glow').length){
-        setInterval(function(){
-            $('.bg-glow').toggleClass('glow');
-        }, 500);
-    }
-    */
-
 	//Navbar landing page?
 	if(!$(".navbar").hasClass("no-adj")){
 		adj();

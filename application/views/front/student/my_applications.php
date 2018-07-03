@@ -83,32 +83,7 @@ if(count($enrollments)>0 && is_array($enrollments)){
                 echo '<p style="font-size: 0.9em;"><i class="fas fa-calendar"></i> ';
 
                 $start_unix = 0; //See if we have a start date
-                if(isset($bs[0]['c_level']) && $bs[0]['c_level']){
-
-                    //Should have some child Bootcamps:
-                    $child_intents = $this->Db_model->cr_outbound_fetch(array(
-                        'cr.cr_inbound_c_id' => $bs[0]['b_outbound_c_id'],
-                        'cr.cr_status >=' => 0,
-                        'c.c_status >=' => 0,
-                        'ru.ru_outbound_u_id' => $enrollment['ru_outbound_u_id'],
-                    ), array('ru'));
-
-                    if(count($child_intents)>0){
-
-                        //Fetch start date for first Class:
-                        $classes = $this->Db_model->r_fetch(array(
-                            'r.r_id' => $child_intents[0]['ru_r_id'],
-                        ));
-
-                        $start_unix = strtotime($classes[0]['r_start_date']);
-
-                        echo echo_time($classes[0]['r_start_date'],2).' - '.trim(echo_time($classes[0]['r_start_date'],2, (($bs[0]['b__week_count']*7*24*3600)-(12*3600)))).' ('.$child_intents[(count($child_intents)-1)]['cr_outbound_rank'].' Weeks)';
-
-                    } else {
-                        echo 'Dates not yet selected';
-                    }
-
-                } elseif(isset($bs[0]['this_class'])) {
+                if(isset($bs[0]['this_class'])) {
 
                     $start_unix = strtotime($bs[0]['this_class']['r_start_date']);
 
@@ -150,26 +125,6 @@ if(count($enrollments)>0 && is_array($enrollments)){
 
             echo '</div>';
 
-
-
-            if(isset($bs[0]['c_level']) && $bs[0]['c_level']){
-
-                //Fetch the Child Bootcamp ID:
-                echo '<ul class="child_enrollments">';
-                $enrollments_displayed = array(); //There might be duplicate enrollments in $child_intents IF the coach repeats the same Bootcamp more than once because of the join query. I am not good with queries so will weave out the duplicates here...
-                foreach($child_intents as $child_enrollment){
-                    if(in_array($child_enrollment['cr_outbound_rank'],$enrollments_displayed)){
-                        continue;
-                    }
-                    array_push($enrollments_displayed,$child_enrollment['cr_outbound_rank']);
-                    echo '<li>';
-                    echo echo_status('ru',$child_enrollment['ru_status'],1,'right');
-                    echo ' Week '.$child_enrollment['cr_outbound_rank'].': '.$child_enrollment['c_outcome'];
-                    echo '</li>';
-                }
-                echo '</ul>';
-
-            }
 
 
             //More info like Bootcamp URL:

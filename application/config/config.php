@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => '4.1',
+    'version' => '4.19',
     'name' => 'Mench',
     'url' => 'https://mench.com/', //Important to end with "/" as other links depend on this.
     'email' => 'shervin@mench.com',
@@ -57,6 +57,12 @@ $config['mench_support_team'] = array(1,2); //Miguel and Shervin @ This Time
 
 //The engagements that coaches are subscribed to:
 $config['coach_subscriptions'] = array(57,60,68,69,70,72,7093,7098);
+
+
+$config['b_weeks_count_options'] = array(1,2,3,4,5,6,7,8,9,10,11,12,13);
+$config['b_unlock_intents_options'] = array(1,2,3,5,0);
+
+
 
 //Email-based engagements subscriptions:
 $config['engagement_subscriptions'] = array(
@@ -169,28 +175,6 @@ $config['object_statuses'] = array(
             's_name'  => 'Published',
             's_desc'  => 'Intent is published live',
             's_icon' => 'fas fa-hashtag',
-        ),
-    ),
-    'c_level' => array(
-        0 => array(
-            's_name'  => 'Weekly Bootcamp',
-            's_desc'  => 'The core unit of education at Mench. Weekly Bootcamps are a bucket of tasks to be executed within 7-days',
-            's_icon' => 'fas fa-cube',
-        ),
-        1 => array(
-            's_name'  => 'Multi-Week Bootcamp',
-            's_desc'  => 'A collection of weekly Bootcamps designed for accomplishing larger intents',
-            's_icon' => 'fas fa-cubes',
-        ),
-        2 => array(
-            's_name'  => 'Task',
-            's_desc'  => 'An executable unit of execution to be completed in less than 5 hours',
-            's_icon' => 'fas fa-check-square',
-        ),
-        3 => array(
-            's_name'  => 'Steps',
-            's_desc'  => 'Breaks tasks down into smaller execution to be completed in less than 30 minutes',
-            's_icon' => 'fal fa-clipboard-check',
         ),
     ),
     'b_guarantee_weeks' => array(

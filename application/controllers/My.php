@@ -601,9 +601,8 @@ class My extends CI_Controller {
             }
 
             //Fixed columns for both Coaches/Students:
-            $intent_count_enabled = ($is_coach && isset($bs[0]['b_old_format']) && !$bs[0]['b_old_format']);
             echo '<td style="text-align:left; padding-left:30px;">Student</td>';
-            echo '<td style="text-align:left; width:'.($intent_count_enabled?120:90).'px;" colspan="'.($intent_count_enabled?3:2).'">Progress</td>';
+            echo '<td style="text-align:left; width:'.($is_coach?120:90).'px;" colspan="'.($is_coach?3:2).'">Progress</td>';
 
         echo '</tr>';
 
@@ -676,7 +675,7 @@ class My extends CI_Controller {
                 if($enrollment['ru_cache__completion_rate']>=1){
 
                     //They have completed it all, show them as winners!
-                    echo '<td valign="top" colspan="'.($intent_count_enabled?'2':'1').'" style="text-align:left; vertical-align:top;">';
+                    echo '<td valign="top" colspan="'.($is_coach?'2':'1').'" style="text-align:left; vertical-align:top;">';
                     echo '<i class="fas fa-trophy"></i><span style="font-size: 0.8em; padding-left:2px;"></span>';
                     echo '</td>';
 
@@ -689,7 +688,7 @@ class My extends CI_Controller {
                         echo '</td>';
                     }
 
-                    if($intent_count_enabled){
+                    if($is_coach){
                         //Task:
                         echo '<td valign="top" style="text-align:left; vertical-align:top;">';
                         if($ranking_visible){
@@ -930,67 +929,6 @@ class My extends CI_Controller {
             //Error:
             die('<span style="color:#FF0000;">Error: Failed to fetch enrollment data. Report Logged for Admin to review.</span>');
 
-        } elseif($enrollments[0]['c_level']==1 /* Multi-Week Bootcamp */){
-
-            //Delete all existing child Enrollments, which IF exist, would be from the last submission:
-            $this->db->query("DELETE FROM v5_class_students WHERE ru_parent_ru_id=".$_POST['ru_id']);
-
-            //Now go through all Bootcamps and see if their Classes are available with this start date
-            $not_available_reason = null;
-            foreach($enrollments[0]['c__child_intents'] as $key=>$b7d){
-
-                //Fetch corresponding Class:
-                $validate_classes = $this->Db_model->r_fetch(array(
-                    'r.r_b_id' => $b7d['b_id'],
-                    'r.r_start_date' => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+($key*7*24*3600)+(12*3600)  /* For GMT/timezone adjustments */ )),
-                    'r.r_status >=' => ( $_POST['ru_support_package']>=2 ? 1 : 0 ),
-                ), null, 'DESC', 1, array('b'));
-
-
-                if(count($validate_classes)<1){
-                    //Class not found!
-                    $not_available_reason = 'Not Found';
-                    break;
-                } else {
-                    //Create student enrollment:
-                    $this->Db_model->ru_create(array(
-                        'ru_b_id' 	        => $validate_classes[0]['b_id'],
-                        'ru_r_id' 	        => $validate_classes[0]['r_id'],
-                        'ru_outbound_u_id' 	=> $enrollments[0]['u_id'],
-                        'ru_status'         => ( $_POST['ru_support_package']>=2 ? 0 /* Pending Payment*/ : 4 ),
-                        'ru_fp_id'          => $enrollments[0]['b_fp_id'],
-                        'ru_assessment_result'          => $enrollments[0]['ru_assessment_result'],
-                        'ru_fp_psid'        => ( $enrollments[0]['b_fp_id']==$enrollments[0]['u_cache__fp_id'] ? $enrollments[0]['u_cache__fp_psid'] : 0 ),
-                        'ru_parent_ru_id'   => $_POST['ru_id'], //To indicate the Parent of this Bootcamp
-
-                        'ru_network_level'  => $_POST['ru_network_level'],
-                        'ru_inbound_u_id'   => $_POST['ru_inbound_u_id'],
-                        'ru_support_package'=> $_POST['ru_support_package'],
-
-                        'ru_start_time'     => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+($key*7*24*3600)+(12*3600)  /* For GMT/timezone adjustments */ )).' 00:00:00',
-                        'ru_end_time'       => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+(($key+1)*7*24*3600)-(12*3600)  /* For GMT/timezone adjustments */ )).' 23:59:59',
-                        'ru_outcome_time'   => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+(($enrollments[0]['b__week_count']+$enrollments[0]['b_guarantee_weeks'])*7*24*3600)-(12*3600))).' 23:59:59',
-                    ));
-
-                }
-            }
-
-            if($not_available_reason){
-                //Ooops we had an issue finding all child Classes:
-                $this->Db_model->e_create(array(
-                    'e_inbound_u_id' => $_POST['u_id'],
-                    'e_text_value' => 'checkout_submit() failed to fetch all child Classess.',
-                    'e_json' => $_POST,
-                    'e_inbound_c_id' => 8, //Platform Error
-                ));
-
-                //Delete all existing child Enrollments again:
-                $this->db->query("DELETE FROM v5_class_students WHERE ru_parent_ru_id=".$_POST['ru_id']);
-
-                //Error:
-                die('<span style="color:#FF0000;">Error: Failed to enroll you to this multi-week Bootcamp starting ['.date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+($key*7*24*3600)+(12*3600))).'].</span>');
-            }
-
         }
 
 
@@ -1020,8 +958,8 @@ class My extends CI_Controller {
             //Class details:
             'ru_r_id'           => $_POST['r_id'],
             'ru_start_time'     => $chosen_classes[0]['r_start_date'].' 00:00:00',
-            'ru_end_time'       => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+($enrollments[0]['b__week_count']*7*24*3600)-(12*3600))).' 23:59:59',
-            'ru_outcome_time'   => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+(($enrollments[0]['b__week_count']+$enrollments[0]['b_guarantee_weeks'])*7*24*3600)-(12*3600))).' 23:59:59',
+            'ru_end_time'       => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+($enrollments[0]['b_weeks_count']*7*24*3600)-(12*3600))).' 23:59:59',
+            'ru_outcome_time'   => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+(($enrollments[0]['b_weeks_count']+$enrollments[0]['b_guarantee_weeks'])*7*24*3600)-(12*3600))).' 23:59:59',
         ));
 
 

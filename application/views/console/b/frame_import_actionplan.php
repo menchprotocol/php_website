@@ -6,10 +6,8 @@ $bs = $this->Db_model->coach_bs(array(
     'ba.ba_outbound_u_id' => $udata['u_id'],
     'ba.ba_status >=' => 0,
     'b.b_status >=' => 2,
-    'c.c_level' => 0, //Can only import from child Bootcamps
     'b.b_id !=' => $b['b_id'], //Can't import from current Bootcamp
 ), array(
-    'b_old_format' => 'DESC',
     'c_outcome' => 'ASC',
 ));
 ?>
@@ -204,7 +202,7 @@ $bs = $this->Db_model->coach_bs(array(
                             <option value="0">Choose Bootcamp...</option>
                             <?php
                             foreach($bs as $this_b){
-                                echo '<option value="'.$this_b['b_id'].'">'.( $this_b['b_old_format'] ? '[OLD FORMAT] ' : '' ).$this_b['c_outcome'].'</option>';
+                                echo '<option value="'.$this_b['b_id'].'">'.$this_b['c_outcome'].'</option>';
                             }
                             ?>
                         </select>

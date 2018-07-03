@@ -1,5 +1,33 @@
 @CHARSET "ISO-8859-1";
 
+#console_body { background-color: #FFF; }
+#console_body .navbar { background-color: #3C4858; }
+
+
+#console_body .navbar-nav > .active > a, #console_body .navbar-nav > .active > a:hover, #console_body .navbar-nav > .active > a:focus {
+    background-color: #FFF !important;
+    color: #3C4858 !important;
+    cursor: default !important;
+}
+
+
+#console_body .navbar-nav a:hover, #console_body .navbar-nav a:focus {
+    background-color: #FFF !important;
+    color: #3C4858 !important;
+}
+
+#console_body .navbar-nav a {
+    color: #FFF !important;
+    background-color: #3C4858;
+}
+
+#console_body .navbar.navbar-transparent .navbar-toggle .icon-bar{
+    color:#FFF;
+}
+
+.sidebar-wrapper{
+    padding-top: 15px;
+}
 #mainsidebar { margin-top:60px; padding-top:0; z-index:1 !important; }
 .main-panel { background-color:transparent; }
 .dash { background-color:#FFF; border-radius:5px !important; margin-right:15px; margin-bottom:80px; padding-bottom: 5px !important; }
@@ -232,7 +260,7 @@ input::-webkit-inner-spin-button {
     background-color: #EFEFEF;
 }
 .step-group{
-    margin:10px 0 0 21px;
+    margin:10px 0 0 0px;
 }
 .step-group>.list-group-item{
     padding:7px;
@@ -333,6 +361,7 @@ input::-webkit-inner-spin-button {
 .assessment-btn{display: block; font-size: 1em; font-weight:300; padding-top: 5px; }
 .tab-pane, .maxout {max-width:665px !important;}
 .list-group-item { padding: 10px 10px; }
+.list-group-item i, .list-group-item b { color:#3C4858 !important; }
 .fa-chain-broken { color:#c32626; margin-right:5px; font-size:0.8em; }
 .extra-info { font-size:0.9em; color:#AAA; padding-bottom:15px; }
 
@@ -549,7 +578,9 @@ h5, .h5 {
 .tooltip, .tooltip * {font-size:12px; margin:0; }
 .container-fluid .alert { margin-top:10px; }
 .tab-space{padding-top:0;}
-.list-group-item>.badge {float:none;}
+.list-group-item>.badge {
+    float:none;
+}
 .suggestion{
     font-size:1.4em;
     display: block;
@@ -1041,18 +1072,7 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px; }
 	display: inline-block;
     width: 58px;
 }
-.bg-glow {
-	background-color:transparent !important;
-    -webkit-transition: text-shadow 1s linear;
-    -moz-transition: text-shadow 1s linear;
-    -ms-transition: text-shadow 1s linear;
-    -o-transition: text-shadow 1s linear;
-    transition: text-shadow 1s linear;
-}
-.bg-glow:hover,
-.bg-glow.glow {
-    text-shadow: 0 0 1px #CCC;
-}
+
 a.badge:focus, a.badge:hover {
     color:inherit !important;
 }
@@ -1127,15 +1147,6 @@ a.badge:focus, a.badge:hover {
 	text-decoration:none;
 }
 .fa-ellipsis-v {color:#bbb;}
-.fa-bars  {
-    color:#AAA;
-	cursor: move; /* fallback if grab cursor is unsupported */
-    cursor: grab;
-    cursor: -moz-grab;
-    cursor: -webkit-grab;
-    padding: 12px 10px;
-    margin: -10px -7px -10px -10px;
-}
 .is_step_sortable .fa-bars{
     margin: -10px -7px -10px -7px; /* TODO -margin: -10px -5px -10px -39px; But needs hover-only CSS logic */
 }
@@ -2093,4 +2104,14 @@ margin:5px 0;
     color: #3C4858;
     font-weight: bold !important;
     text-align: center;
+}
+
+.list-group-item .fa-bars  {
+    color:#AAA !important;
+    cursor: move; /* fallback if grab cursor is unsupported */
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
+    padding: 12px 10px;
+    margin: -10px -7px -10px -10px;
 }

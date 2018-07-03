@@ -11,6 +11,7 @@ $website = $this->config->item('website');
                 <ul class="pull-center">
                     <li><a href="/terms">Terms</a></li>
                     <li><a href="/contact">Contact Us</a></li>
+                    <li class="legal-name"><i>v<?= $website['version'] ?></i></li>
                     <li class="social-li">
                         <a href="https://www.youtube.com/channel/UCOH64HiAIfJlz73tTSI8n-g" target="_blank" class="social-link"><i class="fab fa-youtube"></i></a>
                         <a href="https://www.facebook.com/askmench" target="_blank" class="social-link"><i class="fab fa-facebook"></i></a>
@@ -18,7 +19,6 @@ $website = $this->config->item('website');
                         <a href="https://twitter.com/askmench" target="_blank" class="social-link"><i class="fab fa-twitter"></i></a>
                         <a href="https://www.instagram.com/askmench/" target="_blank" class="social-link"><i class="fab fa-instagram"></i></a>
                     </li>
-                    <li class="legal-name bg-glow"><i><img src="/img/bp_128.png" />v<?= $website['version'] ?></i></li>
                 </ul>
             </nav>
         </div>

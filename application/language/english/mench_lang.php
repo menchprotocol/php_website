@@ -19,7 +19,6 @@ $lang['obj_i_name'] = 'Message';
 $lang['obj_e_status_name'] = 'Engagement Status';
 $lang['obj_x_type_name'] = 'URL Content Type';
 $lang['obj_x_status_name'] = 'URL Status';
-$lang['obj_c_level_name'] = 'Intent Level';
 $lang['obj_ru_assessment_result_name'] = 'Assessment Result';
 $lang['obj_ru_support_package_name'] = 'Support Package';
 $lang['obj_b_guarantee_weeks_name'] = 'Tuition Guarantee Timeline';

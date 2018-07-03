@@ -194,7 +194,6 @@ $udata = $this->session->userdata('user');
                 //Fetch variables for this intent:
                 var pid = parseInt($(this).attr('intent-id'));
                 var cr_id = parseInt($( this ).attr('data-link-id'));
-                var prefix = ( level==2 ? '<?= ( $b['c_level']==1 ? 'Week ' : '') ?>' : '' ); //The default for all intents
 
                 sort_rank++;
 
@@ -210,7 +209,7 @@ $udata = $this->session->userdata('user');
                 }
 
                 //Update sort handler:
-                $( "#cr_"+cr_id+" .inline-level-"+level ).html( prefix + '#' + sort_rank );
+                $( "#cr_"+cr_id+" .inline-level-"+level ).html('#' + sort_rank);
             }
         });
 
@@ -838,46 +837,37 @@ $udata = $this->session->userdata('user');
 
                 <?php
 
-                if(!$b['c_level']){
-                    //Show tip for Tasks:
-                    echo_tip(602);
-                }
+                echo_tip(602);
+
 
                 //Task Expand/Contract all if more than 2
-                if(count($intent['c__child_intents'])>0 && ($b['b_old_format'] || $b['c_level'])){
+                if(count($intent['c__child_intents'])>0){
                     echo '<div id="task_view">';
                     echo '<i class="fas fa-plus-square expand_all"></i> &nbsp;';
                     echo '<i class="fas fa-minus-square close_all"></i>';
                     echo '</div>';
                 }
 
-
-
                 //Task/Bootcamp List:
                 echo '<div id="list-outbound" class="list-group">';
 
-                foreach($intent['c__child_intents'] as $key=>$sub_intent){
-                    echo echo_actionplan($b,$sub_intent, ($level+1),$b['b_id']);
-                }
+                    foreach($intent['c__child_intents'] as $key=>$sub_intent){
+                        echo echo_actionplan($b,$sub_intent, ($level+1),$b['b_id']);
+                    }
 
-                if(!$b['b_old_format'] || $udata['u_inbound_u_id']==1281){
+
                     ?>
                     <div class="list-group-item list_input searchable">
                         <div class="input-group">
                             <div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control intentadder" maxlength="70" intent-id="<?= $intent['c_id'] ?>" id="addintent" placeholder="Add #Intent"></div>
                             <span class="input-group-addon" style="padding-right:8px;">
-
-                            <?php if(!$b['c_level']){ ?>
                                 <span id="dir_handle" data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" class="badge badge-primary pull-right" style="cursor:pointer; margin: 1px 3px 0 6px;">
-                                <div><i class="fas fa-plus"></i></div>
+                                    <div><i class="fas fa-plus"></i></div>
+                                </span>
                             </span>
-                            <?php } ?>
-
-                        </span>
                         </div>
                     </div>
                     <?php
-                }
 
                 echo '</div>';
                 ?>

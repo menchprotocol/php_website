@@ -252,7 +252,7 @@ $(document).ready(function() {
 
 
 <div class="wizard-box" id="date_selection">
-    <p>Choose your <?= $b['b__week_count'] ?>-week class:</p>
+    <p>Choose your <?= $b['b_weeks_count'] ?>-week class:</p>
     <div id="select_dates"></div>
     <br /><br /><br />
 </div>
@@ -321,7 +321,7 @@ $(document).ready(function() {
     <p>Review and confirm your enrollment:</p>
 
     <div class="review-item">Target Outcome: <b><?= $b['c_outcome'] ?></b></div>
-    <div class="review-item">Your Commitment: <b><?= $b['b__week_count'].' Week'.echo__s($b['b__week_count']).' @ '.echo_hours(($b['c__estimated_hours']/$b['b__week_count']),false).'/Week' ?></b></div>
+    <div class="review-item">Your Commitment: <b><?= $b['b_weeks_count'].' Week'.echo__s($b['b_weeks_count']).' @ '.echo_hours(($b['c__estimated_hours']/$b['b_weeks_count']),false).'/Week' ?></b></div>
     <div class="review-item">Class Dates: <b id="class_dates"></b></div>
     <div class="review-item">Classmate Interaction Level: <b id="networking_level"></b></div>
     <div class="review-item">Support Package: <b id="confirm_support"></b></div>

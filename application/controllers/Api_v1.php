@@ -517,7 +517,7 @@ class Api_v1 extends CI_Controller {
             }
 
             echo '<option value="'.$class['r_id'].'">';
-            echo echo_time($class['r_start_date'],5) .' - '. echo_time($class['r_start_date'],5, (($enrollments[0]['b__week_count']*7*24*3600)-(8*3600)));
+            echo echo_time($class['r_start_date'],5) .' - '. echo_time($class['r_start_date'],5, (($enrollments[0]['b_weeks_count']*7*24*3600)-(8*3600)));
             echo '</option>';
         }
 
@@ -1275,12 +1275,6 @@ class Api_v1 extends CI_Controller {
                 'message' => 'Outcome must be 2 characters or longer.',
             ));
             return false;
-        } elseif(!isset($_POST['b_is_parent']) || !in_array(intval($_POST['b_is_parent']),array(0,1))){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Bootcamp type',
-            ));
-            return false;
 	    }
 
 
@@ -1324,13 +1318,14 @@ class Api_v1 extends CI_Controller {
         $default_class_prerequisites = $this->config->item('default_class_prerequisites');
         $mench_support_team = $this->config->item('mench_support_team');
 
+
         //Create new Bootcamp:
         $b = $this->Db_model->b_create(array(
-            'b_fp_id' => ( in_array($udata['u_id'],$mench_support_team) ? 4 : 0 ), //Assign Mench Facebook Page for our team
+            'b_fp_id' => ( in_array($udata['u_id'],$mench_support_team) ? 4 : 0 ), //Assign Mench Facebook Page for Mench team
             'b_url_key' => $generated_key,
             'b_outbound_c_id' => $intent['c_id'],
             'b_prerequisites' => json_encode($default_class_prerequisites),
-            'b_is_parent' => intval($_POST['b_is_parent']),
+            'b_weeks_count' => 1, //Default is 1 week, can change later...
         ));
 
         if(intval($b['b_id'])<=0 || intval($b['b_outbound_c_id'])<=0){
@@ -1574,8 +1569,19 @@ class Api_v1 extends CI_Controller {
                 'message' => 'This Bootcamp must offer a Job in order to be eligible for the deferred payment program',
             ));
             return false;
+        } elseif(!isset($_POST['b_weeks_count']) || intval($_POST['b_weeks_count'])<1){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Bootcamp Duration',
+            ));
+            return false;
+        } elseif(!isset($_POST['b_unlock_intents']) || intval($_POST['b_unlock_intents'])<0){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Intent Unlock Rate',
+            ));
+            return false;
         }
-
 
 
         //Fetch config variables:
@@ -1647,6 +1653,8 @@ class Api_v1 extends CI_Controller {
             'b_offers_deferred' => intval($_POST['b_offers_deferred']),
 
             'b_guarantee_weeks' => intval($_POST['b_guarantee_weeks']),
+            'b_weeks_count' => intval($_POST['b_weeks_count']),
+            'b_unlock_intents' => intval($_POST['b_unlock_intents']),
 
             'b_requires_assessment' => intval($_POST['b_requires_assessment']),
             'b_assessment_url' => $_POST['b_assessment_url'],
@@ -2219,31 +2227,13 @@ class Api_v1 extends CI_Controller {
             ),
         );
 
-        if($bs[0]['b_old_format']){
 
-            //Give specific options on each Milestone:
-            foreach($bs[0]['c__child_intents'] as $task){
-                if(isset($task['c__child_intents'])){
-                    //Give a single/total option:
-                    array_push($import_items,array(
-                        'name' => '<i class="fas fa-check-square"></i> Tasks form ['.$task['c_outcome'].']',
-                        'id' => 'b_outbound_c_ids',
-                        'value' => $task['c_id'],
-                        'count' => count($task['c__child_intents']),
-                    ));
-                }
-            }
-
-        } else {
-
-            array_push($import_items,array(
-                'name' => '<i class="fas fa-check-square"></i> Tasks in Action Plan',
-                'id' => 'b_outbound_c_ids',
-                'value' => $bs[0]['b_outbound_c_id'],
-                'count' => count($bs[0]['c__child_intents']),
-            ));
-
-        }
+        array_push($import_items,array(
+            'name' => '<i class="fas fa-check-square"></i> Tasks in Action Plan',
+            'id' => 'b_outbound_c_ids',
+            'value' => $bs[0]['b_outbound_c_id'],
+            'count' => count($bs[0]['c__child_intents']),
+        ));
 
 
         //Add Outcome section:

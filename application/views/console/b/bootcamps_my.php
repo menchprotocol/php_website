@@ -9,11 +9,7 @@ $website = $this->config->item('website');
         //Prevents creation forms to submit on enter
         $(window).keydown(function(event){
             if((event.keyCode == 10 || event.keyCode == 13) && event.ctrlKey) {
-                if(window.location.hash && window.location.hash.substring(1)=='multiweek') {
-                    b_create(1);
-                } else {
-                    b_create(0);
-                }
+                b_create();
                 event.preventDefault();
                 return false;
             } else if(event.keyCode == 13) {
@@ -39,15 +35,15 @@ $website = $this->config->item('website');
 
 
     var processing_b = 0;
-    function b_create(b_is_parent){
+    function b_create(){
 
         if(processing_b){
             //Do nothing while processing a current b:
             return false;
         }
 
-        var obj = $('#b_c_outcome_'+b_is_parent);
-        var plc = $('.li'+b_is_parent);
+        var obj = $('#b_c_outcome');
+        var plc = $('.new-intent');
 
         if(obj.val().length<2){
             alert('Hint: Enter your Bootcamp Title in the input field and then press ADD');
@@ -58,7 +54,7 @@ $website = $this->config->item('website');
         //Show loader:
         processing_b = 1;
         var c_outcome = obj.val();
-        $('.no-b-div-'+b_is_parent).remove(); //It may exist...
+        $('.no-b-div').remove(); //It may exist...
         obj.val('').prop('disabled',true);
         $('.new-b').hide();
 
@@ -66,7 +62,6 @@ $website = $this->config->item('website');
 
         $.post("/api_v1/b_create", {
             c_outcome:c_outcome,
-            b_is_parent:b_is_parent,
         }, function(data) {
 
             //Processing is done:
@@ -95,79 +90,31 @@ $website = $this->config->item('website');
 <div class="alert alert-info" role="alert" id="mobile-no" style="display:none; margin-top:30px;"><i class="fas fa-exclamation-triangle"></i> Mench Console v<?= $website['version'] ?> is not fully optimized for a mobile device. We recommend using a desktop computer instead.</div>
 
 
-<ul id="topnav" class="nav nav-pills nav-pills-primary">
-    <li id="nav_sevenday" class="active"><a href="#sevenday"><?= $this->lang->line('level_0_icon') .' '. str_replace('Bootcamp','',$this->lang->line('level_0_name')) ?></a></li>
-    <li id="nav_multiweek"><a href="#multiweek"><?= $this->lang->line('level_1_icon') .' '. str_replace('Bootcamp','',$this->lang->line('level_1_name')) ?></a></li>
-    <!-- <li id="nav_goals"><a href="#goals"><?= $this->lang->line('level_2_icon') .' '. $this->lang->line('level_2_name').'s' ?></a></li> -->
-</ul>
 
-<div class="tab-content tab-space">
 
-    <div class="tab-pane" id="tabmultiweek">
-        <?php
-        echo '<div class="list-group maxout">';
+<?php
+echo '<div class="list-group maxout">';
 
-        if(count($bsp)>0){
-            foreach($bsp as $b){
-                echo echo_b($b);
-            }
-        } else {
-            echo '<div class="list-group-item alert alert-info no-b-div-1" style="padding: 15px 10px;"><i class="fas fa-exclamation-triangle" style="margin:0 8px 0 2px;"></i> No Multi-Week Bootcamps Found. Create a new Bootcamp below:</div>';
-        }
+if(count($bs)>0){
+    foreach($bs as $b){
+        echo echo_b($b);
+    }
+} else {
+    echo '<div class="list-group-item alert alert-info no-b-div" style="padding: 15px 10px;"><i class="fas fa-exclamation-triangle" style="margin:0 8px 0 2px;"></i> No Bootcamps Found. Create one by entering its title:</div>';
+}
 
-        //Input to create new Bootcamp:
-        echo '<div class="list-group-item list_input li1 new-step-input" style="padding: 5px 7px;">
-            <div class="input-group">
-                <span class="input-group-addon addon-lean" style="color:#3C4858; font-weight: 300;"><i class="fas fa-cubes"></i></span>
-                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form><input type="text" class="form-control"  maxlength="70" id="b_c_outcome_1" placeholder="Example: Get Hired as Junior Front-End Developer" /></form></div>
-                <span class="input-group-addon" style="padding-right:8px;">
-                    <span data-toggle="tooltip" data-placement="top" title="Keyboard Shortcut [Ctr+Enter]"​ onclick="b_create(1);" class="badge badge-primary pull-right new-b" style="cursor:pointer; margin: 6px -5px 4px 8px;">
-                        <div>ADD</div>
-                    </span>
-                </span>
-            </div>
-        </div>';
-
-        echo '</div>';
-        ?>
-
-    </div>
-
-    <div class="tab-pane active" id="tabsevenday">
-
-        <?php
-        echo '<div class="list-group maxout">';
-
-        if(count($bs)>0){
-            foreach($bs as $b){
-                echo echo_b($b);
-            }
-        } else {
-            echo '<div class="list-group-item alert alert-info no-b-div-0" style="padding: 15px 10px;"><i class="fas fa-exclamation-triangle" style="margin:0 8px 0 2px;"></i> No Weekly Bootcamps Found. Create a new Bootcamp below:</div>';
-        }
-
-        //Input to create new Bootcamp:
-        echo '<div class="list-group-item list_input li0 new-step-input" style="padding: 5px 7px;">
+//Input to create new Bootcamp:
+echo '<div class="list-group-item list_input new-intent" style="padding: 5px 7px;">
             <div class="input-group">
                 <span class="input-group-addon addon-lean" style="color:#3C4858; font-weight: 300;"><i class="fas fa-cube"></i></span>
-                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form><input type="text" class="form-control"  maxlength="70" id="b_c_outcome_0" placeholder="Example: Build Todo list app with AngularJS" /></form></div>
+                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form><input type="text" class="form-control" maxlength="70" id="b_c_outcome" placeholder="Example: Build Todo list app with AngularJS" /></form></div>
                 <span class="input-group-addon" style="padding-right:8px;">
-                    <span data-toggle="tooltip" data-placement="top" title="Keyboard Shortcut [Ctr+Enter]"​ onclick="b_create(0);" class="badge badge-primary pull-right new-b" style="cursor:pointer; margin: 6px -5px 4px 8px;">
+                    <span data-toggle="tooltip" data-placement="top" title="Keyboard Shortcut [Ctr+Enter]"​ onclick="b_create();" class="badge badge-primary pull-right new-b" style="cursor:pointer; margin: 6px -5px 4px 8px;">
                         <div>ADD</div>
                     </span>
                 </span>
             </div>
         </div>';
 
-        echo '</div>';
-        ?>
-
-    </div>
-
-    <div class="tab-pane" id="tabgoals">
-
-        <p>Soon will list all Tasks from all Bootcamps so you can manage them centrally and easily re-use Tasks across multiple weekly Bootcamps.</p>
-
-    </div>
-
-</div>
+echo '</div>';
+?>

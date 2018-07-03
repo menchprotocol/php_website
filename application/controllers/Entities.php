@@ -95,16 +95,13 @@ class Entities extends CI_Controller {
                         'ru_status'         => 0, //Pending Payment...
                         'ru_fp_id'          => $enrollments[0]['b_fp_id'],
                         'ru_fp_psid'        => ( $enrollments[0]['b_fp_id']==$enrollments[0]['u_cache__fp_id'] ? $enrollments[0]['u_cache__fp_psid'] : 0 ),
-                        'ru_parent_ru_id'   => $_POST['ru_id'], //To indicate the Parent of this Bootcamp
-
                         'ru_upfront_pay'    => ( $_POST['ru_support_package']==3 ? ($enrollments[0]['b_weekly_coaching_rate'] * $enrollments[0]['b_deferred_rate'] * $enrollments[0]['b_deferred_deposit']) : ( $_POST['ru_support_package']==2 ? ($enrollments[0]['b_weekly_coaching_rate']) : 0 ) ),
                         'ru_deferred_pay'   => ( $_POST['ru_support_package']==3 ? ($enrollments[0]['b_weekly_coaching_rate'] * $enrollments[0]['b_deferred_rate'] * (1-$enrollments[0]['b_deferred_deposit'])) : 0 ),
 
                         'ru_start_time'     => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+($key*7*24*3600)+(12*3600)  /* For GMT/timezone adjustments */ )).' 00:00:00',
                         'ru_end_time'       => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+(($key+1)*7*24*3600)-(12*3600)  /* For GMT/timezone adjustments */ )).' 23:59:59',
-                        'ru_outcome_time'   => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+(($enrollments[0]['b__week_count']+$enrollments[0]['b_guarantee_weeks'])*7*24*3600)-(12*3600))).' 23:59:59',
+                        'ru_outcome_time'   => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+(($enrollments[0]['b_weeks_count']+$enrollments[0]['b_guarantee_weeks'])*7*24*3600)-(12*3600))).' 23:59:59',
                     ));
-
 
                 }
             }

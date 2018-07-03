@@ -138,7 +138,7 @@ function echo_ru($ru){
     echo '</span>';
 
     //Regular section:
-    echo $CI->lang->line('level_'.$ru['b_is_parent'].'_icon').' '.$ru['c_outcome'];
+    echo '<i class="fas fa-cube"></i> '.$ru['c_outcome'];
 
     echo '</div>';
 }
@@ -160,7 +160,7 @@ function echo_ba($ba){
     echo '</span>';
 
     //Regular section:
-    echo $CI->lang->line('level_'.$ba['b_is_parent'].'_icon').' '.$ba['c_outcome'];
+    echo '<i class="fas fa-cube"></i> '.$ba['c_outcome'];
 
     echo '</div>';
 }
@@ -687,7 +687,7 @@ function echo_cover($u,$img_class=null,$return_anyways=false,$tooltip_content=nu
 function echo_b_header($b){
     $ui = '<p style="border-bottom:4px solid #3C4858; font-weight:bold; padding-bottom:10px; margin-bottom:50px; display:block;">';
     $ui .= '<i class="fas fa-cube"></i> '.$b['c_outcome'];
-    $ui .= '<span style="font-weight: 500; display: block; padding-top:5px; font-size:0.9em;"><i class="fas fa-clock"></i> '.$b['b__week_count'].' Week'.echo__s($b['b__week_count']).' @ '.echo_hours(($b['c__estimated_hours']/$b['b__week_count']),false).'/Week'.'</span>';
+    $ui .= '<span style="font-weight: 500; display: block; padding-top:5px; font-size:0.9em;"><i class="fas fa-clock"></i> '.$b['b_weeks_count'].' Week'.echo__s($b['b_weeks_count']).' @ '.echo_hours(($b['c__estimated_hours']/$b['b_weeks_count']),false).'/Week'.'</span>';
     $ui .= '</p>';
 
     return $ui;
@@ -711,10 +711,10 @@ function echo_clean_url($url){
 
 function echo_diy($b){
     ?>
-    <div class="dash-label"><span class="icon-left"><i class="fas fa-flag"></i></span> <?= $b['b__week_count'].' Week' ?> Action Plan</div>
-    <div class="dash-label"><span class="icon-left"><i class="fas fa-check-square"></i></span> <?= ( $b['b_is_parent'] ? $b['c__child_child_count'] : $b['c__child_count'] ) ?> Tasks & Insights</div>
+    <div class="dash-label"><span class="icon-left"><i class="fas fa-flag"></i></span> <?= $b['b_weeks_count'].' Week' ?> Action Plan</div>
+    <div class="dash-label"><span class="icon-left"><i class="fas fa-check-square"></i></span> <?=  $b['c__child_child_count'] ?> Tasks & Insights</div>
     <div class="dash-label"><span class="icon-left"><i class="fas fa-shield-alt"></i></span> Curated from Industry Experts</div>
-    <div class="dash-label"><span class="icon-left"><i class="fas fa-clock"></i></span> ~<?= echo_hours(($b['c__estimated_hours']/$b['b__week_count']),false) ?>/Week to Complete</div>
+    <div class="dash-label"><span class="icon-left"><i class="fas fa-clock"></i></span> ~<?= echo_hours(($b['c__estimated_hours']/$b['b_weeks_count']),false) ?>/Week to Complete</div>
     <!--<div class="dash-label"><span class="icon-left"><i class="fas fa-comments"></i></span> Peer Chat & Networking</div>-->
     <div class="dash-label"><span class="icon-left"><i class="fas fa-comments"></i></span> Peer Networking Practice</div>
     <?php
@@ -791,11 +791,11 @@ function echo_package($b,$is_diy,$is_landing_page,$enrollment=array()){
 
     } elseif(!$is_diy && $b['b_offers_coaching']){
 
-        $coaching_price = intval($b['b_weekly_coaching_rate'] * $b['b__week_count']);
+        $coaching_price = intval($b['b_weekly_coaching_rate'] * $b['b_weeks_count']);
 
         if($b['b_offers_deferred']) {
-            $deferred_deposit = intval($b['b_weekly_coaching_rate'] * $b['b__week_count'] * $b['b_deferred_rate'] * $b['b_deferred_deposit']);
-            $deferred_remainder = intval($b['b_weekly_coaching_rate'] * $b['b__week_count'] * $b['b_deferred_rate'] * (1 - $b['b_deferred_deposit']));
+            $deferred_deposit = intval($b['b_weekly_coaching_rate'] * $b['b_weeks_count'] * $b['b_deferred_rate'] * $b['b_deferred_deposit']);
+            $deferred_remainder = intval($b['b_weekly_coaching_rate'] * $b['b_weeks_count'] * $b['b_deferred_rate'] * (1 - $b['b_deferred_deposit']));
             $deferred_total = $deferred_deposit+$deferred_remainder;
         }
         ?>
@@ -812,7 +812,7 @@ function echo_package($b,$is_diy,$is_landing_page,$enrollment=array()){
                 <?= ( !$b['b_offers_diy'] || count($enrollment) ? echo_diy($b) : '' ) ?>
 
                 <div class="dash-label"><span class="icon-left"><i class="fas fa-hands-helping"></i></span> Team-Up with an Industry Expert</div>
-                <div class="dash-label"><span class="icon-left"><i class="fas fa-whistle"></i></span> <?= echo_hours($b['b_weekly_coaching_hours']*$b['b__week_count'], false, true) ?> Coaching in <?= $b['b__week_count'].' Week'.echo__s($b['b__week_count']) ?></div>
+                <div class="dash-label"><span class="icon-left"><i class="fas fa-whistle"></i></span> <?= echo_hours($b['b_weekly_coaching_hours']*$b['b_weeks_count'], false, true) ?> Coaching in <?= $b['b_weeks_count'].' Week'.echo__s($b['b_weeks_count']) ?></div>
 
 
 
@@ -828,11 +828,11 @@ function echo_package($b,$is_diy,$is_landing_page,$enrollment=array()){
                 <!--<div class="dash-label"><span class="icon-left"><i class="fas fa-lightbulb"></i></span> Weekly Brainstorming Calls</div>
                 <div class="dash-label"><span class="icon-left"><i class="fab fa-facebook-messenger"></i></span> 1-on-1 Chat & Email Support</div>-->
 
-                <div class="dash-label"><span class="icon-left"><i class="fas fa-smile"></i></span> <a href="https://support.mench.com/hc/en-us/articles/115002080031" target="_blank" style="text-decoration: underline !important; font-size:1em !important;" title="We guarantee you will <?= strtolower($b['c_outcome']) . ( $b['b_guarantee_weeks']>0 ? ' within '.$b['b_guarantee_weeks'].' week'.echo__s($b['b_guarantee_weeks']).' after the end of this '.$b['b__week_count'].' week Bootcamp' : '') ?> as long as you complete all weekly tasks assigned to you by your coach. You will receive a full refund if you do the work but do not <?= strtolower($b['c_outcome']) ?>. Click to learn more." data-toggle="tooltip" data-placement="top"><?= ($b['b__week_count']+$b['b_guarantee_weeks']) ?> Week Outcome Guarantee <i class="fas fa-info-circle"></i></a></div>
+                <div class="dash-label"><span class="icon-left"><i class="fas fa-smile"></i></span> <span title="We guarantee you will <?= strtolower($b['c_outcome']) . ( $b['b_guarantee_weeks']>0 ? ' within '.$b['b_guarantee_weeks'].' week'.echo__s($b['b_guarantee_weeks']).' after the end of this '.$b['b_weeks_count'].' week Bootcamp' : '') ?> as long as you complete all weekly tasks assigned to you by your coach. You will receive a full refund if you do the work but do not <?= strtolower($b['c_outcome']) ?>. Click to learn more." data-toggle="tooltip" data-placement="top"><a href="https://support.mench.com/hc/en-us/articles/115002080031" target="_blank" style="text-decoration: underline !important; font-size:1em !important;"><?= ($b['b_weeks_count']+$b['b_guarantee_weeks']) ?> Week Outcome Guarantee</a> <i class="fas fa-info-circle"></i></span></div>
 
 
                 <?php if(!count($enrollment)){ ?>
-                <div class="dash-label"><span class="icon-left"><i class="fas fa-dollar-sign"></i></span> <?= ( $b['b_offers_deferred'] ? 'Starting from $'.number_format($deferred_deposit/$b['b__week_count'],0).' per Week' : 'A 1-time Payment of $'.number_format($coaching_price,0).' USD') //After your free strategy session if you decided that coaching is the right support framework for you, then you get to choose to pay either $'.$coaching_price.' up-front as full payment OR pay a non-refundable deposit of $'.$deferred_deposit.' USD up-front and $'.$deferred_remainder.' USD later from '.($b['b_deferred_payback']*100).'% of each paycheck when (and only if) you '.strtolower($b['c_outcome']).' ?></div>
+                <div class="dash-label"><span class="icon-left"><i class="fas fa-dollar-sign"></i></span> <?= ( $b['b_offers_deferred'] ? 'Starting from $'.number_format($deferred_deposit/$b['b_weeks_count'],0).' per Week' : 'A 1-time Payment of $'.number_format($coaching_price,0).' USD') //After your free strategy session if you decided that coaching is the right support framework for you, then you get to choose to pay either $'.$coaching_price.' up-front as full payment OR pay a non-refundable deposit of $'.$deferred_deposit.' USD up-front and $'.$deferred_remainder.' USD later from '.($b['b_deferred_payback']*100).'% of each paycheck when (and only if) you '.strtolower($b['c_outcome']).' ?></div>
                 <?php } ?>
 
                 <div class="dash-label"><span class="icon-left"><i class="fas fa-gift"></i></span> First Call Free (No Credit Card)​</div>
@@ -1232,9 +1232,8 @@ function echo_actionplan($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=tru
 
 
     if($editing_enabled){
-            if(!$b['b_old_format'] || $udata['u_inbound_u_id']==1281){
-                $ui .= '<a class="badge badge-primary" onclick="load_modify('.$intent['c_id'].','.$level.')" style="margin-right: -1px;" href="#modify-'.$intent['c_id'].'"><i class="fas fa-cog"></i></a> &nbsp;';
-            }
+
+            $ui .= '<a class="badge badge-primary" onclick="load_modify('.$intent['c_id'].','.$level.')" style="margin-right: -1px;" href="#modify-'.$intent['c_id'].'"><i class="fas fa-cog"></i></a> &nbsp;';
 
             $ui .= '<a href="#messages-'.$intent['c_id'].'" onclick="i_load_frame('.$intent['c_id'].','.$level.')" class="badge badge-primary badge-msg"><span id="messages-counter-'.$intent['c_id'].'">'.count($intent['c__messages']).'</span> <i class="fas fa-comment-dots"></i></a>';
         } else {
@@ -1260,7 +1259,7 @@ function echo_actionplan($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=tru
     if($level==1){
 
         //Bootcamp Outcome:
-        $ui .= '<span><b id="b_objective" style="font-size: 1.3em;">'.$CI->lang->line('level_'.$b['b_is_parent'].'_icon').'<span class="c_outcome_'.$intent['c_id'].'">'.$intent['c_outcome'].'</span></b></span>';
+        $ui .= '<span><b id="b_objective" style="font-size: 1.3em;"><i class="fas fa-cube"></i><span class="c_outcome_'.$intent['c_id'].'">'.$intent['c_outcome'].'</span></b></span>';
 
     } elseif($level==2){
 
@@ -1270,7 +1269,7 @@ function echo_actionplan($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=tru
 
         $ui .= '<a href="javascript:ms_toggle('.$intent['cr_id'].');"><i id="handle-'.$intent['cr_id'].'" class="fal fa-plus-square"></i></a> &nbsp;';
 
-        $ui .= '<span class="inline-level-'.$level.'">'.( $b['b_is_parent']==1 ? 'Week ' : '' ).'#'.$intent['cr_outbound_rank'].'</span>';
+        $ui .= '<span class="inline-level-'.$level.'">#'.$intent['cr_outbound_rank'].'</span>';
         $ui .= '</span>';
 
         $ui .= '<b id="title_'.$intent['cr_id'].'" class="cdr_crnt c_outcome_'.$intent['c_id'].'" completion-rule="'.@$intent['c_completion_rule'].'" parent-intent-id="" outbound-rank="'.$intent['cr_outbound_rank'].'" c_complete_url_required="'.($intent['c_complete_url_required']=='t'?1:0).'"  c_complete_notes_required="'.($intent['c_complete_notes_required']=='t'?1:0).'">'.$intent['c_outcome'].'</b> ';
@@ -1306,10 +1305,9 @@ function echo_actionplan($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=tru
 
         //Step Input field:
         if($editing_enabled){
-            $next_level = ( $b['b_is_parent']==1 ? 2 : 3 );
             $ui .= '<div class="list-group-item list_input new-step-input">
                 <div class="input-group">
-                    <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="new_intent('.$intent['c_id'].','.$next_level.');" intent-id="'.$intent['c_id'].'"><input type="text" class="form-control autosearch intentadder" next-level="'.$next_level.'" maxlength="70" id="addintent'.$intent['c_id'].'" intent-id="'.$intent['c_id'].'" placeholder="Add #Intent"></form></div>
+                    <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="new_intent('.$intent['c_id'].');" intent-id="'.$intent['c_id'].'"><input type="text" class="form-control autosearch intentadder" maxlength="70" id="addintent'.$intent['c_id'].'" intent-id="'.$intent['c_id'].'" placeholder="Add #Intent"></form></div>
                     <span class="input-group-addon" style="padding-right:8px;">
                         <span data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" onclick="new_intent('.$intent['c_id'].','.($level+1).');" class="badge badge-primary pull-right" intent-id="'.$intent['c_id'].'" style="cursor:pointer; margin: 13px -6px 1px 13px;">
                             <div><i class="fas fa-plus"></i></div>
@@ -1341,14 +1339,18 @@ function echo_b($b){
     $b_ui = null;
     $b_ui .= '<a href="/console/'.$b['b_id'].'" class="list-group-item">';
     $b_ui .= '<span class="pull-right"><span class="badge badge-primary"><i class="fas fa-chevron-right"></i></span></span>';
-    $b_ui .= '<i class="'.( $b['b_is_parent']==1 ? 'fas fa-cubes' : 'fas fa-cube' ).'" style="margin: 0 8px 0 2px; color:#3C4858;"></i> ';
+    $b_ui .= '<i class="fas fa-cube" style="margin: 0 8px 0 2px;"></i>';
     $b_ui .= $b['c_outcome'];
-
-    if($all_students>0){
-        $b_ui .= ' &nbsp;<b style="color:#3C4858;" data-toggle="tooltip" data-placement="top" title="This Bootcamp has '.$all_students.' all-time Student'.echo__s($all_students).'"><i class="fas fa-users"></i> '.$all_students.'</b>';
+    if($b['b_weeks_count']>1){
+        $b_ui .= '<b data-toggle="tooltip" data-placement="top" title="Bootcamp Duration is '.$b['b_weeks_count'].' Week'.echo__s($b['b_weeks_count']).'"><i class="fas fa-calendar-alt" style="margin: 0 2px 0 8px;"></i>'.$b['b_weeks_count'].'</b>';
     }
 
-    $b_ui .= ( $b['b_old_format'] ? ' &nbsp;<b style="color:#FF0000;"><i class="fas fa-lock" data-toggle="tooltip" data-placement="top" title="Bootcamp created with older version of Mench. You can import its Action Plan into a new Bootcamp."></i></b>' : '' );
+
+
+    if($all_students>0){
+        $b_ui .= ' &nbsp;<b data-toggle="tooltip" data-placement="top" title="Bootcamp has '.$all_students.' Enrolled Student'.echo__s($all_students).'"><i class="fas fa-users" style="margin: 0 2px 0 8px;"></i>'.$all_students.'</b>';
+    }
+
     $b_ui .= '</a>';
     return $b_ui;
 }

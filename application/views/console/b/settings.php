@@ -259,6 +259,8 @@ function b_save_settings(){
 
         b_id:$('#b_id').val(),
 
+        b_weeks_count:$('#b_weeks_count').val(),
+        b_unlock_intents:$('#b_unlock_intents').val(),
         b_status:$('#b_status').val(),
         b_url_key:$('#b_url_key').val(),
         b_post_enrollment_url_diy:$('#b_post_enrollment_url_diy').val(),
@@ -311,9 +313,9 @@ function b_save_settings(){
 
 
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
-    <li id="nav_enrollment" class="active"><a href="#enrollment"><i class="fas fa-ticket"></i> Enrollment</a></li>
+    <li id="nav_general" class="active"><a href="#general"><i class="fas fa-cube"></i> Bootcamp</a></li>
+    <li id="nav_enrollment"><a href="#enrollment"><i class="fas fa-user-plus"></i> Enrollment</a></li>
     <li id="nav_pages"><a href="#pages"><i class="fab fa-facebook-messenger"></i> Chatbot</a></li>
-    <li id="nav_general"><a href="#general"><i class="fas fa-cog"></i> General</a></li>
     <!-- <li id="nav_coupons"><a href="#coupons"><i class="fas fa-tags"></i> Coupons</a></li> -->
 </ul>
 
@@ -322,11 +324,112 @@ function b_save_settings(){
 
 <div class="tab-content tab-space">
 
-    <div class="tab-pane active" id="tabenrollment">
+
+    <div class="tab-pane active" id="tabgeneral">
+
+        <div class="title" style="margin-top:20px;"><h4><i class="fas fa-sliders-h"></i> Status <span id="hb_627" class="help_button" intent-id="627"></span></h4></div>
+        <div class="help_body maxout" id="content_627"></div>
+        <?= echo_dropdown_status('b','b_status',$b['b_status'],( $udata['u_inbound_u_id']==1281 ? array() : array(3) )); ?>
+        <div style="clear:both; margin:0; padding:0;"></div>
 
 
 
-        <div class="title" style="margin-top:25px;"><h4><i class="fas fa-comment-alt-check"></i> Require Instant Assessment <span id="hb_6964" class="help_button" intent-id="6964"></span></h4></div>
+        <div class="title" style="margin-top:0px;"><h4><i class="fas fa-calendar-alt"></i> Duration <span id="hb_7101" class="help_button" intent-id="7101"></span></h4></div>
+        <div class="help_body maxout" id="content_7101"></div>
+        <?php
+        echo '<select class="input-mini border" id="b_weeks_count" style="padding:4px !important;">';
+        $b_weeks_count_options = $this->config->item('b_weeks_count_options');
+        foreach($b_weeks_count_options as $num){
+            echo '<option value="'.$num.'" '.( $b['b_weeks_count']==$num ? 'selected="selected"' : '' ).'>'.$num.' Week'.echo__s($num).'</option>';
+        }
+        echo '</select>';
+        ?>
+
+
+
+
+
+        <div class="title" style="margin-top:20px;"><h4><i class="fas fa-lock-open"></i> Intent Unlock Rate <span id="hb_7102" class="help_button" intent-id="7102"></span></h4></div>
+        <div class="help_body maxout" id="content_7102"></div>
+        <?php
+        echo '<select class="input-mini border" id="b_unlock_intents" style="padding:4px !important;">';
+        $b_unlock_intents_options = $this->config->item('b_unlock_intents_options');
+        foreach($b_unlock_intents_options as $num){
+            echo '<option value="'.$num.'" '.( $b['b_unlock_intents']==$num ? 'selected="selected"' : '' ).'>Unlock '.($num==0?'All':$num).' Intent'.echo__s($num).' Ahead</option>';
+        }
+        echo '</select>';
+        ?>
+
+
+
+
+
+        <div class="title" style="margin-top:20px;"><h4><i class="fas fa-usd-circle"></i> Offers a Job <span id="hb_7097" class="help_button" intent-id="7097"></h4></div>
+        <div class="help_body maxout" id="content_7097"></div>
+        <div class="form-group label-floating is-empty">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" id="b_offers_job" <?= ( $b['b_offers_job'] ? 'checked' : '') ?> /> Yes, This Bootcamp Results in Getting Hired
+                </label>
+            </div>
+        </div>
+
+
+
+
+
+        <div style="display:none; margin-bottom:20px;">
+            <div class="title" style="margin-top:0;"><h4><i class="fas fa-hashtag"></i> Category <span id="hb_4869" class="help_button" intent-id="4869"></span></h4></div>
+            <div class="help_body maxout" id="content_4869"></div>
+            <div class="form-group label-floating">
+                <?php
+                $current_c_ids = array();
+                $current_inbounds = $this->Db_model->cr_inbound_fetch(array(
+                    'cr.cr_outbound_c_id' => $b['b_outbound_c_id'],
+                    'cr.cr_status' => 1,
+                ));
+                foreach($current_inbounds as $c){
+                    array_push($current_c_ids,$c['cr_inbound_c_id']);
+                }
+                //Show Menu
+                echo tree_menu(4793,$current_c_ids,'select');
+                ?>
+            </div>
+        </div>
+
+
+        <div class="title" style="margin-top:20px;"><h4><i class="fas fa-cart-plus"></i> Landing Page URL <span id="hb_725" class="help_button" intent-id="725"></span></h4></div>
+        <div class="help_body maxout" id="content_725"></div>
+        <div class="form-group label-floating is-empty">
+            <div class="input-group border" style="width:100%; max-width:380px;">
+                <span class="input-group-addon addon-lean" style="color:#3C4858; font-weight: 300;">https://mench.com/</span>
+                <input type="text" id="b_url_key" style="margin:0 0 0 -3px !important; font-size:16px !important; padding-left:0;" value="<?= $b['b_url_key'] ?>" maxlength="30" class="form-control" />
+            </div>
+        </div>
+
+
+
+        <div class="title" style="margin-top:30px;"><h4><i class="fab fa-facebook"></i> Facebook Pixel Tracker <span id="hb_718" class="help_button" intent-id="718"></span></h4></div>
+        <div class="help_body maxout" id="content_718"></div>
+        <div class="input-group">
+            <input type="number" min="0" step="1" style="width:380px; margin-bottom:-5px;" id="b_fb_pixel_id" placeholder="123456789012345" value="<?= (strlen($b['b_fb_pixel_id'])>0?$b['b_fb_pixel_id']:null) ?>" class="form-control border" />
+        </div>
+
+
+
+
+
+        <br />
+        <table width="100%" style="margin-top:10px;"><tr><td class="save-td"><a href="javascript:b_save_settings();" class="btn btn-primary">Save</a></td><td><span class="save_r_results"></span></td></tr></table>
+
+    </div>
+
+
+
+
+    <div class="tab-pane" id="tabenrollment">
+
+        <div class="title" style="margin-top:25px;"><h4><i class="fas fa-tachometer"></i> Require Instant Assessment <span id="hb_6964" class="help_button" intent-id="6964"></span></h4></div>
         <div class="help_body maxout" id="content_6964"></div>
         <div class="form-group label-floating is-empty">
             <div class="checkbox">
@@ -438,7 +541,7 @@ function b_save_settings(){
             <div class="title" style="margin-top:25px;"><h4><i class="fas fa-smile"></i> Tuition Guarantee Timeframe <span id="hb_2585" class="help_button" intent-id="2585"></h4></div>
             <div class="help_body maxout" id="content_2585"></div>
             <p>By when are students guaranteed to [<?= $b['c_outcome'] ?>]?</p>
-            <?= echo_dropdown_status('b_guarantee_weeks','b_guarantee_weeks',$b['b_guarantee_weeks'],( !$b['c_level'] ? array(2,3,4) : array() )); ?>
+            <?= echo_dropdown_status('b_guarantee_weeks','b_guarantee_weeks',$b['b_guarantee_weeks']); ?>
 
 
 
@@ -498,72 +601,7 @@ function b_save_settings(){
 
     </div>
 
-    <div class="tab-pane" id="tabgeneral">
 
-        <div class="title" style="margin-top:20px;"><h4><i class="fas fa-sliders-h"></i> Bootcamp Status <span id="hb_627" class="help_button" intent-id="627"></span></h4></div>
-        <div class="help_body maxout" id="content_627"></div>
-        <?= echo_dropdown_status('b','b_status',$b['b_status'],( $udata['u_inbound_u_id']==1281 && !$b['b_old_format'] ? array() : array(3) )); ?>
-        <div style="clear:both; margin:0; padding:0;"></div>
-
-
-
-        <div class="title" style="margin-top:0px;"><h4><i class="fas fa-usd-circle"></i> Offers a Job <span id="hb_7097" class="help_button" intent-id="7097"></h4></div>
-        <div class="help_body maxout" id="content_7097"></div>
-        <div class="form-group label-floating is-empty">
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" id="b_offers_job" <?= ( $b['b_offers_job'] ? 'checked' : '') ?> /> Yes, This Bootcamp Results in Getting Hired
-                </label>
-            </div>
-        </div>
-
-
-
-        <div style="display:none; margin-bottom:20px;">
-            <div class="title" style="margin-top:0;"><h4><i class="fas fa-hashtag"></i> Category <span id="hb_4869" class="help_button" intent-id="4869"></span></h4></div>
-            <div class="help_body maxout" id="content_4869"></div>
-            <div class="form-group label-floating">
-                <?php
-                $current_c_ids = array();
-                $current_inbounds = $this->Db_model->cr_inbound_fetch(array(
-                    'cr.cr_outbound_c_id' => $b['b_outbound_c_id'],
-                    'cr.cr_status' => 1,
-                ));
-                foreach($current_inbounds as $c){
-                    array_push($current_c_ids,$c['cr_inbound_c_id']);
-                }
-                //Show Menu
-                echo tree_menu(4793,$current_c_ids,'select');
-                ?>
-            </div>
-        </div>
-
-
-        <div class="title" style="margin-top:20px;"><h4><i class="fas fa-cart-plus"></i> Landing Page URL <span id="hb_725" class="help_button" intent-id="725"></span></h4></div>
-        <div class="help_body maxout" id="content_725"></div>
-        <div class="form-group label-floating is-empty">
-            <div class="input-group border" style="width:100%; max-width:380px;">
-                <span class="input-group-addon addon-lean" style="color:#3C4858; font-weight: 300;">https://mench.com/</span>
-                <input type="text" id="b_url_key" style="margin:0 0 0 -3px !important; font-size:16px !important; padding-left:0;" value="<?= $b['b_url_key'] ?>" maxlength="30" class="form-control" />
-            </div>
-        </div>
-
-
-
-        <div class="title" style="margin-top:30px;"><h4><i class="fab fa-facebook"></i> Facebook Pixel Tracker <span id="hb_718" class="help_button" intent-id="718"></span></h4></div>
-        <div class="help_body maxout" id="content_718"></div>
-        <div class="input-group">
-            <input type="number" min="0" step="1" style="width:380px; margin-bottom:-5px;" id="b_fb_pixel_id" placeholder="123456789012345" value="<?= (strlen($b['b_fb_pixel_id'])>0?$b['b_fb_pixel_id']:null) ?>" class="form-control border" />
-        </div>
-
-
-
-
-
-        <br />
-        <table width="100%" style="margin-top:10px;"><tr><td class="save-td"><a href="javascript:b_save_settings();" class="btn btn-primary">Save</a></td><td><span class="save_r_results"></span></td></tr></table>
-
-    </div>
 
     <div class="tab-pane" id="tabcoupons">
         <div class="alert alert-info maxout" role="alert"><i class="fas fa-exclamation-triangle"></i> Pending development; Scheduled for March 2018 🎉​</div>

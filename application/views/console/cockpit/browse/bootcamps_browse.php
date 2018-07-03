@@ -13,7 +13,7 @@ function echo_row($b,$counter){
     echo '<td>'.$counter.'</td>';
     echo '<td>'.$b['b_id'].'</td>';
     echo '<td>'.echo_status('b',$b['b_status'],1,'right').'</td>';
-    echo '<td>'.( $b['b_old_format'] ? '<i class="fas fa-lock" style="color:#FF0000;" title="OLD FORMAT"></i> ' : '' ).'<a href="/console/'.$b['b_id'].'">'.$b['c_outcome'].'</a></td>';
+    echo '<td><a href="/console/'.$b['b_id'].'">'.$b['c_outcome'].'</a></td>';
 
     echo '<td><a href="https://www.facebook.com/'.$b['fp_fb_id'].'">'.$b['fp_name'].'</a></td>';
 

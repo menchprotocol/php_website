@@ -12,29 +12,6 @@ class Adjust extends CI_Controller {
     }
 
 
-    function rsync(){
-
-        $bs = $this->Db_model->b_fetch(array(
-            'c_level' => 1,
-        ));
-
-        $created = 0;
-        foreach($bs as $b){
-            //See if we have classes:
-            $classes = $this->Db_model->r_fetch(array(
-                'r_b_id' => $b['b_id'],
-            ));
-
-            if(count($classes)==0){
-                $created++;
-                $new_class_count = $this->Db_model->r_sync($b['b_id']);
-            } else {
-                //echo '<div><a href="/console/'.$b['b_id'].'">'.$b['b_id'].'</a> Has '.count($classes).' Classes</div>';
-            }
-        }
-
-        echo $created.'/'.count($bs).' Needed classes';
-    }
 
 
     function resync_class_actionplans_and_message_coaches(){
@@ -76,49 +53,6 @@ class Adjust extends CI_Controller {
             }
 
             echo_json($delete);
-        }
-    }
-
-    function c_level(){
-
-        $bs = $this->Db_model->b_fetch(array(
-            'c.c_level IS NULL' => null,
-        ));
-
-        foreach($bs as $b){
-
-            //Update this
-            $this->Db_model->c_update($b['b_outbound_c_id'], array(
-                'c_level' => $b['c_level'],
-            ));
-
-            //Now go through the children:
-            $cs = $this->Db_model->cr_outbound_fetch(array(
-                'cr.cr_inbound_c_id' => $b['b_outbound_c_id'],
-                'c.c_level IS NULL' => null,
-            ));
-
-            $next_level = ( $b['c_level'] ? 0 : 2 );
-            foreach($cs as $c){
-                //Update this
-                $this->Db_model->c_update($c['c_id'], array(
-                    'c_level' => $next_level,
-                ));
-
-                //Do children of children:
-                $cs2 = $this->Db_model->cr_outbound_fetch(array(
-                    'cr.cr_inbound_c_id' => $c['c_id'],
-                    'c.c_level IS NULL' => null,
-                ));
-
-                foreach($cs2 as $c2){
-                    //Update this
-                    $this->Db_model->c_update($c2['c_id'], array(
-                        'c_level' => ( $next_level==0 ? 2 : 3 ),
-                    ));
-                }
-            }
-
         }
     }
 

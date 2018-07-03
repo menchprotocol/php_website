@@ -26,7 +26,7 @@ class Console extends CI_Controller {
 		//Authenticate level 2 or higher, redirect if not:
 		$udata = auth(array(1308,1280),1);
 
-		$title = 'Bootcamps';
+		$title = 'My Bootcamps';
 
 		//Load view
 		$this->load->view('console/console_header' , array(
@@ -46,13 +46,6 @@ class Console extends CI_Controller {
                 'ba.ba_outbound_u_id' => $udata['u_id'],
                 'ba.ba_status >=' => 0,
                 'b.b_status >=' => 2,
-                'c.c_level' => 0,
-            )),
-            'bsp' => $this->Db_model->coach_bs(array(
-                'ba.ba_outbound_u_id' => $udata['u_id'],
-                'ba.ba_status >=' => 0,
-                'b.b_status >=' => 2,
-                'c.c_level' => 1,
             )),
             'udata' => $udata,
         ));
@@ -99,7 +92,7 @@ class Console extends CI_Controller {
 	        'breadcrumb' => array(
 	            array(
 	                'link' => null,
-	                'anchor' => 'Dashboard <span id="hb_2273" class="help_button" intent-id="2273"></span>',
+	                'anchor' => 'Dashboard',
 	            ),
 	        ),
 	    ));
@@ -129,7 +122,7 @@ class Console extends CI_Controller {
             $view_data['breadcrumb'] = array(
                 array(
                     'link' => null,
-                    'anchor' => 'Action Plan <span id="hb_2272" class="help_button" intent-id="2272"></span>'.( !$bs[0]['b_old_format'] && !$bs[0]['c_level'] && 0 ? ' <a href="#" data-toggle="modal" data-target="#importActionPlan" class="tipbtn"><span class="badge tip-badge" title="Import some part or all of prerequisites, Tasks and/or Outcomes from another Bootcamp you manage" data-toggle="tooltip" data-placement="bottom"><i class="fas fa-download"></i></span></a>' : ''),
+                    'anchor' => 'Action Plan <span id="hb_2272" class="help_button" intent-id="2272"></span>'.( 0 ? ' <a href="#" data-toggle="modal" data-target="#importActionPlan" class="tipbtn"><span class="badge tip-badge" title="Import some part or all of prerequisites, Tasks and/or Outcomes from another Bootcamp you manage" data-toggle="tooltip" data-placement="bottom"><i class="fas fa-download"></i></span></a>' : ''),
                 ),
             );
         }

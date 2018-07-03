@@ -13,9 +13,6 @@ $(document).ready(function() {
 
 <div class="maxout">
 
-<div class="help_body below_h" id="content_2273"></div>
-
-
 <?php
 $website = $this->config->item('website');
 
@@ -27,12 +24,12 @@ echo '<div id="marketplace_b_url" style="display:none;">'.$website['url'].$b['b_
 <div class="help_body maxout" id="content_2272"></div>
 
 <?php
-echo '<div class="dash-label"><span class="icon-left"><i class="fas fa-cube"></i></span> '.$b['b__week_count'].' Week'.echo__s($b['b__week_count']).'</div>';
-echo '<div class="dash-label"><span class="icon-left"><i class="fas fa-clock"></i></span> '.echo_hours($b['c__estimated_hours']/(( $b['b_is_parent'] && count($b['c__child_intents'])>0 ? count($b['c__child_intents']) : 1 ))).'/Week</div>';
 //Show all intents:
 $all_intents =  ( isset($b['c__child_count']) ? $b['c__child_count'] : 0 ) + ( isset($b['c__child_child_count']) ? $b['c__child_child_count'] : 0 );
 echo '<div class="dash-label"><span class="icon-left"><i class="fas fa-hashtag"></i></span> ' .$all_intents. ' Intent' . echo__s($all_intents) . '</div>';
 echo ' <div class="dash-label"><span class="icon-left"><i class="fas fa-comment-dots"></i></span> '.$b['c__message_tree_count'].' Message'. echo__s($b['c__message_tree_count']).'</div>';
+echo '<div class="dash-label"><span class="icon-left"><i class="fas fa-clock"></i></span> '.echo_hours($b['c__estimated_hours']/$b['b_weeks_count']).'/Week</div>';
+
 ?>
 
 
@@ -75,7 +72,8 @@ foreach($student_funnel as $ru_status=>$count){
 <div class="title" style="margin-top:40px;"><h4><a href="/console/<?= $b['b_id'] ?>/settings" class="badge badge-primary badge-msg"><b><i class="fas fa-cog"></i> Settings <i class="fas fa-arrow-right"></i></b></a></h4></div>
 
 <?php
-echo '<div>Coaches: ';
+echo '<div class="dash-label"><span class="icon-left"><i class="fas fa-calendar-alt"></i></span> '.$b['b_weeks_count'].' Week'.echo__s($b['b_weeks_count']).'</div>';
+echo '<div class="dash-label"><span class="icon-left"><i class="fas fa-whistle"></i></span> ';
 foreach($b['b__coaches'] as $key=>$coach){
     if($key>0){
         echo ', ';
@@ -83,9 +81,10 @@ foreach($b['b__coaches'] as $key=>$coach){
     echo $coach['u_full_name'];
 }
 echo '</div>';
+echo '<div class="dash-label"><span class="icon-left"><i class="fas fa-cart-plus"></i></span> <a href="/'.$b['b_url_key'].'"><u>'.$website['url'] . $b['b_url_key'].'</u></a> <a href="#" class="btn btn-sm btn-default marketplace_b_url copy-btn">Copy&nbsp;<i class="fas fa-clone" style="font-size:1em;"></i></a></div>';
+echo '<div class="dash-label" style="margin-left:2px;">'.echo_status('b',$b['b_status'],0,'right').'</div>';
+
 ?>
-<div style="margin-top:-5px;">Landing Page: <a href="/<?= $b['b_url_key'] ?>"><u><?= $website['url'] . $b['b_url_key'] ?></u></a> <a href="#" class="btn btn-sm btn-default marketplace_b_url copy-btn">Copy&nbsp;<i class="fas fa-clone" style="font-size:1em;"></i></a></div>
-<div style="margin-top:-5px;">Bootcamp Status: <?= echo_status('b',$b['b_status'],0,'right') ?></div>
 
 
 

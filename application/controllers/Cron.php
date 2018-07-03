@@ -453,27 +453,37 @@ class Cron extends CI_Controller {
         echo_json($stats);
     }
 
-    function class_create($b_id=0){
 
-        if($b_id>0){
-            $filter = array(
-                'b_id' => $b_id,
-            );
-        } else {
-            $filter = array(
-                'b_status >=' => 2,
-                'b_old_format' => 0,
-            );
-        }
-        $bs = $this->Db_model->b_fetch($filter);
+    function class_sync($b_id=0){
 
-        $stats = array();
+        $class_settings = $this->config->item('class_settings');
+
+        $bs = $this->Db_model->b_fetch(array(
+            ( $b_id ? 'b_id='.$b_id : 'b_id>0' ) => null,
+            'b_status>' => 0,
+        ));
+
+        $created = 0;
         foreach($bs as $b){
-            $stats[$b['b_id']] = $this->Db_model->r_sync($b['b_id']);
+
+            //See if we have classes:
+            $classes = $this->Db_model->r_fetch(array(
+                'r_b_id' => $b['b_id'],
+                'r_status IN (0,1)' => null,
+            ));
+            $new_class_count = 0;
+            if(count($classes)<$class_settings['create_weeks_ahead']){
+                $created++;
+                $new_class_count = $this->Db_model->r_sync($b['b_id']);
+            }
+
+            echo '<div><a href="/console/'.$b['b_id'].'/classes">'.$b['b_id'].'</a> Has '.count($classes).' Classes / '.$new_class_count.' newly created</div>';
+
         }
 
-        echo_json($stats);
+        echo $created.'/'.count($bs).' Needed classes';
     }
+
 
     /* ******************************
      * Messaging
