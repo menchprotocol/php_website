@@ -43,7 +43,7 @@ if(count($bs)>0){
 
         echo '<div class="col-md-4 '.( count($bs)==1 ? 'col-md-offset-4' : ( count($bs)==2 && $count==0 ? 'col-md-offset-2' : '' ) ).'">
 <div class="card card-product">
-<div class="card-image"><a href="/'.$b['b_url_key'].'">'.$b['c__header_media'].'</a></div>
+<div class="card-image"><a href="https://mench.co/'.$b['b_url_key'].'">'.$b['c__header_media'].'</a></div>
 <div class="card-content">';
 
 
@@ -53,7 +53,7 @@ if(count($bs)>0){
 
         echo '</h6>';
 
-        echo '<h4 class="card-title"><a href="/'.$b['b_url_key'].'">'.$b['c_outcome'].'</a></h4>';
+        echo '<h4 class="card-title"><a href="https://mench.co/'.$b['b_url_key'].'">'.$b['c_outcome'].'</a></h4>';
 
         /*
         echo '<div class="card-description">';
