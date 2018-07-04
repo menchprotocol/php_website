@@ -484,6 +484,7 @@ class Api_v1 extends CI_Controller {
             'r.r_b_id' => $enrollments[0]['b_id'],
             'r.r_status IN (0,1)' => null,
             'r_start_date >' => date("Y-m-d"),
+            'r_start_date >=' => "2018-07-30",
         ), null, 'ASC', $class_settings['students_show_max']);
 
         foreach($classes as $class){
