@@ -445,7 +445,7 @@ $config['object_statuses'] = array(
         2 => array(
             's_name'  => 'Networking',
             's_desc'  => 'Connect with fellow classmates and setup video calls to share best-practices and key insights. Considering that all your classmates share the same end goal as you so its likely that you will find more in common!',
-            's_icon' => 'fas fa-comment',
+            's_icon' => 'fas fa-comment-plus', //Can also be fas fa-comment
         ),
 
         /*
