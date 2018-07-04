@@ -81,7 +81,7 @@ $( document ).ready(function() {
             foreach($b['c__child_intents'] as $key=>$b7d){
 
                 echo '<div id="c_'.$key.'">';
-                echo '<h4><a href="javascript:toggleview(\'c_'.$key.'\');" style="font-weight: normal;"><i class="pointer fas fa-caret-right"></i> Week '.$b7d['cr_outbound_rank'].': '.$b7d['c_outcome'];
+                echo '<h4><a href="javascript:toggleview(\'c_'.$key.'\');" style="font-weight: normal;"><i class="pointer fas fa-caret-right"></i> '.$b7d['c_outcome'];
                 if($b7d['c__estimated_hours']>0){
                     echo ' &nbsp;<i class="fas fa-clock"></i> <span style="border-bottom:1px dotted #999;" data-toggle="tooltip" data-placement="top" title="This week is estimated to need '.echo_hours($b7d['c__estimated_hours'],0).' to complete all Tasks">'.echo_hours($b7d['c__estimated_hours'],1).'</span> &nbsp; ';
                 }
@@ -110,11 +110,11 @@ $( document ).ready(function() {
                         foreach($b7d['c__child_intents'] as $child_intent){
                             if($child_intent['c_status']>=1){
                                 if($counter==$class_settings['landing_pagetask_visible']){
-                                    echo '<a href="javascript:void(0);" onclick="$(\'.show_full_list_'.$key.'\').toggle();" class="show_full_list_'.$key.' list-group-item">Review All Tasks for This Week <i class="fas fa-chevron-right"></i></a>';
+                                    echo '<a href="javascript:void(0);" onclick="$(\'.show_full_list_'.$key.'\').toggle();" class="show_full_list_'.$key.' list-group-item">See All <i class="fas fa-chevron-right"></i></a>';
                                 }
                                 echo '<li class="list-group-item '.( $counter>=$class_settings['landing_pagetask_visible'] ? 'show_full_list_'.$key.'" style="display:none;"' : '"' ).'>';
                                 //echo '<span class="pull-right">'.($child_intent['c__estimated_hours']>0 ? echo_estimated_time($child_intent['c__estimated_hours'],1) : '').'</span>';
-                                echo $this->lang->line('level_2_icon').' ';
+                                echo '<i class="fas fa-badge-check"></i> ';
                                 echo $child_intent['c_outcome'];
                                 echo '</li>';
                                 $counter++;
@@ -133,8 +133,7 @@ $( document ).ready(function() {
 
         <?php
         if($b['b_offers_coaching']){
-            echo '<h3><i class="fas fa-whistle"></i> Coaches</h3>';
-
+            echo '<h3><i class="fas fa-whistle"></i> 1-on-1 Coaches</h3>';
             echo '<div class="row">';
 
             $count = 0;
@@ -153,11 +152,6 @@ $( document ).ready(function() {
             }
 
             echo '</div>';
-
-            if(strlen($b['b_coaching_services'])>0){ ?>
-                <h3><i class="fas fa-concierge-bell"></i> Coaching Services</h3>
-                <div id="b_coaching_services"><?= '<ol><li>'.join('</li><li>',json_decode($b['b_coaching_services'])).'</li></ol>' ?></div>
-            <?php }
         }
         ?>
         <br />

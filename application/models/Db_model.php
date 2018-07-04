@@ -91,6 +91,9 @@ WHERE ru.ru_status >= 4
         //Now append more data:
         foreach($bs as $key=>$c){
 
+
+            $bs[$key]['c__tree'] = $this->Db_model->c_recursive_fetch($c['c_id']);
+
             //Bootcamp Messages:
             if(count($join_objects)==0 || in_array('i',$join_objects)){
                 $bs[$key]['c__messages'] = $this->Db_model->i_fetch(array(
@@ -1940,11 +1943,10 @@ WHERE ru.ru_status >= 4
 
 	    //Get core data:
         $immediate_children = array(
-            'infinity_error' => 0,
-            'c_total_c_count' => 0,
-            'c_total_c_hours' => 0,
-            'c_child_c_ids' => array(),
-            'c_child_cs' => array(),
+            'c_tree_count' => 0,
+            'c_tree_hours' => 0,
+            'c_flat' => array(),
+            'tree_top' => array(),
         );
 
         if(!$recursive_children){
@@ -1960,19 +1962,23 @@ WHERE ru.ru_status >= 4
 
         if(count($child_cs)>0){
             foreach($child_cs as $c){
-                if(in_array($c['c_id'],$recursive_children['c_child_c_ids'])){
+                if(in_array($c['c_id'],$recursive_children['c_flat'])){
                     //Ooooops, this has an error as it would result in an infinite loop:
-                    $immediate_children['infinity_error'] = 1;
+                    return false;
                 } else {
                     //Fetch children for this intent, if any:
                     $granchildren = $this->Db_model->c_recursive_fetch($c['c_id'], $immediate_children);
 
+                    if(!$granchildren){
+                        //There was an infinity break
+                        return false;
+                    }
+
                     //Addup children if any:
-                    $immediate_children['infinity_error'] += $granchildren['infinity_error'];
-                    $immediate_children['c_total_c_count'] += $granchildren['c_total_c_count'];
-                    $immediate_children['c_total_c_hours'] += $granchildren['c_total_c_hours'];
-                    array_push($immediate_children['c_child_c_ids'],$granchildren['c_child_c_ids']);
-                    array_push($immediate_children['c_child_cs'],$granchildren['c_child_cs']);
+                    $immediate_children['c_tree_count'] += $granchildren['c_tree_count'];
+                    $immediate_children['c_tree_hours'] += $granchildren['c_tree_hours'];
+                    array_push($immediate_children['c_flat'],$granchildren['c_flat']);
+                    array_push($immediate_children['tree_top'],$granchildren['tree_top']);
                 }
             }
         }
@@ -1982,15 +1988,15 @@ WHERE ru.ru_status >= 4
         $cs = $this->Db_model->c_fetch(array(
             'c.c_id' => $c_id,
         ));
-        $immediate_children['c_total_c_count'] += 1;
-        $immediate_children['c_total_c_hours'] += $cs[0]['c_time_estimate'];
-        array_push($immediate_children['c_child_c_ids'],intval($c_id));
-        array_push($immediate_children['c_child_cs'],$cs[0]);
+        $immediate_children['c_tree_count'] += 1;
+        $immediate_children['c_tree_hours'] += $cs[0]['c_time_estimate'];
+        array_push($immediate_children['c_flat'],intval($c_id));
+        array_push($immediate_children['tree_top'],$cs[0]);
 
         //Flatten array:
         $result = array();
-        array_walk_recursive($immediate_children['c_child_c_ids'],function($v, $k) use (&$result){ $result[] = $v; });
-        $immediate_children['c_child_c_ids'] = $result;
+        array_walk_recursive($immediate_children['c_flat'],function($v, $k) use (&$result){ $result[] = $v; });
+        $immediate_children['c_flat'] = $result;
 
         //Return data:
         return $immediate_children;
@@ -2197,8 +2203,8 @@ WHERE ru.ru_status >= 4
 
                 //See what type of children this has:
                 $child_cs = $this->Db_model->c_recursive_fetch($item['c_id']);
-                $new_item['c_total_c_count'] = $child_cs['c_total_c_count'];
-                $new_item['c_total_c_hours'] = $child_cs['c_total_c_hours'];
+                $new_item['c_tree_count'] = $child_cs['c_tree_count'];
+                $new_item['c_tree_hours'] = $child_cs['c_tree_hours'];
 
                 //Fetch all Messages:
                 $messages = $this->Db_model->i_fetch(array(

@@ -25,7 +25,6 @@ $udata = $this->session->userdata('user');
         }
     }
 
-
     $(document).ready(function() {
 
         //Enforce Alphanumeric for URL Key:
@@ -143,9 +142,9 @@ $udata = $this->session->userdata('user');
             displayKey: function(suggestion) { return "" },
             templates: {
                 suggestion: function(suggestion) {
-                    var minutes = parseFloat(suggestion.c_total_c_hours)*60;
-                    var fancy_hours = ( minutes<60 ? minutes+'Min' : (Math.round( parseFloat(suggestion.c_total_c_hours) * 10 ) / 10) +'Hr'  );
-                    return '<span class="suggest-prefix"><i class="fas fa-hashtag"></i></span> '+ suggestion._highlightResult.c_outcome.value + ' [' + suggestion.c_total_c_count + '/' + fancy_hours+']';
+                    var minutes = parseFloat(suggestion.c_tree_hours)*60;
+                    var fancy_hours = ( minutes<60 ? minutes+'Min' : (Math.round( parseFloat(suggestion.c_tree_hours) * 10 ) / 10) +'Hr'  );
+                    return '<span class="suggest-prefix"><i class="fas fa-hashtag"></i></span> '+ suggestion._highlightResult.c_outcome.value + ' [' + suggestion.c_tree_count + '/' + fancy_hours+']';
                 },
                 header: function(data) {
                     if(!data.isEmpty){
@@ -653,7 +652,7 @@ $udata = $this->session->userdata('user');
     /* Simple List Management Functions */
     /* ******************************** */
 
-    function initiate_list(group_id,placeholder,prefix,current_items){
+    function initiate_list(group_id,placeholder,prefix,current_items,maxlimit){
 
         //Is the ID on the page? Should be...
         if(!($('#'+group_id).length)){
@@ -663,7 +662,7 @@ $udata = $this->session->userdata('user');
         //Add the add line:
         $('#'+group_id).html('<div class="list-group-item list_input">'+
             '<div class="input-group">'+
-            '<div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control listerin" placeholder="'+placeholder+'"></div>'+
+            '<div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" "' + ( maxlimit ? ' maxlength="'+maxlimit+'" ' : '' ) + '" class="form-control listerin" placeholder="'+placeholder+'"></div>'+
             '<span class="input-group-addon" style="padding-right:0;">'+
             '<span class="pull-right"><span class="badge badge-primary" style="cursor:pointer;"><i class="fas fa-plus"></i></span></span>'+
             '</span>'+
@@ -684,7 +683,7 @@ $udata = $this->session->userdata('user');
         //Add initial items:
         if(current_items.length>0){
             $.each(current_items, function( index, value ) {
-                add_item(group_id,prefix,value);
+                add_item(group_id,prefix,value,maxlimit);
             });
         }
 
@@ -692,7 +691,7 @@ $udata = $this->session->userdata('user');
         $('#'+group_id+' input[type=text]').keypress(function (e) {
             var code = (e.keyCode ? e.keyCode : e.which);
             if (code == 13) {
-                add_item(group_id,prefix,null);
+                add_item(group_id,prefix,null,maxlimit);
 
                 //Save the changes:
                 save_items(group_id);
@@ -703,7 +702,7 @@ $udata = $this->session->userdata('user');
         //And watch for the Add button click:
         $('#'+group_id+'>div .badge-primary').click(function (e) {
             //Add to UI:
-            add_item(group_id,prefix,null);
+            add_item(group_id,prefix,null,maxlimit);
 
             //Save the changes:
             save_items(group_id);
@@ -759,18 +758,21 @@ $udata = $this->session->userdata('user');
         }
     }
 
-    function initiate_edit(element){
+    function initiate_edit(element,maxlimit){
         var group_id = element.parent().parent().parent().attr('id');
         var new_item = prompt( "Modify:" , element.parent().parent().find( '.theitem' ).text() );
         if (new_item == null || new_item == "") {
             //Cancelled!
+        } else if(maxlimit>0 && new_item.length>maxlimit) {
+            alert('ERROR: Entry can be no longer than '+maxlimit+' characters but yours is '+new_item.length+' characters long.');
+            return false;
         } else {
             element.parent().parent().find( '.theitem' ).text(new_item);
             save_items(group_id);
         }
     }
 
-    function add_item(group_id,prefix,current_value){
+    function add_item(group_id,prefix,current_value,maxlimit){
         if($('#'+group_id+' input[type=text]').val().length>0 || (current_value && current_value.length>0)){
 
             var next_item = $( '#'+group_id+'>li' ).length + 1;
@@ -782,7 +784,7 @@ $udata = $this->session->userdata('user');
             $('#'+group_id+'>.list_input').before( '<li class="list-group-item is_sortable">'+
                 '<span class="pull-right">'+
                 '<a class="badge badge-primary" href="javascript:void(0);" onclick="confirm_remove($(this))"><i class="fas fa-trash-alt"></i></a> '+
-                '<a class="badge badge-primary" href="javascript:void(0);" onclick="initiate_edit($(this))" style="margin-right: -3px;"><i class="fas fa-pen-square"></i></a>'+
+                '<a class="badge badge-primary" href="javascript:void(0);" onclick="initiate_edit($(this),'+maxlimit+')" style="margin-right: -3px;"><i class="fas fa-pen-square"></i></a>'+
                 '</span>'+
                 '<i class="fas fa-bars"></i> <span class="inline-level">'+prefix+' #'+next_item+'</span><span class="theitem">'+current_value+'</span>'+
                 '</li>');
@@ -879,7 +881,7 @@ $udata = $this->session->userdata('user');
                 <?php echo_tip(610); ?>
                 <script>
                     $(document).ready(function() {
-                        initiate_list('b_prerequisites','New Prerequisite','<i class="fas fa-shield-check"></i>',<?= ( strlen($b['b_prerequisites'])>0 ? $b['b_prerequisites'] : '[]' ) ?>);
+                        initiate_list('b_prerequisites','New Prerequisite','<i class="fas fa-shield-check"></i>',<?= ( strlen($b['b_prerequisites'])>0 ? $b['b_prerequisites'] : '[]' ) ?>,0);
                     });
                 </script>
                 <div id="b_prerequisites" class="list-group grey-list"></div>
@@ -893,7 +895,7 @@ $udata = $this->session->userdata('user');
 
                 <script>
                     $(document).ready(function() {
-                        initiate_list('b_transformations','New Skill','<i class="fas fa-trophy"></i>',<?= ( strlen($b['b_transformations'])>0 ? $b['b_transformations'] : '[]' ) ?>);
+                        initiate_list('b_transformations','New Skill','<i class="fas fa-trophy"></i>',<?= ( strlen($b['b_transformations'])>0 ? $b['b_transformations'] : '[]' ) ?>,0);
                     });
                 </script>
                 <div id="b_transformations" class="list-group grey-list"></div>
@@ -906,7 +908,7 @@ $udata = $this->session->userdata('user');
                 <?php if($b['b_offers_coaching']){ ?>
                     <script>
                         $(document).ready(function() {
-                            initiate_list('b_coaching_services','New Coaching Service','<i class="fas fa-concierge-bell"></i>',<?= ( strlen($b['b_coaching_services'])>0 ? $b['b_coaching_services'] : '[]' ) ?>);
+                            initiate_list('b_coaching_services','New Coaching Service [30 Character Max]','<i class="fas fa-concierge-bell"></i>',<?= ( strlen($b['b_coaching_services'])>0 ? $b['b_coaching_services'] : '[]' ) ?>, 30);
                         });
                     </script>
                     <div id="b_coaching_services" class="list-group grey-list"></div>

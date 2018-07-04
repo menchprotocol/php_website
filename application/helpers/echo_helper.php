@@ -713,7 +713,7 @@ function echo_diy($b){
     ?>
     <div class="dash-label"><span class="icon-left"><i class="fas fa-flag"></i></span> <?= $b['b_weeks_count'].' Week' ?> Action Plan</div>
     <div class="dash-label"><span class="icon-left"><i class="fas fa-check-square"></i></span> <?=  $b['c__child_child_count'] ?> Tasks & Insights</div>
-    <div class="dash-label"><span class="icon-left"><i class="fas fa-shield-alt"></i></span> Curated from Industry Experts</div>
+    <div class="dash-label"><span class="icon-left"><i class="fas fa-shield-alt"></i></span> Content from Industry Experts</div>
     <div class="dash-label"><span class="icon-left"><i class="fas fa-clock"></i></span> ~<?= echo_hours(($b['c__estimated_hours']/$b['b_weeks_count']),false) ?>/Week to Complete</div>
     <!--<div class="dash-label"><span class="icon-left"><i class="fas fa-comments"></i></span> Peer Chat & Networking</div>-->
     <div class="dash-label"><span class="icon-left"><i class="fas fa-comments"></i></span> Peer Networking Practice</div>
@@ -817,10 +817,14 @@ function echo_package($b,$is_diy,$is_landing_page,$enrollment=array()){
 
 
                 <?php if(strlen($b['b_coaching_services'])>0){
+
                     $service_count = count(json_decode($b['b_coaching_services']));
-                    ?>
-                    <div class="dash-label"><span class="icon-left"><i class="fas fa-concierge-bell"></i></span> <span title="Your coach will offer you <?= ( $service_count==1 ? '' : 'these '.$service_count.' services: ' ).strip_tags(join(', ',json_decode($b['b_coaching_services']))) ?>" data-toggle="tooltip" data-placement="top"><?= $service_count ?> Coaching Service<?= echo__s($service_count) ?> <i class="fas fa-info-circle"></i></span></div>
-                <?php } else { ?>
+                    //echo them all:
+                    foreach(json_decode($b['b_coaching_services']) as $service){
+                        echo '<div class="dash-label"><span class="icon-left"><i class="fas fa-badge-check"></i></span> '.$service.'</div>';
+                    }
+
+                } else { ?>
                     <div class="dash-label"><span class="icon-left"><i class="fas fa-route"></i></span> Personalized Tasks & Feedback</div>
                 <?php } ?>
 
@@ -1195,6 +1199,8 @@ function echo_actionplan($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=tru
 
     $CI =& get_instance();
     $udata = $CI->session->userdata('user');
+
+
     $child_cs = $CI->Db_model->c_recursive_fetch($intent['c_id']);
 
     if(!isset($intent['c__messages'])){
@@ -1228,7 +1234,7 @@ function echo_actionplan($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=tru
 
 
     //Enable total hours/Task reporting...
-    $ui .= echo_estimated_time($child_cs['c_total_c_hours'],1,1, $intent['c_id'], $level, $intent['c_status']);
+    $ui .= echo_estimated_time($child_cs['c_tree_hours'],1,1, $intent['c_id'], $level, $intent['c_status']);
 
 
     if($editing_enabled){

@@ -81,7 +81,7 @@ foreach($b['b__coaches'] as $key=>$coach){
     echo $coach['u_full_name'];
 }
 echo '</div>';
-echo '<div class="dash-label"><span class="icon-left"><i class="fas fa-cart-plus"></i></span> <a href="/'.$b['b_url_key'].'"><u>'.$website['url'] . $b['b_url_key'].'</u></a> <a href="#" class="btn btn-sm btn-default marketplace_b_url copy-btn">Copy&nbsp;<i class="fas fa-clone" style="font-size:1em;"></i></a></div>';
+echo '<div class="dash-label" style="margin: -5px 0 -9px 0;"><span class="icon-left"><i class="fas fa-cart-plus"></i></span> <a href="/'.$b['b_url_key'].'"><u>'.$website['url'] . $b['b_url_key'].'</u></a> <a href="#" class="btn btn-sm btn-default marketplace_b_url copy-btn">Copy&nbsp;<i class="fas fa-clone" style="font-size:1em;"></i></a></div>';
 echo '<div class="dash-label" style="margin-left:2px;">'.echo_status('b',$b['b_status'],0,'right').'</div>';
 
 ?>
