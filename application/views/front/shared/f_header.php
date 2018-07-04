@@ -73,7 +73,7 @@ $url_part_1 = $this->uri->segment(1);
                         }
                         if(!($url_part_1=='login')) {
                             //This is the login page, show the Launch Button:
-                            echo '<li><a href="/login"><i class="fas fa-sign-in"></i> Login</a></li>';
+                            echo '<li><a href="https://mench.com/login"><i class="fas fa-sign-in"></i> Login</a></li>';
                         }
                     }
     				?>
