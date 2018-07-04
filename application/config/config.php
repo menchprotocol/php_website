@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => '4.19',
+    'version' => '4.2',
     'name' => 'Mench',
     'url' => 'https://mench.com/', //Important to end with "/" as other links depend on this.
     'email' => 'shervin@mench.com',
@@ -447,11 +447,14 @@ $config['object_statuses'] = array(
             's_desc'  => 'Connect with fellow classmates and setup video calls to share best-practices and key insights. Considering that all your classmates share the same end goal as you so its likely that you will find more in common!',
             's_icon' => 'fas fa-comment',
         ),
+
+        /*
         3 => array(
             's_name'  => 'Networking + Interview Practice',
             's_desc'  => 'On top of networking you will further prepare for your interviews by setting up additional practice video calls with fellow classmates. We will provide the framework of your call so you can focus on applying the best-practices you learned in a real world scenario.',
             's_icon' => 'fas fa-comment-plus',
         ),
+        */
     ),
 
     't' => array(
