@@ -134,7 +134,6 @@ class My extends CI_Controller {
         //Fetch all their addmissions:
         $enrollments = $this->Db_model->ru_fetch(array(
             'ru_outbound_u_id'	=> @$users[0]['u_id'],
-            'ru_parent_ru_id'	=> 0, //Child enrollments are fetched within the child row
         ),array(
             'ru.ru_timestamp' => 'DESC',
         ));
@@ -1028,9 +1027,6 @@ class My extends CI_Controller {
                 $this->Db_model->ru_update( $_POST['ru_id'] , array(
                     'ru_status' => -2,
                 ));
-
-                //Also withdraw from any potential child enrollments:
-                $this->db->query("UPDATE v5_class_students SET ru_status=-2 WHERE ru_parent_ru_id=".$_POST['ru_id']);
 
                 //Log Engagement:
                 $this->Db_model->e_create(array(

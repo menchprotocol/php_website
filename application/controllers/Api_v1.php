@@ -609,7 +609,6 @@ class Api_v1 extends CI_Controller {
             $duplicate_registries = $this->Db_model->ru_fetch(array(
                 'ru.ru_outbound_u_id'	            => $udata['u_id'],
                 'ru.ru_b_id'	            => $b['b_id'],
-                'ru.ru_parent_ru_id'	    => 0, //We only care about the main enrollment
                 'ru.ru_status IN (0,4,7)'   => null,
             ), array('ru.ru_status' => 'DESC'));
 

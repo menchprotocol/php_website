@@ -337,9 +337,6 @@ WHERE ru.ru_status >= 4
         if(!isset($insert_columns['ru_r_id'])){
             $insert_columns['ru_r_id'] = 0;
         }
-        if(!isset($insert_columns['ru_parent_ru_id'])){
-            $insert_columns['ru_parent_ru_id'] = 0;
-        }
         if(!isset($insert_columns['ru_assessment_result'])){
             $insert_columns['ru_assessment_result'] = -1;
         }

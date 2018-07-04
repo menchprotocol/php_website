@@ -302,7 +302,6 @@ if(!$inbound_u_id){
 //Start fetching related objects:
 $enrollments = $this->Db_model->ru_fetch(array(
     'ru_outbound_u_id' => $inbound_u_id,
-    'ru_parent_ru_id' => 0,
     'ru_status >=' => 4, //Enrolled
 ), array(
     'ru.ru_id' => 'DESC',
