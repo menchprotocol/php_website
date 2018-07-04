@@ -407,7 +407,7 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
             $application_status_salt = $CI->config->item('application_status_salt');
             //append their My Account Button/URL:
             $button_title = '🎟️ My Bootcamps';
-            $button_url = 'https://mench.com/my/applications?u_key=' . md5($i['e_outbound_u_id'] . $application_status_salt) . '&u_id=' . $i['e_outbound_u_id'];
+            $button_url = 'https://mench.co/my/applications?u_key=' . md5($i['e_outbound_u_id'] . $application_status_salt) . '&u_id=' . $i['e_outbound_u_id'];
             $command = '{enrollments}';
 
         } elseif(substr_count($i['i_message'],'{passwordreset}')>0 && isset($i['e_outbound_u_id'])) {
