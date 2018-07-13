@@ -1791,41 +1791,41 @@ class Api_v1 extends CI_Controller {
 
 	    if(!$_POST['link_c_id']){
             //Create intent:
-            $new_intent = $this->Db_model->c_create(array(
+            $new_c = $this->Db_model->c_create(array(
                 'c_inbound_u_id' => $udata['u_id'],
                 'c_outcome' => trim($_POST['c_outcome']),
-                'c_time_estimate' => ( $_POST['next_level']>=2 ? '0.05' : '0' ), //3 min default Step
+                'c_time_estimate' => '0.05', //3 min default Step
             ));
 
             //Log Engagement for New Intent:
             $this->Db_model->e_create(array(
                 'e_inbound_u_id' => $udata['u_id'],
-                'e_text_value' => 'Intent ['.$new_intent['c_outcome'].'] created',
+                'e_text_value' => 'Intent ['.$new_c['c_outcome'].'] created',
                 'e_json' => array(
                     'input' => $_POST,
                     'before' => null,
-                    'after' => $new_intent,
+                    'after' => $new_c,
                 ),
                 'e_inbound_c_id' => 20, //New Intent
                 'e_b_id' => intval($_POST['b_id']),
-                'e_outbound_c_id' => $new_intent['c_id'],
+                'e_outbound_c_id' => $new_c['c_id'],
             ));
 
         } else {
-            $new_intents = $this->Db_model->c_fetch(array(
+            $new_cs = $this->Db_model->c_fetch(array(
                 'c_id' => $_POST['link_c_id'],
             ));
-            if(count($new_intents)<=0){
+            if(count($new_cs)<=0){
                 die('<span style="color:#FF0000;">Error: Invalid Linked Intent ID.</span>');
             }
-            $new_intent = $new_intents[0];
+            $new_c = $new_cs[0];
         }
 
 	    //Create Link:
 	    $relation = $this->Db_model->cr_create(array(
 	        'cr_inbound_u_id' => $udata['u_id'],
 	        'cr_inbound_c_id'  => intval($_POST['pid']),
-	        'cr_outbound_c_id' => $new_intent['c_id'],
+	        'cr_outbound_c_id' => $new_c['c_id'],
 	        'cr_outbound_rank' => 1 + $this->Db_model->max_value('v5_intent_links','cr_outbound_rank', array(
                 'cr_status >=' => 1,
                 'c_status >=' => 1,
@@ -1836,7 +1836,7 @@ class Api_v1 extends CI_Controller {
 	    //Log Engagement for New Intent Link:
 	    $this->Db_model->e_create(array(
 	        'e_inbound_u_id' => $udata['u_id'],
-	        'e_text_value' => 'Linked intent ['.$new_intent['c_outcome'].'] as outbound of intent ['.$inbound_intents[0]['c_outcome'].']',
+	        'e_text_value' => 'Linked intent ['.$new_c['c_outcome'].'] as outbound of intent ['.$inbound_intents[0]['c_outcome'].']',
 	        'e_json' => array(
 	            'input' => $_POST,
 	            'before' => null,
@@ -1854,7 +1854,7 @@ class Api_v1 extends CI_Controller {
 	    //Return result:
         echo_json(array(
             'status' => 1,
-            'c_id' => $new_intent['c_id'],
+            'c_id' => $new_c['c_id'],
             'html' => echo_actionplan($bs[0],$relations[0],$_POST['next_level'],intval($_POST['pid'])),
         ));
 	}
@@ -2434,8 +2434,6 @@ class Api_v1 extends CI_Controller {
             die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID</span>');
         } elseif(!isset($_POST['c_id']) || intval($_POST['c_id'])<=0){
             die('<span style="color:#FF0000;">Error: Invalid Intent id.</span>');
-        } elseif(!isset($_POST['level']) || intval($_POST['level'])<=0){
-            die('<span style="color:#FF0000;">Error: invalid level ID.</span>');
         } else {
             //Load the phone:
             $this->load->view('console/b/frame_messages' , $_POST);
@@ -2631,7 +2629,7 @@ class Api_v1 extends CI_Controller {
             'message' => echo_message( array_merge($new_messages[0], array(
                 'e_b_id'=>$bs[0]['b_id'],
                 'e_outbound_u_id'=>$udata['u_id'],
-            )), $_POST['level']),
+            ))),
         ));
 	}
 
@@ -2727,10 +2725,10 @@ class Api_v1 extends CI_Controller {
                 //Print the challenge:
                 echo_json(array(
                     'status' => 1,
-                    'message' => echo_message(array_merge($new_messages[0],array(
+                    'message' => echo_message(array_merge($new_messages[0], array(
                         'e_b_id'=>intval($_POST['b_id']),
                         'e_outbound_u_id'=>$udata['u_id'],
-                    )), $_POST['level']),
+                    ))),
                 ));
             }
 	    }

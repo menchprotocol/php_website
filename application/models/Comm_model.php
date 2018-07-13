@@ -1275,7 +1275,9 @@ class Comm_model extends CI_Model {
                 if(!isset($email_to_send[$u['u_id']])){
 
 
-                    $subject_line = 'New Message from Mench'; //Default...
+                    $subject_line = 'New Message from Mench';
+
+                    /*
                     if($intent_title_subject && isset($message['i_outbound_c_id']) && $message['i_outbound_c_id']>0){
                         $intents = $this->Db_model->c_fetch(array(
                             'c.c_id' => $message['i_outbound_c_id'],
@@ -1284,6 +1286,7 @@ class Comm_model extends CI_Model {
                             $subject_line = $intents[0]['c_outcome'];
                         }
                     }
+                    */
 
                     $email_variables = array(
                         'u_email' => $u['u_email'],

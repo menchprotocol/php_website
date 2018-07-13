@@ -67,13 +67,11 @@ $uri_segment_2 = $this->uri->segment(2);
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-main navbar-right">
 
-                        <li <?= ( $uri_segment_1=='console' && ( !$uri_segment_2 || intval($uri_segment_2)>0 ) ? 'class="active"' : '' ) ?> data-toggle="tooltip" data-placement="bottom" title="Manage Bootcamps & Tasks"><a href="/console"><i class="fas fa-cube"></i> Bootcamps</a></li>
-                        <li <?= ( $uri_segment_1=='entities' ? 'class="active"' : '' ) ?> data-toggle="tooltip" data-placement="bottom" title="All platform objects like people, organizations and content"><a href="/entities/1278"><i class="fas fa-at"></i> Entities</a></li>
+                        <li <?= ( $uri_segment_1=='console' && ( !$uri_segment_2 || intval($uri_segment_2)>0 ) ? 'class="active"' : '' ) ?>><a href="/console"><i class="fas fa-cube"></i> Bootcamps</a></li>
+                        <li <?= ( $uri_segment_1=='entities' ? 'class="active"' : '' ) ?>><a href="/entities"><i class="fas fa-at"></i> Entities</a></li>
 
 
                         <li class="extra-toggle"><a href="javascript:void(0);" onclick="$('.extra-toggle').toggle();"><i class="fas fa-ellipsis-h"></i> More</a></li>
-
-
                         <?php if(isset($uenrollment) && count($uenrollment)>0){ ?>
                             <li class="extra-toggle" style="display: none;"><a href="/my/actionplan"><span class="icon-left"><i class="fas fa-user-graduate"></i></span> Student Hub</a></li>
                         <?php } ?>
@@ -89,108 +87,101 @@ $uri_segment_2 = $this->uri->segment(2);
 				
 			</div>
 		</nav>
-		
-	    <div class="sidebar" id="mainsidebar">
-	    	<div class="sidebar-wrapper">
-
-	    		<?php
-
-                if(isset($b)){
-                    echo '<div class="left-li-title">';
-	    		    echo '<i class="fas fa-cube" style="margin-right:3px;"></i><span class="c_outcome_'.$b['b_outbound_c_id'].'">'.$b['c_outcome'].'</span>';
-                    echo '</div>';
-                } elseif($uri_segment_1=='cockpit'){
-                    echo '<div class="left-li-title">';
-                    echo '<i class="fas fa-user-shield" style="margin-right:3px;"></i> Admin Hub';
-                    echo '</div>';
-                } else {
-                    //We need this empty placeholder for the collapse menu to work
-                    echo '<div class="left-li-title" style="margin-bottom:-20px;">';
-                    echo '</div>';
-                }
 
 
-                echo '<ul class="nav navbar-main" style="margin-top:7px;">';
-            	if(isset($b)){
+        <?php if(isset($b) || ($uri_segment_1=='cockpit' && $udata['u_inbound_u_id']==1281)){ ?>
+        <div class="sidebar" id="mainsidebar">
+        <div class="sidebar-wrapper">
 
-            	    echo '<li class="li-sep '.( in_array($_SERVER['REQUEST_URI'],array('/console/'.$b['b_id'],'/console/'.$b['b_id'].'/')) ? 'active' : '' ).'"><a href="/console/'.$b['b_id'].'"><i class="fas fa-tachometer"></i><p>Dashboard</p></a></li>';
-            	    
-            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$b['b_id'].'/actionplan')>0 ? ' class="active"' : '' ).'><a href="/console/'.$b['b_id'].'/actionplan"><i class="fas fa-flag"></i><p>Action Plan</p></a></li>';
+            <?php
+            //We only show side menu if inside a Bootcamp or for the Admin Panel
+            if(isset($b)){
+                echo '<div class="left-li-title">';
+                echo '<i class="fas fa-cube" style="margin-right:3px;"></i><span class="c_outcome_'.$b['b_outbound_c_id'].'">'.$b['c_outcome'].'</span>';
+                echo '</div>';
+            } elseif($uri_segment_1=='cockpit'){
+                echo '<div class="left-li-title">';
+                echo '<i class="fas fa-user-shield" style="margin-right:3px;"></i> Admin Hub';
+                echo '</div>';
+            } else {
+                //We need this empty placeholder for the collapse menu to work
+                echo '<div class="left-li-title" style="margin-bottom:-20px;">';
+                echo '</div>';
+            }
 
-            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$b['b_id'].'/classes')>0 ? ' class="active"' : '' ).'><a href="/console/'.$b['b_id'].'/classes"><i class="fas fa-users"></i><p>Classes</p></a></li>';
+
+            echo '<ul class="nav navbar-main" style="margin-top:7px;">';
+            if(isset($b)){
+
+                echo '<li class="li-sep '.( in_array($_SERVER['REQUEST_URI'],array('/console/'.$b['b_id'],'/console/'.$b['b_id'].'/')) ? 'active' : '' ).'"><a href="/console/'.$b['b_id'].'"><i class="fas fa-tachometer"></i><p>Dashboard</p></a></li>';
+
+                echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$b['b_id'].'/actionplan')>0 ? ' class="active"' : '' ).'><a href="/console/'.$b['b_id'].'/actionplan"><i class="fas fa-flag"></i><p>Action Plan</p></a></li>';
+
+                echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$b['b_id'].'/classes')>0 ? ' class="active"' : '' ).'><a href="/console/'.$b['b_id'].'/classes"><i class="fas fa-users"></i><p>Classes</p></a></li>';
 
 
-            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$b['b_id'].'/settings')>0 ? ' class="active"' : '' ).'><a href="/console/'.$b['b_id'].'/settings"><i class="fas fa-cog"></i><p>Settings</p></a></li>';
+                echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$b['b_id'].'/settings')>0 ? ' class="active"' : '' ).'><a href="/console/'.$b['b_id'].'/settings"><i class="fas fa-cog"></i><p>Settings</p></a></li>';
 
-            	    //Is it connected to a Facebook Page?
-                    if($b['b_fp_id']>0){
+                //Is it connected to a Facebook Page?
+                if($b['b_fp_id']>0){
 
-                        if(!($b['b_fp_id']==4) || $udata['u_inbound_u_id']==1281){
-                            //Facebook Chat Inbox:
-                            echo '<li><a data-toggle="tooltip" data-placement="top" title="Chat with Students who Purchased Coaching using Facebook Page Inbox" href="/api_v1/fp_redirect/'.$b['b_fp_id'].'/'.md5($b['b_fp_id'].'pageLinkHash000').'" target="_blank"><i class="fab fa-facebook"></i><p>Chat Inbox &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
-                        }
-
-                        //Landing Page
-                        echo '<li><a class="landing_page_url" href="/'.$b['b_url_key'].'" target="_blank"><i class="fas fa-cart-plus"></i><p>Landing Page &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
-
+                    if(!($b['b_fp_id']==4) || $udata['u_inbound_u_id']==1281){
+                        //Facebook Chat Inbox:
+                        echo '<li><a data-toggle="tooltip" data-placement="top" title="Chat with Students who Purchased Coaching using Facebook Page Inbox" href="/api_v1/fp_redirect/'.$b['b_fp_id'].'/'.md5($b['b_fp_id'].'pageLinkHash000').'" target="_blank"><i class="fab fa-facebook"></i><p>Chat Inbox &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
                     }
 
-                } elseif($uri_segment_1=='entities'){
-
-                    echo '<li class="li-sep '.( $uri_segment_1=='entities' && $uri_segment_2==1278 ? 'active' : '' ).'"><a href="/entities/1278"><i class="fas fa-users"></i><p>People</p></a></li>';
-
-                    echo '<li class="li-sep '.( $uri_segment_1=='entities' && $uri_segment_2==1326 ? 'active' : '' ).'"><a href="/entities/1326"><i class="fas fa-book"></i><p>Content</p></a></li>';
-
-                    echo '<li class="li-sep '.( $uri_segment_1=='entities' && $uri_segment_2==$udata['u_id'] ? 'active' : '' ).'"><a href="/entities/'.$udata['u_id'].'"><i class="fas fa-user-circle"></i><p>'.$udata['u_full_name'].'</p></a></li>';
-
-                    //echo '<li class="li-sep"><a href="/logout"><i class="fas fa-power-off"></i><p>Logout '.one_two_explode('',' ',$udata['u_full_name']).'</p></a></li>';
-
-                } elseif(in_array($uri_segment_1,array('console','tasks')) && 0){
-
-
-                } else if($uri_segment_1=='cockpit' && $udata['u_inbound_u_id']==1281){
-
-            	    //The the Cockpit Menu for the Mench team:
-                    echo '<li class="li-sep '.( $uri_segment_2=='browse' ? 'active' : '' ).'"><a href="/cockpit/browse/engagements"><i class="fas fa-search"></i><p>Browse</p></a></li>';
-
-                    echo '<li class="li-sep '.( $uri_segment_2=='udemy' ? 'active' : '' ).'"><a href="/cockpit/udemy"><i class="fas fa-address-book"></i><p>Udemy Community</p></a></li>';
-
-                    echo '<li class="li-sep '.( $uri_segment_2=='statusbible' ? 'active' : '' ).'"><a href="/cockpit/statusbible"><i class="fas fa-sliders-h"></i><p>Status Bible</p></a></li>';
-
-
-                    //External Tools:
-                    echo '<li><a href="https://github.com/menchco/mench-web-app/milestones?direction=asc&sort=due_date&state=open" target="_blank"><i class="fab fa-github"></i><p>Team Milestones &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
-
-                    echo '<li><a href="https://www.facebook.com/askmench/inbox" target="_blank"><i class="fab fa-facebook-messenger"></i><p>Facebook Chat &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
-
-                    echo '<li><a href="https://support.mench.com/chat/agent" target="_blank"><i class="fas fa-comment-dots"></i><p>Zendesk Chat &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
-
-                    echo '<li><a href="https://mench.zendesk.com/agent/dashboard" target="_blank"><i class="fas fa-ticket"></i><p>Zendesk Tickets &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
-
-                    echo '<li><a href="https://mench.zendesk.com/knowledge/lists" target="_blank"><i class="fas fa-book"></i><p>Zendesk Guides &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
-
-
-                    echo '<li><a href="https://app.hubspot.com/sales" target="_blank"><i class="fab fa-hubspot"></i><p>HubSpot CRM &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
-
-                    echo '<li><a href="https://app.redash.io/mench/" target="_blank"><i class="fas fa-database"></i><p>SQL DB Stats &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
-
-                    echo '<li><a href="https://mench.foundation/wp-login.php" target="_blank"><i class="fab fa-wordpress"></i><p>Mench Blog &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
-
-                    echo '<li><a href="https://www.youtube.com/channel/UCOH64HiAIfJlz73tTSI8n-g" target="_blank"><i class="fab fa-youtube"></i><p>YouTube Channel &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
+                    //Landing Page
+                    echo '<li><a class="landing_page_url" href="/'.$b['b_url_key'].'" target="_blank"><i class="fas fa-cart-plus"></i><p>Landing Page &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
 
                 }
 
-                echo '</ul>';
+            } else if($uri_segment_1=='cockpit'){
 
-            	?>
+                //The the Cockpit Menu for the Mench team:
+                echo '<li class="li-sep '.( $uri_segment_2=='browse' ? 'active' : '' ).'"><a href="/cockpit/browse/engagements"><i class="fas fa-search"></i><p>Browse</p></a></li>';
+
+                echo '<li class="li-sep '.( $uri_segment_2=='udemy' ? 'active' : '' ).'"><a href="/cockpit/udemy"><i class="fas fa-address-book"></i><p>Udemy Community</p></a></li>';
+
+                echo '<li class="li-sep '.( $uri_segment_2=='statusbible' ? 'active' : '' ).'"><a href="/cockpit/statusbible"><i class="fas fa-sliders-h"></i><p>Status Bible</p></a></li>';
 
 
-	    	</div>
-		</div>
+                //External Tools:
+                echo '<li><a href="https://github.com/menchco/mench-web-app/milestones?direction=asc&sort=due_date&state=open" target="_blank"><i class="fab fa-github"></i><p>Team Milestones &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
+
+                echo '<li><a href="https://www.facebook.com/askmench/inbox" target="_blank"><i class="fab fa-facebook-messenger"></i><p>Facebook Chat &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
+
+                echo '<li><a href="https://support.mench.com/chat/agent" target="_blank"><i class="fas fa-comment-dots"></i><p>Zendesk Chat &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
+
+                echo '<li><a href="https://mench.zendesk.com/agent/dashboard" target="_blank"><i class="fas fa-ticket"></i><p>Zendesk Tickets &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
+
+                echo '<li><a href="https://mench.zendesk.com/knowledge/lists" target="_blank"><i class="fas fa-book"></i><p>Zendesk Guides &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
 
 
-	    <div class="main-panel">
-	        <div class="content dash" style="padding-bottom: 50px !important; <?= ( isset($b) && substr_count($_SERVER['REQUEST_URI'],'/console/'.$b['b_id'].'/actionplan')>0 ? 'min-height: inherit !important;' : '' ) ?>">
+                echo '<li><a href="https://app.hubspot.com/sales" target="_blank"><i class="fab fa-hubspot"></i><p>HubSpot CRM &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
+
+                echo '<li><a href="https://app.redash.io/mench/" target="_blank"><i class="fas fa-database"></i><p>SQL DB Stats &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
+
+                echo '<li><a href="https://mench.foundation/wp-login.php" target="_blank"><i class="fab fa-wordpress"></i><p>Mench Blog &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
+
+                echo '<li><a href="https://www.youtube.com/channel/UCOH64HiAIfJlz73tTSI8n-g" target="_blank"><i class="fab fa-youtube"></i><p>YouTube Channel &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
+
+            }
+
+            echo '</ul>';
+
+            ?>
+
+
+        </div>
+    </div>
+        <div class="main-panel">
+        <?php } else { ?>
+        <div class="main-panel no-side">
+        <?php } ?>
+
+
+
+            <div class="content dash" style="padding-bottom: 50px !important; <?= ( isset($b) && substr_count($_SERVER['REQUEST_URI'],'/console/'.$b['b_id'].'/actionplan')>0 ? 'min-height: inherit !important;' : '' ) ?>">
 	        
     	        <?php 
     	        if(isset($breadcrumb)){

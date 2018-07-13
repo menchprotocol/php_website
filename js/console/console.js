@@ -197,18 +197,6 @@ $(document).ready(function() {
         }
     ]);
 
-    //Watch the expand/close all buttons:
-    $('#task_view .expand_all').click(function (e) {
-        $( "#list-outbound>.is_sortable" ).each(function() {
-            ms_toggle($( this ).attr('data-link-id'),1);
-        });
-    });
-    $('#task_view .close_all').click(function (e) {
-        $( "#list-outbound>.is_sortable" ).each(function() {
-            ms_toggle($( this ).attr('data-link-id'),0);
-        });
-    });
-
 
 
     if($("span.help_button")[0]){

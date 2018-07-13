@@ -52,8 +52,29 @@ function missing_required_db_fields($insert_columns,$field_array){
     return false; //Not missing anything
 }
 
+function find_c_tree($tree_top, $c_id){
 
-function fetch_entity_tree($inbound_u_id,$is_edit=false,$entity_breadcrumb_prefix=false){
+    if(isset($tree_top['c_id']) && $c_id==$tree_top['c_id']){
+        $tree_top['tree_top'] = 1;
+        return $tree_top;
+    } elseif(is_array($tree_top) && count($tree_top)>0){
+        //Need to go deeper:
+        foreach($tree_top as $c){
+            $search = find_c_tree($c, $c_id);
+            if(isset($search['tree_top'])){
+                if($search['tree_top']==1){
+                    $search['tree_top'] = $tree_top;
+                }
+                return $search;
+            }
+        }
+
+        //Still here?
+        return false;
+    }
+}
+
+function fetch_entity_tree($inbound_u_id,$is_edit=false){
 
     $inbound_u_id = intval($inbound_u_id);
     $view_data = array(
@@ -79,6 +100,7 @@ function fetch_entity_tree($inbound_u_id,$is_edit=false,$entity_breadcrumb_prefi
                 redirect_message('/entities','<div class="alert alert-danger" role="alert">Invalid Entity ID</div>');
                 break;
             } elseif(!$this_entity){
+
                 $this_entity = $parent_entities[0];
 
                 //Push this item to breadcrumb:
@@ -111,12 +133,10 @@ function fetch_entity_tree($inbound_u_id,$is_edit=false,$entity_breadcrumb_prefi
         }
 
         //Add core entity item and reverse:
-        if($entity_breadcrumb_prefix){
-            array_push( $breadcrumb , array(
-                'link' => '/entities',
-                'anchor' => 'Entities',
-            ));
-        }
+        array_push( $breadcrumb , array(
+            'link' => '/entities',
+            'anchor' => 'Entities',
+        ));
 
         $view_data['title'] = ( $is_edit ? 'Modify ' : '' ).$this_entity['u_full_name'];
         $view_data['breadcrumb'] = array_reverse($breadcrumb);

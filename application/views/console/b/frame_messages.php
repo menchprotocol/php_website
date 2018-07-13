@@ -4,7 +4,6 @@
 $message_max = $this->config->item('message_max');
 $i_statuses = echo_status('i', null);
 $udata = $this->session->userdata('user');
-$drip_enabled = ($level>1);
 $i_messages = $this->Db_model->i_fetch(array(
     'i_outbound_c_id' => $c_id,
     'i_status >' => 0, //Published in any form
@@ -33,7 +32,6 @@ if(!isset($intents[0])){
 
     //Set core variables:
     var c_id = <?= $c_id ?>;
-    var level = <?= $level ?>;
     var max_length = <?= $message_max ?>;
     var message_count = <?= count($i_messages) ?>;
     //Sync the message count now:
@@ -338,7 +336,6 @@ if(!isset($intents[0])){
             initial_i_status:initial_i_status,
             i_status:new_i_status,
             pid:c_id,
-            level:level,
             i_media_type:$("#ul-nav-"+i_id+" .i_media_type").val(),
 
         }, function(data) {
@@ -491,7 +488,6 @@ if(!isset($intents[0])){
 
             ajaxData.append( 'upload_type', uploadType );
             ajaxData.append( 'i_status', $('#i_status_focus').val() );
-            ajaxData.append( 'level', level );
             ajaxData.append( 'pid', c_id );
             ajaxData.append( 'b_id', $('#b_id').val() );
 
@@ -542,7 +538,6 @@ if(!isset($intents[0])){
             pid:c_id, //Synonymous
             i_message:$('#i_message'+c_id).val(),
             i_status:$('#i_status_focus').val(),
-            level:level,
 
         }, function(data) {
 
@@ -572,9 +567,7 @@ if(!isset($intents[0])){
 <ul class="nav nav-tabs iphone-nav-tabs">
     <li role="presentation" class="nav_1 active"><a href="#messages-<?= $c_id ?>-1"><?= echo_status('i',1, false, null) ?></a></li>
     <li role="presentation" class="nav_3"><a href="#messages-<?= $c_id ?>-3"><?= echo_status('i',3, false, null) ?></a></li>
-    <?php if($drip_enabled){ ?>
     <li role="presentation" class="nav_2"><a href="#messages-<?= $c_id ?>-2"><?= echo_status('i',2, false, null) ?></a></li>
-    <?php } ?>
 </ul>
 
 <input type="hidden" id="i_status_focus" value="1" />
@@ -587,7 +580,7 @@ if(!isset($intents[0])){
     echo '<div class="ix-tip all_msg msg_1">';
     echo '<i class="fas fa-info-circle"></i> ';
     echo $i_desc[1]['s_desc'].'.';
-    if($level==2){
+    if(0){
         echo ' <a id="simulate_'.$c_id.'" href="javascript:void(0)" onclick="tree_message('.$c_id.','.$udata['u_id'].')" data-toggle="tooltip" title="Simulate messages sent to students when Task starts" data-placement="bottom">Send Test Message <i class="fas fa-mobile"></i></a>';
     }
     echo '</div>';
@@ -601,10 +594,10 @@ if(!isset($intents[0])){
     if(count($i_messages)>0){
         echo '<div id="message-sorting'.$c_id.'" class="list-group list-messages">';
         foreach($i_messages as $i){
-            echo echo_message(array_merge($i,array(
+            echo echo_message(array_merge($i, array(
                 'e_b_id'=>$b_id,
                 'e_outbound_u_id'=>$udata['u_id'],
-            )),$level );
+            )));
             //Increase counter:
             ${'message_count_'.$i['i_status']}++;
         }
@@ -642,10 +635,8 @@ if(!isset($intents[0])){
     //File counter:
     echo '<span id="charNum'.$c_id.'">0</span>/'.$message_max;
 
-    if($level>1){
-        //{first_name}
-        echo '<a href="javascript:add_first_name();" class="textarea_buttons remove_loading" style="float:right;" data-toggle="tooltip" title="Replaced with student\'s First Name for a more personal message." data-placement="left"><i class="fas fa-id-card"></i> {first_name}</a>';
-    }
+    //{first_name}
+    echo '<a href="javascript:add_first_name();" class="textarea_buttons remove_loading" style="float:right;" data-toggle="tooltip" title="Replaced with student\'s First Name for a more personal message." data-placement="left"><i class="fas fa-id-card"></i> {first_name}</a>';
 
     //Choose a file:
     $file_limit_mb = $this->config->item('file_limit_mb');

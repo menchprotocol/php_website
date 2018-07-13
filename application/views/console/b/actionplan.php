@@ -27,6 +27,20 @@ $udata = $this->session->userdata('user');
 
     $(document).ready(function() {
 
+
+
+        //Watch the expand/close all buttons:
+        $('#task_view .expand_all').click(function (e) {
+            $( "#list-c-<?= $b['c_id'] ?>>.is_sortable" ).each(function() {
+                ms_toggle($( this ).attr('data-link-id'),1);
+            });
+        });
+        $('#task_view .close_all').click(function (e) {
+            $( "#list-c-<?= $b['c_id'] ?>>.is_sortable" ).each(function() {
+                ms_toggle($( this ).attr('data-link-id'),0);
+            });
+        });
+
         //Enforce Alphanumeric for URL Key:
         $('#b_url_key').keypress(function (e) {
             var regex = new RegExp("^[a-zA-Z0-9]+$");
@@ -69,9 +83,9 @@ $udata = $this->session->userdata('user');
             if(hash_parts.length>=2){
                 //Fetch level if available:
                 if(hash_parts[0]=='messages'){
-                    i_load_frame(hash_parts[1],level_id);
+                    i_load_frame(hash_parts[1]);
                 } else if(hash_parts[0]=='modify'){
-                    load_modify(hash_parts[1],level_id);
+                    load_modify(hash_parts[1]);
                 }
             } else {
                 //Perhaps a menu change?
@@ -142,9 +156,10 @@ $udata = $this->session->userdata('user');
             displayKey: function(suggestion) { return "" },
             templates: {
                 suggestion: function(suggestion) {
-                    var minutes = parseFloat(suggestion.c_tree_hours)*60;
-                    var fancy_hours = ( minutes<60 ? minutes+'Min' : (Math.round( parseFloat(suggestion.c_tree_hours) * 10 ) / 10) +'Hr'  );
-                    return '<span class="suggest-prefix"><i class="fas fa-hashtag"></i></span> '+ suggestion._highlightResult.c_outcome.value + ' [' + suggestion.c_tree_count + '/' + fancy_hours+']';
+                    var minutes = Math.round(parseFloat(suggestion.c__hours)*60);
+                    var hours = Math.round(parseFloat(suggestion.c__hours));
+                    var fancy_hours = ( minutes<60 ? minutes+'Min'+(minutes==1?'':'s') :  hours+'Hr'+(hours==1?'':'s') );
+                    return '<span class="suggest-prefix"><i class="fas fa-hashtag"></i></span> '+ suggestion._highlightResult.c_outcome.value + ( parseFloat(suggestion.c__hours)>0 ? ' [' + ( parseFloat(suggestion.c__count)>1 ? suggestion.c__count+'&raquo;' : '' ) + fancy_hours + ']' : '');
                 },
                 header: function(data) {
                     if(!data.isEmpty){
@@ -170,10 +185,10 @@ $udata = $this->session->userdata('user');
     function c_sort(c_id,level){
 
         if(level==2){
-            var s_element = "list-outbound";
+            var s_element = "list-c-<?= $b['c_id'] ?>";
             var s_draggable = ".is_sortable";
         } else if(level==3){
-            var s_element = "list-outbound-"+c_id;
+            var s_element = "list-cr-"+$('.intent_line_'+c_id).attr('data-link-id');
             var s_draggable = ".is_step_sortable";
         } else {
             //Should not happen!
@@ -235,10 +250,10 @@ $udata = $this->session->userdata('user');
     function load_intent_sort(pid,level){
 
         if(level==2){
-            var s_element = "list-outbound";
+            var s_element = "list-c-<?= $b['c_id'] ?>";
             var s_draggable = ".is_sortable";
         } else if(level==3){
-            var s_element = "list-outbound-"+pid;
+            var s_element = "list-cr-"+$('.intent_line_'+pid).attr('data-link-id');
             var s_draggable = ".is_step_sortable";
         } else {
             //Should not happen!
@@ -311,7 +326,7 @@ $udata = $this->session->userdata('user');
 
 
 
-    function i_load_frame(c_id, level){
+    function i_load_frame(c_id){
 
         var messages_focus_pid = ( $('#iphonex').hasClass('hidden') ? 0 : parseInt($('#iphonex').attr('intent-id')) );
 
@@ -350,7 +365,6 @@ $udata = $this->session->userdata('user');
 
                 b_id:$('#b_id').val(),
                 c_id:c_id,
-                level:level,
 
             }, function(data) {
 
@@ -568,18 +582,20 @@ $udata = $this->session->userdata('user');
 
         //If link_c_id>0 this means we're only linking
         //Set variables mostly based on level:
+
         if(next_level==2){
-            var input_field = $('#addintent');
-            var sort_list_id = "list-outbound";
             var sort_handler = ".is_sortable";
-        } else if(next_level==3){
+            var sort_list_id = "list-c-"+pid;
             var input_field = $('#addintent'+pid);
-            var sort_list_id = "list-outbound-"+pid;
+        } else if(next_level==3){
             var sort_handler = ".is_step_sortable";
+            var sort_list_id = "list-cr-"+$('.intent_line_'+pid).attr('data-link-id');
+            var input_field = $('#addintent'+pid);
         } else {
             alert('Invalid next_level value');
             return false;
         }
+
 
         var b_id = $('#b_id').val();
         var intent_name = input_field.val();
@@ -591,7 +607,7 @@ $udata = $this->session->userdata('user');
         }
 
         //Set processing status:
-        add_to_list(sort_list_id,sort_handler,'<div id="temp'+next_level+'" class="list-group-item"><img src="/img/round_load.gif" class="loader" /> Adding... </div>');
+        add_to_list(sort_list_id, sort_handler, '<div id="temp'+next_level+'" class="list-group-item"><img src="/img/round_load.gif" class="loader" /> Adding... </div>');
 
         //Empty Input:
         input_field.val("").focus();
@@ -851,7 +867,7 @@ $udata = $this->session->userdata('user');
                 }
 
                 //Task/Bootcamp List:
-                echo '<div id="list-outbound" class="list-group">';
+                echo '<div id="list-c-'.$b['c_id'].'" class="list-group list-level-2">';
 
                     foreach($intent['c__child_intents'] as $key=>$sub_intent){
                         echo echo_actionplan($b,$sub_intent, ($level+1),$b['b_id']);
@@ -861,7 +877,7 @@ $udata = $this->session->userdata('user');
                     ?>
                     <div class="list-group-item list_input searchable">
                         <div class="input-group">
-                            <div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control intentadder" maxlength="70" intent-id="<?= $intent['c_id'] ?>" id="addintent" placeholder="Add #Intent"></div>
+                            <div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control intentadder" maxlength="70" intent-id="<?= $intent['c_id'] ?>" id="addintent-c-<?= $b['c_id'] ?>" placeholder="Add #Intent"></div>
                             <span class="input-group-addon" style="padding-right:8px;">
                                 <span id="dir_handle" data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" class="badge badge-primary pull-right" style="cursor:pointer; margin: 1px 3px 0 6px;">
                                     <div><i class="fas fa-plus"></i></div>

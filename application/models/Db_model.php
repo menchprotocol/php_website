@@ -1290,13 +1290,13 @@ WHERE ru.ru_status >= 4
         $new_c['c_inbound_u_id'] = $u_id;
 
         //Create intent:
-        $new_intent = $this->Db_model->c_create($new_c);
+        $new_c = $this->Db_model->c_create($new_c);
 
         //Create Link:
         $intent_relation = $this->Db_model->cr_create(array(
             'cr_inbound_u_id' => $u_id,
             'cr_inbound_c_id'  => $c_id,
-            'cr_outbound_c_id' => $new_intent['c_id'],
+            'cr_outbound_c_id' => $new_c['c_id'],
             'cr_outbound_rank' => 1 + $this->Db_model->max_value('v5_intent_links','cr_outbound_rank', array(
                     'cr_status >=' => 1,
                     'c_status >=' => 1,
@@ -1305,11 +1305,11 @@ WHERE ru.ru_status >= 4
         ));
 
         //Return everything:
-        $new_intents = $this->Db_model->cr_outbound_fetch(array(
+        $new_cs = $this->Db_model->cr_outbound_fetch(array(
             'cr.cr_id' => $intent_relation['cr_id'],
         ));
 
-        return $new_intents[0];
+        return $new_cs[0];
 
     }
 
@@ -1940,8 +1940,8 @@ WHERE ru.ru_status >= 4
 
 	    //Get core data:
         $immediate_children = array(
-            'c_tree_count' => 0,
-            'c_tree_hours' => 0,
+            'c__count' => 0,
+            'c__hours' => 0,
             'c_flat' => array(),
             'tree_top' => array(),
         );
@@ -1972,8 +1972,9 @@ WHERE ru.ru_status >= 4
                     }
 
                     //Addup children if any:
-                    $immediate_children['c_tree_count'] += $granchildren['c_tree_count'];
-                    $immediate_children['c_tree_hours'] += $granchildren['c_tree_hours'];
+                    $immediate_children['c__count'] += $granchildren['c__count'];
+                    $immediate_children['c__hours'] += $granchildren['c__hours'];
+
                     array_push($immediate_children['c_flat'],$granchildren['c_flat']);
                     array_push($immediate_children['tree_top'],$granchildren['tree_top']);
                 }
@@ -1985,8 +1986,13 @@ WHERE ru.ru_status >= 4
         $cs = $this->Db_model->c_fetch(array(
             'c.c_id' => $c_id,
         ));
-        $immediate_children['c_tree_count'] += 1;
-        $immediate_children['c_tree_hours'] += $cs[0]['c_time_estimate'];
+        $immediate_children['c__count'] += 1;
+        $immediate_children['c__hours'] += $cs[0]['c_time_estimate'];
+
+        //Set the data for this intent:
+        $cs[0]['c__count'] = $immediate_children['c__count'];
+        $cs[0]['c__hours'] = $immediate_children['c__hours'];
+
         array_push($immediate_children['c_flat'],intval($c_id));
         array_push($immediate_children['tree_top'],$cs[0]);
 
@@ -2200,8 +2206,8 @@ WHERE ru.ru_status >= 4
 
                 //See what type of children this has:
                 $child_cs = $this->Db_model->c_recursive_fetch($item['c_id']);
-                $new_item['c_tree_count'] = $child_cs['c_tree_count'];
-                $new_item['c_tree_hours'] = $child_cs['c_tree_hours'];
+                $new_item['c__count'] = $child_cs['c__count'];
+                $new_item['c__hours'] = $child_cs['c__hours'];
 
                 //Fetch all Messages:
                 $messages = $this->Db_model->i_fetch(array(

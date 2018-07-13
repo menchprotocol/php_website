@@ -334,7 +334,7 @@ function b_save_settings(){
 
 
 
-        <div class="title" style="margin-top:0px;"><h4><i class="fas fa-calendar-alt"></i> Duration <span id="hb_7101" class="help_button" intent-id="7101"></span></h4></div>
+        <div class="title" style="margin-top:0px;"><h4><i class="fas fa-calendar-alt"></i> Class Duration <span id="hb_7101" class="help_button" intent-id="7101"></span></h4></div>
         <div class="help_body maxout" id="content_7101"></div>
         <?php
         echo '<select class="input-mini border" id="b_weeks_count" style="padding:4px !important;">';

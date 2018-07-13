@@ -366,13 +366,13 @@ class Cron extends CI_Controller {
                             $completion_stats['completed']++;
                             $ru_status = 7; //Graduate
                             $e_inbound_c_id = 64; //Student Graduated
-                            $i_message​​ = '{first_name} your class just ended. Congratulations for completing all Tasks on-time 🎉​';
+                            $i_message​​ = '{first_name} your class just ended. Congratulations for completing all tasks on-time 🎉​';
                         } else {
                             //Did not complete:
                             $completion_stats['incomplete']++;
                             $ru_status = 6; //Incomplete
                             $e_inbound_c_id = 71; //Student Incomplete Class
-                            $i_message​​ = '{first_name} your class just ended. You can no longer submit Steps but you will have life-time access to all Tasks and Steps which are now unlocked.​';
+                            $i_message​​ = '{first_name} your class just ended. You can no longer submit tasks but you will have life-time access to to your action plan if you wish to complete it at a later date.​';
                         }
 
                         //Adjust status in enrollments table:

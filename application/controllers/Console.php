@@ -115,7 +115,23 @@ class Console extends CI_Controller {
 
 		//Fetch intent relative to the Bootcamp by doing an array search:
 		$view_data = extract_level( $bs[0] , ( intval($pid)>0 ? $pid : $bs[0]['c_id'] ) );
-		if(!$view_data){
+
+
+        if(isset($_GET['raw'])){
+            //For testing purposes:
+            echo_json($view_data['b']);
+            exit;
+        } elseif(isset($_GET['tree'])){
+            //For testing purposes:
+            if(isset($_GET['c_id'])){
+                //Try to find sub-set of tree:
+                echo_json(find_c_tree($view_data['b']['c__tree'], $_GET['c_id']));
+            } else {
+                //Echo entire tree:
+                echo_json($view_data['b']['c__tree']);
+            }
+            exit;
+        } elseif(!$view_data){
 		    redirect_message('/console/'.$b_id.'/actionplan','<div class="alert alert-danger" role="alert">Invalid Step ID. Select another Step to continue.</div>');
 		} else {
 		    //Append universal (Flat design) breadcrumb:
@@ -127,11 +143,6 @@ class Console extends CI_Controller {
             );
         }
 
-		if(isset($_GET['raw'])){
-		    //For testing purposes:
-		    echo_json($view_data['b']);
-		    exit;
-		}
 		
 		//Load views:
 		$this->load->view('console/console_header' , $view_data);

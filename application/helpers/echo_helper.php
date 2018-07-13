@@ -624,7 +624,7 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
 
 
 
-function echo_message($i,$level=0,$editing_enabled=true){
+function echo_message($i, $editing_enabled=true){
 
     $ui = '';
     $ui .= '<div class="list-group-item is-msg is_sortable all_msg msg_'.$i['i_status'].'" id="ul-nav-'.$i['i_id'].'" iid="'.$i['i_id'].'">';
@@ -656,13 +656,13 @@ function echo_message($i,$level=0,$editing_enabled=true){
     if($editing_enabled){
         $ui .= '<li class="edit-off" style="margin: 0 0 0 8px;"><span class="on-hover"><i class="fas fa-bars sort_message" iid="'.$i['i_id'].'" style="color:#3C4858;"></i></span></li>';
         $ui .= '<li class="edit-off" style="margin-right: 10px; margin-left: 6px;"><span class="on-hover"><a href="javascript:i_delete('.$i['i_id'].');"><i class="fas fa-trash-alt" style="margin:0 7px 0 5px;"></i></a></span></li>';
-        if($i['i_media_type']=='text' || $level<=2){
+        if($i['i_media_type']=='text'){
             $ui .= '<li class="edit-off" style="margin-left:-4px;"><span class="on-hover"><a href="javascript:msg_start_edit('.$i['i_id'].','.$i['i_status'].');"><i class="fas fa-pen-square"></i></a></span></li>';
         }
         //Right side reverse:
         $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-primary" href="javascript:message_save_updates('.$i['i_id'].','.$i['i_status'].');" style="text-decoration:none; font-weight:bold; padding: 1px 8px 4px;"><i class="fas fa-check"></i></a></li>';
         $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-hidden" href="javascript:msg_cancel_edit('.$i['i_id'].');"><i class="fas fa-times" style="color:#3C4858"></i></a></li>';
-        $ui .= '<li class="pull-right edit-on hidden">'.echo_dropdown_status('i','i_status_'.$i['i_id'],$i['i_status'],($level>1?array(-1):array(-1,2)),'dropup',$level,1).'</li>';
+        $ui .= '<li class="pull-right edit-on hidden">'.echo_dropdown_status('i','i_status_'.$i['i_id'],$i['i_status'],array(-1),'dropup',1).'</li>';
         $ui .= '<li class="pull-right edit-updates"></li>'; //Show potential errors
     }
     $ui .= '</ul>';
@@ -1195,13 +1195,15 @@ function echo_score($score){
 }
 
 
+
+
 function echo_actionplan($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
 
     $CI =& get_instance();
     $udata = $CI->session->userdata('user');
 
-
-    $child_cs = $CI->Db_model->c_recursive_fetch($intent['c_id']);
+    //Find this tree first:
+    $child_cs = find_c_tree($b['c__tree'], $intent['c_id']);
 
     if(!isset($intent['c__messages'])){
         //Fetch this:
@@ -1234,14 +1236,14 @@ function echo_actionplan($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=tru
 
 
     //Enable total hours/Task reporting...
-    $ui .= echo_estimated_time($child_cs['c_tree_hours'],1,1, $intent['c_id'], $level, $intent['c_status']);
+    $ui .= echo_estimated_time($child_cs['c__hours'],1,1, $intent['c_id'], $level, $intent['c_status']);
 
 
     if($editing_enabled){
 
             $ui .= '<a class="badge badge-primary" onclick="load_modify('.$intent['c_id'].','.$level.')" style="margin-right: -1px;" href="#modify-'.$intent['c_id'].'"><i class="fas fa-cog"></i></a> &nbsp;';
 
-            $ui .= '<a href="#messages-'.$intent['c_id'].'" onclick="i_load_frame('.$intent['c_id'].','.$level.')" class="badge badge-primary badge-msg"><span id="messages-counter-'.$intent['c_id'].'">'.count($intent['c__messages']).'</span> <i class="fas fa-comment-dots"></i></a>';
+            $ui .= '<a href="#messages-'.$intent['c_id'].'" onclick="i_load_frame('.$intent['c_id'].')" class="badge badge-primary badge-msg"><span id="messages-counter-'.$intent['c_id'].'">'.count($intent['c__messages']).'</span> <i class="fas fa-comment-dots"></i></a>';
         } else {
             //Show link to current section:
             $ui .= '<a href="javascript:void(0);" onclick="$(\'#messages_'.$intent['c_id'].'\').toggle();" class="badge badge-primary badge-msg"><span id="messages-counter-'.$intent['c_id'].'">'.count($intent['c__messages']).'</span> <i class="fas fa-comment-dots"></i></a>';
@@ -1283,7 +1285,7 @@ function echo_actionplan($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=tru
     } elseif ($level==3){
 
         //Steps
-        $ui .= '<span class="inline-level inline-level-'.$level.'">#'.$intent['cr_outbound_rank'].'</span><span id="title_'.$intent['cr_id'].'" class="c_outcome_'.$intent['c_id'].'" outbound-rank="'.$intent['cr_outbound_rank'].'" c_complete_url_required="'.($intent['c_complete_url_required']=='t'?1:0).'"  c_complete_notes_required="'.($intent['c_complete_notes_required']=='t'?1:0).'">'.$intent['c_outcome'].'</span> ';
+        $ui .= '<span class="inline-level inline-level-'.$level.'">#'.$intent['cr_outbound_rank'].'</span><span id="title_'.$intent['cr_id'].'" class="c_outcome_'.$intent['c_id'].'" outbound-rank="'.$intent['cr_outbound_rank'].'" c_complete_url_required="'.($intent['c_complete_url_required']=='t'?1:0).'"  c_complete_notes_required="'.($intent['c_complete_notes_required']=='t'?1:0).'">'.$intent['c_outcome'].( $child_cs['c__count']>1 ? ' <b data-toggle="tooltip" data-placement="top" title="This intent tree has a total of '.$child_cs['c__count'].' intents"><i class="fas fa-hashtag"></i>' . $child_cs['c__count'].'</b>' : '' ).'</span> ';
 
     }
 
@@ -1292,15 +1294,15 @@ function echo_actionplan($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=tru
         //Show Message Preview:
         $ui .= '<div id="messages_'.$intent['c_id'].'" class="messages-inline">';
         foreach($intent['c__messages'] as $i){
-            $ui .= echo_message($i,$level, false);
+            $ui .= echo_message($i, false);
         }
         $ui .= '</div>';
     }
 
-    //Any Steps?
+    //Any child intents?
     if($level==2){
 
-        $ui .= '<div id="list-outbound-'.$intent['c_id'].'" class="cr-class-'.$intent['cr_id'].' list-group step-group hidden" intent-id="'.$intent['c_id'].'">';
+        $ui .= '<div id="list-cr-'.$intent['cr_id'].'" class="cr-class-'.$intent['cr_id'].' list-group step-group hidden list-level-3" intent-id="'.$intent['c_id'].'">';
         //This line enables the in-between list moves to happen for empty lists:
         $ui .= '<div class="is_step_sortable dropin-box" style="height:1px;">&nbsp;</div>';
         if(isset($intent['c__child_intents']) && count($intent['c__child_intents'])>0){
@@ -1313,9 +1315,9 @@ function echo_actionplan($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=tru
         if($editing_enabled){
             $ui .= '<div class="list-group-item list_input new-step-input">
                 <div class="input-group">
-                    <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="new_intent('.$intent['c_id'].');" intent-id="'.$intent['c_id'].'"><input type="text" class="form-control autosearch intentadder" maxlength="70" id="addintent'.$intent['c_id'].'" intent-id="'.$intent['c_id'].'" placeholder="Add #Intent"></form></div>
+                    <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="new_intent('.$intent['c_id'].',3);" intent-id="'.$intent['c_id'].'"><input type="text" class="form-control autosearch intentadder" maxlength="70" id="addintent-cr-'.$intent['cr_id'].'" intent-id="'.$intent['c_id'].'" placeholder="Add #Intent"></form></div>
                     <span class="input-group-addon" style="padding-right:8px;">
-                        <span data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" onclick="new_intent('.$intent['c_id'].','.($level+1).');" class="badge badge-primary pull-right" intent-id="'.$intent['c_id'].'" style="cursor:pointer; margin: 13px -6px 1px 13px;">
+                        <span data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" onclick="new_intent('.$intent['c_id'].',3);" class="badge badge-primary pull-right" intent-id="'.$intent['c_id'].'" style="cursor:pointer; margin: 13px -6px 1px 13px;">
                             <div><i class="fas fa-plus"></i></div>
                         </span>
                     </span>
@@ -1457,7 +1459,7 @@ function echo__s($count,$is_es=0){
 }
 
 
-function echo_dropdown_status($object,$input_name,$current_status_id,$exclude_ids=array(),$direction='dropdown',$level=0,$mini=0){
+function echo_dropdown_status($object,$input_name,$current_status_id,$exclude_ids=array(),$direction='dropdown',$mini=0){
 
     $CI =& get_instance();
     $udata = $CI->session->userdata('user');
