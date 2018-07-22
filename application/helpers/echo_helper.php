@@ -884,7 +884,7 @@ function echo_hours($decimal_hours,$micro=false,$plus=false){
 
         $original_hours = $decimal_hours*60;
         $decimal_hours = round($original_hours);
-        return ($decimal_hours==$original_hours?'':'~').$decimal_hours.($plus?'+':'').($micro?'m':' Minutes');
+        return ($decimal_hours==$original_hours || $decimal_hours==7?'':'~').$decimal_hours.($plus?'+':'').($micro?'m':' Minutes');
 
     } else {
 
