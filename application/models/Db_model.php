@@ -77,7 +77,10 @@ WHERE ru.ru_status >= 4
 
 	    //Adjust join object:
         if(count($join_objects)==0){
+            //Set defaults:
             array_push($join_objects,'fp');
+            array_push($join_objects,'i');
+            array_push($join_objects,'ba');
         }
         array_push($join_objects,'c__tree');
 
@@ -89,7 +92,7 @@ WHERE ru.ru_status >= 4
         foreach($bs as $key=>$c){
 
             //Bootcamp Messages:
-            if(count($join_objects)==0 || in_array('i',$join_objects)){
+            if(in_array('i',$join_objects)){
                 $bs[$key]['c__messages'] = $this->Db_model->i_fetch(array(
                     'i_status >' => 0,
                     'i_outbound_c_id' => $c['c_id'],
@@ -136,7 +139,7 @@ WHERE ru.ru_status >= 4
             }
 
             //Fetch team:
-            if(count($join_objects)==0 || in_array('ba',$join_objects)){
+            if(in_array('ba',$join_objects)){
                 $bs[$key]['b__coaches'] = $this->Db_model->ba_fetch(array(
                     'ba.ba_b_id' => $c['b_id'],
                     'ba.ba_status >=' => 0,
@@ -158,7 +161,7 @@ WHERE ru.ru_status >= 4
             foreach($bs[$key]['c__child_intents'] as $intent_key=>$intent){
 
                 //Count Messages:
-                if(count($join_objects)==0 || in_array('i',$join_objects)){
+                if(in_array('i',$join_objects)){
                     $intent_messages = $this->Db_model->i_fetch(array(
                         'i_status >' => 0,
                         'i_outbound_c_id' => $intent['c_id'],
@@ -191,7 +194,7 @@ WHERE ru.ru_status >= 4
                 //Addup Step values:
                 foreach($bs[$key]['c__child_intents'][$intent_key]['c__child_intents'] as $step_key=>$step){
 
-                    if(count($join_objects)==0 || in_array('i',$join_objects)){
+                    if(in_array('i',$join_objects)){
                         //Count Messages:
                         $step_messages = $this->Db_model->i_fetch(array(
                             'i_status >' => 0,
@@ -1111,8 +1114,7 @@ WHERE ru.ru_status >= 4
 	                foreach($intents[$key]['c__child_intents'] as $key2=>$value2){
 	                    $intents[$key]['c__child_intents'][$key2]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
 	                        'cr.cr_inbound_c_id' => $value2['c_id'],
-                            'cr.cr_status >=' => 0,
-                            'c.c_status >=' => 0,
+	                        'cr.cr_status >' => 0,
 	                    ) , $join_objects );
 	                }
 	            }
