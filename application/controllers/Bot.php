@@ -10,12 +10,9 @@ class Bot extends CI_Controller {
         $this->output->enable_profiler(FALSE);
     }
 
-
-
     function ping(){
         echo_json(array('status'=>'success'));
     }
-
 
     function t($c_id){
         ini_set('max_execution_time', 8);

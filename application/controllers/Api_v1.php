@@ -698,28 +698,48 @@ class Api_v1 extends CI_Controller {
                 'status' => 0,
                 'message' => 'Missing Intent ID.',
             ));
+        } elseif(!isset($_POST['cr_id'])){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Intent Link ID.',
+            ));
         }
 
-        //Show Potential parent Bootcamps:
-        $parent_bs = $this->Db_model->cr_inbound_fetch(array(
-            'cr.cr_outbound_b_id' => $b['b_id'],
+        //Search for other parent intents:
+        $parent_cs = $this->Db_model->cr_inbound_fetch(array(
+            'cr.cr_outbound_c_id' => $_POST['c_id'],
             'cr.cr_status >=' => 1,
-            'b.b_status >=' => 2, //Published in some way
-        ),array('b'));
+        ));
 
 
         //Did we find anything?
-        if(count($parent_bs)>0){
-            echo '<div class="title" style="margin-top:30px;"><h4><b><i class="fas fa-cubes"></i> Parent Bootcamps</b></a></h4></div>';
-            echo '<div class="list-group maxout">';
-            foreach ($parent_bs as $parent_b){
-                echo '<a href="/console/'.$parent_b['b_id'].'/actionplan" class="list-group-item">';
-                echo '<span class="pull-right"><span class="badge badge-primary" style="margin-top:-5px;"><i class="fas fa-chevron-right"></i></span></span>';
-                echo '<i class="fas fa-cubes"></i> ';
-                echo $parent_b['c_outcome'];
-                echo '</a>';
+        if(count($parent_cs)>1 || (count($parent_cs)>0 && intval($_POST['cr_id'])==0)){
+            $parent_ui = '';
+            $parent_ui .= '<div class="title" style="margin-top:10px;"><h4><b><i class="fas fa-sitemap"></i> Intent Also Belongs To</b></a></h4></div>';
+            $parent_ui .= '<div class="list-group maxout">';
+            foreach ($parent_cs as $parent_c){
+                if($_POST['cr_id']>0 && $parent_c['cr_id']==$_POST['cr_id']){
+                    continue;
+                }
+                $parent_ui .= '<div class="list-group-item">';
+                //TODO Add link to
+                //$parent_ui .= '<span class="pull-right"><a class="badge badge-primary" href="/" target="_blank" style="margin-top:-3px;"><i class="fas fa-external-link-square"></i></a></span>';
+                $parent_ui .= '<i class="fas fa-hashtag"></i> ';
+                $parent_ui .= $parent_c['c_outcome'];
+                $parent_ui .= '</div>';
             }
-            echo '</div>';
+            $parent_ui .= '</div>';
+
+            return echo_json(array(
+                'status' => 1,
+                'parent_found' => 1,
+                'parent_content' => $parent_ui,
+            ));
+        } else {
+            return echo_json(array(
+                'status' => 1,
+                'parent_found' => 0,
+            ));
         }
     }
 
@@ -820,10 +840,10 @@ class Api_v1 extends CI_Controller {
         } elseif(!isset($intent_data['intent']) || !is_array($intent_data['intent'])){
             die('<span style="color:#FF0000;">Error: Invalid Task ID</span>');
             //Submission settings:
-        } elseif($intent_data['intent']['c_complete_url_required']=='t' && count(extract_urls($_POST['us_notes']))<1){
-            die('<span style="color:#FF0000;">Error: URL Required. <a href=""><b><u>Refresh this page</u></b></a> and try again.</span>');
-        } elseif($intent_data['intent']['c_complete_notes_required']=='t' && strlen($_POST['us_notes'])<1){
-            die('<span style="color:#FF0000;">Error: Notes Required. <a href=""><b><u>Refresh this page</u></b></a> and try again.</span>');
+        } elseif($intent_data['intent']['c_require_url_to_complete'] && count(extract_urls($_POST['us_notes']))<1){
+            die('<span style="color:#FF0000;">Error: URL Required to mark as complete. <a href=""><b><u>Refresh this page</u></b></a> and try again.</span>');
+        } elseif($intent_data['intent']['c_require_notes_to_complete'] && strlen($_POST['us_notes'])<1){
+            die('<span style="color:#FF0000;">Error: Notes Required to mark as complete. <a href=""><b><u>Refresh this page</u></b></a> and try again.</span>');
         }
 
 
@@ -1759,43 +1779,64 @@ class Api_v1 extends CI_Controller {
 
 	    $udata = auth(array(1308,1280));
 	    if(!$udata){
-	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Session. Refresh the Page to Continue',
+            ));
 	    } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
-	        die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID.</span>');
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Bootcamp ID.',
+            ));
 	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0){
-	        die('<span style="color:#FF0000;">Error: Invalid Intent ID.</span>');
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Intent ID',
+            ));
         } elseif(!isset($_POST['c_outcome']) || strlen($_POST['c_outcome'])<=0){
-            die('<span style="color:#FF0000;">Error: Missing Intent Outcome.</span>');
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Intent Outcome',
+            ));
         } elseif(!isset($_POST['link_c_id'])){
-            die('<span style="color:#FF0000;">Error: Missing Link Intent ID.</span>');
-	    }
-
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Link Intent ID',
+            ));
+        } elseif(!isset($_POST['next_level'])){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Level',
+            ));
+        }
 
         $_POST['link_c_id'] = intval($_POST['link_c_id']);
 
 	    //Validate Original intent:
 	    $inbound_intents = $this->Db_model->c_fetch(array(
 	        'c.c_id' => intval($_POST['pid']),
-	    ));
+	    ), 1);
 	    if(count($inbound_intents)<=0){
-	        die('<span style="color:#FF0000;">Error: Invalid PID.</span>');
-	    }
-
-	    //Validate Bootcamp ID:
-	    $bs = $this->Db_model->b_fetch(array(
-	        'b.b_id' => intval($_POST['b_id']),
-	    ));
-	    if(count($bs)<=0){
-	        die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID.</span>');
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Intent ID',
+            ));
 	    }
 
 	    if(!$_POST['link_c_id']){
+
+	        //Set default new hours:
+            $default_new_hours = 0.05; //3 min default
+
             //Create intent:
             $new_c = $this->Db_model->c_create(array(
                 'c_inbound_u_id' => $udata['u_id'],
                 'c_outcome' => trim($_POST['c_outcome']),
-                'c_time_estimate' => '0.05', //3 min default Step
+                'c_time_estimate' => $default_new_hours,
             ));
+
+            //Append total new hours:
+            $new_c['new_c_hours'] = $default_new_hours;
 
             //Log Engagement for New Intent:
             $this->Db_model->e_create(array(
@@ -1812,13 +1853,34 @@ class Api_v1 extends CI_Controller {
             ));
 
         } else {
+
             $new_cs = $this->Db_model->c_fetch(array(
                 'c_id' => $_POST['link_c_id'],
-            ));
+            ), 2);
             if(count($new_cs)<=0){
-                die('<span style="color:#FF0000;">Error: Invalid Linked Intent ID.</span>');
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => 'Invalid Linked Intent ID',
+                ));
             }
             $new_c = $new_cs[0];
+
+            //Make sure this is not a duplicate level 2 intent:
+            if($_POST['next_level']==2){
+                foreach($inbound_intents[0]['c__child_intents'] as $current_c){
+                    if($current_c['c_id']==$_POST['link_c_id']){
+                        //Ooops, this is already added in Level 2, cannot add again:
+                        return echo_json(array(
+                            'status' => 0,
+                            'message' => '"'.$new_c['c_outcome'].'" is already added to this Action Plan and cannot be added again.',
+                        ));
+                    }
+                }
+            }
+
+            //Also append total hours:
+            $c_recursive = $this->Db_model->c_recursive_fetch($_POST['link_c_id']);
+            $new_c['new_c_hours'] = $c_recursive['c__hours'];
         }
 
 	    //Create Link:
@@ -1851,11 +1913,23 @@ class Api_v1 extends CI_Controller {
 	        'cr.cr_id' => $relation['cr_id'],
 	    ));
 
+        //Validate Bootcamp ID:
+        $bs = $this->Db_model->b_fetch(array(
+            'b.b_id' => intval($_POST['b_id']),
+        ), array('c__tree'));
+        if(count($bs)<=0){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Bootcamp ID',
+            ));
+        }
+
 	    //Return result:
         echo_json(array(
             'status' => 1,
             'c_id' => $new_c['c_id'],
-            'html' => echo_actionplan($bs[0],$relations[0],$_POST['next_level'],intval($_POST['pid'])),
+            'new_c_hours' => $new_c['new_c_hours'],
+            'html' => echo_actionplan($bs[0],array_merge($new_c,$relations[0]),$_POST['next_level'],intval($_POST['pid'])),
         ));
 	}
 
@@ -1956,8 +2030,7 @@ class Api_v1 extends CI_Controller {
         //Validate Original intent:
         $original_intents = $this->Db_model->c_fetch(array(
             'c.c_id' => intval($_POST['pid']),
-        ) , 0 );
-
+        ), 0 );
 
         if(!$udata){
             echo_json(array(
@@ -1989,28 +2062,22 @@ class Api_v1 extends CI_Controller {
                 'message' => 'Missing Bootcamp ID',
             ));
             return false;
-        } elseif($_POST['level']>=2 && !isset($_POST['c_status'])){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Status',
-            ));
-            return false;
-        } elseif($_POST['level']==2 && !isset($_POST['c_completion_rule'])){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Extension Rule',
-            ));
-            return false;
-        } elseif($_POST['level']>=2 && !isset($_POST['c_time_estimate'])){
+        } elseif(!isset($_POST['c_time_estimate'])){
             echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Time Estimate',
             ));
             return false;
-        } elseif($_POST['level']>=2 && (!isset($_POST['c_complete_url_required']) || !isset($_POST['c_complete_notes_required']))){
+        } elseif(!isset($_POST['c_is_any']) || !isset($_POST['c_require_url_to_complete']) || !isset($_POST['c_require_notes_to_complete'])){
             echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Completion Settings',
+            ));
+            return false;
+        } elseif(!isset($_POST['c_is_public'])){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Visibility Settings',
             ));
             return false;
         } elseif(count($bs)<=0){
@@ -2028,47 +2095,38 @@ class Api_v1 extends CI_Controller {
         }
 
 
-        //Process data based on level:
-        if($_POST['level']<=1){
+        //Update array:
+        $c_update = array(
+            'c_outcome' => trim($_POST['c_outcome']),
+            'c_time_estimate' => doubleval($_POST['c_time_estimate']),
+            'c_require_url_to_complete' => intval($_POST['c_require_url_to_complete']),
+            'c_require_notes_to_complete' => intval($_POST['c_require_notes_to_complete']),
+            'c_is_any' => intval($_POST['c_is_any']),
+            'c_is_public' => intval($_POST['c_is_public']),
+        );
 
-            //Did the Bootcamp's Intent Outcome change?
-            if(!(trim($_POST['c_outcome'])==$original_intents[0]['c_outcome'])){
-                //Generate Update Array
-                $c_update = array(
-                    'c_outcome' => trim($_POST['c_outcome']),
-                );
-            }
-
-        } elseif($_POST['level']>=2){
-
-            //For level 2 & 3
-            $c_update = array(
-                'c_outcome' => trim($_POST['c_outcome']),
-                'c_status' => intval($_POST['c_status']),
-                'c_time_estimate' => doubleval($_POST['c_time_estimate']),
-                'c_complete_url_required' => ( intval($_POST['c_complete_url_required']) ? 't' : 'f' ),
-                'c_complete_notes_required' => ( intval($_POST['c_complete_notes_required']) ? 't' : 'f' ),
-            );
-
-            if($_POST['level']==2){
-                $c_update['c_completion_rule'] = intval($_POST['c_completion_rule']);
+        //Check to see which variables actually changed:
+        foreach($c_update as $key=>$value){
+            //Did this value change?
+            if($_POST[$key]==$original_intents[0][$key]){
+                //No it did not! Remove it!
+                unset($c_update[$key]);
             }
         }
 
+        //Did anything change?
+        if(count($c_update)>0){
 
-
-        //Did we have any intent updating to do?
-        if(isset($c_update) && count($c_update)>0){
-
-            //Now update the DB:
+            //YES, update the DB:
             $this->Db_model->c_update( intval($_POST['pid']) , $c_update );
 
+            //Update Algolia intent:
+            $this->Db_model->algolia_sync('c', $_POST['pid']);
+
+            //Update Bootcamp if the main title has changed:
             if($_POST['pid']==$bs[0]['b_outbound_c_id']){
                 //This is a Bootcamp intent, also update algolia:
-                $this->Db_model->algolia_sync('b',$_POST['b_id']);
-            } else {
-                //Update intent algolia object:
-
+                $this->Db_model->algolia_sync('b', $_POST['b_id']);
             }
 
             //Log Engagement for New Intent Link:
@@ -2093,6 +2151,59 @@ class Api_v1 extends CI_Controller {
             'message' => '<span><i class="fas fa-check"></i> Saved</span>',
         ));
 
+    }
+
+    function unlink_intent(){
+
+        //Auth user and check required variables:
+        $udata = auth(array(1308,1280));
+
+        if(!$udata){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Session Expired',
+            ));
+            return false;
+        } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Bootcamp ID',
+            ));
+            return false;
+        } elseif(!isset($_POST['c_id']) || intval($_POST['c_id'])<=0){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Intent ID',
+            ));
+            return false;
+        } elseif(!isset($_POST['cr_id']) || intval($_POST['cr_id'])<=0){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Inten Link ID',
+            ));
+            return false;
+        }
+
+        //All good, remove the link:
+        $this->Db_model->cr_update( $_POST['cr_id'] , array(
+            'cr_inbound_u_id' => $udata['u_id'],
+            'cr_timestamp' => date("Y-m-d H:i:s"),
+            'cr_status' => -1, //Archived
+        ));
+
+        //Log Engagement for Link removal:
+        $this->Db_model->e_create(array(
+            'e_inbound_u_id' => $udata['u_id'],
+            'e_inbound_c_id' => 89, //Intent Link Archived
+            'e_b_id' => intval($_POST['b_id']),
+            'e_outbound_c_id' => intval($_POST['c_id']),
+            'e_cr_id' => intval($_POST['cr_id']),
+        ));
+
+        //Show success:
+        echo_json(array(
+            'status' => 1,
+        ));
     }
 
     function c_sort(){

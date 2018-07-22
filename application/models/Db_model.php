@@ -74,25 +74,19 @@ WHERE ru.ru_status >= 4
 
     function remix_bs($match_columns, $join_objects=array()){
 
-        //Missing anything?
-        $this->db->select('*');
-        $this->db->from('v5_bootcamps b');
-        $this->db->join('v5_intents c', 'c.c_id = b.b_outbound_c_id');
-        if(count($join_objects)==0 || in_array('fp',$join_objects)){
-            $this->db->join('v5_facebook_pages fp', 'fp.fp_id = b.b_fp_id','left');
-        }
 
-        foreach($match_columns as $key=>$value){
-            $this->db->where($key,$value);
+	    //Adjust join object:
+        if(count($join_objects)==0){
+            array_push($join_objects,'fp');
         }
-        $q = $this->db->get();
-        $bs = $q->result_array();
+        array_push($join_objects,'c__tree');
+
+
+        //Fetch Bootcamps base:
+        $bs = $this->Db_model->b_fetch($match_columns, $join_objects);
 
         //Now append more data:
         foreach($bs as $key=>$c){
-
-
-            $bs[$key]['c__tree'] = $this->Db_model->c_recursive_fetch($c['c_id']);
 
             //Bootcamp Messages:
             if(count($join_objects)==0 || in_array('i',$join_objects)){
@@ -1107,7 +1101,8 @@ WHERE ru.ru_status >= 4
 	            //Do the first level:
 	            $intents[$key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
 	                'cr.cr_inbound_c_id' => $value['c_id'],
-	                'cr.cr_status >' => 0,
+                    'cr.cr_status >=' => 0,
+                    'c.c_status >=' => 0,
 	            ) , $join_objects );
 	            
 	            //need more depth?
@@ -1116,7 +1111,8 @@ WHERE ru.ru_status >= 4
 	                foreach($intents[$key]['c__child_intents'] as $key2=>$value2){
 	                    $intents[$key]['c__child_intents'][$key2]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
 	                        'cr.cr_inbound_c_id' => $value2['c_id'],
-	                        'cr.cr_status >' => 0,
+                            'cr.cr_status >=' => 0,
+                            'c.c_status >=' => 0,
 	                    ) , $join_objects );
 	                }
 	            }
@@ -1146,7 +1142,16 @@ WHERE ru.ru_status >= 4
 	    }
 	    $this->db->order_by($order_by,'DESC');
 	    $q = $this->db->get();
-        return $q->result_array();
+        $bs = $q->result_array();
+
+        foreach($bs as $key=>$c){
+            if(in_array('c__tree',$join_objects)){
+                $bs[$key]['c__tree'] = $this->Db_model->c_recursive_fetch($c['c_id']);
+            }
+        }
+
+
+        return $bs;
 	}
 
 	
@@ -1263,7 +1268,7 @@ WHERE ru.ru_status >= 4
 		
 		//Fetch inserted id:
 		$insert_columns['cr_id'] = $this->db->insert_id();
-		
+
 		return $insert_columns;
 	}
 
@@ -1481,14 +1486,8 @@ WHERE ru.ru_status >= 4
         if(!isset($insert_columns['c_status'])){
             $insert_columns['c_status'] = 1;
         }
-        if(!isset($insert_columns['c_is_output'])){
-            $insert_columns['c_is_output'] = 0;
-        }
         if(!isset($insert_columns['c_is_public'])){
             $insert_columns['c_is_public'] = 0;
-        }
-        if(!isset($insert_columns['c_completion_rule'])){
-            $insert_columns['c_completion_rule'] = 1; //ALL
         }
 		
 		//Lets now add:

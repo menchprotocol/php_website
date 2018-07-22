@@ -878,26 +878,20 @@ function echo_hours($decimal_hours,$micro=false,$plus=false){
 
     if($decimal_hours<=0){
 
-        return '0'.($micro?'h':' Hours ');
+        return '0'.($micro?'m':' Minutes ');
 
     } elseif($decimal_hours<=1.50){
 
-        $decimal_hours = round($decimal_hours*60);
-        return $decimal_hours.($plus?'+':'').($micro?'m':' Minutes');
-
-    } elseif($decimal_hours<2 && 0) {
-
-        /*
-        $minutes_decimal = fmod($decimal_hours,1);
-        $minutes = round(($minutes_decimal-fmod($minutes_decimal,0.083)) * 60);
-        $hours = $decimal_hours - $minutes_decimal;
-        return $hours.($micro?'h':' Hour'.echo__s($hours).' ').($minutes>0 ? $minutes.($micro?'m':' Min'.echo__s($minutes)) : '');
-        */
+        $original_hours = $decimal_hours*60;
+        $decimal_hours = round($original_hours);
+        return ($decimal_hours==$original_hours?'':'~').$decimal_hours.($plus?'+':'').($micro?'m':' Minutes');
 
     } else {
 
         //Just round-up:
-        return round($decimal_hours).($plus?'+':'').($micro?'h':' Hour'.echo__s($decimal_hours));
+        $original_hours = $decimal_hours;
+        $decimal_hours = round($original_hours);
+        return ($decimal_hours==$original_hours?'':'~').$decimal_hours.($plus?'+':'').($micro?'h':' Hour'.echo__s($original_hours));
 
     }
 
@@ -940,6 +934,7 @@ function echo_object($object,$id,$b_id=0){
             if(isset($intents[0])){
                 if($b_id){
                     //We can return a link:
+                    //TODO Update to intent library link
                     return '<a href="'.$website['url'].'console/'.$b_id.'/actionplan#modify-'.$intents[0]['c_id'].'">'.$intents[0]['c_outcome'].'</a>';
                 } else {
                     return $intents[0]['c_outcome'];
@@ -1127,7 +1122,7 @@ function echo_status($object=null,$status=null,$micro_status=false,$data_placeme
 }
 
 
-function echo_estimated_time($c_time_estimate,$show_icon=1,$micro=false,$c_id=0,$level=0,$c_status=1){
+function echo_estimated_time($c_time_estimate,$show_icon=1,$micro=false,$c_id=0,$c_time_intent=0){
 
     if($c_time_estimate>0 || $c_id){
 
@@ -1135,7 +1130,7 @@ function echo_estimated_time($c_time_estimate,$show_icon=1,$micro=false,$c_id=0,
 
         if($c_id){
 
-            $ui .= '<span class="slim-time'.( $level<=2?' hours_level_'.$level:'').'" id="t_estimate_'.$c_id.'" current-hours="'.$c_time_estimate.'">'.echo_hours( $c_time_estimate,true).'</span>';
+            $ui .= '<span class="slim-time" id="t_estimate_'.$c_id.'" tree-hours="'.$c_time_estimate.'" intent-hours="'.$c_time_intent.'">'.echo_hours( $c_time_estimate,true).'</span>';
             $ui .= ' <i class="fas fa-clock"></i>';
 
         } else {
@@ -1216,46 +1211,39 @@ function echo_actionplan($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=tru
     if($level==1){
 
         //Bootcamp Outcome:
-        $ui = '<div id="obj-title" class="list-group-item">';
+        $ui = '<div class="list-group-item">';
 
     } else {
 
         //ATTENTION: DO NOT CHANGE THE ORDER OF data-link-id & intent-id AS the sorting logic depends on their exact position to sort!
-
         //CHANGE WITH CAUTION!
-
-        $ui = '<div id="cr_'.$intent['cr_id'].'" data-link-id="'.$intent['cr_id'].'" intent-id="'.$intent['c_id'].'" class="list-group-item '.( $level>2 ? 'is_step_sortable' : 'is_sortable' ).' intent_line_'.$intent['c_id'].'">';
+        $ui = '<div id="cr_'.$intent['cr_id'].'" data-link-id="'.$intent['cr_id'].'" intent-id="'.$intent['c_id'].'" intent-level="'.$level.'" class="list-group-item '.( $level>2 ? 'is_step_sortable' : 'is_sortable' ).' intent_line_'.$intent['c_id'].'">';
 
     }
-
-
 
     //Right content
     $ui .= '<span class="pull-right maplevel'.$intent['c_id'].'" parent-intent-id="'.$parent_c_id.'" style="'.( $level<3 ? 'margin-right: 8px;' : '' ).'">';
 
 
-
     //Enable total hours/Task reporting...
-    $ui .= echo_estimated_time($child_cs['c__hours'],1,1, $intent['c_id'], $level, $intent['c_status']);
+    $ui .= echo_estimated_time($child_cs['c__hours'],1,1, $intent['c_id'], $intent['c_time_estimate']);
 
 
     if($editing_enabled){
+        $ui .= '<a class="badge badge-primary" onclick="load_modify('.$intent['c_id'].','.( isset($intent['cr_id']) ? $intent['cr_id'] : 0 ).')" style="margin-right: -1px;" href="#modify-'.$intent['c_id'].'-'.( isset($intent['cr_id']) ? $intent['cr_id'] : 0 ).'"><i class="fas fa-cog"></i></a> &nbsp;';
 
-            $ui .= '<a class="badge badge-primary" onclick="load_modify('.$intent['c_id'].','.$level.')" style="margin-right: -1px;" href="#modify-'.$intent['c_id'].'"><i class="fas fa-cog"></i></a> &nbsp;';
-
-            $ui .= '<a href="#messages-'.$intent['c_id'].'" onclick="i_load_frame('.$intent['c_id'].')" class="badge badge-primary badge-msg"><span id="messages-counter-'.$intent['c_id'].'">'.count($intent['c__messages']).'</span> <i class="fas fa-comment-dots"></i></a>';
-        } else {
-            //Show link to current section:
-            $ui .= '<a href="javascript:void(0);" onclick="$(\'#messages_'.$intent['c_id'].'\').toggle();" class="badge badge-primary badge-msg"><span id="messages-counter-'.$intent['c_id'].'">'.count($intent['c__messages']).'</span> <i class="fas fa-comment-dots"></i></a>';
-        }
+        $ui .= '<a href="#messages-'.$intent['c_id'].'" onclick="i_load_frame('.$intent['c_id'].')" class="badge badge-primary badge-msg"><span id="messages-counter-'.$intent['c_id'].'">'.count($intent['c__messages']).'</span> <i class="fas fa-comment-dots"></i></a>';
+    } else {
+        //Show link to current section:
+        $ui .= '<a href="javascript:void(0);" onclick="$(\'#messages_'.$intent['c_id'].'\').toggle();" class="badge badge-primary badge-msg"><span id="messages-counter-'.$intent['c_id'].'">'.count($intent['c__messages']).'</span> <i class="fas fa-comment-dots"></i></a>';
+    }
     //Keep an eye out for inner message counter changes:
     $ui .= '</span> ';
 
 
 
 
-
-
+    $intent_settings = ' c_require_url_to_complete="'.$intent['c_require_url_to_complete'].'" c_require_notes_to_complete="'.$intent['c_require_notes_to_complete'].'" c_is_public="'.$intent['c_is_public'].'" c_is_any="'.$intent['c_is_any'].'" ';
 
 
     //Sorting & Then Left Content:
@@ -1267,12 +1255,11 @@ function echo_actionplan($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=tru
     if($level==1){
 
         //Bootcamp Outcome:
-        $ui .= '<span><b id="b_objective" style="font-size: 1.3em;"><i class="fas fa-cube"></i><span class="c_outcome_'.$intent['c_id'].'">'.$intent['c_outcome'].'</span></b></span>';
+        $ui .= '<span><b id="b_objective" style="font-size: 1.3em;"><i class="fas fa-cube"></i><span class="c_outcome_'.$intent['c_id'].'" '.$intent_settings.'>'.$intent['c_outcome'].'</span></b></span>';
 
     } elseif($level==2){
 
         //Task:
-        //( !(level==2) || increments<=1 ? sort_rank : sort_rank+'-'+(sort_rank + increments - 1))
         $ui .= '<span class="inline-level">';
 
         $ui .= '<a href="javascript:ms_toggle('.$intent['cr_id'].');"><i id="handle-'.$intent['cr_id'].'" class="fal fa-plus-square"></i></a> &nbsp;';
@@ -1280,12 +1267,12 @@ function echo_actionplan($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=tru
         $ui .= '<span class="inline-level-'.$level.'">#'.$intent['cr_outbound_rank'].'</span>';
         $ui .= '</span>';
 
-        $ui .= '<b id="title_'.$intent['cr_id'].'" class="cdr_crnt c_outcome_'.$intent['c_id'].'" completion-rule="'.@$intent['c_completion_rule'].'" parent-intent-id="" outbound-rank="'.$intent['cr_outbound_rank'].'" c_complete_url_required="'.($intent['c_complete_url_required']=='t'?1:0).'"  c_complete_notes_required="'.($intent['c_complete_notes_required']=='t'?1:0).'">'.$intent['c_outcome'].'</b> ';
+        $ui .= '<b id="title_'.$intent['cr_id'].'" class="cdr_crnt c_outcome_'.$intent['c_id'].'" outbound-rank="'.$intent['cr_outbound_rank'].'" '.$intent_settings.'>'.$intent['c_outcome'].'</b> ';
 
     } elseif ($level==3){
 
         //Steps
-        $ui .= '<span class="inline-level inline-level-'.$level.'">#'.$intent['cr_outbound_rank'].'</span><span id="title_'.$intent['cr_id'].'" class="c_outcome_'.$intent['c_id'].'" outbound-rank="'.$intent['cr_outbound_rank'].'" c_complete_url_required="'.($intent['c_complete_url_required']=='t'?1:0).'"  c_complete_notes_required="'.($intent['c_complete_notes_required']=='t'?1:0).'">'.$intent['c_outcome'].( $child_cs['c__count']>1 ? ' <b data-toggle="tooltip" data-placement="top" title="This intent tree has a total of '.$child_cs['c__count'].' intents"><i class="fas fa-hashtag"></i>' . $child_cs['c__count'].'</b>' : '' ).'</span> ';
+        $ui .= '<span class="inline-level inline-level-'.$level.'">#'.$intent['cr_outbound_rank'].'</span><span id="title_'.$intent['cr_id'].'" class="c_outcome_'.$intent['c_id'].'" outbound-rank="'.$intent['cr_outbound_rank'].'" '.$intent_settings.'>'.$intent['c_outcome'].'</span> '.( $child_cs['c__count']>1 ? '<b data-toggle="tooltip" data-placement="top" title="Intent tree contains '.$child_cs['c__count'].' intents"><i class="fas fa-sitemap"></i> ' . $child_cs['c__count'].'</b> ' : '' );
 
     }
 
@@ -1315,7 +1302,7 @@ function echo_actionplan($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=tru
         if($editing_enabled){
             $ui .= '<div class="list-group-item list_input new-step-input">
                 <div class="input-group">
-                    <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="new_intent('.$intent['c_id'].',3);" intent-id="'.$intent['c_id'].'"><input type="text" class="form-control autosearch intentadder" maxlength="70" id="addintent-cr-'.$intent['cr_id'].'" intent-id="'.$intent['c_id'].'" placeholder="Add #Intent"></form></div>
+                    <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="new_intent('.$intent['c_id'].',3);" intent-id="'.$intent['c_id'].'"><input type="text" class="form-control autosearch intentadder-level-3" maxlength="70" id="addintent-cr-'.$intent['cr_id'].'" intent-id="'.$intent['c_id'].'" placeholder="Add #Intent"></form></div>
                     <span class="input-group-addon" style="padding-right:8px;">
                         <span data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" onclick="new_intent('.$intent['c_id'].',3);" class="badge badge-primary pull-right" intent-id="'.$intent['c_id'].'" style="cursor:pointer; margin: 13px -6px 1px 13px;">
                             <div><i class="fas fa-plus"></i></div>

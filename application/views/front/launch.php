@@ -100,7 +100,7 @@ $udata = $this->session->userdata('user');
                 <div class="col-md-4">
                     <div class="info">
                         <div class="icon icon-default mtweak"><i class="fas fa-graduation-cap"></i></div>
-                        <h3 class="info-title">Online Coaches</h3>
+                        <h3 class="info-title">Coaches</h3>
                         <p style="min-height:200px;">Upgrade your online courses into Bootcamps to empower your students to gain valuable skills by taking action. Earn ~50x or more per student by bundling personalized support with your content to dramatically increase student engagement.</p>
                     </div>
                 </div>

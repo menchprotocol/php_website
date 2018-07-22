@@ -205,13 +205,13 @@ if($level==2){
 
         } else {
 
-            if($intent['c_complete_url_required']=='t' && $intent['c_complete_notes_required']=='t'){
+            if($intent['c_require_url_to_complete'] && $intent['c_require_notes_to_complete']){
                 $red_note = 'a URL & completion notes';
                 $textarea_note = 'Include a URL & completion notes (and optional coach feedback) to mark as complete';
-            } elseif($intent['c_complete_url_required']=='t'){
+            } elseif($intent['c_require_url_to_complete']){
                 $red_note = 'a URL';
                 $textarea_note = 'Include a URL (and optional coach feedback) to mark as complete';
-            } elseif($intent['c_complete_notes_required']=='t'){
+            } elseif($intent['c_require_notes_to_complete']){
                 $red_note = 'completion notes';
                 $textarea_note = 'Include completion notes (and optional coach feedback) to mark as complete';
             } else {

@@ -97,7 +97,7 @@ $uri_segment_2 = $this->uri->segment(2);
             //We only show side menu if inside a Bootcamp or for the Admin Panel
             if(isset($b)){
                 echo '<div class="left-li-title">';
-                echo '<i class="fas fa-cube" style="margin-right:3px;"></i><span class="c_outcome_'.$b['b_outbound_c_id'].'">'.$b['c_outcome'].'</span>';
+                echo '<i class="fas fa-cube" style="margin-right:3px;"></i><span class="c_outcome2_'.$b['b_outbound_c_id'].'">'.$b['c_outcome'].'</span>';
                 echo '</div>';
             } elseif($uri_segment_1=='cockpit'){
                 echo '<div class="left-li-title">';

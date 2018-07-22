@@ -27,8 +27,6 @@ $udata = $this->session->userdata('user');
 
     $(document).ready(function() {
 
-
-
         //Watch the expand/close all buttons:
         $('#task_view .expand_all').click(function (e) {
             $( "#list-c-<?= $b['c_id'] ?>>.is_sortable" ).each(function() {
@@ -64,19 +62,6 @@ $udata = $this->session->userdata('user');
         });
 
 
-
-        //Deletion warning for status change:
-        $('#c_status_input').change(function() {
-            if(parseInt($(this).val())<0){
-                //Delete has been selected!
-                $('#delete_warning').html('<span style="color:#FF0000;"><i class="fas fa-trash-alt"></i> You are about to permanently delete this item and its messages.</span>');
-            } else {
-                $('#delete_warning').html('');
-            }
-        });
-
-
-        //addintent
         if(window.location.hash) {
             var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
             var hash_parts = hash.split("-");
@@ -85,7 +70,7 @@ $udata = $this->session->userdata('user');
                 if(hash_parts[0]=='messages'){
                     i_load_frame(hash_parts[1]);
                 } else if(hash_parts[0]=='modify'){
-                    load_modify(hash_parts[1]);
+                    load_modify(hash_parts[1],hash_parts[2]);
                 }
             } else {
                 //Perhaps a menu change?
@@ -93,15 +78,8 @@ $udata = $this->session->userdata('user');
             }
         }
 
-        //Update Bootcamp hours:
-        $('.hours_level_1').text(echo_hours($('.hours_level_1').attr('current-hours')));
-
-
-
         //Load Sortable:
         load_intent_sort($("#pid").val(),"2");
-
-
 
 
         //Activate sorting for Steps:
@@ -115,7 +93,7 @@ $udata = $this->session->userdata('user');
                 load_intent_sort(intent_id,"3");
 
                 //Load time:
-                $('#t_estimate_'+intent_id).text(echo_hours($('#t_estimate_'+intent_id).attr('current-hours')));
+                $('#t_estimate_'+intent_id).text(echo_hours($('#t_estimate_'+intent_id).attr('tree-hours')));
 
             });
 
@@ -125,7 +103,7 @@ $udata = $this->session->userdata('user');
                     var intent_id = $(this).attr('intent-id');
                     if(intent_id){
                         //Load time:
-                        $('#t_estimate_'+intent_id).text(echo_hours($('#t_estimate_'+intent_id).attr('current-hours')));
+                        $('#t_estimate_'+intent_id).text(echo_hours($('#t_estimate_'+intent_id).attr('tree-hours')));
                     }
                 });
             }
@@ -135,13 +113,13 @@ $udata = $this->session->userdata('user');
 
 
         //Load Algolia:
-        $( ".intentadder" ).on('autocomplete:selected', function(event, suggestion, dataset) {
+        $(".intentadder-level-2").on('autocomplete:selected', function(event, suggestion, dataset) {
 
             new_intent($(this).attr('intent-id'), 2, suggestion.c_id);
 
         }).autocomplete({ hint: false, keyboardShortcuts: ['a'] }, [{
 
-            source: function(q, cb) {
+            source: function(q, cb){
                 algolia_c_index.search(q, {
                     hitsPerPage: 7,
                     //filters: ( parseInt($('#u_inbound_u_id').val())==1281 ? null : '(c_inbound_u_id=' + $('#u_id').val() + ' OR c_is_public=1)' ),
@@ -159,21 +137,61 @@ $udata = $this->session->userdata('user');
                     var minutes = Math.round(parseFloat(suggestion.c__hours)*60);
                     var hours = Math.round(parseFloat(suggestion.c__hours));
                     var fancy_hours = ( minutes<60 ? minutes+'Min'+(minutes==1?'':'s') :  hours+'Hr'+(hours==1?'':'s') );
-                    return '<span class="suggest-prefix"><i class="fas fa-hashtag"></i></span> '+ suggestion._highlightResult.c_outcome.value + ( parseFloat(suggestion.c__hours)>0 ? ' [' + ( parseFloat(suggestion.c__count)>1 ? suggestion.c__count+'&raquo;' : '' ) + fancy_hours + ']' : '');
+                    return '<span class="suggest-prefix"><i class="fas fa-hashtag"></i></span> '+ suggestion._highlightResult.c_outcome.value + ( parseFloat(suggestion.c__hours)>0 ? '<span class="search-info">'+( parseFloat(suggestion.c__count)>1 ? ' <i class="fas fa-sitemap"></i> ' + suggestion.c__count : '' ) + ' <i class="fas fa-clock"></i> '+ fancy_hours+'</span>' : '');
                 },
                 header: function(data) {
                     if(!data.isEmpty){
-                        return '<a href="javascript:new_intent(\''+$(this).attr('intent-id')+'\',2)" class="suggestion"><span><i class="fas fa-plus-circle"></i></span> '+data.query+'</a>';
+                        return '<a href="javascript:new_intent(\''+$(".intentadder-level-2").attr('intent-id')+'\',2)" class="suggestion"><span><i class="fas fa-plus-circle"></i></span> '+data.query+'</a>';
                     }
-                },
-                empty: function(data) {
-                    return '<a href="javascript:new_intent(\''+$(this).attr('intent-id')+'\',2)" class="suggestion"><span><i class="fas fa-plus-circle"></i></span> '+data.query+'</a>';
                 },
             }
         }]).keypress(function (e) {
             var code = (e.keyCode ? e.keyCode : e.which);
             if ((code == 13) || (e.ctrlKey && code == 13)) {
                 return new_intent($(this).attr('intent-id'),2);
+            }
+        });
+
+
+
+
+        $(".intentadder-level-3").on('autocomplete:selected', function(event, suggestion, dataset) {
+
+            new_intent($(this).attr('intent-id'), 3, suggestion.c_id);
+
+        }).autocomplete({ hint: false, keyboardShortcuts: ['a'] }, [{
+
+            source: function(q, cb){
+                algolia_c_index.search(q, {
+                    hitsPerPage: 7,
+                    //filters: ( parseInt($('#u_inbound_u_id').val())==1281 ? null : '(c_inbound_u_id=' + $('#u_id').val() + ' OR c_is_public=1)' ),
+                }, function(error, content) {
+                    if (error) {
+                        cb([]);
+                        return;
+                    }
+                    cb(content.hits, content);
+                });
+            },
+            displayKey: function(suggestion) { return "" },
+            templates: {
+                suggestion: function(suggestion) {
+                    var minutes = Math.round(parseFloat(suggestion.c__hours)*60);
+                    var hours = Math.round(parseFloat(suggestion.c__hours));
+                    var fancy_hours = ( minutes<60 ? minutes+'Min'+(minutes==1?'':'s') :  hours+'Hr'+(hours==1?'':'s') );
+
+                    return '<span class="suggest-prefix"><i class="fas fa-hashtag"></i></span> '+ suggestion._highlightResult.c_outcome.value + ( parseFloat(suggestion.c__hours)>0 ? '<span class="search-info">'+( parseFloat(suggestion.c__count)>1 ? ' <i class="fas fa-sitemap"></i> ' + suggestion.c__count : '' ) + ' <i class="fas fa-clock"></i> '+ fancy_hours+'</span>' : '');
+                },
+                header: function(data) {
+                    if(!data.isEmpty){
+                        return '<a href="javascript:new_intent(\''+$(".intentadder-level-3").attr('intent-id')+'\',3)" class="suggestion"><span><i class="fas fa-plus-circle"></i></span> '+data.query+'</a>';
+                    }
+                },
+            }
+        }]).keypress(function (e) {
+            var code = (e.keyCode ? e.keyCode : e.which);
+            if ((code == 13) || (e.ctrlKey && code == 13)) {
+                return new_intent($(this).attr('intent-id'),3);
             }
         });
 
@@ -271,7 +289,7 @@ $udata = $this->session->userdata('user');
             }
         };
 
-        //Enable between list moves:
+        //Enable moving level 3 intents between level 2 intents:
         if(level=="3"){
 
             settings['group'] = "steplists";
@@ -300,17 +318,16 @@ $udata = $this->session->userdata('user');
                         $('.maplevel'+inputs.c_id).attr('parent-intent-id',inputs.to_c_id);
 
                         //Determine core variables for hour move calculations:
-                        var step_hours = parseFloat($('#t_estimate_'+inputs.c_id).attr('current-hours'));
+                        var step_hours = parseFloat($('#t_estimate_'+inputs.c_id).attr('tree-hours'));
                         if(!(step_hours==0)){
                             //Remove from old one:
-                            var from_hours_new = parseFloat($('#t_estimate_'+inputs.from_c_id).attr('current-hours'))-step_hours;
-                            $('#t_estimate_'+inputs.from_c_id).attr('current-hours',from_hours_new).text(echo_hours(from_hours_new));
+                            var from_hours_new = parseFloat($('#t_estimate_'+inputs.from_c_id).attr('tree-hours'))-step_hours;
+                            $('#t_estimate_'+inputs.from_c_id).attr('tree-hours',from_hours_new).text(echo_hours(from_hours_new));
 
                             //Add to new:
-                            var to_hours_new = parseFloat($('#t_estimate_'+inputs.to_c_id).attr('current-hours'))+step_hours;
-                            $('#t_estimate_'+inputs.to_c_id).attr('current-hours',to_hours_new).text(echo_hours(to_hours_new));
+                            var to_hours_new = parseFloat($('#t_estimate_'+inputs.to_c_id).attr('tree-hours'))+step_hours;
+                            $('#t_estimate_'+inputs.to_c_id).attr('tree-hours',to_hours_new).text(echo_hours(to_hours_new));
                         }
-
 
                         //Update sorting for both lists:
                         c_sort(inputs.from_c_id,"3");
@@ -379,77 +396,176 @@ $udata = $this->session->userdata('user');
     }
 
 
+    function adjust_hours(c_id, level, new_hours, apply_to_tree=0, skip_intent_adjustments=0){
 
-    function load_modify(c_id, level){
+        var intent_hours = parseFloat($('#t_estimate_'+c_id).attr('intent-hours'));
+        var tree_hours = parseFloat($('#t_estimate_'+c_id).attr('tree-hours'));
+        var intent_deficit_hours = new_hours - ( skip_intent_adjustments ? 0 : ( apply_to_tree ? tree_hours : intent_hours ) );
 
-        //$('.levelz, #modifybox').removeClass('hidden');
-        var modify_focus_pid = ( $('#modifybox').hasClass('hidden') ? 0 : parseInt($('#modifybox').attr('intent-id')) );
-        var modify_focus_level = ( $('#modifybox').hasClass('hidden') ? 0 : parseInt($('#modifybox').attr('level')) );
-        var cr_id = $('.intent_line_'+c_id).attr('data-link-id');
-        var cr_outbound_b_id = $('.intent_line_'+c_id).attr('data-b-id');
-
-        //Do we already have this loaded? Then we should close it:
-        if(modify_focus_pid==c_id){
-
-            //$('#modifybox').addClass('hidden');
-            $('#modifybox').hide().fadeIn();
+        if(intent_deficit_hours==0){
+            //Nothing changed, so we need to do nothing either!
             return false;
+        }
+        
+        //Adjust same level hours:
+        if(!skip_intent_adjustments){
+            var new_tree_hours = tree_hours + intent_deficit_hours;
+            $('#t_estimate_'+c_id)
+                .attr('tree-hours', new_tree_hours)
+                .text(echo_hours(new_tree_hours));
 
-        } else {
-
-            //Always set title:
-            $('.c_outcome_input').val($(".c_outcome_"+c_id+":first").text());
-
-            if(level==0 && cr_outbound_b_id>0 && cr_id>0){
-                //TODO Load the unlink button
+            if(!apply_to_tree){
+                $('#t_estimate_'+c_id).attr('intent-hours',new_hours).text(echo_hours(new_tree_hours));
             }
+        }
 
-            //Loadup variables for Tasks & Steps:
-            if(level>=2){
+        if(level>=2){
 
-                //Status:
-                $('#modifybox #c_status_input').val($('.c_outcome_'+c_id).attr('current-status'));
+            //Adjust the parent level hours:
+            var parent_c_id = parseInt($('.maplevel'+c_id).attr('parent-intent-id'));
+            var parent_c_tree_hours = parseFloat($('#t_estimate_'+parent_c_id).attr('tree-hours'));
+            var new_parent_c_tree_hours = parent_c_tree_hours + intent_deficit_hours;
 
+            //Update Hours (Either level 1 or 2):
+            $('#t_estimate_'+parent_c_id)
+                .attr('tree-hours', new_parent_c_tree_hours)
+                .text(echo_hours(new_parent_c_tree_hours));
 
-                //Update Timer:
-                $('.timer_'+level).val($('#t_estimate_'+c_id).attr('current-hours'));
+            if(level==3){
+                //Adjust top level (Bootcamp hours) as well:
+                var b_c_id = parseInt($('.maplevel'+parent_c_id).attr('parent-intent-id'));
+                var b_c_tree_hours = parseFloat($('#t_estimate_'+b_c_id).attr('tree-hours'));
+                var new_b_c_tree_hours = b_c_tree_hours + intent_deficit_hours;
 
-                //Completion settings:
-                document.getElementById("c_complete_url_required").checked = parseInt($('.c_outcome_'+c_id).attr('c_complete_url_required'));
-                document.getElementById("c_complete_notes_required").checked = parseInt($('.c_outcome_'+c_id).attr('c_complete_notes_required'));
+                //Update Hours:
+                $('#t_estimate_'+b_c_id)
+                    .attr('tree-hours', new_b_c_tree_hours)
+                    .text(echo_hours(new_b_c_tree_hours));
             }
+        }
+    }
 
-            //Make the frame visible:
-            $("#modifybox").removeClass('hidden').hide().fadeIn();
-            $('#iphonex').addClass('hidden');
 
-            //Reset potential delete message:
-            $('#delete_warning').html('');
+    function unlink_intent(){
 
-            //Show the right elements based on level:
-            $('.levelz').addClass('hidden');
-            $('.level'+level).removeClass('hidden');
+        var c_id = ( $('#modifybox').hasClass('hidden') ? 0 : parseInt($('#modifybox').attr('intent-id')) );
 
-            //Update variables:
-            $('#modifybox').attr('intent-id',c_id);
-            $('#modifybox').attr('level',level);
+        if(!c_id){
+            alert('Error: No Intent has been loaded.');
+            return false;
+        }
 
+        var cr_id = $('.intent_line_'+c_id).attr('data-link-id');
+        var parent_c_id = parseInt($('.maplevel'+c_id).attr('parent-intent-id'));
+        var level = parseInt($('#cr_'+cr_id).attr('intent-level'));
+        var r = confirm("Remove \""+$('.c_outcome_input').val()+"\" from Action Plan?\n(You can still access it from the Intent Library)");
+
+        if (r == true) {
             //Load parent intents:
-            $.post("/api_v1/load_inbound_c", {c_id:c_id, cr_id:cr_id} , function(data) {
+            $.post("/api_v1/unlink_intent", {b_id:$('#b_id').val(), c_id:c_id, cr_id:cr_id} , function(data) {
                 if(data.status){
+
+                    //Adjust hours:
+                    adjust_hours(c_id, level, 0, 1);
+
+                    //Remove from UI:
+                    $('#cr_' + cr_id).html('<span style="color:#3C4858;"><i class="fas fa-trash-alt"></i> Removed</span>');
+
+                    //Disapper in a while:
+                    setTimeout(function () {
+                        //Hide the editor & saving results:
+                        $('#cr_' + cr_id).fadeOut();
+                        setTimeout(function () {
+                            //Hide the editor & saving results:
+                            $('#cr_' + cr_id).remove();
+                            //Hide editing box:
+                            $('#modifybox').addClass('hidden');
+
+                            //Resort all Tasks to illustrate changes on UI:
+                            c_sort(parent_c_id,level);
+
+                        }, 377);
+                    }, 1597);
 
                 } else {
                     alert('ERROR: '+data.message);
                 }
             });
-
-
+        } else {
+            return false;
         }
     }
 
 
+    function load_modify(c_id, cr_id){
+
+        //Make sure inputs are valid:
+        if(!$('#t_estimate_'+c_id).length){
+            return false;
+        }
+
+        var current_c_id = ( $('#modifybox').hasClass('hidden') ? 0 : parseInt($('#modifybox').attr('intent-id')) );
+        var level = ( cr_id==0 ? 1 : $('#cr_'+cr_id).attr('intent-level') );
+
+        //Do we already have this loaded?
+        if(current_c_id>0 && current_c_id==c_id){
+            //Yes, just refresh box:
+            $('#modifybox').hide().fadeIn();
+        }
+
+        //Update variables:
+        $('#modifybox').attr('intent-id',c_id);
+        $('#modifybox').attr('level',level);
+
+        //Set variables:
+        var intent_hours = $('#t_estimate_'+c_id).attr('intent-hours');
+        var tree_hours = $('#t_estimate_'+c_id).attr('tree-hours');
+
+        $('.c_outcome_input').val($(".c_outcome_"+c_id+":first").text());
+        $('#c_time_estimate').val(intent_hours);
+        document.getElementById("c_require_url_to_complete").checked = parseInt($('.c_outcome_'+c_id).attr('c_require_url_to_complete'));
+        document.getElementById("c_require_notes_to_complete").checked = parseInt($('.c_outcome_'+c_id).attr('c_require_notes_to_complete'));
+        document.getElementById("c_is_any").checked = parseInt($('.c_outcome_'+c_id).attr('c_is_any'));
+        document.getElementById("c_is_public").checked = parseInt($('.c_outcome_'+c_id).attr('c_is_public'));
+
+        //Are the tree hours greater than the intent hours?
+        if(tree_hours>intent_hours){
+            //Yes, show remaining tree hours:
+            $('#child-hours').html('<i class="fas fa-sitemap"></i> '+echo_hours(tree_hours-intent_hours)+' in Child Intents');
+        } else {
+            //Nope, clear this field:
+            $('#child-hours').html('');
+        }
 
 
+        //Only show unlink button if not top of the Action Plan
+        if(level==1){
+            $('.unlink-intent').addClass('hidden');
+        } else {
+            $('.unlink-intent').removeClass('hidden');
+        }
+
+
+        //Make the frame visible:
+        $("#modifybox").removeClass('hidden').hide().fadeIn();
+        $('#iphonex').addClass('hidden');
+
+        //Load parent intents:
+        $.post("/api_v1/load_inbound_c", {b_id:$('#b_id').val(), c_id:c_id, cr_id:cr_id} , function(data) {
+            if(data.status){
+                if(data.parent_found){
+                    //Load other parents:
+                    $('#parent_intents').removeClass('hidden').html(data.parent_content);
+                } else {
+                    //No other parents found!
+                    $('#parent_intents').addClass('hidden');
+                }
+            } else {
+                //Ooops, some sort of an error:
+                $('#parent_intents').removeClass('hidden').html('<span style="color:#FF0000;">ERROR: '+data.message+'</span>');
+            }
+        });
+    }
 
 
     function save_modify(){
@@ -467,8 +583,10 @@ $udata = $this->session->userdata('user');
             level:parseInt($('#modifybox').attr('level')),
             c_outcome:$('.c_outcome_input').val(),
             c_time_estimate:parseFloat($('#c_time_estimate').val()),
-            c_complete_url_required:(document.getElementById('c_complete_url_required').checked ? 1 : 0),
-            c_complete_notes_required:(document.getElementById('c_complete_notes_required').checked ? 1 : 0),
+            c_require_url_to_complete:(document.getElementById('c_require_url_to_complete').checked ? 1 : 0),
+            c_require_notes_to_complete:(document.getElementById('c_require_notes_to_complete').checked ? 1 : 0),
+            c_is_any:(document.getElementById('c_is_any').checked ? 1 : 0),
+            c_is_public:(document.getElementById('c_is_public').checked ? 1 : 0),
         };
 
         //Show spinner:
@@ -479,60 +597,21 @@ $udata = $this->session->userdata('user');
 
             if(data.status){
 
-                //Always update title for all 3 levels:
+                //Update variables:
                 $(".c_outcome_"+modify_data['pid']).html(modify_data['c_outcome']);
-                var parent_c_id = parseInt($('.maplevel'+modify_data['pid']).attr('parent-intent-id'));
-
-                //Update page variables:
-                if(modify_data['level']==2){
-
-                    //What to do with the hours:
-                    var current_c_hours = parseFloat($('#t_estimate_'+modify_data['pid']).attr('current-hours'));
-                    var hours_deficit = modify_data['c_time_estimate'] - current_c_hours;
-
-                    if(!(hours_deficit==0)){
-
-                        //Adjust 3 levels of hours:
-                        var current_c_hours = parseFloat($('#t_estimate_'+modify_data['pid']).attr('current-hours'));
-                        var parent_c_hours = parseFloat($('#t_estimate_'+parent_c_id).attr('current-hours'));
-                        var current_b_hours = parseFloat($('.hours_level_1').attr('current-hours'));
-
-                        //Might need to update weekly Bootcamp in Multi-week Bootcamps:
-                        if(modify_data['level']==2){
-                            var new_parent_c_hours = parent_c_hours + hours_deficit;
-                            $('#t_estimate_'+parent_c_id).attr('current-hours',new_parent_c_hours).text(echo_hours(new_parent_c_hours));
-                        }
-
-                        var new_b_hours = current_b_hours + hours_deficit;
-                        $('.hours_level_1').attr('current-hours',new_b_hours).text(echo_hours(new_b_hours));
-
-                        //Update Task:
-                        $('#t_estimate_'+modify_data['pid']).attr('current-hours',modify_data['c_time_estimate']).text(echo_hours(modify_data['c_time_estimate']));
-
-                    }
+                $('.c_outcome_'+modify_data['pid']).attr('c_require_url_to_complete'  , modify_data['c_require_url_to_complete']);
+                $('.c_outcome_'+modify_data['pid']).attr('c_require_notes_to_complete', modify_data['c_require_notes_to_complete']);
+                $('.c_outcome_'+modify_data['pid']).attr('c_is_any'                   , modify_data['c_is_any']);
+                $('.c_outcome_'+modify_data['pid']).attr('c_is_public'                , modify_data['c_is_public']);
 
 
-                } else if(modify_data['level']>=3){
-
-                    //Update time?
-                    var current_hours_step = parseFloat($('#t_estimate_'+modify_data['pid']).attr('current-hours'));
-                    var step_deficit = modify_data['c_time_estimate'] - current_hours_step;
-
-                    //Update Completion Settings (All the time):
-                    $('.c_outcome_'+modify_data['pid']).attr('c_complete_url_required'    , modify_data['c_complete_url_required']);
-                    $('.c_outcome_'+modify_data['pid']).attr('c_complete_notes_required'  , modify_data['c_complete_notes_required']);
-
-
-                    if(!(step_deficit==0)){
-
-                        //Adjust 3 levels of hours:
-                        var current_b_hours = parseFloat($('.hours_level_1').attr('current-hours'));
-                        var current_c_hours = parseFloat($('#t_estimate_'+parent_c_id).attr('current-hours'));
-
-                        //Always update the Step:
-                        $('#t_estimate_'+modify_data['pid']).attr('current-hours',modify_data['c_time_estimate']).text(echo_hours(modify_data['c_time_estimate']));
-                    }
+                if(modify_data['level']==1){
+                    //Update the main title:
+                    $(".c_outcome2_"+modify_data['pid']).html(modify_data['c_outcome']);
                 }
+
+                //Adjust hours:
+                adjust_hours(modify_data['pid'], modify_data['level'], modify_data['c_time_estimate']);
 
                 //Update UI to confirm with user:
                 $('.save_setting_results').html(data.message).hide().fadeIn();
@@ -585,14 +664,14 @@ $udata = $this->session->userdata('user');
 
         if(next_level==2){
             var sort_handler = ".is_sortable";
-            var sort_list_id = "list-c-"+pid;
-            var input_field = $('#addintent'+pid);
+            var sort_list_id = "list-c-"+$('#pid').val();
+            var input_field = $('#addintent-c-'+pid);
         } else if(next_level==3){
             var sort_handler = ".is_step_sortable";
             var sort_list_id = "list-cr-"+$('.intent_line_'+pid).attr('data-link-id');
-            var input_field = $('#addintent'+pid);
+            var input_field = $('#addintent-cr-'+$('.intent_line_'+pid).attr('data-link-id'));
         } else {
-            alert('Invalid next_level value');
+            alert('Invalid next_level value ['+next_level+']');
             return false;
         }
 
@@ -609,50 +688,45 @@ $udata = $this->session->userdata('user');
         //Set processing status:
         add_to_list(sort_list_id, sort_handler, '<div id="temp'+next_level+'" class="list-group-item"><img src="/img/round_load.gif" class="loader" /> Adding... </div>');
 
-        //Empty Input:
-        input_field.val("").focus();
-
         //Update backend:
         $.post("/api_v1/c_new", {b_id:b_id, pid:pid, c_outcome:intent_name, next_level:next_level, link_c_id:link_c_id}, function(data) {
 
-            //Update UI to confirm with user:
+            //Remove loader:
             $( "#temp"+next_level ).remove();
 
-            //Add new
-            add_to_list(sort_list_id,sort_handler,data.html);
+            if(data.status){
 
-            //Re-adjust sorting:
-            load_intent_sort(pid,next_level);
+                //Add new
+                add_to_list(sort_list_id,sort_handler,data.html);
 
-            if(next_level==2){
+                //Re-adjust sorting:
+                load_intent_sort(pid,next_level);
 
-                //Adjust the Task count:
-                c_sort(0,2);
+                if(next_level==2){
 
-                //Re-adjust sorting for inner Steps:
-                load_intent_sort(data.c_id,3);
+                    //Adjust the Task count:
+                    c_sort(0,2);
 
+                    //Re-adjust sorting for inner Steps:
+                    load_intent_sort(data.c_id,3);
+
+                } else {
+                    //Adjust Step sorting:
+                    c_sort(pid,next_level);
+                }
+
+                //Tooltips:
+                $('[data-toggle="tooltip"]').tooltip();
+
+                //Adjust time:
+                adjust_hours(data.c_id, next_level, data.new_c_hours, 0, 1);
             } else {
-                //Adjust Step sorting:
-                c_sort(pid,next_level);
+                //Show errors:
+                alert('ERROR: '+data.message);
             }
 
-            //Tooltips:
-            $('[data-toggle="tooltip"]').tooltip();
-
-            //Add the new time:
-            var step_deficit = 0.05; //3 minutes is the default for new Tasks/Steps
-            var current_b_hours = parseFloat($('.hours_level_1').attr('current-hours'));
-            var current_task_hours = parseFloat($('#t_estimate_'+pid).attr('current-hours'));
-            var current_task_status = parseInt($('.c_outcome_'+pid).attr('current-status'));
-
-            //Update Miletsone:
-            $('#t_estimate_'+pid).attr('current-hours',(current_task_hours + step_deficit)).text(echo_hours((current_task_hours + step_deficit)));
-
-            //Only update Bootcamp if Task is active:
-            if(current_task_status>0){
-                $('.hours_level_1').attr('current-hours',(current_b_hours + step_deficit)).text(echo_hours((current_b_hours + step_deficit)));
-            }
+            //Empty Input:
+            input_field.focus().val('');
 
         });
 
@@ -870,14 +944,13 @@ $udata = $this->session->userdata('user');
                 echo '<div id="list-c-'.$b['c_id'].'" class="list-group list-level-2">';
 
                     foreach($intent['c__child_intents'] as $key=>$sub_intent){
-                        echo echo_actionplan($b,$sub_intent, ($level+1),$b['b_id']);
+                        echo echo_actionplan($b, $sub_intent, ($level+1), $b['b_outbound_c_id']);
                     }
 
-
                     ?>
-                    <div class="list-group-item list_input searchable">
+                    <div class="list-group-item list_input searchable grey-block">
                         <div class="input-group">
-                            <div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control intentadder" maxlength="70" intent-id="<?= $intent['c_id'] ?>" id="addintent-c-<?= $b['c_id'] ?>" placeholder="Add #Intent"></div>
+                            <div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control intentadder-level-2"  maxlength="70" intent-id="<?= $intent['c_id'] ?>" id="addintent-c-<?= $b['c_id'] ?>" placeholder="Add #Intent"></div>
                             <span class="input-group-addon" style="padding-right:8px;">
                                 <span id="dir_handle" data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" class="badge badge-primary pull-right" style="cursor:pointer; margin: 1px 3px 0 6px;">
                                     <div><i class="fas fa-plus"></i></div>
@@ -934,11 +1007,6 @@ $udata = $this->session->userdata('user');
 
             </div>
 
-
-
-
-
-
         </div>
 
     </div>
@@ -946,13 +1014,12 @@ $udata = $this->session->userdata('user');
 
     <div class="col-xs-6" id="iphonecol">
 
-        <div id="modifybox" class="hidden" intent-id="0" level="0">
+
+        <div id="modifybox" class="grey-box hidden" intent-id="0" level="0">
 
             <div style="text-align:right; font-size: 22px; margin: -5px 0 -20px 0;"><a href="javascript:void(0)" onclick="$('#modifybox').addClass('hidden')"><i class="fas fa-times"></i></a></div>
 
-
-
-            <div class="levelz level0 level1 level2 level3 hidden">
+            <div>
                 <div class="title"><h4><i class="fas fa-dot-circle"></i> Outcome <span id="hb_598" class="help_button" intent-id="598"></span></h4></div>
                 <div class="help_body maxout" id="content_598"></div>
 
@@ -965,57 +1032,65 @@ $udata = $this->session->userdata('user');
             </div>
 
 
-            <div class="levelz level1 level2 level3 hidden" style="margin-top:15px;">
-                <div class="title"><h4><i class="fas fa-sliders-h"></i> Status</h4></div>
-                <div class="form-group label-floating is-empty">
-                    <select class="form-control input-mini border" id="c_status_input">
-                        <?php
-                        foreach($intent_statuses as $status_id=>$status){
-                            echo '<option value="'.$status_id.'">'.$status['s_name'].'</option>';
-                        }
-                        ?>
-                    </select>
-                </div>
-                <div id="delete_warning"></div>
-            </div>
-
-
-            <div class="levelz level0 hidden" id="remove_b_link" style="margin-top:15px;">
-
-            </div>
-
-
-            <div class="levelz level1 level2 level3 hidden" style="margin-top:15px;">
+            <div style="margin-top:20px;">
                 <?php $times = $this->config->item('c_time_options'); ?>
                 <div class="title"><h4><i class="fas fa-clock"></i> Time Estimate <span id="hb_609" class="help_button" intent-id="609"></span></h4></div>
                 <div class="help_body maxout" id="content_609"></div>
-                <select class="form-control input-mini border timer_2 timer_3" id="c_time_estimate">
-                    <?php
-                    foreach($times as $time){
-                        echo '<option value="'.$time.'" '.( $intent['c_time_estimate']==$time ? 'selected="selected"' : '' ).'>'.echo_hours($time).'</option>';
-                    }
-                    ?>
-                </select>
+                <table width="100%">
+                    <tr>
+                        <td style="width:105px;">
+                            <select class="form-control input-mini border" id="c_time_estimate" style="display:inline-block;">
+                                <?php
+                                foreach($times as $time){
+                                    echo '<option value="'.$time.'">'.echo_hours($time).'</option>';
+                                }
+                                ?>
+                            </select>
+                        </td>
+                        <td><div id="child-hours"></div></td>
+                    </tr>
+                </table>
             </div>
 
 
 
-            <div class="levelz level1 level2 level3 hidden" style="margin-top:15px;">
-                <div class="title"><h4><i class="fal fa-check-circle"></i> Completion Settings <span id="hb_2284" class="help_button" intent-id="2284"></span></h4></div>
-                <div class="help_body maxout" id="content_2284"></div>
+            <div style="margin-top:20px;">
+                <div class="title"><h4><i class="fas fa-eye"></i> Visibility <span id="hb_7149" class="help_button" intent-id="7149"></span></h4></div>
+                <div class="help_body maxout" id="content_7149"></div>
                 <div class="form-group label-floating is-empty">
                     <div class="checkbox">
-                        <label><input type="checkbox" id="c_complete_notes_required" />Notes Required&nbsp;</label>
-                        <label><input type="checkbox" id="c_complete_url_required" />URL Required&nbsp;</label>
+                        <label><input type="checkbox" id="c_is_public" /> Public&nbsp;Intent</label>
                     </div>
                 </div>
             </div>
 
 
+            <div style="margin-top:20px;">
+                <div class="title"><h4><i class="fas fa-check-circle"></i> Completion Settings <span id="hb_2284" class="help_button" intent-id="2284"></span></h4></div>
+                <div class="help_body maxout" id="content_2284"></div>
+                <div class="form-group label-floating is-empty">
+                    <div class="checkbox">
+                        <label style="display: block;"><input type="checkbox" id="c_is_any" />Complete when ANY Child is Complete&nbsp;</label>
+                        <label style="display: block;"><input type="checkbox" id="c_require_notes_to_complete" />Notes Required to Complete&nbsp;</label>
+                        <label style="display: block;"><input type="checkbox" id="c_require_url_to_complete" />URL Required&nbsp;to Complete&nbsp;</label>
+                    </div>
+                </div>
+            </div>
+
+            <table width="100%" style="margin-top:10px;">
+                <tr>
+                    <td class="save-td"><a href="javascript:save_modify();" class="btn btn-primary">Save</a></td>
+                    <td><span class="save_setting_results"></span></td>
+                    <td style="width:20px;"><a href="javascript:unlink_intent();" class="unlink-intent" data-toggle="tooltip" title="Unlink intent from Action Plan [Still available via Intent Library]" data-placement="left"><i class="fas fa-trash-alt"></i></a></td>
+                </tr>
+            </table>
 
 
-            <table width="100%" style="margin-top:10px;"><tr><td class="save-td"><a href="javascript:save_modify();" class="btn btn-primary">Save</a></td><td><span class="save_setting_results"></span></td></tr></table>
+            <div id="parent_intents" class="hidden"></div>
+
+
         </div>
+
 
 
         <div class="marvel-device iphone-x hidden" id="iphonex" intent-id="">
