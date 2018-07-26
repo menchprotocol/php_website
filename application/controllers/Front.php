@@ -27,6 +27,10 @@ class Front extends CI_Controller {
     }
 	
 	function index($c_id=0){
+		//Go to wordpress website:
+		redirect_message('https://mench.foundation');
+		exit;
+		
 		//Load home page:
         $data = array(
             'title' => 'Land a Dream Coding Job',
