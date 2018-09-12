@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => '4.35',
+    'version' => '5.1',
     'name' => 'Mench',
     'url' => 'https://mench.com/', //Important to end with "/" as other links depend on this.
     'email' => 'shervin@mench.com',
@@ -165,6 +165,33 @@ $config['object_statuses'] = array(
             's_icon' => 'fas fa-tint',
         ),
     ),
+    'w' => array(
+        -2 => array(
+            's_name'  => 'Cancelled',
+            's_desc'  => 'Student cancelled their subscription',
+            's_icon' => 'fas fa-times-hexagon',
+        ),
+        -1 => array(
+            's_name'  => 'Expired',
+            's_desc'  => 'Student was inactive for too long and their subscription expired',
+            's_icon' => 'fas fa-times-hexagon',
+        ),
+        1 => array(
+            's_name'  => 'Subscribed',
+            's_desc'  => 'Student subscribed to an intent',
+            's_icon' => 'fas fa-play-circle',
+        ),
+        2 => array(
+            's_name'  => 'Completed',
+            's_desc'  => 'Student successfully completed all tasks and intentions',
+            's_icon' => 'fas fa-check-circle',
+        ),
+        3 => array(
+            's_name'  => 'Succeeded',
+            's_desc'  => 'Mench has verified that the student has accomplished the intention in their real life',
+            's_icon' => 'fas fa-check-circle',
+        ),
+    ),
     'c' => array(
         -1 => array(
             's_name'  => 'Archived',
@@ -224,9 +251,9 @@ $config['object_statuses'] = array(
             's_icon' => 'fas fa-question-circle',
         ),
         1 => array(
-            's_name'  => 'Do It Yourself',
-            's_desc'  => 'Student will complete the Bootcamp on their own without any coaching',
-            's_icon' => 'fas fa-user',
+            's_name'  => 'Mench Personal Assistant',
+            's_desc'  => 'Student will receive messages with key insights from industry experts',
+            's_icon' => 'fas fa-comment-smile',
         ),
         2 => array(
             's_name'  => '1-on-1 Coaching - Upfront',
@@ -305,9 +332,9 @@ $config['object_statuses'] = array(
             's_icon' => 'fas fa-times-circle',
         ),
         0 => array(
-            's_name'  => 'Coaching Unavailable',
-            's_desc'  => 'Class is not available for coaching enrollments this week',
-            's_icon' => 'fas fa-user',
+            's_name'  => 'Mench Personal Assistant Only',
+            's_desc'  => 'Students can only subscribe to Mench Personal Assistant',
+            's_icon' => 'fas fa-comment-smile',
         ),
         1 => array(
             's_name'  => 'Coaching Available',
@@ -375,12 +402,12 @@ $config['object_statuses'] = array(
         ),
         -1 => array(
             's_name'  => 'Broken',
-            's_desc'  => 'URL detected broken by MenchBot after several tries',
+            's_desc'  => 'URL detected broken by Mench Personal Assistant after several tries',
             's_icon' => 'fas fa-unlink',
         ),
         1 => array(
             's_name'  => 'Seems Broken',
-            's_desc'  => 'URL detected broken by MenchBot but not fully sure as we need to check again',
+            's_desc'  => 'URL detected broken by Mench Personal Assistant but not fully sure as we need to check again',
             's_icon' => 'fas fa-unlink',
         ),
         2 => array(

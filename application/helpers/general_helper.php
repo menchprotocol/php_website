@@ -179,7 +179,8 @@ function fetch_action_plan_copy($b_id,$r_id=0,$current_b=null,$release_cache=arr
         //Assign this cache to the Bootcamp:
         $b = unserialize($cache_action_plans[0]['ej_e_blob']);
 
-        if($b){
+        //Test the most recently added DB field to ensure this copy of the action plan has it, otherwise fetch it
+        if($b && isset($b['b_weeks_count'])){
             array_push($bs,$b);
 
             //Indicate this is a copy:
@@ -300,7 +301,7 @@ function detect_active_enrollment($enrollments){
 
     } elseif(count($enrollments)==1){
 
-        //This is typical, treat this as their Active Enrollment since its the only one they got:
+        //This is typical, treat this as their Active Subscription since its the only one they got:
         return $enrollments[0];
 
     }
@@ -386,7 +387,7 @@ function extract_level($b,$c_id){
         
         foreach($b['c__child_intents'] as $intent_key=>$intent){
 
-            if($intent['c_status']<1){
+            if($intent['c_status']<0){
                 continue;
             }
             
@@ -418,14 +419,14 @@ function extract_level($b,$c_id){
 
                     $next_key++;
 
-                    if(!isset($b['c__child_intents'][$next_key]['c_status'])){
+                    if(!isset($b['c__child_intents'][$next_key]['c_id'])){
 
                         //Next Task does not exist, return Bootcamp:
                         $next_intent = $b;
                         $next_level = 1;
                         break;
 
-                    } elseif($b['c__child_intents'][$next_key]['c_status']>=1){
+                    } elseif($b['c__child_intents'][$next_key]['c_status']>0){
 
                         $next_intent = $b['c__child_intents'][$next_key];
                         $next_level = 2;
@@ -448,7 +449,7 @@ function extract_level($b,$c_id){
 
                 foreach($intent['c__child_intents'] as $step_key=>$step){
 
-                    if($step['c_status']<1){
+                    if($step['c_status']<0){
                         continue;
                     }
 
@@ -559,22 +560,21 @@ function mime_type($mime){
 }
 
 
+function class_weeks($b, $r=null){
+    if(isset($r['r_weeks_count']) && $r['r_weeks_count']>0){
+        return $r['r_weeks_count'];
+    } else {
+        return $b['b_weeks_count'];
+    }
+}
+
+function class_ends($b, $r){
+    return strtotime($r['r_start_date']) + (class_weeks($b, $r) * 7 * 24 * 3600) - (60);
+}
 
 
 function prep_prerequisites($b){
-
-    //Appends system-enforced prerequisites based on Bootcamp settings:
-    $pre_req_array = ( strlen($b['b_prerequisites'])>0 ? json_decode($b['b_prerequisites']) : array() );
-    if($b['c__estimated_hours']>0){
-        array_unshift($pre_req_array, '~'.echo_hours($b['c__estimated_hours']/($b['b_weeks_count'])).'/Week to complete all tasks of this '.$b['b_weeks_count'].' week bootcamp');
-    }
-
-    //Does this Bootcamp require an assessment?
-    if($b['b_requires_assessment']){
-        array_unshift($pre_req_array, 'Pass this bootcamp\'s '.( $b['b_assessment_minutes']>0 ? $b['b_assessment_minutes'].'-minute' : 'free' ).' instant assessment'.( isset($b['ru_assessment_result'])  ? ' '.echo_status('ru_assessment_result', $b['ru_assessment_result']) : '' ));
-    }
-
-    return $pre_req_array;
+    return ( strlen($b['b_prerequisites'])>0 ? json_decode($b['b_prerequisites']) : array() );
 }
 
 
@@ -590,8 +590,6 @@ function b_progress($b){
     $progress_possible = 0; //Total points of progress
     $progress_gained = 0; //Points granted for completion
     $checklist = array();
-
-
 
     //Facebook Page
     $estimated_minutes = 15;
@@ -910,14 +908,14 @@ function b_progress($b){
      *******************************/
 
 
-    //Enrollment package
+    //Subscription package
     $estimated_minutes = 50;
     $progress_possible += $estimated_minutes;
     $e_status = ( $b['b_offers_diy'] || $b['b_offers_coaching'] ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
     $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
     array_push( $checklist , array(
         'href' => '/console/'.$b['b_id'].'/settings#enrollment',
-        'anchor' => '<b>Choose at-least 1 Enrollment Package</b> in Settings',
+        'anchor' => '<b>Choose at-least 1 Subscription Package</b> in Settings',
         'e_status' => $e_status,
         'time_min' => $estimated_minutes,
     ));
@@ -1049,7 +1047,7 @@ function is_valid_intent($c_id){
     $CI =& get_instance();
     $intents = $CI->Db_model->c_fetch(array(
         'c.c_id' => intval($c_id),
-        'c.c_status >=' => 0, //Drafting or higher
+        'c.c_status >' => 0, //Drafting or higher
     ));
     return (count($intents)==1);
 }

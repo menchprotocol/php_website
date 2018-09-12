@@ -100,43 +100,6 @@ WHERE ru.ru_status >= 4
                 $bs[$key]['c__message_tree_count'] = count($bs[$key]['c__messages']);
             }
 
-            // "ihm" is to find the header image of the Bootcamp
-            if(count($join_objects)>0 && in_array('ihm',$join_objects)){
-
-                $b_messages = $this->Db_model->i_fetch(array(
-                    'i_status >=' => 1,
-                    'i_outbound_c_id' => $c['c_id'],
-                ));
-                $bs[$key]['c__header_media'] = null;
-
-                foreach ($b_messages as $i){
-                    if(in_array($i['i_media_type'],array('image'))){
-
-                        $bs[$key]['c__header_media'] = echo_i($i);
-                        break;
-
-                    } elseif($i['i_media_type']=='text' && strlen($i['i_url'])>0){
-
-                        //Attempt to find the image for the cover photo:
-                        $content_image = echo_embed($i['i_url'],$i['i_url'],true);
-
-                        //Did we find a valid image?
-                        if($content_image){
-                            $bs[$key]['c__header_media'] = $content_image;
-                            break;
-                        }
-
-                    }
-                }
-
-                //Did we find an image?
-                if(!$bs[$key]['c__header_media']){
-                    $bs[$key]['c__header_media'] = echo_i(array(
-                        'i_media_type' => 'image',
-                        'i_url' => '/img/bg.jpg',
-                    ));
-                }
-            }
 
             //Fetch team:
             if(in_array('ba',$join_objects)){
@@ -147,15 +110,13 @@ WHERE ru.ru_status >= 4
                 ));
             }
 
+
             //Fetch Sub-intents:
-            $bs[$key]['c__active_intents'] = array();
-            $bs[$key]['c__child_count'] = 0;
-            $bs[$key]['c__child_child_count'] = 0;
             $bs[$key]['c__estimated_hours'] = $bs[$key]['c_time_estimate'];
             $bs[$key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
                 'cr.cr_inbound_c_id' => $c['c_id'],
                 'cr.cr_status >=' => 0,
-                'c.c_status >=' => 0,
+                'c.c_status >' => 0,
             ));
 
             foreach($bs[$key]['c__child_intents'] as $intent_key=>$intent){
@@ -172,11 +133,10 @@ WHERE ru.ru_status >= 4
                     $bs[$key]['c__child_intents'][$intent_key]['c__messages'] = $intent_messages;
                 }
 
-                if($intent['c_status']>=1){
+                if($intent['c_status']>0){
                     //Start by adding up the time:
                     $bs[$key]['c__estimated_hours'] += $intent['c_time_estimate'];
                     $bs[$key]['c__child_intents'][$intent_key]['c__estimated_hours'] = $intent['c_time_estimate'];
-                    $bs[$key]['c__child_count']++;
                 } else {
                     $bs[$key]['c__child_intents'][$intent_key]['c__estimated_hours'] = 0;
                 }
@@ -185,11 +145,9 @@ WHERE ru.ru_status >= 4
                 $bs[$key]['c__child_intents'][$intent_key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
                     'cr.cr_inbound_c_id' => $intent['c_id'],
                     'cr.cr_status >=' => 0,
-                    'c.c_status >=' => 1,
+                    'c.c_status >' => 0,
                 ));
 
-                //Create Step array:
-                $bs[$key]['c__active_intents'][$intent['c_id']] = array();
 
                 //Addup Step values:
                 foreach($bs[$key]['c__child_intents'][$intent_key]['c__child_intents'] as $step_key=>$step){
@@ -214,15 +172,10 @@ WHERE ru.ru_status >= 4
                     $bs[$key]['c__child_intents'][$intent_key]['c__estimated_hours'] += $step['c_time_estimate'];
 
 
-                    if($intent['c_status']>=1 && $step['c_status']>=1) {
+                    if($intent['c_status']>0 && $step['c_status']>0) {
 
                         //Addup Step estimated time for active Steps in active Tasks:
                         $bs[$key]['c__estimated_hours'] += $step['c_time_estimate'];
-
-                        $bs[$key]['c__child_child_count']++;
-
-                        //add to active Steps per Task:
-                        array_push($bs[$key]['c__active_intents'][$intent['c_id']], $step['c_id']);
 
                     }
                 }
@@ -867,7 +820,7 @@ WHERE ru.ru_status >= 4
             //Log Engagement
             $this->Db_model->e_create(array(
                 'e_inbound_u_id' => $enrollments[0]['u_id'],
-                'e_text_value' => ($enrollments[0]['ru_upfront_pay']>0 ? 'Received $'.$enrollments[0]['ru_upfront_pay'].' USD Coaching Tuition via PayPal' : 'Student Enrolled to Do It Yourself for Free' ),
+                'e_text_value' => ($enrollments[0]['ru_upfront_pay']>0 ? 'Received $'.$enrollments[0]['ru_upfront_pay'].' USD Coaching Tuition via PayPal' : 'Student Enrolled to Mench Personal Assistant for Free' ),
                 'e_json' => $_POST,
                 'e_inbound_c_id' => 30,
                 'e_b_id' => $enrollments[0]['ru_b_id'],
@@ -978,10 +931,6 @@ WHERE ru.ru_status >= 4
 		$runs = $q->result_array();
 		foreach($runs as $key=>$class){
 
-            //Now calculate start time and end time for this class:
-            $runs[$key]['r__class_start_time'] = strtotime($class['r_start_date']); //Starts at Midnight same date
-            $runs[$key]['r__class_end_time'] = $runs[$key]['r__class_start_time'] + (7 * 24 * 3600) - (60); //Ends Sunday 11:59PM
-
             if(in_array('ru',$join_objects)){
                 $runs[$key]['r__current_enrollments'] = $class['total_enrollments'];
             } else {
@@ -994,7 +943,7 @@ WHERE ru.ru_status >= 4
             $runs[$key]['r__total_tasks'] = 0;
             if(isset($b['c__child_intents']) && count($b['c__child_intents'])>0){
                 foreach($b['c__child_intents'] as $intent) {
-                    if($intent['c_status']>=1){
+                    if($intent['c_status']>0){
                         //Addup the totals:
                         $runs[$key]['r__total_tasks']++;
                     }
@@ -1055,7 +1004,7 @@ WHERE ru.ru_status >= 4
         $child_intents = $this->Db_model->cr_outbound_fetch(array(
             'cr.cr_inbound_c_id' => $c_id,
             'cr.cr_status >=' => 0,
-            'c.c_status >=' => 0,
+            'c.c_status >' => 0,
         ));
         if(count($child_intents)>0){
             //Yes, it does, lets go through them recursively:
@@ -1105,7 +1054,7 @@ WHERE ru.ru_status >= 4
 	            $intents[$key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
 	                'cr.cr_inbound_c_id' => $value['c_id'],
                     'cr.cr_status >=' => 0,
-                    'c.c_status >=' => 0,
+                    'c.c_status >' => 0,
 	            ) , $join_objects );
 	            
 	            //need more depth?
@@ -1126,6 +1075,7 @@ WHERE ru.ru_status >= 4
 	}
 
 	function b_fetch($match_columns,$join_objects=array(),$order_by='b_id'){
+
 	    //Missing anything?
 	    $this->db->select('*');
         $this->db->from('v5_bootcamps b');
@@ -1148,7 +1098,7 @@ WHERE ru.ru_status >= 4
 
         foreach($bs as $key=>$c){
             if(in_array('c__tree',$join_objects)){
-                $bs[$key]['c__tree'] = $this->Db_model->c_recursive_fetch($c['c_id']);
+                $bs[$key]['c__tree'] = $this->Db_model->c_recursive_fetch($c['c_id'],0,null,in_array('i',$join_objects));
             }
         }
 
@@ -1162,10 +1112,6 @@ WHERE ru.ru_status >= 4
 		$this->db->select('*');
 		$this->db->from('v5_intents c');
 		$this->db->join('v5_intent_links cr', 'cr.cr_outbound_c_id = c.c_id');
-        if(in_array('ru',$join_objects)){
-            $this->db->join('v5_class_students ru', 'ru.ru_b_id = cr.cr_outbound_b_id');
-            $this->db->where('cr_outbound_b_id >',0);
-        }
 		foreach($match_columns as $key=>$value){
             if(!is_null($value)){
                 $this->db->where($key,$value);
@@ -1181,21 +1127,12 @@ WHERE ru.ru_status >= 4
 		if(count($return)>0){
 
             foreach($return as $key=>$value){
-
                 if(in_array('i',$join_objects)){
                     //Fetch Messages:
                     $return[$key]['c__messages'] = $this->Db_model->i_fetch(array(
                         'i_outbound_c_id' => $value['c_id'],
                         'i_status >' => 0, //Published in any form
                     ));
-                }
-
-                //Is this a Bootcamp link?
-                if($value['cr_outbound_b_id']>0){
-                    $bs = $this->Db_model->b_fetch(array(
-                        'b_id' => $value['cr_outbound_b_id'],
-                    ));
-                    $return[$key] = array_merge($return[$key] , $bs[0]);
                 }
             }
 		}
@@ -1258,9 +1195,6 @@ WHERE ru.ru_status >= 4
         if(!isset($insert_columns['cr_status'])){
             $insert_columns['cr_status'] = 1;
         }
-        if(!isset($insert_columns['cr_outbound_b_id'])){
-            $insert_columns['cr_outbound_b_id'] = 0;
-        }
         if(!isset($insert_columns['cr_outbound_rank'])){
             $insert_columns['cr_outbound_rank'] = 1;
         }
@@ -1306,7 +1240,7 @@ WHERE ru.ru_status >= 4
             'cr_outbound_c_id' => $new_c['c_id'],
             'cr_outbound_rank' => 1 + $this->Db_model->max_value('v5_intent_links','cr_outbound_rank', array(
                     'cr_status >=' => 1,
-                    'c_status >=' => 1,
+                    'c_status >' => 0,
                     'cr_inbound_c_id' => $c_id,
                 )),
         ));
@@ -1457,13 +1391,6 @@ WHERE ru.ru_status >= 4
         }
 
 
-        //Either Update top visibility:
-        $items_updated += $this->Db_model->c_update( $bs[0]['b_outbound_c_id'], array(
-            'c_is_public' => $is_public,
-        ));
-
-        //TODO Update visibility for all child Bootcamps owned by this user
-
         //Log Engagement for this Bootcamp:
         $this->Db_model->e_create(array(
             'e_text_value' => 'Successfully updated the visibility of ['.$items_updated.'] intents to ['.( $is_public ? 'Public' : 'Private' ).'] for the Bootcamp ['.$bs[0]['c_outcome'].']',
@@ -1487,9 +1414,6 @@ WHERE ru.ru_status >= 4
         }
         if(!isset($insert_columns['c_status'])){
             $insert_columns['c_status'] = 1;
-        }
-        if(!isset($insert_columns['c_is_public'])){
-            $insert_columns['c_is_public'] = 0;
         }
 		
 		//Lets now add:
@@ -1937,7 +1861,7 @@ WHERE ru.ru_status >= 4
 	}
 
 
-	function c_recursive_fetch($c_id,$recursive_children=null){
+	function c_recursive_fetch($c_id,$cr_id=0,$recursive_children=null,$append_messages=false){
 
 	    //Get core data:
         $immediate_children = array(
@@ -1955,7 +1879,7 @@ WHERE ru.ru_status >= 4
         $child_cs = $this->Db_model->cr_outbound_fetch(array(
             'cr.cr_inbound_c_id' => $c_id,
             'cr.cr_status >=' => 0,
-            'c.c_status >=' => 0,
+            'c.c_status >' => 0,
         ));
 
         if(count($child_cs)>0){
@@ -1965,7 +1889,7 @@ WHERE ru.ru_status >= 4
                     return false;
                 } else {
                     //Fetch children for this intent, if any:
-                    $granchildren = $this->Db_model->c_recursive_fetch($c['c_id'], $immediate_children);
+                    $granchildren = $this->Db_model->c_recursive_fetch($c['c_id'], $c['cr_id'], $immediate_children);
 
                     if(!$granchildren){
                         //There was an infinity break
@@ -1984,9 +1908,21 @@ WHERE ru.ru_status >= 4
 
 
         //Fetch & add this item itself:
-        $cs = $this->Db_model->c_fetch(array(
-            'c.c_id' => $c_id,
-        ));
+        if($cr_id){
+            $cs = $this->Db_model->cr_outbound_fetch(array(
+                'cr.cr_id' => $cr_id,
+            ));
+        } else {
+            //This is the very first item that
+            $cs = $this->Db_model->c_fetch(array(
+                'c.c_id' => $c_id,
+            ));
+        }
+
+        if($append_messages){
+            $immediate_children['c__count'] += 1;
+        }
+
         $immediate_children['c__count'] += 1;
         $immediate_children['c__hours'] += $cs[0]['c_time_estimate'];
 
@@ -2129,7 +2065,7 @@ WHERE ru.ru_status >= 4
                 $c_intents = $this->Db_model->cr_outbound_fetch(array(
                     'cr.cr_inbound_c_id' => $item['b_outbound_c_id'],
                     'cr.cr_status >=' => 0,
-                    'c.c_status >=' => 0,
+                    'c.c_status >' => 0,
                 ));
                 if(count($c_intents)>0){
                     foreach($c_intents as $c){
@@ -2199,7 +2135,6 @@ WHERE ru.ru_status >= 4
 
                 $new_item['c_id'] = intval($item['c_id']);
                 $new_item['c_inbound_u_id'] = intval($item['c_inbound_u_id']);
-                $new_item['c_is_public'] = intval($item['c_is_public']);
                 $new_item['c_e_score'] = intval($item['c_e_score']);
                 $new_item['c_outcome'] = $item['c_outcome'];
                 $new_item['c_keywords'] = ( strlen($item['c_trigger_statements'])>0 ? join(' ',json_decode($item['c_trigger_statements'])) : '' );

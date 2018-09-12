@@ -9,7 +9,7 @@
 //We only want classes with some sort of an acticity:
 
 $classes = $this->Db_model->r_fetch(array(
-    'r_status >=' => 1, //Enrollment Open
+    'r_status >=' => 1, //Subscription Open
 ),null,'ASC',0,array('ru'));
 
 
@@ -58,7 +58,7 @@ foreach($classes as $key=>$class) {
     if($class['r_status']==3){
         echo '100%';
     } elseif($class['r_status']==2){
-        echo round((time()-$class['r__class_start_time'])/($class['r__class_end_time']-$class['r__class_start_time'])*100).'%';
+        echo round((time()-strtotime($class['r_start_date']))/(class_ends($bs[0], $class)-strtotime($class['r_start_date']))*100).'%';
     }
     echo '</span></td>';
     echo '<td>';

@@ -122,7 +122,7 @@ $udata = $this->session->userdata('user');
             source: function(q, cb){
                 algolia_c_index.search(q, {
                     hitsPerPage: 7,
-                    //filters: ( parseInt($('#u_inbound_u_id').val())==1281 ? null : '(c_inbound_u_id=' + $('#u_id').val() + ' OR c_is_public=1)' ),
+                    //filters: ( parseInt($('#u_inbound_u_id').val())==1281 ? null : '(c_inbound_u_id=' + $('#u_id').val() + ')' ),
                 }, function(error, content) {
                     if (error) {
                         cb([]);
@@ -164,7 +164,7 @@ $udata = $this->session->userdata('user');
             source: function(q, cb){
                 algolia_c_index.search(q, {
                     hitsPerPage: 7,
-                    //filters: ( parseInt($('#u_inbound_u_id').val())==1281 ? null : '(c_inbound_u_id=' + $('#u_id').val() + ' OR c_is_public=1)' ),
+                    //filters: ( parseInt($('#u_inbound_u_id').val())==1281 ? null : '(c_inbound_u_id=' + $('#u_id').val() + ')' ),
                 }, function(error, content) {
                     if (error) {
                         cb([]);
@@ -526,7 +526,6 @@ $udata = $this->session->userdata('user');
         document.getElementById("c_require_url_to_complete").checked = parseInt($('.c_outcome_'+c_id).attr('c_require_url_to_complete'));
         document.getElementById("c_require_notes_to_complete").checked = parseInt($('.c_outcome_'+c_id).attr('c_require_notes_to_complete'));
         document.getElementById("c_is_any").checked = parseInt($('.c_outcome_'+c_id).attr('c_is_any'));
-        document.getElementById("c_is_public").checked = parseInt($('.c_outcome_'+c_id).attr('c_is_public'));
 
         //Are the tree hours greater than the intent hours?
         if(tree_hours>intent_hours){
@@ -586,7 +585,6 @@ $udata = $this->session->userdata('user');
             c_require_url_to_complete:(document.getElementById('c_require_url_to_complete').checked ? 1 : 0),
             c_require_notes_to_complete:(document.getElementById('c_require_notes_to_complete').checked ? 1 : 0),
             c_is_any:(document.getElementById('c_is_any').checked ? 1 : 0),
-            c_is_public:(document.getElementById('c_is_public').checked ? 1 : 0),
         };
 
         //Show spinner:
@@ -602,7 +600,6 @@ $udata = $this->session->userdata('user');
                 $('.c_outcome_'+modify_data['pid']).attr('c_require_url_to_complete'  , modify_data['c_require_url_to_complete']);
                 $('.c_outcome_'+modify_data['pid']).attr('c_require_notes_to_complete', modify_data['c_require_notes_to_complete']);
                 $('.c_outcome_'+modify_data['pid']).attr('c_is_any'                   , modify_data['c_is_any']);
-                $('.c_outcome_'+modify_data['pid']).attr('c_is_public'                , modify_data['c_is_public']);
 
 
                 if(modify_data['level']==1){
@@ -909,7 +906,7 @@ $udata = $this->session->userdata('user');
         }
         */
         echo '<div id="bootcamp-objective" class="list-group">';
-        echo echo_actionplan($b,$b,$level);
+        echo echo_actionplan($b,end($b['c__tree']['tree_top']),$level);
         echo '</div>';
         ?>
 
@@ -943,8 +940,10 @@ $udata = $this->session->userdata('user');
                 //Task/Bootcamp List:
                 echo '<div id="list-c-'.$b['c_id'].'" class="list-group list-level-2">';
 
-                    foreach($intent['c__child_intents'] as $key=>$sub_intent){
-                        echo echo_actionplan($b, $sub_intent, ($level+1), $b['b_outbound_c_id']);
+                    foreach($b['c__tree']['tree_top'] as $key=>$sub_intent){
+                        if(!isset($sub_intent['c_id'])){
+                            echo echo_actionplan($b, end($sub_intent), ($level+1), $b['b_outbound_c_id']);
+                        }
                     }
 
                     ?>
@@ -1052,17 +1051,6 @@ $udata = $this->session->userdata('user');
                 </table>
             </div>
 
-
-
-            <div style="margin-top:20px;">
-                <div class="title"><h4><i class="fas fa-eye"></i> Visibility <span id="hb_7149" class="help_button" intent-id="7149"></span></h4></div>
-                <div class="help_body maxout" id="content_7149"></div>
-                <div class="form-group label-floating is-empty">
-                    <div class="checkbox">
-                        <label><input type="checkbox" id="c_is_public" /> Public&nbsp;Intent</label>
-                    </div>
-                </div>
-            </div>
 
 
             <div style="margin-top:20px;">

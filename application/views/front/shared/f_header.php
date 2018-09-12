@@ -69,11 +69,11 @@ $url_part_1 = $this->uri->segment(1);
                         echo '<li id="isloggedin"><a href="/my/actionplan">Student Hub <i class="fas fa-chevron-circle-right"></i></a></li>';
                     } else {
                         if(!($url_part_1=='launch')) {
-                            echo '<li><a href="/launch"><i class="fas fa-rocket"></i> Launch</a></li>';
+                            //echo '<li><a href="/launch"><i class="fas fa-rocket"></i> Launch</a></li>';
                         }
                         if(!($url_part_1=='login')) {
                             //This is the login page, show the Launch Button:
-                            echo '<li><a href="https://mench.com/login"><i class="fas fa-sign-in"></i> Login</a></li>';
+                            echo '<li><a href="/login"><i class="fas fa-sign-in"></i> Login</a></li>';
                         }
                     }
     				?>

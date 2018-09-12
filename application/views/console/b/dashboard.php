@@ -16,8 +16,6 @@ $(document).ready(function() {
 <?php
 $website = $this->config->item('website');
 
-$total_goals = count($b['c__active_intents']) + echo__s($b['c__child_child_count']) + $b['c__child_child_count'];
-
 echo '<div id="marketplace_b_url" style="display:none;">'.$website['url'].$b['b_url_key'].'</div>';
 ?>
 <div class="title"><h4><a href="/console/<?= $b['b_id'] ?>/actionplan" class="badge badge-primary badge-msg"><i class="fas fa-flag"></i> Action Plan <i class="fas fa-arrow-right"></i></a> <span id="hb_2272" class="help_button" intent-id="2272"></span></h4></div>

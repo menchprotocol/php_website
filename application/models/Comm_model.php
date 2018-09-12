@@ -550,7 +550,6 @@ class Comm_model extends CI_Model {
             ));
 
         }
-
     }
 
     function fb_page_connect($u_id,$fp_id,$b_id){
@@ -1092,7 +1091,7 @@ class Comm_model extends CI_Model {
                     'e_inbound_c_id' => 7001, //Cover Photo Save
                 ));
 
-                //New Student Without Enrollment:
+                //New Student Without Subscription:
                 $this->Comm_model->foundation_message(array(
                     'e_outbound_u_id' => $u['u_id'],
                     'e_fp_id' => $fp['fp_id'],

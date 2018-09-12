@@ -1,9 +1,3 @@
-<?php 
-//Calculate office hours:
-$class_settings = $this->config->item('class_settings');
-$udata = $this->session->userdata('user');
-?>
-
 <style>
     .body-container .msg, .body-container li, p, .body-container a { font-size:1.1em !important; }
     .msg { margin-top:10px !important; font-weight:300 !important; line-height: 120%; }
@@ -33,16 +27,6 @@ function toggleview(object_key){
 	}
 }
 
-$( document ).ready(function() {
-    $(".next_start_date").countdowntimer({
-        startDate : "<?php echo date('Y/m/d H:i:s'); ?>",
-        dateAndTime : "<?php echo date('Y/m/d' , echo_time($next_classes[0]['r_start_date'],3,-1)); ?> 23:59:59",
-        size : "lg",
-        regexpMatchFormat: "([0-9]{1,3}):([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",
-        regexpReplaceWith: "<b>$1</b><sup>Days</sup><b>$2</b><sup>H</sup><b>$3</b><sup>M</sup><b>$4</b><sup>S</sup>"
-    });
-});
-
 </script>
 
 
@@ -60,9 +44,6 @@ $( document ).ready(function() {
             }
         }
         ?>
-
-
-
 
         <h3><i class="fas fa-trophy"></i> Skills You Will Gain</h3>
         <div id="b_transformations"><?= ( strlen($b['b_transformations'])>0 ? '<ol><li>'.join('</li><li>',json_decode($b['b_transformations'])).'</li></ol>' : 'Not Set Yet' ) ?></div>
@@ -103,16 +84,16 @@ $( document ).ready(function() {
                     }
 
 
-
                     if(count($b7d['c__child_intents'])>0){
                         echo '<div class="list-group actionplan_list">';
                         $counter = 0;
+                        $landing_pagetask_visible = 3;
                         foreach($b7d['c__child_intents'] as $child_intent){
-                            if($child_intent['c_status']>=1){
-                                if($counter==$class_settings['landing_pagetask_visible']){
+                            if($child_intent['c_status']>0){
+                                if($counter==$landing_pagetask_visible){
                                     echo '<a href="javascript:void(0);" onclick="$(\'.show_full_list_'.$key.'\').toggle();" class="show_full_list_'.$key.' list-group-item">See All <i class="fas fa-chevron-right"></i></a>';
                                 }
-                                echo '<li class="list-group-item '.( $counter>=$class_settings['landing_pagetask_visible'] ? 'show_full_list_'.$key.'" style="display:none;"' : '"' ).'>';
+                                echo '<li class="list-group-item '.( $counter>=$landing_pagetask_visible ? 'show_full_list_'.$key.'" style="display:none;"' : '"' ).'>';
                                 //echo '<span class="pull-right">'.($child_intent['c__estimated_hours']>0 ? echo_estimated_time($child_intent['c__estimated_hours'],1) : '').'</span>';
                                 echo '<i class="fas fa-badge-check"></i> ';
                                 echo $child_intent['c_outcome'];
@@ -130,62 +111,67 @@ $( document ).ready(function() {
             ?>
         </div>
 
-
-        <?php
-        if($b['b_offers_coaching']){
-            echo '<h3><i class="fas fa-whistle"></i> 1-on-1 Coaches</h3>';
-            echo '<div class="row">';
-
-            $count = 0;
-            foreach($b['b__coaches'] as $coach){
-                if(!$coach['u_booking_x_id']){
-                    //Coach does not have their Booking ID, which is required to be listed:
-                    continue;
-                }
-
-                if($count>0 && fmod($count,2)==0){
-                    //A new row:
-                    echo '</div><div class="row">';
-                }
-                echo_coach($coach, $b,1);
-                $count++;
-            }
-
-            echo '</div>';
-        }
-        ?>
         <br />
     </div>
 
     <div class="col-md-4">
         <div id="sidebar">
 
-            <h3 style="margin-top:5px;"><i class="fas fa-shopping-cart"></i> Enrollment</h3>
+            <h3 style="margin-top:5px;"><i class="fas fa-comment-plus"></i> Subscribe</h3>
 
-            <?php
+            <div class="price-box">
 
-            if($b['b_requires_assessment']){
-                echo '<div class="price-box">';
-                echo '<p><i class="fas fa-tachometer"></i> Bootcamp offers a free instant assessment by simply answering a few multiple-choice questions.</p>';
-                //echo '<a href="/'.$b['b_url_key'].'/enroll?start=assessment" class="btn btn-primary" style="margin-top: 15px !important;">Start Free Assessment <i class="fas fa-chevron-right"></i></a>';
-                echo '</div>';
-            }
+                <span id="p_name_1" style="padding-bottom:10px !important; display: block !important;"><?= $b['c_outcome'] ?> with:</span>
 
-            echo_package($b,1,1);
-            echo_package($b,0,1);
+                <div class="support_p">
+                    <div class="dash-label"><span class="icon-left"><i class="fas fa-user-graduate"></i></span> 14 Industry Experts <a href="alert('show')"><u style="font-size:1em; margin-left:3px; display: inline-block;">See List</u></a></div>
+                    <div class="dash-label"><span class="icon-left"><i class="fas fa-lightbulb"></i></span> <?= $b['c__tree']['c__count'] ?> Key Concepts</div>
+                    <div class="dash-label"><span class="icon-left"><i class="fas fa-check-square"></i></span> <?= round($b['c__tree']['c__count']/2) ?> Actionable Tasks</div>
+                    <div class="dash-label"><span class="icon-left"><i class="fas fa-comment"></i></span> <?= $b['c__message_tree_count'] ?> Curated Messages</div>
+                    <div class="dash-label"><span class="icon-left"><i class="fas fa-clock"></i></span> <?= echo_hours(($b['c__estimated_hours']),false) ?> To Complete</div>
+                </div>
 
-            ?>
-            <div style="padding:0; text-align:center; width: 100%;">
-                <div style="margin:0px 0 15px !important; width: 100%;" class="btn btn-primary btn-round countdown"><div>NEXT CLASS IN:</div><span class="next_start_date"></span></div>
+
+                <div class="border" style="background-color: #FFF; padding: 6px 0 2px 6px;">
+
+
+                    <div class="input-group" style="width:100%;">
+                        <input style="padding-left:3px; margin-right:7px; width:100%;" type="email" data-lpignore="true" autocomplete="off" id="u_email" value="" class="form-control" placeholder="Email Address" />
+                        <span class="input-group-addon hidden">
+                            <a class="badge badge-primary" onclick="alert('start')" href="javascript:void(0);">Get Started</a>
+                        </span>
+                    </div>
+
+
+                    <div class="input-group hidden" style="width:100%; margin-top:3px;">
+                        <input style="padding-left:3px;" type="text" id="u_full_name" data-lpignore="true" autocomplete="off" value="" class="form-control" placeholder="Full Name" />
+                    </div>
+                    <div class="input-group" style="width:100%; margin-top:3px;">
+                        <input style="padding-left:3px;" type="password" id="u_password" data-lpignore="true" autocomplete="off" value="" class="form-control" placeholder="Password" />
+                    </div>
+                    <div class="input-group hidden" style="width:100%; margin-top:3px;">
+                        <input style="padding-left:3px;" type="password" id="u_password_repeat" data-lpignore="true" autocomplete="off" value="" class="form-control" placeholder="Repeat Password" />
+                    </div>
+                    <div class="input-group hidden" style="width:100%; margin:8px 0 5px;">
+                        <a class="badge badge-primary" onclick="alert('create')" href="javascript:void(0);">Create Account & Login</a>
+                    </div>
+
+                    <div class="input-group" style="width:100%; margin:8px 0 5px;">
+                        <a class="badge badge-primary" onclick="alert('login')" href="javascript:void(0);">Login</a>
+                    </div>
+
+                 </div>
+
+
+                <div style="font-size:0.9em; padding:10px 0 0 3px; margin-bottom: 0;">
+                    <p style="line-height:130%;"><b>7-Day free trial, then $7 per week</b>. <span style="display: inline-block;">No credit</span> card needed. Cancel anytime.</p>
+                </div>
             </div>
 
         </div>
     </div>
 </div>
 
-
-
-<!--<div style="padding:20px 0 30px; text-align:center;"><div class="lp_action"><a href="<?= '/'.$b['b_url_key'].'/enroll' ?>" class="btn btn-primary btn-round">Enroll &nbsp;<i class="fas fa-chevron-right"></i></a></div></div>-->
 
 
 </div>

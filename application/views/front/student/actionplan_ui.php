@@ -115,8 +115,9 @@ echo '</ol>';
 /* ****************************************
  * Class Not Started / Ended Notification
  *************************************** */
-$class_has_started = ($class['r__class_start_time']<=time()) || (0); //Always treat as started for now?
-$class_has_ended = ($class['r__class_end_time']<=time());
+$class_has_started = (strtotime($class['r_start_date'])<=time()) || (0); //Always treat as started for now?
+$class_ends = class_ends($enrollment, $class);
+$class_has_ended = ($class_ends<=time());
 if(!$class_has_started){
     //Class has not yet started:
     ?>
@@ -124,7 +125,7 @@ if(!$class_has_started){
         $( document ).ready(function() {
             $("#b_start").countdowntimer({
                 startDate : "<?= date('Y/m/d H:i:s'); ?>",
-                dateAndTime : "<?= date('Y/m/d H:i:s' , $class['r__class_start_time']); ?>",
+                dateAndTime : "<?= date('Y/m/d H:i:s' , strtotime($class['r_start_date'])); ?>",
                 size : "lg",
                 regexpMatchFormat: "([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",
                 regexpReplaceWith: "<b>$1</b><sup>Days</sup><b>$2</b><sup>H</sup><b>$3</b><sup>M</sup><b>$4</b><sup>S</sup>"
@@ -135,7 +136,7 @@ if(!$class_has_started){
     <?php
 } elseif($class_has_ended){
     //Class has ended
-    echo '<div class="alert alert-info maxout" role="alert"><i class="fas fa-exclamation-triangle"></i> Class ended '.strtolower(echo_diff_time($class['r__class_end_time'])).' ago</div>';
+    echo '<div class="alert alert-info maxout" role="alert"><i class="fas fa-exclamation-triangle"></i> Class ended '.strtolower(echo_diff_time($class_ends)).' ago</div>';
 }
 
 
@@ -235,13 +236,13 @@ if($level==2){
 
 
             //Show when Bootcamp ends:
-            if($class['r__class_end_time']>time()){
+            if($class_ends>time()){
                 ?>
                 <script>
                     $( document ).ready(function() {
                         $("#ontime_dueby").countdowntimer({
                             startDate : "<?= date('Y/m/d H:i:s'); ?>",
-                            dateAndTime : "<?= date('Y/m/d H:i:s' , $class['r__class_end_time']); ?>",
+                            dateAndTime : "<?= date('Y/m/d H:i:s' , $class_ends); ?>",
                             size : "lg",
                             regexpMatchFormat: "([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",
                             regexpReplaceWith: "<b>$1</b><sup>Days</sup><b>$2</b><sup>H</sup><b>$3</b><sup>M</sup><b>$4</b><sup>S</sup>"
@@ -306,7 +307,7 @@ if($level==1){
     $previous_item_complete = true; //We start this as its true for the very first Step
     foreach($intent['c__child_intents'] as $this_intent){
 
-        if($this_intent['c_status']<1){
+        if($this_intent['c_status']<0){
             //Drafting items should be skipped:
             continue;
         }

@@ -5,7 +5,7 @@
 	<td>Udemy Category</td>
 	<td>Coaches</td>
 	<td>Courses</td>
-	<td>Enrollments</td>
+	<td>Subscriptions</td>
 	<td>Engagement</td>
 	<td>Download</td>
 </tr>

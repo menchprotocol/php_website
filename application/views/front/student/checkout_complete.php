@@ -287,8 +287,8 @@ $(document).ready(function() {
 </div>
 
 
-
-<div class="wizard-box" id="networking_selection">
+<!-- Hide this for now to simplify the whole process -->
+<div class="hidden" id="networking_selection">
     <p>Choose interaction level with your classmates:</p>
     <div class="row">
         <?php
@@ -301,7 +301,7 @@ $(document).ready(function() {
         foreach($ru_network_levels as $key=>$ru_network_level){
             echo '<div class="radio">
                         <label class="radio-box">
-                            <input type="radio" name="ru_network_level" value="'.$key.'" />
+                            <input type="radio" name="ru_network_level" value="'.$key.'" '.($key==1 ? 'checked="checked"' : '').' />
                             <h3><i class="'.$ru_network_level['s_icon'].'"></i> <b id="networking_'.$key.'">'.$ru_network_level['s_name'].'</b> [Free]</h3>
                             <p>'.$ru_network_level['s_desc'].'</p>
                         </label>

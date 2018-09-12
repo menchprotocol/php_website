@@ -430,7 +430,7 @@ class Api_v1 extends CI_Controller {
     }
 
     /* ******************************
-     * Enrollment
+     * Subscription
      ****************************** */
 
     function ru_date_selector(){
@@ -645,7 +645,7 @@ class Api_v1 extends CI_Controller {
                     //Show them an error:
                     die(echo_json(array(
                         'status' => 0,
-                        'error_message' => '<div class="alert alert-danger" role="alert"><i class="fas fa-exclamation-triangle"></i> You have already enrolled in this Bootcamp. Your application status is ['.trim(strip_tags(echo_status('ru',$duplicate_registries[0]['ru_status']))).']. '.($duplicate_registries[0]['ru_status']==-2 ? '<a href="/contact"><u>Contact us</u></a> if you like to restart your application.' : 'We emailed you a link to manage your enrollments. Check your email to continue.').'</div>',
+                        'error_message' => '<div class="alert alert-danger" role="alert"><i class="fas fa-exclamation-triangle"></i> You have already enrolled in this Bootcamp. Your application status is ['.trim(strip_tags(echo_status('ru',$duplicate_registries[0]['ru_status']))).']. '.($duplicate_registries[0]['ru_status']==-2 ? 'Contact us if you like to restart your application.' : 'We emailed you a link to manage your enrollments. Check your email to continue.').'</div>',
                     )));
 
                 }
@@ -746,12 +746,12 @@ class Api_v1 extends CI_Controller {
 
     function ru_save_review(){
         if(!isset($_POST['ru_id']) || !isset($_POST['ru_key']) || intval($_POST['ru_id'])<1 || !($_POST['ru_key']==substr(md5($_POST['ru_id'].'r3vi3wS@lt'),0,6))){
-            die('<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Invalid Enrollment Data.</div>');
+            die('<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Invalid Subscription Data.</div>');
         } elseif(!isset($_POST['ru_review_score']) || intval($_POST['ru_review_score'])<1 || intval($_POST['ru_review_score'])>10){
             die('<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Review Score must be between 1-10.</div>');
         }
 
-        //Validate Enrollment:
+        //Validate Subscription:
         $enrollments = $this->Db_model->ru_fetch(array(
             'ru_id' => intval($_POST['ru_id']),
         ));
@@ -761,7 +761,7 @@ class Api_v1 extends CI_Controller {
                 'e_text_value' => 'Validated review submission call failed to fetch enrollment data',
                 'e_inbound_c_id' => 8, //System Error
             ));
-            die('<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Unable to locate your Enrollment.</div>');
+            die('<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Unable to locate your Subscription.</div>');
         }
 
         //Is this a new review, or updating an existing one?
@@ -963,7 +963,7 @@ class Api_v1 extends CI_Controller {
         if(count($drip_messages)>0){
 
             $start_time = time();
-            $drip_intervals = ($focus_class['r__class_end_time']-$start_time) / (count($drip_messages)+1);
+            $drip_intervals = (class_ends($bs[0], $focus_class)-$start_time) / (count($drip_messages)+1);
             $drip_time = $start_time;
 
             foreach($drip_messages as $i){
@@ -1544,7 +1544,7 @@ class Api_v1 extends CI_Controller {
         } elseif(strlen($_POST['b_post_enrollment_url_diy'])>0 && !filter_var($_POST['b_post_enrollment_url_diy'], FILTER_VALIDATE_URL)){
             echo_json(array(
                 'status' => 0,
-                'message' => 'Enter Valid Post-Enrollment URL',
+                'message' => 'Enter Valid Post-Subscription URL',
             ));
             return false;
         } elseif(!isset($_POST['b_offers_diy']) || !isset($_POST['b_offers_coaching'])){
@@ -1704,7 +1704,6 @@ class Api_v1 extends CI_Controller {
         //TODO Imorove further by only getching links associated to categorization
         $current_inbounds = $this->Db_model->cr_inbound_fetch(array(
             'cr.cr_outbound_c_id' => $bs[0]['b_outbound_c_id'],
-            'cr.cr_outbound_b_id' => 0, //Not linked as part of a Multi-week Bootcamp
             'cr.cr_status' => 1,
         ));
         foreach($current_inbounds as $c){
@@ -1890,7 +1889,7 @@ class Api_v1 extends CI_Controller {
 	        'cr_outbound_c_id' => $new_c['c_id'],
 	        'cr_outbound_rank' => 1 + $this->Db_model->max_value('v5_intent_links','cr_outbound_rank', array(
                 'cr_status >=' => 1,
-                'c_status >=' => 1,
+                'c_status >' => 0,
 	            'cr_inbound_c_id' => intval($_POST['pid']),
 	        )),
 	    ));
@@ -2074,12 +2073,6 @@ class Api_v1 extends CI_Controller {
                 'message' => 'Missing Completion Settings',
             ));
             return false;
-        } elseif(!isset($_POST['c_is_public'])){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Visibility Settings',
-            ));
-            return false;
         } elseif(count($bs)<=0){
             echo_json(array(
                 'status' => 0,
@@ -2102,7 +2095,6 @@ class Api_v1 extends CI_Controller {
             'c_require_url_to_complete' => intval($_POST['c_require_url_to_complete']),
             'c_require_notes_to_complete' => intval($_POST['c_require_notes_to_complete']),
             'c_is_any' => intval($_POST['c_is_any']),
-            'c_is_public' => intval($_POST['c_is_public']),
         );
 
         //Check to see which variables actually changed:

@@ -88,7 +88,7 @@ class My extends CI_Controller {
             ));
 
             if(count($enrollments)<1){
-                return redirect_message('/'.$b_url_key,'<div class="alert alert-danger" role="alert">Enrollment not found.</div>');
+                return redirect_message('/'.$b_url_key,'<div class="alert alert-danger" role="alert">Subscription not found.</div>');
             } elseif($bs[0]['b_requires_assessment'] && $enrollments[0]['ru_assessment_result']<1){
                 //Send them back to assessment as they have not yet passed that:
                 return redirect_message('/'.$b_url_key.'/assessment?u_email='.$_GET['u_email'],'<div class="alert alert-danger" role="alert">You are required to complete the assessment before joining this Bootcamp.</div>');
@@ -217,7 +217,7 @@ class My extends CI_Controller {
         //Set enrollment filters:
         $ru_filter = array(
             'ru.ru_status >=' => 4, //Enrolled
-            'r.r_status >=' => 1, //Open for Enrollment or Higher
+            'r.r_status >=' => 1, //Open for Subscription or Higher
         );
 
         //Define user identifier based on origin (Desktop login vs Messenger Webview):
@@ -324,7 +324,7 @@ class My extends CI_Controller {
         $enrollments = $this->Db_model->remix_enrollments(array(
             'ru.ru_outbound_u_id' => $_POST['u_id'],
             'ru.ru_status >=' => 4, //Enrolled
-            'r.r_status >=' => 1, //Open for Enrollment or Higher
+            'r.r_status >=' => 1, //Open for Subscription or Higher
         ));
 
 
@@ -358,7 +358,7 @@ class My extends CI_Controller {
                 echo '<i class="fas fa-cube"></i> <b>'.$other_enrollment['c_outcome'].'</b>';
                 echo ' <span style="display:inline-block;"><i class="fas fa-calendar"></i> '.echo_time($other_enrollment['r_start_date'],2).'</span>';
 
-                if(time()>$other_enrollment['r__class_start_time'] && time()<$other_enrollment['r__class_end_time']){
+                if(time()>strtotime($other_enrollment['r_start_date']) && time()<class_ends($other_enrollment, $other_enrollment)){
                     echo ' <span class="badge badge-primary grey" style="padding: 2px 9px;">RUNNING</span>';
                 }
 
@@ -390,7 +390,7 @@ class My extends CI_Controller {
 
             $ru_filter = array(
                 'ru.ru_status >=' => 4, //Enrolled
-                'r.r_status >=' => 1, //Open for Enrollment or Higher
+                'r.r_status >=' => 1, //Open for Subscription or Higher
             );
 
             if($_POST['psid']==0){
@@ -487,33 +487,23 @@ class My extends CI_Controller {
         $show_top = 0.2; //The rest are not ranked based on points on the student side, coaches will still see entire ranking
         $show_ranking_top = ceil(count($loadboard_students) * $show_top );
 
+
         if($is_coach){
 
-            //Fetch the most recent cached Action Plans:
-            $cache_action_plans = $this->Db_model->e_fetch(array(
-                'e_inbound_c_id' => 70,
-                'e_r_id' => $class['r_id'],
-            ),1 , array('ej'));
-
-
             //Show Class Status
-            $class_running = (time()>=$class['r__class_start_time'] && time()<$class['r__class_end_time']);
+            $class_ends = class_ends($bs[0], $class);
+            $class_running = (time()>=strtotime($class['r_start_date']) && time()<$class_ends);
 
             echo '<h3 style="margin:0;" class="maxout">';
 
                 //Title (Dates)
-                echo echo_time($class['r_start_date'],2).' - '.echo_time($class['r__class_end_time'],2);
+                echo echo_time($class['r_start_date'],2).' - '.echo_time($class_ends,2);
 
                 //Status:
-                echo ' ('.( $class_running ? 'Running' : ( time()<$class['r__class_start_time'] ? 'Upcoming' : 'Completed' ) ).')';
+                echo ' ('.( $class_running ? 'Running' : ( time()<strtotime($class['r_start_date']) ? 'Upcoming' : 'Completed' ) ).')';
 
                 //Export
                 echo ' <a href="/api_v1/r_export/'.$class['r_id'].'" data-toggle="tooltip" data-placement="left" title="Download a CSV file of all Class students and their contact details"><span class="badge tip-badge"><i class="fas fa-cloud-download"></i></span></a>';
-
-                //Action Plan:
-                if(count($cache_action_plans)>0){
-                    echo ' <a href="javascript:void();" onclick="$(\'.ap_toggle\').toggle()" data-toggle="tooltip" data-placement="left" title="This Class is running on a Copy of your Action Plan. Click to see details."><span class="badge tip-badge"><i class="fas fa-flag"></i></span></a>';
-                }
 
                 //Help Bubble:
                 echo ' <span id="hb_2826" class="help_button" intent-id="2826"></span>';
@@ -522,67 +512,6 @@ class My extends CI_Controller {
             echo '</h3>';
 
             echo '<div class="help_body maxout" id="content_2826"></div>';
-
-
-            if(count($cache_action_plans)>0){
-
-                $b = unserialize($cache_action_plans[0]['ej_e_blob']);
-
-                echo '<div class="ap_toggle" style="display:none;">';
-
-                echo '<div class="title"><h4><i class="fas fa-flag"></i> Action Plan as of '.echo_time($cache_action_plans[0]['e_timestamp'],0).' <span id="hb_3267" class="help_button" intent-id="3267"></span></h4></div>';
-                echo '<div class="help_body maxout" id="content_3267"></div>';
-
-                //Show Action Plan:
-                echo '<div id="bootcamp-objective" class="list-group">';
-                echo echo_actionplan($b,$b,1,0,false);
-                echo '</div>';
-
-                //Task Expand/Contract all if more than 2
-                if(count($b['c__child_intents'])>0){
-                    /*
-                    echo '<div id="task_view">';
-                    echo '<i class="fas fa-plus-square expand_all"></i> &nbsp;';
-                    echo '<i class="fas fa-minus-square close_all"></i>';
-                    echo '</div>';
-                    */
-                }
-
-                //Tasks List:
-                echo '<div id="list-outbound" class="list-group maxout">';
-                foreach($b['c__child_intents'] as $key=>$sub_intent){
-                    echo echo_actionplan($b,$sub_intent,2,$b['b_id'],0,false);
-                }
-                echo '</div>';
-
-
-
-                //Prerequisites, which get some system appended ones:
-                $b['b_prerequisites'] = prep_prerequisites($b);
-                echo '<div class="title" style="margin-top:30px;"><h4><i class="fas fa-shield-check"></i> Prerequisites <span id="hb_610" class="help_button" intent-id="610"></span> <span id="b_prerequisites_status" class="list_status">&nbsp;</span></h4></div>
-            <div class="help_body maxout" id="content_610"></div>';
-                echo ( count($b['b_prerequisites'])>0 ? '<ol class="maxout"><li>'.join('</li><li>',$b['b_prerequisites']).'</li></ol>' : '<div class="alert alert-info maxout" role="alert"><i class="fas fa-exclamation-triangle"></i> Not Set</div>' );
-
-
-                //Skills You Will Gain
-                echo '<div class="title" style="margin-top:30px;"><h4><i class="fas fa-trophy"></i> Skills You Will Gain <span id="hb_2271" class="help_button" intent-id="2271"></span> <span id="b_transformations_status" class="list_status">&nbsp;</span></h4></div>
-            <div class="help_body maxout" id="content_2271"></div>';
-                echo ( strlen($b['b_transformations'])>0 ? '<ol class="maxout"><li>'.join('</li><li>',json_decode($b['b_transformations'])).'</li></ol>' : '<div class="alert alert-info maxout" role="alert"><i class="fas fa-exclamation-triangle"></i> Not Set</div>' );
-
-
-                if($class['r_status']==2 && in_array($udata['u_inbound_u_id'], array(1280,1308,1281))){
-                    //Show button to refresh:
-                    ?>
-                    <div class="copy_ap"><a href="javascript:void(0);" onclick="$('.copy_ap').toggle();" class="btn btn-primary">Update Action Plan</a></div>
-                    <div id="action_plan_status" class="copy_ap maxout" style="display:none; border:1px solid #3C4858; border-radius:5px; margin-top:20px; padding:10px;">
-                        <p><b><i class="fas fa-exclamation-triangle"></i> WARNING:</b> This Class is currently running, and updating your Action Plan may cause confusion for your students as they might need to complete Steps form previous Tasks they had already marked as complete.</p>
-                        <p><a href="javascript:void(0);" onclick="r_sync_c(<?= $b['b_id'] ?>,<?= $class['r_id'] ?>)">I Understand, Continue With Update &raquo;</a></p>
-                    </div>
-                    <?php
-                }
-
-                echo '</div>';
-            }
 
         }
 
@@ -723,7 +652,7 @@ class My extends CI_Controller {
                         //Go through all the Tasks and see which ones are submitted:
                         foreach($bs[0]['c__child_intents'] as $intent) {
 
-                            if($intent['c_status']>=1){
+                            if($intent['c_status']>0){
 
                                 $intent_submitted = (isset($us_data[$intent['c_id']]));
 
@@ -1203,7 +1132,7 @@ class My extends CI_Controller {
             ));
 
             //There is an issue with the key, show error to user:
-            redirect_message('/','<div class="alert alert-danger" role="alert">Enrollment not found for placing a review.</div>');
+            redirect_message('/','<div class="alert alert-danger" role="alert">Subscription not found for placing a review.</div>');
             exit;
         }
 

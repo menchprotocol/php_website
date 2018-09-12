@@ -709,16 +709,6 @@ function echo_clean_url($url){
     return rtrim(str_replace('http://','',str_replace('https://','',str_replace('www.','',$url))),'/');
 }
 
-function echo_diy($b){
-    ?>
-    <div class="dash-label"><span class="icon-left"><i class="fas fa-flag"></i></span> <?= $b['b_weeks_count'].' Week' ?> Action Plan</div>
-    <div class="dash-label"><span class="icon-left"><i class="fas fa-check-square"></i></span> <?=  $b['c__child_child_count'] ?> Tasks & Insights</div>
-    <div class="dash-label"><span class="icon-left"><i class="fas fa-shield-alt"></i></span> Content from Industry Experts</div>
-    <div class="dash-label"><span class="icon-left"><i class="fas fa-clock"></i></span> ~<?= echo_hours(($b['c__estimated_hours']/$b['b_weeks_count']),false) ?>/Week to Complete</div>
-    <!--<div class="dash-label"><span class="icon-left"><i class="fas fa-comments"></i></span> Peer Chat & Networking</div>-->
-    <div class="dash-label"><span class="icon-left"><i class="fas fa-comments"></i></span> Peer Networking Practice</div>
-    <?php
-}
 
 
 function echo_coach($u,$b,$is_landing_page){
@@ -776,15 +766,13 @@ function echo_package($b,$is_diy,$is_landing_page,$enrollment=array()){
         ?>
         <?= ( !$is_landing_page ? '<div class="col-sm-6">' : '' ) ?>
         <div class="price-box">
-            <i class="fas fa-user"></i>
-            <h3>Do It Yourself</h3>
-            <span id="p_name_1" data-price="0" class="hidden">Do It Yourself for Free<!-- For Final Confirmation Text, injected by JS --></span>
+            <i class="fas fa-comment-smile"></i>
+            <h3>Mench Personal Assistant</h3>
+            <span id="p_name_1" data-price="0" class="hidden">Mench Personal Assistant (Free)<!-- For Final Confirmation Text, injected by JS --></span>
             <?= ( !$is_landing_page && $b['b_offers_coaching'] ? '<div style="margin:0 0 10px 0 !important;">&nbsp;</div>' : '' ) ?>
             <div class="support_p">
-                <div class="dash-label"><span class="icon-left"><i class="fas fa-globe"></i></span> FREE Online Classroom Access</div>
-                <?= echo_diy($b) ?>
             </div>
-            <a <?= ( $is_landing_page ? 'href="/'.$b['b_url_key'].'/enroll?package_id=1" class="btn btn-primary"' : 'href="javascript:void(0);" onclick="set_package(1);"' ) ?>><?= ( $b['b_requires_assessment'] && $is_landing_page ? 'Continue' : 'Do It Youself for Free' ) ?> <i class="fas fa-chevron-right"></i></a>
+            <a <?= ( $is_landing_page ? 'href="/'.$b['b_url_key'].'/enroll?package_id=1" class="btn btn-primary"' : 'href="javascript:void(0);" onclick="set_package(1);"' ) ?>>Get Started <i class="fas fa-angle-right"></i></a>
         </div>
         <?= ( !$is_landing_page ? '</div>' : '' ) ?>
         <?php
@@ -803,13 +791,12 @@ function echo_package($b,$is_diy,$is_landing_page,$enrollment=array()){
         <div class="price-box">
             <i class="fas fa-user-friends"></i>
             <h3>1-on-1 Coaching</h3>
-            <span id="p_name_2" data-price="<?= $coaching_price ?>" class="hidden">Do It Yourself + 1 Free Coaching Call​<!-- For Final Confirmation Text, injected by JS --></span>
-            <?= ( $b['b_offers_diy'] && !count($enrollment) ? '<p class="bold-box">Everything in Do It Yourself plus:</p>' : '' ) ?>
+            <span id="p_name_2" data-price="<?= $coaching_price ?>" class="hidden">Mench Personal Assistant + 1 Free Coaching Call​<!-- For Final Confirmation Text, injected by JS --></span>
+            <?= ( $b['b_offers_diy'] && !count($enrollment) ? '<p class="bold-box">Mench Personal Assistant plus:</p>' : '' ) ?>
 
 
             <div class="support_p">
 
-                <?= ( !$b['b_offers_diy'] || count($enrollment) ? echo_diy($b) : '' ) ?>
 
                 <div class="dash-label"><span class="icon-left"><i class="fas fa-hands-helping"></i></span> Team-Up with an Industry Expert</div>
                 <div class="dash-label"><span class="icon-left"><i class="fas fa-whistle"></i></span> <?= echo_hours($b['b_weekly_coaching_hours']*$b['b_weeks_count'], false, true) ?> Coaching in <?= $b['b_weeks_count'].' Week'.echo__s($b['b_weeks_count']) ?></div>
@@ -1243,7 +1230,7 @@ function echo_actionplan($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=tru
 
 
 
-    $intent_settings = ' c_require_url_to_complete="'.$intent['c_require_url_to_complete'].'" c_require_notes_to_complete="'.$intent['c_require_notes_to_complete'].'" c_is_public="'.$intent['c_is_public'].'" c_is_any="'.$intent['c_is_any'].'" ';
+    $intent_settings = ' c_require_url_to_complete="'.$intent['c_require_url_to_complete'].'" c_require_notes_to_complete="'.$intent['c_require_notes_to_complete'].'" c_is_any="'.$intent['c_is_any'].'" ';
 
 
     //Sorting & Then Left Content:
@@ -1292,9 +1279,11 @@ function echo_actionplan($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=tru
         $ui .= '<div id="list-cr-'.$intent['cr_id'].'" class="cr-class-'.$intent['cr_id'].' list-group step-group hidden list-level-3" intent-id="'.$intent['c_id'].'">';
         //This line enables the in-between list moves to happen for empty lists:
         $ui .= '<div class="is_step_sortable dropin-box" style="height:1px;">&nbsp;</div>';
-        if(isset($intent['c__child_intents']) && count($intent['c__child_intents'])>0){
-            foreach($intent['c__child_intents'] as $sub_intent){
-                $ui .= echo_actionplan($b,$sub_intent,($level+1),$intent['c_id'],$editing_enabled);
+
+
+        foreach($child_cs['tree_top'] as $key=>$sub_intent){
+            if(!isset($sub_intent['c_id'])){
+                $ui .= echo_actionplan($b, end($sub_intent), ($level+1), $intent['c_id'], $editing_enabled);
             }
         }
 

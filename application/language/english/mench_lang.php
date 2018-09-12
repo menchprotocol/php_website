@@ -26,7 +26,6 @@ $lang['obj_ru_network_level_name'] = 'Classmates Networking Preference';
 
 $lang['obj_c_name'] = 'Intent';
 $lang['obj_cr_name'] = 'Intent Link';
-$lang['obj_ru_name'] = 'Enrollment';
 $lang['obj_us_name'] = 'Task Status';
 $lang['obj_ba_name'] = 'Bootcamp Team';
 $lang['obj_fp_name'] = 'Facebook Page';

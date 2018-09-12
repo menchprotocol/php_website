@@ -455,7 +455,7 @@ class Bot extends CI_Controller {
         if(isset($_POST) && isset($_POST['payment_status']) && $_POST['payment_status']=='Completed' && isset($_POST['item_number']) && intval($_POST['item_number'])>0){
 
             //Seems like a valid Paypal IPN Call:
-            //Fetch Enrollment row:
+            //Fetch Subscription row:
             $enrollments = $this->Db_model->ru_fetch(array(
                 'ru.ru_id' => intval($_POST['item_number']),
             ));
@@ -482,7 +482,7 @@ class Bot extends CI_Controller {
 
                 if($payment_received>=$enrollments[0]['ru_upfront_pay']){
 
-                    //Finalize their Enrollment:
+                    //Finalize their Subscription:
                     $this->Db_model->ru_finalize($enrollments[0]['ru_id']);
 
                 } else {

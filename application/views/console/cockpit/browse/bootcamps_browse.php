@@ -26,7 +26,7 @@ function echo_row($b,$counter){
 
     echo '<td>';
     if($b['student_funnel'][0]>0 || $b['student_funnel'][4]>0){
-        echo '<span data-toggle="tooltip" title="Initiated Enrollment -> Completed Enrollment">';
+        echo '<span data-toggle="tooltip" title="Initiated Subscription -> Completed Subscription">';
         echo $b['student_funnel'][0].' &raquo; <b>'.$b['student_funnel'][4].'</b>';
         echo '</span>';
     }
@@ -87,7 +87,7 @@ foreach($bs as $key=>$mb){
         <th>&nbsp;</th>
         <th>Lead Coach</th>
         <th colspan="3" style="width: 300px;">Pricing</th>
-        <th>Enrollment Funnel</th>
+        <th>Subscription Funnel</th>
         <th>Activity (Last)</th>
     </tr>
     </thead>
@@ -129,7 +129,7 @@ foreach($bs as $key=>$mb){
         <th>&nbsp;</th>
         <th>Lead Coach</th>
         <th colspan="3" style="width:300px;">Pricing</th>
-        <th>Enrollment Funnel</th>
+        <th>Subscription Funnel</th>
         <th>Activity (Last)</th>
     </tr>
     </thead>

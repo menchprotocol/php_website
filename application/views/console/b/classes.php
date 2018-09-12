@@ -135,7 +135,7 @@ function r_sync_c(b_id,r_id){
                     <?php
                     $active_classes = $this->Db_model->r_fetch(array(
                         'r.r_b_id'	        => $b['b_id'],
-                        'r.r_status >='	    => 0, //Open Enrollment or higher
+                        'r.r_status >='	    => 0, //Open Subscription or higher
                         'r.r_status <='	    => 2, //Running
                     ), $b, 'ASC');
 

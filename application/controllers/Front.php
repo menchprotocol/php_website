@@ -25,18 +25,18 @@ class Front extends CI_Controller {
             $this->load->view('front/shared/f_footer');
         }
     }
-	
-	function index($c_id=0){
-		//Load home page:
+
+    function index($c_id=0){
+        //Load home page:
         $data = array(
-            'title' => 'Land a Dream Coding Job',
+            'title' => 'Level-Up Your Tech Career',
             'c_id' => $c_id,
         );
-		$this->load->view('front/shared/f_header' , $data);
-		$this->load->view('front/b/marketplace', $data);
-		$this->load->view('front/shared/f_footer');
-	}
-	
+        $this->load->view('front/shared/f_header' , $data);
+        $this->load->view('front/b/marketplace', $data);
+        $this->load->view('front/shared/f_footer');
+    }
+
 	function login(){
 	    //Check to see if they are already logged in?
 	    $udata = $this->session->userdata('user');
@@ -57,14 +57,6 @@ class Front extends CI_Controller {
 		    'title' => 'Terms & Privacy Policy',
 		));
 		$this->load->view('front/terms');
-		$this->load->view('front/shared/f_footer');
-	}
-	
-	function contact(){
-		$this->load->view('front/shared/f_header' , array(
-		    'title' => 'Contact Us',
-		));
-		$this->load->view('front/contact');
 		$this->load->view('front/shared/f_footer');
 	}
 

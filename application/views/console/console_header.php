@@ -122,18 +122,8 @@ $uri_segment_2 = $this->uri->segment(2);
 
                 echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$b['b_id'].'/settings')>0 ? ' class="active"' : '' ).'><a href="/console/'.$b['b_id'].'/settings"><i class="fas fa-cog"></i><p>Settings</p></a></li>';
 
-                //Is it connected to a Facebook Page?
-                if($b['b_fp_id']>0){
-
-                    if(!($b['b_fp_id']==4) || $udata['u_inbound_u_id']==1281){
-                        //Facebook Chat Inbox:
-                        echo '<li><a data-toggle="tooltip" data-placement="top" title="Chat with Students who Purchased Coaching using Facebook Page Inbox" href="/api_v1/fp_redirect/'.$b['b_fp_id'].'/'.md5($b['b_fp_id'].'pageLinkHash000').'" target="_blank"><i class="fab fa-facebook"></i><p>Chat Inbox &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
-                    }
-
-                    //Landing Page
-                    echo '<li><a class="landing_page_url" href="/'.$b['b_url_key'].'" target="_blank"><i class="fas fa-cart-plus"></i><p>Landing Page &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
-
-                }
+                //Landing Page
+                echo '<li><a class="landing_page_url" href="/'.$b['b_url_key'].'" target="_blank"><i class="fas fa-cart-plus"></i><p>Landing Page &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
 
             } else if($uri_segment_1=='cockpit'){
 

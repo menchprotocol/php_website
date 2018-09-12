@@ -129,7 +129,7 @@ class Adjust extends CI_Controller {
                 //Find the Step that is after the very last Step done
                 //Note that some Steps could be done, but then rejected by the coach...
                 foreach($bs[0]['c__child_intents'] as $task){
-                    if($task['c_status']==1){
+                    if($task['c_status']>0){
                         $total_steps++;
                         //Has the student done this?
                         if(!array_key_exists($task['c_id'],$us_data)){

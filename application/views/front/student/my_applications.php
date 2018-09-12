@@ -64,7 +64,7 @@ if(count($enrollments)>0 && is_array($enrollments)){
     //Show all Student enrollments:
     foreach($enrollments as $enrollment){
 
-        //Fetch Enrollment Data:
+        //Fetch Subscription Data:
         $bs = fetch_action_plan_copy($enrollment['ru_b_id'],$enrollment['r_id']);
         $enrollment_active = ( $enrollment['ru_status']>=0 && $bs[0]['b_status']>=2 );
 
@@ -77,17 +77,17 @@ if(count($enrollments)>0 && is_array($enrollments)){
 
             echo '<div class="enrollment_checklist">';
 
-                echo '<p><b title="Enrollment ID '.$enrollment['ru_id'].'"><i class="fas fa-cube"></i> '.$bs[0]['c_outcome'].'</b></p>';
+                echo '<p><b title="Subscription ID '.$enrollment['ru_id'].'"><i class="fas fa-cube"></i> '.$bs[0]['c_outcome'].'</b></p>';
 
                 //Show date:
-                echo '<p style="font-size: 0.9em;"><i class="fas fa-calendar"></i> ';
+                echo '<p style="font-size: 0.9em;"><i class="fas fa-calendar" style="margin: 0 2px 0 3px;"></i> ';
 
                 $start_unix = 0; //See if we have a start date
                 if(isset($bs[0]['this_class'])) {
 
                     $start_unix = strtotime($bs[0]['this_class']['r_start_date']);
-
-                    echo echo_time($bs[0]['this_class']['r_start_date'],2).' - '.trim(echo_time($bs[0]['this_class']['r__class_end_time'],2)).' (1 Week)';
+                    $weeks = class_weeks($bs[0], $bs[0]['this_class']);
+                    echo $weeks.' Week'.echo__s($weeks).' from '.echo_time($bs[0]['this_class']['r_start_date'],2).' to '.trim(echo_time(class_ends($bs[0], $bs[0]['this_class']),2));
 
                 } else {
 
@@ -97,7 +97,7 @@ if(count($enrollments)>0 && is_array($enrollments)){
                 echo '</p>';
 
                 //Account, always created at this point:
-                echo '<div class="checkbox" style="margin-top:20px;"><label style="text-decoration:line-through;"><input type="checkbox" disabled checked> Step 1: Initiate Enrollment</label></div>';
+                echo '<div class="checkbox" style="margin-top:20px;"><label style="text-decoration:line-through;"><input type="checkbox" disabled checked> Step 1: Initiate Subscription</label></div>';
 
                 //Do they need to take the assessment?
                 $step = 2;

@@ -23,7 +23,7 @@ $udata = $this->session->userdata('user');
         <div class="info">
             <div class="icon icon-default mtweak"><i class="fas fa-microchip"></i></div>
             <h3 class="info-title">Technology</h3>
-            <p>Our technology is designed from the ground up to maximize student engagements. MenchBot automates some parts of your conversation so you can take more students across the finishing line.</p>
+            <p>Our technology is designed from the ground up to maximize student engagements. Mench Personal Assistant automates some parts of your conversation so you can take more students across the finishing line.</p>
         </div>
     </div>
     <div class="col-md-4">

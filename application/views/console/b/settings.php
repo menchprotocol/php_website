@@ -134,7 +134,7 @@ function loadFacebookPages(is_onstart){
 
 $(document).ready(function() {
 
-    //The 3 checkboxes in the Enrollment tab:
+    //The 3 checkboxes in the Subscription tab:
     $('#b_requires_assessment').change(function() {
         if (this.checked) {
             $('.enrollment_assessment').removeClass('hidden');
@@ -314,7 +314,7 @@ function b_save_settings(){
 
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
     <li id="nav_general" class="active"><a href="#general"><i class="fas fa-cube"></i> Bootcamp</a></li>
-    <li id="nav_enrollment"><a href="#enrollment"><i class="fas fa-user-plus"></i> Enrollment</a></li>
+    <li id="nav_enrollment"><a href="#enrollment"><i class="fas fa-user-plus"></i> Subscription</a></li>
     <li id="nav_pages"><a href="#pages"><i class="fab fa-facebook-messenger"></i> Chatbot</a></li>
     <!-- <li id="nav_coupons"><a href="#coupons"><i class="fas fa-tags"></i> Coupons</a></li> -->
 </ul>
@@ -458,7 +458,7 @@ function b_save_settings(){
 
 
 
-        <div class="title" style="margin-top:20px;"><h4><i class="fas fa-user"></i> Offer Do It Yourself for Free <span id="hb_4789" class="help_button" intent-id="4789"></h4></h4></div>
+        <div class="title" style="margin-top:20px;"><h4><i class="fas fa-comment-smile"></i> Offer Mench Personal Assistant for Free <span id="hb_4789" class="help_button" intent-id="4789"></h4></h4></div>
         <div class="help_body maxout" id="content_4789"></div>
         <div class="form-group label-floating is-empty">
             <div class="checkbox">
@@ -471,7 +471,7 @@ function b_save_settings(){
 
 
             <div class="alert alert-info" style="margin:0; font-size:1.3em;">
-                <p style="margin: 0 0 10px 0;"><i class="fas fa-info-circle"></i> Here is what happens when you enable the Free Do It Yourself package:</p>
+                <p style="margin: 0 0 10px 0;"><i class="fas fa-info-circle"></i> Here is what happens when you enable the Free Mench Personal Assistant package:</p>
                 <ul style="list-style: decimal;">
                     <li><a href="/console/<?= $b['b_id'] ?>/actionplan">Action Plan</a> becomes public using the <i class="fab fa-creative-commons"></i> <a href="https://creativecommons.org/" target="_blank" style="display: inline-block">Creative Commons <i class="fas fa-external-link-square"></i></a> license.</li>
                     <li>Anyone will be allowed to enroll for free without being offered coaching.</li>
@@ -480,7 +480,7 @@ function b_save_settings(){
                 </ul>
             </div>
 
-            <div class="title" style="margin-top:25px;"><h4><i class="fas fa-link"></i> Post-Enrollment URL <span id="hb_4867" class="help_button" intent-id="4867"></span></h4></div>
+            <div class="title" style="margin-top:25px;"><h4><i class="fas fa-link"></i> Post-Subscription URL <span id="hb_4867" class="help_button" intent-id="4867"></span></h4></div>
             <div class="help_body maxout" id="content_4867"></div>
             <div class="input-group">
                 <input type="URL" id="b_post_enrollment_url_diy" style="width:380px;" value="<?= $b['b_post_enrollment_url_diy'] ?>" class="form-control border" />
