@@ -67,20 +67,20 @@ $uri_segment_2 = $this->uri->segment(2);
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-main navbar-right">
 
-                        <li <?= ( $uri_segment_1=='console' && ( !$uri_segment_2 || intval($uri_segment_2)>0 ) ? 'class="active"' : '' ) ?>><a href="/console"><i class="fas fa-cube"></i> Bootcamps</a></li>
+                        <li <?= ( $uri_segment_1=='intents' ? 'class="active"' : '' ) ?>><a href="/intents/7240"><i class="fas fa-hashtag"></i> Intents</a></li>
                         <li <?= ( $uri_segment_1=='entities' ? 'class="active"' : '' ) ?>><a href="/entities"><i class="fas fa-at"></i> Entities</a></li>
 
 
                         <li class="extra-toggle"><a href="javascript:void(0);" onclick="$('.extra-toggle').toggle();"><i class="fas fa-ellipsis-h"></i> More</a></li>
                         <?php if(isset($uenrollment) && count($uenrollment)>0){ ?>
-                            <li class="extra-toggle" style="display: none;"><a href="/my/actionplan"><span class="icon-left"><i class="fas fa-user-graduate"></i></span> Student Hub</a></li>
+                            <li class="extra-toggle" style="display: none;"><a href="/my/actionplan"><span class="icon-left"><i class="fas fa-user-graduate"></i></span> Student</a></li>
                         <?php } ?>
 
                         <?php if($udata['u_inbound_u_id']==1281){ ?>
-                            <li class="extra-toggle" style="display: none;"><a href="/cockpit/browse/engagements"><span class="icon-left"><i class="fas fa-user-shield"></i></span> Admin Hub</a></li>
+                            <li class="extra-toggle" style="display: none;"><a href="/cockpit/browse/engagements"><span class="icon-left"><i class="fas fa-user-shield"></i></span> Admin</a></li>
                         <?php } ?>
 
-                        <li class="extra-toggle" style="display: none;"><a href="/entities/<?= $udata['u_id'] ?>"><span class="icon-left"><i class="fas fa-user-circle"></i></span> My Account</a></li>
+                        <li class="extra-toggle" style="display: none;"><a href="/entities/<?= $udata['u_id'] ?>"><span class="icon-left"><i class="fas fa-user-circle"></i></span> Account</a></li>
                         <li class="extra-toggle" style="display: none;"><a href="/logout"><span class="icon-left"><i class="fas fa-power-off"></i></span> Logout</a></li>
                     </ul>
                 </div>
@@ -175,14 +175,18 @@ $uri_segment_2 = $this->uri->segment(2);
 	        
     	        <?php 
     	        if(isset($breadcrumb)){
-    	            echo '<ol class="breadcrumb">';
-    	            foreach($breadcrumb as $link){
-    	                if($link['link']){
-    	                    echo '<li><a href="'.$link['link'].'">'.$link['anchor'].'</a></li>';
-    	                } else {
-    	                    echo '<li>'.$link['anchor'].'</li>';
-    	                }
-    	            }
+    	            echo '<ol class="breadcrumb '.( isset($breadcrumb_css) ? $breadcrumb_css : '' ).'">';
+    	            if(count($breadcrumb)>0){
+                        foreach($breadcrumb as $link){
+                            if($link['link']){
+                                echo '<li><a href="'.$link['link'].'">'.$link['anchor'].'</a></li>';
+                            } else {
+                                echo '<li>'.$link['anchor'].'</li>';
+                            }
+                        }
+                    } else {
+                        echo '<li>&nbsp;</li>';
+                    }
     	            echo '</ol>';
     	        }
     	        ?>

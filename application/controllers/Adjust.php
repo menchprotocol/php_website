@@ -177,6 +177,47 @@ class Adjust extends CI_Controller {
         echo_json($stats);
     }
 
+    function aaaa(){
+
+        /*
+        $bs = $this->Db_model->b_fetch(array(
+            'b.b_id >' => 0,
+        ));
+        */
+
+        $bs = $this->Db_model->coach_bs(array(
+            'ba.ba_outbound_u_id >=' => 1,
+            'ba.ba_outbound_u_id <=' => 2,
+            'b.b_status >=' => 0,
+        ));
+
+
+        $counter = 0;
+        $done = array();
+        foreach($bs as $b){
+
+            if(in_array($b['b_outbound_c_id'],$done)){
+                continue;
+            }
+
+            array_push($done,$b['b_outbound_c_id']);
+
+            $relation = $this->Db_model->cr_create(array(
+                'cr_inbound_u_id' => 1,
+                'cr_inbound_c_id'  => 7243,
+                'cr_outbound_c_id' => $b['b_outbound_c_id'],
+                'cr_outbound_rank' => 1 + $this->Db_model->max_value('v5_intent_links','cr_outbound_rank', array(
+                        'cr_status >=' => 1,
+                        'c_status >' => 0,
+                        'cr_inbound_c_id' => 7243,
+                    )),
+            ));
+
+            $counter++;
+        }
+        echo $counter.'/'.count($bs);
+    }
+
     function sync_class_completion_rates(){
 
         $running_classes = $this->Db_model->r_fetch(array(

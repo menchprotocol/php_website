@@ -35,7 +35,7 @@ if(!isset($intents[0])){
     var max_length = <?= $message_max ?>;
     var message_count = <?= count($i_messages) ?>;
     //Sync the message count now:
-    window.parent.document.getElementById("messages-counter-"+c_id).innerHTML = message_count;
+    window.parent.document.getElementById("messages-counter-"+c_id).innerHTML = ( message_count>0 ? message_count : '' );
 
     function add_first_name(){
         $('#i_message'+c_id).insertAtCaret('{first_name}');

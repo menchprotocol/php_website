@@ -1098,7 +1098,7 @@ WHERE ru.ru_status >= 4
 
         foreach($bs as $key=>$c){
             if(in_array('c__tree',$join_objects)){
-                $bs[$key]['c__tree'] = $this->Db_model->c_recursive_fetch($c['c_id'],0,null,in_array('i',$join_objects));
+                $bs[$key]['c__tree'] = $this->Db_model->c_recursive_fetch($c['c_id'],0,null);
             }
         }
 
@@ -1861,11 +1861,12 @@ WHERE ru.ru_status >= 4
 	}
 
 
-	function c_recursive_fetch($c_id,$cr_id=0,$recursive_children=null,$append_messages=false){
+	function c_recursive_fetch($c_id,$cr_id=0,$recursive_children=null){
 
 	    //Get core data:
         $immediate_children = array(
             'c__count' => 0,
+            'c__output' => 0,
             'c__hours' => 0,
             'c_flat' => array(),
             'tree_top' => array(),
@@ -1875,7 +1876,7 @@ WHERE ru.ru_status >= 4
             $recursive_children = $immediate_children;
         }
 
-	    //A recursive function to fetch all child intents for a given intent
+	    //A recursive function to fetch all Tree for a given intent
         $child_cs = $this->Db_model->cr_outbound_fetch(array(
             'cr.cr_inbound_c_id' => $c_id,
             'cr.cr_status >=' => 0,
@@ -1898,6 +1899,7 @@ WHERE ru.ru_status >= 4
 
                     //Addup children if any:
                     $immediate_children['c__count'] += $granchildren['c__count'];
+                    $immediate_children['c__output'] += $granchildren['c__output'];
                     $immediate_children['c__hours'] += $granchildren['c__hours'];
 
                     array_push($immediate_children['c_flat'],$granchildren['c_flat']);
@@ -1919,19 +1921,22 @@ WHERE ru.ru_status >= 4
             ));
         }
 
-        if($append_messages){
+        if(count($cs)>0){
+
             $immediate_children['c__count'] += 1;
+            if(intval($cs[0]['c_is_output'])){
+                $immediate_children['c__output'] += 1;
+            }
+            $immediate_children['c__hours'] += $cs[0]['c_time_estimate'];
+
+            //Set the data for this intent:
+            $cs[0]['c__count'] = $immediate_children['c__count'];
+            $cs[0]['c__output'] = $immediate_children['c__output'];
+            $cs[0]['c__hours'] = $immediate_children['c__hours'];
+
+            array_push($immediate_children['c_flat'],intval($c_id));
+            array_push($immediate_children['tree_top'],$cs[0]);
         }
-
-        $immediate_children['c__count'] += 1;
-        $immediate_children['c__hours'] += $cs[0]['c_time_estimate'];
-
-        //Set the data for this intent:
-        $cs[0]['c__count'] = $immediate_children['c__count'];
-        $cs[0]['c__hours'] = $immediate_children['c__hours'];
-
-        array_push($immediate_children['c_flat'],intval($c_id));
-        array_push($immediate_children['tree_top'],$cs[0]);
 
         //Flatten array:
         $result = array();
@@ -2034,19 +2039,6 @@ WHERE ru.ru_status >= 4
                 $new_item['b_e_score'] = intval($item['b_e_score']);
                 $new_item['b_inbound_u_id'] = intval($item['u_id']);
                 $new_item['b_keywords'] = '';
-
-                if(strlen($item['b_prerequisites'])>0){
-                    $new_item['b_keywords'] .= join(' ',json_decode($item['b_prerequisites'])).' ';
-                }
-
-                if(strlen($item['b_transformations'])>0){
-                    $new_item['b_keywords'] .= join(' ',json_decode($item['b_transformations'])).' ';
-                }
-
-                if(strlen($item['b_coaching_services'])>0){
-                    $new_item['b_keywords'] .= join(' ',json_decode($item['b_coaching_services'])).' ';
-                }
-
 
 
                 //Fetch all text messages for description:

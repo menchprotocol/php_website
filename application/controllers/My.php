@@ -983,7 +983,9 @@ class My extends CI_Controller {
         }
     }
 
-    function checkout_pay($b_url_key){
+
+    //TODO needs to be optimized for account subscriptions
+    function subscribe($b_url_key){
 
         //Validate Bootcamp ID:
         $bs = $this->Db_model->remix_bs(array(

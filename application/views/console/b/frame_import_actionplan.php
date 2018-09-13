@@ -132,8 +132,6 @@ $bs = $this->Db_model->coach_bs(array(
                 b_outbound_c_ids:b_outbound_c_ids,
                 task_import_mode:parseInt($('input[name=task_import_mode]:checked').val()),
                 b_level_messages:($('input[name=b_level_messages]:checked').val()=='on'?1:0),
-                b_prerequisites:($('input[name=b_prerequisites]:checked').val()=='on'?1:0),
-                b_transformations:($('input[name=b_transformations]:checked').val()=='on'?1:0),
 
             }, function(data) {
                 //Append data to view:

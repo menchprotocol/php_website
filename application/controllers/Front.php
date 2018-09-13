@@ -74,43 +74,29 @@ class Front extends CI_Controller {
 	 ****************************** */
 
 
-	function launch(){
-	    $this->load->view('front/shared/f_header' , array(
-            'title' => 'Guide Students to Success',
+	function train(){
+        $data = array(
+            'title' => 'Train Mench to become the best Personal Assistant',
             'landing_page' => 'front/splash/coaches_why',
-	    ));
-	    $this->load->view('front/launch');
+        );
+	    $this->load->view('front/shared/f_header' , $data);
+	    $this->load->view('front/train' , $data);
 	    $this->load->view('front/shared/f_footer');
 	}
-	
-	
-	/* ******************************
-	 * Bootcamp PUBLIC
-	 ****************************** */
 
-    /*
-    function affiliate_click($b_id,$u_id=0,$goto_apply=0){
-	    //DEPRECATED: Just keeping for Jason Cannon's Link to His Bootcamp
-        $bs = $this->Db_model->b_fetch(array(
-            'b.b_id' => $b_id,
-        ));
-        if(count($bs)>0){
-            //Lets redirect to Page:
-            redirect_message('/'.$bs[0]['b_url_key'] );
-        } else {
-            //Invalid Bootcamp ID
-            redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Bootcamp ID.</div>');
-        }
-    }
-	*/
-	
-	function landing_page($b_url_key){
-	    
-	    //Fetch data:
-	    $udata = $this->session->userdata('user');
+
+
+
+
+    function landing_page($b_url_key){
+
+	    //TODO Deprecate soon
+
+        //Fetch data:
+        $udata = $this->session->userdata('user');
         $bs = $this->Db_model->remix_bs(array(
-	        'LOWER(b.b_url_key)' => strtolower($b_url_key),
-	    ));
+            'LOWER(b.b_url_key)' => strtolower($b_url_key),
+        ));
 
         //Validate Bootcamp:
         if(!isset($bs[0])){
@@ -138,18 +124,18 @@ class Front extends CI_Controller {
             redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp does not have any active classes.</div>');
         }
 
-	    //Load home page:
-	    $this->load->view('front/shared/f_header' , array(
+        //Load home page:
+        $this->load->view('front/shared/f_header' , array(
             'title' => $bs[0]['c_outcome'],
             'b_id' => $bs[0]['b_id'],
-	        'b_fb_pixel_id' => $bs[0]['b_fb_pixel_id'], //Will insert pixel code in header
+            'b_fb_pixel_id' => $bs[0]['b_fb_pixel_id'], //Will insert pixel code in header
             'canonical' => 'https://mench.com/'.$bs[0]['b_url_key'], //Would set this in the <head> for SEO purposes
-	    ));
-	    $this->load->view('front/b/landing_page' , array(
+        ));
+        $this->load->view('front/b/landing_page' , array(
             'b' => $bs[0],
             'next_classes' => $next_classes,
-	    ));
-	    $this->load->view('front/shared/f_footer');
-	}
+        ));
+        $this->load->view('front/shared/f_footer');
+    }
 
 }

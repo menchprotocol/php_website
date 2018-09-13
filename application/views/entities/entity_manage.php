@@ -274,9 +274,15 @@ if(!$inbound_u_id){
 //Right content:
     echo '<span class="pull-right">';
     echo echo_score($entity['u_e_score']);
-    if ($can_edit) {
-        echo '<a class="badge badge-primary" href="/entities/' . $entity['u_id'] . '/modify"><i class="fas fa-cog"></i></a>';
+
+    if(isset($entity['u__outbound_count']) && $entity['u__outbound_count']>0){
+        echo '<span class="badge badge-primary grey" data-toggle="tooltip" data-placement="top" title="" data-original-title="Entity tree contains '.$entity['u__outbound_count'].' child entities. See list below.">'.echo_big_num($entity['u__outbound_count']).' <i class="fas fa-sitemap"></i></span>';
     }
+
+    if ($can_edit) {
+        echo '<a class="badge badge-primary" href="/entities/' . $entity['u_id'] . '/modify" style="margin-left:2px;"><i class="fas fa-cog"></i></a>';
+    }
+
     echo '</span>';
 
 //Regular section:

@@ -4,9 +4,11 @@ $message_max = $this->config->item('message_max');
 $website = $this->config->item('website');
 $intent_statuses = echo_status('c');
 $udata = $this->session->userdata('user');
+$level = 1;
 ?>
+
 <style> .breadcrumb li { display:block; } </style>
-<input type="hidden" id="b_id" value="<?= $b['b_id'] ?>" />
+<input type="hidden" id="b_id" value="1" />
 <input type="hidden" id="pid" value="<?= $intent['c_id'] ?>" />
 <input type="hidden" id="obj_name" value="" />
 
@@ -29,25 +31,14 @@ $udata = $this->session->userdata('user');
 
         //Watch the expand/close all buttons:
         $('#task_view .expand_all').click(function (e) {
-            $( "#list-c-<?= $b['c_id'] ?>>.is_sortable" ).each(function() {
+            $( "#list-c-<?= $intent['c_id'] ?>>.is_sortable" ).each(function() {
                 ms_toggle($( this ).attr('data-link-id'),1);
             });
         });
         $('#task_view .close_all').click(function (e) {
-            $( "#list-c-<?= $b['c_id'] ?>>.is_sortable" ).each(function() {
+            $( "#list-c-<?= $intent['c_id'] ?>>.is_sortable" ).each(function() {
                 ms_toggle($( this ).attr('data-link-id'),0);
             });
-        });
-
-        //Enforce Alphanumeric for URL Key:
-        $('#b_url_key').keypress(function (e) {
-            var regex = new RegExp("^[a-zA-Z0-9]+$");
-            var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
-            if (regex.test(str)) {
-                return true;
-            }
-            e.preventDefault();
-            return false;
         });
 
 
@@ -203,7 +194,7 @@ $udata = $this->session->userdata('user');
     function c_sort(c_id,level){
 
         if(level==2){
-            var s_element = "list-c-<?= $b['c_id'] ?>";
+            var s_element = "list-c-<?= $intent['c_id'] ?>";
             var s_draggable = ".is_sortable";
         } else if(level==3){
             var s_element = "list-cr-"+$('.intent_line_'+c_id).attr('data-link-id');
@@ -268,7 +259,7 @@ $udata = $this->session->userdata('user');
     function load_intent_sort(pid,level){
 
         if(level==2){
-            var s_element = "list-c-<?= $b['c_id'] ?>";
+            var s_element = "list-c-<?= $intent['c_id'] ?>";
             var s_draggable = ".is_sortable";
         } else if(level==3){
             var s_element = "list-cr-"+$('.intent_line_'+pid).attr('data-link-id');
@@ -406,7 +397,7 @@ $udata = $this->session->userdata('user');
             //Nothing changed, so we need to do nothing either!
             return false;
         }
-        
+
         //Adjust same level hours:
         if(!skip_intent_adjustments){
             var new_tree_hours = tree_hours + intent_deficit_hours;
@@ -530,7 +521,7 @@ $udata = $this->session->userdata('user');
         //Are the tree hours greater than the intent hours?
         if(tree_hours>intent_hours){
             //Yes, show remaining tree hours:
-            $('#child-hours').html('<i class="fas fa-sitemap"></i> '+echo_hours(tree_hours-intent_hours)+' in Child Intents');
+            $('#child-hours').html('<i class="fas fa-sitemap"></i> '+echo_hours(tree_hours-intent_hours)+' in Tree');
         } else {
             //Nope, clear this field:
             $('#child-hours').html('');
@@ -731,283 +722,46 @@ $udata = $this->session->userdata('user');
         return false;
     }
 
-
-
-
-
-    /* ******************************** */
-    /* Simple List Management Functions */
-    /* ******************************** */
-
-    function initiate_list(group_id,placeholder,prefix,current_items,maxlimit){
-
-        //Is the ID on the page? Should be...
-        if(!($('#'+group_id).length)){
-            return false;
-        }
-
-        //Add the add line:
-        $('#'+group_id).html('<div class="list-group-item list_input">'+
-            '<div class="input-group">'+
-            '<div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" "' + ( maxlimit ? ' maxlength="'+maxlimit+'" ' : '' ) + '" class="form-control listerin" placeholder="'+placeholder+'"></div>'+
-            '<span class="input-group-addon" style="padding-right:0;">'+
-            '<span class="pull-right"><span class="badge badge-primary" style="cursor:pointer;"><i class="fas fa-plus"></i></span></span>'+
-            '</span>'+
-            '</div>'+
-            '</div>');
-
-        //Initiate sort:
-        var theobject = document.getElementById(group_id);
-        var sort = Sortable.create( theobject , {
-            animation: 150, // ms, animation speed moving items when sorting, `0` — without animation
-            handle: ".fa-bars", // Restricts sort start click/touch to the specified element
-            draggable: ".is_sortable", // Specifies which items inside the element should be sortable
-            onUpdate: function (evt/**Event*/){
-                save_items(group_id);
-            }
-        });
-
-        //Add initial items:
-        if(current_items.length>0){
-            $.each(current_items, function( index, value ) {
-                add_item(group_id,prefix,value,maxlimit);
-            });
-        }
-
-        //Also watch for the enter key:
-        $('#'+group_id+' input[type=text]').keypress(function (e) {
-            var code = (e.keyCode ? e.keyCode : e.which);
-            if (code == 13) {
-                add_item(group_id,prefix,null,maxlimit);
-
-                //Save the changes:
-                save_items(group_id);
-                return true;
-            }
-        });
-
-        //And watch for the Add button click:
-        $('#'+group_id+'>div .badge-primary').click(function (e) {
-            //Add to UI:
-            add_item(group_id,prefix,null,maxlimit);
-
-            //Save the changes:
-            save_items(group_id);
-        });
-    }
-
-    function save_items(group_id){
-        //Fetch new sort:
-        var new_sort = [];
-        var sort_rank = 0;
-
-        $( '#'+group_id+'>li' ).each(function() {
-            sort_rank++;
-            //Update sort handler:
-            var current_handler = $( this ).find( '.inline-level' ).html();
-            var handler_parts = current_handler.split("#");
-            $( this ).find( '.inline-level' ).html(handler_parts[0]+'#'+sort_rank);
-
-            //Organize for saving:
-            new_sort.push($( this ).find( '.theitem' ).text());
-        });
-
-        //Show Updating:
-        //$('#'+group_id+'_status').html('<span><img src="/img/round_load.gif" class="loader" /></span>');
-
-        //Update backend:
-        $.post("/api_v1/b_save_list", {group_id:group_id, new_sort:new_sort, b_id:$('#b_id').val()}, function(data) {
-
-            //Update UI to confirm with user? Keep it simple for now...
-            if(!data.status){
-                //Some error!
-                $('#'+group_id+'_status').html('<span style="color:#FF0000;">Error: '+data.message+'</span>');
-            } else {
-                /*
-                $('#'+group_id+'_status').html('<span>'+data.message+'</span>');
-                //Disapper in a while:
-                setTimeout(function() {
-                    //Hide the editor & saving results:
-                    $('#'+group_id+'_status').html('&nbsp;');
-                }, 560);
-                */
-            }
-
-        });
-    }
-
-    function confirm_remove(element){
-        var group_id = element.parent().parent().parent().attr('id');
-        var r = confirm("Remove this item?");
-        if (r == true) {
-            element.parent().parent().remove();
-            save_items(group_id);
-        }
-    }
-
-    function initiate_edit(element,maxlimit){
-        var group_id = element.parent().parent().parent().attr('id');
-        var new_item = prompt( "Modify:" , element.parent().parent().find( '.theitem' ).text() );
-        if (new_item == null || new_item == "") {
-            //Cancelled!
-        } else if(maxlimit>0 && new_item.length>maxlimit) {
-            alert('ERROR: Entry can be no longer than '+maxlimit+' characters but yours is '+new_item.length+' characters long.');
-            return false;
-        } else {
-            element.parent().parent().find( '.theitem' ).text(new_item);
-            save_items(group_id);
-        }
-    }
-
-    function add_item(group_id,prefix,current_value,maxlimit){
-        if($('#'+group_id+' input[type=text]').val().length>0 || (current_value && current_value.length>0)){
-
-            var next_item = $( '#'+group_id+'>li' ).length + 1;
-            var do_focus = false;
-            if(!current_value || current_value.length<1){
-                current_value = $('#'+group_id+' input[type=text]').val();
-                do_focus = true;
-            }
-            $('#'+group_id+'>.list_input').before( '<li class="list-group-item is_sortable">'+
-                '<span class="pull-right">'+
-                '<a class="badge badge-primary" href="javascript:void(0);" onclick="confirm_remove($(this))"><i class="fas fa-trash-alt"></i></a> '+
-                '<a class="badge badge-primary" href="javascript:void(0);" onclick="initiate_edit($(this),'+maxlimit+')" style="margin-right: -3px;"><i class="fas fa-pen-square"></i></a>'+
-                '</span>'+
-                '<i class="fas fa-bars"></i> <span class="inline-level">'+prefix+' #'+next_item+'</span><span class="theitem">'+current_value+'</span>'+
-                '</li>');
-
-            //Reset input field and re-focus only if manually added:
-            if(do_focus){
-                $('#'+group_id+' input[type=text]').val('').focus();
-            }
-
-        } else {
-            alert('Error: field is empty!');
-        }
-    }
-
 </script>
 
 
 
 <div class="row">
     <div class="col-xs-6">
-
-
-        <div class="help_body below_h" id="content_2272"></div>
         <?php
-
-        //Show relevant tips:
-        /*
-        if($level==1){
-            echo_tip(599);
-        } elseif($level==2){
-            echo_tip(602);
-        }
-        */
         echo '<div id="bootcamp-objective" class="list-group">';
-        echo echo_actionplan($b,end($b['c__tree']['tree_top']),$level);
+        echo echo_actionplan($c__tree,$intent,$level);
+        echo '</div>';
+
+
+        //Expand/Contract buttons
+        echo '<div id="task_view">';
+        echo '<i class="fas fa-plus-square expand_all"></i> &nbsp;';
+        echo '<i class="fas fa-minus-square close_all"></i>';
+        echo '</div>';
+
+        //Task/Bootcamp List:
+        echo '<div id="list-c-'.$intent['c_id'].'" class="list-group list-level-2">';
+            foreach($c__tree['tree_top'] as $key=>$sub_intent){
+                if(!isset($sub_intent['c_id'])){
+                    echo echo_actionplan($c__tree, end($sub_intent), ($level+1), $intent['c_id']);
+                }
+            }
+
+            ?>
+            <div class="list-group-item list_input searchable grey-block">
+                <div class="input-group">
+                    <div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control intentadder-level-2"  maxlength="70" intent-id="<?= $intent['c_id'] ?>" id="addintent-c-<?= $intent['c_id'] ?>" placeholder="Add #Intent"></div>
+                    <span class="input-group-addon" style="padding-right:8px;">
+                            <span id="dir_handle" data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" class="badge badge-primary pull-right" style="cursor:pointer; margin: 1px 3px 0 6px;">
+                                <div><i class="fas fa-plus"></i></div>
+                            </span>
+                        </span>
+                </div>
+            </div>
+            <?php
         echo '</div>';
         ?>
-
-
-
-        <ul id="topnav" class="nav nav-pills nav-pills-primary">
-            <li id="nav_prerequisites"><a href="#prerequisites"><i class="fas fa-shield-check"></i> Prerequisites</a></li>
-            <li id="nav_intents" class="active"><a href="#intents"><i class="fas fa-hashtag"></i> Intents</a></li>
-            <li id="nav_skills"><a href="#skills"><i class="fas fa-trophy"></i> Skills</a></li>
-            <li id="nav_services"><a href="#services"><i class="fas fa-concierge-bell"></i> Services</a></li>
-        </ul>
-
-
-        <div class="tab-content tab-space">
-
-            <div class="tab-pane active" id="tabintents" style="max-width: none !important;">
-
-                <?php
-
-                echo_tip(602);
-
-
-                //Task Expand/Contract all if more than 2
-                if(count($intent['c__child_intents'])>0){
-                    echo '<div id="task_view">';
-                    echo '<i class="fas fa-plus-square expand_all"></i> &nbsp;';
-                    echo '<i class="fas fa-minus-square close_all"></i>';
-                    echo '</div>';
-                }
-
-                //Task/Bootcamp List:
-                echo '<div id="list-c-'.$b['c_id'].'" class="list-group list-level-2">';
-
-                    foreach($b['c__tree']['tree_top'] as $key=>$sub_intent){
-                        if(!isset($sub_intent['c_id'])){
-                            echo echo_actionplan($b, end($sub_intent), ($level+1), $b['b_outbound_c_id']);
-                        }
-                    }
-
-                    ?>
-                    <div class="list-group-item list_input searchable grey-block">
-                        <div class="input-group">
-                            <div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control intentadder-level-2"  maxlength="70" intent-id="<?= $intent['c_id'] ?>" id="addintent-c-<?= $b['c_id'] ?>" placeholder="Add #Intent"></div>
-                            <span class="input-group-addon" style="padding-right:8px;">
-                                <span id="dir_handle" data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" class="badge badge-primary pull-right" style="cursor:pointer; margin: 1px 3px 0 6px;">
-                                    <div><i class="fas fa-plus"></i></div>
-                                </span>
-                            </span>
-                        </div>
-                    </div>
-                    <?php
-
-                echo '</div>';
-                ?>
-            </div>
-
-
-            <div class="tab-pane" id="tabprerequisites">
-
-                <?php echo_tip(610); ?>
-                <script>
-                    $(document).ready(function() {
-                        initiate_list('b_prerequisites','New Prerequisite','<i class="fas fa-shield-check"></i>',<?= ( strlen($b['b_prerequisites'])>0 ? $b['b_prerequisites'] : '[]' ) ?>,0);
-                    });
-                </script>
-                <div id="b_prerequisites" class="list-group grey-list"></div>
-
-            </div>
-
-
-            <div class="tab-pane" id="tabskills">
-
-                <?php echo_tip(2271); ?>
-
-                <script>
-                    $(document).ready(function() {
-                        initiate_list('b_transformations','New Skill','<i class="fas fa-trophy"></i>',<?= ( strlen($b['b_transformations'])>0 ? $b['b_transformations'] : '[]' ) ?>,0);
-                    });
-                </script>
-                <div id="b_transformations" class="list-group grey-list"></div>
-            </div>
-
-
-            <div class="tab-pane" id="tabservices">
-                <?php echo_tip(7100); ?>
-
-                <?php if($b['b_offers_coaching']){ ?>
-                    <script>
-                        $(document).ready(function() {
-                            initiate_list('b_coaching_services','New Coaching Service [30 Character Max]','<i class="fas fa-concierge-bell"></i>',<?= ( strlen($b['b_coaching_services'])>0 ? $b['b_coaching_services'] : '[]' ) ?>, 30);
-                        });
-                    </script>
-                    <div id="b_coaching_services" class="list-group grey-list"></div>
-                <?php } else { ?>
-                    <div class="alert alert-info maxout" role="alert"><i class="fas fa-exclamation-triangle"></i> You can set coaching services once you <a href="/console/<?= $b['b_id'] ?>/settings#enrollment">enable coaching</a> in settings.</div>
-                <?php } ?>
-
-            </div>
-
-        </div>
-
     </div>
 
 

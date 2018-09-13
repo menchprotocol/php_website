@@ -45,18 +45,8 @@ function toggleview(object_key){
         }
         ?>
 
-        <h3><i class="fas fa-trophy"></i> Skills You Will Gain</h3>
-        <div id="b_transformations"><?= ( strlen($b['b_transformations'])>0 ? '<ol><li>'.join('</li><li>',json_decode($b['b_transformations'])).'</li></ol>' : 'Not Set Yet' ) ?></div>
 
-
-
-        <h3><i class="fas fa-shield-check"></i> Prerequisites</h3>
-        <?php $pre_req_array = prep_prerequisites($b); ?>
-        <div id="b_prerequisites"><?= ( count($pre_req_array)>0 /* Should always be true! */ ? '<ol><li>'.join('</li><li>',$pre_req_array).'</li></ol>' : 'None' ) ?></div>
-
-
-
-        <h3><i class="fas fa-flag"></i> Action Plan</h3>
+        <h3><i class="fas fa-flag"></i> Roadmap</h3>
         <div id="c_tasks_list">
             <?php
             foreach($b['c__child_intents'] as $key=>$b7d){

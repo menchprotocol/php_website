@@ -116,7 +116,7 @@ class Entities extends CI_Controller {
 
 
     //Lists entities
-    function entity_browse($inbound_u_id=0){
+    function entity_manage($inbound_u_id=0){
 
         $udata = auth(null,1); //Just be logged in to browse
         $entities_per_page = 100;
@@ -134,7 +134,7 @@ class Entities extends CI_Controller {
 
         //Load views
         $this->load->view('console/console_header' , $view_data);
-        $this->load->view('console/u/entity_browse' , $view_data);
+        $this->load->view('entities/entity_manage' , $view_data);
         $this->load->view('console/console_footer');
     }
 
@@ -213,13 +213,13 @@ class Entities extends CI_Controller {
 
         //This lists all users based on the permissions of the user
         $this->load->view('console/console_header', $view_data);
-        $this->load->view('console/u/entity_edit', $view_data);
+        $this->load->view('entities/entity_edit', $view_data);
         $this->load->view('console/console_footer');
     }
 
 
     function link_entities(){
-        //Responsible to link inbound/outbound entities to each other via a JS function on entity_browse.php
+        //Responsible to link inbound/outbound entities to each other via a JS function on entity_manage.php
 
 
         //Auth user and check required variables:

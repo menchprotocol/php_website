@@ -694,44 +694,6 @@ function b_progress($b){
 
 
 
-    //Prerequisites
-    $estimated_minutes = 30;
-    $progress_possible += $estimated_minutes;
-    $e_status = ( strlen($b['b_prerequisites'])>0 ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
-    $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
-    array_push( $checklist , array(
-        'href' => '/console/'.$b['b_id'].'/actionplan#prerequisites',
-        'anchor' => '<b>Set 1 or more Prerequisites</b> for your Bootcamp in Action Plan',
-        'e_status' => $e_status,
-        'time_min' => $estimated_minutes,
-    ));
-
-
-    //Skills You Will Gain
-    $estimated_minutes = 30;
-    $progress_possible += $estimated_minutes;
-    $e_status = ( strlen($b['b_transformations'])>0 ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
-    $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
-    array_push( $checklist , array(
-        'href' => '/console/'.$b['b_id'].'/actionplan#skills',
-        'anchor' => '<b>Define Skills You Will Gain</b> in Action Plan',
-        'e_status' => $e_status,
-        'time_min' => $estimated_minutes,
-    ));
-
-    //Coaching Services
-    if($b['b_offers_coaching']){
-        $estimated_minutes = 50;
-        $progress_possible += $estimated_minutes;
-        $e_status = ( strlen($b['b_coaching_services'])>0 ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
-        $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
-        array_push( $checklist , array(
-            'href' => '/console/'.$b['b_id'].'/actionplan#services',
-            'anchor' => '<b>Define Coaching Services</b> in Action Plan',
-            'e_status' => $e_status,
-            'time_min' => $estimated_minutes,
-        ));
-    }
 
 
 

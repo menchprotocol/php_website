@@ -104,7 +104,11 @@ function echo_u($u){
     //Right content:
     $ui .= '<span class="pull-right">';
     $ui .= echo_score($u['u_e_score']);
-    $ui .= '<a class="badge badge-primary '.( $u['u__outbound_count']>0 ? 'stnd-btn' : '' ).'" href="/entities/'.$u['u_id'].'">'.( isset($u['u__outbound_count']) && $u['u__outbound_count']>0 ? echo_big_num($u['u__outbound_count']) : '' ).' <i class="fas fa-chevron-right"></i></a>';
+
+    $ui .= '<a class="badge badge-primary" href="/entities/'.$u['u_id'].'" data-toggle="tooltip" data-placement="top" title="" data-original-title="Entity tree contains '.$u['u__outbound_count'].' child entities. Click to browse.">'.(isset($u['u__outbound_count']) && $u['u__outbound_count']>0 ? echo_big_num($u['u__outbound_count']).' ' : '').'<i class="fas fa-sitemap"></i></a>';
+
+    $ui .= '<a class="badge badge-primary" href="/entities/'.$u['u_id'].'/modify" style="margin-left:2px;"><i class="fas fa-cog"></i></a>';
+
     $ui .= '</span>';
 
     //Regular section:
@@ -1179,13 +1183,13 @@ function echo_score($score){
 
 
 
-function echo_actionplan($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
+function echo_actionplan($c__tree,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
 
     $CI =& get_instance();
     $udata = $CI->session->userdata('user');
 
     //Find this tree first:
-    $child_cs = find_c_tree($b['c__tree'], $intent['c_id']);
+    $child_cs = find_c_tree($c__tree, $intent['c_id']);
 
     if(!isset($intent['c__messages'])){
         //Fetch this:
@@ -1217,12 +1221,15 @@ function echo_actionplan($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=tru
 
 
     if($editing_enabled){
-        $ui .= '<a class="badge badge-primary" onclick="load_modify('.$intent['c_id'].','.( isset($intent['cr_id']) ? $intent['cr_id'] : 0 ).')" style="margin-right: -1px;" href="#modify-'.$intent['c_id'].'-'.( isset($intent['cr_id']) ? $intent['cr_id'] : 0 ).'"><i class="fas fa-cog"></i></a> &nbsp;';
 
-        $ui .= '<a href="#messages-'.$intent['c_id'].'" onclick="i_load_frame('.$intent['c_id'].')" class="badge badge-primary badge-msg"><span id="messages-counter-'.$intent['c_id'].'">'.count($intent['c__messages']).'</span> <i class="fas fa-comment-dots"></i></a>';
+        $ui .= '&nbsp;<'.($level>1 ? 'a href="/intents/'.$intent['c_id'].'" class="badge badge-primary"' :'span class="badge badge-primary grey"').' data-toggle="tooltip" data-placement="top" title="Intent tree contains '.($child_cs['c__count']-1).' child intents. '.($level>1 ? 'Click to browse' :'See list below').'" style="display:inline-block; margin-right:-1px;"><b>' . ($child_cs['c__count']>1?($child_cs['c__count']-1).' ':'').'</b><i class="fas fa-sitemap"></i></'.($level>1 ? 'a' :'span').'> ';
+
+        $ui .= '<a href="#messages-'.$intent['c_id'].'" onclick="i_load_frame('.$intent['c_id'].')" class="badge badge-primary"><span id="messages-counter-'.$intent['c_id'].'">'.( count($intent['c__messages'])>0 ? count($intent['c__messages']) : '').'</span> <i class="fas fa-comment-dots"></i></a>';
+        $ui .= '<a class="badge badge-primary" onclick="load_modify('.$intent['c_id'].','.( isset($intent['cr_id']) ? $intent['cr_id'] : 0 ).')" style="margin:-2px -9px 0 2px;" href="#modify-'.$intent['c_id'].'-'.( isset($intent['cr_id']) ? $intent['cr_id'] : 0 ).'"><i class="fas fa-cog"></i></a> &nbsp;';
+
     } else {
         //Show link to current section:
-        $ui .= '<a href="javascript:void(0);" onclick="$(\'#messages_'.$intent['c_id'].'\').toggle();" class="badge badge-primary badge-msg"><span id="messages-counter-'.$intent['c_id'].'">'.count($intent['c__messages']).'</span> <i class="fas fa-comment-dots"></i></a>';
+        $ui .= '<a href="javascript:void(0);" onclick="$(\'#messages_'.$intent['c_id'].'\').toggle();" class="badge badge-primary"><span id="messages-counter-'.$intent['c_id'].'">'.( count($intent['c__messages'])>0 ? count($intent['c__messages']) : '').'</span> <i class="fas fa-comment-dots"></i></a>';
     }
     //Keep an eye out for inner message counter changes:
     $ui .= '</span> ';
@@ -1242,7 +1249,7 @@ function echo_actionplan($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=tru
     if($level==1){
 
         //Bootcamp Outcome:
-        $ui .= '<span><b id="b_objective" style="font-size: 1.3em;"><i class="fas fa-cube"></i><span class="c_outcome_'.$intent['c_id'].'" '.$intent_settings.'>'.$intent['c_outcome'].'</span></b></span>';
+        $ui .= '<span><b id="b_objective" style="font-size: 1.3em;"><i class="fas fa-hashtag"></i><span class="c_outcome_'.$intent['c_id'].'" '.$intent_settings.'>'.$intent['c_outcome'].'</span></b></span>';
 
     } elseif($level==2){
 
@@ -1259,7 +1266,7 @@ function echo_actionplan($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=tru
     } elseif ($level==3){
 
         //Steps
-        $ui .= '<span class="inline-level inline-level-'.$level.'">#'.$intent['cr_outbound_rank'].'</span><span id="title_'.$intent['cr_id'].'" class="c_outcome_'.$intent['c_id'].'" outbound-rank="'.$intent['cr_outbound_rank'].'" '.$intent_settings.'>'.$intent['c_outcome'].'</span> '.( $child_cs['c__count']>1 ? '<b data-toggle="tooltip" data-placement="top" title="Intent tree contains '.$child_cs['c__count'].' intents"><i class="fas fa-sitemap"></i> ' . $child_cs['c__count'].'</b> ' : '' );
+        $ui .= '<span class="inline-level inline-level-'.$level.'">#'.$intent['cr_outbound_rank'].'</span><span id="title_'.$intent['cr_id'].'" class="c_outcome_'.$intent['c_id'].'" outbound-rank="'.$intent['cr_outbound_rank'].'" '.$intent_settings.'>'.$intent['c_outcome'].'</span> ';
 
     }
 
@@ -1273,7 +1280,7 @@ function echo_actionplan($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=tru
         $ui .= '</div>';
     }
 
-    //Any child intents?
+    //Any Tree?
     if($level==2){
 
         $ui .= '<div id="list-cr-'.$intent['cr_id'].'" class="cr-class-'.$intent['cr_id'].' list-group step-group hidden list-level-3" intent-id="'.$intent['c_id'].'">';
@@ -1283,7 +1290,7 @@ function echo_actionplan($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=tru
 
         foreach($child_cs['tree_top'] as $key=>$sub_intent){
             if(!isset($sub_intent['c_id'])){
-                $ui .= echo_actionplan($b, end($sub_intent), ($level+1), $intent['c_id'], $editing_enabled);
+                $ui .= echo_actionplan($c__tree, end($sub_intent), ($level+1), $intent['c_id'], $editing_enabled);
             }
         }
 
