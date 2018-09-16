@@ -11,11 +11,8 @@ class Cron extends CI_Controller {
         //Example: /usr/bin/php /home/ubuntu/mench-web-app/index.php cron save_profile_pic
 	}
 
-	function ping(){
-	    echo_json(array('status'=>'success'));
-    }
 
-    function algolia_sync($obj='b',$obj_id=0){
+    function algolia_sync($obj,$obj_id=0){
         echo_json($this->Db_model->algolia_sync($obj,$obj_id));
     }
 

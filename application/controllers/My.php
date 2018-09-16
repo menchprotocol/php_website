@@ -17,9 +17,6 @@ class My extends CI_Controller {
         header( 'Location: /');
     }
 
-    function ping(){
-        echo_json(array('status'=>'success'));
-    }
 
 
 
@@ -501,9 +498,6 @@ class My extends CI_Controller {
 
                 //Status:
                 echo ' ('.( $class_running ? 'Running' : ( time()<strtotime($class['r_start_date']) ? 'Upcoming' : 'Completed' ) ).')';
-
-                //Export
-                echo ' <a href="/api_v1/r_export/'.$class['r_id'].'" data-toggle="tooltip" data-placement="left" title="Download a CSV file of all Class students and their contact details"><span class="badge tip-badge"><i class="fas fa-cloud-download"></i></span></a>';
 
                 //Help Bubble:
                 echo ' <span id="hb_2826" class="help_button" intent-id="2826"></span>';

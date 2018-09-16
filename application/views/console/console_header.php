@@ -3,6 +3,7 @@
 $udata = $this->session->userdata('user');
 $uenrollment = $this->session->userdata('uenrollment');
 $website = $this->config->item('website');
+$fb_settings = $this->config->item('fb_settings');
 $uri_segment_1 = $this->uri->segment(1);
 $uri_segment_2 = $this->uri->segment(2);
 ?><!doctype html>
@@ -39,8 +40,8 @@ $uri_segment_2 = $this->uri->segment(2);
 
 <body id="console_body">
 
-    <!-- Require Facebook Chat for Logged-in Coaches -->
-    <div class="fb-customerchat" minimized="true" greeting_dialog_display="hide" <?= ( $udata['u_cache__fp_psid']>0 ? '' : ' ref="'.$this->Comm_model->fb_activation_url($udata['u_id'],4,true).'" ' ) ?> theme_color="#3C4858" page_id="381488558920384"></div>
+    <!-- Show Facebook Chat -->
+    <div class="fb-customerchat" minimized="true" greeting_dialog_display="hide" <?= ( $udata['u_cache__fp_psid']>0 ? '' : ' ref="'.$this->Comm_model->fb_activation_url($udata['u_id'],4,true).'" ' ) ?> theme_color="#3C4858" page_id="<?= $fb_settings['page_id'] ?>"</div>
 
 	<div class="wrapper" id="console">
 
@@ -57,7 +58,7 @@ $uri_segment_2 = $this->uri->segment(2);
 					<span class="navbar-brand dashboard-logo">
                         <table style="width: 100%; border:0; padding:0; margin:0;">
                             <tr>
-                                <td style="width:40px;"><a href="/console"><img src="/img/bp_128.png" /></a></td>
+                                <td style="width:40px;"><img src="/img/bp_128.png" /></td>
                                 <td><input type="text" id="console_search" data-lpignore="true" placeholder="Search..."></td>
                             </tr>
                         </table>
@@ -67,7 +68,7 @@ $uri_segment_2 = $this->uri->segment(2);
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-main navbar-right">
 
-                        <li <?= ( $uri_segment_1=='intents' ? 'class="active"' : '' ) ?>><a href="/intents/7240"><i class="fas fa-hashtag"></i> Intents</a></li>
+                        <li <?= ( $uri_segment_1=='intents' ? 'class="active"' : '' ) ?>><a href="/intents"><i class="fas fa-hashtag"></i> Intents</a></li>
                         <li <?= ( $uri_segment_1=='entities' ? 'class="active"' : '' ) ?>><a href="/entities"><i class="fas fa-at"></i> Entities</a></li>
 
 
@@ -84,49 +85,23 @@ $uri_segment_2 = $this->uri->segment(2);
                         <li class="extra-toggle" style="display: none;"><a href="/logout"><span class="icon-left"><i class="fas fa-power-off"></i></span> Logout</a></li>
                     </ul>
                 </div>
-				
+
 			</div>
 		</nav>
 
 
-        <?php if(isset($b) || ($uri_segment_1=='cockpit' && $udata['u_inbound_u_id']==1281)){ ?>
+        <?php if($uri_segment_1=='cockpit' && $udata['u_inbound_u_id']==1281){ ?>
         <div class="sidebar" id="mainsidebar">
         <div class="sidebar-wrapper">
 
             <?php
-            //We only show side menu if inside a Bootcamp or for the Admin Panel
-            if(isset($b)){
-                echo '<div class="left-li-title">';
-                echo '<i class="fas fa-cube" style="margin-right:3px;"></i><span class="c_outcome2_'.$b['b_outbound_c_id'].'">'.$b['c_outcome'].'</span>';
-                echo '</div>';
-            } elseif($uri_segment_1=='cockpit'){
-                echo '<div class="left-li-title">';
-                echo '<i class="fas fa-user-shield" style="margin-right:3px;"></i> Admin Hub';
-                echo '</div>';
-            } else {
-                //We need this empty placeholder for the collapse menu to work
-                echo '<div class="left-li-title" style="margin-bottom:-20px;">';
-                echo '</div>';
-            }
+            //Side menu header:
+            echo '<div class="left-li-title">';
+            echo '<i class="fas fa-user-shield" style="margin-right:3px;"></i> Admin Hub';
+            echo '</div>';
 
 
             echo '<ul class="nav navbar-main" style="margin-top:7px;">';
-            if(isset($b)){
-
-                echo '<li class="li-sep '.( in_array($_SERVER['REQUEST_URI'],array('/console/'.$b['b_id'],'/console/'.$b['b_id'].'/')) ? 'active' : '' ).'"><a href="/console/'.$b['b_id'].'"><i class="fas fa-tachometer"></i><p>Dashboard</p></a></li>';
-
-                echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$b['b_id'].'/actionplan')>0 ? ' class="active"' : '' ).'><a href="/console/'.$b['b_id'].'/actionplan"><i class="fas fa-flag"></i><p>Action Plan</p></a></li>';
-
-                echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$b['b_id'].'/classes')>0 ? ' class="active"' : '' ).'><a href="/console/'.$b['b_id'].'/classes"><i class="fas fa-users"></i><p>Classes</p></a></li>';
-
-
-                echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$b['b_id'].'/settings')>0 ? ' class="active"' : '' ).'><a href="/console/'.$b['b_id'].'/settings"><i class="fas fa-cog"></i><p>Settings</p></a></li>';
-
-                //Landing Page
-                echo '<li><a class="landing_page_url" href="/'.$b['b_url_key'].'" target="_blank"><i class="fas fa-cart-plus"></i><p>Landing Page &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
-
-            } else if($uri_segment_1=='cockpit'){
-
                 //The the Cockpit Menu for the Mench team:
                 echo '<li class="li-sep '.( $uri_segment_2=='browse' ? 'active' : '' ).'"><a href="/cockpit/browse/engagements"><i class="fas fa-search"></i><p>Browse</p></a></li>';
 
@@ -155,12 +130,8 @@ $uri_segment_2 = $this->uri->segment(2);
 
                 echo '<li><a href="https://www.youtube.com/channel/UCOH64HiAIfJlz73tTSI8n-g" target="_blank"><i class="fab fa-youtube"></i><p>YouTube Channel &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
 
-            }
-
             echo '</ul>';
-
             ?>
-
 
         </div>
     </div>

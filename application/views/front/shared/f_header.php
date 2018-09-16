@@ -3,6 +3,7 @@
 $udata = $this->session->userdata('user');
 $uenrollment = $this->session->userdata('uenrollment');
 $website = $this->config->item('website');
+$fb_settings = $this->config->item('fb_settings');
 $url_part_1 = $this->uri->segment(1);
 ?><!doctype html>
 <html lang="en">
@@ -23,7 +24,6 @@ $url_part_1 = $this->uri->segment(1);
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<title><?= $website['name'].( isset($title) ? ' | '.$title : '' ) ?></title>
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
-    <?= ( isset($canonical) ? '<link rel="canonical" href="'.$canonical.'">' : '' ) ?>
 
 	<?php $this->load->view('front/shared/header_resources' ); ?>
 
@@ -40,6 +40,9 @@ $url_part_1 = $this->uri->segment(1);
 </head>
 
 <body class="landing-page">
+
+    <div class="fb-customerchat" minimized="true" greeting_dialog_display="hide" <?= ( $udata['u_cache__fp_psid']>0 ? '' : ' ref="'.$this->Comm_model->fb_activation_url($udata['u_id'],4,true).'" ' ) ?> theme_color="#3C4858" page_id="<?= $fb_settings['page_id'] ?>"></div>
+
 
     <nav class="navbar navbar-warning navbar-fixed-top navbar-color-on-scroll <?= ( isset($landing_page) ? 'navbar-transparent': 'no-adj') ?>">
     	<div class="container">
@@ -59,11 +62,7 @@ $url_part_1 = $this->uri->segment(1);
     				<?php
                     if(isset($udata['u_id'])){
 
-                        if(isset($b_id) && auth(array(1308,1280),0,$b_id)){
-                            echo '<li id="isloggedin"><a href="/console/'.$b_id.'">Manage <i class="fas fa-cog"></i></a></li>';
-                        }
-
-                        echo '<li id="isloggedin"><a href="/console">Console <i class="fas fa-chevron-circle-right"></i></a></li>';
+                        echo '<li id="isloggedin"><a href="/intents">Console <i class="fas fa-chevron-circle-right"></i></a></li>';
 
                     } elseif(isset($uenrollment['u_id'])){
                         echo '<li id="isloggedin"><a href="/my/actionplan">Student Hub <i class="fas fa-chevron-circle-right"></i></a></li>';

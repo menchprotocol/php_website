@@ -12,9 +12,6 @@ class Front extends CI_Controller {
         redirect_mench_co();
 	}
 
-    function ping(){
-        echo_json(array('status'=>'success'));
-    }
 
     function error(){
 	    if(!redirect_mench_co()){
@@ -29,11 +26,11 @@ class Front extends CI_Controller {
     function index($c_id=0){
         //Load home page:
         $data = array(
-            'title' => 'Level-Up Your Tech Career',
+            'title' => 'Land a Fabulous Programming Job',
             'c_id' => $c_id,
         );
         $this->load->view('front/shared/f_header' , $data);
-        $this->load->view('front/b/marketplace', $data);
+        $this->load->view('front/home', $data);
         $this->load->view('front/shared/f_footer');
     }
 
@@ -42,7 +39,7 @@ class Front extends CI_Controller {
 	    $udata = $this->session->userdata('user');
 	    if(isset($udata['u_inbound_u_id']) && in_array($udata['u_inbound_u_id'], array(1280,1308,1281))){
 	        //Lead coach and above, go to console:
-	        redirect_message('/console');
+	        redirect_message('/intents');
 	    }
 	    
 		$this->load->view('front/shared/f_header' , array(
@@ -84,58 +81,5 @@ class Front extends CI_Controller {
 	    $this->load->view('front/shared/f_footer');
 	}
 
-
-
-
-
-    function landing_page($b_url_key){
-
-	    //TODO Deprecate soon
-
-        //Fetch data:
-        $udata = $this->session->userdata('user');
-        $bs = $this->Db_model->remix_bs(array(
-            'LOWER(b.b_url_key)' => strtolower($b_url_key),
-        ));
-
-        //Validate Bootcamp:
-        if(!isset($bs[0])){
-            //Invalid key, redirect back:
-            redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Bootcamp URL.</div>');
-        } elseif($bs[0]['b_status']<2){
-            redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp is archived.</div>');
-        } elseif($bs[0]['b_fp_id']<=0){
-            redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp not connected to a Facebook Page.</div>');
-        } elseif(!$bs[0]['b_offers_diy'] && !$bs[0]['b_offers_coaching']){
-            redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp not yet open for enrollment.</div>');
-        } elseif(!(strcmp($bs[0]['b_url_key'], $b_url_key)==0)){
-            //URL Case sensitivity redirect:
-            redirect_message('/'.$bs[0]['b_url_key']);
-        }
-
-        //Fetch future classes:
-        $next_classes = $this->Db_model->r_fetch(array(
-            'r_b_id' => $bs[0]['b_id'],
-            'r_status IN ('. ( $bs[0]['b_offers_diy'] ? '0,1' : '1' /* Require coaching */ ).')' => null,
-            'r_start_date >' => date("Y-m-d"),
-        ),null,'ASC',1);
-
-        if(count($next_classes)<1){
-            redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp does not have any active classes.</div>');
-        }
-
-        //Load home page:
-        $this->load->view('front/shared/f_header' , array(
-            'title' => $bs[0]['c_outcome'],
-            'b_id' => $bs[0]['b_id'],
-            'b_fb_pixel_id' => $bs[0]['b_fb_pixel_id'], //Will insert pixel code in header
-            'canonical' => 'https://mench.com/'.$bs[0]['b_url_key'], //Would set this in the <head> for SEO purposes
-        ));
-        $this->load->view('front/b/landing_page' , array(
-            'b' => $bs[0],
-            'next_classes' => $next_classes,
-        ));
-        $this->load->view('front/shared/f_footer');
-    }
 
 }

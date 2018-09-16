@@ -87,19 +87,6 @@ function processAjaxData(response, urlPath){
     window.history.pushState({"html":response.html,"pageTitle":response.pageTitle},"", urlPath);
 }
 
-function c_tree_menu(c_id,hash_key){
-
-    //Show loading:
-    $('#menu_content').html('<span><img src="/img/round_load.gif" style="width:16px; height:16px; margin-top:-2px;" class="loader" /></span>');
-    $.post("/api_v1/c_tree_menu", {
-        c_id:c_id,
-        hash_key:hash_key,
-    }, function(data) {
-        //Show success:
-        $('#menu_content').html(data);
-    });
-}
-
 function toggle_hidden_class(class_name){
     $('.'+class_name).each(function(){
         if($(this).hasClass('hidden')){

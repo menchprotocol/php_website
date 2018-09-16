@@ -1023,7 +1023,6 @@ WHERE ru.ru_status >= 4
 	    $outbound_levels = intval($outbound_levels);
 	    
 	    //The basic fetcher for intents
-	    //Missing anything?
 	    $this->db->select('*');
 	    $this->db->from('v5_intents c');
 	    foreach($match_columns as $key=>$value){
@@ -1033,17 +1032,17 @@ WHERE ru.ru_status >= 4
 	    $intents = $q->result_array();
 	    
 	    
-	    //We had anything?
-	    if(count($intents)>0 && in_array('i',$join_objects)){
-	        $intents[0]['c__messages'] = array();
-	        //Fetch Messages:
-	        foreach($intents as $key=>$value){
-	            $intents[$key]['c__messages'] = $this->Db_model->i_fetch(array(
-	                'i_outbound_c_id' => $value['c_id'],
-	                'i_status >' => 0, //Published in any form
-	            ));
-	        }
-	    }
+	    //Need anything else?
+        if(count($intents)>0 && in_array('i',$join_objects)){
+            $intents[0]['c__messages'] = array();
+            //Fetch Messages:
+            foreach($intents as $key=>$value){
+                $intents[$key]['c__messages'] = $this->Db_model->i_fetch(array(
+                    'i_outbound_c_id' => $value['c_id'],
+                    'i_status >' => 0, //Published in any form
+                ));
+            }
+        }
 	    
 	    if(count($intents)>0 && $outbound_levels>=1){
 	        //Lets append the outbound intents:
@@ -1956,12 +1955,10 @@ WHERE ru.ru_status >= 4
 
         $alg_indexes = array(
             'c' => 'alg_intents',
-            'b' => 'alg_bootcamps',
             'u' => 'alg_entities',
         );
         $algolia_local_tables = array(
             'c' => 'v5_intents',
-            'b' => 'v5_bootcamps',
             'u' => 'v5_entities',
         );
 
@@ -2002,9 +1999,7 @@ WHERE ru.ru_status >= 4
         }
 
         //Fetch item(s) for updates:
-        if($obj=='b'){
-            $items = $this->Db_model->b_fetch($limits,array('ba'));
-        } elseif($obj=='c'){
+        if($obj=='c'){
             $items = $this->Db_model->c_fetch($limits);
         } elseif($obj=='u'){
             $items = $this->Db_model->u_fetch($limits);
@@ -2030,45 +2025,7 @@ WHERE ru.ru_status >= 4
                 $new_item['objectID'] = $item[$obj.'_algolia_id'];
             }
 
-            if($obj=='b'){
-
-                $new_item['b_id'] = intval($item['b_id']); //rquired for all objects
-                $new_item['b_status'] = intval($item['b_status']);
-                $new_item['b_old_format'] = intval($item['b_old_format']);
-                $new_item['c_b_outcome'] = $item['c_outcome'];
-                $new_item['b_e_score'] = intval($item['b_e_score']);
-                $new_item['b_inbound_u_id'] = intval($item['u_id']);
-                $new_item['b_keywords'] = '';
-
-
-                //Fetch all text messages for description:
-                $i_messages = $this->Db_model->i_fetch(array(
-                    'i_outbound_c_id' => $item['b_outbound_c_id'],
-                    'i_media_type' => 'text', //Only type that we can index in search
-                    'i_status >' => 0, //Published in any form
-                ));
-                if(count($i_messages)>0){
-                    foreach($i_messages as $i){
-                        $new_item['b_keywords'] .= $i['i_message'].' ';
-                    }
-                }
-
-                //Fetch all child intent titles:
-                $c_intents = $this->Db_model->cr_outbound_fetch(array(
-                    'cr.cr_inbound_c_id' => $item['b_outbound_c_id'],
-                    'cr.cr_status >=' => 0,
-                    'c.c_status >' => 0,
-                ));
-                if(count($c_intents)>0){
-                    foreach($c_intents as $c){
-                        $new_item['b_keywords'] .= $c['c_outcome'].' ';
-                    }
-                }
-
-                //Clean keywords
-                $new_item['b_keywords'] = trim(strip_tags($new_item['b_keywords']));
-
-            } elseif($obj=='u') {
+            if($obj=='u') {
 
                 $new_item['u_id'] = intval($item['u_id']); //rquired for all objects
                 $new_item['u_inbound_u_id'] = intval($item['u_inbound_u_id']);
@@ -2126,16 +2083,15 @@ WHERE ru.ru_status >= 4
             } elseif($obj=='c'){
 
                 $new_item['c_id'] = intval($item['c_id']);
-                $new_item['c_inbound_u_id'] = intval($item['c_inbound_u_id']);
-                $new_item['c_e_score'] = intval($item['c_e_score']);
                 $new_item['c_outcome'] = $item['c_outcome'];
+                $new_item['c_is_any'] = intval($item['c_is_any']);
+                $new_item['c_is_output'] = intval($item['c_is_output']);
                 $new_item['c_keywords'] = ( strlen($item['c_trigger_statements'])>0 ? join(' ',json_decode($item['c_trigger_statements'])) : '' );
 
-
-                //See what type of children this has:
-                $child_cs = $this->Db_model->c_recursive_fetch($item['c_id']);
-                $new_item['c__count'] = $child_cs['c__count'];
-                $new_item['c__hours'] = $child_cs['c__hours'];
+                $new_item['c__tree_hours'] = doubleval($item['c__tree_hours']);
+                $new_item['c__tree_inputs'] = intval($item['c__tree_inputs']);
+                $new_item['c__tree_outputs'] = intval($item['c__tree_outputs']);
+                $new_item['c__tree_messages'] = intval($item['c__tree_messages']);
 
                 //Fetch all Messages:
                 $messages = $this->Db_model->i_fetch(array(
@@ -2148,6 +2104,7 @@ WHERE ru.ru_status >= 4
                 }
 
                 //Clean keywords
+                $new_item['c__this_messages'] = count($messages);
                 $new_item['c_keywords'] = trim(strip_tags($new_item['c_keywords']));
 
             }

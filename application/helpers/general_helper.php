@@ -52,27 +52,6 @@ function missing_required_db_fields($insert_columns,$field_array){
     return false; //Not missing anything
 }
 
-function find_c_tree($tree_top, $c_id){
-
-    if(isset($tree_top['c_id']) && $c_id==$tree_top['c_id']){
-        $tree_top['tree_top'] = 1;
-        return $tree_top;
-    } elseif(is_array($tree_top) && count($tree_top)>0){
-        //Need to go deeper:
-        foreach($tree_top as $c){
-            $search = find_c_tree($c, $c_id);
-            if(isset($search['tree_top'])){
-                if($search['tree_top']==1){
-                    $search['tree_top'] = $tree_top;
-                }
-                return $search;
-            }
-        }
-
-        //Still here?
-        return false;
-    }
-}
 
 function fetch_entity_tree($inbound_u_id,$is_edit=false){
 
@@ -354,7 +333,7 @@ function extract_level($b,$c_id){
     $CI =& get_instance();
     //This is what we shall return:
     $view_data = array(
-        'pid' => $c_id, //To be deprecated at some point...
+        'c_id' => $c_id, //To be deprecated at some point...
         'c_id' => $c_id,
         'b' => $b,
     );
@@ -1078,7 +1057,7 @@ function auth($entity_groups=null,$force_redirect=0,$b_id=0,$u_id=0){
 	    return false;
 	} else {
 	    //Block access:
-	    redirect_message( ( isset($udata['u_id']) && (in_array($udata['u_inbound_u_id'], array(1280,1308,1281)) || isset($udata['project_permissions'])) ? '/console' : '/login?url='.urlencode($_SERVER['REQUEST_URI']) ),'<div class="alert alert-danger maxout" role="alert">'.( isset($udata['u_id']) ? 'Access not authorized.' : 'Session Expired. Login to continue.' ).'</div>');
+	    redirect_message( ( isset($udata['u_id']) && (in_array($udata['u_inbound_u_id'], array(1280,1308,1281)) || isset($udata['project_permissions'])) ? '/intents' : '/login?url='.urlencode($_SERVER['REQUEST_URI']) ),'<div class="alert alert-danger maxout" role="alert">'.( isset($udata['u_id']) ? 'Access not authorized.' : 'Session Expired. Login to continue.' ).'</div>');
 	}
 	
 }

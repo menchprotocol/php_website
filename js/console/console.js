@@ -29,7 +29,7 @@ function open_tip(intent_id){
 		$("div#content_"+intent_id).html('<img src="/img/round_yellow_load.gif" class="loader" />');
 		
 		//Let's check to see if this user has already seen this:
-		$.post("/api_v1/c_tip", { intent_id:intent_id } , function(data) {
+		$.post("/intents/c_tip", { intent_id:intent_id } , function(data) {
 			//Let's see what we got:
 			if(data.success){
 				//Load the content:

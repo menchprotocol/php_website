@@ -12,7 +12,9 @@ $config['website'] = array(
     'email' => 'shervin@mench.com',
 );
 
+
 $config['fb_settings'] = array(
+    'page_id'        => '381488558920384', //Also repeated in global.js
     'app_id'        => '1782431902047009', //Also repeated in global.js
     'client_secret' => '05aea76d11b062951b40a5bee4251620',
     'default_graph_version' => 'v2.10', //Also repeated in global.js
@@ -196,12 +198,29 @@ $config['object_statuses'] = array(
         -1 => array(
             's_name'  => 'Archived',
             's_desc'  => 'Intent has been archived and all its links has been removed',
-            's_icon' => 'fas fa-trash-alt',
+            's_icon' => 'fas fa-times-circle',
+        ),
+        0 => array(
+            's_name'  => 'Drafting',
+            's_desc'  => 'Intent is being drafted and not yet published',
+            's_icon' => 'fas fa-pause-circle',
         ),
         1 => array(
             's_name'  => 'Published',
             's_desc'  => 'Intent is published live',
-            's_icon' => 'fas fa-hashtag',
+            's_icon' => 'fas fa-play-circle',
+        ),
+    ),
+    'cr' => array(
+        -1 => array(
+            's_name'  => 'Unlinked',
+            's_desc'  => 'Intent link is deleted',
+            's_icon' => 'fas fa-unlink',
+        ),
+        1 => array(
+            's_name'  => 'Linked',
+            's_desc'  => 'Intent link is active',
+            's_icon' => 'fas fa-link',
         ),
     ),
     'b_guarantee_weeks' => array(
@@ -231,18 +250,7 @@ $config['object_statuses'] = array(
             's_icon' => 'fas fa-clock',
         ),
     ),
-    'cr' => array(
-        -1 => array(
-            's_name'  => 'Archived Link',
-            's_desc'  => 'Step link removed',
-            's_icon' => 'fas fa-unlink',
-        ),
-        1 => array(
-            's_name'  => 'Active Link',
-            's_desc'  => 'Step link is active',
-            's_icon' => 'fas fa-link',
-        ),
-    ),
+
 
     'ru_support_package' => array(
         0 => array(

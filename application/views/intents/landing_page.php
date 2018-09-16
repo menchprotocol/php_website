@@ -30,14 +30,14 @@ function toggleview(object_key){
 </script>
 
 
-<h1 style="margin-bottom:30px;"><?= $b['c_outcome'] ?></h1>
+<h1 style="margin-bottom:30px;"><?= $c['c_outcome'] ?></h1>
 
 <div class="row" id="landing_page">
     
     <div class="col-md-8">
     
         <?php
-        foreach($b['c__messages'] as $i){
+        foreach($c['c__messages'] as $i){
             if($i['i_status']==1){
                 //Publish to Landing Page!
                 echo echo_i($i);
@@ -46,46 +46,44 @@ function toggleview(object_key){
         ?>
 
 
-        <h3><i class="fas fa-flag"></i> Roadmap</h3>
+        <h3><i class="fas fa-flag"></i> Action Plan</h3>
         <div id="c_tasks_list">
             <?php
-            foreach($b['c__child_intents'] as $key=>$b7d){
+            foreach($c['c__child_intents'] as $key=>$c){
 
                 echo '<div id="c_'.$key.'">';
-                echo '<h4><a href="javascript:toggleview(\'c_'.$key.'\');" style="font-weight: normal;"><i class="pointer fas fa-caret-right"></i> '.$b7d['c_outcome'];
-                if($b7d['c__estimated_hours']>0){
-                    echo ' &nbsp;<i class="fas fa-clock"></i> <span style="border-bottom:1px dotted #999;" data-toggle="tooltip" data-placement="top" title="This week is estimated to need '.echo_hours($b7d['c__estimated_hours'],0).' to complete all Tasks">'.echo_hours($b7d['c__estimated_hours'],1).'</span> &nbsp; ';
+                echo '<h4><a href="javascript:toggleview(\'c_'.$key.'\');" style="font-weight: normal;"><i class="pointer fas fa-caret-right"></i> '.$c['c_outcome'];
+                if($c['c__tree_hours']>0){
+                    echo ' &nbsp;<i class="fas fa-clock"></i> <span style="border-bottom:1px dotted #999;" data-toggle="tooltip" data-placement="top" title="Estimated to take '.echo_hours($c['c__tree_hours'],0).' to complete">'.echo_hours($c['c__tree_hours'],1).'</span> &nbsp; ';
                 }
                 echo '</a></h4>';
 
 
                 echo '<div class="toggleview c_'.$key.'" style="display:none;">';
 
-                    //First show all messages for this Bootcamp:
-                    foreach($b7d['c__messages'] as $i){
+                    //First show all messages for this intent:
+                    foreach($c['c__messages'] as $i){
                         if($i['i_status']==1){
                             echo '<div class="tip_bubble">';
                             echo echo_i( array_merge( $i , array(
                                 'noshow' => 1,
-                                'e_b_id'=>$b['b_id'],
                             )) , 'Dear Student' ); //As they are a guest at this point
                             echo '</div>';
                         }
                     }
 
 
-                    if(count($b7d['c__child_intents'])>0){
+                    if(count($c['c__child_intents'])>0){
                         echo '<div class="list-group actionplan_list">';
                         $counter = 0;
                         $landing_pagetask_visible = 3;
-                        foreach($b7d['c__child_intents'] as $child_intent){
+                        foreach($c['c__child_intents'] as $child_intent){
                             if($child_intent['c_status']>0){
                                 if($counter==$landing_pagetask_visible){
                                     echo '<a href="javascript:void(0);" onclick="$(\'.show_full_list_'.$key.'\').toggle();" class="show_full_list_'.$key.' list-group-item">See All <i class="fas fa-chevron-right"></i></a>';
                                 }
                                 echo '<li class="list-group-item '.( $counter>=$landing_pagetask_visible ? 'show_full_list_'.$key.'" style="display:none;"' : '"' ).'>';
-                                //echo '<span class="pull-right">'.($child_intent['c__estimated_hours']>0 ? echo_estimated_time($child_intent['c__estimated_hours'],1) : '').'</span>';
-                                echo '<i class="fas fa-badge-check"></i> ';
+                                echo '<i class="'.( $child_intent['c_is_output'] ? 'fas fa-check-square' : 'fas fa-lightbulb-on' ).'" style="width:24px; font-size:0.9em; color:#3C4858 !important; text-align:center;"></i> ';
                                 echo $child_intent['c_outcome'];
                                 echo '</li>';
                                 $counter++;
@@ -111,14 +109,14 @@ function toggleview(object_key){
 
             <div class="price-box">
 
-                <span id="p_name_1" style="padding-bottom:10px !important; display: block !important;"><?= $b['c_outcome'] ?> with:</span>
+                <span id="p_name_1" style="padding-bottom:10px !important; display: block !important;"><?= $c['c_outcome'] ?> with:</span>
 
                 <div class="support_p">
                     <div class="dash-label"><span class="icon-left"><i class="fas fa-user-graduate"></i></span> 14 Industry Experts <a href="alert('show')"><u style="font-size:1em; margin-left:3px; display: inline-block;">See List</u></a></div>
-                    <div class="dash-label"><span class="icon-left"><i class="fas fa-lightbulb"></i></span> <?= $b['c__tree']['c__count'] ?> Key Concepts</div>
-                    <div class="dash-label"><span class="icon-left"><i class="fas fa-check-square"></i></span> <?= round($b['c__tree']['c__count']/2) ?> Actionable Tasks</div>
-                    <div class="dash-label"><span class="icon-left"><i class="fas fa-comment"></i></span> <?= $b['c__message_tree_count'] ?> Curated Messages</div>
-                    <div class="dash-label"><span class="icon-left"><i class="fas fa-clock"></i></span> <?= echo_hours(($b['c__estimated_hours']),false) ?> To Complete</div>
+                    <div class="dash-label"><span class="icon-left"><i class="fas fa-lightbulb-on"></i></span> <?= $c['c__tree_inputs'] ?> Key Concepts</div>
+                    <div class="dash-label"><span class="icon-left"><i class="fas fa-check-square"></i></span> <?= $c['c__tree_outputs'] ?> Actionable Tasks</div>
+                    <div class="dash-label"><span class="icon-left"><i class="fas fa-comment"></i></span> <?= $c['c__tree_messages'] ?> Curated Messages</div>
+                    <div class="dash-label"><span class="icon-left"><i class="fas fa-clock"></i></span> <?= echo_hours(($c['c__tree_hours']),false) ?> To Complete</div>
                 </div>
 
 
@@ -171,6 +169,6 @@ function toggleview(object_key){
 <div class="main main-raised main-plain main-footer">
 <div class="container">
 	
-<?php $this->load->view('front/b/bs_include'); ?>
+<?php $this->load->view('front/shared/why_mench'); ?>
 
 

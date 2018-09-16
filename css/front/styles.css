@@ -55,6 +55,7 @@ body{ background-color: #FFF !important;}
     padding-bottom: 5px;
     margin-top: -3px;
     border:1px solid #FFF;
+    position: relative;
 }
 
 .review-item{
@@ -258,7 +259,7 @@ input::-webkit-inner-spin-button {
     border-bottom-right-radius: 3px;
 }
 
-.list-level-2>.is_sortable, #temp2, #list-entities > .list-group-item{
+.list-level-2>.is_level2_sortable, #temp2, #list-entities > .list-group-item{
     margin-bottom: 0px;
     border: 0;
     border-bottom:1px solid #CCC;
@@ -382,6 +383,25 @@ input::-webkit-inner-spin-button {
 .card-title .title-main { display:block; padding:0 !important; font-size:1.2em; line-height:110% !important; margin: 5px 0 10px; }
 .card-title .title-sub { display:block; font-size:0.8em; font-family:Lato; color:#999; font-weight:normal; line-height:110% !important; padding:0 !important; margin:5px 0 10px !important; }
 .card-title .title-sub i { width:20px; text-align:center; }
+.btn-counter{
+    font-size: 0.7em;
+    display: block;
+    position: absolute;
+    top: -7px;
+    right: 2px;
+    color: #FFF;
+    background-color: #3C4858;
+    padding: 1px 2px;
+    border-radius: 5px;
+    border: 1px solid #fff;
+    font-weight: normal;
+}
+
+
+.btn-counter .fas{
+    color: #FFF !important;
+    font-size: 0.9em !important;
+}
 
 .tight{
     margin:0 !important;
@@ -743,7 +763,7 @@ h5, .h5 {
     border-radius: 4px;
 }
 .no-messages{background-color: #FEDD1B; color:#3C4858;}
-.list-messages>.is_sortable {
+.list-messages>.is_level2_sortable {
 	margin-left: 8px;
     margin-right: 15px;
 }
@@ -1174,7 +1194,7 @@ a.badge:focus, a.badge:hover {
 	text-decoration:none;
 }
 .fa-ellipsis-v {color:#bbb;}
-.is_step_sortable .fa-bars{
+.is_level3_sortable .fa-bars{
     margin: -10px -7px -10px -7px; /* TODO -margin: -10px -5px -10px -39px; But needs hover-only CSS logic */
 }
 .btn-adj {color:#bbb; margin:0 7px 0 0; z-index:9999999;}
@@ -1193,7 +1213,7 @@ a.badge:focus, a.badge:hover {
 	display:block;
 	color:#3C4858;
 }
-.is_sortable .label { display:inline-block;}
+.is_level2_sortable .label { display:inline-block;}
 .algolia-autocomplete {
   width: 100%;
 }

@@ -1,5 +1,5 @@
 
-<h2 class="title" style="text-align:center; margin-top:50px;">Mench Personal Assistant Offers:</h2>
+<h2 class="title" style="text-align:center; margin-top:50px;">Why Mench?</h2>
 
 <div class="features text-center">
 
@@ -10,7 +10,7 @@
                 <div class="icon">
                     <i class="fas fa-lightbulb-dollar" style="color:#3C4858;"></i>
                 </div>
-                <h3 class="info-title">Money-Making Skills</h3>
+                <h3 class="info-title">In-Demand Skills</h3>
                 <p>Mench is trained on various skills necessary to land the best jobs in the technology industry. Our mission is to maximize your chances for landing the best job with the highest pay in the shorted amount of time.</p>
             </div>
         </div>
@@ -20,7 +20,7 @@
                 <div class="icon">
                     <i class="fas fa-route" style="color:#3C4858;"></i>
                 </div>
-                <h3 class="info-title">Custom Action Plan</h3>
+                <h3 class="info-title">Personalized</h3>
                 <p>Leveling-up your career should not interrupt your busy schedule, which is why we let you choose your weekly hours commitment. Go as fast or slow as you'd like and get personalized inshgts sent to your inbox.</p>
             </div>
         </div>

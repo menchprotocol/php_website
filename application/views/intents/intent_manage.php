@@ -2,14 +2,13 @@
 //Fetch the sprint units from config:
 $message_max = $this->config->item('message_max');
 $website = $this->config->item('website');
-$intent_statuses = echo_status('c');
+$c_statuses = echo_status('c');
 $udata = $this->session->userdata('user');
-$level = 1;
 ?>
 
 <style> .breadcrumb li { display:block; } </style>
 <input type="hidden" id="b_id" value="1" />
-<input type="hidden" id="pid" value="<?= $intent['c_id'] ?>" />
+<input type="hidden" id="c_id" value="<?= $c['c_id'] ?>" />
 <input type="hidden" id="obj_name" value="" />
 
 <script>
@@ -27,16 +26,25 @@ $level = 1;
         }
     }
 
+    function adjust_intent_type(){
+        if($('input[type=radio][name=c_is_output][value=\'1\']').is(':checked')){
+            $('.is_task').removeClass('hidden');
+            var c_id = parseInt($('#modifybox').attr('intent-id'));
+        } else {
+            $('.is_task').addClass('hidden');
+        }
+    }
+
     $(document).ready(function() {
 
         //Watch the expand/close all buttons:
         $('#task_view .expand_all').click(function (e) {
-            $( "#list-c-<?= $intent['c_id'] ?>>.is_sortable" ).each(function() {
+            $( "#list-c-<?= $c['c_id'] ?>>.is_level2_sortable" ).each(function() {
                 ms_toggle($( this ).attr('data-link-id'),1);
             });
         });
         $('#task_view .close_all').click(function (e) {
-            $( "#list-c-<?= $intent['c_id'] ?>>.is_sortable" ).each(function() {
+            $( "#list-c-<?= $c['c_id'] ?>>.is_level2_sortable" ).each(function() {
                 ms_toggle($( this ).attr('data-link-id'),0);
             });
         });
@@ -70,7 +78,12 @@ $level = 1;
         }
 
         //Load Sortable:
-        load_intent_sort($("#pid").val(),"2");
+        load_intent_sort($("#c_id").val(),"2");
+
+        //Check changes on Intent Type:
+        $('input[type=radio][name=c_is_output]').change(function() {
+            adjust_intent_type();
+        });
 
 
         //Activate sorting for Steps:
@@ -88,9 +101,9 @@ $level = 1;
 
             });
 
-            if($('.is_step_sortable').length){
+            if($('.is_level3_sortable').length){
                 //Goo through all Steps:
-                $( ".is_step_sortable" ).each(function() {
+                $( ".is_level3_sortable" ).each(function() {
                     var intent_id = $(this).attr('intent-id');
                     if(intent_id){
                         //Load time:
@@ -125,10 +138,10 @@ $level = 1;
             displayKey: function(suggestion) { return "" },
             templates: {
                 suggestion: function(suggestion) {
-                    var minutes = Math.round(parseFloat(suggestion.c__hours)*60);
-                    var hours = Math.round(parseFloat(suggestion.c__hours));
+                    var minutes = Math.round(parseFloat(suggestion.c__tree_hours)*60);
+                    var hours = Math.round(parseFloat(suggestion.c__tree_hours));
                     var fancy_hours = ( minutes<60 ? minutes+'Min'+(minutes==1?'':'s') :  hours+'Hr'+(hours==1?'':'s') );
-                    return '<span class="suggest-prefix"><i class="fas fa-hashtag"></i></span> '+ suggestion._highlightResult.c_outcome.value + ( parseFloat(suggestion.c__hours)>0 ? '<span class="search-info">'+( parseFloat(suggestion.c__count)>1 ? ' <i class="fas fa-sitemap"></i> ' + suggestion.c__count : '' ) + ' <i class="fas fa-clock"></i> '+ fancy_hours+'</span>' : '');
+                    return '<span class="suggest-prefix"><i class="fas fa-hashtag"></i></span> '+ suggestion._highlightResult.c_outcome.value + ( parseFloat(suggestion.c__tree_hours)>0 ? '<span class="search-info">'+( parseFloat(suggestion.c__count)>1 ? ' <i class="fas fa-sitemap"></i> ' + suggestion.c__count : '' ) + ' <i class="fas fa-clock"></i> '+ fancy_hours+'</span>' : '');
                 },
                 header: function(data) {
                     if(!data.isEmpty){
@@ -167,11 +180,11 @@ $level = 1;
             displayKey: function(suggestion) { return "" },
             templates: {
                 suggestion: function(suggestion) {
-                    var minutes = Math.round(parseFloat(suggestion.c__hours)*60);
-                    var hours = Math.round(parseFloat(suggestion.c__hours));
+                    var minutes = Math.round(parseFloat(suggestion.c__tree_hours)*60);
+                    var hours = Math.round(parseFloat(suggestion.c__tree_hours));
                     var fancy_hours = ( minutes<60 ? minutes+'Min'+(minutes==1?'':'s') :  hours+'Hr'+(hours==1?'':'s') );
 
-                    return '<span class="suggest-prefix"><i class="fas fa-hashtag"></i></span> '+ suggestion._highlightResult.c_outcome.value + ( parseFloat(suggestion.c__hours)>0 ? '<span class="search-info">'+( parseFloat(suggestion.c__count)>1 ? ' <i class="fas fa-sitemap"></i> ' + suggestion.c__count : '' ) + ' <i class="fas fa-clock"></i> '+ fancy_hours+'</span>' : '');
+                    return '<span class="suggest-prefix"><i class="fas fa-hashtag"></i></span> '+ suggestion._highlightResult.c_outcome.value + ( parseFloat(suggestion.c__tree_hours)>0 ? '<span class="search-info">'+( parseInt(suggestion.c__tree_inputs)+parseInt(suggestion.c__tree_outputs)>1 ? ' <i class="'+( parseInt(suggestion.c_is_any) ? 'fas fa-code-merge' : 'fas fa-sitemap' )+'"></i> ' + parseInt(suggestion.c__tree_inputs)+parseInt(suggestion.c__tree_outputs) : '' ) + ' <i class="fas fa-clock"></i> '+ fancy_hours+'</span>' : '');
                 },
                 header: function(data) {
                     if(!data.isEmpty){
@@ -194,11 +207,11 @@ $level = 1;
     function c_sort(c_id,level){
 
         if(level==2){
-            var s_element = "list-c-<?= $intent['c_id'] ?>";
-            var s_draggable = ".is_sortable";
+            var s_element = "list-c-<?= $c['c_id'] ?>";
+            var s_draggable = ".is_level2_sortable";
         } else if(level==3){
             var s_element = "list-cr-"+$('.intent_line_'+c_id).attr('data-link-id');
-            var s_draggable = ".is_step_sortable";
+            var s_draggable = ".is_level3_sortable";
         } else {
             //Should not happen!
             return false;
@@ -215,7 +228,7 @@ $level = 1;
             if(!$(this).hasClass('dropin-box')){
 
                 //Fetch variables for this intent:
-                var pid = parseInt($(this).attr('intent-id'));
+                var c_id = parseInt($(this).attr('intent-id'));
                 var cr_id = parseInt($( this ).attr('data-link-id'));
 
                 sort_rank++;
@@ -224,11 +237,11 @@ $level = 1;
                 new_sort[sort_rank] = cr_id;
 
                 //Is the Outbound rank correct? Check DB value:
-                var db_rank = parseInt($('.c_outcome_'+pid).attr('outbound-rank'));
+                var db_rank = parseInt($('.c_outcome_'+c_id).attr('outbound-rank'));
 
                 if(level==2 && !(db_rank==sort_rank) && !c_id){
                     is_properly_sorted = false;
-                    console.log('Intent #'+pid+' detected out of sync.');
+                    console.log('Intent #'+c_id+' detected out of sync.');
                 }
 
                 //Update sort handler:
@@ -239,13 +252,13 @@ $level = 1;
 
         if(level==2 && !is_properly_sorted && !c_id){
             //Sorting issue detected on Task load:
-            c_id = parseInt($('#pid').val());
+            c_id = parseInt($('#c_id').val());
         }
 
         //It might be zero for lists that have jsut been emptied
         if(sort_rank>0 && c_id){
             //Update backend:
-            $.post("/api_v1/c_sort", { pid:c_id, b_id:$('#b_id').val(), new_sort:new_sort }, function(data) {
+            $.post("/intents/c_sort", { c_id:c_id, b_id:$('#b_id').val(), new_sort:new_sort }, function(data) {
                 //Update UI to confirm with user:
                 if(!data.status){
                     //There was some sort of an error returned!
@@ -256,14 +269,14 @@ $level = 1;
     }
 
 
-    function load_intent_sort(pid,level){
+    function load_intent_sort(c_id,level){
 
         if(level==2){
-            var s_element = "list-c-<?= $intent['c_id'] ?>";
-            var s_draggable = ".is_sortable";
+            var s_element = "list-c-<?= $c['c_id'] ?>";
+            var s_draggable = ".is_level2_sortable";
         } else if(level==3){
-            var s_element = "list-cr-"+$('.intent_line_'+pid).attr('data-link-id');
-            var s_draggable = ".is_step_sortable";
+            var s_element = "list-cr-"+$('.intent_line_'+c_id).attr('data-link-id');
+            var s_draggable = ".is_level3_sortable";
         } else {
             //Should not happen!
             return false;
@@ -276,7 +289,7 @@ $level = 1;
             draggable: s_draggable, // Specifies which items inside the element should be sortable
             handle: ".fa-bars", // Restricts sort start click/touch to the specified element
             onUpdate: function (evt/**Event*/){
-                c_sort(pid,level);
+                c_sort(c_id,level);
             }
         };
 
@@ -295,7 +308,7 @@ $level = 1;
                     to_c_id:evt.to.attributes[2].value,
                 };
                 //Update:
-                $.post("/api_v1/c_move_c", inputs, function(data) {
+                $.post("/intents/c_move_c", inputs, function(data) {
                     //Update sorts in both lists:
                     if(!data.status){
 
@@ -336,10 +349,10 @@ $level = 1;
 
     function i_load_frame(c_id){
 
-        var messages_focus_pid = ( $('#iphonex').hasClass('hidden') ? 0 : parseInt($('#iphonex').attr('intent-id')) );
+        var messages_focus_c_id = ( $('#iphonex').hasClass('hidden') ? 0 : parseInt($('#iphonex').attr('intent-id')) );
 
         //Check to see if its open or close:
-        if(messages_focus_pid==c_id){
+        if(messages_focus_c_id==c_id){
 
             //close and return
             //$('#iphonex').addClass('hidden');
@@ -369,7 +382,7 @@ $level = 1;
             handler.html('<div style="text-align:center; padding-top:89px; padding-bottom:89px;"><img src="/img/round_load.gif" class="loader" /></div>');
 
             //Load the frame:
-            $.post("/api_v1/i_load_frame", {
+            $.post("/intents/i_load_frame", {
 
                 b_id:$('#b_id').val(),
                 c_id:c_id,
@@ -437,7 +450,7 @@ $level = 1;
     }
 
 
-    function unlink_intent(){
+    function c_unlink(){
 
         var c_id = ( $('#modifybox').hasClass('hidden') ? 0 : parseInt($('#modifybox').attr('intent-id')) );
 
@@ -449,11 +462,11 @@ $level = 1;
         var cr_id = $('.intent_line_'+c_id).attr('data-link-id');
         var parent_c_id = parseInt($('.maplevel'+c_id).attr('parent-intent-id'));
         var level = parseInt($('#cr_'+cr_id).attr('intent-level'));
-        var r = confirm("Remove \""+$('.c_outcome_input').val()+"\" from Action Plan?\n(You can still access it from the Intent Library)");
+        var r = confirm("Unlink \""+$('.c_outcome_input').val()+"\"?\n(Intent will remain accessible)");
 
         if (r == true) {
             //Load parent intents:
-            $.post("/api_v1/unlink_intent", {b_id:$('#b_id').val(), c_id:c_id, cr_id:cr_id} , function(data) {
+            $.post("/intents/c_unlink", {b_id:$('#b_id').val(), c_id:c_id, cr_id:cr_id} , function(data) {
                 if(data.status){
 
                     //Adjust hours:
@@ -496,7 +509,7 @@ $level = 1;
         }
 
         var current_c_id = ( $('#modifybox').hasClass('hidden') ? 0 : parseInt($('#modifybox').attr('intent-id')) );
-        var level = ( cr_id==0 ? 1 : $('#cr_'+cr_id).attr('intent-level') );
+        var level = ( cr_id==0 ? 1 : parseInt($('#cr_'+cr_id).attr('intent-level')) ); //Either 1, 2 or 3
 
         //Do we already have this loaded?
         if(current_c_id>0 && current_c_id==c_id){
@@ -514,21 +527,24 @@ $level = 1;
 
         $('.c_outcome_input').val($(".c_outcome_"+c_id+":first").text());
         $('#c_time_estimate').val(intent_hours);
+
+        $("input[name=c_is_any][value='"+$('.c_outcome_'+c_id).attr('c_is_any')+"']").prop("checked",true);
+        $("input[name=c_is_output][value='"+$('.c_outcome_'+c_id).attr('c_is_output')+"']").prop("checked",true);
         document.getElementById("c_require_url_to_complete").checked = parseInt($('.c_outcome_'+c_id).attr('c_require_url_to_complete'));
         document.getElementById("c_require_notes_to_complete").checked = parseInt($('.c_outcome_'+c_id).attr('c_require_notes_to_complete'));
-        document.getElementById("c_is_any").checked = parseInt($('.c_outcome_'+c_id).attr('c_is_any'));
+        adjust_intent_type();
 
         //Are the tree hours greater than the intent hours?
         if(tree_hours>intent_hours){
             //Yes, show remaining tree hours:
-            $('#child-hours').html('<i class="fas fa-sitemap"></i> '+echo_hours(tree_hours-intent_hours)+' in Tree');
+            $('#child-hours').html('<i class="fas fa-sitemap"></i> '+echo_hours(tree_hours-intent_hours)+' in child intents');
         } else {
             //Nope, clear this field:
             $('#child-hours').html('');
         }
 
 
-        //Only show unlink button if not top of the Action Plan
+        //Only show unlink button if not level 1
         if(level==1){
             $('.unlink-intent').addClass('hidden');
         } else {
@@ -541,7 +557,7 @@ $level = 1;
         $('#iphonex').addClass('hidden');
 
         //Load parent intents:
-        $.post("/api_v1/load_inbound_c", {b_id:$('#b_id').val(), c_id:c_id, cr_id:cr_id} , function(data) {
+        $.post("/intents/c_list_inbound", {c_id:c_id, cr_id:cr_id} , function(data) {
             if(data.status){
                 if(data.parent_found){
                     //Load other parents:
@@ -567,39 +583,48 @@ $level = 1;
         }
 
         //Prepare data to be modified for this intent:
+        var c_is_output = parseInt($('input[name=c_is_output]:checked').val());
         var modify_data = {
-            b_id:$('#b_id').val(),
-            pid:parseInt($('#modifybox').attr('intent-id')),
+            c_id:parseInt($('#modifybox').attr('intent-id')),
             level:parseInt($('#modifybox').attr('level')),
             c_outcome:$('.c_outcome_input').val(),
             c_time_estimate:parseFloat($('#c_time_estimate').val()),
-            c_require_url_to_complete:(document.getElementById('c_require_url_to_complete').checked ? 1 : 0),
-            c_require_notes_to_complete:(document.getElementById('c_require_notes_to_complete').checked ? 1 : 0),
-            c_is_any:(document.getElementById('c_is_any').checked ? 1 : 0),
+            c_require_url_to_complete:( c_is_output && document.getElementById('c_require_url_to_complete').checked ? 1 : 0),
+            c_require_notes_to_complete:( c_is_output && document.getElementById('c_require_notes_to_complete').checked ? 1 : 0),
+            c_is_any:parseInt($('input[name=c_is_any]:checked').val()),
+            c_is_output:c_is_output,
         };
 
         //Show spinner:
         $('.save_setting_results').html('<span><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
 
         //Save the rest of the content:
-        $.post("/api_v1/c_save_settings", modify_data , function(data) {
+        $.post("/intents/c_save_settings", modify_data , function(data) {
 
             if(data.status){
 
                 //Update variables:
-                $(".c_outcome_"+modify_data['pid']).html(modify_data['c_outcome']);
-                $('.c_outcome_'+modify_data['pid']).attr('c_require_url_to_complete'  , modify_data['c_require_url_to_complete']);
-                $('.c_outcome_'+modify_data['pid']).attr('c_require_notes_to_complete', modify_data['c_require_notes_to_complete']);
-                $('.c_outcome_'+modify_data['pid']).attr('c_is_any'                   , modify_data['c_is_any']);
+                $(".c_outcome_"+modify_data['c_id']).html(modify_data['c_outcome']);
+                $('.c_outcome_'+modify_data['c_id']).attr('c_require_url_to_complete'  , modify_data['c_require_url_to_complete']);
+                $('.c_outcome_'+modify_data['c_id']).attr('c_require_notes_to_complete', modify_data['c_require_notes_to_complete']);
+                $('.c_outcome_'+modify_data['c_id']).attr('c_is_any'                   , modify_data['c_is_any']);
+                $('.c_outcome_'+modify_data['c_id']).attr('c_is_output'                , modify_data['c_is_output']);
 
+                //Adjust UI Icons:
+                if(modify_data['c_is_any']){
+                    $('.maplevel'+modify_data['c_id']+' .c_is_any_icon').addClass('fa-code-merge').removeClass('fa-sitemap');
+                } else {
+                    $('.maplevel'+modify_data['c_id']+' .c_is_any_icon').removeClass('fa-code-merge').addClass('fa-sitemap');
+                }
 
-                if(modify_data['level']==1){
-                    //Update the main title:
-                    $(".c_outcome2_"+modify_data['pid']).html(modify_data['c_outcome']);
+                if(modify_data['c_is_output']){
+                    $('.maplevel'+modify_data['c_id']+' .c_is_output_icon').addClass('fa-check-square').removeClass('fa-lightbulb-on');
+                } else {
+                    $('.maplevel'+modify_data['c_id']+' .c_is_output_icon').removeClass('fa-check-square').addClass('fa-lightbulb-on');
                 }
 
                 //Adjust hours:
-                adjust_hours(modify_data['pid'], modify_data['level'], modify_data['c_time_estimate']);
+                adjust_hours(modify_data['c_id'], modify_data['level'], modify_data['c_time_estimate']);
 
                 //Update UI to confirm with user:
                 $('.save_setting_results').html(data.message).hide().fadeIn();
@@ -623,41 +648,20 @@ $level = 1;
 
 
 
-    function tree_message(c_id,u_id){
 
-        //Show loading:
-        $('#simulate_'+c_id).attr('href','#').html('<span><img src="/img/round_load.gif" style="width:16px; height:16px; margin-top:-2px;" class="loader" /></span>');
-
-        //Disapper in a while:
-        setTimeout(function() {
-            //Hide the editor & saving results:
-            $.post("/api_v1/i_dispatch", {
-                c_id:c_id,
-                depth:1,
-                b_id:$('#b_id').val(),
-                u_id:u_id,
-            }, function(data) {
-                //Show success:
-                $('#simulate_'+c_id).html(data);
-            });
-        }, 334);
-
-    }
-
-
-    function new_intent(pid,next_level,link_c_id=0){
+    function new_intent(c_id,next_level,link_c_id=0){
 
         //If link_c_id>0 this means we're only linking
         //Set variables mostly based on level:
 
         if(next_level==2){
-            var sort_handler = ".is_sortable";
-            var sort_list_id = "list-c-"+$('#pid').val();
-            var input_field = $('#addintent-c-'+pid);
+            var sort_handler = ".is_level2_sortable";
+            var sort_list_id = "list-c-"+$('#c_id').val();
+            var input_field = $('#addintent-c-'+c_id);
         } else if(next_level==3){
-            var sort_handler = ".is_step_sortable";
-            var sort_list_id = "list-cr-"+$('.intent_line_'+pid).attr('data-link-id');
-            var input_field = $('#addintent-cr-'+$('.intent_line_'+pid).attr('data-link-id'));
+            var sort_handler = ".is_level3_sortable";
+            var sort_list_id = "list-cr-"+$('.intent_line_'+c_id).attr('data-link-id');
+            var input_field = $('#addintent-cr-'+$('.intent_line_'+c_id).attr('data-link-id'));
         } else {
             alert('Invalid next_level value ['+next_level+']');
             return false;
@@ -677,7 +681,7 @@ $level = 1;
         add_to_list(sort_list_id, sort_handler, '<div id="temp'+next_level+'" class="list-group-item"><img src="/img/round_load.gif" class="loader" /> Adding... </div>');
 
         //Update backend:
-        $.post("/api_v1/c_new", {b_id:b_id, pid:pid, c_outcome:intent_name, next_level:next_level, link_c_id:link_c_id}, function(data) {
+        $.post("/intents/c_new", {b_id:b_id, c_id:c_id, c_outcome:intent_name, next_level:next_level, link_c_id:link_c_id}, function(data) {
 
             //Remove loader:
             $( "#temp"+next_level ).remove();
@@ -688,7 +692,7 @@ $level = 1;
                 add_to_list(sort_list_id,sort_handler,data.html);
 
                 //Re-adjust sorting:
-                load_intent_sort(pid,next_level);
+                load_intent_sort(c_id,next_level);
 
                 if(next_level==2){
 
@@ -700,14 +704,14 @@ $level = 1;
 
                 } else {
                     //Adjust Step sorting:
-                    c_sort(pid,next_level);
+                    c_sort(c_id,next_level);
                 }
 
                 //Tooltips:
                 $('[data-toggle="tooltip"]').tooltip();
 
                 //Adjust time:
-                adjust_hours(data.c_id, next_level, data.new_c_hours, 0, 1);
+                adjust_hours(data.c_id, next_level, data.c__tree_hours, 0, 1);
             } else {
                 //Show errors:
                 alert('ERROR: '+data.message);
@@ -730,7 +734,7 @@ $level = 1;
     <div class="col-xs-6">
         <?php
         echo '<div id="bootcamp-objective" class="list-group">';
-        echo echo_actionplan($c__tree,$intent,$level);
+        echo echo_actionplan($c,1);
         echo '</div>';
 
 
@@ -741,17 +745,16 @@ $level = 1;
         echo '</div>';
 
         //Task/Bootcamp List:
-        echo '<div id="list-c-'.$intent['c_id'].'" class="list-group list-level-2">';
-            foreach($c__tree['tree_top'] as $key=>$sub_intent){
-                if(!isset($sub_intent['c_id'])){
-                    echo echo_actionplan($c__tree, end($sub_intent), ($level+1), $intent['c_id']);
-                }
+        echo '<div id="list-c-'.$c['c_id'].'" class="list-group list-level-2">';
+
+            foreach($c['c__child_intents'] as $sub_intent){
+                echo echo_actionplan($sub_intent, 2, $c['c_id']);
             }
 
             ?>
             <div class="list-group-item list_input searchable grey-block">
                 <div class="input-group">
-                    <div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control intentadder-level-2"  maxlength="70" intent-id="<?= $intent['c_id'] ?>" id="addintent-c-<?= $intent['c_id'] ?>" placeholder="Add #Intent"></div>
+                    <div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control intentadder-level-2"  maxlength="70" intent-id="<?= $c['c_id'] ?>" id="addintent-c-<?= $c['c_id'] ?>" placeholder="Add #Intent"></div>
                     <span class="input-group-addon" style="padding-right:8px;">
                             <span id="dir_handle" data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" class="badge badge-primary pull-right" style="cursor:pointer; margin: 1px 3px 0 6px;">
                                 <div><i class="fas fa-plus"></i></div>
@@ -773,7 +776,7 @@ $level = 1;
             <div style="text-align:right; font-size: 22px; margin: -5px 0 -20px 0;"><a href="javascript:void(0)" onclick="$('#modifybox').addClass('hidden')"><i class="fas fa-times"></i></a></div>
 
             <div>
-                <div class="title"><h4><i class="fas fa-dot-circle"></i> Outcome <span id="hb_598" class="help_button" intent-id="598"></span></h4></div>
+                <div class="title"><h4><i class="fas fa-bullseye-arrow"></i> Target Outcome <span id="hb_598" class="help_button" intent-id="598"></span></h4></div>
                 <div class="help_body maxout" id="content_598"></div>
 
                 <div class="form-group label-floating is-empty">
@@ -808,22 +811,59 @@ $level = 1;
 
 
             <div style="margin-top:20px;">
-                <div class="title"><h4><i class="fas fa-check-circle"></i> Completion Settings <span id="hb_2284" class="help_button" intent-id="2284"></span></h4></div>
-                <div class="help_body maxout" id="content_2284"></div>
+                <div class="title"><h4><i class="fas fa-check-circle"></i> Completion Method</h4></div>
                 <div class="form-group label-floating is-empty">
-                    <div class="checkbox">
-                        <label style="display: block;"><input type="checkbox" id="c_is_any" />Complete when ANY Child is Complete&nbsp;</label>
-                        <label style="display: block;"><input type="checkbox" id="c_require_notes_to_complete" />Notes Required to Complete&nbsp;</label>
-                        <label style="display: block;"><input type="checkbox" id="c_require_url_to_complete" />URL Required&nbsp;to Complete&nbsp;</label>
+
+                    <div class="radio" style="display:inline-block; border-bottom:1px dotted #999; margin-right:10px; margin-top: 0 !important;" data-toggle="tooltip" title="Intent is completed when ALL immediate child intents are marked as complete" data-placement="right">
+                        <label>
+                            <input type="radio" name="c_is_any" value="0" />
+                            <i class="fas fa-sitemap"></i> All
+                        </label>
                     </div>
+                    <div class="radio" style="display: inline-block; border-bottom:1px dotted #999; margin-top: 0 !important;" data-toggle="tooltip" title="Intent is completed when ANY single one of the immediate child intents are marked as complete" data-placement="right">
+                        <label>
+                            <input type="radio" name="c_is_any" value="1" />
+                            <i class="fas fa-code-merge"></i> Any
+                        </label>
+                    </div>
+
                 </div>
             </div>
+
+
+            <div style="margin-top:20px;">
+                <div class="title"><h4><i class="fas fa-hashtag"></i> Intent Type</h4></div>
+                <div class="form-group label-floating is-empty">
+
+                    <div class="radio" style="display: inline-block; border-bottom:1px dotted #999; margin-top: 0 !important; margin-right:10px !important;" data-toggle="tooltip" title="Intent requires the student to produce an output by completing an actionable task" data-placement="right">
+                        <label>
+                            <input type="radio" name="c_is_output" value="1" />
+                            <i class="fas fa-check-square"></i> Actionable Task
+                        </label>
+                    </div>
+
+                    <div class="radio" style="display:inline-block; border-bottom:1px dotted #999; margin-top: 0 !important;" data-toggle="tooltip" title="Intent communicates a key concept without requiring the student to do anything other than consuming the content (no output)" data-placement="right">
+                        <label>
+                            <input type="radio" name="c_is_output" value="0" />
+                            <i class="fas fa-lightbulb-on"></i> Key Concept
+                        </label>
+                    </div>
+
+                    <div class="checkbox is_task">
+                        <label style="display: block; font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" id="c_require_notes_to_complete" /><i class="fas fa-pencil"></i> Require written response</label>
+                        <label style="display: block; font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" id="c_require_url_to_complete" /><i class="fas fa-link"></i> Require URL in response</label>
+                    </div>
+
+                </div>
+            </div>
+
+
 
             <table width="100%" style="margin-top:10px;">
                 <tr>
                     <td class="save-td"><a href="javascript:save_modify();" class="btn btn-primary">Save</a></td>
                     <td><span class="save_setting_results"></span></td>
-                    <td style="width:20px;"><a href="javascript:unlink_intent();" class="unlink-intent" data-toggle="tooltip" title="Unlink intent from Action Plan [Still available via Intent Library]" data-placement="left"><i class="fas fa-trash-alt"></i></a></td>
+                    <td style="width:80px;"><a href="javascript:c_unlink();" class="unlink-intent" data-toggle="tooltip" title="Remove intent link without deleting the intent (Available to be used elsewhere)" data-placement="left" style="text-decoration:none;"><i class="fas fa-unlink"></i> Unlink</a></td>
                 </tr>
             </table>
 

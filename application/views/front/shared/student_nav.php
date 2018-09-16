@@ -20,7 +20,7 @@ $navigation = array(
         //Is this a logged-in admin?
         $udata = $this->session->userdata('user');
         if(isset($udata) && count($udata)>0){
-            echo '<li class="pull-right"><a href="/console">Console <i class="fas fa-chevron-circle-right"></i></a></li>';
+            echo '<li class="pull-right"><a href="/intents">Console <i class="fas fa-chevron-circle-right"></i></a></li>';
         }
 
         //Logout button:

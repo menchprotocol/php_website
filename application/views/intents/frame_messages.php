@@ -35,7 +35,7 @@ if(!isset($intents[0])){
     var max_length = <?= $message_max ?>;
     var message_count = <?= count($i_messages) ?>;
     //Sync the message count now:
-    window.parent.document.getElementById("messages-counter-"+c_id).innerHTML = ( message_count>0 ? message_count : '' );
+    window.parent.document.getElementById("messages-counter-"+c_id).innerHTML = message_count;
 
     function add_first_name(){
         $('#i_message'+c_id).insertAtCaret('{first_name}');
@@ -196,7 +196,7 @@ if(!isset($intents[0])){
         });
 
         //Update backend:
-        $.post("/api_v1/i_sort", {new_sort:new_sort, b_id:$('#b_id').val(), pid:c_id}, function(data) {
+        $.post("/intents/i_sort", {new_sort:new_sort, b_id:$('#b_id').val(), c_id:c_id}, function(data) {
             if(!data.status){
                 //Show error:
                 alert('ERROR: '+data.message);
@@ -210,7 +210,7 @@ if(!isset($intents[0])){
         var sort_msg = Sortable.create( theobject , {
             animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
             handle: ".fa-bars", // Restricts sort start click/touch to the specified element
-            draggable: ".is_sortable", // Specifies which items inside the element should be sortable
+            draggable: ".is_level2_sortable", // Specifies which items inside the element should be sortable
             onUpdate: function (evt/**Event*/){
                 //Apply new sort:
                 var i_status = $('#i_status_focus').val();
@@ -248,7 +248,7 @@ if(!isset($intents[0])){
             $("#ul-nav-"+i_id).html('<div><img src="/img/round_load.gif" class="loader" /> Deleting...</div>');
 
             //Delete and remove:
-            $.post("/api_v1/i_delete", {i_id:i_id, pid:c_id}, function(data) {
+            $.post("/intents/i_delete", {i_id:i_id, c_id:c_id}, function(data) {
 
                 //Update UI to confirm with user:
                 if(!data.status){
@@ -329,13 +329,13 @@ if(!isset($intents[0])){
         var new_i_status = $("#i_status_"+i_id).val();
 
         //Update message:
-        $.post("/api_v1/i_modify", {
+        $.post("/intents/i_modify", {
 
             i_id:i_id,
             i_message:$("#ul-nav-"+i_id+" textarea").val(),
             initial_i_status:initial_i_status,
             i_status:new_i_status,
-            pid:c_id,
+            c_id:c_id,
             i_media_type:$("#ul-nav-"+i_id+" .i_media_type").val(),
 
         }, function(data) {
@@ -488,11 +488,11 @@ if(!isset($intents[0])){
 
             ajaxData.append( 'upload_type', uploadType );
             ajaxData.append( 'i_status', $('#i_status_focus').val() );
-            ajaxData.append( 'pid', c_id );
+            ajaxData.append( 'c_id', c_id );
             ajaxData.append( 'b_id', $('#b_id').val() );
 
             $.ajax({
-                url: '/api_v1/i_attach',
+                url: '/intents/i_attach',
                 type: $('.box'+c_id).attr('method'),
                 data: ajaxData,
                 dataType: 'json',
@@ -532,10 +532,10 @@ if(!isset($intents[0])){
         message_form_lock();
 
         //Update backend:
-        $.post("/api_v1/i_create", {
+        $.post("/intents/i_create", {
 
             b_id:$('#b_id').val(),
-            pid:c_id, //Synonymous
+            c_id:c_id, //Synonymous
             i_message:$('#i_message'+c_id).val(),
             i_status:$('#i_status_focus').val(),
 
@@ -580,9 +580,6 @@ if(!isset($intents[0])){
     echo '<div class="ix-tip all_msg msg_1">';
     echo '<i class="fas fa-info-circle"></i> ';
     echo $i_desc[1]['s_desc'].'.';
-    if(0){
-        echo ' <a id="simulate_'.$c_id.'" href="javascript:void(0)" onclick="tree_message('.$c_id.','.$udata['u_id'].')" data-toggle="tooltip" title="Simulate messages sent to students when Task starts" data-placement="bottom">Send Test Message <i class="fas fa-mobile"></i></a>';
-    }
     echo '</div>';
     echo '<div class="ix-tip all_msg msg_2 hidden"><i class="fas fa-info-circle"></i> '.$i_desc[2]['s_desc'].'.</div>';
     echo '<div class="ix-tip all_msg msg_3 hidden"><i class="fas fa-info-circle"></i> '.$i_desc[3]['s_desc'].'.</div>';
