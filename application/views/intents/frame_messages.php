@@ -14,17 +14,11 @@ $intents = $this->Db_model->c_fetch(array(
     'c.c_id' => $c_id,
 ));
 
-//Fetch Bootcamp:
-$bs = $this->Db_model->b_fetch(array(
-    'b.b_id' => $b_id,
-));
+
 
 if(!isset($intents[0])){
     //This should never happen:
     die('Invalid input id.');
-} elseif(count($bs)<1){
-    //This should never happen:
-    die('Invalid Bootcamp ID.');
 }
 ?>
 

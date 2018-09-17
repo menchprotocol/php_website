@@ -266,7 +266,7 @@ input::-webkit-inner-spin-button {
     background-color: #EFEFEF;
 }
 .step-group{
-    margin:10px 0 0 0px;
+    margin:10px 0 0 8px;
 }
 .step-group>.list-group-item{
     padding:7px;
@@ -397,7 +397,10 @@ input::-webkit-inner-spin-button {
     font-weight: normal;
 }
 
-
+.btn-counter .slim-time{
+    color:#FFF !important;
+    margin: 0 !important;
+}
 .btn-counter .fas{
     color: #FFF !important;
     font-size: 0.9em !important;

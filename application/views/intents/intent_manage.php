@@ -612,15 +612,15 @@ $udata = $this->session->userdata('user');
 
                 //Adjust UI Icons:
                 if(modify_data['c_is_any']){
-                    $('.maplevel'+modify_data['c_id']+' .c_is_any_icon').addClass('fa-code-merge').removeClass('fa-sitemap');
+                    $('.c_is_any_icon'+modify_data['c_id']).addClass('fa-code-merge').removeClass('fa-sitemap');
                 } else {
-                    $('.maplevel'+modify_data['c_id']+' .c_is_any_icon').removeClass('fa-code-merge').addClass('fa-sitemap');
+                    $('.c_is_any_icon'+modify_data['c_id']).removeClass('fa-code-merge').addClass('fa-sitemap');
                 }
 
                 if(modify_data['c_is_output']){
-                    $('.maplevel'+modify_data['c_id']+' .c_is_output_icon').addClass('fa-check-square').removeClass('fa-lightbulb-on');
+                    $('.c_is_output_icon'+modify_data['c_id']).addClass('fa-check-square').removeClass('fa-lightbulb-on');
                 } else {
-                    $('.maplevel'+modify_data['c_id']+' .c_is_output_icon').removeClass('fa-check-square').addClass('fa-lightbulb-on');
+                    $('.c_is_output_icon'+modify_data['c_id']).removeClass('fa-check-square').addClass('fa-lightbulb-on');
                 }
 
                 //Adjust hours:
@@ -788,47 +788,7 @@ $udata = $this->session->userdata('user');
             </div>
 
 
-            <div style="margin-top:20px;">
-                <?php $times = $this->config->item('c_time_options'); ?>
-                <div class="title"><h4><i class="fas fa-clock"></i> Time Estimate <span id="hb_609" class="help_button" intent-id="609"></span></h4></div>
-                <div class="help_body maxout" id="content_609"></div>
-                <table width="100%">
-                    <tr>
-                        <td style="width:105px;">
-                            <select class="form-control input-mini border" id="c_time_estimate" style="display:inline-block;">
-                                <?php
-                                foreach($times as $time){
-                                    echo '<option value="'.$time.'">'.echo_hours($time).'</option>';
-                                }
-                                ?>
-                            </select>
-                        </td>
-                        <td><div id="child-hours"></div></td>
-                    </tr>
-                </table>
-            </div>
 
-
-
-            <div style="margin-top:20px;">
-                <div class="title"><h4><i class="fas fa-check-circle"></i> Completion Method</h4></div>
-                <div class="form-group label-floating is-empty">
-
-                    <div class="radio" style="display:inline-block; border-bottom:1px dotted #999; margin-right:10px; margin-top: 0 !important;" data-toggle="tooltip" title="Intent is completed when ALL immediate child intents are marked as complete" data-placement="right">
-                        <label>
-                            <input type="radio" name="c_is_any" value="0" />
-                            <i class="fas fa-sitemap"></i> All
-                        </label>
-                    </div>
-                    <div class="radio" style="display: inline-block; border-bottom:1px dotted #999; margin-top: 0 !important;" data-toggle="tooltip" title="Intent is completed when ANY single one of the immediate child intents are marked as complete" data-placement="right">
-                        <label>
-                            <input type="radio" name="c_is_any" value="1" />
-                            <i class="fas fa-code-merge"></i> Any
-                        </label>
-                    </div>
-
-                </div>
-            </div>
 
 
             <div style="margin-top:20px;">
@@ -856,6 +816,55 @@ $udata = $this->session->userdata('user');
 
                 </div>
             </div>
+
+
+
+
+            <div style="margin-top:20px;">
+                <div class="title"><h4><i class="fas fa-check-circle"></i> Completion Method</h4></div>
+                <div class="form-group label-floating is-empty">
+
+                    <div class="radio" style="display:inline-block; border-bottom:1px dotted #999; margin-right:10px; margin-top: 0 !important;" data-toggle="tooltip" title="Intent is completed when ALL immediate child intents are marked as complete" data-placement="right">
+                        <label>
+                            <input type="radio" name="c_is_any" value="0" />
+                            <i class="fas fa-sitemap"></i> All
+                        </label>
+                    </div>
+                    <div class="radio" style="display: inline-block; border-bottom:1px dotted #999; margin-top: 0 !important;" data-toggle="tooltip" title="Intent is completed when ANY single one of the immediate child intents are marked as complete" data-placement="right">
+                        <label>
+                            <input type="radio" name="c_is_any" value="1" />
+                            <i class="fas fa-code-merge"></i> Any
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+
+
+            <div style="margin-top:20px;">
+                <?php $times = $this->config->item('c_time_options'); ?>
+                <div class="title"><h4><i class="fas fa-clock"></i> Time Estimate <span id="hb_609" class="help_button" intent-id="609"></span></h4></div>
+                <div class="help_body maxout" id="content_609"></div>
+                <table width="100%">
+                    <tr>
+                        <td style="width:105px;">
+                            <select class="form-control input-mini border" id="c_time_estimate" style="display:inline-block;">
+                                <?php
+                                foreach($times as $time){
+                                    echo '<option value="'.$time.'">'.echo_hours($time).'</option>';
+                                }
+                                ?>
+                            </select>
+                        </td>
+                        <td><div id="child-hours"></div></td>
+                    </tr>
+                </table>
+            </div>
+
+
 
 
 

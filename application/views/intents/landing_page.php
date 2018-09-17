@@ -121,38 +121,7 @@ function toggleview(object_key){
 
 
                 <div class="border" style="background-color: #FFF; padding: 6px 0 2px 6px;">
-
-
-                    <div class="input-group" style="width:100%;">
-                        <input style="padding-left:3px; margin-right:7px; width:100%;" type="email" data-lpignore="true" autocomplete="off" id="u_email" value="" class="form-control" placeholder="Email Address" />
-                        <span class="input-group-addon hidden">
-                            <a class="badge badge-primary" onclick="alert('start')" href="javascript:void(0);">Get Started</a>
-                        </span>
-                    </div>
-
-
-                    <div class="input-group hidden" style="width:100%; margin-top:3px;">
-                        <input style="padding-left:3px;" type="text" id="u_full_name" data-lpignore="true" autocomplete="off" value="" class="form-control" placeholder="Full Name" />
-                    </div>
-                    <div class="input-group" style="width:100%; margin-top:3px;">
-                        <input style="padding-left:3px;" type="password" id="u_password" data-lpignore="true" autocomplete="off" value="" class="form-control" placeholder="Password" />
-                    </div>
-                    <div class="input-group hidden" style="width:100%; margin-top:3px;">
-                        <input style="padding-left:3px;" type="password" id="u_password_repeat" data-lpignore="true" autocomplete="off" value="" class="form-control" placeholder="Repeat Password" />
-                    </div>
-                    <div class="input-group hidden" style="width:100%; margin:8px 0 5px;">
-                        <a class="badge badge-primary" onclick="alert('create')" href="javascript:void(0);">Create Account & Login</a>
-                    </div>
-
-                    <div class="input-group" style="width:100%; margin:8px 0 5px;">
-                        <a class="badge badge-primary" onclick="alert('login')" href="javascript:void(0);">Login</a>
-                    </div>
-
-                 </div>
-
-
-                <div style="font-size:0.9em; padding:10px 0 0 3px; margin-bottom: 0;">
-                    <p style="line-height:130%;"><b>7-Day free trial, then $7 per week</b>. <span style="display: inline-block;">No credit</span> card needed. Cancel anytime.</p>
+                    <?php echo_messenger(); ?>
                 </div>
             </div>
 

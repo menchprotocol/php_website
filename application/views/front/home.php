@@ -67,42 +67,26 @@
         // Initialize the plugin
             .fbMessenger({
                 // options go here
+                botLogoUrl:"/img/bp_128.png",
+                persistentMenu:[{"label":"My Dashboard"},{"label":"+ Add New Goal"}],
+                botName:"Mench",
+                botCategory:"Education",
+                botWelcomeMessage:"Land your dream job as a programmer"
             })
             // Schedule some interaction:
             .fbMessenger('start', { delay: 3000 })
             .fbMessenger('message', 'user', 'Get Started', { delay: 250 })
             .fbMessenger('typingIndicator', { delay: 250 })
-            .fbMessenger('message', 'bot', 'Hello my friend, I am a jQuery plugin to fake Messenger interactions! I hope you like it.', { delay: 1500 })
+            .fbMessenger('message', 'bot', 'Hi! As your personal assistant im on a mission to help you get hired at your next awesome job.', { delay: 1500 })
             .fbMessenger('typingIndicator', { delay: 2000 })
-            .fbMessenger('message', 'bot', 'If you find my services useful, please star me on GitHub!', { delay: 1500 })
-            .fbMessenger('message', 'user', 'Hi, nice to meet you! I definitely will do!', { delay: 2000 })
-            .fbMessenger('typingIndicator', { delay: 0 })
-            .fbMessenger('message', 'bot', 'Really?', { delay: 1000 })
-            .fbMessenger('showQuickReplies', [ 'Yes!', 'Maybe...', 'Nope, just wanted to be polite' ], { delay: 2000 })
-            .fbMessenger('selectQuickReply', 0, { delay: 1000 })
-            .fbMessenger('showButtonTemplate', 'Do you use button templates?', [ 'Yes', 'No' ], { delay: 1500 })
-            .fbMessenger('selectButtonTemplate', 0, { delay: 2000 })
-            .fbMessenger('showGenericTemplate', [
-                {
-                    imageUrl: '/your-first-image.png',
-                    title: 'This is the first option.',
-                    subtitle: 'You can have a subtitle if you like.',
-                    buttons: [
-                        'Button 1',
-                        'Button 2'
-                    ]
-                },
-                {
-                    imageUrl: '/your-second-image.png',
-                    title: 'This is your second option. Subtitle is optional!',
-                    buttons: [
-                        'Button 3',
-                        'Button 4'
-                    ]
-                }
-            ], { delay: 2000 })
-            .fbMessenger('scrollGenericTemplate', 1, { delay: 1000 })
-            //.fbMessenger('selectGenericTemplate', 0, { delay: 1000 })
+            .fbMessenger('message', 'bot', 'My knowledge is curated by industry experts and includes key concepts and actionable tasks that increase your effectiveness as a candidate.', { delay: 1500 })
+            .fbMessenger('typingIndicator', { delay: 3000 })
+            .fbMessenger('message', 'bot', 'Choose a Career Path to continue:', { delay: 1500 })
+            .fbMessenger('message', 'bot', '/1 Get Hired as Full-Stack Web Developer<br />/2 Get Hired as Software Engineer<br />/3 Get Hired as UI/UX Designer<br />/4 Get Hired as Data Scientist<br />/5 Get Hired as Blockchain Developer', { delay:2000 })
+            .fbMessenger('showQuickReplies', [ '/1', '/2', '/3', '/4', '/5' ], { delay:0 })
+            .fbMessenger('selectQuickReply', 0, { delay: 10000 })
+            .fbMessenger('message', 'bot', 'OK, I can help you Get Hired as Full-Stack Web Developer. Click on the blue [Get Started in Messenger] button to continue.', { delay:2000 })
+            .fbMessenger('message', 'user', '/restart', { delay: 24000 })
             .fbMessenger('run'); // And trigger the execution
     });
 </script>
@@ -112,28 +96,9 @@
 <div class="row">
     <div class="col-md-6">
         <h1 class="center"><?= $title ?></h1>
-        <p class="home_line_2 center">Finding a job you love is about your skills, preferences and ability to craft a story to stand out from the crowd. With Mench personal assistant you'll get curated insights from industry experts to land your next awesome job.</p>
+        <p class="home_line_2 center">Finding a job you love is about your skills, preferences and ability to craft a story to stand out from the crowd. With Mench personal assistant you'll get curated insights from industry experts to land your next awesome programming job.</p>
 
-        <?php
-
-        $fb_settings = $this->config->item('fb_settings');
-
-        ?>
-        <div class="fb-send-to-messenger" style="margin:30px auto; display: block; width:220px;"
-             messenger_app_id="<?= $fb_settings['app_id'] ?>"
-             page_id="<?= $fb_settings['page_id'] ?>"
-             data-ref="helloworld"
-             color="blue"
-             cta_text="GET_STARTED_IN_MESSENGER"
-             size="xlarge">Hello
-        </div>
-        <script>
-            FB.Event.subscribe('send_to_messenger', function(e) {
-                // callback for events triggered by the plugin
-                alert('yayyy');
-            });
-        </script>
-
+        <?php echo_messenger(); ?>
 
         <div class="border hidden" style="background-color: #FFF; padding:6px 0 2px 6px; margin: 30px auto; max-width:320px;">
             <div class="input-group" style="width:100%;">

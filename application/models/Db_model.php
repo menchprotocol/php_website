@@ -82,8 +82,6 @@ WHERE ru.ru_status >= 4
             array_push($join_objects,'i');
             array_push($join_objects,'ba');
         }
-        array_push($join_objects,'c__tree');
-
 
         //Fetch Bootcamps base:
         $bs = $this->Db_model->b_fetch($match_columns, $join_objects);
@@ -1025,6 +1023,9 @@ WHERE ru.ru_status >= 4
 	    //The basic fetcher for intents
 	    $this->db->select('*');
 	    $this->db->from('v5_intents c');
+	    if(in_array('u',$join_objects)){
+            $this->db->join('v5_entities u', 'u.u_id = c.c_inbound_u_id');
+        }
 	    foreach($match_columns as $key=>$value){
 	        $this->db->where($key,$value);
 	    }
@@ -1094,13 +1095,6 @@ WHERE ru.ru_status >= 4
 	    $this->db->order_by($order_by,'DESC');
 	    $q = $this->db->get();
         $bs = $q->result_array();
-
-        foreach($bs as $key=>$c){
-            if(in_array('c__tree',$join_objects)){
-                $bs[$key]['c__tree'] = $this->Db_model->c_recursive_fetch($c['c_id'],0,null);
-            }
-        }
-
 
         return $bs;
 	}
@@ -1860,7 +1854,45 @@ WHERE ru.ru_status >= 4
 	}
 
 
-	function c_recursive_fetch($c_id,$cr_id=0,$recursive_children=null){
+	function c_update_tree($c_id, $c_update_columns=array(), $fetech_outbound=0){
+
+	    //Will fetch the recursive tree and update
+        $tree = $this->Db_model->c_recursive_fetch($c_id, $fetech_outbound);
+
+        $adjusted = 0;
+        if(count($c_update_columns)==0 || count($tree['c_flat'])==0){
+            return $adjusted;
+        }
+
+
+        //Found results, update them relative to their current value:
+        foreach($tree['c_flat'] as $c_id){
+
+            //Construct new adjusting array:
+            $c_relative_update = 'UPDATE "v5_intents" SET';
+            $update_columns = 0;
+            foreach($c_update_columns as $key=>$value){
+                if($update_columns>0){
+                    $c_relative_update .= ',';
+                }
+                $c_relative_update .= ' "'.$key.'" = '.$key.'+('.$value.')';
+                $update_columns++;
+            }
+            //Close the query:
+            $c_relative_update .= ' WHERE "c_id" = '.$c_id.';';
+
+            //Run Query:
+            $this->db->query($c_relative_update);
+
+            //Count updated rows:
+            $adjusted += $this->db->affected_rows();
+
+        }
+
+        return $adjusted;
+    }
+
+	function c_recursive_fetch($c_id, $fetech_outbound=0, $cr_id=0, $recursive_children=null){
 
 	    //Get core data:
         $immediate_children = array(
@@ -1875,12 +1907,21 @@ WHERE ru.ru_status >= 4
             $recursive_children = $immediate_children;
         }
 
-	    //A recursive function to fetch all Tree for a given intent
-        $child_cs = $this->Db_model->cr_outbound_fetch(array(
-            'cr.cr_inbound_c_id' => $c_id,
-            'cr.cr_status >=' => 0,
-            'c.c_status >' => 0,
-        ));
+        //A recursive function to fetch all Tree for a given intent, either upwards or downwards
+        if($fetech_outbound){
+            $child_cs = $this->Db_model->cr_outbound_fetch(array(
+                'cr.cr_inbound_c_id' => $c_id,
+                'cr.cr_status >=' => 0,
+                'c.c_status >' => 0,
+            ));
+        } else {
+            $child_cs = $this->Db_model->cr_inbound_fetch(array(
+                'cr.cr_outbound_c_id' => $c_id,
+                'cr.cr_status >=' => 0,
+                'c.c_status >' => 0,
+            ));
+        }
+
 
         if(count($child_cs)>0){
             foreach($child_cs as $c){
@@ -1889,7 +1930,7 @@ WHERE ru.ru_status >= 4
                     return false;
                 } else {
                     //Fetch children for this intent, if any:
-                    $granchildren = $this->Db_model->c_recursive_fetch($c['c_id'], $c['cr_id'], $immediate_children);
+                    $granchildren = $this->Db_model->c_recursive_fetch($c['c_id'], $fetech_outbound, $c['cr_id'], $immediate_children);
 
                     if(!$granchildren){
                         //There was an infinity break
@@ -1910,9 +1951,15 @@ WHERE ru.ru_status >= 4
 
         //Fetch & add this item itself:
         if($cr_id){
-            $cs = $this->Db_model->cr_outbound_fetch(array(
-                'cr.cr_id' => $cr_id,
-            ));
+            if($fetech_outbound){
+                $cs = $this->Db_model->cr_outbound_fetch(array(
+                    'cr.cr_id' => $cr_id,
+                ));
+            } else {
+                $cs = $this->Db_model->cr_inbound_fetch(array(
+                    'cr.cr_id' => $cr_id,
+                ));
+            }
         } else {
             //This is the very first item that
             $cs = $this->Db_model->c_fetch(array(

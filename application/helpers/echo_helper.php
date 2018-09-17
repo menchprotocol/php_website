@@ -1122,7 +1122,10 @@ function echo_estimated_time($c_time_estimate,$show_icon=1,$micro=false,$c_id=0,
         if($c_id){
 
             $ui .= '<span class="slim-time" id="t_estimate_'.$c_id.'" tree-hours="'.$c_time_estimate.'" intent-hours="'.$c_time_intent.'">'.echo_hours( $c_time_estimate,true).'</span>';
-            $ui .= ' <i class="fas fa-clock"></i>';
+
+            if($show_icon){
+                $ui .= ' <i class="fas fa-clock"></i>';
+            }
 
         } else {
 
@@ -1145,6 +1148,33 @@ function echo_estimated_time($c_time_estimate,$show_icon=1,$micro=false,$c_id=0,
     //No time:
     return null;
 
+}
+
+function echo_messenger(){
+    $CI =& get_instance();
+    $fb_settings = $CI->config->item('fb_settings');
+    ?>
+    <div style="margin:30px auto; display:block; max-width:285px;">
+        <div class="fb-send-to-messenger"
+             messenger_app_id="<?= $fb_settings['app_id'] ?>"
+             page_id="<?= $fb_settings['page_id'] ?>"
+             data-ref="helloworld"
+             color="blue"
+             cta_text="GET_STARTED_IN_MESSENGER"
+             size="xlarge">Connecting to Facebook...</div>
+
+        <div style="font-size:0.9em; padding:10px 0 0 3px; margin-bottom: 0;">
+            <p style="line-height:130%; font-size:1em !important;"><b>7-Day free trial, then $7 per week</b>.<br /><span style="display: inline-block;">No credit</span> card needed. Cancel anytime.</p>
+        </div>
+    </div>
+
+
+    <script>
+        FB.Event.subscribe('send_to_messenger', function(e) {
+            // callback for events triggered by the plugin
+        });
+    </script>
+    <?php
 }
 
 function echo_br($ba){
@@ -1205,16 +1235,14 @@ function echo_actionplan($c, $level, $parent_c_id=0){
     $ui .= '<span class="pull-right maplevel'.$c['c_id'].'" parent-intent-id="'.$parent_c_id.'" style="'.( $level<3 ? 'margin-right: 8px;' : '' ).'">';
 
 
-    //Show total tree hours:
-    $ui .= echo_estimated_time($c['c__tree_hours'],1,1, $c['c_id'], $c['c_time_estimate']);
 
-
-    //TODO Maybe later show indicator for requiring notes or URL: <span class="btn-counter"><i class="fas fa-pencil"></i><i class="fas fa-link"></i></span>
-    $ui .= '<a class="badge badge-primary" onclick="load_modify('.$c['c_id'].','.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).')" style="margin:-2px -4px 0 1px; width:40px;" href="#modify-'.$c['c_id'].'-'.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).'"><i class="c_is_output_icon '.( $c['c_is_output'] ? 'fas fa-check-square' : 'fas fa-lightbulb-on' ).'"></i></a> &nbsp;';
 
     $ui .= '<a href="#messages-'.$c['c_id'].'" onclick="i_load_frame('.$c['c_id'].')" class="badge badge-primary" style="width:40px;"><span class="btn-counter" id="messages-counter-'.$c['c_id'].'">'.$c['c__this_messages'].'</span><i class="fas fa-comment-dots"></i></a>';
 
-    $ui .= '&nbsp;<'.($level>1 ? 'a href="/intents/'.$c['c_id'].'" class="badge badge-primary"' :'span class="badge badge-primary grey"').' data-toggle="tooltip" data-placement="left" title="Intent tree contains '.($c['c__tree_inputs']+$c['c__tree_outputs']).' child intents. '.($level>1 ? 'Click to browse' :'See list below').'" style="display:inline-block; margin-right:-1px; width:40px;"><span class="btn-counter" id="tree-counter-'.$c['c_id'].'">'.($c['c__tree_inputs']+$c['c__tree_outputs']).'</span><i class="c_is_any_icon '.( $c['c_is_any'] ? 'fas fa-code-merge' : 'fas fa-sitemap' ).'"></i></'.($level>1 ? 'a' :'span').'> ';
+    $ui .= '<a class="badge badge-primary" onclick="load_modify('.$c['c_id'].','.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).')" style="margin:-2px -8px 0 2px; width:40px;" href="#modify-'.$c['c_id'].'-'.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).'"><span class="btn-counter">'.echo_estimated_time($c['c__tree_hours'],0,1, $c['c_id'], $c['c_time_estimate']).'</span><i class="c_is_any_icon'.$c['c_id'].' '.( $c['c_is_any'] ? 'fas fa-code-merge' : 'fas fa-sitemap' ).'"></i></a> &nbsp;';
+
+
+    $ui .= '&nbsp;<'.($level>1 ? 'a href="/intents/'.$c['c_id'].'" class="badge badge-primary"' :'span class="badge badge-primary grey"').' style="display:inline-block; margin-right:-1px; width:40px;"><span class="btn-counter" id="tree-counter-'.$c['c_id'].'">'.($c['c__tree_inputs']+$c['c__tree_outputs']).'</span><i class="fas fa-chevron-right  "></i></'.($level>1 ? 'a' :'span').'> ';
 
     //Keep an eye out for inner message counter changes:
     $ui .= '</span> ';
@@ -1233,7 +1261,10 @@ function echo_actionplan($c, $level, $parent_c_id=0){
     if($level==1){
 
         //Bootcamp Outcome:
-        $ui .= '<span><b id="b_objective" style="font-size: 1.3em;"><i class="fas fa-hashtag"></i><span class="c_outcome_'.$c['c_id'].'" '.$c_settings.'>'.$c['c_outcome'].'</span></b></span>';
+        $ui .= '<span><b id="b_objective" style="font-size: 1.3em;">';
+        $ui .= '<i class="c_is_output_icon'.$c['c_id'].' '.( $c['c_is_output'] ? 'fas fa-check-square' : 'fas fa-lightbulb-on' ).'"></i> ';
+        $ui .= '<span class="c_outcome_'.$c['c_id'].'" '.$c_settings.'>'.$c['c_outcome'].'</span>';
+        $ui .= '</b></span>';
 
     } elseif($level==2){
 
@@ -1242,7 +1273,8 @@ function echo_actionplan($c, $level, $parent_c_id=0){
 
         $ui .= '<a href="javascript:ms_toggle('.$c['cr_id'].');"><i id="handle-'.$c['cr_id'].'" class="fal fa-plus-square"></i></a> &nbsp;';
 
-        $ui .= '<span class="inline-level-'.$level.'">#'.$c['cr_outbound_rank'].'</span>';
+        $ui .= '<span class="inline-level-'.$level.'">#'.$c['cr_outbound_rank'].'</span> ';
+        $ui .= '<i class="c_is_output_icon'.$c['c_id'].' '.( $c['c_is_output'] ? 'fas fa-check-square' : 'fas fa-lightbulb-on' ).'" style="width:20px; text-align:center;"></i>';
         $ui .= '</span>';
 
         $ui .= '<b id="title_'.$c['cr_id'].'" class="cdr_crnt c_outcome_'.$c['c_id'].'" outbound-rank="'.$c['cr_outbound_rank'].'" '.$c_settings.'>'.$c['c_outcome'].'</b> ';
@@ -1250,7 +1282,9 @@ function echo_actionplan($c, $level, $parent_c_id=0){
     } elseif ($level==3){
 
         //Steps
-        $ui .= '<span class="inline-level inline-level-'.$level.'">#'.$c['cr_outbound_rank'].'</span><span id="title_'.$c['cr_id'].'" class="c_outcome_'.$c['c_id'].'" outbound-rank="'.$c['cr_outbound_rank'].'" '.$c_settings.'>'.$c['c_outcome'].'</span> ';
+        $ui .= '<span class="inline-level inline-level-'.$level.'">#'.$c['cr_outbound_rank'].'</span> ';
+        $ui .= '<i class="c_is_output_icon'.$c['c_id'].' '.( $c['c_is_output'] ? 'fas fa-check-square' : 'fas fa-lightbulb-on' ).'" style="font-size: 0.9em; width:20px; text-align:center;"></i> ';
+        $ui .= '<span id="title_'.$c['cr_id'].'" class="c_outcome_'.$c['c_id'].'" outbound-rank="'.$c['cr_outbound_rank'].'" '.$c_settings.'>'.$c['c_outcome'].'</span> ';
 
     }
 

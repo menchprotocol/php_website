@@ -23,7 +23,7 @@ class Intents extends CI_Controller
             'c.c_id' => $inbound_c_id,
             'c.c_status >' => 0,
         ), 2);
-        if(!$cs[0]){
+        if(!isset($cs[0])){
             die('Intent ID '.$inbound_c_id.' not found');
         }
 
@@ -367,21 +367,58 @@ class Intents extends CI_Controller
         //Update array:
         $c_update = array(
             'c_outcome' => trim($_POST['c_outcome']),
-            'c_time_estimate' => doubleval($_POST['c_time_estimate']),
             'c_require_url_to_complete' => intval($_POST['c_require_url_to_complete']),
             'c_require_notes_to_complete' => intval($_POST['c_require_notes_to_complete']),
+
+            //These are also in the recursive adjustment array as they affect cache data like c__tree_hours
+            'c_time_estimate' => doubleval($_POST['c_time_estimate']),
             'c_is_any' => intval($_POST['c_is_any']),
             'c_is_output' => intval($_POST['c_is_output']),
         );
 
+
+        //This determines if there are any recursive updates needed on the tree:
+        $updated_recursively = 0;
+        $recursive_update_query = array();
+
+
         //Check to see which variables actually changed:
         foreach($c_update as $key=>$value){
+
             //Did this value change?
             if($_POST[$key]==$cs[0][$key]){
+
                 //No it did not! Remove it!
                 unset($c_update[$key]);
+
+            } else {
+
+                //Something was updated!
+
+                //Does it required a recursive upward update on the tree?
+
+                if($key=='c_time_estimate'){
+
+                    $recursive_update_query['c__tree_hours'] = doubleval($_POST[$key]) - doubleval($cs[0][$key]);
+
+                } elseif($key=='c_is_output'){
+
+                    if(intval($_POST['c_is_output'])){
+                        //Changed to output:
+                        $recursive_update_query['c__tree_inputs'] = -1;
+                        $recursive_update_query['c__tree_outputs'] = 1;
+                    } else {
+                        //Changed to input:
+                        $recursive_update_query['c__tree_outputs'] = -1;
+                        $recursive_update_query['c__tree_inputs'] = 1;
+                    }
+
+                }
             }
         }
+        
+
+
 
         //Did anything change?
         if(count($c_update)>0){
@@ -389,7 +426,12 @@ class Intents extends CI_Controller
             //YES, update the DB:
             $this->Db_model->c_update( intval($_POST['c_id']) , $c_update );
 
-            //Update Algolia intent:
+            //Any recursive updates needed?
+            if(count($recursive_update_query)>0){
+                $updated_recursively = $this->Db_model->c_update_tree(intval($_POST['c_id']), $recursive_update_query);
+            }
+
+            //Update Algolia object:
             $this->Db_model->algolia_sync('c', $_POST['c_id']);
 
             //Log Engagement for New Intent Link:
@@ -400,6 +442,8 @@ class Intents extends CI_Controller
                     'input' => $_POST,
                     'before' => $cs[0],
                     'after' => $c_update,
+                    'updated_recursively' => $updated_recursively,
+                    'recursive_update_query' => $recursive_update_query,
                 ),
                 'e_inbound_c_id' => ( $_POST['level']>=2 && isset($c_update['c_status']) && $c_update['c_status']<0 ? 21 : 19 ), //Intent Deleted OR Updated
                 'e_outbound_c_id' => intval($_POST['c_id']),
@@ -411,6 +455,7 @@ class Intents extends CI_Controller
         echo_json(array(
             'status' => 1,
             'message' => '<span><i class="fas fa-check"></i> Saved</span>',
+            'recursive_updates' => $updated_recursively,
         ));
 
     }
@@ -606,7 +651,7 @@ class Intents extends CI_Controller
         if(count($parent_cs)>1 || (count($parent_cs)>0 && intval($_POST['cr_id'])==0)){
             $parent_ui = '';
             $parent_ui .= '<div class="title" style="margin-top:10px;"><h4><b><i class="fas fa-sitemap rotate180"></i> Other Parent Intents</b></a></h4></div>';
-            $parent_ui .= '<div class="list-group maxout">';
+            $parent_ui .= '<div class="list-group">';
             foreach ($parent_cs as $parent_c){
                 if($_POST['cr_id']>0 && $parent_c['cr_id']==$_POST['cr_id']){
                     continue;
