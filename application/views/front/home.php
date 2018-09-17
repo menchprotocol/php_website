@@ -81,11 +81,11 @@
             .fbMessenger('typingIndicator', { delay: 2000 })
             .fbMessenger('message', 'bot', 'My knowledge is curated by industry experts and includes key concepts and actionable tasks that increase your effectiveness as a candidate.', { delay: 1500 })
             .fbMessenger('typingIndicator', { delay: 3000 })
-            .fbMessenger('message', 'bot', 'Choose a Career Path to continue:', { delay: 1500 })
-            .fbMessenger('message', 'bot', '/1 Get Hired as Full-Stack Web Developer<br />/2 Get Hired as Software Engineer<br />/3 Get Hired as UI/UX Designer<br />/4 Get Hired as Data Scientist<br />/5 Get Hired as Blockchain Developer', { delay:2000 })
-            .fbMessenger('showQuickReplies', [ '/1', '/2', '/3', '/4', '/5' ], { delay:0 })
+            .fbMessenger('message', 'bot', 'Choose a Career to continue:', { delay: 1500 })
+            .fbMessenger('message', 'bot', '/1 Get Hired as Full-Stack Developer<br />/2 Get Hired as Software Engineer<br />/3 Get Hired as UI/UX Designer', { delay:2000 })
+            .fbMessenger('showQuickReplies', [ '/1', '/2', '/3' ], { delay:0 })
             .fbMessenger('selectQuickReply', 0, { delay: 10000 })
-            .fbMessenger('message', 'bot', 'OK, I can help you Get Hired as Full-Stack Web Developer. Click on the blue [Get Started in Messenger] button to continue.', { delay:2000 })
+            .fbMessenger('message', 'bot', 'OK, I can help you Get Hired as Full-Stack Web Developer. Ready to get started?', { delay:2000 })
             .fbMessenger('message', 'user', '/restart', { delay: 24000 })
             .fbMessenger('run'); // And trigger the execution
     });
