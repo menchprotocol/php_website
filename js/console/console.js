@@ -2,7 +2,6 @@
 
 //Loadup Algolia:
 client = algoliasearch('49OCX1ZXLJ', 'ca3cf5f541daee514976bc49f8399716');
-algolia_b_index = client.initIndex('alg_bootcamps');
 algolia_u_index = client.initIndex('alg_entities');
 algolia_c_index = client.initIndex('alg_intents');
 
@@ -143,43 +142,18 @@ $(document).ready(function() {
 
     $( "#console_search" ).on('autocomplete:selected', function(event, suggestion, dataset) {
 
-        if(dataset==1){
-            window.location = "/console/"+suggestion.b_id;
-        } else if(dataset==2){
+        if(dataset==2){
             window.location = "/entities/"+suggestion.u_id;
+        } else if(dataset==2){
+            window.location = "/intents/"+suggestion.c_id;
         }
 
 
     }).autocomplete({ hint: false, keyboardShortcuts: ['s'] }, [
         {
             source: function(q, cb) {
-                algolia_b_index.search(q, {
-
-                    hitsPerPage: 7,
-                    filters: '(b_status>=2)' + ( parseInt($('#u_inbound_u_id').val())==1281 ? '' : ' AND (b_inbound_u_id=' + $('#u_id').val() + ')' ),
-
-                }, function(error, content) {
-                    if (error) {
-                        cb([]);
-                        return;
-                    }
-                    cb(content.hits, content);
-                });
-            },
-            displayKey: function(suggestion) { return "" },
-            templates: {
-                suggestion: function(suggestion) {
-                    return '<i class="fas fa-cube"></i> '+ suggestion.c_b_outcome;
-                },
-            }
-        },
-        {
-            source: function(q, cb) {
                 algolia_u_index.search(q, {
-
                     hitsPerPage: 7,
-                    filters: ( parseInt($('#u_inbound_u_id').val())==1281 ? '' : '' ),
-
                 }, function(error, content) {
                     if (error) {
                         cb([]);
@@ -192,6 +166,29 @@ $(document).ready(function() {
             templates: {
                 suggestion: function(suggestion) {
                     return '<i class="fas fa-at"></i> '+ suggestion.u_full_name + ' ('+suggestion.u_inbound_name+')';
+                },
+            }
+        },
+        {
+
+            source: function(q, cb){
+                algolia_c_index.search(q, {
+                    hitsPerPage: 7,
+                }, function(error, content) {
+                    if (error) {
+                        cb([]);
+                        return;
+                    }
+                    cb(content.hits, content);
+                });
+            },
+            displayKey: function(suggestion) { return "" },
+            templates: {
+                suggestion: function(suggestion) {
+                    var minutes = Math.round(parseFloat(suggestion.c__tree_hours)*60);
+                    var hours = Math.round(parseFloat(suggestion.c__tree_hours));
+                    var fancy_hours = ( minutes<60 ? minutes+'m' :  hours+'h' );
+                    return '<i class="fas fa-hashtag"></i> '+ suggestion._highlightResult.c_outcome.value + ( parseFloat(suggestion.c__tree_hours)>0 ? '<span class="search-info">'+' <i class="fas fa-clock"></i>'+fancy_hours+'</span>' : '');
                 },
             }
         }

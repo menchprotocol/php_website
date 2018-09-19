@@ -51,7 +51,7 @@ class Intents extends CI_Controller
             foreach ($parent_cs as $parent_c){
                 array_push($data['breadcrumb'], array(
                     'link' => '/intents/'.$parent_c['c_id'],
-                    'anchor' => $parent_c['c_outcome'],
+                    'anchor' => '<i class="'.( $parent_c['c_is_any'] ? 'fas fa-code-merge' : 'fas fa-sitemap' ).'" style="padding-right:5px;"></i>'.$parent_c['c_outcome'],
                 ));
             }
         }

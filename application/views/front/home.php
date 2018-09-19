@@ -84,9 +84,7 @@
             .fbMessenger('message', 'bot', 'Choose a Career to continue:', { delay: 1500 })
             .fbMessenger('message', 'bot', '/1 Get Hired as Web Developer<br />/2 Get Hired as Software Engineer<br />/3 Get Hired as UI/UX Designer', { delay:2000 })
             .fbMessenger('showQuickReplies', [ '/1', '/2', '/3' ], { delay:0 })
-            .fbMessenger('selectQuickReply', 0, { delay: 10000 })
-            .fbMessenger('message', 'bot', 'OK, im on it 🙌', { delay:2000 })
-            .fbMessenger('message', 'bot', 'Ready to get started?', { delay:1000 })
+            .fbMessenger('selectQuickReply', 0, { delay:3000 })
             .fbMessenger('message', 'user', '/restart', { delay: 24000 })
             .fbMessenger('run'); // And trigger the execution
     });

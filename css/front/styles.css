@@ -965,6 +965,7 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px; }
 
 @media (max-width: 767px){
 
+    #iphonex { left: -26px !important; }
     .url_truncate { max-width:220px; }
     .class_nav{width:220px;}
     #funnel .main{ margin-top:5px !important; }
@@ -1123,7 +1124,7 @@ a.badge:focus, a.badge:hover {
 .search-info {
     color:#B8B8B8 !important;
     display: inline-block;
-    font-size: 0.8em;
+    font-size: 0.8em !important;
     margin-left: 5px;
 }
 .search-info>.fas {
@@ -2151,7 +2152,7 @@ margin:5px 0;
 }
 
 .bintent>li+li:before, .bintent>li:before{
-    content:"#";
+    content:"";
     color:#CCC;
     padding: 0 5px;
 }

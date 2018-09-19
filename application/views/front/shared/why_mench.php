@@ -1,5 +1,5 @@
 
-<h2 class="title" style="text-align:center; margin-top:50px;">Why Mench?</h2>
+<h2 class="title" style="text-align:center; margin-top:0;">Why Mench?</h2>
 
 <div class="features text-center">
 

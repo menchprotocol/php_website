@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => '5.1',
+    'version' => '5.2',
     'name' => 'Mench',
     'url' => 'https://mench.com/', //Important to end with "/" as other links depend on this.
     'email' => 'shervin@mench.com',
@@ -199,11 +199,6 @@ $config['object_statuses'] = array(
             's_name'  => 'Archived',
             's_desc'  => 'Intent has been archived and all its links has been removed',
             's_icon' => 'fas fa-times-circle',
-        ),
-        0 => array(
-            's_name'  => 'Drafting',
-            's_desc'  => 'Intent is being drafted and not yet published',
-            's_icon' => 'fas fa-pause-circle',
         ),
         1 => array(
             's_name'  => 'Published',
