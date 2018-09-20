@@ -72,7 +72,7 @@ $uri_segment_2 = $this->uri->segment(2);
                         <li <?= ( $uri_segment_1=='entities' ? 'class="active"' : '' ) ?>><a href="/entities"><i class="fas fa-at"></i> Entities</a></li>
 
 
-                        <li class="extra-toggle"><a href="javascript:void(0);" onclick="$('.extra-toggle').toggle();"><i class="fas fa-ellipsis-h"></i> More</a></li>
+                        <li class="extra-toggle"><a href="javascript:void(0);" onclick="$('.extra-toggle').toggle();"><i class="fas fa-ellipsis-h"></i></a></li>
                         <?php if(isset($uenrollment) && count($uenrollment)>0){ ?>
                             <li class="extra-toggle" style="display: none;"><a href="/my/actionplan"><span class="icon-left"><i class="fas fa-user-graduate"></i></span> Student</a></li>
                         <?php } ?>
@@ -107,7 +107,7 @@ $uri_segment_2 = $this->uri->segment(2);
 
                 echo '<li class="li-sep '.( $uri_segment_2=='udemy' ? 'active' : '' ).'"><a href="/cockpit/udemy"><i class="fas fa-address-book"></i><p>Udemy Community</p></a></li>';
 
-                echo '<li class="li-sep '.( $uri_segment_2=='statusbible' ? 'active' : '' ).'"><a href="/cockpit/statusbible"><i class="fas fa-sliders-h"></i><p>Status Bible</p></a></li>';
+                echo '<li class="li-sep '.( $uri_segment_2=='statusbible' ? 'active' : '' ).'"><a href="/cockpit/statusbible"><i class="fas fa-sliders-h"></i><p>Object Statuses</p></a></li>';
 
 
                 //External Tools:

@@ -1892,7 +1892,7 @@ WHERE ru.ru_status >= 4
         return $adjusted;
     }
 
-	function c_recursive_fetch($c_id, $fetech_outbound=0, $cr_id=0, $recursive_children=null){
+	function c_recursive_fetch($c_id, $fetech_outbound=0, $db_update=0, $cr_id=0, $recursive_children=null){
 
 	    //Get core data:
         $immediate_children = array(
@@ -1930,7 +1930,7 @@ WHERE ru.ru_status >= 4
                     return false;
                 } else {
                     //Fetch children for this intent, if any:
-                    $granchildren = $this->Db_model->c_recursive_fetch($c['c_id'], $fetech_outbound, $c['cr_id'], $immediate_children);
+                    $granchildren = $this->Db_model->c_recursive_fetch($c['c_id'], $fetech_outbound, $db_update, $c['cr_id'], $immediate_children);
 
                     if(!$granchildren){
                         //There was an infinity break
@@ -1982,12 +1982,23 @@ WHERE ru.ru_status >= 4
 
             array_push($immediate_children['c_flat'],intval($c_id));
             array_push($immediate_children['tree_top'],$cs[0]);
+
+            //Update DB:
+            if($db_update){
+                $this->Db_model->c_update( $cs[0]['c_id'] , array(
+                    'c__tree_hours' => $cs[0]['c__hours'],
+                    'c__tree_inputs' => ($cs[0]['c__count'] - $cs[0]['c__output']),
+                    'c__tree_outputs' => $cs[0]['c__output'],
+                ));
+            }
         }
 
         //Flatten array:
         $result = array();
         array_walk_recursive($immediate_children['c_flat'],function($v, $k) use (&$result){ $result[] = $v; });
         $immediate_children['c_flat'] = $result;
+
+
 
         //Return data:
         return $immediate_children;

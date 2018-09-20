@@ -875,14 +875,14 @@ function echo_hours($decimal_hours,$micro=false,$plus=false){
 
         $original_hours = $decimal_hours*60;
         $decimal_hours = round($original_hours);
-        return ($decimal_hours==$original_hours || $decimal_hours==7?'':'~').$decimal_hours.($plus?'+':'').($micro?'m':' Minutes');
+        return $decimal_hours.($plus?'+':'').($micro?'m':' Minutes');
 
     } else {
 
         //Just round-up:
         $original_hours = $decimal_hours;
         $decimal_hours = round($original_hours);
-        return ($decimal_hours==$original_hours?'':'~').$decimal_hours.($plus?'+':'').($micro?'h':' Hour'.echo__s($original_hours));
+        return $decimal_hours.($plus?'+':'').($micro?'h':' Hour'.echo__s($original_hours));
 
     }
 
@@ -1137,7 +1137,7 @@ function echo_estimated_time($c_time_estimate,$show_icon=1,$micro=false,$c_id=0,
                 $ui .= round($c_time_estimate*60).($micro?'m':' Minutes');
             } else {
                 //Hours:
-                $ui .= ( round($c_time_estimate,0)==intval($c_time_estimate) ? '' : '~' ).round($c_time_estimate,0).($micro?'h':' Hour'.(round($c_time_estimate,1)==1?'':'s'));
+                $ui .= round($c_time_estimate,0).($micro?'h':' Hour'.(round($c_time_estimate,1)==1?'':'s'));
             }
         }
 
@@ -1471,10 +1471,6 @@ function echo_dropdown_status($object,$input_name,$current_status_id,$exclude_id
 
     $count = 0;
     foreach($statuses as $intval=>$status){
-        if((isset($status['limit_u_inbounds']) && !in_array($udata['u_inbound_u_id'], $status['limit_u_inbounds'])) || in_array($intval,$exclude_ids)){
-            //Do not enable this user to modify to this status:
-            continue;
-        }
         $count++;
         $return_ui .= '<li><a href="javascript:update_dropdown(\''.$input_name.'\','.$intval.','.$count.');">'.echo_status($object,$intval,0,$inner_tooltip).'</a></li>';
         $return_ui .= '<li style="display:none;" class="'.$input_name.'_'.$intval.'" id="'.$input_name.'_'.$count.'">'.echo_status($object,$intval,$mini,$inner_tooltip).'</li>'; //For UI replacement

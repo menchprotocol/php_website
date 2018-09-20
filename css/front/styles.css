@@ -2152,7 +2152,7 @@ margin:5px 0;
 }
 
 .bintent>li+li:before, .bintent>li:before{
-    content:"";
+    content:"#";
     color:#CCC;
     padding: 0 5px;
 }

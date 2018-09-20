@@ -22,7 +22,7 @@ $udata = $this->session->userdata('user');
             return Math.round((dbl_hour*60)) + "m";
         } else {
             //Show in rounded hours:
-            return ( (dbl_hour % 1 == 0) ? "" : "~" ) + Math.round((dbl_hour)) + "h";
+            return Math.round((dbl_hour)) + "h";
         }
     }
 
@@ -537,7 +537,7 @@ $udata = $this->session->userdata('user');
         //Are the tree hours greater than the intent hours?
         if(tree_hours>intent_hours){
             //Yes, show remaining tree hours:
-            $('#child-hours').html('<i class="fas fa-sitemap"></i> '+echo_hours(tree_hours-intent_hours)+' in child intents');
+            $('#child-hours').html('<i class="fas fa-sitemap"></i> '+echo_hours(tree_hours-intent_hours)+' to complete tree');
         } else {
             //Nope, clear this field:
             $('#child-hours').html('');

@@ -87,11 +87,11 @@ class Cockpit extends CI_Controller {
     function statusbible(){
         //Load views
         $this->load->view('console/console_header' , array(
-            'title' => 'Status Bible',
+            'title' => 'Object Statuses',
             'breadcrumb' => array(
                 array(
                     'link' => null,
-                    'anchor' => 'Status Bible <span id="hb_6084" class="help_button" intent-id="6084"></span>',
+                    'anchor' => 'Object Statuses <span id="hb_6084" class="help_button" intent-id="6084"></span>',
                 ),
             ),
         ));
