@@ -97,7 +97,7 @@
             .fbMessenger('typingIndicator', { delay: 0 })
             .fbMessenger('message', 'bot', 'Hi, I\'m Mench, a personal assistant that will get you hired at your next awesome job 🙌', { delay: 3000 })
             .fbMessenger('typingIndicator', { delay: 5000 })
-            .fbMessenger('message', 'bot', 'My human trainers reference videos, books, articles and podcasts from industry experts which I will deliver to you in a timely manner as a roadmap to land your dream job 🌈', { delay: 5000 })
+            .fbMessenger('message', 'bot', 'My human trainers have referenced hundreds of videos, books, articles and podcasts from industry experts organized into a comprehensive roadmap that will empower you to land your dream job 🌈', { delay: 5000 })
             .fbMessenger('typingIndicator', { delay: 10000 })
             .fbMessenger('message', 'bot', 'Are you interested to land a fabulous programming job?', { delay: 1500 })
             .fbMessenger('message', 'bot', '/1 Yes 👍<br />/2 No 👎<br />/3 Explain more 🤔', { delay:2000 })
