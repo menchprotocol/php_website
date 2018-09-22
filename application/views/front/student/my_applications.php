@@ -82,18 +82,11 @@ if(count($enrollments)>0 && is_array($enrollments)){
                 //Show date:
                 echo '<p style="font-size: 0.9em;"><i class="fas fa-calendar" style="margin: 0 2px 0 3px;"></i> ';
 
-                $start_unix = 0; //See if we have a start date
-                if(isset($bs[0]['this_class'])) {
 
-                    $start_unix = strtotime($bs[0]['this_class']['r_start_date']);
-                    $weeks = class_weeks($bs[0], $bs[0]['this_class']);
-                    echo $weeks.' Week'.echo__s($weeks).' from '.echo_time($bs[0]['this_class']['r_start_date'],2).' to '.trim(echo_time(class_ends($bs[0], $bs[0]['this_class']),2));
-
-                } else {
 
                     echo 'Not Selected';
 
-                }
+
                 echo '</p>';
 
                 //Account, always created at this point:

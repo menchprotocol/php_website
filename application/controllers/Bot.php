@@ -10,8 +10,9 @@ class Bot extends CI_Controller {
         $this->output->enable_profiler(FALSE);
     }
 
-    function a($c_id=7240){
-        echo_json($this->Db_model->c_recursive_fetch($c_id,1,1));
+
+    function a(){
+        echo_json($this->Db_model->c_recursive_fetch(6898));
     }
 
 
@@ -93,14 +94,6 @@ class Bot extends CI_Controller {
                                 'webview_share_button' => 'hide',
                                 'messenger_extensions' => true,
                             ),
-                            array(
-                                'title' => '👥 Classroom',
-                                'type' => 'web_url',
-                                'url' => 'https://mench.com/my/classmates',
-                                'webview_height_ratio' => 'tall',
-                                'webview_share_button' => 'hide',
-                                'messenger_extensions' => true,
-                            ),
                         ),
                     ),
                 ),
@@ -109,31 +102,6 @@ class Bot extends CI_Controller {
 
         echo_json($res);
     }
-
-    function s(){
-        echo $_SERVER['SERVER_NAME'];
-        echo '<br />'.$_SERVER['REQUEST_URI'];
-    }
-
-    function error(){
-        //This is meant to create an error to rest the log files:
-        echo $_GET['none'];
-    }
-
-    function json(){
-        echo_json(fetch_action_plan_copy(21,196));
-    }
-
-    function m1(){
-        echo_json($this->Comm_model->foundation_message(array(
-            'e_outbound_u_id' => 1,
-            'e_outbound_c_id' => 923,
-            'depth' => 0,
-        )));
-    }
-
-
-
 
 
     function facebook_webhook(){

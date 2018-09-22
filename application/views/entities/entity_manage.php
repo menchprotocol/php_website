@@ -280,7 +280,7 @@ if(!$inbound_u_id){
     }
 
     if(isset($entity['u__outbound_count']) && $entity['u__outbound_count']>0){
-        echo '<span class="badge badge-primary grey" data-toggle="tooltip" data-placement="left" title="" data-original-title="Entity tree contains '.$entity['u__outbound_count'].' child entities. See list below."><span class="btn-counter">'.echo_big_num($entity['u__outbound_count']).'</span><i class="fas fa-sitemap"></i></span>';
+        echo '<span class="badge badge-primary grey" data-toggle="tooltip" data-placement="left" title="" data-original-title="Entity tree contains '.$entity['u__outbound_count'].' child entities. See list below." style="width:40px;"><span class="btn-counter">'.echo_big_num($entity['u__outbound_count']).'</span><i class="fas fa-chevron-right"></i></span>';
     }
 
     echo '</span>';

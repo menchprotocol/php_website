@@ -1,7 +1,7 @@
 <?php
 //Expand Prerequisites:
 $b = $enrollment;
-$pre_req_array = prep_prerequisites($b);
+$pre_req_array = ( strlen($b['b_prerequisites'])>0 ? json_decode($b['b_prerequisites']) : array() );
 ?>
 <script>
 var current_section = 1; //The index for the wizard

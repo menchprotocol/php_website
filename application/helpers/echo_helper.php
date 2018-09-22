@@ -108,7 +108,7 @@ function echo_u($u){
 
     $ui .= '<a class="badge badge-primary" href="/entities/'.$u['u_id'].'/modify" style="margin:-2px 3px 0 0;"><i class="fas fa-cog"></i></a>';
 
-    $ui .= '<a class="badge badge-primary" href="/entities/'.$u['u_id'].'" data-toggle="tooltip" data-placement="left" title="" data-original-title="Entity tree contains '.$u['u__outbound_count'].' child entities. Click to browse."><span class="btn-counter">'.(isset($u['u__outbound_count']) ? echo_big_num($u['u__outbound_count']).' ' : '').'</span><i class="fas fa-sitemap"></i></a>';
+    $ui .= '<a class="badge badge-primary" href="/entities/'.$u['u_id'].'" data-toggle="tooltip" data-placement="left" title="" data-original-title="Entity tree contains '.$u['u__outbound_count'].' child entities. Click to browse." style="width:40px;"><span class="btn-counter">'.(isset($u['u__outbound_count']) ? echo_big_num($u['u__outbound_count']).' ' : '').'</span><i class="fas fa-chevron-right"></i></a>';
 
     $ui .= '</span>';
 
@@ -1161,7 +1161,7 @@ function echo_messenger(){
              data-ref="helloworld"
              color="blue"
              cta_text="GET_STARTED_IN_MESSENGER"
-             size="xlarge">Connecting to Facebook...</div>
+             size="xlarge">Loading...</div>
 
         <div style="font-size:0.9em; padding:10px 0 0 3px; margin-bottom: 0;">
             <p style="line-height:130%; font-size:1em !important;"><b>7-Day free trial, then $7 per week</b>.<br /><span style="display: inline-block;">No credit</span> card needed. Cancel anytime.</p>
@@ -1227,22 +1227,24 @@ function echo_actionplan($c, $level, $parent_c_id=0){
 
         //ATTENTION: DO NOT CHANGE THE ORDER OF data-link-id & intent-id AS the sorting logic depends on their exact position to sort!
         //CHANGE WITH CAUTION!
-        $ui = '<div id="cr_'.$c['cr_id'].'" data-link-id="'.$c['cr_id'].'" intent-id="'.$c['c_id'].'" intent-level="'.$level.'" class="list-group-item '.( $level==3 ? 'is_level3_sortable' : 'is_level2_sortable' ).' intent_line_'.$c['c_id'].'">';
+        $ui = '<div id="cr_'.$c['cr_id'].'" data-link-id="'.$c['cr_id'].'" intent-id="'.$c['c_id'].'" parent-intent-id="'.$parent_c_id.'" intent-level="'.$level.'" class="list-group-item '.( $level==3 ? 'is_level3_sortable' : 'is_level2_sortable' ).' intent_line_'.$c['c_id'].'">';
 
     }
 
     //Right content
-    $ui .= '<span class="pull-right maplevel'.$c['c_id'].'" parent-intent-id="'.$parent_c_id.'" style="'.( $level<3 ? 'margin-right: 8px;' : '' ).'">';
+    $ui .= '<span class="pull-right" style="'.( $level<3 ? 'margin-right: 8px;' : '' ).'">';
 
 
+    if($level==1 && !$c['c__is_orphan']){
+        $ui .= '<a href="/'.$c['c_id'].'" class="badge badge-primary" style="width:40px;" target="_blank"><span class="btn-counter"><i class="fas fa-external-link"></i></span><i class="fas fa-shopping-cart"></i></a>';
+    }
 
-
-    $ui .= '<a href="#messages-'.$c['c_id'].'" onclick="i_load_frame('.$c['c_id'].')" class="badge badge-primary" style="width:40px;"><span class="btn-counter" id="messages-counter-'.$c['c_id'].'">'.$c['c__this_messages'].'</span><i class="fas fa-comment-dots"></i></a>';
+    $ui .= '<a href="#messages-'.$c['c_id'].'" onclick="i_load_frame('.$c['c_id'].')" class="badge badge-primary" style="width:40px;" title="'.$c['c__tree_messages'].' Messages in tree"><span class="btn-counter" id="messages-counter-'.$c['c_id'].'">'.$c['c__this_messages'].'</span><i class="fas fa-comment-dots"></i></a>';
 
     $ui .= '<a class="badge badge-primary" onclick="load_modify('.$c['c_id'].','.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).')" style="margin:-2px -8px 0 2px; width:40px;" href="#modify-'.$c['c_id'].'-'.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).'"><span class="btn-counter">'.echo_estimated_time($c['c__tree_hours'],0,1, $c['c_id'], $c['c_time_estimate']).'</span><i class="c_is_any_icon'.$c['c_id'].' '.( $c['c_is_any'] ? 'fas fa-code-merge' : 'fas fa-sitemap' ).'"></i></a> &nbsp;';
 
 
-    $ui .= '&nbsp;<'.($level>1 ? 'a href="/intents/'.$c['c_id'].'" class="badge badge-primary"' :'span class="badge badge-primary grey"').' style="display:inline-block; margin-right:-1px; width:40px;"><span class="btn-counter" id="tree-counter-'.$c['c_id'].'">'.($c['c__tree_inputs']+$c['c__tree_outputs']).'</span><i class="fas fa-chevron-right  "></i></'.($level>1 ? 'a' :'span').'> ';
+    $ui .= '&nbsp;<'.( $level>1 || $c['c__is_orphan'] ? 'a href="/intents/'.$c['c_id'].'" class="badge badge-primary"' :'span class="badge badge-primary grey"').' style="display:inline-block; margin-right:-1px; width:40px;" title="'.$c['c__tree_inputs'].' Inputs and '.$c['c__tree_outputs'].' Outputs"><span class="btn-counter" id="tree-counter-'.$c['c_id'].'">'.($c['c__tree_inputs']+$c['c__tree_outputs']).'</span><i class="fas fa-chevron-right"></i></'.( $level>1 || $c['c__is_orphan'] ? 'a' :'span').'> ';
 
     //Keep an eye out for inner message counter changes:
     $ui .= '</span> ';

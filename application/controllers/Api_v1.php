@@ -602,7 +602,7 @@ class Api_v1 extends CI_Controller {
         if(count($drip_messages)>0){
 
             $start_time = time();
-            $drip_intervals = (class_ends($bs[0], $focus_class)-$start_time) / (count($drip_messages)+1);
+            //TODO Adjust $drip_intervals = (class_ends($bs[0], $focus_class)-$start_time) / (count($drip_messages)+1);
             $drip_time = $start_time;
 
             foreach($drip_messages as $i){

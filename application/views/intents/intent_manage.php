@@ -1,16 +1,12 @@
 <?php
-//Fetch the sprint units from config:
-$message_max = $this->config->item('message_max');
-$website = $this->config->item('website');
-$c_statuses = echo_status('c');
-$udata = $this->session->userdata('user');
+if(isset($orphan_cs)){
+    $c['c_id'] = 0;
+}
+
 ?>
+<input type="hidden" id="c_id" value="<?= $c['c_id'] ?>" />
 
 <style> .breadcrumb li { display:block; } </style>
-<input type="hidden" id="b_id" value="1" />
-<input type="hidden" id="c_id" value="<?= $c['c_id'] ?>" />
-<input type="hidden" id="obj_name" value="" />
-
 <script>
 
     function echo_hours(dbl_hour){
@@ -111,9 +107,12 @@ $udata = $this->session->userdata('user');
                     }
                 });
             }
-
         }
 
+
+        $( "#dir_handle" ).click(function() {
+            new_intent(<?= $c['c_id'] ?>, 2);
+        });
 
 
         //Load Algolia:
@@ -140,7 +139,7 @@ $udata = $this->session->userdata('user');
                 suggestion: function(suggestion) {
                     var minutes = Math.round(parseFloat(suggestion.c__tree_hours)*60);
                     var hours = Math.round(parseFloat(suggestion.c__tree_hours));
-                    var fancy_hours = ( minutes<60 ? minutes+'Min'+(minutes==1?'':'s') :  hours+'Hr'+(hours==1?'':'s') );
+                    var fancy_hours = ( minutes<60 ? minutes+'m' :  hours+'h' );
                     return '<span class="suggest-prefix"><i class="fas fa-hashtag"></i></span> '+ suggestion._highlightResult.c_outcome.value + ( parseFloat(suggestion.c__tree_hours)>0 ? '<span class="search-info">'+( parseFloat(suggestion.c__count)>1 ? ' <i class="fas fa-sitemap"></i> ' + suggestion.c__count : '' ) + ' <i class="fas fa-clock"></i> '+ fancy_hours+'</span>' : '');
                 },
                 header: function(data) {
@@ -258,7 +257,7 @@ $udata = $this->session->userdata('user');
         //It might be zero for lists that have jsut been emptied
         if(sort_rank>0 && c_id){
             //Update backend:
-            $.post("/intents/c_sort", { c_id:c_id, b_id:$('#b_id').val(), new_sort:new_sort }, function(data) {
+            $.post("/intents/c_sort", { c_id:c_id, new_sort:new_sort }, function(data) {
                 //Update UI to confirm with user:
                 if(!data.status){
                     //There was some sort of an error returned!
@@ -303,7 +302,6 @@ $udata = $this->session->userdata('user');
                 var inputs = {
                     cr_id:evt.item.attributes[1].nodeValue,
                     c_id:evt.item.attributes[2].nodeValue,
-                    b_id:$('#b_id').val(),
                     from_c_id:evt.from.attributes[2].value,
                     to_c_id:evt.to.attributes[2].value,
                 };
@@ -319,18 +317,22 @@ $udata = $this->session->userdata('user');
 
                         //All good as expected!
                         //Moved the parent pointer:
-                        $('.maplevel'+inputs.c_id).attr('parent-intent-id',inputs.to_c_id);
+                        $('.intent_line_'+inputs.c_id).attr('parent-intent-id',inputs.to_c_id);
 
                         //Determine core variables for hour move calculations:
                         var step_hours = parseFloat($('#t_estimate_'+inputs.c_id).attr('tree-hours'));
+                        var intent_count = parseInt($('#tree-counter-'+inputs.c_id).text());
+
                         if(!(step_hours==0)){
                             //Remove from old one:
                             var from_hours_new = parseFloat($('#t_estimate_'+inputs.from_c_id).attr('tree-hours'))-step_hours;
                             $('#t_estimate_'+inputs.from_c_id).attr('tree-hours',from_hours_new).text(echo_hours(from_hours_new));
+                            $('#tree-counter-'+inputs.from_c_id).text( parseInt($('#tree-counter-'+inputs.from_c_id).text()) - intent_count );
 
                             //Add to new:
                             var to_hours_new = parseFloat($('#t_estimate_'+inputs.to_c_id).attr('tree-hours'))+step_hours;
                             $('#t_estimate_'+inputs.to_c_id).attr('tree-hours',to_hours_new).text(echo_hours(to_hours_new));
+                            $('#tree-counter-'+inputs.to_c_id).text( parseInt($('#tree-counter-'+inputs.to_c_id).text()) + intent_count );
                         }
 
                         //Update sorting for both lists:
@@ -384,7 +386,6 @@ $udata = $this->session->userdata('user');
             //Load the frame:
             $.post("/intents/i_load_frame", {
 
-                b_id:$('#b_id').val(),
                 c_id:c_id,
 
             }, function(data) {
@@ -400,13 +401,13 @@ $udata = $this->session->userdata('user');
     }
 
 
-    function adjust_hours(c_id, level, new_hours, apply_to_tree=0, skip_intent_adjustments=0){
+    function adjust_js_ui(c_id, level, new_hours, intent_deficit_count=0, apply_to_tree=0, skip_intent_adjustments=0){
 
         var intent_hours = parseFloat($('#t_estimate_'+c_id).attr('intent-hours'));
         var tree_hours = parseFloat($('#t_estimate_'+c_id).attr('tree-hours'));
         var intent_deficit_hours = new_hours - ( skip_intent_adjustments ? 0 : ( apply_to_tree ? tree_hours : intent_hours ) );
 
-        if(intent_deficit_hours==0){
+        if(intent_deficit_hours==0 && intent_deficit_count==0){
             //Nothing changed, so we need to do nothing either!
             return false;
         }
@@ -426,25 +427,38 @@ $udata = $this->session->userdata('user');
         if(level>=2){
 
             //Adjust the parent level hours:
-            var parent_c_id = parseInt($('.maplevel'+c_id).attr('parent-intent-id'));
+            var parent_c_id = parseInt($('.intent_line_'+c_id).attr('parent-intent-id'));
             var parent_c_tree_hours = parseFloat($('#t_estimate_'+parent_c_id).attr('tree-hours'));
             var new_parent_c_tree_hours = parent_c_tree_hours + intent_deficit_hours;
 
-            //Update Hours (Either level 1 or 2):
-            $('#t_estimate_'+parent_c_id)
-                .attr('tree-hours', new_parent_c_tree_hours)
-                .text(echo_hours(new_parent_c_tree_hours));
+            if(!(intent_deficit_count==0)){
+                $('#tree-counter-'+parent_c_id).text( parseInt($('#tree-counter-'+parent_c_id).text()) + intent_deficit_count );
+            }
+
+            if(!(intent_deficit_hours==0)){
+                //Update Hours (Either level 1 or 2):
+                $('#t_estimate_'+parent_c_id)
+                    .attr('tree-hours', new_parent_c_tree_hours)
+                    .text(echo_hours(new_parent_c_tree_hours));
+            }
 
             if(level==3){
                 //Adjust top level (Bootcamp hours) as well:
-                var b_c_id = parseInt($('.maplevel'+parent_c_id).attr('parent-intent-id'));
+                var b_c_id = parseInt($('.intent_line_'+parent_c_id).attr('parent-intent-id'));
                 var b_c_tree_hours = parseFloat($('#t_estimate_'+b_c_id).attr('tree-hours'));
                 var new_b_c_tree_hours = b_c_tree_hours + intent_deficit_hours;
 
-                //Update Hours:
-                $('#t_estimate_'+b_c_id)
-                    .attr('tree-hours', new_b_c_tree_hours)
-                    .text(echo_hours(new_b_c_tree_hours));
+
+                if(!(intent_deficit_count==0)){
+                    $('#tree-counter-'+b_c_id).text( parseInt($('#tree-counter-'+b_c_id).text()) + intent_deficit_count );
+                }
+
+                if(!(intent_deficit_hours==0)){
+                    //Update Hours:
+                    $('#t_estimate_'+b_c_id)
+                        .attr('tree-hours', new_b_c_tree_hours)
+                        .text(echo_hours(new_b_c_tree_hours));
+                }
             }
         }
     }
@@ -452,25 +466,25 @@ $udata = $this->session->userdata('user');
 
     function c_unlink(){
 
+        var cr_id = ( $('#modifybox').hasClass('hidden') ? 0 : parseInt($('#modifybox').attr('intent-link-id')) );
         var c_id = ( $('#modifybox').hasClass('hidden') ? 0 : parseInt($('#modifybox').attr('intent-id')) );
 
-        if(!c_id){
+        if(!c_id || !cr_id){
             alert('Error: No Intent has been loaded.');
             return false;
         }
 
-        var cr_id = $('.intent_line_'+c_id).attr('data-link-id');
-        var parent_c_id = parseInt($('.maplevel'+c_id).attr('parent-intent-id'));
-        var level = parseInt($('#cr_'+cr_id).attr('intent-level'));
+        var parent_c_id = parseInt($('#cr_'+cr_id).attr('parent-intent-id'));
+        var level = parseInt($('#cr_'+cr_id).attr('intent-level')); //Either 2 or 3 (Cannot unlink level 1)
         var r = confirm("Unlink \""+$('.c_outcome_input').val()+"\"?\n(Intent will remain accessible)");
 
         if (r == true) {
             //Load parent intents:
-            $.post("/intents/c_unlink", {b_id:$('#b_id').val(), c_id:c_id, cr_id:cr_id} , function(data) {
+            $.post("/intents/c_unlink", {c_id:c_id, cr_id:cr_id} , function(data) {
                 if(data.status){
 
                     //Adjust hours:
-                    adjust_hours(c_id, level, 0, 1);
+                    adjust_js_ui(c_id, level, 0, data.adjusted_c_count, 1);
 
                     //Remove from UI:
                     $('#cr_' + cr_id).html('<span style="color:#3C4858;"><i class="fas fa-trash-alt"></i> Removed</span>');
@@ -518,8 +532,10 @@ $udata = $this->session->userdata('user');
         }
 
         //Update variables:
+        $('#modifybox').attr('intent-link-id',cr_id);
         $('#modifybox').attr('intent-id',c_id);
         $('#modifybox').attr('level',level);
+
 
         //Set variables:
         var intent_hours = $('#t_estimate_'+c_id).attr('intent-hours');
@@ -624,7 +640,7 @@ $udata = $this->session->userdata('user');
                 }
 
                 //Adjust hours:
-                adjust_hours(modify_data['c_id'], modify_data['level'], modify_data['c_time_estimate']);
+                adjust_js_ui(modify_data['c_id'], modify_data['level'], modify_data['c_time_estimate']);
 
                 //Update UI to confirm with user:
                 $('.save_setting_results').html(data.message).hide().fadeIn();
@@ -642,7 +658,6 @@ $udata = $this->session->userdata('user');
         });
 
     }
-
 
 
 
@@ -668,11 +683,10 @@ $udata = $this->session->userdata('user');
         }
 
 
-        var b_id = $('#b_id').val();
         var intent_name = input_field.val();
 
         if(!link_c_id && intent_name.length<1){
-            alert('Error: Missing Outcome. Try Again...');
+            alert('Error: Missing Intent. Try Again...');
             input_field.focus();
             return false;
         }
@@ -681,7 +695,7 @@ $udata = $this->session->userdata('user');
         add_to_list(sort_list_id, sort_handler, '<div id="temp'+next_level+'" class="list-group-item"><img src="/img/round_load.gif" class="loader" /> Adding... </div>');
 
         //Update backend:
-        $.post("/intents/c_new", {b_id:b_id, c_id:c_id, c_outcome:intent_name, next_level:next_level, link_c_id:link_c_id}, function(data) {
+        $.post("/intents/c_new", {c_id:c_id, c_outcome:intent_name, next_level:next_level, link_c_id:link_c_id}, function(data) {
 
             //Remove loader:
             $( "#temp"+next_level ).remove();
@@ -711,7 +725,8 @@ $udata = $this->session->userdata('user');
                 $('[data-toggle="tooltip"]').tooltip();
 
                 //Adjust time:
-                adjust_hours(data.c_id, next_level, data.c__tree_hours, 0, 1);
+                adjust_js_ui(data.c_id, next_level, data.c__tree_hours, data.adjusted_c_count, 0, 1);
+
             } else {
                 //Show errors:
                 alert('ERROR: '+data.message);
@@ -733,37 +748,55 @@ $udata = $this->session->userdata('user');
 <div class="row">
     <div class="col-xs-6">
         <?php
-        echo '<div id="bootcamp-objective" class="list-group">';
-        echo echo_actionplan($c,1);
-        echo '</div>';
 
-
-        //Expand/Contract buttons
-        echo '<div id="task_view">';
-        echo '<i class="fas fa-plus-square expand_all"></i> &nbsp;';
-        echo '<i class="fas fa-minus-square close_all"></i>';
-        echo '</div>';
-
-        //Task/Bootcamp List:
-        echo '<div id="list-c-'.$c['c_id'].'" class="list-group list-level-2">';
-
-            foreach($c['c__child_intents'] as $sub_intent){
-                echo echo_actionplan($sub_intent, 2, $c['c_id']);
+        if(isset($orphan_cs)){
+            echo '<div id="bootcamp-objective" class="list-group">';
+            foreach($orphan_cs as $oc){
+                echo echo_actionplan($oc,1);
             }
+            echo '</div>';
+        } else {
+            echo '<div id="bootcamp-objective" class="list-group">';
+            echo echo_actionplan($c,1);
+            echo '</div>';
 
-            ?>
-            <div class="list-group-item list_input searchable grey-block">
-                <div class="input-group">
-                    <div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control intentadder-level-2"  maxlength="70" intent-id="<?= $c['c_id'] ?>" id="addintent-c-<?= $c['c_id'] ?>" placeholder="Add #Intent"></div>
-                    <span class="input-group-addon" style="padding-right:8px;">
-                            <span id="dir_handle" data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" class="badge badge-primary pull-right" style="cursor:pointer; margin: 1px 3px 0 6px;">
-                                <div><i class="fas fa-plus"></i></div>
+
+            //Expand/Contract buttons
+            echo '<table style="width: 100%;"><tr>';
+                echo '<td width="50%">';
+                    echo '<div id="task_view">';
+                    echo '<i class="fas fa-plus-square expand_all"></i> &nbsp;';
+                    echo '<i class="fas fa-minus-square close_all"></i>';
+                    echo '</div>';
+                echo '</td>';
+                echo '<td width="50%">';
+                    if($orphan_c_count>0){
+                        echo '<div style="text-align:right; font-size:0.9em;"><i class="fas fa-unlink"></i> <a href="/intents/orphan">'.$orphan_c_count.' Orphan Intents &raquo;</a></div>';
+                    }
+                echo '</td>';
+            echo '</tr></table>';
+
+
+            //Task/Bootcamp List:
+            echo '<div id="list-c-'.$c['c_id'].'" class="list-group list-level-2">';
+                foreach($c['c__child_intents'] as $sub_intent){
+                    echo echo_actionplan($sub_intent, 2, $c['c_id']);
+                }
+                ?>
+                <div class="list-group-item list_input searchable grey-block">
+                    <div class="input-group">
+                        <div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control intentadder-level-2"  maxlength="70" intent-id="<?= $c['c_id'] ?>" id="addintent-c-<?= $c['c_id'] ?>" placeholder="Add #Intent"></div>
+                        <span class="input-group-addon" style="padding-right:8px;">
+                                <span id="dir_handle" data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" class="badge badge-primary pull-right" style="cursor:pointer; margin: 1px 3px 0 6px;">
+                                    <div><i class="fas fa-plus"></i></div>
+                                </span>
                             </span>
-                        </span>
+                    </div>
                 </div>
-            </div>
-            <?php
-        echo '</div>';
+                <?php
+            echo '</div>';
+
+        }
         ?>
     </div>
 
@@ -771,7 +804,7 @@ $udata = $this->session->userdata('user');
     <div class="col-xs-6" id="iphonecol">
 
 
-        <div id="modifybox" class="grey-box hidden" intent-id="0" level="0">
+        <div id="modifybox" class="grey-box hidden" intent-id="0" intent-link-id="0" level="0">
 
             <div style="text-align:right; font-size: 22px; margin: -5px 0 -20px 0;"><a href="javascript:void(0)" onclick="$('#modifybox').addClass('hidden')"><i class="fas fa-times"></i></a></div>
 

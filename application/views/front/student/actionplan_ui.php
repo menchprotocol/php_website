@@ -116,8 +116,10 @@ echo '</ol>';
  * Class Not Started / Ended Notification
  *************************************** */
 $class_has_started = (strtotime($class['r_start_date'])<=time()) || (0); //Always treat as started for now?
-$class_ends = class_ends($enrollment, $class);
-$class_has_ended = ($class_ends<=time());
+
+$subscription_ends = time()+(24*3600*7); //TODO Fix
+
+$class_has_ended = ($subscription_ends<=time());
 if(!$class_has_started){
     //Class has not yet started:
     ?>
@@ -136,7 +138,7 @@ if(!$class_has_started){
     <?php
 } elseif($class_has_ended){
     //Class has ended
-    echo '<div class="alert alert-info maxout" role="alert"><i class="fas fa-exclamation-triangle"></i> Class ended '.strtolower(echo_diff_time($class_ends)).' ago</div>';
+    echo '<div class="alert alert-info maxout" role="alert"><i class="fas fa-exclamation-triangle"></i> Class ended '.strtolower(echo_diff_time($subscription_ends)).' ago</div>';
 }
 
 
@@ -236,13 +238,13 @@ if($level==2){
 
 
             //Show when Bootcamp ends:
-            if($class_ends>time()){
+            if($subscription_ends>time()){
                 ?>
                 <script>
                     $( document ).ready(function() {
                         $("#ontime_dueby").countdowntimer({
                             startDate : "<?= date('Y/m/d H:i:s'); ?>",
-                            dateAndTime : "<?= date('Y/m/d H:i:s' , $class_ends); ?>",
+                            dateAndTime : "<?= date('Y/m/d H:i:s' , $subscription_ends); ?>",
                             size : "lg",
                             regexpMatchFormat: "([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",
                             regexpReplaceWith: "<b>$1</b><sup>Days</sup><b>$2</b><sup>H</sup><b>$3</b><sup>M</sup><b>$4</b><sup>S</sup>"

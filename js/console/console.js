@@ -28,7 +28,7 @@ function open_tip(intent_id){
 		$("div#content_"+intent_id).html('<img src="/img/round_yellow_load.gif" class="loader" />');
 		
 		//Let's check to see if this user has already seen this:
-		$.post("/intents/c_tip", { intent_id:intent_id } , function(data) {
+		$.post("/intents/c_echo_tip", { intent_id:intent_id } , function(data) {
 			//Let's see what we got:
 			if(data.success){
 				//Load the content:
@@ -142,7 +142,7 @@ $(document).ready(function() {
 
     $( "#console_search" ).on('autocomplete:selected', function(event, suggestion, dataset) {
 
-        if(dataset==2){
+        if(dataset==1){
             window.location = "/entities/"+suggestion.u_id;
         } else if(dataset==2){
             window.location = "/intents/"+suggestion.c_id;

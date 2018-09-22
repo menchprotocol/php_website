@@ -190,7 +190,7 @@ if(!isset($intents[0])){
         });
 
         //Update backend:
-        $.post("/intents/i_sort", {new_sort:new_sort, b_id:$('#b_id').val(), c_id:c_id}, function(data) {
+        $.post("/intents/i_sort", {new_sort:new_sort, c_id:c_id}, function(data) {
             if(!data.status){
                 //Show error:
                 alert('ERROR: '+data.message);
@@ -483,7 +483,6 @@ if(!isset($intents[0])){
             ajaxData.append( 'upload_type', uploadType );
             ajaxData.append( 'i_status', $('#i_status_focus').val() );
             ajaxData.append( 'c_id', c_id );
-            ajaxData.append( 'b_id', $('#b_id').val() );
 
             $.ajax({
                 url: '/intents/i_attach',
@@ -528,7 +527,6 @@ if(!isset($intents[0])){
         //Update backend:
         $.post("/intents/i_create", {
 
-            b_id:$('#b_id').val(),
             c_id:c_id, //Synonymous
             i_message:$('#i_message'+c_id).val(),
             i_status:$('#i_status_focus').val(),
@@ -586,7 +584,6 @@ if(!isset($intents[0])){
         echo '<div id="message-sorting'.$c_id.'" class="list-group list-messages">';
         foreach($i_messages as $i){
             echo echo_message(array_merge($i, array(
-                'e_b_id'=>$b_id,
                 'e_outbound_u_id'=>$udata['u_id'],
             )));
             //Increase counter:

@@ -455,9 +455,6 @@ class Cron extends CI_Controller {
 
     }
 
-    /* ******************************
-	 * Coach
-	 ****************************** */
 
     function coach_notify_student_activity(){
 
@@ -580,9 +577,8 @@ class Cron extends CI_Controller {
         echo_json($notify_messages);
     }
 
-    /* ******************************
-	 * Students
-	 ****************************** */
+
+
 
     function student_reminder_complete_application(){
 
@@ -650,7 +646,7 @@ class Cron extends CI_Controller {
     function student_reminder_complete_task(){
 
         //Cron Settings: 45 * * * *
-        //Send reminders to students to complete their Steps:
+        //Send reminders to students to complete their intent:
 
         $enrollments = $this->Db_model->ru_fetch(array(
             'r.r_status'	    => 2, //Running Class
@@ -694,7 +690,7 @@ class Cron extends CI_Controller {
             $class = $bs[0]['this_class'];
 
             //See what % of the class time has elapsed?
-            $elapsed_class_percentage = round((time()-strtotime($class['r_start_date']))/(class_ends($bs[0], $class)-strtotime($class['r_start_date'])),5);
+            //TODO $elapsed_class_percentage = round((time()-strtotime($class['r_start_date']))/(class_ends($bs[0], $class)-strtotime($class['r_start_date'])),5);
 
             foreach ($reminder_index as $logic){
                 if($elapsed_class_percentage>=$logic['time_elapsed']){

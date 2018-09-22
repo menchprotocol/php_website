@@ -9,22 +9,7 @@ class Db_model extends CI_Model {
 	}
 
 
-    function fetch_avg_class_completion($r_id){
-        return objectToArray($this->db->query("
-SELECT AVG(ru.ru_cache__completion_rate) AS cr
-FROM v5_class_students ru
-JOIN v5_entities u ON u.u_id = ru.ru_outbound_u_id
-WHERE ru.ru_status >= 4
-  AND ru_r_id = ".$r_id)->result());
-    }
-
-	/* ******************************
-	 * Remix functions that fetch a bunch of existing data:
-	 ****************************** */
-	
-	function remix_enrollments($matching_criteria,$order_columns=array(
-        'ru.ru_id' => 'DESC',
-    )){
+	function remix_enrollments($matching_criteria,$order_columns=array('ru.ru_id' => 'DESC')){
 
 	    $enrollments = $this->Db_model->ru_fetch($matching_criteria,$order_columns);
 
@@ -1013,27 +998,27 @@ WHERE ru.ru_status >= 4
         }
         return $c_tree;
     }
-	
-	
-	function c_fetch($match_columns, $outbound_levels=0, $join_objects=array()){
-	    
-	    //Always deal with ints here:
-	    $outbound_levels = intval($outbound_levels);
-	    
-	    //The basic fetcher for intents
-	    $this->db->select('*');
-	    $this->db->from('v5_intents c');
-	    if(in_array('u',$join_objects)){
+
+
+    function c_fetch($match_columns, $outbound_levels=0, $join_objects=array()){
+
+        //Always deal with ints here:
+        $outbound_levels = intval($outbound_levels);
+
+        //The basic fetcher for intents
+        $this->db->select('*');
+        $this->db->from('v5_intents c');
+        if(in_array('u',$join_objects)){
             $this->db->join('v5_entities u', 'u.u_id = c.c_inbound_u_id');
         }
-	    foreach($match_columns as $key=>$value){
-	        $this->db->where($key,$value);
-	    }
-	    $q = $this->db->get();
-	    $intents = $q->result_array();
-	    
-	    
-	    //Need anything else?
+        foreach($match_columns as $key=>$value){
+            $this->db->where($key,$value);
+        }
+        $q = $this->db->get();
+        $intents = $q->result_array();
+
+
+        //Need anything else?
         if(count($intents)>0 && in_array('i',$join_objects)){
             $intents[0]['c__messages'] = array();
             //Fetch Messages:
@@ -1044,37 +1029,38 @@ WHERE ru.ru_status >= 4
                 ));
             }
         }
-	    
-	    if(count($intents)>0 && $outbound_levels>=1){
-	        //Lets append the outbound intents:
-	        //Can't wrap my head around recursive, will do dummy way for now:
-	        foreach($intents as $key=>$value){
-	            
-	            //Do the first level:
-	            $intents[$key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
-	                'cr.cr_inbound_c_id' => $value['c_id'],
+
+        if(count($intents)>0 && $outbound_levels>=1){
+            //Lets append the outbound intents:
+            //Can't wrap my head around recursive, will do dummy way for now:
+            foreach($intents as $key=>$value){
+
+                //Do the first level:
+                $intents[$key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
+                    'cr.cr_inbound_c_id' => $value['c_id'],
                     'cr.cr_status >=' => 0,
                     'c.c_status >' => 0,
-	            ) , $join_objects );
-	            
-	            //need more depth?
-	            if(count($intents[$key]['c__child_intents'])>0 && $outbound_levels>=2){
-	                //Start the second level:
-	                foreach($intents[$key]['c__child_intents'] as $key2=>$value2){
-	                    $intents[$key]['c__child_intents'][$key2]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
-	                        'cr.cr_inbound_c_id' => $value2['c_id'],
-	                        'cr.cr_status >' => 0,
-	                    ) , $join_objects );
-	                }
-	            }
-	        } 
-	    }
-	    
-	    //Return everything that was collected:
-	    return $intents;
-	}
+                ) , $join_objects );
 
-	function b_fetch($match_columns,$join_objects=array(),$order_by='b_id'){
+                //need more depth?
+                if(count($intents[$key]['c__child_intents'])>0 && $outbound_levels>=2){
+                    //Start the second level:
+                    foreach($intents[$key]['c__child_intents'] as $key2=>$value2){
+                        $intents[$key]['c__child_intents'][$key2]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
+                            'cr.cr_inbound_c_id' => $value2['c_id'],
+                            'cr.cr_status >' => 0,
+                        ) , $join_objects );
+                    }
+                }
+            }
+        }
+
+        //Return everything that was collected:
+        return $intents;
+    }
+
+
+    function b_fetch($match_columns,$join_objects=array(),$order_by='b_id'){
 
 	    //Missing anything?
 	    $this->db->select('*');
@@ -1859,46 +1845,50 @@ WHERE ru.ru_status >= 4
 	    //Will fetch the recursive tree and update
         $tree = $this->Db_model->c_recursive_fetch($c_id, $fetech_outbound);
 
-        $adjusted = 0;
         if(count($c_update_columns)==0 || count($tree['c_flat'])==0){
-            return $adjusted;
+            return false;
         }
-
 
         //Found results, update them relative to their current value:
-        foreach($tree['c_flat'] as $c_id){
-
-            //Construct new adjusting array:
-            $c_relative_update = 'UPDATE "v5_intents" SET';
-            $update_columns = 0;
-            foreach($c_update_columns as $key=>$value){
-                if($update_columns>0){
-                    $c_relative_update .= ',';
-                }
-                $c_relative_update .= ' "'.$key.'" = '.$key.'+('.$value.')';
-                $update_columns++;
+        $c_relative_update = 'UPDATE "v5_intents" SET';
+        $update_columns = 0;
+        foreach($c_update_columns as $key=>$value){
+            if(doubleval($value)==0){
+                continue; //No adjustment needed
             }
-            //Close the query:
-            $c_relative_update .= ' WHERE "c_id" = '.$c_id.';';
+            if($update_columns>0){
+                $c_relative_update .= ',';
+            }
+            $c_relative_update .= ' '.$key.' = '.$key.' + ('.$value.')';
+            $update_columns++;
+        }
+        //Close the query:
+        $c_relative_update .= ' WHERE "c_id" = '; //$c_id to be inserted later...
 
-            //Run Query:
-            $this->db->query($c_relative_update);
-
-            //Count updated rows:
-            $adjusted += $this->db->affected_rows();
-
+        if($update_columns==0){
+            return 0;
         }
 
-        return $adjusted;
+        //Run Query for all intents:
+        $affected_rows = 0;
+        foreach($tree['c_flat'] as $c_this_id){
+            $this->db->query($c_relative_update.$c_this_id.';');
+            $affected_rows += $this->db->affected_rows();
+        }
+        return $affected_rows;
     }
 
 	function c_recursive_fetch($c_id, $fetech_outbound=0, $db_update=0, $cr_id=0, $recursive_children=null){
 
 	    //Get core data:
         $immediate_children = array(
-            'c__count' => 0,
-            'c__output' => 0,
-            'c__hours' => 0,
+            'c1__tree_inputs' => 0,
+            'c1__tree_outputs' => 0,
+            'c1__tree_hours' => 0,
+            'c1__this_messages' => 0,
+            'c1__tree_messages' => 0,
+            'db_updated' => 0,
+            'db_queries' => array(),
             'c_flat' => array(),
             'tree_top' => array(),
         );
@@ -1926,9 +1916,12 @@ WHERE ru.ru_status >= 4
         if(count($child_cs)>0){
             foreach($child_cs as $c){
                 if(in_array($c['c_id'],$recursive_children['c_flat'])){
+
                     //Ooooops, this has an error as it would result in an infinite loop:
                     return false;
+
                 } else {
+
                     //Fetch children for this intent, if any:
                     $granchildren = $this->Db_model->c_recursive_fetch($c['c_id'], $fetech_outbound, $db_update, $c['cr_id'], $immediate_children);
 
@@ -1938,9 +1931,16 @@ WHERE ru.ru_status >= 4
                     }
 
                     //Addup children if any:
-                    $immediate_children['c__count'] += $granchildren['c__count'];
-                    $immediate_children['c__output'] += $granchildren['c__output'];
-                    $immediate_children['c__hours'] += $granchildren['c__hours'];
+                    $immediate_children['c1__tree_inputs'] += $granchildren['c1__tree_inputs'];
+                    $immediate_children['c1__tree_outputs'] += $granchildren['c1__tree_outputs'];
+                    $immediate_children['c1__tree_hours'] += $granchildren['c1__tree_hours'];
+                    if($db_update){
+                        $immediate_children['c1__tree_messages'] += $granchildren['c1__tree_messages'];
+                        $immediate_children['db_updated'] += $granchildren['db_updated'];
+                        if(!empty($granchildren['db_queries'])){
+                            array_push($immediate_children['db_queries'],$granchildren['db_queries']);
+                        }
+                    }
 
                     array_push($immediate_children['c_flat'],$granchildren['c_flat']);
                     array_push($immediate_children['tree_top'],$granchildren['tree_top']);
@@ -1969,31 +1969,59 @@ WHERE ru.ru_status >= 4
 
         if(count($cs)>0){
 
-            $immediate_children['c__count'] += 1;
             if(intval($cs[0]['c_is_output'])){
-                $immediate_children['c__output'] += 1;
+                $immediate_children['c1__tree_outputs'] += 1;
+            } else {
+                $immediate_children['c1__tree_inputs'] += 1;
             }
-            $immediate_children['c__hours'] += $cs[0]['c_time_estimate'];
+            $immediate_children['c1__tree_hours'] += $cs[0]['c_time_estimate'];
 
             //Set the data for this intent:
-            $cs[0]['c__count'] = $immediate_children['c__count'];
-            $cs[0]['c__output'] = $immediate_children['c__output'];
-            $cs[0]['c__hours'] = $immediate_children['c__hours'];
+            $cs[0]['c1__tree_inputs'] = $immediate_children['c1__tree_inputs'];
+            $cs[0]['c1__tree_outputs'] = $immediate_children['c1__tree_outputs'];
+            $cs[0]['c1__tree_hours'] = $immediate_children['c1__tree_hours'];
+
+            //Count messages only if DB updating:
+            if($db_update){
+                $cs[0]['c1__this_messages'] = count($this->Db_model->i_fetch(array(
+                    'i_status >' => 0,
+                    'i_outbound_c_id' => $c_id,
+                )));
+                $immediate_children['c1__tree_messages'] += $cs[0]['c1__this_messages'];
+                $cs[0]['c1__tree_messages'] = $immediate_children['c1__tree_messages'];
+            }
 
             array_push($immediate_children['c_flat'],intval($c_id));
             array_push($immediate_children['tree_top'],$cs[0]);
 
-            //Update DB:
-            if($db_update){
-                $this->Db_model->c_update( $cs[0]['c_id'] , array(
-                    'c__tree_hours' => $cs[0]['c__hours'],
-                    'c__tree_inputs' => ($cs[0]['c__count'] - $cs[0]['c__output']),
-                    'c__tree_outputs' => $cs[0]['c__output'],
+            //Update DB only if any single field is not synced:
+            if($db_update && !(
+                number_format($cs[0]['c1__tree_hours'],3)==number_format($cs[0]['c__tree_hours'],3) &&
+                $cs[0]['c1__tree_inputs']==$cs[0]['c__tree_inputs'] &&
+                $cs[0]['c1__tree_outputs']==$cs[0]['c__tree_outputs'] &&
+                $cs[0]['c1__this_messages']==$cs[0]['c__this_messages'] &&
+                $cs[0]['c1__tree_messages']==$cs[0]['c__tree_messages'] &&
+                intval($cs[0]['c__is_orphan'])==0
+                )){
+
+                //Something was not up to date, let's update:
+                $this->Db_model->c_update( $c_id , array(
+                    'c__tree_hours' => number_format($cs[0]['c1__tree_hours'],3),
+                    'c__tree_inputs' => $cs[0]['c1__tree_inputs'],
+                    'c__tree_outputs' => $cs[0]['c1__tree_outputs'],
+                    'c__this_messages' => $cs[0]['c1__this_messages'],
+                    'c__tree_messages' => $cs[0]['c1__tree_messages'],
+                    'c__is_orphan' => 0, //It cannot be orphan since its part of the main tree
                 ));
+
+                $immediate_children['db_updated']++;
+
+                array_push($immediate_children['db_queries'],'['.$c_id.'] Hours:'.number_format($cs[0]['c__tree_hours'],3).'=>'.number_format($cs[0]['c1__tree_hours'],3).' / Inputs:'.$cs[0]['c__tree_inputs'].'=>'.$cs[0]['c1__tree_inputs'].' / Outputs:'.$cs[0]['c__tree_outputs'].'=>'.$cs[0]['c1__tree_outputs'].' / Message:'.$cs[0]['c__this_messages'].'=>'.$cs[0]['c1__this_messages'].' / Tree Message:'.$cs[0]['c__tree_messages'].'=>'.$cs[0]['c1__tree_messages'].' / Orphan:'.intval($cs[0]['c__is_orphan']).'=>0 ('.$cs[0]['c_outcome'].')');
+
             }
         }
 
-        //Flatten array:
+        //Flatten intent ID array:
         $result = array();
         array_walk_recursive($immediate_children['c_flat'],function($v, $k) use (&$result){ $result[] = $v; });
         $immediate_children['c_flat'] = $result;
@@ -2146,7 +2174,7 @@ WHERE ru.ru_status >= 4
                 $new_item['c_is_output'] = intval($item['c_is_output']);
                 $new_item['c_keywords'] = ( strlen($item['c_trigger_statements'])>0 ? join(' ',json_decode($item['c_trigger_statements'])) : '' );
 
-                $new_item['c__tree_hours'] = doubleval($item['c__tree_hours']);
+                $new_item['c__tree_hours'] = number_format($item['c__tree_hours'],3);
                 $new_item['c__tree_inputs'] = intval($item['c__tree_inputs']);
                 $new_item['c__tree_outputs'] = intval($item['c__tree_outputs']);
                 $new_item['c__tree_messages'] = intval($item['c__tree_messages']);
