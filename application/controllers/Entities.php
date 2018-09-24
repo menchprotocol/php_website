@@ -129,7 +129,7 @@ class Entities extends CI_Controller {
             'child_entities' => $this->Db_model->u_fetch(array(
                 'u_inbound_u_id' => $inbound_u_id,
                 'u_status' => 1, //Only active
-            ), array('count_child'), $entities_per_page),
+            ), array('u__outbound_count'), $entities_per_page),
         ));
 
         //Load views
@@ -164,12 +164,12 @@ class Entities extends CI_Controller {
         //Fetch entitie itself:
         $parent_entities = $this->Db_model->u_fetch(array(
             'u_id' => $inbound_u_id,
-        ), array('count_child'));
+        ), array('u__outbound_count'));
 
         $child_entities = $this->Db_model->u_fetch(array(
             'u_inbound_u_id' => $inbound_u_id,
             'u_status' => 1, //Only active
-        ), array('count_child'), $limit, ($page*$limit));
+        ), array('u__outbound_count'), $limit, ($page*$limit));
 
         foreach($child_entities as $u){
             echo echo_u($u);
@@ -219,8 +219,8 @@ class Entities extends CI_Controller {
 
 
     function link_entities(){
-        //Responsible to link inbound/outbound entities to each other via a JS function on entity_manage.php
 
+        //Responsible to link inbound/outbound entities to each other via a JS function on entity_manage.php
 
         //Auth user and check required variables:
         $udata = auth(array(1308,1280));
@@ -234,6 +234,11 @@ class Entities extends CI_Controller {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Parent Entity',
+            ));
+        } elseif(!isset($_POST['is_inbound'])){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Entity Link Direction',
             ));
         } elseif(!isset($_POST['new_u_id']) || !isset($_POST['new_u_full_name']) || (intval($_POST['new_u_id'])<1 && strlen($_POST['new_u_full_name'])<1)){
             return echo_json(array(
@@ -253,9 +258,17 @@ class Entities extends CI_Controller {
             ));
         }
 
+        $_POST['is_inbound'] = intval($_POST['is_inbound']);
+        if($_POST['is_inbound']){
+            $new_u_cat_id = 1282; //Industry Experts
+        } else {
+            $new_u_cat_id = 1326; //Content
+        }
+
+
 
         //Do we need to add a new entity?
-        if(intval($_POST['new_u_id'])>1){
+        if(intval($_POST['new_u_id'])>0){
 
             //We already have an entity that we just want to link:
             $new_us = $this->Db_model->u_fetch(array(
@@ -267,35 +280,53 @@ class Entities extends CI_Controller {
                     'status' => 0,
                     'message' => 'Invalid new linked entity ID',
                 ));
-            } else {
-                $new_u = $new_us[0];
             }
+
+            $new_u = $new_us[0];
 
         } else {
 
             //We should add a new entity:
             $new_u = $this->Db_model->u_create(array(
                 'u_full_name' 		=> trim($_POST['new_u_full_name']),
-                'u_inbound_u_id'    => 1282, //Authors
+            ));
+
+            if(!isset($new_u['u_id']) || $new_u['u_id']<1){
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => 'Failed to create new entity',
+                ));
+            }
+
+            //Link this to people:
+            $ur1 = $this->Db_model->ur_create(array(
+                'ur_outbound_u_id' => $new_u['u_id'],
+                'ur_inbound_u_id' => $new_u_cat_id,
+            ));
+
+            $this->Db_model->e_create(array(
+                'e_inbound_u_id' => $udata['u_id'],
+                'e_outbound_u_id' => $new_u_cat_id,
+                'e_ur_id' => $ur1['ur_id'],
+                'e_inbound_c_id' => 7291, //Entity Link Create
             ));
 
         }
 
+
         //Link to new OR existing entity:
-        $new_link = $this->Db_model->e_create(array(
-            'e_inbound_c_id' => 6966, //Link
-            'e_inbound_u_id'  => $current_us[0]['u_id'],
-            'e_outbound_u_id' => $new_u['u_id'],
+        $ur2 = $this->Db_model->ur_create(array(
+            'ur_outbound_u_id' => $current_us[0]['u_id'],
+            'ur_inbound_u_id' => $new_u['u_id'],
         ));
 
-
-        //Create a link to track this new creation:
+        //Insert engagement for creation:
         $this->Db_model->e_create(array(
-            'e_inbound_c_id' => 6978, //Link Added
-            'e_inbound_u_id'  => $udata['u_id'], //The person who added this link
-            'e_e_id' => $new_link['e_id'],
+            'e_inbound_u_id' => $udata['u_id'],
+            'e_outbound_u_id' => $new_u['u_id'],
+            'e_ur_id' => $ur2['ur_id'],
+            'e_inbound_c_id' => 7291, //Entity Link Create
         ));
-
 
         //Return newly added/linked entity:
         return echo_json(array(

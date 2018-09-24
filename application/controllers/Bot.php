@@ -15,6 +15,12 @@ class Bot extends CI_Controller {
         echo_json($this->Db_model->c_recursive_fetch(6898));
     }
 
+    function t(){
+        echo_json($this->Db_model->u_fetch(array(
+            'u_id' => 1282,
+        ), array('u__outbound_count')));
+    }
+
 
     function url($smallest_i_id=0,$limit=1){
 

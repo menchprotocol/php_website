@@ -29,8 +29,10 @@ $uri_segment_2 = $this->uri->segment(2);
     <link href="/css/lib/jquery.mCustomScrollbar.min.css" rel="stylesheet" />
 	<?php $this->load->view('front/shared/header_resources' ); ?>
 
+    <script src="/js/lib/jquery.textcomplete.min.js"></script>
     <script src="/js/lib/autocomplete.jquery.min.js"></script>
     <script src="/js/lib/algoliasearch.min.js"></script>
+
     <script src="/js/lib/sortable.min.js" type="text/javascript"></script>
     <script src="/js/front/global.js?v=v<?= $website['version'] ?>" type="text/javascript"></script>
     <script src="/js/console/console.js?v=v<?= $website['version'] ?>" type="text/javascript"></script>

@@ -77,7 +77,7 @@ class Db_model extends CI_Model {
             //Bootcamp Messages:
             if(in_array('i',$join_objects)){
                 $bs[$key]['c__messages'] = $this->Db_model->i_fetch(array(
-                    'i_status >' => 0,
+                    'i_status >=' => 0,
                     'i_outbound_c_id' => $c['c_id'],
                 ));
                 $bs[$key]['c__message_tree_count'] = count($bs[$key]['c__messages']);
@@ -107,7 +107,7 @@ class Db_model extends CI_Model {
                 //Count Messages:
                 if(in_array('i',$join_objects)){
                     $intent_messages = $this->Db_model->i_fetch(array(
-                        'i_status >' => 0,
+                        'i_status >=' => 0,
                         'i_outbound_c_id' => $intent['c_id'],
                     ));
                     $bs[$key]['c__child_intents'][$intent_key]['c__message_tree_count'] = 0;
@@ -138,7 +138,7 @@ class Db_model extends CI_Model {
                     if(in_array('i',$join_objects)){
                         //Count Messages:
                         $step_messages = $this->Db_model->i_fetch(array(
-                            'i_status >' => 0,
+                            'i_status >=' => 0,
                             'i_outbound_c_id' => $step['c_id'],
                         ));
 
@@ -209,7 +209,7 @@ class Db_model extends CI_Model {
 	 ****************************** */
 	
 	function u_fetch($match_columns, $join_objects=array(), $limit_row=0, $limit_offset=0, $order_columns=array(
-        'u_e_score' => 'DESC',
+        'u__e_score' => 'DESC',
     )){
 	    //Fetch the target entities:
 	    $this->db->select('*');
@@ -238,13 +238,29 @@ class Db_model extends CI_Model {
 	    $q = $this->db->get();
 	    $res = $q->result_array();
 
-        if(in_array('count_child',$join_objects)){
-            foreach($res as $key=>$val){
+
+	    //Now fetch inbounds:
+        foreach($res as $key=>$val){
+
+            if(in_array('u__outbound_count',$join_objects)){
                 //Fetch the messages for this entity:
-                $res[$key]['u__outbound_count'] = count($this->Db_model->u_fetch(array(
-                    'u_inbound_u_id' => $val['u_id'],
-                    'u_status' => 1, //Active
+                $res[$key]['u__outbound_count'] = count($this->Db_model->ur_outbound_fetch(array(
+                    'ur_inbound_u_id' => $val['u_id'],
+                    'ur_status >=' => 0, //Pending or Active
+                    'u_status >=' => 0, //Pending or Active
                 )));
+            }
+
+
+            //Fetch the messages for this entity:
+            $res[$key]['u__inbound'] = array();
+            $inbounds = $this->Db_model->ur_inbound_fetch(array(
+                'ur_outbound_u_id' => $val['u_id'],
+                'ur_status >=' => 0, //Pending or Active
+                'u_status >=' => 0, //Pending or Active
+            ));
+            foreach($inbounds as $ur){
+                $res[$key]['u__inbound'][$ur['u_id']] = $ur;
             }
         }
 
@@ -395,7 +411,7 @@ class Db_model extends CI_Model {
 	
 	function u_create($insert_columns){
 
-        if(missing_required_db_fields($insert_columns,array('u_full_name','u_inbound_u_id'))){
+        if(missing_required_db_fields($insert_columns,array('u_full_name'))){
             return false;
         }
 
@@ -406,6 +422,10 @@ class Db_model extends CI_Model {
         if(!isset($insert_columns['u_status'])){
             $insert_columns['u_status'] = 1;
         }
+
+        if(!isset($insert_columns['u_inbound_u_id'])){
+            $insert_columns['u_inbound_u_id'] = null;
+        }
 		
 		//Lets now add:
 		$this->db->insert('v5_entities', $insert_columns);
@@ -414,6 +434,7 @@ class Db_model extends CI_Model {
         $insert_columns['u_id'] = $this->db->insert_id();
 
         if($insert_columns['u_id']>0){
+
             //Fetch to return full data:
             $users = $this->Db_model->u_fetch(array(
                 'u_id' => $insert_columns['u_id'],
@@ -421,9 +442,12 @@ class Db_model extends CI_Model {
 
             //Update Algolia:
             $this->Db_model->algolia_sync('u',$insert_columns['u_id']);
-        }
 
-        return $users[0];
+            return $users[0];
+
+        } else {
+            return false;
+        }
 	}
 	
 	function u_update($user_id,$update_columns){
@@ -1025,7 +1049,7 @@ class Db_model extends CI_Model {
             foreach($intents as $key=>$value){
                 $intents[$key]['c__messages'] = $this->Db_model->i_fetch(array(
                     'i_outbound_c_id' => $value['c_id'],
-                    'i_status >' => 0, //Published in any form
+                    'i_status >=' => 0, //Published in any form
                 ));
             }
         }
@@ -1110,7 +1134,7 @@ class Db_model extends CI_Model {
                     //Fetch Messages:
                     $return[$key]['c__messages'] = $this->Db_model->i_fetch(array(
                         'i_outbound_c_id' => $value['c_id'],
-                        'i_status >' => 0, //Published in any form
+                        'i_status >=' => 0, //Published in any form
                     ));
                 }
             }
@@ -1160,8 +1184,8 @@ class Db_model extends CI_Model {
 		$stats = $q->row_array();
 		return intval($stats['largest']);
 	}
-	
-	function cr_create($insert_columns){
+
+    function cr_create($insert_columns){
 
         if(missing_required_db_fields($insert_columns,array('cr_outbound_c_id','cr_inbound_c_id','cr_inbound_u_id'))){
             return false;
@@ -1177,15 +1201,107 @@ class Db_model extends CI_Model {
         if(!isset($insert_columns['cr_outbound_rank'])){
             $insert_columns['cr_outbound_rank'] = 1;
         }
-		
-		//Lets now add:
-		$this->db->insert('v5_intent_links', $insert_columns);
-		
-		//Fetch inserted id:
-		$insert_columns['cr_id'] = $this->db->insert_id();
 
-		return $insert_columns;
-	}
+        //Lets now add:
+        $this->db->insert('v5_intent_links', $insert_columns);
+
+        //Fetch inserted id:
+        $insert_columns['cr_id'] = $this->db->insert_id();
+
+        return $insert_columns;
+    }
+
+
+    function ur_create($insert_columns){
+
+        if(missing_required_db_fields($insert_columns,array('ur_outbound_u_id','ur_inbound_u_id'))){
+            return false;
+        }
+
+        if(!isset($insert_columns['ur_timestamp'])){
+            $insert_columns['ur_timestamp'] = date("Y-m-d H:i:s");
+        }
+
+        if(!isset($insert_columns['ur_status'])){
+            $insert_columns['ur_status'] = 1; //Live link
+        }
+
+        //Lets now add:
+        $this->db->insert('v5_entity_links', $insert_columns);
+
+        //Fetch inserted id:
+        $insert_columns['ur_id'] = $this->db->insert_id();
+
+        return $insert_columns;
+    }
+
+    function ur_outbound_fetch($match_columns, $join_objects=array()){
+
+        //Missing anything?
+        $this->db->select('*');
+        $this->db->from('v5_entities u');
+        $this->db->join('v5_entity_links ur', 'ur.ur_outbound_u_id = u.u_id');
+        $this->db->join('v5_urls x', 'x.x_id = u.u_cover_x_id','left'); //Fetch the cover photo if >0
+        foreach($match_columns as $key=>$value){
+            if(!is_null($value)){
+                $this->db->where($key,$value);
+            } else {
+                $this->db->where($key);
+            }
+        }
+        $this->db->order_by('u.u__e_score','DESC');
+        $q = $this->db->get();
+        $res = $q->result_array();
+
+
+        if(in_array('u__outbound_count',$join_objects)){
+            foreach($res as $key=>$val){
+                //Fetch the messages for this entity:
+                $res[$key]['u__outbound_count'] = count($this->Db_model->ur_outbound_fetch(array(
+                    'ur_inbound_u_id' => $val['u_id'],
+                    'ur_status >=' => 0, //Pending or Active
+                    'u_status >=' => 0, //Pending or Active
+                )));
+            }
+        }
+
+        if(in_array('u__inbound',$join_objects)){
+            foreach($res as $key=>$val){
+                //Fetch the messages for this entity:
+                $res[$key]['u__inbound'] = array();
+                $inbounds = $this->Db_model->ur_inbound_fetch(array(
+                    'ur_outbound_u_id' => $val['u_id'],
+                    'ur_status >=' => 0, //Pending or Active
+                    'u_status >=' => 0, //Pending or Active
+                ));
+
+                foreach($inbounds as $ur){
+                    $res[$key]['u__inbound'][$ur['u_id']] = $ur;
+                }
+
+            }
+        }
+
+        return $res;
+    }
+
+    function ur_inbound_fetch($match_columns, $join_objects=array()){
+        //Missing anything?
+        $this->db->select('*');
+        $this->db->from('v5_entities u');
+        $this->db->join('v5_entity_links ur', 'ur.ur_inbound_u_id = u.u_id');
+        $this->db->join('v5_urls x', 'x.x_id = u.u_cover_x_id','left'); //Fetch the cover photo if >0
+        foreach($match_columns as $key=>$value){
+            if(!is_null($value)){
+                $this->db->where($key,$value);
+            } else {
+                $this->db->where($key);
+            }
+        }
+        $this->db->order_by('u.u__e_score','DESC');
+        $q = $this->db->get();
+        return $q->result_array();
+    }
 
 
 
@@ -1707,6 +1823,10 @@ class Db_model extends CI_Model {
         if(!isset($insert_columns['e_status'])){
             $insert_columns['e_status'] = -1; //Auto approved
         }
+        if(!isset($insert_columns['e_ur_id'])){
+            $insert_columns['e_ur_id'] = 0;
+        }
+
 
         //Set some zero defaults if not set:
         foreach(array('e_outbound_c_id','e_outbound_u_id','e_inbound_u_id','e_b_id','e_r_id','e_cr_id','e_i_id','e_fp_id','e_replaced_e_id','e_x_id') as $dz){
@@ -1984,7 +2104,7 @@ class Db_model extends CI_Model {
             //Count messages only if DB updating:
             if($db_update){
                 $cs[0]['c1__this_messages'] = count($this->Db_model->i_fetch(array(
-                    'i_status >' => 0,
+                    'i_status >=' => 0,
                     'i_outbound_c_id' => $c_id,
                 )));
                 $immediate_children['c1__tree_messages'] += $cs[0]['c1__this_messages'];
@@ -2115,7 +2235,7 @@ class Db_model extends CI_Model {
 
                 $new_item['u_id'] = intval($item['u_id']); //rquired for all objects
                 $new_item['u_inbound_u_id'] = intval($item['u_inbound_u_id']);
-                $new_item['u_e_score'] = intval($item['u_e_score']);
+                $new_item['u__e_score'] = intval($item['u__e_score']);
 
                 if($new_item['u_inbound_u_id']>0 && !isset($inbound_names[$new_item['u_inbound_u_id']])){
                     //Fetch parent name:
@@ -2181,7 +2301,7 @@ class Db_model extends CI_Model {
 
                 //Fetch all Messages:
                 $messages = $this->Db_model->i_fetch(array(
-                    'i_status >' => 0,
+                    'i_status >=' => 0,
                     'i_outbound_c_id' => $item['c_id'],
                 ));
                 foreach($messages as $i){

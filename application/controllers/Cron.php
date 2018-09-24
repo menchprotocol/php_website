@@ -21,9 +21,9 @@ class Cron extends CI_Controller {
      ****************************** */
 
 
-    function update_u_e_score($u=array()){
+    function update_u__e_score($u=array()){
 
-        //Updates u_e_score based on number/value of connections to other intents/entities
+        //Updates u__e_score based on number/value of connections to other intents/entities
         //Cron Settings: 2 * * * 30
 
         //Define weights:
@@ -51,7 +51,7 @@ class Cron extends CI_Controller {
         $score = 0;
         foreach($entities as $u_child){
             //Addup all child sores:
-            $score += $this->update_u_e_score($u_child);
+            $score += $this->update_u__e_score($u_child);
         }
 
         //Anything to update?
@@ -91,7 +91,7 @@ class Cron extends CI_Controller {
 
             //Update the score:
             $this->Db_model->u_update( $u['u_id'] , array(
-                'u_e_score' => $score,
+                'u__e_score' => $score,
             ));
 
             //return the score:

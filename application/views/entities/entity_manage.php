@@ -40,9 +40,9 @@ if(!$inbound_u_id){
             });
 
 
-            $("#add_authors_input").on('autocomplete:selected', function (event, suggestion, dataset) {
+            $("#add_inbound_input").on('autocomplete:selected', function (event, suggestion, dataset) {
 
-                add_u_link(suggestion.u_id, null, 'inbound');
+                add_u_link(suggestion.u_id, 1);
 
             }).autocomplete({hint: false, keyboardShortcuts: ['a']}, [{
 
@@ -68,64 +68,75 @@ if(!$inbound_u_id){
                     },
                     header: function (data) {
                         if (!data.isEmpty) {
-                            return '<a href="javascript:add_u_link(0,\'' + data.query + '\',\'inbound\')" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create</span> "' + data.query + '"' + ' (Referenced Auhtors)</a>';
+                            return '<a href="javascript:add_u_link(0,1)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create</span> "' + data.query + '"' + ' (Referenced Auhtors)</a>';
                         }
                     },
                     empty: function (data) {
-                        return '<a href="javascript:add_u_link(0,\'' + data.query + '\',\'inbound\')" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create</span> "' + data.query + '"' + ' (Referenced Auhtors)</a>';
+                        return '<a href="javascript:add_u_link(0,1)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create</span> "' + data.query + '"' + ' (Referenced Auhtors)</a>';
                     },
                 }
             }]).keypress(function (e) {
                 var code = (e.keyCode ? e.keyCode : e.which);
                 if ((code == 13) || (e.ctrlKey && code == 13)) {
-                    add_u_link(0, $("#add_authors_input").val(), 'inbound');
+                    add_u_link(0, 1);
                     return true;
                 }
             });
-
-
         });
 
         //Adds OR links authors and content for entities
-        function add_u_link(u_id, u_full_name) {
+        function add_u_link(new_u_id, is_inbound) {
 
-            //if u_id>0 it means we're linking to an existing entity, in which case u_full_name should be null
-            //If u_id=0 it means we are creating a new entity and then linking it, in which case u_full_name is required
+            //if new_u_id>0 it means we're linking to an existing entity, in which case new_u_full_name should be null
+            //If new_u_id=0 it means we are creating a new entity and then linking it, in which case new_u_full_name is required
 
-            if (u_id == 0 && u_full_name.length < 1) {
+            var new_u_full_name = null;
+            if (new_u_id==0) {
+                new_u_full_name = $("#add_inbound_input").val();
+                if(new_u_full_name.length<1){
+                    alert('ERROR: Missing entity name, try again');
+                    return false;
+                }
+            }
 
-                alert('ERROR: Missing entity name, try again');
-                return false;
-
+            if(is_inbound){
+                var input = $('#add_inbound_input');
+                var btn = $('#add_inbound_btn');
+                var list_id = 'list-inbound';
+            } else {
+                var input = $('#add_outbound_input');
+                var btn = $('#add_outbound_btn');
+                var list_id = 'list-outbound';
             }
 
 
             //Adjust UI to indicating loading...
-            var current_href = $('#add_authors_btn').attr('href');
-            $('#add_authors_input').prop('disabled', true); //Empty input
-            $('#add_authors_btn').attr('href', 'javascript:void(0);').html('<i class="fas fa-spinner fa-spin"></i>');
+            var current_href = btn.attr('href');
+            input.prop('disabled', true); //Empty input
+            btn.attr('href', 'javascript:void(0);').html('<i class="fas fa-spinner fa-spin"></i>');
 
 
             //Add via Ajax:
             $.post("/entities/link_entities", {
 
                 u_id:<?= $entity['u_id'] ?>,
-                new_u_id: u_id,
-                new_u_full_name: u_full_name,
+                new_u_id: new_u_id,
+                new_u_full_name: new_u_full_name,
+                is_inbound:is_inbound,
 
             }, function (data) {
 
                 //Release lock:
-                $('#add_authors_input').prop('disabled', false);
-                $('#add_authors_btn').attr('href', current_href).html('ADD');
+                input.prop('disabled', false);
+                btn.attr('href', current_href).html('ADD');
 
                 if (data.status) {
 
                     //Empty input to make it ready for next URL:
-                    $('#add_authors_input').val('');
+                    input.val('').focus();
 
                     //Add new object to list:
-                    add_to_list('list-authors', '.u-item', data.new_u);
+                    add_to_list(list_id, '.u-item', data.new_u);
 
                     //Tooltips:
                     $('[data-toggle="tooltip"]').tooltip();
@@ -273,7 +284,7 @@ if(!$inbound_u_id){
 
 //Right content:
     echo '<span class="pull-right">';
-    echo echo_score($entity['u_e_score']);
+    echo echo_score($entity['u__e_score']);
 
     if ($can_edit) {
         echo '<a class="badge badge-primary" href="/entities/' . $entity['u_id'] . '/modify" style="margin:-2px 3px 0 0;"><i class="fas fa-cog"></i></a>';
@@ -328,30 +339,28 @@ if(!$inbound_u_id){
         't_inbound_u_id' => $inbound_u_id,
     ));
 
-    $inbound_us = $this->Db_model->e_fetch(array(
-        'e_inbound_c_id' => 6966, //Relation Link
-        'e_inbound_u_id' => $inbound_u_id,
-    ), 999, array(), null, array(
-        'e.e_id' => 'ASC',
+
+
+    $inbound_us = $this->Db_model->ur_inbound_fetch(array(
+        'ur_outbound_u_id' => $inbound_u_id,
     ));
 
-    $outbound_us = $this->Db_model->e_fetch(array(
-        'e_inbound_c_id' => 6966, //Relation Link
-        'e_outbound_u_id' => $inbound_u_id,
-    ), 999, array(), null, array(
-        'e.e_id' => 'ASC',
+    $outbound_us = $this->Db_model->ur_outbound_fetch(array(
+        'ur_inbound_u_id' => $inbound_u_id,
     ));
+
+
 
     $show_tabs = array(
         'list' => (count($child_entities) > 0 || $entity['u_id'] == 1326 ? '<li id="nav_list"><a href="#list"><i class="fas fa-at"></i> List</a></li>' : false),
-        'references' => (!in_array($entity['u_inbound_u_id'], array(0, 1278)) ? '<li id="nav_references"><a href="#references"><i class="fas fa-link"></i> References</a></li>' : false),
-        'coach' => (count($b_team_member) > 0 ? '<li id="nav_coach"><a href="#coach"><i class="fas fa-whistle"></i> Coach</a></li>' : false),
-        'student' => (count($enrollments) > 0 ? '<li id="nav_student"><a href="#student"><i class="fas fa-graduation-cap"></i> Student</a></li>' : false),
+        'urls' => ( !in_array($entity['u_inbound_u_id'], array(0, 1278)) ? '<li id="nav_urls"><a href="#urls"><i class="fas fa-link"></i> URLs</a></li>' : false),
+        'inbound' => '<li id="nav_inbound"><a href="#inbound"><i class="fas fa-sign-in-alt rotate90"></i> In</a></li>',
+        'outbound' => '<li id="nav_outbound"><a href="#outbound"><i class="fas fa-sign-out-alt rotate90"></i> Out</a></li>',
+        'intents' => '<li id="nav_intents"><a href="#intents"><i class="fas fa-hashtag"></i> Intents</a></li>',
+        'training' => ( count($b_team_member)>0 ? '<li id="nav_training"><a href="#training"><i class="fas fa-whistle"></i> training</a></li>' : false),
+        'messages' => ( $entity['u_inbound_u_id'] == 1326 ? '<li id="nav_messages"><a href="#messages"><i class="fas fa-comment-dots"></i> Messages</a></li>' : false),
         'payments' => (count($payments) > 0 && auth(array(1281), 0, 0, $entity['u_id']) ? '<li id="nav_payments"><a href="#payments"><i class="fab fa-paypal"></i> Payments</a></li>' : false),
-        'authors' => ($entity['u_inbound_u_id'] == 1326 ? '<li id="nav_authors"><a href="#authors"><i class="fas fa-at"></i> Authors</a></li>' : false),
-        'content' => (!in_array($entity['u_inbound_u_id'], array(0, 1278, 1326)) ? '<li id="nav_content"><a href="#content"><i class="fas fa-book"></i> Content</a></li>' : false),
-        //'subscriptions'    => ( !in_array($entity['u_inbound_u_id'],array(0,1278,1326)) ? '<li id="nav_subscriptions"><a href="#subscriptions"><i class="fas fa-hashtag"></i> Subscriptions</a></li>' : false ),
-        'intents' => ($entity['u_inbound_u_id'] == 1326 ? '<li id="nav_intents"><a href="#intents"><i class="fas fa-hashtag"></i> Intents</a></li>' : false),
+
     );
     ?>
 
@@ -485,9 +494,9 @@ if(!$inbound_u_id){
             echo '</div>';
             echo '</div>';
 
-        } elseif ($item == 'references') {
+        } elseif ($item == 'urls') {
 
-            echo '<div class="tab-pane" id="tabreferences">'; //Tab content starts
+            echo '<div class="tab-pane" id="taburls">'; //Tab content starts
 
             //Fetch all the URLs for this Entity:
             $urls = $this->Db_model->x_fetch(array(
@@ -505,7 +514,7 @@ if(!$inbound_u_id){
                     echo echo_x($entity, $x);
                 }
             } else {
-                echo '<div class="list-group-item alert alert-info no-b-div-1" style="padding: 15px 10px;"><i class="fas fa-exclamation-triangle" style="margin:0 8px 0 2px;"></i> No references added yet</div>';
+                echo '<div class="list-group-item alert alert-info no-b-div-1" style="padding: 15px 10px;"><i class="fas fa-exclamation-triangle" style="margin:0 8px 0 2px;"></i> No URLs added yet</div>';
             }
 
 
@@ -526,20 +535,20 @@ if(!$inbound_u_id){
 
 
             echo '</div>'; //Tab content ends
-        } elseif ($item == 'coach') {
+        } elseif ($item == 'training') {
 
-            echo '<div class="tab-pane" id="tabcoach">';
-            echo '<div id="list-coach" class="list-group maxout grey-list">';
+            echo '<div class="tab-pane" id="tabtraining">';
+            echo '<div id="list-training" class="list-group maxout grey-list">';
             foreach ($b_team_member as $ba) {
                 echo_ba($ba);
             }
             echo '</div>';
             echo '</div>';
 
-        } elseif ($item == 'student') {
+        } elseif ($item == 'intents') {
 
-            echo '<div class="tab-pane" id="tabstudent">';
-            echo '<div id="list-student" class="list-group maxout grey-list">';
+            echo '<div class="tab-pane" id="tabintents">';
+            echo '<div id="list-intents" class="list-group maxout grey-list">';
             foreach ($enrollments as $ru) {
                 echo_ru($ru);
             }
@@ -556,28 +565,27 @@ if(!$inbound_u_id){
             echo '</div>';
             echo '</div>';
 
-        } elseif ($item == 'authors') {
+        } elseif ($item == 'inbound') {
 
-            echo '<div class="tab-pane" id="tabauthors">';
-            echo '<div id="list-authors" class="list-group maxout grey-list">';
+            echo '<div class="tab-pane" id="tabinbound">';
+            echo '<div id="list-inbound" class="list-group maxout grey-list">';
 
-            foreach ($inbound_us as $e) {
-                //Fetch the U:
-                $us = $this->Db_model->u_fetch(array(
-                    'u_id' => $e['e_outbound_u_id'],
-                ), array('count_child'));
-                if (count($us) > 0) {
-                    echo echo_u($us[0]);
+
+            if (count($inbound_us)>0) {
+                foreach ($inbound_us as $ur) {
+                    echo echo_u($ur);
                 }
+            } else {
+                echo '<div class="list-group-item alert alert-info no-b-div-1" style="padding: 15px 10px;"><i class="fas fa-exclamation-triangle" style="margin:0 8px 0 2px;"></i> No inbound entities linked yet</div>';
             }
 
-            //Input to add new authors:
+            //Input to add new inbounds:
             if ($can_edit) {
                 echo '<div class="list-group-item list_input grey-input">
                                     <div class="input-group">
-                                        <div class="form-group is-empty"><input type="text" class="form-control" id="add_authors_input" placeholder="Add Author..."></div>
+                                        <div class="form-group is-empty"><input type="text" class="form-control" id="add_inbound_input" placeholder="Add Inbound..."></div>
                                         <span class="input-group-addon">
-                                            <a class="badge badge-primary" id="add_authors_btn" href="javascript:add_u_link(0, $(\'#add_authors_input\').val(), \'inbound\');">ADD</a>
+                                            <a class="badge badge-primary" id="add_inbound_btn" href="javascript:add_u_link(0, 1);">ADD</a>
                                         </span>
                                     </div>
                                 </div>';
@@ -586,44 +594,43 @@ if(!$inbound_u_id){
             echo '</div>';
             echo '</div>';
 
-        } elseif ($item == 'content') {
+        } elseif ($item == 'outbound') {
 
-            echo '<div class="tab-pane" id="tabcontent">';
-            echo '<div id="list-content" class="list-group maxout grey-list">';
+            echo '<div class="tab-pane" id="taboutbound">';
+            echo '<div id="list-outbound" class="list-group maxout grey-list">';
 
-            if (count($outbound_us) > 0) {
-                foreach ($outbound_us as $e) {
-                    //Fetch the U:
-                    $us = $this->Db_model->u_fetch(array(
-                        'u_id' => $e['e_inbound_u_id'],
-                    ), array('count_child'));
-                    echo echo_u($us[0]);
+            if (count($outbound_us)>0) {
+                foreach ($outbound_us as $ur) {
+                    echo echo_u($ur);
                 }
             } else {
-                echo '<div class="list-group-item alert alert-info no-b-div-1" style="padding: 15px 10px;"><i class="fas fa-exclamation-triangle" style="margin:0 8px 0 2px;"></i> No content added yet</div>';
+                echo '<div class="list-group-item alert alert-info no-b-div-1" style="padding: 15px 10px;"><i class="fas fa-exclamation-triangle" style="margin:0 8px 0 2px;"></i> No outbound entities linked yet</div>';
             }
 
-            echo '</div>';
-            echo '</div>';
 
-        } elseif ($item == 'subscriptions') {
 
-            echo '<div class="tab-pane" id="tabsubscriptions">';
-            echo '<div id="list-subscriptions" class="list-group maxout grey-list">';
-
-            echo '<div>Upcoming feature...</div>';
 
             echo '</div>';
             echo '</div>';
 
         } elseif ($item == 'intents') {
 
-            //Fetch the current intent relations found in this entity:
-
             echo '<div class="tab-pane" id="tabintents">';
             echo '<div id="list-intents" class="list-group maxout grey-list">';
 
+            echo '<div>Upcoming feature...</div>';
 
+            echo '</div>';
+            echo '</div>';
+
+        } elseif ($item == 'messages') {
+
+            //Fetch the current messages that have referenced this content:
+
+            echo '<div class="tab-pane" id="tabmessages">';
+            echo '<div id="list-messages" class="list-group maxout grey-list">';
+
+            echo 'Messages go here...';
             echo '</div>';
             echo '</div>';
 

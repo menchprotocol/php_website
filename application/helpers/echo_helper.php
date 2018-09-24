@@ -104,16 +104,16 @@ function echo_u($u){
 
     //Right content:
     $ui .= '<span class="pull-right">';
-    $ui .= echo_score($u['u_e_score']);
+    $ui .= echo_score($u['u__e_score']);
 
     $ui .= '<a class="badge badge-primary" href="/entities/'.$u['u_id'].'/modify" style="margin:-2px 3px 0 0;"><i class="fas fa-cog"></i></a>';
 
-    $ui .= '<a class="badge badge-primary" href="/entities/'.$u['u_id'].'" data-toggle="tooltip" data-placement="left" title="" data-original-title="Entity tree contains '.$u['u__outbound_count'].' child entities. Click to browse." style="width:40px;"><span class="btn-counter">'.(isset($u['u__outbound_count']) ? echo_big_num($u['u__outbound_count']).' ' : '').'</span><i class="fas fa-chevron-right"></i></a>';
+    $ui .= '<a class="badge badge-primary" href="/entities/'.$u['u_id'].'" style="width:40px;"><span class="btn-counter">'.(isset($u['u__outbound_count']) ? echo_big_num($u['u__outbound_count']) : '0').'</span><i class="fas fa-chevron-right"></i></a>';
 
     $ui .= '</span>';
 
     //Regular section:
-    $ui .= echo_cover($u,'micro-image', ( in_array($u['u_inbound_u_id'], array(1280,1279,1307,1281,1308,1304,1282)) ? 1 : 0 )).' ';
+    $ui .= echo_cover($u,'micro-image', 1).' ';
     if(strlen($u['u_bio'])>0){
         $ui .= '<span data-toggle="tooltip" data-placement="right" title="'.$u['u_bio'].'" style="border-bottom:1px dotted #3C4858; cursor:help;">'.$u['u_full_name'].'</span>';
     } else {
@@ -379,6 +379,14 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
             $i['i_message'] = str_replace('{first_name}', one_two_explode('',' ',$u_full_name), $i['i_message']);
         }
 
+        if($i['i_outbound_u_id']>0){
+            //This message has a reference:
+            //Query this entity:
+            $us = $CI->Db_model->u_fetch(array(
+                'u_id' => $i['i_outbound_u_id'],
+            ));
+            $i['i_message'] = str_replace('@'.$i['i_outbound_u_id'], '<a href="/entities/'.$us[0]['u_id'].'">'.$us[0]['u_full_name'].'</a>', $i['i_message']);
+        }
 
 
         //Does this message include a special command?
@@ -438,13 +446,6 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
                     $command = '{messenger}';
                 }
             }
-
-        } elseif(isset($i['i_button']) && strlen($i['i_button'])>0 && isset($i['i_url']) && strlen($i['i_url'])>0){
-
-            $button_title = trim($i['i_button']);
-            $button_url = $i['i_url'];
-            $command = '{inject_button}'; //Not used anywhere
-            $i['i_message'] .= $command; //To be replaced later on...
 
         }
 
@@ -650,7 +651,7 @@ function echo_message($i){
     //Editing menu:
     $ui .= '<ul class="msg-nav">';
     //$ui .= '<li class="edit-off"><i class="fas fa-clock"></i> 4s Ago</li>';
-    $ui .= '<li class="the_status edit-off" style="margin: 0 6px 0 -3px;">'.echo_status('i',$i['i_status'],1,'right').'</li>';
+    $ui .= '<li class="the_status edit-off" style="margin: 0 6px 0 -3px;">'.echo_status('i_status',$i['i_status'],1,'right').'</li>';
     if($i['i_media_type']=='text'){
         $CI =& get_instance();
         $message_max = $CI->config->item('message_max');
@@ -666,7 +667,7 @@ function echo_message($i){
     //Right side reverse:
     $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-primary" href="javascript:message_save_updates('.$i['i_id'].','.$i['i_status'].');" style="text-decoration:none; font-weight:bold; padding: 1px 8px 4px;"><i class="fas fa-check"></i></a></li>';
     $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-hidden" href="javascript:msg_cancel_edit('.$i['i_id'].');"><i class="fas fa-times" style="color:#3C4858"></i></a></li>';
-    $ui .= '<li class="pull-right edit-on hidden">'.echo_dropdown_status('i','i_status_'.$i['i_id'],$i['i_status'],array(-1),'dropup',1).'</li>';
+    $ui .= '<li class="pull-right edit-on hidden">'.echo_dropdown_status('i_status','i_status_'.$i['i_id'],$i['i_status'],array(-1,0),'dropup',1).'</li>';
     $ui .= '<li class="pull-right edit-updates"></li>'; //Show potential errors
 
     $ui .= '</ul>';
@@ -682,7 +683,7 @@ function echo_cover($u,$img_class=null,$return_anyways=false,$tooltip_content=nu
     if($u['u_cover_x_id']>0 && isset($u['x_url'])){
         return '<img src="'.$u['x_url'].'" class="'.$img_class.'" '.$tooltip_content.' />';
     } elseif($return_anyways) {
-        return '<i class="fas fa-user-circle" '.$tooltip_content.' ></i>';
+        return '<i class="fas fa-at" '.$tooltip_content.' ></i>';
     } else {
         return null;
     }

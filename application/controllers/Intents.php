@@ -1145,7 +1145,7 @@ class Intents extends CI_Controller
             //Fetch Message:
             $messages = $this->Db_model->i_fetch(array(
                 'i_id' => intval($_POST['i_id']),
-                'i_status >' => 0,
+                'i_status >=' => 0,
             ));
 
             //Make sure message is all good:
@@ -1172,8 +1172,41 @@ class Intents extends CI_Controller
 
                 //Is this a text message?
                 if($_POST['i_media_type']=='text'){
+
+                    //Always trim message:
                     $to_update['i_message'] = trim($_POST['i_message']);
-                    $to_update['i_url'] = ( isset($validation['urls'][0]) ? $validation['urls'][0] : null );
+
+
+                    if(isset($validation['urls'][0])){
+                        //We need to make a new entity (or find existing one) and reference:
+
+                    }
+
+
+                    //Do we have any entity references?
+                    preg_match('/@(\d+)/', $to_update['i_message'], $matches);
+                    if(isset($matches[1]) && strlen($matches[1])>0 && strlen($matches[1])==strlen(intval($matches[1]))){
+
+                        $us = $this->Db_model->u_fetch(array(
+                            'u_id' => $matches[1],
+                        ));
+                        if(count($us)==0){
+                            //Invalid Entity ID
+                            return echo_json(array(
+                                'status' => 0,
+                                'message' => '[@'.$matches[1].'] is an Invalid Entity reference',
+                            ));
+                        } elseif(!($us[0]['u_inbound_u_id']==1326)){
+                            //Entity is from a non-allowed category:
+                            return echo_json(array(
+                                'status' => 0,
+                                'message' => '['.$us[0]['u_full_name'].'] is not a valid content entity',
+                            ));
+                        }
+
+                        //All good:
+                        $to_update['i_outbound_u_id'] = $matches[1];
+                    }
                 }
 
                 if(!($_POST['initial_i_status']==$_POST['i_status'])){
@@ -1211,7 +1244,7 @@ class Intents extends CI_Controller
                 echo_json(array(
                     'status' => 1,
                     'message' => echo_i(array_merge($new_messages[0],array('e_outbound_u_id'=>$udata['u_id'])),$udata['u_full_name']),
-                    'new_status' => echo_status('i',$new_messages[0]['i_status'],1,'right'),
+                    'new_status' => echo_status('i_status',$new_messages[0]['i_status'],1,'right'),
                     'success_icon' => '<span><i class="fas fa-check"></i> Saved</span>',
                     'new_uploader' => echo_cover($new_messages[0],null,true, 'data-toggle="tooltip" title="Last modified by '.$new_messages[0]['u_full_name'].' about '.echo_diff_time($new_messages[0]['i_timestamp']).' ago" data-placement="right"'), //If there is a person change...
                 ));
@@ -1243,7 +1276,7 @@ class Intents extends CI_Controller
             //Fetch Message:
             $messages = $this->Db_model->i_fetch(array(
                 'i_id' => intval($_POST['i_id']),
-                'i_status >' => 0, //Not deleted
+                'i_status >=' => 0, //Not deleted
             ));
             if(!isset($messages[0])){
                 echo_json(array(

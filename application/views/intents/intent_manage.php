@@ -2,12 +2,13 @@
 if(isset($orphan_cs)){
     $c['c_id'] = 0;
 }
-
 ?>
-<input type="hidden" id="c_id" value="<?= $c['c_id'] ?>" />
 
+<input type="hidden" id="c_id" value="<?= $c['c_id'] ?>" />
 <style> .breadcrumb li { display:block; } </style>
 <script>
+
+
 
     function echo_hours(dbl_hour){
         dbl_hour = parseFloat(dbl_hour);
@@ -742,8 +743,6 @@ if(isset($orphan_cs)){
     }
 
 </script>
-
-
 
 <div class="row">
     <div class="col-xs-6">

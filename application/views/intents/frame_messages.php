@@ -2,11 +2,11 @@
 
 //Fetch Messages based on c_id:
 $message_max = $this->config->item('message_max');
-$i_statuses = echo_status('i', null);
+$i_statuses = echo_status('i_status', null);
 $udata = $this->session->userdata('user');
 $i_messages = $this->Db_model->i_fetch(array(
     'i_outbound_c_id' => $c_id,
-    'i_status >' => 0, //Published in any form
+    'i_status >=' => 0, //Not deleted
 ), 0, array('x'));
 
 //Fetch intent details:
@@ -107,6 +107,60 @@ if(!isset($intents[0])){
 
 
     $(document).ready(function(){
+
+
+        $('.msgin').textcomplete([
+            {
+                match: /(^|\s)@(\w*(?:\s*\w*))$/,
+                search: function(query, callback) {
+                    algolia_u_index.search(query, {
+                        hitsPerPage:5,
+                        filters:'(u_inbound_u_id=1326)',
+
+                    })
+                        .then(function searchSuccess(content) {
+                            if (content.query === query) {
+                                callback(content.hits);
+                            }
+                        })
+                        .catch(function searchFailure(err) {
+                            console.error(err);
+                        });
+                },
+                template: function (hit) {
+                    // Returns the highlighted version of the name attribute
+                    return '<span class="inline34">@'+hit.u_id+'</span> '+hit._highlightResult.u_full_name.value;
+                },
+                replace: function (hit) {
+                    return ' @' + hit.u_id + ' ';
+                }
+            },
+            {
+                match: /(^|\s)#(\w*(?:\s*\w*))$/,
+                search: function(query, callback) {
+                    algolia_c_index.search(query, {
+                        hitsPerPage:5,
+                    })
+                        .then(function searchSuccess(content) {
+                            if (content.query === query) {
+                                callback(content.hits);
+                            }
+                        })
+                        .catch(function searchFailure(err) {
+                            console.error(err);
+                        });
+                },
+                template: function (hit) {
+                    // Returns the highlighted version of the name attribute
+                    return '<span class="inline34">#'+hit.c_id+'</span> '+hit._highlightResult.c_outcome.value;
+                },
+                replace: function (hit) {
+                    return ' #' + hit.c_id + ' ';
+                }
+            }
+        ]);
+
+
         //Load Nice sort for iPhone X
         new SimpleBar(document.getElementById('intent_messages'+c_id), {
             // option1: value1,
@@ -557,9 +611,9 @@ if(!isset($intents[0])){
 <div class="iphone-title"><i class="fas fa-hashtag"></i> <?= $intents[0]['c_outcome'] ?></div>
 
 <ul class="nav nav-tabs iphone-nav-tabs">
-    <li role="presentation" class="nav_1 active"><a href="#messages-<?= $c_id ?>-1"><?= echo_status('i',1, false, null) ?></a></li>
-    <li role="presentation" class="nav_3"><a href="#messages-<?= $c_id ?>-3"><?= echo_status('i',3, false, null) ?></a></li>
-    <li role="presentation" class="nav_2"><a href="#messages-<?= $c_id ?>-2"><?= echo_status('i',2, false, null) ?></a></li>
+    <li role="presentation" class="nav_1 active"><a href="#messages-<?= $c_id ?>-1"><?= echo_status('i_status',1, false, null) ?></a></li>
+    <li role="presentation" class="nav_3"><a href="#messages-<?= $c_id ?>-3"><?= echo_status('i_status',3, false, null) ?></a></li>
+    <li role="presentation" class="nav_2"><a href="#messages-<?= $c_id ?>-2"><?= echo_status('i_status',2, false, null) ?></a></li>
 </ul>
 
 <input type="hidden" id="i_status_focus" value="1" />
@@ -568,7 +622,7 @@ if(!isset($intents[0])){
 
     <?php
     //Give more information on each message type:
-    $i_desc = echo_status('i');
+    $i_desc = echo_status('i_status');
     echo '<div class="ix-tip all_msg msg_1">';
     echo '<i class="fas fa-info-circle"></i> ';
     echo $i_desc[1]['s_desc'].'.';
@@ -597,13 +651,13 @@ if(!isset($intents[0])){
 
     //Show no Message errors:
     if($message_count_1==0){
-        echo '<div class="ix-tip no-messages'.$c_id.'_1 all_msg msg_1"><i class="fas fa-exclamation-triangle"></i> No '.echo_status('i',1, false, null).' Messages added yet</div>';
+        echo '<div class="ix-tip no-messages'.$c_id.'_1 all_msg msg_1"><i class="fas fa-exclamation-triangle"></i> No '.echo_status('i_status',1, false, null).' Messages added yet</div>';
     }
     if($message_count_2==0){
-        echo '<div class="ix-tip no-messages'.$c_id.'_2 all_msg msg_2 hidden"><i class="fas fa-exclamation-triangle"></i> No '.echo_status('i',2, false, null).' Messages added yet</div>';
+        echo '<div class="ix-tip no-messages'.$c_id.'_2 all_msg msg_2 hidden"><i class="fas fa-exclamation-triangle"></i> No '.echo_status('i_status',2, false, null).' Messages added yet</div>';
     }
     if($message_count_3==0){
-        echo '<div class="ix-tip no-messages'.$c_id.'_3 all_msg msg_3 hidden"><i class="fas fa-exclamation-triangle"></i> No '.echo_status('i',3, false, null).' Messages added yet</div>';
+        echo '<div class="ix-tip no-messages'.$c_id.'_3 all_msg msg_3 hidden"><i class="fas fa-exclamation-triangle"></i> No '.echo_status('i_status',3, false, null).' Messages added yet</div>';
     }
 
     ?>
@@ -632,9 +686,9 @@ if(!isset($intents[0])){
     echo '</div>';
 
 
-    echo '<div class="iphone-add-btn all_msg msg_1"><a href="javascript:msg_create();" id="add_message_1_'.$c_id.'" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="top" class="btn btn-primary">ADD '.echo_status('i',1, false, null).' &nbsp; MESSAGE</a></div>';
-    echo '<div class="iphone-add-btn all_msg msg_2 hidden"><a href="javascript:msg_create();" id="add_message_2_'.$c_id.'" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="top" class="btn btn-primary">ADD '.echo_status('i',2, false, null).' &nbsp; MESSAGE</a></div>';
-    echo '<div class="iphone-add-btn all_msg msg_3 hidden"><a href="javascript:msg_create();" id="add_message_3_'.$c_id.'" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="top" class="btn btn-primary">ADD '.echo_status('i',3, false, null).' &nbsp; MESSAGE</a></div>';
+    echo '<div class="iphone-add-btn all_msg msg_1"><a href="javascript:msg_create();" id="add_message_1_'.$c_id.'" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="top" class="btn btn-primary">ADD '.echo_status('i_status',1, false, null).' &nbsp; MESSAGE</a></div>';
+    echo '<div class="iphone-add-btn all_msg msg_2 hidden"><a href="javascript:msg_create();" id="add_message_2_'.$c_id.'" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="top" class="btn btn-primary">ADD '.echo_status('i_status',2, false, null).' &nbsp; MESSAGE</a></div>';
+    echo '<div class="iphone-add-btn all_msg msg_3 hidden"><a href="javascript:msg_create();" id="add_message_3_'.$c_id.'" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="top" class="btn btn-primary">ADD '.echo_status('i_status',3, false, null).' &nbsp; MESSAGE</a></div>';
 
 
 

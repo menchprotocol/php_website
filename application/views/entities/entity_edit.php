@@ -25,50 +25,6 @@ $(document).ready(function() {
 
 	//Counter:
 	changeBio();
-
-
-
-	//Lookout for primary intent searches:
-    $( "#add_authors_input" ).on('autocomplete:selected', function(event, suggestion, dataset) {
-
-        add_u_link(suggestion.u_id, null, 'inbound');
-
-    }).autocomplete({ hint: false, keyboardShortcuts: ['a'] }, [{
-
-        source: function(q, cb) {
-            algolia_u_index.search(q, {
-                hitsPerPage: 7,
-                filters:'(u_inbound_u_id=1280 OR u_inbound_u_id=1279 OR u_inbound_u_id=1307 OR u_inbound_u_id=1281 OR u_inbound_u_id=1308 OR u_inbound_u_id=1304 OR u_inbound_u_id=1282)',
-            }, function(error, content) {
-                if (error) {
-                    cb([]);
-                    return;
-                }
-                cb(content.hits, content);
-            });
-        },
-        displayKey: function(suggestion) { return "" },
-        templates: {
-            suggestion: function(suggestion) {
-                //If clicked, would trigger the autocomplete:selected above which will trigger the add_u_link() function
-                return '<span><i class="fas fa-at"></i></span> '+ suggestion.u_full_name + ' ('+suggestion.u_inbound_name+')';
-            },
-            header: function(data) {
-                if(!data.isEmpty){
-                    return '<a href="javascript:add_u_link(0,\''+data.query+'\',\'inbound\')" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create</span> "'+data.query+'"'+' (Referenced Auhtors)</a>';
-                }
-            },
-            empty: function(data) {
-                return '<a href="javascript:add_u_link(0,\''+data.query+'\',\'inbound\')" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create</span> "'+data.query+'"'+' (Referenced Auhtors)</a>';
-            },
-        }
-    }]).keypress(function (e) {
-        var code = (e.keyCode ? e.keyCode : e.which);
-        if ((code == 13) || (e.ctrlKey && code == 13)) {
-            add_u_link(0, $("#add_authors_input").val(), 'inbound');
-            return true;
-        }
-    });
 });
 
 //Count text area characters:
@@ -182,18 +138,6 @@ function insert_gravatar(){
         <div style="margin:0 0 10px 0; font-size:0.8em;"><span id="charNum">0</span>/<?= $message_max ?></div>
 
 
-
-
-        <div class="is-login-mediator hidden">
-            <div class="title" style="margin-top:20px;"><h4><i class="fas fa-hashtag"></i> Primary Intent <span id="hb_6980" class="help_button" intent-id="6980"></span></h4></div>
-            <div class="help_body maxout" id="content_6980"></div>
-
-
-            <div class="input-group border">
-                <span class="input-group-addon addon-lean"><i class="fas fa-hashtag" style="color:#3C4858;"></i></span>
-                <input style="padding-left:3px;" type="text" id="u_outbound_c_id" value="<?= $entity['u_outbound_c_id'] ?>" class="form-control c_outcome_input">
-            </div>
-        </div>
 
 
 

@@ -2151,6 +2151,11 @@ margin:5px 0;
     line-height:150%;
 }
 
+.inline34{
+    font-size: 0.9em;
+    color:#CCC;
+}
+
 .bintent>li+li:before, .bintent>li:before{
     content:"#";
     color:#CCC;

@@ -17,7 +17,6 @@ $engagement_filters = array(
     'e_r_id' => 'Class ID',
     'e_outbound_c_id' => 'Intent ID',
     'e_fp_id' => 'FB Page ID',
-    'e_e_id' => 'Referenced Engagement ID',
 );
 
 $match_columns = array();

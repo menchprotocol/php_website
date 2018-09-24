@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => '5.25',
+    'version' => '0.530',
     'name' => 'Mench',
     'url' => 'https://mench.com/', //Important to end with "/" as other links depend on this.
     'email' => 'shervin@mench.com',
@@ -100,40 +100,72 @@ $config['object_statuses'] = array(
         -1 => array(
             's_name'  => 'Archived',
             's_desc'  => 'Entity has been removed',
-            's_icon' => 'fas fa-trash-alt',
+            's_icon' => 'fas fa-times-circle',
+        ),
+        0 => array(
+            's_name'  => 'Pending Review',
+            's_desc'  => 'Entity is added and pending review by a moderator',
+            's_icon' => 'fas fa-exclamation-circle',
         ),
         1 => array(
-            's_name'  => 'Public',
+            's_name'  => 'Active',
             's_desc'  => 'Entity is published live',
-            's_icon' => 'fas fa-bullhorn',
+            's_icon' => 'fas fa-check-circle',
         ),
     ),
-
+    'ur' => array(
+        -1 => array(
+            's_name'  => 'Archived',
+            's_desc'  => 'Entity link is deleted',
+            's_icon' => 'fas fa-times-circle',
+        ),
+        0 => array(
+            's_name'  => 'Pending Review',
+            's_desc'  => 'Entity link is added and pending review by a moderator',
+            's_icon' => 'fas fa-exclamation-circle',
+        ),
+        1 => array(
+            's_name'  => 'Active',
+            's_desc'  => 'Entity link is active',
+            's_icon' => 'fas fa-check-circle',
+        ),
+    ),
     'c' => array(
         -1 => array(
             's_name'  => 'Archived',
             's_desc'  => 'Intent has been archived and all its links has been removed',
-            's_icon' => 'fas fa-trash-alt',
+            's_icon' => 'fas fa-times-circle',
+        ),
+        0 => array(
+            's_name'  => 'Pending Review',
+            's_desc'  => 'Intent is added and pending review by a moderator',
+            's_icon' => 'fas fa-exclamation-circle',
         ),
         1 => array(
-            's_name'  => 'Public',
+            's_name'  => 'Active',
             's_desc'  => 'Intent is published live',
-            's_icon' => 'fas fa-bullhorn',
+            's_icon' => 'fas fa-check-circle',
         ),
     ),
     'cr' => array(
         -1 => array(
-            's_name'  => 'Unlinked',
+            's_name'  => 'Archived',
             's_desc'  => 'Intent link is deleted',
-            's_icon' => 'fas fa-unlink',
+            's_icon' => 'fas fa-times-circle',
+        ),
+        0 => array(
+            's_name'  => 'Pending Review',
+            's_desc'  => 'Intent link is added and pending review by a moderator',
+            's_icon' => 'fas fa-exclamation-circle',
         ),
         1 => array(
-            's_name'  => 'Linked',
+            's_name'  => 'Active',
             's_desc'  => 'Intent link is active',
-            's_icon' => 'fas fa-link',
+            's_icon' => 'fas fa-check-circle',
         ),
     ),
-    'c_completion' => array(
+
+    'c_is_any' => array(
         0 => array(
             's_name'  => 'All Children',
             's_desc'  => 'Intent is complete when all children are marked as complete',
@@ -143,11 +175,6 @@ $config['object_statuses'] = array(
             's_name'  => 'Any Child',
             's_desc'  => 'Intent is complete when a single child is marked as complete',
             's_icon' => 'fas fa-code-merge',
-        ),
-        2 => array(
-            's_name'  => 'Student Input',
-            's_desc'  => 'Intent is complete when student submits their written response',
-            's_icon' => 'fas fa-smile-plus',
         ),
     ),
     'c_is_output' => array(
@@ -164,13 +191,17 @@ $config['object_statuses'] = array(
     ),
 
 
-    'i' => array(
+    'i_status' => array(
         -1 => array(
-            's_name'  => 'Delete',
-            's_desc'  => 'Message removed.',
-            's_icon' => 'fas fa-trash-alt',
+            's_name'  => 'Archived',
+            's_desc'  => 'Message removed',
+            's_icon' => 'fas fa-times-circle',
         ),
-        //No drafting for messages as it over-complicates things
+        0 => array(
+            's_name'  => 'Pending Review',
+            's_desc'  => 'Message is added and pending review by a moderator',
+            's_icon' => 'fas fa-exclamation-circle',
+        ),
         1 => array(
             's_name'  => 'On-Start',
             's_desc'  => 'Initial messages giving students instructions on how to effectively execute and complete this item',
@@ -179,7 +210,7 @@ $config['object_statuses'] = array(
         3 => array(
             's_name'  => 'On-Complete',
             's_desc'  => 'Messages sent when students complete this item. Re-iterate key insights to help students retain learnings',
-            's_icon' => 'fas fa-check-circle',
+            's_icon' => 'fas fa-check-square',
         ),
         2 => array(
             's_name'  => 'Drip',
@@ -293,9 +324,9 @@ $config['object_statuses'] = array(
 
     'x_status' => array(
         -2 => array(
-            's_name'  => 'Deleted',
+            's_name'  => 'Archived',
             's_desc'  => 'URL removed by User',
-            's_icon' => 'fas fa-trash-alt',
+            's_icon' => 'fas fa-times-circle',
         ),
         -1 => array(
             's_name'  => 'Broken',
@@ -308,7 +339,7 @@ $config['object_statuses'] = array(
             's_icon' => 'fas fa-unlink',
         ),
         2 => array(
-            's_name'  => 'Live',
+            's_name'  => 'Active',
             's_desc'  => 'A URL Associated to the Entity',
             's_icon' => 'fas fa-check-circle',
         ),
@@ -318,24 +349,24 @@ $config['object_statuses'] = array(
 
     't' => array(
         -2 => array(
-            's_name'  => 'Coach Payout',
-            's_desc'  => 'Payment sent to coaches and affiliates',
-            's_icon' => 'fas fa-usd-circle',
+            's_name'  => 'Partner Payout',
+            's_desc'  => 'Payment sent to a partner trainer, coach or affiliate',
+            's_icon' => 'fas fa-file-invoice-dollar',
         ),
         -1 => array(
-            's_name'  => 'Refund Payout',
+            's_name'  => 'Refund Payment',
             's_desc'  => 'Transaction hold the exact amount of refund issues to the student',
             's_icon' => 'fas fa-usd-circle',
         ),
         0 => array(
-            's_name'  => 'Transaction Refunded',
-            's_desc'  => 'Payment has been fully or partially refunded and a new transaction has been added to reflect the exact refund',
-            's_icon' => 'fas fa-usd-circle',
+            's_name'  => 'Payment Adjusted',
+            's_desc'  => 'Payment adjusted with a full/partial refunded and new transaction has been added',
+            's_icon' => 'fas fa-hand-holding-usd',
         ),
         1 => array(
             's_name'  => 'Payment Received',
-            's_desc'  => 'Payment received from students for a class enrollment',
-            's_icon' => 'fas fa-usd-circle',
+            's_desc'  => 'Payment received from weekly subscription',
+            's_icon' => 'fas fa-hand-holding-usd',
         ),
     ),
 );
@@ -445,10 +476,6 @@ $config['engagement_references'] = array(
     'e_fp_id' => array(
         'name' => 'Facebook Page',
         'object_code' => 'fp',
-    ),
-    'e_e_id' => array(
-        'name' => 'Referenced Engagement',
-        'object_code' => 'e',
     ),
 );
 

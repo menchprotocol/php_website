@@ -59,7 +59,7 @@ function fetch_entity_tree($inbound_u_id,$is_edit=false){
             //Fetch parent details:
             $parent_entities = $CI->Db_model->u_fetch(array(
                 'u_id' => $parent_id,
-            ), array('count_child'));
+            ), array('u__outbound_count'));
 
             if(count($parent_entities)<1){
                 redirect_message('/entities','<div class="alert alert-danger" role="alert">Invalid Entity ID</div>');
