@@ -2241,7 +2241,7 @@ class Db_model extends CI_Model {
                 $new_item['_tags'] = array();
 
                 //Loop through the Tags:
-                foreach($item as $u_id=>$u){
+                foreach($item['u__inbounds'] as $u_id=>$u){
                     array_push($new_item['_tags'],intval($u_id));
                 }
 
@@ -2305,6 +2305,17 @@ class Db_model extends CI_Model {
                 //Clean keywords
                 $new_item['c__this_messages'] = count($messages);
                 $new_item['c_keywords'] = trim(strip_tags($new_item['c_keywords']));
+
+                //Append parent intents:
+                $new_item['_tags'] = array();
+                $child_cs = $this->Db_model->cr_inbound_fetch(array(
+                    'cr.cr_outbound_c_id' => $item['c_id'],
+                    'cr.cr_status >=' => 1,
+                    'c.c_status >=' => 1,
+                ));
+                foreach($child_cs as $c){
+                    array_push($new_item['_tags'],intval($c['c_id']));
+                }
 
             }
 
