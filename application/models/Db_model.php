@@ -2242,7 +2242,7 @@ class Db_model extends CI_Model {
 
                 //Loop through the Tags:
                 foreach($item['u__inbounds'] as $u_id=>$u){
-                    array_push($new_item['_tags'],intval($u_id));
+                    array_push($new_item['_tags'],'u'.$u_id);
                 }
 
                 //Append additional information:
@@ -2314,7 +2314,7 @@ class Db_model extends CI_Model {
                     'c.c_status >=' => 1,
                 ));
                 foreach($child_cs as $c){
-                    array_push($new_item['_tags'],intval($c['c_id']));
+                    array_push($new_item['_tags'],'c'.$c['c_id']);
                 }
 
             }

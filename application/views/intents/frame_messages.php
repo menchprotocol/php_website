@@ -115,7 +115,9 @@ if(!isset($intents[0])){
                 search: function(query, callback) {
                     algolia_u_index.search(query, {
                         hitsPerPage:5,
-                        filters:'(u_inbound_u_id=1326)',
+                        tagFilters:[
+                            ['1326','1278']
+                        ]
                     })
                         .then(function searchSuccess(content) {
                             if (content.query === query) {
