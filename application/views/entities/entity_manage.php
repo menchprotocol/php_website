@@ -50,10 +50,15 @@ $messages = $this->Db_model->i_fetch(array(
 //Construct main menu
 //should correspond to the manually written code below for each tab with the data fetched above
 $tabs = array(
+    'intents' => array(
+        'title' => 'Intents',
+        'icon' => 'fas fa-hashtag',
+        'item_count' => count($enrollments),
+    ),
     'outbound' => array(
         'title' => 'Outs',
         'icon' => 'fas fa-sign-out-alt rotate90',
-        'item_count' => count($child_entities),
+        'item_count' => $entity['u__outbound_count'],
     ),
     'urls' => array(
         'title' => 'URLs',
@@ -64,11 +69,6 @@ $tabs = array(
         'title' => 'Ins',
         'icon' => 'fas fa-sign-in-alt rotate90',
         'item_count' => count($entity['u__inbounds']),
-    ),
-    'intents' => array(
-        'title' => 'Intents',
-        'icon' => 'fas fa-hashtag',
-        'item_count' => count($enrollments),
     ),
     'training' => array(
         'title' => 'Training',
@@ -107,13 +107,15 @@ $tabs = array(
 <script>
 
     $(document).ready(function () {
+
         //Detect any possible hashes that controll the menu?
         if (window.location.hash) {
             focus_hash(window.location.hash);
         } else {
-            //Mark the first item as active:
-            $('#topnav li:not(.hidden):first').addClass('active');
-            $('.tab-pane:not(.hidden):first').addClass('active');
+            //Mark the first non-hidden item as active:
+            var focus = $('#topnav li:not(.hidden):first');
+            focus.addClass('active');
+            $('#tab'+focus.attr('item-id')).addClass('active');
         }
 
         //Watch for Reference adding:
@@ -437,7 +439,7 @@ echo '</div>';
 echo '<ul id="topnav" class="nav nav-pills nav-pills-primary">';
     //Go through all tabs and see wassup:
     foreach ($tabs as $key => $tab) {
-        echo '<li id="nav_'.$key.'" class="'.( $tab['item_count']>0 ? '' : 'hidden' ).'"><a href="#'.$key.'"><i class="'.$tab['icon'].'"></i> <span class="li-'.$key.'-count">'.$tab['item_count'].'</span> '.$tab['title'].'</a></li>';
+        echo '<li id="nav_'.$key.'" class="'.( $tab['item_count']>0 ? '' : 'hidden' ).'" item-id="'.$key.'"><a href="#'.$key.'"><i class="'.$tab['icon'].'"></i> <span class="li-'.$key.'-count">'.$tab['item_count'].'</span> '.$tab['title'].'</a></li>';
     }
 echo '</ul>';
 

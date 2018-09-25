@@ -281,7 +281,7 @@ input::-webkit-inner-spin-button {
     display: block;
     margin-bottom: 40px;
     position: absolute;
-    top: -70px;
+    top: -25px;
     left: 30px;
 }
 .marvel-device.iphone-x .notch {
