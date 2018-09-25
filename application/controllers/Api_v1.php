@@ -260,7 +260,7 @@ class Api_v1 extends CI_Controller {
                 if($page['fp_status']>=0){
                     $pages_list_ui .= '<span class="pull-right">';
 
-                    if($page['fp_status']==1 && $udata['u_inbound_u_id']==1281){
+                    if($page['fp_status']==1 && array_key_exists(1281, $udata['u__inbounds'])){
                         $pages_list_ui .= '<a id="simulate_'.$page['fp_id'].'" class="badge badge-primary btn-mls" href="javascript:fp_refresh('.$page['fp_id'].')" data-toggle="tooltip" title="Refresh the Mench integration on your Facebook Page to resolve any possible connection issues." data-placement="left"><i class="fas fa-sync"></i></a>';
                     }
 
@@ -663,13 +663,6 @@ class Api_v1 extends CI_Controller {
                 'ru_cache__completion_rate' => 1, //Student is 100% complete
                 'ru_cache__current_task' => ($focus_class['r__total_tasks']+1), //Go 1 Task after the total Tasks to indicate completion
             ));
-
-            //Change their entity Group
-            if(in_array($matching_enrollments[0]['u_inbound_u_id'],array(1304,1282,1279))){
-                $this->Db_model->u_update( $matching_enrollments[0]['u_id'] , array(
-                    'u_inbound_u_id' => 1307, //Graduate
-                ));
-            }
 
             //Send graduation message:
             $this->Comm_model->foundation_message(array(

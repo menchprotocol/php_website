@@ -79,7 +79,7 @@ $uri_segment_2 = $this->uri->segment(2);
                             <li class="extra-toggle" style="display: none;"><a href="/my/actionplan"><span class="icon-left"><i class="fas fa-user-graduate"></i></span> Student</a></li>
                         <?php } ?>
 
-                        <?php if($udata['u_inbound_u_id']==1281){ ?>
+                        <?php if(array_key_exists(1281, $udata['u__inbounds'])){ ?>
                             <li class="extra-toggle" style="display: none;"><a href="/cockpit/browse/engagements"><span class="icon-left"><i class="fas fa-user-shield"></i></span> Admin</a></li>
                         <?php } ?>
 
@@ -92,7 +92,7 @@ $uri_segment_2 = $this->uri->segment(2);
 		</nav>
 
 
-        <?php if($uri_segment_1=='cockpit' && $udata['u_inbound_u_id']==1281){ ?>
+        <?php if($uri_segment_1=='cockpit' && array_key_exists(1281, $udata['u__inbounds'])){ ?>
         <div class="sidebar" id="mainsidebar">
         <div class="sidebar-wrapper">
 

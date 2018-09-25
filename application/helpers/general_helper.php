@@ -467,8 +467,14 @@ function mime_type($mime){
 
 
 
-
-
+function array_any_key_exists(array $keys, array $arr) {
+    foreach($keys as $key){
+        if(array_key_exists($key,$arr)){
+            return true;
+        }
+    }
+    return false;
+}
 
 
 
@@ -505,7 +511,7 @@ function auth($entity_groups=null,$force_redirect=0,$b_id=0,$u_id=0){
 	    //No minimum level required, grant access IF logged in:
 	    return $udata;
 
-    } elseif(isset($udata['u_inbound_u_id']) && $udata['u_inbound_u_id']==1281){
+    } elseif(isset($udata['u__inbounds']) && array_key_exists(1281, $udata['u__inbounds'])){
 
         //Always grant access to Admins:
         return $udata;
@@ -515,26 +521,9 @@ function auth($entity_groups=null,$force_redirect=0,$b_id=0,$u_id=0){
         //Always grant access to the user variable:
         return $udata;
 	    
-	} elseif(isset($udata['u_id']) && $b_id){
+	} elseif(isset($udata['u_id']) && array_any_key_exists($entity_groups,$udata['u__inbounds'])){
 	    
-	    //Fetch Bootcamp admins and see if they have access to this:
-	    $b_coaches = $CI->Db_model->ba_fetch(array(
-	        'ba.ba_b_id' => $b_id,
-	        'ba.ba_status >=' => 1, //Actively assigned team member
-	        'u.u_status' => 1, //Active entity
-	        'u.u_id' => $udata['u_id'],
-	    ));
-	    
-	    if(count($b_coaches)>0){
-	        //Append permissions here:
-	        $udata['project_permissions'] = $b_coaches[0];
-	        //Coach is part of the Bootcamp:
-	        return $udata;
-	    }
-	    
-	} elseif(isset($udata['u_id']) && in_array($udata['u_inbound_u_id'],$entity_groups)){
-	    
-		//They meet the minimum level requirement:
+		//They are part of one of the levels assigned to them:
 	    return $udata;
 	    
 	}
@@ -545,7 +534,7 @@ function auth($entity_groups=null,$force_redirect=0,$b_id=0,$u_id=0){
 	    return false;
 	} else {
 	    //Block access:
-	    redirect_message( ( isset($udata['u_id']) && (in_array($udata['u_inbound_u_id'], array(1280,1308,1281)) || isset($udata['project_permissions'])) ? '/intents' : '/login?url='.urlencode($_SERVER['REQUEST_URI']) ),'<div class="alert alert-danger maxout" role="alert">'.( isset($udata['u_id']) ? 'Access not authorized.' : 'Session Expired. Login to continue.' ).'</div>');
+	    redirect_message( ( isset($udata['u_id']) && ( array_any_key_exists(array(1280,1308,1281),$udata['u__inbounds']) || isset($udata['project_permissions'])) ? '/intents' : '/login?url='.urlencode($_SERVER['REQUEST_URI']) ),'<div class="alert alert-danger maxout" role="alert">'.( isset($udata['u_id']) ? 'Access not authorized.' : 'Session Expired. Login to continue.' ).'</div>');
 	}
 	
 }

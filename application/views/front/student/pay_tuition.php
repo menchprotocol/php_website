@@ -3,11 +3,9 @@
 if(!isset($_GET['payment']) || doubleval($_GET['payment'])<1){
 
     //Show Header:
-    echo echo_b_header($b);
 
 
-    //Show payment links:
-    echo_package($b,0,0, $enrollment);
+    //Show payment links
 
     echo '<span id="white_paypal"><img src="/img/paypal.png" /></span>';
 

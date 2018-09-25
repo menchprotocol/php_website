@@ -817,8 +817,8 @@ class Comm_model extends CI_Model {
             //Yes, make sure that there is no referral variable or if there is, its the same as this one:
             if($ref_u_id && !($u['u_id']==$ref_u_id)){
 
-                //See what type of account is this, as it might be just a Prospect student
-                if($u['u_inbound_u_id']==1304 && strlen($u['u_email'])<1){
+                //See what type of account is this:
+                if(strlen($u['u_email'])<1){
 
                     //Remove this entity to remove them:
                     $this->Db_model->u_update( $u['u_id'] , array(
@@ -1072,7 +1072,6 @@ class Comm_model extends CI_Model {
                     'u_country_code' 	=> $locale[1],
                     'u_cache__fp_id'    => $fp['fp_id'],
                     'u_cache__fp_psid'  => $fp_psid,
-                    'u_inbound_u_id'    => 1304, //Prospects
                 ));
 
                 //Save picture locally:

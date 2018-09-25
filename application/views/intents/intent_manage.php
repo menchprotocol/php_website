@@ -2,22 +2,6 @@
 if(isset($orphan_cs)){
     $c['c_id'] = 0;
 }
-
-
-$tabs = array(
-    'outbound' => array(
-        'title' => 'Outs',
-        'icon' => 'fas fa-sign-out-alt rotate90',
-        'item_count' => count($c['c__child_intents']),
-    ),
-    'inbound' => array(
-        'title' => 'Ins',
-        'icon' => 'fas fa-sign-in-alt rotate90',
-        'item_count' => count($c__inbounds),
-    ),
-);
-
-
 ?>
 
 <input type="hidden" id="c_id" value="<?= $c['c_id'] ?>" />
@@ -142,7 +126,6 @@ $tabs = array(
             source: function(q, cb){
                 algolia_c_index.search(q, {
                     hitsPerPage: 7,
-                    //filters: ( parseInt($('#u_inbound_u_id').val())==1281 ? null : '(c_inbound_u_id=' + $('#u_id').val() + ')' ),
                 }, function(error, content) {
                     if (error) {
                         cb([]);
@@ -184,7 +167,6 @@ $tabs = array(
             source: function(q, cb){
                 algolia_c_index.search(q, {
                     hitsPerPage: 7,
-                    //filters: ( parseInt($('#u_inbound_u_id').val())==1281 ? null : '(c_inbound_u_id=' + $('#u_id').val() + ')' ),
                 }, function(error, content) {
                     if (error) {
                         cb([]);
@@ -338,18 +320,18 @@ $tabs = array(
 
                         //Determine core variables for hour move calculations:
                         var step_hours = parseFloat($('#t_estimate_'+inputs.c_id).attr('tree-hours'));
-                        var intent_count = parseInt($('#tree-counter-'+inputs.c_id).text());
+                        var intent_count = parseInt($('.outbound-counter-'+inputs.c_id+':first').text());
 
                         if(!(step_hours==0)){
                             //Remove from old one:
                             var from_hours_new = parseFloat($('#t_estimate_'+inputs.from_c_id).attr('tree-hours'))-step_hours;
                             $('#t_estimate_'+inputs.from_c_id).attr('tree-hours',from_hours_new).text(echo_hours(from_hours_new));
-                            $('#tree-counter-'+inputs.from_c_id).text( parseInt($('#tree-counter-'+inputs.from_c_id).text()) - intent_count );
+                            $('.outbound-counter-'+inputs.from_c_id).text( parseInt($('.outbound-counter-'+inputs.from_c_id+':first').text()) - intent_count );
 
                             //Add to new:
                             var to_hours_new = parseFloat($('#t_estimate_'+inputs.to_c_id).attr('tree-hours'))+step_hours;
                             $('#t_estimate_'+inputs.to_c_id).attr('tree-hours',to_hours_new).text(echo_hours(to_hours_new));
-                            $('#tree-counter-'+inputs.to_c_id).text( parseInt($('#tree-counter-'+inputs.to_c_id).text()) + intent_count );
+                            $('.outbound-counter-'+inputs.to_c_id).text( parseInt($('.outbound-counter-'+inputs.to_c_id+':first').text()) + intent_count );
                         }
 
                         //Update sorting for both lists:
@@ -449,7 +431,7 @@ $tabs = array(
             var new_c_inbound_tree_hours = c_inbound_tree_hours + intent_deficit_hours;
 
             if(!(intent_deficit_count==0)){
-                $('#tree-counter-'+c_inbound_id).text( parseInt($('#tree-counter-'+c_inbound_id).text()) + intent_deficit_count );
+                $('.outbound-counter-'+c_inbound_id).text( parseInt($('.outbound-counter-'+c_inbound_id+':first').text()) + intent_deficit_count );
             }
 
             if(!(intent_deficit_hours==0)){
@@ -467,7 +449,7 @@ $tabs = array(
 
 
                 if(!(intent_deficit_count==0)){
-                    $('#tree-counter-'+b_c_id).text( parseInt($('#tree-counter-'+b_c_id).text()) + intent_deficit_count );
+                    $('.outbound-counter-'+b_c_id).text( parseInt($('.outbound-counter-'+b_c_id+':first').text()) + intent_deficit_count );
                 }
 
                 if(!(intent_deficit_hours==0)){
@@ -781,6 +763,20 @@ $tabs = array(
 
         } else {
 
+            $tabs = array(
+                'outbound' => array(
+                    'title' => 'Outs',
+                    'icon' => 'fas fa-sign-out-alt rotate90',
+                    'item_count' => ($c['c__tree_inputs']+$c['c__tree_outputs']),
+                ),
+                'inbound' => array(
+                    'title' => 'Ins',
+                    'icon' => 'fas fa-sign-in-alt rotate90',
+                    'item_count' => count($c__inbounds),
+                ),
+            );
+
+
             echo '<div id="bootcamp-objective" class="list-group">';
             echo echo_actionplan($c,1);
             echo '</div>';
@@ -792,7 +788,7 @@ $tabs = array(
             echo '<ul id="topnav" class="nav nav-pills nav-pills-primary">';
 //Go through all tabs and see wassup:
             foreach ($tabs as $key => $tab) {
-                echo '<li id="nav_'.$key.'" class="'.( $key=='outbound' ? 'active' : '' ).'"><a href="#'.$key.'"><i class="'.$tab['icon'].'"></i> <span class="li-'.$key.'-count">'.$tab['item_count'].'</span> '.$tab['title'].'</a></li>';
+                echo '<li id="nav_'.$key.'" class="'.( $key=='outbound' ? 'active' : '' ).'"><a href="#'.$key.'"><i class="'.$tab['icon'].'"></i> <span class="li-'.$key.'-count '.$key.'-counter-'.$c['c_id'].'">'.$tab['item_count'].'</span> '.$tab['title'].'</a></li>';
             }
             echo '</ul>';
 

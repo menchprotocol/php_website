@@ -112,6 +112,11 @@ $config['object_statuses'] = array(
             's_desc'  => 'Entity is published live',
             's_icon' => 'fas fa-check-circle',
         ),
+        2 => array(
+            's_name'  => 'Claimed',
+            's_desc'  => 'Entity is published live',
+            's_icon' => 'fas fa-user-check',
+        ),
     ),
     'ur' => array(
         -1 => array(

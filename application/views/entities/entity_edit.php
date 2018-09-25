@@ -5,14 +5,12 @@ $udata = $this->session->userdata('user');
 
 <style>
     /* Access Permissions */
-    .is-passwordable{display:<?= ( in_array($entity['u_inbound_u_id'], array(1280,1279,1307,1281,1308,1304)) ? 'inline-block' : 'none') ?>;}
-    .needs-current-pass{display:<?= ( strlen($entity['u_password'])>0 && !($udata['u_inbound_u_id']==1281) ? 'block' : 'none' ) ?>;}
-    .is-people{display:<?= (in_array($entity['u_inbound_u_id'],array(1280,1279,1307,1281,1308,1304,1282)) ? 'block' : 'none') ?>;}
-    .is-mediator{display:<?= (in_array($entity['u_inbound_u_id'],array(1308,1280,1281)) ? 'block' : 'none') ?>;}
-    .is-login-mediator{display:<?= ( isset($udata['u_inbound_u_id']) && $udata['u_inbound_u_id']==1281 ? 'block' : 'none') ?>;}
+    .is-passwordable{display:<?= ( array_any_key_exists(array(1280,1281,1308),$udata['u__inbounds']) ? 'inline-block' : 'none') ?>;}
+    .needs-current-pass{display:<?= ( strlen($entity['u_password'])>0 && !array_key_exists(1281, $udata['u__inbounds']) ? 'block' : 'none' ) ?>;}
+    .is-people{display:<?= ( array_key_exists(1278, $udata['u__inbounds']) ? 'block' : 'none') ?>;}
+    .is-mediator{display:<?= ( array_any_key_exists(array(1308,1280,1281),$udata['u__inbounds']) ? 'block' : 'none') ?>;}
+    .is-login-mediator{display:<?= ( isset($udata['u__inbounds']) && array_key_exists(1281, $udata['u__inbounds']) ? 'block' : 'none') ?>;}
 </style>
-
-
 
 
 <script>
@@ -272,7 +270,7 @@ function insert_gravatar(){
         <table width="100%" style="margin-top:30px;"><tr><td class="save-td"><a href="javascript:update_account();" class="btn btn-primary">Save</a></td><td><span class="update_u_results"></span></td></tr></table>
 
         <?php
-        if($udata['u_inbound_u_id']==1281){
+        if(array_key_exists(1281, $udata['u__inbounds'])){
             echo '<div class="u_delete" style="text-align: right;"><a href="javascript:void(0);" onclick="u_delete('.$entity['u_id'].','.$entity['u_inbound_u_id'].')">Delete Entity</a></div>';
         }
         ?>

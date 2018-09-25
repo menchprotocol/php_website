@@ -16,105 +16,6 @@ class Entities extends CI_Controller {
     }
 
 
-    function new_student_api($b_id=354 /*Get Hired As A Junior Full-Stack Developer*/, $ru_support_package=0 /*Same as checkout 1,2,3*/){
-
-        //And API call that get's POST variables for email and name and creates a new user
-
-        //Check variables to make sure it's set
-        if(!isset($_POST['secret']) || !($_POST['secret']=='9d8f710315f4136bf6060b339cedddd1')){
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid secret',
-            ));
-        } elseif(!isset($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid email',
-            ));
-        } elseif(!isset($_POST['name']) || strlen($_POST['name'])<1){
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid name',
-            ));
-        }
-
-        $_POST['email'] = trim(strtolower($_POST['email']));
-
-        //Validate parent entity:
-        $current_us = $this->Db_model->u_fetch(array(
-            'u_email' => $_POST['email'],
-        ));
-        if(count($current_us)>0){
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Email already exists',
-            ));
-        }
-
-
-        //We should add a new entity:
-        $new_u = $this->Db_model->u_create(array(
-            'u_email' 		    => $_POST['email'],
-            'u_status' 		    => 1,
-            'u_full_name' 		=> trim($_POST['name']),
-            'u_inbound_u_id'    => 1304, //Interested student
-        ));
-
-
-        //Log engagement
-        $this->Db_model->e_create(array(
-            'e_text_value' => 'New student entity created using new_student_api() api',
-            'e_inbound_c_id' => 6971, //New Entity
-            'e_inbound_u_id'  => 0, //System/API
-            'e_outbound_u_id' => $new_u['u_id'],
-        ));
-
-        //Also enroll them in the Bootcamp if set and IF offers coaching:
-        if($b_id && in_array($ru_support_package,array(1,2,3))){
-
-            //Fetch Bootcamp:
-            $bs = $this->Db_model->b_fetch(array(
-                'b_id' => $b_id,
-            ));
-
-            if(count($bs)==1 && (($ru_support_package==1 && $bs[0]['b_offers_diy']>0) || ($ru_support_package==2 && $bs[0]['b_offers_coaching']) || ($ru_support_package==3 && $bs[0]['b_offers_deferred']))){
-
-                //Find the next coaching class:
-                $classes = $this->Db_model->r_fetch(array(
-                    'r_b_id' => $b_id,
-                    'r_status' => 1, //Available for coaching
-                ),null,'ASC',1);
-
-                if(count($classes)==1){
-
-                    //Create student enrollment:
-                    $this->Db_model->ru_create(array(
-                        'ru_b_id' 	        => $b_id,
-                        'ru_r_id' 	        => $classes[0]['r_id'],
-                        'ru_outbound_u_id' 	=> $new_u['u_id'],
-                        'ru_status'         => 0, //Pending Payment...
-                        'ru_fp_id'          => $enrollments[0]['b_fp_id'],
-                        'ru_fp_psid'        => ( $enrollments[0]['b_fp_id']==$enrollments[0]['u_cache__fp_id'] ? $enrollments[0]['u_cache__fp_psid'] : 0 ),
-                        'ru_upfront_pay'    => ( $_POST['ru_support_package']==3 ? ($enrollments[0]['b_weekly_coaching_rate'] * $enrollments[0]['b_deferred_rate'] * $enrollments[0]['b_deferred_deposit']) : ( $_POST['ru_support_package']==2 ? ($enrollments[0]['b_weekly_coaching_rate']) : 0 ) ),
-                        'ru_deferred_pay'   => ( $_POST['ru_support_package']==3 ? ($enrollments[0]['b_weekly_coaching_rate'] * $enrollments[0]['b_deferred_rate'] * (1-$enrollments[0]['b_deferred_deposit'])) : 0 ),
-
-                        'ru_start_time'     => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+($key*7*24*3600)+(12*3600)  /* For GMT/timezone adjustments */ )).' 00:00:00',
-                        'ru_end_time'       => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+(($key+1)*7*24*3600)-(12*3600)  /* For GMT/timezone adjustments */ )).' 23:59:59',
-                        'ru_outcome_time'   => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+(($enrollments[0]['b_weeks_count']+$enrollments[0]['b_guarantee_weeks'])*7*24*3600)-(12*3600))).' 23:59:59',
-                    ));
-
-                }
-            }
-        }
-
-        return echo_json(array(
-            'status' => 1,
-            'message' => 'Success',
-            'new_user' => $new_u,
-        ));
-    }
-
-
     //Lists entities
     function entity_manage($u_id=2738){
 
@@ -130,15 +31,15 @@ class Entities extends CI_Controller {
     function delete($u_id){
 
         $udata = $this->session->userdata('user');
-        if(!($udata['u_inbound_u_id']==1281)){
+        if(!array_key_exists(1281, $udata['u__inbounds'])){
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Session expired',
             ));
-        } else {
-            //Attempt to delete:
-            echo_json($this->Db_model->u_delete($u_id));
         }
+
+        //Attempt to delete:
+        echo_json($this->Db_model->u_delete($u_id));
     }
 
     function entity_load_more($inbound_u_id,$limit,$page){
@@ -151,9 +52,9 @@ class Entities extends CI_Controller {
         }
 
         //Fetch entitie itself:
-        $parent_entities = $this->Db_model->u_fetch(array(
+        $entities = $this->Db_model->u_fetch(array(
             'u_id' => $inbound_u_id,
-        ), array('u__outbound_count'));
+        ), array('u__outbound_count',u__outbounds));
 
         $child_entities = $this->Db_model->u_fetch(array(
             'u_inbound_u_id' => $inbound_u_id,
@@ -165,8 +66,8 @@ class Entities extends CI_Controller {
         }
 
         //Do we need another load more button?
-        if($parent_entities[0]['u__outbound_count']>(($page*$limit) + count($child_entities))){
-            echo_next_u(($page+1), $limit, $parent_entities[0]['u__outbound_count']);
+        if($entities[0]['u__outbound_count']>(($page*$limit) + count($child_entities))){
+            echo_next_u(($page+1), $limit, $entities[0]['u__outbound_count']);
         }
 
     }
@@ -182,7 +83,7 @@ class Entities extends CI_Controller {
         $entity_tree = fetch_entity_tree($u_id,true);
 
         //Adjust Breadcrumb for non-admins
-        if(!($udata['u_inbound_u_id']==1281)){
+        if(!array_key_exists(1281, $udata['u__inbounds'])){
             $entity_tree['breadcrumb'] = array(
                 array(
                     'link' => '/entities/'.$u_id,
@@ -398,11 +299,11 @@ class Entities extends CI_Controller {
             //Password update attempt, lets check:
             if(strlen($_POST['u_password_new'])<=0){
                 die('<span style="color:#FF0000;">Error: Missing new password. Try again.</span>');
-            } elseif(strlen($u_current[0]['u_password'])>0 && !($udata['u_inbound_u_id']==1281) && strlen($_POST['u_password_current'])<=0){
+            } elseif(strlen($u_current[0]['u_password'])>0 && !array_key_exists(1281, $udata['u__inbounds']) && strlen($_POST['u_password_current'])<=0){
                 die('<span style="color:#FF0000;">Error: Missing current password. Try again.</span>');
-            } elseif(strlen($u_current[0]['u_password'])>0 && !($udata['u_inbound_u_id']==1281) && !(md5($_POST['u_password_current'])==$u_current[0]['u_password'])){
+            } elseif(strlen($u_current[0]['u_password'])>0 && !array_key_exists(1281, $udata['u__inbounds']) && !(md5($_POST['u_password_current'])==$u_current[0]['u_password'])){
                 die('<span style="color:#FF0000;">Error: Invalid current password. Try again.</span>');
-            } elseif(strlen($u_current[0]['u_password'])>0 && !($udata['u_inbound_u_id']==1281) && $_POST['u_password_new']==$_POST['u_password_current']){
+            } elseif(strlen($u_current[0]['u_password'])>0 && !array_key_exists(1281, $udata['u__inbounds']) && $_POST['u_password_new']==$_POST['u_password_current']){
                 die('<span style="color:#FF0000;">Error: New and current password cannot be the same. Try again.</span>');
             } elseif(strlen($_POST['u_password_new'])<6){
                 die('<span style="color:#FF0000;">Error: New password must be longer than 6 characters. Try again.</span>');
@@ -527,7 +428,7 @@ class Entities extends CI_Controller {
         }
 
         $co_coaches = array();
-        if(!in_array($users[0]['u_inbound_u_id'], array(1280,1308,1281))){
+        if(!array_any_key_exists(array(1280,1308,1281),$users[0]['u__inbounds'])){
             //Regular user, see if they are assigned to any Bootcamp as co-coach
             $co_coaches = $this->Db_model->coach_bs(array(
                 'ba.ba_outbound_u_id' => $users[0]['u_id'],
@@ -549,7 +450,7 @@ class Entities extends CI_Controller {
         }
 
         //Are they admin?
-        if(in_array($users[0]['u_inbound_u_id'], array(1280,1308,1281))){
+        if(array_any_key_exists(array(1280,1308,1281),$users[0]['u__inbounds'])){
             //They have admin rights:
             $session_data['user'] = $users[0];
             $is_coach = true;

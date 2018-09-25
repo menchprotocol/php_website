@@ -254,13 +254,15 @@ class Db_model extends CI_Model {
 
             //Fetch the messages for this entity:
             $res[$key]['u__inbounds'] = array();
-            $inbounds = $this->Db_model->ur_inbound_fetch(array(
-                'ur_outbound_u_id' => $val['u_id'],
-                'ur_status >=' => 0, //Pending or Active
-                'u_status >=' => 0, //Pending or Active
-            ));
-            foreach($inbounds as $ur){
-                $res[$key]['u__inbounds'][$ur['u_id']] = $ur;
+            if(!in_array('skip_u__inbounds',$join_objects)){
+                $inbounds = $this->Db_model->ur_inbound_fetch(array(
+                    'ur_outbound_u_id' => $val['u_id'],
+                    'ur_status >=' => 0, //Pending or Active
+                    'u_status >=' => 0, //Pending or Active
+                ));
+                foreach($inbounds as $ur){
+                    $res[$key]['u__inbounds'][$ur['u_id']] = $ur;
+                }
             }
         }
 
@@ -344,7 +346,7 @@ class Db_model extends CI_Model {
                 'status' => 0,
                 'message' => 'User Not Found in DB',
             );
-        } elseif($users[0]['u_inbound_u_id']==1281){
+        } elseif(array_key_exists(1281, $users[0]['u__inbounds']) ){
             return array(
                 'status' => 0,
                 'message' => 'Cannot delete Admin',
@@ -389,16 +391,10 @@ class Db_model extends CI_Model {
         $this->db->query("DELETE FROM v5_class_students WHERE ru_outbound_u_id=".$u_id);
         $delete_stats['v5_class_students'] = $this->db->affected_rows();
 
-        $this->db->query("DELETE FROM v5_bootcamp_team WHERE ba_outbound_u_id=".$u_id);
-        $delete_stats['v5_bootcamp_team'] = $this->db->affected_rows();
-
-        $this->db->query("DELETE FROM v5_facebook_page_admins WHERE fs_inbound_u_id=".$u_id);
-        $delete_stats['v5_facebook_page_admins'] = $this->db->affected_rows();
-
-        $this->db->query("DELETE FROM v5_facebook_page_admins WHERE fs_inbound_u_id=".$u_id);
-        $delete_stats['v5_facebook_page_admins'] = $this->db->affected_rows();
-
         $this->db->query("DELETE FROM v5_entities WHERE u_id=".$u_id);
+        $delete_stats['v5_entities'] = $this->db->affected_rows();
+
+        $this->db->query("DELETE FROM v5_entity_links WHERE (ur_inbound_u_id=".$u_id." OR ur_outbound_u_id=".$u_id.")");
         $delete_stats['v5_entities'] = $this->db->affected_rows();
 
         return array(
@@ -2239,10 +2235,15 @@ class Db_model extends CI_Model {
             if($obj=='u') {
 
                 $new_item['u_id'] = intval($item['u_id']); //rquired for all objects
-                $new_item['u_inbound_u_id'] = intval($item['u_inbound_u_id']);
                 $new_item['u__e_score'] = intval($item['u__e_score']);
                 $new_item['u_full_name'] = $item['u_full_name'];
                 $new_item['u_keywords'] = $item['u_bio'];
+                $new_item['_tags'] = array();
+
+                //Loop through the Tags:
+                foreach($item as $u_id=>$u){
+                    array_push($new_item['_tags'],intval($u_id));
+                }
 
                 //Append additional information:
                 $urls = $this->Db_model->x_fetch(array(

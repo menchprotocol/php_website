@@ -8,7 +8,7 @@
 
 $entities_per_page = 100;
 $udata = $this->session->userdata('user');
-$can_edit = ($udata['u_id']==$entity['u_id'] || $udata['u_inbound_u_id']==1281);
+$can_edit = ($udata['u_id']==$entity['u_id'] || array_key_exists(1281, $udata['u__inbounds']));
 
 
 $child_entities = $this->Db_model->ur_outbound_fetch(array(
@@ -378,14 +378,13 @@ echo '<div id="u_' . $entity['u_id'] . '" entity-id="' . $entity['u_id'] . '" cl
 
 //Right content:
 echo '<span class="pull-right">';
-echo echo_score($entity['u__e_score']);
 
 if ($can_edit) {
-    echo '<a class="badge badge-primary" href="/entities/' . $entity['u_id'] . '/modify" style="margin:-2px 3px 0 0;"><i class="fas fa-cog"></i></a>';
+    echo '<a class="badge badge-primary" href="/entities/' . $entity['u_id'] . '/modify" style="margin:-2px 3px 0 0; width:40px;" data-toggle="tooltip" data-placement="left" title="Engagement Score"><span class="btn-counter">'.echo_big_num($entity['u__e_score']).'</span><i class="fas fa-cog"></i></a>';
 }
 
 if(isset($entity['u__outbound_count']) && $entity['u__outbound_count']>0){
-    echo '<span class="badge badge-primary grey" data-toggle="tooltip" data-placement="left" title="" data-original-title="Entity tree contains '.$entity['u__outbound_count'].' child entities. See list below." style="width:40px;"><span class="btn-counter">'.echo_big_num($entity['u__outbound_count']).'</span><i class="fas fa-chevron-right"></i></span>';
+    echo '<span class="badge badge-primary grey" data-toggle="tooltip" data-placement="left" title="" data-original-title="Entity tree contains '.$entity['u__outbound_count'].' child entities. See list below." style="width:40px;"><span class="btn-counter">'.echo_big_num($entity['u__outbound_count']).'</span><i class="fas fa-sign-out-alt rotate90"></i></span>';
 }
 
 echo '</span>';
@@ -635,7 +634,7 @@ echo '<div class="tab-content tab-space">';
     echo '<div class="tab-pane maxout '.( !$tabs['training']['item_count'] ? 'hidden' : '' ).'" id="tabtraining">';
     echo '<div id="list-training" class="list-group maxout grey-list">';
     foreach ($b_team_member as $ba) {
-        echo_ba($ba);
+
     }
     echo '</div>';
     echo '</div>';
@@ -658,7 +657,7 @@ echo '<div class="tab-content tab-space">';
     echo '<div class="tab-pane maxout '.( !$tabs['intents']['item_count'] ? 'hidden' : '' ).'" id="tabintents">';
     echo '<div id="list-intents" class="list-group maxout grey-list">';
     foreach ($enrollments as $ru) {
-        echo_ru($ru);
+
     }
     echo '</div>';
     echo '</div>';

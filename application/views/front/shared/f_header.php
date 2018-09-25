@@ -34,9 +34,7 @@ $url_part_1 = $this->uri->segment(1);
 	<?php /* if(isset($udata['u_email'])){ ?>
 	    <script> zE( function () { zE.identify({name: '<?= $udata['u_full_name'] ?>', email: '<?= $udata['u_email'] ?>'}); }); </script>
 	<?php } */ ?>
-	
-	<?php if(isset($b_fb_pixel_id) && strlen($b_fb_pixel_id)>1){ echo echo_facebook_pixel($b_fb_pixel_id,(isset($purchase_value) ? $purchase_value : 0)); } ?>
-	
+
 </head>
 
 <body class="landing-page">

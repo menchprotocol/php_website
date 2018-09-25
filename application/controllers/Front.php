@@ -32,7 +32,7 @@ class Front extends CI_Controller {
 	function login(){
 	    //Check to see if they are already logged in?
 	    $udata = $this->session->userdata('user');
-	    if(isset($udata['u_inbound_u_id']) && in_array($udata['u_inbound_u_id'], array(1280,1308,1281))){
+	    if(isset($udata['u__inbounds']) && array_any_key_exists(array(1280,1308,1281),$udata['u__inbounds'])){
 	        //Lead coach and above, go to console:
 	        redirect_message('/intents');
 	    }

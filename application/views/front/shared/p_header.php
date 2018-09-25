@@ -15,7 +15,6 @@ $website = $this->config->item('website');
 
     <script src="/js/front/global.js?v=v<?= $website['version'] ?>" type="text/javascript"></script>
 
-	<?php if(isset($b_fb_pixel_id) && strlen($b_fb_pixel_id)>1){ echo echo_facebook_pixel($b_fb_pixel_id,(isset($purchase_value) ? $purchase_value : 0)); } ?>
 </head>
 
 <body id="funnel">

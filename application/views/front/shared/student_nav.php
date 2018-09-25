@@ -4,10 +4,7 @@ $navigation = array(
         'my_url' => 'actionplan',
         'anchor' => '🚩 Action Plan',
     ),
-    array(
-        'my_url' => 'classmates',
-        'anchor' => '👥 Classroom',
-    ),
+    //TODO Add my account here...
 );
 ?>
 <div style="clear:both; margin-bottom:15px; padding-bottom:10px; border-bottom:1px solid #3C4858;">

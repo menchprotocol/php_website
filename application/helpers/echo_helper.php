@@ -35,7 +35,7 @@ function echo_x($u, $x){
     $CI =& get_instance();
     $social_urls = $CI->config->item('social_urls');
     $udata = $CI->session->userdata('user');
-    $can_edit = ($udata['u_id']==$u['u_id'] || $udata['u_inbound_u_id']==1281);
+    $can_edit = ($udata['u_id']==$u['u_id'] || array_key_exists(1281, $udata['u__inbounds']));
 
     $ui = null;
     $ui .= '<div id="x_'.$x['x_id'].'" class="list-group-item url-item">';
@@ -104,11 +104,10 @@ function echo_u($u){
 
     //Right content:
     $ui .= '<span class="pull-right">';
-    $ui .= echo_score($u['u__e_score']);
 
-    $ui .= '<a class="badge badge-primary" href="/entities/'.$u['u_id'].'/modify" style="margin:-2px 3px 0 0;"><i class="fas fa-cog"></i></a>';
+    $ui .= '<a class="badge badge-primary" href="/entities/'.$u['u_id'].'/modify" style="margin:-2px 3px 0 0; width:40px;" data-toggle="tooltip" data-placement="left" title="Engagement Score">'.( $u['u__e_score']>0 ? '<span class="btn-counter">'.echo_big_num($u['u__e_score']).'</span>' : '' ).'<i class="fas fa-cog"></i></a>';
 
-    $ui .= '<a class="badge badge-primary" href="/entities/'.$u['u_id'].'" style="width:40px;"><span class="btn-counter">'.(isset($u['u__outbound_count']) ? echo_big_num($u['u__outbound_count']) : '0').'</span><i class="fas fa-chevron-right"></i></a>';
+    $ui .= '<a class="badge badge-primary" href="/entities/'.$u['u_id'].'" style="width:40px;">'.(isset($u['u__outbound_count']) && $u['u__outbound_count']>0 ? '<span class="btn-counter">'.echo_big_num($u['u__outbound_count']).'</span>' : '').'<i class="fas fa-sign-out-alt rotate90"></i></a>';
 
     $ui .= '</span>';
 
@@ -126,49 +125,6 @@ function echo_u($u){
 }
 
 
-function echo_ru($ru){
-
-    $CI =& get_instance();
-    $udata = $CI->session->userdata('user');
-    $can_edit = ($udata['u_inbound_u_id']==1281);
-
-    echo '<div class="list-group-item">';
-
-    //Right content:
-    echo '<span class="pull-right">';
-    echo echo_status('ru', $ru['ru_status'], true, 'left').' &nbsp;';
-    if($can_edit){
-        echo '<a class="badge badge-primary" href="/console/'.$ru['ru_b_id'].( $ru['ru_r_id']>0 ? '/classes#class-'.$ru['ru_r_id'] : '' ).'"><i class="fas fa-chevron-right"></i></a>';
-    }
-    echo '</span>';
-
-    //Regular section:
-    echo '<i class="fas fa-cube"></i> '.$ru['c_outcome'];
-
-    echo '</div>';
-}
-
-function echo_ba($ba){
-
-    $CI =& get_instance();
-    $udata = $CI->session->userdata('user');
-    $can_edit = ($udata['u_id']==$ba['ba_outbound_u_id'] || $udata['u_inbound_u_id']==1281);
-
-    echo '<div class="list-group-item">';
-
-    //Right content:
-    echo '<span class="pull-right">';
-    echo echo_status('ba',$ba['ba_status'], true, 'left').' &nbsp;';
-    if($can_edit){
-        echo '<a class="badge badge-primary" href="/console/'.$ba['ba_b_id'].'"><i class="fas fa-chevron-right"></i></a>';
-    }
-    echo '</span>';
-
-    //Regular section:
-    echo '<i class="fas fa-cube"></i> '.$ba['c_outcome'];
-
-    echo '</div>';
-}
 
 function echo_t($t){
     echo '<div class="list-group-item">';
@@ -689,15 +645,6 @@ function echo_cover($u,$img_class=null,$return_anyways=false,$tooltip_content=nu
     }
 }
 
-function echo_b_header($b){
-    $ui = '<p style="border-bottom:4px solid #3C4858; font-weight:bold; padding-bottom:10px; margin-bottom:50px; display:block;">';
-    $ui .= '<i class="fas fa-cube"></i> '.$b['c_outcome'];
-    $ui .= '<span style="font-weight: 500; display: block; padding-top:5px; font-size:0.9em;"><i class="fas fa-clock"></i> '.$b['b_weeks_count'].' Week'.echo__s($b['b_weeks_count']).' @ '.echo_hours(($b['c__estimated_hours']/$b['b_weeks_count']),false).'/Week'.'</span>';
-    $ui .= '</p>';
-
-    return $ui;
-}
-
 function echo_link($text){
     return preg_replace('!(((f|ht)tp(s)?://)[-a-zA-Zа-яА-Я()0-9@:%_+.~#?&;//=]+)!i', '<a href="$1" target="_blank"><u>$1</u></a>', $text);
 }
@@ -715,156 +662,6 @@ function echo_clean_url($url){
 }
 
 
-
-function echo_coach($u,$b,$is_landing_page){
-
-    $CI =& get_instance();
-    $udata = $CI->session->userdata('user');
-
-    echo '<div class="col-sm-6"><div class="price-box coaching-box" id="coach_'.$u['u_id'].'">';
-
-        echo echo_cover($u,'coach-face');
-        echo '<h3>'.$u['u_full_name'].'</h3>';
-
-    echo '<p style="margin:0 0 0 0 !important;"><img src="/img/flags/'.strtolower($u['u_country_code']).'.png" class="flag" style="margin-top:-4px;" /> '.$u['u_current_city'].( strlen($u['u_timezone'])>0 ? ' '.one_two_explode('','.', $u['u_timezone']).( substr_count($u['u_timezone'],'.5')==1 ? ':30' : ':00' ).' GMT' : '' ).( isset($udata['u_inbound_u_id']) ? ' <a href="/entities/'.$u['u_id'].( $udata['u_inbound_u_id']==1281 ? '/modify' : '' ).'"><i class="fas fa-cog"></i></a>' : '' ).'</p>';
-
-
-    //Any languages other than English?
-    /*
-    if(strlen($u['u_language'])>0){
-        $all_languages = $CI->config->item('languages');
-        //They know more than enligh!
-        $langs = explode(',',$u['u_language']);
-        echo '<p style="margin:0 0 0 0 !important;">';
-        echo 'Fluent in ';
-        foreach($langs as $count=>$lang){
-            if($count>0 && ($count+1)==count($langs)){
-                echo ' & ';
-            } elseif($count>0){
-                echo ', ';
-            }
-            echo $all_languages[$lang];
-        }
-        echo '</p>';
-    }
-    */
-
-    echo '<p style="margin:15px 0 !important;">'.$u['u_bio'].'</p>';
-
-    //Public profiles:
-    echo '<p style="margin:15px 0 5px !important;" class="public-profiles">';
-    echo echo_social_profiles($CI->Db_model->x_social_fetch($u['u_id']));
-    echo '</p>';
-
-    if(!$is_landing_page){
-        echo '<a href="javascript:void(0);" onclick="choose_coach('.$u['u_id'].');">Book Free Call with '.one_two_explode('',' ',$u['u_full_name']).' <i class="fas fa-chevron-right"></i></a>';
-    }
-
-
-    echo '</div></div>';
-}
-
-function echo_package($b,$is_diy,$is_landing_page,$enrollment=array()){
-
-    if($is_diy && $b['b_offers_diy']){
-
-        ?>
-        <?= ( !$is_landing_page ? '<div class="col-sm-6">' : '' ) ?>
-        <div class="price-box">
-            <i class="fas fa-comment-smile"></i>
-            <h3>Mench Personal Assistant</h3>
-            <span id="p_name_1" data-price="0" class="hidden">Mench Personal Assistant (Free)<!-- For Final Confirmation Text, injected by JS --></span>
-            <?= ( !$is_landing_page && $b['b_offers_coaching'] ? '<div style="margin:0 0 10px 0 !important;">&nbsp;</div>' : '' ) ?>
-            <div class="support_p">
-            </div>
-            <a <?= ( $is_landing_page ? 'href="/'.$b['b_url_key'].'/enroll?package_id=1" class="btn btn-primary"' : 'href="javascript:void(0);" onclick="set_package(1);"' ) ?>>Get Started <i class="fas fa-angle-right"></i></a>
-        </div>
-        <?= ( !$is_landing_page ? '</div>' : '' ) ?>
-        <?php
-
-    } elseif(!$is_diy && $b['b_offers_coaching']){
-
-        $coaching_price = intval($b['b_weekly_coaching_rate'] * $b['b_weeks_count']);
-
-        if($b['b_offers_deferred']) {
-            $deferred_deposit = intval($b['b_weekly_coaching_rate'] * $b['b_weeks_count'] * $b['b_deferred_rate'] * $b['b_deferred_deposit']);
-            $deferred_remainder = intval($b['b_weekly_coaching_rate'] * $b['b_weeks_count'] * $b['b_deferred_rate'] * (1 - $b['b_deferred_deposit']));
-            $deferred_total = $deferred_deposit+$deferred_remainder;
-        }
-        ?>
-        <?= ( !$is_landing_page && !count($enrollment) ? '<div class="col-sm-6">' : '' ) ?>
-        <div class="price-box">
-            <i class="fas fa-user-friends"></i>
-            <h3>1-on-1 Coaching</h3>
-            <span id="p_name_2" data-price="<?= $coaching_price ?>" class="hidden">Mench Personal Assistant + 1 Free Coaching Call​<!-- For Final Confirmation Text, injected by JS --></span>
-            <?= ( $b['b_offers_diy'] && !count($enrollment) ? '<p class="bold-box">Mench Personal Assistant plus:</p>' : '' ) ?>
-
-
-            <div class="support_p">
-
-
-                <div class="dash-label"><span class="icon-left"><i class="fas fa-hands-helping"></i></span> Team-Up with an Industry Expert</div>
-                <div class="dash-label"><span class="icon-left"><i class="fas fa-whistle"></i></span> <?= echo_hours($b['b_weekly_coaching_hours']*$b['b_weeks_count'], false, true) ?> Coaching in <?= $b['b_weeks_count'].' Week'.echo__s($b['b_weeks_count']) ?></div>
-
-
-
-                <?php if(strlen($b['b_coaching_services'])>0){
-
-                    $service_count = count(json_decode($b['b_coaching_services']));
-                    //echo them all:
-                    foreach(json_decode($b['b_coaching_services']) as $service){
-                        echo '<div class="dash-label"><span class="icon-left"><i class="fas fa-badge-check"></i></span> '.$service.'</div>';
-                    }
-
-                } else { ?>
-                    <div class="dash-label"><span class="icon-left"><i class="fas fa-route"></i></span> Personalized Tasks & Feedback</div>
-                <?php } ?>
-
-
-                <!--<div class="dash-label"><span class="icon-left"><i class="fas fa-lightbulb-on"></i></span> Weekly Brainstorming Calls</div>
-                <div class="dash-label"><span class="icon-left"><i class="fab fa-facebook-messenger"></i></span> 1-on-1 Chat & Email Support</div>-->
-
-                <div class="dash-label"><span class="icon-left"><i class="fas fa-smile"></i></span> <span title="We guarantee you will <?= strtolower($b['c_outcome']) . ( $b['b_guarantee_weeks']>0 ? ' within '.$b['b_guarantee_weeks'].' week'.echo__s($b['b_guarantee_weeks']).' after the end of this '.$b['b_weeks_count'].' week Bootcamp' : '') ?> as long as you complete all weekly tasks assigned to you by your coach. You will receive a full refund if you do the work but do not <?= strtolower($b['c_outcome']) ?>. Click to learn more." data-toggle="tooltip" data-placement="top"><a href="https://support.mench.com/hc/en-us/articles/115002080031" target="_blank" style="text-decoration: underline !important; font-size:1em !important;"><?= ($b['b_weeks_count']+$b['b_guarantee_weeks']) ?> Week Outcome Guarantee</a> <i class="fas fa-info-circle"></i></span></div>
-
-
-                <?php if(!count($enrollment)){ ?>
-                <div class="dash-label"><span class="icon-left"><i class="fas fa-dollar-sign"></i></span> <?= ( $b['b_offers_deferred'] ? 'Starting from $'.number_format($deferred_deposit/$b['b_weeks_count'],0).' per Week' : 'A 1-time Payment of $'.number_format($coaching_price,0).' USD') //After your free strategy session if you decided that coaching is the right support framework for you, then you get to choose to pay either $'.$coaching_price.' up-front as full payment OR pay a non-refundable deposit of $'.$deferred_deposit.' USD up-front and $'.$deferred_remainder.' USD later from '.($b['b_deferred_payback']*100).'% of each paycheck when (and only if) you '.strtolower($b['c_outcome']).' ?></div>
-                <?php } ?>
-
-                <div class="dash-label"><span class="icon-left"><i class="fas fa-gift"></i></span> First Call Free (No Credit Card)​</div>
-
-            </div>
-
-
-            <?php if(count($enrollment)){ ?>
-                <a href="/<?= $b['b_url_key'] ?>/pay?u_email=shervin@mench.com&payment=<?= $coaching_price ?>" class="btn btn-primary"><?= 'Pay $'.$coaching_price.' USD'.( $b['b_offers_deferred'] ? ' Up-front' : ''  ).' <i class="fas fa-chevron-right"></i>' ?></a>
-            <?php } else { ?>
-            <a <?= ( $is_landing_page ? 'href="/'.$b['b_url_key'].'/enroll?package_id=2" class="btn btn-primary"' : 'href="javascript:void(0);" onclick="set_package(2);"' ) ?>><?= ( $b['b_requires_assessment'] && $is_landing_page ? 'Continue' : 'Book Free Coaching Call' ) ?> <i class="fas fa-chevron-right"></i></a>
-            <?php } ?>
-
-
-            <?php if($b['b_offers_deferred'] && count($enrollment)){ ?>
-
-                <!-- Placeholder for Defered pricing box: -->
-                <p style="margin: 30px 0 10px !important; font-size: 0.9em; font-weight: 300;">Or pay a non-refundable deposit of $<?= $deferred_deposit ?> USD now and $<?= $deferred_remainder ?> USD later from <?= ($b['b_deferred_payback']*100) ?>% of each paycheck when (and only if) you <?= strtolower($b['c_outcome']) ?>:</p>
-                <a href="/<?= $b['b_url_key'] ?>/pay?u_email=shervin@mench.com&payment=<?= $deferred_deposit ?>" class="btn btn-primary">Pay $<?= $deferred_deposit ?> USD Now + $<?= $deferred_remainder ?> Later <i class="fas fa-chevron-right"></i></a>
-
-            <?php } ?>
-
-
-            <?php if(!$is_landing_page){ ?>
-
-                <div style="font-size:0.9em; margin-top:15px; font-weight: 300;"><i class="fas fa-lightbulb-on" style="margin: 0 2px;"></i> <?= echo_embed('https://www.youtube.com/watch?v=kngyyeMel5c', 'Tip by Eric Schmidt [Ex-Google-CEO]: https://www.youtube.com/watch?v=kngyyeMel5c'); ?></div>
-
-            <?php } ?>
-
-        </div>
-
-
-        <?= ( !$is_landing_page && !count($enrollment) ? '</div>' : '' ) ?>
-        <?php
-    }
-}
 
 function echo_hours($decimal_hours,$micro=false,$plus=false){
 
@@ -887,25 +684,6 @@ function echo_hours($decimal_hours,$micro=false,$plus=false){
 
     }
 
-}
-
-
-function echo_facebook_pixel($b_fb_pixel_id,$purchase_value=0){
-    return "<!-- Facebook Pixel Code -->
-<script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '".$b_fb_pixel_id."');
-". ( $purchase_value>0 ? "fbq('track', 'Purchase', {'value':'".$purchase_value."','currency':'USD'});" : "fbq('track', 'PageView');" ) ."
-</script>
-<noscript><img height=\"1\" width=\"1\" style=\"display:none\" src=\"https://www.facebook.com/tr?id=".$b_fb_pixel_id."&ev=PageView&noscript=1\" /></noscript>
-<!-- End Facebook Pixel Code -->";
 }
 
 
@@ -1151,7 +929,7 @@ function echo_estimated_time($c_time_estimate,$show_icon=1,$micro=false,$c_id=0,
 
 }
 
-function echo_messenger(){
+function echo_support_chat(){
     $CI =& get_instance();
     $fb_settings = $CI->config->item('fb_settings');
     ?>
@@ -1178,38 +956,7 @@ function echo_messenger(){
     <?php
 }
 
-function echo_br($ba){
-    //Removed for now: href="javascript:ba_open_modify('.$ba['ba_id'].')"
-    $ui = '<li id="ba_'.$ba['ba_id'].'" u-id="'.$ba['ba_id'].'" class="list-group-item is_level2_sortable">';
-    //Right content
-    $ui .= '<span class="pull-right">';
-    //$ui .= '<span class="label label-primary" data-toggle="tooltip" data-placement="left" title="Click to modify/revoke access.">';
-    //$ui .= '<i class="fas fa-cog"></i>';
-    //$ui .= '</span>';
-    $ui .= echo_status('ba',$ba['ba_status'], false, 'top');
 
-    $ui .= '</span> ';
-
-    //Left content
-    //$ui .= '<i class="fa fas-bars" style="padding-right:3px;"></i> ';
-    $ui .= echo_cover($ba,'profile-icon',true).' <a href="/entities/'.$ba['u_id'].'">'.$ba['u_full_name'].' &raquo;</a> &nbsp;';
-
-    if(!$ba['u_booking_x_id']){
-        $ui .= ' <a href="/entities/'.$ba['u_id'].'#references"  data-toggle="tooltip" title="Coach will not be listed until they have a Booking URL Uploaded from calendly.com or hubspot.com so students can book their first free call" data-placement="top" style="color:#FF0000; text-decoration: none;"><i class="fas fa-calendar-exclamation"></i> Add Booking URL &raquo;</a>';
-    }
-
-    $ui .= '</li>';
-    return $ui;
-}
-
-
-
-function echo_score($score){
-    if(!$score){
-        return false;
-    }
-    return '<span class="title-sub" style="text-transform:none;" data-toggle="tooltip" data-placement="left" title="Engagement Score"><span class="slim-time">'.echo_big_num($score).'</span> <i class="fas fa-badge"></i></span>';
-}
 
 
 
@@ -1235,6 +982,8 @@ function echo_actionplan($c, $level, $c_inbound_id=0){
     //Right content
     $ui .= '<span class="pull-right" style="'.( $level<3 ? 'margin-right: 8px;' : '' ).'">';
 
+    $ui .= '<i class="c_is_any_icon'.$c['c_id'].' '.( $c['c_is_any'] ? 'fas fa-code-merge' : 'fas fa-sitemap' ).'" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i>';
+
 
     if($level==1 && !$c['c__is_orphan']){
         $ui .= '<a href="/'.$c['c_id'].'" class="badge badge-primary" style="width:40px;" target="_blank"><span class="btn-counter"><i class="fas fa-external-link"></i></span><i class="fas fa-shopping-cart"></i></a>';
@@ -1242,10 +991,10 @@ function echo_actionplan($c, $level, $c_inbound_id=0){
 
     $ui .= '<a href="#messages-'.$c['c_id'].'" onclick="i_load_frame('.$c['c_id'].')" class="badge badge-primary" style="width:40px;" title="'.$c['c__tree_messages'].' Messages in tree"><span class="btn-counter" id="messages-counter-'.$c['c_id'].'">'.$c['c__this_messages'].'</span><i class="fas fa-comment-dots"></i></a>';
 
-    $ui .= '<a class="badge badge-primary" onclick="load_modify('.$c['c_id'].','.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).')" style="margin:-2px -8px 0 2px; width:40px;" href="#modify-'.$c['c_id'].'-'.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).'"><span class="btn-counter">'.echo_estimated_time($c['c__tree_hours'],0,1, $c['c_id'], $c['c_time_estimate']).'</span><i class="c_is_any_icon'.$c['c_id'].' '.( $c['c_is_any'] ? 'fas fa-code-merge' : 'fas fa-sitemap' ).'"></i></a> &nbsp;';
+    $ui .= '<a class="badge badge-primary" onclick="load_modify('.$c['c_id'].','.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).')" style="margin:-2px -8px 0 2px; width:40px;" href="#modify-'.$c['c_id'].'-'.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).'"><span class="btn-counter">'.echo_estimated_time($c['c__tree_hours'],0,1, $c['c_id'], $c['c_time_estimate']).'</span><i class="fas fa-cog"></i></a> &nbsp;';
 
 
-    $ui .= '&nbsp;<'.( $level>1 || $c['c__is_orphan'] ? 'a href="/intents/'.$c['c_id'].'" class="badge badge-primary"' :'span class="badge badge-primary grey"').' style="display:inline-block; margin-right:-1px; width:40px;" title="'.$c['c__tree_inputs'].' Inputs and '.$c['c__tree_outputs'].' Outputs"><span class="btn-counter" id="tree-counter-'.$c['c_id'].'">'.($c['c__tree_inputs']+$c['c__tree_outputs']).'</span><i class="fas fa-chevron-right"></i></'.( $level>1 || $c['c__is_orphan'] ? 'a' :'span').'> ';
+    $ui .= '&nbsp;<'.( $level>1 || $c['c__is_orphan'] ? 'a href="/intents/'.$c['c_id'].'" class="badge badge-primary"' :'span class="badge badge-primary grey"').' style="display:inline-block; margin-right:-1px; width:40px;" title="'.$c['c__tree_inputs'].' Inputs and '.$c['c__tree_outputs'].' Outputs"><span class="btn-counter outbound-counter-'.$c['c_id'].'">'.($c['c__tree_inputs']+$c['c__tree_outputs']).'</span><i class="fas fa-sign-out-alt rotate90"></i></'.( $level>1 || $c['c__is_orphan'] ? 'a' :'span').'> ';
 
     //Keep an eye out for inner message counter changes:
     $ui .= '</span> ';
@@ -1291,6 +1040,7 @@ function echo_actionplan($c, $level, $c_inbound_id=0){
 
     }
 
+
     //Any Tree?
     if($level==2){
 
@@ -1328,112 +1078,12 @@ function echo_actionplan($c, $level, $c_inbound_id=0){
 
 }
 
-function echo_b($b){
-
-    //Fetch total students:
-    $CI =& get_instance();
-    $all_students = count($CI->Db_model->ru_fetch(array(
-        'ru.ru_b_id'	   => $b['b_id'],
-        'ru.ru_status >='  => 4,
-    )));
-
-    $b_ui = null;
-    $b_ui .= '<a href="/console/'.$b['b_id'].'" class="list-group-item">';
-    $b_ui .= '<span class="pull-right"><span class="badge badge-primary"><i class="fas fa-chevron-right"></i></span></span>';
-    $b_ui .= '<i class="fas fa-cube" style="margin: 0 8px 0 2px;"></i>';
-    $b_ui .= $b['c_outcome'];
-    if($b['b_weeks_count']>1){
-        $b_ui .= '<b data-toggle="tooltip" data-placement="top" title="Bootcamp Duration is '.$b['b_weeks_count'].' Week'.echo__s($b['b_weeks_count']).'"><i class="fas fa-calendar-alt" style="margin: 0 2px 0 8px;"></i>'.$b['b_weeks_count'].'</b>';
-    }
-
-
-
-    if($all_students>0){
-        $b_ui .= ' &nbsp;<b data-toggle="tooltip" data-placement="top" title="Bootcamp has '.$all_students.' Enrolled Student'.echo__s($all_students).'"><i class="fas fa-users" style="margin: 0 2px 0 8px;"></i>'.$all_students.'</b>';
-    }
-
-    $b_ui .= '</a>';
-    return $b_ui;
-}
 
 function echo_json($array){
     header('Content-Type: application/json');
     echo json_encode($array);
 }
 
-function echo_r($b,$class,$append_class=null){
-
-    $CI =& get_instance();
-    $udata = $CI->session->userdata('user');
-    $class_settings = $CI->config->item('class_settings');
-
-    $guided_enrollments = count($CI->Db_model->ru_fetch(array(
-        'ru_r_id' => $class['r_id'],
-        'ru_status >=' => 4,
-        'ru_upfront_pay >' => 0,
-    )));
-
-    echo '<li class="list-group-item '.$append_class.'">';
-
-    echo '<span class="pull-right">';
-    if($class['r__current_enrollments']>0){
-
-        //How many students, if any, are enrolled in Support Frameworks?
-        echo '<a href="#class-'.$class['r_id'].'" onclick="load_class('.$class['r_id'].')" class="badge badge-primary" style="text-decoration: none;">'.$class['r__current_enrollments'].' <i class="fas fa-chevron-right"></i></a>';
-
-    } else {
-
-        echo '<span class="badge badge-primary grey" data-toggle="tooltip" data-placement="right" title="No Students Yet">0</span>';
-
-    }
-    echo '</span>';
-
-    //Determine the state of the Checkbox:
-    if($guided_enrollments>0 || $class['r_status']>=2){
-
-        //Locked:
-        echo '<span class="badge badge-primary '.( $guided_enrollments==0 ? 'grey' : '' ).'">';
-        echo echo_status('r',$class['r_status'],true, 'right');
-        if($guided_enrollments>0){
-            echo ' <span data-toggle="tooltip" data-placement="right" title="'.$guided_enrollments.' Students Enrolled">'.$guided_enrollments.'</span>';
-        }
-        echo '</span>';
-
-    } else {
-
-        //Can still change:
-        echo '<a href="javascript:void(0);" onclick="toggle_support('.$class['r_id'].')" id="support_toggle_'.$class['r_id'].'" class="badge badge-primary '.( $class['r_status']==0 ? 'grey' : '' ).'" style="text-decoration: none;" current-r-status="'.$class['r_status'].'" data-toggle="tooltip" data-placement="right" title="Click to toggle availability for the week of ['.echo_time($class['r_start_date'],4).'] Yellow = Offer Coaching Grey = Disable Coaching">'.echo_status('r',$class['r_status'],true, null).'</a>';
-
-
-    }
-
-    echo ' <span title="Class ID '.$class['r_id'].'">'.echo_time($class['r_start_date'],1).'</span>';
-
-    echo '</li>';
-}
-
-
-
-function echo_checklist($href,$anchor,$e_status,$time_min=0){
-
-    $ui = '';
-    if($href){
-        $ui .= '<a href="'.$href.'" class="list-group-item '.(($e_status>=-2)?'checklist-done':'').'">';
-        $ui .= '<span class="pull-right"><span class="badge badge-primary" style="margin-top:-5px;"><i class="fas fa-chevron-right"></i></span></span>';
-    } else {
-        $ui .= '<li class="list-group-item '.(($e_status>=-2)?'checklist-done':'').'">';
-    }
-
-    $ui .= echo_status('e_status',$e_status,1,'right').' ';
-    $ui .= $anchor.' ';
-
-    if($href){
-        $ui .= '</a>';
-    } else {
-        $ui .= '</li>';
-    }
-    return $ui;
-}
 
 
 
