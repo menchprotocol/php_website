@@ -365,7 +365,7 @@ input::-webkit-inner-spin-button {
 
 
 .assessment-btn{display: block; font-size: 1em; font-weight:300; padding-top: 5px; }
-.tab-pane, .maxout {max-width:665px !important;}
+.maxout {max-width:665px !important;}
 .list-group-item { padding: 10px 10px; }
 .list-group-item i, .list-group-item b { color:#3C4858 !important; }
 .fa-chain-broken { color:#c32626; margin-right:5px; font-size:0.8em; }
@@ -2156,8 +2156,11 @@ margin:5px 0;
     color:#CCC;
 }
 
-.bintent>li+li:before, .bintent>li:before{
-    content:"#";
+.bentity>li {
+    padding-right: 10px;
+}
+.bentity>li+li:before, .bentity>li:before{
+    content:"@";
     color:#CCC;
     padding: 0 5px;
 }

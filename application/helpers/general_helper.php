@@ -39,85 +39,34 @@ function missing_required_db_fields($insert_columns,$field_array){
 }
 
 
-function fetch_entity_tree($inbound_u_id,$is_edit=false){
+function fetch_entity_tree($u_id,$is_edit=false){
 
-    $inbound_u_id = intval($inbound_u_id);
+    $CI =& get_instance();
+    $entities = $CI->Db_model->u_fetch(array(
+        'u_id' => $u_id,
+    ), array('u__outbound_count'));
+
+    if(count($entities)<1){
+        return redirect_message('/entities','<div class="alert alert-danger maxout" role="alert">Invalid Entity ID</div>');
+    }
+
     $view_data = array(
-        'inbound_u_id' => $inbound_u_id,
+        'inbound_u_id' => $u_id,
+        'entity' => $entities[0],
+        'breadcrumb' => array(),
+        'title' => ( $is_edit ? 'Modify ' : '' ).$entities[0]['u_full_name'],
     );
 
-    //Fetch parent name:
-    if($inbound_u_id){
-
-        $CI =& get_instance();
-        $parent_id = $inbound_u_id; //Start our recursive loop here
-        $this_entity = null; //Will be set during the loop below
-        $breadcrumb = array(); //Populate as we go along
-
-        while($parent_id){
-
-            //Fetch parent details:
-            $parent_entities = $CI->Db_model->u_fetch(array(
-                'u_id' => $parent_id,
-            ), array('u__outbound_count'));
-
-            if(count($parent_entities)<1){
-                redirect_message('/entities','<div class="alert alert-danger" role="alert">Invalid Entity ID</div>');
-                break;
-            } elseif(!$this_entity){
-
-                $this_entity = $parent_entities[0];
-
-                //Push this item to breadcrumb:
-                if($is_edit){
-                    array_push( $breadcrumb , array(
-                        'link' => null,
-                        'anchor' => '<i class="fas fa-cog"></i> Modify',
-                    ));
-                    array_push( $breadcrumb , array(
-                        'link' => '/entities/'.$parent_entities[0]['u_id'],
-                        'anchor' => $parent_entities[0]['u_full_name'],
-                    ));
-                } else {
-                    array_push( $breadcrumb , array(
-                        'link' => null,
-                        'anchor' => $parent_entities[0]['u_full_name'],
-                    ));
-                }
-
-            } else {
-                //Push this item to breadcrumb:
-                array_push( $breadcrumb , array(
-                    'link' => '/entities'.( $parent_id ? '/'.$parent_id : '' ),
-                    'anchor' => $parent_entities[0]['u_full_name'],
-                ));
-            }
-
-            //Set new parent ID:
-            $parent_id = intval($parent_entities[0]['u_inbound_u_id']);
-        }
-
-        //Add core entity item and reverse:
-        array_push( $breadcrumb , array(
-            'link' => '/entities',
-            'anchor' => 'Entities',
+    //Push this item to breadcrumb:
+    if($is_edit){
+        array_push( $view_data['breadcrumb'] , array(
+            'link' => '/entities/'.$u_id,
+            'anchor' => $view_data['entity']['u_full_name'],
         ));
-
-        $view_data['title'] = ( $is_edit ? 'Modify ' : '' ).$this_entity['u_full_name'];
-        $view_data['breadcrumb'] = array_reverse($breadcrumb);
-        $view_data['entity'] = $this_entity;
-
-    } else {
-
-        $view_data['entity'] = null;
-        $view_data['title'] = 'Entities';
-        $view_data['breadcrumb'] = array(
-            array(
-                'link' => null,
-                'anchor' => $view_data['title'] . ' <span id="hb_6776" class="help_button" intent-id="6776"></span>',
-            ),
-        );
-
+        array_push( $view_data['breadcrumb'] , array(
+            'link' => null,
+            'anchor' => '<i class="fas fa-cog"></i> Modify',
+        ));
     }
 
     return $view_data;

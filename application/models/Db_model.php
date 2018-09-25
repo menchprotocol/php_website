@@ -253,14 +253,14 @@ class Db_model extends CI_Model {
 
 
             //Fetch the messages for this entity:
-            $res[$key]['u__inbound'] = array();
+            $res[$key]['u__inbounds'] = array();
             $inbounds = $this->Db_model->ur_inbound_fetch(array(
                 'ur_outbound_u_id' => $val['u_id'],
                 'ur_status >=' => 0, //Pending or Active
                 'u_status >=' => 0, //Pending or Active
             ));
             foreach($inbounds as $ur){
-                $res[$key]['u__inbound'][$ur['u_id']] = $ur;
+                $res[$key]['u__inbounds'][$ur['u_id']] = $ur;
             }
         }
 
@@ -1235,7 +1235,7 @@ class Db_model extends CI_Model {
         return $insert_columns;
     }
 
-    function ur_outbound_fetch($match_columns, $join_objects=array()){
+    function ur_outbound_fetch($match_columns, $join_objects=array(), $limit=0){
 
         //Missing anything?
         $this->db->select('*');
@@ -1250,6 +1250,11 @@ class Db_model extends CI_Model {
             }
         }
         $this->db->order_by('u.u__e_score','DESC');
+
+        if($limit>0){
+            $this->db->limit($limit);
+        }
+
         $q = $this->db->get();
         $res = $q->result_array();
 
@@ -1265,10 +1270,10 @@ class Db_model extends CI_Model {
             }
         }
 
-        if(in_array('u__inbound',$join_objects)){
+        if(in_array('u__inbounds',$join_objects)){
             foreach($res as $key=>$val){
                 //Fetch the messages for this entity:
-                $res[$key]['u__inbound'] = array();
+                $res[$key]['u__inbounds'] = array();
                 $inbounds = $this->Db_model->ur_inbound_fetch(array(
                     'ur_outbound_u_id' => $val['u_id'],
                     'ur_status >=' => 0, //Pending or Active
@@ -1276,7 +1281,7 @@ class Db_model extends CI_Model {
                 ));
 
                 foreach($inbounds as $ur){
-                    $res[$key]['u__inbound'][$ur['u_id']] = $ur;
+                    $res[$key]['u__inbounds'][$ur['u_id']] = $ur;
                 }
 
             }
@@ -2236,19 +2241,6 @@ class Db_model extends CI_Model {
                 $new_item['u_id'] = intval($item['u_id']); //rquired for all objects
                 $new_item['u_inbound_u_id'] = intval($item['u_inbound_u_id']);
                 $new_item['u__e_score'] = intval($item['u__e_score']);
-
-                if($new_item['u_inbound_u_id']>0 && !isset($inbound_names[$new_item['u_inbound_u_id']])){
-                    //Fetch parent name:
-                    $entities = $this->Db_model->u_fetch(array(
-                        'u_id' => $new_item['u_inbound_u_id'],
-                    ));
-                    if(count($entities)>0){
-                        $inbound_names[$new_item['u_inbound_u_id']] = $entities[0]['u_full_name'];
-                    }
-                }
-
-                $new_item['u_inbound_name'] = ( isset($inbound_names[$new_item['u_inbound_u_id']]) ? $inbound_names[$new_item['u_inbound_u_id']] : 'Entities' );
-
                 $new_item['u_full_name'] = $item['u_full_name'];
                 $new_item['u_keywords'] = $item['u_bio'];
 

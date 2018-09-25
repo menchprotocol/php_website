@@ -48,24 +48,11 @@ class Intents extends CI_Controller
             'c' => $cs[0],
             'orphan_c_count' => $orphan_c_count,
             'breadcrumb' => array(), //Even if empty show it, we might populate it soon below
+            'c__inbounds' => $this->Db_model->cr_inbound_fetch(array(
+                'cr.cr_outbound_c_id' => $inbound_c_id,
+                'cr.cr_status >=' => 1,
+            )),
         );
-
-        //Search for all parent intents to populate breadcrumb:
-        $parent_cs = $this->Db_model->cr_inbound_fetch(array(
-            'cr.cr_outbound_c_id' => $inbound_c_id,
-            'cr.cr_status >=' => 1,
-        ));
-
-        //Did we find anything?
-        if(count($parent_cs)>0){
-            $data['breadcrumb_css'] = 'bintent';
-            foreach ($parent_cs as $parent_c){
-                array_push($data['breadcrumb'], array(
-                    'link' => '/intents/'.$parent_c['c_id'],
-                    'anchor' => $parent_c['c_outcome'].'<i class="'.( $parent_c['c_is_any'] ? 'fas fa-code-merge' : 'fas fa-sitemap' ).'" style="padding-left:5px;"></i>',
-                ));
-            }
-        }
 
         $this->load->view('console/console_header', $data);
         $this->load->view('intents/intent_manage' , $data);
@@ -600,11 +587,11 @@ class Intents extends CI_Controller
         }
 
         //Fetch parent ID:
-        $parent_cs = $this->Db_model->cr_inbound_fetch(array(
+        $c__inbounds = $this->Db_model->cr_inbound_fetch(array(
             'cr.cr_id' => $_POST['cr_id'],
             'cr.cr_status >=' => 1,
         ));
-        if(!isset($parent_cs[0])){
+        if(!isset($c__inbounds[0])){
             echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Intent Link ID',
@@ -620,7 +607,7 @@ class Intents extends CI_Controller
             'c__tree_hours' => -(number_format($cs[0]['c__tree_hours'],3)),
             'c__tree_messages' => -($cs[0]['c__tree_messages']),
         );
-        $updated_recursively = $this->Db_model->c_update_tree( $parent_cs[0]['cr_inbound_c_id'] , $recursive_query );
+        $updated_recursively = $this->Db_model->c_update_tree( $c__inbounds[0]['cr_inbound_c_id'] , $recursive_query );
 
 
         //Now we can remove the link:
@@ -658,7 +645,7 @@ class Intents extends CI_Controller
         //Show success:
         echo_json(array(
             'status' => 1,
-            'parent_c' => $parent_cs[0]['cr_inbound_c_id'],
+            'c_inbound' => $c__inbounds[0]['cr_inbound_c_id'],
             'adjusted_c_count' => -($cs[0]['c__tree_outputs'] + $cs[0]['c__tree_inputs']),
         ));
     }
@@ -678,20 +665,20 @@ class Intents extends CI_Controller
         //Update orphan status:
         foreach($orphans as $c){
             //Is it an orphan?
-            $parent_cs = $this->Db_model->cr_inbound_fetch(array(
+            $c__inbounds = $this->Db_model->cr_inbound_fetch(array(
                 'cr.cr_outbound_c_id' => $c['c_id'],
                 'cr.cr_status >=' => 1,
             ));
 
-            if((!count($parent_cs) && !intval($c['c__is_orphan'])) || (count($parent_cs) && intval($c['c__is_orphan']))){
+            if((!count($c__inbounds) && !intval($c['c__is_orphan'])) || (count($c__inbounds) && intval($c['c__is_orphan']))){
                 //Needs adjustment:
                 $this->Db_model->c_update( $c['c_id'] , array(
-                    'c__is_orphan' => ( count($parent_cs) ? 0 : 1 ),
+                    'c__is_orphan' => ( count($c__inbounds) ? 0 : 1 ),
                 ));
                 $sync['orphan_count_update']++;
             }
 
-            if(!count($parent_cs)){
+            if(!count($c__inbounds)){
                 $sync['orphan_total']++;
             }
         }
@@ -834,25 +821,25 @@ class Intents extends CI_Controller
         }
 
         //Search for other parent intents:
-        $parent_cs = $this->Db_model->cr_inbound_fetch(array(
+        $c__inbounds = $this->Db_model->cr_inbound_fetch(array(
             'cr.cr_outbound_c_id' => $_POST['c_id'],
             'cr.cr_status >=' => 1,
         ));
 
 
         //Did we find anything?
-        if(count($parent_cs)>1 || (count($parent_cs)>0 && intval($_POST['cr_id'])==0)){
+        if(count($c__inbounds)>1 || (count($c__inbounds)>0 && intval($_POST['cr_id'])==0)){
             $parent_ui = '';
             $parent_ui .= '<div class="title" style="margin-top:10px;"><h4><b><i class="fas fa-sitemap rotate180"></i> Other Parent Intents</b></a></h4></div>';
             $parent_ui .= '<div class="list-group">';
-            foreach ($parent_cs as $parent_c){
-                if($_POST['cr_id']>0 && $parent_c['cr_id']==$_POST['cr_id']){
+            foreach ($c__inbounds as $c_inbound){
+                if($_POST['cr_id']>0 && $c_inbound['cr_id']==$_POST['cr_id']){
                     continue;
                 }
                 $parent_ui .= '<div class="list-group-item">';
-                $parent_ui .= '<span class="pull-right"><a class="badge badge-primary" href="/intents/'.$parent_c['c_id'].'" style="margin-top:-3px;"><i class="fas fa-chevron-right"></i></a></span>';
+                $parent_ui .= '<span class="pull-right"><a class="badge badge-primary" href="/intents/'.$c_inbound['c_id'].'" style="margin-top:-3px;"><i class="fas fa-chevron-right"></i></a></span>';
                 $parent_ui .= '<i class="fas fa-hashtag"></i> ';
-                $parent_ui .= $parent_c['c_outcome'];
+                $parent_ui .= $c_inbound['c_outcome'];
                 $parent_ui .= '</div>';
             }
             $parent_ui .= '</div>';
@@ -860,7 +847,7 @@ class Intents extends CI_Controller
             return echo_json(array(
                 'status' => 1,
                 'parent_found' => 1,
-                'parent_content' => $parent_ui,
+                'c_inboundontent' => $parent_ui,
             ));
         } else {
             return echo_json(array(
@@ -1321,6 +1308,7 @@ class Intents extends CI_Controller
     }
 
     function i_sort(){
+
         //Auth user and Load object:
         $udata = auth(array(1308,1280));
         if(!$udata){

@@ -123,7 +123,7 @@ function insert_gravatar(){
 
 <div class="tab-content tab-space">
 
-    <div class="tab-pane active" id="tabprofile">
+    <div class="tab-pane maxout active" id="tabprofile">
 
 
         <div class="title" style="margin-bottom:0; padding-bottom:0;"><h4><i class="fas fa-id-card"></i> Full Name</h4></div>
@@ -283,7 +283,7 @@ function insert_gravatar(){
 
 
 
-    <div class="tab-pane is-passwordable" id="tabpassword">
+    <div class="tab-pane maxout is-passwordable" id="tabpassword">
 
         <div class="needs-current-pass">
             <div class="title"><h4><i class="fas fa-asterisk"></i> Current Password</h4></div>

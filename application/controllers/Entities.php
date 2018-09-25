@@ -116,21 +116,10 @@ class Entities extends CI_Controller {
 
 
     //Lists entities
-    function entity_manage($inbound_u_id=0){
+    function entity_manage($u_id=2738){
 
         $udata = auth(null,1); //Just be logged in to browse
-        $entities_per_page = 100;
-        $entity_tree = fetch_entity_tree($inbound_u_id);
-
-        //Fetch core data:
-        $view_data = array_merge( $entity_tree , array(
-            'udata' => $udata,
-            'entities_per_page' => $entities_per_page,
-            'child_entities' => $this->Db_model->u_fetch(array(
-                'u_inbound_u_id' => $inbound_u_id,
-                'u_status' => 1, //Only active
-            ), array('u__outbound_count'), $entities_per_page),
-        ));
+        $view_data = fetch_entity_tree($u_id);
 
         //Load views
         $this->load->view('console/console_header' , $view_data);

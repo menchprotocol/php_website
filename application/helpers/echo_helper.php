@@ -1214,7 +1214,7 @@ function echo_score($score){
 
 
 
-function echo_actionplan($c, $level, $parent_c_id=0){
+function echo_actionplan($c, $level, $c_inbound_id=0){
 
     $CI =& get_instance();
     $udata = $CI->session->userdata('user');
@@ -1228,7 +1228,7 @@ function echo_actionplan($c, $level, $parent_c_id=0){
 
         //ATTENTION: DO NOT CHANGE THE ORDER OF data-link-id & intent-id AS the sorting logic depends on their exact position to sort!
         //CHANGE WITH CAUTION!
-        $ui = '<div id="cr_'.$c['cr_id'].'" data-link-id="'.$c['cr_id'].'" intent-id="'.$c['c_id'].'" parent-intent-id="'.$parent_c_id.'" intent-level="'.$level.'" class="list-group-item '.( $level==3 ? 'is_level3_sortable' : 'is_level2_sortable' ).' intent_line_'.$c['c_id'].'">';
+        $ui = '<div id="cr_'.$c['cr_id'].'" data-link-id="'.$c['cr_id'].'" intent-id="'.$c['c_id'].'" parent-intent-id="'.$c_inbound_id.'" intent-level="'.$level.'" class="list-group-item '.( $level==3 ? 'is_level3_sortable' : 'is_level2_sortable' ).' intent_line_'.$c['c_id'].'">';
 
     }
 

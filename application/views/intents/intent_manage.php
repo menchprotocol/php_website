@@ -2,6 +2,22 @@
 if(isset($orphan_cs)){
     $c['c_id'] = 0;
 }
+
+
+$tabs = array(
+    'outbound' => array(
+        'title' => 'Outs',
+        'icon' => 'fas fa-sign-out-alt rotate90',
+        'item_count' => count($c['c__child_intents']),
+    ),
+    'inbound' => array(
+        'title' => 'Ins',
+        'icon' => 'fas fa-sign-in-alt rotate90',
+        'item_count' => count($c__inbounds),
+    ),
+);
+
+
 ?>
 
 <input type="hidden" id="c_id" value="<?= $c['c_id'] ?>" />
@@ -428,24 +444,24 @@ if(isset($orphan_cs)){
         if(level>=2){
 
             //Adjust the parent level hours:
-            var parent_c_id = parseInt($('.intent_line_'+c_id).attr('parent-intent-id'));
-            var parent_c_tree_hours = parseFloat($('#t_estimate_'+parent_c_id).attr('tree-hours'));
-            var new_parent_c_tree_hours = parent_c_tree_hours + intent_deficit_hours;
+            var c_inbound_id = parseInt($('.intent_line_'+c_id).attr('parent-intent-id'));
+            var c_inbound_tree_hours = parseFloat($('#t_estimate_'+c_inbound_id).attr('tree-hours'));
+            var new_c_inbound_tree_hours = c_inbound_tree_hours + intent_deficit_hours;
 
             if(!(intent_deficit_count==0)){
-                $('#tree-counter-'+parent_c_id).text( parseInt($('#tree-counter-'+parent_c_id).text()) + intent_deficit_count );
+                $('#tree-counter-'+c_inbound_id).text( parseInt($('#tree-counter-'+c_inbound_id).text()) + intent_deficit_count );
             }
 
             if(!(intent_deficit_hours==0)){
                 //Update Hours (Either level 1 or 2):
-                $('#t_estimate_'+parent_c_id)
-                    .attr('tree-hours', new_parent_c_tree_hours)
-                    .text(echo_hours(new_parent_c_tree_hours));
+                $('#t_estimate_'+c_inbound_id)
+                    .attr('tree-hours', new_c_inbound_tree_hours)
+                    .text(echo_hours(new_c_inbound_tree_hours));
             }
 
             if(level==3){
                 //Adjust top level (Bootcamp hours) as well:
-                var b_c_id = parseInt($('.intent_line_'+parent_c_id).attr('parent-intent-id'));
+                var b_c_id = parseInt($('.intent_line_'+c_inbound_id).attr('parent-intent-id'));
                 var b_c_tree_hours = parseFloat($('#t_estimate_'+b_c_id).attr('tree-hours'));
                 var new_b_c_tree_hours = b_c_tree_hours + intent_deficit_hours;
 
@@ -475,7 +491,7 @@ if(isset($orphan_cs)){
             return false;
         }
 
-        var parent_c_id = parseInt($('#cr_'+cr_id).attr('parent-intent-id'));
+        var c_inbound_id = parseInt($('#cr_'+cr_id).attr('parent-intent-id'));
         var level = parseInt($('#cr_'+cr_id).attr('intent-level')); //Either 2 or 3 (Cannot unlink level 1)
         var r = confirm("Unlink \""+$('.c_outcome_input').val()+"\"?\n(Intent will remain accessible)");
 
@@ -501,7 +517,7 @@ if(isset($orphan_cs)){
                             $('#modifybox').addClass('hidden');
 
                             //Resort all Tasks to illustrate changes on UI:
-                            c_sort(parent_c_id,level);
+                            c_sort(c_inbound_id,level);
 
                         }, 377);
                     }, 1597);
@@ -578,7 +594,7 @@ if(isset($orphan_cs)){
             if(data.status){
                 if(data.parent_found){
                     //Load other parents:
-                    $('#parent_intents').removeClass('hidden').html(data.parent_content);
+                    $('#parent_intents').removeClass('hidden').html(data.c_inboundontent);
                 } else {
                     //No other parents found!
                     $('#parent_intents').addClass('hidden');
@@ -744,57 +760,104 @@ if(isset($orphan_cs)){
 
 </script>
 
+
+
+
+
+
 <div class="row">
     <div class="col-xs-6">
         <?php
 
+
+
         if(isset($orphan_cs)){
+
             echo '<div id="bootcamp-objective" class="list-group">';
             foreach($orphan_cs as $oc){
                 echo echo_actionplan($oc,1);
             }
             echo '</div>';
+
         } else {
+
             echo '<div id="bootcamp-objective" class="list-group">';
             echo echo_actionplan($c,1);
             echo '</div>';
 
 
-            //Expand/Contract buttons
-            echo '<table style="width: 100%;"><tr>';
-                echo '<td width="50%">';
+
+
+
+            echo '<ul id="topnav" class="nav nav-pills nav-pills-primary">';
+//Go through all tabs and see wassup:
+            foreach ($tabs as $key => $tab) {
+                echo '<li id="nav_'.$key.'" class="'.( $key=='outbound' ? 'active' : '' ).'"><a href="#'.$key.'"><i class="'.$tab['icon'].'"></i> <span class="li-'.$key.'-count">'.$tab['item_count'].'</span> '.$tab['title'].'</a></li>';
+            }
+            echo '</ul>';
+
+
+
+
+
+            echo '<div class="tab-content tab-space">';
+
+
+
+
+
+
+
+                echo '<div class="tab-pane active" id="taboutbound">';
+                    //Expand/Contract buttons
+                    echo '<table style="width: 100%;"><tr>';
+                    echo '<td width="50%">';
                     echo '<div id="task_view">';
                     echo '<i class="fas fa-plus-square expand_all"></i> &nbsp;';
                     echo '<i class="fas fa-minus-square close_all"></i>';
                     echo '</div>';
-                echo '</td>';
-                echo '<td width="50%">';
+                    echo '</td>';
+                    echo '<td width="50%">';
                     if($orphan_c_count>0){
                         echo '<div style="text-align:right; font-size:0.9em;"><i class="fas fa-unlink"></i> <a href="/intents/orphan">'.$orphan_c_count.' Orphan Intents &raquo;</a></div>';
                     }
-                echo '</td>';
-            echo '</tr></table>';
+                    echo '</td>';
+                    echo '</tr></table>';
 
 
-            //Task/Bootcamp List:
-            echo '<div id="list-c-'.$c['c_id'].'" class="list-group list-level-2">';
-                foreach($c['c__child_intents'] as $sub_intent){
-                    echo echo_actionplan($sub_intent, 2, $c['c_id']);
-                }
-                ?>
-                <div class="list-group-item list_input searchable grey-block">
-                    <div class="input-group">
-                        <div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control intentadder-level-2"  maxlength="70" intent-id="<?= $c['c_id'] ?>" id="addintent-c-<?= $c['c_id'] ?>" placeholder="Add #Intent"></div>
-                        <span class="input-group-addon" style="padding-right:8px;">
-                                <span id="dir_handle" data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" class="badge badge-primary pull-right" style="cursor:pointer; margin: 1px 3px 0 6px;">
-                                    <div><i class="fas fa-plus"></i></div>
-                                </span>
-                            </span>
+                    //Task/Bootcamp List:
+                    echo '<div id="list-c-'.$c['c_id'].'" class="list-group list-level-2">';
+                    foreach($c['c__child_intents'] as $sub_intent){
+                        echo echo_actionplan($sub_intent, 2, $c['c_id']);
+                    }
+                    ?>
+                    <div class="list-group-item list_input searchable grey-block">
+                        <div class="input-group">
+                            <div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control intentadder-level-2"  maxlength="70" intent-id="<?= $c['c_id'] ?>" id="addintent-c-<?= $c['c_id'] ?>" placeholder="Add #Intent"></div>
+                            <span class="input-group-addon" style="padding-right:8px;">
+                                        <span id="dir_handle" data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" class="badge badge-primary pull-right" style="cursor:pointer; margin: 1px 3px 0 6px;">
+                                            <div><i class="fas fa-plus"></i></div>
+                                        </span>
+                                    </span>
+                        </div>
                     </div>
-                </div>
-                <?php
-            echo '</div>';
+                    <?php
+                    echo '</div>';
+                echo '</div>';
 
+
+
+
+
+                echo '<div class="tab-pane" id="tabinbound">';
+                    echo '<div class="list-group">';
+                    foreach($c__inbounds as $sub_intent){
+                        echo echo_actionplan($sub_intent, 3, 0);
+                    }
+                    echo '</div>';
+                echo '</div>';
+
+            echo '</div>';
         }
         ?>
     </div>

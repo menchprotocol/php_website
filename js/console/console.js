@@ -165,7 +165,7 @@ $(document).ready(function() {
             displayKey: function(suggestion) { return "" },
             templates: {
                 suggestion: function(suggestion) {
-                    return '<i class="fas fa-at"></i> '+ suggestion.u_full_name + ' ('+suggestion.u_inbound_name+')';
+                    return '<i class="fas fa-at"></i> '+ suggestion.u_full_name;
                 },
             }
         },
