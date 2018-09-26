@@ -271,7 +271,7 @@ function insert_gravatar(){
 
         <?php
         if(array_key_exists(1281, $udata['u__inbounds'])){
-            echo '<div class="u_delete" style="text-align: right;"><a href="javascript:void(0);" onclick="u_delete('.$entity['u_id'].','.$entity['u_inbound_u_id'].')">Delete Entity</a></div>';
+            echo '<div class="u_delete" style="text-align: right;"><a href="javascript:void(0);" onclick="u_delete('.$entity['u_id'].','.( count($entity['u__inbounds'])>0 ? $entity['u__inbounds'][0]['u_id'] : 1278 ).')">Delete Entity</a></div>';
         }
         ?>
 

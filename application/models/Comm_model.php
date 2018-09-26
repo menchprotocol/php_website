@@ -1003,7 +1003,7 @@ class Comm_model extends CI_Model {
                 $activation_msg = $this->Comm_model->foundation_message(array(
                     'e_outbound_u_id' => $u['u_id'],
                     'e_fp_id' => $fp['fp_id'],
-                    'e_outbound_c_id' => ( in_array($u['u_inbound_u_id'], array(1280,1308)) ? 918 /*Coach*/ : 926),
+                    'e_outbound_c_id' => 926, //Student activation, to be removed?
                     'depth' => 0,
                     'e_b_id' => ( isset($u['ru_b_id']) ? $u['ru_b_id'] : 0 ),
                     'e_r_id' => ( isset($u['r_id']) ? $u['r_id'] : 0 ),

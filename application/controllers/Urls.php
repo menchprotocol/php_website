@@ -137,21 +137,35 @@ class Urls extends CI_Controller
         }
 
 
-        if($_POST['x_outbound_u_id']==1326) {
+        if($_POST['x_outbound_u_id']==1326) { //Content
 
-            //We need to create a new entity:
+            //We need to create a new entity and add this URL below it:
             $new_content = $this->Db_model->u_create(array(
                 'u_full_name' => ( strlen($curl['page_title'])>0 ? $curl['page_title'] : ( strlen($curl['last_domain'])>0 ? $curl['last_domain'].' Content' : '' ) ),
-                'u_inbound_u_id' => $_POST['x_outbound_u_id'],
             ));
 
             $x_outbound_u_id = $new_content['u_id'];
 
-            //Log Engagement new source:
+            //Log Engagement new entity:
             $this->Db_model->e_create(array(
                 'e_inbound_u_id' => $udata['u_id'],
                 'e_outbound_u_id' => $x_outbound_u_id,
-                'e_inbound_c_id' => 6971, //New Entity
+                'e_inbound_c_id' => 6971, //Entity Created
+            ));
+
+
+            //Place this new entity in contents [1326]
+            $ur1 = $this->Db_model->ur_create(array(
+                'ur_outbound_u_id' => $x_outbound_u_id,
+                'ur_inbound_u_id' => 1326,
+            ));
+
+            //Log Engagement new entity link:
+            $this->Db_model->e_create(array(
+                'e_inbound_u_id' => $udata['u_id'],
+                'e_outbound_u_id' => 1326,
+                'e_ur_id' => $ur1['ur_id'],
+                'e_inbound_c_id' => 7291, //Entity Link Create
             ));
 
         } else {

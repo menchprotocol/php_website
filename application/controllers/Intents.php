@@ -1183,7 +1183,7 @@ class Intents extends CI_Controller
                                 'status' => 0,
                                 'message' => '[@'.$matches[1].'] is an Invalid Entity reference',
                             ));
-                        } elseif(!($us[0]['u_inbound_u_id']==1326)){
+                        } elseif(!array_key_exists(1326, $us[0]['u__inbounds'])){
                             //Entity is from a non-allowed category:
                             return echo_json(array(
                                 'status' => 0,

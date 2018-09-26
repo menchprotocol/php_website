@@ -54,11 +54,12 @@ class Entities extends CI_Controller {
         //Fetch entitie itself:
         $entities = $this->Db_model->u_fetch(array(
             'u_id' => $inbound_u_id,
-        ), array('u__outbound_count',u__outbounds));
+        ), array('u__outbound_count'));
 
-        $child_entities = $this->Db_model->u_fetch(array(
-            'u_inbound_u_id' => $inbound_u_id,
-            'u_status' => 1, //Only active
+        $child_entities = $this->Db_model->ur_outbound_fetch(array(
+            'ur_inbound_u_id' => $inbound_u_id,
+            'ur_status >=' => 0, //Pending or Active
+            'u_status >=' => 0, //Pending or Active
         ), array('u__outbound_count'), $limit, ($page*$limit));
 
         foreach($child_entities as $u){

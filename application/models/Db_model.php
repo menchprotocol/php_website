@@ -418,10 +418,6 @@ class Db_model extends CI_Model {
         if(!isset($insert_columns['u_status'])){
             $insert_columns['u_status'] = 1;
         }
-
-        if(!isset($insert_columns['u_inbound_u_id'])){
-            $insert_columns['u_inbound_u_id'] = null;
-        }
 		
 		//Lets now add:
 		$this->db->insert('v5_entities', $insert_columns);
@@ -1231,7 +1227,7 @@ class Db_model extends CI_Model {
         return $insert_columns;
     }
 
-    function ur_outbound_fetch($match_columns, $join_objects=array(), $limit=0){
+    function ur_outbound_fetch($match_columns, $join_objects=array(), $limit=0, $limit_offset=0){
 
         //Missing anything?
         $this->db->select('*');
@@ -1248,7 +1244,7 @@ class Db_model extends CI_Model {
         $this->db->order_by('u.u__e_score','DESC');
 
         if($limit>0){
-            $this->db->limit($limit);
+            $this->db->limit($limit,$limit_offset);
         }
 
         $q = $this->db->get();
