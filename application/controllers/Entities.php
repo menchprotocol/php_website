@@ -212,7 +212,7 @@ class Entities extends CI_Controller {
                     if(!$url_create['status']){
                         return echo_json($url_create);
                     } else {
-                        $linking_to_existing_u = true;
+                        $linking_to_existing_u = ( isset($url_create['is_existing']) );
                         $new_u = $url_create['u'];
                     }
 
