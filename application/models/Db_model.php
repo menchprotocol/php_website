@@ -1003,7 +1003,7 @@ class Db_model extends CI_Model {
                     'status' => 1,
                     'message' => 'Found existing URL',
                     'is_existing' => 1,
-                    'u' => $dup_urls[0],
+                    'u' => array_merge($outbound_us[0],$dup_urls[0]),
                 );
             } elseif($dup_urls[0]['u_id']==$x_outbound_u_id){
                 return array(
@@ -1107,7 +1107,7 @@ class Db_model extends CI_Model {
             return array(
                 'status' => 1,
                 'message' => 'Success',
-                'u' => $new_content,
+                'u' => array_merge($new_content,$ur1),
                 'set_cover_x_id' => $set_cover_x_id,
                 'new_u' => ( $allow_duplicate ? null : echo_u(array_merge($new_content,$ur1), 2, $cad_edit) ),
             );

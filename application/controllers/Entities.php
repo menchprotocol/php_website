@@ -164,6 +164,7 @@ class Entities extends CI_Controller {
         $_POST['is_inbound'] = intval($_POST['is_inbound']);
         $_POST['new_u_id'] = intval($_POST['new_u_id']);
         $linking_to_existing_u = false;
+        $is_url_input = false;
 
         //Are we linking to an existing entity?
         if(intval($_POST['new_u_id'])>0){
@@ -213,6 +214,7 @@ class Entities extends CI_Controller {
                         return echo_json($url_create);
                     } else {
                         $linking_to_existing_u = ( isset($url_create['is_existing']) );
+                        $is_url_input = true;
                         $new_u = $url_create['u'];
                     }
 
@@ -258,7 +260,10 @@ class Entities extends CI_Controller {
         }
 
         //We need to check to ensure this is not a duplicate link if linking to an existing entity:
+        $ur2 = array();
+
         if($linking_to_existing_u){
+
             //Check for duplicates:
             if($_POST['is_inbound']){
                 $dup_entities = $this->Db_model->ur_outbound_fetch(array(
@@ -278,30 +283,34 @@ class Entities extends CI_Controller {
                     'message' => '['.$new_u['u_full_name'].'] is already linked to ['.$current_us[0]['u_full_name'].'] as an '.( $_POST['is_inbound'] ? 'inbound' : 'outbound' ).' entity',
                 ));
             }
-        }
-            
 
 
-        if($_POST['is_inbound']){
-            $ur_outbound_u_id = $current_us[0]['u_id'];
-            $ur_inbound_u_id = $new_u['u_id'];
-        } else {
-            $ur_outbound_u_id = $new_u['u_id'];
-            $ur_inbound_u_id = $current_us[0]['u_id'];
         }
 
-        //Link to new OR existing entity:
-        $ur2 = $this->Db_model->ur_create(array(
-            'ur_outbound_u_id' => $ur_outbound_u_id,
-            'ur_inbound_u_id' => $ur_inbound_u_id,
-        ));
+        if(!$is_url_input){
+            //Add links only if not already added by the URL function:
+            if($_POST['is_inbound']){
+                $ur_outbound_u_id = $current_us[0]['u_id'];
+                $ur_inbound_u_id = $new_u['u_id'];
+            } else {
+                $ur_outbound_u_id = $new_u['u_id'];
+                $ur_inbound_u_id = $current_us[0]['u_id'];
+            }
 
-        //Insert engagement for creation:
-        $this->Db_model->e_create(array(
-            'e_inbound_u_id' => $udata['u_id'],
-            'e_ur_id' => $ur2['ur_id'],
-            'e_inbound_c_id' => 7291, //Entity Link Create
-        ));
+            //Link to new OR existing entity:
+            $ur2 = $this->Db_model->ur_create(array(
+                'ur_outbound_u_id' => $ur_outbound_u_id,
+                'ur_inbound_u_id' => $ur_inbound_u_id,
+            ));
+
+            //Insert engagement for creation:
+            $this->Db_model->e_create(array(
+                'e_inbound_u_id' => $udata['u_id'],
+                'e_ur_id' => $ur2['ur_id'],
+                'e_inbound_c_id' => 7291, //Entity Link Create
+            ));
+        }
+
 
         //Return newly added/linked entity:
         return echo_json(array(
