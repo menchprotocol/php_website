@@ -36,26 +36,33 @@ if(isset($orphan_cs)){
 
         //Watch the expand/close all buttons:
         $('#task_view .expand_all').click(function (e) {
-            $( "#list-c-<?= $c['c_id'] ?>>.is_level2_sortable" ).each(function() {
+            $( ".is_level2_sortable" ).each(function() {
                 ms_toggle($( this ).attr('data-link-id'),1);
             });
         });
         $('#task_view .close_all').click(function (e) {
-            $( "#list-c-<?= $c['c_id'] ?>>.is_level2_sortable" ).each(function() {
+            $( ".is_level2_sortable" ).each(function() {
                 ms_toggle($( this ).attr('data-link-id'),0);
             });
         });
 
 
-        //Make iPhone X Sticky for scrolling longer lists
-        $(".main-panel").scroll(function() {
-            var top_position = $(this).scrollTop();
-            clearTimeout($.data(this, 'scrollTimer'));
-            $.data(this, 'scrollTimer', setTimeout(function() {
-                $("#iphonex").css('top',(top_position-25)); //PX also set in style.css for initial load
-                $("#modifybox").css('top',(top_position-0)); //PX also set in style.css for initial load
-            }, 34));
-        });
+
+        if(is_mobile()){
+            //Adjust columns:
+            $('.cols').removeClass('col-xs-6').removeClass('col-sm-6');
+        } else {
+            //Make iPhone X Sticky for scrolling longer lists
+            $(".main-panel").scroll(function() {
+                var top_position = $(this).scrollTop();
+                clearTimeout($.data(this, 'scrollTimer'));
+                $.data(this, 'scrollTimer', setTimeout(function() {
+                    $("#iphonex").css('top',(top_position-25)); //PX also set in style.css for initial load
+                    $("#modifybox").css('top',(top_position-0)); //PX also set in style.css for initial load
+                }, 34));
+            });
+        }
+
 
 
         if(window.location.hash) {
@@ -144,8 +151,11 @@ if(isset($orphan_cs)){
                 },
                 header: function(data) {
                     if(!data.isEmpty){
-                        return '<a href="javascript:new_intent(\''+$(".intentadder-level-2").attr('intent-id')+'\',2)" class="suggestion"><span><i class="fas fa-plus-circle"></i></span> '+data.query+'</a>';
+                        return '<a href="javascript:new_intent(\''+$(".intentadder-level-2").attr('intent-id')+'\',2)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-hashtag"></i> '+data.query+'</a>';
                     }
+                },
+                empty: function (data) {
+                    return '<a href="javascript:new_intent(\''+$(".intentadder-level-2").attr('intent-id')+'\',2)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-hashtag"></i> '+data.query+'</a>';
                 },
             }
         }]).keypress(function (e) {
@@ -167,6 +177,7 @@ if(isset($orphan_cs)){
             source: function(q, cb){
                 algolia_c_index.search(q, {
                     hitsPerPage: 7,
+                    //filters: ( parseInt($('#u_inbound_u_id').val())==1281 ? null : '(c_inbound_u_id=' + $('#u_id').val() + ')' ),
                 }, function(error, content) {
                     if (error) {
                         cb([]);
@@ -571,21 +582,6 @@ if(isset($orphan_cs)){
         $("#modifybox").removeClass('hidden').hide().fadeIn();
         $('#iphonex').addClass('hidden');
 
-        //Load parent intents:
-        $.post("/intents/c_list_inbound", {c_id:c_id, cr_id:cr_id} , function(data) {
-            if(data.status){
-                if(data.parent_found){
-                    //Load other parents:
-                    $('#parent_intents').removeClass('hidden').html(data.c_inboundontent);
-                } else {
-                    //No other parents found!
-                    $('#parent_intents').addClass('hidden');
-                }
-            } else {
-                //Ooops, some sort of an error:
-                $('#parent_intents').removeClass('hidden').html('<span style="color:#FF0000;">ERROR: '+data.message+'</span>');
-            }
-        });
     }
 
 
@@ -748,7 +744,7 @@ if(isset($orphan_cs)){
 
 
 <div class="row">
-    <div class="col-xs-6">
+    <div class="col-xs-6 cols">
         <?php
 
 
@@ -767,18 +763,18 @@ if(isset($orphan_cs)){
                 'outbound' => array(
                     'title' => 'Outs',
                     'icon' => 'fas fa-sign-out-alt rotate90',
-                    'item_count' => ($c['c__tree_inputs']+$c['c__tree_outputs']),
+                    'item_count' => ($c['c__tree_inputs']+$c['c__tree_outputs']-1),
                 ),
                 'inbound' => array(
                     'title' => 'Ins',
-                    'icon' => 'fas fa-sign-in-alt rotate90',
+                    'icon' => 'fas fa-sign-in-alt',
                     'item_count' => count($c__inbounds),
                 ),
             );
 
 
             echo '<div id="bootcamp-objective" class="list-group">';
-            echo echo_actionplan($c,1);
+                echo echo_actionplan($c,1);
             echo '</div>';
 
 
@@ -795,31 +791,30 @@ if(isset($orphan_cs)){
 
 
 
+            //Expand/Contract buttons
+            echo '<table style="width: 100%;"><tr>';
+            echo '<td width="50%">';
+            echo '<div id="task_view">';
+            echo '<i class="fas fa-plus-square expand_all"></i> &nbsp;';
+            echo '<i class="fas fa-minus-square close_all"></i>';
+            echo '</div>';
+            echo '</td>';
+            echo '<td width="50%">';
+            if($orphan_c_count>0){
+                echo '<div style="text-align:right; font-size:0.9em;"><i class="fas fa-unlink"></i> <a href="/intents/orphan">'.$orphan_c_count.' Orphan Intents &raquo;</a></div>';
+            }
+            echo '</td>';
+            echo '</tr></table>';
+
+
+
+
+
 
             echo '<div class="tab-content tab-space">';
 
 
-
-
-
-
-
                 echo '<div class="tab-pane active" id="taboutbound">';
-                    //Expand/Contract buttons
-                    echo '<table style="width: 100%;"><tr>';
-                    echo '<td width="50%">';
-                    echo '<div id="task_view">';
-                    echo '<i class="fas fa-plus-square expand_all"></i> &nbsp;';
-                    echo '<i class="fas fa-minus-square close_all"></i>';
-                    echo '</div>';
-                    echo '</td>';
-                    echo '<td width="50%">';
-                    if($orphan_c_count>0){
-                        echo '<div style="text-align:right; font-size:0.9em;"><i class="fas fa-unlink"></i> <a href="/intents/orphan">'.$orphan_c_count.' Orphan Intents &raquo;</a></div>';
-                    }
-                    echo '</td>';
-                    echo '</tr></table>';
-
 
                     //Task/Bootcamp List:
                     echo '<div id="list-c-'.$c['c_id'].'" class="list-group list-level-2">';
@@ -846,11 +841,17 @@ if(isset($orphan_cs)){
 
 
                 echo '<div class="tab-pane" id="tabinbound">';
-                    echo '<div class="list-group">';
-                    foreach($c__inbounds as $sub_intent){
-                        echo echo_actionplan($sub_intent, 3, 0);
+
+                    if(count($c__inbounds)>0){
+                        echo '<div class="list-group list-level-2">';
+                        foreach($c__inbounds as $sub_intent){
+                            echo echo_actionplan($sub_intent, 2, 0, true);
+                        }
+                        echo '</div>';
+                    } else {
+                        echo '<div class="alert alert-info" role="alert" style="margin-top: 0;"><i class="fas fa-exclamation-triangle"></i> No inbound intents linked yet.<div style="font-size:0.9em;"><b>TIP</b> You can navigate to your desired intent and add ['.$c['c_outcome'].'] as its outbound intent</div></div>';
                     }
-                    echo '</div>';
+
                 echo '</div>';
 
             echo '</div>';
@@ -859,7 +860,7 @@ if(isset($orphan_cs)){
     </div>
 
 
-    <div class="col-xs-6" id="iphonecol">
+    <div class="col-xs-6 cols" id="iphonecol">
 
 
         <div id="modifybox" class="grey-box hidden" intent-id="0" intent-link-id="0" level="0">

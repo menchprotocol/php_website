@@ -10,7 +10,7 @@ function echo_next_u($page,$limit,$u__outbound_count){
     echo '<a class="load-more list-group-item" href="javascript:void(0);" onclick="entity_load_more('.$page.')">';
 
     //Right content:
-    echo '<span class="pull-right"><span class="badge badge-primary"><i class="fas fa-search-plus"></i></span></span>';
+    echo '<span class="pull-right"><span class="badge badge-secondary"><i class="fas fa-search-plus"></i></span></span>';
 
     //Regular section:
     $max_entities = (($page+1)*$limit);
@@ -45,24 +45,21 @@ function echo_x($u, $x){
 
     if($can_edit && strlen($x['x_clean_url'])>0 && !($x['x_url']==$x['x_clean_url'])){
         //We have detected a different URL behind the scene:
-        $ui .= '<a class="badge badge-primary" href="'.$x['x_clean_url'].'" target="_blank" data-toggle="tooltip" data-placement="left" title="Redirects to another URL"><i class="fas fa-route"></i></a> ';
+        $ui .= '<a class="badge badge-secondary" href="'.$x['x_clean_url'].'" target="_blank" data-toggle="tooltip" data-placement="left" title="Redirects to another URL"><i class="fas fa-route"></i></a> ';
     }
 
     //This is an image and can be set as Cover photo, or may have already been set so...
     if($x['x_id']==$u['u_cover_x_id']){
         //Already set as the cover photo:
-        $ui .= '<span class="badge badge-primary grey current-cover" data-toggle="tooltip" data-placement="left" title="Currently set as Cover Photo"><i class="fas fa-file-check"></i></span> ';
-    } elseif($x['x_id']==$u['u_booking_x_id']){
-        //Already set as the cover photo:
-        $ui .= '<span class="badge badge-primary grey current-cover" data-toggle="tooltip" data-placement="left" title="Currently set as Booking URL"><i class="fas fa-clock"></i></span> ';
+        $ui .= '<span class="badge badge-secondary grey current-cover" data-toggle="tooltip" data-placement="left" title="Currently set as Cover Photo"><i class="fas fa-file-check"></i></span> ';
     } elseif($x['x_type']==4 && $x['x_status']>0 && $can_edit){
         //Could be set as the cover photo:
-        $ui .= '<a class="badge badge-primary add-cover" href="javascript:void(0);" onclick="x_cover_set('.$x['x_id'].')" data-toggle="tooltip" data-placement="left" title="Set this image as Cover Photo"><i class="fas fa-file-image"></i></a> ';
+        $ui .= '<a class="badge badge-secondary add-cover" href="javascript:void(0);" onclick="x_cover_set('.$x['x_id'].')" data-toggle="tooltip" data-placement="left" title="Set this image as Cover Photo"><i class="fas fa-file-image"></i></a> ';
     }
 
     //User can always remove a URL:
     if($can_edit){
-        $ui .= '<a class="badge badge-primary" href="javascript:void(0);" onclick="x_delete('.$x['x_id'].')" data-toggle="tooltip" data-placement="left" title="Delete this URL"><i class="fas fa-trash-alt" title="ID '.$x['x_id'].'"></i></a>';
+        $ui .= '<a class="badge badge-secondary" href="javascript:void(0);" onclick="x_delete('.$x['x_id'].')" data-toggle="tooltip" data-placement="left" title="Delete this URL"><i class="fas fa-trash-alt" title="ID '.$x['x_id'].'"></i></a>';
     }
 
     $ui .= '</span>';
@@ -96,28 +93,78 @@ function echo_x($u, $x){
 }
 
 
-function echo_u($u){
+function echo_u($u, $level, $can_edit, $is_inbound=false){
 
     $ui = null;
-    $ui = null;
-    $ui .= '<div id="u_'.$u['u_id'].'" entity-id="'.$u['u_id'].'" class="list-group-item u-item">';
+    $ui .= '<div id="u_'.$u['u_id'].'" entity-id="'.$u['u_id'].'" is-inbound="'.( $is_inbound ? 1 : 0 ).'" class="list-group-item u-item '.( $level==1 ? 'top_entity' : 'ur_'.$u['ur_id'] ).'">';
 
     //Right content:
     $ui .= '<span class="pull-right">';
 
-    $ui .= '<a class="badge badge-primary" href="/entities/'.$u['u_id'].'/modify" style="margin:-2px 3px 0 0; width:40px;" data-toggle="tooltip" data-placement="left" title="Engagement Score">'.( $u['u__e_score']>0 ? '<span class="btn-counter">'.echo_big_num($u['u__e_score']).'</span>' : '' ).'<i class="fas fa-cog"></i></a>';
+    if($can_edit) {
 
-    $ui .= '<a class="badge badge-primary" href="/entities/'.$u['u_id'].'" style="width:40px;">'.(isset($u['u__outbound_count']) && $u['u__outbound_count']>0 ? '<span class="btn-counter">'.echo_big_num($u['u__outbound_count']).'</span>' : '').'<i class="fas fa-sign-out-alt rotate90"></i></a>';
+        if($level==2){
+            $ui .= '<a class="badge badge-secondary" href="javascript:ur_unlink('.$u['ur_id'].')" style="margin:-2px 3px 0 0; width:40px;"><i class="fas fa-trash-alt"></i></a>';
+        }
+
+        $ui .= '<a class="badge badge-secondary" href="/entities/'.$u['u_id'].'/modify" style="margin:-2px 3px 0 0; width:40px;" data-toggle="tooltip" data-placement="left" title="Engagement Score">'.( $u['u__e_score']>0 ? '<span class="btn-counter">'.echo_big_num($u['u__e_score']).'</span>' : '' ).'<i class="fas fa-cog"></i></a>';
+    }
+
+
+    if($level==1){
+        //Level 1:
+        $ui .= '<span class="badge badge-secondary grey" style="width:40px;"><span class="btn-counter li-outbound-count">'.$u['u__outbound_count'].'</span><i class="fas fa-sign-out-alt rotate90"></i></span>';
+    } else {
+        //Level 2:
+        $ui .= '<a class="badge badge-secondary" href="/entities/'.$u['u_id'].'" style="width:40px;">'.(isset($u['u__outbound_count']) && $u['u__outbound_count']>0 ? '<span class="btn-counter">'.$u['u__outbound_count'].'</span>' : '').'<i class="'.( $is_inbound ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></a>';
+    }
+
 
     $ui .= '</span>';
 
-    //Regular section:
-    $ui .= echo_cover($u,'micro-image', 1).' ';
-    if(strlen($u['u_bio'])>0){
-        $ui .= '<span data-toggle="tooltip" data-placement="right" title="'.$u['u_bio'].'" style="border-bottom:1px dotted #3C4858; cursor:help;">'.$u['u_full_name'].'</span>';
+
+
+    if($level==1){
+
+        //Regular section:
+        $CI =& get_instance();
+        $ui .= echo_cover($u, 'profile-icon2');
+        $ui .= '<b id="u_title" class="u_full_name">' . $u['u_full_name'] . '</b>';
+        $ui .= ' <span class="obj-id">@' . $u['u_id'] . '</span>';
+
+        //Do they have any social profiles in their link?
+        $ui .= echo_social_profiles($CI->Db_model->x_social_fetch($u['u_id']));
+
+//Check last engagement ONLY IF admin:
+        if ($can_edit) {
+            //Check last engagement:
+            $last_eng = $CI->Db_model->e_fetch(array(
+                '(e_inbound_u_id=' . $u['u_id'] . ')' => null,
+            ), 1);
+
+            if (count($last_eng) > 0) {
+                $ui .= ' &nbsp;<a href="/cockpit/browse/engagements?e_u_id=' . $u['u_id'] . '" style="display: inline-block;" data-toggle="tooltip" data-placement="right" title="Last engaged ' . echo_diff_time($last_eng[0]['e_timestamp']) . ' ago. Click to see all engagements"><i class="fas fa-exchange rotate45"></i> <b>' . echo_diff_time($last_eng[0]['e_timestamp']) . ' &raquo;</b></a>';
+            }
+        }
+
+        //Visibly show bio for level 1:
+        $ui .= '<div>' . $u['u_bio'] . '</div>';
+
     } else {
-        $ui .= $u['u_full_name'];
+
+        //Regular section:
+        $ui .= echo_cover($u,'micro-image', 1).' ';
+        if(strlen($u['u_bio'])>0){
+            $ui .= '<span class="u_full_name" data-toggle="tooltip" data-placement="right" title="'.$u['u_bio'].'" style="border-bottom:1px dotted #3C4858; cursor:help;">'.$u['u_full_name'].'</span>';
+        } else {
+            $ui .= '<span class="u_full_name">'.$u['u_full_name'].'</span>';
+        }
+
     }
+
+
+
+
 
     $ui .= '</div>';
 
@@ -440,7 +487,7 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
 
                 } else {
                     //HTML format:
-                    $i['i_message'] = trim(str_replace($i['i_url'],'<a href="'.$masked_url.'" target="_blank">'.echo_clean_url($i['i_url']).'<i class="fas fa-external-link-square" style="font-size: 0.8em; text-decoration:none; padding-left:4px;"></i></a>',$i['i_message']));
+                    $i['i_message'] = trim(str_replace($i['i_url'],'<a href="'.$masked_url.'" target="_blank"><span>'.echo_clean_url($i['i_url']).'</span><i class="fas fa-external-link-square" style="font-size: 0.8em; text-decoration:none; padding-left:4px;"></i></a>',$i['i_message']));
                 }
 
             }
@@ -961,7 +1008,7 @@ function echo_support_chat(){
 
 
 
-function echo_actionplan($c, $level, $c_inbound_id=0){
+function echo_actionplan($c, $level, $c_inbound_id=0, $is_inbound=false){
 
     $CI =& get_instance();
     $udata = $CI->session->userdata('user');
@@ -985,16 +1032,12 @@ function echo_actionplan($c, $level, $c_inbound_id=0){
     $ui .= '<i class="c_is_any_icon'.$c['c_id'].' '.( $c['c_is_any'] ? 'fas fa-code-merge' : 'fas fa-sitemap' ).'" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i>';
 
 
-    if($level==1 && !$c['c__is_orphan']){
-        $ui .= '<a href="/'.$c['c_id'].'" class="badge badge-primary" style="width:40px;" target="_blank"><span class="btn-counter"><i class="fas fa-external-link"></i></span><i class="fas fa-shopping-cart"></i></a>';
-    }
-
     $ui .= '<a href="#messages-'.$c['c_id'].'" onclick="i_load_frame('.$c['c_id'].')" class="badge badge-primary" style="width:40px;" title="'.$c['c__tree_messages'].' Messages in tree"><span class="btn-counter" id="messages-counter-'.$c['c_id'].'">'.$c['c__this_messages'].'</span><i class="fas fa-comment-dots"></i></a>';
 
     $ui .= '<a class="badge badge-primary" onclick="load_modify('.$c['c_id'].','.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).')" style="margin:-2px -8px 0 2px; width:40px;" href="#modify-'.$c['c_id'].'-'.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).'"><span class="btn-counter">'.echo_estimated_time($c['c__tree_hours'],0,1, $c['c_id'], $c['c_time_estimate']).'</span><i class="fas fa-cog"></i></a> &nbsp;';
 
 
-    $ui .= '&nbsp;<'.( $level>1 || $c['c__is_orphan'] ? 'a href="/intents/'.$c['c_id'].'" class="badge badge-primary"' :'span class="badge badge-primary grey"').' style="display:inline-block; margin-right:-1px; width:40px;" title="'.$c['c__tree_inputs'].' Inputs and '.$c['c__tree_outputs'].' Outputs"><span class="btn-counter outbound-counter-'.$c['c_id'].'">'.($c['c__tree_inputs']+$c['c__tree_outputs']).'</span><i class="fas fa-sign-out-alt rotate90"></i></'.( $level>1 || $c['c__is_orphan'] ? 'a' :'span').'> ';
+    $ui .= '&nbsp;<'.( $level>1 || $c['c__is_orphan'] ? 'a href="/intents/'.$c['c_id'].'" class="badge badge-primary"' :'span class="badge badge-primary grey"').' style="display:inline-block; margin-right:-1px; width:40px;"><span class="btn-counter outbound-counter-'.$c['c_id'].'">'.($c['c__tree_inputs']+$c['c__tree_outputs']-1).'</span><i class="'.( $is_inbound ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></'.( $level>1 || $c['c__is_orphan'] ? 'a' :'span').'> ';
 
     //Keep an eye out for inner message counter changes:
     $ui .= '</span> ';
@@ -1005,7 +1048,7 @@ function echo_actionplan($c, $level, $c_inbound_id=0){
 
 
     //Sorting & Then Left Content:
-    if($level>1) {
+    if($level>1 && !$is_inbound) {
         $ui .= '<i class="fas fa-bars"></i> &nbsp;';
     }
 
@@ -1041,6 +1084,11 @@ function echo_actionplan($c, $level, $c_inbound_id=0){
     }
 
 
+    if($level==1 && !$c['c__is_orphan']){
+        $ui .= ' <a href="/'.$c['c_id'].'" style="padding-left:5px;" target="_blank"><i class="fas fa-external-link"></i></a>';
+    }
+
+
     //Any Tree?
     if($level==2){
 
@@ -1051,7 +1099,7 @@ function echo_actionplan($c, $level, $c_inbound_id=0){
 
         if(isset($c['c__child_intents']) && count($c['c__child_intents'])>0){
             foreach($c['c__child_intents'] as $key=>$sub_intent){
-                $ui .= echo_actionplan($sub_intent, ($level+1), $c['c_id']);
+                $ui .= echo_actionplan($sub_intent, ($level+1), $c['c_id'], $is_inbound);
             }
         }
 

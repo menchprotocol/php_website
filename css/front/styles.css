@@ -46,9 +46,7 @@ body{ background-color: #FFF !important;}
 .wizard-box p { padding: 0 10px;}
 .wizard-box select { margin-left: 10px; }
 .wizard-box p, .wizard-box li { font-weight: 300;}
-.badge-primary {
-    background-color:#fedd16;
-    color:#3C4858;
+.badge-primary, .badge-secondary {
     font-size:1em;
     padding-top: 6px;
     padding-left: 8px;
@@ -56,6 +54,20 @@ body{ background-color: #FFF !important;}
     margin-top: -3px;
     border:1px solid #FFF;
     position: relative;
+}
+
+.badge-primary{
+    background-color:#fedd16;
+    color:#3C4858;
+}
+
+.badge-secondary{
+    background-color:#0084ff;
+    color:#FFF;
+}
+
+.badge-secondary .fas {
+    color:#FFF !important;
 }
 
 .review-item{
@@ -72,7 +84,7 @@ body{ background-color: #FFF !important;}
     display: block;
     padding:5px 0 0 0;
 }
-a.badge-primary {
+a.badge-primary, a.badge-secondary {
     cursor:pointer;
     text-align:right;
     min-width:30px;
@@ -259,7 +271,7 @@ input::-webkit-inner-spin-button {
     border-bottom-right-radius: 3px;
 }
 
-.list-level-2>.is_level2_sortable, #temp2, #list-entities > .list-group-item{
+.list-level-2>.is_level2_sortable, #temp2, #list-outbound > .list-group-item{
     margin-bottom: 0px;
     border: 0;
     border-bottom:1px solid #CCC;
@@ -411,8 +423,7 @@ input::-webkit-inner-spin-button {
     paddding:0 !important;
 }
 .url_truncate {
-
-    max-width: 500px;
+    max-width:75%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -627,10 +638,13 @@ h5, .h5 {
     padding: 5px 10px !important;
 }
 
-.grey-input .badge-primary {
+.grey-input .badge-primary, .grey-input .badge-secondary {
     margin: 0 -7px -2px 0 !important;
     font-size:0.9em !important;
     line-height: 130%;
+}
+.grey .fas, .grey {
+    color:#3C4858 !important;
 }
 
 .grey-input .form-group {
@@ -778,11 +792,12 @@ h5, .h5 {
     font-weight: 300 !important;
     color: #3C4858;
 }
-.msg a {
+.msg a span {
 	text-decoration:underline;
     overflow: hidden;
     display: inline-block;
     font-weight: 500;
+    max-width: 90%;
 }
 
 .list-messages video {
@@ -814,13 +829,6 @@ h5, .h5 {
 
 .list_input{
     padding: 0 7px;
-}
-
-#list-outbound .list_input{
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
-    border:0 !important;
-    background-color:#EFEFEF;
 }
 
 .load-grey{
@@ -2005,14 +2013,21 @@ margin:5px 0;
     text-decoration: none !important;
 }
 
-.price-box .btn-primary, .price-box .btn-primary:hover{
+.price-box .btn-primary, .price-box .btn-primary:hover {
     color:#3C4858 !important;
     font-size:0.9em;
     margin: 0 !important;
 }
 
+.btn.btn-secondary, .btn.btn-secondary:hover, .btn.btn-secondary:focus, .btn.btn-secondary:active, .btn.btn-secondary.active, .btn.btn-secondary:active:focus, .btn.btn-secondary:active:hover, .btn.btn-secondary.active:focus, .btn.btn-secondary.active:hover, .open > .btn.btn-secondary.dropdown-toggle, .open > .btn.btn-secondary.dropdown-toggle:focus, .open > .btn.btn-secondary.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-secondary, .navbar .navbar-nav > li > a.btn.btn-secondary:hover, .navbar .navbar-nav > li > a.btn.btn-secondary:focus, .navbar .navbar-nav > li > a.btn.btn-secondary:active, .navbar .navbar-nav > li > a.btn.btn-secondary.active, .navbar .navbar-nav > li > a.btn.btn-secondary:active:focus, .navbar .navbar-nav > li > a.btn.btn-secondary:active:hover, .navbar .navbar-nav > li > a.btn.btn-secondary.active:focus, .navbar .navbar-nav > li > a.btn.btn-secondary.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-secondary.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-secondary.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-secondary.dropdown-toggle:hover {
+    background-color:#0084ff ;
+    color:#FFF;
+}
 
-
+.dropdown-menu-secondary li a:hover, .dropdown-menu-secondary li a:focus, .dropdown-menu-secondary li a:active {
+    background-color:#0084ff;
+    color: #FFF;
+}
 
 .grey-box{
     border-radius: 4px;
@@ -2099,6 +2114,11 @@ margin:5px 0;
 .nav-pills-primary li a {
     border-radius:5px !important;
     border: 1px solid #FFF;
+}
+
+.nav-pills-secondary > li.active > a, .nav-pills-secondary > li.active > a:focus, .nav-pills-secondary > li.active > a:hover, .nav-pills-secondary li.active a {
+    background-color:#0084ff !important;
+    color:#FFF !important;
 }
 #b_c_outcome, #b_c_outcome::placeholder {
     font-size: 18px !important;

@@ -51,7 +51,7 @@ class Intents extends CI_Controller
             'c__inbounds' => $this->Db_model->cr_inbound_fetch(array(
                 'cr.cr_outbound_c_id' => $inbound_c_id,
                 'cr.cr_status >=' => 1,
-            )),
+            ), array('c__child_intents')),
         );
 
         $this->load->view('console/console_header', $data);
@@ -798,63 +798,6 @@ class Intents extends CI_Controller
             'intent_id' => intval($_POST['intent_id']),
             'help_content' => $help_content,
         ));
-    }
-
-    function c_list_inbound(){
-
-        $udata = auth(array(1308,1280),0);
-        if(!$udata){
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Session expired. Login to continue.',
-            ));
-        } elseif(!isset($_POST['c_id']) || intval($_POST['c_id'])<=0){
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Intent ID.',
-            ));
-        } elseif(!isset($_POST['cr_id'])){
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Intent Link ID.',
-            ));
-        }
-
-        //Search for other parent intents:
-        $c__inbounds = $this->Db_model->cr_inbound_fetch(array(
-            'cr.cr_outbound_c_id' => $_POST['c_id'],
-            'cr.cr_status >=' => 1,
-        ));
-
-
-        //Did we find anything?
-        if(count($c__inbounds)>1 || (count($c__inbounds)>0 && intval($_POST['cr_id'])==0)){
-            $parent_ui = '';
-            $parent_ui .= '<div class="title" style="margin-top:10px;"><h4><b><i class="fas fa-sitemap rotate180"></i> Other Parent Intents</b></a></h4></div>';
-            $parent_ui .= '<div class="list-group">';
-            foreach ($c__inbounds as $c_inbound){
-                if($_POST['cr_id']>0 && $c_inbound['cr_id']==$_POST['cr_id']){
-                    continue;
-                }
-                $parent_ui .= '<div class="list-group-item">';
-                $parent_ui .= '<span class="pull-right"><a class="badge badge-primary" href="/intents/'.$c_inbound['c_id'].'" style="margin-top:-3px;"><i class="fas fa-chevron-right"></i></a></span>';
-                $parent_ui .= '<i class="fas fa-hashtag"></i> ';
-                $parent_ui .= $c_inbound['c_outcome'];
-                $parent_ui .= '</div>';
-            }
-            $parent_ui .= '</div>';
-
-            return echo_json(array(
-                'status' => 1,
-                'parent_found' => 1,
-                'c_inboundontent' => $parent_ui,
-            ));
-        } else {
-            return echo_json(array(
-                'status' => 1,
-                'parent_found' => 0,
-            ));
-        }
     }
 
     /* ******************************

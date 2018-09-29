@@ -111,7 +111,7 @@ function insert_gravatar(){
 
 
 
-<ul id="topnav" class="nav nav-pills nav-pills-primary">
+<ul id="topnav" class="nav nav-pills nav-pills-secondary">
   <li id="nav_profile" class="active"><a href="#profile"><i class="fas fa-user-circle"></i> Profile</a></li>
   <li id="nav_password" class="is-passwordable"><a href="#password"><i class="fas fa-lock"></i> Password</a></li>
 </ul>
@@ -267,11 +267,19 @@ function insert_gravatar(){
 
 
 
-        <table width="100%" style="margin-top:30px;"><tr><td class="save-td"><a href="javascript:update_account();" class="btn btn-primary">Save</a></td><td><span class="update_u_results"></span></td></tr></table>
+        <table width="100%" style="margin-top:30px;"><tr><td class="save-td"><a href="javascript:update_account();" class="btn btn-secondary">Save</a></td><td><span class="update_u_results"></span></td></tr></table>
 
         <?php
         if(array_key_exists(1281, $udata['u__inbounds'])){
-            echo '<div class="u_delete" style="text-align: right;"><a href="javascript:void(0);" onclick="u_delete('.$entity['u_id'].','.( count($entity['u__inbounds'])>0 ? $entity['u__inbounds'][0]['u_id'] : 1278 ).')">Delete Entity</a></div>';
+
+            if(count($entity['u__inbounds'])>0){
+                $first_parent = reset($entity['u__inbounds']);
+                $redirect_u_id = $first_parent['u_id'];
+            } else {
+                $redirect_u_id = 2738; //All Entities
+            }
+
+            echo '<div class="u_delete" style="text-align: right;"><a href="javascript:void(0);" onclick="u_delete('.$entity['u_id'].','.$redirect_u_id.')">Delete Entity</a></div>';
         }
         ?>
 
@@ -297,7 +305,7 @@ function insert_gravatar(){
             <span class="material-input"></span>
         </div>
 
-        <table width="100%" style="margin-top:30px;"><tr><td class="save-td"><a href="javascript:update_account();" class="btn btn-primary">Save</a></td><td><span class="update_u_results"></span></td></tr></table>
+        <table width="100%" style="margin-top:30px;"><tr><td class="save-td"><a href="javascript:update_account();" class="btn btn-secondary">Save</a></td><td><span class="update_u_results"></span></td></tr></table>
     </div>
 
 </div>

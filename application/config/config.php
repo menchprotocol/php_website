@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => '0.535',
+    'version' => '0.536',
     'name' => 'Mench',
     'url' => 'https://mench.com/', //Important to end with "/" as other links depend on this.
     'email' => 'shervin@mench.com',
@@ -18,6 +18,7 @@ $config['default_intents'] = array(
     'students' => 'Mench', //What would be loaded for subscription if no specific Intent ID is passed
 );
 
+$config['average_salary'] = 34.50; //Based on programming jobs, https://www.sokanu.com/careers/computer-programmer/salary/
 
 $config['fb_settings'] = array(
     'page_id'        => '381488558920384', //Also repeated in global.js

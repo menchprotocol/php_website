@@ -74,7 +74,7 @@ $uri_segment_2 = $this->uri->segment(2);
                         <li <?= ( $uri_segment_1=='entities' ? 'class="active"' : '' ) ?>><a href="/entities"><i class="fas fa-at"></i> Entities</a></li>
 
 
-                        <li class="extra-toggle"><a href="javascript:void(0);" onclick="$('.extra-toggle').toggle();"><i class="fas fa-ellipsis-h"></i></a></li>
+                        <li class="extra-toggle"><a href="javascript:void(0);" onclick="$('.extra-toggle').toggle();">&nbsp; <i class="fas fa-ellipsis-h"></i> &nbsp;</a></li>
                         <?php if(isset($uenrollment) && count($uenrollment)>0){ ?>
                             <li class="extra-toggle" style="display: none;"><a href="/my/actionplan"><span class="icon-left"><i class="fas fa-user-graduate"></i></span> Student</a></li>
                         <?php } ?>

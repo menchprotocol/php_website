@@ -39,12 +39,6 @@ class Bot extends CI_Controller {
 
     }
 
-    function t(){
-        echo_json($this->Db_model->u_fetch(array(
-            'u_id' => 1282,
-        ), array('u__outbound_count')));
-    }
-
 
 
     function url($smallest_i_id=0,$limit=1){

@@ -214,12 +214,7 @@ class Db_model extends CI_Model {
 	    //Fetch the target entities:
 	    $this->db->select('*');
 	    $this->db->from('v5_entities u');
-        if(in_array('u_booking_x_id',$join_objects)){
-            $this->db->join('v5_urls x', 'x.x_id = u.u_booking_x_id'); //Fetch the cover photo if >0
-        } else {
-            //Attempt to fetch the Cover photo:
-            $this->db->join('v5_urls x', 'x.x_id = u.u_cover_x_id','left'); //Fetch the cover photo if >0
-        }
+	    $this->db->join('v5_urls x', 'x.x_id = u.u_cover_x_id','left'); //Fetch the cover photo if >0
 	    foreach($match_columns as $key=>$value){
 	        if(!is_null($value)){
                 $this->db->where($key,$value);
@@ -409,6 +404,12 @@ class Db_model extends CI_Model {
 
         if(missing_required_db_fields($insert_columns,array('u_full_name'))){
             return false;
+        }
+
+        //Name cannot be longer than this:
+        if(strlen($insert_columns['u_full_name'])>250){
+            //Trim this:
+            $insert_columns['u_full_name'] = substr($insert_columns['u_full_name'],0,247).'...';
         }
 
         if(!isset($insert_columns['u_timestamp'])){
@@ -1148,7 +1149,20 @@ class Db_model extends CI_Model {
 			$this->db->where($key,$value);
 		}
 		$q = $this->db->get();
-		return $q->result_array();
+        $return = $q->result_array();
+
+        if(in_array('c__child_intents',$join_objects)){
+            foreach($return as $key=>$value){
+                //Fetch Messages:
+                $return[$key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
+                    'cr.cr_inbound_c_id' => $value['c_id'],
+                    'cr.cr_status >=' => 0,
+                    'c.c_status >' => 0,
+                ));
+            }
+        }
+
+        return $return;
 	}
 	
 	
@@ -1226,6 +1240,205 @@ class Db_model extends CI_Model {
 
         return $insert_columns;
     }
+
+    function ur_update($ur_id,$update_columns){
+        //Update first
+        $this->db->where('ur_id', $ur_id);
+        $this->db->update('v5_entity_links', $update_columns);
+        return $this->db->affected_rows();
+    }
+
+    function ur_delete($ur_id){
+        //Update status:
+        $this->Db_model->ur_update($ur_id, array(
+            'ur_status' => -1,
+        ));
+        return $this->db->affected_rows();
+    }
+
+
+    function add_db_url($x_url,$x_outbound_u_id,$cad_edit,$allow_duplicate=false) {
+
+        //Auth user and check required variables:
+        $udata = auth(array(1308,1280));
+        $x_url = trim($x_url);
+
+        if(!$udata){
+            return array(
+                'status' => 0,
+                'message' => 'Invalid Session. Refresh the page and try again.',
+            );
+        } elseif(!isset($x_outbound_u_id)){
+            return array(
+                'status' => 0,
+                'message' => 'Missing Outbound Entity ID',
+            );
+        } elseif(!isset($cad_edit)){
+            return array(
+                'status' => 0,
+                'message' => 'Missing Editing Permission',
+            );
+        } elseif(!isset($x_url) || strlen($x_url)<1){
+            return array(
+                'status' => 0,
+                'message' => 'Missing URL',
+            );
+        } elseif(!filter_var($x_url, FILTER_VALIDATE_URL)){
+            return array(
+                'status' => 0,
+                'message' => 'Invalid URL',
+            );
+        }
+
+        //Validate parent entity:
+        $outbound_us = $this->Db_model->u_fetch(array(
+            'u_id' => $x_outbound_u_id,
+        ));
+
+        //Make sure this URL does not exist:
+        $dup_urls = $this->Db_model->x_fetch(array(
+            'x_status >' => -2,
+            '(x_url LIKE \''.$x_url.'\' OR x_clean_url LIKE \''.$x_url.'\')' => null,
+        ), array('u'));
+
+        //Call URL to validate it further:
+        $curl = curl_html($x_url, true);
+
+        if(!$curl){
+            return array(
+                'status' => 0,
+                'message' => 'Invalid URL',
+            );
+        } elseif(count($dup_urls)>0){
+
+            if($allow_duplicate){
+                //Return the object as this is expected:
+                return array(
+                    'status' => 1,
+                    'message' => 'Found existing URL',
+                    'u' => $dup_urls[0],
+                );
+            } elseif($dup_urls[0]['u_id']==$x_outbound_u_id){
+                return array(
+                    'status' => 0,
+                    'message' => 'This URL has already been added!',
+                );
+            } else {
+                return array(
+                    'status' => 0,
+                    'message' => 'URL is already being used by [' . $dup_urls[0]['u_full_name'] . ']. URLs cannot belong to multiple entities.',
+                );
+            }
+        } elseif($curl['url_is_broken']) {
+            return array(
+                'status' => 0,
+                'message' => 'URL seems broken with http code [' . $curl['httpcode'] . ']',
+            );
+        } elseif(count($outbound_us)<1) {
+            return array(
+                'status' => 0,
+                'message' => 'Invalid Outbound Entity ID ['.$x_outbound_u_id.']',
+            );
+        }
+
+
+        if($x_outbound_u_id==1326){ //Content
+
+            //We need to create a new entity and add this URL below it:
+            $new_content = $this->Db_model->u_create(array(
+                'u_full_name' => ( strlen($curl['page_title'])>0 ? $curl['page_title'] : ( strlen($curl['last_domain'])>0 ? $curl['last_domain'].' Content' : '' ) ),
+            ));
+
+            //Log Engagement new entity:
+            $this->Db_model->e_create(array(
+                'e_inbound_u_id' => $udata['u_id'],
+                'e_outbound_u_id' => $new_content['u_id'],
+                'e_inbound_c_id' => 6971, //Entity Created
+            ));
+
+
+            //Place this new entity in $x_outbound_u_id [Content]
+            $ur1 = $this->Db_model->ur_create(array(
+                'ur_outbound_u_id' => $new_content['u_id'],
+                'ur_inbound_u_id' => $x_outbound_u_id,
+            ));
+
+            //Log Engagement new entity link:
+            $this->Db_model->e_create(array(
+                'e_inbound_u_id' => $udata['u_id'],
+                'e_ur_id' => $ur1['ur_id'],
+                'e_inbound_c_id' => 7291, //Entity Link Create
+            ));
+        } else {
+            $new_content = $outbound_us[0];
+        }
+
+
+        //All good, Save URL:
+        $new_x = $this->Db_model->x_create(array(
+            'x_inbound_u_id' => $udata['u_id'],
+            'x_outbound_u_id' => $new_content['u_id'],
+            'x_url' => $x_url,
+            'x_http_code' => $curl['httpcode'],
+            'x_clean_url' => ($curl['clean_url'] ? $curl['clean_url'] : $x_url),
+            'x_type' => $curl['x_type'],
+            'x_status' => ( $curl['url_is_broken'] ? 1 : 2 ),
+        ));
+
+        if(!isset($new_x['x_id']) || $new_x['x_id']<1){
+            return array(
+                'status' => 0,
+                'message' => 'There was an issue creating the URL',
+            );
+        }
+
+        //Log Engagements:
+        $this->Db_model->e_create(array(
+            'e_json' => $curl,
+            'e_inbound_c_id' => 6911, //URL Detected Live
+            'e_inbound_u_id' => $udata['u_id'],
+            'e_outbound_u_id' => $new_content['u_id'],
+            'e_x_id' => $new_x['x_id'],
+        ));
+        $this->Db_model->e_create(array(
+            'e_json' => $new_x,
+            'e_inbound_c_id' => 6910, //URL Added
+            'e_inbound_u_id' => $udata['u_id'],
+            'e_outbound_u_id' => $new_content['u_id'],
+            'e_x_id' => $new_x['x_id'],
+        ));
+
+
+        //Is this a image for an entity without a cover letter? If so, set this as the default:
+        $set_cover_x_id = ( !$outbound_us[0]['u_cover_x_id'] && $new_x['x_type']==4 /* Image file */ ? $new_x['x_id'] : 0 );
+
+
+        if($x_outbound_u_id==1326){
+
+            //Return entity object:
+            return array(
+                'status' => 1,
+                'message' => 'Success',
+                'u' => $new_content,
+                'set_cover_x_id' => $set_cover_x_id,
+                'new_u' => ( $allow_duplicate ? null : echo_u($new_content, 2, $cad_edit) ),
+            );
+
+        } else {
+
+            //Return URL object:
+            return array(
+                'status' => 1,
+                'message' => 'Success',
+                'u' => $outbound_us[0],
+                'set_cover_x_id' => $set_cover_x_id,
+                'new_x' => echo_x($outbound_us[0], $new_x),
+            );
+
+        }
+    }
+
+
 
     function ur_outbound_fetch($match_columns, $join_objects=array(), $limit=0, $limit_offset=0){
 
@@ -1596,7 +1809,7 @@ class Db_model extends CI_Model {
         //Check to see if this URL exists, if so, return that:
         $urls = $this->Db_model->x_fetch(array(
             'x_status >' => -2,
-            '(x_url LIKE \'%'.$insert_columns['x_url'].'%\' OR x_clean_url LIKE \'%'.$insert_columns['x_clean_url'].'%\')' => null,
+            '(x_url LIKE \''.$insert_columns['x_url'].'\' OR x_clean_url LIKE \''.$insert_columns['x_clean_url'].'\')' => null,
         ));
 
         if(count($urls)>0){

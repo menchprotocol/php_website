@@ -101,7 +101,7 @@ echo '</form>';
         foreach($engagements as $e){
             echo '<tr>';
             echo '<td>';
-                echo '<div style="margin-bottom:3px; font-weight:bold;"><span data-toggle="tooltip" title="Intent #'.$e['c_id'].'" data-placement="right" class="underdot">'.$e['c_outcome'].'</span></div>';
+                echo '<div style="margin-bottom:3px; font-weight:bold;"><a href="/intents/'.$e['c_id'].'" target="_blank" data-toggle="tooltip" title="Intent #'.$e['c_id'].'" data-placement="right">'.$e['c_outcome'].'</a></div>';
                 echo '<span data-toggle="tooltip" data-placement="right" title="'.date("Y-m-d H:i:s",strtotime($e['e_timestamp'])).' Engagement #'.$e['e_id'].'" class="underdot">'.echo_time($e['e_timestamp']).'</span>';
             echo '</td>';
 

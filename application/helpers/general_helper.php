@@ -437,16 +437,6 @@ function echo_big_num($number){
     }
 }
 
-function is_booking_url($url){
-    if(substr_count(strtolower($url),'calendly.com')==1){
-        return true;
-    } elseif(substr_count(strtolower($url),'app.hubspot.com/meetings')==1){
-        return true;
-    } else {
-        return false;
-    }
-}
-
 
 
 
@@ -497,6 +487,22 @@ function filter($array,$ikey,$ivalue){
 		}
 	}
 	return null;
+}
+
+
+function entity_type($entity){
+    $entity_type = 0;
+    if(in_array($entity['u_id'], array(1278,1326,2750))){
+        $entity_type = $entity['u_id'];
+    } else {
+        foreach($entity['u__inbounds'] as $u_id=>$u_i){
+            if(in_array($u_id, array(1278,1326,2750))){
+                $entity_type = $u_id;
+                break;
+            }
+        }
+    }
+    return $entity_type;
 }
 
 

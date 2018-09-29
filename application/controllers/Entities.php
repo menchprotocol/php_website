@@ -63,7 +63,7 @@ class Entities extends CI_Controller {
         ), array('u__outbound_count'), $limit, ($page*$limit));
 
         foreach($child_entities as $u){
-            echo echo_u($u);
+            echo echo_u($u, 2, intval($_POST['can_edit']), false /* Load more only for outbound */);
         }
 
         //Do we need another load more button?
@@ -126,12 +126,22 @@ class Entities extends CI_Controller {
                 'status' => 0,
                 'message' => 'Invalid Parent Entity',
             ));
+        } elseif(!isset($_POST['can_edit'])){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Editing Permission',
+            ));
+        } elseif(!isset($_POST['secondary_parent_u_id'])){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Parent Entity',
+            ));
         } elseif(!isset($_POST['is_inbound'])){
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Entity Link Direction',
             ));
-        } elseif(!isset($_POST['new_u_id']) || !isset($_POST['new_u_full_name']) || (intval($_POST['new_u_id'])<1 && strlen($_POST['new_u_full_name'])<1)){
+        } elseif(!isset($_POST['new_u_id']) || !isset($_POST['new_u_input']) || (intval($_POST['new_u_id'])<1 && strlen($_POST['new_u_input'])<1)){
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Either New Entity ID or Name is required',
@@ -149,72 +159,146 @@ class Entities extends CI_Controller {
             ));
         }
 
+
+        //Set some variables:
         $_POST['is_inbound'] = intval($_POST['is_inbound']);
-        if($_POST['is_inbound']){
-            $new_u_cat_id = 1282; //Industry Experts
-        } else {
-            $new_u_cat_id = 1326; //Content
-        }
+        $_POST['new_u_id'] = intval($_POST['new_u_id']);
+        $linking_to_existing_u = false;
 
-
-
-        //Do we need to add a new entity?
+        //Are we linking to an existing entity?
         if(intval($_POST['new_u_id'])>0){
 
-            //We already have an entity that we just want to link:
+            //We're linking to an existing entity:
+            $linking_to_existing_u = true;
+
+            //Validate this existing entity
             $new_us = $this->Db_model->u_fetch(array(
                 'u_id' => $_POST['new_u_id'],
+                'u_status' => 1, //Active only
             ));
-
             if(count($new_us)<1){
                 return echo_json(array(
                     'status' => 0,
-                    'message' => 'Invalid new linked entity ID',
+                    'message' => 'Invalid active entity',
                 ));
+            } else {
+                $new_u = $new_us[0];
             }
 
-            $new_u = $new_us[0];
+            //Is this one of the main entity objects?
+            if($_POST['is_inbound'] && in_array($_POST['new_u_id'], array(1278,1326,2750))){
+                //Does this entity already belong to one?
+                $entity_type = entity_type($current_us[0]);
+                if($entity_type){
+                    return echo_json(array(
+                        'status' => 0,
+                        'message' => '['.$current_us[0]['u_full_name'].'] already belong to ['.$current_us[0]['u__inbounds'][$entity_type]['u_full_name'].'] which means it cannot also be added as ['.$new_u['u_full_name'].']. You can unlink ['.$current_us[0]['u__inbounds'][$entity_type]['u_full_name'].'] and try again.',
+                    ));
+                }
+            }
 
         } else {
 
-            //We should add a new entity:
-            $new_u = $this->Db_model->u_create(array(
-                'u_full_name' 		=> trim($_POST['new_u_full_name']),
-            ));
+            if(filter_var(trim($_POST['new_u_input']),FILTER_VALIDATE_URL)){
 
-            if(!isset($new_u['u_id']) || $new_u['u_id']<1){
-                return echo_json(array(
-                    'status' => 0,
-                    'message' => 'Failed to create new entity',
+
+                if($_POST['secondary_parent_u_id']==1326){
+
+                    //It's a URL, create an entity from this URL:
+                    $allow_duplicate = ( !$_POST['is_inbound'] && $current_us[0]['u_id']!=1326 ); //We can accept duplicates if we're not adding directly under content
+                    $url_create = $this->Db_model->add_db_url(trim($_POST['new_u_input']),1326, $_POST['can_edit'], $allow_duplicate);
+
+                    //Did we have an error?
+                    if(!$url_create['status']){
+                        return echo_json($url_create);
+                    } else {
+                        $linking_to_existing_u = true;
+                        $new_u = $url_create['u'];
+                    }
+
+                } else {
+                    //We only support URL creation for content:
+                    return echo_json(array(
+                        'status' => 0,
+                        'message' => 'You can only use a URL for content entry',
+                    ));
+                }
+
+            } else {
+
+                //We should add a new entity:
+                $new_u = $this->Db_model->u_create(array(
+                    'u_full_name' => trim($_POST['new_u_input']),
+                ));
+
+                if(!isset($new_u['u_id']) || $new_u['u_id']<1){
+                    return echo_json(array(
+                        'status' => 0,
+                        'message' => 'Failed to create new entity for ['.$_POST['new_u_input'].']',
+                    ));
+                }
+
+                //Do we need to add this new entity to a secondary parent?
+                if(intval($_POST['secondary_parent_u_id'])>0){
+
+                    //Link entity to a parent:
+                    $ur1 = $this->Db_model->ur_create(array(
+                        'ur_outbound_u_id' => $new_u['u_id'],
+                        'ur_inbound_u_id' => $_POST['secondary_parent_u_id'],
+                    ));
+
+                    $this->Db_model->e_create(array(
+                        'e_inbound_u_id' => $udata['u_id'],
+                        'e_ur_id' => $ur1['ur_id'],
+                        'e_inbound_c_id' => 7291, //Entity Link Create
+                    ));
+                }
+
+            }
+        }
+
+        //We need to check to ensure this is not a duplicate link if linking to an existing entity:
+        if($linking_to_existing_u){
+            //Check for duplicates:
+            if($_POST['is_inbound']){
+                $dup_entities = $this->Db_model->ur_outbound_fetch(array(
+                    '(ur_outbound_u_id='.$_POST['u_id'].' AND ur_inbound_u_id='.$new_u['u_id'].')' => null,
+                    'ur_status' => 1, //Only active
+                ));
+            } else {
+                $dup_entities = $this->Db_model->ur_outbound_fetch(array(
+                    '(ur_inbound_u_id='.$_POST['u_id'].' AND ur_outbound_u_id='.$new_u['u_id'].')' => null,
+                    'ur_status' => 1, //Only active
                 ));
             }
 
-            //Link this to people:
-            $ur1 = $this->Db_model->ur_create(array(
-                'ur_outbound_u_id' => $new_u['u_id'],
-                'ur_inbound_u_id' => $new_u_cat_id,
-            ));
-
-            $this->Db_model->e_create(array(
-                'e_inbound_u_id' => $udata['u_id'],
-                'e_outbound_u_id' => $new_u_cat_id,
-                'e_ur_id' => $ur1['ur_id'],
-                'e_inbound_c_id' => 7291, //Entity Link Create
-            ));
-
+            if(count($dup_entities)>0){
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => '['.$new_u['u_full_name'].'] is already linked to ['.$current_us[0]['u_full_name'].'] as an '.( $_POST['is_inbound'] ? 'inbound' : 'outbound' ).' entity',
+                ));
+            }
         }
+            
 
+
+        if($_POST['is_inbound']){
+            $ur_outbound_u_id = $current_us[0]['u_id'];
+            $ur_inbound_u_id = $new_u['u_id'];
+        } else {
+            $ur_outbound_u_id = $new_u['u_id'];
+            $ur_inbound_u_id = $current_us[0]['u_id'];
+        }
 
         //Link to new OR existing entity:
         $ur2 = $this->Db_model->ur_create(array(
-            'ur_outbound_u_id' => $current_us[0]['u_id'],
-            'ur_inbound_u_id' => $new_u['u_id'],
+            'ur_outbound_u_id' => $ur_outbound_u_id,
+            'ur_inbound_u_id' => $ur_inbound_u_id,
         ));
 
         //Insert engagement for creation:
         $this->Db_model->e_create(array(
             'e_inbound_u_id' => $udata['u_id'],
-            'e_outbound_u_id' => $new_u['u_id'],
             'e_ur_id' => $ur2['ur_id'],
             'e_inbound_c_id' => 7291, //Entity Link Create
         ));
@@ -223,7 +307,39 @@ class Entities extends CI_Controller {
         return echo_json(array(
             'status' => 1,
             'message' => 'Success',
-            'new_u' => echo_u($new_u),
+            'new_u' => echo_u(array_merge($new_u,$ur2),2, $_POST['can_edit'], $_POST['is_inbound']),
+        ));
+    }
+
+    function unlink_entities(){
+
+        //Auth user and check required variables:
+        $udata = auth(array(1308,1280));
+
+        if(!$udata){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Session. Refresh the page and try again.',
+            ));
+        } elseif(!isset($_POST['ur_id']) || intval($_POST['ur_id'])<1){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing entity link ID',
+            ));
+        }
+
+        $affected_rows = $this->Db_model->ur_delete($_POST['ur_id']);
+
+        //Log unlinking engagement:
+        $this->Db_model->e_create(array(
+            'e_inbound_u_id' => $udata['u_id'],
+            'e_ur_id' => $_POST['ur_id'],
+            'e_inbound_c_id' => 7292, //Entity Link Removed
+        ));
+
+        return echo_json(array(
+            'status' => 1,
+            'message' => 'Successfully unlinked entity',
         ));
     }
 
@@ -538,6 +654,7 @@ class Entities extends CI_Controller {
 
 
     function u_password_reset_initiate(){
+
         //We need an email input:
         if(!isset($_POST['email'])){
             die('<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Missing Email.</div>');
