@@ -734,7 +734,7 @@ function echo_hours($decimal_hours,$micro=false,$plus=false){
 }
 
 
-function echo_object($object,$id,$b_id=0){
+function echo_object($object,$id){
     //Loads the name (and possibly URL) for $object with id=$id
     $CI =& get_instance();
     $id = intval($id);
@@ -749,25 +749,7 @@ function echo_object($object,$id,$b_id=0){
                 'c.c_id' => $id,
             ));
             if(isset($cs[0])){
-                if($b_id){
-                    //We can return a link:
-                    //TODO Update to intent library link
-                    return '<a href="'.$website['url'].'console/'.$b_id.'/actionplan#modify-'.$cs[0]['c_id'].'">'.$cs[0]['c_outcome'].'</a>';
-                } else {
-                    return $cs[0]['c_outcome'];
-                }
-            }
-        } elseif($object=='b'){
-
-            $bs = $CI->Db_model->b_fetch(array(
-                'b.b_id' => $id,
-            ));
-            if(isset($bs[0])){
-                if($b_id){
-                    return '<a href="'.$website['url'].'console/'.$bs[0]['b_id'].'">'.$bs[0]['c_outcome'].'</a>';
-                } else {
-                    return $bs[0]['c_outcome'];
-                }
+                return '<a href="'.$website['url'].'intents/'.$cs[0]['c_id'].'">'.$cs[0]['c_outcome'].'</a>';
             }
 
         } elseif($object=='u'){
@@ -792,27 +774,6 @@ function echo_object($object,$id,$b_id=0){
                 return '<a href="'.$matching_urls[0]['x_url'].'" title="Reference ID '.$id.'" target="_blank">'.echo_clean_url($matching_urls[0]['x_url']).'</a>';
             }
 
-        } elseif($object=='r'){
-            $classes = $CI->Db_model->r_fetch(array(
-                'r.r_id' => $id,
-            ));
-            if(isset($classes[0])){
-                if($b_id){
-                    //We can return a link:
-                    return '<a href="'.$website['url'].'console/'.$b_id.'/classes/'.$classes[0]['r_id'].'">'.echo_time($classes[0]['r_start_date'],1).'</a>';
-                } else {
-                    return echo_time($classes[0]['r_start_date'],1);
-                }
-            }
-        } elseif($object=='fp'){
-            $pages = $CI->Db_model->fp_fetch(array(
-                'fp_id' => $id,
-            ), array('fs'));
-            if(isset($pages[0])){
-                return '<a href="https://www.facebook.com/'.$pages[0]['fp_fb_id'].'" target="_blank">'.$pages[0]['fp_name'].'</a>';
-            } else {
-                print_r($pages);
-            }
         }
         //We would not do the other engagement types...
     }

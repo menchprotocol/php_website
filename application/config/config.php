@@ -12,14 +12,6 @@ $config['website'] = array(
     'email' => 'shervin@mench.com',
 );
 
-//Primary website variables:
-$config['default_intents'] = array(
-    'trainers' => 7240, //What would be loaded when the #Intent link is clicked
-    'students' => 'Mench', //What would be loaded for subscription if no specific Intent ID is passed
-);
-
-$config['average_salary'] = 34.50; //Based on programming jobs, https://www.sokanu.com/careers/computer-programmer/salary/
-
 $config['fb_settings'] = array(
     'page_id'        => '381488558920384', //Also repeated in global.js
     'app_id'        => '1782431902047009', //Also repeated in global.js

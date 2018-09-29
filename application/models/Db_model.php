@@ -16,157 +16,12 @@ class Db_model extends CI_Model {
 	    //Fetch more data for each enrollment:
 	    foreach($enrollments as $key=>$enrollment){
 
-            //Fetch Bootcamp:
-            $bs = $this->Db_model->remix_bs(array(
-                'b.b_id' => $enrollment['ru_b_id'],
-            ));
 
-            if(count($bs)<=0){
-                $this->Db_model->e_create(array(
-                    'e_text_value' => 'remix_enrollments() had invalid [ru_b_id]='.$enrollment['ru_b_id'],
-                    'e_json' => $matching_criteria,
-                    'e_inbound_c_id' => 8, //Platform Error
-                ));
-                unset($enrollments[$key]);
-                continue;
-            } else {
-                //Merge in:
-                $enrollments[$key] = array_merge($enrollments[$key] , $bs[0]);
-            }
-
-            //Fetch Class:
-            if($enrollment['ru_r_id']>0){
-                $classes = $this->Db_model->r_fetch(array(
-                    'r.r_id' => $enrollment['ru_r_id'],
-                ));
-                if(count($classes)<1){
-                    $this->Db_model->e_create(array(
-                        'e_text_value' => 'remix_enrollments() had invalid [r_id]='.$enrollment['ru_r_id'],
-                        'e_json' => $matching_criteria,
-                        'e_inbound_c_id' => 8, //Platform Error
-                    ));
-                    unset($enrollments[$key]);
-                    continue;
-                }
-
-                //Merge in:
-                $enrollments[$key] = array_merge($enrollments[$key] , $classes[0]);
-            }
 	    }
 
 	    return $enrollments;
 	}
 
-    function remix_bs($match_columns, $join_objects=array()){
-
-
-	    //Adjust join object:
-        if(count($join_objects)==0){
-            //Set defaults:
-            array_push($join_objects,'fp');
-            array_push($join_objects,'i');
-            array_push($join_objects,'ba');
-        }
-
-        //Fetch Bootcamps base:
-        $bs = $this->Db_model->b_fetch($match_columns, $join_objects);
-
-        //Now append more data:
-        foreach($bs as $key=>$c){
-
-            //Bootcamp Messages:
-            if(in_array('i',$join_objects)){
-                $bs[$key]['c__messages'] = $this->Db_model->i_fetch(array(
-                    'i_status >=' => 0,
-                    'i_outbound_c_id' => $c['c_id'],
-                ));
-                $bs[$key]['c__message_tree_count'] = count($bs[$key]['c__messages']);
-            }
-
-
-            //Fetch team:
-            if(in_array('ba',$join_objects)){
-                $bs[$key]['b__coaches'] = $this->Db_model->ba_fetch(array(
-                    'ba.ba_b_id' => $c['b_id'],
-                    'ba.ba_status >=' => 0,
-                    'u.u_status' => 1,
-                ));
-            }
-
-
-            //Fetch Sub-intents:
-            $bs[$key]['c__estimated_hours'] = $bs[$key]['c_time_estimate'];
-            $bs[$key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
-                'cr.cr_inbound_c_id' => $c['c_id'],
-                'cr.cr_status >=' => 0,
-                'c.c_status >' => 0,
-            ));
-
-            foreach($bs[$key]['c__child_intents'] as $intent_key=>$intent){
-
-                //Count Messages:
-                if(in_array('i',$join_objects)){
-                    $intent_messages = $this->Db_model->i_fetch(array(
-                        'i_status >=' => 0,
-                        'i_outbound_c_id' => $intent['c_id'],
-                    ));
-                    $bs[$key]['c__child_intents'][$intent_key]['c__message_tree_count'] = 0;
-                    $bs[$key]['c__message_tree_count'] += count($intent_messages);
-                    $bs[$key]['c__child_intents'][$intent_key]['c__message_tree_count'] += count($intent_messages);
-                    $bs[$key]['c__child_intents'][$intent_key]['c__messages'] = $intent_messages;
-                }
-
-                if($intent['c_status']>0){
-                    //Start by adding up the time:
-                    $bs[$key]['c__estimated_hours'] += $intent['c_time_estimate'];
-                    $bs[$key]['c__child_intents'][$intent_key]['c__estimated_hours'] = $intent['c_time_estimate'];
-                } else {
-                    $bs[$key]['c__child_intents'][$intent_key]['c__estimated_hours'] = 0;
-                }
-
-                //Fetch sprint Steps at level 3:
-                $bs[$key]['c__child_intents'][$intent_key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
-                    'cr.cr_inbound_c_id' => $intent['c_id'],
-                    'cr.cr_status >=' => 0,
-                    'c.c_status >' => 0,
-                ));
-
-
-                //Addup Step values:
-                foreach($bs[$key]['c__child_intents'][$intent_key]['c__child_intents'] as $step_key=>$step){
-
-                    if(in_array('i',$join_objects)){
-                        //Count Messages:
-                        $step_messages = $this->Db_model->i_fetch(array(
-                            'i_status >=' => 0,
-                            'i_outbound_c_id' => $step['c_id'],
-                        ));
-
-                        //Add messages:
-                        $bs[$key]['c__child_intents'][$intent_key]['c__child_intents'][$step_key]['c__messages'] = $step_messages;
-                        //Always show Step message count regardless of status:
-                        $bs[$key]['c__child_intents'][$intent_key]['c__child_intents'][$step_key]['c__message_tree_count'] = count($step_messages);
-                        //Increase message counts:
-                        $bs[$key]['c__message_tree_count'] += count($step_messages);
-                        $bs[$key]['c__child_intents'][$intent_key]['c__message_tree_count'] += count($step_messages);
-                    }
-
-                    //Addup Task Hours for its Active Steps Regardless status:
-                    $bs[$key]['c__child_intents'][$intent_key]['c__estimated_hours'] += $step['c_time_estimate'];
-
-
-                    if($intent['c_status']>0 && $step['c_status']>0) {
-
-                        //Addup Step estimated time for active Steps in active Tasks:
-                        $bs[$key]['c__estimated_hours'] += $step['c_time_estimate'];
-
-                    }
-                }
-            }
-        }
-
-        return $bs;
-    }
 
     function t_fetch($match_columns){
 	    //Fetch the target gems:
@@ -457,47 +312,6 @@ class Db_model extends CI_Model {
         $this->Db_model->algolia_sync('u',$user_id);
 
 	    return $users[0];
-	}
-	
-	
-	function ba_fetch($match_columns, $join_objects=array()){
-
-	    //Fetch the admins of the Bootcamps
-	    $this->db->select('*');
-	    $this->db->from('v5_entities u');
-        $this->db->join('v5_urls x', 'x.x_id = u.u_cover_x_id','left'); //Fetch the cover photo if >0
-        $this->db->join('v5_bootcamp_team ba', 'ba.ba_outbound_u_id = u.u_id');
-
-        if(in_array('b',$join_objects)){
-            $this->db->join('v5_bootcamps b', 'ba.ba_b_id = b.b_id');
-            $this->db->join('v5_intents c', 'c.c_id = b.b_outbound_c_id');
-        }
-
-	    foreach($match_columns as $key=>$value){
-	        $this->db->where($key,$value);
-	    }
-	    $this->db->order_by('ba.ba_status','DESC');
-	    $q = $this->db->get();
-	    return $q->result_array();
-	}
-	
-	
-	function coach_bs($match_columns, $order_columns=array(
-        'b_id' => 'ASC',
-    )){
-	    $this->db->select('*');
-	    $this->db->from('v5_intents c');
-	    $this->db->join('v5_bootcamps b', 'b.b_outbound_c_id = c.c_id');
-	    $this->db->join('v5_bootcamp_team ba', 'ba.ba_b_id = b.b_id');
-        $this->db->join('v5_facebook_pages fp', 'fp.fp_id = b.b_fp_id','left');
-        foreach($order_columns as $key=>$value){
-            $this->db->order_by($key,$value);
-        }
-	    foreach($match_columns as $key=>$value){
-	        $this->db->where($key,$value);
-	    }
-	    $q = $this->db->get();
-	    return $q->result_array();
 	}
 
 
@@ -844,117 +658,6 @@ class Db_model extends CI_Model {
         return 0;
 
     }
-
-	function r_sync($b_id){
-
-	    //First determine all dates we'd need:
-        $class_settings = $this->config->item('class_settings');
-
-        $dates_needed = array();
-        $monday_start = ( date("w")==1 ? 2 : 1 );
-        for($i=$monday_start;$i<=($class_settings['create_weeks_ahead']-1+$monday_start);$i++){
-            array_push($dates_needed , date("Y-m-d",(strtotime($i.' mondays from now')+(12*3600)  /* For GMT/timezone adjustments */ )) );
-        }
-
-        //Let's see which Classes we have already?
-        $classes = $this->Db_model->r_fetch(array(
-            'r_b_id' => $b_id,
-            'r_status >=' => 0,
-            'r_start_date IN (\''.join('\',\'',$dates_needed).'\')' => null,
-        ));
-
-        if(count($classes)>0){
-            //Remove these Classes from what we need:
-            foreach($classes as $class){
-                unset($dates_needed[array_search($class['r_start_date'], $dates_needed)]);
-            }
-        }
-
-        //Do we have any dates left to create?
-        if(count($dates_needed)>0){
-            //Yes, start creating these Classes:
-            foreach($dates_needed as $r_start_date){
-                $this->Db_model->r_create(array(
-                    'r_b_id' => $b_id,
-                    'r_start_date' => $r_start_date,
-                    'r_status' => 1, //Offers Coaching
-                ));
-            }
-        }
-
-        return count($dates_needed);
-    }
-	
-	function r_fetch($match_columns , $b=null /* Passing this would load extra variables for the class as well! */, $sorting='DESC', $limit=0, $join_objects=array() ){
-
-        if(in_array('ru',$join_objects)){
-            $this->db->select('r.*, COUNT(ru_id) as total_enrollments');
-        } elseif(in_array('b',$join_objects)){
-            $this->db->select('*');
-        } else {
-            $this->db->select('r.*');
-        }
-
-        $this->db->from('v5_classes r');
-
-        if(in_array('ru',$join_objects)){
-            $this->db->join('v5_class_students ru', 'r.r_id = ru.ru_r_id');
-            $this->db->where('ru.ru_status >=',4); //Always assume active students (!)
-        }
-        if(in_array('b',$join_objects)){
-            $this->db->join('v5_bootcamps b', 'r.r_b_id = b.b_id');
-            $this->db->join('v5_intents c', 'b.b_outbound_c_id = c.c_id');
-        }
-
-		foreach($match_columns as $key=>$value){
-            if(!is_null($value)){
-                $this->db->where($key,$value);
-            } else {
-                $this->db->where($key);
-            }
-		}
-
-        $this->db->order_by('r.r_start_date',$sorting); //Most recent class at top
-
-        if(in_array('ru',$join_objects)){
-            $this->db->order_by('total_enrollments','DESC'); //Most recent class at top
-            $this->db->group_by('r.r_id');
-        }
-
-
-        if($limit>0){
-            $this->db->limit($limit);
-        }
-
-		$q = $this->db->get();
-		
-		$runs = $q->result_array();
-		foreach($runs as $key=>$class){
-
-            if(in_array('ru',$join_objects)){
-                $runs[$key]['r__current_enrollments'] = $class['total_enrollments'];
-            } else {
-                $runs[$key]['r__current_enrollments'] = count($this->Db_model->ru_fetch(array(
-                    'ru_r_id' => $class['r_id'],
-                    'ru_status >=' => 4,
-                )));
-            }
-
-            $runs[$key]['r__total_tasks'] = 0;
-            if(isset($b['c__child_intents']) && count($b['c__child_intents'])>0){
-                foreach($b['c__child_intents'] as $intent) {
-                    if($intent['c_status']>0){
-                        //Addup the totals:
-                        $runs[$key]['r__total_tasks']++;
-                    }
-                }
-            }
-
-		}
-		
-		return $runs;
-	}
-	
 	
 	
 	
@@ -998,23 +701,6 @@ class Db_model extends CI_Model {
     }
 
 
-    function fetch_c_tree($c_id){
-        //This function would fetch all the child c_id's for the input c_id
-        $c_tree = array(intval($c_id));
-        $child_intents = $this->Db_model->cr_outbound_fetch(array(
-            'cr.cr_inbound_c_id' => $c_id,
-            'cr.cr_status >=' => 0,
-            'c.c_status >' => 0,
-        ));
-        if(count($child_intents)>0){
-            //Yes, it does, lets go through them recursively:
-            foreach($child_intents as $c){
-                //Do recursive
-                $c_tree = array_merge($c_tree,$this->fetch_c_tree($c['c_id']));
-            }
-        }
-        return $c_tree;
-    }
 
 
     function c_fetch($match_columns, $outbound_levels=0, $join_objects=array()){
@@ -1571,17 +1257,8 @@ class Db_model extends CI_Model {
 	    return $this->db->affected_rows();
 	}
 	
-	function r_update($r_id,$update_columns){
-	    $this->db->where('r_id', $r_id);
-	    $this->db->update('v5_classes', $update_columns);
-	    return $this->db->affected_rows();
-	}
-	
-	function b_update($b_id,$update_columns){
-	    $this->db->where('b_id', $b_id);
-	    $this->db->update('v5_bootcamps', $update_columns);
-	    return $this->db->affected_rows();
-	}
+
+
 	
 	function e_update($e_id,$update_columns){
 	    $this->db->where('e_id', $e_id);
@@ -1589,125 +1266,9 @@ class Db_model extends CI_Model {
 	    return $this->db->affected_rows();
 	}
 	
-	//Leads:
-	function il_update($il_id,$update_columns){
-	    $this->db->where('il_id', $il_id);
-	    $this->db->update('v5_leads', $update_columns);
-	    return $this->db->affected_rows();
-	}
-	function il_create($insert_columns){
-        if(!isset($insert_columns['il_timestamp'])){
-            $insert_columns['il_timestamp'] = date("Y-m-d H:i:s");
-        }
-	    $this->db->insert('v5_leads', $insert_columns);
-	    $insert_columns['il_id'] = $this->db->insert_id();    
-	    return $insert_columns;
-	}	
-	
-	function r_create($insert_columns){
-        if(missing_required_db_fields($insert_columns,array('r_b_id','r_start_date','r_status'))){
-            return false;
-        }
-	    $this->db->insert('v5_classes', $insert_columns);
-	    $insert_columns['r_id'] = $this->db->insert_id();
-	    return $insert_columns;
-	}
-
-	function enroll_student($u_id,$b){
-
-        //Lets start their enrollment application:
-        $enrollments[0] = $this->Db_model->ru_create(array(
-            'ru_b_id' 	        => $b['b_id'],
-            'ru_status'         => 0, //Pending
-            'ru_outbound_u_id' 	=> $u_id,
-            'ru_fp_id'          => $b['b_fp_id'], //Current Page that the student should connect to
-        ));
-
-        //Log engagement for Application Started:
-        $this->Db_model->e_create(array(
-            'e_inbound_u_id' => $u_id,
-            'e_json' => array(
-                'rudata' => $enrollments[0],
-            ),
-            'e_inbound_c_id' => 29, //Application Started
-            'e_b_id' => $b['b_id'],
-        ));
-
-        //Send the email to their enrollment page:
-        $this->Comm_model->foundation_message(array(
-            'e_inbound_u_id' => 0,
-            'e_outbound_u_id' => $u_id,
-            'e_outbound_c_id' => 2697,
-            'depth' => 0,
-            'e_b_id' => $b['b_id'],
-        ), true);
-
-        //Return enrollment data:
-        return $enrollments[0];
-
-    }
-	
-	function b_create($insert_columns){
-
-        if(missing_required_db_fields($insert_columns,array('b_outbound_c_id','b_url_key'))){
-            return false;
-        }
-
-        if(!isset($insert_columns['b_timestamp'])){
-            $insert_columns['b_timestamp'] = date("Y-m-d H:i:s");
-        }
-        if(!isset($insert_columns['b_status'])){
-            $insert_columns['b_status'] = 2; //Published Privately
-        }
-        if(!isset($insert_columns['b_algolia_id'])){
-            $insert_columns['b_algolia_id'] = 0;
-        }
-        if(!isset($insert_columns['b_fp_id'])){
-            $insert_columns['b_fp_id'] = 0;
-        }
-
-        //Lets now add:
-	    $this->db->insert('v5_bootcamps', $insert_columns);
-	    
-	    //Fetch inserted id:
-	    $insert_columns['b_id'] = $this->db->insert_id();
-	    
-	    return $insert_columns;
-	}
-
-    function c_visibility($b_id,$u_id,$is_public){
-
-        //The main counter:
-        $items_updated = 0;
-
-        //Fetch all Bootcamp data:
-        $bs = $this->Db_model->remix_bs(array(
-            'b.b_id' => $b_id,
-        ));
-        if(count($bs)<1){
-            //Not found!
-            return $items_updated;
-        } elseif(!in_array($is_public,array(0,1))) {
-            //Invalid new status
-            return $items_updated;
-        } elseif(!($bs[0]['b__coaches'][0]['u_id']==$u_id)) {
-            //User is not the lead coach
-            return $items_updated;
-        }
 
 
-        //Log Engagement for this Bootcamp:
-        $this->Db_model->e_create(array(
-            'e_text_value' => 'Successfully updated the visibility of ['.$items_updated.'] intents to ['.( $is_public ? 'Public' : 'Private' ).'] for the Bootcamp ['.$bs[0]['c_outcome'].']',
-            'e_json' => $bs[0],
-            'e_inbound_c_id' => 7093, //Bootcamp Public Visibility Toggled
-            'e_b_id' => $b_id,
-        ));
 
-        //Retuern all items:
-        return $items_updated;
-    }
-	
 	function c_create($insert_columns){
 
         if(missing_required_db_fields($insert_columns,array('c_outcome','c_inbound_u_id'))){
@@ -1860,79 +1421,8 @@ class Db_model extends CI_Model {
         return $insert_columns;
     }
 
-	
-	function ba_create($insert_columns){
 
-        if(missing_required_db_fields($insert_columns,array('ba_outbound_u_id','ba_b_id','ba_status'))){
-            return false;
-        }
 
-        if(!isset($insert_columns['ba_timestamp'])){
-            $insert_columns['ba_timestamp'] = date("Y-m-d H:i:s");
-        }
-	    
-	    //Lets now add:
-	    $this->db->insert('v5_bootcamp_team', $insert_columns);
-	    
-	    //Fetch inserted id:
-        $insert_columns['ba_id'] = $this->db->insert_id();
-	    
-	    return $insert_columns;
-	}
-	
-	
-	
-	function ej_fetch($match_columns=array()){
-        $this->db->select('*');
-        $this->db->from('v5_engagement_blob ej');
-        foreach($match_columns as $key=>$value){
-            if(!is_null($value)){
-                $this->db->where($key,$value);
-            } else {
-                $this->db->where($key);
-            }
-        }
-        $q = $this->db->get();
-        return $q->result_array();
-    }
-
-    function snapshot_action_plan($b_id,$r_id){
-
-	    //Saves a copy of the Action Plan for the Class to use it:
-        $bs = $this->Db_model->remix_bs(array(
-            'b.b_id' => $b_id,
-        ));
-
-        if(count($bs)<1){
-            return false;
-        }
-
-        //Remove unnecessary fields:
-        unset($bs[0]['b__coaches']);
-
-        //Also Update Class end Date:
-        //Fetch Class Details:
-        $classes = $this->Db_model->r_fetch(array(
-            'r_id' => $r_id,
-        ), $bs[0] );
-
-        if(count($classes)<1){
-            return false;
-        }
-
-        //Save Action Plan Copy:
-        $this->Db_model->e_create(array(
-            'e_json' => $bs[0],
-            'e_inbound_c_id' => 70, //Action Plan Snapshot
-            'e_b_id' => $bs[0]['b_id'],
-            'e_outbound_c_id' => $bs[0]['b_outbound_c_id'],
-            'e_r_id' => $r_id,
-        ));
-
-        return true;
-
-    }
-	
 	function e_fetch($match_columns=array(), $limit=100, $join_objects=array(), $replace_key=null, $order_columns=array(
         'e.e_id' => 'DESC',
     )){
@@ -2066,58 +1556,8 @@ class Db_model extends CI_Model {
 
             //Notify relevant subscribers about this notification:
             $engagement_subscriptions = $this->config->item('engagement_subscriptions');
-            $coach_subscriptions = $this->config->item('coach_subscriptions');
             $engagement_references = $this->config->item('engagement_references');
 
-            //Email: The [33] Engagement ID corresponding to Step completion is a email system for coaches to give them more context on certain activities
-
-            //Do we have any coach subscription:
-            if($insert_columns['e_b_id']>0 && in_array($insert_columns['e_inbound_c_id'],$coach_subscriptions)){
-
-                //Just do this one:
-                if(!isset($engagements[0])){
-                    //Fetch Engagement Data:
-                    $engagements = $this->Db_model->e_fetch(array(
-                        'e_id' => $insert_columns['e_id']
-                    ));
-                }
-
-                //Did we find it? We should have:
-                if(isset($engagements[0])){
-
-                    //Fetch all Goal Coaches and Notify them:
-                    $b_coaches = $this->Db_model->ba_fetch(array(
-                        'ba.ba_b_id' => $insert_columns['e_b_id'],
-                        'ba.ba_status >=' => 2, //co-coaches & Lead Coach
-                        'u.u_status' => 1,
-                    ));
-
-                    $subject = '⚠️ Notification: '.trim(strip_tags($engagements[0]['c_outcome'])).' by '.( isset($engagements[0]['u_full_name']) ? $engagements[0]['u_full_name'] : 'System' );
-                    $url = 'https://mench.com/console/'.$insert_columns['e_b_id'];
-
-                    $body = trim(strip_tags($insert_columns['e_text_value']));
-
-                    //Send notifications to current coach
-                    foreach($b_coaches as $bi){
-                        if(in_array($insert_columns['e_inbound_c_id'],$coach_subscriptions)){
-
-                            //Mench notifications:
-                            $this->Comm_model->send_message(array(
-                                array(
-                                    'i_media_type' => 'text',
-                                    'i_message' => $subject."\n\n".$body."\n\n".$url,
-                                    'i_url' => $url,
-                                    'e_inbound_u_id' => 0, //System
-                                    'e_outbound_u_id' => $bi['u_id'],
-                                    'e_b_id' => $insert_columns['e_b_id'],
-                                    'e_r_id' => ( isset($insert_columns['e_r_id']) ? $insert_columns['e_r_id'] : 0 ),
-                                ),
-                            ));
-
-                        }
-                    }
-                }
-            }
 
             //Individual subscriptions:
             foreach($engagement_subscriptions as $subscription){
@@ -2145,7 +1585,7 @@ class Db_model extends CI_Model {
                         foreach($engagement_references as $engagement_field=>$er){
                             if(intval($engagements[0][$engagement_field])>0){
                                 //Yes we have a value here:
-                                $html_message .= '<div>'.$er['name'].': '.echo_object($er['object_code'], $engagements[0][$engagement_field], $engagements[0]['e_b_id']).'</div>';
+                                $html_message .= '<div>'.$er['name'].': '.echo_object($er['object_code'], $engagements[0][$engagement_field]).'</div>';
                             }
                         }
 

@@ -23,16 +23,9 @@ $child_entities = $this->Db_model->ur_outbound_fetch(array(
 ), array('u__outbound_count'), $entities_per_page);
 
 
-$enrollments = $this->Db_model->ru_fetch(array(
-    'ru_outbound_u_id' => $inbound_u_id,
-    'ru_status >=' => 4, //Enrolled
-), array(
-    'ru.ru_id' => 'DESC',
-), array('b'));
+$enrollments = array();
 
-$b_team_member = $this->Db_model->ba_fetch(array(
-    'ba.ba_outbound_u_id' => $inbound_u_id,
-), array('b'));
+$b_team_member = array();
 
 $payments = $this->Db_model->t_fetch(array(
     't_inbound_u_id' => $inbound_u_id,

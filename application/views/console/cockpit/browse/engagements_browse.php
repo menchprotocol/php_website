@@ -125,7 +125,7 @@ echo '</form>';
             foreach($engagement_references as $engagement_field=>$er){
                 if(intval($e[$engagement_field])>0){
                     //Yes we have a value here:
-                    echo '<div>'.$er['name'].': '.echo_object($er['object_code'], $e[$engagement_field], $e['e_b_id']).'</div>';
+                    echo '<div>'.$er['name'].': '.echo_object($er['object_code'], $e[$engagement_field]).'</div>';
                 } elseif(intval($e[$engagement_field])>0) {
                     echo '<div>'.$er['name'].': #'.$e[$engagement_field].'</div>';
                 }

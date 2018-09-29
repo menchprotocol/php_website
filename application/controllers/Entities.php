@@ -544,15 +544,6 @@ class Entities extends CI_Controller {
 
         }
 
-        $co_coaches = array();
-        if(!array_any_key_exists(array(1280,1308,1281),$users[0]['u__inbounds'])){
-            //Regular user, see if they are assigned to any Bootcamp as co-coach
-            $co_coaches = $this->Db_model->coach_bs(array(
-                'ba.ba_outbound_u_id' => $users[0]['u_id'],
-                'ba.ba_status >=' => 1,
-                'b.b_status >=' => 2,
-            ));
-        }
 
         $session_data = array();
         $is_chrome = (strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome')!==false || strpos($_SERVER['HTTP_USER_AGENT'], 'CriOS')!==false);

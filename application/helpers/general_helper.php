@@ -75,72 +75,7 @@ function fetch_entity_tree($u_id,$is_edit=false){
 
 
 function fetch_action_plan_copy($b_id,$r_id=0,$current_b=null,$release_cache=array()){
-
-    $CI =& get_instance();
-    $cache_action_plans = array();
-    $bs = array();
-
-    if($r_id){
-        //See if we have a copy:
-        $cache_action_plans = $CI->Db_model->e_fetch(array(
-            'e_inbound_c_id' => 70,
-            'e_r_id' => $r_id,
-        ), 1, array('ej'));
-    }
-
-    if(count($cache_action_plans)>0){
-
-        //Assign this cache to the Bootcamp:
-        $b = unserialize($cache_action_plans[0]['ej_e_blob']);
-
-        //Test the most recently added DB field to ensure this copy of the action plan has it, otherwise fetch it
-        if($b && isset($b['b_weeks_count'])){
-            array_push($bs,$b);
-
-            //Indicate this is a copy:
-            $bs[0]['is_copy'] = 1;
-            $bs[0]['copy_timestamp'] = $cache_action_plans[0]['e_timestamp'];
-
-            //If we have this, we should replace it to have certain fields updated:
-            if($current_b){
-
-                //Any items that we'd like to release its cache?
-                foreach($release_cache as $key){
-                    //This replaces older values with new ones to ensures we get the most up to date view
-                    $bs[0][$key] = $current_b[0][$key];
-                }
-
-                //Replace:
-                $bs = array_replace_recursive($current_b,$bs);
-            }
-        }
-
-    }
-
-    if(count($bs)==0){
-
-        //Fetch from live:
-        $bs = $CI->Db_model->remix_bs(array(
-            'b.b_id' => $b_id,
-        ));
-
-        //Indicate this is NOT a copy:
-        $bs[0]['is_copy'] = 0;
-        $bs[0]['copy_timestamp'] = null;
-    }
-
-    if($r_id){
-        //Now Fetch Class:
-        $classes = $CI->Db_model->r_fetch(array(
-            'r_id' => $r_id,
-        ), $bs[0] );
-
-        if(count($classes)>0){
-            $bs[0]['this_class'] = $classes[0];
-        }
-    }
-
-    return $bs;
+    //TODO rewrite
 }
 
 
