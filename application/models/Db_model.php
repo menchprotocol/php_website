@@ -288,9 +288,6 @@ class Db_model extends CI_Model {
                 'u_id' => $insert_columns['u_id'],
             ));
 
-            //Update Algolia:
-            $this->Db_model->algolia_sync('u',$insert_columns['u_id']);
-
             return $users[0];
 
         } else {
@@ -1043,7 +1040,6 @@ class Db_model extends CI_Model {
                 'e_inbound_c_id' => 6971, //Entity Created
             ));
 
-
             //Place this new entity in $x_outbound_u_id [Content]
             $ur1 = $this->Db_model->ur_create(array(
                 'ur_outbound_u_id' => $new_content['u_id'],
@@ -1056,6 +1052,10 @@ class Db_model extends CI_Model {
                 'e_ur_id' => $ur1['ur_id'],
                 'e_inbound_c_id' => 7291, //Entity Link Create
             ));
+
+            //Update Algolia:
+            $this->Db_model->algolia_sync('u',$new_content['u_id']);
+
         } else {
             $new_content = $outbound_us[0];
             $ur1 = array();

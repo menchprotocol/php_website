@@ -190,7 +190,7 @@ class Entities extends CI_Controller {
             if($_POST['is_inbound'] && in_array($_POST['new_u_id'], array(1278,1326,2750))){
                 //Does this entity already belong to one?
                 $entity_type = entity_type($current_us[0]);
-                if($entity_type){
+                if($entity_type && $entity_type!=$_POST['new_u_id']){
                     return echo_json(array(
                         'status' => 0,
                         'message' => '['.$current_us[0]['u_full_name'].'] already belong to ['.$current_us[0]['u__inbounds'][$entity_type]['u_full_name'].'] which means it cannot also be added as ['.$new_u['u_full_name'].']. You can unlink ['.$current_us[0]['u__inbounds'][$entity_type]['u_full_name'].'] and try again.',
@@ -284,7 +284,6 @@ class Entities extends CI_Controller {
                 ));
             }
 
-
         }
 
         if(!$is_url_input){
@@ -309,6 +308,11 @@ class Entities extends CI_Controller {
                 'e_ur_id' => $ur2['ur_id'],
                 'e_inbound_c_id' => 7291, //Entity Link Create
             ));
+        }
+
+        if(!$linking_to_existing_u){
+            //Update Algolia:
+            $this->Db_model->algolia_sync('u',$new_u['u_id']);
         }
 
 

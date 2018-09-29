@@ -524,6 +524,9 @@ class Comm_model extends CI_Model {
                     'u_cache__fp_psid'  => $fp_psid,
                 ));
 
+                //Update Algolia:
+                $this->Db_model->algolia_sync('u',$u['u_id']);
+
                 //Save picture locally:
                 $this->Db_model->e_create(array(
                     'e_inbound_u_id' => $u['u_id'],
