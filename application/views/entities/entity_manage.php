@@ -517,7 +517,7 @@ $tabs = array(
 
 
 <div class="row">
-    <div class="col-xs-6">
+    <div class="col-sm-6">
 
 
 <?php
@@ -752,7 +752,7 @@ echo '</div>';
 
   </div>
 
-  <div class="col-xs-6">
+  <div class="col-sm-6">
   </div>
 
 </div>

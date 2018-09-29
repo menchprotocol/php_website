@@ -50,7 +50,10 @@ if(isset($orphan_cs)){
 
         if(is_mobile()){
             //Adjust columns:
-            $('.cols').removeClass('col-xs-6').removeClass('col-sm-6');
+            $('.cols').removeClass('col-xs-6').addClass('col-sm-6');
+            $('.grey-box').addClass('phone-2nd');
+            $('.iphone-x').addClass('iphone-2nd');
+
         } else {
             //Make iPhone X Sticky for scrolling longer lists
             $(".main-panel").scroll(function() {
@@ -822,7 +825,7 @@ if(isset($orphan_cs)){
                         echo echo_actionplan($sub_intent, 2, $c['c_id']);
                     }
                     ?>
-                    <div class="list-group-item list_input searchable grey-block">
+                    <div class="list-group-item list_input grey-block">
                         <div class="input-group">
                             <div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control intentadder-level-2"  maxlength="70" intent-id="<?= $c['c_id'] ?>" id="addintent-c-<?= $c['c_id'] ?>" placeholder="Add #Intent"></div>
                             <span class="input-group-addon" style="padding-right:8px;">

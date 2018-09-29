@@ -800,6 +800,19 @@ h5, .h5 {
     max-width: 90%;
 }
 
+.phone-2nd {
+    position: relative !important;
+    top: unset !important;
+    left: unset !important;
+    max-height: unset !important;
+    margin-right: 0 !important;
+}
+
+.iphone-2nd{
+    position: relative !important;
+    top: unset !important;
+}
+
 .list-messages video {
 	border-top-left-radius:3px;
 	border-top-right-radius: 0.9em;
@@ -1943,9 +1956,6 @@ margin:5px 0;
     margin: 10px 0 0 -4px;
     display: block;
     text-align: right;
-}
-.searchable{
-    margin-bottom:180px !important;
 }
 
 #landing_page_enroll{
