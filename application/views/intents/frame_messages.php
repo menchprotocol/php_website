@@ -106,9 +106,7 @@ if(!isset($intents[0])){
     }
 
 
-    $(document).ready(function(){
-
-
+    function initiate_search(){
         $('.msgin').textcomplete([
             {
                 match: /(^|\s)@(\w*(?:\s*\w*))$/,
@@ -158,7 +156,12 @@ if(!isset($intents[0])){
                 }
             }
         ]);
+    }
 
+
+    $(document).ready(function(){
+
+        initiate_search();
 
         //Load Nice sort for iPhone X
         new SimpleBar(document.getElementById('intent_messages'+c_id), {
@@ -335,12 +338,16 @@ if(!isset($intents[0])){
     }
 
     function msg_start_edit(i_id,initial_i_status){
+
         //Start editing:
         $("#ul-nav-"+i_id).addClass('in-editing');
         $("#ul-nav-"+i_id+" .edit-off").addClass('hidden');
         $("#ul-nav-"+i_id+" .edit-on").removeClass('hidden');
         $("#ul-nav-"+i_id+">div").css('width','100%');
         $("#ul-nav-"+i_id+" textarea").focus();
+
+        //Initiate search:
+        initiate_search();
 
         //Try to initiate the editor, which only applies to text messages:
         changeMessageEditing(i_id);
