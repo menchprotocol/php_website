@@ -44,7 +44,7 @@ function fetch_entity_tree($u_id,$is_edit=false){
     $CI =& get_instance();
     $entities = $CI->Db_model->u_fetch(array(
         'u_id' => $u_id,
-    ), array('u__outbound_count'));
+    ), array('u__outbound_count','u__urls'));
 
     if(count($entities)<1){
         return redirect_message('/entities','<div class="alert alert-danger maxout" role="alert">Invalid Entity ID</div>');
@@ -632,7 +632,7 @@ function curl_html($url,$return_breakdown=false){
         $body_html = substr($response, $header_size);
         $content_type = one_two_explode('',';',curl_getinfo($ch, CURLINFO_CONTENT_TYPE));
 
-        $embed_code = echo_embed($effective_url, $effective_url, false, true);
+        $embed_code = echo_embed($effective_url, $effective_url, true);
         $clean_url = ( $embed_code['status'] && !($clean_url==$embed_code['clean_url']) ? $embed_code['clean_url'] : $clean_url );
 
         // Now see if this is a specific file type:
@@ -663,7 +663,6 @@ function curl_html($url,$return_breakdown=false){
             'url_is_broken' => ( in_array($httpcode,array(0,403,404)) && substr_count($url,'www.facebook.com')==0 ? 1 : 0 ),
             'x_type' => $x_type,
             'clean_url' => ( !$clean_url || $clean_url==$url ? null : $clean_url ),
-            'last_domain' => strtolower(str_replace('www.','',$url_parts['host'])),
             'httpcode' => $httpcode,
             'page_title' => one_two_explode('>','',one_two_explode('<title','</title',$body_html)),
         );
@@ -709,21 +708,12 @@ function arrayToObject($array){
 
 
 
-function message_validation($i_status,$i_message,$i_media_type=null /*Only set for editing*/){
+function message_validation($i_status,$i_message){
 
-    if(in_array($i_media_type,array('video','image','audio','file'))){
-        return array(
-            'status' => 1,
-            'urls' => 'Media images cannot be edited',
-        );
-    }
 
     $CI =& get_instance();
     $message_max = $CI->config->item('message_max');
-    $check_urls = (!$i_media_type || $i_media_type=='text');
-    if($check_urls){
-        $urls = extract_urls($i_message);
-    }
+    $urls = extract_urls($i_message);
 
     if(!isset($i_status) || !(intval($i_status)==$i_status)){
         return array(
@@ -735,15 +725,15 @@ function message_validation($i_status,$i_message,$i_media_type=null /*Only set f
             'status' => 0,
             'message' => 'Missing Message',
         );
-    } elseif($check_urls && count($urls)>1){
+    } elseif(count($urls)>1){
         return array(
             'status' => 0,
             'message' => 'Max 1 URL per Message',
         );
-    } elseif(substr_count($i_message,'{first_name}')>1){
+    } elseif(substr_count($i_message,'/firstname')>1){
         return array(
             'status' => 0,
-            'message' => '{first_name} can be used only once',
+            'message' => '/firstname can be used only once',
         );
     } elseif(strlen($i_message)>$message_max){
         return array(
@@ -761,12 +751,116 @@ function message_validation($i_status,$i_message,$i_media_type=null /*Only set f
             'status' => 0,
             'message' => 'Message must be UTF8',
         );
-    } else {
+    }
+
+
+    //Do we have any entity references?
+    preg_match('/@(\d+)/', $i_message, $matches_u);
+    $i_outbound_u_id = ( isset($matches_u[1]) && strlen($matches_u[1])>0 && strlen($matches_u[1])==strlen(intval($matches_u[1])) ? intval($matches_u[1]) : 0 );
+
+    //Do we have any intents references?
+    preg_match('/#(\d+)/', $i_message, $matches_c);
+    $i_inbound_c_id = ( isset($matches_c[1]) && strlen($matches_c[1])>0 && strlen($matches_c[1])==strlen(intval($matches_c[1])) ? intval($matches_c[1]) : 0 );
+
+
+    if($i_outbound_u_id && count($matches_u)>2){
+        //Log engagement for this:
         return array(
-            'status' => 1,
-            'urls' => ( $check_urls ? $urls : null ),
+            'status' => 0,
+            'message' => 'You can reference a maximum of 1 entity per message',
+        );
+    } elseif($i_outbound_u_id && count($urls)>0){
+        //Log engagement for this:
+        return array(
+            'status' => 0,
+            'message' => 'You can either reference 1 entity or include 1 URL which would transform into an entity',
+        );
+    } elseif($i_inbound_c_id && count($matches_c)>2){
+        //Log engagement for this:
+        return array(
+            'status' => 0,
+            'message' => 'You can reference a maximum of 1 intent per message',
         );
     }
+
+    //Validate Intent:
+    if($i_inbound_c_id){
+
+        //Validate this:
+        $i_inbound_cs = $this->Db_model->c_fetch(array(
+            'c.c_id' => $i_inbound_c_id,
+        ));
+
+        if(count($i_inbound_cs)==0){
+            //Invalid ID:
+            return array(
+                'status' => 0,
+                'message' => 'Intent #'.$i_inbound_c_id.' does not exist',
+            );
+        } elseif($i_inbound_cs[0]['c_status']<1){
+            //Inactive:
+            return array(
+                'status' => 0,
+                'message' => 'Intent #'.$i_inbound_c_id.' is not active so you cannot link to it',
+            );
+        }
+    }
+
+
+
+    //Validate Entity:
+    if($i_outbound_u_id){
+
+        $i_outbound_us = $CI->Db_model->u_fetch(array(
+            'u_id' => $i_outbound_u_id,
+        ));
+
+        if(count($i_outbound_us)==0){
+            //Invalid ID:
+            return array(
+                'status' => 0,
+                'message' => 'Entity [@'.$i_outbound_u_id.'] does not exist',
+            );
+        } elseif($i_outbound_us[0]['u_status']<1){
+            //Inactive:
+            return array(
+                'status' => 0,
+                'message' => 'Entity ['.$i_outbound_us[0]['u_full_name'].'] is not active so you cannot link to it',
+            );
+        } elseif(!array_key_exists(1326, $i_outbound_us[0]['u__inbounds'])) {
+            //Entity is not a Content:
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Entity ['.$i_outbound_us[0]['u_full_name'].'] does not belong to [Content] which is required for it to be referenced in a message',
+            ));
+        }
+
+    } elseif(count($urls)>0){
+
+        //No entity linked, but we have a URL that we should turn into an entity:
+        $url_create = $CI->Db_model->add_db_url($urls[0], 1326, false, true);
+
+        //Did we have an error?
+        if(!$url_create['status']){
+            return $url_create;
+        }
+
+        $i_outbound_u_id = $url_create['u']['u_id'];
+
+        //Replace the URL with this new @entity in message:
+        $i_message = str_replace($urls[0],'@'.$i_outbound_u_id, $i_message);
+
+    }
+
+
+    return array(
+        'status' => 1,
+        'message' => 'Success',
+        //Return cleaned data:
+        'i_message' => trim($i_message), //It might have been modified if URL was added
+        'i_outbound_u_id' => $i_outbound_u_id, //Referencing an entity?
+        'i_inbound_c_id' => $i_inbound_c_id, //Affirming an intent relation?
+    );
 }
 
 

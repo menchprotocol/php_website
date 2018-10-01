@@ -17,6 +17,7 @@ $config['fb_settings'] = array(
     'app_id'        => '1782431902047009', //Also repeated in global.js
     'client_secret' => '05aea76d11b062951b40a5bee4251620',
     'default_graph_version' => 'v2.10', //Also repeated in global.js
+    'mench_access_token' => 'EAAZAVHMRbmyEBAEfN8zsRJ3UOIUJJrNLqeFutPXVQZCoDZA3EO1rgkkzayMtNhisHHEhAos08AmKZCYD7zcZAPIDSMTcBjZAHxxWzbfWyTyp85Fna2bGDfv5JUIBuFTSeQOZBaDHRG7k0kbW8E7kQQN3W6x47VB1dZBPJAU1oNSW1QZDZD',
 );
 
 $config['class_settings'] = array(
@@ -188,7 +189,6 @@ $config['object_statuses'] = array(
         ),
     ),
 
-
     'i_status' => array(
         -1 => array(
             's_name'  => 'Archived',
@@ -289,31 +289,31 @@ $config['object_statuses'] = array(
             's_icon' => 'fas fa-link',
         ),
         1 => array(
-            's_name'  => 'Embeddable',
+            's_name'  => 'Embeddable Content',
             's_fb_key'  => 'text',
             's_desc'  => 'A recognized URL with an embeddable widget',
             's_icon' => 'fas fa-file-code',
         ),
         2 => array(
-            's_name'  => 'Video File',
+            's_name'  => 'Video',
             's_fb_key'  => 'video',
             's_desc'  => 'URL of a raw video file',
             's_icon' => 'fas fa-file-video',
         ),
         3 => array(
-            's_name'  => 'Audio File',
+            's_name'  => 'Audio',
             's_fb_key'  => 'audio',
             's_desc'  => 'URL of a raw audio file',
             's_icon' => 'fas fa-file-audio',
         ),
         4 => array(
-            's_name'  => 'Image File',
+            's_name'  => 'Image',
             's_fb_key'  => 'image',
             's_desc'  => 'URL of a raw image file',
             's_icon' => 'fas fa-file-image',
         ),
         5 => array(
-            's_name'  => 'Generic File',
+            's_name'  => 'File',
             's_fb_key'  => 'file',
             's_desc'  => 'URL of a raw generic file',
             's_icon' => 'fas fa-file-pdf',

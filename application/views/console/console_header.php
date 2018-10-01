@@ -42,11 +42,15 @@ $uri_segment_2 = $this->uri->segment(2);
 
 <body id="console_body">
 
+
+    <?php if(!isset($_GET['skip_header'])){ ?>
     <!-- Show Facebook Chat -->
     <div class="fb-customerchat" minimized="true" greeting_dialog_display="hide" <?= ( $udata['u_cache__fp_psid']>0 ? '' : ' ref="'.$this->Comm_model->fb_activation_url($udata['u_id'],4,true).'" ' ) ?> theme_color="#3C4858" page_id="<?= $fb_settings['page_id'] ?>"</div>
+    <?php } ?>
 
 	<div class="wrapper" id="console">
 
+        <?php if(!isset($_GET['skip_header'])){ ?>
 		<nav class="navbar navbar-transparent navbar-absolute">
 			<div class="container-fluid">
 
@@ -90,6 +94,9 @@ $uri_segment_2 = $this->uri->segment(2);
 
 			</div>
 		</nav>
+        <?php } ?>
+
+
 
 
         <?php if($uri_segment_1=='cockpit' && array_key_exists(1281, $udata['u__inbounds'])){ ?>
@@ -157,7 +164,7 @@ $uri_segment_2 = $this->uri->segment(2);
                         }
                     }
                     echo '</ol>';
-    	        } else {
+    	        } elseif(!isset($_GET['skip_header'])) {
     	            echo '<div style="padding:1px 0;">&nbsp;</div>'; //Give some space in the absent of the breadcrumb
                 }
     	        ?>

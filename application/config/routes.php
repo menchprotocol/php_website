@@ -14,12 +14,6 @@ $route['terms'] 					= "front/terms";
 $route['ses'] 						= "front/ses"; //Raw session logs
 $route['info'] 						= "front/info"; //PHP Info
 
-
-// Student Semi-Private URLs:
-$route['ref/(:num)'] 	                    = "my/load_url/$1"; //For URL loading and embed video playbacks
-$route['webview_video/(:num)'] 	            = "my/webview_video/$1";
-
-
 //TODO Remove all following:
 $route['console/(:num)/actionplan'] 		= "console/actionplan/$1";
 $route['console/(:num)/settings'] 			= "console/settings/$1";

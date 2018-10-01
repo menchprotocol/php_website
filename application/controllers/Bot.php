@@ -41,40 +41,12 @@ class Bot extends CI_Controller {
 
 
 
-    function url($smallest_i_id=0,$limit=1){
-
-        //Show custom input
+    function url(){
         echo '<div><form action=""><input type="url" name="url" value="'.@$_GET['url'].'" style="width:400px;"> <input type="submit" value="Go"></form></div>';
-
-        if(isset($_GET['url'])){
-
-            $curl = curl_html($_GET['url'],true);
-            foreach($curl as $key=>$value){
-                echo '<div style="color:'.( $key=='is_broken_link' && intval($value) ? '#FF0000' : '#000000' ).';">'.$key.': <b>'.$value.'</b></div>';
-            }
-
-        } else {
-
-            boost_power();
-
-            $content = $this->Db_model->i_fetch(array(
-                'i_id >' => $smallest_i_id, //Published in any form
-                'i_status >' => 0, //Published in any form
-                'i_media_type' => 'text',
-                'LENGTH(i_url)>0' => null, //Entire Bootcamp Action Plan
-            ), $limit, array(), array(
-                'i_id' => 'ASC',
-            ));
-
-            foreach($content as $key=>$i){
-
-                $curl = curl_html($i['i_url'],true);
-
-                echo '<div style="color:'.( $curl['is_broken_link'] ? '#FF0000' : '#000000' ).';">#'.($key+1).' ['.$curl['httpcode'].'] id='.$i['i_id'].' <a href="'.$i['i_url'].'" target="_blank">'.( strlen($curl['page_title'])>0 ? $curl['page_title'] : $i['i_url'] ).'</a>'.( $curl['clean_url'] ? ' ====> <a href="'.$curl['clean_url'].'" target="_blank">'.$curl['clean_url'].'</a>' : '' ).' ['.$curl['last_domain'].']</div>';
-
-            }
+        $curl = curl_html($_GET['url'],true);
+        foreach($curl as $key=>$value){
+            echo '<div style="color:'.( $key=='url_is_broken' && intval($value) ? '#FF0000' : '#000000' ).';">'.$key.': <b>'.$value.'</b></div>';
         }
-
     }
 
 
@@ -88,7 +60,7 @@ class Bot extends CI_Controller {
         $res = array();
         foreach($pages as $fp){
 
-            array_push($res , $this->Comm_model->fb_graph($fp['fp_id'], 'POST', '/me/messenger_profile', array(
+            array_push($res , $this->Comm_model->fb_graph('POST', '/me/messenger_profile', array(
                 'get_started' => array(
                     'payload' => 'GET_STARTED',
                 ),
@@ -97,14 +69,14 @@ class Bot extends CI_Controller {
                     'https://mench.co',
                     'https://mench.com',
                 ),
-            ), $fp));
+            )));
 
 
             //Wait until Facebook pro-pagates changes of our whitelisted_domains setting:
             sleep(2);
 
 
-            array_push($res , $this->Comm_model->fb_graph($fp['fp_id'], 'POST', '/me/messenger_profile', array(
+            array_push($res , $this->Comm_model->fb_graph('POST', '/me/messenger_profile', array(
                 'persistent_menu' => array(
                     array(
                         'locale' => 'default',
@@ -122,7 +94,7 @@ class Bot extends CI_Controller {
                         ),
                     ),
                 ),
-            ), $fp));
+            )));
         }
 
         echo_json($res);

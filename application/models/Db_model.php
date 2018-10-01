@@ -102,6 +102,18 @@ class Db_model extends CI_Model {
             }
 
 
+            if(in_array('u__urls',$join_objects)){
+                //Fetch the messages for this entity:
+                $res[$key]['u__urls'] = $this->Db_model->x_fetch(array(
+                    'x_status >' => 0,
+                    'x_outbound_u_id' => $val['u_id'],
+                ), array(), array(
+                    'x_id' => 'ASC'
+                ));
+            }
+
+
+
             //Fetch the messages for this entity:
             $res[$key]['u__inbounds'] = array();
             if(!in_array('skip_u__inbounds',$join_objects)){
@@ -359,38 +371,7 @@ class Db_model extends CI_Model {
         return $q->result_array();
     }
 
-    function sy_create($insert_columns){
-        //Missing anything?
-        if(!isset($insert_columns['sy_i_id'])){
-            return false;
-        } elseif(!isset($insert_columns['sy_fp_id'])){
-            return false;
-        } elseif(!isset($insert_columns['sy_fb_att_id'])){
-            return false;
-        }
 
-        if(!isset($insert_columns['sy_timestamp'])){
-            $insert_columns['sy_timestamp'] = date("Y-m-d H:i:s");
-        }
-
-        //Lets now add:
-        $this->db->insert('v5_message_fb_sync', $insert_columns);
-
-        //Fetch inserted id:
-        $insert_columns['sy_id'] = $this->db->insert_id();
-
-        if(!$insert_columns['sy_id']){
-            //Log this query Error
-            $this->Db_model->e_create(array(
-                'e_text_value' => 'Query Error sy_create() : '.$this->db->_error_message(),
-                'e_json' => $insert_columns,
-                'e_inbound_c_id' => 8, //Platform Error
-            ));
-        }
-
-        return $insert_columns;
-    }
-	
 	function i_create($insert_columns){
 
         //Need either entity or intent:
@@ -404,7 +385,7 @@ class Db_model extends CI_Model {
         }
 
         //Other required fields:
-        if(missing_required_db_fields($insert_columns,array('i_message','i_inbound_u_id','i_media_type'))){
+        if(missing_required_db_fields($insert_columns,array('i_message','i_inbound_u_id'))){
             return false;
         }
 
@@ -416,9 +397,6 @@ class Db_model extends CI_Model {
         }
         if(!isset($insert_columns['i_rank'])){
             $insert_columns['i_rank'] = 1;
-        }
-        if(!isset($insert_columns['i_url'])){
-            $insert_columns['i_url'] = null;
         }
 
         if(!isset($insert_columns['i_outbound_u_id'])){
@@ -940,7 +918,7 @@ class Db_model extends CI_Model {
     }
 
 
-    function add_db_url($x_url,$x_outbound_u_id,$cad_edit,$allow_duplicate=false) {
+    function add_db_url($x_url,$x_outbound_u_id,$cad_edit,$accept_existing_url=false) {
 
         //Auth user and check required variables:
         $udata = auth(array(1308,1280));
@@ -994,12 +972,13 @@ class Db_model extends CI_Model {
             );
         } elseif(count($dup_urls)>0){
 
-            if($allow_duplicate){
+            if($accept_existing_url){
                 //Return the object as this is expected:
                 return array(
                     'status' => 1,
                     'message' => 'Found existing URL',
                     'is_existing' => 1,
+                    'curl' => $curl,
                     'u' => array_merge($outbound_us[0],$dup_urls[0]),
                 );
             } elseif($dup_urls[0]['u_id']==$x_outbound_u_id){
@@ -1029,8 +1008,33 @@ class Db_model extends CI_Model {
         if($x_outbound_u_id==1326){ //Content
 
             //We need to create a new entity and add this URL below it:
+            $x_types = echo_status('x_type', null);
+            $u_full_name = null;
+            $url_code = substr(md5($curl['clean_url']),0,8);
+
+            if(strlen($curl['page_title'])>0){
+
+                //Make sure this is not a duplicate name:
+                $dup_name_us = $this->Db_model->u_fetch(array(
+                    'u_status >=' => 0,
+                    'u_full_name' => $curl['page_title'],
+                ));
+
+                if(count($dup_name_us)>0){
+                    //Yes, we did find a duplicate name! Change this slightly:
+                    $u_full_name = $curl['page_title'].' '.$url_code;
+                } else {
+                    //No duplicate detected, all good to go:
+                    $u_full_name = $curl['page_title'];
+                }
+
+            } else {
+                $u_full_name = $x_types[$curl['x_type']]['s_name'].' '.$url_code;
+            }
+
+
             $new_content = $this->Db_model->u_create(array(
-                'u_full_name' => ( strlen($curl['page_title'])>0 ? $curl['page_title'] : ( strlen($curl['last_domain'])>0 ? $curl['last_domain'].' Content' : '' ) ),
+                'u_full_name' => $u_full_name,
             ));
 
             //Log Engagement new entity:
@@ -1052,9 +1056,6 @@ class Db_model extends CI_Model {
                 'e_ur_id' => $ur1['ur_id'],
                 'e_inbound_c_id' => 7291, //Entity Link Create
             ));
-
-            //Update Algolia:
-            $this->Db_model->algolia_sync('u',$new_content['u_id']);
 
         } else {
             $new_content = $outbound_us[0];
@@ -1101,15 +1102,20 @@ class Db_model extends CI_Model {
         $set_cover_x_id = ( !$outbound_us[0]['u_cover_x_id'] && $new_x['x_type']==4 /* Image file */ ? $new_x['x_id'] : 0 );
 
 
+        //Update Algolia:
+        $this->Db_model->algolia_sync('u',$new_content['u_id']);
+
+
         if($x_outbound_u_id==1326){
 
             //Return entity object:
             return array(
                 'status' => 1,
                 'message' => 'Success',
+                'curl' => $curl,
                 'u' => array_merge($new_content,$ur1),
                 'set_cover_x_id' => $set_cover_x_id,
-                'new_u' => ( $allow_duplicate ? null : echo_u(array_merge($new_content,$ur1), 2, $cad_edit) ),
+                'new_u' => ( $accept_existing_url ? null : echo_u(array_merge($new_content,$ur1), 2, $cad_edit) ),
             );
 
         } else {
@@ -1118,6 +1124,7 @@ class Db_model extends CI_Model {
             return array(
                 'status' => 1,
                 'message' => 'Success',
+                'curl' => $curl,
                 'u' => $outbound_us[0],
                 'set_cover_x_id' => $set_cover_x_id,
                 'new_x' => echo_x($outbound_us[0], $new_x),
@@ -1326,7 +1333,7 @@ class Db_model extends CI_Model {
 
     }
 
-    function x_fetch($match_columns, $join_objects=array(), $order_columns=array()){
+    function x_fetch($match_columns, $join_objects=array(), $order_columns=array(), $limit=0){
         //Fetch the target entities:
         $this->db->select('*');
         $this->db->from('v5_urls x');
@@ -1345,6 +1352,10 @@ class Db_model extends CI_Model {
             foreach($order_columns as $key=>$value){
                 $this->db->order_by($key,$value);
             }
+        }
+
+        if($limit>0){
+            $this->db->limit($limit);
         }
 
         $q = $this->db->get();
@@ -1891,9 +1902,22 @@ class Db_model extends CI_Model {
                 $new_item['u_keywords'] = $item['u_bio'];
                 $new_item['_tags'] = array();
 
-                //Loop through the Tags:
-                foreach($item['u__inbounds'] as $u_id=>$u){
-                    array_push($new_item['_tags'],'u'.$u_id);
+
+                //Tags map parent relation:
+                if(count($item['u__inbounds'])>0){
+                    //Loop through the Tags:
+                    foreach($item['u__inbounds'] as $u_id=>$u){
+                        array_push($new_item['_tags'],'u'.$u_id);
+                    }
+                } else {
+                    //No parents!
+                    array_push($new_item['_tags'],'noparent');
+                }
+
+
+                //Add Entity as tag of Entity itself for search management:
+                if($item['u_id']==2738){
+                    array_push($new_item['_tags'],'u2738');
                 }
 
                 //Append additional information:
@@ -1964,10 +1988,16 @@ class Db_model extends CI_Model {
                     'cr.cr_status >=' => 1,
                     'c.c_status >=' => 1,
                 ));
-                foreach($child_cs as $c){
-                    array_push($new_item['_tags'],'c'.$c['c_id']);
-                }
 
+                if(count($child_cs)>0){
+                    //Loop through the Tags:
+                    foreach($child_cs as $c){
+                        array_push($new_item['_tags'],'c'.$c['c_id']);
+                    }
+                } else {
+                    //No parents!
+                    array_push($new_item['_tags'],'noparent');
+                }
             }
 
             //Add to main array

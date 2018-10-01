@@ -6,41 +6,16 @@ class Comm_model extends CI_Model {
 		parent::__construct();
 	}
 	
-    function fb_graph($fp_id,$action,$url,$payload=array(),$fp=null){
+    function fb_graph($action,$url,$payload=array()){
 
 	    //Do some initial checks
-	    if(!$fp_id && !array_key_exists('access_token',$payload)){
-
-	        //Sometimes the request is not page related, in which case we need an access_token passed via $payload
-            return array(
-                'status' => 0,
-                'message' => 'Missing both fp_id and $payload->access_token',
-            );
-
-        } elseif(!in_array($action, array('GET','POST','DELETE'))){
+	    if(!in_array($action, array('GET','POST','DELETE'))){
 
 	        //Only 4 valid types of $action
             return array(
                 'status' => 0,
                 'message' => '$action ['.$action.'] is invalid',
             );
-
-        } elseif($fp_id && !$fp){
-
-            //Fetch $fp from DB:
-            $pages = $this->Db_model->fp_fetch(array(
-                'fp_id' => $fp_id,
-                'fp_status >=' => 0, //Available or Connected
-                'fs_status' => 1, //Authorized Access
-            ), array('fs'));
-            if(!isset($pages[0]['fs_access_token']) || strlen($pages[0]['fs_access_token'])<1){
-                return array(
-                    'status' => 0,
-                    'message' => 'invalid fp_id ['.$fp_id.']',
-                );
-            } else {
-                $fp = $pages[0];
-            }
 
         }
 
@@ -57,8 +32,9 @@ class Comm_model extends CI_Model {
 
         } else {
             //Apply the Page Access Token:
+            $fb_settings = $this->config->item('fb_settings');
             $access_token_payload = array(
-                'access_token' => $fp['fs_access_token']
+                'access_token' => $fb_settings['mench_access_token']
             );
         }
 
@@ -95,7 +71,6 @@ class Comm_model extends CI_Model {
         //Process results and produce e_json
         $result = objectToArray(json_decode(curl_exec($ch)));
         $e_json = array(
-            'fp' => ( is_array($fp) && count($fp)>0 ? $fp : null ),
             'action' => $action,
             'payload' => $payload,
             'url' => $url,
@@ -111,7 +86,6 @@ class Comm_model extends CI_Model {
                 'e_text_value' => $error_message,
                 'e_inbound_c_id' => 8, //Platform Error
                 'e_json' => $e_json,
-                'e_fp_id' => $fp_id,
             ));
 
             //There was an issue accessing this on FB
@@ -367,7 +341,7 @@ class Comm_model extends CI_Model {
                  */
 
                 //Fetch their profile from Facebook to update
-                $graph_fetch = $this->Comm_model->fb_graph($fp['fp_id'], 'GET', '/'.$fp_psid, array(), $fp);
+                $graph_fetch = $this->Comm_model->fb_graph('GET', '/'.$fp_psid, array());
 
 
                 if(!$graph_fetch['status']){
@@ -485,7 +459,7 @@ class Comm_model extends CI_Model {
 
                 //This is a new user that needs to be registered!
                 //Call facebook messenger API and get user profile
-                $graph_fetch = $this->Comm_model->fb_graph($fp['fp_id'], 'GET', '/'.$fp_psid, array(), $fp);
+                $graph_fetch = $this->Comm_model->fb_graph('GET', '/'.$fp_psid, array());
 
                 if(!$graph_fetch['status'] || !isset($graph_fetch['e_json']['result']['first_name']) || strlen($graph_fetch['e_json']['result']['first_name'])<1){
 
@@ -684,13 +658,13 @@ class Comm_model extends CI_Model {
                 );
 
                 //Messenger:
-                $process = $this->Comm_model->fb_graph($dispatch_fp_id ,'POST','/me/messages', $payload);
+                $process = $this->Comm_model->fb_graph('POST','/me/messages', $payload);
 
                 //Log Outbound Message Engagement:
                 $this->Db_model->e_create(array(
                     'e_inbound_u_id' => ( isset($message['e_inbound_u_id']) ? $message['e_inbound_u_id'] : 0 ),
                     'e_outbound_u_id' => ( isset($message['e_outbound_u_id']) ? $message['e_outbound_u_id'] : 0 ),
-                    'e_text_value' => ( $message['i_media_type']=='text' ? $message['i_message'] : '/attach '.$message['i_media_type'].':'.$message['i_url'] ),
+                    'e_text_value' => $message['i_message'],
                     'e_json' => array(
                         'input_message' => $message,
                         'input_force_email' => ( $force_email ? 1 : 0 ),

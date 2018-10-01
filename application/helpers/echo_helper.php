@@ -234,9 +234,7 @@ function echo_content_url($x_clean_url,$x_type){
     }
 }
 
-function echo_embed($url,$full_message=null,$require_image=false,$return_array=false){
-
-    //$require_image is for Finding the cover photo in YouTube content
+function echo_embed($url,$full_message=null,$return_array=false){
 
     $clean_url = null;
     $embed_code = null;
@@ -271,34 +269,32 @@ function echo_embed($url,$full_message=null,$require_image=false,$return_array=f
             //Set the Clean URL:
             $clean_url = 'https://www.youtube.com/watch?v='.$video_id;
 
-            if($require_image){
+            //We might also find these in the URL:
+            $start_sec = 0;
+            $end_sec = 0;
 
-                $embed_code = '<img src="https://img.youtube.com/vi/'.$video_id.'/0.jpg" class="yt-container" style="padding-bottom:0; margin:-28px 0px;" />';
-
-            } else {
-                //We might also find these in the URL:
-                $start_sec = 0;
-                $end_sec = 0;
-                if(substr_count($url,'start=')>0){
-                    $start_sec = intval(one_two_explode('start=','&',$url));
-                    $clean_url = $clean_url.'&start='.$start_sec;
-                }
-                if(substr_count($url,'end=')>0){
-                    $end_sec = intval(one_two_explode('end=','&',$url));
-                    $clean_url = $clean_url.'&end='.$end_sec;
-                }
-
-                //Inform Student that this video has been sliced:
-                if($start_sec || $end_sec){
-                    $embed_code .= '<div class="video-prefix"><i class="fab fa-youtube" style="color:#ff0202;"></i> Watch from <b>'.($start_sec ? echo_min_from_sec($start_sec) : 'start').'</b> to <b>'.($end_sec ? echo_min_from_sec($end_sec) : 'end').'</b>:</div>';
-                }
-
-                $embed_code .= '<div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/'.$video_id.'?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start='.$start_sec.( $end_sec ? '&end='.$end_sec : '' ).'" frameborder="0" allowfullscreen class="yt-video"></iframe></div>';
+            /*
+            if(substr_count($url,'start=')>0){
+                $start_sec = intval(one_two_explode('start=','&',$url));
+                $clean_url = $clean_url.'&start='.$start_sec;
             }
+            if(substr_count($url,'end=')>0){
+                $end_sec = intval(one_two_explode('end=','&',$url));
+                $clean_url = $clean_url.'&end='.$end_sec;
+            }
+
+
+            //Inform Student that this video has been sliced:
+            if($start_sec || $end_sec){
+                $embed_code .= '<div class="video-prefix"><i class="fab fa-youtube" style="color:#ff0202;"></i> Watch from <b>'.($start_sec ? echo_min_from_sec($start_sec) : 'start').'</b> to <b>'.($end_sec ? echo_min_from_sec($end_sec) : 'end').'</b>:</div>';
+            }
+            */
+
+            $embed_code .= '<div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/'.$video_id.'?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start='.$start_sec.( $end_sec ? '&end='.$end_sec : '' ).'" frameborder="0" allowfullscreen class="yt-video"></iframe></div>';
 
         }
 
-    } elseif(substr_count($url,'vimeo.com/')==1 && !$require_image){
+    } elseif(substr_count($url,'vimeo.com/')==1){
 
         //Seems to be Vimeo:
         $video_id = trim(one_two_explode('vimeo.com/','?',$url));
@@ -309,7 +305,7 @@ function echo_embed($url,$full_message=null,$require_image=false,$return_array=f
             $embed_code = '<div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="https://player.vimeo.com/video/'.$video_id.'?title=0&byline=0" class="yt-video" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>';
         }
 
-    } elseif(substr_count($url,'wistia.com/medias/')==1 && !$require_image){
+    } elseif(substr_count($url,'wistia.com/medias/')==1){
 
         //Seems to be Wistia:
         $video_id = trim(one_two_explode('wistia.com/medias/','?',$url));
@@ -346,21 +342,20 @@ function echo_embed($url,$full_message=null,$require_image=false,$return_array=f
 
 function echo_i($i,$u_full_name=null,$fb_format=false){
 
-    //Must be one of these types:
-    if(!isset($i['i_media_type']) || !in_array($i['i_media_type'],array('text','video','audio','image','file'))){
-        return false;
-    }
-
-
-    //Do a quick hack to make these two variables inter-changable:
+    //Make these two variables inter-changable:
     if(isset($i['i_outbound_c_id']) && $i['i_outbound_c_id']>0 && !isset($i['e_outbound_c_id'])){
         $i['e_outbound_c_id'] = $i['i_outbound_c_id'];
     } elseif(isset($i['e_outbound_c_id']) && $i['e_outbound_c_id']>0 && !isset($i['i_outbound_c_id'])){
         $i['i_outbound_c_id'] = $i['e_outbound_c_id'];
     }
-
+    
 
     $CI =& get_instance();
+    $button_url = null;
+    $button_title = null;
+    $command = null;
+
+
 
     if(!$fb_format){
         //HTML format:
@@ -372,244 +367,154 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
         $fb_message = array();
     }
 
-    //Proceed to Send Message:
-    if($i['i_media_type']=='text' && strlen($i['i_message'])>0){
+
+    //Does this have a entity reference?
+    if($i['i_outbound_u_id']>0){
+        //This message has a referenced entity
+        //See if that entity has a URL:
+        $us = $CI->Db_model->u_fetch(array(
+            'u_id' => $i['i_outbound_u_id'],
+        ), array('skip_u__inbounds'));
 
 
-        //Do we have a {first_name} replacement?
-        if($u_full_name){
-            //Tweak the name:
-            $i['i_message'] = str_replace('{first_name}', one_two_explode('',' ',$u_full_name), $i['i_message']);
+        //Does it have a /slice command?
+        $time_range = array();
+        $found_embeddable = false;
+        $button_title = 'Open Entity';
+        if(substr_count($i['i_message'],'/slice:')>0){
+            $time_range = explode(':', one_two_explode('/slice:',' ',$i['i_message']) ,2);
+            $button_url = '/entities/'.$us[0]['u_id'].'?affirm_c='.$i['i_inbound_c_id'].'&skip_header=1&start='.$time_range[0].'&end='.$time_range[1].'#urls';
+        } else {
+            $button_url = '/entities/'.$us[0]['u_id'].'?affirm_c='.$i['i_inbound_c_id'].'&skip_header=1#urls';
         }
 
-        if($i['i_outbound_u_id']>0){
-            //This message has a reference:
-            //Query this entity:
-            $us = $CI->Db_model->u_fetch(array(
-                'u_id' => $i['i_outbound_u_id'],
-            ));
-            $i['i_message'] = str_replace('@'.$i['i_outbound_u_id'], '<a href="/entities/'.$us[0]['u_id'].'">'.$us[0]['u_full_name'].'</a>', $i['i_message']);
+        if($fb_format){
+            $i['i_message'] = str_replace('@'.$i['i_outbound_u_id'], '['.$us[0]['u_full_name'].']', $i['i_message']);
+        } else {
+            //HTML format:
+            $i['i_message'] = str_replace('@'.$i['i_outbound_u_id'], '<a href="javascript:void(0);" onclick="url_modal(\''.$button_url.'\')">'.$us[0]['u_full_name'].echo_social_profiles($CI->Db_model->x_social_fetch($i['i_outbound_u_id'])).'</a>', $i['i_message']);
         }
+    }
 
 
-        //Does this message include a special command?
-        $button_url = null;
-        $button_title = null;
-        $command = null;
 
-        //Do we have any commands?
-        if(substr_count($i['i_message'],'{button}')>0){
+    //Does this have an intent reference?
+    if($i['i_inbound_c_id']>0){
+        //This message has a referenced entity
+        //See if that entity has a URL:
+        $cs = $CI->Db_model->c_fetch(array(
+            'u_id' => $i['i_inbound_c_id'],
+        ));
 
-            $button_title = 'Open in 🚩Action Plan';
-            $command = '{button}';
-            $button_url = 'https://mench.com/my/actionplan'; //We assume a basic link to Action Plan
-
-            if(isset($i['i_outbound_c_id']) && isset($i['e_b_id']) && isset($i['e_r_id'])){
-
-                //Validate this to make sure it's all Good:
-                $bs = fetch_action_plan_copy($i['e_b_id'],$i['e_r_id']);
-                $c_data = extract_level( $bs[0], $i['i_outbound_c_id'] );
-
-                //Does this intent belong to this Bootcamp/Class?
-                if($c_data){
-                    //Everything looks good:
-                    $button_url = 'https://mench.com/my/actionplan/'.$i['e_b_id'].'/'.$i['i_outbound_c_id'];
-                }
-            }
-
-        } elseif(substr_count($i['i_message'],'{enrollments}')>0 && isset($i['e_outbound_u_id'])) {
-
-            //Fetch salt:
-            $application_status_salt = $CI->config->item('application_status_salt');
-            //append their My Account Button/URL:
-            $button_title = '🎟️ My Bootcamps';
-            $button_url = 'https://mench.co/my/applications?u_key=' . md5($i['e_outbound_u_id'] . $application_status_salt) . '&u_id=' . $i['e_outbound_u_id'];
-            $command = '{enrollments}';
-
-        } elseif(substr_count($i['i_message'],'{passwordreset}')>0 && isset($i['e_outbound_u_id'])) {
-
-            //append their My Account Button/URL:
-            $timestamp = time();
-            $button_title = '👉 Set New Password';
-            $button_url = 'https://mench.com/my/reset_pass?u_id='.$i['e_outbound_u_id'].'&timestamp='.$timestamp.'&p_hash=' . md5($i['e_outbound_u_id'] . 'p@ssWordR3s3t' . $timestamp);
-            $command = '{passwordreset}';
-
-        } elseif(substr_count($i['i_message'],'{messenger}')>0 && isset($i['e_outbound_u_id']) && isset($i['e_b_id'])) {
-
-            //Fetch Facebook Page from Bootcamp:
-            $bs = $CI->Db_model->b_fetch(array(
-                'b.b_id' => $i['e_b_id'],
-            ));
-
-            if(isset($bs[0]['b_fp_id']) && $bs[0]['b_fp_id']>0 && isset($i['e_outbound_u_id']) && $i['e_outbound_u_id']>0){
-                $button_url = $CI->Comm_model->fb_activation_url($i['e_outbound_u_id'],$bs[0]['b_fp_id']);
-                if($button_url) {
-                    //append their My Account Button/URL:
-                    $button_title = '🤖 Activate Chatline';
-                    $command = '{messenger}';
-                }
-            }
-
+        if($fb_format){
+            $i['i_message'] = str_replace('#'.$i['i_inbound_c_id'], 'helps you to ['.$cs[0]['c_outcome'].']', $i['i_message']);
+        } else {
+            //HTML format:
+            $i['i_message'] = str_replace('#'.$i['i_inbound_c_id'], 'helps you to <a href="javascript:void(0);" onclick="url_modal(\'/intents/'.$cs[0]['c_id'].'?skip_header=1\')">'.$cs[0]['c_outcome'].'</a>', $i['i_message']);
         }
+    }
 
 
 
 
 
-        //Does this message also have a URL?
-        if(isset($i['i_url']) && isset($i['i_id']) && intval($i['i_id'])>0 && strlen($i['i_url'])>0){
+    //Do we have any commands?
+    if($u_full_name && substr_count($i['i_message'],'/firstname')>0){
+        //Tweak the name:
+        $command = '/firstname';
+        $i['i_message'] = str_replace('/firstname', one_two_explode('',' ',$u_full_name), $i['i_message']);
+    }
 
-            $website = $CI->config->item('website');
-            $masked_url = $website['url'].'ref/'.$i['i_id'];
 
-            if($fb_format){
+    if(substr_count($i['i_message'],'/intentlink')>0 && isset($i['i_outbound_c_id']) && $i['i_outbound_c_id']>0){
+        $button_title = 'Open in 🚩Action Plan';
+        $command = '/intentlink';
+        $button_url = 'https://mench.com/my/actionplan/'.$i['i_outbound_c_id'];
+    }
 
-                //Messenger format, simply replace the link with a trackable one UNLESS the link is to our own domain:
-                if(substr_count(strtolower($i['i_url']),'mench.com')==0){
-                    $i['i_message'] = trim(str_replace($i['i_url'],$masked_url,$i['i_message']));
-                } else {
-                    //Clean the URL:
-                    $i['i_message'] = trim(str_replace($i['i_url'],echo_clean_url($i['i_url']),$i['i_message']));
-                }
 
-            } else {
+    if(substr_count($i['i_message'],'/resetpassurl')>0 && isset($i['e_outbound_u_id'])) {
+        //append their My Account Button/URL:
+        $timestamp = time();
+        $button_title = '👉 Set New Password';
+        $button_url = 'https://mench.com/my/reset_pass?u_id='.$i['e_outbound_u_id'].'&timestamp='.$timestamp.'&p_hash=' . md5($i['e_outbound_u_id'] . 'p@ssWordR3s3t' . $timestamp);
+        $command = '/resetpassurl';
+    }
 
-                //Is this a supported embed video URL?
-                $embed_html = echo_embed($i['i_url'],$i['i_message']);
-                if($embed_html){
-                    $i['i_message'] = $embed_html;
 
-                    //Facebook Messenger Webview adds an additional button to view full screen:
-                    if(isset($i['show_new_window'])){
-                        //HTML media format:
-                        $i['i_message'] .= '<div><a href="https://mench.com/webview_video/'.$i['i_id'].'" target="_blank">Full Screen in New Window ↗️</a></div>';
-                    }
+    if(substr_count($i['i_message'],'/activateurl')>0 && isset($i['e_outbound_u_id']) && isset($i['e_b_id'])) {
+        //Fetch Facebook Page from Bootcamp:
+        $bs = $CI->Db_model->b_fetch(array(
+            'b.b_id' => $i['e_b_id'],
+        ));
 
-                } else {
-                    //HTML format:
-                    $i['i_message'] = trim(str_replace($i['i_url'],'<a href="'.$masked_url.'" target="_blank"><span>'.echo_clean_url($i['i_url']).'</span><i class="fas fa-external-link-square" style="font-size: 0.8em; text-decoration:none; padding-left:4px;"></i></a>',$i['i_message']));
-                }
-
+        if(isset($bs[0]['b_fp_id']) && $bs[0]['b_fp_id']>0 && isset($i['e_outbound_u_id']) && $i['e_outbound_u_id']>0){
+            $button_url = $CI->Comm_model->fb_activation_url($i['e_outbound_u_id'],$bs[0]['b_fp_id']);
+            if($button_url) {
+                //append their My Account Button/URL:
+                $button_title = '🤖 Activate Personal Assistant';
+                $command = '/activateurl';
             }
         }
+    }
 
 
 
 
-        if($command){
+    if($command || $button_url){
 
-            //Append the button to the message:
-            if($fb_format){
+        //Append the button to the message:
+        if($fb_format){
 
-                //Remove the command from the message:
-                $i['i_message'] = trim(str_replace($command, '', $i['i_message']));
+            //Remove the command from the message:
+            $i['i_message'] = trim(str_replace($command, '', $i['i_message']));
 
-                //Return Messenger array:
-                $fb_message = array(
-                    'attachment' => array(
-                        'type' => 'template',
-                        'payload' => array(
-                            'template_type' => 'button',
-                            'text' => $i['i_message'],
-                            'buttons' => array(
-                                array(
-                                    'title' => $button_title,
-                                    'type' => 'web_url',
-                                    'url' => $button_url,
-                                    'webview_height_ratio' => 'tall',
-                                    'webview_share_button' => 'hide',
-                                    'messenger_extensions' => true,
-                                ),
+            //Return Messenger array:
+            $fb_message = array(
+                'attachment' => array(
+                    'type' => 'template',
+                    'payload' => array(
+                        'template_type' => 'button',
+                        'text' => $i['i_message'],
+                        'buttons' => array(
+                            array(
+                                'title' => $button_title,
+                                'type' => 'web_url',
+                                'url' => $button_url,
+                                'webview_height_ratio' => 'tall',
+                                'webview_share_button' => 'hide',
+                                'messenger_extensions' => true,
                             ),
                         ),
                     ),
-                    'metadata' => 'system_logged', //Prevents from duplicate logging via the echo webhook
-                );
-
-            } else {
-                //HTML format replaces the button with the command:
-                $i['i_message'] = trim(str_replace($command, '<div class="msg" style="padding-top:15px;"><a href="'.$button_url.'" target="_blank"><b>'.$button_title.'</b></a></div>', $i['i_message']));
-                //Return HTML code:
-                $ui .= '<div class="msg" '.$div_style.'>'.nl2br($i['i_message']).'</div>';
-            }
-
-        } else {
-
-            //Regular without any special commands in it!
-            //Now return the template:
-            if($fb_format){
-                //Messenger array:
-                $fb_message = array(
-                    'text' => $i['i_message'],
-                    'metadata' => 'system_logged', //Prevents from duplicate logging via the echo webhook
-                );
-            } else {
-                //HTML format:
-                $ui .= '<div class="msg" '.$div_style.'>'.nl2br($i['i_message']).'</div>';
-            }
-
-        }
-
-    } elseif(in_array($i['i_media_type'],array('video','audio','image','file')) && strlen($i['i_url'])>0) {
-
-        //Valid media file with URL:
-        if($fb_format){
-
-            $payload = array();
-
-            //Do we have this saved in FB Servers?
-            if(isset($i['e_fp_id']) && $i['e_fp_id']>0 && isset($i['i_id']) && $i['i_id']>0){
-
-                //See if we have a cached version of this file for this page:
-                $synced_media_files = $CI->Db_model->sy_fetch(array(
-                    'sy_i_id' => $i['i_id'],
-                    'sy_fp_id' => $i['e_fp_id'],
-                ));
-
-                if(isset($synced_media_files[0]['sy_fb_att_id']) && $synced_media_files[0]['sy_fb_att_id']>0){
-                    //Yesss, use that:
-                    $payload = array(
-                        'attachment_id' => $synced_media_files[0]['sy_fb_att_id'],
-                    );
-                }
-            }
-
-            if(count($payload)<1){
-                //Use standard file:
-                $payload = array(
-                    'url' => $i['i_url'],
-                    'is_reusable' => false,
-                );
-            }
-
-            //Messenger array:
-            $fb_message = array(
-                'attachment' => array(
-                    'type' => $i['i_media_type'],
-                    'payload' => $payload,
                 ),
                 'metadata' => 'system_logged', //Prevents from duplicate logging via the echo webhook
             );
 
         } else {
-
-            //HTML media format:
-            $ui .= '<div '.$div_style.'>'.format_e_text_value('/attach '.$i['i_media_type'].':'.$i['i_url']).'</div>';
-
-            //Facebook Messenger Webview adds an additional button to view full screen:
-            if(isset($i['show_new_window']) && $i['i_media_type']=='video'){
-                //HTML media format:
-                $ui .= '<div><a href="https://mench.com/webview_video/'.$i['i_id'].'" target="_blank">Full Screen in New Window ↗️</a></div>';
-            }
-
+            //HTML format replaces the button with the command:
+            $i['i_message'] = trim(str_replace($command, '<div class="msg" style="padding-top:15px;"><a href="'.$button_url.'" target="_blank"><b>'.$button_title.'</b></a></div>', $i['i_message']));
+            //Return HTML code:
+            $ui .= '<div class="msg" '.$div_style.'>'.nl2br($i['i_message']).'</div>';
         }
 
     } else {
 
-        //Something was wrong:
-        return false;
+        //Regular without any special commands in it!
+        //Now return the template:
+        if($fb_format){
+            //Messenger array:
+            $fb_message = array(
+                'text' => $i['i_message'],
+                'metadata' => 'system_logged', //Prevents from duplicate logging via the echo webhook
+            );
+        } else {
+            //HTML format:
+            $ui .= '<div class="msg" '.$div_style.'>'.nl2br($i['i_message']).'</div>';
+        }
 
     }
+
 
     //Log engagement if Facebook and return:
     if($fb_format && count($fb_message)>0){

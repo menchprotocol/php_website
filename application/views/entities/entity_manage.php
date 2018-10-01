@@ -15,7 +15,10 @@ $entity_type = entity_type($entity);
 //This also gets passed to other pages via AJAX to be applied to u_echo() in ajax calls:
 $can_edit           = ( $udata['u_id']==$entity['u_id'] || array_key_exists(1281, $udata['u__inbounds']));
 $can_edit_outbound  = ( $entity['u_id']==2738 ? false : $can_edit );
-$can_edit_inbound   = ( in_array($entity['u_id'], array(1278,1326,2750)) || in_array($entity_type, array(1278,2750)) ? false : $can_edit );
+$can_edit_inbound   = ( in_array($entity['u_id'], array(1278,1326,2750)) || (!array_key_exists(1281, $udata['u__inbounds']) && in_array($entity_type, array(1278,2750))) ? false : $can_edit );
+$add_name           = ( in_array($entity['u_id'], array(1278,2750)) ? rtrim($entity['u_full_name'],'s') : 'Content' );
+$add_id             = ( in_array($entity['u_id'], array(1278,2750)) ? $entity['u_id'] : 1326 /* Content */ );
+
 
 $child_entities = $this->Db_model->ur_outbound_fetch(array(
     'ur_inbound_u_id' => $inbound_u_id,
@@ -31,19 +34,10 @@ $payments = $this->Db_model->t_fetch(array(
     't_inbound_u_id' => $inbound_u_id,
 ));
 
-//Fetch all the URLs for this Entity:
-$urls = $this->Db_model->x_fetch(array(
-    'x_status >' => 0,
-    'x_outbound_u_id' => $entity['u_id'],
-), array(), array(
-    'x_id' => 'ASC'
-));
-
 $messages = $this->Db_model->i_fetch(array(
     'i_status >=' => 0,
     'i_outbound_u_id' => $inbound_u_id, //Referenced content in messages
 ));
-
 
 
 //Construct main menu
@@ -58,7 +52,7 @@ $tabs = array(
     'urls' => array(
         'title' => 'URLs',
         'icon' => 'fas fa-link',
-        'item_count' => count($urls),
+        'item_count' => count($entity['u__urls']),
         'always_access' => ( !in_array($entity['u_id'], array(2738,1278,1326,2750)) ),
     ),
     'inbound' => array(
@@ -179,7 +173,6 @@ $tabs = array(
 
 
 
-        <?php if($entity['u_id']!=1326){ //No auto suggest for content entry ?>
         $("#new-outbound .new-input").on('autocomplete:selected', function (event, suggestion, dataset) {
 
             add_u_link(suggestion.u_id);
@@ -189,7 +182,7 @@ $tabs = array(
             source: function (q, cb) {
                 algolia_u_index.search(q, {
                     hitsPerPage: 7,
-                    tagFilters:['u1326'] //Content only as outbound
+                    tagFilters:[<?= ( in_array($entity['u_id'], array(1278,2750,1326)) ? "'donotshow'" /* Disable search suggest */ : "'u1326'" /* Content */ ) ?>]
                 }, function (error, content) {
                     if (error) {
                         cb([]);
@@ -205,22 +198,20 @@ $tabs = array(
                 },
                 header: function (data) {
                     if (!data.isEmpty) {
-                        return '<a href="javascript:add_u_link(0,1326)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as Content]</a>';
+                        return '<a href="javascript:add_u_link(0,<?= $add_id ?>)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as <?= $add_name ?>]</a>';
                     }
                 },
                 empty: function (data) {
-                    return '<a href="javascript:add_u_link(0,1326)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create</span> <i class="fas fa-at"></i> ' + data.query + ' [as Content]</a>';
+                    return '<a href="javascript:add_u_link(0,<?= $add_id ?>)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create</span> <i class="fas fa-at"></i> ' + data.query + ' [as <?= $add_name ?>]</a>';
                 },
             }
         }]).keypress(function (e) {
             var code = (e.keyCode ? e.keyCode : e.which);
             if ((code == 13) || (e.ctrlKey && code == 13)) {
-                add_u_link(0,1326);
+                add_u_link(0,<?= $add_id ?>);
                 return true;
             }
         });
-        <?php } ?>
-
 
 
 
@@ -576,9 +567,9 @@ echo '<div class="tab-content tab-space">';
         if ($can_edit_outbound) {
             echo '<div id="new-outbound" class="list-group-item list_input grey-input">
                     <div class="input-group">
-                        <div class="form-group is-empty"><input type="text" class="form-control new-input" placeholder="Add Content by Name/URL"></div>
+                        <div class="form-group is-empty"><input type="text" class="form-control new-input" placeholder="Add '.$add_name.' by Name/URL"></div>
                         <span class="input-group-addon">
-                            <a class="badge badge-secondary new-btn" href="javascript:add_u_link(0,1326);">ADD</a>
+                            <a class="badge badge-secondary new-btn" href="javascript:add_u_link(0,'.$add_id.');">ADD</a>
                         </span>
                     </div>
                 </div>';
@@ -628,7 +619,7 @@ echo '<div class="tab-content tab-space">';
 
     echo '<div class="tab-pane  '.( !$tabs['urls']['item_count'] ? 'hidden' : '' ).'" id="taburls">'; //Tab content starts
     echo '<div id="list-urls" class="list-group  grey-list">';
-    foreach ($urls as $x) {
+    foreach ($entity['u__urls'] as $x) {
         echo echo_x($entity, $x);
     }
 

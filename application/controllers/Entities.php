@@ -206,8 +206,8 @@ class Entities extends CI_Controller {
                 if($_POST['secondary_parent_u_id']==1326){
 
                     //It's a URL, create an entity from this URL:
-                    $allow_duplicate = ( !$_POST['is_inbound'] && $current_us[0]['u_id']!=1326 ); //We can accept duplicates if we're not adding directly under content
-                    $url_create = $this->Db_model->add_db_url(trim($_POST['new_u_input']),1326, $_POST['can_edit'], $allow_duplicate);
+                    $accept_existing_url = ( !$_POST['is_inbound'] && $current_us[0]['u_id']!=1326 ); //We can accept duplicates if we're not adding directly under content
+                    $url_create = $this->Db_model->add_db_url(trim($_POST['new_u_input']),1326, $_POST['can_edit'], $accept_existing_url);
 
                     //Did we have an error?
                     if(!$url_create['status']){
@@ -308,11 +308,9 @@ class Entities extends CI_Controller {
                 'e_ur_id' => $ur2['ur_id'],
                 'e_inbound_c_id' => 7291, //Entity Link Create
             ));
-        }
 
-        if(!$linking_to_existing_u){
             //Update Algolia:
-            $this->Db_model->algolia_sync('u',$new_u['u_id']);
+            $this->Db_model->algolia_sync('u',$ur_outbound_u_id);
         }
 
 

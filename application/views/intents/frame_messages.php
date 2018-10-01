@@ -32,7 +32,7 @@ if(!isset($intents[0])){
     window.parent.document.getElementById("messages-counter-"+c_id).innerHTML = message_count;
 
     function add_first_name(){
-        $('#i_message'+c_id).insertAtCaret('{first_name}');
+        $('#i_message'+c_id).insertAtCaret('/firstname');
         changeMessage();
     }
 
@@ -115,7 +115,7 @@ if(!isset($intents[0])){
                 search: function(query, callback) {
                     algolia_u_index.search(query, {
                         hitsPerPage:5,
-                        tagFilters:['u1326']
+                        tagFilters:['-u2738']
                     })
                         .then(function searchSuccess(content) {
                             if (content.query === query) {
@@ -383,7 +383,6 @@ if(!isset($intents[0])){
             initial_i_status:initial_i_status,
             i_status:new_i_status,
             c_id:c_id,
-            i_media_type:$("#ul-nav-"+i_id+" .i_media_type").val(),
 
         }, function(data) {
 
@@ -676,8 +675,8 @@ if(!isset($intents[0])){
     //File counter:
     echo '<span id="charNum'.$c_id.'">0</span>/'.$message_max;
 
-    //{first_name}
-    echo '<a href="javascript:add_first_name();" class="textarea_buttons remove_loading" style="float:right;" data-toggle="tooltip" title="Replaced with student\'s First Name for a more personal message." data-placement="left"><i class="fas fa-id-card"></i> {first_name}</a>';
+    ///firstname
+    echo '<a href="javascript:add_first_name();" class="textarea_buttons remove_loading" style="float:right;" data-toggle="tooltip" title="Replaced with student\'s First Name for a more personal message." data-placement="left"><i class="fas fa-id-card"></i> /firstname</a>';
 
     //Choose a file:
     $file_limit_mb = $this->config->item('file_limit_mb');

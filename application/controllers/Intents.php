@@ -234,7 +234,7 @@ class Intents extends CI_Controller
                         //Ooops, this is already added in Level 2, cannot add again:
                         return echo_json(array(
                             'status' => 0,
-                            'message' => '"'.$new_c['c_outcome'].'" is already added to this Action Plan and cannot be added again.',
+                            'message' => '['.$new_c['c_outcome'].'] is already added as outbound intent.',
                         ));
                     }
                 }
@@ -955,95 +955,75 @@ class Intents extends CI_Controller
 
         $udata = auth(array(1308,1280));
         if(!$udata){
-            echo_json(array(
+            return echo_json(array(
                 'status' => 0,
                 'message' => 'Session Expired. Login and Try again.',
             ));
         } elseif(!isset($_POST['c_id']) || intval($_POST['c_id'])<=0 || !is_valid_intent($_POST['c_id'])){
-            echo_json(array(
+            return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Step',
             ));
-        } else {
-
-            //Make sure message is all good:
-            $validation = message_validation($_POST['i_status'],$_POST['i_message']);
-
-            if(!$validation['status']){
-
-                //There was some sort of an error:
-                echo_json($validation);
-
-            } else {
-
-                //Detect file type:
-                if(count($validation['urls'])==1 && trim($validation['urls'][0])==trim($_POST['i_message'])){
-
-                    //This message is a URL only, perform raw URL to file conversion
-                    //This feature only available for newly created message, NOT in editing mode!
-                    $mime = remote_mime($validation['urls'][0]);
-                    $i_media_type = mime_type($mime);
-                    if($i_media_type=='file'){
-                        $i_media_type = 'text';
-                    }
-
-                } else {
-                    //This channel is all text:
-                    $i_media_type = 'text'; //Possible: text,image,video,audio,file
-                }
-
-                //Create Message:
-                $i = $this->Db_model->i_create(array(
-                    'i_inbound_u_id' => $udata['u_id'],
-                    'i_outbound_c_id' => intval($_POST['c_id']),
-                    'i_media_type' => $i_media_type,
-                    'i_message' => trim($_POST['i_message']),
-                    'i_url' => ( count($validation['urls'])==1 ? $validation['urls'][0] : null ),
-                    'i_status' => $_POST['i_status'],
-                    'i_rank' => 1 + $this->Db_model->max_value('v5_messages','i_rank', array(
-                            'i_status' => $_POST['i_status'],
-                            'i_outbound_c_id' => intval($_POST['c_id']),
-                        )),
-                ));
-
-                //Fetch full message:
-                $new_messages = $this->Db_model->i_fetch(array(
-                    'i_id' => $i['i_id'],
-                ), 1, array('x'));
-
-
-                //Update intent count:
-                $this->db->query("UPDATE v5_intents SET c__this_messages=c__this_messages+1 WHERE c_id=".intval($_POST['c_id']));
-
-                //Update tree:
-                $updated_recursively = $this->Db_model->c_update_tree( intval($_POST['c_id']) , array(
-                    'c__tree_messages' => 1,
-                ));
-
-
-                //Log engagement:
-                $this->Db_model->e_create(array(
-                    'e_inbound_u_id' => $udata['u_id'],
-                    'e_json' => array(
-                        'cache' => $this->Db_model->c_recursive_fetch(intval($_POST['c_id'])),
-                        'input' => $_POST,
-                        'after' => $new_messages[0],
-                        'updated_recursively' => $updated_recursively,
-                    ),
-                    'e_inbound_c_id' => 34, //Message added
-                    'e_i_id' => intval($new_messages[0]['i_id']),
-                    'e_outbound_c_id' => intval($_POST['c_id']),
-                ));
-
-                //Print the challenge:
-                echo_json(array(
-                    'status' => 1,
-                    'message' => echo_message(array_merge($new_messages[0], array(
-                        'e_outbound_u_id'=>$udata['u_id'],
-                    ))),
-                ));
-            }
         }
+
+        //Make sure message is all good:
+        $validation = message_validation($_POST['i_status'],$_POST['i_message']);
+        if(!$validation['status']){
+            //There was some sort of an error:
+            return echo_json($validation);
+        }
+
+
+        //Create Message:
+        $i = $this->Db_model->i_create(array(
+            'i_inbound_u_id' => $udata['u_id'],
+            'i_outbound_c_id' => intval($_POST['c_id']),
+            'i_status' => $_POST['i_status'],
+            'i_rank' => 1 + $this->Db_model->max_value('v5_messages','i_rank', array(
+                'i_status' => $_POST['i_status'],
+                'i_outbound_c_id' => intval($_POST['c_id']),
+            )),
+            //Referencing attributes:
+            'i_message' => $validation['i_message'],
+            'i_outbound_u_id' => $validation['i_outbound_u_id'],
+            'i_inbound_c_id' => $validation['i_inbound_c_id'],
+        ));
+
+        //Update intent count:
+        $this->db->query("UPDATE v5_intents SET c__this_messages=c__this_messages+1 WHERE c_id=".intval($_POST['c_id']));
+
+        //Update tree:
+        $updated_recursively = $this->Db_model->c_update_tree( intval($_POST['c_id']) , array(
+            'c__tree_messages' => 1,
+        ));
+
+
+        //Fetch full message:
+        $new_messages = $this->Db_model->i_fetch(array(
+            'i_id' => $i['i_id'],
+        ), 1, array('x'));
+
+        //Log engagement:
+        $this->Db_model->e_create(array(
+            'e_inbound_u_id' => $udata['u_id'],
+            'e_json' => array(
+                'cache' => $this->Db_model->c_recursive_fetch(intval($_POST['c_id'])),
+                'input' => $_POST,
+                'after' => $new_messages[0],
+                'updated_recursively' => $updated_recursively,
+            ),
+            'e_inbound_c_id' => 34, //Message added
+            'e_i_id' => intval($new_messages[0]['i_id']),
+            'e_outbound_c_id' => intval($_POST['c_id']),
+        ));
+
+        //Print the challenge:
+        return echo_json(array(
+            'status' => 1,
+            'message' => echo_message(array_merge($new_messages[0], array(
+                'e_outbound_u_id'=>$udata['u_id'],
+            ))),
+        ));
     }
 
     function i_modify(){
@@ -1051,135 +1031,100 @@ class Intents extends CI_Controller
         //Auth user and Load object:
         $udata = auth(array(1308,1280));
         if(!$udata){
-            echo_json(array(
+             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Session. Refresh.',
             ));
-        } elseif(!isset($_POST['i_media_type'])){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Type',
-            ));
         } elseif(!isset($_POST['i_id']) || intval($_POST['i_id'])<=0){
-            echo_json(array(
+            return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Message ID',
             ));
+        } elseif(!isset($_POST['i_message'])){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Message',
+            ));
         } elseif(!isset($_POST['c_id']) || intval($_POST['c_id'])<=0 || !is_valid_intent($_POST['c_id'])){
-            echo_json(array(
+            return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Intent ID',
             ));
-        } else {
-
-            //Fetch Message:
-            $messages = $this->Db_model->i_fetch(array(
-                'i_id' => intval($_POST['i_id']),
-                'i_status >=' => 0,
-            ));
-
-            //Make sure message is all good:
-            $validation = message_validation($_POST['i_status'],( isset($_POST['i_message']) ? $_POST['i_message'] : null ),$_POST['i_media_type']);
-
-            if(!isset($messages[0])){
-                echo_json(array(
-                    'status' => 0,
-                    'message' => 'Message Not Found',
-                ));
-            } elseif(!$validation['status']){
-
-                //There was some sort of an error:
-                echo_json($validation);
-
-            } else {
-
-                //All good, lets move on:
-                //Define what needs to be updated:
-                $to_update = array(
-                    'i_inbound_u_id' => $udata['u_id'],
-                    'i_timestamp' => date("Y-m-d H:i:s"),
-                );
-
-                //Is this a text message?
-                if($_POST['i_media_type']=='text'){
-
-                    //Always trim message:
-                    $to_update['i_message'] = trim($_POST['i_message']);
-
-
-                    if(isset($validation['urls'][0])){
-                        //We need to make a new entity (or find existing one) and reference:
-
-                    }
-
-
-                    //Do we have any entity references?
-                    preg_match('/@(\d+)/', $to_update['i_message'], $matches);
-                    if(isset($matches[1]) && strlen($matches[1])>0 && strlen($matches[1])==strlen(intval($matches[1]))){
-
-                        $us = $this->Db_model->u_fetch(array(
-                            'u_id' => $matches[1],
-                        ));
-                        if(count($us)==0){
-                            //Invalid Entity ID
-                            return echo_json(array(
-                                'status' => 0,
-                                'message' => '[@'.$matches[1].'] is an Invalid Entity reference',
-                            ));
-                        } elseif(!array_key_exists(1326, $us[0]['u__inbounds'])){
-                            //Entity is from a non-allowed category:
-                            return echo_json(array(
-                                'status' => 0,
-                                'message' => '['.$us[0]['u_full_name'].'] is not a valid content entity',
-                            ));
-                        }
-
-                        //All good:
-                        $to_update['i_outbound_u_id'] = $matches[1];
-                    }
-                }
-
-                if(!($_POST['initial_i_status']==$_POST['i_status'])){
-                    //Change the status:
-                    $to_update['i_status'] = $_POST['i_status'];
-                    //Put it at the end of the new list:
-                    $to_update['i_rank'] = 1 + $this->Db_model->max_value('v5_messages','i_rank', array(
-                            'i_status' => $_POST['i_status'],
-                            'i_outbound_c_id' => intval($_POST['c_id']),
-                        ));
-                }
-
-                //Now update the DB:
-                $this->Db_model->i_update( intval($_POST['i_id']) , $to_update );
-
-                //Re-fetch the message for display purposes:
-                $new_messages = $this->Db_model->i_fetch(array(
-                    'i_id' => intval($_POST['i_id']),
-                ), 0, array('x'));
-
-                //Log engagement:
-                $this->Db_model->e_create(array(
-                    'e_inbound_u_id' => $udata['u_id'],
-                    'e_json' => array(
-                        'input' => $_POST,
-                        'before' => $messages[0],
-                        'after' => $new_messages[0],
-                    ),
-                    'e_inbound_c_id' => 36, //Message edited
-                    'e_i_id' => $messages[0]['i_id'],
-                    'e_outbound_c_id' => intval($_POST['c_id']),
-                ));
-
-                //Print the challenge:
-                echo_json(array(
-                    'status' => 1,
-                    'message' => echo_i(array_merge($new_messages[0],array('e_outbound_u_id'=>$udata['u_id'])),$udata['u_full_name']),
-                    'new_status' => echo_status('i_status',$new_messages[0]['i_status'],1,'right'),
-                    'success_icon' => '<span><i class="fas fa-check"></i> Saved</span>',
-                    'new_uploader' => echo_cover($new_messages[0],null,true, 'data-toggle="tooltip" title="Last modified by '.$new_messages[0]['u_full_name'].' about '.echo_diff_time($new_messages[0]['i_timestamp']).' ago" data-placement="right"'), //If there is a person change...
-                ));
-            }
         }
+
+
+        //Fetch Message:
+        $messages = $this->Db_model->i_fetch(array(
+            'i_id' => intval($_POST['i_id']),
+            'i_status >=' => 0,
+        ));
+        if(count($messages)<1){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Message Not Found',
+            ));
+        }
+
+        //Make sure message is all good:
+        $validation = message_validation($_POST['i_status'], $_POST['i_message']);
+
+        if(!$validation['status']){
+            //There was some sort of an error:
+            return echo_json($validation);
+        }
+
+
+        //All good, lets move on:
+        //Define what needs to be updated:
+        $to_update = array(
+            'i_inbound_u_id' => $udata['u_id'],
+            'i_timestamp' => date("Y-m-d H:i:s"),
+            //Could have been modified:
+            'i_message' => $validation['i_message'],
+            'i_outbound_u_id' => $validation['i_outbound_u_id'],
+            'i_inbound_c_id' => $validation['i_inbound_c_id'],
+        );
+
+
+        if(!($_POST['initial_i_status']==$_POST['i_status'])){
+            //Change the status:
+            $to_update['i_status'] = $_POST['i_status'];
+            //Put it at the end of the new list:
+            $to_update['i_rank'] = 1 + $this->Db_model->max_value('v5_messages','i_rank', array(
+                'i_status' => $_POST['i_status'],
+                'i_outbound_c_id' => intval($_POST['c_id']),
+            ));
+        }
+
+        //Now update the DB:
+        $this->Db_model->i_update( intval($_POST['i_id']) , $to_update );
+
+        //Re-fetch the message for display purposes:
+        $new_messages = $this->Db_model->i_fetch(array(
+            'i_id' => intval($_POST['i_id']),
+        ), 0, array('x'));
+
+        //Log engagement:
+        $this->Db_model->e_create(array(
+            'e_inbound_u_id' => $udata['u_id'],
+            'e_json' => array(
+                'input' => $_POST,
+                'before' => $messages[0],
+                'after' => $new_messages[0],
+            ),
+            'e_inbound_c_id' => 36, //Message edited
+            'e_i_id' => $messages[0]['i_id'],
+            'e_outbound_c_id' => intval($_POST['c_id']),
+        ));
+
+        //Print the challenge:
+        return echo_json(array(
+            'status' => 1,
+            'message' => echo_i(array_merge($new_messages[0],array('e_outbound_u_id'=>$udata['u_id'])),$udata['u_full_name']),
+            'new_status' => echo_status('i_status',$new_messages[0]['i_status'],1,'right'),
+            'success_icon' => '<span><i class="fas fa-check"></i> Saved</span>',
+            'new_uploader' => echo_cover($new_messages[0],null,true, 'data-toggle="tooltip" title="Last modified by '.$new_messages[0]['u_full_name'].' about '.echo_diff_time($new_messages[0]['i_timestamp']).' ago" data-placement="right"'), //If there is a person change...
+        ));
     }
 
     function i_delete(){
