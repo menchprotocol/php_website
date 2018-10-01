@@ -406,10 +406,10 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
         ));
 
         if($fb_format){
-            $i['i_message'] = str_replace('#'.$i['i_inbound_c_id'], 'helps you to ['.$cs[0]['c_outcome'].']', $i['i_message']);
+            $i['i_message'] = str_replace('#'.$i['i_inbound_c_id'], '['.$cs[0]['c_outcome'].']', $i['i_message']);
         } else {
             //HTML format:
-            $i['i_message'] = str_replace('#'.$i['i_inbound_c_id'], 'helps you to <a href="javascript:void(0);" onclick="url_modal(\'/intents/'.$cs[0]['c_id'].'?skip_header=1\')">'.$cs[0]['c_outcome'].'</a>', $i['i_message']);
+            $i['i_message'] = str_replace('#'.$i['i_inbound_c_id'], '<a href="javascript:void(0);" onclick="url_modal(\'/intents/'.$cs[0]['c_id'].'?skip_header=1\')">'.$cs[0]['c_outcome'].'</a>', $i['i_message']);
         }
     }
 

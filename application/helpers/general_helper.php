@@ -763,7 +763,7 @@ function message_validation($i_status,$i_message){
     $i_inbound_c_id = ( isset($matches_c[1]) && strlen($matches_c[1])>0 && strlen($matches_c[1])==strlen(intval($matches_c[1])) ? intval($matches_c[1]) : 0 );
 
 
-    if($i_outbound_u_id && count($matches_u)>=2){
+    if($i_outbound_u_id && count($matches_u)>2){
         //Log engagement for this:
         return array(
             'status' => 0,
@@ -775,7 +775,7 @@ function message_validation($i_status,$i_message){
             'status' => 0,
             'message' => 'You can either reference 1 entity or include 1 URL which would transform into an entity',
         );
-    } elseif($i_inbound_c_id && count($matches_c)>=2){
+    } elseif($i_inbound_c_id && count($matches_c)>2){
         //Log engagement for this:
         return array(
             'status' => 0,
