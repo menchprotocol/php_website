@@ -664,9 +664,6 @@ class Db_model extends CI_Model {
 
     function c_fetch($match_columns, $outbound_levels=0, $join_objects=array()){
 
-        //Always deal with ints here:
-        $outbound_levels = intval($outbound_levels);
-
         //The basic fetcher for intents
         $this->db->select('*');
         $this->db->from('v5_intents c');
@@ -679,8 +676,8 @@ class Db_model extends CI_Model {
         $q = $this->db->get();
         $intents = $q->result_array();
 
-
         foreach($intents as $key=>$value){
+
             if(in_array('i',$join_objects)){
                 $intents[$key]['c__messages'] = $this->Db_model->i_fetch(array(
                     'i_outbound_c_id' => $value['c_id'],
@@ -696,11 +693,12 @@ class Db_model extends CI_Model {
             }
 
             if($outbound_levels>=1){
+
                 //Do the first level:
                 $intents[$key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
                     'cr.cr_inbound_c_id' => $value['c_id'],
                     'cr.cr_status >=' => 1,
-                    'c.c_status >' => 0,
+                    'c.c_status >=' => 1,
                 ) , $join_objects );
 
 
@@ -710,7 +708,8 @@ class Db_model extends CI_Model {
                     foreach($intents[$key]['c__child_intents'] as $key2=>$value2){
                         $intents[$key]['c__child_intents'][$key2]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
                             'cr.cr_inbound_c_id' => $value2['c_id'],
-                            'cr.cr_status >' => 1,
+                            'cr.cr_status >=' => 1,
+                            'c.c_status >=' => 1,
                         ) , $join_objects );
                     }
                 }
