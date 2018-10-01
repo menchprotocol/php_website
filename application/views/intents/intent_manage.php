@@ -756,7 +756,7 @@ if(isset($orphan_cs)){
 
             echo '<div id="bootcamp-objective" class="list-group">';
             foreach($orphan_cs as $oc){
-                echo echo_actionplan($oc,1);
+                echo echo_c($oc,1);
             }
             echo '</div>';
 
@@ -777,7 +777,7 @@ if(isset($orphan_cs)){
 
 
             echo '<div id="bootcamp-objective" class="list-group">';
-                echo echo_actionplan($c,1);
+                echo echo_c($c,1);
             echo '</div>';
 
 
@@ -822,7 +822,7 @@ if(isset($orphan_cs)){
                     //Task/Bootcamp List:
                     echo '<div id="list-c-'.$c['c_id'].'" class="list-group list-level-2">';
                     foreach($c['c__child_intents'] as $sub_intent){
-                        echo echo_actionplan($sub_intent, 2, $c['c_id']);
+                        echo echo_c($sub_intent, 2, $c['c_id']);
                     }
                     ?>
                     <div class="list-group-item list_input grey-block">
@@ -848,7 +848,7 @@ if(isset($orphan_cs)){
                     if(count($c__inbounds)>0){
                         echo '<div class="list-group list-level-2">';
                         foreach($c__inbounds as $sub_intent){
-                            echo echo_actionplan($sub_intent, 2, 0, true);
+                            echo echo_c($sub_intent, 2, 0, true);
                         }
                         echo '</div>';
                     } else {

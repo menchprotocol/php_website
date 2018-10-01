@@ -297,7 +297,7 @@ class Intents extends CI_Controller
             'c_id' => $new_c['c_id'],
             'c__tree_hours' => $new_c['c__tree_hours'],
             'adjusted_c_count' => ( $new_c['c__tree_outputs'] + $new_c['c__tree_inputs'] ),
-            'html' => echo_actionplan(array_merge($new_c,$relations[0]),$_POST['next_level'],intval($_POST['c_id'])),
+            'html' => echo_c(array_merge($new_c,$relations[0]),$_POST['next_level'],intval($_POST['c_id'])),
         ));
     }
 

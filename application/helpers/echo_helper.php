@@ -863,7 +863,7 @@ function echo_support_chat(){
 
 
 
-function echo_actionplan($c, $level, $c_inbound_id=0, $is_inbound=false){
+function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
 
     $CI =& get_instance();
     $udata = $CI->session->userdata('user');
@@ -892,7 +892,7 @@ function echo_actionplan($c, $level, $c_inbound_id=0, $is_inbound=false){
     $ui .= '<a class="badge badge-primary" onclick="load_modify('.$c['c_id'].','.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).')" style="margin:-2px -8px 0 2px; width:40px;" href="#modify-'.$c['c_id'].'-'.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).'"><span class="btn-counter">'.echo_estimated_time($c['c__tree_hours'],0,1, $c['c_id'], $c['c_time_estimate']).'</span><i class="fas fa-cog"></i></a> &nbsp;';
 
 
-    $ui .= '&nbsp;<'.( $level>1 || $c['c__is_orphan'] ? 'a href="/intents/'.$c['c_id'].'" class="badge badge-primary"' :'span class="badge badge-primary grey"').' style="display:inline-block; margin-right:-1px; width:40px;"><span class="btn-counter outbound-counter-'.$c['c_id'].'">'.($c['c__tree_inputs']+$c['c__tree_outputs']-1).'</span><i class="'.( $is_inbound ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></'.( $level>1 || $c['c__is_orphan'] ? 'a' :'span').'> ';
+    $ui .= '&nbsp;<'.( $level>1 || $c['c__is_orphan'] ? 'a href="/intents/'.$c['c_id'].( $is_inbound ? '#inbound' : '' ).'" class="badge badge-primary"' :'span class="badge badge-primary grey"').' style="display:inline-block; margin-right:-1px; width:40px;"><span class="btn-counter outbound-counter-'.$c['c_id'].'">'.($c['c__tree_inputs']+$c['c__tree_outputs']-1).'</span><i class="'.( $is_inbound ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></'.( $level>1 || $c['c__is_orphan'] ? 'a' :'span').'> ';
 
     //Keep an eye out for inner message counter changes:
     $ui .= '</span> ';
@@ -954,7 +954,7 @@ function echo_actionplan($c, $level, $c_inbound_id=0, $is_inbound=false){
 
         if(isset($c['c__child_intents']) && count($c['c__child_intents'])>0){
             foreach($c['c__child_intents'] as $key=>$sub_intent){
-                $ui .= echo_actionplan($sub_intent, ($level+1), $c['c_id'], $is_inbound);
+                $ui .= echo_c($sub_intent, ($level+1), $c['c_id'], $is_inbound);
             }
         }
 
