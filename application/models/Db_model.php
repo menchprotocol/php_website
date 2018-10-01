@@ -1000,7 +1000,7 @@ class Db_model extends CI_Model {
             //We need to create a new entity and add this URL below it:
             $x_types = echo_status('x_type', null);
             $u_full_name = null;
-            $url_code = substr(md5($curl['clean_url']),0,8);
+            $url_code = substr(md5(( $curl['clean_url'] ? $curl['clean_url'] : $curl['input_url'] )),0,8);
 
             if(strlen($curl['page_title'])>0){
 
