@@ -45,7 +45,7 @@ $uri_segment_2 = $this->uri->segment(2);
 
     <?php if(!isset($_GET['skip_header'])){ ?>
     <!-- Show Facebook Chat -->
-    <div class="fb-customerchat" minimized="true" greeting_dialog_display="hide" <?= ( $udata['u_cache__fp_psid']>0 ? '' : ' ref="'.$this->Comm_model->fb_activation_url($udata['u_id'],4,true).'" ' ) ?> theme_color="#3C4858" page_id="<?= $fb_settings['page_id'] ?>"</div>
+    <div class="fb-customerchat" minimized="true" greeting_dialog_display="hide" <?= ( $udata['u_cache__fp_psid']>0 ? '' : ' ref="'.$this->Comm_model->fb_activation_url($udata['u_id'],true).'" ' ) ?> theme_color="#3C4858" page_id="<?= $fb_settings['page_id'] ?>"</div>
     <?php } ?>
 
 	<div class="wrapper" id="console">

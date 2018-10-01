@@ -68,11 +68,6 @@ if(count($enrollments)>0 && is_array($enrollments)){
         $bs = fetch_action_plan_copy($enrollment['ru_b_id'],$enrollment['r_id']);
         $enrollment_active = ( $enrollment['ru_status']>=0 && $bs[0]['b_status']>=2 );
 
-        //Fetch Live Bootcamp Data:
-        $live_bs = $this->Db_model->b_fetch(array(
-            'b_id' => $enrollment['ru_b_id'],
-        ));
-
         echo '<div class="enrollment_block">';
 
             echo '<div class="enrollment_checklist">';
@@ -112,7 +107,7 @@ if(count($enrollments)>0 && is_array($enrollments)){
                     if($enrollment['u_cache__fp_psid']>0){
                         echo '<div class="checkbox"><label style="text-decoration: line-through;"><input type="checkbox" disabled checked> '.$bot_title.'</label></div>';
                     } else {
-                        echo '<div class="checkbox"><label><input type="checkbox" disabled> <a href="'.$this->Comm_model->fb_activation_url($enrollment['u_id'],$live_bs[0]['b_fp_id']).'"> '.$bot_title.' <i class="fas fa-chevron-right"></i></a></label></div>';
+                        echo '<div class="checkbox"><label><input type="checkbox" disabled> <a href="'.$this->Comm_model->fb_activation_url($enrollment['u_id']).'"> '.$bot_title.' <i class="fas fa-chevron-right"></i></a></label></div>';
                     }
                 }
 
@@ -123,7 +118,7 @@ if(count($enrollments)>0 && is_array($enrollments)){
             //More info like Bootcamp URL:
             echo '<div class="enrollment_footer">';
                 echo '<span id="withdraw_update_'.$enrollment['ru_id'].'">'.echo_status('ru',$enrollment['ru_status'],0,'top').'</span>';
-                echo '<a href="/'.$live_bs[0]['b_url_key'].'"> | <i class="fas fa-cube"></i> Bootcamp Overview</a>';
+                echo '<a href="/toupdate"> | <i class="fas fa-cube"></i> Bootcamp Overview</a>';
                 if(in_array($enrollment['ru_status'],array(0,4)) && (!$start_unix || $start_unix>time())){
                     //They can still withdraw their application:
                     echo '<span id="hide_post_withdrawal_'.$enrollment['ru_id'].'"> | <a href="javascript:void(0);" title="'.$start_unix.'" onclick="withdraw_enrollment('.$enrollment['ru_id'].')"><i class="fas fa-times-hexagon"></i> Withdraw</a> <span id="process_withdrawal_'.$enrollment['ru_id'].'"></span></span>';

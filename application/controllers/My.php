@@ -47,9 +47,6 @@ class My extends CI_Controller {
             redirect_message('/','<div class="alert alert-danger" role="alert">Invalid URL. Choose your Bootcamp and re-apply to receive an email with your application status url.</div>');
         }
 
-        $bs = $this->Db_model->b_fetch(array(
-            'b_id'	=> ( $enrollments[0]['ru_b_id'] ),
-        ));
 
 
         //Is this a paypal success?

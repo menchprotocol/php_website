@@ -637,14 +637,8 @@ class Db_model extends CI_Model {
 
         $this->db->select('*');
         $this->db->from('v5_class_students ru');
-        $this->db->join('v5_classes r', 'r.r_id = ru.ru_r_id','left');
         $this->db->join('v5_entities u', 'u.u_id = ru.ru_outbound_u_id');
         $this->db->join('v5_urls x', 'x.x_id = u.u_cover_x_id','left'); //Fetch the cover photo if >0
-
-        if(in_array('b',$join_objects)){
-            $this->db->join('v5_bootcamps b', 'b.b_id = ru.ru_b_id');
-            $this->db->join('v5_intents c', 'c.c_id = b.b_outbound_c_id');
-        }
 
         foreach($match_columns as $key=>$value){
             if(!is_null($value)){
@@ -727,32 +721,6 @@ class Db_model extends CI_Model {
         return $intents;
     }
 
-
-    function b_fetch($match_columns,$join_objects=array(),$order_by='b_id'){
-
-	    //Missing anything?
-	    $this->db->select('*');
-        $this->db->from('v5_bootcamps b');
-        $this->db->join('v5_intents c', 'c.c_id = b.b_outbound_c_id');
-
-        if(in_array('fp',$join_objects)){
-            $this->db->join('v5_facebook_pages fp', 'fp.fp_id = b.b_fp_id','left');
-        }
-        if(in_array('ba',$join_objects)){
-            $this->db->join('v5_bootcamp_team ba', 'ba.ba_b_id = b.b_id','left');
-            $this->db->join('v5_entities u', 'u.u_id = ba.ba_outbound_u_id','left');
-            $this->db->where('ba_status',3); //Lead coach
-        }
-        foreach($match_columns as $key=>$value){
-	        $this->db->where($key,$value);
-	    }
-	    $this->db->order_by($order_by,'DESC');
-	    $q = $this->db->get();
-        $bs = $q->result_array();
-
-        return $bs;
-	}
-
 	
 	function cr_outbound_fetch($match_columns,$join_objects=array()){
 		//Missing anything?
@@ -793,9 +761,6 @@ class Db_model extends CI_Model {
 		$this->db->select('*');
 		$this->db->from('v5_intents c');
 		$this->db->join('v5_intent_links cr', 'cr.cr_inbound_c_id = c.c_id');
-        if(in_array('b',$join_objects)){
-            $this->db->join('v5_bootcamps b', 'b.b_outbound_c_id = cr.cr_inbound_c_id');
-        }
 		foreach($match_columns as $key=>$value){
 			$this->db->where($key,$value);
 		}

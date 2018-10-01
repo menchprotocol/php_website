@@ -441,19 +441,13 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
     }
 
 
-    if(substr_count($i['i_message'],'/activateurl')>0 && isset($i['e_outbound_u_id']) && isset($i['e_b_id'])) {
-        //Fetch Facebook Page from Bootcamp:
-        $bs = $CI->Db_model->b_fetch(array(
-            'b.b_id' => $i['e_b_id'],
-        ));
+    if(substr_count($i['i_message'],'/activateurl')>0 && isset($i['e_outbound_u_id'])) {
 
-        if(isset($bs[0]['b_fp_id']) && $bs[0]['b_fp_id']>0 && isset($i['e_outbound_u_id']) && $i['e_outbound_u_id']>0){
-            $button_url = $CI->Comm_model->fb_activation_url($i['e_outbound_u_id'],$bs[0]['b_fp_id']);
-            if($button_url) {
-                //append their My Account Button/URL:
-                $button_title = '🤖 Activate Personal Assistant';
-                $command = '/activateurl';
-            }
+        $button_url = $CI->Comm_model->fb_activation_url($i['e_outbound_u_id']);
+        if($button_url) {
+            //append their My Account Button/URL:
+            $button_title = '🤖 Activate Personal Assistant';
+            $command = '/activateurl';
         }
     }
 
@@ -1031,6 +1025,9 @@ function echo_dropdown_status($object,$input_name,$current_status_id,$exclude_id
 
     $count = 0;
     foreach($statuses as $intval=>$status){
+        if(in_array($intval,$exclude_ids)){
+            continue;
+        }
         $count++;
         $return_ui .= '<li><a href="javascript:update_dropdown(\''.$input_name.'\','.$intval.','.$count.');">'.echo_status($object,$intval,0,$inner_tooltip).'</a></li>';
         $return_ui .= '<li style="display:none;" class="'.$input_name.'_'.$intval.'" id="'.$input_name.'_'.$count.'">'.echo_status($object,$intval,$mini,$inner_tooltip).'</li>'; //For UI replacement

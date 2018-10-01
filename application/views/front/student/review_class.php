@@ -81,8 +81,6 @@ if(count($enrollment['b__coaches'])>1){
     }
     echo '</div>';
 }
-echo '<div class="maxout" style="padding-bottom:7px;"><b>Bootcamp</b>: '.$enrollment['c_outcome'].'</div>';
-echo '<div class="maxout" style="padding-bottom:7px;"><b>Class</b>: '.echo_time($enrollment['r_start_date'],2).'</div>';
 echo '<div style="border-bottom:2px solid #3C4858; margin:0 0 25px;">&nbsp;</div>';
 
 

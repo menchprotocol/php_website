@@ -107,36 +107,9 @@ class Comm_model extends CI_Model {
         }
     }
 
-    function fb_activation_url($u_id,$fp_id,$ref_only=false){
+    function fb_activation_url($u_id,$ref_only=false){
 
-        if($fp_id<1 || $u_id<1){
-            //Log Error:
-            $this->Db_model->e_create(array(
-                'e_outbound_u_id' => $u_id,
-                'e_fp_id' => $fp_id,
-                'e_inbound_c_id' => 8, //Platform error
-                'e_text_value' => 'fb_activation_url() failed to generate activation URL as $fp_id=['.$fp_id.'] OR $u_id=['.$u_id.']',
-            ));
-            //Could not find this page!
-            return false;
-        }
-
-	    //Fetch the page:
-        $fp_pages = $this->Db_model->fp_fetch(array(
-            'fp_id' => $fp_id,
-            'fp_status' => 1, //Must be connected to Mench
-        ), array('fs'));
-
-        if(count($fp_pages)<1){
-            //Log Error:
-            $this->Db_model->e_create(array(
-                'e_outbound_u_id' => $u_id,
-                'e_fp_id' => $fp_id,
-                'e_inbound_c_id' => 8, //Platform error
-                'e_text_value' => 'fb_activation_url() failed to generate activation URL as $fp_id=['.$fp_id.'] did not have fp_status=[1]',
-            ));
-
-            //Could not find this page!
+        if($u_id<1){
             return false;
         }
 
@@ -147,7 +120,8 @@ class Comm_model extends CI_Model {
         if($ref_only){
             return $ref_key;
         } else {
-            return 'https://m.me/'.$fp_pages[0]['fp_fb_id'].'?ref='.$ref_key;
+            $fb_settings = $this->config->item('fb_settings');
+            return 'https://m.me/'.$fb_settings['page_id'].'?ref='.$ref_key;
         }
     }
 
@@ -711,13 +685,6 @@ class Comm_model extends CI_Model {
                         'html_message' => echo_i($message, $u['u_full_name'],false),
                     );
 
-                    //Should we update email?
-                    if(isset($message['e_b_id']) && $message['e_b_id']>0){
-                        //Fetch Bootcamp Details:
-                        $bs = $this->Db_model->b_fetch(array(
-                            'b.b_id' => $message['e_b_id'],
-                        ));
-                    }
 
                     $e_var_create = array(
                         'e_var_create' => array(
