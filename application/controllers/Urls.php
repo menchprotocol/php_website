@@ -61,7 +61,7 @@ class Urls extends CI_Controller
     }
 
     function add_url() {
-        return echo_json($this->Db_model->add_db_url($_POST['x_url'],$_POST['x_outbound_u_id'],$_POST['can_edit']));
+        return echo_json($this->Db_model->x_sync($_POST['x_url'],$_POST['x_outbound_u_id'],$_POST['can_edit']));
     }
 
 

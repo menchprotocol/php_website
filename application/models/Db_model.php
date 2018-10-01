@@ -361,16 +361,6 @@ class Db_model extends CI_Model {
         return $q->result_array();
     }
 
-    function sy_fetch($match_columns){
-        $this->db->select('*');
-        $this->db->from('v5_message_fb_sync sy');
-        foreach($match_columns as $key=>$value){
-            $this->db->where($key,$value);
-        }
-        $q = $this->db->get();
-        return $q->result_array();
-    }
-
 
 	function i_create($insert_columns){
 
@@ -918,7 +908,7 @@ class Db_model extends CI_Model {
     }
 
 
-    function add_db_url($x_url,$x_outbound_u_id,$cad_edit,$accept_existing_url=false) {
+    function x_sync($x_url,$x_outbound_u_id,$cad_edit,$accept_existing_url=false) {
 
         //Auth user and check required variables:
         $udata = auth(array(1308,1280));

@@ -787,7 +787,7 @@ function message_validation($i_status,$i_message){
     if($i_inbound_c_id){
 
         //Validate this:
-        $i_inbound_cs = $this->Db_model->c_fetch(array(
+        $i_inbound_cs = $CI->Db_model->c_fetch(array(
             'c.c_id' => $i_inbound_c_id,
         ));
 
@@ -827,18 +827,12 @@ function message_validation($i_status,$i_message){
                 'status' => 0,
                 'message' => 'Entity ['.$i_outbound_us[0]['u_full_name'].'] is not active so you cannot link to it',
             );
-        } elseif(!array_key_exists(1326, $i_outbound_us[0]['u__inbounds'])) {
-            //Entity is not a Content:
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Entity ['.$i_outbound_us[0]['u_full_name'].'] does not belong to [Content] which is required for it to be referenced in a message',
-            ));
         }
 
     } elseif(count($urls)>0){
 
         //No entity linked, but we have a URL that we should turn into an entity:
-        $url_create = $CI->Db_model->add_db_url($urls[0], 1326, false, true);
+        $url_create = $CI->Db_model->x_sync($urls[0], 1326, false, true);
 
         //Did we have an error?
         if(!$url_create['status']){

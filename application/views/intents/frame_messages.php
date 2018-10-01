@@ -389,9 +389,7 @@ if(!isset($intents[0])){
             if(data.status){
 
                 //All good, lets show new text:
-                if($("#ul-nav-"+i_id+" .i_media_type").val()=='text'){
-                    $("#ul-nav-"+i_id+" .text_message").html(data.message);
-                }
+                $("#ul-nav-"+i_id+" .text_message").html(data.message);
 
                 //Did the status change?
                 if(!(new_i_status==initial_i_status)){
@@ -595,6 +593,9 @@ if(!isset($intents[0])){
                 //Reset input field:
                 $( "#i_message"+c_id ).val("");
                 changeMessage();
+            } else {
+                //Show error:
+                alert('ERROR: '+data.message);
             }
 
             //Unlock field:

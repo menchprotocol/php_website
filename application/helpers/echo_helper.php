@@ -397,13 +397,12 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
     }
 
 
-
     //Does this have an intent reference?
     if($i['i_inbound_c_id']>0){
         //This message has a referenced entity
         //See if that entity has a URL:
         $cs = $CI->Db_model->c_fetch(array(
-            'u_id' => $i['i_inbound_c_id'],
+            'c_id' => $i['i_inbound_c_id'],
         ));
 
         if($fb_format){
@@ -540,38 +539,32 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
 
 function echo_message($i){
 
+    $CI =& get_instance();
+    $message_max = $CI->config->item('message_max');
+
     $ui = '';
     $ui .= '<div class="list-group-item is-msg is_level2_sortable all_msg msg_'.$i['i_status'].'" id="ul-nav-'.$i['i_id'].'" iid="'.$i['i_id'].'">';
-    $ui .= '<input type="hidden" class="i_media_type" value="'.$i['i_media_type'].'" />';
     $ui .= '<div style="overflow:visible !important;">';
 
     //Type & Delivery Method:
-    $ui .= '<div class="'.($i['i_media_type']=='text'?'edit-off text_message':'').'" id="msg_body_'.$i['i_id'].'" style="margin:5px 0 0 0;">';
+    $ui .= '<div class="edit-off text_message" id="msg_body_'.$i['i_id'].'" style="margin:5px 0 0 0;">';
     $ui .= echo_i($i);
     $ui .= '</div>';
 
 
-    if($i['i_media_type']=='text'){
-        //Text editing:
-        $ui .= '<textarea onkeyup="changeMessageEditing('.$i['i_id'].')" name="i_message" id="message_body_'.$i['i_id'].'" class="edit-on hidden msg msgin" placeholder="Write Message..." style="margin-top: 4px;">'.$i['i_message'].'</textarea>';
-    }
+    //Text editing:
+    $ui .= '<textarea onkeyup="changeMessageEditing('.$i['i_id'].')" name="i_message" id="message_body_'.$i['i_id'].'" class="edit-on hidden msg msgin" placeholder="Write Message..." style="margin-top: 4px;">'.$i['i_message'].'</textarea>';
 
     //Editing menu:
     $ui .= '<ul class="msg-nav">';
     //$ui .= '<li class="edit-off"><i class="fas fa-clock"></i> 4s Ago</li>';
     $ui .= '<li class="the_status edit-off" style="margin: 0 6px 0 -3px;">'.echo_status('i_status',$i['i_status'],1,'right').'</li>';
-    if($i['i_media_type']=='text'){
-        $CI =& get_instance();
-        $message_max = $CI->config->item('message_max');
-        $ui .= '<li class="edit-on hidden"><span id="charNumEditing'.$i['i_id'].'">0</span>/'.$message_max.'</li>';
-    }
+    $ui .= '<li class="edit-on hidden"><span id="charNumEditing'.$i['i_id'].'">0</span>/'.$message_max.'</li>';
     $ui .= '<li class="edit-off"><span class="on-hover i_uploader">'.echo_cover($i,null,true, 'data-toggle="tooltip" title="Last modified by '.$i['u_full_name'].' about '.echo_diff_time($i['i_timestamp']).' ago" data-placement="right"').'</span></li>';
 
     $ui .= '<li class="edit-off" style="margin: 0 0 0 8px;"><span class="on-hover"><i class="fas fa-bars sort_message" iid="'.$i['i_id'].'" style="color:#3C4858;"></i></span></li>';
     $ui .= '<li class="edit-off" style="margin-right: 10px; margin-left: 6px;"><span class="on-hover"><a href="javascript:i_delete('.$i['i_id'].');"><i class="fas fa-trash-alt" style="margin:0 7px 0 5px;"></i></a></span></li>';
-    if($i['i_media_type']=='text'){
-        $ui .= '<li class="edit-off" style="margin-left:-4px;"><span class="on-hover"><a href="javascript:msg_start_edit('.$i['i_id'].','.$i['i_status'].');"><i class="fas fa-pen-square"></i></a></span></li>';
-    }
+    $ui .= '<li class="edit-off" style="margin-left:-4px;"><span class="on-hover"><a href="javascript:msg_start_edit('.$i['i_id'].','.$i['i_status'].');"><i class="fas fa-pen-square"></i></a></span></li>';
     //Right side reverse:
     $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-primary" href="javascript:message_save_updates('.$i['i_id'].','.$i['i_status'].');" style="text-decoration:none; font-weight:bold; padding: 1px 8px 4px;"><i class="fas fa-check"></i></a></li>';
     $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-hidden" href="javascript:msg_cancel_edit('.$i['i_id'].');"><i class="fas fa-times" style="color:#3C4858"></i></a></li>';

@@ -822,37 +822,30 @@ class Intents extends CI_Controller
         $udata = auth(array(1308,1280));
         $file_limit_mb = $this->config->item('file_limit_mb');
         if(!$udata){
-            echo_json(array(
+            return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Session. Refresh to Continue',
             ));
-            exit;
         } elseif(!isset($_POST['c_id']) || !isset($_POST['i_status'])){
-            echo_json(array(
+            return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing intent data.',
             ));
-            exit;
         } elseif(!isset($_POST['upload_type']) || !in_array($_POST['upload_type'],array('file','drop'))){
-            echo_json(array(
+            return echo_json(array(
                 'status' => 0,
                 'message' => 'Unknown upload type.',
             ));
-            exit;
         } elseif(!isset($_FILES[$_POST['upload_type']]['tmp_name']) || strlen($_FILES[$_POST['upload_type']]['tmp_name'])==0 || intval($_FILES[$_POST['upload_type']]['size'])==0){
-            echo_json(array(
+            return echo_json(array(
                 'status' => 0,
                 'message' => 'Unable to save file. Max file size allowed is '.$file_limit_mb.' MB.',
             ));
-            exit;
         } elseif($_FILES[$_POST['upload_type']]['size']>($file_limit_mb*1024*1024)){
-
-            echo_json(array(
+            return echo_json(array(
                 'status' => 0,
                 'message' => 'File is larger than '.$file_limit_mb.' MB.',
             ));
-            exit;
-
         }
 
 
@@ -875,40 +868,45 @@ class Intents extends CI_Controller
         //What happened?
         if(!$new_file_url){
             //Oops something went wrong:
-            echo_json(array(
+            return echo_json(array(
                 'status' => 0,
                 'message' => 'Could not save to cloud!',
             ));
-            exit;
         }
 
-        //Detect file type:
-        $i_media_type = mime_type($mime);
 
-        //Create Message:
-        $message = '/attach '.$i_media_type.':'.$new_file_url;
+        $url_create = $this->Db_model->x_sync($new_file_url,1326, 1, 1);
+
+        //Did we have an error?
+        if(!$url_create['status']){
+            //Oops something went wrong:
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Failed to create internal URL from cloud URL',
+            ));
+        }
+
 
         //Create message:
         $i = $this->Db_model->i_create(array(
             'i_inbound_u_id' => $udata['u_id'],
+            'i_outbound_u_id' => $url_create['u']['u_id'],
             'i_outbound_c_id' => intval($_POST['c_id']),
-            'i_media_type' => $i_media_type,
-            'i_message' => $message,
-            'i_url' => $new_file_url,
+            'i_message' => '@'.$url_create['u']['u_id'],
             'i_status' => $_POST['i_status'],
             'i_rank' => 1 + $this->Db_model->max_value('v5_messages','i_rank', array(
-                    'i_status' => $_POST['i_status'],
-                    'i_outbound_c_id' => $_POST['c_id'],
-                )),
+                'i_status' => $_POST['i_status'],
+                'i_outbound_c_id' => $_POST['c_id'],
+            )),
         ));
 
-        //Update intent count:
-        $this->db->query("UPDATE v5_intents SET c__this_messages=c__this_messages+1 WHERE c_id=".intval($_POST['c_id']));
 
-        //Update tree:
+        //Update intent count & tree:
+        $this->db->query("UPDATE v5_intents SET c__this_messages=c__this_messages+1 WHERE c_id=".intval($_POST['c_id']));
         $updated_recursively = $this->Db_model->c_update_tree( intval($_POST['c_id']) , array(
             'c__tree_messages' => 1,
         ));
+
 
         //Fetch full message:
         $new_messages = $this->Db_model->i_fetch(array(
@@ -927,19 +925,6 @@ class Intents extends CI_Controller
             'e_i_id' => intval($new_messages[0]['i_id']),
             'e_outbound_c_id' => intval($new_messages[0]['i_outbound_c_id']),
         ));
-
-
-        //Does it have an attachment and a connected Facebook Page? If so, save the attachment:
-        if(in_array($i_media_type,array('image','audio','video','file'))){
-            //Log engagement for this to be done via a Cron Job:
-            $this->Db_model->e_create(array(
-                'e_inbound_u_id' => $udata['u_id'],
-                'e_inbound_c_id' => 83, //Message Facebook Sync e_inbound_c_id=83
-                'e_i_id' => intval($new_messages[0]['i_id']),
-                'e_outbound_c_id' => intval($new_messages[0]['i_outbound_c_id']),
-                'e_status' => 0, //Job pending
-            ));
-        }
 
 
         //Echo message:

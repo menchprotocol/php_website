@@ -207,7 +207,7 @@ class Entities extends CI_Controller {
 
                     //It's a URL, create an entity from this URL:
                     $accept_existing_url = ( !$_POST['is_inbound'] && $current_us[0]['u_id']!=1326 ); //We can accept duplicates if we're not adding directly under content
-                    $url_create = $this->Db_model->add_db_url(trim($_POST['new_u_input']),1326, $_POST['can_edit'], $accept_existing_url);
+                    $url_create = $this->Db_model->x_sync(trim($_POST['new_u_input']),1326, $_POST['can_edit'], $accept_existing_url);
 
                     //Did we have an error?
                     if(!$url_create['status']){
