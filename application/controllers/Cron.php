@@ -358,7 +358,7 @@ class Cron extends CI_Controller {
          */
 
         $success_count = 0; //Track success
-        $max_per_batch = 1; //Max number of syncs per cron run
+        $max_per_batch = 5; //Max number of syncs per cron run
         $e_json = array();
         $x_types = echo_status('x_type', null);
 

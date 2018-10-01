@@ -17,7 +17,7 @@ $config['fb_settings'] = array(
     'app_id'        => '1782431902047009', //Also repeated in global.js
     'client_secret' => '05aea76d11b062951b40a5bee4251620',
     'default_graph_version' => 'v2.10', //Also repeated in global.js
-    'mench_access_token' => 'EAAZAVHMRbmyEBAEfN8zsRJ3UOIUJJrNLqeFutPXVQZCoDZA3EO1rgkkzayMtNhisHHEhAos08AmKZCYD7zcZAPIDSMTcBjZAHxxWzbfWyTyp85Fna2bGDfv5JUIBuFTSeQOZBaDHRG7k0kbW8E7kQQN3W6x47VB1dZBPJAU1oNSW1QZDZD',
+    'mench_access_token' => 'EAAZAVHMRbmyEBAAuydxkEZAb8YHYRd7ir460HxqaPgShk6kdDvIyleLTXIFUxB7Yq9TMWufd0mprZA1jrNx0KdhJ3aivK4ZAvzFUJZAxX3vRZBbf5BUVvZAZCyrRlkfRSkigoZCeZBaVP4MqqASyMXM6gKASvoXmuTOOJ6MeLIMl5yBgZDZD',
 );
 
 $config['class_settings'] = array(
