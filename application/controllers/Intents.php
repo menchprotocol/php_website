@@ -952,7 +952,7 @@ class Intents extends CI_Controller
         }
 
         //Make sure message is all good:
-        $validation = message_validation($_POST['i_status'],$_POST['i_message']);
+        $validation = message_validation($_POST['i_status'],$_POST['i_message'],$_POST['c_id']);
         if(!$validation['status']){
             //There was some sort of an error:
             return echo_json($validation);
@@ -1051,7 +1051,7 @@ class Intents extends CI_Controller
         }
 
         //Make sure message is all good:
-        $validation = message_validation($_POST['i_status'], $_POST['i_message']);
+        $validation = message_validation($_POST['i_status'], $_POST['i_message'], $_POST['c_id']);
 
         if(!$validation['status']){
             //There was some sort of an error:

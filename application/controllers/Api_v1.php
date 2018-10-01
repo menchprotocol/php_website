@@ -58,63 +58,6 @@ class Api_v1 extends CI_Controller {
 
 
 
-    function ru_save_review(){
-        if(!isset($_POST['ru_id']) || !isset($_POST['ru_key']) || intval($_POST['ru_id'])<1 || !($_POST['ru_key']==substr(md5($_POST['ru_id'].'r3vi3wS@lt'),0,6))){
-            die('<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Invalid Subscription Data.</div>');
-        } elseif(!isset($_POST['ru_review_score']) || intval($_POST['ru_review_score'])<1 || intval($_POST['ru_review_score'])>10){
-            die('<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Review Score must be between 1-10.</div>');
-        }
-
-        //Validate Subscription:
-        $enrollments = $this->Db_model->ru_fetch(array(
-            'ru_id' => intval($_POST['ru_id']),
-        ));
-        if(count($enrollments)<1){
-            $this->Db_model->e_create(array(
-                'e_inbound_u_id' => 0, //System
-                'e_text_value' => 'Validated review submission call failed to fetch enrollment data',
-                'e_inbound_c_id' => 8, //System Error
-            ));
-            die('<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Unable to locate your Subscription.</div>');
-        }
-
-        //Is this a new review, or updating an existing one?
-        $new_review = ( intval($enrollments[0]['ru_review_score'])<0 );
-        $has_text = ( strlen($_POST['ru_review_public_note'])>0 || strlen($_POST['ru_review_private_note'])>0 );
-        $update_data = array(
-            'ru_review_time' => date("Y-m-d H:i:s"),
-            'ru_review_score' => $_POST['ru_review_score'],
-            'ru_review_public_note' => $_POST['ru_review_public_note'],
-            'ru_review_private_note' => $_POST['ru_review_private_note'],
-        );
-
-        //Save Engagement that is visible to coach:
-        $this->Db_model->e_create(array(
-            'e_inbound_u_id' => $enrollments[0]['u_id'],
-            'e_text_value' => ( $new_review ? 'Student rated your Class ' : 'Student updated their rating for your Class to ' ).intval($_POST['ru_review_score']).'/10 with the following review: '.( strlen($_POST['ru_review_public_note'])>0 ? $_POST['ru_review_public_note'] : 'No Review' ),
-            'e_json' => $update_data,
-            'e_inbound_c_id' => 72, //Student Reviewed Class
-        ));
-
-        //Do they have a Private Feedback? Log a need attention Engagement to Mench team reads instantly:
-        if(strlen($_POST['ru_review_private_note'])>0){
-            $this->Db_model->e_create(array(
-                'e_inbound_u_id' => $enrollments[0]['u_id'],
-                'e_text_value' => 'Received the following private/anonymous feedback: '.$_POST['ru_review_private_note'],
-                'e_json' => $update_data,
-                'e_inbound_c_id' => 9, //Support Needing Graceful Errors
-            ));
-        }
-
-        //Update data:
-        $this->Db_model->ru_update($enrollments[0]['ru_id'], $update_data);
-
-        //Show success and thank student:
-        echo '<div class="alert alert-success">Thanks for '.($new_review?'submitting':'updating').' your review 👌'.( $has_text ? ' We read every single review and use your feedback to continuously improve 🙌​' : '' ).'</div>';
-
-        //TODO Encourage sharing IF reviewed highly...
-
-    }
 
     function us_save(){
 

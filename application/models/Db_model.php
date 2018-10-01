@@ -680,37 +680,37 @@ class Db_model extends CI_Model {
         $intents = $q->result_array();
 
 
-        //Need anything else?
-        if(count($intents)>0 && in_array('i',$join_objects)){
-            $intents[0]['c__messages'] = array();
-            //Fetch Messages:
-            foreach($intents as $key=>$value){
+        foreach($intents as $key=>$value){
+            if(in_array('i',$join_objects)){
                 $intents[$key]['c__messages'] = $this->Db_model->i_fetch(array(
                     'i_outbound_c_id' => $value['c_id'],
                     'i_status >=' => 0, //Published in any form
                 ));
             }
-        }
 
-        if(count($intents)>0 && $outbound_levels>=1){
-            //Lets append the outbound intents:
-            //Can't wrap my head around recursive, will do dummy way for now:
-            foreach($intents as $key=>$value){
+            if(in_array('c__inbounds',$join_objects)){
+                $intents[$key]['c__inbounds'] = $this->Db_model->cr_inbound_fetch(array(
+                    'cr.cr_outbound_c_id' => $value['c_id'],
+                    'cr.cr_status >=' => 1,
+                ) , $join_objects);
+            }
 
+            if($outbound_levels>=1){
                 //Do the first level:
                 $intents[$key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
                     'cr.cr_inbound_c_id' => $value['c_id'],
-                    'cr.cr_status >=' => 0,
+                    'cr.cr_status >=' => 1,
                     'c.c_status >' => 0,
                 ) , $join_objects );
 
+
                 //need more depth?
-                if(count($intents[$key]['c__child_intents'])>0 && $outbound_levels>=2){
+                if($outbound_levels>=2){
                     //Start the second level:
                     foreach($intents[$key]['c__child_intents'] as $key2=>$value2){
                         $intents[$key]['c__child_intents'][$key2]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
                             'cr.cr_inbound_c_id' => $value2['c_id'],
-                            'cr.cr_status >' => 0,
+                            'cr.cr_status >' => 1,
                         ) , $join_objects );
                     }
                 }

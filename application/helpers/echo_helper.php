@@ -270,8 +270,8 @@ function echo_embed($url,$full_message=null,$return_array=false){
             $clean_url = 'https://www.youtube.com/watch?v='.$video_id;
 
             //We might also find these in the URL:
-            $start_sec = 0;
-            $end_sec = 0;
+            $start_sec = ( isset($_GET['start']) ? intval($_GET['start']) : 0 );
+            $end_sec = ( isset($_GET['end']) ? intval($_GET['end']) : 0 );
 
             /*
             if(substr_count($url,'start=')>0){
@@ -282,15 +282,14 @@ function echo_embed($url,$full_message=null,$return_array=false){
                 $end_sec = intval(one_two_explode('end=','&',$url));
                 $clean_url = $clean_url.'&end='.$end_sec;
             }
-
+            */
 
             //Inform Student that this video has been sliced:
             if($start_sec || $end_sec){
                 $embed_code .= '<div class="video-prefix"><i class="fab fa-youtube" style="color:#ff0202;"></i> Watch from <b>'.($start_sec ? echo_min_from_sec($start_sec) : 'start').'</b> to <b>'.($end_sec ? echo_min_from_sec($end_sec) : 'end').'</b>:</div>';
             }
-            */
 
-            $embed_code .= '<div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/'.$video_id.'?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start='.$start_sec.( $end_sec ? '&end='.$end_sec : '' ).'" frameborder="0" allowfullscreen class="yt-video"></iframe></div>';
+            $embed_code .= '<div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/'.$video_id.'?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start='.$start_sec.( $end_sec ? '&end='.$end_sec : '' ).'&amp;autoplay=1" frameborder="0" allowfullscreen class="yt-video"></iframe></div>';
 
         }
 
@@ -370,6 +369,7 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
 
     //Does this have a entity reference?
     if($i['i_outbound_u_id']>0){
+
         //This message has a referenced entity
         //See if that entity has a URL:
         $us = $CI->Db_model->u_fetch(array(
@@ -381,9 +381,11 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
         $time_range = array();
         $found_embeddable = false;
         $button_title = 'Open Entity';
-        if(substr_count($i['i_message'],'/slice:')>0){
+        if(substr_count($i['i_message'],'/slice')>0){
             $time_range = explode(':', one_two_explode('/slice:',' ',$i['i_message']) ,2);
             $button_url = '/entities/'.$us[0]['u_id'].'?affirm_c='.$i['i_inbound_c_id'].'&skip_header=1&start='.$time_range[0].'&end='.$time_range[1].'#urls';
+            //Replace it with proper text:
+            $i['i_message'] = str_replace('/slice:'.$time_range[0].':'.$time_range[1], '(from '.($time_range[0] ? echo_min_from_sec($time_range[0]) : 'start').' to '.echo_min_from_sec($time_range[1]).')', $i['i_message']);
         } else {
             $button_url = '/entities/'.$us[0]['u_id'].'?affirm_c='.$i['i_inbound_c_id'].'&skip_header=1#urls';
         }

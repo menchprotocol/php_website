@@ -77,10 +77,7 @@ if(count($enrollments)>0 && is_array($enrollments)){
                 //Show date:
                 echo '<p style="font-size: 0.9em;"><i class="fas fa-calendar" style="margin: 0 2px 0 3px;"></i> ';
 
-
-
                     echo 'Not Selected';
-
 
                 echo '</p>';
 

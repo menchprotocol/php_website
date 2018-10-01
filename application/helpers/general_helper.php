@@ -706,14 +706,33 @@ function arrayToObject($array){
 	return $obj;
 }
 
+function extract_references($prefix,$message){
+    $words = explode(' ',trim($message));
+    $matches = array();
+    foreach ($words as $word){
+        if(substr($word,0,1)==$prefix){
+            //Looks like it, is the rest all integers?
+            $id = substr($word,1);
+            if(strlen($id)==strlen(intval($id))){
+                //Yea seems like all integers, append:
+                array_push($matches,intval($id));
+            }
+        }
+    }
+    return $matches;
+}
 
-
-function message_validation($i_status,$i_message){
+function message_validation($i_status,$i_message,$i_outbound_c_id){
 
 
     $CI =& get_instance();
     $message_max = $CI->config->item('message_max');
+
+    //Extract details from this message:
     $urls = extract_urls($i_message);
+    $u_ids = extract_references('@',$i_message);
+    $c_ids = extract_references('#',$i_message);
+
 
     if(!isset($i_status) || !(intval($i_status)==$i_status)){
         return array(
@@ -724,11 +743,6 @@ function message_validation($i_status,$i_message){
         return array(
             'status' => 0,
             'message' => 'Missing Message',
-        );
-    } elseif(count($urls)>1){
-        return array(
-            'status' => 0,
-            'message' => 'Max 1 URL per Message',
         );
     } elseif(substr_count($i_message,'/firstname')>1){
         return array(
@@ -746,62 +760,95 @@ function message_validation($i_status,$i_message){
             'message' => 'HTML Code is not allowed',
         );
     } elseif(!preg_match('//u', $i_message)){
-        //Log engagement for this:
         return array(
             'status' => 0,
             'message' => 'Message must be UTF8',
         );
-    }
-
-
-    //Do we have any entity references?
-    preg_match('/@(\d+)/', $i_message, $matches_u);
-    $i_outbound_u_id = ( isset($matches_u[1]) && strlen($matches_u[1])>0 && strlen($matches_u[1])==strlen(intval($matches_u[1])) ? intval($matches_u[1]) : 0 );
-
-    //Do we have any intents references?
-    preg_match('/#(\d+)/', $i_message, $matches_c);
-    $i_inbound_c_id = ( isset($matches_c[1]) && strlen($matches_c[1])>0 && strlen($matches_c[1])==strlen(intval($matches_c[1])) ? intval($matches_c[1]) : 0 );
-
-
-    if($i_outbound_u_id && count($matches_u)>2){
-        //Log engagement for this:
+    } elseif(count($u_ids)>1){
         return array(
             'status' => 0,
             'message' => 'You can reference a maximum of 1 entity per message',
         );
-    } elseif($i_outbound_u_id && count($urls)>0){
-        //Log engagement for this:
+    } elseif(count($u_ids)>0 && count($urls)>0){
         return array(
             'status' => 0,
             'message' => 'You can either reference 1 entity or include 1 URL which would transform into an entity',
         );
-    } elseif($i_inbound_c_id && count($matches_c)>2){
-        //Log engagement for this:
+    } elseif(count($urls)>1){
+        return array(
+            'status' => 0,
+            'message' => 'Max 1 URL per Message',
+        );
+    } elseif(count($u_ids)==0 && count($c_ids)>0){
+        return array(
+            'status' => 0,
+            'message' => 'You must reference an entity before being able to affirm an intent',
+        );
+    } elseif(count($u_ids)==0 && substr_count($i_message,'/slice')>0){
+        return array(
+            'status' => 0,
+            'message' => '/slice command required an entity reference',
+        );
+    } elseif(count($c_ids)>1){
         return array(
             'status' => 0,
             'message' => 'You can reference a maximum of 1 intent per message',
         );
     }
 
+
+
+
     //Validate Intent:
-    if($i_inbound_c_id){
+    if(count($c_ids)>0){
 
         //Validate this:
         $i_inbound_cs = $CI->Db_model->c_fetch(array(
-            'c.c_id' => $i_inbound_c_id,
+            'c.c_id' => $c_ids[0],
         ));
 
-        if(count($i_inbound_cs)==0){
+        $i_cs = $CI->Db_model->c_fetch(array(
+            'c.c_id' => $i_outbound_c_id,
+        ), 0, array('c__inbounds'));
+
+        if(count($i_cs)==0){
             //Invalid ID:
             return array(
                 'status' => 0,
-                'message' => 'Intent #'.$i_inbound_c_id.' does not exist',
+                'message' => 'Parent Intent #'.$c_ids[0].' does not exist',
+            );
+        } elseif(count($i_inbound_cs)==0){
+            //Invalid ID:
+            return array(
+                'status' => 0,
+                'message' => 'Intent #'.$c_ids[0].' does not exist',
+            );
+        } elseif($c_ids[0]==$i_outbound_c_id){
+            return array(
+                'status' => 0,
+                'message' => 'You cannot affirm the message intent itself. Choose another intent to continue',
             );
         } elseif($i_inbound_cs[0]['c_status']<1){
             //Inactive:
             return array(
                 'status' => 0,
-                'message' => 'Intent #'.$i_inbound_c_id.' is not active so you cannot link to it',
+                'message' => 'Intent ['.$i_inbound_cs[0]['c_outcome'].'] is not active so you cannot link to it',
+            );
+        }
+
+        $parent_found = false;
+        foreach ($i_cs[0]['c__inbounds'] as $c){
+            if($c['c_id']==$c_ids[0]){
+                $parent_found = true;
+                break;
+            }
+        }
+
+        if(!$parent_found){
+            //Inactive:
+            return array(
+                'status' => 0,
+                'message' => 'Intent ['.$i_cs[0]['c_outcome'].'] is not associated with ['.$i_inbound_cs[0]['c_outcome'].'] so it cannot be used to affirm it. First add it as an inbound and then try affirming it.',
             );
         }
     }
@@ -809,17 +856,17 @@ function message_validation($i_status,$i_message){
 
 
     //Validate Entity:
-    if($i_outbound_u_id){
+    if(count($u_ids)>0){
 
         $i_outbound_us = $CI->Db_model->u_fetch(array(
-            'u_id' => $i_outbound_u_id,
+            'u_id' => $u_ids[0],
         ));
 
         if(count($i_outbound_us)==0){
             //Invalid ID:
             return array(
                 'status' => 0,
-                'message' => 'Entity [@'.$i_outbound_u_id.'] does not exist',
+                'message' => 'Entity [@'.$u_ids[0].'] does not exist',
             );
         } elseif($i_outbound_us[0]['u_status']<1){
             //Inactive:
@@ -839,10 +886,50 @@ function message_validation($i_status,$i_message){
             return $url_create;
         }
 
-        $i_outbound_u_id = $url_create['u']['u_id'];
+        $u_ids[0] = $url_create['u']['u_id'];
 
         //Replace the URL with this new @entity in message:
-        $i_message = str_replace($urls[0],'@'.$i_outbound_u_id, $i_message);
+        $i_message = str_replace($urls[0],'@'.$u_ids[0], $i_message);
+
+    }
+
+    //Do we have any commands?
+    if(substr_count($i_message,'/slice')>0){
+
+        //Validate the format of this command:
+        $slice_times = explode(':',one_two_explode('/slice:',' ',$i_message),2);
+        if(intval($slice_times[0])<1 || intval($slice_times[1])<1 || strlen($slice_times[0])!=strlen(intval($slice_times[0])) || strlen($slice_times[1])!=strlen(intval($slice_times[1]))){
+            //Not valid format!
+            return array(
+                'status' => 0,
+                'message' => 'Invalid format for /slice command. For example, to slice first 60 seconds use: /slice:0:60',
+            );
+        } elseif((intval($slice_times[0])+3)>intval($slice_times[1])){
+            //Not valid format!
+            return array(
+                'status' => 0,
+                'message' => 'Sliced clip must be at-least 3 seconds long',
+            );
+        }
+
+        //Ensure entity has a slicable content:
+        $u__urls = $CI->Db_model->x_fetch(array(
+            'x_status >' => 0,
+            'x_outbound_u_id' => $u_ids[0],
+        ));
+        $found_slicable_url = false;
+        foreach($u__urls as $x){
+            if($x['x_type']==1 && substr_count($x['x_url'],'youtube.com')>0){
+                $found_slicable_url = true;
+                break;
+            }
+        }
+        if(!$found_slicable_url){
+            return array(
+                'status' => 0,
+                'message' => 'The /slice command requires the referenced entity to have a YouTube URL',
+            );
+        }
 
     }
 
@@ -852,8 +939,8 @@ function message_validation($i_status,$i_message){
         'message' => 'Success',
         //Return cleaned data:
         'i_message' => trim($i_message), //It might have been modified if URL was added
-        'i_outbound_u_id' => $i_outbound_u_id, //Referencing an entity?
-        'i_inbound_c_id' => $i_inbound_c_id, //Affirming an intent relation?
+        'i_outbound_u_id' => ( count($u_ids)>0 ? $u_ids[0] : 0 ), //Referencing an entity?
+        'i_inbound_c_id' => ( count($c_ids)>0 ? $c_ids[0] : 0 ), //Affirming an intent relation?
     );
 }
 

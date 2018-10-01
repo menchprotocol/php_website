@@ -144,39 +144,40 @@ $uri_segment_2 = $this->uri->segment(2);
 
         </div>
     </div>
-        <div class="main-panel">
-        <?php } else { ?>
-        <div class="main-panel no-side">
-        <?php } ?>
+
+    <div class="main-panel">
+    <?php } else { ?>
+    <div class="main-panel no-side">
+    <?php } ?>
 
 
 
-            <div class="content dash" style="padding-bottom: 50px !important; <?= ( isset($b) && substr_count($_SERVER['REQUEST_URI'],'/console/'.$b['b_id'].'/actionplan')>0 ? 'min-height: inherit !important;' : '' ) ?>">
-	        
-    	        <?php 
-    	        if(isset($breadcrumb) && count($breadcrumb)>0){
-                    echo '<ol class="breadcrumb '.( isset($breadcrumb_css) ? $breadcrumb_css : '' ).'">';
-                    foreach($breadcrumb as $link){
-                        if($link['link']){
-                            echo '<li><a href="'.$link['link'].'">'.$link['anchor'].'</a></li>';
-                        } else {
-                            echo '<li>'.$link['anchor'].'</li>';
-                        }
+        <div class="content dash" style="padding-bottom: 50px !important; <?= ( isset($b) && substr_count($_SERVER['REQUEST_URI'],'/console/'.$b['b_id'].'/actionplan')>0 ? 'min-height: inherit !important;' : '' ) ?>">
+
+            <?php
+            if(isset($breadcrumb) && count($breadcrumb)>0){
+                echo '<ol class="breadcrumb '.( isset($breadcrumb_css) ? $breadcrumb_css : '' ).'">';
+                foreach($breadcrumb as $link){
+                    if($link['link']){
+                        echo '<li><a href="'.$link['link'].'">'.$link['anchor'].'</a></li>';
+                    } else {
+                        echo '<li>'.$link['anchor'].'</li>';
                     }
-                    echo '</ol>';
-    	        } elseif(!isset($_GET['skip_header'])) {
-    	            echo '<div style="padding:1px 0;">&nbsp;</div>'; //Give some space in the absent of the breadcrumb
                 }
-    	        ?>
-    	        
-    	        
-	            <div class="container-fluid">
-	            <?php 
-	            if(isset($message)){
-	                echo $message;
-	            }
-	            $hm = $this->session->flashdata('hm');
-	            if($hm){
-	            	echo $hm;
-	            }
-	            ?>
+                echo '</ol>';
+            } elseif(!isset($_GET['skip_header'])) {
+                echo '<div style="padding:1px 0;">&nbsp;</div>'; //Give some space in the absent of the breadcrumb
+            }
+            ?>
+
+
+            <div class="container-fluid">
+            <?php
+            if(isset($message)){
+                echo $message;
+            }
+            $hm = $this->session->flashdata('hm');
+            if($hm){
+                echo $hm;
+            }
+            ?>

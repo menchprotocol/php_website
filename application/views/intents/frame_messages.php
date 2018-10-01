@@ -32,7 +32,7 @@ if(!isset($intents[0])){
     window.parent.document.getElementById("messages-counter-"+c_id).innerHTML = message_count;
 
     function add_first_name(){
-        $('#i_message'+c_id).insertAtCaret('/firstname');
+        $('#i_message'+c_id).insertAtCaret('/firstname ');
         changeMessage();
     }
 
@@ -436,7 +436,7 @@ if(!isset($intents[0])){
 
             } else {
                 //Oops, some sort of an error, lets
-                $("#ul-nav-"+i_id+" .edit-updates").html('<b style="color:#FF0000;"><i class="fas fa-exclamation-triangle"></i> '+data.message+'</b>');
+                $("#ul-nav-"+i_id+" .edit-updates").html('<b style="color:#FF0000 !important; line-height: 110% !important;"><i class="fas fa-exclamation-triangle"></i> '+data.message+'</b>');
             }
 
             //Tooltips:
