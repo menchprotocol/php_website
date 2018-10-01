@@ -779,12 +779,12 @@ function message_validation($i_status,$i_message,$i_outbound_c_id){
             'status' => 0,
             'message' => 'Max 1 URL per Message',
         );
-    } elseif(count($u_ids)==0 && count($c_ids)>0){
+    } elseif((count($u_ids)==0 && count($urls)==0) && count($c_ids)>0){
         return array(
             'status' => 0,
             'message' => 'You must reference an entity before being able to affirm an intent',
         );
-    } elseif(count($u_ids)==0 && substr_count($i_message,'/slice')>0){
+    } elseif((count($u_ids)==0 && count($urls)==0) && substr_count($i_message,'/slice')>0){
         return array(
             'status' => 0,
             'message' => '/slice command required an entity reference',
