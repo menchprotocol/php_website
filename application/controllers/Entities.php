@@ -28,7 +28,7 @@ class Entities extends CI_Controller {
         $this->load->view('console/console_footer');
     }
 
-    function delete($u_id){
+    function hard_delete($u_id){
 
         $udata = $this->session->userdata('user');
         if(!array_key_exists(1281, $udata['u__inbounds'])){
@@ -39,7 +39,7 @@ class Entities extends CI_Controller {
         }
 
         //Attempt to delete:
-        echo_json($this->Db_model->u_delete($u_id));
+        echo_json($this->Db_model->u_hard_delete($u_id));
     }
 
     function entity_load_more($inbound_u_id,$limit,$page){
@@ -254,6 +254,7 @@ class Entities extends CI_Controller {
                         'e_ur_id' => $ur1['ur_id'],
                         'e_inbound_c_id' => 7291, //Entity Link Create
                     ));
+
                 }
 
             }
@@ -287,6 +288,7 @@ class Entities extends CI_Controller {
         }
 
         if(!$is_url_input){
+
             //Add links only if not already added by the URL function:
             if($_POST['is_inbound']){
                 $ur_outbound_u_id = $current_us[0]['u_id'];
@@ -296,18 +298,24 @@ class Entities extends CI_Controller {
                 $ur_inbound_u_id = $current_us[0]['u_id'];
             }
 
-            //Link to new OR existing entity:
-            $ur2 = $this->Db_model->ur_create(array(
-                'ur_outbound_u_id' => $ur_outbound_u_id,
-                'ur_inbound_u_id' => $ur_inbound_u_id,
-            ));
+            //Let's make sure this is not the same as the secondary category:
+            if(!($_POST['secondary_parent_u_id']==$ur_inbound_u_id)){
+                //Link to new OR existing entity:
+                $ur2 = $this->Db_model->ur_create(array(
+                    'ur_outbound_u_id' => $ur_outbound_u_id,
+                    'ur_inbound_u_id' => $ur_inbound_u_id,
+                ));
 
-            //Insert engagement for creation:
-            $this->Db_model->e_create(array(
-                'e_inbound_u_id' => $udata['u_id'],
-                'e_ur_id' => $ur2['ur_id'],
-                'e_inbound_c_id' => 7291, //Entity Link Create
-            ));
+                //Insert engagement for creation:
+                $this->Db_model->e_create(array(
+                    'e_inbound_u_id' => $udata['u_id'],
+                    'e_ur_id' => $ur2['ur_id'],
+                    'e_inbound_c_id' => 7291, //Entity Link Create
+                ));
+            } else {
+                //This has already been added:
+                $ur2 = $ur1;
+            }
 
             //Update Algolia:
             $this->Db_model->algolia_sync('u',$ur_outbound_u_id);
@@ -587,7 +595,7 @@ class Entities extends CI_Controller {
 
             } else {
 
-                redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Login Denied. Mench Console v'.$website['version'].' support <a href="https://www.google.com/chrome/browser/" target="_blank"><u>Google Chrome</u></a> only.<br />Wanna know why? <a href="https://support.mench.com/hc/en-us/articles/115003469471"><u>Continue Reading</u> &raquo;</a></div>');
+                redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Login Denied. Mench Console v'.$website['version'].' support <a href="https://www.google.com/chrome/browser/" target="_blank"><u>Google Chrome</u></a> only.</div>');
                 return false;
 
             }

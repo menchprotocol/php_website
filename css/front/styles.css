@@ -13,13 +13,16 @@ body{ background-color: #FFF !important;}
 }
 
 
+
+
+
 #console_body .navbar-nav a:hover, #console_body .navbar-nav a:focus {
     background-color: #FFF !important;
     color: #2f2739 !important;
 }
 
 #console_body .navbar-nav a {
-    color: #FFF !important;
+    color: #FFF;
     background-color: #2f2739;
 }
 
@@ -432,6 +435,33 @@ input::-webkit-inner-spin-button {
     font-size: 1em;
     text-decoration: underline;
 }
+.entities-msg{
+    background-color: #EFEFEF;
+    border-radius: 5px;
+    margin-bottom: 0px;
+    padding-bottom: 10px;
+}
+.entities-msg>h4{
+    padding: 10px;
+    margin:15px 0 0 5px;
+}
+.entities-msg>h4>.fas{
+    font-size:1.2em;
+}
+.entities-msg>h4>a{
+    font-size:1.2em;
+    font-weight:300 !important;
+    text-decoration: none !important;
+    border-bottom: 1px dotted #666;
+}
+.entities-msg>div{
+    margin:0 10px 0 10px;
+    padding:10px;
+    background-color: #fff;
+    border-radius: 5px;
+}
+
+
 
 
 .inline_block{display:inline-block;}
@@ -2255,4 +2285,18 @@ margin:5px 0;
     cursor: -webkit-grab;
     padding: 12px 10px;
     margin: -10px -7px -10px -10px;
+}
+
+
+.intent-active a, .intent-active a:hover, .intent-active a:focus {
+    background-color: #fedd16 !important;
+    color: #2f2739 !important;
+    cursor: default !important;
+}
+
+
+.entity-active > a, .entity-active > a:hover, .entity-active > a:focus {
+    background-color: #0084ff !important;
+    color: #fff !important;
+    cursor: default !important;
 }

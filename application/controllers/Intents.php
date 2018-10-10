@@ -59,6 +59,20 @@ class Intents extends CI_Controller
         $this->load->view('console/console_footer');
     }
 
+
+    function hard_delete($c_id){
+        $udata = $this->session->userdata('user');
+        if(!array_key_exists(1281, $udata['u__inbounds'])){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Session expired',
+            ));
+        }
+
+        //Attempt to delete:
+        echo_json($this->Db_model->c_hard_delete($c_id));
+    }
+
     function orphan(){
 
         //Authenticate level 2 or higher, redirect if not:

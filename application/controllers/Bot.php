@@ -11,36 +11,6 @@ class Bot extends CI_Controller {
     }
 
 
-    function a(){
-        echo_json($this->Db_model->c_recursive_fetch(6898));
-    }
-
-    function g(){
-
-        $us = $this->Db_model->u_fetch(array(
-            'u_id NOT IN (1372,1365,
-2733,
-2531,
-2735,
-2734,
-1370,
-2647,
-1366)' => null,
-        ), array('skip_u__inbounds'));
-
-        foreach($us as $u){
-            $this->Db_model->ur_create(array(
-                'ur_outbound_u_id' => $u['u_id'],
-                'ur_inbound_u_id' => 1278,
-            ));
-        }
-
-        echo 'done';
-
-    }
-
-
-
     function url(){
         echo '<div><form action=""><input type="url" name="url" value="'.@$_GET['url'].'" style="width:400px;"> <input type="submit" value="Go"></form></div>';
         $curl = curl_html($_GET['url'],true);

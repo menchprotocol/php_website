@@ -64,7 +64,7 @@ $uri_segment_2 = $this->uri->segment(2);
 					<span class="navbar-brand dashboard-logo">
                         <table style="width: 100%; border:0; padding:0; margin:0;">
                             <tr>
-                                <td style="width:40px;"><img src="/img/bp_128.png" /></td>
+                                <td style="width:40px;"><img src="//theme.zdassets.com/theme_assets/2085893/cabe5e69ca093a3e91eadfb22bc5bee28d66cdeb.png" /></td>
                                 <td><input type="text" id="console_search" data-lpignore="true" placeholder="Search..."></td>
                             </tr>
                         </table>
@@ -74,8 +74,8 @@ $uri_segment_2 = $this->uri->segment(2);
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-main navbar-right">
 
-                        <li <?= ( $uri_segment_1=='intents' ? 'class="active"' : '' ) ?>><a href="/intents"><i class="fas fa-hashtag"></i> Intents</a></li>
-                        <li <?= ( $uri_segment_1=='entities' ? 'class="active"' : '' ) ?>><a href="/entities"><i class="fas fa-at"></i> Entities</a></li>
+                        <li <?= ( $uri_segment_1=='intents' ? 'class="intent-active"' : '' ) ?>><a href="/intents"><i class="fas fa-hashtag"></i> Intents</a></li>
+                        <li <?= ( $uri_segment_1=='entities' ? 'class="entity-active"' : '' ) ?>><a href="/entities"><i class="fas fa-at"></i> Entities</a></li>
 
 
                         <li class="extra-toggle"><a href="javascript:void(0);" onclick="$('.extra-toggle').toggle();">&nbsp; <i class="fas fa-ellipsis-h"></i> &nbsp;</a></li>

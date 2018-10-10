@@ -17,6 +17,40 @@ class Cron extends CI_Controller {
         echo_json($this->Db_model->algolia_sync($obj,$obj_id));
     }
 
+    function list_duplicate_cs(){
+
+        $q = $this->db->query('select c1.* from v5_intents c1 where (select count(*) from v5_intents c2 where c2.c_outcome = c1.c_outcome) > 1 ORDER BY c1.c_outcome ASC');
+        $duplicates = $q->result_array();
+
+
+        $prev_title = null;
+        foreach($duplicates as $c){
+            if($prev_title!=$c['c_outcome']){
+                echo '<hr />';
+                $prev_title = $c['c_outcome'];
+            }
+
+            echo '<a href="/intents/'.$c['c_id'].'">#'.$c['c_id'].'</a> '.$c['c_outcome'].'<br />';
+        }
+    }
+
+    function list_duplicate_us(){
+
+        $q = $this->db->query('select u1.* from v5_entities u1 where (select count(*) from v5_entities u2 where u2.u_full_name = u1.u_full_name) > 1 ORDER BY u1.u_full_name ASC');
+        $duplicates = $q->result_array();
+
+
+        $prev_title = null;
+        foreach($duplicates as $u){
+            if($prev_title!=$u['u_full_name']){
+                echo '<hr />';
+                $prev_title = $u['u_full_name'];
+            }
+
+            echo '<a href="/entities/'.$u['u_id'].'">#'.$u['u_id'].'</a> '.$u['u_full_name'].'<br />';
+        }
+    }
+
     /* ******************************
      * Classes
      ****************************** */

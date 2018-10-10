@@ -67,7 +67,7 @@ function echo_x($u, $x){
 
     //Regular section:
     $ui .= '<a href="'.$x['x_url'].'" target="_blank" '.( strlen($x['x_url'])>0 && !($x['x_url']==$x['x_url']) ? '' : '' ).'>';
-    $ui .= '<span class="url_truncate">'.echo_clean_url($x['x_url']).'</span>';
+    $ui .= '<span class="url_truncate"><i class="fas fa-link" style="margin-right:3px;"></i>'.echo_clean_url($x['x_url']).'</span>';
 
     //Is this a social URL?
     foreach($social_urls as $url=>$fa_icon){
@@ -95,7 +95,10 @@ function echo_x($u, $x){
 
 function echo_u($u, $level, $can_edit, $is_inbound=false){
 
+    $CI =& get_instance();
+    $udata = $CI->session->userdata('user');
     $ui = null;
+
     $ui .= '<div id="u_'.$u['u_id'].'" entity-id="'.$u['u_id'].'" is-inbound="'.( $is_inbound ? 1 : 0 ).'" class="list-group-item u-item '.( $level==1 ? 'top_entity' : 'ur_'.$u['ur_id'] ).'">';
 
     //Right content:
@@ -103,7 +106,9 @@ function echo_u($u, $level, $can_edit, $is_inbound=false){
 
     if($can_edit) {
 
-        if($level==2){
+        if($level==1 && array_key_exists(1281, $udata['u__inbounds'])){
+            $ui .= '<a class="badge badge-secondary" href="javascript:u_delete('.$u['u_id'].')" style="margin:-2px 3px 0 0; width:40px;"><i class="fas fa-trash-alt"></i></a>';
+        } elseif($level==2){
             $ui .= '<a class="badge badge-secondary" href="javascript:ur_unlink('.$u['ur_id'].')" style="margin:-2px 3px 0 0; width:40px;"><i class="fas fa-trash-alt"></i></a>';
         }
 
@@ -127,7 +132,6 @@ function echo_u($u, $level, $can_edit, $is_inbound=false){
     if($level==1){
 
         //Regular section:
-        $CI =& get_instance();
         $ui .= echo_cover($u, 'profile-icon2');
         $ui .= '<b id="u_title" class="u_full_name">' . $u['u_full_name'] . '</b>';
         $ui .= ' <span class="obj-id">@' . $u['u_id'] . '</span>';
@@ -212,6 +216,7 @@ function echo_tip($c_id){
 
 
 function echo_min_from_sec($sec_int){
+    $sec_int = intval($sec_int);
     $min = 0;
     $sec = fmod($sec_int,60);
     if($sec_int>=60){
@@ -353,7 +358,8 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
     $button_url = null;
     $button_title = null;
     $command = null;
-
+    $is_entity = ( $CI->uri->segment(1)=='entities' );
+    $is_intent = ( $CI->uri->segment(1)=='intents' );
 
 
     if(!$fb_format){
@@ -366,6 +372,15 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
         $fb_message = array();
     }
 
+    //Is it being displayed under entities? Show the original intent as well:
+    if($is_entity && !$fb_format){
+        $original_cs = $CI->Db_model->c_fetch(array(
+            'c_id' => $i['i_outbound_c_id'],
+        ));
+        if(count($original_cs)>0){
+            $i['i_message'] = '<div class="entities-msg"><h4><i class="fas fa-hashtag"></i> <a href="/intents/'.$i['i_outbound_c_id'].'#messages-'.$i['i_outbound_c_id'].'">'.$original_cs[0]['c_outcome'].'<span class="badge badge-primary" style="display:inline-block; margin-left:3px; width:40px;"><i class="fas fa-sign-out-alt rotate90"></i></span></a></h4><div>'.$i['i_message'].'</div></div>';
+        }
+    }
 
     //Does this have a entity reference?
     if($i['i_outbound_u_id']>0){
@@ -376,26 +391,33 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
             'u_id' => $i['i_outbound_u_id'],
         ), array('skip_u__inbounds'));
 
+        if(count($us)>0){
+            //Does it have a /slice command?
+            $time_range = array();
+            $found_embeddable = false;
+            $button_title = 'Open Entity';
+            if(substr_count($i['i_message'],'/slice')>0){
+                $time_range = explode(':', one_two_explode('/slice:',' ',$i['i_message']) ,2);
+                $button_url = '/entities/'.$us[0]['u_id'].'?skip_header=1&start='.$time_range[0].'&end='.$time_range[1].'#urls';
+                //Replace it with proper text:
+                $i['i_message'] = str_replace('/slice:'.$time_range[0].':'.$time_range[1], '(from '.($time_range[0] ? echo_min_from_sec($time_range[0]) : 'start').' to '.echo_min_from_sec($time_range[1]).')', $i['i_message']);
+            } else {
+                $button_url = '/entities/'.$us[0]['u_id'].'?skip_header=1#urls';
+            }
 
-        //Does it have a /slice command?
-        $time_range = array();
-        $found_embeddable = false;
-        $button_title = 'Open Entity';
-        if(substr_count($i['i_message'],'/slice')>0){
-            $time_range = explode(':', one_two_explode('/slice:',' ',$i['i_message']) ,2);
-            $button_url = '/entities/'.$us[0]['u_id'].'?affirm_c='.$i['i_inbound_c_id'].'&skip_header=1&start='.$time_range[0].'&end='.$time_range[1].'#urls';
-            //Replace it with proper text:
-            $i['i_message'] = str_replace('/slice:'.$time_range[0].':'.$time_range[1], '(from '.($time_range[0] ? echo_min_from_sec($time_range[0]) : 'start').' to '.echo_min_from_sec($time_range[1]).')', $i['i_message']);
-        } else {
-            $button_url = '/entities/'.$us[0]['u_id'].'?affirm_c='.$i['i_inbound_c_id'].'&skip_header=1#urls';
+            if($fb_format){
+                $i['i_message'] = str_replace('@'.$i['i_outbound_u_id'], '['.$us[0]['u_full_name'].']', $i['i_message']);
+            } elseif(!$fb_format && $is_intent) {
+                //HTML format:
+                $i['i_message'] = str_replace('@'.$i['i_outbound_u_id'], '<a href="javascript:void(0);" onclick="url_modal(\''.$button_url.'\')">'.$us[0]['u_full_name'].echo_social_profiles($CI->Db_model->x_social_fetch($i['i_outbound_u_id'])).'</a>', $i['i_message']);
+            } elseif(!$fb_format && $is_entity) {
+                //HTML format:
+                $i['i_message'] = str_replace('@'.$i['i_outbound_u_id'], '<b>'.$us[0]['u_full_name'].echo_social_profiles($CI->Db_model->x_social_fetch($i['i_outbound_u_id'])).'</b>', $i['i_message']);
+            } else {
+                //TODO landing page message
+            }
         }
 
-        if($fb_format){
-            $i['i_message'] = str_replace('@'.$i['i_outbound_u_id'], '['.$us[0]['u_full_name'].']', $i['i_message']);
-        } else {
-            //HTML format:
-            $i['i_message'] = str_replace('@'.$i['i_outbound_u_id'], '<a href="javascript:void(0);" onclick="url_modal(\''.$button_url.'\')">'.$us[0]['u_full_name'].echo_social_profiles($CI->Db_model->x_social_fetch($i['i_outbound_u_id'])).'</a>', $i['i_message']);
-        }
     }
 
 
@@ -409,9 +431,11 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
 
         if($fb_format){
             $i['i_message'] = str_replace('#'.$i['i_inbound_c_id'], '['.$cs[0]['c_outcome'].']', $i['i_message']);
-        } else {
+        } elseif($is_intent || $is_entity) {
             //HTML format:
             $i['i_message'] = str_replace('#'.$i['i_inbound_c_id'], '<a href="javascript:void(0);" onclick="url_modal(\'/intents/'.$cs[0]['c_id'].'?skip_header=1\')">'.$cs[0]['c_outcome'].'</a>', $i['i_message']);
+        } else {
+            //TODO landing page message
         }
     }
 
@@ -884,12 +908,14 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
     //Right content
     $ui .= '<span class="pull-right" style="'.( $level<3 ? 'margin-right: 8px;' : '' ).'">';
 
-    $ui .= '<i class="c_is_any_icon'.$c['c_id'].' '.( $c['c_is_any'] ? 'fas fa-code-merge' : 'fas fa-sitemap' ).'" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i>';
+    if($level==1 && array_key_exists(1281, $udata['u__inbounds'])){
+        $ui .= '<a class="badge badge-primary" href="javascript:c_delete('.$c['c_id'].')" style="margin:-2px 3px 0 0; width:40px;"><i class="fas fa-trash-alt"></i></a>';
+    }
 
 
     $ui .= '<a href="#messages-'.$c['c_id'].'" onclick="i_load_frame('.$c['c_id'].')" class="badge badge-primary" style="width:40px;" title="'.$c['c__tree_messages'].' Messages in tree"><span class="btn-counter" id="messages-counter-'.$c['c_id'].'">'.$c['c__this_messages'].'</span><i class="fas fa-comment-dots"></i></a>';
 
-    $ui .= '<a class="badge badge-primary" onclick="load_modify('.$c['c_id'].','.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).')" style="margin:-2px -8px 0 2px; width:40px;" href="#modify-'.$c['c_id'].'-'.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).'"><span class="btn-counter">'.echo_estimated_time($c['c__tree_hours'],0,1, $c['c_id'], $c['c_time_estimate']).'</span><i class="fas fa-cog"></i></a> &nbsp;';
+    $ui .= '<a class="badge badge-primary" onclick="load_modify('.$c['c_id'].','.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).')" style="margin:-2px -8px 0 2px; width:40px;" href="#modify-'.$c['c_id'].'-'.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).'"><span class="btn-counter">'.echo_estimated_time($c['c__tree_hours'],0,1, $c['c_id'], $c['c_time_estimate']).'</span><i class="c_is_any_icon'.$c['c_id'].' '.( $c['c_is_any'] ? 'fas fa-code-merge' : 'fas fa-sitemap' ).'" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i></a> &nbsp;';
 
 
     $ui .= '&nbsp;<'.( $level>1 || $c['c__is_orphan'] ? 'a href="/intents/'.$c['c_id'].( $is_inbound ? '#inbound' : '' ).'" class="badge badge-primary"' :'span class="badge badge-primary grey"').' style="display:inline-block; margin-right:-1px; width:40px;"><span class="btn-counter outbound-counter-'.$c['c_id'].'">'.($c['c__tree_inputs']+$c['c__tree_outputs']-1).'</span><i class="'.( $is_inbound ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></'.( $level>1 || $c['c__is_orphan'] ? 'a' :'span').'> ';
@@ -903,7 +929,7 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
 
 
     //Sorting & Then Left Content:
-    if($level>1 && !$is_inbound) {
+    if($level>1 && (!$is_inbound || $level==3)) {
         $ui .= '<i class="fas fa-bars"></i> &nbsp;';
     }
 
@@ -923,7 +949,9 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
 
         $ui .= '<a href="javascript:ms_toggle('.$c['cr_id'].');"><i id="handle-'.$c['cr_id'].'" class="fal fa-plus-square"></i></a> &nbsp;';
 
-        $ui .= '<span class="inline-level-'.$level.'">#'.$c['cr_outbound_rank'].'</span> ';
+        if(!$is_inbound){
+            $ui .= '<span class="inline-level-'.$level.'">#'.$c['cr_outbound_rank'].'</span> ';
+        }
         $ui .= '<i class="c_is_output_icon'.$c['c_id'].' '.( $c['c_is_output'] ? 'fas fa-check-square' : 'fas fa-lightbulb-on' ).'" style="width:20px; text-align:center;"></i>';
         $ui .= '</span>';
 

@@ -150,12 +150,6 @@ $udata = $this->session->userdata('user');
             </div>
 
         </div>
-
-        <div class="row">
-            <div class="col-md-12">
-                <p><a href="https://support.mench.com/hc/en-us/articles/115002079731">Read More Testimonials &raquo;</a></p>
-            </div>
-        </div>
     </div>
 
 	

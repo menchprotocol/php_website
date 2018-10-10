@@ -23,16 +23,27 @@ class Db_model extends CI_Model {
 	}
 
 
+    function w_fetch($match_columns){
+        //Fetch the target gems:
+        $this->db->select('*');
+        $this->db->from('v5_subscriptions w');
+        foreach($match_columns as $key=>$value){
+            $this->db->where($key,$value);
+        }
+        $q = $this->db->get();
+        return $q->result_array();
+    }
+
     function t_fetch($match_columns){
-	    //Fetch the target gems:
-	    $this->db->select('*');
-	    $this->db->from('v5_transactions t');
-	    foreach($match_columns as $key=>$value){
-	        $this->db->where($key,$value);
-	    }
-	    $q = $this->db->get();
-	    return $q->result_array();
-	}
+        //Fetch the target gems:
+        $this->db->select('*');
+        $this->db->from('v5_transactions t');
+        foreach($match_columns as $key=>$value){
+            $this->db->where($key,$value);
+        }
+        $q = $this->db->get();
+        return $q->result_array();
+    }
 	
 	function il_fetch($match_columns){
 	    //Fetch the target gems:
@@ -46,7 +57,7 @@ class Db_model extends CI_Model {
 	    return $q->result_array();
 	}
 	
-	function il_overview_fetch(){
+	function fetch_il_overview(){
 	    //Fetches an overview of Udemy Community
 	    $this->db->select('COUNT(il_id) as total_coaches, SUM(il_course_count) as total_courses, SUM(il_student_count) as total_students, SUM(il_review_count) as total_reviews, il_udemy_category');
 	    $this->db->from('v5_leads il');
@@ -189,7 +200,68 @@ class Db_model extends CI_Model {
 	    return $insert_columns;
 	}
 
-	function u_delete($u_id){
+    function c_hard_delete($c_id){
+
+        if(intval($c_id)<0){
+            return array(
+                'status' => 0,
+                'message' => 'Missing input ID',
+            );
+        }
+
+        //Validate user exists:
+        $intents = $this->Db_model->c_fetch(array(
+            'c_id' => $c_id,
+        ));
+
+        if(!(count($intents)==1)){
+            return array(
+                'status' => 0,
+                'message' => 'Intent Not Found in DB',
+            );
+        }
+
+        //Check transactions:
+        $subscriptions = $this->Db_model->w_fetch(array(
+            'w_c_id' => $c_id,
+            'w_status >=' => 0,
+        ));
+        if(count($subscriptions)>0){
+            return array(
+                'status' => 0,
+                'message' => 'Cannot delete because there are '.count($subscriptions).' active subscriptions',
+                'subscriptions' => $subscriptions,
+                'c' => $intents[0],
+            );
+        }
+
+        $delete_stats = array();
+
+        //Start removal process by deleting engagements:
+        $this->db->query("DELETE FROM v5_engagements WHERE e_inbound_c_id=".$c_id." OR e_outbound_c_id=".$c_id);
+        $delete_stats['v5_engagements'] = $this->db->affected_rows();
+
+        $this->db->query("DELETE FROM v5_messages WHERE i_outbound_c_id=".$c_id);
+        $delete_stats['v5_messages'] = $this->db->affected_rows();
+
+        $this->db->query("DELETE FROM v5_subscriptions WHERE w_c_id=".$c_id);
+        $delete_stats['v5_subscriptions'] = $this->db->affected_rows();
+
+        $this->db->query("DELETE FROM v5_intents WHERE c_id=".$c_id);
+        $delete_stats['v5_intents'] = $this->db->affected_rows();
+
+        $this->db->query("DELETE FROM v5_intent_links WHERE (cr_inbound_c_id=".$c_id." OR cr_outbound_c_id=".$c_id.")");
+        $delete_stats['v5_intent_links'] = $this->db->affected_rows();
+
+        return array(
+            'status' => 1,
+            'stats' => $delete_stats,
+            'c' => $intents[0],
+        );
+
+    }
+
+    function u_hard_delete($u_id){
 
         if(intval($u_id)<0){
             return array(
@@ -198,7 +270,7 @@ class Db_model extends CI_Model {
             );
         }
 
-	    //Validate user exists:
+        //Validate user exists:
         $users = $this->Db_model->u_fetch(array(
             'u_id' => $u_id,
         ));
@@ -228,20 +300,19 @@ class Db_model extends CI_Model {
             );
         }
 
-        //Check enrollments:
-        $enrollments = $this->Db_model->ru_fetch(array(
-            'ru.ru_outbound_u_id' => $u_id,
+
+        //Check subscriptions:
+        $subscriptions = $this->Db_model->w_fetch(array(
+            '(w_inbound_u_id='.$u_id.' OR w_outbound_u_id='.$u_id.')' => null,
+            'w_status >=' => 0,
         ));
-        if(count($enrollments)>0){
-            foreach($enrollments as $enrollment){
-                if($enrollment['ru_status']==4){
-                    return array(
-                        'status' => 0,
-                        'message' => 'Cannot delete because they have active enrollment',
-                        'user' => $users[0],
-                    );
-                }
-            }
+        if(count($subscriptions)>0){
+            return array(
+                'status' => 0,
+                'message' => 'Cannot delete because there are '.count($subscriptions).' active subscriptions',
+                'subscriptions' => $subscriptions,
+                'u' => $users[0],
+            );
         }
 
         $delete_stats = array();
@@ -250,14 +321,20 @@ class Db_model extends CI_Model {
         $this->db->query("DELETE FROM v5_engagements WHERE e_inbound_u_id=".$u_id." OR e_outbound_u_id=".$u_id);
         $delete_stats['v5_engagements'] = $this->db->affected_rows();
 
-        $this->db->query("DELETE FROM v5_class_students WHERE ru_outbound_u_id=".$u_id);
-        $delete_stats['v5_class_students'] = $this->db->affected_rows();
+        $this->db->query("DELETE FROM v5_messages WHERE i_outbound_u_id=".$u_id);
+        $delete_stats['v5_messages'] = $this->db->affected_rows();
+
+        $this->db->query("DELETE FROM v5_subscriptions WHERE w_outbound_u_id=".$u_id);
+        $delete_stats['v5_subscriptions'] = $this->db->affected_rows();
+
+        $this->db->query("DELETE FROM v5_urls WHERE x_outbound_u_id=".$u_id);
+        $delete_stats['v5_urls'] = $this->db->affected_rows();
 
         $this->db->query("DELETE FROM v5_entities WHERE u_id=".$u_id);
         $delete_stats['v5_entities'] = $this->db->affected_rows();
 
         $this->db->query("DELETE FROM v5_entity_links WHERE (ur_inbound_u_id=".$u_id." OR ur_outbound_u_id=".$u_id.")");
-        $delete_stats['v5_entities'] = $this->db->affected_rows();
+        $delete_stats['v5_entity_links'] = $this->db->affected_rows();
 
         return array(
             'status' => 1,
@@ -266,7 +343,7 @@ class Db_model extends CI_Model {
         );
 
     }
-	
+
 	function u_create($insert_columns){
 
         if(missing_required_db_fields($insert_columns,array('u_full_name'))){
@@ -662,7 +739,7 @@ class Db_model extends CI_Model {
 
 
 
-    function c_fetch($match_columns, $outbound_levels=0, $join_objects=array()){
+    function c_fetch($match_columns, $outbound_levels=0, $join_objects=array(), $order_columns=array(), $limit=0){
 
         //The basic fetcher for intents
         $this->db->select('*');
@@ -672,6 +749,14 @@ class Db_model extends CI_Model {
         }
         foreach($match_columns as $key=>$value){
             $this->db->where($key,$value);
+        }
+        if(count($order_columns)>0){
+            foreach($order_columns as $key=>$value){
+                $this->db->order_by($key,$value);
+            }
+        }
+        if($limit>0){
+            $this->db->limit($limit);
         }
         $q = $this->db->get();
         $intents = $q->result_array();
@@ -1562,7 +1647,7 @@ class Db_model extends CI_Model {
                         $html_message .= '<br />';
                         $html_message .= '<div>Cheers,</div>';
                         $html_message .= '<div>Mench Engagement Watcher</div>';
-                        $html_message .= '<div style="font-size:0.8em;">Engagement <a href="https://mench.com/api_v1/ej_list/'.$engagements[0]['e_id'].'">#'.$engagements[0]['e_id'].'</a></div>';
+                        $html_message .= '<div style="font-size:0.8em;">Engagement <a href="https://mench.com/cockpit/ej_list/'.$engagements[0]['e_id'].'">#'.$engagements[0]['e_id'].'</a></div>';
 
                         //Send email:
                         $this->Comm_model->send_email($subscription['admin_emails'], $subject, $html_message);

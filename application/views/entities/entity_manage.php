@@ -146,6 +146,15 @@ $tabs = array(
         });
     }
 
+    function u_delete(u_id){
+        var r = confirm("Are you sure you want to PERMANENTLY delete this entity and all its associated URLs, Messages, etc...?");
+        if (!(r == true)) {
+            return false;
+        }
+
+        window.location = "/entities/hard_delete/"+u_id;
+    }
+
     $(document).ready(function () {
 
         if (!window.location.hash) {
@@ -221,7 +230,7 @@ $tabs = array(
             source: function (q, cb) {
                 algolia_u_index.search(q, {
                     hitsPerPage: 7,
-                    tagFilters:[['u2750','u1278','u2738']] //Only search People & Organizations
+                    //tagFilters:[['u2750','u1278','u2738','u3000']] //Only search People & Organizations & Entity Types
                 }, function (error, content) {
                     if (error) {
                         cb([]);

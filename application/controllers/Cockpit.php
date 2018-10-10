@@ -35,6 +35,23 @@ class Cockpit extends CI_Controller {
         ));
         $this->load->view('console/console_footer');
     }
+
+
+    function ej_list($e_id){
+        $udata = auth(array(1281),1);
+        //Fetch blob of engagement and display it on screen:
+        $blobs = $this->Db_model->e_fetch(array(
+            'ej_e_id' => $e_id,
+        ),1,array('ej'));
+        if(count($blobs)==1){
+            echo_json(array(
+                'blob' => unserialize($blobs[0]['ej_e_blob']),
+                'e' => $blobs[0]
+            ));
+        } else {
+            echo_json(array('error'=>'Not Found'));
+        }
+    }
 	
 	function udemy(){
 
@@ -76,7 +93,7 @@ class Cockpit extends CI_Controller {
 	            ),
 	        ));
 	        $this->load->view('console/cockpit/udemy_all' , array(
-	            'il_overview' => $this->Db_model->il_overview_fetch(),
+	            'il_overview' => $this->Db_model->fetch_il_overview(),
 	        ));
 	        $this->load->view('console/console_footer');
 	        

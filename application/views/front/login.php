@@ -47,9 +47,5 @@
 	    </form>
 
         <div id="pass_reset"></div>
-	<br />
-	
-	<div class="extra-info">
-        <p>Are you an Industry Expert? <a href="/launch">Start Here</a></p>
-	</div>
+        <br />
 </div>

@@ -132,7 +132,7 @@ echo '</form>';
             }
 
             echo '</td>';
-            echo '<td style="text-align:center !important;">'.( $e['e_has_blob']=='t' ? '<a href="/api_v1/ej_list/'.$e['e_id'].'" target="_blank" data-toggle="tooltip" title="Analyze Engagement JSON Blob in a new window" data-placement="left"><i class="fas fa-search-plus" id="icon_'.$e['e_id'].'"></i></a>' : '' ).'</td>';
+            echo '<td style="text-align:center !important;">'.( $e['e_has_blob']=='t' ? '<a href="/cockpit/ej_list/'.$e['e_id'].'" target="_blank" data-toggle="tooltip" title="Analyze Engagement JSON Blob in a new window" data-placement="left"><i class="fas fa-search-plus" id="icon_'.$e['e_id'].'"></i></a>' : '' ).'</td>';
             echo '</tr>';
         }
         ?>

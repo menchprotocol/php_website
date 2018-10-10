@@ -658,7 +658,13 @@ if(isset($orphan_cs)){
     }
 
 
-
+    function c_delete(c_id){
+        var r = confirm("Are you sure you want to PERMANENTLY delete this intent and all its associated Links, Messages, etc...?");
+        if (!(r == true)) {
+            return false;
+        }
+        window.location = "/intents/hard_delete/"+c_id;
+    }
 
 
 
@@ -919,13 +925,13 @@ if(isset($orphan_cs)){
                 <div class="title"><h4><i class="fas fa-check-circle"></i> Completion Method</h4></div>
                 <div class="form-group label-floating is-empty">
 
-                    <div class="radio" style="display:inline-block; border-bottom:1px dotted #999; margin-right:10px; margin-top: 0 !important;" data-toggle="tooltip" title="Intent is completed when ALL immediate child intents are marked as complete" data-placement="right">
+                    <div class="radio" style="display:inline-block; border-bottom:1px dotted #999; margin-right:10px; margin-top: 0 !important;" data-toggle="tooltip" title="Intent is completed when ALL outbound intents are marked as complete" data-placement="right">
                         <label>
                             <input type="radio" name="c_is_any" value="0" />
                             <i class="fas fa-sitemap"></i> All
                         </label>
                     </div>
-                    <div class="radio" style="display: inline-block; border-bottom:1px dotted #999; margin-top: 0 !important;" data-toggle="tooltip" title="Intent is completed when ANY single one of the immediate child intents are marked as complete" data-placement="right">
+                    <div class="radio" style="display: inline-block; border-bottom:1px dotted #999; margin-top: 0 !important;" data-toggle="tooltip" title="Intent is completed when ANY single one of the outbound intents are marked as complete" data-placement="right">
                         <label>
                             <input type="radio" name="c_is_any" value="1" />
                             <i class="fas fa-code-merge"></i> Any

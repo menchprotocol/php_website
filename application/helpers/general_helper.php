@@ -707,7 +707,8 @@ function arrayToObject($array){
 }
 
 function extract_references($prefix,$message){
-    $words = explode(' ',trim($message));
+    //$words = explode(' ',trim($message));
+    $words = preg_split('/[\s]+/', trim($message) );
     $matches = array();
     foreach ($words as $word){
         if(substr($word,0,1)==$prefix){
@@ -787,7 +788,7 @@ function message_validation($i_status,$i_message,$i_outbound_c_id){
     } elseif((count($u_ids)==0 && count($urls)==0) && substr_count($i_message,'/slice')>0){
         return array(
             'status' => 0,
-            'message' => '/slice command required an entity reference',
+            'message' => '/slice command required an entity reference [@'.count($u_ids).']',
         );
     } elseif(count($c_ids)>1){
         return array(
