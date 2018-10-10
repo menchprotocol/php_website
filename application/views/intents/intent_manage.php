@@ -168,8 +168,11 @@ if(isset($orphan_cs)){
             }
         });
 
+        load_level3_search();
 
+    });
 
+    function load_level3_search(){
 
         $(".intentadder-level-3").on('autocomplete:selected', function(event, suggestion, dataset) {
 
@@ -211,9 +214,7 @@ if(isset($orphan_cs)){
             }
         });
 
-    });
-
-
+    }
 
 
     function c_sort(c_id,level){
@@ -719,6 +720,9 @@ if(isset($orphan_cs)){
 
                     //Re-adjust sorting for inner Steps:
                     load_intent_sort(data.c_id,3);
+
+                    //Load search again:
+                    load_level3_search();
 
                 } else {
                     //Adjust Step sorting:
