@@ -40,58 +40,6 @@ $messages = $this->Db_model->i_fetch(array(
 ));
 
 
-//Construct main menu
-//should correspond to the manually written code below for each tab with the data fetched above
-$tabs = array(
-    'outbound' => array(
-        'title' => 'Outs',
-        'icon' => 'fas fa-sign-out-alt rotate90',
-        'item_count' => $entity['u__outbound_count'],
-        'always_access' => ( $entity_type!=1326 ),
-    ),
-    'urls' => array(
-        'title' => 'URLs',
-        'icon' => 'fas fa-link',
-        'item_count' => count($entity['u__urls']),
-        'always_access' => ( !in_array($entity['u_id'], array(2738,1278,1326,2750)) ),
-    ),
-    'inbound' => array(
-        'title' => 'Ins',
-        'icon' => 'fas fa-sign-in-alt',
-        'item_count' => count($entity['u__inbounds']),
-        'always_access' => ( $entity['u_id']!=2738 ),
-    ),
-    'subscriptions' => array(
-        'title' => 'Subscriptions',
-        'icon' => 'fas fa-comment-plus',
-        'item_count' => count($enrollments),
-        'always_access' => 0,
-    ),
-    'training' => array(
-        'title' => 'Training',
-        'icon' => 'fas fa-whistle',
-        'item_count' => count($b_team_member),
-        'always_access' => 0, //Only show if entity has trained any intents. Admins cannot modify this anyways...
-    ),
-    'messages' => array(
-        'title' => 'Messages',
-        'icon' => 'fas fa-comment-dots',
-        'item_count' => count($messages),
-        'always_access' => 0, //Only show if entity has added any messages. Admins cannot modify this anyways...
-    ),
-    'payments' => array(
-        'title' => 'Payments',
-        'icon' => 'fab fa-paypal',
-        'item_count' => count($payments),
-        'always_access' => 0, //Only show if entity has sent/received payments. Admins cannot modify this anyways...
-    ),
-);
-
-
-
-
-
-
 
 
 
@@ -156,18 +104,6 @@ $tabs = array(
     }
 
     $(document).ready(function () {
-
-        if (!window.location.hash) {
-            //Mark the first non-hidden item as active:
-            var focus = $('#topnav li:not(.hidden,.add-new):first');
-            focus.addClass('active');
-            $('#tab'+focus.attr('item-id')).addClass('active');
-        }
-
-        //Detect any possible hashes that controll the menu?
-        if (window.location.hash) {
-            focus_hash(window.location.hash);
-        }
 
         //Watch for Reference adding:
         $('#add_url_input').keydown(function (event) {
@@ -528,87 +464,18 @@ echo '</div>';
 
 
 
-//Menu
-echo '<ul id="topnav" class="nav nav-pills nav-pills-secondary">';
-
-    //Go through all tabs and see wassup:
-    $needs_adding = array();
-    foreach ($tabs as $key => $tab) {
-
-        echo '<li id="nav_'.$key.'" class="'.( $tab['item_count']>0 ? '' : 'hidden' ).'" item-id="'.$key.'"><a href="#'.$key.'"><i class="'.$tab['icon'].'"></i> <span class="li-'.$key.'-count">'.$tab['item_count'].'</span> '.$tab['title'].'</a></li>';
-
-        if($tab['item_count']==0 && $tab['always_access']){
-            //Add this so we can show it in the "add new section" drop down list:
-            $needs_adding[$key] = $tab;
-        }
-    }
-
-    if(count($needs_adding)>0){
-        //Show an option to add:
-        echo '<div class="btn-group add-group" style="margin:-5px 0 0 5px;" add-counter="'.count($needs_adding).'">
-  <button type="button" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background: none; border: 0; font-size: 0.8em;">
-    <i class="fas fa-plus-circle"></i> 
-  </button>
-  <ul class="dropdown-menu dropdown-menu-secondary">';
-
-        foreach ($needs_adding as $key => $tab) {
-            echo '<li id="nav_add_'.$key.'" class="add-new"><a href="#'.$key.'" onclick="add_section(\''.$key.'\');"><i class="'.$tab['icon'].'"></i> '.$tab['title'].'</a></li>';
-        }
-        echo '</ul></div>';
-    }
-
-echo '</ul>';
-
-echo '<div class="tab-content tab-space">';
-
-    echo '<div class="tab-pane '.( !$tabs['outbound']['item_count'] ? 'hidden' : '' ).'" id="taboutbound">';
-    echo '<div id="list-outbound" class="list-group grey-list">';
-
-        foreach ($child_entities as $u) {
-            echo echo_u($u, 2, $can_edit_outbound);
-        }
-
-        if ($entity['u__outbound_count'] > count($child_entities)) {
-            echo_next_u(1, $entities_per_page, $entity['u__outbound_count']);
-        }
-
-        //Input to add new inbounds:
-        if ($can_edit_outbound) {
-            echo '<div id="new-outbound" class="list-group-item list_input grey-input">
-                    <div class="input-group">
-                        <div class="form-group is-empty"><input type="text" class="form-control new-input" placeholder="Add '.$add_name.' by Name/URL"></div>
-                        <span class="input-group-addon">
-                            <a class="badge badge-secondary new-btn" href="javascript:add_u_link(0,'.$add_id.');">ADD</a>
-                        </span>
-                    </div>
-                </div>';
-        }
-
-    echo '</div>';
-    echo '</div>';
-
-
-
-
-
-
-
-
-
-
-    echo '<div class="tab-pane  '.( !$tabs['inbound']['item_count'] ? 'hidden' : '' ).'" id="tabinbound">';
+//Inbounds
+if($entity['u_id']!=2738){
+    echo '<h5 class="badge badge-secondary"><i class="fas fa-sign-in-alt"></i> <span class="li-inbound-count">'.count($entity['u__inbounds']).'</span> Ins</h5>';
     echo '<div id="list-inbound" class="list-group  grey-list">';
-
-
     foreach ($entity['u__inbounds'] as $ur) {
         echo echo_u($ur, 2, $can_edit_inbound, true);
     }
-
     //Input to add new inbounds:
     if($can_edit_inbound) {
         echo '<div id="new-inbound" class="list-group-item list_input grey-input">
             <div class="input-group">
-                <div class="form-group is-empty"><input type="text" class="form-control new-input" placeholder="Search People & Organizations to Link..."></div>
+                <div class="form-group is-empty"><input type="text" class="form-control new-input" placeholder="Add Entity..."></div>
                 <span class="input-group-addon">
                     <a class="badge badge-secondary new-btn" href="javascript:void(0);" onclick="alert(\'Note: Either choose an option from the suggestion menu to continue\')">ADD</a>
                 </span>
@@ -616,17 +483,40 @@ echo '<div class="tab-content tab-space">';
         </div>';
     }
     echo '</div>';
+}
+
+
+
+//Outbounds
+if($entity_type!=1326){
+    echo '<h5 class="badge badge-secondary"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-outbound-count">'.$entity['u__outbound_count'].'</span> Outs</h5>';
+    echo '<div id="list-outbound" class="list-group grey-list">';
+    foreach ($child_entities as $u) {
+        echo echo_u($u, 2, $can_edit_outbound);
+    }
+    if ($entity['u__outbound_count'] > count($child_entities)) {
+        echo_next_u(1, $entities_per_page, $entity['u__outbound_count']);
+    }
+//Input to add new inbounds:
+    if ($can_edit_outbound) {
+        echo '<div id="new-outbound" class="list-group-item list_input grey-input">
+                    <div class="input-group">
+                        <div class="form-group is-empty"><input type="text" class="form-control new-input" placeholder="Add '.$add_name.' by Name/URL"></div>
+                        <span class="input-group-addon">
+                            <a class="badge badge-secondary new-btn" href="javascript:add_u_link(0,'.$add_id.');">ADD</a>
+                        </span>
+                    </div>
+                </div>';
+    }
+
     echo '</div>';
+}
 
 
 
-
-
-
-
-
-
-    echo '<div class="tab-pane  '.( !$tabs['urls']['item_count'] ? 'hidden' : '' ).'" id="taburls">'; //Tab content starts
+//URLs
+if(!in_array($entity['u_id'], array(2738,1278,1326,2750))){
+    echo '<h5 class="badge badge-secondary"><i class="fas fa-link"></i> <span class="li-urls-count">'.count($entity['u__urls']).'</span> URLs</h5>';
     echo '<div id="list-urls" class="list-group  grey-list">';
     foreach ($entity['u__urls'] as $x) {
         echo echo_x($entity, $x);
@@ -644,103 +534,56 @@ echo '<div class="tab-content tab-space">';
         </div>';
     }
     echo '</div>';
-    echo '</div>'; //Tab content ends
+}
 
 
 
-
-
-
-
-
-
-
-
-
-
-    echo '<div class="tab-pane  '.( !$tabs['training']['item_count'] ? 'hidden' : '' ).'" id="tabtraining">';
-    echo '<div id="list-training" class="list-group  grey-list">';
-    foreach ($b_team_member as $ba) {
-
-    }
-    echo '</div>';
-    echo '</div>';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    echo '<div class="tab-pane  '.( !$tabs['subscriptions']['item_count'] ? 'hidden' : '' ).'" id="tabsubscriptions">';
+//Only show if data exists (users cannot modify this anyways)
+if(count($enrollments)>0){
+    echo '<h5 class="badge badge-secondary"><i class="fas fa-comment-plus"></i> <span class="li-subscriptions-count">'.count($enrollments).'</span> Subscriptions</h5>';
     echo '<div id="list-intents" class="list-group  grey-list">';
     foreach ($enrollments as $ru) {
 
     }
     echo '</div>';
-    echo '</div>';
+}
 
 
 
+//Only show if data exists (users cannot modify this anyways)
+if(count($b_team_member)>0){
+    echo '<h5 class="badge badge-secondary"><i class="fas fa-whistle"></i> <span class="li-training-count">'.count($b_team_member).'</span> Training</h5>';
+    echo '<div id="list-training" class="list-group  grey-list">';
+    foreach ($b_team_member as $ba) {
 
-
-
-
-
-
-
-
-
-
-
-
-    echo '<div class="tab-pane  '.( !$tabs['payments']['item_count'] ? 'hidden' : '' ).'" id="tabpayments">';
-    echo '<div id="list-payments" class="list-group  grey-list">';
-    foreach ($payments as $t) {
-        echo_t($t);
     }
     echo '</div>';
-    echo '</div>';
+}
 
 
 
-
-
-
-
-
-
-
-
-
-    //Fetch the current messages that have referenced this content:
-    echo '<div class="tab-pane  '.( !$tabs['messages']['item_count'] ? 'hidden' : '' ).'" id="tabmessages">';
+//Only show if data exists (users cannot modify this anyways)
+if(count($messages)>0){
+    echo '<h5 class="badge badge-secondary"><i class="fas fa-comment-dots"></i> <span class="li-messages-count">'.count($messages).'</span> Messages</h5>';
     echo '<div id="list-messages" class="list-group  grey-list">';
     foreach($messages as $i){
         echo echo_i($i,$entity['u_full_name']);
     }
     echo '</div>';
+}
+
+
+
+//Only show if data exists (users cannot modify this anyways)
+if(count($payments)>0){
+    echo '<h5 class="badge badge-secondary"><i class="fab fa-paypal"></i> <span class="li-payments-count">'.count($payments).'</span> Payments</h5>';
+    echo '<div id="list-payments" class="list-group  grey-list">';
+    foreach ($payments as $t) {
+        echo_t($t);
+    }
     echo '</div>';
+}
 
-
-
-
-
-
-
-
-
-echo '</div>';
-echo '</div>';
 ?>
 
   </div>

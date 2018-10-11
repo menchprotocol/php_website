@@ -16,12 +16,7 @@ $udata = $this->session->userdata('user');
 <script>
 
 $(document).ready(function() {
-	//Detect any possible hashes that controll the menu?
-	if(window.location.hash) {
-		focus_hash(window.location.hash);
-    }
-
-	//Counter:
+    //Counter:
 	changeBio();
 });
 
@@ -34,7 +29,6 @@ function changeBio() {
         $('#charNum').removeClass('overload').text(len);
     }
 }
-
 
 
 function update_account(){
@@ -110,196 +104,167 @@ function insert_gravatar(){
 
 
 
+<div class="maxout">
 
-<ul id="topnav" class="nav nav-pills nav-pills-secondary">
-  <li id="nav_profile" class="active"><a href="#profile"><i class="fas fa-user-circle"></i> Profile</a></li>
-  <li id="nav_password" class="is-passwordable"><a href="#password"><i class="fas fa-lock"></i> Password</a></li>
-</ul>
-
-
-
-
-<div class="tab-content tab-space">
-
-    <div class="tab-pane maxout active" id="tabprofile">
-
-
-        <div class="title" style="margin-bottom:0; padding-bottom:0;"><h4><i class="fas fa-id-card"></i> Full Name</h4></div>
-        <input type="text" required id="u_full_name" value="<?= $entity['u_full_name'] ?>" data-lpignore="true" placeholder="Full Name" class="form-control border">
+    <div class="title" style="margin-bottom:0; padding-bottom:0;"><h4><i class="fas fa-id-card"></i> Full Name</h4></div>
+    <input type="text" required id="u_full_name" value="<?= $entity['u_full_name'] ?>" data-lpignore="true" placeholder="Full Name" class="form-control border">
 
 
 
 
 
-        <div class="title" style="margin-top:20px;"><h4><i class="fas fa-comment-dots"></i> Summary</h4></div>
-        <textarea class="form-control text-edit border msg" id="u_bio" style="height:100px;" onkeyup="changeBio()"><?= substr(trim(strip_tags($entity['u_bio'])),0,$message_max); ?></textarea>
-        <div style="margin:0 0 10px 0; font-size:0.8em;"><span id="charNum">0</span>/<?= $message_max ?></div>
+    <div class="title" style="margin-top:20px;"><h4><i class="fas fa-comment-dots"></i> Summary</h4></div>
+    <textarea class="form-control text-edit border msg" id="u_bio" style="height:100px;" onkeyup="changeBio()"><?= substr(trim(strip_tags($entity['u_bio'])),0,$message_max); ?></textarea>
+    <div style="margin:0 0 10px 0; font-size:0.8em;"><span id="charNum">0</span>/<?= $message_max ?></div>
 
 
 
 
 
-        <div class="is-people">
-            <div class="title" style="margin-top:20px;"><h4><i class="fas fa-envelope"></i> Primary Email <i class="fas fa-eye-slash" data-toggle="tooltip" title="Will NOT be published publicly"></i></h4></div>
-            <input type="email" id="u_email" data-lpignore="true" style="max-width:260px;" value="<?= $entity['u_email'] ?>" class="form-control border">
+    <div class="is-people">
+        <div class="title" style="margin-top:20px;"><h4><i class="fas fa-envelope"></i> Primary Email <i class="fas fa-eye-slash" data-toggle="tooltip" title="Will NOT be published publicly"></i></h4></div>
+        <input type="email" id="u_email" data-lpignore="true" style="max-width:260px;" value="<?= $entity['u_email'] ?>" class="form-control border">
+    </div>
+
+
+
+    <div class="is-people">
+        <div class="title" style="margin-top:20px;"><h4><i class="fas fa-language"></i> Languages</h4></div>
+        <p>Hold down Ctrl to select multiple:</p>
+        <div class="form-group label-floating is-empty">
+            <select multiple id="u_language" style="height:150px;" class="border">
+                <?php
+                $all_languages = $this->config->item('languages');
+                $my_languages = explode(',',$entity['u_language']);
+                foreach($all_languages as $ln_key=>$ln_name){
+                    echo '<option value="'.$ln_key.'" '.(in_array($ln_key,$my_languages)?'selected="selected"':'').'>'.$ln_name.'</option>';
+                }
+                ?>
+            </select>
+            <span class="material-input"></span>
         </div>
+    </div>
 
 
 
-        <div class="is-people">
-            <div class="title" style="margin-top:20px;"><h4><i class="fas fa-language"></i> Languages</h4></div>
-            <p>Hold down Ctrl to select multiple:</p>
+    <div class="is-people">
+        <div class="title" style="margin-top:20px;"><h4><i class="fas fa-map"></i> Timezone</h4></div>
+        <div class="form-group label-floating is-empty">
+            <select id="u_timezone" class="border">
+                <option value="">Choose...</option>
+                <?php
+                $timezones = $this->config->item('timezones');
+                foreach($timezones as $tz_val=>$tz_name){
+                    echo '<option value="'.$tz_val.'" '.($entity['u_timezone']==$tz_val?'selected="selected"':'').'>'.$tz_name.'</option>';
+                }
+                ?>
+            </select>
+            <span class="material-input"></span>
+        </div>
+    </div>
+
+
+
+
+    <div class="is-people">
+        <div class="title" style="margin-top:20px;"><h4><i class="fas fa-phone-square"></i> Phone <i class="fas fa-eye-slash" data-toggle="tooltip" title="Will NOT be published publicly"></i></h4></div>
+        <div class="form-group label-floating is-empty">
+            <input type="tel" maxlength="30" required id="u_phone" data-lpignore="true" style="max-width:260px;" value="<?= $entity['u_phone'] ?>" class="form-control border">
+            <span class="material-input"></span>
+        </div>
+    </div>
+
+
+
+    <div class="is-people">
+        <div class="title" style="margin-top:20px;"><h4><i class="fas fa-map-marker"></i> Location</h4></div>
+        <div class="form-group label-floating is-empty">
+            <select id="u_country_code" class="border" style="width:100%; margin-bottom:10px; max-width:260px;">
+                <option value="">Choose...</option>
+                <?php
+                $countries_all = $this->config->item('countries_all');
+                foreach($countries_all as $country_key=>$country_name){
+                    echo '<option value="'.$country_key.'" '.($entity['u_country_code']==$country_key?'selected="selected"':'').'>'.$country_name.'</option>';
+                }
+                ?>
+            </select>
+            <span class="material-input"></span>
+        </div>
+        <input type="text" required id="u_current_city" placeholder="Vancouver" style="max-width:260px;" data-lpignore="true" value="<?= $entity['u_current_city'] ?>" class="form-control border">
+    </div>
+
+
+
+
+
+    <div class="is-people">
+        <div class="title" style="margin-top:20px;"><h4><i class="fas fa-venus-mars"></i> Gender</h4></div>
+        <div class="form-group label-floating is-empty">
+            <select id="u_gender" class="border">
+                <option value="">Neither</option>
+                <?php
+                echo '<option value="m" '.($entity['u_gender']=='m'?'selected="selected"':'').'>Male</option>';
+                echo '<option value="f" '.($entity['u_gender']=='f'?'selected="selected"':'').'>Female</option>';
+                ?>
+            </select>
+            <span class="material-input"></span>
+        </div>
+    </div>
+
+
+    <div class="is-mediator">
+        <div class="title" style="margin-top:15px;"><h4><i class="fab fa-paypal"></i> Paypal Payout Email</h4></div>
+        <div class="form-group label-floating is-empty">
+            <input type="email" id="u_paypal_email" data-lpignore="true" style="max-width:260px;" value="<?= $entity['u_paypal_email'] ?>" class="form-control border">
+            <span class="material-input"></span>
+        </div>
+    </div>
+
+
+
+    <div class="is-mediator">
+        <div>
+            <div class="title" style="margin-top:20px;"><h4><i class="fas fa-badge-check"></i> Coach Agreement</h4></div>
             <div class="form-group label-floating is-empty">
-                <select multiple id="u_language" style="height:150px;" class="border">
-                    <?php
-                    $all_languages = $this->config->item('languages');
-                    $my_languages = explode(',',$entity['u_language']);
-                    foreach($all_languages as $ln_key=>$ln_name){
-                        echo '<option value="'.$ln_key.'" '.(in_array($ln_key,$my_languages)?'selected="selected"':'').'>'.$ln_name.'</option>';
-                    }
-                    ?>
-                </select>
-                <span class="material-input"></span>
-            </div>
-        </div>
-
-
-
-        <div class="is-people">
-            <div class="title" style="margin-top:20px;"><h4><i class="fas fa-map"></i> Timezone</h4></div>
-            <div class="form-group label-floating is-empty">
-                <select id="u_timezone" class="border">
-                    <option value="">Choose...</option>
-                    <?php
-                    $timezones = $this->config->item('timezones');
-                    foreach($timezones as $tz_val=>$tz_name){
-                        echo '<option value="'.$tz_val.'" '.($entity['u_timezone']==$tz_val?'selected="selected"':'').'>'.$tz_name.'</option>';
-                    }
-                    ?>
-                </select>
-                <span class="material-input"></span>
-            </div>
-        </div>
-
-
-
-
-        <div class="is-people">
-            <div class="title" style="margin-top:20px;"><h4><i class="fas fa-phone-square"></i> Phone <i class="fas fa-eye-slash" data-toggle="tooltip" title="Will NOT be published publicly"></i></h4></div>
-            <div class="form-group label-floating is-empty">
-                <input type="tel" maxlength="30" required id="u_phone" data-lpignore="true" style="max-width:260px;" value="<?= $entity['u_phone'] ?>" class="form-control border">
-                <span class="material-input"></span>
-            </div>
-        </div>
-
-
-
-        <div class="is-people">
-            <div class="title" style="margin-top:20px;"><h4><i class="fas fa-map-marker"></i> Location</h4></div>
-            <div class="form-group label-floating is-empty">
-                <select id="u_country_code" class="border" style="width:100%; margin-bottom:10px; max-width:260px;">
-                    <option value="">Choose...</option>
-                    <?php
-                    $countries_all = $this->config->item('countries_all');
-                    foreach($countries_all as $country_key=>$country_name){
-                        echo '<option value="'.$country_key.'" '.($entity['u_country_code']==$country_key?'selected="selected"':'').'>'.$country_name.'</option>';
-                    }
-                    ?>
-                </select>
-                <span class="material-input"></span>
-            </div>
-            <input type="text" required id="u_current_city" placeholder="Vancouver" style="max-width:260px;" data-lpignore="true" value="<?= $entity['u_current_city'] ?>" class="form-control border">
-        </div>
-
-
-
-
-
-        <div class="is-people">
-            <div class="title" style="margin-top:20px;"><h4><i class="fas fa-venus-mars"></i> Gender</h4></div>
-            <div class="form-group label-floating is-empty">
-                <select id="u_gender" class="border">
-                    <option value="">Neither</option>
-                    <?php
-                    echo '<option value="m" '.($entity['u_gender']=='m'?'selected="selected"':'').'>Male</option>';
-                    echo '<option value="f" '.($entity['u_gender']=='f'?'selected="selected"':'').'>Female</option>';
-                    ?>
-                </select>
-                <span class="material-input"></span>
-            </div>
-        </div>
-
-
-        <div class="is-mediator">
-            <div class="title" style="margin-top:15px;"><h4><i class="fab fa-paypal"></i> Paypal Payout Email</h4></div>
-            <div class="form-group label-floating is-empty">
-                <input type="email" id="u_paypal_email" data-lpignore="true" style="max-width:260px;" value="<?= $entity['u_paypal_email'] ?>" class="form-control border">
-                <span class="material-input"></span>
-            </div>
-        </div>
-
-
-
-        <div class="is-mediator">
-            <div>
-                <div class="title" style="margin-top:20px;"><h4><i class="fas fa-badge-check"></i> Coach Agreement</h4></div>
-                <div class="form-group label-floating is-empty">
-                    <div class="checkbox">
-                        <label>
-                            <?php $has_agreed = (isset($entity['u_terms_agreement_time']) && strlen($entity['u_terms_agreement_time'])>0); ?>
-                            <?php if($has_agreed){ ?>
-                                <input type="checkbox" id="u_terms_agreement_time" disabled checked /> Agreed on <b><?= echo_time($entity['u_terms_agreement_time'],0) ?> PST</b>
-                            <?php } else { ?>
-                                <input type="checkbox" id="u_terms_agreement_time" <?= ( $udata['u_id']==$entity['u_id'] ? '' : 'disabled') ?> /> I certify that all above statements are true <?= ( $udata['u_id']==$entity['u_id'] ? '' : '<i class="fas fa-lock" data-toggle="tooltip" data-placement="left" title="Only owner can mark this as done​"></i>') ?>
-                            <?php } ?>
-                        </label>
-                    </div>
+                <div class="checkbox">
+                    <label>
+                        <?php $has_agreed = (isset($entity['u_terms_agreement_time']) && strlen($entity['u_terms_agreement_time'])>0); ?>
+                        <?php if($has_agreed){ ?>
+                            <input type="checkbox" id="u_terms_agreement_time" disabled checked /> Agreed on <b><?= echo_time($entity['u_terms_agreement_time'],0) ?> PST</b>
+                        <?php } else { ?>
+                            <input type="checkbox" id="u_terms_agreement_time" <?= ( $udata['u_id']==$entity['u_id'] ? '' : 'disabled') ?> /> I certify that all above statements are true <?= ( $udata['u_id']==$entity['u_id'] ? '' : '<i class="fas fa-lock" data-toggle="tooltip" data-placement="left" title="Only owner can mark this as done​"></i>') ?>
+                        <?php } ?>
+                    </label>
                 </div>
             </div>
         </div>
-
-
-
-
-        <table width="100%" style="margin-top:30px;"><tr><td class="save-td"><a href="javascript:update_account();" class="btn btn-secondary">Save</a></td><td><span class="update_u_results"></span></td></tr></table>
-
-        <?php
-        if(array_key_exists(1281, $udata['u__inbounds'])){
-
-            if(count($entity['u__inbounds'])>0){
-                $first_parent = reset($entity['u__inbounds']);
-                $redirect_u_id = $first_parent['u_id'];
-            } else {
-                $redirect_u_id = 2738; //All Entities
-            }
-
-            echo '<div class="u_delete" style="text-align: right;"><a href="javascript:void(0);" onclick="u_delete('.$entity['u_id'].','.$redirect_u_id.')">Delete Entity</a></div>';
-        }
-        ?>
-
     </div>
 
 
 
 
+    <div>
+        <a class="changepass" href="javascript:$('.changepass').toggle();">Change Password</a>
 
-    <div class="tab-pane maxout is-passwordable" id="tabpassword">
+        <div class="changepass" style="display: none">
+            <div class="needs-current-pass">
+                <div class="title"><h4><i class="fas fa-asterisk"></i> Current Password</h4></div>
+                <div class="form-group label-floating is-empty">
+                    <input type="password" id="u_password_current" style="max-width: 260px;" class="form-control border">
+                    <span class="material-input"></span>
+                </div>
+            </div>
 
-        <div class="needs-current-pass">
-            <div class="title"><h4><i class="fas fa-asterisk"></i> Current Password</h4></div>
+            <div class="title" style="margin-top:30px;"><h4><i class="fas fa-asterisk"></i> Set New Password</h4></div>
             <div class="form-group label-floating is-empty">
-                <input type="password" id="u_password_current" style="max-width: 260px;" class="form-control border">
+                <input type="password" id="u_password_new" style="max-width: 260px;" autocomplete="off" class="form-control border">
                 <span class="material-input"></span>
             </div>
         </div>
-
-        <div class="title" style="margin-top:30px;"><h4><i class="fas fa-asterisk"></i> Set New Password</h4></div>
-        <div class="form-group label-floating is-empty">
-            <input type="password" id="u_password_new" style="max-width: 260px;" autocomplete="off" class="form-control border">
-            <span class="material-input"></span>
-        </div>
-
-        <table width="100%" style="margin-top:30px;"><tr><td class="save-td"><a href="javascript:update_account();" class="btn btn-secondary">Save</a></td><td><span class="update_u_results"></span></td></tr></table>
     </div>
 
+
+
+
+    <table width="100%" style="margin-top:30px;"><tr><td class="save-td"><a href="javascript:update_account();" class="btn btn-secondary">Save</a></td><td><span class="update_u_results"></span></td></tr></table>
 </div>

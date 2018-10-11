@@ -78,9 +78,6 @@ if(isset($orphan_cs)){
                 } else if(hash_parts[0]=='modify'){
                     load_modify(hash_parts[1],hash_parts[2]);
                 }
-            } else {
-                //Perhaps a menu change?
-                focus_hash(window.location.hash);
             }
         }
 
@@ -772,18 +769,6 @@ if(isset($orphan_cs)){
 
         } else {
 
-            $tabs = array(
-                'outbound' => array(
-                    'title' => 'Outs',
-                    'icon' => 'fas fa-sign-out-alt rotate90',
-                    'item_count' => ($c['c__tree_inputs']+$c['c__tree_outputs']-1),
-                ),
-                'inbound' => array(
-                    'title' => 'Ins',
-                    'icon' => 'fas fa-sign-in-alt',
-                    'item_count' => count($c__inbounds),
-                ),
-            );
 
 
             echo '<div id="bootcamp-objective" class="list-group">';
@@ -792,20 +777,8 @@ if(isset($orphan_cs)){
 
 
 
-
-
-            echo '<ul id="topnav" class="nav nav-pills nav-pills-primary">';
-//Go through all tabs and see wassup:
-            foreach ($tabs as $key => $tab) {
-                echo '<li id="nav_'.$key.'" class="'.( $key=='outbound' ? 'active' : '' ).'"><a href="#'.$key.'"><i class="'.$tab['icon'].'"></i> <span class="li-'.$key.'-count '.$key.'-counter-'.$c['c_id'].'">'.$tab['item_count'].'</span> '.$tab['title'].'</a></li>';
-            }
-            echo '</ul>';
-
-
-
-
             //Expand/Contract buttons
-            echo '<table style="width: 100%;"><tr>';
+            echo '<table style="width: 100%; margin-bottom: 15px;"><tr>';
             echo '<td width="50%">';
             echo '<div id="task_view">';
             echo '<i class="fas fa-plus-square expand_all"></i> &nbsp;';
@@ -824,50 +797,45 @@ if(isset($orphan_cs)){
 
 
 
-            echo '<div class="tab-content tab-space">';
-
-
-                echo '<div class="tab-pane active" id="taboutbound">';
-
-                    //Task/Bootcamp List:
-                    echo '<div id="list-c-'.$c['c_id'].'" class="list-group list-level-2">';
-                    foreach($c['c__child_intents'] as $sub_intent){
-                        echo echo_c($sub_intent, 2, $c['c_id']);
+            if($c['c_id']!=7240){
+                echo '<h5 class="badge badge-primary"><i class="fas fa-sign-in-alt"></i> <span class="li-inbound-count inbound-counter-'.$c['c_id'].'">'.count($c__inbounds).'</span> Ins</h5>';
+                if(count($c__inbounds)>0){
+                    echo '<div class="list-group list-level-2">';
+                    foreach($c__inbounds as $sub_intent){
+                        echo echo_c($sub_intent, 2, 0, true);
                     }
-                    ?>
-                    <div class="list-group-item list_input grey-block">
-                        <div class="input-group">
-                            <div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control intentadder-level-2"  maxlength="70" intent-id="<?= $c['c_id'] ?>" id="addintent-c-<?= $c['c_id'] ?>" placeholder="Add #Intent"></div>
-                            <span class="input-group-addon" style="padding-right:8px;">
+                    echo '</div>';
+                } else {
+                    echo '<div class="alert alert-info" role="alert" style="margin-top: 0;"><i class="fas fa-exclamation-triangle"></i> No inbound intents linked yet</div>';
+                }
+            }
+
+
+
+
+
+
+
+
+            echo '<h5 class="badge badge-primary"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-outbound-count outbound-counter-'.$c['c_id'].'">'.($c['c__tree_inputs']+$c['c__tree_outputs']-1).'</span> Outs</h5>';
+            echo '<div id="list-c-'.$c['c_id'].'" class="list-group list-level-2">';
+            foreach($c['c__child_intents'] as $sub_intent){
+                echo echo_c($sub_intent, 2, $c['c_id']);
+            }
+            ?>
+            <div class="list-group-item list_input grey-block">
+                <div class="input-group">
+                    <div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control intentadder-level-2"  maxlength="70" intent-id="<?= $c['c_id'] ?>" id="addintent-c-<?= $c['c_id'] ?>" placeholder="Add #Intent"></div>
+                    <span class="input-group-addon" style="padding-right:8px;">
                                         <span id="dir_handle" data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" class="badge badge-primary pull-right" style="cursor:pointer; margin: 1px 3px 0 6px;">
                                             <div><i class="fas fa-plus"></i></div>
                                         </span>
                                     </span>
-                        </div>
-                    </div>
-                    <?php
-                    echo '</div>';
-                echo '</div>';
-
-
-
-
-
-                echo '<div class="tab-pane" id="tabinbound">';
-
-                    if(count($c__inbounds)>0){
-                        echo '<div class="list-group list-level-2">';
-                        foreach($c__inbounds as $sub_intent){
-                            echo echo_c($sub_intent, 2, 0, true);
-                        }
-                        echo '</div>';
-                    } else {
-                        echo '<div class="alert alert-info" role="alert" style="margin-top: 0;"><i class="fas fa-exclamation-triangle"></i> No inbound intents linked yet.<div style="font-size:0.9em;"><b>TIP</b> You can navigate to your desired intent and add ['.$c['c_outcome'].'] as its outbound intent</div></div>';
-                    }
-
-                echo '</div>';
-
+                </div>
+            </div>
+            <?php
             echo '</div>';
+
         }
         ?>
     </div>

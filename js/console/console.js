@@ -232,18 +232,6 @@ function adjust_hash(hash){
     }
 }
 
-//To keep state of the horizontal menu using URL hashtags:
-function focus_hash(the_hash){
-	if(!the_hash.length){
-		return false;
-	} else {
-        var hash = the_hash.substring(1); //Puts hash in variable, and removes the # character
-        //Open specific menu with a 100ms delay to fix TOP NAV bug
-        //Detect if this Exists:
-        adjust_hash(hash);
-	}
-}
-
 
 function ucwords(str) {
     return (str + '').replace(/^([a-z])|\s+([a-z])/g, function ($1) {
