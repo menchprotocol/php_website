@@ -346,13 +346,12 @@ function echo_embed($url,$full_message=null,$return_array=false){
 
 function echo_i($i,$u_full_name=null,$fb_format=false){
 
-    //Make these two variables inter-changable:
+    //HACK: Make these two variables inter-changeable:
     if(isset($i['i_outbound_c_id']) && $i['i_outbound_c_id']>0 && !isset($i['e_outbound_c_id'])){
         $i['e_outbound_c_id'] = $i['i_outbound_c_id'];
     } elseif(isset($i['e_outbound_c_id']) && $i['e_outbound_c_id']>0 && !isset($i['i_outbound_c_id'])){
         $i['i_outbound_c_id'] = $i['e_outbound_c_id'];
     }
-    
 
     $CI =& get_instance();
     $button_url = null;
@@ -360,27 +359,35 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
     $command = null;
     $is_entity = ( $CI->uri->segment(1)=='entities' );
     $is_intent = ( $CI->uri->segment(1)=='intents' );
+    $ui = null;
+    $original_cs = array();
 
 
-    if(!$fb_format){
-        //HTML format:
-        $div_style = ' style="padding:0; margin:0; font-family: Lato, Helvetica, sans-serif; font-size:16px;"'; //We do this for email templates that do not support CSS and also for internal website...
-        $ui = '';
-        $ui .= '<div class="i_content">';
-    } else {
+    if($fb_format){
         //This is what will be returned to be sent via messenger:
         $fb_message = array();
+    } else {
+        //HTML format:
+        $i['i_message'] = nl2br($i['i_message']);
+        $ui .= '<div class="i_content">';
     }
 
     //Is it being displayed under entities? Show the original intent as well:
     if($is_entity && !$fb_format){
+
         $original_cs = $CI->Db_model->c_fetch(array(
             'c_id' => $i['i_outbound_c_id'],
         ));
         if(count($original_cs)>0){
-            $i['i_message'] = '<div class="entities-msg"><h4><i class="fas fa-hashtag"></i> <a href="/intents/'.$i['i_outbound_c_id'].'#messages-'.$i['i_outbound_c_id'].'">'.$original_cs[0]['c_outcome'].'<span class="badge badge-primary" style="display:inline-block; margin-left:3px; width:40px;"><i class="fas fa-sign-out-alt rotate90"></i></span></a></h4><div>'.$i['i_message'].'</div></div>';
+
+            $ui .= '<div class="entities-msg">'.
+                '<h4><i class="fas fa-hashtag"></i> <a href="/intents/'.$i['i_outbound_c_id'].'#messages-'.$i['i_outbound_c_id'].'">'.$original_cs[0]['c_outcome'].'<span class="badge badge-primary" style="display:inline-block; margin-left:3px; width:40px;"><i class="fas fa-sign-out-alt rotate90"></i></span></a></h4>'.
+                '<div>';
+
         }
     }
+
+
 
     //Does this have a entity reference?
     if($i['i_outbound_u_id']>0){
@@ -468,7 +475,6 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
 
 
     if(substr_count($i['i_message'],'/activateurl')>0 && isset($i['e_outbound_u_id'])) {
-
         $button_url = $CI->Comm_model->fb_activation_url($i['e_outbound_u_id']);
         if($button_url) {
             //append their My Account Button/URL:
@@ -514,7 +520,7 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
             //HTML format replaces the button with the command:
             $i['i_message'] = trim(str_replace($command, '<div class="msg" style="padding-top:15px;"><a href="'.$button_url.'" target="_blank"><b>'.$button_title.'</b></a></div>', $i['i_message']));
             //Return HTML code:
-            $ui .= '<div class="msg" '.$div_style.'>'.nl2br($i['i_message']).'</div>';
+            $ui .= '<div class="msg">'.$i['i_message'].'</div>';
         }
 
     } else {
@@ -529,28 +535,32 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
             );
         } else {
             //HTML format:
-            $ui .= '<div class="msg" '.$div_style.'>'.nl2br($i['i_message']).'</div>';
+            $ui .= '<div class="msg">'.$i['i_message'].'</div>';
         }
 
     }
 
 
     //Log engagement if Facebook and return:
-    if($fb_format && count($fb_message)>0){
+    if($fb_format){
 
-        //Return Facebook Message to be sent out:
-        return $fb_message;
-
-    } elseif(!$fb_format) {
-
-        //This must be HTML if we're still here, return:
-        $ui .= '</div>';
-        return $ui;
+        if(count($fb_message)>0){
+            //Return Facebook Message to be sent out:
+            return $fb_message;
+        } else {
+            //Should not happen!
+            return false;
+        }
 
     } else {
 
-        //Should not happen!
-        return false;
+        //This must be HTML if we're still here, return:
+        if(count($original_cs)>0){
+            $ui .= '</div></div>';
+        }
+
+        $ui .= '</div>';
+        return $ui;
 
     }
 }
@@ -918,7 +928,7 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
     $ui .= '<a class="badge badge-primary" onclick="load_modify('.$c['c_id'].','.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).')" style="margin:-2px -8px 0 2px; width:40px;" href="#modify-'.$c['c_id'].'-'.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).'"><span class="btn-counter">'.echo_estimated_time($c['c__tree_hours'],0,1, $c['c_id'], $c['c_time_estimate']).'</span><i class="c_is_any_icon'.$c['c_id'].' '.( $c['c_is_any'] ? 'fas fa-code-merge' : 'fas fa-sitemap' ).'" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i></a> &nbsp;';
 
 
-    $ui .= '&nbsp;<'.( $level>1 || $c['c__is_orphan'] ? 'a href="/intents/'.$c['c_id'].( $is_inbound ? '#inbound' : '' ).'" class="badge badge-primary"' :'span class="badge badge-primary grey"').' style="display:inline-block; margin-right:-1px; width:40px;"><span class="btn-counter outbound-counter-'.$c['c_id'].'">'.($c['c__tree_inputs']+$c['c__tree_outputs']-1).'</span><i class="'.( $is_inbound ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></'.( $level>1 || $c['c__is_orphan'] ? 'a' :'span').'> ';
+    $ui .= '&nbsp;<'.( $level>1 || $c['c__is_orphan'] ? 'a href="/intents/'.$c['c_id'].'" class="badge badge-primary"' :'span class="badge badge-primary grey"').' style="display:inline-block; margin-right:-1px; width:40px;"><span class="btn-counter outbound-counter-'.$c['c_id'].'">'.($c['c__tree_inputs']+$c['c__tree_outputs']-1).'</span><i class="'.( $is_inbound ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></'.( $level>1 || $c['c__is_orphan'] ? 'a' :'span').'> ';
 
     //Keep an eye out for inner message counter changes:
     $ui .= '</span> ';

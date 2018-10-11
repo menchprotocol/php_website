@@ -444,6 +444,7 @@ input::-webkit-inner-spin-button {
 .entities-msg>h4{
     padding: 10px;
     margin:15px 0 0 5px;
+    font-size: 0.8em;
 }
 .entities-msg>h4>.fas{
     font-size:1.2em;
@@ -816,11 +817,13 @@ h5, .h5 {
 }
 .redalert *, .redalert { color:#FF0000 !important; }
 .msg {
-    font-size: 0.8em !important;
-    font-family: Lato !important;
+    font-size:0.8em !important;
+    font-family: Lato, Helvetica, sans-serif !important;
     line-height: 110% !important;
     font-weight: 300 !important;
     color: #3C4858;
+    padding:0;
+    margin:0;
 }
 .msg a span {
 	text-decoration:underline;
