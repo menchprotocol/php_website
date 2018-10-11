@@ -17,22 +17,18 @@ class Cockpit extends CI_Controller {
 
 	}
 
-    function browse($object_name='none'){
 
-        boost_power();
-
+    function engagements(){
         $this->load->view('console/console_header', array(
-            'title' => 'Browse '.ucwords($object_name),
+            'title' => 'Platform Engagements',
             'breadcrumb' => array(
                 array(
                     'link' => null,
-                    'anchor' => 'Browse <span id="hb_6086" class="help_button" intent-id="6086"></span>',
+                    'anchor' => 'Platform Engagements',
                 ),
             ),
         ));
-        $this->load->view('console/cockpit/browse/browse_index' , array(
-            'object_name' => $object_name,
-        ));
+        $this->load->view('console/cockpit/engagements_browse');
         $this->load->view('console/console_footer');
     }
 

@@ -120,7 +120,7 @@ $messages = $this->Db_model->i_fetch(array(
 
         $("#new-outbound .new-input").on('autocomplete:selected', function (event, suggestion, dataset) {
 
-            add_u_link(suggestion.u_id);
+            add_u_link(suggestion.u_id,0,0);
 
         }).autocomplete({hint: false, keyboardShortcuts: ['a']}, [{
 
@@ -143,11 +143,11 @@ $messages = $this->Db_model->i_fetch(array(
                 },
                 header: function (data) {
                     if (!data.isEmpty) {
-                        return '<a href="javascript:add_u_link(0,<?= $add_id ?>)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as <?= $add_name ?>]</a>';
+                        return '<a href="javascript:add_u_link(0,<?= $add_id ?>,0)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as <?= $add_name ?>]</a>';
                     }
                 },
                 empty: function (data) {
-                    return '<a href="javascript:add_u_link(0,<?= $add_id ?>)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create</span> <i class="fas fa-at"></i> ' + data.query + ' [as <?= $add_name ?>]</a>';
+                    return '<a href="javascript:add_u_link(0,<?= $add_id ?>,0)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create</span> <i class="fas fa-at"></i> ' + data.query + ' [as <?= $add_name ?>]</a>';
                 },
             }
         }]).keypress(function (e) {
@@ -161,7 +161,7 @@ $messages = $this->Db_model->i_fetch(array(
 
 
         $("#new-inbound .new-input").on('autocomplete:selected', function (event, suggestion, dataset) {
-            add_u_link(suggestion.u_id);
+            add_u_link(suggestion.u_id,0,1);
         }).autocomplete({hint: false, keyboardShortcuts: ['a']}, [{
             source: function (q, cb) {
                 algolia_u_index.search(q, {
@@ -184,11 +184,11 @@ $messages = $this->Db_model->i_fetch(array(
                 <?php if($entity_type==1326){ //Suggest both People AND Organizations as new inbound entities: ?>
                 header: function (data) {
                     if (!data.isEmpty) {
-                        return '<a href="javascript:add_u_link(0,1278)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as People]</a><a href="javascript:add_u_link(0,2750)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as Organization]</a>';
+                        return '<a href="javascript:add_u_link(0,1278,1)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as People]</a><a href="javascript:add_u_link(0,2750,1)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as Organization]</a>';
                     }
                 },
                 empty: function (data) {
-                    return '<a href="javascript:add_u_link(0,1278)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as People]</a><a href="javascript:add_u_link(0,2750)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as Organization]</a>';
+                    return '<a href="javascript:add_u_link(0,1278,1)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as People]</a><a href="javascript:add_u_link(0,2750,1)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as Organization]</a>';
                 },
                 <?php } ?>
             }
@@ -197,13 +197,10 @@ $messages = $this->Db_model->i_fetch(array(
     });
 
     //Adds OR links authors and content for entities
-    function add_u_link(new_u_id,secondary_parent_u_id=0) {
+    function add_u_link(new_u_id,secondary_parent_u_id=0, is_inbound) {
 
         //if new_u_id>0 it means we're linking to an existing entity, in which case new_u_input should be null
         //If new_u_id=0 it means we are creating a new entity and then linking it, in which case new_u_input is required
-
-        //It's either inbound or outbound:
-        var is_inbound = ( $('#nav_inbound').hasClass('active') ? 1 : 0 );
 
         if(is_inbound){
             var input = $('#new-inbound .new-input');
@@ -464,55 +461,6 @@ echo '</div>';
 
 
 
-//Inbounds
-if($entity['u_id']!=2738){
-    echo '<h5 class="badge badge-secondary"><i class="fas fa-sign-in-alt"></i> <span class="li-inbound-count">'.count($entity['u__inbounds']).'</span> Ins</h5>';
-    echo '<div id="list-inbound" class="list-group  grey-list">';
-    foreach ($entity['u__inbounds'] as $ur) {
-        echo echo_u($ur, 2, $can_edit_inbound, true);
-    }
-    //Input to add new inbounds:
-    if($can_edit_inbound) {
-        echo '<div id="new-inbound" class="list-group-item list_input grey-input">
-            <div class="input-group">
-                <div class="form-group is-empty"><input type="text" class="form-control new-input" placeholder="Add Entity..."></div>
-                <span class="input-group-addon">
-                    <a class="badge badge-secondary new-btn" href="javascript:void(0);" onclick="alert(\'Note: Either choose an option from the suggestion menu to continue\')">ADD</a>
-                </span>
-            </div>
-        </div>';
-    }
-    echo '</div>';
-}
-
-
-
-//Outbounds
-if($entity_type!=1326){
-    echo '<h5 class="badge badge-secondary"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-outbound-count">'.$entity['u__outbound_count'].'</span> Outs</h5>';
-    echo '<div id="list-outbound" class="list-group grey-list">';
-    foreach ($child_entities as $u) {
-        echo echo_u($u, 2, $can_edit_outbound);
-    }
-    if ($entity['u__outbound_count'] > count($child_entities)) {
-        echo_next_u(1, $entities_per_page, $entity['u__outbound_count']);
-    }
-//Input to add new inbounds:
-    if ($can_edit_outbound) {
-        echo '<div id="new-outbound" class="list-group-item list_input grey-input">
-                    <div class="input-group">
-                        <div class="form-group is-empty"><input type="text" class="form-control new-input" placeholder="Add '.$add_name.' by Name/URL"></div>
-                        <span class="input-group-addon">
-                            <a class="badge badge-secondary new-btn" href="javascript:add_u_link(0,'.$add_id.');">ADD</a>
-                        </span>
-                    </div>
-                </div>';
-    }
-
-    echo '</div>';
-}
-
-
 
 //URLs
 if(!in_array($entity['u_id'], array(2738,1278,1326,2750))){
@@ -538,6 +486,68 @@ if(!in_array($entity['u_id'], array(2738,1278,1326,2750))){
 
 
 
+//Inbounds
+if($entity['u_id']!=2738){
+    echo '<h5 class="badge badge-secondary"><i class="fas fa-sign-in-alt"></i> <span class="li-inbound-count">'.count($entity['u__inbounds']).'</span> Ins</h5>';
+    echo '<div id="list-inbound" class="list-group  grey-list">';
+    foreach ($entity['u__inbounds'] as $ur) {
+        echo echo_u($ur, 2, $can_edit_inbound, true);
+    }
+    //Input to add new inbounds:
+    if($can_edit_inbound) {
+        echo '<div id="new-inbound" class="list-group-item list_input grey-input">
+            <div class="input-group">
+                <div class="form-group is-empty"><input type="text" class="form-control new-input" placeholder="Add Entity..."></div>
+                <span class="input-group-addon">
+                    <a class="badge badge-secondary new-btn" href="javascript:void(0);" onclick="alert(\'Note: Either choose an option from the suggestion menu to continue\')">ADD</a>
+                </span>
+            </div>
+        </div>';
+    }
+    echo '</div>';
+}
+
+
+
+//Outbounds
+echo '<h5 class="badge badge-secondary"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-outbound-count">'.$entity['u__outbound_count'].'</span> Outs</h5>';
+echo '<div id="list-outbound" class="list-group grey-list">';
+foreach ($child_entities as $u) {
+    echo echo_u($u, 2, $can_edit_outbound);
+}
+if($entity['u__outbound_count'] > count($child_entities)) {
+    echo_next_u(1, $entities_per_page, $entity['u__outbound_count']);
+}
+//Input to add new inbounds:
+if($can_edit_outbound){
+    echo '<div id="new-outbound" class="list-group-item list_input grey-input">
+        <div class="input-group">
+            <div class="form-group is-empty"><input type="text" class="form-control new-input" placeholder="Add '.$add_name.' by Name/URL"></div>
+            <span class="input-group-addon">
+                <a class="badge badge-secondary new-btn" href="javascript:add_u_link(0,'.$add_id.', 0);">ADD</a>
+            </span>
+        </div>
+    </div>';
+}
+
+echo '</div>';
+
+
+
+
+//Only show if data exists (users cannot modify this anyways)
+if(count($messages)>0){
+    echo '<h5 class="badge badge-secondary"><i class="fas fa-comment-dots"></i> <span class="li-messages-count">'.count($messages).'</span> Messages</h5>';
+    echo '<div id="list-messages" class="list-group  grey-list">';
+    foreach($messages as $i){
+        echo echo_i($i,$entity['u_full_name']);
+    }
+    echo '</div>';
+}
+
+
+
+
 //Only show if data exists (users cannot modify this anyways)
 if(count($enrollments)>0){
     echo '<h5 class="badge badge-secondary"><i class="fas fa-comment-plus"></i> <span class="li-subscriptions-count">'.count($enrollments).'</span> Subscriptions</h5>';
@@ -560,17 +570,6 @@ if(count($b_team_member)>0){
     echo '</div>';
 }
 
-
-
-//Only show if data exists (users cannot modify this anyways)
-if(count($messages)>0){
-    echo '<h5 class="badge badge-secondary"><i class="fas fa-comment-dots"></i> <span class="li-messages-count">'.count($messages).'</span> Messages</h5>';
-    echo '<div id="list-messages" class="list-group  grey-list">';
-    foreach($messages as $i){
-        echo echo_i($i,$entity['u_full_name']);
-    }
-    echo '</div>';
-}
 
 
 

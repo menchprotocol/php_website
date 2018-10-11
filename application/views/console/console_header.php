@@ -84,7 +84,7 @@ $uri_segment_2 = $this->uri->segment(2);
                         <?php } ?>
 
                         <?php if(array_key_exists(1281, $udata['u__inbounds'])){ ?>
-                            <li class="extra-toggle" style="display: none;"><a href="/cockpit/browse/engagements"><span class="icon-left"><i class="fas fa-user-shield"></i></span> Admin</a></li>
+                            <li class="extra-toggle" style="display: none;"><a href="/cockpit/engagements"><span class="icon-left"><i class="fas fa-user-shield"></i></span> Admin</a></li>
                         <?php } ?>
 
                         <li class="extra-toggle" style="display: none;"><a href="/entities/<?= $udata['u_id'] ?>"><span class="icon-left"><i class="fas fa-user-circle"></i></span> Account</a></li>
@@ -112,7 +112,7 @@ $uri_segment_2 = $this->uri->segment(2);
 
             echo '<ul class="nav navbar-main" style="margin-top:7px;">';
                 //The the Cockpit Menu for the Mench team:
-                echo '<li class="li-sep '.( $uri_segment_2=='browse' ? 'active' : '' ).'"><a href="/cockpit/browse/engagements"><i class="fas fa-search"></i><p>Browse</p></a></li>';
+                echo '<li class="li-sep '.( $uri_segment_2=='engagements' ? 'active' : '' ).'"><a href="/cockpit/engagements"><i class="fas fa-exchange"></i><p>Engagements</p></a></li>';
 
                 echo '<li class="li-sep '.( $uri_segment_2=='udemy' ? 'active' : '' ).'"><a href="/cockpit/udemy"><i class="fas fa-address-book"></i><p>Udemy Community</p></a></li>';
 
@@ -133,7 +133,7 @@ $uri_segment_2 = $this->uri->segment(2);
 
                 echo '<li><a href="https://app.hubspot.com/sales" target="_blank"><i class="fab fa-hubspot"></i><p>HubSpot CRM &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
 
-                echo '<li><a href="https://app.redash.io/mench/" target="_blank"><i class="fas fa-database"></i><p>SQL DB Stats &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
+                //echo '<li><a href="https://app.redash.io/mench/" target="_blank"><i class="fas fa-database"></i><p>SQL DB Stats &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
 
                 echo '<li><a href="https://mench.foundation/wp-login.php" target="_blank"><i class="fab fa-wordpress"></i><p>Mench Blog &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
 
