@@ -396,21 +396,40 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
         //See if that entity has a URL:
         $us = $CI->Db_model->u_fetch(array(
             'u_id' => $i['i_outbound_u_id'],
-        ), array('skip_u__inbounds'));
+        ), array('skip_u__inbounds','u__urls'));
 
         if(count($us)>0){
+
             //Does it have a /slice command?
             $time_range = array();
             $found_embeddable = false;
             $button_title = 'Open Entity';
+
+
             if(substr_count($i['i_message'],'/slice')>0){
                 $time_range = explode(':', one_two_explode('/slice:',' ',$i['i_message']) ,2);
                 $button_url = '/entities/'.$us[0]['u_id'].'?skip_header=1&start='.$time_range[0].'&end='.$time_range[1].'#urls';
+
+                //Set default in case URL is deleted or Embed URL is not found:
+                $replace_with = '(from '.($time_range[0] ? echo_min_from_sec($time_range[0]) : 'start').' to '.echo_min_from_sec($time_range[1]).')';
+
+                //Show the sliced video as well:
+                foreach($us[0]['u__urls'] as $x){
+                    if($x['x_type']==1){
+                        $_GET['start'] = $time_range[0];
+                        $_GET['end'] = $time_range[1];
+                        $replace_with = '<div style="margin-top:7px;">'.echo_embed($x['x_clean_url'],$x['x_clean_url']).'</div>';
+                        break;
+                    }
+                }
+                
                 //Replace it with proper text:
-                $i['i_message'] = str_replace('/slice:'.$time_range[0].':'.$time_range[1], '(from '.($time_range[0] ? echo_min_from_sec($time_range[0]) : 'start').' to '.echo_min_from_sec($time_range[1]).')', $i['i_message']);
+                $i['i_message'] = str_replace('/slice:'.$time_range[0].':'.$time_range[1], $replace_with, $i['i_message']);
+                
             } else {
                 $button_url = '/entities/'.$us[0]['u_id'].'?skip_header=1#urls';
             }
+            
 
             if($fb_format){
                 $i['i_message'] = str_replace('@'.$i['i_outbound_u_id'], '['.$us[0]['u_full_name'].']', $i['i_message']);
