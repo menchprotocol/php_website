@@ -119,10 +119,9 @@ class Db_model extends CI_Model {
                     'x_status >' => 0,
                     'x_outbound_u_id' => $val['u_id'],
                 ), array(), array(
-                    'x_id' => 'ASC'
+                    'x_type' => 'ASC'
                 ));
             }
-
 
 
             //Fetch the messages for this entity:
@@ -1974,20 +1973,8 @@ class Db_model extends CI_Model {
                     }
                 }
 
-                if(strlen($item['u_synonyms'])>0){
-                    $new_item['u_keywords'] .= join(' ',json_decode($item['u_synonyms'])).' ';
-                }
-
                 if(strlen($item['u_email'])>0){
                     $new_item['u_keywords'] .= ' '.$item['u_email'];
-                }
-
-                if(strlen($item['u_paypal_email'])>0){
-                    $new_item['u_keywords'] .= ' '.$item['u_paypal_email'];
-                }
-
-                if(strlen($item['u_phone'])>0){
-                    $new_item['u_keywords'] .= ' '.$item['u_phone'];
                 }
 
                 //Clean keywords

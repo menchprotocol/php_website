@@ -423,47 +423,40 @@ class Intents extends CI_Controller
         ), 0 );
 
         if(!$udata){
-            echo_json(array(
+            return echo_json(array(
                 'status' => 0,
                 'message' => 'Session Expired',
             ));
-            return false;
         } elseif(!isset($_POST['c_id']) || intval($_POST['c_id'])<=0){
-            echo_json(array(
+            return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Intent ID',
             ));
-            return false;
         } elseif(!isset($_POST['level']) || intval($_POST['level'])<0){
-            echo_json(array(
+            return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing level',
             ));
-            return false;
         } elseif(!isset($_POST['c_outcome']) || strlen($_POST['c_outcome'])<=0){
-            echo_json(array(
+            return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Intent',
             ));
-            return false;
         } elseif(!isset($_POST['c_time_estimate'])){
-            echo_json(array(
+            return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Time Estimate',
             ));
-            return false;
         } elseif(!isset($_POST['c_is_any']) || !isset($_POST['c_is_output']) || !isset($_POST['c_require_url_to_complete']) || !isset($_POST['c_require_notes_to_complete'])){
-            echo_json(array(
+            return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Completion Settings',
             ));
-            return false;
         } elseif(count($cs)<=0){
-            echo_json(array(
+            return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Invalid c_id',
             ));
-            return false;
         }
 
 
@@ -554,10 +547,9 @@ class Intents extends CI_Controller
         }
 
         //Show success:
-        echo_json(array(
+        return echo_json(array(
             'status' => 1,
             'message' => '<span><i class="fas fa-check"></i> Saved</span>',
-            'recursive_updates' => $updated_recursively,
         ));
 
     }
@@ -818,7 +810,7 @@ class Intents extends CI_Controller
 	 * i Messages
 	 ****************************** */
 
-    function i_load_frame(){
+    function load_c_messages(){
         $udata = auth();
         if(!$udata){
             //Display error:

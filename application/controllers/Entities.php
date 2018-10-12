@@ -74,40 +74,6 @@ class Entities extends CI_Controller {
     }
 
 
-    //Edit entities
-    function entity_edit($u_id){
-
-        //Authenticate user:
-        $udata = $this->session->userdata('user');
-
-        $udata = auth(array(1308,1280),1,0, $u_id);
-        $entity_tree = fetch_entity_tree($u_id,true);
-
-        //Adjust Breadcrumb for non-admins
-        if(!array_key_exists(1281, $udata['u__inbounds'])){
-            $entity_tree['breadcrumb'] = array(
-                array(
-                    'link' => '/entities/'.$u_id,
-                    'anchor' => 'My Account',
-                ),
-                array(
-                    'link' => null,
-                    'anchor' => '<i class="fas fa-cog"></i> Modify',
-                ),
-            );
-        }
-
-        //Fetch core data:
-        $view_data = array_merge( $entity_tree , array(
-            'udata' => $udata,
-        ));
-
-        //This lists all users based on the permissions of the user
-        $this->load->view('console/console_header', $view_data);
-        $this->load->view('entities/entity_edit', $view_data);
-        $this->load->view('console/console_footer');
-    }
-
 
     function link_entities(){
 
@@ -363,12 +329,10 @@ class Entities extends CI_Controller {
     }
 
 
-    function entity_save_edit(){
+    function u_save_settings(){
 
         //Auth user and check required variables:
         $udata = auth(array(1308,1280));
-        $countries_all = $this->config->item('countries_all');
-        $timezones = $this->config->item('timezones');
         $message_max = $this->config->item('message_max');
 
         //Fetch current data:
@@ -377,26 +341,44 @@ class Entities extends CI_Controller {
         ));
 
         if(!$udata){
-            die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the page and try again.</span>');
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Session Expired',
+            ));
         } elseif(!isset($_POST['u_id']) || intval($_POST['u_id'])<=0 || !(count($u_current)==1)){
-            die('<span style="color:#FF0000;">Error: Invalid ID. Try again.</span>');
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid ID',
+            ));
         } elseif(!isset($_POST['u_full_name']) || strlen($_POST['u_full_name'])<=0){
-            die('<span style="color:#FF0000;">Error: Missing First Name. Try again.</span>');
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing name',
+            ));
         } elseif(strlen($_POST['u_email'])>0 && !filter_var($_POST['u_email'], FILTER_VALIDATE_EMAIL)){
-            die('<span style="color:#FF0000;">Error: Email ['.$_POST['u_email'].'] is invalid. Try again.</span>');
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Email ['.$_POST['u_email'].'] is invalid',
+            ));
         } elseif(filter_var($u_current[0]['u_email'], FILTER_VALIDATE_EMAIL) && strlen($_POST['u_email'])==0){
-            die('<span style="color:#FF0000;">Error: Initial email was ['.$u_current[0]['u_email'].']. Email required once set. Try again.</span>');
-        } elseif(strlen($_POST['u_paypal_email'])>0 && !filter_var($_POST['u_paypal_email'], FILTER_VALIDATE_EMAIL)){
-            die('<span style="color:#FF0000;">Error: Invalid Paypal Email. Try again.</span>');
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Initial email was ['.$u_current[0]['u_email'].']. Email is required once its set',
+            ));
         } elseif(strlen($_POST['u_bio'])>0 && !(strip_tags($_POST['u_bio'])==$_POST['u_bio'])){
-            die('<span style="color:#FF0000;">Error: Cannot include code in your bio.</span>');
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Cannot include code in your bio',
+            ));
         } elseif(strlen($_POST['u_bio'])>$message_max){
-            die('<span style="color:#FF0000;">Error: Introductory Message should be less than '.$message_max.' characters. Try again.</span>');
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Introductory Message should be less than '.$message_max.' characters',
+            ));
         }
 
         //Adjust email:
         $_POST['u_email'] = strtolower($_POST['u_email']);
-        $_POST['u_paypal_email'] = strtolower($_POST['u_paypal_email']);
 
 
         //Make sure email is unique:
@@ -406,63 +388,47 @@ class Entities extends CI_Controller {
                 'u_email' => strtolower($_POST['u_email']),
             ));
             if(count($dup_email)>0){
-                die('<span style="color:#FF0000;">Error: Email ['.$_POST['u_email'].'] is already assigned to another user.</span>');
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => 'Email ['.$_POST['u_email'].'] is already assigned to ['.$dup_email[0]['u_full_name'].']',
+                ));
             }
         }
 
-
-        if(!isset($_POST['u_language'])){
-            $_POST['u_language'] = array();
-        }
-
+        //Prepare data to be updated:
         $u_update = array(
-            //Email updates:
-            'u_email' => ( isset($_POST['u_email']) && strlen($_POST['u_email'])>0 ? trim(strtolower($_POST['u_email'])) : null ),
-            'u_paypal_email' => ( isset($_POST['u_paypal_email']) && strlen($_POST['u_paypal_email'])>0 ? trim(strtolower($_POST['u_paypal_email'])) : null ),
             'u_full_name' => trim($_POST['u_full_name']),
-            'u_phone' => $_POST['u_phone'],
-            'u_gender' => $_POST['u_gender'],
-            'u_country_code' => $_POST['u_country_code'],
-            'u_current_city' => $_POST['u_current_city'],
-            'u_timezone' => $_POST['u_timezone'],
-            'u_language' => join(',',$_POST['u_language']),
             'u_bio' => trim($_POST['u_bio']),
+            'u_email' => ( isset($_POST['u_email']) && strlen($_POST['u_email'])>0 ? trim(strtolower($_POST['u_email'])) : null ),
         );
 
         //Some more checks:
-        if(strlen($_POST['u_password_new'])>0 || strlen($_POST['u_password_current'])>0){
+        if(strlen($_POST['u_password_new'])>0){
 
             //Password update attempt, lets check:
-            if(strlen($_POST['u_password_new'])<=0){
-                die('<span style="color:#FF0000;">Error: Missing new password. Try again.</span>');
-            } elseif(strlen($u_current[0]['u_password'])>0 && !array_key_exists(1281, $udata['u__inbounds']) && strlen($_POST['u_password_current'])<=0){
-                die('<span style="color:#FF0000;">Error: Missing current password. Try again.</span>');
-            } elseif(strlen($u_current[0]['u_password'])>0 && !array_key_exists(1281, $udata['u__inbounds']) && !(md5($_POST['u_password_current'])==$u_current[0]['u_password'])){
-                die('<span style="color:#FF0000;">Error: Invalid current password. Try again.</span>');
-            } elseif(strlen($u_current[0]['u_password'])>0 && !array_key_exists(1281, $udata['u__inbounds']) && $_POST['u_password_new']==$_POST['u_password_current']){
-                die('<span style="color:#FF0000;">Error: New and current password cannot be the same. Try again.</span>');
+            if(!array_key_exists(1281, $udata['u__inbounds'])){
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => 'You must be an admin to set new passwords',
+                ));
             } elseif(strlen($_POST['u_password_new'])<6){
-                die('<span style="color:#FF0000;">Error: New password must be longer than 6 characters. Try again.</span>');
-            } else {
-
-                //Set password for updating:
-                $u_update['u_password'] = md5($_POST['u_password_new']);
-
-                //Reset both fields:
-                echo "<script> $('#u_password_current').val(''); $('#u_password_new').val(''); </script>";
-
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => 'New password must be longer than 6 characters',
+                ));
             }
-        }
 
+            //Set password for updating:
+            $u_update['u_password'] = md5($_POST['u_password_new']);
 
-        //Did they just agree to the agreement?
-        if(isset($_POST['u_newly_checked']) && intval($_POST['u_newly_checked']) && strlen($u_current[0]['u_terms_agreement_time'])<1){
-            //Yes they did, save the timestamp:
-            $u_update['u_terms_agreement_time'] = date("Y-m-d H:i:s");
+            //Reset field:
+            echo "<script> $('#u_password_new').val(''); </script>";
         }
 
         //Now update the DB:
         $this->Db_model->u_update(intval($_POST['u_id']) , $u_update);
+        //Above call would also update algolia index...
+
 
         //Refetch some DB (to keep consistency with login session format) & update the Session:
         if($_POST['u_id']==$udata['u_id']){
@@ -474,9 +440,8 @@ class Entities extends CI_Controller {
             }
         }
 
-        //Remove sensitive data before logging:
+        //Remove sensitive data before logging engagement:
         unset($_POST['u_password_new']);
-        unset($_POST['u_password_current']);
 
         //Log engagement:
         $this->Db_model->e_create(array(
@@ -492,14 +457,36 @@ class Entities extends CI_Controller {
         ));
 
         //Show success:
-        echo '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span>';
+        return echo_json(array(
+            'status' => 1,
+            'message' => '<span><i class="fas fa-check"></i> Saved</span>',
+        ));
 
     }
 
 
 
 
+    function load_messages(){
 
+        $udata = auth();
+        if(!$udata){
+            //Display error:
+            die('<span style="color:#FF0000;">Error: Invalid Session. Login again to continue.</span>');
+        } elseif(!isset($_POST['u_id']) || intval($_POST['u_id'])<=0){
+            die('<span style="color:#FF0000;">Error: Invalid entity id.</span>');
+        }
+
+        $messages = $this->Db_model->i_fetch(array(
+            'i_status >=' => 0,
+            'i_outbound_u_id' => $_POST['u_id'],
+        ));
+        echo '<div id="list-messages" class="list-group  grey-list">';
+        foreach($messages as $i){
+            echo echo_i($i);
+        }
+        echo '</div>';
+    }
 
 
 

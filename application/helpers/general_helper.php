@@ -861,7 +861,7 @@ function message_validation($i_status,$i_message,$i_outbound_c_id){
 
         $i_outbound_us = $CI->Db_model->u_fetch(array(
             'u_id' => $u_ids[0],
-        ));
+        ), array('skip_u__inbounds','u__urls'));
 
         if(count($i_outbound_us)==0){
             //Invalid ID:
@@ -913,13 +913,12 @@ function message_validation($i_status,$i_message,$i_outbound_c_id){
             );
         }
 
-        //Ensure entity has a slicable content:
-        $u__urls = $CI->Db_model->x_fetch(array(
-            'x_status >' => 0,
-            'x_outbound_u_id' => $u_ids[0],
-        ));
+        //Ensure entity has a sliceable content
+        //
+        //currently supporting: YouTube Only! See error message below...
+        //
         $found_slicable_url = false;
-        foreach($u__urls as $x){
+        foreach($i_outbound_us[0]['u__urls'] as $x){
             if($x['x_type']==1 && substr_count($x['x_url'],'youtube.com')>0){
                 $found_slicable_url = true;
                 break;
@@ -928,7 +927,7 @@ function message_validation($i_status,$i_message,$i_outbound_c_id){
         if(!$found_slicable_url){
             return array(
                 'status' => 0,
-                'message' => 'The /slice command requires the referenced entity to have a YouTube URL',
+                'message' => 'The /slice command requires the entity to have a YouTube URL',
             );
         }
 

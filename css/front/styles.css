@@ -443,8 +443,10 @@ input::-webkit-inner-spin-button {
 }
 .entities-msg>h4{
     padding: 10px;
-    margin:0 0 0 5px;
-    font-size: 0.8em;
+    margin:0;
+    line-height:110%;
+    font-size:1em;
+    font-weight: 300;
 }
 .entities-msg>h4>.fas{
     font-size:1.2em;
@@ -684,7 +686,7 @@ h5, .h5 {
 }
 
 .grey-input .input-group-addon {
-    padding-right:8px;
+    padding-right:13px;
 }
 
 
@@ -2071,6 +2073,10 @@ margin:5px 0;
     color: #FFF;
 }
 
+.has-desc{
+    border-bottom:1px dotted #3C4858;
+    cursor:help;
+}
 .grey-box{
     border-radius: 4px;
     padding:10px 10px 0 10px;
@@ -2083,6 +2089,7 @@ margin:5px 0;
     max-height:520px;
     overflow-y: auto;
     margin-right:15px;
+    width:96%;
 }
 
 .checkbox label, .radio label, label {

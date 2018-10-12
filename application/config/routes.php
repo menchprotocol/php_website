@@ -25,7 +25,6 @@ $route['login']						        = "front/login"; //Bootcamp Operator login
 $route['logout']				            = "entities/logout"; //Logout from entites
 
 //Trainer interface:
-$route['entities/(:num)/modify'] 			= "entities/entity_edit/$1";
 $route['entities/(:num)'] 			        = "entities/entity_manage/$1";
 $route['entities'] 			                = "entities/entity_manage";
 $route['intents/(:num)'] 			        = "intents/intent_manage/$1";

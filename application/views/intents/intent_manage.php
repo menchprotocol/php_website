@@ -1,4 +1,5 @@
 <?php
+$udata = $this->session->userdata('user');
 if(isset($orphan_cs)){
     $c['c_id'] = 0;
 }
@@ -34,6 +35,41 @@ if(isset($orphan_cs)){
 
     $(document).ready(function() {
 
+
+        if(is_mobile()){
+            //Adjust columns:
+            $('.cols').removeClass('col-xs-6').addClass('col-sm-6');
+            $('.grey-box').addClass('phone-2nd');
+            $('.iphone-x').addClass('iphone-2nd');
+
+        } else {
+            //Make editing frames Sticky for scrolling longer lists
+            $(".main-panel").scroll(function() {
+                var top_position = $(this).scrollTop();
+                clearTimeout($.data(this, 'scrollTimer'));
+                $.data(this, 'scrollTimer', setTimeout(function() {
+                    $("#iphonex").css('top',(top_position-25)); //PX also set in style.css for initial load
+                    $("#modifybox").css('top',(top_position-0)); //PX also set in style.css for initial load
+                }, 34));
+            });
+        }
+
+
+        //Do we need to auto load anything?
+        if(window.location.hash) {
+            var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
+            var hash_parts = hash.split("-");
+            if(hash_parts.length>=2){
+                //Fetch level if available:
+                if(hash_parts[0]=='messages'){
+                    load_c_messages(hash_parts[1]);
+                } else if(hash_parts[0]=='modify'){
+                    load_c_modify(hash_parts[1],hash_parts[2]);
+                }
+            }
+        }
+
+
         //Watch the expand/close all buttons:
         $('#task_view .expand_all').click(function (e) {
             $( ".is_level2_sortable" ).each(function() {
@@ -46,43 +82,8 @@ if(isset($orphan_cs)){
             });
         });
 
-
-
-        if(is_mobile()){
-            //Adjust columns:
-            $('.cols').removeClass('col-xs-6').addClass('col-sm-6');
-            $('.grey-box').addClass('phone-2nd');
-            $('.iphone-x').addClass('iphone-2nd');
-
-        } else {
-            //Make iPhone X Sticky for scrolling longer lists
-            $(".main-panel").scroll(function() {
-                var top_position = $(this).scrollTop();
-                clearTimeout($.data(this, 'scrollTimer'));
-                $.data(this, 'scrollTimer', setTimeout(function() {
-                    $("#iphonex").css('top',(top_position-25)); //PX also set in style.css for initial load
-                    $("#modifybox").css('top',(top_position-0)); //PX also set in style.css for initial load
-                }, 34));
-            });
-        }
-
-
-
-        if(window.location.hash) {
-            var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
-            var hash_parts = hash.split("-");
-            if(hash_parts.length>=2){
-                //Fetch level if available:
-                if(hash_parts[0]=='messages'){
-                    i_load_frame(hash_parts[1]);
-                } else if(hash_parts[0]=='modify'){
-                    load_modify(hash_parts[1],hash_parts[2]);
-                }
-            }
-        }
-
         //Load Sortable:
-        load_intent_sort($("#c_id").val(),"2");
+        load_c_sort($("#c_id").val(),"2");
 
         //Check changes on Intent Type:
         $('input[type=radio][name=c_is_output]').change(function() {
@@ -98,7 +99,7 @@ if(isset($orphan_cs)){
                 var intent_id = $( this ).attr('intent-id');
 
                 //Load sorting:
-                load_intent_sort(intent_id,"3");
+                load_c_sort(intent_id,"3");
 
                 //Load time:
                 $('#t_estimate_'+intent_id).text(echo_hours($('#t_estimate_'+intent_id).attr('tree-hours')));
@@ -180,7 +181,6 @@ if(isset($orphan_cs)){
             source: function(q, cb){
                 algolia_c_index.search(q, {
                     hitsPerPage: 7,
-                    //filters: ( parseInt($('#u_inbound_u_id').val())==1281 ? null : '(c_inbound_u_id=' + $('#u_id').val() + ')' ),
                 }, function(error, content) {
                     if (error) {
                         cb([]);
@@ -279,7 +279,7 @@ if(isset($orphan_cs)){
     }
 
 
-    function load_intent_sort(c_id,level){
+    function load_c_sort(c_id,level){
 
         if(level==2){
             var s_element = "list-c-<?= $c['c_id'] ?>";
@@ -360,55 +360,42 @@ if(isset($orphan_cs)){
 
 
 
-    function i_load_frame(c_id){
+    function load_c_messages(c_id){
 
-        var messages_focus_c_id = ( $('#iphonex').hasClass('hidden') ? 0 : parseInt($('#iphonex').attr('intent-id')) );
+        //Make the frame visible:
+        $("#iphonex").removeClass('hidden').hide().fadeIn();
+        $('#modifybox').addClass('hidden');
+        var handler = $( "#iphone-screen" );
 
-        //Check to see if its open or close:
-        if(messages_focus_c_id==c_id){
+        //Define the top menu that would not change:
+        $('#iphonex').attr('intent-id',c_id);
 
-            //close and return
-            //$('#iphonex').addClass('hidden');
-            $('#iphonex').hide().fadeIn();
-            return false;
+        //Define standard phone header:
+        var top_menu = '<div class="ix-top">\n' +
+            '<span class="ix-top-left" data-toggle="tooltip" title="PST Time" data-placement="bottom"><?= date("H:i") ?></span>\n' +
+            '<span class="ix-top-right">\n' +
+            '<i class="fas fa-wifi"></i>\n' +
+            '<i class="fas fa-battery-full"></i>\n' +
+            '</span>\n' +
+            '</div>';
 
-        } else {
+        //Show tem loader:
+        handler.html('<div style="text-align:center; padding-top:89px; padding-bottom:89px;"><img src="/img/round_load.gif" class="loader" /></div>');
 
-            //Make the frame visible:
-            $("#iphonex").removeClass('hidden').hide().fadeIn();
-            $('#modifybox').addClass('hidden');
-            var handler = $( "#iphone-screen" );
+        //Load the frame:
+        $.post("/intents/load_c_messages", {
 
-            //Define the top menu that would not change:
-            $('#iphonex').attr('intent-id',c_id);
+            c_id:c_id,
 
-            //Define standard phone header:
-            var top_menu = '<div class="ix-top">\n' +
-                '<span class="ix-top-left" data-toggle="tooltip" title="PST Time" data-placement="bottom"><?= date("H:i") ?></span>\n' +
-                '<span class="ix-top-right">\n' +
-                '<i class="fas fa-wifi"></i>\n' +
-                '<i class="fas fa-battery-full"></i>\n' +
-                '</span>\n' +
-                '</div>';
+        }, function(data) {
 
-            //Show tem loader:
-            handler.html('<div style="text-align:center; padding-top:89px; padding-bottom:89px;"><img src="/img/round_load.gif" class="loader" /></div>');
+            //Empty Inputs Fields if success:
+            handler.html(top_menu+data);
 
-            //Load the frame:
-            $.post("/intents/i_load_frame", {
+            //SHow inner tooltips:
+            $('[data-toggle="tooltip"]').tooltip();
 
-                c_id:c_id,
-
-            }, function(data) {
-
-                //Empty Inputs Fields if success:
-                handler.html(top_menu+data);
-
-                //SHow inner tooltips:
-                $('[data-toggle="tooltip"]').tooltip();
-
-            });
-        }
+        });
     }
 
 
@@ -526,21 +513,14 @@ if(isset($orphan_cs)){
     }
 
 
-    function load_modify(c_id, cr_id){
+    function load_c_modify(c_id, cr_id){
 
         //Make sure inputs are valid:
         if(!$('#t_estimate_'+c_id).length){
             return false;
         }
 
-        var current_c_id = ( $('#modifybox').hasClass('hidden') ? 0 : parseInt($('#modifybox').attr('intent-id')) );
         var level = ( cr_id==0 ? 1 : parseInt($('#cr_'+cr_id).attr('intent-level')) ); //Either 1, 2 or 3
-
-        //Do we already have this loaded?
-        if(current_c_id>0 && current_c_id==c_id){
-            //Yes, just refresh box:
-            $('#modifybox').hide().fadeIn();
-        }
 
         //Update variables:
         $('#modifybox').attr('intent-link-id',cr_id);
@@ -586,7 +566,7 @@ if(isset($orphan_cs)){
     }
 
 
-    function save_modify(){
+    function save_intent_modify(){
 
         //Validate that we have all we need:
         if($('#modifybox').hasClass('hidden') || !parseInt($('#modifybox').attr('intent-id'))) {
@@ -608,7 +588,7 @@ if(isset($orphan_cs)){
         };
 
         //Show spinner:
-        $('.save_setting_results').html('<span><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
+        $('.save_intent_changes').html('<span><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
 
         //Save the rest of the content:
         $.post("/intents/c_save_settings", modify_data , function(data) {
@@ -639,28 +619,29 @@ if(isset($orphan_cs)){
                 adjust_js_ui(modify_data['c_id'], modify_data['level'], modify_data['c_time_estimate']);
 
                 //Update UI to confirm with user:
-                $('.save_setting_results').html(data.message).hide().fadeIn();
+                $('.save_intent_changes').html(data.message).hide().fadeIn();
 
                 //Disapper in a while:
                 setTimeout(function() {
                     //Hide the editor & saving results:
-                    $('.save_setting_results').hide();
+                    $('.save_intent_changes').hide();
                 }, 1000);
 
             } else {
                 //Ooops there was an error!
-                $('.save_setting_results').html('<span style="color:#FF0000;"><i class="fas fa-exclamation-triangle"></i> '+data.message+'</span>').hide().fadeIn();
+                $('.save_intent_changes').html('<span style="color:#FF0000;"><i class="fas fa-exclamation-triangle"></i> '+data.message+'</span>').hide().fadeIn();
             }
         });
 
     }
 
 
-    function c_delete(c_id){
+    function c_delete(){
         var r = confirm("Are you sure you want to PERMANENTLY delete this intent and all its associated Links, Messages, etc...?");
         if (!(r == true)) {
             return false;
         }
+        var c_id = ( $('#modifybox').hasClass('hidden') ? 0 : parseInt($('#modifybox').attr('intent-id')) );
         window.location = "/intents/hard_delete/"+c_id;
     }
 
@@ -708,7 +689,7 @@ if(isset($orphan_cs)){
                 add_to_list(sort_list_id,sort_handler,data.html);
 
                 //Re-adjust sorting:
-                load_intent_sort(c_id,next_level);
+                load_c_sort(c_id,next_level);
 
                 if(next_level==2){
 
@@ -716,7 +697,7 @@ if(isset($orphan_cs)){
                     c_sort(0,2);
 
                     //Re-adjust sorting for inner Steps:
-                    load_intent_sort(data.c_id,3);
+                    load_c_sort(data.c_id,3);
 
                     //Load search again:
                     load_level3_search();
@@ -943,15 +924,19 @@ if(isset($orphan_cs)){
 
             <table width="100%" style="margin-top:10px;">
                 <tr>
-                    <td class="save-td"><a href="javascript:save_modify();" class="btn btn-primary">Save</a></td>
-                    <td><span class="save_setting_results"></span></td>
-                    <td style="width:80px;"><a href="javascript:c_unlink();" class="unlink-intent" data-toggle="tooltip" title="Remove intent link without deleting the intent (Available to be used elsewhere)" data-placement="left" style="text-decoration:none;"><i class="fas fa-unlink"></i> Unlink</a></td>
+                    <td class="save-td"><a href="javascript:save_intent_modify();" class="btn btn-primary">Save</a></td>
+                    <td><span class="save_intent_changes"></span></td>
+                    <td style="width:80px; text-align:right;">
+
+                        <div><a href="javascript:c_unlink();" class="unlink-intent" data-toggle="tooltip" title="Only remove intent link while NOT deleting the intent itself" data-placement="left" style="text-decoration:none;"><i class="fas fa-unlink"></i> Unlink</a></div>
+
+                        <?php if(array_key_exists(1281, $udata['u__inbounds'])){ ?>
+                            <div><a href="javascript:c_delete();" data-toggle="tooltip" title="Delete intent AND remove all its links, messages & references" data-placement="left" style="text-decoration:none;"><i class="fas fa-trash-alt"></i> Delete</a></div>
+                        <?php } ?>
+
+                    </td>
                 </tr>
             </table>
-
-
-            <div id="parent_intents" class="hidden"></div>
-
 
         </div>
 

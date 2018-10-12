@@ -10,7 +10,7 @@ function echo_next_u($page,$limit,$u__outbound_count){
     echo '<a class="load-more list-group-item" href="javascript:void(0);" onclick="entity_load_more('.$page.')">';
 
     //Right content:
-    echo '<span class="pull-right"><span class="badge badge-secondary"><i class="fas fa-search-plus"></i></span></span>';
+    echo '<span class="pull-right" style="margin-right: 6px;"><span class="badge badge-secondary"><i class="fas fa-search-plus"></i></span></span>';
 
     //Regular section:
     $max_entities = (($page+1)*$limit);
@@ -41,7 +41,7 @@ function echo_x($u, $x){
     $ui .= '<div id="x_'.$x['x_id'].'" class="list-group-item url-item">';
 
     //Right content:
-    $ui .= '<span class="pull-right">';
+    $ui .= '<span class="pull-right" style="margin-right: 6px;">';
 
     if($can_edit && strlen($x['x_clean_url'])>0 && !($x['x_url']==$x['x_clean_url'])){
         //We have detected a different URL behind the scene:
@@ -92,88 +92,6 @@ function echo_x($u, $x){
     return $ui;
 }
 
-
-function echo_u($u, $level, $can_edit, $is_inbound=false){
-
-    $CI =& get_instance();
-    $udata = $CI->session->userdata('user');
-    $ui = null;
-
-    $ui .= '<div id="u_'.$u['u_id'].'" entity-id="'.$u['u_id'].'" is-inbound="'.( $is_inbound ? 1 : 0 ).'" class="list-group-item u-item '.( $level==1 ? 'top_entity' : 'ur_'.$u['ur_id'] ).'">';
-
-    //Right content:
-    $ui .= '<span class="pull-right">';
-
-    if($can_edit) {
-
-        if($level==1 && array_key_exists(1281, $udata['u__inbounds'])){
-            $ui .= '<a class="badge badge-secondary" href="javascript:u_delete('.$u['u_id'].')" style="margin:-2px 3px 0 0; width:40px;"><i class="fas fa-trash-alt"></i></a>';
-        } elseif($level==2){
-            $ui .= '<a class="badge badge-secondary" href="javascript:ur_unlink('.$u['ur_id'].')" style="margin:-2px 3px 0 0; width:40px;"><i class="fas fa-trash-alt"></i></a>';
-        }
-
-        $ui .= '<a class="badge badge-secondary" href="/entities/'.$u['u_id'].'/modify" style="margin:-2px 3px 0 0; width:40px;" data-toggle="tooltip" data-placement="left" title="Engagement Score">'.( $u['u__e_score']>0 ? '<span class="btn-counter">'.echo_big_num($u['u__e_score']).'</span>' : '' ).'<i class="fas fa-cog"></i></a>';
-    }
-
-
-    if($level==1){
-        //Level 1:
-        $ui .= '<span class="badge badge-secondary grey" style="width:40px;"><span class="btn-counter li-outbound-count">'.$u['u__outbound_count'].'</span><i class="fas fa-sign-out-alt rotate90"></i></span>';
-    } else {
-        //Level 2:
-        $ui .= '<a class="badge badge-secondary" href="/entities/'.$u['u_id'].'" style="width:40px;">'.(isset($u['u__outbound_count']) && $u['u__outbound_count']>0 ? '<span class="btn-counter">'.$u['u__outbound_count'].'</span>' : '').'<i class="'.( $is_inbound ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></a>';
-    }
-
-
-    $ui .= '</span>';
-
-
-
-    if($level==1){
-
-        //Regular section:
-        $ui .= echo_cover($u, 'profile-icon2');
-        $ui .= '<b id="u_title" class="u_full_name">' . $u['u_full_name'] . '</b>';
-        $ui .= ' <span class="obj-id">@' . $u['u_id'] . '</span>';
-
-        //Do they have any social profiles in their link?
-        $ui .= echo_social_profiles($CI->Db_model->x_social_fetch($u['u_id']));
-
-//Check last engagement ONLY IF admin:
-        if ($can_edit) {
-            //Check last engagement:
-            $last_eng = $CI->Db_model->e_fetch(array(
-                '(e_inbound_u_id=' . $u['u_id'] . ')' => null,
-            ), 1);
-
-            if (count($last_eng) > 0) {
-                $ui .= ' &nbsp;<a href="/cockpit/engagements?e_u_id=' . $u['u_id'] . '" style="display: inline-block;" data-toggle="tooltip" data-placement="right" title="Last engaged ' . echo_diff_time($last_eng[0]['e_timestamp']) . ' ago. Click to see all engagements"><i class="fas fa-exchange rotate45"></i> <b>' . echo_diff_time($last_eng[0]['e_timestamp']) . ' &raquo;</b></a>';
-            }
-        }
-
-        //Visibly show bio for level 1:
-        $ui .= '<div>' . $u['u_bio'] . '</div>';
-
-    } else {
-
-        //Regular section:
-        $ui .= echo_cover($u,'micro-image', 1).' ';
-        if(strlen($u['u_bio'])>0){
-            $ui .= '<span class="u_full_name" data-toggle="tooltip" data-placement="right" title="'.$u['u_bio'].'" style="border-bottom:1px dotted #3C4858; cursor:help;">'.$u['u_full_name'].'</span>';
-        } else {
-            $ui .= '<span class="u_full_name">'.$u['u_full_name'].'</span>';
-        }
-
-    }
-
-
-
-
-
-    $ui .= '</div>';
-
-    return $ui;
-}
 
 
 
@@ -239,10 +157,10 @@ function echo_content_url($x_clean_url,$x_type){
     }
 }
 
-function echo_embed($url,$full_message=null,$return_array=false){
+function echo_embed($url, $full_message=null, $return_array=false, $start_sec=0, $end_sec=0){
 
     $clean_url = null;
-    $embed_code = null;
+    $embed_html_code = null;
     $prefix_message = null;
 
     if(!$full_message){
@@ -274,27 +192,12 @@ function echo_embed($url,$full_message=null,$return_array=false){
             //Set the Clean URL:
             $clean_url = 'https://www.youtube.com/watch?v='.$video_id;
 
-            //We might also find these in the URL:
-            $start_sec = ( isset($_GET['start']) ? intval($_GET['start']) : 0 );
-            $end_sec = ( isset($_GET['end']) ? intval($_GET['end']) : 0 );
-
-            /*
-            if(substr_count($url,'start=')>0){
-                $start_sec = intval(one_two_explode('start=','&',$url));
-                $clean_url = $clean_url.'&start='.$start_sec;
-            }
-            if(substr_count($url,'end=')>0){
-                $end_sec = intval(one_two_explode('end=','&',$url));
-                $clean_url = $clean_url.'&end='.$end_sec;
-            }
-            */
-
             //Inform Student that this video has been sliced:
             if($start_sec || $end_sec){
-                $embed_code .= '<div class="video-prefix"><i class="fab fa-youtube" style="color:#ff0202;"></i> Watch from <b>'.($start_sec ? echo_min_from_sec($start_sec) : 'start').'</b> to <b>'.($end_sec ? echo_min_from_sec($end_sec) : 'end').'</b>:</div>';
+                $embed_html_code .= '<div class="video-prefix"><i class="fab fa-youtube" style="color:#ff0202;"></i> Watch from <b>'.($start_sec ? echo_min_from_sec($start_sec) : 'start').'</b> to <b>'.($end_sec ? echo_min_from_sec($end_sec) : 'end').'</b>:</div>';
             }
 
-            $embed_code .= '<div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/'.$video_id.'?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start='.$start_sec.( $end_sec ? '&end='.$end_sec : '' ).'&amp;autoplay=1" frameborder="0" allowfullscreen class="yt-video"></iframe></div>';
+            $embed_html_code .= '<div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/'.$video_id.'?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start='.$start_sec.( $end_sec ? '&end='.$end_sec : '' ).'&amp;autoplay=1" frameborder="0" allowfullscreen class="yt-video"></iframe></div>';
 
         }
 
@@ -306,7 +209,7 @@ function echo_embed($url,$full_message=null,$return_array=false){
         //This should be an integer!
         if(intval($video_id)==$video_id){
             $clean_url = 'https://vimeo.com/'.$video_id;
-            $embed_code = '<div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="https://player.vimeo.com/video/'.$video_id.'?title=0&byline=0" class="yt-video" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>';
+            $embed_html_code = '<div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="https://player.vimeo.com/video/'.$video_id.'?title=0&byline=0" class="yt-video" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>';
         }
 
     } elseif(substr_count($url,'wistia.com/medias/')==1){
@@ -314,7 +217,7 @@ function echo_embed($url,$full_message=null,$return_array=false){
         //Seems to be Wistia:
         $video_id = trim(one_two_explode('wistia.com/medias/','?',$url));
         $clean_url = trim(one_two_explode('','?',$url));
-        $embed_code = '<script src="https://fast.wistia.com/embed/medias/'.$video_id.'.jsonp" async></script><script src="https://fast.wistia.com/assets/external/E-v1.js" async></script><div class="wistia_responsive_padding video-sorting" style="padding:56.25% 0 0 0;position:relative;"><div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;"><div class="wistia_embed wistia_async_'.$video_id.' seo=false videoFoam=true" style="height:100%;width:100%">&nbsp;</div></div></div>';
+        $embed_html_code = '<script src="https://fast.wistia.com/embed/medias/'.$video_id.'.jsonp" async></script><script src="https://fast.wistia.com/assets/external/E-v1.js" async></script><div class="wistia_responsive_padding video-sorting" style="padding:56.25% 0 0 0;position:relative;"><div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;"><div class="wistia_embed wistia_async_'.$video_id.' seo=false videoFoam=true" style="height:100%;width:100%">&nbsp;</div></div></div>';
 
     }
 
@@ -322,15 +225,15 @@ function echo_embed($url,$full_message=null,$return_array=false){
 
         //Return all aspects of this parsed URL:
         return array(
-            'status' => ( $embed_code ? 1 : 0 ),
-            'embed_code' => $embed_code,
+            'status' => ( $embed_html_code ? 1 : 0 ),
+            'embed_code' => $embed_html_code,
             'clean_url' => $clean_url,
         );
 
     } else {
         //Just return the embed code:
-        if($embed_code){
-            return trim(str_replace($url,$embed_code,$full_message));
+        if($embed_html_code){
+            return trim(str_replace($url,$embed_html_code,$full_message));
         } else {
             //Not matched with an embed rule:
             return false;
@@ -357,8 +260,9 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
     $button_url = null;
     $button_title = null;
     $command = null;
-    $is_entity = ( $CI->uri->segment(1)=='entities' );
     $is_intent = ( $CI->uri->segment(1)=='intents' );
+    $is_entity = ( $CI->uri->segment(1)=='entities' );
+    $is_focus_entity = ( $is_entity && $CI->uri->segment(2)==$i['i_outbound_u_id'] );
     $ui = null;
     $original_cs = array();
 
@@ -380,8 +284,8 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
         ));
         if(count($original_cs)>0){
 
-            $ui .= '<div class="entities-msg">'.
-                '<h4><i class="fas fa-hashtag"></i> <a href="/intents/'.$i['i_outbound_c_id'].'#messages-'.$i['i_outbound_c_id'].'">'.$original_cs[0]['c_outcome'].'<span class="badge badge-primary" style="display:inline-block; margin-left:3px; width:40px;"><i class="fas fa-sign-out-alt rotate90"></i></span></a></h4>'.
+            $ui .= '<div class="entities-msg">'.'<span class="pull-right" style="margin:-4px 10px 0 0;"><a href="/intents/'.$i['i_outbound_c_id'].'#messages-'.$i['i_outbound_c_id'].'"><span class="badge badge-primary" style="display:inline-block; margin-left:3px; width:40px;"><i class="fas fa-sign-out-alt rotate90"></i></span></a></span>'.
+                '<h4><i class="fas fa-hashtag" style="font-size:1em;"></i> '.$original_cs[0]['c_outcome'].'</h4>'.
                 '<div>';
 
         }
@@ -400,50 +304,78 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
 
         if(count($us)>0){
 
+
             //Does it have a /slice command?
             $time_range = array();
             $found_embeddable = false;
             $button_title = 'Open Entity';
+            $button_url = '/entities/'.$us[0]['u_id'].'?skip_header=1'; //To loadup the entity
+            $embed_html_code = null; //Only applicable when !$fb_format
 
 
+            //Is there a slice command?
             if(substr_count($i['i_message'],'/slice')>0){
+                
                 $time_range = explode(':', one_two_explode('/slice:',' ',$i['i_message']) ,2);
-                $button_url = '/entities/'.$us[0]['u_id'].'?skip_header=1&start='.$time_range[0].'&end='.$time_range[1].'#urls';
-
-                //Set default in case URL is deleted or Embed URL is not found:
-                $replace_with = '(from '.($time_range[0] ? echo_min_from_sec($time_range[0]) : 'start').' to '.echo_min_from_sec($time_range[1]).')';
-
-                //Show the sliced video as well:
+                
+                //Try finding a compatible URL for slicing:
                 foreach($us[0]['u__urls'] as $x){
-                    if($x['x_type']==1){
-                        $_GET['start'] = $time_range[0];
-                        $_GET['end'] = $time_range[1];
-                        $replace_with = '<div style="margin-top:7px;">'.echo_embed($x['x_clean_url'],$x['x_clean_url']).'</div>';
+                    if($x['x_type']==1 && substr_count($x['x_url'],'youtube.com')>0 ){
+                        $embed_html_code = '<div style="margin-top:7px;">'.echo_embed($x['x_clean_url'], $x['x_clean_url'],false, $time_range[0], $time_range[1]).'</div>';
                         break;
                     }
                 }
                 
-                //Replace it with proper text:
-                $i['i_message'] = str_replace('/slice:'.$time_range[0].':'.$time_range[1], $replace_with, $i['i_message']);
-                
-            } else {
-                $button_url = '/entities/'.$us[0]['u_id'].'?skip_header=1#urls';
+                //Remove slice command:
+                $i['i_message'] = str_replace('/slice:'.$time_range[0].':'.$time_range[1], '', $i['i_message']);
+
+
+            } elseif(!$fb_format && !$is_focus_entity) {
+
+                //So we did not have a slice command and this is an HTML request for a non-entity item
+                //The reason we don't need these for entities is that they already list all URLs with embed codes, so no need to repeat
+                //Let's see if we have any other embeddable content that we can append to message:
+
+                foreach($us[0]['u__urls'] as $x){
+                    //Find all the ways we could use this URL:
+                    if($x['x_type']==1){
+                        $embed_html_code .= '<div style="margin-top:7px;">'.echo_embed($x['x_clean_url'],$x['x_clean_url']).'</div>';
+                    } elseif($x['x_type']>1){
+                        $embed_html_code .= '<div style="margin-top:7px;">'.echo_content_url($x['x_clean_url'],$x['x_type']).'</div>';
+                    }
+                }
+
             }
             
 
+            //Ok, lets deal with the UI based on delivery method:
             if($fb_format){
+
                 $i['i_message'] = str_replace('@'.$i['i_outbound_u_id'], '['.$us[0]['u_full_name'].']', $i['i_message']);
-            } elseif(!$fb_format && $is_intent) {
-                //HTML format:
-                $i['i_message'] = str_replace('@'.$i['i_outbound_u_id'], '<a href="javascript:void(0);" onclick="url_modal(\''.$button_url.'\')">'.$us[0]['u_full_name'].echo_social_profiles($CI->Db_model->x_social_fetch($i['i_outbound_u_id'])).'</a>', $i['i_message']);
-            } elseif(!$fb_format && $is_entity) {
-                //HTML format:
-                $i['i_message'] = str_replace('@'.$i['i_outbound_u_id'], '<b>'.$us[0]['u_full_name'].echo_social_profiles($CI->Db_model->x_social_fetch($i['i_outbound_u_id'])).'</b>', $i['i_message']);
+
             } else {
-                //TODO landing page message
+
+                if($is_intent) {
+
+                    //HTML format:
+                    $i['i_message'] = str_replace('@'.$i['i_outbound_u_id'], '<a href="javascript:void(0);" onclick="url_modal(\''.$button_url.'\')">'.$us[0]['u_full_name'].echo_social_profiles($CI->Db_model->x_social_fetch($i['i_outbound_u_id'])).'</a>', $i['i_message']);
+
+                } elseif($is_entity) {
+
+                    //HTML format:
+                    $i['i_message'] = str_replace('@'.$i['i_outbound_u_id'], '<b>'.$us[0]['u_full_name'].echo_social_profiles($CI->Db_model->x_social_fetch($i['i_outbound_u_id'])).'</b>', $i['i_message']);
+
+                } else {
+                    //TODO landing page message
+                }
+
+                //Did we have an embed code to be attached?
+                if($embed_html_code){
+                    $i['i_message'] .= $embed_html_code;
+                }
+
             }
         }
-
     }
 
 
@@ -937,14 +869,11 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
     //Right content
     $ui .= '<span class="pull-right" style="'.( $level<3 ? 'margin-right: 8px;' : '' ).'">';
 
-    if($level==1 && array_key_exists(1281, $udata['u__inbounds'])){
-        $ui .= '<a class="badge badge-primary" href="javascript:c_delete('.$c['c_id'].')" style="margin:-2px 3px 0 0; width:40px;"><i class="fas fa-trash-alt"></i></a>';
-    }
 
 
-    $ui .= '<a href="#messages-'.$c['c_id'].'" onclick="i_load_frame('.$c['c_id'].')" class="badge badge-primary" style="width:40px;" title="'.$c['c__tree_messages'].' Messages in tree"><span class="btn-counter" id="messages-counter-'.$c['c_id'].'">'.$c['c__this_messages'].'</span><i class="fas fa-comment-dots"></i></a>';
+    $ui .= '<a href="#messages-'.$c['c_id'].'" onclick="load_c_messages('.$c['c_id'].')" class="badge badge-primary" style="width:40px;"><span class="btn-counter" id="messages-counter-'.$c['c_id'].'">'.$c['c__this_messages'].'</span><i class="fas fa-comment-dots"></i></a>';
 
-    $ui .= '<a class="badge badge-primary" onclick="load_modify('.$c['c_id'].','.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).')" style="margin:-2px -8px 0 2px; width:40px;" href="#modify-'.$c['c_id'].'-'.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).'"><span class="btn-counter">'.echo_estimated_time($c['c__tree_hours'],0,1, $c['c_id'], $c['c_time_estimate']).'</span><i class="c_is_any_icon'.$c['c_id'].' '.( $c['c_is_any'] ? 'fas fa-code-merge' : 'fas fa-sitemap' ).'" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i></a> &nbsp;';
+    $ui .= '<a class="badge badge-primary" onclick="load_c_modify('.$c['c_id'].','.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).')" style="margin:-2px -8px 0 2px; width:40px;" href="#modify-'.$c['c_id'].'-'.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).'"><span class="btn-counter">'.echo_estimated_time($c['c__tree_hours'],0,1, $c['c_id'], $c['c_time_estimate']).'</span><i class="c_is_any_icon'.$c['c_id'].' '.( $c['c_is_any'] ? 'fas fa-code-merge' : 'fas fa-sitemap' ).'" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i></a> &nbsp;';
 
 
     $ui .= '&nbsp;<'.( $level>1 || $c['c__is_orphan'] ? 'a href="/intents/'.$c['c_id'].'" class="badge badge-primary"' :'span class="badge badge-primary grey"').' style="display:inline-block; margin-right:-1px; width:40px;"><span class="btn-counter outbound-counter-'.$c['c_id'].'">'.($c['c__tree_inputs']+$c['c__tree_outputs']-1).'</span><i class="'.( $is_inbound && $level<=2 ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></'.( $level>1 || $c['c__is_orphan'] ? 'a' :'span').'> ';
@@ -1037,6 +966,85 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
     return $ui;
 
 }
+
+
+
+function echo_u($u, $level, $can_edit, $is_inbound=false){
+
+    $CI =& get_instance();
+    $udata = $CI->session->userdata('user');
+    $ur_id = ( isset($u['ur_id']) ? $u['ur_id'] : 0 );
+    $ui = null;
+
+    $ui .= '<div id="u_'.$u['u_id'].'" entity-id="'.$u['u_id'].'" entity-email="'.$u['u_email'].'" entity-bio="'.str_replace('"','\\"',$u['u_bio']).'" has-password="'.( strlen($u['u_password'])>0 ? 1 : 0 ).'" is-inbound="'.( $is_inbound ? 1 : 0 ).'" class="list-group-item u-item u__'.$u['u_id'].' '.( $level==1 ? 'top_entity' : 'ur_'.$u['ur_id'] ).'">';
+
+    //Right content:
+    $ui .= '<span class="pull-right">';
+
+    //Count messages:
+    $messages = $CI->Db_model->i_fetch(array(
+        'i_status >=' => 0,
+        'i_outbound_u_id' => $u['u_id'], //Referenced content in messages
+    ));
+
+    $ui .= '<'.( count($messages)>0 ? 'a href="#messages-'.$u['u_id'].'" onclick="load_u_messages('.$u['u_id'].')" class="badge badge-secondary"' : 'span class="badge badge-secondary grey"' ).' style="width:40px;">'.( count($messages)>0 ? '<span class="btn-counter">'.count($messages).'</span>' : '' ).'<i class="fas fa-comment-dots"></i></'.( count($messages)>0 ? 'a' : 'span' ).'>';
+
+
+    $ui .= '<'.( $can_edit ? 'a href="#modify-'.$u['u_id'].'-'.$ur_id.'" onclick="load_u_modify('.$u['u_id'].','.$ur_id.')" class="badge badge-secondary"' : 'span class="badge badge-secondary grey"' ).' style="margin:-2px -6px 0 2px; width:40px;">'.( $u['u__e_score']>0 ? '<span class="btn-counter" data-toggle="tooltip" data-placement="left" title="Engagement Score">'.echo_big_num($u['u__e_score']).'</span>' : '' ).'<i class="fas fa-sitemap" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i></'.( $can_edit ? 'a' : 'span' ).'> &nbsp;';
+
+
+    if($level==1){
+        //Level 1:
+        $ui .= '<span class="badge badge-secondary grey" style="margin-right:6px; width:40px; margin-left:1px;"><span class="btn-counter li-outbound-count">'.$u['u__outbound_count'].'</span><i class="fas fa-sign-out-alt rotate90"></i></span>';
+    } else {
+        //Level 2:
+        $ui .= '<a class="badge badge-secondary" href="/entities/'.$u['u_id'].( count($messages)>0 ? '#messages-'.$u['u_id'] : '' ).'" style="display:inline-block; margin-right:6px; width:40px; margin-left:1px;">'.(isset($u['u__outbound_count']) && $u['u__outbound_count']>0 ? '<span class="btn-counter">'.$u['u__outbound_count'].'</span>' : '').'<i class="'.( $is_inbound ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></a>';
+    }
+
+
+    $ui .= '</span>';
+
+
+
+    if($level==1){
+
+        //Regular section:
+        $ui .= echo_cover($u, 'profile-icon2');
+        $ui .= '<b id="u_title" class="u_full_name u_full_name_'.$u['u_id'].'">' . $u['u_full_name'] . '</b>';
+        $ui .= ' <span class="obj-id">@' . $u['u_id'] . '</span>';
+
+        //Do they have any social profiles in their link?
+        $ui .= echo_social_profiles($CI->Db_model->x_social_fetch($u['u_id']));
+
+//Check last engagement ONLY IF admin:
+        if ($can_edit) {
+            //Check last engagement:
+            $last_eng = $CI->Db_model->e_fetch(array(
+                '(e_inbound_u_id=' . $u['u_id'] . ')' => null,
+            ), 1);
+
+            if (count($last_eng) > 0) {
+                $ui .= ' &nbsp;<a href="/cockpit/engagements?e_u_id=' . $u['u_id'] . '" style="display: inline-block;" data-toggle="tooltip" data-placement="right" title="Last engaged ' . echo_diff_time($last_eng[0]['e_timestamp']) . ' ago. Click to see all engagements"><i class="fas fa-exchange rotate45"></i> <b>' . echo_diff_time($last_eng[0]['e_timestamp']) . ' &raquo;</b></a>';
+            }
+        }
+
+        //Visibly show bio for level 1:
+        $ui .= '<div class="u_bio_'.$u['u_id'].'">' . $u['u_bio'] . '</div>';
+
+    } else {
+
+        //Regular section:
+        $ui .= echo_cover($u,'micro-image', 1).' ';
+        $ui .= '<span class="u_full_name u_full_name_'.$u['u_id'].( strlen($u['u_bio'])>0 ? ' has-desc ' : '' ).'" data-toggle="tooltip" data-placement="right" title="'.$u['u_bio'].'">'.$u['u_full_name'].'</span>';
+
+    }
+
+
+    $ui .= '</div>';
+
+    return $ui;
+}
+
 
 
 function echo_json($array){
