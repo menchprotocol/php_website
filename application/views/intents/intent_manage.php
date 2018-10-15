@@ -72,12 +72,12 @@ if(isset($orphan_cs)){
 
         //Watch the expand/close all buttons:
         $('#task_view .expand_all').click(function (e) {
-            $( ".is_level2_sortable" ).each(function() {
+            $( ".list-is-outbound .is_level2_sortable" ).each(function() {
                 ms_toggle($( this ).attr('data-link-id'),1);
             });
         });
         $('#task_view .close_all').click(function (e) {
-            $( ".is_level2_sortable" ).each(function() {
+            $( ".list-is-outbound .is_level2_sortable" ).each(function() {
                 ms_toggle($( this ).attr('data-link-id'),0);
             });
         });
@@ -752,31 +752,6 @@ if(isset($orphan_cs)){
 
 
 
-            echo '<div id="bootcamp-objective" class="list-group">';
-                echo echo_c($c,1);
-            echo '</div>';
-
-
-
-            //Expand/Contract buttons
-            echo '<table style="width: 100%; margin-bottom: 15px;"><tr>';
-            echo '<td width="50%">';
-            echo '<div id="task_view">';
-            echo '<i class="fas fa-plus-square expand_all"></i> &nbsp;';
-            echo '<i class="fas fa-minus-square close_all"></i>';
-            echo '</div>';
-            echo '</td>';
-            echo '<td width="50%">';
-            if($orphan_c_count>0){
-                echo '<div style="text-align:right; font-size:0.9em;"><i class="fas fa-unlink"></i> <a href="/intents/orphan">'.$orphan_c_count.' Orphan Intents &raquo;</a></div>';
-            }
-            echo '</td>';
-            echo '</tr></table>';
-
-
-
-
-
 
             if($c['c_id']!=7240){
                 echo '<h5 class="badge badge-primary"><i class="fas fa-sign-in-alt"></i> <span class="li-inbound-count inbound-counter-'.$c['c_id'].'">'.count($c__inbounds).'</span> Ins</h5>';
@@ -793,13 +768,41 @@ if(isset($orphan_cs)){
 
 
 
+            echo '<h5 class="badge badge-primary"><i class="fas fa-hashtag"></i> Intent</h5>';
+            echo '<div id="bootcamp-objective" class="list-group">';
+                echo echo_c($c,1);
+            echo '</div>';
 
 
 
 
 
+
+
+
+
+
+
+
+            //Expand/Contract buttons
+            echo '<table style="width: 100%;"><tr>';
+            echo '<td width="80%">';
             echo '<h5 class="badge badge-primary"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-outbound-count outbound-counter-'.$c['c_id'].'">'.($c['c__tree_inputs']+$c['c__tree_outputs']-1).'</span> Outs</h5>';
-            echo '<div id="list-c-'.$c['c_id'].'" class="list-group list-level-2">';
+                if($orphan_c_count>0){
+                    echo '<div style="text-align:right; font-size:0.9em;"><i class="fas fa-unlink"></i> <a href="/intents/orphan">'.$orphan_c_count.' Orphans &raquo;</a></div>';
+                }
+            echo '</td>';
+            echo '<td width="20%">';
+            echo '<div id="task_view" style="text-align: right; padding-right:5px;">';
+            echo '<i class="fas fa-minus-square close_all"></i> &nbsp;';
+            echo '<i class="fas fa-plus-square expand_all"></i>';
+            echo '</div>';
+            echo '</td>';
+            echo '</tr></table>';
+
+
+
+            echo '<div id="list-c-'.$c['c_id'].'" class="list-group list-is-outbound list-level-2">';
             foreach($c['c__child_intents'] as $sub_intent){
                 echo echo_c($sub_intent, 2, $c['c_id']);
             }

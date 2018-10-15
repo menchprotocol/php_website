@@ -706,7 +706,40 @@ $b_team_member = array();
  *******************************/
 
 
+
+//Inbounds
+if($entity['u_id']!=2738){
+
+    echo '<h5>';
+        echo '<span class="badge badge-secondary"><i class="fas fa-sign-in-alt"></i> <span class="li-inbound-count">'.count($entity['u__inbounds']).'</span> Ins</span>';
+        if($can_edit) {
+            echo ' <a class="add-new-btn" href="javascript:$(\'#new-inbound\').removeClass(\'hidden\');$(\'.add-new-btn\').hide();$(\'#new-inbound .new-input\').focus();"><i class="fas fa-plus-circle"></i></a>';
+        }
+    echo '</h5>';
+
+    echo '<div id="list-inbound" class="list-group  grey-list">';
+    foreach ($entity['u__inbounds'] as $ur) {
+        echo echo_u($ur, 2, $can_edit, true);
+    }
+    //Input to add new inbounds:
+    if($can_edit) {
+        echo '<div id="new-inbound" class="list-group-item list_input grey-input hidden">
+            <div class="input-group">
+                <div class="form-group is-empty"><input type="text" class="form-control new-input" data-lpignore="true" placeholder="Add Entity..."></div>
+                <span class="input-group-addon">
+                    <a class="badge badge-secondary new-btn" href="javascript:void(0);" onclick="alert(\'Note: Either choose an option from the suggestion menu to continue\')">ADD</a>
+                </span>
+            </div>
+        </div>';
+    }
+    echo '</div>';
+}
+
+
+
+
 //Top/main entity
+echo '<h5 class="badge badge-secondary"><i class="fas fa-at"></i> Entity</h5>';
 echo '<div id="entity-box" class="list-group">';
 echo echo_u($entity, 1, $can_edit);
 echo '</div>';
@@ -738,26 +771,6 @@ if(!in_array($entity['u_id'], array(2738,1278,1326,2750))){
 
 
 
-//Inbounds
-if($entity['u_id']!=2738){
-    echo '<h5 class="badge badge-secondary"><i class="fas fa-sign-in-alt"></i> <span class="li-inbound-count">'.count($entity['u__inbounds']).'</span> Ins</h5>';
-    echo '<div id="list-inbound" class="list-group  grey-list">';
-    foreach ($entity['u__inbounds'] as $ur) {
-        echo echo_u($ur, 2, $can_edit, true);
-    }
-    //Input to add new inbounds:
-    if($can_edit) {
-        echo '<div id="new-inbound" class="list-group-item list_input grey-input">
-            <div class="input-group">
-                <div class="form-group is-empty"><input type="text" class="form-control new-input" data-lpignore="true" placeholder="Add Entity..."></div>
-                <span class="input-group-addon">
-                    <a class="badge badge-secondary new-btn" href="javascript:void(0);" onclick="alert(\'Note: Either choose an option from the suggestion menu to continue\')">ADD</a>
-                </span>
-            </div>
-        </div>';
-    }
-    echo '</div>';
-}
 
 
 //Outbounds
