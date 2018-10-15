@@ -295,6 +295,7 @@ class Entities extends CI_Controller {
         return echo_json(array(
             'status' => 1,
             'message' => 'Success',
+            'new_u_status' => $new_u['u_status'],
             'new_u' => echo_u(array_merge($new_u,$ur2),2, $_POST['can_edit'], $_POST['is_inbound']),
         ));
     }

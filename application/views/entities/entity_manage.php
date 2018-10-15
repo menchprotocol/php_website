@@ -91,7 +91,7 @@ $b_team_member = array();
 
     $(document).ready(function () {
 
-        if(is_mobile()){
+        if(is_mobile() || $(window).width()<767){
 
             //Adjust columns:
             $('.cols').removeClass('col-xs-6').addClass('col-sm-6');
@@ -240,13 +240,15 @@ $b_team_member = array();
 
             if (data.status) {
 
-                $(counter_class).text((parseInt($(counter_class+':first').text())+1));
-
                 //Empty input to make it ready for next URL:
                 input.val('').focus();
 
                 //Add new object to list:
                 add_to_list(list_id, '.u-item', data.new_u);
+
+                //Adjust counters:
+                $(counter_class).text((parseInt($(counter_class+':first').text())+1));
+                $('.count-u-status-'+data.new_u_status).text((parseInt($('.count-u-status-'+data.new_u_status).text())+1));
 
                 //Tooltips:
                 $('[data-toggle="tooltip"]').tooltip();
@@ -539,12 +541,31 @@ $b_team_member = array();
     }
 
     function u_delete(){
-        var r = confirm("Are you sure you want to PERMANENTLY delete this entity and all its associated URLs, Messages, etc...?");
-        if (!(r == true)) {
+
+        //Confirm with user:
+        var u_id = ( $('#modifybox').hasClass('hidden') ? 0 : parseInt($('#modifybox').attr('entity-id')) );
+        var direction = ( parseInt($('#u_'+u_id).attr('is-inbound'))==1 ? 'inbound' : 'outbound' );
+        var counter_class = '.li-'+direction+'-count';
+        var current_status = parseInt($('#u_'+u_id).attr('entity-status'));
+        var u_level2_name = $('#u_'+u_id+' .u_full_name').text();
+
+        var r = confirm("Are you sure you want to PERMANENTLY delete ["+u_level2_name+"] and all its associated URLs, Messages, etc...?");
+        if (!(r == true)){
             return false;
         }
-        var u_id = ( $('#modifybox').hasClass('hidden') ? 0 : parseInt($('#modifybox').attr('entity-id')) );
-        window.location = "/entities/hard_delete/"+u_id;
+
+        if(u_id==0){
+            return false;
+        }
+
+        //Save the rest of the content:
+        $.get("/entities/hard_delete/"+u_id, function(data) {
+            $('#u_'+u_id).fadeOut();
+
+            //Update counter:
+            $(counter_class).text((parseInt($(counter_class+':first').text())-1));
+            $('.count-u-status-'+current_status).text((parseInt($('.count-u-status-'+current_status).text())-1));
+        });
     }
 
 

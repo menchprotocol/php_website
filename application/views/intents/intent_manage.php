@@ -35,8 +35,8 @@ if(isset($orphan_cs)){
 
     $(document).ready(function() {
 
+        if(is_mobile() || $(window).width()<767){
 
-        if(is_mobile()){
             //Adjust columns:
             $('.cols').removeClass('col-xs-6').addClass('col-sm-6');
             $('.grey-box').addClass('phone-2nd');
