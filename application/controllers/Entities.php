@@ -144,7 +144,7 @@ class Entities extends CI_Controller {
             //Validate this existing entity
             $new_us = $this->Db_model->u_fetch(array(
                 'u_id' => $_POST['new_u_id'],
-                'u_status' => 1, //Active only
+                'u_status >=' => 1, //Active only
             ));
             if(count($new_us)<1){
                 return echo_json(array(

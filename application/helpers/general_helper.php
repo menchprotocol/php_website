@@ -869,7 +869,7 @@ function message_validation($i_status,$i_message,$i_outbound_c_id){
                 'status' => 0,
                 'message' => 'Entity [@'.$u_ids[0].'] does not exist',
             );
-        } elseif($i_outbound_us[0]['u_status']<1){
+        } elseif($i_outbound_us[0]['u_status']<=0){
             //Inactive:
             return array(
                 'status' => 0,
