@@ -7,11 +7,11 @@ $navigation = array(
     //TODO Add my account here...
 );
 ?>
-<div style="clear:both; margin-bottom:15px; padding-bottom:10px; border-bottom:1px solid #3C4858;">
+<div style="clear:both; margin-bottom:15px; padding-bottom:10px; border-bottom:1px solid #2f2739;">
     <ul class="nav nav-pills nav-pills-primary full-width">
         <?php
         foreach($navigation as $nav_item){
-            echo '<li><a href="/my/'.$nav_item['my_url'].'" '.( isset($current) && $current==$nav_item['my_url'] ? ' style="color:#FFF; background-color:#3C4858 !important;"' : '' ).'>'.$nav_item['anchor'].'</a></li>';
+            echo '<li><a href="/my/'.$nav_item['my_url'].'" '.( isset($current) && $current==$nav_item['my_url'] ? ' style="color:#FFF; background-color:#2f2739 !important;"' : '' ).'>'.$nav_item['anchor'].'</a></li>';
         }
 
         //Is this a logged-in admin?

@@ -485,7 +485,7 @@ if(isset($orphan_cs)){
                     adjust_js_ui(c_id, level, 0, data.adjusted_c_count, 1);
 
                     //Remove from UI:
-                    $('#cr_' + cr_id).html('<span style="color:#3C4858;"><i class="fas fa-trash-alt"></i> Removed</span>');
+                    $('#cr_' + cr_id).html('<span style="color:#2f2739;"><i class="fas fa-trash-alt"></i> Removed</span>');
 
                     //Disapper in a while:
                     setTimeout(function () {
@@ -754,7 +754,7 @@ if(isset($orphan_cs)){
 
 
             if($c['c_id']!=7240){
-                echo '<h5 class="badge badge-primary"><i class="fas fa-sign-in-alt"></i> <span class="li-inbound-count inbound-counter-'.$c['c_id'].'">'.count($c__inbounds).'</span> Ins</h5>';
+                echo '<h5 class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-inbound-count inbound-counter-'.$c['c_id'].'">'.count($c__inbounds).'</span> Ins</h5>';
                 if(count($c__inbounds)>0){
                     echo '<div class="list-group list-level-2">';
                     foreach($c__inbounds as $sub_intent){
@@ -768,7 +768,7 @@ if(isset($orphan_cs)){
 
 
 
-            echo '<h5 class="badge badge-primary"><i class="fas fa-hashtag"></i> Intent</h5>';
+            echo '<h5 class="badge badge-h"><i class="fas fa-hashtag"></i> Intent</h5>';
             echo '<div id="bootcamp-objective" class="list-group">';
                 echo echo_c($c,1);
             echo '</div>';
@@ -787,7 +787,7 @@ if(isset($orphan_cs)){
             //Expand/Contract buttons
             echo '<table style="width: 100%;"><tr>';
             echo '<td width="80%">';
-            echo '<h5 class="badge badge-primary"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-outbound-count outbound-counter-'.$c['c_id'].'">'.($c['c__tree_inputs']+$c['c__tree_outputs']-1).'</span> Outs</h5>';
+            echo '<h5 class="badge badge-h"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-outbound-count outbound-counter-'.$c['c_id'].'">'.($c['c__tree_inputs']+$c['c__tree_outputs']-1).'</span> Outs</h5>';
                 if($orphan_c_count>0){
                     echo '<div style="text-align:right; font-size:0.9em;"><i class="fas fa-unlink"></i> <a href="/intents/orphan">'.$orphan_c_count.' Orphans &raquo;</a></div>';
                 }
@@ -838,7 +838,7 @@ if(isset($orphan_cs)){
 
                 <div class="form-group label-floating is-empty">
                     <div class="input-group border">
-                        <span class="input-group-addon addon-lean" style="color:#3C4858; font-weight: 300;">To</span>
+                        <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;">To</span>
                         <input style="padding-left:0;" type="text" id="c_outcome" maxlength="70" value="" class="form-control c_outcome_input">
                     </div>
                 </div>

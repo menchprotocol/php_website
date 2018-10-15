@@ -246,7 +246,7 @@ class My extends CI_Controller {
 
                     //This is the one that is loaded:
                     echo '<li class="list-group-item grey">';
-                    //echo '<span class="pull-right"><span class="label label-default grey" style="color:#3C4858;">CURRENTLY VIEWING</span></span>';
+                    //echo '<span class="pull-right"><span class="label label-default grey" style="color:#2f2739;">CURRENTLY VIEWING</span></span>';
 
                 } else {
 

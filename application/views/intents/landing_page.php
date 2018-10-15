@@ -84,7 +84,7 @@ function toggleview(object_key){
                                     echo '<a href="javascript:void(0);" onclick="$(\'.show_full_list_'.$key.'\').toggle();" class="show_full_list_'.$key.' list-group-item">See All <i class="fas fa-chevron-right"></i></a>';
                                 }
                                 echo '<li class="list-group-item '.( $counter>=$landing_pagetask_visible ? 'show_full_list_'.$key.'" style="display:none;"' : '"' ).'>';
-                                echo '<i class="'.( $child_intent['c_is_output'] ? 'fas fa-check-square' : 'fas fa-lightbulb-on' ).'" style="width:24px; font-size:0.9em; color:#3C4858 !important; text-align:center;"></i> ';
+                                echo '<i class="'.( $child_intent['c_is_output'] ? 'fas fa-check-square' : 'fas fa-lightbulb-on' ).'" style="width:24px; font-size:0.9em; color:#2f2739 !important; text-align:center;"></i> ';
                                 echo $child_intent['c_outcome'];
                                 echo '</li>';
                                 $counter++;

@@ -711,7 +711,7 @@ $b_team_member = array();
 if($entity['u_id']!=2738){
 
     echo '<h5>';
-        echo '<span class="badge badge-secondary"><i class="fas fa-sign-in-alt"></i> <span class="li-inbound-count">'.count($entity['u__inbounds']).'</span> Ins</span>';
+        echo '<span class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-inbound-count">'.count($entity['u__inbounds']).'</span> Ins</span>';
         if($can_edit) {
             echo ' <a class="add-new-btn" href="javascript:$(\'#new-inbound\').removeClass(\'hidden\');$(\'.add-new-btn\').hide();$(\'#new-inbound .new-input\').focus();"><i class="fas fa-plus-circle"></i></a>';
         }
@@ -739,7 +739,7 @@ if($entity['u_id']!=2738){
 
 
 //Top/main entity
-echo '<h5 class="badge badge-secondary"><i class="fas fa-at"></i> Entity</h5>';
+echo '<h5 class="badge badge-h"><i class="fas fa-at"></i> Entity</h5>';
 echo '<div id="entity-box" class="list-group">';
 echo echo_u($entity, 1, $can_edit);
 echo '</div>';
@@ -749,7 +749,7 @@ echo '</div>';
 
 //URLs
 if(!in_array($entity['u_id'], array(2738,1278,1326,2750))){
-    echo '<h5 class="badge badge-secondary"><i class="fas fa-link"></i> <span class="li-urls-count">'.count($entity['u__urls']).'</span> URLs</h5>';
+    echo '<h5 class="badge badge-h"><i class="fas fa-link"></i> <span class="li-urls-count">'.count($entity['u__urls']).'</span> URLs</h5>';
     echo '<div id="list-urls" class="list-group  grey-list">';
     foreach ($entity['u__urls'] as $x) {
         echo echo_x($entity, $x);
@@ -775,7 +775,7 @@ if(!in_array($entity['u_id'], array(2738,1278,1326,2750))){
 
 //Outbounds
 echo '<table width="100%" style="margin-top:10px;"><tr>';
-echo '<td style="width: 100px;"><h5 class="badge badge-secondary"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-outbound-count">'.$entity['u__outbound_count'].'</span> Outs</h5></td>';
+echo '<td style="width: 100px;"><h5 class="badge badge-h"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-outbound-count">'.$entity['u__outbound_count'].'</span> Outs</h5></td>';
 echo '<td style="text-align: right;"><div class="btn-group btn-group-sm" style="margin-top:-5px;" role="group">';
 
     //Fetch current count for each status from DB:
@@ -836,7 +836,7 @@ echo '</div>';
 
 //Only show if data exists (users cannot modify this anyways)
 if(count($enrollments)>0){
-    echo '<h5 class="badge badge-secondary"><i class="fas fa-comment-plus"></i> <span class="li-subscriptions-count">'.count($enrollments).'</span> Subscriptions</h5>';
+    echo '<h5 class="badge badge-h"><i class="fas fa-comment-plus"></i> <span class="li-subscriptions-count">'.count($enrollments).'</span> Subscriptions</h5>';
     echo '<div id="list-intents" class="list-group  grey-list">';
     foreach ($enrollments as $ru) {
 
@@ -848,7 +848,7 @@ if(count($enrollments)>0){
 
 //Only show if data exists (users cannot modify this anyways)
 if(count($b_team_member)>0){
-    echo '<h5 class="badge badge-secondary"><i class="fas fa-whistle"></i> <span class="li-training-count">'.count($b_team_member).'</span> Training</h5>';
+    echo '<h5 class="badge badge-h"><i class="fas fa-whistle"></i> <span class="li-training-count">'.count($b_team_member).'</span> Training</h5>';
     echo '<div id="list-training" class="list-group  grey-list">';
     foreach ($b_team_member as $ba) {
 
@@ -861,7 +861,7 @@ if(count($b_team_member)>0){
 
 //Only show if data exists (users cannot modify this anyways)
 if(count($payments)>0){
-    echo '<h5 class="badge badge-secondary"><i class="fab fa-paypal"></i> <span class="li-payments-count">'.count($payments).'</span> Payments</h5>';
+    echo '<h5 class="badge badge-h"><i class="fab fa-paypal"></i> <span class="li-payments-count">'.count($payments).'</span> Payments</h5>';
     echo '<div id="list-payments" class="list-group  grey-list">';
     foreach ($payments as $t) {
         echo_t($t);
