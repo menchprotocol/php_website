@@ -364,8 +364,10 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
                     $i['i_message'] = str_replace('@'.$i['i_outbound_u_id'], '<a href="javascript:void(0);" onclick="url_modal(\''.$button_url.'\')">'.$us[0]['u_full_name'].echo_social_profiles($CI->Db_model->x_social_fetch($i['i_outbound_u_id'])).'</a>', $i['i_message']);
 
                 } else {
+
                     //HTML format:
-                    $i['i_message'] = str_replace('@'.$i['i_outbound_u_id'], '<b>'.$us[0]['u_full_name'].echo_social_profiles($CI->Db_model->x_social_fetch($i['i_outbound_u_id'])).'</b>', $i['i_message']);
+                    $i['i_message'] = str_replace('@'.$i['i_outbound_u_id'], $us[0]['u_full_name'].echo_social_profiles($CI->Db_model->x_social_fetch($i['i_outbound_u_id'])).': ', $i['i_message']);
+
                 }
 
                 //Did we have an embed code to be attached?
