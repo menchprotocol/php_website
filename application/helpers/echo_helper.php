@@ -358,12 +358,12 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
 
             } else {
 
-                if($is_intent) {
+                if($is_intent || ($is_entity && !$is_focus_entity)) {
 
                     //HTML format:
                     $i['i_message'] = str_replace('@'.$i['i_outbound_u_id'], '<a href="javascript:void(0);" onclick="url_modal(\''.$button_url.'\')">'.$us[0]['u_full_name'].echo_social_profiles($CI->Db_model->x_social_fetch($i['i_outbound_u_id'])).'</a>', $i['i_message']);
 
-                } elseif($is_entity) {
+                } elseif($is_focus_entity) {
 
                     //HTML format:
                     $i['i_message'] = str_replace('@'.$i['i_outbound_u_id'], '<b>'.$us[0]['u_full_name'].echo_social_profiles($CI->Db_model->x_social_fetch($i['i_outbound_u_id'])).'</b>', $i['i_message']);
