@@ -925,7 +925,7 @@ if(count($payments)>0){
 
       <div id="message-frame" class="grey-box hidden" entity-id="">
 
-          <div style="text-align:right; font-size: 22px; margin: -5px 0 -20px 0;"><a href="javascript:void(0)" onclick="$('#message-frame').addClass('hidden')"><i class="fas fa-times"></i></a></div>
+          <div style="text-align:right; font-size: 22px; margin: -5px 0 -20px 0;"><a href="javascript:void(0)" onclick="$('#message-frame').addClass('hidden');$('#loaded-messages').html('');"><i class="fas fa-times"></i></a></div>
           <h4 style="width:92%; line-height: 110%;"></h4>
 
           <div id="loaded-messages" style="margin-top:20px;"></div>

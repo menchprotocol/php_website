@@ -946,7 +946,7 @@ if(isset($orphan_cs)){
 
 
         <div class="marvel-device iphone-x hidden" id="iphonex" intent-id="">
-            <div style="font-size: 22px; margin: -5px 0 -20px 0; top: 0; right: 0px; position: absolute; z-index:9999999;"><a href="javascript:void(0)" onclick="$('#iphonex').addClass('hidden')"><i class="fas fa-times"></i></a></div>
+            <div style="font-size: 22px; margin: -5px 0 -20px 0; top: 0; right: 0px; position: absolute; z-index:9999999;"><a href="javascript:void(0)" onclick="$('#iphonex').addClass('hidden');$('#iphone-screen').html('');"><i class="fas fa-times"></i></a></div>
             <div class="notch">
                 <div class="camera"></div>
                 <div class="speaker"></div>
