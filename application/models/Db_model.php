@@ -68,7 +68,7 @@ class Db_model extends CI_Model {
 	    $q = $this->db->get();
 	    return $q->result_array();
 	}
-	
+
 	
 	/* ******************************
 	 * Users
@@ -1173,10 +1173,13 @@ class Db_model extends CI_Model {
 
 
 
-    function ur_outbound_fetch($match_columns, $join_objects=array(), $limit=0, $limit_offset=0){
+
+    function ur_outbound_fetch($match_columns, $join_objects=array(), $limit=0, $limit_offset=0, $select='*', $group_by=null, $order_columns=array(
+        'u.u__e_score' => 'DESC',
+    )){
 
         //Missing anything?
-        $this->db->select('*');
+        $this->db->select($select);
         $this->db->from('v5_entities u');
         $this->db->join('v5_entity_links ur', 'ur.ur_outbound_u_id = u.u_id');
         $this->db->join('v5_urls x', 'x.x_id = u.u_cover_x_id','left'); //Fetch the cover photo if >0
@@ -1187,7 +1190,13 @@ class Db_model extends CI_Model {
                 $this->db->where($key);
             }
         }
-        $this->db->order_by('u.u__e_score','DESC');
+
+        if($group_by){
+            $this->db->group_by($group_by);
+        }
+        foreach($order_columns as $key=>$value){
+            $this->db->order_by($key,$value);
+        }
 
         if($limit>0){
             $this->db->limit($limit,$limit_offset);

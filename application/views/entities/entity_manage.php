@@ -6,7 +6,7 @@
  *******************************
  *******************************/
 
-$entities_per_page = 100;
+$entity_per_page = $this->config->item('entity_per_page');
 $udata = $this->session->userdata('user');
 $message_max = $this->config->item('message_max');
 
@@ -23,7 +23,7 @@ $add_id             = ( in_array($entity['u_id'], array(1278,2750)) ? $entity['u
 $child_entities = $this->Db_model->ur_outbound_fetch(array(
     'ur_inbound_u_id' => $inbound_u_id,
     'ur_status' => 1, //Only active
-), array('u__outbound_count'), $entities_per_page);
+), array('u__outbound_count'), $entity_per_page);
 $payments = $this->Db_model->t_fetch(array(
     't_inbound_u_id' => $inbound_u_id,
 ));
@@ -44,54 +44,7 @@ $b_team_member = array();
 ?>
 <script>
 
-    $(document).ready(function () {
-
-        if(is_mobile()){
-
-            //Adjust columns:
-            $('.cols').removeClass('col-xs-6').addClass('col-sm-6');
-            $('.grey-box').addClass('phone-2nd');
-
-        } else {
-            //Make editing frames Sticky for scrolling longer lists
-            $(".main-panel").scroll(function() {
-                var top_position = $(this).scrollTop();
-                clearTimeout($.data(this, 'scrollTimer'));
-                $.data(this, 'scrollTimer', setTimeout(function() {
-                    $(".grey-box").css('top',(top_position-0)); //PX also set in style.css for initial load
-                }, 34));
-            });
-        }
-
-
-        //Do we need to auto load anything?
-        if(window.location.hash) {
-            var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
-            var hash_parts = hash.split("-");
-            if(hash_parts.length>=2){
-                //Fetch level if available:
-                if(hash_parts[0]=='messages'){
-                    load_u_messages(hash_parts[1]);
-                } else if(hash_parts[0]=='modify'){
-                    load_u_modify(hash_parts[1],hash_parts[2]);
-                }
-            }
-        }
-
-
-
-
-        //Watch for URL adding:
-        $('#add_url_input').keydown(function (event) {
-            if ((event.keyCode == 10 || event.keyCode == 13) && event.ctrlKey) {
-                x_add();
-                event.preventDefault();
-                return false;
-            }
-        });
-
-
-        //Loadup various search bars:
+    function initiate_outbound_search(){
         $("#new-outbound .new-input").on('autocomplete:selected', function (event, suggestion, dataset) {
 
             ur_add(suggestion.u_id,0,0);
@@ -131,6 +84,67 @@ $b_team_member = array();
                 return true;
             }
         });
+    }
+
+
+    var u_status_filter = -1; //No filter, show all!
+
+    $(document).ready(function () {
+
+        if(is_mobile()){
+
+            //Adjust columns:
+            $('.cols').removeClass('col-xs-6').addClass('col-sm-6');
+            $('.grey-box').addClass('phone-2nd');
+
+        } else {
+
+            //Adjust height of the messaging windows:
+            $('.grey-box').css('max-height', (parseInt($( window ).height())-120)+'px');
+
+            //Make editing frames Sticky for scrolling longer lists
+            $(".main-panel").scroll(function() {
+                var top_position = $(this).scrollTop();
+                clearTimeout($.data(this, 'scrollTimer'));
+                $.data(this, 'scrollTimer', setTimeout(function() {
+                    $(".grey-box").css('top',(top_position-0)); //PX also set in style.css for initial load
+                }, 34));
+            });
+        }
+
+
+        //Do we need to auto load anything?
+        if(window.location.hash) {
+            var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
+            var hash_parts = hash.split("-");
+            if(hash_parts.length>=2){
+                //Fetch level if available:
+                if(hash_parts[0]=='messages'){
+                    load_u_messages(hash_parts[1]);
+                } else if(hash_parts[0]=='modify'){
+                    load_u_modify(hash_parts[1],hash_parts[2]);
+                } else if(hash_parts[0]=='status'){
+                    //Update status:
+                    filter_u_status(hash_parts[1]);
+                }
+            }
+        }
+
+
+
+
+        //Watch for URL adding:
+        $('#add_url_input').keydown(function (event) {
+            if ((event.keyCode == 10 || event.keyCode == 13) && event.ctrlKey) {
+                x_add();
+                event.preventDefault();
+                return false;
+            }
+        });
+
+
+        //Loadup various search bars:
+        initiate_outbound_search();
 
 
 
@@ -243,6 +257,65 @@ $b_team_member = array();
             }
 
         });
+    }
+
+
+    function update_u_status(u_id, new_u_status){
+
+        //Indicate loading:
+        $('.u-status-bar-'+u_id).html('<img src="/img/round_load.gif" class="loader" />');
+
+        //Will update the status of u_id to new status
+        $.post("/entities/update_u_status", {
+
+            u_id:u_id,
+            new_u_status: new_u_status,
+
+        }, function (data) {
+            if (data.status) {
+
+                //Show data:
+                $('.u-status-bar-'+u_id).html(data.message);
+
+                //Adjust counters:
+                $('.count-u-status-'+new_u_status).text((parseInt($('.count-u-status-'+new_u_status).text())+1));
+                $('.count-u-status-'+data.old_status).text((parseInt($('.count-u-status-'+data.old_status).text())-1));
+                //TODO maybe the new counter element does not exist! Handle this case later...
+
+                if(u_status_filter>=0 && !(new_u_status==u_status_filter)){
+                    //We have the filter on and it does not match the new status, so hide this:
+                    setTimeout(function () {
+                        $('#u_'+u_id).fadeOut();
+                    }, 377);
+                } else {
+                    //Update status:
+                    $('#u_'+u_id).attr('entity-status',new_u_status);
+                }
+
+                //Tooltips:
+                $('[data-toggle="tooltip"]').tooltip();
+
+            } else {
+                //We had an error:
+                $('.u-status-bar-'+u_id).html('<span style="color:#FF0000;">Error: '+data.message+'</span>');
+            }
+        });
+
+
+    }
+
+    function filter_u_status(new_val){
+        if(new_val==-1 || new_val==0 || new_val==1 || new_val==2) {
+            //Remove active class:
+            $('.u-status-filter').removeClass('btn-secondary');
+            //We do have a filter:
+            u_status_filter = parseInt(new_val);
+            $('.u-status-'+new_val).addClass('btn-secondary');
+            entity_load_more(0,1);
+        } else {
+            alert('Invalid new status');
+            return false;
+        }
     }
 
 
@@ -385,19 +458,35 @@ $b_team_member = array();
 
     }
 
-    function entity_load_more(page) {
+    function entity_load_more(page,load_new_filter=0) {
 
-        //Replace load more with spinner:
-        $('.load-more').html('<span class="load-more"><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
+        if(load_new_filter){
+            //Replace load more with spinner:
+            var append_div = $('#new-outbound').html();
+            $('#list-outbound').html('<span class="load-more"><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
+        } else {
+            //Replace load more with spinner:
+            $('.load-more').html('<span class="load-more"><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
+        }
 
-        $.post("/entities/entity_load_more/<?= $inbound_u_id ?>/<?= $entities_per_page ?>/" + page, {
+        $.post("/entities/entity_load_more", {
             can_edit:<?= ( $can_edit ? 1 : 0 ) ?>,
-        }, function (data) {
+            page:page,
+            inbound_u_id:<?= $inbound_u_id ?>,
+            u_status_filter:u_status_filter,
+        }, function(data) {
 
+            //Appending to existing content:
             $('.load-more').remove();
 
-            //Update UI to confirm with user:
-            $(data).insertBefore('#new-outbound');
+            if(load_new_filter){
+                $('#list-outbound').html( data + '<div id="new-outbound" class="list-group-item list_input grey-input">'+append_div+'</div>' ).hide().fadeIn();
+                //Reset search engine:
+                initiate_outbound_search();
+            } else {
+                //Update UI to confirm with user:
+                $(data).insertBefore('#new-outbound');
+            }
 
             //Tooltips:
             $('[data-toggle="tooltip"]').tooltip();
@@ -412,12 +501,14 @@ $b_team_member = array();
         var u_level2_name = $('.ur_'+ur_id+' .u_full_name').text();
         var direction = ( parseInt($('.ur_'+ur_id).attr('is-inbound'))==1 ? 'inbound' : 'outbound' );
         var counter_class = '.li-'+direction+'-count';
+        var current_status = parseInt($('.ur_'+ur_id).attr('entity-status'));
 
         //Confirm that they want to do this:
         var r = confirm("Unlink ["+u_level2_name+"] from ["+u_level1_name+"]?");
         if (!(r == true)) {
             return false;
         }
+
 
         //Show loader:
         $('.ur_'+ur_id).html('<img src="/img/round_load.gif" class="loader" style="width:24px !important; height:24px !important;" /> Unlinking...').hide().fadeIn();
@@ -437,6 +528,7 @@ $b_team_member = array();
 
                 //Update counter:
                 $(counter_class).text((parseInt($(counter_class+':first').text())-1));
+                $('.count-u-status-'+current_status).text((parseInt($('.count-u-status-'+current_status).text())-1));
 
             } else {
                 //There was an error, show to user:
@@ -647,16 +739,51 @@ if($entity['u_id']!=2738){
 }
 
 
-
 //Outbounds
-echo '<h5 class="badge badge-secondary"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-outbound-count">'.$entity['u__outbound_count'].'</span> Outs</h5>';
+echo '<table width="100%" style="margin-top:10px;"><tr>';
+echo '<td style="width: 100px;"><h5 class="badge badge-secondary"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-outbound-count">'.$entity['u__outbound_count'].'</span> Outs</h5></td>';
+echo '<td style="text-align: right;"><div class="btn-group btn-group-sm" style="margin-top:-5px;" role="group">';
+
+    //Fetch current count for each status from DB:
+    $counts = $this->Db_model->ur_outbound_fetch(array(
+        'ur_inbound_u_id' => $inbound_u_id,
+        'ur_status' => 1, //Only active
+        'u_status >=' => 0,
+    ), array(), 0, 0, 'COUNT(u_id) as u_counts, u_status', 'u_status', array(
+        'u.u_status' => 'ASC',
+    ));
+
+    //Only show filtering UI if we find entities with multiple statuses
+    if(count($counts)>0 && $counts[0]['u_counts']<$entity['u__outbound_count']){
+
+        //Load status definitions:
+        $status_index = $this->config->item('object_statuses');
+
+        //Show fixed All button:
+        echo '<a href="javascript:void(0)" onclick="filter_u_status(-1)" class="btn btn-default btn-secondary u-status-filter u-status--1" data-toggle="tooltip" data-placement="top" title="View all entities"><i class="fas fa-at"></i> All [<span class="li-outbound-count">'.$entity['u__outbound_count'].'</span>]</a>';
+
+        //Show each specific filter based on DB counts:
+        foreach($counts as $c_c){
+            $st = $status_index['u'][$c_c['u_status']];
+            echo '<a href="#status-'.$c_c['u_status'].'" onclick="filter_u_status('.$c_c['u_status'].')" class="btn btn-default u-status-filter u-status-'.$c_c['u_status'].'" data-toggle="tooltip" data-placement="top" title="'.$st['s_desc'].'"><i class="'.$st['s_icon'].'"></i> '.$st['s_name'].' [<span class="count-u-status-'.$c_c['u_status'].'">'.$c_c['u_counts'].'</span>]</a>';
+        }
+
+    }
+
+    echo '</div></td>';
+echo '</tr></table>';
+
+
+
 echo '<div id="list-outbound" class="list-group grey-list">';
-foreach ($child_entities as $u) {
+
+foreach($child_entities as $u){
     echo echo_u($u, 2, $can_edit);
 }
 if($entity['u__outbound_count'] > count($child_entities)) {
-    echo_next_u(1, $entities_per_page, $entity['u__outbound_count']);
+    echo_next_u(1, $entity_per_page, $entity['u__outbound_count']);
 }
+
 //Input to add new inbounds:
 if($can_edit){
     echo '<div id="new-outbound" class="list-group-item list_input grey-input">

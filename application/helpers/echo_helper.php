@@ -338,7 +338,10 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
 
                 foreach($us[0]['u__urls'] as $x){
                     //Find all the ways we could use this URL:
-                    if($x['x_type']==1){
+                    if($x['x_type']==0){
+                        //Regular website:
+                        $embed_html_code .= '<div style="margin-top:7px;"><a href="'.$x['x_url'].'" target="_blank"><span class="url_truncate"><i class="fas fa-link" style="margin-right:3px;"></i>'.echo_clean_url($x['x_url']).'</span></a></div>';
+                    } elseif($x['x_type']==1){
                         $embed_html_code .= '<div style="margin-top:7px;">'.echo_embed($x['x_clean_url'],$x['x_clean_url']).'</div>';
                     } elseif($x['x_type']>1){
                         $embed_html_code .= '<div style="margin-top:7px;">'.echo_content_url($x['x_clean_url'],$x['x_type']).'</div>';
@@ -973,10 +976,12 @@ function echo_u($u, $level, $can_edit, $is_inbound=false){
 
     $CI =& get_instance();
     $udata = $CI->session->userdata('user');
+    $status_index = $CI->config->item('object_statuses');
     $ur_id = ( isset($u['ur_id']) ? $u['ur_id'] : 0 );
     $ui = null;
 
-    $ui .= '<div id="u_'.$u['u_id'].'" entity-id="'.$u['u_id'].'" entity-email="'.$u['u_email'].'" entity-bio="'.str_replace('"','\\"',$u['u_bio']).'" has-password="'.( strlen($u['u_password'])>0 ? 1 : 0 ).'" is-inbound="'.( $is_inbound ? 1 : 0 ).'" class="list-group-item u-item u__'.$u['u_id'].' '.( $level==1 ? 'top_entity' : 'ur_'.$u['ur_id'] ).'">';
+
+    $ui .= '<div id="u_'.$u['u_id'].'" entity-id="'.$u['u_id'].'" entity-email="'.$u['u_email'].'" entity-bio="'.str_replace('"','\\"',$u['u_bio']).'" entity-status="'.$u['u_status'].'" has-password="'.( strlen($u['u_password'])>0 ? 1 : 0 ).'" is-inbound="'.( $is_inbound ? 1 : 0 ).'" class="list-group-item u-item u__'.$u['u_id'].' '.( $level==1 ? 'top_entity' : 'ur_'.$u['ur_id'] ).'">';
 
     //Right content:
     $ui .= '<span class="pull-right">';
@@ -986,6 +991,32 @@ function echo_u($u, $level, $can_edit, $is_inbound=false){
         'i_status >=' => 0,
         'i_outbound_u_id' => $u['u_id'], //Referenced content in messages
     ));
+
+
+    //What's the entity status?
+    if(!$is_inbound){
+
+        $ui .= '<span class="u-status-bar-'.$u['u_id'].'">';
+        if(array_key_exists(1281, $udata['u__inbounds']) && $u['u_status']==0){
+
+            $ui .= '<i class="'.$status_index['u'][1]['s_icon'].'"></i> ';
+            $ui .= '<a href="javascript:update_u_status('.$u['u_id'].',1)" data-toggle="tooltip" data-placement="left" title="Current status is '.$status_index['u'][$u['u_status']]['s_name'].'. Click to update entity status to '.$status_index['u'][1]['s_name'].': '.$status_index['u'][1]['s_desc'].'" style="text-decoration:underline;">Activate</a>';
+
+        } elseif(array_key_exists(1281, $udata['u__inbounds']) && $u['u_status']==1){
+
+            $ui .= '<i class="'.$status_index['u'][2]['s_icon'].'"></i> ';
+            $ui .= '<a href="javascript:update_u_status('.$u['u_id'].',2)" data-toggle="tooltip" data-placement="left" title="Current status is '.$status_index['u'][$u['u_status']]['s_name'].'. Click to mark entity as '.$status_index['u'][2]['s_name'].': '.$status_index['u'][2]['s_desc'].'" style="text-decoration:underline;">Verify</a>';
+
+        } elseif($u['u_status']==2){
+
+            //Show verified status:
+            $ui .= echo_status('u',2, true, 'left');
+
+        }
+        $ui .= '</span> ';
+    }
+
+
 
     $ui .= '<'.( count($messages)>0 ? 'a href="#messages-'.$u['u_id'].'" onclick="load_u_messages('.$u['u_id'].')" class="badge badge-secondary"' : 'span class="badge badge-secondary grey"' ).' style="width:40px;">'.( count($messages)>0 ? '<span class="btn-counter">'.count($messages).'</span>' : '' ).'<i class="fas fa-comment-dots"></i></'.( count($messages)>0 ? 'a' : 'span' ).'>';
 
@@ -1005,7 +1036,6 @@ function echo_u($u, $level, $can_edit, $is_inbound=false){
     $ui .= '</span>';
 
 
-
     if($level==1){
 
         //Regular section:
@@ -1016,7 +1046,7 @@ function echo_u($u, $level, $can_edit, $is_inbound=false){
         //Do they have any social profiles in their link?
         $ui .= echo_social_profiles($CI->Db_model->x_social_fetch($u['u_id']));
 
-//Check last engagement ONLY IF admin:
+        //Check last engagement ONLY IF admin:
         if ($can_edit) {
             //Check last engagement:
             $last_eng = $CI->Db_model->e_fetch(array(

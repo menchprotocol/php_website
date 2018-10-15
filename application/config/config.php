@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => '0.554',
+    'version' => '0.56',
     'name' => 'Mench',
     'url' => 'https://mench.com/', //Important to end with "/" as other links depend on this.
     'email' => 'shervin@mench.com',
@@ -48,6 +48,7 @@ $config['application_status_salt'] = 'SALTs3cr3t777';
 $config['bot_activation_salt'] = 'S@LTB0Ts3cr3t4';
 $config['file_limit_mb'] = 25; //Server setting is 32MB. see here: mench.com/ses
 $config['message_max'] = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
+$config['entity_per_page'] = 100;
 
 //Learn more: https://console.aws.amazon.com/iam/home?region=us-west-2#/users/foundation?section=security_credentials
 $config['aws_credentials'] = [
@@ -107,9 +108,9 @@ $config['object_statuses'] = array(
             's_icon' => 'fas fa-check-circle',
         ),
         2 => array(
-            's_name'  => 'Claimed',
-            's_desc'  => 'Entity is published live',
-            's_icon' => 'fas fa-user-check',
+            's_name'  => 'Verified',
+            's_desc'  => 'Verified content are those fully patternized and Verified people refer to accounts claimed by a real person',
+            's_icon' => 'fas fa-badge-check',
         ),
     ),
     'ur' => array(

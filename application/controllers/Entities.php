@@ -42,33 +42,36 @@ class Entities extends CI_Controller {
         echo_json($this->Db_model->u_hard_delete($u_id));
     }
 
-    function entity_load_more($inbound_u_id,$limit,$page){
+    function entity_load_more(){
 
+        $entity_per_page = $this->config->item('entity_per_page');
+        $inbound_u_id = intval($_POST['inbound_u_id']);
+        $u_status_filter = intval($_POST['u_status_filter']);
+        $page = intval($_POST['page']);
         $udata = auth(null); //Just be logged in to browse
+        $filters = array(
+            'ur_inbound_u_id' => $inbound_u_id,
+            'u_status'.( $u_status_filter<0 ? ' >=' : '' ) => ( $u_status_filter<0 ? 0 : intval($u_status_filter) ), //Pending or Active
+            'ur_status' => 1, //Active link
+        );
 
         if(!$udata){
             echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle" style="margin:0 8px 0 2px;"></i> Session expired. Refresh the page and try again.</div>';
             return false;
         }
 
-        //Fetch entitie itself:
-        $entities = $this->Db_model->u_fetch(array(
-            'u_id' => $inbound_u_id,
-        ), array('u__outbound_count'));
-
-        $child_entities = $this->Db_model->ur_outbound_fetch(array(
-            'ur_inbound_u_id' => $inbound_u_id,
-            'ur_status >=' => 0, //Pending or Active
-            'u_status >=' => 0, //Pending or Active
-        ), array('u__outbound_count'), $limit, ($page*$limit));
+        //Fetch entity itself:
+        $entities = $this->Db_model->u_fetch(array('u_id' => $inbound_u_id));
+        $child_entities_count = count($this->Db_model->ur_outbound_fetch($filters));
+        $child_entities = $this->Db_model->ur_outbound_fetch($filters, array('u__outbound_count'), $entity_per_page, ($page*$entity_per_page));
 
         foreach($child_entities as $u){
             echo echo_u($u, 2, intval($_POST['can_edit']), false /* Load more only for outbound */);
         }
 
         //Do we need another load more button?
-        if($entities[0]['u__outbound_count']>(($page*$limit) + count($child_entities))){
-            echo_next_u(($page+1), $limit, $entities[0]['u__outbound_count']);
+        if($child_entities_count>(($page*$entity_per_page) + count($child_entities))){
+            echo_next_u(($page+1), $entity_per_page, $child_entities_count);
         }
 
     }
@@ -678,6 +681,87 @@ class Entities extends CI_Controller {
         //Show message:
         echo '<div class="alert alert-success">Password reset accepted. You will receive an email only if you have a registered Mench account.</div>';
         echo '<script> $(document).ready(function() { $(".pass_success").hide(); }); </script>';
+
+    }
+
+    function filter_u_status(){
+
+    }
+
+    function update_u_status(){
+
+        //Auth user and check required variables:
+        $udata = auth(array(1281));
+
+        if(!$udata){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Session. Refresh the page and try again.',
+            ));
+        } elseif(!isset($_POST['u_id']) || intval($_POST['u_id'])<1){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Parent Entity',
+            ));
+        } elseif(!isset($_POST['new_u_status']) || !in_array($_POST['new_u_status'],array(1,2))){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing New Status with value 1 or 2',
+            ));
+        }
+
+        //Validate parent entity:
+        $current_us = $this->Db_model->u_fetch(array(
+            'u_id' => $_POST['u_id'],
+        ));
+        if(count($current_us)<1){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid entity ID',
+            ));
+        } elseif($current_us[0]['u_status']==$_POST['new_u_status']){
+            //Status seems to be already updated, just update the UI:
+            return echo_json(array(
+                'status' => 1,
+                'old_status' => intval($current_us[0]['u_status']),
+                'message' => '<span>'.echo_status('u',$_POST['new_u_status'], true, 'left').'</span>',
+            ));
+        } elseif(!in_array($current_us[0]['u_status'],array(0,1))){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'You cannot change the status of this entity because of its current status',
+            ));
+        }
+
+        $u_update = array(
+            'u_status' => $_POST['new_u_status'],
+        );
+
+        //Update status:
+        //Now update the DB:
+        $this->Db_model->u_update(intval($_POST['u_id']) , $u_update);
+        //Above call would also update algolia index...
+
+
+        //Log engagement:
+        $this->Db_model->e_create(array(
+            'e_inbound_u_id' => $udata['u_id'], //The user that updated the account
+            'e_text_value' => readable_updates($current_us[0],$u_update,'u_'),
+            'e_json' => array(
+                'input' => $_POST,
+                'before' => $current_us[0],
+                'after' => $u_update,
+            ),
+            'e_inbound_c_id' => 12, //Account Update
+            'e_outbound_u_id' => intval($_POST['u_id']), //The user that their account was updated
+        ));
+
+        //Show success:
+        return echo_json(array(
+            'status' => 1,
+            'old_status' => intval($current_us[0]['u_status']),
+            'message' => '<span>'.echo_status('u',$_POST['new_u_status'], true, 'left').'</span>',
+        ));
 
     }
 
