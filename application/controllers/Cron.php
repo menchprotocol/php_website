@@ -150,9 +150,7 @@ class Cron extends CI_Controller {
             'e_inbound_c_id' => 52, //Scheduled Drip e_inbound_c_id=52
             'e_timestamp <=' => date("Y-m-d H:i:s" ), //Message is due
             //Some standard checks to make sure, these should all be true:
-            'e_r_id >' => 0,
             'e_outbound_u_id >' => 0,
-            'e_b_id >' => 0,
             'e_outbound_c_id >' => 0,
         ), 200, array('ej'));
 
@@ -167,7 +165,6 @@ class Cron extends CI_Controller {
             //Fetch user data:
             $matching_enrollments = $this->Db_model->ru_fetch(array(
                 'ru_outbound_u_id' => $e_text_value['e_outbound_u_id'],
-                'ru_r_id' => $e_text_value['e_r_id'],
                 'ru_status >=' => 4, //Active student
                 'r_status' => 2, //Running Class
             ));
@@ -183,8 +180,6 @@ class Cron extends CI_Controller {
                         'e_inbound_u_id' => 0,
                         'e_outbound_u_id' => $matching_enrollments[0]['u_id'],
                         'i_outbound_c_id' => $json_data['i']['i_outbound_c_id'],
-                        'e_b_id' => $e_text_value['e_b_id'],
-                        'e_r_id' => $e_text_value['e_r_id'],
                     )),
                 ));
 
@@ -488,7 +483,6 @@ class Cron extends CI_Controller {
             $reminders_sent = $this->Db_model->e_fetch(array(
                 'e_inbound_c_id IN (7,28)' => null, //Email/Message sent
                 'e_outbound_u_id' => $enrollment['u_id'],
-                'e_r_id' => $enrollment['r_id'],
                 'e_outbound_c_id IN (3140,3127)' => null, //The ID of the 5 email reminders https://mench.com/console/53/actionplan
             ));
 
@@ -513,8 +507,6 @@ class Cron extends CI_Controller {
                     'e_outbound_u_id' => $enrollment['u_id'],
                     'e_outbound_c_id' => $reminder_c_id,
                     'depth' => 0,
-                    'e_b_id' => $enrollment['ru_b_id'],
-                    'e_r_id' => $enrollment['r_id'],
                 ));
 
                 //Push stats:
@@ -591,7 +583,6 @@ class Cron extends CI_Controller {
                         $reminders_sent = $this->Db_model->e_fetch(array(
                             'e_inbound_c_id IN (7,28)' => null, //Email or Message sent
                             'e_outbound_u_id' => $enrollment['u_id'],
-                            'e_r_id' => $enrollment['r_id'],
                             'e_outbound_c_id' => $logic['reminder_c_id'],
                         ));
 
@@ -603,8 +594,6 @@ class Cron extends CI_Controller {
                                 'e_outbound_u_id' => $enrollment['u_id'],
                                 'e_outbound_c_id' => $logic['reminder_c_id'],
                                 'depth' => 0,
-                                'e_b_id' => $enrollment['ru_b_id'],
-                                'e_r_id' => $enrollment['r_id'],
                             ));
 
                             //Show in stats:

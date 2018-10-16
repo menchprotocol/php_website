@@ -135,7 +135,6 @@ class Bot extends CI_Controller {
                     'e_text_value' => 'facebook_webhook() call missing messaging Array().',
                     'e_json' => $json_data,
                     'e_inbound_c_id' => 8, //Platform Error
-                    'e_fp_id' => $fp_pages[0]['fp_id'],
                 ));
                 continue;
             }
@@ -154,10 +153,7 @@ class Bot extends CI_Controller {
                     $this->Db_model->e_create(array(
                         'e_json' => $json_data,
                         'e_inbound_c_id' => 1, //Message Read
-                        'e_fp_id' => $fp_pages[0]['fp_id'],
                         'e_inbound_u_id' => ( isset($id_user['u_id']) ? $id_user['u_id'] : 0 ),
-                        'e_b_id' => ( isset($id_user['r_b_id']) ? $id_user['r_b_id'] : 0 ),
-                        'e_r_id' => ( isset($id_user['r_id']) ? $id_user['r_id'] : 0 ),
                     ));
 
                 } elseif(isset($im['delivery'])) {
@@ -171,10 +167,7 @@ class Bot extends CI_Controller {
                     $this->Db_model->e_create(array(
                         'e_json' => $json_data,
                         'e_inbound_c_id' => 2, //Message Delivered
-                        'e_fp_id' => $fp_pages[0]['fp_id'],
                         'e_inbound_u_id' => ( isset($id_user['u_id']) ? $id_user['u_id'] : 0 ),
-                        'e_b_id' => ( isset($id_user['r_b_id']) ? $id_user['r_b_id'] : 0 ),
-                        'e_r_id' => ( isset($id_user['r_id']) ? $id_user['r_id'] : 0 ),
                     ));
 
                 } elseif(isset($im['referral']) || isset($im['postback'])) {
@@ -214,10 +207,7 @@ class Bot extends CI_Controller {
                     $eng_data = array(
                         'e_inbound_c_id' => (isset($im['referral']) ? 4 : 3), //Messenger Referral/Postback
                         'e_json' => $json_data,
-                        'e_fp_id' => $fp_pages[0]['fp_id'],
                         'e_inbound_u_id' => ( isset($id_user['u_id']) ? $id_user['u_id'] : 0 ),
-                        'e_b_id' => ( isset($id_user['r_b_id']) ? $id_user['r_b_id'] : 0 ),
-                        'e_r_id' => ( isset($id_user['r_id']) ? $id_user['r_id'] : 0 ),
                     );
 
                     /*
@@ -251,8 +241,7 @@ class Bot extends CI_Controller {
                         ));
                         if(count($enrollments)>0){
                             //Append Bootcamp & Class ID to engagement:
-                            $eng_data['e_b_id'] = $enrollments[0]['r_b_id'];
-                            $eng_data['e_r_id'] = $enrollments[0]['r_id'];
+                            //TODO...
                         }
                     }
 
@@ -271,10 +260,7 @@ class Bot extends CI_Controller {
                     $this->Db_model->e_create(array(
                         'e_json' => $json_data,
                         'e_inbound_c_id' => 5, //Messenger Optin
-                        'e_fp_id' => $fp_pages[0]['fp_id'],
                         'e_inbound_u_id' => ( isset($id_user['u_id']) ? $id_user['u_id'] : 0 ),
-                        'e_b_id' => ( isset($id_user['r_b_id']) ? $id_user['r_b_id'] : 0 ),
-                        'e_r_id' => ( isset($id_user['r_id']) ? $id_user['r_id'] : 0 ),
                     ));
 
                 } elseif(isset($im['message_request']) && $im['message_request']=='accept') {
@@ -313,9 +299,6 @@ class Bot extends CI_Controller {
                         'e_text_value' => ( isset($im['message']['text']) ? $im['message']['text'] : null ),
                         'e_inbound_c_id' => ( $sent_from_us ? 7 : 6 ), //Message Sent/Received
                         'e_outbound_u_id' => ( $sent_from_us && isset($id_user['u_id']) ? $id_user['u_id'] : 0 ),
-                        'e_b_id' => ( isset($id_user['r_b_id']) ? $id_user['r_b_id'] : 0 ),
-                        'e_r_id' => ( isset($id_user['r_id']) ? $id_user['r_id'] : 0 ),
-                        'e_fp_id' => $fp_pages[0]['fp_id'],
                     );
 
                     //It may also have an attachment
@@ -353,10 +336,7 @@ class Bot extends CI_Controller {
                                     'e_text_value' => 'facebook_webhook() Received message with unknown attachment type ['.$att['type'].'].',
                                     'e_json' => $json_data,
                                     'e_inbound_c_id' => 8, //Platform Error
-                                    'e_fp_id' => $fp_pages[0]['fp_id'],
                                     'e_outbound_u_id' => $eng_data['e_outbound_u_id'],
-                                    'e_b_id' => $eng_data['e_b_id'],
-                                    'e_r_id' => $eng_data['e_r_id'],
                                 ));
                             }
                         }
@@ -372,7 +352,6 @@ class Bot extends CI_Controller {
                         'e_text_value' => 'facebook_webhook() received unrecognized webhook call.',
                         'e_json' => $json_data,
                         'e_inbound_c_id' => 8, //Platform Error
-                        'e_fp_id' => $fp_pages[0]['fp_id'],
                     ));
 
                 }

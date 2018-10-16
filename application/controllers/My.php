@@ -160,8 +160,6 @@ class My extends CI_Controller {
                 'e_inbound_u_id' => $focus_enrollment['u_id'],
                 'e_json' => $enrollments,
                 'e_inbound_c_id' => 32, //actionplan Opened
-                'e_b_id' => $focus_enrollment['b_id'],
-                'e_r_id' => $focus_enrollment['r_id'],
                 'e_outbound_c_id' => $focus_enrollment['c_id'],
             ));
 
@@ -190,8 +188,6 @@ class My extends CI_Controller {
             $view_data['us_data'] = $this->Db_model->e_fetch(array(
                 'e_inbound_c_id' => 33, //Completion Report
                 'e_inbound_u_id' => $focus_enrollment['u_id'], //by this Student
-                'e_r_id' => $focus_enrollment['r_id'], //For this Class
-                'e_replaced_e_id' => 0, //Data has not been replaced
             ), 1000, array(), 'e_outbound_c_id');
 
         } else {
@@ -328,8 +324,6 @@ class My extends CI_Controller {
             'e_inbound_c_id' => 33, //Completion Report
             'e_outbound_c_id' => intval($_POST['c_id']), //For this item
             'e_inbound_u_id' => $matching_enrollments[0]['u_id'], //by this Student
-            'e_r_id' => intval($_POST['r_id']), //For this Class
-            'e_replaced_e_id' => 0, //Data has not been replaced
             'e_status !=' => -3, //Should not be rejected
         ));
 
@@ -353,8 +347,6 @@ class My extends CI_Controller {
                     'e_inbound_u_id' => 0,
                     'e_outbound_u_id' => $matching_enrollments[0]['u_id'],
                     'i_outbound_c_id' => $i['i_outbound_c_id'],
-                    'e_b_id' => intval($_POST['b_id']),
-                    'e_r_id' => intval($_POST['r_id']),
                 )));
             }
         }
@@ -369,8 +361,6 @@ class My extends CI_Controller {
                         'e_inbound_u_id' => 0,
                         'e_outbound_u_id' => $matching_enrollments[0]['u_id'],
                         'i_outbound_c_id' => $i['i_outbound_c_id'],
-                        'e_b_id' => intval($_POST['b_id']),
-                        'e_r_id' => intval($_POST['r_id']),
                     )));
                 }
             }
@@ -407,8 +397,6 @@ class My extends CI_Controller {
                     'e_status' => 0, //Pending for the Drip Cron
                     'e_i_id' => $i['i_id'],
                     'e_outbound_c_id' => $i['i_outbound_c_id'],
-                    'e_b_id' => intval($_POST['b_id']),
-                    'e_r_id' => intval($_POST['r_id']),
 
                 ));
             }
@@ -423,8 +411,6 @@ class My extends CI_Controller {
             'e_time_estimate' => $intent_data['intent']['c_time_estimate'], //Estimate time spent on this item
             'e_inbound_c_id' => 33, //Completion Report
             'e_outbound_c_id' => intval($_POST['c_id']),
-            'e_b_id' => intval($_POST['b_id']),
-            'e_r_id' => intval($_POST['r_id']),
             'e_json' => array(
                 'input' => $_POST,
                 'scheduled_drip' => count($drip_messages),
@@ -453,8 +439,6 @@ class My extends CI_Controller {
                 'e_outbound_u_id' => intval($_POST['u_id']),
                 'e_outbound_c_id' => 4632, //As soon as Graduated message
                 'depth' => 0,
-                'e_b_id' => intval($_POST['b_id']),
-                'e_r_id' => intval($_POST['r_id']),
             ));
 
         } elseif($intent_data['next_level']==2){
@@ -481,8 +465,6 @@ class My extends CI_Controller {
                     'intent_data' => $intent_data,
                 ),
                 'e_inbound_c_id' => 8, //Platform Error
-                'e_b_id' => $_POST['b_id'],
-                'e_r_id' => $_POST['r_id'],
                 'e_outbound_c_id' => $_POST['c_id'],
             ));
 
@@ -520,8 +502,6 @@ class My extends CI_Controller {
                 $this->Db_model->e_create(array(
                     'e_inbound_u_id' => $enrollments[0]['u_id'], //System
                     'e_inbound_c_id' => 66, //Application Withdraw
-                    'e_b_id' => $enrollments[0]['ru_b_id'],
-                    'e_r_id' => $enrollments[0]['r_id'],
                 ));
 
                 //Inform User:

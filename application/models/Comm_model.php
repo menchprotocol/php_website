@@ -147,7 +147,6 @@ class Comm_model extends CI_Model {
             $this->Db_model->e_create(array(
                 'e_text_value' => 'fb_identify_activate() got called without $fp_psid variable',
                 'e_inbound_c_id' => 8, //Platform Error
-                'e_fp_id' => $fp['fp_id'],
             ));
             return false;
         }
@@ -236,11 +235,8 @@ class Comm_model extends CI_Model {
                     //Send notification Messages:
                     $notify_user = $this->Comm_model->foundation_message(array(
                         'e_outbound_u_id' => $u['u_id'],
-                        'e_fp_id' => $fp['fp_id'],
                         'e_outbound_c_id' => 923,
                         'depth' => 0,
-                        'e_b_id' => ( isset($u['ru_b_id']) ? $u['ru_b_id'] : 0 ),
-                        'e_r_id' => ( isset($u['r_id']) ? $u['r_id'] : 0 ),
                     ));
 
                     //Log engagement:
@@ -250,8 +246,6 @@ class Comm_model extends CI_Model {
                         'e_json' => $notify_user,
                         'e_text_value' => 'fb_identify_activate() Failed to activate user because Messenger account is already associated with another user.',
                         'e_inbound_c_id' => 8, //Platform error
-                        'e_b_id' => ( isset($u['ru_b_id']) ? $u['ru_b_id'] : 0 ),
-                        'e_r_id' => ( isset($u['r_id']) ? $u['r_id'] : 0 ),
                     ));
 
                     //Return user Object:
@@ -284,9 +278,6 @@ class Comm_model extends CI_Model {
                         'e_inbound_u_id' => $ref_u_id,
                         'e_text_value' => 'fb_identify_activate() had valid referral key that did not exist in the datavase',
                         'e_inbound_c_id' => 8, //Platform Error
-                        'e_fp_id' => $fp['fp_id'],
-                        'e_b_id' => ( isset($u['ru_b_id']) ? $u['ru_b_id'] : 0 ),
-                        'e_r_id' => ( isset($u['r_id']) ? $u['r_id'] : 0 ),
                     ));
 
                     return false;
@@ -330,15 +321,12 @@ class Comm_model extends CI_Model {
                     $this->Db_model->e_create(array(
                         'e_inbound_u_id' => $u['u_id'],
                         'e_json' => array(
-                            'fp' => $fp,
                             'fp_psid' => $fp_psid,
                             'u' => $u,
                             'graph_fetch' => $graph_fetch,
                         ),
                         'e_text_value' => 'fb_identify_activate() failed to fetch user profile data',
                         'e_inbound_c_id' => 8, //Platform error
-                        'e_b_id' => ( isset($u['ru_b_id']) ? $u['ru_b_id'] : 0 ),
-                        'e_r_id' => ( isset($u['r_id']) ? $u['r_id'] : 0 ),
                     ));
 
                     return false;
@@ -400,11 +388,8 @@ class Comm_model extends CI_Model {
                 //Send activation Message:
                 $activation_msg = $this->Comm_model->foundation_message(array(
                     'e_outbound_u_id' => $u['u_id'],
-                    'e_fp_id' => $fp['fp_id'],
                     'e_outbound_c_id' => 926, //Student activation, to be removed?
                     'depth' => 0,
-                    'e_b_id' => ( isset($u['ru_b_id']) ? $u['ru_b_id'] : 0 ),
-                    'e_r_id' => ( isset($u['r_id']) ? $u['r_id'] : 0 ),
                 ));
 
                 //Log Activation Engagement
@@ -415,9 +400,6 @@ class Comm_model extends CI_Model {
                         'activation_msg' => $activation_msg,
                     ),
                     'e_inbound_c_id' => 31, //Messenger Activated
-                    'e_fp_id' => $fp['fp_id'],
-                    'e_b_id' => ( isset($u['ru_b_id']) ? $u['ru_b_id'] : 0 ),
-                    'e_r_id' => ( isset($u['r_id']) ? $u['r_id'] : 0 ),
                 ));
 
 
@@ -440,15 +422,11 @@ class Comm_model extends CI_Model {
                     $this->Db_model->e_create(array(
                         'e_text_value' => 'fb_identify_activate() failed to fetch user profile from Facebook Graph',
                         'e_json' => array(
-                            'fp' => $fp,
                             'fp_psid' => $fp_psid,
                             'fb_ref' => $fb_ref,
                             'graph_fetch' => $graph_fetch,
                         ),
                         'e_inbound_c_id' => 8, //Platform Error
-                        'e_fp_id' => $fp['fp_id'],
-                        'e_b_id' => ( isset($u['ru_b_id']) ? $u['ru_b_id'] : 0 ),
-                        'e_r_id' => ( isset($u['r_id']) ? $u['r_id'] : 0 ),
                     ));
 
                     //We cannot create this user:
@@ -486,7 +464,6 @@ class Comm_model extends CI_Model {
                 //New Student Without Subscription:
                 $this->Comm_model->foundation_message(array(
                     'e_outbound_u_id' => $u['u_id'],
-                    'e_fp_id' => $fp['fp_id'],
                     'e_outbound_c_id' => 921,
                     'depth' => 0,
                 ));
@@ -529,17 +506,13 @@ class Comm_model extends CI_Model {
                 continue;
             }
 
-            //TODO Implement simple caching to remember $dispatch_fp_id & $dispatch_fp_psid && $u IF details such as e_r_id remain the same
+            //TODO Implement simple caching to remember $dispatch_fp_id & $dispatch_fp_psid && $u IF some details remain the same
             if(1){
 
                 //Fetch user communication preferences:
                 $users = array();
-                if(!$force_email && isset($message['e_r_id']) && $message['e_r_id']>0){
-                    //Fetch enrollment to class:
-                    $users = $this->Db_model->ru_fetch(array(
-                        'ru_outbound_u_id' => $message['e_outbound_u_id'],
-                        'ru_r_id' => $message['e_r_id'],
-                    ));
+                if(!$force_email && isset($message['e_w_id']) && $message['e_w_id']>0){
+                    //TODO Fetch enrollment to class...
                 }
 
                 if(count($users)<1){
@@ -603,24 +576,6 @@ class Comm_model extends CI_Model {
             //Send using email or Messenger?
             if(!$force_email && $dispatch_fp_id && $dispatch_fp_psid){
 
-                //Messenger...
-                //Do we have a specific fp_id requested, and if so, does it match the one we found?
-                if(isset($message['e_fp_id']) && $message['e_fp_id']>0 && !($message['e_fp_id']==$dispatch_fp_id)){
-                    //Ooops, we seem to have an issue here...
-                    $failed_count++;
-                    $this->Db_model->e_create(array(
-                        'e_outbound_u_id' => $message['e_outbound_u_id'],
-                        'e_fp_id' => $message['e_fp_id'],
-                        'e_json' => $message,
-                        'e_inbound_c_id' => 8, //Platform error
-                        'e_text_value' => 'send_message() failed to send message because user FP ID ['.$dispatch_fp_id.'] was different that e_fp_id ['.$message['e_fp_id'].']',
-                    ));
-                    continue;
-                } else {
-                    //Override this data to the message data:
-                    $message['e_fp_id'] = $dispatch_fp_id;
-                }
-
                 //Prepare Payload:
                 $payload = array(
                     'recipient' => array(
@@ -647,9 +602,6 @@ class Comm_model extends CI_Model {
                         'results' => $process,
                     ),
                     'e_inbound_c_id' => 7, //Outbound message
-                    'e_fp_id' => ( isset($message['e_fp_id'])   ? $message['e_fp_id'] :0), //If set...
-                    'e_r_id'  => ( isset($message['e_r_id'])    ? $message['e_r_id']  :0), //If set...
-                    'e_b_id'  => ( isset($message['e_b_id'])    ? $message['e_b_id']  :0), //If set...
                     'e_i_id'  => ( isset($message['i_id'])      ? $message['i_id']    :0), //The message that is being dripped
                     'e_outbound_c_id'  => ( isset($message['i_outbound_c_id']) ? $message['i_outbound_c_id'] : 0),
                 ));
@@ -693,8 +645,6 @@ class Comm_model extends CI_Model {
                             'e_text_value' => $email_variables['subject_line'],
                             'e_json' => $email_variables,
                             'e_inbound_c_id' => 28, //Email message sent
-                            'e_r_id'  => ( isset($message['e_r_id']) ? $message['e_r_id'] : 0 ),
-                            'e_b_id'  => ( isset($message['e_b_id']) ? $message['e_b_id'] : 0 ),
                             'e_outbound_c_id'  => ( isset($message['i_outbound_c_id']) ? $message['i_outbound_c_id'] : 0 ),
                         ),
                     );
@@ -758,56 +708,22 @@ class Comm_model extends CI_Model {
             $message['depth'] = 0; //Override this for now and only focus on dispatching Steps at 1 level
             $message['e_inbound_u_id'] = 0; //System, prevents any signatures from being appended...
 
-            //Tweak optional variables:
-            if(!isset($message['e_b_id']) || $message['e_b_id']<1){
-                $message['e_b_id'] = 0;
-            }
-            if(!isset($message['e_r_id']) || $message['e_r_id']<1){
-                $message['e_r_id'] = 0;
-            }
-            if(!isset($message['e_fp_id']) || $message['e_fp_id']<1){
-                $message['e_fp_id'] = 0;
-            }
-
             //Fetch Bootcamp/Class if needed:
             $bs = array();
             $b_data = null;
             $class = null;
 
-            if($message['e_b_id']){
-                //Fetch the copy of the Action Plan for the Class:
-                $bs = fetch_action_plan_copy($message['e_b_id'],$message['e_r_id']);
-
-                //Fetch intent relative to the Bootcamp by doing an array search:
-                $b_data = extract_level($bs[0], $message['e_outbound_c_id']);
-                //IF !$b_data it likely means that intent is a generic system notification not part of $message['e_b_id']
-
-                //Do we have a Class?
-                if($message['e_r_id'] && $bs[0]['this_class']){
-                    $class = $bs[0]['this_class'];
-                }
-            }
-
 
             //Fetch intent and its messages with an appropriate depth
-            $fetch_depth = (($message['depth']==1 || ($message['e_b_id'] && $b_data['level']==2)) ? 1 : ( $message['depth']>1 ? $message['depth'] : 0 ));
+            $fetch_depth = ( $message['depth']>1 ? $message['depth'] : 1 ); //Used to be something different! Just changed it quickly, not sure if this makes sense
             $tree = $this->Db_model->c_fetch(array(
                 'c.c_id' => $message['e_outbound_c_id'],
             ), $fetch_depth, array('i')); //Supports up to 2 levels deep for now...
 
 
-
             //Check to see if we have any other errors:
-            if($message['e_r_id'] && !$message['e_b_id']){
-                $error_message = 'Had e_r_id=['.$message['e_r_id'].'] but missing e_b_id';
-            } elseif(!isset($tree[0])){
+            if(!isset($tree[0])){
                 $error_message = 'Invalid Intent ID ['.$message['e_outbound_c_id'].']';
-            } elseif($message['e_b_id'] && count($bs)<1){
-                $error_message = 'Failed to find Bootcamp ['.$message['e_b_id'].']';
-            } elseif($message['e_r_id'] && !$message['e_b_id']){
-                $error_message = 'Cannot reference a Class without a Bootcamp';
-            } elseif($message['e_r_id'] && !$class){
-                $error_message = 'Failed to locate Class ['.$message['e_r_id'].']';
             } elseif($message['depth']<0 || $message['depth']>1){
                 $error_message = 'Invalid depth ['.$message['depth'].']';
             }
@@ -821,11 +737,8 @@ class Comm_model extends CI_Model {
                 'e_inbound_c_id' => 8, //Platform Error
                 'e_json' => $message,
                 'e_outbound_u_id' => $message['e_outbound_u_id'],
-                'e_fp_id' => $message['e_fp_id'],
                 'e_outbound_c_id' => $message['e_outbound_c_id'],
                 'e_inbound_u_id' => $message['e_inbound_u_id'],
-                'e_b_id' => $message['e_b_id'],
-                'e_r_id' => $message['e_r_id'],
             ));
 
             //Return error:
@@ -861,7 +774,7 @@ class Comm_model extends CI_Model {
         }
 
         //All good, attempt to Dispatch all messages, their engagements have already been logged:
-        return $this->Comm_model->send_message($instant_messages,$force_email,(!$message['e_b_id'] || !$b_data));
+        return $this->Comm_model->send_message($instant_messages,$force_email,true);
     }
 
     function send_email($to_array,$subject,$html_message,$e_var_create=array(),$reply_to=null){

@@ -667,8 +667,6 @@ class Db_model extends CI_Model {
                 'e_outbound_u_id' => $enrollments[0]['u_id'],
                 'e_outbound_c_id' => 2698,
                 'depth' => 0,
-                'e_b_id' => $enrollments[0]['ru_b_id'],
-                'e_r_id' => $enrollments[0]['ru_r_id'],
             ), true);
 
 
@@ -678,8 +676,6 @@ class Db_model extends CI_Model {
                 'e_text_value' => ($enrollments[0]['ru_upfront_pay']>0 ? 'Received $'.$enrollments[0]['ru_upfront_pay'].' USD Coaching Tuition via PayPal' : 'Student Enrolled to Mench Personal Assistant for Free' ),
                 'e_json' => $_POST,
                 'e_inbound_c_id' => 30,
-                'e_b_id' => $enrollments[0]['ru_b_id'],
-                'e_r_id' => $enrollments[0]['ru_r_id'],
             ));
 
             //Update student's payment status:
@@ -1496,9 +1492,6 @@ class Db_model extends CI_Model {
         if(in_array('i',$join_objects)){
             $this->db->join('v5_messages i', 'i.i_id=e.e_i_id','left');
         }
-        if(in_array('fp',$join_objects)){
-            $this->db->join('v5_facebook_pages fp', 'fp.fp_id=e.e_fp_id','left');
-        }
 	    foreach($match_columns as $key=>$value){
 	        if(!is_null($value)){
 	            $this->db->where($key,$value);
@@ -1589,7 +1582,7 @@ class Db_model extends CI_Model {
 
 
         //Set some zero defaults if not set:
-        foreach(array('e_outbound_c_id','e_outbound_u_id','e_inbound_u_id','e_b_id','e_r_id','e_cr_id','e_i_id','e_fp_id','e_replaced_e_id','e_x_id') as $dz){
+        foreach(array('e_outbound_c_id','e_outbound_u_id','e_inbound_u_id','e_cr_id','e_i_id','e_x_id') as $dz){
             if(!isset($insert_columns[$dz]) || intval($insert_columns[$dz])<1){
                 $insert_columns[$dz] = 0;
             }

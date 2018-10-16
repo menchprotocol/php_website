@@ -674,8 +674,6 @@ class Entities extends CI_Controller {
                 'e_outbound_u_id' => $matching_users[0]['u_id'],
                 'e_outbound_c_id' => 3030,
                 'depth' => 0,
-                'e_b_id' => 0,
-                'e_r_id' => 0,
             ), true);
         }
 

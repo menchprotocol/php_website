@@ -172,7 +172,6 @@ if($displayed_messages>0){
         if($i['i_status']==1){
             echo '<div class="tip_bubble">';
             echo echo_i( array_merge( $i , array(
-                'e_b_id'=>$enrollment['b_id'],
                 'e_outbound_u_id'=>$enrollment['u_id'],
             )) , $enrollment['u_full_name'] );
             echo '</div>';

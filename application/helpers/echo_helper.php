@@ -347,7 +347,6 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
                         $embed_html_code .= '<div style="margin-top:7px;">'.echo_content_url($x['x_clean_url'],$x['x_type']).'</div>';
                     }
                 }
-
             }
             
 

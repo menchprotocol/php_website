@@ -13,10 +13,7 @@ $engagement_filters = array(
     'e_inbound_c_id' => 'All Engagements',
     'e_id' => 'Engagement ID',
     'e_u_id' => 'User ID',
-    'e_b_id' => 'Bootcamp ID',
-    'e_r_id' => 'Class ID',
     'e_outbound_c_id' => 'Intent ID',
-    'e_fp_id' => 'FB Page ID',
 );
 
 $match_columns = array();

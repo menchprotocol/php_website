@@ -448,14 +448,6 @@ $config['engagement_references'] = array(
         'name' => 'Recipient',
         'object_code' => 'u',
     ),
-    'e_b_id' => array(
-        'name' => 'Bootcamp',
-        'object_code' => 'b',
-    ),
-    'e_r_id' => array(
-        'name' => 'Class',
-        'object_code' => 'r',
-    ),
     'e_outbound_c_id' => array(
         'name' => 'Intent',
         'object_code' => 'c',
@@ -471,10 +463,6 @@ $config['engagement_references'] = array(
     'e_i_id' => array(
         'name' => 'Message',
         'object_code' => 'i',
-    ),
-    'e_fp_id' => array(
-        'name' => 'Facebook Page',
-        'object_code' => 'fp',
     ),
 );
 
