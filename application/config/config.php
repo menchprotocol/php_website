@@ -182,7 +182,7 @@ $config['object_statuses'] = array(
             's_icon' => 'fas fa-badge',
         ),
         5 => array(
-            's_name'  => 'Complete & Unsubscribed',
+            's_name'  => 'Completed',
             's_desc'  => 'Student successfully completed all tasks and intentions',
             's_icon' => 'fas fa-badge-check',
         ),

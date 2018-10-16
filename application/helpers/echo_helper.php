@@ -787,7 +787,7 @@ function echo_estimated_time($c_time_estimate,$show_icon=1,$micro=false,$c_id=0,
 
         if($c_id){
 
-            $ui .= '<span class="slim-time" id="t_estimate_'.$c_id.'" tree-hours="'.$c_time_estimate.'" intent-hours="'.$c_time_intent.'">'.echo_hours( $c_time_estimate,true).'</span>';
+            $ui .= '<span class="slim-time t_estimate_'.$c_id.'" tree-hours="'.$c_time_estimate.'" intent-hours="'.$c_time_intent.'">'.echo_hours( $c_time_estimate,true).'</span>';
 
             if($show_icon){
                 $ui .= ' <i class="fas fa-clock"></i>';
@@ -871,7 +871,7 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
 
 
     if($level==1 && !$c['c__is_orphan']){
-        $ui .= '<a href="/'.$c['c_id'].'" class="underdot" style="margin-right:7px;" target="_blank" data-toggle="tooltip" title="Open Landing Page with Intent tree overview & Messenger subscription button" data-placement="left"><i class="fas fa-external-link"></i></a>';
+        $ui .= '<a href="/'.$c['c_id'].'" class="underdot" style="margin:0 7px;" target="_blank" data-toggle="tooltip" title="Open Landing Page with Intent tree overview & Messenger subscription button" data-placement="left"><i class="fas fa-external-link"></i></a>';
     }
 
     $ui .= '<a href="#messages-'.$c['c_id'].'" onclick="load_c_messages('.$c['c_id'].')" class="badge badge-primary" style="width:40px;"><span class="btn-counter" id="messages-counter-'.$c['c_id'].'">'.$c['c__this_messages'].'</span><i class="fas fa-comment-dots"></i></a>';

@@ -89,7 +89,7 @@ if(isset($orphan_cs)){
                 load_c_sort(intent_id,"3");
 
                 //Load time:
-                $('#t_estimate_'+intent_id).text(echo_hours($('#t_estimate_'+intent_id).attr('tree-hours')));
+                $('.t_estimate_'+intent_id).text(echo_hours($('.t_estimate_'+intent_id+':first').attr('tree-hours')));
 
             });
 
@@ -99,7 +99,7 @@ if(isset($orphan_cs)){
                     var intent_id = $(this).attr('intent-id');
                     if(intent_id){
                         //Load time:
-                        $('#t_estimate_'+intent_id).text(echo_hours($('#t_estimate_'+intent_id).attr('tree-hours')));
+                        $('.t_estimate_'+intent_id).text(echo_hours($('.t_estimate_'+intent_id+':first').attr('tree-hours')));
                     }
                 });
             }
@@ -318,18 +318,18 @@ if(isset($orphan_cs)){
                         $('.intent_line_'+inputs.c_id).attr('parent-intent-id',inputs.to_c_id);
 
                         //Determine core variables for hour move calculations:
-                        var step_hours = parseFloat($('#t_estimate_'+inputs.c_id).attr('tree-hours'));
+                        var step_hours = parseFloat($('.t_estimate_'+inputs.c_id+':first').attr('tree-hours'));
                         var intent_count = parseInt($('.outbound-counter-'+inputs.c_id+':first').text());
 
                         if(!(step_hours==0)){
                             //Remove from old one:
-                            var from_hours_new = parseFloat($('#t_estimate_'+inputs.from_c_id).attr('tree-hours'))-step_hours;
-                            $('#t_estimate_'+inputs.from_c_id).attr('tree-hours',from_hours_new).text(echo_hours(from_hours_new));
+                            var from_hours_new = parseFloat($('.t_estimate_'+inputs.from_c_id+':first').attr('tree-hours'))-step_hours;
+                            $('.t_estimate_'+inputs.from_c_id).attr('tree-hours',from_hours_new).text(echo_hours(from_hours_new));
                             $('.outbound-counter-'+inputs.from_c_id).text( parseInt($('.outbound-counter-'+inputs.from_c_id+':first').text()) - intent_count );
 
                             //Add to new:
-                            var to_hours_new = parseFloat($('#t_estimate_'+inputs.to_c_id).attr('tree-hours'))+step_hours;
-                            $('#t_estimate_'+inputs.to_c_id).attr('tree-hours',to_hours_new).text(echo_hours(to_hours_new));
+                            var to_hours_new = parseFloat($('.t_estimate_'+inputs.to_c_id+':first').attr('tree-hours'))+step_hours;
+                            $('.t_estimate_'+inputs.to_c_id).attr('tree-hours',to_hours_new).text(echo_hours(to_hours_new));
                             $('.outbound-counter-'+inputs.to_c_id).text( parseInt($('.outbound-counter-'+inputs.to_c_id+':first').text()) + intent_count );
                         }
 
@@ -388,8 +388,8 @@ if(isset($orphan_cs)){
 
     function adjust_js_ui(c_id, level, new_hours, intent_deficit_count=0, apply_to_tree=0, skip_intent_adjustments=0){
 
-        var intent_hours = parseFloat($('#t_estimate_'+c_id).attr('intent-hours'));
-        var tree_hours = parseFloat($('#t_estimate_'+c_id).attr('tree-hours'));
+        var intent_hours = parseFloat($('.t_estimate_'+c_id+':first').attr('intent-hours'));
+        var tree_hours = parseFloat($('.t_estimate_'+c_id+':first').attr('tree-hours'));
         var intent_deficit_hours = new_hours - ( skip_intent_adjustments ? 0 : ( apply_to_tree ? tree_hours : intent_hours ) );
 
         if(intent_deficit_hours==0 && intent_deficit_count==0){
@@ -400,12 +400,12 @@ if(isset($orphan_cs)){
         //Adjust same level hours:
         if(!skip_intent_adjustments){
             var new_tree_hours = tree_hours + intent_deficit_hours;
-            $('#t_estimate_'+c_id)
+            $('.t_estimate_'+c_id)
                 .attr('tree-hours', new_tree_hours)
                 .text(echo_hours(new_tree_hours));
 
             if(!apply_to_tree){
-                $('#t_estimate_'+c_id).attr('intent-hours',new_hours).text(echo_hours(new_tree_hours));
+                $('.t_estimate_'+c_id).attr('intent-hours',new_hours).text(echo_hours(new_tree_hours));
             }
         }
 
@@ -413,7 +413,7 @@ if(isset($orphan_cs)){
 
             //Adjust the parent level hours:
             var c_inbound_id = parseInt($('.intent_line_'+c_id).attr('parent-intent-id'));
-            var c_inbound_tree_hours = parseFloat($('#t_estimate_'+c_inbound_id).attr('tree-hours'));
+            var c_inbound_tree_hours = parseFloat($('.t_estimate_'+c_inbound_id+':first').attr('tree-hours'));
             var new_c_inbound_tree_hours = c_inbound_tree_hours + intent_deficit_hours;
 
             if(!(intent_deficit_count==0)){
@@ -422,27 +422,27 @@ if(isset($orphan_cs)){
 
             if(!(intent_deficit_hours==0)){
                 //Update Hours (Either level 1 or 2):
-                $('#t_estimate_'+c_inbound_id)
+                $('.t_estimate_'+c_inbound_id)
                     .attr('tree-hours', new_c_inbound_tree_hours)
                     .text(echo_hours(new_c_inbound_tree_hours));
             }
 
             if(level==3){
-                //Adjust top level (Bootcamp hours) as well:
-                var b_c_id = parseInt($('.intent_line_'+c_inbound_id).attr('parent-intent-id'));
-                var b_c_tree_hours = parseFloat($('#t_estimate_'+b_c_id).attr('tree-hours'));
-                var new_b_c_tree_hours = b_c_tree_hours + intent_deficit_hours;
+                //Adjust top level intent as well:
+                var top_c_id = parseInt($('.intent_line_'+c_inbound_id).attr('parent-intent-id'));
+                var top_c_tree_hours = parseFloat($('.t_estimate_'+top_c_id+':first').attr('tree-hours'));
+                var new_top_c_tree_hours = top_c_tree_hours + intent_deficit_hours;
 
 
                 if(!(intent_deficit_count==0)){
-                    $('.outbound-counter-'+b_c_id).text( parseInt($('.outbound-counter-'+b_c_id+':first').text()) + intent_deficit_count );
+                    $('.outbound-counter-'+top_c_id).text( parseInt($('.outbound-counter-'+top_c_id+':first').text()) + intent_deficit_count );
                 }
 
                 if(!(intent_deficit_hours==0)){
                     //Update Hours:
-                    $('#t_estimate_'+b_c_id)
-                        .attr('tree-hours', new_b_c_tree_hours)
-                        .text(echo_hours(new_b_c_tree_hours));
+                    $('.t_estimate_'+top_c_id)
+                        .attr('tree-hours', new_top_c_tree_hours)
+                        .text(echo_hours(new_top_c_tree_hours));
                 }
             }
         }
@@ -503,7 +503,7 @@ if(isset($orphan_cs)){
     function load_c_modify(c_id, cr_id){
 
         //Make sure inputs are valid:
-        if(!$('#t_estimate_'+c_id).length){
+        if(!$('.t_estimate_'+c_id+':first').length){
             return false;
         }
 
@@ -516,8 +516,8 @@ if(isset($orphan_cs)){
 
 
         //Set variables:
-        var intent_hours = parseFloat($('#t_estimate_'+c_id).attr('intent-hours'));
-        var tree_hours = $('#t_estimate_'+c_id).attr('tree-hours');
+        var intent_hours = parseFloat($('.t_estimate_'+c_id+':first').attr('intent-hours'));
+        var tree_hours = $('.t_estimate_'+c_id+':first').attr('tree-hours');
 
         $('.c_outcome_input').val($(".c_outcome_"+c_id+":first").text());
         $('#c_time_estimate').val(Math.round(intent_hours*60));
@@ -572,9 +572,6 @@ if(isset($orphan_cs)){
             c_is_any:parseInt($('input[name=c_is_any]:checked').val()),
         };
 
-        console.log(modify_data);
-
-
         //Show spinner:
         $('.save_intent_changes').html('<span><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
 
@@ -596,7 +593,6 @@ if(isset($orphan_cs)){
                 } else {
                     $('.c_is_any_icon'+modify_data['c_id']).removeClass('fa-code-merge').addClass('fa-sitemap');
                 }
-
 
                 //Adjust hours:
                 adjust_js_ui(modify_data['c_id'], modify_data['level'], modify_data['c_time_estimate']);
