@@ -870,6 +870,9 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
     $ui .= '<span class="pull-right" style="'.( $level<3 ? 'margin-right: 8px;' : '' ).'">';
 
 
+    if($level==1 && !$c['c__is_orphan']){
+        $ui .= '<a href="/'.$c['c_id'].'" class="underdot" style="margin-right:7px;" target="_blank" data-toggle="tooltip" title="Open Landing Page with Intent tree overview & Messenger subscription button" data-placement="left"><i class="fas fa-external-link"></i></a>';
+    }
 
     $ui .= '<a href="#messages-'.$c['c_id'].'" onclick="load_c_messages('.$c['c_id'].')" class="badge badge-primary" style="width:40px;"><span class="btn-counter" id="messages-counter-'.$c['c_id'].'">'.$c['c__this_messages'].'</span><i class="fas fa-comment-dots"></i></a>';
 
@@ -883,7 +886,7 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
 
 
 
-    $c_settings = ' c_require_url_to_complete="'.$c['c_require_url_to_complete'].'" c_require_notes_to_complete="'.$c['c_require_notes_to_complete'].'" c_is_any="'.$c['c_is_any'].'" c_is_output="'.$c['c_is_output'].'" ';
+    $c_settings = ' c_require_url_to_complete="'.$c['c_require_url_to_complete'].'" c_require_notes_to_complete="'.$c['c_require_notes_to_complete'].'" c_cost_estimate="'.$c['c_cost_estimate'].'" c_is_any="'.$c['c_is_any'].'" ';
 
 
     //Sorting & Then Left Content:
@@ -896,9 +899,9 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
 
         //Bootcamp Outcome:
         $ui .= '<span><b id="b_objective" style="font-size: 1.3em;">';
-        $ui .= '<i class="c_is_output_icon'.$c['c_id'].' '.( $c['c_is_output'] ? 'fas fa-check-square' : 'fas fa-lightbulb-on' ).'"></i> ';
         $ui .= '<span class="c_outcome_'.$c['c_id'].'" '.$c_settings.'>'.$c['c_outcome'].'</span>';
         $ui .= '</b></span>';
+        $ui .= ' <span class="obj-id underdot" data-toggle="tooltip" data-placement="top" title="Intent ID">#' . $c['c_id'] . '</span>';
 
     } elseif($level==2){
 
@@ -908,9 +911,8 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
         $ui .= '<a href="javascript:ms_toggle('.$c['cr_id'].');"><i id="handle-'.$c['cr_id'].'" class="fal fa-plus-square"></i></a> &nbsp;';
 
         if(!$is_inbound){
-            $ui .= '<span class="inline-level-'.$level.'">#'.$c['cr_outbound_rank'].'</span> ';
+            $ui .= '<span class="inline-level-'.$level.'">#'.$c['cr_outbound_rank'].'</span>';
         }
-        $ui .= '<i class="c_is_output_icon'.$c['c_id'].' '.( $c['c_is_output'] ? 'fas fa-check-square' : 'fas fa-lightbulb-on' ).'" style="width:20px; text-align:center;"></i>';
         $ui .= '</span>';
 
         $ui .= '<span id="title_'.$c['cr_id'].'" class="cdr_crnt c_outcome_'.$c['c_id'].'" outbound-rank="'.$c['cr_outbound_rank'].'" '.$c_settings.'>'.$c['c_outcome'].'</span> ';
@@ -918,15 +920,9 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
     } elseif ($level==3){
 
         //Steps
-        $ui .= '<span class="inline-level inline-level-'.$level.'">#'.$c['cr_outbound_rank'].'</span> ';
-        $ui .= '<i class="c_is_output_icon'.$c['c_id'].' '.( $c['c_is_output'] ? 'fas fa-check-square' : 'fas fa-lightbulb-on' ).'" style="font-size: 0.9em; width:20px; text-align:center;"></i> ';
+        $ui .= '<span class="inline-level inline-level-'.$level.'">#'.$c['cr_outbound_rank'].'</span>';
         $ui .= '<span id="title_'.$c['cr_id'].'" class="c_outcome_'.$c['c_id'].'" outbound-rank="'.$c['cr_outbound_rank'].'" '.$c_settings.'>'.$c['c_outcome'].'</span> ';
 
-    }
-
-
-    if($level==1 && !$c['c__is_orphan']){
-        $ui .= ' <a href="/'.$c['c_id'].'" style="padding-left:5px;" target="_blank"><i class="fas fa-external-link"></i></a>';
     }
 
 
@@ -1038,7 +1034,7 @@ function echo_u($u, $level, $can_edit, $is_inbound=false){
         //Regular section:
         $ui .= echo_cover($u, 'profile-icon2');
         $ui .= '<b id="u_title" class="u_full_name u_full_name_'.$u['u_id'].'">' . $u['u_full_name'] . '</b>';
-        $ui .= ' <span class="obj-id">@' . $u['u_id'] . '</span>';
+        $ui .= ' <span class="obj-id underdot" data-toggle="tooltip" data-placement="top" title="Entity ID">@' . $u['u_id'] . '</span>';
 
         //Do they have any social profiles in their link?
         $ui .= echo_social_profiles($CI->Db_model->x_social_fetch($u['u_id']));

@@ -951,20 +951,13 @@ function message_validation($i_status,$i_message,$i_outbound_c_id){
 function generate_hashtag($text){
     //These hashtags cannot be taken
     $CI =& get_instance();
-    $reserved_hashtags = $CI->config->item('reserved_hashtags');
-    
+
     //Cleanup the text:
     $text = trim($text);
     $text = ucwords($text);
     $text = str_replace('&','And',$text);
     $text = preg_replace("/[^a-zA-Z0-9]/", "", $text);
     $text = substr($text,0,30);
-    
-    //Now check to make sure its all good!
-    if(in_array(strtolower($text),$reserved_hashtags)){
-        //Oops, they cannot pick this, lets add a random number to this!
-        $text .= rand(1,9999);
-    }
     
     return $text;    
 }

@@ -16,4 +16,3 @@ $lang['obj_x_type_name'] = 'URL Type';
 $lang['obj_x_status_name'] = 'URL Status';
 $lang['obj_w_status_name'] = 'Subscription Status';
 $lang['obj_c_is_any_name'] = 'Intent Completion';
-$lang['obj_c_is_output_name'] = 'Intent Type';

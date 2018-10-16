@@ -24,14 +24,6 @@ if(isset($orphan_cs)){
         }
     }
 
-    function adjust_intent_type(){
-        if($('input[type=radio][name=c_is_output][value=\'1\']').is(':checked')){
-            $('.is_task').removeClass('hidden');
-            var c_id = parseInt($('#modifybox').attr('intent-id'));
-        } else {
-            $('.is_task').addClass('hidden');
-        }
-    }
 
     $(document).ready(function() {
 
@@ -84,11 +76,6 @@ if(isset($orphan_cs)){
 
         //Load Sortable:
         load_c_sort($("#c_id").val(),"2");
-
-        //Check changes on Intent Type:
-        $('input[type=radio][name=c_is_output]').change(function() {
-            adjust_intent_type();
-        });
 
 
         //Activate sorting for Steps:
@@ -529,22 +516,21 @@ if(isset($orphan_cs)){
 
 
         //Set variables:
-        var intent_hours = $('#t_estimate_'+c_id).attr('intent-hours');
+        var intent_hours = parseFloat($('#t_estimate_'+c_id).attr('intent-hours'));
         var tree_hours = $('#t_estimate_'+c_id).attr('tree-hours');
 
         $('.c_outcome_input').val($(".c_outcome_"+c_id+":first").text());
-        $('#c_time_estimate').val(intent_hours);
+        $('#c_time_estimate').val(Math.round(intent_hours*60));
+        $('#c_cost_estimate').val(parseFloat($('.c_outcome_'+c_id).attr('c_cost_estimate')));
 
         $("input[name=c_is_any][value='"+$('.c_outcome_'+c_id).attr('c_is_any')+"']").prop("checked",true);
-        $("input[name=c_is_output][value='"+$('.c_outcome_'+c_id).attr('c_is_output')+"']").prop("checked",true);
         document.getElementById("c_require_url_to_complete").checked = parseInt($('.c_outcome_'+c_id).attr('c_require_url_to_complete'));
         document.getElementById("c_require_notes_to_complete").checked = parseInt($('.c_outcome_'+c_id).attr('c_require_notes_to_complete'));
-        adjust_intent_type();
 
         //Are the tree hours greater than the intent hours?
         if(tree_hours>intent_hours){
             //Yes, show remaining tree hours:
-            $('#child-hours').html('<i class="fas fa-sitemap"></i> '+echo_hours(tree_hours-intent_hours)+' to complete tree');
+            $('#child-hours').html('<i class="fas fa-clock"></i> '+echo_hours(tree_hours-intent_hours)+' in <i class="fas fa-sitemap"></i> sub-tree');
         } else {
             //Nope, clear this field:
             $('#child-hours').html('');
@@ -566,7 +552,7 @@ if(isset($orphan_cs)){
     }
 
 
-    function save_intent_modify(){
+    function save_c_modify(){
 
         //Validate that we have all we need:
         if($('#modifybox').hasClass('hidden') || !parseInt($('#modifybox').attr('intent-id'))) {
@@ -575,16 +561,15 @@ if(isset($orphan_cs)){
         }
 
         //Prepare data to be modified for this intent:
-        var c_is_output = parseInt($('input[name=c_is_output]:checked').val());
         var modify_data = {
             c_id:parseInt($('#modifybox').attr('intent-id')),
             level:parseInt($('#modifybox').attr('level')),
             c_outcome:$('.c_outcome_input').val(),
-            c_time_estimate:parseFloat($('#c_time_estimate').val()),
-            c_require_url_to_complete:( c_is_output && document.getElementById('c_require_url_to_complete').checked ? 1 : 0),
-            c_require_notes_to_complete:( c_is_output && document.getElementById('c_require_notes_to_complete').checked ? 1 : 0),
+            c_time_estimate:parseFloat(parseInt($('#c_time_estimate').val())/60).toFixed(3),
+            c_cost_estimate:parseFloat($('#c_cost_estimate').val()).toFixed(2),
+            c_require_url_to_complete:( document.getElementById('c_require_url_to_complete').checked ? 1 : 0),
+            c_require_notes_to_complete:( document.getElementById('c_require_notes_to_complete').checked ? 1 : 0),
             c_is_any:parseInt($('input[name=c_is_any]:checked').val()),
-            c_is_output:c_is_output,
         };
 
         //Show spinner:
@@ -600,7 +585,7 @@ if(isset($orphan_cs)){
                 $('.c_outcome_'+modify_data['c_id']).attr('c_require_url_to_complete'  , modify_data['c_require_url_to_complete']);
                 $('.c_outcome_'+modify_data['c_id']).attr('c_require_notes_to_complete', modify_data['c_require_notes_to_complete']);
                 $('.c_outcome_'+modify_data['c_id']).attr('c_is_any'                   , modify_data['c_is_any']);
-                $('.c_outcome_'+modify_data['c_id']).attr('c_is_output'                , modify_data['c_is_output']);
+                $('.c_outcome_'+modify_data['c_id']).attr('c_cost_estimate'            , modify_data['c_cost_estimate']);
 
                 //Adjust UI Icons:
                 if(modify_data['c_is_any']){
@@ -609,11 +594,6 @@ if(isset($orphan_cs)){
                     $('.c_is_any_icon'+modify_data['c_id']).removeClass('fa-code-merge').addClass('fa-sitemap');
                 }
 
-                if(modify_data['c_is_output']){
-                    $('.c_is_output_icon'+modify_data['c_id']).addClass('fa-check-square').removeClass('fa-lightbulb-on');
-                } else {
-                    $('.c_is_output_icon'+modify_data['c_id']).removeClass('fa-check-square').addClass('fa-lightbulb-on');
-                }
 
                 //Adjust hours:
                 adjust_js_ui(modify_data['c_id'], modify_data['level'], modify_data['c_time_estimate']);
@@ -785,20 +765,14 @@ if(isset($orphan_cs)){
 
 
             //Expand/Contract buttons
-            echo '<table style="width: 100%;"><tr>';
-            echo '<td width="80%">';
-            echo '<h5 class="badge badge-h"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-outbound-count outbound-counter-'.$c['c_id'].'">'.($c['c__tree_inputs']+$c['c__tree_outputs']-1).'</span> Outs</h5>';
+            echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-outbound-count outbound-counter-'.$c['c_id'].'">'.($c['c__tree_inputs']+$c['c__tree_outputs']-1).'</span> Outs</h5>';
                 if($orphan_c_count>0){
                     echo '<div style="text-align:right; font-size:0.9em;"><i class="fas fa-unlink"></i> <a href="/intents/orphan">'.$orphan_c_count.' Orphans &raquo;</a></div>';
                 }
-            echo '</td>';
-            echo '<td width="20%">';
-            echo '<div id="task_view" style="text-align: right; padding-right:5px;">';
-            echo '<i class="fas fa-minus-square close_all"></i> &nbsp;';
-            echo '<i class="fas fa-plus-square expand_all"></i>';
+            echo '<div id="task_view" style="padding-left:8px; display: inline-block;">';
+            echo '<i class="fas fa-plus-square expand_all" style="font-size: 1.2em;"></i> &nbsp;';
+            echo '<i class="fas fa-minus-square close_all" style="font-size: 1.2em;"></i>';
             echo '</div>';
-            echo '</td>';
-            echo '</tr></table>';
 
 
 
@@ -849,36 +823,7 @@ if(isset($orphan_cs)){
 
 
             <div style="margin-top:20px;">
-                <div class="title"><h4><i class="fas fa-hashtag"></i> Intent Type</h4></div>
-                <div class="form-group label-floating is-empty">
-
-                    <div class="radio" style="display: inline-block; border-bottom:1px dotted #999; margin-top: 0 !important; margin-right:10px !important;" data-toggle="tooltip" title="Intent requires the student to produce an output by completing an actionable task" data-placement="right">
-                        <label>
-                            <input type="radio" name="c_is_output" value="1" />
-                            <i class="fas fa-check-square"></i> Actionable Task
-                        </label>
-                    </div>
-
-                    <div class="radio" style="display:inline-block; border-bottom:1px dotted #999; margin-top: 0 !important;" data-toggle="tooltip" title="Intent communicates a key concept without requiring the student to do anything other than consuming the content (no output)" data-placement="right">
-                        <label>
-                            <input type="radio" name="c_is_output" value="0" />
-                            <i class="fas fa-lightbulb-on"></i> Key Concept
-                        </label>
-                    </div>
-
-                    <div class="checkbox is_task">
-                        <label style="display: block; font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" id="c_require_notes_to_complete" /><i class="fas fa-pencil"></i> Require written response</label>
-                        <label style="display: block; font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" id="c_require_url_to_complete" /><i class="fas fa-link"></i> Require URL in response</label>
-                    </div>
-
-                </div>
-            </div>
-
-
-
-
-            <div style="margin-top:20px;">
-                <div class="title"><h4><i class="fas fa-check-circle"></i> Completion Method</h4></div>
+                <div class="title"><h4><i class="fas fa-badge-check"></i> Completion Method</h4></div>
                 <div class="form-group label-floating is-empty">
 
                     <div class="radio" style="display:inline-block; border-bottom:1px dotted #999; margin-right:10px; margin-top: 0 !important;" data-toggle="tooltip" title="Intent is completed when ALL outbound intents are marked as complete" data-placement="right">
@@ -901,24 +846,46 @@ if(isset($orphan_cs)){
 
 
 
+
+
+            <div style="margin-top:10px;">
+                <div class="title"><h4><i class="fas fa-shield-check"></i> Completion Requirements</h4></div>
+                <div class="form-group label-floating is-empty">
+                    <div class="checkbox is_task">
+                        <label style="display: block; font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" id="c_require_notes_to_complete" /><i class="fas fa-pencil"></i> Require written response</label>
+                        <label style="display: block; font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" id="c_require_url_to_complete" /><i class="fas fa-link"></i> Require URL in response</label>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
             <div style="margin-top:20px;">
-                <?php $times = $this->config->item('c_time_options'); ?>
-                <div class="title"><h4><i class="fas fa-clock"></i> Time Estimate <span id="hb_609" class="help_button" intent-id="609"></span></h4></div>
+                <div class="title"><h4><i class="fas fa-box-check"></i> Completion Resources <span id="hb_609" class="help_button" intent-id="609"></span></h4></div>
                 <div class="help_body maxout" id="content_609"></div>
-                <table width="100%">
-                    <tr>
-                        <td style="width:105px;">
-                            <select class="form-control input-mini border" id="c_time_estimate" style="display:inline-block;">
-                                <?php
-                                foreach($times as $time){
-                                    echo '<option value="'.$time.'">'.echo_hours($time).'</option>';
-                                }
-                                ?>
-                            </select>
-                        </td>
-                        <td><div id="child-hours"></div></td>
-                    </tr>
-                </table>
+
+                <div class="form-group label-floating is-empty" style="max-width:150px;">
+                    <div class="input-group border">
+                        <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;"><i class="fas fa-clock"></i></span>
+                        <input style="padding-left:0;" type="number" step="1" min="0" max="300" id="c_time_estimate" value="" class="form-control">
+                        <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;">Minutes</span>
+                    </div>
+                </div>
+                <div id="child-hours" style="margin-left:6px;"></div>
+
+                <div class="form-group label-floating is-empty" style="max-width:150px;">
+                    <div class="input-group border">
+                        <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;"><i class="fas fa-usd-circle"></i></span>
+                        <input style="padding-left:0;" type="number" step="0.01" min="0" max="5000" id="c_cost_estimate" value="" class="form-control">
+                        <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;">USD</span>
+                    </div>
+                </div>
+                <div id="child-costs"></div>
             </div>
 
 
@@ -927,7 +894,7 @@ if(isset($orphan_cs)){
 
             <table width="100%" style="margin-top:10px;">
                 <tr>
-                    <td class="save-td"><a href="javascript:save_intent_modify();" class="btn btn-primary">Save</a></td>
+                    <td class="save-td"><a href="javascript:save_c_modify();" class="btn btn-primary">Save</a></td>
                     <td><span class="save_intent_changes"></span></td>
                     <td style="width:80px; text-align:right;">
 

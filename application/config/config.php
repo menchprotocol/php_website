@@ -20,29 +20,6 @@ $config['fb_settings'] = array(
     'mench_access_token' => 'EAAZAVHMRbmyEBAEfN8zsRJ3UOIUJJrNLqeFutPXVQZCoDZA3EO1rgkkzayMtNhisHHEhAos08AmKZCYD7zcZAPIDSMTcBjZAHxxWzbfWyTyp85Fna2bGDfv5JUIBuFTSeQOZBaDHRG7k0kbW8E7kQQN3W6x47VB1dZBPJAU1oNSW1QZDZD',
 );
 
-$config['class_settings'] = array(
-    'create_weeks_ahead'        => 55, //How many weeks ahead should we create classes?
-    'coach_show_default'        => 10, //Visible by default in Console for Coaches
-    'landing_page_visible'      => 5, //Classes & Tasks visible in the Landing Page by default
-    'landing_pagetask_visible'  => 3, //Tasks underneath each Bootcamp
-    'students_show_max'         => 13, //Maximum available for students to see
-);
-
-$config['deferred_pay_defaults'] = array(
-    //NOTE: If making changes also make sure to edit informational help intent #7019
-    'b_deferred_rate'        => 2.0,  //Multiplier relative to up-front pay
-    'b_deferred_deposit'     => 0.1,  //% of the new/large deferred rate that students must pay up-front which is non-refundable
-    'b_deferred_payback'     => 0.25, //Percentage of each net paycheck that they need to pay back
-);
-
-$config['required_fb_permissions'] = array(
-    'public_profile' => 'Basic permission granted by Facebook so we can access your profile\'s publicly available information.', //Basic permission
-    'pages_show_list' => 'Enables us to list all Facebook Pages you manage so you can choose which one to connect to this Bootcamp.',
-    'manage_pages' => 'Enables us to connect Mench Personal Assistant to the Facebook Page you choose. You can disconnect at any time.',
-    'pages_messaging' => 'Enables us to send and receive messages through your Facebook Page. Cannot be used to send promotional/advertising content.',
-    'pages_messaging_subscriptions' => 'Enables us to send messages to your Students at any time after the first interaction for Task notification/reminders.',
-);
-
 //Used to generate application status links:
 $config['application_status_salt'] = 'SALTs3cr3t777';
 $config['bot_activation_salt'] = 'S@LTB0Ts3cr3t4';
@@ -56,17 +33,6 @@ $config['aws_credentials'] = [
     'secret' => 'ZU1paNBAqps2A4XgLjNVAYbdmgcpT5BIwn6DJ/VU',
 ];
 
-$config['mench_support_team'] = array(1,2); //Miguel and Shervin @ This Time
-
-//The engagements that coaches are subscribed to:
-$config['coach_subscriptions'] = array(57,60,68,69,70,72,7093,7098);
-
-
-$config['b_weeks_count_options'] = array(1,2,3,4,5,6,7,8,9,10,11,12,13);
-$config['b_unlock_intents_options'] = array(1,2,3,5,0);
-
-
-
 //Email-based engagements subscriptions:
 $config['engagement_subscriptions'] = array(
     array(
@@ -77,17 +43,6 @@ $config['engagement_subscriptions'] = array(
         'admin_emails' => array('shervin@mench.com'),
         'subscription' => array(9,15,60,65,68,72,73,75,88,7084    ,8,84,6909),
     ),
-);
-
-//Define what counts as a meaningful Bootcamp engagement by the coach team:
-$config['meaningful_b_engagements']  = array(14,15,16,17,18,19,20,21,22,23,34,35,36,38,39,43,44,73,74,75);
-
-//based on the fibonacci sequence for more realistic estimates
-$config['c_time_options'] = array(0,0.05,0.116667,0.25,0.5,0.75,1,2,3,5); //,8,13
-
-$config['default_class_prerequisites'] = array(
-    'An internet-connected computer or smart-phone',
-    'Fluent in English',
 );
 
 $config['object_statuses'] = array(
@@ -175,18 +130,6 @@ $config['object_statuses'] = array(
             's_name'  => 'Any Child',
             's_desc'  => 'Intent is complete when a single child is marked as complete',
             's_icon' => 'fas fa-code-merge',
-        ),
-    ),
-    'c_is_output' => array(
-        0 => array(
-            's_name'  => 'Key Concept',
-            's_desc'  => 'Intent communicates a key concept that will help accomplish the over-arching intent',
-            's_icon' => 'fas fa-lightbulb-on',
-        ),
-        1 => array(
-            's_name'  => 'Actionable Task',
-            's_desc'  => 'Intent is an executable assignment to produce a tangible output to progress towards the over-arching intent',
-            's_icon' => 'fas fa-check-square',
         ),
     ),
 
@@ -404,40 +347,6 @@ $config['social_urls'] =array(
 );
 
 
-//No Bootcamps can be created using these hashtags
-//URL structure is: https://mench.com/URLKEY
-$config['reserved_hashtags'] = array(
-    'projects',
-    'bootcamp',
-    'mench',
-    'login',
-    'logout',
-    'user',
-    'users',
-    'account',
-    'accounts',
-    'profile',
-    'profiles',
-    'terms',
-    'start',
-    'launch',
-    'contact',
-    'contactus',
-    'faq',
-    'ses',
-    'application_status',
-    'application',
-    'apply',
-    'ref',
-    'console',
-    'help',
-    'hashtag',
-    'coach',
-    'coaches',
-    'student',
-    'students',
-);
-
 //The core objects of the platform:
 $config['engagement_references'] = array(
     'e_inbound_u_id' => array(
@@ -463,6 +372,10 @@ $config['engagement_references'] = array(
     'e_i_id' => array(
         'name' => 'Message',
         'object_code' => 'i',
+    ),
+    'e_w_id' => array(
+        'name' => 'Subscription',
+        'object_code' => 'w',
     ),
 );
 

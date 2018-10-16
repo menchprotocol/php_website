@@ -1792,7 +1792,7 @@ class Db_model extends CI_Model {
 
         if(count($cs)>0){
 
-            if(intval($cs[0]['c_is_output'])){
+            if(intval($cs[0]['c_require_url_to_complete']) || intval($cs[0]['c_require_notes_to_complete'])){
                 $immediate_children['c1__tree_outputs'] += 1;
             } else {
                 $immediate_children['c1__tree_inputs'] += 1;
@@ -1987,7 +1987,6 @@ class Db_model extends CI_Model {
                 $new_item['c_id'] = intval($item['c_id']);
                 $new_item['c_outcome'] = $item['c_outcome'];
                 $new_item['c_is_any'] = intval($item['c_is_any']);
-                $new_item['c_is_output'] = intval($item['c_is_output']);
                 $new_item['c_keywords'] = ( strlen($item['c_trigger_statements'])>0 ? join(' ',json_decode($item['c_trigger_statements'])) : '' );
 
                 $new_item['c__tree_hours'] = number_format($item['c__tree_hours'],3);

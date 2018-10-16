@@ -190,7 +190,6 @@ class Intents extends CI_Controller
                 'c_inbound_u_id' => $udata['u_id'],
                 'c_outcome' => trim($_POST['c_outcome']),
                 'c_time_estimate' => $default_new_hours,
-                'c_is_output' => 1, //Default
                 'c__tree_outputs' => 1, //Default
                 'c__tree_inputs' => 0,
                 'c__tree_hours' => $default_new_hours,
@@ -447,7 +446,22 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Time Estimate',
             ));
-        } elseif(!isset($_POST['c_is_any']) || !isset($_POST['c_is_output']) || !isset($_POST['c_require_url_to_complete']) || !isset($_POST['c_require_notes_to_complete'])){
+        } elseif(intval($_POST['c_time_estimate'])<0 || intval($_POST['c_time_estimate'])>5){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Time estimate must be between 0-300 minutes',
+            ));
+        } elseif(!isset($_POST['c_cost_estimate'])){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Cost Estimate',
+            ));
+        } elseif(intval($_POST['c_cost_estimate'])<0 || intval($_POST['c_cost_estimate'])>300){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Cost estimate must be $0-5000 USD',
+            ));
+        } elseif(!isset($_POST['c_is_any']) || !isset($_POST['c_require_url_to_complete']) || !isset($_POST['c_require_notes_to_complete'])){
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Completion Settings',
@@ -459,17 +473,15 @@ class Intents extends CI_Controller
             ));
         }
 
-
         //Update array:
         $c_update = array(
             'c_outcome' => trim($_POST['c_outcome']),
             'c_require_url_to_complete' => intval($_POST['c_require_url_to_complete']),
             'c_require_notes_to_complete' => intval($_POST['c_require_notes_to_complete']),
-
             //These are also in the recursive adjustment array as they affect cache data like c__tree_hours
-            'c_time_estimate' => doubleval($_POST['c_time_estimate']),
+            'c_cost_estimate' => doubleval($_POST['c_cost_estimate']),
+            'c_time_estimate' => $_POST['c_time_estimate'],
             'c_is_any' => intval($_POST['c_is_any']),
-            'c_is_output' => intval($_POST['c_is_output']),
         );
 
 
@@ -497,9 +509,9 @@ class Intents extends CI_Controller
 
                     $recursive_query['c__tree_hours'] = number_format((doubleval($_POST[$key]) - doubleval($cs[0][$key])),3);
 
-                } elseif($key=='c_is_output'){
+                } elseif($key=='c_require_url_to_complete' || $key=='c_require_notes_to_complete'){
 
-                    if(intval($_POST['c_is_output'])){
+                    if(intval($_POST['c_require_url_to_complete']) || intval($_POST['c_require_notes_to_complete'])){
                         //Changed to output:
                         $recursive_query['c__tree_inputs'] = -1;
                         $recursive_query['c__tree_outputs'] = 1;
