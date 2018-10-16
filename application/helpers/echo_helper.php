@@ -294,7 +294,7 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
 
 
     //Does this have a entity reference?
-    if($i['i_outbound_u_id']>0){
+    if(isset($i['i_outbound_u_id']) && $i['i_outbound_u_id']>0){
 
         //This message has a referenced entity
         //See if that entity has a URL:
@@ -380,7 +380,7 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
 
 
     //Does this have an intent reference?
-    if($i['i_inbound_c_id']>0){
+    if(isset($i['i_inbound_c_id']) && $i['i_inbound_c_id']>0){
         //This message has a referenced entity
         //See if that entity has a URL:
         $cs = $CI->Db_model->c_fetch(array(
