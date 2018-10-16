@@ -174,7 +174,6 @@ class Comm_model extends CI_Model {
 
         //Is this fp_id/fp_psid already registered?
         $fetch_users = $this->Db_model->u_fetch(array(
-            'u_cache__fp_id' => $fp['fp_id'],
             'u_cache__fp_psid' => $fp_psid,
         ));
 
@@ -355,7 +354,6 @@ class Comm_model extends CI_Model {
                     'u_language'       => ( $u['u_language']=='en' && !($u['u_language']==$locale[0]) ? $locale[0] : $u['u_language'] ),
                     'u_country_code'   => $locale[1],
                     'u_full_name'      => $fb_profile['first_name'].' '.$fb_profile['last_name'], //Update their original names with FB
-                    'u_cache__fp_id'   => $fp['fp_id'],
                     'u_cache__fp_psid' => $fp_psid,
                 ));
 
@@ -446,7 +444,6 @@ class Comm_model extends CI_Model {
                     'u_gender'		 	=> strtolower(substr($fb_profile['gender'],0,1)),
                     'u_language' 		=> $locale[0],
                     'u_country_code' 	=> $locale[1],
-                    'u_cache__fp_id'    => $fp['fp_id'],
                     'u_cache__fp_psid'  => $fp_psid,
                 ));
 
@@ -506,7 +503,7 @@ class Comm_model extends CI_Model {
                 continue;
             }
 
-            //TODO Implement simple caching to remember $dispatch_fp_id & $dispatch_fp_psid && $u IF some details remain the same
+            //TODO Implement simple caching to remember $dispatch_fp_psid && $u IF some details remain the same
             if(1){
 
                 //Fetch user communication preferences:
@@ -521,7 +518,6 @@ class Comm_model extends CI_Model {
                         'u_id' => $message['e_outbound_u_id'],
                     ));
                 }
-
 
                 if(count($users)<1){
 
@@ -538,18 +534,15 @@ class Comm_model extends CI_Model {
                 } else {
 
                     //Determine communication method:
-                    $dispatch_fp_id = 0;
                     $dispatch_fp_psid = 0;
                     $u = array();
 
                     if(!$force_email && isset($users[0]['ru_fp_id']) && isset($users[0]['ru_fp_psid']) && $users[0]['ru_fp_id']>0 && $users[0]['ru_fp_psid']>0){
                         //We fetched an enrollment with an active Messenger connection:
-                        $dispatch_fp_id = $users[0]['ru_fp_id'];
                         $dispatch_fp_psid = $users[0]['ru_fp_psid'];
                         $u = $users[0];
-                    } elseif(!$force_email && $users[0]['u_cache__fp_id']>0 && $users[0]['u_cache__fp_psid']>0){
+                    } elseif(!$force_email && $users[0]['u_cache__fp_psid']>0){
                         //We fetched an enrollment with an active Messenger connection:
-                        $dispatch_fp_id = $users[0]['u_cache__fp_id'];
                         $dispatch_fp_psid = $users[0]['u_cache__fp_psid'];
                         $u = $users[0];
                     } elseif(strlen($users[0]['u_email'])>0 && filter_var($users[0]['u_email'], FILTER_VALIDATE_EMAIL)){
@@ -574,7 +567,9 @@ class Comm_model extends CI_Model {
 
 
             //Send using email or Messenger?
-            if(!$force_email && $dispatch_fp_id && $dispatch_fp_psid){
+            if(!$force_email && $dispatch_fp_psid){
+
+                $w_notification_types = echo_status('w_notification_type');
 
                 //Prepare Payload:
                 $payload = array(
@@ -583,7 +578,7 @@ class Comm_model extends CI_Model {
                     ),
                     'message' => echo_i($message, $u['u_full_name'],true),
                     'messaging_type' => 'NON_PROMOTIONAL_SUBSCRIPTION', //https://developers.facebook.com/docs/messenger-platform/send-messages#messaging_types
-                    'notification_type' => $u['u_fb_notification'],
+                    // TODO fetch from w_notification_type & translate 'notification_type' => $w_notification_types[$w['w_notification_type']]['s_fb_key'],
                 );
 
                 //Messenger:

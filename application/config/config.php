@@ -188,6 +188,26 @@ $config['object_statuses'] = array(
         ),
     ),
 
+    'w_notification_type' => array(
+        1 => array(
+            's_name'  => 'Regular',
+            's_fb_key'  => 'REGULAR',
+            's_desc'  => 'Triggers sound & vibration',
+            's_icon' => 'fas fa-bell',
+        ),
+        2 => array(
+            's_name'  => 'Silent Push',
+            's_fb_key'  => 'SILENT_PUSH',
+            's_desc'  => 'Triggers on-screen notification only',
+            's_icon' => 'fal fa-bell',
+        ),
+        3 => array(
+            's_name'  => 'No Push',
+            's_fb_key'  => 'NO_PUSH',
+            's_desc'  => 'Does not trigger any notification',
+            's_icon' => 'fas fa-bell-slash',
+        ),
+    ),
 
 
 

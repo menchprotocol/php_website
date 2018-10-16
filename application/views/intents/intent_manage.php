@@ -865,8 +865,7 @@ if(isset($orphan_cs)){
 
 
             <div style="margin-top:20px;">
-                <div class="title"><h4><i class="fas fa-box-check"></i> Completion Resources <span id="hb_609" class="help_button" intent-id="609"></span></h4></div>
-                <div class="help_body maxout" id="content_609"></div>
+                <div class="title"><h4><i class="fas fa-box-check"></i> Completion Resources</h4></div>
 
                 <div class="form-group label-floating is-empty" style="max-width:150px;">
                     <div class="input-group border">
@@ -884,7 +883,6 @@ if(isset($orphan_cs)){
                         <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;">USD</span>
                     </div>
                 </div>
-                <div id="child-costs"></div>
             </div>
 
 
