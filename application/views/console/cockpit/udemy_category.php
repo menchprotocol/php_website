@@ -31,9 +31,9 @@ foreach($il_category as $i=>$ilo){
         echo '<td style="">---</td>';
         echo '<td style="">---</td>';
         echo '<td style=" width:120px; text-align:right;">';
-            foreach($links as $link_id=>$link_icon){
-                if(strlen($ilo[$link_id])>0){
-                    echo '<a href="'.$ilo[$link_id].'" target="_blank">'.$link_icon.'</a> ';
+            foreach($links as $lid=>$link_icon){
+                if(strlen($ilo[$lid])>0){
+                    echo '<a href="'.$ilo[$lid].'" target="_blank">'.$link_icon.'</a> ';
                 }
             }
             echo '<a href="https://www.google.ca/search?q='.urlencode($ilo['il_first_name'].' '.$ilo['il_last_name']).'" target="_blank"><i class="fab fa-google"></i></a>';

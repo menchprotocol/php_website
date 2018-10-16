@@ -160,7 +160,37 @@ $config['object_statuses'] = array(
             's_icon' => 'fas fa-tint',
         ),
     ),
-    'w_status' => array(
+
+
+    'k_status' => array(
+        -2 => array(
+            's_name'  => 'Revision Needed',
+            's_desc'  => 'Mench moderator has reviewed submission and recommends additional work to better accomplish intent outcome',
+            's_icon' => 'fas fa-exclamation-square',
+        ),
+        -1 => array(
+            's_name'  => 'Skipped',
+            's_desc'  => 'Student skipped intent',
+            's_icon' => 'fal fa-minus-square',
+        ),
+        0 => array(
+            's_name'  => 'Pending',
+            's_desc'  => 'Intent pending completion by student',
+            's_icon' => 'fal fa-square',
+        ),
+        1 => array(
+            's_name'  => 'Completed',
+            's_desc'  => 'Student completed an intent',
+            's_icon' => 'fal fa-check-square',
+        ),
+        2 => array(
+            's_name'  => 'Verified',
+            's_desc'  => 'Completed intent has been verified by a Mench moderator',
+            's_icon' => 'fas fa-check-square',
+        ),
+    ),
+
+     'w_status' => array(
         -2 => array(
             's_name'  => 'Cancelled',
             's_desc'  => 'Student cancelled their paid subscription',

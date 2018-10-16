@@ -21,7 +21,8 @@ class Front extends CI_Controller {
     function index($c_id=0){
         //Load home page:
         $data = array(
-            'title' => 'Land a Fabulous Programming Job',
+            //'title' => 'Land a Fabulous Programming Job',
+            'title' => 'We\'re Cooking Something New ✨',
             'c_id' => $c_id,
         );
         $this->load->view('front/shared/f_header' , $data);
