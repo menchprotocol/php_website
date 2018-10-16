@@ -565,12 +565,15 @@ if(isset($orphan_cs)){
             c_id:parseInt($('#modifybox').attr('intent-id')),
             level:parseInt($('#modifybox').attr('level')),
             c_outcome:$('.c_outcome_input').val(),
-            c_time_estimate:parseFloat(parseInt($('#c_time_estimate').val())/60).toFixed(3),
-            c_cost_estimate:parseFloat($('#c_cost_estimate').val()).toFixed(2),
+            c_time_estimate:parseFloat(parseInt($('#c_time_estimate').val())/60),
+            c_cost_estimate:parseFloat($('#c_cost_estimate').val()),
             c_require_url_to_complete:( document.getElementById('c_require_url_to_complete').checked ? 1 : 0),
             c_require_notes_to_complete:( document.getElementById('c_require_notes_to_complete').checked ? 1 : 0),
             c_is_any:parseInt($('input[name=c_is_any]:checked').val()),
         };
+
+        console.log(modify_data);
+
 
         //Show spinner:
         $('.save_intent_changes').html('<span><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
