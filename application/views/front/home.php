@@ -150,7 +150,7 @@
         <p class="home_line_2 center">Finding a job you love is about your skills, preferences and ability to craft a story to stand out from the crowd. With Mench personal assistant you'll get curated insights from industry experts to land your next awesome programming job.</p>
 
         <div style="padding:20px 0;">
-            <?php echo_support_chat(); ?>
+            <?php echo_support_chat(6623); ?>
         </div>
 
     </div>

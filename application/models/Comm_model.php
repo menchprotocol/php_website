@@ -107,25 +107,6 @@ class Comm_model extends CI_Model {
         }
     }
 
-    function fb_activation_url($u_id,$ref_only=false){
-
-        if($u_id<1){
-            return false;
-        }
-
-        //All good, return the activation URL:
-        $bot_activation_salt = $this->config->item('bot_activation_salt');
-        $ref_key = 'msgact_'.$u_id.'_'.substr(md5($u_id.$bot_activation_salt),0,8);
-
-        if($ref_only){
-            return $ref_key;
-        } else {
-            $fb_settings = $this->config->item('fb_settings');
-            return 'https://m.me/'.$fb_settings['page_id'].'?ref='.$ref_key;
-        }
-    }
-
-
 
     function fb_identify_activate($fp_psid, $fb_ref=null){
 
@@ -146,267 +127,140 @@ class Comm_model extends CI_Model {
 
 
         //Do we have a referral key? This would make life easier:
-        $ref_u_id = 0;
+        $ref_c = array();
         if($fb_ref){
             //We have a ref variable, make sure its valid:
-            if(substr_count($fb_ref,'msgact_')==1){
-                //Activate specific user
-                $parts = explode('_',$fb_ref);
-                $bot_activation_salt = $this->config->item('bot_activation_salt');
-                if(isset($parts[2]) && $parts[2]==substr(md5($parts[1].$bot_activation_salt),0,8)){
-                    $ref_u_id = intval($parts[1]); //This is the matches user id
+            if(substr_count($fb_ref,'w_c_id_')==1){
+                //Validate this intent:
+                $fetch_cs = $this->Db_model->c_fetch(array(
+                    'c_id' => intval(one_two_explode('w_c_id_','',$fb_ref)),
+                ));
+
+                //Any issues?
+                if(count($fetch_cs)<1){
+                    //Ooops we could not find that C:
+
+                } elseif($fetch_cs[0]['c_status']<1){
+                    //Ooops C is no longer active:
+
+                } else {
+                    //All good:
+                    $ref_c = $fetch_cs[0];
                 }
             }
         }
-
 
 
         //Try finding user references... Is this psid already registered?
         $fetch_users = $this->Db_model->u_fetch(array(
             'u_cache__fp_psid' => $fp_psid,
-        ));
-        //Assign user if found:
-        $u = ( count($fetch_users)>0 ? $fetch_users[0] : array() );
+        ), array('u__subscriptions'));
 
 
-        if(count($u)>0){
+        if(count($fetch_users)>0){
 
-            //Returning student located
+            //Is this user asking to be subscribed to an intent?
+            if(count($ref_c)>0){
 
-            //Yes, make sure that there is no referral variable or if there is, its the same as this one:
-            if($ref_u_id && !($u['u_id']==$ref_u_id)){
+                //Check if it exists in their current subscriptions:
+                $is_duplicate = false;
+                foreach($fetch_users[0]['u__subscriptions'] as $w){
+                    if($w['w_c_id']==$ref_c['c_id']){
+                        $is_duplicate = true;
+                        break;
+                    }
+                }
 
-                //See what type of account is this:
-                if(strlen($u['u_email'])<1){
+                if($is_duplicate){
 
-                    //Remove this entity to remove them:
-                    $this->Db_model->u_update( $u['u_id'] , array(
-                        'u_status'   => -1, //Deleted
-                        'u_cache__fp_psid' => null, //Remove from this user...
+                    //Let the user know:
+                    $this->Comm_model->send_message(array(
+                        array_merge($json_data['i'], array(
+                            'e_inbound_u_id' => 0,
+                            'e_outbound_u_id' => $matching_enrollments[0]['u_id'],
+                            'i_outbound_c_id' => $json_data['i']['i_outbound_c_id'],
+                        )),
                     ));
-
-                    //Reset user as if we did not find this:
-                    $u = array();
-
-                    //Would continue...
 
                 } else {
-
-                    //Ooops, this is a legitimate user which we cannot override
-
-                    //Send notification Messages:
-                    $notify_user = $this->Comm_model->foundation_message(array(
-                        'e_outbound_u_id' => $u['u_id'],
-                        'e_outbound_c_id' => 923,
-                        'depth' => 0,
+                    //Confirm the subscription:
+                    $this->Comm_model->send_message(array(
+                        array(
+                            'e_inbound_u_id' => 0, //Initiated by PA
+                            'e_outbound_u_id' => $fetch_users[0]['u_id'],
+                            'e_outbound_c_id' => $ref_c['c_id'],
+                            'i_message' => 'Do you want to '.$ref_c['c_output'].'?',
+                        ),
                     ));
-
-                    //Log engagement:
-                    $this->Db_model->e_create(array(
-                        'e_inbound_u_id' => $u['u_id'],
-                        'e_outbound_u_id' => $ref_u_id,
-                        'e_json' => $notify_user,
-                        'e_text_value' => 'fb_identify_activate() Failed to activate user because Messenger account is already associated with another user.',
-                        'e_inbound_c_id' => 8, //Platform error
-                    ));
-
-                    //Return user Object:
-                    return $u;
-
                 }
-
-            } else {
-                //Return user Object:
-                return $u;
             }
 
-        } else {
+            //Returning user located:
+            return $fetch_users[0];
 
-            //User not found in the database
-
-            //lets see if we have a ref key?
-
-            if($ref_u_id){
-
-                //So now we should have $ref_u_id set
-                //Fetch this account and see whatssup:
-                $matching_users = $this->Db_model->u_fetch(array(
-                    'u_id' => $ref_u_id,
-                ));
-                if(count($matching_users)<1){
-
-                    //Invalid user ID, should not happen...
-                    $this->Db_model->e_create(array(
-                        'e_inbound_u_id' => $ref_u_id,
-                        'e_text_value' => 'fb_identify_activate() had valid referral key that did not exist in the datavase',
-                        'e_inbound_c_id' => 8, //Platform Error
-                    ));
-
-                    return false;
-                }
-
-
-
-                //Set user object:
-                $u = $matching_users[0];
-
-
-                //We are ready to activate!
-                /* *************************************
-                 * Messenger Activation
-                 * *************************************
-                 */
-
-                //Fetch their profile from Facebook to update
-                $graph_fetch = $this->Comm_model->fb_graph('GET', '/'.$fp_psid, array());
-
-
-                if(!$graph_fetch['status']){
-
-                    //This error has already been logged inside $this->Comm_model->fb_graph()
-                    //We cannot create this user:
-                    return false;
-
-                } elseif(!isset($graph_fetch['e_json']['result']['locale'])){
-
-                    //This error has not been logged, and needs more attention:
-                    $this->Db_model->e_create(array(
-                        'e_inbound_u_id' => $u['u_id'],
-                        'e_json' => array(
-                            'fp_psid' => $fp_psid,
-                            'u' => $u,
-                            'graph_fetch' => $graph_fetch,
-                        ),
-                        'e_text_value' => 'fb_identify_activate() failed to fetch user profile data',
-                        'e_inbound_c_id' => 8, //Platform error
-                    ));
-
-                    return false;
-
-                }
-
-                //We're cool!
-                $fb_profile = $graph_fetch['e_json']['result'];
-
-                //Split locale into language and country
-                $locale = explode('_',$fb_profile['locale'],2);
-
-                //Save picture locally:
-                $this->Db_model->e_create(array(
-                    'e_inbound_u_id' => $u['u_id'],
-                    'e_text_value' => $fb_profile['profile_pic'], //Image to be saved
-                    'e_status' => 0, //Pending upload
-                    'e_inbound_c_id' => 7001, //Cover Photo Save
-                ));
-
-                //Do an Update for selected fields as linking:
-                $this->Db_model->u_update( $u['u_id'] , array(
-                    'u_timezone'       => $fb_profile['timezone'],
-                    'u_gender'         => strtolower(substr($fb_profile['gender'],0,1)),
-                    'u_language'       => ( $u['u_language']=='en' && !($u['u_language']==$locale[0]) ? $locale[0] : $u['u_language'] ),
-                    'u_country_code'   => $locale[1],
-                    'u_full_name'      => $fb_profile['first_name'].' '.$fb_profile['last_name'], //Update their original names with FB
-                    'u_cache__fp_psid' => $fp_psid,
-                ));
-
-                //Log Account Update Engagement:
-                $this->Db_model->e_create(array(
-                    'e_inbound_u_id' => $u['u_id'],
-                    'e_outbound_u_id' => $u['u_id'],
-                    'e_json' => array(
-                        'before' => $u,
-                        'after' => $fb_profile,
-                    ),
-                    'e_inbound_c_id' => 12, //Account Updated
-                ));
-
-
-
-                //Send activation Message:
-                $activation_msg = $this->Comm_model->foundation_message(array(
-                    'e_outbound_u_id' => $u['u_id'],
-                    'e_outbound_c_id' => 926, //Student activation, to be removed?
-                    'depth' => 0,
-                ));
-
-                //Log Activation Engagement
-                $this->Db_model->e_create(array(
-                    'e_inbound_u_id' => $u['u_id'],
-                    'e_json' => array(
-                        'fb_profile' => $fb_profile,
-                        'activation_msg' => $activation_msg,
-                    ),
-                    'e_inbound_c_id' => 31, //Messenger Activated
-                ));
-
-                //Return User Object:
-                return $u;
-
-            } else {
-
-                //We do not have a referral code, so its harder to authenticate and map the user.
-                //It's also likely that they are new via Messenger, never visited the Mench website
-                //This is validating to see if a sender is registered or not:
-
-                //This is a new user that needs to be registered!
-                //Call facebook messenger API and get user profile
-                $graph_fetch = $this->Comm_model->fb_graph('GET', '/'.$fp_psid, array());
-
-                if(!$graph_fetch['status'] || !isset($graph_fetch['e_json']['result']['first_name']) || strlen($graph_fetch['e_json']['result']['first_name'])<1){
-
-                    $this->Db_model->e_create(array(
-                        'e_text_value' => 'fb_identify_activate() failed to fetch user profile from Facebook Graph',
-                        'e_json' => array(
-                            'fp_psid' => $fp_psid,
-                            'fb_ref' => $fb_ref,
-                            'graph_fetch' => $graph_fetch,
-                        ),
-                        'e_inbound_c_id' => 8, //Platform Error
-                    ));
-
-                    //We cannot create this user:
-                    return false;
-                }
-
-                //We're cool!
-                $fb_profile = $graph_fetch['e_json']['result'];
-
-                //Split locale into language and country
-                $locale = explode('_',$fb_profile['locale'],2);
-
-                //Create user
-                $u = $this->Db_model->u_create(array(
-                    'u_full_name' 		=> $fb_profile['first_name'].' '.$fb_profile['last_name'],
-                    'u_timezone' 		=> $fb_profile['timezone'],
-                    'u_gender'		 	=> strtolower(substr($fb_profile['gender'],0,1)),
-                    'u_language' 		=> $locale[0],
-                    'u_country_code' 	=> $locale[1],
-                    'u_cache__fp_psid'  => $fp_psid,
-                ));
-
-                //Update Algolia:
-                $this->Db_model->algolia_sync('u',$u['u_id']);
-
-                //Save picture locally:
-                $this->Db_model->e_create(array(
-                    'e_inbound_u_id' => $u['u_id'],
-                    'e_text_value' => $fb_profile['profile_pic'], //Image to be saved
-                    'e_status' => 0, //Pending upload
-                    'e_inbound_c_id' => 7001, //Cover Photo Save
-                ));
-
-                //New Student:
-                $this->Comm_model->foundation_message(array(
-                    'e_outbound_u_id' => $u['u_id'],
-                    'e_outbound_c_id' => 921,
-                    'depth' => 0,
-                ));
-
-                //Return the newly created user Object:
-                return $u;
-
-            }
         }
+
+
+        //We do not have a referral code, so its harder to authenticate and map the user.
+        //It's also likely that they are new via Messenger, never visited the Mench website
+        //This is validating to see if a sender is registered or not:
+
+        //This is a new user that needs to be registered!
+        //Call facebook messenger API and get user profile
+        $graph_fetch = $this->Comm_model->fb_graph('GET', '/'.$fp_psid, array());
+
+        if(!$graph_fetch['status'] || !isset($graph_fetch['e_json']['result']['first_name']) || strlen($graph_fetch['e_json']['result']['first_name'])<1){
+
+            $this->Db_model->e_create(array(
+                'e_text_value' => 'fb_identify_activate() failed to fetch user profile from Facebook Graph',
+                'e_json' => array(
+                    'fp_psid' => $fp_psid,
+                    'fb_ref' => $fb_ref,
+                    'graph_fetch' => $graph_fetch,
+                ),
+                'e_inbound_c_id' => 8, //Platform Error
+            ));
+
+            //We cannot create this user:
+            return false;
+        }
+
+        //We're cool!
+        $fb_profile = $graph_fetch['e_json']['result'];
+
+        //Split locale into language and country
+        $locale = explode('_',$fb_profile['locale'],2);
+
+        //Create user
+        $u = $this->Db_model->u_create(array(
+            'u_full_name' 		=> $fb_profile['first_name'].' '.$fb_profile['last_name'],
+            'u_timezone' 		=> $fb_profile['timezone'],
+            'u_gender'		 	=> strtolower(substr($fb_profile['gender'],0,1)),
+            'u_language' 		=> $locale[0],
+            'u_country_code' 	=> $locale[1],
+            'u_cache__fp_psid'  => $fp_psid,
+        ));
+
+        //Update Algolia:
+        $this->Db_model->algolia_sync('u',$u['u_id']);
+
+        //Save picture locally:
+        $this->Db_model->e_create(array(
+            'e_inbound_u_id' => $u['u_id'],
+            'e_text_value' => $fb_profile['profile_pic'], //Image to be saved
+            'e_status' => 0, //Pending upload
+            'e_inbound_c_id' => 7001, //Cover Photo Save
+        ));
+
+        //New Student:
+        $this->Comm_model->foundation_message(array(
+            'e_outbound_u_id' => $u['u_id'],
+            'e_outbound_c_id' => 921,
+            'depth' => 0,
+        ));
+
+        //Return the newly created user Object:
+        return $u;
     }
 
 

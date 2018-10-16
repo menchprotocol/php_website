@@ -152,7 +152,7 @@ $config['object_statuses'] = array(
         3 => array(
             's_name'  => 'On-Complete',
             's_desc'  => 'Messages sent when students complete this item. Re-iterate key insights to help students retain learnings',
-            's_icon' => 'fas fa-check-square',
+            's_icon' => 'fas fa-calendar-check',
         ),
         2 => array(
             's_name'  => 'Drip',
@@ -191,24 +191,14 @@ $config['object_statuses'] = array(
     ),
 
      'w_status' => array(
-        -2 => array(
+        -1 => array(
             's_name'  => 'Cancelled',
             's_desc'  => 'Student cancelled their paid subscription',
             's_icon' => 'fas fa-times-hexagon',
         ),
-        -1 => array(
-            's_name'  => 'Trial Expired',
-            's_desc'  => 'Student was inactive for too long and their subscription expired',
-            's_icon' => 'fas fa-times-circle',
-        ),
-        0 => array(
-            's_name'  => 'Trial Subscription',
-            's_desc'  => 'Student subscribed to an intent',
-            's_icon' => 'fas fa-play-circle',
-        ),
         1 => array(
-            's_name'  => 'Active Subscription',
-            's_desc'  => 'Student has an active paid subscription to an intent',
+            's_name'  => 'Subscribed',
+            's_desc'  => 'Student has an active subscription to an intent',
             's_icon' => 'fas fa-badge',
         ),
         5 => array(

@@ -129,7 +129,7 @@ function toggleview(object_key){
 
 
                 <div class="border" style="background-color: #FFF; padding: 6px 0 2px 6px;">
-                    <?php echo_support_chat(); ?>
+                    <?php echo_support_chat($c['c_id']); ?>
                 </div>
             </div>
 

@@ -19,7 +19,17 @@ class Bot extends CI_Controller {
         }
     }
 
-
+    function ping($u_id){
+        //Confirm the subscription:
+        $this->Comm_model->send_message(array(
+            array(
+                'e_inbound_u_id' => 0, //Initiated by PA
+                'e_outbound_u_id' => $u_id,
+                'e_outbound_c_id' => 6623,
+                'i_message' => 'Do you want to Get Hired as a Developer?',
+            ),
+        ));
+    }
 
     function update_all($fp_id){
 

@@ -123,6 +123,14 @@ class Db_model extends CI_Model {
                 ));
             }
 
+            if(in_array('u__subscriptions',$join_objects)){
+                //Fetch the messages for this entity:
+                $res[$key]['u__subscriptions'] = $this->Db_model->w_fetch(array(
+                    'w_outbound_u_id' => $val['u_id'],
+                    'w_status' => 1, //Active subscriptions
+                ));
+            }
+
 
             //Fetch the messages for this entity:
             $res[$key]['u__inbounds'] = array();
@@ -661,14 +669,7 @@ class Db_model extends CI_Model {
 
             $enrollments_updated = 1;
 
-            //Inform the Student:
-            $this->Comm_model->foundation_message(array(
-                'e_inbound_u_id' => 0,
-                'e_outbound_u_id' => $enrollments[0]['u_id'],
-                'e_outbound_c_id' => 2698,
-                'depth' => 0,
-            ), true);
-
+            //Inform the Student?
 
             //Log Engagement
             $this->Db_model->e_create(array(

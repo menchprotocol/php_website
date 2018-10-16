@@ -97,17 +97,6 @@ if(count($enrollments)>0 && is_array($enrollments)){
                 echo '<div class="checkbox"><label><input type="checkbox" disabled '.( $enrollment['ru_status']>=4 ? 'checked' : '' ).'> '.( $enrollment['ru_status']>=4 || !$enrollment_active ? '<span style="text-decoration: line-through;">' : '<a href="/'.$bs[0]['b_url_key'].'/enroll?u_email='.$enrollment['u_email'].'">' ).'Step '.$step.': Choose Support Package'.( $enrollment['ru_status']>=4 || !$enrollment_active ? '</span>' : ' <i class="fas fa-chevron-right"></i></a>' ).'</label></div>';
         $step++;
 
-
-                //Messenger activation for Active Bootcamps only
-                if($bs[0]['b_status']>=2){
-                    $bot_title = 'Step '.$step.': Activate Facebook Messenger';
-                    if($enrollment['u_cache__fp_psid']>0){
-                        echo '<div class="checkbox"><label style="text-decoration: line-through;"><input type="checkbox" disabled checked> '.$bot_title.'</label></div>';
-                    } else {
-                        echo '<div class="checkbox"><label><input type="checkbox" disabled> <a href="'.$this->Comm_model->fb_activation_url($enrollment['u_id']).'"> '.$bot_title.' <i class="fas fa-chevron-right"></i></a></label></div>';
-                    }
-                }
-
             echo '</div>';
 
 

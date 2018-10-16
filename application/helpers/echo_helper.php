@@ -425,16 +425,6 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
     }
 
 
-    if(substr_count($i['i_message'],'/activateurl')>0 && isset($i['e_outbound_u_id'])) {
-        $button_url = $CI->Comm_model->fb_activation_url($i['e_outbound_u_id']);
-        if($button_url) {
-            //append their My Account Button/URL:
-            $button_title = '🤖 Activate Personal Assistant';
-            $command = '/activateurl';
-        }
-    }
-
-
 
 
     if($command || $button_url){
@@ -816,7 +806,7 @@ function echo_estimated_time($c_time_estimate,$show_icon=1,$micro=false,$c_id=0,
 
 }
 
-function echo_support_chat(){
+function echo_support_chat($c_id){
     $CI =& get_instance();
     $fb_settings = $CI->config->item('fb_settings');
     ?>
@@ -824,11 +814,10 @@ function echo_support_chat(){
         <div class="fb-send-to-messenger"
              messenger_app_id="<?= $fb_settings['app_id'] ?>"
              page_id="<?= $fb_settings['page_id'] ?>"
-             data-ref="helloworld"
+             data-ref="w_c_id_<?= $c_id ?>"
              color="blue"
              cta_text="GET_STARTED_IN_MESSENGER"
              size="xlarge">Loading...</div>
-
         <div style="font-size:0.9em; padding:10px 0 0 3px; margin-bottom: 0;">
             <p style="line-height:130%; font-size:1em !important;"><b>7-Day free trial, then $7 per week</b>.<br /><span style="display: inline-block;">No credit</span> card needed. Cancel anytime.</p>
         </div>
