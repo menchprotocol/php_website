@@ -127,7 +127,7 @@ class Comm_model extends CI_Model {
 
 
 
-    function fb_identify_activate($fp, $fp_psid, $fb_ref=null){
+    function fb_identify_activate($fp_psid, $fb_ref=null){
 
 	    /*
 	     *
@@ -135,14 +135,7 @@ class Comm_model extends CI_Model {
 	     *
 	     */
 
-        if(!isset($fp['fp_id'])){
-            //Ooops, this is not good:
-            $this->Db_model->e_create(array(
-                'e_text_value' => 'fb_identify_activate() got called with invalid $fp variable with $fp_psid=['.$fp_psid.']',
-                'e_inbound_c_id' => 8, //Platform Error
-            ));
-            return false;
-        } elseif($fp_psid<1){
+        if($fp_psid<1){
             //Ooops, this is not good:
             $this->Db_model->e_create(array(
                 'e_text_value' => 'fb_identify_activate() got called without $fp_psid variable',
@@ -168,45 +161,15 @@ class Comm_model extends CI_Model {
 
 
 
-
-        //Try finding User/Bootcamp/Class ID:
-        $u = array();
-
-        //Is this fp_id/fp_psid already registered?
+        //Try finding user references... Is this psid already registered?
         $fetch_users = $this->Db_model->u_fetch(array(
             'u_cache__fp_psid' => $fp_psid,
         ));
-
-        if(count($fetch_users)>0){
-
-            //Assign user:
-            $u = $fetch_users[0];
-
-            //Attempt to search based on u_id:
-            $ru_filter = array(
-                'ru.ru_outbound_u_id' => $u['u_id'],
-            );
-
-        } else {
-
-            //Attempt to search based on ru_fp_id/psid:
-            $ru_filter = array(
-                'ru_fp_id' => $fp['fp_id'],
-                'ru_fp_psid' => $fp_psid,
-            );
-
-        }
-
-        //See if we can find it in the enrollment table:
-        $enrollments = $this->Db_model->ru_fetch($ru_filter);
-        $active_enrollment = detect_active_enrollment($enrollments); //We'd need to see which enrollment to load now
-        if($active_enrollment){
-            //Override with more complete $u object:
-            $u = $active_enrollment;
-        }
+        //Assign user if found:
+        $u = ( count($fetch_users)>0 ? $fetch_users[0] : array() );
 
 
-        if(count($u)>0 && $u['u_id']>0){
+        if(count($u)>0){
 
             //Returning student located
 
@@ -287,16 +250,6 @@ class Comm_model extends CI_Model {
                 //Set user object:
                 $u = $matching_users[0];
 
-                //See if we can find it in the enrollment table:
-                $enrollments = $this->Db_model->ru_fetch(array(
-                    'ru.ru_outbound_u_id' => $u['u_id'],
-                ));
-                $active_enrollment = detect_active_enrollment($enrollments); //We'd need to see which enrollment to load now
-                if($active_enrollment){
-                    //Override with more complete $u object:
-                    $u = $active_enrollment;
-                }
-
 
                 //We are ready to activate!
                 /* *************************************
@@ -346,7 +299,6 @@ class Comm_model extends CI_Model {
                     'e_inbound_c_id' => 7001, //Cover Photo Save
                 ));
 
-
                 //Do an Update for selected fields as linking:
                 $this->Db_model->u_update( $u['u_id'] , array(
                     'u_timezone'       => $fb_profile['timezone'],
@@ -356,7 +308,6 @@ class Comm_model extends CI_Model {
                     'u_full_name'      => $fb_profile['first_name'].' '.$fb_profile['last_name'], //Update their original names with FB
                     'u_cache__fp_psid' => $fp_psid,
                 ));
-
 
                 //Log Account Update Engagement:
                 $this->Db_model->e_create(array(
@@ -369,18 +320,6 @@ class Comm_model extends CI_Model {
                     'e_inbound_c_id' => 12, //Account Updated
                 ));
 
-
-                //Go through all their enrollments and update their Messenger PSID:
-                $enrollments = $this->Db_model->ru_fetch(array(
-                    'ru_outbound_u_id' => $u['u_id'],
-                    'ru_fp_id' => $fp['fp_id'], //Already set to this
-                    'ru_fp_psid' => null, //Not activated yet...
-                ));
-                foreach($enrollments as $enrollment){
-                    $this->Db_model->ru_update($enrollment['ru_id'], array(
-                        'ru_fp_psid' => $fp_psid,
-                    ));
-                }
 
 
                 //Send activation Message:
@@ -399,8 +338,6 @@ class Comm_model extends CI_Model {
                     ),
                     'e_inbound_c_id' => 31, //Messenger Activated
                 ));
-
-
 
                 //Return User Object:
                 return $u;
@@ -458,7 +395,7 @@ class Comm_model extends CI_Model {
                     'e_inbound_c_id' => 7001, //Cover Photo Save
                 ));
 
-                //New Student Without Subscription:
+                //New Student:
                 $this->Comm_model->foundation_message(array(
                     'e_outbound_u_id' => $u['u_id'],
                     'e_outbound_c_id' => 921,
@@ -469,10 +406,10 @@ class Comm_model extends CI_Model {
                 return $u;
 
             }
-
         }
-
     }
+
+
 
     function send_message($messages,$force_email=false,$intent_title_subject=false){
 

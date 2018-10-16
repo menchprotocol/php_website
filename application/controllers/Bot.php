@@ -82,6 +82,7 @@ class Bot extends CI_Controller {
         //Facebook Webhook Authentication:
         $challenge = ( isset($_GET['hub_challenge']) ? $_GET['hub_challenge'] : null );
         $verify_token = ( isset($_GET['hub_verify_token']) ? $_GET['hub_verify_token'] : null );
+        $fb_settings = $this->config->item('fb_settings');
 
         if ($verify_token == '722bb4e2bac428aa697cc97a605b2c5a') {
             echo $challenge;
@@ -89,6 +90,7 @@ class Bot extends CI_Controller {
 
         //Fetch input data:
         $json_data = json_decode(file_get_contents('php://input'), true);
+
         //This is for local testing only:
         //$json_data = objectToArray(json_decode('{"object":"page","entry":[{"id":"381488558920384","time":1505007977668,"messaging":[{"sender":{"id":"1443101719058431"},"recipient":{"id":"381488558920384"},"timestamp":1505007977521,"message":{"mid":"mid.$cAAFa9hmVoehkmryMMVeaXdGIY9x5","seq":19898,"text":"Yes"}}]}]}'));
 
@@ -114,16 +116,8 @@ class Bot extends CI_Controller {
         //Loop through entries:
         foreach($json_data['entry'] as $entry){
 
-            //Validate the originating page to ensure its a valid Page connected to Mench
-            if(isset($entry['id'])){
-                $fp_pages = $this->Db_model->fp_fetch(array(
-                    'fp_fb_id' => $entry['id'],
-                    'fp_status' => 1, //Must be connected to Mench
-                ), array('fs'));
-            }
-
             //check the page ID:
-            if(!isset($fp_pages) || count($fp_pages)<1){
+            if(!isset($entry['id']) || !($entry['id']==$fb_settings['page_id'])){
                 $this->Db_model->e_create(array(
                     'e_text_value' => 'facebook_webhook() received message from unknown Page ID ['.$entry['id'].']',
                     'e_json' => $json_data,
@@ -144,10 +138,7 @@ class Bot extends CI_Controller {
 
                 if(isset($im['read'])){
 
-                    //Add delay to prevent concurrent request issues
-                    sleep(2);
-
-                    $id_user = $this->Comm_model->fb_identify_activate($fp_pages[0],$im['sender']['id']);
+                    $id_user = $this->Comm_model->fb_identify_activate($im['sender']['id']);
 
                     //This callback will occur when a message a page has sent has been read by the user.
                     $this->Db_model->e_create(array(
@@ -158,10 +149,7 @@ class Bot extends CI_Controller {
 
                 } elseif(isset($im['delivery'])) {
 
-                    //Add delay to prevent concurrent request issues
-                    sleep(2);
-
-                    $id_user = $this->Comm_model->fb_identify_activate($fp_pages[0],$im['sender']['id']);
+                    $id_user = $this->Comm_model->fb_identify_activate($im['sender']['id']);
 
                     //This callback will occur when a message a page has sent has been delivered.
                     $this->Db_model->e_create(array(
@@ -202,13 +190,7 @@ class Bot extends CI_Controller {
 
                     //Did we have a ref from Messenger?
                     $ref = ( $referral_array && isset($referral_array['ref']) && strlen($referral_array['ref'])>0 ? $referral_array['ref'] : null );
-                    $id_user = $this->Comm_model->fb_identify_activate($fp_pages[0],$im['sender']['id'],$ref);
-
-                    $eng_data = array(
-                        'e_inbound_c_id' => (isset($im['referral']) ? 4 : 3), //Messenger Referral/Postback
-                        'e_json' => $json_data,
-                        'e_inbound_u_id' => ( isset($id_user['u_id']) ? $id_user['u_id'] : 0 ),
-                    );
+                    $id_user = $this->Comm_model->fb_identify_activate($im['sender']['id'],$ref);
 
                     /*
                     if($ref){
@@ -231,29 +213,16 @@ class Bot extends CI_Controller {
                     }
                     */
 
-                    if($eng_data['e_inbound_u_id']){
-                        //See if this student has any enrollments:
-                        $enrollments = $this->Db_model->ru_fetch(array(
-                            'r.r_status >='	   => 1, //Open for enrollment
-                            'r.r_status <='	   => 2, //Running
-                            'ru.ru_status >='  => 0, //Initiated or higher as long as Bootcamp is running!
-                            'ru.ru_outbound_u_id'	   => $eng_data['e_inbound_u_id'],
-                        ));
-                        if(count($enrollments)>0){
-                            //Append Bootcamp & Class ID to engagement:
-                            //TODO...
-                        }
-                    }
-
                     //Log primary engagement:
-                    $this->Db_model->e_create($eng_data);
+                    $this->Db_model->e_create(array(
+                        'e_inbound_c_id' => (isset($im['referral']) ? 4 : 3), //Messenger Referral/Postback
+                        'e_json' => $json_data,
+                        'e_inbound_u_id' => ( isset($id_user['u_id']) ? $id_user['u_id'] : 0 ),
+                    ));
 
                 } elseif(isset($im['optin'])) {
 
-                    //Add delay to prevent concurrent request issues
-                    sleep(2);
-
-                    $id_user = $this->Comm_model->fb_identify_activate($fp_pages[0],$im['sender']['id']);
+                    $id_user = $this->Comm_model->fb_identify_activate($im['sender']['id']);
 
                     //Note: Never seen this happen yet!
                     //Log engagement:
@@ -266,7 +235,15 @@ class Bot extends CI_Controller {
                 } elseif(isset($im['message_request']) && $im['message_request']=='accept') {
 
                     //This is when we message them and they accept to chat because they had deleted Messenger or something...
-                    //TODO maybe later log an engagement
+
+                    $id_user = $this->Comm_model->fb_identify_activate($im['sender']['id']);
+
+                    $this->Db_model->e_create(array(
+                        'e_json' => $json_data,
+                        'e_inbound_c_id' => 9, //Messenger Optin
+                        'e_inbound_u_id' => ( isset($id_user['u_id']) ? $id_user['u_id'] : 0 ),
+                        'e_text_value' => 'Messenger user accept to chat because they had deleted/unsubscribed before. Welcome them back personally.',
+                    ));
 
                 } elseif(isset($im['message'])) {
 
@@ -289,8 +266,7 @@ class Bot extends CI_Controller {
                     //Set variables:
                     $sent_from_us = ( isset($im['message']['is_echo']) ); //Indicates the message sent from the page itself
                     $user_id = ( $sent_from_us ? $im['recipient']['id'] : $im['sender']['id'] );
-                    $id_user = $this->Comm_model->fb_identify_activate($fp_pages[0],$user_id);
-
+                    $id_user = $this->Comm_model->fb_identify_activate($user_id);
                     $quick_reply_payload = ( isset($im['message']['quick_reply']['payload']) && strlen($im['message']['quick_reply']['payload'])>0 ? $im['message']['quick_reply']['payload'] : null );
 
                     $eng_data = array(

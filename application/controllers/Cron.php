@@ -312,8 +312,7 @@ class Cron extends CI_Controller {
 
         $e_pending = $this->Db_model->e_fetch(array(
             'e_status' => 0, //Pending file upload to S3
-            'e_inbound_c_id >=' => 6, //Messages only
-            'e_inbound_c_id <=' => 7, //Messages only
+            'e_inbound_c_id IN (6,7)' => null, //Sent/Received messages
         ), $max_per_batch, array('ej'));
 
 
