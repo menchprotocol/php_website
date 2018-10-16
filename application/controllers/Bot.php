@@ -27,6 +27,18 @@ class Bot extends CI_Controller {
                 'e_outbound_u_id' => $u_id,
                 'e_outbound_c_id' => 6623,
                 'i_message' => 'Do you want to Get Hired as a Developer?',
+                'quick_replies' => array(
+                    array(
+                        'content_type' => 'text',
+                        'title' => 'Yes, Subscribe',
+                        'payload' => 'DO_SUBSCRIBE_1',
+                    ),
+                    array(
+                        'content_type' => 'text',
+                        'title' => 'No',
+                        'payload' => 'DO_SUBSCRIBE_0',
+                    ),
+                ),
             ),
         )));
     }

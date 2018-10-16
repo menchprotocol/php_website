@@ -469,11 +469,18 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
         //Regular without any special commands in it!
         //Now return the template:
         if($fb_format){
+
             //Messenger array:
             $fb_message = array(
                 'text' => $i['i_message'],
                 'metadata' => 'system_logged', //Prevents from duplicate logging via the echo webhook
             );
+
+            //Should we append a Quick reply to this message?
+            if(isset($i['quick_replies']) && count($i['quick_replies'])>0){
+                $fb_message['quick_replies'] = $i['quick_replies'];
+            }
+
         } else {
             //HTML format:
             $ui .= '<div class="msg">'.$i['i_message'].'</div>';
