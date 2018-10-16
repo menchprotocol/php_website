@@ -228,7 +228,7 @@ $b_team_member = array();
             u_id:<?= $entity['u_id'] ?>,
             new_u_id: new_u_id,
             new_u_input: new_u_input,
-            is_inbound:is_inbound,
+            is_inbound:( is_inbound ? 1 : 0 ),
             can_edit:<?= ( $can_edit ? 1 : 0 ) ?>,
             secondary_parent_u_id:secondary_parent_u_id,
 

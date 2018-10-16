@@ -22,6 +22,7 @@ class Front extends CI_Controller {
         //Load home page:
         $data = array(
             //'title' => 'Land a Fabulous Programming Job',
+            //'title' => 'Educational Messages for the Conversational Age',
             'title' => 'We\'re Cooking Something New ✨',
             'c_id' => $c_id,
         );
