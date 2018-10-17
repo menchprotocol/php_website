@@ -54,8 +54,8 @@ function toggleview(object_key){
 
                 echo '<div id="c_'.$key.'">';
                 echo '<h4><a href="javascript:toggleview(\'c_'.$key.'\');" style="font-weight: normal;"><i class="pointer fas fa-caret-right"></i> '.$c1['c_outcome'];
-                if($c1['c__tree_hours']>0){
-                    echo ' &nbsp;<i class="fas fa-clock"></i> <span style="border-bottom:1px dotted #999;" data-toggle="tooltip" data-placement="top" title="Estimated to take '.echo_hours($c1['c__tree_hours'],0).' to complete">'.echo_hours($c1['c__tree_hours'],1).'</span> &nbsp; ';
+                if($c1['c__tree_max_hours']>0){
+                    echo ' &nbsp;<i class="fas fa-clock"></i> <span style="border-bottom:1px dotted #999;" data-toggle="tooltip" data-placement="top" title="Estimated to take '.echo_hours($c1['c__tree_max_hours'],0).' to complete">'.echo_hours($c1['c__tree_max_hours'],1).'</span> &nbsp; ';
                 }
                 echo '</a></h4>';
 
@@ -124,7 +124,7 @@ function toggleview(object_key){
                     <?php } ?>
 
                     <div class="dash-label"><span class="icon-left"><i class="fas fa-comment"></i></span> <?= $c['c__tree_messages'] ?> Curated Messages</div>
-                    <div class="dash-label"><span class="icon-left"><i class="fas fa-clock"></i></span> <?= echo_hours(($c['c__tree_hours']),false) ?> To Complete</div>
+                    <div class="dash-label"><span class="icon-left"><i class="fas fa-clock"></i></span> <?= echo_hours(($c['c__tree_max_hours']),false) ?> To Complete</div>
                 </div>
 
 

@@ -73,7 +73,7 @@ $uri_segment_2 = $this->uri->segment(2);
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-main navbar-right">
 
-                        <li <?= ( $uri_segment_1=='intents' ? 'class="intent-active"' : '' ) ?>><a href="/intents"><i class="fas fa-hashtag"></i> Intents</a></li>
+                        <li <?= ( $uri_segment_1=='intents' ? 'class="intent-active"' : '' ) ?>><a href="/intents/7240"><i class="fas fa-hashtag"></i> Intents</a></li>
                         <li <?= ( $uri_segment_1=='entities' ? 'class="entity-active"' : '' ) ?>><a href="/entities"><i class="fas fa-at"></i> Entities</a></li>
 
 

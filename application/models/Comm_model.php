@@ -107,8 +107,7 @@ class Comm_model extends CI_Model {
         }
     }
 
-
-    function fb_identify_activate($fp_psid, $fb_ref=null){
+    function fb_identify_activate($fp_psid, $fb_ref=null, $fb_message=null){
 
 	    /*
 	     *
@@ -125,142 +124,244 @@ class Comm_model extends CI_Model {
             return false;
         }
 
-
-        //Do we have a referral key? This would make life easier:
-        $ref_c = array();
-        if($fb_ref){
-            //We have a ref variable, make sure its valid:
-            if(substr_count($fb_ref,'w_c_id_')==1){
-                //Validate this intent:
-                $fetch_cs = $this->Db_model->c_fetch(array(
-                    'c_id' => intval(one_two_explode('w_c_id_','',$fb_ref)),
-                ));
-
-                //Any issues?
-                if(count($fetch_cs)<1){
-                    //Ooops we could not find that C:
-
-                } elseif($fetch_cs[0]['c_status']<1){
-                    //Ooops C is no longer active:
-
-                } else {
-                    //All good:
-                    $ref_c = $fetch_cs[0];
-                }
-            }
-        }
-
-
         //Try finding user references... Is this psid already registered?
-        $fetch_users = $this->Db_model->u_fetch(array(
+        $fb_message = strtolower($fb_message);
+        $fetch_us = $this->Db_model->u_fetch(array(
             'u_cache__fp_psid' => $fp_psid,
         ), array('u__subscriptions'));
 
 
-        if(count($fetch_users)>0){
+        if(count($fetch_us)>0){
 
-            //Is this user asking to be subscribed to an intent?
-            if(count($ref_c)>0){
+            //Assign user object:
+            $u = $fetch_us[0];
 
-                //Check if it exists in their current subscriptions:
-                $is_duplicate = false;
-                foreach($fetch_users[0]['u__subscriptions'] as $w){
-                    if($w['w_c_id']==$ref_c['c_id']){
-                        $is_duplicate = true;
-                        break;
-                    }
+        } else {
+
+            //New user via Messenger
+
+            //This is a new user that needs to be registered!
+            //Call facebook messenger API and get user profile
+            $graph_fetch = $this->Comm_model->fb_graph('GET', '/'.$fp_psid, array());
+
+            if(!$graph_fetch['status'] || !isset($graph_fetch['e_json']['result']['first_name']) || strlen($graph_fetch['e_json']['result']['first_name'])<1){
+
+                $this->Db_model->e_create(array(
+                    'e_text_value' => 'fb_identify_activate() failed to fetch user profile from Facebook Graph',
+                    'e_json' => array(
+                        'fp_psid' => $fp_psid,
+                        'fb_ref' => $fb_ref,
+                        'graph_fetch' => $graph_fetch,
+                    ),
+                    'e_inbound_c_id' => 8, //Platform Error
+                ));
+
+                //We cannot create this user:
+                return false;
+            }
+
+            //We're cool!
+            $fb_profile = $graph_fetch['e_json']['result'];
+
+            //Split locale into language and country
+            $locale = explode('_',$fb_profile['locale'],2);
+
+            //Create user
+            $u = $this->Db_model->u_create(array(
+                'u_full_name' 		=> $fb_profile['first_name'].' '.$fb_profile['last_name'],
+                'u_timezone' 		=> $fb_profile['timezone'],
+                'u_gender'		 	=> strtolower(substr($fb_profile['gender'],0,1)),
+                'u_language' 		=> $locale[0],
+                'u_country_code' 	=> $locale[1],
+                'u_cache__fp_psid'  => $fp_psid,
+            ));
+
+            //Update Algolia:
+            $this->Db_model->algolia_sync('u',$u['u_id']);
+
+            //Save picture locally:
+            $this->Db_model->e_create(array(
+                'e_inbound_u_id' => $u['u_id'],
+                'e_text_value' => $fb_profile['profile_pic'], //Image to be saved
+                'e_status' => 0, //Pending upload
+                'e_inbound_c_id' => 7001, //Cover Photo Save
+            ));
+
+            //Log engagement
+            $this->Comm_model->foundation_message(array(
+                'e_outbound_u_id' => $u['u_id'],
+                'e_outbound_c_id' => 921, //New Student Without Admission
+                'depth' => 0,
+            ));
+
+        }
+
+
+        //By now we have a user
+        if($fb_ref || $fb_message) {
+
+            //We have a ref variable, make sure its valid:
+            if (substr_count($fb_message, 'lets ')>0 || substr_count($fb_message, 'let\'s ')>0) {
+
+                if(substr_count($fb_message, 'lets ')>0){
+                    $c_target_outcome = intval(one_two_explode('lets ', ' ', $fb_message));
+                } else {
+                    $c_target_outcome = intval(one_two_explode('let\'s ', ' ', $fb_message));
                 }
 
-                if($is_duplicate){
+                //TODO search for this via NLP API
+                //Do replacement search for now:
+                $cs = $this->Db_model->c_fetch(array(
+                    'LOWER(c.c_outcome) LIKE \'%'.$c_target_outcome.'%\'' => null,
+                    'c.c_status >' => 0,
+                ));
 
-                    //Let the user know:
+                if(count($cs)>0){
+
+                    //Amazing, move on to next step:
+                    $fb_ref = 'SUBSCRIBE__10_'.$cs['c_id'];
+
+                } else {
+
+                    //Create new intent in the suggestion bucket:
+                    $this->Db_model->c_new(7431, $c_target_outcome, 0, 2, $u['u_id']);
+
+                    //Also log engagement for points purposes later down the road...
+                    $this->Db_model->e_create(array(
+                        'e_text_value' => 'User suggested ['.$c_target_outcome.'] to be added as an entity.',
+                        'e_inbound_u_id' => $u['u_id'],
+                        'e_inbound_c_id' => 7431, //Suggest new intent
+                    ));
+
+                    //Respond to user:
                     $this->Comm_model->send_message(array(
-                        array_merge($json_data['i'], array(
-                            'e_inbound_u_id' => 0,
-                            'e_outbound_u_id' => $matching_enrollments[0]['u_id'],
-                            'i_outbound_c_id' => $json_data['i']['i_outbound_c_id'],
-                        )),
+                        array(
+                            'e_inbound_u_id' => 2738, //Initiated by PA
+                            'e_outbound_u_id' => $fetch_us[0]['u_id'],
+                            'i_message' => 'I am currently not trained to ['.$c_target_outcome.'], but I have logged this for my human team mates to look into. I will let you know as soon as I am trained on this. Is there anything else I can help you with right now?',
+                        ),
+                    ));
+
+                }
+
+
+
+            }
+
+            if (substr_count($fb_ref, 'SUBSCRIBE__10_')==1) {
+
+                //Validate this intent:
+                $fetch_cs = $this->Db_model->c_fetch(array(
+                    'c_id' => intval(one_two_explode('SUBSCRIBE__10_', '', $fb_ref)),
+                ));
+
+                //Any issues?
+                if(count($fetch_cs)<1) {
+                    //Ooops we could not find that C:
+
+                } elseif($fetch_cs[0]['c_status']<1) {
+
+                    //Ooops C is no longer active:
+
+
+                } else {
+
+                    //All good...
+                    //Check if it exists in their current subscriptions:
+                    $duplicate_w = array();
+                    if(isset($fetch_us[0]['u__subscriptions'])){
+                        foreach($fetch_us[0]['u__subscriptions'] as $w){
+                            if($w['w_c_id']==$fetch_cs[0]['c_id']){
+                                $duplicate_w = $w;
+                                break;
+                            }
+                        }
+                    }
+
+                    if(count($duplicate_w)>0){
+
+                        //Let the user know that this is a duplicate:
+                        $this->Comm_model->send_message(array(
+                            array(
+                                'e_inbound_u_id' => 2738, //Initiated by PA
+                                'e_outbound_u_id' => $fetch_us[0]['u_id'],
+                                'e_outbound_c_id' => $fetch_cs[0]['c_id'],
+                                'i_message' => 'You have already subscribed to '.$fetch_cs[0]['c_output'].'. We have been working on it together since '.decho_time($duplicate_w['w_timestamp'], 2).' /open_actionplan',
+                            ),
+                        ));
+
+                        //Log engagement:
+                        $this->Db_model->e_create(array(
+                            'e_text_value' => 'User attempted to subscribe to an intent that they were already subscribed to. Maybe reach out and ask them why?',
+                            'e_inbound_u_id' => 2738, //Initiated by PA
+                            'e_outbound_u_id' => $fetch_us[0]['u_id'],
+                            'e_outbound_c_id' => $fetch_cs[0]['c_id'],
+                            'e_inbound_c_id' => 9, //Attention Needed
+                        ));
+
+                    } else {
+
+                        //
+                        $this->Comm_model->send_message(array(
+                            array(
+                                'e_inbound_u_id' => 2738, //Initiated by PA
+                                'e_outbound_u_id' => $fetch_us[0]['u_id'],
+                                'e_outbound_c_id' => $fetch_cs[0]['c_id'],
+                                'i_message' => 'Do you want to '.$fetch_cs[0]['c_output'].'?',
+                                'quick_replies' => array(
+                                    array(
+                                        'content_type' => 'text',
+                                        'title' => 'Yes, Learn More',
+                                        'payload' => 'SUBSCRIBE__20_'.$fetch_cs[0]['c_id'],
+                                    ),
+                                    array(
+                                        'content_type' => 'text',
+                                        'title' => 'No',
+                                        'payload' => 'SUBSCRIBE__20_0',
+                                    ),
+                                ),
+                            ),
+                        ));
+
+                    }
+
+                }
+                
+            }
+
+            if (substr_count($fb_ref, 'SUBSCRIBE__20_') == 1) {
+
+                //Initiating an intent Subscription:
+                $w_c_id = intval(one_two_explode('SUBSCRIBE__20_', '', $fb_ref));
+                if ($w_c_id>0) {
+                    
+                    //They confirmed the subscription, go ahead with this:
+                    $w = $this->Db_model->w_create(array(
+                        'w_c_id' => $w_c_id,
+                        'outbound_u_id' => intval(one_two_explode('SUBSCRIBE__20_', '', $fb_ref)),
                     ));
 
                 } else {
-                    //Confirm the subscription:
+                    //They rejected, just let them know:
                     $this->Comm_model->send_message(array(
                         array(
-                            'e_inbound_u_id' => 0, //Initiated by PA
-                            'e_outbound_u_id' => $fetch_users[0]['u_id'],
-                            'e_outbound_c_id' => $ref_c['c_id'],
-                            'i_message' => 'Do you want to '.$ref_c['c_output'].'?',
+                            'e_inbound_u_id' => 2738, //Initiated by PA
+                            'e_outbound_u_id' => $fetch_us[0]['u_id'],
+                            'e_outbound_c_id' => $w_c_id,
+                            'i_message' => 'Roger that 👍 Let me know if you have any specific intention by saying a sentence that starts with "Lets". So for example you say "Lets builda great resume" or "Lets get hired as a back-end developer" and I will get you to your goal',
+                            'button_url' => 'https://mench.com/',
+                            'button_title' => 'Browse Intentions ↗️',
                         ),
                     ));
                 }
+
             }
-
-            //Returning user located:
-            return $fetch_users[0];
-
         }
 
 
-        //We do not have a referral code, so its harder to authenticate and map the user.
-        //It's also likely that they are new via Messenger, never visited the Mench website
-        //This is validating to see if a sender is registered or not:
-
-        //This is a new user that needs to be registered!
-        //Call facebook messenger API and get user profile
-        $graph_fetch = $this->Comm_model->fb_graph('GET', '/'.$fp_psid, array());
-
-        if(!$graph_fetch['status'] || !isset($graph_fetch['e_json']['result']['first_name']) || strlen($graph_fetch['e_json']['result']['first_name'])<1){
-
-            $this->Db_model->e_create(array(
-                'e_text_value' => 'fb_identify_activate() failed to fetch user profile from Facebook Graph',
-                'e_json' => array(
-                    'fp_psid' => $fp_psid,
-                    'fb_ref' => $fb_ref,
-                    'graph_fetch' => $graph_fetch,
-                ),
-                'e_inbound_c_id' => 8, //Platform Error
-            ));
-
-            //We cannot create this user:
-            return false;
-        }
-
-        //We're cool!
-        $fb_profile = $graph_fetch['e_json']['result'];
-
-        //Split locale into language and country
-        $locale = explode('_',$fb_profile['locale'],2);
-
-        //Create user
-        $u = $this->Db_model->u_create(array(
-            'u_full_name' 		=> $fb_profile['first_name'].' '.$fb_profile['last_name'],
-            'u_timezone' 		=> $fb_profile['timezone'],
-            'u_gender'		 	=> strtolower(substr($fb_profile['gender'],0,1)),
-            'u_language' 		=> $locale[0],
-            'u_country_code' 	=> $locale[1],
-            'u_cache__fp_psid'  => $fp_psid,
-        ));
-
-        //Update Algolia:
-        $this->Db_model->algolia_sync('u',$u['u_id']);
-
-        //Save picture locally:
-        $this->Db_model->e_create(array(
-            'e_inbound_u_id' => $u['u_id'],
-            'e_text_value' => $fb_profile['profile_pic'], //Image to be saved
-            'e_status' => 0, //Pending upload
-            'e_inbound_c_id' => 7001, //Cover Photo Save
-        ));
-
-        //New Student:
-        $this->Comm_model->foundation_message(array(
-            'e_outbound_u_id' => $u['u_id'],
-            'e_outbound_c_id' => 921,
-            'depth' => 0,
-        ));
-
-        //Return the newly created user Object:
+        //Return user Object:
         return $u;
+
     }
 
 

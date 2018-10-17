@@ -257,8 +257,8 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
     }
 
     $CI =& get_instance();
-    $button_url = null;
-    $button_title = null;
+    $button_url = ( isset($i['button_url']) ? $i['button_url'] : null );
+    $button_title = ( isset($i['button_title']) ? $i['button_title'] : null );
     $command = null;
     $is_intent = ( $CI->uri->segment(1)=='intents' );
     $is_entity = ( $CI->uri->segment(1)=='entities' );
@@ -409,9 +409,9 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
     }
 
 
-    if(substr_count($i['i_message'],'/intentlink')>0 && isset($i['i_outbound_c_id']) && $i['i_outbound_c_id']>0){
+    if(substr_count($i['i_message'],'/open_actionplan')>0 && isset($i['i_outbound_c_id']) && $i['i_outbound_c_id']>0){
         $button_title = 'Open in 🚩Action Plan';
-        $command = '/intentlink';
+        $command = '/open_actionplan';
         $button_url = 'https://mench.com/my/actionplan/'.$i['i_outbound_c_id'];
     }
 
@@ -821,7 +821,7 @@ function echo_support_chat($c_id){
         <div class="fb-send-to-messenger"
              messenger_app_id="<?= $fb_settings['app_id'] ?>"
              page_id="<?= $fb_settings['page_id'] ?>"
-             data-ref="w_c_id_<?= $c_id ?>"
+             data-ref="SUBSCRIBE__10_<?= $c_id ?>"
              color="blue"
              cta_text="GET_STARTED_IN_MESSENGER"
              size="xlarge">Loading...</div>
@@ -872,7 +872,7 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
 
     $ui .= '<a href="#messages-'.$c['c_id'].'" onclick="load_c_messages('.$c['c_id'].')" class="badge badge-primary" style="width:40px;"><span class="btn-counter" id="messages-counter-'.$c['c_id'].'">'.$c['c__this_messages'].'</span><i class="fas fa-comment-dots"></i></a>';
 
-    $ui .= '<a class="badge badge-primary" onclick="load_c_modify('.$c['c_id'].','.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).')" style="margin:-2px -8px 0 2px; width:40px;" href="#modify-'.$c['c_id'].'-'.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).'"><span class="btn-counter">'.echo_estimated_time($c['c__tree_hours'],0,1, $c['c_id'], $c['c_time_estimate']).'</span><i class="c_is_any_icon'.$c['c_id'].' '.( $c['c_is_any'] ? 'fas fa-code-merge' : 'fas fa-sitemap' ).'" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i></a> &nbsp;';
+    $ui .= '<a class="badge badge-primary" onclick="load_c_modify('.$c['c_id'].','.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).')" style="margin:-2px -8px 0 2px; width:40px;" href="#modify-'.$c['c_id'].'-'.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).'"><span class="btn-counter">'.echo_estimated_time($c['c__tree_max_hours'],0,1, $c['c_id'], $c['c_time_estimate']).'</span><i class="c_is_any_icon'.$c['c_id'].' '.( $c['c_is_any'] ? 'fas fa-code-merge' : 'fas fa-sitemap' ).'" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i></a> &nbsp;';
 
 
     $ui .= '&nbsp;<'.( $level>1 || $c['c__is_orphan'] ? 'a href="/intents/'.$c['c_id'].'" class="badge badge-primary"' :'span class="badge badge-primary grey"').' style="display:inline-block; margin-right:-1px; width:40px;"><span class="btn-counter outbound-counter-'.$c['c_id'].'">'.($c['c__tree_inputs']+$c['c__tree_outputs']-1).'</span><i class="'.( $is_inbound && $level<=2 ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></'.( $level>1 || $c['c__is_orphan'] ? 'a' :'span').'> ';

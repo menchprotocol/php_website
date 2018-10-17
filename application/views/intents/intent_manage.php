@@ -132,10 +132,10 @@ if(isset($orphan_cs)){
             displayKey: function(suggestion) { return "" },
             templates: {
                 suggestion: function(suggestion) {
-                    var minutes = Math.round(parseFloat(suggestion.c__tree_hours)*60);
-                    var hours = Math.round(parseFloat(suggestion.c__tree_hours));
+                    var minutes = Math.round(parseFloat(suggestion.c__tree_max_hours)*60);
+                    var hours = Math.round(parseFloat(suggestion.c__tree_max_hours));
                     var fancy_hours = ( minutes<60 ? minutes+'m' :  hours+'h' );
-                    return '<span class="suggest-prefix"><i class="fas fa-hashtag"></i></span> '+ suggestion._highlightResult.c_outcome.value + ( parseFloat(suggestion.c__tree_hours)>0 ? '<span class="search-info">'+( parseFloat(suggestion.c__count)>1 ? ' <i class="fas fa-sitemap"></i> ' + suggestion.c__count : '' ) + ' <i class="fas fa-clock"></i> '+ fancy_hours+'</span>' : '');
+                    return '<span class="suggest-prefix"><i class="fas fa-hashtag"></i></span> '+ suggestion._highlightResult.c_outcome.value + ( parseFloat(suggestion.c__tree_max_hours)>0 ? '<span class="search-info">'+( parseFloat(suggestion.c__count)>1 ? ' <i class="fas fa-sitemap"></i> ' + suggestion.c__count : '' ) + ' <i class="fas fa-clock"></i> '+ fancy_hours+'</span>' : '');
                 },
                 header: function(data) {
                     if(!data.isEmpty){
@@ -179,11 +179,11 @@ if(isset($orphan_cs)){
             displayKey: function(suggestion) { return "" },
             templates: {
                 suggestion: function(suggestion) {
-                    var minutes = Math.round(parseFloat(suggestion.c__tree_hours)*60);
-                    var hours = Math.round(parseFloat(suggestion.c__tree_hours));
+                    var minutes = Math.round(parseFloat(suggestion.c__tree_max_hours)*60);
+                    var hours = Math.round(parseFloat(suggestion.c__tree_max_hours));
                     var fancy_hours = ( minutes<60 ? minutes+'Min'+(minutes==1?'':'s') :  hours+'Hr'+(hours==1?'':'s') );
 
-                    return '<span class="suggest-prefix"><i class="fas fa-hashtag"></i></span> '+ suggestion._highlightResult.c_outcome.value + ( parseFloat(suggestion.c__tree_hours)>0 ? '<span class="search-info">'+( parseInt(suggestion.c__tree_inputs)+parseInt(suggestion.c__tree_outputs)>1 ? ' <i class="'+( parseInt(suggestion.c_is_any) ? 'fas fa-code-merge' : 'fas fa-sitemap' )+'"></i> ' + parseInt(suggestion.c__tree_inputs)+parseInt(suggestion.c__tree_outputs) : '' ) + ' <i class="fas fa-clock"></i> '+ fancy_hours+'</span>' : '');
+                    return '<span class="suggest-prefix"><i class="fas fa-hashtag"></i></span> '+ suggestion._highlightResult.c_outcome.value + ( parseFloat(suggestion.c__tree_max_hours)>0 ? '<span class="search-info">'+( parseInt(suggestion.c__tree_inputs)+parseInt(suggestion.c__tree_outputs)>1 ? ' <i class="'+( parseInt(suggestion.c_is_any) ? 'fas fa-code-merge' : 'fas fa-sitemap' )+'"></i> ' + parseInt(suggestion.c__tree_inputs)+parseInt(suggestion.c__tree_outputs) : '' ) + ' <i class="fas fa-clock"></i> '+ fancy_hours+'</span>' : '');
                 },
                 header: function(data) {
                     if(!data.isEmpty){
@@ -690,7 +690,7 @@ if(isset($orphan_cs)){
                 $('[data-toggle="tooltip"]').tooltip();
 
                 //Adjust time:
-                adjust_js_ui(data.c_id, next_level, data.c__tree_hours, data.adjusted_c_count, 0, 1);
+                adjust_js_ui(data.c_id, next_level, data.c__tree_max_hours, data.adjusted_c_count, 0, 1);
 
             } else {
                 //Show errors:

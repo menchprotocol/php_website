@@ -34,6 +34,284 @@ class Db_model extends CI_Model {
         return $q->result_array();
     }
 
+    function w_update($id,$update_columns){
+        //Update first
+        $this->db->where('w_id', $id);
+        $this->db->update('v5_subscriptions', $update_columns);
+        return $this->db->affected_rows();
+    }
+
+    function k_update($id,$update_columns){
+        //Update first
+        $this->db->where('k_id', $id);
+        $this->db->update('v5_subscription_intents', $update_columns);
+        return $this->db->affected_rows();
+    }
+
+    function k_create($insert_columns){
+
+        if(missing_required_db_fields($insert_columns,array('k_w_id','k_cr_id','k_time_estimate'))){
+            return false;
+        }
+
+        if(!isset($insert_columns['k_timestamp'])){
+            $insert_columns['k_timestamp'] = date("Y-m-d H:i:s");
+        }
+
+        //Lets now add:
+        $this->db->insert('v5_subscription_intents', $insert_columns);
+
+        //Fetch inserted id:
+        $insert_columns['k_id'] = $this->db->insert_id();
+
+        return $insert_columns;
+    }
+
+    function c_new($c_id, $c_outcome, $link_c_id, $next_level, $inbound_u_id){
+
+	    if(intval($c_id)<=0){
+            return array(
+                'status' => 0,
+                'message' => 'Invalid Intent ID',
+            );
+        } elseif(strlen($c_outcome)<=0){
+            return array(
+                'status' => 0,
+                'message' => 'Missing Intent Outcome',
+            );
+        }
+
+        $link_c_id = intval($link_c_id);
+
+        //Validate Original intent:
+        $inbound_intents = $this->Db_model->c_fetch(array(
+            'c.c_id' => intval($c_id),
+        ), 1);
+        if(count($inbound_intents)<=0){
+            return array(
+                'status' => 0,
+                'message' => 'Invalid Intent ID',
+            );
+        }
+
+        if(!$link_c_id){
+
+            //Set default new hours:
+            $default_new_hours = 0.05; //3 min default
+            $recursive_query = array(
+                'c__tree_outputs' => 1,
+                'c__tree_max_hours' => $default_new_hours,
+            );
+
+            //Create intent:
+            $new_c = $this->Db_model->c_create(array(
+                'c_inbound_u_id' => $inbound_u_id,
+                'c_outcome' => trim($c_outcome),
+                'c_time_estimate' => $default_new_hours,
+                'c__tree_outputs' => 1, //Default
+                'c__tree_inputs' => 0,
+                'c__tree_max_hours' => $default_new_hours,
+            ));
+
+            //Log Engagement for New Intent:
+            $this->Db_model->e_create(array(
+                'e_inbound_u_id' => $inbound_u_id,
+                'e_text_value' => 'Intent ['.$new_c['c_outcome'].'] created',
+                'e_json' => array(
+                    'input' => $_POST,
+                    'before' => null,
+                    'after' => $new_c,
+                ),
+                'e_inbound_c_id' => 20, //New Intent
+                'e_outbound_c_id' => $new_c['c_id'],
+            ));
+
+        } else {
+
+            $new_cs = $this->Db_model->c_fetch(array(
+                'c_id' => $link_c_id,
+                'c.c_status >' => 0,
+            ), ( 3 - $next_level ));
+            if(count($new_cs)<=0){
+                return array(
+                    'status' => 0,
+                    'message' => 'Invalid Linked Intent ID',
+                );
+            }
+            $new_c = $new_cs[0];
+
+
+            //Make sure none of the parents are the same:
+            if($new_c['c_id']==$c_id){
+                return array(
+                    'status' => 0,
+                    'message' => 'You cannot add "'.$new_c['c_outcome'].'" as its own child.',
+                );
+            } else {
+                //check for all parents:
+                $parent_tree = $this->Db_model->c_recursive_fetch($c_id);
+                if(in_array($new_c['c_id'],$parent_tree['c_flat'])){
+                    return array(
+                        'status' => 0,
+                        'message' => 'You cannot add "'.$new_c['c_outcome'].'" as its own grandchild.',
+                    );
+                }
+            }
+
+            //Make sure this is not a duplicate level 2 intent:
+            if($next_level==2){
+                foreach($inbound_intents[0]['c__child_intents'] as $current_c){
+                    if($current_c['c_id']==$link_c_id){
+                        //Ooops, this is already added in Level 2, cannot add again:
+                        return array(
+                            'status' => 0,
+                            'message' => '['.$new_c['c_outcome'].'] is already added as outbound intent.',
+                        );
+                    }
+                }
+            }
+
+            //Remove orphan status if that was the case before:
+            if(intval($new_c['c__is_orphan'])){
+                $this->Db_model->c_update( $new_c['c_id'] , array(
+                    'c__is_orphan' => 0,
+                ));
+            }
+
+            //Prepare recursive update:
+            $recursive_query = array(
+                'c__tree_outputs' => $new_c['c__tree_outputs'],
+                'c__tree_inputs' => $new_c['c__tree_inputs'],
+                'c__tree_max_hours' => number_format($new_c['c__tree_max_hours'],3),
+                'c__tree_messages' => $new_c['c__tree_messages'],
+            );
+        }
+
+
+        //Create Link:
+        $relation = $this->Db_model->cr_create(array(
+            'cr_inbound_u_id' => $inbound_u_id,
+            'cr_inbound_c_id'  => intval($c_id),
+            'cr_outbound_c_id' => $new_c['c_id'],
+            'cr_outbound_rank' => 1 + $this->Db_model->max_value('v5_intent_links','cr_outbound_rank', array(
+                    'cr_status >=' => 1,
+                    'c_status >' => 0,
+                    'cr_inbound_c_id' => intval($c_id),
+                )),
+        ));
+
+        //Update tree count from parent and above:
+        $updated_recursively = $this->Db_model->c_update_tree($c_id, $recursive_query);
+
+        //Log Engagement for new link:
+        $this->Db_model->e_create(array(
+            'e_inbound_u_id' => $inbound_u_id,
+            'e_text_value' => 'Linked intent ['.$new_c['c_outcome'].'] as outbound of intent ['.$inbound_intents[0]['c_outcome'].']',
+            'e_json' => array(
+                'input' => $_POST,
+                'before' => null,
+                'after' => $relation,
+                'recursive_query' => $recursive_query,
+                'updated_recursively' => $updated_recursively,
+            ),
+            'e_inbound_c_id' => 23, //New Intent Link
+            'e_cr_id' => $relation['cr_id'],
+        ));
+
+        $relations = $this->Db_model->cr_outbound_fetch(array(
+            'cr.cr_id' => $relation['cr_id'],
+        ));
+
+        //Return result:
+        return array(
+            'status' => 1,
+            'c_id' => $new_c['c_id'],
+            'c__tree_max_hours' => $new_c['c__tree_max_hours'],
+            'adjusted_c_count' => ( $new_c['c__tree_outputs'] + $new_c['c__tree_inputs'] ),
+            'html' => echo_c(array_merge($new_c,$relations[0]),$next_level,intval($c_id)),
+        );
+    }
+
+    function w_create($insert_columns){
+
+        if(missing_required_db_fields($insert_columns,array('outbound_u_id','w_c_id'))){
+            return false;
+        }
+
+        if(!isset($insert_columns['w_timestamp'])){
+            $insert_columns['w_timestamp'] = date("Y-m-d H:i:s");
+        }
+        if(!isset($insert_columns['w_status'])){
+            $insert_columns['w_status'] = 1;
+        }
+        if(!isset($insert_columns['w_inbound_u_id'])){
+            $insert_columns['w_inbound_u_id'] = 0; //No coach
+        }
+        if(!isset($insert_columns['w_start_time'])){
+            $insert_columns['w_start_time'] = null;
+        }
+        if(!isset($insert_columns['w_end_goal'])){
+            $insert_columns['w_end_goal'] = null;
+        }
+        if(!isset($insert_columns['w_weekly_commitment'])){
+            $insert_columns['w_weekly_commitment'] = null;
+        }
+        if(!isset($insert_columns['w_notification_type'])){
+            $insert_columns['w_notification_type'] = 1; //Regular
+        }
+
+        //Lets now add:
+        $this->db->insert('v5_subscriptions', $insert_columns);
+
+        //Fetch inserted id:
+        $insert_columns['w_id'] = $this->db->insert_id();
+
+        if($insert_columns['w_id']>0){
+
+            //Now let's create a cache of the Action Plan for this subscription:
+            $tree = $this->Db_model->c_recursive_fetch($insert_columns['w_c_id'], true, 0, 0, null, $insert_columns['w_id'] /* Triggers intent caching for this subscription */ );
+
+            if(count($tree['cr_flat'])>0){
+
+                $intent = end($tree['tree_top']);
+
+                //All good with the subscription intent caching, inform user:
+                $this->Comm_model->send_message(array(
+                    array(
+                        'e_inbound_u_id' => 2738, //Initiated by PA
+                        'e_outbound_u_id' => $insert_columns['outbound_u_id'],
+                        'e_outbound_c_id' => $insert_columns['w_c_id'],
+                        'i_message' => 'I have successfully subscribed you to ['.$intent['c_outcome'].']',
+                    ),
+                ));
+
+                //Update total hours:
+                $this->Comm_model->w_update( $insert_columns['w_id'], array(
+                    'w_time_estimate' => $tree['c1__tree_max_hours'],
+                ));
+
+            } else {
+
+                //This should not happen, inform user and log error:
+                $this->Comm_model->send_message(array(
+                    array(
+                        'e_inbound_u_id' => 2738, //Initiated by PA
+                        'e_outbound_u_id' => $insert_columns['outbound_u_id'],
+                        'e_outbound_c_id' => $insert_columns['w_c_id'],
+                        'i_message' => 'Subscription failed',
+                    ),
+                ));
+
+            }
+
+            return $insert_columns;
+
+        } else {
+            return false;
+        }
+    }
+
+
     function t_fetch($match_columns){
         //Fetch the target gems:
         $this->db->select('*');
@@ -149,9 +427,9 @@ class Db_model extends CI_Model {
         return $res;
 	}
 	
-	function ru_update($ru_id,$update_columns){
+	function ru_update($id,$update_columns){
 	    //Update first
-	    $this->db->where('ru_id', $ru_id);
+	    $this->db->where('ru_id', $id);
 	    $this->db->update('v5_class_students', $update_columns);
 	    return $this->db->affected_rows();
 	}
@@ -391,18 +669,18 @@ class Db_model extends CI_Model {
         }
 	}
 	
-	function u_update($user_id,$update_columns){
+	function u_update($id,$update_columns){
 	    //Update first
-	    $this->db->where('u_id', $user_id);
+	    $this->db->where('u_id', $id);
 	    $this->db->update('v5_entities', $update_columns);
 
 	    //Return new row:
 	    $users = $this->u_fetch(array(
-	        'u_id' => $user_id
+	        'u_id' => $id
 	    ));
 
 	    //Update Algolia:
-        $this->Db_model->algolia_sync('u',$user_id);
+        $this->Db_model->algolia_sync('u',$id);
 
 	    return $users[0];
 	}
@@ -492,8 +770,8 @@ class Db_model extends CI_Model {
 		return $insert_columns;
 	}
 	
-	function i_update($i_id,$update_columns){
-		$this->db->where('i_id', $i_id);
+	function i_update($id,$update_columns){
+		$this->db->where('i_id', $id);
 		$this->db->update('v5_messages', $update_columns);
 		return $this->db->affected_rows();
 	}
@@ -571,132 +849,8 @@ class Db_model extends CI_Model {
         return $q->result_array();
     }
 
-    function fp_update($fp_id,$update_columns){
-        $this->db->where('fp_id', $fp_id);
-        $this->db->update('v5_facebook_pages', $update_columns);
-        return $this->db->affected_rows();
-    }
 
-    function fs_update($fs_id,$update_columns){
-        $this->db->where('fs_id', $fs_id);
-        $this->db->update('v5_facebook_page_admins', $update_columns);
-        return $this->db->affected_rows();
-    }
 
-    function fp_create($insert_columns){
-
-        //Missing anything?
-        if(!isset($insert_columns['fp_fb_id'])){
-            return false;
-        } elseif(!isset($insert_columns['fp_name'])){
-            return false;
-        } elseif(!isset($insert_columns['fp_status'])){ //Need status to know whatssup
-            return false;
-        }
-
-        if(!isset($insert_columns['fp_timestamp'])){
-            $insert_columns['fp_timestamp'] = date("Y-m-d H:i:s");
-        }
-
-        //Lets now add:
-        $this->db->insert('v5_facebook_pages', $insert_columns);
-
-        //Fetch inserted id:
-        $insert_columns['fp_id'] = $this->db->insert_id();
-
-        if(!$insert_columns['fp_id']){
-            //Log this query Error
-            $this->Db_model->e_create(array(
-                'e_text_value' => 'Query Error fp_create() : '.$this->db->_error_message(),
-                'e_json' => $insert_columns,
-                'e_inbound_c_id' => 8, //Platform Error
-            ));
-            return false;
-        } else {
-            return $insert_columns;
-        }
-    }
-
-    function fs_create($insert_columns){
-
-        //Missing anything?
-        if(!isset($insert_columns['fs_access_token'])){
-            return false;
-        } elseif(!isset($insert_columns['fs_inbound_u_id'])){
-            return false;
-        } elseif(!isset($insert_columns['fs_fp_id'])){
-            return false;
-        }
-
-        if(!isset($insert_columns['fs_timestamp'])){
-            $insert_columns['fs_timestamp'] = date("Y-m-d H:i:s");
-        }
-
-        //Lets now add:
-        $this->db->insert('v5_facebook_page_admins', $insert_columns);
-
-        //Fetch inserted id:
-        $insert_columns['fs_id'] = $this->db->insert_id();
-
-        if(!$insert_columns['fs_id']){
-            //Log this query Error
-            $this->Db_model->e_create(array(
-                'e_text_value' => 'Query Error fs_create() : '.$this->db->_error_message(),
-                'e_json' => $insert_columns,
-                'e_inbound_c_id' => 8, //Platform Error
-            ));
-            return false;
-        } else {
-            return $insert_columns;
-        }
-    }
-
-	
-	/* ******************************
-	 * Classes
-	 ****************************** */
-
-	function ru_finalize($ru_id){
-
-	    //Students complete their registration in 2 ways: Enroll in a Free Bootcamp or Pay for Coaching
-        //This function finalizes the enrollment when either of these 2 situations happen
-
-        $enrollments = $this->Db_model->remix_enrollments(array(
-            'ru.ru_id'	=> $ru_id,
-        ));
-
-        if(count($enrollments)==1){
-
-            $enrollments_updated = 1;
-
-            //Inform the Student?
-
-            //Log Engagement
-            $this->Db_model->e_create(array(
-                'e_inbound_u_id' => $enrollments[0]['u_id'],
-                'e_text_value' => ($enrollments[0]['ru_upfront_pay']>0 ? 'Received $'.$enrollments[0]['ru_upfront_pay'].' USD Coaching Tuition via PayPal' : 'Student Enrolled to Mench Personal Assistant for Free' ),
-                'e_json' => $_POST,
-                'e_inbound_c_id' => 30,
-            ));
-
-            //Update student's payment status:
-            $this->Db_model->ru_update( $ru_id , array(
-                'ru_status' => 4,
-            ));
-
-            return $enrollments_updated;
-        }
-
-        //Log Error:
-        $this->Db_model->e_create(array(
-            'e_text_value' => 'ru_finalize() failed to update enrollment for ru_id=['.$ru_id.']',
-            'e_inbound_c_id' => 8,
-        ));
-
-        return 0;
-
-    }
-	
 	
 	
 	/* ******************************
@@ -863,8 +1017,8 @@ class Db_model extends CI_Model {
 	
 	
 	
-	function cr_update($cr_id,$update_columns,$column='cr_id'){
-		$this->db->where($column, $cr_id);
+	function cr_update($id,$update_columns,$column='cr_id'){
+		$this->db->where($column, $id);
 		$this->db->update('v5_intent_links', $update_columns);
 		return $this->db->affected_rows();
 	}
@@ -886,6 +1040,8 @@ class Db_model extends CI_Model {
 		$stats = $q->row_array();
 		return intval($stats['largest']);
 	}
+
+
 
     function cr_create($insert_columns){
 
@@ -937,16 +1093,16 @@ class Db_model extends CI_Model {
         return $insert_columns;
     }
 
-    function ur_update($ur_id,$update_columns){
+    function ur_update($id,$update_columns){
         //Update first
-        $this->db->where('ur_id', $ur_id);
+        $this->db->where('ur_id', $id);
         $this->db->update('v5_entity_links', $update_columns);
         return $this->db->affected_rows();
     }
 
-    function ur_delete($ur_id){
+    function ur_delete($id){
         //Update status:
-        $this->Db_model->ur_update($ur_id, array(
+        $this->Db_model->ur_update($id, array(
             'ur_status' => -1,
         ));
         return $this->db->affected_rows();
@@ -1300,12 +1456,12 @@ class Db_model extends CI_Model {
 
 
 
-	function c_update($c_id,$update_columns){
-	    $this->db->where('c_id', $c_id);
+	function c_update($id,$update_columns){
+	    $this->db->where('c_id', $id);
 	    $this->db->update('v5_intents', $update_columns);
 
         //Update Algolia:
-        $this->Db_model->algolia_sync('c',$c_id);
+        $this->Db_model->algolia_sync('c',$id);
 
 	    return $this->db->affected_rows();
 	}
@@ -1313,8 +1469,8 @@ class Db_model extends CI_Model {
 
 
 	
-	function e_update($e_id,$update_columns){
-	    $this->db->where('e_id', $e_id);
+	function e_update($id,$update_columns){
+	    $this->db->where('e_id', $id);
 	    $this->db->update('v5_engagements', $update_columns);
 	    return $this->db->affected_rows();
 	}
@@ -1408,8 +1564,8 @@ class Db_model extends CI_Model {
         return $res;
     }
 
-    function x_update($x_id,$update_columns){
-        $this->db->where('x_id', $x_id);
+    function x_update($id,$update_columns){
+        $this->db->where('x_id', $id);
         $this->db->update('v5_urls', $update_columns);
         return $this->db->affected_rows();
     }
@@ -1664,10 +1820,10 @@ class Db_model extends CI_Model {
 	}
 
 
-	function c_update_tree($c_id, $c_update_columns=array(), $fetech_outbound=0){
+	function c_update_tree($c_id, $c_update_columns=array(), $fetch_outbound=0){
 
 	    //Will fetch the recursive tree and update
-        $tree = $this->Db_model->c_recursive_fetch($c_id, $fetech_outbound);
+        $tree = $this->Db_model->c_recursive_fetch($c_id, $fetch_outbound);
 
         if(count($c_update_columns)==0 || count($tree['c_flat'])==0){
             return false;
@@ -1702,18 +1858,19 @@ class Db_model extends CI_Model {
         return $affected_rows;
     }
 
-	function c_recursive_fetch($c_id, $fetech_outbound=0, $db_update=0, $cr_id=0, $recursive_children=null){
+	function c_recursive_fetch($c_id, $fetch_outbound=0, $db_update=0, $cr_id=0, $recursive_children=null, $k_w_id=0){
 
 	    //Get core data:
         $immediate_children = array(
             'c1__tree_inputs' => 0,
             'c1__tree_outputs' => 0,
-            'c1__tree_hours' => 0,
+            'c1__tree_max_hours' => 0,
             'c1__this_messages' => 0,
             'c1__tree_messages' => 0,
             'db_updated' => 0,
             'db_queries' => array(),
             'c_flat' => array(),
+            'cr_flat' => array(),
             'tree_top' => array(),
         );
 
@@ -1722,7 +1879,7 @@ class Db_model extends CI_Model {
         }
 
         //A recursive function to fetch all Tree for a given intent, either upwards or downwards
-        if($fetech_outbound){
+        if($fetch_outbound){
             $child_cs = $this->Db_model->cr_outbound_fetch(array(
                 'cr.cr_inbound_c_id' => $c_id,
                 'cr.cr_status >=' => 0,
@@ -1747,7 +1904,7 @@ class Db_model extends CI_Model {
                 } else {
 
                     //Fetch children for this intent, if any:
-                    $granchildren = $this->Db_model->c_recursive_fetch($c['c_id'], $fetech_outbound, $db_update, $c['cr_id'], $immediate_children);
+                    $granchildren = $this->Db_model->c_recursive_fetch($c['c_id'], $fetch_outbound, $db_update, $c['cr_id'], $immediate_children, $k_w_id);
 
                     if(!$granchildren){
                         //There was an infinity break
@@ -1757,7 +1914,7 @@ class Db_model extends CI_Model {
                     //Addup children if any:
                     $immediate_children['c1__tree_inputs'] += $granchildren['c1__tree_inputs'];
                     $immediate_children['c1__tree_outputs'] += $granchildren['c1__tree_outputs'];
-                    $immediate_children['c1__tree_hours'] += $granchildren['c1__tree_hours'];
+                    $immediate_children['c1__tree_max_hours'] += $granchildren['c1__tree_max_hours'];
                     if($db_update){
                         $immediate_children['c1__tree_messages'] += $granchildren['c1__tree_messages'];
                         $immediate_children['db_updated'] += $granchildren['db_updated'];
@@ -1766,6 +1923,7 @@ class Db_model extends CI_Model {
                         }
                     }
 
+                    array_push($immediate_children['cr_flat'],$granchildren['cr_flat']);
                     array_push($immediate_children['c_flat'],$granchildren['c_flat']);
                     array_push($immediate_children['tree_top'],$granchildren['tree_top']);
                 }
@@ -1775,7 +1933,7 @@ class Db_model extends CI_Model {
 
         //Fetch & add this item itself:
         if($cr_id){
-            if($fetech_outbound){
+            if($fetch_outbound){
                 $cs = $this->Db_model->cr_outbound_fetch(array(
                     'cr.cr_id' => $cr_id,
                 ));
@@ -1798,12 +1956,12 @@ class Db_model extends CI_Model {
             } else {
                 $immediate_children['c1__tree_inputs'] += 1;
             }
-            $immediate_children['c1__tree_hours'] += $cs[0]['c_time_estimate'];
+            $immediate_children['c1__tree_max_hours'] += $cs[0]['c_time_estimate'];
 
             //Set the data for this intent:
             $cs[0]['c1__tree_inputs'] = $immediate_children['c1__tree_inputs'];
             $cs[0]['c1__tree_outputs'] = $immediate_children['c1__tree_outputs'];
-            $cs[0]['c1__tree_hours'] = $immediate_children['c1__tree_hours'];
+            $cs[0]['c1__tree_max_hours'] = $immediate_children['c1__tree_max_hours'];
 
             //Count messages only if DB updating:
             if($db_update){
@@ -1815,12 +1973,23 @@ class Db_model extends CI_Model {
                 $cs[0]['c1__tree_messages'] = $immediate_children['c1__tree_messages'];
             }
 
+            if(isset($cs[0]['cr_id'])){
+                array_push($immediate_children['cr_flat'],intval($cs[0]['cr_id']));
+                if($k_w_id>0){
+                    //Add this to the cache:
+                    $this->Db_model->k_create(array(
+                        'k_w_id' => $k_w_id,
+                        'k_cr_id' => $cs[0]['cr_id'],
+                        'k_time_estimate' => doubleval($cs[0]['c_time_estimate']),
+                    ));
+                }
+            }
             array_push($immediate_children['c_flat'],intval($c_id));
             array_push($immediate_children['tree_top'],$cs[0]);
 
             //Update DB only if any single field is not synced:
             if($db_update && !(
-                number_format($cs[0]['c1__tree_hours'],3)==number_format($cs[0]['c__tree_hours'],3) &&
+                number_format($cs[0]['c1__tree_max_hours'],3)==number_format($cs[0]['c__tree_max_hours'],3) &&
                 $cs[0]['c1__tree_inputs']==$cs[0]['c__tree_inputs'] &&
                 $cs[0]['c1__tree_outputs']==$cs[0]['c__tree_outputs'] &&
                 $cs[0]['c1__this_messages']==$cs[0]['c__this_messages'] &&
@@ -1830,7 +1999,7 @@ class Db_model extends CI_Model {
 
                 //Something was not up to date, let's update:
                 $this->Db_model->c_update( $c_id , array(
-                    'c__tree_hours' => number_format($cs[0]['c1__tree_hours'],3),
+                    'c__tree_max_hours' => number_format($cs[0]['c1__tree_max_hours'],3),
                     'c__tree_inputs' => $cs[0]['c1__tree_inputs'],
                     'c__tree_outputs' => $cs[0]['c1__tree_outputs'],
                     'c__this_messages' => $cs[0]['c1__this_messages'],
@@ -1840,7 +2009,7 @@ class Db_model extends CI_Model {
 
                 $immediate_children['db_updated']++;
 
-                array_push($immediate_children['db_queries'],'['.$c_id.'] Hours:'.number_format($cs[0]['c__tree_hours'],3).'=>'.number_format($cs[0]['c1__tree_hours'],3).' / Inputs:'.$cs[0]['c__tree_inputs'].'=>'.$cs[0]['c1__tree_inputs'].' / Outputs:'.$cs[0]['c__tree_outputs'].'=>'.$cs[0]['c1__tree_outputs'].' / Message:'.$cs[0]['c__this_messages'].'=>'.$cs[0]['c1__this_messages'].' / Tree Message:'.$cs[0]['c__tree_messages'].'=>'.$cs[0]['c1__tree_messages'].' / Orphan:'.intval($cs[0]['c__is_orphan']).'=>0 ('.$cs[0]['c_outcome'].')');
+                array_push($immediate_children['db_queries'],'['.$c_id.'] Hours:'.number_format($cs[0]['c__tree_max_hours'],3).'=>'.number_format($cs[0]['c1__tree_max_hours'],3).' / Inputs:'.$cs[0]['c__tree_inputs'].'=>'.$cs[0]['c1__tree_inputs'].' / Outputs:'.$cs[0]['c__tree_outputs'].'=>'.$cs[0]['c1__tree_outputs'].' / Message:'.$cs[0]['c__this_messages'].'=>'.$cs[0]['c1__this_messages'].' / Tree Message:'.$cs[0]['c__tree_messages'].'=>'.$cs[0]['c1__tree_messages'].' / Orphan:'.intval($cs[0]['c__is_orphan']).'=>0 ('.$cs[0]['c_outcome'].')');
 
             }
         }
@@ -1849,6 +2018,10 @@ class Db_model extends CI_Model {
         $result = array();
         array_walk_recursive($immediate_children['c_flat'],function($v, $k) use (&$result){ $result[] = $v; });
         $immediate_children['c_flat'] = $result;
+
+        $result = array();
+        array_walk_recursive($immediate_children['cr_flat'],function($v, $k) use (&$result){ $result[] = $v; });
+        $immediate_children['cr_flat'] = $result;
 
 
 
@@ -1990,7 +2163,7 @@ class Db_model extends CI_Model {
                 $new_item['c_is_any'] = intval($item['c_is_any']);
                 $new_item['c_keywords'] = ( strlen($item['c_trigger_statements'])>0 ? join(' ',json_decode($item['c_trigger_statements'])) : '' );
 
-                $new_item['c__tree_hours'] = number_format($item['c__tree_hours'],3);
+                $new_item['c__tree_max_hours'] = number_format($item['c__tree_max_hours'],3);
                 $new_item['c__tree_inputs'] = intval($item['c__tree_inputs']);
                 $new_item['c__tree_outputs'] = intval($item['c__tree_outputs']);
                 $new_item['c__tree_messages'] = intval($item['c__tree_messages']);

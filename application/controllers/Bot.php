@@ -19,24 +19,27 @@ class Bot extends CI_Controller {
         }
     }
 
+    function rec($c_id){
+        echo_json($this->Db_model->c_recursive_fetch($c_id, true));
+    }
     function ping($u_id){
         //Confirm the subscription:
         echo_json($this->Comm_model->send_message(array(
             array(
-                'e_inbound_u_id' => 0, //Initiated by PA
+                'e_inbound_u_id' => 2738, //Initiated by PA
                 'e_outbound_u_id' => $u_id,
                 'e_outbound_c_id' => 6623,
                 'i_message' => 'Do you want to Get Hired as a Developer?',
                 'quick_replies' => array(
                     array(
                         'content_type' => 'text',
-                        'title' => 'Yes, Subscribe',
-                        'payload' => 'DO_SUBSCRIBE_1',
+                        'title' => 'Yes, Learn More',
+                        'payload' => 'SUBSCRIBE__20_1',
                     ),
                     array(
                         'content_type' => 'text',
                         'title' => 'No',
-                        'payload' => 'DO_SUBSCRIBE_0',
+                        'payload' => 'SUBSCRIBE__20_0',
                     ),
                 ),
             ),
@@ -288,13 +291,15 @@ class Bot extends CI_Controller {
                     //Set variables:
                     $sent_from_us = ( isset($im['message']['is_echo']) ); //Indicates the message sent from the page itself
                     $user_id = ( $sent_from_us ? $im['recipient']['id'] : $im['sender']['id'] );
-                    $id_user = $this->Comm_model->fb_identify_activate($user_id);
                     $quick_reply_payload = ( isset($im['message']['quick_reply']['payload']) && strlen($im['message']['quick_reply']['payload'])>0 ? $im['message']['quick_reply']['payload'] : null );
+                    $fb_message = ( isset($im['message']['text']) ? $im['message']['text'] : null );
+
+                    $id_user = $this->Comm_model->fb_identify_activate($user_id, $quick_reply_payload, ( !$sent_from_us ? $fb_message : null ));
 
                     $eng_data = array(
                         'e_inbound_u_id' => ( $sent_from_us || !isset($id_user['u_id']) ? 0 : $id_user['u_id'] ),
                         'e_json' => $json_data,
-                        'e_text_value' => ( isset($im['message']['text']) ? $im['message']['text'] : null ),
+                        'e_text_value' => $fb_message,
                         'e_inbound_c_id' => ( $sent_from_us ? 7 : 6 ), //Message Sent/Received
                         'e_outbound_u_id' => ( $sent_from_us && isset($id_user['u_id']) ? $id_user['u_id'] : 0 ),
                     );
@@ -390,8 +395,7 @@ class Bot extends CI_Controller {
 
                 if($payment_received>=$enrollments[0]['ru_upfront_pay']){
 
-                    //Finalize their Subscription:
-                    $this->Db_model->ru_finalize($enrollments[0]['ru_id']);
+                    //Finalize their Subscription
 
                 } else {
 

@@ -628,7 +628,7 @@ class Entities extends CI_Controller {
             //Default:
             if($is_coach){
                 //Coach default:
-                header( 'Location: /intents' );
+                header( 'Location: /intents/7240' );
             } else {
                 //Student default:
                 header( 'Location: /my/actionplan' );

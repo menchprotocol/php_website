@@ -13,7 +13,7 @@ class Intents extends CI_Controller
 
 
     //For trainers to see and manage an intent:
-    function intent_manage( $inbound_c_id=7240  /* default intent to load */ ){
+    function intent_manage($inbound_c_id){
 
         //Authenticate level 2 or higher, redirect if not:
         $udata = auth(array(1308,1280),1);
@@ -134,184 +134,20 @@ class Intents extends CI_Controller
      ****************************** */
 
     function c_new(){
-
         $udata = auth(array(1308,1280));
         if(!$udata){
-            return echo_json(array(
+            return array(
                 'status' => 0,
                 'message' => 'Invalid Session. Refresh the Page to Continue',
-            ));
-        } elseif(!isset($_POST['c_id']) || intval($_POST['c_id'])<=0){
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid Intent ID',
-            ));
-        } elseif(!isset($_POST['c_outcome']) || strlen($_POST['c_outcome'])<=0){
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Intent Outcome',
-            ));
-        } elseif(!isset($_POST['link_c_id'])){
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Link Intent ID',
-            ));
-        } elseif(!isset($_POST['next_level'])){
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Level',
-            ));
-        }
-
-        $_POST['link_c_id'] = intval($_POST['link_c_id']);
-
-        //Validate Original intent:
-        $inbound_intents = $this->Db_model->c_fetch(array(
-            'c.c_id' => intval($_POST['c_id']),
-        ), 1);
-        if(count($inbound_intents)<=0){
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid Intent ID',
-            ));
-        }
-
-        if(!$_POST['link_c_id']){
-
-            //Set default new hours:
-            $default_new_hours = 0.05; //3 min default
-            $recursive_query = array(
-                'c__tree_outputs' => 1,
-                'c__tree_hours' => $default_new_hours,
             );
-
-            //Create intent:
-            $new_c = $this->Db_model->c_create(array(
-                'c_inbound_u_id' => $udata['u_id'],
-                'c_outcome' => trim($_POST['c_outcome']),
-                'c_time_estimate' => $default_new_hours,
-                'c__tree_outputs' => 1, //Default
-                'c__tree_inputs' => 0,
-                'c__tree_hours' => $default_new_hours,
+        } elseif(!isset($_POST['c_id']) || !isset($_POST['c_outcome']) || !isset($_POST['link_c_id']) || !isset($_POST['next_level'])){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Missing core inputs',
             ));
-
-            //Log Engagement for New Intent:
-            $this->Db_model->e_create(array(
-                'e_inbound_u_id' => $udata['u_id'],
-                'e_text_value' => 'Intent ['.$new_c['c_outcome'].'] created',
-                'e_json' => array(
-                    'input' => $_POST,
-                    'before' => null,
-                    'after' => $new_c,
-                ),
-                'e_inbound_c_id' => 20, //New Intent
-                'e_outbound_c_id' => $new_c['c_id'],
-            ));
-
         } else {
-
-            $new_cs = $this->Db_model->c_fetch(array(
-                'c_id' => $_POST['link_c_id'],
-                'c.c_status >' => 0,
-            ), ( 3 - $_POST['next_level'] ));
-            if(count($new_cs)<=0){
-                return echo_json(array(
-                    'status' => 0,
-                    'message' => 'Invalid Linked Intent ID',
-                ));
-            }
-            $new_c = $new_cs[0];
-
-
-            //Make sure none of the parents are the same:
-            if($new_c['c_id']==$_POST['c_id']){
-                return echo_json(array(
-                    'status' => 0,
-                    'message' => 'You cannot add "'.$new_c['c_outcome'].'" as its own child.',
-                ));
-            } else {
-                //check for all parents:
-                $parent_tree = $this->Db_model->c_recursive_fetch($_POST['c_id']);
-                if(in_array($new_c['c_id'],$parent_tree['c_flat'])){
-                    return echo_json(array(
-                        'status' => 0,
-                        'message' => 'You cannot add "'.$new_c['c_outcome'].'" as its own grandchild.',
-                    ));
-                }
-            }
-
-            //Make sure this is not a duplicate level 2 intent:
-            if($_POST['next_level']==2){
-                foreach($inbound_intents[0]['c__child_intents'] as $current_c){
-                    if($current_c['c_id']==$_POST['link_c_id']){
-                        //Ooops, this is already added in Level 2, cannot add again:
-                        return echo_json(array(
-                            'status' => 0,
-                            'message' => '['.$new_c['c_outcome'].'] is already added as outbound intent.',
-                        ));
-                    }
-                }
-            }
-
-            //Remove orphan status if that was the case before:
-            if(intval($new_c['c__is_orphan'])){
-                $this->Db_model->c_update( $new_c['c_id'] , array(
-                    'c__is_orphan' => 0,
-                ));
-            }
-
-            //Prepare recursive update:
-            $recursive_query = array(
-                'c__tree_outputs' => $new_c['c__tree_outputs'],
-                'c__tree_inputs' => $new_c['c__tree_inputs'],
-                'c__tree_hours' => number_format($new_c['c__tree_hours'],3),
-                'c__tree_messages' => $new_c['c__tree_messages'],
-            );
+            echo_json($this->Db_model->c_new($_POST['c_id'], $_POST['c_outcome'], $_POST['link_c_id'], $_POST['next_level'], $udata['u_id']));
         }
-
-
-        //Create Link:
-        $relation = $this->Db_model->cr_create(array(
-            'cr_inbound_u_id' => $udata['u_id'],
-            'cr_inbound_c_id'  => intval($_POST['c_id']),
-            'cr_outbound_c_id' => $new_c['c_id'],
-            'cr_outbound_rank' => 1 + $this->Db_model->max_value('v5_intent_links','cr_outbound_rank', array(
-                'cr_status >=' => 1,
-                'c_status >' => 0,
-                'cr_inbound_c_id' => intval($_POST['c_id']),
-            )),
-        ));
-
-        //Update tree count from parent and above:
-        $updated_recursively = $this->Db_model->c_update_tree($_POST['c_id'], $recursive_query);
-
-        //Log Engagement for new link:
-        $this->Db_model->e_create(array(
-            'e_inbound_u_id' => $udata['u_id'],
-            'e_text_value' => 'Linked intent ['.$new_c['c_outcome'].'] as outbound of intent ['.$inbound_intents[0]['c_outcome'].']',
-            'e_json' => array(
-                'input' => $_POST,
-                'before' => null,
-                'after' => $relation,
-                'recursive_query' => $recursive_query,
-                'updated_recursively' => $updated_recursively,
-            ),
-            'e_inbound_c_id' => 23, //New Intent Link
-            'e_cr_id' => $relation['cr_id'],
-        ));
-
-        $relations = $this->Db_model->cr_outbound_fetch(array(
-            'cr.cr_id' => $relation['cr_id'],
-        ));
-
-        //Return result:
-        echo_json(array(
-            'status' => 1,
-            'c_id' => $new_c['c_id'],
-            'c__tree_hours' => $new_c['c__tree_hours'],
-            'adjusted_c_count' => ( $new_c['c__tree_outputs'] + $new_c['c__tree_inputs'] ),
-            'html' => echo_c(array_merge($new_c,$relations[0]),$_POST['next_level'],intval($_POST['c_id'])),
-        ));
     }
 
     function c_move_c(){
@@ -378,13 +214,13 @@ class Intents extends CI_Controller
         $updated_from_recursively = $this->Db_model->c_update_tree( $from[0]['c_id'] , array(
             'c__tree_outputs' => -($subject[0]['c__tree_outputs']),
             'c__tree_inputs' => -($subject[0]['c__tree_inputs']),
-            'c__tree_hours' => -(number_format($subject[0]['c__tree_hours'],3)),
+            'c__tree_max_hours' => -(number_format($subject[0]['c__tree_max_hours'],3)),
             'c__tree_messages' => -($subject[0]['c__tree_messages']),
         ));
         $updated_to_recursively = $this->Db_model->c_update_tree( $to[0]['c_id'] , array(
             'c__tree_outputs' => +($subject[0]['c__tree_outputs']),
             'c__tree_inputs' => +($subject[0]['c__tree_inputs']),
-            'c__tree_hours' => +(number_format($subject[0]['c__tree_hours'],3)),
+            'c__tree_max_hours' => +(number_format($subject[0]['c__tree_max_hours'],3)),
             'c__tree_messages' => +($subject[0]['c__tree_messages']),
         ));
 
@@ -478,7 +314,7 @@ class Intents extends CI_Controller
             'c_outcome' => trim($_POST['c_outcome']),
             'c_require_url_to_complete' => intval($_POST['c_require_url_to_complete']),
             'c_require_notes_to_complete' => intval($_POST['c_require_notes_to_complete']),
-            //These are also in the recursive adjustment array as they affect cache data like c__tree_hours
+            //These are also in the recursive adjustment array as they affect cache data like c__tree_max_hours
             'c_cost_estimate' => doubleval($_POST['c_cost_estimate']),
             'c_time_estimate' => $_POST['c_time_estimate'],
             'c_is_any' => intval($_POST['c_is_any']),
@@ -507,7 +343,7 @@ class Intents extends CI_Controller
 
                 if($key=='c_time_estimate'){
 
-                    $recursive_query['c__tree_hours'] = number_format((doubleval($_POST[$key]) - doubleval($cs[0][$key])),3);
+                    $recursive_query['c__tree_max_hours'] = number_format((doubleval($_POST[$key]) - doubleval($cs[0][$key])),3);
 
                 } elseif($key=='c_require_url_to_complete' || $key=='c_require_notes_to_complete'){
 
@@ -622,7 +458,7 @@ class Intents extends CI_Controller
         $recursive_query = array(
             'c__tree_outputs' => -($cs[0]['c__tree_outputs']),
             'c__tree_inputs' => -($cs[0]['c__tree_inputs']),
-            'c__tree_hours' => -(number_format($cs[0]['c__tree_hours'],3)),
+            'c__tree_max_hours' => -(number_format($cs[0]['c__tree_max_hours'],3)),
             'c__tree_messages' => -($cs[0]['c__tree_messages']),
         );
         $updated_recursively = $this->Db_model->c_update_tree( $c__inbounds[0]['cr_inbound_c_id'] , $recursive_query );
@@ -666,9 +502,12 @@ class Intents extends CI_Controller
             'c_inbound' => $c__inbounds[0]['cr_inbound_c_id'],
             'adjusted_c_count' => -($cs[0]['c__tree_outputs'] + $cs[0]['c__tree_inputs']),
         ));
+
     }
 
+
     function c_sync(){
+
         $c_id=7240;
         $sync = $this->Db_model->c_recursive_fetch($c_id,1,1);
 
