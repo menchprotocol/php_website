@@ -628,7 +628,7 @@ class Entities extends CI_Controller {
             //Default:
             if($is_coach){
                 //Coach default:
-                header( 'Location: /intents/7240' );
+                header( 'Location: /intents/6623' );
             } else {
                 //Student default:
                 header( 'Location: /my/actionplan' );
@@ -642,7 +642,7 @@ class Entities extends CI_Controller {
         $this->Db_model->e_create(array(
             'e_inbound_u_id' => ( isset($udata['u_id']) && $udata['u_id']>0 ? $udata['u_id'] : 0 ),
             'e_json' => $udata,
-            'e_inbound_c_id' => 11, //Admin Logout
+            'e_inbound_c_id' => 11, //User Logout
         ));
 
         //Called via AJAX to destroy user session:
@@ -672,7 +672,7 @@ class Entities extends CI_Controller {
             $this->Comm_model->foundation_message(array(
                 'e_inbound_u_id' => 0,
                 'e_outbound_u_id' => $matching_users[0]['u_id'],
-                'e_outbound_c_id' => 3030,
+                'e_outbound_c_id' => 59,
                 'depth' => 0,
             ), true);
         }

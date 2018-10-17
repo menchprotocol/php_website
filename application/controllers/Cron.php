@@ -464,66 +464,6 @@ class Cron extends CI_Controller {
     }
 
 
-    function student_reminder_complete_application(){
-
-        //Cron Settings: 10 * * * *
-
-        //Fetch current incomplete applications:
-        $incomplete_applications = $this->Db_model->ru_fetch(array(
-            'r.r_status'	=> 1, //Open For Subscription
-            'ru.ru_status'  => 0,
-        ));
-
-
-        $stats = array();
-        foreach($incomplete_applications as $enrollment){
-
-            //Fetch existing reminders sent to this student:
-            $reminders_sent = $this->Db_model->e_fetch(array(
-                'e_inbound_c_id IN (7,28)' => null, //Email/Message sent
-                'e_outbound_u_id' => $enrollment['u_id'],
-                'e_outbound_c_id IN (3140,3127)' => null, //The ID of the 5 email reminders https://mench.com/console/53/actionplan
-            ));
-
-            $enrollment_end_time = strtotime($enrollment['r_start_date']) - 60; //11:59PM the night before start date
-            $enrollment_time = strtotime($enrollment['ru_timestamp']);
-
-
-            //Send them a reminder to complete 24 hours after they start, only IF they started their application more than 6 days before the Class start:
-            $reminder_c_id = 0;
-            if(($enrollment_time+(3*24*3600))<$enrollment_end_time && ($enrollment_time+(24*3600))<time() && !filter($reminders_sent,'e_outbound_c_id',3127)){
-                //Sent 24 hours after initiating enrollment IF registered more than 3 days before Class starts
-                $reminder_c_id = 3127;
-            } elseif(($enrollment_time+(26*3600))<$enrollment_end_time && (time()+(24*3600))>$enrollment_end_time && !filter($reminders_sent,'e_outbound_c_id',3140)){
-                //Sent 24 hours before class starts IF registered more than 26 hours before Class starts
-                $reminder_c_id = 3140;
-            }
-
-            if($reminder_c_id){
-                //Send reminder:
-                $this->Comm_model->foundation_message(array(
-                    'e_inbound_u_id' => 0,
-                    'e_outbound_u_id' => $enrollment['u_id'],
-                    'e_outbound_c_id' => $reminder_c_id,
-                    'depth' => 0,
-                ));
-
-                //Push stats:
-                array_push($stats, array(
-                    'email' => $reminder_c_id,
-                    'ru_id' => $enrollment['ru_id'],
-                    'r_id' => $enrollment['r_id'],
-                    'u_id' => $enrollment['u_id'],
-                    'ru_timestamp' => $enrollment['ru_timestamp'],
-                    'r_start_date' => $enrollment['r_start_date'],
-                    'reminders' => $reminders_sent,
-                ));
-            }
-        }
-
-        echo_json($stats);
-    }
-
     function student_reminder_complete_task(){
 
         //Cron Settings: 45 * * * *
@@ -538,7 +478,7 @@ class Cron extends CI_Controller {
         $reminder_index = array(
             array(
                 'time_elapsed'   => 0.90,
-                'progress_below' => 1.00,
+                'progress_below' => 0.99,
                 'reminder_c_id'  => 3139,
             ),
             array(
@@ -552,12 +492,12 @@ class Cron extends CI_Controller {
                 'reminder_c_id'  => 3137,
             ),
             array(
-                'time_elapsed'   => 0.25,
+                'time_elapsed'   => 0.20,
                 'progress_below' => 0.10,
                 'reminder_c_id'  => 3136,
             ),
             array(
-                'time_elapsed'   => 0.10,
+                'time_elapsed'   => 0.05,
                 'progress_below' => 0.01,
                 'reminder_c_id'  => 3358,
             ),

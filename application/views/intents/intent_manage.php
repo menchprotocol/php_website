@@ -732,17 +732,15 @@ if(isset($orphan_cs)){
 
 
 
-            if($c['c_id']!=7240){
-                echo '<h5 class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-inbound-count inbound-counter-'.$c['c_id'].'">'.count($c__inbounds).'</span> Ins</h5>';
-                if(count($c__inbounds)>0){
-                    echo '<div class="list-group list-level-2">';
-                    foreach($c__inbounds as $sub_intent){
-                        echo echo_c($sub_intent, 2, 0, true);
-                    }
-                    echo '</div>';
-                } else {
-                    echo '<div class="alert alert-info" role="alert" style="margin-top: 0;"><i class="fas fa-exclamation-triangle"></i> No inbound intents linked yet</div>';
+            echo '<h5 class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-inbound-count inbound-counter-'.$c['c_id'].'">'.count($c__inbounds).'</span> Ins</h5>';
+            if(count($c__inbounds)>0){
+                echo '<div class="list-group list-level-2">';
+                foreach($c__inbounds as $sub_intent){
+                    echo echo_c($sub_intent, 2, 0, true);
                 }
+                echo '</div>';
+            } else {
+                echo '<div class="alert alert-info" role="alert" style="margin-top: 0;"><i class="fas fa-exclamation-triangle"></i> No inbound intents linked yet</div>';
             }
 
 
@@ -765,14 +763,13 @@ if(isset($orphan_cs)){
 
             //Expand/Contract buttons
             echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-outbound-count outbound-counter-'.$c['c_id'].'">'.($c['c__tree_inputs']+$c['c__tree_outputs']-1).'</span> Outs</h5>';
-                if($orphan_c_count>0){
-                    echo '<div style="text-align:right; font-size:0.9em;"><i class="fas fa-unlink"></i> <a href="/intents/orphan">'.$orphan_c_count.' Orphans &raquo;</a></div>';
-                }
             echo '<div id="task_view" style="padding-left:8px; display: inline-block;">';
             echo '<i class="fas fa-plus-square expand_all" style="font-size: 1.2em;"></i> &nbsp;';
             echo '<i class="fas fa-minus-square close_all" style="font-size: 1.2em;"></i>';
             echo '</div>';
-
+            if($orphan_c_count>0){
+                echo '<div style="padding-left:8px; display: inline-block;"><a href="/intents/orphan">'.$orphan_c_count.' Orphans &raquo;</a></div>';
+            }
 
 
             echo '<div id="list-c-'.$c['c_id'].'" class="list-group list-is-outbound list-level-2">';

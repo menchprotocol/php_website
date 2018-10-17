@@ -709,7 +709,6 @@ $b_team_member = array();
 
 //Inbounds
 if($entity['u_id']!=2738){
-
     echo '<h5>';
         echo '<span class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-inbound-count">'.count($entity['u__inbounds']).'</span> Ins</span>';
         if($can_edit) {
@@ -748,7 +747,7 @@ echo '</div>';
 
 
 //URLs
-if(!in_array($entity['u_id'], array(2738,1278,1326,2750))){
+if(!in_array($entity['u_id'], array(1278,1326,2750))){
     echo '<h5 class="badge badge-h"><i class="fas fa-link"></i> <span class="li-urls-count">'.count($entity['u__urls']).'</span> URLs</h5>';
     echo '<div id="list-urls" class="list-group  grey-list">';
     foreach ($entity['u__urls'] as $x) {

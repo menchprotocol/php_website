@@ -47,7 +47,7 @@ function fetch_entity_tree($u_id,$is_edit=false){
     ), array('u__outbound_count','u__urls'));
 
     if(count($entities)<1){
-        return redirect_message('/entities','<div class="alert alert-danger" role="alert">Invalid Entity ID</div>');
+        return redirect_message('/entities/2738','<div class="alert alert-danger" role="alert">Invalid Entity ID</div>');
     }
 
     $view_data = array(
@@ -475,7 +475,7 @@ function auth($entity_groups=null,$force_redirect=0,$b_id=0,$u_id=0){
 	    return false;
 	} else {
 	    //Block access:
-	    redirect_message( ( isset($udata['u_id']) && ( array_any_key_exists(array(1280,1308,1281),$udata['u__inbounds']) || isset($udata['project_permissions'])) ? '/intents/7240' : '/login?url='.urlencode($_SERVER['REQUEST_URI']) ),'<div class="alert alert-danger maxout" role="alert">'.( isset($udata['u_id']) ? 'Access not authorized.' : 'Session Expired. Login to continue.' ).'</div>');
+	    redirect_message( ( isset($udata['u_id']) && ( array_any_key_exists(array(1280,1308,1281),$udata['u__inbounds']) || isset($udata['project_permissions'])) ? '/intents/6623' : '/login?url='.urlencode($_SERVER['REQUEST_URI']) ),'<div class="alert alert-danger maxout" role="alert">'.( isset($udata['u_id']) ? 'Access not authorized.' : 'Session Expired. Login to continue.' ).'</div>');
 	}
 	
 }

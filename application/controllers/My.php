@@ -437,7 +437,7 @@ class My extends CI_Controller {
             //Send graduation message:
             $this->Comm_model->foundation_message(array(
                 'e_outbound_u_id' => intval($_POST['u_id']),
-                'e_outbound_c_id' => 4632, //As soon as Graduated message
+                'e_outbound_c_id' => 2691, //As soon as Graduated message
                 'depth' => 0,
             ));
 

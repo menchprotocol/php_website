@@ -13,23 +13,15 @@ $route['train'] 				    = "front/train";
 $route['terms'] 					= "front/terms";
 $route['ses'] 						= "front/ses"; //Raw session logs
 $route['info'] 						= "front/info"; //PHP Info
-
-//TODO Remove all following:
-$route['console/(:num)/actionplan'] 		= "console/actionplan/$1";
-$route['console/(:num)/settings'] 			= "console/settings/$1";
-$route['console/(:num)/classes'] 			= "console/classes/$1";
-$route['console/(:num)/raw'] 				= "console/raw/$1"; //For dev purposes
-$route['console/(:num)'] 			        = "console/dashboard/$1";
-$route['console'] 							= "console/bootcamps";
-$route['login']						        = "front/login"; //Bootcamp Operator login
-$route['logout']				            = "entities/logout"; //Logout from entites
+$route['login']					    = "front/login"; //Bootcamp Operator login
+$route['logout']				    = "entities/logout"; //Logout from entites
 
 //Trainer interface:
 $route['entities/(:num)'] 			        = "entities/entity_manage/$1";
-$route['entities'] 			                = "entities/entity_manage";
+$route['entities'] 			                = "entities/entity_manage/2738"; //Default
 $route['intents/(:num)'] 			        = "intents/intent_manage/$1";
-$route['intents'] 			                = "intents/intent_manage"; //Published intents
+$route['intents'] 			                = "intents/intent_manage/6623"; //Default
 
-//Front facing:
+//Front facing landing page for intents:
 $route['(:num)']	                        = "intents/intent_public/$1"; //Public intent browser
 

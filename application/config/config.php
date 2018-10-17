@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => '0.561',
+    'version' => '0.565',
     'name' => 'Mench',
     'url' => 'https://mench.com/', //Important to end with "/" as other links depend on this.
     'email' => 'shervin@mench.com',
@@ -37,11 +37,11 @@ $config['aws_credentials'] = [
 $config['engagement_subscriptions'] = array(
     array(
         'admin_emails' => array('miguel@mench.com'),
-        'subscription' => array(9,15,60,65,68,72,73,75,88,7084 ),
+        'subscription' => array(9,72),
     ),
     array(
         'admin_emails' => array('shervin@mench.com'),
-        'subscription' => array(9,15,60,65,68,72,73,75,88,7084    ,8,84,6909),
+        'subscription' => array(9,72,8),
     ),
 );
 

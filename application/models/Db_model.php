@@ -1582,12 +1582,12 @@ class Db_model extends CI_Model {
 
         //Check to see if this URL exists, if so, return that:
         $urls = $this->Db_model->x_fetch(array(
-            'x_status >' => -2,
-            '(x_url LIKE \''.$insert_columns['x_url'].'\' OR x_clean_url LIKE \''.$insert_columns['x_clean_url'].'\')' => null,
+            '(x_url LIKE \''.$insert_columns['x_url'].'\' OR x_url LIKE \''.$insert_columns['x_clean_url'].'\')' => null,
         ));
 
         if(count($urls)>0){
-            if($urls[0]['x_status']==1 && $insert_columns['x_outbound_u_id']==$urls[0]['x_outbound_u_id']){
+
+            if($insert_columns['x_outbound_u_id']==$urls[0]['x_outbound_u_id']){
 
                 //For same object, we're all good, return this URL:
                 return $urls[0];

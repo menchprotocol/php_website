@@ -187,11 +187,10 @@ class Comm_model extends CI_Model {
                 'e_inbound_c_id' => 7001, //Cover Photo Save
             ));
 
-            //Log engagement
-            $this->Comm_model->foundation_message(array(
-                'e_outbound_u_id' => $u['u_id'],
-                'e_outbound_c_id' => 921, //New Student Without Admission
-                'depth' => 0,
+            //Log new user engagement:
+            $this->Db_model->e_create(array(
+                'e_inbound_u_id' => $u['u_id'],
+                'e_inbound_c_id' => 27, //User Joined
             ));
 
         }
@@ -243,8 +242,6 @@ class Comm_model extends CI_Model {
                     ));
 
                 }
-
-
 
             }
 

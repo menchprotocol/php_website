@@ -412,16 +412,4 @@ class Bot extends CI_Controller {
         }
     }
 
-    function deauthorize(){
-        //Called when someone de-authorizes our page
-        $this->Db_model->e_create(array(
-            'e_text_value' => 'deauthorize() was called because coach revoked some/all permission. Look at e_json log file for more information.',
-            'e_json' => array(
-                'POST' => $_POST,
-                'parse_signed_request' => parse_signed_request($_POST['signed_request']),
-            ),
-            'e_inbound_c_id' => 84, //Facebook Permission Deauthorized
-        ));
-    }
-
 }

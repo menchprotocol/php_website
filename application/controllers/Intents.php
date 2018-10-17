@@ -32,7 +32,7 @@ class Intents extends CI_Controller
             exit;
         }
 
-        if($inbound_c_id==7240){
+        if($inbound_c_id==6623){
             //Also count orphan intents:
             $orphan_c_count = count($this->Db_model->c_fetch(array(
                 'c.c__is_orphan' => 1,
@@ -508,7 +508,7 @@ class Intents extends CI_Controller
 
     function c_sync(){
 
-        $c_id=7240;
+        $c_id=6623;
         $sync = $this->Db_model->c_recursive_fetch($c_id,1,1);
 
         //Check how many are outside of this:
