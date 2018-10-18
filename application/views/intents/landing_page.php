@@ -23,7 +23,7 @@
         <?php if(count($c['c__child_intents'])>0){ ?>
             
             
-        <h3><i class="fas fa-flag"></i> Action Plan <span style="font-size:0.6em;"><i class="fas fa-clock"></i> <?= ($c['c__tree_inputs']+$c['c__tree_outputs']) ?> Concepts in <?= echo_hours(($c['c__tree_max_hours']),false) ?></span></h3>
+        <h3><i class="fas fa-flag"></i> Action Plan <span style="font-size:0.5em; display:inline-block; margin-left:5px; line-height:140%;"><i class="fas fa-lightbulb-on"></i> <?= ($c['c__tree_inputs']+$c['c__tree_outputs']) ?> Concepts <span style="display:inline-block;"><i class="fas fa-clock" style="padding-left: 2px;"></i> <?= echo_hours(($c['c__tree_max_hours']),false) ?></span></span></h3>
 
 
 
@@ -62,7 +62,7 @@
                         }
                         echo '<li class="'.( $c2_counter>=$landing_pagetask_visible ? 'show_full_list_'.$c1_counter.'" style="display:none;"' : '"' ).'>';
                         echo $c2['c_outcome'];
-                        echo '<span style="font-size:0.8em; font-weight:300; margin-left:5px;"><i class="fas fa-lightbulb-on"></i>'.($c2['c__tree_inputs']+$c2['c__tree_outputs']).' <i class="fas fa-clock"></i>'.echo_hours($c2['c__tree_max_hours'],1).'</span>';
+                        echo '<span style="font-size:0.8em; font-weight:300; margin-left:5px;"><i class="fas fa-lightbulb-on"></i>'.($c2['c__tree_inputs']+$c2['c__tree_outputs']).' &nbsp;<i class="fas fa-clock"></i>'.echo_hours($c2['c__tree_max_hours'],1).'</span>';
                         echo '</li>';
                     }
                     echo '</ul>';
