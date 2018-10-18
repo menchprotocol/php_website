@@ -407,6 +407,28 @@ class Comm_model extends CI_Model {
                         //Multiple subscriptions:
                         $confirmation_message = 'Are you sure you want to unsubscribe from';
                     }
+                } else {
+
+                    $this->Comm_model->send_message(array(
+                        array(
+                            'e_inbound_u_id' => 2738, //Initiated by PA
+                            'e_outbound_u_id' => $fetch_us[0]['u_id'],
+                            'i_message' => 'Got it, so you want me to stop all future communications with you?',
+                            'quick_replies' => array(
+                                array(
+                                    'content_type' => 'text',
+                                    'title' => 'Yes, Unsubscribe',
+                                    'payload' => 'UNSUBSCRIBE20_1',
+                                ),
+                                array(
+                                    'content_type' => 'text',
+                                    'title' => 'Stay Friends',
+                                    'payload' => 'UNSUBSCRIBE20_0',
+                                ),
+                            ),
+                        ),
+                    ));
+
                 }
 
 
