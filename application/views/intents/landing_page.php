@@ -1,6 +1,6 @@
 <style>
     .body-container .msg, .body-container li, p, .body-container a { font-size:1.1em !important; }
-    .msg { margin-top:10px !important; font-weight:300 !important; line-height: 120%; }
+    .msg { margin-top:10px !important; font-weight:300 !important; line-height: 120% !important; }
     .msg a { max-width: none; }
 </style>
 
