@@ -1,4 +1,4 @@
-
+<?php $udata = $this->session->userdata('user'); ?>
 <script src="/js/lib/jquery.fbmessenger.min.js"></script>
 <link href="/css/lib/jquery.fbmessenger.css" rel="stylesheet" />
 <link href="/css/lib/devices.min.css" rel="stylesheet" />
@@ -99,10 +99,13 @@
             .fbMessenger('typingIndicator', { delay: 5000 })
             .fbMessenger('message', 'bot', 'My human trainers have referenced hundreds of videos, books, articles and podcasts from industry experts organized into a comprehensive roadmap that will empower you to land your dream job 🌈', { delay: 5000 })
             .fbMessenger('typingIndicator', { delay: 10000 })
-            .fbMessenger('message', 'bot', 'Are you interested to land a fabulous programming job?', { delay: 1500 })
+
+            .fbMessenger('message', 'bot', 'I can empower you to land a fabulous programming job in 4-12 weeks depending on fast/slow you choose to progress. The more weekly hours you invest, the faster I can help you accomplish your goal', { delay: 1500 })
+            .fbMessenger('message', 'bot', 'So, do you want to land a fabulous programming job?', { delay: 1500 })
             .fbMessenger('message', 'bot', '/1 Yes 👍<br />/2 No 👎<br />/3 Explain more 🤔', { delay:2000 })
             .fbMessenger('showQuickReplies', [ '/1', '/2', '/3' ], { delay:0 })
             .fbMessenger('selectQuickReply', 0, { delay:5000 })
+
             .fbMessenger('message', 'bot', 'Sweet 🙏 you are now subscribed to [land a fabulous programming job]. You can manage your intentions using the [🚩Action Plan] button below', { delay:3000 })
             .fbMessenger('typingIndicator', { delay:10000 })
             .fbMessenger('message', 'bot', 'To land a fabulous programming job you need to invest 152-hour to learn 92 key concepts while also completing 61 actionable tasks...', { delay:5000 })
@@ -140,13 +143,17 @@
     }
 </script>
 
-<h1 class="center"><?= $title ?></h1>
-<p class="home_line_2 center">More updates coming soon...</p>
 
 
-<div class="row hidden">
+<div class="<?= ( $udata['u_id']==1  ? 'hidden' : '' ) ?>">
+    <h1 class="center"><?= $title ?></h1>
+    <p class="home_line_2 center">More updates coming soon...</p>
+</div>
+
+
+<div class="row <?= ( $udata['u_id']==1  ? '' : 'hidden' ) ?>">
     <div class="main-message col-md-6">
-        <h1 class="center"><?= $title ?></h1>
+        <h1 class="center">Land your dream job as a junior developer ✨</h1>
         <p class="home_line_2 center">Finding a job you love is about your skills, preferences and ability to craft a story to stand out from the crowd. With Mench personal assistant you'll get curated insights from industry experts to land your next awesome programming job.</p>
 
         <div style="padding:20px 0;">

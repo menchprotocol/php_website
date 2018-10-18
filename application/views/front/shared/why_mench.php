@@ -1,5 +1,5 @@
 
-<h2 class="title" style="text-align:center; margin-top:0;">Why Mench?</h2>
+<h2 class="title" style="text-align:center; margin-top:0;">Mench Personal Assistant Offers:</h2>
 
 <div class="features text-center">
 
@@ -20,7 +20,7 @@
                 <div class="icon">
                     <i class="fas fa-route" style="color:#2f2739;"></i>
                 </div>
-                <h3 class="info-title">Personalized</h3>
+                <h3 class="info-title">Custom Roadmap</h3>
                 <p>Leveling-up your career should not interrupt your busy schedule, which is why we let you choose your weekly hours commitment. Go as fast or slow as you'd like and get personalized inshgts sent to your inbox.</p>
             </div>
         </div>

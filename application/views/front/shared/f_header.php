@@ -58,7 +58,7 @@ $url_part_1 = $this->uri->segment(1);
         		<ul class="nav navbar-nav navbar-right">
     				<?php
                     if(isset($udata['u_id'])){
-                        echo '<li id="isloggedin"><a href="/intents/6623">Console <i class="fas fa-chevron-circle-right"></i></a></li>';
+                        echo '<li id="isloggedin"><a href="/intents/'.( isset($c['c_id']) ? $c['c_id'] : 6623 ).'">Console <i class="fas fa-chevron-circle-right"></i></a></li>';
                     } elseif(isset($uenrollment['u_id'])){
                         echo '<li id="isloggedin"><a href="/my/actionplan">Student Hub <i class="fas fa-chevron-circle-right"></i></a></li>';
                     } else {

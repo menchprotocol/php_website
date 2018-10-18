@@ -128,7 +128,7 @@ class Comm_model extends CI_Model {
         $fb_message = strtolower($fb_message);
         $fetch_us = $this->Db_model->u_fetch(array(
             'u_cache__fp_psid' => $fp_psid,
-        ), array('u__subscriptions'));
+        ), array('u__ws'));
 
 
         if(count($fetch_us)>0){
@@ -176,6 +176,9 @@ class Comm_model extends CI_Model {
                 'u_cache__fp_psid'  => $fp_psid,
             ));
 
+            //No subscriptions at this point:
+            $u['u__ws'] = array();
+
             //Update Algolia:
             $this->Db_model->algolia_sync('u',$u['u_id']);
 
@@ -194,6 +197,7 @@ class Comm_model extends CI_Model {
             ));
 
         }
+
 
 
         //By now we have a user
@@ -218,7 +222,7 @@ class Comm_model extends CI_Model {
                 if(count($cs)>0){
 
                     //Amazing, move on to next step:
-                    $fb_ref = 'SUBSCRIBE__10_'.$cs['c_id'];
+                    $fb_ref = 'SUBSCRIBE10_'.$cs['c_id'];
 
                 } else {
 
@@ -245,11 +249,11 @@ class Comm_model extends CI_Model {
 
             }
 
-            if (substr_count($fb_ref, 'SUBSCRIBE__10_')==1) {
+            if (substr_count($fb_ref, 'SUBSCRIBE10_')==1) {
 
                 //Validate this intent:
                 $fetch_cs = $this->Db_model->c_fetch(array(
-                    'c_id' => intval(one_two_explode('SUBSCRIBE__10_', '', $fb_ref)),
+                    'c_id' => intval(one_two_explode('SUBSCRIBE10_', '', $fb_ref)),
                 ));
 
                 //Any issues?
@@ -266,8 +270,8 @@ class Comm_model extends CI_Model {
                     //All good...
                     //Check if it exists in their current subscriptions:
                     $duplicate_w = array();
-                    if(isset($fetch_us[0]['u__subscriptions'])){
-                        foreach($fetch_us[0]['u__subscriptions'] as $w){
+                    if(isset($fetch_us[0]['u__ws'])){
+                        foreach($fetch_us[0]['u__ws'] as $w){
                             if($w['w_c_id']==$fetch_cs[0]['c_id']){
                                 $duplicate_w = $w;
                                 break;
@@ -309,12 +313,12 @@ class Comm_model extends CI_Model {
                                     array(
                                         'content_type' => 'text',
                                         'title' => 'Yes, Learn More',
-                                        'payload' => 'SUBSCRIBE__20_'.$fetch_cs[0]['c_id'],
+                                        'payload' => 'SUBSCRIBE20_'.$fetch_cs[0]['c_id'],
                                     ),
                                     array(
                                         'content_type' => 'text',
                                         'title' => 'No',
-                                        'payload' => 'SUBSCRIBE__20_0',
+                                        'payload' => 'SUBSCRIBE20_0',
                                     ),
                                 ),
                             ),
@@ -323,19 +327,19 @@ class Comm_model extends CI_Model {
                     }
 
                 }
-                
+
             }
 
-            if (substr_count($fb_ref, 'SUBSCRIBE__20_') == 1) {
+            if (substr_count($fb_ref, 'SUBSCRIBE20_') == 1) {
 
                 //Initiating an intent Subscription:
-                $w_c_id = intval(one_two_explode('SUBSCRIBE__20_', '', $fb_ref));
+                $w_c_id = intval(one_two_explode('SUBSCRIBE20_', '', $fb_ref));
                 if ($w_c_id>0) {
-                    
+
                     //They confirmed the subscription, go ahead with this:
                     $w = $this->Db_model->w_create(array(
                         'w_c_id' => $w_c_id,
-                        'outbound_u_id' => intval(one_two_explode('SUBSCRIBE__20_', '', $fb_ref)),
+                        'outbound_u_id' => intval(one_two_explode('SUBSCRIBE20_', '', $fb_ref)),
                     ));
 
                 } else {
@@ -353,6 +357,87 @@ class Comm_model extends CI_Model {
                 }
 
             }
+
+            if(trim($fb_message)=='unsubscribe'){
+
+                //User has requested to be removed. Let's see what they have:
+                if(count($u['u__ws'])>0){
+
+                    $quick_replies = array();
+                    $i_message = 'Which of the following intentions would you like to unsubscribe from?'."\n";
+
+
+                    foreach($u['u__ws'] as $counter=>$w){
+
+                        //Construct unsubscribe body:
+
+                        $i_message .= "\n".'/'.($counter+1).' '.$w['c_outcome'].' ['.echo_diff_time($w['w_timestamp']).']';
+
+                        array_push( $quick_replies , array(
+                            'content_type' => 'text',
+                            'title' => '/'.($counter+1),
+                            'payload' => 'UNSUBSCRIBE'.$w['w_id'],
+                        ));
+
+                    }
+
+                    array_push( $quick_replies , array(
+                        'content_type' => 'text',
+                        'title' => '/'.($counter+2),
+                        'payload' => 'UNSUBSCRIBE'.$w['w_id'],
+                    ));
+
+                    $this->Comm_model->send_message(array(
+                        array(
+                            'e_inbound_u_id' => 2738, //Initiated by PA
+                            'e_outbound_u_id' => $fetch_us[0]['u_id'],
+                            'e_outbound_c_id' => $fetch_cs[0]['c_id'],
+                            'i_message' => $i_message,
+                            'quick_replies' =>$quick_replies,
+                        ),
+                    ));
+
+
+
+                    //They have active subscriptions, confirm that they would like to be removed from it all:
+                    if(count($u['u__ws'])==1){
+                        //Only a single one?
+                        $confirmation_message = 'Are you sure you want to unsubscribe from';
+                    } else {
+                        //Multiple subscriptions:
+                        $confirmation_message = 'Are you sure you want to unsubscribe from';
+                    }
+                }
+
+
+
+
+            } elseif(substr_count($fb_ref, 'UNSUBSCRIBE')==1){
+
+                //Requested to be removed from a specific subscription:
+                $this->Comm_model->send_message(array(
+                    array(
+                        'e_inbound_u_id' => 2738, //Initiated by PA
+                        'e_outbound_u_id' => $fetch_us[0]['u_id'],
+                        'e_outbound_c_id' => $fetch_cs[0]['c_id'],
+                        'i_message' => 'Do you want to '.$fetch_cs[0]['c_output'].'?',
+                        'quick_replies' => array(
+                            array(
+                                'content_type' => 'text',
+                                'title' => 'Confirm/Unsubscribe',
+                                'payload' => 'UNSUBSCRIBE'.$fetch_cs[0]['c_id'],
+                            ),
+                            array(
+                                'content_type' => 'text',
+                                'title' => 'Cancel',
+                                'payload' => 'SUBSCRIBE20_0',
+                            ),
+                        ),
+                    ),
+                ));
+
+            }
+
         }
 
 

@@ -360,12 +360,12 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
                 if($is_intent || ($is_entity && !$is_focus_entity)) {
 
                     //HTML format:
-                    $i['i_message'] = str_replace('@'.$i['i_outbound_u_id'], '<a href="javascript:void(0);" onclick="url_modal(\''.$button_url.'\')">'.$us[0]['u_full_name'].echo_social_profiles($CI->Db_model->x_social_fetch($i['i_outbound_u_id'])).'</a>', $i['i_message']);
+                    $i['i_message'] = str_replace('@'.$i['i_outbound_u_id'], echo_social_profiles($CI->Db_model->x_social_fetch($i['i_outbound_u_id'])).' <a href="javascript:void(0);" onclick="url_modal(\''.$button_url.'\')">'.$us[0]['u_full_name'].'</a>', $i['i_message']);
 
                 } else {
 
                     //HTML format:
-                    $i['i_message'] = str_replace('@'.$i['i_outbound_u_id'], $us[0]['u_full_name'].echo_social_profiles($CI->Db_model->x_social_fetch($i['i_outbound_u_id'])).': ', $i['i_message']);
+                    $i['i_message'] = str_replace('@'.$i['i_outbound_u_id'], $us[0]['u_full_name'].' ', $i['i_message']);
 
                 }
 
@@ -416,6 +416,18 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
     }
 
 
+    if(substr_count($i['i_message'],'/typing')>0){
+        $command = '/typing';
+        if($fb_format) {
+            //TODO include sender actions https://developers.facebook.com/docs/messenger-platform/send-messages/sender-actions/
+        } else {
+            //HTML format:
+            $i['i_message'] = str_replace($command, '<img src="/img/typing.gif" height="35px" />', $i['i_message']);
+        }
+    }
+
+
+
     if(substr_count($i['i_message'],'/resetpassurl')>0 && isset($i['e_outbound_u_id'])) {
         //append their My Account Button/URL:
         $timestamp = time();
@@ -458,10 +470,16 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
             );
 
         } else {
-            //HTML format replaces the button with the command:
-            $i['i_message'] = trim(str_replace($command, '<div class="msg" style="padding-top:15px;"><a href="'.$button_url.'" target="_blank"><b>'.$button_title.'</b></a></div>', $i['i_message']));
+
+
+            if($button_url && $button_title){
+                //HTML format replaces the button with the command:
+                $i['i_message'] = trim(str_replace($command, '<div class="msg" style="padding-top:15px;"><a href="'.$button_url.'" target="_blank"><b>'.$button_title.'</b></a></div>', $i['i_message']));
+            }
+
             //Return HTML code:
             $ui .= '<div class="msg">'.$i['i_message'].'</div>';
+
         }
 
     } else {
@@ -816,17 +834,21 @@ function echo_estimated_time($c_time_estimate,$show_icon=1,$micro=false,$c_id=0,
 function echo_support_chat($c_id){
     $CI =& get_instance();
     $fb_settings = $CI->config->item('fb_settings');
+    $cs = $CI->Db_model->c_fetch(array(
+        'c.c_id' => $c_id,
+    ));
     ?>
     <div style="margin:30px auto; display:block; max-width:285px;">
         <div class="fb-send-to-messenger"
              messenger_app_id="<?= $fb_settings['app_id'] ?>"
              page_id="<?= $fb_settings['page_id'] ?>"
-             data-ref="SUBSCRIBE__10_<?= $c_id ?>"
+             data-ref="SUBSCRIBE10_<?= $c_id ?>"
              color="blue"
              cta_text="GET_STARTED_IN_MESSENGER"
              size="xlarge">Loading...</div>
         <div style="font-size:0.9em; padding:10px 0 0 3px; margin-bottom: 0;">
-            <p style="line-height:130%; font-size:1em !important;"><b>7-Day free trial, then $7 per week</b>.<br /><span style="display: inline-block;">No credit</span> card needed. Cancel anytime.</p>
+            <p style="line-height:130%; font-size:1em !important;"><b data-toggle="tooltip" title="Do It Yourself with your always-free personal assistant that will customize an action plan to <?= str_replace('"','\'',$cs[0]['c_outcome']) ?>" data-placement="top" class="underdot">DIY for Free</b> or <b data-toggle="tooltip" title="Connect with an industry expert coach and accerelate your progress with assignment review and live chat. Tuition reimbursement guarantee if you do the work but do not <?= str_replace('"','\'',$cs[0]['c_outcome']) ?>!" data-placement="top" class="underdot">$25/week Coaching</b></p>
+            <p style="line-height:130%; font-size:0.9em !important;"><span data-toggle="tooltip" title="Mench personal assistant works only with Facebook messenger. Click on the button above to get stared." data-placement="top" class="underdot">Requires Messenger</span> but <a href="https://newsroom.fb.com/news/2015/06/sign-up-for-messenger-without-a-facebook-account/" target="_blank" data-toggle="tooltip" title="You have the option to use Messenger without having a Facebook account. Click to learn more" data-placement="top" class="underdot">Not Facebook</a></p>
         </div>
     </div>
 

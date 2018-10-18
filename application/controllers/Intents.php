@@ -122,6 +122,7 @@ class Intents extends CI_Controller
         //Load home page:
         $this->load->view('front/shared/f_header' , array(
             'title' => $cs[0]['c_outcome'],
+            'c' => $cs[0],
         ));
         $this->load->view('intents/landing_page' , array(
             'c' => $cs[0],

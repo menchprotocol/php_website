@@ -23,16 +23,7 @@ class Db_model extends CI_Model {
 	}
 
 
-    function w_fetch($match_columns){
-        //Fetch the target gems:
-        $this->db->select('*');
-        $this->db->from('v5_subscriptions w');
-        foreach($match_columns as $key=>$value){
-            $this->db->where($key,$value);
-        }
-        $q = $this->db->get();
-        return $q->result_array();
-    }
+
 
     function w_update($id,$update_columns){
         //Update first
@@ -401,12 +392,12 @@ class Db_model extends CI_Model {
                 ));
             }
 
-            if(in_array('u__subscriptions',$join_objects)){
+            if(in_array('u__ws',$join_objects)){
                 //Fetch the messages for this entity:
-                $res[$key]['u__subscriptions'] = $this->Db_model->w_fetch(array(
+                $res[$key]['u__ws'] = $this->Db_model->w_fetch(array(
                     'w_outbound_u_id' => $val['u_id'],
                     'w_status' => 1, //Active subscriptions
-                ));
+                ), array('w_c_id'));
             }
 
 
@@ -886,6 +877,25 @@ class Db_model extends CI_Model {
         return $q->result_array();
     }
 
+
+    function w_fetch($match_columns, $join_objects=array()){
+        //Fetch the target gems:
+        $this->db->select('*');
+        $this->db->from('v5_subscriptions w');
+        if(in_array('w_c_id',$join_objects)){
+            $this->db->join('v5_intents c', 'w.w_c_id = c.c_id');
+        }
+        foreach($match_columns as $key=>$value){
+            $this->db->where($key,$value);
+        }
+        $q = $this->db->get();
+        $results = $q->result_array();
+
+        //foreach($results as $key=>$value){}
+
+        //Return everything that was collected:
+        return $results;
+    }
 
 
 

@@ -499,6 +499,7 @@ input { font-size:16px !important; }
 .text-edit { min-height:80px; resize: both !important; }
 .mini-label {display:block; margin-bottom:-3px;margin-top:10px;}
 .underdot{ border-bottom:1px dotted #2b2b2b; padding-bottom:2px; cursor:help; }
+a.underdot{ cursor:pointer; text-decoration: none; }
 body { font-size:18px; }
 p a, td a { text-decoration:underline; }
 .mono { font-family:monospace; background-color:#EFEFEF; padding:10px; line-height:180%; border-radius:5px; }
@@ -2315,4 +2316,10 @@ margin:5px 0;
     background-color: #0084ff !important;
     color: #fff !important;
     cursor: default !important;
+}
+
+#landing_page h3 {
+    margin: 45px 0 0px 3px !important;
+    padding-bottom: 0px !important;
+    border-bottom: 0 !important;
 }
