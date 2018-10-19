@@ -52,7 +52,7 @@
 
                 if(count($c1['c__child_intents'])>0){
 
-                    echo '<div style="margin:0 0 5px; padding-top:10px; font-size:1.1em;">This concept includes:</div>';
+                    echo '<div style="margin:0 0 5px; padding-top:10px; font-size:1.1em;">This concept covers:</div>';
                     echo '<ul style="list-style:decimal; margin-left:-15px; font-size:1em;">';
                     $landing_pagetask_visible += ( count($c1['c__child_intents'])==$landing_pagetask_visible+1 ? 1 : 0 );
                     foreach($c1['c__child_intents'] as $c2_counter=>$c2){
@@ -91,7 +91,7 @@
                 <div class="support_p">
                     <div class="dash-label"><span class="icon-left"><i class="fas fa-lightbulb-on"></i></span> <?= ($c['c__tree_inputs']+$c['c__tree_outputs']) ?> Concepts/Best-Practices</div>
                     <div class="dash-label"><span class="icon-left"><i class="fas fa-clock"></i></span> <?= echo_hours(($c['c__tree_max_hours']),false) ?> To Complete</div>
-                    <div class="dash-label"><span class="icon-left"><i class="fas fa-user-graduate"></i></span> <span data-toggle="tooltip" title="We curated concepts and best practices from industry experts" data-placement="top" class="underdot">Trained by 14 Industry Expert</span></div>
+                    <div class="dash-label"><span class="icon-left"><i class="fas fa-user-graduate"></i></span> <span data-toggle="tooltip" title="We curated concepts and best practices from industry experts" data-placement="top" class="underdot">Trained with 14 Industry Expert</span></div>
                     <!-- <a href="alert('show')"><u style="font-size:1em; margin-left:3px; display: inline-block;">See List</u></a> -->
 
                     <?php if(0){ ?>
@@ -109,7 +109,7 @@
 
 
                 <div class="border" style="background-color: #FFF; padding: 6px 0 2px 6px;">
-                    <?php echo_support_chat($c['c_id']); ?>
+                    <?php echo_subscribe_button($c['c_id']); ?>
                 </div>
             </div>
 

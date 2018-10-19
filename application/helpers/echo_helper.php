@@ -831,7 +831,8 @@ function echo_estimated_time($c_time_estimate,$show_icon=1,$micro=false,$c_id=0,
 
 }
 
-function echo_support_chat($c_id){
+function echo_subscribe_button($c_id){
+
     $CI =& get_instance();
     $fb_settings = $CI->config->item('fb_settings');
     $cs = $CI->Db_model->c_fetch(array(
