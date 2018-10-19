@@ -222,7 +222,7 @@ class Comm_model extends CI_Model {
             if(count($cs)>0){
 
                 //Amazing, move on to next step:
-                $fb_ref = 'SUBSCRIBE10_'.$cs['c_id'];
+                $fb_ref = 'SUBSCRIBE10_'.$cs[0]['c_id'];
 
             } else {
 
