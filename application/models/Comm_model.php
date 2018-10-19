@@ -330,7 +330,7 @@ class Comm_model extends CI_Model {
                             'e_inbound_u_id' => 2738, //Initiated by PA
                             'e_outbound_u_id' => $fetch_us[0]['u_id'],
                             'e_outbound_c_id' => $fetch_cs[0]['c_id'],
-                            'i_message' => 'You have already subscribed to '.$fetch_cs[0]['c_output'].'. We have been working on it together since '.echo_time($duplicate_w['w_timestamp'], 2).' /open_actionplan',
+                            'i_message' => 'You have already subscribed to '.$fetch_cs[0]['c_outcome'].'. We have been working on it together since '.echo_time($duplicate_w['w_timestamp'], 2).' /open_actionplan',
                         ),
                     ));
 
@@ -351,7 +351,7 @@ class Comm_model extends CI_Model {
                             'e_inbound_u_id' => 2738, //Initiated by PA
                             'e_outbound_u_id' => $fetch_us[0]['u_id'],
                             'e_outbound_c_id' => $fetch_cs[0]['c_id'],
-                            'i_message' => 'Are you interested to '.$fetch_cs[0]['c_output'].'?',
+                            'i_message' => 'Are you interested to '.$fetch_cs[0]['c_outcome'].'?',
                             'quick_replies' => array(
                                 array(
                                     'content_type' => 'text',
@@ -396,7 +396,7 @@ class Comm_model extends CI_Model {
                         'e_inbound_u_id' => 2738, //Initiated by PA
                         'e_outbound_u_id' => $fetch_us[0]['u_id'],
                         'e_outbound_c_id' => $w_c_id,
-                        'i_message' => 'To '.$fetch_cs[0]['c_output'].' will take about '.$tree['c1__tree_max_hours'].' hours. Confirm subscription?',
+                        'i_message' => 'To '.$fetch_cs[0]['c_outcome'].' will take about '.$tree['c1__tree_max_hours'].' hours. Confirm subscription?',
                         'quick_replies' => array(
                             array(
                                 'content_type' => 'text',
@@ -547,7 +547,7 @@ class Comm_model extends CI_Model {
                     'e_inbound_u_id' => 2738, //Initiated by PA
                     'e_outbound_u_id' => $fetch_us[0]['u_id'],
                     'e_outbound_c_id' => $fetch_cs[0]['c_id'],
-                    'i_message' => 'Do you want to '.$fetch_cs[0]['c_output'].'?',
+                    'i_message' => 'Do you want to '.$fetch_cs[0]['c_outcome'].'?',
                     'quick_replies' => array(
                         array(
                             'content_type' => 'text',
