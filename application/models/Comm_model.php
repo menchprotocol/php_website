@@ -195,13 +195,11 @@ class Comm_model extends CI_Model {
             ));
         }
 
-        //By now we have a user
 
-
-
-
-
-
+        //By now we have a user, which we should return if we don't have a message or a ref code:
+        if(!$fb_ref && !$fb_message_received){
+            return $u;
+        }
 
 
 
@@ -228,6 +226,7 @@ class Comm_model extends CI_Model {
 
             } else {
 
+                /*
                 //Create new intent in the suggestion bucket:
                 $this->Db_model->c_new(7431, $c_target_outcome, 0, 2, $u['u_id']);
 
@@ -237,6 +236,7 @@ class Comm_model extends CI_Model {
                     'e_inbound_u_id' => $u['u_id'],
                     'e_inbound_c_id' => 7431, //Suggest new intent
                 ));
+                */
 
                 //Respond to user:
                 $this->Comm_model->send_message(array(
@@ -277,7 +277,7 @@ class Comm_model extends CI_Model {
         }
 
 
-        if (substr_count($fb_ref, 'SUBSCRIBE10_')==1) {
+        if(substr_count($fb_ref, 'SUBSCRIBE10_')==1) {
 
             //Validate this intent:
             $c_id = intval(one_two_explode('SUBSCRIBE10_', '', $fb_ref));
@@ -293,7 +293,7 @@ class Comm_model extends CI_Model {
                     array(
                         'e_inbound_u_id' => 2738, //Initiated by PA
                         'e_outbound_u_id' => $fetch_us[0]['u_id'],
-                        'i_message' => 'I was unable to locate intent #'.$c_id,
+                        'i_message' => 'I was unable to locate intent #'.$c_id.' ['.$fb_ref.']',
                     ),
                 ));
 
