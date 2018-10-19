@@ -207,9 +207,9 @@ class Comm_model extends CI_Model {
         if(substr_count($fb_message_received, 'lets ')>0 || substr_count($fb_message_received, 'let\'s ')>0) {
 
             if(substr_count($fb_message_received, 'lets ')>0){
-                $c_target_outcome = intval(one_two_explode('lets ', ' ', $fb_message_received));
+                $c_target_outcome = one_two_explode('lets ', ' ', $fb_message_received);
             } else {
-                $c_target_outcome = intval(one_two_explode('let\'s ', ' ', $fb_message_received));
+                $c_target_outcome = one_two_explode('let\'s ', ' ', $fb_message_received);
             }
 
             //TODO search for this via NLP API
