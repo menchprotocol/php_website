@@ -23,7 +23,7 @@ class Bot extends CI_Controller {
         $search_index = load_algolia('alg_intents');
 
         $res = $search_index->search('resume', [
-            'hitsPerPage' => 50
+            'hitsPerPage' => 6
         ]);
 
         echo_json($res);
