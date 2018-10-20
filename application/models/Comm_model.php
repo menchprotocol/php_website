@@ -212,7 +212,17 @@ class Comm_model extends CI_Model {
                 $c_target_outcome = one_two_explode('let\'s ', ' ', $fb_message_received);
             }
 
-            //TODO search for this via NLP API
+            //TODO migrate this to NLP framework like api.ai
+            $search_index = load_algolia('alg_intents');
+
+            $res = $search_index->search('query string', [
+                'attributesToRetrieve' => [
+                    'firstname',
+                    'lastname',
+                ],
+                'hitsPerPage' => 50
+            ]);
+
             //Do replacement search for now:
             $cs = $this->Db_model->c_fetch(array(
                 'LOWER(c.c_outcome) LIKE \'%'.$c_target_outcome.'%\'' => null,

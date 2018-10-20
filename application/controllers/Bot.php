@@ -19,6 +19,16 @@ class Bot extends CI_Controller {
         }
     }
 
+    function s(){
+        $search_index = load_algolia('alg_intents');
+
+        $res = $search_index->search('resume', [
+            'hitsPerPage' => 50
+        ]);
+
+        echo_json($res);
+    }
+
     function rec($c_id){
         echo_json($this->Db_model->c_recursive_fetch($c_id, true));
     }

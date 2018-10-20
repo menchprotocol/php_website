@@ -16,6 +16,12 @@ function lock_cron_for_processing($e_items){
     }
 }
 
+function load_algolia($index_name){
+    require_once('application/libraries/algoliasearch.php');
+    $client = new \AlgoliaSearch\Client("49OCX1ZXLJ", "84a8df1fecf21978299e31c5b535ebeb");
+    return $client->initIndex($index_name);
+}
+
 function missing_required_db_fields($insert_columns,$field_array){
     foreach($field_array as $req_field){
         if(!isset($insert_columns[$req_field]) || strlen($insert_columns[$req_field])==0){

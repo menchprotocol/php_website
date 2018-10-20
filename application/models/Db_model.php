@@ -2070,15 +2070,12 @@ class Db_model extends CI_Model {
             return json_decode(curl_html($website['url']."cron/algolia_sync/".$obj."/".$obj_id));
         }
 
-        //Include PHP library:
-        require_once('application/libraries/algoliasearch.php');
-        $client = new \AlgoliaSearch\Client("49OCX1ZXLJ", "84a8df1fecf21978299e31c5b535ebeb");
-        $index = $client->initIndex($alg_indexes[$obj]);
-
+        //Load algolia
+        $search_index = load_algolia($alg_indexes[$obj]);
 
         if(!$obj_id){
             //Clear this index before re-creating it from scratch:
-            $index->clearIndex();
+            $search_index->clearIndex();
 
             //Reset the local algolia IDs for this:
             $this->db->query("UPDATE ".$algolia_local_tables[$obj]." SET ".$obj."_algolia_id=0 WHERE ".$obj."_algolia_id>0");
@@ -2228,12 +2225,12 @@ class Db_model extends CI_Model {
                 if(intval($items[0][$obj.'_algolia_id'])>0){
 
                     //Update existing index:
-                    $obj_add_message = $index->saveObjects($return_items);
+                    $obj_add_message = $search_index->saveObjects($return_items);
 
                 } else {
 
                     //Create new index:
-                    $obj_add_message = $index->addObjects($return_items);
+                    $obj_add_message = $search_index->addObjects($return_items);
 
                     //Now update local database with the objectIDs:
                     if(isset($obj_add_message['objectIDs']) && count($obj_add_message['objectIDs'])>0){
@@ -2249,7 +2246,7 @@ class Db_model extends CI_Model {
                 //item has been deleted locally but its still indexed on Algolia
 
                 //Delete from algolia:
-                $index->deleteObject($items[0][$obj.'_algolia_id']);
+                $search_index->deleteObject($items[0][$obj.'_algolia_id']);
 
                 //also set its algolia_id to 0 locally:
                 $this->db->query("UPDATE ".$algolia_local_tables[$obj]." SET ".$obj."_algolia_id=0 WHERE ".$obj."_id=".$obj_id);
@@ -2266,7 +2263,7 @@ class Db_model extends CI_Model {
             //Mass update request
             //All remote items have been deleted from algolia index and local algolia_ids have been set to zero
             //we're ready to create new items and update local:
-            $obj_add_message = $index->addObjects($return_items);
+            $obj_add_message = $search_index->addObjects($return_items);
 
             //Now update database with the objectIDs:
             if(isset($obj_add_message['objectIDs']) && count($obj_add_message['objectIDs'])>0){
