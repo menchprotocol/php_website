@@ -90,7 +90,6 @@ class Db_model extends CI_Model {
             //Set default new hours:
             $default_new_hours = 0.05; //3 min default
             $recursive_query = array(
-                'c__tree_outputs' => 1,
                 'c__tree_max_hours' => $default_new_hours,
             );
 
@@ -99,8 +98,7 @@ class Db_model extends CI_Model {
                 'c_inbound_u_id' => $inbound_u_id,
                 'c_outcome' => trim($c_outcome),
                 'c_time_estimate' => $default_new_hours,
-                'c__tree_outputs' => 1, //Default
-                'c__tree_inputs' => 0,
+                'c__tree_all_count' => 1,
                 'c__tree_max_hours' => $default_new_hours,
             ));
 
@@ -171,8 +169,7 @@ class Db_model extends CI_Model {
 
             //Prepare recursive update:
             $recursive_query = array(
-                'c__tree_outputs' => $new_c['c__tree_outputs'],
-                'c__tree_inputs' => $new_c['c__tree_inputs'],
+                'c__tree_all_count' => $new_c['c__tree_all_count'],
                 'c__tree_max_hours' => number_format($new_c['c__tree_max_hours'],3),
                 'c__tree_messages' => $new_c['c__tree_messages'],
             );
@@ -218,7 +215,7 @@ class Db_model extends CI_Model {
             'status' => 1,
             'c_id' => $new_c['c_id'],
             'c__tree_max_hours' => $new_c['c__tree_max_hours'],
-            'adjusted_c_count' => ( $new_c['c__tree_outputs'] + $new_c['c__tree_inputs'] ),
+            'adjusted_c_count' => $new_c['c__tree_all_count'],
             'html' => echo_c(array_merge($new_c,$relations[0]),$next_level,intval($c_id)),
         );
     }
@@ -1872,8 +1869,7 @@ class Db_model extends CI_Model {
 
 	    //Get core data:
         $immediate_children = array(
-            'c1__tree_inputs' => 0,
-            'c1__tree_outputs' => 0,
+            'c1__tree_all_count' => 0,
             'c1__tree_max_hours' => 0,
             'c1__this_messages' => 0,
             'c1__tree_messages' => 0,
@@ -1922,8 +1918,7 @@ class Db_model extends CI_Model {
                     }
 
                     //Addup children if any:
-                    $immediate_children['c1__tree_inputs'] += $granchildren['c1__tree_inputs'];
-                    $immediate_children['c1__tree_outputs'] += $granchildren['c1__tree_outputs'];
+                    $immediate_children['c1__tree_all_count'] += $granchildren['c1__tree_all_count'];
                     $immediate_children['c1__tree_max_hours'] += $granchildren['c1__tree_max_hours'];
                     if($db_update){
                         $immediate_children['c1__tree_messages'] += $granchildren['c1__tree_messages'];
@@ -1961,16 +1956,10 @@ class Db_model extends CI_Model {
 
         if(count($cs)>0){
 
-            if(intval($cs[0]['c_require_url_to_complete']) || intval($cs[0]['c_require_notes_to_complete'])){
-                $immediate_children['c1__tree_outputs'] += 1;
-            } else {
-                $immediate_children['c1__tree_inputs'] += 1;
-            }
             $immediate_children['c1__tree_max_hours'] += $cs[0]['c_time_estimate'];
 
             //Set the data for this intent:
-            $cs[0]['c1__tree_inputs'] = $immediate_children['c1__tree_inputs'];
-            $cs[0]['c1__tree_outputs'] = $immediate_children['c1__tree_outputs'];
+            $cs[0]['c1__tree_all_count'] = $immediate_children['c1__tree_all_count'];
             $cs[0]['c1__tree_max_hours'] = $immediate_children['c1__tree_max_hours'];
 
             //Count messages only if DB updating:
@@ -2000,8 +1989,7 @@ class Db_model extends CI_Model {
             //Update DB only if any single field is not synced:
             if($db_update && !(
                 number_format($cs[0]['c1__tree_max_hours'],3)==number_format($cs[0]['c__tree_max_hours'],3) &&
-                $cs[0]['c1__tree_inputs']==$cs[0]['c__tree_inputs'] &&
-                $cs[0]['c1__tree_outputs']==$cs[0]['c__tree_outputs'] &&
+                $cs[0]['c1__tree_all_count']==$cs[0]['c__tree_all_count'] &&
                 $cs[0]['c1__this_messages']==$cs[0]['c__this_messages'] &&
                 $cs[0]['c1__tree_messages']==$cs[0]['c__tree_messages'] &&
                 intval($cs[0]['c__is_orphan'])==0
@@ -2010,8 +1998,7 @@ class Db_model extends CI_Model {
                 //Something was not up to date, let's update:
                 $this->Db_model->c_update( $c_id , array(
                     'c__tree_max_hours' => number_format($cs[0]['c1__tree_max_hours'],3),
-                    'c__tree_inputs' => $cs[0]['c1__tree_inputs'],
-                    'c__tree_outputs' => $cs[0]['c1__tree_outputs'],
+                    'c__tree_all_count' => $cs[0]['c1__tree_all_count'],
                     'c__this_messages' => $cs[0]['c1__this_messages'],
                     'c__tree_messages' => $cs[0]['c1__tree_messages'],
                     'c__is_orphan' => 0, //It cannot be orphan since its part of the main tree
@@ -2019,7 +2006,7 @@ class Db_model extends CI_Model {
 
                 $immediate_children['db_updated']++;
 
-                array_push($immediate_children['db_queries'],'['.$c_id.'] Hours:'.number_format($cs[0]['c__tree_max_hours'],3).'=>'.number_format($cs[0]['c1__tree_max_hours'],3).' / Inputs:'.$cs[0]['c__tree_inputs'].'=>'.$cs[0]['c1__tree_inputs'].' / Outputs:'.$cs[0]['c__tree_outputs'].'=>'.$cs[0]['c1__tree_outputs'].' / Message:'.$cs[0]['c__this_messages'].'=>'.$cs[0]['c1__this_messages'].' / Tree Message:'.$cs[0]['c__tree_messages'].'=>'.$cs[0]['c1__tree_messages'].' / Orphan:'.intval($cs[0]['c__is_orphan']).'=>0 ('.$cs[0]['c_outcome'].')');
+                array_push($immediate_children['db_queries'],'['.$c_id.'] Hours:'.number_format($cs[0]['c__tree_max_hours'],3).'=>'.number_format($cs[0]['c1__tree_max_hours'],3).' / All Count:'.$cs[0]['c__tree_all_count'].'=>'.$cs[0]['c1__tree_all_count'].' / Message:'.$cs[0]['c__this_messages'].'=>'.$cs[0]['c1__this_messages'].' / Tree Message:'.$cs[0]['c__tree_messages'].'=>'.$cs[0]['c1__tree_messages'].' / Orphan:'.intval($cs[0]['c__is_orphan']).'=>0 ('.$cs[0]['c_outcome'].')');
 
             }
         }
@@ -2171,8 +2158,7 @@ class Db_model extends CI_Model {
                 $new_item['c_keywords'] = ( strlen($item['c_trigger_statements'])>0 ? join(' ',json_decode($item['c_trigger_statements'])) : '' );
 
                 $new_item['c__tree_max_hours'] = number_format($item['c__tree_max_hours'],3);
-                $new_item['c__tree_inputs'] = intval($item['c__tree_inputs']);
-                $new_item['c__tree_outputs'] = intval($item['c__tree_outputs']);
+                $new_item['c__tree_all_count'] = intval($item['c__tree_all_count']);
                 $new_item['c__tree_messages'] = intval($item['c__tree_messages']);
 
                 //Fetch all Messages:

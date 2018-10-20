@@ -213,14 +213,12 @@ class Intents extends CI_Controller
 
         //Adjust tree on both branches:
         $updated_from_recursively = $this->Db_model->c_update_tree( $from[0]['c_id'] , array(
-            'c__tree_outputs' => -($subject[0]['c__tree_outputs']),
-            'c__tree_inputs' => -($subject[0]['c__tree_inputs']),
+            'c__tree_all_count' => -($subject[0]['c__tree_all_count']),
             'c__tree_max_hours' => -(number_format($subject[0]['c__tree_max_hours'],3)),
             'c__tree_messages' => -($subject[0]['c__tree_messages']),
         ));
         $updated_to_recursively = $this->Db_model->c_update_tree( $to[0]['c_id'] , array(
-            'c__tree_outputs' => +($subject[0]['c__tree_outputs']),
-            'c__tree_inputs' => +($subject[0]['c__tree_inputs']),
+            'c__tree_all_count' => +($subject[0]['c__tree_all_count']),
             'c__tree_max_hours' => +(number_format($subject[0]['c__tree_max_hours'],3)),
             'c__tree_messages' => +($subject[0]['c__tree_messages']),
         ));
@@ -339,26 +337,11 @@ class Intents extends CI_Controller
             } else {
 
                 //Something was updated!
-
                 //Does it required a recursive upward update on the tree?
-
                 if($key=='c_time_estimate'){
-
                     $recursive_query['c__tree_max_hours'] = number_format((doubleval($_POST[$key]) - doubleval($cs[0][$key])),3);
-
-                } elseif($key=='c_require_url_to_complete' || $key=='c_require_notes_to_complete'){
-
-                    if(intval($_POST['c_require_url_to_complete']) || intval($_POST['c_require_notes_to_complete'])){
-                        //Changed to output:
-                        $recursive_query['c__tree_inputs'] = -1;
-                        $recursive_query['c__tree_outputs'] = 1;
-                    } else {
-                        //Changed to input:
-                        $recursive_query['c__tree_outputs'] = -1;
-                        $recursive_query['c__tree_inputs'] = 1;
-                    }
-
                 }
+
             }
         }
 
@@ -457,8 +440,7 @@ class Intents extends CI_Controller
 
         //Update parent tree (and upwards) based on the intent type BEFORE removing the link:
         $recursive_query = array(
-            'c__tree_outputs' => -($cs[0]['c__tree_outputs']),
-            'c__tree_inputs' => -($cs[0]['c__tree_inputs']),
+            'c__tree_all_count' => -($cs[0]['c__tree_all_count']),
             'c__tree_max_hours' => -(number_format($cs[0]['c__tree_max_hours'],3)),
             'c__tree_messages' => -($cs[0]['c__tree_messages']),
         );
@@ -501,7 +483,7 @@ class Intents extends CI_Controller
         echo_json(array(
             'status' => 1,
             'c_inbound' => $c__inbounds[0]['cr_inbound_c_id'],
-            'adjusted_c_count' => -($cs[0]['c__tree_outputs'] + $cs[0]['c__tree_inputs']),
+            'adjusted_c_count' => -($cs[0]['c__tree_all_count']),
         ));
 
     }

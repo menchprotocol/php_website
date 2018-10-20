@@ -183,7 +183,7 @@ if(isset($orphan_cs)){
                     var hours = Math.round(parseFloat(suggestion.c__tree_max_hours));
                     var fancy_hours = ( minutes<60 ? minutes+'Min'+(minutes==1?'':'s') :  hours+'Hr'+(hours==1?'':'s') );
 
-                    return '<span class="suggest-prefix"><i class="fas fa-hashtag"></i></span> '+ suggestion._highlightResult.c_outcome.value + ( parseFloat(suggestion.c__tree_max_hours)>0 ? '<span class="search-info">'+( parseInt(suggestion.c__tree_inputs)+parseInt(suggestion.c__tree_outputs)>1 ? ' <i class="'+( parseInt(suggestion.c_is_any) ? 'fas fa-code-merge' : 'fas fa-sitemap' )+'"></i> ' + parseInt(suggestion.c__tree_inputs)+parseInt(suggestion.c__tree_outputs) : '' ) + ' <i class="fas fa-clock"></i> '+ fancy_hours+'</span>' : '');
+                    return '<span class="suggest-prefix"><i class="fas fa-hashtag"></i></span> '+ suggestion._highlightResult.c_outcome.value + ( parseFloat(suggestion.c__tree_max_hours)>0 ? '<span class="search-info">'+( parseInt(suggestion.c__tree_all_count)>1 ? ' <i class="'+( parseInt(suggestion.c_is_any) ? 'fas fa-code-merge' : 'fas fa-sitemap' )+'"></i> ' + parseInt(suggestion.c__tree_all_count) : '' ) + ' <i class="fas fa-clock"></i> '+ fancy_hours+'</span>' : '');
                 },
                 header: function(data) {
                     if(!data.isEmpty){
@@ -762,7 +762,7 @@ if(isset($orphan_cs)){
 
 
             //Expand/Contract buttons
-            echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-outbound-count outbound-counter-'.$c['c_id'].'">'.($c['c__tree_inputs']+$c['c__tree_outputs']-1).'</span> Outs</h5>';
+            echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-outbound-count outbound-counter-'.$c['c_id'].'">'.($c['c__tree_all_count']-1).'</span> Outs</h5>';
             echo '<div id="task_view" style="padding-left:8px; display: inline-block;">';
             echo '<i class="fas fa-plus-square expand_all" style="font-size: 1.2em;"></i> &nbsp;';
             echo '<i class="fas fa-minus-square close_all" style="font-size: 1.2em;"></i>';

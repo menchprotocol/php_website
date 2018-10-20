@@ -214,7 +214,6 @@ class Comm_model extends CI_Model {
                 $c_target_outcome = one_two_explode('let’s ', ' ', $fb_message_received);
             }
 
-
             //TODO migrate this to NLP framework like api.ai
             $search_index = load_algolia('alg_intents');
 
