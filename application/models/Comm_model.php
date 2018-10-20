@@ -215,24 +215,43 @@ class Comm_model extends CI_Model {
             //TODO migrate this to NLP framework like api.ai
             $search_index = load_algolia('alg_intents');
 
-            $res = $search_index->search('query string', [
-                'attributesToRetrieve' => [
-                    'firstname',
-                    'lastname',
-                ],
-                'hitsPerPage' => 50
+            $res = $search_index->search($c_target_outcome, [
+                'hitsPerPage' => 6
             ]);
 
-            //Do replacement search for now:
-            $cs = $this->Db_model->c_fetch(array(
-                'LOWER(c.c_outcome) LIKE \'%'.$c_target_outcome.'%\'' => null,
-                'c.c_status >' => 0,
-            ));
+            if($res['nbHits']>0){
 
-            if(count($cs)>0){
+                //Show options for them to subscribe to:
+                $quick_replies = array();
+                $i_message = 'I found the following intent'.echo__s($res['nbHits']).' that matches your request:'."\n";
+                foreach ($res['hits'] as $count=>$hit){
+                    $i_message .= "\n".($count+1).'/ '.$hit['c_outcome'].' in '.echo_hours($hit['c__tree_max_hours']);
+                    array_push($quick_replies , array(
+                        'content_type' => 'text',
+                        'title' => ($count+1).'/',
+                        'payload' => 'SUBSCRIBE10_'.$hit['c_id'],
+                    ));
+                }
 
-                //Amazing, move on to next step:
-                $fb_ref = 'SUBSCRIBE10_'.$cs[0]['c_id'];
+
+                //Give them a none option:
+                $i_message .= "\n".($count+2).'/ None of the above';
+                array_push($quick_replies , array(
+                    'content_type' => 'text',
+                    'title' => ($count+2).'/',
+                    'payload' => 'SUBSCRIBE10_0',
+                ));
+
+
+                //Show them what we found:
+                $this->Comm_model->send_message(array(
+                    array(
+                        'e_inbound_u_id' => 2738, //Initiated by PA
+                        'e_outbound_u_id' => $fetch_us[0]['u_id'],
+                        'i_message' => $i_message,
+                        'quick_replies' => $quick_replies,
+                    ),
+                ));
 
             } else {
 
