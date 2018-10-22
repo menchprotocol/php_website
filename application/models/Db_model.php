@@ -1865,14 +1865,19 @@ class Db_model extends CI_Model {
         return $affected_rows;
     }
 
-	function c_recursive_fetch($c_id, $fetch_outbound=0, $db_update=0, $cr_id=0, $recursive_children=null, $k_w_id=0){
+	function c_recursive_fetch($c_id, $fetch_outbound=0, $db_update=0, $parent_c=array(), $recursive_children=null, $k_w_id=0){
 
 	    //Get core data:
         $immediate_children = array(
             'c1__tree_all_count' => 0,
-            'c1__tree_max_hours' => 0,
             'c1__this_messages' => 0,
             'c1__tree_messages' => 0,
+
+            'c1__tree_min_hours' => 0,
+            'c1__tree_max_hours' => 0,
+            'c1__tree_min_cost' => 0,
+            'c1__tree_max_cost' => 0,
+
             'db_updated' => 0,
             'db_queries' => array(),
             'c_flat' => array(),
@@ -1884,70 +1889,26 @@ class Db_model extends CI_Model {
             $recursive_children = $immediate_children;
         }
 
-        //A recursive function to fetch all Tree for a given intent, either upwards or downwards
-        if($fetch_outbound){
-            $child_cs = $this->Db_model->cr_outbound_fetch(array(
-                'cr.cr_inbound_c_id' => $c_id,
-                'cr.cr_status >=' => 0,
-                'c.c_status >' => 0,
-            ));
-        } else {
-            $child_cs = $this->Db_model->cr_inbound_fetch(array(
-                'cr.cr_outbound_c_id' => $c_id,
-                'cr.cr_status >=' => 0,
-                'c.c_status >' => 0,
-            ));
-        }
 
 
-        if(count($child_cs)>0){
-            foreach($child_cs as $c){
-                if(in_array($c['c_id'],$recursive_children['c_flat'])){
 
-                    //Ooooops, this has an error as it would result in an infinite loop:
-                    return false;
 
-                } else {
-
-                    //Fetch children for this intent, if any:
-                    $granchildren = $this->Db_model->c_recursive_fetch($c['c_id'], $fetch_outbound, $db_update, $c['cr_id'], $immediate_children, $k_w_id);
-
-                    if(!$granchildren){
-                        //There was an infinity break
-                        return false;
-                    }
-
-                    //Addup children if any:
-                    $immediate_children['c1__tree_all_count'] += $granchildren['c1__tree_all_count'];
-                    $immediate_children['c1__tree_max_hours'] += $granchildren['c1__tree_max_hours'];
-                    if($db_update){
-                        $immediate_children['c1__tree_messages'] += $granchildren['c1__tree_messages'];
-                        $immediate_children['db_updated'] += $granchildren['db_updated'];
-                        if(!empty($granchildren['db_queries'])){
-                            array_push($immediate_children['db_queries'],$granchildren['db_queries']);
-                        }
-                    }
-
-                    array_push($immediate_children['cr_flat'],$granchildren['cr_flat']);
-                    array_push($immediate_children['c_flat'],$granchildren['c_flat']);
-                    array_push($immediate_children['tree_top'],$granchildren['tree_top']);
-                }
-            }
-        }
 
 
         //Fetch & add this item itself:
-        if($cr_id){
+        if(isset($parent_c['cr_id'])){
+            $parent_is_any = intval($parent_c['c_is_any']);
             if($fetch_outbound){
                 $cs = $this->Db_model->cr_outbound_fetch(array(
-                    'cr.cr_id' => $cr_id,
+                    'cr.cr_id' => $parent_c['cr_id'],
                 ));
             } else {
                 $cs = $this->Db_model->cr_inbound_fetch(array(
-                    'cr.cr_id' => $cr_id,
+                    'cr.cr_id' => $parent_c['cr_id'],
                 ));
             }
         } else {
+            $parent_is_any = 0;
             //This is the very first item that
             $cs = $this->Db_model->c_fetch(array(
                 'c.c_id' => $c_id,
@@ -1975,7 +1936,7 @@ class Db_model extends CI_Model {
             if(isset($cs[0]['cr_id'])){
                 array_push($immediate_children['cr_flat'],intval($cs[0]['cr_id']));
                 if($k_w_id>0){
-                    //Add this to the cache:
+                    //Add this to the subscription cache:
                     $this->Db_model->k_create(array(
                         'k_w_id' => $k_w_id,
                         'k_cr_id' => $cs[0]['cr_id'],
@@ -1988,11 +1949,11 @@ class Db_model extends CI_Model {
 
             //Update DB only if any single field is not synced:
             if($db_update && !(
-                number_format($cs[0]['c1__tree_max_hours'],3)==number_format($cs[0]['c__tree_max_hours'],3) &&
-                $cs[0]['c1__tree_all_count']==$cs[0]['c__tree_all_count'] &&
-                $cs[0]['c1__this_messages']==$cs[0]['c__this_messages'] &&
-                $cs[0]['c1__tree_messages']==$cs[0]['c__tree_messages'] &&
-                intval($cs[0]['c__is_orphan'])==0
+                    number_format($cs[0]['c1__tree_max_hours'],3)==number_format($cs[0]['c__tree_max_hours'],3) &&
+                    $cs[0]['c1__tree_all_count']==$cs[0]['c__tree_all_count'] &&
+                    $cs[0]['c1__this_messages']==$cs[0]['c__this_messages'] &&
+                    $cs[0]['c1__tree_messages']==$cs[0]['c__tree_messages'] &&
+                    intval($cs[0]['c__is_orphan'])==0
                 )){
 
                 //Something was not up to date, let's update:
@@ -2009,7 +1970,70 @@ class Db_model extends CI_Model {
                 array_push($immediate_children['db_queries'],'['.$c_id.'] Hours:'.number_format($cs[0]['c__tree_max_hours'],3).'=>'.number_format($cs[0]['c1__tree_max_hours'],3).' / All Count:'.$cs[0]['c__tree_all_count'].'=>'.$cs[0]['c1__tree_all_count'].' / Message:'.$cs[0]['c__this_messages'].'=>'.$cs[0]['c1__this_messages'].' / Tree Message:'.$cs[0]['c__tree_messages'].'=>'.$cs[0]['c1__tree_messages'].' / Orphan:'.intval($cs[0]['c__is_orphan']).'=>0 ('.$cs[0]['c_outcome'].')');
 
             }
+
         }
+
+
+
+
+
+
+
+
+
+
+        //A recursive function to fetch all Tree for a given intent, either upwards or downwards
+        if($fetch_outbound){
+            $child_cs = $this->Db_model->cr_outbound_fetch(array(
+                'cr.cr_inbound_c_id' => $c_id,
+                'cr.cr_status >=' => 0,
+                'c.c_status >' => 0,
+            ));
+        } else {
+            $child_cs = $this->Db_model->cr_inbound_fetch(array(
+                'cr.cr_outbound_c_id' => $c_id,
+                'cr.cr_status >=' => 0,
+                'c.c_status >' => 0,
+            ));
+        }
+
+
+        if(count($child_cs)>0){
+            foreach($child_cs as $c){
+                if(in_array($c['c_id'],$recursive_children['c_flat'])){
+
+                    //Ooooops, this has an error as it would result in an infinite loop:
+                    return false;
+
+                } else {
+
+                    //Fetch children for this intent, if any:
+                    $granchildren = $this->Db_model->c_recursive_fetch($c['c_id'], $fetch_outbound, $db_update, $c, $immediate_children, $k_w_id);
+
+                    if(!$granchildren){
+                        //There was an infinity break
+                        return false;
+                    }
+
+                    //Addup children if any:
+                    $immediate_children['c1__tree_all_count'] += $granchildren['c1__tree_all_count'];
+                    $immediate_children['c1__tree_max_hours'] += $granchildren['c1__tree_max_hours'];
+                    if($db_update){
+                        $immediate_children['c1__tree_messages'] += $granchildren['c1__tree_messages'];
+                        $immediate_children['db_updated'] += $granchildren['db_updated'];
+                        if(!empty($granchildren['db_queries'])){
+                            array_push($immediate_children['db_queries'],$granchildren['db_queries']);
+                        }
+                    }
+
+                    array_push($immediate_children['cr_flat'],$granchildren['cr_flat']);
+                    array_push($immediate_children['c_flat'],$granchildren['c_flat']);
+                    array_push($immediate_children['tree_top'],$granchildren['tree_top']);
+                }
+            }
+        }
+
+
 
         //Flatten intent ID array:
         $result = array();
