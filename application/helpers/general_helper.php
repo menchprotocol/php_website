@@ -53,7 +53,7 @@ function fetch_entity_tree($u_id,$is_edit=false){
     ), array('u__outbound_count','u__urls'));
 
     if(count($entities)<1){
-        return redirect_message('/entities/2738','<div class="alert alert-danger" role="alert">Invalid Entity ID</div>');
+        return redirect_message('/entities','<div class="alert alert-danger" role="alert">Invalid Entity ID</div>');
     }
 
     $view_data = array(

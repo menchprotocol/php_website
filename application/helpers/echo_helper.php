@@ -890,7 +890,7 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
 
 
     if($level==1 && !$c['c__is_orphan']){
-        $ui .= '<a href="/'.$c['c_id'].'" class="underdot" style="margin:0 7px;" target="_blank" data-toggle="tooltip" title="Open Landing Page with Intent tree overview & Messenger subscription button" data-placement="left"><i class="fas fa-external-link"></i></a>';
+        $ui .= '<a href="/'.$c['c_id'].'" class="underdot" style="margin:0 7px; font-size:1.3em;" target="_blank" data-toggle="tooltip" title="Open Landing Page with Intent tree overview & Messenger subscription button" data-placement="left"><i class="fas fa-external-link"></i></a>';
     }
 
     $ui .= '<a href="#messages-'.$c['c_id'].'" onclick="load_c_messages('.$c['c_id'].')" class="badge badge-primary" style="width:40px;"><span class="btn-counter" id="messages-counter-'.$c['c_id'].'">'.$c['c__this_messages'].'</span><i class="fas fa-comment-dots"></i></a>';
@@ -1016,7 +1016,7 @@ function echo_u($u, $level, $can_edit, $is_inbound=false){
 
         } elseif(array_key_exists(1281, $udata['u__inbounds']) && $u['u_status']==1){
 
-            $ui .= '<i class="'.$status_index['u'][2]['s_icon'].'"></i> ';
+            $ui .= '<i class="'.$status_index['u'][2]['s_icon'].'" style="font-size:0.9em;"></i> ';
             $ui .= '<a href="javascript:update_u_status('.$u['u_id'].',2)" data-toggle="tooltip" data-placement="left" title="Current status is '.$status_index['u'][$u['u_status']]['s_name'].'. Click to mark entity as '.$status_index['u'][2]['s_name'].': '.$status_index['u'][2]['s_desc'].'" style="text-decoration:underline;">Verify</a>';
 
         } elseif($u['u_status']==2){

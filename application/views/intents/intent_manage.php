@@ -718,7 +718,6 @@ if(isset($orphan_cs)){
         <?php
 
 
-
         if(isset($orphan_cs)){
 
             echo '<div id="bootcamp-objective" class="list-group">';
@@ -730,9 +729,17 @@ if(isset($orphan_cs)){
         } else {
 
 
+            if($c['c_id']==7433) {
+                //This is the "Get to know how Mench Personal Assistant works" tree
+                //which is recommended to all new students who have not subscribed to it
+                //Let the admin know about this:
+                echo '<div class="alert alert-info" role="alert" style="margin-top: 0;"><i class="fas fa-globe"></i> This is a universal intent that gets recommended to every new Mench student</div>';
+            }
+
 
 
             echo '<h5 class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-inbound-count inbound-counter-'.$c['c_id'].'">'.count($c__inbounds).'</span> Ins</h5>';
+
             if(count($c__inbounds)>0){
                 echo '<div class="list-group list-level-2">';
                 foreach($c__inbounds as $sub_intent){
@@ -745,14 +752,13 @@ if(isset($orphan_cs)){
 
 
 
+
+
+
             echo '<h5 class="badge badge-h"><i class="fas fa-hashtag"></i> Intent</h5>';
             echo '<div id="bootcamp-objective" class="list-group">';
                 echo echo_c($c,1);
             echo '</div>';
-
-
-
-
 
 
 

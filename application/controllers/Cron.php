@@ -11,7 +11,11 @@ class Cron extends CI_Controller {
         //Example: /usr/bin/php /home/ubuntu/mench-web-app/index.php cron save_profile_pic
 	}
 
-
+    function intent_sync($c_id=7240,$update_c_table=1){
+        //Cron Settings: 31 * * * *
+	    //Syncs intents with latest caching data:
+        echo_json($this->Db_model->c_recursive_fetch($c_id, true, $update_c_table));
+    }
 
     function algolia_sync($obj,$obj_id=0){
         echo_json($this->Db_model->algolia_sync($obj,$obj_id));
@@ -50,10 +54,6 @@ class Cron extends CI_Controller {
             echo '<a href="/entities/'.$u['u_id'].'">#'.$u['u_id'].'</a> '.$u['u_full_name'].'<br />';
         }
     }
-
-    /* ******************************
-     * Classes
-     ****************************** */
 
 
     function e_score_recursive($u=array()){
@@ -135,12 +135,9 @@ class Cron extends CI_Controller {
 
 
 
-
-    /* ******************************
-     * Messaging
-     ****************************** */
-
     function message_drip(){
+
+        exit; //Logic needs updating
 
         //Cron Settings: */5 * * * *
 
@@ -377,6 +374,8 @@ class Cron extends CI_Controller {
 
     function message_fb_sync_attachments(){
 
+        exit; //Logic needs updating
+
         //Cron Settings: * * * * *
 
         /*
@@ -465,6 +464,8 @@ class Cron extends CI_Controller {
 
 
     function student_reminder_complete_task(){
+
+        exit; //Needs optimization
 
         //Cron Settings: 45 * * * *
         //Send reminders to students to complete their intent:

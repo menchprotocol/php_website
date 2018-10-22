@@ -17,7 +17,7 @@ class Entities extends CI_Controller {
 
 
     //Lists entities
-    function entity_manage($u_id=2738){
+    function entity_manage($u_id){
 
         $udata = auth(null,1); //Just be logged in to browse
         $view_data = fetch_entity_tree($u_id);

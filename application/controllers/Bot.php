@@ -29,9 +29,7 @@ class Bot extends CI_Controller {
         echo_json($res);
     }
 
-    function rec($c_id){
-        echo_json($this->Db_model->c_recursive_fetch($c_id, true));
-    }
+
     function ping($u_id){
         //Confirm the subscription:
         echo_json($this->Comm_model->send_message(array(

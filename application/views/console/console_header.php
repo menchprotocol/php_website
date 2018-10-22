@@ -74,7 +74,7 @@ $uri_segment_2 = $this->uri->segment(2);
                     <ul class="nav navbar-nav navbar-main navbar-right">
 
                         <li <?= ( $uri_segment_1=='intents' ? 'class="intent-active"' : '' ) ?>><a href="/intents/6623"><i class="fas fa-hashtag"></i> Intents</a></li>
-                        <li <?= ( $uri_segment_1=='entities' ? 'class="entity-active"' : '' ) ?>><a href="/entities/2738"><i class="fas fa-at"></i> Entities</a></li>
+                        <li <?= ( $uri_segment_1=='entities' ? 'class="entity-active"' : '' ) ?>><a href="/entities/1326"><i class="fas fa-at"></i> Entities</a></li>
 
 
                         <li class="extra-toggle"><a href="javascript:void(0);" onclick="$('.extra-toggle').toggle();">&nbsp; <i class="fas fa-ellipsis-h"></i> &nbsp;</a></li>

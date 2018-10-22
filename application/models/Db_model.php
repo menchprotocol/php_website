@@ -257,7 +257,7 @@ class Db_model extends CI_Model {
         if($insert_columns['w_id']>0){
 
             //Now let's create a cache of the Action Plan for this subscription:
-            $tree = $this->Db_model->c_recursive_fetch($insert_columns['w_c_id'], true, 0, 0, null, $insert_columns['w_id'] /* Triggers intent caching for this subscription */ );
+            $tree = $this->Db_model->c_recursive_fetch($insert_columns['w_c_id'], true, 0, $insert_columns['w_id']);
 
             if(count($tree['cr_flat'])>0){
 
@@ -1865,7 +1865,7 @@ class Db_model extends CI_Model {
         return $affected_rows;
     }
 
-	function c_recursive_fetch($c_id, $fetch_outbound=0, $db_update=0, $parent_c=array(), $recursive_children=null, $k_w_id=0){
+	function c_recursive_fetch($c_id, $fetch_outbound=0, $update_c_table=0, $k_w_id=0, $parent_c=array(), $recursive_children=null){
 
 	    //Get core data:
         $immediate_children = array(
@@ -1889,15 +1889,8 @@ class Db_model extends CI_Model {
             $recursive_children = $immediate_children;
         }
 
-
-
-
-
-
-
         //Fetch & add this item itself:
         if(isset($parent_c['cr_id'])){
-            $parent_is_any = intval($parent_c['c_is_any']);
             if($fetch_outbound){
                 $cs = $this->Db_model->cr_outbound_fetch(array(
                     'cr.cr_id' => $parent_c['cr_id'],
@@ -1908,75 +1901,33 @@ class Db_model extends CI_Model {
                 ));
             }
         } else {
-            $parent_is_any = 0;
             //This is the very first item that
             $cs = $this->Db_model->c_fetch(array(
                 'c.c_id' => $c_id,
             ));
         }
 
-        if(count($cs)>0){
 
-            $immediate_children['c1__tree_max_hours'] += $cs[0]['c_time_estimate'];
-
-            //Set the data for this intent:
-            $cs[0]['c1__tree_all_count'] = $immediate_children['c1__tree_all_count'];
-            $cs[0]['c1__tree_max_hours'] = $immediate_children['c1__tree_max_hours'];
-
-            //Count messages only if DB updating:
-            if($db_update){
-                $cs[0]['c1__this_messages'] = count($this->Db_model->i_fetch(array(
-                    'i_status >=' => 0,
-                    'i_outbound_c_id' => $c_id,
-                )));
-                $immediate_children['c1__tree_messages'] += $cs[0]['c1__this_messages'];
-                $cs[0]['c1__tree_messages'] = $immediate_children['c1__tree_messages'];
-            }
-
-            if(isset($cs[0]['cr_id'])){
-                array_push($immediate_children['cr_flat'],intval($cs[0]['cr_id']));
-                if($k_w_id>0){
-                    //Add this to the subscription cache:
-                    $this->Db_model->k_create(array(
-                        'k_w_id' => $k_w_id,
-                        'k_cr_id' => $cs[0]['cr_id'],
-                        'k_time_estimate' => doubleval($cs[0]['c_time_estimate']),
-                    ));
-                }
-            }
-            array_push($immediate_children['c_flat'],intval($c_id));
-            array_push($immediate_children['tree_top'],$cs[0]);
-
-            //Update DB only if any single field is not synced:
-            if($db_update && !(
-                    number_format($cs[0]['c1__tree_max_hours'],3)==number_format($cs[0]['c__tree_max_hours'],3) &&
-                    $cs[0]['c1__tree_all_count']==$cs[0]['c__tree_all_count'] &&
-                    $cs[0]['c1__this_messages']==$cs[0]['c__this_messages'] &&
-                    $cs[0]['c1__tree_messages']==$cs[0]['c__tree_messages'] &&
-                    intval($cs[0]['c__is_orphan'])==0
-                )){
-
-                //Something was not up to date, let's update:
-                $this->Db_model->c_update( $c_id , array(
-                    'c__tree_max_hours' => number_format($cs[0]['c1__tree_max_hours'],3),
-                    'c__tree_all_count' => $cs[0]['c1__tree_all_count'],
-                    'c__this_messages' => $cs[0]['c1__this_messages'],
-                    'c__tree_messages' => $cs[0]['c1__tree_messages'],
-                    'c__is_orphan' => 0, //It cannot be orphan since its part of the main tree
-                ));
-
-                $immediate_children['db_updated']++;
-
-                array_push($immediate_children['db_queries'],'['.$c_id.'] Hours:'.number_format($cs[0]['c__tree_max_hours'],3).'=>'.number_format($cs[0]['c1__tree_max_hours'],3).' / All Count:'.$cs[0]['c__tree_all_count'].'=>'.$cs[0]['c1__tree_all_count'].' / Message:'.$cs[0]['c__this_messages'].'=>'.$cs[0]['c1__this_messages'].' / Tree Message:'.$cs[0]['c__tree_messages'].'=>'.$cs[0]['c1__tree_messages'].' / Orphan:'.intval($cs[0]['c__is_orphan']).'=>0 ('.$cs[0]['c_outcome'].')');
-
-            }
-
+        //We should have found an item by now:
+        if(count($cs)<1){
+            return false;
         }
 
 
 
-
-
+        //Add the link relations before we start recursion so we can have the Tree in up-front order:
+        if(isset($cs[0]['cr_id'])){
+            array_push($immediate_children['cr_flat'],intval($cs[0]['cr_id']));
+            if($k_w_id>0){
+                //Add this to the subscription cache:
+                $this->Db_model->k_create(array(
+                    'k_w_id' => $k_w_id,
+                    'k_cr_id' => $cs[0]['cr_id'],
+                    'k_time_estimate' => doubleval($cs[0]['c_time_estimate']),
+                ));
+            }
+        }
+        array_push($immediate_children['c_flat'],intval($c_id));
 
 
 
@@ -1999,6 +1950,15 @@ class Db_model extends CI_Model {
 
 
         if(count($child_cs)>0){
+
+            //We need to determine this based on the tree AND/OR logic:
+            $local_values = array(
+                'c___tree_min_hours' => 0,
+                'c___tree_max_hours' => 0,
+                'c___tree_min_cost' => 0,
+                'c___tree_max_cost' => 0,
+            );
+
             foreach($child_cs as $c){
                 if(in_array($c['c_id'],$recursive_children['c_flat'])){
 
@@ -2008,7 +1968,7 @@ class Db_model extends CI_Model {
                 } else {
 
                     //Fetch children for this intent, if any:
-                    $granchildren = $this->Db_model->c_recursive_fetch($c['c_id'], $fetch_outbound, $db_update, $c, $immediate_children, $k_w_id);
+                    $granchildren = $this->Db_model->c_recursive_fetch($c['c_id'], $fetch_outbound, $update_c_table, $k_w_id, $c, $immediate_children);
 
                     if(!$granchildren){
                         //There was an infinity break
@@ -2017,8 +1977,31 @@ class Db_model extends CI_Model {
 
                     //Addup children if any:
                     $immediate_children['c1__tree_all_count'] += $granchildren['c1__tree_all_count'];
-                    $immediate_children['c1__tree_max_hours'] += $granchildren['c1__tree_max_hours'];
-                    if($db_update){
+
+                    if($cs[0]['c_is_any']){
+                        //OR Branch, figure out the logic:
+                        if($granchildren['c1__tree_min_hours']<$local_values['c___tree_min_hours'] || $local_values['c___tree_min_hours']==0){
+                            $local_values['c___tree_min_hours'] = $granchildren['c1__tree_min_hours'];
+                        }
+                        if($granchildren['c1__tree_max_hours']>$local_values['c___tree_max_hours']){
+                            $local_values['c___tree_max_hours'] = $granchildren['c1__tree_max_hours'];
+                        }
+                        if($granchildren['c1__tree_min_cost']<$local_values['c___tree_min_cost'] || $local_values['c___tree_min_cost']==0){
+                            $local_values['c___tree_min_cost'] = $granchildren['c1__tree_min_cost'];
+                        }
+                        if($granchildren['c1__tree_max_cost']>$local_values['c___tree_max_cost']){
+                            $local_values['c___tree_max_cost'] = $granchildren['c1__tree_max_cost'];
+                        }
+                    } else {
+                        //AND Branch, add them all up:
+                        $local_values['c___tree_min_hours'] += $granchildren['c1__tree_min_hours'];
+                        $local_values['c___tree_max_hours'] += $granchildren['c1__tree_max_hours'];
+                        $local_values['c___tree_min_cost']  += $granchildren['c1__tree_min_cost'];
+                        $local_values['c___tree_max_cost']  += $granchildren['c1__tree_max_cost'];
+                    }
+
+
+                    if($update_c_table){
                         $immediate_children['c1__tree_messages'] += $granchildren['c1__tree_messages'];
                         $immediate_children['db_updated'] += $granchildren['db_updated'];
                         if(!empty($granchildren['db_queries'])){
@@ -2031,7 +2014,76 @@ class Db_model extends CI_Model {
                     array_push($immediate_children['tree_top'],$granchildren['tree_top']);
                 }
             }
+
+            //Addup the totals from this tree:
+            $immediate_children['c1__tree_min_hours'] += $local_values['c___tree_min_hours'];
+            $immediate_children['c1__tree_max_hours'] += $local_values['c___tree_max_hours'];
+            $immediate_children['c1__tree_min_cost']  += $local_values['c___tree_min_cost'];
+            $immediate_children['c1__tree_max_cost']  += $local_values['c___tree_max_cost'];
         }
+
+
+
+
+
+
+
+        $immediate_children['c1__tree_all_count']++;
+        $immediate_children['c1__tree_min_hours'] += doubleval($cs[0]['c_time_estimate']);
+        $immediate_children['c1__tree_max_hours'] += doubleval($cs[0]['c_time_estimate']);
+        $immediate_children['c1__tree_min_cost']  += doubleval($cs[0]['c_cost_estimate']);
+        $immediate_children['c1__tree_max_cost']  += doubleval($cs[0]['c_cost_estimate']);
+
+        //Set the data for this intent:
+        $cs[0]['c1__tree_all_count'] = $immediate_children['c1__tree_all_count'];
+        $cs[0]['c1__tree_min_hours'] = $immediate_children['c1__tree_min_hours'];
+        $cs[0]['c1__tree_max_hours'] = $immediate_children['c1__tree_max_hours'];
+        $cs[0]['c1__tree_min_cost']  = $immediate_children['c1__tree_min_cost'];
+        $cs[0]['c1__tree_max_cost']  = $immediate_children['c1__tree_max_cost'];
+
+        //Count messages only if DB updating:
+        if($update_c_table){
+            $cs[0]['c1__this_messages'] = count($this->Db_model->i_fetch(array(
+                'i_status >=' => 0,
+                'i_outbound_c_id' => $c_id,
+            )));
+            $immediate_children['c1__tree_messages'] += $cs[0]['c1__this_messages'];
+            $cs[0]['c1__tree_messages'] = $immediate_children['c1__tree_messages'];
+        }
+
+        array_push($immediate_children['tree_top'],$cs[0]);
+
+        //Update DB only if any single field is not synced:
+        if($update_c_table && !(
+                number_format($cs[0]['c1__tree_min_hours'],3)==number_format($cs[0]['c__tree_min_hours'],3) &&
+                number_format($cs[0]['c1__tree_max_hours'],3)==number_format($cs[0]['c__tree_max_hours'],3) &&
+                number_format($cs[0]['c1__tree_min_cost'],2)==number_format($cs[0]['c__tree_min_cost'],2) &&
+                number_format($cs[0]['c1__tree_max_cost'],2)==number_format($cs[0]['c__tree_max_cost'],2) &&
+                $cs[0]['c1__tree_all_count']==$cs[0]['c__tree_all_count'] &&
+                $cs[0]['c1__this_messages']==$cs[0]['c__this_messages'] &&
+                $cs[0]['c1__tree_messages']==$cs[0]['c__tree_messages'] &&
+                intval($cs[0]['c__is_orphan'])==0
+            )){
+
+            //Something was not up to date, let's update:
+            $this->Db_model->c_update( $c_id , array(
+                'c__tree_min_hours' => number_format($cs[0]['c1__tree_min_hours'],3),
+                'c__tree_max_hours' => number_format($cs[0]['c1__tree_max_hours'],3),
+                'c__tree_min_cost'  => number_format($cs[0]['c1__tree_min_cost'],2),
+                'c__tree_max_cost'  => number_format($cs[0]['c1__tree_max_cost'],2),
+                'c__tree_all_count' => $cs[0]['c1__tree_all_count'],
+                'c__this_messages' => $cs[0]['c1__this_messages'],
+                'c__tree_messages' => $cs[0]['c1__tree_messages'],
+                'c__is_orphan' => 0, //It cannot be orphan since its part of the main tree
+            ));
+
+            $immediate_children['db_updated']++;
+
+            array_push($immediate_children['db_queries'],'['.$c_id.'] Hours:'.number_format($cs[0]['c__tree_max_hours'],3).'=>'.number_format($cs[0]['c1__tree_max_hours'],3).' / All Count:'.$cs[0]['c__tree_all_count'].'=>'.$cs[0]['c1__tree_all_count'].' / Message:'.$cs[0]['c__this_messages'].'=>'.$cs[0]['c1__this_messages'].' / Tree Message:'.$cs[0]['c__tree_messages'].'=>'.$cs[0]['c1__tree_messages'].' / Orphan:'.intval($cs[0]['c__is_orphan']).'=>0 ('.$cs[0]['c_outcome'].')');
+
+        }
+
+
 
 
 
@@ -2043,6 +2095,8 @@ class Db_model extends CI_Model {
         $result = array();
         array_walk_recursive($immediate_children['cr_flat'],function($v, $k) use (&$result){ $result[] = $v; });
         $immediate_children['cr_flat'] = $result;
+
+
 
 
 

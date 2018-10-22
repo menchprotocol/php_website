@@ -18,7 +18,7 @@ $route['logout']				    = "entities/logout"; //Logout from entites
 
 //Trainer interface:
 $route['entities/(:num)'] 			        = "entities/entity_manage/$1";
-$route['entities'] 			                = "entities/entity_manage/2738"; //Default
+$route['entities'] 			                = "entities/entity_manage/1326"; //Default
 $route['intents/(:num)'] 			        = "intents/intent_manage/$1";
 $route['intents'] 			                = "intents/intent_manage/6623"; //Default
 
