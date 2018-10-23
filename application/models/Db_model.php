@@ -1953,10 +1953,10 @@ class Db_model extends CI_Model {
 
             //We need to determine this based on the tree AND/OR logic:
             $local_values = array(
-                'c___tree_min_hours' => 0,
-                'c___tree_max_hours' => 0,
-                'c___tree_min_cost' => 0,
-                'c___tree_max_cost' => 0,
+                'c___tree_min_hours' => null,
+                'c___tree_max_hours' => null,
+                'c___tree_min_cost' => null,
+                'c___tree_max_cost' => null,
             );
 
             foreach($child_cs as $c){
@@ -1980,16 +1980,16 @@ class Db_model extends CI_Model {
 
                     if($cs[0]['c_is_any']){
                         //OR Branch, figure out the logic:
-                        if($granchildren['c1__tree_min_hours']<$local_values['c___tree_min_hours'] || $local_values['c___tree_min_hours']==0){
+                        if($granchildren['c1__tree_min_hours']<$local_values['c___tree_min_hours'] || is_null($local_values['c___tree_min_hours'])){
                             $local_values['c___tree_min_hours'] = $granchildren['c1__tree_min_hours'];
                         }
-                        if($granchildren['c1__tree_max_hours']>$local_values['c___tree_max_hours']){
+                        if($granchildren['c1__tree_max_hours']>$local_values['c___tree_max_hours'] || is_null($local_values['c___tree_max_hours'])){
                             $local_values['c___tree_max_hours'] = $granchildren['c1__tree_max_hours'];
                         }
-                        if($granchildren['c1__tree_min_cost']<$local_values['c___tree_min_cost'] || $local_values['c___tree_min_cost']==0){
+                        if($granchildren['c1__tree_min_cost']<$local_values['c___tree_min_cost'] || is_null($local_values['c___tree_min_cost'])){
                             $local_values['c___tree_min_cost'] = $granchildren['c1__tree_min_cost'];
                         }
-                        if($granchildren['c1__tree_max_cost']>$local_values['c___tree_max_cost']){
+                        if($granchildren['c1__tree_max_cost']>$local_values['c___tree_max_cost'] || is_null($local_values['c___tree_max_cost'])){
                             $local_values['c___tree_max_cost'] = $granchildren['c1__tree_max_cost'];
                         }
                     } else {

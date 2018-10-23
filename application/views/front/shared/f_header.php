@@ -22,19 +22,13 @@ $url_part_1 = $this->uri->segment(1);
 	<meta charset="utf-8" />
 	<link rel="icon" type="image/png" href="/img/bp_16.png">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-	<title><?= $website['name'].( isset($title) ? ' | '.$title : '' ) ?></title>
+	<title><?= ( isset($title) ? $title.' | ' : '' ).$website['name'] ?></title>
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
-
 	<?php $this->load->view('front/shared/header_resources' ); ?>
-
-
-
 	<script src="/js/front/global.js?v=v<?= $website['version'] ?>" type="text/javascript"></script>
-	
 	<?php /* if(isset($udata['u_email'])){ ?>
 	    <script> zE( function () { zE.identify({name: '<?= $udata['u_full_name'] ?>', email: '<?= $udata['u_email'] ?>'}); }); </script>
 	<?php } */ ?>
-
 </head>
 
 <body class="landing-page">
