@@ -624,6 +624,9 @@ function echo_concept($c){
 }
 
 function echo_hour_range($c, $micro=false){
+
+    //WARNING: Input $c could be from Database (complete data set) or from Algolia (partial data set)
+
     if($c['c__tree_max_hours']==$c['c__tree_min_hours']){
         //Exactly the same, show a single value:
         return echo_hours($c['c__tree_max_hours'],$micro);

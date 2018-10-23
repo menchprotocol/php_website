@@ -227,7 +227,7 @@ class Comm_model extends CI_Model {
                 $quick_replies = array();
                 $i_message = 'I found the following intent'.echo__s($res['nbHits']).':';
                 foreach ($res['hits'] as $count=>$hit){
-                    $i_message .= "\n\n".($count+1).'/ '.$hit['c_outcome'].' in '.echo_hours($hit['c__tree_max_hours']);
+                    $i_message .= "\n\n".($count+1).'/ '.$hit['c_outcome'].' in '.strip_tags(echo_hour_range($hit));
                     array_push($quick_replies , array(
                         'content_type' => 'text',
                         'title' => ($count+1).'/',
