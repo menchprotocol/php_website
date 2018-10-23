@@ -9,7 +9,8 @@ if(isset($orphan_cs)){
 <style> .breadcrumb li { display:block; } </style>
 <script>
 
-
+    //Set global variables:
+    var is_compact = (is_mobile() || $(window).width()<767);
 
     function echo_hours(dbl_hour){
         dbl_hour = parseFloat(dbl_hour);
@@ -27,11 +28,11 @@ if(isset($orphan_cs)){
 
     $(document).ready(function() {
 
-        if(is_mobile() || $(window).width()<767){
+        if(is_compact){
 
             //Adjust columns:
             $('.cols').removeClass('col-xs-6').addClass('col-sm-6');
-            $('.grey-box').addClass('phone-2nd');
+            $('.fixed-box').addClass('phone-2nd');
             $('.iphone-x').addClass('iphone-2nd');
 
         } else {
@@ -369,6 +370,13 @@ if(isset($orphan_cs)){
         //Show tem loader:
         handler.html('<div style="text-align:center; padding-top:89px; padding-bottom:89px;"><img src="/img/round_load.gif" class="loader" /></div>');
 
+        //We might need to scroll:
+        if(is_compact){
+            $('.main-panel').animate({
+                scrollTop:9999
+            }, 150);
+        }
+
         //Load the frame:
         $.post("/intents/load_c_messages", {
 
@@ -548,6 +556,13 @@ if(isset($orphan_cs)){
         //Make the frame visible:
         $("#modifybox").removeClass('hidden').hide().fadeIn();
         $('#iphonex').addClass('hidden');
+
+        //We might need to scroll:
+        if(is_compact){
+            $('.main-panel').animate({
+                scrollTop:9999
+            }, 150);
+        }
 
     }
 
@@ -733,7 +748,9 @@ if(isset($orphan_cs)){
                 //which is recommended to all new students who have not subscribed to it
                 //Let the admin know about this:
                 echo '<div class="alert alert-info" role="alert" style="margin-top: 0;"><i class="fas fa-globe"></i> This is a universal intent that is automatically recommended to students</div>';
-            } elseif(in_array($c['c_id'],$this->config->item('onhold_intents'))) {
+            }
+
+            if(in_array($c['c_id'],$this->config->item('onhold_intents'))) {
                 //This is the "Get to know how Mench Personal Assistant works" tree
                 //which is recommended to all new students who have not subscribed to it
                 //Let the admin know about this:
@@ -797,117 +814,108 @@ if(isset($orphan_cs)){
 
         }
         ?>
+
     </div>
 
 
     <div class="col-xs-6 cols" id="iphonecol">
 
 
-        <div id="modifybox" class="grey-box hidden" intent-id="0" intent-link-id="0" level="0">
+        <div id="modifybox" class="fixed-box hidden" intent-id="0" intent-link-id="0" level="0">
 
-            <div style="text-align:right; font-size: 22px; margin: -5px 0 -20px 0;"><a href="javascript:void(0)" onclick="$('#modifybox').addClass('hidden')"><i class="fas fa-times"></i></a></div>
+            <h5 class="badge badge-h"><i class="fas fa-cog"></i> Modify Intent</h5>
+            <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;"><a href="javascript:void(0)" onclick="$('#modifybox').addClass('hidden')"><i class="fas fa-times-circle"></i></a></div>
 
-            <div>
-                <div class="title"><h4><i class="fas fa-bullseye-arrow"></i> Target Outcome <span id="hb_598" class="help_button" intent-id="598"></span></h4></div>
-                <div class="help_body maxout" id="content_598"></div>
+            <div class="grey-box">
+                <div>
+                    <div class="title"><h4><i class="fas fa-bullseye-arrow"></i> Target Outcome <span id="hb_598" class="help_button" intent-id="598"></span></h4></div>
+                    <div class="help_body maxout" id="content_598"></div>
 
-                <div class="form-group label-floating is-empty">
-                    <div class="input-group border">
-                        <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;">To</span>
-                        <input style="padding-left:0;" type="text" id="c_outcome" maxlength="70" value="" class="form-control c_outcome_input algolia_search">
+                    <div class="form-group label-floating is-empty">
+                        <div class="input-group border">
+                            <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;">To</span>
+                            <input style="padding-left:0;" type="text" id="c_outcome" maxlength="70" value="" class="form-control c_outcome_input algolia_search">
+                        </div>
                     </div>
                 </div>
+
+
+                <div style="margin-top:20px;">
+                    <div class="title"><h4><i class="fas fa-badge-check"></i> Completion Method</h4></div>
+                    <div class="form-group label-floating is-empty">
+
+                        <div class="radio" style="display:inline-block; border-bottom:1px dotted #999; margin-right:10px; margin-top: 0 !important;" data-toggle="tooltip" title="Intent is completed when ALL outbound intents are marked as complete" data-placement="right">
+                            <label>
+                                <input type="radio" name="c_is_any" value="0" />
+                                <i class="fas fa-sitemap"></i> All
+                            </label>
+                        </div>
+                        <div class="radio" style="display: inline-block; border-bottom:1px dotted #999; margin-top: 0 !important;" data-toggle="tooltip" title="Intent is completed when ANY single one of the outbound intents are marked as complete" data-placement="right">
+                            <label>
+                                <input type="radio" name="c_is_any" value="1" />
+                                <i class="fas fa-code-merge"></i> Any
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div style="margin-top:10px;">
+                    <div class="title"><h4><i class="fas fa-shield-check"></i> Completion Requirements</h4></div>
+                    <div class="form-group label-floating is-empty">
+                        <div class="checkbox is_task">
+                            <label style="display: block; font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" id="c_require_notes_to_complete" /><i class="fas fa-pencil"></i> Require written response</label>
+                            <label style="display: block; font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" id="c_require_url_to_complete" /><i class="fas fa-link"></i> Require URL in response</label>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div style="margin-top:20px;">
+                    <div class="title"><h4><i class="fas fa-box-check"></i> Completion Resources</h4></div>
+
+                    <div class="form-group label-floating is-empty" style="max-width:150px;">
+                        <div class="input-group border">
+                            <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;"><i class="fas fa-clock"></i></span>
+                            <input style="padding-left:0;" type="number" step="1" min="0" max="300" id="c_time_estimate" value="" class="form-control">
+                            <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;">Minutes</span>
+                        </div>
+                    </div>
+                    <div id="child-hours" style="margin-left:6px;"></div>
+
+                    <div class="form-group label-floating is-empty" style="max-width:150px;">
+                        <div class="input-group border">
+                            <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;"><i class="fas fa-usd-circle"></i></span>
+                            <input style="padding-left:0;" type="number" step="0.01" min="0" max="5000" id="c_cost_estimate" value="" class="form-control">
+                            <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;">USD</span>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <table width="100%" style="margin-top:10px;">
+                    <tr>
+                        <td class="save-td"><a href="javascript:save_c_modify();" class="btn btn-primary">Save</a></td>
+                        <td><span class="save_intent_changes"></span></td>
+                        <td style="width:80px; text-align:right;">
+
+                            <div><a href="javascript:c_unlink();" class="unlink-intent" data-toggle="tooltip" title="Only remove intent link while NOT deleting the intent itself" data-placement="left" style="text-decoration:none;"><i class="fas fa-unlink"></i> Unlink</a></div>
+
+                            <?php if(array_key_exists(1281, $udata['u__inbounds'])){ ?>
+                                <div><a href="javascript:c_delete();" data-toggle="tooltip" title="Delete intent AND remove all its links, messages & references" data-placement="left" style="text-decoration:none;"><i class="fas fa-trash-alt"></i> Delete</a></div>
+                            <?php } ?>
+
+                        </td>
+                    </tr>
+                </table>
             </div>
-
-
-
-
-
-            <div style="margin-top:20px;">
-                <div class="title"><h4><i class="fas fa-badge-check"></i> Completion Method</h4></div>
-                <div class="form-group label-floating is-empty">
-
-                    <div class="radio" style="display:inline-block; border-bottom:1px dotted #999; margin-right:10px; margin-top: 0 !important;" data-toggle="tooltip" title="Intent is completed when ALL outbound intents are marked as complete" data-placement="right">
-                        <label>
-                            <input type="radio" name="c_is_any" value="0" />
-                            <i class="fas fa-sitemap"></i> All
-                        </label>
-                    </div>
-                    <div class="radio" style="display: inline-block; border-bottom:1px dotted #999; margin-top: 0 !important;" data-toggle="tooltip" title="Intent is completed when ANY single one of the outbound intents are marked as complete" data-placement="right">
-                        <label>
-                            <input type="radio" name="c_is_any" value="1" />
-                            <i class="fas fa-code-merge"></i> Any
-                        </label>
-                    </div>
-
-                </div>
-            </div>
-
-
-
-
-
-
-
-            <div style="margin-top:10px;">
-                <div class="title"><h4><i class="fas fa-shield-check"></i> Completion Requirements</h4></div>
-                <div class="form-group label-floating is-empty">
-                    <div class="checkbox is_task">
-                        <label style="display: block; font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" id="c_require_notes_to_complete" /><i class="fas fa-pencil"></i> Require written response</label>
-                        <label style="display: block; font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" id="c_require_url_to_complete" /><i class="fas fa-link"></i> Require URL in response</label>
-                    </div>
-                </div>
-            </div>
-
-
-
-
-
-
-
-
-            <div style="margin-top:20px;">
-                <div class="title"><h4><i class="fas fa-box-check"></i> Completion Resources</h4></div>
-
-                <div class="form-group label-floating is-empty" style="max-width:150px;">
-                    <div class="input-group border">
-                        <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;"><i class="fas fa-clock"></i></span>
-                        <input style="padding-left:0;" type="number" step="1" min="0" max="300" id="c_time_estimate" value="" class="form-control">
-                        <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;">Minutes</span>
-                    </div>
-                </div>
-                <div id="child-hours" style="margin-left:6px;"></div>
-
-                <div class="form-group label-floating is-empty" style="max-width:150px;">
-                    <div class="input-group border">
-                        <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;"><i class="fas fa-usd-circle"></i></span>
-                        <input style="padding-left:0;" type="number" step="0.01" min="0" max="5000" id="c_cost_estimate" value="" class="form-control">
-                        <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;">USD</span>
-                    </div>
-                </div>
-            </div>
-
-
-
-
-
-            <table width="100%" style="margin-top:10px;">
-                <tr>
-                    <td class="save-td"><a href="javascript:save_c_modify();" class="btn btn-primary">Save</a></td>
-                    <td><span class="save_intent_changes"></span></td>
-                    <td style="width:80px; text-align:right;">
-
-                        <div><a href="javascript:c_unlink();" class="unlink-intent" data-toggle="tooltip" title="Only remove intent link while NOT deleting the intent itself" data-placement="left" style="text-decoration:none;"><i class="fas fa-unlink"></i> Unlink</a></div>
-
-                        <?php if(array_key_exists(1281, $udata['u__inbounds'])){ ?>
-                            <div><a href="javascript:c_delete();" data-toggle="tooltip" title="Delete intent AND remove all its links, messages & references" data-placement="left" style="text-decoration:none;"><i class="fas fa-trash-alt"></i> Delete</a></div>
-                        <?php } ?>
-
-                    </td>
-                </tr>
-            </table>
 
         </div>
+
+
 
 
 

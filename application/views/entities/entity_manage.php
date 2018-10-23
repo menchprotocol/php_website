@@ -44,6 +44,10 @@ $b_team_member = array();
 ?>
 <script>
 
+    //Set global variables:
+    var u_status_filter = -1; //No filter, show all!
+    var is_compact = (is_mobile() || $(window).width()<767);
+
     function initiate_outbound_search(){
         $("#new-outbound .new-input").on('autocomplete:selected', function (event, suggestion, dataset) {
 
@@ -87,27 +91,25 @@ $b_team_member = array();
     }
 
 
-    var u_status_filter = -1; //No filter, show all!
-
     $(document).ready(function () {
 
-        if(is_mobile() || $(window).width()<767){
+        if(is_compact){
 
             //Adjust columns:
             $('.cols').removeClass('col-xs-6').addClass('col-sm-6');
-            $('.grey-box').addClass('phone-2nd');
+            $('.fixed-box').addClass('phone-2nd');
 
         } else {
 
             //Adjust height of the messaging windows:
-            $('.grey-box').css('max-height', (parseInt($( window ).height())-120)+'px');
+            $('.grey-box').css('max-height', (parseInt($( window ).height())-160)+'px');
 
             //Make editing frames Sticky for scrolling longer lists
             $(".main-panel").scroll(function() {
                 var top_position = $(this).scrollTop();
                 clearTimeout($.data(this, 'scrollTimer'));
                 $.data(this, 'scrollTimer', setTimeout(function() {
-                    $(".grey-box").css('top',(top_position-0)); //PX also set in style.css for initial load
+                    $(".fixed-box").css('top',(top_position-0)); //PX also set in style.css for initial load
                 }, 34));
             });
         }
@@ -465,7 +467,8 @@ $b_team_member = array();
         if(load_new_filter){
             //Replace load more with spinner:
             var append_div = $('#new-outbound').html();
-            $('#list-outbound').html('<span class="load-more"><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
+            //The padding-bottom would remove the scrolling effect on the left side!
+            $('#list-outbound').html('<span class="load-more" style="padding-bottom:500px;"><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
         } else {
             //Replace load more with spinner:
             $('.load-more').html('<span class="load-more"><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
@@ -599,8 +602,15 @@ $b_team_member = array();
         }
 
         //Make the frame visible:
-        $('.grey-box').addClass('hidden');
+        $('.fixed-box').addClass('hidden');
         $("#modifybox").removeClass('hidden').hide().fadeIn();
+
+        //We might need to scroll:
+        if(is_compact){
+            $('.main-panel').animate({
+                scrollTop:9999
+            }, 150);
+        }
     }
 
 
@@ -670,7 +680,7 @@ $b_team_member = array();
     function load_u_messages(u_id){
 
         //Make the frame visible:
-        $('.grey-box').addClass('hidden');
+        $('.fixed-box').addClass('hidden');
         $("#message-frame").removeClass('hidden').hide().fadeIn().attr('entity-id',u_id);
         $("#message-frame h4").text($(".u_full_name_"+u_id+":first").text());
 
@@ -679,6 +689,13 @@ $b_team_member = array();
         //Show tem loader:
         handler.html('<div style="text-align:center; padding:10px 0 50px;"><img src="/img/round_load.gif" class="loader" /></div>');
 
+        //We might need to scroll:
+        if(is_compact){
+            $('.main-panel').animate({
+                scrollTop:9999
+            }, 150);
+        }
+
         //Load the frame:
         $.post("/entities/load_messages", { u_id:u_id }, function(data) {
             //Empty Inputs Fields if success:
@@ -686,6 +703,14 @@ $b_team_member = array();
 
             //Show inner tooltips:
             $('[data-toggle="tooltip"]').tooltip();
+
+            //We might need to scroll:
+            if(is_compact){
+                $('.main-panel').animate({
+                    scrollTop:9999
+                }, 150);
+            }
+
         });
 
     }
@@ -793,12 +818,12 @@ echo '<td style="text-align: right;"><div class="btn-group btn-group-sm" style="
         $status_index = $this->config->item('object_statuses');
 
         //Show fixed All button:
-        echo '<a href="javascript:void(0)" onclick="filter_u_status(-1)" class="btn btn-default btn-secondary u-status-filter u-status--1" data-toggle="tooltip" data-placement="top" title="View all entities"><i class="fas fa-at"></i> All [<span class="li-outbound-count">'.$entity['u__outbound_count'].'</span>]</a>';
+        echo '<a href="javascript:void(0)" onclick="filter_u_status(-1)" class="btn btn-default btn-secondary u-status-filter u-status--1" data-toggle="tooltip" data-placement="top" title="View all entities"><i class="fas fa-at"></i><span class="hide-small"> All</span> [<span class="li-outbound-count">'.$entity['u__outbound_count'].'</span>]</a>';
 
         //Show each specific filter based on DB counts:
         foreach($counts as $c_c){
             $st = $status_index['u'][$c_c['u_status']];
-            echo '<a href="#status-'.$c_c['u_status'].'" onclick="filter_u_status('.$c_c['u_status'].')" class="btn btn-default u-status-filter u-status-'.$c_c['u_status'].'" data-toggle="tooltip" data-placement="top" title="'.$st['s_desc'].'"><i class="'.$st['s_icon'].'"></i> '.$st['s_name'].' [<span class="count-u-status-'.$c_c['u_status'].'">'.$c_c['u_counts'].'</span>]</a>';
+            echo '<a href="#status-'.$c_c['u_status'].'" onclick="filter_u_status('.$c_c['u_status'].')" class="btn btn-default u-status-filter u-status-'.$c_c['u_status'].'" data-toggle="tooltip" data-placement="top" title="'.$st['s_desc'].'"><i class="'.$st['s_icon'].'"></i><span class="hide-small"> '.$st['s_name'].'</span> [<span class="count-u-status-'.$c_c['u_status'].'">'.$c_c['u_counts'].'</span>]</a>';
         }
 
     }
@@ -869,65 +894,67 @@ if(count($payments)>0){
 }
 
 ?>
-
 </div>
 
-    <div class="col-xs-6 cols">
+    <div class="col-xs-6 cols ">
 
 
-      <div id="modifybox" class="grey-box hidden" entity-id="0" entity-link-id="0">
+      <div id="modifybox" class="fixed-box hidden" entity-id="0" entity-link-id="0">
 
-          <div style="text-align:right; font-size: 22px; margin: -5px 0 -20px 0;"><a href="javascript:void(0)" onclick="$('#modifybox').addClass('hidden')"><i class="fas fa-times"></i></a></div>
+          <h5 class="badge badge-h"><i class="fas fa-cog"></i> Modify Entity</h5>
+          <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;"><a href="javascript:void(0)" onclick="$('#modifybox').addClass('hidden')"><i class="fas fa-times-circle"></i></a></div>
 
-
-          <div class="title" style="margin-bottom:0; padding-bottom:0;"><h4><i class="fas fa-fingerprint"></i> Name</h4></div>
-          <input type="text" id="u_full_name" value="" data-lpignore="true" placeholder="Name" class="form-control border">
-
-
-          <div class="title" style="margin-top:15px;"><h4><i class="fas fa-file-alt"></i> Overview [<span style="margin:0 0 10px 0; font-size:0.8em;"><span id="charNum">0</span>/<?= $message_max ?></span>]</h4></div>
-          <textarea class="form-control text-edit border msg" id="u_bio" style="height:85px; background-color:#FFFFFF !important;" onkeyup="changeBio()"></textarea>
+          <div class="grey-box">
+              <div class="title" style="margin-bottom:0; padding-bottom:0;"><h4><i class="fas fa-fingerprint"></i> Name</h4></div>
+              <input type="text" id="u_full_name" value="" data-lpignore="true" placeholder="Name" class="form-control border">
 
 
-          <!-- Password credential management -->
-          <div style="margin-top:15px; display:<?= (array_key_exists(1281, $udata['u__inbounds']) ? 'block' : 'none') ?>;"><a href="javascript:$('.changepass').toggle();" class="changepass changepass_a" data-toggle="tooltip" title="Manage email/password that enables this entity to login" data-placement="top" style="text-decoration:none;"></a></div>
-          <div class="changepass" style="display:none;">
-              <div class="title" style="margin-top:15px;"><h4><i class="fas fa-envelope"></i> Email</h4></div>
-              <input type="email" id="u_email" data-lpignore="true" style="max-width:260px;" value="" data-lpignore="true" class="form-control border">
-          </div>
-          <div class="changepass" style="display:none;">
-              <div class="title" style="margin-top:15px;"><h4><i class="fas fa-asterisk"></i> Set New Password</h4></div>
-              <div class="form-group label-floating is-empty">
-                  <input type="password" id="u_password_new" style="max-width:260px;" autocomplete="new-password" data-lpignore="true" class="form-control border">
-                  <span class="material-input"></span>
+              <div class="title" style="margin-top:15px;"><h4><i class="fas fa-file-alt"></i> Overview [<span style="margin:0 0 10px 0; font-size:0.8em;"><span id="charNum">0</span>/<?= $message_max ?></span>]</h4></div>
+              <textarea class="form-control text-edit border msg" id="u_bio" style="height:85px; background-color:#FFFFFF !important;" onkeyup="changeBio()"></textarea>
+
+
+              <!-- Password credential management -->
+              <div style="margin-top:15px; display:<?= (array_key_exists(1281, $udata['u__inbounds']) ? 'block' : 'none') ?>;"><a href="javascript:$('.changepass').toggle();" class="changepass changepass_a" data-toggle="tooltip" title="Manage email/password that enables this entity to login" data-placement="top" style="text-decoration:none;"></a></div>
+              <div class="changepass" style="display:none;">
+                  <div class="title" style="margin-top:15px;"><h4><i class="fas fa-envelope"></i> Email</h4></div>
+                  <input type="email" id="u_email" data-lpignore="true" style="max-width:260px;" value="" data-lpignore="true" class="form-control border">
               </div>
+              <div class="changepass" style="display:none;">
+                  <div class="title" style="margin-top:15px;"><h4><i class="fas fa-asterisk"></i> Set New Password</h4></div>
+                  <div class="form-group label-floating is-empty">
+                      <input type="password" id="u_password_new" style="max-width:260px;" autocomplete="new-password" data-lpignore="true" class="form-control border">
+                      <span class="material-input"></span>
+                  </div>
+              </div>
+
+
+              <table width="100%" style="margin-top:10px;">
+                  <tr>
+                      <td class="save-td"><a href="javascript:save_u_modify();" class="btn btn-secondary">Save</a></td>
+                      <td><span class="save_entity_changes"></span></td>
+                      <td style="width:100px; text-align:right;">
+
+                          <div class="unlink-entity"><a href="javascript:ur_unlink();" data-toggle="tooltip" title="Only remove entity link while NOT deleting the entity itself" data-placement="left" style="text-decoration:none;"><i class="fas fa-unlink"></i> Unlink</a></div>
+
+                          <?php if(array_key_exists(1281, $udata['u__inbounds'])){ ?>
+                              <div><a href="javascript:u_delete();" data-toggle="tooltip" title="Delete entity AND remove all its URLs, messages & references" data-placement="left" style="text-decoration:none;"><i class="fas fa-trash-alt"></i> Delete</a></div>
+                          <?php } ?>
+
+                      </td>
+                  </tr>
+              </table>
           </div>
 
-
-          <table width="100%" style="margin-top:10px;">
-              <tr>
-                  <td class="save-td"><a href="javascript:save_u_modify();" class="btn btn-secondary">Save</a></td>
-                  <td><span class="save_entity_changes"></span></td>
-                  <td style="width:100px; text-align:right;">
-
-                      <div class="unlink-entity"><a href="javascript:ur_unlink();" data-toggle="tooltip" title="Only remove entity link while NOT deleting the entity itself" data-placement="left" style="text-decoration:none;"><i class="fas fa-unlink"></i> Unlink</a></div>
-
-                      <?php if(array_key_exists(1281, $udata['u__inbounds'])){ ?>
-                          <div><a href="javascript:u_delete();" data-toggle="tooltip" title="Delete entity AND remove all its URLs, messages & references" data-placement="left" style="text-decoration:none;"><i class="fas fa-trash-alt"></i> Delete</a></div>
-                      <?php } ?>
-
-                  </td>
-              </tr>
-          </table>
       </div>
 
 
 
-      <div id="message-frame" class="grey-box hidden" entity-id="">
+      <div id="message-frame" class="fixed-box hidden" entity-id="">
 
-          <div style="text-align:right; font-size: 22px; margin: -5px 0 -20px 0;"><a href="javascript:void(0)" onclick="$('#message-frame').addClass('hidden');$('#loaded-messages').html('');"><i class="fas fa-times"></i></a></div>
-          <h4 style="width:92%; line-height: 110%;"></h4>
+          <h5 class="badge badge-h"><i class="fas fa-comment-dots"></i> Entity Messages</h5>
+          <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;"><a href="javascript:void(0)" onclick="$('#message-frame').addClass('hidden');$('#loaded-messages').html('');"><i class="fas fa-times-circle"></i></a></div>
+          <div class="grey-box"><div id="loaded-messages" style="margin-top:20px;"></div></div>
 
-          <div id="loaded-messages" style="margin-top:20px;"></div>
       </div>
 
 

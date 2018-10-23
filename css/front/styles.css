@@ -73,6 +73,32 @@ body{ background-color: #FFF !important;}
     color:#FFF !important;
 }
 
+
+.fixed-box{
+    position: absolute;
+    top:0;
+    left:0;
+    margin-right:15px;
+    width:96%;
+}
+.grey-box{
+    border-radius: 4px;
+    padding:10px 10px 0 10px;
+    margin:25px 0 0 0;
+    display: block;
+    background-color:#EFEFEF;
+    border-top: 1px solid #CCC;
+    max-height:520px;
+    overflow-y: auto;
+}
+.grey-box input, .grey-box .input-group, .grey-box .form-control {
+    background-color:#FFFFFF;
+}
+.grey-box h4, .grey-box .title{
+    margin-top:0;
+    padding-top:0;
+}
+
 .review-item{
     font-size: 0.9em;
     font-weight: 300;
@@ -848,6 +874,7 @@ h5, .h5 {
     left: unset !important;
     max-height: unset !important;
     margin-right: 0 !important;
+    width: 100% !important;
 }
 
 .iphone-2nd{
@@ -1028,6 +1055,8 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px; }
 
 @media (max-width: 767px){
 
+    .hide-small{ display: none;}
+    .grey-box{ margin-top:30px; }
     #iphonex { left: -26px !important; }
     .class_nav{width:220px;}
     #funnel .main{ margin-top:5px !important; }
@@ -2084,20 +2113,9 @@ margin:5px 0;
     border-bottom:1px dotted #2f2739;
     cursor:help;
 }
-.grey-box{
-    border-radius: 4px;
-    padding:10px 10px 0 10px;
-    margin: 0;
-    display: block;
-    position: absolute;
-    top:0;
-    left:0;
-    background-color:#EFEFEF;
-    max-height:520px;
-    overflow-y: auto;
-    margin-right:15px;
-    width:96%;
-}
+
+
+
 
 .checkbox label, .radio label, label {
     font-size: 18px;
@@ -2107,9 +2125,7 @@ margin:5px 0;
     margin-left: 5px;
     font-weight:500;
 }
-.grey-box input, .grey-box .input-group, .grey-box .form-control {
-    background-color:#FFFFFF;
-}
+
 .form-textarea{
     padding:5px;
     border:0;
@@ -2120,10 +2136,7 @@ margin:5px 0;
     min-height:100px;
     line-height: 110%;
 }
-.grey-box h4, .grey-box .title{
-    margin-top:0;
-    padding-top:0;
-}
+
 .btn-hidden{
     background-color: transparent;
     color: #2f2739;
