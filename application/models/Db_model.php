@@ -2191,9 +2191,12 @@ class Db_model extends CI_Model {
 
                 //Tags map parent relation:
                 if(count($item['u__inbounds'])>0){
-                    //Loop through the Tags:
+                    //Loop through the inbound entities:
                     foreach($item['u__inbounds'] as $u_id=>$u){
                         array_push($new_item['_tags'],'u'.$u_id);
+                        if(!in_array($u_id, array(2738,1278,1326,3089,2750))){
+                            $new_item['u_keywords'] .= ' '.$u['u_full_name'];
+                        }
                     }
                 } else {
                     //No parents!

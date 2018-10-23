@@ -151,25 +151,6 @@ $(document).ready(function() {
 
     }).autocomplete({ hint: false, keyboardShortcuts: ['s'] }, [
         {
-            source: function(q, cb) {
-                algolia_u_index.search(q, {
-                    hitsPerPage: 7,
-                }, function(error, content) {
-                    if (error) {
-                        cb([]);
-                        return;
-                    }
-                    cb(content.hits, content);
-                });
-            },
-            displayKey: function(suggestion) { return "" },
-            templates: {
-                suggestion: function(suggestion) {
-                    return '<i class="fas fa-at"></i> '+ suggestion.u_full_name;
-                },
-            }
-        },
-        {
 
             source: function(q, cb){
                 algolia_c_index.search(q, {
@@ -189,6 +170,25 @@ $(document).ready(function() {
                     var hours = Math.round(parseFloat(suggestion.c__tree_max_hours));
                     var fancy_hours = ( minutes<60 ? minutes+'m' :  hours+'h' );
                     return '<i class="fas fa-hashtag"></i> '+ suggestion._highlightResult.c_outcome.value + ( parseFloat(suggestion.c__tree_max_hours)>0 ? '<span class="search-info">'+' <i class="fas fa-clock"></i>'+fancy_hours+'</span>' : '');
+                },
+            }
+        },
+        {
+            source: function(q, cb) {
+                algolia_u_index.search(q, {
+                    hitsPerPage: 7,
+                }, function(error, content) {
+                    if (error) {
+                        cb([]);
+                        return;
+                    }
+                    cb(content.hits, content);
+                });
+            },
+            displayKey: function(suggestion) { return "" },
+            templates: {
+                suggestion: function(suggestion) {
+                    return '<i class="fas fa-at"></i> '+ suggestion.u_full_name;
                 },
             }
         }

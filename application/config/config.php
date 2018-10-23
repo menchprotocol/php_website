@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => '0.566',
+    'version' => '0.57',
     'name' => 'Mench',
     'url' => 'https://mench.com/', //Important to end with "/" as other links depend on this.
     'email' => 'shervin@mench.com',
@@ -78,6 +78,8 @@ $config['object_statuses'] = array(
     'ur' => array(
         -1 => array(
             's_name'  => 'Archived',
+
+
             's_desc'  => 'Entity link is deleted',
             's_icon' => 'fas fa-times-circle',
         ),
