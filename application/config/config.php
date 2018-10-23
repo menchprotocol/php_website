@@ -27,6 +27,7 @@ $config['file_limit_mb'] = 25; //Server setting is 32MB. see here: mench.com/ses
 $config['message_max'] = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
 $config['entity_per_page'] = 100;
 $config['universal_intents'] = array(7433); //Get to know how Mench Personal Assistant works
+$config['onhold_intents'] = array(7240,6629,6630,7248,7435,369,6653);
 
 //Learn more: https://console.aws.amazon.com/iam/home?region=us-west-2#/users/foundation?section=security_credentials
 $config['aws_credentials'] = [

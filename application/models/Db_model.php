@@ -2234,6 +2234,11 @@ class Db_model extends CI_Model {
 
             } elseif($obj=='c'){
 
+                //Should we skip this?
+                if(in_array($item['c_id'],$this->config->item('onhold_intents'))){
+                    continue;
+                }
+
                 $new_item['c_id'] = intval($item['c_id']);
                 $new_item['c_outcome'] = $item['c_outcome'];
                 $new_item['c_is_any'] = intval($item['c_is_any']);

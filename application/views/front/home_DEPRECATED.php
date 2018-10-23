@@ -145,13 +145,7 @@
 
 
 
-<div class="<?= ( $udata['u_id']==1  ? 'hidden' : '' ) ?>">
-    <h1 class="center"><?= $title ?></h1>
-    <p class="home_line_2 center">More updates coming soon...</p>
-</div>
-
-
-<div class="row <?= ( $udata['u_id']==1  ? '' : 'hidden' ) ?>">
+<div class="row">
     <div class="main-message col-md-6">
         <h1 class="center">Land your dream job as a junior developer ✨</h1>
         <p class="home_line_2 center">Finding a job you love is about your skills, preferences and ability to craft a story to stand out from the crowd. With Mench personal assistant you'll get curated insights from industry experts to land your next awesome programming job.</p>
