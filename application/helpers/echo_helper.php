@@ -695,7 +695,7 @@ function echo_object($object,$id){
                 ));
                 if(isset($matching_users[0])){
                     //TODO Link to profile or chat widget link maybe?
-                    return '<a href="'.$website['url'].'entities/'.$id.'" title="User ID '.$id.'">'.$matching_users[0]['u_full_name'].'</a>';
+                    return '<a href="'.$website['url'].'entities/'.$id.'" title="Entity ID '.$id.'">'.$matching_users[0]['u_full_name'].'</a>';
                 }
             }
 

@@ -36,12 +36,11 @@ if(isset($uenrollment) && count($uenrollment)>0){
 
         //the Messenger Extensions JS SDK is done loading:
         window.extAsyncInit = function() {
-
             //Get context:
             MessengerExtensions.getContext('<?= $fb_settings['app_id'] ?>',
                 function success(thread_context){
                     // success
-                    //User ID was successfully obtained.
+                    //user ID was successfully obtained.
                     var psid = thread_context.psid;
                     var signed_request = thread_context.signed_request;
                     //Fetch Page:

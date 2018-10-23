@@ -1706,7 +1706,7 @@ class Db_model extends CI_Model {
 	    
 	    //Try to auto detect user:
 	    if(!isset($insert_columns['e_inbound_u_id'])){
-	        //Try to fetch user ID from session:
+	        //Try to fetch entity ID from user session:
 	        $user_data = $this->session->userdata('user');
 	        if(isset($user_data['u_id']) && intval($user_data['u_id'])>0){
 	            $insert_columns['e_inbound_u_id'] = $user_data['u_id'];
@@ -2183,6 +2183,7 @@ class Db_model extends CI_Model {
             if($obj=='u') {
 
                 $new_item['u_id'] = intval($item['u_id']); //rquired for all objects
+                $new_item['u_id'] = intval($item['u_id']); //rquired for all objects
                 $new_item['u__e_score'] = intval($item['u__e_score']);
                 $new_item['u_full_name'] = $item['u_full_name'];
                 $new_item['u_keywords'] = $item['u_bio'];
@@ -2239,6 +2240,7 @@ class Db_model extends CI_Model {
                 $new_item['c_keywords'] = ( strlen($item['c_trigger_statements'])>0 ? join(' ',json_decode($item['c_trigger_statements'])) : '' );
 
                 $new_item['c__tree_max_hours'] = number_format($item['c__tree_max_hours'],3);
+                $new_item['c__tree_min_hours'] = number_format($item['c__tree_min_hours'],3);
                 $new_item['c__tree_all_count'] = intval($item['c__tree_all_count']);
                 $new_item['c__tree_messages'] = intval($item['c__tree_messages']);
 

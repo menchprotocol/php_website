@@ -111,7 +111,7 @@ class Comm_model extends CI_Model {
 
 	    /*
 	     *
-	     * Function will detect the user identity of all inbound messages
+	     * Function will detect the entity (user) ID of all inbound messages
 	     *
 	     */
 
@@ -225,9 +225,9 @@ class Comm_model extends CI_Model {
 
                 //Show options for them to subscribe to:
                 $quick_replies = array();
-                $i_message = 'I found the following intent'.echo__s($res['nbHits']).':'."\n";
+                $i_message = 'I found the following intent'.echo__s($res['nbHits']).':';
                 foreach ($res['hits'] as $count=>$hit){
-                    $i_message .= "\n".($count+1).'/ '.$hit['c_outcome'].' in '.echo_hours($hit['c__tree_max_hours']);
+                    $i_message .= "\n\n".($count+1).'/ '.$hit['c_outcome'].' in '.echo_hours($hit['c__tree_max_hours']);
                     array_push($quick_replies , array(
                         'content_type' => 'text',
                         'title' => ($count+1).'/',
@@ -237,15 +237,14 @@ class Comm_model extends CI_Model {
 
 
                 //Give them a none option:
-                $i_message .= "\n".($count+2).'/ None of the above';
+                $i_message .= "\n\n".($count+2).'/ None of the above';
                 array_push($quick_replies , array(
                     'content_type' => 'text',
                     'title' => ($count+2).'/',
                     'payload' => 'SUBSCRIBE10_0',
                 ));
 
-
-                //Show them what we found:
+                //return what we found to the student to decide:
                 $this->Comm_model->send_message(array(
                     array(
                         'e_inbound_u_id' => 2738, //Initiated by PA

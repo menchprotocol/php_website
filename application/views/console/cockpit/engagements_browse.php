@@ -12,7 +12,7 @@ $engagement_references = $this->config->item('engagement_references');
 $engagement_filters = array(
     'e_inbound_c_id' => 'All Engagements',
     'e_id' => 'Engagement ID',
-    'e_u_id' => 'User ID',
+    'e_u_id' => 'Entity ID',
     'e_outbound_c_id' => 'Intent ID',
 );
 
