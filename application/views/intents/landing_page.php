@@ -23,10 +23,7 @@
         <?php if(count($c['c__child_intents'])>0){ ?>
             
             
-        <h3><i class="fas fa-flag"></i> Action Plan <span style="font-size:0.5em; display:inline-block; margin-left:5px; line-height:140%;"><i class="fas fa-lightbulb-on"></i> <?= $c['c__tree_all_count'] ?> Concepts <span style="display:inline-block;"><i class="fas fa-clock" style="padding-left: 2px;"></i> <?= echo_hours(($c['c__tree_max_hours']),false) ?></span></span></h3>
-
-
-
+        <h3><i class="fas fa-flag"></i> Action Plan <span style="font-size:0.5em; display:inline-block; margin-left:5px; line-height:140%;"><i class="fas fa-lightbulb-on"></i> <?= echo_concept($c) ?> <span style="display:inline-block;"><i class="fas fa-clock" style="padding-left: 2px;"></i> <?= echo_hour_range($c) ?></span></span></h3>
 
 
         <div class="list-group actionplan_list">
@@ -37,7 +34,7 @@
 
             echo '<li class="list-group-item" id="c__'.$c1_counter.'">';
             echo '<a href="javascript:void(0)" onclick="$(\'.c_'.$c1_counter.'\').toggle();" style="font-weight: normal;">'.$c1['c_outcome'].' &raquo;</a>';
-            echo '<span style="font-size:0.9em; font-weight:300; display:block;"><i class="fas fa-lightbulb-on"></i>'.$c1['c__tree_all_count'].' Concept'.echo__s($c1['c__tree_all_count']).' <i class="fas fa-clock"></i>'.echo_hours($c1['c__tree_max_hours'],0).'</span>';
+            echo '<span style="font-size:0.9em; font-weight:300; display:block;"><i class="fas fa-lightbulb-on"></i>'.echo_concept($c1).' <i class="fas fa-clock"></i>'.echo_hour_range($c1).'</span>';
 
                 echo '<div class="c_'.$c1_counter.'" style="display:none; margin-left:3px; font-size:0.9em;">';
 
@@ -62,7 +59,7 @@
                         }
                         echo '<li class="'.( $c2_counter>=$landing_pagetask_visible ? 'show_full_list_'.$c1_counter.'" style="display:none;"' : '"' ).'>';
                         echo $c2['c_outcome'];
-                        echo '<span style="font-size:0.8em; font-weight:300; margin-left:5px;"><i class="fas fa-lightbulb-on"></i>'.$c2['c__tree_all_count'].' &nbsp;<i class="fas fa-clock"></i>'.echo_hours($c2['c__tree_max_hours'],1).'</span>';
+                        echo '<span style="font-size:0.8em; font-weight:300; margin-left:5px;"><i class="fas fa-lightbulb-on"></i>'.$c['c__tree_all_count'].' &nbsp;<i class="fas fa-clock"></i>'.echo_hour_range($c2, true).'</span>';
                         echo '</li>';
                     }
                     echo '</ul>';
@@ -89,10 +86,13 @@
             <div class="price-box">
 
                 <div class="support_p">
-                    <div class="dash-label"><span class="icon-left"><i class="fas fa-lightbulb-on"></i></span> <?= $c['c__tree_all_count'] ?> Concepts/Best-Practices</div>
-                    <div class="dash-label"><span class="icon-left"><i class="fas fa-clock"></i></span> <?= echo_hours(($c['c__tree_max_hours']),false) ?> To Complete</div>
-                    <div class="dash-label"><span class="icon-left"><i class="fas fa-user-graduate"></i></span> <span data-toggle="tooltip" title="We curated concepts and best practices from industry experts" data-placement="top" class="underdot">Trained with 14 Industry Expert</span></div>
-                    <div class="dash-label"><span class="icon-left"><i class="fas fa-comment"></i></span> <?= $c['c__tree_messages'] ?> Curated Messages/Insights</div>
+                    <div class="dash-label"><span class="icon-left"><i class="fas fa-lightbulb-on"></i></span> <?= echo_concept($c) ?></div>
+                    <div class="dash-label"><span class="icon-left"><i class="fas fa-clock"></i></span> <?= echo_hour_range($c) ?> to Complete</div>
+                    <?php if($c['c__tree_max_cost']>0){ //Show the potential costs ?>
+                        <div class="dash-label"><span class="icon-left"><i class="fas fa-usd-circle"></i></span> <?= echo_cost_range($c) ?> in Purchases</div>
+                    <?php } ?>
+                    <div class="dash-label"><span class="icon-left"><i class="fas fa-user-graduate"></i></span> <span data-toggle="tooltip" title="We curated concepts and best practices from industry experts" data-placement="top" class="underdot">14 Industry Experts</span></div>
+                    <div class="dash-label"><span class="icon-left"><i class="fas fa-comment"></i></span> <span data-toggle="tooltip" title="Each message is a short video, audio, image or text snippet that explains a concept" data-placement="top" class="underdot"><?= $c['c__tree_messages'] ?> Curated Messages</span></div>
                 </div>
 
 

@@ -604,27 +604,61 @@ function echo_clean_url($url){
 
 
 
-function echo_hours($decimal_hours,$micro=false,$plus=false){
-
+function echo_hours($decimal_hours,$micro=false){
     if($decimal_hours<=0){
-
         return '0'.($micro?'m':' Minutes ');
-
     } elseif($decimal_hours<=1.50){
-
         $original_hours = $decimal_hours*60;
         $decimal_hours = round($original_hours);
-        return $decimal_hours.($plus?'+':'').($micro?'m':' Minutes');
-
+        return $decimal_hours.($micro?'m':' Minutes');
     } else {
-
         //Just round-up:
         $original_hours = $decimal_hours;
         $decimal_hours = round($original_hours);
-        return $decimal_hours.($plus?'+':'').($micro?'h':' Hour'.echo__s($original_hours));
+        return $decimal_hours.($micro?'h':' Hour'.echo__s($original_hours));
+    }
+}
 
+function echo_concept($c){
+    return '<span data-toggle="tooltip" title="A concept is an actionable task or best-practice that will empower you to '.$c['c_outcome'].'" data-placement="top" class="underdot">'.$c['c__tree_all_count'].' Concept'.echo__s($c['c__tree_all_count']).'</span>';
+}
+
+function echo_hour_range($c, $micro=false){
+    if($c['c__tree_max_hours']==$c['c__tree_min_hours']){
+        //Exactly the same, show a single value:
+        return echo_hours($c['c__tree_max_hours'],$micro);
+    } elseif(round($c['c__tree_max_hours'])==round($c['c__tree_min_hours']) || $c['c__tree_min_hours']<1){
+        if($c['c__tree_min_hours']<2 && $c['c__tree_max_hours']<3){
+            $is_minutes = true;
+        } elseif($c['c__tree_min_hours']<10){
+            $is_minutes = false;
+            $hours_decimal = 1;
+        } else {
+            //Number too large to matter, just treat as one:
+            return echo_hours($c['c__tree_max_hours'],$micro);
+        }
+    } else {
+        $is_minutes = false;
+        $hours_decimal = 0;
     }
 
+    //Generate hours range:
+    $ui_time = ($is_minutes ? round($c['c__tree_min_hours']*60) : round($c['c__tree_min_hours'], $hours_decimal) );
+    $ui_time .= ( $micro ? '-' : ' to ' );
+    $ui_time .= ($is_minutes ? round($c['c__tree_max_hours']*60) : round($c['c__tree_max_hours'], $hours_decimal) );
+    $ui_time .= ($is_minutes ? ($micro?'m':' Minutes') : ($micro?'h':' Hours') );
+
+    //Generate UI to return:
+    return ($micro ? '' : '<span data-toggle="tooltip" title="Depending on your current skills it would take '.$ui_time.' to '.$c['c_outcome'].'" data-placement="top" class="underdot">').$ui_time.($micro ? '' : '</span>');
+}
+
+function echo_cost_range($c){
+    if(round($c['c__tree_max_cost'])==round($c['c__tree_min_cost'])){
+        //Pretty similar, show a single value:
+        return '<span data-toggle="tooltip" title="Mench estimates you need to invest $'.round($c['c__tree_max_cost']).' USD on verified 3rd party products to '.$c['c_outcome'].'" data-placement="top" class="underdot">$'.round($c['c__tree_max_cost']).' USD</span>';
+    } else {
+        return '<span data-toggle="tooltip" title="Based on the pathway you choose, Mench estimates you need to invest between $'.round($c['c__tree_min_cost']).' to $'.round($c['c__tree_max_cost']).' USD on verified 3rd party products to '.$c['c_outcome'].'" data-placement="top" class="underdot">$'.round($c['c__tree_min_cost']).' to $'.round($c['c__tree_max_cost']).' USD</span>';
+    }
 }
 
 
