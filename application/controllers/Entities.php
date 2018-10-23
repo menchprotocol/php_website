@@ -288,6 +288,7 @@ class Entities extends CI_Controller {
 
             //Update Algolia:
             $this->Db_model->algolia_sync('u',$ur_outbound_u_id);
+            $this->Db_model->algolia_sync('u',$ur_inbound_u_id);
         }
 
 

@@ -428,11 +428,8 @@ class My extends CI_Controller {
         //Take action based on what the next level is...
         if($intent_data['next_level']==1){
 
-            //The next level is the Bootcamp, which means this was the last Step:
-            $this->Db_model->ru_update( $matching_enrollments[0]['ru_id'] , array(
-                'ru_cache__completion_rate' => 1, //Student is 100% complete
-                'ru_cache__current_task' => ($focus_class['r__total_tasks']+1), //Go 1 Task after the total Tasks to indicate completion
-            ));
+            //Last item completed!
+            //TODO Update status in subscription
 
             //Send graduation message:
             $this->Comm_model->foundation_message(array(
@@ -444,11 +441,9 @@ class My extends CI_Controller {
         } elseif($intent_data['next_level']==2){
 
             //We have a next Task:
-            //We also need to change ru_cache__current_task to reflect this advancement:
-            $this->Db_model->ru_update( $matching_enrollments[0]['ru_id'] , array(
-                'ru_cache__completion_rate' => number_format( ( $matching_enrollments[0]['ru_cache__completion_rate'] + ($intent_data['intent']['c_time_estimate']/$bs[0]['c__estimated_hours']) ),8),
-                'ru_cache__current_task' => $intent_data['next_intent']['cr_outbound_rank'],
-            ));
+            //TODO Update progress on subscription
+            //'ru_cache__completion_rate' => number_format( ( $matching_enrollments[0]['ru_cache__completion_rate'] + ($intent_data['intent']['c_time_estimate']/$bs[0]['c__estimated_hours']) ),8),
+            //'ru_cache__current_task' => $intent_data['next_intent']['cr_outbound_rank'],
 
             //Show button for next Task:
             echo '<div style="font-size:1.2em;"><a href="/my/actionplan/'.$_POST['b_id'].'/'.$intent_data['next_intent']['c_id'].'" class="btn btn-black">Next <i class="fas fa-arrow-right"></i></a></div>';
@@ -493,10 +488,7 @@ class My extends CI_Controller {
 
             if(count($enrollments)==1){
 
-                //All good, withdraw:
-                $this->Db_model->ru_update( $_POST['ru_id'] , array(
-                    'ru_status' => -2,
-                ));
+                //TODO withdraw subscription
 
                 //Log Engagement:
                 $this->Db_model->e_create(array(

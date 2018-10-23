@@ -414,39 +414,7 @@ class Db_model extends CI_Model {
 
         return $res;
 	}
-	
-	function ru_update($id,$update_columns){
-	    //Update first
-	    $this->db->where('ru_id', $id);
-	    $this->db->update('v5_class_students', $update_columns);
-	    return $this->db->affected_rows();
-	}
-	
-	function ru_create($insert_columns){
 
-        if(missing_required_db_fields($insert_columns,array('ru_b_id','ru_outbound_u_id','ru_status'))){
-            return false;
-        }
-
-        if(!isset($insert_columns['ru_timestamp'])){
-            $insert_columns['ru_timestamp'] = date("Y-m-d H:i:s");
-        }
-        if(!isset($insert_columns['ru_r_id'])){
-            $insert_columns['ru_r_id'] = 0;
-        }
-        if(!isset($insert_columns['ru_assessment_result'])){
-            $insert_columns['ru_assessment_result'] = -1;
-        }
-	    
-	    //Lets now add:
-	    $this->db->insert('v5_class_students', $insert_columns);
-	    
-	    //Fetch inserted id:
-	    $insert_columns['ru_id'] = $this->db->insert_id();
-	    
-	    return $insert_columns;
-	}
-	
 
 	function t_create($insert_columns){
 
@@ -1229,7 +1197,6 @@ class Db_model extends CI_Model {
             } else {
                 $u_full_name = $x_types[$curl['x_type']]['s_name'].' '.$url_code;
             }
-
 
             $new_content = $this->Db_model->u_create(array(
                 'u_full_name' => $u_full_name,
