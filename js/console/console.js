@@ -1,10 +1,7 @@
 
 
-//Loadup Algolia:
-client = algoliasearch('49OCX1ZXLJ', 'ca3cf5f541daee514976bc49f8399716');
-algolia_u_index = client.initIndex('alg_entities');
-algolia_c_index = client.initIndex('alg_intents');
-
+//Loadup algolia when any related field is focused on:
+var algolia_loaded = false;
 
 //To update fancy dropdown which is usually used for STATUS updates:
 function update_dropdown(name,intvalue,count){
@@ -134,11 +131,22 @@ function load_help(intent_id){
     $('#hb_'+intent_id).html('<a class="tipbtn" href="javascript:open_tip('+intent_id+')">'+tips_button+'</a>');
 }
 
-
+function load_js_algolia(){
+    $( ".algolia_search" ).focus(function() {
+        //Loadup Algolia once:
+        if(!algolia_loaded){
+            algolia_loaded = true;
+            client = algoliasearch('49OCX1ZXLJ', 'ca3cf5f541daee514976bc49f8399716');
+            algolia_u_index = client.initIndex('alg_entities');
+            algolia_c_index = client.initIndex('alg_intents');
+        }
+    });
+}
 
 //Function to load all help messages throughout the console:
 $(document).ready(function() {
 
+    load_js_algolia();
 
     $( "#console_search" ).on('autocomplete:selected', function(event, suggestion, dataset) {
 
@@ -150,7 +158,6 @@ $(document).ready(function() {
 
     }).autocomplete({ hint: false, keyboardShortcuts: ['s'] }, [
         {
-
             source: function(q, cb){
                 algolia_c_index.search(q, {
                     hitsPerPage: 7,

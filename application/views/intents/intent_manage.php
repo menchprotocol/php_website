@@ -779,7 +779,7 @@ if(isset($orphan_cs)){
             ?>
             <div class="list-group-item list_input grey-block">
                 <div class="input-group">
-                    <div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control intentadder-level-2"  maxlength="70" intent-id="<?= $c['c_id'] ?>" id="addintent-c-<?= $c['c_id'] ?>" placeholder="Add #Intent"></div>
+                    <div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control intentadder-level-2 algolia_search"  maxlength="70" intent-id="<?= $c['c_id'] ?>" id="addintent-c-<?= $c['c_id'] ?>" placeholder="Add #Intent"></div>
                     <span class="input-group-addon" style="padding-right:8px;">
                                         <span id="dir_handle" data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" class="badge badge-primary pull-right" style="cursor:pointer; margin: 1px 3px 0 6px;">
                                             <div><i class="fas fa-plus"></i></div>
@@ -809,7 +809,7 @@ if(isset($orphan_cs)){
                 <div class="form-group label-floating is-empty">
                     <div class="input-group border">
                         <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;">To</span>
-                        <input style="padding-left:0;" type="text" id="c_outcome" maxlength="70" value="" class="form-control c_outcome_input">
+                        <input style="padding-left:0;" type="text" id="c_outcome" maxlength="70" value="" class="form-control c_outcome_input algolia_search">
                     </div>
                 </div>
             </div>

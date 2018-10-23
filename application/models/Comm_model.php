@@ -215,7 +215,7 @@ class Comm_model extends CI_Model {
             }
 
             //TODO migrate this to NLP framework like api.ai
-            $search_index = load_algolia('alg_intents');
+            $search_index = load_php_algolia('alg_intents');
 
             $res = $search_index->search($c_target_outcome, [
                 'hitsPerPage' => 6

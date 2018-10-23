@@ -724,7 +724,7 @@ if($entity['u_id']!=2738){
     if($can_edit) {
         echo '<div id="new-inbound" class="list-group-item list_input grey-input hidden">
             <div class="input-group">
-                <div class="form-group is-empty"><input type="text" class="form-control new-input" data-lpignore="true" placeholder="Add Entity..."></div>
+                <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search" data-lpignore="true" placeholder="Add Entity..."></div>
                 <span class="input-group-addon">
                     <a class="badge badge-secondary new-btn" href="javascript:void(0);" onclick="alert(\'Note: Either choose an option from the suggestion menu to continue\')">ADD</a>
                 </span>
@@ -821,7 +821,7 @@ if($entity['u__outbound_count'] > count($child_entities)) {
 if($can_edit){
     echo '<div id="new-outbound" class="list-group-item list_input grey-input">
         <div class="input-group">
-            <div class="form-group is-empty"><input type="text" class="form-control new-input" data-lpignore="true" placeholder="Add '.$add_name.' by Name/URL"></div>
+            <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search" data-lpignore="true" placeholder="Add '.$add_name.' by Name/URL"></div>
             <span class="input-group-addon">
                 <a class="badge badge-secondary new-btn" href="javascript:ur_add(0,'.$add_id.', 0);">ADD</a>
             </span>

@@ -64,7 +64,7 @@ $uri_segment_2 = $this->uri->segment(2);
                         <table style="width: 100%; border:0; padding:0; margin:0;">
                             <tr>
                                 <td style="width:40px;"><img src="//theme.zdassets.com/theme_assets/2085893/cabe5e69ca093a3e91eadfb22bc5bee28d66cdeb.png" /></td>
-                                <td><input type="text" id="console_search" data-lpignore="true" placeholder="Search..."></td>
+                                <td><input type="text" class="algolia_search" id="console_search" data-lpignore="true" placeholder="Search..."></td>
                             </tr>
                         </table>
 					</span>

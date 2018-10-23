@@ -2136,7 +2136,7 @@ class Db_model extends CI_Model {
         }
 
         //Load algolia
-        $search_index = load_algolia($alg_indexes[$obj]);
+        $search_index = load_php_algolia($alg_indexes[$obj]);
 
         if(!$obj_id){
             //Clear this index before re-creating it from scratch:
