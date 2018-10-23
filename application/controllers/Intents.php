@@ -37,6 +37,7 @@ class Intents extends CI_Controller
             $orphan_c_count = count($this->Db_model->c_fetch(array(
                 'c.c__is_orphan' => 1,
                 'c.c_status >' => 0,
+                'c.c_id NOT IN ('.join(',',$this->config->item('universal_intents')).')' => null,
             )));
         } else {
             $orphan_c_count = 0;
@@ -82,6 +83,7 @@ class Intents extends CI_Controller
         $orphan_cs = $this->Db_model->c_fetch(array(
             'c.c__is_orphan' => 1,
             'c.c_status >' => 0,
+            'c.c_id NOT IN ('.join(',',$this->config->item('universal_intents')).')' => null,
         ), 1);
 
         //Load view

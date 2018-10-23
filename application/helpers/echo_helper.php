@@ -620,7 +620,7 @@ function echo_hours($decimal_hours,$micro=false){
 }
 
 function echo_concept($c){
-    return '<span data-toggle="tooltip" title="A concept is an actionable task or best-practice that will empower you to '.$c['c_outcome'].'" data-placement="top" class="underdot">'.$c['c__tree_all_count'].' Concept'.echo__s($c['c__tree_all_count']).'</span>';
+    return '<span data-toggle="tooltip" title="A concept is a key insight or actionable task that will empower you to '.$c['c_outcome'].'" data-placement="top" class="underdot">'.$c['c__tree_all_count'].' Concept'.echo__s($c['c__tree_all_count']).'</span>';
 }
 
 function echo_hour_range($c, $micro=false){
@@ -653,11 +653,17 @@ function echo_hour_range($c, $micro=false){
 }
 
 function echo_cost_range($c){
-    if(round($c['c__tree_max_cost'])==round($c['c__tree_min_cost'])){
+    if($c['c__tree_max_cost']==0){
+        //No payment:
+        return false;
+    } elseif(round($c['c__tree_max_cost'])==round($c['c__tree_min_cost'])){
         //Pretty similar, show a single value:
         return '<span data-toggle="tooltip" title="Mench estimates you need to invest $'.round($c['c__tree_max_cost']).' USD on verified 3rd party products to '.$c['c_outcome'].'" data-placement="top" class="underdot">$'.round($c['c__tree_max_cost']).' USD</span>';
+    } elseif($c['c__tree_min_cost']==0) {
+        //There is an optional payment:
+        return '<span data-toggle="tooltip" title="You have the option to invest $'.round($c['c__tree_max_cost']).' USD on verified 3rd-party product purchases to speed-up your progress to '.$c['c_outcome'].'" data-placement="top" class="underdot">Optional $'.round($c['c__tree_max_cost']).' USD</span>';
     } else {
-        return '<span data-toggle="tooltip" title="Based on the pathway you choose, Mench estimates you need to invest between $'.round($c['c__tree_min_cost']).' to $'.round($c['c__tree_max_cost']).' USD on verified 3rd party products to '.$c['c_outcome'].'" data-placement="top" class="underdot">$'.round($c['c__tree_min_cost']).' to $'.round($c['c__tree_max_cost']).' USD</span>';
+        return '<span data-toggle="tooltip" title="Mench estimates you need to invest between $'.round($c['c__tree_min_cost']).' to $'.round($c['c__tree_max_cost']).' USD on verified 3rd-party products to speed-up your progress to '.$c['c_outcome'].'" data-placement="top" class="underdot">$'.round($c['c__tree_min_cost']).' to $'.round($c['c__tree_max_cost']).' USD</span>';
     }
 }
 

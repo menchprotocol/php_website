@@ -728,15 +728,12 @@ if(isset($orphan_cs)){
 
         } else {
 
-
-            if($c['c_id']==7433) {
+            if(in_array($c['c_id'],$this->config->item('universal_intents'))) {
                 //This is the "Get to know how Mench Personal Assistant works" tree
                 //which is recommended to all new students who have not subscribed to it
                 //Let the admin know about this:
-                echo '<div class="alert alert-info" role="alert" style="margin-top: 0;"><i class="fas fa-globe"></i> This is a universal intent that gets recommended to every new Mench student</div>';
+                echo '<div class="alert alert-info" role="alert" style="margin-top: 0;"><i class="fas fa-globe"></i> This is a universal intent that is automatically recommended to students</div>';
             }
-
-
 
             echo '<h5 class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-inbound-count inbound-counter-'.$c['c_id'].'">'.count($c__inbounds).'</span> Ins</h5>';
 
@@ -749,9 +746,6 @@ if(isset($orphan_cs)){
             } else {
                 echo '<div class="alert alert-info" role="alert" style="margin-top: 0;"><i class="fas fa-exclamation-triangle"></i> No inbound intents linked yet</div>';
             }
-
-
-
 
 
 

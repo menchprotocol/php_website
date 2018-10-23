@@ -225,7 +225,7 @@ class Comm_model extends CI_Model {
 
                 //Show options for them to subscribe to:
                 $quick_replies = array();
-                $i_message = 'I found the following intent'.echo__s($res['nbHits']).' that matches your request:'."\n";
+                $i_message = 'I found the following intent'.echo__s($res['nbHits']).':'."\n";
                 foreach ($res['hits'] as $count=>$hit){
                     $i_message .= "\n".($count+1).'/ '.$hit['c_outcome'].' in '.echo_hours($hit['c__tree_max_hours']);
                     array_push($quick_replies , array(
