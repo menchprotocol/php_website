@@ -98,6 +98,7 @@ $b_team_member = array();
             //Adjust columns:
             $('.cols').removeClass('col-xs-6').addClass('col-sm-6');
             $('.fixed-box').addClass('phone-2nd');
+            $('.dash').css('margin-bottom', '0px'); //For iframe to show better
 
         } else {
 
@@ -704,13 +705,6 @@ $b_team_member = array();
             //Show inner tooltips:
             $('[data-toggle="tooltip"]').tooltip();
 
-            //We might need to scroll:
-            if(is_compact){
-                $('.main-panel').animate({
-                    scrollTop:9999
-                }, 150);
-            }
-
         });
 
     }
@@ -846,7 +840,7 @@ if($entity['u__outbound_count'] > count($child_entities)) {
 if($can_edit){
     echo '<div id="new-outbound" class="list-group-item list_input grey-input">
         <div class="input-group">
-            <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search" data-lpignore="true" placeholder="Add '.$add_name.' by Name/URL"></div>
+            <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search bottom-add" data-lpignore="true" placeholder="Add '.$add_name.' by Name/URL"></div>
             <span class="input-group-addon">
                 <a class="badge badge-secondary new-btn" href="javascript:ur_add(0,'.$add_id.', 0);">ADD</a>
             </span>

@@ -151,7 +151,7 @@ $uri_segment_2 = $this->uri->segment(2);
 
 
 
-        <div class="content dash" style="padding-bottom: 50px !important; <?= ( isset($b) && substr_count($_SERVER['REQUEST_URI'],'/console/'.$b['b_id'].'/actionplan')>0 ? 'min-height: inherit !important;' : '' ) ?>">
+        <div class="content dash">
 
             <?php
             if(isset($breadcrumb) && count($breadcrumb)>0){

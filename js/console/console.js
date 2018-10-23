@@ -148,6 +148,16 @@ $(document).ready(function() {
 
     load_js_algolia();
 
+    $( ".bottom-add" ).focus(function() {
+        //Give more space at the bottom to see search results:
+        if(!$( ".dash" ).hasClass('dash-expand')){
+            $( ".dash" ).addClass('dash-expand');
+            $('.main-panel').animate({
+                scrollTop:9999
+            }, 150);
+        }
+    });
+
     $( "#console_search" ).on('autocomplete:selected', function(event, suggestion, dataset) {
 
         if(dataset==1){
