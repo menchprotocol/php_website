@@ -2199,7 +2199,7 @@ class Db_model extends CI_Model {
                         }
                     }
                 } else {
-                    //No parents!
+                    //No inbound entities
                     array_push($new_item['_tags'],'noparent');
                 }
 

@@ -143,11 +143,10 @@ $(document).ready(function() {
     $( "#console_search" ).on('autocomplete:selected', function(event, suggestion, dataset) {
 
         if(dataset==1){
-            window.location = "/entities/"+suggestion.u_id;
-        } else if(dataset==2){
             window.location = "/intents/"+suggestion.c_id;
+        } else if(dataset==2){
+            window.location = "/entities/"+suggestion.u_id;
         }
-
 
     }).autocomplete({ hint: false, keyboardShortcuts: ['s'] }, [
         {
