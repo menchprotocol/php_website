@@ -284,9 +284,18 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
         ));
         if(count($original_cs)>0){
 
-            $ui .= '<div class="entities-msg">'.'<span class="pull-right" style="margin:-4px 10px 0 0;"><a href="/intents/'.$i['i_outbound_c_id'].'#messages-'.$i['i_outbound_c_id'].'"><span class="badge badge-primary" style="display:inline-block; margin-left:3px; width:40px;"><i class="fas fa-sign-out-alt rotate90"></i></span></a></span>'.
-                '<h4><i class="fas fa-hashtag" style="font-size:1em;"></i> '.$original_cs[0]['c_outcome'].'</h4>'.
-                '<div>';
+            $ui .= '<div class="entities-msg">';
+            $ui .= '<span class="pull-right" style="margin:6px 10px 0 0;">';
+                $ui .= '<span data-toggle="tooltip" title="This is the '.echo_ordinal($i['i_rank']).' message for this intent" data-placement="left" class="underdot" style="padding-bottom:4px;">'.echo_ordinal($i['i_rank']).'</span> ';
+                $ui .= '<span>'.echo_status('i_status',$i['i_status'],1,'left').'</span> ';
+                $ui .= '<a href="/entities/'.$i['i_inbound_u_id'].'" class="on-hover i_uploader badge badge-secondary" data-toggle="tooltip" title="Last modified by '.$i['u_full_name'].' about '.echo_diff_time($i['i_timestamp']).' ago. Click to open profile." data-placement="left">'.echo_cover($i,null,true).'</a>';
+                $ui .= '<a href="/intents/'.$i['i_outbound_c_id'].'#messages-'.$i['i_outbound_c_id'].'"><span class="badge badge-primary" style="display:inline-block; margin-left:3px; width:40px;"><i class="fas fa-sign-out-alt rotate90"></i></span></a>';
+            $ui .= '</span>';
+            $ui .= '<h4><i class="fas fa-hashtag" style="font-size:1em;"></i> '.$original_cs[0]['c_outcome'].'</h4>';
+            $ui .= '<div>';
+
+
+
 
         }
     }

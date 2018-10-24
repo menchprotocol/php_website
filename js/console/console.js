@@ -34,7 +34,10 @@ function open_tip(intent_id){
 				
 				//Reload tooldip:
 				$('[data-toggle="tooltip"]').tooltip();
-			}
+			} else {
+			    //Show error:
+
+            }
 	    });
 	}
 	

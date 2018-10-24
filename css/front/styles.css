@@ -323,7 +323,7 @@ input::-webkit-inner-spin-button {
     display: block;
     margin-bottom: 40px;
     position: absolute;
-    top: -25px;
+    top: 0;
     left: 30px;
 }
 .marvel-device.iphone-x .notch {
@@ -1019,7 +1019,8 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px; }
 	border-bottom-right-radius: 4px;
 }
 @media (max-width:1150px){
-	#console .navbar-header { min-width:400px; }
+    .hide-small{ display: none;}
+    #console .navbar-header { min-width:400px; }
 	.main-raised {
 	    margin-left:15px !important;
 	    margin-right:15px !important;
@@ -1054,9 +1055,166 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px; }
 }
 .card-image .video-sorting, .card-image video { border-radius:6px; display: block; overflow: hidden; }
 
+
+#funnel{
+    background-color:#FFF !important;
+    color:#2f2739 !important;
+}
+
+#funnel textarea, #funnel input, #funnel select, #funnel .progress {
+    border:1px solid #2f2739;
+    border-radius:5px;
+}
+
+#funnel .section {
+    text-align:left;
+    padding:10px 0;
+}
+
+#funnel .breadcrumb {
+    margin-top:-30px;
+    margin-left:-4px;
+    text-align:left;
+}
+#funnel .breadcrumb li{
+    line-height:110%;
+    font-size:0.4em;
+    margin:0;
+    padding:6px 0;
+    display:block;
+}
+
+#funnel .initial {
+    min-width:20px;
+    text-align:center;
+    display:inline-block;
+}
+#funnel .form-control::placeholder {
+    font-size:20px !important;
+    color:#CCC !important;
+}
+#funnel .list-group-item {
+    padding: 10px 5px 8px;
+}
+#funnel .p_footer{ font-size:0.8em; padding-left:8px;}
+
+#funnel .list-group{
+    text-align:left;
+    font-size:0.6em;
+    line-height:110%;
+}
+
+#funnel .list-group>li{
+    background-color:#EFEFEF;
+}
+
+#funnel h4 {
+    font-size:0.7em;
+    margin:40px 3px 5px 5px;
+    border-bottom:2px solid #2f2739;
+    padding-left:5px
+}
+
+#funnel h4 .title-sub{
+    color:#2f2739 !important;
+}
+
+#funnel .quill_content {
+    font-size:0.7em;
+    line-height:120%;
+    font-weight:normal;
+    margin:0 3px 10px 5px;
+    color:#2f2739;
+}
+.tip_bubble a {
+    font-weight:bold;
+    text-decoration:underline;
+}
+
+select.form-control{
+    width: auto !important;
+    max-width: none !important;
+}
+
+#funnel .quill_content textarea{
+    width: 100% !important;
+    height: 70px !important;
+    font-size: 16px !important;
+    padding: 3px !important;
+    margin: 0 !important;
+    max-width: 100%;
+}
+#funnel .quill_content textarea::placeholder {
+    font-size:16px !important;
+    color:#CCC !important;
+}
+#funnel .quill_content ul, #funnel .quill_content ol{
+    margin-left:-20px;
+}
+#funnel .sub-title {
+    font-size: 1.1em;
+    font-weight:bold;
+    margin: 0 0 2px 5px;
+}
+#funnel .main{
+    margin-top:10px !important;
+    border-radius:0;
+    box-shadow:none;
+    background-color:transparent;
+}
+
+#funnel h3{
+    margin:0;
+}
+
+#funnel .body-container{
+    font-size:24px;
+    font-weight: normal;
+    width:100% !important;
+    margin:0 !important;
+    padding:8px 0 !important;
+    text-align:left;
+    line-height: 120%;
+}
+
+#funnel .checkbox label {
+    cursor: default;
+}
+
+#funnel .form-control {
+    max-width:300px;
+    margin:10px 0 0 !important;
+    padding:21px 10px 25px !important;
+    background-color:#FFF;
+    border-radius:5px;
+    font-size:20px !important;
+}
+
+#funnel h1, #funnel h2{
+    margin:0 0 10px 0 !important;
+    padding:0 !important;
+    line-height:130%;
+}
+
+#funnel .inline-level{
+    font-size: 0.8em;
+    font-weight: bold;
+    display: inline-block;
+    width: 30px;
+    margin-left: -4px;
+    text-align: left;
+    color: #999;
+    margin-right: 0;
+    padding-right: 0;
+}
+
+.list-group {
+    margin-bottom:5px;
+}
+
 @media (max-width: 767px){
 
-    .hide-small{ display: none;}
+    #funnel .p_footer{ padding-left:0; text-align:center;}
     .btn.btn-sm, .btn-group-sm .btn, .navbar .navbar-nav > li > a.btn.btn-sm, .btn-group-sm .navbar .navbar-nav > li > a.btn { padding: 5px; }
     .grey-box{ margin-top:30px; }
     #iphonex { left: -26px !important; }
@@ -1388,115 +1546,6 @@ a.badge:focus, a.badge:hover {
 
 
 
-#funnel{
-    background-color:#FFF !important;
-    color:#2f2739 !important;
-}
-
-#funnel textarea, #funnel input, #funnel select, #funnel .progress {
-    border:1px solid #2f2739;
-    border-radius:5px;
-}
-
-#funnel .section {
-	text-align:left;
-	padding:10px 0;
-}
-
-#funnel .breadcrumb {
-	margin-top:-30px;
-	margin-left:-4px;
-	text-align:left;
-}
-#funnel .breadcrumb li{
-	line-height:110%;
-	font-size:0.4em;
-	margin:0;
-	padding:6px 0;
-	display:block;
-}
-
-#funnel .initial {
-	min-width:20px;
-	text-align:center;
-	display:inline-block;
-}
-#funnel .form-control::placeholder {
-	font-size:20px !important;
-	color:#CCC !important;
-}
-#funnel .list-group-item {
-    padding: 10px 5px 8px;
-}
-#funnel .p_footer{ font-size:0.8em; padding-left:8px;}
-
-@media (max-width: 767px){
-	#funnel .p_footer{ padding-left:0; text-align:center;}
-}
-#funnel .list-group{
-	text-align:left;
-	font-size:0.6em;
-	line-height:110%;
-}
-
-#funnel .list-group>li{
-	background-color:#EFEFEF;
-}
-
-#funnel h4 {
-	font-size:0.7em;
-	margin:40px 3px 5px 5px;
-	border-bottom:2px solid #2f2739;
-	padding-left:5px
-}
-
-#funnel h4 .title-sub{
-	color:#2f2739 !important;
-}
-
-#funnel .quill_content {
-	font-size:0.7em;
-	line-height:120%;
-	font-weight:normal;
-	margin:0 3px 10px 5px;
-	color:#2f2739;
-}
-.tip_bubble a {
-	font-weight:bold;
-	text-decoration:underline;
-}
-
- select.form-control{
-	width: auto !important;
-	max-width: none !important;
-}
-
-#funnel .quill_content textarea{
-	width: 100% !important;
-    height: 70px !important;
-    font-size: 16px !important;
-    padding: 3px !important;
-    margin: 0 !important;
-    max-width: 100%;
-}
-#funnel .quill_content textarea::placeholder {
-	font-size:16px !important;
-	color:#CCC !important;
-}
-#funnel .quill_content ul, #funnel .quill_content ol{
-	margin-left:-20px;
-}
-#funnel .sub-title {
-	font-size: 1.1em;
-	font-weight:bold;
-    margin: 0 0 2px 5px;
-}
-#funnel .main{
-	margin-top:10px !important;
-	border-radius:0;
-	box-shadow:none;
-	background-color:transparent;
-}
 .btn-black{
 	background-color: #2f2739;
     font-size:1.1em;
@@ -1698,32 +1747,6 @@ a .badge {
     display: none;
 }
 
-#funnel h3{
-    margin:0;
-}
-
-#funnel .body-container{
-	font-size:24px;
-	font-weight: normal;
-	width:100% !important;
-	margin:0 !important;
-	padding:8px 0 !important;
-	text-align:left;
-    line-height: 120%;
-}
-
-#funnel .checkbox label {
-  cursor: default;
-}
-
-#funnel .form-control {
-	max-width:300px;
-	margin:10px 0 0 !important;
-	padding:21px 10px 25px !important;
-	background-color:#FFF;
-	border-radius:5px;
-	font-size:20px !important;
-}
 
 .status-label{
     color:#2f2739;
@@ -1918,24 +1941,7 @@ h4 .tip-badge{
 }
 
 
-        
-#funnel h1, #funnel h2{
-	margin:0 0 10px 0 !important;
-	padding:0 !important;
-	line-height:130%;
-}
 
-#funnel .inline-level{
-	font-size: 0.8em;
-    font-weight: bold;
-    display: inline-block;
-    width: 30px;
-    margin-left: -4px;
-    text-align: left;
-    color: #999;
-    margin-right: 0;
-    padding-right: 0;
-}
 
 
 .overload{
@@ -2337,4 +2343,11 @@ margin:5px 0;
     margin: 45px 0 0px 3px !important;
     padding-bottom: 0px !important;
     border-bottom: 0 !important;
+}
+
+.badge>img {
+    width: 23px;
+    height: 23px;
+    margin: -8px -1px -3px -1px !important;
+    border: 1px solid #FFF !important;
 }

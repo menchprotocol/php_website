@@ -164,8 +164,6 @@ $uri_segment_2 = $this->uri->segment(2);
                     }
                 }
                 echo '</ol>';
-            } elseif(!isset($_GET['skip_header'])) {
-                echo '<div style="padding:1px 0;">&nbsp;</div>'; //Give some space in the absent of the breadcrumb
             }
             ?>
 

@@ -603,10 +603,11 @@ class Intents extends CI_Controller
     }
 
     function c_echo_tip(){
+
         $udata = auth(array(1308,1280));
         //Used to load all the help messages within the Console:
         if(!$udata || !isset($_POST['intent_id']) || intval($_POST['intent_id'])<1){
-            echo_json(array(
+            return echo_json(array(
                 'success' => 0,
             ));
         }
@@ -616,9 +617,16 @@ class Intents extends CI_Controller
             'i_outbound_c_id' => intval($_POST['intent_id']),
             'i_status >' => 0, //Published in any form
         ));
+        if(count($messages)==0){
+            return echo_json(array(
+                'success' => 0,
+            ));
+        }
 
-        //Log an engagement for all messages
+        $help_content = null;
         foreach($messages as $i){
+
+            //Log an engagement for all messages
             $this->Db_model->e_create(array(
                 'e_inbound_u_id' => $udata['u_id'],
                 'e_json' => $i,
@@ -626,17 +634,14 @@ class Intents extends CI_Controller
                 'e_outbound_c_id' => intval($_POST['intent_id']),
                 'e_i_id' => $i['i_id'],
             ));
-        }
 
-        //Build UI friendly Message:
-        $help_content = null;
-        foreach($messages as $i){
+            //Build UI friendly Message:
             $help_content .= echo_i(array_merge($i,array('e_outbound_u_id'=>$udata['u_id'])),$udata['u_full_name']);
         }
 
         //Return results:
         echo_json(array(
-            'success' => ( $help_content ?  1 : 0 ), //No Messages perhaps!
+            'success' => 1,
             'intent_id' => intval($_POST['intent_id']),
             'help_content' => $help_content,
         ));

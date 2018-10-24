@@ -41,7 +41,7 @@ if(isset($orphan_cs)){
                 var top_position = $(this).scrollTop();
                 clearTimeout($.data(this, 'scrollTimer'));
                 $.data(this, 'scrollTimer', setTimeout(function() {
-                    $("#iphonex").css('top',(top_position-25)); //PX also set in style.css for initial load
+                    $("#iphonex").css('top',(top_position-0)); //PX also set in style.css for initial load
                     $("#modifybox").css('top',(top_position-0)); //PX also set in style.css for initial load
                 }, 34));
             });

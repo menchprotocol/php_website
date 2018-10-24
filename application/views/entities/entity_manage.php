@@ -103,7 +103,7 @@ $b_team_member = array();
         } else {
 
             //Adjust height of the messaging windows:
-            $('.grey-box').css('max-height', (parseInt($( window ).height())-160)+'px');
+            $('.grey-box').css('max-height', (parseInt($( window ).height())-130)+'px');
 
             //Make editing frames Sticky for scrolling longer lists
             $(".main-panel").scroll(function() {
@@ -947,7 +947,7 @@ if(count($payments)>0){
 
           <h5 class="badge badge-h"><i class="fas fa-comment-dots"></i> Entity Messages</h5>
           <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;"><a href="javascript:void(0)" onclick="$('#message-frame').addClass('hidden');$('#loaded-messages').html('');"><i class="fas fa-times-circle"></i></a></div>
-          <div class="grey-box"><div id="loaded-messages" style="margin-top:20px;"></div></div>
+          <div class="grey-box"><div id="loaded-messages"></div></div>
 
       </div>
 

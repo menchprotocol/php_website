@@ -1,4 +1,3 @@
-<div class="help_body maxout below_h" id="content_6084"></div>
 <div class="maxout">
 <?php
 foreach(echo_status() as $object_id=>$statuses){

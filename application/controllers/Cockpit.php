@@ -84,7 +84,7 @@ class Cockpit extends CI_Controller {
 	            'breadcrumb' => array(
 	                array(
 	                    'link' => null,
-	                    'anchor' => 'Udemy Community <span id="hb_6085" class="help_button" intent-id="6085"></span>',
+	                    'anchor' => 'Udemy Community',
 	                ),
 	            ),
 	        ));
@@ -104,7 +104,7 @@ class Cockpit extends CI_Controller {
             'breadcrumb' => array(
                 array(
                     'link' => null,
-                    'anchor' => 'Object Statuses <span id="hb_6084" class="help_button" intent-id="6084"></span>',
+                    'anchor' => 'Object Statuses',
                 ),
             ),
         ));

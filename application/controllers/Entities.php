@@ -485,7 +485,7 @@ class Entities extends CI_Controller {
         $messages = $this->Db_model->i_fetch(array(
             'i_status >=' => 0,
             'i_outbound_u_id' => $_POST['u_id'],
-        ));
+        ), 0, array('x'));
         echo '<div id="list-messages" class="list-group  grey-list">';
         foreach($messages as $i){
             echo echo_i($i);
