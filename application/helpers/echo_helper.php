@@ -640,7 +640,7 @@ function echo_hour_range($c, $micro=false){
         //Exactly the same, show a single value:
         return echo_hours($c['c__tree_max_hours'],$micro);
     } elseif(round($c['c__tree_max_hours'])==round($c['c__tree_min_hours']) || $c['c__tree_min_hours']<1){
-        if($c['c__tree_min_hours']<2 && $c['c__tree_max_hours']<3){
+        if($c['c__tree_min_hours']<2 && $c['c__tree_max_hours']<3 && ($c['c__tree_max_hours']- $c['c__tree_min_hours'])*60>30){
             $is_minutes = true;
         } elseif($c['c__tree_min_hours']<10){
             $is_minutes = false;
@@ -900,8 +900,7 @@ function echo_subscribe_button($c_id){
              cta_text="GET_STARTED_IN_MESSENGER"
              size="xlarge">Loading...</div>
         <div style="font-size:0.9em; padding:10px 0 0 3px; margin-bottom: 0;">
-            <p style="line-height:130%; font-size:1em !important;"><b data-toggle="tooltip" title="Do It Yourself with your always-free personal assistant that will customize an action plan to <?= str_replace('"','\'',$cs[0]['c_outcome']) ?>" data-placement="top" class="underdot">DIY for Free</b> or <b data-toggle="tooltip" title="Connect with an industry expert coach and accerelate your progress with assignment review and live chat. Tuition reimbursement guarantee if you do the work but do not <?= str_replace('"','\'',$cs[0]['c_outcome']) ?>!" data-placement="top" class="underdot">$85/week Coaching</b></p>
-            <p style="line-height:130%; font-size:0.9em !important;"><span data-toggle="tooltip" title="Mench personal assistant works only with Facebook messenger. Click on the button above to get stared." data-placement="top" class="underdot">Requires Messenger</span> but <a href="https://newsroom.fb.com/news/2015/06/sign-up-for-messenger-without-a-facebook-account/" target="_blank" data-toggle="tooltip" title="You have the option to use Messenger without having a Facebook account. Click to learn more" data-placement="top" class="underdot">Not Facebook</a></p>
+            <p style="line-height:130%; font-size:0.9em !important;"><span data-toggle="tooltip" title="Mench personal assistant is currently offer via Facebook Messenger only" data-placement="top" class="underdot">Requires Messenger</span> but <a href="https://newsroom.fb.com/news/2015/06/sign-up-for-messenger-without-a-facebook-account/" target="_blank" data-toggle="tooltip" title="You can use Messenger without having a Facebook account. Click to learn more" data-placement="top" class="underdot">Not Facebook</a></p>
         </div>
     </div>
 

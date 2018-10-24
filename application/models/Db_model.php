@@ -1961,10 +1961,10 @@ class Db_model extends CI_Model {
                         }
                     } else {
                         //AND Branch, add them all up:
-                        $local_values['c___tree_min_hours'] += $granchildren['c1__tree_min_hours'];
-                        $local_values['c___tree_max_hours'] += $granchildren['c1__tree_max_hours'];
-                        $local_values['c___tree_min_cost']  += $granchildren['c1__tree_min_cost'];
-                        $local_values['c___tree_max_cost']  += $granchildren['c1__tree_max_cost'];
+                        $local_values['c___tree_min_hours'] += number_format($granchildren['c1__tree_min_hours'],4);
+                        $local_values['c___tree_max_hours'] += number_format($granchildren['c1__tree_max_hours'],4);
+                        $local_values['c___tree_min_cost']  += number_format($granchildren['c1__tree_min_cost'],4);
+                        $local_values['c___tree_max_cost']  += number_format($granchildren['c1__tree_max_cost'],4);
                     }
 
 
@@ -1996,10 +1996,10 @@ class Db_model extends CI_Model {
 
 
         $immediate_children['c1__tree_all_count']++;
-        $immediate_children['c1__tree_min_hours'] += doubleval($cs[0]['c_time_estimate']);
-        $immediate_children['c1__tree_max_hours'] += doubleval($cs[0]['c_time_estimate']);
-        $immediate_children['c1__tree_min_cost']  += doubleval($cs[0]['c_cost_estimate']);
-        $immediate_children['c1__tree_max_cost']  += doubleval($cs[0]['c_cost_estimate']);
+        $immediate_children['c1__tree_min_hours'] += number_format($cs[0]['c_time_estimate'],4);
+        $immediate_children['c1__tree_max_hours'] += number_format($cs[0]['c_time_estimate'],4);
+        $immediate_children['c1__tree_min_cost']  += number_format($cs[0]['c_cost_estimate'],4);
+        $immediate_children['c1__tree_max_cost']  += number_format($cs[0]['c_cost_estimate'],4);
 
         //Set the data for this intent:
         $cs[0]['c1__tree_all_count'] = $immediate_children['c1__tree_all_count'];

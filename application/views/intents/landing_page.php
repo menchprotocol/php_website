@@ -48,7 +48,7 @@
 
             echo '<li class="list-group-item" id="c__'.$c1_counter.'">';
             echo '<a href="javascript:void(0)" onclick="$(\'.c_'.$c1_counter.'\').toggle();" style="font-weight: normal;">'.$c1['c_outcome'].' &raquo;</a>';
-            echo '<span style="font-size:0.9em; font-weight:300; display:block;"><i class="fas fa-lightbulb-on"></i>'.echo_concept($c1).' <i class="fas fa-clock"></i>'.echo_hour_range($c1).'</span>';
+            echo '<span style="font-size:0.8em; font-weight:300; display:block;"><i class="fas fa-lightbulb-on"></i>'.echo_concept($c1).' &nbsp;<i class="fas fa-clock"></i>'.echo_hour_range($c1).'</span>';
 
                 echo '<div class="c_'.$c1_counter.'" style="display:none; margin-left:3px; font-size:0.9em;">';
 
