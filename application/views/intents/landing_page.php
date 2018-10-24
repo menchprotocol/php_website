@@ -92,7 +92,9 @@
                         <div class="dash-label"><span class="icon-left"><i class="fas fa-usd-circle"></i></span> <?= echo_cost_range($c) ?> in Purchases</div>
                     <?php } ?>
                     <div class="dash-label"><span class="icon-left"><i class="fas fa-user-graduate"></i></span> <span data-toggle="tooltip" title="We curated concepts and best practices from industry experts" data-placement="top" class="underdot">14 Industry Experts</span></div>
-                    <div class="dash-label"><span class="icon-left"><i class="fas fa-comment"></i></span> <span data-toggle="tooltip" title="Messages are short videos, audio recordings, images or text snippets that explains a concept from the perspective of an industry expert" data-placement="top" class="underdot"><?= $c['c__tree_messages'] ?> Curated Messages</span></div>
+
+                    <?php /* <div class="dash-label"><span class="icon-left"><i class="fas fa-comment"></i></span> <span data-toggle="tooltip" title="Messages are short videos, audio recordings, images or text snippets that explains a concept from the perspective of an industry expert" data-placement="top" class="underdot"><?= $c['c__tree_messages'] ?> Curated Messages</span></div> */ ?>
+
                 </div>
 
 

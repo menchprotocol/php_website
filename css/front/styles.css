@@ -1057,6 +1057,7 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px; }
 @media (max-width: 767px){
 
     .hide-small{ display: none;}
+    .btn.btn-sm, .btn-group-sm .btn, .navbar .navbar-nav > li > a.btn.btn-sm, .btn-group-sm .navbar .navbar-nav > li > a.btn { padding: 5px; }
     .grey-box{ margin-top:30px; }
     #iphonex { left: -26px !important; }
     .class_nav{width:220px;}
