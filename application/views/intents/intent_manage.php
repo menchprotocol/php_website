@@ -133,10 +133,8 @@ if(isset($orphan_cs)){
             displayKey: function(suggestion) { return "" },
             templates: {
                 suggestion: function(suggestion) {
-                    var minutes = Math.round(parseFloat(suggestion.c__tree_max_hours)*60);
-                    var hours = Math.round(parseFloat(suggestion.c__tree_max_hours));
-                    var fancy_hours = ( minutes<60 ? minutes+'m' :  hours+'h' );
-                    return '<span class="suggest-prefix"><i class="fas fa-hashtag"></i></span> '+ suggestion._highlightResult.c_outcome.value + ( parseFloat(suggestion.c__tree_max_hours)>0 ? '<span class="search-info">'+( parseFloat(suggestion.c__count)>1 ? ' <i class="fas fa-sitemap"></i> ' + suggestion.c__count : '' ) + ' <i class="fas fa-clock"></i> '+ fancy_hours+'</span>' : '');
+                    var fancy_hours = fancy_time(suggestion);
+                    return '<span class="suggest-prefix"><i class="fas fa-hashtag"></i></span> '+ suggestion._highlightResult.c_outcome.value + ( fancy_hours ? '<span class="search-info">'+( parseFloat(suggestion.c__count)>1 ? ' <i class="fas fa-sitemap"></i> ' + suggestion.c__count : '' ) + ' <i class="fas fa-clock"></i> '+ fancy_hours+'</span>' : '');
                 },
                 header: function(data) {
                     if(!data.isEmpty){
@@ -180,11 +178,8 @@ if(isset($orphan_cs)){
             displayKey: function(suggestion) { return "" },
             templates: {
                 suggestion: function(suggestion) {
-                    var minutes = Math.round(parseFloat(suggestion.c__tree_max_hours)*60);
-                    var hours = Math.round(parseFloat(suggestion.c__tree_max_hours));
-                    var fancy_hours = ( minutes<60 ? minutes+'Min'+(minutes==1?'':'s') :  hours+'Hr'+(hours==1?'':'s') );
-
-                    return '<span class="suggest-prefix"><i class="fas fa-hashtag"></i></span> '+ suggestion._highlightResult.c_outcome.value + ( parseFloat(suggestion.c__tree_max_hours)>0 ? '<span class="search-info">'+( parseInt(suggestion.c__tree_all_count)>1 ? ' <i class="'+( parseInt(suggestion.c_is_any) ? 'fas fa-code-merge' : 'fas fa-sitemap' )+'"></i> ' + parseInt(suggestion.c__tree_all_count) : '' ) + ' <i class="fas fa-clock"></i> '+ fancy_hours+'</span>' : '');
+                    var fancy_hours = fancy_time(suggestion);
+                    return '<span class="suggest-prefix"><i class="fas fa-hashtag"></i></span> '+ suggestion._highlightResult.c_outcome.value + ( fancy_hours ? '<span class="search-info">'+( parseInt(suggestion.c__tree_all_count)>1 ? ' <i class="'+( parseInt(suggestion.c_is_any) ? 'fas fa-code-merge' : 'fas fa-sitemap' )+'"></i> ' + parseInt(suggestion.c__tree_all_count) : '' ) + ' <i class="fas fa-clock"></i> '+ fancy_hours+'</span>' : '');
                 },
                 header: function(data) {
                     if(!data.isEmpty){
@@ -841,7 +836,7 @@ if(isset($orphan_cs)){
 
 
                 <div style="margin-top:20px;">
-                    <div class="title"><h4><i class="fas fa-badge-check"></i> Completion Method</h4></div>
+                    <div class="title"><h4><i class="fas fa-shield-check"></i> Completion Settings</h4></div>
                     <div class="form-group label-floating is-empty">
 
                         <div class="radio" style="display:inline-block; border-bottom:1px dotted #999; margin-right:10px; margin-top: 0 !important;" data-toggle="tooltip" title="Intent is completed when ALL outbound intents are marked as complete" data-placement="right">
@@ -850,7 +845,7 @@ if(isset($orphan_cs)){
                                 <i class="fas fa-sitemap"></i> All
                             </label>
                         </div>
-                        <div class="radio" style="display: inline-block; border-bottom:1px dotted #999; margin-top: 0 !important;" data-toggle="tooltip" title="Intent is completed when ANY single one of the outbound intents are marked as complete" data-placement="right">
+                        <div class="radio" style="display: inline-block; border-bottom:1px dotted #999; margin-top: 0 !important;" data-toggle="tooltip" title="Intent is completed when ANY outbound intent is marked as complete" data-placement="right">
                             <label>
                                 <input type="radio" name="c_is_any" value="1" />
                                 <i class="fas fa-code-merge"></i> Any
@@ -858,11 +853,7 @@ if(isset($orphan_cs)){
                         </div>
 
                     </div>
-                </div>
 
-
-                <div style="margin-top:10px;">
-                    <div class="title"><h4><i class="fas fa-shield-check"></i> Completion Requirements</h4></div>
                     <div class="form-group label-floating is-empty">
                         <div class="checkbox is_task">
                             <label style="display: block; font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" id="c_require_notes_to_complete" /><i class="fas fa-pencil"></i> Require written response</label>
@@ -870,7 +861,6 @@ if(isset($orphan_cs)){
                         </div>
                     </div>
                 </div>
-
 
 
                 <div style="margin-top:20px;">

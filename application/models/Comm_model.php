@@ -227,6 +227,9 @@ class Comm_model extends CI_Model {
                 $quick_replies = array();
                 $i_message = 'I found the following intent'.echo__s($res['nbHits']).':';
                 foreach ($res['hits'] as $count=>$hit){
+                    //Translate hours back:
+                    $hit['c__tree_max_hours'] = number_format(($hit['c__tree_max_mins']/60), 3);
+                    $hit['c__tree_min_hours'] = number_format(($hit['c__tree_min_mins']/60), 3);
                     $i_message .= "\n\n".($count+1).'/ '.$hit['c_outcome'].' in '.strip_tags(echo_hour_range($hit));
                     array_push($quick_replies , array(
                         'content_type' => 'text',
@@ -455,9 +458,9 @@ class Comm_model extends CI_Model {
                         'e_inbound_u_id' => 2738, //Initiated by PA
                         'e_outbound_u_id' => $fetch_us[0]['u_id'],
                         'e_outbound_c_id' => $w_c_id,
-                        'i_message' => 'Roger that 👍 Let me know if you have any specific intention by saying a sentence that starts with "Lets". So for example you say "Lets builda great resume" or "Lets get hired as a back-end developer" and I will get you to your goal',
-                        'button_url' => 'https://mench.com/',
-                        'button_title' => 'Browse Intentions ↗️',
+                        'i_message' => 'Ok, so what is your biggest challenge in landing your dream job? You can share your intention with by starting a sentence with "Lets", for example "Lets update my resume" or "Lets grow my network"',
+                        //'button_url' => 'https://mench.com/',
+                        //'button_title' => 'Browse Intentions ↗️',
                     ),
                 ));
             }

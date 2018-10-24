@@ -19,6 +19,15 @@ ga('send', 'pageview');
 })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
 
 
+function fancy_time(alg_obj){
+    var minutes = parseInt(alg_obj.c__tree_max_mins);
+    if(minutes<1){
+        return false;
+    }
+    var hours = Math.round(parseInt(alg_obj.c__tree_max_mins)/60);
+    return ( minutes<60 ? minutes+'m' :  hours+'h' );
+}
+
 //Facebook SDK for JavaScript:
 window.fbAsyncInit = function(){
 

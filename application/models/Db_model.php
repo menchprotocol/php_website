@@ -88,7 +88,7 @@ class Db_model extends CI_Model {
         if(!$link_c_id){
 
             //Set default new hours:
-            $default_new_hours = 0.05; //3 min default
+            $default_new_hours = 0.0833; //5 min default
             $recursive_query = array(
                 'c__tree_max_hours' => $default_new_hours,
             );
@@ -2211,8 +2211,8 @@ class Db_model extends CI_Model {
                 $new_item['c_is_any'] = intval($item['c_is_any']);
                 $new_item['c_keywords'] = ( strlen($item['c_trigger_statements'])>0 ? join(' ',json_decode($item['c_trigger_statements'])) : '' );
 
-                $new_item['c__tree_max_hours'] = number_format($item['c__tree_max_hours'],3);
-                $new_item['c__tree_min_hours'] = number_format($item['c__tree_min_hours'],3);
+                $new_item['c__tree_max_mins'] = intval($item['c__tree_max_hours']*60);
+                $new_item['c__tree_min_mins'] = intval($item['c__tree_min_hours']*60);
                 $new_item['c__tree_all_count'] = intval($item['c__tree_all_count']);
                 $new_item['c__tree_messages'] = intval($item['c__tree_messages']);
 

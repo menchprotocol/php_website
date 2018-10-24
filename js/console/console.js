@@ -185,10 +185,8 @@ $(document).ready(function() {
             displayKey: function(suggestion) { return "" },
             templates: {
                 suggestion: function(suggestion) {
-                    var minutes = Math.round(parseFloat(suggestion.c__tree_max_hours)*60);
-                    var hours = Math.round(parseFloat(suggestion.c__tree_max_hours));
-                    var fancy_hours = ( minutes<60 ? minutes+'m' :  hours+'h' );
-                    return '<i class="fas fa-hashtag"></i> '+ suggestion._highlightResult.c_outcome.value + ( parseFloat(suggestion.c__tree_max_hours)>0 ? '<span class="search-info">'+' <i class="fas fa-clock"></i>'+fancy_hours+'</span>' : '');
+                    var fancy_hours = fancy_time(suggestion);
+                    return '<i class="fas fa-hashtag"></i> '+ suggestion._highlightResult.c_outcome.value + ( fancy_hours ? '<span class="search-info">'+' <i class="fas fa-clock"></i>'+fancy_hours+'</span>' : '');
                 },
             }
         },
