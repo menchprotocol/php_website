@@ -853,7 +853,7 @@ h5, .h5 {
 }
 .redalert *, .redalert { color:#FF0000 !important; }
 .msg {
-    font-size:0.8em !important;
+    font-size:1em !important;
     font-family: Lato, Helvetica, sans-serif !important;
     line-height: 110% !important;
     font-weight: 300 !important;

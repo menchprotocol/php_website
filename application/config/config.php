@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => '0.574',
+    'version' => '0.575',
     'name' => 'Mench',
     'url' => 'https://mench.com/', //Important to end with "/" as other links depend on this.
     'email' => 'shervin@mench.com',
@@ -156,17 +156,17 @@ $config['object_statuses'] = array(
         ),
         1 => array(
             's_name'  => 'On-Start',
-            's_desc'  => 'Initial messages giving students instructions on how to effectively execute and complete this item',
+            's_desc'  => 'Initial messages giving students instructions on how to effectively execute and complete this concept',
             's_icon' => 'fas fa-bolt',
         ),
         3 => array(
             's_name'  => 'On-Complete',
-            's_desc'  => 'Messages sent when students complete this item. Re-iterate key insights to help students retain learnings',
+            's_desc'  => 'Messages sent when students complete this concept. Re-iterate key insights to help students retain learnings',
             's_icon' => 'fas fa-calendar-check',
         ),
         2 => array(
             's_name'  => 'Drip',
-            's_desc'  => 'Messages sent in intervals after students complete this item but before their Class ends. Re-iterate key insights to help students retain learnings',
+            's_desc'  => 'Messages sent in intervals after students complete this concept. Re-iterate key insights to help students retain learnings',
             's_icon' => 'fas fa-tint',
         ),
     ),

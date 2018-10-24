@@ -328,7 +328,7 @@ class My extends CI_Controller {
         ));
 
         if(count($already_submitted)>0){
-            die('<span style="color:#FF0000;">Error: You have already marked this item as complete, You cannot re-submit it.</span>');
+            die('<span style="color:#FF0000;">Error: You have already marked this concept as complete, You cannot re-submit it.</span>');
         }
 
 
