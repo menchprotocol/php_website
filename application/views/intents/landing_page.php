@@ -23,7 +23,21 @@
         <?php if(count($c['c__child_intents'])>0){ ?>
             
             
-        <h3><i class="fas fa-flag"></i> Action Plan <span style="font-size:0.5em; display:inline-block; margin-left:5px; line-height:140%;"><i class="fas fa-lightbulb-on"></i> <?= echo_concept($c) ?> <span style="display:inline-block;"><i class="fas fa-clock" style="padding-left: 2px;"></i> <?= echo_hour_range($c) ?></span></span></h3>
+        <h3><i class="fas fa-flag"></i> Action Plan
+            <span style="font-size:0.5em; display:inline-block; margin-left:5px; line-height:140%;">
+                <i class="fas fa-lightbulb-on"></i> <?= echo_concept($c) ?>
+                <span style="display:inline-block;"><i class="fas fa-clock" style="padding-left: 2px;"></i> <?= echo_hour_range($c) ?></span>
+
+                <?php if($c['c__tree_max_cost']>0 && 0){ //Show the potential costs ?>
+                    <div class="dash-label"><span class="icon-left"><i class="fas fa-usd-circle"></i></span> <?= echo_cost_range($c) ?> in Purchases</div>
+
+                    <div class="dash-label"><span class="icon-left"><i class="fas fa-user-graduate"></i></span> <span data-toggle="tooltip" title="We curated concepts and best practices from industry experts" data-placement="top" class="underdot">14 Industry Experts</span></div>
+                <?php } ?>
+
+
+
+            </span>
+        </h3>
 
 
         <div class="list-group actionplan_list">
@@ -59,7 +73,7 @@
                         }
                         echo '<li class="'.( $c2_counter>=$landing_pagetask_visible ? 'show_full_list_'.$c1_counter.'" style="display:none;"' : '"' ).'>';
                         echo $c2['c_outcome'];
-                        echo '<span style="font-size:0.8em; font-weight:300; margin-left:5px;"><i class="fas fa-lightbulb-on"></i>'.$c['c__tree_all_count'].' &nbsp;<i class="fas fa-clock"></i>'.echo_hour_range($c2, true).'</span>';
+                        echo '<span style="font-size:0.8em; font-weight:300; margin-left:5px;"><i class="fas fa-lightbulb-on"></i>'.$c2['c__tree_all_count'].' &nbsp;<i class="fas fa-clock"></i>'.echo_hour_range($c2, true).'</span>';
                         echo '</li>';
                     }
                     echo '</ul>';
@@ -80,25 +94,9 @@
 
     <div class="col-md-4">
         <div id="sidebar">
-
             <h3 style="margin-top:30px;"><i class="fas fa-comment-plus"></i> Subscribe for Free</h3>
-
             <div class="price-box">
-
-                <div class="support_p">
-                    <div class="dash-label"><span class="icon-left"><i class="fas fa-lightbulb-on"></i></span> <?= echo_concept($c) ?></div>
-                    <div class="dash-label"><span class="icon-left"><i class="fas fa-clock"></i></span> <?= echo_hour_range($c) ?> to Complete</div>
-                    <?php if($c['c__tree_max_cost']>0){ //Show the potential costs ?>
-                        <div class="dash-label"><span class="icon-left"><i class="fas fa-usd-circle"></i></span> <?= echo_cost_range($c) ?> in Purchases</div>
-                    <?php } ?>
-                    <div class="dash-label"><span class="icon-left"><i class="fas fa-user-graduate"></i></span> <span data-toggle="tooltip" title="We curated concepts and best practices from industry experts" data-placement="top" class="underdot">14 Industry Experts</span></div>
-
-                    <?php /* <div class="dash-label"><span class="icon-left"><i class="fas fa-comment"></i></span> <span data-toggle="tooltip" title="Messages are short videos, audio recordings, images or text snippets that explains a concept from the perspective of an industry expert" data-placement="top" class="underdot"><?= $c['c__tree_messages'] ?> Curated Messages</span></div> */ ?>
-
-                </div>
-
-
-                <div class="border" style="background-color: #FFF; padding: 6px 0 2px 6px;">
+                <div class="border" style="background-color: #FFF; padding: 6px 0 2px 6px; border: 1px solid #FFF !important;">
                     <?php echo_subscribe_button($c['c_id']); ?>
                 </div>
             </div>
