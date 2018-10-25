@@ -204,15 +204,9 @@ class Comm_model extends CI_Model {
 
 
         //Parse inbound message:
-        if(substr_count($fb_message_received, 'lets ')>0 || substr_count($fb_message_received, 'let\'s ')>0 || substr_count($fb_message_received, 'let’s ')>0) {
+        if(strtolower(substr($fb_message_received,0,4))=='ask ') {
 
-            if(substr_count($fb_message_received, 'lets ')>0){
-                $c_target_outcome = one_two_explode('lets ', ' ', $fb_message_received);
-            } elseif(substr_count($fb_message_received, 'let\'s ')>0){
-                $c_target_outcome = one_two_explode('let\'s ', ' ', $fb_message_received);
-            } elseif(substr_count($fb_message_received, 'let’s ')>0){
-                $c_target_outcome = one_two_explode('let’s ', ' ', $fb_message_received);
-            }
+            $c_target_outcome = one_two_explode('ask ', ' ', $fb_message_received);
 
             //TODO migrate this to NLP framework like api.ai
             $search_index = load_php_algolia('alg_intents');

@@ -107,24 +107,12 @@
 
                     <div style="margin:30px auto; display:block; max-width:285px;">
 
-                        <div class="fb-send-to-messenger"
-                             messenger_app_id="<?= $fb_settings['app_id'] ?>"
-                             page_id="<?= $fb_settings['page_id'] ?>"
-                             data-ref="SUBSCRIBE10_<?= $c['c_id'] ?>"
-                             color="blue"
-                             cta_text="GET_STARTED_IN_MESSENGER"
-                             size="xlarge">Loading...</div>
+                        <a class="btn btn-primary" href="https://m.me/askmench?ref=SUBSCRIBE10_<?= $c['c_id'] ?>">Get Started <i class="fas fa-angle-right"></i></a>
                         <div style="font-size:0.9em; padding:10px 0 0 3px; margin-bottom: 0;">
                             <p style="line-height:130%; font-size:0.9em !important;"><span data-toggle="tooltip" title="Mench Personal Assistant is currently offered via Facebook Messenger. Think of it as an expert friend on a mission to get you hired!" data-placement="top" class="underdot">Requires Messenger</span> but <a href="https://newsroom.fb.com/news/2015/06/sign-up-for-messenger-without-a-facebook-account/" target="_blank" data-toggle="tooltip" title="You can use Facebook Messenger without having a Facebook account. Click to learn more." data-placement="top" class="underdot">Not Facebook</a></p>
                             <p style="line-height:130%; font-size:0.9em !important;">Works <span data-toggle="tooltip" title="We're committed to keeping Mench Personal Assistant always free. In the future we plan to offer optional coaching packages for a more personalized experience" data-placement="top" class="underdot">for Free</span> on <span data-toggle="tooltip" title="Install Facebook Messenger's iPhone/Android app or visit www.messenger.com on a PC" data-placement="top" class="underdot">Smartphones and PCs</span></p>
                         </div>
                     </div>
-
-                    <script>
-                        FB.Event.subscribe('send_to_messenger', function(e) {
-                            // callback for events triggered by the plugin
-                        });
-                    </script>
                 </div>
             </div>
 
