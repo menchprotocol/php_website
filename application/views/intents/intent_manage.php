@@ -842,13 +842,13 @@ if(isset($orphan_cs)){
                         <div class="radio" style="display:inline-block; border-bottom:1px dotted #999; margin-right:10px; margin-top: 0 !important;" data-toggle="tooltip" title="Intent is completed when ALL outbound intents are marked as complete" data-placement="right">
                             <label>
                                 <input type="radio" name="c_is_any" value="0" />
-                                <i class="fas fa-sitemap"></i> All
+                                <i class="fas fa-sitemap"></i> All Outs
                             </label>
                         </div>
                         <div class="radio" style="display: inline-block; border-bottom:1px dotted #999; margin-top: 0 !important;" data-toggle="tooltip" title="Intent is completed when ANY outbound intent is marked as complete" data-placement="right">
                             <label>
                                 <input type="radio" name="c_is_any" value="1" />
-                                <i class="fas fa-code-merge"></i> Any
+                                <i class="fas fa-code-merge"></i> Any Out
                             </label>
                         </div>
 

@@ -1850,6 +1850,7 @@ class Db_model extends CI_Model {
             'c_flat' => array(),
             'cr_flat' => array(),
             'tree_top' => array(),
+            'c__tree_contributors' => array(), //Holds the trainers and experts that are references in messages
         );
 
         if(!$recursive_children){

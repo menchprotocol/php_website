@@ -1,11 +1,10 @@
 <?php 
 //Attempt to fetch session variables:
-$udata = $this->session->userdata('user');
 $website = $this->config->item('website');
 ?></div>
 </div>
 
- 	<footer class="footer hidden">
+ 	<footer class="footer">
         <div class="container">
             <nav>
                 <ul class="pull-center footer-a">

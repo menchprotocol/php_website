@@ -61,19 +61,19 @@ $config['object_statuses'] = array(
             's_icon' => 'fas fa-times-circle',
         ),
         0 => array(
-            's_name'  => 'Pending Review',
-            's_desc'  => 'Entity is added and pending review by a moderator',
-            's_icon' => 'fas fa-exclamation-circle',
+            's_name'  => 'New',
+            's_desc'  => 'Entity is newly added by a user and is pending review by a moderator',
+            's_icon' => 'fas fa-question-circle',
         ),
         1 => array(
-            's_name'  => 'Active',
-            's_desc'  => 'Entity is published live',
-            's_icon' => 'fas fa-check-circle',
+            's_name'  => 'Drafting',
+            's_desc'  => 'Entity is accepted and is being referenced or worked on',
+            's_icon' => 'fas fa-play-circle',
         ),
         2 => array(
-            's_name'  => 'Verified',
-            's_desc'  => 'Verified content are those fully patternized and Verified people refer to accounts claimed by a real person',
-            's_icon' => 'fas fa-badge-check',
+            's_name'  => 'Live',
+            's_desc'  => 'Entity is completed/live',
+            's_icon' => 'fas fa-check-circle',
         ),
     ),
     'ur' => array(

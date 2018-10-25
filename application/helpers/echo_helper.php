@@ -1037,12 +1037,12 @@ function echo_u($u, $level, $can_edit, $is_inbound=false){
         if(array_key_exists(1281, $udata['u__inbounds']) && $u['u_status']==0){
 
             $ui .= '<i class="'.$status_index['u'][1]['s_icon'].'"></i> ';
-            $ui .= '<a href="javascript:update_u_status('.$u['u_id'].',1)" data-toggle="tooltip" data-placement="left" title="Current status is '.$status_index['u'][$u['u_status']]['s_name'].'. Click to update entity status to '.$status_index['u'][1]['s_name'].': '.$status_index['u'][1]['s_desc'].'" style="text-decoration:underline;">Activate</a>';
+            $ui .= '<a href="javascript:update_u_status('.$u['u_id'].',1)" data-toggle="tooltip" data-placement="left" title="Current status is '.$status_index['u'][$u['u_status']]['s_name'].'. Click to update entity status to '.$status_index['u'][1]['s_name'].': '.$status_index['u'][1]['s_desc'].'" style="text-decoration:underline;">Set '.$status_index['u'][1]['s_name'].'</a>';
 
         } elseif(array_key_exists(1281, $udata['u__inbounds']) && $u['u_status']==1){
 
             $ui .= '<i class="'.$status_index['u'][2]['s_icon'].'" style="font-size:0.9em;"></i> ';
-            $ui .= '<a href="javascript:update_u_status('.$u['u_id'].',2)" data-toggle="tooltip" data-placement="left" title="Current status is '.$status_index['u'][$u['u_status']]['s_name'].'. Click to mark entity as '.$status_index['u'][2]['s_name'].': '.$status_index['u'][2]['s_desc'].'" style="text-decoration:underline;">Verify</a>';
+            $ui .= '<a href="javascript:update_u_status('.$u['u_id'].',2)" data-toggle="tooltip" data-placement="left" title="Current status is '.$status_index['u'][$u['u_status']]['s_name'].'. Click to mark entity as '.$status_index['u'][2]['s_name'].': '.$status_index['u'][2]['s_desc'].'" style="text-decoration:underline;">Set '.$status_index['u'][2]['s_name'].'</a>';
 
         } elseif($u['u_status']==2){
 
