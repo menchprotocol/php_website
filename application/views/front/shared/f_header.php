@@ -33,7 +33,7 @@ $url_part_1 = $this->uri->segment(1);
 
 <body class="landing-page">
 
-    <div class="fb-customerchat" minimized="true" greeting_dialog_display="hide" theme_color="#2f2739" page_id="<?= $fb_settings['page_id'] ?>"></div>
+    <div class="fb-customerchat" minimized="true" ref="SUBSCRIBE10_6623" greeting_dialog_display="hide" theme_color="#2f2739" page_id="<?= $fb_settings['page_id'] ?>"></div>
 
     <nav class="navbar navbar-warning navbar-fixed-top navbar-color-on-scroll <?= ( isset($landing_page) ? 'navbar-transparent': 'no-adj') ?>">
     	<div class="container">

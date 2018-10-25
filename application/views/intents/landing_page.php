@@ -99,7 +99,7 @@
 
     <div class="col-md-4">
         <div id="sidebar">
-            <h3 style="margin-top:30px;"><i class="fas fa-comment-plus"></i> Subscribe for Free</h3>
+            <h3 style="margin-top:30px;"><i class="fas fa-comment-plus" style="font-size: 0.8em;"></i> Subscribe for Free</h3>
             <div class="price-box">
                 <div class="border" style="background-color: #FFF; padding: 6px 0 2px 6px; border: 1px solid #FFF !important;">
 
