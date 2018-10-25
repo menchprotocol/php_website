@@ -47,10 +47,10 @@
         foreach($c['c__child_intents'] as $c1_counter=>$c1){
 
             echo '<li class="list-group-item" id="c__'.$c1_counter.'">';
-            echo '<a href="javascript:void(0)" onclick="$(\'.c_'.$c1_counter.'\').toggle();" style="font-weight: normal;">'.$c1['c_outcome'].' &raquo;</a>';
-            echo '<span style="font-size:0.8em; font-weight:300; display:block;"><i class="fas fa-lightbulb-on"></i>'.echo_concept($c1).' &nbsp;<i class="fas fa-clock"></i>'.echo_hour_range($c1).'</span>';
+            echo ($c1_counter+1).'. <a href="javascript:void(0)" onclick="$(\'.c_'.$c1_counter.'\').toggle();" style="font-weight: normal;">'.$c1['c_outcome'].'</a>';
+            echo '<span style="font-size:0.8em; font-weight:300; display:block; padding-left: 15px;"><i class="fas fa-lightbulb-on"></i>'.echo_concept($c1).' &nbsp;<i class="fas fa-clock"></i>'.echo_hour_range($c1).'</span>';
 
-                echo '<div class="c_'.$c1_counter.'" style="display:none; margin-left:3px; font-size:0.9em;">';
+                echo '<div class="c_'.$c1_counter.'" style="display:none; margin-left:3px; font-size:0.9em; padding-left: 15px;">';
 
                 //First show all messages for this intent:
                 foreach($c1['c__messages'] as $i){
@@ -64,7 +64,7 @@
                 if(count($c1['c__child_intents'])>0){
 
                     echo '<div style="margin:0 0 5px; padding-top:10px; font-size:1.1em;">This concept covers:</div>';
-                    echo '<ul style="list-style:decimal; margin-left:-15px; font-size:1em;">';
+                    echo '<ul style="list-style:none; margin-left:-15px; font-size:1em;">';
                     $landing_pagetask_visible += ( count($c1['c__child_intents'])==$landing_pagetask_visible+1 ? 1 : 0 );
                     foreach($c1['c__child_intents'] as $c2_counter=>$c2){
 
@@ -72,7 +72,7 @@
                             echo '<a href="javascript:void(0);" onclick="$(\'.show_full_list_'.$c1_counter.'\').toggle();" class="show_full_list_'.$c1_counter.'">List all Concepts &raquo;</a>';
                         }
                         echo '<li class="'.( $c2_counter>=$landing_pagetask_visible ? 'show_full_list_'.$c1_counter.'" style="display:none;"' : '"' ).'>';
-                        echo $c2['c_outcome'];
+                        echo ($c1_counter+1).'.'.($c2_counter+1).'. '.$c2['c_outcome'];
                         echo '<span style="font-size:0.8em; font-weight:300; margin-left:5px;"><i class="fas fa-lightbulb-on"></i>'.$c2['c__tree_all_count'].' &nbsp;<i class="fas fa-clock"></i>'.echo_hour_range($c2, true).'</span>';
                         echo '</li>';
                     }
