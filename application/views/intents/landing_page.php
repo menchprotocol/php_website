@@ -47,7 +47,7 @@
 
             echo ($c1_counter+1).'. <a href="javascript:void(0)" onclick="$(\'.c_'.$c1_counter.'\').toggle();" style="font-weight: normal;">'.$c1['c_outcome'].'</a>';
 
-            echo '<div style="font-size:0.8em; font-weight:300; padding-left: 15px;">';
+            echo '<div style="font-size:0.8em; font-weight:300; padding-left: 15px; padding-top: 5px;">';
             echo ( $c1['c__tree_all_count']>1 ? '<span style="display:inline-block;width:127px;"><i class="fas fa-lightbulb-on"></i>'.echo_concept($c1).'</span>' : '' );
             echo '<span style="display:inline-block;width:125px;"><i class="fas fa-clock"></i>'.echo_hour_range($c1).'</span>';
             echo '</div>';
@@ -75,7 +75,10 @@
                         }
                         echo '<li class="'.( $c2_counter>=$landing_pagetask_visible ? 'show_full_list_'.$c1_counter.'" style="display:none;"' : '"' ).'>';
                         echo ($c1_counter+1).'.'.($c2_counter+1).'. '.$c2['c_outcome'];
-                        echo '<span style="font-size:0.8em; font-weight:300; margin-left:5px;">'.( $c2['c__tree_all_count']>0 ? '<i class="fas fa-lightbulb-on"></i>'.($c2['c__tree_all_count']).' &nbsp;' : '' ).'<i class="fas fa-clock"></i>'.echo_hour_range($c2, true).'</span>';
+                        echo '<span style="font-size:0.8em; font-weight:300; margin-left:5px;">';
+                        echo ( $c2['c__tree_all_count']>0 ? '<span style="display:inline-block; padding-right:5px;"><i class="fas fa-lightbulb-on"></i>'.($c2['c__tree_all_count']).'</span>' : '' );
+                        echo '<span style="display:inline-block;"><i class="fas fa-clock"></i>'.echo_hour_range($c2, true).'</span>';
+                        echo '</span>';
                         echo '</li>';
                     }
                     echo '</ul>';
