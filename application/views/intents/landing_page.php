@@ -97,7 +97,29 @@
             <h3 style="margin-top:30px;"><i class="fas fa-comment-plus"></i> Subscribe for Free</h3>
             <div class="price-box">
                 <div class="border" style="background-color: #FFF; padding: 6px 0 2px 6px; border: 1px solid #FFF !important;">
-                    <?php echo_subscribe_button($c['c_id']); ?>
+
+                    <?php $fb_settings = $this->config->item('fb_settings'); ?>
+
+                    <div style="margin:30px auto; display:block; max-width:285px;">
+
+                        <div class="fb-send-to-messenger"
+                             messenger_app_id="<?= $fb_settings['app_id'] ?>"
+                             page_id="<?= $fb_settings['page_id'] ?>"
+                             data-ref="SUBSCRIBE10_<?= $c['c_id'] ?>"
+                             color="blue"
+                             cta_text="GET_STARTED_IN_MESSENGER"
+                             size="xlarge">Loading...</div>
+                        <div style="font-size:0.9em; padding:10px 0 0 3px; margin-bottom: 0;">
+                            <p style="line-height:130%; font-size:0.9em !important;"><span data-toggle="tooltip" title="Mench Personal Assistant is currently offered via Facebook Messenger. Think of it as an expert friend on a mission to get you hired!" data-placement="top" class="underdot">Requires Messenger</span> but <a href="https://newsroom.fb.com/news/2015/06/sign-up-for-messenger-without-a-facebook-account/" target="_blank" data-toggle="tooltip" title="You can use Facebook Messenger without having a Facebook account. Click to learn more." data-placement="top" class="underdot">Not Facebook</a></p>
+                            <p style="line-height:130%; font-size:0.9em !important;">Works <span data-toggle="tooltip" title="We're committed to keeping Mench Personal Assistant always free. In the future we plan to offer optional coaching packages for a more personalized experience" data-placement="top" class="underdot">for Free</span> on <span data-toggle="tooltip" title="Install Facebook Messenger's iPhone/Android app or visit www.messenger.com on a PC" data-placement="top" class="underdot">Smartphones and PCs</span></p>
+                        </div>
+                    </div>
+
+                    <script>
+                        FB.Event.subscribe('send_to_messenger', function(e) {
+                            // callback for events triggered by the plugin
+                        });
+                    </script>
                 </div>
             </div>
 
@@ -113,7 +135,49 @@
 
 <div class="main main-raised main-plain main-footer">
 <div class="container">
-	
-<?php $this->load->view('front/shared/why_mench'); ?>
+
+
+    <h2 class="title" style="text-align:center; margin-top:0;">Mench Personal Assistant Offers:</h2>
+
+    <div class="features text-center">
+
+        <div class="row">
+
+            <div class="col-md-4">
+                <div class="info">
+                    <div class="icon">
+                        <i class="fas fa-lightbulb-dollar" style="color:#2f2739;"></i>
+                    </div>
+                    <h3 class="info-title">In-Demand Skills</h3>
+                    <p>Mench is trained on various skills necessary to land the best jobs in the technology industry. Our mission is to maximize your chances for landing the best job with the highest pay in the shorted amount of time.</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="info">
+                    <div class="icon">
+                        <i class="fas fa-route" style="color:#2f2739;"></i>
+                    </div>
+                    <h3 class="info-title">Custom Roadmap</h3>
+                    <p>Leveling-up your career should not interrupt your busy schedule, which is why we let you choose your weekly hours commitment. Go as fast or slow as you'd like and get personalized inshgts sent to your inbox.</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="info">
+                    <div class="icon">
+                        <i class="fas fa-comment-smile" style="color:#2f2739;"></i>
+                    </div>
+                    <h3 class="info-title">Always Free</h3>
+                    <p>We're on a mission to grow your potential, partly by offering the Mench Personal Assistant for free. In the future we plan to offer optional coaching packages for those looking for a more personalized experience.</p>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <br /><br />
 
 

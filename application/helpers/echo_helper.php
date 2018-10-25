@@ -635,10 +635,18 @@ function echo_concept($c){
 function echo_hour_range($c, $micro=false){
 
     //WARNING: Input $c could be from Database (complete data set) or from Algolia (partial data set)
+    if($micro){
+        $single_tooltip_start = null;
+        $single_tooltip_end = null;
+    } else {
+        $single_tooltip_start = '<span data-toggle="tooltip" title="The estimates time to '.$c['c_outcome'].'" data-placement="top" class="underdot">';
+        $single_tooltip_end = '</span>';
+    }
+
 
     if($c['c__tree_max_hours']==$c['c__tree_min_hours']){
         //Exactly the same, show a single value:
-        return echo_hours($c['c__tree_max_hours'],$micro);
+        return $single_tooltip_start.echo_hours($c['c__tree_max_hours'],$micro).$single_tooltip_end;
     } elseif(round($c['c__tree_max_hours'])==round($c['c__tree_min_hours']) || $c['c__tree_min_hours']<1){
         if($c['c__tree_min_hours']<2 && $c['c__tree_max_hours']<3 && ($c['c__tree_max_hours']- $c['c__tree_min_hours'])*60>30){
             $is_minutes = true;
@@ -647,7 +655,7 @@ function echo_hour_range($c, $micro=false){
             $hours_decimal = 1;
         } else {
             //Number too large to matter, just treat as one:
-            return echo_hours($c['c__tree_max_hours'],$micro);
+            return $single_tooltip_start.echo_hours($c['c__tree_max_hours'],$micro).$single_tooltip_end;
         }
     } else {
         $is_minutes = false;
@@ -882,40 +890,6 @@ function echo_estimated_time($c_time_estimate,$show_icon=1,$micro=false,$c_id=0,
     return null;
 
 }
-
-function echo_subscribe_button($c_id){
-
-    $CI =& get_instance();
-    $fb_settings = $CI->config->item('fb_settings');
-    $cs = $CI->Db_model->c_fetch(array(
-        'c.c_id' => $c_id,
-    ));
-    ?>
-    <div style="margin:30px auto; display:block; max-width:285px;">
-        <div class="fb-send-to-messenger"
-             messenger_app_id="<?= $fb_settings['app_id'] ?>"
-             page_id="<?= $fb_settings['page_id'] ?>"
-             data-ref="SUBSCRIBE10_<?= $c_id ?>"
-             color="blue"
-             cta_text="GET_STARTED_IN_MESSENGER"
-             size="xlarge">Loading...</div>
-        <div style="font-size:0.9em; padding:10px 0 0 3px; margin-bottom: 0;">
-            <p style="line-height:130%; font-size:0.9em !important;"><span data-toggle="tooltip" title="Mench personal assistant is currently offer via Facebook Messenger only" data-placement="top" class="underdot">Requires Messenger</span> but <a href="https://newsroom.fb.com/news/2015/06/sign-up-for-messenger-without-a-facebook-account/" target="_blank" data-toggle="tooltip" title="You can use Messenger without having a Facebook account. Click to learn more" data-placement="top" class="underdot">Not Facebook</a></p>
-        </div>
-    </div>
-
-
-    <script>
-        FB.Event.subscribe('send_to_messenger', function(e) {
-            // callback for events triggered by the plugin
-        });
-    </script>
-    <?php
-}
-
-
-
-
 
 
 function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){

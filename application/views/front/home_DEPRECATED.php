@@ -146,15 +146,6 @@
 
 
 <div class="row">
-    <div class="main-message col-md-6">
-        <h1 class="center">Land your dream job as a junior developer ✨</h1>
-        <p class="home_line_2 center">Finding a job you love is about your skills, preferences and ability to craft a story to stand out from the crowd. With Mench personal assistant you'll get curated insights from industry experts to land your next awesome programming job.</p>
-
-        <div style="padding:20px 0;">
-            <?php echo_subscribe_button(6623); ?>
-        </div>
-
-    </div>
     <div class="col-md-6">
         <div class="marvel-device iphone-x" id="iphonex" intent-id="">
             <div class="notch">
@@ -221,5 +212,3 @@ echo '</div>';
 
 <div class="main main-raised main-plain main-footer">
     <div class="container">
-
-        <?php //$this->load->view('front/shared/why_mench'); ?>
