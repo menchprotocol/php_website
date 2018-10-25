@@ -75,9 +75,9 @@
                         }
                         echo '<li class="'.( $c2_counter>=$landing_pagetask_visible ? 'show_full_list_'.$c1_counter.'" style="display:none;"' : '"' ).'>';
                         echo ($c1_counter+1).'.'.($c2_counter+1).'. '.$c2['c_outcome'];
-                        echo '<span style="font-size:0.8em; font-weight:300; margin-left:5px;">';
-                        echo ( $c2['c__tree_all_count']>0 ? '<span style="display:inline-block; padding-right:5px;"><i class="fas fa-lightbulb-on"></i>'.($c2['c__tree_all_count']).'</span>' : '' );
-                        echo '<span style="display:inline-block;"><i class="fas fa-clock"></i>'.echo_hour_range($c2, true).'</span>';
+                        echo '<span style="font-size:0.8em; font-weight:300; margin-left:5px; display:inline-block;">';
+                        echo ( $c2['c__tree_all_count']>0 ? '<span style="padding-right:5px;"><i class="fas fa-lightbulb-on"></i>'.($c2['c__tree_all_count']).'</span>' : '' );
+                        echo '<span><i class="fas fa-clock"></i>'.echo_hour_range($c2, true).'</span>';
                         echo '</span>';
                         echo '</li>';
                     }
