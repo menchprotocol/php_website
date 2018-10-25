@@ -10,6 +10,7 @@ $website = $this->config->item('website');
                 <ul class="pull-center footer-a">
                     <li><a href="/terms">Terms</a></li>
                     <li class="social-li">
+                        <a href="https://m.me/askmench?ref=footer" target="_blank" class="social-link"><i class="fab fa-facebook-messenger"></i></a>
                         <a href="https://www.youtube.com/channel/UCOH64HiAIfJlz73tTSI8n-g" target="_blank" class="social-link"><i class="fab fa-youtube"></i></a>
                         <a href="https://www.facebook.com/askmench" target="_blank" class="social-link"><i class="fab fa-facebook"></i></a>
                         <a href="https://www.linkedin.com/company/askmench/" target="_blank" class="social-link"><i class="fab fa-linkedin"></i></a>
