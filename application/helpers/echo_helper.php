@@ -629,7 +629,8 @@ function echo_hours($decimal_hours,$micro=false){
 }
 
 function echo_concept($c){
-    return '<span data-toggle="tooltip" title="A concept is a key insight or actionable task that will empower you to '.$c['c_outcome'].'" data-placement="top" class="underdot">'.$c['c__tree_all_count'].' Concept'.echo__s($c['c__tree_all_count']).'</span>';
+    $c['c__tree_all_count']--; //To exclude top intent
+    return '<span data-toggle="tooltip" title="'.$c['c__tree_all_count'].' Concept'.echo__s($c['c__tree_all_count']).' will share key insights (and actionable tasks) to '.$c['c_outcome'].'" data-placement="top" class="underdot">'.$c['c__tree_all_count'].' Concept'.echo__s($c['c__tree_all_count']).'</span>';
 }
 
 function echo_hour_range($c, $micro=false){
