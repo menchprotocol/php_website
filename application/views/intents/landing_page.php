@@ -129,7 +129,6 @@
 <div class="main main-raised main-plain main-footer">
 <div class="container">
 
-
     <h2 class="title" style="text-align:center; margin-top:0;">Why Mench?</h2>
 
     <div class="features text-center">
@@ -171,10 +170,5 @@
 
     </div>
 
-    <div class="features text-center" style="padding-top:50px;"><a class="btn btn-primary" href="https://m.me/askmench?ref=SUBSCRIBE10_<?= $c['c_id'] ?>" style="font-size: 1.3em;">Get Started [Free] <i class="fas fa-angle-right"></i></a></div>
 
-
-
-    <br /><br />
-
-
+    <div class="features text-center" style="margin:50px 0 20px;"><a class="btn btn-primary" href="https://m.me/askmench?ref=SUBSCRIBE10_<?= $c['c_id'] ?>" style="font-size: 1.3em;">Get Started [Free] <i class="fas fa-angle-right"></i></a></div>

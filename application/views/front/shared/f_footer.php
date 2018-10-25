@@ -4,7 +4,7 @@ $website = $this->config->item('website');
 ?></div>
 </div>
 
- 	<footer class="footer">
+ 	<footer class="footer" style="margin:0 0 30px 0;">
         <div class="container">
             <nav>
                 <ul class="pull-center footer-a">
