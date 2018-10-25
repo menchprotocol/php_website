@@ -110,7 +110,7 @@
                         <a class="btn btn-primary" href="https://m.me/askmench?ref=SUBSCRIBE10_<?= $c['c_id'] ?>">Get Started <i class="fas fa-angle-right"></i></a>
                         <div style="font-size:0.9em; padding:10px 0 0 3px; margin-bottom: 0;">
                             <p style="line-height:130%; font-size:0.9em !important;"><span data-toggle="tooltip" title="Mench Personal Assistant is currently offered via Facebook Messenger. Think of it as an expert friend on a mission to get you hired!" data-placement="top" class="underdot">Requires Messenger</span> but <a href="https://newsroom.fb.com/news/2015/06/sign-up-for-messenger-without-a-facebook-account/" target="_blank" data-toggle="tooltip" title="You can use Facebook Messenger without having a Facebook account. Click to learn more." data-placement="top" class="underdot">Not Facebook</a></p>
-                            <p style="line-height:130%; font-size:0.9em !important;">Works <span data-toggle="tooltip" title="We're committed to keeping Mench Personal Assistant always free. In the future we plan to offer optional coaching packages for a more personalized experience" data-placement="top" class="underdot">for Free</span> on <span data-toggle="tooltip" title="Install Facebook Messenger's iPhone/Android app or visit www.messenger.com on a PC" data-placement="top" class="underdot">Smartphones and PCs</span></p>
+                            <p style="line-height:130%; font-size:0.9em !important;"><span data-toggle="tooltip" title="We're committed to keeping Mench Personal Assistant always free. In the future we plan to offer optional coaching packages for a more personalized experience" data-placement="top" class="underdot">Always Free</span> on <span data-toggle="tooltip" title="Install Facebook Messenger's iPhone/Android app or visit www.messenger.com on a PC" data-placement="top" class="underdot">Smartphones and PCs</span></p>
                         </div>
                     </div>
                 </div>
@@ -130,7 +130,7 @@
 <div class="container">
 
 
-    <h2 class="title" style="text-align:center; margin-top:0;">Mench Personal Assistant Offers:</h2>
+    <h2 class="title" style="text-align:center; margin-top:0;">Why Mench?</h2>
 
     <div class="features text-center">
 
@@ -139,30 +139,30 @@
             <div class="col-md-4">
                 <div class="info">
                     <div class="icon">
-                        <i class="fas fa-lightbulb-dollar" style="color:#2f2739;"></i>
+                        <i class="fas fa-heart" style="color:#2f2739;"></i>
                     </div>
-                    <h3 class="info-title">In-Demand Skills</h3>
-                    <p>Mench is trained on various skills necessary to land the best jobs in the technology industry. Our mission is to maximize your chances for landing the best job with the highest pay in the shorted amount of time.</p>
+                    <h3 class="info-title">A Job You'll Love</h3>
+                    <p>It's easy to get "a job" as a junior developer in today's automation-hungry economy. But finding your dream job with a superb team that is aligned with your goals and values is a much harder challenge that we'll help you overcome.</p>
                 </div>
             </div>
 
             <div class="col-md-4">
                 <div class="info">
                     <div class="icon">
-                        <i class="fas fa-route" style="color:#2f2739;"></i>
+                        <i class="fas fa-dollar-sign" style="color:#2f2739;"></i>
                     </div>
-                    <h3 class="info-title">Custom Roadmap</h3>
-                    <p>Leveling-up your career should not interrupt your busy schedule, which is why we let you choose your weekly hours commitment. Go as fast or slow as you'd like and get personalized inshgts sent to your inbox.</p>
+                    <h3 class="info-title">Make More Money</h3>
+                    <p>Every month of unemployment costs a junior developer $5,126 USD <a href="https://www.indeed.com/salaries/Junior-Developer-Salaries" target="_blank"><i class="fas fa-external-link-alt" style="color:#2f2739;"></i></a> of loss income. We help you land your dream job in the shortest time possible while also training you on salary negotiation techniques from industry experts.</p>
                 </div>
             </div>
 
             <div class="col-md-4">
                 <div class="info">
                     <div class="icon">
-                        <i class="fas fa-comment-smile" style="color:#2f2739;"></i>
+                        <i class="fas fa-calendar-check" style="color:#2f2739;"></i>
                     </div>
-                    <h3 class="info-title">Always Free</h3>
-                    <p>We're on a mission to grow your potential, partly by offering the Mench Personal Assistant for free. In the future we plan to offer optional coaching packages for those looking for a more personalized experience.</p>
+                    <h3 class="info-title">Flexible Scheduling</h3>
+                    <p>Choose the number of hours you can commit each week to land your new job and Mench will streamline your progress based on your availability. Go as fast or slow as you like to achieve the right balance for success.</p>
                 </div>
             </div>
 
@@ -170,6 +170,10 @@
 
 
     </div>
+
+    <div class="features text-center" style="padding-top:50px;"><a class="btn btn-primary" href="https://m.me/askmench?ref=SUBSCRIBE10_<?= $c['c_id'] ?>" style="font-size: 1.3em;">Get Started [Free] <i class="fas fa-angle-right"></i></a></div>
+
+
 
     <br /><br />
 

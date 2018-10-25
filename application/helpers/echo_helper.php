@@ -916,7 +916,7 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
 
 
     if($level==1 && !$c['c__is_orphan']){
-        $ui .= '<a href="/'.$c['c_id'].'" class="underdot" style="margin:0 7px; font-size:1.3em;" target="_blank" data-toggle="tooltip" title="Open Landing Page with Intent tree overview & Messenger subscription button" data-placement="left"><i class="fas fa-external-link"></i></a>';
+        $ui .= '<a href="/'.$c['c_id'].'" class="underdot" style="margin:0 7px; font-size:1.3em;" data-toggle="tooltip" title="Open Landing Page with Intent tree overview & Messenger subscription button" data-placement="left"><i class="fas fa-shopping-cart"></i></a>';
     }
 
     $ui .= '<a href="#messages-'.$c['c_id'].'" onclick="load_c_messages('.$c['c_id'].')" class="badge badge-primary" style="width:40px;"><span class="btn-counter" id="messages-counter-'.$c['c_id'].'">'.$c['c__this_messages'].'</span><i class="fas fa-comment-dots"></i></a>';
