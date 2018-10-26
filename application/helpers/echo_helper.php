@@ -1065,8 +1065,8 @@ function echo_u($u, $level, $can_edit, $is_inbound=false){
 
 
     if($level==1){
-        //Level 1:
-        $ui .= '<span class="badge badge-secondary grey" style="margin-right:6px; width:40px; margin-left:1px;"><span class="btn-counter li-outbound-count">'.$u['u__outbound_count'].'</span><i class="fas fa-sign-out-alt rotate90"></i></span>';
+        //Level 1, show google search option:
+        $ui .= '&nbsp;<a href="https://www.google.com/search?q='.urlencode($u['u_full_name']).'" target="_blank" class="badge badge-secondary grey" style="margin-right:6px; width:40px; margin-left:1px;" data-toggle="tooltip" title="Search on Google" data-placement="left"><i class="fas fa-external-link-square-alt" style="position: absolute; top: -7px; right: 3px; font-size: 0.85em;"></i><i class="fab fa-google"></i></a> ';
     } else {
         //Level 2:
         $ui .= '<a class="badge badge-secondary" href="/entities/'.$u['u_id'].'" style="display:inline-block; margin-right:6px; width:40px; margin-left:1px;">'.(isset($u['u__outbound_count']) && $u['u__outbound_count']>0 ? '<span class="btn-counter">'.$u['u__outbound_count'].'</span>' : '').'<i class="'.( $is_inbound ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></a>';
@@ -1082,9 +1082,6 @@ function echo_u($u, $level, $can_edit, $is_inbound=false){
         $ui .= echo_cover($u, 'profile-icon2');
         $ui .= '<b id="u_title" class="u_full_name u_full_name_'.$u['u_id'].'">' . $u['u_full_name'] . '</b>';
         $ui .= ' <span class="obj-id underdot" data-toggle="tooltip" data-placement="top" title="Entity ID">@' . $u['u_id'] . '</span>';
-
-        //Do they have any social profiles in their link?
-        //$ui .= echo_social_profiles($CI->Db_model->x_social_fetch($u['u_id']));
 
         //Check last engagement ONLY IF admin:
         if ($can_edit) {

@@ -376,6 +376,7 @@ $config['object_statuses'] = array(
 
 //These URLs are recognized as Social Profiles
 $config['social_urls'] =array(
+    'https://www.amazon.'               => 'fab fa-amazon',
     'https://www.linkedin.com/'         => 'fab fa-linkedin',
     'https://www.youtube.com/'          => 'fab fa-youtube',
     'https://twitter.com/'              => 'fab fa-twitter',
