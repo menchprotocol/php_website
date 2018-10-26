@@ -763,27 +763,9 @@ echo '</div>';
 
 
 
-//URLs
-if(!in_array($entity['u_id'], array(1278,1326,2750))){
-    echo '<h5 class="badge badge-h"><i class="fas fa-link"></i> <span class="li-urls-count">'.count($entity['u__urls']).'</span> URLs</h5>';
-    echo '<div id="list-urls" class="list-group  grey-list">';
-    foreach ($entity['u__urls'] as $x) {
-        echo echo_x($entity, $x);
-    }
 
-    //Add new Reference:
-    if ($can_edit) {
-        echo '<div class="list-group-item list_input grey-input">
-            <div class="input-group">
-                <div class="form-group is-empty"><input type="url" class="form-control" data-lpignore="true" id="add_url_input" placeholder="Paste URL here..."></div>
-                <span class="input-group-addon">
-                    <a class="badge badge-secondary" id="add_url_btn" href="javascript:x_add();">ADD</a>
-                </span>
-            </div>
-        </div>';
-    }
-    echo '</div>';
-}
+
+
 
 
 
@@ -794,33 +776,33 @@ echo '<table width="100%" style="margin-top:10px;"><tr>';
 echo '<td style="width: 100px;"><h5 class="badge badge-h"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-outbound-count">'.$entity['u__outbound_count'].'</span> Outs</h5></td>';
 echo '<td style="text-align: right;"><div class="btn-group btn-group-sm" style="margin-top:-5px;" role="group">';
 
-    //Fetch current count for each status from DB:
-    $counts = $this->Db_model->ur_outbound_fetch(array(
-        'ur_inbound_u_id' => $inbound_u_id,
-        'ur_status' => 1, //Only active
-        'u_status >=' => 0,
-    ), array(), 0, 0, 'COUNT(u_id) as u_counts, u_status', 'u_status', array(
-        'u.u_status' => 'ASC',
-    ));
+//Fetch current count for each status from DB:
+$counts = $this->Db_model->ur_outbound_fetch(array(
+    'ur_inbound_u_id' => $inbound_u_id,
+    'ur_status' => 1, //Only active
+    'u_status >=' => 0,
+), array(), 0, 0, 'COUNT(u_id) as u_counts, u_status', 'u_status', array(
+    'u.u_status' => 'ASC',
+));
 
-    //Only show filtering UI if we find entities with multiple statuses
-    if(count($counts)>0 && $counts[0]['u_counts']<$entity['u__outbound_count']){
+//Only show filtering UI if we find entities with multiple statuses
+if(count($counts)>0 && $counts[0]['u_counts']<$entity['u__outbound_count']){
 
-        //Load status definitions:
-        $status_index = $this->config->item('object_statuses');
+    //Load status definitions:
+    $status_index = $this->config->item('object_statuses');
 
-        //Show fixed All button:
-        echo '<a href="javascript:void(0)" onclick="filter_u_status(-1)" class="btn btn-default btn-secondary u-status-filter u-status--1" data-toggle="tooltip" data-placement="top" title="View all entities"><i class="fas fa-at"></i><span class="hide-small"> All</span> [<span class="li-outbound-count">'.$entity['u__outbound_count'].'</span>]</a>';
+    //Show fixed All button:
+    echo '<a href="javascript:void(0)" onclick="filter_u_status(-1)" class="btn btn-default btn-secondary u-status-filter u-status--1" data-toggle="tooltip" data-placement="top" title="View all entities"><i class="fas fa-at"></i><span class="hide-small"> All</span> [<span class="li-outbound-count">'.$entity['u__outbound_count'].'</span>]</a>';
 
-        //Show each specific filter based on DB counts:
-        foreach($counts as $c_c){
-            $st = $status_index['u'][$c_c['u_status']];
-            echo '<a href="#status-'.$c_c['u_status'].'" onclick="filter_u_status('.$c_c['u_status'].')" class="btn btn-default u-status-filter u-status-'.$c_c['u_status'].'" data-toggle="tooltip" data-placement="top" title="'.$st['s_desc'].'"><i class="'.$st['s_icon'].'"></i><span class="hide-small"> '.$st['s_name'].'</span> [<span class="count-u-status-'.$c_c['u_status'].'">'.$c_c['u_counts'].'</span>]</a>';
-        }
-
+    //Show each specific filter based on DB counts:
+    foreach($counts as $c_c){
+        $st = $status_index['u'][$c_c['u_status']];
+        echo '<a href="#status-'.$c_c['u_status'].'" onclick="filter_u_status('.$c_c['u_status'].')" class="btn btn-default u-status-filter u-status-'.$c_c['u_status'].'" data-toggle="tooltip" data-placement="top" title="'.$st['s_desc'].'"><i class="'.$st['s_icon'].'"></i><span class="hide-small"> '.$st['s_name'].'</span> [<span class="count-u-status-'.$c_c['u_status'].'">'.$c_c['u_counts'].'</span>]</a>';
     }
 
-    echo '</div></td>';
+}
+
+echo '</div></td>';
 echo '</tr></table>';
 
 
@@ -847,6 +829,48 @@ if($can_edit){
 }
 
 echo '</div>';
+
+
+
+
+
+
+
+
+
+
+
+//URLs
+if(!in_array($entity['u_id'], array(1278,1326,2750))){
+    echo '<h5 class="badge badge-h"><i class="fas fa-link"></i> <span class="li-urls-count">'.count($entity['u__urls']).'</span> URLs</h5>';
+    echo '<div id="list-urls" class="list-group  grey-list">';
+    foreach ($entity['u__urls'] as $x) {
+        echo echo_x($entity, $x);
+    }
+
+    //Add new Reference:
+    if ($can_edit) {
+        echo '<div class="list-group-item list_input grey-input">
+            <div class="input-group">
+                <div class="form-group is-empty"><input type="url" class="form-control" data-lpignore="true" id="add_url_input" placeholder="Paste URL here..."></div>
+                <span class="input-group-addon">
+                    <a class="badge badge-secondary" id="add_url_btn" href="javascript:x_add();">ADD</a>
+                </span>
+            </div>
+        </div>';
+    }
+    echo '</div>';
+}
+
+
+
+
+
+
+
+
+
+
 
 
 
