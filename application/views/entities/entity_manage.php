@@ -58,7 +58,6 @@ $b_team_member = array();
             source: function (q, cb) {
                 algolia_u_index.search(q, {
                     hitsPerPage: 7,
-                    tagFilters:[<?= ( in_array($entity['u_id'], array(1278,2750,1326)) ? "'donotshow'" /* Disable search suggest */ : "'u1326'" /* Content */ ) ?>]
                 }, function (error, content) {
                     if (error) {
                         cb([]);
@@ -157,7 +156,6 @@ $b_team_member = array();
             source: function (q, cb) {
                 algolia_u_index.search(q, {
                     hitsPerPage: 7,
-                    //tagFilters:[['u2750','u1278','u2738','u3000']] //Only search People & Organizations & Entity Types
                 }, function (error, content) {
                     if (error) {
                         cb([]);
