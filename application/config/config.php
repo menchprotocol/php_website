@@ -6,8 +6,11 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => '0.5792',
-    'released' => '2018-10-24', //Format: YYYY-MM-DD
+
+    'version' => '0.5793',
+    'released' => '2018-10-26', //Format: YYYY-MM-DD
+
+
     'name' => 'Mench',
     'url' => 'https://mench.com/', //Important to end with "/" as other links depend on this.
     'email' => 'shervin@mench.com',

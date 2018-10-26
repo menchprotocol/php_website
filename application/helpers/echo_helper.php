@@ -1099,7 +1099,7 @@ function echo_u($u, $level, $can_edit, $is_inbound=false){
         }
 
         //Visibly show bio for level 1:
-        $ui .= '<div class="u_bio_'.$u['u_id'].'">' . $u['u_bio'] . '</div>';
+        $ui .= '<div class="u_bio_'.$u['u_id'].'">' . nl2br($u['u_bio']) . '</div>';
 
     } else {
 
