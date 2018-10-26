@@ -15,7 +15,7 @@ class Urls extends CI_Controller
 
     function set_cover(){
         //Auth user and check required variables:
-        $udata = auth(array(1308,1280));
+        $udata = auth(array(1308));
 
         if(!$udata){
             return echo_json(array(
@@ -68,7 +68,7 @@ class Urls extends CI_Controller
     function delete_url(){
 
         //Auth user and check required variables:
-        $udata = auth(array(1308,1280));
+        $udata = auth(array(1308));
 
         if(!$udata){
             return echo_json(array(

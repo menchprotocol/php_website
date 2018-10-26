@@ -16,7 +16,7 @@ class Intents extends CI_Controller
     function intent_manage($inbound_c_id){
 
         //Authenticate level 2 or higher, redirect if not:
-        $udata = auth(array(1308,1280),1);
+        $udata = auth(array(1308),1);
 
         //Fetch intent:
         $cs = $this->Db_model->c_fetch(array(
@@ -77,7 +77,7 @@ class Intents extends CI_Controller
     function orphan(){
 
         //Authenticate level 2 or higher, redirect if not:
-        $udata = auth(array(1308,1280),1);
+        $udata = auth(array(1308),1);
 
         //Fetch intent:
         $orphan_cs = $this->Db_model->c_fetch(array(
@@ -109,17 +109,15 @@ class Intents extends CI_Controller
         $cs = $this->Db_model->c_fetch(array(
             'c.c_id' => $c_id,
             'c.c_status >' => 0,
-        ), 2, array('i') );
+            'c.c_id NOT IN ('.join(',', $this->config->item('onhold_intents')).')' => null,
+        ), 2, array('c__messages','c__inbounds'));
 
-
-        //TODO Make sure this intent belongs to the public home page tree
 
         //Validate Intent:
         if(!isset($cs[0])){
             //Invalid key, redirect back:
-            redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Intent ID</div>');
+            redirect_message('/6623','<div class="alert alert-danger" role="alert">Invalid Intent ID</div>');
         }
-
 
         //Load home page:
         $this->load->view('front/shared/f_header' , array(
@@ -137,7 +135,7 @@ class Intents extends CI_Controller
      ****************************** */
 
     function c_new(){
-        $udata = auth(array(1308,1280));
+        $udata = auth(array(1308));
         if(!$udata){
             return array(
                 'status' => 0,
@@ -156,7 +154,7 @@ class Intents extends CI_Controller
     function c_move_c(){
 
         //Auth user and Load object:
-        $udata = auth(array(1308,1280));
+        $udata = auth(array(1308));
         if(!$udata){
             return echo_json(array(
                 'status' => 0,
@@ -251,7 +249,7 @@ class Intents extends CI_Controller
     function c_save_settings(){
 
         //Auth user and check required variables:
-        $udata = auth(array(1308,1280));
+        $udata = auth(array(1308));
 
         //Validate Original intent:
         $cs = $this->Db_model->c_fetch(array(
@@ -391,7 +389,7 @@ class Intents extends CI_Controller
     function c_unlink(){
 
         //Auth user and check required variables:
-        $udata = auth(array(1308,1280));
+        $udata = auth(array(1308));
 
         if(!$udata){
             echo_json(array(
@@ -530,7 +528,7 @@ class Intents extends CI_Controller
 
     function c_sort(){
         //Auth user and Load object:
-        $udata = auth(array(1308,1280));
+        $udata = auth(array(1308));
         if(!$udata){
             echo_json(array(
                 'status' => 0,
@@ -604,7 +602,7 @@ class Intents extends CI_Controller
 
     function c_echo_tip(){
 
-        $udata = auth(array(1308,1280));
+        $udata = auth(array(1308));
         //Used to load all the help messages within the Console:
         if(!$udata || !isset($_POST['intent_id']) || intval($_POST['intent_id'])<1){
             return echo_json(array(
@@ -666,7 +664,7 @@ class Intents extends CI_Controller
 
     function i_attach(){
 
-        $udata = auth(array(1308,1280));
+        $udata = auth(array(1308));
         $file_limit_mb = $this->config->item('file_limit_mb');
         if(!$udata){
             return echo_json(array(
@@ -785,7 +783,7 @@ class Intents extends CI_Controller
 
     function i_create(){
 
-        $udata = auth(array(1308,1280));
+        $udata = auth(array(1308));
         if(!$udata){
             return echo_json(array(
                 'status' => 0,
@@ -861,7 +859,7 @@ class Intents extends CI_Controller
     function i_modify(){
 
         //Auth user and Load object:
-        $udata = auth(array(1308,1280));
+        $udata = auth(array(1308));
         if(!$udata){
              return echo_json(array(
                 'status' => 0,
@@ -961,7 +959,7 @@ class Intents extends CI_Controller
 
     function i_delete(){
         //Auth user and Load object:
-        $udata = auth(array(1308,1280));
+        $udata = auth(array(1308));
 
         if(!$udata){
             echo_json(array(
@@ -1030,7 +1028,7 @@ class Intents extends CI_Controller
     function i_sort(){
 
         //Auth user and Load object:
-        $udata = auth(array(1308,1280));
+        $udata = auth(array(1308));
         if(!$udata){
             echo_json(array(
                 'status' => 0,

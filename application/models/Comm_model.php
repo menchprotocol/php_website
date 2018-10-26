@@ -839,7 +839,7 @@ class Comm_model extends CI_Model {
             $fetch_depth = ( $message['depth']>1 ? $message['depth'] : 1 ); //Used to be something different! Just changed it quickly, not sure if this makes sense
             $tree = $this->Db_model->c_fetch(array(
                 'c.c_id' => $message['e_outbound_c_id'],
-            ), $fetch_depth, array('i')); //Supports up to 2 levels deep for now...
+            ), $fetch_depth, array('c__messages')); //Supports up to 2 levels deep for now...
 
 
             //Check to see if we have any other errors:

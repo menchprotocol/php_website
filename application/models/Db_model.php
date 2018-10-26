@@ -888,7 +888,7 @@ class Db_model extends CI_Model {
 
         foreach($intents as $key=>$value){
 
-            if(in_array('i',$join_objects)){
+            if(in_array('c__messages',$join_objects)){
                 $intents[$key]['c__messages'] = $this->Db_model->i_fetch(array(
                     'i_outbound_c_id' => $value['c_id'],
                     'i_status >=' => 0, //Published in any form
@@ -899,6 +899,7 @@ class Db_model extends CI_Model {
                 $intents[$key]['c__inbounds'] = $this->Db_model->cr_inbound_fetch(array(
                     'cr.cr_outbound_c_id' => $value['c_id'],
                     'cr.cr_status >=' => 1,
+                    'c.c_id NOT IN ('.join(',', $this->config->item('onhold_intents')).')' => null,
                 ) , $join_objects);
             }
 
@@ -932,6 +933,7 @@ class Db_model extends CI_Model {
 
 	
 	function cr_outbound_fetch($match_columns,$join_objects=array()){
+
 		//Missing anything?
 		$this->db->select('*');
 		$this->db->from('v5_intents c');
@@ -948,10 +950,9 @@ class Db_model extends CI_Model {
 		$return = $q->result_array();
 		
 		//We had anything?
-		if(count($return)>0){
-
+		if(count($join_objects)>0){
             foreach($return as $key=>$value){
-                if(in_array('i',$join_objects)){
+                if(in_array('c__messages',$join_objects)){
                     //Fetch Messages:
                     $return[$key]['c__messages'] = $this->Db_model->i_fetch(array(
                         'i_outbound_c_id' => $value['c_id'],
@@ -976,14 +977,25 @@ class Db_model extends CI_Model {
 		$q = $this->db->get();
         $return = $q->result_array();
 
-        if(in_array('c__child_intents',$join_objects)){
+        if(count($join_objects)>0){
             foreach($return as $key=>$value){
-                //Fetch Messages:
-                $return[$key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
-                    'cr.cr_inbound_c_id' => $value['c_id'],
-                    'cr.cr_status >=' => 0,
-                    'c.c_status >' => 0,
-                ));
+
+                if(in_array('c__child_intents',$join_objects)){
+                    //Fetch children:
+                    $return[$key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
+                        'cr.cr_inbound_c_id' => $value['c_id'],
+                        'cr.cr_status >=' => 0,
+                        'c.c_status >' => 0,
+                    ));
+                }
+
+                if(in_array('c__messages',$join_objects)){
+                    //Fetch Messages:
+                    $return[$key]['c__messages'] = $this->Db_model->i_fetch(array(
+                        'i_outbound_c_id' => $value['c_id'],
+                        'i_status >=' => 0, //Published in any form
+                    ));
+                }
             }
         }
 
@@ -1087,7 +1099,7 @@ class Db_model extends CI_Model {
     function x_sync($x_url,$x_outbound_u_id,$cad_edit,$accept_existing_url=false) {
 
         //Auth user and check required variables:
-        $udata = auth(array(1308,1280));
+        $udata = auth(array(1308));
         $x_url = trim($x_url);
 
         if(!$udata){
@@ -1364,6 +1376,21 @@ class Db_model extends CI_Model {
         return $res;
     }
 
+    function ur_fetch($match_columns, $fetch_fields='*'){
+        //Rarely used for just querying the entity links table:
+        $this->db->select($fetch_fields);
+        $this->db->from('v5_entity_links');
+        foreach($match_columns as $key=>$value){
+            if(!is_null($value)){
+                $this->db->where($key,$value);
+            } else {
+                $this->db->where($key);
+            }
+        }
+        $q = $this->db->get();
+        return $q->result_array();
+    }
+
     function ur_inbound_fetch($match_columns, $join_objects=array()){
         //Missing anything?
         $this->db->select('*');
@@ -1620,7 +1647,7 @@ class Db_model extends CI_Model {
         if(in_array('ej',$join_objects)){
             $this->db->join('v5_engagement_blob ej', 'ej.ej_e_id=e.e_id','left');
         }
-        if(in_array('i',$join_objects)){
+        if(in_array('c__messages',$join_objects)){
             $this->db->join('v5_messages i', 'i.i_id=e.e_i_id','left');
         }
 	    foreach($match_columns as $key=>$value){
@@ -1845,16 +1872,24 @@ class Db_model extends CI_Model {
             'c1__tree_min_cost' => 0,
             'c1__tree_max_cost' => 0,
 
+            'c1__tree_experts' => array(), //Expert references across all contributions
+            'c1__tree_trainers' => array(), //Trainer references considering intent messages
+            'c1__tree_contents' => array(), //Content types entity references on messages
+
             'db_updated' => 0,
             'db_queries' => array(),
             'c_flat' => array(),
             'cr_flat' => array(),
             'tree_top' => array(),
-            'c__tree_contributors' => array(), //Holds the trainers and experts that are references in messages
         );
 
         if(!$recursive_children){
             $recursive_children = $immediate_children;
+
+            //Build content type tree:
+            foreach($this->config->item('content_types') as $u_id=>$content_type_name){
+                $immediate_children['c1__tree_contents'][intval($u_id)] = array();
+            }
         }
 
         //Fetch & add this item itself:
@@ -1862,17 +1897,17 @@ class Db_model extends CI_Model {
             if($fetch_outbound){
                 $cs = $this->Db_model->cr_outbound_fetch(array(
                     'cr.cr_id' => $parent_c['cr_id'],
-                ));
+                ), ( $update_c_table ? array('c__messages') : array() ));
             } else {
                 $cs = $this->Db_model->cr_inbound_fetch(array(
                     'cr.cr_id' => $parent_c['cr_id'],
-                ));
+                ), ( $update_c_table ? array('c__messages') : array() ));
             }
         } else {
             //This is the very first item that
             $cs = $this->Db_model->c_fetch(array(
                 'c.c_id' => $c_id,
-            ));
+            ), 0, ( $update_c_table ? array('c__messages') : array() ));
         }
 
 
@@ -1880,7 +1915,6 @@ class Db_model extends CI_Model {
         if(count($cs)<1){
             return false;
         }
-
 
 
         //Add the link relations before we start recursion so we can have the Tree in up-front order:
@@ -1928,6 +1962,7 @@ class Db_model extends CI_Model {
             );
 
             foreach($child_cs as $c){
+
                 if(in_array($c['c_id'],$recursive_children['c_flat'])){
 
                     //Ooooops, this has an error as it would result in an infinite loop:
@@ -1970,11 +2005,32 @@ class Db_model extends CI_Model {
 
 
                     if($update_c_table){
+
+                        //Update DB requested:
                         $immediate_children['c1__tree_messages'] += $granchildren['c1__tree_messages'];
                         $immediate_children['db_updated'] += $granchildren['db_updated'];
                         if(!empty($granchildren['db_queries'])){
                             array_push($immediate_children['db_queries'],$granchildren['db_queries']);
                         }
+
+                        //Addup unique experts & trainers:
+                        foreach($granchildren['c1__tree_experts'] as $u_id=>$tex){
+                            //Is this a new expert?
+                            if(!isset($immediate_children['c1__tree_experts'][$u_id])){
+                                //Yes, add them to the list:
+                                $immediate_children['c1__tree_experts'][$u_id] = $tex;
+                            }
+                        }
+                        foreach($granchildren['c1__tree_trainers'] as $u_id=>$tet){
+                            //Is this a new expert?
+                            if(!isset($immediate_children['c1__tree_trainers'][$u_id])){
+                                //Yes, add them to the list:
+                                $immediate_children['c1__tree_trainers'][$u_id] = $tet;
+                            }
+                        }
+
+                        //Addup content types:
+
                     }
 
                     array_push($immediate_children['cr_flat'],$granchildren['cr_flat']);
@@ -1988,9 +2044,8 @@ class Db_model extends CI_Model {
             $immediate_children['c1__tree_max_hours'] += $local_values['c___tree_max_hours'];
             $immediate_children['c1__tree_min_cost']  += $local_values['c___tree_min_cost'];
             $immediate_children['c1__tree_max_cost']  += $local_values['c___tree_max_cost'];
+
         }
-
-
 
 
 
@@ -2009,14 +2064,130 @@ class Db_model extends CI_Model {
         $cs[0]['c1__tree_min_cost']  = $immediate_children['c1__tree_min_cost'];
         $cs[0]['c1__tree_max_cost']  = $immediate_children['c1__tree_max_cost'];
 
+
+        //$cs[0]['c1__tree_experts']   = $immediate_children['c1__tree_experts'];
+        //$cs[0]['c1__tree_trainers']  = $immediate_children['c1__tree_trainers'];
+        //$cs[0]['c1__tree_contents']  = $immediate_children['c1__tree_contents'];
+
         //Count messages only if DB updating:
         if($update_c_table){
+
+            //Count messages:
             $cs[0]['c1__this_messages'] = count($this->Db_model->i_fetch(array(
                 'i_status >=' => 0,
                 'i_outbound_c_id' => $c_id,
             )));
             $immediate_children['c1__tree_messages'] += $cs[0]['c1__this_messages'];
             $cs[0]['c1__tree_messages'] = $immediate_children['c1__tree_messages'];
+
+            //See who's involved:
+            $parent_ids = array();
+            foreach($cs[0]['c__messages'] as $i){
+
+                //Who is the author of this message?
+                if(!in_array($i['i_inbound_u_id'],$parent_ids)){
+                    array_push($parent_ids, $i['i_inbound_u_id']);
+                }
+
+                //Check the author of this message (The trainer) in the trainer array:
+                if(!isset($cs[0]['c1__tree_trainers'][$i['i_inbound_u_id']])){
+                    //Add the entire message which would also hold the trainer details:
+                    $cs[0]['c1__tree_trainers'][$i['i_inbound_u_id']] = array(
+                        'u_id' => $i['u_id'],
+                        'u_full_name' => $i['u_full_name'],
+                        'u_bio' => $i['u_bio'],
+                        'u__e_score' => $i['u__e_score'],
+                    );
+                }
+                //How about the parent of this one?
+                if(!isset($immediate_children['c1__tree_trainers'][$i['i_inbound_u_id']])){
+                    //Yes, add them to the list:
+                    $immediate_children['c1__tree_trainers'][$i['i_inbound_u_id']] = array(
+                        'u_id' => $i['u_id'],
+                        'u_full_name' => $i['u_full_name'],
+                        'u_bio' => $i['u_bio'],
+                        'u__e_score' => $i['u__e_score'],
+                    );
+                }
+
+                //Does this message have any entity references?
+                if($i['i_outbound_u_id']>0){
+
+                    //Add the reference it self:
+                    if(!in_array($i['i_outbound_u_id'],$parent_ids)){
+                        array_push($parent_ids, $i['i_outbound_u_id']);
+                    }
+
+                    //Yes! Let's see if any of the parents/creators are industry experts:
+                    $us_fetch = $this->Db_model->u_fetch(array(
+                        'u_id' => $i['i_outbound_u_id'],
+                    ));
+
+                    if(isset($us_fetch[0]) && count($us_fetch[0]['u__inbounds'])>0){
+                        //We found it, let's loop through the parents and aggregate their IDs for a single search:
+                        foreach($us_fetch[0]['u__inbounds'] as $parent_u){
+
+                            //Is this a particular content type?
+                            if(array_key_exists($parent_u['u_id'], $this->config->item('content_types'))){
+                                //yes! Add it to the list if it does not already exist:
+                                if(!isset($cs[0]['c1__tree_contents'][$parent_u['u_id']][$us_fetch[0]['u_id']])){
+                                    $cs[0]['c1__tree_contents'][$parent_u['u_id']][$us_fetch[0]['u_id']] = array(
+                                        'u_id' => $us_fetch[0]['u_id'],
+                                        'u_full_name' => $us_fetch[0]['u_full_name'],
+                                        'u_bio' => $us_fetch[0]['u_bio'],
+                                        'u__e_score' => $us_fetch[0]['u__e_score'],
+                                    );
+                                }
+
+                                //How about the parent tree?
+                                if(!isset($immediate_children['c1__tree_contents'][$parent_u['u_id']][$us_fetch[0]['u_id']])){
+                                    $immediate_children['c1__tree_contents'][$parent_u['u_id']][$us_fetch[0]['u_id']] = array(
+                                        'u_id' => $us_fetch[0]['u_id'],
+                                        'u_full_name' => $us_fetch[0]['u_full_name'],
+                                        'u_bio' => $us_fetch[0]['u_bio'],
+                                        'u__e_score' => $us_fetch[0]['u__e_score'],
+                                    );
+                                }
+                            }
+
+                            if(!in_array($parent_u['u_id'],$parent_ids)){
+                                array_push($parent_ids, $parent_u['u_id']);
+                            }
+                        }
+                    }
+                }
+            }
+
+            //Who was involved in content patternization?
+            if(count($parent_ids)>0){
+
+                //Lets make a query search to see how many of those involved are industry experts:
+                $ixs = $this->Db_model->ur_outbound_fetch(array(
+                    'ur_inbound_u_id' => 3084, //Industry expert entity
+                    'ur_outbound_u_id IN ('.join(',', $parent_ids).')' => null,
+                    'ur_status >=' => 0, //Pending review or higher
+                    'u_status >=' => 0, //Pending review or higher
+                ), array(), 0, 0, 'u_id, u_full_name, u_bio, u__e_score, x_url');
+
+                //Put unique IDs in array key for faster searching:
+                foreach($ixs as $ixsu){
+                    if(!isset($cs[0]['c1__tree_experts'][$ixsu['u_id']])){
+                        $cs[0]['c1__tree_experts'][$ixsu['u_id']] = $ixsu;
+                    }
+                }
+            }
+
+            //Did we find any new industry experts?
+            if(isset($cs[0]['c1__tree_experts'][0])){
+                //Yes, lets add them uniquely to the mother array assuming they are not already there:
+                foreach($cs[0]['c1__tree_experts'] as $new_ixs){
+                    //Is this a new expert?
+                    if(!isset($immediate_children['c1__tree_experts'][$new_ixs['u_id']])){
+                        //Yes, add them to the list:
+                        $immediate_children['c1__tree_experts'][$new_ixs['u_id']] = $new_ixs;
+                    }
+                }
+            }
         }
 
         array_push($immediate_children['tree_top'],$cs[0]);
@@ -2027,6 +2198,9 @@ class Db_model extends CI_Model {
                 number_format($cs[0]['c1__tree_max_hours'],3)==number_format($cs[0]['c__tree_max_hours'],3) &&
                 number_format($cs[0]['c1__tree_min_cost'],2)==number_format($cs[0]['c__tree_min_cost'],2) &&
                 number_format($cs[0]['c1__tree_max_cost'],2)==number_format($cs[0]['c__tree_max_cost'],2) &&
+                ((!$cs[0]['c__tree_experts'] && !count($cs[0]['c1__tree_experts'])) || (serialize($cs[0]['c1__tree_experts'])==$cs[0]['c__tree_experts'])) &&
+                ((!$cs[0]['c__tree_trainers'] && !count($cs[0]['c1__tree_trainers'])) || (serialize($cs[0]['c1__tree_trainers'])==$cs[0]['c__tree_trainers'])) &&
+                (serialize($cs[0]['c1__tree_contents'])==$cs[0]['c__tree_contents']) &&
                 $cs[0]['c1__tree_all_count']==$cs[0]['c__tree_all_count'] &&
                 $cs[0]['c1__this_messages']==$cs[0]['c__this_messages'] &&
                 $cs[0]['c1__tree_messages']==$cs[0]['c__tree_messages'] &&
@@ -2042,6 +2216,9 @@ class Db_model extends CI_Model {
                 'c__tree_all_count' => $cs[0]['c1__tree_all_count'],
                 'c__this_messages' => $cs[0]['c1__this_messages'],
                 'c__tree_messages' => $cs[0]['c1__tree_messages'],
+                'c__tree_experts' => ( count($cs[0]['c1__tree_experts'])>0 ? serialize($cs[0]['c1__tree_experts']) : null ),
+                'c__tree_trainers' => ( count($cs[0]['c1__tree_trainers'])>0 ? serialize($cs[0]['c1__tree_trainers']) : null ),
+                'c__tree_contents' => serialize($cs[0]['c1__tree_contents']), //Always update since we count all types of content anyways
                 'c__is_orphan' => 0, //It cannot be orphan since its part of the main tree
             ));
 
@@ -2053,8 +2230,6 @@ class Db_model extends CI_Model {
 
 
 
-
-
         //Flatten intent ID array:
         $result = array();
         array_walk_recursive($immediate_children['c_flat'],function($v, $k) use (&$result){ $result[] = $v; });
@@ -2063,9 +2238,6 @@ class Db_model extends CI_Model {
         $result = array();
         array_walk_recursive($immediate_children['cr_flat'],function($v, $k) use (&$result){ $result[] = $v; });
         $immediate_children['cr_flat'] = $result;
-
-
-
 
 
         //Return data:

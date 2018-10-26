@@ -25,7 +25,7 @@ class My extends CI_Controller {
         $application_status_salt = $this->config->item('application_status_salt');
         if(!isset($_GET['u_key']) || !isset($_GET['u_id']) || intval($_GET['u_id'])<1 || !(md5($_GET['u_id'].$application_status_salt)==$_GET['u_key'])){
             //Log this error:
-            redirect_message('/','<div class="alert alert-danger" role="alert">Invalid URL. Choose your Bootcamp and re-apply to receive an email with your application status url.</div>');
+            redirect_message('/6623','<div class="alert alert-danger" role="alert">Invalid URL. Choose your Bootcamp and re-apply to receive an email with your application status url.</div>');
         }
 
 
@@ -44,7 +44,7 @@ class My extends CI_Controller {
         if(count($users)==1 && count($enrollments)>0){
             $udata = $users[0];
         } else {
-            redirect_message('/','<div class="alert alert-danger" role="alert">Invalid URL. Choose your Bootcamp and re-apply to receive an email with your application status url.</div>');
+            redirect_message('/6623','<div class="alert alert-danger" role="alert">Invalid URL. Choose your Bootcamp and re-apply to receive an email with your application status url.</div>');
         }
 
 
@@ -227,7 +227,7 @@ class My extends CI_Controller {
         if(count($enrollments)<=1){
 
             //No other enrollments found:
-            die('<div class="alert alert-info" role="alert"><i class="fas fa-exclamation-triangle"></i> Error: You must be part of at-least 2 Bootcamps to be able to switch between them.<div style="margin-top: 15px;"><a href="/">Browse Bootcamps &raquo;</a></div></div>');
+            die('<div class="alert alert-info" role="alert"><i class="fas fa-exclamation-triangle"></i> Error: You must be part of at-least 2 Bootcamps to be able to switch between them.</div>');
 
         } else {
 

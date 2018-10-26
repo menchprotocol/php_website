@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => '0.5791',
+    'version' => '0.5792',
     'released' => '2018-10-24', //Format: YYYY-MM-DD
     'name' => 'Mench',
     'url' => 'https://mench.com/', //Important to end with "/" as other links depend on this.
@@ -29,6 +29,13 @@ $config['message_max'] = 610; //Max number of characters allowed in messages. Fa
 $config['entity_per_page'] = 100;
 $config['universal_intents'] = array(7433); //Get to know how Mench Personal Assistant works
 $config['onhold_intents'] = array(7240,6629,6630,7248,7435,369,6653);
+$config['content_types'] = array( //This should mirror outbound intents of @3000
+    3005 => 'Book',
+    2998 => 'Video',
+    2997 => 'Article',
+    2999 => 'Podcast',
+    3147 => 'Online Course',
+);
 
 //Learn more: https://console.aws.amazon.com/iam/home?region=us-west-2#/users/foundation?section=security_credentials
 $config['aws_credentials'] = [
@@ -366,7 +373,7 @@ $config['object_statuses'] = array(
 
 //These URLs are recognized as Social Profiles
 $config['social_urls'] =array(
-    'https://www.linkedin.com/in/'      => 'fab fa-linkedin',
+    'https://www.linkedin.com/'         => 'fab fa-linkedin',
     'https://www.youtube.com/'          => 'fab fa-youtube',
     'https://twitter.com/'              => 'fab fa-twitter',
     'https://www.instagram.com/'        => 'fab fa-instagram',

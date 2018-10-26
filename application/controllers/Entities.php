@@ -83,7 +83,7 @@ class Entities extends CI_Controller {
         //Responsible to link inbound/outbound entities to each other via a JS function on entity_manage.php
 
         //Auth user and check required variables:
-        $udata = auth(array(1308,1280));
+        $udata = auth(array(1308));
 
         if(!$udata){
             return echo_json(array(
@@ -304,7 +304,7 @@ class Entities extends CI_Controller {
     function unlink_entities(){
 
         //Auth user and check required variables:
-        $udata = auth(array(1308,1280));
+        $udata = auth(array(1308));
 
         if(!$udata){
             return echo_json(array(
@@ -337,7 +337,7 @@ class Entities extends CI_Controller {
     function u_save_settings(){
 
         //Auth user and check required variables:
-        $udata = auth(array(1308,1280));
+        $udata = auth(array(1308));
         $message_max = $this->config->item('message_max');
 
         //Fetch current data:
@@ -569,7 +569,7 @@ class Entities extends CI_Controller {
         }
 
         //Are they admin?
-        if(array_any_key_exists(array(1280,1308,1281),$users[0]['u__inbounds'])){
+        if(array_any_key_exists(array(1308,1281),$users[0]['u__inbounds'])){
             //They have admin rights:
             $session_data['user'] = $users[0];
             $is_coach = true;

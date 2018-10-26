@@ -45,14 +45,14 @@ $url_part_1 = $this->uri->segment(1);
 		            <span class="icon-bar"></span>
 		            <span class="icon-bar"></span>
         		</button>
-        		<a class="navbar-brand" href="/"><img src="/img/bp_128.png" /><span style="text-transform: lowercase; color: #2f2739;"><?= $website['name'] ?></span></a>
+        		<a class="navbar-brand" href="/6623"><img src="/img/bp_128.png" /><span style="text-transform: lowercase; color: #2f2739;"><?= $website['name'] ?></span></a>
         	</div>
 
         	<div class="collapse navbar-collapse">
         		<ul class="nav navbar-nav navbar-right">
     				<?php
                     if(isset($udata['u_id'])){
-                        echo '<li id="isloggedin"><a href="/intents/'.( isset($c['c_id']) ? $c['c_id'].'#messages-'.$c['c_id'] : 6623 ).'">Console <i class="fas fa-chevron-circle-right"></i></a></li>';
+                        echo '<li id="isloggedin"><a href="/intents/'.( isset($c['c_id']) ? $c['c_id'] : 6623 ).'">Console <i class="fas fa-chevron-circle-right"></i></a></li>';
                     } elseif(isset($uenrollment['u_id'])){
                         echo '<li id="isloggedin"><a href="/my/actionplan">Student Hub <i class="fas fa-chevron-circle-right"></i></a></li>';
                     } else {

@@ -91,6 +91,7 @@ body{ background-color: #FFF !important;}
     border-top: 1px solid #CCC;
     max-height:520px;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 .grey-box input, .grey-box .input-group, .grey-box .form-control {
     background-color:#FFFFFF;
@@ -648,7 +649,7 @@ h5, .h5 {
 }
 #console h1 { font-size:2.8em; margin-bottom:15px; margin-top:15px; line-height:100%; }
 .main-raised{
-    max-width: 1150px;
+    max-width:767px;
     margin: -60px auto 0 !important;
 }
 .student-hub{
@@ -2061,10 +2062,7 @@ margin:5px 0;
     font-size: 1em !important;
 }
 .price-box{
-    background-color: #EFEFEF;
-    border-radius: 5px;
-    padding: 10px;
-    margin:5px 0 15px;
+    margin:15px 0 0;
 }
 
 .price-box > i {
@@ -2105,6 +2103,23 @@ margin:5px 0;
     color:#2f2739 !important;
     font-size:0.9em;
     margin: 0 !important;
+}
+
+.why_mench h4{
+    font-size: 1.4em;
+    font-weight: 500;
+    margin: 20px 0 0px 0;
+}
+
+.why_mench h4 span{
+    font-size: 1.4em;
+    width: 38px;
+    display: inline-block;
+    text-align: center;
+}
+
+.why_mench p {
+    margin-left: 42px;
 }
 
 .btn.btn-secondary, .btn.btn-secondary:hover, .btn.btn-secondary:focus, .btn.btn-secondary:active, .btn.btn-secondary.active, .btn.btn-secondary:active:focus, .btn.btn-secondary:active:hover, .btn.btn-secondary.active:focus, .btn.btn-secondary.active:hover, .open > .btn.btn-secondary.dropdown-toggle, .open > .btn.btn-secondary.dropdown-toggle:focus, .open > .btn.btn-secondary.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-secondary, .navbar .navbar-nav > li > a.btn.btn-secondary:hover, .navbar .navbar-nav > li > a.btn.btn-secondary:focus, .navbar .navbar-nav > li > a.btn.btn-secondary:active, .navbar .navbar-nav > li > a.btn.btn-secondary.active, .navbar .navbar-nav > li > a.btn.btn-secondary:active:focus, .navbar .navbar-nav > li > a.btn.btn-secondary:active:hover, .navbar .navbar-nav > li > a.btn.btn-secondary.active:focus, .navbar .navbar-nav > li > a.btn.btn-secondary.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-secondary.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-secondary.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-secondary.dropdown-toggle:hover {

@@ -4,7 +4,7 @@ $website = $this->config->item('website');
 <h1>Terms of Service</h1>
 <br />
 <h3>1. Terms</h3>
-<p>By accessing the website at <a href="/"><?= $website['name'] ?></a>, you are agreeing to be bound by these terms of service, all applicable laws and regulations, and agree that you are responsible for compliance with any applicable local laws. If you do not agree with any of these terms, you are prohibited from using or accessing this site. The materials contained in this website are protected by applicable copyright and trademark law.</p>
+<p>By accessing the website at <a href="/6623"><?= $website['name'] ?></a>, you are agreeing to be bound by these terms of service, all applicable laws and regulations, and agree that you are responsible for compliance with any applicable local laws. If you do not agree with any of these terms, you are prohibited from using or accessing this site. The materials contained in this website are protected by applicable copyright and trademark law.</p>
 <br />
 <h3>2. Use License</h3>
 

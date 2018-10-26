@@ -481,7 +481,7 @@ function auth($entity_groups=null,$force_redirect=0,$b_id=0,$u_id=0){
 	    return false;
 	} else {
 	    //Block access:
-	    redirect_message( ( isset($udata['u_id']) && ( array_any_key_exists(array(1280,1308,1281),$udata['u__inbounds']) || isset($udata['project_permissions'])) ? '/intents/6623' : '/login?url='.urlencode($_SERVER['REQUEST_URI']) ),'<div class="alert alert-danger maxout" role="alert">'.( isset($udata['u_id']) ? 'Access not authorized.' : 'Session Expired. Login to continue.' ).'</div>');
+	    redirect_message( ( isset($udata['u_id']) && ( array_any_key_exists(array(1308,1281),$udata['u__inbounds']) || isset($udata['project_permissions'])) ? '/intents/6623' : '/login?url='.urlencode($_SERVER['REQUEST_URI']) ),'<div class="alert alert-danger maxout" role="alert">'.( isset($udata['u_id']) ? 'Access not authorized.' : 'Session Expired. Login to continue.' ).'</div>');
 	}
 	
 }

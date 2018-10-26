@@ -915,16 +915,20 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
     $ui .= '<span class="pull-right" style="'.( $level<3 ? 'margin-right: 8px;' : '' ).'">';
 
 
-    if($level==1 && !$c['c__is_orphan']){
-        $ui .= '<a href="/'.$c['c_id'].'" class="underdot" style="margin:0 7px; font-size:1.3em;" data-toggle="tooltip" title="Open Landing Page with Intent tree overview & Messenger subscription button" data-placement="left"><i class="fas fa-shopping-cart"></i></a>';
-    }
-
     $ui .= '<a href="#messages-'.$c['c_id'].'" onclick="load_c_messages('.$c['c_id'].')" class="badge badge-primary" style="width:40px;"><span class="btn-counter" id="messages-counter-'.$c['c_id'].'">'.$c['c__this_messages'].'</span><i class="fas fa-comment-dots"></i></a>';
 
     $ui .= '<a class="badge badge-primary" onclick="load_c_modify('.$c['c_id'].','.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).')" style="margin:-2px -8px 0 2px; width:40px;" href="#modify-'.$c['c_id'].'-'.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).'"><span class="btn-counter">'.echo_estimated_time($c['c__tree_max_hours'],0,1, $c['c_id'], $c['c_time_estimate']).'</span><i class="c_is_any_icon'.$c['c_id'].' '.( $c['c_is_any'] ? 'fas fa-code-merge' : 'fas fa-sitemap' ).'" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i></a> &nbsp;';
 
 
-    $ui .= '&nbsp;<'.( $level>1 || $c['c__is_orphan'] ? 'a href="/intents/'.$c['c_id'].'" class="badge badge-primary"' :'span class="badge badge-primary grey"').' style="display:inline-block; margin-right:-1px; width:40px;"><span class="btn-counter outbound-counter-'.$c['c_id'].'">'.($c['c__tree_all_count']-1).'</span><i class="'.( $is_inbound && $level<=2 ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></'.( $level>1 || $c['c__is_orphan'] ? 'a' :'span').'> ';
+    if($level==1 && !$c['c__is_orphan']){
+        //Show Landing Page URL:
+        $ui .= '&nbsp;<a href="/'.$c['c_id'].'" class="badge badge-primary grey" style="display:inline-block; margin-right:-1px; width:40px;" data-toggle="tooltip" title="Open Landing Page with Intent tree overview & Messenger subscription button" data-placement="left"><i class="fas fa-external-link-square-alt" style="position: absolute; top: -7px; right: 3px; font-size: 0.85em;"></i><i class="fas fa-shopping-cart"></i></a> ';
+    } else {
+        //Show link to travel down the tree:
+        $ui .= '&nbsp;<a href="/intents/'.$c['c_id'].'" class="badge badge-primary" style="display:inline-block; margin-right:-1px; width:40px;"><span class="btn-counter outbound-counter-'.$c['c_id'].'">'.($c['c__tree_all_count']-1).'</span><i class="'.( $is_inbound && $level<=2 ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></a> ';
+    }
+
+
 
     //Keep an eye out for inner message counter changes:
     $ui .= '</span> ';
@@ -1032,27 +1036,25 @@ function echo_u($u, $level, $can_edit, $is_inbound=false){
 
 
     //What's the entity status?
-    if(!$is_inbound){
+    $ui .= '<span class="u-status-bar-'.$u['u_id'].'">';
+    if(array_key_exists(1281, $udata['u__inbounds']) && $u['u_status']==0){
 
-        $ui .= '<span class="u-status-bar-'.$u['u_id'].'">';
-        if(array_key_exists(1281, $udata['u__inbounds']) && $u['u_status']==0){
+        $ui .= '<i class="'.$status_index['u'][1]['s_icon'].'"></i> ';
+        $ui .= '<a href="javascript:update_u_status('.$u['u_id'].',1)" data-toggle="tooltip" data-placement="left" title="Current status is '.$status_index['u'][$u['u_status']]['s_name'].'. Click to update entity status to '.$status_index['u'][1]['s_name'].': '.$status_index['u'][1]['s_desc'].'" style="text-decoration:underline;">Set '.$status_index['u'][1]['s_name'].'</a>';
 
-            $ui .= '<i class="'.$status_index['u'][1]['s_icon'].'"></i> ';
-            $ui .= '<a href="javascript:update_u_status('.$u['u_id'].',1)" data-toggle="tooltip" data-placement="left" title="Current status is '.$status_index['u'][$u['u_status']]['s_name'].'. Click to update entity status to '.$status_index['u'][1]['s_name'].': '.$status_index['u'][1]['s_desc'].'" style="text-decoration:underline;">Set '.$status_index['u'][1]['s_name'].'</a>';
+    } elseif(array_key_exists(1281, $udata['u__inbounds']) && $u['u_status']==1){
 
-        } elseif(array_key_exists(1281, $udata['u__inbounds']) && $u['u_status']==1){
+        $ui .= '<i class="'.$status_index['u'][2]['s_icon'].'" style="font-size:0.9em;"></i> ';
+        $ui .= '<a href="javascript:update_u_status('.$u['u_id'].',2)" data-toggle="tooltip" data-placement="left" title="Current status is '.$status_index['u'][$u['u_status']]['s_name'].'. Click to mark entity as '.$status_index['u'][2]['s_name'].': '.$status_index['u'][2]['s_desc'].'" style="text-decoration:underline;">Set '.$status_index['u'][2]['s_name'].'</a>';
 
-            $ui .= '<i class="'.$status_index['u'][2]['s_icon'].'" style="font-size:0.9em;"></i> ';
-            $ui .= '<a href="javascript:update_u_status('.$u['u_id'].',2)" data-toggle="tooltip" data-placement="left" title="Current status is '.$status_index['u'][$u['u_status']]['s_name'].'. Click to mark entity as '.$status_index['u'][2]['s_name'].': '.$status_index['u'][2]['s_desc'].'" style="text-decoration:underline;">Set '.$status_index['u'][2]['s_name'].'</a>';
+    } elseif($u['u_status']==2){
 
-        } elseif($u['u_status']==2){
+        //Show verified status:
+        $ui .= echo_status('u',2, true, 'left');
 
-            //Show verified status:
-            $ui .= echo_status('u',2, true, 'left');
-
-        }
-        $ui .= '</span> ';
     }
+    $ui .= '</span> ';
+
 
 
 
@@ -1067,7 +1069,7 @@ function echo_u($u, $level, $can_edit, $is_inbound=false){
         $ui .= '<span class="badge badge-secondary grey" style="margin-right:6px; width:40px; margin-left:1px;"><span class="btn-counter li-outbound-count">'.$u['u__outbound_count'].'</span><i class="fas fa-sign-out-alt rotate90"></i></span>';
     } else {
         //Level 2:
-        $ui .= '<a class="badge badge-secondary" href="/entities/'.$u['u_id'].( count($messages)>0 ? '#messages-'.$u['u_id'] : '' ).'" style="display:inline-block; margin-right:6px; width:40px; margin-left:1px;">'.(isset($u['u__outbound_count']) && $u['u__outbound_count']>0 ? '<span class="btn-counter">'.$u['u__outbound_count'].'</span>' : '').'<i class="'.( $is_inbound ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></a>';
+        $ui .= '<a class="badge badge-secondary" href="/entities/'.$u['u_id'].'" style="display:inline-block; margin-right:6px; width:40px; margin-left:1px;">'.(isset($u['u__outbound_count']) && $u['u__outbound_count']>0 ? '<span class="btn-counter">'.$u['u__outbound_count'].'</span>' : '').'<i class="'.( $is_inbound ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></a>';
     }
 
 
