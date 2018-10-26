@@ -16,6 +16,20 @@ function lock_cron_for_processing($e_items){
     }
 }
 
+function sortByScore($a, $b) {
+    return intval($b['u__e_score']) - intval($a['u__e_score']);
+}
+
+function u_essentials($full_array){
+    $return_array = array();
+    foreach(array('u_id','u_full_name','u_bio','u__e_score','x_url') as $key){
+        if(isset($full_array[$key])){
+            $return_array[$key] = $full_array[$key];
+        }
+    }
+    return $return_array;
+}
+
 function load_php_algolia($index_name){
     require_once('application/libraries/algoliasearch.php');
     $client = new \AlgoliaSearch\Client("49OCX1ZXLJ", "84a8df1fecf21978299e31c5b535ebeb");

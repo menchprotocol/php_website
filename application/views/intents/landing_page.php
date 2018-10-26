@@ -9,7 +9,7 @@
         $('.alink-'+c_id).attr('href','javascript:void(0);');
         var c_outcome_parent = $('#title-parent').text();
         var c_outcome_child = $('#title-'+c_id).text();
-        var r = confirm("You are about to navigate away.\n\nChoose OK if you ONLY want to "+c_outcome_child+".\n\nChoose Cancel and use the SUBSCRIBE button above if you want to "+c_outcome_parent+".");
+        var r = confirm("You are about to navigate away.\n\nIf you only want to "+c_outcome_child+" then press OK.\n\nBut if you want to "+c_outcome_parent+" then press Cancel and use the SUBSCRIBE button above to get stared.");
         if (r == true) {
             //Go to target intent:
             window.location = "/"+c_id;
@@ -142,8 +142,7 @@
                     echo '</ul>';
 
                     //Since it has children, lets also give the option to navigate downwards:
-                    echo '<div>';
-                    echo '<a href="/'.$c1['c_id'].'" '.( $c['c_id']==6623 ? 'onclick="confirm_child_go('.$c1['c_id'].')"' : '' ).' class="btn btn-primary btn-xs alink-'.$c1['c_id'].'" style="font-size:0.9em !important;">Learn More <i class="fas fa-angle-right"></i></a>';
+                    echo '<div>You can choose to subscribe to this concept only. <a href="/'.$c1['c_id'].'" '.( $c['c_id']==6623 ? 'onclick="confirm_child_go('.$c1['c_id'].')"' : '' ).' class="alink-'.$c1['c_id'].'">Learn More</a>.';
                     echo '</div>';
 
                 }

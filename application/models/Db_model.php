@@ -2013,7 +2013,7 @@ class Db_model extends CI_Model {
                             array_push($immediate_children['db_queries'],$granchildren['db_queries']);
                         }
 
-                        //Addup unique experts & trainers:
+                        //Addup unique experts:
                         foreach($granchildren['c1__tree_experts'] as $u_id=>$tex){
                             //Is this a new expert?
                             if(!isset($immediate_children['c1__tree_experts'][$u_id])){
@@ -2021,6 +2021,8 @@ class Db_model extends CI_Model {
                                 $immediate_children['c1__tree_experts'][$u_id] = $tex;
                             }
                         }
+
+                        //Addup unique trainers:
                         foreach($granchildren['c1__tree_trainers'] as $u_id=>$tet){
                             //Is this a new expert?
                             if(!isset($immediate_children['c1__tree_trainers'][$u_id])){
@@ -2030,6 +2032,14 @@ class Db_model extends CI_Model {
                         }
 
                         //Addup content types:
+                        foreach($granchildren['c1__tree_contents'] as $type_u_id=>$current_us){
+                            foreach($current_us as $u_id=>$u_obj){
+                                if(!isset($immediate_children['c1__tree_contents'][$type_u_id][$u_id])){
+                                    //Yes, add them to the list:
+                                    $immediate_children['c1__tree_contents'][$type_u_id][$u_id] = $u_obj;
+                                }
+                            }
+                        }
 
                     }
 
@@ -2065,12 +2075,12 @@ class Db_model extends CI_Model {
         $cs[0]['c1__tree_max_cost']  = $immediate_children['c1__tree_max_cost'];
 
 
-        //$cs[0]['c1__tree_experts']   = $immediate_children['c1__tree_experts'];
-        //$cs[0]['c1__tree_trainers']  = $immediate_children['c1__tree_trainers'];
-        //$cs[0]['c1__tree_contents']  = $immediate_children['c1__tree_contents'];
-
         //Count messages only if DB updating:
         if($update_c_table){
+
+            $cs[0]['c1__tree_experts']   = array();
+            $cs[0]['c1__tree_trainers']  = array();
+            $cs[0]['c1__tree_contents']  = array();
 
             //Count messages:
             $cs[0]['c1__this_messages'] = count($this->Db_model->i_fetch(array(
@@ -2079,6 +2089,7 @@ class Db_model extends CI_Model {
             )));
             $immediate_children['c1__tree_messages'] += $cs[0]['c1__this_messages'];
             $cs[0]['c1__tree_messages'] = $immediate_children['c1__tree_messages'];
+
 
             //See who's involved:
             $parent_ids = array();
@@ -2089,29 +2100,22 @@ class Db_model extends CI_Model {
                     array_push($parent_ids, $i['i_inbound_u_id']);
                 }
 
+
                 //Check the author of this message (The trainer) in the trainer array:
                 if(!isset($cs[0]['c1__tree_trainers'][$i['i_inbound_u_id']])){
                     //Add the entire message which would also hold the trainer details:
-                    $cs[0]['c1__tree_trainers'][$i['i_inbound_u_id']] = array(
-                        'u_id' => $i['u_id'],
-                        'u_full_name' => $i['u_full_name'],
-                        'u_bio' => $i['u_bio'],
-                        'u__e_score' => $i['u__e_score'],
-                    );
+                    $cs[0]['c1__tree_trainers'][$i['i_inbound_u_id']] = u_essentials($i);
                 }
                 //How about the parent of this one?
                 if(!isset($immediate_children['c1__tree_trainers'][$i['i_inbound_u_id']])){
                     //Yes, add them to the list:
-                    $immediate_children['c1__tree_trainers'][$i['i_inbound_u_id']] = array(
-                        'u_id' => $i['u_id'],
-                        'u_full_name' => $i['u_full_name'],
-                        'u_bio' => $i['u_bio'],
-                        'u__e_score' => $i['u__e_score'],
-                    );
+                    $immediate_children['c1__tree_trainers'][$i['i_inbound_u_id']] = u_essentials($i);
                 }
+
 
                 //Does this message have any entity references?
                 if($i['i_outbound_u_id']>0){
+
 
                     //Add the reference it self:
                     if(!in_array($i['i_outbound_u_id'],$parent_ids)){
@@ -2131,22 +2135,12 @@ class Db_model extends CI_Model {
                             if(array_key_exists($parent_u['u_id'], $this->config->item('content_types'))){
                                 //yes! Add it to the list if it does not already exist:
                                 if(!isset($cs[0]['c1__tree_contents'][$parent_u['u_id']][$us_fetch[0]['u_id']])){
-                                    $cs[0]['c1__tree_contents'][$parent_u['u_id']][$us_fetch[0]['u_id']] = array(
-                                        'u_id' => $us_fetch[0]['u_id'],
-                                        'u_full_name' => $us_fetch[0]['u_full_name'],
-                                        'u_bio' => $us_fetch[0]['u_bio'],
-                                        'u__e_score' => $us_fetch[0]['u__e_score'],
-                                    );
+                                    $cs[0]['c1__tree_contents'][$parent_u['u_id']][$us_fetch[0]['u_id']] = u_essentials($us_fetch[0]);
                                 }
 
                                 //How about the parent tree?
                                 if(!isset($immediate_children['c1__tree_contents'][$parent_u['u_id']][$us_fetch[0]['u_id']])){
-                                    $immediate_children['c1__tree_contents'][$parent_u['u_id']][$us_fetch[0]['u_id']] = array(
-                                        'u_id' => $us_fetch[0]['u_id'],
-                                        'u_full_name' => $us_fetch[0]['u_full_name'],
-                                        'u_bio' => $us_fetch[0]['u_bio'],
-                                        'u__e_score' => $us_fetch[0]['u__e_score'],
-                                    );
+                                    $immediate_children['c1__tree_contents'][$parent_u['u_id']][$us_fetch[0]['u_id']] = u_essentials($us_fetch[0]);
                                 }
                             }
 
@@ -2177,8 +2171,10 @@ class Db_model extends CI_Model {
                 }
             }
 
+
             //Did we find any new industry experts?
-            if(isset($cs[0]['c1__tree_experts'][0])){
+            if(count($cs[0]['c1__tree_experts'])>0){
+
                 //Yes, lets add them uniquely to the mother array assuming they are not already there:
                 foreach($cs[0]['c1__tree_experts'] as $new_ixs){
                     //Is this a new expert?
@@ -2192,14 +2188,36 @@ class Db_model extends CI_Model {
 
         array_push($immediate_children['tree_top'],$cs[0]);
 
-        //Update DB only if any single field is not synced:
-        if($update_c_table && !(
+
+
+        if($update_c_table){
+
+            //Assign aggregates:
+            $cs[0]['c1__tree_experts'] = $immediate_children['c1__tree_experts'];
+            $cs[0]['c1__tree_trainers'] = $immediate_children['c1__tree_trainers'];
+            $cs[0]['c1__tree_contents'] = $immediate_children['c1__tree_contents'];
+
+            //Start sorting:
+            if(is_array($cs[0]['c1__tree_experts']) && count($cs[0]['c1__tree_experts'])>0){
+                usort($cs[0]['c1__tree_experts'], 'sortByScore');
+            }
+            if(is_array($cs[0]['c1__tree_trainers']) && count($cs[0]['c1__tree_trainers'])>0){
+                usort($cs[0]['c1__tree_trainers'], 'sortByScore');
+            }
+            foreach($cs[0]['c1__tree_contents'] as $type_u_id=>$current_us){
+                if(count($cs[0]['c1__tree_contents'][$type_u_id])>0){
+                    usort($cs[0]['c1__tree_contents'][$type_u_id], 'sortByScore');
+                }
+            }
+
+            //Update DB only if any single field is not synced:
+            if(!(
                 number_format($cs[0]['c1__tree_min_hours'],3)==number_format($cs[0]['c__tree_min_hours'],3) &&
                 number_format($cs[0]['c1__tree_max_hours'],3)==number_format($cs[0]['c__tree_max_hours'],3) &&
                 number_format($cs[0]['c1__tree_min_cost'],2)==number_format($cs[0]['c__tree_min_cost'],2) &&
                 number_format($cs[0]['c1__tree_max_cost'],2)==number_format($cs[0]['c__tree_max_cost'],2) &&
-                ((!$cs[0]['c__tree_experts'] && !count($cs[0]['c1__tree_experts'])) || (serialize($cs[0]['c1__tree_experts'])==$cs[0]['c__tree_experts'])) &&
-                ((!$cs[0]['c__tree_trainers'] && !count($cs[0]['c1__tree_trainers'])) || (serialize($cs[0]['c1__tree_trainers'])==$cs[0]['c__tree_trainers'])) &&
+                ((!$cs[0]['c__tree_experts'] && count($cs[0]['c1__tree_experts'])<1) || (serialize($cs[0]['c1__tree_experts'])==$cs[0]['c__tree_experts'])) &&
+                ((!$cs[0]['c__tree_trainers'] && count($cs[0]['c1__tree_trainers'])<1) || (serialize($cs[0]['c1__tree_trainers'])==$cs[0]['c__tree_trainers'])) &&
                 (serialize($cs[0]['c1__tree_contents'])==$cs[0]['c__tree_contents']) &&
                 $cs[0]['c1__tree_all_count']==$cs[0]['c__tree_all_count'] &&
                 $cs[0]['c1__this_messages']==$cs[0]['c__this_messages'] &&
@@ -2207,27 +2225,27 @@ class Db_model extends CI_Model {
                 intval($cs[0]['c__is_orphan'])==0
             )){
 
-            //Something was not up to date, let's update:
-            $this->Db_model->c_update( $c_id , array(
-                'c__tree_min_hours' => number_format($cs[0]['c1__tree_min_hours'],3),
-                'c__tree_max_hours' => number_format($cs[0]['c1__tree_max_hours'],3),
-                'c__tree_min_cost'  => number_format($cs[0]['c1__tree_min_cost'],2),
-                'c__tree_max_cost'  => number_format($cs[0]['c1__tree_max_cost'],2),
-                'c__tree_all_count' => $cs[0]['c1__tree_all_count'],
-                'c__this_messages' => $cs[0]['c1__this_messages'],
-                'c__tree_messages' => $cs[0]['c1__tree_messages'],
-                'c__tree_experts' => ( count($cs[0]['c1__tree_experts'])>0 ? serialize($cs[0]['c1__tree_experts']) : null ),
-                'c__tree_trainers' => ( count($cs[0]['c1__tree_trainers'])>0 ? serialize($cs[0]['c1__tree_trainers']) : null ),
-                'c__tree_contents' => serialize($cs[0]['c1__tree_contents']), //Always update since we count all types of content anyways
-                'c__is_orphan' => 0, //It cannot be orphan since its part of the main tree
-            ));
+                //Something was not up to date, let's update:
+                $this->Db_model->c_update( $c_id , array(
+                    'c__tree_min_hours' => number_format($cs[0]['c1__tree_min_hours'],3),
+                    'c__tree_max_hours' => number_format($cs[0]['c1__tree_max_hours'],3),
+                    'c__tree_min_cost'  => number_format($cs[0]['c1__tree_min_cost'],2),
+                    'c__tree_max_cost'  => number_format($cs[0]['c1__tree_max_cost'],2),
+                    'c__tree_all_count' => $cs[0]['c1__tree_all_count'],
+                    'c__this_messages' => $cs[0]['c1__this_messages'],
+                    'c__tree_messages' => $cs[0]['c1__tree_messages'],
+                    'c__tree_experts' => ( count($cs[0]['c1__tree_experts'])>0 ? serialize($cs[0]['c1__tree_experts']) : null ),
+                    'c__tree_trainers' => ( count($cs[0]['c1__tree_trainers'])>0 ? serialize($cs[0]['c1__tree_trainers']) : null ),
+                    'c__tree_contents' => serialize($cs[0]['c1__tree_contents']), //Always update since we count all types of content anyways
+                    'c__is_orphan' => 0, //It cannot be orphan since its part of the main tree
+                ));
 
-            $immediate_children['db_updated']++;
+                $immediate_children['db_updated']++;
 
-            array_push($immediate_children['db_queries'],'['.$c_id.'] Hours:'.number_format($cs[0]['c__tree_max_hours'],3).'=>'.number_format($cs[0]['c1__tree_max_hours'],3).' / All Count:'.$cs[0]['c__tree_all_count'].'=>'.$cs[0]['c1__tree_all_count'].' / Message:'.$cs[0]['c__this_messages'].'=>'.$cs[0]['c1__this_messages'].' / Tree Message:'.$cs[0]['c__tree_messages'].'=>'.$cs[0]['c1__tree_messages'].' / Orphan:'.intval($cs[0]['c__is_orphan']).'=>0 ('.$cs[0]['c_outcome'].')');
+                array_push($immediate_children['db_queries'],'['.$c_id.'] Hours:'.number_format($cs[0]['c__tree_max_hours'],3).'=>'.number_format($cs[0]['c1__tree_max_hours'],3).' / All Count:'.$cs[0]['c__tree_all_count'].'=>'.$cs[0]['c1__tree_all_count'].' / Message:'.$cs[0]['c__this_messages'].'=>'.$cs[0]['c1__this_messages'].' / Tree Message:'.$cs[0]['c__tree_messages'].'=>'.$cs[0]['c1__tree_messages'].' / Orphan:'.intval($cs[0]['c__is_orphan']).'=>0 ('.$cs[0]['c_outcome'].')');
 
+            }
         }
-
 
 
         //Flatten intent ID array:
