@@ -407,6 +407,7 @@ $config['social_urls'] =array(
     'https://www.khanacademy.org/'      => 'fas fa-graduation-cap',
     'https://www.lynda.com/'            => 'fas fa-graduation-cap',
     'https://www.skillshare.com/'       => 'fas fa-graduation-cap',
+    '.edu/'                             => 'fas fa-graduation-cap',
 );
 
 
