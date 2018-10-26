@@ -647,7 +647,7 @@ $b_team_member = array();
                 $(".u__"+modify_data['u_id']).attr('has-password', ( modify_data['u_password_new'].length>0 ? 1 : 0 ));
                 if($('.u_bio_'+modify_data['u_id']).length){
                     //This is the top entity that's loaded, simply update:
-                    $(".u_bio_"+modify_data['u_id']).text(nl2br(modify_data['u_bio']));
+                    $(".u_bio_"+modify_data['u_id']).html(nl2br(modify_data['u_bio']));
                 } else {
                     //This is a level 2 item, let's update the UI accordingly:
                     if(modify_data['u_bio'].length>0){
