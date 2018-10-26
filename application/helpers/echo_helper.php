@@ -1084,7 +1084,7 @@ function echo_u($u, $level, $can_edit, $is_inbound=false){
         $ui .= ' <span class="obj-id underdot" data-toggle="tooltip" data-placement="top" title="Entity ID">@' . $u['u_id'] . '</span>';
 
         //Do they have any social profiles in their link?
-        $ui .= echo_social_profiles($CI->Db_model->x_social_fetch($u['u_id']));
+        //$ui .= echo_social_profiles($CI->Db_model->x_social_fetch($u['u_id']));
 
         //Check last engagement ONLY IF admin:
         if ($can_edit) {
