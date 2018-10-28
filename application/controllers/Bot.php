@@ -47,7 +47,7 @@ class Bot extends CI_Controller {
                     array(
                         'content_type' => 'text',
                         'title' => 'No',
-                        'payload' => 'SUBSCRIBE20_0',
+                        'payload' => 'SUBSCRIBE10_0',
                     ),
                 ),
             ),

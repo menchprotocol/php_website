@@ -308,92 +308,107 @@ class Comm_model extends CI_Model {
 
             //Validate this intent:
             $c_id = intval(one_two_explode('SUBSCRIBE10_', '', $fb_ref));
-            $fetch_cs = $this->Db_model->c_fetch(array(
-                'c_id' => $c_id,
-            ));
 
-            //Any issues?
-            if(count($fetch_cs)<1) {
+            if($c_id==0){
 
-                //Ooops we could not find that C:
+                //They rejected the offer... Acknowledge and give response:
                 $this->Comm_model->send_message(array(
                     array(
                         'e_inbound_u_id' => 2738, //Initiated by PA
                         'e_outbound_u_id' => $fetch_us[0]['u_id'],
-                        'i_message' => 'I was unable to locate intent #'.$c_id.' ['.$fb_ref.']',
-                    ),
-                ));
-
-            } elseif($fetch_cs[0]['c_status']<1) {
-
-                //Ooops C is no longer active:
-                $this->Comm_model->send_message(array(
-                    array(
-                        'e_inbound_u_id' => 2738, //Initiated by PA
-                        'e_outbound_u_id' => $fetch_us[0]['u_id'],
-                        'i_message' => 'I was unable to subscribe you to '.$fetch_cs[0]['c_outcome'].' as its no longer active',
+                        'i_message' => 'Ok, so what is your biggest challenge in landing your dream job? You can give me a command by starting a sentence with "Lets", for example "Lets get hired as a developer", "Lets book more interviews" or "Lets build a great resume"',
                     ),
                 ));
 
             } else {
 
-                //All good...
-                //Check if it exists in their current subscriptions:
-                $duplicate_w = array();
-                if(isset($fetch_us[0]['u__ws'])){
-                    foreach($fetch_us[0]['u__ws'] as $w){
-                        if($w['w_c_id']==$fetch_cs[0]['c_id']){
-                            $duplicate_w = $w;
-                            break;
-                        }
-                    }
-                }
+                $fetch_cs = $this->Db_model->c_fetch(array(
+                    'c_id' => $c_id,
+                ));
 
-                if(count($duplicate_w)>0){
+                //Any issues?
+                if(count($fetch_cs)<1) {
 
-                    //Let the user know that this is a duplicate:
+                    //Ooops we could not find that C:
                     $this->Comm_model->send_message(array(
                         array(
                             'e_inbound_u_id' => 2738, //Initiated by PA
                             'e_outbound_u_id' => $fetch_us[0]['u_id'],
-                            'e_outbound_c_id' => $fetch_cs[0]['c_id'],
-                            'i_message' => 'You have already subscribed to '.$fetch_cs[0]['c_outcome'].'. We have been working on it together since '.echo_time($duplicate_w['w_timestamp'], 2).' /open_actionplan',
+                            'i_message' => 'I was unable to locate intent #'.$c_id.' ['.$fb_ref.']',
                         ),
                     ));
 
-                    //Log engagement:
-                    $this->Db_model->e_create(array(
-                        'e_text_value' => 'User attempted to subscribe to an intent that they were already subscribed to. Maybe reach out and ask them why?',
-                        'e_inbound_u_id' => 2738, //Initiated by PA
-                        'e_outbound_u_id' => $fetch_us[0]['u_id'],
-                        'e_outbound_c_id' => $fetch_cs[0]['c_id'],
-                        'e_inbound_c_id' => 9, //Attention Needed
+                } elseif($fetch_cs[0]['c_status']<1) {
+
+                    //Ooops C is no longer active:
+                    $this->Comm_model->send_message(array(
+                        array(
+                            'e_inbound_u_id' => 2738, //Initiated by PA
+                            'e_outbound_u_id' => $fetch_us[0]['u_id'],
+                            'i_message' => 'I was unable to subscribe you to '.$fetch_cs[0]['c_outcome'].' as its no longer active',
+                        ),
                     ));
 
                 } else {
 
-                    //Confirm if they are interested for this intention:
-                    $this->Comm_model->send_message(array(
-                        array(
+                    //All good...
+                    //Check if it exists in their current subscriptions:
+                    $duplicate_w = array();
+                    if(isset($fetch_us[0]['u__ws'])){
+                        foreach($fetch_us[0]['u__ws'] as $w){
+                            if($w['w_c_id']==$fetch_cs[0]['c_id']){
+                                $duplicate_w = $w;
+                                break;
+                            }
+                        }
+                    }
+
+                    if(count($duplicate_w)>0){
+
+                        //Let the user know that this is a duplicate:
+                        $this->Comm_model->send_message(array(
+                            array(
+                                'e_inbound_u_id' => 2738, //Initiated by PA
+                                'e_outbound_u_id' => $fetch_us[0]['u_id'],
+                                'e_outbound_c_id' => $fetch_cs[0]['c_id'],
+                                'i_message' => 'You have already subscribed to '.$fetch_cs[0]['c_outcome'].'. We have been working on it together since '.echo_time($duplicate_w['w_timestamp'], 2).' /open_actionplan',
+                            ),
+                        ));
+
+                        //Log engagement:
+                        $this->Db_model->e_create(array(
+                            'e_text_value' => 'User attempted to subscribe to an intent that they were already subscribed to. Maybe reach out and ask them why?',
                             'e_inbound_u_id' => 2738, //Initiated by PA
                             'e_outbound_u_id' => $fetch_us[0]['u_id'],
                             'e_outbound_c_id' => $fetch_cs[0]['c_id'],
-                            'i_message' => 'Are you interested to '.$fetch_cs[0]['c_outcome'].'?',
-                            'quick_replies' => array(
-                                array(
-                                    'content_type' => 'text',
-                                    'title' => 'Yes, Learn More',
-                                    'payload' => 'SUBSCRIBE20_'.$fetch_cs[0]['c_id'],
-                                ),
-                                array(
-                                    'content_type' => 'text',
-                                    'title' => 'No',
-                                    'payload' => 'SUBSCRIBE20_0',
+                            'e_inbound_c_id' => 9, //Attention Needed
+                        ));
+
+                    } else {
+
+                        //Confirm if they are interested for this intention:
+                        $this->Comm_model->send_message(array(
+                            array(
+                                'e_inbound_u_id' => 2738, //Initiated by PA
+                                'e_outbound_u_id' => $fetch_us[0]['u_id'],
+                                'e_outbound_c_id' => $fetch_cs[0]['c_id'],
+                                'i_message' => 'Are you interested to '.$fetch_cs[0]['c_outcome'].'?',
+                                'quick_replies' => array(
+                                    array(
+                                        'content_type' => 'text',
+                                        'title' => 'Yes, Learn More',
+                                        'payload' => 'SUBSCRIBE20_'.$fetch_cs[0]['c_id'],
+                                    ),
+                                    array(
+                                        'content_type' => 'text',
+                                        'title' => 'No',
+                                        'payload' => 'SUBSCRIBE10_0',
+                                    ),
                                 ),
                             ),
-                        ),
-                    ));
+                        ));
 
+                    }
                 }
             }
 
@@ -430,7 +445,7 @@ class Comm_model extends CI_Model {
                         'e_inbound_u_id' => 2738, //Initiated by PA
                         'e_outbound_u_id' => $fetch_us[0]['u_id'],
                         'e_outbound_c_id' => $w_c_id,
-                        'i_message' => 'To '.$fetch_cs[0]['c_outcome'].' will take about '.echo_hour_range($tree).' to complete. Ready to get started?',
+                        'i_message' => 'To '.$fetch_cs[0]['c_outcome'].' will take about '.echo_hour_range($fetch_cs[0]).' to complete. Ready to get started?',
                         'quick_replies' => array(
                             array(
                                 'content_type' => 'text',
@@ -440,26 +455,14 @@ class Comm_model extends CI_Model {
                             array(
                                 'content_type' => 'text',
                                 'title' => 'No',
-                                'payload' => 'SUBSCRIBE99_0',
+                                'payload' => 'SUBSCRIBE10_0',
                             ),
                             //TODO Masybe Show a "learn more" if Drip messages available?
                         ),
                     ),
                 ));
-
-            } else {
-                //They rejected, just let them know:
-                $this->Comm_model->send_message(array(
-                    array(
-                        'e_inbound_u_id' => 2738, //Initiated by PA
-                        'e_outbound_u_id' => $fetch_us[0]['u_id'],
-                        'e_outbound_c_id' => $w_c_id,
-                        'i_message' => 'Ok, so what is your biggest challenge in landing your dream job? You can share your intention with by starting a sentence with "Lets", for example "Lets update my resume" or "Lets grow my network"',
-                        //'button_url' => 'https://mench.com/',
-                        //'button_title' => 'Browse Intentions ↗️',
-                    ),
-                ));
             }
+
         } elseif(substr_count($fb_ref, 'SUBSCRIBE99_')==1){
 
             $w_c_id = intval(one_two_explode('SUBSCRIBE99_', '', $fb_ref));
@@ -562,7 +565,7 @@ class Comm_model extends CI_Model {
                             array(
                                 'content_type' => 'text',
                                 'title' => 'Stay Friends',
-                                'payload' => 'UNSUBSCRIBE20_0',
+                                'payload' => 'UNSUBSCRIBE10_0',
                             ),
                         ),
                     ),
@@ -600,7 +603,7 @@ class Comm_model extends CI_Model {
                         array(
                             'content_type' => 'text',
                             'title' => 'Cancel',
-                            'payload' => 'SUBSCRIBE20_0',
+                            'payload' => 'SUBSCRIBE10_0',
                         ),
                     ),
                 ),
