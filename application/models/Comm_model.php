@@ -212,7 +212,7 @@ class Comm_model extends CI_Model {
         }
 
         //Did we have a command?
-        if($c_target_outcome) {
+        if($c_target_outcome){
 
             //TODO migrate this to NLP framework for more accurate results:
             $search_index = load_php_algolia('alg_intents');
@@ -281,6 +281,133 @@ class Comm_model extends CI_Model {
 
             }
 
+        } elseif(trim($fb_message_received)=='unsubscribe'){
+
+            //User has requested to be removed. Let's see what they have:
+            if(count($u['u__ws'])>0){
+
+                $quick_replies = array();
+                $i_message = 'Which of the following intentions would you like to unsubscribe from?';
+                $increment = 1;
+
+                foreach($u['u__ws'] as $counter=>$w){
+                    //Construct unsubscribe confirmation body:
+                    $i_message .= "\n\n".'/'.($counter+$increment).' '.$w['c_outcome'].' ['.echo_diff_time($w['w_timestamp']).']';
+                    array_push( $quick_replies , array(
+                        'content_type' => 'text',
+                        'title' => '/'.($counter+$increment),
+                        'payload' => 'UNSUBSCRIBE_'.$w['w_id'],
+                    ));
+                }
+
+
+                if(count($u['u__ws'])>1){
+                    //We have more than one option, give an unsubscribe all option:
+                    $increment++;
+                    $i_message .= "\n\n".'/'.($counter+$increment).' Unsubscribe from All';
+                    array_push( $quick_replies , array(
+                        'content_type' => 'text',
+                        'title' => '/'.($counter+$increment),
+                        'payload' => 'UNSUBSCRIBE_ALL',
+                    ));
+                }
+
+                //Alwyas give none option:
+                $increment++;
+                $i_message .= "\n\n".'/'.($counter+$increment).' No, Stay Friends';
+                array_push( $quick_replies , array(
+                    'content_type' => 'text',
+                    'title' => '/'.($counter+$increment),
+                    'payload' => 'UNSUBSCRIBE_CANCEL',
+                ));
+
+                //Send out message and let them confirm:
+                $this->Comm_model->send_message(array(
+                    array(
+                        'e_inbound_u_id' => 2738, //Initiated by PA
+                        'e_outbound_u_id' => $fetch_us[0]['u_id'],
+                        'i_message' => $i_message,
+                        'quick_replies' =>$quick_replies,
+                    ),
+                ));
+
+            } else {
+
+                $this->Comm_model->send_message(array(
+                    array(
+                        'e_inbound_u_id' => 2738, //Initiated by PA
+                        'e_outbound_u_id' => $fetch_us[0]['u_id'],
+                        'i_message' => 'Got it, just to confirm, you want me to stop all future communications with you?',
+                        'quick_replies' => array(
+                            array(
+                                'content_type' => 'text',
+                                'title' => 'Yes, Unsubscribe',
+                                'payload' => 'UNSUBSCRIBE_ALL',
+                            ),
+                            array(
+                                'content_type' => 'text',
+                                'title' => 'No, Stay Friends',
+                                'payload' => 'UNSUBSCRIBE_CANCEL',
+                            ),
+                        ),
+                    ),
+                ));
+
+            }
+
+        } elseif(substr_count($fb_ref, 'UNSUBSCRIBE_')==1){
+
+            $unsub_value = one_two_explode('UNSUBSCRIBE_', '', $fb_ref);
+
+            if($unsub_value=='CANCEL'){
+
+                //User changed their mind, confirm:
+                $this->Comm_model->send_message(array(
+                    array(
+                        'e_inbound_u_id' => 2738, //Initiated by PA
+                        'e_outbound_u_id' => $fetch_us[0]['u_id'],
+                        'i_message' => 'Awesome, would be happy to stay friends and help you accomplish your career goals',
+                    ),
+                ));
+
+            } elseif($unsub_value=='ALL'){
+
+                //User wants completely out:
+
+                //Update User table status:
+                $this->Db_model->u_update( $fetch_us[0]['u_id'] , array(
+                    'u_status' => -1, //Unsubscribed
+                ));
+
+                //Log engagement:
+                $this->Db_model->e_create(array(
+                    'e_inbound_u_id' => $fetch_us[0]['u_id'], //Initiated by PA
+                    'e_outbound_u_id' => $fetch_us[0]['u_id'],
+                    'e_inbound_c_id' => 7452, //User Unsubscribed
+                ));
+
+                //Let them know:
+                $this->Comm_model->send_message(array(
+                    array(
+                        'e_inbound_u_id' => 2738, //Initiated by PA
+                        'e_outbound_u_id' => $fetch_us[0]['u_id'],
+                        'i_message' => 'Confirmed! This is the final message you will receive from me unless you send me a message at any time. Take care of your self and I hope to talk to you soon.',
+                    ),
+                ));
+
+            } elseif(intval($unsub_value)>0){
+
+                //User wants to remove a specific subscription, validate it:
+                $this->Comm_model->send_message(array(
+                    array(
+                        'e_inbound_u_id' => 2738, //Initiated by PA
+                        'e_outbound_u_id' => $fetch_us[0]['u_id'],
+                        'i_message' => 'Confirmed! I have unsubscribed you from [XXXXX]',
+                    ),
+                ));
+
+            }
+
         } elseif($fb_message_received && !$fb_ref){
 
             //We have a regular inbound message from the user:
@@ -292,6 +419,7 @@ class Comm_model extends CI_Model {
 
             } else {
 
+                /*
                 //We do not accept inbound messages unless they are subscribed to a premium membership, let them know this:
                 $this->Comm_model->send_message(array(
                     array(
@@ -303,6 +431,8 @@ class Comm_model extends CI_Model {
 
                 //Offer coaching plan introduction:
                 $fb_ref = 'SUBSCRIBE10_7440';
+
+                */
 
             }
 
@@ -495,122 +625,6 @@ class Comm_model extends CI_Model {
                 ));
 
             }
-        }
-
-
-
-
-
-        if(trim($fb_message_received)=='unsubscribe'){
-
-            //User has requested to be removed. Let's see what they have:
-            if(count($u['u__ws'])>0){
-
-                $quick_replies = array();
-                $i_message = 'Which of the following intentions would you like to unsubscribe from?'."\n";
-
-
-                foreach($u['u__ws'] as $counter=>$w){
-
-                    //Construct unsubscribe body:
-
-                    $i_message .= "\n".'/'.($counter+1).' '.$w['c_outcome'].' ['.echo_diff_time($w['w_timestamp']).']';
-
-                    array_push( $quick_replies , array(
-                        'content_type' => 'text',
-                        'title' => '/'.($counter+1),
-                        'payload' => 'UNSUBSCRIBE'.$w['w_id'],
-                    ));
-
-                }
-
-                array_push( $quick_replies , array(
-                    'content_type' => 'text',
-                    'title' => '/'.($counter+2),
-                    'payload' => 'UNSUBSCRIBE'.$w['w_id'],
-                ));
-
-                $this->Comm_model->send_message(array(
-                    array(
-                        'e_inbound_u_id' => 2738, //Initiated by PA
-                        'e_outbound_u_id' => $fetch_us[0]['u_id'],
-                        'e_outbound_c_id' => $fetch_cs[0]['c_id'],
-                        'i_message' => $i_message,
-                        'quick_replies' =>$quick_replies,
-                    ),
-                ));
-
-
-
-                //They have active subscriptions, confirm that they would like to be removed from it all:
-                if(count($u['u__ws'])==1){
-                    //Only a single one?
-                    $confirmation_message = 'Are you sure you want to unsubscribe from';
-                } else {
-                    //Multiple subscriptions:
-                    $confirmation_message = 'Are you sure you want to unsubscribe from';
-                }
-
-            } else {
-
-                $this->Comm_model->send_message(array(
-                    array(
-                        'e_inbound_u_id' => 2738, //Initiated by PA
-                        'e_outbound_u_id' => $fetch_us[0]['u_id'],
-                        'i_message' => 'Got it, so you want me to stop all future communications with you?',
-                        'quick_replies' => array(
-                            array(
-                                'content_type' => 'text',
-                                'title' => 'Yes, Unsubscribe',
-                                'payload' => 'UNSUBSCRIBE20_1',
-                            ),
-                            array(
-                                'content_type' => 'text',
-                                'title' => 'Stay Friends',
-                                'payload' => 'UNSUBSCRIBE10_0',
-                            ),
-                        ),
-                    ),
-                ));
-
-            }
-
-        } elseif(substr_count($fb_ref, 'UNSUBSCRIBE')==1){
-
-            //Update User table status:
-            $this->Db_model->u_update( $fetch_us[0]['u_id'] , array(
-                'u_status' => -1, //Unsubscribed
-            ));
-
-            //Log engagement:
-            $this->Db_model->e_create(array(
-                'e_inbound_u_id' => $fetch_us[0]['u_id'], //Initiated by PA
-                'e_outbound_u_id' => $fetch_us[0]['u_id'],
-                'e_inbound_c_id' => 7452, //User Unsubscribed
-            ));
-
-            //Requested to be removed from a specific subscription:
-            $this->Comm_model->send_message(array(
-                array(
-                    'e_inbound_u_id' => 2738, //Initiated by PA
-                    'e_outbound_u_id' => $fetch_us[0]['u_id'],
-                    'e_outbound_c_id' => $fetch_cs[0]['c_id'],
-                    'i_message' => 'Do you want to '.$fetch_cs[0]['c_outcome'].'?',
-                    'quick_replies' => array(
-                        array(
-                            'content_type' => 'text',
-                            'title' => 'Confirm/Unsubscribe',
-                            'payload' => 'UNSUBSCRIBE'.$fetch_cs[0]['c_id'],
-                        ),
-                        array(
-                            'content_type' => 'text',
-                            'title' => 'Cancel',
-                            'payload' => 'SUBSCRIBE10_0',
-                        ),
-                    ),
-                ),
-            ));
-
         }
 
 
