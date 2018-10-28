@@ -685,7 +685,7 @@ function echo_contents($c, $micro=false){
 
                 if(isset($u['u_bio']) && strlen($u['u_bio'])>0){
                     //Has description, show it here:
-                    $text_overview .= ' <span data-toggle="tooltip" title="'.stripslashes($u['u_bio']).'" data-placement="top" class="underdot" style="display:inline-block;">'.$u['u_full_name'].'</span>';
+                    $text_overview .= ' <span data-toggle="tooltip" title="'.stripslashes($u['u_bio']).'" data-placement="top" class="underdot">'.$u['u_full_name'].'</span>';
                 } else {
                     //Just the name:
                     $text_overview .= $u['u_full_name'];
@@ -752,7 +752,7 @@ function echo_experts($c, $micro=false){
             }
 
             if(($count+1)>=$visible_ppl){
-                $text_overview .= '<span class="show_more_'.$c['c_id'].'"> & <a href="javascript:void(0);" onclick="$(\'.show_more_'.$c['c_id'].'\').toggle()" style="text-decoration:underline;">'.($all_count-$visible_ppl).' more</a>.</span><span class="show_more_'.$c['c_id'].'" style="display:none;">';
+                $text_overview .= '<span class="show_more_'.$c['c_id'].'"> & <a href="javascript:void(0);" onclick="$(\'.show_more_'.$c['c_id'].'\').toggle()" style="text-decoration:underline; font-weight:bold;">'.($all_count-$visible_ppl).' more</a>.</span><span class="show_more_'.$c['c_id'].'" style="display:none;">';
             }
         }
 
@@ -777,19 +777,9 @@ function echo_concept($c, $micro=false){
 
 function echo_hour_range($c, $micro=false){
 
-    //WARNING: Input $c could be from Database (complete data set) or from Algolia (partial data set)
-    if($micro){
-        $single_tooltip_start = null;
-        $single_tooltip_end = null;
-    } else {
-        $single_tooltip_start = '<span data-toggle="tooltip" title="The estimates time to '.$c['c_outcome'].'" data-placement="top" class="underdot">';
-        $single_tooltip_end = '</span>';
-    }
-
-
     if($c['c__tree_max_hours']==$c['c__tree_min_hours']){
         //Exactly the same, show a single value:
-        return $single_tooltip_start.echo_hours($c['c__tree_max_hours'],$micro).$single_tooltip_end;
+        return echo_hours($c['c__tree_max_hours'],$micro);
     } elseif(round($c['c__tree_max_hours'])==round($c['c__tree_min_hours']) || $c['c__tree_min_hours']<1){
         if($c['c__tree_min_hours']<2 && $c['c__tree_max_hours']<3 && ($c['c__tree_max_hours']- $c['c__tree_min_hours'])*60>30){
             $is_minutes = true;
@@ -798,7 +788,7 @@ function echo_hour_range($c, $micro=false){
             $hours_decimal = 1;
         } else {
             //Number too large to matter, just treat as one:
-            return $single_tooltip_start.echo_hours($c['c__tree_max_hours'],$micro).$single_tooltip_end;
+            return echo_hours($c['c__tree_max_hours'],$micro);
         }
     } else {
         $is_minutes = false;
@@ -812,7 +802,7 @@ function echo_hour_range($c, $micro=false){
     $ui_time .= ($is_minutes ? ($micro?'m':' Minutes') : ($micro?'h':' Hours') );
 
     //Generate UI to return:
-    return ($micro ? '' : '<span data-toggle="tooltip" title="Depending on your current skills it would take '.$ui_time.' to '.$c['c_outcome'].'" data-placement="top" class="underdot">').$ui_time.($micro ? '' : '</span>');
+    return $ui_time;
 }
 
 function echo_cost_range($c){
