@@ -228,7 +228,7 @@ class Comm_model extends CI_Model {
                     array_push($quick_replies , array(
                         'content_type' => 'text',
                         'title' => ($count+1).'/',
-                        'payload' => 'SUBSCRIBE10_'.$hit['c_id'],
+                        'payload' => 'SUBSCRIBE20_'.$hit['c_id'],
                     ));
                 }
 
@@ -401,11 +401,16 @@ class Comm_model extends CI_Model {
 
             //Initiating an intent Subscription:
             $w_c_id = intval(one_two_explode('SUBSCRIBE20_', '', $fb_ref));
-            if ($w_c_id>0) {
+            $fetch_cs = $this->Db_model->c_fetch(array(
+                'c_id' => $w_c_id,
+                'c_status >=' => 1,
+            ));
+            if (count($fetch_cs)==1) {
 
                 //Fetch all the messages for this intent:
                 $tree = $this->Db_model->c_recursive_fetch($w_c_id,1,0);
 
+                //Show messages for this intent:
                 $messages = $this->Db_model->i_fetch(array(
                     'i_outbound_c_id' => $w_c_id,
                     'i_status >=' => 0, //Published in any form
@@ -419,6 +424,7 @@ class Comm_model extends CI_Model {
                     ));
                 }
 
+                //Send message for final confirmation:
                 $this->Comm_model->send_message(array(
                     array(
                         'e_inbound_u_id' => 2738, //Initiated by PA
@@ -429,14 +435,13 @@ class Comm_model extends CI_Model {
                             array(
                                 'content_type' => 'text',
                                 'title' => 'Yes, Subscribe',
-                                'payload' => 'SUBSCRIBE99_'.$fetch_cs[0]['c_id'],
+                                'payload' => 'SUBSCRIBE99_'.$w_c_id,
                             ),
                             array(
                                 'content_type' => 'text',
                                 'title' => 'No',
                                 'payload' => 'SUBSCRIBE99_0',
                             ),
-
                             //TODO Masybe Show a "learn more" if Drip messages available?
                         ),
                     ),
@@ -458,12 +463,12 @@ class Comm_model extends CI_Model {
         } elseif(substr_count($fb_ref, 'SUBSCRIBE99_')==1){
 
             $w_c_id = intval(one_two_explode('SUBSCRIBE99_', '', $fb_ref));
-            $intents = $this->Db_model->c_fetch(array(
+            $fetch_cs = $this->Db_model->c_fetch(array(
                 'c_id' => $w_c_id,
                 'c_status >=' => 1,
             ));
 
-            if (count($intents)==1) {
+            if (count($fetch_cs)==1) {
 
                 //Create a new subscription:
                 $w = $this->Db_model->w_create(array(
@@ -480,7 +485,7 @@ class Comm_model extends CI_Model {
                         'e_inbound_u_id' => 2738, //Initiated by PA
                         'e_outbound_u_id' => $fetch_us[0]['u_id'],
                         'e_outbound_c_id' => $w_c_id,
-                        'i_message' => 'You are now subscribed 🙌 I will be handing everything else from here to ensure you '.$intents[0]['c_outcome'],
+                        'i_message' => 'You are now subscribed 🙌 I will be handing everything else from here to ensure you '.$fetch_cs[0]['c_outcome'],
                     ),
                 ));
 
