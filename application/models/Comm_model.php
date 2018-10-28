@@ -202,11 +202,17 @@ class Comm_model extends CI_Model {
         }
 
 
+        $c_target_outcome = null;
+        if(strtolower(substr($fb_message_received,0,4))=='lets '){
+            $c_target_outcome =  one_two_explode('lets ', ' ', $fb_message_received);
+        } elseif(strtolower(substr($fb_message_received,0,5))=='let’s '){
+            $c_target_outcome =  one_two_explode('let’s ', ' ', $fb_message_received);
+        } elseif(strtolower(substr($fb_message_received,0,5))=='let\'s '){
+            $c_target_outcome =  one_two_explode('let\'s ', ' ', $fb_message_received);
+        }
 
-        //Parse inbound message:
-        if(strtolower(substr($fb_message_received,0,4))=='ask ') {
-
-            $c_target_outcome = one_two_explode('ask ', ' ', $fb_message_received);
+        //Did we have a command?
+        if($c_target_outcome) {
 
             //TODO migrate this to NLP framework like api.ai
             $search_index = load_php_algolia('alg_intents');
@@ -316,7 +322,7 @@ class Comm_model extends CI_Model {
                     array(
                         'e_inbound_u_id' => 2738, //Initiated by PA
                         'e_outbound_u_id' => $fetch_us[0]['u_id'],
-                        'i_message' => 'Ok, so what is your biggest challenge in landing your dream job? You can give me a command by starting a sentence with "Lets", for example "Lets get hired as a developer", "Lets book more interviews" or "Lets build a great resume"',
+                        'i_message' => 'Ok, so what is your biggest career-related challenge? Command me by starting a sentence with "Lets", for example: [Lets get hired as a developer], [Lets book more interviews] or [Lets build a great resume]',
                     ),
                 ));
 
