@@ -33,11 +33,11 @@ $config['entity_per_page'] = 100;
 $config['universal_intents'] = array(7433); //Get to know how Mench Personal Assistant works
 $config['onhold_intents'] = array(7240,6629,6630,7248,7435,369,6653);
 $config['content_types'] = array( //This should mirror outbound intents of @3000
-    3005 => 'Book',
-    2998 => 'Video',
-    2997 => 'Article',
-    2999 => 'Podcast',
     3147 => 'Online Course',
+    3005 => 'Book',
+    2999 => 'Podcast',
+    2997 => 'Article',
+    2998 => 'Video',
 );
 
 //Learn more: https://console.aws.amazon.com/iam/home?region=us-west-2#/users/foundation?section=security_credentials
