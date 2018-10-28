@@ -1885,11 +1885,6 @@ class Db_model extends CI_Model {
 
         if(!$recursive_children){
             $recursive_children = $immediate_children;
-
-            //Build content type tree:
-            foreach($this->config->item('content_types') as $u_id=>$content_type_name){
-                $immediate_children['c1__tree_contents'][intval($u_id)] = array();
-            }
         }
 
         //Fetch & add this item itself:
@@ -2054,7 +2049,6 @@ class Db_model extends CI_Model {
             $immediate_children['c1__tree_max_hours'] += $local_values['c___tree_max_hours'];
             $immediate_children['c1__tree_min_cost']  += $local_values['c___tree_min_cost'];
             $immediate_children['c1__tree_max_cost']  += $local_values['c___tree_max_cost'];
-
         }
 
 
@@ -2205,7 +2199,7 @@ class Db_model extends CI_Model {
                 usort($cs[0]['c1__tree_trainers'], 'sortByScore');
             }
             foreach($cs[0]['c1__tree_contents'] as $type_u_id=>$current_us){
-                if(count($cs[0]['c1__tree_contents'][$type_u_id])>0){
+                if(isset($cs[0]['c1__tree_contents'][$type_u_id]) && count($cs[0]['c1__tree_contents'][$type_u_id])>0){
                     usort($cs[0]['c1__tree_contents'][$type_u_id], 'sortByScore');
                 }
             }
@@ -2218,7 +2212,7 @@ class Db_model extends CI_Model {
                 number_format($cs[0]['c1__tree_max_cost'],2)==number_format($cs[0]['c__tree_max_cost'],2) &&
                 ((!$cs[0]['c__tree_experts'] && count($cs[0]['c1__tree_experts'])<1) || (serialize($cs[0]['c1__tree_experts'])==$cs[0]['c__tree_experts'])) &&
                 ((!$cs[0]['c__tree_trainers'] && count($cs[0]['c1__tree_trainers'])<1) || (serialize($cs[0]['c1__tree_trainers'])==$cs[0]['c__tree_trainers'])) &&
-                (serialize($cs[0]['c1__tree_contents'])==$cs[0]['c__tree_contents']) &&
+                ((!$cs[0]['c__tree_contents'] && count($cs[0]['c1__tree_contents'])<1) || (serialize($cs[0]['c1__tree_contents'])==$cs[0]['c__tree_contents'])) &&
                 $cs[0]['c1__tree_all_count']==$cs[0]['c__tree_all_count'] &&
                 $cs[0]['c1__this_messages']==$cs[0]['c__this_messages'] &&
                 $cs[0]['c1__tree_messages']==$cs[0]['c__tree_messages'] &&
@@ -2236,7 +2230,7 @@ class Db_model extends CI_Model {
                     'c__tree_messages' => $cs[0]['c1__tree_messages'],
                     'c__tree_experts' => ( count($cs[0]['c1__tree_experts'])>0 ? serialize($cs[0]['c1__tree_experts']) : null ),
                     'c__tree_trainers' => ( count($cs[0]['c1__tree_trainers'])>0 ? serialize($cs[0]['c1__tree_trainers']) : null ),
-                    'c__tree_contents' => serialize($cs[0]['c1__tree_contents']), //Always update since we count all types of content anyways
+                    'c__tree_contents' => ( count($cs[0]['c1__tree_contents'])>0 ? serialize($cs[0]['c1__tree_contents']) : null ),
                     'c__is_orphan' => 0, //It cannot be orphan since its part of the main tree
                 ));
 

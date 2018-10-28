@@ -925,8 +925,8 @@ if(count($payments)>0){
               <input type="text" id="u_full_name" value="" data-lpignore="true" placeholder="Name" class="form-control border">
 
 
-              <div class="title" style="margin-top:15px;"><h4><i class="fas fa-file-alt"></i> Overview [<span style="margin:0 0 10px 0; font-size:0.8em;"><span id="charNum">0</span>/<?= $message_max ?></span>]</h4></div>
-              <textarea class="form-control text-edit border msg" id="u_bio" style="height:85px; background-color:#FFFFFF !important;" onkeyup="changeBio()"></textarea>
+              <div class="title" style="margin-top:15px;"><h4><i class="fas fa-comment-dots"></i> Introductory Message [<span style="margin:0 0 10px 0; font-size:0.8em;"><span id="charNum">0</span>/<?= $message_max ?></span>]</h4></div>
+              <textarea class="form-control text-edit border msg" id="u_bio" style="height:186px; background-color:#FFFFFF !important;" onkeyup="changeBio()"></textarea>
 
 
               <!-- Password credential management -->

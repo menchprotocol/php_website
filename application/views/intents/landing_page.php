@@ -20,8 +20,6 @@
 <div id="landing_page">
 
     <?php
-
-    //See what parents we need to list here:
     $need_grandpa = !( $c['c_id']==6623 );
     $grandpa_intent = null;
     $parent_intents = null;
@@ -65,15 +63,22 @@
 
     <div class="price-box">
 
-        <!-- Action Plan Overview -->
         <div class="support_p">
             <div class="dash-label"><span class="icon-left"><i class="fas fa-lightbulb-on"></i></span> <?= ($c['c__tree_all_count']-1) ?> Key Concepts</div>
-            <div class="dash-label"><span class="icon-left"><i class="fas fa-user-graduate"></i></span> <span data-toggle="tooltip" title="We curated concepts and best practices from industry experts" data-placement="top" class="underdot">14 Industry Expert</span></div>
 
-            <div class="dash-label"><span class="icon-left"><i class="fas fa-clock"></i></span> <?= echo_hour_range(($c)) ?> to Complete</div>
-            <?php if($c['c__tree_max_cost']>0 && 0){ //Show the potential costs ?>
+            <?php if(strlen($c['c__tree_contents'])>0){ ?>
+                <div class="dash-label"><span class="icon-left"><i class="fas fa-book"></i></span> <?= echo_contents($c) ?></div>
+            <?php } ?>
+
+            <?php if(strlen($c['c__tree_experts'])>0){ ?>
+                <div class="dash-label"><span class="icon-left"><i class="fas fa-user-graduate"></i></span> <?= echo_experts($c) ?></div>
+            <?php } ?>
+
+            <div class="dash-label"><span class="icon-left"><i class="fas fa-clock"></i></span> <?= echo_hour_range($c) ?> to Complete</div>
+            <?php if($c['c__tree_max_cost']>0){ //Show the potential costs ?>
                 <div class="dash-label"><span class="icon-left"><i class="fas fa-usd-circle"></i></span> <?= echo_cost_range($c) ?> in Purchases</div>
             <?php } ?>
+
         </div>
 
 
@@ -94,7 +99,7 @@
 
     <?php if(count($c['c__child_intents'])>0){ ?>
 
-        <h3>Action Plan</h3>
+        <h3><?= ( $c['c_is_any'] ? 'Choose a Pathway:' : 'Action Plan' ) ?></h3>
         <div class="list-group actionplan_list">
         <?php
         $c1_counter = 0;
@@ -106,8 +111,11 @@
             echo ($c1_counter+1).'. <a id="title-'.$c1['c_id'].'" href="javascript:void(0)" onclick="$(\'.c_'.$c1_counter.'\').toggle();" style="font-weight: normal;">'.$c1['c_outcome'].'</a>';
 
             echo '<div style="font-size:0.8em; font-weight:300; padding-left: 15px; padding-top: 5px;">';
-            echo ( $c1['c__tree_all_count']>1 ? '<span style="display:inline-block;width:127px;"><i class="fas fa-lightbulb-on"></i>'.echo_concept($c1).'</span>' : '' );
-            echo '<span style="display:inline-block;width:140px;"><i class="fas fa-clock"></i>'.echo_hour_range($c1).'</span>';
+
+            echo ( $c1['c__tree_all_count']>1 ? '<span style="display:inline-block;width:127px;"><i class="fas fa-lightbulb-on"></i>'.echo_concept($c1, true).'</span>' : '' );
+            echo ( strlen($c1['c__tree_experts'])>0 ? '<span style="display:inline-block;width:127px;"><i class="fas fa-user-graduate"></i>'.echo_experts($c1, true).'</span>' : '' );
+            echo '<span style="display:inline-block;width:140px;"><i class="fas fa-clock"></i>'.echo_hour_range($c1, true).'</span>';
+
             echo '</div>';
 
                 echo '<div class="c_'.$c1_counter.'" style="display:none; margin-left:3px; font-size:0.9em; padding-left: 15px;">';
@@ -132,11 +140,13 @@
                             echo '<a href="javascript:void(0);" onclick="$(\'.show_full_list_'.$c1_counter.'\').toggle();" class="show_full_list_'.$c1_counter.'">List all Concepts &raquo;</a>';
                         }
                         echo '<li class="'.( $c2_counter>=$landing_pagetask_visible ? 'show_full_list_'.$c1_counter.'" style="display:none;"' : '"' ).'>';
-                        echo ($c1_counter+1).'.'.($c2_counter+1).'. '.$c2['c_outcome'];
+                        echo ($c1_counter+1).'.'.($c2_counter+1).'. '.$c2['c_outcome'].' in '.echo_hour_range($c2, true);
+                        /*
                         echo '<span style="font-size:0.8em; font-weight:300; margin-left:5px; display:inline-block;">';
                         echo ( $c2['c__tree_all_count']>0 ? '<span style="padding-right:5px;"><i class="fas fa-lightbulb-on"></i>'.($c2['c__tree_all_count']).'</span>' : '' );
                         echo '<span><i class="fas fa-clock"></i>'.echo_hour_range($c2, true).'</span>';
                         echo '</span>';
+                        */
                         echo '</li>';
                     }
                     echo '</ul>';

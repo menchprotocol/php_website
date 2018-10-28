@@ -197,7 +197,7 @@ function echo_embed($url, $full_message=null, $return_array=false, $start_sec=0,
                 $embed_html_code .= '<div class="video-prefix"><i class="fab fa-youtube" style="color:#ff0202;"></i> Watch from <b>'.($start_sec ? echo_min_from_sec($start_sec) : 'start').'</b> to <b>'.($end_sec ? echo_min_from_sec($end_sec) : 'end').'</b>:</div>';
             }
 
-            $embed_html_code .= '<div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/'.$video_id.'?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start='.$start_sec.( $end_sec ? '&end='.$end_sec : '' ).'&amp;autoplay=1" frameborder="0" allowfullscreen class="yt-video"></iframe></div>';
+            $embed_html_code .= '<div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/'.$video_id.'?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start='.$start_sec.( $end_sec ? '&end='.$end_sec : '' ).'" frameborder="0" allowfullscreen class="yt-video"></iframe></div>';
 
         }
 
@@ -628,9 +628,151 @@ function echo_hours($decimal_hours,$micro=false){
     }
 }
 
-function echo_concept($c){
+function echo_contents($c, $micro=false){
+
+    //Make initial variables:
+    $c['c__tree_contents'] = unserialize($c['c__tree_contents']);
+
+    if(count($c['c__tree_contents'])<1){
+        return false;
+    }
+
+    $all_count = 0;
+    foreach($c['c__tree_contents'] as $type_u_id=>$current_us){
+        $all_count += count($current_us);
+    }
+
+    if(!$micro && $all_count>0){
+
+        $visible_ppl = 3;
+        $type_count = 0;
+        $type_all_count = count($c['c__tree_contents']);
+        $CI =& get_instance();
+        $content_types = $CI->config->item('content_types');
+        $edit_enabled = auth(array(1281),0);
+        //More than 3:
+        $text_overview = '';
+        foreach($c['c__tree_contents'] as $type_id=>$current_us){
+
+            if($type_count>0){
+                if(($type_count+1)>=$type_all_count){
+                    $text_overview .= ' &';
+                } else {
+                    $text_overview .= ',';
+                }
+            }
+
+            //Show category:
+            $text_overview .= ' <span class="show_type_'.$type_id.'"><a href="javascript:void(0);" onclick="$(\'.show_type_'.$type_id.'\').toggle()" style="text-decoration:underline;">'.count($current_us).' '.$content_types[$type_id].echo__s(count($current_us)).'</a>'.(($type_count+1)>=$type_all_count ? '.' : '').'</span><span class="show_type_'.$type_id.'" style="display:none;">';
+
+
+            $count = 0;
+            foreach($current_us as $u){
+
+                if($count>0){
+                    if(($count+1)>=count($current_us)){
+                        $text_overview .= ' &';
+                    } else {
+                        $text_overview .= ',';
+                    }
+                }
+
+                $text_overview .= ' ';
+
+                if($edit_enabled){
+                    $text_overview .= '<a href="/entities/'.$u['u_id'].'">';
+                }
+
+                if(isset($u['u_bio']) && strlen($u['u_bio'])>0){
+                    //Has description, show it here:
+                    $text_overview .= ' <span data-toggle="tooltip" title="'.stripslashes($u['u_bio']).'" data-placement="top" class="underdot" style="display:inline-block;">'.$u['u_full_name'].'</span>';
+                } else {
+                    //Just the name:
+                    $text_overview .= $u['u_full_name'];
+                }
+
+                if($edit_enabled){
+                    $text_overview .= '</a>';
+                }
+                $count++;
+            }
+
+            $text_overview .= '</span>';
+            $type_count++;
+        }
+
+
+    }
+
+    //Return results:
+    if($all_count==0){
+        return false;
+    } else {
+        return '<span>'.$all_count.( $micro ? '' : ' Content Reference'.echo__s($all_count).' across'.$text_overview ).'</span>';
+    }
+}
+
+function echo_experts($c, $micro=false){
+
+    //Make initial variables:
+    $c['c__tree_experts'] = unserialize($c['c__tree_experts']);
+    $all_count = count($c['c__tree_experts']);
+
+    if(!$micro && $all_count>0){
+
+        $visible_ppl = 3;
+        $edit_enabled = auth(array(1281),0);
+        //More than 3:
+        $text_overview = '';
+        foreach($c['c__tree_experts'] as $count=>$u){
+            if($count>0){
+                if(($count+1)>=$all_count){
+                    $text_overview .= ' &';
+                } else {
+                    $text_overview .= ',';
+                }
+            }
+
+            $text_overview .= ' ';
+
+            if($edit_enabled){
+                $text_overview .= '<a href="/entities/'.$u['u_id'].'">';
+            }
+
+            if(isset($u['u_bio']) && strlen($u['u_bio'])>0){
+                //Has description, show it here:
+                $text_overview .= ' <span data-toggle="tooltip" title="'.stripslashes($u['u_bio']).'" data-placement="top" class="underdot" style="display:inline-block;">'.$u['u_full_name'].'</span>';
+            } else {
+                //Just the name:
+                $text_overview .= $u['u_full_name'];
+            }
+
+            if($edit_enabled){
+                $text_overview .= '</a>';
+            }
+
+            if(($count+1)>=$visible_ppl){
+                $text_overview .= '<span class="show_more_'.$c['c_id'].'"> & <a href="javascript:void(0);" onclick="$(\'.show_more_'.$c['c_id'].'\').toggle()" style="text-decoration:underline;">'.($all_count-$visible_ppl).' more</a>.</span><span class="show_more_'.$c['c_id'].'" style="display:none;">';
+            }
+        }
+
+        if(($count+1)>=$visible_ppl){
+            //Close the span:
+            $text_overview .= '.</span>';
+        }
+    }
+
+    //Return results:
+    if($all_count==0){
+        return false;
+    } else {
+        return '<span>'.$all_count.( $micro ? '' : ' Industry Expert'.echo__s($all_count).' including'.$text_overview ).'</span>';
+    }
+}
+
+function echo_concept($c, $micro=false){
     $c['c__tree_all_count']--; //To exclude top intent
-    return '<span data-toggle="tooltip" title="'.$c['c__tree_all_count'].' Concept'.echo__s($c['c__tree_all_count']).' will share key insights (and actionable tasks) to '.$c['c_outcome'].'" data-placement="top" class="underdot">'.$c['c__tree_all_count'].' Concept'.echo__s($c['c__tree_all_count']).'</span>';
+    return '<span data-toggle="tooltip" title="'.$c['c__tree_all_count'].' Concept'.echo__s($c['c__tree_all_count']).' will share key insights (and actionable tasks) to '.$c['c_outcome'].'" data-placement="top" class="underdot">'.$c['c__tree_all_count'].( $micro ? '' : ' Concept'.echo__s($c['c__tree_all_count']) ).'</span>';
 }
 
 function echo_hour_range($c, $micro=false){

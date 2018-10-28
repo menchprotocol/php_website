@@ -682,7 +682,8 @@ h5, .h5 {
 .landing-page .navbar-header { padding:0 0 0 0;}
 .navbar .navbar-brand { padding:11px 10px 7px 27px; }
 .body-container { width: 95%; }
-.tooltip, .tooltip * {font-size:12px; margin:0; }
+.tooltip, .tooltip * {font-size:12px; margin:0;  }
+.tooltip-inner { max-width:400px !important; background-color: #efefef; line-height: 120%; padding:7px; }
 .container-fluid .alert { margin-top:10px; }
 .tab-space{padding-top:0;}
 .list-group-item>.badge {

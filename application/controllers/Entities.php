@@ -385,7 +385,6 @@ class Entities extends CI_Controller {
         //Adjust email:
         $_POST['u_email'] = strtolower($_POST['u_email']);
 
-
         //Make sure email is unique:
         if(strlen($_POST['u_email'])>0){
             $dup_email = $this->Db_model->u_fetch(array(
@@ -403,7 +402,7 @@ class Entities extends CI_Controller {
         //Prepare data to be updated:
         $u_update = array(
             'u_full_name' => trim($_POST['u_full_name']),
-            'u_bio' => trim($_POST['u_bio']),
+            'u_bio' => str_replace('"','`',trim($_POST['u_bio'])),
             'u_email' => ( isset($_POST['u_email']) && strlen($_POST['u_email'])>0 ? trim(strtolower($_POST['u_email'])) : null ),
         );
 

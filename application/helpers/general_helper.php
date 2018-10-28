@@ -94,7 +94,7 @@ function fetch_entity_tree($u_id,$is_edit=false){
 
 
 
-function fetch_action_plan_copy($b_id,$r_id=0,$current_b=null,$release_cache=array()){
+function fetch_action_plan_copy(){
     //TODO rewrite
 }
 
@@ -461,13 +461,13 @@ function entity_type($entity){
 }
 
 
-function auth($entity_groups=null,$force_redirect=0,$b_id=0,$u_id=0){
+function auth($entity_groups=null,$force_redirect=0){
 	
 	$CI =& get_instance();
 	$udata = $CI->session->userdata('user');
 	
 	//Let's start checking various ways we can give user access:
-	if(!$entity_groups && !$b_id && is_array($udata) && count($udata)>0){
+	if(!$entity_groups && is_array($udata) && count($udata)>0){
 	    
 	    //No minimum level required, grant access IF logged in:
 	    return $udata;
@@ -475,11 +475,6 @@ function auth($entity_groups=null,$force_redirect=0,$b_id=0,$u_id=0){
     } elseif(isset($udata['u__inbounds']) && array_key_exists(1281, $udata['u__inbounds'])){
 
         //Always grant access to Admins:
-        return $udata;
-
-    } elseif($u_id>0 && $udata['u_id']==$u_id){
-
-        //Always grant access to the user variable:
         return $udata;
 	    
 	} elseif(isset($udata['u_id']) && array_any_key_exists($entity_groups,$udata['u__inbounds'])){
