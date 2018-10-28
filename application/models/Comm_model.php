@@ -203,20 +203,19 @@ class Comm_model extends CI_Model {
 
 
         $c_target_outcome = null;
-        if(strtolower(substr($fb_message_received,0,4))=='lets '){
-            $c_target_outcome =  one_two_explode('lets ', ' ', $fb_message_received);
-        } elseif(strtolower(substr($fb_message_received,0,5))=='let’s '){
-            $c_target_outcome =  one_two_explode('let’s ', ' ', $fb_message_received);
-        } elseif(strtolower(substr($fb_message_received,0,5))=='let\'s '){
-            $c_target_outcome =  one_two_explode('let\'s ', ' ', $fb_message_received);
+        if(substr_count($fb_message_received, 'lets ')>0){
+            $c_target_outcome =  one_two_explode('lets ', '', $fb_message_received);
+        } elseif(substr_count($fb_message_received, 'let’s ')>0){
+            $c_target_outcome =  one_two_explode('let’s ', '', $fb_message_received);
+        } elseif(substr_count($fb_message_received, 'let\'s ')>0){
+            $c_target_outcome =  one_two_explode('let\'s ', '', $fb_message_received);
         }
 
         //Did we have a command?
         if($c_target_outcome) {
 
-            //TODO migrate this to NLP framework like api.ai
+            //TODO migrate this to NLP framework for more accurate results:
             $search_index = load_php_algolia('alg_intents');
-
             $res = $search_index->search($c_target_outcome, [
                 'hitsPerPage' => 6
             ]);
@@ -381,7 +380,7 @@ class Comm_model extends CI_Model {
                             ),
                         ));
 
-                        //Log engagement:
+                        //Log engagement for admin:
                         $this->Db_model->e_create(array(
                             'e_text_value' => 'User attempted to subscribe to an intent that they were already subscribed to. Maybe reach out and ask them why?',
                             'e_inbound_u_id' => 2738, //Initiated by PA
