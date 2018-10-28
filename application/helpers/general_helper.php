@@ -460,6 +460,22 @@ function entity_type($entity){
     return $entity_type;
 }
 
+function clean_title($title){
+    $common_end_exploders = array('-','|');
+    foreach($common_end_exploders as $keyword){
+        if(substr_count($title,$keyword)>0){
+            $parts = explode($keyword, $title);
+            $last_peace = $parts[(count($parts)-1)];
+
+            //Should we remove the last part if not too long?
+            if(substr($last_peace, 0,1)==' ' && strlen($last_peace)<16){
+                $title = str_replace($keyword.$last_peace,'',$title);
+                break; //Only a single extension, so break the loop
+            }
+        }
+    }
+    return trim($title);
+}
 
 function auth($entity_groups=null,$force_redirect=0){
 	
@@ -679,7 +695,7 @@ function curl_html($url,$return_breakdown=false){
             'x_type' => $x_type,
             'clean_url' => ( !$clean_url || $clean_url==$url ? null : $clean_url ),
             'httpcode' => $httpcode,
-            'page_title' => one_two_explode('>','',one_two_explode('<title','</title',$body_html)),
+            'page_title' => clean_title(one_two_explode('>','',one_two_explode('<title','</title',$body_html))),
         );
 
         return $return_array;

@@ -11,6 +11,29 @@ class Cron extends CI_Controller {
         //Example: /usr/bin/php /home/ubuntu/mench-web-app/index.php cron save_profile_pic
 	}
 
+	function clean(){
+
+        $fetch_us = $this->Db_model->u_fetch(array(
+            'u_status' => 2,
+        ));
+
+        $updates = 0;
+        foreach($fetch_us as $u){
+            $new_title = clean_title($u['u_full_name']);
+            echo $u['u_full_name'];
+            if(!($new_title==$u['u_full_name'])){
+                $this->Db_model->u_update($u['u_id'] , array(
+                    'u_full_name' => $new_title,
+                ));
+                $updates++;
+                echo '<b> ==> '.$new_title.'</b>';
+            }
+            echo '<hr />';
+        }
+
+        echo $updates;
+    }
+
     function intent_sync($c_id=7240,$update_c_table=1){
         //Cron Settings: 31 * * * *
 	    //Syncs intents with latest caching data:

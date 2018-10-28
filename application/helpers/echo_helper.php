@@ -663,7 +663,7 @@ function echo_contents($c, $micro=false){
             }
 
             //Show category:
-            $text_overview .= ' <span class="show_type_'.$type_id.'"><a href="javascript:void(0);" onclick="$(\'.show_type_'.$type_id.'\').toggle()" style="text-decoration:underline;">'.count($current_us).' '.$content_types[$type_id].echo__s(count($current_us)).'</a>'.(($type_count+1)>=$type_all_count ? '.' : '').'</span><span class="show_type_'.$type_id.'" style="display:none;">';
+            $text_overview .= ' <span class="show_type_'.$type_id.'"><a href="javascript:void(0);" onclick="$(\'.show_type_'.$type_id.'\').toggle()" style="text-decoration:underline; display:inline-block;">'.count($current_us).' '.$content_types[$type_id].echo__s(count($current_us)).'</a>'.(($type_count+1)>=$type_all_count ? '.' : '').'</span><span class="show_type_'.$type_id.'" style="display:none;">';
 
 
             $count = 0;
@@ -1046,6 +1046,11 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
     //Right content
     $ui .= '<span class="pull-right" style="'.( $level<3 ? 'margin-right: 8px;' : '' ).'">';
 
+    if($level==1 && array_key_exists(1281, $udata['u__inbounds'])){
+        //Give option to update the cache:
+        $ui .= '<a href="/cron/intent_sync/'.$c['c_id'].'/1" class="badge badge-primary" target="_blank" style="display:inline-block; margin-right:-1px; width:40px;" data-toggle="tooltip" title="Update the recursive Outbound cache of this tree starting from this intent" data-placement="left"><i class="fas fa-external-link-square-alt" style="position: absolute; top: -7px; right: 3px; font-size: 0.85em;"></i><i class="fas fa-sync-alt"></i></a> ';
+    }
+
 
     $ui .= '<a href="#messages-'.$c['c_id'].'" onclick="load_c_messages('.$c['c_id'].')" class="badge badge-primary" style="width:40px;"><span class="btn-counter" id="messages-counter-'.$c['c_id'].'">'.$c['c__this_messages'].'</span><i class="fas fa-comment-dots"></i></a>';
 
@@ -1054,7 +1059,7 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
 
     if($level==1 && !$c['c__is_orphan']){
         //Show Landing Page URL:
-        $ui .= '&nbsp;<a href="/'.$c['c_id'].'" class="badge badge-primary grey" style="display:inline-block; margin-right:-1px; width:40px;" data-toggle="tooltip" title="Open Landing Page with Intent tree overview & Messenger subscription button" data-placement="left"><i class="fas fa-external-link-square-alt" style="position: absolute; top: -7px; right: 3px; font-size: 0.85em;"></i><i class="fas fa-shopping-cart"></i></a> ';
+        $ui .= '&nbsp;<a href="/'.$c['c_id'].'" class="badge badge-primary" target="_blank" style="display:inline-block; margin-right:-1px; width:40px;" data-toggle="tooltip" title="Open Landing Page with Intent tree overview & Messenger subscription button" data-placement="left"><i class="fas fa-external-link-square-alt" style="position: absolute; top: -7px; right: 3px; font-size: 0.85em;"></i><i class="fas fa-shopping-cart"></i></a> ';
     } else {
         //Show link to travel down the tree:
         $ui .= '&nbsp;<a href="/intents/'.$c['c_id'].'" class="badge badge-primary" style="display:inline-block; margin-right:-1px; width:40px;"><span class="btn-counter outbound-counter-'.$c['c_id'].'">'.($c['c__tree_all_count']-1).'</span><i class="'.( $is_inbound && $level<=2 ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></a> ';
