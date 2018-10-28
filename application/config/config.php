@@ -7,7 +7,7 @@ date_default_timezone_set('America/Los_Angeles');
 //Primary website variables:
 $config['website'] = array(
 
-    'version' => '0.5797',
+    'version' => '0.5798',
     'released' => '2018-10-28', //Format: YYYY-MM-DD
 
     'name' => 'Mench',
