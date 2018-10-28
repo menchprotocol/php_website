@@ -222,7 +222,7 @@ class Db_model extends CI_Model {
 
     function w_create($insert_columns){
 
-        if(missing_required_db_fields($insert_columns,array('outbound_u_id','w_c_id'))){
+        if(missing_required_db_fields($insert_columns,array('w_outbound_u_id','w_c_id'))){
             return false;
         }
 
@@ -263,18 +263,8 @@ class Db_model extends CI_Model {
 
                 $intent = end($tree['tree_top']);
 
-                //All good with the subscription intent caching, inform user:
-                $this->Comm_model->send_message(array(
-                    array(
-                        'e_inbound_u_id' => 2738, //Initiated by PA
-                        'e_outbound_u_id' => $insert_columns['outbound_u_id'],
-                        'e_outbound_c_id' => $insert_columns['w_c_id'],
-                        'i_message' => 'I have successfully subscribed you to ['.$intent['c_outcome'].']',
-                    ),
-                ));
-
                 //Update total hours:
-                $this->Comm_model->w_update( $insert_columns['w_id'], array(
+                $this->Db_model->w_update( $insert_columns['w_id'], array(
                     'w_time_estimate' => $tree['c1__tree_max_hours'],
                 ));
 
@@ -284,7 +274,7 @@ class Db_model extends CI_Model {
                 $this->Comm_model->send_message(array(
                     array(
                         'e_inbound_u_id' => 2738, //Initiated by PA
-                        'e_outbound_u_id' => $insert_columns['outbound_u_id'],
+                        'e_outbound_u_id' => $insert_columns['w_outbound_u_id'],
                         'e_outbound_c_id' => $insert_columns['w_c_id'],
                         'i_message' => 'Subscription failed',
                     ),

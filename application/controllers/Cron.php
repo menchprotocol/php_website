@@ -11,6 +11,12 @@ class Cron extends CI_Controller {
         //Example: /usr/bin/php /home/ubuntu/mench-web-app/index.php cron save_profile_pic
 	}
 
+	function go(){
+        echo_json($this->Db_model->w_create(array(
+            'w_c_id' => 6623,
+            'w_outbound_u_id' => 1,
+        )));
+    }
 
     function intent_sync($c_id=7240,$update_c_table=1){
         //Cron Settings: 31 * * * *

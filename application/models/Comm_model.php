@@ -478,14 +478,11 @@ class Comm_model extends CI_Model {
 
             if (count($fetch_cs)==1) {
 
-                //Create a new subscription:
+                //Create a new subscription (Which will also cache action plan):
                 $w = $this->Db_model->w_create(array(
                     'w_c_id' => $w_c_id,
-                    'outbound_u_id' => $fetch_us[0]['u_id'],
+                    'w_outbound_u_id' => $fetch_us[0]['u_id'],
                 ));
-
-                //Cache action plan for this subscription:
-                $tree = $this->Db_model->c_recursive_fetch($w_c_id,1,0,$w['w_id']);
 
                 //Confirm with them that we're now ready:
                 $this->Comm_model->send_message(array(
