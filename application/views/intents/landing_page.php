@@ -117,7 +117,7 @@
             echo '<span><i class="fas fa-clock"></i>'.echo_hour_range($c1, true).'</span>';
             echo '</span>';
 
-                echo '<div class="c_'.$c1_counter.'" style="display:none; margin-left:3px; font-size:0.9em; padding-left: 15px;">';
+                echo '<div class="c_'.$c1_counter.'" style="display:none; margin-left:3px; font-size:0.9em;">';
 
                 //First show all messages for this intent:
                 foreach($c1['c__messages'] as $i){
