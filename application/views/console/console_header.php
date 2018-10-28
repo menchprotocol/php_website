@@ -79,14 +79,14 @@ $uri_segment_2 = $this->uri->segment(2);
 
                         <li class="extra-toggle"><a href="javascript:void(0);" onclick="$('.extra-toggle').toggle();">&nbsp; <i class="fas fa-ellipsis-h"></i> &nbsp;</a></li>
                         <?php if(isset($uenrollment) && count($uenrollment)>0){ ?>
-                            <li class="extra-toggle" style="display: none;"><a href="/my/actionplan"><span class="icon-left"><i class="fas fa-user-graduate"></i></span> Student</a></li>
+                            <li class="extra-toggle" style="display: none;"><a href="/my/actionplan"><span class="icon-left"><i class="fas fa-user-graduate"></i></span> Hub</a></li>
                         <?php } ?>
 
                         <?php if(array_key_exists(1281, $udata['u__inbounds'])){ ?>
                             <li class="extra-toggle" style="display: none;"><a href="/cockpit/engagements"><span class="icon-left"><i class="fas fa-user-shield"></i></span> Admin</a></li>
                         <?php } ?>
 
-                        <li class="extra-toggle" style="display: none;"><a href="/entities/<?= $udata['u_id'] ?>"><span class="icon-left"><i class="fas fa-user-circle"></i></span> Account</a></li>
+                        <li class="extra-toggle" style="display: none;"><a href="/entities/<?= $udata['u_id'] ?>"><span class="icon-left"><i class="fas fa-user-circle"></i></span> Me</a></li>
                         <li class="extra-toggle" style="display: none;"><a href="/logout"><span class="icon-left"><i class="fas fa-power-off"></i></span> Logout</a></li>
                     </ul>
                 </div>

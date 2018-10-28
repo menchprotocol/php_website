@@ -684,7 +684,6 @@ h5, .h5 {
 .body-container { width: 95%; }
 .tooltip, .tooltip * {font-size:12px; margin:0;  }
 .tooltip-inner { line-height: 120%; }
-#landing_page .tooltip-inner { max-width:250px !important; }
 .container-fluid .alert { margin-top:10px; }
 .tab-space{padding-top:0;}
 .list-group-item>.badge {
