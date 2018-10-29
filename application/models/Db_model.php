@@ -760,41 +760,6 @@ class Db_model extends CI_Model {
 
     }
 
-    /* ******************************
-     * Facebook Pages/Admins
-     ****************************** */
-
-    function fp_fetch($match_columns,$join_objects=array(),$order_columns=array()){
-
-        $this->db->select('*');
-        $this->db->from('v5_facebook_pages fp');
-
-        if(in_array('fs',$join_objects)){
-            $this->db->join('v5_facebook_page_admins fs', 'fs.fs_fp_id = fp.fp_id', 'left');
-            if(count($order_columns)==0){
-                $order_columns = array('fs_timestamp'=>'DESC');
-            }
-        }
-        if(in_array('u',$join_objects)){
-            $this->db->join('v5_entities u', 'u.u_id = fs.fs_inbound_u_id');
-        }
-
-        foreach($match_columns as $key=>$value){
-            if(!is_null($value)){
-                $this->db->where($key,$value);
-            } else {
-                $this->db->where($key);
-            }
-        }
-
-        foreach($order_columns as $key=>$value){
-            $this->db->order_by($key,$value);
-        }
-
-        $q = $this->db->get();
-        return $q->result_array();
-    }
-
 
 
 	
@@ -839,6 +804,11 @@ class Db_model extends CI_Model {
         $this->db->from('v5_subscription_intents k');
         if(in_array('cr',$join_objects)){
             $this->db->join('v5_intent_links cr', 'k.k_cr_id = cr.cr_id');
+        }
+        if(in_array('w_c',$join_objects)){
+            //Also join with subscription row:
+            $this->db->join('v5_subscriptions w', 'w.w_id = k.k_w_id');
+            $this->db->join('v5_intents c', 'c.c_id = w.w_c_id');
         }
         foreach($match_columns as $key=>$value){
             $this->db->where($key,$value);

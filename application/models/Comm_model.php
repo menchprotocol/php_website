@@ -493,7 +493,7 @@ class Comm_model extends CI_Model {
                         'w_outbound_u_id' => $fetch_us[0]['u_id'], //All subscriptions belonging to this user
                         'w_status >=' => 0, //With an active status
                         '(cr_inbound_c_id='.$c_id.' OR cr_outbound_c_id='.$c_id.')' => null,
-                    ), array('cr'));
+                    ), array('cr','w_c'));
 
                     if(count($subscription_intents)>0){
 
@@ -503,7 +503,7 @@ class Comm_model extends CI_Model {
                                 'e_inbound_u_id' => 2738, //Initiated by PA
                                 'e_outbound_u_id' => $fetch_us[0]['u_id'],
                                 'e_outbound_c_id' => $fetch_cs[0]['c_id'],
-                                'i_message' => 'You have already subscribed to '.$fetch_cs[0]['c_outcome'].'. We have been working on it together since '.echo_time($subscription_intents[0]['w_timestamp'], 2).' /open_actionplan',
+                                'i_message' => 'You have already subscribed to '.$fetch_cs[0]['c_outcome'].( $subscription_intents[0]['c_id']==$c_id ? '' : ' via '.$subscription_intents[0]['c_outcome'] ).'. We have been working on it together since '.echo_time($subscription_intents[0]['w_timestamp'], 2).' /open_actionplan',
                             ),
                         ));
 
@@ -695,11 +695,7 @@ class Comm_model extends CI_Model {
                     $dispatch_fp_psid = 0;
                     $u = array();
 
-                    if(!$force_email && isset($users[0]['ru_fp_id']) && isset($users[0]['ru_fp_psid']) && $users[0]['ru_fp_id']>0 && $users[0]['ru_fp_psid']>0){
-                        //We fetched an enrollment with an active Messenger connection:
-                        $dispatch_fp_psid = $users[0]['ru_fp_psid'];
-                        $u = $users[0];
-                    } elseif(!$force_email && $users[0]['u_cache__fp_psid']>0){
+                    if(!$force_email && $users[0]['u_cache__fp_psid']>0){
                         //We fetched an enrollment with an active Messenger connection:
                         $dispatch_fp_psid = $users[0]['u_cache__fp_psid'];
                         $u = $users[0];
@@ -718,6 +714,7 @@ class Comm_model extends CI_Model {
                             'e_text_value' => 'send_message() detected user without an active email/Messenger with $force_email=['.($force_email?'1':'0').']',
                         ));
                         continue;
+
                     }
                 }
             }

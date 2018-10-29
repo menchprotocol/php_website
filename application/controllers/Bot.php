@@ -360,47 +360,23 @@ class Bot extends CI_Controller {
         if(isset($_POST) && isset($_POST['payment_status']) && $_POST['payment_status']=='Completed' && isset($_POST['item_number']) && intval($_POST['item_number'])>0){
 
             //Seems like a valid Paypal IPN Call:
-            //Fetch Subscription row:
-            $enrollments = $this->Db_model->ru_fetch(array(
-                'ru.ru_id' => intval($_POST['item_number']),
+            //TODO Fetch Subscription row with intval($_POST['item_number'])
+
+            $payment_received = doubleval(( $_POST['payment_gross']>$_POST['mc_gross'] ? $_POST['payment_gross'] : $_POST['mc_gross'] ));
+
+            //Save this new transaction:
+            $transaction = $this->Db_model->t_create(array(
+                't_status' => 1, //Payment received from Student
+                't_timestamp' => date("Y-m-d H:i:s"),
+                't_paypal_id' => $_POST['txn_id'],
+                't_paypal_ipn' => json_encode($_POST),
+                't_currency' => $_POST['mc_currency'],
+                't_payment_type' => $_POST['payment_type'],
+                't_total' => $payment_received,
+                't_fees' => doubleval(( $_POST['payment_fee']>$_POST['mc_fee'] ? $_POST['payment_fee'] : $_POST['mc_fee'] )),
+                //TODO Link to subsciption & user...
             ));
 
-            if(count($enrollments)==1){
-
-                $payment_received = doubleval(( $_POST['payment_gross']>$_POST['mc_gross'] ? $_POST['payment_gross'] : $_POST['mc_gross'] ));
-
-                //Save this new transaction:
-                $transaction = $this->Db_model->t_create(array(
-                    't_ru_id' => $enrollments[0]['ru_id'],
-                    't_r_id' => $enrollments[0]['ru_r_id'],
-                    't_b_id' => $enrollments[0]['ru_b_id'],
-                    't_inbound_u_id' => $enrollments[0]['ru_outbound_u_id'],
-                    't_status' => 1, //Payment received from Student
-                    't_timestamp' => date("Y-m-d H:i:s"),
-                    't_paypal_id' => $_POST['txn_id'],
-                    't_paypal_ipn' => json_encode($_POST),
-                    't_currency' => $_POST['mc_currency'],
-                    't_payment_type' => $_POST['payment_type'],
-                    't_total' => $payment_received,
-                    't_fees' => doubleval(( $_POST['payment_fee']>$_POST['mc_fee'] ? $_POST['payment_fee'] : $_POST['mc_fee'] )),
-                ));
-
-                if($payment_received>=$enrollments[0]['ru_upfront_pay']){
-
-                    //Finalize their Subscription
-
-                } else {
-
-                    //Should not happen, log error:
-                    $this->Db_model->e_create(array(
-                        'e_text_value' => 'paypal_webhook() received a partial payment form the student which is not allowed.',
-                        'e_json' => $_POST,
-                        'e_inbound_c_id' => 8,
-                    ));
-
-                }
-
-            }
         }
     }
 
