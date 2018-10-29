@@ -551,47 +551,49 @@ class Comm_model extends CI_Model {
                         'e_inbound_c_id' => 9, //Attention Needed
                     ));
 
-                }
+                } else {
 
-                //Fetch all the messages for this intent:
-                $tree = $this->Db_model->c_recursive_fetch($w_c_id,1,0);
+                    //Fetch all the messages for this intent:
+                    $tree = $this->Db_model->c_recursive_fetch($w_c_id,1,0);
 
-                //Show messages for this intent:
-                $messages = $this->Db_model->i_fetch(array(
-                    'i_outbound_c_id' => $w_c_id,
-                    'i_status >=' => 0, //Published in any form
-                ));
-                foreach($messages as $i){
+                    //Show messages for this intent:
+                    $messages = $this->Db_model->i_fetch(array(
+                        'i_outbound_c_id' => $w_c_id,
+                        'i_status >=' => 0, //Published in any form
+                    ));
+                    foreach($messages as $i){
+                        $this->Comm_model->send_message(array(
+                            array_merge($i, array(
+                                'e_inbound_u_id' => 2738, //Initiated by PA
+                                'e_outbound_u_id' => $fetch_us[0]['u_id'],
+                            )),
+                        ));
+                    }
+
+                    //Send message for final confirmation:
                     $this->Comm_model->send_message(array(
-                        array_merge($i, array(
+                        array(
                             'e_inbound_u_id' => 2738, //Initiated by PA
                             'e_outbound_u_id' => $fetch_us[0]['u_id'],
-                        )),
-                    ));
-                }
-
-                //Send message for final confirmation:
-                $this->Comm_model->send_message(array(
-                    array(
-                        'e_inbound_u_id' => 2738, //Initiated by PA
-                        'e_outbound_u_id' => $fetch_us[0]['u_id'],
-                        'e_outbound_c_id' => $w_c_id,
-                        'i_message' => 'To '.$fetch_cs[0]['c_outcome'].' will take about '.echo_hour_range($fetch_cs[0]).' to complete. Ready to get started?',
-                        'quick_replies' => array(
-                            array(
-                                'content_type' => 'text',
-                                'title' => 'Yes, Subscribe',
-                                'payload' => 'SUBSCRIBE99_'.$w_c_id,
+                            'e_outbound_c_id' => $w_c_id,
+                            'i_message' => 'To '.$fetch_cs[0]['c_outcome'].' will take about '.echo_hour_range($fetch_cs[0]).' to complete. Ready to get started?',
+                            'quick_replies' => array(
+                                array(
+                                    'content_type' => 'text',
+                                    'title' => 'Yes, Subscribe',
+                                    'payload' => 'SUBSCRIBE99_'.$w_c_id,
+                                ),
+                                array(
+                                    'content_type' => 'text',
+                                    'title' => 'No',
+                                    'payload' => 'SUBSCRIBE10_0',
+                                ),
+                                //TODO Maybe Show a "learn more" if Drip messages available?
                             ),
-                            array(
-                                'content_type' => 'text',
-                                'title' => 'No',
-                                'payload' => 'SUBSCRIBE10_0',
-                            ),
-                            //TODO Maybe Show a "learn more" if Drip messages available?
                         ),
-                    ),
-                ));
+                    ));
+
+                }
             }
 
         } elseif(substr_count($fb_ref, 'SUBSCRIBE99_')==1){
