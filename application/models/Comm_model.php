@@ -127,7 +127,7 @@ class Comm_model extends CI_Model {
         //Try finding user references... Is this psid already registered?
         //We either have the user in DB or we'll register them now:
         $fb_message_received = strtolower($fb_message_received);
-        $lets_command_guide = 'You can give me a command by starting a sentence with "Lets", for example: [Lets get hired as a developer], [Lets book more interviews] or [Lets build a great resume]';
+        $lets_command_guide = 'You can give me a command by starting a sentence with "Lets", for example: [Lets land a dream job], [Lets book new interviews] or [Lets create a great resume].';
         $fetch_us = $this->Db_model->u_fetch(array(
             'u_cache__fp_psid' => $fp_psid,
         ), array('u__ws'));
@@ -199,9 +199,33 @@ class Comm_model extends CI_Model {
 
         //By now we have a user, which we should return if we don't have a message or a ref code:
         if(!$fb_ref && !$fb_message_received){
-            return $u;
-        }
 
+            return $u;
+
+        } elseif($fb_message_received && $fetch_us[0]['u_status']==-1){
+
+            //We got a message from an unsubscribed user, let them know:
+            return $this->Comm_model->send_message(array(
+                array(
+                    'e_inbound_u_id' => 2738, //Initiated by PA
+                    'e_outbound_u_id' => $fetch_us[0]['u_id'],
+                    'i_message' => 'You are currently unsubscribed from Mench. Would you like to activate your account?',
+                    'quick_replies' => array(
+                        array(
+                            'content_type' => 'text',
+                            'title' => 'Yes, Re-Activate',
+                            'payload' => 'ACTIVATE_YES',
+                        ),
+                        array(
+                            'content_type' => 'text',
+                            'title' => 'Stay Unsubscribed',
+                            'payload' => 'ACTIVATE_NO',
+                        ),
+                    ),
+                ),
+            ));
+
+        }
 
         $c_target_outcome = null;
 
@@ -287,7 +311,7 @@ class Comm_model extends CI_Model {
 
             }
 
-        } elseif(trim($fb_message_received)=='unsubscribe'){
+        } elseif(substr_count($fb_message_received, 'unsubscribe')>0){
 
             //User has requested to be removed. Let's see what they have:
             if(count($u['u__ws'])>0){
@@ -472,43 +496,10 @@ class Comm_model extends CI_Model {
                 }
             }
 
-        } elseif($fb_message_received && !$fb_ref){
+        } elseif($fb_message_received && count($fetch_us[0]['u__ws'])==0){
 
-            //We have a regular inbound message from the user:
-            if($fetch_us[0]['u_status']==-1){
-
-                //We got a message from an unsubscribed user, let them know:
-                $this->Comm_model->send_message(array(
-                    array(
-                        'e_inbound_u_id' => 2738, //Initiated by PA
-                        'e_outbound_u_id' => $fetch_us[0]['u_id'],
-                        'i_message' => 'You are currently unsubscribed from Mench. Would you like to activate your account?',
-                        'quick_replies' => array(
-                            array(
-                                'content_type' => 'text',
-                                'title' => 'Yes, Re-Activate',
-                                'payload' => 'ACTIVATE_YES',
-                            ),
-                            array(
-                                'content_type' => 'text',
-                                'title' => 'Stay Unsubscribed',
-                                'payload' => 'ACTIVATE_NO',
-                            ),
-                        ),
-                    ),
-                ));
-
-            } elseif(count($fetch_us[0]['u__ws'])==0){
-
-                //Ask if they are interested to join the primary intent:
-                return $this->Comm_model->fb_identify_activate($fp_psid, 'SUBSCRIBE10_6623', $fb_message_received);
-
-            } else {
-
-                //Let them know this is automated and no humans available?
-                //For now we will not since we will be monitoring all messages to build MVP
-
-            }
+            //Ask if they are interested to join the primary intent:
+            return $this->Comm_model->fb_identify_activate($fp_psid, 'SUBSCRIBE10_6623', $fb_message_received);
 
         } elseif(substr_count($fb_ref, 'ACTIVATE_')==1) {
 
@@ -534,7 +525,7 @@ class Comm_model extends CI_Model {
                     array(
                         'e_inbound_u_id' => 2738, //Initiated by PA
                         'e_outbound_u_id' => $fetch_us[0]['u_id'],
-                        'i_message' => 'Ok, your account will remain unsubscribed. '.$lets_command_guide,
+                        'i_message' => 'Ok, your account will remain unsubscribed. If you changed your mind, '.$lets_command_guide,
                     ),
                 ));
 
