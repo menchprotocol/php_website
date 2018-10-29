@@ -127,6 +127,7 @@ class Comm_model extends CI_Model {
         //Try finding user references... Is this psid already registered?
         //We either have the user in DB or we'll register them now:
         $fb_message_received = strtolower($fb_message_received);
+        $lets_command_guide = 'You can give me a command by starting a sentence with "Lets", for example: [Lets get hired as a developer], [Lets book more interviews] or [Lets build a great resume]';
         $fetch_us = $this->Db_model->u_fetch(array(
             'u_cache__fp_psid' => $fp_psid,
         ), array('u__ws'));
@@ -365,13 +366,17 @@ class Comm_model extends CI_Model {
                     array(
                         'e_inbound_u_id' => 2738, //Initiated by PA
                         'e_outbound_u_id' => $fetch_us[0]['u_id'],
-                        'i_message' => 'Awesome, would be happy to stay friends and help you accomplish your career goals',
+                        'i_message' => 'Awesome, would be happy to stay friends and help you accomplish your career goals. '.$lets_command_guide,
                     ),
                 ));
 
             } elseif($unsub_value=='ALL'){
 
-                //User wants completely out:
+                //User wants completely out...
+
+                //Unsubscribe from all.
+                $this->db->query("UPDATE v5_subscriptions SET w_status=-1 WHERE w_outbound_u_id=".$fetch_us[0]['u_id']);
+                $total_unsubscribed = $this->db->affected_rows();
 
                 //Update User table status:
                 $this->Db_model->u_update( $fetch_us[0]['u_id'] , array(
@@ -382,6 +387,7 @@ class Comm_model extends CI_Model {
                 $this->Db_model->e_create(array(
                     'e_inbound_u_id' => $fetch_us[0]['u_id'], //Initiated by PA
                     'e_outbound_u_id' => $fetch_us[0]['u_id'],
+                    'e_text_value' => 'Student unsubscribed from all '.$total_unsubscribed.' subscriptions',
                     'e_inbound_c_id' => 7452, //User Unsubscribed
                 ));
 
@@ -390,23 +396,63 @@ class Comm_model extends CI_Model {
                     array(
                         'e_inbound_u_id' => 2738, //Initiated by PA
                         'e_outbound_u_id' => $fetch_us[0]['u_id'],
-                        'i_message' => 'Confirmed! This is the final message you will receive from me unless you send me a message at any time. Take care of your self and I hope to talk to you soon.',
+                        'i_message' => ''.( $total_unsubscribed>0 ? 'Confirmed, I have unsubscribed you from '.$total_unsubscribed.' intent'.echo__s($total_unsubscribed).'.' : 'Confirmed!').' This is the final message you will receive from me unless you send me a message at any time. Take care of your self and I hope to talk to you soon.',
                     ),
                 ));
 
             } elseif(intval($unsub_value)>0){
 
-
-
                 //User wants to remove a specific subscription, validate it:
-                $this->Comm_model->send_message(array(
-                    array(
-                        'e_inbound_u_id' => 2738, //Initiated by PA
-                        'e_outbound_u_id' => $fetch_us[0]['u_id'],
-                        'i_message' => 'Confirmed! I have unsubscribed you from [XXXXX]',
-                    ),
-                ));
+                $subscriptions = $this->Db_model->w_fetch(array(
+                    'w_id' => intval($unsub_value),
+                    'w_status >=' => 0,
+                ), array('w_c_id'));
 
+                //All good?
+                if(count($subscriptions)==1){
+
+                    //Update status for this single subscription:
+                    $this->db->query("UPDATE v5_subscriptions SET w_status=-1 WHERE w_id=".intval($unsub_value));
+
+                    //Log engagement:
+                    $this->Db_model->e_create(array(
+                        'e_inbound_u_id' => $fetch_us[0]['u_id'],
+                        'e_outbound_u_id' => $fetch_us[0]['u_id'],
+                        'e_outbound_c_id' => $subscriptions[0]['w_c_id'],
+                        'e_text_value' => 'Student unsubscribed from their intention to '.$subscriptions[0]['c_outcome'],
+                        'e_inbound_c_id' => 7452, //User Unsubscribed
+                        'e_w_id' => intval($unsub_value),
+                    ));
+
+                    //Show success message to user:
+                    $this->Comm_model->send_message(array(
+                        array(
+                            'e_inbound_u_id' => 2738, //Initiated by PA
+                            'e_outbound_u_id' => $fetch_us[0]['u_id'],
+                            'i_message' => 'I have successfully unsubscribed you from your intention to '.$subscriptions[0]['c_outcome'].'. Say "Unsubscribe" again if you wish to stop all future communications. '.$lets_command_guide,
+                        ),
+                    ));
+
+                } else {
+
+                    //let them know we had error:
+                    $this->Comm_model->send_message(array(
+                        array(
+                            'e_inbound_u_id' => 2738, //Initiated by PA
+                            'e_outbound_u_id' => $fetch_us[0]['u_id'],
+                            'i_message' => 'Unable to process your request as I could not locate your subscription. Please try again.',
+                        ),
+                    ));
+
+                    //Log error engagement:
+                    $this->Db_model->e_create(array(
+                        'e_inbound_u_id' => $fetch_us[0]['u_id'],
+                        'e_text_value' => 'Student attempted to unsubscribe but failed to do so',
+                        'e_inbound_c_id' => 8, //System error
+                        'e_w_id' => intval($unsub_value),
+                    ));
+
+                }
             }
 
         } elseif($fb_message_received && !$fb_ref){
@@ -452,7 +498,7 @@ class Comm_model extends CI_Model {
                     array(
                         'e_inbound_u_id' => 2738, //Initiated by PA
                         'e_outbound_u_id' => $fetch_us[0]['u_id'],
-                        'i_message' => 'Ok, so what is your biggest career-related challenge? Command me by starting a sentence with "Lets", for example: [Lets get hired as a developer], [Lets book more interviews] or [Lets build a great resume]',
+                        'i_message' => 'Ok, so what is your biggest career-related challenge? '.$lets_command_guide,
                     ),
                 ));
 
@@ -538,7 +584,7 @@ class Comm_model extends CI_Model {
                             'e_inbound_u_id' => 2738, //Initiated by PA
                             'e_outbound_u_id' => $fetch_us[0]['u_id'],
                             'e_outbound_c_id' => $fetch_cs[0]['c_id'],
-                            'i_message' => ( $subscription_intents[0]['c_id']==$w_c_id ? 'You have already subscribed to '.$fetch_cs[0]['c_outcome'].'. We have been working on it together since '.echo_time($subscription_intents[0]['w_timestamp'], 2).' /open_actionplan' : 'Your subscription to '.$subscription_intents[0]['c_outcome'].' already covers the intention to '.$fetch_cs[0]['c_outcome'].', so I will not create a duplicate subscription. /open_actionplan' ),
+                            'i_message' => ( $subscription_intents[0]['c_id']==$w_c_id ? 'You have already subscribed to '.$fetch_cs[0]['c_outcome'].'. We have been working on it together since '.echo_time($subscription_intents[0]['w_timestamp'], 2).'. /open_actionplan' : 'Your subscription to '.$subscription_intents[0]['c_outcome'].' already covers the intention to '.$fetch_cs[0]['c_outcome'].', so I will not create a duplicate subscription. /open_actionplan' ),
                         ),
                     ));
 

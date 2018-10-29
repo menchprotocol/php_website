@@ -49,7 +49,7 @@ $config['aws_credentials'] = [
 $config['engagement_subscriptions'] = array(
     array(
         'admin_emails' => array('miguel@mench.com'),
-        'subscription' => array(9,72,7452),
+        'subscription' => array(9,72),
     ),
     array(
         'admin_emails' => array('shervin@mench.com'),
@@ -212,8 +212,8 @@ $config['object_statuses'] = array(
 
      'w_status' => array(
         -1 => array(
-            's_name'  => 'Cancelled',
-            's_desc'  => 'Student cancelled their paid subscription',
+            's_name'  => 'Unsubscribed',
+            's_desc'  => 'Student cancelled their subscription',
             's_icon' => 'fas fa-times-hexagon',
         ),
         1 => array(
