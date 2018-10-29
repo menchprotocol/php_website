@@ -331,6 +331,17 @@ class Comm_model extends CI_Model {
                     ),
                 ));
 
+            } elseif($fetch_us[0]['u_status']==-1) {
+
+                //User is already unsubscribed, let them know:
+                $this->Comm_model->send_message(array(
+                    array(
+                        'e_inbound_u_id' => 2738, //Initiated by PA
+                        'e_outbound_u_id' => $fetch_us[0]['u_id'],
+                        'i_message' => 'You are already unsubscribed from Mench and will no longer receive any communication from us. To subscribe again, '.$lets_command_guide,
+                    ),
+                ));
+
             } else {
 
                 $this->Comm_model->send_message(array(
@@ -375,7 +386,7 @@ class Comm_model extends CI_Model {
                 //User wants completely out...
 
                 //Unsubscribe from all.
-                $this->db->query("UPDATE v5_subscriptions SET w_status=-1 WHERE w_outbound_u_id=".$fetch_us[0]['u_id']);
+                $this->db->query("UPDATE v5_subscriptions SET w_status=-1 WHERE w_status>=0 AND w_outbound_u_id=".$fetch_us[0]['u_id']);
                 $total_unsubscribed = $this->db->affected_rows();
 
                 //Update User table status:
