@@ -19,16 +19,6 @@ class Bot extends CI_Controller {
         }
     }
 
-    function s(){
-        $search_index = load_php_algolia('alg_intents');
-
-        $res = $search_index->search('resume', [
-            'hitsPerPage' => 6
-        ]);
-
-        echo_json($res);
-    }
-
 
     function ping($u_id){
         //Confirm the subscription:
@@ -54,51 +44,45 @@ class Bot extends CI_Controller {
         )));
     }
 
-    function update_all($fp_id){
-
-        $pages = $this->Db_model->fp_fetch(array(
-            'fp_id' => $fp_id,
-        ), array('fs'));
+    function menu(){
 
         $res = array();
-        foreach($pages as $fp){
 
-            array_push($res , $this->Comm_model->fb_graph('POST', '/me/messenger_profile', array(
-                'get_started' => array(
-                    'payload' => 'GET_STARTED',
-                ),
-                'whitelisted_domains' => array(
-                    'http://local.mench.co',
-                    'https://mench.co',
-                    'https://mench.com',
-                ),
-            )));
-
-
-            //Wait until Facebook pro-pagates changes of our whitelisted_domains setting:
-            sleep(2);
+        array_push($res , $this->Comm_model->fb_graph('POST', '/me/messenger_profile', array(
+            'get_started' => array(
+                'payload' => 'GET_STARTED',
+            ),
+            'whitelisted_domains' => array(
+                'http://local.mench.co',
+                'https://mench.co',
+                'https://mench.com',
+            ),
+        )));
 
 
-            array_push($res , $this->Comm_model->fb_graph('POST', '/me/messenger_profile', array(
-                'persistent_menu' => array(
-                    array(
-                        'locale' => 'default',
-                        'composer_input_disabled' => false,
-                        'disabled_surfaces' => array('CUSTOMER_CHAT_PLUGIN'),
-                        'call_to_actions' => array(
-                            array(
-                                'title' => '🚩 Action Plan',
-                                'type' => 'web_url',
-                                'url' => 'https://mench.com/my/actionplan',
-                                'webview_height_ratio' => 'tall',
-                                'webview_share_button' => 'hide',
-                                'messenger_extensions' => true,
-                            ),
+        //Wait until Facebook pro-pagates changes of our whitelisted_domains setting:
+        sleep(2);
+
+
+        array_push($res , $this->Comm_model->fb_graph('POST', '/me/messenger_profile', array(
+            'persistent_menu' => array(
+                array(
+                    'locale' => 'default',
+                    'composer_input_disabled' => false,
+                    'disabled_surfaces' => array('CUSTOMER_CHAT_PLUGIN'),
+                    'call_to_actions' => array(
+                        array(
+                            'title' => '🚩 Action Plan',
+                            'type' => 'web_url',
+                            'url' => 'https://mench.com/my/actionplan',
+                            'webview_height_ratio' => 'tall',
+                            'webview_share_button' => 'hide',
+                            'messenger_extensions' => true,
                         ),
                     ),
                 ),
-            )));
-        }
+            ),
+        )));
 
         echo_json($res);
     }

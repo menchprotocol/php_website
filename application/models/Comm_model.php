@@ -237,7 +237,6 @@ class Comm_model extends CI_Model {
                     ));
                 }
 
-
                 //Give them a none option:
                 $i_message .= "\n\n".($count+2).'/ None of the above';
                 array_push($quick_replies , array(
@@ -397,6 +396,8 @@ class Comm_model extends CI_Model {
 
             } elseif(intval($unsub_value)>0){
 
+
+
                 //User wants to remove a specific subscription, validate it:
                 $this->Comm_model->send_message(array(
                     array(
@@ -486,19 +487,15 @@ class Comm_model extends CI_Model {
 
                 } else {
 
-                    //All good...
-                    //Check if it exists in their current subscriptions:
-                    $duplicate_w = array();
-                    if(isset($fetch_us[0]['u__ws'])){
-                        foreach($fetch_us[0]['u__ws'] as $w){
-                            if($w['w_c_id']==$fetch_cs[0]['c_id']){
-                                $duplicate_w = $w;
-                                break;
-                            }
-                        }
-                    }
+                    //Intent seems good...
+                    //See if this intent belong to any of these subscriptions:
+                    $subscription_intents = $this->Db_model->k_fetch(array(
+                        'w_outbound_u_id' => $fetch_us[0]['u_id'], //All subscriptions belonging to this user
+                        'w_status >=' => 0, //With an active status
+                        '(cr_inbound_c_id='.$c_id.' OR cr_outbound_c_id='.$c_id.')' => null,
+                    ), array('cr'));
 
-                    if(count($duplicate_w)>0){
+                    if(count($subscription_intents)>0){
 
                         //Let the user know that this is a duplicate:
                         $this->Comm_model->send_message(array(
@@ -506,7 +503,7 @@ class Comm_model extends CI_Model {
                                 'e_inbound_u_id' => 2738, //Initiated by PA
                                 'e_outbound_u_id' => $fetch_us[0]['u_id'],
                                 'e_outbound_c_id' => $fetch_cs[0]['c_id'],
-                                'i_message' => 'You have already subscribed to '.$fetch_cs[0]['c_outcome'].'. We have been working on it together since '.echo_time($duplicate_w['w_timestamp'], 2).' /open_actionplan',
+                                'i_message' => 'You have already subscribed to '.$fetch_cs[0]['c_outcome'].'. We have been working on it together since '.echo_time($subscription_intents[0]['w_timestamp'], 2).' /open_actionplan',
                             ),
                         ));
 

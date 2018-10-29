@@ -833,6 +833,23 @@ class Db_model extends CI_Model {
     }
 
 
+    function k_fetch($match_columns, $join_objects=array()){
+        //Fetch the target gems:
+        $this->db->select('*');
+        $this->db->from('v5_subscription_intents k');
+        if(in_array('cr',$join_objects)){
+            $this->db->join('v5_intent_links cr', 'k.k_cr_id = cr.cr_id');
+        }
+        foreach($match_columns as $key=>$value){
+            $this->db->where($key,$value);
+        }
+        $q = $this->db->get();
+        $results = $q->result_array();
+
+        //Return everything that was collected:
+        return $results;
+    }
+
     function w_fetch($match_columns, $join_objects=array()){
         //Fetch the target gems:
         $this->db->select('*');
@@ -851,6 +868,7 @@ class Db_model extends CI_Model {
         //Return everything that was collected:
         return $results;
     }
+
 
 
 
