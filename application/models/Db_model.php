@@ -811,7 +811,11 @@ class Db_model extends CI_Model {
             $this->db->join('v5_intents c', 'c.c_id = w.w_c_id');
         }
         foreach($match_columns as $key=>$value){
-            $this->db->where($key,$value);
+            if(!is_null($value)){
+                $this->db->where($key,$value);
+            } else {
+                $this->db->where($key);
+            }
         }
         $q = $this->db->get();
         $results = $q->result_array();
@@ -828,7 +832,11 @@ class Db_model extends CI_Model {
             $this->db->join('v5_intents c', 'w.w_c_id = c.c_id');
         }
         foreach($match_columns as $key=>$value){
-            $this->db->where($key,$value);
+            if(!is_null($value)){
+                $this->db->where($key,$value);
+            } else {
+                $this->db->where($key);
+            }
         }
         $q = $this->db->get();
         $results = $q->result_array();

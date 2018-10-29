@@ -487,60 +487,28 @@ class Comm_model extends CI_Model {
 
                 } else {
 
-                    //Intent seems good...
-                    //See if this intent belong to any of these subscriptions:
-                    $subscription_intents = $this->Db_model->k_fetch(array(
-                        'w_outbound_u_id' => $fetch_us[0]['u_id'], //All subscriptions belonging to this user
-                        'w_status >=' => 0, //With an active status
-                        '(cr_inbound_c_id='.$c_id.' OR cr_outbound_c_id='.$c_id.')' => null,
-                    ), array('cr','w_c'));
-
-                    if(count($subscription_intents)>0){
-
-                        //Let the user know that this is a duplicate:
-                        $this->Comm_model->send_message(array(
-                            array(
-                                'e_inbound_u_id' => 2738, //Initiated by PA
-                                'e_outbound_u_id' => $fetch_us[0]['u_id'],
-                                'e_outbound_c_id' => $fetch_cs[0]['c_id'],
-                                'i_message' => 'You have already subscribed to '.$fetch_cs[0]['c_outcome'].( $subscription_intents[0]['c_id']==$c_id ? '' : ' via '.$subscription_intents[0]['c_outcome'] ).'. We have been working on it together since '.echo_time($subscription_intents[0]['w_timestamp'], 2).' /open_actionplan',
-                            ),
-                        ));
-
-                        //Log engagement for admin:
-                        $this->Db_model->e_create(array(
-                            'e_text_value' => 'User attempted to subscribe to an intent that they were already subscribed to. Maybe reach out and ask them why?',
+                    //Confirm if they are interested for this intention:
+                    $this->Comm_model->send_message(array(
+                        array(
                             'e_inbound_u_id' => 2738, //Initiated by PA
                             'e_outbound_u_id' => $fetch_us[0]['u_id'],
                             'e_outbound_c_id' => $fetch_cs[0]['c_id'],
-                            'e_inbound_c_id' => 9, //Attention Needed
-                        ));
-
-                    } else {
-
-                        //Confirm if they are interested for this intention:
-                        $this->Comm_model->send_message(array(
-                            array(
-                                'e_inbound_u_id' => 2738, //Initiated by PA
-                                'e_outbound_u_id' => $fetch_us[0]['u_id'],
-                                'e_outbound_c_id' => $fetch_cs[0]['c_id'],
-                                'i_message' => 'Are you interested to '.$fetch_cs[0]['c_outcome'].'?',
-                                'quick_replies' => array(
-                                    array(
-                                        'content_type' => 'text',
-                                        'title' => 'Yes, Learn More',
-                                        'payload' => 'SUBSCRIBE20_'.$fetch_cs[0]['c_id'],
-                                    ),
-                                    array(
-                                        'content_type' => 'text',
-                                        'title' => 'No',
-                                        'payload' => 'SUBSCRIBE10_0',
-                                    ),
+                            'i_message' => 'Are you interested to '.$fetch_cs[0]['c_outcome'].'?',
+                            'quick_replies' => array(
+                                array(
+                                    'content_type' => 'text',
+                                    'title' => 'Yes, Learn More',
+                                    'payload' => 'SUBSCRIBE20_'.$fetch_cs[0]['c_id'],
+                                ),
+                                array(
+                                    'content_type' => 'text',
+                                    'title' => 'No',
+                                    'payload' => 'SUBSCRIBE10_0',
                                 ),
                             ),
-                        ));
+                        ),
+                    ));
 
-                    }
                 }
             }
 
@@ -553,6 +521,37 @@ class Comm_model extends CI_Model {
                 'c_status >=' => 1,
             ));
             if (count($fetch_cs)==1) {
+
+                //Intent seems good...
+                //See if this intent belong to any of these subscriptions:
+                $subscription_intents = $this->Db_model->k_fetch(array(
+                    'w_outbound_u_id' => $fetch_us[0]['u_id'], //All subscriptions belonging to this user
+                    'w_status >=' => 0, //With an active status
+                    '(cr_inbound_c_id='.$w_c_id.' OR cr_outbound_c_id='.$w_c_id.')' => null,
+                ), array('cr','w_c'));
+
+                if(count($subscription_intents)>0){
+
+                    //Let the user know that this is a duplicate:
+                    $this->Comm_model->send_message(array(
+                        array(
+                            'e_inbound_u_id' => 2738, //Initiated by PA
+                            'e_outbound_u_id' => $fetch_us[0]['u_id'],
+                            'e_outbound_c_id' => $fetch_cs[0]['c_id'],
+                            'i_message' => 'You have already subscribed to '.$fetch_cs[0]['c_outcome'].( $subscription_intents[0]['c_id']==$w_c_id ? '' : ' via '.$subscription_intents[0]['c_outcome'] ).'. We have been working on it together since '.echo_time($subscription_intents[0]['w_timestamp'], 2).' /open_actionplan',
+                        ),
+                    ));
+
+                    //Log engagement for admin:
+                    $this->Db_model->e_create(array(
+                        'e_text_value' => 'User attempted to subscribe to an intent that they were already subscribed to. Maybe reach out and ask them why?',
+                        'e_inbound_u_id' => 2738, //Initiated by PA
+                        'e_outbound_u_id' => $fetch_us[0]['u_id'],
+                        'e_outbound_c_id' => $fetch_cs[0]['c_id'],
+                        'e_inbound_c_id' => 9, //Attention Needed
+                    ));
+
+                }
 
                 //Fetch all the messages for this intent:
                 $tree = $this->Db_model->c_recursive_fetch($w_c_id,1,0);
@@ -589,7 +588,7 @@ class Comm_model extends CI_Model {
                                 'title' => 'No',
                                 'payload' => 'SUBSCRIBE10_0',
                             ),
-                            //TODO Masybe Show a "learn more" if Drip messages available?
+                            //TODO Maybe Show a "learn more" if Drip messages available?
                         ),
                     ),
                 ));
