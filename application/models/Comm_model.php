@@ -530,12 +530,12 @@ class Comm_model extends CI_Model {
             if(count($u['u__ws'])>0){
 
                 $quick_replies = array();
-                $i_message = 'Which of the following intentions would you like to unsubscribe from?';
+                $i_message = 'Choose one of the following options:';
                 $increment = 1;
 
                 foreach($u['u__ws'] as $counter=>$w){
                     //Construct unsubscribe confirmation body:
-                    $i_message .= "\n\n".'/'.($counter+$increment).' '.$w['c_outcome'].' ['.echo_diff_time($w['w_timestamp']).']';
+                    $i_message .= "\n\n".'/'.($counter+$increment).' Unsubscribe '.$w['c_outcome'];
                     array_push( $quick_replies , array(
                         'content_type' => 'text',
                         'title' => '/'.($counter+$increment),
@@ -543,21 +543,18 @@ class Comm_model extends CI_Model {
                     ));
                 }
 
-
-                if(count($u['u__ws'])>1){
-                    //We have more than one option, give an unsubscribe all option:
-                    $increment++;
-                    $i_message .= "\n\n".'/'.($counter+$increment).' Unsubscribe from All';
-                    array_push( $quick_replies , array(
-                        'content_type' => 'text',
-                        'title' => '/'.($counter+$increment),
-                        'payload' => 'UNSUBSCRIBE_ALL',
-                    ));
-                }
+                //We have more than one option, give an unsubscribe all option:
+                $increment++;
+                $i_message .= "\n\n".'/'.($counter+$increment).' Unsubscribe Everything & Stop Communication';
+                array_push( $quick_replies , array(
+                    'content_type' => 'text',
+                    'title' => '/'.($counter+$increment),
+                    'payload' => 'UNSUBSCRIBE_ALL',
+                ));
 
                 //Alwyas give none option:
                 $increment++;
-                $i_message .= "\n\n".'/'.($counter+$increment).' No, Stay Friends';
+                $i_message .= "\n\n".'/'.($counter+$increment).' Do Not Unsubscribe & Stay Friends';
                 array_push( $quick_replies , array(
                     'content_type' => 'text',
                     'title' => '/'.($counter+$increment),
