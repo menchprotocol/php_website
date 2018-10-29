@@ -132,6 +132,22 @@ class Comm_model extends CI_Model {
             'u_cache__fp_psid' => $fp_psid,
         ), array('u__ws'));
 
+
+        $c_target_outcome = null;
+        if($fb_message_received){
+            if(substr_count($fb_message_received, 'lets ')>0){
+                $c_target_outcome = one_two_explode('lets ', '', $fb_message_received);
+            } elseif(substr_count($fb_message_received, 'let’s ')>0){
+                $c_target_outcome = one_two_explode('let’s ', '', $fb_message_received);
+            } elseif(substr_count($fb_message_received, 'let\'s ')>0){
+                $c_target_outcome = one_two_explode('let\'s ', '', $fb_message_received);
+            } elseif(substr($fb_message_received, -1)=='?'){
+                //Them seem to be asking a question, lets treat this as a command:
+                $c_target_outcome = str_replace('?','',$fb_message_received);
+            }
+        }
+
+
         if(count($fetch_us)>0){
 
             //User found:
@@ -224,177 +240,6 @@ class Comm_model extends CI_Model {
                     ),
                 ),
             ));
-
-        }
-
-        $c_target_outcome = null;
-
-        if($fb_message_received){
-            if(substr_count($fb_message_received, 'lets ')>0){
-                $c_target_outcome = one_two_explode('lets ', '', $fb_message_received);
-            } elseif(substr_count($fb_message_received, 'let’s ')>0){
-                $c_target_outcome = one_two_explode('let’s ', '', $fb_message_received);
-            } elseif(substr_count($fb_message_received, 'let\'s ')>0){
-                $c_target_outcome = one_two_explode('let\'s ', '', $fb_message_received);
-            } elseif(substr($fb_message_received, -1)=='?'){
-                //Them seem to be asking a question, lets treat this as a command:
-                $c_target_outcome = str_replace('?','',$fb_message_received);
-            }
-        }
-
-        //Did we have a command?
-        if($c_target_outcome){
-
-            //TODO migrate this to NLP framework for more accurate results:
-            $search_index = load_php_algolia('alg_intents');
-            $res = $search_index->search($c_target_outcome, [
-                'hitsPerPage' => 6
-            ]);
-
-            if($res['nbHits']>0){
-
-                //Show options for them to subscribe to:
-                $quick_replies = array();
-                $i_message = 'I found the following intent'.echo__s($res['nbHits']).':';
-                foreach ($res['hits'] as $count=>$hit){
-                    //Translate hours back:
-                    $hit['c__tree_max_hours'] = number_format(($hit['c__tree_max_mins']/60), 3);
-                    $hit['c__tree_min_hours'] = number_format(($hit['c__tree_min_mins']/60), 3);
-                    $i_message .= "\n\n".($count+1).'/ '.$hit['c_outcome'].' in '.strip_tags(echo_hour_range($hit));
-                    array_push($quick_replies , array(
-                        'content_type' => 'text',
-                        'title' => ($count+1).'/',
-                        'payload' => 'SUBSCRIBE20_'.$hit['c_id'],
-                    ));
-                }
-
-                //Give them a none option:
-                $i_message .= "\n\n".($count+2).'/ None of the above';
-                array_push($quick_replies , array(
-                    'content_type' => 'text',
-                    'title' => ($count+2).'/',
-                    'payload' => 'SUBSCRIBE10_0',
-                ));
-
-                //return what we found to the student to decide:
-                $this->Comm_model->send_message(array(
-                    array(
-                        'e_inbound_u_id' => 2738, //Initiated by PA
-                        'e_outbound_u_id' => $fetch_us[0]['u_id'],
-                        'i_message' => $i_message,
-                        'quick_replies' => $quick_replies,
-                    ),
-                ));
-
-            } else {
-
-                /*
-                //Create new intent in the suggestion bucket:
-                $this->Db_model->c_new(7431, $c_target_outcome, 0, 2, $u['u_id']);
-
-                //Also log engagement for points purposes later down the road...
-                $this->Db_model->e_create(array(
-                    'e_text_value' => 'User suggested ['.$c_target_outcome.'] to be added as an entity.',
-                    'e_inbound_u_id' => $u['u_id'],
-                    'e_inbound_c_id' => 7431, //Suggest new intent
-                ));
-                */
-
-                //Respond to user:
-                $this->Comm_model->send_message(array(
-                    array(
-                        'e_inbound_u_id' => 2738, //Initiated by PA
-                        'e_outbound_u_id' => $fetch_us[0]['u_id'],
-                        'i_message' => 'I am currently not trained to ['.$c_target_outcome.'], but I have logged this for my human team mates to look into. I will let you know as soon as I am trained on this. Is there anything else I can help you with right now?',
-                    ),
-                ));
-
-            }
-
-        } elseif(substr_count($fb_message_received, 'unsubscribe')>0){
-
-            //User has requested to be removed. Let's see what they have:
-            if(count($u['u__ws'])>0){
-
-                $quick_replies = array();
-                $i_message = 'Which of the following intentions would you like to unsubscribe from?';
-                $increment = 1;
-
-                foreach($u['u__ws'] as $counter=>$w){
-                    //Construct unsubscribe confirmation body:
-                    $i_message .= "\n\n".'/'.($counter+$increment).' '.$w['c_outcome'].' ['.echo_diff_time($w['w_timestamp']).']';
-                    array_push( $quick_replies , array(
-                        'content_type' => 'text',
-                        'title' => '/'.($counter+$increment),
-                        'payload' => 'UNSUBSCRIBE_'.$w['w_id'],
-                    ));
-                }
-
-
-                if(count($u['u__ws'])>1){
-                    //We have more than one option, give an unsubscribe all option:
-                    $increment++;
-                    $i_message .= "\n\n".'/'.($counter+$increment).' Unsubscribe from All';
-                    array_push( $quick_replies , array(
-                        'content_type' => 'text',
-                        'title' => '/'.($counter+$increment),
-                        'payload' => 'UNSUBSCRIBE_ALL',
-                    ));
-                }
-
-                //Alwyas give none option:
-                $increment++;
-                $i_message .= "\n\n".'/'.($counter+$increment).' No, Stay Friends';
-                array_push( $quick_replies , array(
-                    'content_type' => 'text',
-                    'title' => '/'.($counter+$increment),
-                    'payload' => 'UNSUBSCRIBE_CANCEL',
-                ));
-
-                //Send out message and let them confirm:
-                $this->Comm_model->send_message(array(
-                    array(
-                        'e_inbound_u_id' => 2738, //Initiated by PA
-                        'e_outbound_u_id' => $fetch_us[0]['u_id'],
-                        'i_message' => $i_message,
-                        'quick_replies' =>$quick_replies,
-                    ),
-                ));
-
-            } elseif($fetch_us[0]['u_status']==-1) {
-
-                //User is already unsubscribed, let them know:
-                $this->Comm_model->send_message(array(
-                    array(
-                        'e_inbound_u_id' => 2738, //Initiated by PA
-                        'e_outbound_u_id' => $fetch_us[0]['u_id'],
-                        'i_message' => 'You are already unsubscribed from Mench and will no longer receive any communication from us. To subscribe again, '.$lets_command_guide,
-                    ),
-                ));
-
-            } else {
-
-                $this->Comm_model->send_message(array(
-                    array(
-                        'e_inbound_u_id' => 2738, //Initiated by PA
-                        'e_outbound_u_id' => $fetch_us[0]['u_id'],
-                        'i_message' => 'Got it, just to confirm, you want me to stop all future communications with you?',
-                        'quick_replies' => array(
-                            array(
-                                'content_type' => 'text',
-                                'title' => 'Yes, Unsubscribe',
-                                'payload' => 'UNSUBSCRIBE_ALL',
-                            ),
-                            array(
-                                'content_type' => 'text',
-                                'title' => 'No, Stay Friends',
-                                'payload' => 'UNSUBSCRIBE_CANCEL',
-                            ),
-                        ),
-                    ),
-                ));
-
-            }
 
         } elseif(substr_count($fb_ref, 'UNSUBSCRIBE_')==1){
 
@@ -495,11 +340,6 @@ class Comm_model extends CI_Model {
 
                 }
             }
-
-        } elseif($fb_message_received && count($fetch_us[0]['u__ws'])==0){
-
-            //Ask if they are interested to join the primary intent:
-            return $this->Comm_model->fb_identify_activate($fp_psid, 'SUBSCRIBE10_6623', $fb_message_received);
 
         } elseif(substr_count($fb_ref, 'ACTIVATE_')==1) {
 
@@ -705,6 +545,165 @@ class Comm_model extends CI_Model {
                 ));
 
             }
+
+        } elseif($c_target_outcome){
+
+            //TODO migrate this to NLP framework for more accurate results:
+            $search_index = load_php_algolia('alg_intents');
+            $res = $search_index->search($c_target_outcome, [
+                'hitsPerPage' => 6
+            ]);
+
+            if($res['nbHits']>0){
+
+                //Show options for them to subscribe to:
+                $quick_replies = array();
+                $i_message = 'I found the following intent'.echo__s($res['nbHits']).':';
+                foreach ($res['hits'] as $count=>$hit){
+                    //Translate hours back:
+                    $hit['c__tree_max_hours'] = number_format(($hit['c__tree_max_mins']/60), 3);
+                    $hit['c__tree_min_hours'] = number_format(($hit['c__tree_min_mins']/60), 3);
+                    $i_message .= "\n\n".($count+1).'/ '.$hit['c_outcome'].' in '.strip_tags(echo_hour_range($hit));
+                    array_push($quick_replies , array(
+                        'content_type' => 'text',
+                        'title' => ($count+1).'/',
+                        'payload' => 'SUBSCRIBE20_'.$hit['c_id'],
+                    ));
+                }
+
+                //Give them a none option:
+                $i_message .= "\n\n".($count+2).'/ None of the above';
+                array_push($quick_replies , array(
+                    'content_type' => 'text',
+                    'title' => ($count+2).'/',
+                    'payload' => 'SUBSCRIBE10_0',
+                ));
+
+                //return what we found to the student to decide:
+                $this->Comm_model->send_message(array(
+                    array(
+                        'e_inbound_u_id' => 2738, //Initiated by PA
+                        'e_outbound_u_id' => $fetch_us[0]['u_id'],
+                        'i_message' => $i_message,
+                        'quick_replies' => $quick_replies,
+                    ),
+                ));
+
+            } else {
+
+                /*
+                //Create new intent in the suggestion bucket:
+                $this->Db_model->c_new(7431, $c_target_outcome, 0, 2, $u['u_id']);
+
+                //Also log engagement for points purposes later down the road...
+                $this->Db_model->e_create(array(
+                    'e_text_value' => 'User suggested ['.$c_target_outcome.'] to be added as an entity.',
+                    'e_inbound_u_id' => $u['u_id'],
+                    'e_inbound_c_id' => 7431, //Suggest new intent
+                ));
+                */
+
+                //Respond to user:
+                $this->Comm_model->send_message(array(
+                    array(
+                        'e_inbound_u_id' => 2738, //Initiated by PA
+                        'e_outbound_u_id' => $fetch_us[0]['u_id'],
+                        'i_message' => 'I am currently not trained to ['.$c_target_outcome.'], but I have logged this for my human team mates to look into. I will let you know as soon as I am trained on this. Is there anything else I can help you with right now?',
+                    ),
+                ));
+
+            }
+
+        } elseif(substr_count($fb_message_received, 'unsubscribe')>0){
+
+            //User has requested to be removed. Let's see what they have:
+            if(count($u['u__ws'])>0){
+
+                $quick_replies = array();
+                $i_message = 'Which of the following intentions would you like to unsubscribe from?';
+                $increment = 1;
+
+                foreach($u['u__ws'] as $counter=>$w){
+                    //Construct unsubscribe confirmation body:
+                    $i_message .= "\n\n".'/'.($counter+$increment).' '.$w['c_outcome'].' ['.echo_diff_time($w['w_timestamp']).']';
+                    array_push( $quick_replies , array(
+                        'content_type' => 'text',
+                        'title' => '/'.($counter+$increment),
+                        'payload' => 'UNSUBSCRIBE_'.$w['w_id'],
+                    ));
+                }
+
+
+                if(count($u['u__ws'])>1){
+                    //We have more than one option, give an unsubscribe all option:
+                    $increment++;
+                    $i_message .= "\n\n".'/'.($counter+$increment).' Unsubscribe from All';
+                    array_push( $quick_replies , array(
+                        'content_type' => 'text',
+                        'title' => '/'.($counter+$increment),
+                        'payload' => 'UNSUBSCRIBE_ALL',
+                    ));
+                }
+
+                //Alwyas give none option:
+                $increment++;
+                $i_message .= "\n\n".'/'.($counter+$increment).' No, Stay Friends';
+                array_push( $quick_replies , array(
+                    'content_type' => 'text',
+                    'title' => '/'.($counter+$increment),
+                    'payload' => 'UNSUBSCRIBE_CANCEL',
+                ));
+
+                //Send out message and let them confirm:
+                $this->Comm_model->send_message(array(
+                    array(
+                        'e_inbound_u_id' => 2738, //Initiated by PA
+                        'e_outbound_u_id' => $fetch_us[0]['u_id'],
+                        'i_message' => $i_message,
+                        'quick_replies' =>$quick_replies,
+                    ),
+                ));
+
+            } elseif($fetch_us[0]['u_status']==-1) {
+
+                //User is already unsubscribed, let them know:
+                $this->Comm_model->send_message(array(
+                    array(
+                        'e_inbound_u_id' => 2738, //Initiated by PA
+                        'e_outbound_u_id' => $fetch_us[0]['u_id'],
+                        'i_message' => 'You are already unsubscribed from Mench and will no longer receive any communication from us. To subscribe again, '.$lets_command_guide,
+                    ),
+                ));
+
+            } else {
+
+                $this->Comm_model->send_message(array(
+                    array(
+                        'e_inbound_u_id' => 2738, //Initiated by PA
+                        'e_outbound_u_id' => $fetch_us[0]['u_id'],
+                        'i_message' => 'Got it, just to confirm, you want me to stop all future communications with you?',
+                        'quick_replies' => array(
+                            array(
+                                'content_type' => 'text',
+                                'title' => 'Yes, Unsubscribe',
+                                'payload' => 'UNSUBSCRIBE_ALL',
+                            ),
+                            array(
+                                'content_type' => 'text',
+                                'title' => 'No, Stay Friends',
+                                'payload' => 'UNSUBSCRIBE_CANCEL',
+                            ),
+                        ),
+                    ),
+                ));
+
+            }
+
+        } elseif($fb_message_received && !$fb_ref && count($fetch_us[0]['u__ws'])==0){
+
+            //Ask if they are interested to join the primary intent:
+            return $this->Comm_model->fb_identify_activate($fp_psid, 'SUBSCRIBE10_6623', $fb_message_received);
+
         }
 
 
