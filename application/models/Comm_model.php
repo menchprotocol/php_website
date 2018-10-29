@@ -204,12 +204,18 @@ class Comm_model extends CI_Model {
 
 
         $c_target_outcome = null;
-        if(substr_count($fb_message_received, 'lets ')>0){
-            $c_target_outcome =  one_two_explode('lets ', '', $fb_message_received);
-        } elseif(substr_count($fb_message_received, 'let’s ')>0){
-            $c_target_outcome =  one_two_explode('let’s ', '', $fb_message_received);
-        } elseif(substr_count($fb_message_received, 'let\'s ')>0){
-            $c_target_outcome =  one_two_explode('let\'s ', '', $fb_message_received);
+
+        if($fb_message_received){
+            if(substr_count($fb_message_received, 'lets ')>0){
+                $c_target_outcome = one_two_explode('lets ', '', $fb_message_received);
+            } elseif(substr_count($fb_message_received, 'let’s ')>0){
+                $c_target_outcome = one_two_explode('let’s ', '', $fb_message_received);
+            } elseif(substr_count($fb_message_received, 'let\'s ')>0){
+                $c_target_outcome = one_two_explode('let\'s ', '', $fb_message_received);
+            } elseif(substr($fb_message_received, -1)=='?'){
+                //Them seem to be asking a question, lets treat this as a command:
+                $c_target_outcome = str_replace('?','',$fb_message_received);
+            }
         }
 
         //Did we have a command?
@@ -469,35 +475,72 @@ class Comm_model extends CI_Model {
         } elseif($fb_message_received && !$fb_ref){
 
             //We have a regular inbound message from the user:
-            if(count($fetch_us[0]['u__ws'])==0){
+            if($fetch_us[0]['u_status']==-1){
 
-                //Ask if they are interested to join the primary intent:
-                //Amazing, move on to next step:
-                $fb_ref = 'SUBSCRIBE10_6623';
-
-            } else {
-
-                /*
-                //We do not accept inbound messages unless they are subscribed to a premium membership, let them know this:
+                //We got a message from an unsubscribed user, let them know:
                 $this->Comm_model->send_message(array(
                     array(
                         'e_inbound_u_id' => 2738, //Initiated by PA
                         'e_outbound_u_id' => $fetch_us[0]['u_id'],
-                        'i_message' => 'I am unable to respond to your messages unless you enroll in a coaching plan that will connect you to an industry expert for live chats, assignment review and more',
+                        'i_message' => 'You are currently unsubscribed from Mench. Would you like to activate your account?',
+                        'quick_replies' => array(
+                            array(
+                                'content_type' => 'text',
+                                'title' => 'Yes, Re-Activate',
+                                'payload' => 'ACTIVATE_YES',
+                            ),
+                            array(
+                                'content_type' => 'text',
+                                'title' => 'Stay Unsubscribed',
+                                'payload' => 'ACTIVATE_NO',
+                            ),
+                        ),
                     ),
                 ));
 
-                //Offer coaching plan introduction:
-                $fb_ref = 'SUBSCRIBE10_7440';
+            } elseif(count($fetch_us[0]['u__ws'])==0){
 
-                */
+                //Ask if they are interested to join the primary intent:
+                return $this->Comm_model->fb_identify_activate($fp_psid, 'SUBSCRIBE10_6623', $fb_message_received);
+
+            } else {
+
+                //Let them know this is automated and no humans available?
+                //For now we will not since we will be monitoring all messages to build MVP
 
             }
 
-        }
+        } elseif(substr_count($fb_ref, 'ACTIVATE_')==1) {
 
+            if($fb_ref=='ACTIVATE_YES'){
 
-        if(substr_count($fb_ref, 'SUBSCRIBE10_')==1) {
+                //Update User table status:
+                $this->Db_model->u_update( $fetch_us[0]['u_id'] , array(
+                    'u_status' => 1,
+                ));
+
+                //Inform them:
+                $this->Comm_model->send_message(array(
+                    array(
+                        'e_inbound_u_id' => 2738, //Initiated by PA
+                        'e_outbound_u_id' => $fetch_us[0]['u_id'],
+                        'i_message' => 'Sweet, you account is now activated but you are not subscribed to any intents yet. '.$lets_command_guide,
+                    ),
+                ));
+
+            } elseif($fb_ref=='ACTIVATE_NO'){
+
+                $this->Comm_model->send_message(array(
+                    array(
+                        'e_inbound_u_id' => 2738, //Initiated by PA
+                        'e_outbound_u_id' => $fetch_us[0]['u_id'],
+                        'i_message' => 'Ok, your account will remain unsubscribed. '.$lets_command_guide,
+                    ),
+                ));
+
+            }
+
+        } elseif(substr_count($fb_ref, 'SUBSCRIBE10_')==1) {
 
             //Validate this intent:
             $c_id = intval(one_two_explode('SUBSCRIBE10_', '', $fb_ref));
