@@ -617,22 +617,29 @@ function echo_k($k, $is_inbound){
 
     $ui = '<a href="/my/actionplan/'.$k['k_w_id'].'/'.$k['c_id'].'" class="list-group-item">';
 
+    //Different pointer position based on direction:
     if($is_inbound){
         $ui .= '<span class="pull-left">';
         $ui .= '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-left"></i></span>';
         $ui .= '</span>';
-        $ui .= ' '.$k['c_outcome'];
     } else {
         $ui .= '<span class="pull-right">';
         $ui .= '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-right"></i></span>';
         $ui .= '</span>';
+    }
+
+    //Same body:
+    if(isset($k['w_c_id']) && $is_inbound && $k['w_c_id']==$k['c_id']){
+        //This is the parent subscription!
+        $ui .= echo_status('w_status',$k['w_status'],1,'right');
+    } else {
         $ui .= echo_status('k_status',$k['k_status'],1,'right');
-        $ui .= ' '.$k['c_outcome'];
-        $ui .= ' <i class="fas fa-lightbulb-on"></i> '.$k['c__tree_all_count'];
-        $ui .= ' <i class="fas fa-clock"></i> '.echo_hour_range($k, true);
-        if(strlen($k['k_notes'])>0){
-            $ui .= ' <i class="fas fa-comment-dots"></i> '.htmlentities($k['k_notes']);
-        }
+    }
+    $ui .= ' '.$k['c_outcome'];
+    $ui .= ' <i class="fas fa-lightbulb-on"></i> '.$k['c__tree_all_count'];
+    $ui .= ' <i class="fas fa-clock"></i> '.echo_hour_range($k, true);
+    if(strlen($k['k_notes'])>0){
+        $ui .= ' <i class="fas fa-edit"></i> '.htmlentities($k['k_notes']);
     }
 
     $ui .= '</a>';
@@ -805,7 +812,6 @@ function echo_experts($c, $micro=false){
 }
 
 function echo_concept($c, $micro=false){
-    $c['c__tree_all_count']--; //To exclude top intent
     return '<span data-toggle="tooltip" title="'.$c['c__tree_all_count'].' Concept'.echo__s($c['c__tree_all_count']).' will share key insights (and actionable tasks) to '.$c['c_outcome'].'" data-placement="top" class="underdot">'.$c['c__tree_all_count'].( $micro ? '' : ' Concept'.echo__s($c['c__tree_all_count']) ).'</span>';
 }
 
@@ -1096,7 +1102,7 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
         $ui .= '&nbsp;<a href="/'.$c['c_id'].'" class="badge badge-primary" target="_blank" style="display:inline-block; margin-right:-1px; width:40px;" data-toggle="tooltip" title="Open Landing Page with Intent tree overview & Messenger subscription button" data-placement="left"><i class="fas fa-external-link-square-alt" style="position: absolute; top: -7px; right: 3px; font-size: 0.85em;"></i><i class="fas fa-shopping-cart"></i></a> ';
     } else {
         //Show link to travel down the tree:
-        $ui .= '&nbsp;<a href="/intents/'.$c['c_id'].'" class="badge badge-primary" style="display:inline-block; margin-right:-1px; width:40px;"><span class="btn-counter outbound-counter-'.$c['c_id'].'">'.($c['c__tree_all_count']-1).'</span><i class="'.( $is_inbound && $level<=2 ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></a> ';
+        $ui .= '&nbsp;<a href="/intents/'.$c['c_id'].'" class="badge badge-primary" style="display:inline-block; margin-right:-1px; width:40px;"><span class="btn-counter outbound-counter-'.$c['c_id'].'">'.$c['c__tree_all_count'].'</span><i class="'.( $is_inbound && $level<=2 ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></a> ';
     }
 
 

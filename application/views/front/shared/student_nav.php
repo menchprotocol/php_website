@@ -17,7 +17,8 @@ $navigation = array(
         //Is this a logged-in admin?
         $udata = $this->session->userdata('user');
         if(isset($udata) && count($udata)>0){
-            echo '<li class="pull-right"><a href="/intents/6623">Console <i class="fas fa-chevron-circle-right"></i></a></li>';
+            $uri_segment_4 = intval($this->uri->segment(4));
+            echo '<li class="pull-right"><a href="/intents/'.( $uri_segment_4 ? $uri_segment_4 : 6623 ).'">Console <i class="fas fa-chevron-circle-right"></i></a></li>';
         }
 
         //Logout button:

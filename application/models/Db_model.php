@@ -23,11 +23,81 @@ class Db_model extends CI_Model {
         return $this->db->affected_rows();
     }
 
-    function k_mark_complete($k_id){
-        //TODO Go through and determine whats the new status
-        $new_k_status = 2;
-        return $new_k_status;
+
+    function k_mark_complete($k, $w){
+
+        //First look at immediate children of $k['cr_outbound_c_id'] to see if they are all complete:
+        $incomplete_child_cs = $this->Db_model->k_fetch(array(
+            'k_w_id' => $w['w_id'],
+            'k_status <=' => 1, //Anything with k_status<=1 is incomplete
+            'cr_inbound_c_id' => $k['cr_outbound_c_id'],
+        ), array('cr','cr_c_out'));
+
+        if(count($incomplete_child_cs)==0){
+
+            //Yes they are (or no children exists)! So this intent is complete!
+            //Now let's recursively fetch all the siblings for this subscription:
+            $cr_inbound_c_id = $k['cr_inbound_c_id'];
+            $cr_outbound_c_id = $k['cr_outbound_c_id'];
+            while(count($this->Db_model->k_fetch(array(
+                    'k_w_id' => $w['w_id'],
+                    'cr_inbound_c_id' => $cr_inbound_c_id, //Fetch children of parent intent which are the siblings of current intent
+                    'cr_outbound_c_id !=' => $cr_outbound_c_id, //Exclude current intent (as we're about to mark is as complete)
+                    'k_status <=' => 1, //Anything with k_status<=1 is incomplete
+                ), array('cr')))==0){
+
+                //Is the top representing the entire subscription?
+                if($w['w_c_id']==$cr_inbound_c_id){
+
+                    //OMG YES! Everything is complete!
+                    //TODO Log completion engagement for subscription and inform student they are done
+
+                    //The entire subscription is complete!
+                    $this->Db_model->w_update( $w['w_id'] , array(
+                        'w_status' => 2,
+                    ));
+
+                    //We know there are no more siblings at this is the top:
+                    break;
+
+                } else {
+
+                    //Fetch one level up:
+                    $parents = $this->Db_model->k_fetch(array(
+                        'k_w_id' => $w['w_id'],
+                        'k_status IN (1,-1)' => null, //auto-updatable statuses
+                        'cr_outbound_c_id' => $cr_inbound_c_id,
+                    ), array('cr'));
+
+                    if(count($parents)==0){
+                        //Parent does not have an auto-updatable status!
+                        break;
+                    }
+
+                    //Update all parents to done:
+                    foreach($parents as $pk){
+                        $this->Db_model->k_update($pk['k_id'], array(
+                            'k_status' => 2, //Complete!
+                        ));
+                    }
+
+                    //level-up pointer:
+                    $cr_inbound_c_id = $parents[0]['cr_inbound_c_id'];
+                    $cr_outbound_c_id = $parents[0]['cr_outbound_c_id'];
+                }
+            }
+
+            //All children are complete, so set k_status=2 which means complete!
+            return 2;
+
+        } else {
+
+            //Not all children are complete, so set k_status=1 which means working on...
+            return 1;
+
+        }
     }
+
 
     function k_create($insert_columns){
 
@@ -273,6 +343,17 @@ class Db_model extends CI_Model {
 
             }
 
+            //Log subscription engagement:
+            $this->Db_model->e_create(array(
+                'e_inbound_u_id' => $insert_columns['w_outbound_u_id'],
+                'e_outbound_u_id' => $insert_columns['w_outbound_u_id'],
+                'e_json' => $insert_columns,
+                'e_inbound_c_id' => 7465, //Subscribed
+                'e_w_id' => $insert_columns['w_id'],
+                'e_outbound_c_id' => $insert_columns['w_c_id'],
+            ));
+
+            //Return results:
             return $insert_columns;
 
         } else {

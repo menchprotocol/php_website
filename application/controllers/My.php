@@ -90,7 +90,7 @@ class My extends CI_Controller {
             if(!$w_id || !$c_id){
                 //User with a single subscription
                 $w_id = $subscriptions[0]['w_id'];
-                $c_id = $subscriptions[0]['c_id'];
+                $c_id = $subscriptions[0]['c_id']; //TODO set to current/focused intent
             }
 
             //We have a single item to load:
@@ -142,35 +142,43 @@ class My extends CI_Controller {
     function update_k_save(){
 
         //Validate integrity of request:
-        if(
-               !isset($_POST['k_id']) || intval($_POST['k_id'])<=0
-            || !isset($_POST['page_load_time']) || !intval($_POST['page_load_time'])
-            || !isset($_POST['us_notes'])
-        ){
-            die('<span style="color:#FF0000;">Error: Missing Core Data</span>');
+        if(!isset($_POST['k_id']) || intval($_POST['k_id'])<=0 || !isset($_POST['k_notes'])){
+            return redirect_message('/my/actionplan','<div class="alert alert-danger" role="alert">Error: Missing Core Data.</div>');
         }
 
         //Fetch student name and details:
         $udata = $this->session->userdata('user');
         $ks = $this->Db_model->k_fetch(array(
             'k_id' => $_POST['k_id'],
-        ), array('cr','cr_c_in'));
+        ), array('w','cr','cr_c_out'));
+
         if(!(count($ks)==1)){
-            die('<span style="color:#FF0000;">Error: Invalid submission ID</span>');
+            return redirect_message('/my/actionplan','<div class="alert alert-danger" role="alert">Error: Invalid submission ID.</div>');
         }
+        $k_url = '/my/actionplan/'.$ks[0]['k_w_id'].'/'.$ks[0]['c_id'];
+
 
         //Do we have what it takes to mark as complete?
-        if($ks[0]['c_require_url_to_complete'] && count(extract_urls($_POST['us_notes']))<1){
-            die('<span style="color:#FF0000;">Error: URL Required to mark as complete. <a href=""><b><u>Refresh this page</u></b></a> and try again.</span>');
-        } elseif($ks[0]['c_require_notes_to_complete'] && strlen($_POST['us_notes'])<1){
-            die('<span style="color:#FF0000;">Error: Notes Required to mark as complete. <a href=""><b><u>Refresh this page</u></b></a> and try again.</span>');
+        if($ks[0]['c_require_url_to_complete'] && count(extract_urls($_POST['k_notes']))<1){
+            return redirect_message($k_url,'<div class="alert alert-danger" role="alert">Error: URL Required to mark ['.$ks[0]['c_outcome'].'] as complete.</div>');
+        } elseif($ks[0]['c_require_notes_to_complete'] && strlen($_POST['k_notes'])<1){
+            return redirect_message($k_url,'<div class="alert alert-danger" role="alert">Error: Notes Required to mark ['.$ks[0]['c_outcome'].'] as complete.</div>');
         }
 
+
+        //Did anything change?
+        $status_changed = ( $ks[0]['k_status']<=0 );
+        $notes_changed = !($ks[0]['k_notes']==trim($_POST['k_notes']));
+        if(!$notes_changed && !$status_changed){
+            //Nothing seemed to change! Let them know:
+            return redirect_message($k_url,'<div class="alert alert-info" role="alert">Note: Nothing saved because nothing was changed.</div>');
+        }
+
+        //All good, move forward with the update:
         //Save a copy of the student completion report:
         $this->Db_model->e_create(array(
             'e_inbound_u_id' => ( isset($udata['u_id']) ? $udata['u_id'] : $ks[0]['k_outbound_u_id'] ),
-            'e_status' => -1, //Auto Verified
-            'e_text_value' => trim($_POST['us_notes']),
+            'e_text_value' => ( $notes_changed ? trim($_POST['k_notes']) : '' ),
             'e_inbound_c_id' => 33, //Completion Report
             'e_outbound_c_id' => $ks[0]['c_id'],
             'e_json' => array(
@@ -179,18 +187,28 @@ class My extends CI_Controller {
             ),
         ));
 
+        //Update k:
         $k_update_array = array(
-            'k_notes' => trim($_POST['us_notes']),
             'k_last_updated' => date("Y-m-d H:i:s"),
         );
 
-        if($ks[0]['k_status']<=0){
+        if($notes_changed){
             //Also update k_status, determine what it should be:
-            $k_update_array['k_status'] = $this->Db_model->k_mark_complete($ks[0]['k_id']);
+            $k_update_array['k_notes'] = trim($_POST['k_notes']);
+        }
+
+        if($status_changed){
+            //Also update k_status, determine what it should be:
+            $k_update_array['k_status'] = $this->Db_model->k_mark_complete($ks[0], $ks[0]);
         }
 
         //Update subscription:
         $this->Db_model->k_update($ks[0]['k_id'], $k_update_array);
+
+        //Redirect back to page with success message:
+        return redirect_message($k_url,'<div class="alert alert-success" role="alert">Submission saved!</div>');
+
+
 
 
         //TODO Update tree upwards and dispatch drip/instant message logic as needed!
@@ -250,12 +268,6 @@ class My extends CI_Controller {
             }
         }
         */
-
-        //TODO Is Subscription complete?
-
-
-        //Redirect back to page:
-        header( 'Location: /my/actionplan/'.$ks[0]['k_w_id'].'/'.$ks[0]['cr_outbound_c_id']);
     }
 
 

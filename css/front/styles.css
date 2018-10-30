@@ -65,10 +65,15 @@ body{ background-color: #FFF !important;}
     color:#2f2739;
 }
 
+.btn-xs.btn-black{
+    font-size: 0.6em !important;
+    font-weight: normal !important;
+}
+
 .student-h3{
     font-size:1.6em;
-    line-height:120%;
-    margin-bottom:15px !important;
+    line-height:110% !important;
+    margin:15px 0 !important;
 }
 
 .badge-secondary{

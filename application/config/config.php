@@ -7,8 +7,8 @@ date_default_timezone_set('America/Los_Angeles');
 //Primary website variables:
 $config['website'] = array(
 
-    'version' => '0.57991',
-    'released' => '2018-10-28', //Format: YYYY-MM-DD
+    'version' => '0.58',
+    'released' => '2018-10-30', //Format: YYYY-MM-DD
 
     'name' => 'Mench',
     'url' => 'https://mench.com/', //Important to end with "/" as other links depend on this.
@@ -24,13 +24,11 @@ $config['fb_settings'] = array(
 );
 
 //Used to generate application status links:
-$config['application_status_salt'] = 'SALTs3cr3t777';
-$config['bot_activation_salt'] = 'S@LTB0Ts3cr3t4';
 $config['file_limit_mb'] = 25; //Server setting is 32MB. see here: mench.com/ses
 $config['message_max'] = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
-$config['entity_per_page'] = 100;
-$config['universal_intents'] = array(7433); //Get to know how Mench Personal Assistant works
-$config['onhold_intents'] = array(7240,6629,6630,7248,7435,369,6653);
+$config['entity_per_page'] = 50;
+$config['universal_intents'] = array(7433); //Get to know how Mench Personal Assistant works //TODO Implement...
+$config['onhold_intents'] = array(7240,6629,6630,7248,7435,369,6653); //TODO Replace with drafting intents c_status=0
 $config['content_types'] = array( //This should mirror outbound intents of @3000
     3147 => 'Online Course',
     3005 => 'Book',
@@ -53,7 +51,7 @@ $config['engagement_subscriptions'] = array(
     ),
     array(
         'admin_emails' => array('shervin@mench.com'),
-        'subscription' => array(9,72,7452,8),
+        'subscription' => array(9,72,7465,7452,8),
     ),
 );
 
@@ -228,7 +226,7 @@ $config['object_statuses'] = array(
         ),
         2 => array(
              's_name'  => 'Completed',
-             's_desc'  => 'Concept is complete',
+             's_desc'  => 'All subscription intents are marked as complete',
              's_icon' => 'fas fa-check-square',
         ),
         3 => array(

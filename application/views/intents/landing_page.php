@@ -67,7 +67,7 @@
         <div class="support_p">
 
             <!-- Show two primary ones -->
-            <div class="dash-label"><span class="icon-left"><i class="fas fa-lightbulb-on"></i></span> <?= ($c['c__tree_all_count']-1) ?> Key Concepts</div>
+            <div class="dash-label"><span class="icon-left"><i class="fas fa-lightbulb-on"></i></span> <?= $c['c__tree_all_count'] ?> Key Concepts</div>
             <div class="dash-label"><span class="icon-left"><i class="fas fa-clock"></i></span> <?= echo_hour_range($c) ?> to Complete</div>
 
             <?php if(strlen($c['c__tree_contents'])>0){ ?>
@@ -114,7 +114,7 @@
 
 
             echo '<span style="font-size:0.8em; font-weight:300; margin-left:5px; display:inline-block;">';
-            echo ( $c1['c__tree_all_count']>0 ? '<span style="padding-right:5px;"><i class="fas fa-lightbulb-on"></i>'.($c1['c__tree_all_count']).'</span>' : '' );
+            echo ( $c1['c__tree_all_count']>0 ? '<span style="padding-right:5px;"><i class="fas fa-lightbulb-on"></i>'.$c1['c__tree_all_count'].'</span>' : '' );
             echo '<span><i class="fas fa-clock"></i>'.echo_hour_range($c1, true).'</span>';
             echo '</span>';
 
@@ -131,7 +131,7 @@
 
                 if(count($c1['c__child_intents'])>0){
 
-                    echo '<div style="margin:0 0 5px; padding-top:10px; font-size:1.1em;">'.$c1['c_outcome'].' with '.($c1['c__tree_all_count']-1).' sub-concepts'.( count($c1['c__child_intents'])<($c1['c__tree_all_count']-1) ? ' across '.count($c1['c__child_intents']).' branches' : ''  ).':</div>';
+                    echo '<div style="margin:0 0 5px; padding-top:10px; font-size:1.1em;">'.$c1['c_outcome'].' with '.$c1['c__tree_all_count'].' sub-concepts'.( count($c1['c__child_intents'])<$c1['c__tree_all_count'] ? ' across '.count($c1['c__child_intents']).' branches' : ''  ).':</div>';
                     echo '<ul style="list-style:none; margin-left:-30px; font-size:1em;">';
                     $landing_pagetask_visible += ( count($c1['c__child_intents'])==$landing_pagetask_visible+1 ? 1 : 0 );
                     foreach($c1['c__child_intents'] as $c2_counter=>$c2){

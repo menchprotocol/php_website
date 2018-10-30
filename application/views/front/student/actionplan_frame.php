@@ -4,7 +4,7 @@
 $udata = $this->session->userdata('user');
 $fb_settings = $this->config->item('fb_settings');
 
-if(count($udata['u__ws'])){
+if(isset($udata['u__ws']) && count($udata['u__ws'])){
 
     //User seems to be accessing the Action Plan from their browser
 
