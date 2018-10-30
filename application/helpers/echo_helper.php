@@ -630,6 +630,9 @@ function echo_k($k, $is_inbound){
         $ui .= ' '.$k['c_outcome'];
         $ui .= ' <i class="fas fa-lightbulb-on"></i> '.$k['c__tree_all_count'];
         $ui .= ' <i class="fas fa-clock"></i> '.echo_hour_range($k, true);
+        if(strlen($k['k_notes'])>0){
+            $ui .= ' <i class="fas fa-comment-dots"></i> '.htmlentities($k['k_notes']);
+        }
     }
 
     $ui .= '</a>';

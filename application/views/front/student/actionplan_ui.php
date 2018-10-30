@@ -4,11 +4,6 @@
 $application_status_salt = $this->config->item('application_status_salt');
 $udata = $this->session->userdata('user');
 $page_load_time = time();
-$messages = $this->Db_model->i_fetch(array(
-    'i_outbound_c_id' => $c['c_id'],
-    'i_status' => 1, //On start messages only
-));
-
 ?>
 <script>
 function update_k_start(){
@@ -58,7 +53,7 @@ if(count($k_ins)==0){
         echo echo_status('w_status',$subscriptions[0]['w_status']);
         echo ' &nbsp;&nbsp;<i class="fas fa-lightbulb-on"></i> '.$subscriptions[0]['c__tree_all_count'];
         echo ' &nbsp;&nbsp;<i class="fas fa-clock"></i> '.echo_hour_range($subscriptions[0]);
-        echo ' &nbsp;&nbsp;<i class="fas fa-calendar-check"></i> '.echo_time($subscriptions[0]['w_timestamp']);
+        //echo ' &nbsp;&nbsp;<i class="fas fa-calendar-check"></i> '.echo_time($subscriptions[0]['w_timestamp']);
         //TODO Show coach name if w_inbound_u_id>0
         //TODO show subscription pace data such as start/end time, weekly rate & notification type
     echo '</div>';
@@ -77,7 +72,7 @@ if(count($k_ins)==0){
     */
 
     //Show completion progress for the single inbound intent:
-    echo '<div id="save_report" class="sub_title">';
+    echo '<div class="sub_title">';
 
         echo echo_status('k_status',$k_ins[0]['k_status']);
 
@@ -92,18 +87,46 @@ if(count($k_ins)==0){
             echo '<div><i class="fas fa-comment-dots initial"></i> '.echo_link(nl2br(htmlentities($k_ins[0]['k_notes']))).'</div>';
         }
 
-        //Show button in its own row:
-        echo '<div class="update_k_save" id="initiate_done"><a href="javascript:update_k_start();" class="btn btn-tight btn-black">'.($k_ins[0]['k_status']<=0 ? '<i class="fas fa-check-square"></i> Mark as Complete' : '<i class="fas fa-edit"></i> Modify Report' ).'</a></div>';
+
+    echo '</div>';
+
+
+    echo '<div>';
+
+        //Show all messages:
+        $messages = $this->Db_model->i_fetch(array(
+            'i_outbound_c_id' => $c['c_id'],
+            'i_status' => 1, //On start messages only
+        ));
+        if(count($messages)>0){
+            $hide_messages_onload = ( count($k_ins)==0 || $k_ins[0]['k_status']<=0);
+            echo '<div class="tips_content">';
+            foreach($messages as $i){
+                if($i['i_status']==1){
+                    echo '<div class="tip_bubble">';
+                    echo echo_i( array_merge( $i , array(
+                        'e_outbound_u_id' => $subscriptions[0]['u_id'],
+                    )) , $subscriptions[0]['u_full_name'] );
+                    echo '</div>';
+                }
+            }
+            echo '</div>';
+        }
+
+
+
+    //Show button in its own row:
+        echo '<div class="update_k_save" id="initiate_done"><a href="javascript:update_k_start();" class="btn btn-tight btn-black">'.($k_ins[0]['k_status']<=0 ? '<i class="fas fa-check-square"></i> Mark as Complete' : '<i class="fas fa-edit"></i> Modify' ).'</a></div>';
 
 
         //Echo hidden completion box on page:
-        if($k_ins[0]['c_require_url_to_complete'] && $k_ins[0]['c_require_notes_to_complete']){
+        if($c['c_require_url_to_complete'] && $c['c_require_notes_to_complete']){
             $red_note = 'Requires a URL & completion notes';
             $textarea_note = 'Include a URL & completion notes (and optional feedback) to mark as complete';
-        } elseif($k_ins[0]['c_require_url_to_complete']){
+        } elseif($c['c_require_url_to_complete']){
             $red_note = 'Requires a URL';
             $textarea_note = 'Include a URL (and optional feedback) to mark as complete';
-        } elseif($k_ins[0]['c_require_notes_to_complete']){
+        } elseif($c['c_require_notes_to_complete']){
             $red_note = 'Requires completion notes';
             $textarea_note = 'Include completion notes (and optional feedback) to mark as complete';
         } else {
@@ -119,7 +142,7 @@ if(count($k_ins)==0){
                 if($red_note) {
                     echo '<div style="color:#FF0000;"><i class="fas fa-exclamation-triangle"></i> ' . $red_note . '</div>';
                 }
-                echo '<textarea name="us_notes" class="form-control maxout" placeholder="'.$textarea_note.'">'.$k_ins[0]['k_notes'].'</textarea>';
+                echo '<textarea name="us_notes" class="form-control maxout" placeholder="'.$textarea_note.'" style="padding:5px !important;">'.$k_ins[0]['k_notes'].'</textarea>';
                 echo '<button type="submit" class="btn btn-tight btn-black"><i class="fas fa-check-circle"></i>Save</button>';
             echo '</div>';
 
@@ -129,30 +152,13 @@ if(count($k_ins)==0){
 }
 
 
-//Show all messages:
-if(count($messages)>0){
-
-    $hide_messages_onload = ( count($k_ins)==0 || $k_ins[0]['k_status']<=0);
-
-    echo '<div class="tips_content">';
-    foreach($messages as $i){
-        if($i['i_status']==1){
-            echo '<div class="tip_bubble">';
-            echo echo_i( array_merge( $i , array(
-                'e_outbound_u_id' => $subscriptions[0]['u_id'],
-            )) , $subscriptions[0]['u_full_name'] );
-            echo '</div>';
-        }
+if(count($k_outs)>0){
+    echo '<h5 style="margin-top: 10px;">Complete '.( $c['c_is_any'] ? 'Any' : 'All' ).':</h5>';
+    echo '<div class="list-group">';
+    foreach($k_outs as $k){
+        echo echo_k($k, 0);
     }
     echo '</div>';
 }
-
-
-
-echo '<div class="list-group" style="margin-top: 10px;">';
-foreach($k_outs as $k){
-    echo echo_k($k, 0);
-}
-echo '</div>';
 
 ?>
