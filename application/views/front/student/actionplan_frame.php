@@ -1,10 +1,12 @@
 <?php
 
 //Do they have a local session? (i.e. Browser login):
-$uenrollment = $this->session->userdata('uenrollment');
+$udata = $this->session->userdata('user');
 $fb_settings = $this->config->item('fb_settings');
 
-if(isset($uenrollment) && count($uenrollment)>0){
+if(count($udata['u__ws'])){
+
+    //User seems to be accessing the Action Plan from their browser
 
     //Include header:
     $this->load->view('front/shared/student_nav' , array(
@@ -14,7 +16,7 @@ if(isset($uenrollment) && count($uenrollment)>0){
     //Fetch page instantly as we know who this is:
     ?>
     <script>
-        $.post("/my/display_actionplan/0/<?= (isset($b_id) ? intval($b_id) : $uenrollment['b_id']) ?>/<?= ( isset($c_id) ? intval($c_id) : $uenrollment['b_outbound_c_id']) ?>", {}, function(data) {
+        $.post("/my/display_actionplan/0/<?= ( isset($w_id) ? intval($w_id) : $udata['u__ws'][0]['w_id'] ) ?>/<?= ( isset($c_id) ? intval($c_id) : $udata['u__ws'][0]['w_c_id'] ) ?>", {}, function(data) {
             $( "#page_content").html(data);
         });
     </script>
@@ -44,7 +46,7 @@ if(isset($uenrollment) && count($uenrollment)>0){
                     var psid = thread_context.psid;
                     var signed_request = thread_context.signed_request;
                     //Fetch Page:
-                    $.post("/my/display_actionplan/"+psid+"/<?= (isset($b_id) ? intval($b_id) : 0) ?>/<?= ( isset($c_id) ? intval($c_id) : 0) ?>?sr="+signed_request, {}, function(data) {
+                    $.post("/my/display_actionplan/"+psid+"/<?= ( isset($w_id) ? intval($w_id) : 0) ?>/<?= ( isset($c_id) ? intval($c_id) : 0) ?>?sr="+signed_request, {}, function(data) {
                         //Update UI to confirm with user:
                         $( "#page_content").html(data);
                     });
@@ -60,6 +62,7 @@ if(isset($uenrollment) && count($uenrollment)>0){
 
     </script>
     <?php
+
 }
 ?>
 

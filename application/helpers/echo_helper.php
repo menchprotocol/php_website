@@ -599,11 +599,41 @@ function echo_link($text){
     return preg_replace('!(((f|ht)tp(s)?://)[-a-zA-Zа-яА-Я()0-9@:%_+.~#?&;//=]+)!i', '<a href="$1" target="_blank"><u>$1</u></a>', $text);
 }
 
+function echo_w($w){
+    $ui = '<a href="/my/actionplan/'.$w['w_id'].'/'.$w['w_c_id'].'" class="list-group-item">';
+    $ui .= '<span class="pull-right">';
+    $ui .= '<span class="badge badge-primary"><i class="fas fa-angle-right"></i></span>';
+    $ui .= '</span>';
+    $ui .= echo_status('w_status',$w['w_status'],1,'right');
+    $ui .= ' '.$w['c_outcome'];
+    $ui .= ' <i class="fas fa-lightbulb-on"></i> '.$w['c__tree_all_count'];
+    $ui .= ' &nbsp;<i class="fas fa-clock"></i> '.echo_hour_range($w,1);
+    $ui .= '</a>';
+    return $ui;
+}
 
-function echo_completion_report($us_eng){
-    echo echo_status('e_status',$us_eng['e_status']);
-    echo '<div style="margin:10px 0 10px;"><span class="status-label" style="color:#2f2739;"><i class="fas fa-clock initial"></i>Completion Time:</span> '.echo_time($us_eng['e_timestamp']).' PST</div>';
-    echo '<div style="margin-bottom:10px;"><span class="status-label" style="color:#2f2739;"><i class="fas fa-comment-dots initial"></i>Your Comments:</span> '.( strlen($us_eng['e_text_value'])>0 ? echo_link(nl2br(htmlentities($us_eng['e_text_value']))) : 'None' ).'</div>';
+function echo_k($k, $is_inbound){
+
+    $ui = '<a href="/my/actionplan/'.$k['k_w_id'].'/'.$k['c_id'].'" class="list-group-item">';
+
+    if($is_inbound){
+        $ui .= '<span class="pull-left">';
+        $ui .= '<span class="badge badge-primary"><i class="fas fa-angle-left"></i></span>';
+        $ui .= '</span>';
+        $ui .= ' '.$k['c_outcome'];
+    } else {
+        $ui .= '<span class="pull-right">';
+        $ui .= '<span class="badge badge-primary"><i class="fas fa-angle-right"></i></span>';
+        $ui .= '</span>';
+        $ui .= echo_status('k_status',$k['k_status'],1,'right');
+        $ui .= ' '.$k['c_outcome'];
+        $ui .= ' <i class="fas fa-lightbulb-on"></i> '.$k['c__tree_all_count'];
+        $ui .= ' <i class="fas fa-clock"></i> '.echo_hour_range($k, true);
+    }
+
+    $ui .= '</a>';
+
+    return $ui;
 }
 
 
@@ -979,7 +1009,7 @@ function echo_status($object=null,$status=null,$micro_status=false,$data_placeme
             if(is_null($data_placement) && $micro_status){
                 return ( isset($result['s_icon']) ? '<i class="'.$result['s_icon'].' initial"></i> ' : '<i class="fas fa-sliders-h initial"></i> ' );
             } else {
-                return '<span class="status-label" '.( isset($result['s_desc']) && !is_null($data_placement) ? 'data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$result['s_desc'].'" style="border-bottom:1px dotted #444; padding-bottom:1px;"':'style="cursor:pointer;"').'>'.( isset($result['s_icon']) ? '<i class="'.$result['s_icon'].' initial"></i> ' : '<i class="fas fa-sliders-h initial"></i> ' ).($micro_status?'':$result['s_name']).'</span>';
+                return '<span class="status-label" '.( (isset($result['s_desc']) || $micro_status) && !is_null($data_placement) ? 'data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.($micro_status ? $result['s_name'] : '').( isset($result['s_desc']) ? ($micro_status ? ': ' : '').$result['s_desc'] : '' ).'" style="border-bottom:1px dotted #444; padding-bottom:1px;"':'style="cursor:pointer;"').'>'.( isset($result['s_icon']) ? '<i class="'.$result['s_icon'].' initial"></i> ' : '<i class="fas fa-sliders-h initial"></i> ' ).($micro_status?'':$result['s_name']).'</span>';
             }
 
         }

@@ -7,7 +7,7 @@ date_default_timezone_set('America/Los_Angeles');
 //Primary website variables:
 $config['website'] = array(
 
-    'version' => '0.5798',
+    'version' => '0.5799',
     'released' => '2018-10-28', //Format: YYYY-MM-DD
 
     'name' => 'Mench',
@@ -194,19 +194,24 @@ $config['object_statuses'] = array(
             's_icon' => 'fal fa-minus-square',
         ),
         0 => array(
-            's_name'  => 'Pending',
-            's_desc'  => 'Intent pending completion by student',
+            's_name'  => 'Not Started',
+            's_desc'  => 'Pending completion',
             's_icon' => 'fal fa-square',
         ),
         1 => array(
-            's_name'  => 'Completed',
-            's_desc'  => 'Student completed an intent',
-            's_icon' => 'fal fa-check-square',
+            's_name'  => 'Working On',
+            's_desc'  => 'Work has started and but some concepts are pending completion',
+            's_icon' => 'fal fa-caret-square-right',
         ),
         2 => array(
-            's_name'  => 'Verified',
-            's_desc'  => 'Completed intent has been verified by a Mench moderator',
+            's_name'  => 'Completed',
+            's_desc'  => 'Concept is complete',
             's_icon' => 'fas fa-check-square',
+        ),
+        3 => array(
+            's_name'  => 'Approved',
+            's_desc'  => 'Reviewed and approved by Mench moderator',
+            's_icon' => 'fas fa-badge-check',
         ),
     ),
 
@@ -214,17 +219,22 @@ $config['object_statuses'] = array(
         -1 => array(
             's_name'  => 'Unsubscribed',
             's_desc'  => 'Student cancelled their subscription',
-            's_icon' => 'fas fa-times-hexagon',
+            's_icon' => 'fas fa-minus-square initial',
         ),
         1 => array(
-            's_name'  => 'Subscribed',
-            's_desc'  => 'Student has an active subscription to an intent',
-            's_icon' => 'fas fa-badge',
+             's_name'  => 'Subscribed',
+             's_desc'  => 'Work has started and pending completion',
+             's_icon' => 'fal fa-caret-square-right',
         ),
-        5 => array(
-            's_name'  => 'Completed',
-            's_desc'  => 'Student successfully completed all tasks and intentions',
-            's_icon' => 'fas fa-badge-check',
+        2 => array(
+             's_name'  => 'Completed',
+             's_desc'  => 'Concept is complete',
+             's_icon' => 'fas fa-check-square',
+        ),
+        3 => array(
+             's_name'  => 'Approved',
+             's_desc'  => 'Reviewed and approved by Mench moderator',
+             's_icon' => 'fas fa-badge-check',
         ),
     ),
 

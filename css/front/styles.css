@@ -70,6 +70,10 @@ body{ background-color: #FFF !important;}
     color:#FFF;
 }
 
+.blue{
+    color:#0084ff !important;
+}
+
 .badge-secondary .fas {
     color:#FFF !important;
 }
@@ -136,11 +140,11 @@ a.badge-primary:hover {
      color:#666;
  }
 
-.child_enrollments {
+.child_subscriptions {
     margin:0 0 -7px -40px;
     list-style: none;
 }
-.child_enrollments li {
+.child_subscriptions li {
     font-size:0.8em;
     border-top: 2px solid #000;
     padding:5px 5px 5px 7px;
@@ -1121,7 +1125,7 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px; }
     color:#2f2739 !important;
 }
 
-#funnel .quill_content {
+#funnel .sub_title {
     font-size:0.7em;
     line-height:120%;
     font-weight:normal;
@@ -1138,7 +1142,7 @@ select.form-control{
     max-width: none !important;
 }
 
-#funnel .quill_content textarea{
+#funnel .sub_title textarea{
     width: 100% !important;
     height: 70px !important;
     font-size: 16px !important;
@@ -1146,11 +1150,11 @@ select.form-control{
     margin: 0 !important;
     max-width: 100%;
 }
-#funnel .quill_content textarea::placeholder {
+#funnel .sub_title textarea::placeholder {
     font-size:16px !important;
     color:#CCC !important;
 }
-#funnel .quill_content ul, #funnel .quill_content ol{
+#funnel .sub_title ul, #funnel .sub_title ol{
     margin-left:-20px;
 }
 #funnel .sub-title {
@@ -1689,7 +1693,7 @@ a .badge {
     line-height: 120%;
 }
 
-.enrollment_block{
+.subscription_block{
     border:2px solid #2f2739;
     padding:0;
     margin-top:25px;
@@ -1697,15 +1701,15 @@ a .badge {
     background-color:#EFEFEF;
 }
 
-.enrollment_checklist{
+.subscription_checklist{
     padding:7px;
 }
 
-.enrollment_checklist .checkbox {
+.subscription_checklist .checkbox {
     margin-left:25px;
 }
 
-.enrollment_footer{
+.subscription_footer{
     font-size: 0.8em;
     margin-top:7px;
     padding:7px;
@@ -1743,12 +1747,6 @@ a .badge {
     display: inline-block;
     margin-left:7px;
 }
-
-#all_enrollments{
-    margin:15px 0 30px;
-    display: none;
-}
-
 
 .status-label{
     color:#2f2739;

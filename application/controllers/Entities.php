@@ -512,21 +512,7 @@ class Entities extends CI_Controller {
         //Fetch user data:
         $users = $this->Db_model->u_fetch(array(
             'u_email' => strtolower($_POST['u_email']),
-        ));
-
-        //See if they have any active enrollments:
-        $active_enrollment = null;
-
-        if(count($users)==1){
-
-            $enrollments = $this->Db_model->remix_enrollments(array(
-                'ru_outbound_u_id' => $users[0]['u_id'],
-                'ru_status >=' => 4,
-            ));
-            //We'd need to see which enrollment to load now:
-            $active_enrollment = detect_active_enrollment($enrollments);
-
-        }
+        ), array('u__ws'));
 
         if(count($users)==0){
 
@@ -543,7 +529,9 @@ class Entities extends CI_Controller {
                 'e_json' => $_POST,
                 'e_inbound_c_id' => 9, //Support Needing Graceful Errors
             ));
+
             redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Your account has been de-activated. Contact us to re-active your account.</div>');
+
             return false;
 
         } elseif(!($_POST['u_password']==$master_password) && !($users[0]['u_password']==md5($_POST['u_password']))){
@@ -554,18 +542,10 @@ class Entities extends CI_Controller {
 
         }
 
-
         $session_data = array();
         $is_chrome = (strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome')!==false || strpos($_SERVER['HTTP_USER_AGENT'], 'CriOS')!==false);
         $is_coach = false;
         $is_student = false;
-
-        //Are they a student?
-        if($active_enrollment){
-            //They have admin rights:
-            $session_data['uenrollment'] = $active_enrollment;
-            $is_student = true;
-        }
 
         //Are they admin?
         if(array_any_key_exists(array(1308,1281),$users[0]['u__inbounds'])){

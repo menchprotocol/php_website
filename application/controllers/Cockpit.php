@@ -89,7 +89,7 @@ class Cockpit extends CI_Controller {
 	            ),
 	        ));
 	        $this->load->view('console/cockpit/udemy_all' , array(
-	            'il_overview' => $this->Db_model->fetch_il_overview(),
+	            'il_overview' => $this->Db_model->il_overview(),
 	        ));
 	        $this->load->view('console/console_footer');
 	        

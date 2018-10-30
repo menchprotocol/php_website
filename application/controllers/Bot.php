@@ -135,11 +135,7 @@ class Bot extends CI_Controller {
 
             //check the page ID:
             if(!isset($entry['id']) || !($entry['id']==$fb_settings['page_id'])){
-                $this->Db_model->e_create(array(
-                    'e_text_value' => 'facebook_webhook() received message from unknown Page ID ['.$entry['id'].']',
-                    'e_json' => $json_data,
-                    'e_inbound_c_id' => 8, //Platform Error
-                ));
+                //This can happen for the older webhook that we offered to other FB pages:
                 continue;
             } elseif(!isset($entry['messaging'])){
                 $this->Db_model->e_create(array(

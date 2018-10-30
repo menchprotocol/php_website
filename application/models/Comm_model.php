@@ -127,7 +127,6 @@ class Comm_model extends CI_Model {
         //Try finding user references... Is this psid already registered?
         //We either have the user in DB or we'll register them now:
         $fb_message_received = strtolower($fb_message_received);
-        $lets_command_guide = 'You can give me a command by starting a sentence with "Lets", for example: [Lets land a dream job], [Lets book new interviews] or [Lets create a great resume].';
         $fetch_us = $this->Db_model->u_fetch(array(
             'u_cache__fp_psid' => $fp_psid,
         ), array('u__ws'));
@@ -229,7 +228,7 @@ class Comm_model extends CI_Model {
                     array(
                         'e_inbound_u_id' => 2738, //Initiated by PA
                         'e_outbound_u_id' => $fetch_us[0]['u_id'],
-                        'i_message' => 'Awesome, would be happy to stay friends and help you accomplish your career goals. '.$lets_command_guide,
+                        'i_message' => 'Awesome, would be happy to stay friends and help you accomplish your career goals. '.$this->lang->line('bot_lets_intro'),
                     ),
                 ));
 
@@ -269,7 +268,7 @@ class Comm_model extends CI_Model {
                 $subscriptions = $this->Db_model->w_fetch(array(
                     'w_id' => intval($unsub_value),
                     'w_status >=' => 0,
-                ), array('w_c_id'));
+                ), array('c'));
 
                 //All good?
                 if(count($subscriptions)==1){
@@ -292,7 +291,7 @@ class Comm_model extends CI_Model {
                         array(
                             'e_inbound_u_id' => 2738, //Initiated by PA
                             'e_outbound_u_id' => $fetch_us[0]['u_id'],
-                            'i_message' => 'I have successfully unsubscribed you from your intention to '.$subscriptions[0]['c_outcome'].'. Say "Unsubscribe" again if you wish to stop all future communications. '.$lets_command_guide,
+                            'i_message' => 'I have successfully unsubscribed you from your intention to '.$subscriptions[0]['c_outcome'].'. Say "Unsubscribe" again if you wish to stop all future communications. '.$this->lang->line('bot_lets_intro'),
                         ),
                     ));
 
@@ -332,7 +331,7 @@ class Comm_model extends CI_Model {
                     array(
                         'e_inbound_u_id' => 2738, //Initiated by PA
                         'e_outbound_u_id' => $fetch_us[0]['u_id'],
-                        'i_message' => 'Sweet, you account is now activated but you are not subscribed to any intents yet. '.$lets_command_guide,
+                        'i_message' => 'Sweet, you account is now activated but you are not subscribed to any intents yet. '.$this->lang->line('bot_lets_intro'),
                     ),
                 ));
 
@@ -342,7 +341,7 @@ class Comm_model extends CI_Model {
                     array(
                         'e_inbound_u_id' => 2738, //Initiated by PA
                         'e_outbound_u_id' => $fetch_us[0]['u_id'],
-                        'i_message' => 'Ok, your account will remain unsubscribed. If you changed your mind, '.$lets_command_guide,
+                        'i_message' => 'Ok, your account will remain unsubscribed. If you changed your mind, '.$this->lang->line('bot_lets_intro'),
                     ),
                 ));
 
@@ -360,7 +359,7 @@ class Comm_model extends CI_Model {
                     array(
                         'e_inbound_u_id' => 2738, //Initiated by PA
                         'e_outbound_u_id' => $fetch_us[0]['u_id'],
-                        'i_message' => 'Ok, so what is your biggest career-related challenge? '.$lets_command_guide,
+                        'i_message' => 'Ok, so what is your biggest career-related challenge? '.$this->lang->line('bot_lets_intro'),
                     ),
                 ));
 
@@ -578,7 +577,7 @@ class Comm_model extends CI_Model {
                     array(
                         'e_inbound_u_id' => 2738, //Initiated by PA
                         'e_outbound_u_id' => $fetch_us[0]['u_id'],
-                        'i_message' => 'You are already unsubscribed from Mench and will no longer receive any communication from us. To subscribe again, '.$lets_command_guide,
+                        'i_message' => 'You are already unsubscribed from Mench and will no longer receive any communication from us. To subscribe again, '.$this->lang->line('bot_lets_intro'),
                     ),
                 ));
 
@@ -747,7 +746,7 @@ class Comm_model extends CI_Model {
                 //Fetch user communication preferences:
                 $users = array();
                 if(!$force_email && isset($message['e_w_id']) && $message['e_w_id']>0){
-                    //TODO Fetch enrollment to class...
+                    //TODO Fetch subscription to class...
                 }
 
                 if(count($users)<1){
@@ -776,7 +775,7 @@ class Comm_model extends CI_Model {
                     $u = array();
 
                     if(!$force_email && $users[0]['u_cache__fp_psid']>0){
-                        //We fetched an enrollment with an active Messenger connection:
+                        //We fetched an subscription with an active Messenger connection:
                         $dispatch_fp_psid = $users[0]['u_cache__fp_psid'];
                         $u = $users[0];
                     } elseif(strlen($users[0]['u_email'])>0 && filter_var($users[0]['u_email'], FILTER_VALIDATE_EMAIL)){

@@ -1,7 +1,6 @@
 <?php 
 //Attempt to fetch session variables:
 $udata = $this->session->userdata('user');
-$uenrollment = $this->session->userdata('uenrollment');
 $website = $this->config->item('website');
 $fb_settings = $this->config->item('fb_settings');
 $uri_segment_1 = $this->uri->segment(1);
@@ -78,7 +77,7 @@ $uri_segment_2 = $this->uri->segment(2);
 
 
                         <li class="extra-toggle"><a href="javascript:void(0);" onclick="$('.extra-toggle').toggle();">&nbsp; <i class="fas fa-ellipsis-h"></i> &nbsp;</a></li>
-                        <?php if(isset($uenrollment) && count($uenrollment)>0){ ?>
+                        <?php if(isset($udata['u__ws']) && count($udata['u__ws'])>0){ ?>
                             <li class="extra-toggle" style="display: none;"><a href="/my/actionplan"><span class="icon-left"><i class="fas fa-user-graduate"></i></span> Hub</a></li>
                         <?php } ?>
 

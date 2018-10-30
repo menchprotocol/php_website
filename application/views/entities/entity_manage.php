@@ -27,7 +27,7 @@ $child_entities = $this->Db_model->ur_outbound_fetch(array(
 $payments = $this->Db_model->t_fetch(array(
     't_inbound_u_id' => $inbound_u_id,
 ));
-$enrollments = array();
+$subscriptions = array();
 $b_team_member = array();
 
 
@@ -875,10 +875,10 @@ if(!in_array($entity['u_id'], array(1278,1326,2750))){
 
 
 //Only show if data exists (users cannot modify this anyways)
-if(count($enrollments)>0){
-    echo '<h5 class="badge badge-h"><i class="fas fa-comment-plus"></i> <span class="li-subscriptions-count">'.count($enrollments).'</span> Subscriptions</h5>';
+if(count($subscriptions)>0){
+    echo '<h5 class="badge badge-h"><i class="fas fa-comment-plus"></i> <span class="li-subscriptions-count">'.count($subscriptions).'</span> Subscriptions</h5>';
     echo '<div id="list-intents" class="list-group  grey-list">';
-    foreach ($enrollments as $ru) {
+    foreach ($subscriptions as $ru) {
 
     }
     echo '</div>';

@@ -9,22 +9,6 @@ class Db_model extends CI_Model {
 	}
 
 
-	function remix_enrollments($matching_criteria,$order_columns=array('ru.ru_id' => 'DESC')){
-
-	    $enrollments = $this->Db_model->ru_fetch($matching_criteria,$order_columns);
-
-	    //Fetch more data for each enrollment:
-	    foreach($enrollments as $key=>$enrollment){
-
-
-	    }
-
-	    return $enrollments;
-	}
-
-
-
-
     function w_update($id,$update_columns){
         //Update first
         $this->db->where('w_id', $id);
@@ -41,13 +25,19 @@ class Db_model extends CI_Model {
 
     function k_create($insert_columns){
 
-        if(missing_required_db_fields($insert_columns,array('k_w_id','k_cr_id','k_time_estimate'))){
+        if(missing_required_db_fields($insert_columns,array('k_w_id','k_cr_id'))){
             return false;
         }
 
         if(!isset($insert_columns['k_timestamp'])){
             $insert_columns['k_timestamp'] = date("Y-m-d H:i:s");
         }
+
+        if(!isset($insert_columns['k_cr_outbound_rank'])){
+            $insert_columns['k_cr_outbound_rank'] = 0;
+        }
+
+
 
         //Lets now add:
         $this->db->insert('v5_subscription_intents', $insert_columns);
@@ -263,11 +253,6 @@ class Db_model extends CI_Model {
 
                 $intent = end($tree['tree_top']);
 
-                //Update total hours:
-                $this->Db_model->w_update( $insert_columns['w_id'], array(
-                    'w_time_estimate' => $tree['c1__tree_max_hours'],
-                ));
-
             } else {
 
                 //This should not happen, inform user and log error:
@@ -313,7 +298,7 @@ class Db_model extends CI_Model {
 	    return $q->result_array();
 	}
 	
-	function fetch_il_overview(){
+	function il_overview(){
 	    //Fetches an overview of Udemy Community
 	    $this->db->select('COUNT(il_id) as total_coaches, SUM(il_course_count) as total_courses, SUM(il_student_count) as total_students, SUM(il_review_count) as total_reviews, il_udemy_category');
 	    $this->db->from('v5_leads il');
@@ -384,7 +369,7 @@ class Db_model extends CI_Model {
                 $res[$key]['u__ws'] = $this->Db_model->w_fetch(array(
                     'w_outbound_u_id' => $val['u_id'],
                     'w_status' => 1, //Active subscriptions
-                ), array('w_c_id'));
+                ), array('c'));
             }
 
 
@@ -722,94 +707,37 @@ class Db_model extends CI_Model {
 		return $this->db->affected_rows();
 	}
 
-    function i_replicate($u_id,$c_messages,$c_id){
-        //This function strips and copies all $c_messages to $c_id recorded as $u_id
-        $newly_created_messages = array();
-
-        foreach($c_messages as $i){
-
-            if($i['i_status']<=0){
-                continue; //Only do active messages, should not happen...
-            }
-
-            $new_i = array();
-            foreach($i as $key=>$value){
-                //Is this a message field?
-                if(substr($key,0,2)=='i_' && !in_array($key,array('i_id','i_inbound_u_id','i_outbound_c_id','i_timestamp','i_rank'))){
-                    //Yes, move over:
-                    $new_i[$key] = $value;
-                }
-            }
-
-            //Replace creator & c_id
-            $new_i['i_inbound_u_id'] = $u_id;
-            $new_i['i_outbound_c_id'] = $c_id;
-            $new_i['i_rank'] = 1 + $this->Db_model->max_value('v5_messages','i_rank', array(
-                    'i_status' => $new_i['i_status'],
-                    'i_outbound_c_id' => $c_id,
-                ));
-
-            //Create:
-            $i_create = $this->Db_model->i_create($new_i);
-
-            //Append to total stats:
-            array_push($newly_created_messages,$i_create);
-        }
-
-        return $newly_created_messages;
-
-    }
 
 
-
-	
-	
-	/* ******************************
-	 * Bootcamps
-	 ****************************** */
-
-    function ru_fetch($match_columns,$order_columns=array(
-        'ru.ru_cache__completion_rate' => 'DESC',
-        'u.u_cache__fp_psid' => 'ASC',
-    ), $join_objects=array()){
-
-        $this->db->select('*');
-        $this->db->from('v5_class_students ru');
-        $this->db->join('v5_entities u', 'u.u_id = ru.ru_outbound_u_id');
-        $this->db->join('v5_urls x', 'x.x_id = u.u_cover_x_id','left'); //Fetch the cover photo if >0
-
-        foreach($match_columns as $key=>$value){
-            if(!is_null($value)){
-                $this->db->where($key,$value);
-            } else {
-                $this->db->where($key);
-            }
-        }
-
-        //Order by completion rate:
-        if(count($order_columns)>0){
-            foreach($order_columns as $key=>$value){
-                $this->db->order_by($key,$value);
-            }
-        }
-
-        $q = $this->db->get();
-        return $q->result_array();
-    }
 
 
     function k_fetch($match_columns, $join_objects=array()){
         //Fetch the target gems:
         $this->db->select('*');
         $this->db->from('v5_subscription_intents k');
+
         if(in_array('cr',$join_objects)){
+
             $this->db->join('v5_intent_links cr', 'k.k_cr_id = cr.cr_id');
+
+            if(in_array('cr_c_out',$join_objects)){
+                //Also join with subscription row:
+                $this->db->join('v5_intents c', 'c.c_id = cr.cr_outbound_c_id');
+            } elseif(in_array('cr_c_in',$join_objects)){
+                //Also join with subscription row:
+                $this->db->join('v5_intents c', 'c.c_id = cr.cr_inbound_c_id');
+            }
         }
-        if(in_array('w_c',$join_objects)){
+
+        if(in_array('w',$join_objects)){
+            //Also join with subscription row:
+            $this->db->join('v5_subscriptions w', 'w.w_id = k.k_w_id');
+        } elseif(in_array('w_c',$join_objects)){
             //Also join with subscription row:
             $this->db->join('v5_subscriptions w', 'w.w_id = k.k_w_id');
             $this->db->join('v5_intents c', 'c.c_id = w.w_c_id');
         }
+
         foreach($match_columns as $key=>$value){
             if(!is_null($value)){
                 $this->db->where($key,$value);
@@ -817,6 +745,12 @@ class Db_model extends CI_Model {
                 $this->db->where($key);
             }
         }
+
+        if(in_array('cr_c_out',$join_objects)){
+            //Intent links are cached upon subscription and its important to keep the same order:
+            $this->db->order_by('k_cr_outbound_rank','ASC');
+        }
+
         $q = $this->db->get();
         $results = $q->result_array();
 
@@ -828,8 +762,11 @@ class Db_model extends CI_Model {
         //Fetch the target gems:
         $this->db->select('*');
         $this->db->from('v5_subscriptions w');
-        if(in_array('w_c_id',$join_objects)){
+        if(in_array('c',$join_objects)){
             $this->db->join('v5_intents c', 'w.w_c_id = c.c_id');
+        }
+        if(in_array('u',$join_objects)){
+            $this->db->join('v5_entities u', 'w.w_outbound_u_id = u.u_id');
         }
         foreach($match_columns as $key=>$value){
             if(!is_null($value)){
@@ -1362,21 +1299,6 @@ class Db_model extends CI_Model {
         return $res;
     }
 
-    function ur_fetch($match_columns, $fetch_fields='*'){
-        //Rarely used for just querying the entity links table:
-        $this->db->select($fetch_fields);
-        $this->db->from('v5_entity_links');
-        foreach($match_columns as $key=>$value){
-            if(!is_null($value)){
-                $this->db->where($key,$value);
-            } else {
-                $this->db->where($key);
-            }
-        }
-        $q = $this->db->get();
-        return $q->result_array();
-    }
-
     function ur_inbound_fetch($match_columns, $join_objects=array()){
         //Missing anything?
         $this->db->select('*');
@@ -1398,48 +1320,6 @@ class Db_model extends CI_Model {
 
 
 
-
-    function c_replicate($u_id,$intent,$c_id){
-
-        if($intent['c_status']<0){
-            return array();
-        }
-
-        $new_c = array();
-        foreach($intent as $key=>$value){
-            //Is this a message field?
-            if(!(substr($key,0,3)=='c__') && substr($key,0,2)=='c_' && !in_array($key,array('c_id','c_timestamp','c_inbound_u_id'))){
-                //Yes, move over:
-                $new_c[$key] = $value;
-            }
-        }
-
-        //Append creator:
-        $new_c['c_inbound_u_id'] = $u_id;
-
-        //Create intent:
-        $new_c = $this->Db_model->c_create($new_c);
-
-        //Create Link:
-        $intent_relation = $this->Db_model->cr_create(array(
-            'cr_inbound_u_id' => $u_id,
-            'cr_inbound_c_id'  => $c_id,
-            'cr_outbound_c_id' => $new_c['c_id'],
-            'cr_outbound_rank' => 1 + $this->Db_model->max_value('v5_intent_links','cr_outbound_rank', array(
-                    'cr_status >=' => 1,
-                    'c_status >' => 0,
-                    'cr_inbound_c_id' => $c_id,
-                )),
-        ));
-
-        //Return everything:
-        $new_cs = $this->Db_model->cr_outbound_fetch(array(
-            'cr.cr_id' => $intent_relation['cr_id'],
-        ));
-
-        return $new_cs[0];
-
-    }
 
 
 
@@ -1906,7 +1786,7 @@ class Db_model extends CI_Model {
                 $this->Db_model->k_create(array(
                     'k_w_id' => $k_w_id,
                     'k_cr_id' => $cs[0]['cr_id'],
-                    'k_time_estimate' => doubleval($cs[0]['c_time_estimate']),
+                    'k_cr_outbound_rank' => $cs[0]['cr_outbound_rank'],
                 ));
             }
         }

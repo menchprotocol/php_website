@@ -1,7 +1,6 @@
 <?php 
 //Attempt to fetch session variables:
 $udata = $this->session->userdata('user');
-$uenrollment = $this->session->userdata('uenrollment');
 $website = $this->config->item('website');
 $fb_settings = $this->config->item('fb_settings');
 $url_part_1 = $this->uri->segment(1);
@@ -53,7 +52,7 @@ $url_part_1 = $this->uri->segment(1);
     				<?php
                     if(isset($udata['u_id'])){
                         echo '<li id="isloggedin"><a href="/intents/'.( isset($c['c_id']) ? $c['c_id'] : 6623 ).'">Console <i class="fas fa-chevron-circle-right"></i></a></li>';
-                    } elseif(isset($uenrollment['u_id'])){
+                    } elseif(isset($udata['u__ws']) && count($udata['u__ws'])>0){
                         echo '<li id="isloggedin"><a href="/my/actionplan">Student Hub <i class="fas fa-chevron-circle-right"></i></a></li>';
                     } else {
                         if(!($url_part_1=='login')) {

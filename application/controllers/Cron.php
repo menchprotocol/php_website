@@ -78,7 +78,7 @@ class Cron extends CI_Controller {
             'x_inbound_u_id' => 5, //URL Creator
             'x_outbound_u_id' => 8, //URL Referenced to them
 
-            'ru_outbound_u_id' => 13, //Subscriptions
+            'w_outbound_u_id' => 13, //Subscriptions
             'c_inbound_u_id' => 21, //Active Intents
             't_inbound_u_id' => 55, //Transactions
         );
@@ -122,9 +122,9 @@ class Cron extends CI_Controller {
             $score += count($this->Db_model->c_fetch(array(
                     'c_inbound_u_id' => $u['u_id'],
                 ))) * $score_weights['c_inbound_u_id'];
-            $score += count($this->Db_model->ru_fetch(array(
-                    'ru_outbound_u_id' => $u['u_id'],
-                ))) * $score_weights['ru_outbound_u_id'];
+            $score += count($this->Db_model->w_fetch(array(
+                    'w_outbound_u_id' => $u['u_id'],
+                ))) * $score_weights['w_outbound_u_id'];
             $score += count($this->Db_model->t_fetch(array(
                     't_inbound_u_id' => $u['u_id'],
                 ))) * $score_weights['t_inbound_u_id'];
@@ -167,13 +167,13 @@ class Cron extends CI_Controller {
         foreach($e_pending as $e_text_value){
 
             //Fetch user data:
-            $matching_enrollments = $this->Db_model->ru_fetch(array(
+            $matching_subscriptions = $this->Db_model->w_fetch(array(
                 'ru_outbound_u_id' => $e_text_value['e_outbound_u_id'],
                 'ru_status >=' => 4, //Active student
                 'r_status' => 2, //Running Class
             ));
 
-            if(count($matching_enrollments)>0){
+            if(count($matching_subscriptions)>0){
 
                 //Prepare variables:
                 $json_data = unserialize($e_text_value['ej_e_blob']);
@@ -182,7 +182,7 @@ class Cron extends CI_Controller {
                 $this->Comm_model->send_message(array(
                     array_merge($json_data['i'], array(
                         'e_inbound_u_id' => 0,
-                        'e_outbound_u_id' => $matching_enrollments[0]['u_id'],
+                        'e_outbound_u_id' => $matching_subscriptions[0]['u_id'],
                         'i_outbound_c_id' => $json_data['i']['i_outbound_c_id'],
                     )),
                 ));
@@ -477,7 +477,7 @@ class Cron extends CI_Controller {
         //Cron Settings: 45 * * * *
         //Send reminders to students to complete their intent:
 
-        $enrollments = $this->Db_model->ru_fetch(array(
+        $subscriptions = $this->Db_model->w_fetch(array(
             'r.r_status'	    => 2, //Running Class
             'ru.ru_status'      => 4, //Enrolled Students
         ));
@@ -512,11 +512,11 @@ class Cron extends CI_Controller {
         );
 
         $stats = array();
-        foreach($enrollments as $enrollment){
+        foreach($subscriptions as $subscription){
 
             //Fetch full Bootcamp/Class data for this:
-            $bs = fetch_action_plan_copy($enrollment['ru_b_id'], $enrollment['r_id']);
-            $class = $bs[0]['this_class'];
+            //$bs = fetch_action_plan_copy($subscription['ru_b_id'], $subscription['r_id']);
+            //$class = $bs[0]['this_class'];
 
             //See what % of the class time has elapsed?
             //TODO $elapsed_class_percentage = round((time()-strtotime($class['r_start_date']))/(class_ends($bs[0], $class)-strtotime($class['r_start_date'])),5);
@@ -524,12 +524,12 @@ class Cron extends CI_Controller {
             foreach ($reminder_index as $logic){
                 if($elapsed_class_percentage>=$logic['time_elapsed']){
 
-                    if($enrollment['ru_cache__completion_rate']<$logic['progress_below']){
+                    if($subscription['ru_cache__completion_rate']<$logic['progress_below']){
 
                         //See if we have reminded them already about this:
                         $reminders_sent = $this->Db_model->e_fetch(array(
                             'e_inbound_c_id IN (7,28)' => null, //Email or Message sent
-                            'e_outbound_u_id' => $enrollment['u_id'],
+                            'e_outbound_u_id' => $subscription['u_id'],
                             'e_outbound_c_id' => $logic['reminder_c_id'],
                         ));
 
@@ -538,13 +538,13 @@ class Cron extends CI_Controller {
                             //Nope, send this message out:
                             $this->Comm_model->foundation_message(array(
                                 'e_inbound_u_id' => 0, //System
-                                'e_outbound_u_id' => $enrollment['u_id'],
+                                'e_outbound_u_id' => $subscription['u_id'],
                                 'e_outbound_c_id' => $logic['reminder_c_id'],
                                 'depth' => 0,
                             ));
 
                             //Show in stats:
-                            array_push($stats,$enrollment['u_full_name'].' done '.round($enrollment['ru_cache__completion_rate']*100).'% (less than target '.round($logic['progress_below']*100).'%) where class is '.round($elapsed_class_percentage*100).'% complete and got reminded via c_id '.$logic['reminder_c_id']);
+                            array_push($stats,$subscription['u_full_name'].' done '.round($subscription['ru_cache__completion_rate']*100).'% (less than target '.round($logic['progress_below']*100).'%) where class is '.round($elapsed_class_percentage*100).'% complete and got reminded via c_id '.$logic['reminder_c_id']);
                         }
                     }
 

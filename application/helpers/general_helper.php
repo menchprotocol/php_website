@@ -4,7 +4,6 @@ function is_dev(){
     return ( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='local.mench.co' );
 }
 
-
 function lock_cron_for_processing($e_items){
     $CI =& get_instance();
     foreach($e_items as $e){
@@ -92,13 +91,6 @@ function fetch_entity_tree($u_id,$is_edit=false){
     return $view_data;
 }
 
-
-
-function fetch_action_plan_copy(){
-    //TODO rewrite
-}
-
-
 function join_keys($input_array,$joiner=','){
     $joined_string = null;
     foreach($input_array as $key=>$value){
@@ -111,70 +103,6 @@ function join_keys($input_array,$joiner=','){
 }
 
 
-
-function detect_active_enrollment($enrollments){
-
-    //Determines the active enrollment of a student, especially useful if they have multiple enrollments
-    if(count($enrollments)<1){
-
-        return false;
-
-    } elseif(count($enrollments)>1){
-
-        /*
-         * Ohh, let's try to figure this out. There are a few scenarios:
-         *
-         * 1. Multiple up-coming Bootcaps that do not overlap
-         * 2. A mix of past Bootcamps already completed, and some upcoming ones
-         * 3. A bunch of past Bootcamps that are all completed and none active
-         * 4. A mix and match of above?!
-         *
-         * ru_status & r_status and are guiding lights here to crack this puzzle
-         *
-         */
-
-        //TODO Ooptimize the loop below because I cannot fully wrap my head around it for now!
-        //Should think further about priorities and various use cases of this function
-        //So i'm leaving it as is to be tested further @ later date (Mar 6th 2018)
-
-        $active_enrollment = null;
-
-        foreach($enrollments as $enrollment){
-
-            //Now see whatssup:
-            if($enrollment['ru_status']>4 || $enrollment['r_status']>2){
-
-                //This is a completed Class:
-                $active_enrollment = $enrollment;
-
-            } elseif($enrollment['ru_status']==4 && $enrollment['r_status']<2){
-
-                //Class is not started yet:
-                $active_enrollment = $enrollment;
-
-            } elseif($enrollment['ru_status']==4 && $enrollment['r_status']==2){
-
-                //Active class has highest priority, break after:
-                $active_enrollment = $enrollment;
-                break; //This is what we care about the most, so make it have the last say
-
-            } elseif(!$active_enrollment){
-
-                //Not sure what this could be:
-                $active_enrollment = $enrollment;
-
-            }
-        }
-
-        return $active_enrollment;
-
-    } elseif(count($enrollments)==1){
-
-        //This is typical, treat this as their Active Subscription since its the only one they got:
-        return $enrollments[0];
-
-    }
-}
 
 function fetch_file_ext($url){
 	//https://cdn.fbsbx.com/v/t59.3654-21/19359558_10158969505640587_4006997452564463616_n.aac/audioclip-1500335487327-1590.aac?oh=5344e3d423b14dee5efe93edd432d245&oe=596FEA95
@@ -210,154 +138,6 @@ function parse_signed_request($signed_request) {
 
 function base64_url_decode($input) {
     return base64_decode(strtr($input, '-_', '+/'));
-}
-
-
-
-
-
-function extract_level($b,$c_id){
-
-    //This function uses
-    
-    $CI =& get_instance();
-    //This is what we shall return:
-    $view_data = array(
-        'c_id' => $c_id, //To be deprecated at some point...
-        'c_id' => $c_id,
-        'b' => $b,
-    );
-
-    if($b['c_id']==$c_id){
-        
-        //Level 1 (The Bootcamp itself)
-        $view_data['level'] = 1;
-        $view_data['task_index'] = 0;
-        $view_data['intent'] = $b;
-        $view_data['title'] = 'Action Plan | '.$b['c_outcome'];
-        $view_data['breadcrumb_p'] = array(
-            array(
-                'link' => null,
-                'anchor' => '<i class="fas fa-cube"></i> '.$b['c_outcome'],
-            ),
-        );
-        //Not applicable at Bootcamp Level:
-        $view_data['next_intent'] = null; //Used in actionplan_ui view for Step Sequence Submission positioning to better understand next move
-        $view_data['next_level'] = 0; //Used in actionplan_ui view for Step Sequence Submission positioning to better understand next move
-        $view_data['previous_intent'] = null; //Used in actionplan_ui view for Step Sequence Submission positioning to better understand previous move
-        $view_data['previous_level'] = 0; //Used in actionplan_ui view for Step Sequence Submission positioning to better understand previous move
-
-        return $view_data;
-        
-    } else {
-
-        //Keeps track of Tasks:
-        $previous_intent = null;
-        
-        foreach($b['c__child_intents'] as $intent_key=>$intent){
-
-            if($intent['c_status']<0){
-                continue;
-            }
-            
-            if($intent['c_id']==$c_id){
-
-                //Found this as level 2:
-                $view_data['level'] = 2;
-                $view_data['task_index'] = $intent['cr_outbound_rank'];
-                $view_data['intent'] = $intent;
-                $view_data['title'] = 'Action Plan | '.$CI->lang->line('level_'.$view_data['level'].'_name').' '.$intent['cr_outbound_rank'].': '.$intent['c_outcome'];
-                $view_data['breadcrumb_p'] = array(
-                    array(
-                        'link' => '/my/actionplan/'.$b['b_id'].'/'.$b['b_outbound_c_id'],
-                        'anchor' => '<i class="fas fa-cube"></i> '.$b['c_outcome'],
-                    ),
-                    array(
-                        'link' => null,
-                        'anchor' => $intent['c_outcome'],
-                    ),
-                );
-
-
-                //Find the next intent:
-                $next_intent = null;
-                $next_level = 0;
-                $next_key = $intent_key;
-
-                while(!$next_intent){
-
-                    $next_key++;
-
-                    if(!isset($b['c__child_intents'][$next_key]['c_id'])){
-
-                        //Next Task does not exist, return Bootcamp:
-                        $next_intent = $b;
-                        $next_level = 1;
-                        break;
-
-                    } elseif($b['c__child_intents'][$next_key]['c_status']>0){
-
-                        $next_intent = $b['c__child_intents'][$next_key];
-                        $next_level = 2;
-                        break;
-
-                    }
-                }
-
-                $view_data['next_intent'] = $next_intent;
-                $view_data['next_level'] = $next_level;
-                $view_data['previous_intent'] = $previous_intent;
-                $view_data['previous_level'] = ( $previous_intent ? 2 : 1 );
-                
-                return $view_data;
-                
-            } else {
-
-                //Save this:
-                $previous_intent = $intent;
-
-                foreach($intent['c__child_intents'] as $step_key=>$step){
-
-                    if($step['c_status']<0){
-                        continue;
-                    }
-
-                    if($step['c_id']==$c_id){
-
-                        //This is level 3:
-                        $view_data['level'] = 3;
-                        $view_data['step_goal'] = $intent; //Only available for Steps
-                        $view_data['task_index'] = $intent['cr_outbound_rank'];
-                        $view_data['intent'] = $step;
-                        $view_data['title'] = 'Action Plan | '.$CI->lang->line('level_'.($view_data['level']-1).'_name').' '.$intent['cr_outbound_rank'].' '.$CI->lang->line('level_'.$view_data['level'].'_name').' '.$step['cr_outbound_rank'].': '.$step['c_outcome'];
-
-                        $view_data['breadcrumb_p'] = array(
-                            array(
-                                'link' => '/my/actionplan/'.$b['b_id'].'/'.$b['b_outbound_c_id'],
-                                'anchor' => $b['c_outcome'],
-                            ),
-                            array(
-                                'link' => '/my/actionplan/'.$b['b_id'].'/'.$intent['c_id'],
-                                'anchor' => $intent['c_outcome'],
-                            ),
-                            array(
-                                'link' => null,
-                                'anchor' => $step['c_outcome'],
-                            ),
-                        );
-                        
-                        return $view_data;
-
-                    }
-
-                }
-
-            }
-        }
-        
-        //Still here?!
-        return false;
-    }
 }
 
 
