@@ -24,9 +24,12 @@ function update_k_start(){
 <?php
 
 //Fetch inbound breadcrumb tree all the way to the top of subscription w_c_id
+echo '<div class="list-group" style="margin-top: 10px;">';
 foreach($k_ins as $k){
     echo echo_k($k, 1);
 }
+echo '</div>';
+
 /* ******************************
  * Next/Previous Buttons
  ****************************** */
@@ -45,7 +48,7 @@ echo '</div>';
 
 
 //Show title
-echo '<h5>'.$c['c_outcome'].'</h5>';
+echo '<h3 class="student-h3">'.$c['c_outcome'].'</h3>';
 
 
 if(count($k_ins)==0){
@@ -96,16 +99,16 @@ if(count($k_ins)==0){
         //Echo hidden completion box on page:
         if($k_ins[0]['c_require_url_to_complete'] && $k_ins[0]['c_require_notes_to_complete']){
             $red_note = 'Requires a URL & completion notes';
-            $textarea_note = 'Include a URL & completion notes (and optional coach feedback) to mark as complete';
+            $textarea_note = 'Include a URL & completion notes (and optional feedback) to mark as complete';
         } elseif($k_ins[0]['c_require_url_to_complete']){
             $red_note = 'Requires a URL';
-            $textarea_note = 'Include a URL (and optional coach feedback) to mark as complete';
+            $textarea_note = 'Include a URL (and optional feedback) to mark as complete';
         } elseif($k_ins[0]['c_require_notes_to_complete']){
             $red_note = 'Requires completion notes';
-            $textarea_note = 'Include completion notes (and optional coach feedback) to mark as complete';
+            $textarea_note = 'Include completion notes (and optional feedback) to mark as complete';
         } else {
             $red_note = null;
-            $textarea_note = 'Include optional feedback for your coach';
+            $textarea_note = 'Include optional feedback';
         }
 
         //Submission button visible after first button was clicked:
@@ -116,8 +119,8 @@ if(count($k_ins)==0){
                 if($red_note) {
                     echo '<div style="color:#FF0000;"><i class="fas fa-exclamation-triangle"></i> ' . $red_note . '</div>';
                 }
-                echo '<textarea name="us_notes" class="form-control maxout" placeholder="'.$textarea_note.'"></textarea>';
-                echo '<button type="submit" class="btn btn-tight btn-black"><i class="fas fa-check-circle"></i>Submit</button>';
+                echo '<textarea name="us_notes" class="form-control maxout" placeholder="'.$textarea_note.'">'.$k_ins[0]['k_notes'].'</textarea>';
+                echo '<button type="submit" class="btn btn-tight btn-black"><i class="fas fa-check-circle"></i>Save</button>';
             echo '</div>';
 
         echo '</form>';

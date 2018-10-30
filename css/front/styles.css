@@ -65,9 +65,20 @@ body{ background-color: #FFF !important;}
     color:#2f2739;
 }
 
+.student-h3{
+    font-size:1.6em;
+    line-height:120%;
+    margin-bottom:15px !important;
+}
+
 .badge-secondary{
     background-color:#0084ff;
     color:#FFF;
+}
+
+.fr-bgd {
+    margin-top:-7px;
+    margin-right: 3px;
 }
 
 .blue{

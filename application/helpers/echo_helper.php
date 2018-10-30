@@ -619,12 +619,12 @@ function echo_k($k, $is_inbound){
 
     if($is_inbound){
         $ui .= '<span class="pull-left">';
-        $ui .= '<span class="badge badge-primary"><i class="fas fa-angle-left"></i></span>';
+        $ui .= '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-left"></i></span>';
         $ui .= '</span>';
         $ui .= ' '.$k['c_outcome'];
     } else {
         $ui .= '<span class="pull-right">';
-        $ui .= '<span class="badge badge-primary"><i class="fas fa-angle-right"></i></span>';
+        $ui .= '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-right"></i></span>';
         $ui .= '</span>';
         $ui .= echo_status('k_status',$k['k_status'],1,'right');
         $ui .= ' '.$k['c_outcome'];
