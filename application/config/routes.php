@@ -12,6 +12,7 @@ $route['default_controller'] 		= "front"; // Home page
 $route['train'] 				    = "front/train";
 $route['terms'] 					= "front/terms";
 $route['ses'] 						= "front/ses"; //Raw session logs
+$route['jobs'] 						= "front/jobs";
 $route['info'] 						= "front/info"; //PHP Info
 $route['login']					    = "front/login"; //Bootcamp Operator login
 $route['logout']				    = "entities/logout"; //Logout from entites

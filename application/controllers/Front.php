@@ -18,14 +18,34 @@ class Front extends CI_Controller {
         $this->load->view('front/shared/f_footer');
     }
 
+    function jobs(){
+        $this->load->view('front/shared/f_header' , array(
+            'title' => 'Work at Mench',
+        ));
+        $this->load->view('front/mench-co-jobs');
+        $this->load->view('front/shared/f_footer');
+    }
+
     function index(){
         $udata = $this->session->userdata('user');
         if(isset($udata['u__inbounds']) && array_any_key_exists(array(1308,1281),$udata['u__inbounds'])){
+
             //Lead coach and above, go to console:
             redirect_message('/intents/6623');
+
+        } elseif(( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='mench.co' )) {
+
+            $this->load->view('front/shared/f_header' , array(
+                'title' => 'Online Education. Transformed.',
+            ));
+            $this->load->view('front/mench-co-intro');
+            $this->load->view('front/shared/f_footer');
+
         } else {
+
             //Go to default landing page:
             redirect_message('/6623');
+
         }
     }
 
