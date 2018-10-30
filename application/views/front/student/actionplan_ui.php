@@ -11,42 +11,10 @@ $messages = $this->Db_model->i_fetch(array(
 
 ?>
 <script>
-
-function update_k_save(){
-
-	var us_notes = $('#us_notes').val(); //This is needed otherwise we lose the variable!
-	
-	//Show spinner:
-	$('.update_k_save').hide();
-	$('#save_report').html('<img src="/img/round_load.gif" class="loader" />').hide().fadeIn();
-	
-	//Save the rest of the content:
-	$.post("/my/us_save", {
-
-        page_load_time:<?= $page_load_time ?>,
-		us_notes:us_notes,
-        u_id:$('#u_id').val(),
-        s_key:$('#s_key').val(),
-        c_id:$('#c_id').val(),
-
-	} , function(data) {
-		//Update UI to confirm with user:
-		$('#save_report').html(data).hide().fadeIn();
-
-		//Reposition to top:
-		$('html,body').animate({
-			scrollTop: $('#save_report').offset().top
-		}, 150);
-    });
-
-}
-
 function update_k_start(){
     $('.update_k_save').toggle();
     $('#us_notes').focus();
 }
-
-
 </script>
 
 <input type="hidden" id="c_id" value="<?= $c['c_id'] ?>" />
@@ -54,10 +22,27 @@ function update_k_start(){
 <input type="hidden" id="u_key" value="<?= md5($subscriptions[0]['u_id'].$application_status_salt) ?>" />
 
 <?php
+
 //Fetch inbound breadcrumb tree all the way to the top of subscription w_c_id
 foreach($k_ins as $k){
     echo echo_k($k, 1);
 }
+/* ******************************
+ * Next/Previous Buttons
+ ****************************** */
+/*
+echo '<h4 class="maxout"><i class="fas fa-arrows"></i> Navigation</h4>';
+echo '<div style="font-size:0.8em;">';
+if(isset($previous_intent['c_id'])){
+    echo '<a href="/my/actionplan/'.$previous_intent['c_id'].'" class="btn btn-tight btn-black" style="margin:0;"><i class="fas fa-arrow-left"></i> Previous</a>';
+}
+if(isset($next_intent['c_id'])){
+    echo '<a href="/my/actionplan/'.$next_intent['c_id'].'" class="btn btn-tight btn-black" style="margin:0 0 0 8px;">Next <i class="fas fa-arrow-right"></i></a>';
+}
+echo '</div>';
+*/
+
+
 
 //Show title
 echo '<h5>'.$c['c_outcome'].'</h5>';
@@ -76,6 +61,17 @@ if(count($k_ins)==0){
     echo '</div>';
 
 } elseif(count($k_ins)==1){
+
+    /*
+    //TODO Automated completion?
+    if($k_ins[0]['k_status']==0 && !$k_ins[0]['c_require_url_to_complete'] && !$k_ins[0]['c_require_notes_to_complete']){
+        //It's their first time reading this!
+        $this->Db_model->k_update( $k_ins[0]['k_id'] , array(
+            'k_status' => ( count($k_outs)==0 ? 2 : 1 ),
+        ));
+        //TODO implement recursive logic:
+    }
+    */
 
     //Show completion progress for the single inbound intent:
     echo '<div id="save_report" class="sub_title">';
@@ -113,13 +109,18 @@ if(count($k_ins)==0){
         }
 
         //Submission button visible after first button was clicked:
-        echo '<div class="update_k_save" style="display:none; margin-top:10px;">';
-            if($red_note) {
-                echo '<div style="color:#FF0000;"><i class="fas fa-exclamation-triangle"></i> ' . $red_note . '</div>';
-            }
-            echo '<textarea id="us_notes" class="form-control maxout" placeholder="'.$textarea_note.'"></textarea>';
-            echo '<a href="javascript:update_k_save();" class="btn btn-tight btn-black"><i class="fas fa-check-circle"></i>Submit</a>';
-        echo '</div>';
+        echo '<form method="POST" action="/my/update_k_save">';
+            echo '<input type="hidden" name="page_load_time" value="'.$page_load_time.'" />';
+            echo '<input type="hidden" name="k_id" value="'.$k_ins[0]['k_id'].'" />';
+            echo '<div class="update_k_save" style="display:none; margin-top:10px;">';
+                if($red_note) {
+                    echo '<div style="color:#FF0000;"><i class="fas fa-exclamation-triangle"></i> ' . $red_note . '</div>';
+                }
+                echo '<textarea name="us_notes" class="form-control maxout" placeholder="'.$textarea_note.'"></textarea>';
+                echo '<button type="submit" class="btn btn-tight btn-black"><i class="fas fa-check-circle"></i>Submit</button>';
+            echo '</div>';
+
+        echo '</form>';
 
     echo '</div>';
 }
@@ -127,6 +128,9 @@ if(count($k_ins)==0){
 
 //Show all messages:
 if(count($messages)>0){
+
+    $hide_messages_onload = ( count($k_ins)==0 || $k_ins[0]['k_status']<=0);
+
     echo '<div class="tips_content">';
     foreach($messages as $i){
         if($i['i_status']==1){
@@ -148,119 +152,4 @@ foreach($k_outs as $k){
 }
 echo '</div>';
 
-
-
-
-
-
-/* ******************************
- * Next/Previous Buttons
- ****************************** */
-/*
-echo '<h4 class="maxout"><i class="fas fa-arrows"></i> Navigation</h4>';
-echo '<div style="font-size:0.8em;">';
-if(isset($previous_intent['c_id'])){
-    echo '<a href="/my/actionplan/'.$previous_intent['c_id'].'" class="btn btn-tight btn-black" style="margin:0;"><i class="fas fa-arrow-left"></i> Previous</a>';
-}
-if(isset($next_intent['c_id'])){
-    echo '<a href="/my/actionplan/'.$next_intent['c_id'].'" class="btn btn-tight btn-black" style="margin:0 0 0 8px;">Next <i class="fas fa-arrow-right"></i></a>';
-}
-echo '</div>';
-*/
-
-
-
-
-/* ******************************
- * Task/Step List
- ****************************** */
-
-
-//Fetch child intents that are in their subscriptions:
-/*
-
-echo '<div id="list-outbound" class="list-group maxout">';
-
-//This could be either a list of Tasks or Steps, we'll know using $level
-$previous_item_complete = true; //We start this as its true for the very first Step
-foreach($ks[0]['c__child_intents'] as $c){
-
-    if($c['c_status']<0){
-        //Drafting items should be skipped:
-        continue;
-    }
-
-    if($level==1){
-
-        //Task completion status;
-        $this_item_e_status = ( isset($us_data[$c['c_id']]) ? $us_data[$c['c_id']]['e_status'] : -4 );
-
-        //TODO Optimize this based on c_is_any value
-
-    } elseif($level==2){
-
-        //Step List
-        $this_item_e_status = ( isset($us_data[$c['c_id']]) ? $us_data[$c['c_id']]['e_status'] : -4 );
-
-    }
-
-    //Now determine the lock status of this item...
-
-    //Used in $unlocked_item logic in case coach modifies Action Plan and Adds items before previously completed items:
-    $this_item_complete = ( $this_item_e_status>=-2 );
-
-    //See Status:
-    $unlocked_item = true; //TODO Can later put limitations if necessary, for now, lets keep it all open
-
-    //Left content
-    if($unlocked_item){
-
-        //Show link to enter this item:
-        $ui = '<a href="/my/actionplan/'.$subscriptions[0]['b_id'].'/'.$c['c_id'].'" class="list-group-item">';
-        $ui .= '<span class="pull-right"><span class="badge badge-primary" style="margin-top:-5px;"><i class="fas fa-chevron-right"></i></span></span>';
-        $ui .= echo_status('e_status',$this_item_e_status,1).' ';
-
-    } else {
-
-        //Step/Task is locked, do not show link:
-        $ui = '<li class="list-group-item">';
-        $ui .= '<i class="fas fa-lock initial"></i> ';
-
-    }
-
-    //Title on the left:
-    if($level==1){
-        $ui .= '<span>Task '.$c['cr_outbound_rank'].':</span> ';
-    } elseif($level==2){
-        $ui .= '<span>Step '.$c['cr_outbound_rank'].':</span> ';
-    }
-
-    //Intent title:
-    $ui .= $c['c_outcome'].' ';
-
-    $ui .= '<span class="sub-stats">';
-
-    //Enable total hours/Task reporting...
-    if($level==1 && isset($c['c__estimated_hours'])){
-        $ui .= echo_estimated_time($c['c__estimated_hours'],1);
-    } elseif(isset($c['c_time_estimate'])){
-        $ui .= echo_estimated_time($c['c_time_estimate'],1);
-    }
-
-    if($level==1 && $unlocked_item && isset($child_step_count) && $child_step_count){
-        //Show the number of sub-Steps:
-        //$ui .= '<span class="title-sub"><i class="fas fa-flag"></i>'.$child_step_count.'</span>';
-    }
-
-    $ui .= '</span>';
-
-    $ui .= ( $unlocked_item ? '</a>' : '</li>');
-
-    echo $ui;
-
-    //Save this item's completion rate for the next run:
-    $previous_item_complete = $this_item_complete;
-}
-echo '</div>';
-*/
 ?>

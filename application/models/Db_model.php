@@ -23,6 +23,12 @@ class Db_model extends CI_Model {
         return $this->db->affected_rows();
     }
 
+    function k_mark_complete($k_id){
+        //TODO Go through and determine whats the new status
+        $new_k_status = 2;
+        return $new_k_status;
+    }
+
     function k_create($insert_columns){
 
         if(missing_required_db_fields($insert_columns,array('k_w_id','k_cr_id'))){
