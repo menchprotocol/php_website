@@ -762,7 +762,7 @@ function echo_contents($c, $fb_format=0){
     }
 
 
-    $pitch = 'Aggregates '.$all_count.' Content Source'.echo__s($all_count).( $fb_format ? ' including' : ':' ).$text_overview.'.';
+    $pitch = 'Aggregates '.$all_count.' content source'.echo__s($all_count).( $fb_format ? ' including' : ':' ).$text_overview.'.';
     if($fb_format) {
         return '📚 '.$pitch."\n";
     } else {
@@ -795,7 +795,7 @@ function echo_costs($c, $fb_format=0){
 }
 
 function echo_concepts($c, $fb_format=0){
-    $pitch = 'Action Plan includes '.$c['c__tree_all_count'].' Key Concept'.echo__s($c['c__tree_all_count']).'.';
+    $pitch = 'Action Plan includes '.$c['c__tree_all_count'].' key concept'.echo__s($c['c__tree_all_count']).'.';
     if($fb_format) {
         return '💡 '.$pitch."\n";
     } else {
@@ -805,7 +805,7 @@ function echo_concepts($c, $fb_format=0){
 }
 
 function echo_completion_estimate($c, $fb_format=0){
-    $pitch = 'Takes about '.echo_hour_range($c).' to complete'.( $c['c__tree_max_hours']==$c['c__tree_min_hours'] ? '' : ' depending on your skill-sets and preferences' ).'.';
+    $pitch = 'Takes '.echo_hour_range($c).' to complete'.( $c['c__tree_max_hours']==$c['c__tree_min_hours'] ? '' : ' based on your skill-sets & preferences' ).'.';
     if($fb_format) {
         return '🕓 '.$pitch."\n";
     } else {
@@ -893,7 +893,7 @@ function echo_experts($c, $fb_format=0){
 
 
 
-    $pitch = 'Quotes '.$all_count.' Industry Expert'.echo__s($all_count).( $fb_format ? ' including' : ':' ).$text_overview;
+    $pitch = 'Quotes '.$all_count.' industry expert'.echo__s($all_count).( $fb_format ? ' including' : ':' ).$text_overview;
     if($fb_format) {
         return '👩‍🎓 '.$pitch."\n";
     } else {

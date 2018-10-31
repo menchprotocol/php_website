@@ -10,7 +10,7 @@
         $('.alink-'+c_id).attr('href','javascript:void(0);');
         var c_outcome_parent = $('#title-parent').text();
         var c_outcome_child = $('#title-'+c_id).text();
-        var r = confirm("If you only want to "+c_outcome_child+" then press OK.\n\nBut if you want to "+c_outcome_parent+" then press Cancel and use the SUBSCRIBE button above.");
+        var r = confirm("If you are only interested to "+c_outcome_child+" then press OK. But if you want to "+c_outcome_parent+" then press Cancel and use the SUBSCRIBE button above.");
         if (r == true) {
             //Go to target intent:
             window.location = "/"+c_id;
@@ -117,7 +117,7 @@
 
                 if(count($c1['c__child_intents'])>0){
 
-                    echo '<div style="margin:0 0 5px; padding-top:10px; font-size:1.1em;">'.$c1['c_outcome'].' with '.$c1['c__tree_all_count'].' sub-concepts'.( count($c1['c__child_intents'])<$c1['c__tree_all_count'] ? ' across '.count($c1['c__child_intents']).' branches' : ''  ).':</div>';
+                    echo '<div style="margin:0 0 5px; padding-top:10px; font-size:1.1em;">'.$c1['c_outcome'].' with '.$c1['c__tree_all_count'].' concepts'.( count($c1['c__child_intents'])<$c1['c__tree_all_count'] ? ' in '.count($c1['c__child_intents']).' branches' : ''  ).':</div>';
                     echo '<ul style="list-style:none; margin-left:-30px; font-size:1em;">';
                     $landing_pagetask_visible += ( count($c1['c__child_intents'])==$landing_pagetask_visible+1 ? 1 : 0 );
                     foreach($c1['c__child_intents'] as $c2_counter=>$c2){
@@ -138,7 +138,7 @@
                     echo '</ul>';
 
                     //Since it has children, lets also give the option to navigate downwards:
-                    echo '<div>You can choose to subscribe to this concept only. <a href="/'.$c1['c_id'].'" '.( $c['c_id']==6623 ? 'onclick="confirm_child_go('.$c1['c_id'].')"' : '' ).' class="alink-'.$c1['c_id'].'">Learn More</a>.';
+                    echo '<div>You can choose to <a href="/'.$c1['c_id'].'" '.( $c['c_id']==6623 ? 'onclick="confirm_child_go('.$c1['c_id'].')"' : '' ).' class="alink-'.$c1['c_id'].'">subscribe to this concept only</a>.';
                     echo '</div>';
 
                 }
