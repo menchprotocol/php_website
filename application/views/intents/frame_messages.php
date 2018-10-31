@@ -324,6 +324,10 @@ if(!isset($intents[0])){
                     message_count--;
                     window.parent.document.getElementById("messages-counter-"+c_id).innerHTML = message_count;
 
+                    if(message_count==0){
+                        $('.msg-badge-'+c_id).addClass('grey');
+                    }
+
                     //Disapper in a while:
                     setTimeout(function() {
                         $("#ul-nav-"+i_id).fadeOut();

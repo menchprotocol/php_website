@@ -680,6 +680,10 @@ if(isset($orphan_cs)){
                 //Re-adjust sorting:
                 load_c_sort(c_id,next_level);
 
+                //Remove potential grey class:
+                $('.tree-badge-'+c_id).removeClass('grey');
+
+
                 if(next_level==2){
 
                     //Adjust the Task count:
@@ -742,7 +746,7 @@ if(isset($orphan_cs)){
                 //This is the "Get to know how Mench Personal Assistant works" tree
                 //which is recommended to all new students who have not subscribed to it
                 //Let the admin know about this:
-                echo '<div class="alert alert-info" role="alert" style="margin-top: 0;"><i class="fas fa-globe"></i> This is a universal intent that is automatically recommended to students</div>';
+                //echo '<div class="alert alert-info" role="alert" style="margin-top: 0;"><i class="fas fa-globe"></i> This is a universal intent that is automatically recommended to students</div>';
             }
 
             if(in_array($c['c_id'],$this->config->item('onhold_intents'))) {
