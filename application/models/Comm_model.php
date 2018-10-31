@@ -477,7 +477,7 @@ class Comm_model extends CI_Model {
                             'e_inbound_u_id' => 2738, //Initiated by PA
                             'e_outbound_u_id' => $fetch_us[0]['u_id'],
                             'e_outbound_c_id' => $w_c_id,
-                            'i_message' => 'Here is what you need to know to '.$fetch_cs[0]['c_outcome'].':'."\n".
+                            'i_message' => 'Here is what you need to know to '.$fetch_cs[0]['c_outcome'].':'."\n\n".
                                 echo_concepts($fetch_cs[0], 1).
                                 echo_completion_estimate($fetch_cs[0], 1).
                                 echo_costs($fetch_cs[0], 1).
