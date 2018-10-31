@@ -1,8 +1,3 @@
-<?php 
-//Attempt to fetch session variables:
-$website = $this->config->item('website');
-?>
-
 <!-- START SHARED RESOURCES -->
 <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Lato|Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons|Titillium+Web:700" />
 <link href="/css/lib/fa/fontawesome.css?v=5.10" rel="stylesheet" />
@@ -16,9 +11,9 @@ $website = $this->config->item('website');
 <link href="/css/lib/jquery-ui.min.css" rel="stylesheet" />
 <link href="/css/lib/default.min.css" rel="stylesheet" />
 <link href="/css/lib/simplebar.css" rel="stylesheet" />
-<link href="/css/console/material-dashboard.css?v=v<?= $website['version'] ?>" rel="stylesheet" />
-<link href="/css/front/material-kit.css?v=v<?= $website['version'] ?>" rel="stylesheet" />
-<link href="/css/front/styles.css?v=v<?= $website['version'] ?>" rel="stylesheet" />
+<link href="/css/console/material-dashboard.css?v=v<?= $this->config->item('app_version') ?>" rel="stylesheet" />
+<link href="/css/front/material-kit.css?v=v<?= $this->config->item('app_version') ?>" rel="stylesheet" />
+<link href="/css/front/styles.css?v=v<?= $this->config->item('app_version') ?>" rel="stylesheet" />
 
 
 <!-- Core JS Files -->

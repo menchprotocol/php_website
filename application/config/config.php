@@ -4,28 +4,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 //Settime zone to PST:
 date_default_timezone_set('America/Los_Angeles');
 
-//Primary website variables:
-$config['website'] = array(
-
-    'version' => '0.581',
-    'released' => '2018-10-30', //Format: YYYY-MM-DD
-
-    'name' => 'Mench',
-    'url' => 'https://mench.com/', //Important to end with "/" as other links depend on this.
-    'email' => 'shervin@mench.com',
-);
-
-$config['fb_settings'] = array(
-    'page_id'        => '381488558920384', //Also repeated in global.js
-    'app_id'        => '1782431902047009', //Also repeated in global.js
-    'client_secret' => '05aea76d11b062951b40a5bee4251620',
-    'default_graph_version' => 'v2.10', //Also repeated in global.js
-    'mench_access_token' => 'EAAZAVHMRbmyEBAEfN8zsRJ3UOIUJJrNLqeFutPXVQZCoDZA3EO1rgkkzayMtNhisHHEhAos08AmKZCYD7zcZAPIDSMTcBjZAHxxWzbfWyTyp85Fna2bGDfv5JUIBuFTSeQOZBaDHRG7k0kbW8E7kQQN3W6x47VB1dZBPJAU1oNSW1QZDZD',
-);
-
 //Used to generate application status links:
-$config['file_limit_mb'] = 25; //Server setting is 32MB. see here: mench.com/ses
+$config['app_version'] = '0.581'; //Updates status css/js cache files
 $config['message_max'] = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
+$config['file_limit_mb'] = 25; //Server setting is 32MB. see here: mench.com/ses
 $config['entity_per_page'] = 50;
 $config['universal_intents'] = array(7433); //Get to know how Mench Personal Assistant works //TODO Implement...
 $config['onhold_intents'] = array(7240,6629,6630,7248,7435,369,6653); //TODO Replace with drafting intents c_status=0
@@ -35,6 +17,14 @@ $config['content_types'] = array( //This should mirror outbound intents of @3000
     2999 => 'Podcast',
     2997 => 'Article',
     2998 => 'Video',
+);
+
+$config['fb_settings'] = array(
+    'page_id'        => '381488558920384', //Also repeated in global.js
+    'app_id'        => '1782431902047009', //Also repeated in global.js
+    'client_secret' => '05aea76d11b062951b40a5bee4251620',
+    'default_graph_version' => 'v2.10', //Also repeated in global.js
+    'mench_access_token' => 'EAAZAVHMRbmyEBAEfN8zsRJ3UOIUJJrNLqeFutPXVQZCoDZA3EO1rgkkzayMtNhisHHEhAos08AmKZCYD7zcZAPIDSMTcBjZAHxxWzbfWyTyp85Fna2bGDfv5JUIBuFTSeQOZBaDHRG7k0kbW8E7kQQN3W6x47VB1dZBPJAU1oNSW1QZDZD',
 );
 
 //Learn more: https://console.aws.amazon.com/iam/home?region=us-west-2#/users/foundation?section=security_credentials

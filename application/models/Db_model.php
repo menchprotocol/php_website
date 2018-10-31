@@ -2244,7 +2244,6 @@ class Db_model extends CI_Model {
     function algolia_sync($obj,$obj_id=0){
 
 	    //Define the support objects indexed on algolia:
-        $website = $this->config->item('website');
         $obj_id = intval($obj_id);
 
         $alg_indexes = array(
@@ -2268,7 +2267,7 @@ class Db_model extends CI_Model {
 
         if(is_dev()){
             //Do a call on live:
-            return json_decode(curl_html($website['url']."cron/algolia_sync/".$obj."/".$obj_id));
+            return json_decode(curl_html("https://mench.com/cron/algolia_sync/".$obj."/".$obj_id));
         }
 
         //Load algolia

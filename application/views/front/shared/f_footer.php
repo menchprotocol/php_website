@@ -1,7 +1,4 @@
-<?php 
-//Attempt to fetch session variables:
-$website = $this->config->item('website');
-?></div>
+</div>
 </div>
 
  	<footer class="footer" style="margin:0 0 30px 0;">
@@ -18,7 +15,7 @@ $website = $this->config->item('website');
                         <a href="mailto:support@mench.com" class="social-link"><i class="fas fa-envelope" data-toggle="tooltip" title="Send us an email" data-placement="top"></i></a>
                         <a href="/terms" class="social-link"><i class="fas fa-balance-scale" data-toggle="tooltip" title="Review our terms of service and privacy policy" data-placement="top"></i></a>
                     </li>
-                    <li class="legal-name"><i><span class="legal-name underdot" data-toggle="tooltip" title="Current version was released on <?= date("F j, Y",strtotime($website['released'])) ?>" data-placement="top">v<?= $website['version'] ?></span></i></li>
+                    <li class="legal-name"><i>v<?= $this->config->item('app_version') ?></i></li>
 
                     <!-- <li style="padding-right: 1px;"><a href="https://angel.co/mench/jobs" target="_blank">We're Hiring!</a></li> -->
 

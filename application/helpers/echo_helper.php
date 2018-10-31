@@ -941,16 +941,13 @@ function echo_object($object,$id){
     $id = intval($id);
 
     if($id>0){
-        //Used mainly for engagement tracking
-        $website = $CI->config->item('website');
-
         if($object=='c'){
             //Fetch intent/Step:
             $cs = $CI->Db_model->c_fetch(array(
                 'c.c_id' => $id,
             ));
             if(isset($cs[0])){
-                return '<a href="'.$website['url'].'intents/'.$cs[0]['c_id'].'">'.$cs[0]['c_outcome'].'</a>';
+                return '<a href="https://mench.com/intents/'.$cs[0]['c_id'].'">'.$cs[0]['c_outcome'].'</a>';
             }
 
         } elseif($object=='u'){
@@ -962,7 +959,7 @@ function echo_object($object,$id){
                 ));
                 if(isset($matching_users[0])){
                     //TODO Link to profile or chat widget link maybe?
-                    return '<a href="'.$website['url'].'entities/'.$id.'" title="Entity ID '.$id.'">'.$matching_users[0]['u_full_name'].'</a>';
+                    return '<a href="https://mench.com/entities/'.$id.'" title="Entity ID '.$id.'">'.$matching_users[0]['u_full_name'].'</a>';
                 }
             }
 

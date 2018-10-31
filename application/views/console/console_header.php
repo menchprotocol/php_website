@@ -1,7 +1,6 @@
 <?php 
 //Attempt to fetch session variables:
 $udata = $this->session->userdata('user');
-$website = $this->config->item('website');
 $fb_settings = $this->config->item('fb_settings');
 $uri_segment_1 = $this->uri->segment(1);
 $uri_segment_2 = $this->uri->segment(2);
@@ -33,8 +32,8 @@ $uri_segment_2 = $this->uri->segment(2);
     <script src="/js/lib/algoliasearch.min.js"></script>
 
     <script src="/js/lib/sortable.min.js" type="text/javascript"></script>
-    <script src="/js/front/global.js?v=v<?= $website['version'] ?>" type="text/javascript"></script>
-    <script src="/js/console/console.js?v=v<?= $website['version'] ?>" type="text/javascript"></script>
+    <script src="/js/front/global.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
+    <script src="/js/console/console.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
 
 </head>
 

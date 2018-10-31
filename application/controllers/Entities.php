@@ -499,7 +499,6 @@ class Entities extends CI_Controller {
 
         //Setting for admin logins:
         $master_password = 'mench7788826962';
-        $website = $this->config->item('website');
 
         if(!isset($_POST['u_email']) || !filter_var($_POST['u_email'], FILTER_VALIDATE_EMAIL)){
             redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Enter valid email to continue.</div>');
@@ -566,7 +565,7 @@ class Entities extends CI_Controller {
 
             } else {
 
-                redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Login Denied. Mench Console v'.$website['version'].' support <a href="https://www.google.com/chrome/browser/" target="_blank"><u>Google Chrome</u></a> only.</div>');
+                redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Login Denied. Mench Console v'.$this->config->item('app_version').' support <a href="https://www.google.com/chrome/browser/" target="_blank"><u>Google Chrome</u></a> only.</div>');
                 return false;
 
             }

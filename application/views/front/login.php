@@ -2,11 +2,6 @@
 <br />
 
 <div class="login-content">
-	
-	<?php 
-	//Check to make sure it's Chrome:
-    $website = $this->config->item('website');
-	    ?>
         <script>
             //Show loading:
             function u_password_reset_initiate(){
