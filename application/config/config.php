@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 date_default_timezone_set('America/Los_Angeles');
 
 //Used to generate application status links:
-$config['app_version'] = '0.581'; //Updates status css/js cache files
+$config['app_version'] = '0.582'; //Updates status css/js cache files
 $config['message_max'] = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
 $config['file_limit_mb'] = 25; //Server setting is 32MB. see here: mench.com/ses
 $config['entity_per_page'] = 50;
@@ -49,13 +49,13 @@ $config['engagement_subscriptions'] = array(
 $config['object_statuses'] = array(
     'u' => array(
         -2 => array(
-            's_name'  => 'Archived',
-            's_desc'  => 'Entity has been removed',
-            's_icon' => 'fas fa-times-circle',
-        ),
-        -1 => array(
             's_name'  => 'Unsubscribed',
             's_desc'  => 'User requested to be un-subscribed from Mench',
+            's_icon' => 'fas fa-minus-circle',
+        ),
+        -1 => array(
+            's_name'  => 'Archived',
+            's_desc'  => 'Entity has been removed',
             's_icon' => 'fas fa-times-circle',
         ),
         0 => array(
@@ -64,13 +64,13 @@ $config['object_statuses'] = array(
             's_icon' => 'fas fa-question-circle',
         ),
         1 => array(
-            's_name'  => 'Drafting',
-            's_desc'  => 'Entity is accepted and is being referenced or worked on',
+            's_name'  => 'Referencing',
+            's_desc'  => 'Entity is accepted and is in the referencing process',
             's_icon' => 'fas fa-play-circle',
         ),
         2 => array(
-            's_name'  => 'Live',
-            's_desc'  => 'Entity is completed/live',
+            's_name'  => 'Active',
+            's_desc'  => 'Entity is completed and live',
             's_icon' => 'fas fa-check-circle',
         ),
     ),
@@ -94,20 +94,35 @@ $config['object_statuses'] = array(
         ),
     ),
     'c' => array(
+        -2 => array(
+            's_name'  => 'Denied',
+            's_desc'  => 'Intent rejected as it did not meet intent creation guidelines',
+            's_icon' => 'fas fa-minus-circle',
+        ),
         -1 => array(
             's_name'  => 'Archived',
             's_desc'  => 'Intent has been archived and all its links has been removed',
             's_icon' => 'fas fa-times-circle',
         ),
         0 => array(
-            's_name'  => 'Pending Review',
-            's_desc'  => 'Intent is added and pending review by a moderator',
-            's_icon' => 'fas fa-exclamation-circle',
+            's_name'  => 'New',
+            's_desc'  => 'Intent is newly added by a user and is pending review by a moderator',
+            's_icon' => 'fas fa-question-circle',
         ),
         1 => array(
+            's_name'  => 'Drafting',
+            's_desc'  => 'Intent is added and remains in drafting mode until made active',
+            's_icon' => 'fas fa-play-circle',
+        ),
+        2 => array(
             's_name'  => 'Active',
-            's_desc'  => 'Intent is published live',
+            's_desc'  => 'Intent is published live and used in Action Plans',
             's_icon' => 'fas fa-check-circle',
+        ),
+        3 => array(
+            's_name'  => 'Subscribable',
+            's_desc'  => 'Intents that are public that users can subscribed to',
+            's_icon' => 'fas fa-badge-check',
         ),
     ),
     'cr' => array(

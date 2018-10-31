@@ -242,7 +242,7 @@ class Comm_model extends CI_Model {
 
                 //Update User table status:
                 $this->Db_model->u_update( $fetch_us[0]['u_id'] , array(
-                    'u_status' => -1, //Unsubscribed
+                    'u_status' => -2, //Unsubscribed
                 ));
 
                 //Log engagement:
@@ -446,7 +446,7 @@ class Comm_model extends CI_Model {
                             'e_outbound_u_id' => $fetch_us[0]['u_id'],
                             'e_outbound_c_id' => $fetch_cs[0]['c_id'],
                             'e_w_id' => $subscription_intents[0]['k_w_id'],
-                            'i_message' => ( $subscription_intents[0]['c_id']==$w_c_id ? 'You have already subscribed to '.$fetch_cs[0]['c_outcome'].'. We have been working on it together since '.echo_time($subscription_intents[0]['w_timestamp'], 2).'. /open_actionplan' : 'Your subscription to '.$subscription_intents[0]['c_outcome'].' already covers the intention to '.$fetch_cs[0]['c_outcome'].', so I will not create a duplicate subscription. /open_actionplan' ),
+                            'i_message' => ( $subscription_intents[0]['c_id']==$w_c_id ? 'You have already subscribed to '.$fetch_cs[0]['c_outcome'].'. We have been working on it together since '.echo_time($subscription_intents[0]['w_timestamp'], 2).' /open_actionplan' : 'Your subscription to '.$subscription_intents[0]['c_outcome'].' already covers the intention to '.$fetch_cs[0]['c_outcome'].', so I will not create a duplicate subscription. /open_actionplan' ),
                         ),
                     ));
 
@@ -580,7 +580,7 @@ class Comm_model extends CI_Model {
                     ),
                 ));
 
-            } elseif($fetch_us[0]['u_status']==-1) {
+            } elseif($fetch_us[0]['u_status']<0) {
 
                 //User is already unsubscribed, let them know:
                 $this->Comm_model->send_message(array(
@@ -615,7 +615,7 @@ class Comm_model extends CI_Model {
 
             }
 
-        } elseif($fb_message_received && $fetch_us[0]['u_status']==-1){
+        } elseif($fb_message_received && $fetch_us[0]['u_status']<0){
 
             //We got a message from an unsubscribed user, let them know:
             return $this->Comm_model->send_message(array(

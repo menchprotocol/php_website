@@ -329,7 +329,7 @@ input::-webkit-inner-spin-button {
     background-color: #EFEFEF;
 }
 .step-group{
-    margin:10px 0 0 8px;
+    margin:10px 0 0 13px;
 }
 .step-group>.list-group-item{
     padding:7px;

@@ -168,9 +168,6 @@ class Cron extends CI_Controller {
 
             //Fetch user data:
             $matching_subscriptions = $this->Db_model->w_fetch(array(
-                'ru_outbound_u_id' => $e_text_value['e_outbound_u_id'],
-                'ru_status >=' => 4, //Active student
-                'r_status' => 2, //Running Class
             ));
 
             if(count($matching_subscriptions)>0){
@@ -478,8 +475,6 @@ class Cron extends CI_Controller {
         //Send reminders to students to complete their intent:
 
         $subscriptions = $this->Db_model->w_fetch(array(
-            'r.r_status'	    => 2, //Running Class
-            'ru.ru_status'      => 4, //Enrolled Students
         ));
 
         //Define the logic of these reminders

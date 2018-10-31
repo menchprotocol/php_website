@@ -584,7 +584,6 @@ $b_team_member = array();
         $('#modifybox').attr('entity-id',u_id);
 
         $('#u_full_name').val($(".u_full_name_"+u_id+":first").text());
-        $('.u_full_name_trust').text($(".u_full_name_"+u_id+":first").text());
         $('#u_bio').val($(".u__"+u_id+":first").attr('entity-bio'));
         changeBio();
 
@@ -926,8 +925,7 @@ if(count($payments)>0){
 
 
               <div class="title" style="margin-top:15px;"><h4><i class="fas fa-comment-dots"></i> Introductory Message [<span style="margin:0 0 10px 0; font-size:0.8em;"><span id="charNum">0</span>/<?= $message_max ?></span>]</h4></div>
-              <p>Why should we trust <span class="u_full_name_trust"></span>?</p>
-              <textarea class="form-control text-edit border msg" id="u_bio" style="height:186px; background-color:#FFFFFF !important;" onkeyup="changeBio()"></textarea>
+              <textarea class="form-control text-edit border msg" id="u_bio" style="height:146px; background-color:#FFFFFF !important;" onkeyup="changeBio()"></textarea>
 
 
               <!-- Password credential management -->
@@ -968,7 +966,7 @@ if(count($payments)>0){
 
       <div id="message-frame" class="fixed-box hidden" entity-id="">
 
-          <h5 class="badge badge-h"><i class="fas fa-comment-dots"></i> Entity Messages</h5>
+          <h5 class="badge badge-h" data-toggle="tooltip" title="Message management can only be done using Intents. Entity messages are listed below for view-only" data-placement="bottom"><i class="fas fa-comment-dots"></i> Entity Messages <i class="fas fa-lock"></i></h5>
           <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;"><a href="javascript:void(0)" onclick="$('#message-frame').addClass('hidden');$('#loaded-messages').html('');"><i class="fas fa-times-circle"></i></a></div>
           <div class="grey-box"><div id="loaded-messages"></div></div>
 

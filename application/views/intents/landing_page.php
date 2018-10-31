@@ -10,7 +10,7 @@
         $('.alink-'+c_id).attr('href','javascript:void(0);');
         var c_outcome_parent = $('#title-parent').text();
         var c_outcome_child = $('#title-'+c_id).text();
-        var r = confirm("If you are only interested to "+c_outcome_child+" then press OK. But if you want to "+c_outcome_parent+" then press Cancel and use the SUBSCRIBE button above.");
+        var r = confirm("Press OK to " +c_outcome_child+"\nPress CANCEL to "+c_outcome_parent);
         if (r == true) {
             //Go to target intent:
             window.location = "/"+c_id;
@@ -94,15 +94,19 @@
         $landing_pagetask_visible = 5;
         foreach($c['c__child_intents'] as $c1_counter=>$c1){
 
+            //We need messages or children to expand this intent:
+            $requies_expansion = ( count($c1['c__messages'])>0 || count($c1['c__child_intents'])>0 );
+
             echo '<li class="list-group-item" id="c__'.$c1_counter.'">';
 
-            echo ($c1_counter+1).'. <a id="title-'.$c1['c_id'].'" href="javascript:void(0)" onclick="$(\'.c_'.$c1_counter.'\').toggle();" style="font-weight: normal;">'.$c1['c_outcome'].'</a>';
+                echo ($c1_counter+1).'. <'.( $requies_expansion ? 'a href="javascript:void(0)" onclick="$(\'.c_'.$c1_counter.'\').toggle();"' : 'span' ).' id="title-'.$c1['c_id'].'" style="font-weight: normal;">'.$c1['c_outcome'].'</'.( $requies_expansion ? 'a' : 'span' ).'>';
 
 
-            echo '<span style="font-size:0.8em; font-weight:300; margin-left:5px; display:inline-block;">';
-            echo ( $c1['c__tree_all_count']>0 ? '<span style="padding-right:5px;"><i class="fas fa-lightbulb-on"></i>'.$c1['c__tree_all_count'].'</span>' : '' );
-            echo '<span><i class="fas fa-clock"></i>'.echo_hour_range($c1, true).'</span>';
-            echo '</span>';
+                echo '<span style="font-size:0.8em; font-weight:300; margin-left:5px; display:inline-block;">';
+                echo ( $c1['c__tree_all_count']>0 ? '<span style="padding-right:5px;"><i class="fas fa-lightbulb-on"></i>'.$c1['c__tree_all_count'].'</span>' : '' );
+                echo '<span><i class="fas fa-clock"></i>'.echo_hour_range($c1, true).'</span>';
+                echo '</span>';
+
 
                 echo '<div class="c_'.$c1_counter.'" style="display:none; margin-left:3px; font-size:0.9em;">';
 

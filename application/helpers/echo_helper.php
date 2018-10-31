@@ -783,7 +783,7 @@ function echo_costs($c, $fb_format=0){
         $price_range = 'between $'.round($c['c__tree_min_cost']).' to $'.round($c['c__tree_max_cost']).' USD';
     }
 
-    $pitch = 'May cost '.$price_range.' to purchase third-party products.';
+    $pitch = 'May cost '.$price_range.' in verified third-party product purchases.';
     if($fb_format) {
         return '💵 '.$pitch."\n";
     } else {
@@ -803,7 +803,10 @@ function echo_concepts($c, $fb_format=0){
 }
 
 function echo_completion_estimate($c, $fb_format=0){
-    $pitch = 'Takes '.echo_hour_range($c).' to complete'.( $c['c__tree_max_hours']==$c['c__tree_min_hours'] ? '' : ' based on your skill-sets & preferences' ).'.';
+
+    $is_equal = ( $c['c__tree_max_hours']==$c['c__tree_min_hours'] );
+    $pitch = 'Takes '.( $is_equal ? 'about ' : '' ).echo_hour_range($c).' to complete'.( $is_equal ? '' : ' based on your skill-sets & preferences' ).'.';
+
     if($fb_format) {
         return '🕓 '.$pitch."\n";
     } else {
@@ -1311,7 +1314,7 @@ function echo_u($u, $level, $can_edit, $is_inbound=false){
         $ui .= echo_cover($u, 'profile-icon2');
         $ui .= '<b id="u_title" class="u_full_name u_full_name_'.$u['u_id'].'">' . $u['u_full_name'] . '</b>';
         $ui .= ' <span class="obj-id underdot" data-toggle="tooltip" data-placement="top" title="Entity ID">@' . $u['u_id'] . '</span>';
-        $ui .= ' <a href="https://www.google.com/search?q='.urlencode($u['u_full_name']).'" target="_blank" data-toggle="tooltip" title="Search on Google" data-placement="left"><i class="fab fa-google"></i></a>';
+        $ui .= ' <a href="https://www.google.com/search?q='.urlencode($u['u_full_name']).'" target="_blank" data-toggle="tooltip" title="Search on Google" data-placement="top"><i class="fab fa-google"></i></a>';
 
         //Check last engagement ONLY IF admin:
         if ($can_edit) {
