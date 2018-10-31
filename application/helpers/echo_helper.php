@@ -805,7 +805,7 @@ function echo_concepts($c, $fb_format=0){
 }
 
 function echo_completion_estimate($c, $fb_format=0){
-    $pitch = 'Takes about '.echo_hour_range($c).' to Complete.';
+    $pitch = 'Takes about '.echo_hour_range($c).' to complete'.( $c['c__tree_max_hours']==$c['c__tree_min_hours'] ? '' : ' depending on your skill-sets and preferences' ).'.';
     if($fb_format) {
         return '🕓 '.$pitch."\n";
     } else {
