@@ -206,7 +206,7 @@ class My extends CI_Controller {
         $this->Db_model->k_update($ks[0]['k_id'], $k_update_array);
 
         //Redirect back to page with success message:
-        return redirect_message($k_url,'<div class="alert alert-success" role="alert">Submission saved!</div>');
+        return redirect_message($k_url,'<div class="alert alert-success" role="alert"><i class="fal fa-check-circle"></i> Saved</div>');
 
 
 

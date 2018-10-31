@@ -28,8 +28,8 @@ if(!isset($intents[0])){
     var c_id = <?= $c_id ?>;
     var max_length = <?= $message_max ?>;
     var message_count = <?= count($i_messages) ?>;
-    //Sync the message count now:
-    window.parent.document.getElementById("messages-counter-"+c_id).innerHTML = message_count;
+
+    $(".messages-counter-"+c_id, window.parent.document).text(message_count);
 
     function add_first_name(){
         $('#i_message'+c_id).insertAtCaret('/firstname ');
@@ -322,7 +322,7 @@ if(!isset($intents[0])){
 
                     //Adjust counter by one:
                     message_count--;
-                    window.parent.document.getElementById("messages-counter-"+c_id).innerHTML = message_count;
+                    $(".messages-counter-"+c_id, window.parent.document).text(message_count);
 
                     if(message_count==0){
                         $('.msg-badge-'+c_id).addClass('grey');
@@ -566,7 +566,7 @@ if(!isset($intents[0])){
 
                     //Adjust Action Plan counter by one:
                     message_count++;
-                    window.parent.document.getElementById("messages-counter-"+c_id).innerHTML = message_count;
+                    $(".messages-counter-"+c_id, window.parent.document).text(message_count);
                 },
                 error: function(data) {
                     var result = [];
@@ -604,7 +604,8 @@ if(!isset($intents[0])){
 
                 //Adjust counter by one:
                 message_count++;
-                window.parent.document.getElementById("messages-counter-"+c_id).innerHTML = message_count;
+                $(".messages-counter-"+c_id, window.parent.document).text(message_count);
+
                 $('.msg-badge-'+c_id).removeClass('grey');
 
                 //Reset input field:

@@ -176,10 +176,12 @@ class Db_model extends CI_Model {
 
         if(!$link_c_id){
 
+            //We are NOT linking to an existing intent, but instead, we're creating a new intent:
             //Set default new hours:
             $default_new_hours = 0.0833; //5 min default
             $recursive_query = array(
                 'c__tree_max_hours' => $default_new_hours,
+                'c__tree_all_count' => 1, //We just added one
             );
 
             //Create intent:
@@ -187,7 +189,7 @@ class Db_model extends CI_Model {
                 'c_inbound_u_id' => $inbound_u_id,
                 'c_outcome' => trim($c_outcome),
                 'c_time_estimate' => $default_new_hours,
-                'c__tree_all_count' => 1,
+                'c__tree_all_count' => 1, //We just added one
                 'c__tree_max_hours' => $default_new_hours,
             ));
 
@@ -206,10 +208,12 @@ class Db_model extends CI_Model {
 
         } else {
 
+            //We are linking to $link_c_id so no need to create anything new...
             $new_cs = $this->Db_model->c_fetch(array(
                 'c_id' => $link_c_id,
                 'c.c_status >' => 0,
             ), ( 3 - $next_level ));
+
             if(count($new_cs)<=0){
                 return array(
                     'status' => 0,
@@ -280,6 +284,10 @@ class Db_model extends CI_Model {
         //Update tree count from parent and above:
         $updated_recursively = $this->Db_model->c_update_tree($c_id, $recursive_query);
 
+
+
+
+
         //Log Engagement for new link:
         $this->Db_model->e_create(array(
             'e_inbound_u_id' => $inbound_u_id,
@@ -304,7 +312,7 @@ class Db_model extends CI_Model {
             'status' => 1,
             'c_id' => $new_c['c_id'],
             'c__tree_max_hours' => $new_c['c__tree_max_hours'],
-            'adjusted_c_count' => $new_c['c__tree_all_count'],
+            'adjusted_c_count' => intval($new_c['c__tree_all_count']),
             'html' => echo_c(array_merge($new_c,$relations[0]),$next_level,intval($c_id)),
         );
     }

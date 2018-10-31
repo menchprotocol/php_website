@@ -575,7 +575,6 @@ $b_team_member = array();
 
         //Make sure inputs are valid:
         if(!$('.u__'+u_id).length){
-            alert('Entity not found');
             return false;
         }
 

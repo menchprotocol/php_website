@@ -391,6 +391,7 @@ if(isset($orphan_cs)){
 
     function adjust_js_ui(c_id, level, new_hours, intent_deficit_count=0, apply_to_tree=0, skip_intent_adjustments=0){
 
+        intent_deficit_count = parseInt(intent_deficit_count);
         var intent_hours = parseFloat($('.t_estimate_'+c_id+':first').attr('intent-hours'));
         var tree_hours = parseFloat($('.t_estimate_'+c_id+':first').attr('tree-hours'));
         var intent_deficit_hours = new_hours - ( skip_intent_adjustments ? 0 : ( apply_to_tree ? tree_hours : intent_hours ) );
@@ -410,6 +411,15 @@ if(isset($orphan_cs)){
             if(!apply_to_tree){
                 $('.t_estimate_'+c_id).attr('intent-hours',new_hours).text(echo_hours(new_tree_hours));
             }
+        }
+
+
+        //Adjust inbound counters, if any:
+        if(!(intent_deficit_count==0)){
+            //See how many inbounds we have:
+            $('.inb-counter').each(function(){
+                $(this).text( parseInt($(this).text()) + intent_deficit_count );
+            });
         }
 
         if(level>=2){
@@ -860,7 +870,7 @@ if(isset($orphan_cs)){
 
                     <div class="form-group label-floating is-empty">
                         <div class="checkbox is_task">
-                            <label style="display: block; font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" id="c_require_notes_to_complete" /><i class="fas fa-pencil"></i> Require written response</label>
+                            <label style="display: block; font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" id="c_require_notes_to_complete" /><i class="fas fa-pencil"></i> Require a written response</label>
                             <label style="display: block; font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" id="c_require_url_to_complete" /><i class="fas fa-link"></i> Require URL in response</label>
                         </div>
                     </div>

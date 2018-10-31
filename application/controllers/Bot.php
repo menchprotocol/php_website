@@ -11,6 +11,14 @@ class Bot extends CI_Controller {
     }
 
 
+    function aa(){
+        echo_json($this->Db_model->c_update_tree(7472, array(
+            'c__tree_all_count' => 2,
+            'c__tree_max_hours' => 1.5,
+        )));
+    }
+
+
     function url(){
         echo '<div><form action=""><input type="url" name="url" value="'.@$_GET['url'].'" style="width:400px;"> <input type="submit" value="Go"></form></div>';
         $curl = curl_html($_GET['url'],true);

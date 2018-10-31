@@ -1160,26 +1160,12 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
     //Right content
     $ui .= '<span class="pull-right" style="'.( $level<3 ? 'margin-right: 8px;' : '' ).'">';
 
-    if($level==1 && array_key_exists(1281, $udata['u__inbounds'])){
-        //Give option to update the cache:
-        $ui .= '<a href="/cron/intent_sync/'.$c['c_id'].'/1" class="badge badge-primary" target="_blank" style="display:inline-block; margin-right:-1px; width:40px;" data-toggle="tooltip" title="Updates Intent tree cache which controls landing page counters for concept, hours, content types and industry expert" data-placement="left"><i class="fas fa-external-link-square-alt" style="position: absolute; top: -7px; right: 3px; font-size: 0.85em;"></i><i class="fas fa-sync-alt"></i></a> ';
-    }
-
-
-    $ui .= '<a href="#messages-'.$c['c_id'].'" onclick="load_c_messages('.$c['c_id'].')" class="msg-badge-'.$c['c_id'].' badge badge-primary '.( $c['c__this_messages']==0 ? 'grey' : '' ).'" style="width:40px;"><span class="btn-counter" id="messages-counter-'.$c['c_id'].'">'.$c['c__this_messages'].'</span><i class="fas fa-comment-dots"></i></a>';
+    $ui .= '<a href="#messages-'.$c['c_id'].'" onclick="load_c_messages('.$c['c_id'].')" class="msg-badge-'.$c['c_id'].' badge badge-primary '.( $c['c__this_messages']==0 ? 'grey' : '' ).'" style="width:40px;"><span class="btn-counter messages-counter-'.$c['c_id'].'">'.$c['c__this_messages'].'</span><i class="fas fa-comment-dots"></i></a>';
 
     $ui .= '<a class="badge badge-primary" onclick="load_c_modify('.$c['c_id'].','.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).')" style="margin:-2px -8px 0 2px; width:40px;" href="#modify-'.$c['c_id'].'-'.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).'"><span class="btn-counter">'.echo_estimated_time($c['c__tree_max_hours'],0,1, $c['c_id'], $c['c_time_estimate']).'</span><i class="c_is_any_icon'.$c['c_id'].' '.( $c['c_is_any'] ? 'fas fa-code-merge' : 'fas fa-sitemap' ).'" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i></a> &nbsp;';
 
-
-    if($level==1 && !$c['c__is_orphan']){
-        //Show Landing Page URL:
-        $ui .= '&nbsp;<a href="/'.$c['c_id'].'" class="badge badge-primary" target="_blank" style="display:inline-block; margin-right:-1px; width:40px;" data-toggle="tooltip" title="Open Landing Page with Intent tree overview & Messenger subscription button" data-placement="left"><i class="fas fa-external-link-square-alt" style="position: absolute; top: -7px; right: 3px; font-size: 0.85em;"></i><i class="fas fa-shopping-cart"></i></a> ';
-    } else {
-        //Show link to travel down the tree:
-        $ui .= '&nbsp;<a href="/intents/'.$c['c_id'].'" class="tree-badge-'.$c['c_id'].' badge badge-primary '.( $c['c__tree_all_count']<=1 ? 'grey' : '' ).'" style="display:inline-block; margin-right:-1px; width:40px;"><span class="btn-counter outbound-counter-'.$c['c_id'].'">'.$c['c__tree_all_count'].'</span><i class="'.( $is_inbound && $level<=2 ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></a> ';
-    }
-
-
+    //Show link to travel down the tree:
+    $ui .= '&nbsp;<a href="/intents/'.$c['c_id'].'" class="tree-badge-'.$c['c_id'].' badge badge-primary '.( $c['c__tree_all_count']<=1 ? 'grey' : '' ).'" style="display:inline-block; margin-right:-1px; width:40px;"><span class="btn-counter outbound-counter-'.$c['c_id'].' '.( $is_inbound && $level==2 ? 'inb-counter' : '' ).'">'.$c['c__tree_all_count'].'</span><i class="'.( $is_inbound && $level<=2 ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></a> ';
 
     //Keep an eye out for inner message counter changes:
     $ui .= '</span> ';
@@ -1202,6 +1188,12 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
         $ui .= '<span class="c_outcome_'.$c['c_id'].'" '.$c_settings.'>'.$c['c_outcome'].'</span>';
         $ui .= '</b></span>';
         $ui .= ' <span class="obj-id underdot" data-toggle="tooltip" data-placement="top" title="Intent ID">#' . $c['c_id'] . '</span>';
+
+        //Give option to update the cache:
+        $ui .= ' <a href="/cron/intent_sync/'.$c['c_id'].'/1" target="_blank" data-toggle="tooltip" title="Updates Intent tree cache which controls landing page counters for concept, hours, content types and industry expert" data-placement="top"><i class="fas fa-sync-alt"></i></a>';
+
+        //Show Landing Page URL:
+        $ui .= ' <a href="/'.$c['c_id'].'" target="_blank" data-toggle="tooltip" title="Open Landing Page with Intent tree overview & Messenger subscription button" data-placement="top"><i class="fas fa-shopping-cart"></i></a>';
 
     } elseif($level==2){
 
@@ -1307,22 +1299,11 @@ function echo_u($u, $level, $can_edit, $is_inbound=false){
     $ui .= '</span> ';
 
 
-
-
     $ui .= '<'.( count($messages)>0 ? 'a href="#messages-'.$u['u_id'].'" onclick="load_u_messages('.$u['u_id'].')" class="badge badge-secondary"' : 'span class="badge badge-secondary grey"' ).' style="width:40px;">'.( count($messages)>0 ? '<span class="btn-counter">'.count($messages).'</span>' : '' ).'<i class="fas fa-comment-dots"></i></'.( count($messages)>0 ? 'a' : 'span' ).'>';
-
 
     $ui .= '<'.( $can_edit ? 'a href="#modify-'.$u['u_id'].'-'.$ur_id.'" onclick="load_u_modify('.$u['u_id'].','.$ur_id.')" class="badge badge-secondary"' : 'span class="badge badge-secondary grey"' ).' style="margin:-2px -6px 0 2px; width:40px;">'.( $u['u__e_score']>0 ? '<span class="btn-counter" data-toggle="tooltip" data-placement="left" title="Engagement Score">'.echo_big_num($u['u__e_score']).'</span>' : '' ).'<i class="fas fa-sitemap" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i></'.( $can_edit ? 'a' : 'span' ).'> &nbsp;';
 
-
-    if($level==1){
-        //Level 1, show google search option:
-        $ui .= '<a href="https://www.google.com/search?q='.urlencode($u['u_full_name']).'" target="_blank" class="badge badge-secondary" style="margin-right:6px; width:40px; margin-left:1px;" data-toggle="tooltip" title="Search on Google" data-placement="left"><i class="fas fa-external-link-square-alt" style="position: absolute; top: -7px; right: 3px; font-size: 0.85em; color:#2b2b2b !important;"></i><i class="fab fa-google" style="color:#FFFFFF !important;"></i></a> ';
-    } else {
-        //Level 2:
-        $ui .= '<a class="badge badge-secondary" href="/entities/'.$u['u_id'].'" style="display:inline-block; margin-right:6px; width:40px; margin-left:1px;">'.(isset($u['u__outbound_count']) && $u['u__outbound_count']>0 ? '<span class="btn-counter">'.$u['u__outbound_count'].'</span>' : '').'<i class="'.( $is_inbound ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></a>';
-    }
-
+    $ui .= '<a class="badge badge-secondary" href="/entities/'.$u['u_id'].'" style="display:inline-block; margin-right:6px; width:40px; margin-left:1px;">'.(isset($u['u__outbound_count']) && $u['u__outbound_count']>0 ? '<span class="btn-counter '.( $level==1 ? 'li-outbound-count' : '' ).'">'.$u['u__outbound_count'].'</span>' : '').'<i class="'.( $is_inbound ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></a>';
 
     $ui .= '</span>';
 
@@ -1333,6 +1314,7 @@ function echo_u($u, $level, $can_edit, $is_inbound=false){
         $ui .= echo_cover($u, 'profile-icon2');
         $ui .= '<b id="u_title" class="u_full_name u_full_name_'.$u['u_id'].'">' . $u['u_full_name'] . '</b>';
         $ui .= ' <span class="obj-id underdot" data-toggle="tooltip" data-placement="top" title="Entity ID">@' . $u['u_id'] . '</span>';
+        $ui .= ' <a href="https://www.google.com/search?q='.urlencode($u['u_full_name']).'" target="_blank" data-toggle="tooltip" title="Search on Google" data-placement="left"><i class="fab fa-google"></i></a>';
 
         //Check last engagement ONLY IF admin:
         if ($can_edit) {
