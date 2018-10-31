@@ -620,11 +620,11 @@ function echo_k($k, $is_inbound){
     //Different pointer position based on direction:
     if($is_inbound){
         $ui .= '<span class="pull-left">';
-        $ui .= '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-left"></i></span>';
+        $ui .= '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-left"></i> '.$k['c__tree_all_count'].'</span>';
         $ui .= '</span>';
     } else {
         $ui .= '<span class="pull-right">';
-        $ui .= '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-right"></i></span>';
+        $ui .= '<span class="badge badge-primary fr-bgd">'.$k['c__tree_all_count'].' <i class="fas fa-angle-right"></i></span>';
         $ui .= '</span>';
     }
 
@@ -636,8 +636,6 @@ function echo_k($k, $is_inbound){
         $ui .= echo_status('k_status',$k['k_status'],1,'right');
     }
     $ui .= ' '.$k['c_outcome'];
-    $ui .= ' <i class="fas fa-lightbulb-on"></i> '.$k['c__tree_all_count'];
-    $ui .= ' <i class="fas fa-clock"></i> '.echo_hour_range($k, true);
     if(strlen($k['k_notes'])>0){
         $ui .= ' <i class="fas fa-edit"></i> '.htmlentities($k['k_notes']);
     }
@@ -762,7 +760,7 @@ function echo_contents($c, $fb_format=0){
     }
 
 
-    $pitch = 'Aggregates '.$all_count.' content source'.echo__s($all_count).( $fb_format ? ' including' : ':' ).$text_overview.'.';
+    $pitch = 'Aggregates '.$all_count.' content source'.echo__s($all_count).' including'.$text_overview.'.';
     if($fb_format) {
         return '📚 '.$pitch."\n";
     } else {
@@ -878,7 +876,7 @@ function echo_experts($c, $fb_format=0){
             }
 
             if(($count+1)>=$visible_html){
-                $text_overview .= '<span class="show_more_'.$c['c_id'].'"> & <a href="javascript:void(0);" onclick="$(\'.show_more_'.$c['c_id'].'\').toggle()" style="text-decoration:underline; font-weight:bold;">'.($all_count-$visible_html).' more</a>.</span><span class="show_more_'.$c['c_id'].'" style="display:none;">';
+                $text_overview .= '<span class="show_more_'.$c['c_id'].'"> & <a href="javascript:void(0);" onclick="$(\'.show_more_'.$c['c_id'].'\').toggle()" style="text-decoration:underline;">'.($all_count-$visible_html).' more</a>.</span><span class="show_more_'.$c['c_id'].'" style="display:none;">';
             }
         }
     }
@@ -893,7 +891,7 @@ function echo_experts($c, $fb_format=0){
 
 
 
-    $pitch = 'Quotes '.$all_count.' industry expert'.echo__s($all_count).( $fb_format ? ' including' : ':' ).$text_overview;
+    $pitch = 'Quotes '.$all_count.' industry expert'.echo__s($all_count).' including'.$text_overview;
     if($fb_format) {
         return '👩‍🎓 '.$pitch."\n";
     } else {

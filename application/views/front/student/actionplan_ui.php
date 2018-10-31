@@ -49,8 +49,11 @@ if(count($k_ins)==0){
 
     echo echo_status('k_status', $k_ins[0]['k_status']);
 
-    echo ' &nbsp;&nbsp;<i class="fas fa-lightbulb-on"></i> ' . $c['c__tree_all_count'];
-    echo ' &nbsp;&nbsp;<i class="fas fa-clock"></i> ' . echo_hour_range($c);
+    //echo ' &nbsp;&nbsp;<i class="fas fa-lightbulb-on"></i> ' . $c['c__tree_all_count'];
+    //echo ' &nbsp;&nbsp;<i class="fas fa-clock"></i> ' . echo_hour_range($c);
+
+    echo ' &nbsp;&nbsp;<i class="fas fa-clock"></i> ' . echo_hours($c['c_time_estimate']);
+
 
     if ($k_ins[0]['k_last_updated']) {
         echo ' &nbsp;&nbsp;<i class="fas fa-calendar-check"></i> ' . echo_time($k_ins[0]['k_last_updated']);
