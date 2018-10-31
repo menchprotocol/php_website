@@ -762,7 +762,7 @@ function echo_contents($c, $fb_format=0){
     }
 
 
-    $pitch = 'Aggregates '.$all_count.' Content Source'.echo__s($all_count).( $fb_format ? ' that include ' : ':' ).$text_overview.'.';
+    $pitch = 'Aggregates '.$all_count.' Content Source'.echo__s($all_count).( $fb_format ? ' including' : ':' ).$text_overview.'.';
     if($fb_format) {
         return '📚 '.$pitch."\n";
     } else {
