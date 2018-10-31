@@ -433,7 +433,7 @@ class Comm_model extends CI_Model {
                 //See if this intent belong to any of these subscriptions:
                 $subscription_intents = $this->Db_model->k_fetch(array(
                     'w_outbound_u_id' => $fetch_us[0]['u_id'], //All subscriptions belonging to this user
-                    'w_status >=' => 0, //With an active status
+                    'w_status' => 1, //Subscribed
                     '(cr_inbound_c_id='.$w_c_id.' OR cr_outbound_c_id='.$w_c_id.')' => null,
                 ), array('cr','w_c'));
 
