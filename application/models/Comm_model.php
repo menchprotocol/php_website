@@ -954,11 +954,9 @@ class Comm_model extends CI_Model {
 
 
             //Fetch intent and its messages with an appropriate depth
-            $fetch_depth = ( $message['depth']>1 ? $message['depth'] : 1 ); //Used to be something different! Just changed it quickly, not sure if this makes sense
             $tree = $this->Db_model->c_fetch(array(
                 'c.c_id' => $message['e_outbound_c_id'],
-            ), $fetch_depth, array('c__messages')); //Supports up to 2 levels deep for now...
-
+            ), ( $message['depth']>1 ? $message['depth'] : 0 ), array('c__messages')); //Supports up to 2 levels deep for now...
 
             //Check to see if we have any other errors:
             if(!isset($tree[0])){

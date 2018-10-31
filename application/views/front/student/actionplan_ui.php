@@ -32,15 +32,22 @@ if(count($k_ins)==0){
 
     //This must be top level subscription, show subscription data:
     echo '<div class="sub_title">';
-        echo echo_status('w_status',$subscriptions[0]['w_status']);
+        echo echo_status('w_status',$w['w_status']);
         echo ' &nbsp;&nbsp;<i class="fas fa-lightbulb-on"></i> '.$c['c__tree_all_count'];
         echo ' &nbsp;&nbsp;<i class="fas fa-clock"></i> '.echo_hour_range($c);
-        //echo ' &nbsp;&nbsp;<i class="fas fa-calendar-check"></i> '.echo_time($subscriptions[0]['w_timestamp']);
+        //echo ' &nbsp;&nbsp;<i class="fas fa-calendar-check"></i> '.echo_time($w['w_timestamp']);
         //TODO Show coach name if w_inbound_u_id>0
         //TODO show subscription pace data such as start/end time, weekly rate & notification type
     echo '</div>';
 
 } elseif(count($k_ins)==1) {
+
+
+    if($this->Db_model->k_is_parent_done($w['w_id'], $k_ins[0]['cr_outbound_c_id'], $k_ins[0]['cr_inbound_c_id'] )){
+        echo '/Parent Done';
+    } else {
+        echo '/Parent NOT';
+    }
 
     $is_started = ( $k_ins[0]['k_status']>=1 );
 
@@ -53,7 +60,6 @@ if(count($k_ins)==0){
     //echo ' &nbsp;&nbsp;<i class="fas fa-clock"></i> ' . echo_hour_range($c);
 
     echo ' &nbsp;&nbsp;<i class="fas fa-clock"></i> ' . echo_hours($c['c_time_estimate']);
-
 
     if ($k_ins[0]['k_last_updated']) {
         echo ' &nbsp;&nbsp;<i class="fas fa-calendar-check"></i> ' . echo_time($k_ins[0]['k_last_updated']);
@@ -81,8 +87,8 @@ if(count($messages)>0){
         if($i['i_status']==1){
             echo '<div class="tip_bubble">';
             echo echo_i( array_merge( $i , array(
-                'e_outbound_u_id' => $subscriptions[0]['u_id'],
-            )) , $subscriptions[0]['u_full_name'] );
+                'e_outbound_u_id' => $w['u_id'],
+            )) , $w['u_full_name'] );
             echo '</div>';
         }
     }

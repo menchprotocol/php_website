@@ -23,7 +23,7 @@ class Db_model extends CI_Model {
         return $this->db->affected_rows();
     }
 
-    function k_parent_done($w_id, $cr_inbound_c_id, $cr_outbound_c_id){
+    function k_is_parent_done($w_id, $c_id, $cr_inbound_c_id){
 
         $siblings = $this->Db_model->k_fetch(array(
             'k_w_id' => $w_id,
@@ -35,7 +35,7 @@ class Db_model extends CI_Model {
 
         $is_complete = true;
         foreach($siblings as $k_c_cr){
-            if(!intval($k_c_cr['c_is_any']) && !($k_c_cr['cr_outbound_c_id']==$cr_outbound_c_id) && $k_c_cr['k_status']<=1){
+            if(!intval($k_c_cr['c_is_any']) && !($k_c_cr['cr_outbound_c_id']==$c_id) && $k_c_cr['k_status']<=1){
                 //We found an incomplete sibling intent that is NOT this intent and that requires ALL child to be complete!
                 $is_complete = false;
                 break;

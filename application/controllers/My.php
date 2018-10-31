@@ -130,7 +130,7 @@ class My extends CI_Controller {
 
             //All good, Load UI:
             $this->load->view('front/student/actionplan_ui.php' , array(
-                'subscriptions' => $subscriptions,
+                'w' => $subscriptions[0], //We must have 1 by now!
                 'c' => $cs[0],
                 'k_ins' => $k_ins,
                 'k_outs' => $k_outs,
