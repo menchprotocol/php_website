@@ -764,7 +764,7 @@ function echo_contents($c, $fb_format=0){
 
     $pitch = 'Aggregates '.$all_count.' Content Source'.echo__s($all_count).( $fb_format ? ' that include ' : ':' ).$text_overview.'.';
     if($fb_format) {
-        return '- 📚 '.$pitch."\n";
+        return '📚 '.$pitch."\n";
     } else {
         //HTML format
        return '<div class="dash-label"><span class="icon-left"><i class="fas fa-book"></i></span> '.$pitch.'</div>';
@@ -787,7 +787,7 @@ function echo_costs($c, $fb_format=0){
 
     $pitch = 'May cost '.$price_range.' to purchase third-party products.';
     if($fb_format) {
-        return '- 💵 '.$pitch."\n";
+        return '💵 '.$pitch."\n";
     } else {
         //HTML format
         return '<div class="dash-label"><span class="icon-left"><i class="fas fa-usd-square"></i></span> '.$pitch.'</div>';
@@ -797,7 +797,7 @@ function echo_costs($c, $fb_format=0){
 function echo_concepts($c, $fb_format=0){
     $pitch = 'Action Plan includes '.$c['c__tree_all_count'].' Key Concept'.echo__s($c['c__tree_all_count']).'.';
     if($fb_format) {
-        return '- 💡 '.$pitch."\n";
+        return '💡 '.$pitch."\n";
     } else {
         //HTML format
         return '<div class="dash-label"><span class="icon-left"><i class="fas fa-lightbulb-on"></i></span> '.$pitch.'</div>';
@@ -807,7 +807,7 @@ function echo_concepts($c, $fb_format=0){
 function echo_completion_estimate($c, $fb_format=0){
     $pitch = 'Takes about '.echo_hour_range($c).' to Complete.';
     if($fb_format) {
-        return '- 🕓 '.$pitch."\n";
+        return '🕓 '.$pitch."\n";
     } else {
         //HTML format
        return '<div class="dash-label"><span class="icon-left"><i class="fas fa-clock"></i></span> '.$pitch.'</div>';
@@ -895,7 +895,7 @@ function echo_experts($c, $fb_format=0){
 
     $pitch = 'Quotes '.$all_count.' Industry Expert'.echo__s($all_count).( $fb_format ? ' including' : ':' ).$text_overview;
     if($fb_format) {
-        return '- 👩‍🎓 '.$pitch."\n";
+        return '👩‍🎓 '.$pitch."\n";
     } else {
         //HTML format
         return '<div class="dash-label"><span class="icon-left"><i class="fas fa-user-graduate"></i></span> '.$pitch.'</div>';
