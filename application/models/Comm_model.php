@@ -469,13 +469,21 @@ class Comm_model extends CI_Model {
                         ));
                     }
 
+
+
                     //Send message for final confirmation:
                     $this->Comm_model->send_message(array(
                         array(
                             'e_inbound_u_id' => 2738, //Initiated by PA
                             'e_outbound_u_id' => $fetch_us[0]['u_id'],
                             'e_outbound_c_id' => $w_c_id,
-                            'i_message' => 'To '.$fetch_cs[0]['c_outcome'].' will take about '.echo_hour_range($fetch_cs[0]).' to complete. Ready to get started?',
+                            'i_message' => 'Here is what you need to know to '.$fetch_cs[0]['c_outcome'].':'."\n".
+                                echo_concepts($fetch_cs[0], 1).
+                                echo_completion_estimate($fetch_cs[0], 1).
+                                echo_costs($fetch_cs[0], 1).
+                                echo_contents($fetch_cs[0], 1).
+                                echo_experts($fetch_cs[0], 1).
+                                "\n".'Ready to get started? 💪',
                             'quick_replies' => array(
                                 array(
                                     'content_type' => 'text',
