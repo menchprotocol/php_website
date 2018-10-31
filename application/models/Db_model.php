@@ -23,6 +23,28 @@ class Db_model extends CI_Model {
         return $this->db->affected_rows();
     }
 
+    function k_parent_done($w_id, $cr_inbound_c_id, $cr_outbound_c_id){
+
+        $siblings = $this->Db_model->k_fetch(array(
+            'k_w_id' => $w_id,
+            'cr_inbound_c_id' => $cr_inbound_c_id, //Fetch children of parent intent which are the siblings of current intent
+        ), array('cr','cr_c_in'));
+
+        //The above query should always return results...
+        //Now determine if the parent is done based on its c_is_any setting and the completion status of its children:
+
+        $is_complete = true;
+        foreach($siblings as $k_c_cr){
+            if(!intval($k_c_cr['c_is_any']) && !($k_c_cr['cr_outbound_c_id']==$cr_outbound_c_id) && $k_c_cr['k_status']<=1){
+                //We found an incomplete sibling intent that is NOT this intent and that requires ALL child to be complete!
+                $is_complete = false;
+                break;
+            } elseif(intval($k_c_cr['c_is_any'])){
+                //Since the parent is ANY it would be complete by default as we're about to complete this one...
+                break;
+            }
+        }
+    }
 
     function k_mark_complete($k, $w){
 
@@ -39,12 +61,13 @@ class Db_model extends CI_Model {
             //Now let's recursively fetch all the siblings for this subscription:
             $cr_inbound_c_id = $k['cr_inbound_c_id'];
             $cr_outbound_c_id = $k['cr_outbound_c_id'];
+
             while(count($this->Db_model->k_fetch(array(
                     'k_w_id' => $w['w_id'],
                     'cr_inbound_c_id' => $cr_inbound_c_id, //Fetch children of parent intent which are the siblings of current intent
                     'cr_outbound_c_id !=' => $cr_outbound_c_id, //Exclude current intent (as we're about to mark is as complete)
                     'k_status <=' => 1, //Anything with k_status<=1 is incomplete
-                ), array('cr')))==0){
+                ), array('cr','cr_c_in')))==0){
 
                 //Is the top representing the entire subscription?
                 if($w['w_c_id']==$cr_inbound_c_id){

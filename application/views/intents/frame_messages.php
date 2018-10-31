@@ -555,6 +555,7 @@ if(!isset($intents[0])){
                 processData: false,
                 complete: function() {
                     $('.box'+c_id).removeClass('is-uploading');
+                    $('.msg-badge-'+c_id).removeClass('grey');
                 },
                 success: function(data) {
                     message_form_unlock(data);
@@ -600,6 +601,7 @@ if(!isset($intents[0])){
                 //Adjust counter by one:
                 message_count++;
                 window.parent.document.getElementById("messages-counter-"+c_id).innerHTML = message_count;
+                $('.msg-badge-'+c_id).removeClass('grey');
 
                 //Reset input field:
                 $( "#i_message"+c_id ).val("");

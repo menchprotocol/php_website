@@ -65,24 +65,12 @@
     <div class="price-box">
 
         <div class="support_p">
-
-            <!-- Show two primary ones -->
-            <div class="dash-label"><span class="icon-left"><i class="fas fa-lightbulb-on"></i></span> <?= $c['c__tree_all_count'] ?> Key Concepts</div>
-            <div class="dash-label"><span class="icon-left"><i class="fas fa-clock"></i></span> <?= echo_hour_range($c) ?> to Complete</div>
-
-            <?php if(strlen($c['c__tree_contents'])>0){ ?>
-                <div class="dash-label"><span class="icon-left"><i class="fas fa-book"></i></span> <?= echo_contents($c) ?></div>
-            <?php } ?>
-
-            <?php if(strlen($c['c__tree_experts'])>0){ ?>
-                <div class="dash-label"><span class="icon-left"><i class="fas fa-user-graduate"></i></span> <?= echo_experts($c) ?></div>
-            <?php } ?>
-
-            <?php if($c['c__tree_max_cost']>0){ //Show the potential costs ?>
-                <div class="dash-label"><span class="icon-left"><i class="fas fa-usd-circle"></i></span> <?= echo_cost_range($c) ?> in Purchases</div>
-            <?php } ?>
+            <?= echo_concepts($c, 0) ?>
+            <?= echo_completion_estimate($c, 0) ?>
+            <?= echo_costs($c, 0) ?>
+            <?= echo_contents($c, 0) ?>
+            <?= echo_experts($c, 0) ?>
         </div>
-
 
         <!-- Call to Action -->
         <a class="btn btn-primary" href="https://m.me/askmench?ref=SUBSCRIBE10_<?= $c['c_id'] ?>" style="display: inline-block; padding: 12px 36px;">Subscribe [Free] <i class="fas fa-angle-right"></i></a>
@@ -95,8 +83,6 @@
         </div>
 
     </div>
-
-
 
 
     <?php if(count($c['c__child_intents'])>0){ ?>

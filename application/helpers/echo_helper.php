@@ -669,7 +669,13 @@ function echo_hours($decimal_hours,$micro=false){
     }
 }
 
-function echo_contents($c, $micro=false){
+function echo_contents($c, $fb_format=0){
+
+    //Do we have anything to return?
+    if(strlen($c['c__tree_contents'])<=0){
+        return false;
+    }
+
 
     //Make initial variables:
     $c['c__tree_contents'] = unserialize($c['c__tree_contents']);
@@ -683,7 +689,7 @@ function echo_contents($c, $micro=false){
         $all_count += count($current_us);
     }
 
-    if(!$micro && $all_count>0){
+    if($all_count>0){
 
         $visible_ppl = 3;
         $type_count = 0;
@@ -704,78 +710,157 @@ function echo_contents($c, $micro=false){
             }
 
             //Show category:
-            $text_overview .= ' <span class="show_type_'.$type_id.'"><a href="javascript:void(0);" onclick="$(\'.show_type_'.$type_id.'\').toggle()" style="text-decoration:underline; display:inline-block;">'.count($current_us).' '.$content_types[$type_id].echo__s(count($current_us)).'</a>'.(($type_count+1)>=$type_all_count ? '.' : '').'</span><span class="show_type_'.$type_id.'" style="display:none;">';
+            $cat_contribution = count($current_us).' '.$content_types[$type_id].echo__s(count($current_us));
+            if($fb_format) {
 
+                $text_overview .= ' '.$cat_contribution;
 
-            $count = 0;
-            foreach($current_us as $u){
+            } else {
 
-                if($count>0){
-                    if(($count+1)>=count($current_us)){
-                        $text_overview .= ' &';
-                    } else {
-                        $text_overview .= ',';
+                $text_overview .= ' <span class="show_type_'.$type_id.'"><a href="javascript:void(0);" onclick="$(\'.show_type_'.$type_id.'\').toggle()" style="text-decoration:underline; display:inline-block;">'.$cat_contribution.'</a></span><span class="show_type_'.$type_id.'" style="display:none;">';
+
+                //We only show details on our website's HTML landing pages:
+                $count = 0;
+                foreach ($current_us as $u) {
+
+                    if ($count > 0) {
+                        if (($count + 1) >= count($current_us)) {
+                            $text_overview .= ' &';
+                        } else {
+                            $text_overview .= ',';
+                        }
                     }
-                }
 
-                $text_overview .= ' ';
+                    $text_overview .= ' ';
 
-                if($edit_enabled){
-                    $text_overview .= '<a href="/entities/'.$u['u_id'].'">';
-                }
+                    if ($edit_enabled) {
+                        $text_overview .= '<a href="/entities/' . $u['u_id'] . '">';
+                    }
 
-                if(isset($u['u_bio']) && strlen($u['u_bio'])>0){
-                    //Has description, show it here:
-                    $text_overview .= ' <span data-toggle="tooltip" title="'.stripslashes($u['u_bio']).'" data-placement="top" class="underdot">'.$u['u_full_name'].'</span>';
-                } else {
-                    //Just the name:
-                    $text_overview .= $u['u_full_name'];
-                }
+                    if (isset($u['u_bio']) && strlen($u['u_bio']) > 0) {
+                        //Has description, show it here:
+                        $text_overview .= ' <span data-toggle="tooltip" title="' . stripslashes($u['u_bio']) . '" data-placement="top" class="underdot">' . $u['u_full_name'] . '</span>';
+                    } else {
+                        //Just the name:
+                        $text_overview .= $u['u_full_name'];
+                    }
 
-                if($edit_enabled){
-                    $text_overview .= '</a>';
+                    if ($edit_enabled) {
+                        $text_overview .= '</a>';
+                    }
+                    $count++;
                 }
-                $count++;
+                $text_overview .= '</span>';
             }
-
-            $text_overview .= '</span>';
             $type_count++;
         }
-
-
     }
 
     //Return results:
     if($all_count==0){
         return false;
+    }
+
+
+    $pitch = 'Aggregates '.$all_count.' Content Source'.echo__s($all_count).( $fb_format ? ' that include ' : ':' ).$text_overview.'.';
+    if($fb_format) {
+        return '- 📚 '.$pitch."\n";
     } else {
-        return '<span>'.$all_count.( $micro ? '' : ' Content Reference'.echo__s($all_count).' across'.$text_overview ).'</span>';
+        //HTML format
+       return '<div class="dash-label"><span class="icon-left"><i class="fas fa-book"></i></span> '.$pitch.'</div>';
     }
 }
 
-function echo_experts($c, $micro=false){
+
+
+function echo_costs($c, $fb_format=0){
+
+    if($c['c__tree_max_cost']<=0){
+        return false;
+    } elseif(round($c['c__tree_max_cost'])==round($c['c__tree_min_cost']) || $c['c__tree_min_cost']==0){
+        //Single price:
+        $price_range = 'up to $'.round($c['c__tree_max_cost']).' USD';
+    } else {
+        //Price range:
+        $price_range = 'between $'.round($c['c__tree_min_cost']).' to $'.round($c['c__tree_max_cost']).' USD';
+    }
+
+    $pitch = 'May cost '.$price_range.' to purchase third-party products.';
+    if($fb_format) {
+        return '- 💵 '.$pitch."\n";
+    } else {
+        //HTML format
+        return '<div class="dash-label"><span class="icon-left"><i class="fas fa-usd-square"></i></span> '.$pitch.'</div>';
+    }
+}
+
+function echo_concepts($c, $fb_format=0){
+    $pitch = 'Action Plan includes '.$c['c__tree_all_count'].' Key Concept'.echo__s($c['c__tree_all_count']).'.';
+    if($fb_format) {
+        return '- 💡 '.$pitch."\n";
+    } else {
+        //HTML format
+        return '<div class="dash-label"><span class="icon-left"><i class="fas fa-lightbulb-on"></i></span> '.$pitch.'</div>';
+    }
+}
+
+function echo_completion_estimate($c, $fb_format=0){
+    $pitch = 'Takes about '.echo_hour_range($c).' to Complete.';
+    if($fb_format) {
+        return '- 🕓 '.$pitch."\n";
+    } else {
+        //HTML format
+       return '<div class="dash-label"><span class="icon-left"><i class="fas fa-clock"></i></span> '.$pitch.'</div>';
+    }
+}
+
+function echo_experts($c, $fb_format=0){
+
+    //Do we have any concepts?
+    if(strlen($c['c__tree_experts'])<=0){
+        return false;
+    }
 
     //Make initial variables:
     $c['c__tree_experts'] = unserialize($c['c__tree_experts']);
     $all_count = count($c['c__tree_experts']);
+    if($all_count==0){
+        //Should never happen since strlen($c['c__tree_experts'])>0
+        return false;
+    }
 
-    if(!$micro && $all_count>0){
 
-        $visible_ppl = 3;
-        $edit_enabled = auth(array(1281),0);
-        //More than 3:
-        $text_overview = '';
-        foreach($c['c__tree_experts'] as $count=>$u){
-            if($count>0){
-                if(($count+1)>=$all_count){
-                    $text_overview .= ' &';
-                } else {
-                    $text_overview .= ',';
+    $visible_html = 5; //Landing page, beyond this is hidden and visible with a click
+    $visible_bot = 10; //Plain text style, but beyond this is cut out!
+    $edit_enabled = auth(array(1281),0);
+    $text_overview = '';
+
+    foreach($c['c__tree_experts'] as $count=>$u){
+
+        $is_last_fb_item = ($fb_format && $count>=$visible_bot);
+
+        if($count>0){
+            if(($count+1)>=$all_count || $is_last_fb_item){
+                $text_overview .= ' &';
+                if($is_last_fb_item){
+                    $text_overview .= ' '.($all_count-$visible_bot).' more!';
+                    break;
                 }
+            } else {
+                $text_overview .= ',';
             }
+        }
 
-            $text_overview .= ' ';
+        $text_overview .= ' ';
 
+        if($fb_format){
+
+            //Just the name:
+            $text_overview .= $u['u_full_name'];
+
+        } else {
+
+            //HTML Format:
             if($edit_enabled){
                 $text_overview .= '<a href="/entities/'.$u['u_id'].'">';
             }
@@ -792,28 +877,32 @@ function echo_experts($c, $micro=false){
                 $text_overview .= '</a>';
             }
 
-            if(($count+1)>=$visible_ppl){
-                $text_overview .= '<span class="show_more_'.$c['c_id'].'"> & <a href="javascript:void(0);" onclick="$(\'.show_more_'.$c['c_id'].'\').toggle()" style="text-decoration:underline; font-weight:bold;">'.($all_count-$visible_ppl).' more</a>.</span><span class="show_more_'.$c['c_id'].'" style="display:none;">';
+            if(($count+1)>=$visible_html){
+                $text_overview .= '<span class="show_more_'.$c['c_id'].'"> & <a href="javascript:void(0);" onclick="$(\'.show_more_'.$c['c_id'].'\').toggle()" style="text-decoration:underline; font-weight:bold;">'.($all_count-$visible_html).' more</a>.</span><span class="show_more_'.$c['c_id'].'" style="display:none;">';
             }
         }
-
-        if(($count+1)>=$visible_ppl){
-            //Close the span:
-            $text_overview .= '.</span>';
-        }
     }
 
-    //Return results:
-    if($all_count==0){
-        return false;
+    if(!$fb_format && ($count+1)>=$visible_html){
+        //Close the span:
+        $text_overview .= '.</span>';
+    } elseif($fb_format && !$is_last_fb_item){
+        //Close the span:
+        $text_overview .= '.';
+    }
+
+
+
+    $pitch = 'Quotes '.$all_count.' Industry Expert'.echo__s($all_count).( $fb_format ? ' including' : ':' ).$text_overview;
+    if($fb_format) {
+        return '- 👩‍🎓 '.$pitch."\n";
     } else {
-        return '<span>'.$all_count.( $micro ? '' : ' Industry Expert'.echo__s($all_count).' including'.$text_overview ).'</span>';
+        //HTML format
+        return '<div class="dash-label"><span class="icon-left"><i class="fas fa-user-graduate"></i></span> '.$pitch.'</div>';
     }
 }
 
-function echo_concept($c, $micro=false){
-    return '<span data-toggle="tooltip" title="'.$c['c__tree_all_count'].' Concept'.echo__s($c['c__tree_all_count']).' will share key insights (and actionable tasks) to '.$c['c_outcome'].'" data-placement="top" class="underdot">'.$c['c__tree_all_count'].( $micro ? '' : ' Concept'.echo__s($c['c__tree_all_count']) ).'</span>';
-}
+
 
 function echo_hour_range($c, $micro=false){
 
@@ -845,20 +934,7 @@ function echo_hour_range($c, $micro=false){
     return $ui_time;
 }
 
-function echo_cost_range($c){
-    if($c['c__tree_max_cost']==0){
-        //No payment:
-        return false;
-    } elseif(round($c['c__tree_max_cost'])==round($c['c__tree_min_cost'])){
-        //Pretty similar, show a single value:
-        return '<span data-toggle="tooltip" title="Mench estimates you need to invest $'.round($c['c__tree_max_cost']).' USD on verified 3rd party products to '.$c['c_outcome'].'" data-placement="top" class="underdot">$'.round($c['c__tree_max_cost']).' USD</span>';
-    } elseif($c['c__tree_min_cost']==0) {
-        //There is an optional payment:
-        return '<span data-toggle="tooltip" title="You have the option to invest $'.round($c['c__tree_max_cost']).' USD on verified 3rd-party product purchases to speed-up your progress to '.$c['c_outcome'].'" data-placement="top" class="underdot">Optional $'.round($c['c__tree_max_cost']).' USD</span>';
-    } else {
-        return '<span data-toggle="tooltip" title="Mench estimates you need to invest between $'.round($c['c__tree_min_cost']).' to $'.round($c['c__tree_max_cost']).' USD on verified 3rd-party products to speed-up your progress to '.$c['c_outcome'].'" data-placement="top" class="underdot">$'.round($c['c__tree_min_cost']).' to $'.round($c['c__tree_max_cost']).' USD</span>';
-    }
-}
+
 
 
 function echo_object($object,$id){
@@ -1088,11 +1164,11 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
 
     if($level==1 && array_key_exists(1281, $udata['u__inbounds'])){
         //Give option to update the cache:
-        $ui .= '<a href="/cron/intent_sync/'.$c['c_id'].'/1" class="badge badge-primary" target="_blank" style="display:inline-block; margin-right:-1px; width:40px;" data-toggle="tooltip" title="Update the recursive Outbound cache of this tree starting from this intent" data-placement="left"><i class="fas fa-external-link-square-alt" style="position: absolute; top: -7px; right: 3px; font-size: 0.85em;"></i><i class="fas fa-sync-alt"></i></a> ';
+        $ui .= '<a href="/cron/intent_sync/'.$c['c_id'].'/1" class="badge badge-primary" target="_blank" style="display:inline-block; margin-right:-1px; width:40px;" data-toggle="tooltip" title="Updates Intent tree cache which controls landing page counters for concept, hours, content types and industry expert" data-placement="left"><i class="fas fa-external-link-square-alt" style="position: absolute; top: -7px; right: 3px; font-size: 0.85em;"></i><i class="fas fa-sync-alt"></i></a> ';
     }
 
 
-    $ui .= '<a href="#messages-'.$c['c_id'].'" onclick="load_c_messages('.$c['c_id'].')" class="badge badge-primary" style="width:40px;"><span class="btn-counter" id="messages-counter-'.$c['c_id'].'">'.$c['c__this_messages'].'</span><i class="fas fa-comment-dots"></i></a>';
+    $ui .= '<a href="#messages-'.$c['c_id'].'" onclick="load_c_messages('.$c['c_id'].')" class="msg-badge-'.$c['c_id'].' badge badge-primary '.( $c['c__this_messages']==0 ? 'grey' : '' ).'" style="width:40px;"><span class="btn-counter" id="messages-counter-'.$c['c_id'].'">'.$c['c__this_messages'].'</span><i class="fas fa-comment-dots"></i></a>';
 
     $ui .= '<a class="badge badge-primary" onclick="load_c_modify('.$c['c_id'].','.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).')" style="margin:-2px -8px 0 2px; width:40px;" href="#modify-'.$c['c_id'].'-'.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).'"><span class="btn-counter">'.echo_estimated_time($c['c__tree_max_hours'],0,1, $c['c_id'], $c['c_time_estimate']).'</span><i class="c_is_any_icon'.$c['c_id'].' '.( $c['c_is_any'] ? 'fas fa-code-merge' : 'fas fa-sitemap' ).'" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i></a> &nbsp;';
 
@@ -1102,7 +1178,7 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
         $ui .= '&nbsp;<a href="/'.$c['c_id'].'" class="badge badge-primary" target="_blank" style="display:inline-block; margin-right:-1px; width:40px;" data-toggle="tooltip" title="Open Landing Page with Intent tree overview & Messenger subscription button" data-placement="left"><i class="fas fa-external-link-square-alt" style="position: absolute; top: -7px; right: 3px; font-size: 0.85em;"></i><i class="fas fa-shopping-cart"></i></a> ';
     } else {
         //Show link to travel down the tree:
-        $ui .= '&nbsp;<a href="/intents/'.$c['c_id'].'" class="badge badge-primary" style="display:inline-block; margin-right:-1px; width:40px;"><span class="btn-counter outbound-counter-'.$c['c_id'].'">'.$c['c__tree_all_count'].'</span><i class="'.( $is_inbound && $level<=2 ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></a> ';
+        $ui .= '&nbsp;<a href="/intents/'.$c['c_id'].'" class="badge badge-primary '.( $level==3 && $c['c__tree_all_count']<=1 ? 'grey' : '' ).'" style="display:inline-block; margin-right:-1px; width:40px;"><span class="btn-counter outbound-counter-'.$c['c_id'].'">'.$c['c__tree_all_count'].'</span><i class="'.( $is_inbound && $level<=2 ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></a> ';
     }
 
 
