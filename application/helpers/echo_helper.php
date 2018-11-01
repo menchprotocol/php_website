@@ -620,11 +620,11 @@ function echo_k($k, $is_inbound){
     //Different pointer position based on direction:
     if($is_inbound){
         $ui .= '<span class="pull-left">';
-        $ui .= '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-left"></i> '.$k['c__tree_all_count'].'</span>';
+        $ui .= '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-left"></i></span>';
         $ui .= '</span>';
     } else {
         $ui .= '<span class="pull-right">';
-        $ui .= '<span class="badge badge-primary fr-bgd">'.$k['c__tree_all_count'].' <i class="fas fa-angle-right"></i></span>';
+        $ui .= '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-right"></i></span>';
         $ui .= '</span>';
     }
 
@@ -760,7 +760,7 @@ function echo_contents($c, $fb_format=0){
     }
 
 
-    $pitch = 'Aggregates '.$all_count.' content source'.echo__s($all_count).' including'.$text_overview.'.';
+    $pitch = 'Aggregates '.$all_count.' content source'.echo__s($all_count).' in'.$text_overview.'.';
     if($fb_format) {
         return '📚 '.$pitch."\n";
     } else {

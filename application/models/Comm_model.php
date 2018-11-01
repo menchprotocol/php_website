@@ -930,39 +930,27 @@ class Comm_model extends CI_Model {
         }
     }
 
-    function foundation_message($message,$force_email=false){
+    function foundation_message($e,$force_email=false){
 
         //Validate key components that are required:
         $error_message = null;
-        if(count($message)<1){
-            $error_message = 'Missing $message';
-        } elseif(!isset($message['e_outbound_c_id']) || $message['e_outbound_c_id']<1){
+        if(count($e)<1){
+            $error_message = 'Missing $e';
+        } elseif(!isset($e['e_outbound_c_id']) || $e['e_outbound_c_id']<1){
             $error_message = 'Missing e_outbound_c_id';
-        } elseif(!isset($message['e_outbound_u_id']) || $message['e_outbound_u_id']<1) {
+        } elseif(!isset($e['e_outbound_u_id']) || $e['e_outbound_u_id']<1) {
             $error_message = 'Missing e_outbound_u_id';
         }
 
         if(!$error_message){
-
-            $message['depth'] = 0; //Override this for now and only focus on dispatching Steps at 1 level
-            $message['e_inbound_u_id'] = 0; //System, prevents any signatures from being appended...
-
-            //Fetch Bootcamp/Class if needed:
-            $bs = array();
-            $b_data = null;
-            $class = null;
-
-
             //Fetch intent and its messages with an appropriate depth
-            $tree = $this->Db_model->c_fetch(array(
-                'c.c_id' => $message['e_outbound_c_id'],
-            ), ( $message['depth']>1 ? $message['depth'] : 0 ), array('c__messages')); //Supports up to 2 levels deep for now...
+            $cs = $this->Db_model->c_fetch(array(
+                'c.c_id' => $e['e_outbound_c_id'],
+            ), 0, array('c__messages')); //Supports up to 2 levels deep for now...
 
             //Check to see if we have any other errors:
-            if(!isset($tree[0])){
-                $error_message = 'Invalid Intent ID ['.$message['e_outbound_c_id'].']';
-            } elseif($message['depth']<0 || $message['depth']>1){
-                $error_message = 'Invalid depth ['.$message['depth'].']';
+            if(!isset($cs[0])){
+                $error_message = 'Invalid Intent ID ['.$e['e_outbound_c_id'].']';
             }
         }
 
@@ -972,10 +960,10 @@ class Comm_model extends CI_Model {
             $this->Db_model->e_create(array(
                 'e_text_value' => 'foundation_message() error: '.$error_message,
                 'e_inbound_c_id' => 8, //Platform Error
-                'e_json' => $message,
-                'e_outbound_u_id' => $message['e_outbound_u_id'],
-                'e_outbound_c_id' => $message['e_outbound_c_id'],
-                'e_inbound_u_id' => $message['e_inbound_u_id'],
+                'e_json' => $e,
+                'e_outbound_u_id' => $e['e_outbound_u_id'],
+                'e_outbound_c_id' => $e['e_outbound_c_id'],
+                'e_inbound_u_id' => $e['e_inbound_u_id'],
             ));
 
             //Return error:
@@ -991,15 +979,103 @@ class Comm_model extends CI_Model {
 
 
         //Append main object messages:
-        if(isset($tree[0]['c__messages']) && count($tree[0]['c__messages'])>0){
+        if(isset($cs[0]['c__messages']) && count($cs[0]['c__messages'])>0){
             //We have messages for the very first level!
-            foreach($tree[0]['c__messages'] as $key=>$i){
+            foreach($cs[0]['c__messages'] as $key=>$i){
                 if($i['i_status']==1){
                     //Add message to instant stream:
-                    array_push($instant_messages , array_merge($message, $i));
+                    array_push($instant_messages , array_merge($e, $i));
                 }
             }
         }
+
+
+        //Do we have a subscription, if so, we need to add a next step message:
+        if(isset($e['e_w_id'])){
+
+            //Yes, let's see what pending intents there are:
+            $k_ins = $this->Db_model->k_fetch(array(
+                'w_id' => $e['e_w_id'],
+                'w_status' => 1, //Active subscriptions only
+                'cr_status >=' => 1,
+                'c_status >=' => 1,
+                'k_status <=' => 1, //Not completed yet
+                'cr_inbound_c_id' => $e['e_outbound_c_id'],
+            ), array('w','cr','cr_c_out'));
+
+            $message_body = null;
+            $quick_replies = array();
+
+            //Do we have any?
+            if(count($k_ins)<=1){
+
+                if(count($k_ins)==0){
+                    //Let's try to find the next item in tree:
+                    $k_ins = $this->Db_model->k_next($e['e_w_id']);
+                }
+
+                //Did we find it in case
+                if(count($k_ins)==1){
+
+                    //Update as complete and move on:
+                    $this->Db_model->k_update($k_ins[0]['k_id'], array(
+                        'k_last_updated' => date("Y-m-d H:i:s"),
+                        'k_status' => $this->Db_model->k_top_complete($k_ins[0], $k_ins[0]),
+                    ));
+
+                    //Inform about the next step... Messages would dispatch soon with the next cron job...
+                    $message_body .= 'The next step to '.$cs[0]['c_outcome'].' is to '.$k_ins[0]['c_outcome'];
+
+                } else {
+                    //Subscription is complete!
+                    $message_body .= 'This was the final concept of your subscription, congratulations for making it through!';
+                }
+
+            } else {
+
+                //We have multiple children that are pending completion... Is it ALL or ANY?
+                if(intval($cs[0]['c_is_any'])){
+
+                    //User needs to choose one of the following:
+                    $message_body .= 'The next step to '.$cs[0]['c_outcome'].' is to choose 1 of the following paths:';
+                    foreach($k_ins as $counter=>$k){
+                        $message_body .= "\n\n".($counter+1).'/ '.$k['c_outcome'];
+                        array_push( $quick_replies , array(
+                            'content_type' => 'text',
+                            'title' => '/'.($counter+1),
+                            'payload' => 'ADVANCE_'.$cs[0]['c_id'].'_'.$k['c_id'],
+                        ));
+                    }
+
+                } else {
+
+                    //User needs to complete all children, and we'd recommend the first item as their next step:
+                    $message_body .= 'There are '.count($k_ins).' concepts you need to complete in order to '.$cs[0]['c_outcome'].'. I recommend starting from the first one:';
+                    foreach($k_ins as $counter=>$k){
+                        $message_body .= "\n\n".($counter+1).'/ '.$k['c_outcome'];
+                        array_push( $quick_replies , array(
+                            'content_type' => 'text',
+                            'title' => '/'.($counter+1).( $counter==0 ? ' (Recommended)' : '' ),
+                            'payload' => 'ADVANCE_'.$cs[0]['c_id'].'_'.$k['c_id'],
+                        ));
+                    }
+
+                }
+
+            }
+
+            //Append next-step message:
+            array_push($instant_messages , array(
+                'e_inbound_u_id' => 2738, //Initiated by PA
+                'e_outbound_u_id' => $e['e_outbound_u_id'],
+                'e_outbound_c_id' => $e['e_outbound_c_id'],
+                'e_w_id' => $e['e_w_id'],
+                'i_message' => $message_body,
+                'quick_replies' => $quick_replies,
+            ));
+
+        }
+
 
         //Anything to be sent instantly?
         if(count($instant_messages)<1){

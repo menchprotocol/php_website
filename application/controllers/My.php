@@ -199,11 +199,12 @@ class My extends CI_Controller {
 
         if($status_changed){
             //Also update k_status, determine what it should be:
-            $k_update_array['k_status'] = $this->Db_model->k_mark_complete($ks[0], $ks[0]);
+            $k_update_array['k_status'] = $this->Db_model->k_top_complete($ks[0], $ks[0]);
         }
 
         //Update subscription:
         $this->Db_model->k_update($ks[0]['k_id'], $k_update_array);
+
 
         //Redirect back to page with success message:
         return redirect_message($k_url,'<div class="alert alert-success" role="alert"><i class="fal fa-check-circle"></i> Saved</div>');

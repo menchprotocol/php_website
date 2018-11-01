@@ -535,7 +535,6 @@ class Cron extends CI_Controller {
                                 'e_inbound_u_id' => 0, //System
                                 'e_outbound_u_id' => $subscription['u_id'],
                                 'e_outbound_c_id' => $logic['reminder_c_id'],
-                                'depth' => 0,
                             ));
 
                             //Show in stats:

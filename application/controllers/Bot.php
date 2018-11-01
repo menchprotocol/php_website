@@ -95,13 +95,21 @@ class Bot extends CI_Controller {
         echo_json($res);
     }
 
-    function test($c_id, $depth=0, $u_id=1){
-        echo_json($this->Comm_model->foundation_message(array(
-            'e_inbound_u_id' => 2738, //Initiated by PA
-            'e_outbound_u_id' => $u_id,
-            'e_outbound_c_id' => $c_id,
-            'depth' => $depth,
-        )));
+    function test($c_id, $w_id=0, $u_id=1){
+        echo_json(array(
+            'ks' => $this->Db_model->k_fetch(array(
+                'w_id' => $w_id,
+                'cr_status >=' => 1,
+                'c_status >=' => 1,
+                'cr_inbound_c_id' => $c_id,
+            ), array('w','cr','cr_c_out')),
+            'message' => $this->Comm_model->foundation_message(array(
+                'e_inbound_u_id' => 2738, //Initiated by PA
+                'e_outbound_u_id' => $u_id,
+                'e_outbound_c_id' => $c_id,
+                'e_w_id' => $w_id,
+            )),
+        ));
     }
 
     function talk(){
