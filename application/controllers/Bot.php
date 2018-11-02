@@ -134,6 +134,7 @@ class Bot extends CI_Controller {
         ));
     }
 
+
     function facebook_webhook(){
 
         /*
@@ -393,32 +394,6 @@ class Bot extends CI_Controller {
 
                 }
             }
-        }
-    }
-
-    function paypal_webhook(){
-
-        //Called when the paypal payment is complete:
-        if(isset($_POST) && isset($_POST['payment_status']) && $_POST['payment_status']=='Completed' && isset($_POST['item_number']) && intval($_POST['item_number'])>0){
-
-            //Seems like a valid Paypal IPN Call:
-            //TODO Fetch Subscription row with intval($_POST['item_number'])
-
-            $payment_received = doubleval(( $_POST['payment_gross']>$_POST['mc_gross'] ? $_POST['payment_gross'] : $_POST['mc_gross'] ));
-
-            //Save this new transaction:
-            $transaction = $this->Db_model->t_create(array(
-                't_status' => 1, //Payment received from Student
-                't_timestamp' => date("Y-m-d H:i:s"),
-                't_paypal_id' => $_POST['txn_id'],
-                't_paypal_ipn' => json_encode($_POST),
-                't_currency' => $_POST['mc_currency'],
-                't_payment_type' => $_POST['payment_type'],
-                't_total' => $payment_received,
-                't_fees' => doubleval(( $_POST['payment_fee']>$_POST['mc_fee'] ? $_POST['payment_fee'] : $_POST['mc_fee'] )),
-                //TODO Link to subsciption & user...
-            ));
-
         }
     }
 

@@ -19,7 +19,7 @@ class Db_model extends CI_Model {
     function k_update($id,$update_columns){
         //Update first
         $this->db->where('k_id', $id);
-        $this->db->update('v5_subscription_intents', $update_columns);
+        $this->db->update('v5_subscription_links', $update_columns);
         return $this->db->affected_rows();
     }
 
@@ -55,13 +55,13 @@ class Db_model extends CI_Model {
             //This is the none chosen answers, if any:
             foreach($none_chosen_path as $k){
                 //Skip this item:
-                $this->db->query("UPDATE v5_subscription_intents SET k_status=-1 WHERE k_status IN (0,1) AND k_id=".$k['k_id']);
+                $this->db->query("UPDATE v5_subscription_links SET k_status=-1 WHERE k_status IN (0,1) AND k_id=".$k['k_id']);
 
                 //SKIP entire down tree as per user OR choice:
                 $dwn_tree = $this->Db_model->k_recursive_fetch($w_id, $k['c_id'], 1);
                 if(count($dwn_tree['k_flat'])>0){
                     //Update all children with certain k_status values as we do not want to update everything!
-                    $this->db->query("UPDATE v5_subscription_intents SET k_status=-1 WHERE k_status IN (0,1) AND k_id IN (".join(',',$dwn_tree['k_flat']).")");
+                    $this->db->query("UPDATE v5_subscription_links SET k_status=-1 WHERE k_status IN (0,1) AND k_id IN (".join(',',$dwn_tree['k_flat']).")");
                 }
             }
 
@@ -277,7 +277,7 @@ class Db_model extends CI_Model {
 
 
         //Lets now add:
-        $this->db->insert('v5_subscription_intents', $insert_columns);
+        $this->db->insert('v5_subscription_links', $insert_columns);
 
         //Fetch inserted id:
         $insert_columns['k_id'] = $this->db->insert_id();
@@ -530,17 +530,6 @@ class Db_model extends CI_Model {
         }
     }
 
-
-    function t_fetch($match_columns){
-        //Fetch the target gems:
-        $this->db->select('*');
-        $this->db->from('v5_transactions t');
-        foreach($match_columns as $key=>$value){
-            $this->db->where($key,$value);
-        }
-        $q = $this->db->get();
-        return $q->result_array();
-    }
 	
 	function il_fetch($match_columns){
 	    //Fetch the target gems:
@@ -577,7 +566,7 @@ class Db_model extends CI_Model {
 	    //Fetch the target entities:
 	    $this->db->select('*');
 	    $this->db->from('v5_entities u');
-	    $this->db->join('v5_urls x', 'x.x_id = u.u_cover_x_id','left'); //Fetch the cover photo if >0
+	    $this->db->join('v5_entity_urls x', 'x.x_id = u.u_cover_x_id','left'); //Fetch the cover photo if >0
 	    foreach($match_columns as $key=>$value){
 	        if(!is_null($value)){
                 $this->db->where($key,$value);
@@ -646,31 +635,6 @@ class Db_model extends CI_Model {
         return $res;
 	}
 
-
-	function t_create($insert_columns){
-
-	    //TODO Add checks and protection
-        if(!isset($insert_columns['t_timestamp'])){
-            $insert_columns['t_timestamp'] = date("Y-m-d H:i:s");
-        }
-	    
-	    //Lets now add:
-	    $this->db->insert('v5_transactions', $insert_columns);
-	    
-	    //Fetch inserted id:
-	    $insert_columns['t_id'] = $this->db->insert_id();
-
-        if(!$insert_columns['t_id']){
-            //Log this query Error
-            $this->Db_model->e_create(array(
-                'e_text_value' => 'Query Error t_create() : '.$this->db->_error_message(),
-                'e_json' => $insert_columns,
-                'e_inbound_c_id' => 8, //Platform Error
-            ));
-        }
-	    
-	    return $insert_columns;
-	}
 
     function c_hard_delete($c_id){
 
@@ -760,18 +724,6 @@ class Db_model extends CI_Model {
             );
         }
 
-        //Check transactions:
-        $transactions = $this->Db_model->t_fetch(array(
-            't_inbound_u_id' => $u_id,
-        ));
-        if(count($transactions)>0){
-            return array(
-                'status' => 0,
-                'message' => 'Cannot delete because user has transactions',
-                'user' => $users[0],
-            );
-        }
-
 
         //Check subscriptions:
         $subscriptions = $this->Db_model->w_fetch(array(
@@ -799,8 +751,8 @@ class Db_model extends CI_Model {
         $this->db->query("DELETE FROM v5_subscriptions WHERE w_outbound_u_id=".$u_id);
         $delete_stats['v5_subscriptions'] = $this->db->affected_rows();
 
-        $this->db->query("DELETE FROM v5_urls WHERE x_outbound_u_id=".$u_id);
-        $delete_stats['v5_urls'] = $this->db->affected_rows();
+        $this->db->query("DELETE FROM v5_entity_urls WHERE x_outbound_u_id=".$u_id);
+        $delete_stats['v5_entity_urls'] = $this->db->affected_rows();
 
         $this->db->query("DELETE FROM v5_entities WHERE u_id=".$u_id);
         $delete_stats['v5_entities'] = $this->db->affected_rows();
@@ -888,7 +840,7 @@ class Db_model extends CI_Model {
         $this->db->join('v5_intents c', 'i.i_outbound_c_id = c.c_id');
         $this->db->join('v5_entities u', 'u.u_id = i.i_inbound_u_id');
         if(in_array('x',$join_objects)){
-            $this->db->join('v5_urls x', 'x.x_id = u.u_cover_x_id','left'); //Fetch the cover photo if >0
+            $this->db->join('v5_entity_urls x', 'x.x_id = u.u_cover_x_id','left'); //Fetch the cover photo if >0
         }
         foreach($match_columns as $key=>$value){
             if(!is_null($value)){
@@ -970,7 +922,7 @@ class Db_model extends CI_Model {
     function k_fetch($match_columns, $join_objects=array(), $order_columns=array(), $limit=0){
         //Fetch the target gems:
         $this->db->select('*');
-        $this->db->from('v5_subscription_intents k');
+        $this->db->from('v5_subscription_links k');
 
         if(in_array('cr',$join_objects)){
 
@@ -1508,7 +1460,7 @@ class Db_model extends CI_Model {
         $this->db->select($select);
         $this->db->from('v5_entities u');
         $this->db->join('v5_entity_links ur', 'ur.ur_outbound_u_id = u.u_id');
-        $this->db->join('v5_urls x', 'x.x_id = u.u_cover_x_id','left'); //Fetch the cover photo if >0
+        $this->db->join('v5_entity_urls x', 'x.x_id = u.u_cover_x_id','left'); //Fetch the cover photo if >0
         foreach($match_columns as $key=>$value){
             if(!is_null($value)){
                 $this->db->where($key,$value);
@@ -1568,7 +1520,7 @@ class Db_model extends CI_Model {
         $this->db->select('*');
         $this->db->from('v5_entities u');
         $this->db->join('v5_entity_links ur', 'ur.ur_inbound_u_id = u.u_id');
-        $this->db->join('v5_urls x', 'x.x_id = u.u_cover_x_id','left'); //Fetch the cover photo if >0
+        $this->db->join('v5_entity_urls x', 'x.x_id = u.u_cover_x_id','left'); //Fetch the cover photo if >0
         foreach($match_columns as $key=>$value){
             if(!is_null($value)){
                 $this->db->where($key,$value);
@@ -1667,7 +1619,7 @@ class Db_model extends CI_Model {
     function x_fetch($match_columns, $join_objects=array(), $order_columns=array(), $limit=0){
         //Fetch the target entities:
         $this->db->select('*');
-        $this->db->from('v5_urls x');
+        $this->db->from('v5_entity_urls x');
         if(in_array('u',$join_objects)){
             $this->db->join('v5_entities u', 'u.u_id=x.x_outbound_u_id','left');
         }
@@ -1697,7 +1649,7 @@ class Db_model extends CI_Model {
 
     function x_update($id,$update_columns){
         $this->db->where('x_id', $id);
-        $this->db->update('v5_urls', $update_columns);
+        $this->db->update('v5_entity_urls', $update_columns);
         return $this->db->affected_rows();
     }
 
@@ -1757,7 +1709,7 @@ class Db_model extends CI_Model {
 
 
         //Lets now add:
-        $this->db->insert('v5_urls', $insert_columns);
+        $this->db->insert('v5_entity_urls', $insert_columns);
 
         //Fetch inserted id:
         $insert_columns['x_id'] = $this->db->insert_id();

@@ -24,9 +24,6 @@ $child_entities = $this->Db_model->ur_outbound_fetch(array(
     'ur_inbound_u_id' => $inbound_u_id,
     'ur_status' => 1, //Only active
 ), array('u__outbound_count'), $entity_per_page);
-$payments = $this->Db_model->t_fetch(array(
-    't_inbound_u_id' => $inbound_u_id,
-));
 $subscriptions = array();
 $b_team_member = array();
 
@@ -896,17 +893,6 @@ if(count($b_team_member)>0){
 }
 
 
-
-
-//Only show if data exists (users cannot modify this anyways)
-if(count($payments)>0){
-    echo '<h5 class="badge badge-h"><i class="fab fa-paypal"></i> <span class="li-payments-count">'.count($payments).'</span> Payments</h5>';
-    echo '<div id="list-payments" class="list-group  grey-list">';
-    foreach ($payments as $t) {
-        echo_t($t);
-    }
-    echo '</div>';
-}
 
 ?>
 </div>

@@ -80,7 +80,6 @@ class Cron extends CI_Controller {
 
             'w_outbound_u_id' => 13, //Subscriptions
             'c_inbound_u_id' => 21, //Active Intents
-            't_inbound_u_id' => 55, //Transactions
         );
 
         //Fetch child entities:
@@ -125,9 +124,6 @@ class Cron extends CI_Controller {
             $score += count($this->Db_model->w_fetch(array(
                     'w_outbound_u_id' => $u['u_id'],
                 ))) * $score_weights['w_outbound_u_id'];
-            $score += count($this->Db_model->t_fetch(array(
-                    't_inbound_u_id' => $u['u_id'],
-                ))) * $score_weights['t_inbound_u_id'];
 
             //Update the score:
             $this->Db_model->u_update( $u['u_id'] , array(
@@ -509,17 +505,13 @@ class Cron extends CI_Controller {
         $stats = array();
         foreach($subscriptions as $subscription){
 
-            //Fetch full Bootcamp/Class data for this:
-            //$bs = fetch_action_plan_copy($subscription['ru_b_id'], $subscription['r_id']);
-            //$class = $bs[0]['this_class'];
-
             //See what % of the class time has elapsed?
-            //TODO $elapsed_class_percentage = round((time()-strtotime($class['r_start_date']))/(class_ends($bs[0], $class)-strtotime($class['r_start_date'])),5);
+            //TODO calculate $elapsed_class_percentage
 
             foreach ($reminder_index as $logic){
                 if($elapsed_class_percentage>=$logic['time_elapsed']){
 
-                    if($subscription['ru_cache__completion_rate']<$logic['progress_below']){
+                    if($subscription['w__progress']<$logic['progress_below']){
 
                         //See if we have reminded them already about this:
                         $reminders_sent = $this->Db_model->e_fetch(array(
@@ -538,7 +530,7 @@ class Cron extends CI_Controller {
                             ));
 
                             //Show in stats:
-                            array_push($stats,$subscription['u_full_name'].' done '.round($subscription['ru_cache__completion_rate']*100).'% (less than target '.round($logic['progress_below']*100).'%) where class is '.round($elapsed_class_percentage*100).'% complete and got reminded via c_id '.$logic['reminder_c_id']);
+                            array_push($stats,$subscription['u_full_name'].' done '.round($subscription['w__progress']*100).'% (less than target '.round($logic['progress_below']*100).'%) where class is '.round($elapsed_class_percentage*100).'% complete and got reminded via c_id '.$logic['reminder_c_id']);
                         }
                     }
 

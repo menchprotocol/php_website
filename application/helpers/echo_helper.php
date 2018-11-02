@@ -94,21 +94,6 @@ function echo_x($u, $x){
 
 
 
-
-function echo_t($t){
-    echo '<div class="list-group-item">';
-
-    //Right content:
-    echo '<span class="pull-right">';
-    echo '<a class="badge badge-primary stnd-btn" href="https://www.paypal.com/activity/payment/'.$t['t_paypal_id'].'" target="_blank"><i class="fab fa-paypal"></i> <i class="fas fa-external-link-square"></i></a>';
-    echo '</span>';
-
-    //Regular section:
-    echo $t['t_total'].' '.$t['t_currency'];
-
-    echo '</div>';
-}
-
 function echo_rank($rank){
     if($rank==1){
         return '🥇';

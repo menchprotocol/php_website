@@ -35,13 +35,13 @@ class My extends CI_Controller {
         $this->load->view('front/shared/p_footer');
     }
 
-    function display_actionplan($ru_fp_psid, $w_id=0, $c_id=0){
+    function display_actionplan($u_cache__fp_psid, $w_id=0, $c_id=0){
 
         //Get session data in case user is doing a browser login:
         $udata = $this->session->userdata('user');
 
         //Fetch Bootcamps for this user:
-        if(!$ru_fp_psid && count($udata['u__ws'])<1){
+        if(!$u_cache__fp_psid && count($udata['u__ws'])<1){
             //There is an issue here!
             die('<div class="alert alert-danger" role="alert">Invalid Credentials</div>');
         } elseif(count($udata['u__ws'])<1 && !is_dev() && isset($_GET['sr']) && !parse_signed_request($_GET['sr'])){
@@ -61,9 +61,9 @@ class My extends CI_Controller {
             $w_filter['w_status >='] = 0;
         }
 
-        if($ru_fp_psid>0){
+        if($u_cache__fp_psid>0){
             //No, we should have a Facebook PSID to try to find them:
-            $w_filter['u_cache__fp_psid'] = $ru_fp_psid;
+            $w_filter['u_cache__fp_psid'] = $u_cache__fp_psid;
             $w_filter['w_status >='] = 0;
         }
 
@@ -215,6 +215,7 @@ class My extends CI_Controller {
         //Redirect back to page with success message:
         return redirect_message($k_url,'<div class="alert alert-success" role="alert"><i class="fal fa-check-circle"></i> Saved</div>');
 
+        //TODO Update w__progress at this point based on intent data
         //TODO Update tree upwards and dispatch drip/instant message logic as needed!
         /*
         //See if we need to dispatch any messages:
