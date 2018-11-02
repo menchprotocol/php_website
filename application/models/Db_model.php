@@ -488,9 +488,6 @@ class Db_model extends CI_Model {
         if(!isset($insert_columns['w_weekly_commitment'])){
             $insert_columns['w_weekly_commitment'] = null;
         }
-        if(!isset($insert_columns['w_notification_type'])){
-            $insert_columns['w_notification_type'] = 1; //Regular
-        }
 
         //Lets now add:
         $this->db->insert('v5_subscriptions', $insert_columns);

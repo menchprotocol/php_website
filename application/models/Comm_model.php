@@ -128,7 +128,7 @@ class Comm_model extends CI_Model {
         //We either have the user in DB or we'll register them now:
         $fb_message_received = strtolower($fb_message_received);
         $fetch_us = $this->Db_model->u_fetch(array(
-            'u__fb_psid' => $fp_psid,
+            'u_fb_psid' => $fp_psid,
         ), array('u__ws'));
 
 
@@ -187,7 +187,7 @@ class Comm_model extends CI_Model {
                 'u_gender'		 	=> strtolower(substr($fb_profile['gender'],0,1)),
                 'u_language' 		=> $locale[0],
                 'u_country_code' 	=> $locale[1],
-                'u__fb_psid'  => $fp_psid,
+                'u_fb_psid'  => $fp_psid,
             ));
 
             //No subscriptions at this point:
@@ -784,9 +784,9 @@ class Comm_model extends CI_Model {
                     $dispatch_fp_psid = 0;
                     $u = array();
 
-                    if(!$force_email && $users[0]['u__fb_psid']>0){
+                    if(!$force_email && $users[0]['u_fb_psid']>0){
                         //We fetched an subscription with an active Messenger connection:
-                        $dispatch_fp_psid = $users[0]['u__fb_psid'];
+                        $dispatch_fp_psid = $users[0]['u_fb_psid'];
                         $u = $users[0];
                     } elseif(strlen($users[0]['u_email'])>0 && filter_var($users[0]['u_email'], FILTER_VALIDATE_EMAIL)){
                         //User has not activated Messenger but has email:
@@ -813,7 +813,7 @@ class Comm_model extends CI_Model {
             //Send using email or Messenger?
             if(!$force_email && $dispatch_fp_psid){
 
-                $w_notification_types = echo_status('w_notification_type');
+                $u_fb_notifications = echo_status('u_fb_notification');
 
                 //Prepare Payload:
                 $payload = array(
@@ -822,7 +822,7 @@ class Comm_model extends CI_Model {
                     ),
                     'message' => echo_i($message, $u['u_full_name'],true),
                     'messaging_type' => 'NON_PROMOTIONAL_SUBSCRIPTION', //https://developers.facebook.com/docs/messenger-platform/send-messages#messaging_types
-                    // TODO fetch from w_notification_type & translate 'notification_type' => $w_notification_types[$w['w_notification_type']]['s_fb_key'],
+                    // TODO fetch from u_fb_notification & translate 'notification_type' => $u_fb_notifications[$w['u_fb_notification']]['s_fb_key'],
                 );
 
                 //Messenger:

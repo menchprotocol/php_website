@@ -16,7 +16,7 @@ $lang['obj_x_type_name'] = 'URL Type';
 $lang['obj_x_status_name'] = 'URL Status';
 $lang['obj_w_status_name'] = 'Subscription Status';
 $lang['obj_c_is_any_name'] = 'Intent Completion';
-$lang['obj_w_notification_type_name'] = 'Subscription Notifications';
+$lang['obj_u_fb_notification_name'] = 'Notification Level';
 $lang['obj_k_status_name'] = 'Subscription Intent Status';
 
 $lang['bot_lets_intro'] = 'You can give me a command by starting a sentence with "Lets", for example: [Lets land a dream job], [Lets book new interviews] or [Lets create a great resume].';

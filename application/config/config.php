@@ -241,7 +241,7 @@ $config['object_statuses'] = array(
         ),
     ),
 
-    'w_notification_type' => array(
+    'u_fb_notification' => array(
         1 => array(
             's_name'  => 'Regular',
             's_fb_key'  => 'REGULAR',

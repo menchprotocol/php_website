@@ -35,13 +35,13 @@ class My extends CI_Controller {
         $this->load->view('front/shared/p_footer');
     }
 
-    function display_actionplan($u__fb_psid, $w_id=0, $c_id=0){
+    function display_actionplan($u_fb_psid, $w_id=0, $c_id=0){
 
         //Get session data in case user is doing a browser login:
         $udata = $this->session->userdata('user');
 
         //Fetch Bootcamps for this user:
-        if(!$u__fb_psid && count($udata['u__ws'])<1){
+        if(!$u_fb_psid && count($udata['u__ws'])<1){
             //There is an issue here!
             die('<div class="alert alert-danger" role="alert">Invalid Credentials</div>');
         } elseif(count($udata['u__ws'])<1 && !is_dev() && isset($_GET['sr']) && !parse_signed_request($_GET['sr'])){
@@ -61,9 +61,9 @@ class My extends CI_Controller {
             $w_filter['w_status >='] = 0;
         }
 
-        if($u__fb_psid>0){
+        if($u_fb_psid>0){
             //No, we should have a Facebook PSID to try to find them:
-            $w_filter['u__fb_psid'] = $u__fb_psid;
+            $w_filter['u_fb_psid'] = $u_fb_psid;
             $w_filter['w_status >='] = 0;
         }
 
