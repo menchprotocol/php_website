@@ -19,7 +19,7 @@ class Db_model extends CI_Model {
     function k_update($id,$update_columns){
         //Update first
         $this->db->where('k_id', $id);
-        $this->db->update('v5_subscription_links', $update_columns);
+        $this->db->update('v5_subscription_intent_links', $update_columns);
         return $this->db->affected_rows();
     }
 
@@ -55,13 +55,13 @@ class Db_model extends CI_Model {
             //This is the none chosen answers, if any:
             foreach($none_chosen_path as $k){
                 //Skip this item:
-                $this->db->query("UPDATE v5_subscription_links SET k_status=-1 WHERE k_status IN (0,1) AND k_id=".$k['k_id']);
+                $this->db->query("UPDATE v5_subscription_intent_links SET k_status=-1 WHERE k_status IN (0,1) AND k_id=".$k['k_id']);
 
                 //SKIP entire down tree as per user OR choice:
                 $dwn_tree = $this->Db_model->k_recursive_fetch($w_id, $k['c_id'], 1);
                 if(count($dwn_tree['k_flat'])>0){
                     //Update all children with certain k_status values as we do not want to update everything!
-                    $this->db->query("UPDATE v5_subscription_links SET k_status=-1 WHERE k_status IN (0,1) AND k_id IN (".join(',',$dwn_tree['k_flat']).")");
+                    $this->db->query("UPDATE v5_subscription_intent_links SET k_status=-1 WHERE k_status IN (0,1) AND k_id IN (".join(',',$dwn_tree['k_flat']).")");
                 }
             }
 
@@ -277,7 +277,7 @@ class Db_model extends CI_Model {
 
 
         //Lets now add:
-        $this->db->insert('v5_subscription_links', $insert_columns);
+        $this->db->insert('v5_subscription_intent_links', $insert_columns);
 
         //Fetch inserted id:
         $insert_columns['k_id'] = $this->db->insert_id();
@@ -922,7 +922,7 @@ class Db_model extends CI_Model {
     function k_fetch($match_columns, $join_objects=array(), $order_columns=array(), $limit=0){
         //Fetch the target gems:
         $this->db->select('*');
-        $this->db->from('v5_subscription_links k');
+        $this->db->from('v5_subscription_intent_links k');
 
         if(in_array('cr',$join_objects)){
 
