@@ -99,6 +99,16 @@ class Bot extends CI_Controller {
         echo_json($this->Db_model->k_recursive_fetch($w_id, $c_id, $fetch_outbound));
     }
 
+    function a(){
+        echo_json($this->Comm_model->send_message(array(
+            array(
+                'e_inbound_u_id' => 2738, //Initiated by PA
+                'e_outbound_u_id' => 1,
+                'i_message' => 'Congratulations for completing all concepts 🎉 I am most interested to know if you have achieved your intention to '.$cs[0]['c_outcome'].'?',
+            ),
+        )));
+    }
+
     function test($c_id, $w_id=0, $u_id=1){
         echo_json(array(
             'ks' => $this->Db_model->k_fetch(array(
