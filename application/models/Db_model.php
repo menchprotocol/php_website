@@ -241,7 +241,7 @@ class Db_model extends CI_Model {
                                 'e_outbound_u_id' => $w['w_outbound_u_id'],
                                 'e_outbound_c_id' => $w['w_c_id'],
                                 'e_w_id' => $w['w_id'],
-                                'i_message' => 'Congratulations /first_name for completing all concepts of your subscription. I am most interested to know if you have achieved your intention to '.$cs[0]['c_outcome'].'?',
+                                'i_message' => 'Congratulations /firstname for completing all concepts of your subscription. I am most interested to know if you have achieved your intention to '.$cs[0]['c_outcome'].'?',
                             ),
                         ));
 
