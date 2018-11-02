@@ -199,7 +199,10 @@ class Db_model extends CI_Model {
                     'c.c_id' => $w['w_c_id'],
                 ));
                 if(count($cs)==1){
+
+                    //Assume true unless otherwise:
                     $subscription_is_complete = true;
+
                     if($cs[0]['c_is_any']){
                         //We need a single one to be completed:
                         $complete_child_cs = $this->Db_model->k_fetch(array(
@@ -226,14 +229,6 @@ class Db_model extends CI_Model {
 
                     if($subscription_is_complete){
 
-                        //Log subscription completion engagement:
-                        $this->Db_model->e_create(array(
-                            'e_inbound_u_id' => $w['w_outbound_u_id'],
-                            'e_outbound_c_id' => $w['w_c_id'],
-                            'e_w_id' => $w['w_id'],
-                            'e_inbound_c_id' => 7490, //Subscription Completed
-                        ));
-
                         //Inform user that they are now complete with all tasks:
                         $this->Comm_model->send_message(array(
                             array(
@@ -245,6 +240,13 @@ class Db_model extends CI_Model {
                             ),
                         ));
 
+                        //Log subscription completion engagement:
+                        $this->Db_model->e_create(array(
+                            'e_inbound_u_id' => $w['w_outbound_u_id'],
+                            'e_outbound_c_id' => $w['w_c_id'],
+                            'e_w_id' => $w['w_id'],
+                            'e_inbound_c_id' => 7490, //Subscription Completed
+                        ));
 
                         //The entire subscription is now complete!
                         $this->Db_model->w_update( $w['w_id'], array(
