@@ -104,7 +104,7 @@ class Bot extends CI_Controller {
             array(
                 'e_inbound_u_id' => 2738, //Initiated by PA
                 'e_outbound_u_id' => 1,
-                'i_message' => 'Congratulations for completing all concepts 🎉 I am most interested to know if you have achieved your intention to '.$cs[0]['c_outcome'].'?',
+                'i_message' => 'Congratulations for completing all concepts 🎉 I am most interested to know if you have achieved your intention to?',
             ),
         )));
     }
