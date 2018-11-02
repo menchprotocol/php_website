@@ -1011,17 +1011,14 @@ class Comm_model extends CI_Model {
 
                 if(count($k_ins)==0){
                     //Let's try to find the next item in tree:
-                    $k_ins = $this->Db_model->k_next($e['e_w_id']);
+                    $k_ins = $this->Db_model->k_next_fetch($e['e_w_id']);
                 }
 
                 //Did we find it in case
                 if(count($k_ins)==1){
 
                     //Update as complete and move on:
-                    $this->Db_model->k_update($k_ins[0]['k_id'], array(
-                        'k_last_updated' => date("Y-m-d H:i:s"),
-                        'k_status' => $this->Db_model->k_top_complete($k_ins[0], $k_ins[0]),
-                    ));
+                    $this->Db_model->k_complete_recursive_up($k_ins[0], $k_ins[0]);
 
                     //Inform about the next step... Messages would dispatch soon with the next cron job...
                     $message_body .= 'The next step to '.$cs[0]['c_outcome'].' is to '.$k_ins[0]['c_outcome'];

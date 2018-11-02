@@ -41,7 +41,7 @@ $config['engagement_subscriptions'] = array(
     ),
     array(
         'admin_emails' => array('shervin@mench.com'),
-        'subscription' => array(9,72,7465,7452,8),
+        'subscription' => array(9,72,7465,7452,8,7490),
     ),
 );
 
@@ -204,7 +204,7 @@ $config['object_statuses'] = array(
         1 => array(
             's_name'  => 'Working On',
             's_desc'  => 'Work has started and but some concepts are pending completion',
-            's_icon' => 'fal fa-caret-square-right',
+            's_icon' => 'fas fa-caret-square-right',
         ),
         2 => array(
             's_name'  => 'Completed',
@@ -227,7 +227,7 @@ $config['object_statuses'] = array(
         1 => array(
              's_name'  => 'Subscribed',
              's_desc'  => 'Work has started and pending completion',
-             's_icon' => 'fal fa-caret-square-right',
+             's_icon' => 'fas fa-caret-square-right',
         ),
         2 => array(
              's_name'  => 'Completed',

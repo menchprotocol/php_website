@@ -4,7 +4,7 @@
 $next_button = null;
 if($w['w_status']==1){
     //Active subscription, attempt to find next item, which we should be able to find:
-    $ks_next = $this->Db_model->k_next($w['w_id']);
+    $ks_next = $this->Db_model->k_next_fetch($w['w_id']);
     if(count($ks_next)>0){
         if($ks_next[0]['c_id']==$c['c_id']){
             $next_button = '<span style="font-size: 0.7em; padding-left:5px; display:inline-block;"><i class="fas fa-shield-check"></i> This is the next-in-line concept</span>';
@@ -54,13 +54,6 @@ if(count($k_ins)==0){
 
 } elseif(count($k_ins)==1) {
 
-
-    if($this->Db_model->k_is_parent_done($w['w_id'], $k_ins[0]['cr_outbound_c_id'], $k_ins[0]['cr_inbound_c_id'] )){
-        echo '/Parent Done';
-    } else {
-        echo '/Parent NOT';
-    }
-
     $is_started = ( $k_ins[0]['k_status']>=1 );
 
     //Show completion progress for the single inbound intent:
@@ -81,7 +74,9 @@ if(count($k_ins)==0){
 
 }
 
-
+//Override this for now and always show messages
+//TODO Consider updates to this later
+$is_started = false;
 
 //Show all messages:
 $messages = $this->Db_model->i_fetch(array(
@@ -129,23 +124,20 @@ if(count($k_ins)==1){
     }
 
     //Submission button visible after first button was clicked:
-    $is_incomplete = ($k_ins[0]['k_status']<=0);
+    $is_incomplete = ($k_ins[0]['k_status']<=0 || ($k_ins[0]['k_status']==1 && count($k_outs)==0));
     $show_textarea = ($red_note && $is_incomplete);
     if(!$show_textarea){
         //Show button to make text visible:
         echo '<a href="javascript:void(0);" onclick="$(\'.toggle_text\').toggle();" class="toggle_text btn btn-xs btn-black"><i class="fas fa-edit"></i> '.( $is_incomplete ? 'Add Written Answer' : 'Modify Answer' ).'</a>';
     }
 
-
     //Echo next button if available:
     echo $next_button;
-
 
     echo '<form method="POST" action="/my/update_k_save">';
 
         echo '<input type="hidden" name="k_id"  value="'.$k_ins[0]['k_id'].'" />';
         //echo '<input type="hidden" name="k_key" value="'.md5($k_ins[0]['k_id'].'k_key_SALT555').'" />'; //TODO Wire in for more security?!
-
 
         echo '<div class="toggle_text" style="'.( $show_textarea ? '' : 'display:none; ' ).'margin-top:10px;">';
             if($red_note) {
@@ -155,7 +147,9 @@ if(count($k_ins)==1){
         echo '</div>';
 
 
-        if($k_ins[0]['k_status']<=0){
+        if($k_ins[0]['k_status']==0 && count($k_outs)>0){
+            echo '<button type="submit" class="btn btn-primary">OK, Continue <i class="fas fa-angle-right"></i></a>';
+        } elseif($is_incomplete){
             echo '<button type="submit" class="btn btn-primary"><i class="fas fa-check-square"></i> Mark as Complete</button>';
         } else {
             echo '<button type="submit" class="btn btn-primary '.( !$show_textarea ? 'toggle_text" style="display:none;' : '' ).'"><i class="fas fa-edit"></i> Update Answer</button>';
@@ -170,13 +164,17 @@ if(count($k_ins)==1){
 
 
 
-if(count($k_outs)>0){
-    echo '<h5 style="margin-top: 10px;">Complete '.( $c['c_is_any'] ? 'Any' : 'All' ).':</h5>';
-    echo '<div class="list-group">';
-    foreach($k_outs as $k){
-        echo echo_k($k, 0);
+
+if(!isset($k_ins[0]) || !($k_ins[0]['k_status']==0)){
+    if(count($k_outs)>0){
+        echo '<h5 style="margin-top: 10px;">'.( $c['c_is_any'] ? 'Choose Your Path to Continue:' : 'Complete All Following:' ).'</h5>';
+        echo '<div class="list-group">';
+        foreach($k_outs as $k){
+            echo echo_k($k, 0, ( $c['c_is_any'] && $k['k_status']==0 ? $c['c_id'] : 0 ));
+        }
+        echo '</div>';
     }
-    echo '</div>';
 }
+
 
 ?>

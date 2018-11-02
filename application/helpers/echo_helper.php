@@ -613,9 +613,10 @@ function echo_w($w){
     return $ui;
 }
 
-function echo_k($k, $is_inbound){
 
-    $ui = '<a href="/my/actionplan/'.$k['k_w_id'].'/'.$k['c_id'].'" class="list-group-item">';
+function echo_k($k, $is_inbound, $c_is_any_cr_inbound_c_id=0){
+
+    $ui = '<a href="'.( $c_is_any_cr_inbound_c_id ? '/my/choose_any_path/'.$k['w_id'].'/'.$k['c_id'].'/'.$c_is_any_cr_inbound_c_id.'/'.md5($k['w_id'].'kjaghksjha*(^'.$k['c_id'].$c_is_any_cr_inbound_c_id) : '/my/actionplan/'.$k['k_w_id'].'/'.$k['c_id'] ).'" class="list-group-item">';
 
     //Different pointer position based on direction:
     if($is_inbound){
@@ -624,17 +625,23 @@ function echo_k($k, $is_inbound){
         $ui .= '</span>';
     } else {
         $ui .= '<span class="pull-right">';
-        $ui .= '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-right"></i></span>';
+        $ui .= '<span class="badge badge-primary fr-bgd">'.( $c_is_any_cr_inbound_c_id ? 'Choose This Path <i class="fas fa-check-circle"></i>' : '<i class="fas fa-angle-right"></i>').'</span>';
         $ui .= '</span>';
     }
 
     //Same body:
+    /*
     if(isset($k['w_c_id']) && $is_inbound && $k['w_c_id']==$k['c_id']){
         //This is the parent subscription!
         $ui .= echo_status('w_status',$k['w_status'],1,'right');
     } else {
         $ui .= echo_status('k_status',$k['k_status'],1,'right');
     }
+    */
+    if(!$is_inbound){
+        $ui .= echo_status('k_status',$k['k_status'],1,'right');
+    }
+
     $ui .= ' '.$k['c_outcome'];
     if(strlen($k['k_notes'])>0){
         $ui .= ' <i class="fas fa-edit"></i> '.htmlentities($k['k_notes']);

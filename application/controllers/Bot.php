@@ -95,6 +95,10 @@ class Bot extends CI_Controller {
         echo_json($res);
     }
 
+    function kr($w_id,$c_id,$fetch_outbound){
+        echo_json($this->Db_model->k_recursive_fetch($w_id, $c_id, $fetch_outbound));
+    }
+
     function test($c_id, $w_id=0, $u_id=1){
         echo_json(array(
             'ks' => $this->Db_model->k_fetch(array(

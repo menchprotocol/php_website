@@ -139,6 +139,18 @@ class My extends CI_Controller {
         }
     }
 
+    function choose_any_path($w_id, $c_id, $cr_inbound_c_id, $w_key){
+        if(md5($w_id.'kjaghksjha*(^'.$c_id.$cr_inbound_c_id)==$w_key){
+            //Validated! Move on:
+            if($this->Db_model->k_choose_any_path($w_id, $c_id, $cr_inbound_c_id)){
+                //Successful, redirect and show message:
+                redirect_message('/my/actionplan/'.$w_id.'/'.$c_id,'<div class="alert alert-success" role="alert" title="'.$siblings_updated.' Siblings updated">Your answer was saved.</div>');
+            } else {
+                redirect_message('/my/actionplan/'.$w_id.'/'.$cr_inbound_c_id,'<div class="alert alert-danger" role="alert">There was an error saving your answer.</div>');
+            }
+        }
+    }
+
     function update_k_save(){
 
         //Validate integrity of request:
@@ -167,7 +179,7 @@ class My extends CI_Controller {
 
 
         //Did anything change?
-        $status_changed = ( $ks[0]['k_status']<=0 );
+        $status_changed = ( $ks[0]['k_status']<=1 );
         $notes_changed = !($ks[0]['k_notes']==trim($_POST['k_notes']));
         if(!$notes_changed && !$status_changed){
             //Nothing seemed to change! Let them know:
@@ -187,30 +199,21 @@ class My extends CI_Controller {
             ),
         ));
 
-        //Update k:
-        $k_update_array = array(
-            'k_last_updated' => date("Y-m-d H:i:s"),
-        );
-
         if($notes_changed){
-            //Also update k_status, determine what it should be:
-            $k_update_array['k_notes'] = trim($_POST['k_notes']);
+            //Updates k notes:
+            $this->Db_model->k_update($ks[0]['k_id'], array(
+                'k_last_updated' => date("Y-m-d H:i:s"),
+                'k_notes' => trim($_POST['k_notes']),
+            ));
         }
 
         if($status_changed){
             //Also update k_status, determine what it should be:
-            $k_update_array['k_status'] = $this->Db_model->k_top_complete($ks[0], $ks[0]);
+            $this->Db_model->k_complete_recursive_up($ks[0], $ks[0]);
         }
-
-        //Update subscription:
-        $this->Db_model->k_update($ks[0]['k_id'], $k_update_array);
-
 
         //Redirect back to page with success message:
         return redirect_message($k_url,'<div class="alert alert-success" role="alert"><i class="fal fa-check-circle"></i> Saved</div>');
-
-
-
 
         //TODO Update tree upwards and dispatch drip/instant message logic as needed!
         /*
