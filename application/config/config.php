@@ -17,6 +17,7 @@ $config['content_types'] = array( //This should mirror outbound intents of @3000
     2999 => 'Podcast',
     2997 => 'Article',
     2998 => 'Video',
+    3192 => 'Product',
 );
 
 $config['fb_settings'] = array(
