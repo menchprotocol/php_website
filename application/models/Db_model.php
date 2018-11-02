@@ -91,7 +91,7 @@ class Db_model extends CI_Model {
             //The first case is for OR intents that a child is not yet selected, and the second part is for regular incompleted items:
             '(k_status=1 AND c_is_any=1)' => null, //Not completed or not yet started
         ), array('w','cr','cr_c_out'), array(
-            'k.k_id' => 'DESC',
+            'k.k_rank' => 'DESC',
         ), 1);
 
         $first_all = $this->Db_model->k_fetch(array(
@@ -102,10 +102,10 @@ class Db_model extends CI_Model {
             //The first case is for OR intents that a child is not yet selected, and the second part is for regular incompleted items:
             'k_status IN (0,-2)' => null, //Not completed or not yet started
         ), array('w','cr','cr_c_out'), array(
-            'k.k_id' => 'ASC', //Items are cached in order ;)
+            'k.k_rank' => 'ASC', //Items are cached in order ;)
         ), 1);
 
-        if(isset($first_all[0]) && (!isset($last_any[0]) || $first_all[0]['k_id']<$last_any[0]['k_id'])){
+        if(isset($first_all[0]) && (!isset($last_any[0]) || $first_all[0]['k_rank']<$last_any[0]['k_rank'])){
             return $first_all;
         } elseif(isset($last_any[0])){
             return $last_any;
@@ -269,6 +269,15 @@ class Db_model extends CI_Model {
         if(!isset($insert_columns['k_timestamp'])){
             $insert_columns['k_timestamp'] = date("Y-m-d H:i:s");
         }
+
+        if(!isset($insert_columns['k_rank'])){
+            //Determine the highest rank for this subscription:
+            $insert_columns['k_rank'] = 1 + $this->Db_model->max_value('v5_subscription_intent_links','k_rank', array(
+                'k_w_id' => $insert_columns['k_w_id'],
+            ));
+        }
+
+
 
         if(!isset($insert_columns['k_cr_outbound_rank'])){
             $insert_columns['k_cr_outbound_rank'] = 0;
@@ -1164,7 +1173,12 @@ class Db_model extends CI_Model {
 		}
 		$q = $this->db->get();
 		$stats = $q->row_array();
-		return intval($stats['largest']);
+		if(count($stats)>0){
+            return intval($stats['largest']);
+        } else {
+		    //Nothing found:
+            return 0;
+        }
 	}
 
 
