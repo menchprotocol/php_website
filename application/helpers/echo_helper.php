@@ -752,7 +752,7 @@ function echo_contents($c, $fb_format=0){
     }
 
 
-    $pitch = 'Aggregates '.$all_count.' content source'.echo__s($all_count).' in'.$text_overview.'.';
+    $pitch = 'Includes '.$all_count.' reference'.echo__s($all_count).' to'.$text_overview.'.';
     if($fb_format) {
         return '📚 '.$pitch."\n";
     } else {
