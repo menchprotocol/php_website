@@ -5,13 +5,13 @@ if(count($k_ins)==1) {
     //Echo hidden completion box on page:
     if ($c['c_require_url_to_complete'] && $c['c_require_notes_to_complete']) {
         $red_note = 'Requires both a URL & completion notes to mark as complete';
-        $textarea_note = 'Include a URL & completion notes (and optional feedback) to mark as complete';
+        $textarea_note = 'Include a URL & completion notes to mark as complete';
     } elseif ($c['c_require_url_to_complete']) {
         $red_note = 'Requires a URL';
-        $textarea_note = 'Include a URL (and optional feedback) to mark as complete';
+        $textarea_note = 'Include a URL to mark as complete';
     } elseif ($c['c_require_notes_to_complete']) {
         $red_note = 'Requires completion notes';
-        $textarea_note = 'Include completion notes (and optional feedback) to mark as complete';
+        $textarea_note = 'Include completion notes to mark as complete';
     } else {
         $red_note = null;
         $textarea_note = 'Include optional feedback';
@@ -33,7 +33,7 @@ if($w['w_status']==1){
             //$next_button = '<span style="font-size: 0.7em; padding-left:5px; display:inline-block;"><i class="fas fa-shield-check"></i> This is the next-in-line concept</span>';
             $next_button = null;
         } else {
-            $next_button = '<a href="/my/actionplan/'.$ks_next[0]['k_w_id'].'/'.$ks_next[0]['c_id'].'" class="btn '.(!$show_textarea && !$is_incomplete ? 'btn-md btn-primary' : 'btn-xs btn-black' ).'" data-toggle="tooltip" data-placement="top" title="Next concept-in-line is to '.$ks_next[0]['c_outcome'].'">Next-in-line <i class="fas fa-angle-right"></i></a>';
+            $next_button = '<a href="/my/actionplan/'.$ks_next[0]['k_w_id'].'/'.$ks_next[0]['c_id'].'" class="btn '.( count($k_ins)==1 && !$show_textarea && !$is_incomplete ? 'btn-md btn-primary' : 'btn-xs btn-black' ).'" data-toggle="tooltip" data-placement="top" title="Next concept-in-line is to '.$ks_next[0]['c_outcome'].'">Next-in-line <i class="fas fa-angle-right"></i></a>';
         }
     }
 }
