@@ -1,5 +1,28 @@
 <?php
 
+//Do some calculations:
+if(count($k_ins)==1) {
+    //Echo hidden completion box on page:
+    if ($c['c_require_url_to_complete'] && $c['c_require_notes_to_complete']) {
+        $red_note = 'Requires both a URL & completion notes to mark as complete';
+        $textarea_note = 'Include a URL & completion notes (and optional feedback) to mark as complete';
+    } elseif ($c['c_require_url_to_complete']) {
+        $red_note = 'Requires a URL';
+        $textarea_note = 'Include a URL (and optional feedback) to mark as complete';
+    } elseif ($c['c_require_notes_to_complete']) {
+        $red_note = 'Requires completion notes';
+        $textarea_note = 'Include completion notes (and optional feedback) to mark as complete';
+    } else {
+        $red_note = null;
+        $textarea_note = 'Include optional feedback';
+    }
+
+    //Submission button visible after first button was clicked:
+    $is_incomplete = ($k_ins[0]['k_status'] <= 0 || ($k_ins[0]['k_status'] == 1 && count($k_outs) == 0));
+    $show_textarea = ($red_note && $is_incomplete);
+}
+
+
 //Do we have a next item?
 $next_button = null;
 if($w['w_status']==1){
@@ -10,7 +33,7 @@ if($w['w_status']==1){
             //$next_button = '<span style="font-size: 0.7em; padding-left:5px; display:inline-block;"><i class="fas fa-shield-check"></i> This is the next-in-line concept</span>';
             $next_button = null;
         } else {
-            $next_button = '<a href="/my/actionplan/'.$ks_next[0]['k_w_id'].'/'.$ks_next[0]['c_id'].'" class="btn btn-xs btn-black" data-toggle="tooltip" data-placement="top" title="Next concept-in-line is to '.$ks_next[0]['c_outcome'].'">Next-in-line <i class="fas fa-angle-right"></i></a>';
+            $next_button = '<a href="/my/actionplan/'.$ks_next[0]['k_w_id'].'/'.$ks_next[0]['c_id'].'" class="btn '.(!$show_textarea && !$is_incomplete ? 'btn-md btn-primary' : 'btn-xs btn-black' ).'" data-toggle="tooltip" data-placement="top" title="Next concept-in-line is to '.$ks_next[0]['c_outcome'].'">Next-in-line <i class="fas fa-angle-right"></i></a>';
         }
     }
 }
@@ -109,24 +132,6 @@ if(count($messages)>0){
 //Show completion options below messages:
 if(count($k_ins)==1){
 
-    //Echo hidden completion box on page:
-    if($c['c_require_url_to_complete'] && $c['c_require_notes_to_complete']){
-        $red_note = 'Requires both a URL & completion notes to mark as complete';
-        $textarea_note = 'Include a URL & completion notes (and optional feedback) to mark as complete';
-    } elseif($c['c_require_url_to_complete']){
-        $red_note = 'Requires a URL';
-        $textarea_note = 'Include a URL (and optional feedback) to mark as complete';
-    } elseif($c['c_require_notes_to_complete']){
-        $red_note = 'Requires completion notes';
-        $textarea_note = 'Include completion notes (and optional feedback) to mark as complete';
-    } else {
-        $red_note = null;
-        $textarea_note = 'Include optional feedback';
-    }
-
-    //Submission button visible after first button was clicked:
-    $is_incomplete = ($k_ins[0]['k_status']<=0 || ($k_ins[0]['k_status']==1 && count($k_outs)==0));
-    $show_textarea = ($red_note && $is_incomplete);
     if(!$show_textarea){
         //Show button to make text visible:
         echo '<a href="javascript:void(0);" onclick="$(\'.toggle_text\').toggle();" class="toggle_text btn btn-xs btn-black"><i class="fas fa-edit"></i> '.( $is_incomplete ? 'Add Written Answer' : 'Modify Answer' ).'</a>';
@@ -152,8 +157,10 @@ if(count($k_ins)==1){
             echo '<button type="submit" class="btn btn-primary">OK, Continue <i class="fas fa-angle-right"></i></a>';
         } elseif($is_incomplete){
             echo '<button type="submit" class="btn btn-primary"><i class="fas fa-check-square"></i> Mark as Complete</button>';
+        } elseif(!$show_textarea) {
+            echo '<button type="submit" class="btn btn-primary toggle_text" style="display:none;"><i class="fas fa-edit"></i> Update Answer</button>';
         } else {
-            echo '<button type="submit" class="btn btn-primary '.( !$show_textarea ? 'toggle_text" style="display:none;' : '' ).'"><i class="fas fa-edit"></i> Update Answer</button>';
+            echo '<button type="submit" class="btn btn-primary"><i class="fas fa-edit"></i> Update Answer</button>';
         }
 
     echo '</form>';
