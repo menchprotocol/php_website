@@ -483,7 +483,7 @@ class Comm_model extends CI_Model {
                                 echo_experts($fetch_cs[0], 1).
                                 echo_completion_estimate($fetch_cs[0], 1).
                                 echo_costs($fetch_cs[0], 1).
-                                "\n".'Ready to level-up your career? 💪',
+                                "\n".'Are you ready to '.$fetch_cs[0]['c_outcome'].'? 💪',
                             'quick_replies' => array(
                                 array(
                                     'content_type' => 'text',

@@ -72,7 +72,7 @@
             <?= echo_costs($c, 0) ?>
         </div>
 
-        <p style="padding-bottom: 15px;">Ready to grow your potential? 💪</p>
+        <p style="padding-bottom: 15px;">Are you ready to <?= $c['c_outcome'] ?>? 💪</p>
 
         <!-- Call to Action -->
         <a class="btn btn-primary" href="https://m.me/askmench?ref=SUBSCRIBE10_<?= $c['c_id'] ?>" style="display: inline-block; padding: 12px 36px;">Subscribe [Free] <i class="fas fa-angle-right"></i></a>
