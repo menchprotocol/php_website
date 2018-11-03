@@ -21,7 +21,14 @@ class Cron extends CI_Controller {
     function intent_sync($c_id=7240,$update_c_table=1){
         //Cron Settings: 31 * * * *
 	    //Syncs intents with latest caching data:
-        echo_json($this->Db_model->c_recursive_fetch($c_id, true, $update_c_table));
+        $sync = $this->Db_model->c_recursive_fetch($c_id, true, $update_c_table);
+        if(isset($_GET['redirect']) && strlen($_GET['redirect'])>0){
+            //Now redirect;
+            header( 'Location: '.$_GET['redirect'] );
+        } else {
+            //Show json:
+            echo_json($sync);
+        }
     }
 
     function algolia_sync($obj,$obj_id=0){
