@@ -325,7 +325,9 @@ class Db_model extends CI_Model {
 
             //We are NOT linking to an existing intent, but instead, we're creating a new intent:
             //Set default new hours:
-            $default_new_hours = 0.0833; //5 min default
+
+            $default_new_hours = 0; //0 min default
+
             $recursive_query = array(
                 'c__tree_max_hours' => $default_new_hours,
                 'c__tree_all_count' => 1, //We just added one
