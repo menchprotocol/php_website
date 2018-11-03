@@ -722,7 +722,7 @@ if(isset($orphan_cs)){
             }
 
             //Empty Input:
-            input_field.focus().val('');
+            input_field.focus();
 
         });
 

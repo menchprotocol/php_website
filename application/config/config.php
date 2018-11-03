@@ -11,7 +11,9 @@ $config['file_limit_mb'] = 25; //Server setting is 32MB. see here: mench.com/ses
 $config['entity_per_page'] = 50;
 $config['universal_intents'] = array(7433); //Get to know how Mench Personal Assistant works //TODO Implement...
 $config['onhold_intents'] = array(7240,6629,6630,7248,7435,369,6653); //TODO Replace with drafting intents c_status=0
-$config['content_types'] = array( //This should mirror outbound intents of @3000
+
+//This should mirror outbound intents of @3000, and the order of the items would be used in the Landing page:
+$config['content_types'] = array(
     3147 => 'Online Course',
     3005 => 'Book',
     2999 => 'Podcast',
@@ -20,6 +22,7 @@ $config['content_types'] = array( //This should mirror outbound intents of @3000
     3192 => 'Tool',
 );
 
+//Mench Facebook page & Bot settings:
 $config['fb_settings'] = array(
     'page_id'        => '381488558920384', //Also repeated in global.js
     'app_id'        => '1782431902047009', //Also repeated in global.js
