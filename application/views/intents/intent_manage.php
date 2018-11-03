@@ -70,7 +70,6 @@ if(isset($orphan_cs)){
 
             //Expand/Contract buttons
             echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-outbound-count outbound-counter-'.$c['c_id'].'">'.$c['c__tree_all_count'].'</span> Outs</h5>';
-            echo '<div id="outs_error"></div>';
             echo '<div id="task_view" style="padding-left:8px; display: inline-block;">';
             echo '<i class="fas fa-plus-square expand_all" style="font-size: 1.2em;"></i> &nbsp;';
             echo '<i class="fas fa-minus-square close_all" style="font-size: 1.2em;"></i>';
@@ -79,6 +78,7 @@ if(isset($orphan_cs)){
                 echo '<div style="padding-left:8px; display: inline-block;"><a href="/intents/orphan">'.$orphan_c_count.' Orphans &raquo;</a></div>';
             }
 
+            echo '<div id="outs_error"></div>'; //Show potential errors detected in the Action Plan via our JS functions...
 
             echo '<div id="list-c-'.$c['c_id'].'" class="list-group list-is-outbound list-level-2">';
             foreach($c['c__child_intents'] as $sub_intent){
