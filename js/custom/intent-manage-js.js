@@ -187,9 +187,6 @@ function load_level3_search(){
 
 function c_sort(c_id,level){
 
-    console.log('c_sort/'+c_id+'/'+level);
-    return false;
-
     if(level==2){
         var s_element = "list-c-"+c_top_id;
         var s_draggable = ".is_level2_sortable";
@@ -267,7 +264,6 @@ function load_c_sort(c_id,level){
         //Should not happen!
         return false;
     }
-
 
     var theobject = document.getElementById(s_element);
 
