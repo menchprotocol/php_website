@@ -70,7 +70,7 @@ foreach($engagement_filters as $key=>$value){
             echo '<option value="'.$c_eng['c_id'].'" '.((isset($_GET[$key]) && $_GET[$key]==$c_eng['c_id'])?'selected="selected"':'').'>'.$c_eng['c_outcome'].'</option>';
         }
         echo '</select>';
-        echo '<div><a href="/console/360/actionplan" target="_blank">Open in Action Plan <i class="fas fa-external-link-square"></i></a></div>';
+        //echo '<div><a href="/console/360/actionplan" target="_blank">Open in Action Plan <i class="fas fa-external-link-square"></i></a></div>'; //TODO NO CLUE what this is!
 
     } else {
         //show text input

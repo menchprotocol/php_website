@@ -6,8 +6,8 @@ namespace Aws;
  * a handler. The handler function is then used to send command objects and
  * return a promise that is resolved with an AWS result object.
  *
- * The "front" of the list is invoked before the "end" of the list. You can add
- * middleware to the front of the list using one of the "prepend" method, and
+ * The "custom" of the list is invoked before the "end" of the list. You can add
+ * middleware to the custom of the list using one of the "prepend" method, and
  * the end of the list using one of the "append" method. The last function
  * invoked in a handler list is the handler (a function that does not accept a
  * next handler but rather is responsible for returning a promise that is

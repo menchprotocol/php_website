@@ -25,14 +25,14 @@ class My extends CI_Controller {
      ****************************** */
 
     function actionplan($w_id=0, $c_id=0){
-        $this->load->view('front/shared/p_header' , array(
+        $this->load->view('custom/shared/p_header' , array(
             'title' => '🚩 Action Plan',
         ));
-        $this->load->view('front/student/actionplan_frame' , array(
+        $this->load->view('custom/student/actionplan_frame' , array(
             'c_id' => $c_id,
             'w_id' => $w_id,
         ));
-        $this->load->view('front/shared/p_footer');
+        $this->load->view('custom/shared/p_footer');
     }
 
     function display_actionplan($u_fb_psid, $w_id=0, $c_id=0){
@@ -129,7 +129,7 @@ class My extends CI_Controller {
             }
 
             //All good, Load UI:
-            $this->load->view('front/student/actionplan_ui.php' , array(
+            $this->load->view('custom/student/actionplan_ui.php' , array(
                 'w' => $subscriptions[0], //We must have 1 by now!
                 'c' => $cs[0],
                 'k_ins' => $k_ins,
@@ -280,9 +280,9 @@ class My extends CI_Controller {
         $data = array(
             'title' => 'Password Reset',
         );
-        $this->load->view('front/shared/p_header' , $data);
-        $this->load->view('front/student/password_reset');
-        $this->load->view('front/shared/p_footer');
+        $this->load->view('custom/shared/p_header' , $data);
+        $this->load->view('custom/student/password_reset');
+        $this->load->view('custom/shared/p_footer');
     }
 	
 }

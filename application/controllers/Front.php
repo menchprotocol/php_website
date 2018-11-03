@@ -11,19 +11,19 @@ class Front extends CI_Controller {
 
 
     function error(){
-        $this->load->view('front/shared/f_header', array(
+        $this->load->view('custom/shared/f_header', array(
             'title' => 'Page Not Found',
         ));
-        $this->load->view('front/error');
-        $this->load->view('front/shared/f_footer');
+        $this->load->view('custom/error');
+        $this->load->view('custom/shared/f_footer');
     }
 
     function jobs(){
-        $this->load->view('front/shared/f_header' , array(
+        $this->load->view('custom/shared/f_header' , array(
             'title' => 'Work at Mench',
         ));
-        $this->load->view('front/mench-co-jobs');
-        $this->load->view('front/shared/f_footer');
+        $this->load->view('custom/mench-co-jobs');
+        $this->load->view('custom/shared/f_footer');
     }
 
     function index(){
@@ -35,11 +35,11 @@ class Front extends CI_Controller {
 
         } elseif(( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='mench.co' )) {
 
-            $this->load->view('front/shared/f_header' , array(
+            $this->load->view('custom/shared/f_header' , array(
                 'title' => 'Online Education. Transformed.',
             ));
-            $this->load->view('front/mench-co-intro');
-            $this->load->view('front/shared/f_footer');
+            $this->load->view('custom/mench-co-intro');
+            $this->load->view('custom/shared/f_footer');
 
         } else {
 
@@ -57,19 +57,19 @@ class Front extends CI_Controller {
 	        redirect_message('/intents/6623');
 	    }
 	    
-		$this->load->view('front/shared/f_header' , array(
+		$this->load->view('custom/shared/f_header' , array(
 		    'title' => 'Login',
 		));
-		$this->load->view('front/login');
-		$this->load->view('front/shared/f_footer');
+		$this->load->view('custom/login');
+		$this->load->view('custom/shared/f_footer');
 	}
 	
 	function terms(){
-		$this->load->view('front/shared/f_header' , array(
+		$this->load->view('custom/shared/f_header' , array(
 		    'title' => 'Terms & Privacy Policy',
 		));
-		$this->load->view('front/terms');
-		$this->load->view('front/shared/f_footer');
+		$this->load->view('custom/terms');
+		$this->load->view('custom/shared/f_footer');
 	}
 
     function ses(){
@@ -89,11 +89,11 @@ class Front extends CI_Controller {
 	function train(){
         $data = array(
             'title' => 'Train Mench to become the best Personal Assistant',
-            'landing_page' => 'front/splash/coaches_why',
+            'landing_page' => 'custom/splash/coaches_why',
         );
-	    $this->load->view('front/shared/f_header' , $data);
-	    $this->load->view('front/train' , $data);
-	    $this->load->view('front/shared/f_footer');
+	    $this->load->view('custom/shared/f_header' , $data);
+	    $this->load->view('custom/train' , $data);
+	    $this->load->view('custom/shared/f_footer');
 	}
 
 

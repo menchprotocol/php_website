@@ -106,7 +106,7 @@ switch (ENVIRONMENT)
  * APPLICATION DIRECTORY NAME
  *---------------------------------------------------------------
  *
- * If you want this front controller to use a different "application"
+ * If you want this custom controller to use a different "application"
  * directory than the default one you can set its name here. The directory
  * can also be renamed or relocated anywhere on your server. If you do,
  * use an absolute (full) server path.
@@ -144,7 +144,7 @@ switch (ENVIRONMENT)
  * specific controller class/function here. For most applications, you
  * WILL NOT set your routing here, but it's an option for those
  * special instances where you might want to override the standard
- * routing in a specific front controller that shares a common CI installation.
+ * routing in a specific custom controller that shares a common CI installation.
  *
  * IMPORTANT: If you set the routing here, NO OTHER controller will be
  * callable. In essence, this preference limits your application to ONE
@@ -173,7 +173,7 @@ switch (ENVIRONMENT)
  * config class when initialized. This allows you to set custom config
  * items or override any default config values found in the config.php file.
  * This can be handy as it permits you to share one application between
- * multiple front controller files, with each file containing different
+ * multiple custom controller files, with each file containing different
  * config values.
  *
  * Un-comment the $assign_to_config array below to use this feature
@@ -231,7 +231,7 @@ switch (ENVIRONMENT)
 	// Path to the system directory
 	define('BASEPATH', $system_path);
 
-	// Path to the front controller (this file) directory
+	// Path to the custom controller (this file) directory
 	define('FCPATH', dirname(__FILE__).DIRECTORY_SEPARATOR);
 
 	// Name of the "system" directory

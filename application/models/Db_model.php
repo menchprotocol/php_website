@@ -2007,7 +2007,7 @@ class Db_model extends CI_Model {
         }
 
 
-        //Add the link relations before we start recursion so we can have the Tree in up-front order:
+        //Add the link relations before we start recursion so we can have the Tree in up-custom order:
         if(isset($cs[0]['cr_id'])){
             array_push($immediate_children['cr_flat'],intval($cs[0]['cr_id']));
             if($k_w_id>0){
@@ -2382,7 +2382,7 @@ class Db_model extends CI_Model {
         }
 
 
-        //Add the link relations before we start recursion so we can have the Tree in up-front order:
+        //Add the link relations before we start recursion so we can have the Tree in up-custom order:
         array_push($immediate_children['c_flat'],intval($c_id));
         if(isset($cs[0]['cr_id'])){
             array_push($immediate_children['cr_flat'],intval($cs[0]['cr_id']));

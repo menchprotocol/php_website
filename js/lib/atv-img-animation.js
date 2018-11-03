@@ -20,7 +20,7 @@
  * 		<img src="/images/flattened-icon.jpg">
  *
  *		<div class="atvImg-layer" data-img="/images/back.png"></div>
- *		<div class="atvImg-layer" data-img="/images/front.png"></div>
+ *		<div class="atvImg-layer" data-img="/images/custom.png"></div>
  * </div>
  *
  * You can have any number of 'atvImg-layer' elements. So add as many

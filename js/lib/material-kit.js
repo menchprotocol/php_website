@@ -148,7 +148,7 @@ var big_image;
                                 'height': card_image_height + 'px',
                                 'width': card_image_width + 'px'
                             });
-                            var $append_div = $card_img.find('.front');
+                            var $append_div = $card_img.find('.custom');
                         }
 
                         colored_shadow_div.css({'background-image': 'url(' + img_source +')'}).appendTo($append_div);
@@ -179,7 +179,7 @@ var big_image;
              });
 
              if($(this).hasClass('back-background')){
-                 var img_src = $(this).siblings('.front').find('img').attr('src');
+                 var img_src = $(this).siblings('.custom').find('img').attr('src');
                  $(this).css('background-image','url("' + img_src + '")');
              }
          });

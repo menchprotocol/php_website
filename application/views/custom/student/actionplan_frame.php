@@ -9,7 +9,7 @@ if(isset($udata['u__ws']) && count($udata['u__ws'])){
     //User seems to be accessing the Action Plan from their browser
 
     //Include header:
-    $this->load->view('front/shared/student_nav' , array(
+    $this->load->view('custom/shared/student_nav' , array(
         'current' => 'actionplan',
     ));
 

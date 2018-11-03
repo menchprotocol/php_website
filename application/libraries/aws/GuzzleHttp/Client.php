@@ -109,7 +109,7 @@ class Client implements ClientInterface
     public function requestAsync($method, $uri = '', array $options = [])
     {
         $options = $this->prepareDefaults($options);
-        // Remove request modifying parameter because it can be done up-front.
+        // Remove request modifying parameter because it can be done up-custom.
         $headers = isset($options['headers']) ? $options['headers'] : [];
         $body = isset($options['body']) ? $options['body'] : null;
         $version = isset($options['version']) ? $options['version'] : '1.1';

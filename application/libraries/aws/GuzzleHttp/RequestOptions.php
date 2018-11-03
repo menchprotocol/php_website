@@ -217,7 +217,7 @@ final class RequestOptions
 
     /**
      * stream: Set to true to attempt to stream a response rather than
-     * download it all up-front.
+     * download it all up-custom.
      */
     const STREAM = 'stream';
 

@@ -120,14 +120,14 @@ class Intents extends CI_Controller
         }
 
         //Load home page:
-        $this->load->view('front/shared/f_header' , array(
+        $this->load->view('custom/shared/f_header' , array(
             'title' => $cs[0]['c_outcome'],
             'c' => $cs[0],
         ));
         $this->load->view('intents/landing_page' , array(
             'c' => $cs[0],
         ));
-        $this->load->view('front/shared/f_footer');
+        $this->load->view('custom/shared/f_footer');
     }
 
     /* ******************************

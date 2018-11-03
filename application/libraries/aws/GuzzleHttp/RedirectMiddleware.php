@@ -122,7 +122,7 @@ class RedirectMiddleware
     {
         return $promise->then(
             function (ResponseInterface $response) use ($uri, $statusCode) {
-                // Note that we are pushing to the front of the list as this
+                // Note that we are pushing to the custom of the list as this
                 // would be an earlier response than what is currently present
                 // in the history header.
                 $historyHeader = $response->getHeader(self::HISTORY_HEADER);
