@@ -30,10 +30,10 @@ if($w['w_status']==1){
     $ks_next = $this->Db_model->k_next_fetch($w['w_id']);
     if(count($ks_next)>0){
         if($ks_next[0]['c_id']==$c['c_id']){
-            //$next_button = '<span style="font-size: 0.7em; padding-left:5px; display:inline-block;"><i class="fas fa-shield-check"></i> This is the next-in-line concept</span>';
+            //$next_button = '<span style="font-size: 0.7em; padding-left:5px; display:inline-block;"><i class="fas fa-shield-check"></i> This is the next-in-line intent</span>';
             $next_button = null;
         } else {
-            $next_button = '<a href="/my/actionplan/'.$ks_next[0]['k_w_id'].'/'.$ks_next[0]['c_id'].'" class="btn '.( count($k_ins)==1 && !$show_textarea && !$is_incomplete ? 'btn-md btn-primary' : 'btn-xs btn-black' ).'" data-toggle="tooltip" data-placement="top" title="Next concept-in-line is to '.$ks_next[0]['c_outcome'].'">Next-in-line <i class="fas fa-angle-right"></i></a>';
+            $next_button = '<a href="/my/actionplan/'.$ks_next[0]['k_w_id'].'/'.$ks_next[0]['c_id'].'" class="btn '.( count($k_ins)==1 && !$show_textarea && !$is_incomplete ? 'btn-md btn-primary' : 'btn-xs btn-black' ).'" data-toggle="tooltip" data-placement="top" title="Next intent-in-line is to '.$ks_next[0]['c_outcome'].'">Next-in-line <i class="fas fa-angle-right"></i></a>';
         }
     }
 }

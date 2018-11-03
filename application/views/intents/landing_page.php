@@ -65,12 +65,14 @@
     <div class="price-box">
 
         <div class="support_p">
-            <?= echo_concepts($c, 0) ?>
-            <?= echo_completion_estimate($c, 0) ?>
-            <?= echo_costs($c, 0) ?>
+            <?= echo_intent_overview($c, 0) ?>
             <?= echo_contents($c, 0) ?>
             <?= echo_experts($c, 0) ?>
+            <?= echo_completion_estimate($c, 0) ?>
+            <?= echo_costs($c, 0) ?>
         </div>
+
+        <p style="padding-bottom: 15px;">Ready to grow your potential? 💪</p>
 
         <!-- Call to Action -->
         <a class="btn btn-primary" href="https://m.me/askmench?ref=SUBSCRIBE10_<?= $c['c_id'] ?>" style="display: inline-block; padding: 12px 36px;">Subscribe [Free] <i class="fas fa-angle-right"></i></a>
@@ -121,13 +123,13 @@
 
                 if(count($c1['c__child_intents'])>0){
 
-                    echo '<div style="margin:0 0 5px; padding-top:10px; font-size:1.1em;">'.$c1['c_outcome'].' with '.$c1['c__tree_all_count'].' concepts'.( count($c1['c__child_intents'])<$c1['c__tree_all_count'] ? ' in '.count($c1['c__child_intents']).' branches' : ''  ).':</div>';
+                    echo '<div style="margin:0 0 5px; padding-top:10px; font-size:1.1em;">'.$c1['c_outcome'].' with '.$c1['c__tree_all_count'].' intents'.( count($c1['c__child_intents'])<$c1['c__tree_all_count'] ? ' in '.count($c1['c__child_intents']).' branches' : ''  ).':</div>';
                     echo '<ul style="list-style:none; margin-left:-30px; font-size:1em;">';
                     $landing_pagetask_visible += ( count($c1['c__child_intents'])==$landing_pagetask_visible+1 ? 1 : 0 );
                     foreach($c1['c__child_intents'] as $c2_counter=>$c2){
 
                         if($c2_counter==$landing_pagetask_visible){
-                            echo '<a href="javascript:void(0);" onclick="$(\'.show_full_list_'.$c1_counter.'\').toggle();" class="show_full_list_'.$c1_counter.'">List all Concepts &raquo;</a>';
+                            echo '<a href="javascript:void(0);" onclick="$(\'.show_full_list_'.$c1_counter.'\').toggle();" class="show_full_list_'.$c1_counter.'">List all intents &raquo;</a>';
                         }
                         echo '<li class="'.( $c2_counter>=$landing_pagetask_visible ? 'show_full_list_'.$c1_counter.'" style="display:none;"' : '"' ).'>';
                         echo ($c1_counter+1).'.'.($c2_counter+1).'. '.$c2['c_outcome'];
@@ -142,7 +144,7 @@
                     echo '</ul>';
 
                     //Since it has children, lets also give the option to navigate downwards:
-                    echo '<div>You can choose to <a href="/'.$c1['c_id'].'" '.( $c['c_id']==6623 ? 'onclick="confirm_child_go('.$c1['c_id'].')"' : '' ).' class="alink-'.$c1['c_id'].'">subscribe to this concept only</a>.';
+                    echo '<div>You can choose to <a href="/'.$c1['c_id'].'" '.( $c['c_id']==6623 ? 'onclick="confirm_child_go('.$c1['c_id'].')"' : '' ).' class="alink-'.$c1['c_id'].'">subscribe to this intent only</a>.';
                     echo '</div>';
 
                 }

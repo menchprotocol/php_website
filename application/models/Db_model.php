@@ -236,7 +236,7 @@ class Db_model extends CI_Model {
                                 'e_outbound_u_id' => $w['w_outbound_u_id'],
                                 'e_outbound_c_id' => $w['w_c_id'],
                                 'e_w_id' => $w['w_id'],
-                                'i_message' => 'Congratulations for completing all concepts 🎉 I am most interested to know if you have achieved your intention to '.$cs[0]['c_outcome'].'?',
+                                'i_message' => 'Congratulations for completing your Action Plan 🎉 I am most interested to know if you have achieved your intention to '.$cs[0]['c_outcome'].'?',
                             ),
                         ));
 

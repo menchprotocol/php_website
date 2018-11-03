@@ -185,17 +185,17 @@ $config['object_statuses'] = array(
         ),
         1 => array(
             's_name'  => 'On-Start',
-            's_desc'  => 'Initial messages giving students instructions on how to effectively execute and complete this concept',
+            's_desc'  => 'Initial messages giving students instructions on how to effectively execute and complete this intent',
             's_icon' => 'fas fa-bolt',
         ),
         3 => array(
             's_name'  => 'On-Complete',
-            's_desc'  => 'Messages sent when students complete this concept. Re-iterate key insights to help students retain learnings',
+            's_desc'  => 'Messages sent when students complete this intent. Re-iterate key insights to help students retain learnings',
             's_icon' => 'fas fa-calendar-check',
         ),
         2 => array(
             's_name'  => 'Drip',
-            's_desc'  => 'Messages sent in intervals after students complete this concept. Re-iterate key insights to help students retain learnings',
+            's_desc'  => 'Messages sent in intervals after students complete this intent. Re-iterate key insights to help students retain learnings',
             's_icon' => 'fas fa-tint',
         ),
     ),
@@ -219,12 +219,12 @@ $config['object_statuses'] = array(
         ),
         1 => array(
             's_name'  => 'Working On',
-            's_desc'  => 'Work has started and but some concepts are pending completion',
+            's_desc'  => 'Work has started and but some intents are pending completion',
             's_icon' => 'fas fa-caret-square-right',
         ),
         2 => array(
             's_name'  => 'Completed',
-            's_desc'  => 'Concept is complete',
+            's_desc'  => 'Intent is complete',
             's_icon' => 'fas fa-check-square',
         ),
         3 => array(

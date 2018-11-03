@@ -752,7 +752,7 @@ function echo_contents($c, $fb_format=0){
     }
 
 
-    $pitch = 'Includes '.$all_count.' reference'.echo__s($all_count).' to'.$text_overview.'.';
+    $pitch = 'Intents reference'.$text_overview.' from industry experts.';
     if($fb_format) {
         return '📚 '.$pitch."\n";
     } else {
@@ -784,8 +784,8 @@ function echo_costs($c, $fb_format=0){
     }
 }
 
-function echo_concepts($c, $fb_format=0){
-    $pitch = 'Action Plan includes '.$c['c__tree_all_count'].' key concept'.echo__s($c['c__tree_all_count']).'.';
+function echo_intent_overview($c, $fb_format=0){
+    $pitch = 'Action Plan includes '.$c['c__tree_all_count'].' intents that offer a clear & optimized path to '.$c['c_outcome'].'.';
     if($fb_format) {
         return '💡 '.$pitch."\n";
     } else {
@@ -797,7 +797,7 @@ function echo_concepts($c, $fb_format=0){
 function echo_completion_estimate($c, $fb_format=0){
 
     $is_equal = ( $c['c__tree_max_hours']==$c['c__tree_min_hours'] );
-    $pitch = 'Takes '.( $is_equal ? 'about ' : '' ).echo_hour_range($c).' to complete'.( $is_equal ? '' : ' based on your skill-sets & preferences' ).'.';
+    $pitch = 'It takes about '.echo_hour_range($c).' to complete this Action Plan.';
 
     if($fb_format) {
         return '🕓 '.$pitch."\n";
@@ -809,7 +809,7 @@ function echo_completion_estimate($c, $fb_format=0){
 
 function echo_experts($c, $fb_format=0){
 
-    //Do we have any concepts?
+    //Do we have any intents?
     if(strlen($c['c__tree_experts'])<=0){
         return false;
     }
@@ -870,7 +870,7 @@ function echo_experts($c, $fb_format=0){
                 $text_overview .= '</a>';
             }
 
-            if(($count+1)>=$visible_html){
+            if(($count+1)==$visible_html && ($all_count-$visible_html)>0){
                 $text_overview .= '<span class="show_more_'.$c['c_id'].'"> & <a href="javascript:void(0);" onclick="$(\'.show_more_'.$c['c_id'].'\').toggle()" style="text-decoration:underline;">'.($all_count-$visible_html).' more</a>.</span><span class="show_more_'.$c['c_id'].'" style="display:none;">';
             }
         }
@@ -885,8 +885,7 @@ function echo_experts($c, $fb_format=0){
     }
 
 
-
-    $pitch = 'Quotes '.$all_count.' industry expert'.echo__s($all_count).' including'.$text_overview;
+    $pitch = 'A total of '.$all_count.' industry expert'.echo__s($all_count).' are referenced:'.$text_overview;
     if($fb_format) {
         return '👩‍🎓 '.$pitch."\n";
     } else {
@@ -899,7 +898,7 @@ function echo_experts($c, $fb_format=0){
 
 function echo_hour_range($c, $micro=false){
 
-    if($c['c__tree_max_hours']==$c['c__tree_min_hours']){
+    if(round($c['c__tree_max_hours'],1)==round($c['c__tree_min_hours'],1)){
         //Exactly the same, show a single value:
         return echo_hours($c['c__tree_max_hours'],$micro);
     } elseif(round($c['c__tree_max_hours'])==round($c['c__tree_min_hours']) || $c['c__tree_min_hours']<1){
@@ -1182,7 +1181,7 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
         $ui .= ' <span class="obj-id underdot" data-toggle="tooltip" data-placement="top" title="Intent ID">#' . $c['c_id'] . '</span>';
 
         //Give option to update the cache:
-        $ui .= ' <a href="/cron/intent_sync/'.$c['c_id'].'/1" target="_blank" data-toggle="tooltip" title="Updates Intent tree cache which controls landing page counters for concept, hours, content types and industry expert" data-placement="top"><i class="fas fa-sync-alt"></i></a>';
+        $ui .= ' <a href="/cron/intent_sync/'.$c['c_id'].'/1" target="_blank" data-toggle="tooltip" title="Updates Intent tree cache which controls landing page counters for intent, hours, content types and industry expert" data-placement="top"><i class="fas fa-sync-alt"></i></a>';
 
         //Show Landing Page URL:
         $ui .= ' <a href="/'.$c['c_id'].'" target="_blank" data-toggle="tooltip" title="Open Landing Page with Intent tree overview & Messenger subscription button" data-placement="top"><i class="fas fa-shopping-cart"></i></a>';

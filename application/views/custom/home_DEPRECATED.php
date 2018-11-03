@@ -108,7 +108,7 @@
 
             .fbMessenger('message', 'bot', 'Sweet 🙏 you are now subscribed to [land a fabulous programming job]. You can manage your intentions using the [🚩Action Plan] button below', { delay:3000 })
             .fbMessenger('typingIndicator', { delay:10000 })
-            .fbMessenger('message', 'bot', 'To land a fabulous programming job you need to invest 152-hour to learn 92 key concepts while also completing 61 actionable tasks...', { delay:5000 })
+            .fbMessenger('message', 'bot', 'To land a fabulous programming job you need to invest 152-hour to learn 92 key intents while also completing 61 actionable tasks...', { delay:5000 })
             .fbMessenger('typingIndicator', { delay:10000 })
             .fbMessenger('message', 'bot', 'Considering your current schedule, how many hours per week can you invest to land a fabulous programming job?<br /><br />/1 8 Hours/Week (19 Weeks Long)<br />/2 12 Hours/Week (13 Weeks Long)<br />/3 20 Hours/Week (8 Weeks Long)<br />/4 40 Hours/Week (4 Weeks Long)<br />/5 Not Sure Yet', { delay:5000 })
             .fbMessenger('showQuickReplies', [ '/1', '/2', '/3', '/4', '/5' ], { delay:0 })

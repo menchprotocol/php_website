@@ -478,12 +478,12 @@ class Comm_model extends CI_Model {
                             'e_outbound_u_id' => $fetch_us[0]['u_id'],
                             'e_outbound_c_id' => $w_c_id,
                             'i_message' => 'Here is what you need to know to '.$fetch_cs[0]['c_outcome'].':'."\n\n".
-                                echo_concepts($fetch_cs[0], 1).
-                                echo_completion_estimate($fetch_cs[0], 1).
-                                echo_costs($fetch_cs[0], 1).
+                                echo_intent_overview($fetch_cs[0], 1).
                                 echo_contents($fetch_cs[0], 1).
                                 echo_experts($fetch_cs[0], 1).
-                                "\n".'Ready to get started? 💪',
+                                echo_completion_estimate($fetch_cs[0], 1).
+                                echo_costs($fetch_cs[0], 1).
+                                "\n".'Ready to level-up your career? 💪',
                             'quick_replies' => array(
                                 array(
                                     'content_type' => 'text',
@@ -1025,7 +1025,7 @@ class Comm_model extends CI_Model {
 
                 } else {
                     //Subscription is complete!
-                    $message_body .= 'This was the final concept of your subscription, congratulations for making it through!';
+                    $message_body .= 'This was the final intent of your subscription, congratulations for making it through!';
                 }
 
             } else {
@@ -1047,7 +1047,7 @@ class Comm_model extends CI_Model {
                 } else {
 
                     //User needs to complete all children, and we'd recommend the first item as their next step:
-                    $message_body .= 'There are '.count($k_ins).' concepts you need to complete in order to '.$cs[0]['c_outcome'].'. I recommend starting from the first one:';
+                    $message_body .= 'There are '.count($k_ins).' intents you need to complete in order to '.$cs[0]['c_outcome'].'. I recommend starting from the first one:';
                     foreach($k_ins as $counter=>$k){
                         $message_body .= "\n\n".($counter+1).'/ '.$k['c_outcome'];
                         array_push( $quick_replies , array(
