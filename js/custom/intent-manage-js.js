@@ -187,6 +187,9 @@ function load_level3_search(){
 
 function c_sort(c_id,level){
 
+    console.log('c_sort/'+c_id+'/'+level);
+    return false;
+
     if(level==2){
         var s_element = "list-c-"+c_top_id;
         var s_draggable = ".is_level2_sortable";
@@ -253,10 +256,12 @@ function c_sort(c_id,level){
 function load_c_sort(c_id,level){
 
     if(level==2){
+        var element_key = null;
         var s_element = "list-c-"+c_top_id;
         var s_draggable = ".is_level2_sortable";
     } else if(level==3){
-        var s_element = "list-cr-"+$('.intent_line_'+c_id).attr('data-link-id');
+        var element_key = '.intent_line_'+c_id;
+        var s_element = "list-cr-"+$(element_key).attr('data-link-id');
         var s_draggable = ".is_level3_sortable";
     } else {
         //Should not happen!
@@ -265,6 +270,21 @@ function load_c_sort(c_id,level){
 
 
     var theobject = document.getElementById(s_element);
+
+    if(!theobject){
+        //Likely due to duplicate intents belonging in this tree!
+
+        //Show general error:
+        $('#outs_error').html( "<div class=\"alert alert-danger\"><i class=\"fas fa-exclamation-triangle\"></i> Error: Detected duplicate intents! Fix & refresh.</div>" );
+
+        //Show specific error:
+        if(element_key){
+            $( "<div class=\"act-error\"><i class=\"fas fa-exclamation-triangle\"></i> Error: Duplicate intent! Only keep 1 & refresh.</div>" ).prependTo( element_key );
+        }
+
+        return false;
+    }
+
     var settings = {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
         draggable: s_draggable, // Specifies which items inside the element should be sortable
@@ -273,6 +293,7 @@ function load_c_sort(c_id,level){
             c_sort(c_id,level);
         }
     };
+
 
     //Enable moving level 3 intents between level 2 intents:
     if(level=="3"){
@@ -318,13 +339,14 @@ function load_c_sort(c_id,level){
                     }
 
                     //Update sorting for both lists:
-                    c_sort(inputs.from_c_id,"3");
-                    c_sort(inputs.to_c_id,"3");
+                    c_sort(inputs.from_c_id,3);
+                    c_sort(inputs.to_c_id,3);
 
                 }
             });
         };
     }
+
     var sort = Sortable.create( theobject , settings );
 }
 

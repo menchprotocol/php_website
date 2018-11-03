@@ -4,8 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 //Settime zone to PST:
 date_default_timezone_set('America/Los_Angeles');
 
-//Used to generate application status links:
-$config['app_version'] = '0.583'; //Updates status css/js cache files
+//Cache buster for static files
+$config['app_version'] = '0.584'.( ( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='local.mench.co' ) ? microtime(true) : '' ); //Updates status css/js cache files
 $config['message_max'] = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
 $config['c_outcome_max'] = 70; //Max number of characters allowed in the title of intents
 $config['u_full_name_max'] = 210; //Max number of characters allowed in the title of intents

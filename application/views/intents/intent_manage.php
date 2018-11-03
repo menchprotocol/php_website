@@ -70,6 +70,7 @@ if(isset($orphan_cs)){
 
             //Expand/Contract buttons
             echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-outbound-count outbound-counter-'.$c['c_id'].'">'.$c['c__tree_all_count'].'</span> Outs</h5>';
+            echo '<div id="outs_error"></div>';
             echo '<div id="task_view" style="padding-left:8px; display: inline-block;">';
             echo '<i class="fas fa-plus-square expand_all" style="font-size: 1.2em;"></i> &nbsp;';
             echo '<i class="fas fa-minus-square close_all" style="font-size: 1.2em;"></i>';

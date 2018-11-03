@@ -331,6 +331,7 @@ input::-webkit-inner-spin-button {
 .step-group{
     margin:10px 0 0 13px;
 }
+.act-error{ color:#f55145; font-weight:bold; font-size:0.9em; margin:-7px 0 3px 0; }
 .step-group>.list-group-item{
     padding:7px;
     border:1px solid #EFEFEF;

@@ -775,7 +775,7 @@ function echo_costs($c, $fb_format=0){
         $price_range = 'between $'.round($c['c__tree_min_cost']).' to $'.round($c['c__tree_max_cost']).' USD';
     }
 
-    $pitch = 'May cost '.$price_range.' in verified third-party product purchases.';
+    $pitch = 'It might cost '.$price_range.' to buy verified third-party products.';
     if($fb_format) {
         return '💵 '.$pitch."\n";
     } else {
