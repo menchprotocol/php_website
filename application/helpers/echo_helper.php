@@ -1181,7 +1181,7 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
         $ui .= ' <span class="obj-id underdot" data-toggle="tooltip" data-placement="top" title="Intent ID">#' . $c['c_id'] . '</span>';
 
         //Give option to update the cache:
-        $ui .= ' <a href="/cron/intent_sync/'.$c['c_id'].'/1?redirect=/'.$c['c_id'].'" data-toggle="tooltip" title="Updates Intent tree cache which controls landing page counters for intent, hours, content types and industry expert" data-placement="top"><i class="fas fa-sync-alt"></i></a>';
+        $ui .= ' <a href="/cron/intent_sync/'.$c['c_id'].'/1?redirect=/'.$c['c_id'].'" onclick="turn_off()" data-toggle="tooltip" title="Updates Intent tree cache which controls landing page counters for intent, hours, content types and industry expert" data-placement="top"><i class="fas fa-sync-alt"></i></a>';
 
         //Show Landing Page URL:
         $ui .= ' <a href="/'.$c['c_id'].'" data-toggle="tooltip" title="Open Landing Page with Intent tree overview & Messenger subscription button" data-placement="top"><i class="fas fa-shopping-cart"></i></a>';

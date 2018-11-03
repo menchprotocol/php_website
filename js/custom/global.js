@@ -65,6 +65,9 @@ window.fbAsyncInit = function(){
 }(document, 'script', 'facebook-jssdk'));
 
 
+function turn_off(){
+    $('.dash').html('<span><img src="/img/round_load.gif" style="width:32px; height:32px; margin-top:-2px;" class="loader" /></span> Processing...');
+}
 
 function nl2br(str, is_xhtml) {
     if (typeof str === 'undefined' || str === null) {
