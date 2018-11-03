@@ -885,7 +885,7 @@ function echo_experts($c, $fb_format=0){
     }
 
 
-    $pitch = 'A total of '.$all_count.' industry expert'.echo__s($all_count).' are referenced:'.$text_overview;
+    $pitch = 'References are from '.$all_count.' industry expert'.echo__s($all_count).' including '.$text_overview;
     if($fb_format) {
         return '👩‍🎓 '.$pitch."\n";
     } else {
