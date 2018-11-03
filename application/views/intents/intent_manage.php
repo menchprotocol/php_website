@@ -474,7 +474,7 @@ if(isset($orphan_cs)){
 
         var c_inbound_id = parseInt($('#cr_'+cr_id).attr('parent-intent-id'));
         var level = parseInt($('#cr_'+cr_id).attr('intent-level')); //Either 2 or 3 (Cannot unlink level 1)
-        var r = confirm("Unlink \""+$('.c_outcome_input').val()+"\"?\n(Intent will remain accessible)");
+        var r = confirm("Unlink \""+$('#c_outcome').val()+"\"?\n(Intent will remain accessible)");
 
         if (r == true) {
             //Load parent intents:
@@ -513,6 +513,16 @@ if(isset($orphan_cs)){
     }
 
 
+    function changeName() {
+        var len = $('#c_outcome').val().length;
+        if (len > <?= $this->config->item('c_outcome_max') ?>) {
+            $('#charNameNum').addClass('overload').text(len);
+        } else {
+            $('#charNameNum').removeClass('overload').text(len);
+        }
+    }
+
+
     function load_c_modify(c_id, cr_id){
 
         //Make sure inputs are valid:
@@ -532,9 +542,11 @@ if(isset($orphan_cs)){
         var intent_hours = parseFloat($('.t_estimate_'+c_id+':first').attr('intent-hours'));
         var tree_hours = $('.t_estimate_'+c_id+':first').attr('tree-hours');
 
-        $('.c_outcome_input').val($(".c_outcome_"+c_id+":first").text());
+        $('#c_outcome').val($(".c_outcome_"+c_id+":first").text());
         $('#c_time_estimate').val(Math.round(intent_hours*60));
         $('#c_cost_estimate').val(parseFloat($('.c_outcome_'+c_id).attr('c_cost_estimate')));
+
+        changeName();
 
         $("input[name=c_is_any][value='"+$('.c_outcome_'+c_id).attr('c_is_any')+"']").prop("checked",true);
         document.getElementById("c_require_url_to_complete").checked = parseInt($('.c_outcome_'+c_id).attr('c_require_url_to_complete'));
@@ -584,7 +596,7 @@ if(isset($orphan_cs)){
         var modify_data = {
             c_id:parseInt($('#modifybox').attr('intent-id')),
             level:parseInt($('#modifybox').attr('level')),
-            c_outcome:$('.c_outcome_input').val(),
+            c_outcome:$('#c_outcome').val(),
             c_time_estimate:parseFloat(parseInt($('#c_time_estimate').val())/60),
             c_cost_estimate:parseFloat($('#c_cost_estimate').val()),
             c_require_url_to_complete:( document.getElementById('c_require_url_to_complete').checked ? 1 : 0),
@@ -810,7 +822,7 @@ if(isset($orphan_cs)){
             ?>
             <div class="list-group-item list_input grey-block">
                 <div class="input-group">
-                    <div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control intentadder-level-2 algolia_search bottom-add"  maxlength="70" intent-id="<?= $c['c_id'] ?>" id="addintent-c-<?= $c['c_id'] ?>" placeholder="Add #Intent"></div>
+                    <div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control intentadder-level-2 algolia_search bottom-add"  maxlength="<?= $this->config->item('c_outcome_max') ?>" intent-id="<?= $c['c_id'] ?>" id="addintent-c-<?= $c['c_id'] ?>" placeholder="Add #Intent"></div>
                     <span class="input-group-addon" style="padding-right:8px;">
                                         <span id="dir_handle" data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" class="badge badge-primary pull-right" style="cursor:pointer; margin: 1px 3px 0 6px;">
                                             <div><i class="fas fa-plus"></i></div>
@@ -837,13 +849,13 @@ if(isset($orphan_cs)){
 
             <div class="grey-box">
                 <div>
-                    <div class="title"><h4><i class="fas fa-bullseye-arrow"></i> Target Outcome <span id="hb_598" class="help_button" intent-id="598"></span></h4></div>
+                    <div class="title"><h4><i class="fas fa-bullseye-arrow"></i> Target Outcome [<span style="margin:0 0 10px 0; font-size:0.8em;"><span id="charNameNum">0</span>/<?= $this->config->item('c_outcome_max') ?></span>] <span id="hb_598" class="help_button" intent-id="598"></span></h4></div>
                     <div class="help_body maxout" id="content_598"></div>
 
                     <div class="form-group label-floating is-empty">
                         <div class="input-group border">
                             <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;">To</span>
-                            <input style="padding-left:0;" type="text" id="c_outcome" maxlength="70" value="" class="form-control c_outcome_input algolia_search">
+                            <input style="padding-left:0;" type="text" id="c_outcome" onkeyup="changeName()" maxlength="<?= $this->config->item('c_outcome_max') ?>" value="" class="form-control algolia_search">
                         </div>
                     </div>
                 </div>

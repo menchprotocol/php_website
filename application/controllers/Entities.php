@@ -360,6 +360,11 @@ class Entities extends CI_Controller {
                 'status' => 0,
                 'message' => 'Missing name',
             ));
+        } elseif(strlen($_POST['u_full_name'])>$this->config->item('u_full_name_max')){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Name is longer than the allowed '.$this->config->item('u_full_name_max').' characters. Shorten and try again.',
+            ));
         } elseif(strlen($_POST['u_email'])>0 && !filter_var($_POST['u_email'], FILTER_VALIDATE_EMAIL)){
             return echo_json(array(
                 'status' => 0,

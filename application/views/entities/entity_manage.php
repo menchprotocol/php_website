@@ -6,9 +6,7 @@
  *******************************
  *******************************/
 
-$entity_per_page = $this->config->item('entity_per_page');
 $udata = $this->session->userdata('user');
-$message_max = $this->config->item('message_max');
 
 //Determine what type of entity is this? (Content, people or Organization)
 $entity_type = entity_type($entity);
@@ -23,7 +21,7 @@ $add_id             = ( in_array($entity['u_id'], array(1278,2750)) ? $entity['u
 $child_entities = $this->Db_model->ur_outbound_fetch(array(
     'ur_inbound_u_id' => $inbound_u_id,
     'ur_status' => 1, //Only active
-), array('u__outbound_count'), $entity_per_page);
+), array('u__outbound_count'), $this->config->item('entity_per_page'));
 $subscriptions = array();
 $b_team_member = array();
 
@@ -323,10 +321,19 @@ $b_team_member = array();
     //Count text area characters:
     function changeBio() {
         var len = $('#u_bio').val().length;
-        if (len > <?= $message_max ?>) {
+        if (len > <?= $this->config->item('message_max') ?>) {
             $('#charNum').addClass('overload').text(len);
         } else {
             $('#charNum').removeClass('overload').text(len);
+        }
+    }
+
+    function changeName() {
+        var len = $('#u_full_name').val().length;
+        if (len > <?= $this->config->item('u_full_name_max') ?>) {
+            $('#charNameNum').addClass('overload').text(len);
+        } else {
+            $('#charNameNum').removeClass('overload').text(len);
         }
     }
 
@@ -583,6 +590,7 @@ $b_team_member = array();
         $('#u_full_name').val($(".u_full_name_"+u_id+":first").text());
         $('#u_bio').val($(".u__"+u_id+":first").attr('entity-bio'));
         changeBio();
+        changeName();
 
         //Update password reset UI:
         $('#u_email').val($(".u__"+u_id+":first").attr('entity-email'));
@@ -809,7 +817,7 @@ foreach($child_entities as $u){
     echo echo_u($u, 2, $can_edit);
 }
 if($entity['u__outbound_count'] > count($child_entities)) {
-    echo_next_u(1, $entity_per_page, $entity['u__outbound_count']);
+    echo_next_u(1, $this->config->item('entity_per_page'), $entity['u__outbound_count']);
 }
 
 //Input to add new inbounds:
@@ -906,11 +914,10 @@ if(count($b_team_member)>0){
           <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;"><a href="javascript:void(0)" onclick="$('#modifybox').addClass('hidden')"><i class="fas fa-times-circle"></i></a></div>
 
           <div class="grey-box">
-              <div class="title" style="margin-bottom:0; padding-bottom:0;"><h4><i class="fas fa-fingerprint"></i> Name</h4></div>
-              <input type="text" id="u_full_name" value="" data-lpignore="true" placeholder="Name" class="form-control border">
+              <div class="title" style="margin-bottom:0; padding-bottom:0;"><h4><i class="fas fa-fingerprint"></i> Name [<span style="margin:0 0 10px 0; font-size:0.8em;"><span id="charNameNum">0</span>/<?= $this->config->item('u_full_name_max') ?></span>]</h4></div>
+              <input type="text" id="u_full_name" value="" onkeyup="changeName()" maxlength="<?= $this->config->item('u_full_name_max') ?>" data-lpignore="true" placeholder="Name" class="form-control border">
 
-
-              <div class="title" style="margin-top:15px;"><h4><i class="fas fa-comment-dots"></i> Introductory Message [<span style="margin:0 0 10px 0; font-size:0.8em;"><span id="charNum">0</span>/<?= $message_max ?></span>]</h4></div>
+              <div class="title" style="margin-top:15px;"><h4><i class="fas fa-comment-dots"></i> Introductory Message [<span style="margin:0 0 10px 0; font-size:0.8em;"><span id="charNum">0</span>/<?= $this->config->item('message_max') ?></span>]</h4></div>
               <textarea class="form-control text-edit border msg" id="u_bio" style="height:146px; background-color:#FFFFFF !important;" onkeyup="changeBio()"></textarea>
 
 

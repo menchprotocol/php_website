@@ -5,10 +5,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 date_default_timezone_set('America/Los_Angeles');
 
 //Used to generate application status links:
-$config['app_version'] = '0.582'; //Updates status css/js cache files
+$config['app_version'] = '0.583'; //Updates status css/js cache files
 $config['message_max'] = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
+$config['c_outcome_max'] = 70; //Max number of characters allowed in the title of intents
+$config['u_full_name_max'] = 210; //Max number of characters allowed in the title of intents
 $config['file_limit_mb'] = 25; //Server setting is 32MB. see here: mench.com/ses
-$config['entity_per_page'] = 50;
+$config['entity_per_page'] = 50; //Even number
 $config['universal_intents'] = array(7433); //Get to know how Mench Personal Assistant works //TODO Implement...
 $config['onhold_intents'] = array(7240,6629,6630,7248,7435,369,6653); //TODO Replace with drafting intents c_status=0
 
@@ -126,8 +128,18 @@ $config['object_statuses'] = array(
         3 => array(
             's_name'  => 'Subscribable',
             's_desc'  => 'Intents that are public that users can subscribed to',
+            's_icon' => 'fas fa-comment-check',
+        ),
+
+        /*
+         * TODO Maybe develop later to replace the universal_intents variable?
+        4 => array(
+            's_name'  => 'Recommended',
+            's_desc'  => 'Intents that are recommended to users with related interests',
             's_icon' => 'fas fa-badge-check',
         ),
+        */
+
     ),
     'cr' => array(
         -1 => array(
