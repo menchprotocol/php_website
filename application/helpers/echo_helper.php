@@ -752,7 +752,7 @@ function echo_contents($c, $fb_format=0){
     }
 
 
-    $pitch = 'Intents reference'.$text_overview.' from industry experts.';
+    $pitch = 'Intents reference'.$text_overview.'.';
     if($fb_format) {
         return '📚 '.$pitch."\n";
     } else {
@@ -785,7 +785,7 @@ function echo_costs($c, $fb_format=0){
 }
 
 function echo_intent_overview($c, $fb_format=0){
-    $pitch = 'Action Plan includes '.$c['c__tree_all_count'].' intents that offer a clear & optimized path to '.$c['c_outcome'].'.';
+    $pitch = 'Action Plan includes '.$c['c__tree_all_count'].' intents that offer a personalized roadmap to '.$c['c_outcome'].'.';
     if($fb_format) {
         return '💡 '.$pitch."\n";
     } else {
@@ -797,7 +797,7 @@ function echo_intent_overview($c, $fb_format=0){
 function echo_completion_estimate($c, $fb_format=0){
 
     $is_equal = ( $c['c__tree_max_hours']==$c['c__tree_min_hours'] );
-    $pitch = 'It takes about '.echo_hour_range($c).' to complete this Action Plan.';
+    $pitch = 'It takes about '.strtolower(echo_hour_range($c)).' to complete this Action Plan.';
 
     if($fb_format) {
         return '🕓 '.$pitch."\n";
@@ -823,7 +823,7 @@ function echo_experts($c, $fb_format=0){
     }
 
 
-    $visible_html = 5; //Landing page, beyond this is hidden and visible with a click
+    $visible_html = 4; //Landing page, beyond this is hidden and visible with a click
     $visible_bot = 10; //Plain text style, but beyond this is cut out!
     $edit_enabled = auth(array(1281),0);
     $text_overview = '';
@@ -885,7 +885,7 @@ function echo_experts($c, $fb_format=0){
     }
 
 
-    $pitch = 'References are from '.$all_count.' industry expert'.echo__s($all_count).($all_count==1 ? ':' : ' including' ).$text_overview;
+    $pitch = 'Intents also reference '.$all_count.' industry expert'.echo__s($all_count).($all_count==1 ? ':' : ' including' ).$text_overview;
     if($fb_format) {
         return '👩‍🎓 '.$pitch."\n";
     } else {
