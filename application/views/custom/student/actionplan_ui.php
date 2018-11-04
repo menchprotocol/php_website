@@ -109,7 +109,8 @@ $messages = $this->Db_model->i_fetch(array(
 ));
 if(count($messages)>0){
     $hide_messages_onload = ( count($k_ins)==0 || $k_ins[0]['k_status']<=0);
-    echo '<div class="tips_content message_content" style="display: '.( $is_started ? 'none' : 'block' ).';">';
+    echo '<div class="tips_content message_content left-grey" style="display: '.( $is_started ? 'none' : 'block' ).';">';
+    echo '<h5 class="badge badge-hy"><i class="fas fa-comment-dots"></i> '.count($messages).' Message'.echo__s(count($messages)).':</h5>';
     foreach($messages as $i){
         if($i['i_status']==1){
             echo '<div class="tip_bubble">';
@@ -123,7 +124,7 @@ if(count($messages)>0){
 
     if($is_started){
         //Show button to show messages:
-        echo '<a href="javascript:void(0);" onclick="$(\'.message_content\').toggle();" class="message_content btn btn-xs btn-black"><i class="fas fa-comment-dots"></i> See '.count($messages).' Message'.echo__s(count($messages)).'</a>';
+        echo '<div class="left-grey"><a href="javascript:void(0);" onclick="$(\'.message_content\').toggle();" class="message_content btn btn-xs btn-black"><i class="fas fa-comment-dots"></i> See '.count($messages).' Message'.echo__s(count($messages)).'</a></div>';
     }
 }
 
@@ -134,29 +135,28 @@ if(count($k_ins)==1){
 
     if(!$show_textarea){
         //Show button to make text visible:
-        echo '<a href="javascript:void(0);" onclick="$(\'.toggle_text\').toggle();" class="toggle_text btn btn-xs btn-black"><i class="fas fa-edit"></i> '.( $is_incomplete ? 'Add Written Answer' : 'Modify Answer' ).'</a>';
+        echo '<div class="left-grey"><a href="javascript:void(0);" onclick="$(\'.toggle_text\').toggle();" class="toggle_text btn btn-xs btn-black"><i class="fas fa-edit"></i> '.( $is_incomplete ? 'Add Written Answer' : 'Modify Answer' ).'</a></div>';
     }
 
-    //Echo next button if available:
-    echo $next_button;
-
+    echo '<div class="left-grey">';
     echo '<form method="POST" action="/my/update_k_save">';
 
         echo '<input type="hidden" name="k_id"  value="'.$k_ins[0]['k_id'].'" />';
         //echo '<input type="hidden" name="k_key" value="'.md5($k_ins[0]['k_id'].'k_key_SALT555').'" />'; //TODO Wire in for more security?!
 
-        echo '<div class="toggle_text" style="'.( $show_textarea ? '' : 'display:none; ' ).'margin-top:10px;">';
+        echo '<div class="toggle_text" style="'.( $show_textarea ? '' : 'display:none; ' ).'">';
             if($red_note) {
-                echo '<div style="color:#2b2b2b; font-size:0.7em; margin:20px 0 0 0 !important; padding:0;"><i class="fas fa-exclamation-triangle"></i> ' . $red_note . '</div>';
+                echo '<div style="color:#2b2b2b; font-size:0.7em; margin:0 !important; padding:0;"><i class="fas fa-exclamation-triangle"></i> ' . $red_note . '</div>';
             }
             echo '<textarea name="k_notes" class="form-control maxout" placeholder="'.$textarea_note.'" style="padding:5px !important; margin:0 !important;">'.$k_ins[0]['k_notes'].'</textarea>';
         echo '</div>';
 
 
         if($k_ins[0]['k_status']==0 && count($k_outs)>0){
-            echo '<button type="submit" class="btn btn-primary">OK, Continue <i class="fas fa-angle-right"></i></a>';
+            echo '<button type="submit" name="k_next_redirect" value="'.( $k_ins[0]['c_is_any'] ? 1 : $k_ins[0]['k_rank'] ).'" class="btn btn-primary">OK, Continue <i class="fas fa-angle-right"></i></a>';
         } elseif($is_incomplete){
-            echo '<button type="submit" class="btn btn-primary"><i class="fas fa-check-square"></i> Mark as Complete</button>';
+            echo '<button type="submit" name="k_next_redirect" value="1" class="btn btn-primary"><i class="fas fa-check-square"></i> Mark Complete & Go Next <i class="fas fa-angle-right"></i></button>';
+            echo '<div>or <button type="submit" class="btn btn-xs btn-black"><i class="fas fa-check-square"></i> Mark Complete</button></div>';
         } elseif(!$show_textarea) {
             echo '<button type="submit" class="btn btn-primary toggle_text" style="display:none;"><i class="fas fa-edit"></i> Update Answer</button>';
         } else {
@@ -164,25 +164,26 @@ if(count($k_ins)==1){
         }
 
     echo '</form>';
-
-} else {
-    //Echo next button if available:
-    echo $next_button;
+    echo '</div>';
 }
-
-
 
 
 if(!isset($k_ins[0]) || !($k_ins[0]['k_status']==0)){
     if(count($k_outs)>0){
-        echo '<h5 style="margin-top: 10px;">'.( $c['c_is_any'] ? 'Choose Your Path to Continue:' : 'Complete All Following:' ).'</h5>';
+        echo '<div class="left-grey">';
+        echo '<h5 class="badge badge-hy">'.( $c['c_is_any'] ? '<i class="fas fa-code-merge"></i> Choose One Path to Continue' : '<i class="fas fa-sitemap"></i> Complete All Following' ).':</h5>';
         echo '<div class="list-group">';
         foreach($k_outs as $k){
             echo echo_k($k, 0, ( $c['c_is_any'] && $k['k_status']==0 ? $c['c_id'] : 0 ));
         }
         echo '</div>';
+        echo '</div>';
     }
 }
+
+
+//Echo next button if available:
+echo $next_button;
 
 
 ?>

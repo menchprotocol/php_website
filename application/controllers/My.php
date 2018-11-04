@@ -212,8 +212,18 @@ class My extends CI_Controller {
             $this->Db_model->k_complete_recursive_up($ks[0], $ks[0]);
         }
 
+
         //Redirect back to page with success message:
-        return redirect_message($k_url,'<div class="alert alert-success" role="alert"><i class="fal fa-check-circle"></i> Saved</div>');
+        if(isset($_POST['k_next_redirect']) && intval($_POST['k_next_redirect'])>0){
+            //Go to next item:
+            $ks_next = $this->Db_model->k_next_fetch($ks[0]['w_id'], ( intval($_POST['k_next_redirect'])>1 ? intval($_POST['k_next_redirect']) : 0 ));
+            if(count($ks_next)>0){
+                //Override original item:
+                $k_url = '/my/actionplan/'.$ks_next[0]['k_w_id'].'/'.$ks_next[0]['c_id'];
+            }
+        }
+
+        return redirect_message($k_url,'<div class="alert alert-success" role="alert"><i class="fal fa-check-circle"></i> Successfully Saved</div>');
 
         //TODO Update w__progress at this point based on intent data
         //TODO Update tree upwards and dispatch drip/instant message logic as needed!

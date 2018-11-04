@@ -80,7 +80,7 @@ class Db_model extends CI_Model {
     }
 
 
-    function k_next_fetch($w_id){
+    function k_next_fetch($w_id, $min_k_rank=0){
 
 	    //Two things need to be fetched:
         $last_any = $this->Db_model->k_fetch(array(
@@ -88,6 +88,7 @@ class Db_model extends CI_Model {
             'w_status' => 1, //Active subscriptions
             'cr_status >=' => 1,
             'c_status >=' => 1,
+            'k_rank >' => $min_k_rank,
             //The first case is for OR intents that a child is not yet selected, and the second part is for regular incompleted items:
             '(k_status=1 AND c_is_any=1)' => null, //Not completed or not yet started
         ), array('w','cr','cr_c_out'), array(
@@ -99,6 +100,7 @@ class Db_model extends CI_Model {
             'w_status' => 1, //Active subscriptions
             'cr_status >=' => 1,
             'c_status >=' => 1,
+            'k_rank >' => $min_k_rank,
             //The first case is for OR intents that a child is not yet selected, and the second part is for regular incompleted items:
             'k_status IN (0,-2)' => null, //Not completed or not yet started
         ), array('w','cr','cr_c_out'), array(
