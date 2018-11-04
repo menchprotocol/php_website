@@ -67,6 +67,11 @@ $(document).ready(function() {
     load_c_sort(c_top_id,2);
 
 
+    $('input[type=radio][name=c_is_any]').change(function() {
+        adjust_c_is_any_ui();
+    });
+
+
     //Activate sorting for Steps:
     if($('.step-group').length){
 
@@ -143,6 +148,18 @@ $(document).ready(function() {
     load_level3_search();
 
 });
+
+function adjust_c_is_any_ui(){
+    if($('#c_is_any_0').is(':checked')){
+        //Unlock settings:
+        $('.completion-settings').removeClass('hidden');
+    } else {
+        //Any is selected, lock the completion settings as its not allowed for ANY Branches:
+        $('#c_require_notes_to_complete').prop('checked', false);
+        $('#c_require_url_to_complete').prop('checked', false);
+        $('.completion-settings').addClass('hidden');
+    }
+}
 
 function load_level3_search(){
 
@@ -557,6 +574,8 @@ function load_c_modify(c_id, cr_id){
     $("input[name=c_is_any][value='"+$('.c_outcome_'+c_id).attr('c_is_any')+"']").prop("checked",true);
     document.getElementById("c_require_url_to_complete").checked = parseInt($('.c_outcome_'+c_id).attr('c_require_url_to_complete'));
     document.getElementById("c_require_notes_to_complete").checked = parseInt($('.c_outcome_'+c_id).attr('c_require_notes_to_complete'));
+
+    adjust_c_is_any_ui();
 
     //Are the tree hours greater than the intent hours?
     if(tree_hours>intent_hours){

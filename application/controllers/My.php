@@ -142,7 +142,7 @@ class My extends CI_Controller {
     function choose_any_path($w_id, $c_id, $cr_inbound_c_id, $w_key){
         if(md5($w_id.'kjaghksjha*(^'.$c_id.$cr_inbound_c_id)==$w_key){
             //Validated! Move on:
-            if($this->Db_model->k_choose_any_path($w_id, $c_id, $cr_inbound_c_id)){
+            if($this->Db_model->k_complete_or($w_id, $c_id, $cr_inbound_c_id)){
                 //Successful, redirect and show message:
                 redirect_message('/my/actionplan/'.$w_id.'/'.$c_id,'<div class="alert alert-success" role="alert" title="'.$siblings_updated.' Siblings updated">Your answer was saved.</div>');
             } else {

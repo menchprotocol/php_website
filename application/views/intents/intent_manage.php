@@ -132,25 +132,26 @@ if(isset($orphan_cs)){
 
                         <div class="radio" style="display:inline-block; border-bottom:1px dotted #999; margin-right:10px; margin-top: 0 !important;" data-toggle="tooltip" title="Intent is completed when ALL outbound intents are marked as complete" data-placement="right">
                             <label>
-                                <input type="radio" name="c_is_any" value="0" />
+                                <input type="radio" id="c_is_any_0" name="c_is_any" value="0" />
                                 <i class="fas fa-sitemap"></i> All Outs
                             </label>
                         </div>
                         <div class="radio" style="display: inline-block; border-bottom:1px dotted #999; margin-top: 0 !important;" data-toggle="tooltip" title="Intent is completed when ANY outbound intent is marked as complete" data-placement="right">
                             <label>
-                                <input type="radio" name="c_is_any" value="1" />
+                                <input type="radio" id="c_is_any_1" name="c_is_any" value="1" />
                                 <i class="fas fa-code-merge"></i> Any Out
                             </label>
                         </div>
 
                     </div>
 
-                    <div class="form-group label-floating is-empty">
+                    <div class="form-group label-floating is-empty completion-settings">
                         <div class="checkbox is_task">
                             <label style="display: block; font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" id="c_require_notes_to_complete" /><i class="fas fa-pencil"></i> Require a written note</label>
                             <label style="display: block; font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" id="c_require_url_to_complete" /><i class="fas fa-link"></i> Require URL in response</label>
                         </div>
                     </div>
+
                 </div>
 
 

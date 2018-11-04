@@ -47,18 +47,6 @@ foreach($k_ins as $k){
 echo '</div>';
 
 
-/*
-//Next/Previous Buttons
-echo '<h4 class="maxout"><i class="fas fa-arrows"></i> Navigation</h4>';
-echo '<div style="font-size:0.8em;">';
-if(isset($previous_intent['c_id'])){
-    echo '<a href="/my/actionplan/'.$previous_intent['c_id'].'" class="btn btn-tight btn-black" style="margin:0;"><i class="fas fa-arrow-left"></i> Previous</a>';
-}
-if(isset($next_intent['c_id'])){
-    echo '<a href="/my/actionplan/'.$next_intent['c_id'].'" class="btn btn-tight btn-black" style="margin:0 0 0 8px;">Next <i class="fas fa-arrow-right"></i></a>';
-}
-echo '</div>';
-*/
 
 
 
@@ -101,6 +89,7 @@ if(count($k_ins)==0){
 //Override this for now and always show messages
 //TODO Consider updates to this later
 //$is_started = false;
+
 
 //Show all messages:
 $messages = $this->Db_model->i_fetch(array(
@@ -152,9 +141,7 @@ if(count($k_ins)==1){
         echo '</div>';
 
 
-        if($k_ins[0]['k_status']==0 && count($k_outs)>0){
-            echo '<button type="submit" '.( $k_ins[0]['c_is_any'] ? '' : ' name="k_next_redirect" value="'.$k_ins[0]['k_rank'].'"' ).' class="btn btn-primary">Got It, Continue <i class="fas fa-angle-right"></i></a>';
-        } elseif($is_incomplete){
+        if($is_incomplete){
             echo '<button type="submit" name="k_next_redirect" value="1" class="btn btn-primary"><i class="fas fa-check-square"></i> Mark Complete & Go Next <i class="fas fa-angle-right"></i></button>';
             echo '<div>or <button type="submit" class="btn btn-xs btn-black"><i class="fas fa-check-square"></i> Mark Complete</button></div>';
         } elseif(!$show_textarea) {
@@ -168,10 +155,11 @@ if(count($k_ins)==1){
 }
 
 
-if(!isset($k_ins[0]) || !($k_ins[0]['k_status']==0)){
+//count($k_ins)==0 || !($k_ins[0]['k_status']==0)
+if(1){
     if(count($k_outs)>0){
         echo '<div class="left-grey">';
-        echo '<h5 class="badge badge-hy">'.( $c['c_is_any'] ? '<i class="fas fa-code-merge"></i> Choose One Path to Continue' : '<i class="fas fa-sitemap"></i> Complete All Following' ).':</h5>';
+        echo '<h5 class="badge badge-hy">'.( $c['c_is_any'] ? '<i class="fas fa-code-merge"></i> Choose One' : '<i class="fas fa-sitemap"></i> Complete All' ).':</h5>';
         echo '<div class="list-group">';
         foreach($k_outs as $k){
             echo echo_k($k, 0, ( $c['c_is_any'] && $k['k_status']==0 ? $c['c_id'] : 0 ));
@@ -184,6 +172,5 @@ if(!isset($k_ins[0]) || !($k_ins[0]['k_status']==0)){
 
 //Echo next button if available:
 echo $next_button;
-
 
 ?>
