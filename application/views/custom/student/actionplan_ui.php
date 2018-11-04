@@ -153,7 +153,7 @@ if(count($k_ins)==1){
 
 
         if($k_ins[0]['k_status']==0 && count($k_outs)>0){
-            echo '<button type="submit" name="k_next_redirect" value="'.( $k_ins[0]['c_is_any'] ? 1 : $k_ins[0]['k_rank'] ).'" class="btn btn-primary">OK, Continue <i class="fas fa-angle-right"></i></a>';
+            echo '<button type="submit" '.( $k_ins[0]['c_is_any'] ? '' : ' name="k_next_redirect" value="'.$k_ins[0]['k_rank'].'"' ).' class="btn btn-primary">Got It, Continue <i class="fas fa-angle-right"></i></a>';
         } elseif($is_incomplete){
             echo '<button type="submit" name="k_next_redirect" value="1" class="btn btn-primary"><i class="fas fa-check-square"></i> Mark Complete & Go Next <i class="fas fa-angle-right"></i></button>';
             echo '<div>or <button type="submit" class="btn btn-xs btn-black"><i class="fas fa-check-square"></i> Mark Complete</button></div>';

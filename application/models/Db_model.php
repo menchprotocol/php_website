@@ -132,6 +132,7 @@ class Db_model extends CI_Model {
             $dwn_incomplete_ks = $this->Db_model->k_fetch(array(
                 'k_status IN (1,0,-2)' => null, //incomplete
                 'k_id IN ('.join(',',$dwn_tree['k_flat']).')' => null,
+                'k_id !=' => $cr['k_id'], //Exclude current item as it's not yet updated!
             ));
             if(count($dwn_incomplete_ks)>0){
                 //We do have some incomplete children, so this is not complete:
@@ -194,13 +195,24 @@ class Db_model extends CI_Model {
                 }
             }
 
+
             if($all_complete){
 
-                //What kind of parent do we have?
+                //There is a slight chance the entire subscription might be complete at this point...
+                //Check to see how we're doing on the macro level:
+
+                //What kind of an intent (AND node or OR node) is this subscription?
                 $cs = $this->Db_model->c_fetch(array(
                     'c.c_id' => $w['w_c_id'],
                 ));
-                if(count($cs)==1){
+
+                if(count($cs)==0){
+
+                    //No the subscription is not complete!
+                    //Do another recursion on this to complete it upwards again as our current changes may re-do completion statuses:
+                    $this->Db_model->k_complete_recursive_up($cr, $w, $force_1);
+
+                } elseif(count($cs)==1){
 
                     //Assume true unless otherwise:
                     $subscription_is_complete = true;

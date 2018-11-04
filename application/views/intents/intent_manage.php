@@ -147,7 +147,7 @@ if(isset($orphan_cs)){
 
                     <div class="form-group label-floating is-empty">
                         <div class="checkbox is_task">
-                            <label style="display: block; font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" id="c_require_notes_to_complete" /><i class="fas fa-pencil"></i> Require a written response</label>
+                            <label style="display: block; font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" id="c_require_notes_to_complete" /><i class="fas fa-pencil"></i> Require a written note</label>
                             <label style="display: block; font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" id="c_require_url_to_complete" /><i class="fas fa-link"></i> Require URL in response</label>
                         </div>
                     </div>
