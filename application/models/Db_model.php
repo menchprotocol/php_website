@@ -212,10 +212,11 @@ class Db_model extends CI_Model {
                             'k_last_updated' => date("Y-m-d H:i:s"),
                             'k_status' => 1, //Started
                         ));
-                    } else {
-                        //So subscription cannot be complete
+                        //So subscription cannot be complete:
                         $w_might_be_complete = false;
-                        break;
+                    } else {
+                        //So subscription cannot be complete:
+                        $w_might_be_complete = false;
                     }
                 }
             }

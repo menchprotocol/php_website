@@ -30,7 +30,7 @@ if(count($k_ins)==1) {
 
     //Submission button visible after first button was clicked:
     $is_incomplete = ($k_ins[0]['k_status'] <= 0 || ($k_ins[0]['k_status'] == 1 && count($k_outs) == 0));
-    $show_textarea = ($red_note && $is_incomplete);
+    $show_written_input = ($red_note && $is_incomplete);
 }
 
 
@@ -44,7 +44,7 @@ if($w['w_status']==1){
             //$next_button = '<span style="font-size: 0.7em; padding-left:5px; display:inline-block;"><i class="fas fa-shield-check"></i> This is the next-in-line intent</span>';
             $next_button = null;
         } else {
-            $next_button = '<a href="/my/actionplan/'.$ks_next[0]['k_w_id'].'/'.$ks_next[0]['c_id'].'" class="btn '.( count($k_ins)==1 && !$show_textarea && !$is_incomplete ? 'btn-md btn-primary' : 'btn-xs btn-black' ).'" data-toggle="tooltip" data-placement="top" title="Next intent-in-line is to '.$ks_next[0]['c_outcome'].'">Next-in-line <i class="fas fa-angle-right"></i></a>';
+            $next_button = '<a href="/my/actionplan/'.$ks_next[0]['k_w_id'].'/'.$ks_next[0]['c_id'].'" class="btn '.( count($k_ins)==1 && !$show_written_input && !$is_incomplete ? 'btn-md btn-primary' : 'btn-xs btn-black' ).'" data-toggle="tooltip" data-placement="top" title="Next intent-in-line is to '.$ks_next[0]['c_outcome'].'">Next-in-line <i class="fas fa-angle-right"></i></a>';
         }
     }
 }
@@ -66,27 +66,30 @@ echo '<h3 class="student-h3">'.$c['c_outcome'].'</h3>';
 
 if(count($k_ins)==0){
 
-    $hide_messages = true; //Subscriptions are always started!
+    //Always hide messages on the subscription-level to have students focus on Action Plan
+    $hide_messages = true;
 
     //This must be top level subscription, show subscription data:
     echo '<div class="sub_title">';
         echo echo_status('w_status',$w['w_status']);
-        echo ' &nbsp;&nbsp;<i class="fas fa-calendar-check"></i> '.echo_time($w['w_timestamp']);
+        echo ' &nbsp;&nbsp;<i class="fas fa-calendar-check"></i> '.echo_diff_time($w['w_timestamp']).' ago';
         //TODO show subscription pace data such as start/end time, weekly rate & notification type
     echo '</div>';
 
 } elseif(count($k_ins)==1) {
 
-    $hide_messages = ( $k_ins[0]['k_status']>=1 );
+    $hide_messages = ( $has_completion_info && $k_ins[0]['k_status']>=2 );
 
     //Show completion progress for the single inbound intent:
     echo '<div class="sub_title">';
 
     echo echo_status('k_status', $k_ins[0]['k_status']);
-    echo ' &nbsp;&nbsp;<i class="fas fa-clock"></i> ' . echo_hours($c['c_time_estimate']);
 
+    //Either show completion time or when it was completed:
     if ($k_ins[0]['k_last_updated']) {
-        echo ' &nbsp;&nbsp;<i class="fas fa-calendar-check"></i> ' . echo_time($k_ins[0]['k_last_updated']);
+        echo ' &nbsp;&nbsp;<i class="fas fa-calendar-check"></i> '.echo_diff_time($k_ins[0]['k_last_updated']).' ago';
+    } else {
+        echo ' &nbsp;&nbsp;<i class="fas fa-clock"></i> ' . echo_hours($c['c_time_estimate']).' to complete';
     }
 
     if (strlen($k_ins[0]['k_notes'])>0) {
@@ -96,10 +99,6 @@ if(count($k_ins)==0){
     echo '</div>';
 
 }
-
-//Override this for now and always show messages
-//TODO Consider updates to this later
-$hide_messages = ( count($k_ins)==0 );
 
 
 //Show all messages:
@@ -129,7 +128,7 @@ if(count($messages)>0){
 //Show completion options below messages:
 if(count($k_ins)==1 && ( $has_completion_info || (!intval($c['c_is_any']) && !$has_outs) )){
 
-    if(!$show_textarea){
+    if(!$show_written_input && !$is_incomplete && strlen($k_ins[0]['k_notes'])>0 /* For now only allow is complete */){
         //Show button to make text visible:
         echo '<div class="left-grey"><a href="javascript:void(0);" onclick="$(\'.toggle_text\').toggle();" class="toggle_text btn btn-xs btn-black"><i class="fas fa-edit"></i> '.( $is_incomplete ? 'Add Written Answer' : 'Modify Answer' ).'</a></div>';
     }
@@ -140,7 +139,7 @@ if(count($k_ins)==1 && ( $has_completion_info || (!intval($c['c_is_any']) && !$h
         echo '<input type="hidden" name="k_id"  value="'.$k_ins[0]['k_id'].'" />';
         //echo '<input type="hidden" name="k_key" value="'.md5($k_ins[0]['k_id'].'k_key_SALT555').'" />'; //TODO Wire in for more security?!
 
-        echo '<div class="toggle_text" style="'.( $show_textarea ? '' : 'display:none; ' ).'">';
+        echo '<div class="toggle_text" style="'.( $show_written_input ? '' : 'display:none; ' ).'">';
             if($red_note) {
                 echo '<div style="color:#2b2b2b; font-size:0.7em; margin:0 !important; padding:0;"><i class="fas fa-exclamation-triangle"></i> ' . $red_note . '</div>';
             }
@@ -155,14 +154,12 @@ if(count($k_ins)==1 && ( $has_completion_info || (!intval($c['c_is_any']) && !$h
             //Give them an option to complete and stay here
             //TODO Remove this for now as its too complex...
             //echo '<div>or <button type="submit" class="btn btn-xs btn-black"><i class="fas fa-check-square"></i> Mark Complete</button></div>';
-        } elseif(!$show_textarea) {
+        } elseif(!$show_written_input) {
             echo '<button type="submit" class="btn btn-primary toggle_text" style="display:none;"><i class="fas fa-edit"></i> Update Answer</button>';
         } else {
             echo '<button type="submit" class="btn btn-primary"><i class="fas fa-edit"></i> Update Answer</button>';
         }
-
-    echo '<a href="" class="btn btn-primary toggle_text"><i class="fas fa-edit"></i> Test</a>';
-
+        
     echo '</form>';
     echo '</div>';
 }
@@ -179,15 +176,7 @@ if($has_outs && $list_outs){
 }
 
 
-//Echo next button if available:
+//Echo next button (if available):
 echo $next_button;
-
-if(count($k_ins)>0 && 0){
-    $up_tree = $this->Db_model->k_recursive_fetch($w['w_id'], $k_ins[0]['cr_outbound_c_id'], 0);
-    //unset($up_tree['c_flat'][(count($up_tree['k_flat'])-1)]);
-    print_r($up_tree['k_flat']);
-}
-
-
 
 ?>
