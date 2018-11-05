@@ -526,7 +526,7 @@ class Comm_model extends CI_Model {
                         'e_outbound_u_id' => $fetch_us[0]['u_id'],
                         'e_outbound_c_id' => $w_c_id,
                         'e_w_id' => $w['w_id'],
-                        'i_message' => 'You are now subscribed 🙌 I will be handing everything else from here to ensure you '.$fetch_cs[0]['c_outcome'].' /open_actionplan',
+                        'i_message' => 'You are now subscribed 🙌 I will continue to have conversations with you to ensure you '.$fetch_cs[0]['c_outcome'].' /open_actionplan',
                     ),
                 ));
 

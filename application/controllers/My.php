@@ -140,12 +140,51 @@ class My extends CI_Controller {
     }
 
     function choose_any_path($w_id, $c_id, $cr_inbound_c_id, $w_key){
+
         if(md5($w_id.'kjaghksjha*(^'.$c_id.$cr_inbound_c_id)==$w_key){
             //Validated! Move on:
-            if($this->Db_model->k_complete_or($w_id, $c_id, $cr_inbound_c_id)){
-                //Successful, redirect and show message:
-                redirect_message('/my/actionplan/'.$w_id.'/'.$c_id,'<div class="alert alert-success" role="alert" title="'.$siblings_updated.' Siblings updated">Your answer was saved.</div>');
+            //$c_id is the chosen path for the options of $cr_inbound_c_id
+            //When a user chooses an answer to an ANY intent, this function would mark that answer as complete while marking all siblings as SKIPPED
+            $chosen_path = $this->Db_model->k_fetch(array(
+                'k_w_id' => $w_id,
+                'cr_inbound_c_id' => $cr_inbound_c_id, //Fetch children of parent intent which are the siblings of current intent
+                'cr_outbound_c_id' => $c_id, //The answer
+                'cr_status >=' => 1,
+                'c_status >=' => 1,
+            ), array('w','cr','cr_c_in'));
+
+            if(count($chosen_path)==1){
+
+                //Also fetch outbound to see if we requires any notes/url to mark as complete:
+                $path_requirements = $this->Db_model->k_fetch(array(
+                    'k_w_id' => $w_id,
+                    'cr_inbound_c_id' => $cr_inbound_c_id, //Fetch children of parent intent which are the siblings of current intent
+                    'cr_outbound_c_id' => $c_id, //The answer
+                    'cr_status >=' => 1,
+                    'c_status >=' => 1,
+                ), array('w','cr','cr_c_out'));
+
+                if(count($path_requirements)==1){
+                    //Determine status:
+                    $force_working_on = ( intval($path_requirements[0]['c_require_notes_to_complete']) || intval($path_requirements[0]['c_require_url_to_complete']) );
+
+                    //Now mark intent as complete and move on:
+                    $this->Db_model->k_complete_recursive_up($chosen_path[0], $chosen_path[0], $force_working_on);
+
+                    //Successful, redirect and show message:
+                    redirect_message('/my/actionplan/'.$w_id.'/'.$c_id,'<div class="alert alert-success" role="alert">Your answer was saved.</div>');
+                }
+
             } else {
+                //Oooopsi, we could not find it! Log error and return false:
+                $this->Db_model->e_create(array(
+                    'e_text_value' => 'Unable to locate OR selection for this subscription',
+                    'e_inbound_c_id' => 8, //System error
+                    'e_outbound_c_id' => $c_id,
+                    'e_w_id' => $w_id,
+                ));
+
+                //Error, redirect:
                 redirect_message('/my/actionplan/'.$w_id.'/'.$cr_inbound_c_id,'<div class="alert alert-danger" role="alert">There was an error saving your answer.</div>');
             }
         }

@@ -1,6 +1,17 @@
 <?php
 
-//Do some calculations:
+//Prepare some variables to better understand out situation here:
+$messages = $this->Db_model->i_fetch(array(
+    'i_outbound_c_id' => $c['c_id'],
+    'i_status' => 1, //On start messages only
+));
+$has_outs = (count($k_outs)>0);
+//We want to show the child intents in specific conditions to ensure a step-by-step navigation by the user through the browser Action Plan
+//(Note that the conversational UI already has this step-by-step navigation in mind, but the user has more flexibility in the Browser side)
+$has_completion_info = ( intval($c['c_require_url_to_complete']) || intval($c['c_require_notes_to_complete']) );
+$list_outs = ( count($k_ins)==0 || !($k_ins[0]['k_status']==0) || intval($c['c_is_any']) || !$has_completion_info || count($messages)==0 );
+
+
 if(count($k_ins)==1) {
     //Echo hidden completion box on page:
     if ($c['c_require_url_to_complete'] && $c['c_require_notes_to_complete']) {
@@ -55,7 +66,7 @@ echo '<h3 class="student-h3">'.$c['c_outcome'].'</h3>';
 
 if(count($k_ins)==0){
 
-    $is_started = true; //Subscriptions are always started!
+    $hide_messages = true; //Subscriptions are always started!
 
     //This must be top level subscription, show subscription data:
     echo '<div class="sub_title">';
@@ -66,7 +77,7 @@ if(count($k_ins)==0){
 
 } elseif(count($k_ins)==1) {
 
-    $is_started = ( $k_ins[0]['k_status']>=1 );
+    $hide_messages = ( $k_ins[0]['k_status']>=1 );
 
     //Show completion progress for the single inbound intent:
     echo '<div class="sub_title">';
@@ -88,17 +99,13 @@ if(count($k_ins)==0){
 
 //Override this for now and always show messages
 //TODO Consider updates to this later
-//$is_started = false;
+$hide_messages = false;
 
 
 //Show all messages:
-$messages = $this->Db_model->i_fetch(array(
-    'i_outbound_c_id' => $c['c_id'],
-    'i_status' => 1, //On start messages only
-));
 if(count($messages)>0){
     $hide_messages_onload = ( count($k_ins)==0 || $k_ins[0]['k_status']<=0);
-    echo '<div class="tips_content message_content left-grey" style="display: '.( $is_started ? 'none' : 'block' ).';">';
+    echo '<div class="tips_content message_content left-grey" style="display: '.( $hide_messages ? 'none' : 'block' ).';">';
     echo '<h5 class="badge badge-hy"><i class="fas fa-comment-dots"></i> '.count($messages).' Message'.echo__s(count($messages)).':</h5>';
     foreach($messages as $i){
         if($i['i_status']==1){
@@ -111,7 +118,7 @@ if(count($messages)>0){
     }
     echo '</div>';
 
-    if($is_started){
+    if($hide_messages){
         //Show button to show messages:
         echo '<div class="left-grey"><a href="javascript:void(0);" onclick="$(\'.message_content\').toggle();" class="message_content btn btn-xs btn-black"><i class="fas fa-comment-dots"></i> See '.count($messages).' Message'.echo__s(count($messages)).'</a></div>';
     }
@@ -120,7 +127,7 @@ if(count($messages)>0){
 
 
 //Show completion options below messages:
-if(count($k_ins)==1){
+if(count($k_ins)==1 && ( $has_completion_info || (!intval($c['c_is_any']) && !$has_outs) )){
 
     if(!$show_textarea){
         //Show button to make text visible:
@@ -141,9 +148,13 @@ if(count($k_ins)==1){
         echo '</div>';
 
 
-        if($is_incomplete){
+        if($has_outs && !$list_outs){
+            echo '<button type="submit" class="btn btn-primary"><i class="fas fa-check-square"></i> Got It, Continue <i class="fas fa-angle-right"></i></button>';
+        } elseif($is_incomplete){
             echo '<button type="submit" name="k_next_redirect" value="1" class="btn btn-primary"><i class="fas fa-check-square"></i> Mark Complete & Go Next <i class="fas fa-angle-right"></i></button>';
-            echo '<div>or <button type="submit" class="btn btn-xs btn-black"><i class="fas fa-check-square"></i> Mark Complete</button></div>';
+            //Give them an option to complete and stay here
+            //TODO Remove this for now as its too complex...
+            //echo '<div>or <button type="submit" class="btn btn-xs btn-black"><i class="fas fa-check-square"></i> Mark Complete</button></div>';
         } elseif(!$show_textarea) {
             echo '<button type="submit" class="btn btn-primary toggle_text" style="display:none;"><i class="fas fa-edit"></i> Update Answer</button>';
         } else {
@@ -154,23 +165,27 @@ if(count($k_ins)==1){
     echo '</div>';
 }
 
-
-//count($k_ins)==0 || !($k_ins[0]['k_status']==0)
-if(1){
-    if(count($k_outs)>0){
-        echo '<div class="left-grey">';
-        echo '<h5 class="badge badge-hy">'.( $c['c_is_any'] ? '<i class="fas fa-code-merge"></i> Choose One' : '<i class="fas fa-sitemap"></i> Complete All' ).':</h5>';
-        echo '<div class="list-group">';
-        foreach($k_outs as $k){
-            echo echo_k($k, 0, ( $c['c_is_any'] && $k['k_status']==0 ? $c['c_id'] : 0 ));
-        }
-        echo '</div>';
-        echo '</div>';
+if($has_outs && $list_outs){
+    echo '<div class="left-grey">';
+    echo '<h5 class="badge badge-hy">'.( $c['c_is_any'] ? '<i class="fas fa-code-merge"></i> Choose One' : '<i class="fas fa-sitemap"></i> Complete All' ).':</h5>';
+    echo '<div class="list-group">';
+    foreach($k_outs as $k){
+        echo echo_k($k, 0, ( $c['c_is_any'] && $k['k_status']==0 ? $c['c_id'] : 0 ));
     }
+    echo '</div>';
+    echo '</div>';
 }
 
 
 //Echo next button if available:
 echo $next_button;
+
+if(count($k_ins)>0 && 0){
+    $up_tree = $this->Db_model->k_recursive_fetch($w['w_id'], $k_ins[0]['cr_outbound_c_id'], 0);
+    //unset($up_tree['c_flat'][(count($up_tree['k_flat'])-1)]);
+    print_r($up_tree['k_flat']);
+}
+
+
 
 ?>

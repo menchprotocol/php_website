@@ -785,7 +785,7 @@ function echo_costs($c, $fb_format=0){
 }
 
 function echo_intent_overview($c, $fb_format=0){
-    $pitch = 'Action Plan includes '.$c['c__tree_all_count'].' intents that offer a personalized roadmap to '.$c['c_outcome'].'.';
+    $pitch = 'Action Plan includes '.$c['c__tree_all_count'].' intents that offer a roadmap to '.$c['c_outcome'].'.';
     if($fb_format) {
         return '💡 '.$pitch."\n";
     } else {

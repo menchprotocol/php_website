@@ -23,96 +23,25 @@ class Db_model extends CI_Model {
         return $this->db->affected_rows();
     }
 
-    function k_skip_siblings($w_id, $c_id, $cr_inbound_c_id){
-
-        //$c_id is the chosen path that we're trying to find its siblings for the parent $cr_inbound_c_id
-        //Let's keep track of this:
-	    $siblings_skipped = 0;
-
-        //First search for other options that need to be skipped because of this selection:
-        $none_chosen_path = $this->Db_model->k_fetch(array(
-            'k_w_id' => $w_id,
-            'cr_inbound_c_id' => $cr_inbound_c_id, //Fetch children of parent intent which are the siblings of current intent
-            'cr_outbound_c_id !=' => $c_id, //NOT The answer (we need its siblings)
-            'cr_status >=' => 1,
-            'c_status >=' => 1,
-            'k_status' => 0, //We will only skip intents that are not stared
-        ), array('w','cr','cr_c_out'));
-
-        //This is the none chosen answers, if any:
-        foreach($none_chosen_path as $k){
-
-            //Skip this intent:
-            $this->db->query("UPDATE v5_subscription_intent_links SET k_status=-1 WHERE k_id=".$k['k_id']);
-            $siblings_skipped += $this->db->affected_rows();
-
-            //SKIP entire down tree as per user OR choice:
-            $dwn_tree = $this->Db_model->k_recursive_fetch($w_id, $k['c_id'], 1);
-            if(count($dwn_tree['k_flat'])>0){
-                //Update all children with certain k_status values as we do not want to update everything!
-                $this->db->query("UPDATE v5_subscription_intent_links SET k_status=-1 WHERE k_id IN (".join(',',$dwn_tree['k_flat']).")");
-                $siblings_skipped += $this->db->affected_rows();
-            }
-        }
-
-        return $siblings_skipped;
-    }
-
-    function k_complete_or($w_id, $c_id, $cr_inbound_c_id){
-
-        //Check if parent of this item is not started, because if not, we need to mark that as Working On:
-        $this->Db_model->k_start_parent($w_id, $cr_inbound_c_id);
-
-	    //$c_id is the chosen path for the options of $cr_inbound_c_id
-	    //When a user chooses an answer to an ANY intent, this function would mark that answer as complete while marking all siblings as SKIPPED
-        $chosen_path = $this->Db_model->k_fetch(array(
-            'k_w_id' => $w_id,
-            'cr_inbound_c_id' => $cr_inbound_c_id, //Fetch children of parent intent which are the siblings of current intent
-            'cr_outbound_c_id' => $c_id, //The answer
-            'cr_status >=' => 1,
-            'c_status >=' => 1,
-            //Allow ANY k_status to enable answer updates i guess?
-        ), array('w','cr','cr_c_out'));
-
-        if(count($chosen_path)==1){
-
-            //Skip all eligible siblings, if any:
-            $siblings_skipped = $this->Db_model->k_skip_siblings($w_id, $c_id, $cr_inbound_c_id);
-
-            //Now update this item as done and move on:
-            $this->Db_model->k_complete_recursive_up($chosen_path[0], $chosen_path[0]);
-
-            return true;
-
-        } else {
-            //Oooopsi, we could not find it! Log error and return false:
-            $this->Db_model->e_create(array(
-                'e_text_value' => 'Unable to locate OR selection for this subscription',
-                'e_inbound_c_id' => 8, //System error
-                'e_outbound_c_id' => $c_id,
-                'e_w_id' => $w_id,
-            ));
-            return false;
-        }
-    }
 
 
     function k_next_fetch($w_id, $min_k_rank=0){
 
 	    //Two things need to be fetched:
-        $last_any = $this->Db_model->k_fetch(array(
+        $last_working_on_any = $this->Db_model->k_fetch(array(
             'w_id' => $w_id,
             'w_status' => 1, //Active subscriptions
             'cr_status >=' => 1,
             'c_status >=' => 1,
             'k_rank >' => $min_k_rank,
             //The first case is for OR intents that a child is not yet selected, and the second part is for regular incompleted items:
-            '(k_status=1 AND c_is_any=1)' => null, //Not completed or not yet started
+            '(k_status IN (1,-2) AND c_is_any=1)' => null, //Not completed or not yet started
         ), array('w','cr','cr_c_out'), array(
             'k.k_rank' => 'DESC',
         ), 1);
 
-        $first_all = $this->Db_model->k_fetch(array(
+        //We did not find it? Ok fetch the first one and replace:
+        $first_pending_all = $this->Db_model->k_fetch(array(
             'w_id' => $w_id,
             'w_status' => 1, //Active subscriptions
             'cr_status >=' => 1,
@@ -124,139 +53,179 @@ class Db_model extends CI_Model {
             'k.k_rank' => 'ASC', //Items are cached in order ;)
         ), 1);
 
-        if(isset($first_all[0]) && (!isset($last_any[0]) || $first_all[0]['k_rank']<$last_any[0]['k_rank'])){
-            return $first_all;
-        } elseif(isset($last_any[0])){
-            return $last_any;
+        if(isset($first_pending_all[0]) && (!isset($last_working_on_any[0]) || $first_pending_all[0]['k_rank']<$last_working_on_any[0]['k_rank'])){
+            return $first_pending_all;
+        } elseif(isset($last_working_on_any[0])){
+            return $last_working_on_any;
         } else {
             //Neither case was found!
             return false;
         }
     }
 
-    function k_start_parent($w_id, $cr_inbound_c_id){
+    function k_complete_recursive_up($cr, $w, $force_working_on=false){
 
-	    //Fetch the parent status:
+        //Check if parent of this item is not started, because if not, we need to mark that as Working On:
         $parent_ks = $this->Db_model->k_fetch(array(
-            'k_w_id' => $w_id,
+            'k_w_id' => $w['w_id'],
             'k_status' => 0, //Not Started
-            'cr_outbound_c_id' => $cr_inbound_c_id,
+            'cr_outbound_c_id' => $cr['cr_inbound_c_id'],
         ), array('cr'));
-
         if(count($parent_ks)==1){
-            //Update status (It might not work if it was working on AND $new_k_status=1)
+            //Update status (It might not work if it was working on AND new k_status=1)
             $this->Db_model->k_update($parent_ks[0]['k_id'], array(
                 'k_last_updated' => date("Y-m-d H:i:s"),
                 'k_status' => 1, //Working On...
             ));
-            return true;
-        } else {
-            return false;
         }
-    }
-
-    function k_complete_recursive_up($cr, $w){
-
-        //Check if parent of this item is not started, because if not, we need to mark that as Working On:
-        $this->Db_model->k_start_parent($w['w_id'], $cr['cr_inbound_c_id']);
 
 	    //See if current intent children are complete...
         //We'll assume complete unless proven otherwise:
         $down_is_complete = true;
 
         //Is this an OR branch? Because if it is, we need to skip its siblings:
+        $siblings_skipped = 0; //Let's keep track of this
         if(intval($cr['c_is_any'])){
             //Skip all eligible siblings, if any:
-            $siblings_skipped = $this->Db_model->k_skip_siblings($w['w_id'], $cr['cr_outbound_c_id'], $cr['cr_inbound_c_id']);
-        }
+            //$cr['cr_outbound_c_id'] is the chosen path that we're trying to find its siblings for the parent $cr['cr_inbound_c_id']
 
-        //Regardless of Branch type, we need all children to be complete if we are to mark this as complete...
-        //If not, we will mark is as working on...
-        //So lets fetch the down tree and see Whatssup:
-        $dwn_tree = $this->Db_model->k_recursive_fetch($w['w_id'], $cr['cr_outbound_c_id'], 1);
+            //First search for other options that need to be skipped because of this selection:
+            $none_chosen_path = $this->Db_model->k_fetch(array(
+                'k_w_id' => $w['w_id'],
+                'cr_inbound_c_id' => $cr['cr_inbound_c_id'], //Fetch children of parent intent which are the siblings of current intent
+                'cr_outbound_c_id !=' => $cr['cr_outbound_c_id'], //NOT The answer (we need its siblings)
+                'cr_status >=' => 1,
+                'c_status >=' => 1,
+                'k_status' => 0, //We will only skip intents that are not stared
+            ), array('w','cr','cr_c_out'));
 
+            //This is the none chosen answers, if any:
+            foreach($none_chosen_path as $k){
+                //Skip this intent:
+                $this->db->query("UPDATE v5_subscription_intent_links SET k_status=-1 WHERE k_id=".$k['k_id']);
+                $siblings_skipped += $this->db->affected_rows();
 
-        //Does it have OUTs?
-        if(count($dwn_tree['k_flat'])>0){
-            //We do have down, let's check their status:
-            $dwn_incomplete_ks = $this->Db_model->k_fetch(array(
-                'k_status IN (1,0,-2)' => null, //incomplete
-                'k_id IN ('.join(',',$dwn_tree['k_flat']).')' => null, //All OUT links
-            ), array('cr'));
-            if(count($dwn_incomplete_ks)>0){
-                //We do have some incomplete children, so this is not complete:
-                $down_is_complete = false;
+                //SKIP entire down tree as per user OR choice:
+                $dwn_tree = $this->Db_model->k_recursive_fetch($w['w_id'], $k['c_id'], 1);
+                if(count($dwn_tree['k_flat'])>0){
+                    //Update all children with certain k_status values as we do not want to update everything!
+                    $this->db->query("UPDATE v5_subscription_intent_links SET k_status=-1 WHERE k_id IN (".join(',',$dwn_tree['k_flat']).")");
+                    $siblings_skipped += $this->db->affected_rows();
+                }
             }
         }
 
+
+        if(!$force_working_on){
+            //Regardless of Branch type, we need all children to be complete if we are to mark this as complete...
+            //If not, we will mark is as working on...
+            //So lets fetch the down tree and see Whatssup:
+            $dwn_tree = $this->Db_model->k_recursive_fetch($w['w_id'], $cr['cr_outbound_c_id'], 1);
+
+
+            //Does it have OUTs?
+            if(count($dwn_tree['k_flat'])>0){
+                //We do have down, let's check their status:
+                $dwn_incomplete_ks = $this->Db_model->k_fetch(array(
+                    'k_status IN (1,0,-2)' => null, //incomplete
+                    'k_id IN ('.join(',',$dwn_tree['k_flat']).')' => null, //All OUT links
+                ), array('cr'));
+                if(count($dwn_incomplete_ks)>0){
+                    //We do have some incomplete children, so this is not complete:
+                    $down_is_complete = false;
+                }
+            }
+        }
+
+
         //Ok now define the new status here:
-        $new_k_status = ( $down_is_complete ? 2 : 1 );
+        $down_tree_is_complete = ($down_is_complete && !$force_working_on);
 
         //Update this intent:
         $this->Db_model->k_update($cr['k_id'], array(
             'k_last_updated' => date("Y-m-d H:i:s"),
-            'k_status' => $new_k_status,
+            'k_status' => ( $down_tree_is_complete ? 2 : 1 ),
         ));
 
 
-
-
         //Are we done with this branch?
-        if($down_is_complete){
+        if($down_tree_is_complete){
 
-            //Since it's now complete, see if above needs completion as well:
-
+            //Since down tree is now complete, see if up tree needs completion as well:
             //Fetch all ups/inbounds:
             $up_tree = $this->Db_model->k_recursive_fetch($w['w_id'], $cr['cr_outbound_c_id'], 0);
-            if(count($up_tree['k_flat'])==0){
-                //This is $cr['c_id'] must be equal to w_c_id, which should never happen!
-                return false;
-            }
+            
+            //Track completion for all top parents, because if they are all complete, the Subscription might be complete:
+            $w_might_be_complete = true;
 
-            //Let's go through each up and see what they are up to:
-            $all_complete = true;
-            $up_ks = $this->Db_model->k_fetch(array(
-                'k_id IN ('.join(',',$up_tree['k_flat']).')' => null,
-            ), array('cr','cr_c_out'));
-            foreach($up_ks as $k){
+            //Now loop through each level and see whatssup:
+            foreach($up_tree['k_flat'] as $parent_k_id){
 
-                //Assume complete unless proven otherwise:
-                $is_complete = true;
+                //Fetch details to see whatssup:
+                $parent_ks = $this->Db_model->k_fetch(array(
+                    'k_id' => $parent_k_id,
+                    'k_w_id' => $w['w_id'],
+                    'cr_status >=' => 1,
+                    'c_status >=' => 1,
+                    'k_status <' => 2, //Not completed in any way
+                ), array('cr','cr_c_out'));
+                
+                if(count($parent_ks)==1){
 
-                //Any intents would always be complete since we already marked one of its children as complete!
-                //If it's an ALL intent, we need to check to make sure all children are complete:
-                if(!intval($k['c_is_any'])){
-                    //We need all to be complete:
-                    $incomplete_child_cs = $this->Db_model->k_fetch(array(
-                        'k_w_id' => $w['w_id'],
-                        'k_status IN (1,0,-2)' => null, //incomplete
-                        'cr_inbound_c_id' => $k['c_id'],
-                    ), array('cr','cr_c_out'));
-                    if(count($incomplete_child_cs)>0){
-                        $is_complete = false;
+                    //We did find an incomplete parent, let's see if its now completed:
+                    //Assume complete unless proven otherwise:
+                    $is_complete = true;
+
+                    //Any intents would always be complete since we already marked one of its children as complete!
+                    //If it's an ALL intent, we need to check to make sure all children are complete:
+                    if(intval($parent_ks[0]['c_is_any'])){
+                        //We need a single immediate child to be complete:
+                        $complete_child_cs = $this->Db_model->k_fetch(array(
+                            'k_w_id' => $w['w_id'],
+                            'k_status NOT IN (1,0,-2)' => null, //complete
+                            'cr_inbound_c_id' => $parent_ks[0]['cr_outbound_c_id'],
+                        ), array('cr'));
+                        if(count($complete_child_cs)==0){
+                            $is_complete = false;
+                        }
+                    } else {
+                        //We need all immediate children to be complete:
+                        $incomplete_child_cs = $this->Db_model->k_fetch(array(
+                            'k_w_id' => $w['w_id'],
+                            'k_status IN (1,0,-2)' => null, //incomplete
+                            'cr_inbound_c_id' => $parent_ks[0]['cr_outbound_c_id'],
+                        ), array('cr'));
+                        if(count($incomplete_child_cs)>0){
+                            $is_complete = false;
+                        }
+                    }
+
+                    if($is_complete){
+                        //Update this:
+                        $this->Db_model->k_update( $parent_ks[0]['k_id'], array(
+                            'k_last_updated' => date("Y-m-d H:i:s"),
+                            'k_status' => 2, //complete
+                        ));
+                    } elseif($parent_ks[0]['k_status']==0) {
+                        //Status is not started, let's set to started:
+                        $this->Db_model->k_update( $parent_ks[0]['k_id'], array(
+                            'k_last_updated' => date("Y-m-d H:i:s"),
+                            'k_status' => 1, //Started
+                        ));
+                    } else {
+                        //So subscription cannot be complete
+                        $w_might_be_complete = false;
+                        break;
                     }
                 }
-
-                if($is_complete){
-                    //Update this:
-                    $this->Db_model->k_update( $k['k_id'], array(
-                        'k_last_updated' => date("Y-m-d H:i:s"),
-                        'k_status' => 2, //Now complete
-                    ));
-                } else {
-                    //So parent can no longer be complete either!
-                    $all_complete = false;
-                    break;
-                }
             }
 
 
-            if($all_complete){
+            if($w_might_be_complete){
 
-                //There is a slight chance the entire subscription might be complete at this point...
-                //Check to see how we're doing on the macro level:
-
-                //What kind of an intent (AND node or OR node) is this subscription?
+                //There is a chance that entire subscription might be complete
+                //To determine this we need to look at the top level siblings...
+                //What kind of an intent (AND node or OR node) is this subscription w_c_id?
                 $cs = $this->Db_model->c_fetch(array(
                     'c.c_id' => $w['w_c_id'],
                 ));
@@ -319,7 +288,7 @@ class Db_model extends CI_Model {
 
                         //The entire subscription is now complete!
                         $this->Db_model->w_update( $w['w_id'], array(
-                            'w_status' => 2, //Now complete
+                            'w_status' => 2, //Subscription is now complete
                         ));
                     }
                 }
