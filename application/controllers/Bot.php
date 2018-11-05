@@ -172,24 +172,24 @@ class Bot extends CI_Controller {
 
                 if(isset($im['read'])){
 
-                    $id_user = $this->Comm_model->fb_identify_activate($im['sender']['id']);
+                    $u = $this->Comm_model->fb_identify_activate($im['sender']['id']);
 
                     //This callback will occur when a message a page has sent has been read by the user.
                     $this->Db_model->e_create(array(
                         'e_json' => $json_data,
                         'e_inbound_c_id' => 1, //Message Read
-                        'e_inbound_u_id' => ( isset($id_user['u_id']) ? $id_user['u_id'] : 0 ),
+                        'e_inbound_u_id' => ( isset($u['u_id']) ? $u['u_id'] : 0 ),
                     ));
 
                 } elseif(isset($im['delivery'])) {
 
-                    $id_user = $this->Comm_model->fb_identify_activate($im['sender']['id']);
+                    $u = $this->Comm_model->fb_identify_activate($im['sender']['id']);
 
                     //This callback will occur when a message a page has sent has been delivered.
                     $this->Db_model->e_create(array(
                         'e_json' => $json_data,
                         'e_inbound_c_id' => 2, //Message Delivered
-                        'e_inbound_u_id' => ( isset($id_user['u_id']) ? $id_user['u_id'] : 0 ),
+                        'e_inbound_u_id' => ( isset($u['u_id']) ? $u['u_id'] : 0 ),
                     ));
 
                 } elseif(isset($im['referral']) || isset($im['postback'])) {
@@ -231,7 +231,8 @@ class Bot extends CI_Controller {
 
                     //Did we have a ref from Messenger?
                     $ref = ( $referral_array && isset($referral_array['ref']) && strlen($referral_array['ref'])>0 ? $referral_array['ref'] : null );
-                    $id_user = $this->Comm_model->fb_identify_activate($im['sender']['id'],$ref);
+
+                    $u = $this->Comm_model->fb_identify_activate($im['sender']['id'], $ref);
 
                     /*
                     if($ref){
@@ -258,31 +259,31 @@ class Bot extends CI_Controller {
                     $this->Db_model->e_create(array(
                         'e_inbound_c_id' => (isset($im['referral']) ? 4 : 3), //Messenger Referral/Postback
                         'e_json' => $json_data,
-                        'e_inbound_u_id' => ( isset($id_user['u_id']) ? $id_user['u_id'] : 0 ),
+                        'e_inbound_u_id' => ( isset($u['u_id']) ? $u['u_id'] : 0 ),
                     ));
 
                 } elseif(isset($im['optin'])) {
 
-                    $id_user = $this->Comm_model->fb_identify_activate($im['sender']['id']);
+                    $u = $this->Comm_model->fb_identify_activate($im['sender']['id']);
 
                     //Note: Never seen this happen yet!
                     //Log engagement:
                     $this->Db_model->e_create(array(
                         'e_json' => $json_data,
                         'e_inbound_c_id' => 5, //Messenger Optin
-                        'e_inbound_u_id' => ( isset($id_user['u_id']) ? $id_user['u_id'] : 0 ),
+                        'e_inbound_u_id' => ( isset($u['u_id']) ? $u['u_id'] : 0 ),
                     ));
 
                 } elseif(isset($im['message_request']) && $im['message_request']=='accept') {
 
                     //This is when we message them and they accept to chat because they had deleted Messenger or something...
 
-                    $id_user = $this->Comm_model->fb_identify_activate($im['sender']['id']);
+                    $u = $this->Comm_model->fb_identify_activate($im['sender']['id']);
 
                     $this->Db_model->e_create(array(
                         'e_json' => $json_data,
                         'e_inbound_c_id' => 9, //Messenger Optin
-                        'e_inbound_u_id' => ( isset($id_user['u_id']) ? $id_user['u_id'] : 0 ),
+                        'e_inbound_u_id' => ( isset($u['u_id']) ? $u['u_id'] : 0 ),
                         'e_text_value' => 'Messenger user accept to chat because they had deleted/unsubscribed before. Welcome them back personally.',
                     ));
 
@@ -310,14 +311,14 @@ class Bot extends CI_Controller {
                     $quick_reply_payload = ( isset($im['message']['quick_reply']['payload']) && strlen($im['message']['quick_reply']['payload'])>0 ? $im['message']['quick_reply']['payload'] : null );
                     $fb_message = ( isset($im['message']['text']) ? $im['message']['text'] : null );
 
-                    $id_user = $this->Comm_model->fb_identify_activate($user_id, $quick_reply_payload, ( !$sent_from_us ? $fb_message : null ));
+                    $u = $this->Comm_model->fb_identify_activate($user_id, $quick_reply_payload, ( !$sent_from_us ? $fb_message : null ));
 
                     $eng_data = array(
-                        'e_inbound_u_id' => ( $sent_from_us || !isset($id_user['u_id']) ? 0 : $id_user['u_id'] ),
+                        'e_inbound_u_id' => ( $sent_from_us || !isset($u['u_id']) ? 0 : $u['u_id'] ),
                         'e_json' => $json_data,
                         'e_text_value' => $fb_message,
                         'e_inbound_c_id' => ( $sent_from_us ? 7 : 6 ), //Message Sent/Received
-                        'e_outbound_u_id' => ( $sent_from_us && isset($id_user['u_id']) ? $id_user['u_id'] : 0 ),
+                        'e_outbound_u_id' => ( $sent_from_us && isset($u['u_id']) ? $u['u_id'] : 0 ),
                     );
 
                     //It may also have an attachment
