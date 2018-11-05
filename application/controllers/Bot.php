@@ -28,30 +28,6 @@ class Bot extends CI_Controller {
     }
 
 
-    function ping($u_id){
-        //Confirm the subscription:
-        echo_json($this->Comm_model->send_message(array(
-            array(
-                'e_inbound_u_id' => 2738, //Initiated by PA
-                'e_outbound_u_id' => $u_id,
-                'e_outbound_c_id' => 6623,
-                'i_message' => 'Do you want to Get Hired as a Developer?',
-                'quick_replies' => array(
-                    array(
-                        'content_type' => 'text',
-                        'title' => 'Yes, Learn More',
-                        'payload' => 'SUBSCRIBE20_1',
-                    ),
-                    array(
-                        'content_type' => 'text',
-                        'title' => 'No',
-                        'payload' => 'SUBSCRIBE10_0',
-                    ),
-                ),
-            ),
-        )));
-    }
-
     function menu(){
 
         $res = array();
@@ -99,15 +75,6 @@ class Bot extends CI_Controller {
         echo_json($this->Db_model->k_recursive_fetch($w_id, $c_id, $fetch_outbound));
     }
 
-    function a(){
-        echo_json($this->Comm_model->send_message(array(
-            array(
-                'e_inbound_u_id' => 2738, //Initiated by PA
-                'e_outbound_u_id' => 1,
-                'i_message' => 'Congratulations for completing your Action Plan 🎉 I am most interested to know if you have achieved your intention to?',
-            ),
-        )));
-    }
 
     function test($c_id, $w_id=0, $u_id=1){
         echo_json(array(
@@ -174,6 +141,12 @@ class Bot extends CI_Controller {
                 'e_inbound_c_id' => 8, //Platform Error
             ));
             return false;
+        } else {
+            //Log webhook for now to resolve bug:
+            $this->Db_model->e_create(array(
+                'e_json' => $json_data,
+                'e_inbound_c_id' => 7698, //Inboud FB Webhook
+            ));
         }
 
 

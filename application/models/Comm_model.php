@@ -190,6 +190,12 @@ class Comm_model extends CI_Model {
                 'u_fb_psid'  => $fp_psid,
             ));
 
+            //Log new user engagement:
+            $this->Db_model->e_create(array(
+                'e_inbound_u_id' => $u['u_id'],
+                'e_inbound_c_id' => 27, //User Joined
+            ));
+
             //No subscriptions at this point:
             $u['u__ws'] = array();
 
@@ -202,12 +208,6 @@ class Comm_model extends CI_Model {
                 'e_text_value' => $fb_profile['profile_pic'], //Image to be saved
                 'e_status' => 0, //Pending upload
                 'e_inbound_c_id' => 7001, //Cover Photo Save
-            ));
-
-            //Log new user engagement:
-            $this->Db_model->e_create(array(
-                'e_inbound_u_id' => $u['u_id'],
-                'e_inbound_c_id' => 27, //User Joined
             ));
         }
 
@@ -400,7 +400,7 @@ class Comm_model extends CI_Model {
                             'e_inbound_u_id' => 2738, //Initiated by PA
                             'e_outbound_u_id' => $fetch_us[0]['u_id'],
                             'e_outbound_c_id' => $fetch_cs[0]['c_id'],
-                            'i_message' => 'Hi 👋 Are you interested to '.$fetch_cs[0]['c_outcome'].'?',
+                            'i_message' => 'Hello hello 👋 are you interested to '.$fetch_cs[0]['c_outcome'].'?',
                             'quick_replies' => array(
                                 array(
                                     'content_type' => 'text',
@@ -708,7 +708,12 @@ class Comm_model extends CI_Model {
 
         } elseif($fb_message_received && !$fb_ref && count($fetch_us[0]['u__ws'])==0){
 
-            //Ask if they are interested to join the primary intent:
+            //Ask if they are interested to join the primary intent...
+
+            //But first pause for a bit to ensure they are successfully registered on the system:
+            sleep(2);
+
+            //Now invite them:
             return $this->Comm_model->fb_identify_activate($fp_psid, 'SUBSCRIBE10_6623', $fb_message_received);
 
         }

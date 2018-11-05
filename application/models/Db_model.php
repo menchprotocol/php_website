@@ -1933,9 +1933,6 @@ class Db_model extends CI_Model {
 
 
         //Set some defaults:
-        if(!isset($insert_columns['e_timestamp'])){
-            $insert_columns['e_timestamp'] = date("Y-m-d H:i:s");
-        }
         if(!isset($insert_columns['e_text_value'])){
             $insert_columns['e_text_value'] = null;
         }
