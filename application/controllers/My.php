@@ -162,7 +162,7 @@ class My extends CI_Controller {
         //There is a chance that the subscription might be now completed due to this skipping, lets check:
         $ks = $this->Db_model->k_fetch(array(
             'k_id' => $k_id,
-        ), array('w','cr','cr_c_out'));
+        ), array('w','cr','cr_c_in'));
         if(count($ks)>0){
             $this->Db_model->k_complete_recursive_up($ks[0],$ks[0],-1);
         }

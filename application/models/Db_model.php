@@ -255,7 +255,7 @@ class Db_model extends CI_Model {
                             $is_complete = false;
                         }
                     } else {
-                        //We need all immediate children to be complete:
+                        //We need all immediate children to be complete (i.e. No incomplete)
                         $incomplete_child_cs = $this->Db_model->k_fetch(array(
                             'k_w_id' => $w['w_id'],
                             'k_status IN (1,0,-2)' => null, //incomplete
