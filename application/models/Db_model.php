@@ -110,7 +110,14 @@ class Db_model extends CI_Model {
                     'e_outbound_u_id' => $cs[0]['w_outbound_u_id'],
                     'e_outbound_c_id' => $cs[0]['w_c_id'],
                     'e_w_id' => $cs[0]['w_id'],
-                    'i_message' => 'Congratulations for completing your Action Plan 🎉 I am most interested to know if you have achieved your intention to '.$cs[0]['c_outcome'].'?',
+                    'i_message' => 'Congratulations for completing your Action Plan 🎉',
+                ),
+                array(
+                    'e_inbound_u_id' => 2738, //Initiated by PA
+                    'e_outbound_u_id' => $cs[0]['w_outbound_u_id'],
+                    'e_outbound_c_id' => $cs[0]['w_c_id'],
+                    'e_w_id' => $cs[0]['w_id'],
+                    'i_message' => 'Did you '.$cs[0]['c_outcome'].'?',
                 ),
             ));
 

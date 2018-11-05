@@ -180,7 +180,7 @@ if($has_outs && $list_outs){
 echo $next_button;
 
 //Give a skip option if not complete:
-if(count($k_ins)==1 && $k_ins[0]['k_status']<2){
+if(count($k_ins)==1 && in_array($k_ins[0]['k_status'], array(1,0,-2))){
     echo '<span class="skippable">or <a href="javascript:void(0);" onclick="confirm_skip('.$w['w_id'].','.$c['c_id'].','.$k_ins[0]['k_id'].')">skip intent</a></span>';
 }
 
