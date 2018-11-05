@@ -129,55 +129,142 @@ class Db_model extends CI_Model {
         }
     }
 
+
+
+    function k_status_update($k_id, $new_k_status){
+
+	    //Marks a single subscription intent as complete:
+        $this->Db_model->k_update($k_id, array(
+            'k_last_updated' => date("Y-m-d H:i:s"),
+            'k_status' => $new_k_status, //Working On...
+        ));
+
+        if($new_k_status==2){
+
+            //It's complete!
+            //Fetch full $k object
+            $ks = $this->Db_model->k_fetch(array(
+                'k_id' => $k_id,
+            ), array('w','cr'));
+            if(count($ks)==0){
+                return false;
+            }
+
+            //Dispatch all on-complete messages of $c_id
+            $messages = $this->Db_model->i_fetch(array(
+                'i_outbound_c_id' => $ks[0]['cr_outbound_c_id'],
+                'i_status' => 3, //On complete messages
+            ));
+            if(count($messages)>0){
+                $send_messages = array();
+                foreach($messages as $i){
+                    array_push($send_messages, array_merge($i , array(
+                        'e_w_id' => $ks[0]['w_id'],
+                        'e_inbound_u_id' => 2738, //Initiated by PA
+                        'e_outbound_u_id' => $ks[0]['w_outbound_u_id'],
+                        'i_outbound_c_id' => $i['i_outbound_c_id'],
+                    )));
+                }
+                //Sendout messages:
+                $this->Comm_model->send_message($send_messages);
+            }
+
+            //TODO Update w__progress at this point based on intent data
+
+            //TODO implement drip
+
+            /*
+            //This function will search and schedule all drip messages of $c_id
+            $messages = $this->Db_model->i_fetch(array(
+                'i_outbound_c_id' => $c_id,
+                'i_status' => 2, //Drip messages
+            ));
+
+            if(count($messages)>0){
+                $start_time = time();
+                //TODO Adjust $drip_intervals = (class_ends($bs[0], $focus_class)-$start_time) / (count($drip_messages)+1);
+                $drip_time = $start_time;
+                foreach($messages as $i){
+                    $drip_time += $drip_intervals;
+                    $this->Db_model->e_create(array(
+                        'e_inbound_u_id' => 0, //System
+                        'e_outbound_u_id' => $ks[0]['u_id'],
+                        'e_timestamp' => date("Y-m-d H:i:s" , $drip_time ), //Used by Cron Job to fetch this Drip when due
+                        'e_json' => array(
+                            'created_time' => date("Y-m-d H:i:s" , $start_time ),
+                            'drip_time' => date("Y-m-d H:i:s" , $drip_time ),
+                            'i_drip_count' => count($drip_messages),
+                            'i' => $i, //The actual message that would be sent
+                        ),
+                        'e_inbound_c_id' => 52, //Pending Drip e_inbound_c_id=52
+                        'e_status' => 0, //Pending for the Drip Cron
+                        'e_i_id' => $i['i_id'],
+                        'e_outbound_c_id' => $i['i_outbound_c_id'],
+                    ));
+                }
+            }
+            */
+        }
+    }
+
+
+    function k_skip_recursive_down($w_id, $c_id, $k_id){
+        //User has requested to skip an intent starting from:
+        $dwn_tree = $this->Db_model->k_recursive_fetch($w_id, $c_id, 1);
+        $skip_ks = array_merge(array(intval($k_id)), $dwn_tree['k_flat']);
+
+        //Now see how many should we actually skip based on current status:
+        $skippable_ks = $this->Db_model->k_fetch(array(
+            'k_status IN (1,0)' => null, //incomplete
+            'k_id IN ('.join(',',$skip_ks).')' => null,
+        ));
+
+        //Now start skipping:
+        foreach($skippable_ks as $k){
+            $this->Db_model->k_status_update($k['k_id'], -1); //skip
+        }
+
+        return count($skippable_ks);
+    }
+
+
+
     function k_complete_recursive_up($cr, $w, $force_k_status=null){
 
         //Check if parent of this item is not started, because if not, we need to mark that as Working On:
         $parent_ks = $this->Db_model->k_fetch(array(
             'k_w_id' => $w['w_id'],
-            'k_status' => 0, //Not Started
+            'k_status' => 0, //skip intents that are not stared or working on...
             'cr_outbound_c_id' => $cr['cr_inbound_c_id'],
         ), array('cr'));
         if(count($parent_ks)==1){
             //Update status (It might not work if it was working on AND new k_status=1)
-            $this->Db_model->k_update($parent_ks[0]['k_id'], array(
-                'k_last_updated' => date("Y-m-d H:i:s"),
-                'k_status' => 1, //Working On...
-            ));
+            $this->Db_model->k_status_update($parent_ks[0]['k_id'], 1);
         }
 
 	    //See if current intent children are complete...
         //We'll assume complete unless proven otherwise:
         $down_is_complete = true;
-
+        $total_skipped = 0;
         //Is this an OR branch? Because if it is, we need to skip its siblings:
-        $siblings_skipped = 0; //Let's keep track of this
         if(intval($cr['c_is_any'])){
             //Skip all eligible siblings, if any:
             //$cr['cr_outbound_c_id'] is the chosen path that we're trying to find its siblings for the parent $cr['cr_inbound_c_id']
 
             //First search for other options that need to be skipped because of this selection:
-            $none_chosen_path = $this->Db_model->k_fetch(array(
+            $none_chosen_paths = $this->Db_model->k_fetch(array(
                 'k_w_id' => $w['w_id'],
                 'cr_inbound_c_id' => $cr['cr_inbound_c_id'], //Fetch children of parent intent which are the siblings of current intent
                 'cr_outbound_c_id !=' => $cr['cr_outbound_c_id'], //NOT The answer (we need its siblings)
                 'cr_status >=' => 1,
                 'c_status >=' => 1,
-                'k_status' => 0, //We will only skip intents that are not stared
+                'k_status IN (0,1)' => null,
             ), array('w','cr','cr_c_out'));
 
             //This is the none chosen answers, if any:
-            foreach($none_chosen_path as $k){
+            foreach($none_chosen_paths as $k){
                 //Skip this intent:
-                $this->db->query("UPDATE v5_subscription_intent_links SET k_status=-1 WHERE k_id=".$k['k_id']);
-                $siblings_skipped += $this->db->affected_rows();
-
-                //SKIP entire down tree as per user OR choice:
-                $dwn_tree = $this->Db_model->k_recursive_fetch($w['w_id'], $k['c_id'], 1);
-                if(count($dwn_tree['k_flat'])>0){
-                    //Update all children with certain k_status values as we do not want to update everything!
-                    $this->db->query("UPDATE v5_subscription_intent_links SET k_status=-1 WHERE k_id IN (".join(',',$dwn_tree['k_flat']).")");
-                    $siblings_skipped += $this->db->affected_rows();
-                }
+                $total_skipped += $this->Db_model->k_skip_recursive_down($w['w_id'], $k['c_id'], $k['k_id']);
             }
         }
 
@@ -187,7 +274,6 @@ class Db_model extends CI_Model {
             //If not, we will mark is as working on...
             //So lets fetch the down tree and see Whatssup:
             $dwn_tree = $this->Db_model->k_recursive_fetch($w['w_id'], $cr['cr_outbound_c_id'], 1);
-
 
             //Does it have OUTs?
             if(count($dwn_tree['k_flat'])>0){
@@ -208,10 +294,7 @@ class Db_model extends CI_Model {
         $new_k_status = ( !is_null($force_k_status) ? $force_k_status : ( $down_is_complete ? 2 : 1 ) );
 
         //Update this intent:
-        $this->Db_model->k_update($cr['k_id'], array(
-            'k_last_updated' => date("Y-m-d H:i:s"),
-            'k_status' => $new_k_status,
-        ));
+        $this->Db_model->k_status_update($cr['k_id'], $new_k_status);
 
 
         //We are done with this branch if the status is any of the following:
@@ -268,16 +351,10 @@ class Db_model extends CI_Model {
 
                     if($is_complete){
                         //Update this:
-                        $this->Db_model->k_update( $parent_ks[0]['k_id'], array(
-                            'k_last_updated' => date("Y-m-d H:i:s"),
-                            'k_status' => ( !is_null($force_k_status) ? $force_k_status : 2 ), //complete
-                        ));
+                        $this->Db_model->k_status_update($parent_ks[0]['k_id'], ( !is_null($force_k_status) ? $force_k_status : 2 ));
                     } elseif($parent_ks[0]['k_status']==0) {
                         //Status is not started, let's set to started:
-                        $this->Db_model->k_update( $parent_ks[0]['k_id'], array(
-                            'k_last_updated' => date("Y-m-d H:i:s"),
-                            'k_status' => 1, //Started
-                        ));
+                        $this->Db_model->k_status_update($parent_ks[0]['k_id'], 1); //Started
                         //So subscription cannot be complete:
                         $w_might_be_complete = false;
                     } else {

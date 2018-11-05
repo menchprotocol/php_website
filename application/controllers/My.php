@@ -140,24 +140,8 @@ class My extends CI_Controller {
     }
 
     function skip_tree($w_id, $c_id, $k_id){
-
-        //User has requested to skip an intent starting from:
-        $dwn_tree = $this->Db_model->k_recursive_fetch($w_id, $c_id, 1);
-        $skip_ks = array_merge(array(intval($k_id)), $dwn_tree['k_flat']);
-
-        //Now see how many should we actually skip based on current status:
-        $skippable_ks = $this->Db_model->k_fetch(array(
-            'k_status IN (1,0)' => null, //incomplete
-            'k_id IN ('.join(',',$skip_ks).')' => null,
-        ));
-
-        //Now start skipping:
-        foreach($skippable_ks as $k){
-            $this->Db_model->k_update($k['k_id'], array(
-                'k_last_updated' => date("Y-m-d H:i:s"),
-                'k_status' => -1, //skip
-            ));
-        }
+        //Start skipping:
+        $total_skipped = $this->Db_model->k_skip_recursive_down($w_id, $c_id, $k_id);
 
         //There is a chance that the subscription might be now completed due to this skipping, lets check:
         $ks = $this->Db_model->k_fetch(array(
@@ -168,7 +152,7 @@ class My extends CI_Controller {
         }
 
         //Draft message:
-        $message = '<div class="alert alert-success" role="alert">'.count($skippable_ks).' intent'.echo__s(count($skippable_ks)).' successfully skipped.</div>';
+        $message = '<div class="alert alert-success" role="alert">'.$total_skipped.' intent'.echo__s($total_skipped).' successfully skipped.</div>';
 
         //Find the next item to navigate them to:
         $ks_next = $this->Db_model->k_next_fetch($w_id);
@@ -303,65 +287,6 @@ class My extends CI_Controller {
         }
 
         return redirect_message($k_url,'<div class="alert alert-success" role="alert"><i class="fal fa-check-circle"></i> Successfully Saved</div>');
-
-        //TODO Update w__progress at this point based on intent data
-        //TODO Update tree upwards and dispatch drip/instant message logic as needed!
-        /*
-        //See if we need to dispatch any messages:
-        $on_complete_text_values = array();
-        $drip_messages = array();
-
-        //Dispatch messages for this Step:
-        //$step_messages = extract_level($bs[0],$_POST['c_id']);
-
-        foreach($step_messages['intent']['c__messages'] as $i){
-            if($i['i_status']==2){
-                array_push($drip_messages , $i);
-            } elseif($i['i_status']==3){
-                array_push($on_complete_text_values, array_merge($i , array(
-                    'e_inbound_u_id' => 0,
-                    'e_outbound_u_id' => $ks[0]['u_id'],
-                    'i_outbound_c_id' => $i['i_outbound_c_id'],
-                )));
-            }
-        }
-
-        //Anything to be sent instantly?
-        if(count($on_complete_text_values)>0){
-            //Dispatch all Instant Messages, their engagements have already been logged:
-            $this->Comm_model->send_message($on_complete_text_values);
-        }
-
-        //TODO Wire in drip messages
-        if(0 && count($drip_messages)>0){
-
-            $start_time = time();
-            //TODO Adjust $drip_intervals = (class_ends($bs[0], $focus_class)-$start_time) / (count($drip_messages)+1);
-            $drip_time = $start_time;
-
-            foreach($drip_messages as $i){
-
-                $drip_time += $drip_intervals;
-                $this->Db_model->e_create(array(
-
-                    'e_inbound_u_id' => 0, //System
-                    'e_outbound_u_id' => $ks[0]['u_id'],
-                    'e_timestamp' => date("Y-m-d H:i:s" , $drip_time ), //Used by Cron Job to fetch this Drip when due
-                    'e_json' => array(
-                        'created_time' => date("Y-m-d H:i:s" , $start_time ),
-                        'drip_time' => date("Y-m-d H:i:s" , $drip_time ),
-                        'i_drip_count' => count($drip_messages),
-                        'i' => $i, //The actual message that would be sent
-                    ),
-                    'e_inbound_c_id' => 52, //Pending Drip e_inbound_c_id=52
-                    'e_status' => 0, //Pending for the Drip Cron
-                    'e_i_id' => $i['i_id'],
-                    'e_outbound_c_id' => $i['i_outbound_c_id'],
-
-                ));
-            }
-        }
-        */
     }
 
 
