@@ -207,9 +207,16 @@ class Bot extends CI_Controller {
                         //The payload field passed is defined in the above places.
                         $payload = $im['postback']['payload']; //Maybe do something with this later?
 
-                        if(isset($im['postback']['referral'])){
+                        if(isset($im['postback']['referral']) && count($im['postback']['referral'])>0){
 
                             $referral_array = $im['postback']['referral'];
+
+                        } elseif($payload=='GET_STARTED') {
+
+                            //The very first payload, set defaults:
+                            $referral_array = array(
+                                'ref' => 'SUBSCRIBE10_6623',
+                            );
 
                         } else {
                             //Postback without referral!
