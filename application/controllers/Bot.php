@@ -144,6 +144,7 @@ class Bot extends CI_Controller {
         } else {
             //Log webhook for now to resolve bug:
             $this->Db_model->e_create(array(
+                'e_text_value' => count($json_data['entry']).' Entries / '.count($json_data['entry'][0]['messaging']).' Messages for 1st Entry / First sender ID: '.$json_data['entry'][0]['messaging'][0]['sender']['id'],
                 'e_json' => $json_data,
                 'e_inbound_c_id' => 7698, //Inboud FB Webhook
             ));
