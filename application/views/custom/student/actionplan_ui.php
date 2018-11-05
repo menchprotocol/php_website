@@ -49,6 +49,8 @@ if($w['w_status']==1){
     }
 }
 
+//Include JS file:
+echo '<script src="/js/custom/actionplan-js.js?v=v'.$this->config->item('app_version').'" type="text/javascript"></script>';
 
 //Fetch inbound breadcrumb tree all the way to the top of subscription w_c_id
 echo '<div class="list-group" style="margin-top: 10px;">';
@@ -62,7 +64,7 @@ echo '</div>';
 
 
 //Show title
-echo '<h3 class="student-h3">'.$c['c_outcome'].'</h3>';
+echo '<h3 class="student-h3 primary-title">'.$c['c_outcome'].'</h3>';
 
 if(count($k_ins)==0){
 
@@ -103,7 +105,7 @@ if(count($k_ins)==0){
 
 //Show all messages:
 if(count($messages)>0){
-    $hide_messages_onload = ( count($k_ins)==0 || $k_ins[0]['k_status']<=0);
+    $hide_messages_onload = ( count($k_ins)==0 || $k_ins[0]['k_status']<=0 );
     echo '<div class="tips_content message_content left-grey" style="display: '.( $hide_messages ? 'none' : 'block' ).';">';
     echo '<h5 class="badge badge-hy"><i class="fas fa-comment-dots"></i> '.count($messages).' Message'.echo__s(count($messages)).':</h5>';
     foreach($messages as $i){
@@ -147,13 +149,11 @@ if(count($k_ins)==1 && ( $has_completion_info || (!intval($c['c_is_any']) && !$h
         echo '</div>';
 
 
+
         if($has_outs && !$list_outs){
             echo '<button type="submit" class="btn btn-primary"><i class="fas fa-check-square"></i> Got It, Continue <i class="fas fa-angle-right"></i></button>';
         } elseif($is_incomplete){
             echo '<button type="submit" name="k_next_redirect" value="1" class="btn btn-primary"><i class="fas fa-check-square"></i> Mark Complete & Go Next <i class="fas fa-angle-right"></i></button>';
-            //Give them an option to complete and stay here
-            //TODO Remove this for now as its too complex...
-            //echo '<div>or <button type="submit" class="btn btn-xs btn-black"><i class="fas fa-check-square"></i> Mark Complete</button></div>';
         } elseif(!$show_written_input) {
             echo '<button type="submit" class="btn btn-primary toggle_text" style="display:none;"><i class="fas fa-edit"></i> Update Answer</button>';
         } else {
@@ -178,5 +178,10 @@ if($has_outs && $list_outs){
 
 //Echo next button (if available):
 echo $next_button;
+
+//Give a skip option if not complete:
+if(count($k_ins)==1 && $k_ins[0]['k_status']<2){
+    echo '<span class="skippable">or <a href="javascript:void(0);" onclick="confirm_skip('.$w['w_id'].','.$c['c_id'].','.$k_ins[0]['k_id'].')">skip intent</a></span>';
+}
 
 ?>

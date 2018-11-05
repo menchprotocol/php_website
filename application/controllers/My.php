@@ -139,6 +139,41 @@ class My extends CI_Controller {
         }
     }
 
+    function skip_tree($w_id, $c_id, $k_id){
+
+        //User has requested to skip an intent starting from:
+        $dwn_tree = $this->Db_model->k_recursive_fetch($w_id, $c_id, 1);
+        $skip_ks = array_merge(array(intval($k_id)), $dwn_tree['k_flat']);
+
+        //Now see how many should we actually skip based on current status:
+        $skippable_ks = $this->Db_model->k_fetch(array(
+            'k_status IN (1,0)' => null, //incomplete
+            'k_id IN ('.join(',',$skip_ks).')' => null,
+        ));
+
+        //Now start skipping:
+        foreach($skippable_ks as $k){
+            $this->Db_model->k_update($k['k_id'], array(
+                'k_last_updated' => date("Y-m-d H:i:s"),
+                'k_status' => -1, //skip
+            ));
+        }
+
+        //There is a chance that the subscription might be now completed due to this skipping, lets check:
+        $this->Db_model->w_check_completion($w_id);
+
+        //Draft message:
+        $message = '<div class="alert alert-success" role="alert">'.count($skippable_ks).' intent'.echo__s(count($skippable_ks)).' successfully skipped.</div>';
+
+        //Find the next item to navigate them to:
+        $ks_next = $this->Db_model->k_next_fetch($w_id);
+        if(count($ks_next)>0){
+            redirect_message('/my/actionplan/'.$ks_next[0]['k_w_id'].'/'.$ks_next[0]['c_id'],$message);
+        } else {
+            redirect_message('/my/actionplan',$message);
+        }
+    }
+
     function choose_any_path($w_id, $c_id, $cr_inbound_c_id, $w_key){
 
         if(md5($w_id.'kjaghksjha*(^'.$c_id.$cr_inbound_c_id)==$w_key){

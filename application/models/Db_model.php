@@ -63,6 +63,72 @@ class Db_model extends CI_Model {
         }
     }
 
+    function w_check_completion($w_id){
+        //To determine if the subscription is complete we need to look at the top level siblings...
+        //What kind of an intent (AND node or OR node) is this subscription w_c_id?
+        $cs = $this->Db_model->w_fetch(array(
+            'w_id' => $w_id,
+        ), array('c'));
+
+        if(count($cs)==0){
+            return false;
+        }
+
+        //Assume true unless otherwise:
+        $subscription_is_complete = true;
+
+        if($cs[0]['c_is_any']){
+            //We need a single one to be completed:
+            $complete_child_cs = $this->Db_model->k_fetch(array(
+                'k_w_id' => $cs[0]['w_id'],
+                'cr_inbound_c_id' => $cs[0]['w_c_id'],
+                'cr_status >=' => 1,
+                'k_status IN (-1,2,3)' => null, //complete
+            ), array('cr'));
+            if(count($complete_child_cs)==0){
+                $subscription_is_complete = false;
+            }
+        } else {
+            //We need all to be completed:
+            $incomplete_child_cs = $this->Db_model->k_fetch(array(
+                'k_w_id' => $cs[0]['w_id'],
+                'cr_inbound_c_id' => $cs[0]['w_c_id'],
+                'cr_status >=' => 1,
+                'k_status IN (1,0,-2)' => null, //incomplete
+            ), array('cr'));
+            if(count($incomplete_child_cs)>0){
+                $subscription_is_complete = false;
+            }
+        }
+
+        if($subscription_is_complete){
+
+            //Inform user that they are now complete with all tasks:
+            $this->Comm_model->send_message(array(
+                array(
+                    'e_inbound_u_id' => 2738, //Initiated by PA
+                    'e_outbound_u_id' => $cs[0]['w_outbound_u_id'],
+                    'e_outbound_c_id' => $cs[0]['w_c_id'],
+                    'e_w_id' => $cs[0]['w_id'],
+                    'i_message' => 'Congratulations for completing your Action Plan 🎉 I am most interested to know if you have achieved your intention to '.$cs[0]['c_outcome'].'?',
+                ),
+            ));
+
+            //Log subscription completion engagement:
+            $this->Db_model->e_create(array(
+                'e_inbound_u_id' => $cs[0]['w_outbound_u_id'],
+                'e_outbound_c_id' => $cs[0]['w_c_id'],
+                'e_w_id' => $cs[0]['w_id'],
+                'e_inbound_c_id' => 7490, //Subscription Completed
+            ));
+
+            //The entire subscription is now complete!
+            $this->Db_model->w_update( $cs[0]['w_id'], array(
+                'w_status' => 2, //Subscription is now complete
+            ));
+        }
+    }
+
     function k_complete_recursive_up($cr, $w, $force_working_on=false){
 
         //Check if parent of this item is not started, because if not, we need to mark that as Working On:
@@ -221,78 +287,9 @@ class Db_model extends CI_Model {
                 }
             }
 
-
             if($w_might_be_complete){
-
                 //There is a chance that entire subscription might be complete
-                //To determine this we need to look at the top level siblings...
-                //What kind of an intent (AND node or OR node) is this subscription w_c_id?
-                $cs = $this->Db_model->c_fetch(array(
-                    'c.c_id' => $w['w_c_id'],
-                ));
-
-                if(count($cs)==0){
-
-                    //No the subscription is not complete!
-                    //Do another recursion on this to complete it upwards again as our current changes may re-do completion statuses:
-                    $this->Db_model->k_complete_recursive_up($cr, $w);
-
-                } elseif(count($cs)==1){
-
-                    //Assume true unless otherwise:
-                    $subscription_is_complete = true;
-
-                    if($cs[0]['c_is_any']){
-                        //We need a single one to be completed:
-                        $complete_child_cs = $this->Db_model->k_fetch(array(
-                            'k_w_id' => $w['w_id'],
-                            'cr_inbound_c_id' => $w['w_c_id'],
-                            'cr_status >=' => 1,
-                            'k_status IN (-1,2,3)' => null, //complete
-                        ), array('cr'));
-                        if(count($complete_child_cs)==0){
-                            $subscription_is_complete = false;
-                        }
-                    } else {
-                        //We need all to be completed:
-                        $incomplete_child_cs = $this->Db_model->k_fetch(array(
-                            'k_w_id' => $w['w_id'],
-                            'cr_inbound_c_id' => $w['w_c_id'],
-                            'cr_status >=' => 1,
-                            'k_status IN (1,0,-2)' => null, //incomplete
-                        ), array('cr'));
-                        if(count($incomplete_child_cs)>0){
-                            $subscription_is_complete = false;
-                        }
-                    }
-
-                    if($subscription_is_complete){
-
-                        //Inform user that they are now complete with all tasks:
-                        $this->Comm_model->send_message(array(
-                            array(
-                                'e_inbound_u_id' => 2738, //Initiated by PA
-                                'e_outbound_u_id' => $w['w_outbound_u_id'],
-                                'e_outbound_c_id' => $w['w_c_id'],
-                                'e_w_id' => $w['w_id'],
-                                'i_message' => 'Congratulations for completing your Action Plan 🎉 I am most interested to know if you have achieved your intention to '.$cs[0]['c_outcome'].'?',
-                            ),
-                        ));
-
-                        //Log subscription completion engagement:
-                        $this->Db_model->e_create(array(
-                            'e_inbound_u_id' => $w['w_outbound_u_id'],
-                            'e_outbound_c_id' => $w['w_c_id'],
-                            'e_w_id' => $w['w_id'],
-                            'e_inbound_c_id' => 7490, //Subscription Completed
-                        ));
-
-                        //The entire subscription is now complete!
-                        $this->Db_model->w_update( $w['w_id'], array(
-                            'w_status' => 2, //Subscription is now complete
-                        ));
-                    }
-                }
+                $this->Db_model->w_check_completion($w['w_id']);
             }
         }
     }
