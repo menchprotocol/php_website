@@ -270,7 +270,7 @@ class Db_model extends CI_Model {
                         //Update this:
                         $this->Db_model->k_update( $parent_ks[0]['k_id'], array(
                             'k_last_updated' => date("Y-m-d H:i:s"),
-                            'k_status' => 2, //complete
+                            'k_status' => ( !is_null($force_k_status) ? $force_k_status : 2 ), //complete
                         ));
                     } elseif($parent_ks[0]['k_status']==0) {
                         //Status is not started, let's set to started:
