@@ -99,7 +99,7 @@ if(count($k_ins)==0){
 
 //Override this for now and always show messages
 //TODO Consider updates to this later
-$hide_messages = false;
+$hide_messages = ( count($k_ins)==0 );
 
 
 //Show all messages:
@@ -160,6 +160,8 @@ if(count($k_ins)==1 && ( $has_completion_info || (!intval($c['c_is_any']) && !$h
         } else {
             echo '<button type="submit" class="btn btn-primary"><i class="fas fa-edit"></i> Update Answer</button>';
         }
+
+    echo '<a href="" class="btn btn-primary toggle_text"><i class="fas fa-edit"></i> Test</a>';
 
     echo '</form>';
     echo '</div>';
