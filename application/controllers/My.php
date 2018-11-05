@@ -164,7 +164,7 @@ class My extends CI_Controller {
             'k_id' => $k_id,
         ), array('w','cr','cr_c_out'));
         if(count($ks)>0){
-            $this->Db_model->k_complete_recursive_up($ks[0],$ks[0]);
+            $this->Db_model->k_complete_recursive_up($ks[0],$ks[0],-1);
         }
 
         //Draft message:
@@ -206,7 +206,7 @@ class My extends CI_Controller {
 
                 if(count($path_requirements)==1){
                     //Determine status:
-                    $force_working_on = ( intval($path_requirements[0]['c_require_notes_to_complete']) || intval($path_requirements[0]['c_require_url_to_complete']) );
+                    $force_working_on = ( (intval($path_requirements[0]['c_require_notes_to_complete']) || intval($path_requirements[0]['c_require_url_to_complete'])) ? 1 : null );
 
                     //Now mark intent as complete and move on:
                     $this->Db_model->k_complete_recursive_up($chosen_path[0], $chosen_path[0], $force_working_on);

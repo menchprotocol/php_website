@@ -129,7 +129,7 @@ class Db_model extends CI_Model {
         }
     }
 
-    function k_complete_recursive_up($cr, $w, $force_working_on=false){
+    function k_complete_recursive_up($cr, $w, $force_k_status=null){
 
         //Check if parent of this item is not started, because if not, we need to mark that as Working On:
         $parent_ks = $this->Db_model->k_fetch(array(
@@ -182,7 +182,7 @@ class Db_model extends CI_Model {
         }
 
 
-        if(!$force_working_on){
+        if(!$force_k_status){
             //Regardless of Branch type, we need all children to be complete if we are to mark this as complete...
             //If not, we will mark is as working on...
             //So lets fetch the down tree and see Whatssup:
@@ -205,17 +205,17 @@ class Db_model extends CI_Model {
 
 
         //Ok now define the new status here:
-        $down_tree_is_complete = ($down_is_complete && !$force_working_on);
+        $new_k_status = ( !is_null($force_k_status) ? $force_k_status : ( $down_is_complete ? 2 : 1 ) );
 
         //Update this intent:
         $this->Db_model->k_update($cr['k_id'], array(
             'k_last_updated' => date("Y-m-d H:i:s"),
-            'k_status' => ( $down_tree_is_complete ? 2 : 1 ),
+            'k_status' => $new_k_status,
         ));
 
 
-        //Are we done with this branch?
-        if($down_tree_is_complete){
+        //We are done with this branch if the status is any of the following:
+        if(in_array($new_k_status, array(3,2,-1))){
 
             //Since down tree is now complete, see if up tree needs completion as well:
             //Fetch all ups/inbounds:
