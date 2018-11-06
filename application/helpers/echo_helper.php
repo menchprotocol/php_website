@@ -601,7 +601,7 @@ function echo_w($w){
 
 function echo_k($k, $is_inbound, $c_is_any_cr_inbound_c_id=0){
 
-    $ui = '<a href="'.( $c_is_any_cr_inbound_c_id ? '/my/choose_any_path/'.$k['w_id'].'/'.$k['c_id'].'/'.$c_is_any_cr_inbound_c_id.'/'.md5($k['w_id'].'kjaghksjha*(^'.$k['c_id'].$c_is_any_cr_inbound_c_id) : '/my/actionplan/'.$k['k_w_id'].'/'.$k['c_id'] ).'" class="list-group-item">';
+    $ui = '<a href="'.( $c_is_any_cr_inbound_c_id ? '/my/choose_any_path/'.$k['w_id'].'/'.$c_is_any_cr_inbound_c_id.'/'.$k['c_id'].'/'.md5($k['w_id'].'kjaghksjha*(^'.$k['c_id'].$c_is_any_cr_inbound_c_id) : '/my/actionplan/'.$k['k_w_id'].'/'.$k['c_id'] ).'" class="list-group-item">';
 
     //Different pointer position based on direction:
     if($is_inbound){
@@ -762,8 +762,7 @@ function echo_pa_lets(){
         'You can give me a command by starting a sentence with "Lets", for example: [Lets land a dream job], [Lets book new interviews] or [Lets create a great resume].',
         'You can command me using "Lets", for example: [Lets get hired], [Lets create a cover letter] or [Lets do better at interviews].',
     );
-    $rand_keys = array_rand($options, 1);
-    return $options[$rand_keys[0]];
+    return $options[rand(0,(count($options)-1))];
 }
 
 function echo_pa_oneway(){
@@ -772,8 +771,7 @@ function echo_pa_oneway(){
         'I am not designed to respond to custom text messages. I can understand you only when you choose one of the multiple-choice options I provide.',
         'What was that? I would only understand if you choose one of the multiple-choice options I provide.',
     );
-    $rand_keys = array_rand($options, 1);
-    return $options[$rand_keys[0]].( rand(1,2)==1 ? ' '.echo_pa_lets() : '' );
+    return $options[rand(0,(count($options)-1))];
 }
 
 function echo_costs($c, $fb_format=0){

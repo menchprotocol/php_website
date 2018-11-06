@@ -560,12 +560,12 @@ class Comm_model extends CI_Model {
                         'e_outbound_u_id' => $u['u_id'],
                         'e_outbound_c_id' => $c_id,
                         'e_w_id' => $w_id,
-                        'i_message' => $total_skipped.' intent'.echo__s($total_skipped).' successfully skipped.',
+                        'i_message' => 'Ok, I successfully skipped '.$total_skipped.' intent'.echo__s($total_skipped).'.',
                     ),
                 ));
 
                 //Find the next item to navigate them to:
-                $ks_next = $this->Db_model->k_next_fetch($w_id);
+                $ks_next = $this->Db_model->k_next_fetch($w_id,$k_id);
                 if(count($ks_next)>0){
                     //Now move on to communicate the next step.
                     $this->Comm_model->foundation_message(array(
@@ -581,7 +581,7 @@ class Comm_model extends CI_Model {
         } elseif(substr_count($fb_ref, 'CHOOSEAND_')==1){
 
             //Student consumed AND tree content, and is ready to move on to next intent...
-            $input_parts = explode('_', one_two_explode('CHOOSEAND_', '', $fb_ref) ,2);
+            $input_parts = explode('_', one_two_explode('CHOOSEAND_', '', $fb_ref));
             $cr_inbound_c_id = intval($input_parts[0]); //The parent node
             $cr_outbound_c_id = intval($input_parts[1]); //The next step
 
@@ -589,10 +589,26 @@ class Comm_model extends CI_Model {
         } elseif(substr_count($fb_ref, 'CHOOSEOR_')==1){
 
             //Student has responded to a multiple-choice OR tree
-            $input_parts = explode('_', one_two_explode('CHOOSEOR_', '', $fb_ref) ,2);
-            $cr_inbound_c_id = intval($input_parts[0]); //The parent node
-            $cr_outbound_c_id = intval($input_parts[1]); //The next step
-
+            $input_parts = explode('_', one_two_explode('CHOOSEOR_', '', $fb_ref));
+            $w_id = intval($input_parts[0]);
+            $cr_inbound_c_id = intval($input_parts[1]);
+            $c_id = intval($input_parts[2]);
+            $k_id = intval($input_parts[3]);
+            if($w_id>0 && $cr_inbound_c_id>0 && $c_id>0 && $k_id>0){
+                if($this->Db_model->k_choose_or($w_id, $cr_inbound_c_id, $c_id)){
+                    //Find the next item to navigate them to:
+                    $ks_next = $this->Db_model->k_next_fetch($w_id,$k_id);
+                    if(count($ks_next)>0){
+                        //Now move on to communicate the next step.
+                        $this->Comm_model->foundation_message(array(
+                            'e_inbound_u_id' => 2738, //Initiated by PA
+                            'e_outbound_u_id' => $u['u_id'],
+                            'e_outbound_c_id' => $ks_next[0]['c_id'],
+                            'e_w_id' => $w_id,
+                        ));
+                    }
+                }
+            }
 
         } elseif(substr_count($fb_message_received, 'unsubscribe')>0 || substr_count($fb_message_received, 'quit')>0){
 
@@ -713,6 +729,11 @@ class Comm_model extends CI_Model {
                 $quick_replies = array();
                 $i_message = 'I found the following intent'.echo__s($res['nbHits']).':';
                 foreach ($res['hits'] as $count=>$hit){
+                    if($hit['c__tree_all_count']<=1){
+                        //User cannot subscribe to this as its not a tree:
+                        //TODO enable instant consumption of this item later...
+                        continue;
+                    }
                     //Translate hours back:
                     $hit['c__tree_max_hours'] = number_format(($hit['c__tree_max_mins']/60), 3);
                     $hit['c__tree_min_hours'] = number_format(($hit['c__tree_min_mins']/60), 3);
@@ -797,9 +818,7 @@ class Comm_model extends CI_Model {
                         'e_w_id' => $u['u__ws'][0]['w_id'],
                     ));
                 }
-
             }
-
         }
 
         //Return user Object:
@@ -1135,7 +1154,7 @@ class Comm_model extends CI_Model {
                             array_push( $quick_replies , array(
                                 'content_type' => 'text',
                                 'title' => '/'.($counter+1),
-                                'payload' => 'CHOOSEOR_'.$cs[0]['c_id'].'_'.$k['c_id'],
+                                'payload' => 'CHOOSEOR_'.$e['e_w_id'].'_'.$cs[0]['c_id'].'_'.$k['c_id'].'_'.$k['k_id'],
                             ));
                         }
 

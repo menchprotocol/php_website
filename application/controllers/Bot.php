@@ -72,7 +72,9 @@ class Bot extends CI_Controller {
     }
 
 
-
+    function aa(){
+            echo echo_pa_oneway();
+    }
 
 
     function facebook_webhook(){

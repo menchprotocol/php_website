@@ -250,6 +250,53 @@ class Db_model extends CI_Model {
     }
 
 
+    function k_choose_or($w_id, $cr_inbound_c_id, $c_id){
+        //$c_id is the chosen path for the options of $cr_inbound_c_id
+        //When a user chooses an answer to an ANY intent, this function would mark that answer as complete while marking all siblings as SKIPPED
+        $chosen_path = $this->Db_model->k_fetch(array(
+            'k_w_id' => $w_id,
+            'cr_inbound_c_id' => $cr_inbound_c_id, //Fetch children of parent intent which are the siblings of current intent
+            'cr_outbound_c_id' => $c_id, //The answer
+            'cr_status >=' => 1,
+            'c_status >=' => 1,
+        ), array('w','cr','cr_c_in'));
+
+        if(count($chosen_path)==1){
+
+            //Also fetch outbound to see if we requires any notes/url to mark as complete:
+            $path_requirements = $this->Db_model->k_fetch(array(
+                'k_w_id' => $w_id,
+                'cr_inbound_c_id' => $cr_inbound_c_id, //Fetch children of parent intent which are the siblings of current intent
+                'cr_outbound_c_id' => $c_id, //The answer
+                'cr_status >=' => 1,
+                'c_status >=' => 1,
+            ), array('w','cr','cr_c_out'));
+
+            if(count($path_requirements)==1){
+                //Determine status:
+                $force_working_on = ( (intval($path_requirements[0]['c_require_notes_to_complete']) || intval($path_requirements[0]['c_require_url_to_complete'])) ? 1 : null );
+
+                //Now mark intent as complete (and this will SKIP all siblings) and move on:
+                $this->Db_model->k_complete_recursive_up($chosen_path[0], $chosen_path[0], $force_working_on);
+
+                //Successful:
+                return true;
+            } else {
+                return false;
+            }
+
+        } else {
+            //Oooopsi, we could not find it! Log error and return false:
+            $this->Db_model->e_create(array(
+                'e_text_value' => 'Unable to locate OR selection for this subscription',
+                'e_inbound_c_id' => 8, //System error
+                'e_outbound_c_id' => $c_id,
+                'e_w_id' => $w_id,
+            ));
+
+            return false;
+        }
+    }
 
     function k_complete_recursive_up($cr, $w, $force_k_status=null){
 
@@ -643,6 +690,7 @@ class Db_model extends CI_Model {
 
             } else {
 
+                //This would happen if the user subscribes to an intent without any children...
                 //This should not happen, inform user and log error:
                 $this->Comm_model->send_message(array(
                     array(
