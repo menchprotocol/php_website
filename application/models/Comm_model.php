@@ -536,6 +536,23 @@ class Comm_model extends CI_Model {
 
             }
 
+        } elseif(substr_count($fb_ref, 'SKIPTREE_')==1){
+
+            //User has indicated they want to skip this tree and move on to the next item in-line:
+
+
+        } elseif(substr_count($fb_ref, 'CHOOSEAND_')==1){
+
+            //Student consumed AND tree content, and is ready to move on to next on...
+
+
+        } elseif(substr_count($fb_ref, 'CHOOSEOR_')==1){
+
+            //Student has responded to a multiple-choice OR tree
+            $or_parts = explode('_', one_two_explode('CHOOSEOR_', '', $fb_ref) ,2);
+            $cr_inbound_c_id = $or_parts[0]; //The parent node that its the OR node
+            $cr_outbound_c_id = $or_parts[1]; //The answer to that OR node
+
 
         } elseif(substr_count($fb_message_received, 'unsubscribe')>0 || substr_count($fb_message_received, 'quit')>0){
 
@@ -745,10 +762,38 @@ class Comm_model extends CI_Model {
 
 
     function inform_current_step($w){
+
         //Informs the user where they are in the tree and what action they need to take next...
         //Mainly used when student start talking to us and we try to direct them to their next task
         //$ws is all their subscriptions that is active right now'
 
+        exit;
+
+        $ks_next = $this->Db_model->k_next_fetch($w['w_id']);
+        if(count($ks_next)>0){
+
+            $this->Comm_model->send_message(array(
+                array(
+                    'e_inbound_u_id' => 2738, //Initiated by PA
+                    'e_outbound_u_id' => $u['u_id'],
+                    'e_outbound_c_id' => $fetch_cs[0]['c_id'],
+                    'i_message' => 'You are currently trying to '.$ks_next[0]['c_outcome'].':',
+                    'quick_replies' => array(
+                        array(
+                            'content_type' => 'text',
+                            'title' => 'Yes, Learn More',
+                            'payload' => 'SUBSCRIBE20_'.$fetch_cs[0]['c_id'],
+                        ),
+                        array(
+                            'content_type' => 'text',
+                            'title' => 'No',
+                            'payload' => 'SUBSCRIBE10_0',
+                        ),
+                    ),
+                ),
+            ));
+
+        }
 
     }
 
@@ -1025,71 +1070,75 @@ class Comm_model extends CI_Model {
         //Do we have a subscription, if so, we need to add a next step message:
         if(isset($e['e_w_id'])){
 
-            //Yes, let's see what pending intents there are:
-            $k_ins = $this->Db_model->k_fetch(array(
+            //Lets see how many child intents there are
+            $k_outs = $this->Db_model->k_fetch(array(
                 'w_id' => $e['e_w_id'],
                 'w_status' => 1, //Active subscriptions only
                 'cr_status >=' => 1,
                 'c_status >=' => 1,
-                'k_status <=' => 1, //Not completed yet
                 'cr_inbound_c_id' => $e['e_outbound_c_id'],
+                //We are fetching with any k_status just to see what is available/possible from here
             ), array('w','cr','cr_c_out'));
 
             $message_body = null;
             $quick_replies = array();
 
-            //Do we have any?
-            if(count($k_ins)<=1){
+            //How many children do we have?
+            if(count($k_outs)<=1){
 
-                if(count($k_ins)==0){
+                //We have 0-1 option! If zero, let's see what the next step:
+                if(count($k_outs)==0){
                     //Let's try to find the next item in tree:
-                    $k_ins = $this->Db_model->k_next_fetch($e['e_w_id']);
+                    $k_outs = $this->Db_model->k_next_fetch($e['e_w_id']);
                 }
 
-                //Did we find it in case
-                if(count($k_ins)==1){
-
-                    //Update as complete and move on:
-                    $this->Db_model->k_complete_recursive_up($k_ins[0], $k_ins[0]);
+                //Do we have an option?
+                if(count($k_outs)>0){
 
                     //Inform about the next step... Messages would dispatch soon with the next cron job...
-                    $message_body .= 'The next step to '.$cs[0]['c_outcome'].' is to '.$k_ins[0]['c_outcome'];
+                    $message_body .= 'The next step to '.$cs[0]['c_outcome'].' is to '.$k_outs[0]['c_outcome'].'.';
 
-                } else {
-                    //Subscription is complete!
-                    $message_body .= 'This was the final intent of your subscription, congratulations for making it through!';
                 }
 
             } else {
 
-                //We have multiple children that are pending completion... Is it ALL or ANY?
+                //We have multiple children that are pending completion...
+                //Is it ALL or ANY?
                 if(intval($cs[0]['c_is_any'])){
 
                     //User needs to choose one of the following:
                     $message_body .= 'The next step to '.$cs[0]['c_outcome'].' is to choose 1 of the following paths:';
-                    foreach($k_ins as $counter=>$k){
+                    foreach($k_outs as $counter=>$k){
                         $message_body .= "\n\n".($counter+1).'/ '.$k['c_outcome'];
                         array_push( $quick_replies , array(
                             'content_type' => 'text',
                             'title' => '/'.($counter+1),
-                            'payload' => 'ADVANCE_'.$cs[0]['c_id'].'_'.$k['c_id'],
+                            'payload' => 'CHOOSEOR_'.$cs[0]['c_id'].'_'.$k['c_id'],
                         ));
                     }
 
                 } else {
 
                     //User needs to complete all children, and we'd recommend the first item as their next step:
-                    $message_body .= 'There are '.count($k_ins).' intents you need to complete in order to '.$cs[0]['c_outcome'].'. I recommend starting from the first one:';
-                    foreach($k_ins as $counter=>$k){
+                    $message_body .= 'There are '.count($k_outs).' intents you need to complete in order to '.$cs[0]['c_outcome'].'. I recommend starting from the first one:';
+                    foreach($k_outs as $counter=>$k){
                         $message_body .= "\n\n".($counter+1).'/ '.$k['c_outcome'];
                         array_push( $quick_replies , array(
                             'content_type' => 'text',
-                            'title' => '/'.($counter+1).( $counter==0 ? ' (Recommended)' : '' ),
-                            'payload' => 'ADVANCE_'.$cs[0]['c_id'].'_'.$k['c_id'],
+                            'title' => '/'.($counter+1).( $counter==0 ? ' [Recommended]' : '' ),
+                            'payload' => 'CHOOSEAND_'.$cs[0]['c_id'].'_'.$k['c_id'],
                         ));
                     }
 
                 }
+
+                //Give option to skip at all times:
+                $message_body .= "\n\n".($counter+2).'/ Skip and move-on (Not recommended)';
+                array_push( $quick_replies , array(
+                    'content_type' => 'text',
+                    'title' => '/'.($counter+2).' [Skip]',
+                    'payload' => 'SKIPTREE_'.$cs[0]['c_id'],
+                ));
 
             }
 

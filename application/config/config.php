@@ -242,16 +242,18 @@ $config['object_statuses'] = array(
             's_desc'  => 'Student cancelled their subscription and stopped pursuing the intent',
             's_icon' => 'fas fa-minus-square initial',
         ),
-         0 => array(
+        /*
+        0 => array(
              's_name'  => 'Passive Subscription',
              's_desc'  => 'Subscription advances in the background along side other subscriptions',
              's_icon' => 'fas fa-info-square',
-         ),
-         1 => array(
+        ),
+        */
+        1 => array(
              's_name'  => 'Active Subscription',
              's_desc'  => 'Work has started and pending completion',
              's_icon' => 'fas fa-caret-square-right',
-         ),
+        ),
         2 => array(
              's_name'  => 'Updating Subscription',
              's_desc'  => 'All subscription intents are marked as complete and student is receiving updates from new changes happening to their subscription tree',
