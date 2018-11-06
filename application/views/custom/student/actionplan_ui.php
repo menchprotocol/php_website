@@ -39,7 +39,7 @@ $next_button = null;
 if($w['w_status']==1){
     //Active subscription, attempt to find next item, which we should be able to find:
     $ks_next = $this->Db_model->k_next_fetch($w['w_id']);
-    if(count($ks_next)>0){
+    if($ks_next){
         if($ks_next[0]['c_id']==$c['c_id']){
             //$next_button = '<span style="font-size: 0.7em; padding-left:5px; display:inline-block;"><i class="fas fa-shield-check"></i> This is the next-in-line intent</span>';
             $next_button = null;

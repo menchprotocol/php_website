@@ -548,7 +548,8 @@ class Comm_model extends CI_Model {
             $w_id = intval($input_parts[0]);
             $c_id = intval($input_parts[1]);
             $k_id = intval($input_parts[2]);
-            if($w_id>0 && $c_id>0 && $k_id>0){
+            $k_rank = intval($input_parts[3]);
+            if($w_id>0 && $c_id>0 && $k_id>0 && $k_rank>0){
 
                 //Skip items:
                 $total_skipped = $this->Db_model->k_skip_recursive_down($w_id, $c_id, $k_id);
@@ -565,8 +566,8 @@ class Comm_model extends CI_Model {
                 ));
 
                 //Find the next item to navigate them to:
-                $ks_next = $this->Db_model->k_next_fetch($w_id,$k_id);
-                if(count($ks_next)>0){
+                $ks_next = $this->Db_model->k_next_fetch($w_id,$k_rank);
+                if($ks_next){
                     //Now move on to communicate the next step.
                     $this->Comm_model->foundation_message(array(
                         'e_inbound_u_id' => 2738, //Initiated by PA
@@ -593,8 +594,8 @@ class Comm_model extends CI_Model {
             $w_id = intval($input_parts[0]);
             $cr_inbound_c_id = intval($input_parts[1]);
             $c_id = intval($input_parts[2]);
-            $k_id = intval($input_parts[3]);
-            if($w_id>0 && $cr_inbound_c_id>0 && $c_id>0 && $k_id>0){
+            $k_rank = intval($input_parts[3]);
+            if($w_id>0 && $cr_inbound_c_id>0 && $c_id>0 && $k_rank>0){
                 if($this->Db_model->k_choose_or($w_id, $cr_inbound_c_id, $c_id)){
 
                     $this->Comm_model->send_message(array(
@@ -603,25 +604,13 @@ class Comm_model extends CI_Model {
                             'e_outbound_u_id' => $u['u_id'],
                             'e_outbound_c_id' => $c_id,
                             'e_w_id' => $w_id,
-                            'i_message' => 'Saved answer!',
+                            'i_message' => 'Ok, I saved your answer...',
                         ),
                     ));
 
                     //Find the next item to navigate them to:
-                    $ks_next = $this->Db_model->k_next_fetch($w_id,$k_id);
-                    if(count($ks_next)>0){
-
-                        $this->Comm_model->send_message(array(
-                            array(
-                                'e_inbound_u_id' => 2738, //Initiated by PA
-                                'e_outbound_u_id' => $u['u_id'],
-                                'e_outbound_c_id' => $c_id,
-                                'e_w_id' => $w_id,
-                                'i_message' => 'Found next K! = '.$ks_next[0]['c_id'],
-                            ),
-                        ));
-
-
+                    $ks_next = $this->Db_model->k_next_fetch($w_id,$k_rank);
+                    if($ks_next){
                         //Now move on to communicate the next step.
                         $this->Comm_model->foundation_message(array(
                             'e_inbound_u_id' => 2738, //Initiated by PA
@@ -832,8 +821,7 @@ class Comm_model extends CI_Model {
 
                 //Remind user of their next step:
                 $ks_next = $this->Db_model->k_next_fetch($u['u__ws'][0]['w_id']);
-
-                if(count($ks_next)>0){
+                if($ks_next){
                     $this->Comm_model->foundation_message(array(
                         'e_inbound_u_id' => 2738, //Initiated by PA
                         'e_outbound_u_id' => $u['u_id'],
@@ -1151,7 +1139,7 @@ class Comm_model extends CI_Model {
                     }
 
                     //Do we have an option?
-                    if(count($k_outs)>0){
+                    if($k_outs){
 
                         //Inform about the next step... Messages would dispatch soon with the next cron job...
                         $message_body .= 'The next step to '.$cs[0]['c_outcome'].' is to '.$k_outs[0]['c_outcome'].'.';
@@ -1177,7 +1165,7 @@ class Comm_model extends CI_Model {
                             array_push( $quick_replies , array(
                                 'content_type' => 'text',
                                 'title' => '/'.($counter+1),
-                                'payload' => 'CHOOSEOR_'.$e['e_w_id'].'_'.$k_ins[0]['c_id'].'_'.$k['c_id'].'_'.$k['k_id'],
+                                'payload' => 'CHOOSEOR_'.$e['e_w_id'].'_'.$k_ins[0]['c_id'].'_'.$k['c_id'].'_'.$k['k_rank'],
                             ));
                         }
 
@@ -1202,7 +1190,7 @@ class Comm_model extends CI_Model {
                 array_push( $quick_replies , array(
                     'content_type' => 'text',
                     'title' => 'Skip',
-                    'payload' => 'SKIPTREE_'.$e['e_w_id'].'_'.$k_ins[0]['c_id'].'_'.$k_ins[0]['k_id'],
+                    'payload' => 'SKIPTREE_'.$e['e_w_id'].'_'.$k_ins[0]['c_id'].'_'.$k_ins[0]['k_id'].'_'.$k_ins[0]['k_rank'],
                 ));
 
                 //Append next-step message:

@@ -148,7 +148,7 @@ class My extends CI_Controller {
 
         //Find the next item to navigate them to:
         $ks_next = $this->Db_model->k_next_fetch($w_id);
-        if(count($ks_next)>0){
+        if($ks_next){
             redirect_message('/my/actionplan/'.$ks_next[0]['k_w_id'].'/'.$ks_next[0]['c_id'],$message);
         } else {
             redirect_message('/my/actionplan',$message);
@@ -232,7 +232,7 @@ class My extends CI_Controller {
         if(isset($_POST['k_next_redirect']) && intval($_POST['k_next_redirect'])>0){
             //Go to next item:
             $ks_next = $this->Db_model->k_next_fetch($ks[0]['w_id'], ( intval($_POST['k_next_redirect'])>1 ? intval($_POST['k_next_redirect']) : 0 ));
-            if(count($ks_next)>0){
+            if($ks_next){
                 //Override original item:
                 $k_url = '/my/actionplan/'.$ks_next[0]['k_w_id'].'/'.$ks_next[0]['c_id'];
             }
