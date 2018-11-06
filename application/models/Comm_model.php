@@ -1110,7 +1110,7 @@ class Comm_model extends CI_Model {
 
                     array_push( $quick_replies , array(
                         'content_type' => 'text',
-                        'title' => 'Got It, Next ➡',
+                        'title' => 'Ok Next ▶️',
                         'payload' => 'CHOOSEAND_'.$cs[0]['c_id'].'_'.$k_outs[0]['c_id'], //Here are are using CHOOSEAND_ also for OR branches with a single option... Maybe we need to change this later?! For now it feels ok to do so...
                     ));
 
@@ -1123,7 +1123,7 @@ class Comm_model extends CI_Model {
                 if(intval($cs[0]['c_is_any'])){
 
                     //User needs to choose one of the following:
-                    $message_body .= 'The next step to '.$cs[0]['c_outcome'].' is to choose 1 of the following paths:';
+                    $message_body .= 'Choose one of the following options to '.$cs[0]['c_outcome'].':';
                     foreach($k_outs as $counter=>$k){
                         $message_body .= "\n\n".($counter+1).'/ '.$k['c_outcome'];
                         array_push( $quick_replies , array(
