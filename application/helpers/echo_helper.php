@@ -777,6 +777,20 @@ function echo_k_requirements($c){
     }
 }
 
+function echo_pa_saved(){
+    //Informs the user that their answer is saved!
+    $options = array(
+        'Got it',
+        'Ok',
+        'Sweet',
+        'Nice answer',
+        'Gotcha',
+        'Fabolous',
+        'Yay',
+    );
+    return $options[rand(0,(count($options)-1))];
+}
+
 function echo_pa_oneway(){
     //Informs the user that the PA cannot speak, unless you give it a specific command like Lets
     $options = array(

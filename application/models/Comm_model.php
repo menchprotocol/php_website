@@ -646,7 +646,7 @@ class Comm_model extends CI_Model {
                             'e_outbound_u_id' => $u['u_id'],
                             'e_outbound_c_id' => $c_id,
                             'e_w_id' => $w_id,
-                            'i_message' => 'Got it, I saved your answer...',
+                            'i_message' => echo_pa_saved(),
                         ),
                     ));
 
