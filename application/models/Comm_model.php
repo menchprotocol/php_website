@@ -1122,7 +1122,7 @@ class Comm_model extends CI_Model {
                     //User needs to complete all children, and we'd recommend the first item as their next step:
                     $message_body .= 'There are '.count($k_outs).' intents you need to complete in order to '.$cs[0]['c_outcome'].'. I recommend starting from the first one:';
                     foreach($k_outs as $counter=>$k){
-                        $message_body .= "\n\n".($counter+1).'/ '.$k['c_outcome'];
+                        $message_body .= "\n\n".($counter+1).'/ '.$k['c_outcome'].' [Recommended]';
                         array_push( $quick_replies , array(
                             'content_type' => 'text',
                             'title' => '/'.($counter+1).( $counter==0 ? ' [Recommended]' : '' ),
@@ -1133,10 +1133,10 @@ class Comm_model extends CI_Model {
                 }
 
                 //Give option to skip at all times:
-                $message_body .= "\n\n".($counter+2).'/ Skip and move-on (Not recommended)';
+                $message_body .= "\n\n".($counter+2).'/ Skip and move-on [Not Recommended]';
                 array_push( $quick_replies , array(
                     'content_type' => 'text',
-                    'title' => '/'.($counter+2).' [Skip]',
+                    'title' => '/'.($counter+2),
                     'payload' => 'SKIPTREE_'.$cs[0]['c_id'],
                 ));
 
