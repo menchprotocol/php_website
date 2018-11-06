@@ -1150,11 +1150,11 @@ class Comm_model extends CI_Model {
                         //User needs to choose one of the following:
                         $message_body .= 'Choose one of the following options to '.$cs[0]['c_outcome'].':';
                         foreach($k_outs as $counter=>$k){
-                            $message_body .= "\n\n".($counter+1).'/ '.$k['c_outcome'];
+                            $message_body .= "\n\n".($counter+1).'/ '.$k['c_outcome'].' ['.$e['e_w_id'].'_'.$k_ins[0]['c_id'].'_'.$k['c_id'].'_'.$k['k_id'].']';
                             array_push( $quick_replies , array(
                                 'content_type' => 'text',
                                 'title' => '/'.($counter+1),
-                                'payload' => 'CHOOSEOR_'.$e['e_w_id'].'_'.$cs[0]['c_id'].'_'.$k['c_id'].'_'.$k['k_id'],
+                                'payload' => 'CHOOSEOR_'.$e['e_w_id'].'_'.$k_ins[0]['c_id'].'_'.$k['c_id'].'_'.$k['k_id'],
                             ));
                         }
 
