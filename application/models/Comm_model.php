@@ -610,6 +610,18 @@ class Comm_model extends CI_Model {
                     //Find the next item to navigate them to:
                     $ks_next = $this->Db_model->k_next_fetch($w_id,$k_id);
                     if(count($ks_next)>0){
+
+                        $this->Comm_model->send_message(array(
+                            array(
+                                'e_inbound_u_id' => 2738, //Initiated by PA
+                                'e_outbound_u_id' => $u['u_id'],
+                                'e_outbound_c_id' => $c_id,
+                                'e_w_id' => $w_id,
+                                'i_message' => 'Found next K! = '.$ks_next[0]['c_id'],
+                            ),
+                        ));
+
+
                         //Now move on to communicate the next step.
                         $this->Comm_model->foundation_message(array(
                             'e_inbound_u_id' => 2738, //Initiated by PA
@@ -1161,7 +1173,7 @@ class Comm_model extends CI_Model {
                         //User needs to choose one of the following:
                         $message_body .= 'Choose one of the following options to '.$cs[0]['c_outcome'].':';
                         foreach($k_outs as $counter=>$k){
-                            $message_body .= "\n\n".($counter+1).'/ '.$k['c_outcome'].' ['.$e['e_w_id'].'_'.$k_ins[0]['c_id'].'_'.$k['c_id'].'_'.$k['k_id'].']';
+                            $message_body .= "\n\n".($counter+1).'/ '.$k['c_outcome'];
                             array_push( $quick_replies , array(
                                 'content_type' => 'text',
                                 'title' => '/'.($counter+1),
