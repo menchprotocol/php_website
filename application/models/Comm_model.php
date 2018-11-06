@@ -1174,7 +1174,7 @@ class Comm_model extends CI_Model {
                     //We have 0-1 option! If zero, let's see what the next step:
                     if(count($k_outs)==0){
                         //Let's try to find the next item in tree:
-                        $k_outs = $this->Db_model->k_next_fetch($e['e_w_id']);
+                        $k_outs = $this->Db_model->k_next_fetch($e['e_w_id'], $k_ins[0]['k_rank']);
                     }
 
                     //Do we have an option?
