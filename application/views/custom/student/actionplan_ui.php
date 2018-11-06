@@ -127,6 +127,8 @@ if(count($k_ins)==1 && ( $has_completion_info || (!intval($c['c_is_any']) && !$h
     echo '<form method="POST" action="/my/update_k_save">';
 
         echo '<input type="hidden" name="k_id"  value="'.$k_ins[0]['k_id'].'" />';
+        echo '<input type="hidden" name="is_from_messenger"  value="'.( isset($_GET['is_from_messenger']) ? 1 : 0 ).'" />';
+
         //echo '<input type="hidden" name="k_key" value="'.md5($k_ins[0]['k_id'].'k_key_SALT555').'" />'; //TODO Wire in for more security?!
 
         echo '<div class="toggle_text" style="'.( $show_written_input ? '' : 'display:none; ' ).'">';

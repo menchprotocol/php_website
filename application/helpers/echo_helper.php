@@ -407,7 +407,7 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
     if(substr_count($i['i_message'],'/open_actionplan')>0 && isset($i['e_w_id']) && $i['e_w_id']>0 && isset($i['i_outbound_c_id']) && $i['i_outbound_c_id']>0){
         $button_title = 'Open in 🚩Action Plan';
         $command = '/open_actionplan';
-        $button_url = 'https://mench.com/my/actionplan/'.$i['e_w_id'].'/'.$i['i_outbound_c_id'];
+        $button_url = 'https://mench.com/my/actionplan/'.$i['e_w_id'].'/'.$i['i_outbound_c_id'].'?is_from_messenger=1';
     }
 
 

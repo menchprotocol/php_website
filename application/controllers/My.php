@@ -235,6 +235,16 @@ class My extends CI_Controller {
             if($ks_next){
                 //Override original item:
                 $k_url = '/my/actionplan/'.$ks_next[0]['k_w_id'].'/'.$ks_next[0]['c_id'];
+
+                if(intval($_POST['is_from_messenger'])){
+                    //Also send confirmation messages via messenger:
+                    $this->Comm_model->foundation_message(array(
+                        'e_inbound_u_id' => 2738, //Initiated by PA
+                        'e_outbound_u_id' => $ks[0]['k_outbound_u_id'],
+                        'e_outbound_c_id' => $ks_next[0]['c_id'],
+                        'e_w_id' => $ks[0]['k_w_id'],
+                    ));
+                }
             }
         }
 
