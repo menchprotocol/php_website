@@ -610,21 +610,17 @@ function echo_k($k, $is_inbound, $c_is_any_cr_inbound_c_id=0){
         $ui .= '</span>';
     } else {
         $ui .= '<span class="pull-right">';
-        $ui .= '<span class="badge badge-primary fr-bgd">'.( $c_is_any_cr_inbound_c_id ? 'Choose This <i class="fas fa-check-circle"></i>' : '<i class="fas fa-angle-right"></i>').'</span>';
+        $ui .= '<span class="badge badge-primary fr-bgd">'.( $c_is_any_cr_inbound_c_id ? 'Select <i class="fas fa-check-circle"></i>' : '<i class="fas fa-angle-right"></i>').'</span>';
         $ui .= '</span>';
-    }
 
-    //Same body:
-    /*
-    if(isset($k['w_c_id']) && $is_inbound && $k['w_c_id']==$k['c_id']){
-        //This is the parent subscription!
-        $ui .= echo_status('w_status',$k['w_status'],1,'right');
-    } else {
-        $ui .= echo_status('k_status',$k['k_status'],1,'right');
-    }
-    */
-    if(!$is_inbound){
-        $ui .= echo_status('k_status',$k['k_status'],1,'right');
+        //For outbound show icon:
+        if($c_is_any_cr_inbound_c_id){
+            //Radio button to indicate a single selection:
+            $ui .= '<span class="status-label" style="padding-bottom:1px;"><i class="fal fa-circle"></i> </span>';
+        } else {
+            //Proper status:
+            $ui .= echo_status('k_status',$k['k_status'],1,'right');
+        }
     }
 
     $ui .= ' '.$k['c_outcome'];
