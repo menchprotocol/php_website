@@ -18,12 +18,25 @@ class Bot extends CI_Controller {
         )));
     }
 
-    function f($c_id, $u_id=1){
-        $this->Comm_model->foundation_message(array(
-            'e_inbound_u_id' => 2738, //Initiated by PA
-            'e_outbound_u_id' => $u_id,
-            'e_outbound_c_id' => $c_id,
+    function f($w_id, $c_id){
+
+        //Fetch w:
+        $subscriptions = $this->Db_model->w_fetch(array(
+            'w_id' => $w_id,
         ));
+
+        if(count($subscriptions)==1){
+            $this->Comm_model->foundation_message(array(
+                'e_inbound_u_id' => 2738, //Initiated by PA
+                'e_outbound_u_id' => $subscriptions[0]['w_outbound_u_id'],
+                'e_outbound_c_id' => $c_id,
+                'e_w_id' => $w_id,
+            ));
+        } else {
+            echo 'ERROR: Invalid w_id';
+        }
+
+
     }
 
 
