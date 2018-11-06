@@ -1051,6 +1051,18 @@ class Comm_model extends CI_Model {
         }
 
 
+        //Give some context on the current intent:
+        if(isset($e['e_w_id'])){
+            array_push($instant_messages , array(
+                'e_inbound_u_id' => 2738, //Initiated by PA
+                'e_outbound_u_id' => $e['e_outbound_u_id'],
+                'e_outbound_c_id' => $e['e_outbound_c_id'],
+                'e_w_id' => $e['e_w_id'],
+                'i_message' => 'Ok so our intention is to '.$cs[0]['c_outcome'].'.',
+            ));
+        }
+
+
         //Let's start adding-up the instant messages:
         $instant_messages = array();
 
