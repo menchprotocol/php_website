@@ -1125,7 +1125,7 @@ class Comm_model extends CI_Model {
                 'e_outbound_u_id' => $e['e_outbound_u_id'],
                 'e_outbound_c_id' => $e['e_outbound_c_id'],
                 'e_w_id' => $e['e_w_id'],
-                'i_message' => 'Now our focus is to '.$cs[0]['c_outcome'].'.',
+                'i_message' => 'Let’s '.$cs[0]['c_outcome'].'.',
             ));
         }
 

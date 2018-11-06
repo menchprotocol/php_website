@@ -785,7 +785,7 @@ function echo_pa_saved(){
         'Sweet',
         'Nice answer',
         'Gotcha',
-        'Fabolous',
+        'Fabulous',
         'Yay',
     );
     return $options[rand(0,(count($options)-1))];
