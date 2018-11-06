@@ -771,7 +771,9 @@ class Comm_model extends CI_Model {
             //TODO migrate this to NLP framework for more accurate results:
             $search_index = load_php_algolia('alg_intents');
             $res = $search_index->search($c_target_outcome, [
-                'hitsPerPage' => 6
+                'hitsPerPage' => 6,
+            ], [
+                'c__tree_all_count >' => 1, //TODO enable instant consumption of this item later...
             ]);
 
             if($res['nbHits']>0){
@@ -780,11 +782,6 @@ class Comm_model extends CI_Model {
                 $quick_replies = array();
                 $i_message = 'I found the following intent'.echo__s($res['nbHits']).':';
                 foreach ($res['hits'] as $count=>$hit){
-                    if($hit['c__tree_all_count']<=1){
-                        //User cannot subscribe to this as its not a tree:
-                        //TODO enable instant consumption of this item later...
-                        continue;
-                    }
                     //Translate hours back:
                     $hit['c__tree_max_hours'] = number_format(($hit['c__tree_max_mins']/60), 3);
                     $hit['c__tree_min_hours'] = number_format(($hit['c__tree_min_mins']/60), 3);
