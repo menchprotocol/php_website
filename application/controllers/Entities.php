@@ -612,7 +612,7 @@ class Entities extends CI_Controller {
             //Default:
             if($is_coach){
                 //Coach default:
-                header( 'Location: /intents/6623' );
+                header( 'Location: /intents/'.$this->config->item('primary_c') );
             } else {
                 //Student default:
                 header( 'Location: /my/actionplan' );

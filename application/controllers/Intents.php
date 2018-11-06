@@ -32,7 +32,7 @@ class Intents extends CI_Controller
             exit;
         }
 
-        if($inbound_c_id==6623){
+        if($inbound_c_id==$this->config->item('primary_c')){
             //Also count orphan intents:
             $orphan_c_count = count($this->Db_model->c_fetch(array(
                 'c.c__is_orphan' => 1,
@@ -116,7 +116,7 @@ class Intents extends CI_Controller
         //Validate Intent:
         if(!isset($cs[0])){
             //Invalid key, redirect back:
-            redirect_message('/6623','<div class="alert alert-danger" role="alert">Invalid Intent ID</div>');
+            redirect_message('/'.$this->config->item('primary_c'),'<div class="alert alert-danger" role="alert">Invalid Intent ID</div>');
         }
 
         //Load home page:
@@ -491,7 +491,7 @@ class Intents extends CI_Controller
 
     function c_sync(){
 
-        $c_id=6623;
+        $c_id=$this->config->item('primary_c');
         $sync = $this->Db_model->c_recursive_fetch($c_id,1,1);
 
         //Check how many are outside of this:

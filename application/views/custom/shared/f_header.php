@@ -31,7 +31,7 @@ $url_part_1 = $this->uri->segment(1);
 
 <body class="landing-page">
 
-    <div class="fb-customerchat" minimized="true" ref="SUBSCRIBE10_6623" greeting_dialog_display="hide" theme_color="#2f2739" page_id="<?= $fb_settings['page_id'] ?>"></div>
+    <div class="fb-customerchat" minimized="true" ref="SUBSCRIBE10_<?= $this->config->item('primary_c') ?>" greeting_dialog_display="hide" theme_color="#2f2739" page_id="<?= $fb_settings['page_id'] ?>"></div>
 
     <nav class="navbar navbar-warning navbar-fixed-top navbar-color-on-scroll <?= ( isset($landing_page) ? 'navbar-transparent': 'no-adj') ?>">
     	<div class="container">
@@ -50,7 +50,7 @@ $url_part_1 = $this->uri->segment(1);
         		<ul class="nav navbar-nav navbar-right">
     				<?php
                     if(isset($udata['u_id'])){
-                        echo '<li id="isloggedin"><a href="/intents/'.( isset($c['c_id']) ? $c['c_id'] : 6623 ).'">Console <i class="fas fa-chevron-circle-right"></i></a></li>';
+                        echo '<li id="isloggedin"><a href="/intents/'.( isset($c['c_id']) ? $c['c_id'] : $this->config->item('primary_c') ).'">Console <i class="fas fa-chevron-circle-right"></i></a></li>';
                     } elseif(isset($udata['u__ws']) && count($udata['u__ws'])>0){
                         echo '<li id="isloggedin"><a href="/my/actionplan">Student Hub <i class="fas fa-chevron-circle-right"></i></a></li>';
                     } else {

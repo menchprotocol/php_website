@@ -94,84 +94,7 @@ class Bot extends CI_Controller {
     }
 
 
-    function inform_step($ws){
-        //Informs the user where they are in the tree and what action they need to take next...
-        //$ws is all their subscriptions that is active right now
 
-    }
-
-    function step_forward($w_id=0, $u_id=0){
-
-        //The primary function that would pro-actively communicate the subscription to the user
-        //If $w_id is provided it would step forward a specific subscription
-        //If both $w_id and $u_id are present, it would auto register the user in an idle subscription if they are not part of it yet, and if they are, it would step them forward.
-
-        $bot_settings = array(
-            'max_per_run' => 10, //How many subscriptions to server per run (Might include duplicate w_outbound_u_id's that will be excluded)
-            'talk_frequency_min' => 10, //How many minutes between each interval of talking?
-        );
-
-        //Run even minute by the cron job and determines which users to talk to...
-        //Fetch all active subscriptions:
-        $user_ids_served = array(); //We use this to ensure we're only service one subscription per user
-        $active_subscriptions = $this->Db_model->w_fetch(array(
-            'w_status' => 1, //Active subscriptions
-            'u_status >=' => 0, //Active entity
-            'c_status >=' => 1, //Active intent TODO Update to 2 when new intent statuses are implemented
-        ), array('c','u'), array(
-            'w_last_served' => 'ASC', //Fetch users who have not been served the longest, so we can pay attention to them...
-        ), $bot_settings['max_per_run']);
-
-
-        if(1){
-            echo_json($active_subscriptions);
-        } else {
-            //Now lets go through the subscriptions:
-            foreach($active_subscriptions as $w){
-
-                if(in_array(intval($w['u_id']),$user_ids_served)){
-                    //We do not want to handle two subscriptions from the same user, skip this for now:
-                    continue;
-                }
-
-                //Add this user to the queue:
-                array_push($user_ids_served, intval($w['u_id']));
-
-                //See where this user is in their subscription:
-                $ks_next = $this->Db_model->k_next_fetch($w['w_id']);
-
-                //Update the serving timestamp:
-                $this->Db_model->w_update( $w['w_id'], array(
-                    'w_last_served' => date("Y-m-d H:i:s"),
-                ));
-
-
-                if(){
-                    $this->Comm_model->send_message(array(
-                        array(
-                            'e_inbound_u_id' => 2738, //Initiated by PA
-                            'e_outbound_u_id' => $u['u_id'],
-                            'i_message' => 'I am an automated Personal Assistant so I cannot figure what you said, just yet.',
-                        ),
-                    ));
-                }
-
-
-                if(count($ks_next)==0){
-                    //This should not happen, report and look into it:
-                    $this->Db_model->e_create(array(
-                        'e_text_value' => 'facebook_webhook() Function missing either [object] or [entry] variable.',
-                        'e_json' => $json_data,
-                        'e_inbound_c_id' => 8, //Platform Error
-                    ));
-
-                    continue;
-                }
-
-                //$ks_next[0]['c_outcome']
-            }
-        }
-    }
 
 
     function facebook_webhook(){
@@ -287,7 +210,7 @@ class Bot extends CI_Controller {
 
                             //The very first payload, set defaults:
                             $referral_array = array(
-                                'ref' => 'SUBSCRIBE10_6623',
+                                'ref' => 'SUBSCRIBE10_'.$this->config->item('primary_c'),
                             );
 
                         } else {

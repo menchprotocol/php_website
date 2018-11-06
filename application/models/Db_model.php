@@ -59,6 +59,12 @@ class Db_model extends CI_Model {
             return $last_working_on_any;
         } else {
             //Neither case was found!
+            //This should not happen, report and look into it:
+            $this->Db_model->e_create(array(
+                'e_text_value' => 'k_next_fetch() Was unable to locate the next step for this subscription!',
+                'e_w_id' => $w_id,
+                'e_inbound_c_id' => 8, //Platform Error
+            ));
             return false;
         }
     }

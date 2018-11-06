@@ -31,7 +31,7 @@ class Custom extends CI_Controller {
         if(isset($udata['u__inbounds']) && array_any_key_exists(array(1308,1281),$udata['u__inbounds'])){
 
             //Lead coach and above, go to console:
-            redirect_message('/intents/6623');
+            redirect_message('/intents/'.$this->config->item('primary_c'));
 
         } elseif(( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='mench.co' )) {
 
@@ -44,7 +44,7 @@ class Custom extends CI_Controller {
         } else {
 
             //Go to default landing page:
-            redirect_message('/6623');
+            redirect_message('/'.$this->config->item('primary_c'));
 
         }
     }
@@ -54,7 +54,7 @@ class Custom extends CI_Controller {
 	    $udata = $this->session->userdata('user');
 	    if(isset($udata['u__inbounds']) && array_any_key_exists(array(1308,1281),$udata['u__inbounds'])){
 	        //Lead coach and above, go to console:
-	        redirect_message('/intents/6623');
+	        redirect_message('/intents/'.$this->config->item('primary_c'));
 	    }
 	    
 		$this->load->view('custom/shared/f_header' , array(

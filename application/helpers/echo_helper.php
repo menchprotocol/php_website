@@ -764,7 +764,7 @@ function echo_contents($c, $fb_format=0){
 function echo_pa_lets(){
     $options = array(
         'You can give me a command by starting a sentence with "Lets", for example: [Lets land a dream job], [Lets book new interviews] or [Lets create a great resume].',
-        'Command me using "Lets", for example: [Lets get hired], [Lets create a cover letter] or [Lets do better at interviews].',
+        'You can command me using "Lets", for example: [Lets get hired], [Lets create a cover letter] or [Lets do better at interviews].',
     );
     $rand_keys = array_rand($options, 1);
     return $options[$rand_keys[0]];
@@ -773,8 +773,8 @@ function echo_pa_lets(){
 function echo_pa_oneway(){
     //Informs the user that the PA cannot speak, unless you give it a specific command like Lets
     $options = array(
-        'Im a different type of Personal Assistant, one that does not understand what you say unless I specifically ask you.',
-        'What was that? ',
+        'I am not designed to respond to custom text messages. I can understand you only when you choose one of the multiple-choice options I provide.',
+        'What was that? I would only understand if you choose one of the multiple-choice options I provide.',
     );
     $rand_keys = array_rand($options, 1);
     return $options[$rand_keys[0]].( rand(1,2)==1 ? ' '.echo_pa_lets() : '' );

@@ -19,9 +19,9 @@ $route['logout']				    = "entities/logout"; //Logout from entites
 
 //Trainer interface:
 $route['entities/(:num)'] 			        = "entities/entity_manage/$1";
-$route['entities'] 			                = "entities/entity_manage/1326"; //Default
+$route['entities'] 			                = "entities/entity_manage/".$this->config->item('primary_u');
 $route['intents/(:num)'] 			        = "intents/intent_manage/$1";
-$route['intents'] 			                = "intents/intent_manage/6623"; //Default
+$route['intents'] 			                = "intents/intent_manage/".$this->config->item('primary_c');
 
 //Front facing landing page for intents:
 $route['(:num)']	                        = "intents/intent_public/$1"; //Public intent browser

@@ -527,9 +527,12 @@ class Comm_model extends CI_Model {
                         'e_outbound_u_id' => $u['u_id'],
                         'e_outbound_c_id' => $w_c_id,
                         'e_w_id' => $w['w_id'],
-                        'i_message' => 'You are now subscribed 🙌 I will continue to have conversations with you to ensure you '.$fetch_cs[0]['c_outcome'].' /open_actionplan',
+                        'i_message' => 'You are now subscribed 🙌 From now on I will proactively have conversations with you that would lead you to '.$fetch_cs[0]['c_outcome'].' /open_actionplan',
                     ),
                 ));
+
+                //Inform user of their next step (Step 1):
+                $this->Comm_model->inform_current_step($w);
 
             }
 
@@ -713,15 +716,11 @@ class Comm_model extends CI_Model {
             if(count($u['u__ws'])==0){
 
                 //They do not have a subscription, so we can offer them to subscribe to our default intent:
-                return $this->Comm_model->fb_identify_activate($fp_psid, 'SUBSCRIBE10_6623', $fb_message_received);
+                $this->Comm_model->fb_identify_activate($fp_psid, 'SUBSCRIBE10_'.$this->config->item('primary_c'), $fb_message_received);
 
             } else {
 
                 //We don't know what this message means...
-                //But we can figure out where in their subscription they are...
-
-
-                //inform the user on how mench works:
                 $this->Comm_model->send_message(array(
                     array(
                         'e_inbound_u_id' => 2738, //Initiated by PA
@@ -729,6 +728,9 @@ class Comm_model extends CI_Model {
                         'i_message' => echo_pa_oneway(),
                     ),
                 ));
+
+                //Let them know that and inform them of their next step for next-up subscription:
+                $this->Comm_model->inform_current_step($u['u__ws'][0]);
 
             }
 
@@ -740,6 +742,15 @@ class Comm_model extends CI_Model {
 
     }
 
+
+
+    function inform_current_step($w){
+        //Informs the user where they are in the tree and what action they need to take next...
+        //Mainly used when student start talking to us and we try to direct them to their next task
+        //$ws is all their subscriptions that is active right now'
+
+
+    }
 
 
     function send_message($messages,$force_email=false,$intent_title_subject=false){

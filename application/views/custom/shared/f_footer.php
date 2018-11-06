@@ -6,7 +6,7 @@
             <nav>
                 <ul class="footer-a">
                     <li class="social-li">
-                        <a href="https://m.me/askmench?ref=SUBSCRIBE10_6623" class="social-link" data-toggle="tooltip" title="Get started with Mench Personal Assistant on Facebook Messenger" data-placement="top"><i class="fab fa-facebook-messenger"></i></a>
+                        <a href="https://m.me/askmench?ref=SUBSCRIBE10_<?= $this->config->item('primary_c') ?>" class="social-link" data-toggle="tooltip" title="Get started with Mench Personal Assistant on Facebook Messenger" data-placement="top"><i class="fab fa-facebook-messenger"></i></a>
                         <a href="https://www.youtube.com/channel/UCOH64HiAIfJlz73tTSI8n-g" target="_blank" class="social-link" data-toggle="tooltip" title="Subscribe to our YouTube Channel" data-placement="top"><i class="fab fa-youtube"></i></a>
                         <a href="https://www.facebook.com/askmench" target="_blank" class="social-link" data-toggle="tooltip" title="Like us on Facebook" data-placement="top"><i class="fab fa-facebook"></i></a>
                         <a href="https://www.linkedin.com/company/askmench/" target="_blank" class="social-link" data-toggle="tooltip" title="Follow us on LinkedIn" data-placement="top"><i class="fab fa-linkedin"></i></a>

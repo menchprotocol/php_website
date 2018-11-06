@@ -21,30 +21,34 @@
 <div id="landing_page">
 
     <?php
-    $need_grandpa = !( $c['c_id']==6623 );
-    $grandpa_intent = null;
-    $parent_intents = null;
-    //Show all instant messages for this intent:
-    foreach($c['c__inbounds'] as $ci){
-        $parent_intents .= '<a class="list-group-item" href="/'.$ci['c_id'].'"><span class="badge badge-primary"><i class="fas fa-angle-left"></i></span> '.$ci['c_outcome'].'</a>';
-        if($ci['c_id']==6623){
-            //Already included:
-            $need_grandpa = false;
-        }
-    }
-    if($need_grandpa){
-        //Fetch top intent and include it here:
-        $gps = $this->Db_model->c_fetch(array(
-            'c_id' => 6623,
-        ));
-        $grandpa_intent = '<a class="list-group-item" href="/'.$gps[0]['c_id'].'"><span class="badge badge-primary"><i class="fas fa-angle-left"></i></span> '.$gps[0]['c_outcome'].'</a>';
-    }
+    if(!($c['c_id']==$this->config->item('primary_c'))){
 
-    //Display generated parents:
-    echo '<div class="list-group" style="margin-top: 10px;">';
-    echo ( $need_grandpa ? $grandpa_intent : '' );
-    echo $parent_intents;
-    echo '</div>';
+        $need_grandpa = true;
+        $grandpa_intent = null;
+        $parent_intents = null;
+        //Show all parent intents for this intent:
+        foreach($c['c__inbounds'] as $ci){
+            $parent_intents .= '<a class="list-group-item" href="/'.$ci['c_id'].'"><span class="badge badge-primary"><i class="fas fa-angle-left"></i></span> '.$ci['c_outcome'].'</a>';
+            if($ci['c_id']==$this->config->item('primary_c')){
+                //Already included:
+                $need_grandpa = false;
+            }
+        }
+
+        if($need_grandpa){
+            //Fetch top intent and include it here:
+            $gps = $this->Db_model->c_fetch(array(
+                'c_id' => $this->config->item('primary_c'),
+            ));
+            $grandpa_intent = '<a class="list-group-item" href="/'.$gps[0]['c_id'].'"><span class="badge badge-primary"><i class="fas fa-angle-left"></i></span> '.$gps[0]['c_outcome'].'</a>';
+        }
+
+        //Display generated parents:
+        echo '<div class="list-group" style="margin-top: 10px;">';
+        echo ( $need_grandpa ? $grandpa_intent : '' );
+        echo $parent_intents;
+        echo '</div>';
+    }
 
 
 
@@ -144,7 +148,7 @@
                     echo '</ul>';
 
                     //Since it has children, lets also give the option to navigate downwards:
-                    echo '<div>You can choose to <a href="/'.$c1['c_id'].'" '.( $c['c_id']==6623 ? 'onclick="confirm_child_go('.$c1['c_id'].')"' : '' ).' class="alink-'.$c1['c_id'].'">subscribe to this intent only</a>.';
+                    echo '<div>You can choose to <a href="/'.$c1['c_id'].'" '.( $c['c_id']==$this->config->item('primary_c') ? 'onclick="confirm_child_go('.$c1['c_id'].')"' : '' ).' class="alink-'.$c1['c_id'].'">subscribe to this intent only</a>.';
                     echo '</div>';
 
                 }

@@ -11,13 +11,6 @@ class Cron extends CI_Controller {
         //Example: /usr/bin/php /home/ubuntu/mench-web-app/index.php cron save_profile_pic
 	}
 
-	function go(){
-        echo_json($this->Db_model->w_create(array(
-            'w_c_id' => 6623,
-            'w_outbound_u_id' => 1,
-        )));
-    }
-
     function intent_sync($c_id=7240,$update_c_table=1){
         //Cron Settings: 31 * * * *
 	    //Syncs intents with latest caching data:
@@ -30,6 +23,8 @@ class Cron extends CI_Controller {
             echo_json($sync);
         }
     }
+
+
 
     function algolia_sync($obj,$obj_id=0){
         echo_json($this->Db_model->algolia_sync($obj,$obj_id));
@@ -473,6 +468,64 @@ class Cron extends CI_Controller {
     function student_reminder_complete_task(){
 
         exit; //Needs optimization
+
+        //Will ask the student why they are stuck and try to get them to engage with the material
+        //TODO implement social features to maybe connect to other students at the same level
+        //The primary function that would pro-actively communicate the subscription to the user
+        //If $w_id is provided it would step forward a specific subscription
+        //If both $w_id and $u_id are present, it would auto register the user in an idle subscription if they are not part of it yet, and if they are, it would step them forward.
+
+        $bot_settings = array(
+            'max_per_run' => 10, //How many subscriptions to server per run (Might include duplicate w_outbound_u_id's that will be excluded)
+            'reminder_frequency_min' => 1440, //Every 24 hours
+        );
+
+        //Run even minute by the cron job and determines which users to talk to...
+        //Fetch all active subscriptions:
+        $user_ids_served = array(); //We use this to ensure we're only service one subscription per user
+        $active_subscriptions = $this->Db_model->w_fetch(array(
+            'w_status' => 1, //Active subscriptions
+            'u_status >=' => 0, //Active entity
+            'c_status >=' => 1, //Active intent TODO Update to 2 when new intent statuses are implemented
+            'w_last_served >=' => date("Y-m-d H:i:s", (time()+($bot_settings['reminder_frequency_min']*60))),
+        ), array('c','u'), array(
+            'w_last_served' => 'ASC', //Fetch users who have not been served the longest, so we can pay attention to them...
+        ), $bot_settings['max_per_run']);
+
+        foreach($active_subscriptions as $w){
+
+            if(in_array(intval($w['u_id']),$user_ids_served)){
+                //Skip this as we do not want to handle two subscriptions from the same user:
+                continue;
+            }
+
+            //Add this user to the queue:
+            array_push($user_ids_served, intval($w['u_id']));
+
+            //See where this user is in their subscription:
+            $ks_next = $this->Db_model->k_next_fetch($w['w_id']);
+
+            if(!$ks_next){
+                //Should not happen, bug already reported:
+                return false;
+            }
+
+            //Update the serving timestamp:
+            $this->Db_model->w_update( $w['w_id'], array(
+                'w_last_served' => date("Y-m-d H:i:s"),
+            ));
+
+
+            //Give them next step again:
+            $this->Comm_model->k_next_fetch($w['w_id']);
+
+            //$ks_next[0]['c_outcome']
+        }
+
+
+
+
+        exit;
 
         //Cron Settings: 45 * * * *
         //Send reminders to students to complete their intent:
