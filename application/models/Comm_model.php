@@ -531,14 +531,17 @@ class Comm_model extends CI_Model {
                     ),
                 ));
 
-                //Inform user of their next step (Step 1):
-                $this->Comm_model->foundation_message(array(
-                    'e_inbound_u_id' => 2738, //Initiated by PA
-                    'e_outbound_u_id' => $u['u_id'],
-                    'e_outbound_c_id' => $fetch_cs[0]['c_id'],
-                    'e_w_id' => $w['w_id'],
-                ), true);
-
+                //Find next step and move-on:
+                $ks_next = $this->Db_model->k_next_fetch($w['w_id']);
+                if($ks_next){
+                    //Inform user of their next step (Step 1):
+                    $this->Comm_model->foundation_message(array(
+                        'e_inbound_u_id' => 2738, //Initiated by PA
+                        'e_outbound_u_id' => $u['u_id'],
+                        'e_outbound_c_id' => $ks_next[0]['c_id'],
+                        'e_w_id' => $w['w_id'],
+                    ), true);
+                }
             }
 
         } elseif(substr_count($fb_ref, 'SKIPTREE_')==1){
