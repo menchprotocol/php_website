@@ -93,6 +93,13 @@ class Bot extends CI_Controller {
         ));
     }
 
+
+    function inform_step($ws){
+        //Informs the user where they are in the tree and what action they need to take next...
+        //$ws is all their subscriptions that is active right now
+
+    }
+
     function step_forward($w_id=0, $u_id=0){
 
         //The primary function that would pro-actively communicate the subscription to the user

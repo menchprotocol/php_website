@@ -169,7 +169,7 @@ $(document).ready(function() {
             window.location = "/entities/"+suggestion.u_id;
         }
 
-    }).autocomplete({ hint: false, keyboardShortcuts: ['s'] }, [
+    }).autocomplete({ hint: false, minLength: 3, autoselect:true, keyboardShortcuts: ['s'] }, [
         {
             source: function(q, cb){
                 algolia_c_index.search(q, {

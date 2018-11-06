@@ -738,11 +738,13 @@ class Db_model extends CI_Model {
             }
 
             if(in_array('u__ws',$join_objects)){
-                //Fetch the messages for this entity:
+                //Fetch the subscriptions for this entity:
                 $res[$key]['u__ws'] = $this->Db_model->w_fetch(array(
                     'w_outbound_u_id' => $val['u_id'],
-                    'w_status' => 1, //Active subscriptions
-                ), array('c'));
+                    'w_status IN (1,2)' => null, //Active subscriptions (Passive ones have a more targetted distribution)
+                ), array('c'), array(
+                    'w_last_served' => 'ASC'
+                ));
             }
 
 

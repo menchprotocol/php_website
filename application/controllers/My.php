@@ -73,7 +73,7 @@ class My extends CI_Controller {
         if(count($subscriptions)==0){
 
             //No subscriptions found:
-            die('<div class="alert alert-danger" role="alert">You have no active subscriptions yet. '.$this->lang->line('bot_lets_intro').'</div>');
+            die('<div class="alert alert-danger" role="alert">You have no active subscriptions yet. '.echo_pa_lets().'</div>');
 
         } elseif(count($subscriptions)>1){
 

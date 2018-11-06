@@ -1,5 +1,5 @@
 <?php
-/* Sample use case: <?= $this->lang->line('bot_lets_intro') ?> */
+/* Sample use case: <?= $this->lang->line('obj_u_name') ?> */
 
 //Core Databae Objects:
 $lang['obj_u_name'] = 'Entity';
@@ -18,5 +18,3 @@ $lang['obj_w_status_name'] = 'Subscription Status';
 $lang['obj_c_is_any_name'] = 'Intent Completion';
 $lang['obj_u_fb_notification_name'] = 'Notification Level';
 $lang['obj_k_status_name'] = 'Subscription Intent Status';
-
-$lang['bot_lets_intro'] = 'You can give me a command by starting a sentence with "Lets", for example: [Lets land a dream job], [Lets book new interviews] or [Lets create a great resume].';

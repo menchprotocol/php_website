@@ -110,7 +110,7 @@ $(document).ready(function() {
 
         new_intent($(this).attr('intent-id'), 2, suggestion.c_id);
 
-    }).autocomplete({ hint: false, keyboardShortcuts: ['a'] }, [{
+    }).autocomplete({ hint: false, minLength: 3, autoselect:true, keyboardShortcuts: ['a'] }, [{
 
         source: function(q, cb){
             algolia_c_index.search(q, {
@@ -167,7 +167,7 @@ function load_level3_search(){
 
         new_intent($(this).attr('intent-id'), 3, suggestion.c_id);
 
-    }).autocomplete({ hint: false, keyboardShortcuts: ['a'] }, [{
+    }).autocomplete({ hint: false, minLength: 3, autoselect:true, keyboardShortcuts: ['a'] }, [{
 
         source: function(q, cb){
             algolia_c_index.search(q, {

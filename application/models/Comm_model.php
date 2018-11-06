@@ -229,7 +229,7 @@ class Comm_model extends CI_Model {
                     array(
                         'e_inbound_u_id' => 2738, //Initiated by PA
                         'e_outbound_u_id' => $u['u_id'],
-                        'i_message' => 'Awesome, would be happy to stay friends and help you accomplish your career goals. '.$this->lang->line('bot_lets_intro'),
+                        'i_message' => 'Awesome, would be happy to stay friends and help you accomplish your career goals. '.echo_pa_lets(),
                     ),
                 ));
 
@@ -292,7 +292,7 @@ class Comm_model extends CI_Model {
                         array(
                             'e_inbound_u_id' => 2738, //Initiated by PA
                             'e_outbound_u_id' => $u['u_id'],
-                            'i_message' => 'I have successfully unsubscribed you from your intention to '.$subscriptions[0]['c_outcome'].'. Say "Unsubscribe" again if you wish to stop all future communications. '.$this->lang->line('bot_lets_intro'),
+                            'i_message' => 'I have successfully unsubscribed you from your intention to '.$subscriptions[0]['c_outcome'].'. Say "Unsubscribe" again if you wish to stop all future communications. '.echo_pa_lets(),
                         ),
                     ));
 
@@ -332,7 +332,7 @@ class Comm_model extends CI_Model {
                     array(
                         'e_inbound_u_id' => 2738, //Initiated by PA
                         'e_outbound_u_id' => $u['u_id'],
-                        'i_message' => 'Sweet, you account is now activated but you are not subscribed to any intents yet. '.$this->lang->line('bot_lets_intro'),
+                        'i_message' => 'Sweet, you account is now activated but you are not subscribed to any intents yet. '.echo_pa_lets(),
                     ),
                 ));
 
@@ -342,7 +342,7 @@ class Comm_model extends CI_Model {
                     array(
                         'e_inbound_u_id' => 2738, //Initiated by PA
                         'e_outbound_u_id' => $u['u_id'],
-                        'i_message' => 'Ok, your account will remain unsubscribed. If you changed your mind, '.$this->lang->line('bot_lets_intro'),
+                        'i_message' => 'Ok, your account will remain unsubscribed. If you changed your mind, '.echo_pa_lets(),
                     ),
                 ));
 
@@ -360,7 +360,7 @@ class Comm_model extends CI_Model {
                     array(
                         'e_inbound_u_id' => 2738, //Initiated by PA
                         'e_outbound_u_id' => $u['u_id'],
-                        'i_message' => 'Ok, so what is your biggest career-related challenge? '.$this->lang->line('bot_lets_intro'),
+                        'i_message' => 'Ok, so what is your biggest career-related challenge? '.echo_pa_lets(),
                     ),
                 ));
 
@@ -534,7 +534,7 @@ class Comm_model extends CI_Model {
             }
 
 
-        } elseif(substr_count($fb_message_received, 'unsubscribe')>0){
+        } elseif(substr_count($fb_message_received, 'unsubscribe')>0 || substr_count($fb_message_received, 'quit')>0){
 
             //User has requested to be removed. Let's see what they have:
             if(count($u['u__ws'])>0){
@@ -588,7 +588,7 @@ class Comm_model extends CI_Model {
                     array(
                         'e_inbound_u_id' => 2738, //Initiated by PA
                         'e_outbound_u_id' => $u['u_id'],
-                        'i_message' => 'You are already unsubscribed from Mench and will no longer receive any communication from us. To subscribe again, '.$this->lang->line('bot_lets_intro'),
+                        'i_message' => 'You are already unsubscribed from Mench and will no longer receive any communication from us. To subscribe again, '.echo_pa_lets(),
                     ),
                 ));
 
@@ -717,7 +717,18 @@ class Comm_model extends CI_Model {
 
             } else {
 
-                //We don't know what this message means
+                //We don't know what this message means...
+                //But we can figure out where in their subscription they are...
+
+
+                //inform the user on how mench works:
+                $this->Comm_model->send_message(array(
+                    array(
+                        'e_inbound_u_id' => 2738, //Initiated by PA
+                        'e_outbound_u_id' => $u['u_id'],
+                        'i_message' => echo_pa_oneway(),
+                    ),
+                ));
 
             }
 

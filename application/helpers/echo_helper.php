@@ -752,7 +752,7 @@ function echo_contents($c, $fb_format=0){
     }
 
 
-    $pitch = 'Intents reference'.$text_overview.'.';
+    $pitch = 'Insights reference'.$text_overview.'.';
     if($fb_format) {
         return '📚 '.$pitch."\n";
     } else {
@@ -761,7 +761,24 @@ function echo_contents($c, $fb_format=0){
     }
 }
 
+function echo_pa_lets(){
+    $options = array(
+        'You can give me a command by starting a sentence with "Lets", for example: [Lets land a dream job], [Lets book new interviews] or [Lets create a great resume].',
+        'Command me using "Lets", for example: [Lets get hired], [Lets create a cover letter] or [Lets do better at interviews].',
+    );
+    $rand_keys = array_rand($options, 1);
+    return $options[$rand_keys[0]];
+}
 
+function echo_pa_oneway(){
+    //Informs the user that the PA cannot speak, unless you give it a specific command like Lets
+    $options = array(
+        'Im a different type of Personal Assistant, one that does not understand what you say unless I specifically ask you.',
+        'What was that? ',
+    );
+    $rand_keys = array_rand($options, 1);
+    return $options[$rand_keys[0]].( rand(1,2)==1 ? ' '.echo_pa_lets() : '' );
+}
 
 function echo_costs($c, $fb_format=0){
 
@@ -785,7 +802,7 @@ function echo_costs($c, $fb_format=0){
 }
 
 function echo_intent_overview($c, $fb_format=0){
-    $pitch = 'Action Plan includes '.$c['c__tree_all_count'].' intents that offer a roadmap to '.$c['c_outcome'].'.';
+    $pitch = 'Action Plan includes '.$c['c__tree_all_count'].' insights.';
     if($fb_format) {
         return '💡 '.$pitch."\n";
     } else {
@@ -797,7 +814,7 @@ function echo_intent_overview($c, $fb_format=0){
 function echo_completion_estimate($c, $fb_format=0){
 
     $is_equal = ( $c['c__tree_max_hours']==$c['c__tree_min_hours'] );
-    $pitch = 'It takes about '.strtolower(echo_hour_range($c)).' to complete this Action Plan.';
+    $pitch = 'It takes '.strtolower(echo_hour_range($c)).' to complete this Action Plan.';
 
     if($fb_format) {
         return '🕓 '.$pitch."\n";
@@ -885,7 +902,7 @@ function echo_experts($c, $fb_format=0){
     }
 
 
-    $pitch = 'Intents also reference '.$all_count.' industry expert'.echo__s($all_count).($all_count==1 ? ':' : ' including' ).$text_overview;
+    $pitch = 'Insights quote '.$all_count.' industry expert'.echo__s($all_count).($all_count==1 ? ':' : ' including' ).$text_overview;
     if($fb_format) {
         return '👩‍🎓 '.$pitch."\n";
     } else {
