@@ -1051,6 +1051,9 @@ class Comm_model extends CI_Model {
         }
 
 
+        //Let's start adding-up the instant messages:
+        $instant_messages = array();
+
         //Give some context on the current intent:
         if(isset($e['e_w_id']) && $e['e_w_id']>0){
             array_push($instant_messages , array(
@@ -1061,11 +1064,6 @@ class Comm_model extends CI_Model {
                 'i_message' => 'Ok so now we are focused on the intention to '.$cs[0]['c_outcome'].'.',
             ));
         }
-
-
-        //Let's start adding-up the instant messages:
-        $instant_messages = array();
-
 
         //Append main object messages:
         if(isset($cs[0]['c__messages']) && count($cs[0]['c__messages'])>0){
