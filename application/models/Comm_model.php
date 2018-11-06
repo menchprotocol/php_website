@@ -544,33 +544,54 @@ class Comm_model extends CI_Model {
         } elseif(substr_count($fb_ref, 'SKIPTREE_')==1){
 
             //User has indicated they want to skip this tree and move on to the next item in-line:
-            $total_skipped = $this->Db_model->k_skip_recursive_down($w_id, $c_id, $k_id);
+            $input_parts = explode('_', one_two_explode('CHOOSEAND_', '', $fb_ref) ,3);
+            $w_id = intval($input_parts[0]);
+            $c_id = intval($input_parts[1]);
+            $k_id = intval($input_parts[2]);
+            if($w_id>0 && $c_id>0 && $k_id>0){
 
-            //Draft message:
-            $message = '<div class="alert alert-success" role="alert">'.$total_skipped.' intent'.echo__s($total_skipped).' successfully skipped.</div>';
+                //Skip items:
+                $total_skipped = $this->Db_model->k_skip_recursive_down($w_id, $c_id, $k_id);
 
-            //Find the next item to navigate them to:
-            $ks_next = $this->Db_model->k_next_fetch($w_id);
-            if(count($ks_next)>0){
-                redirect_message('/my/actionplan/'.$ks_next[0]['k_w_id'].'/'.$ks_next[0]['c_id'],$message);
-            } else {
-                redirect_message('/my/actionplan',$message);
+                //Inform them about the skip status:
+                $this->Comm_model->send_message(array(
+                    array(
+                        'e_inbound_u_id' => 2738, //Initiated by PA
+                        'e_outbound_u_id' => $u['u_id'],
+                        'e_outbound_c_id' => $c_id,
+                        'e_w_id' => $w_id,
+                        'i_message' => $total_skipped.' intent'.echo__s($total_skipped).' successfully skipped.',
+                    ),
+                ));
+
+                //Find the next item to navigate them to:
+                $ks_next = $this->Db_model->k_next_fetch($w_id);
+                if(count($ks_next)>0){
+                    //Now move on to communicate the next step.
+                    $this->Comm_model->foundation_message(array(
+                        'e_inbound_u_id' => 2738, //Initiated by PA
+                        'e_outbound_u_id' => $u['u_id'],
+                        'e_outbound_c_id' => $ks_next[0]['c_id'],
+                        'e_w_id' => $w_id,
+                    ));
+                }
+
             }
 
         } elseif(substr_count($fb_ref, 'CHOOSEAND_')==1){
 
             //Student consumed AND tree content, and is ready to move on to next intent...
-            $c_parts = explode('_', one_two_explode('CHOOSEAND_', '', $fb_ref) ,2);
-            $cr_inbound_c_id = intval($c_parts[0]); //The parent node
-            $cr_outbound_c_id = intval($c_parts[1]); //The next step
+            $input_parts = explode('_', one_two_explode('CHOOSEAND_', '', $fb_ref) ,2);
+            $cr_inbound_c_id = intval($input_parts[0]); //The parent node
+            $cr_outbound_c_id = intval($input_parts[1]); //The next step
 
 
         } elseif(substr_count($fb_ref, 'CHOOSEOR_')==1){
 
             //Student has responded to a multiple-choice OR tree
-            $c_parts = explode('_', one_two_explode('CHOOSEOR_', '', $fb_ref) ,2);
-            $cr_inbound_c_id = intval($c_parts[0]); //The parent node
-            $cr_outbound_c_id = intval($c_parts[1]); //The next step
+            $input_parts = explode('_', one_two_explode('CHOOSEOR_', '', $fb_ref) ,2);
+            $cr_inbound_c_id = intval($input_parts[0]); //The parent node
+            $cr_outbound_c_id = intval($input_parts[1]); //The next step
 
 
         } elseif(substr_count($fb_message_received, 'unsubscribe')>0 || substr_count($fb_message_received, 'quit')>0){
@@ -1136,7 +1157,6 @@ class Comm_model extends CI_Model {
                 }
 
                 //Always give option to skip:
-                $message_body .= "\n\n".'SKIP: '.$e['e_w_id'].'_'.$k_ins[0]['c_id'].'_'.$k_ins[0]['k_id'];
                 array_push( $quick_replies , array(
                     'content_type' => 'text',
                     'title' => 'Skip',
