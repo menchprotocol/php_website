@@ -595,7 +595,7 @@ class Comm_model extends CI_Model {
                 $ks = $this->Db_model->k_fetch(array(
                     'w_id' => $w_id,
                     'k_id' => $k_id,
-                ), array('w','cr','cr_c_out'));
+                ), array('w','cr','cr_c_in'));
 
                 //Do we need any additional information?
                 $requirement_notes = echo_k_requirements($ks[0]);
