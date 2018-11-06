@@ -798,7 +798,7 @@ class Comm_model extends CI_Model {
     }
 
 
-    function send_message($messages,$force_email=false,$intent_title_subject=false){
+    function send_message($messages){
 
         if(count($messages)<1){
             return array(
@@ -832,9 +832,6 @@ class Comm_model extends CI_Model {
 
                 //Fetch user communication preferences:
                 $users = array();
-                if(!$force_email && isset($message['e_w_id']) && $message['e_w_id']>0){
-                    //TODO Fetch subscription to class...
-                }
 
                 if(count($users)<1){
                     //Fetch user profile via their account:
@@ -861,7 +858,7 @@ class Comm_model extends CI_Model {
                     $dispatch_fp_psid = 0;
                     $u = array();
 
-                    if(!$force_email && $users[0]['u_fb_psid']>0){
+                    if($users[0]['u_fb_psid']>0){
                         //We fetched an subscription with an active Messenger connection:
                         $dispatch_fp_psid = $users[0]['u_fb_psid'];
                         $u = $users[0];
@@ -877,7 +874,7 @@ class Comm_model extends CI_Model {
                             'e_outbound_u_id' => $message['e_outbound_u_id'],
                             'e_json' => $message,
                             'e_inbound_c_id' => 8, //Platform error
-                            'e_text_value' => 'send_message() detected user without an active email/Messenger with $force_email=['.($force_email?'1':'0').']',
+                            'e_text_value' => 'send_message() detected user without an active email/Messenger',
                         ));
                         continue;
 
@@ -888,7 +885,7 @@ class Comm_model extends CI_Model {
 
 
             //Send using email or Messenger?
-            if(!$force_email && $dispatch_fp_psid){
+            if($dispatch_fp_psid){
 
                 $u_fb_notifications = echo_status('u_fb_notification');
 
@@ -912,8 +909,6 @@ class Comm_model extends CI_Model {
                     'e_text_value' => $message['i_message'],
                     'e_json' => array(
                         'input_message' => $message,
-                        'input_force_email' => ( $force_email ? 1 : 0 ),
-                        'input_intent_title_subject' => ( $intent_title_subject ? 1 : 0 ),
                         'payload' => $payload,
                         'results' => $process,
                     ),
@@ -933,19 +928,7 @@ class Comm_model extends CI_Model {
                 //This is an email request, combine the emails per user:
                 if(!isset($email_to_send[$u['u_id']])){
 
-
                     $subject_line = 'New Message from Mench';
-
-                    /*
-                    if($intent_title_subject && isset($message['i_outbound_c_id']) && $message['i_outbound_c_id']>0){
-                        $intents = $this->Db_model->c_fetch(array(
-                            'c.c_id' => $message['i_outbound_c_id'],
-                        ));
-                        if(count($intents)>0){
-                            $subject_line = $intents[0]['c_outcome'];
-                        }
-                    }
-                    */
 
                     $email_variables = array(
                         'u_email' => $u['u_email'],
@@ -1007,7 +990,7 @@ class Comm_model extends CI_Model {
         }
     }
 
-    function foundation_message($e,$skip_messages=false,$force_email=false){
+    function foundation_message($e,$skip_messages=false){
 
         //Validate key components that are required:
         $error_message = null;
@@ -1180,7 +1163,7 @@ class Comm_model extends CI_Model {
         }
 
         //All good, attempt to Dispatch all messages, their engagements have already been logged:
-        return $this->Comm_model->send_message($instant_messages,$force_email,true);
+        return $this->Comm_model->send_message($instant_messages);
     }
 
     function send_email($to_array,$subject,$html_message,$e_var_create=array(),$reply_to=null){

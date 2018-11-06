@@ -13,6 +13,16 @@ class Urls extends CI_Controller
         $this->output->enable_profiler(FALSE);
     }
 
+
+    function text_url(){
+        //To see how our URL testing functions work...
+        echo '<div><form action=""><input type="url" name="url" value="'.@$_GET['url'].'" style="width:400px;"> <input type="submit" value="Go"></form></div>';
+        $curl = curl_html($_GET['url'],true);
+        foreach($curl as $key=>$value){
+            echo '<div style="color:'.( $key=='url_is_broken' && intval($value) ? '#FF0000' : '#000000' ).';">'.$key.': <b>'.$value.'</b></div>';
+        }
+    }
+
     function set_cover(){
         //Auth user and check required variables:
         $udata = auth(array(1308));

@@ -11,15 +11,8 @@ class Bot extends CI_Controller {
     }
 
 
-    function aa(){
-        echo_json($this->Db_model->c_update_tree(7472, array(
-            'c__tree_all_count' => 2,
-            'c__tree_max_hours' => 1.5,
-        )));
-    }
 
     function f($w_id, $c_id){
-
         //Fetch w:
         $subscriptions = $this->Db_model->w_fetch(array(
             'w_id' => $w_id,
@@ -35,24 +28,12 @@ class Bot extends CI_Controller {
         } else {
             echo 'ERROR: Invalid w_id';
         }
-
-
     }
 
 
-    function url(){
-        echo '<div><form action=""><input type="url" name="url" value="'.@$_GET['url'].'" style="width:400px;"> <input type="submit" value="Go"></form></div>';
-        $curl = curl_html($_GET['url'],true);
-        foreach($curl as $key=>$value){
-            echo '<div style="color:'.( $key=='url_is_broken' && intval($value) ? '#FF0000' : '#000000' ).';">'.$key.': <b>'.$value.'</b></div>';
-        }
-    }
-
-
-    function menu(){
+    function sync_menu(){
 
         $res = array();
-
         array_push($res , $this->Comm_model->fb_graph('POST', '/me/messenger_profile', array(
             'get_started' => array(
                 'payload' => 'GET_STARTED',
@@ -64,10 +45,8 @@ class Bot extends CI_Controller {
             ),
         )));
 
-
         //Wait until Facebook pro-pagates changes of our whitelisted_domains setting:
         sleep(2);
-
 
         array_push($res , $this->Comm_model->fb_graph('POST', '/me/messenger_profile', array(
             'persistent_menu' => array(
@@ -90,28 +69,6 @@ class Bot extends CI_Controller {
         )));
 
         echo_json($res);
-    }
-
-    function kr($w_id,$c_id,$fetch_outbound){
-        echo_json($this->Db_model->k_recursive_fetch($w_id, $c_id, $fetch_outbound));
-    }
-
-
-    function test($c_id, $w_id=0, $u_id=1){
-        echo_json(array(
-            'ks' => $this->Db_model->k_fetch(array(
-                'w_id' => $w_id,
-                'cr_status >=' => 1,
-                'c_status >=' => 1,
-                'cr_inbound_c_id' => $c_id,
-            ), array('w','cr','cr_c_out')),
-            'message' => $this->Comm_model->foundation_message(array(
-                'e_inbound_u_id' => 2738, //Initiated by PA
-                'e_outbound_u_id' => $u_id,
-                'e_outbound_c_id' => $c_id,
-                'e_w_id' => $w_id,
-            )),
-        ));
     }
 
 
@@ -157,13 +114,6 @@ class Bot extends CI_Controller {
                 'e_inbound_c_id' => 8, //Platform Error
             ));
             return false;
-        } else {
-            //Log webhook for now to resolve bug:
-            $this->Db_model->e_create(array(
-                'e_text_value' => count($json_data['entry']).' Entries / '.count($json_data['entry'][0]['messaging']).' Messages for 1st Entry / First sender ID: '.$json_data['entry'][0]['messaging'][0]['sender']['id'],
-                'e_json' => $json_data,
-                'e_inbound_c_id' => 7698, //Inboud FB Webhook
-            ));
         }
 
 
