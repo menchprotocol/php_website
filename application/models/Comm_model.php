@@ -899,6 +899,7 @@ class Comm_model extends CI_Model {
 
             //Make sure we have the necessary fields:
             if(!isset($message['e_outbound_u_id'])){
+
                 //Log error:
                 $this->Db_model->e_create(array(
                     'e_json' => $message,
@@ -906,6 +907,7 @@ class Comm_model extends CI_Model {
                     'e_text_value' => 'send_message() failed to send message as it was missing e_outbound_u_id',
                 ));
                 continue;
+
             }
 
             //TODO Implement simple caching to remember $dispatch_fp_psid && $u IF some details remain the same
@@ -1206,6 +1208,9 @@ class Comm_model extends CI_Model {
                         //User needs to choose one of the following:
                         $message_body .= 'Choose one of the following options to '.$cs[0]['c_outcome'].':';
                         foreach($k_outs as $counter=>$k){
+                            if($counter==10){
+                                break; //Quick reply accepts 11 options max! We need 1 for skip and 10 here...
+                            }
                             $message_body .= "\n\n".($counter+1).'/ '.$k['c_outcome'];
                             array_push( $quick_replies , array(
                                 'content_type' => 'text',
@@ -1217,8 +1222,11 @@ class Comm_model extends CI_Model {
                     } else {
 
                         //User needs to complete all children, and we'd recommend the first item as their next step:
-                        $message_body .= 'There are '.count($k_outs).' intents you need to complete in order to '.$cs[0]['c_outcome'].'. I recommend starting from the first one:';
+                        $message_body .= 'There are '.count($k_outs).' items you need to complete in order to '.$cs[0]['c_outcome'].'. I recommend starting from the first one:';
                         foreach($k_outs as $counter=>$k){
+                            if($counter==10){
+                                break; //Quick reply accepts 11 options max! We need 1 for skip and 10 here...
+                            }
                             $message_body .= "\n\n".($counter+1).'/ '.$k['c_outcome'].( $counter==0 ? ' [Start Here]' : '' );
                             array_push( $quick_replies , array(
                                 'content_type' => 'text',
