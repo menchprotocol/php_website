@@ -236,23 +236,28 @@ $config['object_statuses'] = array(
 
      'w_status' => array(
         -1 => array(
-            's_name'  => 'Unsubscribed',
-            's_desc'  => 'Student cancelled their subscription',
+            's_name'  => 'Quit',
+            's_desc'  => 'Student cancelled their subscription and stopped pursuing the intent',
             's_icon' => 'fas fa-minus-square initial',
         ),
-        1 => array(
-             's_name'  => 'Subscribed',
+         0 => array(
+             's_name'  => 'Passive Subscription',
+             's_desc'  => 'Subscription advances in the background along side other subscriptions',
+             's_icon' => 'fas fa-info-square',
+         ),
+         1 => array(
+             's_name'  => 'Active Subscription',
              's_desc'  => 'Work has started and pending completion',
              's_icon' => 'fas fa-caret-square-right',
-        ),
+         ),
         2 => array(
-             's_name'  => 'Completed',
-             's_desc'  => 'All subscription intents are marked as complete',
-             's_icon' => 'fas fa-check-square',
+             's_name'  => 'Updating Subscription',
+             's_desc'  => 'All subscription intents are marked as complete and student is receiving updates from new changes happening to their subscription tree',
+             's_icon' => 'fas fa-rss-square',
         ),
         3 => array(
-             's_name'  => 'Approved',
-             's_desc'  => 'Reviewed and approved by Mench moderator',
+             's_name'  => 'Successful Subscription',
+             's_desc'  => 'Student accomplish the intent of the subscription by completion as verified by Mench',
              's_icon' => 'fas fa-badge-check',
         ),
     ),

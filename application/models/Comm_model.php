@@ -623,11 +623,11 @@ class Comm_model extends CI_Model {
                 array(
                     'e_inbound_u_id' => 2738, //Initiated by PA
                     'e_outbound_u_id' => $u['u_id'],
-                    'i_message' => 'You are currently unsubscribed from Mench. Would you like to activate your account?',
+                    'i_message' => 'You are currently unsubscribed. Would you like me to re-activate your account?',
                     'quick_replies' => array(
                         array(
                             'content_type' => 'text',
-                            'title' => 'Yes, Re-Activate',
+                            'title' => 'Yes, Activate',
                             'payload' => 'ACTIVATE_YES',
                         ),
                         array(
@@ -707,10 +707,19 @@ class Comm_model extends CI_Model {
 
             }
 
-        } elseif($fb_message_received && !$fb_ref && count($u['u__ws'])==0){
+        } elseif($fb_message_received && !$fb_ref){
 
-            //Ask if they are interested to join the primary intent...
-            return $this->Comm_model->fb_identify_activate($fp_psid, 'SUBSCRIBE10_6623', $fb_message_received);
+            //We have received a free-style message that is not recognized with a reference code...
+            if(count($u['u__ws'])==0){
+
+                //They do not have a subscription, so we can offer them to subscribe to our default intent:
+                return $this->Comm_model->fb_identify_activate($fp_psid, 'SUBSCRIBE10_6623', $fb_message_received);
+
+            } else {
+
+                //We don't know what this message means
+
+            }
 
         }
 

@@ -1102,7 +1102,7 @@ class Db_model extends CI_Model {
         return $results;
     }
 
-    function w_fetch($match_columns, $join_objects=array()){
+    function w_fetch($match_columns, $join_objects=array(), $order_columns=array(), $limit=0){
         //Fetch the target gems:
         $this->db->select('*');
         $this->db->from('v5_subscriptions w');
@@ -1118,6 +1118,14 @@ class Db_model extends CI_Model {
             } else {
                 $this->db->where($key);
             }
+        }
+        if(count($order_columns)>0){
+            foreach($order_columns as $key=>$value){
+                $this->db->order_by($key,$value);
+            }
+        }
+        if($limit>0){
+            $this->db->limit($limit);
         }
         $q = $this->db->get();
         $results = $q->result_array();
