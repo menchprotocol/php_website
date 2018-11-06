@@ -610,7 +610,7 @@ function echo_k($k, $is_inbound, $c_is_any_cr_inbound_c_id=0){
         $ui .= '</span>';
     } else {
         $ui .= '<span class="pull-right">';
-        $ui .= '<span class="badge badge-primary fr-bgd">'.( $c_is_any_cr_inbound_c_id ? 'Choose This Path <i class="fas fa-check-circle"></i>' : '<i class="fas fa-angle-right"></i>').'</span>';
+        $ui .= '<span class="badge badge-primary fr-bgd">'.( $c_is_any_cr_inbound_c_id ? 'Choose This <i class="fas fa-check-circle"></i>' : '<i class="fas fa-angle-right"></i>').'</span>';
         $ui .= '</span>';
     }
 

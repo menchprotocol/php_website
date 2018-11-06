@@ -143,14 +143,6 @@ class My extends CI_Controller {
         //Start skipping:
         $total_skipped = $this->Db_model->k_skip_recursive_down($w_id, $c_id, $k_id);
 
-        //There is a chance that the subscription might be now completed due to this skipping, lets check:
-        $ks = $this->Db_model->k_fetch(array(
-            'k_id' => $k_id,
-        ), array('w','cr','cr_c_in'));
-        if(count($ks)>0){
-            $this->Db_model->k_complete_recursive_up($ks[0],$ks[0],-1);
-        }
-
         //Draft message:
         $message = '<div class="alert alert-success" role="alert">'.$total_skipped.' intent'.echo__s($total_skipped).' successfully skipped.</div>';
 
