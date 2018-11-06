@@ -543,16 +543,8 @@ class Comm_model extends CI_Model {
 
         } elseif(substr_count($fb_ref, 'SKIPTREE_')==1){
 
-            $this->Comm_model->send_message(array(
-                array(
-                    'e_inbound_u_id' => 2738, //Initiated by PA
-                    'e_outbound_u_id' => 1,
-                    'i_message' => 'Ok so you wanna skip? '.$fb_ref,
-                ),
-            ));
-
             //User has indicated they want to skip this tree and move on to the next item in-line:
-            $input_parts = explode('_', one_two_explode('CHOOSEAND_', '', $fb_ref) ,3);
+            $input_parts = explode('_', one_two_explode('SKIPTREE_', '', $fb_ref));
             $w_id = intval($input_parts[0]);
             $c_id = intval($input_parts[1]);
             $k_id = intval($input_parts[2]);
