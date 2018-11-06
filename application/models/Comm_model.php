@@ -1007,7 +1007,7 @@ class Comm_model extends CI_Model {
         }
     }
 
-    function foundation_message($e,$force_email=false){
+    function foundation_message($e,$skip_messages=false,$force_email=false){
 
         //Validate key components that are required:
         $error_message = null;
@@ -1061,12 +1061,12 @@ class Comm_model extends CI_Model {
                 'e_outbound_u_id' => $e['e_outbound_u_id'],
                 'e_outbound_c_id' => $e['e_outbound_c_id'],
                 'e_w_id' => $e['e_w_id'],
-                'i_message' => 'Ok so now we are focused on the intention to '.$cs[0]['c_outcome'].'.',
+                'i_message' => 'Our current focus is to '.$cs[0]['c_outcome'].'.',
             ));
         }
 
         //Append main object messages:
-        if(isset($cs[0]['c__messages']) && count($cs[0]['c__messages'])>0){
+        if(!$skip_messages && isset($cs[0]['c__messages']) && count($cs[0]['c__messages'])>0){
             //We have messages for the very first level!
             foreach($cs[0]['c__messages'] as $key=>$i){
                 if($i['i_status']==1){

@@ -657,7 +657,7 @@ class Entities extends CI_Controller {
                 'e_inbound_u_id' => 0,
                 'e_outbound_u_id' => $matching_users[0]['u_id'],
                 'e_outbound_c_id' => 59,
-            ), true);
+            ), false);
         }
 
         //Show message:
