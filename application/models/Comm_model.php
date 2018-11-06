@@ -1059,7 +1059,7 @@ class Comm_model extends CI_Model {
                 'cr_status >=' => 1,
                 'c_status >=' => 1,
                 'cr_outbound_c_id' => $e['e_outbound_c_id'],
-            ), array('cr','cr_c_in'));
+            ), array('w','cr','cr_c_in'));
 
             if(count($k_ins)>0){
 
