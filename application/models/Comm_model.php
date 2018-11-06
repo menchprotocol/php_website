@@ -596,6 +596,17 @@ class Comm_model extends CI_Model {
             $k_id = intval($input_parts[3]);
             if($w_id>0 && $cr_inbound_c_id>0 && $c_id>0 && $k_id>0){
                 if($this->Db_model->k_choose_or($w_id, $cr_inbound_c_id, $c_id)){
+
+                    $this->Comm_model->send_message(array(
+                        array(
+                            'e_inbound_u_id' => 2738, //Initiated by PA
+                            'e_outbound_u_id' => $u['u_id'],
+                            'e_outbound_c_id' => $c_id,
+                            'e_w_id' => $w_id,
+                            'i_message' => 'Saved answer!',
+                        ),
+                    ));
+
                     //Find the next item to navigate them to:
                     $ks_next = $this->Db_model->k_next_fetch($w_id,$k_id);
                     if(count($ks_next)>0){
