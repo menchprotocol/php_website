@@ -1153,7 +1153,7 @@ class Comm_model extends CI_Model {
 
             if(count($k_ins)>0){
 
-                //TODO Handle if there were multiple $k_ins!
+                //TODO Handle if there were multiple $k_ins because intent may belong to multiple parts of this tree
 
                 //Lets see how many child intents there are
                 $k_outs = $this->Db_model->k_fetch(array(
@@ -1174,21 +1174,25 @@ class Comm_model extends CI_Model {
                     //We have 0-1 option! If zero, let's see what the next step:
                     if(count($k_outs)==0){
                         //Let's try to find the next item in tree:
-                        $k_outs = $this->Db_model->k_next_fetch($e['e_w_id'], $k_ins[0]['k_rank']);
+                        $k_outs = $this->Db_model->k_next_fetch($e['e_w_id']);
                     }
 
                     //Do we have an option?
                     if($k_outs && count($k_outs)>0){
 
-                        //Inform about the next step... Messages would dispatch soon with the next cron job...
-                        $message_body .= 'The next step to '.$cs[0]['c_outcome'].' is to '.$k_outs[0]['c_outcome'].'.';
+                        if($k_outs[0]['c_id']==$cs[0]['c_id']){
+                            //next step is the current one!
+                        } else {
+                            //Inform about the next step... Messages would dispatch soon with the next cron job...
+                            $message_body .= 'The next step to '.$cs[0]['c_outcome'].' is to '.$k_outs[0]['c_outcome'].'.';
+                        }
 
+                        //Give option to move on:
                         array_push( $quick_replies , array(
                             'content_type' => 'text',
                             'title' => 'Ok Next ▶️',
                             'payload' => 'CHOOSEAND_'.$e['e_w_id'].'_'.$k_outs[0]['k_id'].'_'.$k_outs[0]['k_rank'], //Here are are using CHOOSEAND_ also for OR branches with a single option... Maybe we need to change this later?! For now it feels ok to do so...
                         ));
-
                     }
 
                 } else {
