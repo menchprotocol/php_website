@@ -616,7 +616,7 @@ class Comm_model extends CI_Model {
                     $this->Db_model->k_complete_recursive_up($ks[0], $ks[0]);
 
                     //Go to next item:
-                    $ks_next = $this->Db_model->k_next_fetch($w_id,$k_rank);
+                    $ks_next = $this->Db_model->k_next_fetch($w_id);
                     if($ks_next){
                         //Now move on to communicate the next step.
                         $this->Comm_model->foundation_message(array(
