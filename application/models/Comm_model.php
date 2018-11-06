@@ -1208,7 +1208,7 @@ class Comm_model extends CI_Model {
                         //User needs to choose one of the following:
                         $message_body .= 'Choose one of the following options to '.$cs[0]['c_outcome'].':';
                         foreach($k_outs as $counter=>$k){
-                            if($counter==10){
+                            if($counter==9){
                                 break; //Quick reply accepts 11 options max! We need 1 for skip and 10 here...
                             }
                             $message_body .= "\n\n".($counter+1).'/ '.$k['c_outcome'];
@@ -1224,7 +1224,7 @@ class Comm_model extends CI_Model {
                         //User needs to complete all children, and we'd recommend the first item as their next step:
                         $message_body .= 'There are '.count($k_outs).' items you need to complete in order to '.$cs[0]['c_outcome'].'. I recommend starting from the first one:';
                         foreach($k_outs as $counter=>$k){
-                            if($counter==10){
+                            if($counter==9){
                                 break; //Quick reply accepts 11 options max! We need 1 for skip and 10 here...
                             }
                             $message_body .= "\n\n".($counter+1).'/ '.$k['c_outcome'].( $counter==0 ? ' [Start Here]' : '' );
