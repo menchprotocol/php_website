@@ -1052,13 +1052,13 @@ class Comm_model extends CI_Model {
 
 
         //Give some context on the current intent:
-        if(isset($e['e_w_id'])){
+        if(isset($e['e_w_id']) && $e['e_w_id']>0){
             array_push($instant_messages , array(
                 'e_inbound_u_id' => 2738, //Initiated by PA
                 'e_outbound_u_id' => $e['e_outbound_u_id'],
                 'e_outbound_c_id' => $e['e_outbound_c_id'],
                 'e_w_id' => $e['e_w_id'],
-                'i_message' => 'Ok so our intention is to '.$cs[0]['c_outcome'].'.',
+                'i_message' => 'Ok so now we are focused on the intention to '.$cs[0]['c_outcome'].'.',
             ));
         }
 
@@ -1080,7 +1080,7 @@ class Comm_model extends CI_Model {
 
 
         //Do we have a subscription, if so, we need to add a next step message:
-        if(isset($e['e_w_id'])){
+        if(isset($e['e_w_id']) && $e['e_w_id']>0){
 
             //Lets see how many child intents there are
             $k_outs = $this->Db_model->k_fetch(array(
@@ -1109,6 +1109,12 @@ class Comm_model extends CI_Model {
 
                     //Inform about the next step... Messages would dispatch soon with the next cron job...
                     $message_body .= 'The next step to '.$cs[0]['c_outcome'].' is to '.$k_outs[0]['c_outcome'].'.';
+
+                    array_push( $quick_replies , array(
+                        'content_type' => 'text',
+                        'title' => 'Got It, Next ➡',
+                        'payload' => 'CHOOSEAND_'.$cs[0]['c_id'].'_'.$k_outs[0]['c_id'], //Here are are using CHOOSEAND_ also for OR branches with a single option... Maybe we need to change this later?! For now it feels ok to do so...
+                    ));
 
                 }
 
@@ -1144,15 +1150,14 @@ class Comm_model extends CI_Model {
 
                 }
 
-                //Give option to skip at all times:
-                $message_body .= "\n\n".($counter+2).'/ Skip and move-on [Not Recommended]';
-                array_push( $quick_replies , array(
-                    'content_type' => 'text',
-                    'title' => '/'.($counter+2),
-                    'payload' => 'SKIPTREE_'.$cs[0]['c_id'],
-                ));
-
             }
+
+            //Always give option to skip:
+            array_push( $quick_replies , array(
+                'content_type' => 'text',
+                'title' => 'Skip',
+                'payload' => 'SKIPTREE_'.$cs[0]['c_id'],
+            ));
 
             //Append next-step message:
             array_push($instant_messages , array(
