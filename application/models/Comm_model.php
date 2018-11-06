@@ -583,9 +583,48 @@ class Comm_model extends CI_Model {
 
             //Student consumed AND tree content, and is ready to move on to next intent...
             $input_parts = explode('_', one_two_explode('CHOOSEAND_', '', $fb_ref));
-            $cr_inbound_c_id = intval($input_parts[0]); //The parent node
-            $cr_outbound_c_id = intval($input_parts[1]); //The next step
+            $w_id = intval($input_parts[0]);
+            $k_id = intval($input_parts[1]);
+            $k_rank = intval($input_parts[2]);
+            if($w_id>0 && $k_id>0 && $k_rank>0){
 
+                //Fetch this relation:
+                $ks = $this->Db_model->k_fetch(array(
+                    'w_id' => $w_id,
+                    'k_id' => $k_id,
+                ), array('w','cr','cr_c_out'));
+
+                //Do we need any additional information?
+                $requirement_notes = echo_k_requirements($ks[0]);
+                if($requirement_notes){
+                    //yes do, let them know that they can only complete via the Action Plan:
+                    $this->Comm_model->send_message(array(
+                        array(
+                            'e_inbound_u_id' => 2738, //Initiated by PA
+                            'e_outbound_u_id' => $u['u_id'],
+                            'e_outbound_c_id' => $ks[0]['c_id'],
+                            'e_w_id' => $w_id,
+                            'i_message' => $requirement_notes.', which you can submit inside the Action Plan: /open_actionplan',
+                        ),
+                    ));
+                } else {
+
+                    //No requirements, Update this intent and move on:
+                    $this->Db_model->k_complete_recursive_up($ks[0], $ks[0]);
+
+                    //Go to next item:
+                    $ks_next = $this->Db_model->k_next_fetch($w_id,$k_rank);
+                    if($ks_next){
+                        //Now move on to communicate the next step.
+                        $this->Comm_model->foundation_message(array(
+                            'e_inbound_u_id' => 2738, //Initiated by PA
+                            'e_outbound_u_id' => $u['u_id'],
+                            'e_outbound_c_id' => $ks_next[0]['c_id'],
+                            'e_w_id' => $w_id,
+                        ));
+                    }
+                }
+            }
 
         } elseif(substr_count($fb_ref, 'CHOOSEOR_')==1){
 
@@ -604,7 +643,7 @@ class Comm_model extends CI_Model {
                             'e_outbound_u_id' => $u['u_id'],
                             'e_outbound_c_id' => $c_id,
                             'e_w_id' => $w_id,
-                            'i_message' => 'Ok, I saved your answer...',
+                            'i_message' => 'Got it, I saved your answer...',
                         ),
                     ));
 
@@ -1084,7 +1123,7 @@ class Comm_model extends CI_Model {
                 'e_outbound_u_id' => $e['e_outbound_u_id'],
                 'e_outbound_c_id' => $e['e_outbound_c_id'],
                 'e_w_id' => $e['e_w_id'],
-                'i_message' => 'Our current focus is to '.$cs[0]['c_outcome'].'.',
+                'i_message' => 'Now our focus is to '.$cs[0]['c_outcome'].'.',
             ));
         }
 
@@ -1139,7 +1178,7 @@ class Comm_model extends CI_Model {
                     }
 
                     //Do we have an option?
-                    if($k_outs){
+                    if($k_outs && count($k_outs)>0){
 
                         //Inform about the next step... Messages would dispatch soon with the next cron job...
                         $message_body .= 'The next step to '.$cs[0]['c_outcome'].' is to '.$k_outs[0]['c_outcome'].'.';
@@ -1147,7 +1186,7 @@ class Comm_model extends CI_Model {
                         array_push( $quick_replies , array(
                             'content_type' => 'text',
                             'title' => 'Ok Next ▶️',
-                            'payload' => 'CHOOSEAND_'.$cs[0]['c_id'].'_'.$k_outs[0]['c_id'], //Here are are using CHOOSEAND_ also for OR branches with a single option... Maybe we need to change this later?! For now it feels ok to do so...
+                            'payload' => 'CHOOSEAND_'.$e['e_w_id'].'_'.$k_outs[0]['k_id'].'_'.$k_outs[0]['k_rank'], //Here are are using CHOOSEAND_ also for OR branches with a single option... Maybe we need to change this later?! For now it feels ok to do so...
                         ));
 
                     }
@@ -1174,11 +1213,11 @@ class Comm_model extends CI_Model {
                         //User needs to complete all children, and we'd recommend the first item as their next step:
                         $message_body .= 'There are '.count($k_outs).' intents you need to complete in order to '.$cs[0]['c_outcome'].'. I recommend starting from the first one:';
                         foreach($k_outs as $counter=>$k){
-                            $message_body .= "\n\n".($counter+1).'/ '.$k['c_outcome'].( $counter==0 ? ' [Recommended]' : '' );
+                            $message_body .= "\n\n".($counter+1).'/ '.$k['c_outcome'].( $counter==0 ? ' [Start Here]' : '' );
                             array_push( $quick_replies , array(
                                 'content_type' => 'text',
                                 'title' => '/'.($counter+1).( $counter==0 ? ' [Recommended]' : '' ),
-                                'payload' => 'CHOOSEAND_'.$cs[0]['c_id'].'_'.$k['c_id'],
+                                'payload' => 'CHOOSEAND_'.$e['e_w_id'].'_'.$k['k_id'].'_'.$k['k_rank'],
                             ));
                         }
 

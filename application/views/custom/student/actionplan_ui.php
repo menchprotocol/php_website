@@ -13,24 +13,12 @@ $list_outs = ( count($k_ins)==0 || !($k_ins[0]['k_status']==0) || intval($c['c_i
 
 
 if(count($k_ins)==1) {
-    //Echo hidden completion box on page:
-    if ($c['c_require_url_to_complete'] && $c['c_require_notes_to_complete']) {
-        $red_note = 'Requires both a URL & completion notes to mark as complete';
-        $textarea_note = 'Include a URL & completion notes to mark as complete';
-    } elseif ($c['c_require_url_to_complete']) {
-        $red_note = 'Requires a URL';
-        $textarea_note = 'Include a URL to mark as complete';
-    } elseif ($c['c_require_notes_to_complete']) {
-        $red_note = 'Requires completion notes';
-        $textarea_note = 'Include completion notes to mark as complete';
-    } else {
-        $red_note = null;
-        $textarea_note = 'Include optional feedback';
-    }
+    //Inform the user of any completion requirements:
+    $requirement_notes = echo_k_requirements($c);
 
     //Submission button visible after first button was clicked:
     $is_incomplete = ($k_ins[0]['k_status'] <= 0 || ($k_ins[0]['k_status'] == 1 && count($k_outs) == 0));
-    $show_written_input = ($red_note && $is_incomplete);
+    $show_written_input = ($requirement_notes && $is_incomplete);
 }
 
 
@@ -142,10 +130,10 @@ if(count($k_ins)==1 && ( $has_completion_info || (!intval($c['c_is_any']) && !$h
         //echo '<input type="hidden" name="k_key" value="'.md5($k_ins[0]['k_id'].'k_key_SALT555').'" />'; //TODO Wire in for more security?!
 
         echo '<div class="toggle_text" style="'.( $show_written_input ? '' : 'display:none; ' ).'">';
-            if($red_note) {
-                echo '<div style="color:#2b2b2b; font-size:0.7em; margin:0 !important; padding:0;"><i class="fas fa-exclamation-triangle"></i> ' . $red_note . '</div>';
+            if($requirement_notes) {
+                echo '<div style="color:#2b2b2b; font-size:0.7em; margin:0 !important; padding:0;"><i class="fas fa-exclamation-triangle"></i> ' . $requirement_notes . '</div>';
             }
-            echo '<textarea name="k_notes" class="form-control maxout" placeholder="'.$textarea_note.'" style="padding:5px !important; margin:0 !important;">'.$k_ins[0]['k_notes'].'</textarea>';
+            echo '<textarea name="k_notes" class="form-control maxout" style="padding:5px !important; margin:0 !important;">'.$k_ins[0]['k_notes'].'</textarea>';
         echo '</div>';
 
 

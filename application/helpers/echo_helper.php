@@ -765,6 +765,18 @@ function echo_pa_lets(){
     return $options[rand(0,(count($options)-1))];
 }
 
+function echo_k_requirements($c){
+    if($c['c_require_url_to_complete'] && $c['c_require_notes_to_complete']) {
+        return 'Intent completion requires both a URL & a written response';
+    } elseif ($c['c_require_url_to_complete']) {
+        return 'Intent completion requires a URL';
+    } elseif ($c['c_require_notes_to_complete']) {
+        return 'Intent completion requires a written response';
+    } else {
+        return null;
+    }
+}
+
 function echo_pa_oneway(){
     //Informs the user that the PA cannot speak, unless you give it a specific command like Lets
     $options = array(
