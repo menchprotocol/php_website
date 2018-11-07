@@ -224,9 +224,6 @@ function echo_embed($url, $full_message=null, $return_array=false, $start_sec=0,
             return false;
         }
     }
-
-
-
 }
 
 
@@ -247,6 +244,7 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
     $command = null;
     $is_intent = ( $CI->uri->segment(1)=='intents' );
     $is_entity = ( $CI->uri->segment(1)=='entities' );
+    $is_public = ( !$is_intent && !$is_entity ); //The public landing pages that users use to get started
     $is_focus_entity = ( $is_entity && $CI->uri->segment(2)==$i['i_outbound_u_id'] );
     $ui = null;
     $original_cs = array();
@@ -279,9 +277,6 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
             $ui .= '<h4><i class="fas fa-hashtag" style="font-size:1em;"></i> '.$original_cs[0]['c_outcome'].'</h4>';
             $ui .= '<div>';
 
-
-
-
         }
     }
 
@@ -308,7 +303,12 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
 
 
             //Is there a slice command?
-            if(substr_count($i['i_message'],'/slice')>0){
+            if($fb_format){
+
+                //Show an option to open action plan:
+                $i['i_message'] = $i['i_message'].' /open_actionplan';
+
+            } elseif(substr_count($i['i_message'],'/slice')>0){
                 
                 $time_range = explode(':', one_two_explode('/slice:',' ',$i['i_message']) ,2);
                 
@@ -324,17 +324,22 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
                 $i['i_message'] = str_replace('/slice:'.$time_range[0].':'.$time_range[1], '', $i['i_message']);
 
 
-            } elseif(!$fb_format && !$is_focus_entity) {
+            } elseif(!$is_focus_entity) {
 
-                //So we did not have a slice command and this is an HTML request for a non-entity item
-                //The reason we don't need these for entities is that they already list all URLs with embed codes, so no need to repeat
+                //So we did not have a slice command and this is an HTML request for a non-entity page
+                //Note: The reason we don't need these for entities is that they already list all URLs with embed codes, so no need to repeat
                 //Let's see if we have any other embeddable content that we can append to message:
 
                 foreach($us[0]['u__urls'] as $x){
                     //Find all the ways we could use this URL:
                     if($x['x_type']==0){
-                        //Regular website:
-                        $embed_html_code .= '<div style="margin-top:7px;"><a href="'.$x['x_url'].'" target="_blank"><span class="url_truncate"><i class="fas fa-link" style="margin-right:3px;"></i>'.echo_clean_url($x['x_url']).'</span></a></div>';
+                        if($is_public){
+                            //Replace the name:
+
+                        } else {
+                            //Regular website:
+                            $embed_html_code .= '<div style="margin-top:7px;"><a href="'.$x['x_url'].'" target="_blank"><span class="url_truncate"><i class="fas fa-link" style="margin-right:3px;"></i>'.echo_clean_url($x['x_url']).'</span></a></div>';
+                        }
                     } elseif($x['x_type']==1){
                         $embed_html_code .= '<div style="margin-top:7px;">'.echo_embed($x['x_clean_url'],$x['x_clean_url']).'</div>';
                     } elseif($x['x_type']>1){
@@ -347,7 +352,7 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
             //Ok, lets deal with the UI based on delivery method:
             if($fb_format){
 
-                $i['i_message'] = str_replace('@'.$i['i_outbound_u_id'], '['.$us[0]['u_full_name'].']', $i['i_message']);
+                $i['i_message'] = str_replace('@'.$i['i_outbound_u_id'], $us[0]['u_full_name'], $i['i_message']);
 
             } else {
 
@@ -359,7 +364,8 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
                 } else {
 
                     //HTML format:
-                    $i['i_message'] = str_replace('@'.$i['i_outbound_u_id'], $us[0]['u_full_name'].' ', $i['i_message']);
+                    $entity_title = ( strlen($us[0]['u_bio'])>0 ? '<span data-toggle="tooltip" title="'.$us[0]['u_bio'].'" data-placement="top" class="underdot">'.$us[0]['u_full_name'].'</span>' : $us[0]['u_full_name'] );
+                    $i['i_message'] = str_replace('@'.$i['i_outbound_u_id'], $entity_title.' ', $i['i_message']);
 
                 }
 
@@ -381,13 +387,11 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
             'c_id' => $i['i_inbound_c_id'],
         ));
 
-        if($fb_format){
-            $i['i_message'] = str_replace('#'.$i['i_inbound_c_id'], '['.$cs[0]['c_outcome'].']', $i['i_message']);
-        } elseif($is_intent || $is_entity) {
-            //HTML format:
-            $i['i_message'] = str_replace('#'.$i['i_inbound_c_id'], '<a href="javascript:void(0);" onclick="url_modal(\'/intents/'.$cs[0]['c_id'].'?skip_header=1\')">'.$cs[0]['c_outcome'].'</a>', $i['i_message']);
+        if($fb_format || $is_public){
+            $i['i_message'] = str_replace('#'.$i['i_inbound_c_id'], $cs[0]['c_outcome'], $i['i_message']);
         } else {
-            //TODO landing page message
+            //HTML format for the console:
+            $i['i_message'] = str_replace('#'.$i['i_inbound_c_id'], '<a href="javascript:void(0);" onclick="url_modal(\'/intents/'.$cs[0]['c_id'].'?skip_header=1\')">'.$cs[0]['c_outcome'].'</a>', $i['i_message']);
         }
     }
 
@@ -1223,6 +1227,17 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
         //Show Landing Page URL:
         $ui .= ' <a href="/'.$c['c_id'].'" data-toggle="tooltip" title="Open Landing Page with Intent tree overview & Messenger subscription button" data-placement="top"><i class="fas fa-shopping-cart"></i></a>';
 
+
+        //Additional details about this intent?
+        $ui .= '<div style="padding-top: 5px;">';
+        if(in_array($c['c_id'],$CI->config->item('featured_cs'))) {
+            $ui .= '<b data-toggle="tooltip" title="Intention is featured on landing pages under [Related Intentions]" class="underdot" data-placement="top" style="color:#0000FF !important;"><i class="fas fa-bullhorn"></i> FEATURED</b>';
+        }
+        if(in_array($c['c_id'],$CI->config->item('onhold_intents'))) {
+            $ui .= ' &nbsp;&nbsp;<b data-toggle="tooltip" title="Intention is on-hold and not publicly accessible" class="underdot" data-placement="top" style="color:#FF0000 !important;"><i class="fas fa-exclamation-triangle"></i> ON HOLD</b>';
+        }
+        $ui .= '</div>';
+
     } elseif($level==2){
 
         //Task:
@@ -1371,6 +1386,7 @@ function echo_u($u, $level, $can_edit, $is_inbound=false){
     $ui .= '</div>';
 
     return $ui;
+
 }
 
 

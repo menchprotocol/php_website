@@ -5,8 +5,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 date_default_timezone_set('America/Los_Angeles');
 
 //Cache buster for static files
-$config['app_version'] = '0.5899'.( ( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='local.mench.co' ) ? microtime(true) : '' ); //Updates status css/js cache files
-$config['primary_c'] = 7264; //The default platform intent that would be recommended to new students
+$config['app_version'] = '0.59'.( ( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='local.mench.co' ) ? microtime(true) : '' ); //Updates status css/js cache files
+
+$config['primary_c'] = 6903; //The default platform intent that would be recommended to new students
+$config['featured_cs'] = array(6903,6623,6898,7262,7263,6672,7311,7261); //What is publicly shown on the landing pages as related intentions
 $config['primary_u'] = 1326; //The default console entity that is loaded when Entities is clicked
 $config['message_max'] = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
 $config['c_outcome_max'] = 89; //Max number of characters allowed in the title of intents
@@ -58,7 +60,7 @@ $config['object_statuses'] = array(
     'u' => array(
         -2 => array(
             's_name'  => 'Unsubscribed',
-            's_desc'  => 'User requested to be un-subscribed from Mench',
+            's_desc'  => 'User requested to be removed from Mench',
             's_icon' => 'fas fa-minus-circle',
         ),
         -1 => array(

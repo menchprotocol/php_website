@@ -434,7 +434,7 @@ class Comm_model extends CI_Model {
                 //See if this intent belong to any of these subscriptions:
                 $subscription_intents = $this->Db_model->k_fetch(array(
                     'w_outbound_u_id' => $u['u_id'], //All subscriptions belonging to this user
-                    'w_status' => 1, //Subscribed
+                    'w_status' => 1, //Active
                     '(cr_inbound_c_id='.$w_c_id.' OR cr_outbound_c_id='.$w_c_id.')' => null,
                 ), array('cr','w_c'));
 
@@ -484,7 +484,7 @@ class Comm_model extends CI_Model {
                                 echo_experts($fetch_cs[0], 1).
                                 echo_completion_estimate($fetch_cs[0], 1).
                                 echo_costs($fetch_cs[0], 1).
-                                "\n".'Are you ready to '.$fetch_cs[0]['c_outcome'].'? 💪',
+                                "\n".'Are you ready to '.$fetch_cs[0]['c_outcome'].'?',
                             'quick_replies' => array(
                                 array(
                                     'content_type' => 'text',

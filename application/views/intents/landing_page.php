@@ -21,8 +21,8 @@
 <div id="landing_page">
 
     <?php
-    if(!($c['c_id']==$this->config->item('primary_c'))){
-
+    if(!($c['c_id']==$this->config->item('primary_c')) && 0){
+        //TODO Re-active later... For now we have the bottom section for related intentions
         $need_grandpa = true;
         $grandpa_intent = null;
         $parent_intents = null;
@@ -48,6 +48,7 @@
         echo ( $need_grandpa ? $grandpa_intent : '' );
         echo $parent_intents;
         echo '</div>';
+
     }
 
 
@@ -76,10 +77,10 @@
             <?= echo_costs($c, 0) ?>
         </div>
 
-        <p style="padding-bottom: 15px;">Are you ready to <?= $c['c_outcome'] ?>? 💪</p>
+        <p style="padding-bottom: 15px;">Are you ready to <?= $c['c_outcome'] ?>?</p>
 
         <!-- Call to Action -->
-        <a class="btn btn-primary" href="https://m.me/askmench?ref=SUBSCRIBE10_<?= $c['c_id'] ?>" style="display: inline-block; padding: 12px 36px;">Subscribe [Free] <i class="fas fa-angle-right"></i></a>
+        <a class="btn btn-primary" href="https://m.me/askmench?ref=SUBSCRIBE10_<?= $c['c_id'] ?>" style="display: inline-block; padding: 12px 36px;">Get Started [Free] <i class="fas fa-angle-right"></i></a>
 
 
         <!-- Additional Notes/Details -->
@@ -147,9 +148,10 @@
                     }
                     echo '</ul>';
 
-                    //Since it has children, lets also give the option to navigate downwards:
-                    echo '<div>You can choose to <a href="/'.$c1['c_id'].'" '.( $c['c_id']==$this->config->item('primary_c') ? 'onclick="confirm_child_go('.$c1['c_id'].')"' : '' ).' class="alink-'.$c1['c_id'].'">subscribe to this intent only</a>.';
-                    echo '</div>';
+                    //Since it has children, lets also give the option to navigate downwards ONLY IF...
+                    if($c1['c__tree_max_hours']>=0.5){
+                        echo '<div>You can choose to <a href="/'.$c1['c_id'].'" '.( $c['c_id']==$this->config->item('primary_c') ? 'onclick="confirm_child_go('.$c1['c_id'].')"' : '' ).' class="alink-'.$c1['c_id'].'">subscribe to this intent only</a>.</div>';
+                    }
 
                 }
 
@@ -161,6 +163,36 @@
         </div>
         <br />
     <?php } ?>
+</div>
+
+
+<div>
+    <h3>Related Intentions</h3>
+    <div class="list-group actionplan_list">
+        <?php
+        $featured_cs = $fetch_cs = $this->Db_model->c_fetch(array(
+            'c_id IN ('.join(',', $this->config->item('featured_cs')).')' => null,
+            'c_id !=' => $c['c_id'],
+        ));
+        foreach($featured_cs as $featured_c){
+            echo '<a href="/'.$featured_c['c_id'].'" class="list-group-item">';
+
+                echo '<span class="pull-right">';
+                echo '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-right"></i></span>';
+                echo '</span>';
+
+
+                echo $featured_c['c_outcome'];
+
+                echo '<span style="font-size:0.8em; font-weight:300; margin-left:5px; display:inline-block;">';
+                echo ( $featured_c['c__tree_all_count']>0 ? '<span style="padding-right:5px;"><i class="fas fa-lightbulb-on"></i>'.$featured_c['c__tree_all_count'].'</span>' : '' );
+                echo '<span><i class="fas fa-clock"></i>'.echo_hour_range($featured_c, true).'</span>';
+                echo '</span>';
+
+            echo '</a>';
+        }
+        ?>
+    </div>
 </div>
 
 
@@ -183,6 +215,6 @@
 
 <div class="features" style="margin:55px 0 20px;">
     <p>Are you ready to <?= $c['c_outcome'] ?>?</p>
-    <a class="btn btn-primary" href="https://m.me/askmench?ref=SUBSCRIBE10_<?= $c['c_id'] ?>" style="font-size: 1.3em;">Subscribe [Free] <i class="fas fa-angle-right"></i></a>
+    <a class="btn btn-primary" href="https://m.me/askmench?ref=SUBSCRIBE10_<?= $c['c_id'] ?>" style="font-size: 1.3em;">Get Started [Free] <i class="fas fa-angle-right"></i></a>
 </div>
 
