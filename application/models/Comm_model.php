@@ -453,64 +453,52 @@ class Comm_model extends CI_Model {
 
                 } else {
 
+                    //Fetch all the messages for this intent:
+                    $tree = $this->Db_model->c_recursive_fetch($w_c_id,1,0);
 
-                    //Fetch their subscription:
-                    $subscriptions = $this->Db_model->w_fetch(array(
-                        'w_outbound_u_id' => $u['u_id'], //All subscriptions belonging to this user
-                        'w_status' => 1, //Active
-                        'w_c_id' => $w_c_id,
+                    //Show messages for this intent:
+                    $messages = $this->Db_model->i_fetch(array(
+                        'i_outbound_c_id' => $w_c_id,
+                        'i_status >=' => 0, //Published in any form
                     ));
-
-
-                    if(count($subscriptions)>0){
-                        //Fetch all the messages for this intent:
-                        $tree = $this->Db_model->c_recursive_fetch($w_c_id,1,0);
-
-                        //Show messages for this intent:
-                        $messages = $this->Db_model->i_fetch(array(
-                            'i_outbound_c_id' => $w_c_id,
-                            'i_status >=' => 0, //Published in any form
-                        ));
-                        foreach($messages as $i){
-                            $this->Comm_model->send_message(array(
-                                array_merge($i, array(
-                                    'e_w_id' => $subscriptions[0]['w_id'],
-                                    'e_inbound_u_id' => 2738, //Initiated by PA
-                                    'e_outbound_u_id' => $u['u_id'],
-                                )),
-                            ));
-                        }
-
-                        //Send message for final confirmation:
+                    foreach($messages as $i){
                         $this->Comm_model->send_message(array(
-                            array(
+                            array_merge($i, array(
+                                'e_w_id' => $subscriptions[0]['w_id'],
                                 'e_inbound_u_id' => 2738, //Initiated by PA
                                 'e_outbound_u_id' => $u['u_id'],
-                                'e_outbound_c_id' => $w_c_id,
-                                'i_message' => 'Highlights are:'."\n\n".
-                                    echo_intent_overview($fetch_cs[0], 1).
-                                    echo_contents($fetch_cs[0], 1).
-                                    echo_experts($fetch_cs[0], 1).
-                                    echo_completion_estimate($fetch_cs[0], 1).
-                                    echo_costs($fetch_cs[0], 1).
-                                    "\n".'Are you ready to '.$fetch_cs[0]['c_outcome'].'?',
-                                'quick_replies' => array(
-                                    array(
-                                        'content_type' => 'text',
-                                        'title' => 'Yes, Subscribe',
-                                        'payload' => 'SUBSCRIBE99_'.$w_c_id,
-                                    ),
-                                    array(
-                                        'content_type' => 'text',
-                                        'title' => 'No',
-                                        'payload' => 'SUBSCRIBE10_0',
-                                    ),
-                                    //TODO Maybe Show a "learn more" if Drip messages available?
-                                ),
-                            ),
+                            )),
                         ));
-
                     }
+
+                    //Send message for final confirmation:
+                    $this->Comm_model->send_message(array(
+                        array(
+                            'e_inbound_u_id' => 2738, //Initiated by PA
+                            'e_outbound_u_id' => $u['u_id'],
+                            'e_outbound_c_id' => $w_c_id,
+                            'i_message' => 'Highlights are:'."\n\n".
+                                echo_intent_overview($fetch_cs[0], 1).
+                                echo_contents($fetch_cs[0], 1).
+                                echo_experts($fetch_cs[0], 1).
+                                echo_completion_estimate($fetch_cs[0], 1).
+                                echo_costs($fetch_cs[0], 1).
+                                "\n".'Are you ready to '.$fetch_cs[0]['c_outcome'].'?',
+                            'quick_replies' => array(
+                                array(
+                                    'content_type' => 'text',
+                                    'title' => 'Yes, Subscribe',
+                                    'payload' => 'SUBSCRIBE99_'.$w_c_id,
+                                ),
+                                array(
+                                    'content_type' => 'text',
+                                    'title' => 'No',
+                                    'payload' => 'SUBSCRIBE10_0',
+                                ),
+                                //TODO Maybe Show a "learn more" if Drip messages available?
+                            ),
+                        ),
+                    ));
 
                 }
             }

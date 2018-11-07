@@ -297,7 +297,6 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
             if($fb_format){
 
                 //Show an option to open action plan:
-                $i['i_message'] = $i['i_message'].' /open_actionplan';
                 $i['i_message'] = str_replace('@'.$i['i_outbound_u_id'], $us[0]['u_full_name'], $i['i_message']);
 
             } else {
