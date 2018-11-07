@@ -777,6 +777,17 @@ function echo_pa_lets(){
     return $options[rand(0,(count($options)-1))];
 }
 
+function echo_skip_statements(){
+    $options = array(
+        'You may also skip and do none of the above, even though I would not recommend that.',
+        'You can skip and move on, which I don\'t think is a good idea.',
+        'You may also can choose to do none of the above (Not recommended).',
+    );
+    return $options[rand(0,(count($options)-1))];
+}
+
+
+
 function echo_k_requirements($c){
     if($c['c_require_url_to_complete'] && $c['c_require_notes_to_complete']) {
         return 'Intent completion requires both a URL & a written response';
