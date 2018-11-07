@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 date_default_timezone_set('America/Los_Angeles');
 
 //Cache buster for static files
-$config['app_version'] = '0.59'.( ( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='local.mench.co' ) ? microtime(true) : '' ); //Updates status css/js cache files
+$config['app_version'] = '0.591'.( ( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='local.mench.co' ) ? microtime(true) : '' ); //Updates status css/js cache files
 
 $config['primary_c'] = 6903; //The default platform intent that would be recommended to new students
 $config['featured_cs'] = array(6903,6623,6898,7262,7263,6672,7311,7261); //What is publicly shown on the landing pages as related intentions

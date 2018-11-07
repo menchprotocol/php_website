@@ -752,12 +752,28 @@ function echo_contents($c, $fb_format=0){
     }
 
 
-    $pitch = 'Insights reference'.$text_overview.'.';
+
+
+    $pitch = '';
     if($fb_format) {
-        return '📚 '.$pitch."\n";
+        return '📚 Insights reference'.$text_overview.'.'."\n";
     } else {
         //HTML format
-       return '<div class="dash-label"><span class="icon-left"><i class="fas fa-book"></i></span> '.$pitch.'</div>';
+        $id = 'ContentReferences';
+        return '<div class="panel-group" id="open'.$id.'" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
+            <div class="panel-heading" role="tab" id="heading'.$id.'">
+                <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#open'.$id.'" href="#collapse'.$id.'" aria-expanded="true" aria-controls="collapse'.$id.'">
+                        <i class="fas fa-book" style="transform:none !important;"></i> '.$all_count.' Reference'.echo__s($all_count).'
+                    </a>
+                </h4>
+            </div>
+            <div id="collapse'.$id.'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'.$id.'">
+                <div class="panel-body">
+                    Insights reference'.$text_overview.'.
+                </div>
+            </div>
+        </div></div>';
     }
 }
 
@@ -816,35 +832,71 @@ function echo_costs($c, $fb_format=0){
         $price_range = 'between $'.round($c['c__tree_min_cost']).' to $'.round($c['c__tree_max_cost']).' USD';
     }
 
-    $pitch = 'It might cost '.$price_range.' to buy verified third-party products.';
     if($fb_format) {
-        return '💵 '.$pitch."\n";
+        return '💵 It might cost '.$price_range.' to buy verified third-party products.'."\n";
     } else {
         //HTML format
-        return '<div class="dash-label"><span class="icon-left"><i class="fas fa-usd-square"></i></span> '.$pitch.'</div>';
+        $id = 'CostForcast';
+        return '<div class="panel-group" id="open'.$id.'" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
+            <div class="panel-heading" role="tab" id="heading'.$id.'">
+                <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#open'.$id.'" href="#collapse'.$id.'" aria-expanded="true" aria-controls="collapse'.$id.'">
+                        <i class="fas fa-usd-square" style="transform:none !important;"></i> '.ucwords($price_range).'
+                    </a>
+                </h4>
+            </div>
+            <div id="collapse'.$id.'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'.$id.'">
+                <div class="panel-body">
+                    It might cost '.$price_range.' to purchase verified third-party products.
+                </div>
+            </div>
+        </div></div>';
     }
 }
 
 function echo_intent_overview($c, $fb_format=0){
-    $pitch = 'Action Plan includes '.$c['c__tree_all_count'].' insights.';
     if($fb_format) {
-        return '💡 '.$pitch."\n";
+        return '💡 Action Plan includes '.$c['c__tree_all_count'].' insights.'."\n";
     } else {
         //HTML format
-        return '<div class="dash-label"><span class="icon-left"><i class="fas fa-lightbulb-on"></i></span> '.$pitch.'</div>';
+        $id = 'IntentOverview';
+        return '<div class="panel-group" id="open'.$id.'" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
+            <div class="panel-heading" role="tab" id="heading'.$id.'">
+                <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#open'.$id.'" href="#collapse'.$id.'" aria-expanded="true" aria-controls="collapse'.$id.'">
+                    <i class="fas fa-lightbulb-on" style="transform:none !important;"></i> '.$c['c__tree_all_count'].' Insights
+                </a>
+            </h4>
+        </div>
+        <div id="collapse'.$id.'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'.$id.'">
+            <div class="panel-body">
+                Action Plan includes '.$c['c__tree_all_count'].' Insights that offer tips and actionable tasks from content published by industry experts.
+            </div>
+        </div>
+    </div></div>';
     }
 }
 
 function echo_completion_estimate($c, $fb_format=0){
-
-    $is_equal = ( $c['c__tree_max_hours']==$c['c__tree_min_hours'] );
-    $pitch = 'It takes '.strtolower(echo_hour_range($c)).' to complete your personalized Action Plan.';
-
     if($fb_format) {
-        return '🕓 '.$pitch."\n";
+        return '🕓 It takes '.strtolower(echo_hour_range($c)).' to complete your personalized Action Plan.'."\n";
     } else {
         //HTML format
-       return '<div class="dash-label"><span class="icon-left"><i class="fas fa-clock"></i></span> '.$pitch.'</div>';
+        $id = 'EstimatedTime';
+        return '<div class="panel-group" id="open'.$id.'" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
+            <div class="panel-heading" role="tab" id="heading'.$id.'">
+                <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#open'.$id.'" href="#collapse'.$id.'" aria-expanded="true" aria-controls="collapse'.$id.'">
+                        <i class="fas fa-clock" style="transform:none !important;"></i> '.ucwords(echo_hour_range($c)).'
+                    </a>
+                </h4>
+            </div>
+            <div id="collapse'.$id.'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'.$id.'">
+                <div class="panel-body">
+                    It usually takes '.strtolower(echo_hour_range($c)).' to complete a personalized version of this Action Plan.
+                </div>
+            </div>
+        </div></div>';
     }
 }
 
@@ -926,12 +978,28 @@ function echo_experts($c, $fb_format=0){
     }
 
 
+
     $pitch = 'Insights quote '.$all_count.' industry expert'.echo__s($all_count).($all_count==1 ? ':' : ' including' ).$text_overview;
     if($fb_format) {
-        return '👩‍🎓 '.$pitch."\n";
+        return '👩‍🎓 '.$pitch.".\n";
     } else {
         //HTML format
-        return '<div class="dash-label"><span class="icon-left"><i class="fas fa-user-graduate"></i></span> '.$pitch.'</div>';
+        $id = 'IndustryExperts';
+        return '<div class="panel-group" id="open'.$id.'" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
+            <div class="panel-heading" role="tab" id="heading'.$id.'">
+                <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#open'.$id.'" href="#collapse'.$id.'" aria-expanded="true" aria-controls="collapse'.$id.'">
+                        <i class="fas fa-shield-check" style="transform:none !important;"></i> '.$all_count.' Industry Expert'.echo__s($all_count).'
+                    </a>
+                </h4>
+            </div>
+            <div id="collapse'.$id.'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'.$id.'">
+                <div class="panel-body">
+                    '.$pitch.'.
+                    <p style="font-size: 1em !important;">They are not affiliated with Mench, yet their work has been referenced by Mench.</p>
+                </div>
+            </div>
+        </div></div>';
     }
 }
 
@@ -1165,6 +1233,7 @@ function echo_estimated_time($c_time_estimate,$show_icon=1,$micro=false,$c_id=0,
         } else {
 
             if($show_icon){
+
                 $ui .= '<i class="fas fa-clock"></i>';
             }
             if($c_time_estimate<1){

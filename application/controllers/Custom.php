@@ -18,6 +18,7 @@ class Custom extends CI_Controller {
         $this->load->view('custom/shared/f_footer');
     }
 
+
     function jobs(){
         $this->load->view('custom/shared/f_header' , array(
             'title' => 'Work at Mench',
@@ -25,6 +26,7 @@ class Custom extends CI_Controller {
         $this->load->view('custom/mench-co-jobs');
         $this->load->view('custom/shared/f_footer');
     }
+
 
     function index(){
         $udata = $this->session->userdata('user');
@@ -57,6 +59,7 @@ class Custom extends CI_Controller {
         }
     }
 
+
 	function login(){
 	    //Check to see if they are already logged in?
 	    $udata = $this->session->userdata('user');
@@ -71,7 +74,8 @@ class Custom extends CI_Controller {
 		$this->load->view('custom/login');
 		$this->load->view('custom/shared/f_footer');
 	}
-	
+
+
 	function terms(){
 		$this->load->view('custom/shared/f_header' , array(
 		    'title' => 'Terms & Privacy Policy',
