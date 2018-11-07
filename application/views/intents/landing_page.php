@@ -166,35 +166,6 @@
 </div>
 
 
-<div>
-    <h3>Related Intentions</h3>
-    <div class="list-group actionplan_list">
-        <?php
-        $featured_cs = $fetch_cs = $this->Db_model->c_fetch(array(
-            'c_id IN ('.join(',', $this->config->item('featured_cs')).')' => null,
-            'c_id !=' => $c['c_id'],
-        ));
-        foreach($featured_cs as $featured_c){
-            echo '<a href="/'.$featured_c['c_id'].'" class="list-group-item">';
-
-                echo '<span class="pull-right">';
-                echo '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-right"></i></span>';
-                echo '</span>';
-
-
-                echo $featured_c['c_outcome'];
-
-                echo '<span style="font-size:0.8em; font-weight:300; margin-left:5px; display:inline-block;">';
-                echo ( $featured_c['c__tree_all_count']>0 ? '<span style="padding-right:5px;"><i class="fas fa-lightbulb-on"></i>'.$featured_c['c__tree_all_count'].'</span>' : '' );
-                echo '<span><i class="fas fa-clock"></i>'.echo_hour_range($featured_c, true).'</span>';
-                echo '</span>';
-
-            echo '</a>';
-        }
-        ?>
-    </div>
-</div>
-
 
 
 <div class="why_mench">
@@ -218,3 +189,35 @@
     <a class="btn btn-primary" href="https://m.me/askmench?ref=SUBSCRIBE10_<?= $c['c_id'] ?>" style="font-size: 1.3em;">Get Started [Free] <i class="fas fa-angle-right"></i></a>
 </div>
 
+
+
+
+
+<div>
+    <h3>Related Intentions</h3>
+    <div class="list-group actionplan_list">
+        <?php
+        $featured_cs = $fetch_cs = $this->Db_model->c_fetch(array(
+            'c_id IN ('.join(',', $this->config->item('featured_cs')).')' => null,
+            'c_id !=' => $c['c_id'],
+        ));
+        foreach($featured_cs as $featured_c){
+            echo '<a href="/'.$featured_c['c_id'].'" class="list-group-item">';
+
+            echo '<span class="pull-right">';
+            echo '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-right"></i></span>';
+            echo '</span>';
+
+
+            echo $featured_c['c_outcome'];
+
+            echo '<span style="font-size:0.8em; font-weight:300; margin-left:5px; display:inline-block;">';
+            echo ( $featured_c['c__tree_all_count']>0 ? '<span style="padding-right:5px;"><i class="fas fa-lightbulb-on"></i>'.$featured_c['c__tree_all_count'].'</span>' : '' );
+            echo '<span><i class="fas fa-clock"></i>'.echo_hour_range($featured_c, true).'</span>';
+            echo '</span>';
+
+            echo '</a>';
+        }
+        ?>
+    </div>
+</div>

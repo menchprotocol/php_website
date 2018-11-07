@@ -838,7 +838,7 @@ function echo_intent_overview($c, $fb_format=0){
 function echo_completion_estimate($c, $fb_format=0){
 
     $is_equal = ( $c['c__tree_max_hours']==$c['c__tree_min_hours'] );
-    $pitch = 'It takes '.strtolower(echo_hour_range($c)).' to complete this Action Plan.';
+    $pitch = 'It takes '.strtolower(echo_hour_range($c)).' to complete your personalized Action Plan.';
 
     if($fb_format) {
         return '🕓 '.$pitch."\n";
