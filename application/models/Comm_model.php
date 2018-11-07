@@ -1237,7 +1237,7 @@ class Comm_model extends CI_Model {
                     }
 
                     //Always give option to skip:
-                    $message_body .= "\n\n".echo_skip_statements();
+                    $message_body .= ( rand(1,2)==1 ? "\n\n".echo_skip_statements() : '' );
                     array_push( $quick_replies , array(
                         'content_type' => 'text',
                         'title' => 'Skip',

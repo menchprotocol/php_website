@@ -781,7 +781,8 @@ function echo_skip_statements(){
     $options = array(
         'You may also skip and do none of the above, even though I would not recommend that.',
         'You can skip and move on, which I don\'t think is a good idea.',
-        'You may also can choose to do none of the above (Not recommended).',
+        'You may also skip this entire section and move on, which I would vote against.',
+        'There is a skip option as well...',
     );
     return $options[rand(0,(count($options)-1))];
 }
