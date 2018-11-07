@@ -293,68 +293,62 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
 
         if(count($us)>0){
 
-
-            //Does it have a /slice command?
-            $time_range = array();
-            $found_embeddable = false;
-            $button_title = 'Open Entity';
-            $button_url = '/entities/'.$us[0]['u_id'].'?skip_header=1'; //To loadup the entity
-            $embed_html_code = null; //Only applicable when !$fb_format
-
-
             //Is there a slice command?
             if($fb_format){
 
                 //Show an option to open action plan:
                 $i['i_message'] = $i['i_message'].' /open_actionplan';
-
-            } elseif(substr_count($i['i_message'],'/slice')>0){
-                
-                $time_range = explode(':', one_two_explode('/slice:',' ',$i['i_message']) ,2);
-                
-                //Try finding a compatible URL for slicing:
-                foreach($us[0]['u__urls'] as $x){
-                    if($x['x_type']==1 && substr_count($x['x_url'],'youtube.com')>0 ){
-                        $embed_html_code = '<div style="margin-top:7px;">'.echo_embed($x['x_clean_url'], $x['x_clean_url'],false, $time_range[0], $time_range[1]).'</div>';
-                        break;
-                    }
-                }
-                
-                //Remove slice command:
-                $i['i_message'] = str_replace('/slice:'.$time_range[0].':'.$time_range[1], '', $i['i_message']);
-
-
-            } elseif(!$is_focus_entity) {
-
-                //So we did not have a slice command and this is an HTML request for a non-entity page
-                //Note: The reason we don't need these for entities is that they already list all URLs with embed codes, so no need to repeat
-                //Let's see if we have any other embeddable content that we can append to message:
-
-                foreach($us[0]['u__urls'] as $x){
-                    //Find all the ways we could use this URL:
-                    if($x['x_type']==0){
-                        if($is_public){
-                            //Replace the name:
-
-                        } else {
-                            //Regular website:
-                            $embed_html_code .= '<div style="margin-top:7px;"><a href="'.$x['x_url'].'" target="_blank"><span class="url_truncate"><i class="fas fa-link" style="margin-right:3px;"></i>'.echo_clean_url($x['x_url']).'</span></a></div>';
-                        }
-                    } elseif($x['x_type']==1){
-                        $embed_html_code .= '<div style="margin-top:7px;">'.echo_embed($x['x_clean_url'],$x['x_clean_url']).'</div>';
-                    } elseif($x['x_type']>1){
-                        $embed_html_code .= '<div style="margin-top:7px;">'.echo_content_url($x['x_clean_url'],$x['x_type']).'</div>';
-                    }
-                }
-            }
-            
-
-            //Ok, lets deal with the UI based on delivery method:
-            if($fb_format){
-
                 $i['i_message'] = str_replace('@'.$i['i_outbound_u_id'], $us[0]['u_full_name'], $i['i_message']);
 
             } else {
+
+                //HTML Format:
+                $time_range = array();
+                $button_title = 'Open Entity';
+                $button_url = '/entities/'.$us[0]['u_id'].'?skip_header=1'; //To loadup the entity
+                $embed_html_code = null;
+
+                if(substr_count($i['i_message'],'/slice')>0){
+
+                    $time_range = explode(':', one_two_explode('/slice:',' ',$i['i_message']) ,2);
+
+                    //Try finding a compatible URL for slicing:
+                    foreach($us[0]['u__urls'] as $x){
+                        if($x['x_type']==1 && substr_count($x['x_url'],'youtube.com')>0 ){
+                            $embed_html_code = '<div style="margin-top:7px;">'.echo_embed($x['x_clean_url'], $x['x_clean_url'],false, $time_range[0], $time_range[1]).'</div>';
+                            break;
+                        }
+                    }
+
+                    //Remove slice command:
+                    $i['i_message'] = str_replace('/slice:'.$time_range[0].':'.$time_range[1], '', $i['i_message']);
+
+
+                } elseif(!$is_focus_entity) {
+
+                    //So we did not have a slice command and this is an HTML request for a non-entity page
+                    //Note: The reason we don't need these for entities is that they already list all URLs with embed codes, so no need to repeat
+                    //Let's see if we have any other embeddable content that we can append to message:
+
+                    foreach($us[0]['u__urls'] as $x){
+                        //Find all the ways we could use this URL:
+                        if($x['x_type']==0){
+                            if($is_public){
+                                //Replace the name:
+
+                            } else {
+                                //Regular website:
+                                $embed_html_code .= '<div style="margin-top:7px;"><a href="'.$x['x_url'].'" target="_blank"><span class="url_truncate"><i class="fas fa-link" style="margin-right:3px;"></i>'.echo_clean_url($x['x_url']).'</span></a></div>';
+                            }
+                        } elseif($x['x_type']==1){
+                            $embed_html_code .= '<div style="margin-top:7px;">'.echo_embed($x['x_clean_url'],$x['x_clean_url']).'</div>';
+                        } elseif($x['x_type']>1){
+                            $embed_html_code .= '<div style="margin-top:7px;">'.echo_content_url($x['x_clean_url'],$x['x_type']).'</div>';
+                        }
+                    }
+                }
+
+
 
                 if($is_intent || ($is_entity && !$is_focus_entity)) {
 
@@ -379,6 +373,7 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
     }
 
 
+
     //Does this have an intent reference?
     if(isset($i['i_inbound_c_id']) && $i['i_inbound_c_id']>0){
         //This message has a referenced entity
@@ -394,8 +389,6 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
             $i['i_message'] = str_replace('#'.$i['i_inbound_c_id'], '<a href="javascript:void(0);" onclick="url_modal(\'/intents/'.$cs[0]['c_id'].'?skip_header=1\')">'.$cs[0]['c_outcome'].'</a>', $i['i_message']);
         }
     }
-
-
 
 
 
