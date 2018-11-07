@@ -1132,6 +1132,21 @@ function echo_status($object=null,$status=null,$micro_status=false,$data_placeme
     }
 }
 
+function echo_featured_c($c){
+    $ui = '<a href="/'.$c['c_id'].'" class="list-group-item">';
+
+    $ui .= '<span class="pull-right">';
+    $ui .= '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-right"></i></span>';
+    $ui .= '</span>';
+
+    $ui .= $c['c_outcome'];
+    $ui .= '<span style="font-size:0.8em; font-weight:300; margin-left:5px; display:inline-block;">';
+    //$ui .= ( $c['c__tree_all_count']>0 ? '<span style="padding-right:5px;"><i class="fas fa-lightbulb-on"></i>'.$c['c__tree_all_count'].'</span>' : '' );
+    $ui .= '<span><i class="fas fa-clock"></i>'.echo_hour_range($c, false).'</span>';
+    $ui .= '</span>';
+    $ui .= '</a>';
+    return $ui;
+}
 
 function echo_estimated_time($c_time_estimate,$show_icon=1,$micro=false,$c_id=0,$c_time_intent=0){
 

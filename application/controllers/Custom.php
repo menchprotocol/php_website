@@ -28,6 +28,7 @@ class Custom extends CI_Controller {
 
     function index(){
         $udata = $this->session->userdata('user');
+
         if(isset($udata['u__inbounds']) && array_any_key_exists(array(1308,1281),$udata['u__inbounds'])){
 
             //Lead coach and above, go to console:
@@ -44,7 +45,14 @@ class Custom extends CI_Controller {
         } else {
 
             //Go to default landing page:
-            redirect_message('/'.$this->config->item('primary_c'));
+            return redirect_message('/'.$this->config->item('primary_c'));
+
+            //Show index page:
+            $this->load->view('custom/shared/f_header' , array(
+                'title' => 'Terms & Privacy Policy',
+            ));
+            $this->load->view('custom/featured_intentions');
+            $this->load->view('custom/shared/f_footer');
 
         }
     }
