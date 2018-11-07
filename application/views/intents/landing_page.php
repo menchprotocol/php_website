@@ -188,7 +188,8 @@
 
 
 
-
+<?php
+/*
 
 <div>
     <h3>Related Intentions</h3>
@@ -204,3 +205,6 @@
         ?>
     </div>
 </div>
+
+ */
+?>

@@ -1027,7 +1027,7 @@ function echo_hour_range($c, $micro=false){
 
     //Generate hours range:
     $ui_time = ($is_minutes ? round($c['c__tree_min_hours']*60) : round($c['c__tree_min_hours'], $hours_decimal) );
-    $ui_time .= ( $micro ? '-' : ' to ' );
+    $ui_time .= '-';
     $ui_time .= ($is_minutes ? round($c['c__tree_max_hours']*60) : round($c['c__tree_max_hours'], $hours_decimal) );
     $ui_time .= ($is_minutes ? ($micro?'m':' Minutes') : ($micro?'h':' Hours') );
 

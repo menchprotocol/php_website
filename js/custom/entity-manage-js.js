@@ -5,7 +5,7 @@ function initiate_outbound_search(){
 
         ur_add(suggestion.u_id,0,0);
 
-    }).autocomplete({hint: false, minLength: 3, autoselect:true, keyboardShortcuts: ['a']}, [{
+    }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
 
         source: function (q, cb) {
             algolia_u_index.search(q, {
@@ -104,7 +104,7 @@ $(document).ready(function () {
 
     $("#new-inbound .new-input").on('autocomplete:selected', function (event, suggestion, dataset) {
         ur_add(suggestion.u_id,0,1);
-    }).autocomplete({hint: false, minLength: 3, autoselect:true, keyboardShortcuts: ['a']}, [{
+    }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
         source: function (q, cb) {
             algolia_u_index.search(q, {
                 hitsPerPage: 7,
