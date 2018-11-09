@@ -464,7 +464,9 @@ class Cron extends CI_Controller {
 
     }
 
-    function fix_u(){
+
+    function fix_people_missing_inbound(){
+	    //TODO Run on more time later, should return nothing... Then delete this...
         $fetch_us = $this->Db_model->u_fetch(array(
             'u_fb_psid >' => 0,
         ));
@@ -472,7 +474,6 @@ class Cron extends CI_Controller {
             if(!isset($u['u__inbounds'][1278])){
                 //Add inbound:
                 echo '<a href="/entities/'.$u['u_id'].'">'.$u['u_full_name'].'</a><br />';
-                continue;
                 $ur1 = $this->Db_model->ur_create(array(
                     'ur_outbound_u_id' => $u['u_id'],
                     'ur_inbound_u_id' => 1278,
