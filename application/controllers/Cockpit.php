@@ -28,9 +28,25 @@ class Cockpit extends CI_Controller {
                 ),
             ),
         ));
-        $this->load->view('console/cockpit/engagements_browse');
+        $this->load->view('cockpit/engagements_browse');
         $this->load->view('console/console_footer');
     }
+
+
+    function subscriptions(){
+        $this->load->view('console/console_header', array(
+            'title' => 'Subscriptions Browser',
+            'breadcrumb' => array(
+                array(
+                    'link' => null,
+                    'anchor' => 'Subscriptions Browser',
+                ),
+            ),
+        ));
+        $this->load->view('cockpit/subscriptions_browse');
+        $this->load->view('console/console_footer');
+    }
+
 
 
     function ej_list($e_id){
@@ -67,7 +83,7 @@ class Cockpit extends CI_Controller {
 	                ),
 	            ),
 	        ));
-	        $this->load->view('console/cockpit/udemy_category' , array(
+	        $this->load->view('cockpit/udemy_category' , array(
 	            'il_category' => $this->Db_model->il_fetch(array(
 	                'il_udemy_user_id >' => 0,
 	                'il_student_count >' => 0,
@@ -88,7 +104,7 @@ class Cockpit extends CI_Controller {
 	                ),
 	            ),
 	        ));
-	        $this->load->view('console/cockpit/udemy_all' , array(
+	        $this->load->view('cockpit/udemy_all' , array(
 	            'il_overview' => $this->Db_model->il_overview(),
 	        ));
 	        $this->load->view('console/console_footer');
@@ -97,18 +113,18 @@ class Cockpit extends CI_Controller {
 	}
 
 
-    function statusbible(){
+    function statuslegend(){
         //Load views
         $this->load->view('console/console_header' , array(
-            'title' => 'Object Statuses',
+            'title' => 'Status Legend',
             'breadcrumb' => array(
                 array(
                     'link' => null,
-                    'anchor' => 'Object Statuses',
+                    'anchor' => 'Status Legend',
                 ),
             ),
         ));
-        $this->load->view('console/cockpit/echo_status');
+        $this->load->view('cockpit/statuslegend');
         $this->load->view('console/console_footer');
     }
 

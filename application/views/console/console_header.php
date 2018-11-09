@@ -103,17 +103,23 @@ $uri_segment_2 = $this->uri->segment(2);
             <?php
             //Side menu header:
             echo '<div class="left-li-title">';
-            echo '<i class="fas fa-user-shield" style="margin-right:3px;"></i> Admin Hub';
+            echo '<i class="fas fa-user-shield" style="margin-right:3px;"></i> Admin Cockpit';
             echo '</div>';
 
 
             echo '<ul class="nav navbar-main" style="margin-top:7px;">';
+
+
                 //The the Cockpit Menu for the Mench team:
                 echo '<li class="li-sep '.( $uri_segment_2=='engagements' ? 'active' : '' ).'"><a href="/cockpit/engagements"><i class="fas fa-exchange"></i><p>Engagements</p></a></li>';
 
-                echo '<li class="li-sep '.( $uri_segment_2=='udemy' ? 'active' : '' ).'"><a href="/cockpit/udemy"><i class="fas fa-address-book"></i><p>Udemy Community</p></a></li>';
+                echo '<li class="li-sep '.( $uri_segment_2=='subscriptions' ? 'active' : '' ).'"><a href="/cockpit/subscriptions"><i class="fas fa-comment-plus"></i><p>Subscriptions</p></a></li>';
 
-                echo '<li class="li-sep '.( $uri_segment_2=='statusbible' ? 'active' : '' ).'"><a href="/cockpit/statusbible"><i class="fas fa-sliders-h"></i><p>Object Statuses</p></a></li>';
+                echo '<li class="li-sep '.( $uri_segment_2=='statuslegend' ? 'active' : '' ).'"><a href="/cockpit/statuslegend"><i class="fas fa-shapes"></i><p>Status Legend</p></a></li>';
+
+
+                //Our index of Udemy instructors:
+                //echo '<li class="li-sep '.( $uri_segment_2=='udemy' ? 'active' : '' ).'"><a href="/cockpit/udemy"><i class="fas fa-address-book"></i><p>Udemy Community</p></a></li>';
 
 
                 //External Tools:
@@ -121,20 +127,21 @@ $uri_segment_2 = $this->uri->segment(2);
 
                 echo '<li><a href="https://www.facebook.com/askmench/inbox" target="_blank"><i class="fab fa-facebook-messenger"></i><p>Facebook Chat &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
 
-                echo '<li><a href="https://support.mench.com/chat/agent" target="_blank"><i class="fas fa-comment-dots"></i><p>Zendesk Chat &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
+                //echo '<li><a href="https://support.mench.com/chat/agent" target="_blank"><i class="fas fa-comment-dots"></i><p>Zendesk Chat &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
 
-                echo '<li><a href="https://mench.zendesk.com/agent/dashboard" target="_blank"><i class="fas fa-ticket"></i><p>Zendesk Tickets &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
+                //echo '<li><a href="https://mench.zendesk.com/agent/dashboard" target="_blank"><i class="fas fa-ticket"></i><p>Zendesk Tickets &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
 
-                echo '<li><a href="https://mench.zendesk.com/knowledge/lists" target="_blank"><i class="fas fa-book"></i><p>Zendesk Guides &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
+                //echo '<li><a href="https://mench.zendesk.com/knowledge/lists" target="_blank"><i class="fas fa-book"></i><p>Zendesk Guides &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
 
 
-                echo '<li><a href="https://app.hubspot.com/sales" target="_blank"><i class="fab fa-hubspot"></i><p>HubSpot CRM &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
+                //echo '<li><a href="https://app.hubspot.com/sales" target="_blank"><i class="fab fa-hubspot"></i><p>HubSpot CRM &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
 
                 //echo '<li><a href="https://app.redash.io/mench/" target="_blank"><i class="fas fa-database"></i><p>SQL DB Stats &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
 
                 echo '<li><a href="https://mench.foundation/wp-login.php" target="_blank"><i class="fab fa-wordpress"></i><p>Mench Blog &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
 
                 echo '<li><a href="https://www.youtube.com/channel/UCOH64HiAIfJlz73tTSI8n-g" target="_blank"><i class="fab fa-youtube"></i><p>YouTube Channel &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
+
 
             echo '</ul>';
             ?>

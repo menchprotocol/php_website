@@ -44,7 +44,7 @@ class Entities extends CI_Controller {
 
     function entity_load_more(){
 
-        $entity_per_page = $this->config->item('entity_per_page');
+        $items_per_page = $this->config->item('items_per_page');
         $inbound_u_id = intval($_POST['inbound_u_id']);
         $u_status_filter = intval($_POST['u_status_filter']);
         $page = intval($_POST['page']);
@@ -63,15 +63,15 @@ class Entities extends CI_Controller {
         //Fetch entity itself:
         $entities = $this->Db_model->u_fetch(array('u_id' => $inbound_u_id));
         $child_entities_count = count($this->Db_model->ur_outbound_fetch($filters));
-        $child_entities = $this->Db_model->ur_outbound_fetch($filters, array('u__outbound_count'), $entity_per_page, ($page*$entity_per_page));
+        $child_entities = $this->Db_model->ur_outbound_fetch($filters, array('u__outbound_count'), $items_per_page, ($page*$items_per_page));
 
         foreach($child_entities as $u){
             echo echo_u($u, 2, intval($_POST['can_edit']), false /* Load more only for outbound */);
         }
 
         //Do we need another load more button?
-        if($child_entities_count>(($page*$entity_per_page) + count($child_entities))){
-            echo_next_u(($page+1), $entity_per_page, $child_entities_count);
+        if($child_entities_count>(($page*$items_per_page) + count($child_entities))){
+            echo_next_u(($page+1), $items_per_page, $child_entities_count);
         }
 
     }

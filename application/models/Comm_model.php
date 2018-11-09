@@ -190,6 +190,12 @@ class Comm_model extends CI_Model {
                 'u_fb_psid'         => $fp_psid,
             ));
 
+            //Assign people group as we know this is who they are:
+            $ur1 = $this->Db_model->ur_create(array(
+                'ur_outbound_u_id' => $u['u_id'],
+                'ur_inbound_u_id' => 1278,
+            ));
+
             //Log new user engagement:
             $this->Db_model->e_create(array(
                 'e_inbound_u_id' => $u['u_id'],
@@ -1237,7 +1243,6 @@ class Comm_model extends CI_Model {
                     }
 
                     //Always give option to skip:
-                    $message_body .= ( rand(1,2)==1 ? "\n\n".echo_skip_statements() : '' );
                     array_push( $quick_replies , array(
                         'content_type' => 'text',
                         'title' => 'Skip',

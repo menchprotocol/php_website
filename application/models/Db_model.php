@@ -417,7 +417,7 @@ class Db_model extends CI_Model {
                                 'e_outbound_u_id' => $cs[0]['w_outbound_u_id'],
                                 'e_outbound_c_id' => $cs[0]['w_c_id'],
                                 'e_w_id' => $cs[0]['w_id'],
-                                'i_message' => 'Congratulations for completing your '.echo_ordinal((count($completed_subscriptions)+1)).' Subscription 🎉 Over time I will keep sharing new insights (based on my new training data) that could help you to '.$cs[0]['c_outcome'].' 🙌 You can also stop updates on your subscriptions by saying "quit".',
+                                'i_message' => 'Congratulations for completing your '.echo_ordinal((count($completed_subscriptions)+1)).' Subscription 🎉 Over time I will keep sharing new insights (based on my new training data) that could help you to '.$cs[0]['c_outcome'].' 🙌 You can, at any time, stop updates on your subscriptions by saying "quit".',
                             ),
                             array(
                                 'e_inbound_u_id' => 2738, //Initiated by PA
@@ -858,7 +858,7 @@ class Db_model extends CI_Model {
             );
         }
 
-        //Check transactions:
+        //Check subscriptions:
         $subscriptions = $this->Db_model->w_fetch(array(
             'w_c_id' => $c_id,
             'w_status >=' => 0,
@@ -866,7 +866,7 @@ class Db_model extends CI_Model {
         if(count($subscriptions)>0){
             return array(
                 'status' => 0,
-                'message' => 'Cannot delete because there are '.count($subscriptions).' active subscriptions',
+                'message' => 'Cannot delete because there are '.count($subscriptions).' subscriptions',
                 'subscriptions' => $subscriptions,
                 'c' => $intents[0],
             );
@@ -1184,6 +1184,9 @@ class Db_model extends CI_Model {
         }
         if(in_array('u',$join_objects)){
             $this->db->join('v5_entities u', 'w.w_outbound_u_id = u.u_id');
+            if(in_array('u_x',$join_objects)){
+                $this->db->join('v5_entity_urls x', 'x.x_id = u.u_cover_x_id','left'); //Fetch the cover photo if >0
+            }
         }
         foreach($match_columns as $key=>$value){
             if(!is_null($value)){
@@ -1203,7 +1206,31 @@ class Db_model extends CI_Model {
         $q = $this->db->get();
         $results = $q->result_array();
 
-        //foreach($results as $key=>$value){}
+        if(in_array('w_stats',$join_objects)){
+            //We need to append subscription stats:
+            foreach($results as $key=>$value){
+                //Count related items:
+                $results[$key]['w_stats'] = array(
+                    //Fetch intent engagements cached per subscription:
+                    'k_count' => count($this->Db_model->k_fetch(array(
+                        'k_w_id' => $value['w_id'],
+                    ))),
+                    //Fetch engagements that need attention:
+                    'e_att_count' => count($this->Db_model->e_fetch(array(
+                        '(e_inbound_u_id='.$value['w_outbound_u_id'].' OR e_inbound_u_id='.$value['w_outbound_u_id'].')' => null,
+                        'e_inbound_c_id IN ('.join(',', $this->config->item('student_att_es')).')' => null,
+                        'e_status IN (-2,-1,0)' => null, //Auto Approved, needing menual review and approval
+                    ), 999)),
+                    //Now fetch the inverse of that for all other engagements:
+                    'e_all_count' => count($this->Db_model->e_fetch(array(
+                        '(e_inbound_u_id='.$value['w_outbound_u_id'].' OR e_inbound_u_id='.$value['w_outbound_u_id'].')' => null,
+                        '(e_inbound_c_id NOT IN ('.join(',', $this->config->item('student_att_es')).') OR e_status NOT IN (-2,-1,0))' => null,
+                    ), 999)),
+                );
+            }
+        }
+
+
 
         //Return everything that was collected:
         return $results;

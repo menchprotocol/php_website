@@ -80,7 +80,7 @@ class My extends CI_Controller {
             //Let them choose between subscriptions:
             echo '<div class="list-group" style="margin-top: 10px;">';
             foreach($subscriptions as $w){
-                echo echo_w($w);
+                echo echo_w_students($w);
             }
             echo '</div>';
 

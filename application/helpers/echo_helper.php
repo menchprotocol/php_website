@@ -587,18 +587,92 @@ function echo_link($text){
     return preg_replace('!(((f|ht)tp(s)?://)[-a-zA-Zа-яА-Я()0-9@:%_+.~#?&;//=]+)!i', '<a href="$1" target="_blank"><u>$1</u></a>', $text);
 }
 
-function echo_w($w){
+function echo_big_num($number){
+    if($number>=10000000){
+        return '<span title="'.$number.'">'.round(($number/1000000),0).'m</span>';
+    } elseif($number>=1000000){
+        return '<span title="'.$number.'">'.round(($number/1000000), 1).'m</span>';
+    } elseif($number>=10000){
+        return '<span title="'.$number.'">'.round(($number/1000), 0).'k</span>';
+    } elseif($number>=1000){
+        return '<span title="'.$number.'">'.round(($number/1000),1).'k</span>';
+    } else {
+        return $number;
+    }
+}
+
+
+function echo_w_console($w){
+
+    //Assumes w_stats has been added to w_fetch so we can display proper stats here...
+
+    $CI =& get_instance();
+    //This function will be called from 3 areas:
+    $is_intent = ( $CI->uri->segment(1)=='intents' );
+    $is_entity = ( $CI->uri->segment(1)=='entities' );
+    $is_cockpit = ( $CI->uri->segment(1)=='cockpit' );
+
+
+    //Display the item
+    $ui = '<div class="list-group-item">';
+
+    //Right content:
+    $ui .= '<span class="pull-right">';
+
+    //Show subscription time:
+    $ui .= ' <span data-toggle="tooltip" data-placement="top" title="Student initiated subscription on '.$w['w_timestamp'].'" style="font-size:0.8em;">'.echo_diff_time($w['w_timestamp']).'</span> ';
+
+
+    //Show user notification level:
+    $ui .= ' <span>'.echo_status('u_fb_notification',$w['u_fb_notification'], true, 'left').'</span> ';
+
+    //Number of intents in Student Action Plan:
+    $ui .= '<a href="#wactionplan-'.$w['w_id'].'" onclick="load_w_actionplan('.$w['w_id'].')" class="badge badge-primary grey" style="width:40px;" data-toggle="tooltip" data-placement="left" title="Subscription has '.$w['w_stats']['k_count'].' cached intents. Click to open Action Plan."><span class="btn-counter">'.echo_big_num($w['w_stats']['k_count']).'</span><i class="fas fa-hashtag"></i></a> ';
+
+    //Engagements made by student:
+    $ui .= '<a href="#wengagements-'.$w['w_id'].'" onclick="load_w_engagements('.$w['w_id'].')" class="badge badge-primary grey" style="width:40px;" data-toggle="tooltip" data-placement="left" title="'.($w['w_stats']['e_att_count']+$w['w_stats']['e_all_count']).' total engagements, '.$w['w_stats']['e_att_count'].' pending admin review."><span class="btn-counter">'.echo_big_num($w['w_stats']['e_att_count']+$w['w_stats']['e_all_count']).'</span><i class="'.( $w['w_stats']['e_att_count']>0 ? 'fas fa-exclamation-triangle redalert' : 'fas fa-exchange' ).'"></i></a>';
+
+    $ui .= '</span>';
+
+
+    //Start with subscription status:
+    $ui .= '<span>'.echo_status('w_status',$w['w_status'], true, 'right').'</span> ';
+
+    //Then customize based on request location:
+    if($is_intent || $is_cockpit){
+        //Show user who has subscribed:
+        $user_ws = $CI->Db_model->w_fetch(array(
+            'w_outbound_u_id' => $w['w_outbound_u_id'],
+        ));
+        $ui .= echo_cover($w,'micro-image', 1).' ';
+        $ui .= '<a href="/entities/'.$w['u_id'].'" class="u_full_name">'.$w['u_full_name'].'</a>';
+        $ui .= ( count($user_ws)>1 ? ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Student has '.count($user_ws).' total subsciptions" class="underdot"><i class="fas fa-comment-plus"></i> '.count($user_ws).'</span>' : '' );
+    }
+
+    if($is_entity || $is_cockpit){
+        $ui .= ( $is_cockpit ? '<div style="margin: 3px 0 0 3px;"><i class="fas fa-hashtag"></i> ' : '' );
+        $ui .= '<a href="/intents/'.$w['c_id'].'" class="u_full_name">'.$w['c_outcome'].'</a>';
+        $ui .= ( $is_cockpit ? '</div>' : '' );
+    }
+
+    $ui .= '</div>';
+
+    return $ui;
+}
+
+function echo_w_students($w){
     $ui = '<a href="/my/actionplan/'.$w['w_id'].'/'.$w['w_c_id'].'" class="list-group-item">';
     $ui .= '<span class="pull-right">';
     $ui .= '<span class="badge badge-primary"><i class="fas fa-angle-right"></i></span>';
     $ui .= '</span>';
     $ui .= echo_status('w_status',$w['w_status'],1,'right');
     $ui .= ' '.$w['c_outcome'];
-    $ui .= ' <i class="fas fa-lightbulb-on"></i> '.$w['c__tree_all_count'];
+    $ui .= '  '.$w['c__tree_all_count'];
     $ui .= ' &nbsp;<i class="fas fa-clock"></i> '.echo_hour_range($w,1);
     $ui .= '</a>';
     return $ui;
 }
+
 
 
 function echo_k($k, $is_inbound, $c_is_any_cr_inbound_c_id=0){
@@ -784,6 +858,7 @@ function echo_pa_lets(){
 }
 
 function echo_skip_statements(){
+    //TODO Not in use for now, maybe remove?
     $options = array(
         'You may also skip and do none of the above, even though I would not recommend that.',
         'You can skip and move on, which I don\'t think is a good idea.',
@@ -1203,7 +1278,7 @@ function echo_status($object=null,$status=null,$micro_status=false,$data_placeme
             if(is_null($data_placement) && $micro_status){
                 return ( isset($result['s_icon']) ? '<i class="'.$result['s_icon'].' initial"></i> ' : '<i class="fas fa-sliders-h initial"></i> ' );
             } else {
-                return '<span class="status-label" '.( (isset($result['s_desc']) || $micro_status) && !is_null($data_placement) ? 'data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.($micro_status ? $result['s_name'] : '').( isset($result['s_desc']) ? ($micro_status ? ': ' : '').$result['s_desc'] : '' ).'" style="border-bottom:1px dotted #444; padding-bottom:1px;"':'style="cursor:pointer;"').'>'.( isset($result['s_icon']) ? '<i class="'.$result['s_icon'].' initial"></i> ' : '<i class="fas fa-sliders-h initial"></i> ' ).($micro_status?'':$result['s_name']).'</span>';
+                return '<span class="status-label" '.( (isset($result['s_desc']) || $micro_status) && !is_null($data_placement) ? 'data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.($micro_status ? $CI->lang->line('obj_'.$object.'_name').' is '.$result['s_name'] : '').( isset($result['s_desc']) ? ($micro_status ? ': ' : '').$result['s_desc'] : '' ).'" style="border-bottom:1px dotted #444; padding-bottom:1px;"':'style="cursor:pointer;"').'>'.( isset($result['s_icon']) ? '<i class="'.$result['s_icon'].' initial"></i> ' : '<i class="fas fa-sliders-h initial"></i> ' ).($micro_status?'':$result['s_name']).'</span>';
             }
 
         }

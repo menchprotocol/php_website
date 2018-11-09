@@ -10,10 +10,15 @@
 $engagement_references = $this->config->item('engagement_references');
 
 $engagement_filters = array(
-    'e_inbound_c_id' => 'All Engagements',
+    'e_inbound_c_id' => 'All Engagement Types',
     'e_id' => 'Engagement ID',
     'e_u_id' => 'Entity ID',
+    'e_ur_id' => 'Entity Link ID',
+    'e_x_id' => 'Entity URL ID',
+    'e_i_id' => 'Message ID',
     'e_outbound_c_id' => 'Intent ID',
+    'e_cr_id' => 'Intent Link ID',
+    'e_w_id' => 'Subscription ID',
 );
 
 $match_columns = array();

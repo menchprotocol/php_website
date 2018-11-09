@@ -158,20 +158,6 @@ function extract_urls($text,$inverse=false){
 }
 
 
-function echo_big_num($number){
-    if($number>=10000000){
-        return '<span title="'.$number.'">'.round(($number/1000000),0).'m</span>';
-    } elseif($number>=1000000){
-        return '<span title="'.$number.'">'.round(($number/1000000), 1).'m</span>';
-    } elseif($number>=10000){
-        return '<span title="'.$number.'">'.round(($number/1000), 0).'k</span>';
-    } elseif($number>=1000){
-        return '<span title="'.$number.'">'.round(($number/1000),1).'k</span>';
-    } else {
-        return $number;
-    }
-}
-
 
 
 

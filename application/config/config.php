@@ -7,6 +7,8 @@ date_default_timezone_set('America/Los_Angeles');
 //Cache buster for static files
 $config['app_version'] = '0.592'.( ( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='local.mench.co' ) ? microtime(true) : '' ); //Updates status css/js cache files
 
+// User case: $this->config->item('student_att_es')
+
 $config['primary_c'] = 6903; //The default platform intent that would be recommended to new students
 $config['featured_cs'] = array(6903,6623,6898,7262,7263,6672,7311,7261); //What is publicly shown on the landing pages as related intentions
 $config['primary_u'] = 1326; //The default console entity that is loaded when Entities is clicked
@@ -14,9 +16,10 @@ $config['message_max'] = 610; //Max number of characters allowed in messages. Fa
 $config['c_outcome_max'] = 89; //Max number of characters allowed in the title of intents
 $config['u_full_name_max'] = 233; //Max number of characters allowed in the title of intents
 $config['file_limit_mb'] = 25; //Server setting is 32MB. see here: mench.com/ses
-$config['entity_per_page'] = 50; //Even number
+$config['items_per_page'] = 50; //Even number
 $config['universal_intents'] = array(7433); //Get to know how Mench Personal Assistant works //TODO Implement...
 $config['onhold_intents'] = array(7240,6629,6630,7248,7435,369,6653); //TODO Replace with drafting intents c_status=0
+$config['student_att_es'] = array(8,9); //The engagements that require admin review for student engagements
 
 //This should mirror outbound intents of @3000, and the order of the items would be used in the Landing page:
 $config['content_types'] = array(
@@ -51,7 +54,7 @@ $config['engagement_subscriptions'] = array(
     ),
     array(
         'admin_emails' => array('shervin@mench.com'),
-        'subscription' => array(9,72,7465,7452,8,7490),
+        'subscription' => array(9,72,7452,8),
     ),
 );
 
@@ -242,7 +245,7 @@ $config['object_statuses'] = array(
         -1 => array(
             's_name'  => 'Quit',
             's_desc'  => 'Student cancelled their subscription and stopped pursuing the intent',
-            's_icon' => 'fas fa-minus-square initial',
+            's_icon' => 'fas fa-minus-square redalert',
         ),
         /*
         0 => array(
@@ -386,31 +389,6 @@ $config['object_statuses'] = array(
             's_icon' => 'fas fa-check-circle',
         ),
     ),
-
-
-
-    't' => array(
-        -2 => array(
-            's_name'  => 'Partner Payout',
-            's_desc'  => 'Payment sent to a partner trainer, coach or affiliate',
-            's_icon' => 'fas fa-file-invoice-dollar',
-        ),
-        -1 => array(
-            's_name'  => 'Refund Payment',
-            's_desc'  => 'Transaction hold the exact amount of refund issues to the student',
-            's_icon' => 'fas fa-usd-circle',
-        ),
-        0 => array(
-            's_name'  => 'Payment Adjusted',
-            's_desc'  => 'Payment adjusted with a full/partial refunded and new transaction has been added',
-            's_icon' => 'fas fa-hand-holding-usd',
-        ),
-        1 => array(
-            's_name'  => 'Payment Received',
-            's_desc'  => 'Payment received from weekly subscription',
-            's_icon' => 'fas fa-hand-holding-usd',
-        ),
-    ),
 );
 
 //These URLs are recognized as Social Profiles
@@ -453,20 +431,28 @@ $config['social_urls'] =array(
 //The core objects of the platform:
 $config['engagement_references'] = array(
     'e_inbound_u_id' => array(
-        'name' => 'Initiator',
+        'name' => 'Initiator Entity',
         'object_code' => 'u',
     ),
     'e_outbound_u_id' => array(
-        'name' => 'Recipient',
+        'name' => 'Recipient Entity',
         'object_code' => 'u',
+    ),
+    'e_ur_id' => array(
+        'name' => 'Entity Link',
+        'object_code' => 'ur',
+    ),
+    'e_x_id' => array(
+        'name' => 'Entity URL',
+        'object_code' => 'x',
     ),
     'e_outbound_c_id' => array(
         'name' => 'Intent',
         'object_code' => 'c',
     ),
-    'e_x_id' => array(
-        'name' => 'Reference',
-        'object_code' => 'x',
+    'e_inbound_c_id' => array(
+        'name' => 'Engagement Type',
+        'object_code' => 'c',
     ),
     'e_cr_id' => array(
         'name' => 'Intent Link',

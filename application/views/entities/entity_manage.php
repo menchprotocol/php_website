@@ -11,13 +11,20 @@ $can_edit           = ( $udata['u_id']==$entity['u_id'] || array_key_exists(1281
 $add_name           = ( in_array($entity['u_id'], array(1278,2750)) ? rtrim($entity['u_full_name'],'s') : 'Content' );
 $add_id             = ( in_array($entity['u_id'], array(1278,2750)) ? $entity['u_id'] : 1326 /* Content */ );
 
-
 //Fetch other data:
 $child_entities = $this->Db_model->ur_outbound_fetch(array(
     'ur_inbound_u_id' => $entity['u_id'],
     'ur_status' => 1, //Only active
-), array('u__outbound_count'), $this->config->item('entity_per_page'));
-$subscriptions = array();
+), array('u__outbound_count'), $this->config->item('items_per_page'));
+
+//Intents subscribed:
+$limit = (is_dev() ? 10 : 100);
+$all_subscriptions = $this->Db_model->w_fetch(array(
+    'w_outbound_u_id' => $entity['u_id'],
+), array('u','c','w_stats'), array(
+    'w_id' => 'DESC',
+), $limit);
+
 
 
 //Javascript Logic:
@@ -129,7 +136,7 @@ foreach($child_entities as $u){
     echo echo_u($u, 2, $can_edit);
 }
 if($entity['u__outbound_count'] > count($child_entities)) {
-    echo_next_u(1, $this->config->item('entity_per_page'), $entity['u__outbound_count']);
+    echo_next_u(1, $this->config->item('items_per_page'), $entity['u__outbound_count']);
 }
 
 //Input to add new inbounds:
@@ -152,6 +159,25 @@ echo '</div>';
 
 
 
+//Only show if data exists (users cannot modify this anyways)
+if(count($all_subscriptions)>0){
+    //Show these subscriptions:
+    echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-comment-plus"></i> '.count($all_subscriptions).($limit==count($all_subscriptions)?'+':'').' Subscriptions</h5>';
+    echo '<div class="list-group list-grey" style="margin-bottom:10px;">';
+    foreach($all_subscriptions as $w){
+        echo echo_w_console($w);
+    }
+    echo '</div>';
+}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -159,7 +185,7 @@ echo '</div>';
 //URLs
 if(!in_array($entity['u_id'], array(1278,1326,2750))){
     echo '<h5 class="badge badge-h"><i class="fas fa-link"></i> <span class="li-urls-count">'.count($entity['u__urls']).'</span> URLs</h5>';
-    echo '<div id="list-urls" class="list-group  grey-list">';
+    echo '<div id="list-urls" class="list-group  grey-list" style="margin-bottom:40px;">';
     foreach ($entity['u__urls'] as $x) {
         echo echo_x($entity, $x);
     }
@@ -180,25 +206,6 @@ if(!in_array($entity['u_id'], array(1278,1326,2750))){
 
 
 
-
-
-
-
-
-
-
-
-
-
-//Only show if data exists (users cannot modify this anyways)
-if(count($subscriptions)>0){
-    echo '<h5 class="badge badge-h"><i class="fas fa-comment-plus"></i> <span class="li-subscriptions-count">'.count($subscriptions).'</span> Subscriptions</h5>';
-    echo '<div id="list-intents" class="list-group  grey-list">';
-    foreach ($subscriptions as $ru) {
-
-    }
-    echo '</div>';
-}
 
 
 

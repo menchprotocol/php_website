@@ -84,6 +84,27 @@ if(isset($orphan_cs)){
             <?php
             echo '</div>';
 
+
+
+
+            //Intent subscribers:
+            $limit = (is_dev() ? 10 : 100);
+            $all_subscriptions = $this->Db_model->w_fetch(array(
+                'w_c_id' => $c['c_id'],
+            ), array('u','u_x','w_stats'), array(
+                'w_id' => 'DESC',
+            ), $limit);
+
+            if(count($all_subscriptions)>0){
+                //Show these subscriptions:
+                echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-comment-plus"></i> '.count($all_subscriptions).($limit==count($all_subscriptions)?'+':'').' Subscriptions</h5>';
+                echo '<div class="list-group " style="margin-bottom: 40px;">';
+                foreach($all_subscriptions as $w){
+                    echo echo_w_console($w);
+                }
+                echo '</div>';
+            }
+
         }
         ?>
 
