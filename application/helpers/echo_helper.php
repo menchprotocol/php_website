@@ -1503,7 +1503,7 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
         //Additional details about this intent?
         $ui .= '<div style="padding-top: 5px;">';
         if(in_array($c['c_id'],$CI->config->item('featured_cs'))) {
-            $ui .= '<b data-toggle="tooltip" title="Intention is featured on landing pages under [Related Intentions]" class="underdot" data-placement="top" style="color:#0000FF !important;"><i class="fas fa-bullhorn"></i> FEATURED</b>';
+            //$ui .= '<b data-toggle="tooltip" title="Intention is featured on landing pages under [Related Intentions]" class="underdot" data-placement="top" style="color:#0000FF !important;"><i class="fas fa-bullhorn"></i> FEATURED</b>';
         }
         if(in_array($c['c_id'],$CI->config->item('onhold_intents'))) {
             $ui .= ' &nbsp;&nbsp;<b data-toggle="tooltip" title="Intention is on-hold and not publicly accessible" class="underdot" data-placement="top" style="color:#FF0000 !important;"><i class="fas fa-exclamation-triangle"></i> ON HOLD</b>';
