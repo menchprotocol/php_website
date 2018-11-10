@@ -72,8 +72,21 @@ class Bot extends CI_Controller {
     }
 
 
-    function aa(){
-            echo echo_pa_oneway();
+
+    function fixx(){
+
+        $blobs = $this->Db_model->e_fetch(array(
+            'e_timestamp >' => '2018-11-7 00:00:00',
+            'e_inbound_c_id IN (6,7)' => null,
+        ),0,array('ej'));
+
+        foreach($blobs as $b){
+            $blob = unserialize($b['ej_e_blob']);
+
+        }
+
+        echo count($blobs);
+        //echo_mili()
     }
 
 
@@ -147,6 +160,8 @@ class Bot extends CI_Controller {
                         'e_json' => $json_data,
                         'e_inbound_c_id' => 1, //Message Read
                         'e_inbound_u_id' => ( isset($u['u_id']) ? $u['u_id'] : 0 ),
+                        'e_timestamp' => echo_mili($im['timestamp']), //The Facebook time
+
                     ));
 
                 } elseif(isset($im['delivery'])) {
@@ -158,6 +173,7 @@ class Bot extends CI_Controller {
                         'e_json' => $json_data,
                         'e_inbound_c_id' => 2, //Message Delivered
                         'e_inbound_u_id' => ( isset($u['u_id']) ? $u['u_id'] : 0 ),
+                        'e_timestamp' => echo_mili($im['timestamp']), //The Facebook time
                     ));
 
                 } elseif(isset($im['referral']) || isset($im['postback'])) {
@@ -228,6 +244,7 @@ class Bot extends CI_Controller {
                         'e_inbound_c_id' => (isset($im['referral']) ? 4 : 3), //Messenger Referral/Postback
                         'e_json' => $json_data,
                         'e_inbound_u_id' => ( isset($u['u_id']) ? $u['u_id'] : 0 ),
+                        'e_timestamp' => echo_mili($im['timestamp']), //The Facebook time
                     ));
 
                 } elseif(isset($im['optin'])) {
@@ -240,6 +257,7 @@ class Bot extends CI_Controller {
                         'e_json' => $json_data,
                         'e_inbound_c_id' => 5, //Messenger Optin
                         'e_inbound_u_id' => ( isset($u['u_id']) ? $u['u_id'] : 0 ),
+                        'e_timestamp' => echo_mili($im['timestamp']), //The Facebook time
                     ));
 
                 } elseif(isset($im['message_request']) && $im['message_request']=='accept') {
@@ -250,7 +268,7 @@ class Bot extends CI_Controller {
 
                     $this->Db_model->e_create(array(
                         'e_json' => $json_data,
-                        'e_inbound_c_id' => 9, //Messenger Optin
+                        'e_inbound_c_id' => 9, //User needs attention
                         'e_inbound_u_id' => ( isset($u['u_id']) ? $u['u_id'] : 0 ),
                         'e_text_value' => 'Messenger user accept to chat because they had deleted/unsubscribed before. Welcome them back personally.',
                     ));
@@ -288,6 +306,11 @@ class Bot extends CI_Controller {
                         'e_inbound_c_id' => ( $sent_from_us ? 7 : 6 ), //Message Sent/Received
                         'e_outbound_u_id' => ( $sent_from_us && isset($u['u_id']) ? $u['u_id'] : 0 ),
                     );
+
+                    //We only have a timestamp for received messages (not sent ones):
+                    if(!$sent_from_us){
+                        $eng_data['e_timestamp'] = echo_mili($im['timestamp']); //The Facebook time
+                    }
 
                     //It may also have an attachment
                     if(isset($im['message']['attachments'])){

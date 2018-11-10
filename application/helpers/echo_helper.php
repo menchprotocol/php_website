@@ -1442,6 +1442,11 @@ function echo_estimated_time($c_time_estimate,$show_icon=1,$micro=false,$c_id=0,
 
 }
 
+function echo_mili($microtime){
+    $time = $microtime/1000;
+    echo date("Y-m-d H:i:s", floor($time)).'.'.one_two_explode('.','',$time);
+}
+
 
 function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
 

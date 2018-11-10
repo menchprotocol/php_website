@@ -2056,6 +2056,13 @@ class Db_model extends CI_Model {
         if(!isset($insert_columns['e_text_value'])){
             $insert_columns['e_text_value'] = null;
         }
+        if(!isset($insert_columns['e_timestamp'])){
+            //Time with milliseconds:
+            $t = microtime(true);
+            $micro = sprintf("%06d",($t - floor($t)) * 1000000);
+            $d = new DateTime( date('Y-m-d H:i:s.'.$micro, $t) );
+            $insert_columns['e_timestamp'] = $d->format("Y-m-d H:i:s.u");
+        }
         if(!isset($insert_columns['e_status'])){
             $insert_columns['e_status'] = -1; //Auto approved
         }
