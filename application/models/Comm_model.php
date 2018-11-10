@@ -107,33 +107,14 @@ class Comm_model extends CI_Model {
         }
     }
 
-    function fb_identify_activate($fp_psid, $fb_ref=null, $fb_message_received=null){
 
-	    /*
-	     *
-	     * Function will detect the entity (user) ID of all inbound messages
-	     *
-	     */
 
-        if($fp_psid<1){
-            //Ooops, this is not good:
-            $this->Db_model->e_create(array(
-                'e_text_value' => 'fb_identify_activate() got called without $fp_psid variable',
-                'e_inbound_c_id' => 8, //Platform Error
-            ));
-            return false;
-        }
-
-        //Try finding user references... Is this psid already registered?
-        //We either have the user in DB or we'll register them now:
-        $fb_message_received = strtolower($fb_message_received);
-        $fetch_us = $this->Db_model->u_fetch(array(
-            'u_fb_psid' => $fp_psid,
-        ), array('u__ws'));
+    function auto_respond($u, $fb_ref=null, $fb_message_received=null){
 
 
         $c_target_outcome = null;
         if($fb_message_received){
+            $fb_message_received = strtolower($fb_message_received);
             if(substr_count($fb_message_received, 'lets ')>0){
                 $c_target_outcome = one_two_explode('lets ', '', $fb_message_received);
             } elseif(substr_count($fb_message_received, 'let’s ')>0){
@@ -147,84 +128,7 @@ class Comm_model extends CI_Model {
         }
 
 
-        if(count($fetch_us)>0){
-
-            //User found:
-            $u = $fetch_us[0];
-
-        } else {
-
-            //This is a new user that needs to be registered!
-            //Call facebook messenger API and get user profile
-            $graph_fetch = $this->Comm_model->fb_graph('GET', '/'.$fp_psid, array());
-
-            if(!$graph_fetch['status'] || !isset($graph_fetch['e_json']['result']['first_name']) || strlen($graph_fetch['e_json']['result']['first_name'])<1){
-
-                $this->Db_model->e_create(array(
-                    'e_text_value' => 'fb_identify_activate() failed to fetch user profile from Facebook Graph',
-                    'e_json' => array(
-                        'fp_psid' => $fp_psid,
-                        'fb_ref' => $fb_ref,
-                        'graph_fetch' => $graph_fetch,
-                    ),
-                    'e_inbound_c_id' => 8, //Platform Error
-                ));
-
-                //We cannot create this user:
-                return false;
-            }
-
-            //We're cool!
-            $fb_profile = $graph_fetch['e_json']['result'];
-
-            //Split locale into language and country
-            $locale = explode('_',$fb_profile['locale'],2);
-
-            //Create user
-            $u = $this->Db_model->u_create(array(
-                'u_full_name' 		=> $fb_profile['first_name'].' '.$fb_profile['last_name'],
-                'u_timezone' 		=> $fb_profile['timezone'],
-                'u_gender'		 	=> strtolower(substr($fb_profile['gender'],0,1)),
-                'u_language' 		=> $locale[0],
-                'u_country_code' 	=> $locale[1],
-                'u_fb_psid'         => $fp_psid,
-            ));
-
-            //Assign people group as we know this is who they are:
-            $ur1 = $this->Db_model->ur_create(array(
-                'ur_outbound_u_id' => $u['u_id'],
-                'ur_inbound_u_id' => 1278,
-            ));
-
-            //Log new user engagement:
-            $this->Db_model->e_create(array(
-                'e_inbound_u_id' => $u['u_id'],
-                'e_inbound_c_id' => 27, //User Joined
-                'e_json' => $u,
-            ));
-
-            //No subscriptions at this point:
-            $u['u__ws'] = array();
-
-            //Update Algolia:
-            $this->Db_model->algolia_sync('u', $u['u_id']);
-
-            //Save picture locally:
-            $this->Db_model->e_create(array(
-                'e_inbound_u_id' => $u['u_id'],
-                'e_text_value' => $fb_profile['profile_pic'], //Image to be saved
-                'e_status' => 0, //Pending upload
-                'e_inbound_c_id' => 7001, //Cover Photo Save
-            ));
-        }
-
-
-        //By now we have a user, which we should return if we don't have a message or a ref code:
-        if(!$fb_ref && !$fb_message_received){
-
-            return $u;
-
-        } elseif(substr_count($fb_ref, 'UNSUBSCRIBE_')==1){
+        if(substr_count($fb_ref, 'UNSUBSCRIBE_')==1){
 
             $unsub_value = one_two_explode('UNSUBSCRIBE_', '', $fb_ref);
 
@@ -459,6 +363,8 @@ class Comm_model extends CI_Model {
 
                 } else {
 
+                    //Now we need to confirm if they really want to subscribe to this...
+
                     //Fetch all the messages for this intent:
                     $tree = $this->Db_model->c_recursive_fetch($w_c_id,1,0);
 
@@ -467,10 +373,10 @@ class Comm_model extends CI_Model {
                         'i_outbound_c_id' => $w_c_id,
                         'i_status >=' => 0, //Published in any form
                     ));
+
                     foreach($messages as $i){
                         $this->Comm_model->send_message(array(
                             array_merge($i, array(
-                                'e_w_id' => $subscriptions[0]['w_id'],
                                 'e_inbound_u_id' => 2738, //Initiated by PA
                                 'e_outbound_u_id' => $u['u_id'],
                             )),
@@ -673,14 +579,20 @@ class Comm_model extends CI_Model {
 
         } elseif(substr_count($fb_message_received, 'unsubscribe')>0 || substr_count($fb_message_received, 'quit')>0){
 
+            //See if they have any subscriptions:
+            $current_ws = $this->Db_model->w_fetch(array(
+                'w_outbound_u_id' => $u['u_id'],
+                'w_status IN (1,2)' => null, //Active subscriptions (Passive ones have a more targetted distribution)
+            ), array('c'));
+
             //User has requested to be removed. Let's see what they have:
-            if(count($u['u__ws'])>0){
+            if(count($current_ws)>0){
 
                 $quick_replies = array();
                 $i_message = 'Choose one of the following options:';
                 $increment = 1;
 
-                foreach($u['u__ws'] as $counter=>$w){
+                foreach($current_ws as $counter=>$w){
                     //Construct unsubscribe confirmation body:
                     $i_message .= "\n\n".'/'.($counter+$increment).' Unsubscribe '.$w['c_outcome'];
                     array_push( $quick_replies , array(
@@ -783,7 +695,7 @@ class Comm_model extends CI_Model {
             $res = $search_index->search($c_target_outcome, [
                 'hitsPerPage' => 6,
             ], [
-                'c__tree_all_count >' => 1, //TODO enable instant consumption of this item later...
+                'c__tree_all_count >' => 1,
             ]);
 
             if($res['nbHits']>0){
@@ -848,13 +760,21 @@ class Comm_model extends CI_Model {
 
         } elseif($fb_message_received && !$fb_ref){
 
+            //See if they have any subscriptions:
+            $current_ws = $this->Db_model->w_fetch(array(
+                'w_outbound_u_id' => $u['u_id'],
+                'w_status IN (1,2)' => null, //Active subscriptions (Passive ones have a more targetted distribution)
+            ), array('c'));
+
             //We have received a free-style message that is not recognized with a reference code...
-            if(count($u['u__ws'])==0){
+            if(count($current_ws)==0){
 
                 //They do not have a subscription, so we can offer them to subscribe to our default intent:
-                $this->Comm_model->fb_identify_activate($fp_psid, 'SUBSCRIBE10_'.$this->config->item('primary_c'), $fb_message_received);
+                $this->Comm_model->auto_respond($u, 'SUBSCRIBE10_'.$this->config->item('primary_c'), $fb_message_received);
 
             } else {
+
+                //TODO Optimize for multiple subscriptions, this one only deals with the first randomly selected one...
 
                 //We don't know what this message means...
                 $this->Comm_model->send_message(array(
@@ -866,21 +786,113 @@ class Comm_model extends CI_Model {
                 ));
 
                 //Remind user of their next step:
-                $ks_next = $this->Db_model->k_next_fetch($u['u__ws'][0]['w_id']);
+                $ks_next = $this->Db_model->k_next_fetch($current_ws[0]['w_id']);
                 if($ks_next){
                     $this->Comm_model->foundation_message(array(
                         'e_inbound_u_id' => 2738, //Initiated by PA
                         'e_outbound_u_id' => $u['u_id'],
                         'e_outbound_c_id' => $ks_next[0]['c_id'],
-                        'e_w_id' => $u['u__ws'][0]['w_id'],
+                        'e_w_id' => $current_ws[0]['w_id'],
                     ));
                 }
+
             }
         }
 
-        //Return user Object:
-        return $u;
 
+    }
+
+    function fb_identify_activate($fp_psid){
+
+	    /*
+	     *
+	     * Function will detect the entity (user) ID for all FB webhook calls
+	     *
+	     */
+
+        if($fp_psid<1){
+            //Ooops, this is not good:
+            $this->Db_model->e_create(array(
+                'e_text_value' => 'fb_identify_activate() got called without $fp_psid variable',
+                'e_inbound_c_id' => 8, //Platform Error
+            ));
+            return false;
+        }
+
+        //Try finding user references... Is this psid already registered?
+        //We either have the user in DB or we'll register them now:
+        $fetch_us = $this->Db_model->u_fetch(array(
+            'u_fb_psid' => $fp_psid,
+        ), array('skip_u__inbounds'));
+
+
+        if(count($fetch_us)>0){
+            //User found:
+            return $fetch_us[0];
+        }
+
+
+        //This is a new user that needs to be registered!
+        //Call facebook messenger API and get user profile
+        $graph_fetch = $this->Comm_model->fb_graph('GET', '/'.$fp_psid, array());
+
+        if(!$graph_fetch['status'] || !isset($graph_fetch['e_json']['result']['first_name']) || strlen($graph_fetch['e_json']['result']['first_name'])<1){
+
+            $this->Db_model->e_create(array(
+                'e_text_value' => 'fb_identify_activate() failed to fetch user profile from Facebook Graph',
+                'e_json' => array(
+                    'fp_psid' => $fp_psid,
+                    'graph_fetch' => $graph_fetch,
+                ),
+                'e_inbound_c_id' => 8, //Platform Error
+            ));
+
+            //We cannot create this user:
+            return false;
+        }
+
+        //We're cool!
+        $fb_profile = $graph_fetch['e_json']['result'];
+
+        //Split locale into language and country
+        $locale = explode('_',$fb_profile['locale'],2);
+
+        //Create user
+        $u = $this->Db_model->u_create(array(
+            'u_full_name' 		=> $fb_profile['first_name'].' '.$fb_profile['last_name'],
+            'u_timezone' 		=> $fb_profile['timezone'],
+            'u_gender'		 	=> strtolower(substr($fb_profile['gender'],0,1)),
+            'u_language' 		=> $locale[0],
+            'u_country_code' 	=> $locale[1],
+            'u_fb_psid'         => $fp_psid,
+        ));
+
+        //Assign people group as we know this is who they are:
+        $ur1 = $this->Db_model->ur_create(array(
+            'ur_outbound_u_id' => $u['u_id'],
+            'ur_inbound_u_id' => 1278,
+        ));
+
+        //Log new user engagement:
+        $this->Db_model->e_create(array(
+            'e_inbound_u_id' => $u['u_id'],
+            'e_inbound_c_id' => 27, //User Joined
+            'e_json' => $u,
+        ));
+
+        //Update Algolia:
+        $this->Db_model->algolia_sync('u', $u['u_id']);
+
+        //Save picture locally:
+        $this->Db_model->e_create(array(
+            'e_inbound_u_id' => $u['u_id'],
+            'e_text_value' => $fb_profile['profile_pic'], //Image to be saved
+            'e_status' => 0, //Pending upload
+            'e_inbound_c_id' => 7001, //Cover Photo Save
+        ));
+
+        //Return user object:
+        return $u;
     }
 
 

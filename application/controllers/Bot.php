@@ -216,7 +216,7 @@ class Bot extends CI_Controller {
                     //Did we have a ref from Messenger?
                     $ref = ( $referral_array && isset($referral_array['ref']) && strlen($referral_array['ref'])>0 ? $referral_array['ref'] : null );
 
-                    $u = $this->Comm_model->fb_identify_activate($im['sender']['id'], $ref);
+                    $u = $this->Comm_model->fb_identify_activate($im['sender']['id']);
 
                     /*
                     if($ref){
@@ -246,6 +246,11 @@ class Bot extends CI_Controller {
                         'e_inbound_u_id' => ( isset($u['u_id']) ? $u['u_id'] : 0 ),
                         'e_timestamp' => echo_mili($im['timestamp']), //The Facebook time
                     ));
+
+
+                    //We might need to respond:
+                    $this->Comm_model->auto_respond($u, $ref);
+
 
                 } elseif(isset($im['optin'])) {
 
@@ -297,7 +302,7 @@ class Bot extends CI_Controller {
                     $quick_reply_payload = ( isset($im['message']['quick_reply']['payload']) && strlen($im['message']['quick_reply']['payload'])>0 ? $im['message']['quick_reply']['payload'] : null );
                     $fb_message = ( isset($im['message']['text']) ? $im['message']['text'] : null );
 
-                    $u = $this->Comm_model->fb_identify_activate($user_id, $quick_reply_payload, ( !$sent_from_us ? $fb_message : null ));
+                    $u = $this->Comm_model->fb_identify_activate($user_id);
 
                     $eng_data = array(
                         'e_inbound_u_id' => ( $sent_from_us || !isset($u['u_id']) ? 0 : $u['u_id'] ),
@@ -355,6 +360,9 @@ class Bot extends CI_Controller {
 
                     //Log incoming engagement:
                     $this->Db_model->e_create($eng_data);
+
+                    //We might need to respond:
+                    $this->Comm_model->auto_respond($u, $quick_reply_payload, ( !$sent_from_us ? $fb_message : null ));
 
                 } else {
 
