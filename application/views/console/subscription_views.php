@@ -24,10 +24,10 @@
         } else {
 
             //Adjust height of the messaging windows:
-            //$('.grey-box').css('height', (parseInt($( window ).height())-130)+'px');
+            $('.grey-box-w').css('height', (parseInt($( window ).height())-130)+'px');
             $('.grey-box').css('max-height', (parseInt($( window ).height())-130)+'px');
 
-            //$('.ajax-frame').css('height', (parseInt($( window ).height())-155)+'px');
+            $('.ajax-frame').css('height', (parseInt($( window ).height())-155)+'px');
             $('.ajax-frame').css('max-height', (parseInt($( window ).height())-155)+'px');
 
             //Make editing frames Sticky for scrolling longer lists
@@ -123,6 +123,6 @@
 <div id="load_w_frame" class="fixed-box hidden">
     <h5 class="badge badge-h badge-h-max"><i class="fas fa-comment-plus"></i> <span id="w_title"></span></h5>
     <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;"><a href="javascript:void(0)" onclick="$('#load_w_frame').addClass('hidden');$('#loaded-ws').html('');"><i class="fas fa-times-circle"></i></a></div>
-    <div class="grey-box" style="padding-bottom: 10px;"><iframe class="ajax-frame hidden" src=""></iframe><span class="frame-loader hidden"><img src="/img/round_load.gif" class="loader" /> Loading...</span></div>
+    <div class="grey-box grey-box-w" style="padding-bottom: 10px;"><iframe class="ajax-frame hidden" src=""></iframe><span class="frame-loader hidden"><img src="/img/round_load.gif" class="loader" /> Loading...</span></div>
 </div>
 
