@@ -1220,21 +1220,14 @@ class Db_model extends CI_Model {
                         'k_w_id' => $value['w_id'],
                         'k_status NOT IN (1,0,-2)' => null, //complete
                     ))),
-                    //Fetch engagements that need attention:
-                    'e_att_count' => count($this->Db_model->e_fetch(array(
-                        '(e_inbound_u_id='.$value['w_outbound_u_id'].' OR e_inbound_u_id='.$value['w_outbound_u_id'].')' => null,
-                        'e_inbound_c_id IN ('.join(',', $this->config->item('student_att_es')).')' => null,
-                        'e_status IN (-2,-1,0)' => null, //Auto Approved, needing menual review and approval
-                    ), 999)),
-                    //Now fetch the inverse of that for all other engagements:
+                    //fetch all user engagements:
                     'e_all_count' => count($this->Db_model->e_fetch(array(
                         '(e_inbound_u_id='.$value['w_outbound_u_id'].' OR e_inbound_u_id='.$value['w_outbound_u_id'].')' => null,
-                        '(e_inbound_c_id NOT IN ('.join(',', $this->config->item('student_att_es')).') OR e_status NOT IN (-2,-1,0))' => null,
+                        '(e_inbound_c_id NOT IN ('.join(',', $this->config->item('exclude_es')).'))' => null,
                     ), 999)),
                 );
             }
         }
-
 
 
         //Return everything that was collected:

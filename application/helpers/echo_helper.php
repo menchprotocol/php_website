@@ -691,7 +691,7 @@ function echo_w_console($w){
     $ui .= '<a href="#wactionplan-'.$w['w_id'].'" onclick="load_w_actionplan('.$w['w_id'].')" class="badge badge-primary grey" style="width:40px;" data-toggle="tooltip" data-placement="left" title="'.$w['w_stats']['k_count_done'].'/'.($w['w_stats']['k_count_done']+$w['w_stats']['k_count_undone']).' intents are marked as complete. Click to open Action Plan."><span class="btn-counter">'.( ($w['w_stats']['k_count_undone']+$w['w_stats']['k_count_done'])>0 ? number_format(($w['w_stats']['k_count_done']/($w['w_stats']['k_count_undone']+$w['w_stats']['k_count_done'])*100),0).'%' : '0%' ).'</span>🚩</a> ';
 
     //Engagements made by student:
-    $ui .= '<a href="#wengagements-'.$w['w_id'].'-'.$w['w_outbound_u_id'].'" onclick="load_w_engagements('.$w['w_id'].','.$w['w_outbound_u_id'].')" class="badge badge-primary grey" style="width:40px;" data-toggle="tooltip" data-placement="left" title="'.$w['w_stats']['e_att_count'].'/'.($w['w_stats']['e_att_count']+$w['w_stats']['e_all_count']).' engagements pending admin review."><span class="btn-counter">'.echo_big_num($w['w_stats']['e_att_count']+$w['w_stats']['e_all_count']).'</span>'.( $w['w_stats']['e_att_count']>0 ? '⚠️' : '<i class="fas fa-exchange">' ).'</i></a>';
+    $ui .= '<a href="#wengagements-'.$w['w_id'].'-'.$w['w_outbound_u_id'].'" onclick="load_w_engagements('.$w['w_id'].','.$w['w_outbound_u_id'].')" class="badge badge-primary grey" style="width:40px;" data-toggle="tooltip" data-placement="left" title="'.$w['w_stats']['e_all_count'].' engagements"><span class="btn-counter">'.echo_big_num($w['w_stats']['e_all_count']).'</span><i class="fas fa-exchange"></i></a>';
 
     $ui .= '</span>';
 

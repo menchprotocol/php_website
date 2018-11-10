@@ -7,7 +7,7 @@ date_default_timezone_set('America/Los_Angeles');
 //Cache buster for static files
 $config['app_version'] = '0.595'.( ( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='local.mench.co' ) ? microtime(true) : '' ); //Updates status css/js cache files
 
-// User case: $this->config->item('student_att_es')
+// User case: $this->config->item('')
 
 $config['primary_c'] = 6903; //The default platform intent that would be recommended to new students
 $config['featured_cs'] = array(6903,6623,6898,7262,7263,6672,7311,7261); //What is publicly shown on the landing pages as related intentions
@@ -19,7 +19,7 @@ $config['file_limit_mb'] = 25; //Server setting is 32MB. see here: mench.com/ses
 $config['items_per_page'] = 50; //Even number
 $config['universal_intents'] = array(7433); //Get to know how Mench Personal Assistant works //TODO Implement...
 $config['onhold_intents'] = array(7240,6629,6630,7248,7435,369,6653); //TODO Replace with drafting intents c_status=0
-$config['student_att_es'] = array(8,9); //The engagements that require admin review for student engagements
+$config['exclude_es'] = array(1,2); //The engagements that should be ignored
 
 //This should mirror outbound intents of @3000, and the order of the items would be used in the Landing page:
 $config['content_types'] = array(

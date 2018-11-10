@@ -3,6 +3,7 @@
 //Fetch data:
 $engagements = $this->Db_model->e_fetch(array(
     '(e_outbound_u_id = '.$u_id.' OR e_inbound_u_id = '.$u_id.')' => null,
+    '(e_inbound_c_id NOT IN ('.join(',', $this->config->item('exclude_es')).'))' => null,
 ), (is_dev() ? 20 : 100));
 
 //Show this data:
