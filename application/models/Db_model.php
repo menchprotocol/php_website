@@ -1966,7 +1966,7 @@ class Db_model extends CI_Model {
 
 
 	function e_fetch($match_columns=array(), $limit=100, $join_objects=array(), $replace_key=null, $order_columns=array(
-        'e.e_id' => 'DESC',
+        'e.e_timestamp' => 'DESC',
     )){
 	    $this->db->select('*');
 	    $this->db->from('v5_engagements e');
