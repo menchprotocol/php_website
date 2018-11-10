@@ -1222,7 +1222,7 @@ class Db_model extends CI_Model {
                     ))),
                     //fetch all user engagements:
                     'e_all_count' => count($this->Db_model->e_fetch(array(
-                        '(e_inbound_u_id='.$value['w_outbound_u_id'].' OR e_inbound_u_id='.$value['w_outbound_u_id'].')' => null,
+                        '(e_outbound_u_id='.$value['w_outbound_u_id'].' OR e_inbound_u_id='.$value['w_outbound_u_id'].')' => null,
                         '(e_inbound_c_id NOT IN ('.join(',', $this->config->item('exclude_es')).'))' => null,
                     ), 999)),
                 );
