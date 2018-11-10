@@ -275,5 +275,9 @@ if(!in_array($entity['u_id'], array(1278,1326,2750))){
       </div>
 
 
-  </div>
+      <?php $this->load->view('console/subscription_views'); ?>
+
+
+
+    </div>
 </div>

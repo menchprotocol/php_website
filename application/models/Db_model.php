@@ -1212,8 +1212,13 @@ class Db_model extends CI_Model {
                 //Count related items:
                 $results[$key]['w_stats'] = array(
                     //Fetch intent engagements cached per subscription:
-                    'k_count' => count($this->Db_model->k_fetch(array(
+                    'k_count_undone' => count($this->Db_model->k_fetch(array(
                         'k_w_id' => $value['w_id'],
+                        'k_status IN (1,0,-2)' => null, //incomplete
+                    ))),
+                    'k_count_done' => count($this->Db_model->k_fetch(array(
+                        'k_w_id' => $value['w_id'],
+                        'k_status NOT IN (1,0,-2)' => null, //complete
                     ))),
                     //Fetch engagements that need attention:
                     'e_att_count' => count($this->Db_model->e_fetch(array(
@@ -2116,7 +2121,7 @@ class Db_model extends CI_Model {
                         foreach($engagement_references as $engagement_field=>$er){
                             if(intval($engagements[0][$engagement_field])>0){
                                 //Yes we have a value here:
-                                $html_message .= '<div>'.$er['name'].': '.echo_object($er['object_code'], $engagements[0][$engagement_field]).'</div>';
+                                $html_message .= '<div>'.$er['name'].': '.echo_object($er['object_code'], $engagements[0][$engagement_field], $engagement_field, null).'</div>';
                             }
                         }
 

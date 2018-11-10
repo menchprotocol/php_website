@@ -13,7 +13,6 @@ $udata = $this->session->userdata('user');
 	<?php $this->load->view('custom/shared/header_resources' ); ?>
 
     <script src="/js/custom/global.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
-
 </head>
 
 <body id="funnel">

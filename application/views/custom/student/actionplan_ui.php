@@ -40,7 +40,7 @@ if($w['w_status']==1){
 //Include JS file:
 echo '<script src="/js/custom/actionplan-js.js?v=v'.$this->config->item('app_version').'" type="text/javascript"></script>';
 
-//Fetch inbound breadcrumb tree all the way to the top of subscription w_c_id
+//Fetch inbound tree all the way to the top of subscription w_c_id
 echo '<div class="list-group" style="margin-top: 10px;">';
 foreach($k_ins as $k){
     echo echo_k($k, 1);

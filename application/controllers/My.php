@@ -139,6 +139,66 @@ class My extends CI_Controller {
         }
     }
 
+    function load_w_actionplan(){
+
+        //Auth user and check required variables:
+        $udata = auth(array(1308)); //Trainers
+
+        if(!$udata){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Session Expired',
+            ));
+        } elseif(!isset($_POST['w_id']) || intval($_POST['w_id'])<=0){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Subscriptions ID',
+            ));
+        }
+
+        //Fetch subscription
+        $validate_subscription = $this->Db_model->w_fetch(array(
+            'w_id' => $_POST['w_id'], //Other than this one...
+        ));
+        if(!(count($validate_subscription)==1)){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Subscriptions ID',
+            ));
+        }
+        $w = $validate_subscription[0];
+
+        //Load Action Plan iFrame:
+        return echo_json(array(
+            'status' => 1,
+            'url' => '/my/actionplan/'.$w['w_id'].'/'.$w['w_c_id'],
+        ));
+
+    }
+
+
+    function load_w_engagements($u_id,$w_id=0){
+
+        //Auth user and check required variables:
+        $udata = auth(array(1308)); //Trainers
+
+        if(!$udata){
+            die('<div class="alert alert-danger" role="alert">Session Expired</div>');
+        } elseif(intval($u_id)<=0){
+            die('<div class="alert alert-danger" role="alert">Missing User ID</div>');
+        }
+
+        //Load view for this iFrame:
+        $this->load->view('custom/shared/p_header' , array(
+            'title' => 'User Engagements',
+        ));
+        $this->load->view('custom/student/engagement_list' , array(
+            'u_id' => $u_id,
+            'w_id' => $w_id,
+        ));
+        $this->load->view('custom/shared/p_footer');
+    }
+
     function skip_tree($w_id, $c_id, $k_id){
         //Start skipping:
         $total_skipped = $this->Db_model->k_skip_recursive_down($w_id, $c_id, $k_id);

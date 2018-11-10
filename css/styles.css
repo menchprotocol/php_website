@@ -217,18 +217,6 @@ a.badge-primary:hover {
 .card .card-content{
     padding: 5px 15px 15px;
 }
-.breadcrumb {
-	margin:0; 
-	color:#2f2739;
-	font-family:"Roboto Slab", "Times New Roman", serif; 
-	font-size:1.8em;
-	font-weight:normal;
-	padding:15px 15px;
-	background-color:transparent;
-	border-radius:0;
-	margin-bottom:10px;
-	line-height: 130%;
-}
 .left-navi-title { 
 	font-weight:bold;
 	line-height: 120%;
@@ -257,7 +245,6 @@ input::-webkit-inner-spin-button {
     margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }
 
-.breadcrumb a { font-weight:bold; }
 .scheduler-iframe {
     width: 100%;
     height: 1000px;
@@ -385,6 +372,8 @@ input::-webkit-inner-spin-button {
     padding:7px;
     border:1px solid #EFEFEF;
 }
+.p-header{clear:both; margin-bottom:15px; padding-bottom:10px; border-bottom:1px solid #2f2739;}
+
 
 /* iPhone devide tweak: */
 .marvel-device.iphone-x {
@@ -1141,19 +1130,6 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px; }
 #funnel .section {
     text-align:left;
     padding:10px 0;
-}
-
-#funnel .breadcrumb {
-    margin-top:-30px;
-    margin-left:-4px;
-    text-align:left;
-}
-#funnel .breadcrumb li{
-    line-height:110%;
-    font-size:0.4em;
-    margin:0;
-    padding:6px 0;
-    display:block;
 }
 
 #funnel .initial {
@@ -2344,15 +2320,6 @@ margin:5px 0;
     margin-left:5px;
 }
 
-.breadcrumb>li+li:before{
-    content:"» ";
-}
-
-.breadcrumb>li{
-    font-size:0.8em;
-    line-height:150%;
-}
-
 .inline34{
     font-size: 0.9em;
     color:#CCC;
@@ -2432,11 +2399,22 @@ margin:5px 0;
     border: 1px solid #FFF !important;
 }
 
+.e-msg{
+    background-color:#FFF;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 5px 0 0;
+}
+
 .badge-h{
     background-color:#2f2739;
     color: #FFF;
     padding: 7px;
     font-size: 16px;
+}
+
+.badge-h-max{
+    max-width: 90%;
 }
 
 .badge-hy{

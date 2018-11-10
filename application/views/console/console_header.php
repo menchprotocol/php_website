@@ -158,19 +158,6 @@ $uri_segment_2 = $this->uri->segment(2);
 
         <div class="content dash">
 
-            <?php
-            if(isset($breadcrumb) && count($breadcrumb)>0){
-                echo '<ol class="breadcrumb '.( isset($breadcrumb_css) ? $breadcrumb_css : '' ).'">';
-                foreach($breadcrumb as $link){
-                    if($link['link']){
-                        echo '<li><a href="'.$link['link'].'">'.$link['anchor'].'</a></li>';
-                    } else {
-                        echo '<li>'.$link['anchor'].'</li>';
-                    }
-                }
-                echo '</ol>';
-            }
-            ?>
 
 
             <div class="container-fluid">

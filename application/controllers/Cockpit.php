@@ -21,27 +21,17 @@ class Cockpit extends CI_Controller {
     function engagements(){
         $this->load->view('console/console_header', array(
             'title' => 'Platform Engagements',
-            'breadcrumb' => array(
-                array(
-                    'link' => null,
-                    'anchor' => 'Platform Engagements',
-                ),
-            ),
         ));
         $this->load->view('cockpit/engagements_browse');
         $this->load->view('console/console_footer');
     }
 
 
+
+
     function subscriptions(){
         $this->load->view('console/console_header', array(
             'title' => 'Subscriptions Browser',
-            'breadcrumb' => array(
-                array(
-                    'link' => null,
-                    'anchor' => 'Subscriptions Browser',
-                ),
-            ),
         ));
         $this->load->view('cockpit/subscriptions_browse');
         $this->load->view('console/console_footer');
@@ -72,16 +62,6 @@ class Cockpit extends CI_Controller {
 	        //Load coach list:
 	        $this->load->view('console/console_header', array(
 	            'title' => urldecode($_GET['cat']).' Udemy Community',
-	            'breadcrumb' => array(
-	                array(
-	                    'link' => '/cockpit/udemy',
-	                    'anchor' => 'Udemy Community',
-	                ),
-	                array(
-	                    'link' => null,
-	                    'anchor' => urldecode($_GET['cat']).' <a href="/scraper/udemy_csv?cat='.urlencode($_GET['cat']).'"><i class="fas fa-cloud-download"></i>CSV</a>',
-	                ),
-	            ),
 	        ));
 	        $this->load->view('cockpit/udemy_category' , array(
 	            'il_category' => $this->Db_model->il_fetch(array(
@@ -97,12 +77,6 @@ class Cockpit extends CI_Controller {
 	        //Load category list:
 	        $this->load->view('console/console_header', array(
 	            'title' => 'Udemy Community',
-	            'breadcrumb' => array(
-	                array(
-	                    'link' => null,
-	                    'anchor' => 'Udemy Community',
-	                ),
-	            ),
 	        ));
 	        $this->load->view('cockpit/udemy_all' , array(
 	            'il_overview' => $this->Db_model->il_overview(),
@@ -117,12 +91,6 @@ class Cockpit extends CI_Controller {
         //Load views
         $this->load->view('console/console_header' , array(
             'title' => 'Status Legend',
-            'breadcrumb' => array(
-                array(
-                    'link' => null,
-                    'anchor' => 'Status Legend',
-                ),
-            ),
         ));
         $this->load->view('cockpit/statuslegend');
         $this->load->view('console/console_footer');

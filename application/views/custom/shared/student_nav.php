@@ -1,4 +1,5 @@
 <?php
+$udata = auth(array(1308)); //Is Trainers
 $navigation = array(
     array(
         'my_url' => 'actionplan',
@@ -6,8 +7,10 @@ $navigation = array(
     ),
     //TODO Add my account here...
 );
+
 ?>
-<div style="clear:both; margin-bottom:15px; padding-bottom:10px; border-bottom:1px solid #2f2739;">
+
+<div class="p-header <?= ( $udata ? 'hidden' : '' ) ?>">
     <ul class="nav nav-pills nav-pills-primary full-width">
         <?php
         foreach($navigation as $nav_item){
@@ -15,8 +18,7 @@ $navigation = array(
         }
 
         //Is this a logged-in admin?
-        $udata = $this->session->userdata('user');
-        if(isset($udata) && count($udata)>0){
+        if($udata){
             $uri_segment_4 = intval($this->uri->segment(4));
             echo '<li class="pull-right"><a href="/intents/'.( $uri_segment_4 ? $uri_segment_4.'#modify-'.$uri_segment_4.'-0' : $this->config->item('primary_c') ).'">Console <i class="fas fa-chevron-circle-right"></i></a></li>';
         }

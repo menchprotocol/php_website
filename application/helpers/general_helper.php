@@ -72,21 +72,8 @@ function fetch_entity_tree($u_id,$is_edit=false){
     $view_data = array(
         'inbound_u_id' => $u_id,
         'entity' => $entities[0],
-        'breadcrumb' => array(),
         'title' => ( $is_edit ? 'Modify ' : '' ).$entities[0]['u_full_name'],
     );
-
-    //Push this item to breadcrumb:
-    if($is_edit){
-        array_push( $view_data['breadcrumb'] , array(
-            'link' => '/entities/'.$u_id,
-            'anchor' => $view_data['entity']['u_full_name'],
-        ));
-        array_push( $view_data['breadcrumb'] , array(
-            'link' => null,
-            'anchor' => '<i class="fas fa-cog"></i> Modify',
-        ));
-    }
 
     return $view_data;
 }

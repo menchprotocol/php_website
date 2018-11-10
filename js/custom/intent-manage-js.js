@@ -368,8 +368,8 @@ function load_c_sort(c_id,level){
 function load_c_messages(c_id){
 
     //Make the frame visible:
+    $('.fixed-box').addClass('hidden');
     $("#iphonex").removeClass('hidden').hide().fadeIn();
-    $('#modifybox').addClass('hidden');
     var handler = $( "#iphone-screen" );
 
     //Define the top menu that would not change:
@@ -596,8 +596,8 @@ function load_c_modify(c_id, cr_id){
 
 
     //Make the frame visible:
+    $('#iphonex, .fixed-box').addClass('hidden');
     $("#modifybox").removeClass('hidden').hide().fadeIn();
-    $('#iphonex').addClass('hidden');
 
     //We might need to scroll:
     if(is_compact){

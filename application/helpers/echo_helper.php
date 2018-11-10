@@ -602,6 +602,68 @@ function echo_big_num($number){
 }
 
 
+
+function echo_e($e){
+
+    $CI =& get_instance();
+    $hour_difference = (15*3600);
+
+    //Display the item
+    $ui = '<div class="list-group-item">';
+
+        //Right content:
+        $ui .= '<span class="pull-right">';
+
+            //Show user notification level:
+            $ui .= ' <span>'.echo_status('e_status',$e['e_status'], true, 'left').'</span> ';
+
+            //Lets go through all references to see what is there:
+            $engagement_references = $CI->config->item('engagement_references');
+            foreach($engagement_references as $engagement_field=>$er){
+                if(intval($e[$engagement_field])>0){
+                    //Yes we have a value here:
+                    $ui .= echo_object($er['object_code'], $e[$engagement_field], $engagement_field, $er['name']);
+                }
+            }
+
+            if($e['e_has_blob']=='t'){
+                $ui .= '<a href="/cockpit/ej_list/'.$e['e_id'].'" class="badge badge-primary grey" target="_blank" data-toggle="tooltip" title="Analyze Engagement JSON Blob in a new window" data-placement="left"><i class="fas fa-search-plus"></i></a>';
+            }
+
+        $ui .= '</span>';
+
+        //What type of main content do we have, if any?
+        $main_content = null;
+        $main_content_title = null;
+        if(strlen($e['e_text_value'])>0){
+            $main_content = format_e_text_value($e['e_text_value']);
+        } elseif($e['e_i_id']>0){
+            //Fetch message conent:
+            $matching_messages = $this->Db_model->i_fetch(array(
+                'i_id' => $e['e_i_id'],
+            ));
+            if(count($matching_messages)>0){
+                $main_content_title = ' Message #'.$e['e_i_id'];
+                $main_content = echo_i($matching_messages[0]);
+            }
+        }
+
+
+        $ui .= '<a href="/intents/'.$e['c_id'].'" target="_blank" data-toggle="tooltip" title="Intent #'.$e['c_id'].'" data-placement="right"><b>'.$e['c_outcome'].'</b></a>';
+        $ui .= ' <span data-toggle="tooltip" data-placement="top" title="'.$e['e_timestamp'].' ('.($hour_difference/3600).' hours ahead) Engagement #'.$e['e_id'].'" style="font-size:0.8em;">'.echo_diff_time((strtotime($e['e_timestamp'])-$hour_difference)).' ago</span> ';
+        $ui .= $main_content_title;
+
+        //Do we have a message?
+        $ui .= '<div class="e-msg '.( $main_content ? '' : 'hidden' ).'">';
+        $ui .= $main_content;
+        $ui .= '</div>';
+
+
+    $ui .= '</div>';
+
+    return $ui;
+}
+
 function echo_w_console($w){
 
     //Assumes w_stats has been added to w_fetch so we can display proper stats here...
@@ -627,16 +689,17 @@ function echo_w_console($w){
     $ui .= ' <span>'.echo_status('u_fb_notification',$w['u_fb_notification'], true, 'left').'</span> ';
 
     //Number of intents in Student Action Plan:
-    $ui .= '<a href="#wactionplan-'.$w['w_id'].'" onclick="load_w_actionplan('.$w['w_id'].')" class="badge badge-primary grey" style="width:40px;" data-toggle="tooltip" data-placement="left" title="Subscription has '.$w['w_stats']['k_count'].' cached intents. Click to open Action Plan."><span class="btn-counter">'.echo_big_num($w['w_stats']['k_count']).'</span><i class="fas fa-hashtag"></i></a> ';
+    $ui .= '<a href="#wactionplan-'.$w['w_id'].'" onclick="load_w_actionplan('.$w['w_id'].')" class="badge badge-primary grey" style="width:40px;" data-toggle="tooltip" data-placement="left" title="'.$w['w_stats']['k_count_done'].'/'.($w['w_stats']['k_count_done']+$w['w_stats']['k_count_undone']).' intents are marked as complete. Click to open Action Plan."><span class="btn-counter">'.( ($w['w_stats']['k_count_undone']+$w['w_stats']['k_count_done'])>0 ? number_format(($w['w_stats']['k_count_done']/($w['w_stats']['k_count_undone']+$w['w_stats']['k_count_done'])*100),0).'%' : '0%' ).'</span>🚩</a> ';
 
     //Engagements made by student:
-    $ui .= '<a href="#wengagements-'.$w['w_id'].'" onclick="load_w_engagements('.$w['w_id'].')" class="badge badge-primary grey" style="width:40px;" data-toggle="tooltip" data-placement="left" title="'.($w['w_stats']['e_att_count']+$w['w_stats']['e_all_count']).' total engagements, '.$w['w_stats']['e_att_count'].' pending admin review."><span class="btn-counter">'.echo_big_num($w['w_stats']['e_att_count']+$w['w_stats']['e_all_count']).'</span><i class="'.( $w['w_stats']['e_att_count']>0 ? 'fas fa-exclamation-triangle redalert' : 'fas fa-exchange' ).'"></i></a>';
+    $ui .= '<a href="#wengagements-'.$w['w_id'].'-'.$w['w_outbound_u_id'].'" onclick="load_w_engagements('.$w['w_id'].','.$w['w_outbound_u_id'].')" class="badge badge-primary grey" style="width:40px;" data-toggle="tooltip" data-placement="left" title="'.$w['w_stats']['e_att_count'].'/'.($w['w_stats']['e_att_count']+$w['w_stats']['e_all_count']).' engagements pending admin review."><span class="btn-counter">'.echo_big_num($w['w_stats']['e_att_count']+$w['w_stats']['e_all_count']).'</span>'.( $w['w_stats']['e_att_count']>0 ? '⚠️' : '<i class="fas fa-exchange">' ).'</i></a>';
 
     $ui .= '</span>';
 
 
     //Start with subscription status:
     $ui .= '<span>'.echo_status('w_status',$w['w_status'], true, 'right').'</span> ';
+
 
     //Then customize based on request location:
     if($is_intent || $is_cockpit){
@@ -645,20 +708,22 @@ function echo_w_console($w){
             'w_outbound_u_id' => $w['w_outbound_u_id'],
         ));
         $ui .= echo_cover($w,'micro-image', 1).' ';
-        $ui .= '<a href="/entities/'.$w['u_id'].'" class="u_full_name">'.$w['u_full_name'].'</a>';
+        $ui .= '<a href="/entities/'.$w['u_id'].'" class="u_full_name w_entity_'.$w['w_id'].'">'.$w['u_full_name'].'</a>';
         $ui .= ( count($user_ws)>1 ? ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Student has '.count($user_ws).' total subsciptions" class="underdot"><i class="fas fa-comment-plus"></i> '.count($user_ws).'</span>' : '' );
     }
 
     if($is_entity || $is_cockpit){
         $ui .= ( $is_cockpit ? '<div style="margin: 3px 0 0 3px;"><i class="fas fa-hashtag"></i> ' : '' );
-        $ui .= '<a href="/intents/'.$w['c_id'].'" class="u_full_name">'.$w['c_outcome'].'</a>';
+        $ui .= '<a href="/intents/'.$w['c_id'].'" class="w_intent_'.$w['w_id'].'">'.$w['c_outcome'].'</a>';
         $ui .= ( $is_cockpit ? '</div>' : '' );
     }
-
     $ui .= '</div>';
+
+
 
     return $ui;
 }
+
 
 function echo_w_students($w){
     $ui = '<a href="/my/actionplan/'.$w['w_id'].'/'.$w['w_c_id'].'" class="list-group-item">';
@@ -1123,22 +1188,46 @@ function echo_hour_range($c, $micro=false){
 
 
 
-function echo_object($object,$id){
+function echo_object($object,$id,$engagement_field,$button_type){
+
+
     //Loads the name (and possibly URL) for $object with id=$id
     $CI =& get_instance();
     $id = intval($id);
 
     if($id>0){
         if($object=='c'){
+
+            $is_inbound = ( $engagement_field=='e_inbound_c_id' ? true : false );
             //Fetch intent/Step:
             $cs = $CI->Db_model->c_fetch(array(
                 'c.c_id' => $id,
             ));
             if(isset($cs[0])){
-                return '<a href="https://mench.com/intents/'.$cs[0]['c_id'].'">'.$cs[0]['c_outcome'].'</a>';
+                if(!$button_type){
+                    //Plain view:
+                    return '<a href="https://mench.com/intents/'.$cs[0]['c_id'].'">'.$cs[0]['c_outcome'].'</a>';
+                } else {
+                    if($is_inbound){
+                        return NULL;
+                    } else {
+                        return '<a href="/intents/'.$cs[0]['c_id'].'" class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="top" title="'.$button_type.': '.stripslashes($cs[0]['c_outcome']).'"><i class="'.( $is_inbound ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></a> ';
+                    }
+                }
+            }
+        } elseif($object=='i'){
+
+            if(!$button_type){
+                //Plain view:
+                return '#'.$id;
+            } else {
+                return NULL;
             }
 
         } elseif($object=='u'){
+
+            $is_inbound = ( $engagement_field=='e_inbound_u_id' ? true : false );
+
             if($id<=0){
                 return 'System';
             } else {
@@ -1146,8 +1235,12 @@ function echo_object($object,$id){
                     'u_id' => $id,
                 ));
                 if(isset($matching_users[0])){
-                    //TODO Link to profile or chat widget link maybe?
-                    return '<a href="https://mench.com/entities/'.$id.'" title="Entity ID '.$id.'">'.$matching_users[0]['u_full_name'].'</a>';
+                    if(!$button_type){
+                        //Plain view:
+                        return '<a href="https://mench.com/entities/'.$id.'" title="Entity ID '.$id.'">'.$matching_users[0]['u_full_name'].'</a>';
+                    } else {
+                        return '<a href="/entities/'.$id.'" class="badge badge-secondary" style="width:40px;" data-toggle="tooltip" data-placement="top" title="'.$button_type.': '.stripslashes($matching_users[0]['u_full_name']).'">'.echo_cover($matching_users[0], 'profile-icon2').'</a> ';
+                    }
                 }
             }
 
@@ -1157,7 +1250,12 @@ function echo_object($object,$id){
                 'x_id' => $id,
             ));
             if(isset($matching_urls[0])){
-                return '<a href="'.$matching_urls[0]['x_url'].'" title="Reference ID '.$id.'" target="_blank">'.echo_clean_url($matching_urls[0]['x_url']).'</a>';
+                if(!$button_type){
+                    //Plain view:
+                    return '<a href="'.$matching_urls[0]['x_url'].'" title="Reference ID '.$id.'" target="_blank">'.echo_clean_url($matching_urls[0]['x_url']).'</a>';
+                } else {
+                    return '<a href="'.$matching_urls[0]['x_url'].'" class="badge badge-secondary" style="width:40px;">'.echo_status('x_status',$matching_urls[0]['x_status'], true, 'top').'</a> ';
+                }
             }
 
         }
@@ -1166,7 +1264,12 @@ function echo_object($object,$id){
 
     //Still here? Return default:
     if($id>0){
-        return '#'.$id;
+        if(!$button_type){
+            //Plain view:
+            return '#'.$id;
+        } else {
+            return '<span class="badge badge-primary grey" data-toggle="tooltip" data-placement="top" title="'.$button_type.' #'.$id.'"><i class="fas fa-question-circle"></i></span> ';
+        }
     } else {
         return NULL;
     }

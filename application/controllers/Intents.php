@@ -48,7 +48,6 @@ class Intents extends CI_Controller
             'title' => $cs[0]['c_outcome'],
             'c' => $cs[0],
             'orphan_c_count' => $orphan_c_count,
-            'breadcrumb' => array(), //Even if empty show it, we might populate it soon below
             'c__inbounds' => $this->Db_model->cr_inbound_fetch(array(
                 'cr.cr_outbound_c_id' => $inbound_c_id,
                 'cr.cr_status >=' => 1,
@@ -89,12 +88,6 @@ class Intents extends CI_Controller
         //Load view
         $data = array(
             'title' => 'Orphan Intents',
-            'breadcrumb' => array(
-                array(
-                    'link' => null,
-                    'anchor' => 'Orphan Intents',
-                )
-            ),
         );
 
         $this->load->view('console/console_header', $data);

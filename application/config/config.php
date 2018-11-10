@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 date_default_timezone_set('America/Los_Angeles');
 
 //Cache buster for static files
-$config['app_version'] = '0.593'.( ( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='local.mench.co' ) ? microtime(true) : '' ); //Updates status css/js cache files
+$config['app_version'] = '0.594'.( ( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='local.mench.co' ) ? microtime(true) : '' ); //Updates status css/js cache files
 
 // User case: $this->config->item('student_att_es')
 
@@ -369,12 +369,12 @@ $config['object_statuses'] = array(
 
     'x_status' => array(
         -2 => array(
-            's_name'  => 'Archived',
+            's_name'  => 'Archived URL',
             's_desc'  => 'URL removed by User',
             's_icon' => 'fas fa-times-circle',
         ),
         -1 => array(
-            's_name'  => 'Broken',
+            's_name'  => 'Broken URL',
             's_desc'  => 'URL detected broken by Mench Personal Assistant after several tries',
             's_icon' => 'fas fa-unlink',
         ),
@@ -384,9 +384,9 @@ $config['object_statuses'] = array(
             's_icon' => 'fas fa-unlink',
         ),
         2 => array(
-            's_name'  => 'Active',
+            's_name'  => 'Active URL',
             's_desc'  => 'A URL Associated to the Entity',
-            's_icon' => 'fas fa-check-circle',
+            's_icon' => 'fas fa-link',
         ),
     ),
 );

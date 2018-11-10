@@ -6,13 +6,11 @@ $all_subscriptions = $this->Db_model->w_fetch(array(), array('c','u','u_x','w_st
 ), (is_dev() ? 10 : 100));
 ?>
 
-
-
-
 <div class="row" style="padding-bottom:50px;">
     <div class="col-xs-6 cols">
         <?php
-        echo '<div class="list-group">';
+        echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-comment-plus"></i> Subscriptions Browser</h5>';
+        echo '<div class="list-group list-grey">';
         foreach($all_subscriptions as $w){
             echo echo_w_console($w);
         }
@@ -20,7 +18,6 @@ $all_subscriptions = $this->Db_model->w_fetch(array(), array('c','u','u_x','w_st
         ?>
     </div>
     <div class="col-xs-6 cols">
-        <div class="alert alert-info" role="alert" id="mobile-no" style="display:none; margin-top:30px;">Choose a subscription to load details here...</div>
-
+        <?php $this->load->view('console/subscription_views'); ?>
     </div>
 </div>

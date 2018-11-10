@@ -5,7 +5,6 @@ if(isset($orphan_cs)){
 }
 ?>
 
-<style> .breadcrumb li { display:block; } </style>
 <script>
     //Define some global variables:
     var c_top_id = <?= $c['c_id'] ?>;
@@ -98,7 +97,7 @@ if(isset($orphan_cs)){
             if(count($all_subscriptions)>0){
                 //Show these subscriptions:
                 echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-comment-plus"></i> '.count($all_subscriptions).($limit==count($all_subscriptions)?'+':'').' Subscriptions</h5>';
-                echo '<div class="list-group " style="margin-bottom: 40px;">';
+                echo '<div class="list-group list-grey" style="margin-bottom: 40px;">';
                 foreach($all_subscriptions as $w){
                     echo echo_w_console($w);
                 }
@@ -228,6 +227,9 @@ if(isset($orphan_cs)){
             <div class="screen" id="iphone-screen">
             </div>
         </div>
+
+
+        <?php $this->load->view('console/subscription_views'); ?>
 
 
     </div>
