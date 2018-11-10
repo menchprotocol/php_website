@@ -653,7 +653,7 @@ function echo_e($e){
         $ui .= $main_content_title;
 
         //Do we have a message?
-        $ui .= '<div class="e-msg '.( $main_content ? '' : 'hidden' ).'">';
+        $ui .= '<div class="e-msg '.( $main_content && strlen($main_content)>0 ? '' : 'hidden' ).'">';
         $ui .= $main_content;
         $ui .= '</div>';
 
