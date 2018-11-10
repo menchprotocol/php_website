@@ -648,8 +648,8 @@ function echo_e($e){
         }
 
 
-        $ui .= '<a href="/intents/'.$e['c_id'].'" target="_blank" data-toggle="tooltip" title="Intent #'.$e['c_id'].'" data-placement="right"><b>'.$e['c_outcome'].'</b></a>';
-        $ui .= ' <span data-toggle="tooltip" data-placement="top" title="'.$e['e_timestamp'].' Engagement #'.$e['e_id'].'" style="font-size:0.8em;">'.echo_diff_time(strtotime($e['e_timestamp'])).' ago</span> ';
+        $ui .= '<b>'.$e['c_outcome'].'</b>';
+        $ui .= ' <span data-toggle="tooltip" data-placement="right" title="'.$e['e_timestamp'].' Engagement #'.$e['e_id'].'" style="font-size:0.8em;">'.echo_diff_time(strtotime($e['e_timestamp'])).' ago</span> ';
         $ui .= $main_content_title;
 
         //Do we have a message?
@@ -1207,11 +1207,8 @@ function echo_object($object,$id,$engagement_field,$button_type){
                     //Plain view:
                     return '<a href="https://mench.com/intents/'.$cs[0]['c_id'].'">'.$cs[0]['c_outcome'].'</a>';
                 } else {
-                    if($is_inbound){
-                        return NULL;
-                    } else {
-                        return '<a href="/intents/'.$cs[0]['c_id'].'" class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="top" title="'.$button_type.': '.stripslashes($cs[0]['c_outcome']).'"><i class="'.( $is_inbound ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></a> ';
-                    }
+                    return '<a href="/intents/'.$cs[0]['c_id'].'" class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="'.$button_type.': '.stripslashes($cs[0]['c_outcome']).'"><i class="'.( $is_inbound ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></a> ';
+
                 }
             }
         } elseif($object=='i'){
@@ -1238,7 +1235,7 @@ function echo_object($object,$id,$engagement_field,$button_type){
                         //Plain view:
                         return '<a href="https://mench.com/entities/'.$id.'" title="Entity ID '.$id.'">'.$matching_users[0]['u_full_name'].'</a>';
                     } else {
-                        return '<a href="/entities/'.$id.'" class="badge badge-secondary" style="width:40px;" data-toggle="tooltip" data-placement="top" title="'.$button_type.': '.stripslashes($matching_users[0]['u_full_name']).'">'.echo_cover($matching_users[0], 'profile-icon2').'</a> ';
+                        return '<a href="/entities/'.$id.'" class="badge badge-secondary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="'.$button_type.': '.stripslashes($matching_users[0]['u_full_name']).'">'.echo_cover($matching_users[0], 'profile-icon2').'</a> ';
                     }
                 }
             }
@@ -1267,7 +1264,7 @@ function echo_object($object,$id,$engagement_field,$button_type){
             //Plain view:
             return '#'.$id;
         } else {
-            return '<span class="badge badge-primary grey" data-toggle="tooltip" data-placement="top" title="'.$button_type.' #'.$id.'"><i class="fas fa-question-circle"></i></span> ';
+            return '<span class="badge badge-primary grey" data-toggle="tooltip" data-placement="left" title="'.$button_type.' #'.$id.'"><i class="fas fa-question-circle"></i></span> ';
         }
     } else {
         return NULL;
