@@ -7,7 +7,7 @@ $engagements = $this->Db_model->e_fetch(array(
 
 //Show this data:
 //Fetch objects
-echo '<div class="list-group">';
+echo '<div class="list-group list-grey" style="margin:-14px -5px -10px;">';
 foreach($engagements as $e){
     echo echo_e($e);
 }

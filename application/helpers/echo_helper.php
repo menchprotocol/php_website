@@ -606,7 +606,6 @@ function echo_big_num($number){
 function echo_e($e){
 
     $CI =& get_instance();
-    $hour_difference = (15*3600);
 
     //Display the item
     $ui = '<div class="list-group-item">';
@@ -650,7 +649,7 @@ function echo_e($e){
 
 
         $ui .= '<a href="/intents/'.$e['c_id'].'" target="_blank" data-toggle="tooltip" title="Intent #'.$e['c_id'].'" data-placement="right"><b>'.$e['c_outcome'].'</b></a>';
-        $ui .= ' <span data-toggle="tooltip" data-placement="top" title="'.$e['e_timestamp'].' ('.($hour_difference/3600).' hours ahead) Engagement #'.$e['e_id'].'" style="font-size:0.8em;">'.echo_diff_time((strtotime($e['e_timestamp'])-$hour_difference)).' ago</span> ';
+        $ui .= ' <span data-toggle="tooltip" data-placement="top" title="'.$e['e_timestamp'].' Engagement #'.$e['e_id'].'" style="font-size:0.8em;">'.echo_diff_time(strtotime($e['e_timestamp'])).' ago</span> ';
         $ui .= $main_content_title;
 
         //Do we have a message?
