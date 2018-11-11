@@ -694,8 +694,7 @@ class Comm_model extends CI_Model {
             $search_index = load_php_algolia('alg_intents');
             $res = $search_index->search($c_target_outcome, [
                 'hitsPerPage' => 6,
-            ], [
-                'c__tree_all_count >' => 1,
+                'filters' => 'c__tree_all_count>1', //As users can only subscribe to intents that are multi nodes
             ]);
 
             if($res['nbHits']>0){
