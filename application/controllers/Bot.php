@@ -35,8 +35,7 @@ class Bot extends CI_Controller {
         $search_index = load_php_algolia('alg_intents');
         echo_json($search_index->search($_GET['q'], [
             'hitsPerPage' => 6,
-        ], [
-            'c__tree_all_count >' => 1,
+            'filters' => 'c__tree_all_count>1',
         ]));
     }
 
