@@ -138,15 +138,12 @@ $config['object_statuses'] = array(
             's_icon' => 'fas fa-comment-check',
         ),
 
-        /*
-         * TODO Maybe develop later to replace the universal_intents variable?
+        //TODO Maybe develop later to replace the universal_intents variable?
         4 => array(
             's_name'  => 'Recommended',
             's_desc'  => 'Intents that are recommended to users with related interests',
             's_icon' => 'fas fa-badge-check',
         ),
-        */
-
     ),
     'cr' => array(
         -1 => array(

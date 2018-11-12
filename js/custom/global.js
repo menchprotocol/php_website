@@ -7,7 +7,6 @@ ga('create', 'UA-92774608-1', 'auto');
 ga('send', 'pageview');
 
 
-
 function fancy_time(alg_obj){
     var minutes = parseInt(alg_obj.c__tree_max_mins);
     if(minutes<1){
@@ -16,54 +15,6 @@ function fancy_time(alg_obj){
     var hours = Math.round(parseInt(alg_obj.c__tree_max_mins)/60);
     return ( minutes<60 ? minutes+'m' :  hours+'h' );
 }
-
-//Facebook SDK for JavaScript:
-window.fbAsyncInit = function(){
-
-    FB.init({
-        appId            : '1782431902047009', //Mench
-        autoLogAppEvents : true,
-        xfbml            : true,
-        version          : 'v2.10'
-    });
-
-    //This would only be included via console_header.php which is for the Console:
-    if(!$(".fb-customerchat").length) {
-        FB.getLoginStatus(function(response) {
-
-            if (response.status === 'connected' || response.status === 'not_authorized') {
-
-                //User is logged into Facebook, show FB Chat:
-                //$('body').prepend('<div class="fb-customerchat" minimized="true" greeting_dialog_display="fade" theme_color="#2f2739" page_id="381488558920384"></div>');
-
-                //Re-initiate to show Chat:
-                /*
-                FB.init({
-                    appId            : '1782431902047009', //Mench
-                    autoLogAppEvents : true,
-                    xfbml            : true,
-                    version          : 'v2.10'
-                });
-                */
-
-            } else {
-
-                //Zendesk chat...
-
-            }
-        });
-    }
-};
-
-
-(function(d, s, id){
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) {return;}
-    js = d.createElement(s); js.id = id;
-    js.src = "https://connect.facebook.net/en_US/sdk.js";
-    fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));
-
 
 function turn_off(){
     $('.dash').html('<span><img src="/img/round_load.gif" style="width:32px; height:32px; margin-top:-2px;" class="loader" /></span> Processing...');
@@ -76,7 +27,6 @@ function nl2br(str, is_xhtml) {
     var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';
     return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
 }
-
 
 function adj(){
 	var scroll = $(window).scrollTop();
@@ -95,17 +45,6 @@ function processAjaxData(response, urlPath){
     window.history.pushState({"html":response.html,"pageTitle":response.pageTitle},"", urlPath);
 }
 
-function toggle_hidden_class(class_name){
-    $('.'+class_name).each(function(){
-        if($(this).hasClass('hidden')){
-            $(this).removeClass('hidden');
-        } else {
-            $(this).addClass('hidden');
-        }
-    });
-}
-
-
 function is_mobile(){
     var isMobile = false; //initiate as false
     if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|ipad|iris|kindle|Android|Silk|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(navigator.userAgent)
@@ -118,7 +57,6 @@ function is_mobile(){
 
 
 $(document).ready(function() {
-
 	//Navbar landing page?
 	if(!$(".navbar").hasClass("no-adj")){
 		adj();
@@ -131,5 +69,4 @@ $(document).ready(function() {
 	$(function () {
 		  $('[data-toggle="tooltip"]').tooltip();
 	});
-
 });

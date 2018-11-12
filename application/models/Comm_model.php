@@ -772,7 +772,11 @@ class Comm_model extends CI_Model {
             ), array('c'));
 
             //Now see what they are saying as we can try to understand some stuff:
-            if(in_array($fb_message_received, array('yes','yeah','ya','ok','continue','ok continue','ok continue ▶️','▶️','ok continue','go','yass','yas','yea','yup','next','yes, learn more'))){
+            if($last_message_sent[0]['e_inbound_c_id']==1){
+
+                //We're waiting for a Written answer, confirm and save...
+
+            } elseif(in_array($fb_message_received, array('yes','yeah','ya','ok','continue','ok continue','ok continue ▶️','▶️','ok continue','go','yass','yas','yea','yup','next','yes, learn more'))){
                 //Accepting an offer...
 
             } elseif(in_array($fb_message_received, array('skip','skip it'))){

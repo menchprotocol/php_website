@@ -30,7 +30,6 @@ if(isset($udata['u__ws']) && count($udata['u__ws'])){
     //Use Facebook to see if we can find this user's identity:
     ?>
     <script>
-
         (function(d, s, id){
             var js, fjs = d.getElementsByTagName(s)[0];
             if (d.getElementById(id)) {return;}
@@ -69,4 +68,4 @@ if(isset($udata['u__ws']) && count($udata['u__ws'])){
 }
 ?>
 
-<div id="page_content"><div style="text-align:center;"><img src="/img/round_load.gif" class="loader" /></div></div>
+<div id="page_content maxout"><div style="text-align:center;"><img src="/img/round_load.gif" class="loader" /></div></div>

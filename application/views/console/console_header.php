@@ -1,7 +1,6 @@
 <?php 
 //Attempt to fetch session variables:
 $udata = $this->session->userdata('user');
-$fb_settings = $this->config->item('fb_settings');
 $uri_segment_1 = $this->uri->segment(1);
 $uri_segment_2 = $this->uri->segment(2);
 ?><!doctype html>
@@ -40,10 +39,12 @@ $uri_segment_2 = $this->uri->segment(2);
 
 <body id="console_body">
 
-    <?php if(!isset($_GET['skip_header'])){ ?>
-    <!-- Show Facebook Chat -->
-    <div class="fb-customerchat" minimized="true" greeting_dialog_display="hide" theme_color="#2f2739" page_id="<?= $fb_settings['page_id'] ?>"</div>
-    <?php } ?>
+    <?php
+    if(!isset($_GET['skip_header'])){
+        //Include the chat plugin:
+        $this->load->view('custom/shared/chat_plugin');
+    }
+    ?>
 
 	<div class="wrapper" id="console">
 
@@ -77,7 +78,7 @@ $uri_segment_2 = $this->uri->segment(2);
 
                         <li class="extra-toggle"><a href="javascript:void(0);" onclick="$('.extra-toggle').toggle();">&nbsp; <i class="fas fa-ellipsis-h"></i> &nbsp;</a></li>
                         <?php if(isset($udata['u__ws']) && count($udata['u__ws'])>0){ ?>
-                            <li class="extra-toggle" style="display: none;"><a href="/my/actionplan"><span class="icon-left"><i class="fas fa-user-graduate"></i></span> Hub</a></li>
+                            <li class="extra-toggle" style="display: none;"><a href="/my/actionplan"><span class="icon-left"><i class="fas fa-flag"></i></span> Action Plan</a></li>
                         <?php } ?>
 
                         <?php if(array_key_exists(1281, $udata['u__inbounds'])){ ?>

@@ -17,7 +17,7 @@ $udata = $this->session->userdata('user');
 
 <body id="funnel">
 
-<div class="main main-raised student-hub">
+<div class="main main-raised maxout">
 <div class="container body-container">
 
 <?php
