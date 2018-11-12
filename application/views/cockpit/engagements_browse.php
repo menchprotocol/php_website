@@ -85,7 +85,7 @@ echo '</form>';
 
 
 //Fetch objects
-echo '<div class="list-group list-grey">';
+echo '<div class="list-group list-grey maxout">';
 foreach($engagements as $e){
     echo echo_e($e);
 }
