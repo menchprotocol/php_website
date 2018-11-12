@@ -67,4 +67,4 @@ if(isset($udata['u__ws']) && count($udata['u__ws'])){
 }
 ?>
 
-<div id="page_content" class="maxout"><div style="text-align:center;"><img src="/img/round_load.gif" class="loader" /></div></div>
+<div id="page_content" class="maxout"><div style="text-align:center; margin-top: 30px;"><img src="/img/round_load.gif" class="loader" /></div></div>

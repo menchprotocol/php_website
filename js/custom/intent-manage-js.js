@@ -372,7 +372,7 @@ function i_load_modify(c_id){
 
     //Load content via a URL:
     $('.frame-loader').addClass('hidden');
-    $('.ajax-frame').attr('src','/intents/i_load_modify/'+c_id).removeClass('hidden');
+    $('.ajax-frame').attr('src','/intents/i_load_modify/'+c_id).removeClass('hidden').css('margin-top','0');
 
     //Tooltips:
     $('[data-toggle="tooltip"]').tooltip();

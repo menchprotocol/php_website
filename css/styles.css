@@ -376,7 +376,7 @@ input::-webkit-inner-spin-button {
     margin:10px 0 0 13px;
 }
 
-.left-grey{ border-left: 5px solid #2f2739; padding-left: 7px; margin-top: 15px; }
+.left-grey{ border-left: 5px solid #2f2739; padding-left: 7px; }
 .act-error{ color:#f55145; font-weight:bold; font-size:0.9em; margin:-7px 0 3px 0; }
 .step-group>.list-group-item{
     padding:7px;
