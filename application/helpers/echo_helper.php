@@ -934,13 +934,13 @@ function echo_skip_statements(){
 
 
 
-function echo_k_requirements($c){
+function echo_c_requirements($c){
     if($c['c_require_url_to_complete'] && $c['c_require_notes_to_complete']) {
-        return 'Intent completion requires both a URL & a written response';
+        return 'Marking as complete requires both a URL & a written response';
     } elseif ($c['c_require_url_to_complete']) {
-        return 'Intent completion requires a URL';
+        return 'Marking as complete requires a URL';
     } elseif ($c['c_require_notes_to_complete']) {
-        return 'Intent completion requires a written response';
+        return 'Marking as complete requires a written response';
     } else {
         return null;
     }

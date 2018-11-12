@@ -14,7 +14,7 @@ $list_outs = ( count($k_ins)==0 || !($k_ins[0]['k_status']==0) || intval($c['c_i
 
 if(count($k_ins)==1) {
     //Inform the user of any completion requirements:
-    $requirement_notes = echo_k_requirements($c);
+    $requirement_notes = echo_c_requirements($c);
 
     //Submission button visible after first button was clicked:
     $is_incomplete = ($k_ins[0]['k_status'] <= 0 || ($k_ins[0]['k_status'] == 1 && count($k_outs) == 0));

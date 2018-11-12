@@ -653,7 +653,7 @@ class Entities extends CI_Controller {
         ));
         if(count($matching_users)>0){
             //Dispatch the password reset Intent:
-            $this->Comm_model->foundation_message(array(
+            $this->Comm_model->compose_messages(array(
                 'e_inbound_u_id' => 0,
                 'e_outbound_u_id' => $matching_users[0]['u_id'],
                 'e_outbound_c_id' => 59,

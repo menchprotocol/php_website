@@ -602,7 +602,7 @@ class Cron extends CI_Controller {
                         if(count($reminders_sent)==0){
 
                             //Nope, send this message out:
-                            $this->Comm_model->foundation_message(array(
+                            $this->Comm_model->compose_messages(array(
                                 'e_inbound_u_id' => 0, //System
                                 'e_outbound_u_id' => $subscription['u_id'],
                                 'e_outbound_c_id' => $logic['reminder_c_id'],

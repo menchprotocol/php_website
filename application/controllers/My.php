@@ -298,7 +298,7 @@ class My extends CI_Controller {
 
                 if(intval($_POST['is_from_messenger'])){
                     //Also send confirmation messages via messenger:
-                    $this->Comm_model->foundation_message(array(
+                    $this->Comm_model->compose_messages(array(
                         'e_inbound_u_id' => 2738, //Initiated by PA
                         'e_outbound_u_id' => $ks[0]['k_outbound_u_id'],
                         'e_outbound_c_id' => $ks_next[0]['c_id'],
