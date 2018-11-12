@@ -6,10 +6,10 @@ $fb_settings = $this->config->item('fb_settings');
     //Facebook SDK for JavaScript:
     window.fbAsyncInit = function(){
         FB.init({
-            appId            : '1782431902047009', //Mench
+            appId            : '<?= $fb_settings['app_id'] ?>',
             autoLogAppEvents : true,
             xfbml            : true,
-            version          : 'v3.2'
+            version          : 'v3.2' //Updated 2018-11-11
         });
     };
 
@@ -23,4 +23,4 @@ $fb_settings = $this->config->item('fb_settings');
 
 </script>
 
-<div class="fb-customerchat" minimized="true" ref="SUBSCRIBE10_<?= $this->config->item('primary_c') ?>" <?= ( $udata ? 'logged_in_greeting="'.one_two_explode('',' ',$udata['u_full_name']).', how can we help you grow?"' : '' ) ?> logged_out_greeting="Hi 👋 How can we help you?" greeting_dialog_display="fade" greeting_dialog_delay="3" theme_color="#2f2739" page_id="<?= $fb_settings['page_id'] ?>"></div>
+<div class="fb-customerchat" minimized="true" ref="SUBSCRIBE10_<?= $this->config->item('primary_c') ?>" <?= ( $udata ? 'logged_in_greeting="'.one_two_explode('',' ',$udata['u_full_name']).', how can we help you grow?"' : '' ) ?> logged_out_greeting="Hi 👋 How can we help you?" greeting_dialog_display="hide" theme_color="#2f2739" page_id="<?= $fb_settings['page_id'] ?>"></div>

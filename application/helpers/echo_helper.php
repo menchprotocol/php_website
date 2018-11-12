@@ -1130,7 +1130,7 @@ function echo_experts($c, $fb_format=0){
 
     $pitch = 'Insights quote '.$all_count.' industry expert'.echo__s($all_count).($all_count==1 ? ':' : ' including' ).$text_overview;
     if($fb_format) {
-        return '👩‍🎓 '.$pitch.".\n";
+        return '👩‍🎓 '.$pitch."\n";
     } else {
         //HTML format
         $id = 'IndustryExperts';
@@ -1144,8 +1144,8 @@ function echo_experts($c, $fb_format=0){
             </div>
             <div id="collapse'.$id.'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'.$id.'">
                 <div class="panel-body">
-                    '.$pitch.'.
-                    <p style="font-size: 1em !important;">They are not affiliated with Mench, yet their work has been referenced by Mench.</p>
+                    '.$pitch.'
+                    <p style="font-size: 1em !important;">They are not affiliated with Mench. Their work is referenced by our training team.</p>
                 </div>
             </div>
         </div></div>';

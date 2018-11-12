@@ -1,29 +1,20 @@
 <?php
 $udata = auth(array(1308)); //Is Trainers
-$navigation = array(
-    array(
-        'my_url' => 'actionplan',
-        'anchor' => '🚩 Action Plan',
-    ),
-    //TODO Add my account here...
-);
-
 ?>
-
 <div class="p-header <?= ( $udata ? 'hidden' : '' ) ?>">
     <ul class="nav nav-pills nav-pills-primary full-width">
         <?php
+        $navigation = array(
+            array(
+                'my_url' => 'actionplan',
+                'anchor' => '🚩 Action Plan',
+            ),
+            //TODO Add my account here...
+        );
         foreach($navigation as $nav_item){
             echo '<li><a href="/my/'.$nav_item['my_url'].'" '.( isset($current) && $current==$nav_item['my_url'] ? ' style="color:#FFF; background-color:#2f2739 !important;"' : '' ).'>'.$nav_item['anchor'].'</a></li>';
         }
-
-        //Is this a logged-in admin?
-        if($udata){
-            $uri_segment_4 = intval($this->uri->segment(4));
-            echo '<li class="pull-right"><a href="/intents/'.( $uri_segment_4 ? $uri_segment_4.'#modify-'.$uri_segment_4.'-0' : $this->config->item('primary_c') ).'">Console <i class="fas fa-chevron-circle-right"></i></a></li>';
-        }
-
-        //Logout button:
+        //Student Logout button:
         echo '<li class="pull-right"><a href="/logout">Logout <i class="fas fa-power-off"></i></a></li>';
         ?>
     </ul>

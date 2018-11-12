@@ -18,40 +18,21 @@ class My extends CI_Controller {
     }
 
 
-
-
     /* ******************************
      * Messenger Persistent Menu
      ****************************** */
 
     function actionplan($w_id=0, $c_id=0){
 
-        $udata = auth(array(1308)); //Is Trainer?
-        $udata = false;
-
-        //Print proper header:
-        if($udata){
-            $this->load->view('console/console_header' , array(
-                'title' => '🚩 Action Plan',
-            ));
-        } else {
-            $this->load->view('custom/shared/p_header' , array(
-                'title' => '🚩 Action Plan',
-            ));
-        }
-
+        $this->load->view('custom/shared/p_header' , array(
+            'title' => '🚩 Action Plan',
+        ));
         //include main body:
         $this->load->view('custom/student/actionplan_frame' , array(
             'c_id' => $c_id,
             'w_id' => $w_id,
         ));
-
-        //And footer:
-        if($udata){
-            $this->load->view('console/console_footer');
-        } else {
-            $this->load->view('custom/shared/p_footer');
-        }
+        $this->load->view('custom/shared/p_footer');
     }
 
     function display_actionplan($u_fb_psid, $w_id=0, $c_id=0){
@@ -97,6 +78,7 @@ class My extends CI_Controller {
         } elseif(count($subscriptions)>1){
 
             //Let them choose between subscriptions:
+            echo '<h3 class="student-h3 primary-title">My Subscriptions</h3>';
             echo '<div class="list-group" style="margin-top: 10px;">';
             foreach($subscriptions as $w){
                 echo echo_w_students($w);
