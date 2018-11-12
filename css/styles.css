@@ -141,7 +141,6 @@ body{ background-color: #FFF !important;}
     color:#FFF !important;
 }
 
-
 .fixed-box{
     position: absolute;
     top:0;
@@ -157,7 +156,7 @@ body{ background-color: #FFF !important;}
     background-color:#EFEFEF;
     border-top: 1px solid #CCC;
     max-height:520px;
-    overflow-y: auto;
+    overflow-y: hidden;
     overflow-x: hidden;
 }
 .grey-box input, .grey-box .input-group, .grey-box .form-control {
@@ -1115,7 +1114,7 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px; }
 
 
 #funnel{
-    background-color:#FFF !important;
+    background-color:#efefef !important;
     color:#2f2739 !important;
 }
 

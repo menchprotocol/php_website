@@ -24,11 +24,11 @@
         } else {
 
             //Adjust height of the messaging windows:
-            $('.grey-box-w').css('height', (parseInt($( window ).height())-130)+'px');
-            $('.grey-box').css('max-height', (parseInt($( window ).height())-130)+'px');
+            $('.grey-box-w').css('height', (parseInt($( window ).height())-190)+'px');
+            $('.grey-box').css('max-height', (parseInt($( window ).height())-190)+'px');
 
-            $('.ajax-frame').css('height', (parseInt($( window ).height())-155)+'px');
-            $('.ajax-frame').css('max-height', (parseInt($( window ).height())-155)+'px');
+            $('.ajax-frame').css('height', (parseInt($( window ).height())-215)+'px');
+            $('.ajax-frame').css('max-height', (parseInt($( window ).height())-215)+'px');
 
             //Make editing frames Sticky for scrolling longer lists
             $(".main-panel").scroll(function() {

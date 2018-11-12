@@ -15,6 +15,7 @@ $udata = $this->session->userdata('user');
     <script src="/js/custom/global.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
 </head>
 
+
 <body id="funnel">
 
 <div class="main main-raised maxout">
