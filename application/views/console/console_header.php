@@ -34,10 +34,28 @@ $uri_segment_2 = $this->uri->segment(2);
     <script src="/js/custom/global.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
     <script src="/js/custom/console.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
 
+
+    <script>
+        <?php
+        //Create flat list of JS variables:
+        $js_inbound_u_ids = array();
+        if($udata){
+            foreach($udata['u__inbounds'] as $privilege){
+                array_push($js_inbound_u_ids, intval($privilege['u_id']));
+            }
+        }
+        ?>
+
+        //Define global js variables:
+        var js_u_id = <?= $udata['u_id'] ?>;
+        var js_inbound_u_ids = [<?= join(',',$js_inbound_u_ids) ?>];
+
+    </script>
+
 </head>
 
 
-<body id="console_body">
+<body id="console_body" class="<?= ( isset($_GET['skip_header']) ? 'grey-bg' : '' ) ?>">
 
     <?php
     if(!isset($_GET['skip_header'])){
@@ -157,9 +175,7 @@ $uri_segment_2 = $this->uri->segment(2);
 
 
 
-        <div class="content dash">
-
-
+        <div class="content <?= ( isset($_GET['skip_header']) ? 'no-frame' : 'dash' ) ?>">
 
             <div class="container-fluid">
             <?php

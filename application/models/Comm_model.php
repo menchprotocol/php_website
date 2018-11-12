@@ -475,7 +475,7 @@ class Comm_model extends CI_Model {
                         'e_outbound_u_id' => $u['u_id'],
                         'e_outbound_c_id' => $c_id,
                         'e_w_id' => $w_id,
-                        'i_message' => 'Ok, I successfully skipped '.$total_skipped.' intent'.echo__s($total_skipped).'.',
+                        'i_message' => 'Ok, I successfully skipped '.$total_skipped.' insight'.echo__s($total_skipped).'.',
                     ),
                 ));
 

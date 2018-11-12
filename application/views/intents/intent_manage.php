@@ -110,7 +110,7 @@ if(isset($orphan_cs)){
     </div>
 
 
-    <div class="col-xs-6 cols" id="iphonecol">
+    <div class="col-xs-6 cols">
 
 
         <div id="modifybox" class="fixed-box hidden" intent-id="0" intent-link-id="0" level="0">
@@ -183,7 +183,6 @@ if(isset($orphan_cs)){
                 </div>
 
 
-
                 <table width="100%" style="margin-top:10px;">
                     <tr>
                         <td class="save-td"><a href="javascript:save_c_modify();" class="btn btn-primary">Save</a></td>
@@ -202,32 +201,6 @@ if(isset($orphan_cs)){
             </div>
 
         </div>
-
-
-
-
-
-        <div class="marvel-device iphone-x hidden" id="iphonex" intent-id="">
-            <div style="font-size: 22px; margin: -5px 0 -20px 0; top: 0; right: 0px; position: absolute; z-index:9999999;"><a href="javascript:void(0)" onclick="$('#iphonex').addClass('hidden');$('#iphone-screen').html('');"><i class="fas fa-times"></i></a></div>
-            <div class="notch">
-                <div class="camera"></div>
-                <div class="speaker"></div>
-            </div>
-            <div class="top-bar"></div>
-            <div class="sleep"></div>
-            <div class="bottom-bar"></div>
-            <div class="volume"></div>
-            <div class="overflow">
-                <div class="shadow shadow--tr"></div>
-                <div class="shadow shadow--tl"></div>
-                <div class="shadow shadow--br"></div>
-                <div class="shadow shadow--bl"></div>
-            </div>
-            <div class="inner-shadow"></div>
-            <div class="screen" id="iphone-screen">
-            </div>
-        </div>
-
 
         <?php $this->load->view('console/subscription_views'); ?>
 

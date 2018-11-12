@@ -140,6 +140,35 @@ class My extends CI_Controller {
         }
     }
 
+    function w_delete($w_id){
+
+        //Validate it's an admin:
+        if(!auth(array(1281))){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Session Expired, login to continue...',
+            ));
+        }
+
+        //Delete subscription and report back:
+        $delete_stats = array();
+
+        $this->db->query("DELETE FROM v5_subscriptions WHERE w_id=".$w_id);
+        $delete_stats['v5_subscriptions'] = $this->db->affected_rows();
+
+        $this->db->query("DELETE FROM v5_subscription_intent_links WHERE e_w_id=".$w_id);
+        $delete_stats['v5_subscription_intent_links'] = $this->db->affected_rows();
+
+        $this->db->query("DELETE FROM v5_engagements WHERE e_w_id=".$w_id);
+        $delete_stats['v5_engagements'] = $this->db->affected_rows();
+
+        return echo_json(array(
+            'status' => 1,
+            'w_id' => $w_id,
+            'stats' => $delete_stats,
+        ));
+    }
+
     function load_w_actionplan(){
 
         //Auth user and check required variables:
@@ -205,7 +234,7 @@ class My extends CI_Controller {
         $total_skipped = $this->Db_model->k_skip_recursive_down($w_id, $c_id, $k_id);
 
         //Draft message:
-        $message = '<div class="alert alert-success" role="alert">'.$total_skipped.' intent'.echo__s($total_skipped).' successfully skipped.</div>';
+        $message = '<div class="alert alert-success" role="alert">'.$total_skipped.' insight'.echo__s($total_skipped).' successfully skipped.</div>';
 
         //Find the next item to navigate them to:
         $ks_next = $this->Db_model->k_next_fetch($w_id);

@@ -3,6 +3,7 @@
 //Fetch Messages based on c_id:
 $message_max = $this->config->item('message_max');
 $i_statuses = echo_status('i_status', null);
+$i_desc = echo_status('i_status');
 $udata = $this->session->userdata('user');
 $i_messages = $this->Db_model->i_fetch(array(
     'i_outbound_c_id' => $c_id,
@@ -29,27 +30,17 @@ if(!isset($intents[0])){
 <script src="/js/custom/messaging-js.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
 
 
-<div class="iphone-title"><i class="fas fa-hashtag"></i> <?= $intents[0]['c_outcome'] ?></div>
-
 <ul class="nav nav-tabs iphone-nav-tabs">
-    <li role="presentation" class="nav_1 active"><a href="#messages-<?= $c_id ?>-1"><?= echo_status('i_status',1, false, null) ?></a></li>
-    <li role="presentation" class="nav_3"><a href="#messages-<?= $c_id ?>-3"><?= echo_status('i_status',3, false, null) ?></a></li>
-    <li role="presentation" class="nav_2"><a href="#messages-<?= $c_id ?>-2"><?= echo_status('i_status',2, false, null) ?></a></li>
+    <li role="presentation" class="nav_1 active" data-toggle="tooltip" title="<?= $i_desc[1]['s_desc'] ?>" data-placement="right"><a href="#messages-<?= $c_id ?>-1"><?= echo_status('i_status',1, false, null) ?></a></li>
+    <li role="presentation" class="nav_3" data-toggle="tooltip" title="<?= $i_desc[2]['s_desc'] ?>" data-placement="right"><a href="#messages-<?= $c_id ?>-3"><?= echo_status('i_status',3, false, null) ?></a></li>
+    <li role="presentation" class="nav_2" data-toggle="tooltip" title="<?= $i_desc[3]['s_desc'] ?>" data-placement="right"><a href="#messages-<?= $c_id ?>-2"><?= echo_status('i_status',2, false, null) ?></a></li>
 </ul>
 
 <input type="hidden" id="i_status_focus" value="1" />
 
-<div class="ix-msg" style="height:380px; padding-top:7px;" id="intent_messages<?= $c_id ?>">
+<div id="intent_messages<?= $c_id ?>">
 
     <?php
-    //Give more information on each message type:
-    $i_desc = echo_status('i_status');
-    echo '<div class="ix-tip all_msg msg_1">';
-    echo '<i class="fas fa-info-circle"></i> ';
-    echo $i_desc[1]['s_desc'].'.';
-    echo '</div>';
-    echo '<div class="ix-tip all_msg msg_2 hidden"><i class="fas fa-info-circle"></i> '.$i_desc[2]['s_desc'].'.</div>';
-    echo '<div class="ix-tip all_msg msg_3 hidden"><i class="fas fa-info-circle"></i> '.$i_desc[3]['s_desc'].'.</div>';
 
     $message_count_1 = 0;
     $message_count_2 = 0;
@@ -84,12 +75,12 @@ if(!isset($intents[0])){
     ?>
 </div>
 
-<div class="ix-kyb">
+<div style="margin-top:-7px;">
     <?php
     echo '<div class="list-group list-messages">';
     echo '<div class="list-group-item">';
 
-    echo '<div class="add-msg add-msg'.$c_id.'" style="border-radius:0 !important; margin-top: 2px;">';
+    echo '<div class="add-msg add-msg'.$c_id.'">';
     echo '<form class="box box'.$c_id.'" method="post" enctype="multipart/form-data">'; //Used for dropping files
 
     echo '<textarea onkeyup="changeMessage()" class="form-control msg msgin algolia_search" style="min-height:80px; box-shadow: none; resize: none; margin-bottom: 0px;" id="i_message'.$c_id.'" placeholder="Write Message, Drop a File or Paste URL"></textarea>';

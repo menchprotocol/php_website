@@ -48,7 +48,7 @@ $(document).ready(function () {
 
         //Adjust columns:
         $('.cols').removeClass('col-xs-6').addClass('col-sm-6');
-        $('.fixed-box').addClass('phone-2nd');
+        $('.fixed-box').addClass('release-fixture');
         $('.dash').css('margin-bottom', '0px'); //For iframe to show better
 
     } else {

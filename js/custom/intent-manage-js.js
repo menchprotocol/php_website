@@ -20,8 +20,7 @@ $(document).ready(function() {
 
         //Adjust columns:
         $('.cols').removeClass('col-xs-6').addClass('col-sm-6');
-        $('.fixed-box').addClass('phone-2nd');
-        $('.iphone-x').addClass('iphone-2nd');
+        $('.fixed-box').addClass('release-fixture');
 
     } else {
         //Make editing frames Sticky for scrolling longer lists
@@ -29,7 +28,6 @@ $(document).ready(function() {
             var top_position = $(this).scrollTop();
             clearTimeout($.data(this, 'scrollTimer'));
             $.data(this, 'scrollTimer', setTimeout(function() {
-                $("#iphonex").css('top',(top_position-0)); //PX also set in style.css for initial load
                 $("#modifybox").css('top',(top_position-0)); //PX also set in style.css for initial load
             }, 34));
         });
@@ -43,7 +41,7 @@ $(document).ready(function() {
         if(hash_parts.length>=2){
             //Fetch level if available:
             if(hash_parts[0]=='messages'){
-                load_c_messages(hash_parts[1]);
+                i_load_modify(hash_parts[1]);
             } else if(hash_parts[0]=='modify'){
                 load_c_modify(hash_parts[1],hash_parts[2]);
             }
@@ -364,51 +362,24 @@ function load_c_sort(c_id,level){
 }
 
 
+function i_load_modify(c_id){
 
-function load_c_messages(c_id){
+    //Start loading:
+    $('.fixed-box, .ajax-frame').addClass('hidden');
+    $('#load_w_frame, .frame-loader').removeClass('hidden').hide().fadeIn();
+    //Set title:
+    $('#w_title').html('<i class="fas fa-comment-dots"></i> '+$('.c_outcome_'+c_id+':first').text());
 
-    //Make the frame visible:
-    $('.fixed-box').addClass('hidden');
-    $("#iphonex").removeClass('hidden').hide().fadeIn();
-    var handler = $( "#iphone-screen" );
+    //Load content via a URL:
+    $('.frame-loader').addClass('hidden');
+    $('.ajax-frame').attr('src','/intents/i_load_modify/'+c_id).removeClass('hidden');
 
-    //Define the top menu that would not change:
-    $('#iphonex').attr('intent-id',c_id);
+    //Tooltips:
+    $('[data-toggle="tooltip"]').tooltip();
 
-    //Define standard phone header:
-    var top_menu = '<div class="ix-top">\n' +
-        '<span class="ix-top-left" data-toggle="tooltip" title="PST Time" data-placement="bottom">'+current_time+'</span>\n' +
-        '<span class="ix-top-right">\n' +
-        '<i class="fas fa-wifi"></i>\n' +
-        '<i class="fas fa-battery-full"></i>\n' +
-        '</span>\n' +
-        '</div>';
-
-    //Show tem loader:
-    handler.html('<div style="text-align:center; padding-top:89px; padding-bottom:89px;"><img src="/img/round_load.gif" class="loader" /></div>');
-
-    //We might need to scroll:
-    if(is_compact){
-        $('.main-panel').animate({
-            scrollTop:9999
-        }, 150);
-    }
-
-    //Load the frame:
-    $.post("/intents/load_c_messages", {
-
-        c_id:c_id,
-
-    }, function(data) {
-
-        //Empty Inputs Fields if success:
-        handler.html(top_menu+data);
-
-        //Show inner tooltips:
-        $('[data-toggle="tooltip"]').tooltip();
-
-    });
 }
+
+
 
 
 function adjust_js_ui(c_id, level, new_hours, intent_deficit_count=0, apply_to_tree=0, skip_intent_adjustments=0){
@@ -596,7 +567,7 @@ function load_c_modify(c_id, cr_id){
 
 
     //Make the frame visible:
-    $('#iphonex, .fixed-box').addClass('hidden');
+    $('.fixed-box, .ajax-frame').addClass('hidden');
     $("#modifybox").removeClass('hidden').hide().fadeIn();
 
     //We might need to scroll:

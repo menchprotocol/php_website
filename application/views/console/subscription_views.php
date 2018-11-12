@@ -18,7 +18,7 @@
 
             //Adjust columns:
             $('.cols').removeClass('col-xs-6').addClass('col-sm-6');
-            $('.fixed-box').addClass('phone-2nd');
+            $('.fixed-box').addClass('release-fixture');
             $('.dash').css('margin-bottom', '0px'); //For iframe to show better
 
         } else {
@@ -41,7 +41,6 @@
 
         }
 
-
         if(window.location.hash){
             var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
             var hash_parts = hash.split("-");
@@ -58,10 +57,10 @@
 
     });
 
-    function frame_loader(w_id,title_suffix, hide_intent=false){
+    function frame_loader(w_id, hide_intent=false){
 
         //Start loading:
-        $('#iphonex, .fixed-box, .ajax-frame').addClass('hidden');
+        $('.fixed-box, .ajax-frame').addClass('hidden');
         $('#load_w_frame, .frame-loader').removeClass('hidden');
 
         //Construct title:
@@ -76,13 +75,22 @@
             w_intent = w_intent+$('.w_intent_'+w_id).text();
         }
 
-        $('#w_title').text(( w_entity ? w_entity : '' )+( w_intent && !hide_intent ? w_intent : '' )+' '+title_suffix);
+        return ( w_entity ? w_entity : '' )+( w_intent && !hide_intent ? w_intent : '' );
+
     }
 
     function load_w_actionplan(w_id){
 
         w_id = parseInt(w_id);
-        frame_loader(w_id,'Action Plan');
+        var frame_title = frame_loader(w_id);
+        $('#w_title').html('<i class="fas fa-flag"></i> '+frame_title);
+
+
+        //Is this user an admin? if so, give them a delete option:
+        if(jQuery.inArray(1281, js_inbound_u_ids) !== -1){
+            //Append delete button:
+            $('#w_title').append('<a href="javascript:void(0);"><i class="fas fa-comment-plus"></i></a>');
+        }
 
         //Add via Ajax:
         $.post("/my/load_w_actionplan", { w_id:w_id }, function (data) {
@@ -107,7 +115,8 @@
 
         w_id = parseInt(w_id);
         u_id = parseInt(u_id);
-        frame_loader(w_id,'Engagements', true);
+        var frame_title = frame_loader(w_id, true);
+        $('#w_title').html('<i class="fas fa-exchange"></i> '+frame_title);
 
         //Load content via a URL:
         $('.frame-loader').addClass('hidden');
@@ -121,7 +130,7 @@
 
 
 <div id="load_w_frame" class="fixed-box hidden">
-    <h5 class="badge badge-h badge-h-max"><i class="fas fa-comment-plus"></i> <span id="w_title"></span></h5>
+    <h5 class="badge badge-h badge-h-max" id="w_title"></h5>
     <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;"><a href="javascript:void(0)" onclick="$('#load_w_frame').addClass('hidden');$('#loaded-ws').html('');"><i class="fas fa-times-circle"></i></a></div>
     <div class="grey-box grey-box-w" style="padding-bottom: 10px;"><iframe class="ajax-frame hidden" src=""></iframe><span class="frame-loader hidden"><img src="/img/round_load.gif" class="loader" /> Loading...</span></div>
 </div>

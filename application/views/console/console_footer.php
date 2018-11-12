@@ -3,14 +3,6 @@
 	    </div>
 	</div>
 
-<?php 
-$udata = $this->session->userdata('user');
-
-//For JS functions such as search and in account page
-echo '<input type="hidden" id="u_id" value="'.$udata['u_id'].'" />';
-?>
-
-
 
 <script>
     function url_modal(url){

@@ -519,6 +519,7 @@ class Intents extends CI_Controller
         echo_json($sync);
     }
 
+
     function c_sort(){
         //Auth user and Load object:
         $udata = auth(array(1308));
@@ -642,17 +643,26 @@ class Intents extends CI_Controller
 	 * i Messages
 	 ****************************** */
 
-    function load_c_messages(){
+    function i_load_modify($c_id){
         $udata = auth();
         if(!$udata){
             //Display error:
             die('<span style="color:#FF0000;">Error: Invalid Session. Login again to continue.</span>');
-        } elseif(!isset($_POST['c_id']) || intval($_POST['c_id'])<=0){
+        } elseif(intval($c_id)<=0){
             die('<span style="color:#FF0000;">Error: Invalid Intent id.</span>');
-        } else {
-            //Load the phone:
-            $this->load->view('intents/frame_messages' , $_POST);
         }
+
+        //Don't show the heading here as we're loading inside an iframe:
+        $_GET['skip_header'] = true;
+
+        //Load view:
+        $this->load->view('console/console_header', array(
+            'title' => 'Intent #'.$c_id.' Messages',
+        ));
+        $this->load->view('intents/frame_messages' , array(
+            'c_id' => $c_id,
+        ));
+        $this->load->view('console/console_footer');
     }
 
     function i_attach(){

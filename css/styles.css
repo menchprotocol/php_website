@@ -4,6 +4,7 @@
 #console_body .navbar { background-color: #2f2739; }
 
 body{ background-color: #FFF !important;}
+body.grey-bg{ background-color: #EFEFEF !important;}
 .main-raised {box-shadow: none;}
 
 #console_body .navbar-nav > .active > a, #console_body .navbar-nav > .active > a:hover, #console_body .navbar-nav > .active > a:focus {
@@ -13,7 +14,9 @@ body{ background-color: #FFF !important;}
 }
 
 
-
+.no-frame .container-fluid {
+    padding: 0 !important;
+}
 
 
 #console_body .navbar-nav a:hover, #console_body .navbar-nav a:focus {
@@ -76,7 +79,7 @@ body{ background-color: #FFF !important;}
 .student-h3{
     font-size:1.6em;
     line-height:110% !important;
-    margin:15px 0 !important;
+    margin:0 0 15px 0 !important;
 }
 
 .skippable{
@@ -92,6 +95,14 @@ body{ background-color: #FFF !important;}
     font-size:0.85em;
 }
 
+.add-msg{
+    width:100%;
+    background-color: #FFF;
+    min-width: 280px;
+    border-radius: 5px;
+    border-bottom-right-radius: 1.3em;
+    border-top-right-radius: 1.3em;
+}
 .panel-primary>.panel-heading {
     background-color: #fff;
     border-color: #fedd16;
@@ -374,7 +385,7 @@ input::-webkit-inner-spin-button {
 .p-header{clear:both; margin-bottom:15px; padding-bottom:10px; border-bottom:1px solid #2f2739;}
 
 
-/* iPhone devide tweak: */
+/* iPhone device tweak: */
 .marvel-device.iphone-x {
     width: 345px;
     height: 640px;
@@ -414,10 +425,6 @@ input::-webkit-inner-spin-button {
 }
 .ix-top-right .fa-wifi{
 	margin-right: 2px;
-}
-
-.ix-kyb{
-	
 }
 
 .form-el{
@@ -851,7 +858,6 @@ h5, .h5 {
 .remove_loading .dropup>a { padding:5px 8px; }
 
 .msg-nav>li>a:hover { background-color:#EFEFEF; }
-.add-msg { width:100%; }
 .msg-show { display:inline-block !important; }
 .msg-hide { display:none; }
 .i_uploader>img{width: 20px; height: 20px; margin:-2px 0px 0 3px; border-radius: 50%;}
@@ -881,8 +887,13 @@ h5, .h5 {
 	margin:0;
 	margin-bottom:5px;
 	display:inline-block;
-	background-color: #EFEFEF !important;
+	background-color: #FFF !important;
 }
+
+.list-messages .list-group-item {
+    background-color: transparent;
+}
+
 .tip_bubble{
     padding: 5px 0;
     margin:0;
@@ -897,18 +908,16 @@ h5, .h5 {
     line-height: 110%;
     font-size: 16px;
     font-weight: 500;
-    margin: 0 8px 7px;
+    margin:0 0 12px;
     text-align: left;
     background-color: #FFF;
     color: #999;
     padding: 6px 5px;
-    border-radius: 4px;
+    border-radius: 5px;
+    border-bottom-right-radius: 1.3em;
+    border-top-right-radius: 1.3em;
 }
 .no-messages{background-color: #FEDD1B; color:#2f2739;}
-.list-messages>.is_level2_sortable {
-	margin-left: 8px;
-    margin-right: 15px;
-}
 .msg {
     font-size:1em !important;
     font-family: Lato, Helvetica, sans-serif !important;
@@ -926,7 +935,7 @@ h5, .h5 {
     max-width: 90%;
 }
 
-.phone-2nd {
+.release-fixture {
     position: relative !important;
     top: unset !important;
     left: unset !important;
@@ -935,7 +944,7 @@ h5, .h5 {
     width: 100% !important;
 }
 
-.iphone-2nd{
+.irelease-fixture{
     position: relative !important;
     top: unset !important;
 }
@@ -1252,16 +1261,11 @@ select.form-control{
     padding-right: 0;
 }
 
-.list-group {
-    margin-bottom:5px;
-}
-
 @media (max-width: 767px){
 
     #funnel .p_footer{ padding-left:0; text-align:center;}
     .btn.btn-sm, .btn-group-sm .btn, .navbar .navbar-nav > li > a.btn.btn-sm, .btn-group-sm .navbar .navbar-nav > li > a.btn { padding: 5px; }
     .grey-box{ margin-top:30px; }
-    #iphonex { left: -26px !important; }
     .class_nav{width:220px;}
     #funnel .main{ margin-top:5px !important; }
 	#funnel .body-container{ font-size:20px; line-height: 30px; }
@@ -1305,7 +1309,6 @@ select.form-control{
 	.typicalform {max-width:100%;}
 	.nav-pills:not(.nav-pills-icons) > li > a { font-size: 0.8em; }
 	.list-messages>div>div { max-width:100%; }
-	.add-msg { width:100%; }
 	.card .card-content {padding: 5px 15px 15px;}
 	.footer .pull-right, .footer .pull-left{ float:none !important; margin: 0 auto; }
 	
@@ -1605,7 +1608,6 @@ a.badge:focus, a.badge:hover {
     margin:2px 0 0 0;
     padding:0;
     line-height: 100%;
-    text-align:center;
 }
 .iphone-add-btn a{
     padding:5px 12px;
@@ -1996,10 +1998,7 @@ font-weight:bold;
   display: inline;
 }
 
-.add-msg{
-background-color: #FFF !important;
-border-top: 4px solid #777;
-}
+
 .is-working {
   background-color:#e5e4e4 !important;
 }

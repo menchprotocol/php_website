@@ -540,7 +540,7 @@ function echo_message($i){
     $ui .= '<div style="overflow:visible !important;">';
 
     //Type & Delivery Method:
-    $ui .= '<div class="edit-off text_message" id="msg_body_'.$i['i_id'].'" style="margin:5px 0 0 0;">';
+    $ui .= '<div class="edit-off text_message" id="msg_body_'.$i['i_id'].'" style="margin:2px 0 0 0;">';
     $ui .= echo_i($i);
     $ui .= '</div>';
 
@@ -638,7 +638,7 @@ function echo_e($e){
             $main_content = format_e_text_value($e['e_text_value']);
         } elseif($e['e_i_id']>0){
             //Fetch message conent:
-            $matching_messages = $this->Db_model->i_fetch(array(
+            $matching_messages = $CI->Db_model->i_fetch(array(
                 'i_id' => $e['e_i_id'],
             ));
             if(count($matching_messages)>0){
@@ -688,10 +688,10 @@ function echo_w_console($w){
     $ui .= ' <span>'.echo_status('u_fb_notification',$w['u_fb_notification'], true, 'left').'</span> ';
 
     //Number of intents in Student Action Plan:
-    $ui .= '<a href="#wactionplan-'.$w['w_id'].'" onclick="load_w_actionplan('.$w['w_id'].')" class="badge badge-primary grey" style="width:40px;" data-toggle="tooltip" data-placement="left" title="'.$w['w_stats']['k_count_done'].'/'.($w['w_stats']['k_count_done']+$w['w_stats']['k_count_undone']).' intents are marked as complete. Click to open Action Plan."><span class="btn-counter">'.( ($w['w_stats']['k_count_undone']+$w['w_stats']['k_count_done'])>0 ? number_format(($w['w_stats']['k_count_done']/($w['w_stats']['k_count_undone']+$w['w_stats']['k_count_done'])*100),0).'%' : '0%' ).'</span>🚩</a> ';
+    $ui .= '<a href="#wactionplan-'.$w['w_id'].'" onclick="load_w_actionplan('.$w['w_id'].')" class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="'.$w['w_stats']['k_count_done'].'/'.($w['w_stats']['k_count_done']+$w['w_stats']['k_count_undone']).' intents are marked as complete. Click to open Action Plan."><span class="btn-counter">'.( ($w['w_stats']['k_count_undone']+$w['w_stats']['k_count_done'])>0 ? number_format(($w['w_stats']['k_count_done']/($w['w_stats']['k_count_undone']+$w['w_stats']['k_count_done'])*100),0).'%' : '0%' ).'</span><i class="fas fa-flag" style="font-size:0.85em;"></i></a> ';
 
     //Engagements made by student:
-    $ui .= '<a href="#wengagements-'.$w['w_id'].'-'.$w['w_outbound_u_id'].'" onclick="load_w_engagements('.$w['w_id'].','.$w['w_outbound_u_id'].')" class="badge badge-primary grey" style="width:40px;" data-toggle="tooltip" data-placement="left" title="'.$w['w_stats']['e_all_count'].' engagements"><span class="btn-counter">'.echo_big_num($w['w_stats']['e_all_count']).'</span><i class="fas fa-exchange"></i></a>';
+    $ui .= '<a href="#wengagements-'.$w['w_id'].'-'.$w['w_outbound_u_id'].'" onclick="load_w_engagements('.$w['w_id'].','.$w['w_outbound_u_id'].')" class="badge badge-secondary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="'.$w['w_stats']['e_all_count'].' engagements"><span class="btn-counter">'.echo_big_num($w['w_stats']['e_all_count']).'</span><i class="fas fa-exchange"></i></a>';
 
     $ui .= '</span>';
 
@@ -1465,7 +1465,7 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
     //Right content
     $ui .= '<span class="pull-right" style="'.( $level<3 ? 'margin-right: 8px;' : '' ).'">';
 
-    $ui .= '<a href="#messages-'.$c['c_id'].'" onclick="load_c_messages('.$c['c_id'].')" class="msg-badge-'.$c['c_id'].' badge badge-primary '.( $c['c__this_messages']==0 ? 'grey' : '' ).'" style="width:40px;"><span class="btn-counter messages-counter-'.$c['c_id'].'">'.$c['c__this_messages'].'</span><i class="fas fa-comment-dots"></i></a>';
+    $ui .= '<a href="#messages-'.$c['c_id'].'" onclick="i_load_modify('.$c['c_id'].')" class="msg-badge-'.$c['c_id'].' badge badge-primary '.( $c['c__this_messages']==0 ? 'grey' : '' ).'" style="width:40px;"><span class="btn-counter messages-counter-'.$c['c_id'].'">'.$c['c__this_messages'].'</span><i class="fas fa-comment-dots"></i></a>';
 
     $ui .= '<a class="badge badge-primary" onclick="load_c_modify('.$c['c_id'].','.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).')" style="margin:-2px -8px 0 2px; width:40px;" href="#modify-'.$c['c_id'].'-'.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).'"><span class="btn-counter">'.echo_estimated_time($c['c__tree_max_hours'],0,1, $c['c_id'], $c['c_time_estimate']).'</span><i class="c_is_any_icon'.$c['c_id'].' '.( $c['c_is_any'] ? 'fas fa-code-merge' : 'fas fa-sitemap' ).'" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i></a> &nbsp;';
 
