@@ -80,6 +80,14 @@
     }
 
 
+    function confirm_w_delete(w_id){
+        var r = confirm("Are you sure you want to permanently delete this subscription?");
+        if (r == true) {
+            window.location = "/my/w_delete/"+w_id;
+        }
+    }
+
+
     function load_w_actionplan(w_id){
 
         w_id = parseInt(w_id);
@@ -90,7 +98,7 @@
         //Is this user an admin? if so, give them a delete option:
         if(jQuery.inArray(1281, js_inbound_u_ids) !== -1){
             //Append delete button:
-            $('#w_title').append(' &nbsp;<a href="/my/w_delete/'+w_id+'"><i class="fas fa-trash-alt" style="color:#FFF;"></i></a>');
+            $('#w_title').append(' &nbsp;<a href="javascript:void(0);" onclick="confirm_w_delete('+w_id+')"><i class="fas fa-trash-alt" style="color:#FFF;"></i></a>');
         }
 
         //Add via Ajax:
