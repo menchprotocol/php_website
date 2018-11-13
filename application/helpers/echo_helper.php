@@ -688,14 +688,6 @@ function echo_w_console($w){
     //Show user notification level:
     $ui .= ' <span>'.echo_status('u_fb_notification',$w['u_fb_notification'], true, 'left').'</span> ';
 
-    //Number of intents in Student Action Plan:
-    $ui .= '<a href="#wactionplan-'.$w['w_id'].'-'.$w['w_outbound_u_id'].'" onclick="load_w_actionplan('.$w['w_id'].','.$w['w_outbound_u_id'].')" class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="'.$w['w_stats']['k_count_done'].'/'.($w['w_stats']['k_count_done']+$w['w_stats']['k_count_undone']).' intents are marked as complete. Click to open Action Plan."><span class="btn-counter">'.( ($w['w_stats']['k_count_undone']+$w['w_stats']['k_count_done'])>0 ? number_format(($w['w_stats']['k_count_done']/($w['w_stats']['k_count_undone']+$w['w_stats']['k_count_done'])*100),0).'%' : '0%' ).'</span><i class="fas fa-flag" style="font-size:0.85em;"></i></a> ';
-
-    //Don't show if entities since the entity already has an engagement button on its level 1 white info box! We don't want to replicate that...
-    if(!$is_entity){
-
-    }
-
 
     //Then customize based on request location:
     if($is_intent || $is_cockpit){
@@ -708,19 +700,25 @@ function echo_w_console($w){
         $subscription_title .= '<span class="u_full_name u_full_name_'.$w['u_id'].'">'.$w['u_full_name'].'</span>';
 
         //Engagements made by subscriber:
-        $ui .= '<a href="#wengagements-'.$w['w_outbound_u_id'].'-'.$w['w_id'].'" onclick="load_u_engagements('.$w['w_outbound_u_id'].','.$w['w_id'].')" class="badge badge-secondary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="'.$w['w_stats']['e_all_count'].' engagements"><span class="btn-counter">'.$w['w_stats']['e_all_count'].( $w['w_stats']['e_all_count']==$CI->config->item('max_counter') ? '+' : '').'</span><i class="fas fa-exchange"></i></a>';
+        $ui .= '<a href="#wengagements-'.$w['w_outbound_u_id'].'-'.$w['w_id'].'" onclick="load_u_engagements('.$w['w_outbound_u_id'].','.$w['w_id'].')" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="'.$w['w_stats']['e_all_count'].' engagements"><span class="btn-counter">'.$w['w_stats']['e_all_count'].( $w['w_stats']['e_all_count']==$CI->config->item('max_counter') ? '+' : '').'</span><i class="fas fa-exchange"></i></a>';
 
         //Link to subscriber, but count total subscriptions first:
-        $ui .= '<a href="/entities/'.$w['w_outbound_u_id'].'" class="badge badge-secondary" style="width:40px;" data-toggle="tooltip" data-placement="top" title="Student has '.count($user_ws).' total subsciptions"><span class="btn-counter">'.count($user_ws).'</span><i class="fas fa-at"></i></a> ';
+        $ui .= '<a href="/entities/'.$w['w_outbound_u_id'].'" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="top" title="Student has '.count($user_ws).' total subsciptions"><span class="btn-counter">'.count($user_ws).'</span><i class="fas fa-sign-out-alt rotate90"></i></a>';
 
     }
 
+
+    //Number of intents in Student Action Plan:
+    $ui .= '<a href="#wactionplan-'.$w['w_id'].'-'.$w['w_outbound_u_id'].'" onclick="load_w_actionplan('.$w['w_id'].','.$w['w_outbound_u_id'].')" class="badge badge-primary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="'.$w['w_stats']['k_count_done'].'/'.($w['w_stats']['k_count_done']+$w['w_stats']['k_count_undone']).' intents are marked as complete. Click to open Action Plan."><span class="btn-counter">'.( ($w['w_stats']['k_count_undone']+$w['w_stats']['k_count_done'])>0 ? number_format(($w['w_stats']['k_count_done']/($w['w_stats']['k_count_undone']+$w['w_stats']['k_count_done'])*100),0).'%' : '0%' ).'</span><i class="fas fa-flag" style="font-size:0.85em;"></i></a>';
+
+
     if($is_entity || $is_cockpit){
+
         //Link to subscription's main intent:
         $intent_ws = $CI->Db_model->w_fetch(array(
             'w_inbound_c_id' => $w['c_id'],
         ));
-        $ui .= '<a href="/intents/'.$w['c_id'].'" class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="Open subscribed intention to '.$w['c_outcome'].' with '.count($intent_ws).' subscriptions"><span class="btn-counter">'.count($intent_ws).'</span><i class="fas fa-hashtag"></i></a>';
+        $ui .= '<a href="/intents/'.$w['c_id'].'" class="badge badge-primary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="Open subscribed intention to '.$w['c_outcome'].' with '.count($intent_ws).' subscriptions"><span class="btn-counter">'.count($intent_ws).'</span><i class="fas fa-sign-in-alt"></i></a>';
 
         $subscription_title .= ( $is_cockpit ? '<div style="margin: 3px 0 0 3px;"><i class="fas fa-hashtag"></i> ' : '' );
         $subscription_title .= '<span class="w_intent_'.$w['w_id'].'">'.$w['c_outcome'].'</span>';
@@ -776,16 +774,18 @@ function echo_k_console($k){
 
         //Right content:
         $ui .= '<span class="pull-right">';
+
             //Show last update time, if any:
             if($k['k_last_updated']){
                 $ui .= ' <span data-toggle="tooltip" data-placement="top" title="Submitted on  '.$k['k_last_updated'].'" style="font-size:0.8em;">'.echo_diff_time($k['k_last_updated']).'</span> ';
             }
 
             //Link to subscriber, but count total subscriptions first:
-            $ui .= '<a href="/entities/'.$k['u_id'].'" class="badge badge-secondary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="Open Subscriber '.$k['u_full_name'].' with '.count($user_ws).' subscriptions"><span class="btn-counter">'.count($user_ws).'</span><i class="fas fa-at"></i></a> ';
+            $ui .= '<a href="/entities/'.$k['u_id'].'" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="Open Subscriber '.$k['u_full_name'].' with '.count($user_ws).' subscriptions"><span class="btn-counter">'.count($user_ws).'</span><i class="fas fa-sign-out-alt rotate90"></i></a>';
 
             //Link to subscription's main intent:
-            $ui .= '<a href="/intents/'.$k['c_id'].'" class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="Open subscribed intention to '.$k['c_outcome'].' with '.count($intent_ws).' subscriptions"><span class="btn-counter">'.count($intent_ws).'</span><i class="fas fa-hashtag"></i></a>';
+            $ui .= '<a href="/intents/'.$k['c_id'].'" class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="Open subscribed intention to '.$k['c_outcome'].' with '.count($intent_ws).' subscriptions"><span class="btn-counter">'.count($intent_ws).'</span><i class="fas fa-sign-in-alt"></i></a>';
+
         $ui .= '</span>';
 
         //Show user who has subscribed:
