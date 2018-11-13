@@ -697,6 +697,17 @@ class Comm_model extends CI_Model {
                 'filters' => 'c__tree_all_count>1', //As users can only subscribe to intents that are multi nodes
             ]);
 
+            //Log intent search:
+            $this->Db_model->e_create(array(
+                'e_text_value' => 'Found '.$res['nbHits'].' intent'.echo__s($res['nbHits']).' matching "'.$c_target_outcome.'"',
+                'e_json' => array(
+                    'input' => $c_target_outcome,
+                    'output' => $res,
+                ),
+                'e_inbound_u_id' => $u['u_id'], //user who searched
+                'e_inbound_c_id' => 7703, //Search for New Intent Subscription
+            ));
+
             if($res['nbHits']>0){
 
                 //Show options for them to subscribe to:
