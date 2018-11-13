@@ -781,10 +781,10 @@ function echo_k_console($k){
             }
 
             //Link to subscriber, but count total subscriptions first:
-            $ui .= '<a href="/entities/'.$k['u_id'].'" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="Open Subscriber '.$k['u_full_name'].' with '.count($user_ws).' subscriptions"><span class="btn-counter">'.count($user_ws).'</span><i class="fas fa-sign-out-alt rotate90"></i></a>';
+            $ui .= '<a href="/entities/'.$k['u_id'].'" target="_parent" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="Open Subscriber '.$k['u_full_name'].' with '.count($user_ws).' subscriptions"><span class="btn-counter">'.count($user_ws).'</span><i class="fas fa-sign-out-alt rotate90"></i></a>';
 
             //Link to subscription's main intent:
-            $ui .= '<a href="/intents/'.$k['c_id'].'" class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="Open subscribed intention to '.$k['c_outcome'].' with '.count($intent_ws).' subscriptions"><span class="btn-counter">'.count($intent_ws).'</span><i class="fas fa-sign-in-alt"></i></a>';
+            $ui .= '<a href="/intents/'.$k['c_id'].'" target="_parent" class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="Open subscribed intention to '.$k['c_outcome'].' with '.count($intent_ws).' subscriptions"><span class="btn-counter">'.count($intent_ws).'</span><i class="fas fa-sign-in-alt"></i></a>';
 
         $ui .= '</span>';
 
