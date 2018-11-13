@@ -1273,7 +1273,7 @@ function echo_object($object,$id,$engagement_field,$button_type){
                     //Plain view:
                     return '<a href="https://mench.com/intents/'.$cs[0]['c_id'].'">'.$cs[0]['c_outcome'].'</a>';
                 } else {
-                    return '<a href="/intents/'.$cs[0]['c_id'].'" class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="'.$button_type.': '.stripslashes($cs[0]['c_outcome']).'"><i class="'.( $is_inbound ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></a> ';
+                    return '<a href="/intents/'.$cs[0]['c_id'].'" target="_parent" class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="'.$button_type.': '.stripslashes($cs[0]['c_outcome']).'"><i class="'.( $is_inbound ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></a> ';
 
                 }
             }
@@ -1301,7 +1301,7 @@ function echo_object($object,$id,$engagement_field,$button_type){
                         //Plain view:
                         return '<a href="https://mench.com/entities/'.$id.'" title="Entity ID '.$id.'">'.$matching_users[0]['u_full_name'].'</a>';
                     } else {
-                        return '<a href="/entities/'.$id.'" class="badge badge-secondary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="'.$button_type.': '.stripslashes($matching_users[0]['u_full_name']).'">'.echo_cover($matching_users[0], 'profile-icon2').'</a> ';
+                        return '<a href="/entities/'.$id.'" target="_parent" class="badge badge-secondary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="'.$button_type.': '.stripslashes($matching_users[0]['u_full_name']).'">'.echo_cover($matching_users[0], 'profile-icon2').'</a> ';
                     }
                 }
             }
@@ -1314,9 +1314,9 @@ function echo_object($object,$id,$engagement_field,$button_type){
             if(isset($matching_urls[0])){
                 if(!$button_type){
                     //Plain view:
-                    return '<a href="'.$matching_urls[0]['x_url'].'" title="Reference ID '.$id.'" target="_blank">'.echo_clean_url($matching_urls[0]['x_url']).'</a>';
+                    return '<a href="'.$matching_urls[0]['x_url'].'" target="_blank" title="Reference ID '.$id.'">'.echo_clean_url($matching_urls[0]['x_url']).'</a>';
                 } else {
-                    return '<a href="'.$matching_urls[0]['x_url'].'" class="badge badge-secondary" style="width:40px;">'.echo_status('x_status',$matching_urls[0]['x_status'], true, 'top').'</a> ';
+                    return '<a href="'.$matching_urls[0]['x_url'].'" target="_blank" class="badge badge-secondary" style="width:40px;">'.echo_status('x_status',$matching_urls[0]['x_status'], true, 'top').'</a> ';
                 }
             }
 
