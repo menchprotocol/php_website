@@ -149,7 +149,7 @@ class Db_model extends CI_Model {
 
         //Now see how many should we actually skip based on current status:
         $skippable_ks = $this->Db_model->k_fetch(array(
-            'k_status IN (1,0)' => null, //incomplete
+            'k_status IN ('.join(',', $this->config->item('k_status_incomplete')).')' => null, //incomplete
             'k_id IN ('.join(',',$skip_ks).')' => null,
         ));
 
@@ -269,7 +269,7 @@ class Db_model extends CI_Model {
             if(count($dwn_tree['k_flat'])>0){
                 //We do have down, let's check their status:
                 $dwn_incomplete_ks = $this->Db_model->k_fetch(array(
-                    'k_status IN (1,0,-2)' => null, //incomplete
+                    'k_status IN ('.join(',', $this->config->item('k_status_incomplete')).')' => null, //incomplete
                     'k_id IN ('.join(',',$dwn_tree['k_flat']).')' => null, //All OUT links
                 ), array('cr'));
                 if(count($dwn_incomplete_ks)>0){
@@ -321,7 +321,7 @@ class Db_model extends CI_Model {
                         //We need a single immediate child to be complete:
                         $complete_child_cs = $this->Db_model->k_fetch(array(
                             'k_w_id' => $w['w_id'],
-                            'k_status NOT IN (1,0,-2)' => null, //complete
+                            'k_status NOT IN ('.join(',', $this->config->item('k_status_incomplete')).')' => null, //complete
                             'cr_inbound_c_id' => $parent_ks[0]['cr_outbound_c_id'],
                         ), array('cr'));
                         if(count($complete_child_cs)==0){
@@ -331,7 +331,7 @@ class Db_model extends CI_Model {
                         //We need all immediate children to be complete (i.e. No incomplete)
                         $incomplete_child_cs = $this->Db_model->k_fetch(array(
                             'k_w_id' => $w['w_id'],
-                            'k_status IN (1,0,-2)' => null, //incomplete
+                            'k_status IN ('.join(',', $this->config->item('k_status_incomplete')).')' => null, //incomplete
                             'cr_inbound_c_id' => $parent_ks[0]['cr_outbound_c_id'],
                         ), array('cr'));
                         if(count($incomplete_child_cs)>0){
@@ -357,7 +357,7 @@ class Db_model extends CI_Model {
             if($w_might_be_complete){
                 //There is a chance that entire subscription might be complete
                 //To determine if the subscription is complete we need to look at the top level siblings...
-                //What kind of an intent (AND node or OR node) is this subscription w_c_id?
+                //What kind of an intent (AND node or OR node) is this subscription w_inbound_c_id?
                 $cs = $this->Db_model->w_fetch(array(
                     'w_id' => $w['w_id'],
                 ), array('c'));
@@ -373,9 +373,9 @@ class Db_model extends CI_Model {
                     //We need a single one to be completed:
                     $complete_child_cs = $this->Db_model->k_fetch(array(
                         'k_w_id' => $cs[0]['w_id'],
-                        'cr_inbound_c_id' => $cs[0]['w_c_id'],
+                        'cr_inbound_c_id' => $cs[0]['w_inbound_c_id'],
                         'cr_status >=' => 1,
-                        'k_status IN (-1,2,3)' => null, //complete
+                        'k_status NOT IN ('.join(',', $this->config->item('k_status_incomplete')).')' => null, //complete
                     ), array('cr'));
                     if(count($complete_child_cs)==0){
                         $subscription_is_complete = false;
@@ -384,9 +384,9 @@ class Db_model extends CI_Model {
                     //We need all to be completed:
                     $incomplete_child_cs = $this->Db_model->k_fetch(array(
                         'k_w_id' => $cs[0]['w_id'],
-                        'cr_inbound_c_id' => $cs[0]['w_c_id'],
+                        'cr_inbound_c_id' => $cs[0]['w_inbound_c_id'],
                         'cr_status >=' => 1,
-                        'k_status IN (1,0,-2)' => null, //incomplete
+                        'k_status IN ('.join(',', $this->config->item('k_status_incomplete')).')' => null, //incomplete
                     ), array('cr'));
                     if(count($incomplete_child_cs)>0){
                         $subscription_is_complete = false;
@@ -415,14 +415,14 @@ class Db_model extends CI_Model {
                             array(
                                 'e_inbound_u_id' => 2738, //Initiated by PA
                                 'e_outbound_u_id' => $cs[0]['w_outbound_u_id'],
-                                'e_outbound_c_id' => $cs[0]['w_c_id'],
+                                'e_outbound_c_id' => $cs[0]['w_inbound_c_id'],
                                 'e_w_id' => $cs[0]['w_id'],
                                 'i_message' => 'Congratulations for completing your '.echo_ordinal((count($completed_subscriptions)+1)).' Subscription 🎉 Over time I will keep sharing new insights (based on my new training data) that could help you to '.$cs[0]['c_outcome'].' 🙌 You can, at any time, stop updates on your subscriptions by saying "quit".',
                             ),
                             array(
                                 'e_inbound_u_id' => 2738, //Initiated by PA
                                 'e_outbound_u_id' => $cs[0]['w_outbound_u_id'],
-                                'e_outbound_c_id' => $cs[0]['w_c_id'],
+                                'e_outbound_c_id' => $cs[0]['w_inbound_c_id'],
                                 'e_w_id' => $cs[0]['w_id'],
                                 'i_message' => 'How else can I help you advance your tech career? '.echo_pa_lets(),
                             ),
@@ -431,7 +431,7 @@ class Db_model extends CI_Model {
                         //Log subscription completion engagement:
                         $this->Db_model->e_create(array(
                             'e_inbound_u_id' => $cs[0]['w_outbound_u_id'],
-                            'e_outbound_c_id' => $cs[0]['w_c_id'],
+                            'e_outbound_c_id' => $cs[0]['w_inbound_c_id'],
                             'e_w_id' => $cs[0]['w_id'],
                             'e_inbound_c_id' => 7490, //Subscription Completed
                         ));
@@ -658,7 +658,7 @@ class Db_model extends CI_Model {
 
     function w_create($insert_columns){
 
-        if(missing_required_db_fields($insert_columns,array('w_outbound_u_id','w_c_id'))){
+        if(missing_required_db_fields($insert_columns,array('w_outbound_u_id','w_inbound_c_id'))){
             return false;
         }
 
@@ -690,7 +690,7 @@ class Db_model extends CI_Model {
         if($insert_columns['w_id']>0){
 
             //Now let's create a cache of the Action Plan for this subscription:
-            $tree = $this->Db_model->c_recursive_fetch($insert_columns['w_c_id'], true, 0, $insert_columns['w_id']);
+            $tree = $this->Db_model->c_recursive_fetch($insert_columns['w_inbound_c_id'], true, 0, $insert_columns['w_id']);
 
             if(count($tree['cr_flat'])>0){
 
@@ -704,7 +704,7 @@ class Db_model extends CI_Model {
                     array(
                         'e_inbound_u_id' => 2738, //Initiated by PA
                         'e_outbound_u_id' => $insert_columns['w_outbound_u_id'],
-                        'e_outbound_c_id' => $insert_columns['w_c_id'],
+                        'e_outbound_c_id' => $insert_columns['w_inbound_c_id'],
                         'i_message' => 'Subscription failed',
                     ),
                 ));
@@ -718,7 +718,7 @@ class Db_model extends CI_Model {
                 'e_json' => $insert_columns,
                 'e_inbound_c_id' => 7465, //Subscribed
                 'e_w_id' => $insert_columns['w_id'],
-                'e_outbound_c_id' => $insert_columns['w_c_id'],
+                'e_outbound_c_id' => $insert_columns['w_inbound_c_id'],
             ));
 
             //Return results:
@@ -860,7 +860,7 @@ class Db_model extends CI_Model {
 
         //Check subscriptions:
         $subscriptions = $this->Db_model->w_fetch(array(
-            'w_c_id' => $c_id,
+            'w_inbound_c_id' => $c_id,
             'w_status >=' => 0,
         ));
         if(count($subscriptions)>0){
@@ -881,7 +881,7 @@ class Db_model extends CI_Model {
         $this->db->query("DELETE FROM v5_messages WHERE i_outbound_c_id=".$c_id);
         $delete_stats['v5_messages'] = $this->db->affected_rows();
 
-        $this->db->query("DELETE FROM v5_subscriptions WHERE w_c_id=".$c_id);
+        $this->db->query("DELETE FROM v5_subscriptions WHERE w_inbound_c_id=".$c_id);
         $delete_stats['v5_subscriptions'] = $this->db->affected_rows();
 
         $this->db->query("DELETE FROM v5_intents WHERE c_id=".$c_id);
@@ -1120,9 +1120,9 @@ class Db_model extends CI_Model {
 
 
 
-    function k_fetch($match_columns, $join_objects=array(), $order_columns=array(), $limit=0){
+    function k_fetch($match_columns, $join_objects=array(), $order_columns=array(), $limit=0, $select='*', $group_by=null){
         //Fetch the target gems:
-        $this->db->select('*');
+        $this->db->select($select);
         $this->db->from('v5_subscription_intent_links k');
 
         if(in_array('cr',$join_objects)){
@@ -1141,10 +1141,16 @@ class Db_model extends CI_Model {
         if(in_array('w',$join_objects)){
             //Also join with subscription row:
             $this->db->join('v5_subscriptions w', 'w.w_id = k.k_w_id');
-        } elseif(in_array('w_c',$join_objects)){
-            //Also join with subscription row:
-            $this->db->join('v5_subscriptions w', 'w.w_id = k.k_w_id');
-            $this->db->join('v5_intents c', 'c.c_id = w.w_c_id');
+
+            if(in_array('w_c',$join_objects)){
+                //Also join with subscription row:
+                $this->db->join('v5_intents c', 'c.c_id = w.w_inbound_c_id');
+            }
+            if(in_array('w_u',$join_objects)){
+                //Also add subscriber and their profile picture:
+                $this->db->join('v5_entities u', 'u.u_id = w.w_outbound_u_id');
+                $this->db->join('v5_entity_urls x', 'x.x_id = u.u_cover_x_id','left'); //Fetch the cover photo if >0
+            }
         }
 
         foreach($match_columns as $key=>$value){
@@ -1153,6 +1159,10 @@ class Db_model extends CI_Model {
             } else {
                 $this->db->where($key);
             }
+        }
+
+        if($group_by){
+            $this->db->group_by($group_by);
         }
 
         if(count($order_columns)>0){
@@ -1180,7 +1190,7 @@ class Db_model extends CI_Model {
         $this->db->select('*');
         $this->db->from('v5_subscriptions w');
         if(in_array('c',$join_objects)){
-            $this->db->join('v5_intents c', 'w.w_c_id = c.c_id');
+            $this->db->join('v5_intents c', 'w.w_inbound_c_id = c.c_id');
         }
         if(in_array('u',$join_objects)){
             $this->db->join('v5_entities u', 'w.w_outbound_u_id = u.u_id');
@@ -1214,17 +1224,17 @@ class Db_model extends CI_Model {
                     //Fetch intent engagements cached per subscription:
                     'k_count_undone' => count($this->Db_model->k_fetch(array(
                         'k_w_id' => $value['w_id'],
-                        'k_status IN (1,0,-2)' => null, //incomplete
+                        'k_status IN ('.join(',', $this->config->item('k_status_incomplete')).')' => null, //incomplete
                     ))),
                     'k_count_done' => count($this->Db_model->k_fetch(array(
                         'k_w_id' => $value['w_id'],
-                        'k_status NOT IN (1,0,-2)' => null, //complete
+                        'k_status NOT IN ('.join(',', $this->config->item('k_status_incomplete')).')' => null, //complete
                     ))),
                     //fetch all user engagements:
                     'e_all_count' => count($this->Db_model->e_fetch(array(
                         '(e_outbound_u_id='.$value['w_outbound_u_id'].' OR e_inbound_u_id='.$value['w_outbound_u_id'].')' => null,
                         '(e_inbound_c_id NOT IN ('.join(',', $this->config->item('exclude_es')).'))' => null,
-                    ), 999)),
+                    ), $this->config->item('max_counter'))),
                 );
             }
         }
@@ -1960,11 +1970,13 @@ class Db_model extends CI_Model {
 
 	function e_fetch($match_columns=array(), $limit=100, $join_objects=array(), $replace_key=null, $order_columns=array(
         'e.e_timestamp' => 'DESC',
-    )){
-	    $this->db->select('*');
+    ), $select='*', $group_by=null){
+	    $this->db->select($select);
 	    $this->db->from('v5_engagements e');
-        $this->db->join('v5_intents c', 'c.c_id=e.e_inbound_c_id');
-	    $this->db->join('v5_entities u', 'u.u_id=e.e_inbound_u_id','left');
+	    if(!$group_by){
+            $this->db->join('v5_intents c', 'c.c_id=e.e_inbound_c_id');
+            $this->db->join('v5_entities u', 'u.u_id=e.e_inbound_u_id','left');
+        }
         if(in_array('ej',$join_objects)){
             $this->db->join('v5_engagement_blob ej', 'ej.ej_e_id=e.e_id','left');
         }
@@ -1978,6 +1990,10 @@ class Db_model extends CI_Model {
 	            $this->db->where($key);
 	        }
 	    }
+
+        if($group_by){
+            $this->db->group_by($group_by);
+        }
 
         foreach($order_columns as $key=>$value){
             $this->db->order_by($key,$value);

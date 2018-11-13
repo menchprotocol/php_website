@@ -123,6 +123,7 @@ class My extends CI_Controller {
                     'e_json' => $subscriptions,
                     'e_text_value' => 'Unable to load a specific intent for the student Action Plan! Should not happen...',
                     'e_inbound_c_id' => 8,
+                    'e_w_id' => $w_id,
                     'e_outbound_c_id' => $c_id,
                 ));
 
@@ -201,13 +202,13 @@ class My extends CI_Controller {
         //Load Action Plan iFrame:
         return echo_json(array(
             'status' => 1,
-            'url' => '/my/actionplan/'.$w['w_id'].'/'.$w['w_c_id'],
+            'url' => '/my/actionplan/'.$w['w_id'].'/'.$w['w_inbound_c_id'],
         ));
 
     }
 
 
-    function load_w_engagements($u_id,$w_id=0){
+    function load_u_engagements($u_id){
 
         //Auth user and check required variables:
         $udata = auth(array(1308)); //Trainers
@@ -224,7 +225,6 @@ class My extends CI_Controller {
         ));
         $this->load->view('custom/student/engagement_list' , array(
             'u_id' => $u_id,
-            'w_id' => $w_id,
         ));
         $this->load->view('custom/shared/p_footer');
     }

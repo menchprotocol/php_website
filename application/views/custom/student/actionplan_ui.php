@@ -40,7 +40,7 @@ if($w['w_status']==1){
 //Include JS file:
 echo '<script src="/js/custom/actionplan-js.js?v=v'.$this->config->item('app_version').'" type="text/javascript"></script>';
 
-//Fetch inbound tree all the way to the top of subscription w_c_id
+//Fetch inbound tree all the way to the top of subscription w_inbound_c_id
 echo '<div class="list-group" style="margin-top: 10px;">';
 foreach($k_ins as $k){
     echo echo_k($k, 1);
@@ -68,7 +68,7 @@ if(count($k_ins)==0){
 
 } elseif(count($k_ins)==1) {
 
-    $hide_messages = ( $has_completion_info && $k_ins[0]['k_status']>=2 );
+    $hide_messages = ( $has_completion_info && !in_array($k_ins[0]['k_status'], $this->config->item('k_status_incomplete')));
 
     //Show completion progress for the single inbound intent:
     echo '<div class="sub_title">';
@@ -170,7 +170,7 @@ if($has_outs && $list_outs){
 echo $next_button;
 
 //Give a skip option if not complete:
-if(count($k_ins)==1 && in_array($k_ins[0]['k_status'], array(1,0,-2))){
+if(count($k_ins)==1 && in_array($k_ins[0]['k_status'], $this->config->item('k_status_incomplete'))){
     echo '<span class="skippable">or <a href="javascript:void(0);" onclick="confirm_skip('.$w['w_id'].','.$c['c_id'].','.$k_ins[0]['k_id'].')">skip intent</a></span>';
 }
 

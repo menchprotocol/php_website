@@ -80,6 +80,8 @@ $(document).ready(function () {
             } else if(hash_parts[0]=='status'){
                 //Update status:
                 filter_u_status(hash_parts[1]);
+            } else if(hash_parts[0]=='wengagements'){
+                load_u_engagements(hash_parts[1]);
             }
         }
     }

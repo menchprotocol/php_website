@@ -191,7 +191,7 @@ class Comm_model extends CI_Model {
                     $this->Db_model->e_create(array(
                         'e_inbound_u_id' => $u['u_id'],
                         'e_outbound_u_id' => $u['u_id'],
-                        'e_outbound_c_id' => $subscriptions[0]['w_c_id'],
+                        'e_outbound_c_id' => $subscriptions[0]['w_inbound_c_id'],
                         'e_text_value' => 'Student unsubscribed from their intention to '.$subscriptions[0]['c_outcome'],
                         'e_inbound_c_id' => 7452, //User Unsubscribed
                         'e_w_id' => intval($unsub_value),
@@ -333,9 +333,9 @@ class Comm_model extends CI_Model {
         } elseif(substr_count($fb_ref, 'SUBSCRIBE20_')==1){
 
             //Initiating an intent Subscription:
-            $w_c_id = intval(one_two_explode('SUBSCRIBE20_', '', $fb_ref));
+            $w_inbound_c_id = intval(one_two_explode('SUBSCRIBE20_', '', $fb_ref));
             $fetch_cs = $this->Db_model->c_fetch(array(
-                'c_id' => $w_c_id,
+                'c_id' => $w_inbound_c_id,
                 'c_status >=' => 1,
             ));
             if (count($fetch_cs)==1) {
@@ -345,8 +345,8 @@ class Comm_model extends CI_Model {
                 $subscription_intents = $this->Db_model->k_fetch(array(
                     'w_outbound_u_id' => $u['u_id'], //All subscriptions belonging to this user
                     'w_status' => 1, //Active
-                    '(cr_inbound_c_id='.$w_c_id.' OR cr_outbound_c_id='.$w_c_id.')' => null,
-                ), array('cr','w_c'));
+                    '(cr_inbound_c_id='.$w_inbound_c_id.' OR cr_outbound_c_id='.$w_inbound_c_id.')' => null,
+                ), array('cr','w','w_c'));
 
                 if(count($subscription_intents)>0){
 
@@ -357,7 +357,7 @@ class Comm_model extends CI_Model {
                             'e_outbound_u_id' => $u['u_id'],
                             'e_outbound_c_id' => $fetch_cs[0]['c_id'],
                             'e_w_id' => $subscription_intents[0]['k_w_id'],
-                            'i_message' => ( $subscription_intents[0]['c_id']==$w_c_id ? 'You have already subscribed to '.$fetch_cs[0]['c_outcome'].'. We have been working on it together since '.echo_time($subscription_intents[0]['w_timestamp'], 2).' /open_actionplan' : 'Your subscription to '.$subscription_intents[0]['c_outcome'].' already covers the intention to '.$fetch_cs[0]['c_outcome'].', so I will not create a duplicate subscription. /open_actionplan' ),
+                            'i_message' => ( $subscription_intents[0]['c_id']==$w_inbound_c_id ? 'You have already subscribed to '.$fetch_cs[0]['c_outcome'].'. We have been working on it together since '.echo_time($subscription_intents[0]['w_timestamp'], 2).' /open_actionplan' : 'Your subscription to '.$subscription_intents[0]['c_outcome'].' already covers the intention to '.$fetch_cs[0]['c_outcome'].', so I will not create a duplicate subscription. /open_actionplan' ),
                         ),
                     ));
 
@@ -366,11 +366,11 @@ class Comm_model extends CI_Model {
                     //Now we need to confirm if they really want to subscribe to this...
 
                     //Fetch all the messages for this intent:
-                    $tree = $this->Db_model->c_recursive_fetch($w_c_id,1,0);
+                    $tree = $this->Db_model->c_recursive_fetch($w_inbound_c_id,1,0);
 
                     //Show messages for this intent:
                     $messages = $this->Db_model->i_fetch(array(
-                        'i_outbound_c_id' => $w_c_id,
+                        'i_outbound_c_id' => $w_inbound_c_id,
                         'i_status >=' => 0, //Published in any form
                     ));
 
@@ -388,7 +388,7 @@ class Comm_model extends CI_Model {
                         array(
                             'e_inbound_u_id' => 2738, //Initiated by PA
                             'e_outbound_u_id' => $u['u_id'],
-                            'e_outbound_c_id' => $w_c_id,
+                            'e_outbound_c_id' => $w_inbound_c_id,
                             'i_message' => 'Highlights are:'."\n\n".
                                 echo_intent_overview($fetch_cs[0], 1).
                                 echo_contents($fetch_cs[0], 1).
@@ -400,14 +400,14 @@ class Comm_model extends CI_Model {
                                 array(
                                     'content_type' => 'text',
                                     'title' => 'Yes, Subscribe',
-                                    'payload' => 'SUBSCRIBE99_'.$w_c_id,
+                                    'payload' => 'SUBSCRIBE99_'.$w_inbound_c_id,
                                 ),
                                 array(
                                     'content_type' => 'text',
                                     'title' => 'No',
                                     'payload' => 'SUBSCRIBE10_0',
                                 ),
-                                //TODO Maybe Show a "learn more" if Drip messages available?
+                                //TODO Maybe Show a "7 Extra Notes" if Drip messages available?
                             ),
                         ),
                     ));
@@ -417,9 +417,9 @@ class Comm_model extends CI_Model {
 
         } elseif(substr_count($fb_ref, 'SUBSCRIBE99_')==1){
 
-            $w_c_id = intval(one_two_explode('SUBSCRIBE99_', '', $fb_ref));
+            $w_inbound_c_id = intval(one_two_explode('SUBSCRIBE99_', '', $fb_ref));
             $fetch_cs = $this->Db_model->c_fetch(array(
-                'c_id' => $w_c_id,
+                'c_id' => $w_inbound_c_id,
                 'c_status >=' => 1,
             ));
 
@@ -427,7 +427,7 @@ class Comm_model extends CI_Model {
 
                 //Create a new subscription (Which will also cache action plan):
                 $w = $this->Db_model->w_create(array(
-                    'w_c_id' => $w_c_id,
+                    'w_inbound_c_id' => $w_inbound_c_id,
                     'w_outbound_u_id' => $u['u_id'],
                 ));
 
@@ -436,7 +436,7 @@ class Comm_model extends CI_Model {
                     array(
                         'e_inbound_u_id' => 2738, //Initiated by PA
                         'e_outbound_u_id' => $u['u_id'],
-                        'e_outbound_c_id' => $w_c_id,
+                        'e_outbound_c_id' => $w_inbound_c_id,
                         'e_w_id' => $w['w_id'],
                         'i_message' => 'You are now subscribed 🙌 /open_actionplan',
                     ),
@@ -1287,7 +1287,7 @@ class Comm_model extends CI_Model {
                 }
 
 
-                //As long as $e['e_outbound_c_id'] is NOT equal to w_c_id, then we will have a k_out relation so we can give the option to skip:
+                //As long as $e['e_outbound_c_id'] is NOT equal to w_inbound_c_id, then we will have a k_out relation so we can give the option to skip:
                 $k_ins = $this->Db_model->k_fetch(array(
                     'w_id' => $e['e_w_id'],
                     'w_status IN (0,1)' => null, //Active subscriptions only

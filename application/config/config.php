@@ -5,14 +5,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 date_default_timezone_set('America/Los_Angeles');
 
 //Cache buster for static files
-$config['app_version'] = '0.598'.( ( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='local.mench.co' ) ? microtime(true) : '' ); //Updates status css/js cache files
+$config['app_version'] = '0.599'.( ( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='local.mench.co' ) ? microtime(true) : '' ); //Updates status css/js cache files
 
-// User case: $this->config->item('')
+//User case: $this->config->item('k_status_incomplete')
 
 $config['primary_c'] = 6903; //The default platform intent that would be recommended to new students
 $config['featured_cs'] = array(6903,6623,6898,7262,7263,6672,7311,7261); //What is publicly shown on the landing pages as related intentions
 $config['primary_u'] = 1326; //The default console entity that is loaded when Entities is clicked
 $config['message_max'] = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
+$config['max_counter'] = 999; //Used in counting things of engagements in console UI. If more that this will add a "+" sign to the end
 $config['c_outcome_max'] = 89; //Max number of characters allowed in the title of intents
 $config['u_full_name_max'] = 233; //Max number of characters allowed in the title of intents
 $config['file_limit_mb'] = 25; //Server setting is 32MB. see here: mench.com/ses
@@ -20,6 +21,7 @@ $config['items_per_page'] = 50; //Even number
 $config['universal_intents'] = array(7433); //Get to know how Mench Personal Assistant works //TODO Implement...
 $config['onhold_intents'] = array(7240,6629,6630,7248,7435,369,6653); //TODO Replace with drafting intents c_status=0
 $config['exclude_es'] = array(1,2); //The engagements that should be ignored
+$config['k_status_incomplete'] = array(1,0,-2); //The K statuses that indicate the task is not complete... Other statuses indicate completeness, see k_status below for more details
 
 //This should mirror outbound intents of @3000, and the order of the items would be used in the Landing page:
 $config['content_types'] = array(
@@ -192,15 +194,15 @@ $config['object_statuses'] = array(
             's_desc'  => 'Initial messages with instructions on how to effectively complete this intent',
             's_icon' => 'fas fa-bolt',
         ),
+        2 => array(
+            's_name'  => 'Extra Note',
+            's_desc'  => 'Extra messages that student can receive, or else would be dripped in intervals after students complete intent to re-iterate key insights & retain learnings',
+            's_icon' => 'fas fa-comment-exclamation',
+        ),
         3 => array(
             's_name'  => 'On-Complete',
             's_desc'  => 'Messages sent when intent is complete to re-iterate key insights & retain learnings',
             's_icon' => 'fas fa-calendar-check',
-        ),
-        2 => array(
-            's_name'  => 'Drip',
-            's_desc'  => 'Messages sent in intervals after students complete this intent to re-iterate key insights & retain learnings',
-            's_icon' => 'fas fa-tint',
         ),
     ),
 

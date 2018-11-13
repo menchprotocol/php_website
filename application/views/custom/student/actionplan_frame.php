@@ -16,7 +16,7 @@ if(isset($udata['u__ws']) && count($udata['u__ws'])){
     //Fetch page instantly as we know who this is:
     ?>
     <script>
-        $.post("/my/display_actionplan/0/<?= ( isset($w_id) ? intval($w_id) : $udata['u__ws'][0]['w_id'] ) ?>/<?= ( isset($c_id) ? intval($c_id) : $udata['u__ws'][0]['w_c_id'] ) ?>", {}, function(data) {
+        $.post("/my/display_actionplan/0/<?= ( isset($w_id) ? intval($w_id) : $udata['u__ws'][0]['w_id'] ) ?>/<?= ( isset($c_id) ? intval($c_id) : $udata['u__ws'][0]['w_inbound_c_id'] ) ?>", {}, function(data) {
             $( "#page_content").html(data);
 
             //Load tooldip:

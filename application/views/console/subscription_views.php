@@ -47,9 +47,9 @@
             if(hash_parts.length>=2){
                 //Fetch level if available:
                 if(hash_parts[0]=='wactionplan'){
-                    load_w_actionplan(hash_parts[1]);
+                    load_w_actionplan(hash_parts[1],hash_parts[2]);
                 } else if(hash_parts[0]=='wengagements'){
-                    load_w_engagements(hash_parts[1],hash_parts[2]);
+                    load_u_engagements(hash_parts[1],hash_parts[2]);
                 }
             }
         }
@@ -57,7 +57,7 @@
 
     });
 
-    function frame_loader(w_id, hide_intent=false){
+    function frame_loader(w_id, u_id, hide_intent=false){
 
         //Start loading:
         $('.fixed-box, .ajax-frame').addClass('hidden');
@@ -65,14 +65,14 @@
 
         //Construct title:
         var w_entity = null;
-        if($('.w_entity_'+w_id).length){
-            w_entity = $('.w_entity_'+w_id).text();
+        if(u_id>0 && $('.u_full_name_'+u_id+':first').length){
+            w_entity = $('.u_full_name_'+u_id+':first').text();
         }
 
         var w_intent = null;
-        if($('.w_intent_'+w_id).length){
+        if(w_id>0 && $('.w_intent_'+w_id).length){
             w_intent = ( w_entity ? ' / ' : '' );
-            w_intent = w_intent+$('.w_intent_'+w_id).text();
+            w_intent = w_intent + $('.w_intent_'+w_id).text();
         }
 
         return ( w_entity ? w_entity : '' )+( w_intent && !hide_intent ? w_intent : '' );
@@ -88,17 +88,17 @@
     }
 
 
-    function load_w_actionplan(w_id){
+    function load_w_actionplan(w_id,u_id){
 
         w_id = parseInt(w_id);
-        var frame_title = frame_loader(w_id);
+        u_id = parseInt(u_id);
+        var frame_title = frame_loader(w_id,u_id);
         $('#w_title').html('<i class="fas fa-flag"></i> '+frame_title);
-
 
         //Is this user an admin? if so, give them a delete option:
         if(jQuery.inArray(1281, js_inbound_u_ids) !== -1){
             //Append delete button:
-            $('#w_title').append(' &nbsp;<a href="javascript:void(0);" onclick="confirm_w_delete('+w_id+')"><i class="fas fa-trash-alt" style="color:#FFF;"></i></a>');
+            $('#w_title').prepend('<a href="javascript:void(0);" onclick="confirm_w_delete('+w_id+')" data-toggle="tooltip" title="Permanently delete this subscription and its related data" data-placement="bottom"><i class="fas fa-trash-alt" style="color:#FFF;"></i></a> &nbsp;');
         }
 
         //Add via Ajax:
@@ -117,22 +117,6 @@
                 alert('Error Loading Subscription Data: ' + data.message);
             }
         });
-    }
-
-
-    function load_w_engagements(w_id,u_id){
-
-        w_id = parseInt(w_id);
-        u_id = parseInt(u_id);
-        var frame_title = frame_loader(w_id, true);
-        $('#w_title').html('<i class="fas fa-exchange"></i> '+frame_title);
-
-        //Load content via a URL:
-        $('.frame-loader').addClass('hidden');
-        $('.ajax-frame').attr('src','/my/load_w_engagements/'+u_id+'/'+w_id).removeClass('hidden').css('margin-top','0');
-
-        //Tooltips:
-        $('[data-toggle="tooltip"]').tooltip();
     }
 
 </script>

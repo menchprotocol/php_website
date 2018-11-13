@@ -103,7 +103,7 @@ $uri_segment_2 = $this->uri->segment(2);
                             <li class="extra-toggle" style="display: none;"><a href="/cockpit/engagements"><span class="icon-left"><i class="fas fa-user-shield"></i></span> Admin</a></li>
                         <?php } ?>
 
-                        <li class="extra-toggle" style="display: none;"><a href="/entities/<?= $udata['u_id'] ?>"><span class="icon-left"><i class="fas fa-user-circle"></i></span> Me</a></li>
+                        <li class="extra-toggle" style="display: none;"><a href="/entities/<?= $udata['u_id'] ?>"><span class="icon-left"><i class="fas fa-user-circle"></i></span> Profile</a></li>
                         <li class="extra-toggle" style="display: none;"><a href="/logout"><span class="icon-left"><i class="fas fa-power-off"></i></span> Logout</a></li>
                     </ul>
                 </div>

@@ -89,7 +89,7 @@ if(isset($orphan_cs)){
             //Intent subscribers:
             $limit = (is_dev() ? 10 : 100);
             $all_subscriptions = $this->Db_model->w_fetch(array(
-                'w_c_id' => $c['c_id'],
+                'w_inbound_c_id' => $c['c_id'],
             ), array('u','u_x','w_stats'), array(
                 'w_id' => 'DESC',
             ), $limit);
