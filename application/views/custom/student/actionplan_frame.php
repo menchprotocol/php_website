@@ -4,9 +4,9 @@
 $udata = $this->session->userdata('user');
 $fb_settings = $this->config->item('fb_settings');
 
-if(isset($udata['u__ws']) && count($udata['u__ws'])){
+if((isset($udata['u__ws']) && count($udata['u__ws'])) || (array_key_exists(1281, $udata['u__inbounds']))){
 
-    //User seems to be accessing the Action Plan from their browser
+    //User is accessing the Action Plan from their browser
 
     //Include header:
     $this->load->view('custom/shared/student_nav' , array(
