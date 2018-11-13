@@ -676,7 +676,7 @@ function echo_w_console($w){
 
 
     //Display the item
-    $ui = '<div class="list-group-item">';
+    $ui = '<div class="list-group-item" id="w_div_'.$w['w_id'].'">';
 
     //Right content:
     $ui .= '<span class="pull-right">';

@@ -83,7 +83,20 @@
     function confirm_w_delete(w_id){
         var r = confirm("Are you sure you want to permanently delete this subscription?");
         if (r == true) {
-            window.location = "/my/w_delete/"+w_id;
+
+            //Make ajax call and remove item:
+            $.post("/my/w_delete/"+w_id, {}, function (data) {
+                if (data.status) {
+                    //Hide boxed:
+                    $('.frame-loader').addClass('hidden');
+
+                    //Remove frame
+                    $('#w_div_'+w_id).html('<span style="color:#2f2739;"><i class="fas fa-trash-alt"></i> Deleted</span>');
+                    setTimeout(function () {
+                        $('#w_div_'+w_id).fadeOut();
+                    }, 377);
+                }
+            });
         }
     }
 
