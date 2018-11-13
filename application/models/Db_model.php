@@ -2106,13 +2106,13 @@ class Db_model extends CI_Model {
                 ));
             }
 
-            //Notify relevant subscribers about this notification:
-            $engagement_subscriptions = $this->config->item('engagement_subscriptions');
-            $engagement_references = $this->config->item('engagement_references');
-
-
             //Individual subscriptions:
-            foreach($engagement_subscriptions as $subscription){
+            foreach($this->config->item('engagement_subscriptions') as $admin_u_id=>$subscription){
+
+                //Do not notify about own actions:
+                if(intval($insert_columns['e_inbound_u_id'])==$admin_u_id){
+                    continue;
+                }
 
                 if(in_array($insert_columns['e_inbound_c_id'],$subscription['subscription']) || in_array(0,$subscription['subscription'])){
 
@@ -2134,7 +2134,7 @@ class Db_model extends CI_Model {
                         $html_message .= '<div>Hi Mench Admin,</div><br />';
 
                         //Lets go through all references to see what is there:
-                        foreach($engagement_references as $engagement_field=>$er){
+                        foreach($this->config->item('engagement_references') as $engagement_field=>$er){
                             if(intval($engagements[0][$engagement_field])>0){
                                 //Yes we have a value here:
                                 $html_message .= '<div>'.$er['name'].': '.echo_object($er['object_code'], $engagements[0][$engagement_field], $engagement_field, null).'</div>';

@@ -50,13 +50,23 @@ $config['aws_credentials'] = [
 
 //Email-based engagements subscriptions:
 $config['engagement_subscriptions'] = array(
-    array(
-        'admin_emails' => array('miguel@mench.com'),
-        'subscription' => array(9,72),
-    ),
-    array(
+    1 => array(
         'admin_emails' => array('shervin@mench.com'),
-        'subscription' => array(9,72,7452,8,7703),
+        'subscription' => array(
+            9, //User attention
+            72, //Student Reviewed Mench
+            7452, //Quit Intention
+            8, //System error
+            7703, //Search for New Intent Subscription
+            10 //user login
+        ),
+    ),
+    2 => array(
+        'admin_emails' => array('miguel@mench.com'),
+        'subscription' => array(
+            9, //User attention
+            72 //Student Reviewed Mench
+        ),
     ),
 );
 

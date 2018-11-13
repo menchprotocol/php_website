@@ -1210,8 +1210,7 @@ function echo_experts($c, $fb_format=0){
             </div>
             <div id="collapse'.$id.'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'.$id.'">
                 <div class="panel-body">
-                    '.$pitch.'
-                    <p style="font-size: 1em !important;">They are not affiliated with Mench. Their work is referenced by our training team.</p>
+                    '.$pitch.' <span style="font-size: 1em !important;">They are not affiliated with Mench, yet their work has been referenced by our training team.</span>
                 </div>
             </div>
         </div></div>';
