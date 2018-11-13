@@ -958,7 +958,7 @@ function echo_contents($c, $fb_format=0){
 
     $pitch = '';
     if($fb_format) {
-        return '📚 Insights reference'.$text_overview.'.'."\n";
+        return '📚 Action Plan reference'.$text_overview.'.'."\n";
     } else {
         //HTML format
         $id = 'ContentReferences';
@@ -972,7 +972,7 @@ function echo_contents($c, $fb_format=0){
             </div>
             <div id="collapse'.$id.'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'.$id.'">
                 <div class="panel-body">
-                    Insights reference'.$text_overview.'.
+                    Action Plan reference'.$text_overview.'.
                 </div>
             </div>
         </div></div>';
@@ -1071,7 +1071,7 @@ function echo_costs($c, $fb_format=0){
 
 function echo_intent_overview($c, $fb_format=0){
     if($fb_format) {
-        return '💡 Action Plan includes '.$c['c__tree_all_count'].' insights.'."\n";
+        return '🚩 Action Plan includes '.$c['c__tree_all_count'].' insights.'."\n";
     } else {
         //HTML format
         $id = 'IntentOverview';
@@ -1079,13 +1079,13 @@ function echo_intent_overview($c, $fb_format=0){
             <div class="panel-heading" role="tab" id="heading'.$id.'">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open'.$id.'" href="#collapse'.$id.'" aria-expanded="true" aria-controls="collapse'.$id.'">
-                    <i class="fas fa-lightbulb-on" style="transform:none !important;"></i> '.$c['c__tree_all_count'].' Insights
+                    <i class="fas fa-flag" style="transform:none !important;"></i> '.$c['c__tree_all_count'].' Insights
                 </a>
             </h4>
         </div>
         <div id="collapse'.$id.'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'.$id.'">
             <div class="panel-body">
-                Action Plan includes '.$c['c__tree_all_count'].' Insights that offer tips and actionable tasks from content published by industry experts.
+                Action Plan includes '.$c['c__tree_all_count'].' Insights that offer tips and actionable tasks to '.$c['c_outcome'].'.
             </div>
         </div>
     </div></div>';
@@ -1094,7 +1094,7 @@ function echo_intent_overview($c, $fb_format=0){
 
 function echo_completion_estimate($c, $fb_format=0){
     if($fb_format) {
-        return '🕓 Action Plan is estimated to take '.strtolower(echo_hour_range($c)).' to complete.'."\n";
+        return '🕓 Action Plan takes '.strtolower(echo_hour_range($c)).' to complete.'."\n";
     } else {
         //HTML format
         $id = 'EstimatedTime';
@@ -1108,7 +1108,7 @@ function echo_completion_estimate($c, $fb_format=0){
             </div>
             <div id="collapse'.$id.'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'.$id.'">
                 <div class="panel-body">
-                    It usually takes '.strtolower(echo_hour_range($c)).' to complete a personalized version of this Action Plan.
+                    Action Plan takes '.strtolower(echo_hour_range($c)).' to complete.
                 </div>
             </div>
         </div></div>';
@@ -1194,7 +1194,7 @@ function echo_experts($c, $fb_format=0){
 
 
 
-    $pitch = 'Insights quote '.$all_count.' industry expert'.echo__s($all_count).($all_count==1 ? ':' : ' including' ).$text_overview;
+    $pitch = 'Action Plan quotes '.$all_count.' industry expert'.echo__s($all_count).($all_count==1 ? ':' : ' including' ).$text_overview;
     if($fb_format) {
         return '👩‍🎓 '.$pitch."\n";
     } else {
