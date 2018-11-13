@@ -41,7 +41,7 @@ class My extends CI_Controller {
         $udata = $this->session->userdata('user');
 
         //Fetch Bootcamps for this user:
-        if(!$u_fb_psid && count($udata['u__ws'])<1){
+        if(!$u_fb_psid && count($udata['u__ws'])<1 && !array_key_exists(1281, $udata['u__inbounds'])){
             //There is an issue here!
             die('<div class="alert alert-danger" role="alert">Invalid Credentials</div>');
         } elseif(count($udata['u__ws'])<1 && !is_dev() && isset($_GET['sr']) && !parse_signed_request($_GET['sr'])){
