@@ -958,7 +958,7 @@ function echo_contents($c, $fb_format=0){
 
     $pitch = '';
     if($fb_format) {
-        return '📚 Action Plan reference'.$text_overview.'.'."\n";
+        return '📚 Action Plan references'.$text_overview.'.'."\n";
     } else {
         //HTML format
         $id = 'ContentReferences';
@@ -972,7 +972,7 @@ function echo_contents($c, $fb_format=0){
             </div>
             <div id="collapse'.$id.'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'.$id.'">
                 <div class="panel-body">
-                    Action Plan reference'.$text_overview.'.
+                    Action Plan references'.$text_overview.'.
                 </div>
             </div>
         </div></div>';
@@ -1041,7 +1041,7 @@ function echo_costs($c, $fb_format=0){
         return false;
     } elseif(round($c['c__tree_max_cost'])==round($c['c__tree_min_cost']) || $c['c__tree_min_cost']==0){
         //Single price:
-        $price_range = 'up to $'.round($c['c__tree_max_cost']).' USD';
+        $price_range = '$'.round($c['c__tree_max_cost']).' USD';
     } else {
         //Price range:
         $price_range = 'between $'.round($c['c__tree_min_cost']).' to $'.round($c['c__tree_max_cost']).' USD';

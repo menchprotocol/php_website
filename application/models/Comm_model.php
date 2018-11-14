@@ -257,7 +257,7 @@ class Comm_model extends CI_Model {
                     array(
                         'e_inbound_u_id' => 2738, //Initiated by PA
                         'e_outbound_u_id' => $u['u_id'],
-                        'i_message' => 'Ok, so what is your biggest career-related challenge? '.echo_pa_lets(),
+                        'i_message' => 'Ok, so how can I help you advance your tech career? '.echo_pa_lets(),
                     ),
                 ));
 
