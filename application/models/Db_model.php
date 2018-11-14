@@ -31,7 +31,6 @@ class Db_model extends CI_Model {
         $last_working_on_any = $this->Db_model->k_fetch(array(
             'w_id' => $w_id,
             'w_status' => 1, //Active subscriptions
-            'cr_status >=' => 1,
             'c_status >=' => 1,
             'k_rank >' => $min_k_rank,
             //The first case is for OR intents that a child is not yet selected, and the second part is for regular incompleted items:
@@ -44,7 +43,6 @@ class Db_model extends CI_Model {
         $first_pending_all = $this->Db_model->k_fetch(array(
             'w_id' => $w_id,
             'w_status' => 1, //Active subscriptions
-            'cr_status >=' => 1,
             'c_status >=' => 1,
             'k_rank >' => $min_k_rank,
             //The first case is for OR intents that a child is not yet selected, and the second part is for regular incompleted items:
@@ -178,7 +176,6 @@ class Db_model extends CI_Model {
             'k_w_id' => $w_id,
             'cr_inbound_c_id' => $cr_inbound_c_id, //Fetch children of parent intent which are the siblings of current intent
             'cr_outbound_c_id' => $c_id, //The answer
-            'cr_status >=' => 1,
             'c_status >=' => 1,
         ), array('w','cr','cr_c_in'));
 
@@ -189,7 +186,6 @@ class Db_model extends CI_Model {
                 'k_w_id' => $w_id,
                 'cr_inbound_c_id' => $cr_inbound_c_id, //Fetch children of parent intent which are the siblings of current intent
                 'cr_outbound_c_id' => $c_id, //The answer
-                'cr_status >=' => 1,
                 'c_status >=' => 1,
             ), array('w','cr','cr_c_out'));
 
@@ -246,7 +242,6 @@ class Db_model extends CI_Model {
                 'k_w_id' => $w['w_id'],
                 'cr_inbound_c_id' => $cr['cr_inbound_c_id'], //Fetch children of parent intent which are the siblings of current intent
                 'cr_outbound_c_id !=' => $cr['cr_outbound_c_id'], //NOT The answer (we need its siblings)
-                'cr_status >=' => 1,
                 'c_status >=' => 1,
                 'k_status IN (0,1)' => null,
             ), array('w','cr','cr_c_out'));
@@ -304,7 +299,6 @@ class Db_model extends CI_Model {
                 $parent_ks = $this->Db_model->k_fetch(array(
                     'k_id' => $parent_k_id,
                     'k_w_id' => $w['w_id'],
-                    'cr_status >=' => 1,
                     'c_status >=' => 1,
                     'k_status <' => 2, //Not completed in any way
                 ), array('cr','cr_c_out'));
@@ -374,7 +368,6 @@ class Db_model extends CI_Model {
                     $complete_child_cs = $this->Db_model->k_fetch(array(
                         'k_w_id' => $cs[0]['w_id'],
                         'cr_inbound_c_id' => $cs[0]['w_inbound_c_id'],
-                        'cr_status >=' => 1,
                         'k_status NOT IN ('.join(',', $this->config->item('k_status_incomplete')).')' => null, //complete
                     ), array('cr'));
                     if(count($complete_child_cs)==0){
@@ -385,7 +378,6 @@ class Db_model extends CI_Model {
                     $incomplete_child_cs = $this->Db_model->k_fetch(array(
                         'k_w_id' => $cs[0]['w_id'],
                         'cr_inbound_c_id' => $cs[0]['w_inbound_c_id'],
-                        'cr_status >=' => 1,
                         'k_status IN ('.join(',', $this->config->item('k_status_incomplete')).')' => null, //incomplete
                     ), array('cr'));
                     if(count($incomplete_child_cs)>0){
@@ -2640,7 +2632,6 @@ class Db_model extends CI_Model {
         $child_cs = $this->Db_model->k_fetch(array(
             'k_w_id' => $w_id,
             ( $fetch_outbound ? 'cr_inbound_c_id' : 'cr_outbound_c_id' ) => $c_id,
-            'cr_status >=' => 1,
             'c_status >=' => 1,
         ), array('cr',( $fetch_outbound ? 'cr_c_out' : 'cr_c_in' )));
 

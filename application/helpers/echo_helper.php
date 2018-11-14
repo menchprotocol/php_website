@@ -1524,19 +1524,18 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
         'k_all' => 0,
         'k_completed' => 0,
     );
-    if($level >= 2){
-        $k_stat_fetch = $CI->Db_model->k_fetch(array(
-            'k_cr_id' => $c['cr_id'],
-        ), array(), array(), 0, 'k_status, COUNT(k_id) as cr_count', 'k_status');
-        foreach($k_stat_fetch as $ks){
-            $k_stats['k_all'] += $ks['cr_count'];
-            //Calculate real completion:
-            if($ks['k_status']>=2){
-                $k_stats['k_completed'] += $ks['cr_count'];
-            }
+
+    //Fetch K stats:
+    $k_stat_fetch = $CI->Db_model->k_fetch(array(
+        'cr_outbound_c_id' => $c['c_id'],
+    ), array('cr'), array(), 0, 'k_status, COUNT(k_id) as cr_count', 'k_status');
+    foreach($k_stat_fetch as $ks){
+        $k_stats['k_all'] += $ks['cr_count'];
+        //Calculate real completion:
+        if($ks['k_status']>=2){
+            $k_stats['k_completed'] += $ks['cr_count'];
         }
     }
-
 
 
     if($level==1){
@@ -1560,7 +1559,7 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
     //Show submission stats
     if($k_stats['k_all']>0){
         //Show link to load these intents in user subscriptions:
-        $ui .= '<a href="#kcache-'.$c['c_id'].'-'.$c['cr_id'].'" onclick="kcache_load('.$c['c_id'].','.$c['cr_id'].')" class="badge badge-primary" style="width:40px; margin-right:2px;" data-toggle="tooltip" title="'.$k_stats['k_completed'].'/'.$k_stats['k_all'].' marked as complete across all Action Plans" data-placement="top"><span class="btn-counter">'.round($k_stats['k_completed']/$k_stats['k_all']*100).'%</span><i class="fas fa-flag" style="font-size:0.85em;"></i></a>';
+        $ui .= '<a href="#kcache-'.$c['c_id'].'" onclick="kcache_load('.$c['c_id'].')" class="badge badge-primary" style="width:40px; margin-right:2px;" data-toggle="tooltip" title="'.$k_stats['k_completed'].'/'.$k_stats['k_all'].' marked as complete across all Action Plans" data-placement="top"><span class="btn-counter">'.round($k_stats['k_completed']/$k_stats['k_all']*100).'%</span><i class="fas fa-flag" style="font-size:0.85em;"></i></a>';
     }
 
     if($e_count>0){
