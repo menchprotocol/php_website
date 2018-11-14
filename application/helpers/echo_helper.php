@@ -1047,8 +1047,9 @@ function echo_costs($c, $fb_format=0){
         $price_range = 'between $'.round($c['c__tree_min_cost']).' to $'.round($c['c__tree_max_cost']).' USD';
     }
 
+    $pitch = 'Action Plan recommends '.$price_range.' in verified third-party product purchases.';
     if($fb_format) {
-        return '💵 It might cost '.$price_range.' to buy verified third-party products.'."\n";
+        return '💵 '.$pitch."\n";
     } else {
         //HTML format
         $id = 'CostForcast';
@@ -1061,9 +1062,7 @@ function echo_costs($c, $fb_format=0){
                 </h4>
             </div>
             <div id="collapse'.$id.'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'.$id.'">
-                <div class="panel-body">
-                    It might cost '.$price_range.' to purchase verified third-party products.
-                </div>
+                <div class="panel-body">'.$pitch.'</div>
             </div>
         </div></div>';
     }
