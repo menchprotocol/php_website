@@ -956,9 +956,9 @@ function echo_contents($c, $fb_format=0){
 
 
 
-    $pitch = '';
+    $pitch = 'Action Plan references'.$text_overview.' from industry experts.';
     if($fb_format) {
-        return '📚 Action Plan references'.$text_overview.'.'."\n";
+        return '📚 '.$pitch."\n";
     } else {
         //HTML format
         $id = 'ContentReferences';
@@ -966,14 +966,12 @@ function echo_contents($c, $fb_format=0){
             <div class="panel-heading" role="tab" id="heading'.$id.'">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open'.$id.'" href="#collapse'.$id.'" aria-expanded="true" aria-controls="collapse'.$id.'">
-                        <i class="fas fa-book" style="transform:none !important;"></i> '.$all_count.' Reference'.echo__s($all_count).'
+                        <i class="fas" style="transform:none !important;">📚</i> '.$all_count.' Reference'.echo__s($all_count).'
                     </a>
                 </h4>
             </div>
             <div id="collapse'.$id.'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'.$id.'">
-                <div class="panel-body">
-                    Action Plan references'.$text_overview.'.
-                </div>
+                <div class="panel-body">'.$pitch.'</div>
             </div>
         </div></div>';
     }
@@ -1049,9 +1047,10 @@ function echo_costs($c, $fb_format=0){
         $price_range = 'between $'.round($c['c__tree_min_cost']).' to $'.round($c['c__tree_max_cost']).' USD';
     }
 
-    $pitch = 'Action Plan recommends '.$price_range.' in verified third-party product purchases.';
+
+    $pitch = 'Action Plan recommends '.$price_range.' in third-party product purchases.';
     if($fb_format) {
-        return '💵 '.$pitch."\n";
+        return '💸 '.$pitch."\n";
     } else {
         //HTML format
         $id = 'CostForcast';
@@ -1059,7 +1058,7 @@ function echo_costs($c, $fb_format=0){
             <div class="panel-heading" role="tab" id="heading'.$id.'">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open'.$id.'" href="#collapse'.$id.'" aria-expanded="true" aria-controls="collapse'.$id.'">
-                        <i class="fas fa-usd-square" style="transform:none !important;"></i> '.ucwords($price_range).'
+                        <i class="fas" style="transform:none !important;">💸</i> '.ucwords($price_range).'
                     </a>
                 </h4>
             </div>
@@ -1071,8 +1070,11 @@ function echo_costs($c, $fb_format=0){
 }
 
 function echo_intent_overview($c, $fb_format=0){
+
+    $pitch = 'Action Plan contains '.$c['c__tree_all_count'].' insights that will help you '.$c['c_outcome'].'.';
+
     if($fb_format) {
-        return '🚩 Action Plan includes '.$c['c__tree_all_count'].' insights.'."\n";
+        return '🚩 '.$pitch."\n";
     } else {
         //HTML format
         $id = 'IntentOverview';
@@ -1080,22 +1082,21 @@ function echo_intent_overview($c, $fb_format=0){
             <div class="panel-heading" role="tab" id="heading'.$id.'">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open'.$id.'" href="#collapse'.$id.'" aria-expanded="true" aria-controls="collapse'.$id.'">
-                    <i class="fas fa-flag" style="transform:none !important;"></i> '.$c['c__tree_all_count'].' Insights
+                    <i class="fas" style="transform:none !important;">💡</i> '.$c['c__tree_all_count'].' Insights
                 </a>
             </h4>
         </div>
         <div id="collapse'.$id.'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'.$id.'">
-            <div class="panel-body">
-                Action Plan includes '.$c['c__tree_all_count'].' Insights that offer tips and actionable tasks to '.$c['c_outcome'].'.
-            </div>
+            <div class="panel-body">'.$pitch.'</div>
         </div>
     </div></div>';
     }
 }
 
 function echo_completion_estimate($c, $fb_format=0){
+    $pitch = 'Action Plan estimates that it will take '.strtolower(echo_hour_range($c)).' to '.$c['c_outcome'].'.';
     if($fb_format) {
-        return '🕓 Action Plan takes '.strtolower(echo_hour_range($c)).' to complete.'."\n";
+        return '⏰ '.$pitch."\n";
     } else {
         //HTML format
         $id = 'EstimatedTime';
@@ -1103,14 +1104,12 @@ function echo_completion_estimate($c, $fb_format=0){
             <div class="panel-heading" role="tab" id="heading'.$id.'">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open'.$id.'" href="#collapse'.$id.'" aria-expanded="true" aria-controls="collapse'.$id.'">
-                        <i class="fas fa-clock" style="transform:none !important;"></i> '.ucwords(echo_hour_range($c)).'
+                        <i class="fas" style="transform:none !important;">⏰</i> '.ucwords(echo_hour_range($c)).'
                     </a>
                 </h4>
             </div>
             <div id="collapse'.$id.'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'.$id.'">
-                <div class="panel-body">
-                    Action Plan takes '.strtolower(echo_hour_range($c)).' to complete.
-                </div>
+                <div class="panel-body">'.$pitch.'</div>
             </div>
         </div></div>';
     }
@@ -1197,7 +1196,7 @@ function echo_experts($c, $fb_format=0){
 
     $pitch = 'Action Plan quotes '.$all_count.' industry expert'.echo__s($all_count).($all_count==1 ? ':' : ' including' ).$text_overview;
     if($fb_format) {
-        return '👩‍🎓 '.$pitch."\n";
+        return '🎓 '.$pitch."\n";
     } else {
         //HTML format
         $id = 'IndustryExperts';
@@ -1205,7 +1204,7 @@ function echo_experts($c, $fb_format=0){
             <div class="panel-heading" role="tab" id="heading'.$id.'">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open'.$id.'" href="#collapse'.$id.'" aria-expanded="true" aria-controls="collapse'.$id.'">
-                        <i class="fas fa-shield-check" style="transform:none !important;"></i> '.$all_count.' Industry Expert'.echo__s($all_count).'
+                        <i class="fas" style="transform:none !important;">🎓</i> '.$all_count.' Industry Expert'.echo__s($all_count).'
                     </a>
                 </h4>
             </div>

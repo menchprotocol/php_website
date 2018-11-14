@@ -5,6 +5,7 @@
     .tooltip-inner { max-width:350px !important; }
 </style>
 
+
 <script>
     function confirm_child_go(c_id){
         $('.alink-'+c_id).attr('href','javascript:void(0);');
@@ -90,24 +91,25 @@
 
     <?php if(count($c['c__child_intents'])>0){ ?>
 
-        <h3><?= ( $c['c_is_any'] ? 'Choose a Pathway:' : 'Action Plan' ) ?></h3>
+        <h3>🚩 Action Plan</h3>
+        <?= ( $c['c_is_any'] ? '<p>Complete Action Plan by completing ANY Single One of the following options:</p>' : '<p>Complete Action Plan by completing ALL of the following:</p>' ) ?>
         <div class="list-group actionplan_list">
-        <?php
-        $c1_counter = 0;
-        $landing_pagetask_visible = 5;
-        foreach($c['c__child_intents'] as $c1_counter=>$c1){
+            <?php
+            $c1_counter = 0;
+            $landing_pagetask_visible = 5;
+            foreach($c['c__child_intents'] as $c1_counter=>$c1){
 
-            //We need messages or children to expand this intent:
-            $requies_expansion = ( count($c1['c__messages'])>0 || count($c1['c__child_intents'])>0 );
+                //We need messages or children to expand this intent:
+                $requies_expansion = ( count($c1['c__messages'])>0 || count($c1['c__child_intents'])>0 );
 
-            echo '<li class="list-group-item" id="c__'.$c1_counter.'">';
+                echo '<li class="list-group-item" id="c__'.$c1_counter.'">';
 
                 echo ($c1_counter+1).'. <'.( $requies_expansion ? 'a href="javascript:void(0)" onclick="$(\'.c_'.$c1_counter.'\').toggle();"' : 'span' ).' id="title-'.$c1['c_id'].'" style="font-weight: normal;">'.$c1['c_outcome'].'</'.( $requies_expansion ? 'a' : 'span' ).'>';
 
 
                 echo '<span style="font-size:0.8em; font-weight:300; margin-left:5px; display:inline-block;">';
                 //echo ( $c1['c__tree_all_count']>0 ? '<span style="padding-right:5px;"><i class="fas fa-lightbulb-on"></i>'.$c1['c__tree_all_count'].'</span>' : '' );
-                echo '<span><i class="fas fa-clock"></i>'.echo_hour_range($c1, false).'</span>';
+                echo '<span>⏰'.echo_hour_range($c1, false).'</span>';
                 echo '</span>';
 
 
@@ -137,7 +139,7 @@
                         /*
                         echo '<span style="font-size:0.8em; font-weight:300; margin-left:5px; display:inline-block;">';
                         echo ( $c2['c__tree_all_count']>0 ? '<span style="padding-right:5px;"><i class="fas fa-lightbulb-on"></i>'.($c2['c__tree_all_count']).'</span>' : '' );
-                        echo '<span><i class="fas fa-clock"></i>'.echo_hour_range($c2, true).'</span>';
+                        echo '<span>⏰ '.echo_hour_range($c2, true).'</span>';
                         echo '</span>';
                         */
                         echo '</li>';
@@ -152,10 +154,10 @@
                 }
 
                 echo '</div>';
-            echo '</li>';
+                echo '</li>';
 
-        }
-        ?>
+            }
+            ?>
         </div>
         <br />
     <?php } ?>
@@ -164,27 +166,31 @@
 
 
 
-
+<h3></h3>
+<p>Mench is a personal asssistant on a mission to advance your tech career:</p>
 
 <div class="why_mench">
 
-    <h3>Why Mench?</h3>
-
-    <h4><span><i class="fas fa-heart"></i></span> A Job You'll LOVE</h4>
+    <h4><span>💖</span> Land a Job You'll LOVE</h4>
     <p>It's easy to get "a job" as a junior developer in today's automation-hungry economy. But finding your dream job with a superb team that is aligned with your goals and values is a much harder challenge that we'll help you overcome.</p>
 
-    <h4><span><i class="fas fa-dollar-sign"></i></span> Make More Money</h4>
+    <h4><span>💵</span> Make More Faster</h4>
     <p>Every month of unemployment costs a junior developer $5,126 USD <a href="https://www.indeed.com/salaries/Junior-Developer-Salaries" target="_blank"><i class="fas fa-external-link-alt" style="color:#2f2739;"></i></a> of loss income. We help you land your dream job in the shortest time possible while also training you on salary negotiation techniques from industry experts.</p>
 
-    <h4><span><i class="fas fa-calendar-check"></i></span> Flexible Hours</h4>
+    <h4><span>⏰</span> Flexible Hours</h4>
     <p>Choose the number of hours you can commit each week to <?= $c['c_outcome'] ?> and Mench will streamline your progress based on your availability. Go as fast or slow as you like to achieve the right balance for success.</p>
 
 </div>
 
 
+
+
+
 <div class="features" style="margin:55px 0 20px;">
     <a class="btn btn-primary" href="https://m.me/askmench?ref=SUBSCRIBE10_<?= $c['c_id'] ?>" style="display: inline-block; padding: 12px 36px;">Get Started [Free] <i class="fas fa-angle-right"></i></a>
 </div>
+
+
 
 
 

@@ -344,7 +344,7 @@ class Comm_model extends CI_Model {
                             'e_outbound_u_id' => $u['u_id'],
                             'e_outbound_c_id' => $fetch_cs[0]['c_id'],
                             'e_w_id' => $subscription_intents[0]['k_w_id'],
-                            'i_message' => ( $subscription_intents[0]['c_id']==$w_inbound_c_id ? 'You have already subscribed to '.$fetch_cs[0]['c_outcome'].'. We have been working on it together since '.echo_time($subscription_intents[0]['w_timestamp'], 2).' /open_actionplan' : 'Your subscription to '.$subscription_intents[0]['c_outcome'].' already covers the intention to '.$fetch_cs[0]['c_outcome'].', so I will not create a duplicate subscription. /open_actionplan' ),
+                            'i_message' => ( $subscription_intents[0]['c_id']==$w_inbound_c_id ? 'You have already subscribed to '.$fetch_cs[0]['c_outcome'].'. We have been working on it together since '.echo_time($subscription_intents[0]['w_timestamp'], 2).'. /open_actionplan' : 'Your subscription to '.$subscription_intents[0]['c_outcome'].' already covers the intention to '.$fetch_cs[0]['c_outcome'].', so I will not create a duplicate subscription. /open_actionplan' ),
                         ),
                     ));
 

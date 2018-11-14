@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 date_default_timezone_set('America/Los_Angeles');
 
 //Cache buster for static files
-$config['app_version'] = '0.602'.( ( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='local.mench.co' ) ? microtime(true) : '' ); //Updates status css/js cache files
+$config['app_version'] = '0.603'.( ( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='local.mench.co' ) ? microtime(true) : '' ); //Updates status css/js cache files
 
 //User case: $this->config->item('k_status_incomplete')
 
@@ -135,26 +135,20 @@ $config['object_statuses'] = array(
             's_icon' => 'fas fa-question-circle',
         ),
         1 => array(
-            's_name'  => 'Drafting',
-            's_desc'  => 'Intent is added and remains in drafting mode until made active',
+            's_name'  => 'Patternizing',
+            's_desc'  => 'Intent is is growing in patterns',
             's_icon' => 'fas fa-play-circle',
         ),
         2 => array(
-            's_name'  => 'Active',
+            's_name'  => 'Published',
             's_desc'  => 'Intent is published live and used in Action Plans',
             's_icon' => 'fas fa-check-circle',
         ),
-        3 => array(
-            's_name'  => 'Subscribable',
-            's_desc'  => 'Intents that are public that users can subscribed to',
-            's_icon' => 'fas fa-comment-check',
-        ),
-
         //TODO Maybe develop later to replace the universal_intents variable?
-        4 => array(
+        3 => array(
             's_name'  => 'Recommended',
             's_desc'  => 'Intents that are recommended to users with related interests',
-            's_icon' => 'fas fa-badge-check',
+            's_icon' => 'fas fa-comment-check',
         ),
     ),
     'cr' => array(
