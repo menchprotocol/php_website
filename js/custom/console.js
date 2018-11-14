@@ -155,9 +155,7 @@ $(document).ready(function() {
         //Give more space at the bottom to see search results:
         if(!$( ".dash" ).hasClass('dash-expand')){
             $( ".dash" ).addClass('dash-expand');
-            $('.main-panel').animate({
-                scrollTop:9999
-            }, 150);
+            //$('.main-panel').animate({ scrollTop:9999 }, 150);
         }
     });
 

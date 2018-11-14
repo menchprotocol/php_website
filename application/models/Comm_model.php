@@ -109,26 +109,13 @@ class Comm_model extends CI_Model {
 
 
 
-    function auto_respond($u, $fb_ref=null, $fb_message_received=null){
+    function process_fb_ref($u, $fb_ref){
 
+	    if(!$fb_ref){
 
-        $c_target_outcome = null;
-        if($fb_message_received){
-            $fb_message_received = trim(strtolower($fb_message_received));
-            if(substr_count($fb_message_received, 'lets ')>0){
-                $c_target_outcome = one_two_explode('lets ', '', $fb_message_received);
-            } elseif(substr_count($fb_message_received, 'let’s ')>0){
-                $c_target_outcome = one_two_explode('let’s ', '', $fb_message_received);
-            } elseif(substr_count($fb_message_received, 'let\'s ')>0){
-                $c_target_outcome = one_two_explode('let\'s ', '', $fb_message_received);
-            } elseif(substr($fb_message_received, -1)=='?'){
-                //Them seem to be asking a question, lets treat this as a command:
-                $c_target_outcome = str_replace('?','',$fb_message_received);
-            }
-        }
+	        return false;
 
-
-        if(substr_count($fb_ref, 'UNSUBSCRIBE_')==1){
+        } elseif(substr_count($fb_ref, 'UNSUBSCRIBE_')==1){
 
             $unsub_value = one_two_explode('UNSUBSCRIBE_', '', $fb_ref);
 
@@ -344,7 +331,7 @@ class Comm_model extends CI_Model {
                 //See if this intent belong to any of these subscriptions:
                 $subscription_intents = $this->Db_model->k_fetch(array(
                     'w_outbound_u_id' => $u['u_id'], //All subscriptions belonging to this user
-                    'w_status' => 1, //Active
+                    'w_status >=' => 0, //Any type of past subscription
                     '(cr_inbound_c_id='.$w_inbound_c_id.' OR cr_outbound_c_id='.$w_inbound_c_id.')' => null,
                 ), array('cr','w','w_c'));
 
@@ -540,7 +527,7 @@ class Comm_model extends CI_Model {
                 }
             }
 
-        } elseif(substr_count($fb_ref, 'CHOOSEOR_')==1){
+        } elseif(substr_count($fb_ref, 'CHOOSEOR_')==1) {
 
             //Student has responded to a multiple-choice OR tree
             $input_parts = explode('_', one_two_explode('CHOOSEOR_', '', $fb_ref));
@@ -548,7 +535,7 @@ class Comm_model extends CI_Model {
             $cr_inbound_c_id = intval($input_parts[1]);
             $c_id = intval($input_parts[2]);
             $k_rank = intval($input_parts[3]);
-            if($w_id>0 && $cr_inbound_c_id>0 && $c_id>0 && $k_rank>0){
+            if ($w_id > 0 && $cr_inbound_c_id > 0 && $c_id > 0 && $k_rank > 0) {
 
                 //Confirm answer received:
                 $this->Comm_model->send_message(array(
@@ -562,10 +549,10 @@ class Comm_model extends CI_Model {
                 ));
 
                 //Now save answer:
-                if($this->Db_model->k_choose_or($w_id, $cr_inbound_c_id, $c_id)){
+                if ($this->Db_model->k_choose_or($w_id, $cr_inbound_c_id, $c_id)) {
                     //Find the next item to navigate them to:
-                    $ks_next = $this->Db_model->k_next_fetch($w_id,$k_rank);
-                    if($ks_next){
+                    $ks_next = $this->Db_model->k_next_fetch($w_id, $k_rank);
+                    if ($ks_next) {
                         //Now move on to communicate the next step.
                         $this->Comm_model->compose_messages(array(
                             'e_inbound_u_id' => 2738, //Initiated by PA
@@ -576,8 +563,29 @@ class Comm_model extends CI_Model {
                     }
                 }
             }
+        }
+    }
 
-        } elseif(substr_count($fb_message_received, 'unsubscribe')>0 || substr_count($fb_message_received, 'quit')>0){
+    function auto_respond($u, $fb_ref=null, $fb_message_received=null){
+
+
+        $c_target_outcome = null;
+        if($fb_message_received){
+            $fb_message_received = trim(strtolower($fb_message_received));
+            if(substr_count($fb_message_received, 'lets ')>0){
+                $c_target_outcome = one_two_explode('lets ', '', $fb_message_received);
+            } elseif(substr_count($fb_message_received, 'let’s ')>0){
+                $c_target_outcome = one_two_explode('let’s ', '', $fb_message_received);
+            } elseif(substr_count($fb_message_received, 'let\'s ')>0){
+                $c_target_outcome = one_two_explode('let\'s ', '', $fb_message_received);
+            } elseif(substr($fb_message_received, -1)=='?'){
+                //Them seem to be asking a question, lets treat this as a command:
+                $c_target_outcome = str_replace('?','',$fb_message_received);
+            }
+        }
+
+
+        if(substr_count($fb_message_received, 'unsubscribe')>0 || substr_count($fb_message_received, 'quit')>0){
 
             //See if they have any subscriptions:
             $current_ws = $this->Db_model->w_fetch(array(
