@@ -649,7 +649,7 @@ class Intents extends CI_Controller
         if(!$udata){
             die('<div class="alert alert-danger" role="alert">Session Expired</div>');
         } elseif(intval($c_id)<=0){
-            die('<div class="alert alert-danger" role="alert">Missing Intent ID</div>');
+            die('<div class="alert alert-danger" role="alert">Missing Intent ID ['.$c_id.']</div>');
         }
 
         //Load view for this iFrame:
