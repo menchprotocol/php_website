@@ -1287,8 +1287,6 @@ class Comm_model extends CI_Model {
                         ));
                     }
 
-                    $message_body .= "\n\n".'Select your answer to continue...';
-
                 } else {
 
                     //See if we need notes/url

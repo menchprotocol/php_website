@@ -1015,13 +1015,15 @@ function echo_c_requirements($c){
 function echo_pa_saved(){
     //Informs the user that their answer is saved!
     $options = array(
-        'Got it',
-        'Ok',
-        'Sweet',
+        'Got it 👍',
+        'Noted',
+        'Ok sweet',
         'Nice answer',
-        'Gotcha',
+        'Nice 👍',
+        'Gotcha 🙌',
         'Fabulous',
-        'Yay',
+        'Confirmed',
+        '👌',
     );
     return $options[rand(0,(count($options)-1))];
 }
