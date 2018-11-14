@@ -4,7 +4,7 @@
 $udata = $this->session->userdata('user');
 $fb_settings = $this->config->item('fb_settings');
 
-if((isset($udata['u__ws']) && count($udata['u__ws'])) || (array_key_exists(1281, $udata['u__inbounds']))){
+if((isset($udata['u__ws']) && count($udata['u__ws'])) || (isset($udata['u__inbounds']) && count($udata['u__inbounds'])>0 && array_key_exists(1281, $udata['u__inbounds']))){
 
     //User is accessing the Action Plan from their browser
 

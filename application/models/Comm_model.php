@@ -782,6 +782,7 @@ class Comm_model extends CI_Model {
                 'w_status IN (1,2)' => null, //Active subscriptions (Passive ones have a more targetted distribution)
             ), array('c'));
 
+
             //Now see what they are saying as we can try to understand some stuff:
             if($last_message_sent[0]['e_inbound_c_id']==1){
 
@@ -792,7 +793,17 @@ class Comm_model extends CI_Model {
 
             } elseif(in_array($fb_message_received, array('skip','skip it'))){
 
+
+            } elseif(in_array($fb_message_received, array('help','support','f1','sos'))){
+
+                //Ask the user if they like to be connected to a human
+                //IF yes, create a ATTENTION NEEDED engagement that would notify admin so admin can start a manual conversation
+
             } elseif(in_array($fb_message_received, array('learn','learn more','explain','explain more'))){
+
+            } elseif(in_array($fb_message_received, array('subscription','subscribe'))){
+
+                //Offer them to open Action Plan where they can manage subscriptions, and train them on the LETS command
 
             } elseif(in_array($fb_message_received, array('no','nope','nah','cancel','stop'))){
                 //Rejecting an offer...
@@ -1140,6 +1151,7 @@ class Comm_model extends CI_Model {
         }
 
         if(!$error_message){
+
             //Fetch intent and its messages with an appropriate depth
             $cs = $this->Db_model->c_fetch(array(
                 'c.c_id' => $e['e_outbound_c_id'],

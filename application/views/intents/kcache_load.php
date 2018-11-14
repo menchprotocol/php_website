@@ -2,7 +2,7 @@
 
 $k_outs = $this->Db_model->k_fetch(array(
     'k_cr_id' => $cr_id, //Active subscriptions only
-    'k_status >=' => 2, //Real completion [You can remove this to see all submissions with all statuses]
+    //'k_status >=' => 2, //Real completion [You can remove this to see all submissions with all statuses]
     //We are fetching with any k_status just to see what is available/possible from here
 ), array('w','w_c','w_u'), array('k_status'=>'ASC'), 0);
 

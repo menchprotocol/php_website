@@ -70,6 +70,14 @@ class My extends CI_Controller {
         //Try finding them:
         $subscriptions = $this->Db_model->w_fetch($w_filter, array('c','u'));
 
+        //Log action plan view engagement:
+        $this->Db_model->e_create(array(
+            'e_inbound_c_id' => 32,
+            'e_inbound_u_id' => $subscriptions[0]['u_id'],
+            'e_outbound_c_id' => $c_id,
+            'e_w_id' => ( count($subscriptions)==1 ? $subscriptions[0]['w_id'] : 0 /* No Specific Subcription */ ),
+        ));
+
         if(count($subscriptions)==0){
 
             //No subscriptions found:
@@ -94,6 +102,7 @@ class My extends CI_Controller {
                 $c_id = $subscriptions[0]['c_id']; //TODO set to current/focused intent
             }
 
+
             //We have a single item to load:
             //Now we need to load the action plan:
             $k_ins = $this->Db_model->k_fetch(array(
@@ -110,12 +119,26 @@ class My extends CI_Controller {
                 'cr_inbound_c_id' => $c_id,
             ), array('w','cr','cr_c_out'));
 
+            /*
+             *
+SELECT *
+FROM "v5_subscription_intent_links" "k"
+       JOIN "v5_intent_links" "cr" ON "k"."k_cr_id" = "cr"."cr_id"
+       JOIN "v5_intents" "c" ON "c"."c_id" = "cr"."cr_outbound_c_id"
+       JOIN "v5_subscriptions" "w" ON "w"."w_id" = "k"."k_w_id"
+WHERE "w_id" = '112'
+  AND "cr_status" >= 1
+  AND "c_status" >= 1
+  AND "cr_inbound_c_id" = '6903'
+ORDER BY "k_cr_outbound_rank" ASC
+             * */
+
             $cs = $this->Db_model->c_fetch(array(
                 'c_status >=' => 1,
                 'c_id' => $c_id,
             ));
 
-            if(count($cs)<1 || (count($k_ins)<1 && count($k_outs)<1)){
+            if(count($cs)<1 || (!count($k_ins) && !count($k_outs))){
 
                 //Ooops, we had issues finding th is intent! Should not happen, report:
                 $this->Db_model->e_create(array(
