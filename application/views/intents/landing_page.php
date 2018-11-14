@@ -176,7 +176,7 @@
     <h4><span><i class="fas fa-dollar-sign"></i></span> Make More Money</h4>
     <p>Every month of unemployment costs a junior developer $5,126 USD <a href="https://www.indeed.com/salaries/Junior-Developer-Salaries" target="_blank"><i class="fas fa-external-link-alt" style="color:#2f2739;"></i></a> of loss income. We help you land your dream job in the shortest time possible while also training you on salary negotiation techniques from industry experts.</p>
 
-    <h4><span><i class="fas fa-calendar-check"></i></span> Flexible Scheduling</h4>
+    <h4><span><i class="fas fa-calendar-check"></i></span> Flexible Hours</h4>
     <p>Choose the number of hours you can commit each week to <?= $c['c_outcome'] ?> and Mench will streamline your progress based on your availability. Go as fast or slow as you like to achieve the right balance for success.</p>
 
 </div>

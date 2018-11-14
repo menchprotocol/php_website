@@ -641,15 +641,15 @@ class Intents extends CI_Controller
 
 
 
-    function kcache_load($cr_id){
+    function kcache_load($c_id){
 
         //Auth user and check required variables:
         $udata = auth(array(1308)); //Trainers
 
         if(!$udata){
             die('<div class="alert alert-danger" role="alert">Session Expired</div>');
-        } elseif(intval($cr_id)<=0){
-            die('<div class="alert alert-danger" role="alert">Missing Intent Link ID</div>');
+        } elseif(intval($c_id)<=0){
+            die('<div class="alert alert-danger" role="alert">Missing Intent ID ['.$c_id.']</div>');
         }
 
         //Load view for this iFrame:
@@ -657,7 +657,7 @@ class Intents extends CI_Controller
             'title' => 'User Engagements',
         ));
         $this->load->view('intents/kcache_load' , array(
-            'cr_id' => $cr_id,
+            'c_id' => $c_id,
         ));
         $this->load->view('custom/shared/p_footer');
     }

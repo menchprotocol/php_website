@@ -107,31 +107,16 @@ class My extends CI_Controller {
             //Now we need to load the action plan:
             $k_ins = $this->Db_model->k_fetch(array(
                 'w_id' => $w_id,
-                'cr_status >=' => 1,
                 'c_status >=' => 1,
                 'cr_outbound_c_id' => $c_id,
             ), array('w','cr','cr_c_in'));
 
             $k_outs = $this->Db_model->k_fetch(array(
                 'w_id' => $w_id,
-                'cr_status >=' => 1,
                 'c_status >=' => 1,
                 'cr_inbound_c_id' => $c_id,
             ), array('w','cr','cr_c_out'));
 
-            /*
-             *
-SELECT *
-FROM "v5_subscription_intent_links" "k"
-       JOIN "v5_intent_links" "cr" ON "k"."k_cr_id" = "cr"."cr_id"
-       JOIN "v5_intents" "c" ON "c"."c_id" = "cr"."cr_outbound_c_id"
-       JOIN "v5_subscriptions" "w" ON "w"."w_id" = "k"."k_w_id"
-WHERE "w_id" = '112'
-  AND "cr_status" >= 1
-  AND "c_status" >= 1
-  AND "cr_inbound_c_id" = '6903'
-ORDER BY "k_cr_outbound_rank" ASC
-             * */
 
             $cs = $this->Db_model->c_fetch(array(
                 'c_status >=' => 1,

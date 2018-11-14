@@ -47,7 +47,7 @@ $(document).ready(function() {
             } else if(hash_parts[0]=='estats'){
                 estats_load(hash_parts[1]);
             } else if(hash_parts[0]=='kcache'){
-                kcache_load(hash_parts[1],hash_parts[2]);
+                kcache_load(hash_parts[1]);
             }
         }
     }
@@ -398,7 +398,7 @@ function estats_load(c_id){
     $('[data-toggle="tooltip"]').tooltip();
 }
 
-function kcache_load(c_id,cr_id){
+function kcache_load(c_id){
     //Start loading:
     $('.fixed-box, .ajax-frame').addClass('hidden');
     $('#load_w_frame, .frame-loader').removeClass('hidden').hide().fadeIn();
@@ -407,7 +407,7 @@ function kcache_load(c_id,cr_id){
 
     //Load content via a URL:
     $('.frame-loader').addClass('hidden');
-    $('.ajax-frame').attr('src','/intents/kcache_load/'+cr_id).removeClass('hidden').css('margin-top','0');
+    $('.ajax-frame').attr('src','/intents/kcache_load/'+c_id).removeClass('hidden').css('margin-top','0');
 
     //Tooltips:
     $('[data-toggle="tooltip"]').tooltip();

@@ -59,7 +59,7 @@ foreach($engagement_filters as $key=>$value){
         //Fetch all engagements from intent #6653
         $all_engs = $this->Db_model->cr_outbound_fetch(array(
             'cr.cr_inbound_c_id' => 6653,
-            'cr.cr_status >' => 0,
+            'cr.cr_status >=' => 1,
             'c.c_status >' => 0, //Use status to control menu item visibility
         ));
 
