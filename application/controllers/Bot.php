@@ -249,8 +249,8 @@ class Bot extends CI_Controller {
                     ));
 
 
-                    //We might need to respond:
-                    $this->Comm_model->auto_respond($u, $ref);
+                    //We might need to respond based on the reference:
+                    $this->Comm_model->fb_ref_process($u, $ref);
 
 
                 } elseif(isset($im['optin'])) {
@@ -362,8 +362,12 @@ class Bot extends CI_Controller {
                     //Log incoming engagement:
                     $this->Db_model->e_create($eng_data);
 
-                    //We might need to respond:
-                    $this->Comm_model->auto_respond($u, $quick_reply_payload, ( !$sent_from_us ? $fb_message : null ));
+                    //Process both
+                    if($quick_reply_payload){
+                        $this->Comm_model->fb_ref_process($u, $quick_reply_payload);
+                    } elseif(!$sent_from_us) {
+                        $this->Comm_model->fb_message_process($u, $fb_message);
+                    }
 
                 } else {
 

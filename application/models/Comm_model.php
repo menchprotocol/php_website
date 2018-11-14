@@ -109,9 +109,9 @@ class Comm_model extends CI_Model {
 
 
 
-    function process_fb_ref($u, $fb_ref){
+    function fb_ref_process($u, $fb_ref){
 
-	    if(!$fb_ref){
+	    if(!$fb_ref || strlen($fb_ref)<1){
 
 	        return false;
 
@@ -563,11 +563,15 @@ class Comm_model extends CI_Model {
                     }
                 }
             }
+
         }
     }
 
-    function auto_respond($u, $fb_ref=null, $fb_message_received=null){
+    function fb_message_process($u, $fb_message_received){
 
+	    if(!$fb_message_received){
+	        return false;
+        }
 
         $c_target_outcome = null;
         if($fb_message_received){
@@ -776,7 +780,7 @@ class Comm_model extends CI_Model {
 
             }
 
-        } elseif($fb_message_received && !$fb_ref){
+        } else {
 
             //Fetch the last message we send to this user:
             $last_message_sent = $this->Db_model->e_fetch(array(
@@ -825,7 +829,7 @@ class Comm_model extends CI_Model {
             if(count($current_ws)==0){
 
                 //They do not have a subscription, so we can offer them to subscribe to our default intent:
-                $this->Comm_model->auto_respond($u, 'SUBSCRIBE10_'.$this->config->item('primary_c'), $fb_message_received);
+                $this->Comm_model->fb_ref_process($u, 'SUBSCRIBE10_'.$this->config->item('primary_c'));
 
             } else {
 
@@ -853,8 +857,6 @@ class Comm_model extends CI_Model {
 
             }
         }
-
-
     }
 
 
