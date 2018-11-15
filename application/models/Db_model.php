@@ -2067,13 +2067,10 @@ class Db_model extends CI_Model {
         if(!isset($insert_columns['e_status'])){
             $insert_columns['e_status'] = -1; //Auto approved
         }
-        if(!isset($insert_columns['e_ur_id'])){
-            $insert_columns['e_ur_id'] = 0;
-        }
 
 
         //Set some zero defaults if not set:
-        foreach(array('e_outbound_c_id','e_outbound_u_id','e_inbound_u_id','e_cr_id','e_i_id','e_x_id') as $dz){
+        foreach(array('e_outbound_c_id','e_outbound_u_id','e_inbound_u_id','e_cr_id','e_i_id','e_x_id','e_ur_id') as $dz){
             if(!isset($insert_columns[$dz]) || intval($insert_columns[$dz])<1){
                 $insert_columns[$dz] = 0;
             }
@@ -2081,7 +2078,6 @@ class Db_model extends CI_Model {
 
 		//Lets log:
 		$this->db->insert('v5_engagements', $insert_columns);
-
 
 		//Fetch inserted id:
 		$insert_columns['e_id'] = $this->db->insert_id();

@@ -1286,9 +1286,21 @@ function echo_object($object,$id,$engagement_field,$button_type){
                 return NULL;
             }
 
-        } elseif($object=='u'){
+        } elseif($object=='w' && $id>0){
 
-            $is_inbound = ( $engagement_field=='e_inbound_u_id' ? true : false );
+            $subscriptions = $CI->Db_model->w_fetch(array(
+                'w_id' => $id,
+            ), array('c'));
+            if(count($subscriptions)>0){
+                if(!$button_type){
+                    //Plain view:
+                    return '<a href="https://mench.com/intents/'.$subscriptions[0]['w_inbound_c_id'].'">'.$subscriptions[0]['c_outcome'].'</a>';
+                } else {
+                    return '<span class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="Subscribed to '.$subscriptions[0]['c_outcome'].' [Subscription #'.$id.']"><i class="fas fa-comment-plus"></i></span> ';
+                }
+            }
+
+        } elseif($object=='u'){
 
             if($id<=0){
                 return 'System';
