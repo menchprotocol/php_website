@@ -77,7 +77,7 @@
         <?= echo_completion_estimate($c, 0) ?>
         <?= echo_costs($c, 0) ?>
         <?php
-        $id = 'FlexibleHours';
+        $id = 'WorksWithMessenger';
         echo '<div class="panel-group" id="open'.$id.'" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
             <div class="panel-heading" role="tab" id="heading'.$id.'">
                 <h4 class="panel-title">
