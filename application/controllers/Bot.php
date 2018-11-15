@@ -54,7 +54,6 @@ class Bot extends CI_Controller {
     }
 
 
-
     function facebook_webhook(){
 
         /*

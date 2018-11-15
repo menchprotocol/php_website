@@ -782,24 +782,28 @@ class Comm_model extends CI_Model {
 
         } else {
 
+            //Fetch their current subscriptions:
+            $current_ws = $this->Db_model->w_fetch(array(
+                'w_outbound_u_id' => $u['u_id'],
+                'w_status >=' => 0, //Any type of Active subscriptions
+            ));
+
             //See if an admin has sent this user a message in the last hour via the Facebook Inbox UI:
             if(count($this->Db_model->e_fetch(array(
                     'e_timestamp >=' => date("Y-m-d H:i:s", (time()-(3600))), //Messages sent from us less than an hour ago
                     'e_inbound_c_id' => 7, //Messages sent from us
-                    'e_outbound_u_id' => 1281, //We log Facebook Inbox UI messages sent with this user ID
+                    'e_inbound_u_id' => 1281, //We log Facebook Inbox UI messages sent with this user ID
                 ),1))>0){
 
                 //They are chatting with the admin, do nothing here...
 
-            } elseif(count($this->Db_model->w_fetch(array(
-                    'w_outbound_u_id' => $u['u_id'],
-                    'w_status >=' => 0, //Any type of Active subscriptions
-                )))==0){
+            } elseif(count($current_ws)==0){
 
                 //They do not have a subscription! Recommend to subscribe to our default intent:
                 $this->Comm_model->fb_ref_process($u, 'SUBSCRIBE10_'.$this->config->item('primary_c'));
 
             } elseif(in_array($fb_message_received, array('yes','yeah','ya','ok','continue','ok continue','ok continue ▶️','▶️','ok continue','go','yass','yas','yea','yup','next','yes, learn more'))){
+
                 //Accepting an offer...
 
             } elseif(in_array($fb_message_received, array('skip','skip it'))){
@@ -837,6 +841,7 @@ class Comm_model extends CI_Model {
 
                 //Remind user of their next step:
                 $ks_next = $this->Db_model->k_next_fetch($current_ws[0]['w_id']);
+
                 if($ks_next){
                     $this->Comm_model->compose_messages(array(
                         'e_inbound_u_id' => 2738, //Initiated by PA
