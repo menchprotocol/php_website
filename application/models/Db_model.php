@@ -539,7 +539,7 @@ class Db_model extends CI_Model {
 
         } else {
 
-            //We are linking to $link_c_id so no need to create anything new...
+            //We are linking to $link_c_id, lets make sure it exists:
             $new_cs = $this->Db_model->c_fetch(array(
                 'c_id' => $link_c_id,
                 'c.c_status >' => 0,
@@ -554,34 +554,40 @@ class Db_model extends CI_Model {
             $new_c = $new_cs[0];
 
 
-            //Make sure none of the parents are the same:
-            if($new_c['c_id']==$c_id){
+            //check for all parents:
+            $parent_tree = $this->Db_model->c_recursive_fetch($c_id);
+            if(in_array($new_c['c_id'],$parent_tree['c_flat'])){
+                return array(
+                    'status' => 0,
+                    'message' => 'You cannot add "'.$new_c['c_outcome'].'" as its own grandchild.',
+                );
+            }
+
+
+            //Make sure this is not a duplicate intent for its parent:
+            $dup_links = $this->Db_model->cr_outbound_fetch(array(
+                'cr_inbound_c_id'  => intval($c_id),
+                'cr_outbound_c_id' => $new_c['c_id'],
+            ));
+            if(count($dup_links)>0){
+                //What is the status? If achived, we can bring back to life!
+                if($dup_links[0]['cr_status']<0){
+                    //Yes, we can bring back to life!
+                    //TODO update old link here?
+                } else {
+                    //Ooops, this is a duplicate!
+                    return array(
+                        'status' => 0,
+                        'message' => '['.$new_c['c_outcome'].'] is already linked here.',
+                    );
+                    //TODO maybe trigger a notice to admin on how to not add duplicates!
+                }
+            } elseif($new_c['c_id']==$c_id){
+                //Make sure none of the parents are the same:
                 return array(
                     'status' => 0,
                     'message' => 'You cannot add "'.$new_c['c_outcome'].'" as its own child.',
                 );
-            } else {
-                //check for all parents:
-                $parent_tree = $this->Db_model->c_recursive_fetch($c_id);
-                if(in_array($new_c['c_id'],$parent_tree['c_flat'])){
-                    return array(
-                        'status' => 0,
-                        'message' => 'You cannot add "'.$new_c['c_outcome'].'" as its own grandchild.',
-                    );
-                }
-            }
-
-            //Make sure this is not a duplicate level 2 intent:
-            if($next_level==2){
-                foreach($inbound_intents[0]['c__child_intents'] as $current_c){
-                    if($current_c['c_id']==$link_c_id){
-                        //Ooops, this is already added in Level 2, cannot add again:
-                        return array(
-                            'status' => 0,
-                            'message' => '['.$new_c['c_outcome'].'] is already added as outbound intent.',
-                        );
-                    }
-                }
             }
 
             //Remove orphan status if that was the case before:
