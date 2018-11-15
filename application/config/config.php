@@ -441,6 +441,18 @@ $config['engagement_references'] = array(
         'name' => 'Recipient Entity',
         'object_code' => 'u',
     ),
+    'e_inbound_c_id' => array(
+        'name' => 'Engagement Type',
+        'object_code' => 'c',
+    ),
+    'e_outbound_c_id' => array(
+        'name' => 'Intent',
+        'object_code' => 'c',
+    ),
+    'e_w_id' => array(
+        'name' => 'Subscription',
+        'object_code' => 'w',
+    ),
     'e_ur_id' => array(
         'name' => 'Entity Link',
         'object_code' => 'ur',
@@ -449,14 +461,6 @@ $config['engagement_references'] = array(
         'name' => 'Entity URL',
         'object_code' => 'x',
     ),
-    'e_outbound_c_id' => array(
-        'name' => 'Intent',
-        'object_code' => 'c',
-    ),
-    'e_inbound_c_id' => array(
-        'name' => 'Engagement Type',
-        'object_code' => 'c',
-    ),
     'e_cr_id' => array(
         'name' => 'Intent Link',
         'object_code' => 'cr',
@@ -464,10 +468,6 @@ $config['engagement_references'] = array(
     'e_i_id' => array(
         'name' => 'Message',
         'object_code' => 'i',
-    ),
-    'e_w_id' => array(
-        'name' => 'Subscription',
-        'object_code' => 'w',
     ),
 );
 

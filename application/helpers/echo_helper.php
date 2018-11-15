@@ -617,8 +617,7 @@ function echo_e($e){
             $ui .= ' <span>'.echo_status('e_status',$e['e_status'], true, 'left').'</span> ';
 
             //Lets go through all references to see what is there:
-            $engagement_references = $CI->config->item('engagement_references');
-            foreach($engagement_references as $engagement_field=>$er){
+            foreach($CI->config->item('engagement_references') as $engagement_field=>$er){
                 if(intval($e[$engagement_field])>0){
                     //Yes we have a value here:
                     $ui .= echo_object($er['object_code'], $e[$engagement_field], $engagement_field, $er['name']);
@@ -1286,7 +1285,7 @@ function echo_object($object,$id,$engagement_field,$button_type){
                 return NULL;
             }
 
-        } elseif($object=='w' && $id>0){
+        } elseif($object=='w'){
 
             $subscriptions = $CI->Db_model->w_fetch(array(
                 'w_id' => $id,
@@ -1302,19 +1301,15 @@ function echo_object($object,$id,$engagement_field,$button_type){
 
         } elseif($object=='u'){
 
-            if($id<=0){
-                return 'System';
-            } else {
-                $matching_users = $CI->Db_model->u_fetch(array(
-                    'u_id' => $id,
-                ));
-                if(isset($matching_users[0])){
-                    if(!$button_type){
-                        //Plain view:
-                        return '<a href="https://mench.com/entities/'.$id.'" title="Entity ID '.$id.'">'.$matching_users[0]['u_full_name'].'</a>';
-                    } else {
-                        return '<a href="/entities/'.$id.'" target="_parent" class="badge badge-secondary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="'.$button_type.': '.stripslashes($matching_users[0]['u_full_name']).'">'.echo_cover($matching_users[0], 'profile-icon2').'</a> ';
-                    }
+            $matching_users = $CI->Db_model->u_fetch(array(
+                'u_id' => $id,
+            ));
+            if(count($matching_users)>0){
+                if(!$button_type){
+                    //Plain view:
+                    return '<a href="https://mench.com/entities/'.$id.'" title="Entity ID '.$id.'">'.$matching_users[0]['u_full_name'].'</a>';
+                } else {
+                    return '<a href="/entities/'.$id.'" target="_parent" class="badge badge-secondary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="'.$button_type.': '.stripslashes($matching_users[0]['u_full_name']).'">'.echo_cover($matching_users[0], 'profile-icon2', true).'</a> ';
                 }
             }
 
@@ -1764,7 +1759,7 @@ function echo_u($u, $level, $can_edit, $is_inbound=false){
     } else {
 
         //Regular section:
-        $ui .= echo_cover($u,'micro-image', 1).' ';
+        $ui .= echo_cover($u,'micro-image', true).' ';
         $ui .= '<span class="u_full_name u_full_name_'.$u['u_id'].( strlen($u['u_bio'])>0 ? ' has-desc ' : '' ).'" data-toggle="tooltip" data-placement="right" title="'.$u['u_bio'].'">'.$u['u_full_name'].'</span>';
 
     }
