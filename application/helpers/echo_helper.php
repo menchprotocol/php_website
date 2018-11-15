@@ -1296,7 +1296,7 @@ function echo_object($object,$id,$engagement_field,$button_type){
                     //Plain view:
                     return '<a href="https://mench.com/intents/'.$subscriptions[0]['w_inbound_c_id'].'">'.$subscriptions[0]['c_outcome'].'</a>';
                 } else {
-                    return '<span class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="Subscribed to '.$subscriptions[0]['c_outcome'].' [Subscription #'.$id.']"><i class="fas fa-comment-plus"></i></span> ';
+                    return '<a href="/intents/'.$subscriptions[0]['w_inbound_c_id'].'" class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="Subscribed to '.$subscriptions[0]['c_outcome'].' [Subscription #'.$id.']"><i class="fas fa-comment-plus"></i></a> ';
                 }
             }
 
