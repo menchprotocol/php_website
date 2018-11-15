@@ -780,7 +780,13 @@ class Comm_model extends CI_Model {
 
             }
 
-        } else {
+
+        //See if an admin has sent this user a message in the last hour via the Facebook Inbox UI:
+        } elseif(count($this->Db_model->e_fetch(array(
+            'e_timestamp >=' => date("Y-m-d H:i:s", (time()-(1800))), //Messages sent from us less than 30 minutes ago
+            'e_inbound_c_id' => 7, //Messages sent from us
+            'e_inbound_u_id' => 1281, //We log Facebook Inbox UI messages sent with this user ID
+        ),1))==0) {
 
             //Fetch their current subscriptions:
             $current_ws = $this->Db_model->w_fetch(array(
@@ -788,18 +794,19 @@ class Comm_model extends CI_Model {
                 'w_status >=' => 0, //Any type of Active subscriptions
             ));
 
-            //See if an admin has sent this user a message in the last hour via the Facebook Inbox UI:
-            if(count($this->Db_model->e_fetch(array(
-                    'e_timestamp >=' => date("Y-m-d H:i:s", (time()-(3600))), //Messages sent from us less than an hour ago
-                    'e_inbound_c_id' => 7, //Messages sent from us
-                    'e_inbound_u_id' => 1281, //We log Facebook Inbox UI messages sent with this user ID
-                ),1))>0){
+            if(count($current_ws)==0){
 
-                //They are chatting with the admin, do nothing here...
+                //They do not have a subscription!
 
-            } elseif(count($current_ws)==0){
+                //Log engagement:
+                $this->Db_model->e_create(array(
+                    'e_text_value' => $fb_message_received,
+                    'e_inbound_c_id' => 7718, //Log Unrecognizable Message Received
+                    'e_inbound_u_id' => $u['u_id'], //User who initiated this message
+                    'e_outbound_u_id' => 2738, //Talking to Mench PA
+                ));
 
-                //They do not have a subscription! Recommend to subscribe to our default intent:
+                //Recommend to subscribe to our default intent:
                 $this->Comm_model->fb_ref_process($u, 'SUBSCRIBE10_'.$this->config->item('primary_c'));
 
             } elseif(in_array($fb_message_received, array('yes','yeah','ya','ok','continue','ok continue','ok continue ▶️','▶️','ok continue','go','yass','yas','yea','yup','next','yes, learn more'))){
@@ -828,9 +835,19 @@ class Comm_model extends CI_Model {
 
             } else {
 
+                //We don't know what this message means!
                 //TODO Optimize for multiple subscriptions, this one only deals with the first randomly selected one...
 
-                //We don't know what this message means...
+                //Log engagement:
+                $this->Db_model->e_create(array(
+                    'e_text_value' => $fb_message_received,
+                    'e_inbound_c_id' => 7718, //Log Unrecognizable Message Received
+                    'e_inbound_u_id' => $u['u_id'], //User who initiated this message
+                    'e_outbound_u_id' => 2738, //Talking to Mench PA
+                    'e_w_id' => $current_ws[0]['w_id'],
+                ));
+
+                //Notify the user that we don't understand:
                 $this->Comm_model->send_message(array(
                     array(
                         'e_inbound_u_id' => 2738, //Initiated by PA
@@ -839,9 +856,8 @@ class Comm_model extends CI_Model {
                     ),
                 ));
 
-                //Remind user of their next step:
+                //Remind user of their next step, if any:
                 $ks_next = $this->Db_model->k_next_fetch($current_ws[0]['w_id']);
-
                 if($ks_next){
                     $this->Comm_model->compose_messages(array(
                         'e_inbound_u_id' => 2738, //Initiated by PA
