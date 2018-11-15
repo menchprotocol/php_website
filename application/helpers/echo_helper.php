@@ -965,13 +965,13 @@ function echo_contents($c, $fb_format=0){
         return '<div class="panel-group" id="open'.$id.'" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
             <div class="panel-heading" role="tab" id="heading'.$id.'">
                 <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" data-parent="#open'.$id.'" href="#collapse'.$id.'" aria-expanded="true" aria-controls="collapse'.$id.'">
-                        <i class="fas" style="transform:none !important;">📚</i> '.$all_count.' Reference'.echo__s($all_count).'
+                    <a role="button" data-toggle="collapse" data-parent="#open'.$id.'" href="#collapse'.$id.'" aria-expanded="false" aria-controls="collapse'.$id.'">
+                        <i class="fas" style="transform:none !important;">📚</i> '.$all_count.' Reference'.echo__s($all_count).'<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                     </a>
                 </h4>
             </div>
-            <div id="collapse'.$id.'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'.$id.'">
-                <div class="panel-body">'.$pitch.'</div>
+            <div id="collapse'.$id.'" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="heading'.$id.'">
+                <div class="panel-body" style="padding:5px 0 0 5px; font-size:1.1em;">'.$pitch.'</div>
             </div>
         </div></div>';
     }
@@ -1057,13 +1057,13 @@ function echo_costs($c, $fb_format=0){
         return '<div class="panel-group" id="open'.$id.'" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
             <div class="panel-heading" role="tab" id="heading'.$id.'">
                 <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" data-parent="#open'.$id.'" href="#collapse'.$id.'" aria-expanded="true" aria-controls="collapse'.$id.'">
-                        <i class="fas" style="transform:none !important;">💸</i> '.ucwords($price_range).'
+                    <a role="button" data-toggle="collapse" data-parent="#open'.$id.'" href="#collapse'.$id.'" aria-expanded="false" aria-controls="collapse'.$id.'">
+                        <i class="fas" style="transform:none !important;">💸</i> '.ucwords($price_range).'<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                     </a>
                 </h4>
             </div>
-            <div id="collapse'.$id.'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'.$id.'">
-                <div class="panel-body">'.$pitch.'</div>
+            <div id="collapse'.$id.'" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="heading'.$id.'">
+                <div class="panel-body" style="padding:5px 0 0 5px; font-size:1.1em;">'.$pitch.'</div>
             </div>
         </div></div>';
     }
@@ -1081,13 +1081,13 @@ function echo_intent_overview($c, $fb_format=0){
         return '<div class="panel-group" id="open'.$id.'" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
             <div class="panel-heading" role="tab" id="heading'.$id.'">
                 <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" data-parent="#open'.$id.'" href="#collapse'.$id.'" aria-expanded="true" aria-controls="collapse'.$id.'">
-                    <i class="fas" style="transform:none !important;">💡</i> '.$c['c__tree_all_count'].' Insights
+                    <a role="button" data-toggle="collapse" data-parent="#open'.$id.'" href="#collapse'.$id.'" aria-expanded="false" aria-controls="collapse'.$id.'">
+                    <i class="fas" style="transform:none !important;">💡</i> '.$c['c__tree_all_count'].' Insights<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                 </a>
             </h4>
         </div>
-        <div id="collapse'.$id.'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'.$id.'">
-            <div class="panel-body">'.$pitch.'</div>
+        <div id="collapse'.$id.'" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="heading'.$id.'">
+            <div class="panel-body" style="padding:5px 0 0 5px; font-size:1.1em;">'.$pitch.'</div>
         </div>
     </div></div>';
     }
@@ -1103,13 +1103,13 @@ function echo_completion_estimate($c, $fb_format=0){
         return '<div class="panel-group" id="open'.$id.'" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
             <div class="panel-heading" role="tab" id="heading'.$id.'">
                 <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" data-parent="#open'.$id.'" href="#collapse'.$id.'" aria-expanded="true" aria-controls="collapse'.$id.'">
-                        <i class="fas" style="transform:none !important;">⏰</i> '.ucwords(echo_hour_range($c)).'
+                    <a role="button" data-toggle="collapse" data-parent="#open'.$id.'" href="#collapse'.$id.'" aria-expanded="false" aria-controls="collapse'.$id.'">
+                        <i class="fas" style="transform:none !important;">⏰</i> '.ucwords(echo_hour_range($c)).'<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                     </a>
                 </h4>
             </div>
-            <div id="collapse'.$id.'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'.$id.'">
-                <div class="panel-body">'.$pitch.'</div>
+            <div id="collapse'.$id.'" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="heading'.$id.'">
+                <div class="panel-body" style="padding:5px 0 0 5px; font-size:1.1em;">'.$pitch.'</div>
             </div>
         </div></div>';
     }
@@ -1203,13 +1203,13 @@ function echo_experts($c, $fb_format=0){
         return '<div class="panel-group" id="open'.$id.'" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
             <div class="panel-heading" role="tab" id="heading'.$id.'">
                 <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" data-parent="#open'.$id.'" href="#collapse'.$id.'" aria-expanded="true" aria-controls="collapse'.$id.'">
-                        <i class="fas" style="transform:none !important;">🎓</i> '.$all_count.' Industry Expert'.echo__s($all_count).'
+                    <a role="button" data-toggle="collapse" data-parent="#open'.$id.'" href="#collapse'.$id.'" aria-expanded="false" aria-controls="collapse'.$id.'">
+                        <i class="fas" style="transform:none !important;">🎓</i> '.$all_count.' Industry Expert'.echo__s($all_count).'<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                     </a>
                 </h4>
             </div>
-            <div id="collapse'.$id.'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'.$id.'">
-                <div class="panel-body">
+            <div id="collapse'.$id.'" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="heading'.$id.'">
+                <div class="panel-body" style="padding:5px 0 0 5px; font-size:1.1em;">
                     '.$pitch.' <span style="font-size: 1em !important;">They are not affiliated with Mench, yet their work has been referenced by our training team.</span>
                 </div>
             </div>

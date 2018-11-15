@@ -376,7 +376,7 @@ class Comm_model extends CI_Model {
                             'e_inbound_u_id' => 2738, //Initiated by PA
                             'e_outbound_u_id' => $u['u_id'],
                             'e_outbound_c_id' => $w_inbound_c_id,
-                            'i_message' => 'Highlights are:'."\n\n".
+                            'i_message' => 'Here is an overview of this subscription:'."\n\n".
                                 echo_intent_overview($fetch_cs[0], 1).
                                 echo_contents($fetch_cs[0], 1).
                                 echo_experts($fetch_cs[0], 1).

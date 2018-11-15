@@ -11,7 +11,7 @@
         $('.alink-'+c_id).attr('href','javascript:void(0);');
         var c_outcome_parent = $('#title-parent').text();
         var c_outcome_child = $('#title-'+c_id).text();
-        var r = confirm("Press OK to " +c_outcome_child+"\nPress CANCEL to "+c_outcome_parent);
+        var r = confirm("Press OK to ONLY " +c_outcome_child+"\nPress CANCEL to "+c_outcome_parent);
         if (r == true) {
             //Go to target intent:
             window.location = "/"+c_id;
@@ -69,14 +69,16 @@
 
     <br />
 
-    <?= echo_intent_overview($c, 0) ?>
-    <?= echo_contents($c, 0) ?>
-    <?= echo_experts($c, 0) ?>
-    <?= echo_completion_estimate($c, 0) ?>
-    <?= echo_costs($c, 0) ?>
+    <h3 style="margin-top:0px !important;">Overview:</h3>
+    <div style="margin:12px 0 0 5px;">
+        <?= echo_intent_overview($c, 0) ?>
+        <?= echo_contents($c, 0) ?>
+        <?= echo_experts($c, 0) ?>
+        <?= echo_completion_estimate($c, 0) ?>
+        <?= echo_costs($c, 0) ?>
+    </div>
 
-
-    <p style="padding:15px 0;">Ready to <?= $c['c_outcome'] ?>?</p>
+    <p style="padding:15px 0 0 0;">Ready to <?= $c['c_outcome'] ?>?</p>
 
     <!-- Call to Action -->
     <a class="btn btn-primary" href="https://m.me/askmench?ref=SUBSCRIBE10_<?= $c['c_id'] ?>" style="display: inline-block; padding: 12px 36px;">Get Started [Free] <i class="fas fa-angle-right"></i></a>
@@ -91,29 +93,27 @@
 
     <?php if(count($c['c__child_intents'])>0){ ?>
 
-        <h3>🚩 Action Plan</h3>
-        <?= ( $c['c_is_any'] ? '<p>Complete Action Plan by completing ANY Single One of the following options:</p>' : '<p>Complete Action Plan by completing ALL of the following:</p>' ) ?>
-        <div class="list-group actionplan_list">
+        <h3>Action Plan:</h3>
+        <div class="list-group actionplan_list" style="margin:12px 0 0 5px;">
             <?php
             $c1_counter = 0;
-            $landing_pagetask_visible = 5;
             foreach($c['c__child_intents'] as $c1_counter=>$c1){
 
-                //We need messages or children to expand this intent:
-                $requies_expansion = ( count($c1['c__messages'])>0 || count($c1['c__child_intents'])>0 );
 
-                echo '<li class="list-group-item" id="c__'.$c1_counter.'">';
+                echo '<div class="panel-group" id="open'.$c1_counter.'" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
+            <div class="panel-heading" role="tab" id="heading'.$c1_counter.'">
+                <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#open'.$c1_counter.'" href="#collapse'.$c1_counter.'" aria-expanded="false" aria-controls="collapse'.$c1_counter.'">
+                       '.( $c['c_is_any'] ? 'Option' : 'Part' ).' '.($c1_counter+1).': <span id="title-'.$c1['c_id'].'">'.$c1['c_outcome'].'</span><i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                    </a>
+                </h4>
+            </div>
+            <div id="collapse'.$c1_counter.'" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="heading'.$c1_counter.'">
+                <div class="panel-body" style="padding:5px 0 0 5px;">';
 
-                echo ($c1_counter+1).'. <'.( $requies_expansion ? 'a href="javascript:void(0)" onclick="$(\'.c_'.$c1_counter.'\').toggle();"' : 'span' ).' id="title-'.$c1['c_id'].'" style="font-weight: normal;">'.$c1['c_outcome'].'</'.( $requies_expansion ? 'a' : 'span' ).'>';
 
-
-                echo '<span style="font-size:0.8em; font-weight:300; margin-left:5px; display:inline-block;">';
-                //echo ( $c1['c__tree_all_count']>0 ? '<span style="padding-right:5px;"><i class="fas fa-lightbulb-on"></i>'.$c1['c__tree_all_count'].'</span>' : '' );
-                echo '<span>⏰'.echo_hour_range($c1, false).'</span>';
-                echo '</span>';
-
-
-                echo '<div class="c_'.$c1_counter.'" style="display:none; margin-left:3px; font-size:0.9em;">';
+                //Nothing to show:
+                echo '<div style="margin:0 0 5px; padding-top:5px; font-size:1.1em;">It is estimated to take '.echo_hour_range($c1, false).' to complete this part.</div>';
 
                 //First show all messages for this intent:
                 foreach($c1['c__messages'] as $i){
@@ -126,35 +126,22 @@
 
                 if(count($c1['c__child_intents'])>0){
 
-                    echo '<div style="margin:0 0 5px; padding-top:10px; font-size:1.1em;">'.$c1['c_outcome'].' with '.$c1['c__tree_all_count'].' insights'.( count($c1['c__child_intents'])<$c1['c__tree_all_count'] ? ' across '.count($c1['c__child_intents']).' categories' : ''  ).':</div>';
                     echo '<ul style="list-style:none; margin-left:-30px; font-size:1em;">';
-                    $landing_pagetask_visible += ( count($c1['c__child_intents'])==$landing_pagetask_visible+1 ? 1 : 0 );
                     foreach($c1['c__child_intents'] as $c2_counter=>$c2){
-
-                        if($c2_counter==$landing_pagetask_visible){
-                            echo '<a href="javascript:void(0);" onclick="$(\'.show_full_list_'.$c1_counter.'\').toggle();" class="show_full_list_'.$c1_counter.'">List all intents &raquo;</a>';
-                        }
-                        echo '<li class="'.( $c2_counter>=$landing_pagetask_visible ? 'show_full_list_'.$c1_counter.'" style="display:none;"' : '"' ).'>';
-                        echo ($c1_counter+1).'.'.($c2_counter+1).'. '.$c2['c_outcome'];
-                        /*
-                        echo '<span style="font-size:0.8em; font-weight:300; margin-left:5px; display:inline-block;">';
-                        echo ( $c2['c__tree_all_count']>0 ? '<span style="padding-right:5px;"><i class="fas fa-lightbulb-on"></i>'.($c2['c__tree_all_count']).'</span>' : '' );
-                        echo '<span>⏰ '.echo_hour_range($c2, true).'</span>';
-                        echo '</span>';
-                        */
-                        echo '</li>';
+                        echo '<li>Part '. ($c1_counter+1).'.'.($c2_counter+1).'. '.$c2['c_outcome'].'</li>';
                     }
                     echo '</ul>';
 
                     //Since it has children, lets also give the option to navigate downwards ONLY IF...
                     if($c1['c__tree_max_hours']>=0.5){
-                        echo '<div>You can choose to <a href="/'.$c1['c_id'].'" '.( $c['c_id']==$this->config->item('primary_c') ? 'onclick="confirm_child_go('.$c1['c_id'].')"' : '' ).' class="alink-'.$c1['c_id'].'">subscribe to this intent only</a>.</div>';
+                        echo '<div>You can choose to <a href="/'.$c1['c_id'].'" '.( $c['c_id']==$this->config->item('primary_c') ? 'onclick="confirm_child_go('.$c1['c_id'].')"' : '' ).' class="alink-'.$c1['c_id'].'" style="text-decoration:underline;">subscribe to this part only</a>.</div>';
                     }
 
                 }
 
-                echo '</div>';
-                echo '</li>';
+                echo '</div>
+            </div>
+        </div></div>';
 
             }
             ?>
@@ -166,20 +153,62 @@
 
 
 
-<h3></h3>
-<p>Mench is a personal asssistant on a mission to advance your tech career:</p>
+<h3 style="margin-top: 0px !important;">Advance Your Tech Career:</h3>
+<div style="margin:12px 0 0 5px;">
 
-<div class="why_mench">
+    <?php
 
-    <h4><span>💖</span> Land a Job You'll LOVE</h4>
-    <p>It's easy to get "a job" as a junior developer in today's automation-hungry economy. But finding your dream job with a superb team that is aligned with your goals and values is a much harder challenge that we'll help you overcome.</p>
+    //Print 3 more menu items:
 
-    <h4><span>💵</span> Make More Faster</h4>
-    <p>Every month of unemployment costs a junior developer $5,126 USD <a href="https://www.indeed.com/salaries/Junior-Developer-Salaries" target="_blank"><i class="fas fa-external-link-alt" style="color:#2f2739;"></i></a> of loss income. We help you land your dream job in the shortest time possible while also training you on salary negotiation techniques from industry experts.</p>
 
-    <h4><span>⏰</span> Flexible Hours</h4>
-    <p>Choose the number of hours you can commit each week to <?= $c['c_outcome'] ?> and Mench will streamline your progress based on your availability. Go as fast or slow as you like to achieve the right balance for success.</p>
+    $id = 'JobYouWillLove';
+    echo '<div class="panel-group" id="open'.$id.'" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
+            <div class="panel-heading" role="tab" id="heading'.$id.'">
+                <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#open'.$id.'" href="#collapse'.$id.'" aria-expanded="false" aria-controls="collapse'.$id.'">
+                        <i class="fas" style="transform:none !important;">💖</i> Land a Job You\'ll LOVE<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                    </a>
+                </h4>
+            </div>
+            <div id="collapse'.$id.'" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="heading'.$id.'">
+                <div class="panel-body" style="padding:5px 0 0 5px; font-size:1.1em;">It\'s easy to get "a job" as a junior developer in today\'s automation-hungry economy. But finding your dream job with a superb team that is aligned with your goals and values is a much harder challenge that we\'ll help you overcome.</div>
+            </div>
+        </div></div>';
 
+
+
+    $id = 'MakeMoreFaster';
+    echo '<div class="panel-group" id="open'.$id.'" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
+            <div class="panel-heading" role="tab" id="heading'.$id.'">
+                <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#open'.$id.'" href="#collapse'.$id.'" aria-expanded="false" aria-controls="collapse'.$id.'">
+                        <i class="fas" style="transform:none !important;">💵</i> Make More Faster<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                    </a>
+                </h4>
+            </div>
+            <div id="collapse'.$id.'" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="heading'.$id.'">
+                <div class="panel-body" style="padding:5px 0 0 5px; font-size:1.1em;">Every month of unemployment costs a junior developer $5,126 USD <a href="https://www.indeed.com/salaries/Junior-Developer-Salaries" target="_blank"><i class="fas fa-external-link-alt" style="color:#2f2739;"></i></a> of loss income. We help you land your dream job in the shortest time possible while also training you on salary negotiation techniques from industry experts.</div>
+            </div>
+        </div></div>';
+
+
+
+    $id = 'FlexibleHours';
+    echo '<div class="panel-group" id="open'.$id.'" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
+            <div class="panel-heading" role="tab" id="heading'.$id.'">
+                <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#open'.$id.'" href="#collapse'.$id.'" aria-expanded="false" aria-controls="collapse'.$id.'">
+                        <i class="fas" style="transform:none !important;">⏰</i> Flexible Hours<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                    </a>
+                </h4>
+            </div>
+            <div id="collapse'.$id.'" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="heading'.$id.'">
+                <div class="panel-body" style="padding:5px 0 0 5px; font-size:1.1em;">Choose the number of hours you can commit each week to '. $c['c_outcome'] .' and Mench will streamline your progress based on your availability. Go as fast or slow as you like to achieve the right balance for success.</div>
+            </div>
+        </div></div>';
+
+
+    ?>
 </div>
 
 
