@@ -19,7 +19,7 @@ class Db_model extends CI_Model {
     function k_update($id,$update_columns){
         //Update first
         $this->db->where('k_id', $id);
-        $this->db->update('v5_subscription_intent_links', $update_columns);
+        $this->db->update('v5_subscription_links', $update_columns);
         return $this->db->affected_rows();
     }
 
@@ -454,7 +454,7 @@ class Db_model extends CI_Model {
 
         if(!isset($insert_columns['k_rank'])){
             //Determine the highest rank for this subscription:
-            $insert_columns['k_rank'] = 1 + $this->Db_model->max_value('v5_subscription_intent_links','k_rank', array(
+            $insert_columns['k_rank'] = 1 + $this->Db_model->max_value('v5_subscription_links','k_rank', array(
                 'k_w_id' => $insert_columns['k_w_id'],
             ));
         }
@@ -468,7 +468,7 @@ class Db_model extends CI_Model {
 
 
         //Lets now add:
-        $this->db->insert('v5_subscription_intent_links', $insert_columns);
+        $this->db->insert('v5_subscription_links', $insert_columns);
 
         //Fetch inserted id:
         $insert_columns['k_id'] = $this->db->insert_id();
@@ -870,8 +870,8 @@ class Db_model extends CI_Model {
         $this->db->query("DELETE FROM v5_engagements WHERE e_inbound_c_id=".$c_id." OR e_outbound_c_id=".$c_id);
         $delete_stats['v5_engagements'] = $this->db->affected_rows();
 
-        $this->db->query("DELETE FROM v5_messages WHERE i_outbound_c_id=".$c_id);
-        $delete_stats['v5_messages'] = $this->db->affected_rows();
+        $this->db->query("DELETE FROM v5_intent_messages WHERE i_outbound_c_id=".$c_id);
+        $delete_stats['v5_intent_messages'] = $this->db->affected_rows();
 
         $this->db->query("DELETE FROM v5_subscriptions WHERE w_inbound_c_id=".$c_id);
         $delete_stats['v5_subscriptions'] = $this->db->affected_rows();
@@ -938,8 +938,8 @@ class Db_model extends CI_Model {
         $this->db->query("DELETE FROM v5_engagements WHERE e_inbound_u_id=".$u_id." OR e_outbound_u_id=".$u_id);
         $delete_stats['v5_engagements'] = $this->db->affected_rows();
 
-        $this->db->query("DELETE FROM v5_messages WHERE i_outbound_u_id=".$u_id);
-        $delete_stats['v5_messages'] = $this->db->affected_rows();
+        $this->db->query("DELETE FROM v5_intent_messages WHERE i_outbound_u_id=".$u_id);
+        $delete_stats['v5_intent_messages'] = $this->db->affected_rows();
 
         $this->db->query("DELETE FROM v5_subscriptions WHERE w_outbound_u_id=".$u_id);
         $delete_stats['v5_subscriptions'] = $this->db->affected_rows();
@@ -1029,7 +1029,7 @@ class Db_model extends CI_Model {
     )){
 
         $this->db->select('*');
-        $this->db->from('v5_messages i');
+        $this->db->from('v5_intent_messages i');
         $this->db->join('v5_intents c', 'i.i_outbound_c_id = c.c_id');
         $this->db->join('v5_entities u', 'u.u_id = i.i_inbound_u_id');
         if(in_array('x',$join_objects)){
@@ -1094,7 +1094,7 @@ class Db_model extends CI_Model {
 
 
 		//Lets now add:
-		$this->db->insert('v5_messages', $insert_columns);
+		$this->db->insert('v5_intent_messages', $insert_columns);
 		
 		//Fetch inserted id:
 		$insert_columns['i_id'] = $this->db->insert_id();
@@ -1104,7 +1104,7 @@ class Db_model extends CI_Model {
 	
 	function i_update($id,$update_columns){
 		$this->db->where('i_id', $id);
-		$this->db->update('v5_messages', $update_columns);
+		$this->db->update('v5_intent_messages', $update_columns);
 		return $this->db->affected_rows();
 	}
 
@@ -1115,7 +1115,7 @@ class Db_model extends CI_Model {
     function k_fetch($match_columns, $join_objects=array(), $order_columns=array(), $limit=0, $select='*', $group_by=null){
         //Fetch the target gems:
         $this->db->select($select);
-        $this->db->from('v5_subscription_intent_links k');
+        $this->db->from('v5_subscription_links k');
 
         if(in_array('cr',$join_objects)){
 
@@ -1973,7 +1973,7 @@ class Db_model extends CI_Model {
             $this->db->join('v5_engagement_blob ej', 'ej.ej_e_id=e.e_id','left');
         }
         if(in_array('c__messages',$join_objects)){
-            $this->db->join('v5_messages i', 'i.i_id=e.e_i_id','left');
+            $this->db->join('v5_intent_messages i', 'i.i_id=e.e_i_id','left');
         }
 	    foreach($match_columns as $key=>$value){
 	        if(!is_null($value)){

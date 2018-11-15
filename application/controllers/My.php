@@ -165,8 +165,8 @@ class My extends CI_Controller {
         $this->db->query("DELETE FROM v5_subscriptions WHERE w_id=".$w_id);
         $delete_stats['v5_subscriptions'] = $this->db->affected_rows();
 
-        $this->db->query("DELETE FROM v5_subscription_intent_links WHERE k_w_id=".$w_id);
-        $delete_stats['v5_subscription_intent_links'] = $this->db->affected_rows();
+        $this->db->query("DELETE FROM v5_subscription_links WHERE k_w_id=".$w_id);
+        $delete_stats['v5_subscription_links'] = $this->db->affected_rows();
 
         $this->db->query("DELETE FROM v5_engagements WHERE e_w_id=".$w_id);
         $delete_stats['v5_engagements'] = $this->db->affected_rows();

@@ -790,7 +790,7 @@ class Intents extends CI_Controller
             'i_outbound_c_id' => intval($_POST['c_id']),
             'i_message' => '@'.$url_create['u']['u_id'],
             'i_status' => $_POST['i_status'],
-            'i_rank' => 1 + $this->Db_model->max_value('v5_messages','i_rank', array(
+            'i_rank' => 1 + $this->Db_model->max_value('v5_intent_messages','i_rank', array(
                 'i_status' => $_POST['i_status'],
                 'i_outbound_c_id' => $_POST['c_id'],
             )),
@@ -860,7 +860,7 @@ class Intents extends CI_Controller
             'i_inbound_u_id' => $udata['u_id'],
             'i_outbound_c_id' => intval($_POST['c_id']),
             'i_status' => $_POST['i_status'],
-            'i_rank' => 1 + $this->Db_model->max_value('v5_messages','i_rank', array(
+            'i_rank' => 1 + $this->Db_model->max_value('v5_intent_messages','i_rank', array(
                 'i_status' => $_POST['i_status'],
                 'i_outbound_c_id' => intval($_POST['c_id']),
             )),
@@ -971,7 +971,7 @@ class Intents extends CI_Controller
             //Change the status:
             $to_update['i_status'] = $_POST['i_status'];
             //Put it at the end of the new list:
-            $to_update['i_rank'] = 1 + $this->Db_model->max_value('v5_messages','i_rank', array(
+            $to_update['i_rank'] = 1 + $this->Db_model->max_value('v5_intent_messages','i_rank', array(
                 'i_status' => $_POST['i_status'],
                 'i_outbound_c_id' => intval($_POST['c_id']),
             ));

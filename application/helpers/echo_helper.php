@@ -1031,6 +1031,7 @@ function echo_pa_oneway(){
     $options = array(
         'I am not designed to respond to custom text messages. I can understand you only when you choose one of the multiple-choice options I provide.',
         'What was that? I would only understand if you choose one of the multiple-choice options I provide.',
+        'I did not get that as I cannot respond to your text messages. Select multiple-choice option to continue...',
     );
     return $options[rand(0,(count($options)-1))];
 }

@@ -782,23 +782,22 @@ class Comm_model extends CI_Model {
 
         } else {
 
-            //Fetch the last message we send to this user:
-            $last_message_sent = $this->Db_model->e_fetch(array(
-                'e_inbound_c_id' => 7, //Messages sent from us
-                'e_outbound_u_id' => $u['u_id'],
-            ), 1, array('ej'));
+            //See if an admin has sent this user a message in the last hour via the Facebook Inbox UI:
+            if(count($this->Db_model->e_fetch(array(
+                    'e_timestamp >=' => date("Y-m-d H:i:s", (time()-(3600))), //Messages sent from us less than an hour ago
+                    'e_inbound_c_id' => 7, //Messages sent from us
+                    'e_outbound_u_id' => 1281, //We log Facebook Inbox UI messages sent with this user ID
+                ),1))>0){
 
-            //See if they have any subscriptions:
-            $current_ws = $this->Db_model->w_fetch(array(
-                'w_outbound_u_id' => $u['u_id'],
-                'w_status IN (1,2)' => null, //Active subscriptions (Passive ones have a more targetted distribution)
-            ), array('c'));
+                //They are chatting with the admin, do nothing here...
 
+            } elseif(count($this->Db_model->w_fetch(array(
+                    'w_outbound_u_id' => $u['u_id'],
+                    'w_status >=' => 0, //Any type of Active subscriptions
+                )))==0){
 
-            //Now see what they are saying as we can try to understand some stuff:
-            if($last_message_sent[0]['e_inbound_c_id']==1){
-
-                //We're waiting for a Written answer, confirm and save...
+                //They do not have a subscription! Recommend to subscribe to our default intent:
+                $this->Comm_model->fb_ref_process($u, 'SUBSCRIBE10_'.$this->config->item('primary_c'));
 
             } elseif(in_array($fb_message_received, array('yes','yeah','ya','ok','continue','ok continue','ok continue ▶️','▶️','ok continue','go','yass','yas','yea','yup','next','yes, learn more'))){
                 //Accepting an offer...
@@ -822,14 +821,6 @@ class Comm_model extends CI_Model {
 
             } elseif(substr($fb_message_received,0,1)=='/' || is_int($fb_message_received)){
                 //Likely an OR response with a specific number in mind...
-
-            }
-
-            //We have received a free-style message that is not recognized with a reference code...
-            if(count($current_ws)==0){
-
-                //They do not have a subscription, so we can offer them to subscribe to our default intent:
-                $this->Comm_model->fb_ref_process($u, 'SUBSCRIBE10_'.$this->config->item('primary_c'));
 
             } else {
 

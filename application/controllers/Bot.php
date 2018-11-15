@@ -12,25 +12,6 @@ class Bot extends CI_Controller {
 
 
 
-    function f($w_id, $c_id){
-        //Fetch w:
-        $subscriptions = $this->Db_model->w_fetch(array(
-            'w_id' => $w_id,
-        ));
-
-        if(count($subscriptions)==1){
-            echo_json($this->Comm_model->compose_messages(array(
-                'e_inbound_u_id' => 2738, //Initiated by PA
-                'e_outbound_u_id' => $subscriptions[0]['w_outbound_u_id'],
-                'e_outbound_c_id' => $c_id,
-                'e_w_id' => $w_id,
-            )));
-        } else {
-            echo 'ERROR: Invalid w_id';
-        }
-    }
-
-
 
     function sync_menu(){
 
@@ -72,23 +53,6 @@ class Bot extends CI_Controller {
         echo_json($res);
     }
 
-
-
-    function fixx(){
-
-        $blobs = $this->Db_model->e_fetch(array(
-            'e_timestamp >' => '2018-11-7 00:00:00',
-            'e_inbound_c_id IN (6,7)' => null,
-        ),0,array('ej'));
-
-        foreach($blobs as $b){
-            $blob = unserialize($b['ej_e_blob']);
-
-        }
-
-        echo count($blobs);
-        //echo_mili()
-    }
 
 
     function facebook_webhook(){
@@ -306,7 +270,7 @@ class Bot extends CI_Controller {
                     $u = $this->Comm_model->fb_identify_activate($user_id);
 
                     $eng_data = array(
-                        'e_inbound_u_id' => ( $sent_from_us || !isset($u['u_id']) ? 0 : $u['u_id'] ),
+                        'e_inbound_u_id' => ( $sent_from_us ? 1281 /* Log on behalf of Mench Admins as it was sent via Facebook Inbox UI */ : $u['u_id'] ),
                         'e_json' => $json_data,
                         'e_text_value' => $fb_message,
                         'e_inbound_c_id' => ( $sent_from_us ? 7 : 6 ), //Message Sent/Received
