@@ -76,22 +76,29 @@
         <?= echo_experts($c, 0) ?>
         <?= echo_completion_estimate($c, 0) ?>
         <?= echo_costs($c, 0) ?>
+        <?php
+        $id = 'FlexibleHours';
+        echo '<div class="panel-group" id="open'.$id.'" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
+            <div class="panel-heading" role="tab" id="heading'.$id.'">
+                <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#open'.$id.'" href="#collapse'.$id.'" aria-expanded="false" aria-controls="collapse'.$id.'">
+                        <i class="fab fa-facebook-messenger" style="transform:none !important; color:#0084ff; font-size: 1.25em; margin: 0 8px 0 6px;"></i> Works with Messenger<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                    </a>
+                </h4>
+            </div>
+            <div id="collapse'.$id.'" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="heading'.$id.'">
+                <div class="panel-body" style="padding:5px 0 0 5px; font-size:1.1em;">Mench Personal Assistant works on Facebook Messenger. Think of it as an expert friend on a mission to advance your tech career! If you do not have (or want to have) a Facebook account, you can easily use Facebook Messenger <a href="https://newsroom.fb.com/news/2015/06/sign-up-for-messenger-without-a-facebook-account/" target="_blank" style="text-decoration: underline;">without a Facebook account</a>.</div>
+            </div>
+        </div></div>';
+        ?>
     </div>
 
     <p style="padding:15px 0 0 0;">Ready to <?= $c['c_outcome'] ?>?</p>
 
-
-    <!-- Call to Action -->
+    <!-- Call to Actions -->
     <a class="btn btn-primary" href="https://m.me/askmench?ref=SUBSCRIBE10_<?= $c['c_id'] ?>" style="display: inline-block; padding: 12px 36px;">Get Started [Free] <i class="fas fa-angle-right"></i></a>
 
     <span class="learn_more_toggle" style="display: inline-block;">or <a class="btn btn-primary grey" href="#learnMore" onclick="$('.learn_more_toggle').toggle();" style="display: inline-block; padding:12px 16px;">Learn More <i class="fas fa-info-circle"></i></a></span>
-
-
-    <!-- Additional Notes/Details -->
-    <div style="font-size:0.9em; padding:10px 0 0 3px; margin-bottom: 0;">
-        <p style="line-height:130%; font-size:0.9em !important;"><span data-toggle="tooltip" title="Mench Personal Assistant is currently offered via Facebook Messenger. Think of it as an expert friend on a mission to get you hired!" data-placement="top" class="underdot">Requires Messenger</span> but <a href="https://newsroom.fb.com/news/2015/06/sign-up-for-messenger-without-a-facebook-account/" target="_blank" data-toggle="tooltip" title="You can use Facebook Messenger without having a Facebook account. Click to learn more." data-placement="top" class="underdot">Not Facebook</a></p>
-        <!-- <p style="line-height:130%; font-size:0.9em !important;"><span data-toggle="tooltip" title="We're committed to keeping Mench Personal Assistant always free. In the future we plan to offer optional coaching packages for a more personalized experience" data-placement="top" class="underdot">Always Free</span> on <span data-toggle="tooltip" title="Install Facebook Messenger's iPhone/Android app or visit www.messenger.com on a PC" data-placement="top" class="underdot">Smartphones and PCs</span></p> -->
-    </div>
 
 </div>
 
