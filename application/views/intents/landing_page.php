@@ -19,6 +19,7 @@
     }
 </script>
 
+
 <div id="landing_page">
 
     <?php
@@ -53,7 +54,6 @@
     }
 
 
-
     //Intent Title:
     echo '<h1 style="margin-bottom:30px;" id="title-parent">'.$c['c_outcome'].'</h1>';
 
@@ -80,8 +80,11 @@
 
     <p style="padding:15px 0 0 0;">Ready to <?= $c['c_outcome'] ?>?</p>
 
+
     <!-- Call to Action -->
     <a class="btn btn-primary" href="https://m.me/askmench?ref=SUBSCRIBE10_<?= $c['c_id'] ?>" style="display: inline-block; padding: 12px 36px;">Get Started [Free] <i class="fas fa-angle-right"></i></a>
+
+    <span class="learn_more_toggle" style="display: inline-block;">or <a class="btn btn-primary grey" href="#learnMore" onclick="$('.learn_more_toggle').toggle();" style="display: inline-block; padding:12px 16px;">Learn More <i class="fas fa-info-circle"></i></a></span>
 
 
     <!-- Additional Notes/Details -->
@@ -90,6 +93,12 @@
         <!-- <p style="line-height:130%; font-size:0.9em !important;"><span data-toggle="tooltip" title="We're committed to keeping Mench Personal Assistant always free. In the future we plan to offer optional coaching packages for a more personalized experience" data-placement="top" class="underdot">Always Free</span> on <span data-toggle="tooltip" title="Install Facebook Messenger's iPhone/Android app or visit www.messenger.com on a PC" data-placement="top" class="underdot">Smartphones and PCs</span></p> -->
     </div>
 
+</div>
+
+
+
+<a name="learnMore"></a>
+<div style="display: none;" class="learn_more_toggle">
 
     <?php if(count($c['c__child_intents'])>0){ ?>
 
@@ -148,19 +157,17 @@
         </div>
         <br />
     <?php } ?>
-</div>
 
 
 
 
-<h3 style="margin-top: 0px !important;">Advance Your Tech Career:</h3>
-<div style="margin:12px 0 0 5px;">
+
+
+    <h3 style="margin-top: 0px !important;">Advance Your Tech Career:</h3>
+    <div style="margin:12px 0 0 5px;">
 
     <?php
-
     //Print 3 more menu items:
-
-
     $id = 'JobYouWillLove';
     echo '<div class="panel-group" id="open'.$id.'" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
             <div class="panel-heading" role="tab" id="heading'.$id.'">
@@ -207,20 +214,11 @@
             </div>
         </div></div>';
 
-
     ?>
+    </div>
+
+
 </div>
-
-
-
-
-
-<div class="features" style="margin:55px 0 20px;">
-    <a class="btn btn-primary" href="https://m.me/askmench?ref=SUBSCRIBE10_<?= $c['c_id'] ?>" style="display: inline-block; padding: 12px 36px;">Get Started [Free] <i class="fas fa-angle-right"></i></a>
-</div>
-
-
-
 
 
 <?php
