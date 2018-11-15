@@ -1295,7 +1295,8 @@ function echo_object($object,$id,$engagement_field,$button_type){
                     //Plain view:
                     return '<a href="https://mench.com/intents/'.$subscriptions[0]['w_inbound_c_id'].'">'.$subscriptions[0]['c_outcome'].'</a>';
                 } else {
-                    return '<a href="/intents/'.$subscriptions[0]['w_inbound_c_id'].'" class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="Subscribed to '.$subscriptions[0]['c_outcome'].' [Subscription #'.$id.']"><i class="fas fa-comment-plus"></i></a> ';
+                    //TODO replace with Action Plan flag that would show student progress and load up their action plan...
+                    return '<a href="/intents/'.$subscriptions[0]['w_inbound_c_id'].'" target="_parent" class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="Subscribed to '.$subscriptions[0]['c_outcome'].' [Subscription #'.$id.']"><i class="fas fa-comment-plus"></i></a> ';
                 }
             }
 
@@ -1662,7 +1663,7 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
         //Step Input field:
         $ui .= '<div class="list-group-item list_input new-step-input">
             <div class="input-group">
-                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="new_intent('.$c['c_id'].',3);" intent-id="'.$c['c_id'].'"><input type="text" class="form-control autosearch intentadder-level-3 algolia_search" maxlength="'.$CI->config->item('c_outcome_max').'" id="addintent-cr-'.$c['cr_id'].'" intent-id="'.$c['c_id'].'" placeholder="Add #Intent"></form></div>
+                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="new_intent('.$c['c_id'].',3);" intent-id="'.$c['c_id'].'"><input type="text" class="form-control autosearch intentadder-level-3 algolia_search bottom-add" maxlength="'.$CI->config->item('c_outcome_max').'" id="addintent-cr-'.$c['cr_id'].'" intent-id="'.$c['c_id'].'" placeholder="Add #Intent"></form></div>
                 <span class="input-group-addon" style="padding-right:8px;">
                     <span data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" onclick="new_intent('.$c['c_id'].',3);" class="badge badge-primary pull-right" intent-id="'.$c['c_id'].'" style="cursor:pointer; margin: 13px -6px 1px 13px;">
                         <div><i class="fas fa-plus"></i></div>

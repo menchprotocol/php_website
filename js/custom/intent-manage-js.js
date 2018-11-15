@@ -527,7 +527,7 @@ function c_unlink(){
                         c_sort(c_inbound_id,level);
 
                     }, 377);
-                }, 1597);
+                }, 377);
 
             } else {
                 alert('ERROR: '+data.message);
