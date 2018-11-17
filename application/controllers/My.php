@@ -168,14 +168,14 @@ class My extends CI_Controller {
         //Delete subscription and report back:
         $archive_stats = array();
 
-        $this->db->query("DELETE FROM v5_subscriptions WHERE w_id=".$w_id);
-        $archive_stats['v5_subscriptions'] = $this->db->affected_rows();
+        $this->db->query("DELETE FROM tb_subscriptions WHERE w_id=".$w_id);
+        $archive_stats['tb_subscriptions'] = $this->db->affected_rows();
 
-        $this->db->query("DELETE FROM v5_subscription_links WHERE k_w_id=".$w_id);
-        $archive_stats['v5_subscription_links'] = $this->db->affected_rows();
+        $this->db->query("DELETE FROM tb_subscription_links WHERE k_w_id=".$w_id);
+        $archive_stats['tb_subscription_links'] = $this->db->affected_rows();
 
-        $this->db->query("DELETE FROM v5_engagements WHERE e_w_id=".$w_id);
-        $archive_stats['v5_engagements'] = $this->db->affected_rows();
+        $this->db->query("DELETE FROM tb_engagements WHERE e_w_id=".$w_id);
+        $archive_stats['tb_engagements'] = $this->db->affected_rows();
 
         return echo_json(array(
             'status' => 1,

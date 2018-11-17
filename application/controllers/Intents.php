@@ -813,7 +813,7 @@ class Intents extends CI_Controller
             'i_c_id' => intval($_POST['c_id']),
             'i_message' => '@'.$url_create['u']['u_id'],
             'i_status' => $_POST['i_status'],
-            'i_rank' => 1 + $this->Db_model->max_value('v5_intent_messages','i_rank', array(
+            'i_rank' => 1 + $this->Db_model->max_value('tb_intent_messages','i_rank', array(
                 'i_status' => $_POST['i_status'],
                 'i_c_id' => $_POST['c_id'],
             )),
@@ -821,7 +821,7 @@ class Intents extends CI_Controller
 
 
         //Update intent count & tree:
-        $this->db->query("UPDATE v5_intents SET c__this_messages=c__this_messages+1 WHERE c_id=".intval($_POST['c_id']));
+        $this->db->query("UPDATE tb_intents SET c__this_messages=c__this_messages+1 WHERE c_id=".intval($_POST['c_id']));
         $updated_recursively = $this->Db_model->c_update_tree( intval($_POST['c_id']) , array(
             'c__tree_messages' => 1,
         ));
@@ -883,7 +883,7 @@ class Intents extends CI_Controller
             'i_inbound_u_id' => $udata['u_id'],
             'i_c_id' => intval($_POST['c_id']),
             'i_status' => $_POST['i_status'],
-            'i_rank' => 1 + $this->Db_model->max_value('v5_intent_messages','i_rank', array(
+            'i_rank' => 1 + $this->Db_model->max_value('tb_intent_messages','i_rank', array(
                 'i_status' => $_POST['i_status'],
                 'i_c_id' => intval($_POST['c_id']),
             )),
@@ -893,7 +893,7 @@ class Intents extends CI_Controller
         ));
 
         //Update intent count:
-        $this->db->query("UPDATE v5_intents SET c__this_messages=c__this_messages+1 WHERE c_id=".intval($_POST['c_id']));
+        $this->db->query("UPDATE tb_intents SET c__this_messages=c__this_messages+1 WHERE c_id=".intval($_POST['c_id']));
 
         //Update tree:
         $updated_recursively = $this->Db_model->c_update_tree( intval($_POST['c_id']) , array(
@@ -992,7 +992,7 @@ class Intents extends CI_Controller
             //Change the status:
             $to_update['i_status'] = $_POST['i_status'];
             //Put it at the end of the new list:
-            $to_update['i_rank'] = 1 + $this->Db_model->max_value('v5_intent_messages','i_rank', array(
+            $to_update['i_rank'] = 1 + $this->Db_model->max_value('tb_intent_messages','i_rank', array(
                 'i_status' => $_POST['i_status'],
                 'i_c_id' => intval($_POST['c_id']),
             ));
@@ -1069,7 +1069,7 @@ class Intents extends CI_Controller
                 ));
 
                 //Update intent count:
-                $this->db->query("UPDATE v5_intents SET c__this_messages=c__this_messages-1 WHERE c_id=".intval($_POST['c_id']));
+                $this->db->query("UPDATE tb_intents SET c__this_messages=c__this_messages-1 WHERE c_id=".intval($_POST['c_id']));
 
                 //Update tree:
                 $updated_recursively = $this->Db_model->c_update_tree( intval($_POST['c_id']) , array(

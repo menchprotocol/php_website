@@ -32,7 +32,7 @@ class Cron extends CI_Controller {
 
     function list_duplicate_cs(){
 
-        $q = $this->db->query('select c1.* from v5_intents c1 where (select count(*) from v5_intents c2 where c2.c_outcome = c1.c_outcome) > 1 ORDER BY c1.c_outcome ASC');
+        $q = $this->db->query('select c1.* from tb_intents c1 where (select count(*) from tb_intents c2 where c2.c_outcome = c1.c_outcome) > 1 ORDER BY c1.c_outcome ASC');
         $duplicates = $q->result_array();
 
 
@@ -49,7 +49,7 @@ class Cron extends CI_Controller {
 
     function list_duplicate_us(){
 
-        $q = $this->db->query('select u1.* from v5_entities u1 where (select count(*) from v5_entities u2 where u2.u_full_name = u1.u_full_name) > 1 ORDER BY u1.u_full_name ASC');
+        $q = $this->db->query('select u1.* from tb_entities u1 where (select count(*) from tb_entities u2 where u2.u_full_name = u1.u_full_name) > 1 ORDER BY u1.u_full_name ASC');
         $duplicates = $q->result_array();
 
 

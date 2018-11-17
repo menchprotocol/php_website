@@ -12,14 +12,14 @@ class Db_model extends CI_Model {
     function w_update($id,$update_columns){
         //Update first
         $this->db->where('w_id', $id);
-        $this->db->update('v5_subscriptions', $update_columns);
+        $this->db->update('tb_subscriptions', $update_columns);
         return $this->db->affected_rows();
     }
 
     function k_update($id,$update_columns){
         //Update first
         $this->db->where('k_id', $id);
-        $this->db->update('v5_subscription_links', $update_columns);
+        $this->db->update('tb_subscription_links', $update_columns);
         return $this->db->affected_rows();
     }
 
@@ -454,7 +454,7 @@ class Db_model extends CI_Model {
 
         if(!isset($insert_columns['k_rank'])){
             //Determine the highest rank for this subscription:
-            $insert_columns['k_rank'] = 1 + $this->Db_model->max_value('v5_subscription_links','k_rank', array(
+            $insert_columns['k_rank'] = 1 + $this->Db_model->max_value('tb_subscription_links','k_rank', array(
                 'k_w_id' => $insert_columns['k_w_id'],
             ));
         }
@@ -468,7 +468,7 @@ class Db_model extends CI_Model {
 
 
         //Lets now add:
-        $this->db->insert('v5_subscription_links', $insert_columns);
+        $this->db->insert('tb_subscription_links', $insert_columns);
 
         //Fetch inserted id:
         $insert_columns['k_id'] = $this->db->insert_id();
@@ -611,7 +611,7 @@ class Db_model extends CI_Model {
             'cr_inbound_u_id' => $inbound_u_id,
             'cr_parent_c_id'  => intval($c_id),
             'cr_child_c_id' => $new_c['c_id'],
-            'cr_child_rank' => 1 + $this->Db_model->max_value('v5_intent_links','cr_child_rank', array(
+            'cr_child_rank' => 1 + $this->Db_model->max_value('tb_intent_links','cr_child_rank', array(
                     'cr_status >=' => 1,
                     'c_status >=' => 0,
                     'cr_parent_c_id' => intval($c_id),
@@ -671,7 +671,7 @@ class Db_model extends CI_Model {
         }
 
         //Lets now add:
-        $this->db->insert('v5_subscriptions', $insert_columns);
+        $this->db->insert('tb_subscriptions', $insert_columns);
 
         //Fetch inserted id:
         $insert_columns['w_id'] = $this->db->insert_id();
@@ -729,8 +729,8 @@ class Db_model extends CI_Model {
     )){
 	    //Fetch the target entities:
 	    $this->db->select('*');
-	    $this->db->from('v5_entities u');
-	    $this->db->join('v5_entity_urls x', 'x.x_id = u.u_cover_x_id','left'); //Fetch the cover photo if >0
+	    $this->db->from('tb_entities u');
+	    $this->db->join('tb_entity_urls x', 'x.x_id = u.u_cover_x_id','left'); //Fetch the cover photo if >0
 	    foreach($match_columns as $key=>$value){
 	        if(!is_null($value)){
                 $this->db->where($key,$value);
@@ -840,20 +840,20 @@ class Db_model extends CI_Model {
         $archive_stats = array();
 
         //Start removal process by deleting engagements:
-        $this->db->query("DELETE FROM v5_engagements WHERE e_parent_c_id=".$c_id." OR e_child_c_id=".$c_id);
-        $archive_stats['v5_engagements'] = $this->db->affected_rows();
+        $this->db->query("DELETE FROM tb_engagements WHERE e_parent_c_id=".$c_id." OR e_child_c_id=".$c_id);
+        $archive_stats['tb_engagements'] = $this->db->affected_rows();
 
-        $this->db->query("DELETE FROM v5_intent_messages WHERE i_c_id=".$c_id);
-        $archive_stats['v5_intent_messages'] = $this->db->affected_rows();
+        $this->db->query("DELETE FROM tb_intent_messages WHERE i_c_id=".$c_id);
+        $archive_stats['tb_intent_messages'] = $this->db->affected_rows();
 
-        $this->db->query("DELETE FROM v5_subscriptions WHERE w_c_id=".$c_id);
-        $archive_stats['v5_subscriptions'] = $this->db->affected_rows();
+        $this->db->query("DELETE FROM tb_subscriptions WHERE w_c_id=".$c_id);
+        $archive_stats['tb_subscriptions'] = $this->db->affected_rows();
 
-        $this->db->query("DELETE FROM v5_intents WHERE c_id=".$c_id);
-        $archive_stats['v5_intents'] = $this->db->affected_rows();
+        $this->db->query("DELETE FROM tb_intents WHERE c_id=".$c_id);
+        $archive_stats['tb_intents'] = $this->db->affected_rows();
 
-        $this->db->query("DELETE FROM v5_intent_links WHERE (cr_parent_c_id=".$c_id." OR cr_child_c_id=".$c_id.")");
-        $archive_stats['v5_intent_links'] = $this->db->affected_rows();
+        $this->db->query("DELETE FROM tb_intent_links WHERE (cr_parent_c_id=".$c_id." OR cr_child_c_id=".$c_id.")");
+        $archive_stats['tb_intent_links'] = $this->db->affected_rows();
 
         return array(
             'status' => 1,
@@ -908,23 +908,23 @@ class Db_model extends CI_Model {
         $archive_stats = array();
 
         //Start removal process by deleting engagements:
-        $this->db->query("DELETE FROM v5_engagements WHERE e_parent_u_id=".$u_id." OR e_child_u_id=".$u_id);
-        $archive_stats['v5_engagements'] = $this->db->affected_rows();
+        $this->db->query("DELETE FROM tb_engagements WHERE e_parent_u_id=".$u_id." OR e_child_u_id=".$u_id);
+        $archive_stats['tb_engagements'] = $this->db->affected_rows();
 
-        $this->db->query("DELETE FROM v5_intent_messages WHERE i_u_id=".$u_id);
-        $archive_stats['v5_intent_messages'] = $this->db->affected_rows();
+        $this->db->query("DELETE FROM tb_intent_messages WHERE i_u_id=".$u_id);
+        $archive_stats['tb_intent_messages'] = $this->db->affected_rows();
 
-        $this->db->query("DELETE FROM v5_subscriptions WHERE w_child_u_id=".$u_id);
-        $archive_stats['v5_subscriptions'] = $this->db->affected_rows();
+        $this->db->query("DELETE FROM tb_subscriptions WHERE w_child_u_id=".$u_id);
+        $archive_stats['tb_subscriptions'] = $this->db->affected_rows();
 
-        $this->db->query("DELETE FROM v5_entity_urls WHERE x_u_id=".$u_id);
-        $archive_stats['v5_entity_urls'] = $this->db->affected_rows();
+        $this->db->query("DELETE FROM tb_entity_urls WHERE x_u_id=".$u_id);
+        $archive_stats['tb_entity_urls'] = $this->db->affected_rows();
 
-        $this->db->query("DELETE FROM v5_entities WHERE u_id=".$u_id);
-        $archive_stats['v5_entities'] = $this->db->affected_rows();
+        $this->db->query("DELETE FROM tb_entities WHERE u_id=".$u_id);
+        $archive_stats['tb_entities'] = $this->db->affected_rows();
 
-        $this->db->query("DELETE FROM v5_entity_links WHERE (ur_parent_u_id=".$u_id." OR ur_child_u_id=".$u_id.")");
-        $archive_stats['v5_entity_links'] = $this->db->affected_rows();
+        $this->db->query("DELETE FROM tb_entity_links WHERE (ur_parent_u_id=".$u_id." OR ur_child_u_id=".$u_id.")");
+        $archive_stats['tb_entity_links'] = $this->db->affected_rows();
 
         return array(
             'status' => 1,
@@ -955,7 +955,7 @@ class Db_model extends CI_Model {
         }
 		
 		//Lets now add:
-		$this->db->insert('v5_entities', $insert_columns);
+		$this->db->insert('tb_entities', $insert_columns);
 
         //Fetch inserted id:
         $insert_columns['u_id'] = $this->db->insert_id();
@@ -977,7 +977,7 @@ class Db_model extends CI_Model {
 	function u_update($id,$update_columns){
 	    //Update first
 	    $this->db->where('u_id', $id);
-	    $this->db->update('v5_entities', $update_columns);
+	    $this->db->update('tb_entities', $update_columns);
 
 	    //Return new row:
 	    $users = $this->u_fetch(array(
@@ -1002,8 +1002,8 @@ class Db_model extends CI_Model {
     )){
 
         $this->db->select('*');
-        $this->db->from('v5_intent_messages i');
-        $this->db->join('v5_intents c', 'i.i_c_id = c.c_id');
+        $this->db->from('tb_intent_messages i');
+        $this->db->join('tb_intents c', 'i.i_c_id = c.c_id');
         foreach($match_columns as $key=>$value){
             if(!is_null($value)){
                 $this->db->where($key,$value);
@@ -1063,7 +1063,7 @@ class Db_model extends CI_Model {
 
 
 		//Lets now add:
-		$this->db->insert('v5_intent_messages', $insert_columns);
+		$this->db->insert('tb_intent_messages', $insert_columns);
 		
 		//Fetch inserted id:
 		$insert_columns['i_id'] = $this->db->insert_id();
@@ -1073,7 +1073,7 @@ class Db_model extends CI_Model {
 	
 	function i_update($id,$update_columns){
 		$this->db->where('i_id', $id);
-		$this->db->update('v5_intent_messages', $update_columns);
+		$this->db->update('tb_intent_messages', $update_columns);
 		return $this->db->affected_rows();
 	}
 
@@ -1084,33 +1084,33 @@ class Db_model extends CI_Model {
     function k_fetch($match_columns, $join_objects=array(), $order_columns=array(), $limit=0, $select='*', $group_by=null){
         //Fetch the target gems:
         $this->db->select($select);
-        $this->db->from('v5_subscription_links k');
+        $this->db->from('tb_subscription_links k');
 
         if(in_array('cr',$join_objects)){
 
-            $this->db->join('v5_intent_links cr', 'k.k_cr_id = cr.cr_id');
+            $this->db->join('tb_intent_links cr', 'k.k_cr_id = cr.cr_id');
 
             if(in_array('cr_c_out',$join_objects)){
                 //Also join with subscription row:
-                $this->db->join('v5_intents c', 'c.c_id = cr.cr_child_c_id');
+                $this->db->join('tb_intents c', 'c.c_id = cr.cr_child_c_id');
             } elseif(in_array('cr_c_in',$join_objects)){
                 //Also join with subscription row:
-                $this->db->join('v5_intents c', 'c.c_id = cr.cr_parent_c_id');
+                $this->db->join('tb_intents c', 'c.c_id = cr.cr_parent_c_id');
             }
         }
 
         if(in_array('w',$join_objects)){
             //Also join with subscription row:
-            $this->db->join('v5_subscriptions w', 'w.w_id = k.k_w_id');
+            $this->db->join('tb_subscriptions w', 'w.w_id = k.k_w_id');
 
             if(in_array('w_c',$join_objects)){
                 //Also join with subscription row:
-                $this->db->join('v5_intents c', 'c.c_id = w.w_c_id');
+                $this->db->join('tb_intents c', 'c.c_id = w.w_c_id');
             }
             if(in_array('w_u',$join_objects)){
                 //Also add subscriber and their profile picture:
-                $this->db->join('v5_entities u', 'u.u_id = w.w_child_u_id');
-                $this->db->join('v5_entity_urls x', 'x.x_id = u.u_cover_x_id','left'); //Fetch the cover photo if >0
+                $this->db->join('tb_entities u', 'u.u_id = w.w_child_u_id');
+                $this->db->join('tb_entity_urls x', 'x.x_id = u.u_cover_x_id','left'); //Fetch the cover photo if >0
             }
         }
 
@@ -1149,14 +1149,14 @@ class Db_model extends CI_Model {
     function w_fetch($match_columns, $join_objects=array(), $order_columns=array(), $limit=0){
         //Fetch the target gems:
         $this->db->select('*');
-        $this->db->from('v5_subscriptions w');
+        $this->db->from('tb_subscriptions w');
         if(in_array('c',$join_objects)){
-            $this->db->join('v5_intents c', 'w.w_c_id = c.c_id');
+            $this->db->join('tb_intents c', 'w.w_c_id = c.c_id');
         }
         if(in_array('u',$join_objects)){
-            $this->db->join('v5_entities u', 'w.w_child_u_id = u.u_id');
+            $this->db->join('tb_entities u', 'w.w_child_u_id = u.u_id');
             if(in_array('u_x',$join_objects)){
-                $this->db->join('v5_entity_urls x', 'x.x_id = u.u_cover_x_id','left'); //Fetch the cover photo if >0
+                $this->db->join('tb_entity_urls x', 'x.x_id = u.u_cover_x_id','left'); //Fetch the cover photo if >0
             }
         }
         foreach($match_columns as $key=>$value){
@@ -1212,9 +1212,9 @@ class Db_model extends CI_Model {
 
         //The basic fetcher for intents
         $this->db->select('*');
-        $this->db->from('v5_intents c');
+        $this->db->from('tb_intents c');
         if(in_array('u',$join_objects)){
-            $this->db->join('v5_entities u', 'u.u_id = c.c_inbound_u_id');
+            $this->db->join('tb_entities u', 'u.u_id = c.c_inbound_u_id');
         }
         foreach($match_columns as $key=>$value){
             $this->db->where($key,$value);
@@ -1279,8 +1279,8 @@ class Db_model extends CI_Model {
 
 		//Missing anything?
 		$this->db->select('*');
-		$this->db->from('v5_intents c');
-		$this->db->join('v5_intent_links cr', 'cr.cr_child_c_id = c.c_id');
+		$this->db->from('tb_intents c');
+		$this->db->join('tb_intent_links cr', 'cr.cr_child_c_id = c.c_id');
 		foreach($match_columns as $key=>$value){
             if(!is_null($value)){
                 $this->db->where($key,$value);
@@ -1312,8 +1312,8 @@ class Db_model extends CI_Model {
 	function cr_inbound_fetch($match_columns,$join_objects=array()){
 		//Missing anything?
 		$this->db->select('*');
-		$this->db->from('v5_intents c');
-		$this->db->join('v5_intent_links cr', 'cr.cr_parent_c_id = c.c_id');
+		$this->db->from('tb_intents c');
+		$this->db->join('tb_intent_links cr', 'cr.cr_parent_c_id = c.c_id');
 		foreach($match_columns as $key=>$value){
 			$this->db->where($key,$value);
 		}
@@ -1349,17 +1349,17 @@ class Db_model extends CI_Model {
 	
 	function cr_update($id,$update_columns,$column='cr_id'){
 		$this->db->where($column, $id);
-		$this->db->update('v5_intent_links', $update_columns);
+		$this->db->update('tb_intent_links', $update_columns);
 		return $this->db->affected_rows();
 	}
 	
 	
 	function max_value($table,$column,$match_columns){
 		$this->db->select('MAX('.$column.') as largest');
-		if($table=='v5_intent_links'){
+		if($table=='tb_intent_links'){
 		    //This is a HACK :D
-            $this->db->from('v5_intent_links cr');
-            $this->db->join('v5_intents c', 'cr.cr_child_c_id = c.c_id');
+            $this->db->from('tb_intent_links cr');
+            $this->db->join('tb_intents c', 'cr.cr_child_c_id = c.c_id');
         } else {
             $this->db->from($table);
         }
@@ -1396,7 +1396,7 @@ class Db_model extends CI_Model {
         }
 
         //Lets now add:
-        $this->db->insert('v5_intent_links', $insert_columns);
+        $this->db->insert('tb_intent_links', $insert_columns);
 
         //Fetch inserted id:
         $insert_columns['cr_id'] = $this->db->insert_id();
@@ -1420,7 +1420,7 @@ class Db_model extends CI_Model {
         }
 
         //Lets now add:
-        $this->db->insert('v5_entity_links', $insert_columns);
+        $this->db->insert('tb_entity_links', $insert_columns);
 
         //Fetch inserted id:
         $insert_columns['ur_id'] = $this->db->insert_id();
@@ -1431,7 +1431,7 @@ class Db_model extends CI_Model {
     function ur_update($id,$update_columns){
         //Update first
         $this->db->where('ur_id', $id);
-        $this->db->update('v5_entity_links', $update_columns);
+        $this->db->update('tb_entity_links', $update_columns);
         return $this->db->affected_rows();
     }
 
@@ -1667,9 +1667,9 @@ class Db_model extends CI_Model {
 
         //Missing anything?
         $this->db->select($select);
-        $this->db->from('v5_entities u');
-        $this->db->join('v5_entity_links ur', 'ur.ur_child_u_id = u.u_id');
-        $this->db->join('v5_entity_urls x', 'x.x_id = u.u_cover_x_id','left'); //Fetch the cover photo if >0
+        $this->db->from('tb_entities u');
+        $this->db->join('tb_entity_links ur', 'ur.ur_child_u_id = u.u_id');
+        $this->db->join('tb_entity_urls x', 'x.x_id = u.u_cover_x_id','left'); //Fetch the cover photo if >0
         foreach($match_columns as $key=>$value){
             if(!is_null($value)){
                 $this->db->where($key,$value);
@@ -1727,9 +1727,9 @@ class Db_model extends CI_Model {
     function ur_inbound_fetch($match_columns, $join_objects=array()){
         //Missing anything?
         $this->db->select('*');
-        $this->db->from('v5_entities u');
-        $this->db->join('v5_entity_links ur', 'ur.ur_parent_u_id = u.u_id');
-        $this->db->join('v5_entity_urls x', 'x.x_id = u.u_cover_x_id','left'); //Fetch the cover photo if >0
+        $this->db->from('tb_entities u');
+        $this->db->join('tb_entity_links ur', 'ur.ur_parent_u_id = u.u_id');
+        $this->db->join('tb_entity_urls x', 'x.x_id = u.u_cover_x_id','left'); //Fetch the cover photo if >0
         foreach($match_columns as $key=>$value){
             if(!is_null($value)){
                 $this->db->where($key,$value);
@@ -1750,7 +1750,7 @@ class Db_model extends CI_Model {
 
 	function c_update($id,$update_columns){
 	    $this->db->where('c_id', $id);
-	    $this->db->update('v5_intents', $update_columns);
+	    $this->db->update('tb_intents', $update_columns);
 
         //Update Algolia:
         $this->Db_model->algolia_sync('c',$id);
@@ -1763,7 +1763,7 @@ class Db_model extends CI_Model {
 	
 	function e_update($id,$update_columns){
 	    $this->db->where('e_id', $id);
-	    $this->db->update('v5_engagements', $update_columns);
+	    $this->db->update('tb_engagements', $update_columns);
 	    return $this->db->affected_rows();
 	}
 	
@@ -1784,7 +1784,7 @@ class Db_model extends CI_Model {
         }
 		
 		//Lets now add:
-		$this->db->insert('v5_intents', $insert_columns);
+		$this->db->insert('tb_intents', $insert_columns);
 		
 		//Fetch inserted id:
 		$insert_columns['c_id'] = ( isset($insert_columns['c_id']) ? $insert_columns['c_id'] : $this->db->insert_id() );
@@ -1828,9 +1828,9 @@ class Db_model extends CI_Model {
     function x_fetch($match_columns, $join_objects=array(), $order_columns=array(), $limit=0){
         //Fetch the target entities:
         $this->db->select('*');
-        $this->db->from('v5_entity_urls x');
+        $this->db->from('tb_entity_urls x');
         if(in_array('u',$join_objects)){
-            $this->db->join('v5_entities u', 'u.u_id=x.x_u_id','left');
+            $this->db->join('tb_entities u', 'u.u_id=x.x_u_id','left');
         }
         foreach($match_columns as $key=>$value){
             if(!is_null($value)){
@@ -1858,7 +1858,7 @@ class Db_model extends CI_Model {
 
     function x_update($id,$update_columns){
         $this->db->where('x_id', $id);
-        $this->db->update('v5_entity_urls', $update_columns);
+        $this->db->update('tb_entity_urls', $update_columns);
         return $this->db->affected_rows();
     }
 
@@ -1914,7 +1914,7 @@ class Db_model extends CI_Model {
 
 
         //Lets now add:
-        $this->db->insert('v5_entity_urls', $insert_columns);
+        $this->db->insert('tb_entity_urls', $insert_columns);
 
         //Fetch inserted id:
         $insert_columns['x_id'] = $this->db->insert_id();
@@ -1928,16 +1928,16 @@ class Db_model extends CI_Model {
         'e.e_timestamp' => 'DESC',
     ), $select='*', $group_by=null){
 	    $this->db->select($select);
-	    $this->db->from('v5_engagements e');
+	    $this->db->from('tb_engagements e');
 	    if(!$group_by){
-            $this->db->join('v5_intents c', 'c.c_id=e.e_parent_c_id');
-            $this->db->join('v5_entities u', 'u.u_id=e.e_parent_u_id','left');
+            $this->db->join('tb_intents c', 'c.c_id=e.e_parent_c_id');
+            $this->db->join('tb_entities u', 'u.u_id=e.e_parent_u_id','left');
         }
         if(in_array('ej',$join_objects)){
-            $this->db->join('v5_engagement_blobs ej', 'ej.ej_e_id=e.e_id','left');
+            $this->db->join('tb_engagement_blobs ej', 'ej.ej_e_id=e.e_id','left');
         }
         if(in_array('c__messages',$join_objects)){
-            $this->db->join('v5_intent_messages i', 'i.i_id=e.e_i_id','left');
+            $this->db->join('tb_intent_messages i', 'i.i_id=e.e_i_id','left');
         }
 	    foreach($match_columns as $key=>$value){
 	        if(!is_null($value)){
@@ -2013,7 +2013,7 @@ class Db_model extends CI_Model {
                 $insert_columns['e_has_blob'] = 't';
             }
         }
-        //Remove e_json from here to keep v5_engagements small and lean
+        //Remove e_json from here to keep tb_engagements small and lean
         unset($insert_columns['e_json']);
 
 
@@ -2041,7 +2041,7 @@ class Db_model extends CI_Model {
         }
 
 		//Lets log:
-		$this->db->insert('v5_engagements', $insert_columns);
+		$this->db->insert('tb_engagements', $insert_columns);
 
 		//Fetch inserted id:
 		$insert_columns['e_id'] = $this->db->insert_id();
@@ -2052,7 +2052,7 @@ class Db_model extends CI_Model {
 		    //Did we have a blob to save?
             if($save_blob){
                 //Save this in a separate field:
-                $this->db->insert('v5_engagement_blobs', array(
+                $this->db->insert('tb_engagement_blobs', array(
                     'ej_e_id' => $insert_columns['e_id'],
                     'ej_e_blob' => serialize($save_blob),
                 ));
@@ -2122,7 +2122,7 @@ class Db_model extends CI_Model {
         }
 
         //Found results, update them relative to their current value:
-        $c_relative_update = 'UPDATE "v5_intents" SET';
+        $c_relative_update = 'UPDATE "tb_intents" SET';
         $update_columns = 0;
         foreach($c_update_columns as $key=>$value){
             if(doubleval($value)==0){
@@ -2644,8 +2644,8 @@ class Db_model extends CI_Model {
             'u' => 'alg_entities',
         );
         $algolia_local_tables = array(
-            'c' => 'v5_intents',
-            'u' => 'v5_entities',
+            'c' => 'tb_intents',
+            'u' => 'tb_entities',
         );
 
 	    if(!array_key_exists($obj,$alg_indexes)){
