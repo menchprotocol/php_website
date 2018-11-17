@@ -141,10 +141,6 @@ $uri_segment_2 = $this->uri->segment(2);
                 echo '<li class="li-sep '.( $uri_segment_2=='statuslegend' ? 'active' : '' ).'"><a href="/adminpanel/statuslegend"><i class="fas fa-shapes"></i><p>Status Legend</p></a></li>';
 
 
-                //Our index of Udemy instructors:
-                //echo '<li class="li-sep '.( $uri_segment_2=='udemy' ? 'active' : '' ).'"><a href="/adminpanel/udemy"><i class="fas fa-address-book"></i><p>Udemy Community</p></a></li>';
-
-
                 //External Tools:
                 echo '<li><a href="https://github.com/menchco/mench-web-app/milestones?direction=asc&sort=due_date&state=open" target="_blank"><i class="fab fa-github"></i><p>Team Milestones &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
 

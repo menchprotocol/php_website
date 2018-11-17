@@ -26,9 +26,6 @@ class Adminpanel extends CI_Controller {
         $this->load->view('console/console_footer');
     }
 
-
-
-
     function subscriptions(){
         $this->load->view('console/console_header', array(
             'title' => 'Subscriptions Browser',
@@ -36,8 +33,6 @@ class Adminpanel extends CI_Controller {
         $this->load->view('adminpanel/subscriptions_browse');
         $this->load->view('console/console_footer');
     }
-
-
 
     function ej_list($e_id){
         $udata = auth(array(1281),1);
@@ -54,37 +49,6 @@ class Adminpanel extends CI_Controller {
             echo_json(array('error'=>'Not Found'));
         }
     }
-	
-	function udemy(){
-
-	    if(isset($_GET['cat'])){
-	        
-	        //Load coach list:
-	        $this->load->view('console/console_header', array(
-	            'title' => urldecode($_GET['cat']).' Udemy Community',
-	        ));
-	        $this->load->view('adminpanel/udemy_category' , array(
-	            'il_category' => $this->Db_model->il_fetch(array(
-	                'il_udemy_user_id >' => 0,
-	                'il_student_count >' => 0,
-	                'il_udemy_category' => urldecode($_GET['cat']),
-	            )),
-	        ));
-	        $this->load->view('console/console_footer');
-	        
-	    } else {
-	        
-	        //Load category list:
-	        $this->load->view('console/console_header', array(
-	            'title' => 'Udemy Community',
-	        ));
-	        $this->load->view('adminpanel/udemy_all' , array(
-	            'il_overview' => $this->Db_model->il_overview(),
-	        ));
-	        $this->load->view('console/console_footer');
-	        
-	    }
-	}
 
 
     function statuslegend(){

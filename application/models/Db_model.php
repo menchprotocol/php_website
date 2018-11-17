@@ -718,33 +718,6 @@ class Db_model extends CI_Model {
         }
     }
 
-	
-	function il_fetch($match_columns,$limit_row=0){
-	    //Fetch the target gems:
-	    $this->db->select('*');
-	    $this->db->from('v5_leads_RETIRED il');
-	    foreach($match_columns as $key=>$value){
-	        $this->db->where($key,$value);
-	    }
-	    $this->db->order_by('il_student_count DESC');
-        if($limit_row>0){
-            $this->db->limit($limit_row);
-        }
-	    $q = $this->db->get();
-	    return $q->result_array();
-	}
-	
-	function il_overview(){
-	    //Fetches an overview of Udemy Community
-	    $this->db->select('COUNT(il_id) as total_coaches, SUM(il_course_count) as total_courses, SUM(il_student_count) as total_students, SUM(il_review_count) as total_reviews, il_udemy_category');
-	    $this->db->from('v5_leads_RETIRED il');
-	    $this->db->where('il_udemy_user_id>0');
-	    $this->db->where('il_student_count>0'); //Need for Engagement Rate
-	    $this->db->group_by('il_udemy_category');
-	    $this->db->order_by('total_coaches DESC');
-	    $q = $this->db->get();
-	    return $q->result_array();
-	}
 
 	
 	/* ******************************
