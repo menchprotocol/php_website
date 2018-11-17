@@ -725,6 +725,7 @@ class Comm_model extends CI_Model {
                 //Show options for them to subscribe to:
                 $quick_replies = array();
                 $i_message = 'I found the following intent'.echo__s($res['nbHits']).':';
+
                 foreach ($res['hits'] as $count=>$hit){
                     //Translate hours back:
                     $hit['c__tree_max_hours'] = number_format(($hit['c__tree_max_mins']/60), 3);
@@ -757,18 +758,6 @@ class Comm_model extends CI_Model {
 
             } else {
 
-                /*
-                //Create new intent in the suggestion bucket:
-                $this->Db_model->c_new(7431, $c_target_outcome, 0, 2, $u['u_id']);
-
-                //Also log engagement for points purposes later down the road...
-                $this->Db_model->e_create(array(
-                    'e_text_value' => 'User suggested ['.$c_target_outcome.'] to be added as an entity.',
-                    'e_inbound_u_id' => $u['u_id'],
-                    'e_inbound_c_id' => 7431, //Suggest new intent
-                ));
-                */
-
                 //Respond to user:
                 $this->Comm_model->send_message(array(
                     array(
@@ -777,6 +766,16 @@ class Comm_model extends CI_Model {
                         'i_message' => 'I am currently not trained to ['.$c_target_outcome.'], but I have logged this for my human team mates to look into. I will let you know as soon as I am trained on this. Is there anything else I can help you with right now?',
                     ),
                 ));
+
+                //log engagement for points purposes later down the road...
+                $this->Db_model->e_create(array(
+                    'e_text_value' => $c_target_outcome,
+                    'e_inbound_u_id' => $u['u_id'],
+                    'e_inbound_c_id' => 7431, //Suggest new intent
+                ));
+
+                //Create new intent in the suggestion bucket:
+                //$this->Db_model->c_new(7431, $c_target_outcome, 0, 2, $u['u_id']);
 
             }
 
@@ -1289,8 +1288,8 @@ class Comm_model extends CI_Model {
                     //User needs to choose one of the following:
                     $message_body .= 'Choose one of the following options to '.$cs[0]['c_outcome'].':';
                     foreach($k_outs as $counter=>$k){
-                        if($counter==9){
-                            break; //Quick reply accepts 11 options max! We need 1 for skip and 10 here...
+                        if($counter==10){
+                            break; //Quick reply accepts 11 options max!
                         }
                         $message_body .= "\n\n".($counter+1).'/ '.$k['c_outcome'];
                         array_push( $quick_replies , array(
@@ -1311,14 +1310,14 @@ class Comm_model extends CI_Model {
                         //User needs to complete all children, and we'd recommend the first item as their next step:
                         $message_body .= 'You need to do '.count($k_outs).' things to '.$cs[0]['c_outcome'].':';
                         foreach($k_outs as $counter=>$k){
-                            if($counter==9){
-                                break; //Quick reply accepts 11 options max! We need 1 for skip and 10 here...
-                            }
+
+                            //Add message:
                             $message_body .= "\n\n".($counter+1).'/ '.$k['c_outcome'];
+
                             if($counter==0){
                                 array_push( $quick_replies , array(
                                     'content_type' => 'text',
-                                    'title' => 'Ok Continue ▶️', // OLD FORMAT if giving options to all: '/'.($counter+1).( $counter==0 ? ' [Recommended]' : '' )
+                                    'title' => 'Ok Continue ▶️',
                                     'payload' => 'MARKCOMPLETE_'.$e['e_w_id'].'_'.$k['k_id'].'_'.$k['k_rank'],
                                 ));
                             }
@@ -1337,6 +1336,7 @@ class Comm_model extends CI_Model {
                     'w_status IN (0,1)' => null, //Active subscriptions only
                     'cr_outbound_c_id' => $e['e_outbound_c_id'],
                 ), array('w','cr','cr_c_out'));
+
 
                 if(count($k_ins)>0){
                     //Give option to skip if NOT the main intent of the subscription:

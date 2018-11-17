@@ -978,7 +978,7 @@ function echo_contents($c, $fb_format=0){
 function echo_pa_lets(){
     $options = array(
         'You can give me a command by starting a sentence with "Lets", for example: [Lets land a dream job], [Lets book new interviews] or [Lets create a great resume].',
-        'You can command me using "Lets", for example: [Lets get hired], [Lets create a cover letter] or [Lets do better at interviews].',
+        'You can command me using "Lets", for example: [Lets create a cover letter] or [Lets do better at interviews].', //[Lets get hired],
     );
     return $options[rand(0,(count($options)-1))];
 }
