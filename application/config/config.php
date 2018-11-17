@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 date_default_timezone_set('America/Los_Angeles');
 
 //Cache buster for static files
-$config['app_version'] = '0.605'.( ( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='local.mench.co' ) ? microtime(true) : '' ); //Updates status css/js cache files
+$config['app_version'] = '0.606'.( ( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='local.mench.co' ) ? microtime(true) : '' ); //Updates status css/js cache files
 
 //User case: $this->config->item('c_point_options')
 
@@ -83,7 +83,7 @@ $config['object_statuses'] = array(
         1 => array(
             's_name'  => 'Referencing',
             's_desc'  => 'Entity is accepted and is in the referencing process',
-            's_icon' => 'fas fa-play-circle',
+            's_icon' => 'fas fa-spinner fa-spin',
         ),
         2 => array(
             's_name'  => 'Active',
@@ -124,7 +124,7 @@ $config['object_statuses'] = array(
         1 => array(
             's_name'  => 'Patternizing',
             's_desc'  => 'Intent is is growing in patterns',
-            's_icon' => 'fal fa-play-circle',
+            's_icon' => 'fas fa-spinner fa-spin',
         ),
         2 => array(
             's_name'  => 'Published',

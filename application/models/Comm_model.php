@@ -916,6 +916,25 @@ class Comm_model extends CI_Model {
                 'u_fb_psid'         => $fp_psid,
             ));
 
+            //Log admin error to review:
+            $this->Db_model->e_create(array(
+                'e_text_value' => 'fb_identify_activate() failed to fetch user profile from Facebook Graph. User created anyway.',
+                'e_json' => array(
+                    'fp_psid' => $fp_psid,
+                    'graph_fetch' => $graph_fetch,
+                ),
+                'e_inbound_c_id' => 8, //Platform Error
+            ));
+
+            //Inform the user:
+            $this->Comm_model->send_message(array(
+                array(
+                    'e_inbound_u_id' => 2738, //Initiated by PA
+                    'e_outbound_u_id' => $u['u_id'],
+                    'i_message' => 'Hi stranger! Let\'s get started by completing your profile information by opening the My Account tab in the menu below.',
+                ),
+            ));
+
         } else {
 
             //We did find the profile, move ahead:

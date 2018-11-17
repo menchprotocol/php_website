@@ -31,8 +31,8 @@ $uri_segment_2 = $this->uri->segment(2);
     <script src="/js/lib/algoliasearch.min.js"></script>
 
     <script src="/js/lib/sortable.min.js" type="text/javascript"></script>
-    <script src="/js/custom/global.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
-    <script src="/js/custom/console.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
+    <script src="/js/custom/global-js.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
+    <script src="/js/custom/console-js.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
 
 
     <script>
@@ -44,6 +44,10 @@ $uri_segment_2 = $this->uri->segment(2);
                 array_push($js_inbound_u_ids, intval($privilege['u_id']));
             }
         }
+
+        //Translate intent/entity icons to make them available in JS functions:
+        echo ' var c_statuses = '.json_encode(echo_status('c')).'; ';
+        echo ' var u_statuses = '.json_encode(echo_status('u')).'; ';
         ?>
 
         //Define global js variables:

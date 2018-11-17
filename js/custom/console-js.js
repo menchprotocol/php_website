@@ -184,7 +184,7 @@ $(document).ready(function() {
             templates: {
                 suggestion: function(suggestion) {
                     var fancy_hours = fancy_time(suggestion);
-                    return '<i class="fas fa-hashtag"></i> '+ suggestion._highlightResult.c_outcome.value + ( fancy_hours ? '<span class="search-info">'+' <i class="fas fa-clock"></i>'+fancy_hours+'</span>' : '');
+                    return '<i class="fas fa-hashtag"></i> <i class="' + c_statuses[suggestion.c_status]["s_icon"] + '"></i> '+ suggestion._highlightResult.c_outcome.value + ( fancy_hours ? '<span class="search-info">'+' <i class="fas fa-clock"></i>'+fancy_hours+'</span>' : '');
                 },
             }
         },
@@ -203,7 +203,7 @@ $(document).ready(function() {
             displayKey: function(suggestion) { return "" },
             templates: {
                 suggestion: function(suggestion) {
-                    return '<i class="fas fa-at"></i> '+ suggestion.u_full_name;
+                    return '<i class="fas fa-at"></i> <i class="' + u_statuses[suggestion.u_status]["s_icon"] + '"></i> '+ suggestion.u_full_name;
                 },
             }
         }

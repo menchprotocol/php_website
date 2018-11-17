@@ -22,7 +22,7 @@ $url_part_1 = $this->uri->segment(1);
 	<title><?= ( isset($title) ? $title.' | ' : '' ).'Mench' ?></title>
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
 	<?php $this->load->view('custom/shared/header_resources' ); ?>
-	<script src="/js/custom/global.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
+	<script src="/js/custom/global-js.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
 </head>
 
 <body class="landing-page">
