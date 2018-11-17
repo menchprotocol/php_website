@@ -53,11 +53,11 @@ $config['engagement_subscriptions'] = array(
         'admin_emails' => array('shervin@mench.com'),
         'subscription' => array(
             9, //User attention
-            72, //Student Reviewed Mench
-            7452, //Quit Intention
             8, //System error
+            10, //user login
             7703, //Search for New Intent Subscription
-            10 //user login
+            7431, //Suggest new entity that was not found!
+            7452, //Quit subscription
         ),
     ),
 );
