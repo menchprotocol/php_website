@@ -271,7 +271,6 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
             $ui .= '<span class="pull-right" style="margin:6px 10px 0 0;">';
                 $ui .= '<span data-toggle="tooltip" title="This is the '.echo_ordinal($i['i_rank']).' message for this intent" data-placement="left" class="underdot" style="padding-bottom:4px;">'.echo_ordinal($i['i_rank']).'</span> ';
                 $ui .= '<span>'.echo_status('i_status',$i['i_status'],1,'left').'</span> ';
-                $ui .= '<a href="/entities/'.$i['i_inbound_u_id'].'" class="on-hover i_uploader badge badge-secondary" data-toggle="tooltip" title="Last modified by '.$i['u_full_name'].' about '.echo_diff_time($i['i_timestamp']).' ago. Click to open profile." data-placement="left">'.echo_cover($i,null,true).'</a>';
                 $ui .= '<a href="/intents/'.$i['i_c_id'].'#messages-'.$i['i_c_id'].'"><span class="badge badge-primary" style="display:inline-block; margin-left:3px; width:40px;"><i class="fas fa-sign-out-alt rotate90"></i></span></a>';
             $ui .= '</span>';
             $ui .= '<h4><i class="fas fa-hashtag" style="font-size:1em;"></i> '.$original_cs[0]['c_outcome'].'</h4>';
@@ -376,8 +375,6 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
 
         }
     }
-
-
 
 
 
@@ -534,10 +531,7 @@ function echo_message($i){
 
     //Editing menu:
     $ui .= '<ul class="msg-nav">';
-    //$ui .= '<li class="edit-off"><i class="fas fa-clock"></i> 4s Ago</li>';
-    //$ui .= '<li class="the_status edit-off" style="margin: 0 6px 0 -3px;">'.echo_status('i_status',$i['i_status'],1,'right').'</li>'; //This is duplicate of top menu status
     $ui .= '<li class="edit-on hidden"><span id="charNumEditing'.$i['i_id'].'">0</span>/'.$message_max.'</li>';
-    $ui .= '<li class="edit-off"><span class="on-hover i_uploader">'.echo_cover($i,null,true, 'data-toggle="tooltip" title="Last modified by '.$i['u_full_name'].' about '.echo_diff_time($i['i_timestamp']).' ago" data-placement="right"').'</span></li>';
 
     $ui .= '<li class="edit-off" style="margin: 0 0 0 8px;"><span class="on-hover"><i class="fas fa-bars sort_message" iid="'.$i['i_id'].'" style="color:#2f2739;"></i></span></li>';
     $ui .= '<li class="edit-off" style="margin-right: 10px; margin-left: 6px;"><span class="on-hover"><a href="javascript:i_delete('.$i['i_id'].');"><i class="fas fa-trash-alt" style="margin:0 7px 0 5px;"></i></a></span></li>';

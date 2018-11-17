@@ -382,9 +382,6 @@ function message_save_updates(i_id,initial_i_status){
 
             }
 
-            //Update new uploader:
-            $("#ul-nav-"+i_id+" .i_uploader").html(data.new_uploader);
-
             //Show success here
             $("#ul-nav-"+i_id+" .edit-updates").html('<b>'+data.success_icon+'</b>');
 

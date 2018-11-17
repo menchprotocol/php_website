@@ -228,23 +228,21 @@
 </div>
 
 
+
+
 <?php
-/*
-
-<div>
-    <h3>Related Intentions</h3>
-    <div class="list-group actionplan_list">
-        <?php
-        $featured_cs = $fetch_cs = $this->Db_model->c_fetch(array(
-            'c_status' => 3, //Featured Intents
-            'c_id !=' => $c['c_id'],
-        ));
-        foreach($featured_cs as $featured_c){
-            echo echo_featured_c($featured_c);
-        }
-        ?>
-    </div>
-</div>
-
- */
+$featured_cs = $fetch_cs = $this->Db_model->c_fetch(array(
+    'c_status' => 3, //Featured Intents
+    'c_id !=' => $c['c_id'],
+));
+if(count($featured_cs)>0){
+    echo '<div>';
+    echo '<h3>More Intentions:</h3>';
+    echo '<div class="list-group actionplan_list">';
+    foreach($featured_cs as $featured_c){
+        echo echo_featured_c($featured_c);
+    }
+    echo '</div>';
+    echo '</div>';
+}
 ?>

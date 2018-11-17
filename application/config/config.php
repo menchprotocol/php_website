@@ -81,7 +81,7 @@ $config['object_statuses'] = array(
             's_icon' => 'fal fa-question-circle',
         ),
         1 => array(
-            's_name'  => 'Referencing',
+            's_name'  => 'Working On',
             's_desc'  => 'Entity is accepted and is in the referencing process',
             's_icon' => 'fas fa-spinner fa-spin',
         ),
@@ -120,7 +120,7 @@ $config['object_statuses'] = array(
             's_icon' => 'fal fa-question-circle',
         ),
         1 => array(
-            's_name'  => 'Patternizing',
+            's_name'  => 'Working On',
             's_desc'  => 'Curating intent tree & messages until ready to be published',
             's_icon' => 'fas fa-spinner fa-spin',
         ),
@@ -291,7 +291,7 @@ $config['object_statuses'] = array(
             's_icon' => 'fas fa-exclamation-circle',
         ),
         -2 => array(
-            's_name'  => 'Processing',
+            's_name'  => 'Working On',
             's_desc'  => 'Temporary status to prevent duplicate processing',
             's_icon' => 'fas fa-spinner fa-spin',
         ),

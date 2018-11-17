@@ -29,6 +29,7 @@ class Custom extends CI_Controller {
 
 
     function index(){
+
         $udata = $this->session->userdata('user');
 
         if(isset($udata['u__inbounds']) && array_any_key_exists(array(1308,1281),$udata['u__inbounds'])){
@@ -46,16 +47,34 @@ class Custom extends CI_Controller {
 
         } else {
 
-            //Go to default landing page:
-            return redirect_message('/'.$this->config->item('primary_c'));
-
-            //Show index page:
-            $this->load->view('custom/shared/f_header' , array(
-                'title' => 'Terms & Privacy Policy',
+            //How many featured intents do we have?
+            $featured_cs = $fetch_cs = $this->Db_model->c_fetch(array(
+                'c_status' => 3, //Featured Intents
             ));
-            $this->load->view('custom/featured_intentions');
-            $this->load->view('custom/shared/f_footer');
 
+            if(count($featured_cs)==0){
+
+                //Go to default landing page:
+                return redirect_message('/'.$this->config->item('primary_c'));
+
+            } elseif(count($featured_cs)==1){
+
+                //TO to single feature:
+                return redirect_message('/'.$featured_cs[0]['c_id']);
+
+            } else {
+
+                //We have more featured, list them so user can choose:
+                //Show index page:
+                $this->load->view('custom/shared/f_header' , array(
+                    'title' => 'Advance Your Tech Career',
+                ));
+                $this->load->view('custom/featured_intentions', array(
+                    'featured_cs' => $featured_cs,
+                ));
+                $this->load->view('custom/shared/f_footer');
+
+            }
         }
     }
 

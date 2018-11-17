@@ -8,7 +8,7 @@ $udata = $this->session->userdata('user');
 $i_messages = $this->Db_model->i_fetch(array(
     'i_c_id' => $c_id,
     'i_status >=' => 0, //Not deleted
-), 0, array('x'));
+), 0);
 
 //Fetch intent details:
 $intents = $this->Db_model->c_fetch(array(

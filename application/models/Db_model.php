@@ -1031,9 +1031,6 @@ class Db_model extends CI_Model {
         $this->db->select('*');
         $this->db->from('v5_intent_messages i');
         $this->db->join('v5_intents c', 'i.i_c_id = c.c_id');
-        if(in_array('x',$join_objects)){
-            $this->db->join('v5_entity_urls x', 'x.x_id = u.u_cover_x_id','left'); //Fetch the cover photo if >0
-        }
         foreach($match_columns as $key=>$value){
             if(!is_null($value)){
                 $this->db->where($key,$value);

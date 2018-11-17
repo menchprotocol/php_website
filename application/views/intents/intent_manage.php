@@ -27,7 +27,7 @@ if(isset($orphan_cs)){
 
         } else {
 
-            echo '<h5 class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-inbound-count inbound-counter-'.$c['c_id'].'">'.count($c__inbounds).'</span> Parents</h5>';
+            echo '<h5 class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-inbound-count inbound-counter-'.$c['c_id'].'">'.count($c__inbounds).'</span> Parent'.echo__s(count($c__inbounds)).'</h5>';
 
             if(count($c__inbounds)>0){
                 echo '<div class="list-group list-level-2">';
@@ -49,9 +49,7 @@ if(isset($orphan_cs)){
 
 
 
-
-
-
+            
 
             //Expand/Contract buttons
             echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-outbound-count outbound-counter-'.$c['c_id'].'">'.$c['c__tree_all_count'].'</span> Children</h5>';

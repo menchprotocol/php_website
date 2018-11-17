@@ -860,7 +860,6 @@ h5, .h5 {
 .msg-nav>li>a:hover { background-color:#EFEFEF; }
 .msg-show { display:inline-block !important; }
 .msg-hide { display:none; }
-.i_uploader>img{width: 20px; height: 20px; margin:-2px 0px 0 3px; border-radius: 50%;}
 
 .msg-menu {padding:0 10px !important; display:inline-block;}
 .msg-menu>button {border: 0; background-color: transparent;}

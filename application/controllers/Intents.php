@@ -904,7 +904,7 @@ class Intents extends CI_Controller
         //Fetch full message:
         $new_messages = $this->Db_model->i_fetch(array(
             'i_id' => $i['i_id'],
-        ), 1, array('x'));
+        ), 1);
 
         //Log engagement:
         $this->Db_model->e_create(array(
@@ -1004,7 +1004,7 @@ class Intents extends CI_Controller
         //Re-fetch the message for display purposes:
         $new_messages = $this->Db_model->i_fetch(array(
             'i_id' => intval($_POST['i_id']),
-        ), 0, array('x'));
+        ), 0);
 
         //Log engagement:
         $this->Db_model->e_create(array(
@@ -1025,7 +1025,6 @@ class Intents extends CI_Controller
             'message' => echo_i(array_merge($new_messages[0],array('e_child_u_id'=>$udata['u_id'])),$udata['u_full_name']),
             'new_status' => echo_status('i_status',$new_messages[0]['i_status'],1,'right'),
             'success_icon' => '<span><i class="fas fa-check"></i> Saved</span>',
-            'new_uploader' => echo_cover($new_messages[0],null,true, 'data-toggle="tooltip" title="Last modified by '.$new_messages[0]['u_full_name'].' about '.echo_diff_time($new_messages[0]['i_timestamp']).' ago" data-placement="right"'), //If there is a person change...
         ));
     }
 
