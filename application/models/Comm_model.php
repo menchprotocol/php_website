@@ -906,36 +906,36 @@ class Comm_model extends CI_Model {
         //Call facebook messenger API and get user profile
         $graph_fetch = $this->Comm_model->fb_graph('GET', '/'.$fp_psid, array());
 
+
+        //Did we find the profile from FB?
         if(!$graph_fetch['status'] || !isset($graph_fetch['e_json']['result']['first_name']) || strlen($graph_fetch['e_json']['result']['first_name'])<1){
 
-            $this->Db_model->e_create(array(
-                'e_text_value' => 'fb_identify_activate() failed to fetch user profile from Facebook Graph',
-                'e_json' => array(
-                    'fp_psid' => $fp_psid,
-                    'graph_fetch' => $graph_fetch,
-                ),
-                'e_inbound_c_id' => 8, //Platform Error
+            //No profile!
+            //This happens when user has signed uo to messenger with their phone number
+            $u = $this->Db_model->u_create(array(
+                'u_full_name' 		=> 'Candidate '.rand(100000000,999999999),
+                'u_fb_psid'         => $fp_psid,
             ));
 
-            //We cannot create this user:
-            return false;
+        } else {
+
+            //We did find the profile, move ahead:
+            $fb_profile = $graph_fetch['e_json']['result'];
+
+            //Split locale into language and country
+            $locale = explode('_',$fb_profile['locale'],2);
+
+            //Create user
+            $u = $this->Db_model->u_create(array(
+                'u_full_name' 		=> $fb_profile['first_name'].' '.$fb_profile['last_name'],
+                'u_timezone' 		=> $fb_profile['timezone'],
+                'u_gender'		 	=> strtolower(substr($fb_profile['gender'],0,1)),
+                'u_language' 		=> $locale[0],
+                'u_country_code' 	=> $locale[1],
+                'u_fb_psid'         => $fp_psid,
+            ));
+
         }
-
-        //We're cool!
-        $fb_profile = $graph_fetch['e_json']['result'];
-
-        //Split locale into language and country
-        $locale = explode('_',$fb_profile['locale'],2);
-
-        //Create user
-        $u = $this->Db_model->u_create(array(
-            'u_full_name' 		=> $fb_profile['first_name'].' '.$fb_profile['last_name'],
-            'u_timezone' 		=> $fb_profile['timezone'],
-            'u_gender'		 	=> strtolower(substr($fb_profile['gender'],0,1)),
-            'u_language' 		=> $locale[0],
-            'u_country_code' 	=> $locale[1],
-            'u_fb_psid'         => $fp_psid,
-        ));
 
         //Assign people group as we know this is who they are:
         $ur1 = $this->Db_model->ur_create(array(
@@ -963,6 +963,7 @@ class Comm_model extends CI_Model {
 
         //Return user object:
         return $u;
+
     }
 
 
