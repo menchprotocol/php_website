@@ -50,7 +50,7 @@ class Entities extends CI_Controller {
         $page = intval($_POST['page']);
         $udata = auth(null); //Just be logged in to browse
         $filters = array(
-            'ur_inbound_u_id' => $inbound_u_id,
+            'ur_parent_u_id' => $inbound_u_id,
             'u_status'.( $u_status_filter<0 ? ' >=' : '' ) => ( $u_status_filter<0 ? 0 : intval($u_status_filter) ), //Pending or Active
             'ur_status' => 1, //Active link
         );
@@ -214,14 +214,14 @@ class Entities extends CI_Controller {
 
                     //Link entity to a parent:
                     $ur1 = $this->Db_model->ur_create(array(
-                        'ur_outbound_u_id' => $new_u['u_id'],
-                        'ur_inbound_u_id' => $_POST['secondary_parent_u_id'],
+                        'ur_child_u_id' => $new_u['u_id'],
+                        'ur_parent_u_id' => $_POST['secondary_parent_u_id'],
                     ));
 
                     $this->Db_model->e_create(array(
-                        'e_inbound_u_id' => $udata['u_id'],
+                        'e_parent_u_id' => $udata['u_id'],
                         'e_ur_id' => $ur1['ur_id'],
-                        'e_inbound_c_id' => 7291, //Entity Link Create
+                        'e_parent_c_id' => 7291, //Entity Link Create
                     ));
 
                 }
@@ -237,12 +237,12 @@ class Entities extends CI_Controller {
             //Check for duplicates:
             if($_POST['is_inbound']){
                 $dup_entities = $this->Db_model->ur_outbound_fetch(array(
-                    '(ur_outbound_u_id='.$_POST['u_id'].' AND ur_inbound_u_id='.$new_u['u_id'].')' => null,
+                    '(ur_child_u_id='.$_POST['u_id'].' AND ur_parent_u_id='.$new_u['u_id'].')' => null,
                     'ur_status' => 1, //Only active
                 ));
             } else {
                 $dup_entities = $this->Db_model->ur_outbound_fetch(array(
-                    '(ur_inbound_u_id='.$_POST['u_id'].' AND ur_outbound_u_id='.$new_u['u_id'].')' => null,
+                    '(ur_parent_u_id='.$_POST['u_id'].' AND ur_child_u_id='.$new_u['u_id'].')' => null,
                     'ur_status' => 1, //Only active
                 ));
             }
@@ -260,26 +260,26 @@ class Entities extends CI_Controller {
 
             //Add links only if not already added by the URL function:
             if($_POST['is_inbound']){
-                $ur_outbound_u_id = $current_us[0]['u_id'];
-                $ur_inbound_u_id = $new_u['u_id'];
+                $ur_child_u_id = $current_us[0]['u_id'];
+                $ur_parent_u_id = $new_u['u_id'];
             } else {
-                $ur_outbound_u_id = $new_u['u_id'];
-                $ur_inbound_u_id = $current_us[0]['u_id'];
+                $ur_child_u_id = $new_u['u_id'];
+                $ur_parent_u_id = $current_us[0]['u_id'];
             }
 
             //Let's make sure this is not the same as the secondary category:
-            if(!($_POST['secondary_parent_u_id']==$ur_inbound_u_id)){
+            if(!($_POST['secondary_parent_u_id']==$ur_parent_u_id)){
                 //Link to new OR existing entity:
                 $ur2 = $this->Db_model->ur_create(array(
-                    'ur_outbound_u_id' => $ur_outbound_u_id,
-                    'ur_inbound_u_id' => $ur_inbound_u_id,
+                    'ur_child_u_id' => $ur_child_u_id,
+                    'ur_parent_u_id' => $ur_parent_u_id,
                 ));
 
-                //Insert engagement for creation:
+                //log engagement for creation:
                 $this->Db_model->e_create(array(
-                    'e_inbound_u_id' => $udata['u_id'],
+                    'e_parent_u_id' => $udata['u_id'],
                     'e_ur_id' => $ur2['ur_id'],
-                    'e_inbound_c_id' => 7291, //Entity Link Create
+                    'e_parent_c_id' => 7291, //Entity Link Create
                 ));
             } else {
                 //This has already been added:
@@ -287,8 +287,8 @@ class Entities extends CI_Controller {
             }
 
             //Update Algolia:
-            $this->Db_model->algolia_sync('u',$ur_outbound_u_id);
-            $this->Db_model->algolia_sync('u',$ur_inbound_u_id);
+            $this->Db_model->algolia_sync('u',$ur_child_u_id);
+            $this->Db_model->algolia_sync('u',$ur_parent_u_id);
         }
 
 
@@ -322,9 +322,9 @@ class Entities extends CI_Controller {
 
         //Log unlinking engagement:
         $this->Db_model->e_create(array(
-            'e_inbound_u_id' => $udata['u_id'],
+            'e_parent_u_id' => $udata['u_id'],
             'e_ur_id' => $_POST['ur_id'],
-            'e_inbound_c_id' => 7292, //Entity Link Removed
+            'e_parent_c_id' => 7292, //Entity Link Removed
         ));
 
         return echo_json(array(
@@ -375,12 +375,12 @@ class Entities extends CI_Controller {
                 'status' => 0,
                 'message' => 'Initial email was ['.$u_current[0]['u_email'].']. Email is required once its set',
             ));
-        } elseif(strlen($_POST['u_bio'])>0 && !(strip_tags($_POST['u_bio'])==$_POST['u_bio'])){
+        } elseif(strlen($_POST['u_intro_message'])>0 && !(strip_tags($_POST['u_intro_message'])==$_POST['u_intro_message'])){
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Cannot include code in your bio',
             ));
-        } elseif(strlen($_POST['u_bio'])>$message_max){
+        } elseif(strlen($_POST['u_intro_message'])>$message_max){
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Introductory Message should be less than '.$message_max.' characters',
@@ -407,7 +407,7 @@ class Entities extends CI_Controller {
         //Prepare data to be updated:
         $u_update = array(
             'u_full_name' => trim($_POST['u_full_name']),
-            'u_bio' => str_replace('"','`',trim($_POST['u_bio'])),
+            'u_intro_message' => str_replace('"','`',trim($_POST['u_intro_message'])),
             'u_email' => ( isset($_POST['u_email']) && strlen($_POST['u_email'])>0 ? trim(strtolower($_POST['u_email'])) : null ),
         );
 
@@ -454,15 +454,15 @@ class Entities extends CI_Controller {
 
         //Log engagement:
         $this->Db_model->e_create(array(
-            'e_inbound_u_id' => $udata['u_id'], //The user that updated the account
-            'e_text_value' => readable_updates($u_current[0],$u_update,'u_'),
+            'e_parent_u_id' => $udata['u_id'], //The user that updated the account
+            'e_value' => readable_updates($u_current[0],$u_update,'u_'),
             'e_json' => array(
                 'input' => $_POST,
                 'before' => $u_current[0],
                 'after' => $u_update,
             ),
-            'e_inbound_c_id' => 12, //Account Update
-            'e_outbound_u_id' => intval($_POST['u_id']), //The user that their account was updated
+            'e_parent_c_id' => 12, //Account Update
+            'e_child_u_id' => intval($_POST['u_id']), //The user that their account was updated
         ));
 
         //Show success:
@@ -488,7 +488,7 @@ class Entities extends CI_Controller {
 
         $messages = $this->Db_model->i_fetch(array(
             'i_status >=' => 0,
-            'i_outbound_u_id' => $_POST['u_id'],
+            'i_u_id' => $_POST['u_id'],
         ), 0, array('x'));
         echo '<div id="list-messages" class="list-group  grey-list">';
         foreach($messages as $i){
@@ -528,10 +528,10 @@ class Entities extends CI_Controller {
 
             //Deleted entity
             $this->Db_model->e_create(array(
-                'e_inbound_u_id' => $users[0]['u_id'],
-                'e_text_value' => 'login() denied because account is not active.',
+                'e_parent_u_id' => $users[0]['u_id'],
+                'e_value' => 'login() denied because account is not active.',
                 'e_json' => $_POST,
-                'e_inbound_c_id' => 9, //Support Needing Graceful Errors
+                'e_parent_c_id' => 9, //Support Needing Graceful Errors
             ));
 
             redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Your account has been de-activated. Contact us to re-active your account.</div>');
@@ -587,9 +587,9 @@ class Entities extends CI_Controller {
         //Log engagement
         if(!($_POST['u_password']==$master_password)){
             $this->Db_model->e_create(array(
-                'e_inbound_u_id' => $users[0]['u_id'],
+                'e_parent_u_id' => $users[0]['u_id'],
                 'e_json' => $users[0],
-                'e_inbound_c_id' => 10, //login
+                'e_parent_c_id' => 10, //login
             ));
         }
 
@@ -624,9 +624,9 @@ class Entities extends CI_Controller {
         //Log engagement:
         $udata = $this->session->userdata('user');
         $this->Db_model->e_create(array(
-            'e_inbound_u_id' => ( isset($udata['u_id']) && $udata['u_id']>0 ? $udata['u_id'] : 0 ),
+            'e_parent_u_id' => ( isset($udata['u_id']) && $udata['u_id']>0 ? $udata['u_id'] : 0 ),
             'e_json' => $udata,
-            'e_inbound_c_id' => 11, //User Logout
+            'e_parent_c_id' => 11, //User Logout
         ));
 
         //Called via AJAX to destroy user session:
@@ -654,9 +654,9 @@ class Entities extends CI_Controller {
         if(count($matching_users)>0){
             //Dispatch the password reset Intent:
             $this->Comm_model->compose_messages(array(
-                'e_inbound_u_id' => 0,
-                'e_outbound_u_id' => $matching_users[0]['u_id'],
-                'e_outbound_c_id' => 59,
+                'e_parent_u_id' => 0,
+                'e_child_u_id' => $matching_users[0]['u_id'],
+                'e_child_c_id' => 59,
             ));
         }
 
@@ -727,15 +727,15 @@ class Entities extends CI_Controller {
 
         //Log engagement:
         $this->Db_model->e_create(array(
-            'e_inbound_u_id' => $udata['u_id'], //The user that updated the account
-            'e_text_value' => readable_updates($current_us[0],$u_update,'u_'),
+            'e_parent_u_id' => $udata['u_id'], //The user that updated the account
+            'e_value' => readable_updates($current_us[0],$u_update,'u_'),
             'e_json' => array(
                 'input' => $_POST,
                 'before' => $current_us[0],
                 'after' => $u_update,
             ),
-            'e_inbound_c_id' => 12, //Account Update
-            'e_outbound_u_id' => intval($_POST['u_id']), //The user that their account was updated
+            'e_parent_c_id' => 12, //Account Update
+            'e_child_u_id' => intval($_POST['u_id']), //The user that their account was updated
         ));
 
         //Show success:
@@ -763,8 +763,8 @@ class Entities extends CI_Controller {
 
             //Log engagement:
             $this->Db_model->e_create(array(
-                'e_inbound_u_id' => intval($_POST['u_id']),
-                'e_inbound_c_id' => 59, //Password reset
+                'e_parent_u_id' => intval($_POST['u_id']),
+                'e_parent_c_id' => 59, //Password reset
             ));
 
             //Log all sessions out:

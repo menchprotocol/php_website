@@ -2,7 +2,7 @@
 
 //Prepare some variables to better understand out situation here:
 $messages = $this->Db_model->i_fetch(array(
-    'i_outbound_c_id' => $c['c_id'],
+    'i_c_id' => $c['c_id'],
     'i_status' => 1, //On start messages only
 ));
 $has_outs = (count($k_outs)>0);
@@ -40,7 +40,7 @@ if($w['w_status']==1){
 //Include JS file:
 echo '<script src="/js/custom/actionplan-js.js?v=v'.$this->config->item('app_version').'" type="text/javascript"></script>';
 
-//Fetch inbound tree all the way to the top of subscription w_inbound_c_id
+//Fetch inbound tree all the way to the top of subscription w_c_id
 echo '<div class="list-group" style="margin-top: 10px;">';
 foreach($k_ins as $k){
     echo echo_k($k, 1);
@@ -100,7 +100,7 @@ if(count($messages)>0){
         if($i['i_status']==1){
             echo '<div class="tip_bubble">';
             echo echo_i( array_merge( $i , array(
-                'e_outbound_u_id' => $w['u_id'],
+                'e_child_u_id' => $w['u_id'],
             )) , $w['u_full_name'] );
             echo '</div>';
         }

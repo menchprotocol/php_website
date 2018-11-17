@@ -48,7 +48,7 @@ class Intents extends CI_Controller
             'c' => $cs[0],
             'orphan_c_count' => $orphan_c_count,
             'c__inbounds' => $this->Db_model->cr_inbound_fetch(array(
-                'cr.cr_outbound_c_id' => $inbound_c_id,
+                'cr.cr_child_c_id' => $inbound_c_id,
                 'cr.cr_status >=' => 1,
             ), array('c__child_intents')),
         );
@@ -196,7 +196,7 @@ class Intents extends CI_Controller
         $this->Db_model->cr_update( intval($_POST['cr_id']) , array(
             'cr_inbound_u_id' => $udata['u_id'],
             'cr_timestamp' => date("Y-m-d H:i:s"),
-            'cr_inbound_c_id' => intval($_POST['to_c_id']),
+            'cr_parent_c_id' => intval($_POST['to_c_id']),
             //No need to update sorting here as a separate JS function would call that within half a second after the move...
         ));
 
@@ -216,15 +216,15 @@ class Intents extends CI_Controller
 
         //Log engagement:
         $this->Db_model->e_create(array(
-            'e_inbound_u_id' => $udata['u_id'],
+            'e_parent_u_id' => $udata['u_id'],
             'e_json' => array(
                 'post' => $_POST,
                 'updated_from_recursively' => $updated_from_recursively,
                 'updated_to_recursively' => $updated_to_recursively,
             ),
-            'e_text_value' => '['.$subject[0]['c_outcome'].'] was migrated from ['.$from[0]['c_outcome'].'] to ['.$to[0]['c_outcome'].']', //Message migrated
-            'e_inbound_c_id' => 50, //Intent migrated
-            'e_outbound_c_id' => intval($_POST['c_id']),
+            'e_value' => '['.$subject[0]['c_outcome'].'] was migrated from ['.$from[0]['c_outcome'].'] to ['.$to[0]['c_outcome'].']', //Message migrated
+            'e_parent_c_id' => 50, //Intent migrated
+            'e_child_c_id' => intval($_POST['c_id']),
             'e_cr_id' => intval($_POST['cr_id']),
         ));
 
@@ -371,8 +371,8 @@ class Intents extends CI_Controller
 
             //Log Engagement for New Intent Link:
             $this->Db_model->e_create(array(
-                'e_inbound_u_id' => $udata['u_id'],
-                'e_text_value' => readable_updates($cs[0],$c_update,'c_'),
+                'e_parent_u_id' => $udata['u_id'],
+                'e_value' => readable_updates($cs[0],$c_update,'c_'),
                 'e_json' => array(
                     'input' => $_POST,
                     'before' => $cs[0],
@@ -380,8 +380,8 @@ class Intents extends CI_Controller
                     'updated_recursively' => $updated_recursively,
                     'recursive_query' => $recursive_query,
                 ),
-                'e_inbound_c_id' => ( $_POST['level']>=2 && isset($c_update['c_status']) && $c_update['c_status']<0 ? 21 : 19 ), //Intent Deleted OR Updated
-                'e_outbound_c_id' => intval($_POST['c_id']),
+                'e_parent_c_id' => ( $_POST['level']>=2 && isset($c_update['c_status']) && $c_update['c_status']<0 ? 21 : 19 ), //Intent Deleted OR Updated
+                'e_child_c_id' => intval($_POST['c_id']),
             ));
 
         }
@@ -452,7 +452,7 @@ class Intents extends CI_Controller
             'c__tree_max_hours' => -(number_format($cs[0]['c__tree_max_hours'],3)),
             'c__tree_messages' => -($cs[0]['c__tree_messages']),
         );
-        $updated_recursively = $this->Db_model->c_update_tree( $c__inbounds[0]['cr_inbound_c_id'] , $recursive_query );
+        $updated_recursively = $this->Db_model->c_update_tree( $c__inbounds[0]['cr_parent_c_id'] , $recursive_query );
 
 
         //Now we can remove the link:
@@ -465,7 +465,7 @@ class Intents extends CI_Controller
 
         //Did this intent become an orphan? Does it still have any other parents?
         if(0==count($this->Db_model->cr_inbound_fetch(array(
-                'cr.cr_outbound_c_id' => $_POST['c_id'],
+                'cr.cr_child_c_id' => $_POST['c_id'],
                 'cr.cr_status >=' => 1,
             )))){
             //We made this orphan!
@@ -476,9 +476,9 @@ class Intents extends CI_Controller
 
         //Log Engagement for Link removal:
         $this->Db_model->e_create(array(
-            'e_inbound_u_id' => $udata['u_id'],
-            'e_inbound_c_id' => 89, //Intent Link Archived
-            'e_outbound_c_id' => intval($_POST['c_id']),
+            'e_parent_u_id' => $udata['u_id'],
+            'e_parent_c_id' => 89, //Intent Link Archived
+            'e_child_c_id' => intval($_POST['c_id']),
             'e_cr_id' => intval($_POST['cr_id']),
             'e_json' => array(
                 'input' => $_POST,
@@ -490,7 +490,7 @@ class Intents extends CI_Controller
         //Show success:
         echo_json(array(
             'status' => 1,
-            'c_inbound' => $c__inbounds[0]['cr_inbound_c_id'],
+            'c_inbound' => $c__inbounds[0]['cr_parent_c_id'],
             'adjusted_c_count' => -($cs[0]['c__tree_all_count']),
         ));
 
@@ -514,7 +514,7 @@ class Intents extends CI_Controller
         foreach($orphans as $c){
             //Is it an orphan?
             $c__inbounds = $this->Db_model->cr_inbound_fetch(array(
-                'cr.cr_outbound_c_id' => $c['c_id'],
+                'cr.cr_child_c_id' => $c['c_id'],
                 'cr.cr_status >=' => 1,
             ));
 
@@ -569,7 +569,7 @@ class Intents extends CI_Controller
 
                 //Fetch for the record:
                 $outbounds_before = $this->Db_model->cr_outbound_fetch(array(
-                    'cr.cr_inbound_c_id' => intval($_POST['c_id']),
+                    'cr.cr_parent_c_id' => intval($_POST['c_id']),
                     'cr.cr_status >=' => 0,
                 ));
 
@@ -578,27 +578,27 @@ class Intents extends CI_Controller
                     $this->Db_model->cr_update( intval($cr_id) , array(
                         'cr_inbound_u_id' => $udata['u_id'],
                         'cr_timestamp' => date("Y-m-d H:i:s"),
-                        'cr_outbound_rank' => intval($rank),
+                        'cr_child_rank' => intval($rank),
                     ));
                 }
 
                 //Fetch for the record:
                 $outbounds_after = $this->Db_model->cr_outbound_fetch(array(
-                    'cr.cr_inbound_c_id' => intval($_POST['c_id']),
+                    'cr.cr_parent_c_id' => intval($_POST['c_id']),
                     'cr.cr_status >=' => 0,
                 ));
 
                 //Log Engagement:
                 $this->Db_model->e_create(array(
-                    'e_inbound_u_id' => $udata['u_id'],
-                    'e_text_value' => 'Sorted outbound intents for ['.$inbound_intents[0]['c_outcome'].']',
+                    'e_parent_u_id' => $udata['u_id'],
+                    'e_value' => 'Sorted outbound intents for ['.$inbound_intents[0]['c_outcome'].']',
                     'e_json' => array(
                         'input' => $_POST,
                         'before' => $outbounds_before,
                         'after' => $outbounds_after,
                     ),
-                    'e_inbound_c_id' => 22, //Links Sorted
-                    'e_outbound_c_id' => intval($_POST['c_id']),
+                    'e_parent_c_id' => 22, //Links Sorted
+                    'e_child_c_id' => intval($_POST['c_id']),
                 ));
 
                 //Display message:
@@ -622,7 +622,7 @@ class Intents extends CI_Controller
 
         //Fetch Messages and the User's Got It Engagement History:
         $messages = $this->Db_model->i_fetch(array(
-            'i_outbound_c_id' => intval($_POST['intent_id']),
+            'i_c_id' => intval($_POST['intent_id']),
             'i_status >' => 0, //Published in any form
         ));
         if(count($messages)==0){
@@ -636,15 +636,15 @@ class Intents extends CI_Controller
 
             //Log an engagement for all messages
             $this->Db_model->e_create(array(
-                'e_inbound_u_id' => $udata['u_id'],
+                'e_parent_u_id' => $udata['u_id'],
                 'e_json' => $i,
-                'e_inbound_c_id' => 40, //Got It
-                'e_outbound_c_id' => intval($_POST['intent_id']),
+                'e_parent_c_id' => 40, //Got It
+                'e_child_c_id' => intval($_POST['intent_id']),
                 'e_i_id' => $i['i_id'],
             ));
 
             //Build UI friendly Message:
-            $help_content .= echo_i(array_merge($i,array('e_outbound_u_id'=>$udata['u_id'])),$udata['u_full_name']);
+            $help_content .= echo_i(array_merge($i,array('e_child_u_id'=>$udata['u_id'])),$udata['u_full_name']);
         }
 
         //Return results:
@@ -809,13 +809,13 @@ class Intents extends CI_Controller
         //Create message:
         $i = $this->Db_model->i_create(array(
             'i_inbound_u_id' => $udata['u_id'],
-            'i_outbound_u_id' => $url_create['u']['u_id'],
-            'i_outbound_c_id' => intval($_POST['c_id']),
+            'i_u_id' => $url_create['u']['u_id'],
+            'i_c_id' => intval($_POST['c_id']),
             'i_message' => '@'.$url_create['u']['u_id'],
             'i_status' => $_POST['i_status'],
             'i_rank' => 1 + $this->Db_model->max_value('v5_intent_messages','i_rank', array(
                 'i_status' => $_POST['i_status'],
-                'i_outbound_c_id' => $_POST['c_id'],
+                'i_c_id' => $_POST['c_id'],
             )),
         ));
 
@@ -834,15 +834,15 @@ class Intents extends CI_Controller
 
         //Log engagement:
         $this->Db_model->e_create(array(
-            'e_inbound_u_id' => $udata['u_id'],
+            'e_parent_u_id' => $udata['u_id'],
             'e_json' => array(
                 'post' => $_POST,
                 'file' => $_FILES,
                 'after' => $new_messages[0],
             ),
-            'e_inbound_c_id' => 34, //Message added e_inbound_c_id=34
+            'e_parent_c_id' => 34, //Message added e_parent_c_id=34
             'e_i_id' => intval($new_messages[0]['i_id']),
-            'e_outbound_c_id' => intval($new_messages[0]['i_outbound_c_id']),
+            'e_child_c_id' => intval($new_messages[0]['i_c_id']),
         ));
 
 
@@ -850,7 +850,7 @@ class Intents extends CI_Controller
         echo_json(array(
             'status' => 1,
             'message' => echo_message( array_merge($new_messages[0], array(
-                'e_outbound_u_id'=>$udata['u_id'],
+                'e_child_u_id'=>$udata['u_id'],
             ))),
         ));
     }
@@ -881,16 +881,15 @@ class Intents extends CI_Controller
         //Create Message:
         $i = $this->Db_model->i_create(array(
             'i_inbound_u_id' => $udata['u_id'],
-            'i_outbound_c_id' => intval($_POST['c_id']),
+            'i_c_id' => intval($_POST['c_id']),
             'i_status' => $_POST['i_status'],
             'i_rank' => 1 + $this->Db_model->max_value('v5_intent_messages','i_rank', array(
                 'i_status' => $_POST['i_status'],
-                'i_outbound_c_id' => intval($_POST['c_id']),
+                'i_c_id' => intval($_POST['c_id']),
             )),
             //Referencing attributes:
             'i_message' => $validation['i_message'],
-            'i_outbound_u_id' => $validation['i_outbound_u_id'],
-            'i_inbound_c_id' => $validation['i_inbound_c_id'],
+            'i_u_id' => $validation['i_u_id'],
         ));
 
         //Update intent count:
@@ -909,23 +908,23 @@ class Intents extends CI_Controller
 
         //Log engagement:
         $this->Db_model->e_create(array(
-            'e_inbound_u_id' => $udata['u_id'],
+            'e_parent_u_id' => $udata['u_id'],
             'e_json' => array(
                 'cache' => $this->Db_model->c_recursive_fetch(intval($_POST['c_id'])),
                 'input' => $_POST,
                 'after' => $new_messages[0],
                 'updated_recursively' => $updated_recursively,
             ),
-            'e_inbound_c_id' => 34, //Message added
+            'e_parent_c_id' => 34, //Message added
             'e_i_id' => intval($new_messages[0]['i_id']),
-            'e_outbound_c_id' => intval($_POST['c_id']),
+            'e_child_c_id' => intval($_POST['c_id']),
         ));
 
         //Print the challenge:
         return echo_json(array(
             'status' => 1,
             'message' => echo_message(array_merge($new_messages[0], array(
-                'e_outbound_u_id'=>$udata['u_id'],
+                'e_child_u_id'=>$udata['u_id'],
             ))),
         ));
     }
@@ -985,8 +984,7 @@ class Intents extends CI_Controller
             'i_timestamp' => date("Y-m-d H:i:s"),
             //Could have been modified:
             'i_message' => $validation['i_message'],
-            'i_outbound_u_id' => $validation['i_outbound_u_id'],
-            'i_inbound_c_id' => $validation['i_inbound_c_id'],
+            'i_u_id' => $validation['i_u_id'],
         );
 
 
@@ -996,7 +994,7 @@ class Intents extends CI_Controller
             //Put it at the end of the new list:
             $to_update['i_rank'] = 1 + $this->Db_model->max_value('v5_intent_messages','i_rank', array(
                 'i_status' => $_POST['i_status'],
-                'i_outbound_c_id' => intval($_POST['c_id']),
+                'i_c_id' => intval($_POST['c_id']),
             ));
         }
 
@@ -1010,21 +1008,21 @@ class Intents extends CI_Controller
 
         //Log engagement:
         $this->Db_model->e_create(array(
-            'e_inbound_u_id' => $udata['u_id'],
+            'e_parent_u_id' => $udata['u_id'],
             'e_json' => array(
                 'input' => $_POST,
                 'before' => $messages[0],
                 'after' => $new_messages[0],
             ),
-            'e_inbound_c_id' => 36, //Message edited
+            'e_parent_c_id' => 36, //Message edited
             'e_i_id' => $messages[0]['i_id'],
-            'e_outbound_c_id' => intval($_POST['c_id']),
+            'e_child_c_id' => intval($_POST['c_id']),
         ));
 
         //Print the challenge:
         return echo_json(array(
             'status' => 1,
-            'message' => echo_i(array_merge($new_messages[0],array('e_outbound_u_id'=>$udata['u_id'])),$udata['u_full_name']),
+            'message' => echo_i(array_merge($new_messages[0],array('e_child_u_id'=>$udata['u_id'])),$udata['u_full_name']),
             'new_status' => echo_status('i_status',$new_messages[0]['i_status'],1,'right'),
             'success_icon' => '<span><i class="fas fa-check"></i> Saved</span>',
             'new_uploader' => echo_cover($new_messages[0],null,true, 'data-toggle="tooltip" title="Last modified by '.$new_messages[0]['u_full_name'].' about '.echo_diff_time($new_messages[0]['i_timestamp']).' ago" data-placement="right"'), //If there is a person change...
@@ -1081,14 +1079,14 @@ class Intents extends CI_Controller
 
                 //Log engagement:
                 $this->Db_model->e_create(array(
-                    'e_inbound_u_id' => $udata['u_id'],
+                    'e_parent_u_id' => $udata['u_id'],
                     'e_json' => array(
                         'input' => $_POST,
                         'before' => $messages[0],
                     ),
-                    'e_inbound_c_id' => 35, //Message deleted
+                    'e_parent_c_id' => 35, //Message deleted
                     'e_i_id' => intval($messages[0]['i_id']),
-                    'e_outbound_c_id' => intval($_POST['c_id']),
+                    'e_child_c_id' => intval($_POST['c_id']),
                 ));
 
                 echo_json(array(
@@ -1133,10 +1131,10 @@ class Intents extends CI_Controller
 
             //Log engagement:
             $this->Db_model->e_create(array(
-                'e_inbound_u_id' => $udata['u_id'],
+                'e_parent_u_id' => $udata['u_id'],
                 'e_json' => $_POST,
-                'e_inbound_c_id' => 39, //Messages sorted
-                'e_outbound_c_id' => intval($_POST['c_id']),
+                'e_parent_c_id' => 39, //Messages sorted
+                'e_child_c_id' => intval($_POST['c_id']),
             ));
 
             echo_json(array(

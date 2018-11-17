@@ -21,7 +21,7 @@ function sortByScore($a, $b) {
 
 function u_essentials($full_array){
     $return_array = array();
-    foreach(array('u_id','u_full_name','u_bio','u__e_score','x_url') as $key){
+    foreach(array('u_id','u_full_name','u_intro_message','u__e_score','x_url') as $key){
         if(isset($full_array[$key])){
             $return_array[$key] = $full_array[$key];
         }
@@ -41,12 +41,12 @@ function missing_required_db_fields($insert_columns,$field_array){
             //Ooops, we're missing this required field:
             $CI =& get_instance();
             $CI->Db_model->e_create(array(
-                'e_text_value' => 'Missing required field ['.$req_field.'] for inserting new DB row',
+                'e_value' => 'Missing required field ['.$req_field.'] for inserting new DB row',
                 'e_json' => array(
                     'insert_columns' => $insert_columns,
                     'required_fields' => $field_array,
                 ),
-                'e_inbound_c_id' => 8, //Platform Error
+                'e_parent_c_id' => 8, //Platform Error
             ));
 
             return true; //We have an issue
@@ -341,9 +341,9 @@ function save_file($file_url,$json_data,$is_local=false){
             return $result['ObjectURL'];
         } else {
             $CI->Db_model->e_create(array(
-                'e_text_value' => 'save_file() Unable to upload file ['.$file_url.'] to Mench cloud.',
+                'e_value' => 'save_file() Unable to upload file ['.$file_url.'] to Mench cloud.',
                 'e_json' => $json_data,
-                'e_inbound_c_id' => 8, //Platform Error
+                'e_parent_c_id' => 8, //Platform Error
             ));
             return false;
         }
@@ -507,7 +507,7 @@ function extract_references($prefix,$message){
     return $matches;
 }
 
-function message_validation($i_status,$i_message,$i_outbound_c_id){
+function message_validation($i_status,$i_message,$i_c_id){
 
 
     $CI =& get_instance();
@@ -593,7 +593,7 @@ function message_validation($i_status,$i_message,$i_outbound_c_id){
         ));
 
         $i_cs = $CI->Db_model->c_fetch(array(
-            'c.c_id' => $i_outbound_c_id,
+            'c.c_id' => $i_c_id,
         ), 0, array('c__inbounds'));
 
         if(count($i_cs)==0){
@@ -608,7 +608,7 @@ function message_validation($i_status,$i_message,$i_outbound_c_id){
                 'status' => 0,
                 'message' => 'Intent #'.$c_ids[0].' does not exist',
             );
-        } elseif($c_ids[0]==$i_outbound_c_id){
+        } elseif($c_ids[0]==$i_c_id){
             return array(
                 'status' => 0,
                 'message' => 'You cannot affirm the message intent itself. Choose another intent to continue',
@@ -723,8 +723,7 @@ function message_validation($i_status,$i_message,$i_outbound_c_id){
         'message' => 'Success',
         //Return cleaned data:
         'i_message' => trim($i_message), //It might have been modified if URL was added
-        'i_outbound_u_id' => ( count($u_ids)>0 ? $u_ids[0] : 0 ), //Referencing an entity?
-        'i_inbound_c_id' => ( count($c_ids)>0 ? $c_ids[0] : 0 ), //Affirming an intent relation?
+        'i_u_id' => ( count($u_ids)>0 ? $u_ids[0] : 0 ), //Referencing an entity?
     );
 }
 
@@ -765,40 +764,40 @@ function one_two_explode($one,$two,$content){
 }
 
 
-function format_e_text_value($e_text_value){
+function format_e_value($e_value){
     
     //Do replacements:
-    if(substr_count($e_text_value,'/attach ')>0){
-        $attachments = explode('/attach ',$e_text_value);
+    if(substr_count($e_value,'/attach ')>0){
+        $attachments = explode('/attach ',$e_value);
         foreach($attachments as $key=>$attachment){
             if($key==0){
                 //We're gonna start buiolding this message from scrach:
-                $e_text_value = $attachment;
+                $e_value = $attachment;
                 continue;
             }
             $segments = explode(':',$attachment,2);
             $sub_segments = preg_split('/[\s]+/', $segments[1] );
 
             if($segments[0]=='image'){
-                $e_text_value .= '<img src="'.$sub_segments[0].'" style="max-width:100%" />';
+                $e_value .= '<img src="'.$sub_segments[0].'" style="max-width:100%" />';
             } elseif($segments[0]=='audio'){
-                $e_text_value .= '<audio controls><source src="'.$sub_segments[0].'" type="audio/mpeg"></audio>';
+                $e_value .= '<audio controls><source src="'.$sub_segments[0].'" type="audio/mpeg"></audio>';
             } elseif($segments[0]=='video'){
-                $e_text_value .= '<video width="100%" onclick="this.play()" controls><source src="'.$sub_segments[0].'" type="video/mp4"></video>';
+                $e_value .= '<video width="100%" onclick="this.play()" controls><source src="'.$sub_segments[0].'" type="video/mp4"></video>';
             } elseif($segments[0]=='file'){
-                $e_text_value .= '<a href="'.$sub_segments[0].'" class="btn btn-primary" target="_blank"><i class="fas fa-cloud-download"></i> Download File</a>';
+                $e_value .= '<a href="'.$sub_segments[0].'" class="btn btn-primary" target="_blank"><i class="fas fa-cloud-download"></i> Download File</a>';
             }
             
             //Do we have any leftovers after the URL? If so, append:
             if(isset($sub_segments[1])){
-                $e_text_value = ' '.$sub_segments[1];
+                $e_value = ' '.$sub_segments[1];
             }
         }
     } else {
-        $e_text_value = echo_link($e_text_value);
+        $e_value = echo_link($e_value);
     }
-    $e_text_value = nl2br($e_text_value);
-    return $e_text_value;
+    $e_value = nl2br($e_value);
+    return $e_value;
 }
 
 

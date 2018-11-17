@@ -57,7 +57,7 @@ class My extends CI_Controller {
             $w_filter['w_id'] = $w_id;
         } elseif(count($udata['u__ws'])>0){
             //Yes! It seems to be a desktop login:
-            $w_filter['w_outbound_u_id'] = $udata['u__ws'][0]['w_outbound_u_id'];
+            $w_filter['w_child_u_id'] = $udata['u__ws'][0]['w_child_u_id'];
             $w_filter['w_status >='] = 0;
         }
 
@@ -79,8 +79,8 @@ class My extends CI_Controller {
 
             //Log action plan view engagement:
             $this->Db_model->e_create(array(
-                'e_inbound_c_id' => 32,
-                'e_inbound_u_id' => $subscriptions[0]['u_id'],
+                'e_parent_c_id' => 32,
+                'e_parent_u_id' => $subscriptions[0]['u_id'],
             ));
 
             //Let them choose between subscriptions:
@@ -102,9 +102,9 @@ class My extends CI_Controller {
 
             //Log action plan view engagement:
             $this->Db_model->e_create(array(
-                'e_inbound_c_id' => 32,
-                'e_inbound_u_id' => $subscriptions[0]['u_id'],
-                'e_outbound_c_id' => $c_id,
+                'e_parent_c_id' => 32,
+                'e_parent_u_id' => $subscriptions[0]['u_id'],
+                'e_child_c_id' => $c_id,
                 'e_w_id' => $w_id,
             ));
 
@@ -114,13 +114,13 @@ class My extends CI_Controller {
             $k_ins = $this->Db_model->k_fetch(array(
                 'w_id' => $w_id,
                 'c_status >=' => 2,
-                'cr_outbound_c_id' => $c_id,
+                'cr_child_c_id' => $c_id,
             ), array('w','cr','cr_c_in'));
 
             $k_outs = $this->Db_model->k_fetch(array(
                 'w_id' => $w_id,
                 'c_status >=' => 2,
-                'cr_inbound_c_id' => $c_id,
+                'cr_parent_c_id' => $c_id,
             ), array('w','cr','cr_c_out'));
 
 
@@ -133,12 +133,12 @@ class My extends CI_Controller {
 
                 //Ooops, we had issues finding th is intent! Should not happen, report:
                 $this->Db_model->e_create(array(
-                    'e_inbound_u_id' => $subscriptions[0]['u_id'],
+                    'e_parent_u_id' => $subscriptions[0]['u_id'],
                     'e_json' => $subscriptions,
-                    'e_text_value' => 'Unable to load a specific intent for the student Action Plan! Should not happen...',
-                    'e_inbound_c_id' => 8,
+                    'e_value' => 'Unable to load a specific intent for the student Action Plan! Should not happen...',
+                    'e_parent_c_id' => 8,
                     'e_w_id' => $w_id,
-                    'e_outbound_c_id' => $c_id,
+                    'e_child_c_id' => $c_id,
                 ));
 
                 die('<div class="alert alert-danger" role="alert">Invalid Intent ID.</div>');
@@ -216,7 +216,7 @@ class My extends CI_Controller {
         //Load Action Plan iFrame:
         return echo_json(array(
             'status' => 1,
-            'url' => '/my/actionplan/'.$w['w_id'].'/'.$w['w_inbound_c_id'],
+            'url' => '/my/actionplan/'.$w['w_id'].'/'.$w['w_c_id'],
         ));
 
     }
@@ -259,13 +259,13 @@ class My extends CI_Controller {
         }
     }
 
-    function choose_any_path($w_id, $cr_inbound_c_id, $c_id, $w_key){
-        if(md5($w_id.'kjaghksjha*(^'.$c_id.$cr_inbound_c_id)==$w_key){
-            if($this->Db_model->k_choose_or($w_id, $cr_inbound_c_id, $c_id)){
+    function choose_any_path($w_id, $cr_parent_c_id, $c_id, $w_key){
+        if(md5($w_id.'kjaghksjha*(^'.$c_id.$cr_parent_c_id)==$w_key){
+            if($this->Db_model->k_choose_or($w_id, $cr_parent_c_id, $c_id)){
                 redirect_message('/my/actionplan/'.$w_id.'/'.$c_id,'<div class="alert alert-success" role="alert">Your answer was saved.</div>');
             } else {
                 //We had some sort of an error:
-                redirect_message('/my/actionplan/'.$w_id.'/'.$cr_inbound_c_id,'<div class="alert alert-danger" role="alert">There was an error saving your answer.</div>');
+                redirect_message('/my/actionplan/'.$w_id.'/'.$cr_parent_c_id,'<div class="alert alert-danger" role="alert">There was an error saving your answer.</div>');
             }
         }
     }
@@ -308,10 +308,10 @@ class My extends CI_Controller {
         //All good, move forward with the update:
         //Save a copy of the student completion report:
         $this->Db_model->e_create(array(
-            'e_inbound_u_id' => ( isset($udata['u_id']) ? $udata['u_id'] : $ks[0]['k_outbound_u_id'] ),
-            'e_text_value' => ( $notes_changed ? trim($_POST['k_notes']) : '' ),
-            'e_inbound_c_id' => 33, //Completion Report
-            'e_outbound_c_id' => $ks[0]['c_id'],
+            'e_parent_u_id' => ( isset($udata['u_id']) ? $udata['u_id'] : $ks[0]['k_outbound_u_id'] ),
+            'e_value' => ( $notes_changed ? trim($_POST['k_notes']) : '' ),
+            'e_parent_c_id' => 33, //Completion Report
+            'e_child_c_id' => $ks[0]['c_id'],
             'e_json' => array(
                 'input' => $_POST,
                 'k' => $ks[0],
@@ -343,9 +343,9 @@ class My extends CI_Controller {
                 if(intval($_POST['is_from_messenger'])){
                     //Also send confirmation messages via messenger:
                     $this->Comm_model->compose_messages(array(
-                        'e_inbound_u_id' => 2738, //Initiated by PA
-                        'e_outbound_u_id' => $ks[0]['k_outbound_u_id'],
-                        'e_outbound_c_id' => $ks_next[0]['c_id'],
+                        'e_parent_u_id' => 2738, //Initiated by PA
+                        'e_child_u_id' => $ks[0]['k_outbound_u_id'],
+                        'e_child_c_id' => $ks_next[0]['c_id'],
                         'e_w_id' => $ks[0]['k_w_id'],
                     ));
                 }

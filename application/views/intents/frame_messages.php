@@ -6,7 +6,7 @@ $i_statuses = echo_status('i_status', null);
 $i_desc = echo_status('i_status');
 $udata = $this->session->userdata('user');
 $i_messages = $this->Db_model->i_fetch(array(
-    'i_outbound_c_id' => $c_id,
+    'i_c_id' => $c_id,
     'i_status >=' => 0, //Not deleted
 ), 0, array('x'));
 
@@ -50,7 +50,7 @@ if(!isset($intents[0])){
         echo '<div id="message-sorting'.$c_id.'" class="list-group list-messages">';
         foreach($i_messages as $i){
             echo echo_message(array_merge($i, array(
-                'e_outbound_u_id'=>$udata['u_id'],
+                'e_child_u_id'=>$udata['u_id'],
             )));
             //Increase counter:
             ${'message_count_'.$i['i_status']}++;

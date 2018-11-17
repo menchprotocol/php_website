@@ -84,8 +84,7 @@ function initiate_search(){
             match: /(^|\s)@(\w*(?:\s*\w*))$/,
             search: function(query, callback) {
                 algolia_u_index.search(query, {
-                    hitsPerPage:5,
-                    tagFilters:['-u2738']
+                    hitsPerPage:5
                 })
                     .then(function searchSuccess(content) {
                         if (content.query === query) {
@@ -104,29 +103,6 @@ function initiate_search(){
                 return ' @' + hit.u_id + ' ';
             }
         },
-        {
-            match: /(^|\s)#(\w*(?:\s*\w*))$/,
-            search: function(query, callback) {
-                algolia_c_index.search(query, {
-                    hitsPerPage:5,
-                })
-                    .then(function searchSuccess(content) {
-                        if (content.query === query) {
-                            callback(content.hits);
-                        }
-                    })
-                    .catch(function searchFailure(err) {
-                        console.error(err);
-                    });
-            },
-            template: function (hit) {
-                // Returns the highlighted version of the name attribute
-                return '<span class="inline34">#'+hit.c_id+'</span> '+hit._highlightResult.c_outcome.value;
-            },
-            replace: function (hit) {
-                return ' #' + hit.c_id + ' ';
-            }
-        }
     ]);
 }
 

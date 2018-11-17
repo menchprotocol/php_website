@@ -278,8 +278,8 @@ function u_load_filter_status(new_val){
 
 
 //Count text area characters:
-function u_bio_counter() {
-    var len = $('#u_bio').val().length;
+function u_intro_message_counter() {
+    var len = $('#u_intro_message').val().length;
     if (len>message_max) {
         $('#charNum').addClass('overload').text(len);
     } else {
@@ -344,7 +344,7 @@ function x_add() {
 
     $.post("/urls/add_url", {
 
-        x_outbound_u_id:top_u_id,
+        x_u_id:top_u_id,
         x_url: $('#add_url_input').val(),
         can_edit:can_u_edit,
 
@@ -547,8 +547,8 @@ function u_load_modify(u_id, ur_id){
     $('#modifybox').attr('entity-id',u_id);
 
     $('#u_full_name').val($(".u_full_name_"+u_id+":first").text());
-    $('#u_bio').val($(".u__"+u_id+":first").attr('entity-bio'));
-    u_bio_counter();
+    $('#u_intro_message').val($(".u__"+u_id+":first").attr('entity-bio'));
+    u_intro_message_counter();
     u_full_name_word_count();
 
     //Update password reset UI:
@@ -588,7 +588,7 @@ function u_save_modify(){
     var modify_data = {
         u_id:parseInt($('#modifybox').attr('entity-id')),
         u_full_name:$('#u_full_name').val(),
-        u_bio:$('#u_bio').val(),
+        u_intro_message:$('#u_intro_message').val(),
         u_email:$('#u_email').val(),
         u_password_new:$('#u_password_new').val(),
     };
@@ -603,16 +603,16 @@ function u_save_modify(){
 
             //Update variables:
             $(".u_full_name_"+modify_data['u_id']).text(modify_data['u_full_name']);
-            $(".u__"+modify_data['u_id']).attr('entity-bio', modify_data['u_bio']);
+            $(".u__"+modify_data['u_id']).attr('entity-bio', modify_data['u_intro_message']);
             $(".u__"+modify_data['u_id']).attr('entity-email', modify_data['u_email']);
             $(".u__"+modify_data['u_id']).attr('has-password', ( modify_data['u_password_new'].length>0 ? 1 : 0 ));
-            if($('.u_bio_'+modify_data['u_id']).length){
+            if($('.u_intro_message_'+modify_data['u_id']).length){
                 //This is the top entity that's loaded, simply update:
-                $(".u_bio_"+modify_data['u_id']).html(nl2br(modify_data['u_bio']));
+                $(".u_intro_message_"+modify_data['u_id']).html(nl2br(modify_data['u_intro_message']));
             } else {
                 //This is a level 2 item, let's update the UI accordingly:
-                if(modify_data['u_bio'].length>0){
-                    $(".u_full_name_"+modify_data['u_id']).addClass('has-desc').attr('data-toggle', 'tooltip').attr('data-original-title', modify_data['u_bio']);
+                if(modify_data['u_intro_message'].length>0){
+                    $(".u_full_name_"+modify_data['u_id']).addClass('has-desc').attr('data-toggle', 'tooltip').attr('data-original-title', modify_data['u_intro_message']);
                 } else {
                     $(".u_full_name_"+modify_data['u_id']).removeClass('has-desc').attr('data-toggle', '').attr('data-original-title', '');
                 }

@@ -27,7 +27,7 @@ if(isset($orphan_cs)){
 
         } else {
 
-            echo '<h5 class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-inbound-count inbound-counter-'.$c['c_id'].'">'.count($c__inbounds).'</span> Ins</h5>';
+            echo '<h5 class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-inbound-count inbound-counter-'.$c['c_id'].'">'.count($c__inbounds).'</span> Parents</h5>';
 
             if(count($c__inbounds)>0){
                 echo '<div class="list-group list-level-2">';
@@ -54,7 +54,7 @@ if(isset($orphan_cs)){
 
 
             //Expand/Contract buttons
-            echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-outbound-count outbound-counter-'.$c['c_id'].'">'.$c['c__tree_all_count'].'</span> Outs</h5>';
+            echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-outbound-count outbound-counter-'.$c['c_id'].'">'.$c['c__tree_all_count'].'</span> Children</h5>';
             echo '<div id="task_view" style="padding-left:8px; display: inline-block;">';
             echo '<i class="fas fa-plus-square expand_all" style="font-size: 1.2em;"></i> &nbsp;';
             echo '<i class="fas fa-minus-square close_all" style="font-size: 1.2em;"></i>';
@@ -89,7 +89,7 @@ if(isset($orphan_cs)){
             //Intent subscribers:
             $limit = (is_dev() ? 10 : 100);
             $all_subscriptions = $this->Db_model->w_fetch(array(
-                'w_inbound_c_id' => $c['c_id'],
+                'w_c_id' => $c['c_id'],
             ), array('u','u_x','w_stats'), array(
                 'w_id' => 'DESC',
             ), $limit);
@@ -177,15 +177,15 @@ if(isset($orphan_cs)){
                         <div class="form-group label-floating is-empty">
 
                             <div class="radio" style="display:inline-block; border-bottom:1px dotted #999; margin-right:10px; margin-top: 0 !important;" data-toggle="tooltip" title="Intent is completed when ALL outbound intents are marked as complete" data-placement="right">
-                                <label>
+                                <label style="display:inline-block;">
                                     <input type="radio" id="c_is_any_0" name="c_is_any" value="0" />
-                                    <i class="fas fa-sitemap"></i> All Outs
+                                    <i class="fas fa-sitemap"></i> All Children
                                 </label>
                             </div>
                             <div class="radio" style="display: inline-block; border-bottom:1px dotted #999; margin-top: 0 !important;" data-toggle="tooltip" title="Intent is completed when ANY outbound intent is marked as complete" data-placement="right">
-                                <label>
+                                <label style="display:inline-block;">
                                     <input type="radio" id="c_is_any_1" name="c_is_any" value="1" />
-                                    <i class="fas fa-code-merge"></i> Any Out
+                                    <i class="fas fa-code-merge"></i> Any Child
                                 </label>
                             </div>
 

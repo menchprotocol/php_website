@@ -1,7 +1,7 @@
 <?php
 
 $engagements = $this->Db_model->e_fetch(array(
-    '(e_inbound_c_id='.$c_id.' OR e_outbound_c_id='.$c_id.')' => null,
+    '(e_parent_c_id='.$c_id.' OR e_child_c_id='.$c_id.')' => null,
 ), (is_dev() ? 20 : 100));
 
 //Fetch objects

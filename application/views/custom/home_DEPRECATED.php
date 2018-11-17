@@ -183,7 +183,7 @@
 /*
 //Fetch home page intents:
 $child_cs = $this->Db_model->cr_outbound_fetch(array(
-    'cr.cr_inbound_c_id' => 7241, //Get hired as a programmer intents that are published
+    'cr.cr_parent_c_id' => 7241, //Get hired as a programmer intents that are published
     'cr.cr_status >=' => 0,
     'c.c_status' => 3,
 ));

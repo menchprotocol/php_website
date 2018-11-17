@@ -13,14 +13,14 @@ $add_id             = ( in_array($entity['u_id'], array(1278,2750)) ? $entity['u
 
 //Fetch other data:
 $child_entities = $this->Db_model->ur_outbound_fetch(array(
-    'ur_inbound_u_id' => $entity['u_id'],
+    'ur_parent_u_id' => $entity['u_id'],
     'ur_status' => 1, //Only active
 ), array('u__outbound_count'), $this->config->item('items_per_page'));
 
 //Intents subscribed:
 $limit = (is_dev() ? 10 : 100);
 $all_subscriptions = $this->Db_model->w_fetch(array(
-    'w_outbound_u_id' => $entity['u_id'],
+    'w_child_u_id' => $entity['u_id'],
 ), array('u','c','w_stats'), array(
     'w_id' => 'DESC',
 ), $limit);
@@ -50,10 +50,10 @@ $all_subscriptions = $this->Db_model->w_fetch(array(
 <?php
 //Entity & Components:
 
-//Inbounds
+//Parents
 if($entity['u_id']!=2738){
     echo '<h5>';
-        echo '<span class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-inbound-count">'.count($entity['u__inbounds']).'</span> Ins</span>';
+        echo '<span class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-inbound-count">'.count($entity['u__inbounds']).'</span> Parents</span>';
         if($can_edit) {
             echo ' <a class="add-new-btn" href="javascript:$(\'#new-inbound\').removeClass(\'hidden\');$(\'.add-new-btn\').hide();$(\'#new-inbound .new-input\').focus();"><i class="fas fa-plus-circle"></i></a>';
         }
@@ -94,14 +94,14 @@ echo '</div>';
 
 
 
-//Outbounds
+//Childs
 echo '<table width="100%" style="margin-top:10px;"><tr>';
-echo '<td style="width: 100px;"><h5 class="badge badge-h"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-outbound-count">'.$entity['u__outbound_count'].'</span> Outs</h5></td>';
+echo '<td style="width: 100px;"><h5 class="badge badge-h"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-outbound-count">'.$entity['u__outbound_count'].'</span> Children</h5></td>';
 echo '<td style="text-align: right;"><div class="btn-group btn-group-sm" style="margin-top:-5px;" role="group">';
 
 //Fetch current count for each status from DB:
 $counts = $this->Db_model->ur_outbound_fetch(array(
-    'ur_inbound_u_id' => $entity['u_id'],
+    'ur_parent_u_id' => $entity['u_id'],
     'ur_status' => 1, //Only active
     'u_status >=' => 0,
 ), array(), 0, 0, 'COUNT(u_id) as u_counts, u_status', 'u_status', array(
@@ -227,7 +227,7 @@ if(!in_array($entity['u_id'], array(1278,1326,2750))){
               <input type="text" id="u_full_name" value="" onkeyup="u_full_name_word_count()" maxlength="<?= $this->config->item('u_full_name_max') ?>" data-lpignore="true" placeholder="Name" class="form-control border">
 
               <div class="title" style="margin-top:15px;"><h4><i class="fas fa-comment-dots"></i> Introductory Message [<span style="margin:0 0 10px 0; font-size:0.8em;"><span id="charNum">0</span>/<?= $this->config->item('message_max') ?></span>]</h4></div>
-              <textarea class="form-control text-edit border msg" id="u_bio" style="height:146px; background-color:#FFFFFF !important;" onkeyup="u_bio_counter()"></textarea>
+              <textarea class="form-control text-edit border msg" id="u_intro_message" style="height:146px; background-color:#FFFFFF !important;" onkeyup="u_intro_message_counter()"></textarea>
 
 
               <!-- Password credential management -->

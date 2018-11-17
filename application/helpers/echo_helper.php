@@ -232,10 +232,10 @@ function echo_embed($url, $full_message=null, $return_array=false, $start_sec=0,
 function echo_i($i,$u_full_name=null,$fb_format=false){
 
     //HACK: Make these two variables inter-changeable:
-    if(isset($i['i_outbound_c_id']) && $i['i_outbound_c_id']>0 && !isset($i['e_outbound_c_id'])){
-        $i['e_outbound_c_id'] = $i['i_outbound_c_id'];
-    } elseif(isset($i['e_outbound_c_id']) && $i['e_outbound_c_id']>0 && !isset($i['i_outbound_c_id'])){
-        $i['i_outbound_c_id'] = $i['e_outbound_c_id'];
+    if(isset($i['i_c_id']) && $i['i_c_id']>0 && !isset($i['e_child_c_id'])){
+        $i['e_child_c_id'] = $i['i_c_id'];
+    } elseif(isset($i['e_child_c_id']) && $i['e_child_c_id']>0 && !isset($i['i_c_id'])){
+        $i['i_c_id'] = $i['e_child_c_id'];
     }
 
     $CI =& get_instance();
@@ -245,7 +245,7 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
     $is_intent = ( $CI->uri->segment(1)=='intents' );
     $is_entity = ( $CI->uri->segment(1)=='entities' );
     $is_public = ( !$is_intent && !$is_entity ); //The public landing pages that users use to get started
-    $is_focus_entity = ( $is_entity && $CI->uri->segment(2)==$i['i_outbound_u_id'] );
+    $is_focus_entity = ( $is_entity && $CI->uri->segment(2)==$i['i_u_id'] );
     $ui = null;
     $original_cs = array();
 
@@ -263,7 +263,7 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
     if($is_entity && !$fb_format){
 
         $original_cs = $CI->Db_model->c_fetch(array(
-            'c_id' => $i['i_outbound_c_id'],
+            'c_id' => $i['i_c_id'],
         ));
         if(count($original_cs)>0){
 
@@ -272,7 +272,7 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
                 $ui .= '<span data-toggle="tooltip" title="This is the '.echo_ordinal($i['i_rank']).' message for this intent" data-placement="left" class="underdot" style="padding-bottom:4px;">'.echo_ordinal($i['i_rank']).'</span> ';
                 $ui .= '<span>'.echo_status('i_status',$i['i_status'],1,'left').'</span> ';
                 $ui .= '<a href="/entities/'.$i['i_inbound_u_id'].'" class="on-hover i_uploader badge badge-secondary" data-toggle="tooltip" title="Last modified by '.$i['u_full_name'].' about '.echo_diff_time($i['i_timestamp']).' ago. Click to open profile." data-placement="left">'.echo_cover($i,null,true).'</a>';
-                $ui .= '<a href="/intents/'.$i['i_outbound_c_id'].'#messages-'.$i['i_outbound_c_id'].'"><span class="badge badge-primary" style="display:inline-block; margin-left:3px; width:40px;"><i class="fas fa-sign-out-alt rotate90"></i></span></a>';
+                $ui .= '<a href="/intents/'.$i['i_c_id'].'#messages-'.$i['i_c_id'].'"><span class="badge badge-primary" style="display:inline-block; margin-left:3px; width:40px;"><i class="fas fa-sign-out-alt rotate90"></i></span></a>';
             $ui .= '</span>';
             $ui .= '<h4><i class="fas fa-hashtag" style="font-size:1em;"></i> '.$original_cs[0]['c_outcome'].'</h4>';
             $ui .= '<div>';
@@ -283,12 +283,12 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
 
 
     //Does this have a entity reference?
-    if(isset($i['i_outbound_u_id']) && $i['i_outbound_u_id']>0){
+    if(isset($i['i_u_id']) && $i['i_u_id']>0){
 
         //This message has a referenced entity
         //See if that entity has a URL:
         $us = $CI->Db_model->u_fetch(array(
-            'u_id' => $i['i_outbound_u_id'],
+            'u_id' => $i['i_u_id'],
         ), array('skip_u__inbounds','u__urls'));
 
         if(count($us)>0){
@@ -297,7 +297,7 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
             if($fb_format){
 
                 //Show an option to open action plan:
-                $i['i_message'] = str_replace('@'.$i['i_outbound_u_id'], $us[0]['u_full_name'].' /open_actionplan', $i['i_message']);
+                $i['i_message'] = str_replace('@'.$i['i_u_id'], $us[0]['u_full_name'].' /open_actionplan', $i['i_message']);
 
                 if(substr_count($i['i_message'],'/slice')>0){
                     $time_range = explode(':', one_two_explode('/slice:',' ',$i['i_message']) ,2);
@@ -357,13 +357,13 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
                 if($is_intent || ($is_entity && !$is_focus_entity)) {
 
                     //HTML format:
-                    $i['i_message'] = str_replace('@'.$i['i_outbound_u_id'], echo_social_profiles($CI->Db_model->x_social_fetch($i['i_outbound_u_id'])).' <a href="javascript:void(0);" onclick="url_modal(\''.$button_url.'\')">'.$us[0]['u_full_name'].'</a>', $i['i_message']);
+                    $i['i_message'] = str_replace('@'.$i['i_u_id'], echo_social_profiles($CI->Db_model->x_social_fetch($i['i_u_id'])).' <a href="javascript:void(0);" onclick="url_modal(\''.$button_url.'\')">'.$us[0]['u_full_name'].'</a>', $i['i_message']);
 
                 } else {
 
                     //HTML format:
-                    $entity_title = ( strlen($us[0]['u_bio'])>0 ? '<span data-toggle="tooltip" title="'.$us[0]['u_bio'].'" data-placement="top" class="underdot">'.$us[0]['u_full_name'].'</span>' : $us[0]['u_full_name'] );
-                    $i['i_message'] = str_replace('@'.$i['i_outbound_u_id'], $entity_title.' ', $i['i_message']);
+                    $entity_title = ( strlen($us[0]['u_intro_message'])>0 ? '<span data-toggle="tooltip" title="'.$us[0]['u_intro_message'].'" data-placement="top" class="underdot">'.$us[0]['u_full_name'].'</span>' : $us[0]['u_full_name'] );
+                    $i['i_message'] = str_replace('@'.$i['i_u_id'], $entity_title.' ', $i['i_message']);
 
                 }
 
@@ -379,22 +379,6 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
 
 
 
-    //Does this have an intent reference?
-    if(isset($i['i_inbound_c_id']) && $i['i_inbound_c_id']>0){
-        //This message has a referenced entity
-        //See if that entity has a URL:
-        $cs = $CI->Db_model->c_fetch(array(
-            'c_id' => $i['i_inbound_c_id'],
-        ));
-
-        if($fb_format || $is_public){
-            $i['i_message'] = str_replace('#'.$i['i_inbound_c_id'], $cs[0]['c_outcome'], $i['i_message']);
-        } else {
-            //HTML format for the console:
-            $i['i_message'] = str_replace('#'.$i['i_inbound_c_id'], '<a href="javascript:void(0);" onclick="url_modal(\'/intents/'.$cs[0]['c_id'].'?skip_header=1\')">'.$cs[0]['c_outcome'].'</a>', $i['i_message']);
-        }
-    }
-
 
 
     //Do we have any commands?
@@ -406,10 +390,10 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
 
 
 
-    if(substr_count($i['i_message'],'/open_actionplan')>0 && isset($i['e_w_id']) && $i['e_w_id']>0 && isset($i['i_outbound_c_id']) && $i['i_outbound_c_id']>0){
+    if(substr_count($i['i_message'],'/open_actionplan')>0 && isset($i['e_w_id']) && $i['e_w_id']>0 && isset($i['i_c_id']) && $i['i_c_id']>0){
         $button_title = 'Open in 🚩Action Plan';
         $command = '/open_actionplan';
-        $button_url = 'https://mench.com/my/actionplan/'.$i['e_w_id'].'/'.$i['i_outbound_c_id'].'?is_from_messenger=1';
+        $button_url = 'https://mench.com/my/actionplan/'.$i['e_w_id'].'/'.$i['i_c_id'].'?is_from_messenger=1';
     }
 
 
@@ -425,11 +409,11 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
 
 
 
-    if(substr_count($i['i_message'],'/resetpassurl')>0 && isset($i['e_outbound_u_id'])) {
+    if(substr_count($i['i_message'],'/resetpassurl')>0 && isset($i['e_child_u_id'])) {
         //append their My Account Button/URL:
         $timestamp = time();
         $button_title = '👉 Set New Password';
-        $button_url = 'https://mench.com/my/reset_pass?u_id='.$i['e_outbound_u_id'].'&timestamp='.$timestamp.'&p_hash=' . md5($i['e_outbound_u_id'] . 'p@ssWordR3s3t' . $timestamp);
+        $button_url = 'https://mench.com/my/reset_pass?u_id='.$i['e_child_u_id'].'&timestamp='.$timestamp.'&p_hash=' . md5($i['e_child_u_id'] . 'p@ssWordR3s3t' . $timestamp);
         $command = '/resetpassurl';
     }
 
@@ -633,8 +617,8 @@ function echo_e($e){
         //What type of main content do we have, if any?
         $main_content = null;
         $main_content_title = null;
-        if(strlen($e['e_text_value'])>0){
-            $main_content = format_e_text_value($e['e_text_value']);
+        if(strlen($e['e_value'])>0){
+            $main_content = format_e_value($e['e_value']);
         } elseif($e['e_i_id']>0){
             //Fetch message conent:
             $matching_messages = $CI->Db_model->i_fetch(array(
@@ -693,29 +677,29 @@ function echo_w_console($w){
 
         //Show user who has subscribed:
         $user_ws = $CI->Db_model->w_fetch(array(
-            'w_outbound_u_id' => $w['w_outbound_u_id'],
+            'w_child_u_id' => $w['w_child_u_id'],
         ));
         $subscription_title .= echo_cover($w,'micro-image', 1).' ';
         $subscription_title .= '<span class="u_full_name u_full_name_'.$w['u_id'].'">'.$w['u_full_name'].'</span>';
 
         //Engagements made by subscriber:
-        $ui .= '<a href="#wengagements-'.$w['w_outbound_u_id'].'-'.$w['w_id'].'" onclick="load_u_engagements('.$w['w_outbound_u_id'].','.$w['w_id'].')" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="'.$w['w_stats']['e_all_count'].' engagements"><span class="btn-counter">'.$w['w_stats']['e_all_count'].( $w['w_stats']['e_all_count']==$CI->config->item('max_counter') ? '+' : '').'</span><i class="fas fa-exchange"></i></a>';
+        $ui .= '<a href="#wengagements-'.$w['w_child_u_id'].'-'.$w['w_id'].'" onclick="load_u_engagements('.$w['w_child_u_id'].','.$w['w_id'].')" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="'.$w['w_stats']['e_all_count'].' engagements"><span class="btn-counter">'.$w['w_stats']['e_all_count'].( $w['w_stats']['e_all_count']==$CI->config->item('max_counter') ? '+' : '').'</span><i class="fas fa-exchange"></i></a>';
 
         //Link to subscriber, but count total subscriptions first:
-        $ui .= '<a href="/entities/'.$w['w_outbound_u_id'].'" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="top" title="Student has '.count($user_ws).' total subsciptions"><span class="btn-counter">'.count($user_ws).'</span><i class="fas fa-sign-out-alt rotate90"></i></a>';
+        $ui .= '<a href="/entities/'.$w['w_child_u_id'].'" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="top" title="Student has '.count($user_ws).' total subsciptions"><span class="btn-counter">'.count($user_ws).'</span><i class="fas fa-sign-out-alt rotate90"></i></a>';
 
     }
 
 
     //Number of intents in Student Action Plan:
-    $ui .= '<a href="#wactionplan-'.$w['w_id'].'-'.$w['w_outbound_u_id'].'" onclick="load_w_actionplan('.$w['w_id'].','.$w['w_outbound_u_id'].')" class="badge badge-primary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="'.$w['w_stats']['k_count_done'].'/'.($w['w_stats']['k_count_done']+$w['w_stats']['k_count_undone']).' intents are marked as complete. Click to open Action Plan."><span class="btn-counter">'.( ($w['w_stats']['k_count_undone']+$w['w_stats']['k_count_done'])>0 ? number_format(($w['w_stats']['k_count_done']/($w['w_stats']['k_count_undone']+$w['w_stats']['k_count_done'])*100),0).'%' : '0%' ).'</span><i class="fas fa-flag" style="font-size:0.85em;"></i></a>';
+    $ui .= '<a href="#wactionplan-'.$w['w_id'].'-'.$w['w_child_u_id'].'" onclick="load_w_actionplan('.$w['w_id'].','.$w['w_child_u_id'].')" class="badge badge-primary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="'.$w['w_stats']['k_count_done'].'/'.($w['w_stats']['k_count_done']+$w['w_stats']['k_count_undone']).' intents are marked as complete. Click to open Action Plan."><span class="btn-counter">'.( ($w['w_stats']['k_count_undone']+$w['w_stats']['k_count_done'])>0 ? number_format(($w['w_stats']['k_count_done']/($w['w_stats']['k_count_undone']+$w['w_stats']['k_count_done'])*100),0).'%' : '0%' ).'</span><i class="fas fa-flag" style="font-size:0.85em;"></i></a>';
 
 
     if($is_entity || $is_cockpit){
 
         //Link to subscription's main intent:
         $intent_ws = $CI->Db_model->w_fetch(array(
-            'w_inbound_c_id' => $w['c_id'],
+            'w_c_id' => $w['c_id'],
         ));
         $ui .= '<a href="/intents/'.$w['c_id'].'" class="badge badge-primary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="Open subscribed intention to '.$w['c_outcome'].' with '.count($intent_ws).' subscriptions"><span class="btn-counter">'.count($intent_ws).'</span><i class="fas fa-sign-in-alt"></i></a>';
 
@@ -738,7 +722,7 @@ function echo_w_console($w){
 
 
 function echo_w_students($w){
-    $ui = '<a href="/my/actionplan/'.$w['w_id'].'/'.$w['w_inbound_c_id'].'" class="list-group-item">';
+    $ui = '<a href="/my/actionplan/'.$w['w_id'].'/'.$w['w_c_id'].'" class="list-group-item">';
     $ui .= '<span class="pull-right">';
     $ui .= '<span class="badge badge-primary"><i class="fas fa-angle-right"></i></span>';
     $ui .= '</span>';
@@ -759,10 +743,10 @@ function echo_k_console($k){
 
     //Fetch some additional subscription stats:
     $user_ws = $CI->Db_model->w_fetch(array(
-        'w_outbound_u_id' => $k['u_id'],
+        'w_child_u_id' => $k['u_id'],
     ));
     $intent_ws = $CI->Db_model->w_fetch(array(
-        'w_inbound_c_id' => $k['c_id'],
+        'w_c_id' => $k['c_id'],
     ));
 
 
@@ -803,9 +787,9 @@ function echo_k_console($k){
 }
 
 
-function echo_k($k, $is_inbound, $c_is_any_cr_inbound_c_id=0){
+function echo_k($k, $is_inbound, $c_is_any_cr_parent_c_id=0){
 
-    $ui = '<a href="'.( $c_is_any_cr_inbound_c_id ? '/my/choose_any_path/'.$k['w_id'].'/'.$c_is_any_cr_inbound_c_id.'/'.$k['c_id'].'/'.md5($k['w_id'].'kjaghksjha*(^'.$k['c_id'].$c_is_any_cr_inbound_c_id) : '/my/actionplan/'.$k['k_w_id'].'/'.$k['c_id'] ).'" class="list-group-item">';
+    $ui = '<a href="'.( $c_is_any_cr_parent_c_id ? '/my/choose_any_path/'.$k['w_id'].'/'.$c_is_any_cr_parent_c_id.'/'.$k['c_id'].'/'.md5($k['w_id'].'kjaghksjha*(^'.$k['c_id'].$c_is_any_cr_parent_c_id) : '/my/actionplan/'.$k['k_w_id'].'/'.$k['c_id'] ).'" class="list-group-item">';
 
     //Different pointer position based on direction:
     if($is_inbound){
@@ -814,11 +798,11 @@ function echo_k($k, $is_inbound, $c_is_any_cr_inbound_c_id=0){
         $ui .= '</span>';
     } else {
         $ui .= '<span class="pull-right">';
-        $ui .= '<span class="badge badge-primary fr-bgd">'.( $c_is_any_cr_inbound_c_id ? 'Select <i class="fas fa-check-circle"></i>' : '<i class="fas fa-angle-right"></i>').'</span>';
+        $ui .= '<span class="badge badge-primary fr-bgd">'.( $c_is_any_cr_parent_c_id ? 'Select <i class="fas fa-check-circle"></i>' : '<i class="fas fa-angle-right"></i>').'</span>';
         $ui .= '</span>';
 
         //For outbound show icon:
-        if($c_is_any_cr_inbound_c_id){
+        if($c_is_any_cr_parent_c_id){
             //Radio button to indicate a single selection:
             $ui .= '<span class="status-label" style="padding-bottom:1px;"><i class="fal fa-circle"></i> </span>';
         } else {
@@ -927,9 +911,9 @@ function echo_contents($c, $fb_format=0){
                         $text_overview .= '<a href="/entities/' . $u['u_id'] . '">';
                     }
 
-                    if (isset($u['u_bio']) && strlen($u['u_bio']) > 0) {
+                    if (isset($u['u_intro_message']) && strlen($u['u_intro_message']) > 0) {
                         //Has description, show it here:
-                        $text_overview .= ' <span data-toggle="tooltip" title="' . stripslashes($u['u_bio']) . '" data-placement="top" class="underdot">' . $u['u_full_name'] . '</span>';
+                        $text_overview .= ' <span data-toggle="tooltip" title="' . stripslashes($u['u_intro_message']) . '" data-placement="top" class="underdot">' . $u['u_full_name'] . '</span>';
                     } else {
                         //Just the name:
                         $text_overview .= $u['u_full_name'];
@@ -1165,9 +1149,9 @@ function echo_experts($c, $fb_format=0){
                 $text_overview .= '<a href="/entities/'.$u['u_id'].'">';
             }
 
-            if(isset($u['u_bio']) && strlen($u['u_bio'])>0){
+            if(isset($u['u_intro_message']) && strlen($u['u_intro_message'])>0){
                 //Has description, show it here:
-                $text_overview .= ' <span data-toggle="tooltip" title="'.stripslashes($u['u_bio']).'" data-placement="top" class="underdot" style="display:inline-block;">'.$u['u_full_name'].'</span>';
+                $text_overview .= ' <span data-toggle="tooltip" title="'.stripslashes($u['u_intro_message']).'" data-placement="top" class="underdot" style="display:inline-block;">'.$u['u_full_name'].'</span>';
             } else {
                 //Just the name:
                 $text_overview .= $u['u_full_name'];
@@ -1261,7 +1245,7 @@ function echo_object($object,$id,$engagement_field,$button_type){
     if($id>0){
         if($object=='c'){
 
-            $is_inbound = ( $engagement_field=='e_inbound_c_id' ? true : false );
+            $is_inbound = ( $engagement_field=='e_parent_c_id' ? true : false );
             //Fetch intent/Step:
             $cs = $CI->Db_model->c_fetch(array(
                 'c.c_id' => $id,
@@ -1292,10 +1276,10 @@ function echo_object($object,$id,$engagement_field,$button_type){
             if(count($subscriptions)>0){
                 if(!$button_type){
                     //Plain view:
-                    return '<a href="https://mench.com/intents/'.$subscriptions[0]['w_inbound_c_id'].'">'.$subscriptions[0]['c_outcome'].'</a>';
+                    return '<a href="https://mench.com/intents/'.$subscriptions[0]['w_c_id'].'">'.$subscriptions[0]['c_outcome'].'</a>';
                 } else {
                     //TODO replace with Action Plan flag that would show student progress and load up their action plan...
-                    return '<a href="/intents/'.$subscriptions[0]['w_inbound_c_id'].'" target="_parent" class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="Subscribed to '.$subscriptions[0]['c_outcome'].' [Subscription #'.$id.']"><i class="fas fa-comment-plus"></i></a> ';
+                    return '<a href="/intents/'.$subscriptions[0]['w_c_id'].'" target="_parent" class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="Subscribed to '.$subscriptions[0]['c_outcome'].' [Subscription #'.$id.']"><i class="fas fa-comment-plus"></i></a> ';
                 }
             }
 
@@ -1524,7 +1508,7 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
 
     //Count engagements for this intent:
     $e_count = count($CI->Db_model->e_fetch(array(
-        '(e_inbound_c_id='.$c['c_id'].' OR e_outbound_c_id='.$c['c_id'].')' => null,
+        '(e_parent_c_id='.$c['c_id'].' OR e_child_c_id='.$c['c_id'].')' => null,
     ), $CI->config->item('max_counter')));
 
     //Count subscription caches for this intent link:
@@ -1535,7 +1519,7 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
 
     //Fetch K stats:
     $k_stat_fetch = $CI->Db_model->k_fetch(array(
-        'cr_outbound_c_id' => $c['c_id'],
+        'cr_child_c_id' => $c['c_id'],
     ), array('cr'), array(), 0, 'k_status, COUNT(k_id) as cr_count', 'k_status');
     foreach($k_stat_fetch as $ks){
         $k_stats['k_all'] += $ks['cr_count'];
@@ -1654,19 +1638,19 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
         $ui .= '<a href="javascript:ms_toggle('.$c['cr_id'].');"><i id="handle-'.$c['cr_id'].'" class="fal fa-plus-square"></i></a> &nbsp;';
 
         if(!$is_inbound){
-            $ui .= '<span class="inline-level-'.$level.'">#'.$c['cr_outbound_rank'].'</span>';
+            $ui .= '<span class="inline-level-'.$level.'">#'.$c['cr_child_rank'].'</span>';
         }
         $ui .= '</span>';
 
-        $ui .= '<span id="title_'.$c['cr_id'].'" class="cdr_crnt c_outcome_'.$c['c_id'].( strlen($c['c_trigger_statements'])>0 ? ' has-desc ' : '' ).'" outbound-rank="'.$c['cr_outbound_rank'].'" '.$c_settings.' data-toggle="tooltip" data-placement="right" title="'.$c['c_trigger_statements'].'">'.$c['c_outcome'].'</span> ';
+        $ui .= '<span id="title_'.$c['cr_id'].'" class="cdr_crnt c_outcome_'.$c['c_id'].( strlen($c['c_trigger_statements'])>0 ? ' has-desc ' : '' ).'" outbound-rank="'.$c['cr_child_rank'].'" '.$c_settings.' data-toggle="tooltip" data-placement="right" title="'.$c['c_trigger_statements'].'">'.$c['c_outcome'].'</span> ';
 
         $ui .= $extra_ui;
 
     } elseif ($level==3){
 
         //Steps
-        $ui .= '<span class="inline-level inline-level-'.$level.'">#'.$c['cr_outbound_rank'].'</span>';
-        $ui .= '<span id="title_'.$c['cr_id'].'" class="c_outcome_'.$c['c_id'].( strlen($c['c_trigger_statements'])>0 ? ' has-desc ' : '' ).'" outbound-rank="'.$c['cr_outbound_rank'].'" '.$c_settings.' data-toggle="tooltip" data-placement="right" title="'.$c['c_trigger_statements'].'">'.$c['c_outcome'].'</span> ';
+        $ui .= '<span class="inline-level inline-level-'.$level.'">#'.$c['cr_child_rank'].'</span>';
+        $ui .= '<span id="title_'.$c['cr_id'].'" class="c_outcome_'.$c['c_id'].( strlen($c['c_trigger_statements'])>0 ? ' has-desc ' : '' ).'" outbound-rank="'.$c['cr_child_rank'].'" '.$c_settings.' data-toggle="tooltip" data-placement="right" title="'.$c['c_trigger_statements'].'">'.$c['c_outcome'].'</span> ';
 
         $ui .= $extra_ui;
 
@@ -1721,7 +1705,7 @@ function echo_u($u, $level, $can_edit, $is_inbound=false){
     $ui = null;
 
 
-    $ui .= '<div id="u_'.$u['u_id'].'" entity-id="'.$u['u_id'].'" entity-email="'.$u['u_email'].'" entity-bio="'.str_replace('"','\\"',$u['u_bio']).'" entity-status="'.$u['u_status'].'" has-password="'.( strlen($u['u_password'])>0 ? 1 : 0 ).'" is-inbound="'.( $is_inbound ? 1 : 0 ).'" class="list-group-item u-item u__'.$u['u_id'].' '.( $level==1 ? 'top_entity' : 'ur_'.$u['ur_id'] ).'">';
+    $ui .= '<div id="u_'.$u['u_id'].'" entity-id="'.$u['u_id'].'" entity-email="'.$u['u_email'].'" entity-bio="'.str_replace('"','\\"',$u['u_intro_message']).'" entity-status="'.$u['u_status'].'" has-password="'.( strlen($u['u_password'])>0 ? 1 : 0 ).'" is-inbound="'.( $is_inbound ? 1 : 0 ).'" class="list-group-item u-item u__'.$u['u_id'].' '.( $level==1 ? 'top_entity' : 'ur_'.$u['ur_id'] ).'">';
 
     //Right content:
     $ui .= '<span class="pull-right">';
@@ -1729,7 +1713,7 @@ function echo_u($u, $level, $can_edit, $is_inbound=false){
     //Count messages:
     $messages = $CI->Db_model->i_fetch(array(
         'i_status >=' => 0,
-        'i_outbound_u_id' => $u['u_id'], //Referenced content in messages
+        'i_u_id' => $u['u_id'], //Referenced content in messages
     ));
 
     //What's the entity status?
@@ -1755,8 +1739,8 @@ function echo_u($u, $level, $can_edit, $is_inbound=false){
 
     //Check total key engagement for this user:
     $e_count = count($CI->Db_model->e_fetch(array(
-        '(e_inbound_u_id='.$u['u_id'].' OR e_outbound_u_id='.$u['u_id'].')' => null,
-        '(e_inbound_c_id NOT IN ('.join(',', $CI->config->item('exclude_es')).'))' => null,
+        '(e_parent_u_id='.$u['u_id'].' OR e_child_u_id='.$u['u_id'].')' => null,
+        '(e_parent_c_id NOT IN ('.join(',', $CI->config->item('exclude_es')).'))' => null,
     ), $CI->config->item('max_counter')));
     if($e_count>0){
         //Show the engagement button:
@@ -1783,13 +1767,13 @@ function echo_u($u, $level, $can_edit, $is_inbound=false){
         $ui .= ' <a href="https://www.google.com/search?q='.urlencode($u['u_full_name']).'" target="_blank" data-toggle="tooltip" title="Search on Google" data-placement="top"><i class="fab fa-google"></i></a>';
 
         //Visibly show bio for level 1:
-        $ui .= '<div class="u_bio_'.$u['u_id'].'" style="margin-top:2px;">' . nl2br($u['u_bio']) . '</div>';
+        $ui .= '<div class="u_intro_message_'.$u['u_id'].'" style="margin-top:2px;">' . nl2br($u['u_intro_message']) . '</div>';
 
     } else {
 
         //Regular section:
         $ui .= echo_cover($u,'micro-image', true).' ';
-        $ui .= '<span class="u_full_name u_full_name_'.$u['u_id'].( strlen($u['u_bio'])>0 ? ' has-desc ' : '' ).'" data-toggle="tooltip" data-placement="right" title="'.$u['u_bio'].'">'.$u['u_full_name'].'</span>';
+        $ui .= '<span class="u_full_name u_full_name_'.$u['u_id'].( strlen($u['u_intro_message'])>0 ? ' has-desc ' : '' ).'" data-toggle="tooltip" data-placement="right" title="'.$u['u_intro_message'].'">'.$u['u_full_name'].'</span>';
 
     }
 

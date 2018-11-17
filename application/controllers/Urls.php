@@ -58,9 +58,9 @@ class Urls extends CI_Controller
 
         //Log Engagements:
         $this->Db_model->e_create(array(
-            'e_inbound_c_id' => 69123, //Cover photo added
-            'e_inbound_u_id' => $udata['u_id'],
-            'e_outbound_u_id' => $urls[0]['u_id'],
+            'e_parent_c_id' => 69123, //Cover photo added
+            'e_parent_u_id' => $udata['u_id'],
+            'e_child_u_id' => $urls[0]['u_id'],
             'e_x_id' => $_POST['x_id'],
         ));
 
@@ -71,7 +71,7 @@ class Urls extends CI_Controller
     }
 
     function add_url() {
-        return echo_json($this->Db_model->x_sync($_POST['x_url'],$_POST['x_outbound_u_id'],$_POST['can_edit']));
+        return echo_json($this->Db_model->x_sync($_POST['x_url'],$_POST['x_u_id'],$_POST['can_edit']));
     }
 
 
@@ -119,9 +119,9 @@ class Urls extends CI_Controller
         //Log Engagement:
         $this->Db_model->e_create(array(
             'e_json' => $urls[0],
-            'e_inbound_c_id' => 6912, //URL Deleted
-            'e_inbound_u_id' => $udata['u_id'],
-            'e_outbound_u_id' => $urls[0]['x_outbound_u_id'],
+            'e_parent_c_id' => 6912, //URL Deleted
+            'e_parent_u_id' => $udata['u_id'],
+            'e_child_u_id' => $urls[0]['x_u_id'],
             'e_x_id' => $_POST['x_id'],
         ));
 
@@ -135,9 +135,9 @@ class Urls extends CI_Controller
             //Log Engagement:
             $this->Db_model->e_create(array(
                 'e_json' => $urls[0],
-                'e_inbound_c_id' => 6924, //Cover Photo Removed
-                'e_inbound_u_id' => $udata['u_id'],
-                'e_outbound_u_id' => $urls[0]['x_outbound_u_id'],
+                'e_parent_c_id' => 6924, //Cover Photo Removed
+                'e_parent_u_id' => $udata['u_id'],
+                'e_child_u_id' => $urls[0]['x_u_id'],
                 'e_x_id' => $_POST['x_id'],
             ));
         }

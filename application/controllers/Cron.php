@@ -74,19 +74,19 @@ class Cron extends CI_Controller {
         $score_weights = array(
             'u__outbounds' => 0, //Child entities are just containers, no score on the link
 
-            'e_outbound_u_id' => 1, //Engagement initiator
-            'e_inbound_u_id' => 1, //Engagement recipient
+            'e_child_u_id' => 1, //Engagement initiator
+            'e_parent_u_id' => 1, //Engagement recipient
 
             'x_inbound_u_id' => 5, //URL Creator
-            'x_outbound_u_id' => 8, //URL Referenced to them
+            'x_u_id' => 8, //URL Referenced to them
 
-            'w_outbound_u_id' => 13, //Subscriptions
+            'w_child_u_id' => 13, //Subscriptions
             'c_inbound_u_id' => 21, //Active Intents
         );
 
         //Fetch child entities:
         $entities = $this->Db_model->ur_outbound_fetch(array(
-            'ur_inbound_u_id' => ( count($u)>0 ? $u['u_id'] : 2738 /* Parent Entity */ ),
+            'ur_parent_u_id' => ( count($u)>0 ? $u['u_id'] : 2738 /* Parent Entity */ ),
             'ur_status >=' => 0, //Pending or Active
             'u_status >=' => 0, //Pending or Active
         ));
@@ -105,16 +105,16 @@ class Cron extends CI_Controller {
             $score += count($entities) * $score_weights['u__outbounds'];
 
             $score += count($this->Db_model->e_fetch(array(
-                    'e_outbound_u_id' => $u['u_id'],
-                ), 5000)) * $score_weights['e_outbound_u_id'];
+                    'e_child_u_id' => $u['u_id'],
+                ), 5000)) * $score_weights['e_child_u_id'];
             $score += count($this->Db_model->e_fetch(array(
-                    'e_inbound_u_id' => $u['u_id'],
-                ), 5000)) * $score_weights['e_inbound_u_id'];
+                    'e_parent_u_id' => $u['u_id'],
+                ), 5000)) * $score_weights['e_parent_u_id'];
 
             $score += count($this->Db_model->x_fetch(array(
                     'x_status >' => 0,
-                    'x_outbound_u_id' => $u['u_id'],
-                ))) * $score_weights['x_outbound_u_id'];
+                    'x_u_id' => $u['u_id'],
+                ))) * $score_weights['x_u_id'];
             $score += count($this->Db_model->x_fetch(array(
                     'x_status >' => 0,
                     'x_inbound_u_id' => $u['u_id'],
@@ -124,8 +124,8 @@ class Cron extends CI_Controller {
                     'c_inbound_u_id' => $u['u_id'],
                 ))) * $score_weights['c_inbound_u_id'];
             $score += count($this->Db_model->w_fetch(array(
-                    'w_outbound_u_id' => $u['u_id'],
-                ))) * $score_weights['w_outbound_u_id'];
+                    'w_child_u_id' => $u['u_id'],
+                ))) * $score_weights['w_child_u_id'];
 
             //Update the score:
             $this->Db_model->u_update( $u['u_id'] , array(
@@ -149,11 +149,11 @@ class Cron extends CI_Controller {
         //Fetch pending drips
         $e_pending = $this->Db_model->e_fetch(array(
             'e_status' => 0, //Pending
-            'e_inbound_c_id' => 52, //Scheduled Drip e_inbound_c_id=52
+            'e_parent_c_id' => 52, //Scheduled Drip e_parent_c_id=52
             'e_timestamp <=' => date("Y-m-d H:i:s" ), //Message is due
             //Some standard checks to make sure, these should all be true:
-            'e_outbound_u_id >' => 0,
-            'e_outbound_c_id >' => 0,
+            'e_child_u_id >' => 0,
+            'e_child_c_id >' => 0,
         ), 200, array('ej'));
 
 
@@ -162,7 +162,7 @@ class Cron extends CI_Controller {
 
 
         $drip_sent = 0;
-        foreach($e_pending as $e_text_value){
+        foreach($e_pending as $e_value){
 
             //Fetch user data:
             $matching_subscriptions = $this->Db_model->w_fetch(array(
@@ -171,19 +171,19 @@ class Cron extends CI_Controller {
             if(count($matching_subscriptions)>0){
 
                 //Prepare variables:
-                $json_data = unserialize($e_text_value['ej_e_blob']);
+                $json_data = unserialize($e_value['ej_e_blob']);
 
                 //Send this message:
                 $this->Comm_model->send_message(array(
                     array_merge($json_data['i'], array(
-                        'e_inbound_u_id' => 0,
-                        'e_outbound_u_id' => $matching_subscriptions[0]['u_id'],
-                        'i_outbound_c_id' => $json_data['i']['i_outbound_c_id'],
+                        'e_parent_u_id' => 0,
+                        'e_child_u_id' => $matching_subscriptions[0]['u_id'],
+                        'i_c_id' => $json_data['i']['i_c_id'],
                     )),
                 ));
 
                 //Update Engagement:
-                $this->Db_model->e_update( $e_text_value['e_id'] , array(
+                $this->Db_model->e_update( $e_value['e_id'] , array(
                     'e_status' => 1, //Mark as done
                 ));
 
@@ -205,7 +205,7 @@ class Cron extends CI_Controller {
 
         $e_pending = $this->Db_model->e_fetch(array(
             'e_status' => 0, //Pending
-            'e_inbound_c_id' => 7001, //Cover Photo Save
+            'e_parent_c_id' => 7001, //Cover Photo Save
         ), $max_per_batch);
 
 
@@ -218,7 +218,7 @@ class Cron extends CI_Controller {
 
             //Check URL and validate:
             $error_message = null;
-            $curl = curl_html($u['e_text_value'],true);
+            $curl = curl_html($u['e_value'],true);
 
             if(!$curl){
                 $error_message = 'Invalid URL (start with http:// or https://)';
@@ -231,7 +231,7 @@ class Cron extends CI_Controller {
             if(!$error_message){
 
                 //Save the file to S3
-                $new_file_url = save_file($u['e_text_value'],$u);
+                $new_file_url = save_file($u['e_value'],$u);
 
                 if(!$new_file_url){
                     $error_message = 'Failed to upload the file to Mench CDN';
@@ -259,7 +259,7 @@ class Cron extends CI_Controller {
                     //Save URL:
                     $new_x = $this->Db_model->x_create(array(
                         'x_inbound_u_id' => $u['u_id'],
-                        'x_outbound_u_id' => $u['u_id'],
+                        'x_u_id' => $u['u_id'],
                         'x_url' => $new_file_url,
                         'x_clean_url' => $new_file_url,
                         'x_type' => 4, //Image
@@ -275,10 +275,10 @@ class Cron extends CI_Controller {
 
                         //Log engagement:
                         $this->Db_model->e_create(array(
-                            'e_inbound_u_id' => $u['u_id'],
-                            'e_outbound_u_id' => $u['u_id'],
-                            'e_inbound_c_id' => 12, //Account Update
-                            'e_text_value' => 'Profile cover photo updates from Facebook Image ['.$u['e_text_value'].'] to Mench CDN ['.$new_file_url.']',
+                            'e_parent_u_id' => $u['u_id'],
+                            'e_child_u_id' => $u['u_id'],
+                            'e_parent_c_id' => 12, //Account Update
+                            'e_value' => 'Profile cover photo updates from Facebook Image ['.$u['e_value'].'] to Mench CDN ['.$new_file_url.']',
                             'e_x_id' => $new_x['x_id'],
                         ));
                     }
@@ -287,7 +287,7 @@ class Cron extends CI_Controller {
 
             //Update engagement:
             $this->Db_model->e_update( $u['e_id'] , array(
-                'e_text_value' => ( $error_message ? 'ERROR: '.$error_message : 'Success' ).' (Original Image URL: '.$u['e_text_value'].')',
+                'e_value' => ( $error_message ? 'ERROR: '.$error_message : 'Success' ).' (Original Image URL: '.$u['e_value'].')',
                 'e_status' => 1, //Done
             ));
 
@@ -311,7 +311,7 @@ class Cron extends CI_Controller {
 
         $e_pending = $this->Db_model->e_fetch(array(
             'e_status' => 0, //Pending file upload to S3
-            'e_inbound_c_id IN (6,7)' => null, //Sent/Received messages
+            'e_parent_c_id IN (6,7)' => null, //Sent/Received messages
         ), $max_per_batch, array('ej'));
 
 
@@ -344,7 +344,7 @@ class Cron extends CI_Controller {
 
                                         //Update engagement data:
                                         $this->Db_model->e_update( $ep['e_id'] , array(
-                                            'e_text_value' => ( strlen($ep['e_text_value'])>0 ? $ep['e_text_value']."\n\n" : '' ).'/attach '.$att['type'].':'.$new_file_url, //Makes the file preview available on the message
+                                            'e_value' => ( strlen($ep['e_value'])>0 ? $ep['e_value']."\n\n" : '' ).'/attach '.$att['type'].':'.$new_file_url, //Makes the file preview available on the message
                                             'e_status' => 1, //Mark as done
                                         ));
 
@@ -359,10 +359,10 @@ class Cron extends CI_Controller {
             } else {
                 //This should not happen, report:
                 $this->Db_model->e_create(array(
-                    'e_inbound_u_id' => 0, //System
-                    'e_text_value' => 'cron/bot_save_files() fetched ej_e_blob() that was missing its [entry] value',
+                    'e_parent_u_id' => 0, //System
+                    'e_value' => 'cron/bot_save_files() fetched ej_e_blob() that was missing its [entry] value',
                     'e_json' => $json_data,
-                    'e_inbound_c_id' => 8, //System Error
+                    'e_parent_c_id' => 8, //System Error
                 ));
             }
 
@@ -431,12 +431,12 @@ class Cron extends CI_Controller {
 
                     //Log error:
                     $this->Db_model->e_create(array(
-                        'e_text_value' => 'message_fb_sync_attachments() Failed to sync attachment using Facebook API',
+                        'e_value' => 'message_fb_sync_attachments() Failed to sync attachment using Facebook API',
                         'e_json' => array(
                             'payload' => $payload,
                             'result' => $result,
                         ),
-                        'e_inbound_c_id' => 8, //Platform Error
+                        'e_parent_c_id' => 8, //Platform Error
                     ));
 
                     //Disable future attempts:
@@ -475,8 +475,8 @@ class Cron extends CI_Controller {
                 //Add inbound:
                 echo '<a href="/entities/'.$u['u_id'].'">'.$u['u_full_name'].'</a><br />';
                 $ur1 = $this->Db_model->ur_create(array(
-                    'ur_outbound_u_id' => $u['u_id'],
-                    'ur_inbound_u_id' => 1278,
+                    'ur_child_u_id' => $u['u_id'],
+                    'ur_parent_u_id' => 1278,
                 ));
             }
         }
@@ -495,7 +495,7 @@ class Cron extends CI_Controller {
         //If both $w_id and $u_id are present, it would auto register the user in an idle subscription if they are not part of it yet, and if they are, it would step them forward.
 
         $bot_settings = array(
-            'max_per_run' => 10, //How many subscriptions to server per run (Might include duplicate w_outbound_u_id's that will be excluded)
+            'max_per_run' => 10, //How many subscriptions to server per run (Might include duplicate w_child_u_id's that will be excluded)
             'reminder_frequency_min' => 1440, //Every 24 hours
         );
 
@@ -506,9 +506,9 @@ class Cron extends CI_Controller {
             'w_status' => 1,
             'u_status >=' => 0,
             'c_status >=' => 2,
-            'w_last_served >=' => date("Y-m-d H:i:s", (time()+($bot_settings['reminder_frequency_min']*60))),
+            'w_last_heard >=' => date("Y-m-d H:i:s", (time()+($bot_settings['reminder_frequency_min']*60))),
         ), array('c','u'), array(
-            'w_last_served' => 'ASC', //Fetch users who have not been served the longest, so we can pay attention to them...
+            'w_last_heard' => 'ASC', //Fetch users who have not been served the longest, so we can pay attention to them...
         ), $bot_settings['max_per_run']);
 
         foreach($active_subscriptions as $w){
@@ -531,7 +531,7 @@ class Cron extends CI_Controller {
 
             //Update the serving timestamp:
             $this->Db_model->w_update( $w['w_id'], array(
-                'w_last_served' => date("Y-m-d H:i:s"),
+                'w_last_heard' => date("Y-m-d H:i:s"),
             ));
 
 
@@ -594,18 +594,18 @@ class Cron extends CI_Controller {
 
                         //See if we have reminded them already about this:
                         $reminders_sent = $this->Db_model->e_fetch(array(
-                            'e_inbound_c_id IN (7,28)' => null, //Email or Message sent
-                            'e_outbound_u_id' => $subscription['u_id'],
-                            'e_outbound_c_id' => $logic['reminder_c_id'],
+                            'e_parent_c_id IN (7,28)' => null, //Email or Message sent
+                            'e_child_u_id' => $subscription['u_id'],
+                            'e_child_c_id' => $logic['reminder_c_id'],
                         ));
 
                         if(count($reminders_sent)==0){
 
                             //Nope, send this message out:
                             $this->Comm_model->compose_messages(array(
-                                'e_inbound_u_id' => 0, //System
-                                'e_outbound_u_id' => $subscription['u_id'],
-                                'e_outbound_c_id' => $logic['reminder_c_id'],
+                                'e_parent_u_id' => 0, //System
+                                'e_child_u_id' => $subscription['u_id'],
+                                'e_child_c_id' => $logic['reminder_c_id'],
                             ));
 
                             //Show in stats:

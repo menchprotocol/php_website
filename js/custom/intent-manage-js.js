@@ -241,7 +241,7 @@ function c_save_sort(c_id,level){
             //Store in DB:
             new_sort[sort_rank] = cr_id;
 
-            //Is the Outbound rank correct? Check DB value:
+            //Is the Child rank correct? Check DB value:
             var db_rank = parseInt($('.c_outcome_'+c_id).attr('outbound-rank'));
 
             if(level==2 && !(db_rank==sort_rank) && !c_id){
