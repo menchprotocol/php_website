@@ -2124,7 +2124,10 @@ class Db_model extends CI_Model {
 
                         //Compose email:
                         $html_message = null; //Start
-                        $html_message .= '<div>Hi Mench Admin,</div><br />';
+
+                        if(strlen($engagements[0]['e_text_value'])>0){
+                            $html_message .= '<div>'.format_e_text_value($engagements[0]['e_text_value']).'</div><br />';
+                        }
 
                         //Lets go through all references to see what is there:
                         foreach($this->config->item('engagement_references') as $engagement_field=>$er){
@@ -2134,13 +2137,8 @@ class Db_model extends CI_Model {
                             }
                         }
 
-                        if(strlen($engagements[0]['e_text_value'])>0){
-                            $html_message .= '<div>Message:<br />'.format_e_text_value($engagements[0]['e_text_value']).'</div>';
-                        }
-                        $html_message .= '<br />';
-                        $html_message .= '<div>Cheers,</div>';
-                        $html_message .= '<div>Mench Engagement Watcher</div>';
-                        $html_message .= '<div style="font-size:0.8em;">Engagement <a href="https://mench.com/cockpit/ej_list/'.$engagements[0]['e_id'].'">#'.$engagements[0]['e_id'].'</a></div>';
+                        //Append ID:
+                        $html_message .= '<div>Engagement ID: <a href="https://mench.com/cockpit/ej_list/'.$engagements[0]['e_id'].'">#'.$engagements[0]['e_id'].'</a></div>';
 
                         //Send email:
                         $this->Comm_model->send_email($subscription['admin_emails'], $subject, $html_message);
