@@ -5,7 +5,7 @@ $engagements = $this->Db_model->e_fetch(array(
 ), (is_dev() ? 20 : 100));
 
 //Fetch objects
-echo '<div class="list-group list-grey maxout">';
+echo '<div class="list-group list-grey">';
 foreach($engagements as $e){
     echo echo_e($e);
 }

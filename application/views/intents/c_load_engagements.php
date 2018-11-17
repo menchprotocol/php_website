@@ -8,7 +8,7 @@ $k_outs = $this->Db_model->k_fetch(array(
 
 //Fetch objects
 $current_status = -999; //This would keep going higher as we print each heather...
-echo '<div class="list-group list-grey maxout">';
+echo '<div class="list-group list-grey">';
 foreach($k_outs as $k){
     if($k['k_status']>$current_status){
         //Print header:
