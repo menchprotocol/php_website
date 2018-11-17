@@ -180,7 +180,7 @@ function is_valid_intent($c_id){
     $CI =& get_instance();
     $intents = $CI->Db_model->c_fetch(array(
         'c.c_id' => intval($c_id),
-        'c.c_status >' => 0, //Drafting or higher
+        'c.c_status >=' => 0,
     ));
     return (count($intents)==1);
 }
@@ -613,7 +613,7 @@ function message_validation($i_status,$i_message,$i_outbound_c_id){
                 'status' => 0,
                 'message' => 'You cannot affirm the message intent itself. Choose another intent to continue',
             );
-        } elseif($i_inbound_cs[0]['c_status']<1){
+        } elseif($i_inbound_cs[0]['c_status']<0){
             //Inactive:
             return array(
                 'status' => 0,

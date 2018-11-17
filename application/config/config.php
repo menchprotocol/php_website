@@ -5,21 +5,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 date_default_timezone_set('America/Los_Angeles');
 
 //Cache buster for static files
-$config['app_version'] = '0.604'.( ( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='local.mench.co' ) ? microtime(true) : '' ); //Updates status css/js cache files
+$config['app_version'] = '0.605'.( ( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='local.mench.co' ) ? microtime(true) : '' ); //Updates status css/js cache files
 
-//User case: $this->config->item('k_status_incomplete')
+//User case: $this->config->item('c_point_options')
 
 $config['primary_c'] = 6903; //The default platform intent that would be recommended to new students
-$config['featured_cs'] = array(6903,6623,6898,7262,7263,6672,7311,7261); //What is publicly shown on the landing pages as related intentions
 $config['primary_u'] = 1326; //The default console entity that is loaded when Entities is clicked
+
 $config['message_max'] = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
 $config['max_counter'] = 999; //Used in counting things of engagements in console UI. If more that this will add a "+" sign to the end
 $config['c_outcome_max'] = 89; //Max number of characters allowed in the title of intents
 $config['u_full_name_max'] = 233; //Max number of characters allowed in the title of intents
 $config['file_limit_mb'] = 25; //Server setting is 32MB. see here: mench.com/ses
 $config['items_per_page'] = 50; //Even number
-$config['universal_intents'] = array(7433); //Get to know how Mench Personal Assistant works //TODO Implement...
-$config['onhold_intents'] = array(7240,6629,6630,7248,7435,369,6653); //TODO Replace with drafting intents c_status=0
+$config['c_point_options'] = array(0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610);
 $config['exclude_es'] = array(1,2); //The engagements that should be ignored
 $config['k_status_incomplete'] = array(1,0,-2); //The K statuses that indicate the task is not complete... Other statuses indicate completeness, see k_status below for more details
 
@@ -59,13 +58,6 @@ $config['engagement_subscriptions'] = array(
             8, //System error
             7703, //Search for New Intent Subscription
             10 //user login
-        ),
-    ),
-    2 => array(
-        'admin_emails' => array('miguel@mench.com'),
-        'subscription' => array(
-            9, //User attention
-            72 //Student Reviewed Mench
         ),
     ),
 );
@@ -119,11 +111,6 @@ $config['object_statuses'] = array(
         ),
     ),
     'c' => array(
-        -2 => array(
-            's_name'  => 'Denied',
-            's_desc'  => 'Intent rejected as it did not meet intent creation guidelines',
-            's_icon' => 'fas fa-minus-circle',
-        ),
         -1 => array(
             's_name'  => 'Archived',
             's_desc'  => 'Intent has been archived and all its links has been removed',
@@ -132,21 +119,20 @@ $config['object_statuses'] = array(
         0 => array(
             's_name'  => 'New',
             's_desc'  => 'Intent is newly added by a user and is pending review by a moderator',
-            's_icon' => 'fas fa-question-circle',
+            's_icon' => 'fal fa-question-circle',
         ),
         1 => array(
             's_name'  => 'Patternizing',
             's_desc'  => 'Intent is is growing in patterns',
-            's_icon' => 'fas fa-play-circle',
+            's_icon' => 'fal fa-play-circle',
         ),
         2 => array(
             's_name'  => 'Published',
             's_desc'  => 'Intent is published live and used in Action Plans',
             's_icon' => 'fas fa-check-circle',
         ),
-        //TODO Maybe develop later to replace the universal_intents variable?
         3 => array(
-            's_name'  => 'Recommended',
+            's_name'  => 'Featured',
             's_desc'  => 'Intents that are recommended to users with related interests',
             's_icon' => 'fas fa-comment-check',
         ),

@@ -1,5 +1,5 @@
 
-function initiate_outbound_search(){
+function u_load_child_search(){
 
     $("#new-outbound .new-input").on('autocomplete:selected', function (event, suggestion, dataset) {
 
@@ -74,12 +74,12 @@ $(document).ready(function () {
         if(hash_parts.length>=2){
             //Fetch level if available:
             if(hash_parts[0]=='messages'){
-                load_u_messages(hash_parts[1]);
+                u_load_messages(hash_parts[1]);
             } else if(hash_parts[0]=='modify'){
-                load_u_modify(hash_parts[1],hash_parts[2]);
+                u_load_modify(hash_parts[1],hash_parts[2]);
             } else if(hash_parts[0]=='status'){
                 //Update status:
-                filter_u_status(hash_parts[1]);
+                u_load_filter_status(hash_parts[1]);
             } else if(hash_parts[0]=='wengagements'){
                 load_u_engagements(hash_parts[1]);
             }
@@ -100,7 +100,7 @@ $(document).ready(function () {
 
 
     //Loadup various search bars:
-    initiate_outbound_search();
+    u_load_child_search();
 
 
 
@@ -217,13 +217,13 @@ function ur_add(new_u_id,secondary_parent_u_id=0, is_inbound) {
 }
 
 
-function update_u_status(u_id, new_u_status){
+function u_save_status(u_id, new_u_status){
 
     //Indicate loading:
     $('.u-status-bar-'+u_id).html('<img src="/img/round_load.gif" class="loader" />');
 
     //Will update the status of u_id to new status
-    $.post("/entities/update_u_status", {
+    $.post("/entities/u_save_status", {
 
         u_id:u_id,
         new_u_status: new_u_status,
@@ -261,14 +261,14 @@ function update_u_status(u_id, new_u_status){
 
 }
 
-function filter_u_status(new_val){
+function u_load_filter_status(new_val){
     if(new_val==-1 || new_val==0 || new_val==1 || new_val==2) {
         //Remove active class:
         $('.u-status-filter').removeClass('btn-secondary');
         //We do have a filter:
         u_status_filter = parseInt(new_val);
         $('.u-status-'+new_val).addClass('btn-secondary');
-        entity_load_more(0,1);
+        u_load_next_page(0,1);
     } else {
         alert('Invalid new status');
         return false;
@@ -278,7 +278,7 @@ function filter_u_status(new_val){
 
 
 //Count text area characters:
-function changeBio() {
+function u_bio_counter() {
     var len = $('#u_bio').val().length;
     if (len>message_max) {
         $('#charNum').addClass('overload').text(len);
@@ -287,7 +287,7 @@ function changeBio() {
     }
 }
 
-function changeName() {
+function u_full_name_word_count() {
     var len = $('#u_full_name').val().length;
     if (len>u_full_name_max) {
         $('#charNameNum').addClass('overload').text(len);
@@ -424,7 +424,7 @@ function x_delete(x_id) {
 
 }
 
-function entity_load_more(page,load_new_filter=0) {
+function u_load_next_page(page,load_new_filter=0) {
 
     if(load_new_filter){
         //Replace load more with spinner:
@@ -436,7 +436,7 @@ function entity_load_more(page,load_new_filter=0) {
         $('.load-more').html('<span class="load-more"><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
     }
 
-    $.post("/entities/entity_load_more", {
+    $.post("/entities/u_load_next_page", {
         can_edit:can_u_edit,
         page:page,
         inbound_u_id:top_u_id,
@@ -449,7 +449,7 @@ function entity_load_more(page,load_new_filter=0) {
         if(load_new_filter){
             $('#list-outbound').html( data + '<div id="new-outbound" class="list-group-item list_input grey-input">'+append_div+'</div>' ).hide().fadeIn();
             //Reset search engine:
-            initiate_outbound_search();
+            u_load_child_search();
         } else {
             //Update UI to confirm with user:
             $(data).insertBefore('#new-outbound');
@@ -534,7 +534,7 @@ function u_delete(){
 }
 
 
-function load_u_modify(u_id, ur_id){
+function u_load_modify(u_id, ur_id){
 
     //Make sure inputs are valid:
     if(!$('.u__'+u_id).length){
@@ -548,8 +548,8 @@ function load_u_modify(u_id, ur_id){
 
     $('#u_full_name').val($(".u_full_name_"+u_id+":first").text());
     $('#u_bio').val($(".u__"+u_id+":first").attr('entity-bio'));
-    changeBio();
-    changeName();
+    u_bio_counter();
+    u_full_name_word_count();
 
     //Update password reset UI:
     $('#u_email').val($(".u__"+u_id+":first").attr('entity-email'));
@@ -576,7 +576,7 @@ function load_u_modify(u_id, ur_id){
 }
 
 
-function save_u_modify(){
+function u_save_modify(){
 
     //Validate that we have all we need:
     if($('#modifybox').hasClass('hidden') || !parseInt($('#modifybox').attr('entity-id'))) {
@@ -640,7 +640,7 @@ function save_u_modify(){
 }
 
 
-function load_u_messages(u_id){
+function u_load_messages(u_id){
 
     //Make the frame visible:
     $('.fixed-box').addClass('hidden');

@@ -42,7 +42,7 @@ class Entities extends CI_Controller {
         echo_json($this->Db_model->u_hard_delete($u_id));
     }
 
-    function entity_load_more(){
+    function u_load_next_page(){
 
         $items_per_page = $this->config->item('items_per_page');
         $inbound_u_id = intval($_POST['inbound_u_id']);
@@ -666,11 +666,11 @@ class Entities extends CI_Controller {
 
     }
 
-    function filter_u_status(){
+    function u_load_filter_status(){
 
     }
 
-    function update_u_status(){
+    function u_save_status(){
 
         //Auth user and check required variables:
         $udata = auth(array(1281));

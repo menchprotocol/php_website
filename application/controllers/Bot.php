@@ -11,6 +11,10 @@ class Bot extends CI_Controller {
     }
 
 
+    function tree($c_id){
+        echo_json($this->Db_model->c_recursive_fetch($c_id, 1));
+    }
+
 
 
     function sync_menu(){

@@ -70,20 +70,18 @@ class My extends CI_Controller {
         //Try finding them:
         $subscriptions = $this->Db_model->w_fetch($w_filter, array('c','u'));
 
-        //Log action plan view engagement:
-        $this->Db_model->e_create(array(
-            'e_inbound_c_id' => 32,
-            'e_inbound_u_id' => $subscriptions[0]['u_id'],
-            'e_outbound_c_id' => $c_id,
-            'e_w_id' => ( count($subscriptions)==1 ? $subscriptions[0]['w_id'] : 0 /* No Specific Subcription */ ),
-        ));
-
         if(count($subscriptions)==0){
 
             //No subscriptions found:
             die('<div class="alert alert-danger" role="alert">You have no active subscriptions yet. '.echo_pa_lets().'</div>');
 
         } elseif(count($subscriptions)>1){
+
+            //Log action plan view engagement:
+            $this->Db_model->e_create(array(
+                'e_inbound_c_id' => 32,
+                'e_inbound_u_id' => $subscriptions[0]['u_id'],
+            ));
 
             //Let them choose between subscriptions:
             echo '<h3 class="student-h3 primary-title">My Subscriptions</h3>';
@@ -102,24 +100,32 @@ class My extends CI_Controller {
                 $c_id = $subscriptions[0]['c_id']; //TODO set to current/focused intent
             }
 
+            //Log action plan view engagement:
+            $this->Db_model->e_create(array(
+                'e_inbound_c_id' => 32,
+                'e_inbound_u_id' => $subscriptions[0]['u_id'],
+                'e_outbound_c_id' => $c_id,
+                'e_w_id' => $w_id,
+            ));
+
 
             //We have a single item to load:
             //Now we need to load the action plan:
             $k_ins = $this->Db_model->k_fetch(array(
                 'w_id' => $w_id,
-                'c_status >=' => 1,
+                'c_status >=' => 2,
                 'cr_outbound_c_id' => $c_id,
             ), array('w','cr','cr_c_in'));
 
             $k_outs = $this->Db_model->k_fetch(array(
                 'w_id' => $w_id,
-                'c_status >=' => 1,
+                'c_status >=' => 2,
                 'cr_inbound_c_id' => $c_id,
             ), array('w','cr','cr_c_out'));
 
 
             $cs = $this->Db_model->c_fetch(array(
-                'c_status >=' => 1,
+                'c_status >=' => 2,
                 'c_id' => $c_id,
             ));
 

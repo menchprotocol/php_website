@@ -279,14 +279,14 @@ class Comm_model extends CI_Model {
                         ),
                     ));
 
-                } elseif($fetch_cs[0]['c_status']<1) {
+                } elseif($fetch_cs[0]['c_status']<2) {
 
                     //Ooops C is no longer active:
                     $this->Comm_model->send_message(array(
                         array(
                             'e_inbound_u_id' => 2738, //Initiated by PA
                             'e_outbound_u_id' => $u['u_id'],
-                            'i_message' => 'I was unable to subscribe you to '.$fetch_cs[0]['c_outcome'].' as its no longer active',
+                            'i_message' => 'I was unable to subscribe you to '.$fetch_cs[0]['c_outcome'].' as its not published',
                         ),
                     ));
 
@@ -323,7 +323,7 @@ class Comm_model extends CI_Model {
             $w_inbound_c_id = intval(one_two_explode('SUBSCRIBE20_', '', $fb_ref));
             $fetch_cs = $this->Db_model->c_fetch(array(
                 'c_id' => $w_inbound_c_id,
-                'c_status >=' => 1,
+                'c_status >=' => 2,
             ));
             if (count($fetch_cs)==1) {
 
@@ -407,7 +407,7 @@ class Comm_model extends CI_Model {
             $w_inbound_c_id = intval(one_two_explode('SUBSCRIBE99_', '', $fb_ref));
             $fetch_cs = $this->Db_model->c_fetch(array(
                 'c_id' => $w_inbound_c_id,
-                'c_status >=' => 1,
+                'c_status >=' => 2,
             ));
 
             if (count($fetch_cs)==1) {

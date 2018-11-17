@@ -7,7 +7,7 @@
 function echo_next_u($page,$limit,$u__outbound_count){
     //We have more child entities than what was listed here.
     //Give user a way to access them:
-    echo '<a class="load-more list-group-item" href="javascript:void(0);" onclick="entity_load_more('.$page.')">';
+    echo '<a class="load-more list-group-item" href="javascript:void(0);" onclick="u_load_next_page('.$page.')">';
 
     //Right content:
     echo '<span class="pull-right" style="margin-right: 6px;"><span class="badge badge-secondary"><i class="fas fa-search-plus"></i></span></span>';
@@ -685,7 +685,7 @@ function echo_w_console($w){
 
 
     //Show user notification level:
-    $ui .= ' <span>'.echo_status('u_fb_notification',$w['u_fb_notification'], true, 'left').'</span> ';
+    $ui .= ' <span>'.echo_status('w_status',$w['w_status'], true, 'left').'</span> ';
 
 
     //Then customize based on request location:
@@ -729,7 +729,6 @@ function echo_w_console($w){
 
 
     //Start with subscription status:
-    $ui .= echo_status('w_status',$w['w_status'], true, 'right').' ';
     $ui .= $subscription_title;
     $ui .= '</div>';
 
@@ -1560,15 +1559,19 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
 
     }
 
+
     //Right content
     $ui .= '<span class="pull-right" style="'.( $level<3 ? 'margin-right: 8px;' : '' ).'">';
 
-    //TODO show intent status here
+
+    //show intent status:
+    $ui .= '<span class="c_status_'.$c['c_id'].'">'.echo_status('c', $c['c_status'], true, 'left').'</span> ';
+
 
     //Show submission stats
     if($k_stats['k_all']>0){
         //Show link to load these intents in user subscriptions:
-        $ui .= '<a href="#kcache-'.$c['c_id'].'" onclick="kcache_load('.$c['c_id'].')" class="badge badge-primary" style="width:40px; margin-right:2px;" data-toggle="tooltip" title="'.$k_stats['k_completed'].'/'.$k_stats['k_all'].' marked as complete across all Action Plans" data-placement="top"><span class="btn-counter">'.round($k_stats['k_completed']/$k_stats['k_all']*100).'%</span><i class="fas fa-flag" style="font-size:0.85em;"></i></a>';
+        $ui .= '<a href="#kcache-'.$c['c_id'].'" onclick="c_load_engagements('.$c['c_id'].')" class="badge badge-primary" style="width:40px; margin-right:2px;" data-toggle="tooltip" title="'.$k_stats['k_completed'].'/'.$k_stats['k_all'].' marked as complete across all Action Plans" data-placement="top"><span class="btn-counter">'.round($k_stats['k_completed']/$k_stats['k_all']*100).'%</span><i class="fas fa-flag" style="font-size:0.85em;"></i></a>';
     }
 
     if($e_count>0){
@@ -1578,7 +1581,7 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
 
     $ui .= '<a href="#messages-'.$c['c_id'].'" onclick="i_load_modify('.$c['c_id'].')" class="msg-badge-'.$c['c_id'].' badge badge-primary '.( $c['c__this_messages']==0 ? 'grey' : '' ).'" style="width:40px;"><span class="btn-counter messages-counter-'.$c['c_id'].'">'.$c['c__this_messages'].'</span><i class="fas fa-comment-dots"></i></a>';
 
-    $ui .= '<a class="badge badge-primary" onclick="load_c_modify('.$c['c_id'].','.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).')" style="margin:-2px -8px 0 2px; width:40px;" href="#modify-'.$c['c_id'].'-'.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).'"><span class="btn-counter">'.echo_estimated_time($c['c__tree_max_hours'],0,1, $c['c_id'], $c['c_time_estimate']).'</span><i class="c_is_any_icon'.$c['c_id'].' '.( $c['c_is_any'] ? 'fas fa-code-merge' : 'fas fa-sitemap' ).'" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i></a> &nbsp;';
+    $ui .= '<a class="badge badge-primary" onclick="c_load_modify('.$c['c_id'].','.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).')" style="margin:-2px -8px 0 2px; width:40px;" href="#modify-'.$c['c_id'].'-'.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).'"><span class="btn-counter">'.echo_estimated_time($c['c__tree_max_hours'],0,1, $c['c_id'], $c['c_time_estimate']).'</span><i class="c_is_any_icon'.$c['c_id'].' '.( $c['c_is_any'] ? 'fas fa-code-merge' : 'fas fa-sitemap' ).'" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i></a> &nbsp;';
 
     //Show link to travel down the tree:
     $ui .= '&nbsp;<a href="/intents/'.$c['c_id'].'" class="tree-badge-'.$c['c_id'].' badge badge-primary '.( $c['c__tree_all_count']<=1 ? 'grey' : '' ).'" style="display:inline-block; margin-right:-1px; width:40px;"><span class="btn-counter outbound-counter-'.$c['c_id'].' '.( $is_inbound && $level==2 ? 'inb-counter' : '' ).'">'.$c['c__tree_all_count'].'</span><i class="'.( $is_inbound && $level<=2 ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></a> ';
@@ -1588,13 +1591,40 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
 
 
 
-    $c_settings = ' c_require_url_to_complete="'.$c['c_require_url_to_complete'].'" c_require_notes_to_complete="'.$c['c_require_notes_to_complete'].'" c_cost_estimate="'.$c['c_cost_estimate'].'" c_is_any="'.$c['c_is_any'].'" ';
+    $c_settings = ' c_require_url_to_complete="'.$c['c_require_url_to_complete'].'" c_require_notes_to_complete="'.$c['c_require_notes_to_complete'].'" c_cost_estimate="'.$c['c_cost_estimate'].'" c_status="'.$c['c_status'].'" c_points="'.$c['c_points'].'" c_trigger_statements="'.$c['c_trigger_statements'].'" c_is_any="'.$c['c_is_any'].'" ';
 
 
     //Sorting & Then Left Content:
     if($level>1 && (!$is_inbound || $level==3)) {
         $ui .= '<i class="fas fa-bars"></i> &nbsp;';
     }
+
+    //Build points UI if any:
+    $extra_ui = ' ';
+    $extra_ui .= '<span class="ui_c_points_'.$c['c_id'].'">';
+    if($c['c_points']>0){
+        $extra_ui .= '<i class="fas fa-weight" style="margin-right: 2px;"></i>'.$c['c_points'];
+    }
+    $extra_ui .= '</span> ';
+
+    $extra_ui .= '<span class="ui_c_require_notes_to_complete_'.$c['c_id'].'">';
+    if(intval($c['c_require_notes_to_complete'])){
+        $extra_ui .= '<i class="fas fa-pencil"></i>';
+    }
+    $extra_ui .= '</span> ';
+
+    $extra_ui .= '<span class="ui_c_require_url_to_complete_'.$c['c_id'].'">';
+    if(intval($c['c_require_url_to_complete'])){
+        $extra_ui .= '<i class="fas fa-link"></i>';
+    }
+    $extra_ui .= '</span> ';
+
+    $extra_ui .= '<span class="ui_c_cost_estimate_'.$c['c_id'].'">';
+    if($c['c_cost_estimate']>0){
+        $extra_ui .= '<i class="fas fa-usd-circle" style="margin-right: 2px;"></i>'.$c['c_cost_estimate'];
+    }
+    $extra_ui .= '</span> ';
+
 
 
     if($level==1){
@@ -1611,16 +1641,10 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
         //Show Landing Page URL:
         $ui .= ' <a href="/'.$c['c_id'].'" data-toggle="tooltip" title="Open Landing Page with Intent tree overview & Messenger subscription button" data-placement="top"><i class="fas fa-shopping-cart"></i></a>';
 
+        $ui .= $extra_ui;
 
-        //Additional details about this intent?
-        $ui .= '<div style="padding-top: 5px;">';
-        if(in_array($c['c_id'],$CI->config->item('featured_cs'))) {
-            //$ui .= '<b data-toggle="tooltip" title="Intention is featured on landing pages under [Related Intentions]" class="underdot" data-placement="top" style="color:#0000FF !important;"><i class="fas fa-bullhorn"></i> FEATURED</b>';
-        }
-        if(in_array($c['c_id'],$CI->config->item('onhold_intents'))) {
-            $ui .= ' &nbsp;&nbsp;<b data-toggle="tooltip" title="Intention is on-hold and not publicly accessible" class="underdot" data-placement="top" style="color:#FF0000 !important;"><i class="fas fa-exclamation-triangle"></i> ON HOLD</b>';
-        }
-        $ui .= '</div>';
+        //Expand trigger statements:
+        $ui .= '<div class="c_trigger_statements_'.$c['c_id'].'" style="margin-top:2px;">' . nl2br($c['c_trigger_statements']) . '</div>';
 
     } elseif($level==2){
 
@@ -1634,13 +1658,17 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
         }
         $ui .= '</span>';
 
-        $ui .= '<span id="title_'.$c['cr_id'].'" class="cdr_crnt c_outcome_'.$c['c_id'].'" outbound-rank="'.$c['cr_outbound_rank'].'" '.$c_settings.'>'.$c['c_outcome'].'</span> ';
+        $ui .= '<span id="title_'.$c['cr_id'].'" class="cdr_crnt c_outcome_'.$c['c_id'].( strlen($c['c_trigger_statements'])>0 ? ' has-desc ' : '' ).'" outbound-rank="'.$c['cr_outbound_rank'].'" '.$c_settings.' data-toggle="tooltip" data-placement="right" title="'.$c['c_trigger_statements'].'">'.$c['c_outcome'].'</span> ';
+
+        $ui .= $extra_ui;
 
     } elseif ($level==3){
 
         //Steps
         $ui .= '<span class="inline-level inline-level-'.$level.'">#'.$c['cr_outbound_rank'].'</span>';
-        $ui .= '<span id="title_'.$c['cr_id'].'" class="c_outcome_'.$c['c_id'].'" outbound-rank="'.$c['cr_outbound_rank'].'" '.$c_settings.'>'.$c['c_outcome'].'</span> ';
+        $ui .= '<span id="title_'.$c['cr_id'].'" class="c_outcome_'.$c['c_id'].( strlen($c['c_trigger_statements'])>0 ? ' has-desc ' : '' ).'" outbound-rank="'.$c['cr_outbound_rank'].'" '.$c_settings.' data-toggle="tooltip" data-placement="right" title="'.$c['c_trigger_statements'].'">'.$c['c_outcome'].'</span> ';
+
+        $ui .= $extra_ui;
 
     }
 
@@ -1663,9 +1691,9 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
         //Step Input field:
         $ui .= '<div class="list-group-item list_input new-step-input">
             <div class="input-group">
-                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="new_intent('.$c['c_id'].',3);" intent-id="'.$c['c_id'].'"><input type="text" class="form-control autosearch intentadder-level-3 algolia_search bottom-add" maxlength="'.$CI->config->item('c_outcome_max').'" id="addintent-cr-'.$c['cr_id'].'" intent-id="'.$c['c_id'].'" placeholder="Add #Intent"></form></div>
+                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="c_js_new('.$c['c_id'].',3);" intent-id="'.$c['c_id'].'"><input type="text" class="form-control autosearch intentadder-level-3 algolia_search bottom-add" maxlength="'.$CI->config->item('c_outcome_max').'" id="addintent-cr-'.$c['cr_id'].'" intent-id="'.$c['c_id'].'" placeholder="Add #Intent"></form></div>
                 <span class="input-group-addon" style="padding-right:8px;">
-                    <span data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" onclick="new_intent('.$c['c_id'].',3);" class="badge badge-primary pull-right" intent-id="'.$c['c_id'].'" style="cursor:pointer; margin: 13px -6px 1px 13px;">
+                    <span data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" onclick="c_js_new('.$c['c_id'].',3);" class="badge badge-primary pull-right" intent-id="'.$c['c_id'].'" style="cursor:pointer; margin: 13px -6px 1px 13px;">
                         <div><i class="fas fa-plus"></i></div>
                     </span>
                 </span>
@@ -1709,12 +1737,12 @@ function echo_u($u, $level, $can_edit, $is_inbound=false){
     if(array_key_exists(1281, $udata['u__inbounds']) && $u['u_status']==0){
 
         $ui .= '<i class="'.$status_index['u'][1]['s_icon'].'"></i> ';
-        $ui .= '<a href="javascript:update_u_status('.$u['u_id'].',1)" data-toggle="tooltip" data-placement="left" title="Current status is '.$status_index['u'][$u['u_status']]['s_name'].'. Click to update entity status to '.$status_index['u'][1]['s_name'].': '.$status_index['u'][1]['s_desc'].'" style="text-decoration:underline;">Set '.$status_index['u'][1]['s_name'].'</a>';
+        $ui .= '<a href="javascript:u_save_status('.$u['u_id'].',1)" data-toggle="tooltip" data-placement="left" title="Current status is '.$status_index['u'][$u['u_status']]['s_name'].'. Click to update entity status to '.$status_index['u'][1]['s_name'].': '.$status_index['u'][1]['s_desc'].'" style="text-decoration:underline;">Set '.$status_index['u'][1]['s_name'].'</a>';
 
     } elseif(array_key_exists(1281, $udata['u__inbounds']) && $u['u_status']==1){
 
         $ui .= '<i class="'.$status_index['u'][2]['s_icon'].'" style="font-size:0.9em;"></i> ';
-        $ui .= '<a href="javascript:update_u_status('.$u['u_id'].',2)" data-toggle="tooltip" data-placement="left" title="Current status is '.$status_index['u'][$u['u_status']]['s_name'].'. Click to mark entity as '.$status_index['u'][2]['s_name'].': '.$status_index['u'][2]['s_desc'].'" style="text-decoration:underline;">Set '.$status_index['u'][2]['s_name'].'</a>';
+        $ui .= '<a href="javascript:u_save_status('.$u['u_id'].',2)" data-toggle="tooltip" data-placement="left" title="Current status is '.$status_index['u'][$u['u_status']]['s_name'].'. Click to mark entity as '.$status_index['u'][2]['s_name'].': '.$status_index['u'][2]['s_desc'].'" style="text-decoration:underline;">Set '.$status_index['u'][2]['s_name'].'</a>';
 
     } elseif($u['u_status']==2){
 
@@ -1736,10 +1764,10 @@ function echo_u($u, $level, $can_edit, $is_inbound=false){
     }
 
 
-    $ui .= '<'.( count($messages)>0 ? 'a href="#messages-'.$u['u_id'].'" onclick="load_u_messages('.$u['u_id'].')" class="badge badge-secondary"' : 'span class="badge badge-secondary grey"' ).' style="width:40px;">'.( count($messages)>0 ? '<span class="btn-counter">'.count($messages).'</span>' : '' ).'<i class="fas fa-comment-dots"></i></'.( count($messages)>0 ? 'a' : 'span' ).'>';
+    $ui .= '<'.( count($messages)>0 ? 'a href="#messages-'.$u['u_id'].'" onclick="u_load_messages('.$u['u_id'].')" class="badge badge-secondary"' : 'span class="badge badge-secondary grey"' ).' style="width:40px;">'.( count($messages)>0 ? '<span class="btn-counter">'.count($messages).'</span>' : '' ).'<i class="fas fa-comment-dots"></i></'.( count($messages)>0 ? 'a' : 'span' ).'>';
 
 
-    $ui .= '<'.( $can_edit ? 'a href="#modify-'.$u['u_id'].'-'.$ur_id.'" onclick="load_u_modify('.$u['u_id'].','.$ur_id.')" class="badge badge-secondary"' : 'span class="badge badge-secondary grey"' ).' style="margin:-2px -6px 0 2px; width:40px;">'.( $u['u__e_score']>0 ? '<span class="btn-counter" data-toggle="tooltip" data-placement="left" title="Engagement Score">'.echo_big_num($u['u__e_score']).'</span>' : '' ).'<i class="fas fa-sitemap" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i></'.( $can_edit ? 'a' : 'span' ).'> &nbsp;';
+    $ui .= '<'.( $can_edit ? 'a href="#modify-'.$u['u_id'].'-'.$ur_id.'" onclick="u_load_modify('.$u['u_id'].','.$ur_id.')" class="badge badge-secondary"' : 'span class="badge badge-secondary grey"' ).' style="margin:-2px -6px 0 2px; width:40px;">'.( $u['u__e_score']>0 ? '<span class="btn-counter" data-toggle="tooltip" data-placement="left" title="Engagement Score">'.echo_big_num($u['u__e_score']).'</span>' : '' ).'<i class="fas fa-sitemap" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i></'.( $can_edit ? 'a' : 'span' ).'> &nbsp;';
 
     $ui .= '<a class="badge badge-secondary" href="/entities/'.$u['u_id'].'" style="display:inline-block; margin-right:6px; width:40px; margin-left:1px;">'.(isset($u['u__outbound_count']) && $u['u__outbound_count']>0 ? '<span class="btn-counter '.( $level==1 ? 'li-outbound-count' : '' ).'">'.$u['u__outbound_count'].'</span>' : '').'<i class="'.( $is_inbound ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></a>';
 

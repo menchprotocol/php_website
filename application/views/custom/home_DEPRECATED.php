@@ -185,7 +185,7 @@
 $child_cs = $this->Db_model->cr_outbound_fetch(array(
     'cr.cr_inbound_c_id' => 7241, //Get hired as a programmer intents that are published
     'cr.cr_status >=' => 0,
-    'c.c_status >' => 0,
+    'c.c_status' => 3,
 ));
 
 echo '<h2 class="title" style="text-align:center; margin-top:50px;">Trained Career Paths:</h2>';

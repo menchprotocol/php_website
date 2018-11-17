@@ -503,9 +503,9 @@ class Cron extends CI_Controller {
         //Fetch all active subscriptions:
         $user_ids_served = array(); //We use this to ensure we're only service one subscription per user
         $active_subscriptions = $this->Db_model->w_fetch(array(
-            'w_status' => 1, //Active subscriptions
-            'u_status >=' => 0, //Active entity
-            'c_status >=' => 1, //Active intent TODO Update to 2 when new intent statuses are implemented
+            'w_status' => 1,
+            'u_status >=' => 0,
+            'c_status >=' => 2,
             'w_last_served >=' => date("Y-m-d H:i:s", (time()+($bot_settings['reminder_frequency_min']*60))),
         ), array('c','u'), array(
             'w_last_served' => 'ASC', //Fetch users who have not been served the longest, so we can pay attention to them...

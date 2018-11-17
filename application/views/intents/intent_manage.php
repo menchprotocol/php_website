@@ -119,6 +119,8 @@ if(isset($orphan_cs)){
             <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;"><a href="javascript:void(0)" onclick="$('#modifybox').addClass('hidden')"><i class="fas fa-times-circle"></i></a></div>
 
             <div class="grey-box">
+
+
                 <div>
                     <div class="title"><h4><i class="fas fa-bullseye-arrow"></i> Target Outcome [<span style="margin:0 0 10px 0; font-size:0.8em;"><span id="charNameNum">0</span>/<?= $this->config->item('c_outcome_max') ?></span>] <span id="hb_598" class="help_button" intent-id="598"></span></h4></div>
                     <div class="help_body maxout" id="content_598"></div>
@@ -126,58 +128,95 @@ if(isset($orphan_cs)){
                     <div class="form-group label-floating is-empty">
                         <div class="input-group border">
                             <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;">To</span>
-                            <input style="padding-left:0;" type="text" id="c_outcome" onkeyup="changeName()" maxlength="<?= $this->config->item('c_outcome_max') ?>" value="" class="form-control algolia_search">
+                            <input style="padding-left:0;" type="text" id="c_outcome" onkeyup="c_outcome_word_count()" maxlength="<?= $this->config->item('c_outcome_max') ?>" value="" class="form-control algolia_search">
                         </div>
                     </div>
                 </div>
 
 
-                <div style="margin-top:20px;">
-                    <div class="title"><h4><i class="fas fa-shield-check"></i> Completion Settings</h4></div>
-                    <div class="form-group label-floating is-empty">
 
-                        <div class="radio" style="display:inline-block; border-bottom:1px dotted #999; margin-right:10px; margin-top: 0 !important;" data-toggle="tooltip" title="Intent is completed when ALL outbound intents are marked as complete" data-placement="right">
-                            <label>
-                                <input type="radio" id="c_is_any_0" name="c_is_any" value="0" />
-                                <i class="fas fa-sitemap"></i> All Outs
-                            </label>
-                        </div>
-                        <div class="radio" style="display: inline-block; border-bottom:1px dotted #999; margin-top: 0 !important;" data-toggle="tooltip" title="Intent is completed when ANY outbound intent is marked as complete" data-placement="right">
-                            <label>
-                                <input type="radio" id="c_is_any_1" name="c_is_any" value="1" />
-                                <i class="fas fa-code-merge"></i> Any Out
-                            </label>
-                        </div>
+                <div class="title" style="margin-top:15px;"><h4><i class="fas fa-comment-edit"></i> Trigger Statements <span id="hb_7724" class="help_button" intent-id="7724"></span></h4></div>
+                <div class="help_body maxout" id="content_7724"></div>
+                <textarea class="form-control text-edit border msg" id="c_trigger_statements" style="height:86px; background-color:#FFFFFF !important;"></textarea>
 
+
+
+
+                <div class="row">
+                    <div class="col-md-6" style="margin-top:20px;">
+                        <div class="title"><h4><i class="fas fa-sliders-h"></i> Status</h4></div>
+                        <select class="form-control" id="c_status">
+                        <?php
+                        foreach(echo_status('c') as $c_status_id=>$c_status){
+                            echo '<option value="'.$c_status_id.'" title="'.$c_status['s_desc'].'">'.$c_status['s_name'].'</option>';
+                        }
+                        ?>
+                        </select>
                     </div>
-
-                    <div class="form-group label-floating is-empty completion-settings">
-                        <div class="checkbox is_task">
-                            <label style="display: block; font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" id="c_require_notes_to_complete" /><i class="fas fa-pencil"></i> Require a written note</label>
-                            <label style="display: block; font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" id="c_require_url_to_complete" /><i class="fas fa-link"></i> Require URL in response</label>
-                        </div>
+                    <div class="col-md-6" style="margin-top:20px;">
+                        <div class="title"><h4><i class="fas fa-weight"></i> Assessment Points</h4></div>
+                        <select class="form-control" id="c_points">
+                            <?php
+                            foreach($this->config->item('c_point_options') as $point){
+                                echo '<option value="'.$point.'">'.$point.' Point'.echo__s($point).'</option>';
+                            }
+                            ?>
+                        </select>
                     </div>
-
                 </div>
 
 
-                <div style="margin-top:20px;">
-                    <div class="title"><h4><i class="fas fa-box-check"></i> Completion Resources</h4></div>
 
-                    <div class="form-group label-floating is-empty" style="max-width:150px;">
-                        <div class="input-group border">
-                            <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;"><i class="fas fa-clock"></i></span>
-                            <input style="padding-left:0;" type="number" step="1" min="0" max="300" id="c_time_estimate" value="" class="form-control">
-                            <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;">Minutes</span>
+
+
+
+                <div class="row">
+                    <div class="col-md-6" style="margin-top:20px;">
+
+                        <div class="title"><h4><i class="fas fa-shield-check"></i> Completion Settings</h4></div>
+                        <div class="form-group label-floating is-empty">
+
+                            <div class="radio" style="display:inline-block; border-bottom:1px dotted #999; margin-right:10px; margin-top: 0 !important;" data-toggle="tooltip" title="Intent is completed when ALL outbound intents are marked as complete" data-placement="right">
+                                <label>
+                                    <input type="radio" id="c_is_any_0" name="c_is_any" value="0" />
+                                    <i class="fas fa-sitemap"></i> All Outs
+                                </label>
+                            </div>
+                            <div class="radio" style="display: inline-block; border-bottom:1px dotted #999; margin-top: 0 !important;" data-toggle="tooltip" title="Intent is completed when ANY outbound intent is marked as complete" data-placement="right">
+                                <label>
+                                    <input type="radio" id="c_is_any_1" name="c_is_any" value="1" />
+                                    <i class="fas fa-code-merge"></i> Any Out
+                                </label>
+                            </div>
+
                         </div>
-                    </div>
-                    <div id="child-hours" style="margin-left:6px;"></div>
 
-                    <div class="form-group label-floating is-empty" style="max-width:150px;">
-                        <div class="input-group border">
-                            <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;"><i class="fas fa-usd-circle"></i></span>
-                            <input style="padding-left:0;" type="number" step="0.01" min="0" max="5000" id="c_cost_estimate" value="" class="form-control">
-                            <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;">USD</span>
+                        <div class="form-group label-floating is-empty completion-settings">
+                            <div class="checkbox is_task">
+                                <label style="display: block; font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" id="c_require_notes_to_complete" /><i class="fas fa-pencil"></i> Require a written note</label>
+                                <label style="display: block; font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" id="c_require_url_to_complete" /><i class="fas fa-link"></i> Require URL in response</label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6" style="margin-top:20px;">
+                        <div class="title"><h4><i class="fas fa-box-check"></i> Completion Resources</h4></div>
+
+                        <div class="form-group label-floating is-empty" style="max-width:150px;">
+                            <div class="input-group border">
+                                <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;"><i class="fas fa-clock"></i></span>
+                                <input style="padding-left:0;" type="number" step="1" min="0" max="300" id="c_time_estimate" value="" class="form-control">
+                                <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;">Minutes</span>
+                            </div>
+                        </div>
+                        <div id="child-hours" style="margin-left:6px;"></div>
+
+                        <div class="form-group label-floating is-empty" style="max-width:150px;">
+                            <div class="input-group border">
+                                <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;"><i class="fas fa-usd-circle"></i></span>
+                                <input style="padding-left:0;" type="number" step="0.01" min="0" max="5000" id="c_cost_estimate" value="" class="form-control">
+                                <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;">USD</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -185,7 +224,7 @@ if(isset($orphan_cs)){
 
                 <table width="100%" style="margin-top:10px;">
                     <tr>
-                        <td class="save-td"><a href="javascript:save_c_modify();" class="btn btn-primary">Save</a></td>
+                        <td class="save-td"><a href="javascript:c_save_modify();" class="btn btn-primary">Save</a></td>
                         <td><span class="save_intent_changes"></span></td>
                         <td style="width:80px; text-align:right;">
 

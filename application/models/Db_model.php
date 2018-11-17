@@ -31,7 +31,7 @@ class Db_model extends CI_Model {
         $last_working_on_any = $this->Db_model->k_fetch(array(
             'w_id' => $w_id,
             'w_status' => 1, //Active subscriptions
-            'c_status >=' => 1,
+            'c_status >=' => 2,
             'k_rank >' => $min_k_rank,
             //The first case is for OR intents that a child is not yet selected, and the second part is for regular incompleted items:
             '(k_status IN (1,-2) AND c_is_any=1)' => null, //Not completed or not yet started
@@ -43,7 +43,7 @@ class Db_model extends CI_Model {
         $first_pending_all = $this->Db_model->k_fetch(array(
             'w_id' => $w_id,
             'w_status' => 1, //Active subscriptions
-            'c_status >=' => 1,
+            'c_status >=' => 2,
             'k_rank >' => $min_k_rank,
             //The first case is for OR intents that a child is not yet selected, and the second part is for regular incompleted items:
             'k_status IN (0,-2)' => null, //Not completed or not yet started
@@ -176,7 +176,7 @@ class Db_model extends CI_Model {
             'k_w_id' => $w_id,
             'cr_inbound_c_id' => $cr_inbound_c_id, //Fetch children of parent intent which are the siblings of current intent
             'cr_outbound_c_id' => $c_id, //The answer
-            'c_status >=' => 1,
+            'c_status >=' => 2,
         ), array('w','cr','cr_c_in'));
 
         if(count($chosen_path)==1){
@@ -186,7 +186,7 @@ class Db_model extends CI_Model {
                 'k_w_id' => $w_id,
                 'cr_inbound_c_id' => $cr_inbound_c_id, //Fetch children of parent intent which are the siblings of current intent
                 'cr_outbound_c_id' => $c_id, //The answer
-                'c_status >=' => 1,
+                'c_status >=' => 2,
             ), array('w','cr','cr_c_out'));
 
             if(count($path_requirements)==1){
@@ -242,7 +242,7 @@ class Db_model extends CI_Model {
                 'k_w_id' => $w['w_id'],
                 'cr_inbound_c_id' => $cr['cr_inbound_c_id'], //Fetch children of parent intent which are the siblings of current intent
                 'cr_outbound_c_id !=' => $cr['cr_outbound_c_id'], //NOT The answer (we need its siblings)
-                'c_status >=' => 1,
+                'c_status >=' => 2,
                 'k_status IN (0,1)' => null,
             ), array('w','cr','cr_c_out'));
 
@@ -299,7 +299,7 @@ class Db_model extends CI_Model {
                 $parent_ks = $this->Db_model->k_fetch(array(
                     'k_id' => $parent_k_id,
                     'k_w_id' => $w['w_id'],
-                    'c_status >=' => 1,
+                    'c_status >=' => 2,
                     'k_status <' => 2, //Not completed in any way
                 ), array('cr','cr_c_out'));
                 
@@ -542,7 +542,7 @@ class Db_model extends CI_Model {
             //We are linking to $link_c_id, lets make sure it exists:
             $new_cs = $this->Db_model->c_fetch(array(
                 'c_id' => $link_c_id,
-                'c.c_status >' => 0,
+                'c_status >=' => 0,
             ), ( 3 - $next_level ));
 
             if(count($new_cs)<=0){
@@ -613,7 +613,7 @@ class Db_model extends CI_Model {
             'cr_outbound_c_id' => $new_c['c_id'],
             'cr_outbound_rank' => 1 + $this->Db_model->max_value('v5_intent_links','cr_outbound_rank', array(
                     'cr_status >=' => 1,
-                    'c_status >' => 0,
+                    'c_status >=' => 0,
                     'cr_inbound_c_id' => intval($c_id),
                 )),
         ));
@@ -1280,7 +1280,6 @@ class Db_model extends CI_Model {
                 $intents[$key]['c__inbounds'] = $this->Db_model->cr_inbound_fetch(array(
                     'cr.cr_outbound_c_id' => $value['c_id'],
                     'cr.cr_status >=' => 1,
-                    'c.c_id NOT IN ('.join(',', $this->config->item('onhold_intents')).')' => null,
                 ) , $join_objects);
             }
 
@@ -1290,7 +1289,7 @@ class Db_model extends CI_Model {
                 $intents[$key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
                     'cr.cr_inbound_c_id' => $value['c_id'],
                     'cr.cr_status >=' => 1,
-                    'c.c_status >=' => 1,
+                    'c.c_status >=' => 0,
                 ) , $join_objects );
 
 
@@ -1301,7 +1300,7 @@ class Db_model extends CI_Model {
                         $intents[$key]['c__child_intents'][$key2]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
                             'cr.cr_inbound_c_id' => $value2['c_id'],
                             'cr.cr_status >=' => 1,
-                            'c.c_status >=' => 1,
+                            'c.c_status >=' => 0,
                         ) , $join_objects );
                     }
                 }
@@ -1366,7 +1365,7 @@ class Db_model extends CI_Model {
                     $return[$key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
                         'cr.cr_inbound_c_id' => $value['c_id'],
                         'cr.cr_status >=' => 0,
-                        'c.c_status >' => 0,
+                        'c.c_status >=' => 0,
                     ));
                 }
 
@@ -2270,13 +2269,13 @@ class Db_model extends CI_Model {
             $child_cs = $this->Db_model->cr_outbound_fetch(array(
                 'cr.cr_inbound_c_id' => $c_id,
                 'cr.cr_status >=' => 0,
-                'c.c_status >' => 0,
+                'c.c_status >=' => 0,
             ));
         } else {
             $child_cs = $this->Db_model->cr_inbound_fetch(array(
                 'cr.cr_outbound_c_id' => $c_id,
                 'cr.cr_status >=' => 0,
-                'c.c_status >' => 0,
+                'c.c_status >=' => 0,
             ));
         }
 
@@ -2633,8 +2632,8 @@ class Db_model extends CI_Model {
         //A recursive function to fetch all Tree for a given intent, either upwards or downwards
         $child_cs = $this->Db_model->k_fetch(array(
             'k_w_id' => $w_id,
+            'c_status >=' => 2,
             ( $fetch_outbound ? 'cr_inbound_c_id' : 'cr_outbound_c_id' ) => $c_id,
-            'c_status >=' => 1,
         ), array('cr',( $fetch_outbound ? 'cr_c_out' : 'cr_c_in' )));
 
 
@@ -2701,7 +2700,7 @@ class Db_model extends CI_Model {
 
 
         if(is_dev()){
-            //Do a call on live:
+            //Do a call on live as this does not work on local:
             return json_decode(curl_html("https://mench.com/cron/algolia_sync/".$obj."/".$obj_id));
         }
 
@@ -2755,6 +2754,7 @@ class Db_model extends CI_Model {
                 $new_item['u_id'] = intval($item['u_id']); //rquired for all objects
                 $new_item['u_id'] = intval($item['u_id']); //rquired for all objects
                 $new_item['u__e_score'] = intval($item['u__e_score']);
+                $new_item['u_status'] = intval($item['u_status']);
                 $new_item['u_full_name'] = $item['u_full_name'];
                 $new_item['u_keywords'] = $item['u_bio'];
                 $new_item['_tags'] = array();
@@ -2804,41 +2804,24 @@ class Db_model extends CI_Model {
 
             } elseif($obj=='c'){
 
-                //Should we skip this?
-                if(in_array($item['c_id'],$this->config->item('onhold_intents'))){
-                    continue;
-                }
-
                 $new_item['c_id'] = intval($item['c_id']);
                 $new_item['c_outcome'] = $item['c_outcome'];
                 $new_item['c_is_any'] = intval($item['c_is_any']);
-                $new_item['c_keywords'] = ( strlen($item['c_trigger_statements'])>0 ? join(' ',json_decode($item['c_trigger_statements'])) : '' );
+                $new_item['c_keywords'] = trim($item['c_trigger_statements']);
+                $new_item['c_status'] = intval($item['c_status']);
 
                 $new_item['c__tree_max_mins'] = intval($item['c__tree_max_hours']*60);
                 $new_item['c__tree_min_mins'] = intval($item['c__tree_min_hours']*60);
                 $new_item['c__tree_all_count'] = intval($item['c__tree_all_count']);
                 $new_item['c__tree_messages'] = intval($item['c__tree_messages']);
 
-                //Fetch all Messages:
-                $messages = $this->Db_model->i_fetch(array(
-                    'i_status >=' => 0,
-                    'i_outbound_c_id' => $item['c_id'],
-                ));
-                foreach($messages as $i){
-                    //Add main URL:
-                    $new_item['c_keywords'] .= ' '.$i['i_message'];
-                }
-
-                //Clean keywords
-                $new_item['c__this_messages'] = count($messages);
-                $new_item['c_keywords'] = trim(strip_tags($new_item['c_keywords']));
-
                 //Append parent intents:
                 $new_item['_tags'] = array();
+
                 $child_cs = $this->Db_model->cr_inbound_fetch(array(
                     'cr.cr_outbound_c_id' => $item['c_id'],
                     'cr.cr_status >=' => 1,
-                    'c.c_status >=' => 1,
+                    'c.c_status >=' => 0,
                 ));
 
                 if(count($child_cs)>0){

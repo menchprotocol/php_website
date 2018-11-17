@@ -20,8 +20,8 @@ class Intents extends CI_Controller
 
         //Fetch intent:
         $cs = $this->Db_model->c_fetch(array(
-            'c.c_id' => $inbound_c_id,
-            'c.c_status >' => 0,
+            'c_id' => $inbound_c_id,
+            'c.c_status >=' => 0,
         ), 2);
         if(!isset($cs[0])){
             die('Intent ID '.$inbound_c_id.' not found');
@@ -36,8 +36,7 @@ class Intents extends CI_Controller
             //Also count orphan intents:
             $orphan_c_count = count($this->Db_model->c_fetch(array(
                 'c.c__is_orphan' => 1,
-                'c.c_status >' => 0,
-                'c.c_id NOT IN ('.join(',',$this->config->item('universal_intents')).')' => null,
+                'c.c_status >=' => 0,
             )));
         } else {
             $orphan_c_count = 0;
@@ -81,8 +80,7 @@ class Intents extends CI_Controller
         //Fetch intent:
         $orphan_cs = $this->Db_model->c_fetch(array(
             'c.c__is_orphan' => 1,
-            'c.c_status >' => 0,
-            'c.c_id NOT IN ('.join(',',$this->config->item('universal_intents')).')' => null,
+            'c.c_status >=' => 0,
         ), 1);
 
         //Load view
@@ -101,8 +99,7 @@ class Intents extends CI_Controller
         //Fetch data:
         $cs = $this->Db_model->c_fetch(array(
             'c.c_id' => $c_id,
-            'c.c_status >' => 0,
-            'c.c_id NOT IN ('.join(',', $this->config->item('onhold_intents')).')' => null,
+            'c.c_status >=' => 2, //Published or featured
         ), 2, array('c__messages','c__inbounds'));
 
 
@@ -284,6 +281,21 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Cost Estimate',
             ));
+        } elseif(!isset($_POST['c_status'])){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Status',
+            ));
+        } elseif(!isset($_POST['c_points'])){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Points',
+            ));
+        } elseif(!isset($_POST['c_trigger_statements'])){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Trigger Statements',
+            ));
         } elseif(intval($_POST['c_cost_estimate'])<0 || intval($_POST['c_cost_estimate'])>300){
             return echo_json(array(
                 'status' => 0,
@@ -310,6 +322,9 @@ class Intents extends CI_Controller
             'c_cost_estimate' => doubleval($_POST['c_cost_estimate']),
             'c_time_estimate' => $_POST['c_time_estimate'],
             'c_is_any' => intval($_POST['c_is_any']),
+            'c_status' => intval($_POST['c_status']),
+            'c_points' => intval($_POST['c_points']),
+            'c_trigger_statements' => trim($_POST['c_trigger_statements']),
         );
 
 
@@ -407,7 +422,7 @@ class Intents extends CI_Controller
         //Fetch intent to see what kind is it:
         $cs = $this->Db_model->c_fetch(array(
             'c.c_id' => intval($_POST['c_id']),
-            'c.c_status >' => 0,
+            'c.c_status >=' => 0,
         ));
         if(!isset($cs[0])){
             echo_json(array(
@@ -490,7 +505,7 @@ class Intents extends CI_Controller
         //Check how many are outside of this:
         $orphans = $this->Db_model->c_fetch(array(
             'c.c_id NOT IN ('.join(',',$sync['c_flat']).')' => null,
-            'c.c_status >' => 0,
+            'c.c_status >=' => 0,
         ));
         $sync['orphan_count_update'] = 0;
         $sync['orphan_total'] = 0;
@@ -520,7 +535,8 @@ class Intents extends CI_Controller
     }
 
 
-    function c_sort(){
+    function c_save_sort(){
+
         //Auth user and Load object:
         $udata = auth(array(1308));
         if(!$udata){
@@ -562,7 +578,7 @@ class Intents extends CI_Controller
                     $this->Db_model->cr_update( intval($cr_id) , array(
                         'cr_inbound_u_id' => $udata['u_id'],
                         'cr_timestamp' => date("Y-m-d H:i:s"),
-                        'cr_outbound_rank' => intval($rank), //Might have decimal for DRAFTING Tasks/Steps
+                        'cr_outbound_rank' => intval($rank),
                     ));
                 }
 
@@ -640,8 +656,15 @@ class Intents extends CI_Controller
     }
 
 
+    //This is used to update the intent UI when a status update happens:
+    function c_echo_status(){
+        return echo_json(array(
+            'status' => 1,
+            'status_ui' => echo_status('c', $_POST['c_status'], true, 'left'),
+        ));
+    }
 
-    function kcache_load($c_id){
+    function c_load_engagements($c_id){
 
         //Auth user and check required variables:
         $udata = auth(array(1308)); //Trainers
@@ -656,7 +679,7 @@ class Intents extends CI_Controller
         $this->load->view('custom/shared/p_header' , array(
             'title' => 'User Engagements',
         ));
-        $this->load->view('intents/kcache_load' , array(
+        $this->load->view('intents/c_load_engagements' , array(
             'c_id' => $c_id,
         ));
         $this->load->view('custom/shared/p_footer');

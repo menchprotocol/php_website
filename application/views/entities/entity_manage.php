@@ -115,12 +115,12 @@ if(count($counts)>0 && $counts[0]['u_counts']<$entity['u__outbound_count']){
     $status_index = $this->config->item('object_statuses');
 
     //Show fixed All button:
-    echo '<a href="javascript:void(0)" onclick="filter_u_status(-1)" class="btn btn-default btn-secondary u-status-filter u-status--1" data-toggle="tooltip" data-placement="top" title="View all entities"><i class="fas fa-at"></i><span class="hide-small"> All</span> [<span class="li-outbound-count">'.$entity['u__outbound_count'].'</span>]</a>';
+    echo '<a href="javascript:void(0)" onclick="u_load_filter_status(-1)" class="btn btn-default btn-secondary u-status-filter u-status--1" data-toggle="tooltip" data-placement="top" title="View all entities"><i class="fas fa-at"></i><span class="hide-small"> All</span> [<span class="li-outbound-count">'.$entity['u__outbound_count'].'</span>]</a>';
 
     //Show each specific filter based on DB counts:
     foreach($counts as $c_c){
         $st = $status_index['u'][$c_c['u_status']];
-        echo '<a href="#status-'.$c_c['u_status'].'" onclick="filter_u_status('.$c_c['u_status'].')" class="btn btn-default u-status-filter u-status-'.$c_c['u_status'].'" data-toggle="tooltip" data-placement="top" title="'.$st['s_desc'].'"><i class="'.$st['s_icon'].'"></i><span class="hide-small"> '.$st['s_name'].'</span> [<span class="count-u-status-'.$c_c['u_status'].'">'.$c_c['u_counts'].'</span>]</a>';
+        echo '<a href="#status-'.$c_c['u_status'].'" onclick="u_load_filter_status('.$c_c['u_status'].')" class="btn btn-default u-status-filter u-status-'.$c_c['u_status'].'" data-toggle="tooltip" data-placement="top" title="'.$st['s_desc'].'"><i class="'.$st['s_icon'].'"></i><span class="hide-small"> '.$st['s_name'].'</span> [<span class="count-u-status-'.$c_c['u_status'].'">'.$c_c['u_counts'].'</span>]</a>';
     }
 
 }
@@ -224,10 +224,10 @@ if(!in_array($entity['u_id'], array(1278,1326,2750))){
 
           <div class="grey-box">
               <div class="title" style="margin-bottom:0; padding-bottom:0;"><h4><i class="fas fa-fingerprint"></i> Name [<span style="margin:0 0 10px 0; font-size:0.8em;"><span id="charNameNum">0</span>/<?= $this->config->item('u_full_name_max') ?></span>]</h4></div>
-              <input type="text" id="u_full_name" value="" onkeyup="changeName()" maxlength="<?= $this->config->item('u_full_name_max') ?>" data-lpignore="true" placeholder="Name" class="form-control border">
+              <input type="text" id="u_full_name" value="" onkeyup="u_full_name_word_count()" maxlength="<?= $this->config->item('u_full_name_max') ?>" data-lpignore="true" placeholder="Name" class="form-control border">
 
               <div class="title" style="margin-top:15px;"><h4><i class="fas fa-comment-dots"></i> Introductory Message [<span style="margin:0 0 10px 0; font-size:0.8em;"><span id="charNum">0</span>/<?= $this->config->item('message_max') ?></span>]</h4></div>
-              <textarea class="form-control text-edit border msg" id="u_bio" style="height:146px; background-color:#FFFFFF !important;" onkeyup="changeBio()"></textarea>
+              <textarea class="form-control text-edit border msg" id="u_bio" style="height:146px; background-color:#FFFFFF !important;" onkeyup="u_bio_counter()"></textarea>
 
 
               <!-- Password credential management -->
@@ -247,7 +247,7 @@ if(!in_array($entity['u_id'], array(1278,1326,2750))){
 
               <table width="100%" style="margin-top:10px;">
                   <tr>
-                      <td class="save-td"><a href="javascript:save_u_modify();" class="btn btn-secondary">Save</a></td>
+                      <td class="save-td"><a href="javascript:u_save_modify();" class="btn btn-secondary">Save</a></td>
                       <td><span class="save_entity_changes"></span></td>
                       <td style="width:100px; text-align:right;">
 

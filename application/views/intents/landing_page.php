@@ -136,7 +136,7 @@
                     if($i['i_status']==1){
                         echo echo_i( array_merge( $i , array(
                             'noshow' => 1,
-                        )) , 'Dear Student' ); //As they are a guest at this point
+                        )) , 'Dear candidate' ); //As they are a guest at this point
                     }
                 }
 
@@ -149,7 +149,7 @@
                     echo '</ul>';
 
                     //Since it has children, lets also give the option to navigate downwards ONLY IF...
-                    if($c1['c__tree_max_hours']>=0.5){
+                    if($c1['c_status']>=2){
                         echo '<div>You can choose to <a href="/'.$c1['c_id'].'" '.( $c['c_id']==$this->config->item('primary_c') ? 'onclick="confirm_child_go('.$c1['c_id'].')"' : '' ).' class="alink-'.$c1['c_id'].'" style="text-decoration:underline;">subscribe to this part only</a>.</div>';
                     }
 
@@ -236,7 +236,7 @@
     <div class="list-group actionplan_list">
         <?php
         $featured_cs = $fetch_cs = $this->Db_model->c_fetch(array(
-            'c_id IN ('.join(',', $this->config->item('featured_cs')).')' => null,
+            'c_status' => 3, //Featured Intents
             'c_id !=' => $c['c_id'],
         ));
         foreach($featured_cs as $featured_c){
