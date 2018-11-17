@@ -7,7 +7,7 @@ $i_desc = echo_status('i_status');
 $udata = $this->session->userdata('user');
 $i_messages = $this->Db_model->i_fetch(array(
     'i_c_id' => $c_id,
-    'i_status >=' => 0, //Not deleted
+    'i_status >=' => 0, //Not Archived
 ), 0);
 
 //Fetch intent details:

@@ -43,6 +43,8 @@ function echo_x($u, $x){
     //Right content:
     $ui .= '<span class="pull-right" style="margin-right: 6px;">';
 
+    $ui .= echo_status('x_status',$x['x_status'],true,'left').' ';
+
     if($can_edit && strlen($x['x_clean_url'])>0 && !($x['x_url']==$x['x_clean_url'])){
         //We have detected a different URL behind the scene:
         $ui .= '<a class="badge badge-secondary" href="'.$x['x_clean_url'].'" target="_blank" data-toggle="tooltip" data-placement="left" title="Redirects to another URL"><i class="fas fa-route"></i></a> ';
@@ -52,14 +54,14 @@ function echo_x($u, $x){
     if($x['x_id']==$u['u_cover_x_id']){
         //Already set as the cover photo:
         $ui .= '<span class="badge badge-secondary grey current-cover" data-toggle="tooltip" data-placement="left" title="Currently set as Cover Photo"><i class="fas fa-file-check"></i></span> ';
-    } elseif($x['x_type']==4 && $x['x_status']>0 && $can_edit){
+    } elseif($x['x_type']==4 && $x['x_status']>-2 && $can_edit){
         //Could be set as the cover photo:
         $ui .= '<a class="badge badge-secondary add-cover" href="javascript:void(0);" onclick="x_cover_set('.$x['x_id'].')" data-toggle="tooltip" data-placement="left" title="Set this image as Cover Photo"><i class="fas fa-file-image"></i></a> ';
     }
 
     //User can always remove a URL:
     if($can_edit){
-        $ui .= '<a class="badge badge-secondary" href="javascript:void(0);" onclick="x_delete('.$x['x_id'].')" data-toggle="tooltip" data-placement="left" title="Delete this URL"><i class="fas fa-trash-alt" title="ID '.$x['x_id'].'"></i></a>';
+        $ui .= '<a class="badge badge-secondary" href="javascript:void(0);" onclick="x_archive('.$x['x_id'].')" data-toggle="tooltip" data-placement="left" title="Delete this URL"><i class="fas fa-trash-alt" title="ID '.$x['x_id'].'"></i></a>';
     }
 
     $ui .= '</span>';
@@ -67,7 +69,7 @@ function echo_x($u, $x){
 
     //Regular section:
     $ui .= '<a href="'.$x['x_url'].'" target="_blank" '.( strlen($x['x_url'])>0 && !($x['x_url']==$x['x_url']) ? '' : '' ).'>';
-    $ui .= '<span class="url_truncate"><i class="fas fa-link" style="margin-right:3px;"></i>'.echo_clean_url($x['x_url']).'</span>';
+    $ui .= '<span class="url_truncate">'.echo_clean_url($x['x_url']).'</span>';
 
     //Is this a social URL?
     foreach($social_urls as $url=>$fa_icon){
@@ -531,10 +533,12 @@ function echo_message($i){
 
     //Editing menu:
     $ui .= '<ul class="msg-nav">';
+
+    $ui .= '<li class="edit-off msg_status" style="margin: 0 1px 0 -1px;">'.echo_status('i_status',$i['i_status'],1,'right').'</li>';
     $ui .= '<li class="edit-on hidden"><span id="charNumEditing'.$i['i_id'].'">0</span>/'.$message_max.'</li>';
 
     $ui .= '<li class="edit-off" style="margin: 0 0 0 8px;"><span class="on-hover"><i class="fas fa-bars sort_message" iid="'.$i['i_id'].'" style="color:#2f2739;"></i></span></li>';
-    $ui .= '<li class="edit-off" style="margin-right: 10px; margin-left: 6px;"><span class="on-hover"><a href="javascript:i_delete('.$i['i_id'].');"><i class="fas fa-trash-alt" style="margin:0 7px 0 5px;"></i></a></span></li>';
+    $ui .= '<li class="edit-off" style="margin-right: 10px; margin-left: 6px;"><span class="on-hover"><a href="javascript:i_archive('.$i['i_id'].');"><i class="fas fa-trash-alt" style="margin:0 7px 0 5px;"></i></a></span></li>';
     $ui .= '<li class="edit-off" style="margin-left:-4px;"><span class="on-hover"><a href="javascript:msg_start_edit('.$i['i_id'].','.$i['i_status'].');"><i class="fas fa-pen-square"></i></a></span></li>';
     //Right side reverse:
     $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-primary" href="javascript:message_save_updates('.$i['i_id'].','.$i['i_status'].');" style="text-decoration:none; font-weight:bold; padding: 1px 8px 4px;"><i class="fas fa-check"></i></a></li>';
@@ -603,7 +607,7 @@ function echo_e($e){
             }
 
             if($e['e_has_blob']=='t'){
-                $ui .= '<a href="/cockpit/ej_list/'.$e['e_id'].'" class="badge badge-primary grey" target="_blank" data-toggle="tooltip" title="Analyze Engagement JSON Blob in a new window" data-placement="left"><i class="fas fa-search-plus"></i></a>';
+                $ui .= '<a href="/adminpanel/ej_list/'.$e['e_id'].'" class="badge badge-primary grey" target="_blank" data-toggle="tooltip" title="Analyze Engagement JSON Blob in a new window" data-placement="left"><i class="fas fa-search-plus"></i></a>';
             }
 
         $ui .= '</span>';
@@ -648,7 +652,7 @@ function echo_w_console($w){
     //This function will be called from 3 areas:
     $is_intent = ( $CI->uri->segment(1)=='intents' );
     $is_entity = ( $CI->uri->segment(1)=='entities' );
-    $is_cockpit = ( $CI->uri->segment(1)=='cockpit' );
+    $is_adminpanel = ( $CI->uri->segment(1)=='adminpanel' );
     $subscription_title = ''; //Build as we go depending on which view is loaded...
 
 
@@ -667,7 +671,7 @@ function echo_w_console($w){
 
 
     //Then customize based on request location:
-    if($is_intent || $is_cockpit){
+    if($is_intent || $is_adminpanel){
 
         //Show user who has subscribed:
         $user_ws = $CI->Db_model->w_fetch(array(
@@ -689,7 +693,7 @@ function echo_w_console($w){
     $ui .= '<a href="#wactionplan-'.$w['w_id'].'-'.$w['w_child_u_id'].'" onclick="load_w_actionplan('.$w['w_id'].','.$w['w_child_u_id'].')" class="badge badge-primary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="'.$w['w_stats']['k_count_done'].'/'.($w['w_stats']['k_count_done']+$w['w_stats']['k_count_undone']).' intents are marked as complete. Click to open Action Plan."><span class="btn-counter">'.( ($w['w_stats']['k_count_undone']+$w['w_stats']['k_count_done'])>0 ? number_format(($w['w_stats']['k_count_done']/($w['w_stats']['k_count_undone']+$w['w_stats']['k_count_done'])*100),0).'%' : '0%' ).'</span><i class="fas fa-flag" style="font-size:0.85em;"></i></a>';
 
 
-    if($is_entity || $is_cockpit){
+    if($is_entity || $is_adminpanel){
 
         //Link to subscription's main intent:
         $intent_ws = $CI->Db_model->w_fetch(array(
@@ -697,9 +701,9 @@ function echo_w_console($w){
         ));
         $ui .= '<a href="/intents/'.$w['c_id'].'" class="badge badge-primary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="Open subscribed intention to '.$w['c_outcome'].' with '.count($intent_ws).' subscriptions"><span class="btn-counter">'.count($intent_ws).'</span><i class="fas fa-sign-in-alt"></i></a>';
 
-        $subscription_title .= ( $is_cockpit ? '<div style="margin: 3px 0 0 3px;"><i class="fas fa-hashtag"></i> ' : '' );
+        $subscription_title .= ( $is_adminpanel ? '<div style="margin: 3px 0 0 3px;"><i class="fas fa-hashtag"></i> ' : '' );
         $subscription_title .= '<span class="w_intent_'.$w['w_id'].'">'.$w['c_outcome'].'</span>';
-        $subscription_title .= ( $is_cockpit ? '</div>' : '' );
+        $subscription_title .= ( $is_adminpanel ? '</div>' : '' );
     }
 
 
@@ -1699,37 +1703,19 @@ function echo_u($u, $level, $can_edit, $is_inbound=false){
     $ui = null;
 
 
-    $ui .= '<div id="u_'.$u['u_id'].'" entity-id="'.$u['u_id'].'" entity-email="'.$u['u_email'].'" entity-bio="'.str_replace('"','\\"',$u['u_intro_message']).'" entity-status="'.$u['u_status'].'" has-password="'.( strlen($u['u_password'])>0 ? 1 : 0 ).'" is-inbound="'.( $is_inbound ? 1 : 0 ).'" class="list-group-item u-item u__'.$u['u_id'].' '.( $level==1 ? 'top_entity' : 'ur_'.$u['ur_id'] ).'">';
+    $ui .= '<div id="u_'.$u['u_id'].'" entity-id="'.$u['u_id'].'" entity-email="'.$u['u_email'].'" entity-intro-message="'.str_replace('"','\\"',$u['u_intro_message']).'" entity-status="'.$u['u_status'].'" has-password="'.( strlen($u['u_password'])>0 ? 1 : 0 ).'" is-inbound="'.( $is_inbound ? 1 : 0 ).'" class="list-group-item u-item u__'.$u['u_id'].' '.( $level==1 ? 'top_entity' : 'ur_'.$u['ur_id'] ).'">';
 
     //Right content:
     $ui .= '<span class="pull-right">';
+
+    //Start by showing entity status:
+    $ui .= echo_status('u',$u['u_status'], true, 'left').' ';
 
     //Count messages:
     $messages = $CI->Db_model->i_fetch(array(
         'i_status >=' => 0,
         'i_u_id' => $u['u_id'], //Referenced content in messages
     ));
-
-    //What's the entity status?
-    $ui .= '<span class="u-status-bar-'.$u['u_id'].'">';
-    if(array_key_exists(1281, $udata['u__inbounds']) && $u['u_status']==0){
-
-        $ui .= '<i class="'.$status_index['u'][1]['s_icon'].'"></i> ';
-        $ui .= '<a href="javascript:u_save_status('.$u['u_id'].',1)" data-toggle="tooltip" data-placement="left" title="Current status is '.$status_index['u'][$u['u_status']]['s_name'].'. Click to update entity status to '.$status_index['u'][1]['s_name'].': '.$status_index['u'][1]['s_desc'].'" style="text-decoration:underline;">Set '.$status_index['u'][1]['s_name'].'</a>';
-
-    } elseif(array_key_exists(1281, $udata['u__inbounds']) && $u['u_status']==1){
-
-        $ui .= '<i class="'.$status_index['u'][2]['s_icon'].'" style="font-size:0.9em;"></i> ';
-        $ui .= '<a href="javascript:u_save_status('.$u['u_id'].',2)" data-toggle="tooltip" data-placement="left" title="Current status is '.$status_index['u'][$u['u_status']]['s_name'].'. Click to mark entity as '.$status_index['u'][2]['s_name'].': '.$status_index['u'][2]['s_desc'].'" style="text-decoration:underline;">Set '.$status_index['u'][2]['s_name'].'</a>';
-
-    } elseif($u['u_status']==2){
-
-        //Show verified status:
-        $ui .= echo_status('u',2, true, 'left');
-
-    }
-    $ui .= '</span> ';
-
 
     //Check total key engagement for this user:
     $e_count = count($CI->Db_model->e_fetch(array(

@@ -237,18 +237,16 @@ function load_message_sorting(){
 }
 
 
-
-
-function i_delete(i_id){
+function i_archive(i_id){
     //Double check:
-    var r = confirm("Delete Message?");
+    var r = confirm("Archive Message?");
     if (r == true) {
         //Show processing:
         var original_message = $("#ul-nav-"+i_id).html();
-        $("#ul-nav-"+i_id).html('<div><img src="/img/round_load.gif" class="loader" /> Deleting...</div>');
+        $("#ul-nav-"+i_id).html('<div><img src="/img/round_load.gif" class="loader" /> Archiving...</div>');
 
-        //Delete and remove:
-        $.post("/intents/i_delete", {i_id:i_id, c_id:c_id}, function(data) {
+        //Archive and remove:
+        $.post("/intents/i_archive", {i_id:i_id, c_id:c_id}, function(data) {
 
             //Update UI to confirm with user:
             if(!data.status){
@@ -355,7 +353,7 @@ function message_save_updates(i_id,initial_i_status){
             //Did the status change?
             if(!(new_i_status==initial_i_status)){
                 //Update new status:
-                $("#ul-nav-"+i_id+" .the_status").html(data.new_status);
+                $("#ul-nav-"+i_id+" .msg_status").html(data.new_status);
 
                 //Switch message over to its section and inform the user:
                 $("#ul-nav-"+i_id).removeClass('msg_'+initial_i_status).addClass('msg_'+new_i_status)

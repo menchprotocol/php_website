@@ -112,11 +112,11 @@ class Cron extends CI_Controller {
                 ), 5000)) * $score_weights['e_parent_u_id'];
 
             $score += count($this->Db_model->x_fetch(array(
-                    'x_status >' => 0,
+                    'x_status >' => -2,
                     'x_u_id' => $u['u_id'],
                 ))) * $score_weights['x_u_id'];
             $score += count($this->Db_model->x_fetch(array(
-                    'x_status >' => 0,
+                    'x_status >' => -2,
                     'x_inbound_u_id' => $u['u_id'],
                 ))) * $score_weights['x_inbound_u_id'];
 
@@ -148,7 +148,7 @@ class Cron extends CI_Controller {
 
         //Fetch pending drips
         $e_pending = $this->Db_model->e_fetch(array(
-            'e_status' => 0, //Pending
+            'e_status' => 0, //Pending work
             'e_parent_c_id' => 52, //Scheduled Drip e_parent_c_id=52
             'e_timestamp <=' => date("Y-m-d H:i:s" ), //Message is due
             //Some standard checks to make sure, these should all be true:
@@ -184,7 +184,7 @@ class Cron extends CI_Controller {
 
                 //Update Engagement:
                 $this->Db_model->e_update( $e_value['e_id'] , array(
-                    'e_status' => 1, //Mark as done
+                    'e_status' => 2, //Publish
                 ));
 
                 //Increase counter:
@@ -263,6 +263,7 @@ class Cron extends CI_Controller {
                         'x_url' => $new_file_url,
                         'x_clean_url' => $new_file_url,
                         'x_type' => 4, //Image
+                        'x_status' => 1, //Published
                     ));
 
                     //Replace cover photo only if this user has no cover photo set:
@@ -288,7 +289,7 @@ class Cron extends CI_Controller {
             //Update engagement:
             $this->Db_model->e_update( $u['e_id'] , array(
                 'e_value' => ( $error_message ? 'ERROR: '.$error_message : 'Success' ).' (Original Image URL: '.$u['e_value'].')',
-                'e_status' => 1, //Done
+                'e_status' => 2, //Publish
             ));
 
         }
@@ -303,7 +304,7 @@ class Cron extends CI_Controller {
         /*
          * This cron job looks for all engagements with Facebook attachments
          * that are pending upload (i.e. e_status=0) and uploads their
-         * attachments to amazon S3 and then changes status to e_status=1
+         * attachments to amazon S3 and then changes status to Published
          *
          */
 
@@ -345,7 +346,7 @@ class Cron extends CI_Controller {
                                         //Update engagement data:
                                         $this->Db_model->e_update( $ep['e_id'] , array(
                                             'e_value' => ( strlen($ep['e_value'])>0 ? $ep['e_value']."\n\n" : '' ).'/attach '.$att['type'].':'.$new_file_url, //Makes the file preview available on the message
-                                            'e_status' => 1, //Mark as done
+                                            'e_status' => 2, //Mark as done
                                         ));
 
                                         //Increase counter:

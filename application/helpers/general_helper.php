@@ -9,7 +9,7 @@ function lock_cron_for_processing($e_items){
     foreach($e_items as $e){
         if($e['e_id']>0 && $e['e_status']==0){
             $CI->Db_model->e_update( $e['e_id'] , array(
-                'e_status' => -2, //Processing so other Cron jobs do not touch this...
+                'e_status' => 1, //Working on...
             ));
         }
     }

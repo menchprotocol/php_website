@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 date_default_timezone_set('America/Los_Angeles');
 
 //Cache buster for static files
-$config['app_version'] = '0.606'.( ( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='local.mench.co' ) ? microtime(true) : '' ); //Updates status css/js cache files
+$config['app_version'] = '0.607'.( ( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='local.mench.co' ) ? microtime(true) : '' ); //Updates status css/js cache files
 
 //User case: $this->config->item('c_point_options')
 
@@ -81,7 +81,7 @@ $config['object_statuses'] = array(
             's_icon' => 'fal fa-question-circle',
         ),
         1 => array(
-            's_name'  => 'Working On',
+            's_name'  => 'Referencing',
             's_desc'  => 'Entity is accepted and is in the referencing process',
             's_icon' => 'fas fa-spinner fa-spin',
         ),
@@ -94,7 +94,7 @@ $config['object_statuses'] = array(
     'ur' => array(
         -1 => array(
             's_name'  => 'Archived',
-            's_desc'  => 'Entity link is deleted',
+            's_desc'  => 'Entity link is removed',
             's_icon' => 'fas fa-trash-alt',
         ),
         0 => array(
@@ -138,7 +138,7 @@ $config['object_statuses'] = array(
     'cr' => array(
         -1 => array(
             's_name'  => 'Archived',
-            's_desc'  => 'Intent link is deleted',
+            's_desc'  => 'Intent link is removed',
             's_icon' => 'fas fa-trash-alt',
         ),
         0 => array(
@@ -278,40 +278,23 @@ $config['object_statuses'] = array(
     ),
 
 
-
     'e_status' => array(
-        -4 => array( //This does not exist in the DB and is manually invoked if item is not found in DB
-            's_name'  => 'Pending Completion',
-            's_desc'  => 'Item not yet completed',
-            's_icon' => 'fal fa-circle',
-        ),
-        -3 => array(
-            's_name'  => 'Rejected',
-            's_desc'  => 'Item was reviewed and rejected as it did not meet Mench guidelines',
-            's_icon' => 'fas fa-exclamation-circle',
-        ),
-        -2 => array(
-            's_name'  => 'Working On',
-            's_desc'  => 'Temporary status to prevent duplicate processing',
-            's_icon' => 'fas fa-spinner fa-spin',
-        ),
-        -1 => array(
-            's_name'  => 'Auto Verified',
-            's_desc'  => 'Item has been auto approved',
-            's_icon' => 'fal fa-check-circle',
-        ),
         0 => array(
-            's_name'  => 'Submitted',
-            's_desc'  => 'Item submitted and pending verification',
-            's_icon' => 'fal fa-check-circle',
+            's_name'  => 'New',
+            's_desc'  => 'New engagement is added and pending verification',
+            's_icon' => 'fal fa-question-circle',
         ),
         1 => array(
-            's_name'  => 'Verified',
-            's_desc'  => 'Item has been processed and is now complete',
+            's_name'  => 'Working On',
+            's_desc'  => 'A cron job is processing this engagement',
+            's_icon' => 'fas fa-spinner fa-spin',
+        ),
+        2 => array(
+            's_name'  => 'Published',
+            's_desc'  => 'Engagement is complete',
             's_icon' => 'fas fa-check-circle',
         ),
     ),
-
 
     'x_type' => array(
         0 => array(
@@ -321,7 +304,7 @@ $config['object_statuses'] = array(
             's_icon' => 'fas fa-link',
         ),
         1 => array(
-            's_name'  => 'Embeddable Content',
+            's_name'  => 'Embeddable',
             's_fb_key'  => 'text',
             's_desc'  => 'A recognized URL with an embeddable widget',
             's_icon' => 'fas fa-file-code',
@@ -359,19 +342,19 @@ $config['object_statuses'] = array(
             's_icon' => 'fas fa-trash-alt',
         ),
         -1 => array(
-            's_name'  => 'Is Broken',
-            's_desc'  => 'URL detected broken by Mench Personal Assistant after several tries',
-            's_icon' => 'fas fa-unlink',
+            's_name'  => 'Seems Broken',
+            's_desc'  => 'URL detected broken and pending moderator review',
+            's_icon' => 'fas fa-exclamation-triangle',
+        ),
+        0 => array(
+            's_name'  => 'New',
+            's_desc'  => 'URL is newly added and pending moderator review',
+            's_icon' => 'fal fa-question-circle',
         ),
         1 => array(
-            's_name'  => 'Seems Broken',
-            's_desc'  => 'URL detected broken by Mench Personal Assistant but not fully sure as we need to check again',
-            's_icon' => 'fas fa-unlink',
-        ),
-        2 => array(
             's_name'  => 'Published',
-            's_desc'  => 'A URL Associated to the Entity',
-            's_icon' => 'fas fa-link',
+            's_desc'  => 'URL is live and being distributed across Action Plans',
+            's_icon' => 'fas fa-check-circle',
         ),
     ),
 );

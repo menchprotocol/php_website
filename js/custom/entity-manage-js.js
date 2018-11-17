@@ -217,50 +217,6 @@ function ur_add(new_u_id,secondary_parent_u_id=0, is_inbound) {
 }
 
 
-function u_save_status(u_id, new_u_status){
-
-    //Indicate loading:
-    $('.u-status-bar-'+u_id).html('<img src="/img/round_load.gif" class="loader" />');
-
-    //Will update the status of u_id to new status
-    $.post("/entities/u_save_status", {
-
-        u_id:u_id,
-        new_u_status: new_u_status,
-
-    }, function (data) {
-        if (data.status) {
-
-            //Show data:
-            $('.u-status-bar-'+u_id).html(data.message);
-
-            //Adjust counters:
-            $('.count-u-status-'+new_u_status).text((parseInt($('.count-u-status-'+new_u_status).text())+1));
-            $('.count-u-status-'+data.old_status).text((parseInt($('.count-u-status-'+data.old_status).text())-1));
-            //TODO maybe the new counter element does not exist! Handle this case later...
-
-            if(u_status_filter>=0 && !(new_u_status==u_status_filter)){
-                //We have the filter on and it does not match the new status, so hide this:
-                setTimeout(function () {
-                    $('#u_'+u_id).fadeOut();
-                }, 377);
-            } else {
-                //Update status:
-                $('#u_'+u_id).attr('entity-status',new_u_status);
-            }
-
-            //Tooltips:
-            $('[data-toggle="tooltip"]').tooltip();
-
-        } else {
-            //We had an error:
-            $('.u-status-bar-'+u_id).html('<span style="color:#FF0000;">Error: '+data.message+'</span>');
-        }
-    });
-
-
-}
-
 function u_load_filter_status(new_val){
     if(new_val==-1 || new_val==0 || new_val==1 || new_val==2) {
         //Remove active class:
@@ -385,18 +341,18 @@ function x_add() {
 
 }
 
-function x_delete(x_id) {
+function x_archive(x_id) {
 
-    var r = confirm("Delete Reference?");
+    var r = confirm("Archive URL?");
     if (r == false) {
         return false;
     }
 
     //Show loader to delete:
-    $('#x_' + x_id).html('<img src="/img/round_load.gif" class="loader" /> Deleting... ');
+    $('#x_' + x_id).html('<img src="/img/round_load.gif" class="loader" /> Archiving... ');
 
-    //Delete"
-    $.post("/urls/delete_url", {
+    //Archive:
+    $.post("/urls/x_archive", {
 
         x_id: x_id,
         can_edit:can_u_edit,
@@ -547,14 +503,16 @@ function u_load_modify(u_id, ur_id){
     $('#modifybox').attr('entity-id',u_id);
 
     $('#u_full_name').val($(".u_full_name_"+u_id+":first").text());
-    $('#u_intro_message').val($(".u__"+u_id+":first").attr('entity-bio'));
+    $('#u_intro_message').val($(".u__"+u_id+":first").attr('entity-intro-message'));
+    $('#u_status').val($(".u__"+u_id+":first").attr('entity-status'));
+
     u_intro_message_counter();
     u_full_name_word_count();
 
     //Update password reset UI:
     $('#u_email').val($(".u__"+u_id+":first").attr('entity-email'));
     $('.changepass').hide();
-    $('.changepass_a').show().text(( parseInt($(".u__"+u_id+":first").attr('has-password')) && $(".u__"+u_id+":first").attr('entity-email').length>0 ? 'Update Login Credentials' : 'Setup Login Credentials'));
+    $('.changepass_a').show().html('<i class="fas fa-key"></i> '+( parseInt($(".u__"+u_id+":first").attr('has-password')) && $(".u__"+u_id+":first").attr('entity-email').length>0 ? 'Update Login Credentials' : 'Setup Login Credentials'));
 
     //Only show unlink button if not level 1
     if(parseInt(ur_id)>0){
@@ -603,7 +561,7 @@ function u_save_modify(){
 
             //Update variables:
             $(".u_full_name_"+modify_data['u_id']).text(modify_data['u_full_name']);
-            $(".u__"+modify_data['u_id']).attr('entity-bio', modify_data['u_intro_message']);
+            $(".u__"+modify_data['u_id']).attr('entity-intro-message', modify_data['u_intro_message']);
             $(".u__"+modify_data['u_id']).attr('entity-email', modify_data['u_email']);
             $(".u__"+modify_data['u_id']).attr('has-password', ( modify_data['u_password_new'].length>0 ? 1 : 0 ));
             if($('.u_intro_message_'+modify_data['u_id']).length){
@@ -615,6 +573,24 @@ function u_save_modify(){
                     $(".u_full_name_"+modify_data['u_id']).addClass('has-desc').attr('data-toggle', 'tooltip').attr('data-original-title', modify_data['u_intro_message']);
                 } else {
                     $(".u_full_name_"+modify_data['u_id']).removeClass('has-desc').attr('data-toggle', '').attr('data-original-title', '');
+                }
+            }
+
+            //Did the status change?
+            if(0){
+                //Adjust counters:
+                $('.count-u-status-'+new_u_status).text((parseInt($('.count-u-status-'+new_u_status).text())+1));
+                $('.count-u-status-'+data.old_status).text((parseInt($('.count-u-status-'+data.old_status).text())-1));
+                //TODO maybe the new counter element does not exist! Handle this case later...
+
+                if(u_status_filter>=0 && !(new_u_status==u_status_filter)){
+                    //We have the filter on and it does not match the new status, so hide this:
+                    setTimeout(function () {
+                        $('#u_'+u_id).fadeOut();
+                    }, 377);
+                } else {
+                    //Update status:
+                    $('#u_'+u_id).attr('entity-status',new_u_status);
                 }
             }
 

@@ -11,7 +11,7 @@
 $totals = array(0,0,0,0);
 foreach($il_overview as $ilo){
     echo '<tr>';
-        echo '<td><a href="/cockpit/udemy?cat='.urlencode($ilo['il_udemy_category']).'">'.$ilo['il_udemy_category'].'</td>';
+        echo '<td><a href="/adminpanel/udemy?cat='.urlencode($ilo['il_udemy_category']).'">'.$ilo['il_udemy_category'].'</td>';
         echo '<td>'.number_format($ilo['total_coaches'],0).'</td>';
         echo '<td>'.number_format($ilo['total_courses'],0).'</td>';
         echo '<td>'.number_format($ilo['total_students'],0).'</td>';

@@ -49,7 +49,7 @@ if(isset($orphan_cs)){
 
 
 
-            
+
 
             //Expand/Contract buttons
             echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-outbound-count outbound-counter-'.$c['c_id'].'">'.$c['c__tree_all_count'].'</span> Children</h5>';
@@ -145,8 +145,8 @@ if(isset($orphan_cs)){
                         <div class="title"><h4><i class="fas fa-sliders-h"></i> Status</h4></div>
                         <select class="form-control" id="c_status">
                         <?php
-                        foreach(echo_status('c') as $c_status_id=>$c_status){
-                            echo '<option value="'.$c_status_id.'" title="'.$c_status['s_desc'].'">'.$c_status['s_name'].'</option>';
+                        foreach(echo_status('c') as $status_id=>$status){
+                            echo '<option value="'.$status_id.'" title="'.$status['s_desc'].'">'.$status['s_name'].'</option>';
                         }
                         ?>
                         </select>
@@ -226,7 +226,7 @@ if(isset($orphan_cs)){
                         <td><span class="save_intent_changes"></span></td>
                         <td style="width:80px; text-align:right;">
 
-                            <div><a href="javascript:c_unlink();" class="unlink-intent" data-toggle="tooltip" title="Only remove intent link while NOT deleting the intent itself" data-placement="left" style="text-decoration:none;"><i class="fas fa-unlink"></i> Unlink</a></div>
+                            <div><a href="javascript:c_unlink();" class="unlink-intent" data-toggle="tooltip" title="Only remove intent link while NOT Archiving the intent itself" data-placement="left" style="text-decoration:none;"><i class="fas fa-unlink"></i> Unlink</a></div>
 
                             <?php if(array_key_exists(1281, $udata['u__inbounds'])){ ?>
                                 <div><a href="javascript:c_delete();" data-toggle="tooltip" title="Delete intent AND remove all its links, messages & references" data-placement="left" style="text-decoration:none;"><i class="fas fa-trash-alt"></i> Delete</a></div>

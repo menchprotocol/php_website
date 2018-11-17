@@ -2056,14 +2056,6 @@ margin:5px 0;
     margin: -8px 5px 0 0;
     border-radius: 50%;
 }
-.message_status{
-    width: 152px;
-    overflow: hidden;
-    display: inline-block;
-    margin-top: -5px;
-    height: 39px;
-    line-height: 110%;
-}
 .when_to {
     font-size: 14px;
     font-weight: bold;

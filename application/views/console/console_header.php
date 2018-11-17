@@ -104,7 +104,7 @@ $uri_segment_2 = $this->uri->segment(2);
                         <?php } ?>
 
                         <?php if(array_key_exists(1281, $udata['u__inbounds'])){ ?>
-                            <li class="extra-toggle" style="display: none;"><a href="/cockpit/engagements"><span class="icon-left"><i class="fas fa-user-shield"></i></span> Admin</a></li>
+                            <li class="extra-toggle" style="display: none;"><a href="/adminpanel/engagements"><span class="icon-left"><i class="fas fa-user-shield"></i></span> Admin</a></li>
                         <?php } ?>
 
                         <li class="extra-toggle" style="display: none;"><a href="/entities/<?= $udata['u_id'] ?>"><span class="icon-left"><i class="fas fa-user-circle"></i></span> Profile</a></li>
@@ -119,30 +119,30 @@ $uri_segment_2 = $this->uri->segment(2);
 
 
 
-        <?php if($uri_segment_1=='cockpit' && array_key_exists(1281, $udata['u__inbounds'])){ ?>
+        <?php if($uri_segment_1=='adminpanel' && array_key_exists(1281, $udata['u__inbounds'])){ ?>
         <div class="sidebar" id="mainsidebar">
         <div class="sidebar-wrapper">
 
             <?php
             //Side menu header:
             echo '<div class="left-li-title">';
-            echo '<i class="fas fa-user-shield" style="margin-right:3px;"></i> Admin Cockpit';
+            echo '<i class="fas fa-user-shield" style="margin-right:3px;"></i> Admin Panel';
             echo '</div>';
 
 
             echo '<ul class="nav navbar-main" style="margin-top:7px;">';
 
 
-                //The the Cockpit Menu for the Mench team:
-                echo '<li class="li-sep '.( $uri_segment_2=='engagements' ? 'active' : '' ).'"><a href="/cockpit/engagements"><i class="fas fa-exchange"></i><p>Engagements</p></a></li>';
+                //The the Admin Panel Menu for the Mench team:
+                echo '<li class="li-sep '.( $uri_segment_2=='engagements' ? 'active' : '' ).'"><a href="/adminpanel/engagements"><i class="fas fa-exchange"></i><p>Engagements</p></a></li>';
 
-                echo '<li class="li-sep '.( $uri_segment_2=='subscriptions' ? 'active' : '' ).'"><a href="/cockpit/subscriptions"><i class="fas fa-comment-plus"></i><p>Subscriptions</p></a></li>';
+                echo '<li class="li-sep '.( $uri_segment_2=='subscriptions' ? 'active' : '' ).'"><a href="/adminpanel/subscriptions"><i class="fas fa-comment-plus"></i><p>Subscriptions</p></a></li>';
 
-                echo '<li class="li-sep '.( $uri_segment_2=='statuslegend' ? 'active' : '' ).'"><a href="/cockpit/statuslegend"><i class="fas fa-shapes"></i><p>Status Legend</p></a></li>';
+                echo '<li class="li-sep '.( $uri_segment_2=='statuslegend' ? 'active' : '' ).'"><a href="/adminpanel/statuslegend"><i class="fas fa-shapes"></i><p>Status Legend</p></a></li>';
 
 
                 //Our index of Udemy instructors:
-                //echo '<li class="li-sep '.( $uri_segment_2=='udemy' ? 'active' : '' ).'"><a href="/cockpit/udemy"><i class="fas fa-address-book"></i><p>Udemy Community</p></a></li>';
+                //echo '<li class="li-sep '.( $uri_segment_2=='udemy' ? 'active' : '' ).'"><a href="/adminpanel/udemy"><i class="fas fa-address-book"></i><p>Udemy Community</p></a></li>';
 
 
                 //External Tools:

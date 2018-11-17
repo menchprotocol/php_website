@@ -53,7 +53,7 @@ $all_subscriptions = $this->Db_model->w_fetch(array(
 //Parents
 if($entity['u_id']!=2738){
     echo '<h5>';
-        echo '<span class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-inbound-count">'.count($entity['u__inbounds']).'</span> Parents</span>';
+        echo '<span class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-inbound-count">'.count($entity['u__inbounds']).'</span> Parent'.echo__s(count($entity['u__inbounds'])).'</span>';
         if($can_edit) {
             echo ' <a class="add-new-btn" href="javascript:$(\'#new-inbound\').removeClass(\'hidden\');$(\'.add-new-btn\').hide();$(\'#new-inbound .new-input\').focus();"><i class="fas fa-plus-circle"></i></a>';
         }
@@ -230,17 +230,36 @@ if(!in_array($entity['u_id'], array(1278,1326,2750))){
               <textarea class="form-control text-edit border msg" id="u_intro_message" style="height:146px; background-color:#FFFFFF !important;" onkeyup="u_intro_message_counter()"></textarea>
 
 
-              <!-- Password credential management -->
-              <div style="margin-top:15px; display:<?= (array_key_exists(1281, $udata['u__inbounds']) ? 'block' : 'none') ?>;"><a href="javascript:$('.changepass').toggle();" class="changepass changepass_a" data-toggle="tooltip" title="Manage email/password that enables this entity to login" data-placement="top" style="text-decoration:none;"></a></div>
-              <div class="changepass" style="display:none;">
-                  <div class="title" style="margin-top:15px;"><h4><i class="fas fa-envelope"></i> Email</h4></div>
-                  <input type="email" id="u_email" data-lpignore="true" style="max-width:260px;" value="" data-lpignore="true" class="form-control border">
-              </div>
-              <div class="changepass" style="display:none;">
-                  <div class="title" style="margin-top:15px;"><h4><i class="fas fa-asterisk"></i> Set New Password</h4></div>
-                  <div class="form-group label-floating is-empty">
-                      <input type="password" id="u_password_new" style="max-width:260px;" autocomplete="new-password" data-lpignore="true" class="form-control border">
-                      <span class="material-input"></span>
+              <div class="row">
+                  <div class="col-md-6" style="margin-top:15px;">
+
+                      <div class="title"><h4><i class="fas fa-sliders-h"></i> Status</h4></div>
+                      <select class="form-control" id="u_status">
+                          <?php
+                          foreach(echo_status('u') as $status_id=>$status){
+                              echo '<option value="'.$status_id.'" title="'.$status['s_desc'].'">'.$status['s_name'].'</option>';
+                          }
+                          ?>
+                      </select>
+
+                  </div>
+                  <div class="col-md-6" style="margin-top:15px;">
+
+                      <!-- Password credential management -->
+                      <div style="display:<?= (array_key_exists(1281, $udata['u__inbounds']) ? 'block' : 'none') ?>;"><a href="javascript:$('.changepass').toggle();" class="changepass changepass_a" data-toggle="tooltip" title="Manage email/password that enables this entity to login" data-placement="top" style="text-decoration:none;"></a></div>
+
+                      <div class="changepass" style="display:none;">
+                          <div class="title"><h4><i class="fas fa-envelope"></i> Email</h4></div>
+                          <input type="email" id="u_email" data-lpignore="true" style="max-width:260px;" value="" data-lpignore="true" class="form-control border">
+                      </div>
+                      <div class="changepass" style="display:none;">
+                          <div class="title" style="margin-top:15px;"><h4><i class="fas fa-asterisk"></i> Set New Password</h4></div>
+                          <div class="form-group label-floating is-empty">
+                              <input type="password" id="u_password_new" style="max-width:260px;" autocomplete="new-password" data-lpignore="true" class="form-control border">
+                              <span class="material-input"></span>
+                          </div>
+                      </div>
+
                   </div>
               </div>
 
@@ -251,7 +270,7 @@ if(!in_array($entity['u_id'], array(1278,1326,2750))){
                       <td><span class="save_entity_changes"></span></td>
                       <td style="width:100px; text-align:right;">
 
-                          <div class="unlink-entity"><a href="javascript:ur_unlink();" data-toggle="tooltip" title="Only remove entity link while NOT deleting the entity itself" data-placement="left" style="text-decoration:none;"><i class="fas fa-unlink"></i> Unlink</a></div>
+                          <div class="unlink-entity"><a href="javascript:ur_unlink();" data-toggle="tooltip" title="Only remove entity link while NOT Archiving the entity itself" data-placement="left" style="text-decoration:none;"><i class="fas fa-unlink"></i> Unlink</a></div>
 
                           <?php if(array_key_exists(1281, $udata['u__inbounds'])){ ?>
                               <div><a href="javascript:u_delete();" data-toggle="tooltip" title="Delete entity AND remove all its URLs, messages & references" data-placement="left" style="text-decoration:none;"><i class="fas fa-trash-alt"></i> Delete</a></div>

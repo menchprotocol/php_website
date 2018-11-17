@@ -318,7 +318,7 @@ class Entities extends CI_Controller {
             ));
         }
 
-        $affected_rows = $this->Db_model->ur_delete($_POST['ur_id']);
+        $affected_rows = $this->Db_model->ur_archive($_POST['ur_id']);
 
         //Log unlinking engagement:
         $this->Db_model->e_create(array(
@@ -526,7 +526,7 @@ class Entities extends CI_Controller {
 
         } elseif($users[0]['u_status']<0){
 
-            //Deleted entity
+            //Archived entity
             $this->Db_model->e_create(array(
                 'e_parent_u_id' => $users[0]['u_id'],
                 'e_value' => 'login() denied because account is not active.',
@@ -666,86 +666,6 @@ class Entities extends CI_Controller {
 
     }
 
-    function u_load_filter_status(){
-
-    }
-
-    function u_save_status(){
-
-        //Auth user and check required variables:
-        $udata = auth(array(1281));
-
-        if(!$udata){
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid Session. Refresh the page and try again.',
-            ));
-        } elseif(!isset($_POST['u_id']) || intval($_POST['u_id'])<1){
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid Parent Entity',
-            ));
-        } elseif(!isset($_POST['new_u_status']) || !in_array($_POST['new_u_status'],array(1,2))){
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Missing New Status with value 1 or 2',
-            ));
-        }
-
-        //Validate parent entity:
-        $current_us = $this->Db_model->u_fetch(array(
-            'u_id' => $_POST['u_id'],
-        ));
-        if(count($current_us)<1){
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid entity ID',
-            ));
-        } elseif($current_us[0]['u_status']==$_POST['new_u_status']){
-            //Status seems to be already updated, just update the UI:
-            return echo_json(array(
-                'status' => 1,
-                'old_status' => intval($current_us[0]['u_status']),
-                'message' => '<span>'.echo_status('u',$_POST['new_u_status'], true, 'left').'</span>',
-            ));
-        } elseif(!in_array($current_us[0]['u_status'],array(0,1))){
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'You cannot change the status of this entity because of its current status',
-            ));
-        }
-
-        $u_update = array(
-            'u_status' => $_POST['new_u_status'],
-        );
-
-        //Update status:
-        //Now update the DB:
-        $this->Db_model->u_update(intval($_POST['u_id']) , $u_update);
-        //Above call would also update algolia index...
-
-
-        //Log engagement:
-        $this->Db_model->e_create(array(
-            'e_parent_u_id' => $udata['u_id'], //The user that updated the account
-            'e_value' => readable_updates($current_us[0],$u_update,'u_'),
-            'e_json' => array(
-                'input' => $_POST,
-                'before' => $current_us[0],
-                'after' => $u_update,
-            ),
-            'e_parent_c_id' => 12, //Account Update
-            'e_child_u_id' => intval($_POST['u_id']), //The user that their account was updated
-        ));
-
-        //Show success:
-        return echo_json(array(
-            'status' => 1,
-            'old_status' => intval($current_us[0]['u_status']),
-            'message' => '<span>'.echo_status('u',$_POST['new_u_status'], true, 'left').'</span>',
-        ));
-
-    }
 
     function u_password_reset_apply(){
         //This function updates the user's new password as requested via a password reset:

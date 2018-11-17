@@ -380,7 +380,7 @@ class Intents extends CI_Controller
                     'updated_recursively' => $updated_recursively,
                     'recursive_query' => $recursive_query,
                 ),
-                'e_parent_c_id' => ( $_POST['level']>=2 && isset($c_update['c_status']) && $c_update['c_status']<0 ? 21 : 19 ), //Intent Deleted OR Updated
+                'e_parent_c_id' => ( $_POST['level']>=2 && isset($c_update['c_status']) && $c_update['c_status']<0 ? 21 : 19 ), //Intent Archived OR Updated
                 'e_child_c_id' => intval($_POST['c_id']),
             ));
 
@@ -1028,7 +1028,7 @@ class Intents extends CI_Controller
         ));
     }
 
-    function i_delete(){
+    function i_archive(){
         //Auth user and Load object:
         $udata = auth(array(1308));
 
@@ -1052,7 +1052,7 @@ class Intents extends CI_Controller
             //Fetch Message:
             $messages = $this->Db_model->i_fetch(array(
                 'i_id' => intval($_POST['i_id']),
-                'i_status >=' => 0, //Not deleted
+                'i_status >=' => 0, //Not Archived
             ));
             if(!isset($messages[0])){
                 echo_json(array(
@@ -1065,7 +1065,7 @@ class Intents extends CI_Controller
                 $this->Db_model->i_update( intval($_POST['i_id']) , array(
                     'i_inbound_u_id' => $udata['u_id'],
                     'i_timestamp' => date("Y-m-d H:i:s"),
-                    'i_status' => -1, //Deleted by coach
+                    'i_status' => -1, //Archived
                 ));
 
                 //Update intent count:
@@ -1083,14 +1083,14 @@ class Intents extends CI_Controller
                         'input' => $_POST,
                         'before' => $messages[0],
                     ),
-                    'e_parent_c_id' => 35, //Message deleted
+                    'e_parent_c_id' => 35, //Message Archived
                     'e_i_id' => intval($messages[0]['i_id']),
                     'e_child_c_id' => intval($_POST['c_id']),
                 ));
 
                 echo_json(array(
                     'status' => 1,
-                    'message' => '<span style="color:#2f2739;"><i class="fas fa-trash-alt"></i> Deleted</span>',
+                    'message' => '<span style="color:#2f2739;"><i class="fas fa-trash-alt"></i> Archived</span>',
                 ));
             }
         }

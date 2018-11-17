@@ -16,20 +16,6 @@ class Bot extends CI_Controller {
     }
 
 
-    function aa(){
-        $authors = $this->Db_model->e_fetch(array(
-            'e_status' => 0, //Pending
-            'e_parent_c_id' => 52, //Scheduled Drip e_parent_c_id=52
-            'e_timestamp <=' => date("Y-m-d H:i:s" ), //Message is due
-            //Some standard checks to make sure, these should all be true:
-            'e_child_u_id >' => 0,
-            'e_child_c_id >' => 0,
-        ), 200, array(), null, array('e.e_timestamp' => 'DESC'), 'DIISTINCT(e_parent_u_id) AS ppid', 'e_parent_u_id');
-        echo_json($authors);
-    }
-
-
-
     function sync_menu(){
 
         $res = array();
@@ -248,7 +234,7 @@ class Bot extends CI_Controller {
 
                 } elseif(isset($im['message_request']) && $im['message_request']=='accept') {
 
-                    //This is when we message them and they accept to chat because they had deleted Messenger or something...
+                    //This is when we message them and they accept to chat because they had Archived Messenger or something...
 
                     $u = $this->Comm_model->fb_identify_activate($im['sender']['id']);
 
@@ -256,7 +242,7 @@ class Bot extends CI_Controller {
                         'e_json' => $json_data,
                         'e_parent_c_id' => 9, //User needs attention
                         'e_parent_u_id' => ( isset($u['u_id']) ? $u['u_id'] : 0 ),
-                        'e_value' => 'Messenger user accept to chat because they had deleted/unsubscribed before. Welcome them back personally.',
+                        'e_value' => 'Messenger user accept to chat because they had Archived/unsubscribed before. Welcome them back personally.',
                     ));
 
                 } elseif(isset($im['message'])) {

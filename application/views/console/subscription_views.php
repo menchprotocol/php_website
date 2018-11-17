@@ -91,7 +91,7 @@
                     $('.frame-loader').addClass('hidden');
 
                     //Remove frame
-                    $('#w_div_'+w_id).html('<span style="color:#2f2739;"><i class="fas fa-trash-alt"></i> Deleted</span>');
+                    $('#w_div_'+w_id).html('<span style="color:#2f2739;"><i class="fas fa-trash-alt"></i> Archived</span>');
                     setTimeout(function () {
                         $('#w_div_'+w_id).fadeOut();
                     }, 377);

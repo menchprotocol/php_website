@@ -75,7 +75,7 @@ class Urls extends CI_Controller
     }
 
 
-    function delete_url(){
+    function x_archive(){
 
         //Auth user and check required variables:
         $udata = auth(array(1308));
@@ -106,7 +106,7 @@ class Urls extends CI_Controller
 
         //Make the update (Assume it's all good):
         $rows_updated = $this->Db_model->x_update( $_POST['x_id'] , array(
-            'x_status' => -2, //Delete by user
+            'x_status' => -2, //Archived
         ));
 
         if(!$rows_updated){
@@ -119,7 +119,7 @@ class Urls extends CI_Controller
         //Log Engagement:
         $this->Db_model->e_create(array(
             'e_json' => $urls[0],
-            'e_parent_c_id' => 6912, //URL Deleted
+            'e_parent_c_id' => 6912, //URL Archived
             'e_parent_u_id' => $udata['u_id'],
             'e_child_u_id' => $urls[0]['x_u_id'],
             'e_x_id' => $_POST['x_id'],
@@ -144,7 +144,7 @@ class Urls extends CI_Controller
 
         return echo_json(array(
             'status' => 1,
-            'message' => '<i class="fas fa-trash-alt"></i> Deleted',
+            'message' => '<i class="fas fa-trash-alt"></i> Archived',
         ));
     }
 

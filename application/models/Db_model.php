@@ -793,7 +793,7 @@ class Db_model extends CI_Model {
             if(in_array('u__urls',$join_objects)){
                 //Fetch the messages for this entity:
                 $res[$key]['u__urls'] = $this->Db_model->x_fetch(array(
-                    'x_status >' => 0,
+                    'x_status >' => -2,
                     'x_u_id' => $val['u_id'],
                 ), array(), array(
                     'x_type' => 'ASC'
@@ -864,27 +864,27 @@ class Db_model extends CI_Model {
             );
         }
 
-        $delete_stats = array();
+        $archive_stats = array();
 
         //Start removal process by deleting engagements:
         $this->db->query("DELETE FROM v5_engagements WHERE e_parent_c_id=".$c_id." OR e_child_c_id=".$c_id);
-        $delete_stats['v5_engagements'] = $this->db->affected_rows();
+        $archive_stats['v5_engagements'] = $this->db->affected_rows();
 
         $this->db->query("DELETE FROM v5_intent_messages WHERE i_c_id=".$c_id);
-        $delete_stats['v5_intent_messages'] = $this->db->affected_rows();
+        $archive_stats['v5_intent_messages'] = $this->db->affected_rows();
 
         $this->db->query("DELETE FROM v5_subscriptions WHERE w_c_id=".$c_id);
-        $delete_stats['v5_subscriptions'] = $this->db->affected_rows();
+        $archive_stats['v5_subscriptions'] = $this->db->affected_rows();
 
         $this->db->query("DELETE FROM v5_intents WHERE c_id=".$c_id);
-        $delete_stats['v5_intents'] = $this->db->affected_rows();
+        $archive_stats['v5_intents'] = $this->db->affected_rows();
 
         $this->db->query("DELETE FROM v5_intent_links WHERE (cr_parent_c_id=".$c_id." OR cr_child_c_id=".$c_id.")");
-        $delete_stats['v5_intent_links'] = $this->db->affected_rows();
+        $archive_stats['v5_intent_links'] = $this->db->affected_rows();
 
         return array(
             'status' => 1,
-            'stats' => $delete_stats,
+            'stats' => $archive_stats,
             'c' => $intents[0],
         );
 
@@ -932,30 +932,30 @@ class Db_model extends CI_Model {
             );
         }
 
-        $delete_stats = array();
+        $archive_stats = array();
 
         //Start removal process by deleting engagements:
         $this->db->query("DELETE FROM v5_engagements WHERE e_parent_u_id=".$u_id." OR e_child_u_id=".$u_id);
-        $delete_stats['v5_engagements'] = $this->db->affected_rows();
+        $archive_stats['v5_engagements'] = $this->db->affected_rows();
 
         $this->db->query("DELETE FROM v5_intent_messages WHERE i_u_id=".$u_id);
-        $delete_stats['v5_intent_messages'] = $this->db->affected_rows();
+        $archive_stats['v5_intent_messages'] = $this->db->affected_rows();
 
         $this->db->query("DELETE FROM v5_subscriptions WHERE w_child_u_id=".$u_id);
-        $delete_stats['v5_subscriptions'] = $this->db->affected_rows();
+        $archive_stats['v5_subscriptions'] = $this->db->affected_rows();
 
         $this->db->query("DELETE FROM v5_entity_urls WHERE x_u_id=".$u_id);
-        $delete_stats['v5_entity_urls'] = $this->db->affected_rows();
+        $archive_stats['v5_entity_urls'] = $this->db->affected_rows();
 
         $this->db->query("DELETE FROM v5_entities WHERE u_id=".$u_id);
-        $delete_stats['v5_entities'] = $this->db->affected_rows();
+        $archive_stats['v5_entities'] = $this->db->affected_rows();
 
         $this->db->query("DELETE FROM v5_entity_links WHERE (ur_parent_u_id=".$u_id." OR ur_child_u_id=".$u_id.")");
-        $delete_stats['v5_entity_links'] = $this->db->affected_rows();
+        $archive_stats['v5_entity_links'] = $this->db->affected_rows();
 
         return array(
             'status' => 1,
-            'stats' => $delete_stats,
+            'stats' => $archive_stats,
             'user' => $users[0],
         );
 
@@ -1462,7 +1462,7 @@ class Db_model extends CI_Model {
         return $this->db->affected_rows();
     }
 
-    function ur_delete($id){
+    function ur_archive($id){
         //Update status:
         $this->Db_model->ur_update($id, array(
             'ur_status' => -1,
@@ -1623,7 +1623,7 @@ class Db_model extends CI_Model {
             'x_http_code' => $curl['httpcode'],
             'x_clean_url' => ($curl['clean_url'] ? $curl['clean_url'] : $x_url),
             'x_type' => $curl['x_type'],
-            'x_status' => ( $curl['url_is_broken'] ? 1 : 2 ),
+            'x_status' => ( $curl['url_is_broken'] ? -1 : 1 ), //Either Published or Seems Broken
         ));
 
         if(!isset($new_x['x_id']) || $new_x['x_id']<1){
@@ -1836,7 +1836,7 @@ class Db_model extends CI_Model {
 
             $urls = $this->Db_model->x_fetch(array(
                 'x_u_id' => $u_id,
-                'x_status >' => 0,
+                'x_status >' => -2,
                 '(x_url LIKE \'%'.$key.'%\' OR x_clean_url LIKE \'%'.$key.'%\')' => null,
             ));
 
@@ -1891,7 +1891,7 @@ class Db_model extends CI_Model {
 
     function x_create($insert_columns){
 
-        if(missing_required_db_fields($insert_columns,array('x_url','x_clean_url','x_type','x_inbound_u_id','x_u_id'))){
+        if(missing_required_db_fields($insert_columns,array('x_url','x_clean_url','x_type','x_inbound_u_id','x_u_id','x_status'))){
             return false;
         } elseif(!filter_var($insert_columns['x_url'], FILTER_VALIDATE_URL)){
             return false;
@@ -1933,10 +1933,6 @@ class Db_model extends CI_Model {
 
         if(!isset($insert_columns['x_check_timestamp'])){
             $insert_columns['x_check_timestamp'] = date("Y-m-d H:i:s");
-        }
-
-        if(!isset($insert_columns['x_status'])){
-            $insert_columns['x_status'] = 1; //Live URL
         }
 
         if(!isset($insert_columns['x_http_code'])){
@@ -2060,7 +2056,7 @@ class Db_model extends CI_Model {
             $insert_columns['e_timestamp'] = $d->format("Y-m-d H:i:s.u");
         }
         if(!isset($insert_columns['e_status'])){
-            $insert_columns['e_status'] = -1; //Auto approved
+            $insert_columns['e_status'] = 2; //Auto Published
         }
 
 
@@ -2128,7 +2124,7 @@ class Db_model extends CI_Model {
                         }
 
                         //Append ID:
-                        $html_message .= '<div>Engagement ID: <a href="https://mench.com/cockpit/ej_list/'.$engagements[0]['e_id'].'">#'.$engagements[0]['e_id'].'</a></div>';
+                        $html_message .= '<div>Engagement ID: <a href="https://mench.com/adminpanel/ej_list/'.$engagements[0]['e_id'].'">#'.$engagements[0]['e_id'].'</a></div>';
 
                         //Send email:
                         $this->Comm_model->send_email($subscription['admin_emails'], $subject, $html_message);
@@ -2709,7 +2705,7 @@ class Db_model extends CI_Model {
         if($obj_id){
             $limits[$obj.'_id'] = $obj_id;
         } else {
-            $limits[$obj.'_status >='] = 0; //None deleted items (we assume this means the same thing for all objects)
+            $limits[$obj.'_status >='] = 0; //None Archived items (we assume this means the same thing for all objects)
         }
 
         //Fetch item(s) for updates:
@@ -2772,7 +2768,7 @@ class Db_model extends CI_Model {
 
                 //Append additional information:
                 $urls = $this->Db_model->x_fetch(array(
-                    'x_status >' => 0,
+                    'x_status >' => -2,
                     'x_u_id' => $item['u_id'],
                 ));
                 foreach($urls as $x){
@@ -2860,7 +2856,7 @@ class Db_model extends CI_Model {
 
             } elseif(intval($items[0][$obj.'_algolia_id'])>0) {
 
-                //item has been deleted locally but its still indexed on Algolia
+                //item has been Archived locally but its still indexed on Algolia
 
                 //Delete from algolia:
                 $search_index->deleteObject($items[0][$obj.'_algolia_id']);
@@ -2870,7 +2866,7 @@ class Db_model extends CI_Model {
 
                 return array(
                     'status' => 1,
-                    'message' => 'item deleted',
+                    'message' => 'Item Archived',
                 );
 
             }
@@ -2878,7 +2874,7 @@ class Db_model extends CI_Model {
         } else {
 
             //Mass update request
-            //All remote items have been deleted from algolia index and local algolia_ids have been set to zero
+            //All remote items have been Archived from algolia index and local algolia_ids have been set to zero
             //we're ready to create new items and update local:
             $obj_add_message = $search_index->addObjects($return_items);
 
