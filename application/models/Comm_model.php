@@ -702,11 +702,11 @@ class Comm_model extends CI_Model {
 
         } elseif($c_target_outcome){
 
-            //TODO migrate this to NLP framework for more accurate results:
+            //Do a search to see what we find...
             $search_index = load_php_algolia('alg_intents');
             $res = $search_index->search($c_target_outcome, [
                 'hitsPerPage' => 6,
-                'filters' => 'c__tree_all_count>1', //As users can only subscribe to intents that are multi nodes
+                'filters' => 'c__tree_all_count>1 AND c_status>=2', //users can only subscribe to published intents with children
             ]);
 
             //Log intent search:
