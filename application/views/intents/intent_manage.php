@@ -141,15 +141,18 @@ if(isset($orphan_cs)){
 
 
                 <div class="row">
-                    <div class="col-md-6" style="margin-top:20px;">
+                    <div class="col-md-6 inlineform" style="margin-top:20px;">
                         <div class="title"><h4><i class="fas fa-sliders-h"></i> Status</h4></div>
-                        <select class="form-control" id="c_status">
+                        <select class="form-control" id="c_status" style="display: inline-block !important;">
                         <?php
                         foreach(echo_status('c') as $status_id=>$status){
                             echo '<option value="'.$status_id.'" title="'.$status['s_desc'].'">'.$status['s_name'].'</option>';
                         }
                         ?>
                         </select>
+                        <span class="checkbox" style="display: inline-block !important;">
+                            <label style="display:inline-block !important; font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" id="apply_recurively" /><span class="underdot" data-toggle="tooltip" title="Applies the new status recursively down to all children/grandchildren that have the same starting status. Page will refresh after saving." data-placement="top">Recursive Down</span> <i class="fas fa-sign-out-alt rotate90"></i></label>
+                        </span>
                     </div>
                     <div class="col-md-6" style="margin-top:20px;">
                         <div class="title"><h4><i class="fas fa-weight"></i> Assessment Points</h4></div>

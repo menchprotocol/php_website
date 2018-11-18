@@ -5,9 +5,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 date_default_timezone_set('America/Los_Angeles');
 
 //Cache buster for static files
-$config['app_version'] = '0.607'.( ( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='local.mench.co' ) ? microtime(true) : '' ); //Updates status css/js cache files
+$config['app_version'] = '0.609'.( ( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='local.mench.co' ) ? microtime(true) : '' ); //Updates status css/js cache files
 
-//User case: $this->config->item('c_point_options')
+//User case: $this->config->item('timezones')
 
 $config['primary_c'] = 6903; //The default platform intent that would be recommended to new students
 $config['primary_u'] = 1326; //The default console entity that is loaded when Entities is clicked
@@ -97,11 +97,6 @@ $config['object_statuses'] = array(
             's_desc'  => 'Entity link is removed',
             's_icon' => 'fas fa-trash-alt',
         ),
-        0 => array(
-            's_name'  => 'New',
-            's_desc'  => 'Entity link is added and pending review by a moderator',
-            's_icon' => 'fal fa-question-circle',
-        ),
         1 => array(
             's_name'  => 'Published',
             's_desc'  => 'Entity link is active',
@@ -140,11 +135,6 @@ $config['object_statuses'] = array(
             's_name'  => 'Archived',
             's_desc'  => 'Intent link is removed',
             's_icon' => 'fas fa-trash-alt',
-        ),
-        0 => array(
-            's_name'  => 'New',
-            's_desc'  => 'Intent link is added and pending review by a moderator',
-            's_icon' => 'fal fa-question-circle',
         ),
         1 => array(
             's_name'  => 'Published',
@@ -234,18 +224,20 @@ $config['object_statuses'] = array(
             's_desc'  => 'Student cancelled their subscription and stopped pursuing the intent',
             's_icon' => 'fas fa-minus-circle',
         ),
+        /*
         0 => array(
              's_name'  => 'Passive',
              's_desc'  => 'Subscription advances in the background',
              's_icon' => 'fas fa-circle-notch fa-spin',
         ),
+        */
         1 => array(
-             's_name'  => 'Active',
-             's_desc'  => 'Work has started and pending completion',
+             's_name'  => 'Working On',
+             's_desc'  => 'Work to accomplish intent has started and pending completion',
              's_icon' => 'fas fa-spinner fa-spin',
         ),
         2 => array(
-             's_name'  => 'Updating',
+             's_name'  => 'Syncing Updates',
              's_desc'  => 'All subscription intents are marked as complete and student is receiving updates from new changes happening to their subscription tree',
              's_icon' => 'fas fa-sync fa-spin',
         ),
@@ -383,16 +375,16 @@ $config['social_urls'] =array(
     'https://discordapp.com/'           => 'fab fa-discord',
 
     //Education websites:
-    'https://www.udemy.com/'            => 'fas fa-graduation-cap',
-    'https://www.udacity.com/'          => 'fas fa-graduation-cap',
-    'https://www.thinkific.com/'        => 'fas fa-graduation-cap',
-    'https://teachable.com/'            => 'fas fa-graduation-cap',
-    'https://www.coursera.org/'         => 'fas fa-graduation-cap',
-    'https://www.edx.org/'              => 'fas fa-graduation-cap',
-    'https://www.khanacademy.org/'      => 'fas fa-graduation-cap',
-    'https://www.lynda.com/'            => 'fas fa-graduation-cap',
-    'https://www.skillshare.com/'       => 'fas fa-graduation-cap',
-    '.edu/'                             => 'fas fa-graduation-cap',
+    'https://www.udemy.com/'            => 'fas fa-presentation',
+    'https://www.udacity.com/'          => 'fas fa-presentation',
+    'https://www.thinkific.com/'        => 'fas fa-presentation',
+    'https://teachable.com/'            => 'fas fa-presentation',
+    'https://www.coursera.org/'         => 'fas fa-presentation',
+    'https://www.edx.org/'              => 'fas fa-presentation',
+    'https://www.khanacademy.org/'      => 'fas fa-presentation',
+    'https://www.lynda.com/'            => 'fas fa-presentation',
+    'https://www.skillshare.com/'       => 'fas fa-presentation',
+    '.edu/'                             => 'fas fa-presentation',
 );
 
 

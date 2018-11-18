@@ -337,7 +337,7 @@ input::-webkit-inner-spin-button {
 .alert{font-size: 1em !important;}
 .dashboard-logo{
 	width:80% !important;
-	padding:11px 0 0 0 !important;
+	padding:10px 0 0 0 !important;
 	text-align:left;
 }
 .dashboard-logo img{
@@ -629,6 +629,23 @@ h5, .h5 {
 .inlineform .form-group{
     display: inline !important;
 }
+.mench-mini{
+    width:20px; margin-top:-3px; margin-left:0px;
+}
+.ur__notes{
+    display: inline-block;
+    font-size: 0.8em;
+    color: #999;
+    max-width: 100%;
+    overflow: hidden;
+    margin: 5px 0 -3px 6px;
+    line-height: 120%;
+}
+.ur__notes a{
+    text-decoration: underline;
+    color: #999;
+}
+
 .countdown{
     margin:0 0 10px 0 !important;
     background-color:#2f2739 !important;

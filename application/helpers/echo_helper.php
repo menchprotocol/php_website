@@ -35,7 +35,6 @@ function echo_x($u, $x){
     $CI =& get_instance();
     $social_urls = $CI->config->item('social_urls');
     $udata = $CI->session->userdata('user');
-    $can_edit = ($udata['u_id']==$u['u_id'] || array_key_exists(1281, $udata['u__inbounds']));
 
     $ui = null;
     $ui .= '<div id="x_'.$x['x_id'].'" class="list-group-item url-item">';
@@ -45,24 +44,23 @@ function echo_x($u, $x){
 
     $ui .= echo_status('x_status',$x['x_status'],true,'left').' ';
 
-    if($can_edit && strlen($x['x_clean_url'])>0 && !($x['x_url']==$x['x_clean_url'])){
+    if(strlen($x['x_clean_url'])>0 && !($x['x_url']==$x['x_clean_url'])){
         //We have detected a different URL behind the scene:
-        $ui .= '<a class="badge badge-secondary" href="'.$x['x_clean_url'].'" target="_blank" data-toggle="tooltip" data-placement="left" title="Redirects to another URL"><i class="fas fa-route"></i></a> ';
+        $ui .= '<a class="badge badge-secondary" href="'.$x['x_clean_url'].'" target="_blank" data-toggle="tooltip" data-placement="left" title="Mench has detected that this URL redirects to another URL. Click to open redirect URL."><i class="fas fa-route"></i></a> ';
     }
 
     //This is an image and can be set as Cover photo, or may have already been set so...
     if($x['x_id']==$u['u_cover_x_id']){
         //Already set as the cover photo:
         $ui .= '<span class="badge badge-secondary grey current-cover" data-toggle="tooltip" data-placement="left" title="Currently set as Cover Photo"><i class="fas fa-file-check"></i></span> ';
-    } elseif($x['x_type']==4 && $x['x_status']>-2 && $can_edit){
+    } elseif($x['x_type']==4 && $x['x_status']>-2){
         //Could be set as the cover photo:
         $ui .= '<a class="badge badge-secondary add-cover" href="javascript:void(0);" onclick="x_cover_set('.$x['x_id'].')" data-toggle="tooltip" data-placement="left" title="Set this image as Cover Photo"><i class="fas fa-file-image"></i></a> ';
     }
 
     //User can always remove a URL:
-    if($can_edit){
-        $ui .= '<a class="badge badge-secondary" href="javascript:void(0);" onclick="x_archive('.$x['x_id'].')" data-toggle="tooltip" data-placement="left" title="Delete this URL"><i class="fas fa-trash-alt" title="ID '.$x['x_id'].'"></i></a>';
-    }
+    $ui .= '<a class="badge badge-secondary" href="javascript:void(0);" onclick="x_archive('.$x['x_id'].')" data-toggle="tooltip" data-placement="left" title="Archive URL"><i class="fas fa-trash-alt" title="ID '.$x['x_id'].'"></i></a>';
+
 
     $ui .= '</span>';
 
@@ -629,7 +627,7 @@ function echo_e($e){
         }
 
 
-        $ui .= '<b>'.$e['c_outcome'].'</b>';
+        $ui .= '<b>'.str_replace('Log ','',$e['c_outcome']).'</b>';
         $ui .= ' <span data-toggle="tooltip" data-placement="right" title="'.$e['e_timestamp'].' Engagement #'.$e['e_id'].'" style="font-size:0.8em;">'.echo_diff_time(strtotime($e['e_timestamp'])).' ago</span> ';
         $ui .= $main_content_title;
 
@@ -677,8 +675,24 @@ function echo_w_console($w){
         $user_ws = $CI->Db_model->w_fetch(array(
             'w_child_u_id' => $w['w_child_u_id'],
         ));
+
+        if(!isset($w['u__inbounds'])){
+            //Fetch inbounds at this point:
+            $w['u__inbounds'] = $CI->Db_model->ur_inbound_fetch(array(
+                'ur_child_u_id' => $w['w_child_u_id'],
+                'ur_status >=' => 0, //Pending or Active
+                'u_status >=' => 0, //Pending or Active
+            ));
+        }
+
         $subscription_title .= echo_cover($w,'micro-image', 1).' ';
         $subscription_title .= '<span class="u_full_name u_full_name_'.$w['u_id'].'">'.$w['u_full_name'].'</span>';
+        //Loop through parents and show those that have u_parent_icon set:
+        foreach($w['u__inbounds'] as $in_u){
+            if(strlen($in_u['u_parent_icon'])>0){
+                $subscription_title .= ' &nbsp;<span data-toggle="tooltip" title="'.$in_u['u_full_name'].(strlen($in_u['ur_notes'])>0 ? ' = '.$in_u['ur_notes'] : '').'" data-placement="top" class="u_parent_icon_child_'.$in_u['u_id'].'">'.$in_u['u_parent_icon'].'</span>';
+            }
+        }
 
         //Engagements made by subscriber:
         $ui .= '<a href="#wengagements-'.$w['w_child_u_id'].'-'.$w['w_id'].'" onclick="load_u_engagements('.$w['w_child_u_id'].','.$w['w_id'].')" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="'.$w['w_stats']['e_all_count'].' engagements"><span class="btn-counter">'.$w['w_stats']['e_all_count'].( $w['w_stats']['e_all_count']==$CI->config->item('max_counter') ? '+' : '').'</span><i class="fas fa-exchange"></i></a>';
@@ -868,7 +882,7 @@ function echo_contents($c, $fb_format=0){
         $type_all_count = count($c['c__tree_contents']);
         $CI =& get_instance();
         $content_types = $CI->config->item('content_types');
-        $edit_enabled = auth(array(1281),0);
+        $has_console_access = auth(array(1281),0);
         //More than 3:
         $text_overview = '';
         foreach($c['c__tree_contents'] as $type_id=>$current_us){
@@ -905,7 +919,7 @@ function echo_contents($c, $fb_format=0){
 
                     $text_overview .= ' ';
 
-                    if ($edit_enabled) {
+                    if ($has_console_access) {
                         $text_overview .= '<a href="/entities/' . $u['u_id'] . '">';
                     }
 
@@ -917,7 +931,7 @@ function echo_contents($c, $fb_format=0){
                         $text_overview .= $u['u_full_name'];
                     }
 
-                    if ($edit_enabled) {
+                    if ($has_console_access) {
                         $text_overview .= '</a>';
                     }
                     $count++;
@@ -1114,7 +1128,7 @@ function echo_experts($c, $fb_format=0){
 
     $visible_html = 4; //Landing page, beyond this is hidden and visible with a click
     $visible_bot = 10; //Plain text style, but beyond this is cut out!
-    $edit_enabled = auth(array(1281),0);
+    $has_console_access = auth(array(1281),0);
     $text_overview = '';
 
     foreach($c['c__tree_experts'] as $count=>$u){
@@ -1143,7 +1157,7 @@ function echo_experts($c, $fb_format=0){
         } else {
 
             //HTML Format:
-            if($edit_enabled){
+            if($has_console_access){
                 $text_overview .= '<a href="/entities/'.$u['u_id'].'">';
             }
 
@@ -1155,7 +1169,7 @@ function echo_experts($c, $fb_format=0){
                 $text_overview .= $u['u_full_name'];
             }
 
-            if($edit_enabled){
+            if($has_console_access){
                 $text_overview .= '</a>';
             }
 
@@ -1432,7 +1446,7 @@ function echo_status($object=null,$status=null,$micro_status=false,$data_placeme
             if(is_null($data_placement) && $micro_status){
                 return ( isset($result['s_icon']) ? '<i class="'.$result['s_icon'].' initial"></i> ' : '<i class="fas fa-sliders-h initial"></i> ' );
             } else {
-                return '<span class="status-label" '.( (isset($result['s_desc']) || $micro_status) && !is_null($data_placement) ? 'data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.($micro_status ? $CI->lang->line('obj_'.$object.'_name').' is '.$result['s_name'] : '').( isset($result['s_desc']) ? ($micro_status ? ': ' : '').$result['s_desc'] : '' ).'" style="border-bottom:1px dotted #444; padding-bottom:1px;"':'style="cursor:pointer;"').'>'.( isset($result['s_icon']) ? '<i class="'.$result['s_icon'].' initial"></i>' : '<i class="fas fa-sliders-h initial"></i>' ).' '.($micro_status?'':$result['s_name']).'</span>';
+                return '<span class="status-label" '.( (isset($result['s_desc']) || $micro_status) && !is_null($data_placement) ? 'data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.($micro_status ? $CI->lang->line('obj_'.$object.'_name').' is '.$result['s_name'] : '').( isset($result['s_desc']) ? ($micro_status ? ': ' : '').$result['s_desc'] : '' ).'" style="border-bottom:1px dotted #444; padding-bottom:1px; line-height:140%;"':'style="cursor:pointer;"').'>'.( isset($result['s_icon']) ? '<i class="'.$result['s_icon'].' initial"></i>' : '<i class="fas fa-sliders-h initial"></i>' ).' '.($micro_status?'':$result['s_name']).'</span>';
             }
 
         }
@@ -1582,8 +1596,8 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
     }
 
     //Build points UI if any:
-    $extra_ui = ' ';
-    $extra_ui .= '<span class="ui_c_points_'.$c['c_id'].'">';
+    $extra_ui = '';
+    $extra_ui .= '<span class="ui_c_points_'.$c['c_id'].'" style="display:inline-block; margin-left:5px;">';
     if($c['c_points']>0){
         $extra_ui .= '<i class="fas fa-weight" style="margin-right: 2px;"></i>'.$c['c_points'];
     }
@@ -1603,7 +1617,7 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
 
     $extra_ui .= '<span class="ui_c_cost_estimate_'.$c['c_id'].'">';
     if($c['c_cost_estimate']>0){
-        $extra_ui .= '<i class="fas fa-usd-circle" style="margin-right: 2px;"></i>'.$c['c_cost_estimate'];
+        $extra_ui .= '<i class="fas fa-usd-circle" style="margin-right:2px; display:inline-block;"></i>'.$c['c_cost_estimate'];
     }
     $extra_ui .= '</span> ';
 
@@ -1693,8 +1707,7 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
 }
 
 
-
-function echo_u($u, $level, $can_edit, $is_inbound=false){
+function echo_u($u, $level, $is_inbound=false){
 
     $CI =& get_instance();
     $udata = $CI->session->userdata('user');
@@ -1705,11 +1718,18 @@ function echo_u($u, $level, $can_edit, $is_inbound=false){
 
     $ui .= '<div id="u_'.$u['u_id'].'" entity-id="'.$u['u_id'].'" entity-email="'.$u['u_email'].'" entity-intro-message="'.str_replace('"','\\"',$u['u_intro_message']).'" entity-status="'.$u['u_status'].'" has-password="'.( strlen($u['u_password'])>0 ? 1 : 0 ).'" is-inbound="'.( $is_inbound ? 1 : 0 ).'" class="list-group-item u-item u__'.$u['u_id'].' '.( $level==1 ? 'top_entity' : 'ur_'.$u['ur_id'] ).'">';
 
+    //Hidden fields to store dynamic value!
+    $ui .= '<span class="u_parent_icon_val_'.$u['u_id'].' hidden">'.$u['u_parent_icon'].'</span>';
+    if($ur_id>0){
+        $ui .= '<span class="ur_notes_val_'.$ur_id.' hidden">'.$u['ur_notes'].'</span>';
+    }
+
+
     //Right content:
     $ui .= '<span class="pull-right">';
 
     //Start by showing entity status:
-    $ui .= echo_status('u',$u['u_status'], true, 'left').' ';
+    $ui .= '<span class="u_status_'.$u['u_id'].'">'.echo_status('u',$u['u_status'], true, 'left').'</span> ';
 
     //Count messages:
     $messages = $CI->Db_model->i_fetch(array(
@@ -1731,7 +1751,7 @@ function echo_u($u, $level, $can_edit, $is_inbound=false){
     $ui .= '<'.( count($messages)>0 ? 'a href="#messages-'.$u['u_id'].'" onclick="u_load_messages('.$u['u_id'].')" class="badge badge-secondary"' : 'span class="badge badge-secondary grey"' ).' style="width:40px;">'.( count($messages)>0 ? '<span class="btn-counter">'.count($messages).'</span>' : '' ).'<i class="fas fa-comment-dots"></i></'.( count($messages)>0 ? 'a' : 'span' ).'>';
 
 
-    $ui .= '<'.( $can_edit ? 'a href="#modify-'.$u['u_id'].'-'.$ur_id.'" onclick="u_load_modify('.$u['u_id'].','.$ur_id.')" class="badge badge-secondary"' : 'span class="badge badge-secondary grey"' ).' style="margin:-2px -6px 0 2px; width:40px;">'.( $u['u__e_score']>0 ? '<span class="btn-counter" data-toggle="tooltip" data-placement="left" title="Engagement Score">'.echo_big_num($u['u__e_score']).'</span>' : '' ).'<i class="fas fa-sitemap" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i></'.( $can_edit ? 'a' : 'span' ).'> &nbsp;';
+    $ui .= '<a href="#modify-'.$u['u_id'].'-'.$ur_id.'" onclick="u_load_modify('.$u['u_id'].','.$ur_id.')" class="badge badge-secondary" style="margin:-2px -6px 0 2px; width:40px;">'.( $u['u__e_score']>0 ? '<span class="btn-counter" data-toggle="tooltip" data-placement="left" title="Engagement Score">'.echo_big_num($u['u__e_score']).'</span>' : '' ).'<i class="fas fa-sitemap" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i></a> &nbsp;';
 
     $ui .= '<a class="badge badge-secondary" href="/entities/'.$u['u_id'].'" style="display:inline-block; margin-right:6px; width:40px; margin-left:1px;">'.(isset($u['u__outbound_count']) && $u['u__outbound_count']>0 ? '<span class="btn-counter '.( $level==1 ? 'li-outbound-count' : '' ).'">'.$u['u__outbound_count'].'</span>' : '').'<i class="'.( $is_inbound ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></a>';
 
@@ -1743,11 +1763,58 @@ function echo_u($u, $level, $can_edit, $is_inbound=false){
         //Regular section:
         $ui .= echo_cover($u, 'profile-icon2');
         $ui .= '<b id="u_title" class="u_full_name u_full_name_'.$u['u_id'].'">' . $u['u_full_name'] . '</b>';
-        $ui .= ' <span class="obj-id underdot" data-toggle="tooltip" data-placement="top" title="Entity ID">@' . $u['u_id'] . '</span>';
-        $ui .= ' <a href="https://www.google.com/search?q='.urlencode($u['u_full_name']).'" target="_blank" data-toggle="tooltip" title="Search on Google" data-placement="top"><i class="fab fa-google"></i></a>';
 
-        //Visibly show bio for level 1:
-        $ui .= '<div class="u_intro_message_'.$u['u_id'].'" style="margin-top:2px;">' . nl2br($u['u_intro_message']) . '</div>';
+        $ui .= ' <span class="obj-id underdot" data-toggle="tooltip" data-placement="top" title="Entity ID">@' . $u['u_id'] . '</span>';
+
+
+        if($u['u_fb_psid']){
+            //Also show their notification settings now that they are on Mench:
+            $ui .= ' '.echo_status('u_fb_notification', $u['u_fb_notification'], true, 'top');
+            //Show Mench icon:
+            $ui .= ' <a href="/my/fb_profile/'.$u['u_id'].'" target="_blank" data-toggle="tooltip" title="User connected to Mench. Hit to ping Facebook profile data." data-placement="top"><img src="/img/bp_128.png" class="mench-mini"></a>';
+
+        }
+
+        //All of the following could be merged/migrated to ur_notes once that structure is introduced, but for now let's give visibility:
+        if($u['u_country_code']){
+            $u['u_country_code'] = strtoupper($u['u_country_code']);
+            $countries_all = $CI->config->item('countries_all');
+            $ui .= ' &nbsp;<img src="/img/flags/'.strtolower($u['u_country_code']).'.png" style="height:16px; border-radius:2px; margin-top:-3px;" data-toggle="tooltip" title="User country set to '.( isset($countries_all[$u['u_country_code']]) ? $countries_all[$u['u_country_code']] : $u['u_country_code'] ).'" data-placement="top">';
+        }
+
+        if($u['u_language']){
+            $languages = $CI->config->item('languages');
+            $parts = explode(',',$u['u_language']);
+            $languages_fancy = '';
+            foreach ($parts as $counter=>$part){
+                if($counter>0){
+                    $languages_fancy .= ', ';
+                }
+                $languages_fancy .= ( isset($languages[$part]) ? $languages[$part] : $part );
+            }
+            $ui .= ' &nbsp;<i class="fas fa-language" data-toggle="tooltip" title="User language set to '.$languages_fancy.'" data-placement="top"></i>';
+        }
+
+        if($u['u_timezone']){
+            $timezones = $CI->config->item('timezones');
+            $ui .= ' &nbsp;<i class="fas fa-map" data-toggle="tooltip" title="User timezene set: '.( isset($timezones[$u['u_timezone']]) ? $timezones[$u['u_timezone']] : $u['u_timezone'] ).'" data-placement="top"></i>';
+        }
+
+        if($u['u_gender']){
+            $gender = ( $u['u_gender']=='m' ? 'male' : ( $u['u_gender']=='f' ? 'female' : 'Unknown' ) );
+            $ui .= ' &nbsp;<i class="fas fa-'.$gender.'" data-toggle="tooltip" title="User identified themselves as '.$gender.'" data-placement="top"></i>';
+        }
+
+        //are they connected to Mench?
+        if(strlen($u['u_password'])>0){
+            $ui .= ' &nbsp;<i class="fas fa-key" data-toggle="tooltip" title="User has an assigned login password" data-placement="top"></i>';
+        }
+        if(strlen($u['u_email'])>0){
+            $ui .= ' &nbsp;<a href="mailto:'.$u['u_email'].'" data-toggle="tooltip" title="User email set: '.$u['u_email'].'" data-placement="top"><i class="fas fa-envelope"></i></a>';
+        }
+
+        //Google search:
+        $ui .= ' &nbsp;<a href="https://www.google.com/search?q='.urlencode($u['u_full_name']).'" target="_blank" data-toggle="tooltip" title="Search on Google" data-placement="top"><i class="fab fa-google"></i></a>';
 
     } else {
 
@@ -1755,6 +1822,35 @@ function echo_u($u, $level, $can_edit, $is_inbound=false){
         $ui .= echo_cover($u,'micro-image', true).' ';
         $ui .= '<span class="u_full_name u_full_name_'.$u['u_id'].( strlen($u['u_intro_message'])>0 ? ' has-desc ' : '' ).'" data-toggle="tooltip" data-placement="right" title="'.$u['u_intro_message'].'">'.$u['u_full_name'].'</span>';
 
+    }
+
+    $ui .= ' <span class="u_parent_icon_ui_'.$u['u_id'].(strlen($u['u_parent_icon'])==0?' hidden ':'').'" data-toggle="tooltip" title="Parent Icon" data-placement="top">&nbsp;['.$u['u_parent_icon'].']</span>';
+
+    if(!isset($u['u__inbounds'])){
+        //Fetch inbounds at this point:
+        $u['u__inbounds'] = $CI->Db_model->ur_inbound_fetch(array(
+            'ur_child_u_id' => $u['u_id'],
+            'ur_status >=' => 0, //Pending or Active
+            'u_status >=' => 0, //Pending or Active
+        ));
+    }
+
+    //Loop through parents and show those that have u_parent_icon set:
+    foreach($u['u__inbounds'] as $in_u){
+        if(strlen($in_u['u_parent_icon'])>0){
+            $ui .= ' &nbsp;<span data-toggle="tooltip" title="'.$in_u['u_full_name'].(strlen($in_u['ur_notes'])>0 ? ' = '.$in_u['ur_notes'] : '').'" data-placement="top" class="u_parent_icon_child_'.$in_u['u_id'].'">'.$in_u['u_parent_icon'].'</span>';
+        }
+    }
+
+    //Does it have a UR value?
+    if($ur_id>0){
+        //show the link box for updating:
+        $ui .= ' <span class="ur__notes ur__notes_'.$ur_id.'">'.echo_link($u['ur_notes']).'</span>';
+    }
+
+    if($level==1){
+        //Visibly show bio for level 1:
+        $ui .= '<div class="u_intro_message_'.$u['u_id'].'" style="margin-top:2px;">' . nl2br($u['u_intro_message']) . '</div>';
     }
 
 

@@ -17,6 +17,38 @@ class My extends CI_Controller {
         header( 'Location: /');
     }
 
+    function fb_profile($u_id){
+
+        $udata = auth(array(1308));
+        $current_us = $this->Db_model->u_fetch(array(
+            'u_id' => $u_id,
+        ));
+
+        if(!$udata){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Session Expired. Login and Try again.',
+            ));
+        } elseif(count($current_us)==0){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'User not found!',
+            ));
+        } elseif(strlen($current_us[0]['u_fb_psid'])<10){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'User does not seem to be connected to Mench, so profile data cannot be fetched',
+            ));
+        } else {
+
+            //Fetch results and show:
+            return echo_json(array(
+                'fb_profile' => $this->Comm_model->fb_graph('GET', '/'.$current_us[0]['u_fb_psid'], array()),
+                'u' => $current_us[0],
+            ));
+
+        }
+    }
 
     /* ******************************
      * Messenger Persistent Menu
@@ -39,12 +71,13 @@ class My extends CI_Controller {
 
         //Get session data in case user is doing a browser login:
         $udata = $this->session->userdata('user');
+        $no_session_w = (!isset($udata['u__ws']) || count($udata['u__ws'])<1);
 
         //Fetch Bootcamps for this user:
-        if(!$u_fb_psid && count($udata['u__ws'])<1 && !array_key_exists(1281, $udata['u__inbounds'])){
+        if(!$u_fb_psid && $no_session_w && !array_key_exists(1281, $udata['u__inbounds'])){
             //There is an issue here!
             die('<div class="alert alert-danger" role="alert">Invalid Credentials</div>');
-        } elseif(count($udata['u__ws'])<1 && !is_dev() && isset($_GET['sr']) && !parse_signed_request($_GET['sr'])){
+        } elseif($no_session_w && !is_dev() && isset($_GET['sr']) && !parse_signed_request($_GET['sr'])){
             die('<div class="alert alert-danger" role="alert">Unable to authenticate your origin.</div>');
         }
 

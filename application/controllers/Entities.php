@@ -66,7 +66,7 @@ class Entities extends CI_Controller {
         $child_entities = $this->Db_model->ur_outbound_fetch($filters, array('u__outbound_count'), $items_per_page, ($page*$items_per_page));
 
         foreach($child_entities as $u){
-            echo echo_u($u, 2, intval($_POST['can_edit']), false /* Load more only for outbound */);
+            echo echo_u($u, 2, false /* Load more only for outbound */);
         }
 
         //Do we need another load more button?
@@ -94,11 +94,6 @@ class Entities extends CI_Controller {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Parent Entity',
-            ));
-        } elseif(!isset($_POST['can_edit'])){
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Editing Permission',
             ));
         } elseif(!isset($_POST['secondary_parent_u_id'])){
             return echo_json(array(
@@ -176,7 +171,7 @@ class Entities extends CI_Controller {
 
                     //It's a URL, create an entity from this URL:
                     $accept_existing_url = ( !$_POST['is_inbound'] && $current_us[0]['u_id']!=1326 ); //We can accept duplicates if we're not adding directly under content
-                    $url_create = $this->Db_model->x_sync(trim($_POST['new_u_input']),1326, $_POST['can_edit'], $accept_existing_url);
+                    $url_create = $this->Db_model->x_sync(trim($_POST['new_u_input']),1326, 1, $accept_existing_url);
 
                     //Did we have an error?
                     if(!$url_create['status']){
@@ -297,7 +292,7 @@ class Entities extends CI_Controller {
             'status' => 1,
             'message' => 'Success',
             'new_u_status' => $new_u['u_status'],
-            'new_u' => echo_u(array_merge($new_u,$ur2),2, $_POST['can_edit'], $_POST['is_inbound']),
+            'new_u' => echo_u(array_merge($new_u,$ur2),2, $_POST['is_inbound']),
         ));
     }
 
@@ -360,6 +355,16 @@ class Entities extends CI_Controller {
                 'status' => 0,
                 'message' => 'Missing name',
             ));
+        } elseif(!isset($_POST['u_status'])){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing status',
+            ));
+        } elseif(!isset($_POST['ur_id']) || !isset($_POST['ur_notes'])){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing entity link data',
+            ));
         } elseif(strlen($_POST['u_full_name'])>$this->config->item('u_full_name_max')){
             return echo_json(array(
                 'status' => 0,
@@ -406,10 +411,51 @@ class Entities extends CI_Controller {
 
         //Prepare data to be updated:
         $u_update = array(
+            'u_status' => intval($_POST['u_status']),
             'u_full_name' => trim($_POST['u_full_name']),
             'u_intro_message' => str_replace('"','`',trim($_POST['u_intro_message'])),
+            'u_parent_icon' => trim($_POST['u_parent_icon']),
             'u_email' => ( isset($_POST['u_email']) && strlen($_POST['u_email'])>0 ? trim(strtolower($_POST['u_email'])) : null ),
         );
+
+        //DO we have a link to update?
+        if(intval($_POST['ur_id'])>0){
+
+            //Yes, first validate this link:
+            $urs = $this->Db_model->ur_inbound_fetch(array(
+                'ur_id' => $_POST['ur_id'],
+            ));
+
+            if(count($urs)==0){
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => 'Invalid Entity Link ID',
+                ));
+            }
+
+            //Has the link value changes?
+            if(!($urs[0]['ur_notes']==$_POST['ur_notes'])){
+
+                //Something has changed, log this:
+                $this->Db_model->ur_update($_POST['ur_id'], array(
+                    'ur_notes' => $_POST['ur_notes'],
+                ));
+
+                //Log engagement:
+                $this->Db_model->e_create(array(
+                    'e_parent_u_id' => $udata['u_id'], //The user that updated the account
+                    'e_value' => 'Updates from ['.$urs[0]['ur_notes'].'] to ['.$_POST['ur_notes'].']',
+                    'e_json' => array(
+                        'input' => $_POST,
+                        'before' => $urs[0]['ur_notes'],
+                        'after' => $_POST['ur_notes'],
+                    ),
+                    'e_parent_c_id' => 7727, //entity link note modification
+                    'e_ur_id' => $_POST['ur_id'],
+                ));
+            }
+
+        }
 
         //Some more checks:
         if(strlen($_POST['u_password_new'])>0){
@@ -437,7 +483,6 @@ class Entities extends CI_Controller {
         //Now update the DB:
         $this->Db_model->u_update(intval($_POST['u_id']) , $u_update);
         //Above call would also update algolia index...
-
 
         //Refetch some DB (to keep consistency with login session format) & update the Session:
         if($_POST['u_id']==$udata['u_id']){
@@ -469,6 +514,8 @@ class Entities extends CI_Controller {
         return echo_json(array(
             'status' => 1,
             'message' => '<span><i class="fas fa-check"></i> Saved</span>',
+            'status_ui' => echo_status('u', $_POST['u_status'], true, 'left'),
+            'ur__notes' => echo_link($_POST['ur_notes']),
         ));
 
     }

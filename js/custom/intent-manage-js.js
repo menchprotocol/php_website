@@ -583,6 +583,7 @@ function c_load_modify(c_id, cr_id){
     $("input[name=c_is_any][value='"+$('.c_outcome_'+c_id).attr('c_is_any')+"']").prop("checked",true);
     document.getElementById("c_require_url_to_complete").checked = parseInt($('.c_outcome_'+c_id).attr('c_require_url_to_complete'));
     document.getElementById("c_require_notes_to_complete").checked = parseInt($('.c_outcome_'+c_id).attr('c_require_notes_to_complete'));
+    document.getElementById("apply_recurively").checked = false; //Always remove this so the user can choose
 
     c_adjust_isany_ui();
 
@@ -636,11 +637,14 @@ function c_save_modify(){
         c_require_url_to_complete:( document.getElementById('c_require_url_to_complete').checked ? 1 : 0),
         c_require_notes_to_complete:( document.getElementById('c_require_notes_to_complete').checked ? 1 : 0),
         c_is_any:parseInt($('input[name=c_is_any]:checked').val()),
-
+        apply_recurively:( document.getElementById('apply_recurively').checked ? 1 : 0),
         c_status:parseInt($('#c_status').val()),
         c_points:parseInt($('#c_points').val()),
         c_trigger_statements:$('#c_trigger_statements').val().replace(/\"/g, ""), //Remove double quotes
     };
+
+    //Take a snapshot of the current status:
+    var original_c_status = parseInt($('.c_outcome_'+modify_data['c_id']).attr('c_status'));
 
     //Show spinner:
     $('.save_intent_changes').html('<span><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
@@ -649,8 +653,6 @@ function c_save_modify(){
     $.post("/intents/c_save_settings", modify_data , function(data) {
 
         if(data.status){
-
-            var original_c_status = parseInt($('.c_outcome_'+modify_data['c_id']).attr('c_status'));
 
             //Update variables:
             $(".c_outcome_"+modify_data['c_id']).html(modify_data['c_outcome']);
@@ -672,15 +674,8 @@ function c_save_modify(){
 
             //has status updated? If so update the UI:
             if(original_c_status!=modify_data['c_status']){
-                //Fetch new status UI and update:
-                //Update backend:
-                $.post("/intents/c_echo_status", modify_data, function(data) {
-                    //Update status:
-                    $('.c_status_'+modify_data['c_id']).html(data.status_ui);
-
-                    //Tooltips:
-                    $('[data-toggle="tooltip"]').tooltip();
-                });
+                //Update status:
+                $('.c_status_'+modify_data['c_id']).html(data.status_ui);
             }
 
             //Update trigger statements:
@@ -713,11 +708,16 @@ function c_save_modify(){
             //Reload Tooltip again:
             $('[data-toggle="tooltip"]').tooltip();
 
-            //Disapper in a while:
+            //What's the final action?
             setTimeout(function() {
-                //Hide the editor & saving results:
-                $('.save_intent_changes').hide();
-            }, 377);
+                if(modify_data['apply_recurively'] && data.children_updated>0){
+                    //Refresh page soon to show new status for children:
+                    window.location = "/intents/"+c_top_id;
+                } else {
+                    //Hide the editor & saving results:
+                    $('.save_intent_changes').hide();
+                }
+            }, 610);
 
         } else {
             //Ooops there was an error!

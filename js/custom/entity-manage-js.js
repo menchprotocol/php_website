@@ -184,7 +184,6 @@ function ur_add(new_u_id,secondary_parent_u_id=0, is_inbound) {
         new_u_id: new_u_id,
         new_u_input: new_u_input,
         is_inbound:( is_inbound ? 1 : 0 ),
-        can_edit:can_u_edit,
         secondary_parent_u_id:secondary_parent_u_id,
 
     }, function (data) {
@@ -243,6 +242,16 @@ function u_intro_message_counter() {
     }
 }
 
+
+function u_parent_icon_word_count() {
+    var len = $('#u_parent_icon').val().length;
+    if (len>u_full_name_max) {
+        $('#charu_parent_iconNum').addClass('overload').text(len);
+    } else {
+        $('#charu_parent_iconNum').removeClass('overload').text(len);
+    }
+}
+
 function u_full_name_word_count() {
     var len = $('#u_full_name').val().length;
     if (len>u_full_name_max) {
@@ -252,6 +261,17 @@ function u_full_name_word_count() {
     }
 }
 
+function ur_notes_word_count() {
+    var len = $('#ur_notes').val().length;
+    if (len>message_max) {
+        $('#charur_notesNum').addClass('overload').text(len);
+    } else {
+        $('#charur_notesNum').removeClass('overload').text(len);
+    }
+}
+
+
+
 
 function x_cover_set(x_id) {
     //Set loader:
@@ -260,7 +280,6 @@ function x_cover_set(x_id) {
     //Add cover photo:
     $.post("/urls/set_cover", {
         x_id: x_id,
-        can_edit:can_u_edit,
     }, function (data) {
 
         if (data.status) {
@@ -302,7 +321,6 @@ function x_add() {
 
         x_u_id:top_u_id,
         x_url: $('#add_url_input').val(),
-        can_edit:can_u_edit,
 
     }, function (data) {
 
@@ -355,7 +373,6 @@ function x_archive(x_id) {
     $.post("/urls/x_archive", {
 
         x_id: x_id,
-        can_edit:can_u_edit,
 
     }, function (data) {
 
@@ -393,7 +410,6 @@ function u_load_next_page(page,load_new_filter=0) {
     }
 
     $.post("/entities/u_load_next_page", {
-        can_edit:can_u_edit,
         page:page,
         inbound_u_id:top_u_id,
         u_status_filter:u_status_filter,
@@ -448,6 +464,7 @@ function ur_unlink(){
 
             //Update UI to confirm with user:
             $('.ur_'+ur_id).fadeOut();
+            $('#modifybox').addClass('hidden');
 
             //Update counter:
             $(counter_class).text((parseInt($(counter_class+':first').text())-1));
@@ -502,23 +519,36 @@ function u_load_modify(u_id, ur_id){
     $('#modifybox').attr('entity-link-id',ur_id);
     $('#modifybox').attr('entity-id',u_id);
 
+
     $('#u_full_name').val($(".u_full_name_"+u_id+":first").text());
     $('#u_intro_message').val($(".u__"+u_id+":first").attr('entity-intro-message'));
     $('#u_status').val($(".u__"+u_id+":first").attr('entity-status'));
+    $('#u_parent_icon').val($(".u_parent_icon_val_"+u_id+":first").html().replace('\\',''));
 
     u_intro_message_counter();
     u_full_name_word_count();
+    u_parent_icon_word_count();
 
     //Update password reset UI:
     $('#u_email').val($(".u__"+u_id+":first").attr('entity-email'));
-    $('.changepass').hide();
-    $('.changepass_a').show().html('<i class="fas fa-key"></i> '+( parseInt($(".u__"+u_id+":first").attr('has-password')) && $(".u__"+u_id+":first").attr('entity-email').length>0 ? 'Update Login Credentials' : 'Setup Login Credentials'));
 
     //Only show unlink button if not level 1
     if(parseInt(ur_id)>0){
-        $('.unlink-entity').removeClass('hidden');
+
+        //Make the UI link and the notes in the edit box:
+        $('.unlink-entity, #ur_note_ui').removeClass('hidden');
+
+        //Assign value:
+        $('#ur_notes').val($(".ur_notes_val_"+ur_id+":first").text());
+
+        //Update count:
+        ur_notes_word_count();
+
     } else {
-        $('.unlink-entity').addClass('hidden');
+
+        //Hide the section and clear it:
+        $('.unlink-entity, #ur_note_ui').addClass('hidden');
+
     }
 
     //Make the frame visible:
@@ -544,12 +574,19 @@ function u_save_modify(){
 
     //Prepare data to be modified for this intent:
     var modify_data = {
+        ur_id:parseInt($('#modifybox').attr('entity-link-id')),
+        ur_notes:$('#ur_notes').val(),
         u_id:parseInt($('#modifybox').attr('entity-id')),
         u_full_name:$('#u_full_name').val(),
         u_intro_message:$('#u_intro_message').val(),
+        u_status:$('#u_status').val(), //The new status (might not have changed too)
         u_email:$('#u_email').val(),
         u_password_new:$('#u_password_new').val(),
+        u_parent_icon:$('#u_parent_icon').val(),
     };
+
+    //Take a snapshot of the status:
+    var original_u_status = parseInt($('.u__'+modify_data['u_id']).attr('entity-status'));
 
     //Show spinner:
     $('.save_entity_changes').html('<span><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
@@ -564,6 +601,8 @@ function u_save_modify(){
             $(".u__"+modify_data['u_id']).attr('entity-intro-message', modify_data['u_intro_message']);
             $(".u__"+modify_data['u_id']).attr('entity-email', modify_data['u_email']);
             $(".u__"+modify_data['u_id']).attr('has-password', ( modify_data['u_password_new'].length>0 ? 1 : 0 ));
+            $(".u_parent_icon_val_"+modify_data['u_id']).html(modify_data['u_parent_icon']);
+
             if($('.u_intro_message_'+modify_data['u_id']).length){
                 //This is the top entity that's loaded, simply update:
                 $(".u_intro_message_"+modify_data['u_id']).html(nl2br(modify_data['u_intro_message']));
@@ -576,22 +615,43 @@ function u_save_modify(){
                 }
             }
 
-            //Did the status change?
-            if(0){
-                //Adjust counters:
-                $('.count-u-status-'+new_u_status).text((parseInt($('.count-u-status-'+new_u_status).text())+1));
-                $('.count-u-status-'+data.old_status).text((parseInt($('.count-u-status-'+data.old_status).text())-1));
-                //TODO maybe the new counter element does not exist! Handle this case later...
+            //Did we have notes to update?
+            if(modify_data['ur_id']>0){
+                //Yes, update the notes:
+                $(".ur__notes_"+modify_data['ur_id']).html(data.ur__notes);
+                $(".ur_notes_val_"+modify_data['ur_id']).text(modify_data['ur_notes']);
+            }
 
-                if(u_status_filter>=0 && !(new_u_status==u_status_filter)){
+            if(modify_data['u_parent_icon'].length>0){
+                $('.u_parent_icon_ui_'+modify_data['u_id']).removeClass('hidden').html('&nbsp;['+modify_data['u_parent_icon']+']');
+                $('.u_parent_icon_child_'+modify_data['u_id']).html(modify_data['u_parent_icon']);
+            } else {
+                //hide that section
+                $('.u_parent_icon_ui_'+modify_data['u_id']).addClass('hidden');
+                $('.u_parent_icon_child_'+modify_data['u_id']).html('');
+            }
+
+            //has status updated? If so update the UI:
+            if(original_u_status!=modify_data['u_status']){
+
+                //Update status:
+                $('.u_status_'+modify_data['u_id']).html(data.status_ui);
+
+                //Adjust counters for the filtering system as that also will change:
+                $('.count-u-status-'+modify_data['u_status']).text((parseInt($('.count-u-status-'+modify_data['u_status']).text())+1));
+                $('.count-u-status-'+original_u_status).text((parseInt($('.count-u-status-'+original_u_status).text())-1));
+                //TODO maybe the new counter element does not exist and we need to create it! Handle this case later...
+
+                if(u_status_filter>=0 && !(modify_data['u_status']==u_status_filter)){
                     //We have the filter on and it does not match the new status, so hide this:
                     setTimeout(function () {
-                        $('#u_'+u_id).fadeOut();
+                        $('.u__'+modify_data['u_id']).fadeOut();
                     }, 377);
                 } else {
                     //Update status:
-                    $('#u_'+u_id).attr('entity-status',new_u_status);
+                    $('.u__'+modify_data['u_id']).attr('entity-status',modify_data['u_status']);
                 }
+
             }
 
             //Reload Tooltip again:
@@ -604,7 +664,7 @@ function u_save_modify(){
             setTimeout(function() {
                 //Hide the editor & saving results:
                 $('.save_entity_changes').hide();
-            }, 1000);
+            }, 377);
 
         } else {
             //Ooops there was an error!

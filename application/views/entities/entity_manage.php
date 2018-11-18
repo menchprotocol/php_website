@@ -7,9 +7,11 @@ $udata = $this->session->userdata('user');
 $entity_type = entity_type($entity);
 
 //This also gets passed to other pages via AJAX to be applied to u_echo() in ajax calls:
-$can_edit           = ( $udata['u_id']==$entity['u_id'] || array_key_exists(1281, $udata['u__inbounds']));
 $add_name           = ( in_array($entity['u_id'], array(1278,2750)) ? rtrim($entity['u_full_name'],'s') : 'Content' );
 $add_id             = ( in_array($entity['u_id'], array(1278,2750)) ? $entity['u_id'] : 1326 /* Content */ );
+//TODO Deal with this override later as we try to reduce rules here...
+$add_name           = 'Entity';
+$add_id             = 0;
 
 //Fetch other data:
 $child_entities = $this->Db_model->ur_outbound_fetch(array(
@@ -34,7 +36,6 @@ $all_subscriptions = $this->Db_model->w_fetch(array(
     var u_status_filter = -1; //No filter, show all!
     var is_compact = (is_mobile() || $(window).width()<767);
     var top_u_id = <?= $entity['u_id'] ?>;
-    var can_u_edit = <?= ( $can_edit ? 1 : 0 ) ?>;
     var add_u_name = '<?= $add_name ?>';
     var add_u_id = <?= $add_id ?>;
     var message_max = <?= $this->config->item('message_max') ?>;
@@ -51,21 +52,21 @@ $all_subscriptions = $this->Db_model->w_fetch(array(
 //Entity & Components:
 
 //Parents
-if($entity['u_id']!=2738){
-    echo '<h5>';
-        echo '<span class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-inbound-count">'.count($entity['u__inbounds']).'</span> Parent'.echo__s(count($entity['u__inbounds'])).'</span>';
-        if($can_edit) {
-            echo ' <a class="add-new-btn" href="javascript:$(\'#new-inbound\').removeClass(\'hidden\');$(\'.add-new-btn\').hide();$(\'#new-inbound .new-input\').focus();"><i class="fas fa-plus-circle"></i></a>';
-        }
-    echo '</h5>';
+echo '<h5>';
+echo '<span class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-inbound-count">'.count($entity['u__inbounds']).'</span> Parent'.echo__s(count($entity['u__inbounds'])).'</span>';
 
-    echo '<div id="list-inbound" class="list-group  grey-list">';
-    foreach ($entity['u__inbounds'] as $ur) {
-        echo echo_u($ur, 2, $can_edit, true);
-    }
-    //Input to add new inbounds:
-    if($can_edit) {
-        echo '<div id="new-inbound" class="list-group-item list_input grey-input hidden">
+echo ' <a class="add-new-btn" href="javascript:$(\'#new-inbound\').removeClass(\'hidden\');$(\'.add-new-btn\').hide();$(\'#new-inbound .new-input\').focus();"><i class="fas fa-plus-circle"></i></a>';
+
+echo '</h5>';
+
+echo '<div id="list-inbound" class="list-group  grey-list">';
+
+foreach ($entity['u__inbounds'] as $ur) {
+    echo echo_u($ur, 2, true);
+}
+
+//Input to add new inbounds:
+echo '<div id="new-inbound" class="list-group-item list_input grey-input hidden">
             <div class="input-group">
                 <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search" data-lpignore="true" placeholder="Add Entity..."></div>
                 <span class="input-group-addon">
@@ -73,9 +74,8 @@ if($entity['u_id']!=2738){
                 </span>
             </div>
         </div>';
-    }
-    echo '</div>';
-}
+
+echo '</div>';
 
 
 
@@ -84,13 +84,8 @@ if($entity['u_id']!=2738){
 //Top/main entity
 echo '<h5 class="badge badge-h"><i class="fas fa-at"></i> Entity</h5>';
 echo '<div id="entity-box" class="list-group">';
-echo echo_u($entity, 1, $can_edit);
+echo echo_u($entity, 1);
 echo '</div>';
-
-
-
-
-
 
 
 
@@ -108,7 +103,7 @@ $counts = $this->Db_model->ur_outbound_fetch(array(
     'u.u_status' => 'ASC',
 ));
 
-//Only show filtering UI if we find entities with multiple statuses
+//Only show filtering UI if we find entities with different statuses
 if(count($counts)>0 && $counts[0]['u_counts']<$entity['u__outbound_count']){
 
     //Load status definitions:
@@ -133,15 +128,14 @@ echo '</tr></table>';
 echo '<div id="list-outbound" class="list-group grey-list">';
 
 foreach($child_entities as $u){
-    echo echo_u($u, 2, $can_edit);
+    echo echo_u($u, 2);
 }
 if($entity['u__outbound_count'] > count($child_entities)) {
     echo_next_u(1, $this->config->item('items_per_page'), $entity['u__outbound_count']);
 }
 
 //Input to add new inbounds:
-if($can_edit){
-    echo '<div id="new-outbound" class="list-group-item list_input grey-input">
+echo '<div id="new-outbound" class="list-group-item list_input grey-input">
         <div class="input-group">
             <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search bottom-add" data-lpignore="true" placeholder="Add '.$add_name.' by Name/URL"></div>
             <span class="input-group-addon">
@@ -149,8 +143,6 @@ if($can_edit){
             </span>
         </div>
     </div>';
-}
-
 echo '</div>';
 
 
@@ -183,16 +175,14 @@ if(count($all_subscriptions)>0){
 
 
 //URLs
-if(!in_array($entity['u_id'], array(1278,1326,2750))){
-    echo '<h5 class="badge badge-h"><i class="fas fa-link"></i> <span class="li-urls-count">'.count($entity['u__urls']).'</span> URLs</h5>';
-    echo '<div id="list-urls" class="list-group  grey-list" style="margin-bottom:40px;">';
-    foreach ($entity['u__urls'] as $x) {
-        echo echo_x($entity, $x);
-    }
+echo '<h5 class="badge badge-h"><i class="fas fa-link"></i> <span class="li-urls-count">'.count($entity['u__urls']).'</span> URLs</h5>';
+echo '<div id="list-urls" class="list-group  grey-list" style="margin-bottom:40px;">';
+foreach ($entity['u__urls'] as $x) {
+    echo echo_x($entity, $x);
+}
 
-    //Add new Reference:
-    if ($can_edit) {
-        echo '<div class="list-group-item list_input grey-input">
+//Add new Reference:
+echo '<div class="list-group-item list_input grey-input">
             <div class="input-group">
                 <div class="form-group is-empty"><input type="url" class="form-control" data-lpignore="true" id="add_url_input" placeholder="Paste URL here..."></div>
                 <span class="input-group-addon">
@@ -200,14 +190,7 @@ if(!in_array($entity['u_id'], array(1278,1326,2750))){
                 </span>
             </div>
         </div>';
-    }
-    echo '</div>';
-}
-
-
-
-
-
+echo '</div>';
 
 
 
@@ -231,7 +214,7 @@ if(!in_array($entity['u_id'], array(1278,1326,2750))){
 
 
               <div class="row">
-                  <div class="col-md-6" style="margin-top:15px;">
+                  <div class="col-md-4" style="margin-top:15px;">
 
                       <div class="title"><h4><i class="fas fa-sliders-h"></i> Status</h4></div>
                       <select class="form-control" id="u_status">
@@ -243,23 +226,38 @@ if(!in_array($entity['u_id'], array(1278,1326,2750))){
                       </select>
 
                   </div>
-                  <div class="col-md-6" style="margin-top:15px;">
+                  <div class="col-md-8" style="margin-top:15px;">
 
-                      <!-- Password credential management -->
-                      <div style="display:<?= (array_key_exists(1281, $udata['u__inbounds']) ? 'block' : 'none') ?>;"><a href="javascript:$('.changepass').toggle();" class="changepass changepass_a" data-toggle="tooltip" title="Manage email/password that enables this entity to login" data-placement="top" style="text-decoration:none;"></a></div>
+                      <div class="title" style="margin-bottom:0; padding-bottom:0;"><h4><i class="fas fa-code"></i> HTML Icon [<span style="margin:0 0 10px 0; font-size:0.8em;"><span id="charu_parent_iconNum">0</span>/<?= $this->config->item('u_full_name_max') ?></span>]</h4></div>
+                      <input type="text" id="u_parent_icon" value="" onkeyup="u_parent_icon_word_count()" maxlength="<?= $this->config->item('u_full_name_max') ?>" data-lpignore="true" placeholder="" class="form-control border">
 
-                      <div class="changepass" style="display:none;">
-                          <div class="title"><h4><i class="fas fa-envelope"></i> Email</h4></div>
-                          <input type="email" id="u_email" data-lpignore="true" style="max-width:260px;" value="" data-lpignore="true" class="form-control border">
+                  </div>
+              </div>
+
+
+
+
+              <div id="ur_note_ui" style="margin-top:15px;">
+
+                  <div class="title" style="margin-bottom:0; padding-bottom:0;"><h4><i class="fas fa-file-alt"></i> Link Notes [<span style="margin:0 0 10px 0; font-size:0.8em;"><span id="charur_notesNum">0</span>/<?= $this->config->item('message_max') ?></span>]</h4></div>
+                  <input type="text" id="ur_notes" value="" onkeyup="ur_notes_word_count()" maxlength="<?= $this->config->item('message_max') ?>" data-lpignore="true" placeholder="" class="form-control border">
+
+              </div>
+
+
+
+              <!-- TODO Merge into ur_notes soon -->
+              <div class="row" style="margin-top:15px;">
+                  <div class="col-md-6">
+                      <div class="title"><h4><i class="fas fa-envelope"></i> Email</h4></div>
+                      <input type="email" id="u_email" data-lpignore="true" style="max-width:260px;" value="" data-lpignore="true" class="form-control border">
+                  </div>
+                  <div class="col-md-6">
+                      <div class="title"><h4><i class="fas fa-asterisk"></i> Set New Password</h4></div>
+                      <div class="form-group label-floating is-empty">
+                          <input type="password" id="u_password_new" style="max-width:260px;" autocomplete="new-password" data-lpignore="true" class="form-control border">
+                          <span class="material-input"></span>
                       </div>
-                      <div class="changepass" style="display:none;">
-                          <div class="title" style="margin-top:15px;"><h4><i class="fas fa-asterisk"></i> Set New Password</h4></div>
-                          <div class="form-group label-floating is-empty">
-                              <input type="password" id="u_password_new" style="max-width:260px;" autocomplete="new-password" data-lpignore="true" class="form-control border">
-                              <span class="material-input"></span>
-                          </div>
-                      </div>
-
                   </div>
               </div>
 

@@ -85,7 +85,7 @@ $uri_segment_2 = $this->uri->segment(2);
                         <table style="width: 100%; border:0; padding:0; margin:0;">
                             <tr>
                                 <td style="width:40px;"><img src="//theme.zdassets.com/theme_assets/2085893/cabe5e69ca093a3e91eadfb22bc5bee28d66cdeb.png" /></td>
-                                <td><input type="text" class="algolia_search" id="console_search" data-lpignore="true" placeholder="Search..."></td>
+                                <td><input type="text" class="algolia_search" id="console_search" data-lpignore="true" placeholder="Search Entities/Intents"></td>
                             </tr>
                         </table>
 					</span>
@@ -94,19 +94,15 @@ $uri_segment_2 = $this->uri->segment(2);
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-main navbar-right">
 
-                        <li <?= ( $uri_segment_1=='intents' ? 'class="intent-active"' : '' ) ?>><a href="/intents/<?= $this->config->item('primary_c') ?>"><i class="fas fa-hashtag"></i> Intents</a></li>
                         <li <?= ( $uri_segment_1=='entities' ? 'class="entity-active"' : '' ) ?>><a href="/entities/<?= $this->config->item('primary_u') ?>"><i class="fas fa-at"></i> Entities</a></li>
+                        <li <?= ( $uri_segment_1=='intents' ? 'class="intent-active"' : '' ) ?>><a href="/intents/<?= $this->config->item('primary_c') ?>"><i class="fas fa-hashtag"></i> Intents</a></li>
+                        <li <?= ( $uri_segment_1=='my' ? 'class="entity-active"' : '' ) ?>><a href="/my/actionplan"><i class="fas fa-flag"></i> Action Plans</a></li>
+                        <li <?= ( $uri_segment_1=='engagements' ? 'class="entity-active"' : '' ) ?>><a href="/adminpanel/engagements"><i class="fas fa-exchange"></i> Engagements</a></li>
 
 
                         <li class="extra-toggle"><a href="javascript:void(0);" onclick="$('.extra-toggle').toggle();">&nbsp; <i class="fas fa-ellipsis-h"></i> &nbsp;</a></li>
-                        <?php if(isset($udata['u__ws']) && count($udata['u__ws'])>0){ ?>
-                            <li class="extra-toggle" style="display: none;"><a href="/my/actionplan"><span class="icon-left"><i class="fas fa-flag"></i></span> Action Plan</a></li>
-                        <?php } ?>
 
-                        <?php if(array_key_exists(1281, $udata['u__inbounds'])){ ?>
-                            <li class="extra-toggle" style="display: none;"><a href="/adminpanel/engagements"><span class="icon-left"><i class="fas fa-user-shield"></i></span> Admin</a></li>
-                        <?php } ?>
-
+                        <li class="extra-toggle" style="display: none;"><a href="/adminpanel/statuslegend"><span class="icon-left"><i class="fas fa-shield"></i></span> Admin</a></li>
                         <li class="extra-toggle" style="display: none;"><a href="/entities/<?= $udata['u_id'] ?>"><span class="icon-left"><i class="fas fa-user-circle"></i></span> Profile</a></li>
                         <li class="extra-toggle" style="display: none;"><a href="/logout"><span class="icon-left"><i class="fas fa-power-off"></i></span> Logout</a></li>
                     </ul>
@@ -139,27 +135,6 @@ $uri_segment_2 = $this->uri->segment(2);
                 echo '<li class="li-sep '.( $uri_segment_2=='subscriptions' ? 'active' : '' ).'"><a href="/adminpanel/subscriptions"><i class="fas fa-comment-plus"></i><p>Subscriptions</p></a></li>';
 
                 echo '<li class="li-sep '.( $uri_segment_2=='statuslegend' ? 'active' : '' ).'"><a href="/adminpanel/statuslegend"><i class="fas fa-shapes"></i><p>Status Legend</p></a></li>';
-
-
-                //External Tools:
-                echo '<li><a href="https://github.com/menchco/mench-web-app/milestones?direction=asc&sort=due_date&state=open" target="_blank"><i class="fab fa-github"></i><p>Team Milestones &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
-
-                echo '<li><a href="https://www.facebook.com/askmench/inbox" target="_blank"><i class="fab fa-facebook-messenger"></i><p>Facebook Chat &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
-
-                //echo '<li><a href="https://support.mench.com/chat/agent" target="_blank"><i class="fas fa-comment-dots"></i><p>Zendesk Chat &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
-
-                //echo '<li><a href="https://mench.zendesk.com/agent/dashboard" target="_blank"><i class="fas fa-ticket"></i><p>Zendesk Tickets &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
-
-                //echo '<li><a href="https://mench.zendesk.com/knowledge/lists" target="_blank"><i class="fas fa-book"></i><p>Zendesk Guides &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
-
-
-                //echo '<li><a href="https://app.hubspot.com/sales" target="_blank"><i class="fab fa-hubspot"></i><p>HubSpot CRM &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
-
-                //echo '<li><a href="https://app.redash.io/mench/" target="_blank"><i class="fas fa-database"></i><p>SQL DB Stats &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
-
-                echo '<li><a href="https://mench.foundation/wp-login.php" target="_blank"><i class="fab fa-wordpress"></i><p>Mench Blog &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
-
-                echo '<li><a href="https://www.youtube.com/channel/UCOH64HiAIfJlz73tTSI8n-g" target="_blank"><i class="fab fa-youtube"></i><p>YouTube Channel &nbsp;<i class="fas fa-external-link-square"></i></p></a></li>';
 
 
             echo '</ul>';

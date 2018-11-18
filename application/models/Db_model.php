@@ -1415,6 +1415,10 @@ class Db_model extends CI_Model {
             $insert_columns['ur_timestamp'] = date("Y-m-d H:i:s");
         }
 
+        if(!isset($insert_columns['ur_notes']) || strlen(trim($insert_columns['ur_notes']))<1){
+            $insert_columns['ur_notes'] = null;
+        }
+
         if(!isset($insert_columns['ur_status'])){
             $insert_columns['ur_status'] = 1; //Live link
         }
@@ -1640,7 +1644,7 @@ class Db_model extends CI_Model {
                 'curl' => $curl,
                 'u' => array_merge($new_content,$ur1),
                 'set_cover_x_id' => $set_cover_x_id,
-                'new_u' => ( $accept_existing_url ? null : echo_u(array_merge($new_content,$ur1), 2, $cad_edit) ),
+                'new_u' => ( $accept_existing_url ? null : echo_u(array_merge($new_content,$ur1), 2) ),
             );
 
         } else {
@@ -2831,7 +2835,7 @@ class Db_model extends CI_Model {
 
                 //item has been Archived locally but its still indexed on Algolia
 
-                //Delete from algolia:
+                //Remove from algolia:
                 $search_index->deleteObject($items[0][$obj.'_algolia_id']);
 
                 //also set its algolia_id to 0 locally:

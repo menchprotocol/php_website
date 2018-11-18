@@ -271,6 +271,11 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Time Estimate',
             ));
+        } elseif(!isset($_POST['apply_recurively'])){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Recursive setting',
+            ));
         } elseif(intval($_POST['c_time_estimate'])<0 || intval($_POST['c_time_estimate'])>5){
             return echo_json(array(
                 'status' => 0,
@@ -366,6 +371,36 @@ class Intents extends CI_Controller
                 $updated_recursively = $this->Db_model->c_update_tree(intval($_POST['c_id']), $recursive_query);
             }
 
+            //Any recursive down status sync requests?
+            $children_updated = 0;
+            if(intval($_POST['apply_recurively']) && !(intval($_POST['c_status'])==intval($cs[0]['c_status']))){
+
+                //Yes, sync downwards where current statuses match:
+                $children = $this->Db_model->c_recursive_fetch(intval($_POST['c_id']), 1);
+                foreach($children['c_flat'] as $child_c_id){
+
+                    //See what the status of this is, and update only if status matches:
+                    $this->db->query("UPDATE tb_intents SET c_status=".intval($_POST['c_status'])." WHERE c_status=".intval($cs[0]['c_status'])." AND c_id=".$child_c_id);
+
+                    //Did it work?! Maybe not if the status was different...
+                    if($this->db->affected_rows()){
+
+                        //Yes it did update!
+
+                        //Update counter:
+                        $children_updated++;
+
+                        //Log modify engagement for this intent:
+                        $this->Db_model->e_create(array(
+                            'e_parent_u_id' => $udata['u_id'],
+                            'e_value' => 'Status recursively updated from ['.$cs[0]['c_status'].'] to ['.$_POST['c_status'].'] initiated from parent intent #'.$cs[0]['c_id'].' ['.$cs[0]['c_outcome'].']',
+                            'e_parent_c_id' => 19, //Intent Modification
+                            'e_child_c_id' => $child_c_id,
+                        ));
+                    }
+                }
+            }
+
             //Update Algolia object:
             $this->Db_model->algolia_sync('c', $_POST['c_id']);
 
@@ -378,9 +413,10 @@ class Intents extends CI_Controller
                     'before' => $cs[0],
                     'after' => $c_update,
                     'updated_recursively' => $updated_recursively,
+                    'children_updated' => $children_updated,
                     'recursive_query' => $recursive_query,
                 ),
-                'e_parent_c_id' => ( $_POST['level']>=2 && isset($c_update['c_status']) && $c_update['c_status']<0 ? 21 : 19 ), //Intent Archived OR Updated
+                'e_parent_c_id' => ( $_POST['level']>=2 && isset($c_update['c_status']) && $c_update['c_status']<0 ? 21 : 19 ), //Intent Archived OR Modification
                 'e_child_c_id' => intval($_POST['c_id']),
             ));
 
@@ -389,7 +425,9 @@ class Intents extends CI_Controller
         //Show success:
         return echo_json(array(
             'status' => 1,
-            'message' => '<span><i class="fas fa-check"></i> Saved</span>',
+            'children_updated' => $children_updated,
+            'message' => '<span><i class="fas fa-check"></i> Saved'.( $children_updated>0 ? ' & '.$children_updated.' Recursive Updates' : '').'</span>',
+            'status_ui' => echo_status('c', $_POST['c_status'], true, 'left'),
         ));
 
     }
@@ -655,14 +693,6 @@ class Intents extends CI_Controller
         ));
     }
 
-
-    //This is used to update the intent UI when a status update happens:
-    function c_echo_status(){
-        return echo_json(array(
-            'status' => 1,
-            'status_ui' => echo_status('c', $_POST['c_status'], true, 'left'),
-        ));
-    }
 
     function c_load_engagements($c_id){
 
