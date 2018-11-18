@@ -10,7 +10,7 @@ $config['app_version'] = '0.609'.( ( isset($_SERVER['SERVER_NAME']) && $_SERVER[
 //User case: $this->config->item('timezones')
 
 $config['primary_c'] = 6903; //The default platform intent that would be recommended to new students
-$config['primary_u'] = 1326; //The default console entity that is loaded when Entities is clicked
+$config['primary_u'] = 2738; //The default console entity that is loaded when Entities is clicked
 
 $config['message_max'] = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
 $config['max_counter'] = 999; //Used in counting things of engagements in console UI. If more that this will add a "+" sign to the end
