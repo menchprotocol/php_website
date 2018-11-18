@@ -12,14 +12,14 @@ class Db_model extends CI_Model {
     function w_update($id,$update_columns){
         //Update first
         $this->db->where('w_id', $id);
-        $this->db->update('tb_subscriptions', $update_columns);
+        $this->db->update('tb_actionplans', $update_columns);
         return $this->db->affected_rows();
     }
 
     function k_update($id,$update_columns){
         //Update first
         $this->db->where('k_id', $id);
-        $this->db->update('tb_subscription_links', $update_columns);
+        $this->db->update('tb_actionplan_links', $update_columns);
         return $this->db->affected_rows();
     }
 
@@ -454,7 +454,7 @@ class Db_model extends CI_Model {
 
         if(!isset($insert_columns['k_rank'])){
             //Determine the highest rank for this subscription:
-            $insert_columns['k_rank'] = 1 + $this->Db_model->max_value('tb_subscription_links','k_rank', array(
+            $insert_columns['k_rank'] = 1 + $this->Db_model->max_value('tb_actionplan_links','k_rank', array(
                 'k_w_id' => $insert_columns['k_w_id'],
             ));
         }
@@ -468,7 +468,7 @@ class Db_model extends CI_Model {
 
 
         //Lets now add:
-        $this->db->insert('tb_subscription_links', $insert_columns);
+        $this->db->insert('tb_actionplan_links', $insert_columns);
 
         //Fetch inserted id:
         $insert_columns['k_id'] = $this->db->insert_id();
@@ -671,7 +671,7 @@ class Db_model extends CI_Model {
         }
 
         //Lets now add:
-        $this->db->insert('tb_subscriptions', $insert_columns);
+        $this->db->insert('tb_actionplans', $insert_columns);
 
         //Fetch inserted id:
         $insert_columns['w_id'] = $this->db->insert_id();
@@ -846,8 +846,8 @@ class Db_model extends CI_Model {
         $this->db->query("DELETE FROM tb_intent_messages WHERE i_c_id=".$c_id);
         $archive_stats['tb_intent_messages'] = $this->db->affected_rows();
 
-        $this->db->query("DELETE FROM tb_subscriptions WHERE w_c_id=".$c_id);
-        $archive_stats['tb_subscriptions'] = $this->db->affected_rows();
+        $this->db->query("DELETE FROM tb_actionplans WHERE w_c_id=".$c_id);
+        $archive_stats['tb_actionplans'] = $this->db->affected_rows();
 
         $this->db->query("DELETE FROM tb_intents WHERE c_id=".$c_id);
         $archive_stats['tb_intents'] = $this->db->affected_rows();
@@ -914,8 +914,8 @@ class Db_model extends CI_Model {
         $this->db->query("DELETE FROM tb_intent_messages WHERE i_u_id=".$u_id);
         $archive_stats['tb_intent_messages'] = $this->db->affected_rows();
 
-        $this->db->query("DELETE FROM tb_subscriptions WHERE w_child_u_id=".$u_id);
-        $archive_stats['tb_subscriptions'] = $this->db->affected_rows();
+        $this->db->query("DELETE FROM tb_actionplans WHERE w_child_u_id=".$u_id);
+        $archive_stats['tb_actionplans'] = $this->db->affected_rows();
 
         $this->db->query("DELETE FROM tb_entity_urls WHERE x_u_id=".$u_id);
         $archive_stats['tb_entity_urls'] = $this->db->affected_rows();
@@ -1084,7 +1084,7 @@ class Db_model extends CI_Model {
     function k_fetch($match_columns, $join_objects=array(), $order_columns=array(), $limit=0, $select='*', $group_by=null){
         //Fetch the target gems:
         $this->db->select($select);
-        $this->db->from('tb_subscription_links k');
+        $this->db->from('tb_actionplan_links k');
 
         if(in_array('cr',$join_objects)){
 
@@ -1101,7 +1101,7 @@ class Db_model extends CI_Model {
 
         if(in_array('w',$join_objects)){
             //Also join with subscription row:
-            $this->db->join('tb_subscriptions w', 'w.w_id = k.k_w_id');
+            $this->db->join('tb_actionplans w', 'w.w_id = k.k_w_id');
 
             if(in_array('w_c',$join_objects)){
                 //Also join with subscription row:
@@ -1149,7 +1149,7 @@ class Db_model extends CI_Model {
     function w_fetch($match_columns, $join_objects=array(), $order_columns=array(), $limit=0){
         //Fetch the target gems:
         $this->db->select('*');
-        $this->db->from('tb_subscriptions w');
+        $this->db->from('tb_actionplans w');
         if(in_array('c',$join_objects)){
             $this->db->join('tb_intents c', 'w.w_c_id = c.c_id');
         }

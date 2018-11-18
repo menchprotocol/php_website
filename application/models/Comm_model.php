@@ -135,7 +135,7 @@ class Comm_model extends CI_Model {
                 //User wants completely out...
 
                 //Unsubscribe from all.
-                $this->db->query("UPDATE tb_subscriptions SET w_status=-1 WHERE w_status>=0 AND w_child_u_id=".$u['u_id']);
+                $this->db->query("UPDATE tb_actionplans SET w_status=-1 WHERE w_status>=0 AND w_child_u_id=".$u['u_id']);
                 $total_unsubscribed = $this->db->affected_rows();
 
                 //Update User table status:
@@ -172,7 +172,7 @@ class Comm_model extends CI_Model {
                 if(count($subscriptions)==1){
 
                     //Update status for this single subscription:
-                    $this->db->query("UPDATE tb_subscriptions SET w_status=-1 WHERE w_id=".intval($unsub_value));
+                    $this->db->query("UPDATE tb_actionplans SET w_status=-1 WHERE w_id=".intval($unsub_value));
 
                     //Log engagement:
                     $this->Db_model->e_create(array(
