@@ -679,7 +679,7 @@ function echo_w_console($w){
         //Loop through parents and show those that have u_parent_icon set:
         foreach($w['u__inbounds'] as $in_u){
             if(strlen($in_u['u_parent_icon'])>0){
-                $subscription_title .= ' &nbsp;<span data-toggle="tooltip" title="'.$in_u['u_full_name'].(strlen($in_u['ur_notes'])>0 ? ' = '.$in_u['ur_notes'] : '').'" data-placement="top" class="u_parent_icon_child_'.$in_u['u_id'].'">'.$in_u['u_parent_icon'].'</span>';
+                $subscription_title .= ' &nbsp;<span data-toggle="tooltip" title="'.$in_u['u_full_name'].(strlen($in_u['ur_notes'])>0 ? ': '.$in_u['ur_notes'] : '').'" data-placement="top" class="u_parent_icon_child_'.$in_u['u_id'].'">'.$in_u['u_parent_icon'].'</span>';
             }
         }
 

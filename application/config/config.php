@@ -57,7 +57,7 @@ $config['engagement_subscriptions'] = array(
             10, //user login
             7703, //Search for New Intent Subscription
             7431, //Suggest new entity that was not found!
-            7452, //Quit subscription
+            7452, //Skip subscription
         ),
     ),
 );
@@ -96,6 +96,11 @@ $config['object_statuses'] = array(
             's_name'  => 'Archived',
             's_desc'  => 'Entity link is removed',
             's_icon' => 'fas fa-trash-alt',
+        ),
+        0 => array(
+            's_name'  => 'New',
+            's_desc'  => 'Entity link is newly added and is pending review by a moderator',
+            's_icon' => 'fal fa-question-circle',
         ),
         1 => array(
             's_name'  => 'Published',
@@ -220,17 +225,10 @@ $config['object_statuses'] = array(
 
      'w_status' => array(
         -1 => array(
-            's_name'  => 'Quit',
-            's_desc'  => 'Student cancelled their subscription and stopped pursuing the intent',
+            's_name'  => 'Skipped',
+            's_desc'  => 'User skipped their Action Plan',
             's_icon' => 'fas fa-minus-circle',
         ),
-        /*
-        0 => array(
-             's_name'  => 'Passive',
-             's_desc'  => 'Subscription advances in the background',
-             's_icon' => 'fas fa-circle-notch fa-spin',
-        ),
-        */
         1 => array(
              's_name'  => 'Working On',
              's_desc'  => 'Work to accomplish intent has started and pending completion',
@@ -242,8 +240,8 @@ $config['object_statuses'] = array(
              's_icon' => 'fas fa-sync fa-spin',
         ),
         3 => array(
-             's_name'  => 'Successful',
-             's_desc'  => 'Student accomplish the intent of the subscription by completion as verified by Mench',
+             's_name'  => 'Accomplished',
+             's_desc'  => 'Student realized their intent and made it real',
              's_icon' => 'fas fa-badge-check',
         ),
     ),
@@ -285,6 +283,58 @@ $config['object_statuses'] = array(
             's_name'  => 'Published',
             's_desc'  => 'Engagement is complete',
             's_icon' => 'fas fa-check-circle',
+        ),
+    ),
+
+
+    'ur_note_type' => array(
+        0 => array(
+            's_name'  => 'Not Set',
+            's_fb_key'  => null,
+            's_desc'  => 'Entity link note not set',
+            's_icon' => 'fas fa-link',
+        ),
+        1 => array(
+            's_name'  => 'Text',
+            's_fb_key'  => 'text',
+            's_desc'  => 'Generic text',
+            's_icon' => 'fas fa-link',
+        ),
+        2 => array(
+            's_name'  => 'Web Page URL',
+            's_fb_key'  => 'text',
+            's_desc'  => 'URL point to a generic website on the internet',
+            's_icon' => 'fas fa-link',
+        ),
+        3 => array(
+            's_name'  => 'Embeddable URL',
+            's_fb_key'  => 'text',
+            's_desc'  => 'A recognized URL with an embeddable widget',
+            's_icon' => 'fas fa-file-code',
+        ),
+        4 => array(
+            's_name'  => 'Video URL',
+            's_fb_key'  => 'video',
+            's_desc'  => 'URL of a raw video file',
+            's_icon' => 'fas fa-file-video',
+        ),
+        5 => array(
+            's_name'  => 'Audio URL',
+            's_fb_key'  => 'audio',
+            's_desc'  => 'URL of a raw audio file',
+            's_icon' => 'fas fa-file-audio',
+        ),
+        6 => array(
+            's_name'  => 'Image URL',
+            's_fb_key'  => 'image',
+            's_desc'  => 'URL of a raw image file',
+            's_icon' => 'fas fa-file-image',
+        ),
+        7 => array(
+            's_name'  => 'File URL',
+            's_fb_key'  => 'file',
+            's_desc'  => 'URL of a raw generic file',
+            's_icon' => 'fas fa-file-pdf',
         ),
     ),
 

@@ -215,30 +215,6 @@ class Entities extends CI_Controller {
         //We need to check to ensure this is not a duplicate link if linking to an existing entity:
         $ur2 = array();
 
-        if($linking_to_existing_u){
-
-            //Check for duplicates:
-            if($_POST['is_inbound']){
-                $dup_entities = $this->Db_model->ur_outbound_fetch(array(
-                    '(ur_child_u_id='.$_POST['u_id'].' AND ur_parent_u_id='.$new_u['u_id'].')' => null,
-                    'ur_status' => 1, //Only active
-                ));
-            } else {
-                $dup_entities = $this->Db_model->ur_outbound_fetch(array(
-                    '(ur_parent_u_id='.$_POST['u_id'].' AND ur_child_u_id='.$new_u['u_id'].')' => null,
-                    'ur_status' => 1, //Only active
-                ));
-            }
-
-            if(count($dup_entities)>0){
-                return echo_json(array(
-                    'status' => 0,
-                    'message' => '['.$new_u['u_full_name'].'] is already linked to ['.$current_us[0]['u_full_name'].'] as an '.( $_POST['is_inbound'] ? 'inbound' : 'outbound' ).' entity',
-                ));
-            }
-
-        }
-
         if(!$is_url_input){
 
             //Add links only if not already added by the URL function:

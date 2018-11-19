@@ -4,6 +4,7 @@
 //Core Databae Objects:
 $lang['obj_u_name'] = 'Entity Status';
 $lang['obj_ur_name'] = 'Entity Link';
+$lang['obj_ur_note_type_name'] = 'Entity Link Type';
 $lang['obj_c_name'] = 'Intent Status';
 $lang['obj_cr_name'] = 'Intent Link';
 
