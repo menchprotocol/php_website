@@ -40,7 +40,7 @@ if($w['w_status']==1){
 //Include JS file:
 echo '<script src="/js/custom/actionplan-js.js?v=v'.$this->config->item('app_version').'" type="text/javascript"></script>';
 
-//Fetch inbound tree all the way to the top of subscription w_c_id
+//Fetch parent tree all the way to the top of subscription w_c_id
 echo '<div class="list-group" style="margin-top: 10px;">';
 foreach($k_ins as $k){
     echo echo_k($k, 1);
@@ -70,7 +70,7 @@ if(count($k_ins)==0){
 
     $hide_messages = ( $has_completion_info && !in_array($k_ins[0]['k_status'], $this->config->item('k_status_incomplete')));
 
-    //Show completion progress for the single inbound intent:
+    //Show completion progress for the single parent intent:
     echo '<div class="sub_title">';
 
     echo echo_status('k_status', $k_ins[0]['k_status']);

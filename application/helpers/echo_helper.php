@@ -4,7 +4,7 @@
 
 
 
-function echo_next_u($page,$limit,$u__outbound_count){
+function echo_next_u($page,$limit,$u__children_count){
     //We have more child entities than what was listed here.
     //Give user a way to access them:
     echo '<a class="load-more list-group-item" href="javascript:void(0);" onclick="u_load_next_page('.$page.')">';
@@ -14,8 +14,8 @@ function echo_next_u($page,$limit,$u__outbound_count){
 
     //Regular section:
     $max_entities = (($page+1)*$limit);
-    $max_entities = ( $max_entities>$u__outbound_count ? $u__outbound_count : $max_entities );
-    echo 'Load '.(($page*$limit)+1).'-'.$max_entities.' from '.$u__outbound_count.' total';
+    $max_entities = ( $max_entities>$u__children_count ? $u__children_count : $max_entities );
+    echo 'Load '.(($page*$limit)+1).'-'.$max_entities.' from '.$u__children_count.' total';
 
     echo '</a>';
 }
@@ -277,7 +277,7 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
         //See if that entity has a URL:
         $us = $CI->Db_model->u_fetch(array(
             'u_id' => $i['i_u_id'],
-        ), array('skip_u__inbounds','u__urls'));
+        ), array('skip_u__parents','u__urls'));
 
         if(count($us)>0){
 
@@ -640,7 +640,7 @@ function echo_w_console($w){
     $is_intent = ( $CI->uri->segment(1)=='intents' );
     $is_entity = ( $CI->uri->segment(1)=='entities' );
     $is_adminpanel = ( $CI->uri->segment(1)=='adminpanel' );
-    $subscription_title = ''; //Build as we go depending on which view is loaded...
+    $w_title = ''; //Build as we go depending on which view is loaded...
 
 
     //Display the item
@@ -665,21 +665,21 @@ function echo_w_console($w){
             'w_child_u_id' => $w['w_child_u_id'],
         ));
 
-        if(!isset($w['u__inbounds'])){
-            //Fetch inbounds at this point:
-            $w['u__inbounds'] = $CI->Db_model->ur_inbound_fetch(array(
+        if(!isset($w['u__parents'])){
+            //Fetch parents at this point:
+            $w['u__parents'] = $CI->Db_model->ur_parent_fetch(array(
                 'ur_child_u_id' => $w['w_child_u_id'],
                 'ur_status >=' => 0, //Pending or Active
                 'u_status >=' => 0, //Pending or Active
             ));
         }
 
-        $subscription_title .= echo_cover($w,'micro-image', 1).' ';
-        $subscription_title .= '<span class="u_full_name u_full_name_'.$w['u_id'].'">'.$w['u_full_name'].'</span>';
-        //Loop through parents and show those that have u_parent_icon set:
-        foreach($w['u__inbounds'] as $in_u){
-            if(strlen($in_u['u_parent_icon'])>0){
-                $subscription_title .= ' &nbsp;<span data-toggle="tooltip" title="'.$in_u['u_full_name'].(strlen($in_u['ur_notes'])>0 ? ': '.$in_u['ur_notes'] : '').'" data-placement="top" class="u_parent_icon_child_'.$in_u['u_id'].'">'.$in_u['u_parent_icon'].'</span>';
+        $w_title .= echo_cover($w,'micro-image', 1).' ';
+        $w_title .= '<span class="u_full_name u_full_name_'.$w['u_id'].'">'.$w['u_full_name'].'</span>';
+        //Loop through parents and show those that have u_icon set:
+        foreach($w['u__parents'] as $in_u){
+            if(strlen($in_u['u_icon'])>0){
+                $w_title .= ' &nbsp;<span data-toggle="tooltip" title="'.$in_u['u_full_name'].(strlen($in_u['ur_notes'])>0 ? ': '.$in_u['ur_notes'] : '').'" data-placement="top" class="u_icon_child_'.$in_u['u_id'].'">'.$in_u['u_icon'].'</span>';
             }
         }
 
@@ -704,9 +704,9 @@ function echo_w_console($w){
         ));
         $ui .= '<a href="/intents/'.$w['c_id'].'" class="badge badge-primary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="Open subscribed intention to '.$w['c_outcome'].' with '.count($intent_ws).' subscriptions"><span class="btn-counter">'.count($intent_ws).'</span><i class="fas fa-sign-in-alt"></i></a>';
 
-        $subscription_title .= ( $is_adminpanel ? '<div style="margin: 3px 0 0 3px;"><i class="fas fa-hashtag"></i> ' : '' );
-        $subscription_title .= '<span class="w_intent_'.$w['w_id'].'">'.$w['c_outcome'].'</span>';
-        $subscription_title .= ( $is_adminpanel ? '</div>' : '' );
+        $w_title .= ( $is_adminpanel ? '<div style="margin: 3px 0 0 3px;"><i class="fas fa-hashtag"></i> ' : '' );
+        $w_title .= '<span class="w_intent_'.$w['w_id'].'">'.$w['c_outcome'].'</span>';
+        $w_title .= ( $is_adminpanel ? '</div>' : '' );
     }
 
 
@@ -714,7 +714,7 @@ function echo_w_console($w){
 
 
     //Start with subscription status:
-    $ui .= $subscription_title;
+    $ui .= $w_title;
     $ui .= '</div>';
 
 
@@ -788,12 +788,12 @@ function echo_k_console($k){
 }
 
 
-function echo_k($k, $is_inbound, $c_is_any_cr_parent_c_id=0){
+function echo_k($k, $is_parent, $c_is_any_cr_parent_c_id=0){
 
     $ui = '<a href="'.( $c_is_any_cr_parent_c_id ? '/my/choose_any_path/'.$k['w_id'].'/'.$c_is_any_cr_parent_c_id.'/'.$k['c_id'].'/'.md5($k['w_id'].'kjaghksjha*(^'.$k['c_id'].$c_is_any_cr_parent_c_id) : '/my/actionplan/'.$k['k_w_id'].'/'.$k['c_id'] ).'" class="list-group-item">';
 
     //Different pointer position based on direction:
-    if($is_inbound){
+    if($is_parent){
         $ui .= '<span class="pull-left">';
         $ui .= '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-left"></i></span>';
         $ui .= '</span>';
@@ -802,7 +802,7 @@ function echo_k($k, $is_inbound, $c_is_any_cr_parent_c_id=0){
         $ui .= '<span class="badge badge-primary fr-bgd">'.( $c_is_any_cr_parent_c_id ? 'Select <i class="fas fa-check-circle"></i>' : '<i class="fas fa-angle-right"></i>').'</span>';
         $ui .= '</span>';
 
-        //For outbound show icon:
+        //For children show icon:
         if($c_is_any_cr_parent_c_id){
             //Radio button to indicate a single selection:
             $ui .= '<span class="status-label" style="padding-bottom:1px;"><i class="fal fa-circle"></i> </span>';
@@ -1246,7 +1246,7 @@ function echo_object($object,$id,$engagement_field,$button_type){
     if($id>0){
         if($object=='c'){
 
-            $is_inbound = ( $engagement_field=='e_parent_c_id' ? true : false );
+            $is_parent = ( $engagement_field=='e_parent_c_id' ? true : false );
             //Fetch intent/Step:
             $cs = $CI->Db_model->c_fetch(array(
                 'c.c_id' => $id,
@@ -1256,7 +1256,7 @@ function echo_object($object,$id,$engagement_field,$button_type){
                     //Plain view:
                     return '<a href="https://mench.com/intents/'.$cs[0]['c_id'].'">'.$cs[0]['c_outcome'].'</a>';
                 } else {
-                    return '<a href="/intents/'.$cs[0]['c_id'].'" target="_parent" class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="'.$button_type.': '.stripslashes($cs[0]['c_outcome']).'"><i class="'.( $is_inbound ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></a> ';
+                    return '<a href="/intents/'.$cs[0]['c_id'].'" target="_parent" class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="'.$button_type.': '.stripslashes($cs[0]['c_outcome']).'"><i class="'.( $is_parent ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></a> ';
 
                 }
             }
@@ -1271,16 +1271,16 @@ function echo_object($object,$id,$engagement_field,$button_type){
 
         } elseif($object=='w'){
 
-            $subscriptions = $CI->Db_model->w_fetch(array(
+            $ws = $CI->Db_model->w_fetch(array(
                 'w_id' => $id,
             ), array('c'));
-            if(count($subscriptions)>0){
+            if(count($ws)>0){
                 if(!$button_type){
                     //Plain view:
-                    return '<a href="https://mench.com/intents/'.$subscriptions[0]['w_c_id'].'">'.$subscriptions[0]['c_outcome'].'</a>';
+                    return '<a href="https://mench.com/intents/'.$ws[0]['w_c_id'].'">'.$ws[0]['c_outcome'].'</a>';
                 } else {
                     //TODO replace with Action Plan flag that would show student progress and load up their action plan...
-                    return '<a href="/intents/'.$subscriptions[0]['w_c_id'].'" target="_parent" class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="Subscribed to '.$subscriptions[0]['c_outcome'].' [Subscription #'.$id.']"><i class="fas fa-comment-plus"></i></a> ';
+                    return '<a href="/intents/'.$ws[0]['w_c_id'].'" target="_parent" class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="Subscribed to '.$ws[0]['c_outcome'].' [Subscription #'.$id.']"><i class="fas fa-comment-plus"></i></a> ';
                 }
             }
 
@@ -1502,7 +1502,7 @@ function echo_mili($microtime){
 }
 
 
-function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
+function echo_c($c, $level, $c_parent_id=0, $is_parent=false){
 
     $CI =& get_instance();
     $udata = $CI->session->userdata('user');
@@ -1540,7 +1540,7 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
 
         //ATTENTION: DO NOT CHANGE THE ORDER OF data-link-id & intent-id AS the sorting logic depends on their exact position to sort!
         //CHANGE WITH CAUTION!
-        $ui = '<div id="cr_'.$c['cr_id'].'" data-link-id="'.$c['cr_id'].'" intent-id="'.$c['c_id'].'" parent-intent-id="'.$c_inbound_id.'" intent-level="'.$level.'" class="list-group-item '.( $level==3 ? 'is_level3_sortable' : 'is_level2_sortable' ).' intent_line_'.$c['c_id'].'">';
+        $ui = '<div id="cr_'.$c['cr_id'].'" data-link-id="'.$c['cr_id'].'" intent-id="'.$c['c_id'].'" parent-intent-id="'.$c_parent_id.'" intent-level="'.$level.'" class="list-group-item '.( $level==3 ? 'is_level3_sortable' : 'is_level2_sortable' ).' intent_line_'.$c['c_id'].'">';
 
     }
 
@@ -1569,7 +1569,7 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
     $ui .= '<a class="badge badge-primary" onclick="c_load_modify('.$c['c_id'].','.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).')" style="margin:-2px -8px 0 2px; width:40px;" href="#modify-'.$c['c_id'].'-'.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).'"><span class="btn-counter">'.echo_estimated_time($c['c__tree_max_hours'],0,1, $c['c_id'], $c['c_time_estimate']).'</span><i class="fas fa-cog"></i></a> &nbsp;';
 
     //Show link to travel down the tree:
-    $ui .= '&nbsp;<a href="/intents/'.$c['c_id'].'" class="tree-badge-'.$c['c_id'].' badge badge-primary '.( $c['c__tree_all_count']<=1 ? 'grey' : '' ).'" style="display:inline-block; margin-right:-1px; width:40px;"><span class="btn-counter outbound-counter-'.$c['c_id'].' '.( $is_inbound && $level==2 ? 'inb-counter' : '' ).'">'.$c['c__tree_all_count'].'</span><i class="'.( $is_inbound && $level<=2 ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></a> ';
+    $ui .= '&nbsp;<a href="/intents/'.$c['c_id'].'" class="tree-badge-'.$c['c_id'].' badge badge-primary '.( $c['c__tree_all_count']<=1 ? 'grey' : '' ).'" style="display:inline-block; margin-right:-1px; width:40px;"><span class="btn-counter children-counter-'.$c['c_id'].' '.( $is_parent && $level==2 ? 'inb-counter' : '' ).'">'.$c['c__tree_all_count'].'</span><i class="'.( $is_parent && $level<=2 ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></a> ';
 
     //Keep an eye out for inner message counter changes:
     $ui .= '</span> ';
@@ -1583,7 +1583,7 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
     $ui .= '<i class="c_is_any_icon'.$c['c_id'].' '.( $c['c_is_any'] ? 'fas fa-code-merge' : 'fas fa-sitemap' ).'" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i> ';
 
     //Sorting & Then Left Content:
-    if($level>1 && (!$is_inbound || $level==3)) {
+    if($level>1 && (!$is_parent || $level==3)) {
         $ui .= '<i class="fas fa-bars"></i> &nbsp;';
     }
 
@@ -1642,12 +1642,12 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
 
         $ui .= '<a href="javascript:ms_toggle('.$c['cr_id'].');"><i id="handle-'.$c['cr_id'].'" class="fal fa-plus-square"></i></a> &nbsp;';
 
-        if(!$is_inbound){
+        if(!$is_parent){
             $ui .= '<span class="inline-level-'.$level.'">#'.$c['cr_child_rank'].'</span>';
         }
         $ui .= '</span>';
 
-        $ui .= '<span id="title_'.$c['cr_id'].'" class="cdr_crnt c_outcome_'.$c['c_id'].( strlen($c['c_trigger_statements'])>0 ? ' has-desc ' : '' ).'" outbound-rank="'.$c['cr_child_rank'].'" '.$c_settings.' data-toggle="tooltip" data-placement="right" title="'.$c['c_trigger_statements'].'">'.$c['c_outcome'].'</span> ';
+        $ui .= '<span id="title_'.$c['cr_id'].'" class="cdr_crnt c_outcome_'.$c['c_id'].( strlen($c['c_trigger_statements'])>0 ? ' has-desc ' : '' ).'" children-rank="'.$c['cr_child_rank'].'" '.$c_settings.' data-toggle="tooltip" data-placement="right" title="'.$c['c_trigger_statements'].'">'.$c['c_outcome'].'</span> ';
 
         $ui .= $extra_ui;
 
@@ -1655,7 +1655,7 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
 
         //Steps
         $ui .= '<span class="inline-level inline-level-'.$level.'">#'.$c['cr_child_rank'].'</span>';
-        $ui .= '<span id="title_'.$c['cr_id'].'" class="c_outcome_'.$c['c_id'].( strlen($c['c_trigger_statements'])>0 ? ' has-desc ' : '' ).'" outbound-rank="'.$c['cr_child_rank'].'" '.$c_settings.' data-toggle="tooltip" data-placement="right" title="'.$c['c_trigger_statements'].'">'.$c['c_outcome'].'</span> ';
+        $ui .= '<span id="title_'.$c['cr_id'].'" class="c_outcome_'.$c['c_id'].( strlen($c['c_trigger_statements'])>0 ? ' has-desc ' : '' ).'" children-rank="'.$c['cr_child_rank'].'" '.$c_settings.' data-toggle="tooltip" data-placement="right" title="'.$c['c_trigger_statements'].'">'.$c['c_outcome'].'</span> ';
 
         $ui .= $extra_ui;
 
@@ -1672,7 +1672,7 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
 
         if(isset($c['c__child_intents']) && count($c['c__child_intents'])>0){
             foreach($c['c__child_intents'] as $key=>$sub_intent){
-                $ui .= echo_c($sub_intent, ($level+1), $c['c_id'], $is_inbound);
+                $ui .= echo_c($sub_intent, ($level+1), $c['c_id'], $is_parent);
             }
         }
 
@@ -1700,7 +1700,7 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
 }
 
 
-function echo_u($u, $level, $is_inbound=false){
+function echo_u($u, $level, $is_parent=false){
 
     $CI =& get_instance();
     $udata = $CI->session->userdata('user');
@@ -1709,10 +1709,10 @@ function echo_u($u, $level, $is_inbound=false){
     $ui = null;
 
 
-    $ui .= '<div id="u_'.$u['u_id'].'" entity-id="'.$u['u_id'].'" entity-email="'.$u['u_email'].'" entity-intro-message="'.str_replace('"','\\"',$u['u_intro_message']).'" entity-status="'.$u['u_status'].'" has-password="'.( strlen($u['u_password'])>0 ? 1 : 0 ).'" is-inbound="'.( $is_inbound ? 1 : 0 ).'" class="list-group-item u-item u__'.$u['u_id'].' '.( $level==1 ? 'top_entity' : 'ur_'.$u['ur_id'] ).'">';
+    $ui .= '<div id="u_'.$u['u_id'].'" entity-id="'.$u['u_id'].'" entity-email="'.$u['u_email'].'" entity-intro-message="'.str_replace('"','\\"',$u['u_intro_message']).'" entity-status="'.$u['u_status'].'" has-password="'.( strlen($u['u_password'])>0 ? 1 : 0 ).'" is-parent="'.( $is_parent ? 1 : 0 ).'" class="list-group-item u-item u__'.$u['u_id'].' '.( $level==1 ? 'top_entity' : 'ur_'.$u['ur_id'] ).'">';
 
     //Hidden fields to store dynamic value!
-    $ui .= '<span class="u_parent_icon_val_'.$u['u_id'].' hidden">'.$u['u_parent_icon'].'</span>';
+    $ui .= '<span class="u_icon_val_'.$u['u_id'].' hidden">'.$u['u_icon'].'</span>';
     if($ur_id>0){
         $ui .= '<span class="ur_notes_val_'.$ur_id.' hidden">'.$u['ur_notes'].'</span>';
     }
@@ -1746,7 +1746,7 @@ function echo_u($u, $level, $is_inbound=false){
 
     $ui .= '<a href="#modify-'.$u['u_id'].'-'.$ur_id.'" onclick="u_load_modify('.$u['u_id'].','.$ur_id.')" class="badge badge-secondary" style="margin:-2px -6px 0 2px; width:40px;">'.( $u['u__e_score']>0 ? '<span class="btn-counter" data-toggle="tooltip" data-placement="left" title="Engagement Score">'.echo_big_num($u['u__e_score']).'</span>' : '' ).'<i class="fas fa-cog" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i></a> &nbsp;';
 
-    $ui .= '<a class="badge badge-secondary" href="/entities/'.$u['u_id'].'" style="display:inline-block; margin-right:6px; width:40px; margin-left:1px;">'.(isset($u['u__outbound_count']) && $u['u__outbound_count']>0 ? '<span class="btn-counter '.( $level==1 ? 'li-outbound-count' : '' ).'">'.$u['u__outbound_count'].'</span>' : '').'<i class="'.( $is_inbound ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></a>';
+    $ui .= '<a class="badge badge-secondary" href="/entities/'.$u['u_id'].'" style="display:inline-block; margin-right:6px; width:40px; margin-left:1px;">'.(isset($u['u__children_count']) && $u['u__children_count']>0 ? '<span class="btn-counter '.( $level==1 ? 'li-children-count' : '' ).'">'.$u['u__children_count'].'</span>' : '').'<i class="'.( $is_parent ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></a>';
 
     $ui .= '</span>';
 
@@ -1817,21 +1817,21 @@ function echo_u($u, $level, $is_inbound=false){
 
     }
 
-    $ui .= ' <span class="u_parent_icon_ui_'.$u['u_id'].(strlen($u['u_parent_icon'])==0?' hidden ':'').'" data-toggle="tooltip" title="Parent Icon" data-placement="top">&nbsp;['.$u['u_parent_icon'].']</span>';
+    $ui .= ' <span class="u_icon_ui_'.$u['u_id'].(strlen($u['u_icon'])==0?' hidden ':'').'" data-toggle="tooltip" title="Parent Icon" data-placement="top">&nbsp;['.$u['u_icon'].']</span>';
 
-    if(!isset($u['u__inbounds'])){
-        //Fetch inbounds at this point:
-        $u['u__inbounds'] = $CI->Db_model->ur_inbound_fetch(array(
+    if(!isset($u['u__parents'])){
+        //Fetch parents at this point:
+        $u['u__parents'] = $CI->Db_model->ur_parent_fetch(array(
             'ur_child_u_id' => $u['u_id'],
             'ur_status >=' => 0, //Pending or Active
             'u_status >=' => 0, //Pending or Active
         ));
     }
 
-    //Loop through parents and show those that have u_parent_icon set:
-    foreach($u['u__inbounds'] as $in_u){
-        if(strlen($in_u['u_parent_icon'])>0){
-            $ui .= ' &nbsp;<a href="/entities/'.$in_u['u_id'].'" data-toggle="tooltip" title="'.$in_u['u_full_name'].(strlen($in_u['ur_notes'])>0 ? ' = '.$in_u['ur_notes'] : '').'" data-placement="top" class="u_parent_icon_child_'.$in_u['u_id'].'">'.$in_u['u_parent_icon'].'</a>';
+    //Loop through parents and show those that have u_icon set:
+    foreach($u['u__parents'] as $in_u){
+        if(strlen($in_u['u_icon'])>0){
+            $ui .= ' &nbsp;<a href="/entities/'.$in_u['u_id'].'" data-toggle="tooltip" title="'.$in_u['u_full_name'].(strlen($in_u['ur_notes'])>0 ? ' = '.$in_u['ur_notes'] : '').'" data-placement="top" class="u_icon_child_'.$in_u['u_id'].'">'.$in_u['u_icon'].'</a>';
         }
     }
 

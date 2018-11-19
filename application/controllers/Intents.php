@@ -13,18 +13,18 @@ class Intents extends CI_Controller
 
 
     //For trainers to see and manage an intent:
-    function intent_manage($inbound_c_id){
+    function intent_manage($parent_c_id){
 
         //Authenticate level 2 or higher, redirect if not:
         $udata = auth(array(1308),1);
 
         //Fetch intent:
         $cs = $this->Db_model->c_fetch(array(
-            'c_id' => $inbound_c_id,
+            'c_id' => $parent_c_id,
             'c.c_status >=' => 0,
         ), 2);
         if(!isset($cs[0])){
-            die('Intent ID '.$inbound_c_id.' not found');
+            die('Intent ID '.$parent_c_id.' not found');
         }
 
         if(isset($_GET['raw'])){
@@ -32,7 +32,7 @@ class Intents extends CI_Controller
             exit;
         }
 
-        if($inbound_c_id==$this->config->item('primary_c')){
+        if($parent_c_id==$this->config->item('primary_c')){
             //Also count orphan intents:
             $orphan_c_count = count($this->Db_model->c_fetch(array(
                 'c.c__is_orphan' => 1,
@@ -47,21 +47,21 @@ class Intents extends CI_Controller
             'title' => $cs[0]['c_outcome'],
             'c' => $cs[0],
             'orphan_c_count' => $orphan_c_count,
-            'c__inbounds' => $this->Db_model->cr_inbound_fetch(array(
-                'cr.cr_child_c_id' => $inbound_c_id,
+            'c__parents' => $this->Db_model->cr_parent_fetch(array(
+                'cr.cr_child_c_id' => $parent_c_id,
                 'cr.cr_status >=' => 1,
             ), array('c__child_intents')),
         );
 
-        $this->load->view('console/console_header', $data);
+        $this->load->view('shared/console_header', $data);
         $this->load->view('intents/intent_manage' , $data);
-        $this->load->view('console/console_footer');
+        $this->load->view('shared/console_footer');
     }
 
 
     function hard_delete($c_id){
         $udata = $this->session->userdata('user');
-        if(!array_key_exists(1281, $udata['u__inbounds'])){
+        if(!array_key_exists(1281, $udata['u__parents'])){
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Session expired',
@@ -88,9 +88,9 @@ class Intents extends CI_Controller
             'title' => 'Orphan Intents',
         );
 
-        $this->load->view('console/console_header', $data);
+        $this->load->view('shared/console_header', $data);
         $this->load->view('intents/intent_manage' , array('orphan_cs' => $orphan_cs));
-        $this->load->view('console/console_footer');
+        $this->load->view('shared/console_footer');
     }
 
 
@@ -100,7 +100,7 @@ class Intents extends CI_Controller
         $cs = $this->Db_model->c_fetch(array(
             'c.c_id' => $c_id,
             'c.c_status >=' => 2, //Published or featured
-        ), 2, array('c__messages','c__inbounds'));
+        ), 2, array('c__messages','c__parents'));
 
 
         //Validate Intent:
@@ -110,14 +110,14 @@ class Intents extends CI_Controller
         }
 
         //Load home page:
-        $this->load->view('custom/shared/f_header' , array(
+        $this->load->view('shared/public_header' , array(
             'title' => $cs[0]['c_outcome'],
             'c' => $cs[0],
         ));
         $this->load->view('intents/landing_page' , array(
             'c' => $cs[0],
         ));
-        $this->load->view('custom/shared/f_footer');
+        $this->load->view('shared/public_footer');
     }
 
     /* ******************************
@@ -194,7 +194,7 @@ class Intents extends CI_Controller
 
         //Make the move:
         $this->Db_model->cr_update( intval($_POST['cr_id']) , array(
-            'cr_inbound_u_id' => $udata['u_id'],
+            'cr_parent_u_id' => $udata['u_id'],
             'cr_timestamp' => date("Y-m-d H:i:s"),
             'cr_parent_c_id' => intval($_POST['to_c_id']),
             //No need to update sorting here as a separate JS function would call that within half a second after the move...
@@ -376,7 +376,7 @@ class Intents extends CI_Controller
             if(intval($_POST['apply_recurively']) && !(intval($_POST['c_status'])==intval($cs[0]['c_status']))){
 
                 //Yes, sync downwards where current statuses match:
-                $children = $this->Db_model->c_recursive_fetch(intval($_POST['c_id']), 1);
+                $children = $this->Db_model->c_recursive_fetch(intval($_POST['c_id']), true);
                 foreach($children['c_flat'] as $child_c_id){
 
                     //See what the status of this is, and update only if status matches:
@@ -471,11 +471,11 @@ class Intents extends CI_Controller
         }
 
         //Fetch parent ID:
-        $c__inbounds = $this->Db_model->cr_inbound_fetch(array(
+        $c__parents = $this->Db_model->cr_parent_fetch(array(
             'cr.cr_id' => $_POST['cr_id'],
             'cr.cr_status >=' => 1,
         ));
-        if(!isset($c__inbounds[0])){
+        if(!isset($c__parents[0])){
             echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Intent Link ID',
@@ -490,19 +490,19 @@ class Intents extends CI_Controller
             'c__tree_max_hours' => -(number_format($cs[0]['c__tree_max_hours'],3)),
             'c__tree_messages' => -($cs[0]['c__tree_messages']),
         );
-        $updated_recursively = $this->Db_model->c_update_tree( $c__inbounds[0]['cr_parent_c_id'] , $recursive_query );
+        $updated_recursively = $this->Db_model->c_update_tree( $c__parents[0]['cr_parent_c_id'] , $recursive_query );
 
 
         //Now we can remove the link:
         $this->Db_model->cr_update( $_POST['cr_id'] , array(
-            'cr_inbound_u_id' => $udata['u_id'],
+            'cr_parent_u_id' => $udata['u_id'],
             'cr_timestamp' => date("Y-m-d H:i:s"),
             'cr_status' => -1, //Archived
         ));
 
 
         //Did this intent become an orphan? Does it still have any other parents?
-        if(0==count($this->Db_model->cr_inbound_fetch(array(
+        if(0==count($this->Db_model->cr_parent_fetch(array(
                 'cr.cr_child_c_id' => $_POST['c_id'],
                 'cr.cr_status >=' => 1,
             )))){
@@ -528,7 +528,7 @@ class Intents extends CI_Controller
         //Show success:
         echo_json(array(
             'status' => 1,
-            'c_inbound' => $c__inbounds[0]['cr_parent_c_id'],
+            'c_parent' => $c__parents[0]['cr_parent_c_id'],
             'adjusted_c_count' => -($cs[0]['c__tree_all_count']),
         ));
 
@@ -538,7 +538,7 @@ class Intents extends CI_Controller
     function c_sync(){
 
         $c_id=$this->config->item('primary_c');
-        $sync = $this->Db_model->c_recursive_fetch($c_id,1,1);
+        $sync = $this->Db_model->c_recursive_fetch($c_id,true,true);
 
         //Check how many are outside of this:
         $orphans = $this->Db_model->c_fetch(array(
@@ -551,20 +551,20 @@ class Intents extends CI_Controller
         //Update orphan status:
         foreach($orphans as $c){
             //Is it an orphan?
-            $c__inbounds = $this->Db_model->cr_inbound_fetch(array(
+            $c__parents = $this->Db_model->cr_parent_fetch(array(
                 'cr.cr_child_c_id' => $c['c_id'],
                 'cr.cr_status >=' => 1,
             ));
 
-            if((!count($c__inbounds) && !intval($c['c__is_orphan'])) || (count($c__inbounds) && intval($c['c__is_orphan']))){
+            if((!count($c__parents) && !intval($c['c__is_orphan'])) || (count($c__parents) && intval($c['c__is_orphan']))){
                 //Needs adjustment:
                 $this->Db_model->c_update( $c['c_id'] , array(
-                    'c__is_orphan' => ( count($c__inbounds) ? 0 : 1 ),
+                    'c__is_orphan' => ( count($c__parents) ? 0 : 1 ),
                 ));
                 $sync['orphan_count_update']++;
             }
 
-            if(!count($c__inbounds)){
+            if(!count($c__parents)){
                 $sync['orphan_total']++;
             }
         }
@@ -595,10 +595,10 @@ class Intents extends CI_Controller
         } else {
 
             //Validate Parent intent:
-            $inbound_intents = $this->Db_model->c_fetch(array(
+            $parent_intents = $this->Db_model->c_fetch(array(
                 'c.c_id' => intval($_POST['c_id']),
             ));
-            if(count($inbound_intents)<=0){
+            if(count($parent_intents)<=0){
                 echo_json(array(
                     'status' => 0,
                     'message' => 'Invalid c_id',
@@ -606,7 +606,7 @@ class Intents extends CI_Controller
             } else {
 
                 //Fetch for the record:
-                $outbounds_before = $this->Db_model->cr_outbound_fetch(array(
+                $children_before = $this->Db_model->cr_children_fetch(array(
                     'cr.cr_parent_c_id' => intval($_POST['c_id']),
                     'cr.cr_status >=' => 0,
                 ));
@@ -614,14 +614,14 @@ class Intents extends CI_Controller
                 //Update them all:
                 foreach($_POST['new_sort'] as $rank=>$cr_id){
                     $this->Db_model->cr_update( intval($cr_id) , array(
-                        'cr_inbound_u_id' => $udata['u_id'],
+                        'cr_parent_u_id' => $udata['u_id'],
                         'cr_timestamp' => date("Y-m-d H:i:s"),
                         'cr_child_rank' => intval($rank),
                     ));
                 }
 
                 //Fetch for the record:
-                $outbounds_after = $this->Db_model->cr_outbound_fetch(array(
+                $children_after = $this->Db_model->cr_children_fetch(array(
                     'cr.cr_parent_c_id' => intval($_POST['c_id']),
                     'cr.cr_status >=' => 0,
                 ));
@@ -629,11 +629,11 @@ class Intents extends CI_Controller
                 //Log Engagement:
                 $this->Db_model->e_create(array(
                     'e_parent_u_id' => $udata['u_id'],
-                    'e_value' => 'Sorted outbound intents for ['.$inbound_intents[0]['c_outcome'].']',
+                    'e_value' => 'Sorted child intents for ['.$parent_intents[0]['c_outcome'].']',
                     'e_json' => array(
                         'input' => $_POST,
-                        'before' => $outbounds_before,
-                        'after' => $outbounds_after,
+                        'before' => $children_before,
+                        'after' => $children_after,
                     ),
                     'e_parent_c_id' => 22, //Links Sorted
                     'e_child_c_id' => intval($_POST['c_id']),
@@ -706,13 +706,13 @@ class Intents extends CI_Controller
         }
 
         //Load view for this iFrame:
-        $this->load->view('custom/shared/p_header' , array(
+        $this->load->view('shared/messenger_header' , array(
             'title' => 'User Engagements',
         ));
-        $this->load->view('intents/c_load_engagements' , array(
+        $this->load->view('engagements/intent_engagements' , array(
             'c_id' => $c_id,
         ));
-        $this->load->view('custom/shared/p_footer');
+        $this->load->view('shared/messenger_footer');
     }
 
 
@@ -728,21 +728,19 @@ class Intents extends CI_Controller
         }
 
         //Load view for this iFrame:
-        $this->load->view('custom/shared/p_header' , array(
+        $this->load->view('shared/messenger_header' , array(
             'title' => 'User Engagements',
         ));
-        $this->load->view('intents/estats_load' , array(
+        $this->load->view('engagements/estats_load' , array(
             'c_id' => $c_id,
         ));
-        $this->load->view('custom/shared/p_footer');
+        $this->load->view('shared/messenger_footer');
     }
 
 
     /* ******************************
 	 * i Messages
 	 ****************************** */
-
-
 
     function i_load_modify($c_id){
         $udata = auth();
@@ -757,13 +755,13 @@ class Intents extends CI_Controller
         $_GET['skip_header'] = true;
 
         //Load view:
-        $this->load->view('console/console_header', array(
+        $this->load->view('shared/console_header', array(
             'title' => 'Intent #'.$c_id.' Messages',
         ));
         $this->load->view('intents/frame_messages' , array(
             'c_id' => $c_id,
         ));
-        $this->load->view('console/console_footer');
+        $this->load->view('shared/console_footer');
     }
 
     function i_attach(){
@@ -838,7 +836,7 @@ class Intents extends CI_Controller
 
         //Create message:
         $i = $this->Db_model->i_create(array(
-            'i_inbound_u_id' => $udata['u_id'],
+            'i_parent_u_id' => $udata['u_id'],
             'i_u_id' => $url_create['u']['u_id'],
             'i_c_id' => intval($_POST['c_id']),
             'i_message' => '@'.$url_create['u']['u_id'],
@@ -910,7 +908,7 @@ class Intents extends CI_Controller
 
         //Create Message:
         $i = $this->Db_model->i_create(array(
-            'i_inbound_u_id' => $udata['u_id'],
+            'i_parent_u_id' => $udata['u_id'],
             'i_c_id' => intval($_POST['c_id']),
             'i_status' => $_POST['i_status'],
             'i_rank' => 1 + $this->Db_model->max_value('tb_intent_messages','i_rank', array(
@@ -1010,7 +1008,7 @@ class Intents extends CI_Controller
         //All good, lets move on:
         //Define what needs to be updated:
         $to_update = array(
-            'i_inbound_u_id' => $udata['u_id'],
+            'i_parent_u_id' => $udata['u_id'],
             'i_timestamp' => date("Y-m-d H:i:s"),
             //Could have been modified:
             'i_message' => $validation['i_message'],
@@ -1093,7 +1091,7 @@ class Intents extends CI_Controller
 
                 //Now update the DB:
                 $this->Db_model->i_update( intval($_POST['i_id']) , array(
-                    'i_inbound_u_id' => $udata['u_id'],
+                    'i_parent_u_id' => $udata['u_id'],
                     'i_timestamp' => date("Y-m-d H:i:s"),
                     'i_status' => -1, //Archived
                 ));

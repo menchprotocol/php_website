@@ -14,24 +14,22 @@ class Adminpanel extends CI_Controller {
 
         //Authenticate level 3 or higher, redirect if not:
         $this->udata = auth(array(1281),1);
-
 	}
 
-
     function engagements(){
-        $this->load->view('console/console_header', array(
+        $this->load->view('shared/console_header', array(
             'title' => 'Platform Engagements',
         ));
-        $this->load->view('adminpanel/engagements_browse');
-        $this->load->view('console/console_footer');
+        $this->load->view('engagements/engagements_browse');
+        $this->load->view('shared/console_footer');
     }
 
     function subscriptions(){
-        $this->load->view('console/console_header', array(
+        $this->load->view('shared/console_header', array(
             'title' => 'Subscriptions Browser',
         ));
-        $this->load->view('adminpanel/subscriptions_browse');
-        $this->load->view('console/console_footer');
+        $this->load->view('actionplans/actionplans_browse');
+        $this->load->view('shared/console_footer');
     }
 
     function ej_list($e_id){
@@ -53,11 +51,11 @@ class Adminpanel extends CI_Controller {
 
     function statuslegend(){
         //Load views
-        $this->load->view('console/console_header' , array(
+        $this->load->view('shared/console_header' , array(
             'title' => 'Status Legend',
         ));
-        $this->load->view('adminpanel/statuslegend');
-        $this->load->view('console/console_footer');
+        $this->load->view('other/statuslegend');
+        $this->load->view('shared/console_footer');
     }
 
 

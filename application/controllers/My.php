@@ -56,15 +56,15 @@ class My extends CI_Controller {
 
     function actionplan($w_id=0, $c_id=0){
 
-        $this->load->view('custom/shared/p_header' , array(
+        $this->load->view('shared/messenger_header' , array(
             'title' => '🚩 Action Plan',
         ));
         //include main body:
-        $this->load->view('custom/student/actionplan_frame' , array(
+        $this->load->view('actionplans/actionplan_frame' , array(
             'c_id' => $c_id,
             'w_id' => $w_id,
         ));
-        $this->load->view('custom/shared/p_footer');
+        $this->load->view('shared/messenger_footer');
     }
 
     function display_actionplan($u_fb_psid, $w_id=0, $c_id=0){
@@ -74,7 +74,7 @@ class My extends CI_Controller {
         $no_session_w = (!isset($udata['u__ws']) || count($udata['u__ws'])<1);
 
         //Fetch Bootcamps for this user:
-        if(!$u_fb_psid && $no_session_w && !array_key_exists(1281, $udata['u__inbounds'])){
+        if(!$u_fb_psid && $no_session_w && !array_key_exists(1281, $udata['u__parents'])){
             //There is an issue here!
             die('<div class="alert alert-danger" role="alert">Invalid Credentials</div>');
         } elseif($no_session_w && !is_dev() && isset($_GET['sr']) && !parse_signed_request($_GET['sr'])){
@@ -101,42 +101,42 @@ class My extends CI_Controller {
         }
 
         //Try finding them:
-        $subscriptions = $this->Db_model->w_fetch($w_filter, array('c','u'));
+        $ws = $this->Db_model->w_fetch($w_filter, array('c','u'));
 
-        if(count($subscriptions)==0){
+        if(count($ws)==0){
 
             //No subscriptions found:
             die('<div class="alert alert-danger" role="alert">You have no active subscriptions yet. '.echo_pa_lets().'</div>');
 
-        } elseif(count($subscriptions)>1){
+        } elseif(count($ws)>1){
 
             //Log action plan view engagement:
             $this->Db_model->e_create(array(
                 'e_parent_c_id' => 32,
-                'e_parent_u_id' => $subscriptions[0]['u_id'],
+                'e_parent_u_id' => $ws[0]['u_id'],
             ));
 
             //Let them choose between subscriptions:
             echo '<h3 class="student-h3 primary-title">My Subscriptions</h3>';
             echo '<div class="list-group" style="margin-top: 10px;">';
-            foreach($subscriptions as $w){
+            foreach($ws as $w){
                 echo echo_w_students($w);
             }
             echo '</div>';
 
-        } elseif(count($subscriptions)==1) {
+        } elseif(count($ws)==1) {
 
             //We found a single subscription, load this by default:
             if(!$w_id || !$c_id){
                 //User with a single subscription
-                $w_id = $subscriptions[0]['w_id'];
-                $c_id = $subscriptions[0]['c_id']; //TODO set to current/focused intent
+                $w_id = $ws[0]['w_id'];
+                $c_id = $ws[0]['c_id']; //TODO set to current/focused intent
             }
 
             //Log action plan view engagement:
             $this->Db_model->e_create(array(
                 'e_parent_c_id' => 32,
-                'e_parent_u_id' => $subscriptions[0]['u_id'],
+                'e_parent_u_id' => $ws[0]['u_id'],
                 'e_child_c_id' => $c_id,
                 'e_w_id' => $w_id,
             ));
@@ -166,8 +166,8 @@ class My extends CI_Controller {
 
                 //Ooops, we had issues finding th is intent! Should not happen, report:
                 $this->Db_model->e_create(array(
-                    'e_parent_u_id' => $subscriptions[0]['u_id'],
-                    'e_json' => $subscriptions,
+                    'e_parent_u_id' => $ws[0]['u_id'],
+                    'e_json' => $ws,
                     'e_value' => 'Unable to load a specific intent for the student Action Plan! Should not happen...',
                     'e_parent_c_id' => 8,
                     'e_w_id' => $w_id,
@@ -178,8 +178,8 @@ class My extends CI_Controller {
             }
 
             //All good, Load UI:
-            $this->load->view('custom/student/actionplan_ui.php' , array(
-                'w' => $subscriptions[0], //We must have 1 by now!
+            $this->load->view('actionplans/actionplan_ui.php' , array(
+                'w' => $ws[0], //We must have 1 by now!
                 'c' => $cs[0],
                 'k_ins' => $k_ins,
                 'k_outs' => $k_outs,
@@ -267,13 +267,13 @@ class My extends CI_Controller {
         }
 
         //Load view for this iFrame:
-        $this->load->view('custom/shared/p_header' , array(
+        $this->load->view('shared/messenger_header' , array(
             'title' => 'User Engagements',
         ));
-        $this->load->view('custom/student/engagement_list' , array(
+        $this->load->view('engagements/engagement_list' , array(
             'u_id' => $u_id,
         ));
-        $this->load->view('custom/shared/p_footer');
+        $this->load->view('shared/messenger_footer');
     }
 
     function skip_tree($w_id, $c_id, $k_id){
@@ -341,7 +341,7 @@ class My extends CI_Controller {
         //All good, move forward with the update:
         //Save a copy of the student completion report:
         $this->Db_model->e_create(array(
-            'e_parent_u_id' => ( isset($udata['u_id']) ? $udata['u_id'] : $ks[0]['k_outbound_u_id'] ),
+            'e_parent_u_id' => ( isset($udata['u_id']) ? $udata['u_id'] : $ks[0]['k_children_u_id'] ),
             'e_value' => ( $notes_changed ? trim($_POST['k_notes']) : '' ),
             'e_parent_c_id' => 33, //Completion Report
             'e_child_c_id' => $ks[0]['c_id'],
@@ -377,7 +377,7 @@ class My extends CI_Controller {
                     //Also send confirmation messages via messenger:
                     $this->Comm_model->compose_messages(array(
                         'e_parent_u_id' => 2738, //Initiated by PA
-                        'e_child_u_id' => $ks[0]['k_outbound_u_id'],
+                        'e_child_u_id' => $ks[0]['k_children_u_id'],
                         'e_child_c_id' => $ks_next[0]['c_id'],
                         'e_w_id' => $ks[0]['k_w_id'],
                     ));
@@ -393,9 +393,9 @@ class My extends CI_Controller {
         $data = array(
             'title' => 'Password Reset',
         );
-        $this->load->view('custom/shared/p_header' , $data);
-        $this->load->view('custom/student/password_reset');
-        $this->load->view('custom/shared/p_footer');
+        $this->load->view('shared/messenger_header' , $data);
+        $this->load->view('entities/password_reset');
+        $this->load->view('shared/messenger_footer');
     }
 	
 }

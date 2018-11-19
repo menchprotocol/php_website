@@ -181,7 +181,7 @@ class Db_model extends CI_Model {
 
         if(count($chosen_path)==1){
 
-            //Also fetch outbound to see if we requires any notes/url to mark as complete:
+            //Also fetch children to see if we requires any notes/url to mark as complete:
             $path_requirements = $this->Db_model->k_fetch(array(
                 'k_w_id' => $w_id,
                 'cr_parent_c_id' => $cr_parent_c_id, //Fetch children of parent intent which are the siblings of current intent
@@ -286,7 +286,7 @@ class Db_model extends CI_Model {
         if(in_array($new_k_status, array(3,2,-1))){
 
             //Since down tree is now complete, see if up tree needs completion as well:
-            //Fetch all ups/inbounds:
+            //Fetch all parents:
             $up_tree = $this->Db_model->k_recursive_fetch($w['w_id'], $cr['cr_child_c_id'], 0);
             
             //Track completion for all top parents, because if they are all complete, the Subscription might be complete:
@@ -361,7 +361,7 @@ class Db_model extends CI_Model {
                 }
 
                 //Assume true unless otherwise:
-                $subscription_is_complete = true;
+                $w_is_complete = true;
 
                 if($cs[0]['c_is_any']){
                     //We need a single one to be completed:
@@ -371,7 +371,7 @@ class Db_model extends CI_Model {
                         'k_status NOT IN ('.join(',', $this->config->item('k_status_incomplete')).')' => null, //complete
                     ), array('cr'));
                     if(count($complete_child_cs)==0){
-                        $subscription_is_complete = false;
+                        $w_is_complete = false;
                     }
                 } else {
                     //We need all to be completed:
@@ -381,11 +381,11 @@ class Db_model extends CI_Model {
                         'k_status IN ('.join(',', $this->config->item('k_status_incomplete')).')' => null, //incomplete
                     ), array('cr'));
                     if(count($incomplete_child_cs)>0){
-                        $subscription_is_complete = false;
+                        $w_is_complete = false;
                     }
                 }
 
-                if($subscription_is_complete){
+                if($w_is_complete){
 
                     //We do this check as a hack to a bug that was running this piece of code 10 times!
                     $validate_subscription = $this->Db_model->w_fetch(array(
@@ -396,7 +396,7 @@ class Db_model extends CI_Model {
                     if(count($validate_subscription)==1){
 
                         //What subscription number is this?
-                        $completed_subscriptions = $this->Db_model->w_fetch(array(
+                        $completed_ws = $this->Db_model->w_fetch(array(
                             'w_id !=' => $cs[0]['w_id'], //Other than this one...
                             'w_parent_u_id' => $cs[0]['w_child_u_id'],
                             'w_status >=' => 2, //Completed subscriptions
@@ -409,14 +409,14 @@ class Db_model extends CI_Model {
                                 'e_child_u_id' => $cs[0]['w_child_u_id'],
                                 'e_child_c_id' => $cs[0]['w_c_id'],
                                 'e_w_id' => $cs[0]['w_id'],
-                                'i_message' => 'Congratulations for completing your '.echo_ordinal((count($completed_subscriptions)+1)).' Subscription 🎉 Over time I will keep sharing new insights (based on my new training data) that could help you to '.$cs[0]['c_outcome'].' 🙌 You can, at any time, stop updates on your subscriptions by saying "quit".',
+                                'i_message' => 'Congratulations for completing your '.echo_ordinal((count($completed_ws)+1)).' Subscription 🎉 Over time I will keep sharing new insights (based on my new training data) that could help you to '.$cs[0]['c_outcome'].' 🙌 You can, at any time, stop updates on your subscriptions by saying "quit".',
                             ),
                             array(
                                 'e_parent_u_id' => 2738, //Initiated by PA
                                 'e_child_u_id' => $cs[0]['w_child_u_id'],
                                 'e_child_c_id' => $cs[0]['w_c_id'],
                                 'e_w_id' => $cs[0]['w_id'],
-                                'i_message' => 'How else can I help you advance your tech career? '.echo_pa_lets(),
+                                'i_message' => 'How else can I help you '.$this->lang->line('platform_intent').'? '.echo_pa_lets(),
                             ),
                         ));
 
@@ -476,7 +476,7 @@ class Db_model extends CI_Model {
         return $insert_columns;
     }
 
-    function c_new($c_id, $c_outcome, $link_c_id, $next_level, $inbound_u_id){
+    function c_new($c_id, $c_outcome, $link_c_id, $next_level, $parent_u_id){
 
 	    if(intval($c_id)<=0){
             return array(
@@ -493,10 +493,10 @@ class Db_model extends CI_Model {
         $link_c_id = intval($link_c_id);
 
         //Validate Original intent:
-        $inbound_intents = $this->Db_model->c_fetch(array(
+        $parent_intents = $this->Db_model->c_fetch(array(
             'c.c_id' => intval($c_id),
         ), 1);
-        if(count($inbound_intents)<=0){
+        if(count($parent_intents)<=0){
             return array(
                 'status' => 0,
                 'message' => 'Invalid Intent ID',
@@ -517,7 +517,7 @@ class Db_model extends CI_Model {
 
             //Create intent:
             $new_c = $this->Db_model->c_create(array(
-                'c_inbound_u_id' => $inbound_u_id,
+                'c_parent_u_id' => $parent_u_id,
                 'c_outcome' => trim($c_outcome),
                 'c_time_estimate' => $default_new_hours,
                 'c__tree_all_count' => 1, //We just added one
@@ -526,7 +526,7 @@ class Db_model extends CI_Model {
 
             //Log Engagement for New Intent:
             $this->Db_model->e_create(array(
-                'e_parent_u_id' => $inbound_u_id,
+                'e_parent_u_id' => $parent_u_id,
                 'e_value' => 'Intent ['.$new_c['c_outcome'].'] created',
                 'e_json' => array(
                     'input' => $_POST,
@@ -565,7 +565,7 @@ class Db_model extends CI_Model {
 
 
             //Make sure this is not a duplicate intent for its parent:
-            $dup_links = $this->Db_model->cr_outbound_fetch(array(
+            $dup_links = $this->Db_model->cr_children_fetch(array(
                 'cr_parent_c_id'  => intval($c_id),
                 'cr_child_c_id' => $new_c['c_id'],
             ));
@@ -608,7 +608,7 @@ class Db_model extends CI_Model {
 
         //Create Link:
         $relation = $this->Db_model->cr_create(array(
-            'cr_inbound_u_id' => $inbound_u_id,
+            'cr_parent_u_id' => $parent_u_id,
             'cr_parent_c_id'  => intval($c_id),
             'cr_child_c_id' => $new_c['c_id'],
             'cr_child_rank' => 1 + $this->Db_model->max_value('tb_intent_links','cr_child_rank', array(
@@ -627,8 +627,8 @@ class Db_model extends CI_Model {
 
         //Log Engagement for new link:
         $this->Db_model->e_create(array(
-            'e_parent_u_id' => $inbound_u_id,
-            'e_value' => 'Linked intent ['.$new_c['c_outcome'].'] as outbound of intent ['.$inbound_intents[0]['c_outcome'].']',
+            'e_parent_u_id' => $parent_u_id,
+            'e_value' => 'Linked intent ['.$new_c['c_outcome'].'] as child of intent ['.$parent_intents[0]['c_outcome'].']',
             'e_json' => array(
                 'input' => $_POST,
                 'before' => null,
@@ -640,7 +640,7 @@ class Db_model extends CI_Model {
             'e_cr_id' => $relation['cr_id'],
         ));
 
-        $relations = $this->Db_model->cr_outbound_fetch(array(
+        $relations = $this->Db_model->cr_children_fetch(array(
             'cr.cr_id' => $relation['cr_id'],
         ));
 
@@ -670,6 +670,14 @@ class Db_model extends CI_Model {
             $insert_columns['w_parent_u_id'] = 0; //No coach assigned
         }
 
+        if(!isset($insert_columns['w_c_rank'])){
+            //Place this new action plan after the last one the user currently has:
+            $insert_columns['w_c_rank'] = 1 + $this->Db_model->max_value('tb_actionplans','w_c_rank', array(
+                'w_status >=' => 1, //Anything they are working on...
+                'w_child_u_id' => $insert_columns['w_child_u_id'],
+            )); //No coach assigned
+        }
+
         //Lets now add:
         $this->db->insert('tb_actionplans', $insert_columns);
 
@@ -679,7 +687,7 @@ class Db_model extends CI_Model {
         if($insert_columns['w_id']>0){
 
             //Now let's create a cache of the Action Plan for this subscription:
-            $tree = $this->Db_model->c_recursive_fetch($insert_columns['w_c_id'], true, 0, $insert_columns['w_id']);
+            $tree = $this->Db_model->c_recursive_fetch($insert_columns['w_c_id'], true, false, $insert_columns['w_id']);
 
             if(count($tree['cr_flat'])>0){
 
@@ -750,12 +758,12 @@ class Db_model extends CI_Model {
 	    $res = $q->result_array();
 
 
-	    //Now fetch inbounds:
+	    //Now fetch parents:
         foreach($res as $key=>$val){
 
-            if(in_array('u__outbound_count',$join_objects)){
+            if(in_array('u__children_count',$join_objects)){
                 //Fetch the messages for this entity:
-                $res[$key]['u__outbound_count'] = count($this->Db_model->ur_outbound_fetch(array(
+                $res[$key]['u__children_count'] = count($this->Db_model->ur_children_fetch(array(
                     'ur_parent_u_id' => $val['u_id'],
                     'ur_status >=' => 0, //Pending or Active
                     'u_status >=' => 0, //Pending or Active
@@ -785,15 +793,15 @@ class Db_model extends CI_Model {
 
 
             //Fetch the messages for this entity:
-            $res[$key]['u__inbounds'] = array();
-            if(!in_array('skip_u__inbounds',$join_objects)){
-                $inbounds = $this->Db_model->ur_inbound_fetch(array(
+            $res[$key]['u__parents'] = array();
+            if(!in_array('skip_u__parents',$join_objects)){
+                $parents = $this->Db_model->ur_parent_fetch(array(
                     'ur_child_u_id' => $val['u_id'],
                     'ur_status >=' => 0, //Pending or Active
                     'u_status >=' => 0, //Pending or Active
                 ));
-                foreach($inbounds as $ur){
-                    $res[$key]['u__inbounds'][$ur['u_id']] = $ur;
+                foreach($parents as $ur){
+                    $res[$key]['u__parents'][$ur['u_id']] = $ur;
                 }
             }
         }
@@ -824,15 +832,15 @@ class Db_model extends CI_Model {
         }
 
         //Check subscriptions:
-        $subscriptions = $this->Db_model->w_fetch(array(
+        $ws = $this->Db_model->w_fetch(array(
             'w_c_id' => $c_id,
             'w_status >=' => 0,
         ));
-        if(count($subscriptions)>0){
+        if(count($ws)>0){
             return array(
                 'status' => 0,
-                'message' => 'Cannot delete because there are '.count($subscriptions).' subscriptions',
-                'subscriptions' => $subscriptions,
+                'message' => 'Cannot delete because there are '.count($ws).' subscriptions',
+                'ws' => $ws,
                 'c' => $intents[0],
             );
         }
@@ -882,7 +890,7 @@ class Db_model extends CI_Model {
                 'status' => 0,
                 'message' => 'User Not Found in DB',
             );
-        } elseif(array_key_exists(1281, $users[0]['u__inbounds']) ){
+        } elseif(array_key_exists(1281, $users[0]['u__parents']) ){
             return array(
                 'status' => 0,
                 'message' => 'Cannot delete Admin',
@@ -892,15 +900,15 @@ class Db_model extends CI_Model {
 
 
         //Check subscriptions:
-        $subscriptions = $this->Db_model->w_fetch(array(
+        $ws = $this->Db_model->w_fetch(array(
             '(w_parent_u_id='.$u_id.' OR w_child_u_id='.$u_id.')' => null,
             'w_status >=' => 0,
         ));
-        if(count($subscriptions)>0){
+        if(count($ws)>0){
             return array(
                 'status' => 0,
-                'message' => 'Cannot delete because there are '.count($subscriptions).' active subscriptions',
-                'subscriptions' => $subscriptions,
+                'message' => 'Cannot delete because there are '.count($ws).' active subscriptions',
+                'ws' => $ws,
                 'u' => $users[0],
             );
         }
@@ -1208,13 +1216,13 @@ class Db_model extends CI_Model {
 
 
 
-    function c_fetch($match_columns, $outbound_levels=0, $join_objects=array(), $order_columns=array(), $limit=0){
+    function c_fetch($match_columns, $children_levels=0, $join_objects=array(), $order_columns=array(), $limit=0){
 
         //The basic fetcher for intents
         $this->db->select('*');
         $this->db->from('tb_intents c');
         if(in_array('u',$join_objects)){
-            $this->db->join('tb_entities u', 'u.u_id = c.c_inbound_u_id');
+            $this->db->join('tb_entities u', 'u.u_id = c.c_parent_u_id');
         }
         foreach($match_columns as $key=>$value){
             $this->db->where($key,$value);
@@ -1239,17 +1247,17 @@ class Db_model extends CI_Model {
                 ));
             }
 
-            if(in_array('c__inbounds',$join_objects)){
-                $intents[$key]['c__inbounds'] = $this->Db_model->cr_inbound_fetch(array(
+            if(in_array('c__parents',$join_objects)){
+                $intents[$key]['c__parents'] = $this->Db_model->cr_parent_fetch(array(
                     'cr.cr_child_c_id' => $value['c_id'],
                     'cr.cr_status >=' => 1,
                 ) , $join_objects);
             }
 
-            if($outbound_levels>=1){
+            if($children_levels>=1){
 
                 //Do the first level:
-                $intents[$key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
+                $intents[$key]['c__child_intents'] = $this->Db_model->cr_children_fetch(array(
                     'cr.cr_parent_c_id' => $value['c_id'],
                     'cr.cr_status >=' => 1,
                     'c.c_status >=' => 0,
@@ -1257,10 +1265,10 @@ class Db_model extends CI_Model {
 
 
                 //need more depth?
-                if($outbound_levels>=2){
+                if($children_levels>=2){
                     //Start the second level:
                     foreach($intents[$key]['c__child_intents'] as $key2=>$value2){
-                        $intents[$key]['c__child_intents'][$key2]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
+                        $intents[$key]['c__child_intents'][$key2]['c__child_intents'] = $this->Db_model->cr_children_fetch(array(
                             'cr.cr_parent_c_id' => $value2['c_id'],
                             'cr.cr_status >=' => 1,
                             'c.c_status >=' => 0,
@@ -1275,7 +1283,7 @@ class Db_model extends CI_Model {
     }
 
 	
-	function cr_outbound_fetch($match_columns,$join_objects=array()){
+	function cr_children_fetch($match_columns,$join_objects=array()){
 
 		//Missing anything?
 		$this->db->select('*');
@@ -1309,7 +1317,7 @@ class Db_model extends CI_Model {
 		return $return;
 	}
 	
-	function cr_inbound_fetch($match_columns,$join_objects=array()){
+	function cr_parent_fetch($match_columns,$join_objects=array()){
 		//Missing anything?
 		$this->db->select('*');
 		$this->db->from('tb_intents c');
@@ -1325,7 +1333,7 @@ class Db_model extends CI_Model {
 
                 if(in_array('c__child_intents',$join_objects)){
                     //Fetch children:
-                    $return[$key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
+                    $return[$key]['c__child_intents'] = $this->Db_model->cr_children_fetch(array(
                         'cr.cr_parent_c_id' => $value['c_id'],
                         'cr.cr_status >=' => 0,
                         'c.c_status >=' => 0,
@@ -1380,7 +1388,7 @@ class Db_model extends CI_Model {
 
     function cr_create($insert_columns){
 
-        if(missing_required_db_fields($insert_columns,array('cr_child_c_id','cr_parent_c_id','cr_inbound_u_id'))){
+        if(missing_required_db_fields($insert_columns,array('cr_child_c_id','cr_parent_c_id','cr_parent_u_id'))){
             return false;
         }
 
@@ -1482,7 +1490,7 @@ class Db_model extends CI_Model {
         }
 
         //Validate parent entity:
-        $outbound_us = $this->Db_model->u_fetch(array(
+        $children_us = $this->Db_model->u_fetch(array(
             'u_id' => $x_u_id,
         ));
 
@@ -1509,7 +1517,7 @@ class Db_model extends CI_Model {
                     'message' => 'Found existing URL',
                     'is_existing' => 1,
                     'curl' => $curl,
-                    'u' => array_merge($outbound_us[0],$dup_urls[0]),
+                    'u' => array_merge($children_us[0],$dup_urls[0]),
                 );
             } elseif($dup_urls[0]['u_id']==$x_u_id){
                 return array(
@@ -1527,7 +1535,7 @@ class Db_model extends CI_Model {
                 'status' => 0,
                 'message' => 'URL seems broken with http code [' . $curl['httpcode'] . ']',
             );
-        } elseif(count($outbound_us)<1) {
+        } elseif(count($children_us)<1) {
             return array(
                 'status' => 0,
                 'message' => 'Invalid Child Entity ID ['.$x_u_id.']',
@@ -1587,14 +1595,14 @@ class Db_model extends CI_Model {
             ));
 
         } else {
-            $new_content = $outbound_us[0];
+            $new_content = $children_us[0];
             $ur1 = array();
         }
 
 
         //All good, Save URL:
         $new_x = $this->Db_model->x_create(array(
-            'x_inbound_u_id' => $udata['u_id'],
+            'x_parent_u_id' => $udata['u_id'],
             'x_u_id' => $new_content['u_id'],
             'x_url' => $x_url,
             'x_http_code' => $curl['httpcode'],
@@ -1628,7 +1636,7 @@ class Db_model extends CI_Model {
 
 
         //Is this a image for an entity without a cover letter? If so, set this as the default:
-        $set_cover_x_id = ( !$outbound_us[0]['u_cover_x_id'] && $new_x['x_type']==4 /* Image file */ ? $new_x['x_id'] : 0 );
+        $set_cover_x_id = ( !$children_us[0]['u_cover_x_id'] && $new_x['x_type']==4 /* Image file */ ? $new_x['x_id'] : 0 );
 
 
         //Update Algolia:
@@ -1654,9 +1662,9 @@ class Db_model extends CI_Model {
                 'status' => 1,
                 'message' => 'Success',
                 'curl' => $curl,
-                'u' => $outbound_us[0],
+                'u' => $children_us[0],
                 'set_cover_x_id' => $set_cover_x_id,
-                'new_x' => echo_x($outbound_us[0], $new_x),
+                'new_x' => echo_x($children_us[0], $new_x),
             );
 
         }
@@ -1665,7 +1673,7 @@ class Db_model extends CI_Model {
 
 
 
-    function ur_outbound_fetch($match_columns, $join_objects=array(), $limit=0, $limit_offset=0, $select='*', $group_by=null, $order_columns=array(
+    function ur_children_fetch($match_columns, $join_objects=array(), $limit=0, $limit_offset=0, $select='*', $group_by=null, $order_columns=array(
         'u.u__e_score' => 'DESC',
     )){
 
@@ -1697,10 +1705,10 @@ class Db_model extends CI_Model {
         $res = $q->result_array();
 
 
-        if(in_array('u__outbound_count',$join_objects)){
+        if(in_array('u__children_count',$join_objects)){
             foreach($res as $key=>$val){
                 //Fetch the messages for this entity:
-                $res[$key]['u__outbound_count'] = count($this->Db_model->ur_outbound_fetch(array(
+                $res[$key]['u__children_count'] = count($this->Db_model->ur_children_fetch(array(
                     'ur_parent_u_id' => $val['u_id'],
                     'ur_status >=' => 0, //Pending or Active
                     'u_status >=' => 0, //Pending or Active
@@ -1708,18 +1716,18 @@ class Db_model extends CI_Model {
             }
         }
 
-        if(in_array('u__inbounds',$join_objects)){
+        if(in_array('u__parents',$join_objects)){
             foreach($res as $key=>$val){
                 //Fetch the messages for this entity:
-                $res[$key]['u__inbounds'] = array();
-                $inbounds = $this->Db_model->ur_inbound_fetch(array(
+                $res[$key]['u__parents'] = array();
+                $parents = $this->Db_model->ur_parent_fetch(array(
                     'ur_child_u_id' => $val['u_id'],
                     'ur_status >=' => 0, //Pending or Active
                     'u_status >=' => 0, //Pending or Active
                 ));
 
-                foreach($inbounds as $ur){
-                    $res[$key]['u__inbounds'][$ur['u_id']] = $ur;
+                foreach($parents as $ur){
+                    $res[$key]['u__parents'][$ur['u_id']] = $ur;
                 }
 
             }
@@ -1728,7 +1736,7 @@ class Db_model extends CI_Model {
         return $res;
     }
 
-    function ur_inbound_fetch($match_columns, $join_objects=array()){
+    function ur_parent_fetch($match_columns, $join_objects=array()){
         //Missing anything?
         $this->db->select('*');
         $this->db->from('tb_entities u');
@@ -1776,7 +1784,7 @@ class Db_model extends CI_Model {
 
 	function c_create($insert_columns){
 
-        if(missing_required_db_fields($insert_columns,array('c_outcome','c_inbound_u_id'))){
+        if(missing_required_db_fields($insert_columns,array('c_outcome','c_parent_u_id'))){
             return false;
         }
 
@@ -1843,7 +1851,7 @@ class Db_model extends CI_Model {
 
     function x_create($insert_columns){
 
-        if(missing_required_db_fields($insert_columns,array('x_url','x_clean_url','x_type','x_inbound_u_id','x_u_id','x_status'))){
+        if(missing_required_db_fields($insert_columns,array('x_url','x_clean_url','x_type','x_parent_u_id','x_u_id','x_status'))){
             return false;
         } elseif(!filter_var($insert_columns['x_url'], FILTER_VALIDATE_URL)){
             return false;
@@ -1867,7 +1875,7 @@ class Db_model extends CI_Model {
 
                 //Save this engagement as we have an issue here...
                 $this->Db_model->e_create(array(
-                    'e_parent_u_id' => $insert_columns['x_inbound_u_id'],
+                    'e_parent_u_id' => $insert_columns['x_parent_u_id'],
                     'e_child_u_id' => $insert_columns['x_u_id'],
                     'e_parent_c_id' => 8, //System error
                     'e_value' => 'x_create() found a duplicate URL ID ['.$urls[0]['x_id'].']',
@@ -2038,7 +2046,7 @@ class Db_model extends CI_Model {
             }
 
             //Individual subscriptions:
-            foreach($this->config->item('engagement_subscriptions') as $admin_u_id=>$subscription){
+            foreach($this->config->item('notify_admins') as $admin_u_id=>$subscription){
 
                 //Do not notify about own actions:
                 if(intval($insert_columns['e_parent_u_id'])==$admin_u_id){
@@ -2091,10 +2099,10 @@ class Db_model extends CI_Model {
 	}
 
 
-	function c_update_tree($c_id, $c_update_columns=array(), $fetch_outbound=0){
+	function c_update_tree($c_id, $c_update_columns=array(), $fetch_children=0){
 
 	    //Will fetch the recursive tree and update
-        $tree = $this->Db_model->c_recursive_fetch($c_id, $fetch_outbound);
+        $tree = $this->Db_model->c_recursive_fetch($c_id, $fetch_children);
 
         if(count($c_update_columns)==0 || count($tree['c_flat'])==0){
             return false;
@@ -2129,7 +2137,7 @@ class Db_model extends CI_Model {
         return $affected_rows;
     }
 
-    function c_recursive_fetch($c_id, $fetch_outbound=0, $update_c_table=0, $k_w_id=0, $parent_c=array(), $recursive_children=null){
+    function c_recursive_fetch($c_id, $fetch_children=false, $update_c_table=false, $w_id=0, $parent_c=array(), $recursive_children=null){
 
         //Get core data:
         $immediate_children = array(
@@ -2159,20 +2167,24 @@ class Db_model extends CI_Model {
 
         //Fetch & add this item itself:
         if(isset($parent_c['cr_id'])){
-            if($fetch_outbound){
-                $cs = $this->Db_model->cr_outbound_fetch(array(
+
+            if($fetch_children){
+                $cs = $this->Db_model->cr_children_fetch(array(
                     'cr.cr_id' => $parent_c['cr_id'],
                 ), ( $update_c_table ? array('c__messages') : array() ));
             } else {
-                $cs = $this->Db_model->cr_inbound_fetch(array(
+                $cs = $this->Db_model->cr_parent_fetch(array(
                     'cr.cr_id' => $parent_c['cr_id'],
                 ), ( $update_c_table ? array('c__messages') : array() ));
             }
+
         } else {
+
             //This is the very first item that
             $cs = $this->Db_model->c_fetch(array(
                 'c.c_id' => $c_id,
             ), 0, ( $update_c_table ? array('c__messages') : array() ));
+
         }
 
 
@@ -2182,33 +2194,42 @@ class Db_model extends CI_Model {
         }
 
 
+        //Always add intent to tree:
+        array_push($immediate_children['c_flat'],intval($c_id));
+
+
         //Add the link relations before we start recursion so we can have the Tree in up-custom order:
         if(isset($cs[0]['cr_id'])){
+
+            //Add intent link:
             array_push($immediate_children['cr_flat'],intval($cs[0]['cr_id']));
-            if($k_w_id>0){
-                //Add this to the subscription cache:
+
+            //Are we caching an Action Plan?
+            if($w_id>0){
+                //Yes we are, create a cache of this link for this Action Plan:
                 $this->Db_model->k_create(array(
-                    'k_w_id' => $k_w_id,
+                    'k_w_id' => $w_id,
                     'k_cr_id' => $cs[0]['cr_id'],
                     'k_cr_child_rank' => $cs[0]['cr_child_rank'],
                 ));
             }
+
         }
-        array_push($immediate_children['c_flat'],intval($c_id));
 
-
-
-
+        //Terminate at OR branches for Action Plan caching (when $w_id>0)
+        if($w_id>0 && $cs[0]['c_is_any']){
+            //return false;
+        }
 
         //A recursive function to fetch all Tree for a given intent, either upwards or downwards
-        if($fetch_outbound){
-            $child_cs = $this->Db_model->cr_outbound_fetch(array(
+        if($fetch_children){
+            $child_cs = $this->Db_model->cr_children_fetch(array(
                 'cr.cr_parent_c_id' => $c_id,
                 'cr.cr_status >=' => 0,
                 'c.c_status >=' => 0,
             ));
         } else {
-            $child_cs = $this->Db_model->cr_inbound_fetch(array(
+            $child_cs = $this->Db_model->cr_parent_fetch(array(
                 'cr.cr_child_c_id' => $c_id,
                 'cr.cr_status >=' => 0,
                 'c.c_status >=' => 0,
@@ -2236,7 +2257,7 @@ class Db_model extends CI_Model {
                 } else {
 
                     //Fetch children for this intent, if any:
-                    $granchildren = $this->Db_model->c_recursive_fetch($c['c_id'], $fetch_outbound, $update_c_table, $k_w_id, $c, $immediate_children);
+                    $granchildren = $this->Db_model->c_recursive_fetch($c['c_id'], $fetch_children, $update_c_table, $w_id, $c, $immediate_children);
 
                     if(!$granchildren){
                         //There was an infinity break
@@ -2362,20 +2383,20 @@ class Db_model extends CI_Model {
                 //Who are the parent authors of this message?
 
 
-                if(!in_array($i['i_inbound_u_id'],$parent_ids)){
-                    array_push($parent_ids, $i['i_inbound_u_id']);
+                if(!in_array($i['i_parent_u_id'],$parent_ids)){
+                    array_push($parent_ids, $i['i_parent_u_id']);
                 }
 
 
                 //Check the author of this message (The trainer) in the trainer array:
-                if(!isset($cs[0]['c1__tree_trainers'][$i['i_inbound_u_id']])){
+                if(!isset($cs[0]['c1__tree_trainers'][$i['i_parent_u_id']])){
                     //Add the entire message which would also hold the trainer details:
-                    $cs[0]['c1__tree_trainers'][$i['i_inbound_u_id']] = u_essentials($i);
+                    $cs[0]['c1__tree_trainers'][$i['i_parent_u_id']] = u_essentials($i);
                 }
                 //How about the parent of this one?
-                if(!isset($immediate_children['c1__tree_trainers'][$i['i_inbound_u_id']])){
+                if(!isset($immediate_children['c1__tree_trainers'][$i['i_parent_u_id']])){
                     //Yes, add them to the list:
-                    $immediate_children['c1__tree_trainers'][$i['i_inbound_u_id']] = u_essentials($i);
+                    $immediate_children['c1__tree_trainers'][$i['i_parent_u_id']] = u_essentials($i);
                 }
 
 
@@ -2393,9 +2414,9 @@ class Db_model extends CI_Model {
                         'u_id' => $i['i_u_id'],
                     ));
 
-                    if(isset($us_fetch[0]) && count($us_fetch[0]['u__inbounds'])>0){
+                    if(isset($us_fetch[0]) && count($us_fetch[0]['u__parents'])>0){
                         //We found it, let's loop through the parents and aggregate their IDs for a single search:
-                        foreach($us_fetch[0]['u__inbounds'] as $parent_u){
+                        foreach($us_fetch[0]['u__parents'] as $parent_u){
 
                             //Is this a particular content type?
                             if(array_key_exists($parent_u['u_id'], $this->config->item('content_types'))){
@@ -2422,7 +2443,7 @@ class Db_model extends CI_Model {
             if(count($parent_ids)>0){
 
                 //Lets make a query search to see how many of those involved are industry experts:
-                $ixs = $this->Db_model->ur_outbound_fetch(array(
+                $ixs = $this->Db_model->ur_children_fetch(array(
                     'ur_parent_u_id' => 3084, //Industry expert entity
                     'ur_child_u_id IN ('.join(',', $parent_ids).')' => null,
                     'ur_status >=' => 0, //Pending review or higher
@@ -2529,7 +2550,7 @@ class Db_model extends CI_Model {
     }
 
 
-    function k_recursive_fetch($w_id, $c_id, $fetch_outbound, $parent_c=array(), $recursive_children=null){
+    function k_recursive_fetch($w_id, $c_id, $fetch_children, $parent_c=array(), $recursive_children=null){
 
         //Get core data:
         $immediate_children = array(
@@ -2550,7 +2571,7 @@ class Db_model extends CI_Model {
             $cs = $this->Db_model->k_fetch(array(
                 'k_w_id' => $w_id,
                 'k_cr_id' => $parent_c['cr_id'],
-            ), array('cr', ($fetch_outbound ? 'cr_c_out' : 'cr_c_in')));
+            ), array('cr', ($fetch_children ? 'cr_c_out' : 'cr_c_in')));
         }
 
         //We should have found an item by now:
@@ -2571,15 +2592,15 @@ class Db_model extends CI_Model {
         $child_cs = $this->Db_model->k_fetch(array(
             'k_w_id' => $w_id,
             'c_status >=' => 2,
-            ( $fetch_outbound ? 'cr_parent_c_id' : 'cr_child_c_id' ) => $c_id,
-        ), array('cr',( $fetch_outbound ? 'cr_c_out' : 'cr_c_in' )));
+            ( $fetch_children ? 'cr_parent_c_id' : 'cr_child_c_id' ) => $c_id,
+        ), array('cr',( $fetch_children ? 'cr_c_out' : 'cr_c_in' )));
 
 
         if(count($child_cs)>0){
             foreach($child_cs as $c){
 
                 //Fetch children for this intent, if any:
-                $granchildren = $this->Db_model->k_recursive_fetch($w_id, $c['c_id'], $fetch_outbound, $c, $immediate_children);
+                $granchildren = $this->Db_model->k_recursive_fetch($w_id, $c['c_id'], $fetch_children, $c, $immediate_children);
 
                 //return $granchildren;
 
@@ -2665,7 +2686,7 @@ class Db_model extends CI_Model {
             $items = $this->Db_model->c_fetch($limits);
         } elseif($obj=='u'){
             $items = $this->Db_model->u_fetch($limits);
-            $inbound_names = array(); //To cache names of parents
+            $parent_names = array(); //To cache names of parents
         }
 
         //Go through selection and update:
@@ -2694,21 +2715,22 @@ class Db_model extends CI_Model {
                 $new_item['u__e_score'] = intval($item['u__e_score']);
                 $new_item['u_status'] = intval($item['u_status']);
                 $new_item['u_full_name'] = $item['u_full_name'];
+                $new_item['u_icon'] = $item['u_icon'];
                 $new_item['u_keywords'] = $item['u_intro_message'];
                 $new_item['_tags'] = array();
 
 
                 //Tags map parent relation:
-                if(count($item['u__inbounds'])>0){
-                    //Loop through the inbound entities:
-                    foreach($item['u__inbounds'] as $u_id=>$u){
+                if(count($item['u__parents'])>0){
+                    //Loop through parent entities:
+                    foreach($item['u__parents'] as $u_id=>$u){
                         array_push($new_item['_tags'],'u'.$u_id);
                         if(!in_array($u_id, array(2738,1278,1326,3089,2750))){
                             $new_item['u_keywords'] .= ' '.$u['u_full_name'];
                         }
                     }
                 } else {
-                    //No inbound entities
+                    //No parent entities
                     array_push($new_item['_tags'],'noparent');
                 }
 
@@ -2756,7 +2778,7 @@ class Db_model extends CI_Model {
                 //Append parent intents:
                 $new_item['_tags'] = array();
 
-                $child_cs = $this->Db_model->cr_inbound_fetch(array(
+                $child_cs = $this->Db_model->cr_parent_fetch(array(
                     'cr.cr_child_c_id' => $item['c_id'],
                     'cr.cr_status >=' => 1,
                     'c.c_status >=' => 0,

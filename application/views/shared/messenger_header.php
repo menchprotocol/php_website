@@ -10,7 +10,7 @@ $udata = $this->session->userdata('user');
 	<title><?= 'Mench'.( isset($title) ? ' | '.$title : '' ) ?></title>
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
 	
-	<?php $this->load->view('custom/shared/header_resources' ); ?>
+	<?php $this->load->view('shared/include_js_css' ); ?>
 
     <script src="/js/custom/global-js.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
 </head>

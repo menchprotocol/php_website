@@ -61,7 +61,7 @@ class Bot extends CI_Controller {
 
         /*
          *
-         * The master function for all inbound Facebook calls
+         * The master function for all Facebook webhook calls
          *
          * */
 
@@ -253,7 +253,7 @@ class Bot extends CI_Controller {
                      * */
 
 
-                    //Is this a non loggable inbound message? If so, this has already been logged by Mench:
+                    //Is this a non loggable message? If so, this has already been logged by Mench:
                     $metadata = ( isset($im['message']['metadata']) ? $im['message']['metadata'] : null ); //Send API custom string [metadata field]
                     if($metadata=='system_logged'){
                         //This is already logged! No need to take further action!

@@ -126,7 +126,7 @@ class Comm_model extends CI_Model {
                     array(
                         'e_parent_u_id' => 2738, //Initiated by PA
                         'e_child_u_id' => $u['u_id'],
-                        'i_message' => 'Awesome, would be happy to stay friends and help you accomplish your career goals. '.echo_pa_lets(),
+                        'i_message' => 'Awesome, I am excited to continue helping you to '.$this->lang->line('platform_intent').'. '.echo_pa_lets(),
                     ),
                 ));
 
@@ -162,14 +162,14 @@ class Comm_model extends CI_Model {
 
             } elseif(intval($unsub_value)>0){
 
-                //User wants to remove a specific subscription, validate it:
-                $subscriptions = $this->Db_model->w_fetch(array(
+                //User wants to skip a specific intent from their Action Plan, validate it:
+                $ws = $this->Db_model->w_fetch(array(
                     'w_id' => intval($unsub_value),
                     'w_status >=' => 0,
                 ), array('c'));
 
                 //All good?
-                if(count($subscriptions)==1){
+                if(count($ws)==1){
 
                     //Update status for this single subscription:
                     $this->db->query("UPDATE tb_actionplans SET w_status=-1 WHERE w_id=".intval($unsub_value));
@@ -178,8 +178,8 @@ class Comm_model extends CI_Model {
                     $this->Db_model->e_create(array(
                         'e_parent_u_id' => $u['u_id'],
                         'e_child_u_id' => $u['u_id'],
-                        'e_child_c_id' => $subscriptions[0]['w_c_id'],
-                        'e_value' => 'Student unsubscribed from their intention to '.$subscriptions[0]['c_outcome'],
+                        'e_child_c_id' => $ws[0]['w_c_id'],
+                        'e_value' => 'Student unsubscribed from their intention to '.$ws[0]['c_outcome'],
                         'e_parent_c_id' => 7452, //User Unsubscribed
                         'e_w_id' => intval($unsub_value),
                     ));
@@ -189,7 +189,7 @@ class Comm_model extends CI_Model {
                         array(
                             'e_parent_u_id' => 2738, //Initiated by PA
                             'e_child_u_id' => $u['u_id'],
-                            'i_message' => 'I have successfully unsubscribed you from your intention to '.$subscriptions[0]['c_outcome'].'. Say "Unsubscribe" again if you wish to stop all future communications. '.echo_pa_lets(),
+                            'i_message' => 'I have successfully unsubscribed you from your intention to '.$ws[0]['c_outcome'].'. Say "Unsubscribe" again if you wish to stop all future communications. '.echo_pa_lets(),
                         ),
                     ));
 
@@ -257,7 +257,7 @@ class Comm_model extends CI_Model {
                     array(
                         'e_parent_u_id' => 2738, //Initiated by PA
                         'e_child_u_id' => $u['u_id'],
-                        'i_message' => 'Ok, so how can I help you advance your tech career? '.echo_pa_lets(),
+                        'i_message' => 'Ok, so how can I help you '.$this->lang->line('platform_intent').'? '.echo_pa_lets(),
                     ),
                 ));
 
@@ -329,13 +329,13 @@ class Comm_model extends CI_Model {
 
                 //Intent seems good...
                 //See if this intent belong to any of these subscriptions:
-                $subscription_intents = $this->Db_model->k_fetch(array(
+                $ks = $this->Db_model->k_fetch(array(
                     'w_child_u_id' => $u['u_id'], //All subscriptions belonging to this user
                     'w_status >=' => 0, //Any type of past subscription
                     '(cr_parent_c_id='.$w_c_id.' OR cr_child_c_id='.$w_c_id.')' => null,
                 ), array('cr','w','w_c'));
 
-                if(count($subscription_intents)>0){
+                if(count($ks)>0){
 
                     //Let the user know that this is a duplicate:
                     $this->Comm_model->send_message(array(
@@ -343,8 +343,8 @@ class Comm_model extends CI_Model {
                             'e_parent_u_id' => 2738, //Initiated by PA
                             'e_child_u_id' => $u['u_id'],
                             'e_child_c_id' => $fetch_cs[0]['c_id'],
-                            'e_w_id' => $subscription_intents[0]['k_w_id'],
-                            'i_message' => ( $subscription_intents[0]['c_id']==$w_c_id ? 'You have already subscribed to '.$fetch_cs[0]['c_outcome'].'. We have been working on it together since '.echo_time($subscription_intents[0]['w_timestamp'], 2).'. /open_actionplan' : 'Your subscription to '.$subscription_intents[0]['c_outcome'].' already covers the intention to '.$fetch_cs[0]['c_outcome'].', so I will not create a duplicate subscription. /open_actionplan' ),
+                            'e_w_id' => $ks[0]['k_w_id'],
+                            'i_message' => ( $ks[0]['c_id']==$w_c_id ? 'You have already subscribed to '.$fetch_cs[0]['c_outcome'].'. We have been working on it together since '.echo_time($ks[0]['w_timestamp'], 2).'. /open_actionplan' : 'Your subscription to '.$ks[0]['c_outcome'].' already covers the intention to '.$fetch_cs[0]['c_outcome'].', so I will not create a duplicate subscription. /open_actionplan' ),
                         ),
                     ));
 
@@ -353,7 +353,7 @@ class Comm_model extends CI_Model {
                     //Now we need to confirm if they really want to subscribe to this...
 
                     //Fetch all the messages for this intent:
-                    $tree = $this->Db_model->c_recursive_fetch($w_c_id,1,0);
+                    $tree = $this->Db_model->c_recursive_fetch($w_c_id,true,false);
 
                     //Show messages for this intent:
                     $messages = $this->Db_model->i_fetch(array(
@@ -894,7 +894,7 @@ class Comm_model extends CI_Model {
         //We either have the user in DB or we'll register them now:
         $fetch_us = $this->Db_model->u_fetch(array(
             'u_fb_psid' => $fp_psid,
-        ), array('skip_u__inbounds'));
+        ), array('skip_u__parents'));
 
 
         if(count($fetch_us)>0){

@@ -72,20 +72,20 @@ class Cron extends CI_Controller {
 
         //Define weights:
         $score_weights = array(
-            'u__outbounds' => 0, //Child entities are just containers, no score on the link
+            'u__childrens' => 0, //Child entities are just containers, no score on the link
 
             'e_child_u_id' => 1, //Engagement initiator
             'e_parent_u_id' => 1, //Engagement recipient
 
-            'x_inbound_u_id' => 5, //URL Creator
+            'x_parent_u_id' => 5, //URL Creator
             'x_u_id' => 8, //URL Referenced to them
 
             'w_child_u_id' => 13, //Subscriptions
-            'c_inbound_u_id' => 21, //Active Intents
+            'c_parent_u_id' => 21, //Active Intents
         );
 
         //Fetch child entities:
-        $entities = $this->Db_model->ur_outbound_fetch(array(
+        $entities = $this->Db_model->ur_children_fetch(array(
             'ur_parent_u_id' => ( count($u)>0 ? $u['u_id'] : 2738 /* Parent Entity */ ),
             'ur_status >=' => 0, //Pending or Active
             'u_status >=' => 0, //Pending or Active
@@ -102,7 +102,7 @@ class Cron extends CI_Controller {
         if(count($u)>0){
 
             //Update this row:
-            $score += count($entities) * $score_weights['u__outbounds'];
+            $score += count($entities) * $score_weights['u__childrens'];
 
             $score += count($this->Db_model->e_fetch(array(
                     'e_child_u_id' => $u['u_id'],
@@ -117,12 +117,12 @@ class Cron extends CI_Controller {
                 ))) * $score_weights['x_u_id'];
             $score += count($this->Db_model->x_fetch(array(
                     'x_status >' => -2,
-                    'x_inbound_u_id' => $u['u_id'],
-                ))) * $score_weights['x_inbound_u_id'];
+                    'x_parent_u_id' => $u['u_id'],
+                ))) * $score_weights['x_parent_u_id'];
 
             $score += count($this->Db_model->c_fetch(array(
-                    'c_inbound_u_id' => $u['u_id'],
-                ))) * $score_weights['c_inbound_u_id'];
+                    'c_parent_u_id' => $u['u_id'],
+                ))) * $score_weights['c_parent_u_id'];
             $score += count($this->Db_model->w_fetch(array(
                     'w_child_u_id' => $u['u_id'],
                 ))) * $score_weights['w_child_u_id'];
@@ -165,10 +165,10 @@ class Cron extends CI_Controller {
         foreach($e_pending as $e_value){
 
             //Fetch user data:
-            $matching_subscriptions = $this->Db_model->w_fetch(array(
+            $ws = $this->Db_model->w_fetch(array(
             ));
 
-            if(count($matching_subscriptions)>0){
+            if(count($ws)>0){
 
                 //Prepare variables:
                 $json_data = unserialize($e_value['ej_e_blob']);
@@ -177,7 +177,7 @@ class Cron extends CI_Controller {
                 $this->Comm_model->send_message(array(
                     array_merge($json_data['i'], array(
                         'e_parent_u_id' => 0,
-                        'e_child_u_id' => $matching_subscriptions[0]['u_id'],
+                        'e_child_u_id' => $ws[0]['u_id'],
                         'i_c_id' => $json_data['i']['i_c_id'],
                     )),
                 ));
@@ -258,7 +258,7 @@ class Cron extends CI_Controller {
 
                     //Save URL:
                     $new_x = $this->Db_model->x_create(array(
-                        'x_inbound_u_id' => $u['u_id'],
+                        'x_parent_u_id' => $u['u_id'],
                         'x_u_id' => $u['u_id'],
                         'x_url' => $new_file_url,
                         'x_clean_url' => $new_file_url,
@@ -466,14 +466,14 @@ class Cron extends CI_Controller {
     }
 
 
-    function fix_people_missing_inbound(){
+    function fix_people_missing_parent(){
 	    //TODO Run on more time later, should return nothing... Then delete this...
         $fetch_us = $this->Db_model->u_fetch(array(
             'u_fb_psid >' => 0,
         ));
         foreach($fetch_us as $u){
-            if(!isset($u['u__inbounds'][1278])){
-                //Add inbound:
+            if(!isset($u['u__parents'][1278])){
+                //Add parent:
                 echo '<a href="/entities/'.$u['u_id'].'">'.$u['u_full_name'].'</a><br />';
                 $ur1 = $this->Db_model->ur_create(array(
                     'ur_child_u_id' => $u['u_id'],
@@ -503,7 +503,7 @@ class Cron extends CI_Controller {
         //Run even minute by the cron job and determines which users to talk to...
         //Fetch all active subscriptions:
         $user_ids_served = array(); //We use this to ensure we're only service one subscription per user
-        $active_subscriptions = $this->Db_model->w_fetch(array(
+        $active_ws = $this->Db_model->w_fetch(array(
             'w_status' => 1,
             'u_status >=' => 0,
             'c_status >=' => 2,
@@ -512,7 +512,7 @@ class Cron extends CI_Controller {
             'w_last_heard' => 'ASC', //Fetch users who have not been served the longest, so we can pay attention to them...
         ), $bot_settings['max_per_run']);
 
-        foreach($active_subscriptions as $w){
+        foreach($active_ws as $w){
 
             if(in_array(intval($w['u_id']),$user_ids_served)){
                 //Skip this as we do not want to handle two subscriptions from the same user:
@@ -550,7 +550,7 @@ class Cron extends CI_Controller {
         //Cron Settings: 45 * * * *
         //Send reminders to students to complete their intent:
 
-        $subscriptions = $this->Db_model->w_fetch(array(
+        $ws = $this->Db_model->w_fetch(array(
         ));
 
         //Define the logic of these reminders
@@ -583,7 +583,7 @@ class Cron extends CI_Controller {
         );
 
         $stats = array();
-        foreach($subscriptions as $subscription){
+        foreach($ws as $subscription){
 
             //See what % of the class time has elapsed?
             //TODO calculate $elapsed_class_percentage

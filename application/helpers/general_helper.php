@@ -63,14 +63,14 @@ function fetch_entity_tree($u_id,$is_edit=false){
     $CI =& get_instance();
     $entities = $CI->Db_model->u_fetch(array(
         'u_id' => $u_id,
-    ), array('u__outbound_count','u__urls'));
+    ), array('u__children_count','u__urls'));
 
     if(count($entities)<1){
         return redirect_message('/entities','<div class="alert alert-danger" role="alert">Invalid Entity ID</div>');
     }
 
     $view_data = array(
-        'inbound_u_id' => $u_id,
+        'parent_u_id' => $u_id,
         'entity' => $entities[0],
         'title' => ( $is_edit ? 'Modify ' : '' ).$entities[0]['u_full_name'],
     );
@@ -203,7 +203,7 @@ function entity_type($entity){
     if(in_array($entity['u_id'], array(1278,1326,2750))){
         $entity_type = $entity['u_id'];
     } else {
-        foreach($entity['u__inbounds'] as $u_id=>$u_i){
+        foreach($entity['u__parents'] as $u_id=>$u_i){
             if(in_array($u_id, array(1278,1326,2750))){
                 $entity_type = $u_id;
                 break;
@@ -241,12 +241,12 @@ function auth($entity_groups=null,$force_redirect=0){
 	    //No minimum level required, grant access IF logged in:
 	    return $udata;
 
-    } elseif(isset($udata['u__inbounds']) && array_key_exists(1281, $udata['u__inbounds'])){
+    } elseif(isset($udata['u__parents']) && array_key_exists(1281, $udata['u__parents'])){
 
         //Always grant access to Admins:
         return $udata;
 	    
-	} elseif(isset($udata['u_id']) && array_any_key_exists($entity_groups,$udata['u__inbounds'])){
+	} elseif(isset($udata['u_id']) && array_any_key_exists($entity_groups,$udata['u__parents'])){
 	    
 		//They are part of one of the levels assigned to them:
 	    return $udata;
@@ -259,7 +259,7 @@ function auth($entity_groups=null,$force_redirect=0){
 	    return false;
 	} else {
 	    //Block access:
-	    redirect_message( ( isset($udata['u_id']) && ( array_any_key_exists(array(1308,1281),$udata['u__inbounds']) || isset($udata['project_permissions'])) ? '/intents/'.$this->config->item('primary_c') : '/login?url='.urlencode($_SERVER['REQUEST_URI']) ),'<div class="alert alert-danger maxout" role="alert">'.( isset($udata['u_id']) ? 'Access not authorized.' : 'Session Expired. Login to continue.' ).'</div>');
+	    redirect_message( ( isset($udata['u_id']) && ( array_any_key_exists(array(1308,1281),$udata['u__parents']) || isset($udata['project_permissions'])) ? '/intents/'.$this->config->item('primary_c') : '/login?url='.urlencode($_SERVER['REQUEST_URI']) ),'<div class="alert alert-danger maxout" role="alert">'.( isset($udata['u_id']) ? 'Access not authorized.' : 'Session Expired. Login to continue.' ).'</div>');
 	}
 	
 }
@@ -588,13 +588,13 @@ function message_validation($i_status,$i_message,$i_c_id){
     if(count($c_ids)>0){
 
         //Validate this:
-        $i_inbound_cs = $CI->Db_model->c_fetch(array(
+        $i_parent_cs = $CI->Db_model->c_fetch(array(
             'c.c_id' => $c_ids[0],
         ));
 
         $i_cs = $CI->Db_model->c_fetch(array(
             'c.c_id' => $i_c_id,
-        ), 0, array('c__inbounds'));
+        ), 0, array('c__parents'));
 
         if(count($i_cs)==0){
             //Invalid ID:
@@ -602,7 +602,7 @@ function message_validation($i_status,$i_message,$i_c_id){
                 'status' => 0,
                 'message' => 'Parent Intent #'.$c_ids[0].' does not exist',
             );
-        } elseif(count($i_inbound_cs)==0){
+        } elseif(count($i_parent_cs)==0){
             //Invalid ID:
             return array(
                 'status' => 0,
@@ -613,16 +613,16 @@ function message_validation($i_status,$i_message,$i_c_id){
                 'status' => 0,
                 'message' => 'You cannot affirm the message intent itself. Choose another intent to continue',
             );
-        } elseif($i_inbound_cs[0]['c_status']<0){
+        } elseif($i_parent_cs[0]['c_status']<0){
             //Inactive:
             return array(
                 'status' => 0,
-                'message' => 'Intent ['.$i_inbound_cs[0]['c_outcome'].'] is not active so you cannot link to it',
+                'message' => 'Intent ['.$i_parent_cs[0]['c_outcome'].'] is not active so you cannot link to it',
             );
         }
 
         $parent_found = false;
-        foreach ($i_cs[0]['c__inbounds'] as $c){
+        foreach ($i_cs[0]['c__parents'] as $c){
             if($c['c_id']==$c_ids[0]){
                 $parent_found = true;
                 break;
@@ -633,7 +633,7 @@ function message_validation($i_status,$i_message,$i_c_id){
             //Inactive:
             return array(
                 'status' => 0,
-                'message' => 'Intent ['.$i_cs[0]['c_outcome'].'] is not associated with ['.$i_inbound_cs[0]['c_outcome'].'] so it cannot be used to affirm it. First add it as an inbound and then try affirming it.',
+                'message' => 'Intent ['.$i_cs[0]['c_outcome'].'] is not associated with ['.$i_parent_cs[0]['c_outcome'].'] so it cannot be used to affirm it. First add it as a parent and then try affirming it.',
             );
         }
     }
@@ -643,21 +643,21 @@ function message_validation($i_status,$i_message,$i_c_id){
     //Validate Entity:
     if(count($u_ids)>0){
 
-        $i_outbound_us = $CI->Db_model->u_fetch(array(
+        $i_children_us = $CI->Db_model->u_fetch(array(
             'u_id' => $u_ids[0],
-        ), array('skip_u__inbounds','u__urls'));
+        ), array('skip_u__parents','u__urls'));
 
-        if(count($i_outbound_us)==0){
+        if(count($i_children_us)==0){
             //Invalid ID:
             return array(
                 'status' => 0,
                 'message' => 'Entity [@'.$u_ids[0].'] does not exist',
             );
-        } elseif($i_outbound_us[0]['u_status']<0){
+        } elseif($i_children_us[0]['u_status']<0){
             //Inactive:
             return array(
                 'status' => 0,
-                'message' => 'Entity ['.$i_outbound_us[0]['u_full_name'].'] is not active so you cannot link to it',
+                'message' => 'Entity ['.$i_children_us[0]['u_full_name'].'] is not active so you cannot link to it',
             );
         }
 
@@ -702,7 +702,7 @@ function message_validation($i_status,$i_message,$i_c_id){
         //currently supporting: YouTube Only! See error message below...
         //
         $found_slicable_url = false;
-        foreach($i_outbound_us[0]['u__urls'] as $x){
+        foreach($i_children_us[0]['u__urls'] as $x){
             if($x['x_type']==1 && substr_count($x['x_url'],'youtube.com')>0){
                 $found_slicable_url = true;
                 break;

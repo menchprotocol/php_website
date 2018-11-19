@@ -11,20 +11,20 @@ class Custom extends CI_Controller {
 
 
     function error(){
-        $this->load->view('custom/shared/f_header', array(
+        $this->load->view('shared/public_header', array(
             'title' => 'Page Not Found',
         ));
-        $this->load->view('custom/error');
-        $this->load->view('custom/shared/f_footer');
+        $this->load->view('other/404_page_not_found');
+        $this->load->view('shared/public_footer');
     }
 
 
     function jobs(){
-        $this->load->view('custom/shared/f_header' , array(
+        $this->load->view('shared/public_header' , array(
             'title' => 'Work at Mench',
         ));
-        $this->load->view('custom/mench-co-jobs');
-        $this->load->view('custom/shared/f_footer');
+        $this->load->view('entities/mench-co-jobs');
+        $this->load->view('shared/public_footer');
     }
 
 
@@ -32,18 +32,18 @@ class Custom extends CI_Controller {
 
         $udata = $this->session->userdata('user');
 
-        if(isset($udata['u__inbounds']) && array_any_key_exists(array(1308,1281),$udata['u__inbounds'])){
+        if(isset($udata['u__parents']) && array_any_key_exists(array(1308,1281),$udata['u__parents'])){
 
             //Lead coach and above, go to console:
             redirect_message('/intents/'.$this->config->item('primary_c'));
 
         } elseif(( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='mench.co' )) {
 
-            $this->load->view('custom/shared/f_header' , array(
+            $this->load->view('shared/public_header' , array(
                 'title' => 'Online Education. Transformed.',
             ));
-            $this->load->view('custom/mench-co-intro');
-            $this->load->view('custom/shared/f_footer');
+            $this->load->view('entities/mench-co-intro');
+            $this->load->view('shared/public_footer');
 
         } else {
 
@@ -66,13 +66,13 @@ class Custom extends CI_Controller {
 
                 //We have more featured, list them so user can choose:
                 //Show index page:
-                $this->load->view('custom/shared/f_header' , array(
+                $this->load->view('shared/public_header' , array(
                     'title' => 'Advance Your Tech Career',
                 ));
-                $this->load->view('custom/featured_intentions', array(
+                $this->load->view('intents/home_featured_intents', array(
                     'featured_cs' => $featured_cs,
                 ));
-                $this->load->view('custom/shared/f_footer');
+                $this->load->view('shared/public_footer');
 
             }
         }
@@ -82,25 +82,25 @@ class Custom extends CI_Controller {
 	function login(){
 	    //Check to see if they are already logged in?
 	    $udata = $this->session->userdata('user');
-	    if(isset($udata['u__inbounds']) && array_any_key_exists(array(1308,1281),$udata['u__inbounds'])){
+	    if(isset($udata['u__parents']) && array_any_key_exists(array(1308,1281),$udata['u__parents'])){
 	        //Lead coach and above, go to console:
 	        redirect_message('/intents/'.$this->config->item('primary_c'));
 	    }
 	    
-		$this->load->view('custom/shared/f_header' , array(
+		$this->load->view('shared/public_header' , array(
 		    'title' => 'Login',
 		));
-		$this->load->view('custom/login');
-		$this->load->view('custom/shared/f_footer');
+		$this->load->view('entities/login');
+		$this->load->view('shared/public_footer');
 	}
 
 
 	function terms(){
-		$this->load->view('custom/shared/f_header' , array(
+		$this->load->view('shared/public_header' , array(
 		    'title' => 'Terms & Privacy Policy',
 		));
-		$this->load->view('custom/terms');
-		$this->load->view('custom/shared/f_footer');
+		$this->load->view('other/terms');
+		$this->load->view('shared/public_footer');
 	}
 
     function ses(){
@@ -120,11 +120,11 @@ class Custom extends CI_Controller {
 	function train(){
         $data = array(
             'title' => 'Train Mench to become the best Personal Assistant',
-            'landing_page' => 'custom/splash/coaches_why',
+            'landing_page' => 'entities/splash_trainers_why',
         );
-	    $this->load->view('custom/shared/f_header' , $data);
-	    $this->load->view('custom/train' , $data);
-	    $this->load->view('custom/shared/f_footer');
+	    $this->load->view('shared/public_header' , $data);
+	    $this->load->view('entities/become_a_trainer' , $data);
+	    $this->load->view('shared/public_footer');
 	}
 
 

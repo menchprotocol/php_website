@@ -23,15 +23,15 @@ class Entities extends CI_Controller {
         $view_data = fetch_entity_tree($u_id);
 
         //Load views
-        $this->load->view('console/console_header' , $view_data);
+        $this->load->view('shared/console_header' , $view_data);
         $this->load->view('entities/entity_manage' , $view_data);
-        $this->load->view('console/console_footer');
+        $this->load->view('shared/console_footer');
     }
 
     function hard_delete($u_id){
 
         $udata = $this->session->userdata('user');
-        if(!array_key_exists(1281, $udata['u__inbounds'])){
+        if(!array_key_exists(1281, $udata['u__parents'])){
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Session expired',
@@ -45,12 +45,12 @@ class Entities extends CI_Controller {
     function u_load_next_page(){
 
         $items_per_page = $this->config->item('items_per_page');
-        $inbound_u_id = intval($_POST['inbound_u_id']);
+        $parent_u_id = intval($_POST['parent_u_id']);
         $u_status_filter = intval($_POST['u_status_filter']);
         $page = intval($_POST['page']);
         $udata = auth(null); //Just be logged in to browse
         $filters = array(
-            'ur_parent_u_id' => $inbound_u_id,
+            'ur_parent_u_id' => $parent_u_id,
             'u_status'.( $u_status_filter<0 ? ' >=' : '' ) => ( $u_status_filter<0 ? 0 : intval($u_status_filter) ), //Pending or Active
             'ur_status' => 1, //Active link
         );
@@ -61,12 +61,12 @@ class Entities extends CI_Controller {
         }
 
         //Fetch entity itself:
-        $entities = $this->Db_model->u_fetch(array('u_id' => $inbound_u_id));
-        $child_entities_count = count($this->Db_model->ur_outbound_fetch($filters));
-        $child_entities = $this->Db_model->ur_outbound_fetch($filters, array('u__outbound_count'), $items_per_page, ($page*$items_per_page));
+        $entities = $this->Db_model->u_fetch(array('u_id' => $parent_u_id));
+        $child_entities_count = count($this->Db_model->ur_children_fetch($filters));
+        $child_entities = $this->Db_model->ur_children_fetch($filters, array('u__children_count'), $items_per_page, ($page*$items_per_page));
 
         foreach($child_entities as $u){
-            echo echo_u($u, 2, false /* Load more only for outbound */);
+            echo echo_u($u, 2, false /* Load more only for children */);
         }
 
         //Do we need another load more button?
@@ -80,7 +80,7 @@ class Entities extends CI_Controller {
 
     function link_entities(){
 
-        //Responsible to link inbound/outbound entities to each other via a JS function on entity_manage.php
+        //Responsible to link parent/children entities to each other via a JS function on entity_manage.php
 
         //Auth user and check required variables:
         $udata = auth(array(1308));
@@ -100,7 +100,7 @@ class Entities extends CI_Controller {
                 'status' => 0,
                 'message' => 'Missing Parent Entity',
             ));
-        } elseif(!isset($_POST['is_inbound'])){
+        } elseif(!isset($_POST['is_parent'])){
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Entity Link Direction',
@@ -125,7 +125,7 @@ class Entities extends CI_Controller {
 
 
         //Set some variables:
-        $_POST['is_inbound'] = intval($_POST['is_inbound']);
+        $_POST['is_parent'] = intval($_POST['is_parent']);
         $_POST['new_u_id'] = intval($_POST['new_u_id']);
         $linking_to_existing_u = false;
         $is_url_input = false;
@@ -158,7 +158,7 @@ class Entities extends CI_Controller {
                 if($_POST['secondary_parent_u_id']==1326){
 
                     //It's a URL, create an entity from this URL:
-                    $accept_existing_url = ( !$_POST['is_inbound'] && $current_us[0]['u_id']!=1326 ); //We can accept duplicates if we're not adding directly under content
+                    $accept_existing_url = ( !$_POST['is_parent'] && $current_us[0]['u_id']!=1326 ); //We can accept duplicates if we're not adding directly under content
                     $url_create = $this->Db_model->x_sync(trim($_POST['new_u_input']),1326, 1, $accept_existing_url);
 
                     //Did we have an error?
@@ -218,7 +218,7 @@ class Entities extends CI_Controller {
         if(!$is_url_input){
 
             //Add links only if not already added by the URL function:
-            if($_POST['is_inbound']){
+            if($_POST['is_parent']){
                 $ur_child_u_id = $current_us[0]['u_id'];
                 $ur_parent_u_id = $new_u['u_id'];
             } else {
@@ -256,7 +256,7 @@ class Entities extends CI_Controller {
             'status' => 1,
             'message' => 'Success',
             'new_u_status' => $new_u['u_status'],
-            'new_u' => echo_u(array_merge($new_u,$ur2),2, $_POST['is_inbound']),
+            'new_u' => echo_u(array_merge($new_u,$ur2),2, $_POST['is_parent']),
         ));
     }
 
@@ -378,7 +378,7 @@ class Entities extends CI_Controller {
             'u_status' => intval($_POST['u_status']),
             'u_full_name' => trim($_POST['u_full_name']),
             'u_intro_message' => str_replace('"','`',trim($_POST['u_intro_message'])),
-            'u_parent_icon' => trim($_POST['u_parent_icon']),
+            'u_icon' => trim($_POST['u_icon']),
             'u_email' => ( isset($_POST['u_email']) && strlen($_POST['u_email'])>0 ? trim(strtolower($_POST['u_email'])) : null ),
         );
 
@@ -386,7 +386,7 @@ class Entities extends CI_Controller {
         if(intval($_POST['ur_id'])>0){
 
             //Yes, first validate this link:
-            $urs = $this->Db_model->ur_inbound_fetch(array(
+            $urs = $this->Db_model->ur_parent_fetch(array(
                 'ur_id' => $_POST['ur_id'],
             ));
 
@@ -425,7 +425,7 @@ class Entities extends CI_Controller {
         if(strlen($_POST['u_password_new'])>0){
 
             //Password update attempt, lets check:
-            if(!array_key_exists(1281, $udata['u__inbounds'])){
+            if(!array_key_exists(1281, $udata['u__parents'])){
                 return echo_json(array(
                     'status' => 0,
                     'message' => 'You must be an admin to set new passwords',
@@ -563,7 +563,7 @@ class Entities extends CI_Controller {
         $is_student = false;
 
         //Are they admin?
-        if(array_any_key_exists(array(1308,1281),$users[0]['u__inbounds'])){
+        if(array_any_key_exists(array(1308,1281),$users[0]['u__parents'])){
             //They have admin rights:
             $session_data['user'] = $users[0];
             $is_coach = true;

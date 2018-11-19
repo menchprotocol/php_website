@@ -24,7 +24,7 @@ $uri_segment_2 = $this->uri->segment(2);
 
     <link href="/css/lib/devices.min.css" rel="stylesheet" />
     <link href="/css/lib/jquery.mCustomScrollbar.min.css" rel="stylesheet" />
-	<?php $this->load->view('custom/shared/header_resources' ); ?>
+	<?php $this->load->view('shared/include_js_css' ); ?>
 
     <script src="/js/lib/jquery.textcomplete.min.js"></script>
     <script src="/js/lib/autocomplete.jquery.min.js"></script>
@@ -38,10 +38,10 @@ $uri_segment_2 = $this->uri->segment(2);
     <script>
         <?php
         //Create flat list of JS variables:
-        $js_inbound_u_ids = array();
+        $js_parent_u_ids = array();
         if($udata){
-            foreach($udata['u__inbounds'] as $privilege){
-                array_push($js_inbound_u_ids, intval($privilege['u_id']));
+            foreach($udata['u__parents'] as $privilege){
+                array_push($js_parent_u_ids, intval($privilege['u_id']));
             }
         }
 
@@ -52,7 +52,7 @@ $uri_segment_2 = $this->uri->segment(2);
 
         //Define global js variables:
         var js_u_id = <?= $udata['u_id'] ?>;
-        var js_inbound_u_ids = [<?= join(',',$js_inbound_u_ids) ?>];
+        var js_parent_u_ids = [<?= join(',',$js_parent_u_ids) ?>];
 
     </script>
 
@@ -64,7 +64,7 @@ $uri_segment_2 = $this->uri->segment(2);
     <?php
     if(!isset($_GET['skip_header'])){
         //Include the chat plugin:
-        $this->load->view('custom/shared/chat_plugin');
+        $this->load->view('shared/messenger_web_chat');
     }
     ?>
 
@@ -115,7 +115,7 @@ $uri_segment_2 = $this->uri->segment(2);
 
 
 
-        <?php if($uri_segment_1=='adminpanel' && array_key_exists(1281, $udata['u__inbounds'])){ ?>
+        <?php if($uri_segment_1=='adminpanel' && array_key_exists(1281, $udata['u__parents'])){ ?>
         <div class="sidebar" id="mainsidebar">
         <div class="sidebar-wrapper">
 

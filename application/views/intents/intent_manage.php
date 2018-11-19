@@ -28,16 +28,16 @@ if(isset($orphan_cs)){
         } else {
 
             //Start with parents:
-            echo '<h5 class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-inbound-count inbound-counter-'.$c['c_id'].'">'.count($c__inbounds).'</span> Parent'.echo__s(count($c__inbounds)).'</h5>';
+            echo '<h5 class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-parent-count parent-counter-'.$c['c_id'].'">'.count($c__parents).'</span> Parent'.echo__s(count($c__parents)).'</h5>';
 
-            if(count($c__inbounds)>0){
+            if(count($c__parents)>0){
                 echo '<div class="list-group list-level-2">';
-                foreach($c__inbounds as $sub_intent){
+                foreach($c__parents as $sub_intent){
                     echo echo_c($sub_intent, 2, 0, true);
                 }
                 echo '</div>';
             } else {
-                echo '<div class="alert alert-info" role="alert" style="margin-top: 0;"><i class="fas fa-exclamation-triangle"></i> No inbound intents linked yet</div>';
+                echo '<div class="alert alert-info" role="alert" style="margin-top: 0;"><i class="fas fa-exclamation-triangle"></i> No parent intents linked yet</div>';
             }
 
 
@@ -54,7 +54,7 @@ if(isset($orphan_cs)){
 
             //Expand/Contract buttons
             echo '<div class="indent2">';
-                echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-outbound-count outbound-counter-'.$c['c_id'].'">'.$c['c__tree_all_count'].'</span> Children</h5>';
+                echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-children-count children-counter-'.$c['c_id'].'">'.$c['c__tree_all_count'].'</span> Children</h5>';
 
                 echo '<div id="task_view" style="padding-left:8px; display: inline-block;">';
                     echo '<i class="fas fa-plus-square expand_all" style="font-size: 1.2em;"></i> &nbsp;';
@@ -69,7 +69,7 @@ if(isset($orphan_cs)){
 
             echo '<div id="outs_error indent2"></div>'; //Show potential errors detected in the Action Plan via our JS functions...
 
-            echo '<div id="list-c-'.$c['c_id'].'" class="list-group list-is-outbound list-level-2 indent2">';
+            echo '<div id="list-c-'.$c['c_id'].'" class="list-group list-is-children list-level-2 indent2">';
             foreach($c['c__child_intents'] as $sub_intent){
                 echo echo_c($sub_intent, 2, $c['c_id']);
             }
@@ -92,17 +92,17 @@ if(isset($orphan_cs)){
 
             //Intent subscribers:
             $limit = (is_dev() ? 10 : 100);
-            $all_subscriptions = $this->Db_model->w_fetch(array(
+            $ws = $this->Db_model->w_fetch(array(
                 'w_c_id' => $c['c_id'],
             ), array('u','u_x','w_stats'), array(
                 'w_id' => 'DESC',
             ), $limit);
 
-            if(count($all_subscriptions)>0){
+            if(count($ws)>0){
                 //Show these subscriptions:
-                echo '<h5 class="badge badge-h indent1" style="display: inline-block;"><i class="fas fa-comment-plus"></i> '.count($all_subscriptions).($limit==count($all_subscriptions)?'+':'').' Subscriptions</h5>';
+                echo '<h5 class="badge badge-h indent1" style="display: inline-block;"><i class="fas fa-comment-plus"></i> '.count($ws).($limit==count($ws)?'+':'').' Subscriptions</h5>';
                 echo '<div class="list-group list-grey indent1" style="margin-bottom: 40px;">';
-                foreach($all_subscriptions as $w){
+                foreach($ws as $w){
                     echo echo_w_console($w);
                 }
                 echo '</div>';
@@ -234,7 +234,7 @@ if(isset($orphan_cs)){
 
                             <div><a href="javascript:c_unlink();" class="unlink-intent" data-toggle="tooltip" title="Only remove intent link while NOT Archiving the intent itself" data-placement="left" style="text-decoration:none;"><i class="fas fa-unlink"></i> Unlink</a></div>
 
-                            <?php if(array_key_exists(1281, $udata['u__inbounds'])){ ?>
+                            <?php if(array_key_exists(1281, $udata['u__parents'])){ ?>
                                 <div><a href="javascript:c_delete();" data-toggle="tooltip" title="Delete intent AND remove all its links, messages & references" data-placement="left" style="text-decoration:none;"><i class="fas fa-trash-alt"></i> Delete</a></div>
                             <?php } ?>
 
@@ -245,7 +245,7 @@ if(isset($orphan_cs)){
 
         </div>
 
-        <?php $this->load->view('console/subscription_views'); ?>
+        <?php $this->load->view('actionplans/actionplan_right_col'); ?>
 
 
     </div>

@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 date_default_timezone_set('America/Los_Angeles');
 
 //Cache buster for static files
-$config['app_version'] = '0.6093'.( ( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='local.mench.co' ) ? microtime(true) : '' ); //Updates status css/js cache files
+$config['app_version'] = '0.6094'.( ( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='local.mench.co' ) ? microtime(true) : '' ); //Updates status css/js cache files
 
 //User case: $this->config->item('timezones')
 
@@ -22,7 +22,7 @@ $config['c_point_options'] = array(0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 23
 $config['exclude_es'] = array(1,2); //The engagements that should be ignored
 $config['k_status_incomplete'] = array(1,0,-2); //The K statuses that indicate the task is not complete... Other statuses indicate completeness, see k_status below for more details
 
-//This should mirror outbound intents of @3000, and the order of the items would be used in the Landing page:
+//This should mirror child intents of @3000, and the order of the items would be used in the Landing page:
 $config['content_types'] = array(
     3147 => 'Online Course',
     3005 => 'Book',
@@ -48,7 +48,7 @@ $config['aws_credentials'] = [
 ];
 
 //Email-based engagements subscriptions:
-$config['engagement_subscriptions'] = array(
+$config['notify_admins'] = array(
     1 => array(
         'admin_emails' => array('shervin@mench.com'),
         'subscription' => array(

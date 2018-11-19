@@ -14,14 +14,14 @@ $add_name           = 'Entity';
 $add_id             = 0;
 
 //Fetch other data:
-$child_entities = $this->Db_model->ur_outbound_fetch(array(
+$child_entities = $this->Db_model->ur_children_fetch(array(
     'ur_parent_u_id' => $entity['u_id'],
     'ur_status' => 1, //Only active
-), array('u__outbound_count'), $this->config->item('items_per_page'));
+), array('u__children_count'), $this->config->item('items_per_page'));
 
 //Intents subscribed:
 $limit = (is_dev() ? 10 : 100);
-$all_subscriptions = $this->Db_model->w_fetch(array(
+$ws = $this->Db_model->w_fetch(array(
     'w_child_u_id' => $entity['u_id'],
 ), array('u','c','w_stats'), array(
     'w_id' => 'DESC',
@@ -52,13 +52,13 @@ $all_subscriptions = $this->Db_model->w_fetch(array(
 //Entity & Components:
 
 //Parents
-echo '<h5><span class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-inbound-count">'.count($entity['u__inbounds']).'</span> Parent'.echo__s(count($entity['u__inbounds'])).'</span></h5>';
-echo '<div id="list-inbound" class="list-group  grey-list">';
-foreach ($entity['u__inbounds'] as $ur) {
+echo '<h5><span class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-parent-count">'.count($entity['u__parents']).'</span> Parent'.echo__s(count($entity['u__parents'])).'</span></h5>';
+echo '<div id="list-parent" class="list-group  grey-list">';
+foreach ($entity['u__parents'] as $ur) {
     echo echo_u($ur, 2, true);
 }
-//Input to add new inbounds:
-echo '<div id="new-inbound" class="list-group-item list_input grey-input">
+//Input to add new parents:
+echo '<div id="new-parent" class="list-group-item list_input grey-input">
             <div class="input-group">
                 <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search" data-lpignore="true" placeholder="Add Entity..."></div>
                 <span class="input-group-addon">
@@ -83,11 +83,11 @@ echo '</div>';
 
 //Childs
 echo '<div class="indent2"><table width="100%" style="margin-top:10px;"><tr>';
-echo '<td style="width: 100px;"><h5 class="badge badge-h"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-outbound-count">'.$entity['u__outbound_count'].'</span> Children</h5></td>';
+echo '<td style="width: 100px;"><h5 class="badge badge-h"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-children-count">'.$entity['u__children_count'].'</span> Children</h5></td>';
 echo '<td style="text-align: right;"><div class="btn-group btn-group-sm" style="margin-top:-5px;" role="group">';
 
 //Fetch current count for each status from DB:
-$counts = $this->Db_model->ur_outbound_fetch(array(
+$counts = $this->Db_model->ur_children_fetch(array(
     'ur_parent_u_id' => $entity['u_id'],
     'ur_status' => 1, //Only active
     'u_status >=' => 0,
@@ -96,13 +96,13 @@ $counts = $this->Db_model->ur_outbound_fetch(array(
 ));
 
 //Only show filtering UI if we find entities with different statuses
-if(count($counts)>0 && $counts[0]['u_counts']<$entity['u__outbound_count']){
+if(count($counts)>0 && $counts[0]['u_counts']<$entity['u__children_count']){
 
     //Load status definitions:
     $status_index = $this->config->item('object_statuses');
 
     //Show fixed All button:
-    echo '<a href="javascript:void(0)" onclick="u_load_filter_status(-1)" class="btn btn-default btn-secondary u-status-filter u-status--1" data-toggle="tooltip" data-placement="top" title="View all entities"><i class="fas fa-at"></i><span class="hide-small"> All</span> [<span class="li-outbound-count">'.$entity['u__outbound_count'].'</span>]</a>';
+    echo '<a href="javascript:void(0)" onclick="u_load_filter_status(-1)" class="btn btn-default btn-secondary u-status-filter u-status--1" data-toggle="tooltip" data-placement="top" title="View all entities"><i class="fas fa-at"></i><span class="hide-small"> All</span> [<span class="li-children-count">'.$entity['u__children_count'].'</span>]</a>';
 
     //Show each specific filter based on DB counts:
     foreach($counts as $c_c){
@@ -117,17 +117,17 @@ echo '</tr></table></div>';
 
 
 
-echo '<div id="list-outbound" class="list-group grey-list indent2">';
+echo '<div id="list-children" class="list-group grey-list indent2">';
 
 foreach($child_entities as $u){
     echo echo_u($u, 2);
 }
-if($entity['u__outbound_count'] > count($child_entities)) {
-    echo_next_u(1, $this->config->item('items_per_page'), $entity['u__outbound_count']);
+if($entity['u__children_count'] > count($child_entities)) {
+    echo_next_u(1, $this->config->item('items_per_page'), $entity['u__children_count']);
 }
 
-//Input to add new inbounds:
-echo '<div id="new-outbound" class="list-group-item list_input grey-input">
+//Input to add new parents:
+echo '<div id="new-children" class="list-group-item list_input grey-input">
         <div class="input-group">
             <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search bottom-add" data-lpignore="true" placeholder="Add '.$add_name.' by Name/URL"></div>
             <span class="input-group-addon">
@@ -144,11 +144,11 @@ echo '</div>';
 
 
 //Only show if data exists (users cannot modify this anyways)
-if(count($all_subscriptions)>0){
+if(count($ws)>0){
     //Show these subscriptions:
-    echo '<h5 class="badge badge-h indent1" style="display: inline-block;"><i class="fas fa-comment-plus"></i> '.count($all_subscriptions).($limit==count($all_subscriptions)?'+':'').' Subscriptions</h5>';
+    echo '<h5 class="badge badge-h indent1" style="display: inline-block;"><i class="fas fa-comment-plus"></i> '.count($ws).($limit==count($ws)?'+':'').' Subscriptions</h5>';
     echo '<div class="list-group list-grey indent1" style="margin-bottom:10px;">';
-    foreach($all_subscriptions as $w){
+    foreach($ws as $w){
         echo echo_w_console($w);
     }
     echo '</div>';
@@ -220,8 +220,8 @@ echo '</div>';
                   </div>
                   <div class="col-md-8" style="margin-top:15px;">
 
-                      <div class="title" style="margin-bottom:0; padding-bottom:0;"><h4><i class="fas fa-code"></i> HTML Icon [<span style="margin:0 0 10px 0; font-size:0.8em;"><span id="charu_parent_iconNum">0</span>/<?= $this->config->item('u_full_name_max') ?></span>]</h4></div>
-                      <input type="text" id="u_parent_icon" value="" onkeyup="u_parent_icon_word_count()" maxlength="<?= $this->config->item('u_full_name_max') ?>" data-lpignore="true" placeholder="" class="form-control border">
+                      <div class="title" style="margin-bottom:0; padding-bottom:0;"><h4><i class="fas fa-code"></i> HTML Icon [<span style="margin:0 0 10px 0; font-size:0.8em;"><span id="charu_iconNum">0</span>/<?= $this->config->item('u_full_name_max') ?></span>]</h4></div>
+                      <input type="text" id="u_icon" value="" onkeyup="u_icon_word_count()" maxlength="<?= $this->config->item('u_full_name_max') ?>" data-lpignore="true" placeholder="" class="form-control border">
 
                   </div>
               </div>
@@ -262,7 +262,7 @@ echo '</div>';
 
                           <div class="unlink-entity"><a href="javascript:ur_unlink();" data-toggle="tooltip" title="Only remove entity link while NOT Archiving the entity itself" data-placement="left" style="text-decoration:none;"><i class="fas fa-unlink"></i> Unlink</a></div>
 
-                          <?php if(array_key_exists(1281, $udata['u__inbounds'])){ ?>
+                          <?php if(array_key_exists(1281, $udata['u__parents'])){ ?>
                               <div><a href="javascript:u_delete();" data-toggle="tooltip" title="Delete entity AND remove all its URLs, messages & references" data-placement="left" style="text-decoration:none;"><i class="fas fa-trash-alt"></i> Delete</a></div>
                           <?php } ?>
 
@@ -284,7 +284,7 @@ echo '</div>';
       </div>
 
 
-      <?php $this->load->view('console/subscription_views'); ?>
+      <?php $this->load->view('actionplans/actionplan_right_col'); ?>
 
 
 

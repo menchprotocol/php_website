@@ -29,7 +29,7 @@
         $grandpa_intent = null;
         $parent_intents = null;
         //Show all parent intents for this intent:
-        foreach($c['c__inbounds'] as $ci){
+        foreach($c['c__parents'] as $ci){
             $parent_intents .= '<a class="list-group-item" href="/'.$ci['c_id'].'"><span class="badge badge-primary"><i class="fas fa-angle-left"></i></span> '.$ci['c_outcome'].'</a>';
             if($ci['c_id']==$this->config->item('primary_c')){
                 //Already included:
@@ -87,7 +87,7 @@
                 </h4>
             </div>
             <div id="collapse'.$id.'" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="heading'.$id.'">
-                <div class="panel-body" style="padding:5px 0 0 5px; font-size:1.1em;">Mench Personal Assistant works on Facebook Messenger. Think of it as an expert friend on a mission to advance your tech career! If you do not have (or want to have) a Facebook account, you can easily use Facebook Messenger <a href="https://newsroom.fb.com/news/2015/06/sign-up-for-messenger-without-a-facebook-account/" target="_blank" style="text-decoration: underline;">without a Facebook account</a>.</div>
+                <div class="panel-body" style="padding:5px 0 0 5px; font-size:1.1em;">Mench Personal Assistant works on Facebook Messenger. Think of it as an expert friend on a mission to '.$this->lang->line('platform_intent').'! If you do not have (or want to have) a Facebook account, you can easily use Facebook Messenger <a href="https://newsroom.fb.com/news/2015/06/sign-up-for-messenger-without-a-facebook-account/" target="_blank" style="text-decoration: underline;">without a Facebook account</a>.</div>
             </div>
         </div></div>';
         ?>

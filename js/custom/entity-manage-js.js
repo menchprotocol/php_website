@@ -1,7 +1,7 @@
 
 function u_load_child_search(){
 
-    $("#new-outbound .new-input").on('autocomplete:selected', function (event, suggestion, dataset) {
+    $("#new-children .new-input").on('autocomplete:selected', function (event, suggestion, dataset) {
 
         ur_add(suggestion.u_id,0,0);
 
@@ -104,7 +104,7 @@ $(document).ready(function () {
 
 
 
-    $("#new-inbound .new-input").on('autocomplete:selected', function (event, suggestion, dataset) {
+    $("#new-parent .new-input").on('autocomplete:selected', function (event, suggestion, dataset) {
         ur_add(suggestion.u_id,0,1);
     }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
         source: function (q, cb) {
@@ -124,7 +124,7 @@ $(document).ready(function () {
                 return '<span><i class="fas fa-at"></i></span> ' + suggestion.u_full_name;
             },
             header: function (data) {
-                //1326 suggests both People AND Organizations as new inbound entities:
+                //1326 suggests both People AND Organizations as new parent entities:
                 if (!data.isEmpty && entity_u_type==1326) {
                     return '<a href="javascript:ur_add(0,1278,1)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as People]</a><a href="javascript:ur_add(0,2750,1)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as Organization]</a>';
                 }
@@ -142,21 +142,21 @@ $(document).ready(function () {
 });
 
 //Adds OR links authors and content for entities
-function ur_add(new_u_id,secondary_parent_u_id=0, is_inbound) {
+function ur_add(new_u_id,secondary_parent_u_id=0, is_parent) {
 
     //if new_u_id>0 it means we're linking to an existing entity, in which case new_u_input should be null
     //If new_u_id=0 it means we are creating a new entity and then linking it, in which case new_u_input is required
 
-    if(is_inbound){
-        var input = $('#new-inbound .new-input');
-        var btn = $('#new-inbound .new-btn');
-        var list_id = 'list-inbound';
-        var counter_class = '.li-inbound-count';
+    if(is_parent){
+        var input = $('#new-parent .new-input');
+        var btn = $('#new-parent .new-btn');
+        var list_id = 'list-parent';
+        var counter_class = '.li-parent-count';
     } else {
-        var input = $('#new-outbound .new-input');
-        var btn = $('#new-outbound .new-btn');
-        var list_id = 'list-outbound';
-        var counter_class = '.li-outbound-count';
+        var input = $('#new-children .new-input');
+        var btn = $('#new-children .new-btn');
+        var list_id = 'list-children';
+        var counter_class = '.li-children-count';
     }
 
 
@@ -183,7 +183,7 @@ function ur_add(new_u_id,secondary_parent_u_id=0, is_inbound) {
         u_id:top_u_id,
         new_u_id: new_u_id,
         new_u_input: new_u_input,
-        is_inbound:( is_inbound ? 1 : 0 ),
+        is_parent:( is_parent ? 1 : 0 ),
         secondary_parent_u_id:secondary_parent_u_id,
 
     }, function (data) {
@@ -243,12 +243,12 @@ function u_intro_message_counter() {
 }
 
 
-function u_parent_icon_word_count() {
-    var len = $('#u_parent_icon').val().length;
+function u_icon_word_count() {
+    var len = $('#u_icon').val().length;
     if (len>u_full_name_max) {
-        $('#charu_parent_iconNum').addClass('overload').text(len);
+        $('#charu_iconNum').addClass('overload').text(len);
     } else {
-        $('#charu_parent_iconNum').removeClass('overload').text(len);
+        $('#charu_iconNum').removeClass('overload').text(len);
     }
 }
 
@@ -401,9 +401,9 @@ function u_load_next_page(page,load_new_filter=0) {
 
     if(load_new_filter){
         //Replace load more with spinner:
-        var append_div = $('#new-outbound').html();
+        var append_div = $('#new-children').html();
         //The padding-bottom would remove the scrolling effect on the left side!
-        $('#list-outbound').html('<span class="load-more" style="padding-bottom:500px;"><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
+        $('#list-children').html('<span class="load-more" style="padding-bottom:500px;"><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
     } else {
         //Replace load more with spinner:
         $('.load-more').html('<span class="load-more"><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
@@ -411,7 +411,7 @@ function u_load_next_page(page,load_new_filter=0) {
 
     $.post("/entities/u_load_next_page", {
         page:page,
-        inbound_u_id:top_u_id,
+        parent_u_id:top_u_id,
         u_status_filter:u_status_filter,
     }, function(data) {
 
@@ -419,12 +419,12 @@ function u_load_next_page(page,load_new_filter=0) {
         $('.load-more').remove();
 
         if(load_new_filter){
-            $('#list-outbound').html( data + '<div id="new-outbound" class="list-group-item list_input grey-input">'+append_div+'</div>' ).hide().fadeIn();
+            $('#list-children').html( data + '<div id="new-children" class="list-group-item list_input grey-input">'+append_div+'</div>' ).hide().fadeIn();
             //Reset search engine:
             u_load_child_search();
         } else {
             //Update UI to confirm with user:
-            $(data).insertBefore('#new-outbound');
+            $(data).insertBefore('#new-children');
         }
 
         //Tooltips:
@@ -438,7 +438,7 @@ function ur_unlink(){
     var ur_id = ( $('#modifybox').hasClass('hidden') ? 0 : parseInt($('#modifybox').attr('entity-link-id')) );
     var u_level1_name = $('.top_entity .u_full_name').text();
     var u_level2_name = $('.ur_'+ur_id+' .u_full_name').text();
-    var direction = ( parseInt($('.ur_'+ur_id).attr('is-inbound'))==1 ? 'inbound' : 'outbound' );
+    var direction = ( parseInt($('.ur_'+ur_id).attr('is-parent'))==1 ? 'parent' : 'children' );
     var counter_class = '.li-'+direction+'-count';
     var current_status = parseInt($('.ur_'+ur_id).attr('entity-status'));
 
@@ -482,7 +482,7 @@ function u_delete(){
 
     //Confirm with user:
     var u_id = ( $('#modifybox').hasClass('hidden') ? 0 : parseInt($('#modifybox').attr('entity-id')) );
-    var direction = ( parseInt($('#u_'+u_id).attr('is-inbound'))==1 ? 'inbound' : 'outbound' );
+    var direction = ( parseInt($('#u_'+u_id).attr('is-parent'))==1 ? 'parent' : 'children' );
     var counter_class = '.li-'+direction+'-count';
     var current_status = parseInt($('#u_'+u_id).attr('entity-status'));
     var u_level2_name = $('#u_'+u_id+' .u_full_name').text();
@@ -523,11 +523,11 @@ function u_load_modify(u_id, ur_id){
     $('#u_full_name').val($(".u_full_name_"+u_id+":first").text());
     $('#u_intro_message').val($(".u__"+u_id+":first").attr('entity-intro-message'));
     $('#u_status').val($(".u__"+u_id+":first").attr('entity-status'));
-    $('#u_parent_icon').val($(".u_parent_icon_val_"+u_id+":first").html().replace('\\',''));
+    $('#u_icon').val($(".u_icon_val_"+u_id+":first").html().replace('\\',''));
 
     u_intro_message_counter();
     u_full_name_word_count();
-    u_parent_icon_word_count();
+    u_icon_word_count();
 
     //Update password reset UI:
     $('#u_email').val($(".u__"+u_id+":first").attr('entity-email'));
@@ -582,7 +582,7 @@ function u_save_modify(){
         u_status:$('#u_status').val(), //The new status (might not have changed too)
         u_email:$('#u_email').val(),
         u_password_new:$('#u_password_new').val(),
-        u_parent_icon:$('#u_parent_icon').val(),
+        u_icon:$('#u_icon').val(),
     };
 
     //Take a snapshot of the status:
@@ -601,7 +601,7 @@ function u_save_modify(){
             $(".u__"+modify_data['u_id']).attr('entity-intro-message', modify_data['u_intro_message']);
             $(".u__"+modify_data['u_id']).attr('entity-email', modify_data['u_email']);
             $(".u__"+modify_data['u_id']).attr('has-password', ( modify_data['u_password_new'].length>0 ? 1 : 0 ));
-            $(".u_parent_icon_val_"+modify_data['u_id']).html(modify_data['u_parent_icon']);
+            $(".u_icon_val_"+modify_data['u_id']).html(modify_data['u_icon']);
 
             if($('.u_intro_message_'+modify_data['u_id']).length){
                 //This is the top entity that's loaded, simply update:
@@ -622,13 +622,13 @@ function u_save_modify(){
                 $(".ur_notes_val_"+modify_data['ur_id']).text(modify_data['ur_notes']);
             }
 
-            if(modify_data['u_parent_icon'].length>0){
-                $('.u_parent_icon_ui_'+modify_data['u_id']).removeClass('hidden').html('&nbsp;['+modify_data['u_parent_icon']+']');
-                $('.u_parent_icon_child_'+modify_data['u_id']).html(modify_data['u_parent_icon']);
+            if(modify_data['u_icon'].length>0){
+                $('.u_icon_ui_'+modify_data['u_id']).removeClass('hidden').html('&nbsp;['+modify_data['u_icon']+']');
+                $('.u_icon_child_'+modify_data['u_id']).html(modify_data['u_icon']);
             } else {
                 //hide that section
-                $('.u_parent_icon_ui_'+modify_data['u_id']).addClass('hidden');
-                $('.u_parent_icon_child_'+modify_data['u_id']).html('');
+                $('.u_icon_ui_'+modify_data['u_id']).addClass('hidden');
+                $('.u_icon_child_'+modify_data['u_id']).html('');
             }
 
             //has status updated? If so update the UI:

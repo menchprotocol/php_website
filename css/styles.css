@@ -213,17 +213,6 @@ a.badge-primary:hover {
      color:#666;
  }
 
-.child_subscriptions {
-    margin:0 0 -7px -40px;
-    list-style: none;
-}
-.child_subscriptions li {
-    font-size:0.8em;
-    border-top: 2px solid #000;
-    padding:5px 5px 5px 7px;
-    background-color:#fff;
-}
-
 .card .card-content{
     padding: 5px 15px 15px;
 }
@@ -366,7 +355,7 @@ input::-webkit-inner-spin-button {
     border-bottom-right-radius: 3px;
 }
 
-.list-level-2>.is_level2_sortable, #temp2, #list-outbound > .list-group-item, .list-grey > .list-group-item{
+.list-level-2>.is_level2_sortable, #temp2, #list-children > .list-group-item, .list-grey > .list-group-item{
     margin-bottom: 0px;
     border: 0;
     border-bottom:1px solid #CCC;
@@ -1167,7 +1156,6 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px; }
 #funnel .list-group-item {
     padding: 10px 5px 8px;
 }
-#funnel .p_footer{ font-size:0.8em; padding-left:8px;}
 
 #funnel .list-group{
     text-align:left;
@@ -1286,7 +1274,6 @@ select.form-control{
 
     .indent1 { margin-left:8px; }
     .indent2 { margin-left:16px; }
-    #funnel .p_footer{ padding-left:0; text-align:center;}
     .btn.btn-sm, .btn-group-sm .btn, .navbar .navbar-nav > li > a.btn.btn-sm, .btn-group-sm .navbar .navbar-nav > li > a.btn { padding: 5px; }
     .grey-box{ margin-top:30px; }
     .class_nav{width:220px;}
@@ -1754,30 +1741,6 @@ a .badge {
     font-size: 1.3em;
     margin-top: 21px;
     line-height: 120%;
-}
-
-.subscription_block{
-    border:2px solid #2f2739;
-    padding:0;
-    margin-top:25px;
-    border-radius:5px;
-    background-color:#EFEFEF;
-}
-
-.subscription_checklist{
-    padding:7px;
-}
-
-.subscription_checklist .checkbox {
-    margin-left:25px;
-}
-
-.subscription_footer{
-    font-size: 0.8em;
-    margin-top:7px;
-    padding:7px;
-    border-top:2px solid #333;
-    background-color:#FFF;
 }
 
 .card-content .card-title {

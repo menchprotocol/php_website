@@ -109,7 +109,7 @@
         $('#w_title').html('<i class="fas fa-flag"></i> '+frame_title);
 
         //Is this user an admin? if so, give them a delete option:
-        if(jQuery.inArray(1281, js_inbound_u_ids) !== -1){
+        if(jQuery.inArray(1281, js_parent_u_ids) !== -1){
             //Append delete button:
             $('#w_title').prepend('<a href="javascript:void(0);" onclick="confirm_w_delete('+w_id+')" data-toggle="tooltip" title="Permanently delete this subscription and its related data" data-placement="bottom"><i class="fas fa-trash-alt" style="color:#FFF;"></i></a> &nbsp;');
         }

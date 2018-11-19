@@ -21,13 +21,13 @@ $url_part_1 = $this->uri->segment(1);
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<title><?= ( isset($title) ? $title.' | ' : '' ).'Mench' ?></title>
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
-	<?php $this->load->view('custom/shared/header_resources' ); ?>
+	<?php $this->load->view('shared/include_js_css' ); ?>
 	<script src="/js/custom/global-js.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
 </head>
 
 <body class="landing-page">
 
-    <?php $this->load->view('custom/shared/chat_plugin'); ?>
+    <?php $this->load->view('shared/messenger_web_chat'); ?>
 
     <nav class="navbar navbar-warning navbar-fixed-top navbar-color-on-scroll <?= ( isset($landing_page) ? 'navbar-transparent': 'no-adj') ?>">
     	<div class="container">

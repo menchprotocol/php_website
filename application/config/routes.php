@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$route['404_override'] = 'custom/error';
+$route['404_override'] = 'other/404_page_not_found';
 $route['translate_uri_dashes'] = FALSE;
 
 /* ******************************

@@ -1,6 +1,6 @@
 
 <div>
-    <h3>Hi, I'm Mench, a human-trained personal assistant on a mission to advance your tech career.</h3>
+    <h3>Hi, I'm Mench, a human-trained personal assistant on a mission to <?= $this->lang->line('platform_intent') ?>.</h3>
     <h3>How can I help you today?</h3>
     <div class="list-group actionplan_list" style="margin-top: 10px;">
         <?php

@@ -60,12 +60,12 @@ $(document).ready(function() {
 
     //Watch the expand/close all buttons:
     $('#task_view .expand_all').click(function (e) {
-        $( ".list-is-outbound .is_level2_sortable" ).each(function() {
+        $( ".list-is-children .is_level2_sortable" ).each(function() {
             ms_toggle($( this ).attr('data-link-id'),1);
         });
     });
     $('#task_view .close_all').click(function (e) {
-        $( ".list-is-outbound .is_level2_sortable" ).each(function() {
+        $( ".list-is-children .is_level2_sortable" ).each(function() {
             ms_toggle($( this ).attr('data-link-id'),0);
         });
     });
@@ -242,7 +242,7 @@ function c_save_sort(c_id,level){
             new_sort[sort_rank] = cr_id;
 
             //Is the Child rank correct? Check DB value:
-            var db_rank = parseInt($('.c_outcome_'+c_id).attr('outbound-rank'));
+            var db_rank = parseInt($('.c_outcome_'+c_id).attr('children-rank'));
 
             if(level==2 && !(db_rank==sort_rank) && !c_id){
                 is_properly_sorted = false;
@@ -344,18 +344,18 @@ function c_load_sort(c_id,level){
 
                     //Determine core variables for hour move calculations:
                     var step_hours = parseFloat($('.t_estimate_'+inputs.c_id+':first').attr('tree-hours'));
-                    var intent_count = parseInt($('.outbound-counter-'+inputs.c_id+':first').text());
+                    var intent_count = parseInt($('.children-counter-'+inputs.c_id+':first').text());
 
                     if(!(step_hours==0)){
                         //Remove from old one:
                         var from_hours_new = parseFloat($('.t_estimate_'+inputs.from_c_id+':first').attr('tree-hours'))-step_hours;
                         $('.t_estimate_'+inputs.from_c_id).attr('tree-hours',from_hours_new).text(c_js_hours(from_hours_new));
-                        $('.outbound-counter-'+inputs.from_c_id).text( parseInt($('.outbound-counter-'+inputs.from_c_id+':first').text()) - intent_count );
+                        $('.children-counter-'+inputs.from_c_id).text( parseInt($('.children-counter-'+inputs.from_c_id+':first').text()) - intent_count );
 
                         //Add to new:
                         var to_hours_new = parseFloat($('.t_estimate_'+inputs.to_c_id+':first').attr('tree-hours'))+step_hours;
                         $('.t_estimate_'+inputs.to_c_id).attr('tree-hours',to_hours_new).text(c_js_hours(to_hours_new));
-                        $('.outbound-counter-'+inputs.to_c_id).text( parseInt($('.outbound-counter-'+inputs.to_c_id+':first').text()) + intent_count );
+                        $('.children-counter-'+inputs.to_c_id).text( parseInt($('.children-counter-'+inputs.to_c_id+':first').text()) + intent_count );
                     }
 
                     //Update sorting for both lists:
@@ -445,9 +445,9 @@ function adjust_js_ui(c_id, level, new_hours, intent_deficit_count=0, apply_to_t
     }
 
 
-    //Adjust inbound counters, if any:
+    //Adjust parent counters, if any:
     if(!(intent_deficit_count==0)){
-        //See how many inbounds we have:
+        //See how many parents we have:
         $('.inb-counter').each(function(){
             $(this).text( parseInt($(this).text()) + intent_deficit_count );
         });
@@ -456,30 +456,30 @@ function adjust_js_ui(c_id, level, new_hours, intent_deficit_count=0, apply_to_t
     if(level>=2){
 
         //Adjust the parent level hours:
-        var c_inbound_id = parseInt($('.intent_line_'+c_id).attr('parent-intent-id'));
-        var c_inbound_tree_hours = parseFloat($('.t_estimate_'+c_inbound_id+':first').attr('tree-hours'));
-        var new_c_inbound_tree_hours = c_inbound_tree_hours + intent_deficit_hours;
+        var c_parent_id = parseInt($('.intent_line_'+c_id).attr('parent-intent-id'));
+        var c_parent_tree_hours = parseFloat($('.t_estimate_'+c_parent_id+':first').attr('tree-hours'));
+        var new_c_parent_tree_hours = c_parent_tree_hours + intent_deficit_hours;
 
         if(!(intent_deficit_count==0)){
-            $('.outbound-counter-'+c_inbound_id).text( parseInt($('.outbound-counter-'+c_inbound_id+':first').text()) + intent_deficit_count );
+            $('.children-counter-'+c_parent_id).text( parseInt($('.children-counter-'+c_parent_id+':first').text()) + intent_deficit_count );
         }
 
         if(!(intent_deficit_hours==0)){
             //Update Hours (Either level 1 or 2):
-            $('.t_estimate_'+c_inbound_id)
-                .attr('tree-hours', new_c_inbound_tree_hours)
-                .text(c_js_hours(new_c_inbound_tree_hours));
+            $('.t_estimate_'+c_parent_id)
+                .attr('tree-hours', new_c_parent_tree_hours)
+                .text(c_js_hours(new_c_parent_tree_hours));
         }
 
         if(level==3){
             //Adjust top level intent as well:
-            var top_c_id = parseInt($('.intent_line_'+c_inbound_id).attr('parent-intent-id'));
+            var top_c_id = parseInt($('.intent_line_'+c_parent_id).attr('parent-intent-id'));
             var top_c_tree_hours = parseFloat($('.t_estimate_'+top_c_id+':first').attr('tree-hours'));
             var new_top_c_tree_hours = top_c_tree_hours + intent_deficit_hours;
 
 
             if(!(intent_deficit_count==0)){
-                $('.outbound-counter-'+top_c_id).text( parseInt($('.outbound-counter-'+top_c_id+':first').text()) + intent_deficit_count );
+                $('.children-counter-'+top_c_id).text( parseInt($('.children-counter-'+top_c_id+':first').text()) + intent_deficit_count );
             }
 
             if(!(intent_deficit_hours==0)){
@@ -503,7 +503,7 @@ function c_unlink(){
         return false;
     }
 
-    var c_inbound_id = parseInt($('#cr_'+cr_id).attr('parent-intent-id'));
+    var c_parent_id = parseInt($('#cr_'+cr_id).attr('parent-intent-id'));
     var level = parseInt($('#cr_'+cr_id).attr('intent-level')); //Either 2 or 3 (Cannot unlink level 1)
     var r = confirm("Unlink \""+$('#c_outcome').val()+"\"?\n(Intent will remain accessible)");
 
@@ -528,7 +528,7 @@ function c_unlink(){
                     $('#modifybox').addClass('hidden');
 
                     //Resort all Tasks to illustrate changes on UI:
-                    c_save_sort(c_inbound_id,level);
+                    c_save_sort(c_parent_id,level);
                 }, 377);
 
             } else {
