@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 date_default_timezone_set('America/Los_Angeles');
 
 //Cache buster for static files
-$config['app_version'] = '0.609'.( ( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='local.mench.co' ) ? microtime(true) : '' ); //Updates status css/js cache files
+$config['app_version'] = '0.6092'.( ( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='local.mench.co' ) ? microtime(true) : '' ); //Updates status css/js cache files
 
 //User case: $this->config->item('timezones')
 
@@ -349,42 +349,6 @@ $config['object_statuses'] = array(
             's_icon' => 'fas fa-check-circle',
         ),
     ),
-);
-
-//These URLs are recognized as Social Profiles
-$config['social_urls'] =array(
-    'https://en.wikipedia.org'          => 'fab fa-wikipedia-w',
-    'https://www.amazon.'               => 'fab fa-amazon',
-    'https://www.linkedin.com/'         => 'fab fa-linkedin',
-    'https://www.youtube.com/'          => 'fab fa-youtube',
-    'https://twitter.com/'              => 'fab fa-twitter',
-    'https://www.instagram.com/'        => 'fab fa-instagram',
-    'https://www.facebook.com/'         => 'fab fa-facebook',
-    'https://m.me/'                     => 'fab fa-facebook-messenger',
-    'https://join.skype.com/'           => 'fab fa-skype',
-    'https://github.com/'               => 'fab fa-github',
-    'https://soundcloud.com/'           => 'fab fa-soundcloud',
-    'https://medium.com/'               => 'fab fa-medium',
-    'https://www.kickstarter.com/'      => 'fab fa-kickstarter',
-    'https://www.quora.com/'            => 'fab fa-quora',
-    'https://www.reddit.com/'           => 'fab fa-reddit',
-    'https://slack.com/'                => 'fab fa-slack',
-    'https://www.pinterest.'            => 'fab fa-pinterest',
-    'https://plus.google.com/'          => 'fab fa-google-plus',
-    'https://dribbble.com/'             => 'fab fa-dribbble',
-    'https://discordapp.com/'           => 'fab fa-discord',
-
-    //Education websites:
-    'https://www.udemy.com/'            => 'fas fa-presentation',
-    'https://www.udacity.com/'          => 'fas fa-presentation',
-    'https://www.thinkific.com/'        => 'fas fa-presentation',
-    'https://teachable.com/'            => 'fas fa-presentation',
-    'https://www.coursera.org/'         => 'fas fa-presentation',
-    'https://www.edx.org/'              => 'fas fa-presentation',
-    'https://www.khanacademy.org/'      => 'fas fa-presentation',
-    'https://www.lynda.com/'            => 'fas fa-presentation',
-    'https://www.skillshare.com/'       => 'fas fa-presentation',
-    '.edu/'                             => 'fas fa-presentation',
 );
 
 

@@ -27,6 +27,7 @@ if(isset($orphan_cs)){
 
         } else {
 
+            //Start with parents:
             echo '<h5 class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-inbound-count inbound-counter-'.$c['c_id'].'">'.count($c__inbounds).'</span> Parent'.echo__s(count($c__inbounds)).'</h5>';
 
             if(count($c__inbounds)>0){
@@ -41,8 +42,8 @@ if(isset($orphan_cs)){
 
 
 
-            echo '<h5 class="badge badge-h"><i class="fas fa-hashtag"></i> Intent</h5>';
-            echo '<div id="bootcamp-objective" class="list-group">';
+            echo '<h5 class="badge badge-h indent1"><i class="fas fa-hashtag"></i> Intent</h5>';
+            echo '<div id="bootcamp-objective" class="list-group indent1">';
                 echo echo_c($c,1);
             echo '</div>';
 
@@ -52,18 +53,23 @@ if(isset($orphan_cs)){
 
 
             //Expand/Contract buttons
-            echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-outbound-count outbound-counter-'.$c['c_id'].'">'.$c['c__tree_all_count'].'</span> Children</h5>';
-            echo '<div id="task_view" style="padding-left:8px; display: inline-block;">';
-            echo '<i class="fas fa-plus-square expand_all" style="font-size: 1.2em;"></i> &nbsp;';
-            echo '<i class="fas fa-minus-square close_all" style="font-size: 1.2em;"></i>';
+            echo '<div class="indent2">';
+                echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-outbound-count outbound-counter-'.$c['c_id'].'">'.$c['c__tree_all_count'].'</span> Children</h5>';
+
+                echo '<div id="task_view" style="padding-left:8px; display: inline-block;">';
+                    echo '<i class="fas fa-plus-square expand_all" style="font-size: 1.2em;"></i> &nbsp;';
+                    echo '<i class="fas fa-minus-square close_all" style="font-size: 1.2em;"></i>';
+                echo '</div>';
+
+                if($orphan_c_count>0){
+                    echo '<span style="padding-left:8px; display: inline-block;"><a href="/intents/orphan">'.$orphan_c_count.' Orphans &raquo;</a></span>';
+                }
+
             echo '</div>';
-            if($orphan_c_count>0){
-                echo '<div style="padding-left:8px; display: inline-block;"><a href="/intents/orphan">'.$orphan_c_count.' Orphans &raquo;</a></div>';
-            }
 
-            echo '<div id="outs_error"></div>'; //Show potential errors detected in the Action Plan via our JS functions...
+            echo '<div id="outs_error indent2"></div>'; //Show potential errors detected in the Action Plan via our JS functions...
 
-            echo '<div id="list-c-'.$c['c_id'].'" class="list-group list-is-outbound list-level-2">';
+            echo '<div id="list-c-'.$c['c_id'].'" class="list-group list-is-outbound list-level-2 indent2">';
             foreach($c['c__child_intents'] as $sub_intent){
                 echo echo_c($sub_intent, 2, $c['c_id']);
             }
@@ -94,8 +100,8 @@ if(isset($orphan_cs)){
 
             if(count($all_subscriptions)>0){
                 //Show these subscriptions:
-                echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-comment-plus"></i> '.count($all_subscriptions).($limit==count($all_subscriptions)?'+':'').' Subscriptions</h5>';
-                echo '<div class="list-group list-grey" style="margin-bottom: 40px;">';
+                echo '<h5 class="badge badge-h indent1" style="display: inline-block;"><i class="fas fa-comment-plus"></i> '.count($all_subscriptions).($limit==count($all_subscriptions)?'+':'').' Subscriptions</h5>';
+                echo '<div class="list-group list-grey indent1" style="margin-bottom: 40px;">';
                 foreach($all_subscriptions as $w){
                     echo echo_w_console($w);
                 }
@@ -176,20 +182,17 @@ if(isset($orphan_cs)){
 
                         <div class="title"><h4><i class="fas fa-shield-check"></i> Completion Settings</h4></div>
                         <div class="form-group label-floating is-empty">
-
-                            <div class="radio" style="display:inline-block; border-bottom:1px dotted #999; margin-right:10px; margin-top: 0 !important;" data-toggle="tooltip" title="Intent is completed when ALL outbound intents are marked as complete" data-placement="right">
-                                <label style="display:inline-block;">
-                                    <input type="radio" id="c_is_any_0" name="c_is_any" value="0" />
-                                    <i class="fas fa-sitemap"></i> All Children
-                                </label>
-                            </div>
-                            <div class="radio" style="display: inline-block; border-bottom:1px dotted #999; margin-top: 0 !important;" data-toggle="tooltip" title="Intent is completed when ANY outbound intent is marked as complete" data-placement="right">
-                                <label style="display:inline-block;">
-                                    <input type="radio" id="c_is_any_1" name="c_is_any" value="1" />
-                                    <i class="fas fa-code-merge"></i> Any Child
-                                </label>
-                            </div>
-
+                            <?php
+                            $intent_types = echo_status('c_is_any');
+                            foreach($intent_types as $c_is_any=>$intent_type){
+                                echo '<div class="radio" style="display:inline-block; border-bottom:1px dotted #999; margin-top: 0 !important;" data-toggle="tooltip" title="'.$intent_type['s_desc'].'" data-placement="right">
+                                    <label style="display:inline-block;">
+                                        <input type="radio" id="c_is_any_'.$c_is_any.'" name="c_is_any" value="'.$c_is_any.'" />
+                                        <i class="'.$intent_type['s_icon'].'"></i> '.$intent_type['s_name'].'
+                                    </label>
+                                </div>';
+                            }
+                            ?>
                         </div>
 
                         <div class="form-group label-floating is-empty completion-settings">

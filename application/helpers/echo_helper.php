@@ -33,7 +33,6 @@ function echo_social_profiles($social_profiles){
 function echo_x($u, $x){
 
     $CI =& get_instance();
-    $social_urls = $CI->config->item('social_urls');
     $udata = $CI->session->userdata('user');
 
     $ui = null;
@@ -68,16 +67,6 @@ function echo_x($u, $x){
     //Regular section:
     $ui .= '<a href="'.$x['x_url'].'" target="_blank" '.( strlen($x['x_url'])>0 && !($x['x_url']==$x['x_url']) ? '' : '' ).'>';
     $ui .= '<span class="url_truncate">'.echo_clean_url($x['x_url']).'</span>';
-
-    //Is this a social URL?
-    foreach($social_urls as $url=>$fa_icon){
-        if(substr_count($x['x_url'],$url)>0){
-            $ui .= '<i class="'.$fa_icon.'" data-toggle="tooltip" data-placement="top" title="Verified Domain"></i> ';
-            break;
-        }
-    }
-
-
     $ui .= '<i class="fas fa-external-link-square"></i></a>';
 
     //Can we display this URL?
@@ -356,7 +345,7 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
                 if($is_intent || ($is_entity && !$is_focus_entity)) {
 
                     //HTML format:
-                    $i['i_message'] = str_replace('@'.$i['i_u_id'], echo_social_profiles($CI->Db_model->x_social_fetch($i['i_u_id'])).' <a href="javascript:void(0);" onclick="url_modal(\''.$button_url.'\')">'.$us[0]['u_full_name'].'</a>', $i['i_message']);
+                    $i['i_message'] = str_replace('@'.$i['i_u_id'], ' <a href="javascript:void(0);" onclick="url_modal(\''.$button_url.'\')">'.$us[0]['u_full_name'].'</a>', $i['i_message']);
 
                 } else {
 
@@ -1577,7 +1566,7 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
 
     $ui .= '<a href="#messages-'.$c['c_id'].'" onclick="i_load_modify('.$c['c_id'].')" class="msg-badge-'.$c['c_id'].' badge badge-primary '.( $c['c__this_messages']==0 ? 'grey' : '' ).'" style="width:40px;"><span class="btn-counter messages-counter-'.$c['c_id'].'">'.$c['c__this_messages'].'</span><i class="fas fa-comment-dots"></i></a>';
 
-    $ui .= '<a class="badge badge-primary" onclick="c_load_modify('.$c['c_id'].','.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).')" style="margin:-2px -8px 0 2px; width:40px;" href="#modify-'.$c['c_id'].'-'.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).'"><span class="btn-counter">'.echo_estimated_time($c['c__tree_max_hours'],0,1, $c['c_id'], $c['c_time_estimate']).'</span><i class="c_is_any_icon'.$c['c_id'].' '.( $c['c_is_any'] ? 'fas fa-code-merge' : 'fas fa-sitemap' ).'" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i></a> &nbsp;';
+    $ui .= '<a class="badge badge-primary" onclick="c_load_modify('.$c['c_id'].','.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).')" style="margin:-2px -8px 0 2px; width:40px;" href="#modify-'.$c['c_id'].'-'.( isset($c['cr_id']) ? $c['cr_id'] : 0 ).'"><span class="btn-counter">'.echo_estimated_time($c['c__tree_max_hours'],0,1, $c['c_id'], $c['c_time_estimate']).'</span><i class="fas fa-cog"></i></a> &nbsp;';
 
     //Show link to travel down the tree:
     $ui .= '&nbsp;<a href="/intents/'.$c['c_id'].'" class="tree-badge-'.$c['c_id'].' badge badge-primary '.( $c['c__tree_all_count']<=1 ? 'grey' : '' ).'" style="display:inline-block; margin-right:-1px; width:40px;"><span class="btn-counter outbound-counter-'.$c['c_id'].' '.( $is_inbound && $level==2 ? 'inb-counter' : '' ).'">'.$c['c__tree_all_count'].'</span><i class="'.( $is_inbound && $level<=2 ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></a> ';
@@ -1590,10 +1579,14 @@ function echo_c($c, $level, $c_inbound_id=0, $is_inbound=false){
     $c_settings = ' c_require_url_to_complete="'.$c['c_require_url_to_complete'].'" c_require_notes_to_complete="'.$c['c_require_notes_to_complete'].'" c_cost_estimate="'.$c['c_cost_estimate'].'" c_status="'.$c['c_status'].'" c_points="'.$c['c_points'].'" c_trigger_statements="'.$c['c_trigger_statements'].'" c_is_any="'.$c['c_is_any'].'" ';
 
 
+    //Show intent type:
+    $ui .= '<i class="c_is_any_icon'.$c['c_id'].' '.( $c['c_is_any'] ? 'fas fa-code-merge' : 'fas fa-sitemap' ).'" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i> ';
+
     //Sorting & Then Left Content:
     if($level>1 && (!$is_inbound || $level==3)) {
         $ui .= '<i class="fas fa-bars"></i> &nbsp;';
     }
+
 
     //Build points UI if any:
     $extra_ui = '';
@@ -1751,7 +1744,7 @@ function echo_u($u, $level, $is_inbound=false){
     $ui .= '<'.( count($messages)>0 ? 'a href="#messages-'.$u['u_id'].'" onclick="u_load_messages('.$u['u_id'].')" class="badge badge-secondary"' : 'span class="badge badge-secondary grey"' ).' style="width:40px;">'.( count($messages)>0 ? '<span class="btn-counter">'.count($messages).'</span>' : '' ).'<i class="fas fa-comment-dots"></i></'.( count($messages)>0 ? 'a' : 'span' ).'>';
 
 
-    $ui .= '<a href="#modify-'.$u['u_id'].'-'.$ur_id.'" onclick="u_load_modify('.$u['u_id'].','.$ur_id.')" class="badge badge-secondary" style="margin:-2px -6px 0 2px; width:40px;">'.( $u['u__e_score']>0 ? '<span class="btn-counter" data-toggle="tooltip" data-placement="left" title="Engagement Score">'.echo_big_num($u['u__e_score']).'</span>' : '' ).'<i class="fas fa-sitemap" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i></a> &nbsp;';
+    $ui .= '<a href="#modify-'.$u['u_id'].'-'.$ur_id.'" onclick="u_load_modify('.$u['u_id'].','.$ur_id.')" class="badge badge-secondary" style="margin:-2px -6px 0 2px; width:40px;">'.( $u['u__e_score']>0 ? '<span class="btn-counter" data-toggle="tooltip" data-placement="left" title="Engagement Score">'.echo_big_num($u['u__e_score']).'</span>' : '' ).'<i class="fas fa-cog" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i></a> &nbsp;';
 
     $ui .= '<a class="badge badge-secondary" href="/entities/'.$u['u_id'].'" style="display:inline-block; margin-right:6px; width:40px; margin-left:1px;">'.(isset($u['u__outbound_count']) && $u['u__outbound_count']>0 ? '<span class="btn-counter '.( $level==1 ? 'li-outbound-count' : '' ).'">'.$u['u__outbound_count'].'</span>' : '').'<i class="'.( $is_inbound ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></a>';
 
@@ -1838,7 +1831,7 @@ function echo_u($u, $level, $is_inbound=false){
     //Loop through parents and show those that have u_parent_icon set:
     foreach($u['u__inbounds'] as $in_u){
         if(strlen($in_u['u_parent_icon'])>0){
-            $ui .= ' &nbsp;<span data-toggle="tooltip" title="'.$in_u['u_full_name'].(strlen($in_u['ur_notes'])>0 ? ' = '.$in_u['ur_notes'] : '').'" data-placement="top" class="u_parent_icon_child_'.$in_u['u_id'].'">'.$in_u['u_parent_icon'].'</span>';
+            $ui .= ' &nbsp;<a href="/entities/'.$in_u['u_id'].'" data-toggle="tooltip" title="'.$in_u['u_full_name'].(strlen($in_u['ur_notes'])>0 ? ' = '.$in_u['ur_notes'] : '').'" data-placement="top" class="u_parent_icon_child_'.$in_u['u_id'].'">'.$in_u['u_parent_icon'].'</a>';
         }
     }
 

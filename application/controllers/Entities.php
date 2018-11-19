@@ -150,18 +150,6 @@ class Entities extends CI_Controller {
                 $new_u = $new_us[0];
             }
 
-            //Is this one of the main entity objects?
-            if($_POST['is_inbound'] && in_array($_POST['new_u_id'], array(1278,1326,2750))){
-                //Does this entity already belong to one?
-                $entity_type = entity_type($current_us[0]);
-                if($entity_type && $entity_type!=$_POST['new_u_id']){
-                    return echo_json(array(
-                        'status' => 0,
-                        'message' => '['.$current_us[0]['u_full_name'].'] already belong to ['.$current_us[0]['u__inbounds'][$entity_type]['u_full_name'].'] which means it cannot also be added as ['.$new_u['u_full_name'].']. You can unlink ['.$current_us[0]['u__inbounds'][$entity_type]['u_full_name'].'] and try again.',
-                    ));
-                }
-            }
-
         } else {
 
             if(filter_var(trim($_POST['new_u_input']),FILTER_VALIDATE_URL)){

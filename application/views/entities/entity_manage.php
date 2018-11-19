@@ -52,21 +52,13 @@ $all_subscriptions = $this->Db_model->w_fetch(array(
 //Entity & Components:
 
 //Parents
-echo '<h5>';
-echo '<span class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-inbound-count">'.count($entity['u__inbounds']).'</span> Parent'.echo__s(count($entity['u__inbounds'])).'</span>';
-
-echo ' <a class="add-new-btn" href="javascript:$(\'#new-inbound\').removeClass(\'hidden\');$(\'.add-new-btn\').hide();$(\'#new-inbound .new-input\').focus();"><i class="fas fa-plus-circle"></i></a>';
-
-echo '</h5>';
-
+echo '<h5><span class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-inbound-count">'.count($entity['u__inbounds']).'</span> Parent'.echo__s(count($entity['u__inbounds'])).'</span></h5>';
 echo '<div id="list-inbound" class="list-group  grey-list">';
-
 foreach ($entity['u__inbounds'] as $ur) {
     echo echo_u($ur, 2, true);
 }
-
 //Input to add new inbounds:
-echo '<div id="new-inbound" class="list-group-item list_input grey-input hidden">
+echo '<div id="new-inbound" class="list-group-item list_input grey-input">
             <div class="input-group">
                 <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search" data-lpignore="true" placeholder="Add Entity..."></div>
                 <span class="input-group-addon">
@@ -82,15 +74,15 @@ echo '</div>';
 
 
 //Top/main entity
-echo '<h5 class="badge badge-h"><i class="fas fa-at"></i> Entity</h5>';
-echo '<div id="entity-box" class="list-group">';
+echo '<h5 class="badge badge-h indent1"><i class="fas fa-at"></i> Entity</h5>';
+echo '<div id="entity-box" class="list-group indent1">';
 echo echo_u($entity, 1);
 echo '</div>';
 
 
 
 //Childs
-echo '<table width="100%" style="margin-top:10px;"><tr>';
+echo '<div class="indent2"><table width="100%" style="margin-top:10px;"><tr>';
 echo '<td style="width: 100px;"><h5 class="badge badge-h"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-outbound-count">'.$entity['u__outbound_count'].'</span> Children</h5></td>';
 echo '<td style="text-align: right;"><div class="btn-group btn-group-sm" style="margin-top:-5px;" role="group">';
 
@@ -121,11 +113,11 @@ if(count($counts)>0 && $counts[0]['u_counts']<$entity['u__outbound_count']){
 }
 
 echo '</div></td>';
-echo '</tr></table>';
+echo '</tr></table></div>';
 
 
 
-echo '<div id="list-outbound" class="list-group grey-list">';
+echo '<div id="list-outbound" class="list-group grey-list indent2">';
 
 foreach($child_entities as $u){
     echo echo_u($u, 2);
@@ -154,8 +146,8 @@ echo '</div>';
 //Only show if data exists (users cannot modify this anyways)
 if(count($all_subscriptions)>0){
     //Show these subscriptions:
-    echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-comment-plus"></i> '.count($all_subscriptions).($limit==count($all_subscriptions)?'+':'').' Subscriptions</h5>';
-    echo '<div class="list-group list-grey" style="margin-bottom:10px;">';
+    echo '<h5 class="badge badge-h indent1" style="display: inline-block;"><i class="fas fa-comment-plus"></i> '.count($all_subscriptions).($limit==count($all_subscriptions)?'+':'').' Subscriptions</h5>';
+    echo '<div class="list-group list-grey indent1" style="margin-bottom:10px;">';
     foreach($all_subscriptions as $w){
         echo echo_w_console($w);
     }
@@ -175,8 +167,8 @@ if(count($all_subscriptions)>0){
 
 
 //URLs
-echo '<h5 class="badge badge-h"><i class="fas fa-link"></i> <span class="li-urls-count">'.count($entity['u__urls']).'</span> URLs</h5>';
-echo '<div id="list-urls" class="list-group  grey-list" style="margin-bottom:40px;">';
+echo '<h5 class="badge badge-h indent1"><i class="fas fa-link"></i> <span class="li-urls-count">'.count($entity['u__urls']).'</span> URLs</h5>';
+echo '<div id="list-urls" class="list-group indent1 grey-list" style="margin-bottom:40px;">';
 foreach ($entity['u__urls'] as $x) {
     echo echo_x($entity, $x);
 }

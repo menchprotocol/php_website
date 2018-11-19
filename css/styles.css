@@ -632,6 +632,8 @@ h5, .h5 {
 .mench-mini{
     width:20px; margin-top:-3px; margin-left:0px;
 }
+
+
 .ur__notes{
     display: inline-block;
     font-size: 0.8em;
@@ -1277,8 +1279,13 @@ select.form-control{
     padding-right: 0;
 }
 
+.indent1 { margin-left:20px; }
+.indent2 { margin-left:40px; }
+
 @media (max-width: 767px){
 
+    .indent1 { margin-left:10px; }
+    .indent2 { margin-left:20px; }
     #funnel .p_footer{ padding-left:0; text-align:center;}
     .btn.btn-sm, .btn-group-sm .btn, .navbar .navbar-nav > li > a.btn.btn-sm, .btn-group-sm .navbar .navbar-nav > li > a.btn { padding: 5px; }
     .grey-box{ margin-top:30px; }

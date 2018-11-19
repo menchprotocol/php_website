@@ -1804,31 +1804,6 @@ class Db_model extends CI_Model {
 	 * Other
 	 ****************************** */
 
-	function x_social_fetch($u_id){
-
-	    $social_urls = $this->config->item('social_urls');
-
-        $return_array = array();
-	    foreach($social_urls as $key=>$fa_icon){
-
-            $urls = $this->Db_model->x_fetch(array(
-                'x_u_id' => $u_id,
-                'x_status >' => -2,
-                '(x_url LIKE \'%'.$key.'%\' OR x_clean_url LIKE \'%'.$key.'%\')' => null,
-            ));
-
-            foreach($urls as $url){
-                array_push($return_array , array(
-                    'url' => $url['x_url'],
-                    'fa_icon' => $fa_icon,
-                ));
-            }
-        }
-
-	    return $return_array;
-
-    }
-
     function x_fetch($match_columns, $join_objects=array(), $order_columns=array(), $limit=0){
         //Fetch the target entities:
         $this->db->select('*');
