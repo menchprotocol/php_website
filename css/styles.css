@@ -1279,13 +1279,13 @@ select.form-control{
     padding-right: 0;
 }
 
-.indent1 { margin-left:20px; }
-.indent2 { margin-left:40px; }
+.indent1 { margin-left:15px; }
+.indent2 { margin-left:30px; }
 
 @media (max-width: 767px){
 
-    .indent1 { margin-left:10px; }
-    .indent2 { margin-left:20px; }
+    .indent1 { margin-left:8px; }
+    .indent2 { margin-left:16px; }
     #funnel .p_footer{ padding-left:0; text-align:center;}
     .btn.btn-sm, .btn-group-sm .btn, .navbar .navbar-nav > li > a.btn.btn-sm, .btn-group-sm .navbar .navbar-nav > li > a.btn { padding: 5px; }
     .grey-box{ margin-top:30px; }
