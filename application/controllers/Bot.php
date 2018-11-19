@@ -166,7 +166,7 @@ class Bot extends CI_Controller {
 
                             //The very first payload, set defaults:
                             $referral_array = array(
-                                'ref' => 'SUBSCRIBE10_'.$this->config->item('primary_c'),
+                                'ref' => 'ACTIONPLANADD10_'.$this->config->item('primary_c'),
                             );
 
                         } else {

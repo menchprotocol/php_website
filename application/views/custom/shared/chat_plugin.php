@@ -23,4 +23,4 @@ $fb_settings = $this->config->item('fb_settings');
 
 </script>
 
-<div class="fb-customerchat" minimized="true" ref="SUBSCRIBE10_<?= $this->config->item('primary_c') ?>" <?= ( $udata ? 'logged_in_greeting="'.one_two_explode('',' ',$udata['u_full_name']).', how can we help you grow?"' : '' ) ?> logged_out_greeting="Hi 👋 How can we help you?" greeting_dialog_display="hide" theme_color="#2f2739" page_id="<?= $fb_settings['page_id'] ?>"></div>
+<div class="fb-customerchat" minimized="true" ref="ACTIONPLANADD10_<?= $this->config->item('primary_c') ?>" <?= ( $udata ? 'logged_in_greeting="'.one_two_explode('',' ',$udata['u_full_name']).', how can we help you grow?"' : '' ) ?> logged_out_greeting="Hi 👋 How can we help you?" greeting_dialog_display="hide" theme_color="#2f2739" page_id="<?= $fb_settings['page_id'] ?>"></div>

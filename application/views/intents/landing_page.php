@@ -96,7 +96,7 @@
     <p style="padding:15px 0 0 0;">Ready to <?= $c['c_outcome'] ?>?</p>
 
     <!-- Call to Actions -->
-    <a class="btn btn-primary" href="https://m.me/askmench?ref=SUBSCRIBE10_<?= $c['c_id'] ?>" style="display: inline-block; padding: 12px 36px;">Get Started [Free] <i class="fas fa-angle-right"></i></a>
+    <a class="btn btn-primary" href="https://m.me/askmench?ref=ACTIONPLANADD10_<?= $c['c_id'] ?>" style="display: inline-block; padding: 12px 36px;">Get Started [Free] <i class="fas fa-angle-right"></i></a>
 
     <span class="learn_more_toggle" style="display: inline-block;">or <a class="btn btn-primary grey" href="#learnMore" onclick="$('.learn_more_toggle').toggle();" style="display: inline-block; padding:12px 16px;">Learn More <i class="fas fa-info-circle"></i></a></span>
 
@@ -120,7 +120,7 @@
             <div class="panel-heading" role="tab" id="heading'.$c1_counter.'">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open'.$c1_counter.'" href="#collapse'.$c1_counter.'" aria-expanded="false" aria-controls="collapse'.$c1_counter.'">
-                       '.( $c['c_is_any'] ? 'Option' : 'Part' ).' '.($c1_counter+1).': <span id="title-'.$c1['c_id'].'">'.$c1['c_outcome'].'</span><i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                       '.( $c['c_is_any'] ? 'Option' : 'Step' ).' '.($c1_counter+1).': <span id="title-'.$c1['c_id'].'">'.$c1['c_outcome'].'</span><i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                     </a>
                 </h4>
             </div>

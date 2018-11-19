@@ -115,9 +115,9 @@ class Comm_model extends CI_Model {
 
 	        return false;
 
-        } elseif(substr_count($fb_ref, 'UNSUBSCRIBE_')==1){
+        } elseif(substr_count($fb_ref, 'ACTIONPLANSKIP_')==1){
 
-            $unsub_value = one_two_explode('UNSUBSCRIBE_', '', $fb_ref);
+            $unsub_value = one_two_explode('ACTIONPLANSKIP_', '', $fb_ref);
 
             if($unsub_value=='CANCEL'){
 
@@ -245,10 +245,10 @@ class Comm_model extends CI_Model {
 
             }
 
-        } elseif(substr_count($fb_ref, 'SUBSCRIBE10_')==1) {
+        } elseif(substr_count($fb_ref, 'ACTIONPLANADD10_')==1) {
 
             //Validate this intent:
-            $c_id = intval(one_two_explode('SUBSCRIBE10_', '', $fb_ref));
+            $c_id = intval(one_two_explode('ACTIONPLANADD10_', '', $fb_ref));
 
             if($c_id==0){
 
@@ -303,12 +303,12 @@ class Comm_model extends CI_Model {
                                 array(
                                     'content_type' => 'text',
                                     'title' => 'Yes, Learn More',
-                                    'payload' => 'SUBSCRIBE20_'.$fetch_cs[0]['c_id'],
+                                    'payload' => 'ACTIONPLANADD20_'.$fetch_cs[0]['c_id'],
                                 ),
                                 array(
                                     'content_type' => 'text',
                                     'title' => 'No',
-                                    'payload' => 'SUBSCRIBE10_0',
+                                    'payload' => 'ACTIONPLANADD10_0',
                                 ),
                             ),
                         ),
@@ -317,10 +317,10 @@ class Comm_model extends CI_Model {
                 }
             }
 
-        } elseif(substr_count($fb_ref, 'SUBSCRIBE20_')==1){
+        } elseif(substr_count($fb_ref, 'ACTIONPLANADD20_')==1){
 
             //Initiating an intent Subscription:
-            $w_c_id = intval(one_two_explode('SUBSCRIBE20_', '', $fb_ref));
+            $w_c_id = intval(one_two_explode('ACTIONPLANADD20_', '', $fb_ref));
             $fetch_cs = $this->Db_model->c_fetch(array(
                 'c_id' => $w_c_id,
                 'c_status >=' => 2,
@@ -387,12 +387,12 @@ class Comm_model extends CI_Model {
                                 array(
                                     'content_type' => 'text',
                                     'title' => 'Yes, Subscribe',
-                                    'payload' => 'SUBSCRIBE99_'.$w_c_id,
+                                    'payload' => 'ACTIONPLANADD99_'.$w_c_id,
                                 ),
                                 array(
                                     'content_type' => 'text',
                                     'title' => 'No',
-                                    'payload' => 'SUBSCRIBE10_0',
+                                    'payload' => 'ACTIONPLANADD10_0',
                                 ),
                                 //TODO Maybe Show a "7 Extra Notes" if Drip messages available?
                             ),
@@ -402,50 +402,52 @@ class Comm_model extends CI_Model {
                 }
             }
 
-        } elseif(substr_count($fb_ref, 'SUBSCRIBE99_')==1){
+        } elseif(substr_count($fb_ref, 'ACTIONPLANADD99_')==1){
 
-            $w_c_id = intval(one_two_explode('SUBSCRIBE99_', '', $fb_ref));
+            $w_c_id = intval(one_two_explode('ACTIONPLANADD99_', '', $fb_ref));
+            //Validate Intent ID:
             $fetch_cs = $this->Db_model->c_fetch(array(
                 'c_id' => $w_c_id,
                 'c_status >=' => 2,
             ));
 
-            if (count($fetch_cs)==1) {
+            if(count($fetch_cs)==1){
 
-                //Create a new subscription (Which will also cache action plan):
+                //Add to intent to user's action plan and create a cache of all intent links:
                 $w = $this->Db_model->w_create(array(
                     'w_c_id' => $w_c_id,
                     'w_child_u_id' => $u['u_id'],
                 ));
 
-                //Confirm with them that we're now ready:
-                $this->Comm_model->send_message(array(
-                    array(
+                //Was this added successfully?
+                if(isset($w['w_id']) && $w['w_id']>0){
+
+                    //Confirm with them that we're now ready:
+                    $this->Comm_model->send_message(array(
+                        array(
+                            'e_parent_u_id' => 2738, //Initiated by PA
+                            'e_child_u_id' => $u['u_id'],
+                            'e_child_c_id' => $w_c_id,
+                            'e_w_id' => $w['w_id'],
+                            'i_message' => 'Success! I have added the intention to '.$fetch_cs[0]['c_outcome'].' to your Action Plan 🙌 /open_actionplan',
+                        ),
+                    ));
+
+                    //Initiate first message for action plan tree:
+                    $this->Comm_model->compose_messages(array(
                         'e_parent_u_id' => 2738, //Initiated by PA
                         'e_child_u_id' => $u['u_id'],
                         'e_child_c_id' => $w_c_id,
                         'e_w_id' => $w['w_id'],
-                        'i_message' => 'You are now subscribed 🙌 /open_actionplan',
-                    ),
-                ));
-
-                //Find next step and move-on:
-                $ks_next = $this->Db_model->k_next_fetch($w['w_id']);
-                if($ks_next){
-                    //Inform user of their next step (Step 1):
-                    $this->Comm_model->compose_messages(array(
-                        'e_parent_u_id' => 2738, //Initiated by PA
-                        'e_child_u_id' => $u['u_id'],
-                        'e_child_c_id' => $ks_next[0]['c_id'],
-                        'e_w_id' => $w['w_id'],
                     ), true);
+
                 }
             }
 
-        } elseif(substr_count($fb_ref, 'SKIPTREE_')==1){
+        } elseif(substr_count($fb_ref, 'SKIPSUBTREE_')==1){
 
             //User has indicated they want to skip this tree and move on to the next item in-line:
-            $input_parts = explode('_', one_two_explode('SKIPTREE_', '', $fb_ref));
+            $input_parts = explode('_', one_two_explode('SKIPSUBTREE_', '', $fb_ref));
             $w_id = intval($input_parts[0]);
             $c_id = intval($input_parts[1]);
             $k_id = intval($input_parts[2]);
@@ -610,7 +612,7 @@ class Comm_model extends CI_Model {
                     array_push( $quick_replies , array(
                         'content_type' => 'text',
                         'title' => '/'.($counter+$increment),
-                        'payload' => 'UNSUBSCRIBE_'.$w['w_id'],
+                        'payload' => 'ACTIONPLANSKIP_'.$w['w_id'],
                     ));
                 }
 
@@ -620,7 +622,7 @@ class Comm_model extends CI_Model {
                 array_push( $quick_replies , array(
                     'content_type' => 'text',
                     'title' => '/'.($counter+$increment),
-                    'payload' => 'UNSUBSCRIBE_ALL',
+                    'payload' => 'ACTIONPLANSKIP_ALL',
                 ));
 
                 //Alwyas give none option:
@@ -629,7 +631,7 @@ class Comm_model extends CI_Model {
                 array_push( $quick_replies , array(
                     'content_type' => 'text',
                     'title' => '/'.($counter+$increment),
-                    'payload' => 'UNSUBSCRIBE_CANCEL',
+                    'payload' => 'ACTIONPLANSKIP_CANCEL',
                 ));
 
                 //Send out message and let them confirm:
@@ -664,12 +666,12 @@ class Comm_model extends CI_Model {
                             array(
                                 'content_type' => 'text',
                                 'title' => 'Yes, Unsubscribe',
-                                'payload' => 'UNSUBSCRIBE_ALL',
+                                'payload' => 'ACTIONPLANSKIP_ALL',
                             ),
                             array(
                                 'content_type' => 'text',
                                 'title' => 'No, Stay Friends',
-                                'payload' => 'UNSUBSCRIBE_CANCEL',
+                                'payload' => 'ACTIONPLANSKIP_CANCEL',
                             ),
                         ),
                     ),
@@ -734,7 +736,7 @@ class Comm_model extends CI_Model {
                     array_push($quick_replies , array(
                         'content_type' => 'text',
                         'title' => ($count+1).'/',
-                        'payload' => 'SUBSCRIBE20_'.$hit['c_id'],
+                        'payload' => 'ACTIONPLANADD20_'.$hit['c_id'],
                     ));
                 }
 
@@ -743,7 +745,7 @@ class Comm_model extends CI_Model {
                 array_push($quick_replies , array(
                     'content_type' => 'text',
                     'title' => ($count+2).'/',
-                    'payload' => 'SUBSCRIBE10_0',
+                    'payload' => 'ACTIONPLANADD10_0',
                 ));
 
                 //return what we found to the student to decide:
@@ -806,7 +808,7 @@ class Comm_model extends CI_Model {
                 ));
 
                 //Recommend to subscribe to our default intent:
-                $this->Comm_model->fb_ref_process($u, 'SUBSCRIBE10_'.$this->config->item('primary_c'));
+                $this->Comm_model->fb_ref_process($u, 'ACTIONPLANADD10_'.$this->config->item('primary_c'));
 
             } elseif(in_array($fb_message_received, array('yes','yeah','ya','ok','continue','ok continue','ok continue ▶️','▶️','ok continue','go','yass','yas','yea','yup','next','yes, learn more'))){
 
@@ -1236,13 +1238,25 @@ class Comm_model extends CI_Model {
 
         //Give some context on the current intent:
         if(isset($e['e_w_id']) && $e['e_w_id']>0){
-            array_push($instant_messages , array(
-                'e_parent_u_id' => 2738, //Initiated by PA
-                'e_child_u_id' => $e['e_child_u_id'],
-                'e_child_c_id' => $e['e_child_c_id'],
-                'e_w_id' => $e['e_w_id'],
-                'i_message' => 'Let’s '.$cs[0]['c_outcome'].'.',
-            ));
+
+            //Lets see how many child intents there are
+            $k_outs = $this->Db_model->k_fetch(array(
+                'w_id' => $e['e_w_id'],
+                'w_status IN (0,1)' => null, //Active subscriptions only
+                'cr_parent_c_id' => $e['e_child_c_id'],
+                //We are fetching with any k_status just to see what is available/possible from here
+            ), array('w','cr','cr_c_out'));
+
+            if(count($k_outs)>0 && !($k_outs[0]['w_c_id']==$e['e_child_c_id'])){
+                //Only confirm the intention if its not the top-level action plan intention:
+                array_push($instant_messages , array(
+                    'e_parent_u_id' => 2738, //Initiated by PA
+                    'e_child_u_id' => $e['e_child_u_id'],
+                    'e_child_c_id' => $e['e_child_c_id'],
+                    'e_w_id' => $e['e_w_id'],
+                    'i_message' => 'Let’s '.$cs[0]['c_outcome'].'.',
+                ));
+            }
         }
 
         //Append main object messages:
@@ -1260,18 +1274,10 @@ class Comm_model extends CI_Model {
         //Do we have a subscription, if so, we need to add a next step message:
         if(isset($e['e_w_id']) && $e['e_w_id']>0){
 
-            //Lets see how many child intents there are
-            $k_outs = $this->Db_model->k_fetch(array(
-                'w_id' => $e['e_w_id'],
-                'w_status IN (0,1)' => null, //Active subscriptions only
-                'cr_parent_c_id' => $e['e_child_c_id'],
-                //We are fetching with any k_status just to see what is available/possible from here
-            ), array('w','cr','cr_c_out'));
-
             $message_body = null;
             $quick_replies = array();
 
-            //How many children do we have?
+            //How many children do we have for this intent?
             if(count($k_outs)<=1){
 
                 //We have 0-1 child intents! If zero, let's see what the next step:
@@ -1305,7 +1311,7 @@ class Comm_model extends CI_Model {
 
                     //Note that ANY nodes cannot require a written response or a URL
                     //User needs to choose one of the following:
-                    $message_body .= 'Choose one of the following options to '.$cs[0]['c_outcome'].':';
+                    $message_body .= 'There are '.count($k_outs).' options to '.$cs[0]['c_outcome'].':';
                     foreach($k_outs as $counter=>$k){
                         if($counter==10){
                             break; //Quick reply accepts 11 options max!
@@ -1327,16 +1333,16 @@ class Comm_model extends CI_Model {
                     } else {
                         //No, just show the children:
                         //User needs to complete all children, and we'd recommend the first item as their next step:
-                        $message_body .= 'You need to do '.count($k_outs).' things to '.$cs[0]['c_outcome'].':';
+                        $message_body .= 'There are '.count($k_outs).' steps to '.$cs[0]['c_outcome'].':';
                         foreach($k_outs as $counter=>$k){
 
                             //Add message:
-                            $message_body .= "\n\n".($counter+1).'/ '.$k['c_outcome'];
+                            $message_body .= "\n\n".'Step '.($counter+1).': '.$k['c_outcome'];
 
                             if($counter==0){
                                 array_push( $quick_replies , array(
                                     'content_type' => 'text',
-                                    'title' => 'Ok Continue ▶️',
+                                    'title' => 'Start Step 1 ▶️',
                                     'payload' => 'MARKCOMPLETE_'.$e['e_w_id'].'_'.$k['k_id'].'_'.$k['k_rank'],
                                 ));
                             }
@@ -1362,7 +1368,7 @@ class Comm_model extends CI_Model {
                     array_push( $quick_replies , array(
                         'content_type' => 'text',
                         'title' => 'Skip',
-                        'payload' => 'SKIPTREE_'.$e['e_w_id'].'_'.$e['e_child_c_id'].'_'.$k_ins[0]['k_id'].'_'.$k_ins[0]['k_rank'],
+                        'payload' => 'SKIPSUBTREE_'.$e['e_w_id'].'_'.$e['e_child_c_id'].'_'.$k_ins[0]['k_id'].'_'.$k_ins[0]['k_rank'],
                     ));
                 }
 
