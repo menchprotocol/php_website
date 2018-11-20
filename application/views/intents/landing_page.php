@@ -225,6 +225,69 @@
     </div>
 
 
+
+
+
+
+
+
+    <h3 style="margin-top: 30px !important;">How it Works:</h3>
+    <div style="margin:12px 0 0 5px;">
+
+        <?php
+        //Print 3 more menu items:
+        $id = 'Step1';
+        echo '<div class="panel-group" id="open'.$id.'" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
+            <div class="panel-heading" role="tab" id="heading'.$id.'">
+                <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#open'.$id.'" href="#collapse'.$id.'" aria-expanded="false" aria-controls="collapse'.$id.'">
+                        <i class="fas" style="transform:none !important;">1️⃣</i> Connect with Mench on Messenger <i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                    </a>
+                </h4>
+            </div>
+            <div id="collapse'.$id.'" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="heading'.$id.'">
+                <div class="panel-body" style="padding:5px 0 0 5px; font-size:1.1em;">Its as easy as clicking the Get Started button above which will connect you to Mench, your Personal Assistant.</div>
+            </div>
+        </div></div>';
+
+
+
+        $id = 'Step2';
+        echo '<div class="panel-group" id="open'.$id.'" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
+            <div class="panel-heading" role="tab" id="heading'.$id.'">
+                <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#open'.$id.'" href="#collapse'.$id.'" aria-expanded="false" aria-controls="collapse'.$id.'">
+                        <i class="fas" style="transform:none !important;">2️⃣</i> Add this program to your Action Plan <i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                    </a>
+                </h4>
+            </div>
+            <div id="collapse'.$id.'" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="heading'.$id.'">
+                <div class="panel-body" style="padding:5px 0 0 5px; font-size:1.1em;">The first question that Mench will ask you is to confirm if you are interested to '.$c['c_outcome'].'. Answering Yes will add this program to your Action Plan so Mench can help you accomplish it.</div>
+            </div>
+        </div></div>';
+
+
+
+        $id = 'Step3';
+        echo '<div class="panel-group" id="open'.$id.'" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
+            <div class="panel-heading" role="tab" id="heading'.$id.'">
+                <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#open'.$id.'" href="#collapse'.$id.'" aria-expanded="false" aria-controls="collapse'.$id.'">
+                        <i class="fas" style="transform:none !important;">3️⃣</i> Continue the Conversation <i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                    </a>
+                </h4>
+            </div>
+            <div id="collapse'.$id.'" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="heading'.$id.'">
+                <div class="panel-body" style="padding:5px 0 0 5px; font-size:1.1em;">Mench will continue the conversation and provide you with a step by step Action Plan that helps you '.$c['c_outcome'].'.</div>
+            </div>
+        </div></div>';
+
+        ?>
+    </div>
+
+
+
+
 </div>
 
 
