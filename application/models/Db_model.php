@@ -150,7 +150,7 @@ class Db_model extends CI_Model {
         $skippable_ks = $this->Db_model->k_fetch(array(
             'k_status IN ('.join(',', $this->config->item('k_status_incomplete')).')' => null, //incomplete
             'k_id IN ('.join(',',$skip_ks).')' => null,
-        ), array('cr','cr_c_child'));
+        ), array('cr','cr_c_child'), array('k_rank'=>'ASC'));
 
         if($update_db){
 

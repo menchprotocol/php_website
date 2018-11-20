@@ -550,6 +550,7 @@ class Comm_model extends CI_Model {
 
 
                 if($handler=='KCANCELSKIP_'){
+
                     //user changed their mind and does not want to skip anymore
                     //acknowledge this good decision:
                     $this->Comm_model->send_message(array(
@@ -559,7 +560,9 @@ class Comm_model extends CI_Model {
                             'i_message' => 'I am happy you changed your mind! Let\'s continue...',
                         ),
                     ));
+
                 } elseif($handler=='KCONFIRMEDSKIP_') {
+
                     //They have confirmed, go ahead and skip items:
                     $total_skipped = $this->Db_model->k_skip_recursive_down($w_id, $c_id, $k_id);
 
@@ -573,6 +576,7 @@ class Comm_model extends CI_Model {
                             'i_message' => 'Ok, I marked '.$total_skipped.' insight'.echo__s($total_skipped).' as skipped. You can always re-visit them in your Action Plan and complete them at any time. /open_actionplan',
                         ),
                     ));
+
                 }
 
                 //Find the next item to navigate them to:
