@@ -618,9 +618,7 @@ h5, .h5 {
 .inlineform .form-group{
     display: inline !important;
 }
-.mench-mini{
-    width:20px; margin-top:-3px; margin-left:0px;
-}
+
 
 
 .ur__notes{
@@ -2031,18 +2029,7 @@ margin:5px 0;
     margin-left:5px;
 }
 .dropdown-toggle.btn{ padding:12px 5px; }
-.profile-icon {
-    width: 20px;
-    height: 20px;
-    margin: -2px 5px 0 0;
-    border-radius: 50%;
-}
-.profile-icon2 {
-    width: 26px;
-    height: 26px;
-    margin: -8px 5px 0 0;
-    border-radius: 50%;
-}
+
 .when_to {
     font-size: 14px;
     font-weight: bold;
@@ -2402,3 +2389,20 @@ margin:5px 0;
 }
 
 .redalert *, .redalert { color:#FF0000 !important; }
+
+.profile-icon {
+    width: 20px;
+    height: 20px;
+    margin: -2px 5px 0 0;
+    border-radius: 50% ;
+}
+.profile-icon2 {
+    width: 26px;
+    height: 26px;
+    margin: -8px 5px 0 0;
+    border-radius: 50%;
+}
+.mench-mini{
+    width:20px;
+    margin:-3px 0 0 0;
+}

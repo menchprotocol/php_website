@@ -115,9 +115,9 @@ class Comm_model extends CI_Model {
 
 	        return false;
 
-        } elseif(substr_count($fb_ref, 'ACTIONPLANSKIP_')==1){
+        } elseif(substr_count($fb_ref, 'WSKIP_')==1){
 
-            $unsub_value = one_two_explode('ACTIONPLANSKIP_', '', $fb_ref);
+            $unsub_value = one_two_explode('WSKIP_', '', $fb_ref);
 
             if($unsub_value=='CANCEL'){
 
@@ -444,29 +444,136 @@ class Comm_model extends CI_Model {
                 }
             }
 
-        } elseif(substr_count($fb_ref, 'SKIPSUBTREE_')==1){
+        } elseif(substr_count($fb_ref, 'KCONFIRMEDSKIP_')==1 || substr_count($fb_ref, 'KSTARTSKIP_')==1 || substr_count($fb_ref, 'KSTARTSKIP_CANCEL')==1){
 
-            //User has indicated they want to skip this tree and move on to the next item in-line:
-            $input_parts = explode('_', one_two_explode('SKIPSUBTREE_', '', $fb_ref));
+	        if(substr_count($fb_ref, 'KSTARTSKIP_')==1){
+                $handler = 'KSTARTSKIP_';
+            } elseif(substr_count($fb_ref, 'KCANCELSKIP_')==1){
+                $handler = 'KSKIPCANCEL_';
+            } elseif(substr_count($fb_ref, 'KCONFIRMEDSKIP_')==1){
+                $handler = 'KCONFIRMEDSKIP_';
+            }
+
+            //Extract varibales from REF:
+            $input_parts = explode('_', one_two_explode($handler, '', $fb_ref));
             $w_id = intval($input_parts[0]);
             $c_id = intval($input_parts[1]);
             $k_id = intval($input_parts[2]);
             $k_rank = intval($input_parts[3]);
-            if($w_id>0 && $c_id>0 && $k_id>0 && $k_rank>0){
 
-                //Skip items:
-                $total_skipped = $this->Db_model->k_skip_recursive_down($w_id, $c_id, $k_id);
 
-                //Inform them about the skip status:
+            if(!($w_id>0 && $c_id>0 && $k_id>0 && $k_rank>0)){
+                //Log Unknown error:
+                $this->Db_model->e_create(array(
+                    'e_value' => 'fb_ref_process() function failed to fetch proper data for SKIP request with reference value ['.$fb_ref.']',
+                    'e_parent_c_id' => 8, //Platform Error
+                    'e_json' => $u,
+                    'e_w_id' => $w_id,
+                    'e_child_c_id' => $c_id,
+                ));
+                return false;
+            }
+
+
+            if($handler=='KSTARTSKIP_') {
+
+                //User has indicated they want to skip this tree and move on to the next item in-line:
+                //Lets confirm the implications of this SKIP to ensure they are aware:
+
+                //See how many children would be skipped if they decide to do so:
+                $would_be_skipped = $this->Db_model->k_skip_recursive_down($w_id, $c_id, $k_id, false);
+                $would_be_skipped_count = count($would_be_skipped);
+
+                if($would_be_skipped_count==0){
+                    //Nothing found to skip! This should not happen, log error:
+                    $this->Db_model->e_create(array(
+                        'e_value' => 'fb_ref_process() did not find anything to skip for ['.$fb_ref.']',
+                        'e_parent_c_id' => 8, //Platform Error
+                        'e_json' => $u,
+                        'e_w_id' => $w_id,
+                        'e_child_c_id' => $c_id,
+                    ));
+
+                    //Inform user:
+                    $this->Comm_model->send_message(array(
+                        array(
+                            'e_parent_u_id' => 2738, //Initiated by PA
+                            'e_child_u_id' => $u['u_id'],
+                            'i_message' => 'I did not find anything to skip!',
+                        ),
+                    ));
+
+                    return false;
+                }
+
+
+                //Construct the message to give more details on skipping:
+                $message = 'These are the '.$would_be_skipped_count.' insight'.echo__s($would_be_skipped_count).' you are about to skip:';
+                foreach($would_be_skipped as $counter=>$k_c){
+                    if(strlen($message)<($this->config->item('fb_max_message')-100)){
+                        //We have enough room to add more:
+                        $message .= "\n\n".($counter+1).'/ '.$k_c['c_outcome'];
+                    } else {
+                        //We cannot add any more, indicate truncating:
+                        $remainder = $would_be_skipped_count-$counter;
+                        $message .= "\n\n".'And '.$remainder.' more insight'.echo__s($would_be_skipped_count).'!';
+                        break;
+                    }
+                }
+
+                //Recommend against it:
+                $message .= "\n\n".'I would not recommend skipping them unless you feel comfortable handling them on your own.';
+
+                //Send them the message:
                 $this->Comm_model->send_message(array(
                     array(
                         'e_parent_u_id' => 2738, //Initiated by PA
                         'e_child_u_id' => $u['u_id'],
-                        'e_child_c_id' => $c_id,
-                        'e_w_id' => $w_id,
-                        'i_message' => 'Ok, I successfully skipped '.$total_skipped.' insight'.echo__s($total_skipped).'.',
+                        'i_message' => $message,
+                        'quick_replies' => array(
+                            array(
+                                'content_type' => 'text',
+                                'title' => 'Skip '.$would_be_skipped_count.' insight'.echo__s($would_be_skipped_count).' 🚫',
+                                //Change the reference to indicate their confirmation:
+                                'payload' => str_replace( 'KSTARTSKIP_','KCONFIRMEDSKIP_',$fb_ref),
+                            ),
+                            array(
+                                'content_type' => 'text',
+                                'title' => 'Continue ▶️',
+                                'payload' => str_replace( 'KSTARTSKIP_','KCANCELSKIP_',$fb_ref),
+                            ),
+                        ),
                     ),
                 ));
+
+            } elseif($handler=='KCONFIRMEDSKIP_' || $handler=='KCANCELSKIP_') {
+
+
+                if($handler=='KCANCELSKIP_'){
+                    //user changed their mind and does not want to skip anymore
+                    //acknowledge this good decision:
+                    $this->Comm_model->send_message(array(
+                        array(
+                            'e_parent_u_id' => 2738, //Initiated by PA
+                            'e_child_u_id' => $u['u_id'],
+                            'i_message' => 'I am happy you changed your mind! Let\'s continue...',
+                        ),
+                    ));
+                } elseif($handler=='KCONFIRMEDSKIP_') {
+                    //They have confirmed, go ahead and skip items:
+                    $total_skipped = $this->Db_model->k_skip_recursive_down($w_id, $c_id, $k_id);
+
+                    //Inform them about the skip status:
+                    $this->Comm_model->send_message(array(
+                        array(
+                            'e_parent_u_id' => 2738, //Initiated by PA
+                            'e_child_u_id' => $u['u_id'],
+                            'e_child_c_id' => $c_id,
+                            'e_w_id' => $w_id,
+                            'i_message' => 'Ok, I marked '.$total_skipped.' insight'.echo__s($total_skipped).' as skipped. You can always re-visit them in your Action Plan and complete them at any time. /open_actionplan',
+                        ),
+                    ));
+                }
 
                 //Find the next item to navigate them to:
                 $ks_next = $this->Db_model->k_next_fetch($w_id,$k_rank);
@@ -495,7 +602,7 @@ class Comm_model extends CI_Model {
                 $ks = $this->Db_model->k_fetch(array(
                     'w_id' => $w_id,
                     'k_id' => $k_id,
-                ), array('w','cr','cr_c_in'));
+                ), array('w','cr','cr_c_parent'));
 
                 //Do we need any additional information?
                 $requirement_notes = echo_c_requirements($ks[0]);
@@ -612,7 +719,7 @@ class Comm_model extends CI_Model {
                     array_push( $quick_replies , array(
                         'content_type' => 'text',
                         'title' => '/'.($counter+$increment),
-                        'payload' => 'ACTIONPLANSKIP_'.$w['w_id'],
+                        'payload' => 'WSKIP_'.$w['w_id'],
                     ));
                 }
 
@@ -622,7 +729,7 @@ class Comm_model extends CI_Model {
                 array_push( $quick_replies , array(
                     'content_type' => 'text',
                     'title' => '/'.($counter+$increment),
-                    'payload' => 'ACTIONPLANSKIP_ALL',
+                    'payload' => 'WSKIP_ALL',
                 ));
 
                 //Alwyas give none option:
@@ -631,7 +738,7 @@ class Comm_model extends CI_Model {
                 array_push( $quick_replies , array(
                     'content_type' => 'text',
                     'title' => '/'.($counter+$increment),
-                    'payload' => 'ACTIONPLANSKIP_CANCEL',
+                    'payload' => 'WSKIP_CANCEL',
                 ));
 
                 //Send out message and let them confirm:
@@ -666,12 +773,12 @@ class Comm_model extends CI_Model {
                             array(
                                 'content_type' => 'text',
                                 'title' => 'Yes, Unsubscribe',
-                                'payload' => 'ACTIONPLANSKIP_ALL',
+                                'payload' => 'WSKIP_ALL',
                             ),
                             array(
                                 'content_type' => 'text',
                                 'title' => 'No, Stay Friends',
-                                'payload' => 'ACTIONPLANSKIP_CANCEL',
+                                'payload' => 'WSKIP_CANCEL',
                             ),
                         ),
                     ),
@@ -1245,7 +1352,7 @@ class Comm_model extends CI_Model {
                 'w_status IN (0,1)' => null, //Active subscriptions only
                 'cr_parent_c_id' => $e['e_child_c_id'],
                 //We are fetching with any k_status just to see what is available/possible from here
-            ), array('w','cr','cr_c_out'));
+            ), array('w','cr','cr_c_child'));
 
             if(count($k_outs)>0 && !($k_outs[0]['w_c_id']==$e['e_child_c_id'])){
                 //Only confirm the intention if its not the top-level action plan intention:
@@ -1360,7 +1467,7 @@ class Comm_model extends CI_Model {
                     'w_id' => $e['e_w_id'],
                     'w_status IN (0,1)' => null, //Active subscriptions only
                     'cr_child_c_id' => $e['e_child_c_id'],
-                ), array('w','cr','cr_c_out'));
+                ), array('w','cr','cr_c_child'));
 
 
                 if(count($k_ins)>0){
@@ -1368,7 +1475,7 @@ class Comm_model extends CI_Model {
                     array_push( $quick_replies , array(
                         'content_type' => 'text',
                         'title' => 'Skip',
-                        'payload' => 'SKIPSUBTREE_'.$e['e_w_id'].'_'.$e['e_child_c_id'].'_'.$k_ins[0]['k_id'].'_'.$k_ins[0]['k_rank'],
+                        'payload' => 'KSTARTSKIP_'.$e['e_w_id'].'_'.$e['e_child_c_id'].'_'.$k_ins[0]['k_id'].'_'.$k_ins[0]['k_rank'],
                     ));
                 }
 

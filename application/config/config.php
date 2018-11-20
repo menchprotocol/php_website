@@ -5,13 +5,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 date_default_timezone_set('America/Los_Angeles');
 
 //Cache buster for static files
-$config['app_version'] = '0.6094'.( ( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='local.mench.co' ) ? microtime(true) : '' ); //Updates status css/js cache files
+$config['app_version'] = '0.6095'.( ( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='local.mench.co' ) ? microtime(true) : '' ); //Updates status css/js cache files
 
-//User case: $this->config->item('timezones')
+//User case: $this->config->item('fb_max_message')
 
 $config['primary_c'] = 6903; //The default platform intent that would be recommended to new students
 $config['primary_u'] = 2738; //The default console entity that is loaded when Entities is clicked
-
 $config['message_max'] = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
 $config['max_counter'] = 999; //Used in counting things of engagements in console UI. If more that this will add a "+" sign to the end
 $config['c_outcome_max'] = 89; //Max number of characters allowed in the title of intents
@@ -33,6 +32,7 @@ $config['content_types'] = array(
 );
 
 //Mench Facebook page & Bot settings:
+$config['fb_max_message'] = 2000; //The maximum length of a Message accepted via Messenger API
 $config['fb_settings'] = array(
     'page_id'        => '381488558920384', //Also repeated in global.js
     'app_id'        => '1782431902047009', //Also repeated in global.js

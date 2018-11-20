@@ -148,13 +148,13 @@ class My extends CI_Controller {
                 'w_id' => $w_id,
                 'c_status >=' => 2,
                 'cr_child_c_id' => $c_id,
-            ), array('w','cr','cr_c_in'));
+            ), array('w','cr','cr_c_parent'));
 
             $k_outs = $this->Db_model->k_fetch(array(
                 'w_id' => $w_id,
                 'c_status >=' => 2,
                 'cr_parent_c_id' => $c_id,
-            ), array('w','cr','cr_c_out'));
+            ), array('w','cr','cr_c_child'));
 
 
             $cs = $this->Db_model->c_fetch(array(
@@ -314,7 +314,7 @@ class My extends CI_Controller {
         $udata = $this->session->userdata('user');
         $ks = $this->Db_model->k_fetch(array(
             'k_id' => $_POST['k_id'],
-        ), array('w','cr','cr_c_out'));
+        ), array('w','cr','cr_c_child'));
 
         if(!(count($ks)==1)){
             return redirect_message('/my/actionplan','<div class="alert alert-danger" role="alert">Error: Invalid submission ID.</div>');

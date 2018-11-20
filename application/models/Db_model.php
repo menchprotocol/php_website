@@ -35,7 +35,7 @@ class Db_model extends CI_Model {
             'k_rank >' => $min_k_rank,
             //The first case is for OR intents that a child is not yet selected, and the second part is for regular incompleted items:
             '(k_status IN (1,-2) AND c_is_any=1)' => null, //Not completed or not yet started
-        ), array('w','cr','cr_c_out'), array(
+        ), array('w','cr','cr_c_child'), array(
             'k.k_rank' => 'DESC',
         ), 1);
 
@@ -47,7 +47,7 @@ class Db_model extends CI_Model {
             'k_rank >' => $min_k_rank,
             //The first case is for OR intents that a child is not yet selected, and the second part is for regular incompleted items:
             'k_status IN (0,-2)' => null, //Not completed or not yet started
-        ), array('w','cr','cr_c_out'), array(
+        ), array('w','cr','cr_c_child'), array(
             'k.k_rank' => 'ASC', //Items are cached in order ;)
         ), 1);
 
@@ -140,32 +140,42 @@ class Db_model extends CI_Model {
     }
 
 
-    function k_skip_recursive_down($w_id, $c_id, $k_id){
+    function k_skip_recursive_down($w_id, $c_id, $k_id, $update_db=true){
+
         //User has requested to skip an intent starting from:
-        $dwn_tree = $this->Db_model->k_recursive_fetch($w_id, $c_id, 1);
+        $dwn_tree = $this->Db_model->k_recursive_fetch($w_id, $c_id, true);
         $skip_ks = array_merge(array(intval($k_id)), $dwn_tree['k_flat']);
 
         //Now see how many should we actually skip based on current status:
         $skippable_ks = $this->Db_model->k_fetch(array(
             'k_status IN ('.join(',', $this->config->item('k_status_incomplete')).')' => null, //incomplete
             'k_id IN ('.join(',',$skip_ks).')' => null,
-        ));
+        ), array('cr','cr_c_child'));
 
-        //Now start skipping:
-        foreach($skippable_ks as $k){
-            $this->Db_model->k_status_update($k['k_id'], -1); //skip
+        if($update_db){
+
+            //Now start skipping:
+            foreach($skippable_ks as $k){
+                $this->Db_model->k_status_update($k['k_id'], -1); //skip
+            }
+
+            //There is a chance that the subscription might be now completed due to this skipping, lets check:
+            $ks = $this->Db_model->k_fetch(array(
+                'k_id' => $k_id,
+            ), array('w','cr','cr_c_parent'));
+            if(count($ks)>0){
+                $this->Db_model->k_complete_recursive_up($ks[0],$ks[0],-1);
+            }
+
+            //Returned total intents skipped:
+            return count($skippable_ks);
+
+        } else {
+
+            //Returned total intents that would be skipped:
+            return $skippable_ks;
+
         }
-
-        //There is a chance that the subscription might be now completed due to this skipping, lets check:
-        $ks = $this->Db_model->k_fetch(array(
-            'k_id' => $k_id,
-        ), array('w','cr','cr_c_in'));
-        if(count($ks)>0){
-            $this->Db_model->k_complete_recursive_up($ks[0],$ks[0],-1);
-        }
-
-        //Returned total intents skipped:
-        return count($skippable_ks);
     }
 
 
@@ -177,7 +187,7 @@ class Db_model extends CI_Model {
             'cr_parent_c_id' => $cr_parent_c_id, //Fetch children of parent intent which are the siblings of current intent
             'cr_child_c_id' => $c_id, //The answer
             'c_status >=' => 2,
-        ), array('w','cr','cr_c_in'));
+        ), array('w','cr','cr_c_parent'));
 
         if(count($chosen_path)==1){
 
@@ -187,7 +197,7 @@ class Db_model extends CI_Model {
                 'cr_parent_c_id' => $cr_parent_c_id, //Fetch children of parent intent which are the siblings of current intent
                 'cr_child_c_id' => $c_id, //The answer
                 'c_status >=' => 2,
-            ), array('w','cr','cr_c_out'));
+            ), array('w','cr','cr_c_child'));
 
             if(count($path_requirements)==1){
                 //Determine status:
@@ -244,7 +254,7 @@ class Db_model extends CI_Model {
                 'cr_child_c_id !=' => $cr['cr_child_c_id'], //NOT The answer (we need its siblings)
                 'c_status >=' => 2,
                 'k_status IN (0,1)' => null,
-            ), array('w','cr','cr_c_out'));
+            ), array('w','cr','cr_c_child'));
 
             //This is the none chosen answers, if any:
             foreach($none_chosen_paths as $k){
@@ -258,7 +268,7 @@ class Db_model extends CI_Model {
             //Regardless of Branch type, we need all children to be complete if we are to mark this as complete...
             //If not, we will mark is as working on...
             //So lets fetch the down tree and see Whatssup:
-            $dwn_tree = $this->Db_model->k_recursive_fetch($w['w_id'], $cr['cr_child_c_id'], 1);
+            $dwn_tree = $this->Db_model->k_recursive_fetch($w['w_id'], $cr['cr_child_c_id'], true);
 
             //Does it have OUTs?
             if(count($dwn_tree['k_flat'])>0){
@@ -287,7 +297,7 @@ class Db_model extends CI_Model {
 
             //Since down tree is now complete, see if up tree needs completion as well:
             //Fetch all parents:
-            $up_tree = $this->Db_model->k_recursive_fetch($w['w_id'], $cr['cr_child_c_id'], 0);
+            $up_tree = $this->Db_model->k_recursive_fetch($w['w_id'], $cr['cr_child_c_id'], false);
             
             //Track completion for all top parents, because if they are all complete, the Subscription might be complete:
             $w_might_be_complete = true;
@@ -301,7 +311,7 @@ class Db_model extends CI_Model {
                     'k_w_id' => $w['w_id'],
                     'c_status >=' => 2,
                     'k_status <' => 2, //Not completed in any way
-                ), array('cr','cr_c_out'));
+                ), array('cr','cr_c_child'));
                 
                 if(count($parent_ks)==1){
 
@@ -1098,10 +1108,10 @@ class Db_model extends CI_Model {
 
             $this->db->join('tb_intent_links cr', 'k.k_cr_id = cr.cr_id');
 
-            if(in_array('cr_c_out',$join_objects)){
+            if(in_array('cr_c_child',$join_objects)){
                 //Also join with subscription row:
                 $this->db->join('tb_intents c', 'c.c_id = cr.cr_child_c_id');
-            } elseif(in_array('cr_c_in',$join_objects)){
+            } elseif(in_array('cr_c_parent',$join_objects)){
                 //Also join with subscription row:
                 $this->db->join('tb_intents c', 'c.c_id = cr.cr_parent_c_id');
             }
@@ -1138,7 +1148,7 @@ class Db_model extends CI_Model {
             foreach($order_columns as $key=>$value){
                 $this->db->order_by($key,$value);
             }
-        } elseif(in_array('cr_c_out',$join_objects)){
+        } elseif(in_array('cr_c_child',$join_objects)){
             //Intent links are cached upon subscription and its important to keep the same order:
             $this->db->order_by('k_cr_child_rank','ASC');
         }
@@ -2571,7 +2581,7 @@ class Db_model extends CI_Model {
             $cs = $this->Db_model->k_fetch(array(
                 'k_w_id' => $w_id,
                 'k_cr_id' => $parent_c['cr_id'],
-            ), array('cr', ($fetch_children ? 'cr_c_out' : 'cr_c_in')));
+            ), array('cr', ($fetch_children ? 'cr_c_child' : 'cr_c_parent')));
         }
 
         //We should have found an item by now:
@@ -2593,7 +2603,7 @@ class Db_model extends CI_Model {
             'k_w_id' => $w_id,
             'c_status >=' => 2,
             ( $fetch_children ? 'cr_parent_c_id' : 'cr_child_c_id' ) => $c_id,
-        ), array('cr',( $fetch_children ? 'cr_c_out' : 'cr_c_in' )));
+        ), array('cr',( $fetch_children ? 'cr_c_child' : 'cr_c_parent' )));
 
 
         if(count($child_cs)>0){
@@ -2715,10 +2725,8 @@ class Db_model extends CI_Model {
                 $new_item['u__e_score'] = intval($item['u__e_score']);
                 $new_item['u_status'] = intval($item['u_status']);
                 $new_item['u_full_name'] = $item['u_full_name'];
-                $new_item['u_icon'] = $item['u_icon'];
                 $new_item['u_keywords'] = $item['u_intro_message'];
                 $new_item['_tags'] = array();
-
 
                 //Tags map parent relation:
                 if(count($item['u__parents'])>0){
