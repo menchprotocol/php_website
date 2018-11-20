@@ -449,7 +449,7 @@ class Comm_model extends CI_Model {
 	        if(substr_count($fb_ref, 'KSTARTSKIP_')==1){
                 $handler = 'KSTARTSKIP_';
             } elseif(substr_count($fb_ref, 'KCANCELSKIP_')==1){
-                $handler = 'KSKIPCANCEL_';
+                $handler = 'KCANCELSKIP_';
             } elseif(substr_count($fb_ref, 'KCONFIRMEDSKIP_')==1){
                 $handler = 'KCONFIRMEDSKIP_';
             }
