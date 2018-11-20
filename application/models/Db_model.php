@@ -150,7 +150,7 @@ class Db_model extends CI_Model {
         $skippable_ks = $this->Db_model->k_fetch(array(
             'k_status IN ('.join(',', $this->config->item('k_status_incomplete')).')' => null, //incomplete
             'k_id IN ('.join(',',$skip_ks).')' => null,
-        ), array('cr','cr_c_child'), array('k_rank'=>'ASC'));
+        ), ( $update_db ? array() : array('cr','cr_c_child') ), array('k_rank'=>'ASC'));
 
         if($update_db){
 
@@ -167,15 +167,11 @@ class Db_model extends CI_Model {
                 $this->Db_model->k_complete_recursive_up($ks[0],$ks[0],-1);
             }
 
-            //Returned total intents skipped:
-            return count($skippable_ks);
-
-        } else {
-
-            //Returned total intents that would be skipped:
-            return $skippable_ks;
-
         }
+
+        //Returned intents:
+        return $skippable_ks;
+
     }
 
 

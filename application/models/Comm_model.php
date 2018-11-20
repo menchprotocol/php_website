@@ -485,6 +485,7 @@ class Comm_model extends CI_Model {
                 $would_be_skipped_count = count($would_be_skipped);
 
                 if($would_be_skipped_count==0){
+
                     //Nothing found to skip! This should not happen, log error:
                     $this->Db_model->e_create(array(
                         'e_value' => 'fb_ref_process() did not find anything to skip for ['.$fb_ref.']',
@@ -504,6 +505,7 @@ class Comm_model extends CI_Model {
                     ));
 
                     return false;
+
                 }
 
 
@@ -546,6 +548,19 @@ class Comm_model extends CI_Model {
                     ),
                 ));
 
+                //Log engagement:
+                $this->Db_model->e_create(array(
+                    'e_value' => 'User considering to skip '.$would_be_skipped_count.' Action Plan intents.',
+                    'e_json' => array(
+                        'would_be_skipped' => $would_be_skipped,
+                        'ref' => $fb_ref,
+                    ),
+                    'e_parent_u_id' => $u['u_id'], //user who searched
+                    'e_parent_c_id' => 7730, //Skip initiated
+                    'e_child_c_id' => $c_id,
+                    'e_w_id' => $w_id,
+                ));
+
             } elseif($handler=='KCONFIRMEDSKIP_' || $handler=='KCANCELSKIP_') {
 
 
@@ -559,6 +574,17 @@ class Comm_model extends CI_Model {
                             'e_child_u_id' => $u['u_id'],
                             'i_message' => 'I am happy you changed your mind! Let\'s continue...',
                         ),
+                    ));
+
+                    //Log engagement:
+                    $this->Db_model->e_create(array(
+                        'e_json' => array(
+                            'ref' => $fb_ref,
+                        ),
+                        'e_parent_u_id' => $u['u_id'], //user who searched
+                        'e_parent_c_id' => 7731, //Skip cancelled
+                        'e_child_c_id' => $c_id,
+                        'e_w_id' => $w_id,
                     ));
 
                     //Reset ranking to find the next real item:
@@ -578,7 +604,20 @@ class Comm_model extends CI_Model {
                     ));
 
                     //Now actually skip and see if we've finished this Action Plan:
-                    $this->Db_model->k_skip_recursive_down($w_id, $c_id, $k_id);
+                    $skippable_ks = $this->Db_model->k_skip_recursive_down($w_id, $c_id, $k_id);
+
+                    //Log engagement:
+                    $this->Db_model->e_create(array(
+                        'e_value' => 'Skipping confirmed on '.count($skippable_ks).' Action Plan intents.',
+                        'e_json' => array(
+                            'ref' => $fb_ref,
+                            'skipped' => $skippable_ks,
+                        ),
+                        'e_parent_u_id' => $u['u_id'], //user who searched
+                        'e_parent_c_id' => 7732, //Skip confirmed
+                        'e_child_c_id' => $c_id,
+                        'e_w_id' => $w_id,
+                    ));
 
                 }
 
