@@ -510,7 +510,7 @@ class Comm_model extends CI_Model {
                 //Construct the message to give more details on skipping:
                 $message = 'You are about to skip these '.$would_be_skipped_count.' insight'.echo__s($would_be_skipped_count).':';
                 foreach($would_be_skipped as $counter=>$k_c){
-                    if(strlen($message)<($this->config->item('fb_max_message')-100)){
+                    if(strlen($message)<($this->config->item('fb_max_message')-200)){
                         //We have enough room to add more:
                         $message .= "\n\n".($counter+1).'/ '.$k_c['c_outcome'];
                     } else {
@@ -1461,9 +1461,6 @@ class Comm_model extends CI_Model {
                                 ));
                             }
                         }
-
-                        //Now informing them that we'll go with the first option:
-                        $message_body .= "\n\n".'We will start with option /1 and work our way through this list.';
                     }
 
                 }
