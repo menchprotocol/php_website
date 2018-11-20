@@ -376,7 +376,7 @@ class Comm_model extends CI_Model {
                             'e_parent_u_id' => 2738, //Initiated by PA
                             'e_child_u_id' => $u['u_id'],
                             'e_child_c_id' => $w_c_id,
-                            'i_message' => 'Here is an overview of this subscription:'."\n\n".
+                            'i_message' => 'Here is an overview:'."\n\n".
                                 echo_intent_overview($fetch_cs[0], 1).
                                 echo_contents($fetch_cs[0], 1).
                                 echo_experts($fetch_cs[0], 1).
@@ -516,7 +516,7 @@ class Comm_model extends CI_Model {
                     } else {
                         //We cannot add any more, indicate truncating:
                         $remainder = $would_be_skipped_count-$counter;
-                        $message .= "\n\n".'And '.$remainder.' more insight'.echo__s($would_be_skipped_count).'!';
+                        $message .= "\n\n".'And '.$remainder.' more insight'.echo__s($remainder).'!';
                         break;
                     }
                 }
@@ -573,12 +573,12 @@ class Comm_model extends CI_Model {
                             'e_child_u_id' => $u['u_id'],
                             'e_child_c_id' => $c_id,
                             'e_w_id' => $w_id,
-                            'i_message' => 'Confirmed, I marked this section as skipped. You can always re-visit them in your Action Plan and complete them at any time. /open_actionplan',
+                            'i_message' => 'Confirmed, I marked this section as skipped. You can always re-visit these insights in your Action Plan and complete them at any time. /open_actionplan',
                         ),
                     ));
 
                     //Now actually skip and see if we've finished this Action Plan:
-                    $total_skipped = $this->Db_model->k_skip_recursive_down($w_id, $c_id, $k_id);
+                    $this->Db_model->k_skip_recursive_down($w_id, $c_id, $k_id);
 
                 }
 
@@ -903,15 +903,15 @@ class Comm_model extends CI_Model {
             'e_parent_u_id' => 1281, //We log Facebook Inbox UI messages sent with this user ID
         ),1))==0) {
 
-            //Fetch their current subscriptions:
+            //Fetch their currently working on subscriptions:
             $current_ws = $this->Db_model->w_fetch(array(
                 'w_child_u_id' => $u['u_id'],
-                'w_status >=' => 0, //Any type of Active subscriptions
+                'w_status' => 1, //Working on...
             ));
 
             if(count($current_ws)==0){
 
-                //They do not have a subscription!
+                //There is nothing in their Action plan that they are working on!
 
                 //Log engagement:
                 $this->Db_model->e_create(array(
@@ -1388,7 +1388,7 @@ class Comm_model extends CI_Model {
         //Do we have a subscription, if so, we need to add a next step message:
         if(isset($e['e_w_id']) && $e['e_w_id']>0){
 
-            $message_body = null;
+            $message = null;
             $quick_replies = array();
 
             //How many children do we have for this intent?
@@ -1405,10 +1405,10 @@ class Comm_model extends CI_Model {
 
                     //See if we need notes/url
                     if($requirement_notes){
-                        $message_body .= $requirement_notes;
+                        $message .= $requirement_notes;
                     } else {
                         //Give option to move on:
-                        $message_body .= 'The next step to '.$cs[0]['c_outcome'].' is to '.$k_outs[0]['c_outcome'].'.';
+                        $message .= 'The next step to '.$cs[0]['c_outcome'].' is to '.$k_outs[0]['c_outcome'].'.';
                         array_push( $quick_replies , array(
                             'content_type' => 'text',
                             'title' => 'Ok Continue ▶️',
@@ -1425,12 +1425,13 @@ class Comm_model extends CI_Model {
 
                     //Note that ANY nodes cannot require a written response or a URL
                     //User needs to choose one of the following:
-                    $message_body .= 'Choose one of these '.count($k_outs).' options to '.$cs[0]['c_outcome'].':';
+                    $message .= 'Choose one of these '.count($k_outs).' options to '.$cs[0]['c_outcome'].':';
                     foreach($k_outs as $counter=>$k){
                         if($counter==10){
                             break; //Quick reply accepts 11 options max!
+                            //We know that the $message length cannot surpass the limit defined by fb_max_message variable!
                         }
-                        $message_body .= "\n\n".($counter+1).'/ '.$k['c_outcome'];
+                        $message .= "\n\n".($counter+1).'/ '.$k['c_outcome'];
                         array_push( $quick_replies , array(
                             'content_type' => 'text',
                             'title' => '/'.($counter+1),
@@ -1443,15 +1444,12 @@ class Comm_model extends CI_Model {
                     //See if we need notes/url
                     if($requirement_notes){
                         //Yes we do:
-                        $message_body .= $requirement_notes;
+                        $message .= $requirement_notes;
                     } else {
                         //No, just show the children:
                         //User needs to complete all children, and we'd recommend the first item as their next step:
-                        $message_body .= 'There are '.count($k_outs).' steps to '.$cs[0]['c_outcome'].':';
+                        $message .= 'There are '.count($k_outs).' steps to '.$cs[0]['c_outcome'].':';
                         foreach($k_outs as $counter=>$k){
-
-                            //Add message:
-                            $message_body .= "\n\n".'Step '.($counter+1).': '.$k['c_outcome'];
 
                             if($counter==0){
                                 array_push( $quick_replies , array(
@@ -1460,9 +1458,19 @@ class Comm_model extends CI_Model {
                                     'payload' => 'MARKCOMPLETE_'.$e['e_w_id'].'_'.$k['k_id'].'_'.$k['k_rank'],
                                 ));
                             }
+
+                            //make sure message is within range:
+                            if(strlen($message)<($this->config->item('fb_max_message')-200)){
+                                //Add message:
+                                $message .= "\n\n".'Step '.($counter+1).': '.$k['c_outcome'];
+                            } else {
+                                //We cannot add any more, indicate truncating:
+                                $remainder = count($k_outs)-$counter;
+                                $message .= "\n\n".'And '.$remainder.' more step'.echo__s($remainder).'!';
+                                break;
+                            }
                         }
                     }
-
                 }
 
 
@@ -1491,7 +1499,7 @@ class Comm_model extends CI_Model {
                 'e_child_u_id' => $e['e_child_u_id'],
                 'e_child_c_id' => $e['e_child_c_id'],
                 'e_w_id' => $e['e_w_id'],
-                'i_message' => $message_body,
+                'i_message' => $message,
                 'quick_replies' => $quick_replies,
             ));
 

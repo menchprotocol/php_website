@@ -7,7 +7,7 @@ date_default_timezone_set('America/Los_Angeles');
 //Cache buster for static files
 $config['app_version'] = '0.6095'.( ( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='local.mench.co' ) ? microtime(true) : '' ); //Updates status css/js cache files
 
-//User case: $this->config->item('fb_max_message')
+//User case: $this->config->item('')
 
 $config['primary_c'] = 6903; //The default platform intent that would be recommended to new students
 $config['primary_u'] = 2738; //The default console entity that is loaded when Entities is clicked

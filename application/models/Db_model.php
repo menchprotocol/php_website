@@ -36,7 +36,7 @@ class Db_model extends CI_Model {
             //The first case is for OR intents that a child is not yet selected, and the second part is for regular incompleted items:
             '(k_status IN (1,-2) AND c_is_any=1)' => null, //Not completed or not yet started
         ), array('w','cr','cr_c_child'), array(
-            'k.k_rank' => 'DESC',
+            'k_rank' => 'DESC',
         ), 1);
 
         //We did not find it? Ok fetch the first one and replace:
@@ -48,7 +48,7 @@ class Db_model extends CI_Model {
             //The first case is for OR intents that a child is not yet selected, and the second part is for regular incompleted items:
             'k_status IN (0,-2)' => null, //Not completed or not yet started
         ), array('w','cr','cr_c_child'), array(
-            'k.k_rank' => 'ASC', //Items are cached in order ;)
+            'k_rank' => 'ASC', //Items are cached in order ;)
         ), 1);
 
         if(isset($first_pending_all[0]) && (!isset($last_working_on_any[0]) || $first_pending_all[0]['k_rank']<$last_working_on_any[0]['k_rank'])){
@@ -1164,7 +1164,7 @@ class Db_model extends CI_Model {
         return $results;
     }
 
-    function w_fetch($match_columns, $join_objects=array(), $order_columns=array(), $limit=0){
+    function w_fetch($match_columns, $join_objects=array(), $order_columns=array('w_c_rank'=>'ASC'), $limit=0){
         //Fetch the target gems:
         $this->db->select('*');
         $this->db->from('tb_actionplans w');
