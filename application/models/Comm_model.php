@@ -566,9 +566,6 @@ class Comm_model extends CI_Model {
 
                 } elseif($handler=='KCONFIRMEDSKIP_') {
 
-                    //They have confirmed, go ahead and skip items:
-                    $total_skipped = $this->Db_model->k_skip_recursive_down($w_id, $c_id, $k_id);
-
                     //Inform them about the skip status:
                     $this->Comm_model->send_message(array(
                         array(
@@ -576,9 +573,12 @@ class Comm_model extends CI_Model {
                             'e_child_u_id' => $u['u_id'],
                             'e_child_c_id' => $c_id,
                             'e_w_id' => $w_id,
-                            'i_message' => 'Ok, I marked '.$total_skipped.' insight'.echo__s($total_skipped).' as skipped. You can always re-visit them in your Action Plan and complete them at any time. /open_actionplan',
+                            'i_message' => 'Confirmed, I marked this section as skipped. You can always re-visit them in your Action Plan and complete them at any time. /open_actionplan',
                         ),
                     ));
+
+                    //Now actually skip and see if we've finished this Action Plan:
+                    $total_skipped = $this->Db_model->k_skip_recursive_down($w_id, $c_id, $k_id);
 
                 }
 
