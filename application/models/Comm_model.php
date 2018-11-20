@@ -644,14 +644,14 @@ class Comm_model extends CI_Model {
             $k_rank = intval($input_parts[2]);
             if($w_id>0 && $k_id>0 && $k_rank>0){
 
-                //Fetch this relation:
-                $ks = $this->Db_model->k_fetch(array(
+                //Fetch child intent first to check requirements:
+                $k_children = $this->Db_model->k_fetch(array(
                     'w_id' => $w_id,
                     'k_id' => $k_id,
-                ), array('w','cr','cr_c_parent'));
+                ), array('w','cr','cr_c_child'));
 
                 //Do we need any additional information?
-                $requirement_notes = echo_c_requirements($ks[0]);
+                $requirement_notes = echo_c_requirements($k_children[0]);
                 if($requirement_notes){
 
                     //yes do, let them know that they can only complete via the Action Plan:
@@ -659,7 +659,7 @@ class Comm_model extends CI_Model {
                         array(
                             'e_parent_u_id' => 2738, //Initiated by PA
                             'e_child_u_id' => $u['u_id'],
-                            'e_child_c_id' => $ks[0]['c_id'],
+                            'e_child_c_id' => $k_children[0]['c_id'],
                             'e_w_id' => $w_id,
                             'i_message' => $requirement_notes.', which you can submit using your Action Plan. /open_actionplan',
                         ),
@@ -667,8 +667,14 @@ class Comm_model extends CI_Model {
 
                 } else {
 
+                    //Fetch parent intent to mark as complete:
+                    $k_parents = $this->Db_model->k_fetch(array(
+                        'w_id' => $w_id,
+                        'k_id' => $k_id,
+                    ), array('w','cr','cr_c_parent'));
+
                     //No requirements, Update this intent and move on:
-                    $this->Db_model->k_complete_recursive_up($ks[0], $ks[0]);
+                    $this->Db_model->k_complete_recursive_up($k_parents[0], $k_parents[0]);
 
                     //Go to next item:
                     $ks_next = $this->Db_model->k_next_fetch($w_id);
