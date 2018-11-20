@@ -257,7 +257,7 @@ class Db_model extends CI_Model {
             //This is the none chosen answers, if any:
             foreach($none_chosen_paths as $k){
                 //Skip this intent:
-                $total_skipped += $this->Db_model->k_skip_recursive_down($w['w_id'], $k['c_id'], $k['k_id']);
+                $total_skipped += count($this->Db_model->k_skip_recursive_down($w['w_id'], $k['c_id'], $k['k_id']));
             }
         }
 
@@ -620,7 +620,7 @@ class Db_model extends CI_Model {
             'cr_parent_c_id'  => intval($c_id),
             'cr_child_c_id' => $new_c['c_id'],
             'cr_child_rank' => 1 + $this->Db_model->max_value('tb_intent_links','cr_child_rank', array(
-                    'cr_status >=' => 1,
+                    'cr_status' => 1,
                     'c_status >=' => 0,
                     'cr_parent_c_id' => intval($c_id),
                 )),
@@ -1256,9 +1256,9 @@ class Db_model extends CI_Model {
             }
 
             if(in_array('c__parents',$join_objects)){
-                $intents[$key]['c__parents'] = $this->Db_model->cr_parent_fetch(array(
+                $intents[$key]['c__parents'] = $this->Db_model->cr_parents_fetch(array(
                     'cr.cr_child_c_id' => $value['c_id'],
-                    'cr.cr_status >=' => 1,
+                    'cr.cr_status' => 1,
                 ) , $join_objects);
             }
 
@@ -1267,7 +1267,7 @@ class Db_model extends CI_Model {
                 //Do the first level:
                 $intents[$key]['c__child_intents'] = $this->Db_model->cr_children_fetch(array(
                     'cr.cr_parent_c_id' => $value['c_id'],
-                    'cr.cr_status >=' => 1,
+                    'cr.cr_status' => 1,
                     'c.c_status >=' => 0,
                 ) , $join_objects );
 
@@ -1278,7 +1278,7 @@ class Db_model extends CI_Model {
                     foreach($intents[$key]['c__child_intents'] as $key2=>$value2){
                         $intents[$key]['c__child_intents'][$key2]['c__child_intents'] = $this->Db_model->cr_children_fetch(array(
                             'cr.cr_parent_c_id' => $value2['c_id'],
-                            'cr.cr_status >=' => 1,
+                            'cr.cr_status' => 1,
                             'c.c_status >=' => 0,
                         ) , $join_objects );
                     }
@@ -1325,7 +1325,7 @@ class Db_model extends CI_Model {
 		return $return;
 	}
 	
-	function cr_parent_fetch($match_columns,$join_objects=array()){
+	function cr_parents_fetch($match_columns,$join_objects=array()){
 		//Missing anything?
 		$this->db->select('*');
 		$this->db->from('tb_intents c');
@@ -1343,7 +1343,7 @@ class Db_model extends CI_Model {
                     //Fetch children:
                     $return[$key]['c__child_intents'] = $this->Db_model->cr_children_fetch(array(
                         'cr.cr_parent_c_id' => $value['c_id'],
-                        'cr.cr_status >=' => 0,
+                        'cr.cr_status' => 1,
                         'c.c_status >=' => 0,
                     ));
                 }
@@ -2181,7 +2181,7 @@ class Db_model extends CI_Model {
                     'cr.cr_id' => $parent_c['cr_id'],
                 ), ( $update_c_table ? array('c__messages') : array() ));
             } else {
-                $cs = $this->Db_model->cr_parent_fetch(array(
+                $cs = $this->Db_model->cr_parents_fetch(array(
                     'cr.cr_id' => $parent_c['cr_id'],
                 ), ( $update_c_table ? array('c__messages') : array() ));
             }
@@ -2233,13 +2233,13 @@ class Db_model extends CI_Model {
         if($fetch_children){
             $child_cs = $this->Db_model->cr_children_fetch(array(
                 'cr.cr_parent_c_id' => $c_id,
-                'cr.cr_status >=' => 0,
+                'cr.cr_status' => 1,
                 'c.c_status >=' => 0,
             ));
         } else {
-            $child_cs = $this->Db_model->cr_parent_fetch(array(
+            $child_cs = $this->Db_model->cr_parents_fetch(array(
                 'cr.cr_child_c_id' => $c_id,
-                'cr.cr_status >=' => 0,
+                'cr.cr_status' => 1,
                 'c.c_status >=' => 0,
             ));
         }
@@ -2784,9 +2784,9 @@ class Db_model extends CI_Model {
                 //Append parent intents:
                 $new_item['_tags'] = array();
 
-                $child_cs = $this->Db_model->cr_parent_fetch(array(
+                $child_cs = $this->Db_model->cr_parents_fetch(array(
                     'cr.cr_child_c_id' => $item['c_id'],
-                    'cr.cr_status >=' => 1,
+                    'cr.cr_status' => 1,
                     'c.c_status >=' => 0,
                 ));
 

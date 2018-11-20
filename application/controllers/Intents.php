@@ -47,9 +47,9 @@ class Intents extends CI_Controller
             'title' => $cs[0]['c_outcome'],
             'c' => $cs[0],
             'orphan_c_count' => $orphan_c_count,
-            'c__parents' => $this->Db_model->cr_parent_fetch(array(
+            'c__parents' => $this->Db_model->cr_parents_fetch(array(
                 'cr.cr_child_c_id' => $parent_c_id,
-                'cr.cr_status >=' => 1,
+                'cr.cr_status' => 1,
             ), array('c__child_intents')),
         );
 
@@ -471,9 +471,9 @@ class Intents extends CI_Controller
         }
 
         //Fetch parent ID:
-        $c__parents = $this->Db_model->cr_parent_fetch(array(
+        $c__parents = $this->Db_model->cr_parents_fetch(array(
             'cr.cr_id' => $_POST['cr_id'],
-            'cr.cr_status >=' => 1,
+            'cr.cr_status' => 1,
         ));
         if(!isset($c__parents[0])){
             echo_json(array(
@@ -502,9 +502,9 @@ class Intents extends CI_Controller
 
 
         //Did this intent become an orphan? Does it still have any other parents?
-        if(0==count($this->Db_model->cr_parent_fetch(array(
+        if(0==count($this->Db_model->cr_parents_fetch(array(
                 'cr.cr_child_c_id' => $_POST['c_id'],
-                'cr.cr_status >=' => 1,
+                'cr.cr_status' => 1,
             )))){
             //We made this orphan!
             $this->Db_model->c_update( intval($_POST['c_id']) , array(
@@ -551,9 +551,9 @@ class Intents extends CI_Controller
         //Update orphan status:
         foreach($orphans as $c){
             //Is it an orphan?
-            $c__parents = $this->Db_model->cr_parent_fetch(array(
+            $c__parents = $this->Db_model->cr_parents_fetch(array(
                 'cr.cr_child_c_id' => $c['c_id'],
-                'cr.cr_status >=' => 1,
+                'cr.cr_status' => 1,
             ));
 
             if((!count($c__parents) && !intval($c['c__is_orphan'])) || (count($c__parents) && intval($c['c__is_orphan']))){
@@ -608,7 +608,7 @@ class Intents extends CI_Controller
                 //Fetch for the record:
                 $children_before = $this->Db_model->cr_children_fetch(array(
                     'cr.cr_parent_c_id' => intval($_POST['c_id']),
-                    'cr.cr_status >=' => 0,
+                    'cr.cr_status' => 1,
                 ));
 
                 //Update them all:
@@ -623,7 +623,7 @@ class Intents extends CI_Controller
                 //Fetch for the record:
                 $children_after = $this->Db_model->cr_children_fetch(array(
                     'cr.cr_parent_c_id' => intval($_POST['c_id']),
-                    'cr.cr_status >=' => 0,
+                    'cr.cr_status' => 1,
                 ));
 
                 //Log Engagement:

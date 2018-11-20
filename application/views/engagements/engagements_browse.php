@@ -58,8 +58,8 @@ foreach($engagement_filters as $key=>$value){
 
         //Fetch all engagements from intent #6653
         $all_engs = $this->Db_model->cr_children_fetch(array(
-            'cr.cr_parent_c_id' => 6653,
-            'cr.cr_status >=' => 1,
+            'cr.cr_parent_c_id IN (7720,7719,7722,7723)' => null, //The 4 branches of #Log platform engagements #6653
+            'cr.cr_status' => 1,
             'c.c_status >=' => 0,
         ));
 

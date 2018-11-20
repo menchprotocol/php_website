@@ -285,7 +285,7 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
             if($fb_format){
 
                 //Show an option to open action plan:
-                $i['i_message'] = str_replace('@'.$i['i_u_id'], $us[0]['u_full_name'].' /open_actionplan', $i['i_message']);
+                $i['i_message'] = str_replace('@'.$i['i_u_id'], $us[0]['u_full_name'], $i['i_message']);
 
                 if(substr_count($i['i_message'],'/slice')>0){
                     $time_range = explode(':', one_two_explode('/slice:',' ',$i['i_message']) ,2);

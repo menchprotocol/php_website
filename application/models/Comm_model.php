@@ -465,7 +465,7 @@ class Comm_model extends CI_Model {
             if(!($w_id>0 && $c_id>0 && $k_id>0 && $k_rank>0)){
                 //Log Unknown error:
                 $this->Db_model->e_create(array(
-                    'e_value' => 'fb_ref_process() function failed to fetch proper data for SKIP request with reference value ['.$fb_ref.']',
+                    'e_value' => 'fb_ref_process() failed to fetch proper data for '.$handler.' request with reference value ['.$fb_ref.']',
                     'e_parent_c_id' => 8, //Platform Error
                     'e_json' => $u,
                     'e_w_id' => $w_id,
@@ -698,32 +698,42 @@ class Comm_model extends CI_Model {
             $cr_parent_c_id = intval($input_parts[1]);
             $c_id = intval($input_parts[2]);
             $k_rank = intval($input_parts[3]);
-            if ($w_id > 0 && $cr_parent_c_id > 0 && $c_id > 0 && $k_rank > 0) {
 
-                //Confirm answer received:
-                $this->Comm_model->send_message(array(
-                    array(
+            if(!($w_id>0 && $cr_parent_c_id>0 && $c_id>0 && $k_rank>0)) {
+                //Log Unknown error:
+                $this->Db_model->e_create(array(
+                    'e_value' => 'fb_ref_process() failed to fetch proper data for CHOOSEOR_ request with reference value [' . $fb_ref . ']',
+                    'e_parent_c_id' => 8, //Platform Error
+                    'e_json' => $u,
+                    'e_w_id' => $w_id,
+                    'e_child_c_id' => $c_id,
+                ));
+                return false;
+            }
+
+            //Confirm answer received:
+            $this->Comm_model->send_message(array(
+                array(
+                    'e_parent_u_id' => 2738, //Initiated by PA
+                    'e_child_u_id' => $u['u_id'],
+                    'e_child_c_id' => $c_id,
+                    'e_w_id' => $w_id,
+                    'i_message' => echo_pa_saved(),
+                ),
+            ));
+
+            //Now save answer:
+            if ($this->Db_model->k_choose_or($w_id, $cr_parent_c_id, $c_id)) {
+                //Find the next item to navigate them to:
+                $ks_next = $this->Db_model->k_next_fetch($w_id, $k_rank);
+                if ($ks_next) {
+                    //Now move on to communicate the next step.
+                    $this->Comm_model->compose_messages(array(
                         'e_parent_u_id' => 2738, //Initiated by PA
                         'e_child_u_id' => $u['u_id'],
-                        'e_child_c_id' => $c_id,
+                        'e_child_c_id' => $ks_next[0]['c_id'],
                         'e_w_id' => $w_id,
-                        'i_message' => echo_pa_saved(),
-                    ),
-                ));
-
-                //Now save answer:
-                if ($this->Db_model->k_choose_or($w_id, $cr_parent_c_id, $c_id)) {
-                    //Find the next item to navigate them to:
-                    $ks_next = $this->Db_model->k_next_fetch($w_id, $k_rank);
-                    if ($ks_next) {
-                        //Now move on to communicate the next step.
-                        $this->Comm_model->compose_messages(array(
-                            'e_parent_u_id' => 2738, //Initiated by PA
-                            'e_child_u_id' => $u['u_id'],
-                            'e_child_c_id' => $ks_next[0]['c_id'],
-                            'e_w_id' => $w_id,
-                        ));
-                    }
+                    ));
                 }
             }
 
@@ -1417,6 +1427,7 @@ class Comm_model extends CI_Model {
 
         }
 
+
         //Append main object messages:
         if(!$skip_messages && isset($cs[0]['c__messages']) && count($cs[0]['c__messages'])>0){
             //We have messages for the very first level!
@@ -1430,126 +1441,124 @@ class Comm_model extends CI_Model {
 
 
         //Do we have a subscription, if so, we need to add a next step message:
-        if(isset($e['e_w_id']) && $e['e_w_id']>0){
+        if($requirement_notes){
+
+            //URL or a written response is required, let them know that they should complete using the Action Plan:
+            array_push($instant_messages , array(
+                'e_parent_u_id' => 2738, //Initiated by PA
+                'e_child_u_id' => $e['e_child_u_id'],
+                'e_child_c_id' => $e['e_child_c_id'],
+                'e_w_id' => $e['e_w_id'],
+                'i_message' => $requirement_notes,
+            ));
+
+        } elseif(isset($e['e_w_id']) && $e['e_w_id']>0){
 
             $message = null;
             $quick_replies = array();
 
-            if($requirement_notes){
+            //Nothing is required to mark as complete, which means we can move forward with this:
+            //How many children do we have for this intent?
+            if(count($k_outs)<=1){
 
-                //yes do, let them know that they can only complete via the Action Plan:
-                array_push($instant_messages , array(
-                    'e_parent_u_id' => 2738, //Initiated by PA
-                    'e_child_u_id' => $e['e_child_u_id'],
-                    'e_child_c_id' => $e['e_child_c_id'],
-                    'e_w_id' => $e['e_w_id'],
-                    'i_message' => $requirement_notes,
-                ));
+                //We have 0-1 child intents! If zero, let's see what the next step:
+                if(count($k_outs)==0){
+                    //Let's try to find the next item in tree:
+                    $k_outs = $this->Db_model->k_next_fetch($e['e_w_id']);
+                }
+
+                //Do we have a next intent?
+                if(count($k_outs)>0 && !($k_outs[0]['c_id']==$cs[0]['c_id'])){
+
+                    //Give option to move on:
+                    $message .= 'The next step to '.$cs[0]['c_outcome'].' is to '.$k_outs[0]['c_outcome'].'.';
+                    array_push( $quick_replies , array(
+                        'content_type' => 'text',
+                        'title' => 'Ok Continue ▶️',
+                        'payload' => 'MARKCOMPLETE_'.$e['e_w_id'].'_'.$k_outs[0]['k_id'].'_'.$k_outs[0]['k_rank'], //Here are are using MARKCOMPLETE_ also for OR branches with a single option... Maybe we need to change this later?! For now it feels ok to do so...
+                    ));
+
+                }
 
             } else {
 
-                //How many children do we have for this intent?
-                if(count($k_outs)<=1){
+                //We have multiple children that are pending completion...
+                //Is it ALL or ANY?
+                if(intval($cs[0]['c_is_any'])){
 
-                    //We have 0-1 child intents! If zero, let's see what the next step:
-                    if(count($k_outs)==0){
-                        //Let's try to find the next item in tree:
-                        $k_outs = $this->Db_model->k_next_fetch($e['e_w_id']);
-                    }
-
-                    //Do we have a next intent?
-                    if(count($k_outs)>0 && !($k_outs[0]['c_id']==$cs[0]['c_id'])){
-
-                        //Give option to move on:
-                        $message .= 'The next step to '.$cs[0]['c_outcome'].' is to '.$k_outs[0]['c_outcome'].'.';
+                    //Note that ANY nodes cannot require a written response or a URL
+                    //User needs to choose one of the following:
+                    $message .= 'Choose one of these '.count($k_outs).' options to '.$cs[0]['c_outcome'].':';
+                    foreach($k_outs as $counter=>$k){
+                        if($counter==10){
+                            break; //Quick reply accepts 11 options max!
+                            //We know that the $message length cannot surpass the limit defined by fb_max_message variable!
+                        }
+                        $message .= "\n\n".($counter+1).'/ '.$k['c_outcome'];
                         array_push( $quick_replies , array(
                             'content_type' => 'text',
-                            'title' => 'Ok Continue ▶️',
-                            'payload' => 'MARKCOMPLETE_'.$e['e_w_id'].'_'.$k_outs[0]['k_id'].'_'.$k_outs[0]['k_rank'], //Here are are using MARKCOMPLETE_ also for OR branches with a single option... Maybe we need to change this later?! For now it feels ok to do so...
+                            'title' => '/'.($counter+1),
+                            'payload' => 'CHOOSEOR_'.$e['e_w_id'].'_'.$e['e_child_c_id'].'_'.$k['c_id'].'_'.$k['k_rank'],
                         ));
-
                     }
 
                 } else {
 
-                    //We have multiple children that are pending completion...
-                    //Is it ALL or ANY?
-                    if(intval($cs[0]['c_is_any'])){
+                    //User needs to complete all children, and we'd recommend the first item as their next step:
+                    $message .= 'There are '.count($k_outs).' steps to '.$cs[0]['c_outcome'].':';
+                    foreach($k_outs as $counter=>$k){
 
-                        //Note that ANY nodes cannot require a written response or a URL
-                        //User needs to choose one of the following:
-                        $message .= 'Choose one of these '.count($k_outs).' options to '.$cs[0]['c_outcome'].':';
-                        foreach($k_outs as $counter=>$k){
-                            if($counter==10){
-                                break; //Quick reply accepts 11 options max!
-                                //We know that the $message length cannot surpass the limit defined by fb_max_message variable!
-                            }
-                            $message .= "\n\n".($counter+1).'/ '.$k['c_outcome'];
+                        if($counter==0){
                             array_push( $quick_replies , array(
                                 'content_type' => 'text',
-                                'title' => '/'.($counter+1),
-                                'payload' => 'CHOOSEOR_'.$e['e_w_id'].'_'.$e['e_child_c_id'].'_'.$k['c_id'].'_'.$k['k_rank'],
+                                'title' => 'Start Step 1 ▶️',
+                                'payload' => 'MARKCOMPLETE_'.$e['e_w_id'].'_'.$k['k_id'].'_'.$k['k_rank'],
                             ));
                         }
 
-                    } else {
-
-                        //User needs to complete all children, and we'd recommend the first item as their next step:
-                        $message .= 'There are '.count($k_outs).' steps to '.$cs[0]['c_outcome'].':';
-                        foreach($k_outs as $counter=>$k){
-
-                            if($counter==0){
-                                array_push( $quick_replies , array(
-                                    'content_type' => 'text',
-                                    'title' => 'Start Step 1 ▶️',
-                                    'payload' => 'MARKCOMPLETE_'.$e['e_w_id'].'_'.$k['k_id'].'_'.$k['k_rank'],
-                                ));
-                            }
-
-                            //make sure message is within range:
-                            if(strlen($message)<($this->config->item('fb_max_message')-200)){
-                                //Add message:
-                                $message .= "\n\n".'Step '.($counter+1).': '.$k['c_outcome'];
-                            } else {
-                                //We cannot add any more, indicate truncating:
-                                $remainder = count($k_outs)-$counter;
-                                $message .= "\n\n".'And '.$remainder.' more step'.echo__s($remainder).'!';
-                                break;
-                            }
+                        //make sure message is within range:
+                        if(strlen($message)<($this->config->item('fb_max_message')-200)){
+                            //Add message:
+                            $message .= "\n\n".'Step '.($counter+1).': '.$k['c_outcome'];
+                        } else {
+                            //We cannot add any more, indicate truncating:
+                            $remainder = count($k_outs)-$counter;
+                            $message .= "\n\n".'And '.$remainder.' more step'.echo__s($remainder).'!';
+                            break;
                         }
-
                     }
 
-
-                    //As long as $e['e_child_c_id'] is NOT equal to w_c_id, then we will have a k_out relation so we can give the option to skip:
-                    $k_ins = $this->Db_model->k_fetch(array(
-                        'w_id' => $e['e_w_id'],
-                        'w_status IN (0,1)' => null, //Active subscriptions only
-                        'cr_child_c_id' => $e['e_child_c_id'],
-                    ), array('w','cr','cr_c_child'));
-
-
-                    if(count($k_ins)>0){
-                        //Give option to skip if NOT the main intent of the subscription:
-                        array_push( $quick_replies , array(
-                            'content_type' => 'text',
-                            'title' => 'Skip',
-                            'payload' => 'KSTARTSKIP_'.$e['e_w_id'].'_'.$e['e_child_c_id'].'_'.$k_ins[0]['k_id'].'_'.$k_ins[0]['k_rank'],
-                        ));
-                    }
                 }
 
-                //Append next-step message:
-                array_push($instant_messages , array(
-                    'e_parent_u_id' => 2738, //Initiated by PA
-                    'e_child_u_id' => $e['e_child_u_id'],
-                    'e_child_c_id' => $e['e_child_c_id'],
-                    'e_w_id' => $e['e_w_id'],
-                    'i_message' => $message,
-                    'quick_replies' => $quick_replies,
-                ));
 
+                //As long as $e['e_child_c_id'] is NOT equal to w_c_id, then we will have a k_out relation so we can give the option to skip:
+                $k_ins = $this->Db_model->k_fetch(array(
+                    'w_id' => $e['e_w_id'],
+                    'w_status IN (0,1)' => null, //Active subscriptions only
+                    'cr_child_c_id' => $e['e_child_c_id'],
+                ), array('w','cr','cr_c_child'));
+
+
+                if(count($k_ins)>0){
+                    //Give option to skip if NOT the main intent of the subscription:
+                    array_push( $quick_replies , array(
+                        'content_type' => 'text',
+                        'title' => 'Skip',
+                        'payload' => 'KSTARTSKIP_'.$e['e_w_id'].'_'.$e['e_child_c_id'].'_'.$k_ins[0]['k_id'].'_'.$k_ins[0]['k_rank'],
+                    ));
+                }
             }
+
+            //Append next-step message:
+            array_push($instant_messages , array(
+                'e_parent_u_id' => 2738, //Initiated by PA
+                'e_child_u_id' => $e['e_child_u_id'],
+                'e_child_c_id' => $e['e_child_c_id'],
+                'e_w_id' => $e['e_w_id'],
+                'i_message' => $message,
+                'quick_replies' => $quick_replies,
+            ));
+
         }
 
 
