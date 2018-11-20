@@ -444,7 +444,7 @@ class Comm_model extends CI_Model {
                 }
             }
 
-        } elseif(substr_count($fb_ref, 'KCONFIRMEDSKIP_')==1 || substr_count($fb_ref, 'KSTARTSKIP_')==1 || substr_count($fb_ref, 'KSTARTSKIP_CANCEL')==1){
+        } elseif(substr_count($fb_ref, 'KCONFIRMEDSKIP_')==1 || substr_count($fb_ref, 'KSTARTSKIP_')==1 || substr_count($fb_ref, 'KCANCELSKIP_')==1){
 
 	        if(substr_count($fb_ref, 'KSTARTSKIP_')==1){
                 $handler = 'KSTARTSKIP_';
