@@ -561,6 +561,9 @@ class Comm_model extends CI_Model {
                         ),
                     ));
 
+                    //Reset ranking to find the next real item:
+                    $k_rank = 0;
+
                 } elseif($handler=='KCONFIRMEDSKIP_') {
 
                     //They have confirmed, go ahead and skip items:
