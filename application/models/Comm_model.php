@@ -1425,7 +1425,7 @@ class Comm_model extends CI_Model {
 
                     //Note that ANY nodes cannot require a written response or a URL
                     //User needs to choose one of the following:
-                    $message_body .= 'There are '.count($k_outs).' options to '.$cs[0]['c_outcome'].':';
+                    $message_body .= 'Choose one of these '.count($k_outs).' options to '.$cs[0]['c_outcome'].':';
                     foreach($k_outs as $counter=>$k){
                         if($counter==10){
                             break; //Quick reply accepts 11 options max!
