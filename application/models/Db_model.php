@@ -1449,63 +1449,22 @@ class Db_model extends CI_Model {
     }
 
 
-    function ur_search_place($child_u_id, $ur_notes, $parent_parent_u_id){
+    function ur_search_place($child_u_id, $ur_notes_search, $parent_parent_u_id, $ur_notes_update=null){
 
-        //This function would attempt to place $child_u_id as a child of $parent_u_id
+        //This function would attempt to find a child of $parent_parent_u_id that its ur_notes=$ur_notes
+        //Once it finds it, then it would place it under that as long as it does not exist...
 
         //first make sure not already assigned:
-        $existing = $this->Db_model->ur_children_fetch(array(
-            'ur_parent_u_id' => $parent_u_id,
-            'ur_child_u_id' => $child_u_id,
+        $found_parent = $this->Db_model->ur_children_fetch(array(
+            'ur_parent_u_id' => $parent_parent_u_id,
+            'LOWER(ur_notes)' => trim(strtolower($ur_notes_search)),
         ));
 
-        if(count($existing)>0){
-
-            $update_array = array();
-            //We have it already! We might need to update it:
-            if($existing[0]['ur_status']==-1){
-                $update_array['ur_status'] = 1; //Bring back to life
-                $update_array['ur_notes'] = $ur_notes; //Assign notes anyways since this was deleted!
-            } elseif(strlen($existing[0]['ur_notes'])==0){
-                //We can update its notes since there is nothing there:
-                $update_array['ur_notes'] = $ur_notes;
-            } else {
-                //We can't do anything since its an active entity link with a note
-                return false;
-            }
-
-            //Still here? Update then:
-            $this->Db_model->ur_update($existing[0]['ur_id'], $update_array);
-
-            //Log engagement:
-            $this->Db_model->e_create(array(
-                'e_parent_c_id' => 7727, //entity link note modification
-                'e_ur_id' => $existing[0]['ur_id'],
-                'e_json' => array(
-                    'before' => $existing[0],
-                    'after' => $update_array,
-                ),
-            ));
-
-            return true;
-
+        if(count($found_parent)>0){
+            return $this->Db_model->ur_place($child_u_id, $found_parent[0]['u_id'], $ur_notes_update);
         } else {
-
-            //Create new one:
-            $new_ur = $this->Db_model->ur_create(array(
-                'ur_child_u_id' => $child_u_id,
-                'ur_parent_u_id' => $parent_u_id,
-                'ur_notes' => $ur_notes,
-            ));
-
-            //Log Engagement new entity link:
-            $this->Db_model->e_create(array(
-                'e_ur_id' => $new_ur['ur_id'],
-                'e_parent_c_id' => 7291, //Entity Link Create
-            ));
-
-            return true;
-
+            //Unable to locate the parent:
+            return false;
         }
     }
 
