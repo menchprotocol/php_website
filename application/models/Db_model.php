@@ -598,13 +598,6 @@ class Db_model extends CI_Model {
                 );
             }
 
-            //Remove orphan status if that was the case before:
-            if(intval($new_c['c__is_orphan'])){
-                $this->Db_model->c_update( $new_c['c_id'] , array(
-                    'c__is_orphan' => 0,
-                ));
-            }
-
             //Prepare recursive update:
             $recursive_query = array(
                 'c__tree_all_count' => $new_c['c__tree_all_count'],
@@ -1455,12 +1448,125 @@ class Db_model extends CI_Model {
         return $this->db->affected_rows();
     }
 
-    function ur_archive($id){
-        //Update status:
-        $this->Db_model->ur_update($id, array(
-            'ur_status' => -1,
+
+    function ur_search_place($child_u_id, $ur_notes, $parent_parent_u_id){
+
+        //This function would attempt to place $child_u_id as a child of $parent_u_id
+
+        //first make sure not already assigned:
+        $existing = $this->Db_model->ur_children_fetch(array(
+            'ur_parent_u_id' => $parent_u_id,
+            'ur_child_u_id' => $child_u_id,
         ));
-        return $this->db->affected_rows();
+
+        if(count($existing)>0){
+
+            $update_array = array();
+            //We have it already! We might need to update it:
+            if($existing[0]['ur_status']==-1){
+                $update_array['ur_status'] = 1; //Bring back to life
+                $update_array['ur_notes'] = $ur_notes; //Assign notes anyways since this was deleted!
+            } elseif(strlen($existing[0]['ur_notes'])==0){
+                //We can update its notes since there is nothing there:
+                $update_array['ur_notes'] = $ur_notes;
+            } else {
+                //We can't do anything since its an active entity link with a note
+                return false;
+            }
+
+            //Still here? Update then:
+            $this->Db_model->ur_update($existing[0]['ur_id'], $update_array);
+
+            //Log engagement:
+            $this->Db_model->e_create(array(
+                'e_parent_c_id' => 7727, //entity link note modification
+                'e_ur_id' => $existing[0]['ur_id'],
+                'e_json' => array(
+                    'before' => $existing[0],
+                    'after' => $update_array,
+                ),
+            ));
+
+            return true;
+
+        } else {
+
+            //Create new one:
+            $new_ur = $this->Db_model->ur_create(array(
+                'ur_child_u_id' => $child_u_id,
+                'ur_parent_u_id' => $parent_u_id,
+                'ur_notes' => $ur_notes,
+            ));
+
+            //Log Engagement new entity link:
+            $this->Db_model->e_create(array(
+                'e_ur_id' => $new_ur['ur_id'],
+                'e_parent_c_id' => 7291, //Entity Link Create
+            ));
+
+            return true;
+
+        }
+    }
+
+    function ur_place($child_u_id, $parent_u_id, $ur_notes=null){
+
+        //This function would attempt to place $child_u_id as a child of $parent_u_id
+
+        //first make sure not already assigned:
+        $existing = $this->Db_model->ur_children_fetch(array(
+            'ur_parent_u_id' => $parent_u_id,
+            'ur_child_u_id' => $child_u_id,
+        ));
+
+        if(count($existing)>0){
+
+            $update_array = array();
+            //We have it already! We might need to update it:
+            if($existing[0]['ur_status']==-1){
+                $update_array['ur_status'] = 1; //Bring back to life
+                $update_array['ur_notes'] = $ur_notes; //Assign notes anyways since this was deleted!
+            } elseif(strlen($existing[0]['ur_notes'])==0){
+                //We can update its notes since there is nothing there:
+                $update_array['ur_notes'] = $ur_notes;
+            } else {
+                //We can't do anything since its an active entity link with a note
+                return false;
+            }
+
+            //Still here? Update then:
+            $this->Db_model->ur_update($existing[0]['ur_id'], $update_array);
+
+            //Log engagement:
+            $this->Db_model->e_create(array(
+                'e_parent_c_id' => 7727, //entity link note modification
+                'e_ur_id' => $existing[0]['ur_id'],
+                'e_json' => array(
+                    'before' => $existing[0],
+                    'after' => $update_array,
+                ),
+            ));
+
+            return true;
+
+        } else {
+
+            //Create new one:
+            $new_ur = $this->Db_model->ur_create(array(
+                'ur_child_u_id' => $child_u_id,
+                'ur_parent_u_id' => $parent_u_id,
+                'ur_notes' => $ur_notes,
+            ));
+
+            //Log Engagement new entity link:
+            $this->Db_model->e_create(array(
+                'e_ur_id' => $new_ur['ur_id'],
+                'e_parent_c_id' => 7291, //Entity Link Create
+            ));
+
+            return true;
+
+        }
     }
 
 
@@ -2731,19 +2837,28 @@ class Db_model extends CI_Model {
                     //Loop through parent entities:
                     foreach($item['u__parents'] as $u_id=>$u){
                         array_push($new_item['_tags'],'u'.$u_id);
-                        if(!in_array($u_id, array(2738,1278,1326,3089,2750))){
-                            $new_item['u_keywords'] .= ' '.$u['u_full_name'];
-                        }
+                    }
+                    if(intval($item['u__is_orphan'])){
+                        //Sync orphan status if not appropriate:
+                        $this->Db_model->u_update( $item['u_id'] , array(
+                            'u__is_orphan' => 0,
+                        ));
                     }
                 } else {
-                    //No parent entities
+                    //Entity seems orphan:
                     array_push($new_item['_tags'],'noparent');
+                    if(!intval($item['u__is_orphan'])){
+                        //Sync orphan status if not appropriate:
+                        $this->Db_model->u_update( $item['u_id'] , array(
+                            'u__is_orphan' => 1,
+                        ));
+                    }
                 }
 
 
-                //Add Entity as tag of Entity itself for search management:
-                if($item['u_id']==2738){
-                    array_push($new_item['_tags'],'u2738');
+                //Add primary Entity as tag of Entity itself for search management:
+                if($item['u_id']==$this->config->item('primary_u')){
+                    array_push($new_item['_tags'],'u'.$this->config->item('primary_u'));
                 }
 
                 //Append additional information:
@@ -2795,9 +2910,21 @@ class Db_model extends CI_Model {
                     foreach($child_cs as $c){
                         array_push($new_item['_tags'],'c'.$c['c_id']);
                     }
+                    //Sync orphan status if not appropriate:
+                    if(intval($item['c__is_orphan'])){
+                        $this->Db_model->c_update( $item['c_id'] , array(
+                            'c__is_orphan' => 0,
+                        ));
+                    }
                 } else {
                     //No parents!
                     array_push($new_item['_tags'],'noparent');
+                    //Sync orphan status if not appropriate:
+                    if(!intval($item['c__is_orphan'])){
+                        $this->Db_model->c_update( $item['c_id'] , array(
+                            'c__is_orphan' => 1,
+                        ));
+                    }
                 }
             }
 

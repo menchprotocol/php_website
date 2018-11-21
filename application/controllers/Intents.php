@@ -543,44 +543,6 @@ class Intents extends CI_Controller
     }
 
 
-    function c_sync(){
-
-        $c_id=$this->config->item('primary_c');
-        $sync = $this->Db_model->c_recursive_fetch($c_id,true,true);
-
-        //Check how many are outside of this:
-        $orphans = $this->Db_model->c_fetch(array(
-            'c.c_id NOT IN ('.join(',',$sync['c_flat']).')' => null,
-            'c.c_status >=' => 0,
-        ));
-        $sync['orphan_count_update'] = 0;
-        $sync['orphan_total'] = 0;
-
-        //Update orphan status:
-        foreach($orphans as $c){
-            //Is it an orphan?
-            $c__parents = $this->Db_model->cr_parents_fetch(array(
-                'cr.cr_child_c_id' => $c['c_id'],
-                'cr.cr_status' => 1,
-            ));
-
-            if((!count($c__parents) && !intval($c['c__is_orphan'])) || (count($c__parents) && intval($c['c__is_orphan']))){
-                //Needs adjustment:
-                $this->Db_model->c_update( $c['c_id'] , array(
-                    'c__is_orphan' => ( count($c__parents) ? 0 : 1 ),
-                ));
-                $sync['orphan_count_update']++;
-            }
-
-            if(!count($c__parents)){
-                $sync['orphan_total']++;
-            }
-        }
-
-        echo_json($sync);
-    }
-
-
     function c_save_sort(){
 
         //Auth user and Load object:

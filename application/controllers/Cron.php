@@ -11,6 +11,19 @@ class Cron extends CI_Controller {
         //Example: /usr/bin/php /home/ubuntu/mench-web-app/index.php cron save_profile_pic
 	}
 
+
+    //Cache of cron jobs as of now [keep in sync when updating cron file]
+    //* * * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron message_file_save
+    //* * * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron message_fb_sync_attachments
+    //*/5 * * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron message_drip
+    //*/6 * * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron save_profile_pic
+    //31 * * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron intent_sync
+    //45 * * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron student_reminder_complete_task
+    //30 2 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron algolia_sync b 0
+    //30 4 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron algolia_sync u 0
+    //30 3 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron e_score_recursive
+
+
     function intent_sync($c_id=7240,$update_c_table=1){
         //Cron Settings: 31 * * * *
 	    //Syncs intents with latest caching data:
@@ -23,7 +36,6 @@ class Cron extends CI_Controller {
             echo_json($sync);
         }
     }
-
 
 
     function algolia_sync($obj,$obj_id=0){
@@ -86,7 +98,7 @@ class Cron extends CI_Controller {
 
         //Fetch child entities:
         $entities = $this->Db_model->ur_children_fetch(array(
-            'ur_parent_u_id' => ( count($u)>0 ? $u['u_id'] : 2738 /* Parent Entity */ ),
+            'ur_parent_u_id' => ( count($u)>0 ? $u['u_id'] : $this->config->item('primary_u') ),
             'ur_status >=' => 0, //Pending or Active
             'u_status >=' => 0, //Pending or Active
         ));

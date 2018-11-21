@@ -277,7 +277,10 @@ class Entities extends CI_Controller {
             ));
         }
 
-        $affected_rows = $this->Db_model->ur_archive($_POST['ur_id']);
+        //Archive this:
+        $this->Db_model->ur_update($_POST['ur_id'], array(
+            'ur_status' => -1,
+        ));
 
         //Log unlinking engagement:
         $this->Db_model->e_create(array(

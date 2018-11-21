@@ -7,10 +7,10 @@ date_default_timezone_set('America/Los_Angeles');
 //Cache buster for static files
 $config['app_version'] = '0.6095'.( ( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='local.mench.co' ) ? microtime(true) : '' ); //Updates status css/js cache files
 
-//User case: $this->config->item('')
+//User case: $this->config->item('timezones')
 
 $config['primary_c'] = 6903; //The default platform intent that would be recommended to new students
-$config['primary_u'] = 2738; //The default console entity that is loaded when Entities is clicked
+$config['primary_u'] = 3463; //The default console entity that is loaded when Entities is clicked
 $config['message_max'] = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
 $config['max_counter'] = 999; //Used in counting things of engagements in console UI. If more that this will add a "+" sign to the end
 $config['c_outcome_max'] = 89; //Max number of characters allowed in the title of intents
@@ -429,35 +429,35 @@ $config['engagement_references'] = array(
 
 
 $config['timezones'] = array(
-    '-11'       => "(GMT-11:00) Midway Island, Samoa",
-    '-10'       => "(GMT-10:00) Hawaii",
-    '-9'        => "(GMT-09:00) Alaska",
-    '-8'        => "(GMT-08:00) Pacific Standard Time, Tijuana",
-    '-7'        => "(GMT-07:00) Arizona, Mountain Time, Chihuahua",
-    '-6'        => "(GMT-06:00) Central Time, Mexico City, etc...",
-    '-5'        => "(GMT-05:00) Eastern Time, Indiana, Bogota, Lima",
-    '-4.5'      => "(GMT-04:30) Caracas",
-    '-4'        => "(GMT-04:00) Atlantic Time, La Paz, Santiago",
-    '-3.5'      => "(GMT-03:30) Newfoundland",
-    '-3'        => "(GMT-03:00) Buenos Aires, Greenland",
-    '-2'        => "(GMT-02:00) Stanley",
-    '-1'        => "(GMT-01:00) Azores, Cape Verde Is.",
-    '0'         => "(GMT 0:00) London, Dublin, Lisbon, Casablanca",
-    '1'         => "(GMT+01:00) Amsterdam, Berlin, Paris, etc...",
-    '2'         => "(GMT+02:00) Athens, Istanbul, Jerusalem, etc...",
-    '3'         => "(GMT+03:00) Moscow, Baghdad, Kuwait, Riyadh",
-    '3.5'       => "(GMT+03:30) Tehran",
-    '4'         => "(GMT+04:00) Baku, Volgograd, Muscat, etc...",
-    '4.5'       => "(GMT+04:30) Kabul",
-    '5'         => "(GMT+05:00) Karachi, Tashkent, Kolkata, etc...",
-    '6'         => "(GMT+06:00) Ekaterinburg, Almaty, Dhaka",
-    '7'         => "(GMT+07:00) Novosibirsk, Bangkok, Jakarta",
-    '8'         => "(GMT+08:00) Hong Kong, Perth, Singapore, etc...",
-    '9'         => "(GMT+09:00) Irkutsk, Seoul, Tokyo",
-    '9.5'       => "(GMT+09:30) Adelaide, Darwin",
-    '10'        => "(GMT+10:00) Melbourne, Sydney, Guam, etc...",
-    '11'        => "(GMT+11:00) Vladivostok",
-    '12'        => "(GMT+12:00) Magadan, Auckland, Fiji",
+    '-11'       => "GMT-11:00 Midway Island, Samoa",
+    '-10'       => "GMT-10:00 Hawaii",
+    '-9'        => "GMT-09:00 Alaska",
+    '-8'        => "GMT-08:00 Pacific Standard Time, Tijuana",
+    '-7'        => "GMT-07:00 Arizona, Mountain Time, Chihuahua",
+    '-6'        => "GMT-06:00 Central Time, Mexico City ",
+    '-5'        => "GMT-05:00 Eastern Time, Indiana, Bogota, Lima",
+    '-4.5'      => "GMT-04:30 Caracas",
+    '-4'        => "GMT-04:00 Atlantic Time, La Paz, Santiago",
+    '-3.5'      => "GMT-03:30 Newfoundland",
+    '-3'        => "GMT-03:00 Buenos Aires, Greenland",
+    '-2'        => "GMT-02:00 Stanley",
+    '-1'        => "GMT-01:00 Azores, Cape Verde Is.",
+    '0'         => "GMT 0:00 London, Dublin, Lisbon, Casablanca",
+    '1'         => "GMT+01:00 Amsterdam, Berlin, Paris ",
+    '2'         => "GMT+02:00 Athens, Istanbul, Jerusalem ",
+    '3'         => "GMT+03:00 Moscow, Baghdad, Kuwait, Riyadh",
+    '3.5'       => "GMT+03:30 Tehran",
+    '4'         => "GMT+04:00 Baku, Volgograd, Muscat ",
+    '4.5'       => "GMT+04:30 Kabul",
+    '5'         => "GMT+05:00 Karachi, Tashkent, Kolkata ",
+    '6'         => "GMT+06:00 Ekaterinburg, Almaty, Dhaka",
+    '7'         => "GMT+07:00 Novosibirsk, Bangkok, Jakarta",
+    '8'         => "GMT+08:00 Hong Kong, Perth, Singapore ",
+    '9'         => "GMT+09:00 Irkutsk, Seoul, Tokyo",
+    '9.5'       => "GMT+09:30 Adelaide, Darwin",
+    '10'        => "GMT+10:00 Melbourne, Sydney, Guam ",
+    '11'        => "GMT+11:00 Vladivostok",
+    '12'        => "GMT+12:00 Magadan, Auckland, Fiji",
 );
 
 $config['languages'] = array(
@@ -671,7 +671,7 @@ $config['countries_all'] = array(
     "CL" => "Chile",
     "CN" => "China",
     "CX" => "Christmas Island",
-    "CC" => "Cocos (Keeling) Islands",
+    "CC" => "Cocos Keeling Islands",
     "CO" => "Colombia",
     "KM" => "Comoros",
     "CG" => "Congo",
