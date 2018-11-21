@@ -1543,7 +1543,7 @@ function echo_c($c, $level, $c_parent_id=0, $is_parent=false){
 
         //ATTENTION: DO NOT CHANGE THE ORDER OF data-link-id & intent-id AS the sorting logic depends on their exact position to sort!
         //CHANGE WITH CAUTION!
-        $ui = '<div id="cr_'.$c['cr_id'].'" data-link-id="'.$c['cr_id'].'" intent-id="'.$c['c_id'].'" parent-intent-id="'.$c_parent_id.'" intent-level="'.$level.'" class="list-group-item '.( $level==3 ? 'is_level3_sortable' : 'is_level2_sortable' ).' intent_line_'.$c['c_id'].'">';
+        $ui = '<div id="cr_'.$c['cr_id'].'" data-link-id="'.$c['cr_id'].'" cr_status="'.$c['cr_status'].'" cr_condition_min="'.$c['cr_condition_min'].'" cr_condition_max="'.$c['cr_condition_max'].'" intent-id="'.$c['c_id'].'" parent-intent-id="'.$c_parent_id.'" intent-level="'.$level.'" class="list-group-item '.( $level==3 ? 'is_level3_sortable' : 'is_level2_sortable' ).' intent_line_'.$c['c_id'].'">';
 
     }
 
@@ -1551,8 +1551,12 @@ function echo_c($c, $level, $c_parent_id=0, $is_parent=false){
     //Right content
     $ui .= '<span class="pull-right" style="'.( $level<3 ? 'margin-right: 8px;' : '' ).'">';
 
+    //Show Intent Link conditional status: (The intent link status is either Published or Archived, which would make it invisible)
+    if($level>1){
+        $ui .= '<span class="cr_status_'.$c['cr_id'].'">'.echo_status('cr_status', $c['cr_status'], true, 'left').'</span> ';
+    }
 
-    //show intent status:
+    //Always show intent status:
     $ui .= '<span class="c_status_'.$c['c_id'].'">'.echo_status('c', $c['c_status'], true, 'left').'</span> ';
 
 
@@ -1650,7 +1654,7 @@ function echo_c($c, $level, $c_parent_id=0, $is_parent=false){
         }
         $ui .= '</span>';
 
-        $ui .= '<span id="title_'.$c['cr_id'].'" class="cdr_crnt c_outcome_'.$c['c_id'].( strlen($c['c_trigger_statements'])>0 ? ' has-desc ' : '' ).'" children-rank="'.$c['cr_child_rank'].'" '.$c_settings.' data-toggle="tooltip" data-placement="right" title="'.$c['c_trigger_statements'].'">'.$c['c_outcome'].'</span> ';
+        $ui .= '<span id="title_'.$c['cr_id'].'" class="cdr_crnt tree_title c_outcome_'.$c['c_id'].( strlen($c['c_trigger_statements'])>0 ? ' has-desc ' : '' ).'" children-rank="'.$c['cr_child_rank'].'" '.$c_settings.' data-toggle="tooltip" data-placement="right" title="'.$c['c_trigger_statements'].'">'.$c['c_outcome'].'</span> ';
 
         $ui .= $extra_ui;
 
@@ -1658,7 +1662,7 @@ function echo_c($c, $level, $c_parent_id=0, $is_parent=false){
 
         //Steps
         $ui .= '<span class="inline-level inline-level-'.$level.'">#'.$c['cr_child_rank'].'</span>';
-        $ui .= '<span id="title_'.$c['cr_id'].'" class="c_outcome_'.$c['c_id'].( strlen($c['c_trigger_statements'])>0 ? ' has-desc ' : '' ).'" children-rank="'.$c['cr_child_rank'].'" '.$c_settings.' data-toggle="tooltip" data-placement="right" title="'.$c['c_trigger_statements'].'">'.$c['c_outcome'].'</span> ';
+        $ui .= '<span id="title_'.$c['cr_id'].'" class="tree_title c_outcome_'.$c['c_id'].( strlen($c['c_trigger_statements'])>0 ? ' has-desc ' : '' ).'" children-rank="'.$c['cr_child_rank'].'" '.$c_settings.' data-toggle="tooltip" data-placement="right" title="'.$c['c_trigger_statements'].'">'.$c['c_outcome'].'</span> ';
 
         $ui .= $extra_ui;
 

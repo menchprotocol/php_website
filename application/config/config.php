@@ -14,7 +14,7 @@ $config['primary_u'] = 2738; //The default console entity that is loaded when En
 $config['message_max'] = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
 $config['max_counter'] = 999; //Used in counting things of engagements in console UI. If more that this will add a "+" sign to the end
 $config['c_outcome_max'] = 89; //Max number of characters allowed in the title of intents
-$config['u_full_name_max'] = 233; //Max number of characters allowed in the title of intents
+$config['u_full_name_max'] = 250; //Max number of characters allowed in the title of intents
 $config['file_limit_mb'] = 25; //Server setting is 32MB. see here: mench.com/ses
 $config['items_per_page'] = 50; //Even number
 $config['c_point_options'] = array(0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610);
@@ -75,14 +75,9 @@ $config['object_statuses'] = array(
             's_desc'  => 'Entity has been removed',
             's_icon' => 'fas fa-trash-alt',
         ),
-        0 => array(
-            's_name'  => 'New',
-            's_desc'  => 'Entity is newly added by a user and is pending review by a moderator',
-            's_icon' => 'fal fa-question-circle',
-        ),
         1 => array(
-            's_name'  => 'Referencing',
-            's_desc'  => 'Entity is accepted and is in the referencing process',
+            's_name'  => 'Working On',
+            's_desc'  => 'Entity is accepted and its being patternized',
             's_icon' => 'fas fa-spinner fa-spin',
         ),
         2 => array(
@@ -97,11 +92,6 @@ $config['object_statuses'] = array(
             's_desc'  => 'Entity link is removed',
             's_icon' => 'fas fa-trash-alt',
         ),
-        0 => array(
-            's_name'  => 'New',
-            's_desc'  => 'Entity link is newly added and is pending review by a moderator',
-            's_icon' => 'fal fa-question-circle',
-        ),
         1 => array(
             's_name'  => 'Published',
             's_desc'  => 'Entity link is active',
@@ -114,14 +104,9 @@ $config['object_statuses'] = array(
             's_desc'  => 'Intent has been archived and all its links has been removed',
             's_icon' => 'fas fa-trash-alt',
         ),
-        0 => array(
-            's_name'  => 'New',
-            's_desc'  => 'Intent is newly added by a user and is pending review by a moderator',
-            's_icon' => 'fal fa-question-circle',
-        ),
         1 => array(
             's_name'  => 'Working On',
-            's_desc'  => 'Curating intent tree & messages until ready to be published',
+            's_desc'  => 'Intent tree/messages are being patternized from the internet',
             's_icon' => 'fas fa-spinner fa-spin',
         ),
         2 => array(
@@ -135,16 +120,21 @@ $config['object_statuses'] = array(
             's_icon' => 'fas fa-badge-check',
         ),
     ),
-    'cr' => array(
+    'cr_status' => array(
         -1 => array(
             's_name'  => 'Archived',
-            's_desc'  => 'Intent link is removed',
+            's_desc'  => 'Remove Intent link',
             's_icon' => 'fas fa-trash-alt',
         ),
         1 => array(
             's_name'  => 'Published',
-            's_desc'  => 'Intent link is active',
+            's_desc'  => 'Intent link published and added to user Action Plans up-front',
             's_icon' => 'fas fa-check-circle',
+        ),
+        2 => array(
+            's_name'  => 'Conditional',
+            's_desc'  => 'Intent added to Action Plans after parent intent is complete AND the user\'s % score falls within the defined min/max range',
+            's_icon' => 'fas fa-question-circle fa-spin',
         ),
     ),
 
@@ -166,11 +156,6 @@ $config['object_statuses'] = array(
             's_name'  => 'Archived',
             's_desc'  => 'Message removed',
             's_icon' => 'fas fa-trash-alt',
-        ),
-        0 => array(
-            's_name'  => 'New',
-            's_desc'  => 'Message is added and pending review by a moderator',
-            's_icon' => 'fal fa-question-circle',
         ),
         1 => array(
             's_name'  => 'On-Start',
@@ -229,20 +214,25 @@ $config['object_statuses'] = array(
             's_desc'  => 'User skipped their Action Plan',
             's_icon' => 'fas fa-minus-circle',
         ),
+        0 => array(
+            's_name'  => 'Suggested',
+            's_desc'  => 'Intention has been recommended and pending user approval',
+            's_icon' => 'fal fa-plus-circle',
+        ),
         1 => array(
-             's_name'  => 'Working On',
-             's_desc'  => 'Work to accomplish intent has started and pending completion',
-             's_icon' => 'fas fa-spinner fa-spin',
+            's_name'  => 'Working On',
+            's_desc'  => 'Work to accomplish intent has started and pending completion',
+            's_icon' => 'fas fa-spinner fa-spin',
         ),
         2 => array(
-             's_name'  => 'Syncing Updates',
-             's_desc'  => 'All subscription intents are marked as complete and student is receiving updates from new changes happening to their subscription tree',
-             's_icon' => 'fas fa-sync fa-spin',
+            's_name'  => 'Syncing Updates',
+            's_desc'  => 'All subscription intents are marked as complete and student is receiving updates from new changes happening to their subscription tree',
+            's_icon' => 'fas fa-sync fa-spin',
         ),
         3 => array(
-             's_name'  => 'Accomplished',
-             's_desc'  => 'Student realized their intent and made it real',
-             's_icon' => 'fas fa-badge-check',
+            's_name'  => 'Accomplished',
+            's_desc'  => 'Student realized their intent and made it real',
+            's_icon' => 'fas fa-badge-check',
         ),
     ),
 
@@ -272,7 +262,7 @@ $config['object_statuses'] = array(
         0 => array(
             's_name'  => 'New',
             's_desc'  => 'New engagement is added and pending verification',
-            's_icon' => 'fal fa-question-circle',
+            's_icon' => 'fal fa-plus-circle',
         ),
         1 => array(
             's_name'  => 'Working On',
@@ -388,11 +378,6 @@ $config['object_statuses'] = array(
             's_desc'  => 'URL detected broken and pending moderator review',
             's_icon' => 'fas fa-exclamation-triangle',
         ),
-        0 => array(
-            's_name'  => 'New',
-            's_desc'  => 'URL is newly added and pending moderator review',
-            's_icon' => 'fal fa-question-circle',
-        ),
         1 => array(
             's_name'  => 'Published',
             's_desc'  => 'URL is live and being distributed across Action Plans',
@@ -434,7 +419,7 @@ $config['engagement_references'] = array(
     ),
     'e_cr_id' => array(
         'name' => 'Intent Link',
-        'object_code' => 'cr',
+        'object_code' => 'cr_status',
     ),
     'e_i_id' => array(
         'name' => 'Message',

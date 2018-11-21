@@ -262,10 +262,6 @@ echo '</div>';
 
                           <div class="unlink-entity"><a href="javascript:ur_unlink();" data-toggle="tooltip" title="Only remove entity link while NOT Archiving the entity itself" data-placement="left" style="text-decoration:none;"><i class="fas fa-unlink"></i> Unlink</a></div>
 
-                          <?php if(array_key_exists(1281, $udata['u__parents'])){ ?>
-                              <div><a href="javascript:u_delete();" data-toggle="tooltip" title="Delete entity AND remove all its URLs, messages & references" data-placement="left" style="text-decoration:none;"><i class="fas fa-trash-alt"></i> Delete</a></div>
-                          <?php } ?>
-
                       </td>
                   </tr>
               </table>

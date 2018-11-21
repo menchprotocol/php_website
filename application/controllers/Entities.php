@@ -478,7 +478,7 @@ class Entities extends CI_Controller {
         return echo_json(array(
             'status' => 1,
             'message' => '<span><i class="fas fa-check"></i> Saved</span>',
-            'status_ui' => echo_status('u', $_POST['u_status'], true, 'left'),
+            'status_u_ui' => echo_status('u', $_POST['u_status'], true, 'left'),
             'ur__notes' => echo_link($_POST['ur_notes']),
         ));
 

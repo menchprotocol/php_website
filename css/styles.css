@@ -2377,6 +2377,11 @@ margin:5px 0;
     max-width: 90%;
 }
 
+.tree_title{
+    margin:2px 0 0 0;
+    display: inline-block;
+}
+
 .badge-hy{
     color: #FFF;
     background-color: #2f2739;

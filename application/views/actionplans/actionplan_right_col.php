@@ -27,8 +27,8 @@
             $('.grey-box-w').css('height', (parseInt($( window ).height())-190)+'px');
             $('.grey-box').css('max-height', (parseInt($( window ).height())-190)+'px');
 
-            $('.ajax-frame').css('height', (parseInt($( window ).height())-215)+'px');
-            $('.ajax-frame').css('max-height', (parseInt($( window ).height())-215)+'px');
+            $('.ajax-frame').css('height', (parseInt($( window ).height())-225)+'px');
+            $('.ajax-frame').css('max-height', (parseInt($( window ).height())-225)+'px');
 
             //Make editing frames Sticky for scrolling longer lists
             $(".main-panel").scroll(function() {

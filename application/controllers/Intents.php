@@ -426,13 +426,18 @@ class Intents extends CI_Controller
         return echo_json(array(
             'status' => 1,
             'children_updated' => $children_updated,
+            'adjusted_c_count' => -($cs[0]['c__tree_all_count']),
             'message' => '<span><i class="fas fa-check"></i> Saved'.( $children_updated>0 ? ' & '.$children_updated.' Recursive Updates' : '').'</span>',
-            'status_ui' => echo_status('c', $_POST['c_status'], true, 'left'),
+            'status_c_ui' => echo_status('c', $_POST['c_status'], true, 'left'),
+            'status_cr_ui' => echo_status('cr_status', $_POST['cr_status'], true, 'left'),
         ));
 
     }
 
     function c_unlink(){
+
+
+
 
         //Auth user and check required variables:
         $udata = auth(array(1308));
@@ -469,6 +474,9 @@ class Intents extends CI_Controller
             ));
             return false;
         }
+
+
+
 
         //Fetch parent ID:
         $c__parents = $this->Db_model->cr_parents_fetch(array(

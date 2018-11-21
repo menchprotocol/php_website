@@ -78,6 +78,11 @@ $(document).ready(function() {
         c_adjust_isany_ui();
     });
 
+    $('#cr_status').change(function() {
+        var cr_id = ( $('#modifybox').hasClass('hidden') ? 0 : parseInt($('#modifybox').attr('intent-link-id')) );
+        cr_adjust_is_conditional_ui(cr_id);
+    });
+
 
     //Activate sorting for Steps:
     if($('.step-group').length){
@@ -156,6 +161,8 @@ $(document).ready(function() {
 
 });
 
+
+
 function c_adjust_isany_ui(){
     if($('#c_is_any_0').is(':checked')){
         //Unlock settings:
@@ -165,6 +172,32 @@ function c_adjust_isany_ui(){
         $('#c_require_notes_to_complete').prop('checked', false);
         $('#c_require_url_to_complete').prop('checked', false);
         $('.completion-settings').addClass('hidden');
+    }
+}
+
+
+function cr_adjust_is_conditional_ui(cr_id){
+    if(cr_id>0){
+        //Yes show that section:
+        $('#c_link_access').removeClass('hidden');
+
+        //See which one needs to be checked:
+        $('.notify_cr_delete').addClass('hidden');
+
+        var selected_cr_status = parseInt($('#cr_status').find(":selected").val());
+        if(selected_cr_status<2){
+            $('.score_range_box').addClass('hidden');
+            if(selected_cr_status<0){
+                //About to delete? Notify them:
+                $('.notify_cr_delete').removeClass('hidden');
+            }
+        } else {
+            $('.score_range_box').removeClass('hidden');
+        }
+
+    } else {
+        //No hide that section:
+        $('#c_link_access').addClass('hidden');
     }
 }
 
@@ -493,54 +526,15 @@ function adjust_js_ui(c_id, level, new_hours, intent_deficit_count=0, apply_to_t
 }
 
 
-function c_unlink(){
 
-    var cr_id = ( $('#modifybox').hasClass('hidden') ? 0 : parseInt($('#modifybox').attr('intent-link-id')) );
-    var c_id = ( $('#modifybox').hasClass('hidden') ? 0 : parseInt($('#modifybox').attr('intent-id')) );
-
-    if(!c_id || !cr_id){
-        alert('Error: No Intent has been loaded.');
-        return false;
-    }
-
-    var c_parent_id = parseInt($('#cr_'+cr_id).attr('parent-intent-id'));
-    var level = parseInt($('#cr_'+cr_id).attr('intent-level')); //Either 2 or 3 (Cannot unlink level 1)
-    var r = confirm("Unlink \""+$('#c_outcome').val()+"\"?\n(Intent will remain accessible)");
-
-    if (r == true) {
-        //Load parent intents:
-        $.post("/intents/c_unlink", {c_id:c_id, cr_id:cr_id} , function(data) {
-            if(data.status){
-
-                //Adjust hours:
-                adjust_js_ui(c_id, level, 0, data.adjusted_c_count, 1);
-
-                //Remove from UI:
-                $('#cr_' + cr_id).html('<span style="color:#2f2739;"><i class="fas fa-trash-alt"></i> Removed</span>');
-
-                //Disapper in a while:
-                //Hide the editor & saving results:
-                $('#cr_' + cr_id).fadeOut();
-                setTimeout(function () {
-                    //Hide the editor & saving results:
-                    $('#cr_' + cr_id).remove();
-                    //Hide editing box:
-                    $('#modifybox').addClass('hidden');
-
-                    //Resort all Tasks to illustrate changes on UI:
-                    c_save_sort(c_parent_id,level);
-                }, 377);
-
-            } else {
-                alert('ERROR: '+data.message);
-            }
-        });
+function c_webhook_word_count() {
+    var len = $('#c_webhook_url').val().length;
+    if (len>u_full_name_max) {
+        $('#charWebhookNum').addClass('overload').text(len);
     } else {
-        return false;
+        $('#charWebhookNum').removeClass('overload').text(len);
     }
 }
-
-
 
 function c_outcome_word_count() {
     var len = $('#c_outcome').val().length;
@@ -566,13 +560,13 @@ function c_load_modify(c_id, cr_id){
     $('#modifybox').attr('intent-id',c_id);
     $('#modifybox').attr('level',level);
 
-
     //Set variables:
     var intent_hours = parseFloat($('.t_estimate_'+c_id+':first').attr('intent-hours'));
     var tree_hours = $('.t_estimate_'+c_id+':first').attr('tree-hours');
 
     $('#c_outcome').val($(".c_outcome_"+c_id+":first").text());
     c_outcome_word_count();
+    c_webhook_word_count();
 
     $('#c_status').val($('.c_outcome_'+c_id).attr('c_status'));
     $('#c_points').val($('.c_outcome_'+c_id).attr('c_points'));
@@ -580,12 +574,24 @@ function c_load_modify(c_id, cr_id){
     $('#c_time_estimate').val(Math.round(intent_hours*60));
     $('#c_cost_estimate').val(parseFloat($('.c_outcome_'+c_id).attr('c_cost_estimate')));
 
+    //Load intent links if any:
+    if(cr_id>0){
+        $("#cr_status").val($('#cr_'+cr_id).attr('cr_status')); //Drop down
+        $('#cr_condition_min').val($('#cr_'+cr_id).attr('cr_condition_min'));
+        $('#cr_condition_max').val($('#cr_'+cr_id).attr('cr_condition_max'));
+    }
+
+    //Adjust Radio buttons:
     $("input[name=c_is_any][value='"+$('.c_outcome_'+c_id).attr('c_is_any')+"']").prop("checked",true);
+
+    //Adjust checkboxes:
     document.getElementById("c_require_url_to_complete").checked = parseInt($('.c_outcome_'+c_id).attr('c_require_url_to_complete'));
     document.getElementById("c_require_notes_to_complete").checked = parseInt($('.c_outcome_'+c_id).attr('c_require_notes_to_complete'));
     document.getElementById("apply_recurively").checked = false; //Always remove this so the user can choose
 
+    //Run UI Updating functions:
     c_adjust_isany_ui();
+    cr_adjust_is_conditional_ui(cr_id); //We must run this all the time
 
     //Are the tree hours greater than the intent hours?
     if(tree_hours>intent_hours){
@@ -595,7 +601,6 @@ function c_load_modify(c_id, cr_id){
         //Nope, clear this field:
         $('#child-hours').html('');
     }
-
 
     //Only show unlink button if not level 1
     if(level==1){
@@ -609,6 +614,9 @@ function c_load_modify(c_id, cr_id){
     $('.fixed-box, .ajax-frame').addClass('hidden');
     $("#modifybox").removeClass('hidden').hide().fadeIn();
 
+    //Reload Tooltip again:
+    $('[data-toggle="tooltip"]').tooltip();
+
     //We might need to scroll:
     if(is_compact){
         $('.main-panel').animate({
@@ -618,7 +626,6 @@ function c_load_modify(c_id, cr_id){
 
 }
 
-
 function c_save_modify(){
 
     //Validate that we have all we need:
@@ -627,21 +634,29 @@ function c_save_modify(){
         return false;
     }
 
+
+
     //Prepare data to be modified for this intent:
     var modify_data = {
         c_id:parseInt($('#modifybox').attr('intent-id')),
+        cr_id:parseInt($('#modifybox').attr('intent-link-id')), //Will be zero for Level 1 intent!
         level:parseInt($('#modifybox').attr('level')),
         c_outcome:$('#c_outcome').val(),
+        c_status:parseInt($('#c_status').val()),
         c_time_estimate:parseFloat(parseInt($('#c_time_estimate').val())/60),
         c_cost_estimate:parseFloat($('#c_cost_estimate').val()),
         c_require_url_to_complete:( document.getElementById('c_require_url_to_complete').checked ? 1 : 0),
         c_require_notes_to_complete:( document.getElementById('c_require_notes_to_complete').checked ? 1 : 0),
         c_is_any:parseInt($('input[name=c_is_any]:checked').val()),
         apply_recurively:( document.getElementById('apply_recurively').checked ? 1 : 0),
-        c_status:parseInt($('#c_status').val()),
         c_points:parseInt($('#c_points').val()),
         c_trigger_statements:$('#c_trigger_statements').val().replace(/\"/g, ""), //Remove double quotes
     };
+
+    if(modify_data['cr_id']>0){
+        var original_cr_status = parseInt($('#cr_'+modify_data['cr_id']).attr('cr_status'));
+        modify_data['cr_status'] = $('#cr_status').val();
+    }
 
     //Take a snapshot of the current status:
     var original_c_status = parseInt($('.c_outcome_'+modify_data['c_id']).attr('c_status'));
@@ -665,17 +680,61 @@ function c_save_modify(){
             $('.c_outcome_'+modify_data['c_id']).attr('c_points'                   , modify_data['c_points']);
             $('.c_outcome_'+modify_data['c_id']).attr('c_trigger_statements'       , modify_data['c_trigger_statements']);
 
+
+            //has intent link status updated? If so update the UI:
+            if(modify_data['cr_id']>0 && original_cr_status!=modify_data['cr_status']){
+                //Update link status:
+                $('#cr_'+modify_data['cr_id']).attr('cr_status'                     , modify_data['cr_status']);
+                //Update status:
+                $('.cr_status_'+modify_data['cr_id']).html(data.status_cr_ui);
+            }
+
+            //has intent status updated? If so update the UI:
+            if(original_c_status!=modify_data['c_status']){
+                //Update status:
+                $('.c_status_'+modify_data['c_id']).html(data.status_c_ui);
+            }
+
+
+
+            //Has the intent/intent-link been archived? Either way, we need to hide this row:
+            if((modify_data['cr_id']>0 && original_cr_status>0 && modify_data['cr_status']<0) || (original_c_status>0 && modify_data['c_status']<0)){
+                //We're archiving this...
+                if(modify_data['level']==1){
+                    //move up as this item has been removed!
+                    window.location = "/intents/"+($('.intent_line_'+modify_data['c_id']).attr('parent-intent-id'));
+                } else {
+                    //hide removed item:
+                    //Adjust hours:
+                    adjust_js_ui(modify_data['c_id'], modify_data['level'], 0, data.adjusted_c_count, 1);
+
+                    //Remove from UI:
+                    $('#cr_' + modify_data['cr_id']).html('<span style="color:#2f2739;"><i class="fas fa-trash-alt"></i> Removed</span>');
+
+                    //Disapper in a while:
+                    //Hide the editor & saving results:
+                    $('#cr_' + modify_data['cr_id']).fadeOut();
+
+                    setTimeout(function () {
+
+                        //Hide the editor & saving results:
+                        $('#cr_' + modify_data['cr_id']).remove();
+
+                        //Hide editing box:
+                        $('#modifybox').addClass('hidden');
+
+                        //Resort all Tasks to illustrate changes on UI:
+                        c_save_sort(parseInt($('.intent_line_'+modify_data['c_id']).attr('parent-intent-id')),modify_data['level']);
+
+                    }, 377);
+                }
+            }
+
             //Adjust UI Icons:
             if(modify_data['c_is_any']){
                 $('.c_is_any_icon'+modify_data['c_id']).addClass('fa-code-merge').removeClass('fa-sitemap');
             } else {
                 $('.c_is_any_icon'+modify_data['c_id']).removeClass('fa-code-merge').addClass('fa-sitemap');
-            }
-
-            //has status updated? If so update the UI:
-            if(original_c_status!=modify_data['c_status']){
-                //Update status:
-                $('.c_status_'+modify_data['c_id']).html(data.status_ui);
             }
 
             //Update trigger statements:
@@ -726,17 +785,6 @@ function c_save_modify(){
     });
 
 }
-
-
-function c_delete(){
-    var r = confirm("Are you sure you want to PERMANENTLY delete this intent and all its associated Links, Messages, etc...?");
-    if (!(r == true)) {
-        return false;
-    }
-    var c_id = ( $('#modifybox').hasClass('hidden') ? 0 : parseInt($('#modifybox').attr('intent-id')) );
-    window.location = "/intents/hard_delete/"+c_id;
-}
-
 
 
 function c_js_new(c_id,next_level,link_c_id=0){
