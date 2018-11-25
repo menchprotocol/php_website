@@ -172,6 +172,7 @@ $config['object_statuses'] = array(
             's_icon' => 'fas fa-badge-check',
         ),
     ),
+
     'li_status' => array(
         -1 => array(
             's_name'  => 'Removed',
@@ -195,7 +196,7 @@ $config['object_statuses'] = array(
         ),
         3 => array(
             's_name'  => 'Accomplished',
-            's_desc'  => 'Intent accomplished as verified by Mench',
+            's_desc'  => 'Intent accomplished as verified by Mench. The most precious links :)',
             's_icon' => 'fas fa-badge-check',
         ),
     ),
@@ -228,7 +229,7 @@ $config['object_statuses'] = array(
 
 
 
-    'u' => array(
+    'en' => array(
         -2 => array(
             's_name'  => 'Unsubscribed',
             's_desc'  => 'User requested to be removed from Mench',
@@ -267,7 +268,7 @@ $config['object_statuses'] = array(
             's_icon' => 'fas fa-check-circle',
         ),
     ),
-    'c' => array(
+    'in' => array(
         -1 => array(
             's_name'  => 'Archived',
             's_desc'  => 'Intent has been archived and all its links has been removed',
@@ -432,24 +433,6 @@ $config['object_statuses'] = array(
     ),
 
 
-    'e_status' => array(
-        0 => array(
-            's_name'  => 'New',
-            's_desc'  => 'New engagement is added and pending verification',
-            's_icon' => 'fal fa-plus-circle',
-        ),
-        1 => array(
-            's_name'  => 'Working On',
-            's_desc'  => 'A cron job is processing this engagement',
-            's_icon' => 'fas fa-spinner fa-spin',
-        ),
-        2 => array(
-            's_name'  => 'Published',
-            's_desc'  => 'Engagement is complete',
-            's_icon' => 'fas fa-check-circle',
-        ),
-    ),
-
 
     'ur_note_type' => array(
         0 => array(
@@ -563,21 +546,21 @@ $config['object_statuses'] = array(
 
 //The core objects of the platform:
 $config['engagement_references'] = array(
-    'e_parent_u_id' => array(
+    'li_en_creator_id' => array(
         'name' => 'Initiator Entity',
-        'object_code' => 'u',
+        'object_code' => 'en',
     ),
-    'e_child_u_id' => array(
+    ' li_en_child_id' => array(
         'name' => 'Recipient Entity',
-        'object_code' => 'u',
+        'object_code' => 'en',
     ),
-    'e_parent_c_id' => array(
-        'name' => 'Engagement Type',
-        'object_code' => 'c',
+    'li_en_type_id' => array(
+        'name' => 'Link Type Entity',
+        'object_code' => 'en',
     ),
-    'e_child_c_id' => array(
+    'li_in_child_id' => array(
         'name' => 'Intent',
-        'object_code' => 'c',
+        'object_code' => 'in',
     ),
 );
 
@@ -1209,7 +1192,7 @@ $config['permitted_uri_chars'] = 'a-z 0-9~%.:_\-';
 */
 $config['allow_get_array'] = TRUE;
 $config['enable_query_strings'] = FALSE;
-$config['controller_trigger'] = 'c';
+$config['controller_trigger'] = 'in';
 $config['function_trigger'] = 'm';
 $config['directory_trigger'] = 'd';
 

@@ -44,7 +44,7 @@ class My extends CI_Controller {
             //Fetch results and show:
             return echo_json(array(
                 'fb_profile' => $this->Comm_model->fb_graph('GET', '/'.$current_us[0]['u_fb_psid'], array()),
-                'u' => $current_us[0],
+                'en' => $current_us[0],
             ));
 
         }
@@ -101,7 +101,7 @@ class My extends CI_Controller {
         }
 
         //Try finding them:
-        $ws = $this->Db_model->w_fetch($w_filter, array('c','u'));
+        $ws = $this->Db_model->w_fetch($w_filter, array('in','en'));
 
         if(count($ws)==0){
 
@@ -112,8 +112,8 @@ class My extends CI_Controller {
 
             //Log action plan view engagement:
             $this->Db_model->li_create(array(
-                'e_parent_c_id' => 32,
-                'e_parent_u_id' => $ws[0]['u_id'],
+                'li_en_type_id' => 4283,
+                'li_en_creator_id' => $ws[0]['u_id'],
             ));
 
             //Let them choose between subscriptions:
@@ -135,9 +135,9 @@ class My extends CI_Controller {
 
             //Log action plan view engagement:
             $this->Db_model->li_create(array(
-                'e_parent_c_id' => 32,
-                'e_parent_u_id' => $ws[0]['u_id'],
-                'e_child_c_id' => $c_id,
+                'li_en_type_id' => 4283,
+                'li_en_creator_id' => $ws[0]['u_id'],
+                'li_in_child_id' => $c_id,
                 'e_w_id' => $w_id,
             ));
 
@@ -157,21 +157,21 @@ class My extends CI_Controller {
             ), array('w','cr','cr_c_child'));
 
 
-            $cs = $this->Db_model->in_fetch(array(
+            $intents = $this->Db_model->in_fetch(array(
                 'c_status >=' => 2,
                 'c_id' => $c_id,
             ));
 
-            if(count($cs)<1 || (!count($k_ins) && !count($k_outs))){
+            if(count($intents)<1 || (!count($k_ins) && !count($k_outs))){
 
                 //Ooops, we had issues finding th is intent! Should not happen, report:
                 $this->Db_model->li_create(array(
-                    'e_parent_u_id' => $ws[0]['u_id'],
+                    'li_en_creator_id' => $ws[0]['u_id'],
                     'li_json_blob' => $ws,
-                    'e_value' => 'Unable to load a specific intent for the student Action Plan! Should not happen...',
-                    'e_parent_c_id' => 8,
+                    'li_message' => 'Unable to load a specific intent for the student Action Plan! Should not happen...',
+                    'li_en_type_id' => 4246,
                     'e_w_id' => $w_id,
-                    'e_child_c_id' => $c_id,
+                    'li_in_child_id' => $c_id,
                 ));
 
                 die('<div class="alert alert-danger" role="alert">Invalid Intent ID.</div>');
@@ -180,7 +180,7 @@ class My extends CI_Controller {
             //All good, Load UI:
             $this->load->view('actionplans/actionplan_ui.php' , array(
                 'w' => $ws[0], //We must have 1 by now!
-                'c' => $cs[0],
+                'in' => $intents[0],
                 'k_ins' => $k_ins,
                 'k_outs' => $k_outs,
             ));
@@ -341,10 +341,10 @@ class My extends CI_Controller {
         //All good, move forward with the update:
         //Save a copy of the student completion report:
         $this->Db_model->li_create(array(
-            'e_parent_u_id' => ( isset($udata['u_id']) ? $udata['u_id'] : $ks[0]['k_children_u_id'] ),
-            'e_value' => ( $notes_changed ? trim($_POST['k_notes']) : '' ),
-            'e_parent_c_id' => 33, //Completion Report
-            'e_child_c_id' => $ks[0]['c_id'],
+            'li_en_creator_id' => ( isset($udata['u_id']) ? $udata['u_id'] : $ks[0]['k_children_u_id'] ),
+            'li_message' => ( $notes_changed ? trim($_POST['k_notes']) : '' ),
+            'li_en_type_id' => 4242, //Completion Report
+            'li_in_child_id' => $ks[0]['c_id'],
             'li_json_blob' => array(
                 'input' => $_POST,
                 'k' => $ks[0],
@@ -376,9 +376,8 @@ class My extends CI_Controller {
                 if(intval($_POST['is_from_messenger'])){
                     //Also send confirmation messages via messenger:
                     $this->Comm_model->compose_messages(array(
-                        'e_parent_u_id' => 2738, //Initiated by PA
-                        'e_child_u_id' => $ks[0]['k_children_u_id'],
-                        'e_child_c_id' => $ks_next[0]['c_id'],
+                        ' li_en_child_id' => $ks[0]['k_children_u_id'],
+                        'li_in_child_id' => $ks_next[0]['c_id'],
                         'e_w_id' => $ks[0]['k_w_id'],
                     ));
                 }

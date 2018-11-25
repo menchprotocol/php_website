@@ -153,7 +153,7 @@ class Entities extends CI_Controller {
                     } else {
                         $linking_to_existing_u = ( isset($url_create['is_existing']) );
                         $is_url_input = true;
-                        $new_u = $url_create['u'];
+                        $new_u = $url_create['en'];
                     }
 
                 } else {
@@ -220,8 +220,8 @@ class Entities extends CI_Controller {
             }
 
             //Update Algolia:
-            $this->Db_model->algolia_sync('u',$ur_child_u_id);
-            $this->Db_model->algolia_sync('u',$ur_parent_u_id);
+            $this->Db_model->algolia_sync('en',$ur_child_u_id);
+            $this->Db_model->algolia_sync('en',$ur_parent_u_id);
         }
 
 
@@ -258,9 +258,9 @@ class Entities extends CI_Controller {
 
         //Log unlinking engagement:
         $this->Db_model->li_create(array(
-            'e_parent_u_id' => $udata['u_id'],
+            'li_en_creator_id' => $udata['u_id'],
             'e_ur_id' => $_POST['ur_id'],
-            'e_parent_c_id' => 7292, //Entity Link Removed
+            'li_en_type_id' => 4241, //Entity Link Removed
         ));
 
         return echo_json(array(
@@ -373,14 +373,14 @@ class Entities extends CI_Controller {
 
                 //Log engagement:
                 $this->Db_model->li_create(array(
-                    'e_parent_u_id' => $udata['u_id'], //The user that updated the account
-                    'e_value' => 'Updates from ['.$urs[0]['ur_notes'].'] to ['.$_POST['ur_notes'].']',
+                    'li_en_creator_id' => $udata['u_id'], //The user that updated the account
+                    'li_message' => 'Updates from ['.$urs[0]['ur_notes'].'] to ['.$_POST['ur_notes'].']',
                     'li_json_blob' => array(
                         'input' => $_POST,
                         'before' => $urs[0]['ur_notes'],
                         'after' => $_POST['ur_notes'],
                     ),
-                    'e_parent_c_id' => 7727, //entity link note modification
+                    'li_en_type_id' => 4242, //entity link note modification
                     'e_ur_id' => $_POST['ur_id'],
                 ));
             }
@@ -393,32 +393,32 @@ class Entities extends CI_Controller {
 
         //Refetch some DB (to keep consistency with login session format) & update the Session:
         if($_POST['u_id']==$udata['u_id']){
-            $users = $this->Db_model->u_fetch(array(
+            $entities = $this->Db_model->u_fetch(array(
                 'u_id' => intval($_POST['u_id']),
             ));
-            if(isset($users[0])){
-                $this->session->set_userdata(array('user' => $users[0]));
+            if(isset($entities[0])){
+                $this->session->set_userdata(array('user' => $entities[0]));
             }
         }
 
         //Log engagement:
         $this->Db_model->li_create(array(
-            'e_parent_u_id' => $udata['u_id'], //The user that updated the account
-            'e_value' => readable_updates($u_current[0],$u_update,'u_'),
+            'li_en_creator_id' => $udata['u_id'], //The user that updated the account
+            'li_message' => readable_updates($u_current[0],$u_update,'u_'),
             'li_json_blob' => array(
                 'input' => $_POST,
                 'before' => $u_current[0],
                 'after' => $u_update,
             ),
-            'e_parent_c_id' => 12, //Account Update
-            'e_child_u_id' => intval($_POST['u_id']), //The user that their account was updated
+            'li_en_type_id' => 4263, //Account Update
+            'li_en_child_id' => intval($_POST['u_id']), //The user that their account was updated
         ));
 
         //Show success:
         return echo_json(array(
             'status' => 1,
             'message' => '<span><i class="fas fa-check"></i> Saved</span>',
-            'status_u_ui' => echo_status('u', $_POST['u_status'], true, 'left'),
+            'status_u_ui' => echo_status('en', $_POST['u_status'], true, 'left'),
             'ur__notes' => echo_link($_POST['ur_notes']),
         ));
 
@@ -465,31 +465,31 @@ class Entities extends CI_Controller {
         }
 
         //Fetch user data:
-        $users = $this->Db_model->u_fetch(array(
+        $entities = $this->Db_model->u_fetch(array(
             'u_email' => strtolower($_POST['u_email']),
         ), array('u__ws'));
 
-        if(count($users)==0){
+        if(count($entities)==0){
 
             //Not found!
             redirect_message('/login','<div class="alert alert-danger" role="alert">Error: '.$_POST['u_email'].' not found.</div>');
             return false;
 
-        } elseif($users[0]['u_status']<0){
+        } elseif($entities[0]['u_status']<0){
 
             //Archived entity
             $this->Db_model->li_create(array(
-                'e_parent_u_id' => $users[0]['u_id'],
-                'e_value' => 'login() denied because account is not active.',
+                'li_en_creator_id' => $entities[0]['u_id'],
+                'li_message' => 'login() denied because account is not active.',
                 'li_json_blob' => $_POST,
-                'e_parent_c_id' => 9, //Support Needing Graceful Errors
+                'li_en_type_id' => 4247, //Support Needing Graceful Errors
             ));
 
             redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Your account has been de-activated. Contact us to re-active your account.</div>');
 
             return false;
 
-        } elseif(!($_POST['u_password']==$master_password) && !($users[0]['u_password']==md5($_POST['u_password']))){
+        } elseif(!($_POST['u_password']==$master_password) && !($entities[0]['u_password']==md5($_POST['u_password']))){
 
             //Bad password
             redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Incorrect password for '.$_POST['u_email'].'.</div>');
@@ -503,9 +503,9 @@ class Entities extends CI_Controller {
         $is_student = false;
 
         //Are they admin?
-        if(array_any_key_exists(array(1308),$users[0]['u__parents'])){
+        if(array_any_key_exists(array(1308),$entities[0]['u__parents'])){
             //They have admin rights:
-            $session_data['user'] = $users[0];
+            $session_data['user'] = $entities[0];
             $is_coach = true;
         }
 
@@ -538,9 +538,9 @@ class Entities extends CI_Controller {
         //Log engagement
         if(!($_POST['u_password']==$master_password)){
             $this->Db_model->li_create(array(
-                'e_parent_u_id' => $users[0]['u_id'],
-                'li_json_blob' => $users[0],
-                'e_parent_c_id' => 10, //login
+                'li_en_creator_id' => $entities[0]['u_id'],
+                'li_json_blob' => $entities[0],
+                'li_en_type_id' => 4269, //login
             ));
         }
 
@@ -552,9 +552,9 @@ class Entities extends CI_Controller {
         if(isset($_POST['u_password'])){
             unset($_POST['u_password']); //Sensitive information to be removed and NOT logged
         }
-        $users[0]['login_ip'] = $_SERVER['REMOTE_ADDR'];
-        $users[0]['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
-        $users[0]['input_post_data'] = $_POST;
+        $entities[0]['login_ip'] = $_SERVER['REMOTE_ADDR'];
+        $entities[0]['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
+        $entities[0]['input_post_data'] = $_POST;
 
 
         if(isset($_POST['url']) && strlen($_POST['url'])>0){
@@ -575,9 +575,9 @@ class Entities extends CI_Controller {
         //Log engagement:
         $udata = $this->session->userdata('user');
         $this->Db_model->li_create(array(
-            'e_parent_u_id' => ( isset($udata['u_id']) && $udata['u_id']>0 ? $udata['u_id'] : 0 ),
+            'li_en_creator_id' => ( isset($udata['u_id']) && $udata['u_id']>0 ? $udata['u_id'] : 0 ),
             'li_json_blob' => $udata,
-            'e_parent_c_id' => 11, //User Logout
+            'li_en_type_id' => 4270, //User Logout
         ));
 
         //Called via AJAX to destroy user session:
@@ -605,9 +605,8 @@ class Entities extends CI_Controller {
         if(count($matching_users)>0){
             //Dispatch the password reset Intent:
             $this->Comm_model->compose_messages(array(
-                'e_parent_u_id' => 0,
-                'e_child_u_id' => $matching_users[0]['u_id'],
-                'e_child_c_id' => 59,
+                ' li_en_child_id' => $matching_users[0]['u_id'],
+                'li_in_child_id' => 59,
             ));
         }
 
@@ -634,8 +633,8 @@ class Entities extends CI_Controller {
 
             //Log engagement:
             $this->Db_model->li_create(array(
-                'e_parent_u_id' => intval($_POST['u_id']),
-                'e_parent_c_id' => 59, //Password reset
+                'li_en_creator_id' => intval($_POST['u_id']),
+                'li_en_type_id' => 4271, //Password reset
             ));
 
             //Log all sessions out:

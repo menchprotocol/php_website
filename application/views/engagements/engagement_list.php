@@ -2,8 +2,8 @@
 
 //Fetch data:
 $engagements = $this->Db_model->li_fetch(array(
-    '(e_child_u_id = '.$u_id.' OR e_parent_u_id = '.$u_id.')' => null,
-    '(e_parent_c_id NOT IN ('.join(',', $this->config->item('exclude_es')).'))' => null,
+    '( li_en_child_id = '.$u_id.' OR li_en_parent_id = '.$u_id.')' => null,
+    '(li_en_type_id NOT IN ('.join(',', $this->config->item('exclude_es')).'))' => null,
 ), (is_dev() ? 20 : 100));
 
 //Show this data:

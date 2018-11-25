@@ -100,7 +100,7 @@ if(count($messages)>0){
         if($i['i_status']==1){
             echo '<div class="tip_bubble">';
             echo echo_i( array_merge( $i , array(
-                'e_child_u_id' => $w['u_id'],
+                ' li_en_child_id' => $w['u_id'],
             )) , $w['u_full_name'] );
             echo '</div>';
         }

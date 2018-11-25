@@ -28,7 +28,7 @@ class Cron extends CI_Controller {
         $q = $this->db->query("SELECT DISTINCT(ur_child_u_id) as p_id FROM tb_entity_links ur WHERE NOT EXISTS (
    SELECT 1
    FROM   tb_entities u
-   WHERE  u.u_id = ur.ur_child_u_id
+   WHERE  u_id = ur_child_u_id
    );");
 
         $results = $q->result_array();
@@ -98,8 +98,8 @@ class Cron extends CI_Controller {
         $score_weights = array(
             'u__childrens' => 0, //Child entities are just containers, no score on the link
 
-            'e_child_u_id' => 1, //Engagement initiator
-            'e_parent_u_id' => 1, //Engagement recipient
+            ' li_en_child_id' => 1, //Engagement initiator
+            'li_en_creator_id' => 1, //Engagement recipient
 
             'x_parent_u_id' => 5, //URL Creator
             'x_u_id' => 8, //URL Referenced to them
@@ -129,11 +129,11 @@ class Cron extends CI_Controller {
             $score += count($entities) * $score_weights['u__childrens'];
 
             $score += count($this->Db_model->li_fetch(array(
-                    'e_child_u_id' => $u['u_id'],
-                ), 5000)) * $score_weights['e_child_u_id'];
+                    ' li_en_child_id' => $u['u_id'],
+                ), 5000)) * $score_weights[' li_en_child_id'];
             $score += count($this->Db_model->li_fetch(array(
-                    'e_parent_u_id' => $u['u_id'],
-                ), 5000)) * $score_weights['e_parent_u_id'];
+                    'li_en_creator_id' => $u['u_id'],
+                ), 5000)) * $score_weights['li_en_creator_id'];
 
             $score += count($this->Db_model->x_fetch(array(
                     'x_status >' => -2,
@@ -172,12 +172,12 @@ class Cron extends CI_Controller {
 
         //Fetch pending drips
         $e_pending = $this->Db_model->li_fetch(array(
-            'e_status' => 0, //Pending work
-            'e_parent_c_id' => 52, //Scheduled Drip e_parent_c_id=52
+            'li_status' => 0, //Pending work
+            'li_en_type_id' => 4281, //Scheduled Drip
             'li_timestamp <=' => date("Y-m-d H:i:s" ), //Message is due
             //Some standard checks to make sure, these should all be true:
-            'e_child_u_id >' => 0,
-            'e_child_c_id >' => 0,
+            ' li_en_child_id >' => 0,
+            'li_in_child_id >' => 0,
         ), 200);
 
 
@@ -186,7 +186,7 @@ class Cron extends CI_Controller {
 
 
         $drip_sent = 0;
-        foreach($e_pending as $e_value){
+        foreach($e_pending as $li_message){
 
             //Fetch user data:
             $ws = $this->Db_model->w_fetch(array(
@@ -195,20 +195,19 @@ class Cron extends CI_Controller {
             if(count($ws)>0){
 
                 //Prepare variables:
-                $json_data = unserialize($e_value['li_json_blob']);
+                $json_data = unserialize($li_message['li_json_blob']);
 
                 //Send this message:
                 $this->Comm_model->send_message(array(
                     array_merge($json_data['i'], array(
-                        'e_parent_u_id' => 0,
-                        'e_child_u_id' => $ws[0]['u_id'],
+                        ' li_en_child_id' => $ws[0]['u_id'],
                         'i_c_id' => $json_data['i']['i_c_id'],
                     )),
                 ));
 
                 //Update Engagement:
-                $this->Db_model->e_update( $e_value['e_id'] , array(
-                    'e_status' => 2, //Publish
+                $this->Db_model->e_update( $li_message['li_id'] , array(
+                    'li_status' => 2, //Publish
                 ));
 
                 //Increase counter:
@@ -228,7 +227,7 @@ class Cron extends CI_Controller {
         $max_per_batch = 20; //Max number of scans per run
 
         $e_pending = $this->Db_model->li_fetch(array(
-            'e_status' => 0, //Pending
+            'li_status' => 0, //Pending
             'e_parent_c_id' => 7001, //Cover Photo Save
         ), $max_per_batch);
 
@@ -242,7 +241,7 @@ class Cron extends CI_Controller {
 
             //Check URL and validate:
             $error_message = null;
-            $curl = curl_html($u['e_value'],true);
+            $curl = curl_html($u['li_message'],true);
 
             if(!$curl){
                 $error_message = 'Invalid URL (start with http:// or https://)';
@@ -255,7 +254,7 @@ class Cron extends CI_Controller {
             if(!$error_message){
 
                 //Save the file to S3
-                $new_file_url = save_file($u['e_value'],$u);
+                $new_file_url = save_file($u['li_message'],$u);
 
                 if(!$new_file_url){
                     $error_message = 'Failed to upload the file to Mench CDN';
@@ -300,10 +299,10 @@ class Cron extends CI_Controller {
 
                         //Log engagement:
                         $this->Db_model->li_create(array(
-                            'e_parent_u_id' => $u['u_id'],
-                            'e_child_u_id' => $u['u_id'],
-                            'e_parent_c_id' => 12, //Account Update
-                            'e_value' => 'Profile cover photo updates from Facebook Image ['.$u['e_value'].'] to Mench CDN ['.$new_file_url.']',
+                            'li_en_creator_id' => $u['u_id'],
+                            ' li_en_child_id' => $u['u_id'],
+                            ' li_en_type_id' => 4263, //Account Update
+                            'li_message' => 'Profile cover photo updates from Facebook Image ['.$u['li_message'].'] to Mench CDN ['.$new_file_url.']',
                             'e_x_id' => $new_x['x_id'],
                         ));
                     }
@@ -311,9 +310,9 @@ class Cron extends CI_Controller {
             }
 
             //Update engagement:
-            $this->Db_model->e_update( $u['e_id'] , array(
-                'e_value' => ( $error_message ? 'ERROR: '.$error_message : 'Success' ).' (Original Image URL: '.$u['e_value'].')',
-                'e_status' => 2, //Publish
+            $this->Db_model->e_update( $u['li_id'] , array(
+                'li_message' => ( $error_message ? 'ERROR: '.$error_message : 'Success' ).' (Original Image URL: '.$u['li_message'].')',
+                'li_status' => 2, //Publish
             ));
 
         }
@@ -327,7 +326,7 @@ class Cron extends CI_Controller {
 
         /*
          * This cron job looks for all engagements with Facebook attachments
-         * that are pending upload (i.e. e_status=0) and uploads their
+         * that are pending upload (i.e. li_status=0) and uploads their
          * attachments to amazon S3 and then changes status to Published
          *
          */
@@ -335,8 +334,8 @@ class Cron extends CI_Controller {
         $max_per_batch = 10; //Max number of scans per run
 
         $e_pending = $this->Db_model->li_fetch(array(
-            'e_status' => 0, //Pending file upload to S3
-            'e_parent_c_id IN (6,7)' => null, //Sent/Received messages
+            'li_status' => 0, //Pending file upload to S3
+            'li_en_type_id IN (4277,4280)' => null, //Sent/Received messages
         ), $max_per_batch);
 
 
@@ -368,9 +367,9 @@ class Cron extends CI_Controller {
                                         $new_file_url = save_file($att['payload']['url'],$json_data);
 
                                         //Update engagement data:
-                                        $this->Db_model->e_update( $ep['e_id'] , array(
-                                            'e_value' => ( strlen($ep['e_value'])>0 ? $ep['e_value']."\n\n" : '' ).'/attach '.$att['type'].':'.$new_file_url, //Makes the file preview available on the message
-                                            'e_status' => 2, //Mark as done
+                                        $this->Db_model->e_update( $ep['li_id'] , array(
+                                            'li_message' => ( strlen($ep['li_message'])>0 ? $ep['li_message']."\n\n" : '' ).'/attach '.$att['type'].':'.$new_file_url, //Makes the file preview available on the message
+                                            'li_status' => 2, //Mark as done
                                         ));
 
                                         //Increase counter:
@@ -384,10 +383,9 @@ class Cron extends CI_Controller {
             } else {
                 //This should not happen, report:
                 $this->Db_model->li_create(array(
-                    'e_parent_u_id' => 0, //System
-                    'e_value' => 'cron/bot_save_files() fetched li_json_blob() that was missing its [entry] value',
+                    'li_message' => 'cron/bot_save_files() fetched li_json_blob() that was missing its [entry] value',
                     'li_json_blob' => $json_data,
-                    'e_parent_c_id' => 8, //System Error
+                    'li_en_type_id' => 4246, //System Error
                 ));
             }
 
@@ -456,12 +454,12 @@ class Cron extends CI_Controller {
 
                     //Log error:
                     $this->Db_model->li_create(array(
-                        'e_value' => 'message_fb_sync_attachments() Failed to sync attachment using Facebook API',
+                        'li_message' => 'message_fb_sync_attachments() Failed to sync attachment using Facebook API',
                         'li_json_blob' => array(
                             'payload' => $payload,
                             'result' => $result,
                         ),
-                        'e_parent_c_id' => 8, //Platform Error
+                        'li_en_type_id' => 4246, //Platform Error
                     ));
 
                     //Disable future attempts:
@@ -532,7 +530,7 @@ class Cron extends CI_Controller {
             'u_status >=' => 0,
             'c_status >=' => 2,
             'w_last_heard >=' => date("Y-m-d H:i:s", (time()+($bot_settings['reminder_frequency_min']*60))),
-        ), array('c','u'), array(
+        ), array('in','en'), array(
             'w_last_heard' => 'ASC', //Fetch users who have not been served the longest, so we can pay attention to them...
         ), $bot_settings['max_per_run']);
 
@@ -619,18 +617,18 @@ class Cron extends CI_Controller {
 
                         //See if we have reminded them already about this:
                         $reminders_sent = $this->Db_model->li_fetch(array(
-                            'e_parent_c_id IN (7,28)' => null, //Email or Message sent
-                            'e_child_u_id' => $subscription['u_id'],
-                            'e_child_c_id' => $logic['reminder_c_id'],
+                            'li_en_type_id IN (4280,4276)' => null, //Email or Message sent
+                            'li_en_child_id' => $subscription['u_id'],
+                            'li_in_child_id' => $logic['reminder_c_id'],
                         ));
 
                         if(count($reminders_sent)==0){
 
                             //Nope, send this message out:
                             $this->Comm_model->compose_messages(array(
-                                'e_parent_u_id' => 0, //System
-                                'e_child_u_id' => $subscription['u_id'],
-                                'e_child_c_id' => $logic['reminder_c_id'],
+                                'li_en_creator_id' => 0, //System
+                                ' li_en_child_id' => $subscription['u_id'],
+                                'li_in_child_id' => $logic['reminder_c_id'],
                             ));
 
                             //Show in stats:

@@ -13,14 +13,24 @@ class Migrate extends CI_Controller {
     }
 
     function c(){
+        boost_power();
+
+        $intents = $this->Db_model->in_fetch(array(), 0);
+        foreach($intents as $c){
+
+        }
 
     }
 
     function u(){
+        boost_power();
+
 
     }
 
     function e(){
+        boost_power();
+
 
     }
 

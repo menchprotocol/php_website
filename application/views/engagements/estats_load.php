@@ -1,7 +1,7 @@
 <?php
 
 $engagements = $this->Db_model->li_fetch(array(
-    '(e_parent_c_id='.$c_id.' OR e_child_c_id='.$c_id.')' => null,
+    '(li_in_parent_id='.$c_id.' OR li_in_child_id='.$c_id.')' => null,
 ), (is_dev() ? 20 : 100));
 
 //Fetch objects

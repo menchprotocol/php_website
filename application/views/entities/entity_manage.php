@@ -23,7 +23,7 @@ $child_entities = $this->Db_model->ur_children_fetch(array(
 $limit = (is_dev() ? 10 : 100);
 $ws = $this->Db_model->w_fetch(array(
     'w_child_u_id' => $entity['u_id'],
-), array('u','c','w_stats'), array(
+), array('en','in','w_stats'), array(
     'w_id' => 'DESC',
 ), $limit);
 
@@ -101,7 +101,7 @@ $counts = $this->Db_model->ur_children_fetch(array(
     'ur_status' => 1, //Only active
     'u_status >=' => 0,
 ), array(), 0, 0, 'COUNT(u_id) as u_counts, u_status', 'u_status', array(
-    'u.u_status' => 'ASC',
+    'u_status' => 'ASC',
 ));
 
 
@@ -116,7 +116,7 @@ if(count($counts)>0 && $counts[0]['u_counts']<$entity['u__children_count']){
 
     //Show each specific filter based on DB counts:
     foreach($counts as $c_c){
-        $st = $status_index['u'][$c_c['u_status']];
+        $st = $status_index['en'][$c_c['u_status']];
         echo '<a href="#status-'.$c_c['u_status'].'" onclick="u_load_filter_status('.$c_c['u_status'].')" class="btn btn-default u-status-filter u-status-'.$c_c['u_status'].'" data-toggle="tooltip" data-placement="top" title="'.$st['s_desc'].'"><i class="'.$st['s_icon'].'"></i><span class="hide-small"> '.$st['s_name'].'</span> [<span class="count-u-status-'.$c_c['u_status'].'">'.$c_c['u_counts'].'</span>]</a>';
     }
 
@@ -220,7 +220,7 @@ echo '</div>';
                       <div class="title" style="margin-top:15px;"><h4><i class="fas fa-sliders-h"></i> Entity Status</h4></div>
                       <select class="form-control" id="u_status">
                           <?php
-                          foreach(echo_status('u') as $status_id=>$status){
+                          foreach(echo_status('en') as $status_id=>$status){
                               echo '<option value="'.$status_id.'" title="'.$status['s_desc'].'">'.$status['s_name'].'</option>';
                           }
                           ?>

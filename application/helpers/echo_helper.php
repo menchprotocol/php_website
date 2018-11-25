@@ -57,8 +57,6 @@ function echo_x($u, $x){
         $ui .= '<a class="badge badge-secondary add-cover" href="javascript:void(0);" onclick="x_cover_set('.$x['x_id'].')" data-toggle="tooltip" data-placement="left" title="Set this image as Cover Photo"><i class="fas fa-file-image"></i></a> ';
     }
 
-    //User can always remove a URL:
-    $ui .= '<a class="badge badge-secondary" href="javascript:void(0);" onclick="x_archive('.$x['x_id'].')" data-toggle="tooltip" data-placement="left" title="Archive URL"><i class="fas fa-trash-alt" title="ID '.$x['x_id'].'"></i></a>';
 
 
     $ui .= '</span>';
@@ -221,10 +219,10 @@ function echo_embed($url, $full_message=null, $return_array=false, $start_sec=0,
 function echo_i($i,$u_full_name=null,$fb_format=false){
 
     //HACK: Make these two variables inter-changeable:
-    if(isset($i['i_c_id']) && $i['i_c_id']>0 && !isset($i['e_child_c_id'])){
-        $i['e_child_c_id'] = $i['i_c_id'];
-    } elseif(isset($i['e_child_c_id']) && $i['e_child_c_id']>0 && !isset($i['i_c_id'])){
-        $i['i_c_id'] = $i['e_child_c_id'];
+    if(isset($i['i_c_id']) && $i['i_c_id']>0 && !isset($i['li_in_child_id'])){
+        $i['li_in_child_id'] = $i['i_c_id'];
+    } elseif(isset($i['li_in_child_id']) && $i['li_in_child_id']>0 && !isset($i['i_c_id'])){
+        $i['i_c_id'] = $i['li_in_child_id'];
     }
 
     $CI =& get_instance();
@@ -396,11 +394,11 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
 
 
 
-    if(substr_count($i['i_message'],'/resetpassurl')>0 && isset($i['e_child_u_id'])) {
+    if(substr_count($i['i_message'],'/resetpassurl')>0 && isset($i[' li_en_child_id'])) {
         //append their My Account Button/URL:
         $timestamp = time();
         $button_title = '👉 Set New Password';
-        $button_url = 'https://mench.com/my/reset_pass?u_id='.$i['e_child_u_id'].'&timestamp='.$timestamp.'&p_hash=' . md5($i['e_child_u_id'] . 'p@ssWordR3s3t' . $timestamp);
+        $button_url = 'https://mench.com/my/reset_pass?u_id='.$i[' li_en_child_id'].'&timestamp='.$timestamp.'&p_hash=' . md5($i[' li_en_child_id'] . 'p@ssWordR3s3t' . $timestamp);
         $command = '/resetpassurl';
     }
 
@@ -584,7 +582,7 @@ function echo_e($e){
         $ui .= '<span class="pull-right">';
 
             //Show user notification level:
-            $ui .= ' <span>'.echo_status('e_status',$e['e_status'], true, 'left').'</span> ';
+            $ui .= ' <span>'.echo_status('li_status',$e['li_status'], true, 'left').'</span> ';
 
             //Lets go through all references to see what is there:
             foreach($CI->config->item('engagement_references') as $engagement_field=>$er){
@@ -595,7 +593,7 @@ function echo_e($e){
             }
 
             if($e['e_has_blob']=='t'){
-                $ui .= '<a href="/adminpanel/li_list_blob/'.$e['e_id'].'" class="badge badge-primary grey" target="_blank" data-toggle="tooltip" title="Analyze Engagement JSON Blob in a new window" data-placement="left"><i class="fas fa-search-plus"></i></a>';
+                $ui .= '<a href="/adminpanel/li_list_blob/'.$e['li_id'].'" class="badge badge-primary grey" target="_blank" data-toggle="tooltip" title="Analyze Engagement JSON Blob in a new window" data-placement="left"><i class="fas fa-search-plus"></i></a>';
             }
 
         $ui .= '</span>';
@@ -603,8 +601,8 @@ function echo_e($e){
         //What type of main content do we have, if any?
         $main_content = null;
         $main_content_title = null;
-        if(strlen($e['e_value'])>0){
-            $main_content = format_e_value($e['e_value']);
+        if(strlen($e['li_message'])>0){
+            $main_content = format_li_message($e['li_message']);
         } elseif($e['e_i_id']>0){
             //Fetch message conent:
             $matching_messages = $CI->Db_model->i_fetch(array(
@@ -618,7 +616,7 @@ function echo_e($e){
 
 
         $ui .= '<b>'.str_replace('Log ','',$e['c_outcome']).'</b>';
-        $ui .= ' <span data-toggle="tooltip" data-placement="right" title="'.$e['li_timestamp'].' Engagement #'.$e['e_id'].'" style="font-size:0.8em;">'.echo_diff_time(strtotime($e['li_timestamp'])).' ago</span> ';
+        $ui .= ' <span data-toggle="tooltip" data-placement="right" title="'.$e['li_timestamp'].' Engagement #'.$e['li_id'].'" style="font-size:0.8em;">'.echo_diff_time(strtotime($e['li_timestamp'])).' ago</span> ';
         $ui .= $main_content_title;
 
         //Do we have a message?
@@ -1250,19 +1248,20 @@ function echo_object($object,$id,$engagement_field,$button_type){
     $id = intval($id);
 
     if($id>0){
-        if($object=='c'){
+        if($object=='in'){
 
-            $is_parent = ( $engagement_field=='e_parent_c_id' ? true : false );
+            $is_parent = ( $engagement_field=='li_in_parent_id' ? true : false );
+
             //Fetch intent/Step:
-            $cs = $CI->Db_model->in_fetch(array(
-                'c.c_id' => $id,
+            $intents = $CI->Db_model->in_fetch(array(
+                'c_id' => $id,
             ));
-            if(isset($cs[0])){
+            if(isset($intents[0])){
                 if(!$button_type){
                     //Plain view:
-                    return '<a href="https://mench.com/intents/'.$cs[0]['c_id'].'">'.$cs[0]['c_outcome'].'</a>';
+                    return '<a href="https://mench.com/intents/'.$intents[0]['c_id'].'">'.$intents[0]['c_outcome'].'</a>';
                 } else {
-                    return '<a href="/intents/'.$cs[0]['c_id'].'" target="_parent" class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="'.$button_type.': '.stripslashes($cs[0]['c_outcome']).'"><i class="'.( $is_parent ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></a> ';
+                    return '<a href="/intents/'.$intents[0]['c_id'].'" target="_parent" class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="'.$button_type.': '.stripslashes($intents[0]['c_outcome']).'"><i class="'.( $is_parent ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90' ).'"></i></a> ';
 
                 }
             }
@@ -1279,7 +1278,7 @@ function echo_object($object,$id,$engagement_field,$button_type){
 
             $ws = $CI->Db_model->w_fetch(array(
                 'w_id' => $id,
-            ), array('c'));
+            ), array('in'));
             if(count($ws)>0){
                 if(!$button_type){
                     //Plain view:
@@ -1290,7 +1289,7 @@ function echo_object($object,$id,$engagement_field,$button_type){
                 }
             }
 
-        } elseif($object=='u'){
+        } elseif($object=='en'){
 
             $matching_users = $CI->Db_model->u_fetch(array(
                 'u_id' => $id,
@@ -1515,7 +1514,7 @@ function echo_c($c, $level, $c_parent_id=0, $is_parent=false){
 
     //Count engagements for this intent:
     $e_count = count($CI->Db_model->li_fetch(array(
-        '(e_parent_c_id='.$c['c_id'].' OR e_child_c_id='.$c['c_id'].')' => null,
+        '(li_in_parent_id='.$c['c_id'].' OR li_in_child_id='.$c['c_id'].')' => null,
     ), $CI->config->item('max_counter')));
 
     //Count subscription caches for this intent link:
@@ -1560,7 +1559,7 @@ function echo_c($c, $level, $c_parent_id=0, $is_parent=false){
     }
 
     //Always show intent status:
-    $ui .= '<span class="c_status_'.$c['c_id'].'">'.echo_status('c', $c['c_status'], true, 'left').'</span> ';
+    $ui .= '<span class="c_status_'.$c['c_id'].'">'.echo_status('in', $c['c_status'], true, 'left').'</span> ';
 
 
     //Show submission stats
@@ -1732,7 +1731,7 @@ function echo_u($u, $level, $is_parent=false){
     $ui .= '<span class="pull-right">';
 
     //Start by showing entity status:
-    $ui .= '<span class="u_status_'.$u['u_id'].'">'.echo_status('u',$u['u_status'], true, 'left').'</span> ';
+    $ui .= '<span class="u_status_'.$u['u_id'].'">'.echo_status('en',$u['u_status'], true, 'left').'</span> ';
 
     //Count messages:
     $messages = $CI->Db_model->i_fetch(array(
@@ -1742,8 +1741,8 @@ function echo_u($u, $level, $is_parent=false){
 
     //Check total key engagement for this user:
     $e_count = count($CI->Db_model->li_fetch(array(
-        '(e_parent_u_id='.$u['u_id'].' OR e_child_u_id='.$u['u_id'].')' => null,
-        '(e_parent_c_id NOT IN ('.join(',', $CI->config->item('exclude_es')).'))' => null,
+        '(li_en_parent_id='.$u['u_id'].' OR  li_en_child_id='.$u['u_id'].')' => null,
+        '(li_en_type_id NOT IN ('.join(',', $CI->config->item('exclude_es')).'))' => null,
     ), $CI->config->item('max_counter')));
     if($e_count>0){
         //Show the engagement button:

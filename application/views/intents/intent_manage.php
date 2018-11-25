@@ -100,7 +100,7 @@ if(isset($orphan_intents)){
             $limit = (is_dev() ? 10 : 100);
             $ws = $this->Db_model->w_fetch(array(
                 'w_c_id' => $c['c_id'],
-            ), array('u','u_x','w_stats'), array(
+            ), array('en','u_x','w_stats'), array(
                 'w_id' => 'DESC',
             ), $limit);
 
@@ -158,7 +158,7 @@ if(isset($orphan_intents)){
                         <div class="title" style="margin-top:15px;"><h4><i class="fas fa-hashtag"></i> <?= $this->lang->line('obj_c_name') ?></h4></div>
                         <select class="form-control" id="c_status" style="display: inline-block !important;">
                             <?php
-                            foreach(echo_status('c') as $status_id=>$status){
+                            foreach(echo_status('in') as $status_id=>$status){
                                 echo '<option value="'.$status_id.'" title="'.$status['s_desc'].'">'.$status['s_name'].'</option>';
                             }
                             ?>

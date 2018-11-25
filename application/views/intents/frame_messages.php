@@ -12,17 +12,17 @@ $i_messages = $this->Db_model->i_fetch(array(
 
 //Fetch intent details:
 $intents = $this->Db_model->in_fetch(array(
-    'c.c_id' => $c_id,
+    'c_id' => $c_id,
 ));
 
 if(!isset($intents[0])){
     //This should never happen:
-    die('Invalid input id.');
+    die('Invalid intent id.');
 }
 ?>
 
 <script>
-    //Set core variables:
+    //pass core variables to JS:
     var c_id = <?= $c_id ?>;
     var max_length = <?= $li_message_max ?>;
     var message_count = <?= count($i_messages) ?>;
@@ -50,7 +50,7 @@ if(!isset($intents[0])){
         echo '<div id="message-sorting'.$c_id.'" class="list-group list-messages">';
         foreach($i_messages as $i){
             echo echo_message(array_merge($i, array(
-                'e_child_u_id'=>$udata['u_id'],
+                ' li_en_child_id'=>$udata['u_id'],
             )));
             //Increase counter:
             ${'message_count_'.$i['i_status']}++;

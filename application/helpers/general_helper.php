@@ -7,9 +7,9 @@ function is_dev(){
 function lock_cron_for_processing($e_items){
     $CI =& get_instance();
     foreach($e_items as $e){
-        if($e['e_id']>0 && $e['e_status']==0){
-            $CI->Db_model->e_update( $e['e_id'] , array(
-                'e_status' => 1, //Working on...
+        if($e['li_id']>0 && $e['li_status']==0){
+            $CI->Db_model->e_update( $e['li_id'] , array(
+                'li_status' => 1, //Working on...
             ));
         }
     }
@@ -41,12 +41,12 @@ function missing_required_db_fields($insert_columns,$field_array){
             //Ooops, we're missing this required field:
             $CI =& get_instance();
             $CI->Db_model->li_create(array(
-                'e_value' => 'Missing required field ['.$req_field.'] for inserting new DB row',
+                'li_message' => 'Missing required field ['.$req_field.'] for inserting new DB row',
                 'li_json_blob' => array(
                     'insert_columns' => $insert_columns,
                     'required_fields' => $field_array,
                 ),
-                'e_parent_c_id' => 8, //Platform Error
+                'li_en_type_id' => 4246, //Platform Error
             ));
 
             return true; //We have an issue
@@ -179,8 +179,8 @@ function array_any_key_exists(array $keys, array $arr) {
 function is_valid_intent($c_id){
     $CI =& get_instance();
     $intents = $CI->Db_model->in_fetch(array(
-        'c.c_id' => intval($c_id),
-        'c.c_status >=' => 0,
+        'c_id' => intval($c_id),
+        'c_status >=' => 0,
     ));
     return (count($intents)==1);
 }
@@ -341,9 +341,9 @@ function save_file($file_url,$json_data,$is_local=false){
             return $result['ObjectURL'];
         } else {
             $CI->Db_model->li_create(array(
-                'e_value' => 'save_file() Unable to upload file ['.$file_url.'] to Mench cloud.',
+                'li_message' => 'save_file() Unable to upload file ['.$file_url.'] to Mench cloud.',
                 'li_json_blob' => $json_data,
-                'e_parent_c_id' => 8, //Platform Error
+                'li_en_type_id' => 4246, //Platform Error
             ));
             return false;
         }
@@ -589,11 +589,11 @@ function message_validation($i_status,$i_message,$i_c_id){
 
         //Validate this:
         $i_parent_cs = $CI->Db_model->in_fetch(array(
-            'c.c_id' => $c_ids[0],
+            'c_id' => $c_ids[0],
         ));
 
         $i_cs = $CI->Db_model->in_fetch(array(
-            'c.c_id' => $i_c_id,
+            'c_id' => $i_c_id,
         ), 0, array('in__active_parents'));
 
         if(count($i_cs)==0){
@@ -671,7 +671,7 @@ function message_validation($i_status,$i_message,$i_c_id){
             return $url_create;
         }
 
-        $u_ids[0] = $url_create['u']['u_id'];
+        $u_ids[0] = $url_create['en']['u_id'];
 
         //Replace the URL with this new @entity in message:
         $i_message = str_replace($urls[0],'@'.$u_ids[0], $i_message);
@@ -764,40 +764,40 @@ function one_two_explode($one,$two,$content){
 }
 
 
-function format_e_value($e_value){
+function format_li_message($li_message){
     
     //Do replacements:
-    if(substr_count($e_value,'/attach ')>0){
-        $attachments = explode('/attach ',$e_value);
+    if(substr_count($li_message,'/attach ')>0){
+        $attachments = explode('/attach ',$li_message);
         foreach($attachments as $key=>$attachment){
             if($key==0){
                 //We're gonna start buiolding this message from scrach:
-                $e_value = $attachment;
+                $li_message = $attachment;
                 continue;
             }
             $segments = explode(':',$attachment,2);
             $sub_segments = preg_split('/[\s]+/', $segments[1] );
 
             if($segments[0]=='image'){
-                $e_value .= '<img src="'.$sub_segments[0].'" style="max-width:100%" />';
+                $li_message .= '<img src="'.$sub_segments[0].'" style="max-width:100%" />';
             } elseif($segments[0]=='audio'){
-                $e_value .= '<audio controls><source src="'.$sub_segments[0].'" type="audio/mpeg"></audio>';
+                $li_message .= '<audio controls><source src="'.$sub_segments[0].'" type="audio/mpeg"></audio>';
             } elseif($segments[0]=='video'){
-                $e_value .= '<video width="100%" onclick="this.play()" controls><source src="'.$sub_segments[0].'" type="video/mp4"></video>';
+                $li_message .= '<video width="100%" onclick="this.play()" controls><source src="'.$sub_segments[0].'" type="video/mp4"></video>';
             } elseif($segments[0]=='file'){
-                $e_value .= '<a href="'.$sub_segments[0].'" class="btn btn-primary" target="_blank"><i class="fas fa-cloud-download"></i> Download File</a>';
+                $li_message .= '<a href="'.$sub_segments[0].'" class="btn btn-primary" target="_blank"><i class="fas fa-cloud-download"></i> Download File</a>';
             }
             
             //Do we have any leftovers after the URL? If so, append:
             if(isset($sub_segments[1])){
-                $e_value = ' '.$sub_segments[1];
+                $li_message = ' '.$sub_segments[1];
             }
         }
     } else {
-        $e_value = echo_link($e_value);
+        $li_message = echo_link($li_message);
     }
-    $e_value = nl2br($e_value);
-    return $e_value;
+    $li_message = nl2br($li_message);
+    return $li_message;
 }
 
 

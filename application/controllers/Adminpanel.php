@@ -32,12 +32,12 @@ class Adminpanel extends CI_Controller {
         $this->load->view('shared/console_footer');
     }
 
-    function li_list_blob($e_id){
+    function li_list_blob($li_id){
 	    //Authenticate trainer access:
         $udata = auth(array(1308),1);
         //Fetch blob of engagement and display it on screen:
         $blobs = $this->Db_model->li_fetch(array(
-            'e_id' => $e_id,
+            'li_id' => $li_id,
         ),1);
         if(count($blobs)==1){
             echo_json(array(
