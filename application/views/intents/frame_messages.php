@@ -1,7 +1,7 @@
 <?php
 
 //Fetch Messages based on c_id:
-$message_max = $this->config->item('message_max');
+$li_message_max = $this->config->item('li_message_max');
 $i_statuses = echo_status('i_status', null);
 $i_desc = echo_status('i_status');
 $udata = $this->session->userdata('user');
@@ -11,7 +11,7 @@ $i_messages = $this->Db_model->i_fetch(array(
 ), 0);
 
 //Fetch intent details:
-$intents = $this->Db_model->c_fetch(array(
+$intents = $this->Db_model->in_fetch(array(
     'c.c_id' => $c_id,
 ));
 
@@ -24,7 +24,7 @@ if(!isset($intents[0])){
 <script>
     //Set core variables:
     var c_id = <?= $c_id ?>;
-    var max_length = <?= $message_max ?>;
+    var max_length = <?= $li_message_max ?>;
     var message_count = <?= count($i_messages) ?>;
 </script>
 <script src="/js/custom/messaging-js.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
@@ -87,14 +87,14 @@ if(!isset($intents[0])){
 
     echo '<div id="i_message_counter" style="margin:0 0 1px 0; font-size:0.8em;">';
     //File counter:
-    echo '<span id="charNum'.$c_id.'">0</span>/'.$message_max;
+    echo '<span id="charNum'.$c_id.'">0</span>/'.$li_message_max;
 
     ///firstname
     echo '<a href="javascript:add_first_name();" class="textarea_buttons remove_loading" style="float:right;" data-toggle="tooltip" title="Replaced with student\'s First Name for a more personal message." data-placement="left"><i class="fas fa-fingerprint"></i> /firstname</a>';
 
     //Choose a file:
-    $file_limit_mb = $this->config->item('file_limit_mb');
-    echo '<div style="float:right; display:inline-block; margin-right:8px;" class="remove_loading"><input class="box__file inputfile" type="file" name="file" id="file" /><label class="textarea_buttons" for="file" data-toggle="tooltip" title="Upload Video, Audio, Images or PDFs up to '.$file_limit_mb.' MB." data-placement="top"><i class="fas fa-image"></i> Upload File</label></div>';
+    $file_size_max = $this->config->item('file_size_max');
+    echo '<div style="float:right; display:inline-block; margin-right:8px;" class="remove_loading"><input class="box__file inputfile" type="file" name="file" id="file" /><label class="textarea_buttons" for="file" data-toggle="tooltip" title="Upload Video, Audio, Images or PDFs up to '.$file_size_max.' MB." data-placement="top"><i class="fas fa-image"></i> Upload File</label></div>';
     echo '</div>';
 
 

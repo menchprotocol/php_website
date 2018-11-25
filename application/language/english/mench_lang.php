@@ -1,5 +1,5 @@
 <?php
-/* Sample use case: <?= $this->lang->line('obj_cr_name') ?> */
+/* Sample use case: <?= $this->lang->line('platform_intent') ?> */
 
 //Core Databae Objects:
 $lang['obj_u_name'] = 'Entity Status';
@@ -19,3 +19,7 @@ $lang['obj_c_is_any_name'] = 'Intent Completion';
 $lang['obj_u_fb_notification_name'] = 'User Notification Setting';
 $lang['obj_k_status_name'] = 'Subscription Intent Status';
 $lang['platform_intent'] = 'advance your tech career'; //The main intent of the Mench platform
+
+
+
+$lang['obj_en_communication_name'] = 'Entity Communication Level';

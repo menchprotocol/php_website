@@ -1,6 +1,6 @@
 <?php
 $udata = $this->session->userdata('user');
-if(isset($orphan_cs)){
+if(isset($orphan_intents)){
     $c['c_id'] = 0;
 }
 ?>
@@ -9,8 +9,8 @@ if(isset($orphan_cs)){
     //Define some global variables:
     var c_top_id = <?= $c['c_id'] ?>;
     var current_time = '<?= date("H:i") ?>';
-    var c_outcome_max = <?= $this->config->item('c_outcome_max') ?>;
-    var u_full_name_max = <?= $this->config->item('u_full_name_max') ?>;
+    var in_outcome_max = <?= $this->config->item('in_outcome_max') ?>;
+    var en_name_max = <?= $this->config->item('en_name_max') ?>;
 </script>
 <script src="/js/custom/intent-manage-js.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
 
@@ -18,10 +18,10 @@ if(isset($orphan_cs)){
 <div class="row">
     <div class="col-xs-6 cols">
         <?php
-        if(isset($orphan_cs)){
+        if(isset($orphan_intents)){
 
             echo '<div id="bootcamp-objective" class="list-group">';
-            foreach($orphan_cs as $oc){
+            foreach($orphan_intents as $oc){
                 echo echo_c($oc,1);
             }
             echo '</div>';
@@ -29,11 +29,11 @@ if(isset($orphan_cs)){
         } else {
 
             //Start with parents:
-            echo '<h5 class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-parent-count parent-counter-'.$c['c_id'].'">'.count($c__parents).'</span> Parent'.echo__s(count($c__parents)).'</h5>';
+            echo '<h5 class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-parent-count parent-counter-'.$c['c_id'].'">'.count($in__active_parents).'</span> Parent'.echo__s(count($in__active_parents)).'</h5>';
 
-            if(count($c__parents)>0){
+            if(count($in__active_parents)>0){
                 echo '<div class="list-group list-level-2">';
-                foreach($c__parents as $sub_intent){
+                foreach($in__active_parents as $sub_intent){
                     echo echo_c($sub_intent, 2, 0, true);
                 }
                 echo '</div>';
@@ -62,8 +62,13 @@ if(isset($orphan_cs)){
                     echo '<i class="fas fa-minus-square close_all" style="font-size: 1.2em;"></i>';
                 echo '</div>';
 
-                if($orphan_c_count>0){
-                    echo '<span style="padding-left:8px; display: inline-block;"><a href="/intents/orphan">'.$orphan_c_count.' Orphans &raquo;</a></span>';
+
+                //Count orphans IF we are in the top parent root:
+                if($this->config->item('primary_in_id')==$c['c_id']){
+                    $orphans_count = count($this->Db_model->in_orphans_fetch());
+                    if($orphans_count>0){
+                        echo '<span style="padding-left:8px; display: inline-block;"><a href="/intents/orphan">'.$orphans_count.' Orphans &raquo;</a></span>';
+                    }
                 }
 
             echo '</div>';
@@ -71,13 +76,13 @@ if(isset($orphan_cs)){
             echo '<div id="outs_error indent2"></div>'; //Show potential errors detected in the Action Plan via our JS functions...
 
             echo '<div id="list-c-'.$c['c_id'].'" class="list-group list-is-children list-level-2 indent2">';
-            foreach($c['c__child_intents'] as $sub_intent){
+            foreach($c['in__active_children'] as $sub_intent){
                 echo echo_c($sub_intent, 2, $c['c_id']);
             }
             ?>
             <div class="list-group-item list_input grey-block">
                 <div class="input-group">
-                    <div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control intentadder-level-2 algolia_search bottom-add"  maxlength="<?= $this->config->item('c_outcome_max') ?>" intent-id="<?= $c['c_id'] ?>" id="addintent-c-<?= $c['c_id'] ?>" placeholder="Add #Intent"></div>
+                    <div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control intentadder-level-2 algolia_search bottom-add"  maxlength="<?= $this->config->item('in_outcome_max') ?>" intent-id="<?= $c['c_id'] ?>" id="addintent-c-<?= $c['c_id'] ?>" placeholder="Add #Intent"></div>
                     <span class="input-group-addon" style="padding-right:8px;">
                                         <span id="dir_handle" data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" class="badge badge-primary pull-right" style="cursor:pointer; margin: 1px 3px 0 6px;">
                                             <div><i class="fas fa-plus"></i></div>
@@ -127,13 +132,13 @@ if(isset($orphan_cs)){
 
 
                 <div>
-                    <div class="title"><h4><i class="fas fa-bullseye-arrow"></i> Target Outcome [<span style="margin:0 0 10px 0; font-size:0.8em;"><span id="charNameNum">0</span>/<?= $this->config->item('c_outcome_max') ?></span>] <span id="hb_598" class="help_button" intent-id="598"></span></h4></div>
+                    <div class="title"><h4><i class="fas fa-bullseye-arrow"></i> Target Outcome [<span style="margin:0 0 10px 0; font-size:0.8em;"><span id="charNameNum">0</span>/<?= $this->config->item('in_outcome_max') ?></span>] <span id="hb_598" class="help_button" intent-id="598"></span></h4></div>
                     <div class="help_body maxout" id="content_598"></div>
 
                     <div class="form-group label-floating is-empty">
                         <div class="input-group border">
                             <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;">To</span>
-                            <input style="padding-left:0;" type="text" id="c_outcome" onkeyup="c_outcome_word_count()" maxlength="<?= $this->config->item('c_outcome_max') ?>" value="" class="form-control">
+                            <input style="padding-left:0;" type="text" id="c_outcome" onkeyup="c_outcome_word_count()" maxlength="<?= $this->config->item('in_outcome_max') ?>" value="" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -191,7 +196,7 @@ if(isset($orphan_cs)){
                         <div class="title" style="margin-top:15px;"><h4><i class="fas fa-weight"></i> Completion Points</h4></div>
                         <select class="form-control" id="c_points">
                             <?php
-                            foreach($this->config->item('c_point_options') as $point){
+                            foreach($this->config->item('in_points_options') as $point){
                                 echo '<option value="'.$point.'">'.( $point==0 ? 'Disabled' : $point.' Point'.echo__s($point) ).'</option>';
                             }
                             ?>
@@ -247,11 +252,11 @@ if(isset($orphan_cs)){
 
 
 
-                        <div class="title" style="margin-top:15px;"><h4><i class="fas fa-cloud-upload"></i> Webhook URL [<span style="margin:0 0 10px 0; font-size:0.8em;"><span id="charWebhookNum">0</span>/<?= $this->config->item('u_full_name_max') ?></span>]</h4></div>
+                        <div class="title" style="margin-top:15px;"><h4><i class="fas fa-cloud-upload"></i> Webhook URL [<span style="margin:0 0 10px 0; font-size:0.8em;"><span id="charWebhookNum">0</span>/<?= $this->config->item('en_name_max') ?></span>]</h4></div>
                         <div class="form-group label-floating is-empty">
                             <div class="input-group border">
                                 <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;" data-toggle="tooltip" title="Secure HTTPS URLs are required for webhooks" data-placement="top">https://</span>
-                                <input style="padding-left:0;" type="text" id="c_webhook_url" onkeyup="c_webhook_word_count()" maxlength="<?= $this->config->item('u_full_name_max') ?>" value="" class="form-control">
+                                <input style="padding-left:0;" type="text" id="c_webhook_url" onkeyup="c_webhook_word_count()" maxlength="<?= $this->config->item('en_name_max') ?>" value="" class="form-control">
                             </div>
                         </div>
 

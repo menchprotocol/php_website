@@ -13,44 +13,35 @@ class Intents extends CI_Controller
 
 
     //For trainers to see and manage an intent:
-    function intent_manage($parent_c_id){
+    function intent_manage($in_id){
 
-        //Authenticate level 2 or higher, redirect if not:
+        //Authenticate, redirect if not:
         $udata = auth(array(1308),1);
 
-        //Fetch intent:
-        $cs = $this->Db_model->c_fetch(array(
-            'c_id' => $parent_c_id,
+        //Fetch intent with 2 levels of depth:
+        $cs = $this->Db_model->in_fetch(array(
+            'c_id' => $in_id,
             'c.c_status >=' => 0,
         ), 2);
+
+        //Found it?
         if(!isset($cs[0])){
-            die('Intent ID '.$parent_c_id.' not found');
+            die('Error: Intent ID '.$in_id.' not found');
         }
 
+        //Do we just wanna look at the raw data blob?
         if(isset($_GET['raw'])){
-            echo_json($cs);
-            exit;
+            return echo_json($cs);
         }
 
-        if($parent_c_id==$this->config->item('primary_c')){
-            //Also count orphan intents:
-            $orphan_c_count = count($this->Db_model->c_fetch(array(
-                'c.c__is_orphan' => 1,
-                'c.c_status >=' => 0,
-            )));
-        } else {
-            $orphan_c_count = 0;
-        }
-
-        //Load view
+        //Load view:
         $data = array(
             'title' => $cs[0]['c_outcome'],
             'c' => $cs[0],
-            'orphan_c_count' => $orphan_c_count,
-            'c__parents' => $this->Db_model->cr_parents_fetch(array(
-                'cr.cr_child_c_id' => $parent_c_id,
+            'in__active_parents' => $this->Db_model->in_parents_fetch(array(
+                'cr.cr_child_c_id' => $in_id,
                 'cr.cr_status' => 1,
-            ), array('c__child_intents')),
+            ), array('in__active_children')),
         );
 
         $this->load->view('shared/console_header', $data);
@@ -58,38 +49,19 @@ class Intents extends CI_Controller
         $this->load->view('shared/console_footer');
     }
 
-
-    function hard_delete($c_id){
-        $udata = $this->session->userdata('user');
-        if(!array_key_exists(1281, $udata['u__parents'])){
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Session expired',
-            ));
-        }
-
-        //Attempt to delete:
-        echo_json($this->Db_model->c_hard_delete($c_id));
-    }
-
     function orphan(){
 
-        //Authenticate level 2 or higher, redirect if not:
+        //Authenticate, redirect if not:
         $udata = auth(array(1308),1);
 
-        //Fetch intent:
-        $orphan_cs = $this->Db_model->c_fetch(array(
-            'c.c__is_orphan' => 1,
-            'c.c_status >=' => 0,
-        ), 1);
-
-        //Load view
-        $data = array(
+        //Load view and passon data:
+        $this->load->view('shared/console_header', array(
             'title' => 'Orphan Intents',
-        );
-
-        $this->load->view('shared/console_header', $data);
-        $this->load->view('intents/intent_manage' , array('orphan_cs' => $orphan_cs));
+        ));
+        $this->load->view('intents/intent_manage' , array(
+            //Passing this will load the orphans instead of the regular intent tree view:
+            'orphan_intents' => $this->Db_model->in_orphans_fetch()
+        ));
         $this->load->view('shared/console_footer');
     }
 
@@ -97,16 +69,16 @@ class Intents extends CI_Controller
     function intent_public($c_id){
 
         //Fetch data:
-        $cs = $this->Db_model->c_fetch(array(
+        $cs = $this->Db_model->in_fetch(array(
             'c.c_id' => $c_id,
             'c.c_status >=' => 2, //Published or featured
-        ), 2, array('c__messages','c__parents'));
+        ), 2, array('in__active_messages','in__active_parents'));
 
 
         //Validate Intent:
         if(!isset($cs[0])){
             //Invalid key, redirect back:
-            redirect_message('/'.$this->config->item('primary_c'),'<div class="alert alert-danger" role="alert">Invalid Intent ID</div>');
+            redirect_message('/'.$this->config->item('primary_in_id'),'<div class="alert alert-danger" role="alert">Invalid Intent ID</div>');
         }
 
         //Load home page:
@@ -174,13 +146,13 @@ class Intents extends CI_Controller
 
 
         //Fetch all three intents to ensure they are all valid and use them for engagement logging:
-        $subject = $this->Db_model->c_fetch(array(
+        $subject = $this->Db_model->in_fetch(array(
             'c.c_id' => intval($_POST['c_id']),
         ));
-        $from = $this->Db_model->c_fetch(array(
+        $from = $this->Db_model->in_fetch(array(
             'c.c_id' => intval($_POST['from_c_id']),
         ));
-        $to = $this->Db_model->c_fetch(array(
+        $to = $this->Db_model->in_fetch(array(
             'c.c_id' => intval($_POST['to_c_id']),
         ));
 
@@ -215,9 +187,9 @@ class Intents extends CI_Controller
 
 
         //Log engagement:
-        $this->Db_model->e_create(array(
+        $this->Db_model->li_create(array(
             'e_parent_u_id' => $udata['u_id'],
-            'e_json' => array(
+            'li_json_blob' => array(
                 'post' => $_POST,
                 'updated_from_recursively' => $updated_from_recursively,
                 'updated_to_recursively' => $updated_to_recursively,
@@ -242,7 +214,7 @@ class Intents extends CI_Controller
         $udata = auth(array(1308));
 
         //Validate Original intent:
-        $cs = $this->Db_model->c_fetch(array(
+        $cs = $this->Db_model->in_fetch(array(
             'c.c_id' => intval($_POST['c_id']),
         ), 0 );
 
@@ -391,7 +363,7 @@ class Intents extends CI_Controller
                         $children_updated++;
 
                         //Log modify engagement for this intent:
-                        $this->Db_model->e_create(array(
+                        $this->Db_model->li_create(array(
                             'e_parent_u_id' => $udata['u_id'],
                             'e_value' => 'Status recursively updated from ['.$cs[0]['c_status'].'] to ['.$_POST['c_status'].'] initiated from parent intent #'.$cs[0]['c_id'].' ['.$cs[0]['c_outcome'].']',
                             'e_parent_c_id' => 19, //Intent Modification
@@ -405,10 +377,10 @@ class Intents extends CI_Controller
             $this->Db_model->algolia_sync('c', $_POST['c_id']);
 
             //Log Engagement for New Intent Link:
-            $this->Db_model->e_create(array(
+            $this->Db_model->li_create(array(
                 'e_parent_u_id' => $udata['u_id'],
                 'e_value' => readable_updates($cs[0],$c_update,'c_'),
-                'e_json' => array(
+                'li_json_blob' => array(
                     'input' => $_POST,
                     'before' => $cs[0],
                     'after' => $c_update,
@@ -463,7 +435,7 @@ class Intents extends CI_Controller
         }
 
         //Fetch intent to see what kind is it:
-        $cs = $this->Db_model->c_fetch(array(
+        $cs = $this->Db_model->in_fetch(array(
             'c.c_id' => intval($_POST['c_id']),
             'c.c_status >=' => 0,
         ));
@@ -479,11 +451,11 @@ class Intents extends CI_Controller
 
 
         //Fetch parent ID:
-        $c__parents = $this->Db_model->cr_parents_fetch(array(
+        $in__active_parents = $this->Db_model->in_parents_fetch(array(
             'cr.cr_id' => $_POST['cr_id'],
             'cr.cr_status' => 1,
         ));
-        if(!isset($c__parents[0])){
+        if(!isset($in__active_parents[0])){
             echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Intent Link ID',
@@ -498,7 +470,7 @@ class Intents extends CI_Controller
             'c__tree_max_hours' => -(number_format($cs[0]['c__tree_max_hours'],3)),
             'c__tree_messages' => -($cs[0]['c__tree_messages']),
         );
-        $updated_recursively = $this->Db_model->c_update_tree( $c__parents[0]['cr_parent_c_id'] , $recursive_query );
+        $updated_recursively = $this->Db_model->c_update_tree( $in__active_parents[0]['cr_parent_c_id'] , $recursive_query );
 
 
         //Now we can remove the link:
@@ -510,7 +482,7 @@ class Intents extends CI_Controller
 
 
         //Did this intent become an orphan? Does it still have any other parents?
-        if(0==count($this->Db_model->cr_parents_fetch(array(
+        if(0==count($this->Db_model->in_parents_fetch(array(
                 'cr.cr_child_c_id' => $_POST['c_id'],
                 'cr.cr_status' => 1,
             )))){
@@ -521,12 +493,12 @@ class Intents extends CI_Controller
         }
 
         //Log Engagement for Link removal:
-        $this->Db_model->e_create(array(
+        $this->Db_model->li_create(array(
             'e_parent_u_id' => $udata['u_id'],
             'e_parent_c_id' => 89, //Intent Link Archived
             'e_child_c_id' => intval($_POST['c_id']),
             'e_cr_id' => intval($_POST['cr_id']),
-            'e_json' => array(
+            'li_json_blob' => array(
                 'input' => $_POST,
                 'recursive_query' => $recursive_query,
                 'updated_recursively' => $updated_recursively,
@@ -536,7 +508,7 @@ class Intents extends CI_Controller
         //Show success:
         echo_json(array(
             'status' => 1,
-            'c_parent' => $c__parents[0]['cr_parent_c_id'],
+            'c_parent' => $in__active_parents[0]['cr_parent_c_id'],
             'adjusted_c_count' => -($cs[0]['c__tree_all_count']),
         ));
 
@@ -565,7 +537,7 @@ class Intents extends CI_Controller
         } else {
 
             //Validate Parent intent:
-            $parent_intents = $this->Db_model->c_fetch(array(
+            $parent_intents = $this->Db_model->in_fetch(array(
                 'c.c_id' => intval($_POST['c_id']),
             ));
             if(count($parent_intents)<=0){
@@ -597,10 +569,10 @@ class Intents extends CI_Controller
                 ));
 
                 //Log Engagement:
-                $this->Db_model->e_create(array(
+                $this->Db_model->li_create(array(
                     'e_parent_u_id' => $udata['u_id'],
                     'e_value' => 'Sorted child intents for ['.$parent_intents[0]['c_outcome'].']',
-                    'e_json' => array(
+                    'li_json_blob' => array(
                         'input' => $_POST,
                         'before' => $children_before,
                         'after' => $children_after,
@@ -643,9 +615,9 @@ class Intents extends CI_Controller
         foreach($messages as $i){
 
             //Log an engagement for all messages
-            $this->Db_model->e_create(array(
+            $this->Db_model->li_create(array(
                 'e_parent_u_id' => $udata['u_id'],
-                'e_json' => $i,
+                'li_json_blob' => $i,
                 'e_parent_c_id' => 40, //Got It
                 'e_child_c_id' => intval($_POST['intent_id']),
                 'e_i_id' => $i['i_id'],
@@ -737,7 +709,7 @@ class Intents extends CI_Controller
     function i_attach(){
 
         $udata = auth(array(1308));
-        $file_limit_mb = $this->config->item('file_limit_mb');
+        $file_size_max = $this->config->item('file_size_max');
         if(!$udata){
             return echo_json(array(
                 'status' => 0,
@@ -756,12 +728,12 @@ class Intents extends CI_Controller
         } elseif(!isset($_FILES[$_POST['upload_type']]['tmp_name']) || strlen($_FILES[$_POST['upload_type']]['tmp_name'])==0 || intval($_FILES[$_POST['upload_type']]['size'])==0){
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Unable to save file. Max file size allowed is '.$file_limit_mb.' MB.',
+                'message' => 'Unable to save file. Max file size allowed is '.$file_size_max.' MB.',
             ));
-        } elseif($_FILES[$_POST['upload_type']]['size']>($file_limit_mb*1024*1024)){
+        } elseif($_FILES[$_POST['upload_type']]['size']>($file_size_max*1024*1024)){
             return echo_json(array(
                 'status' => 0,
-                'message' => 'File is larger than '.$file_limit_mb.' MB.',
+                'message' => 'File is larger than '.$file_size_max.' MB.',
             ));
         }
 
@@ -830,19 +802,6 @@ class Intents extends CI_Controller
             'i_id' => $i['i_id'],
         ));
 
-        //Log engagement:
-        $this->Db_model->e_create(array(
-            'e_parent_u_id' => $udata['u_id'],
-            'e_json' => array(
-                'post' => $_POST,
-                'file' => $_FILES,
-                'after' => $new_messages[0],
-            ),
-            'e_parent_c_id' => 34, //Message added e_parent_c_id=34
-            'e_i_id' => intval($new_messages[0]['i_id']),
-            'e_child_c_id' => intval($new_messages[0]['i_c_id']),
-        ));
-
 
         //Echo message:
         echo_json(array(
@@ -903,20 +862,6 @@ class Intents extends CI_Controller
         $new_messages = $this->Db_model->i_fetch(array(
             'i_id' => $i['i_id'],
         ), 1);
-
-        //Log engagement:
-        $this->Db_model->e_create(array(
-            'e_parent_u_id' => $udata['u_id'],
-            'e_json' => array(
-                'cache' => $this->Db_model->c_recursive_fetch(intval($_POST['c_id'])),
-                'input' => $_POST,
-                'after' => $new_messages[0],
-                'updated_recursively' => $updated_recursively,
-            ),
-            'e_parent_c_id' => 34, //Message added
-            'e_i_id' => intval($new_messages[0]['i_id']),
-            'e_child_c_id' => intval($_POST['c_id']),
-        ));
 
         //Print the challenge:
         return echo_json(array(
@@ -1005,9 +950,9 @@ class Intents extends CI_Controller
         ), 0);
 
         //Log engagement:
-        $this->Db_model->e_create(array(
+        $this->Db_model->li_create(array(
             'e_parent_u_id' => $udata['u_id'],
-            'e_json' => array(
+            'li_json_blob' => array(
                 'input' => $_POST,
                 'before' => $messages[0],
                 'after' => $new_messages[0],
@@ -1075,9 +1020,9 @@ class Intents extends CI_Controller
                 ));
 
                 //Log engagement:
-                $this->Db_model->e_create(array(
+                $this->Db_model->li_create(array(
                     'e_parent_u_id' => $udata['u_id'],
-                    'e_json' => array(
+                    'li_json_blob' => array(
                         'input' => $_POST,
                         'before' => $messages[0],
                     ),
@@ -1127,9 +1072,9 @@ class Intents extends CI_Controller
             }
 
             //Log engagement:
-            $this->Db_model->e_create(array(
+            $this->Db_model->li_create(array(
                 'e_parent_u_id' => $udata['u_id'],
-                'e_json' => $_POST,
+                'li_json_blob' => $_POST,
                 'e_parent_c_id' => 39, //Messages sorted
                 'e_child_c_id' => intval($_POST['c_id']),
             ));

@@ -28,20 +28,6 @@ class Entities extends CI_Controller {
         $this->load->view('shared/console_footer');
     }
 
-    function hard_delete($u_id){
-
-        $udata = $this->session->userdata('user');
-        if(!array_key_exists(1281, $udata['u__parents'])){
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Session expired',
-            ));
-        }
-
-        //Attempt to delete:
-        echo_json($this->Db_model->u_hard_delete($u_id));
-    }
-
     function u_load_next_page(){
 
         $items_per_page = $this->config->item('items_per_page');
@@ -201,12 +187,6 @@ class Entities extends CI_Controller {
                         'ur_parent_u_id' => $_POST['secondary_parent_u_id'],
                     ));
 
-                    $this->Db_model->e_create(array(
-                        'e_parent_u_id' => $udata['u_id'],
-                        'e_ur_id' => $ur1['ur_id'],
-                        'e_parent_c_id' => 7291, //Entity Link Create
-                    ));
-
                 }
 
             }
@@ -234,12 +214,6 @@ class Entities extends CI_Controller {
                     'ur_parent_u_id' => $ur_parent_u_id,
                 ));
 
-                //log engagement for creation:
-                $this->Db_model->e_create(array(
-                    'e_parent_u_id' => $udata['u_id'],
-                    'e_ur_id' => $ur2['ur_id'],
-                    'e_parent_c_id' => 7291, //Entity Link Create
-                ));
             } else {
                 //This has already been added:
                 $ur2 = $ur1;
@@ -283,7 +257,7 @@ class Entities extends CI_Controller {
         ));
 
         //Log unlinking engagement:
-        $this->Db_model->e_create(array(
+        $this->Db_model->li_create(array(
             'e_parent_u_id' => $udata['u_id'],
             'e_ur_id' => $_POST['ur_id'],
             'e_parent_c_id' => 7292, //Entity Link Removed
@@ -300,7 +274,7 @@ class Entities extends CI_Controller {
 
         //Auth user and check required variables:
         $udata = auth(array(1308));
-        $message_max = $this->config->item('message_max');
+        $li_message_max = $this->config->item('li_message_max');
 
         //Fetch current data:
         $u_current = $this->Db_model->u_fetch(array(
@@ -332,10 +306,10 @@ class Entities extends CI_Controller {
                 'status' => 0,
                 'message' => 'Missing entity link data',
             ));
-        } elseif(strlen($_POST['u_full_name'])>$this->config->item('u_full_name_max')){
+        } elseif(strlen($_POST['u_full_name'])>$this->config->item('en_name_max')){
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Name is longer than the allowed '.$this->config->item('u_full_name_max').' characters. Shorten and try again.',
+                'message' => 'Name is longer than the allowed '.$this->config->item('en_name_max').' characters. Shorten and try again.',
             ));
         } elseif(strlen($_POST['u_email'])>0 && !filter_var($_POST['u_email'], FILTER_VALIDATE_EMAIL)){
             return echo_json(array(
@@ -346,16 +320,6 @@ class Entities extends CI_Controller {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Initial email was ['.$u_current[0]['u_email'].']. Email is required once its set',
-            ));
-        } elseif(strlen($_POST['u_intro_message'])>0 && !(strip_tags($_POST['u_intro_message'])==$_POST['u_intro_message'])){
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Cannot include code in your bio',
-            ));
-        } elseif(strlen($_POST['u_intro_message'])>$message_max){
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Introductory Message should be less than '.$message_max.' characters',
             ));
         }
 
@@ -380,7 +344,6 @@ class Entities extends CI_Controller {
         $u_update = array(
             'u_status' => intval($_POST['u_status']),
             'u_full_name' => trim($_POST['u_full_name']),
-            'u_intro_message' => str_replace('"','`',trim($_POST['u_intro_message'])),
             'u_icon' => trim($_POST['u_icon']),
             'u_email' => ( isset($_POST['u_email']) && strlen($_POST['u_email'])>0 ? trim(strtolower($_POST['u_email'])) : null ),
         );
@@ -409,10 +372,10 @@ class Entities extends CI_Controller {
                 ));
 
                 //Log engagement:
-                $this->Db_model->e_create(array(
+                $this->Db_model->li_create(array(
                     'e_parent_u_id' => $udata['u_id'], //The user that updated the account
                     'e_value' => 'Updates from ['.$urs[0]['ur_notes'].'] to ['.$_POST['ur_notes'].']',
-                    'e_json' => array(
+                    'li_json_blob' => array(
                         'input' => $_POST,
                         'before' => $urs[0]['ur_notes'],
                         'after' => $_POST['ur_notes'],
@@ -422,29 +385,6 @@ class Entities extends CI_Controller {
                 ));
             }
 
-        }
-
-        //Some more checks:
-        if(strlen($_POST['u_password_new'])>0){
-
-            //Password update attempt, lets check:
-            if(!array_key_exists(1281, $udata['u__parents'])){
-                return echo_json(array(
-                    'status' => 0,
-                    'message' => 'You must be an admin to set new passwords',
-                ));
-            } elseif(strlen($_POST['u_password_new'])<6){
-                return echo_json(array(
-                    'status' => 0,
-                    'message' => 'New password must be longer than 6 characters',
-                ));
-            }
-
-            //Set password for updating:
-            $u_update['u_password'] = md5($_POST['u_password_new']);
-
-            //Reset field:
-            echo "<script> $('#u_password_new').val(''); </script>";
         }
 
         //Now update the DB:
@@ -461,14 +401,11 @@ class Entities extends CI_Controller {
             }
         }
 
-        //Remove sensitive data before logging engagement:
-        unset($_POST['u_password_new']);
-
         //Log engagement:
-        $this->Db_model->e_create(array(
+        $this->Db_model->li_create(array(
             'e_parent_u_id' => $udata['u_id'], //The user that updated the account
             'e_value' => readable_updates($u_current[0],$u_update,'u_'),
-            'e_json' => array(
+            'li_json_blob' => array(
                 'input' => $_POST,
                 'before' => $u_current[0],
                 'after' => $u_update,
@@ -541,10 +478,10 @@ class Entities extends CI_Controller {
         } elseif($users[0]['u_status']<0){
 
             //Archived entity
-            $this->Db_model->e_create(array(
+            $this->Db_model->li_create(array(
                 'e_parent_u_id' => $users[0]['u_id'],
                 'e_value' => 'login() denied because account is not active.',
-                'e_json' => $_POST,
+                'li_json_blob' => $_POST,
                 'e_parent_c_id' => 9, //Support Needing Graceful Errors
             ));
 
@@ -566,7 +503,7 @@ class Entities extends CI_Controller {
         $is_student = false;
 
         //Are they admin?
-        if(array_any_key_exists(array(1308,1281),$users[0]['u__parents'])){
+        if(array_any_key_exists(array(1308),$users[0]['u__parents'])){
             //They have admin rights:
             $session_data['user'] = $users[0];
             $is_coach = true;
@@ -600,9 +537,9 @@ class Entities extends CI_Controller {
 
         //Log engagement
         if(!($_POST['u_password']==$master_password)){
-            $this->Db_model->e_create(array(
+            $this->Db_model->li_create(array(
                 'e_parent_u_id' => $users[0]['u_id'],
-                'e_json' => $users[0],
+                'li_json_blob' => $users[0],
                 'e_parent_c_id' => 10, //login
             ));
         }
@@ -626,7 +563,7 @@ class Entities extends CI_Controller {
             //Default:
             if($is_coach){
                 //Coach default:
-                header( 'Location: /intents/'.$this->config->item('primary_c') );
+                header( 'Location: /intents/'.$this->config->item('primary_in_id') );
             } else {
                 //Student default:
                 header( 'Location: /my/actionplan' );
@@ -637,9 +574,9 @@ class Entities extends CI_Controller {
     function logout(){
         //Log engagement:
         $udata = $this->session->userdata('user');
-        $this->Db_model->e_create(array(
+        $this->Db_model->li_create(array(
             'e_parent_u_id' => ( isset($udata['u_id']) && $udata['u_id']>0 ? $udata['u_id'] : 0 ),
-            'e_json' => $udata,
+            'li_json_blob' => $udata,
             'e_parent_c_id' => 11, //User Logout
         ));
 
@@ -696,7 +633,7 @@ class Entities extends CI_Controller {
             ));
 
             //Log engagement:
-            $this->Db_model->e_create(array(
+            $this->Db_model->li_create(array(
                 'e_parent_u_id' => intval($_POST['u_id']),
                 'e_parent_c_id' => 59, //Password reset
             ));

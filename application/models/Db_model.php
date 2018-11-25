@@ -118,11 +118,11 @@ class Db_model extends CI_Model {
                 $drip_time = $start_time;
                 foreach($messages as $i){
                     $drip_time += $drip_intervals;
-                    $this->Db_model->e_create(array(
+                    $this->Db_model->li_create(array(
                         'e_parent_u_id' => 0, //System
                         'e_child_u_id' => $ks[0]['u_id'],
-                        'e_timestamp' => date("Y-m-d H:i:s" , $drip_time ), //Used by Cron Job to fetch this Drip when due
-                        'e_json' => array(
+                        'li_timestamp' => date("Y-m-d H:i:s" , $drip_time ), //Used by Cron Job to fetch this Drip when due
+                        'li_json_blob' => array(
                             'created_time' => date("Y-m-d H:i:s" , $start_time ),
                             'drip_time' => date("Y-m-d H:i:s" , $drip_time ),
                             'i_drip_count' => count($drip_messages),
@@ -212,7 +212,7 @@ class Db_model extends CI_Model {
 
         } else {
             //Oooopsi, we could not find it! Log error and return false:
-            $this->Db_model->e_create(array(
+            $this->Db_model->li_create(array(
                 'e_value' => 'Unable to locate OR selection for this subscription',
                 'e_parent_c_id' => 8, //System error
                 'e_child_c_id' => $c_id,
@@ -428,14 +428,6 @@ class Db_model extends CI_Model {
                             ),
                         ));
 
-                        //Log subscription completion engagement:
-                        $this->Db_model->e_create(array(
-                            'e_parent_u_id' => $cs[0]['w_child_u_id'],
-                            'e_child_c_id' => $cs[0]['w_c_id'],
-                            'e_w_id' => $cs[0]['w_id'],
-                            'e_parent_c_id' => 7490, //Subscription Completed
-                        ));
-
                         //The entire subscription is now complete!
                         $this->Db_model->w_update( $cs[0]['w_id'], array(
                             'w_status' => 2, //Subscription is now complete
@@ -501,7 +493,7 @@ class Db_model extends CI_Model {
         $link_c_id = intval($link_c_id);
 
         //Validate Original intent:
-        $parent_intents = $this->Db_model->c_fetch(array(
+        $parent_intents = $this->Db_model->in_fetch(array(
             'c.c_id' => intval($c_id),
         ), 1);
         if(count($parent_intents)<=0){
@@ -533,10 +525,10 @@ class Db_model extends CI_Model {
             ));
 
             //Log Engagement for New Intent:
-            $this->Db_model->e_create(array(
+            $this->Db_model->li_create(array(
                 'e_parent_u_id' => $parent_u_id,
                 'e_value' => 'Intent ['.$new_c['c_outcome'].'] created',
-                'e_json' => array(
+                'li_json_blob' => array(
                     'input' => $_POST,
                     'before' => null,
                     'after' => $new_c,
@@ -548,7 +540,7 @@ class Db_model extends CI_Model {
         } else {
 
             //We are linking to $link_c_id, lets make sure it exists:
-            $new_cs = $this->Db_model->c_fetch(array(
+            $new_cs = $this->Db_model->in_fetch(array(
                 'c_id' => $link_c_id,
                 'c_status >=' => 0,
             ), ( 3 - $next_level ));
@@ -626,21 +618,6 @@ class Db_model extends CI_Model {
 
 
 
-        //Log Engagement for new link:
-        $this->Db_model->e_create(array(
-            'e_parent_u_id' => $parent_u_id,
-            'e_value' => 'Linked intent ['.$new_c['c_outcome'].'] as child of intent ['.$parent_intents[0]['c_outcome'].']',
-            'e_json' => array(
-                'input' => $_POST,
-                'before' => null,
-                'after' => $relation,
-                'recursive_query' => $recursive_query,
-                'updated_recursively' => $updated_recursively,
-            ),
-            'e_parent_c_id' => 23, //New Intent Link
-            'e_cr_id' => $relation['cr_id'],
-        ));
-
         $relations = $this->Db_model->cr_children_fetch(array(
             'cr.cr_id' => $relation['cr_id'],
         ));
@@ -709,16 +686,6 @@ class Db_model extends CI_Model {
 
             }
 
-            //Log subscription engagement:
-            $this->Db_model->e_create(array(
-                'e_parent_u_id' => $insert_columns['w_child_u_id'],
-                'e_child_u_id' => $insert_columns['w_child_u_id'],
-                'e_json' => $insert_columns,
-                'e_parent_c_id' => 7465, //Subscribed
-                'e_w_id' => $insert_columns['w_id'],
-                'e_child_c_id' => $insert_columns['w_c_id'],
-            ));
-
             //Return results:
             return $insert_columns;
 
@@ -728,16 +695,29 @@ class Db_model extends CI_Model {
     }
 
 
+    function en_orphans_fetch(){
+        return array();
+        //TODO Fetches the orphan entities:
+        return $this->Db_model->in_fetch(array(
+            ' NOT EXISTS (SELECT 1 FROM tb_entity_links ur WHERE u.u_id = ur.ur_child_u_id AND ur_status>0) ' => null,
+        ), array('skip_u__parents'));
+    }
+
+
+    function in_orphans_fetch(){
+	    return array();
+        //TODO Fetches the orphan intents:
+        return $this->Db_model->in_fetch(array(
+            ' NOT EXISTS (SELECT 1 FROM tb_entity_links ur WHERE u.u_id = ur.ur_child_u_id AND ur_status>0) ' => null,
+        ));
+    }
+
+
 	
-	/* ******************************
-	 * Users
-	 ****************************** */
-	
-	function u_fetch($match_columns, $join_objects=array(), $limit_row=0, $limit_offset=0, $order_columns=array(
-        'u__e_score' => 'DESC',
-    )){
+	function u_fetch($match_columns, $join_objects=array(), $limit=0, $limit_offset=0, $order_columns=array('u__e_score'=>'DESC'), $select='*', $group_by=null){
+
 	    //Fetch the target entities:
-	    $this->db->select('*');
+	    $this->db->select($select);
 	    $this->db->from('tb_entities u');
 	    $this->db->join('tb_entity_urls x', 'x.x_id = u.u_cover_x_id','left'); //Fetch the cover photo if >0
 	    foreach($match_columns as $key=>$value){
@@ -747,12 +727,14 @@ class Db_model extends CI_Model {
                 $this->db->where($key);
             }
 	    }
-
-        if($limit_row>0){
-            $this->db->limit($limit_row,$limit_offset);
+        if($group_by){
+            $this->db->group_by($group_by);
         }
         foreach($order_columns as $key=>$value){
             $this->db->order_by($key,$value);
+        }
+        if($limit>0){
+            $this->db->limit($limit,$limit_offset);
         }
 
 	    $q = $this->db->get();
@@ -810,139 +792,6 @@ class Db_model extends CI_Model {
         return $res;
 	}
 
-
-    function c_hard_delete($c_id){
-
-        if(intval($c_id)<0){
-            return array(
-                'status' => 0,
-                'message' => 'Missing input ID',
-            );
-        }
-
-        //Validate user exists:
-        $intents = $this->Db_model->c_fetch(array(
-            'c_id' => $c_id,
-        ));
-
-        if(!(count($intents)==1)){
-            return array(
-                'status' => 0,
-                'message' => 'Intent Not Found in DB',
-            );
-        }
-
-        //Check subscriptions:
-        $ws = $this->Db_model->w_fetch(array(
-            'w_c_id' => $c_id,
-            'w_status >=' => 0,
-        ));
-        if(count($ws)>0){
-            return array(
-                'status' => 0,
-                'message' => 'Cannot delete because there are '.count($ws).' subscriptions',
-                'ws' => $ws,
-                'c' => $intents[0],
-            );
-        }
-
-        $archive_stats = array();
-
-        //Start removal process by deleting engagements:
-        $this->db->query("DELETE FROM tb_engagements WHERE e_parent_c_id=".$c_id." OR e_child_c_id=".$c_id);
-        $archive_stats['tb_engagements'] = $this->db->affected_rows();
-
-        $this->db->query("DELETE FROM tb_intent_messages WHERE i_c_id=".$c_id);
-        $archive_stats['tb_intent_messages'] = $this->db->affected_rows();
-
-        $this->db->query("DELETE FROM tb_actionplans WHERE w_c_id=".$c_id);
-        $archive_stats['tb_actionplans'] = $this->db->affected_rows();
-
-        $this->db->query("DELETE FROM tb_intents WHERE c_id=".$c_id);
-        $archive_stats['tb_intents'] = $this->db->affected_rows();
-
-        $this->db->query("DELETE FROM tb_intent_links WHERE (cr_parent_c_id=".$c_id." OR cr_child_c_id=".$c_id.")");
-        $archive_stats['tb_intent_links'] = $this->db->affected_rows();
-
-        return array(
-            'status' => 1,
-            'stats' => $archive_stats,
-            'c' => $intents[0],
-        );
-
-    }
-
-    function u_hard_delete($u_id){
-
-        if(intval($u_id)<0){
-            return array(
-                'status' => 0,
-                'message' => 'Missing input $u_id',
-            );
-        }
-
-        //Validate user exists:
-        $users = $this->Db_model->u_fetch(array(
-            'u_id' => $u_id,
-        ));
-
-        if(!(count($users)==1)){
-            return array(
-                'status' => 0,
-                'message' => 'User Not Found in DB',
-            );
-        } elseif(array_key_exists(1281, $users[0]['u__parents']) ){
-            return array(
-                'status' => 0,
-                'message' => 'Cannot delete Admin',
-                'user' => $users[0],
-            );
-        }
-
-
-        //Check subscriptions:
-        $ws = $this->Db_model->w_fetch(array(
-            '(w_parent_u_id='.$u_id.' OR w_child_u_id='.$u_id.')' => null,
-            'w_status >=' => 0,
-        ));
-        if(count($ws)>0){
-            return array(
-                'status' => 0,
-                'message' => 'Cannot delete because there are '.count($ws).' active subscriptions',
-                'ws' => $ws,
-                'u' => $users[0],
-            );
-        }
-
-        $archive_stats = array();
-
-        //Start removal process by deleting engagements:
-        $this->db->query("DELETE FROM tb_engagements WHERE e_parent_u_id=".$u_id." OR e_child_u_id=".$u_id);
-        $archive_stats['tb_engagements'] = $this->db->affected_rows();
-
-        $this->db->query("DELETE FROM tb_intent_messages WHERE i_u_id=".$u_id);
-        $archive_stats['tb_intent_messages'] = $this->db->affected_rows();
-
-        $this->db->query("DELETE FROM tb_actionplans WHERE w_child_u_id=".$u_id);
-        $archive_stats['tb_actionplans'] = $this->db->affected_rows();
-
-        $this->db->query("DELETE FROM tb_entity_urls WHERE x_u_id=".$u_id);
-        $archive_stats['tb_entity_urls'] = $this->db->affected_rows();
-
-        $this->db->query("DELETE FROM tb_entities WHERE u_id=".$u_id);
-        $archive_stats['tb_entities'] = $this->db->affected_rows();
-
-        $this->db->query("DELETE FROM tb_entity_links WHERE (ur_parent_u_id=".$u_id." OR ur_child_u_id=".$u_id.")");
-        $archive_stats['tb_entity_links'] = $this->db->affected_rows();
-
-        return array(
-            'status' => 1,
-            'stats' => $archive_stats,
-            'user' => $users[0],
-        );
-
-    }
-
 	function u_create($insert_columns){
 
         if(missing_required_db_fields($insert_columns,array('u_full_name'))){
@@ -960,7 +809,7 @@ class Db_model extends CI_Model {
         }
 
         if(!isset($insert_columns['u_status'])){
-            $insert_columns['u_status'] = 1;
+            $insert_columns['u_status'] = 0; //New entity
         }
 		
 		//Lets now add:
@@ -1038,9 +887,9 @@ class Db_model extends CI_Model {
 
         //Need either entity or intent:
         if(!isset($insert_columns['i_c_id'])){
-            $this->Db_model->e_create(array(
+            $this->Db_model->li_create(array(
                 'e_value' => 'A new message requires either an Entity or Intent to be referenced to',
-                'e_json' => $insert_columns,
+                'li_json_blob' => $insert_columns,
                 'e_parent_c_id' => 8, //Platform Error
             ));
             return false;
@@ -1201,7 +1050,7 @@ class Db_model extends CI_Model {
                         'k_status NOT IN ('.join(',', $this->config->item('k_status_incomplete')).')' => null, //complete
                     ))),
                     //fetch all user engagements:
-                    'e_all_count' => count($this->Db_model->e_fetch(array(
+                    'e_all_count' => count($this->Db_model->li_fetch(array(
                         '(e_child_u_id='.$value['w_child_u_id'].' OR e_parent_u_id='.$value['w_child_u_id'].')' => null,
                         '(e_parent_c_id NOT IN ('.join(',', $this->config->item('exclude_es')).'))' => null,
                     ), $this->config->item('max_counter'))),
@@ -1217,10 +1066,10 @@ class Db_model extends CI_Model {
 
 
 
-    function c_fetch($match_columns, $children_levels=0, $join_objects=array(), $order_columns=array(), $limit=0){
+    function in_fetch($match_columns, $append_chil_levels=0, $join_objects=array(), $order_columns=array(), $limit=0, $limit_offset=0, $select='*', $group_by=null){
 
         //The basic fetcher for intents
-        $this->db->select('*');
+        $this->db->select($select);
         $this->db->from('tb_intents c');
         if(in_array('u',$join_objects)){
             $this->db->join('tb_entities u', 'u.u_id = c.c_parent_u_id');
@@ -1228,48 +1077,54 @@ class Db_model extends CI_Model {
         foreach($match_columns as $key=>$value){
             $this->db->where($key,$value);
         }
+
+        if($group_by){
+            $this->db->group_by($group_by);
+        }
         if(count($order_columns)>0){
             foreach($order_columns as $key=>$value){
                 $this->db->order_by($key,$value);
             }
         }
         if($limit>0){
-            $this->db->limit($limit);
+            $this->db->limit($limit, $limit_offset);
         }
         $q = $this->db->get();
         $intents = $q->result_array();
 
         foreach($intents as $key=>$value){
 
-            if(in_array('c__messages',$join_objects)){
-                $intents[$key]['c__messages'] = $this->Db_model->i_fetch(array(
+            //Should we append messaging link types?
+            if(in_array('in__active_messages',$join_objects)){
+                $intents[$key]['in__active_messages'] = $this->Db_model->i_fetch(array(
                     'i_c_id' => $value['c_id'],
                     'i_status >=' => 0, //Published in any form
                 ));
             }
 
-            if(in_array('c__parents',$join_objects)){
-                $intents[$key]['c__parents'] = $this->Db_model->cr_parents_fetch(array(
+            //Should we fetch all parent intentions?
+            if(in_array('in__active_parents',$join_objects)){
+                $intents[$key]['in__active_parents'] = $this->Db_model->in_parents_fetch(array(
                     'cr.cr_child_c_id' => $value['c_id'],
                     'cr.cr_status' => 1,
                 ) , $join_objects);
             }
 
-            if($children_levels>=1){
+            //Have we been asked to append any children to this query?
+            if($append_chil_levels>=1){
 
                 //Do the first level:
-                $intents[$key]['c__child_intents'] = $this->Db_model->cr_children_fetch(array(
+                $intents[$key]['in__active_children'] = $this->Db_model->cr_children_fetch(array(
                     'cr.cr_parent_c_id' => $value['c_id'],
                     'cr.cr_status' => 1,
                     'c.c_status >=' => 0,
                 ) , $join_objects );
 
-
-                //need more depth?
-                if($children_levels>=2){
+                //We can also do a second level, just like how the Intents are displayed using a 2-level navigation:
+                if($append_chil_levels>=2){
                     //Start the second level:
-                    foreach($intents[$key]['c__child_intents'] as $key2=>$value2){
-                        $intents[$key]['c__child_intents'][$key2]['c__child_intents'] = $this->Db_model->cr_children_fetch(array(
+                    foreach($intents[$key]['in__active_children'] as $key2=>$value2){
+                        $intents[$key]['in__active_children'][$key2]['in__active_children'] = $this->Db_model->cr_children_fetch(array(
                             'cr.cr_parent_c_id' => $value2['c_id'],
                             'cr.cr_status' => 1,
                             'c.c_status >=' => 0,
@@ -1304,9 +1159,9 @@ class Db_model extends CI_Model {
 		//We had anything?
 		if(count($join_objects)>0){
             foreach($return as $key=>$value){
-                if(in_array('c__messages',$join_objects)){
+                if(in_array('in__active_messages',$join_objects)){
                     //Fetch Messages:
-                    $return[$key]['c__messages'] = $this->Db_model->i_fetch(array(
+                    $return[$key]['in__active_messages'] = $this->Db_model->i_fetch(array(
                         'i_c_id' => $value['c_id'],
                         'i_status >=' => 0, //Published in any form
                     ));
@@ -1318,7 +1173,7 @@ class Db_model extends CI_Model {
 		return $return;
 	}
 	
-	function cr_parents_fetch($match_columns,$join_objects=array()){
+	function in_parents_fetch($match_columns,$join_objects=array()){
 		//Missing anything?
 		$this->db->select('*');
 		$this->db->from('tb_intents c');
@@ -1332,18 +1187,18 @@ class Db_model extends CI_Model {
         if(count($join_objects)>0){
             foreach($return as $key=>$value){
 
-                if(in_array('c__child_intents',$join_objects)){
+                if(in_array('in__active_children',$join_objects)){
                     //Fetch children:
-                    $return[$key]['c__child_intents'] = $this->Db_model->cr_children_fetch(array(
+                    $return[$key]['in__active_children'] = $this->Db_model->cr_children_fetch(array(
                         'cr.cr_parent_c_id' => $value['c_id'],
                         'cr.cr_status' => 1,
                         'c.c_status >=' => 0,
                     ));
                 }
 
-                if(in_array('c__messages',$join_objects)){
+                if(in_array('in__active_messages',$join_objects)){
                     //Fetch Messages:
-                    $return[$key]['c__messages'] = $this->Db_model->i_fetch(array(
+                    $return[$key]['in__active_messages'] = $this->Db_model->i_fetch(array(
                         'i_c_id' => $value['c_id'],
                         'i_status >=' => 0, //Published in any form
                     ));
@@ -1497,10 +1352,10 @@ class Db_model extends CI_Model {
             $this->Db_model->ur_update($existing[0]['ur_id'], $update_array);
 
             //Log engagement:
-            $this->Db_model->e_create(array(
+            $this->Db_model->li_create(array(
                 'e_parent_c_id' => 7727, //entity link note modification
                 'e_ur_id' => $existing[0]['ur_id'],
-                'e_json' => array(
+                'li_json_blob' => array(
                     'before' => $existing[0],
                     'after' => $update_array,
                 ),
@@ -1515,12 +1370,6 @@ class Db_model extends CI_Model {
                 'ur_child_u_id' => $child_u_id,
                 'ur_parent_u_id' => $parent_u_id,
                 'ur_notes' => $ur_notes,
-            ));
-
-            //Log Engagement new entity link:
-            $this->Db_model->e_create(array(
-                'e_ur_id' => $new_ur['ur_id'],
-                'e_parent_c_id' => 7291, //Entity Link Create
             ));
 
             return true;
@@ -1648,7 +1497,7 @@ class Db_model extends CI_Model {
             ));
 
             //Log Engagement new entity:
-            $this->Db_model->e_create(array(
+            $this->Db_model->li_create(array(
                 'e_parent_u_id' => $udata['u_id'],
                 'e_child_u_id' => $new_content['u_id'],
                 'e_parent_c_id' => 6971, //Entity Created
@@ -1658,13 +1507,6 @@ class Db_model extends CI_Model {
             $ur1 = $this->Db_model->ur_create(array(
                 'ur_child_u_id' => $new_content['u_id'],
                 'ur_parent_u_id' => $x_u_id,
-            ));
-
-            //Log Engagement new entity link:
-            $this->Db_model->e_create(array(
-                'e_parent_u_id' => $udata['u_id'],
-                'e_ur_id' => $ur1['ur_id'],
-                'e_parent_c_id' => 7291, //Entity Link Create
             ));
 
         } else {
@@ -1690,22 +1532,6 @@ class Db_model extends CI_Model {
                 'message' => 'There was an issue creating the URL',
             );
         }
-
-        //Log Engagements:
-        $this->Db_model->e_create(array(
-            'e_json' => $curl,
-            'e_parent_c_id' => 6911, //URL Detected Live
-            'e_parent_u_id' => $udata['u_id'],
-            'e_child_u_id' => $new_content['u_id'],
-            'e_x_id' => $new_x['x_id'],
-        ));
-        $this->Db_model->e_create(array(
-            'e_json' => $new_x,
-            'e_parent_c_id' => 6910, //URL Added
-            'e_parent_u_id' => $udata['u_id'],
-            'e_child_u_id' => $new_content['u_id'],
-            'e_x_id' => $new_x['x_id'],
-        ));
 
 
         //Is this a image for an entity without a cover letter? If so, set this as the default:
@@ -1848,7 +1674,7 @@ class Db_model extends CI_Model {
 	
 	function e_update($id,$update_columns){
 	    $this->db->where('e_id', $id);
-	    $this->db->update('tb_engagements', $update_columns);
+	    $this->db->update('table_links', $update_columns);
 	    return $this->db->affected_rows();
 	}
 	
@@ -1947,12 +1773,12 @@ class Db_model extends CI_Model {
             } else {
 
                 //Save this engagement as we have an issue here...
-                $this->Db_model->e_create(array(
+                $this->Db_model->li_create(array(
                     'e_parent_u_id' => $insert_columns['x_parent_u_id'],
                     'e_child_u_id' => $insert_columns['x_u_id'],
                     'e_parent_c_id' => 8, //System error
                     'e_value' => 'x_create() found a duplicate URL ID ['.$urls[0]['x_id'].']',
-                    'e_json' => $insert_columns,
+                    'li_json_blob' => $insert_columns,
                     'e_x_id' => $urls[0]['x_id'],
                 ));
 
@@ -1984,21 +1810,11 @@ class Db_model extends CI_Model {
 
 
 
-	function e_fetch($match_columns=array(), $limit=100, $join_objects=array(), $replace_key=null, $order_columns=array(
-        'e.e_timestamp' => 'DESC',
-    ), $select='*', $group_by=null){
+	function li_fetch($match_columns=array(), $limit=100, $join_objects=array(), $order_columns=array('li_timestamp' => 'DESC'), $select='*', $group_by=null){
+
 	    $this->db->select($select);
-	    $this->db->from('tb_engagements e');
-	    if(!$group_by){
-            $this->db->join('tb_intents c', 'c.c_id=e.e_parent_c_id');
-            $this->db->join('tb_entities u', 'u.u_id=e.e_parent_u_id','left');
-        }
-        if(in_array('ej',$join_objects)){
-            $this->db->join('tb_engagement_blobs ej', 'ej.ej_e_id=e.e_id','left');
-        }
-        if(in_array('c__messages',$join_objects)){
-            $this->db->join('tb_intent_messages i', 'i.i_id=e.e_i_id','left');
-        }
+	    $this->db->from('table_links li');
+
 	    foreach($match_columns as $key=>$value){
 	        if(!is_null($value)){
 	            $this->db->where($key,$value);
@@ -2019,33 +1835,12 @@ class Db_model extends CI_Model {
 	        $this->db->limit($limit);
 	    }
 	    $q = $this->db->get();
-	    $res = $q->result_array();
-
-	    //Do we need to replace the array key?
-	    if($replace_key && count($res)>0 && isset($res[0][$replace_key])){
-	        //We need to replace the array key with a specific field for faster data accessing later on using array_key_exists()
-            foreach($res as $key=>$val){
-                unset($res[$key]);
-                if(!isset($res[$val[$replace_key]])){
-                    $res[$val[$replace_key]] = $val;
-                } else {
-                    //This should not happen, log this error:
-                    $this->Db_model->e_create(array(
-                        'e_value' => 'e_fetch() was asked to replace array key with ['.$replace_key.'] and found a duplicate key value ['.$val[$replace_key].']',
-                        'e_json' => $val,
-                        'e_parent_c_id' => 8, //Platform Error
-                    ));
-                }
-            }
-        }
-
-        //Return results:
-        return $res;
+	    return $q->result_array();
 	}
 	
 	
 	
-	function e_create($insert_columns){
+	function li_create($insert_columns){
 
         if(missing_required_db_fields($insert_columns,array('e_parent_c_id'))){
             return false;
@@ -2064,29 +1859,16 @@ class Db_model extends CI_Model {
 	    }
 
 
-        //Do we have a json attachment for this engagement?
-        $insert_columns['e_has_blob'] = 'f';
-        $save_blob = null;
-        if(isset($insert_columns['e_json']) && strlen(print_r($insert_columns['e_json'],true))>0){
-            if(is_array($insert_columns['e_json']) && count($insert_columns['e_json'])>0){
-                $save_blob = $insert_columns['e_json'];
-                $insert_columns['e_has_blob'] = 't';
-            }
-        }
-        //Remove e_json from here to keep tb_engagements small and lean
-        unset($insert_columns['e_json']);
-
-
         //Set some defaults:
         if(!isset($insert_columns['e_value'])){
             $insert_columns['e_value'] = null;
         }
-        if(!isset($insert_columns['e_timestamp'])){
+        if(!isset($insert_columns['li_timestamp'])){
             //Time with milliseconds:
             $t = microtime(true);
             $micro = sprintf("%06d",($t - floor($t)) * 1000000);
             $d = new DateTime( date('Y-m-d H:i:s.'.$micro, $t) );
-            $insert_columns['e_timestamp'] = $d->format("Y-m-d H:i:s.u");
+            $insert_columns['li_timestamp'] = $d->format("Y-m-d H:i:s.u");
         }
         if(!isset($insert_columns['e_status'])){
             $insert_columns['e_status'] = 2; //Auto Published
@@ -2101,22 +1883,13 @@ class Db_model extends CI_Model {
         }
 
 		//Lets log:
-		$this->db->insert('tb_engagements', $insert_columns);
+		$this->db->insert('table_links', $insert_columns);
 
 		//Fetch inserted id:
 		$insert_columns['e_id'] = $this->db->insert_id();
 
 
 		if($insert_columns['e_id']>0){
-
-		    //Did we have a blob to save?
-            if($save_blob){
-                //Save this in a separate field:
-                $this->db->insert('tb_engagement_blobs', array(
-                    'ej_e_id' => $insert_columns['e_id'],
-                    'ej_e_blob' => serialize($save_blob),
-                ));
-            }
 
             //Individual subscriptions:
             foreach($this->config->item('notify_admins') as $admin_u_id=>$subscription){
@@ -2131,7 +1904,7 @@ class Db_model extends CI_Model {
                     //Just do this one:
                     if(!isset($engagements[0])){
                         //Fetch Engagement Data:
-                        $engagements = $this->Db_model->e_fetch(array(
+                        $engagements = $this->Db_model->li_fetch(array(
                             'e_id' => $insert_columns['e_id']
                         ));
                     }
@@ -2157,7 +1930,7 @@ class Db_model extends CI_Model {
                         }
 
                         //Append ID:
-                        $html_message .= '<div>Engagement ID: <a href="https://mench.com/adminpanel/ej_list/'.$engagements[0]['e_id'].'">#'.$engagements[0]['e_id'].'</a></div>';
+                        $html_message .= '<div>Engagement ID: <a href="https://mench.com/adminpanel/li_list_blob/'.$engagements[0]['e_id'].'">#'.$engagements[0]['e_id'].'</a></div>';
 
                         //Send email:
                         $this->Comm_model->send_email($subscription['admin_emails'], $subject, $html_message);
@@ -2244,19 +2017,19 @@ class Db_model extends CI_Model {
             if($fetch_children){
                 $cs = $this->Db_model->cr_children_fetch(array(
                     'cr.cr_id' => $parent_c['cr_id'],
-                ), ( $update_c_table ? array('c__messages') : array() ));
+                ), ( $update_c_table ? array('in__active_messages') : array() ));
             } else {
-                $cs = $this->Db_model->cr_parents_fetch(array(
+                $cs = $this->Db_model->in_parents_fetch(array(
                     'cr.cr_id' => $parent_c['cr_id'],
-                ), ( $update_c_table ? array('c__messages') : array() ));
+                ), ( $update_c_table ? array('in__active_messages') : array() ));
             }
 
         } else {
 
             //This is the very first item that
-            $cs = $this->Db_model->c_fetch(array(
+            $cs = $this->Db_model->in_fetch(array(
                 'c.c_id' => $c_id,
-            ), 0, ( $update_c_table ? array('c__messages') : array() ));
+            ), 0, ( $update_c_table ? array('in__active_messages') : array() ));
 
         }
 
@@ -2302,7 +2075,7 @@ class Db_model extends CI_Model {
                 'c.c_status >=' => 0,
             ));
         } else {
-            $child_cs = $this->Db_model->cr_parents_fetch(array(
+            $child_cs = $this->Db_model->in_parents_fetch(array(
                 'cr.cr_child_c_id' => $c_id,
                 'cr.cr_status' => 1,
                 'c.c_status >=' => 0,
@@ -2451,7 +2224,7 @@ class Db_model extends CI_Model {
 
             //See who's involved:
             $parent_ids = array();
-            foreach($cs[0]['c__messages'] as $i){
+            foreach($cs[0]['in__active_messages'] as $i){
 
                 //Who are the parent authors of this message?
 
@@ -2521,7 +2294,7 @@ class Db_model extends CI_Model {
                     'ur_child_u_id IN ('.join(',', $parent_ids).')' => null,
                     'ur_status >=' => 0, //Pending review or higher
                     'u_status >=' => 0, //Pending review or higher
-                ), array(), 0, 0, 'u_id, u_full_name, u_intro_message, u__e_score, x_url');
+                ), array(), 0, 0, 'u_id, u_full_name, u__e_score, x_url');
 
                 //Put unique IDs in array key for faster searching:
                 foreach($ixs as $ixsu){
@@ -2635,7 +2408,7 @@ class Db_model extends CI_Model {
         if(!$recursive_children && !isset($parent_c['cr_id'])){
             //First item:
             $recursive_children = $immediate_children;
-            $cs = $this->Db_model->c_fetch(array(
+            $cs = $this->Db_model->in_fetch(array(
                 'c_id' => $c_id,
             ));
 
@@ -2756,7 +2529,7 @@ class Db_model extends CI_Model {
 
         //Fetch item(s) for updates:
         if($obj=='c'){
-            $items = $this->Db_model->c_fetch($limits);
+            $items = $this->Db_model->in_fetch($limits);
         } elseif($obj=='u'){
             $items = $this->Db_model->u_fetch($limits);
             $parent_names = array(); //To cache names of parents
@@ -2787,8 +2560,7 @@ class Db_model extends CI_Model {
                 $new_item['u_id'] = intval($item['u_id']); //rquired for all objects
                 $new_item['u__e_score'] = intval($item['u__e_score']);
                 $new_item['u_status'] = intval($item['u_status']);
-                $new_item['u_full_name'] = $item['u_full_name'];
-                $new_item['u_keywords'] = $item['u_intro_message'];
+                $new_item['u_full_name'] = '';
                 $new_item['_tags'] = array();
 
                 //Tags map parent relation:
@@ -2797,27 +2569,18 @@ class Db_model extends CI_Model {
                     foreach($item['u__parents'] as $u_id=>$u){
                         array_push($new_item['_tags'],'u'.$u_id);
                     }
-                    if(intval($item['u__is_orphan'])){
-                        //Sync orphan status if not appropriate:
-                        $this->Db_model->u_update( $item['u_id'] , array(
-                            'u__is_orphan' => 0,
-                        ));
-                    }
                 } else {
-                    //Entity seems orphan:
-                    array_push($new_item['_tags'],'noparent');
-                    if(!intval($item['u__is_orphan'])){
-                        //Sync orphan status if not appropriate:
-                        $this->Db_model->u_update( $item['u_id'] , array(
-                            'u__is_orphan' => 1,
-                        ));
-                    }
+                    //Orphan Entity:
+                    array_push($new_item['_tags'],'isorphan');
                 }
+
+                //TODO Fetch parent text/url links to be indexed:
+                // $new_item['u_keywords'] .= '';
 
 
                 //Add primary Entity as tag of Entity itself for search management:
-                if($item['u_id']==$this->config->item('primary_u')){
-                    array_push($new_item['_tags'],'u'.$this->config->item('primary_u'));
+                if($item['u_id']==$this->config->item('primary_en_id')){
+                    array_push($new_item['_tags'],'u'.$this->config->item('primary_en_id'));
                 }
 
                 //Append additional information:
@@ -2858,7 +2621,7 @@ class Db_model extends CI_Model {
                 //Append parent intents:
                 $new_item['_tags'] = array();
 
-                $child_cs = $this->Db_model->cr_parents_fetch(array(
+                $child_cs = $this->Db_model->in_parents_fetch(array(
                     'cr.cr_child_c_id' => $item['c_id'],
                     'cr.cr_status' => 1,
                     'c.c_status >=' => 0,
@@ -2877,7 +2640,7 @@ class Db_model extends CI_Model {
                     }
                 } else {
                     //No parents!
-                    array_push($new_item['_tags'],'noparent');
+                    array_push($new_item['_tags'],'isorphan');
                     //Sync orphan status if not appropriate:
                     if(!intval($item['c__is_orphan'])){
                         $this->Db_model->c_update( $item['c_id'] , array(

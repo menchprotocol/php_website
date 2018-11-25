@@ -68,9 +68,9 @@ class Comm_model extends CI_Model {
         //Apply settings:
         curl_setopt_array($ch, $ch_setting);
 
-        //Process results and produce e_json
+        //Process results and produce li_json_blob
         $result = objectToArray(json_decode(curl_exec($ch)));
-        $e_json = array(
+        $li_json_blob = array(
             'action' => $action,
             'payload' => $payload,
             'url' => $url,
@@ -82,17 +82,17 @@ class Comm_model extends CI_Model {
 
             //Failed to fetch this profile:
             $error_message = 'Comm_model->fb_graph() failed to '.$action.' '.$url;
-            $this->Db_model->e_create(array(
+            $this->Db_model->li_create(array(
                 'e_value' => $error_message,
                 'e_parent_c_id' => 8, //Platform Error
-                'e_json' => $e_json,
+                'li_json_blob' => $li_json_blob,
             ));
 
             //There was an issue accessing this on FB
             return array(
                 'status' => 0,
                 'message' => $error_message,
-                'e_json' => $e_json,
+                'li_json_blob' => $li_json_blob,
             );
 
         } else {
@@ -101,7 +101,7 @@ class Comm_model extends CI_Model {
             return array(
                 'status' => 1,
                 'message' => 'Success',
-                'e_json' => $e_json,
+                'li_json_blob' => $li_json_blob,
             );
 
         }
@@ -143,14 +143,6 @@ class Comm_model extends CI_Model {
                     'u_status' => -2, //Unsubscribed
                 ));
 
-                //Log engagement:
-                $this->Db_model->e_create(array(
-                    'e_parent_u_id' => $u['u_id'], //Initiated by PA
-                    'e_child_u_id' => $u['u_id'],
-                    'e_value' => 'Student unsubscribed from all '.$total_unsubscribed.' subscriptions',
-                    'e_parent_c_id' => 7452, //User Unsubscribed
-                ));
-
                 //Let them know:
                 $this->Comm_model->send_message(array(
                     array(
@@ -174,16 +166,6 @@ class Comm_model extends CI_Model {
                     //Update status for this single subscription:
                     $this->db->query("UPDATE tb_actionplans SET w_status=-1 WHERE w_id=".intval($unsub_value));
 
-                    //Log engagement:
-                    $this->Db_model->e_create(array(
-                        'e_parent_u_id' => $u['u_id'],
-                        'e_child_u_id' => $u['u_id'],
-                        'e_child_c_id' => $ws[0]['w_c_id'],
-                        'e_value' => 'Student unsubscribed from their intention to '.$ws[0]['c_outcome'],
-                        'e_parent_c_id' => 7452, //User Unsubscribed
-                        'e_w_id' => intval($unsub_value),
-                    ));
-
                     //Show success message to user:
                     $this->Comm_model->send_message(array(
                         array(
@@ -205,7 +187,7 @@ class Comm_model extends CI_Model {
                     ));
 
                     //Log error engagement:
-                    $this->Db_model->e_create(array(
+                    $this->Db_model->li_create(array(
                         'e_parent_u_id' => $u['u_id'],
                         'e_value' => 'Student attempted to unsubscribe but failed to do so',
                         'e_parent_c_id' => 8, //System error
@@ -263,7 +245,7 @@ class Comm_model extends CI_Model {
 
             } else {
 
-                $fetch_cs = $this->Db_model->c_fetch(array(
+                $fetch_cs = $this->Db_model->in_fetch(array(
                     'c_id' => $c_id,
                 ));
 
@@ -321,7 +303,7 @@ class Comm_model extends CI_Model {
 
             //Initiating an intent Subscription:
             $w_c_id = intval(one_two_explode('ACTIONPLANADD20_', '', $fb_ref));
-            $fetch_cs = $this->Db_model->c_fetch(array(
+            $fetch_cs = $this->Db_model->in_fetch(array(
                 'c_id' => $w_c_id,
                 'c_status >=' => 2,
             ));
@@ -406,7 +388,7 @@ class Comm_model extends CI_Model {
 
             $w_c_id = intval(one_two_explode('ACTIONPLANADD99_', '', $fb_ref));
             //Validate Intent ID:
-            $fetch_cs = $this->Db_model->c_fetch(array(
+            $fetch_cs = $this->Db_model->in_fetch(array(
                 'c_id' => $w_c_id,
                 'c_status >=' => 2,
             ));
@@ -464,10 +446,10 @@ class Comm_model extends CI_Model {
 
             if(!($w_id>0 && $c_id>0 && $k_id>0 && $k_rank>0)){
                 //Log Unknown error:
-                $this->Db_model->e_create(array(
+                $this->Db_model->li_create(array(
                     'e_value' => 'fb_ref_process() failed to fetch proper data for '.$handler.' request with reference value ['.$fb_ref.']',
                     'e_parent_c_id' => 8, //Platform Error
-                    'e_json' => $u,
+                    'li_json_blob' => $u,
                     'e_w_id' => $w_id,
                     'e_child_c_id' => $c_id,
                 ));
@@ -487,10 +469,10 @@ class Comm_model extends CI_Model {
                 if($would_be_skipped_count==0){
 
                     //Nothing found to skip! This should not happen, log error:
-                    $this->Db_model->e_create(array(
+                    $this->Db_model->li_create(array(
                         'e_value' => 'fb_ref_process() did not find anything to skip for ['.$fb_ref.']',
                         'e_parent_c_id' => 8, //Platform Error
-                        'e_json' => $u,
+                        'li_json_blob' => $u,
                         'e_w_id' => $w_id,
                         'e_child_c_id' => $c_id,
                     ));
@@ -549,9 +531,9 @@ class Comm_model extends CI_Model {
                 ));
 
                 //Log engagement:
-                $this->Db_model->e_create(array(
+                $this->Db_model->li_create(array(
                     'e_value' => 'User considering to skip '.$would_be_skipped_count.' Action Plan intents.',
-                    'e_json' => array(
+                    'li_json_blob' => array(
                         'would_be_skipped' => $would_be_skipped,
                         'ref' => $fb_ref,
                     ),
@@ -577,8 +559,8 @@ class Comm_model extends CI_Model {
                     ));
 
                     //Log engagement:
-                    $this->Db_model->e_create(array(
-                        'e_json' => array(
+                    $this->Db_model->li_create(array(
+                        'li_json_blob' => array(
                             'ref' => $fb_ref,
                         ),
                         'e_parent_u_id' => $u['u_id'], //user who searched
@@ -607,9 +589,9 @@ class Comm_model extends CI_Model {
                     $skippable_ks = $this->Db_model->k_skip_recursive_down($w_id, $c_id, $k_id);
 
                     //Log engagement:
-                    $this->Db_model->e_create(array(
+                    $this->Db_model->li_create(array(
                         'e_value' => 'Skipping confirmed on '.count($skippable_ks).' Action Plan intents.',
-                        'e_json' => array(
+                        'li_json_blob' => array(
                             'ref' => $fb_ref,
                             'skipped' => $skippable_ks,
                         ),
@@ -701,10 +683,10 @@ class Comm_model extends CI_Model {
 
             if(!($w_id>0 && $cr_parent_c_id>0 && $c_id>0 && $k_rank>0)) {
                 //Log Unknown error:
-                $this->Db_model->e_create(array(
+                $this->Db_model->li_create(array(
                     'e_value' => 'fb_ref_process() failed to fetch proper data for CHOOSEOR_ request with reference value [' . $fb_ref . ']',
                     'e_parent_c_id' => 8, //Platform Error
-                    'e_json' => $u,
+                    'li_json_blob' => $u,
                     'e_w_id' => $w_id,
                     'e_child_c_id' => $c_id,
                 ));
@@ -883,9 +865,9 @@ class Comm_model extends CI_Model {
             ]);
 
             //Log intent search:
-            $this->Db_model->e_create(array(
+            $this->Db_model->li_create(array(
                 'e_value' => 'Found '.$res['nbHits'].' intent'.echo__s($res['nbHits']).' matching "'.$c_target_outcome.'"',
-                'e_json' => array(
+                'li_json_blob' => array(
                     'input' => $c_target_outcome,
                     'output' => $res,
                 ),
@@ -940,24 +922,17 @@ class Comm_model extends CI_Model {
                     ),
                 ));
 
-                //log engagement for points purposes later down the road...
-                $this->Db_model->e_create(array(
-                    'e_parent_u_id' => $u['u_id'],
-                    'e_parent_c_id' => 7431, //Suggest new intent
-                    'e_value' => $c_target_outcome, //The suggested intent
-                ));
-
                 //Create new intent in the suggestion bucket:
-                //$this->Db_model->c_new(7431, $c_target_outcome, 0, 2, $u['u_id']);
+                //$this->Db_model->c_new(000, $c_target_outcome, 0, 2, $u['u_id']);
 
             }
 
 
         //See if an admin has sent this user a message in the last hour via the Facebook Inbox UI:
-        } elseif(count($this->Db_model->e_fetch(array(
-            'e_timestamp >=' => date("Y-m-d H:i:s", (time()-(1800))), //Messages sent from us less than 30 minutes ago
+        } elseif(count($this->Db_model->li_fetch(array(
+            'li_timestamp >=' => date("Y-m-d H:i:s", (time()-(1800))), //Messages sent from us less than 30 minutes ago
             'e_parent_c_id' => 7, //Messages sent from us
-            'e_parent_u_id' => 1281, //We log Facebook Inbox UI messages sent with this user ID
+            'e_parent_u_id' => 4148, //We log Facebook Inbox UI messages sent with this user ID
         ),1))==0) {
 
             //Fetch their currently working on subscriptions:
@@ -971,7 +946,7 @@ class Comm_model extends CI_Model {
                 //There is nothing in their Action plan that they are working on!
 
                 //Log engagement:
-                $this->Db_model->e_create(array(
+                $this->Db_model->li_create(array(
                     'e_value' => $fb_message_received,
                     'e_parent_c_id' => 7718, //Log Unrecognizable Message Received
                     'e_parent_u_id' => $u['u_id'], //User who initiated this message
@@ -979,7 +954,7 @@ class Comm_model extends CI_Model {
                 ));
 
                 //Recommend to subscribe to our default intent:
-                $this->Comm_model->fb_ref_process($u, 'ACTIONPLANADD10_'.$this->config->item('primary_c'));
+                $this->Comm_model->fb_ref_process($u, 'ACTIONPLANADD10_'.$this->config->item('primary_in_id'));
 
             } elseif(in_array($fb_message_received, array('yes','yeah','ya','ok','continue','ok continue','ok continue ▶️','▶️','ok continue','go','yass','yas','yea','yup','next','yes, learn more'))){
 
@@ -1011,7 +986,7 @@ class Comm_model extends CI_Model {
                 //TODO Optimize for multiple subscriptions, this one only deals with the first randomly selected one...
 
                 //Log engagement:
-                $this->Db_model->e_create(array(
+                $this->Db_model->li_create(array(
                     'e_value' => $fb_message_received,
                     'e_parent_c_id' => 7718, //Log Unrecognizable Message Received
                     'e_parent_u_id' => $u['u_id'], //User who initiated this message
@@ -1054,7 +1029,7 @@ class Comm_model extends CI_Model {
 
         if($fp_psid<1){
             //Ooops, this is not good:
-            $this->Db_model->e_create(array(
+            $this->Db_model->li_create(array(
                 'e_value' => 'fb_identify_activate() got called without $fp_psid variable',
                 'e_parent_c_id' => 8, //Platform Error
             ));
@@ -1080,7 +1055,7 @@ class Comm_model extends CI_Model {
 
 
         //Did we find the profile from FB?
-        if(!$graph_fetch['status'] || !isset($graph_fetch['e_json']['result']['first_name']) || strlen($graph_fetch['e_json']['result']['first_name'])<1){
+        if(!$graph_fetch['status'] || !isset($graph_fetch['li_json_blob']['result']['first_name']) || strlen($graph_fetch['li_json_blob']['result']['first_name'])<1){
 
             //No profile!
             //This happens when user has signed uo to messenger with their phone number
@@ -1090,9 +1065,9 @@ class Comm_model extends CI_Model {
             ));
 
             //Log admin error to review:
-            $this->Db_model->e_create(array(
+            $this->Db_model->li_create(array(
                 'e_value' => 'fb_identify_activate() failed to fetch user profile from Facebook Graph. User created anyway.',
-                'e_json' => array(
+                'li_json_blob' => array(
                     'fp_psid' => $fp_psid,
                     'graph_fetch' => $graph_fetch,
                 ),
@@ -1111,7 +1086,7 @@ class Comm_model extends CI_Model {
         } else {
 
             //We did find the profile, move ahead:
-            $fb_profile = $graph_fetch['e_json']['result'];
+            $fb_profile = $graph_fetch['li_json_blob']['result'];
 
             //Split locale into language and country
             $locale = explode('_',$fb_profile['locale'],2);
@@ -1135,17 +1110,17 @@ class Comm_model extends CI_Model {
         ));
 
         //Log new user engagement:
-        $this->Db_model->e_create(array(
+        $this->Db_model->li_create(array(
             'e_parent_u_id' => $u['u_id'],
             'e_parent_c_id' => 27, //User Joined
-            'e_json' => $u,
+            'li_json_blob' => $u,
         ));
 
         //Update Algolia:
         $this->Db_model->algolia_sync('u', $u['u_id']);
 
         //Save picture locally:
-        $this->Db_model->e_create(array(
+        $this->Db_model->li_create(array(
             'e_parent_u_id' => $u['u_id'],
             'e_value' => $fb_profile['profile_pic'], //Image to be saved
             'e_status' => 0, //Pending upload
@@ -1169,7 +1144,7 @@ class Comm_model extends CI_Model {
 
         $failed_count = 0;
         $email_to_send = array();
-        $e_json = array(
+        $li_json_blob = array(
             'messages' => array(),
             'email' => array(),
         );
@@ -1180,8 +1155,8 @@ class Comm_model extends CI_Model {
             if(!isset($message['e_child_u_id'])){
 
                 //Log error:
-                $this->Db_model->e_create(array(
-                    'e_json' => $message,
+                $this->Db_model->li_create(array(
+                    'li_json_blob' => $message,
                     'e_parent_c_id' => 8, //Platform error
                     'e_value' => 'send_message() failed to send message as it was missing e_child_u_id',
                 ));
@@ -1206,9 +1181,9 @@ class Comm_model extends CI_Model {
 
                     //Log error:
                     $failed_count++;
-                    $this->Db_model->e_create(array(
+                    $this->Db_model->li_create(array(
                         'e_child_u_id' => $message['e_child_u_id'],
-                        'e_json' => $message,
+                        'li_json_blob' => $message,
                         'e_parent_c_id' => 8, //Platform error
                         'e_value' => 'send_message() failed to fetch user details message as it was missing core variables',
                     ));
@@ -1232,9 +1207,9 @@ class Comm_model extends CI_Model {
                         //This should technically not happen!
                         //Log error:
                         $failed_count++;
-                        $this->Db_model->e_create(array(
+                        $this->Db_model->li_create(array(
                             'e_child_u_id' => $message['e_child_u_id'],
-                            'e_json' => $message,
+                            'li_json_blob' => $message,
                             'e_parent_c_id' => 8, //Platform error
                             'e_value' => 'send_message() detected user without an active email/Messenger',
                         ));
@@ -1265,11 +1240,11 @@ class Comm_model extends CI_Model {
                 $process = $this->Comm_model->fb_graph('POST','/me/messages', $payload);
 
                 //Log Child Message Engagement:
-                $this->Db_model->e_create(array(
+                $this->Db_model->li_create(array(
                     'e_parent_u_id' => ( isset($message['e_parent_u_id']) ? $message['e_parent_u_id'] : 0 ),
                     'e_child_u_id' => ( isset($message['e_child_u_id']) ? $message['e_child_u_id'] : 0 ),
                     'e_value' => $message['i_message'],
-                    'e_json' => array(
+                    'li_json_blob' => array(
                         'input_message' => $message,
                         'payload' => $payload,
                         'results' => $process,
@@ -1283,7 +1258,7 @@ class Comm_model extends CI_Model {
                     $failed_count++;
                 }
 
-                array_push( $e_json['messages'] , $process );
+                array_push( $li_json_blob['messages'] , $process );
 
             } else {
 
@@ -1304,7 +1279,7 @@ class Comm_model extends CI_Model {
                             'e_parent_u_id' => ( isset($message['e_parent_u_id']) ? $message['e_parent_u_id'] : 0 ), //If set...
                             'e_child_u_id' => $u['u_id'],
                             'e_value' => $email_variables['subject_line'],
-                            'e_json' => $email_variables,
+                            'li_json_blob' => $email_variables,
                             'e_parent_c_id' => 28, //Email message sent
                             'e_child_c_id'  => ( isset($message['i_c_id']) ? $message['i_c_id'] : 0 ),
                         ),
@@ -1327,7 +1302,7 @@ class Comm_model extends CI_Model {
             foreach($email_to_send as $email){
                 $process = $this->Comm_model->send_email(array($email['u_email']), $email['subject_line'], $email['html_message'], $email['e_var_create'], 'support@mench.com' /*Hack! To be replaced with ceo email*/);
 
-                array_push( $e_json['email'] , $process );
+                array_push( $li_json_blob['email'] , $process );
             }
         }
 
@@ -1338,7 +1313,7 @@ class Comm_model extends CI_Model {
             return array(
                 'status' => 0,
                 'message' => 'Failed to send '.$failed_count.'/'.count($messages).' message'.echo__s(count($messages)).'.',
-                'e_json' => $e_json,
+                'li_json_blob' => $li_json_blob,
             );
 
         } else {
@@ -1346,7 +1321,7 @@ class Comm_model extends CI_Model {
             return array(
                 'status' => 1,
                 'message' => 'Successfully sent '.count($messages).' message'.echo__s(count($messages)),
-                'e_json' => $e_json,
+                'li_json_blob' => $li_json_blob,
             );
 
         }
@@ -1367,9 +1342,9 @@ class Comm_model extends CI_Model {
         if(!$error_message){
 
             //Fetch intent and its messages with an appropriate depth
-            $cs = $this->Db_model->c_fetch(array(
+            $cs = $this->Db_model->in_fetch(array(
                 'c.c_id' => $e['e_child_c_id'],
-            ), 0, array('c__messages')); //Supports up to 2 levels deep for now...
+            ), 0, array('in__active_messages')); //Supports up to 2 levels deep for now...
 
             //Check to see if we have any other errors:
             if(!isset($cs[0])){
@@ -1383,10 +1358,10 @@ class Comm_model extends CI_Model {
         //Did we catch any errors?
         if($error_message){
             //Log error:
-            $this->Db_model->e_create(array(
+            $this->Db_model->li_create(array(
                 'e_value' => 'compose_messages() error: '.$error_message,
                 'e_parent_c_id' => 8, //Platform Error
-                'e_json' => $e,
+                'li_json_blob' => $e,
                 'e_child_u_id' => $e['e_child_u_id'],
                 'e_child_c_id' => $e['e_child_c_id'],
                 'e_parent_u_id' => $e['e_parent_u_id'],
@@ -1429,9 +1404,9 @@ class Comm_model extends CI_Model {
 
 
         //Append main object messages:
-        if(!$skip_messages && isset($cs[0]['c__messages']) && count($cs[0]['c__messages'])>0){
+        if(!$skip_messages && isset($cs[0]['in__active_messages']) && count($cs[0]['in__active_messages'])>0){
             //We have messages for the very first level!
-            foreach($cs[0]['c__messages'] as $key=>$i){
+            foreach($cs[0]['in__active_messages'] as $key=>$i){
                 if($i['i_status']==1){
                     //Add message to instant stream:
                     array_push($instant_messages , array_merge($e, $i));
@@ -1597,7 +1572,7 @@ class Comm_model extends CI_Model {
 
         //Log engagement once:
         if(count($e_var_create)>0){
-            $this->Db_model->e_create($e_var_create);
+            $this->Db_model->li_create($e_var_create);
         }
 
         return $this->CLIENT->sendEmail(array(

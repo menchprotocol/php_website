@@ -32,15 +32,15 @@ class Custom extends CI_Controller {
 
         $udata = $this->session->userdata('user');
 
-        if(isset($udata['u__parents']) && array_any_key_exists(array(1308,1281),$udata['u__parents'])){
+        if(isset($udata['u__parents']) && array_any_key_exists(array(1308),$udata['u__parents'])){
 
             //Lead coach and above, go to console:
-            redirect_message('/intents/'.$this->config->item('primary_c'));
+            redirect_message('/intents/'.$this->config->item('primary_in_id'));
 
-        } elseif(( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='mench.co' )) {
+        } elseif(1 || ( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='mench.co' )) {
 
             $this->load->view('shared/public_header' , array(
-                'title' => 'Online Education. Transformed.',
+                'title' => ucwords($this->lang->line('platform_intent')),
             ));
             $this->load->view('entities/mench-co-intro');
             $this->load->view('shared/public_footer');
@@ -48,14 +48,14 @@ class Custom extends CI_Controller {
         } else {
 
             //How many featured intents do we have?
-            $featured_cs = $fetch_cs = $this->Db_model->c_fetch(array(
+            $featured_cs = $fetch_cs = $this->Db_model->in_fetch(array(
                 'c_status' => 3, //Featured Intents
             ));
 
             if(count($featured_cs)==0){
 
                 //Go to default landing page:
-                return redirect_message('/'.$this->config->item('primary_c'));
+                return redirect_message('/'.$this->config->item('primary_in_id'));
 
             } elseif(count($featured_cs)==1){
 
@@ -82,9 +82,9 @@ class Custom extends CI_Controller {
 	function login(){
 	    //Check to see if they are already logged in?
 	    $udata = $this->session->userdata('user');
-	    if(isset($udata['u__parents']) && array_any_key_exists(array(1308,1281),$udata['u__parents'])){
+	    if(isset($udata['u__parents']) && array_any_key_exists(array(1308),$udata['u__parents'])){
 	        //Lead coach and above, go to console:
-	        redirect_message('/intents/'.$this->config->item('primary_c'));
+	        redirect_message('/intents/'.$this->config->item('primary_in_id'));
 	    }
 	    
 		$this->load->view('shared/public_header' , array(

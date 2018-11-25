@@ -24,6 +24,18 @@ class Cron extends CI_Controller {
     //30 3 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron e_score_recursive
 
 
+    function show_missing_us(){
+        $q = $this->db->query("SELECT DISTINCT(ur_child_u_id) as p_id FROM tb_entity_links ur WHERE NOT EXISTS (
+   SELECT 1
+   FROM   tb_entities u
+   WHERE  u.u_id = ur.ur_child_u_id
+   );");
+
+        $results = $q->result_array();
+
+        echo_json($results);
+    }
+
     function intent_sync($c_id=7240,$update_c_table=1){
         //Cron Settings: 31 * * * *
 	    //Syncs intents with latest caching data:
@@ -98,7 +110,7 @@ class Cron extends CI_Controller {
 
         //Fetch child entities:
         $entities = $this->Db_model->ur_children_fetch(array(
-            'ur_parent_u_id' => ( count($u)>0 ? $u['u_id'] : $this->config->item('primary_u') ),
+            'ur_parent_u_id' => ( count($u)>0 ? $u['u_id'] : $this->config->item('primary_en_id') ),
             'ur_status >=' => 0, //Pending or Active
             'u_status >=' => 0, //Pending or Active
         ));
@@ -116,10 +128,10 @@ class Cron extends CI_Controller {
             //Update this row:
             $score += count($entities) * $score_weights['u__childrens'];
 
-            $score += count($this->Db_model->e_fetch(array(
+            $score += count($this->Db_model->li_fetch(array(
                     'e_child_u_id' => $u['u_id'],
                 ), 5000)) * $score_weights['e_child_u_id'];
-            $score += count($this->Db_model->e_fetch(array(
+            $score += count($this->Db_model->li_fetch(array(
                     'e_parent_u_id' => $u['u_id'],
                 ), 5000)) * $score_weights['e_parent_u_id'];
 
@@ -132,7 +144,7 @@ class Cron extends CI_Controller {
                     'x_parent_u_id' => $u['u_id'],
                 ))) * $score_weights['x_parent_u_id'];
 
-            $score += count($this->Db_model->c_fetch(array(
+            $score += count($this->Db_model->in_fetch(array(
                     'c_parent_u_id' => $u['u_id'],
                 ))) * $score_weights['c_parent_u_id'];
             $score += count($this->Db_model->w_fetch(array(
@@ -159,14 +171,14 @@ class Cron extends CI_Controller {
         //Cron Settings: */5 * * * *
 
         //Fetch pending drips
-        $e_pending = $this->Db_model->e_fetch(array(
+        $e_pending = $this->Db_model->li_fetch(array(
             'e_status' => 0, //Pending work
             'e_parent_c_id' => 52, //Scheduled Drip e_parent_c_id=52
-            'e_timestamp <=' => date("Y-m-d H:i:s" ), //Message is due
+            'li_timestamp <=' => date("Y-m-d H:i:s" ), //Message is due
             //Some standard checks to make sure, these should all be true:
             'e_child_u_id >' => 0,
             'e_child_c_id >' => 0,
-        ), 200, array('ej'));
+        ), 200);
 
 
         //Lock item so other Cron jobs don't pick this up:
@@ -183,7 +195,7 @@ class Cron extends CI_Controller {
             if(count($ws)>0){
 
                 //Prepare variables:
-                $json_data = unserialize($e_value['ej_e_blob']);
+                $json_data = unserialize($e_value['li_json_blob']);
 
                 //Send this message:
                 $this->Comm_model->send_message(array(
@@ -215,7 +227,7 @@ class Cron extends CI_Controller {
 
         $max_per_batch = 20; //Max number of scans per run
 
-        $e_pending = $this->Db_model->e_fetch(array(
+        $e_pending = $this->Db_model->li_fetch(array(
             'e_status' => 0, //Pending
             'e_parent_c_id' => 7001, //Cover Photo Save
         ), $max_per_batch);
@@ -287,7 +299,7 @@ class Cron extends CI_Controller {
                         ));
 
                         //Log engagement:
-                        $this->Db_model->e_create(array(
+                        $this->Db_model->li_create(array(
                             'e_parent_u_id' => $u['u_id'],
                             'e_child_u_id' => $u['u_id'],
                             'e_parent_c_id' => 12, //Account Update
@@ -322,10 +334,10 @@ class Cron extends CI_Controller {
 
         $max_per_batch = 10; //Max number of scans per run
 
-        $e_pending = $this->Db_model->e_fetch(array(
+        $e_pending = $this->Db_model->li_fetch(array(
             'e_status' => 0, //Pending file upload to S3
             'e_parent_c_id IN (6,7)' => null, //Sent/Received messages
-        ), $max_per_batch, array('ej'));
+        ), $max_per_batch);
 
 
         //Lock item so other Cron jobs don't pick this up:
@@ -336,7 +348,7 @@ class Cron extends CI_Controller {
         foreach($e_pending as $ep){
 
             //Prepare variables:
-            $json_data = unserialize($ep['ej_e_blob']);
+            $json_data = unserialize($ep['li_json_blob']);
 
             //Loop through entries:
             if(is_array($json_data) && isset($json_data['entry']) && count($json_data['entry'])>0){
@@ -371,10 +383,10 @@ class Cron extends CI_Controller {
                 }
             } else {
                 //This should not happen, report:
-                $this->Db_model->e_create(array(
+                $this->Db_model->li_create(array(
                     'e_parent_u_id' => 0, //System
-                    'e_value' => 'cron/bot_save_files() fetched ej_e_blob() that was missing its [entry] value',
-                    'e_json' => $json_data,
+                    'e_value' => 'cron/bot_save_files() fetched li_json_blob() that was missing its [entry] value',
+                    'li_json_blob' => $json_data,
                     'e_parent_c_id' => 8, //System Error
                 ));
             }
@@ -401,7 +413,7 @@ class Cron extends CI_Controller {
 
         $success_count = 0; //Track success
         $max_per_batch = 5; //Max number of syncs per cron run
-        $e_json = array();
+        $li_json_blob = array();
         $x_types = echo_status('x_type', null);
 
         $pending_urls = $this->Db_model->x_fetch(array(
@@ -430,10 +442,10 @@ class Cron extends CI_Controller {
                 $result = $this->Comm_model->fb_graph('POST', '/me/message_attachments', $payload);
                 $db_result = false;
 
-                if($result['status'] && isset($result['e_json']['result']['attachment_id'])){
+                if($result['status'] && isset($result['li_json_blob']['result']['attachment_id'])){
                     //Save attachment to DB:
                     $db_result = $this->Db_model->x_update( $x['x_id'] , array(
-                        'x_fb_att_id' => $result['e_json']['result']['attachment_id'],
+                        'x_fb_att_id' => $result['li_json_blob']['result']['attachment_id'],
                     ));
                 }
 
@@ -443,9 +455,9 @@ class Cron extends CI_Controller {
                 } else {
 
                     //Log error:
-                    $this->Db_model->e_create(array(
+                    $this->Db_model->li_create(array(
                         'e_value' => 'message_fb_sync_attachments() Failed to sync attachment using Facebook API',
-                        'e_json' => array(
+                        'li_json_blob' => array(
                             'payload' => $payload,
                             'result' => $result,
                         ),
@@ -460,7 +472,7 @@ class Cron extends CI_Controller {
 
 
                 //Save stats either way:
-                array_push($e_json, array(
+                array_push($li_json_blob, array(
                     'payload' => $payload,
                     'fb_result' => $result,
                 ));
@@ -472,7 +484,7 @@ class Cron extends CI_Controller {
         echo_json(array(
             'status' => ( $success_count==count($pending_urls) && $success_count>0 ? 1 : 0 ),
             'message' => $success_count.'/'.count($pending_urls).' Message'.echo__s(count($pending_urls)).' successfully synced their attachment with Facebook',
-            'e_json' => $e_json,
+            'li_json_blob' => $li_json_blob,
         ));
 
     }
@@ -606,7 +618,7 @@ class Cron extends CI_Controller {
                     if($subscription['w__progress']<$logic['progress_below']){
 
                         //See if we have reminded them already about this:
-                        $reminders_sent = $this->Db_model->e_fetch(array(
+                        $reminders_sent = $this->Db_model->li_fetch(array(
                             'e_parent_c_id IN (7,28)' => null, //Email or Message sent
                             'e_child_u_id' => $subscription['u_id'],
                             'e_child_c_id' => $logic['reminder_c_id'],

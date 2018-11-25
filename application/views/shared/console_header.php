@@ -94,16 +94,16 @@ $uri_segment_2 = $this->uri->segment(2);
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-main navbar-right">
 
-                        <li <?= ( $uri_segment_1=='entities' ? 'class="entity-active"' : '' ) ?>><a href="/entities/<?= $this->config->item('primary_u') ?>"><i class="fas fa-at"></i> Entities</a></li>
-                        <li <?= ( $uri_segment_1=='intents' ? 'class="intent-active"' : '' ) ?>><a href="/intents/<?= $this->config->item('primary_c') ?>"><i class="fas fa-hashtag"></i> Intents</a></li>
-                        <li <?= ( $uri_segment_1=='my' ? 'class="entity-active"' : '' ) ?>><a href="/my/actionplan"><i class="fas fa-flag"></i> Action Plans</a></li>
-                        <li <?= ( $uri_segment_1=='engagements' ? 'class="entity-active"' : '' ) ?>><a href="/adminpanel/engagements"><i class="fas fa-exchange"></i> Engagements</a></li>
+                        <li <?= ( $uri_segment_1=='entities' ? 'class="entity-active"' : '' ) ?>><a href="/entities/<?= $this->config->item('primary_en_id') ?>"><i class="fas fa-at"></i> Entities</a></li>
+                        <li <?= ( $uri_segment_1=='engagements' ? 'class="entity-active"' : '' ) ?>><a href="/adminpanel/engagements"><i class="fas fa-exchange"></i> Engage</a></li>
+                        <li <?= ( $uri_segment_1=='intents' ? 'class="intent-active"' : '' ) ?>><a href="/intents/<?= $this->config->item('primary_in_id') ?>"><i class="fas fa-hashtag"></i> Intents</a></li>
 
 
                         <li class="extra-toggle"><a href="javascript:void(0);" onclick="$('.extra-toggle').toggle();">&nbsp; <i class="fas fa-ellipsis-h"></i> &nbsp;</a></li>
 
+                        <li class="extra-toggle" style="display: none;"><a href="/my/actionplan"><i class="fas fa-flag"></i> Action Plans</a></li>
                         <li class="extra-toggle" style="display: none;"><a href="/adminpanel/statuslegend"><span class="icon-left"><i class="fas fa-shield"></i></span> Admin</a></li>
-                        <li class="extra-toggle" style="display: none;"><a href="/entities/<?= $udata['u_id'] ?>"><span class="icon-left"><i class="fas fa-user-circle"></i></span> Profile</a></li>
+                        <li class="extra-toggle" style="display: none;"><a href="/entities/<?= $udata['u_id'] ?>"><span class="icon-left"><i class="fas fa-user-circle"></i></span> Me</a></li>
                         <li class="extra-toggle" style="display: none;"><a href="/logout"><span class="icon-left"><i class="fas fa-power-off"></i></span> Logout</a></li>
                     </ul>
                 </div>
@@ -115,7 +115,7 @@ $uri_segment_2 = $this->uri->segment(2);
 
 
 
-        <?php if($uri_segment_1=='adminpanel' && array_key_exists(1281, $udata['u__parents'])){ ?>
+        <?php if($uri_segment_1=='adminpanel' && array_key_exists(1308, $udata['u__parents'])){ ?>
         <div class="sidebar" id="mainsidebar">
         <div class="sidebar-wrapper">
 

@@ -9,15 +9,15 @@ $config['app_version'] = '0.6095'.( ( isset($_SERVER['SERVER_NAME']) && $_SERVER
 
 //User case: $this->config->item('timezones')
 
-$config['primary_c'] = 6903; //The default platform intent that would be recommended to new students
-$config['primary_u'] = 3463; //The default console entity that is loaded when Entities is clicked
-$config['message_max'] = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
+$config['primary_in_id'] = 6903; //The default platform intent that would be recommended to new students
+$config['primary_en_id'] = 3463; //The default console entity that is loaded when Entities is clicked
+$config['li_message_max'] = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
 $config['max_counter'] = 999; //Used in counting things of engagements in console UI. If more that this will add a "+" sign to the end
-$config['c_outcome_max'] = 89; //Max number of characters allowed in the title of intents
-$config['u_full_name_max'] = 250; //Max number of characters allowed in the title of intents
-$config['file_limit_mb'] = 25; //Server setting is 32MB. see here: mench.com/ses
+$config['in_outcome_max'] = 89; //Max number of characters allowed in the title of intents
+$config['en_name_max'] = 250; //Max number of characters allowed in the title of intents
+$config['file_size_max'] = 25; //Server setting is 32MB. see here: mench.com/ses
 $config['items_per_page'] = 50; //Even number
-$config['c_point_options'] = array(0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610);
+$config['in_points_options'] = array(0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610);
 $config['exclude_es'] = array(1,2); //The engagements that should be ignored
 $config['k_status_incomplete'] = array(1,0,-2); //The K statuses that indicate the task is not complete... Other statuses indicate completeness, see k_status below for more details
 
@@ -56,14 +56,178 @@ $config['notify_admins'] = array(
             8, //System error
             10, //user login
             7703, //Search for New Intent Subscription
-            7431, //Suggest new entity that was not found!
-            7452, //Skip subscription
         ),
     ),
 );
 
+$config['transition'] = array(
+    //Patternization Links
+    20 => 4250, //Log intent creation
+    6971 => 4251, //Log entity creation
+    21 => 4252, //Log intent archived
+    50 => 4254, //Log intent migration
+    19 => 4264, //Log intent modification
+    //0 => 4253, //Entity Archived (Did not have this!)
+
+    36      => 4242, //Log intent message update
+    7727    => 4242, //Log entity link note modification
+
+    12      => 4263, //Log entity modification
+    7001    => 4263, //Log cover photo set
+    6924    => 4263, //Log cover photo removed
+
+    89      => 4241, //Log intent unlinked
+    7292    => 4241, //Log entity unlinked
+    35      => 4241, //Log intent message archived
+    6912    => 4241, //Log entity URL archived
+
+    39      => 4262, //Log intent message sorting
+    22      => 4262, //Log intent children sorted
+
+
+
+    //Growth links
+    27 => 4265, //Log user joined
+    5 => 4266, //Log Messenger optin
+    4 => 4267, //Log Messenger referral
+    3 => 4268, //Log Messenger postback
+    10 => 4269, //Log user sign in
+    11 => 4270, //Log user sign out
+    59 => 4271, //Log user password reset
+
+
+    //Personal Assistant links
+    40 => 4273, //Log console tip read
+    //0 => 4235, //Log new Action Plan intent [to be implemented]
+    7703 => 4275, //Log subscription intent search
+    28 => 4276, //Log user email sent
+    6 => 4277, //Log message received
+    1 => 4278, //Log message read
+    2 => 4279, //Log message delivered
+    7 => 4280, //Log message sent
+    52 => 4281, //Log message queued
+    55 => 4282, //Log my account access
+    32 => 4283, //Log action plan access
+    33 => 4242, //Log action plan intent completion [Link updated]
+    7730 => 4284, //Log Skip Initiation
+    7731 => 4285, //Log Skip Cancellation
+    7732 => 4286, //Log Skip Confirmation
+    7718 => 4287, //Log unrecognized message
+
+    //Platform Operations Links:
+    8 => 4246, //Log system bug
+    9 => 4247, //Log user attention request
+    72 => 4248, //Log user review
+);
+
 
 $config['object_statuses'] = array(
+
+    'en_status' => array(
+        -1 => array(
+            's_name'  => 'Removed',
+            's_desc'  => 'Entity has been removed',
+            's_icon' => 'fas fa-trash-alt',
+        ),
+        0 => array(
+            's_name'  => 'New',
+            's_desc'  => 'Entity newly added and pending work',
+            's_icon' => 'fal fa-plus-circle',
+        ),
+        1 => array(
+            's_name'  => 'Working On',
+            's_desc'  => 'Entity is accepted and its being patternized',
+            's_icon' => 'fas fa-spinner fa-spin',
+        ),
+        2 => array(
+            's_name'  => 'Syncing',
+            's_desc'  => 'Entity is completed and live',
+            's_icon' => 'fas fa-check-circle',
+        ),
+    ),
+    'in_status' => array(
+        -1 => array(
+            's_name'  => 'Removed',
+            's_desc'  => 'Intent has been archived and all its links has been removed',
+            's_icon' => 'fas fa-trash-alt',
+        ),
+        0 => array(
+            's_name'  => 'New',
+            's_desc'  => 'Intent is newly added and pending completion',
+            's_icon' => 'fal fa-plus-circle',
+        ),
+        1 => array(
+            's_name'  => 'Working On',
+            's_desc'  => 'Intent tree/messages are being patternized from the internet',
+            's_icon' => 'fas fa-spinner fa-spin',
+        ),
+        2 => array(
+            's_name'  => 'Syncing',
+            's_desc'  => 'Intent is published live and ready to accept subscriptions',
+            's_icon' => 'fas fa-check-circle',
+        ),
+        3 => array(
+            's_name'  => 'Featured',
+            's_desc'  => 'Intent is recommended on mench.com home page',
+            's_icon' => 'fas fa-badge-check',
+        ),
+    ),
+    'li_status' => array(
+        -1 => array(
+            's_name'  => 'Removed',
+            's_desc'  => 'User decided to skip this link',
+            's_icon' => 'fal fa-minus-square',
+        ),
+        0 => array(
+            's_name'  => 'New',
+            's_desc'  => 'New link pending acceptance',
+            's_icon' => 'fal fa-square',
+        ),
+        1 => array(
+            's_name'  => 'Working On',
+            's_desc'  => 'Work has started and but some intents are pending completion',
+            's_icon' => 'fas fa-spinner fa-spin',
+        ),
+        2 => array(
+            's_name'  => 'Syncing',
+            's_desc'  => 'Completed and ready for updates to be synced',
+            's_icon' => 'fas fa-check-square',
+        ),
+        3 => array(
+            's_name'  => 'Accomplished',
+            's_desc'  => 'Intent accomplished as verified by Mench',
+            's_icon' => 'fas fa-badge-check',
+        ),
+    ),
+
+    'en_communication' => array(
+        -1 => array(
+            's_name'  => 'Unsubscribed',
+            's_desc'  => 'User requested to be removed from Mench',
+            's_icon' => 'fas fa-minus-circle',
+        ),
+        1 => array(
+            's_name'  => 'Regular',
+            's_fb_key'  => 'REGULAR',
+            's_desc'  => 'Triggers sound & vibration',
+            's_icon' => 'fas fa-bell',
+        ),
+        2 => array(
+            's_name'  => 'Silent Push',
+            's_fb_key'  => 'SILENT_PUSH',
+            's_desc'  => 'Triggers on-screen notification only',
+            's_icon' => 'fal fa-bell',
+        ),
+        3 => array(
+            's_name'  => 'No Push',
+            's_fb_key'  => 'NO_PUSH',
+            's_desc'  => 'Does not trigger any notification',
+            's_icon' => 'fas fa-bell-slash',
+        ),
+    ),
+
+
+
     'u' => array(
         -2 => array(
             's_name'  => 'Unsubscribed',
@@ -74,6 +238,11 @@ $config['object_statuses'] = array(
             's_name'  => 'Archived',
             's_desc'  => 'Entity has been removed',
             's_icon' => 'fas fa-trash-alt',
+        ),
+        0 => array(
+            's_name'  => 'New',
+            's_desc'  => 'Entity does not have any parents, yet',
+            's_icon' => 'fal fa-plus-circle',
         ),
         1 => array(
             's_name'  => 'Working On',
@@ -103,6 +272,11 @@ $config['object_statuses'] = array(
             's_name'  => 'Archived',
             's_desc'  => 'Intent has been archived and all its links has been removed',
             's_icon' => 'fas fa-trash-alt',
+        ),
+        0 => array(
+            's_name'  => 'New',
+            's_desc'  => 'Intent does not have any parents, yet',
+            's_icon' => 'fal fa-plus-circle',
         ),
         1 => array(
             's_name'  => 'Working On',
@@ -404,26 +578,6 @@ $config['engagement_references'] = array(
     'e_child_c_id' => array(
         'name' => 'Intent',
         'object_code' => 'c',
-    ),
-    'e_w_id' => array(
-        'name' => 'Subscription',
-        'object_code' => 'w',
-    ),
-    'e_ur_id' => array(
-        'name' => 'Entity Link',
-        'object_code' => 'ur',
-    ),
-    'e_x_id' => array(
-        'name' => 'Entity URL',
-        'object_code' => 'x',
-    ),
-    'e_cr_id' => array(
-        'name' => 'Intent Link',
-        'object_code' => 'cr_status',
-    ),
-    'e_i_id' => array(
-        'name' => 'Message',
-        'object_code' => 'i',
     ),
 );
 

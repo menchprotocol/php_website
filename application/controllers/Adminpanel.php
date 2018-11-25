@@ -12,8 +12,8 @@ class Adminpanel extends CI_Controller {
 		//Load our buddies:
 		$this->output->enable_profiler(FALSE);
 
-        //Authenticate level 3 or higher, redirect if not:
-        $this->udata = auth(array(1281),1);
+        //Authenticate Trainers, redirect if not:
+        $this->udata = auth(array(1308),1);
 	}
 
     function engagements(){
@@ -32,15 +32,16 @@ class Adminpanel extends CI_Controller {
         $this->load->view('shared/console_footer');
     }
 
-    function ej_list($e_id){
-        $udata = auth(array(1281),1);
+    function li_list_blob($e_id){
+	    //Authenticate trainer access:
+        $udata = auth(array(1308),1);
         //Fetch blob of engagement and display it on screen:
-        $blobs = $this->Db_model->e_fetch(array(
-            'ej_e_id' => $e_id,
-        ),1,array('ej'));
+        $blobs = $this->Db_model->li_fetch(array(
+            'e_id' => $e_id,
+        ),1);
         if(count($blobs)==1){
             echo_json(array(
-                'blob' => unserialize($blobs[0]['ej_e_blob']),
+                'blob' => unserialize($blobs[0]['li_json_blob']),
                 'e' => $blobs[0]
             ));
         } else {

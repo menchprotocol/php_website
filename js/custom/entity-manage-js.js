@@ -195,7 +195,7 @@ function ur_add(new_u_id,secondary_parent_u_id=0, is_parent) {
         if (data.status) {
 
             //Empty input to make it ready for next URL:
-            input.val('').focus();
+            input.focus();
 
             //Add new object to list:
             add_to_list(list_id, '.u-item', data.new_u);
@@ -232,20 +232,10 @@ function u_load_filter_status(new_val){
 
 
 
-//Count text area characters:
-function u_intro_message_counter() {
-    var len = $('#u_intro_message').val().length;
-    if (len>message_max) {
-        $('#charNum').addClass('overload').text(len);
-    } else {
-        $('#charNum').removeClass('overload').text(len);
-    }
-}
-
 
 function u_icon_word_count() {
     var len = $('#u_icon').val().length;
-    if (len>u_full_name_max) {
+    if (len>en_name_max) {
         $('#charu_iconNum').addClass('overload').text(len);
     } else {
         $('#charu_iconNum').removeClass('overload').text(len);
@@ -254,7 +244,7 @@ function u_icon_word_count() {
 
 function u_full_name_word_count() {
     var len = $('#u_full_name').val().length;
-    if (len>u_full_name_max) {
+    if (len>en_name_max) {
         $('#charNameNum').addClass('overload').text(len);
     } else {
         $('#charNameNum').removeClass('overload').text(len);
@@ -263,7 +253,7 @@ function u_full_name_word_count() {
 
 function ur_notes_word_count() {
     var len = $('#ur_notes').val().length;
-    if (len>message_max) {
+    if (len>li_message_max) {
         $('#charur_notesNum').addClass('overload').text(len);
     } else {
         $('#charur_notesNum').removeClass('overload').text(len);
@@ -332,7 +322,7 @@ function x_add() {
         if (data.status) {
 
             //Empty input to make it ready for next URL:
-            $('#add_url_input').val('');
+            $('#add_url_input');
 
             //Add new object to list:
             add_to_list('list-urls', '.url-item', data.new_x);
@@ -493,11 +483,9 @@ function u_load_modify(u_id, ur_id){
 
 
     $('#u_full_name').val($(".u_full_name_"+u_id+":first").text());
-    $('#u_intro_message').val($(".u__"+u_id+":first").attr('entity-intro-message'));
     $('#u_status').val($(".u__"+u_id+":first").attr('entity-status'));
     $('#u_icon').val($(".u_icon_val_"+u_id+":first").html().replace('\\',''));
 
-    u_intro_message_counter();
     u_full_name_word_count();
     u_icon_word_count();
 
@@ -508,7 +496,7 @@ function u_load_modify(u_id, ur_id){
     if(parseInt(ur_id)>0){
 
         //Make the UI link and the notes in the edit box:
-        $('.unlink-entity, #ur_note_ui').removeClass('hidden');
+        $('.unlink-entity, .li_component').removeClass('hidden');
 
         //Assign value:
         $('#ur_notes').val($(".ur_notes_val_"+ur_id+":first").text());
@@ -519,7 +507,7 @@ function u_load_modify(u_id, ur_id){
     } else {
 
         //Hide the section and clear it:
-        $('.unlink-entity, #ur_note_ui').addClass('hidden');
+        $('.unlink-entity, .li_component').addClass('hidden');
 
     }
 
@@ -550,10 +538,7 @@ function u_save_modify(){
         ur_notes:$('#ur_notes').val(),
         u_id:parseInt($('#modifybox').attr('entity-id')),
         u_full_name:$('#u_full_name').val(),
-        u_intro_message:$('#u_intro_message').val(),
         u_status:$('#u_status').val(), //The new status (might not have changed too)
-        u_email:$('#u_email').val(),
-        u_password_new:$('#u_password_new').val(),
         u_icon:$('#u_icon').val(),
     };
 
@@ -570,22 +555,7 @@ function u_save_modify(){
 
             //Update variables:
             $(".u_full_name_"+modify_data['u_id']).text(modify_data['u_full_name']);
-            $(".u__"+modify_data['u_id']).attr('entity-intro-message', modify_data['u_intro_message']);
-            $(".u__"+modify_data['u_id']).attr('entity-email', modify_data['u_email']);
-            $(".u__"+modify_data['u_id']).attr('has-password', ( modify_data['u_password_new'].length>0 ? 1 : 0 ));
             $(".u_icon_val_"+modify_data['u_id']).html(modify_data['u_icon']);
-
-            if($('.u_intro_message_'+modify_data['u_id']).length){
-                //This is the top entity that's loaded, simply update:
-                $(".u_intro_message_"+modify_data['u_id']).html(nl2br(modify_data['u_intro_message']));
-            } else {
-                //This is a level 2 item, let's update the UI accordingly:
-                if(modify_data['u_intro_message'].length>0){
-                    $(".u_full_name_"+modify_data['u_id']).addClass('has-desc').attr('data-toggle', 'tooltip').attr('data-original-title', modify_data['u_intro_message']);
-                } else {
-                    $(".u_full_name_"+modify_data['u_id']).removeClass('has-desc').attr('data-toggle', '').attr('data-original-title', '');
-                }
-            }
 
             //Did we have notes to update?
             if(modify_data['ur_id']>0){

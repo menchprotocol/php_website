@@ -28,7 +28,6 @@ $ws = $this->Db_model->w_fetch(array(
 ), $limit);
 
 
-
 //Javascript Logic:
 ?>
 <script>
@@ -38,8 +37,8 @@ $ws = $this->Db_model->w_fetch(array(
     var top_u_id = <?= $entity['u_id'] ?>;
     var add_u_name = '<?= $add_name ?>';
     var add_u_id = <?= $add_id ?>;
-    var message_max = <?= $this->config->item('message_max') ?>;
-    var u_full_name_max = <?= $this->config->item('u_full_name_max') ?>;
+    var li_message_max = <?= $this->config->item('li_message_max') ?>;
+    var en_name_max = <?= $this->config->item('en_name_max') ?>;
     var entity_u_type = <?= $entity_type ?>;
 </script>
 <script src="/js/custom/entity-manage-js.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
@@ -52,28 +51,29 @@ $ws = $this->Db_model->w_fetch(array(
 //Entity & Components:
 
 //Parents
-echo '<h5><span class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-parent-count">'.count($entity['u__parents']).'</span> Parent'.echo__s(count($entity['u__parents'])).'</span></h5>';
-echo '<div id="list-parent" class="list-group  grey-list">';
-foreach ($entity['u__parents'] as $ur) {
-    echo echo_u($ur, 2, true);
+if($entity['u_id']!=$this->config->item('primary_en_id') || count($entity['u__parents'])>0){
+
+    echo '<h5><span class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-parent-count">'.count($entity['u__parents']).'</span> Parent'.echo__s(count($entity['u__parents'])).'</span></h5>';
+    echo '<div id="list-parent" class="list-group  grey-list">';
+    foreach ($entity['u__parents'] as $ur) {
+        echo echo_u($ur, 2, true);
+    }
+    //Input to add new parents:
+    echo '<div id="new-parent" class="list-group-item list_input grey-input">
+                <div class="input-group">
+                    <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search" data-lpignore="true" placeholder="Add Entity..."></div>
+                    <span class="input-group-addon">
+                        <a class="badge badge-secondary new-btn" href="javascript:void(0);" onclick="alert(\'Note: Either choose an option from the suggestion menu to continue\')">ADD</a>
+                    </span>
+                </div>
+            </div>';
+
+    echo '</div>';
 }
-//Input to add new parents:
-echo '<div id="new-parent" class="list-group-item list_input grey-input">
-            <div class="input-group">
-                <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search" data-lpignore="true" placeholder="Add Entity..."></div>
-                <span class="input-group-addon">
-                    <a class="badge badge-secondary new-btn" href="javascript:void(0);" onclick="alert(\'Note: Either choose an option from the suggestion menu to continue\')">ADD</a>
-                </span>
-            </div>
-        </div>';
-
-echo '</div>';
 
 
 
-
-
-//Top/main entity
+//Focused/current entity:
 echo '<h5 class="badge badge-h indent1"><i class="fas fa-at"></i> Entity</h5>';
 echo '<div id="entity-box" class="list-group indent1">';
 echo echo_u($entity, 1);
@@ -81,9 +81,18 @@ echo '</div>';
 
 
 
-//Childs
+//Children:
 echo '<div class="indent2"><table width="100%" style="margin-top:10px;"><tr>';
 echo '<td style="width: 100px;"><h5 class="badge badge-h"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-children-count">'.$entity['u__children_count'].'</span> Children</h5></td>';
+//Count orphans IF we are in the top parent root:
+if($this->config->item('primary_en_id')==$entity['u_id']){
+    $orphans_count = count($this->Db_model->en_orphans_fetch());
+    if($orphans_count>0){
+        echo '<td style="width:130px;">';
+        echo '<span style="padding-left:8px; display: inline-block;"><a href="/entities/orphan">'.$orphans_count.' Orphans &raquo;</a></span>';
+        echo '</td>';
+    }
+}
 echo '<td style="text-align: right;"><div class="btn-group btn-group-sm" style="margin-top:-5px;" role="group">';
 
 //Fetch current count for each status from DB:
@@ -94,6 +103,7 @@ $counts = $this->Db_model->ur_children_fetch(array(
 ), array(), 0, 0, 'COUNT(u_id) as u_counts, u_status', 'u_status', array(
     'u.u_status' => 'ASC',
 ));
+
 
 //Only show filtering UI if we find entities with different statuses
 if(count($counts)>0 && $counts[0]['u_counts']<$entity['u__children_count']){
@@ -198,17 +208,16 @@ echo '</div>';
           <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;"><a href="javascript:void(0)" onclick="$('#modifybox').addClass('hidden')"><i class="fas fa-times-circle"></i></a></div>
 
           <div class="grey-box">
-              <div class="title" style="margin-bottom:0; padding-bottom:0;"><h4><i class="fas fa-fingerprint"></i> Name [<span style="margin:0 0 10px 0; font-size:0.8em;"><span id="charNameNum">0</span>/<?= $this->config->item('u_full_name_max') ?></span>]</h4></div>
-              <input type="text" id="u_full_name" value="" onkeyup="u_full_name_word_count()" maxlength="<?= $this->config->item('u_full_name_max') ?>" data-lpignore="true" placeholder="Name" class="form-control border">
-
-              <div class="title" style="margin-top:15px;"><h4><i class="fas fa-comment-dots"></i> Introductory Message [<span style="margin:0 0 10px 0; font-size:0.8em;"><span id="charNum">0</span>/<?= $this->config->item('message_max') ?></span>]</h4></div>
-              <textarea class="form-control text-edit border msg" id="u_intro_message" style="height:146px; background-color:#FFFFFF !important;" onkeyup="u_intro_message_counter()"></textarea>
 
 
               <div class="row">
-                  <div class="col-md-4" style="margin-top:15px;">
+                  <div class="col-md-6">
 
-                      <div class="title"><h4><i class="fas fa-sliders-h"></i> Status</h4></div>
+                      <div class="title" style="margin-bottom:0; padding-bottom:0; margin-top:15px;"><h4><i class="fas fa-fingerprint"></i> Name [<span style="margin:0 0 10px 0; font-size:0.8em;"><span id="charNameNum">0</span>/<?= $this->config->item('en_name_max') ?></span>]</h4></div>
+                      <input type="text" id="u_full_name" value="" onkeyup="u_full_name_word_count()" maxlength="<?= $this->config->item('en_name_max') ?>" data-lpignore="true" placeholder="Name" class="form-control border">
+
+
+                      <div class="title" style="margin-top:15px;"><h4><i class="fas fa-sliders-h"></i> Entity Status</h4></div>
                       <select class="form-control" id="u_status">
                           <?php
                           foreach(echo_status('u') as $status_id=>$status){
@@ -218,39 +227,29 @@ echo '</div>';
                       </select>
 
                   </div>
-                  <div class="col-md-8" style="margin-top:15px;">
-
-                      <div class="title" style="margin-bottom:0; padding-bottom:0;"><h4><i class="fas fa-code"></i> HTML Icon [<span style="margin:0 0 10px 0; font-size:0.8em;"><span id="charu_iconNum">0</span>/<?= $this->config->item('u_full_name_max') ?></span>]</h4></div>
-                      <input type="text" id="u_icon" value="" onkeyup="u_icon_word_count()" maxlength="<?= $this->config->item('u_full_name_max') ?>" data-lpignore="true" placeholder="" class="form-control border">
-
-                  </div>
-              </div>
-
-
-
-
-              <div id="ur_note_ui" style="margin-top:15px;">
-
-                  <div class="title" style="margin-bottom:0; padding-bottom:0;"><h4><i class="fas fa-file-alt"></i> Link Notes [<span style="margin:0 0 10px 0; font-size:0.8em;"><span id="charur_notesNum">0</span>/<?= $this->config->item('message_max') ?></span>]</h4></div>
-                  <input type="text" id="ur_notes" value="" onkeyup="ur_notes_word_count()" maxlength="<?= $this->config->item('message_max') ?>" data-lpignore="true" placeholder="" class="form-control border">
-
-              </div>
-
-
-
-              <!-- TODO Merge into ur_notes soon -->
-              <div class="row" style="margin-top:15px;">
                   <div class="col-md-6">
-                      <div class="title"><h4><i class="fas fa-envelope"></i> Email</h4></div>
-                      <input type="email" id="u_email" data-lpignore="true" style="max-width:260px;" value="" data-lpignore="true" class="form-control border">
-                  </div>
-                  <div class="col-md-6">
-                      <div class="title"><h4><i class="fas fa-asterisk"></i> Set New Password</h4></div>
-                      <div class="form-group label-floating is-empty">
-                          <input type="password" id="u_password_new" style="max-width:260px;" autocomplete="new-password" data-lpignore="true" class="form-control border">
-                          <span class="material-input"></span>
+
+                      <div class="title" style="margin-bottom:0; padding-bottom:0; margin-top:15px;"><h4><i class="fas fa-code"></i> Icon [<span style="margin:0 0 10px 0; font-size:0.8em;"><span id="charu_iconNum">0</span>/<?= $this->config->item('en_name_max') ?></span>]</h4></div>
+                      <input type="text" id="u_icon" value="" onkeyup="u_icon_word_count()" maxlength="<?= $this->config->item('en_name_max') ?>" data-lpignore="true" placeholder="" class="form-control border">
+
+
+                      <div class="li_component" style="margin-top:15px;">
+                          <div class="title"><h4><i class="fas fa-link"></i> Entity Link Status</h4></div>
+                          <select class="form-control" id="ur_status">
+                              <?php
+                              foreach(echo_status('li_status') as $status_id=>$status){
+                                  echo '<option value="'.$status_id.'" title="'.$status['s_desc'].'">'.$status['s_name'].'</option>';
+                              }
+                              ?>
+                          </select>
                       </div>
+
                   </div>
+              </div>
+
+              <div class="li_component" style="margin-top:15px;">
+                  <div class="title" style="margin-bottom:0; padding-bottom:0;"><h4><i class="fas fa-file-alt"></i> Link Notes [<span style="margin:0 0 10px 0; font-size:0.8em;"><span id="charur_notesNum">0</span>/<?= $this->config->item('li_message_max') ?></span>]</h4></div>
+                  <textarea class="form-control text-edit border msg" id="ur_notes" onkeyup="ur_notes_word_count()" maxlength="<?= $this->config->item('li_message_max') ?>" data-lpignore="true" style="height:66px;"></textarea>
               </div>
 
 
@@ -259,7 +258,6 @@ echo '</div>';
                       <td class="save-td"><a href="javascript:u_save_modify();" class="btn btn-secondary">Save</a></td>
                       <td><span class="save_entity_changes"></span></td>
                       <td style="width:100px; text-align:right;">
-
                           <div class="unlink-entity"><a href="javascript:ur_unlink();" data-toggle="tooltip" title="Only remove entity link while NOT Archiving the entity itself" data-placement="left" style="text-decoration:none;"><i class="fas fa-unlink"></i> Unlink</a></div>
 
                       </td>

@@ -1,6 +1,6 @@
 <?php
 
-$engagements = $this->Db_model->e_fetch(array(
+$engagements = $this->Db_model->li_fetch(array(
     '(e_parent_c_id='.$c_id.' OR e_child_c_id='.$c_id.')' => null,
 ), (is_dev() ? 20 : 100));
 

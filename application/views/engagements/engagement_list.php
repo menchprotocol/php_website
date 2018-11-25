@@ -1,7 +1,7 @@
 <?php
 
 //Fetch data:
-$engagements = $this->Db_model->e_fetch(array(
+$engagements = $this->Db_model->li_fetch(array(
     '(e_child_u_id = '.$u_id.' OR e_parent_u_id = '.$u_id.')' => null,
     '(e_parent_c_id NOT IN ('.join(',', $this->config->item('exclude_es')).'))' => null,
 ), (is_dev() ? 20 : 100));

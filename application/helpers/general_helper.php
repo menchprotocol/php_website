@@ -21,7 +21,7 @@ function sortByScore($a, $b) {
 
 function u_essentials($full_array){
     $return_array = array();
-    foreach(array('u_id','u_full_name','u_intro_message','u__e_score','x_url') as $key){
+    foreach(array('u_id','u_full_name','u__e_score','x_url') as $key){
         if(isset($full_array[$key])){
             $return_array[$key] = $full_array[$key];
         }
@@ -40,9 +40,9 @@ function missing_required_db_fields($insert_columns,$field_array){
         if(!isset($insert_columns[$req_field]) || strlen($insert_columns[$req_field])==0){
             //Ooops, we're missing this required field:
             $CI =& get_instance();
-            $CI->Db_model->e_create(array(
+            $CI->Db_model->li_create(array(
                 'e_value' => 'Missing required field ['.$req_field.'] for inserting new DB row',
-                'e_json' => array(
+                'li_json_blob' => array(
                     'insert_columns' => $insert_columns,
                     'required_fields' => $field_array,
                 ),
@@ -178,7 +178,7 @@ function array_any_key_exists(array $keys, array $arr) {
 
 function is_valid_intent($c_id){
     $CI =& get_instance();
-    $intents = $CI->Db_model->c_fetch(array(
+    $intents = $CI->Db_model->in_fetch(array(
         'c.c_id' => intval($c_id),
         'c.c_status >=' => 0,
     ));
@@ -241,9 +241,9 @@ function auth($entity_groups=null,$force_redirect=0){
 	    //No minimum level required, grant access IF logged in:
 	    return $udata;
 
-    } elseif(isset($udata['u__parents']) && array_key_exists(1281, $udata['u__parents'])){
+    } elseif(isset($udata['u__parents']) && array_key_exists(1308, $udata['u__parents'])){
 
-        //Always grant access to Admins:
+        //Always grant access to Trainers:
         return $udata;
 	    
 	} elseif(isset($udata['u_id']) && array_any_key_exists($entity_groups,$udata['u__parents'])){
@@ -259,7 +259,7 @@ function auth($entity_groups=null,$force_redirect=0){
 	    return false;
 	} else {
 	    //Block access:
-	    redirect_message( ( isset($udata['u_id']) && ( array_any_key_exists(array(1308,1281),$udata['u__parents']) || isset($udata['project_permissions'])) ? '/intents/'.$this->config->item('primary_c') : '/login?url='.urlencode($_SERVER['REQUEST_URI']) ),'<div class="alert alert-danger maxout" role="alert">'.( isset($udata['u_id']) ? 'Access not authorized.' : 'Session Expired. Login to continue.' ).'</div>');
+	    redirect_message( ( isset($udata['u_id']) && ( array_any_key_exists(array(1308),$udata['u__parents']) || isset($udata['project_permissions'])) ? '/intents/'.$this->config->item('primary_in_id') : '/login?url='.urlencode($_SERVER['REQUEST_URI']) ),'<div class="alert alert-danger maxout" role="alert">'.( isset($udata['u_id']) ? 'Access not authorized.' : 'Session Expired. Login to continue.' ).'</div>');
 	}
 	
 }
@@ -340,9 +340,9 @@ function save_file($file_url,$json_data,$is_local=false){
             @unlink(( $is_local ? $file_url : $file_path.$file_name ));
             return $result['ObjectURL'];
         } else {
-            $CI->Db_model->e_create(array(
+            $CI->Db_model->li_create(array(
                 'e_value' => 'save_file() Unable to upload file ['.$file_url.'] to Mench cloud.',
-                'e_json' => $json_data,
+                'li_json_blob' => $json_data,
                 'e_parent_c_id' => 8, //Platform Error
             ));
             return false;
@@ -511,7 +511,7 @@ function message_validation($i_status,$i_message,$i_c_id){
 
 
     $CI =& get_instance();
-    $message_max = $CI->config->item('message_max');
+    $li_message_max = $CI->config->item('li_message_max');
 
     //Extract details from this message:
     $urls = extract_urls($i_message);
@@ -534,10 +534,10 @@ function message_validation($i_status,$i_message,$i_c_id){
             'status' => 0,
             'message' => '/firstname can be used only once',
         );
-    } elseif(strlen($i_message)>$message_max){
+    } elseif(strlen($i_message)>$li_message_max){
         return array(
             'status' => 0,
-            'message' => 'Max is '.$message_max.' Characters',
+            'message' => 'Max is '.$li_message_max.' Characters',
         );
     } elseif($i_message!=strip_tags($i_message)){
         return array(
@@ -588,13 +588,13 @@ function message_validation($i_status,$i_message,$i_c_id){
     if(count($c_ids)>0){
 
         //Validate this:
-        $i_parent_cs = $CI->Db_model->c_fetch(array(
+        $i_parent_cs = $CI->Db_model->in_fetch(array(
             'c.c_id' => $c_ids[0],
         ));
 
-        $i_cs = $CI->Db_model->c_fetch(array(
+        $i_cs = $CI->Db_model->in_fetch(array(
             'c.c_id' => $i_c_id,
-        ), 0, array('c__parents'));
+        ), 0, array('in__active_parents'));
 
         if(count($i_cs)==0){
             //Invalid ID:
@@ -622,7 +622,7 @@ function message_validation($i_status,$i_message,$i_c_id){
         }
 
         $parent_found = false;
-        foreach ($i_cs[0]['c__parents'] as $c){
+        foreach ($i_cs[0]['in__active_parents'] as $c){
             if($c['c_id']==$c_ids[0]){
                 $parent_found = true;
                 break;

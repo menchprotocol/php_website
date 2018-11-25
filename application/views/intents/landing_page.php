@@ -23,15 +23,15 @@
 <div id="landing_page">
 
     <?php
-    if(!($c['c_id']==$this->config->item('primary_c')) && 0){
+    if(!($c['c_id']==$this->config->item('primary_in_id')) && 0){
         //TODO Re-active later... For now we have the bottom section for related intentions
         $need_grandpa = true;
         $grandpa_intent = null;
         $parent_intents = null;
         //Show all parent intents for this intent:
-        foreach($c['c__parents'] as $ci){
+        foreach($c['in__active_parents'] as $ci){
             $parent_intents .= '<a class="list-group-item" href="/'.$ci['c_id'].'"><span class="badge badge-primary"><i class="fas fa-angle-left"></i></span> '.$ci['c_outcome'].'</a>';
-            if($ci['c_id']==$this->config->item('primary_c')){
+            if($ci['c_id']==$this->config->item('primary_in_id')){
                 //Already included:
                 $need_grandpa = false;
             }
@@ -39,8 +39,8 @@
 
         if($need_grandpa){
             //Fetch top intent and include it here:
-            $gps = $this->Db_model->c_fetch(array(
-                'c_id' => $this->config->item('primary_c'),
+            $gps = $this->Db_model->in_fetch(array(
+                'c_id' => $this->config->item('primary_in_id'),
             ));
             $grandpa_intent = '<a class="list-group-item" href="/'.$gps[0]['c_id'].'"><span class="badge badge-primary"><i class="fas fa-angle-left"></i></span> '.$gps[0]['c_outcome'].'</a>';
         }
@@ -53,13 +53,12 @@
 
     }
 
-
     //Intent Title:
     echo '<h1 style="margin-bottom:30px;" id="title-parent">'.$c['c_outcome'].'</h1>';
 
 
     //Show all instant messages for this intent:
-    foreach($c['c__messages'] as $i){
+    foreach($c['in__active_messages'] as $i){
         if($i['i_status']==1){
             //Publish to Landing Page!
             echo echo_i($i);
@@ -107,13 +106,13 @@
 <a name="learnMore"></a>
 <div style="display: none;" class="learn_more_toggle">
 
-    <?php if(count($c['c__child_intents'])>0){ ?>
+    <?php if(count($c['in__active_children'])>0){ ?>
 
         <h3>Action Plan:</h3>
         <div class="list-group actionplan_list" style="margin:12px 0 0 5px;">
             <?php
             $c1_counter = 0;
-            foreach($c['c__child_intents'] as $c1_counter=>$c1){
+            foreach($c['in__active_children'] as $c1_counter=>$c1){
 
 
                 echo '<div class="panel-group" id="open'.$c1_counter.'" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
@@ -132,7 +131,7 @@
                 echo '<div style="margin:0 0 5px; padding-top:5px; font-size:1.1em;">It is estimated to take '.echo_hour_range($c1, false).' to complete this part.</div>';
 
                 //First show all messages for this intent:
-                foreach($c1['c__messages'] as $i){
+                foreach($c1['in__active_messages'] as $i){
                     if($i['i_status']==1){
                         echo echo_i( array_merge( $i , array(
                             'noshow' => 1,
@@ -140,17 +139,17 @@
                     }
                 }
 
-                if(count($c1['c__child_intents'])>0){
+                if(count($c1['in__active_children'])>0){
 
                     echo '<ul style="list-style:none; margin-left:-30px; font-size:1em;">';
-                    foreach($c1['c__child_intents'] as $c2_counter=>$c2){
+                    foreach($c1['in__active_children'] as $c2_counter=>$c2){
                         echo '<li>Part '. ($c1_counter+1).'.'.($c2_counter+1).'. '.$c2['c_outcome'].'</li>';
                     }
                     echo '</ul>';
 
                     //Since it has children, lets also give the option to navigate downwards ONLY IF...
                     if($c1['c_status']>=2){
-                        echo '<div>You can choose to <a href="/'.$c1['c_id'].'" '.( $c['c_id']==$this->config->item('primary_c') ? 'onclick="confirm_child_go('.$c1['c_id'].')"' : '' ).' class="alink-'.$c1['c_id'].'" style="text-decoration:underline;">subscribe to this part only</a>.</div>';
+                        echo '<div>You can choose to <a href="/'.$c1['c_id'].'" '.( $c['c_id']==$this->config->item('primary_in_id') ? 'onclick="confirm_child_go('.$c1['c_id'].')"' : '' ).' class="alink-'.$c1['c_id'].'" style="text-decoration:underline;">subscribe to this part only</a>.</div>';
                     }
 
                 }
@@ -294,7 +293,7 @@
 
 
 <?php
-$featured_cs = $fetch_cs = $this->Db_model->c_fetch(array(
+$featured_cs = $fetch_cs = $this->Db_model->in_fetch(array(
     'c_status' => 3, //Featured Intents
     'c_id !=' => $c['c_id'],
 ));

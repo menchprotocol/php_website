@@ -529,7 +529,7 @@ function adjust_js_ui(c_id, level, new_hours, intent_deficit_count=0, apply_to_t
 
 function c_webhook_word_count() {
     var len = $('#c_webhook_url').val().length;
-    if (len>u_full_name_max) {
+    if (len>en_name_max) {
         $('#charWebhookNum').addClass('overload').text(len);
     } else {
         $('#charWebhookNum').removeClass('overload').text(len);
@@ -538,7 +538,7 @@ function c_webhook_word_count() {
 
 function c_outcome_word_count() {
     var len = $('#c_outcome').val().length;
-    if (len>c_outcome_max) {
+    if (len>in_outcome_max) {
         $('#charNameNum').addClass('overload').text(len);
     } else {
         $('#charNameNum').removeClass('overload').text(len);

@@ -251,7 +251,7 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
     //Is it being displayed under entities? Show the original intent as well:
     if($is_entity && !$fb_format){
 
-        $original_cs = $CI->Db_model->c_fetch(array(
+        $original_cs = $CI->Db_model->in_fetch(array(
             'c_id' => $i['i_c_id'],
         ));
         if(count($original_cs)>0){
@@ -350,7 +350,8 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
                 } else {
 
                     //HTML format:
-                    $entity_title = ( strlen($us[0]['u_intro_message'])>0 ? '<span data-toggle="tooltip" title="'.$us[0]['u_intro_message'].'" data-placement="top" class="underdot">'.$us[0]['u_full_name'].'</span>' : $us[0]['u_full_name'] );
+                    //TODO Fetch text description from parent entity notes
+                    $entity_title = ( 0 ? '<span data-toggle="tooltip" title="'.'notes here'.'" data-placement="top" class="underdot">'.$us[0]['u_full_name'].'</span>' : $us[0]['u_full_name'] );
                     $i['i_message'] = str_replace('@'.$i['i_u_id'], $entity_title.' ', $i['i_message']);
 
                 }
@@ -503,7 +504,7 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
 function echo_message($i){
 
     $CI =& get_instance();
-    $message_max = $CI->config->item('message_max');
+    $li_message_max = $CI->config->item('li_message_max');
 
     $ui = '';
     $ui .= '<div class="list-group-item is-msg is_level2_sortable all_msg msg_'.$i['i_status'].'" id="ul-nav-'.$i['i_id'].'" iid="'.$i['i_id'].'">';
@@ -522,7 +523,7 @@ function echo_message($i){
     $ui .= '<ul class="msg-nav">';
 
     $ui .= '<li class="edit-off msg_status" style="margin: 0 1px 0 -1px;">'.echo_status('i_status',$i['i_status'],1,'right').'</li>';
-    $ui .= '<li class="edit-on hidden"><span id="charNumEditing'.$i['i_id'].'">0</span>/'.$message_max.'</li>';
+    $ui .= '<li class="edit-on hidden"><span id="charNumEditing'.$i['i_id'].'">0</span>/'.$li_message_max.'</li>';
 
     $ui .= '<li class="edit-off" style="margin: 0 0 0 8px;"><span class="on-hover"><i class="fas fa-bars sort_message" iid="'.$i['i_id'].'" style="color:#2f2739;"></i></span></li>';
     $ui .= '<li class="edit-off" style="margin-right: 10px; margin-left: 6px;"><span class="on-hover"><a href="javascript:i_archive('.$i['i_id'].');"><i class="fas fa-trash-alt" style="margin:0 7px 0 5px;"></i></a></span></li>';
@@ -594,7 +595,7 @@ function echo_e($e){
             }
 
             if($e['e_has_blob']=='t'){
-                $ui .= '<a href="/adminpanel/ej_list/'.$e['e_id'].'" class="badge badge-primary grey" target="_blank" data-toggle="tooltip" title="Analyze Engagement JSON Blob in a new window" data-placement="left"><i class="fas fa-search-plus"></i></a>';
+                $ui .= '<a href="/adminpanel/li_list_blob/'.$e['e_id'].'" class="badge badge-primary grey" target="_blank" data-toggle="tooltip" title="Analyze Engagement JSON Blob in a new window" data-placement="left"><i class="fas fa-search-plus"></i></a>';
             }
 
         $ui .= '</span>';
@@ -617,7 +618,7 @@ function echo_e($e){
 
 
         $ui .= '<b>'.str_replace('Log ','',$e['c_outcome']).'</b>';
-        $ui .= ' <span data-toggle="tooltip" data-placement="right" title="'.$e['e_timestamp'].' Engagement #'.$e['e_id'].'" style="font-size:0.8em;">'.echo_diff_time(strtotime($e['e_timestamp'])).' ago</span> ';
+        $ui .= ' <span data-toggle="tooltip" data-placement="right" title="'.$e['li_timestamp'].' Engagement #'.$e['e_id'].'" style="font-size:0.8em;">'.echo_diff_time(strtotime($e['li_timestamp'])).' ago</span> ';
         $ui .= $main_content_title;
 
         //Do we have a message?
@@ -871,7 +872,7 @@ function echo_contents($c, $fb_format=0){
         $type_all_count = count($c['c__tree_contents']);
         $CI =& get_instance();
         $content_types = $CI->config->item('content_types');
-        $has_console_access = auth(array(1281),0);
+        $has_console_access = auth(array(1308),0);
         //More than 3:
         $text_overview = '';
         foreach($c['c__tree_contents'] as $type_id=>$current_us){
@@ -912,9 +913,10 @@ function echo_contents($c, $fb_format=0){
                         $text_overview .= '<a href="/entities/' . $u['u_id'] . '">';
                     }
 
-                    if (isset($u['u_intro_message']) && strlen($u['u_intro_message']) > 0) {
+                    //TODO fetch text parent entity notes to share description.
+                    if (0) {
                         //Has description, show it here:
-                        $text_overview .= ' <span data-toggle="tooltip" title="' . stripslashes($u['u_intro_message']) . '" data-placement="top" class="underdot">' . $u['u_full_name'] . '</span>';
+                        $text_overview .= ' <span data-toggle="tooltip" title="' . 'notes here' . '" data-placement="top" class="underdot">' . $u['u_full_name'] . '</span>';
                     } else {
                         //Just the name:
                         $text_overview .= $u['u_full_name'];
@@ -1120,7 +1122,7 @@ function echo_experts($c, $fb_format=0){
 
     $visible_html = 4; //Landing page, beyond this is hidden and visible with a click
     $visible_bot = 10; //Plain text style, but beyond this is cut out!
-    $has_console_access = auth(array(1281),0);
+    $has_console_access = auth(array(1308),0);
     $text_overview = '';
 
     foreach($c['c__tree_experts'] as $count=>$u){
@@ -1153,9 +1155,10 @@ function echo_experts($c, $fb_format=0){
                 $text_overview .= '<a href="/entities/'.$u['u_id'].'">';
             }
 
-            if(isset($u['u_intro_message']) && strlen($u['u_intro_message'])>0){
+            //TODO Share parent entity link notes/urls
+            if(0){
                 //Has description, show it here:
-                $text_overview .= ' <span data-toggle="tooltip" title="'.stripslashes($u['u_intro_message']).'" data-placement="top" class="underdot" style="display:inline-block;">'.$u['u_full_name'].'</span>';
+                $text_overview .= ' <span data-toggle="tooltip" title="'.'nots here'.'" data-placement="top" class="underdot" style="display:inline-block;">'.$u['u_full_name'].'</span>';
             } else {
                 //Just the name:
                 $text_overview .= $u['u_full_name'];
@@ -1251,7 +1254,7 @@ function echo_object($object,$id,$engagement_field,$button_type){
 
             $is_parent = ( $engagement_field=='e_parent_c_id' ? true : false );
             //Fetch intent/Step:
-            $cs = $CI->Db_model->c_fetch(array(
+            $cs = $CI->Db_model->in_fetch(array(
                 'c.c_id' => $id,
             ));
             if(isset($cs[0])){
@@ -1511,7 +1514,7 @@ function echo_c($c, $level, $c_parent_id=0, $is_parent=false){
     $udata = $CI->session->userdata('user');
 
     //Count engagements for this intent:
-    $e_count = count($CI->Db_model->e_fetch(array(
+    $e_count = count($CI->Db_model->li_fetch(array(
         '(e_parent_c_id='.$c['c_id'].' OR e_child_c_id='.$c['c_id'].')' => null,
     ), $CI->config->item('max_counter')));
 
@@ -1677,8 +1680,8 @@ function echo_c($c, $level, $c_parent_id=0, $is_parent=false){
         $ui .= '<div class="is_level3_sortable dropin-box" style="height:1px;">&nbsp;</div>';
 
 
-        if(isset($c['c__child_intents']) && count($c['c__child_intents'])>0){
-            foreach($c['c__child_intents'] as $key=>$sub_intent){
+        if(isset($c['in__active_children']) && count($c['in__active_children'])>0){
+            foreach($c['in__active_children'] as $key=>$sub_intent){
                 $ui .= echo_c($sub_intent, ($level+1), $c['c_id'], $is_parent);
             }
         }
@@ -1687,7 +1690,7 @@ function echo_c($c, $level, $c_parent_id=0, $is_parent=false){
         //Step Input field:
         $ui .= '<div class="list-group-item list_input new-step-input">
             <div class="input-group">
-                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="c_js_new('.$c['c_id'].',3);" intent-id="'.$c['c_id'].'"><input type="text" class="form-control autosearch intentadder-level-3 algolia_search bottom-add" maxlength="'.$CI->config->item('c_outcome_max').'" id="addintent-cr-'.$c['cr_id'].'" intent-id="'.$c['c_id'].'" placeholder="Add #Intent"></form></div>
+                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="c_js_new('.$c['c_id'].',3);" intent-id="'.$c['c_id'].'"><input type="text" class="form-control autosearch intentadder-level-3 algolia_search bottom-add" maxlength="'.$CI->config->item('in_outcome_max').'" id="addintent-cr-'.$c['cr_id'].'" intent-id="'.$c['c_id'].'" placeholder="Add #Intent"></form></div>
                 <span class="input-group-addon" style="padding-right:8px;">
                     <span data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" onclick="c_js_new('.$c['c_id'].',3);" class="badge badge-primary pull-right" intent-id="'.$c['c_id'].'" style="cursor:pointer; margin: 13px -6px 1px 13px;">
                         <div><i class="fas fa-plus"></i></div>
@@ -1716,7 +1719,7 @@ function echo_u($u, $level, $is_parent=false){
     $ui = null;
 
 
-    $ui .= '<div id="u_'.$u['u_id'].'" entity-id="'.$u['u_id'].'" entity-email="'.$u['u_email'].'" entity-intro-message="'.str_replace('"','\\"',$u['u_intro_message']).'" entity-status="'.$u['u_status'].'" has-password="'.( strlen($u['u_password'])>0 ? 1 : 0 ).'" is-parent="'.( $is_parent ? 1 : 0 ).'" class="list-group-item u-item u__'.$u['u_id'].' '.( $level==1 ? 'top_entity' : 'ur_'.$u['ur_id'] ).'">';
+    $ui .= '<div id="u_'.$u['u_id'].'" entity-id="'.$u['u_id'].'" entity-email="'.$u['u_email'].'" entity-status="'.$u['u_status'].'" has-password="'.( strlen($u['u_password'])>0 ? 1 : 0 ).'" is-parent="'.( $is_parent ? 1 : 0 ).'" class="list-group-item u-item u__'.$u['u_id'].' '.( $level==1 ? 'top_entity' : 'ur_'.$u['ur_id'] ).'">';
 
     //Hidden fields to store dynamic value!
     $ui .= '<span class="u_icon_val_'.$u['u_id'].' hidden">'.$u['u_icon'].'</span>';
@@ -1738,7 +1741,7 @@ function echo_u($u, $level, $is_parent=false){
     ));
 
     //Check total key engagement for this user:
-    $e_count = count($CI->Db_model->e_fetch(array(
+    $e_count = count($CI->Db_model->li_fetch(array(
         '(e_parent_u_id='.$u['u_id'].' OR e_child_u_id='.$u['u_id'].')' => null,
         '(e_parent_c_id NOT IN ('.join(',', $CI->config->item('exclude_es')).'))' => null,
     ), $CI->config->item('max_counter')));
@@ -1820,7 +1823,7 @@ function echo_u($u, $level, $is_parent=false){
 
         //Regular section:
         $ui .= echo_cover($u,'micro-image', true).' ';
-        $ui .= '<span class="u_full_name u_full_name_'.$u['u_id'].( strlen($u['u_intro_message'])>0 ? ' has-desc ' : '' ).'" data-toggle="tooltip" data-placement="right" title="'.$u['u_intro_message'].'">'.$u['u_full_name'].'</span>';
+        $ui .= '<span class="u_full_name u_full_name_'.$u['u_id'].'">'.$u['u_full_name'].'</span>';
 
     }
 
@@ -1847,12 +1850,6 @@ function echo_u($u, $level, $is_parent=false){
         //show the link box for updating:
         $ui .= ' <span class="ur__notes ur__notes_'.$ur_id.'">'.echo_link($u['ur_notes']).'</span>';
     }
-
-    if($level==1){
-        //Visibly show bio for level 1:
-        $ui .= '<div class="u_intro_message_'.$u['u_id'].'" style="margin-top:2px;">' . nl2br($u['u_intro_message']) . '</div>';
-    }
-
 
     $ui .= '</div>';
 

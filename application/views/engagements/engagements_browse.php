@@ -35,7 +35,7 @@ foreach($engagement_filters as $key=>$value){
 }
 
 //Fetch engagements with possible filters:
-$engagements = $this->Db_model->e_fetch($match_columns,(is_dev() ? 20 : 100));
+$engagements = $this->Db_model->li_fetch($match_columns,(is_dev() ? 20 : 100));
 
 ?>
 

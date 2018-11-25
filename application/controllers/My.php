@@ -74,7 +74,7 @@ class My extends CI_Controller {
         $no_session_w = (!isset($udata['u__ws']) || count($udata['u__ws'])<1);
 
         //Fetch Bootcamps for this user:
-        if(!$u_fb_psid && $no_session_w && !array_key_exists(1281, $udata['u__parents'])){
+        if(!$u_fb_psid && $no_session_w && !array_key_exists(1308, $udata['u__parents'])){
             //There is an issue here!
             die('<div class="alert alert-danger" role="alert">Invalid Credentials</div>');
         } elseif($no_session_w && !is_dev() && isset($_GET['sr']) && !parse_signed_request($_GET['sr'])){
@@ -111,7 +111,7 @@ class My extends CI_Controller {
         } elseif(count($ws)>1){
 
             //Log action plan view engagement:
-            $this->Db_model->e_create(array(
+            $this->Db_model->li_create(array(
                 'e_parent_c_id' => 32,
                 'e_parent_u_id' => $ws[0]['u_id'],
             ));
@@ -134,7 +134,7 @@ class My extends CI_Controller {
             }
 
             //Log action plan view engagement:
-            $this->Db_model->e_create(array(
+            $this->Db_model->li_create(array(
                 'e_parent_c_id' => 32,
                 'e_parent_u_id' => $ws[0]['u_id'],
                 'e_child_c_id' => $c_id,
@@ -157,7 +157,7 @@ class My extends CI_Controller {
             ), array('w','cr','cr_c_child'));
 
 
-            $cs = $this->Db_model->c_fetch(array(
+            $cs = $this->Db_model->in_fetch(array(
                 'c_status >=' => 2,
                 'c_id' => $c_id,
             ));
@@ -165,9 +165,9 @@ class My extends CI_Controller {
             if(count($cs)<1 || (!count($k_ins) && !count($k_outs))){
 
                 //Ooops, we had issues finding th is intent! Should not happen, report:
-                $this->Db_model->e_create(array(
+                $this->Db_model->li_create(array(
                     'e_parent_u_id' => $ws[0]['u_id'],
-                    'e_json' => $ws,
+                    'li_json_blob' => $ws,
                     'e_value' => 'Unable to load a specific intent for the student Action Plan! Should not happen...',
                     'e_parent_c_id' => 8,
                     'e_w_id' => $w_id,
@@ -207,8 +207,8 @@ class My extends CI_Controller {
         $this->db->query("DELETE FROM tb_actionplan_links WHERE k_w_id=".$w_id);
         $archive_stats['tb_actionplan_links'] = $this->db->affected_rows();
 
-        $this->db->query("DELETE FROM tb_engagements WHERE e_w_id=".$w_id);
-        $archive_stats['tb_engagements'] = $this->db->affected_rows();
+        $this->db->query("DELETE FROM table_links WHERE e_w_id=".$w_id);
+        $archive_stats['table_links'] = $this->db->affected_rows();
 
         return echo_json(array(
             'status' => 1,
@@ -340,12 +340,12 @@ class My extends CI_Controller {
 
         //All good, move forward with the update:
         //Save a copy of the student completion report:
-        $this->Db_model->e_create(array(
+        $this->Db_model->li_create(array(
             'e_parent_u_id' => ( isset($udata['u_id']) ? $udata['u_id'] : $ks[0]['k_children_u_id'] ),
             'e_value' => ( $notes_changed ? trim($_POST['k_notes']) : '' ),
             'e_parent_c_id' => 33, //Completion Report
             'e_child_c_id' => $ks[0]['c_id'],
-            'e_json' => array(
+            'li_json_blob' => array(
                 'input' => $_POST,
                 'k' => $ks[0],
             ),

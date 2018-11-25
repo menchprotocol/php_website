@@ -15,6 +15,18 @@ class Bot extends CI_Controller {
         echo_json($this->Comm_model->fb_graph('GET', '/2375537049154935', array()));
     }
 
+    function ff(){
+        //Fetch all engagements from intent #6653
+        $all_engs = $this->Db_model->cr_children_fetch(array(
+            'cr.cr_parent_c_id IN (7723)' => null, //,,
+            'cr.cr_status' => 1,
+            'c.c_status >=' => 0,
+        ));
+        foreach($all_engs as $c_eng) {
+            echo ' '.$c_eng['c_id'].' => 000000000000000000, //'.$c_eng['c_outcome'].'<br />';
+        }
+    }
+
 
     function sync_menu(){
 
@@ -83,16 +95,16 @@ class Bot extends CI_Controller {
 
         //Do some basic checks:
         if(!isset($json_data['object']) || !isset($json_data['entry'])){
-            $this->Db_model->e_create(array(
+            $this->Db_model->li_create(array(
                 'e_value' => 'facebook_webhook() Function missing either [object] or [entry] variable.',
-                'e_json' => $json_data,
+                'li_json_blob' => $json_data,
                 'e_parent_c_id' => 8, //Platform Error
             ));
             return false;
         } elseif(!$json_data['object']=='page'){
-            $this->Db_model->e_create(array(
+            $this->Db_model->li_create(array(
                 'e_value' => 'facebook_webhook() Function call object value is not equal to [page], which is what was expected.',
-                'e_json' => $json_data,
+                'li_json_blob' => $json_data,
                 'e_parent_c_id' => 8, //Platform Error
             ));
             return false;
@@ -107,9 +119,9 @@ class Bot extends CI_Controller {
                 //This can happen for the older webhook that we offered to other FB pages:
                 continue;
             } elseif(!isset($entry['messaging'])){
-                $this->Db_model->e_create(array(
+                $this->Db_model->li_create(array(
                     'e_value' => 'facebook_webhook() call missing messaging Array().',
-                    'e_json' => $json_data,
+                    'li_json_blob' => $json_data,
                     'e_parent_c_id' => 8, //Platform Error
                 ));
                 continue;
@@ -123,11 +135,11 @@ class Bot extends CI_Controller {
                     $u = $this->Comm_model->fb_identify_activate($im['sender']['id']);
 
                     //This callback will occur when a message a page has sent has been read by the user.
-                    $this->Db_model->e_create(array(
-                        'e_json' => $json_data,
+                    $this->Db_model->li_create(array(
+                        'li_json_blob' => $json_data,
                         'e_parent_c_id' => 1, //Message Read
                         'e_parent_u_id' => ( isset($u['u_id']) ? $u['u_id'] : 0 ),
-                        'e_timestamp' => echo_mili($im['timestamp']), //The Facebook time
+                        'li_timestamp' => echo_mili($im['timestamp']), //The Facebook time
 
                     ));
 
@@ -136,11 +148,11 @@ class Bot extends CI_Controller {
                     $u = $this->Comm_model->fb_identify_activate($im['sender']['id']);
 
                     //This callback will occur when a message a page has sent has been delivered.
-                    $this->Db_model->e_create(array(
-                        'e_json' => $json_data,
+                    $this->Db_model->li_create(array(
+                        'li_json_blob' => $json_data,
                         'e_parent_c_id' => 2, //Message Delivered
                         'e_parent_u_id' => ( isset($u['u_id']) ? $u['u_id'] : 0 ),
-                        'e_timestamp' => echo_mili($im['timestamp']), //The Facebook time
+                        'li_timestamp' => echo_mili($im['timestamp']), //The Facebook time
                     ));
 
                 } elseif(isset($im['referral']) || isset($im['postback'])) {
@@ -166,7 +178,7 @@ class Bot extends CI_Controller {
 
                             //The very first payload, set defaults:
                             $referral_array = array(
-                                'ref' => 'ACTIONPLANADD10_'.$this->config->item('primary_c'),
+                                'ref' => 'ACTIONPLANADD10_'.$this->config->item('primary_in_id'),
                             );
 
                         } else {
@@ -207,11 +219,11 @@ class Bot extends CI_Controller {
                     */
 
                     //Log primary engagement:
-                    $this->Db_model->e_create(array(
+                    $this->Db_model->li_create(array(
                         'e_parent_c_id' => (isset($im['referral']) ? 4 : 3), //Messenger Referral/Postback
-                        'e_json' => $json_data,
+                        'li_json_blob' => $json_data,
                         'e_parent_u_id' => ( isset($u['u_id']) ? $u['u_id'] : 0 ),
-                        'e_timestamp' => echo_mili($im['timestamp']), //The Facebook time
+                        'li_timestamp' => echo_mili($im['timestamp']), //The Facebook time
                     ));
 
 
@@ -225,11 +237,11 @@ class Bot extends CI_Controller {
 
                     //Note: Never seen this happen yet!
                     //Log engagement:
-                    $this->Db_model->e_create(array(
-                        'e_json' => $json_data,
+                    $this->Db_model->li_create(array(
+                        'li_json_blob' => $json_data,
                         'e_parent_c_id' => 5, //Messenger Optin
                         'e_parent_u_id' => ( isset($u['u_id']) ? $u['u_id'] : 0 ),
-                        'e_timestamp' => echo_mili($im['timestamp']), //The Facebook time
+                        'li_timestamp' => echo_mili($im['timestamp']), //The Facebook time
                     ));
 
                 } elseif(isset($im['message_request']) && $im['message_request']=='accept') {
@@ -264,8 +276,8 @@ class Bot extends CI_Controller {
                     $u = $this->Comm_model->fb_identify_activate($user_id);
 
                     $eng_data = array(
-                        'e_parent_u_id' => ( $sent_from_us ? 1281 /* Log on behalf of Mench Admins as it was sent via Facebook Inbox UI */ : $u['u_id'] ),
-                        'e_json' => $json_data,
+                        'e_parent_u_id' => ( $sent_from_us ? 4148 /* Log on behalf of Mench Admins as it was sent via Facebook Inbox UI */ : $u['u_id'] ),
+                        'li_json_blob' => $json_data,
                         'e_value' => $fb_message,
                         'e_parent_c_id' => ( $sent_from_us ? 7 : 6 ), //Message Sent/Received
                         'e_child_u_id' => ( $sent_from_us && isset($u['u_id']) ? $u['u_id'] : 0 ),
@@ -273,7 +285,7 @@ class Bot extends CI_Controller {
 
                     //We only have a timestamp for received messages (not sent ones):
                     if(!$sent_from_us){
-                        $eng_data['e_timestamp'] = echo_mili($im['timestamp']); //The Facebook time
+                        $eng_data['li_timestamp'] = echo_mili($im['timestamp']); //The Facebook time
                     }
 
                     //It may also have an attachment
@@ -307,9 +319,9 @@ class Bot extends CI_Controller {
 
                             } else {
                                 //This should really not happen!
-                                $this->Db_model->e_create(array(
+                                $this->Db_model->li_create(array(
                                     'e_value' => 'facebook_webhook() Received message with unknown attachment type ['.$att['type'].'].',
-                                    'e_json' => $json_data,
+                                    'li_json_blob' => $json_data,
                                     'e_parent_c_id' => 8, //Platform Error
                                     'e_child_u_id' => $eng_data['e_child_u_id'],
                                 ));
@@ -318,7 +330,7 @@ class Bot extends CI_Controller {
                     }
 
                     //Log incoming engagement:
-                    $this->Db_model->e_create($eng_data);
+                    $this->Db_model->li_create($eng_data);
 
                     //Process both
                     if($quick_reply_payload){
@@ -330,9 +342,9 @@ class Bot extends CI_Controller {
                 } else {
 
                     //This should really not happen!
-                    $this->Db_model->e_create(array(
+                    $this->Db_model->li_create(array(
                         'e_value' => 'facebook_webhook() received unrecognized webhook call.',
-                        'e_json' => $json_data,
+                        'li_json_blob' => $json_data,
                         'e_parent_c_id' => 8, //Platform Error
                     ));
 
