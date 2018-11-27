@@ -98,7 +98,7 @@ class Cron extends CI_Controller {
         $score_weights = array(
             'u__childrens' => 0, //Child entities are just containers, no score on the link
 
-            ' li_en_child_id' => 1, //Engagement initiator
+            'li_en_child_id' => 1, //Engagement initiator
             'li_en_creator_id' => 1, //Engagement recipient
 
             'x_parent_u_id' => 5, //URL Creator
@@ -129,8 +129,8 @@ class Cron extends CI_Controller {
             $score += count($entities) * $score_weights['u__childrens'];
 
             $score += count($this->Db_model->li_fetch(array(
-                    ' li_en_child_id' => $u['u_id'],
-                ), 5000)) * $score_weights[' li_en_child_id'];
+                    'li_en_child_id' => $u['u_id'],
+                ), 5000)) * $score_weights['li_en_child_id'];
             $score += count($this->Db_model->li_fetch(array(
                     'li_en_creator_id' => $u['u_id'],
                 ), 5000)) * $score_weights['li_en_creator_id'];
@@ -176,7 +176,7 @@ class Cron extends CI_Controller {
             'li_en_type_id' => 4281, //Scheduled Drip
             'li_timestamp <=' => date("Y-m-d H:i:s" ), //Message is due
             //Some standard checks to make sure, these should all be true:
-            ' li_en_child_id >' => 0,
+            'li_en_child_id >' => 0,
             'li_in_child_id >' => 0,
         ), 200);
 
@@ -186,7 +186,7 @@ class Cron extends CI_Controller {
 
 
         $drip_sent = 0;
-        foreach($e_pending as $li_message){
+        foreach($e_pending as $li_content){
 
             //Fetch user data:
             $ws = $this->Db_model->w_fetch(array(
@@ -195,18 +195,18 @@ class Cron extends CI_Controller {
             if(count($ws)>0){
 
                 //Prepare variables:
-                $json_data = unserialize($li_message['li_json_blob']);
+                $json_data = unserialize($li_content['li_metadata']);
 
                 //Send this message:
                 $this->Comm_model->send_message(array(
                     array_merge($json_data['i'], array(
-                        ' li_en_child_id' => $ws[0]['u_id'],
+                        'li_en_child_id' => $ws[0]['u_id'],
                         'i_c_id' => $json_data['i']['i_c_id'],
                     )),
                 ));
 
                 //Update Engagement:
-                $this->Db_model->e_update( $li_message['li_id'] , array(
+                $this->Db_model->e_update( $li_content['li_id'] , array(
                     'li_status' => 2, //Publish
                 ));
 
@@ -228,7 +228,7 @@ class Cron extends CI_Controller {
 
         $e_pending = $this->Db_model->li_fetch(array(
             'li_status' => 0, //Pending
-            'e_parent_c_id' => 7001, //Cover Photo Save
+            'li_en_type_id' => 4299, //Save media file to Mench cloud
         ), $max_per_batch);
 
 
@@ -241,7 +241,7 @@ class Cron extends CI_Controller {
 
             //Check URL and validate:
             $error_message = null;
-            $curl = curl_html($u['li_message'],true);
+            $curl = curl_html($u['li_content'],true);
 
             if(!$curl){
                 $error_message = 'Invalid URL (start with http:// or https://)';
@@ -254,7 +254,7 @@ class Cron extends CI_Controller {
             if(!$error_message){
 
                 //Save the file to S3
-                $new_file_url = save_file($u['li_message'],$u);
+                $new_file_url = save_file($u['li_content'],$u);
 
                 if(!$new_file_url){
                     $error_message = 'Failed to upload the file to Mench CDN';
@@ -300,9 +300,9 @@ class Cron extends CI_Controller {
                         //Log engagement:
                         $this->Db_model->li_create(array(
                             'li_en_creator_id' => $u['u_id'],
-                            ' li_en_child_id' => $u['u_id'],
-                            ' li_en_type_id' => 4263, //Account Update
-                            'li_message' => 'Profile cover photo updates from Facebook Image ['.$u['li_message'].'] to Mench CDN ['.$new_file_url.']',
+                            'li_en_child_id' => $u['u_id'],
+                            'li_en_type_id' => 4263, //Entity Modified
+                            'li_content' => 'Profile cover photo updates from Facebook Image ['.$u['li_content'].'] to Mench CDN ['.$new_file_url.']',
                             'e_x_id' => $new_x['x_id'],
                         ));
                     }
@@ -311,7 +311,7 @@ class Cron extends CI_Controller {
 
             //Update engagement:
             $this->Db_model->e_update( $u['li_id'] , array(
-                'li_message' => ( $error_message ? 'ERROR: '.$error_message : 'Success' ).' (Original Image URL: '.$u['li_message'].')',
+                'li_content' => ( $error_message ? 'ERROR: '.$error_message : 'Success' ).' (Original Image URL: '.$u['li_content'].')',
                 'li_status' => 2, //Publish
             ));
 
@@ -347,7 +347,7 @@ class Cron extends CI_Controller {
         foreach($e_pending as $ep){
 
             //Prepare variables:
-            $json_data = unserialize($ep['li_json_blob']);
+            $json_data = unserialize($ep['li_metadata']);
 
             //Loop through entries:
             if(is_array($json_data) && isset($json_data['entry']) && count($json_data['entry'])>0){
@@ -368,7 +368,7 @@ class Cron extends CI_Controller {
 
                                         //Update engagement data:
                                         $this->Db_model->e_update( $ep['li_id'] , array(
-                                            'li_message' => ( strlen($ep['li_message'])>0 ? $ep['li_message']."\n\n" : '' ).'/attach '.$att['type'].':'.$new_file_url, //Makes the file preview available on the message
+                                            'li_content' => ( strlen($ep['li_content'])>0 ? $ep['li_content']."\n\n" : '' ).'/attach '.$att['type'].':'.$new_file_url, //Makes the file preview available on the message
                                             'li_status' => 2, //Mark as done
                                         ));
 
@@ -383,8 +383,8 @@ class Cron extends CI_Controller {
             } else {
                 //This should not happen, report:
                 $this->Db_model->li_create(array(
-                    'li_message' => 'cron/bot_save_files() fetched li_json_blob() that was missing its [entry] value',
-                    'li_json_blob' => $json_data,
+                    'li_content' => 'cron/bot_save_files() fetched li_metadata() that was missing its [entry] value',
+                    'li_metadata' => $json_data,
                     'li_en_type_id' => 4246, //System Error
                 ));
             }
@@ -411,7 +411,7 @@ class Cron extends CI_Controller {
 
         $success_count = 0; //Track success
         $max_per_batch = 5; //Max number of syncs per cron run
-        $li_json_blob = array();
+        $li_metadata = array();
         $x_types = echo_status('x_type', null);
 
         $pending_urls = $this->Db_model->x_fetch(array(
@@ -440,10 +440,10 @@ class Cron extends CI_Controller {
                 $result = $this->Comm_model->fb_graph('POST', '/me/message_attachments', $payload);
                 $db_result = false;
 
-                if($result['status'] && isset($result['li_json_blob']['result']['attachment_id'])){
+                if($result['status'] && isset($result['li_metadata']['result']['attachment_id'])){
                     //Save attachment to DB:
                     $db_result = $this->Db_model->x_update( $x['x_id'] , array(
-                        'x_fb_att_id' => $result['li_json_blob']['result']['attachment_id'],
+                        'x_fb_att_id' => $result['li_metadata']['result']['attachment_id'],
                     ));
                 }
 
@@ -454,8 +454,8 @@ class Cron extends CI_Controller {
 
                     //Log error:
                     $this->Db_model->li_create(array(
-                        'li_message' => 'message_fb_sync_attachments() Failed to sync attachment using Facebook API',
-                        'li_json_blob' => array(
+                        'li_content' => 'message_fb_sync_attachments() Failed to sync attachment using Facebook API',
+                        'li_metadata' => array(
                             'payload' => $payload,
                             'result' => $result,
                         ),
@@ -470,7 +470,7 @@ class Cron extends CI_Controller {
 
 
                 //Save stats either way:
-                array_push($li_json_blob, array(
+                array_push($li_metadata, array(
                     'payload' => $payload,
                     'fb_result' => $result,
                 ));
@@ -482,7 +482,7 @@ class Cron extends CI_Controller {
         echo_json(array(
             'status' => ( $success_count==count($pending_urls) && $success_count>0 ? 1 : 0 ),
             'message' => $success_count.'/'.count($pending_urls).' Message'.echo__s(count($pending_urls)).' successfully synced their attachment with Facebook',
-            'li_json_blob' => $li_json_blob,
+            'li_metadata' => $li_metadata,
         ));
 
     }
@@ -627,7 +627,7 @@ class Cron extends CI_Controller {
                             //Nope, send this message out:
                             $this->Comm_model->compose_messages(array(
                                 'li_en_creator_id' => 0, //System
-                                ' li_en_child_id' => $subscription['u_id'],
+                                'li_en_child_id' => $subscription['u_id'],
                                 'li_in_child_id' => $logic['reminder_c_id'],
                             ));
 

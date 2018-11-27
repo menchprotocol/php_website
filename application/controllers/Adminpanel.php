@@ -40,8 +40,11 @@ class Adminpanel extends CI_Controller {
             'li_id' => $li_id,
         ),1);
         if(count($blobs)==1){
+            $blob = $blobs[0]['li_metadata'];
+            unset($blobs[0]['li_metadata']);
             echo_json(array(
-                'blob' => unserialize($blobs[0]['li_json_blob']),
+                'blob' => unserialize($blob),
+                //Show the rest of the engagement too:
                 'e' => $blobs[0]
             ));
         } else {

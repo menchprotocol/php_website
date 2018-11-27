@@ -10,11 +10,6 @@ class Entities extends CI_Controller {
         $this->output->enable_profiler(FALSE);
     }
 
-    function ping()
-    {
-        echo_json(array('status' => 'success'));
-    }
-
 
     //Lists entities
     function entity_manage($u_id){
@@ -274,7 +269,7 @@ class Entities extends CI_Controller {
 
         //Auth user and check required variables:
         $udata = auth(array(1308));
-        $li_message_max = $this->config->item('li_message_max');
+        $li_content_max = $this->config->item('li_content_max');
 
         //Fetch current data:
         $u_current = $this->Db_model->u_fetch(array(
@@ -311,34 +306,9 @@ class Entities extends CI_Controller {
                 'status' => 0,
                 'message' => 'Name is longer than the allowed '.$this->config->item('en_name_max').' characters. Shorten and try again.',
             ));
-        } elseif(strlen($_POST['u_email'])>0 && !filter_var($_POST['u_email'], FILTER_VALIDATE_EMAIL)){
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Email ['.$_POST['u_email'].'] is invalid',
-            ));
-        } elseif(filter_var($u_current[0]['u_email'], FILTER_VALIDATE_EMAIL) && strlen($_POST['u_email'])==0){
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Initial email was ['.$u_current[0]['u_email'].']. Email is required once its set',
-            ));
         }
 
-        //Adjust email:
-        $_POST['u_email'] = strtolower($_POST['u_email']);
 
-        //Make sure email is unique:
-        if(strlen($_POST['u_email'])>0){
-            $dup_email = $this->Db_model->u_fetch(array(
-                'u_id !=' => $_POST['u_id'],
-                'u_email' => strtolower($_POST['u_email']),
-            ));
-            if(count($dup_email)>0){
-                return echo_json(array(
-                    'status' => 0,
-                    'message' => 'Email ['.$_POST['u_email'].'] is already assigned to ['.$dup_email[0]['u_full_name'].']',
-                ));
-            }
-        }
 
         //Prepare data to be updated:
         $u_update = array(
@@ -366,6 +336,9 @@ class Entities extends CI_Controller {
             //Has the link value changes?
             if(!($urs[0]['ur_notes']==$_POST['ur_notes'])){
 
+                //Do we have a URL? Use it to determine link type
+                //$this->Db_model->x_sync($_POST['x_url'],$_POST['x_u_id'],1)
+
                 //Something has changed, log this:
                 $this->Db_model->ur_update($_POST['ur_id'], array(
                     'ur_notes' => $_POST['ur_notes'],
@@ -374,8 +347,8 @@ class Entities extends CI_Controller {
                 //Log engagement:
                 $this->Db_model->li_create(array(
                     'li_en_creator_id' => $udata['u_id'], //The user that updated the account
-                    'li_message' => 'Updates from ['.$urs[0]['ur_notes'].'] to ['.$_POST['ur_notes'].']',
-                    'li_json_blob' => array(
+                    'li_content' => 'Updates from ['.$urs[0]['ur_notes'].'] to ['.$_POST['ur_notes'].']',
+                    'li_metadata' => array(
                         'input' => $_POST,
                         'before' => $urs[0]['ur_notes'],
                         'after' => $_POST['ur_notes'],
@@ -404,13 +377,13 @@ class Entities extends CI_Controller {
         //Log engagement:
         $this->Db_model->li_create(array(
             'li_en_creator_id' => $udata['u_id'], //The user that updated the account
-            'li_message' => readable_updates($u_current[0],$u_update,'u_'),
-            'li_json_blob' => array(
+            'li_content' => readable_updates($u_current[0],$u_update,'u_'),
+            'li_metadata' => array(
                 'input' => $_POST,
                 'before' => $u_current[0],
                 'after' => $u_update,
             ),
-            'li_en_type_id' => 4263, //Account Update
+            'li_en_type_id' => 4263, //Entity modified
             'li_en_child_id' => intval($_POST['u_id']), //The user that their account was updated
         ));
 
@@ -480,8 +453,8 @@ class Entities extends CI_Controller {
             //Archived entity
             $this->Db_model->li_create(array(
                 'li_en_creator_id' => $entities[0]['u_id'],
-                'li_message' => 'login() denied because account is not active.',
-                'li_json_blob' => $_POST,
+                'li_content' => 'login() denied because account is not active.',
+                'li_metadata' => $_POST,
                 'li_en_type_id' => 4247, //Support Needing Graceful Errors
             ));
 
@@ -539,7 +512,7 @@ class Entities extends CI_Controller {
         if(!($_POST['u_password']==$master_password)){
             $this->Db_model->li_create(array(
                 'li_en_creator_id' => $entities[0]['u_id'],
-                'li_json_blob' => $entities[0],
+                'li_metadata' => $entities[0],
                 'li_en_type_id' => 4269, //login
             ));
         }
@@ -576,7 +549,7 @@ class Entities extends CI_Controller {
         $udata = $this->session->userdata('user');
         $this->Db_model->li_create(array(
             'li_en_creator_id' => ( isset($udata['u_id']) && $udata['u_id']>0 ? $udata['u_id'] : 0 ),
-            'li_json_blob' => $udata,
+            'li_metadata' => $udata,
             'li_en_type_id' => 4270, //User Logout
         ));
 
@@ -605,7 +578,7 @@ class Entities extends CI_Controller {
         if(count($matching_users)>0){
             //Dispatch the password reset Intent:
             $this->Comm_model->compose_messages(array(
-                ' li_en_child_id' => $matching_users[0]['u_id'],
+                'li_en_child_id' => $matching_users[0]['u_id'],
                 'li_in_child_id' => 59,
             ));
         }

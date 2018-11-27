@@ -253,7 +253,7 @@ function u_full_name_word_count() {
 
 function ur_notes_word_count() {
     var len = $('#ur_notes').val().length;
-    if (len>li_message_max) {
+    if (len>li_content_max) {
         $('#charur_notesNum').addClass('overload').text(len);
     } else {
         $('#charur_notesNum').removeClass('overload').text(len);
@@ -262,35 +262,6 @@ function ur_notes_word_count() {
 
 
 
-
-function x_cover_set(x_id) {
-    //Set loader:
-    $('#x_' + x_id + ' .add-cover').addClass('hidden').after('<span class="badge badge-secondary grey cover-load"><i class="fas fa-spinner fa-spin"></i></span>');
-
-    //Add cover photo:
-    $.post("/urls/set_cover", {
-        x_id: x_id,
-    }, function (data) {
-
-        if (data.status) {
-
-            $('.current-cover').remove(); //Remove Current cover icon
-            $('#entity-box .profile-icon2').remove();
-            $('#x_' + x_id + ' .cover-load').html(data.message);
-
-            //Tooltips:
-            $('[data-toggle="tooltip"]').tooltip();
-
-        } else {
-            //We had an error:
-            alert('Error: ' + data.message);
-            $('#x_' + x_id + ' .cover-load').remove();
-            $('#x_' + x_id + ' .add-cover').removeClass('hidden')
-        }
-
-    });
-
-}
 
 function u_load_next_page(page,load_new_filter = 0) {
 

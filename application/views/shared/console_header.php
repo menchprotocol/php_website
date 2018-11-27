@@ -95,7 +95,7 @@ $uri_segment_2 = $this->uri->segment(2);
                     <ul class="nav navbar-nav navbar-main navbar-right">
 
                         <li <?= ( $uri_segment_1=='entities' ? 'class="entity-active"' : '' ) ?>><a href="/entities/<?= $this->config->item('primary_en_id') ?>"><i class="fas fa-at"></i> Entities</a></li>
-                        <li <?= ( $uri_segment_1=='engagements' ? 'class="entity-active"' : '' ) ?>><a href="/adminpanel/engagements"><i class="fas fa-exchange"></i> Engage</a></li>
+                        <li <?= ( $uri_segment_1=='engagements' ? 'class="entity-active"' : '' ) ?>><a href="/adminpanel/engagements"><i class="fas fa-link"></i> Engage</a></li>
                         <li <?= ( $uri_segment_1=='intents' ? 'class="intent-active"' : '' ) ?>><a href="/intents/<?= $this->config->item('primary_in_id') ?>"><i class="fas fa-hashtag"></i> Intents</a></li>
 
 
@@ -130,7 +130,7 @@ $uri_segment_2 = $this->uri->segment(2);
 
 
                 //The the Admin Panel Menu for the Mench team:
-                echo '<li class="li-sep '.( $uri_segment_2=='engagements' ? 'active' : '' ).'"><a href="/adminpanel/engagements"><i class="fas fa-exchange"></i><p>Engagements</p></a></li>';
+                echo '<li class="li-sep '.( $uri_segment_2=='engagements' ? 'active' : '' ).'"><a href="/adminpanel/engagements"><i class="fas fa-link"></i><p>Engagements</p></a></li>';
 
                 echo '<li class="li-sep '.( $uri_segment_2=='subscriptions' ? 'active' : '' ).'"><a href="/adminpanel/subscriptions"><i class="fas fa-comment-plus"></i><p>Subscriptions</p></a></li>';
 

@@ -11,9 +11,10 @@ $config['app_version'] = '0.6095'.( ( isset($_SERVER['SERVER_NAME']) && $_SERVER
 
 $config['primary_in_id'] = 6903; //The default platform intent that would be recommended to new students
 $config['primary_en_id'] = 3463; //The default console entity that is loaded when Entities is clicked
-$config['li_message_max'] = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
+$config['li_content_max'] = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
 $config['max_counter'] = 999; //Used in counting things of engagements in console UI. If more that this will add a "+" sign to the end
 $config['in_outcome_max'] = 89; //Max number of characters allowed in the title of intents
+$config['in_seconds_max'] = 28800; //The maximum seconds allowed per intent. If larger, the trainer is asked to break it down into smaller intents
 $config['en_name_max'] = 250; //Max number of characters allowed in the title of intents
 $config['file_size_max'] = 25; //Server setting is 32MB. see here: mench.com/ses
 $config['items_per_page'] = 50; //Even number
@@ -73,8 +74,7 @@ $config['transition'] = array(
     7727    => 4242, //Log entity link note modification
 
     12      => 4263, //Log entity modification
-    7001    => 4263, //Log cover photo set
-    6924    => 4263, //Log cover photo removed
+    7001    => 4299, //Log pending image upload sync to cloud
 
     89      => 4241, //Log intent unlinked
     7292    => 4241, //Log entity unlinked
@@ -550,7 +550,7 @@ $config['engagement_references'] = array(
         'name' => 'Initiator Entity',
         'object_code' => 'en',
     ),
-    ' li_en_child_id' => array(
+    'li_en_child_id' => array(
         'name' => 'Recipient Entity',
         'object_code' => 'en',
     ),

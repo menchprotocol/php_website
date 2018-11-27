@@ -1,7 +1,7 @@
 <?php
 
 //Fetch Messages based on c_id:
-$li_message_max = $this->config->item('li_message_max');
+$li_content_max = $this->config->item('li_content_max');
 $i_statuses = echo_status('i_status', null);
 $i_desc = echo_status('i_status');
 $udata = $this->session->userdata('user');
@@ -24,7 +24,7 @@ if(!isset($intents[0])){
 <script>
     //pass core variables to JS:
     var c_id = <?= $c_id ?>;
-    var max_length = <?= $li_message_max ?>;
+    var max_length = <?= $li_content_max ?>;
     var message_count = <?= count($i_messages) ?>;
 </script>
 <script src="/js/custom/messaging-js.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
@@ -50,7 +50,7 @@ if(!isset($intents[0])){
         echo '<div id="message-sorting'.$c_id.'" class="list-group list-messages">';
         foreach($i_messages as $i){
             echo echo_message(array_merge($i, array(
-                ' li_en_child_id'=>$udata['u_id'],
+                'li_en_child_id'=>$udata['u_id'],
             )));
             //Increase counter:
             ${'message_count_'.$i['i_status']}++;
@@ -87,7 +87,7 @@ if(!isset($intents[0])){
 
     echo '<div id="i_message_counter" style="margin:0 0 1px 0; font-size:0.8em;">';
     //File counter:
-    echo '<span id="charNum'.$c_id.'">0</span>/'.$li_message_max;
+    echo '<span id="charNum'.$c_id.'">0</span>/'.$li_content_max;
 
     ///firstname
     echo '<a href="javascript:add_first_name();" class="textarea_buttons remove_loading" style="float:right;" data-toggle="tooltip" title="Replaced with student\'s First Name for a more personal message." data-placement="left"><i class="fas fa-fingerprint"></i> /firstname</a>';

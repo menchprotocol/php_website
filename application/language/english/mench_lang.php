@@ -21,5 +21,4 @@ $lang['obj_k_status_name'] = 'Subscription Intent Status';
 $lang['platform_intent'] = 'advance your tech career'; //The main intent of the Mench platform
 
 
-
 $lang['obj_en_communication_name'] = 'Entity Communication Level';

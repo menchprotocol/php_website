@@ -92,7 +92,7 @@ class Db_model extends CI_Model {
                 foreach($messages as $i){
                     array_push($send_messages, array_merge($i , array(
                         'e_w_id' => $ks[0]['w_id'],
-                        ' li_en_child_id' => $ks[0]['w_child_u_id'],
+                        'li_en_child_id' => $ks[0]['w_child_u_id'],
                         'i_c_id' => $i['i_c_id'],
                     )));
                 }
@@ -101,39 +101,7 @@ class Db_model extends CI_Model {
             }
 
             //TODO Update w__progress at this point based on intent data
-
-            //TODO implement drip
-
-            /*
-            //This function will search and schedule all drip messages of $c_id
-            $messages = $this->Db_model->i_fetch(array(
-                'i_c_id' => $c_id,
-                'i_status' => 2, //Drip messages
-            ));
-
-            if(count($messages)>0){
-                $start_time = time();
-                //TODO Adjust $drip_intervals = (class_ends($bs[0], $focus_class)-$start_time) / (count($drip_messages)+1);
-                $drip_time = $start_time;
-                foreach($messages as $i){
-                    $drip_time += $drip_intervals;
-                    $this->Db_model->li_create(array(
-                        ' li_en_child_id' => $ks[0]['u_id'],
-                        'li_timestamp' => date("Y-m-d H:i:s" , $drip_time ), //Used by Cron Job to fetch this Drip when due
-                        'li_json_blob' => array(
-                            'created_time' => date("Y-m-d H:i:s" , $start_time ),
-                            'drip_time' => date("Y-m-d H:i:s" , $drip_time ),
-                            'i_drip_count' => count($drip_messages),
-                            'i' => $i, //The actual message that would be sent
-                        ),
-                        'li_en_type_id' => 4281, //Pending Drip
-                        'li_status' => 0, //Pending for the Drip Cron
-                        'e_i_id' => $i['i_id'],
-                        'li_in_child_id' => $i['i_c_id'],
-                    ));
-                }
-            }
-            */
+            //TODO implement drip 'li_en_type_id' => 4281, //Pending Drip
         }
     }
 
@@ -211,7 +179,7 @@ class Db_model extends CI_Model {
         } else {
             //Oooopsi, we could not find it! Log error and return false:
             $this->Db_model->li_create(array(
-                'li_message' => 'Unable to locate OR selection for this subscription',
+                'li_content' => 'Unable to locate OR selection for this subscription',
                 'li_en_type_id' => 4246, //System error
                 'li_in_child_id' => $c_id,
                 'e_w_id' => $w_id,
@@ -411,13 +379,13 @@ class Db_model extends CI_Model {
                         //Inform user that they are now complete with all tasks:
                         $this->Comm_model->send_message(array(
                             array(
-                                    ' li_en_child_id' => $intents[0]['w_child_u_id'],
+                                    'li_en_child_id' => $intents[0]['w_child_u_id'],
                                 'li_in_child_id' => $intents[0]['w_c_id'],
                                 'e_w_id' => $intents[0]['w_id'],
                                 'i_message' => 'Congratulations for completing your '.echo_ordinal((count($completed_ws)+1)).' Subscription 🎉 Over time I will keep sharing new insights (based on my new training data) that could help you to '.$intents[0]['c_outcome'].' 🙌 You can, at any time, stop updates on your subscriptions by saying "quit".',
                             ),
                             array(
-                                    ' li_en_child_id' => $intents[0]['w_child_u_id'],
+                                    'li_en_child_id' => $intents[0]['w_child_u_id'],
                                 'li_in_child_id' => $intents[0]['w_c_id'],
                                 'e_w_id' => $intents[0]['w_id'],
                                 'i_message' => 'How else can I help you '.$this->lang->line('platform_intent').'? '.echo_pa_lets(),
@@ -440,7 +408,7 @@ class Db_model extends CI_Model {
 
     function k_create($insert_columns){
 
-        if(missing_required_db_fields($insert_columns,array('k_w_id','k_cr_id'))){
+        if(detect_missing_columns($insert_columns,array('k_w_id','k_cr_id'))){
             return false;
         }
 
@@ -523,8 +491,8 @@ class Db_model extends CI_Model {
             //Log Engagement for New Intent:
             $this->Db_model->li_create(array(
                 'li_en_creator_id' => $parent_u_id,
-                'li_message' => 'Intent ['.$new_c['c_outcome'].'] created',
-                'li_json_blob' => array(
+                'li_content' => 'Intent ['.$new_c['c_outcome'].'] created',
+                'li_metadata' => array(
                     'input' => $_POST,
                     'before' => null,
                     'after' => $new_c,
@@ -630,7 +598,7 @@ class Db_model extends CI_Model {
 
     function w_create($insert_columns){
 
-        if(missing_required_db_fields($insert_columns,array('w_child_u_id','w_c_id'))){
+        if(detect_missing_columns($insert_columns,array('w_child_u_id','w_c_id'))){
             return false;
         }
 
@@ -673,7 +641,7 @@ class Db_model extends CI_Model {
                 //This should not happen, inform user and log error:
                 $this->Comm_model->send_message(array(
                     array(
-                        ' li_en_child_id' => $insert_columns['w_child_u_id'],
+                        'li_en_child_id' => $insert_columns['w_child_u_id'],
                         'li_in_child_id' => $insert_columns['w_c_id'],
                         'i_message' => 'Subscription failed',
                     ),
@@ -789,7 +757,7 @@ class Db_model extends CI_Model {
 
 	function u_create($insert_columns){
 
-        if(missing_required_db_fields($insert_columns,array('u_full_name'))){
+        if(detect_missing_columns($insert_columns,array('u_full_name'))){
             return false;
         }
 
@@ -883,15 +851,15 @@ class Db_model extends CI_Model {
         //Need either entity or intent:
         if(!isset($insert_columns['i_c_id'])){
             $this->Db_model->li_create(array(
-                'li_message' => 'A new message requires either an Entity or Intent to be referenced to',
-                'li_json_blob' => $insert_columns,
+                'li_content' => 'A new message requires either an Entity or Intent to be referenced to',
+                'li_metadata' => $insert_columns,
                 'li_en_type_id' => 4246, //Platform Error
             ));
             return false;
         }
 
         //Other required fields:
-        if(missing_required_db_fields($insert_columns,array('i_message'))){
+        if(detect_missing_columns($insert_columns,array('i_message'))){
             return false;
         }
 
@@ -1239,7 +1207,7 @@ class Db_model extends CI_Model {
 
     function cr_create($insert_columns){
 
-        if(missing_required_db_fields($insert_columns,array('cr_child_c_id','cr_parent_c_id','cr_parent_u_id'))){
+        if(detect_missing_columns($insert_columns,array('cr_child_c_id','cr_parent_c_id','cr_parent_u_id'))){
             return false;
         }
 
@@ -1266,7 +1234,7 @@ class Db_model extends CI_Model {
 
     function ur_create($insert_columns){
 
-        if(missing_required_db_fields($insert_columns,array('ur_child_u_id','ur_parent_u_id'))){
+        if(detect_missing_columns($insert_columns,array('ur_child_u_id','ur_parent_u_id'))){
             return false;
         }
 
@@ -1350,7 +1318,7 @@ class Db_model extends CI_Model {
             $this->Db_model->li_create(array(
                 'li_en_type_id' => 4242, //entity link note modification
                 'e_ur_id' => $existing[0]['ur_id'],
-                'li_json_blob' => array(
+                'li_metadata' => array(
                     'before' => $existing[0],
                     'after' => $update_array,
                 ),
@@ -1494,7 +1462,7 @@ class Db_model extends CI_Model {
             //Log Engagement new entity:
             $this->Db_model->li_create(array(
                 'li_en_creator_id' => $udata['u_id'],
-                ' li_en_child_id' => $new_content['u_id'],
+                'li_en_child_id' => $new_content['u_id'],
                 'li_en_type_id' => 4251, //Entity Created
             ));
 
@@ -1529,7 +1497,7 @@ class Db_model extends CI_Model {
         }
 
 
-        //Is this a image for an entity without a cover letter? If so, set this as the default:
+        //Is this a image suitable to become the Entity icon? If so, set this as the default:
         $set_cover_x_id = ( !$children_us[0]['u_cover_x_id'] && $new_x['x_type']==4 /* Image file */ ? $new_x['x_id'] : 0 );
 
 
@@ -1679,7 +1647,7 @@ class Db_model extends CI_Model {
     function in_create($insert_columns){
 
         //What is required to create a new intent?
-        if(missing_required_db_fields($insert_columns,array('in_status','in_outcome'))){
+        if(detect_missing_columns($insert_columns,array('in_status','in_outcome'))){
             return false;
         }
 
@@ -1692,7 +1660,7 @@ class Db_model extends CI_Model {
         }
 
         //Update Algolia:
-        $this->Db_model->algolia_sync('in',$insert_columns['in_id']);
+        //$this->Db_model->algolia_sync('in',$insert_columns['in_id']);
 
         return $insert_columns;
     }
@@ -1701,7 +1669,7 @@ class Db_model extends CI_Model {
 
     function c_create($insert_columns){
 
-        if(missing_required_db_fields($insert_columns,array('c_outcome','c_parent_u_id'))){
+        if(detect_missing_columns($insert_columns,array('c_outcome','c_parent_u_id'))){
             return false;
         }
 
@@ -1768,7 +1736,7 @@ class Db_model extends CI_Model {
 
     function x_create($insert_columns){
 
-        if(missing_required_db_fields($insert_columns,array('x_url','x_clean_url','x_type','x_parent_u_id','x_u_id','x_status'))){
+        if(detect_missing_columns($insert_columns,array('x_url','x_clean_url','x_type','x_parent_u_id','x_u_id','x_status'))){
             return false;
         } elseif(!filter_var($insert_columns['x_url'], FILTER_VALIDATE_URL)){
             return false;
@@ -1793,10 +1761,10 @@ class Db_model extends CI_Model {
                 //Save this engagement as we have an issue here...
                 $this->Db_model->li_create(array(
                     'li_en_creator_id' => $insert_columns['x_parent_u_id'],
-                    ' li_en_child_id' => $insert_columns['x_u_id'],
+                    'li_en_child_id' => $insert_columns['x_u_id'],
                     'li_en_type_id' => 4246, //System error
-                    'li_message' => 'x_create() found a duplicate URL ID ['.$urls[0]['x_id'].']',
-                    'li_json_blob' => $insert_columns,
+                    'li_content' => 'x_create() found a duplicate URL ID ['.$urls[0]['x_id'].']',
+                    'li_metadata' => $insert_columns,
                     'e_x_id' => $urls[0]['x_id'],
                 ));
 
@@ -1860,7 +1828,7 @@ class Db_model extends CI_Model {
 	
 	function li_create($insert_columns){
 
-        if(missing_required_db_fields($insert_columns,array('li_en_type_id'))){
+        if(detect_missing_columns($insert_columns,array('li_en_type_id'))){
             return false;
         }
 
@@ -1876,10 +1844,9 @@ class Db_model extends CI_Model {
 	        }
 	    }
 
-
         //Set some defaults:
-        if(!isset($insert_columns['li_message'])){
-            $insert_columns['li_message'] = null;
+        if(!isset($insert_columns['li_content'])){
+            $insert_columns['li_content'] = null;
         }
         if(!isset($insert_columns['li_timestamp'])){
             //Time with milliseconds:
@@ -1888,13 +1855,14 @@ class Db_model extends CI_Model {
             $d = new DateTime( date('Y-m-d H:i:s.'.$micro, $t) );
             $insert_columns['li_timestamp'] = $d->format("Y-m-d H:i:s.u");
         }
+
+
         if(!isset($insert_columns['li_status'])){
             $insert_columns['li_status'] = 2; //Auto Published
         }
 
-
         //Set some zero defaults if not set:
-        foreach(array('li_in_child_id','li_in_parent_id',' li_en_child_id','li_en_parent_id','li_li_id','li_tokens') as $dz){
+        foreach(array('li_in_child_id','li_in_parent_id','li_en_child_id','li_en_parent_id','li_li_id','li_tokens') as $dz){
             if(!isset($insert_columns[$dz]) || intval($insert_columns[$dz])<1){
                 $insert_columns[$dz] = 0;
             }
@@ -1907,7 +1875,7 @@ class Db_model extends CI_Model {
 		$insert_columns['li_id'] = $this->db->insert_id();
 
 
-		if($insert_columns['li_id']>0){
+		if($insert_columns['li_id']>0 && 0){
 
             //Individual subscriptions:
             foreach($this->config->item('notify_admins') as $admin_u_id=>$subscription){
@@ -1917,7 +1885,7 @@ class Db_model extends CI_Model {
                     continue;
                 }
 
-                if(in_array($insert_columns[' li_en_type_id'],$subscription['subscription'])){
+                if(in_array($insert_columns['li_en_type_id'],$subscription['subscription'])){
 
                     //Just do this one:
                     if(!isset($engagements[0])){
@@ -1935,8 +1903,8 @@ class Db_model extends CI_Model {
                         //Compose email:
                         $html_message = null; //Start
 
-                        if(strlen($engagements[0]['li_message'])>0){
-                            $html_message .= '<div>'.format_li_message($engagements[0]['li_message']).'</div><br />';
+                        if(strlen($engagements[0]['li_content'])>0){
+                            $html_message .= '<div>'.format_li_content($engagements[0]['li_content']).'</div><br />';
                         }
 
                         //Lets go through all references to see what is there:

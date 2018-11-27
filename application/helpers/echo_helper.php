@@ -30,73 +30,7 @@ function echo_social_profiles($social_profiles){
 
 
 
-function echo_x($u, $x){
 
-    $CI =& get_instance();
-    $udata = $CI->session->userdata('user');
-
-    $ui = null;
-    $ui .= '<div id="x_'.$x['x_id'].'" class="list-group-item url-item">';
-
-    //Right content:
-    $ui .= '<span class="pull-right" style="margin-right: 6px;">';
-
-    $ui .= echo_status('x_status',$x['x_status'],true,'left').' ';
-
-    if(strlen($x['x_clean_url'])>0 && !($x['x_url']==$x['x_clean_url'])){
-        //We have detected a different URL behind the scene:
-        $ui .= '<a class="badge badge-secondary" href="'.$x['x_clean_url'].'" target="_blank" data-toggle="tooltip" data-placement="left" title="Mench has detected that this URL redirects to another URL. Click to open redirect URL."><i class="fas fa-route"></i></a> ';
-    }
-
-    //This is an image and can be set as Cover photo, or may have already been set so...
-    if($x['x_id']==$u['u_cover_x_id']){
-        //Already set as the cover photo:
-        $ui .= '<span class="badge badge-secondary grey current-cover" data-toggle="tooltip" data-placement="left" title="Currently set as Cover Photo"><i class="fas fa-file-check"></i></span> ';
-    } elseif($x['x_type']==4 && $x['x_status']>-2){
-        //Could be set as the cover photo:
-        $ui .= '<a class="badge badge-secondary add-cover" href="javascript:void(0);" onclick="x_cover_set('.$x['x_id'].')" data-toggle="tooltip" data-placement="left" title="Set this image as Cover Photo"><i class="fas fa-file-image"></i></a> ';
-    }
-
-
-
-    $ui .= '</span>';
-
-
-    //Regular section:
-    $ui .= '<a href="'.$x['x_url'].'" target="_blank" '.( strlen($x['x_url'])>0 && !($x['x_url']==$x['x_url']) ? '' : '' ).'>';
-    $ui .= '<span class="url_truncate">'.echo_clean_url($x['x_url']).'</span>';
-    $ui .= '<i class="fas fa-external-link-square"></i></a>';
-
-    //Can we display this URL?
-    if($x['x_type']==1){
-        $ui .= '<div style="margin-top:7px;">'.echo_embed($x['x_clean_url'],$x['x_clean_url']).'</div>';
-    } elseif($x['x_type']>1){
-        $ui .= '<div style="margin-top:7px;">'.echo_content_url($x['x_clean_url'],$x['x_type']).'</div>';
-    }
-
-    $ui .= '</div>';
-
-    return $ui;
-}
-
-
-
-function echo_rank($rank){
-    if($rank==1){
-        return '🥇';
-    } elseif($rank==2){
-        return '🥈';
-    } elseif($rank==3){
-        return '🥉';
-    } else {
-        return echo_ordinal($rank);
-    }
-}
-
-function echo_tip($c_id){
-    echo '<span id="hb_'.$c_id.'" class="help_button belowh2-btn" intent-id="'.$c_id.'"></span>';
-    echo '<div class="help_body belowh2-bdy maxout" id="content_'.$c_id.'"></div>';
-}
 
 
 
@@ -394,11 +328,11 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
 
 
 
-    if(substr_count($i['i_message'],'/resetpassurl')>0 && isset($i[' li_en_child_id'])) {
+    if(substr_count($i['i_message'],'/resetpassurl')>0 && isset($i['li_en_child_id'])) {
         //append their My Account Button/URL:
         $timestamp = time();
         $button_title = '👉 Set New Password';
-        $button_url = 'https://mench.com/my/reset_pass?u_id='.$i[' li_en_child_id'].'&timestamp='.$timestamp.'&p_hash=' . md5($i[' li_en_child_id'] . 'p@ssWordR3s3t' . $timestamp);
+        $button_url = 'https://mench.com/my/reset_pass?u_id='.$i['li_en_child_id'].'&timestamp='.$timestamp.'&p_hash=' . md5($i['li_en_child_id'] . 'p@ssWordR3s3t' . $timestamp);
         $command = '/resetpassurl';
     }
 
@@ -502,7 +436,7 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
 function echo_message($i){
 
     $CI =& get_instance();
-    $li_message_max = $CI->config->item('li_message_max');
+    $li_content_max = $CI->config->item('li_content_max');
 
     $ui = '';
     $ui .= '<div class="list-group-item is-msg is_level2_sortable all_msg msg_'.$i['i_status'].'" id="ul-nav-'.$i['i_id'].'" iid="'.$i['i_id'].'">';
@@ -521,7 +455,7 @@ function echo_message($i){
     $ui .= '<ul class="msg-nav">';
 
     $ui .= '<li class="edit-off msg_status" style="margin: 0 1px 0 -1px;">'.echo_status('i_status',$i['i_status'],1,'right').'</li>';
-    $ui .= '<li class="edit-on hidden"><span id="charNumEditing'.$i['i_id'].'">0</span>/'.$li_message_max.'</li>';
+    $ui .= '<li class="edit-on hidden"><span id="charNumEditing'.$i['i_id'].'">0</span>/'.$li_content_max.'</li>';
 
     $ui .= '<li class="edit-off" style="margin: 0 0 0 8px;"><span class="on-hover"><i class="fas fa-bars sort_message" iid="'.$i['i_id'].'" style="color:#2f2739;"></i></span></li>';
     $ui .= '<li class="edit-off" style="margin-right: 10px; margin-left: 6px;"><span class="on-hover"><a href="javascript:i_archive('.$i['i_id'].');"><i class="fas fa-trash-alt" style="margin:0 7px 0 5px;"></i></a></span></li>';
@@ -592,7 +526,7 @@ function echo_e($e){
                 }
             }
 
-            if($e['e_has_blob']=='t'){
+            if(strlen($e['li_metadata'])>0){
                 $ui .= '<a href="/adminpanel/li_list_blob/'.$e['li_id'].'" class="badge badge-primary grey" target="_blank" data-toggle="tooltip" title="Analyze Engagement JSON Blob in a new window" data-placement="left"><i class="fas fa-search-plus"></i></a>';
             }
 
@@ -601,8 +535,8 @@ function echo_e($e){
         //What type of main content do we have, if any?
         $main_content = null;
         $main_content_title = null;
-        if(strlen($e['li_message'])>0){
-            $main_content = format_li_message($e['li_message']);
+        if(strlen($e['li_content'])>0){
+            $main_content = format_li_content($e['li_content']);
         } elseif($e['e_i_id']>0){
             //Fetch message conent:
             $matching_messages = $CI->Db_model->i_fetch(array(
@@ -683,7 +617,7 @@ function echo_w_console($w){
         }
 
         //Engagements made by subscriber:
-        $ui .= '<a href="#wengagements-'.$w['w_child_u_id'].'-'.$w['w_id'].'" onclick="load_u_engagements('.$w['w_child_u_id'].','.$w['w_id'].')" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="'.$w['w_stats']['e_all_count'].' engagements"><span class="btn-counter">'.$w['w_stats']['e_all_count'].( $w['w_stats']['e_all_count']==$CI->config->item('max_counter') ? '+' : '').'</span><i class="fas fa-exchange"></i></a>';
+        $ui .= '<a href="#wengagements-'.$w['w_child_u_id'].'-'.$w['w_id'].'" onclick="load_u_engagements('.$w['w_child_u_id'].','.$w['w_id'].')" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="'.$w['w_stats']['e_all_count'].' engagements"><span class="btn-counter">'.$w['w_stats']['e_all_count'].( $w['w_stats']['e_all_count']==$CI->config->item('max_counter') ? '+' : '').'</span><i class="fas fa-link"></i></a>';
 
         //Link to subscriber, but count total subscriptions first:
         $ui .= '<a href="/entities/'.$w['w_child_u_id'].'" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="top" title="Student has '.count($user_ws).' total subsciptions"><span class="btn-counter">'.count($user_ws).'</span><i class="fas fa-sign-out-alt rotate90"></i></a>';
@@ -1570,7 +1504,7 @@ function echo_c($c, $level, $c_parent_id=0, $is_parent=false){
 
     if($e_count>0){
         //Show link to load these engagements:
-        $ui .= '<a href="#estats-'.$c['c_id'].'" onclick="estats_load('.$c['c_id'].')" class="badge badge-primary" style="width:40px; margin-right:2px;"><span class="btn-counter">'.$e_count.($e_count==$CI->config->item('max_counter')?'+':'').'</span><i class="fas fa-exchange"></i></a>';
+        $ui .= '<a href="#estats-'.$c['c_id'].'" onclick="estats_load('.$c['c_id'].')" class="badge badge-primary" style="width:40px; margin-right:2px;"><span class="btn-counter">'.$e_count.($e_count==$CI->config->item('max_counter')?'+':'').'</span><i class="fas fa-link"></i></a>';
     }
 
     $ui .= '<a href="#messages-'.$c['c_id'].'" onclick="i_load_modify('.$c['c_id'].')" class="msg-badge-'.$c['c_id'].' badge badge-primary '.( $c['c__this_messages']==0 ? 'grey' : '' ).'" style="width:40px;"><span class="btn-counter messages-counter-'.$c['c_id'].'">'.$c['c__this_messages'].'</span><i class="fas fa-comment-dots"></i></a>';
@@ -1746,7 +1680,7 @@ function echo_u($u, $level, $is_parent=false){
     ), $CI->config->item('max_counter')));
     if($e_count>0){
         //Show the engagement button:
-        $ui .= '<a href="#wengagements-'.$u['u_id'].'" onclick="load_u_engagements('.$u['u_id'].')" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="'.$e_count.' entity engagements"><span class="btn-counter">'.$e_count.( $e_count==$CI->config->item('max_counter') ? '+' : '').'</span><i class="fas fa-exchange"></i></a>';
+        $ui .= '<a href="#wengagements-'.$u['u_id'].'" onclick="load_u_engagements('.$u['u_id'].')" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="'.$e_count.' entity engagements"><span class="btn-counter">'.$e_count.( $e_count==$CI->config->item('max_counter') ? '+' : '').'</span><i class="fas fa-link"></i></a>';
     }
 
 
@@ -1848,6 +1782,20 @@ function echo_u($u, $level, $is_parent=false){
     if($ur_id>0){
         //show the link box for updating:
         $ui .= ' <span class="ur__notes ur__notes_'.$ur_id.'">'.echo_link($u['ur_notes']).'</span>';
+
+        //How about a URL in the message?
+        /*
+        $ui .= '<a href="'.$x['x_url'].'" target="_blank" '.( strlen($x['x_url'])>0 && !($x['x_url']==$x['x_url']) ? '' : '' ).'>';
+        $ui .= '<span class="url_truncate">'.echo_clean_url($x['x_url']).'</span>';
+        $ui .= '<i class="fas fa-external-link-square"></i></a>';
+
+        //Can we display this URL?
+        if($x['x_type']==1){
+            $ui .= '<div style="margin-top:7px;">'.echo_embed($x['x_clean_url'],$x['x_clean_url']).'</div>';
+        } elseif($x['x_type']>1){
+            $ui .= '<div style="margin-top:7px;">'.echo_content_url($x['x_clean_url'],$x['x_type']).'</div>';
+        }
+        */
     }
 
     $ui .= '</div>';

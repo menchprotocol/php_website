@@ -189,12 +189,12 @@ class Intents extends CI_Controller
         //Log engagement:
         $this->Db_model->li_create(array(
             'li_en_creator_id' => $udata['u_id'],
-            'li_json_blob' => array(
+            'li_metadata' => array(
                 'post' => $_POST,
                 'updated_from_recursively' => $updated_from_recursively,
                 'updated_to_recursively' => $updated_to_recursively,
             ),
-            'li_message' => '['.$subject[0]['c_outcome'].'] was migrated from ['.$from[0]['c_outcome'].'] to ['.$to[0]['c_outcome'].']', //Message migrated
+            'li_content' => '['.$subject[0]['c_outcome'].'] was migrated from ['.$from[0]['c_outcome'].'] to ['.$to[0]['c_outcome'].']', //Message migrated
             'li_en_type_id' => 4254, //Intent migrated
             'li_in_child_id' => intval($_POST['c_id']),
             'e_cr_id' => intval($_POST['cr_id']),
@@ -365,7 +365,7 @@ class Intents extends CI_Controller
                         //Log modify engagement for this intent:
                         $this->Db_model->li_create(array(
                             'li_en_creator_id' => $udata['u_id'],
-                            'li_message' => 'Status recursively updated from ['.$intents[0]['c_status'].'] to ['.$_POST['c_status'].'] initiated from parent intent #'.$intents[0]['c_id'].' ['.$intents[0]['c_outcome'].']',
+                            'li_content' => 'Status recursively updated from ['.$intents[0]['c_status'].'] to ['.$_POST['c_status'].'] initiated from parent intent #'.$intents[0]['c_id'].' ['.$intents[0]['c_outcome'].']',
                             'li_en_type_id' => 4264, //Intent Modification
                             'li_in_child_id' => $child_c_id,
                         ));
@@ -379,8 +379,8 @@ class Intents extends CI_Controller
             //Log Engagement for New Intent Link:
             $this->Db_model->li_create(array(
                 'li_en_creator_id' => $udata['u_id'],
-                'li_message' => readable_updates($intents[0],$c_update,'c_'),
-                'li_json_blob' => array(
+                'li_content' => readable_updates($intents[0],$c_update,'c_'),
+                'li_metadata' => array(
                     'input' => $_POST,
                     'before' => $intents[0],
                     'after' => $c_update,
@@ -498,7 +498,7 @@ class Intents extends CI_Controller
             'li_en_type_id' => 4241, //Intent Link Archived
             'li_in_child_id' => intval($_POST['c_id']),
             'e_cr_id' => intval($_POST['cr_id']),
-            'li_json_blob' => array(
+            'li_metadata' => array(
                 'input' => $_POST,
                 'recursive_query' => $recursive_query,
                 'updated_recursively' => $updated_recursively,
@@ -571,8 +571,8 @@ class Intents extends CI_Controller
                 //Log Engagement:
                 $this->Db_model->li_create(array(
                     'li_en_creator_id' => $udata['u_id'],
-                    'li_message' => 'Sorted child intents for ['.$parent_intents[0]['c_outcome'].']',
-                    'li_json_blob' => array(
+                    'li_content' => 'Sorted child intents for ['.$parent_intents[0]['c_outcome'].']',
+                    'li_metadata' => array(
                         'input' => $_POST,
                         'before' => $children_before,
                         'after' => $children_after,
@@ -617,14 +617,14 @@ class Intents extends CI_Controller
             //Log an engagement for all messages
             $this->Db_model->li_create(array(
                 'li_en_creator_id' => $udata['u_id'],
-                'li_json_blob' => $i,
+                'li_metadata' => $i,
                 'li_en_type_id' => 4273, //Got It
                 'li_in_child_id' => intval($_POST['intent_id']),
                 'e_i_id' => $i['i_id'],
             ));
 
             //Build UI friendly Message:
-            $help_content .= echo_i(array_merge($i,array(' li_en_child_id'=>$udata['u_id'])),$udata['u_full_name']);
+            $help_content .= echo_i(array_merge($i,array('li_en_child_id'=>$udata['u_id'])),$udata['u_full_name']);
         }
 
         //Return results:
@@ -807,7 +807,7 @@ class Intents extends CI_Controller
         echo_json(array(
             'status' => 1,
             'message' => echo_message( array_merge($new_messages[0], array(
-                ' li_en_child_id'=>$udata['u_id'],
+                'li_en_child_id'=>$udata['u_id'],
             ))),
         ));
     }
@@ -867,7 +867,7 @@ class Intents extends CI_Controller
         return echo_json(array(
             'status' => 1,
             'message' => echo_message(array_merge($new_messages[0], array(
-                ' li_en_child_id'=>$udata['u_id'],
+                'li_en_child_id'=>$udata['u_id'],
             ))),
         ));
     }
@@ -952,7 +952,7 @@ class Intents extends CI_Controller
         //Log engagement:
         $this->Db_model->li_create(array(
             'li_en_creator_id' => $udata['u_id'],
-            'li_json_blob' => array(
+            'li_metadata' => array(
                 'input' => $_POST,
                 'before' => $messages[0],
                 'after' => $new_messages[0],
@@ -965,7 +965,7 @@ class Intents extends CI_Controller
         //Print the challenge:
         return echo_json(array(
             'status' => 1,
-            'message' => echo_i(array_merge($new_messages[0],array(' li_en_child_id'=>$udata['u_id'])),$udata['u_full_name']),
+            'message' => echo_i(array_merge($new_messages[0],array('li_en_child_id'=>$udata['u_id'])),$udata['u_full_name']),
             'new_status' => echo_status('i_status',$new_messages[0]['i_status'],1,'right'),
             'success_icon' => '<span><i class="fas fa-check"></i> Saved</span>',
         ));
@@ -1022,7 +1022,7 @@ class Intents extends CI_Controller
                 //Log engagement:
                 $this->Db_model->li_create(array(
                     'li_en_creator_id' => $udata['u_id'],
-                    'li_json_blob' => array(
+                    'li_metadata' => array(
                         'input' => $_POST,
                         'before' => $messages[0],
                     ),
@@ -1074,7 +1074,7 @@ class Intents extends CI_Controller
             //Log engagement:
             $this->Db_model->li_create(array(
                 'li_en_creator_id' => $udata['u_id'],
-                'li_json_blob' => $_POST,
+                'li_metadata' => $_POST,
                 'li_en_type_id' => 4262, //Messages sorted
                 'li_in_child_id' => intval($_POST['c_id']),
             ));

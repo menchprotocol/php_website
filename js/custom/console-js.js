@@ -242,7 +242,7 @@ function load_u_engagements(u_id,w_id=0){
     w_id = parseInt(w_id);
     u_id = parseInt(u_id);
     var frame_title = frame_loader(w_id, u_id, true);
-    $('#w_title').html('<i class="fas fa-exchange"></i> '+frame_title);
+    $('#w_title').html('<i class="fas fa-link"></i> '+frame_title);
 
     //Load content via a URL:
     $('.frame-loader').addClass('hidden');

@@ -37,7 +37,7 @@ $ws = $this->Db_model->w_fetch(array(
     var top_u_id = <?= $entity['u_id'] ?>;
     var add_u_name = '<?= $add_name ?>';
     var add_u_id = <?= $add_id ?>;
-    var li_message_max = <?= $this->config->item('li_message_max') ?>;
+    var li_content_max = <?= $this->config->item('li_content_max') ?>;
     var en_name_max = <?= $this->config->item('en_name_max') ?>;
     var entity_u_type = <?= $entity_type ?>;
 </script>
@@ -248,8 +248,8 @@ echo '</div>';
               </div>
 
               <div class="li_component" style="margin-top:15px;">
-                  <div class="title" style="margin-bottom:0; padding-bottom:0;"><h4><i class="fas fa-file-alt"></i> Link Notes [<span style="margin:0 0 10px 0; font-size:0.8em;"><span id="charur_notesNum">0</span>/<?= $this->config->item('li_message_max') ?></span>]</h4></div>
-                  <textarea class="form-control text-edit border msg" id="ur_notes" onkeyup="ur_notes_word_count()" maxlength="<?= $this->config->item('li_message_max') ?>" data-lpignore="true" style="height:66px;"></textarea>
+                  <div class="title" style="margin-bottom:0; padding-bottom:0;"><h4><i class="fas fa-file-alt"></i> Link Notes [<span style="margin:0 0 10px 0; font-size:0.8em;"><span id="charur_notesNum">0</span>/<?= $this->config->item('li_content_max') ?></span>]</h4></div>
+                  <textarea class="form-control text-edit border msg" id="ur_notes" onkeyup="ur_notes_word_count()" maxlength="<?= $this->config->item('li_content_max') ?>" data-lpignore="true" style="height:66px;"></textarea>
               </div>
 
 

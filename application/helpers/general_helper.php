@@ -35,16 +35,16 @@ function load_php_algolia($index_name){
     return $client->initIndex($index_name);
 }
 
-function missing_required_db_fields($insert_columns,$field_array){
-    foreach($field_array as $req_field){
+function detect_missing_columns($insert_columns,$required_columns){
+    foreach($required_columns as $req_field){
         if(!isset($insert_columns[$req_field]) || strlen($insert_columns[$req_field])==0){
             //Ooops, we're missing this required field:
             $CI =& get_instance();
             $CI->Db_model->li_create(array(
-                'li_message' => 'Missing required field ['.$req_field.'] for inserting new DB row',
-                'li_json_blob' => array(
+                'li_content' => 'Missing required field ['.$req_field.'] for inserting new DB row',
+                'li_metadata' => array(
                     'insert_columns' => $insert_columns,
-                    'required_fields' => $field_array,
+                    'required_columns' => $required_columns,
                 ),
                 'li_en_type_id' => 4246, //Platform Error
             ));
@@ -55,6 +55,12 @@ function missing_required_db_fields($insert_columns,$field_array){
 
     //No errors found, all good:
     return false; //Not missing anything
+}
+
+
+//TODO Remove after migration:
+function migrate_submissions($c_require_notes_to_complete, $c_require_url_to_complete){
+
 }
 
 
@@ -341,8 +347,8 @@ function save_file($file_url,$json_data,$is_local=false){
             return $result['ObjectURL'];
         } else {
             $CI->Db_model->li_create(array(
-                'li_message' => 'save_file() Unable to upload file ['.$file_url.'] to Mench cloud.',
-                'li_json_blob' => $json_data,
+                'li_content' => 'save_file() Unable to upload file ['.$file_url.'] to Mench cloud.',
+                'li_metadata' => $json_data,
                 'li_en_type_id' => 4246, //Platform Error
             ));
             return false;
@@ -511,7 +517,7 @@ function message_validation($i_status,$i_message,$i_c_id){
 
 
     $CI =& get_instance();
-    $li_message_max = $CI->config->item('li_message_max');
+    $li_content_max = $CI->config->item('li_content_max');
 
     //Extract details from this message:
     $urls = extract_urls($i_message);
@@ -534,10 +540,10 @@ function message_validation($i_status,$i_message,$i_c_id){
             'status' => 0,
             'message' => '/firstname can be used only once',
         );
-    } elseif(strlen($i_message)>$li_message_max){
+    } elseif(strlen($i_message)>$li_content_max){
         return array(
             'status' => 0,
-            'message' => 'Max is '.$li_message_max.' Characters',
+            'message' => 'Max is '.$li_content_max.' Characters',
         );
     } elseif($i_message!=strip_tags($i_message)){
         return array(
@@ -764,40 +770,40 @@ function one_two_explode($one,$two,$content){
 }
 
 
-function format_li_message($li_message){
+function format_li_content($li_content){
     
     //Do replacements:
-    if(substr_count($li_message,'/attach ')>0){
-        $attachments = explode('/attach ',$li_message);
+    if(substr_count($li_content,'/attach ')>0){
+        $attachments = explode('/attach ',$li_content);
         foreach($attachments as $key=>$attachment){
             if($key==0){
                 //We're gonna start buiolding this message from scrach:
-                $li_message = $attachment;
+                $li_content = $attachment;
                 continue;
             }
             $segments = explode(':',$attachment,2);
             $sub_segments = preg_split('/[\s]+/', $segments[1] );
 
             if($segments[0]=='image'){
-                $li_message .= '<img src="'.$sub_segments[0].'" style="max-width:100%" />';
+                $li_content .= '<img src="'.$sub_segments[0].'" style="max-width:100%" />';
             } elseif($segments[0]=='audio'){
-                $li_message .= '<audio controls><source src="'.$sub_segments[0].'" type="audio/mpeg"></audio>';
+                $li_content .= '<audio controls><source src="'.$sub_segments[0].'" type="audio/mpeg"></audio>';
             } elseif($segments[0]=='video'){
-                $li_message .= '<video width="100%" onclick="this.play()" controls><source src="'.$sub_segments[0].'" type="video/mp4"></video>';
+                $li_content .= '<video width="100%" onclick="this.play()" controls><source src="'.$sub_segments[0].'" type="video/mp4"></video>';
             } elseif($segments[0]=='file'){
-                $li_message .= '<a href="'.$sub_segments[0].'" class="btn btn-primary" target="_blank"><i class="fas fa-cloud-download"></i> Download File</a>';
+                $li_content .= '<a href="'.$sub_segments[0].'" class="btn btn-primary" target="_blank"><i class="fas fa-cloud-download"></i> Download File</a>';
             }
             
             //Do we have any leftovers after the URL? If so, append:
             if(isset($sub_segments[1])){
-                $li_message = ' '.$sub_segments[1];
+                $li_content = ' '.$sub_segments[1];
             }
         }
     } else {
-        $li_message = echo_link($li_message);
+        $li_content = echo_link($li_content);
     }
-    $li_message = nl2br($li_message);
-    return $li_message;
+    $li_content = nl2br($li_content);
+    return $li_content;
 }
 
 

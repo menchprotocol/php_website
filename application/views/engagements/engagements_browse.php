@@ -1,7 +1,7 @@
 <?php
 
 $engagement_filters = array(
-    ' li_en_type_id' => 'Link Types',
+    'li_en_type_id' => 'Link Types',
     'li_id' => 'Engagement ID',
     'e_u_id' => 'Entity ID',
     'li_in_child_id' => 'Intent ID',
@@ -42,14 +42,14 @@ $engagements = $this->Db_model->li_fetch($match_columns,(is_dev() ? 20 : 100));
 
 <?php
 //Display filters:
-echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-exchange"></i> Platform Engagements</h5>';
+echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-link"></i> Platform Engagements</h5>';
 
 
 echo '<form action="" method="GET">';
 echo '<table class="table table-condensed"><tr>';
 foreach($engagement_filters as $key=>$value){
     echo '<td><div style="padding-right:5px;">';
-    if($key==' li_en_type_id'){ //We have a list to show:
+    if($key=='li_en_type_id'){ //We have a list to show:
 
         //Fetch all engagements from intent #6653
         $all_engs = $this->Db_model->cr_children_fetch(array(

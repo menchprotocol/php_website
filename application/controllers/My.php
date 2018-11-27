@@ -167,8 +167,8 @@ class My extends CI_Controller {
                 //Ooops, we had issues finding th is intent! Should not happen, report:
                 $this->Db_model->li_create(array(
                     'li_en_creator_id' => $ws[0]['u_id'],
-                    'li_json_blob' => $ws,
-                    'li_message' => 'Unable to load a specific intent for the student Action Plan! Should not happen...',
+                    'li_metadata' => $ws,
+                    'li_content' => 'Unable to load a specific intent for the student Action Plan! Should not happen...',
                     'li_en_type_id' => 4246,
                     'e_w_id' => $w_id,
                     'li_in_child_id' => $c_id,
@@ -342,10 +342,10 @@ class My extends CI_Controller {
         //Save a copy of the student completion report:
         $this->Db_model->li_create(array(
             'li_en_creator_id' => ( isset($udata['u_id']) ? $udata['u_id'] : $ks[0]['k_children_u_id'] ),
-            'li_message' => ( $notes_changed ? trim($_POST['k_notes']) : '' ),
+            'li_content' => ( $notes_changed ? trim($_POST['k_notes']) : '' ),
             'li_en_type_id' => 4242, //Completion Report
             'li_in_child_id' => $ks[0]['c_id'],
-            'li_json_blob' => array(
+            'li_metadata' => array(
                 'input' => $_POST,
                 'k' => $ks[0],
             ),
@@ -376,7 +376,7 @@ class My extends CI_Controller {
                 if(intval($_POST['is_from_messenger'])){
                     //Also send confirmation messages via messenger:
                     $this->Comm_model->compose_messages(array(
-                        ' li_en_child_id' => $ks[0]['k_children_u_id'],
+                        'li_en_child_id' => $ks[0]['k_children_u_id'],
                         'li_in_child_id' => $ks_next[0]['c_id'],
                         'e_w_id' => $ks[0]['k_w_id'],
                     ));
