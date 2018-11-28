@@ -25,17 +25,17 @@ function u_load_child_search(){
             },
             header: function (data) {
                 if (!data.isEmpty) {
-                    return '<a href="javascript:ur_add(0,'+add_u_id+',0)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as '+add_u_name+']</a>';
+                    return '<a href="javascript:ur_add(0,'+top_u_id+',0)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as '+top_u_full_name+']</a>';
                 }
             },
             empty: function (data) {
-                return '<a href="javascript:ur_add(0,'+add_u_id+',0)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create</span> <i class="fas fa-at"></i> ' + data.query + ' [as '+add_u_name+']</a>';
+                return '<a href="javascript:ur_add(0,'+top_u_id+',0)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create</span> <i class="fas fa-at"></i> ' + data.query + ' [as '+top_u_full_name+']</a>';
             },
         }
     }]).keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            ur_add(0,add_u_id);
+            ur_add(0,top_u_id);
             return true;
         }
     });
@@ -73,9 +73,9 @@ $(document).ready(function () {
         var hash_parts = hash.split("-");
         if(hash_parts.length>=2){
             //Fetch level if available:
-            if(hash_parts[0]=='messages'){
+            if(hash_parts[0]=='loadmessages'){
                 u_load_messages(hash_parts[1]);
-            } else if(hash_parts[0]=='modify'){
+            } else if(hash_parts[0]=='loadmodify'){
                 u_load_modify(hash_parts[1],hash_parts[2]);
             } else if(hash_parts[0]=='status'){
                 //Update status:
@@ -103,7 +103,6 @@ $(document).ready(function () {
     u_load_child_search();
 
 
-
     $("#new-parent .new-input").on('autocomplete:selected', function (event, suggestion, dataset) {
         ur_add(suggestion.u_id,0,1);
     }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
@@ -124,15 +123,12 @@ $(document).ready(function () {
                 return '<span><i class="fas fa-at"></i></span> ' + suggestion.u_full_name;
             },
             header: function (data) {
-                //1326 suggests both People AND Organizations as new parent entities:
-                if (!data.isEmpty && entity_u_type==1326) {
-                    return '<a href="javascript:ur_add(0,1278,1)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as People]</a><a href="javascript:ur_add(0,2750,1)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as Organization]</a>';
+                if (!data.isEmpty) {
+                    return '<a href="javascript:ur_add(0,'+top_u_id+',1)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as '+top_u_full_name+']</a>';
                 }
             },
             empty: function (data) {
-                if(entity_u_type==1326){
-                    return '<a href="javascript:ur_add(0,1278,1)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as People]</a><a href="javascript:ur_add(0,2750,1)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as Organization]</a>';
-                }
+                return '<a href="javascript:ur_add(0,'+top_u_id+',1)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as '+top_u_full_name+']</a>';
             },
         }
     }]);

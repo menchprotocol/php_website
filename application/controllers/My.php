@@ -20,7 +20,7 @@ class My extends CI_Controller {
     function fb_profile($u_id){
 
         $udata = auth(array(1308));
-        $current_us = $this->Db_model->u_fetch(array(
+        $current_us = $this->Db_model->en_fetch(array(
             'u_id' => $u_id,
         ));
 
@@ -74,7 +74,7 @@ class My extends CI_Controller {
         $no_session_w = (!isset($udata['u__ws']) || count($udata['u__ws'])<1);
 
         //Fetch Bootcamps for this user:
-        if(!$u_fb_psid && $no_session_w && !array_key_exists(1308, $udata['u__parents'])){
+        if(!$u_fb_psid && $no_session_w && !array_filter($udata['en__parents'], 'en_id', 1308)){
             //There is an issue here!
             die('<div class="alert alert-danger" role="alert">Invalid Credentials</div>');
         } elseif($no_session_w && !is_dev() && isset($_GET['sr']) && !parse_signed_request($_GET['sr'])){
@@ -146,19 +146,19 @@ class My extends CI_Controller {
             //Now we need to load the action plan:
             $k_ins = $this->Db_model->k_fetch(array(
                 'w_id' => $w_id,
-                'c_status >=' => 2,
+                'in_status >=' => 2,
                 'cr_child_c_id' => $c_id,
             ), array('w','cr','cr_c_parent'));
 
             $k_outs = $this->Db_model->k_fetch(array(
                 'w_id' => $w_id,
-                'c_status >=' => 2,
+                'in_status >=' => 2,
                 'cr_parent_c_id' => $c_id,
             ), array('w','cr','cr_c_child'));
 
 
             $intents = $this->Db_model->in_fetch(array(
-                'c_status >=' => 2,
+                'in_status >=' => 2,
                 'c_id' => $c_id,
             ));
 

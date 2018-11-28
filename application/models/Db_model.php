@@ -31,10 +31,10 @@ class Db_model extends CI_Model {
         $last_working_on_any = $this->Db_model->k_fetch(array(
             'w_id' => $w_id,
             'w_status' => 1, //Active subscriptions
-            'c_status >=' => 2,
+            'in_status >=' => 2,
             'k_rank >' => $min_k_rank,
             //The first case is for OR intents that a child is not yet selected, and the second part is for regular incompleted items:
-            '(k_status IN (1,-2) AND c_is_any=1)' => null, //Not completed or not yet started
+            '(k_status IN (1,-2) AND in_is_any=1)' => null, //Not completed or not yet started
         ), array('w','cr','cr_c_child'), array(
             'k_rank' => 'DESC',
         ), 1);
@@ -43,7 +43,7 @@ class Db_model extends CI_Model {
         $first_pending_all = $this->Db_model->k_fetch(array(
             'w_id' => $w_id,
             'w_status' => 1, //Active subscriptions
-            'c_status >=' => 2,
+            'in_status >=' => 2,
             'k_rank >' => $min_k_rank,
             //The first case is for OR intents that a child is not yet selected, and the second part is for regular incompleted items:
             'k_status IN (0,-2)' => null, //Not completed or not yet started
@@ -150,7 +150,7 @@ class Db_model extends CI_Model {
             'k_w_id' => $w_id,
             'cr_parent_c_id' => $cr_parent_c_id, //Fetch children of parent intent which are the siblings of current intent
             'cr_child_c_id' => $c_id, //The answer
-            'c_status >=' => 2,
+            'in_status >=' => 2,
         ), array('w','cr','cr_c_parent'));
 
         if(count($chosen_path)==1){
@@ -160,7 +160,7 @@ class Db_model extends CI_Model {
                 'k_w_id' => $w_id,
                 'cr_parent_c_id' => $cr_parent_c_id, //Fetch children of parent intent which are the siblings of current intent
                 'cr_child_c_id' => $c_id, //The answer
-                'c_status >=' => 2,
+                'in_status >=' => 2,
             ), array('w','cr','cr_c_child'));
 
             if(count($path_requirements)==1){
@@ -207,7 +207,7 @@ class Db_model extends CI_Model {
         $down_is_complete = true;
         $total_skipped = 0;
         //Is this an OR branch? Because if it is, we need to skip its siblings:
-        if(intval($cr['c_is_any'])){
+        if(intval($cr['in_is_any'])){
             //Skip all eligible siblings, if any:
             //$cr['cr_child_c_id'] is the chosen path that we're trying to find its siblings for the parent $cr['cr_parent_c_id']
 
@@ -216,7 +216,7 @@ class Db_model extends CI_Model {
                 'k_w_id' => $w['w_id'],
                 'cr_parent_c_id' => $cr['cr_parent_c_id'], //Fetch children of parent intent which are the siblings of current intent
                 'cr_child_c_id !=' => $cr['cr_child_c_id'], //NOT The answer (we need its siblings)
-                'c_status >=' => 2,
+                'in_status >=' => 2,
                 'k_status IN (0,1)' => null,
             ), array('w','cr','cr_c_child'));
 
@@ -273,7 +273,7 @@ class Db_model extends CI_Model {
                 $parent_ks = $this->Db_model->k_fetch(array(
                     'k_id' => $parent_k_id,
                     'k_w_id' => $w['w_id'],
-                    'c_status >=' => 2,
+                    'in_status >=' => 2,
                     'k_status <' => 2, //Not completed in any way
                 ), array('cr','cr_c_child'));
                 
@@ -285,7 +285,7 @@ class Db_model extends CI_Model {
 
                     //Any intents would always be complete since we already marked one of its children as complete!
                     //If it's an ALL intent, we need to check to make sure all children are complete:
-                    if(intval($parent_ks[0]['c_is_any'])){
+                    if(intval($parent_ks[0]['in_is_any'])){
                         //We need a single immediate child to be complete:
                         $complete_child_cs = $this->Db_model->k_fetch(array(
                             'k_w_id' => $w['w_id'],
@@ -337,7 +337,7 @@ class Db_model extends CI_Model {
                 //Assume true unless otherwise:
                 $w_is_complete = true;
 
-                if($intents[0]['c_is_any']){
+                if($intents[0]['in_is_any']){
                     //We need a single one to be completed:
                     $complete_child_cs = $this->Db_model->k_fetch(array(
                         'k_w_id' => $intents[0]['w_id'],
@@ -472,20 +472,20 @@ class Db_model extends CI_Model {
             //We are NOT linking to an existing intent, but instead, we're creating a new intent:
             //Set default new hours:
 
-            $default_new_hours = 0; //0 min default
+            $default_new_seconds = 0;
 
             $recursive_query = array(
-                'c__tree_max_hours' => $default_new_hours,
-                'c__tree_all_count' => 1, //We just added one
+                'c__tree_max_hours' => $default_new_seconds,
+                'in__tree_count' => 1, //We just added one
             );
 
             //Create intent:
             $new_c = $this->Db_model->c_create(array(
                 'c_parent_u_id' => $parent_u_id,
                 'c_outcome' => trim($c_outcome),
-                'c_time_estimate' => $default_new_hours,
-                'c__tree_all_count' => 1, //We just added one
-                'c__tree_max_hours' => $default_new_hours,
+                'c_time_estimate' => $default_new_seconds,
+                'in__tree_count' => 1, //We just added one
+                'c__tree_max_hours' => $default_new_seconds,
             ));
 
             //Log Engagement for New Intent:
@@ -506,7 +506,7 @@ class Db_model extends CI_Model {
             //We are linking to $link_c_id, lets make sure it exists:
             $new_cs = $this->Db_model->in_fetch(array(
                 'c_id' => $link_c_id,
-                'c_status >=' => 0,
+                'in_status >=' => 0,
             ), ( 3 - $next_level ));
 
             if(count($new_cs)<=0){
@@ -535,7 +535,7 @@ class Db_model extends CI_Model {
             ));
             if(count($dup_links)>0){
                 //What is the status? If achived, we can bring back to life!
-                if($dup_links[0]['cr_status']<0){
+                if($dup_links[0]['li_status']<0){
                     //Yes, we can bring back to life!
                     //TODO update old link here?
                 } else {
@@ -556,8 +556,8 @@ class Db_model extends CI_Model {
 
             //Prepare recursive update:
             $recursive_query = array(
-                'c__tree_all_count' => $new_c['c__tree_all_count'],
-                'c__tree_max_hours' => number_format($new_c['c__tree_max_hours'],3),
+                'in__tree_count' => $new_c['in__tree_count'],
+                'c__tree_max_hours' => intval($new_c['c__tree_max_hours']),
                 'c__tree_messages' => $new_c['c__tree_messages'],
             );
         }
@@ -569,8 +569,8 @@ class Db_model extends CI_Model {
             'cr_parent_c_id'  => intval($c_id),
             'cr_child_c_id' => $new_c['c_id'],
             'cr_child_rank' => 1 + $this->Db_model->max_value('tb_intent_links','cr_child_rank', array(
-                    'cr_status' => 1,
-                    'c_status >=' => 0,
+                    'li_status' => 1,
+                    'in_status >=' => 0,
                     'cr_parent_c_id' => intval($c_id),
                 )),
         ));
@@ -583,7 +583,7 @@ class Db_model extends CI_Model {
 
 
         $relations = $this->Db_model->cr_children_fetch(array(
-            'cr_id' => $relation['cr_id'],
+            'li_id' => $relation['li_id'],
         ));
 
         //Return result:
@@ -591,7 +591,7 @@ class Db_model extends CI_Model {
             'status' => 1,
             'c_id' => $new_c['c_id'],
             'c__tree_max_hours' => $new_c['c__tree_max_hours'],
-            'adjusted_c_count' => intval($new_c['c__tree_all_count']),
+            'adjusted_c_count' => intval($new_c['in__tree_count']),
             'html' => echo_c(array_merge($new_c,$relations[0]),$next_level,intval($c_id)),
         );
     }
@@ -663,7 +663,7 @@ class Db_model extends CI_Model {
         //TODO Fetches the orphan entities:
         return $this->Db_model->in_fetch(array(
             ' NOT EXISTS (SELECT 1 FROM tb_entity_links ur WHERE u_id = ur_child_u_id AND ur_status>0) ' => null,
-        ), array('skip_u__parents'));
+        ), array('skip_en__parents'));
     }
 
 
@@ -677,7 +677,7 @@ class Db_model extends CI_Model {
 
 
 	
-	function u_fetch($match_columns, $join_objects=array(), $limit=0, $limit_offset=0, $order_columns=array('u__e_score'=>'DESC'), $select='*', $group_by=null){
+	function en_fetch($match_columns, $join_objects=array(), $limit=0, $limit_offset=0, $order_columns=array('u__e_score'=>'DESC'), $select='*', $group_by=null){
 
 	    //Fetch the target entities:
 	    $this->db->select($select);
@@ -739,16 +739,14 @@ class Db_model extends CI_Model {
 
 
             //Fetch the messages for this entity:
-            $res[$key]['u__parents'] = array();
-            if(!in_array('skip_u__parents',$join_objects)){
-                $parents = $this->Db_model->ur_parent_fetch(array(
+            if(in_array('skip_en__parents',$join_objects)){
+                $res[$key]['en__parents'] = array();
+            } else {
+                $res[$key]['en__parents'] = $this->Db_model->ur_parent_fetch(array(
                     'ur_child_u_id' => $val['u_id'],
                     'ur_status >=' => 0, //Pending or Active
                     'u_status >=' => 0, //Pending or Active
                 ));
-                foreach($parents as $ur){
-                    $res[$key]['u__parents'][$ur['u_id']] = $ur;
-                }
             }
         }
 
@@ -784,7 +782,7 @@ class Db_model extends CI_Model {
         if($insert_columns['u_id']>0){
 
             //Fetch to return full data:
-            $entities = $this->Db_model->u_fetch(array(
+            $entities = $this->Db_model->en_fetch(array(
                 'u_id' => $insert_columns['u_id'],
             ));
 
@@ -801,7 +799,7 @@ class Db_model extends CI_Model {
 	    $this->db->update('tb_entities', $update_columns);
 
 	    //Return new row:
-	    $entities = $this->u_fetch(array(
+	    $entities = $this->en_fetch(array(
 	        'u_id' => $id
 	    ));
 
@@ -909,7 +907,7 @@ class Db_model extends CI_Model {
 
         if(in_array('cr',$join_objects)){
 
-            $this->db->join('tb_intent_links cr', 'k.k_cr_id = cr_id');
+            $this->db->join('tb_intent_links cr', 'k.k_cr_id = li_id');
 
             if(in_array('cr_c_child',$join_objects)){
                 //Also join with subscription row:
@@ -1069,7 +1067,7 @@ class Db_model extends CI_Model {
             if(in_array('in__active_parents',$join_objects)){
                 $intents[$key]['in__active_parents'] = $this->Db_model->in_parents_fetch(array(
                     'cr_child_c_id' => $value['c_id'],
-                    'cr_status' => 1,
+                    'li_status' => 1,
                 ) , $join_objects);
             }
 
@@ -1079,8 +1077,8 @@ class Db_model extends CI_Model {
                 //Do the first level:
                 $intents[$key]['in__active_children'] = $this->Db_model->cr_children_fetch(array(
                     'cr_parent_c_id' => $value['c_id'],
-                    'cr_status' => 1,
-                    'c_status >=' => 0,
+                    'li_status' => 1,
+                    'in_status >=' => 0,
                 ) , $join_objects );
 
                 //We can also do a second level, just like how the Intents are displayed using a 2-level navigation:
@@ -1089,8 +1087,8 @@ class Db_model extends CI_Model {
                     foreach($intents[$key]['in__active_children'] as $key2=>$value2){
                         $intents[$key]['in__active_children'][$key2]['in__active_children'] = $this->Db_model->cr_children_fetch(array(
                             'cr_parent_c_id' => $value2['c_id'],
-                            'cr_status' => 1,
-                            'c_status >=' => 0,
+                            'li_status' => 1,
+                            'in_status >=' => 0,
                         ) , $join_objects );
                     }
                 }
@@ -1154,8 +1152,8 @@ class Db_model extends CI_Model {
                     //Fetch children:
                     $return[$key]['in__active_children'] = $this->Db_model->cr_children_fetch(array(
                         'cr_parent_c_id' => $value['c_id'],
-                        'cr_status' => 1,
-                        'c_status >=' => 0,
+                        'li_status' => 1,
+                        'in_status >=' => 0,
                     ));
                 }
 
@@ -1174,7 +1172,7 @@ class Db_model extends CI_Model {
 	
 	
 	
-	function cr_update($id,$update_columns,$column='cr_id'){
+	function cr_update($id,$update_columns,$column='li_id'){
 		$this->db->where($column, $id);
 		$this->db->update('tb_intent_links', $update_columns);
 		return $this->db->affected_rows();
@@ -1215,8 +1213,8 @@ class Db_model extends CI_Model {
             $insert_columns['cr_timestamp'] = date("Y-m-d H:i:s");
         }
 
-        if(!isset($insert_columns['cr_status'])){
-            $insert_columns['cr_status'] = 1;
+        if(!isset($insert_columns['li_status'])){
+            $insert_columns['li_status'] = 1;
         }
         if(!isset($insert_columns['cr_child_rank'])){
             $insert_columns['cr_child_rank'] = 1;
@@ -1226,7 +1224,7 @@ class Db_model extends CI_Model {
         $this->db->insert('tb_intent_links', $insert_columns);
 
         //Fetch inserted id:
-        $insert_columns['cr_id'] = $this->db->insert_id();
+        $insert_columns['li_id'] = $this->db->insert_id();
 
         return $insert_columns;
     }
@@ -1375,7 +1373,7 @@ class Db_model extends CI_Model {
         }
 
         //Validate parent entity:
-        $children_us = $this->Db_model->u_fetch(array(
+        $children_us = $this->Db_model->en_fetch(array(
             'u_id' => $x_u_id,
         ));
 
@@ -1438,7 +1436,7 @@ class Db_model extends CI_Model {
             if(strlen($curl['page_title'])>0){
 
                 //Make sure this is not a duplicate name:
-                $dup_name_us = $this->Db_model->u_fetch(array(
+                $dup_name_us = $this->Db_model->en_fetch(array(
                     'u_status >=' => 0,
                     'u_full_name' => $curl['page_title'],
                 ));
@@ -1578,20 +1576,14 @@ class Db_model extends CI_Model {
             }
         }
 
-        if(in_array('u__parents',$join_objects)){
+        if(in_array('en__parents',$join_objects)){
             foreach($res as $key=>$val){
                 //Fetch the messages for this entity:
-                $res[$key]['u__parents'] = array();
-                $parents = $this->Db_model->ur_parent_fetch(array(
+                $res[$key]['en__parents'] = $this->Db_model->ur_parent_fetch(array(
                     'ur_child_u_id' => $val['u_id'],
                     'ur_status >=' => 0, //Pending or Active
                     'u_status >=' => 0, //Pending or Active
                 ));
-
-                foreach($parents as $ur){
-                    $res[$key]['u__parents'][$ur['u_id']] = $ur;
-                }
-
             }
         }
 
@@ -1666,6 +1658,35 @@ class Db_model extends CI_Model {
     }
 
 
+    function en_create($insert_columns){
+
+        //What is required to create a new intent?
+        if(detect_missing_columns($insert_columns,array('en_status','en_name'))){
+            return false;
+        }
+
+        //Set some zero defaults if not set:
+        foreach(array('en_communication','en_messenger_psid','en_rating','en_algolia_id') as $dz){
+            if(!isset($insert_columns[$dz])){
+                $insert_columns[$dz] = 0;
+            }
+        }
+
+        //Lets now add:
+        $this->db->insert('table_entities', $insert_columns);
+
+        //Fetch inserted id:
+        if(!isset($insert_columns['en_id'])){
+            $insert_columns['en_id'] = $this->db->insert_id();
+        }
+
+        //Update Algolia:
+        //$this->Db_model->algolia_sync('en',$insert_columns['en_id']);
+
+        return $insert_columns;
+    }
+
+
 
     function c_create($insert_columns){
 
@@ -1676,8 +1697,8 @@ class Db_model extends CI_Model {
         if(!isset($insert_columns['c_timestamp'])){
             $insert_columns['c_timestamp'] = date("Y-m-d H:i:s");
         }
-        if(!isset($insert_columns['c_status'])){
-            $insert_columns['c_status'] = 1;
+        if(!isset($insert_columns['in_status'])){
+            $insert_columns['in_status'] = 1;
         }
 		
 		//Lets now add:
@@ -1799,7 +1820,21 @@ class Db_model extends CI_Model {
 	function li_fetch($match_columns=array(), $limit=100, $join_objects=array(), $order_columns=array('li_timestamp' => 'DESC'), $select='*', $group_by=null){
 
 	    $this->db->select($select);
-	    $this->db->from('table_links li');
+	    $this->db->from('table_links');
+
+        if(in_array('in_parent',$join_objects)){
+            $this->db->join('table_intents', 'li_in_parent_id=in_id');
+        } elseif(in_array('in_child',$join_objects)){
+            $this->db->join('table_intents', 'li_in_child_id=in_id');
+        }
+
+        if(in_array('en_parent',$join_objects)){
+            $this->db->join('table_entities', 'li_en_parent_id=en_id');
+        } elseif(in_array('en_child',$join_objects)){
+            $this->db->join('table_entities', 'li_en_child_id=en_id');
+        } elseif(in_array('en_type',$join_objects)){
+            $this->db->join('table_entities', 'li_en_type_id=en_id');
+        }
 
 	    foreach($match_columns as $key=>$value){
 	        if(!is_null($value)){
@@ -1863,7 +1898,7 @@ class Db_model extends CI_Model {
 
         //Set some zero defaults if not set:
         foreach(array('li_in_child_id','li_in_parent_id','li_en_child_id','li_en_parent_id','li_li_id','li_tokens') as $dz){
-            if(!isset($insert_columns[$dz]) || intval($insert_columns[$dz])<1){
+            if(!isset($insert_columns[$dz])){
                 $insert_columns[$dz] = 0;
             }
         }
@@ -1998,15 +2033,15 @@ class Db_model extends CI_Model {
         }
 
         //Fetch & add this item itself:
-        if(isset($parent_c['cr_id'])){
+        if(isset($parent_c['li_id'])){
 
             if($fetch_children){
                 $intents = $this->Db_model->cr_children_fetch(array(
-                    'cr_id' => $parent_c['cr_id'],
+                    'li_id' => $parent_c['li_id'],
                 ), ( $update_c_table ? array('in__active_messages') : array() ));
             } else {
                 $intents = $this->Db_model->in_parents_fetch(array(
-                    'cr_id' => $parent_c['cr_id'],
+                    'li_id' => $parent_c['li_id'],
                 ), ( $update_c_table ? array('in__active_messages') : array() ));
             }
 
@@ -2031,17 +2066,17 @@ class Db_model extends CI_Model {
 
 
         //Add the link relations before we start recursion so we can have the Tree in up-custom order:
-        if(isset($intents[0]['cr_id'])){
+        if(isset($intents[0]['li_id'])){
 
             //Add intent link:
-            array_push($immediate_children['cr_flat'],intval($intents[0]['cr_id']));
+            array_push($immediate_children['cr_flat'],intval($intents[0]['li_id']));
 
             //Are we caching an Action Plan?
             if($w_id>0){
                 //Yes we are, create a cache of this link for this Action Plan:
                 $this->Db_model->k_create(array(
                     'k_w_id' => $w_id,
-                    'k_cr_id' => $intents[0]['cr_id'],
+                    'k_cr_id' => $intents[0]['li_id'],
                     'k_cr_child_rank' => $intents[0]['cr_child_rank'],
                 ));
             }
@@ -2049,7 +2084,7 @@ class Db_model extends CI_Model {
         }
 
         //Terminate at OR branches for Action Plan caching (when $w_id>0)
-        if($w_id>0 && $intents[0]['c_is_any']){
+        if($w_id>0 && $intents[0]['in_is_any']){
             //return false;
         }
 
@@ -2057,14 +2092,14 @@ class Db_model extends CI_Model {
         if($fetch_children){
             $child_cs = $this->Db_model->cr_children_fetch(array(
                 'cr_parent_c_id' => $c_id,
-                'cr_status' => 1,
-                'c_status >=' => 0,
+                'li_status' => 1,
+                'in_status >=' => 0,
             ));
         } else {
             $child_cs = $this->Db_model->in_parents_fetch(array(
                 'cr_child_c_id' => $c_id,
-                'cr_status' => 1,
-                'c_status >=' => 0,
+                'li_status' => 1,
+                'in_status >=' => 0,
             ));
         }
 
@@ -2099,7 +2134,7 @@ class Db_model extends CI_Model {
                     //Addup children if any:
                     $immediate_children['c1__tree_all_count'] += $granchildren['c1__tree_all_count'];
 
-                    if($intents[0]['c_is_any']){
+                    if($intents[0]['in_is_any']){
                         //OR Branch, figure out the logic:
                         if($granchildren['c1__tree_min_hours']<$local_values['c___tree_min_hours'] || is_null($local_values['c___tree_min_hours'])){
                             $local_values['c___tree_min_hours'] = $granchildren['c1__tree_min_hours'];
@@ -2179,10 +2214,10 @@ class Db_model extends CI_Model {
 
 
         $immediate_children['c1__tree_all_count']++;
-        $immediate_children['c1__tree_min_hours'] += number_format($intents[0]['c_time_estimate'],4);
-        $immediate_children['c1__tree_max_hours'] += number_format($intents[0]['c_time_estimate'],4);
-        $immediate_children['c1__tree_min_cost']  += number_format($intents[0]['c_cost_estimate'],4);
-        $immediate_children['c1__tree_max_cost']  += number_format($intents[0]['c_cost_estimate'],4);
+        $immediate_children['c1__tree_min_hours'] += intval($intents[0]['c_time_estimate']);
+        $immediate_children['c1__tree_max_hours'] += intval($intents[0]['c_time_estimate']);
+        $immediate_children['c1__tree_min_cost']  += number_format($intents[0]['c_cost_estimate'],2);
+        $immediate_children['c1__tree_max_cost']  += number_format($intents[0]['c_cost_estimate'],2);
 
         //Set the data for this intent:
         $intents[0]['c1__tree_all_count'] = $immediate_children['c1__tree_all_count'];
@@ -2242,13 +2277,13 @@ class Db_model extends CI_Model {
                     }
 
                     //Yes! Let's see if any of the parents/creators are industry experts:
-                    $us_fetch = $this->Db_model->u_fetch(array(
+                    $us_fetch = $this->Db_model->en_fetch(array(
                         'u_id' => $i['i_u_id'],
                     ));
 
-                    if(isset($us_fetch[0]) && count($us_fetch[0]['u__parents'])>0){
+                    if(isset($us_fetch[0]) && count($us_fetch[0]['en__parents'])>0){
                         //We found it, let's loop through the parents and aggregate their IDs for a single search:
-                        foreach($us_fetch[0]['u__parents'] as $parent_u){
+                        foreach($us_fetch[0]['en__parents'] as $parent_u){
 
                             //Is this a particular content type?
                             if(array_key_exists($parent_u['u_id'], $this->config->item('content_types'))){
@@ -2331,14 +2366,14 @@ class Db_model extends CI_Model {
 
             //Update DB only if any single field is not synced:
             if(!(
-                number_format($intents[0]['c1__tree_min_hours'],3)==number_format($intents[0]['c__tree_min_hours'],3) &&
-                number_format($intents[0]['c1__tree_max_hours'],3)==number_format($intents[0]['c__tree_max_hours'],3) &&
+                intval($intents[0]['c1__tree_min_hours'])==intval($intents[0]['c__tree_min_hours']) &&
+                intval($intents[0]['c1__tree_max_hours'])==intval($intents[0]['c__tree_max_hours']) &&
                 number_format($intents[0]['c1__tree_min_cost'],2)==number_format($intents[0]['c__tree_min_cost'],2) &&
                 number_format($intents[0]['c1__tree_max_cost'],2)==number_format($intents[0]['c__tree_max_cost'],2) &&
                 ((!$intents[0]['c__tree_experts'] && count($intents[0]['c1__tree_experts'])<1) || (serialize($intents[0]['c1__tree_experts'])==$intents[0]['c__tree_experts'])) &&
                 ((!$intents[0]['c__tree_trainers'] && count($intents[0]['c1__tree_trainers'])<1) || (serialize($intents[0]['c1__tree_trainers'])==$intents[0]['c__tree_trainers'])) &&
                 ((!$intents[0]['c__tree_contents'] && count($intents[0]['c1__tree_contents'])<1) || (serialize($intents[0]['c1__tree_contents'])==$intents[0]['c__tree_contents'])) &&
-                $intents[0]['c1__tree_all_count']==$intents[0]['c__tree_all_count'] &&
+                $intents[0]['c1__tree_all_count']==$intents[0]['in__tree_count'] &&
                 $intents[0]['c1__this_messages']==$intents[0]['c__this_messages'] &&
                 $intents[0]['c1__tree_messages']==$intents[0]['c__tree_messages'] &&
                 intval($intents[0]['c__is_orphan'])==0
@@ -2346,11 +2381,11 @@ class Db_model extends CI_Model {
 
                 //Something was not up to date, let's update:
                 $this->Db_model->c_update( $c_id , array(
-                    'c__tree_min_hours' => number_format($intents[0]['c1__tree_min_hours'],3),
-                    'c__tree_max_hours' => number_format($intents[0]['c1__tree_max_hours'],3),
+                    'c__tree_min_hours' => intval($intents[0]['c1__tree_min_hours']),
+                    'c__tree_max_hours' => intval($intents[0]['c1__tree_max_hours']),
                     'c__tree_min_cost'  => number_format($intents[0]['c1__tree_min_cost'],2),
                     'c__tree_max_cost'  => number_format($intents[0]['c1__tree_max_cost'],2),
-                    'c__tree_all_count' => $intents[0]['c1__tree_all_count'],
+                    'in__tree_count' => $intents[0]['c1__tree_all_count'],
                     'c__this_messages' => $intents[0]['c1__this_messages'],
                     'c__tree_messages' => $intents[0]['c1__tree_messages'],
                     'c__tree_experts' => ( count($intents[0]['c1__tree_experts'])>0 ? serialize($intents[0]['c1__tree_experts']) : null ),
@@ -2361,7 +2396,7 @@ class Db_model extends CI_Model {
 
                 $immediate_children['db_updated']++;
 
-                array_push($immediate_children['db_queries'],'['.$c_id.'] Hours:'.number_format($intents[0]['c__tree_max_hours'],3).'=>'.number_format($intents[0]['c1__tree_max_hours'],3).' / All Count:'.$intents[0]['c__tree_all_count'].'=>'.$intents[0]['c1__tree_all_count'].' / Message:'.$intents[0]['c__this_messages'].'=>'.$intents[0]['c1__this_messages'].' / Tree Message:'.$intents[0]['c__tree_messages'].'=>'.$intents[0]['c1__tree_messages'].' / Orphan:'.intval($intents[0]['c__is_orphan']).'=>0 ('.$intents[0]['c_outcome'].')');
+                array_push($immediate_children['db_queries'],'['.$c_id.'] Seconds:'.intval($intents[0]['c__tree_max_hours']).'=>'.intval($intents[0]['c1__tree_max_hours']).' / All Count:'.$intents[0]['in__tree_count'].'=>'.$intents[0]['c1__tree_all_count'].' / Message:'.$intents[0]['c__this_messages'].'=>'.$intents[0]['c1__this_messages'].' / Tree Message:'.$intents[0]['c__tree_messages'].'=>'.$intents[0]['c1__tree_messages'].' / Orphan:'.intval($intents[0]['c__is_orphan']).'=>0 ('.$intents[0]['c_outcome'].')');
 
             }
         }
@@ -2391,7 +2426,7 @@ class Db_model extends CI_Model {
             'k_flat' => array(),
         );
 
-        if(!$recursive_children && !isset($parent_c['cr_id'])){
+        if(!$recursive_children && !isset($parent_c['li_id'])){
             //First item:
             $recursive_children = $immediate_children;
             $intents = $this->Db_model->in_fetch(array(
@@ -2402,7 +2437,7 @@ class Db_model extends CI_Model {
             //Recursive item:
             $intents = $this->Db_model->k_fetch(array(
                 'k_w_id' => $w_id,
-                'k_cr_id' => $parent_c['cr_id'],
+                'k_cr_id' => $parent_c['li_id'],
             ), array('cr', ($fetch_children ? 'cr_c_child' : 'cr_c_parent')));
         }
 
@@ -2414,8 +2449,8 @@ class Db_model extends CI_Model {
 
         //Add the link relations before we start recursion so we can have the Tree in up-custom order:
         array_push($immediate_children['c_flat'],intval($c_id));
-        if(isset($intents[0]['cr_id'])){
-            array_push($immediate_children['cr_flat'],intval($intents[0]['cr_id']));
+        if(isset($intents[0]['li_id'])){
+            array_push($immediate_children['cr_flat'],intval($intents[0]['li_id']));
             array_push($immediate_children['k_flat'],intval($intents[0]['k_id']));
         }
 
@@ -2423,7 +2458,7 @@ class Db_model extends CI_Model {
         //A recursive function to fetch all Tree for a given intent, either upwards or downwards
         $child_cs = $this->Db_model->k_fetch(array(
             'k_w_id' => $w_id,
-            'c_status >=' => 2,
+            'in_status >=' => 2,
             ( $fetch_children ? 'cr_parent_c_id' : 'cr_child_c_id' ) => $c_id,
         ), array('cr',( $fetch_children ? 'cr_c_child' : 'cr_c_parent' )));
 
@@ -2519,7 +2554,7 @@ class Db_model extends CI_Model {
         if($obj=='in'){
             $items = $this->Db_model->in_fetch($limits);
         } elseif($obj=='en'){
-            $items = $this->Db_model->u_fetch($limits);
+            $items = $this->Db_model->en_fetch($limits);
             $parent_names = array(); //To cache names of parents
         }
 
@@ -2552,10 +2587,10 @@ class Db_model extends CI_Model {
                 $new_item['_tags'] = array();
 
                 //Tags map parent relation:
-                if(count($item['u__parents'])>0){
+                if(count($item['en__parents'])>0){
                     //Loop through parent entities:
-                    foreach($item['u__parents'] as $u_id=>$u){
-                        array_push($new_item['_tags'],'en'.$u_id);
+                    foreach($item['en__parents'] as $u){
+                        array_push($new_item['_tags'],'en'.$u['u_id']);
                     }
                 } else {
                     //Orphan Entity:
@@ -2597,13 +2632,13 @@ class Db_model extends CI_Model {
 
                 $new_item['c_id'] = intval($item['c_id']);
                 $new_item['c_outcome'] = $item['c_outcome'];
-                $new_item['c_is_any'] = intval($item['c_is_any']);
+                $new_item['in_is_any'] = intval($item['in_is_any']);
                 $new_item['c_keywords'] = trim($item['c_trigger_statements']);
-                $new_item['c_status'] = intval($item['c_status']);
+                $new_item['in_status'] = intval($item['in_status']);
 
-                $new_item['c__tree_max_mins'] = intval($item['c__tree_max_hours']*60);
-                $new_item['c__tree_min_mins'] = intval($item['c__tree_min_hours']*60);
-                $new_item['c__tree_all_count'] = intval($item['c__tree_all_count']);
+                $new_item['in__tree_max_secs'] = intval($item['c__tree_max_hours']);
+                $new_item['in__tree_min_secs'] = intval($item['c__tree_min_hours']);
+                $new_item['in__tree_count'] = intval($item['in__tree_count']);
                 $new_item['c__tree_messages'] = intval($item['c__tree_messages']);
 
                 //Append parent intents:
@@ -2611,8 +2646,8 @@ class Db_model extends CI_Model {
 
                 $child_cs = $this->Db_model->in_parents_fetch(array(
                     'cr_child_c_id' => $item['c_id'],
-                    'cr_status' => 1,
-                    'c_status >=' => 0,
+                    'li_status' => 1,
+                    'in_status >=' => 0,
                 ));
 
                 if(count($child_cs)>0){

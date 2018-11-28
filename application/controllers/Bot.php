@@ -19,8 +19,8 @@ class Bot extends CI_Controller {
         //Fetch all engagements from intent #6653
         $all_engs = $this->Db_model->cr_children_fetch(array(
             'cr_parent_c_id IN (7723)' => null, //,,
-            'cr_status' => 1,
-            'c_status >=' => 0,
+            'li_status' => 1,
+            'in_status >=' => 0,
         ));
         foreach($all_engs as $c_eng) {
             echo ' '.$c_eng['c_id'].' => 000000000000000000, //'.$c_eng['c_outcome'].'<br />';
@@ -132,18 +132,22 @@ class Bot extends CI_Controller {
 
                 if(isset($im['read'])){
 
+                    //TODO Only log IF last engagement was 5 minutes+ ago
+
                     $en = $this->Comm_model->fb_identify_activate($im['sender']['id']);
 
                     //This callback will occur when a message a page has sent has been read by the user.
                     $this->Db_model->li_create(array(
                         'li_metadata' => $json_data,
                         'li_en_type_id' => 4278, //Message Read
-                        'li_en_creator_id' => ( isset($u['u_id']) ? $u['u_id'] : 0 ),
+                        'li_en_creator_id' => ( isset($en['u_id']) ? $en['u_id'] : 0 ),
                         'li_timestamp' => echo_mili($im['timestamp']), //The Facebook time
 
                     ));
 
                 } elseif(isset($im['delivery'])) {
+
+                    //TODO Only log IF last engagement was 5 minutes+ ago
 
                     $en = $this->Comm_model->fb_identify_activate($im['sender']['id']);
 
@@ -151,7 +155,7 @@ class Bot extends CI_Controller {
                     $this->Db_model->li_create(array(
                         'li_metadata' => $json_data,
                         'li_en_type_id' => 4279, //Message Delivered
-                        'li_en_creator_id' => ( isset($u['u_id']) ? $u['u_id'] : 0 ),
+                        'li_en_creator_id' => ( isset($en['u_id']) ? $en['u_id'] : 0 ),
                         'li_timestamp' => echo_mili($im['timestamp']), //The Facebook time
                     ));
 
@@ -222,7 +226,7 @@ class Bot extends CI_Controller {
                     $this->Db_model->li_create(array(
                         'li_en_type_id' => (isset($im['referral']) ? 4267 : 4268), //Messenger Referral/Postback
                         'li_metadata' => $json_data,
-                        'li_en_creator_id' => ( isset($u['u_id']) ? $u['u_id'] : 0 ),
+                        'li_en_creator_id' => ( isset($en['u_id']) ? $en['u_id'] : 0 ),
                         'li_timestamp' => echo_mili($im['timestamp']), //The Facebook time
                     ));
 
@@ -240,7 +244,7 @@ class Bot extends CI_Controller {
                     $this->Db_model->li_create(array(
                         'li_metadata' => $json_data,
                         'li_en_type_id' => 4266, //Messenger Optin
-                        'li_en_creator_id' => ( isset($u['u_id']) ? $u['u_id'] : 0 ),
+                        'li_en_creator_id' => ( isset($en['u_id']) ? $en['u_id'] : 0 ),
                         'li_timestamp' => echo_mili($im['timestamp']), //The Facebook time
                     ));
 
@@ -276,11 +280,11 @@ class Bot extends CI_Controller {
                     $en = $this->Comm_model->fb_identify_activate($user_id);
 
                     $eng_data = array(
-                        'li_en_creator_id' => ( $sent_from_us ? 4148 /* Log on behalf of Mench Admins as it was sent via Facebook Inbox UI */ : $u['u_id'] ),
+                        'li_en_creator_id' => ( $sent_from_us ? 4148 /* Log on behalf of Mench Admins as it was sent via Facebook Inbox UI */ : $en['u_id'] ),
                         'li_metadata' => $json_data,
                         'li_content' => $fb_message,
                         'li_en_type_id' => ( $sent_from_us ? 4280 : 4277 ), //Message Sent/Received
-                        'li_en_child_id' => ( $sent_from_us && isset($u['u_id']) ? $u['u_id'] : 0 ),
+                        'li_en_child_id' => ( $sent_from_us && isset($en['u_id']) ? $en['u_id'] : 0 ),
                     );
 
                     //We only have a timestamp for received messages (not sent ones):

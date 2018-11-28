@@ -8,11 +8,11 @@ ga('send', 'pageview');
 
 
 function fancy_time(alg_obj){
-    var minutes = parseInt(alg_obj.c__tree_max_mins);
+    var minutes = Math.round(parseInt(alg_obj.in__tree_max_secs)/60);
     if(minutes<1){
         return false;
     }
-    var hours = Math.round(parseInt(alg_obj.c__tree_max_mins)/60);
+    var hours = Math.round(parseInt(alg_obj.in__tree_max_secs)/3600);
     return ( minutes<60 ? minutes+'m' :  hours+'h' );
 }
 

@@ -115,9 +115,9 @@ class Comm_model extends CI_Model {
 
 	        return false;
 
-        } elseif(substr_count($fb_ref, 'WSKIP_')==1){
+        } elseif(substr_count($fb_ref, 'APSKIP_')==1){
 
-            $unsub_value = one_two_explode('WSKIP_', '', $fb_ref);
+            $unsub_value = one_two_explode('APSKIP_', '', $fb_ref);
 
             if($unsub_value=='CANCEL'){
 
@@ -133,20 +133,20 @@ class Comm_model extends CI_Model {
 
                 //User wants completely out...
 
-                //Unsubscribe from all.
+                //Skip everything from their Action Plan
                 $this->db->query("UPDATE tb_actionplans SET w_status=-1 WHERE w_status>=0 AND w_child_u_id=".$u['u_id']);
-                $total_unsubscribed = $this->db->affected_rows();
+                $intents_skipped = $this->db->affected_rows();
 
-                //Update User table status:
-                $this->Db_model->u_update( $u['u_id'] , array(
-                    'u_status' => -2, //Unsubscribed
+                //Update User communication status:
+                $this->Db_model->en_update( $u['u_id'] , array(
+                    'en_communication' => -1, //Unsubscribed
                 ));
 
                 //Let them know:
                 $this->Comm_model->send_message(array(
                     array(
                         'li_en_child_id' => $u['u_id'],
-                        'i_message' => ''.( $total_unsubscribed>0 ? 'Confirmed, I have unsubscribed you from '.$total_unsubscribed.' intent'.echo__s($total_unsubscribed).'.' : 'Confirmed!').' This is the final message you will receive from me unless you send me a message at any time. Take care of your self and I hope to talk to you soon.',
+                        'i_message' => 'Confirmed, I skipped all '.$intents_skipped.' intent'.echo__s($intents_skipped).' in your Action Plan. This is the final message you will receive from me unless you message me. Take care of your self and I hope to talk to you soon 😘',
                     ),
                 ));
 
@@ -168,7 +168,7 @@ class Comm_model extends CI_Model {
                     $this->Comm_model->send_message(array(
                         array(
                             'li_en_child_id' => $u['u_id'],
-                            'i_message' => 'I have successfully unsubscribed you from your intention to '.$ws[0]['c_outcome'].'. Say "Unsubscribe" again if you wish to stop all future communications. '.echo_pa_lets(),
+                            'i_message' => 'I have successfully skipped the intention to '.$ws[0]['c_outcome'].'. Say "Unsubscribe" if you wish to stop all future communications. '.echo_pa_lets(),
                         ),
                     ));
 
@@ -185,7 +185,7 @@ class Comm_model extends CI_Model {
                     //Log error engagement:
                     $this->Db_model->li_create(array(
                         'li_en_creator_id' => $u['u_id'],
-                        'li_content' => 'Student attempted to unsubscribe but failed to do so',
+                        'li_content' => 'Failed to skip an intent from the student Action Plan',
                         'li_en_type_id' => 4246, //System error
                         'e_w_id' => intval($unsub_value),
                     ));
@@ -253,7 +253,7 @@ class Comm_model extends CI_Model {
                         ),
                     ));
 
-                } elseif($fetch_cs[0]['c_status']<2) {
+                } elseif($fetch_cs[0]['in_status']<2) {
 
                     //Ooops C is no longer active:
                     $this->Comm_model->send_message(array(
@@ -295,7 +295,7 @@ class Comm_model extends CI_Model {
             $w_c_id = intval(one_two_explode('ACTIONPLANADD20_', '', $fb_ref));
             $fetch_cs = $this->Db_model->in_fetch(array(
                 'c_id' => $w_c_id,
-                'c_status >=' => 2,
+                'in_status >=' => 2,
             ));
             if (count($fetch_cs)==1) {
 
@@ -377,7 +377,7 @@ class Comm_model extends CI_Model {
             //Validate Intent ID:
             $fetch_cs = $this->Db_model->in_fetch(array(
                 'c_id' => $w_c_id,
-                'c_status >=' => 2,
+                'in_status >=' => 2,
             ));
 
             if(count($fetch_cs)==1){
@@ -720,47 +720,62 @@ class Comm_model extends CI_Model {
         }
 
 
-        if(substr_count($fb_message_received, 'unsubscribe')>0 || substr_count($fb_message_received, 'quit')>0){
+        if(includes_any($fb_message_received, array('unsubscribe','quit','skip'))){
 
-            //See if they have any subscriptions:
-            $current_ws = $this->Db_model->w_fetch(array(
-                'w_child_u_id' => $u['u_id'],
-                'w_status IN (1,2)' => null, //Active subscriptions (Passive ones have a more targetted distribution)
-            ), array('in'));
+            if($u['en_communication']<0) {
+                //User is already unsubscribed, let them know:
+                return $this->Comm_model->send_message(array(
+                    array(
+                        'li_en_child_id' => $u['u_id'],
+                        'i_message' => 'You are already unsubscribed from Mench and will no longer receive any communication from us. To subscribe again, '.echo_pa_lets(),
+                    ),
+                ));
+            }
 
-            //User has requested to be removed. Let's see what they have:
-            if(count($current_ws)>0){
+            //List their Action Plan intents:
+            $actionplans = $this->Db_model->li_fetch(array(
+                'li_en_type_id' => 4235, //Intents added to the action plan
+                'li_en_child_id' => $u['u_id'], //Belongs to this user
+                'li_in_parent_id' => 0, //This indicates that this is a top-level intent in the Action Plan
+                'li_status IN (0,1,2)' => null, //Actively working on
+            ), 100, array('in_child'), array('li_rank' => 'ASC'));
+
+
+            //Do they have anything in their Action Plan?
+            if(count($actionplans)>0){
 
                 $quick_replies = array();
-                $i_message = 'Choose one of the following options:';
+                $i_message = 'Choose the intention you like to skip:';
                 $increment = 1;
 
-                foreach($current_ws as $counter=>$w){
+                foreach($actionplans as $counter=>$li){
                     //Construct unsubscribe confirmation body:
-                    $i_message .= "\n\n".'/'.($counter+$increment).' Unsubscribe '.$w['c_outcome'];
+                    $i_message .= "\n\n".'/'.($counter+$increment).' Skip '.$li['c_outcome'];
                     array_push( $quick_replies , array(
                         'content_type' => 'text',
                         'title' => '/'.($counter+$increment),
-                        'payload' => 'WSKIP_'.$w['w_id'],
+                        'payload' => 'APSKIP_'.$li['c_id'],
                     ));
                 }
 
-                //We have more than one option, give an unsubscribe all option:
-                $increment++;
-                $i_message .= "\n\n".'/'.($counter+$increment).' Unsubscribe Everything & Stop Communication';
-                array_push( $quick_replies , array(
-                    'content_type' => 'text',
-                    'title' => '/'.($counter+$increment),
-                    'payload' => 'WSKIP_ALL',
-                ));
+                if(count($actionplans)>=2){
+                    //Give option to skip all and unsubscribe:
+                    $increment++;
+                    $i_message .= "\n\n".'/'.($counter+$increment).' Skip all intentions and unsubscribe';
+                    array_push( $quick_replies , array(
+                        'content_type' => 'text',
+                        'title' => '/'.($counter+$increment),
+                        'payload' => 'APSKIP_ALL',
+                    ));
+                }
 
                 //Alwyas give none option:
                 $increment++;
-                $i_message .= "\n\n".'/'.($counter+$increment).' Do Not Unsubscribe & Stay Friends';
+                $i_message .= "\n\n".'/'.($counter+$increment).' Cancel skipping and continue';
                 array_push( $quick_replies , array(
                     'content_type' => 'text',
                     'title' => '/'.($counter+$increment),
-                    'payload' => 'WSKIP_CANCEL',
+                    'payload' => 'APSKIP_CANCEL',
                 ));
 
                 //Send out message and let them confirm:
@@ -772,32 +787,23 @@ class Comm_model extends CI_Model {
                     ),
                 ));
 
-            } elseif($u['u_status']<0) {
-
-                //User is already unsubscribed, let them know:
-                $this->Comm_model->send_message(array(
-                    array(
-                        'li_en_child_id' => $u['u_id'],
-                        'i_message' => 'You are already unsubscribed from Mench and will no longer receive any communication from us. To subscribe again, '.echo_pa_lets(),
-                    ),
-                ));
-
             } else {
 
+                //They do not have anything in their Action Plan, so we assume they just want to Unsubscribe and stop all future communications:
                 $this->Comm_model->send_message(array(
                     array(
                         'li_en_child_id' => $u['u_id'],
-                        'i_message' => 'Got it, just to confirm, you want me to stop all future communications with you?',
+                        'i_message' => 'Got it, just to confirm, you want to unsubscribe and stop all future communications with me?',
                         'quick_replies' => array(
                             array(
                                 'content_type' => 'text',
                                 'title' => 'Yes, Unsubscribe',
-                                'payload' => 'WSKIP_ALL',
+                                'payload' => 'APSKIP_ALL',
                             ),
                             array(
                                 'content_type' => 'text',
                                 'title' => 'No, Stay Friends',
-                                'payload' => 'WSKIP_CANCEL',
+                                'payload' => 'APSKIP_CANCEL',
                             ),
                         ),
                     ),
@@ -805,7 +811,7 @@ class Comm_model extends CI_Model {
 
             }
 
-        } elseif($fb_message_received && $u['u_status']<0){
+        } elseif($fb_message_received && $u['en_communication']<0){
 
             //We got a message from an unsubscribed user, let them know:
             return $this->Comm_model->send_message(array(
@@ -833,7 +839,7 @@ class Comm_model extends CI_Model {
             $search_index = load_php_algolia('alg_intents');
             $res = $search_index->search($c_target_outcome, [
                 'hitsPerPage' => 6,
-                'filters' => 'c__tree_all_count>1 AND c_status>=2', //users can only subscribe to published intents with children
+                'filters' => 'in_status>=2', //Search published intents
             ]);
 
             //Log intent search:
@@ -847,16 +853,19 @@ class Comm_model extends CI_Model {
                 'li_en_type_id' => 4275, //Search for New Intent Subscription
             ));
 
-            if($res['nbHits']>0){
+            //Check to see if we have a single result without any children:
+            if($res['nbHits']==1 && $res['hits'][0]['in__tree_count']==1){
+
+                //Yes, just send the messages of this intent as the response:
+
+
+            } elseif($res['nbHits']>0){
 
                 //Show options for them to subscribe to:
                 $quick_replies = array();
-                $i_message = 'I found the following intent'.echo__s($res['nbHits']).':';
+                $i_message = 'I found these intents:';
 
                 foreach ($res['hits'] as $count=>$hit){
-                    //Translate hours back:
-                    $hit['c__tree_max_hours'] = number_format(($hit['c__tree_max_mins']/60), 3);
-                    $hit['c__tree_min_hours'] = number_format(($hit['c__tree_min_mins']/60), 3);
                     $i_message .= "\n\n".($count+1).'/ '.$hit['c_outcome'].' in '.strip_tags(echo_hour_range($hit));
                     array_push($quick_replies , array(
                         'content_type' => 'text',
@@ -906,12 +915,12 @@ class Comm_model extends CI_Model {
         ),1))==0) {
 
             //Fetch their currently working on subscriptions:
-            $current_ws = $this->Db_model->w_fetch(array(
+            $actionplans = $this->Db_model->w_fetch(array(
                 'w_child_u_id' => $u['u_id'],
                 'w_status' => 1, //Working on...
             ));
 
-            if(count($current_ws)==0){
+            if(count($actionplans)==0){
 
                 //There is nothing in their Action plan that they are working on!
 
@@ -940,9 +949,6 @@ class Comm_model extends CI_Model {
 
             } elseif(in_array($fb_message_received, array('learn','learn more','explain','explain more'))){
 
-            } elseif(in_array($fb_message_received, array('subscription','subscribe'))){
-
-                //Offer them to open Action Plan where they can manage subscriptions, and train them on the LETS command
 
             } elseif(in_array($fb_message_received, array('no','nope','nah','cancel','stop'))){
                 //Rejecting an offer...
@@ -961,7 +967,7 @@ class Comm_model extends CI_Model {
                     'li_en_type_id' => 4287, //Log Unrecognizable Message Received
                     'li_en_creator_id' => $u['u_id'], //User who initiated this message
                     'li_en_child_id' => 2738, //Talking to Mench PA
-                    'e_w_id' => $current_ws[0]['w_id'],
+                    'e_w_id' => $actionplans[0]['w_id'],
                 ));
 
                 //Notify the user that we don't understand:
@@ -973,12 +979,12 @@ class Comm_model extends CI_Model {
                 ));
 
                 //Remind user of their next step, if any:
-                $ks_next = $this->Db_model->k_next_fetch($current_ws[0]['w_id']);
+                $ks_next = $this->Db_model->k_next_fetch($actionplans[0]['w_id']);
                 if($ks_next){
                     $this->Comm_model->compose_messages(array(
                         'li_en_child_id' => $u['u_id'],
                         'li_in_child_id' => $ks_next[0]['c_id'],
-                        'e_w_id' => $current_ws[0]['w_id'],
+                        'e_w_id' => $actionplans[0]['w_id'],
                     ));
                 }
 
@@ -1006,9 +1012,9 @@ class Comm_model extends CI_Model {
 
         //Try finding user references... Is this psid already registered?
         //We either have the user in DB or we'll register them now:
-        $fetch_us = $this->Db_model->u_fetch(array(
+        $fetch_us = $this->Db_model->en_fetch(array(
             'u_fb_psid' => $fp_psid,
-        ), array('skip_u__parents'));
+        ), array('skip_en__parents'));
 
 
         if(count($fetch_us)>0){
@@ -1139,7 +1145,7 @@ class Comm_model extends CI_Model {
 
                 if(count($entities)<1){
                     //Fetch user profile via their account:
-                    $entities = $this->Db_model->u_fetch(array(
+                    $entities = $this->Db_model->en_fetch(array(
                         'u_id' => $message['li_en_child_id'],
                     ));
                 }
@@ -1424,7 +1430,7 @@ class Comm_model extends CI_Model {
 
                 //We have multiple children that are pending completion...
                 //Is it ALL or ANY?
-                if(intval($intents[0]['c_is_any'])){
+                if(intval($intents[0]['in_is_any'])){
 
                     //Note that ANY nodes cannot require a written response or a URL
                     //User needs to choose one of the following:

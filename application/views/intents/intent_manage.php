@@ -55,9 +55,9 @@ if(isset($orphan_intents)){
 
             //Expand/Contract buttons
             echo '<div class="indent2">';
-                echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-children-count children-counter-'.$c['c_id'].'">'.$c['c__tree_all_count'].'</span> Children</h5>';
+                echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-children-count children-counter-'.$c['c_id'].'">'.$c['in__tree_count'].'</span> Children</h5>';
 
-                echo '<div id="task_view" style="padding-left:8px; display: inline-block;">';
+                echo '<div id="expand_intents" style="padding-left:8px; display: inline-block;">';
                     echo '<i class="fas fa-plus-square expand_all" style="font-size: 1.2em;"></i> &nbsp;';
                     echo '<i class="fas fa-minus-square close_all" style="font-size: 1.2em;"></i>';
                 echo '</div>';
@@ -84,7 +84,7 @@ if(isset($orphan_intents)){
                 <div class="input-group">
                     <div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control intentadder-level-2 algolia_search bottom-add"  maxlength="<?= $this->config->item('in_outcome_max') ?>" intent-id="<?= $c['c_id'] ?>" id="addintent-c-<?= $c['c_id'] ?>" placeholder="Add #Intent"></div>
                     <span class="input-group-addon" style="padding-right:8px;">
-                                        <span id="dir_handle" data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" class="badge badge-primary pull-right" style="cursor:pointer; margin: 1px 3px 0 6px;">
+                                        <span id="add_in_btn" data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" class="badge badge-primary pull-right" style="cursor:pointer; margin: 1px 3px 0 6px;">
                                             <div><i class="fas fa-plus"></i></div>
                                         </span>
                                     </span>
@@ -138,7 +138,7 @@ if(isset($orphan_intents)){
                     <div class="form-group label-floating is-empty">
                         <div class="input-group border">
                             <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;">To</span>
-                            <input style="padding-left:0;" type="text" id="c_outcome" onkeyup="c_outcome_word_count()" maxlength="<?= $this->config->item('in_outcome_max') ?>" value="" class="form-control">
+                            <input style="padding-left:0;" type="text" id="c_outcome" onkeyup="in_outcome_counter()" maxlength="<?= $this->config->item('in_outcome_max') ?>" value="" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -156,7 +156,7 @@ if(isset($orphan_intents)){
                     <div class="col-md-6 inlineform">
 
                         <div class="title" style="margin-top:15px;"><h4><i class="fas fa-hashtag"></i> <?= $this->lang->line('obj_c_name') ?></h4></div>
-                        <select class="form-control" id="c_status" style="display: inline-block !important;">
+                        <select class="form-control" id="in_status" style="display: inline-block !important;">
                             <?php
                             foreach(echo_status('in') as $status_id=>$status){
                                 echo '<option value="'.$status_id.'" title="'.$status['s_desc'].'">'.$status['s_name'].'</option>';
@@ -172,10 +172,10 @@ if(isset($orphan_intents)){
                         <div class="title" style="margin-top:15px;"><h4><i class="fas fa-check-square"></i> Completion Method</h4></div>
                         <div class="form-group label-floating is-empty">
                             <?php
-                            foreach(echo_status('c_is_any') as $c_val=>$intent_type){
+                            foreach(echo_status('in_is_any') as $c_val=>$intent_type){
                                 echo '<div class="radio" style="display:inline-block; border-bottom:1px dotted #999; margin-top: 0 !important;" data-toggle="tooltip" title="'.$intent_type['s_desc'].'" data-placement="right">
                                     <label style="display:inline-block;">
-                                        <input type="radio" id="c_is_any_'.$c_val.'" name="c_is_any" value="'.$c_val.'" />
+                                        <input type="radio" id="in_is_any_'.$c_val.'" name="in_is_any" value="'.$c_val.'" />
                                         <i class="'.$intent_type['s_icon'].'"></i> '.$intent_type['s_name'].'
                                     </label>
                                 </div>';
@@ -185,7 +185,21 @@ if(isset($orphan_intents)){
 
                         <div class="form-group label-floating is-empty completion-settings">
                             <div class="checkbox is_task">
-                                <label style="display: block; font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" id="c_require_notes_to_complete" /><i class="fas fa-pencil"></i> Require a written note</label>
+                                <?php
+                                //List all the input options and allow user to pick between them:
+                                $valid_responses = $this->Db_model->li_fetch(array(
+                                    'li_en_parent_id' => 4227, //All Entity Link Types
+                                    'li_en_child_id >' => 0, //Must have a child
+                                    'li_en_child_id !=' => 4230, //Not a Naked link as that is already the default option
+                                    'li_status >=' => 0, //Not removed
+                                    'en_status >=' => 2, //Syncing
+                                ), 100, array('en_child'), array('li_rank' => 'ASC'));
+
+                                foreach($valid_responses as $en){
+                                    echo '<label style="display: block; font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" id="" /><i class="fas fa-pencil"></i> Require ...</label>';
+                                }
+
+                                ?>
                                 <label style="display: block; font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" id="c_require_url_to_complete" /><i class="fas fa-link"></i> Require URL in response</label>
                             </div>
                         </div>
@@ -207,10 +221,10 @@ if(isset($orphan_intents)){
                     <div class="col-md-6" style="margin-top:15px;">
 
                         <div id="c_link_access" class="hidden">
-                            <div class="title"><h4><i class="fas fa-link"></i> <?= $this->lang->line('obj_cr_status_name') ?></h4></div>
-                            <select class="form-control" id="cr_status" style="display: inline-block !important;">
+                            <div class="title"><h4><i class="fas fa-link"></i> <?= $this->lang->line('obj_li_status_name') ?></h4></div>
+                            <select class="form-control" id="li_status" style="display: inline-block !important;">
                                 <?php
-                                foreach(echo_status('cr_status') as $status_id=>$status){
+                                foreach(echo_status('li_status') as $status_id=>$status){
                                     echo '<option value="'.$status_id.'" title="'.$status['s_desc'].'">'.$status['s_name'].'</option>';
                                 }
                                 ?>
@@ -235,7 +249,7 @@ if(isset($orphan_intents)){
                         <div class="form-group label-floating is-empty" style="max-width:150px;">
                             <div class="input-group border">
                                 <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;"><i class="fas fa-clock"></i></span>
-                                <input style="padding-left:0;" type="number" step="1" min="0" max="300" id="c_time_estimate" value="" class="form-control">
+                                <input style="padding-left:0;" type="number" step="1" min="0" max="<?= $this->config->item('in_seconds_max') ?>" id="c_time_estimate" value="" class="form-control">
                                 <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;">Minutes</span>
                             </div>
                         </div>
@@ -251,14 +265,6 @@ if(isset($orphan_intents)){
                         </div>
 
 
-
-                        <div class="title" style="margin-top:15px;"><h4><i class="fas fa-cloud-upload"></i> Webhook URL [<span style="margin:0 0 10px 0; font-size:0.8em;"><span id="charWebhookNum">0</span>/<?= $this->config->item('en_name_max') ?></span>]</h4></div>
-                        <div class="form-group label-floating is-empty">
-                            <div class="input-group border">
-                                <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;" data-toggle="tooltip" title="Secure HTTPS URLs are required for webhooks" data-placement="top">https://</span>
-                                <input style="padding-left:0;" type="text" id="c_webhook_url" onkeyup="c_webhook_word_count()" maxlength="<?= $this->config->item('en_name_max') ?>" value="" class="form-control">
-                            </div>
-                        </div>
 
 
                     </div>

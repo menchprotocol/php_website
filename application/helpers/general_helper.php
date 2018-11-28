@@ -15,6 +15,15 @@ function lock_cron_for_processing($e_items){
     }
 }
 
+function includes_any($string,$items){
+    foreach($items as $item){
+        if(substr_count($string, $items)>0){
+            return true;
+        }
+    }
+    return false;
+}
+
 function sortByScore($a, $b) {
     return intval($b['u__e_score']) - intval($a['u__e_score']);
 }
@@ -67,7 +76,7 @@ function migrate_submissions($c_require_notes_to_complete, $c_require_url_to_com
 function fetch_entity_tree($u_id,$is_edit=false){
 
     $CI =& get_instance();
-    $entities = $CI->Db_model->u_fetch(array(
+    $entities = $CI->Db_model->en_fetch(array(
         'u_id' => $u_id,
     ), array('u__children_count','u__urls'));
 
@@ -186,37 +195,23 @@ function is_valid_intent($c_id){
     $CI =& get_instance();
     $intents = $CI->Db_model->in_fetch(array(
         'c_id' => intval($c_id),
-        'c_status >=' => 0,
+        'in_status >=' => 0,
     ));
     return (count($intents)==1);
 }
 
-function filter($array,$ikey,$ivalue){
-	if(!is_array($array) || count($array)<=0){
-		return null;
+function array_filter($array,$match_key,$match_value){
+
+	if(!is_array($array) || count($array)<1){
+		return false;
 	}
 	foreach($array as $key=>$value){
-		if(isset($value[$ikey]) && $value[$ikey]==$ivalue){
+		if(isset($value[$match_key]) && $value[$match_key]==$match_value){
 			return $array[$key];
 		}
 	}
-	return null;
-}
-
-
-function entity_type($entity){
-    $entity_type = 0;
-    if(in_array($entity['u_id'], array(1278,1326,2750))){
-        $entity_type = $entity['u_id'];
-    } else {
-        foreach($entity['u__parents'] as $u_id=>$u_i){
-            if(in_array($u_id, array(1278,1326,2750))){
-                $entity_type = $u_id;
-                break;
-            }
-        }
-    }
-    return $entity_type;
+	//Could not find it!
+	return false;
 }
 
 function clean_title($title){
@@ -247,12 +242,12 @@ function auth($entity_groups=null,$force_redirect=0){
 	    //No minimum level required, grant access IF logged in:
 	    return $udata;
 
-    } elseif(isset($udata['u__parents']) && array_key_exists(1308, $udata['u__parents'])){
+    } elseif(isset($udata['en__parents']) && array_filter($udata['en__parents'], 'en_id', 1308)){
 
         //Always grant access to Trainers:
         return $udata;
 	    
-	} elseif(isset($udata['u_id']) && array_any_key_exists($entity_groups,$udata['u__parents'])){
+	} elseif(isset($udata['u_id']) && array_filter($udata['en__parents'], 'en_id', $entity_groups)){
 	    
 		//They are part of one of the levels assigned to them:
 	    return $udata;
@@ -265,7 +260,7 @@ function auth($entity_groups=null,$force_redirect=0){
 	    return false;
 	} else {
 	    //Block access:
-	    redirect_message( ( isset($udata['u_id']) && ( array_any_key_exists(array(1308),$udata['u__parents']) || isset($udata['project_permissions'])) ? '/intents/'.$this->config->item('primary_in_id') : '/login?url='.urlencode($_SERVER['REQUEST_URI']) ),'<div class="alert alert-danger maxout" role="alert">'.( isset($udata['u_id']) ? 'Access not authorized.' : 'Session Expired. Login to continue.' ).'</div>');
+	    redirect_message( ( isset($udata['en__parents'][0]) && array_filter($udata['en__parents'], 'en_id', 1308) ? '/intents/'.$this->config->item('primary_in_id') : '/login?url='.urlencode($_SERVER['REQUEST_URI']) ),'<div class="alert alert-danger maxout" role="alert">'.( isset($udata['u_id']) ? 'Access not authorized.' : 'Session Expired. Login to continue.' ).'</div>');
 	}
 	
 }
@@ -619,7 +614,7 @@ function message_validation($i_status,$i_message,$i_c_id){
                 'status' => 0,
                 'message' => 'You cannot affirm the message intent itself. Choose another intent to continue',
             );
-        } elseif($i_parent_cs[0]['c_status']<0){
+        } elseif($i_parent_cs[0]['in_status']<0){
             //Inactive:
             return array(
                 'status' => 0,
@@ -649,9 +644,9 @@ function message_validation($i_status,$i_message,$i_c_id){
     //Validate Entity:
     if(count($u_ids)>0){
 
-        $i_children_us = $CI->Db_model->u_fetch(array(
+        $i_children_us = $CI->Db_model->en_fetch(array(
             'u_id' => $u_ids[0],
-        ), array('skip_u__parents','u__urls'));
+        ), array('skip_en__parents','u__urls'));
 
         if(count($i_children_us)==0){
             //Invalid ID:

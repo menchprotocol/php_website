@@ -119,7 +119,7 @@
             <div class="panel-heading" role="tab" id="heading'.$c1_counter.'">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open'.$c1_counter.'" href="#collapse'.$c1_counter.'" aria-expanded="false" aria-controls="collapse'.$c1_counter.'">
-                       '.( $c['c_is_any'] ? 'Option' : 'Step' ).' '.($c1_counter+1).': <span id="title-'.$c1['c_id'].'">'.$c1['c_outcome'].'</span><i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                       '.( $c['in_is_any'] ? 'Option' : 'Step' ).' '.($c1_counter+1).': <span id="title-'.$c1['c_id'].'">'.$c1['c_outcome'].'</span><i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                     </a>
                 </h4>
             </div>
@@ -148,7 +148,7 @@
                     echo '</ul>';
 
                     //Since it has children, lets also give the option to navigate downwards ONLY IF...
-                    if($c1['c_status']>=2){
+                    if($c1['in_status']>=2){
                         echo '<div>You can choose to <a href="/'.$c1['c_id'].'" '.( $c['c_id']==$this->config->item('primary_in_id') ? 'onclick="confirm_child_go('.$c1['c_id'].')"' : '' ).' class="alink-'.$c1['c_id'].'" style="text-decoration:underline;">subscribe to this part only</a>.</div>';
                     }
 
@@ -294,7 +294,7 @@
 
 <?php
 $featured_cs = $fetch_cs = $this->Db_model->in_fetch(array(
-    'c_status' => 3, //Featured Intents
+    'in_status' => 3, //Featured Intents
     'c_id !=' => $c['c_id'],
 ));
 if(count($featured_cs)>0){

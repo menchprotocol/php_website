@@ -490,11 +490,11 @@ class Cron extends CI_Controller {
 
     function fix_people_missing_parent(){
 	    //TODO Run on more time later, should return nothing... Then delete this...
-        $fetch_us = $this->Db_model->u_fetch(array(
+        $fetch_us = $this->Db_model->en_fetch(array(
             'u_fb_psid >' => 0,
         ));
         foreach($fetch_us as $u){
-            if(!isset($u['u__parents'][1278])){
+            if(!array_filter($u['en__parents'], 'en_id', 1278)){
                 //Add parent:
                 echo '<a href="/entities/'.$u['u_id'].'">'.$u['u_full_name'].'</a><br />';
                 $ur1 = $this->Db_model->ur_create(array(
@@ -528,7 +528,7 @@ class Cron extends CI_Controller {
         $active_ws = $this->Db_model->w_fetch(array(
             'w_status' => 1,
             'u_status >=' => 0,
-            'c_status >=' => 2,
+            'in_status >=' => 2,
             'w_last_heard >=' => date("Y-m-d H:i:s", (time()+($bot_settings['reminder_frequency_min']*60))),
         ), array('in','en'), array(
             'w_last_heard' => 'ASC', //Fetch users who have not been served the longest, so we can pay attention to them...

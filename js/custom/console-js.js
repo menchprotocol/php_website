@@ -111,21 +111,21 @@ function view_el(u_id,c_id){
     }
 }
 
-function ms_toggle(cr_id,new_state=-1){
+function ms_toggle(li_id,new_state=-1){
 
     if(new_state<0){
         //Detect new state:
-        new_state = ( $('.cr-class-'+cr_id).hasClass('hidden') ? 1 : 0 );
+        new_state = ( $('.cr-class-'+li_id).hasClass('hidden') ? 1 : 0 );
     }
 
     if(new_state){
         //open:
-        $('.cr-class-'+cr_id).removeClass('hidden');
-        $('#handle-'+cr_id).removeClass('fa-plus-square').addClass('fa-minus-square');
+        $('.cr-class-'+li_id).removeClass('hidden');
+        $('#handle-'+li_id).removeClass('fa-plus-square').addClass('fa-minus-square');
     } else {
         //Close:
-        $('.cr-class-'+cr_id).addClass('hidden');
-        $('#handle-'+cr_id).removeClass('fa-minus-square').addClass('fa-plus-square');
+        $('.cr-class-'+li_id).addClass('hidden');
+        $('#handle-'+li_id).removeClass('fa-minus-square').addClass('fa-plus-square');
     }
 }
 
@@ -184,7 +184,7 @@ $(document).ready(function() {
             templates: {
                 suggestion: function(suggestion) {
                     var fancy_hours = fancy_time(suggestion);
-                    return '<i class="' + c_statuses[suggestion.c_status]["s_icon"] + '"></i> <i class="fas fa-hashtag"></i> '+ suggestion._highlightResult.c_outcome.value + ( fancy_hours ? '<span class="search-info">'+' <i class="fas fa-clock"></i>'+fancy_hours+'</span>' : '');
+                    return '<i class="' + in_statuses[suggestion.in_status]["s_icon"] + '"></i> <i class="fas fa-hashtag"></i> '+ suggestion._highlightResult.c_outcome.value + ( fancy_hours ? '<span class="search-info">'+' <i class="fas fa-clock"></i>'+fancy_hours+'</span>' : '');
                 },
             }
         },

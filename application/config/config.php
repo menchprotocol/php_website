@@ -7,7 +7,7 @@ date_default_timezone_set('America/Los_Angeles');
 //Cache buster for static files
 $config['app_version'] = '0.6095'.( ( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='local.mench.co' ) ? microtime(true) : '' ); //Updates status css/js cache files
 
-//User case: $this->config->item('timezones')
+//User case: $this->config->item('en_li_type_ids')
 
 $config['primary_in_id'] = 6903; //The default platform intent that would be recommended to new students
 $config['primary_en_id'] = 3463; //The default console entity that is loaded when Entities is clicked
@@ -18,9 +18,10 @@ $config['in_seconds_max'] = 28800; //The maximum seconds allowed per intent. If 
 $config['en_name_max'] = 250; //Max number of characters allowed in the title of intents
 $config['file_size_max'] = 25; //Server setting is 32MB. see here: mench.com/ses
 $config['items_per_page'] = 50; //Even number
-$config['in_points_options'] = array(0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610);
+$config['in_points_options'] = array(-89,-55,-34,-21,-13,-8,-5,-3,-2,-1,0,1,2,3,5,8,13,21,34,55,89,144,233,377,610);
 $config['exclude_es'] = array(1,2); //The engagements that should be ignored
 $config['k_status_incomplete'] = array(1,0,-2); //The K statuses that indicate the task is not complete... Other statuses indicate completeness, see k_status below for more details
+$config['en_li_type_ids'] = array(4320,4230,4256,4318,4260,4259,4261,4255,4257,4319,4258,4325); //All entity link types based on content types. See all here: https://mench.com/entities/4227
 
 //This should mirror child intents of @3000, and the order of the items would be used in the Landing page:
 $config['content_types'] = array(
@@ -52,72 +53,13 @@ $config['aws_credentials'] = [
 $config['notify_admins'] = array(
     1 => array(
         'admin_emails' => array('shervin@mench.com'),
-        'subscription' => array(
+        'admin_notify' => array(
             9, //User attention
             8, //System error
             10, //user login
             7703, //Search for New Intent Subscription
         ),
     ),
-);
-
-$config['transition'] = array(
-    //Patternization Links
-    20 => 4250, //Log intent creation
-    6971 => 4251, //Log entity creation
-    21 => 4252, //Log intent archived
-    50 => 4254, //Log intent migration
-    19 => 4264, //Log intent modification
-    //0 => 4253, //Entity Archived (Did not have this!)
-
-    36      => 4242, //Log intent message update
-    7727    => 4242, //Log entity link note modification
-
-    12      => 4263, //Log entity modification
-    7001    => 4299, //Log pending image upload sync to cloud
-
-    89      => 4241, //Log intent unlinked
-    7292    => 4241, //Log entity unlinked
-    35      => 4241, //Log intent message archived
-    6912    => 4241, //Log entity URL archived
-
-    39      => 4262, //Log intent message sorting
-    22      => 4262, //Log intent children sorted
-
-
-
-    //Growth links
-    27 => 4265, //Log user joined
-    5 => 4266, //Log Messenger optin
-    4 => 4267, //Log Messenger referral
-    3 => 4268, //Log Messenger postback
-    10 => 4269, //Log user sign in
-    11 => 4270, //Log user sign out
-    59 => 4271, //Log user password reset
-
-
-    //Personal Assistant links
-    40 => 4273, //Log console tip read
-    //0 => 4235, //Log new Action Plan intent [to be implemented]
-    7703 => 4275, //Log subscription intent search
-    28 => 4276, //Log user email sent
-    6 => 4277, //Log message received
-    1 => 4278, //Log message read
-    2 => 4279, //Log message delivered
-    7 => 4280, //Log message sent
-    52 => 4281, //Log message queued
-    55 => 4282, //Log my account access
-    32 => 4283, //Log action plan access
-    33 => 4242, //Log action plan intent completion [Link updated]
-    7730 => 4284, //Log Skip Initiation
-    7731 => 4285, //Log Skip Cancellation
-    7732 => 4286, //Log Skip Confirmation
-    7718 => 4287, //Log unrecognized message
-
-    //Platform Operations Links:
-    8 => 4246, //Log system bug
-    9 => 4247, //Log user attention request
-    72 => 4248, //Log user review
 );
 
 
@@ -204,37 +146,39 @@ $config['object_statuses'] = array(
     'en_communication' => array(
         -1 => array(
             's_name'  => 'Unsubscribed',
-            's_desc'  => 'User requested to be removed from Mench',
+            's_fb_key'  => null,
+            's_desc'  => 'User was connected but requested to be unsubscribed, so we can no longer reach-out to them',
             's_icon' => 'fas fa-minus-circle',
+        ),
+        0 => array(
+            's_name'  => 'Not Connected',
+            's_fb_key'  => null,
+            's_desc'  => 'User is not yet connected to Mench on Facebook Messenger',
+            's_icon' => 'fas fa-empty-set',
         ),
         1 => array(
             's_name'  => 'Regular',
             's_fb_key'  => 'REGULAR',
-            's_desc'  => 'Triggers sound & vibration',
+            's_desc'  => 'User is connected and will be notified by sound & vibration for new Mench messages',
             's_icon' => 'fas fa-bell',
         ),
         2 => array(
             's_name'  => 'Silent Push',
             's_fb_key'  => 'SILENT_PUSH',
-            's_desc'  => 'Triggers on-screen notification only',
+            's_desc'  => 'User is connected and will be notified by on-screen notification only for new Mench messages',
             's_icon' => 'fal fa-bell',
         ),
         3 => array(
             's_name'  => 'No Push',
             's_fb_key'  => 'NO_PUSH',
-            's_desc'  => 'Does not trigger any notification',
+            's_desc'  => 'User is connected but will not be notified for new Mench messages except the red icon indicator on the Messenger app which would indicate the total number of new messages they have',
             's_icon' => 'fas fa-bell-slash',
         ),
     ),
 
 
 
-    'en' => array(
-        -2 => array(
-            's_name'  => 'Unsubscribed',
-            's_desc'  => 'User requested to be removed from Mench',
-            's_icon' => 'fas fa-minus-circle',
-        ),
+    'u' => array(
         -1 => array(
             's_name'  => 'Archived',
             's_desc'  => 'Entity has been removed',
@@ -295,7 +239,7 @@ $config['object_statuses'] = array(
             's_icon' => 'fas fa-badge-check',
         ),
     ),
-    'cr_status' => array(
+    'li_status' => array(
         -1 => array(
             's_name'  => 'Archived',
             's_desc'  => 'Remove Intent link',
@@ -313,7 +257,7 @@ $config['object_statuses'] = array(
         ),
     ),
 
-    'c_is_any' => array(
+    'in_is_any' => array(
         0 => array(
             's_name'  => 'All Children',
             's_desc'  => 'Intent is complete when all children are marked as complete',

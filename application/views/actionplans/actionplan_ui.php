@@ -9,7 +9,7 @@ $has_outs = (count($k_outs)>0);
 //We want to show the child intents in specific conditions to ensure a step-by-step navigation by the user through the browser Action Plan
 //(Note that the conversational UI already has this step-by-step navigation in mind, but the user has more flexibility in the Browser side)
 $has_completion_info = ( intval($c['c_require_url_to_complete']) || intval($c['c_require_notes_to_complete']) );
-$list_outs = ( count($k_ins)==0 || !($k_ins[0]['k_status']==0) || intval($c['c_is_any']) || !$has_completion_info || count($messages)==0 );
+$list_outs = ( count($k_ins)==0 || !($k_ins[0]['k_status']==0) || intval($c['in_is_any']) || !$has_completion_info || count($messages)==0 );
 
 
 if(count($k_ins)==1) {
@@ -116,7 +116,7 @@ if(count($messages)>0){
 
 
 //Show completion options below messages:
-if(count($k_ins)==1 && ( $has_completion_info || (!intval($c['c_is_any']) && !$has_outs) )){
+if(count($k_ins)==1 && ( $has_completion_info || (!intval($c['in_is_any']) && !$has_outs) )){
 
     if(!$show_written_input && !$is_incomplete && strlen($k_ins[0]['k_notes'])>0 /* For now only allow is complete */){
         //Show button to make text visible:
@@ -156,10 +156,10 @@ if(count($k_ins)==1 && ( $has_completion_info || (!intval($c['c_is_any']) && !$h
 
 if($has_outs && $list_outs){
     echo '<div class="left-grey">';
-    echo '<h5 class="badge badge-hy">'.( $c['c_is_any'] ? '<i class="fas fa-code-merge"></i> Choose One' : '<i class="fas fa-sitemap"></i> Complete All' ).':</h5>';
+    echo '<h5 class="badge badge-hy">'.( $c['in_is_any'] ? '<i class="fas fa-code-merge"></i> Choose One' : '<i class="fas fa-sitemap"></i> Complete All' ).':</h5>';
     echo '<div class="list-group">';
     foreach($k_outs as $k){
-        echo echo_k($k, 0, ( $c['c_is_any'] && $k['k_status']==0 ? $c['c_id'] : 0 ));
+        echo echo_k($k, 0, ( $c['in_is_any'] && $k['k_status']==0 ? $c['c_id'] : 0 ));
     }
     echo '</div>';
     echo '</div>';

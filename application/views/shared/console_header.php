@@ -40,13 +40,13 @@ $uri_segment_2 = $this->uri->segment(2);
         //Create flat list of JS variables:
         $js_parent_u_ids = array();
         if($udata){
-            foreach($udata['u__parents'] as $privilege){
+            foreach($udata['en__parents'] as $privilege){
                 array_push($js_parent_u_ids, intval($privilege['u_id']));
             }
         }
 
         //Translate intent/entity icons to make them available in JS functions:
-        echo ' var c_statuses = '.json_encode(echo_status('in')).'; ';
+        echo ' var in_statuses = '.json_encode(echo_status('in')).'; ';
         echo ' var u_statuses = '.json_encode(echo_status('en')).'; ';
         ?>
 
@@ -115,7 +115,7 @@ $uri_segment_2 = $this->uri->segment(2);
 
 
 
-        <?php if($uri_segment_1=='adminpanel' && array_key_exists(1308, $udata['u__parents'])){ ?>
+        <?php if($uri_segment_1=='adminpanel'){ ?>
         <div class="sidebar" id="mainsidebar">
         <div class="sidebar-wrapper">
 

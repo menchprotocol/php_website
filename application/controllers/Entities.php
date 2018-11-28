@@ -42,7 +42,7 @@ class Entities extends CI_Controller {
         }
 
         //Fetch entity itself:
-        $entities = $this->Db_model->u_fetch(array('u_id' => $parent_u_id));
+        $entities = $this->Db_model->en_fetch(array('u_id' => $parent_u_id));
         $child_entities_count = count($this->Db_model->ur_children_fetch($filters));
         $child_entities = $this->Db_model->ur_children_fetch($filters, array('u__children_count'), $items_per_page, ($page*$items_per_page));
 
@@ -94,7 +94,7 @@ class Entities extends CI_Controller {
         }
 
         //Validate parent entity:
-        $current_us = $this->Db_model->u_fetch(array(
+        $current_us = $this->Db_model->en_fetch(array(
             'u_id' => $_POST['u_id'],
         ));
         if(count($current_us)<1){
@@ -118,7 +118,7 @@ class Entities extends CI_Controller {
             $linking_to_existing_u = true;
 
             //Validate this existing entity
-            $new_us = $this->Db_model->u_fetch(array(
+            $new_us = $this->Db_model->en_fetch(array(
                 'u_id' => $_POST['new_u_id'],
                 'u_status >=' => 1, //Active only
             ));
@@ -272,7 +272,7 @@ class Entities extends CI_Controller {
         $li_content_max = $this->config->item('li_content_max');
 
         //Fetch current data:
-        $u_current = $this->Db_model->u_fetch(array(
+        $u_current = $this->Db_model->en_fetch(array(
             'u_id' => intval($_POST['u_id']),
         ));
 
@@ -366,7 +366,7 @@ class Entities extends CI_Controller {
 
         //Refetch some DB (to keep consistency with login session format) & update the Session:
         if($_POST['u_id']==$udata['u_id']){
-            $entities = $this->Db_model->u_fetch(array(
+            $entities = $this->Db_model->en_fetch(array(
                 'u_id' => intval($_POST['u_id']),
             ));
             if(isset($entities[0])){
@@ -438,7 +438,7 @@ class Entities extends CI_Controller {
         }
 
         //Fetch user data:
-        $entities = $this->Db_model->u_fetch(array(
+        $entities = $this->Db_model->en_fetch(array(
             'u_email' => strtolower($_POST['u_email']),
         ), array('u__ws'));
 
@@ -476,7 +476,7 @@ class Entities extends CI_Controller {
         $is_student = false;
 
         //Are they admin?
-        if(array_any_key_exists(array(1308),$entities[0]['u__parents'])){
+        if(array_filter($entities[0]['en__parents'], 'en_id', 1308)){
             //They have admin rights:
             $session_data['user'] = $entities[0];
             $is_coach = true;
@@ -572,7 +572,7 @@ class Entities extends CI_Controller {
         }
 
         //Attempt to fetch this user:
-        $matching_users = $this->Db_model->u_fetch(array(
+        $matching_users = $this->Db_model->en_fetch(array(
             'u_email' => strtolower($_POST['email']),
         ));
         if(count($matching_users)>0){

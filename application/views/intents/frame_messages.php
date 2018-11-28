@@ -31,9 +31,9 @@ if(!isset($intents[0])){
 
 
 <ul class="nav nav-tabs iphone-nav-tabs">
-    <li role="presentation" class="nav_1 active" data-toggle="tooltip" title="<?= $i_desc[1]['s_desc'] ?>" data-placement="bottom"><a href="#messages-<?= $c_id ?>-1"><?= echo_status('i_status',1, false, null) ?></a></li>
-    <li role="presentation" class="nav_2" data-toggle="tooltip" title="<?= $i_desc[2]['s_desc'] ?>" data-placement="bottom"><a href="#messages-<?= $c_id ?>-2"><?= echo_status('i_status',2, false, null) ?></a></li>
-    <li role="presentation" class="nav_3" data-toggle="tooltip" title="<?= $i_desc[3]['s_desc'] ?>" data-placement="bottom"><a href="#messages-<?= $c_id ?>-3"><?= echo_status('i_status',3, false, null) ?></a></li>
+    <li role="presentation" class="nav_1 active" data-toggle="tooltip" title="<?= $i_desc[1]['s_desc'] ?>" data-placement="bottom"><a href="#loadmessages-<?= $c_id ?>-1"><?= echo_status('i_status',1, false, null) ?></a></li>
+    <li role="presentation" class="nav_2" data-toggle="tooltip" title="<?= $i_desc[2]['s_desc'] ?>" data-placement="bottom"><a href="#loadmessages-<?= $c_id ?>-2"><?= echo_status('i_status',2, false, null) ?></a></li>
+    <li role="presentation" class="nav_3" data-toggle="tooltip" title="<?= $i_desc[3]['s_desc'] ?>" data-placement="bottom"><a href="#loadmessages-<?= $c_id ?>-3"><?= echo_status('i_status',3, false, null) ?></a></li>
 </ul>
 
 <input type="hidden" id="i_status_focus" value="1" />

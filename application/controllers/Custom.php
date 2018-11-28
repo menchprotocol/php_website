@@ -32,7 +32,7 @@ class Custom extends CI_Controller {
 
         $udata = $this->session->userdata('user');
 
-        if(isset($udata['u__parents']) && array_any_key_exists(array(1308),$udata['u__parents'])){
+        if(isset($udata['en__parents'][0]) && array_filter($udata['en__parents'], 'en_id', 1308)){
 
             //Lead coach and above, go to console:
             redirect_message('/intents/'.$this->config->item('primary_in_id'));
@@ -49,7 +49,7 @@ class Custom extends CI_Controller {
 
             //How many featured intents do we have?
             $featured_cs = $fetch_cs = $this->Db_model->in_fetch(array(
-                'c_status' => 3, //Featured Intents
+                'in_status' => 3, //Featured Intents
             ));
 
             if(count($featured_cs)==0){
@@ -82,7 +82,7 @@ class Custom extends CI_Controller {
 	function login(){
 	    //Check to see if they are already logged in?
 	    $udata = $this->session->userdata('user');
-	    if(isset($udata['u__parents']) && array_any_key_exists(array(1308),$udata['u__parents'])){
+	    if(isset($udata['en__parents'][0]) && array_filter($udata['en__parents'], 'en_id', 1308)){
 	        //Lead coach and above, go to console:
 	        redirect_message('/intents/'.$this->config->item('primary_in_id'));
 	    }

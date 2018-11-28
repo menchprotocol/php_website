@@ -3,16 +3,6 @@
 //Fetch Data Components
 $udata = $this->session->userdata('user');
 
-//Determine what type of entity is this? (Content, people or Organization)
-$entity_type = entity_type($entity);
-
-//This also gets passed to other pages via AJAX to be applied to u_echo() in ajax calls:
-$add_name           = ( in_array($entity['u_id'], array(1278,2750)) ? rtrim($entity['u_full_name'],'s') : 'Content' );
-$add_id             = ( in_array($entity['u_id'], array(1278,2750)) ? $entity['u_id'] : 1326 /* Content */ );
-//TODO Deal with this override later as we try to reduce rules here...
-$add_name           = 'Entity';
-$add_id             = 0;
-
 //Fetch other data:
 $child_entities = $this->Db_model->ur_children_fetch(array(
     'ur_parent_u_id' => $entity['u_id'],
@@ -35,11 +25,9 @@ $ws = $this->Db_model->w_fetch(array(
     var u_status_filter = -1; //No filter, show all!
     var is_compact = (is_mobile() || $(window).width()<767);
     var top_u_id = <?= $entity['u_id'] ?>;
-    var add_u_name = '<?= $add_name ?>';
-    var add_u_id = <?= $add_id ?>;
+    var top_u_full_name ='<?= str_replace('\'','’',$entity['u_full_name']) ?>';
     var li_content_max = <?= $this->config->item('li_content_max') ?>;
     var en_name_max = <?= $this->config->item('en_name_max') ?>;
-    var entity_u_type = <?= $entity_type ?>;
 </script>
 <script src="/js/custom/entity-manage-js.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
 
@@ -51,11 +39,11 @@ $ws = $this->Db_model->w_fetch(array(
 //Entity & Components:
 
 //Parents
-if($entity['u_id']!=$this->config->item('primary_en_id') || count($entity['u__parents'])>0){
+if($entity['u_id']!=$this->config->item('primary_en_id') || count($entity['en__parents'])>0){
 
-    echo '<h5><span class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-parent-count">'.count($entity['u__parents']).'</span> Parent'.echo__s(count($entity['u__parents'])).'</span></h5>';
+    echo '<h5><span class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-parent-count">'.count($entity['en__parents']).'</span> Parent'.echo__s(count($entity['en__parents'])).'</span></h5>';
     echo '<div id="list-parent" class="list-group  grey-list">';
-    foreach ($entity['u__parents'] as $ur) {
+    foreach ($entity['en__parents'] as $ur) {
         echo echo_u($ur, 2, true);
     }
     //Input to add new parents:
@@ -139,9 +127,9 @@ if($entity['u__children_count'] > count($child_entities)) {
 //Input to add new parents:
 echo '<div id="new-children" class="list-group-item list_input grey-input">
         <div class="input-group">
-            <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search bottom-add" data-lpignore="true" placeholder="Add '.$add_name.' by Name/URL"></div>
+            <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search bottom-add" data-lpignore="true" placeholder="Add '.stripslashes($entity['u_full_name']).'"></div>
             <span class="input-group-addon">
-                <a class="badge badge-secondary new-btn" href="javascript:ur_add(0,'.$add_id.', 0);">ADD</a>
+                <a class="badge badge-secondary new-btn" href="javascript:ur_add(0,'.$entity['u_id'].', 0);">ADD</a>
             </span>
         </div>
     </div>';
