@@ -1,22 +1,25 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Adminpanel extends CI_Controller {
+class Adminpanel extends CI_Controller
+{
 
     //To carry the user object after validation
     var $udata;
 
-	function __construct() {
-		parent::__construct();
-		
-		//Load our buddies:
-		$this->output->enable_profiler(FALSE);
+    function __construct()
+    {
+        parent::__construct();
+
+        //Load our buddies:
+        $this->output->enable_profiler(FALSE);
 
         //Authenticate Trainers, redirect if not:
-        $this->udata = auth(array(1308),1);
-	}
+        $this->udata = auth(array(1308), 1);
+    }
 
-    function engagements(){
+    function engagements()
+    {
         $this->load->view('shared/console_header', array(
             'title' => 'Platform Engagements',
         ));
@@ -24,7 +27,8 @@ class Adminpanel extends CI_Controller {
         $this->load->view('shared/console_footer');
     }
 
-    function subscriptions(){
+    function subscriptions()
+    {
         $this->load->view('shared/console_header', array(
             'title' => 'Subscriptions Browser',
         ));
@@ -32,30 +36,32 @@ class Adminpanel extends CI_Controller {
         $this->load->view('shared/console_footer');
     }
 
-    function li_list_blob($li_id){
-	    //Authenticate trainer access:
-        $udata = auth(array(1308),1);
+    function li_list_blob($tr_id)
+    {
+        //Authenticate trainer access:
+        $udata = auth(array(1308), 1);
         //Fetch blob of engagement and display it on screen:
         $blobs = $this->Db_model->li_fetch(array(
-            'li_id' => $li_id,
-        ),1);
-        if(count($blobs)==1){
-            $blob = $blobs[0]['li_metadata'];
-            unset($blobs[0]['li_metadata']);
+            'tr_id' => $tr_id,
+        ), 1);
+        if (count($blobs) == 1) {
+            $blob = $blobs[0]['tr_metadata'];
+            unset($blobs[0]['tr_metadata']);
             echo_json(array(
                 'blob' => unserialize($blob),
                 //Show the rest of the engagement too:
                 'e' => $blobs[0]
             ));
         } else {
-            echo_json(array('error'=>'Not Found'));
+            echo_json(array('error' => 'Not Found'));
         }
     }
 
 
-    function statuslegend(){
+    function statuslegend()
+    {
         //Load views
-        $this->load->view('shared/console_header' , array(
+        $this->load->view('shared/console_header', array(
             'title' => 'Status Legend',
         ));
         $this->load->view('other/statuslegend');

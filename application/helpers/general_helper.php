@@ -1,61 +1,68 @@
 <?php
 
-function is_dev(){
-    return ( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='local.mench.co' );
+function is_dev()
+{
+    return (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] == 'local.mench.co');
 }
 
-function lock_cron_for_processing($e_items){
+function lock_cron_for_processing($e_items)
+{
     $CI =& get_instance();
-    foreach($e_items as $e){
-        if($e['li_id']>0 && $e['li_status']==0){
-            $CI->Db_model->e_update( $e['li_id'] , array(
-                'li_status' => 1, //Working on...
+    foreach ($e_items as $e) {
+        if ($e['tr_id'] > 0 && $e['tr_status'] == 0) {
+            $CI->Db_model->li_update($e['tr_id'], array(
+                'tr_status' => 1, //Working on...
             ));
         }
     }
 }
 
-function includes_any($string,$items){
-    foreach($items as $item){
-        if(substr_count($string, $items)>0){
+function includes_any($string, $items)
+{
+    foreach ($items as $item) {
+        if (substr_count($string, $items) > 0) {
             return true;
         }
     }
     return false;
 }
 
-function sortByScore($a, $b) {
+function sortByScore($a, $b)
+{
     return intval($b['u__e_score']) - intval($a['u__e_score']);
 }
 
-function u_essentials($full_array){
+function u_essentials($full_array)
+{
     $return_array = array();
-    foreach(array('u_id','u_full_name','u__e_score','x_url') as $key){
-        if(isset($full_array[$key])){
+    foreach (array('u_id', 'u_full_name', 'u__e_score', 'x_url') as $key) {
+        if (isset($full_array[$key])) {
             $return_array[$key] = $full_array[$key];
         }
     }
     return $return_array;
 }
 
-function load_php_algolia($index_name){
+function load_php_algolia($index_name)
+{
     require_once('application/libraries/algoliasearch.php');
     $client = new \AlgoliaSearch\Client("49OCX1ZXLJ", "84a8df1fecf21978299e31c5b535ebeb");
     return $client->initIndex($index_name);
 }
 
-function detect_missing_columns($insert_columns,$required_columns){
-    foreach($required_columns as $req_field){
-        if(!isset($insert_columns[$req_field]) || strlen($insert_columns[$req_field])==0){
+function detect_missing_columns($insert_columns, $required_columns)
+{
+    foreach ($required_columns as $req_field) {
+        if (!isset($insert_columns[$req_field]) || strlen($insert_columns[$req_field]) == 0) {
             //Ooops, we're missing this required field:
             $CI =& get_instance();
-            $CI->Db_model->li_create(array(
-                'li_content' => 'Missing required field ['.$req_field.'] for inserting new DB row',
-                'li_metadata' => array(
+            $CI->Db_model->tr_create(array(
+                'tr_content' => 'Missing required field [' . $req_field . '] for inserting new DB row',
+                'tr_metadata' => array(
                     'insert_columns' => $insert_columns,
                     'required_columns' => $required_columns,
                 ),
-                'li_en_type_id' => 4246, //Platform Error
+                'tr_en_type_id' => 4246, //Platform Error
             ));
 
             return true; //We have an issue
@@ -68,35 +75,38 @@ function detect_missing_columns($insert_columns,$required_columns){
 
 
 //TODO Remove after migration:
-function migrate_submissions($c_require_notes_to_complete, $c_require_url_to_complete){
+function migrate_submissions($c_require_notes_to_complete, $c_require_url_to_complete)
+{
 
 }
 
 
-function fetch_entity_tree($u_id,$is_edit=false){
+function fetch_entity_tree($u_id, $is_edit = false)
+{
 
     $CI =& get_instance();
     $entities = $CI->Db_model->en_fetch(array(
         'u_id' => $u_id,
-    ), array('u__children_count','u__urls'));
+    ), array('u__children_count', 'u__urls'));
 
-    if(count($entities)<1){
-        return redirect_message('/entities','<div class="alert alert-danger" role="alert">Invalid Entity ID</div>');
+    if (count($entities) < 1) {
+        return redirect_message('/entities', '<div class="alert alert-danger" role="alert">Invalid Entity ID</div>');
     }
 
     $view_data = array(
         'parent_u_id' => $u_id,
         'entity' => $entities[0],
-        'title' => ( $is_edit ? 'Modify ' : '' ).$entities[0]['u_full_name'],
+        'title' => ($is_edit ? 'Modify ' : '') . $entities[0]['u_full_name'],
     );
 
     return $view_data;
 }
 
-function join_keys($input_array,$joiner=','){
+function join_keys($input_array, $joiner = ',')
+{
     $joined_string = null;
-    foreach($input_array as $key=>$value){
-        if($joined_string){
+    foreach ($input_array as $key => $value) {
+        if ($joined_string) {
             $joined_string .= $joiner;
         }
         $joined_string .= $key;
@@ -105,18 +115,18 @@ function join_keys($input_array,$joiner=','){
 }
 
 
-
-function fetch_file_ext($url){
-	//https://cdn.fbsbx.com/v/t59.3654-21/19359558_10158969505640587_4006997452564463616_n.aac/audioclip-1500335487327-1590.aac?oh=5344e3d423b14dee5efe93edd432d245&oe=596FEA95
-	$url_parts = explode('?',$url,2);
-	$url_parts = explode('/',$url_parts[0]);
-	$file_parts = explode('.',end($url_parts));
-	return end($file_parts);
+function fetch_file_ext($url)
+{
+    //https://cdn.fbsbx.com/v/t59.3654-21/19359558_10158969505640587_4006997452564463616_n.aac/audioclip-1500335487327-1590.aac?oh=5344e3d423b14dee5efe93edd432d245&oe=596FEA95
+    $url_parts = explode('?', $url, 2);
+    $url_parts = explode('/', $url_parts[0]);
+    $file_parts = explode('.', end($url_parts));
+    return end($file_parts);
 }
 
 
-
-function parse_signed_request($signed_request) {
+function parse_signed_request($signed_request)
+{
 
     //Fetch app settings:
     $CI =& get_instance();
@@ -127,50 +137,46 @@ function parse_signed_request($signed_request) {
     // Decode the data
     $sig = base64_url_decode($encoded_sig);
     $data = json_decode(base64_url_decode($payload), true);
-    
+
     // Confirm the signature
     $expected_sig = hash_hmac('sha256', $payload, $fb_settings['client_secret'], $raw = true);
     if ($sig !== $expected_sig) {
         //error_log('Bad Signed JSON signature!');
         return null;
     }
-    
+
     return $data;
 }
 
-function base64_url_decode($input) {
+function base64_url_decode($input)
+{
     return base64_decode(strtr($input, '-_', '+/'));
 }
 
 
-
-
-function extract_urls($text,$inverse=false){
+function extract_urls($text, $inverse = false)
+{
     $text = preg_replace('/[[:^print:]]/', ' ', $text); //Replace non-ascii characters with space
     $parts = preg_split('/\s+/', $text);
     $return = array();
-    foreach($parts as $part){
-        if(!$inverse && filter_var($part, FILTER_VALIDATE_URL)){
-            array_push($return,$part);
-        } elseif($inverse && !filter_var($part, FILTER_VALIDATE_URL) && strlen($part)>0){
-            array_push($return,$part);
+    foreach ($parts as $part) {
+        if (!$inverse && filter_var($part, FILTER_VALIDATE_URL)) {
+            array_push($return, $part);
+        } elseif ($inverse && !filter_var($part, FILTER_VALIDATE_URL) && strlen($part) > 0) {
+            array_push($return, $part);
         }
     }
     return $return;
 }
 
 
-
-
-
-
-
-function mime_type($mime){
-    if(strstr($mime, "video/")){
+function mime_type($mime)
+{
+    if (strstr($mime, "video/")) {
         return 'video';
-    } else if(strstr($mime, "image/")){
+    } else if (strstr($mime, "image/")) {
         return 'image';
-    } else if(strstr($mime, "audio/")){
+    } else if (strstr($mime, "audio/")) {
         return 'audio';
     } else {
         return 'file';
@@ -178,11 +184,10 @@ function mime_type($mime){
 }
 
 
-
-
-function array_any_key_exists(array $keys, array $arr) {
-    foreach($keys as $key){
-        if(array_key_exists($key,$arr)){
+function array_any_key_exists(array $keys, array $arr)
+{
+    foreach ($keys as $key) {
+        if (array_key_exists($key, $arr)) {
             return true;
         }
     }
@@ -190,40 +195,78 @@ function array_any_key_exists(array $keys, array $arr) {
 }
 
 
+function en_match_metadata($key, $value)
+{
+    //Uses the en_metadata variable in config to determine if the current item has a valid entity parent or not.
+    $CI =& get_instance();
+    $en_metadata = $CI->config->item('en_metadata');
 
-function is_valid_intent($c_id){
+    //Is this a timezone? We might need some adjustments if so...
+    if ($key == 'en_timezones') {
+        $valid_halfs = array(-4, -3, 3, 4, 9); //These are timezones with half values so far
+        $decimal = fmod(doubleval($value), 1);
+        if (!($decimal == 0)) {
+            $whole = intval(str_replace('.' . $decimal, '', $value));
+            if (in_array(intval($whole), $valid_halfs)) {
+                $value = $whole + ($whole < 0 ? -0.5 : +0.5);
+            } else {
+                $value = round(doubleval($value));
+            }
+        }
+    }
+
+    if (isset($en_metadata[$key][strtolower($value)])) {
+        //Found it, return entity ID:
+        return $en_metadata[$key][strtolower($value)];
+    } else {
+        //Ooops, this value did not exist! Notify the admin so we can look into this:
+        $error_message = 'en_match_metadata() failed to find cached variable [' . $key . ']=[' . $value . ']. Look into the cron/en_metadata() function and update this accordingly.';
+        die($error_message);
+        $CI->Db_model->tr_create(array(
+            'tr_content' => $error_message,
+            'tr_en_type_id' => 4246, //Platform Error
+        ));
+        return false;
+    }
+}
+
+
+function is_valid_intent($c_id)
+{
     $CI =& get_instance();
     $intents = $CI->Db_model->in_fetch(array(
         'c_id' => intval($c_id),
         'in_status >=' => 0,
     ));
-    return (count($intents)==1);
+    return (count($intents) == 1);
 }
 
-function array_filter($array,$match_key,$match_value){
+function filter_array($array, $match_key, $match_value)
+{
 
-	if(!is_array($array) || count($array)<1){
-		return false;
-	}
-	foreach($array as $key=>$value){
-		if(isset($value[$match_key]) && $value[$match_key]==$match_value){
-			return $array[$key];
-		}
-	}
-	//Could not find it!
-	return false;
+    if (!is_array($array) || count($array) < 1) {
+        return false;
+    }
+    foreach ($array as $key => $value) {
+        if (isset($value[$match_key]) && $value[$match_key] == $match_value) {
+            return $array[$key];
+        }
+    }
+    //Could not find it!
+    return false;
 }
 
-function clean_title($title){
-    $common_end_exploders = array('-','|');
-    foreach($common_end_exploders as $keyword){
-        if(substr_count($title,$keyword)>0){
+function clean_title($title)
+{
+    $common_end_exploders = array('-', '|');
+    foreach ($common_end_exploders as $keyword) {
+        if (substr_count($title, $keyword) > 0) {
             $parts = explode($keyword, $title);
-            $last_peace = $parts[(count($parts)-1)];
+            $last_peace = $parts[(count($parts) - 1)];
 
             //Should we remove the last part if not too long?
-            if(substr($last_peace, 0,1)==' ' && strlen($last_peace)<16){
-                $title = str_replace($keyword.$last_peace,'',$title);
+            if (substr($last_peace, 0, 1) == ' ' && strlen($last_peace) < 16) {
+                $title = str_replace($keyword . $last_peace, '', $title);
                 break; //Only a single extension, so break the loop
             }
         }
@@ -231,59 +274,62 @@ function clean_title($title){
     return trim($title);
 }
 
-function auth($entity_groups=null,$force_redirect=0){
-	
-	$CI =& get_instance();
-	$udata = $CI->session->userdata('user');
-	
-	//Let's start checking various ways we can give user access:
-	if(!$entity_groups && is_array($udata) && count($udata)>0){
-	    
-	    //No minimum level required, grant access IF logged in:
-	    return $udata;
+function auth($entity_groups = null, $force_redirect = 0)
+{
 
-    } elseif(isset($udata['en__parents']) && array_filter($udata['en__parents'], 'en_id', 1308)){
+    $CI =& get_instance();
+    $udata = $CI->session->userdata('user');
+
+    //Let's start checking various ways we can give user access:
+    if (!$entity_groups && is_array($udata) && count($udata) > 0) {
+
+        //No minimum level required, grant access IF logged in:
+        return $udata;
+
+    } elseif (isset($udata['en__parents']) && filter_array($udata['en__parents'], 'en_id', 1308)) {
 
         //Always grant access to Trainers:
         return $udata;
-	    
-	} elseif(isset($udata['u_id']) && array_filter($udata['en__parents'], 'en_id', $entity_groups)){
-	    
-		//They are part of one of the levels assigned to them:
-	    return $udata;
-	    
-	}
-	
-	//Still here?!
-	//We could not find a reason to give user access, so block them:
-	if(!$force_redirect){
-	    return false;
-	} else {
-	    //Block access:
-	    redirect_message( ( isset($udata['en__parents'][0]) && array_filter($udata['en__parents'], 'en_id', 1308) ? '/intents/'.$this->config->item('primary_in_id') : '/login?url='.urlencode($_SERVER['REQUEST_URI']) ),'<div class="alert alert-danger maxout" role="alert">'.( isset($udata['u_id']) ? 'Access not authorized.' : 'Session Expired. Login to continue.' ).'</div>');
-	}
-	
+
+    } elseif (isset($udata['u_id']) && filter_array($udata['en__parents'], 'en_id', $entity_groups)) {
+
+        //They are part of one of the levels assigned to them:
+        return $udata;
+
+    }
+
+    //Still here?!
+    //We could not find a reason to give user access, so block them:
+    if (!$force_redirect) {
+        return false;
+    } else {
+        //Block access:
+        redirect_message((isset($udata['en__parents'][0]) && filter_array($udata['en__parents'], 'en_id', 1308) ? '/intents/' . $this->config->item('primary_in_id') : '/login?url=' . urlencode($_SERVER['REQUEST_URI'])), '<div class="alert alert-danger maxout" role="alert">' . (isset($udata['u_id']) ? 'Access not authorized.' : 'Session Expired. Login to continue.') . '</div>');
+    }
+
 }
 
-function redirect_message($url,$message=null, $response_code=null){
+function redirect_message($url, $message = null, $response_code = null)
+{
 
     //Do we have a Message?
-    if($message){
+    if ($message) {
         $CI =& get_instance();
         $CI->session->set_flashdata('hm', $message);
     }
 
     //What's the default response code?
-    $response_code = ( !$response_code && !$message ? 301 : ( $response_code ? $response_code : null ) );
-    if($response_code) {
-        header("Location: ".$url, true, $response_code);
+    $response_code = (!$response_code && !$message ? 301 : ($response_code ? $response_code : null));
+    if ($response_code) {
+        header("Location: " . $url, true, $response_code);
     } else {
-        header("Location: ".$url, true);
+        header("Location: " . $url, true);
     }
-	die();
+    die();
 }
 
-function remote_mime($file_url){
+function remote_mime($file_url)
+{
     //Fetch Remote:
     $ch = curl_init($file_url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -293,16 +339,17 @@ function remote_mime($file_url){
     return $mime;
 }
 
-function save_file($file_url,$json_data,$is_local=false){
+function save_file($file_url, $json_data, $is_local = false)
+{
     $CI =& get_instance();
-    
-    $file_name = md5($file_url.'fileSavingSa!t').'.'.fetch_file_ext($file_url);
-    
-    if(!$is_local){
+
+    $file_name = md5($file_url . 'fileSavingSa!t') . '.' . fetch_file_ext($file_url);
+
+    if (!$is_local) {
         //Save this remote file to local first:
         $file_path = 'application/cache/temp_files/';
-        
-        
+
+
         //Fetch Remote:
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $file_url);
@@ -312,113 +359,116 @@ function save_file($file_url,$json_data,$is_local=false){
         curl_setopt($ch, CURLOPT_HEADER, 0);
         $result = curl_exec($ch);
         curl_close($ch);
-        
+
         //Write in directory:
-        $fp = @fopen( $file_path.$file_name , 'w');
+        $fp = @fopen($file_path . $file_name, 'w');
     }
-    
+
     //Then upload to AWS S3:
-    if(($is_local || (isset($fp) && $fp)) && @require_once( 'application/libraries/aws/aws-autoloader.php' )){
-        
-        if(isset($fp)){
+    if (($is_local || (isset($fp) && $fp)) && @require_once('application/libraries/aws/aws-autoloader.php')) {
+
+        if (isset($fp)) {
             fwrite($fp, $result);
             fclose($fp);
         }
-        
+
         $s3 = new Aws\S3\S3Client([
-            'version' 		=> 'latest',
-            'region'  		=> 'us-west-2',
-            'credentials' 	=> $CI->config->item('aws_credentials'),
+            'version' => 'latest',
+            'region' => 'us-west-2',
+            'credentials' => $CI->config->item('aws_credentials'),
         ]);
         $result = $s3->putObject(array(
-            'Bucket'       => 's3foundation', //Same bucket for now
-            'Key'          => $file_name,
-            'SourceFile'   => ( $is_local ? $file_url : $file_path.$file_name ),
-            'ACL'          => 'public-read'
+            'Bucket' => 's3foundation', //Same bucket for now
+            'Key' => $file_name,
+            'SourceFile' => ($is_local ? $file_url : $file_path . $file_name),
+            'ACL' => 'public-read'
         ));
-        
-        if(isset($result['ObjectURL']) && strlen($result['ObjectURL'])>10){
-            @unlink(( $is_local ? $file_url : $file_path.$file_name ));
+
+        if (isset($result['ObjectURL']) && strlen($result['ObjectURL']) > 10) {
+            @unlink(($is_local ? $file_url : $file_path . $file_name));
             return $result['ObjectURL'];
         } else {
-            $CI->Db_model->li_create(array(
-                'li_content' => 'save_file() Unable to upload file ['.$file_url.'] to Mench cloud.',
-                'li_metadata' => $json_data,
-                'li_en_type_id' => 4246, //Platform Error
+            $CI->Db_model->tr_create(array(
+                'tr_content' => 'save_file() Unable to upload file [' . $file_url . '] to Mench cloud.',
+                'tr_metadata' => $json_data,
+                'tr_en_type_id' => 4246, //Platform Error
             ));
             return false;
         }
-        
+
     } else {
         //Probably local, ignore this!
         return false;
     }
 }
 
-function readable_updates($before,$after,$remove_prefix){
+function readable_updates($before, $after, $remove_prefix)
+{
     $message = null;
-    foreach($after as $key=>$after_value){
-        if(isset($before[$key]) && !($before[$key]==$after_value)){
+    foreach ($after as $key => $after_value) {
+        if (isset($before[$key]) && !($before[$key] == $after_value)) {
             //Change detected!
-            if($message){
+            if ($message) {
                 $message .= "\n";
             }
-            $message .= '- Updated '.ucwords(str_replace('_',' ',str_replace($remove_prefix,'',$key))).' from ['.strip_tags($before[$key]).'] to ['.strip_tags($after_value).']';
+            $message .= '- Updated ' . ucwords(str_replace('_', ' ', str_replace($remove_prefix, '', $key))) . ' from [' . strip_tags($before[$key]) . '] to [' . strip_tags($after_value) . ']';
         }
     }
-    
-    if(!$message){
+
+    if (!$message) {
         //No changes detected!
         $message = 'Nothing updated!';
     }
-    
+
     return $message;
 }
 
-function fb_time($unix_time){
-	//It has milliseconds like "1458668856253", which we need to tranform for DB insertion:
-	return date("Y-m-d H:i:s",round($unix_time/1000));
+function fb_time($unix_time)
+{
+    //It has milliseconds like "1458668856253", which we need to tranform for DB insertion:
+    return date("Y-m-d H:i:s", round($unix_time / 1000));
 }
 
 
-function curl_html($url,$return_breakdown=false){
+function curl_html($url, $return_breakdown = false)
+{
 
     //Validate URL:
-    if(!filter_var($url, FILTER_VALIDATE_URL)){
+    if (!filter_var($url, FILTER_VALIDATE_URL)) {
         return false;
     }
 
-	$ch = curl_init($url);
+    $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.1) Gecko/20061204 Firefox/2.0.0.1");
     curl_setopt($ch, CURLOPT_REFERER, "https://www.mench.com");
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
-	curl_setopt($ch, CURLOPT_POST, FALSE);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($ch, CURLOPT_POST, FALSE);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($ch, CURLOPT_VERBOSE, 1);
     curl_setopt($ch, CURLOPT_HEADER, 1);
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 8); //If site takes longer than this to connect, we have an issue!
 
-    if(is_dev()){
-	    //SSL does not work on my local PC.
-	    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-	    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-	}
+    if (is_dev()) {
+        //SSL does not work on my local PC.
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+    }
     $response = curl_exec($ch);
 
-	if($return_breakdown){
+    if ($return_breakdown) {
 
         $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $clean_url = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
-        $effective_url = ( strlen($clean_url)<1 || $clean_url==$url ? $url : $clean_url );
+        $effective_url = (strlen($clean_url) < 1 || $clean_url == $url ? $url : $clean_url);
 
         $url_parts = parse_url($effective_url);
         $body_html = substr($response, $header_size);
-        $content_type = one_two_explode('',';',curl_getinfo($ch, CURLINFO_CONTENT_TYPE));
+        $content_type = one_two_explode('', ';', curl_getinfo($ch, CURLINFO_CONTENT_TYPE));
 
         $embed_code = echo_embed($effective_url, $effective_url, true);
-        $clean_url = ( $embed_code['status'] && !($clean_url==$embed_code['clean_url']) ? $embed_code['clean_url'] : $clean_url );
+        $clean_url = ($embed_code['status'] && !($clean_url == $embed_code['clean_url']) ? $embed_code['clean_url'] : $clean_url);
 
         // Now see if this is a specific file type:
         // Audio File URL: https://s3foundation.s3-us-west-2.amazonaws.com/672b41ff20fece4b3e7ae2cf4b58389f.mp3
@@ -426,15 +476,15 @@ function curl_html($url,$return_breakdown=false){
         // Image File URL: https://s3foundation.s3-us-west-2.amazonaws.com/d673c17d7164817025a000416da3be3f.png
         // Reglr File URL: https://s3foundation.s3-us-west-2.amazonaws.com/611695da5d0d199e2d95dd2eabe484cf.zip
 
-        if(substr_count($content_type,'application/')==1){
+        if (substr_count($content_type, 'application/') == 1) {
             $x_type = 5;
-        } elseif(substr_count($content_type,'image/')==1){
+        } elseif (substr_count($content_type, 'image/') == 1) {
             $x_type = 4;
-        } elseif(substr_count($content_type,'audio/')==1){
+        } elseif (substr_count($content_type, 'audio/') == 1) {
             $x_type = 3;
-        } elseif(substr_count($content_type,'video/')==1){
+        } elseif (substr_count($content_type, 'video/') == 1) {
             $x_type = 2;
-        } elseif($embed_code['status']){
+        } elseif ($embed_code['status']) {
             //Embed enabled URL:
             $x_type = 1;
         } else {
@@ -445,11 +495,11 @@ function curl_html($url,$return_breakdown=false){
         $return_array = array(
             //used all the time, also when updating en entity:
             'input_url' => $url,
-            'url_is_broken' => ( in_array($httpcode,array(0,403,404)) && substr_count($url,'www.facebook.com')==0 ? 1 : 0 ),
+            'url_is_broken' => (in_array($httpcode, array(0, 403, 404)) && substr_count($url, 'www.facebook.com') == 0 ? 1 : 0),
             'x_type' => $x_type,
-            'clean_url' => ( !$clean_url || $clean_url==$url ? null : $clean_url ),
+            'clean_url' => (!$clean_url || $clean_url == $url ? null : $clean_url),
             'httpcode' => $httpcode,
-            'page_title' => clean_title(one_two_explode('>','',one_two_explode('<title','</title',$body_html))),
+            'page_title' => clean_title(one_two_explode('>', '', one_two_explode('<title', '</title', $body_html))),
         );
 
         return $return_array;
@@ -460,122 +510,127 @@ function curl_html($url,$return_breakdown=false){
     }
 }
 
-function boost_power(){
-	ini_set('memory_limit', '-1');
-	ini_set('max_execution_time', 600);
+function boost_power()
+{
+    ini_set('memory_limit', '-1');
+    ini_set('max_execution_time', 600);
 }
 
 
-function objectToArray( $object ) {
-	if( !is_object( $object ) && !is_array( $object ) ) {
-		return $object;
-	}
-	if( is_object( $object ) ) {
-		$object = (array) $object;
-	}
-	return array_map( 'objectToArray', $object );
+function objectToArray($object)
+{
+    if (!is_object($object) && !is_array($object)) {
+        return $object;
+    }
+    if (is_object($object)) {
+        $object = (array)$object;
+    }
+    return array_map('objectToArray', $object);
 }
 
 
-function arrayToObject($array){
-	$obj = new stdClass;
-	foreach($array as $k => $v) {
-		if(strlen($k)) {
-			if(is_array($v)) {
-				$obj->{$k} = arrayToObject($v); //RECURSION
-			} else {
-				$obj->{$k} = $v;
-			}
-		}
-	}
-	return $obj;
+function arrayToObject($array)
+{
+    $obj = new stdClass;
+    foreach ($array as $k => $v) {
+        if (strlen($k)) {
+            if (is_array($v)) {
+                $obj->{$k} = arrayToObject($v); //RECURSION
+            } else {
+                $obj->{$k} = $v;
+            }
+        }
+    }
+    return $obj;
 }
 
-function extract_references($prefix,$message){
+function extract_references($prefix, $message)
+{
     //$words = explode(' ',trim($message));
-    $words = preg_split('/[\s]+/', trim($message) );
+    $words = preg_split('/[\s]+/', trim($message));
     $matches = array();
-    foreach ($words as $word){
-        if(substr($word,0,1)==$prefix){
+    foreach ($words as $word) {
+        if (substr($word, 0, 1) == $prefix) {
             //Looks like it, is the rest all integers?
-            $id = substr($word,1);
-            if(strlen($id)==strlen(intval($id))){
+            $id = substr($word, 1);
+            if (strlen($id) == strlen(intval($id))) {
                 //Yea seems like all integers, append:
-                array_push($matches,intval($id));
+                array_push($matches, intval($id));
             }
         }
     }
     return $matches;
 }
 
-function message_validation($i_status,$i_message,$i_c_id){
+function message_validation($i_status, $i_message, $i_c_id)
+{
 
 
     $CI =& get_instance();
-    $li_content_max = $CI->config->item('li_content_max');
+    $tr_content_max = $CI->config->item('tr_content_max');
 
     //Extract details from this message:
     $urls = extract_urls($i_message);
-    $u_ids = extract_references('@',$i_message);
-    $c_ids = extract_references('#',$i_message);
+    $u_ids = extract_references('@', $i_message);
+    $c_ids = extract_references('#', $i_message);
 
 
-    if(!isset($i_status) || !(intval($i_status)==$i_status)){
+    if (!isset($i_status) || !(intval($i_status) == $i_status)) {
         return array(
             'status' => 0,
             'message' => 'Missing Status',
         );
-    } elseif(!isset($i_message) || strlen($i_message)<=0){
+    } elseif (!isset($i_message) || strlen($i_message) <= 0) {
         return array(
             'status' => 0,
             'message' => 'Missing Message',
         );
-    } elseif(substr_count($i_message,'/firstname')>1){
+    } elseif (substr_count($i_message, '/firstname') > 1) {
         return array(
             'status' => 0,
             'message' => '/firstname can be used only once',
         );
-    } elseif(strlen($i_message)>$li_content_max){
+    } elseif (strlen($i_message) > $tr_content_max) {
         return array(
             'status' => 0,
-            'message' => 'Max is '.$li_content_max.' Characters',
+            'message' => 'Max is ' . $tr_content_max . ' Characters',
         );
-    } elseif($i_message!=strip_tags($i_message)){
+    } elseif ($i_message != strip_tags($i_message)) {
         return array(
             'status' => 0,
             'message' => 'HTML Code is not allowed',
         );
-    } elseif(!preg_match('//u', $i_message)){
+    } elseif (!preg_match('//u', $i_message)) {
         return array(
             'status' => 0,
             'message' => 'Message must be UTF8',
         );
-    } elseif(count($u_ids)>1){
+    } elseif (count($u_ids) > 1) {
         return array(
             'status' => 0,
             'message' => 'You can reference a maximum of 1 entity per message',
         );
-    } elseif(count($u_ids)>0 && count($urls)>0){
+    } elseif (count($u_ids) > 0 && count($urls) > 0) {
         return array(
             'status' => 0,
             'message' => 'You can either reference 1 entity or include 1 URL which would transform into an entity',
         );
-    } elseif(count($urls)>1){
+    } elseif (count($urls) > 1) {
         return array(
             'status' => 0,
             'message' => 'Max 1 URL per Message',
         );
-    } elseif((count($u_ids)==0 && count($urls)==0) && count($c_ids)>0){
+    } elseif ((count($u_ids) == 0 && count($urls) == 0) && count($c_ids) > 0) {
         return array(
             'status' => 0,
             'message' => 'You must reference an entity before being able to affirm an intent',
         );
-    } elseif((count($u_ids)==0 && count($urls)==0) && substr_count($i_message,'/slice')>0){
+    } elseif ((count($u_ids) == 0 && count($urls) == 0) && substr_count($i_message, '/slice') > 0) {
         return array(
             'status' => 0,
-            'message' => '/slice command required an entity reference [@'.count($u_ids).']',
+            'message' => '/slice command required an entity reference [@' . count($u_ids) . ']',
         );
-    } elseif(count($c_ids)>1){
+    } elseif (count($c_ids) > 1) {
         return array(
             'status' => 0,
             'message' => 'You can reference a maximum of 1 intent per message',
@@ -583,10 +638,8 @@ function message_validation($i_status,$i_message,$i_c_id){
     }
 
 
-
-
     //Validate Intent:
-    if(count($c_ids)>0){
+    if (count($c_ids) > 0) {
 
         //Validate this:
         $i_parent_cs = $CI->Db_model->in_fetch(array(
@@ -597,100 +650,99 @@ function message_validation($i_status,$i_message,$i_c_id){
             'c_id' => $i_c_id,
         ), 0, array('in__active_parents'));
 
-        if(count($i_cs)==0){
+        if (count($i_cs) == 0) {
             //Invalid ID:
             return array(
                 'status' => 0,
-                'message' => 'Parent Intent #'.$c_ids[0].' does not exist',
+                'message' => 'Parent Intent #' . $c_ids[0] . ' does not exist',
             );
-        } elseif(count($i_parent_cs)==0){
+        } elseif (count($i_parent_cs) == 0) {
             //Invalid ID:
             return array(
                 'status' => 0,
-                'message' => 'Intent #'.$c_ids[0].' does not exist',
+                'message' => 'Intent #' . $c_ids[0] . ' does not exist',
             );
-        } elseif($c_ids[0]==$i_c_id){
+        } elseif ($c_ids[0] == $i_c_id) {
             return array(
                 'status' => 0,
                 'message' => 'You cannot affirm the message intent itself. Choose another intent to continue',
             );
-        } elseif($i_parent_cs[0]['in_status']<0){
+        } elseif ($i_parent_cs[0]['in_status'] < 0) {
             //Inactive:
             return array(
                 'status' => 0,
-                'message' => 'Intent ['.$i_parent_cs[0]['c_outcome'].'] is not active so you cannot link to it',
+                'message' => 'Intent [' . $i_parent_cs[0]['c_outcome'] . '] is not active so you cannot link to it',
             );
         }
 
         $parent_found = false;
-        foreach ($i_cs[0]['in__active_parents'] as $c){
-            if($c['c_id']==$c_ids[0]){
+        foreach ($i_cs[0]['in__active_parents'] as $c) {
+            if ($c['c_id'] == $c_ids[0]) {
                 $parent_found = true;
                 break;
             }
         }
 
-        if(!$parent_found){
+        if (!$parent_found) {
             //Inactive:
             return array(
                 'status' => 0,
-                'message' => 'Intent ['.$i_cs[0]['c_outcome'].'] is not associated with ['.$i_parent_cs[0]['c_outcome'].'] so it cannot be used to affirm it. First add it as a parent and then try affirming it.',
+                'message' => 'Intent [' . $i_cs[0]['c_outcome'] . '] is not associated with [' . $i_parent_cs[0]['c_outcome'] . '] so it cannot be used to affirm it. First add it as a parent and then try affirming it.',
             );
         }
     }
 
 
-
     //Validate Entity:
-    if(count($u_ids)>0){
+    if (count($u_ids) > 0) {
 
         $i_children_us = $CI->Db_model->en_fetch(array(
             'u_id' => $u_ids[0],
-        ), array('skip_en__parents','u__urls'));
+        ), array('skip_en__parents', 'u__urls'));
 
-        if(count($i_children_us)==0){
+        if (count($i_children_us) == 0) {
             //Invalid ID:
             return array(
                 'status' => 0,
-                'message' => 'Entity [@'.$u_ids[0].'] does not exist',
+                'message' => 'Entity [@' . $u_ids[0] . '] does not exist',
             );
-        } elseif($i_children_us[0]['u_status']<0){
+        } elseif ($i_children_us[0]['u_status'] < 0) {
             //Inactive:
             return array(
                 'status' => 0,
-                'message' => 'Entity ['.$i_children_us[0]['u_full_name'].'] is not active so you cannot link to it',
+                'message' => 'Entity [' . $i_children_us[0]['u_full_name'] . '] is not active so you cannot link to it',
             );
         }
 
-    } elseif(count($urls)>0){
+    } elseif (count($urls) > 0) {
 
         //No entity linked, but we have a URL that we should turn into an entity:
         $url_create = $CI->Db_model->x_sync($urls[0], 1326, false, true);
 
         //Did we have an error?
-        if(!$url_create['status']){
+        if (!$url_create['status']) {
             return $url_create;
         }
 
         $u_ids[0] = $url_create['en']['u_id'];
 
         //Replace the URL with this new @entity in message:
-        $i_message = str_replace($urls[0],'@'.$u_ids[0], $i_message);
+        $i_message = str_replace($urls[0], '@' . $u_ids[0], $i_message);
 
     }
 
     //Do we have any commands?
-    if(substr_count($i_message,'/slice')>0){
+    if (substr_count($i_message, '/slice') > 0) {
 
         //Validate the format of this command:
-        $slice_times = explode(':',one_two_explode('/slice:',' ',$i_message),2);
-        if(intval($slice_times[0])<1 || intval($slice_times[1])<1 || strlen($slice_times[0])!=strlen(intval($slice_times[0])) || strlen($slice_times[1])!=strlen(intval($slice_times[1]))){
+        $slice_times = explode(':', one_two_explode('/slice:', ' ', $i_message), 2);
+        if (intval($slice_times[0]) < 1 || intval($slice_times[1]) < 1 || strlen($slice_times[0]) != strlen(intval($slice_times[0])) || strlen($slice_times[1]) != strlen(intval($slice_times[1]))) {
             //Not valid format!
             return array(
                 'status' => 0,
                 'message' => 'Invalid format for /slice command. For example, to slice first 60 seconds use: /slice:0:60',
             );
-        } elseif((intval($slice_times[0])+3)>intval($slice_times[1])){
+        } elseif ((intval($slice_times[0]) + 3) > intval($slice_times[1])) {
             //Not valid format!
             return array(
                 'status' => 0,
@@ -703,13 +755,13 @@ function message_validation($i_status,$i_message,$i_c_id){
         //currently supporting: YouTube Only! See error message below...
         //
         $found_slicable_url = false;
-        foreach($i_children_us[0]['u__urls'] as $x){
-            if($x['x_type']==1 && substr_count($x['x_url'],'youtube.com')>0){
+        foreach ($i_children_us[0]['u__urls'] as $x) {
+            if ($x['x_type'] == 1 && substr_count($x['x_url'], 'youtube.com') > 0) {
                 $found_slicable_url = true;
                 break;
             }
         }
-        if(!$found_slicable_url){
+        if (!$found_slicable_url) {
             return array(
                 'status' => 0,
                 'message' => 'The /slice command requires the entity to have a YouTube URL',
@@ -724,85 +776,86 @@ function message_validation($i_status,$i_message,$i_c_id){
         'message' => 'Success',
         //Return cleaned data:
         'i_message' => trim($i_message), //It might have been modified if URL was added
-        'i_u_id' => ( count($u_ids)>0 ? $u_ids[0] : 0 ), //Referencing an entity?
+        'i_u_id' => (count($u_ids) > 0 ? $u_ids[0] : 0), //Referencing an entity?
     );
 }
 
 
-
-
-
-function generate_hashtag($text){
+function generate_hashtag($text)
+{
     //These hashtags cannot be taken
     $CI =& get_instance();
 
     //Cleanup the text:
     $text = trim($text);
     $text = ucwords($text);
-    $text = str_replace('&','And',$text);
+    $text = str_replace('&', 'And', $text);
     $text = preg_replace("/[^a-zA-Z0-9]/", "", $text);
-    $text = substr($text,0,30);
-    
-    return $text;    
+    $text = substr($text, 0, 30);
+
+    return $text;
 }
 
-function one_two_explode($one,$two,$content){
-    if(strlen($one)>0){
-        if(substr_count($content, $one)<1){
+function one_two_explode($one, $two, $content)
+{
+    if (strlen($one) > 0) {
+        if (substr_count($content, $one) < 1) {
             return NULL;
         }
-        $temp = explode($one,$content,2);
-        if(strlen($two)>0){
-            $temp = explode($two,$temp[1],2);
+        $temp = explode($one, $content, 2);
+        if (strlen($two) > 0) {
+            $temp = explode($two, $temp[1], 2);
             return trim($temp[0]);
         } else {
             return trim($temp[1]);
         }
     } else {
-        $temp = explode($two,$content,2);
+        $temp = explode($two, $content, 2);
         return trim($temp[0]);
     }
 }
 
 
-function format_li_content($li_content){
-    
+function format_tr_content($tr_content)
+{
+
     //Do replacements:
-    if(substr_count($li_content,'/attach ')>0){
-        $attachments = explode('/attach ',$li_content);
-        foreach($attachments as $key=>$attachment){
-            if($key==0){
+    if (substr_count($tr_content, '/attach ') > 0) {
+        $attachments = explode('/attach ', $tr_content);
+        foreach ($attachments as $key => $attachment) {
+            if ($key == 0) {
                 //We're gonna start buiolding this message from scrach:
-                $li_content = $attachment;
+                $tr_content = $attachment;
                 continue;
             }
-            $segments = explode(':',$attachment,2);
-            $sub_segments = preg_split('/[\s]+/', $segments[1] );
+            $segments = explode(':', $attachment, 2);
+            $sub_segments = preg_split('/[\s]+/', $segments[1]);
 
-            if($segments[0]=='image'){
-                $li_content .= '<img src="'.$sub_segments[0].'" style="max-width:100%" />';
-            } elseif($segments[0]=='audio'){
-                $li_content .= '<audio controls><source src="'.$sub_segments[0].'" type="audio/mpeg"></audio>';
-            } elseif($segments[0]=='video'){
-                $li_content .= '<video width="100%" onclick="this.play()" controls><source src="'.$sub_segments[0].'" type="video/mp4"></video>';
-            } elseif($segments[0]=='file'){
-                $li_content .= '<a href="'.$sub_segments[0].'" class="btn btn-primary" target="_blank"><i class="fas fa-cloud-download"></i> Download File</a>';
+            if ($segments[0] == 'image') {
+                $tr_content .= '<img src="' . $sub_segments[0] . '" style="max-width:100%" />';
+            } elseif ($segments[0] == 'audio') {
+                $tr_content .= '<audio controls><source src="' . $sub_segments[0] . '" type="audio/mpeg"></audio>';
+            } elseif ($segments[0] == 'video') {
+                $tr_content .= '<video width="100%" onclick="this.play()" controls><source src="' . $sub_segments[0] . '" type="video/mp4"></video>';
+            } elseif ($segments[0] == 'file') {
+                $tr_content .= '<a href="' . $sub_segments[0] . '" class="btn btn-primary" target="_blank"><i class="fas fa-cloud-download"></i> Download File</a>';
             }
-            
+
             //Do we have any leftovers after the URL? If so, append:
-            if(isset($sub_segments[1])){
-                $li_content = ' '.$sub_segments[1];
+            if (isset($sub_segments[1])) {
+                $tr_content = ' ' . $sub_segments[1];
             }
         }
     } else {
-        $li_content = echo_link($li_content);
+        $tr_content = echo_link($tr_content);
     }
-    $li_content = nl2br($li_content);
-    return $li_content;
+    $tr_content = nl2br($tr_content);
+    return $tr_content;
 }
 
 
-function bigintval($value) {
+function bigintval($value)
+{
     $value = trim($value);
     if (ctype_digit($value)) {
         return $value;

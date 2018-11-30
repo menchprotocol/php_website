@@ -1,44 +1,46 @@
 <?php
 //Make sure we have all key variables:
-if(!isset($_GET['u_id']) || intval($_GET['u_id'])<=0 || !isset($_GET['timestamp']) || intval($_GET['timestamp'])<=0 || !isset($_GET['p_hash']) || strlen($_GET['p_hash'])<10){
+if (!isset($_GET['u_id']) || intval($_GET['u_id']) <= 0 || !isset($_GET['timestamp']) || intval($_GET['timestamp']) <= 0 || !isset($_GET['p_hash']) || strlen($_GET['p_hash']) < 10) {
     echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Missing Core Variables.</div>';
-} elseif(!($_GET['p_hash']==md5($_GET['u_id'] . 'p@ssWordR3s3t' . $_GET['timestamp']))){
+} elseif (!($_GET['p_hash'] == md5($_GET['u_id'] . 'p@ssWordR3s3t' . $_GET['timestamp']))) {
     echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Invalid hash key.</div>';
-} elseif(($_GET['timestamp']+(24*3600))<time()){
+} elseif (($_GET['timestamp'] + (24 * 3600)) < time()) {
     echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Password reset link has expired. You can request another one <a href="/login">here</a>.</div>';
 } else {
 
 //Everything is good, enable the password reset:
-?>
+    ?>
 
-<script>
-    //Show loading:
-    function u_password_reset_apply(){
+    <script>
         //Show loading:
-        $('#pass_reset').html('<span><img src="/img/round_load.gif" class="loader" /></span>');
-        //Hide the editor & saving results:
-        $.post("/entities/u_password_reset_apply", {
-            u_id:<?= $_GET['u_id'] ?>,
-            timestamp:<?= $_GET['timestamp'] ?>,
-            p_hash:"<?= $_GET['p_hash'] ?>",
-            new_pass:$('#u_password').val(),
-        }, function(data) {
-            //Show success:
-            $('#pass_reset').html(data);
-        });
-    }
-</script>
+        function u_password_reset_apply() {
+            //Show loading:
+            $('#pass_reset').html('<span><img src="/img/round_load.gif" class="loader" /></span>');
+            //Hide the editor & saving results:
+            $.post("/entities/u_password_reset_apply", {
+                u_id:<?= $_GET['u_id'] ?>,
+                timestamp:<?= $_GET['timestamp'] ?>,
+                p_hash: "<?= $_GET['p_hash'] ?>",
+                new_pass: $('#u_password').val(),
+            }, function (data) {
+                //Show success:
+                $('#pass_reset').html(data);
+            });
+        }
+    </script>
 
 
-<h3>Enter New Password</h3>
-<div class="input-group pass_success">
+    <h3>Enter New Password</h3>
+    <div class="input-group pass_success">
     <span class="input-group-addon">
         <i class="fas fa-lock"></i>
     </span>
-    <div class="form-group is-empty"><input type="password" autocomplete="false" nofill id="u_password" placeholder="New Password" class="form-control"><span class="material-input"></span></div>
-</div>
+        <div class="form-group is-empty"><input type="password" autocomplete="false" nofill id="u_password"
+                                                placeholder="New Password" class="form-control"><span
+                    class="material-input"></span></div>
+    </div>
 
-<?php /*
+    <?php /*
 <script>
     $(document).ready(function() {
         var isMobile = false; //initiate as false
@@ -51,11 +53,12 @@ if(!isset($_GET['u_id']) || intval($_GET['u_id'])<=0 || !isset($_GET['timestamp'
     });
 </script>
 <div class="alert alert-info" role="alert" id="mobile-no" style="display:none; margin-top:30px;"><i class="fas fa-exclamation-triangle"></i> Mench Console v<?= $this->config->item('app_version') ?> is not fully optimized for a mobile device. We recommend using a desktop computer instead.</div>
-*/?>
+*/ ?>
 
-<div id="loginb" class="submit-btn pass_success">
-    <a class="btn btn-black btn-round btn-md" style="font-size: 0.9em; font-weight: 500;" href="javascript:u_password_reset_apply();">Update Password</a>
-</div>
-<div id="pass_reset"></div>
+    <div id="loginb" class="submit-btn pass_success">
+        <a class="btn btn-black btn-round btn-md" style="font-size: 0.9em; font-weight: 500;"
+           href="javascript:u_password_reset_apply();">Update Password</a>
+    </div>
+    <div id="pass_reset"></div>
 
 <?php } ?>

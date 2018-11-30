@@ -6,12 +6,11 @@ $lang['obj_u_name'] = 'Entity Status';
 $lang['obj_ur_name'] = 'Entity Link';
 $lang['obj_ur_note_type_name'] = 'Entity Link Type';
 $lang['obj_c_name'] = 'Intent Status';
-$lang['obj_li_status_name'] = 'Intent Link Status';
+$lang['obj_tr_status_name'] = 'Transaction Status';
 
 $lang['obj_i_name'] = 'Message Status';
 $lang['obj_i_status_name'] = 'Message Status';
 $lang['obj_i_dispatch_name'] = 'Message Dispatch';
-$lang['obj_li_status_name'] = 'Engagement Status';
 $lang['obj_x_type_name'] = 'URL Type';
 $lang['obj_x_status_name'] = 'URL Status';
 $lang['obj_w_status_name'] = 'Subscription Status';
