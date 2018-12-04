@@ -163,7 +163,7 @@ if (isset($orphan_intents)) {
                     <div class="col-md-6 inlineform">
 
                         <div class="title" style="margin-top:15px;"><h4><i
-                                        class="fas fa-hashtag"></i> <?= $this->lang->line('obj_c_name') ?></h4></div>
+                                        class="fas fa-hashtag"></i> Intent Status</h4></div>
                         <select class="form-control" id="in_status" style="display: inline-block !important;">
                             <?php
                             foreach (echo_status('in') as $status_id => $status) {
@@ -200,7 +200,7 @@ if (isset($orphan_intents)) {
                             <div class="checkbox is_task">
                                 <?php
                                 //List all the input options and allow user to pick between them:
-                                $valid_responses = $this->Db_model->li_fetch(array(
+                                $valid_responses = $this->Db_model->tr_fetch(array(
                                     'tr_en_parent_id' => 4227, //All Entity Link Types
                                     'tr_en_child_id >' => 0, //Must have a child
                                     'tr_en_child_id !=' => 4230, //Not a Naked link as that is already the default option
@@ -236,7 +236,7 @@ if (isset($orphan_intents)) {
 
                         <div id="c_link_access" class="hidden">
                             <div class="title"><h4><i
-                                            class="fas fa-atlas"></i> <?= $this->lang->line('obj_tr_status_name') ?>
+                                            class="fas fa-atlas"></i> Transaction Status
                                 </h4></div>
                             <select class="form-control" id="tr_status" style="display: inline-block !important;">
                                 <?php

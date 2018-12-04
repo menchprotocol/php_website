@@ -128,7 +128,7 @@ class Comm_model extends CI_Model
                 $this->Comm_model->send_message(array(
                     array(
                         'tr_en_child_id' => $u['u_id'],
-                        'i_message' => 'Awesome, I am excited to continue helping you to ' . $this->lang->line('platform_intent') . '. ' . echo_pa_lets(),
+                        'i_message' => 'Awesome, I am excited to continue helping you to ' . $this->config->item('primary_in_name') . '. ' . echo_pa_lets(),
                     ),
                 ));
 
@@ -235,7 +235,7 @@ class Comm_model extends CI_Model
                 $this->Comm_model->send_message(array(
                     array(
                         'tr_en_child_id' => $u['u_id'],
-                        'i_message' => 'Ok, so how can I help you ' . $this->lang->line('platform_intent') . '? ' . echo_pa_lets(),
+                        'i_message' => 'Ok, so how can I help you ' . $this->config->item('primary_in_name') . '? ' . echo_pa_lets(),
                     ),
                 ));
 
@@ -737,7 +737,7 @@ class Comm_model extends CI_Model
             }
 
             //List their Action Plan intents:
-            $actionplans = $this->Db_model->li_fetch(array(
+            $actionplans = $this->Db_model->tr_fetch(array(
                 'tr_en_type_id' => 4235, //Intents added to the action plan
                 'tr_en_child_id' => $u['u_id'], //Belongs to this user
                 'tr_in_parent_id' => 0, //This indicates that this is a top-level intent in the Action Plan
@@ -912,7 +912,7 @@ class Comm_model extends CI_Model
 
 
             //See if an admin has sent this user a message in the last hour via the Facebook Inbox UI:
-        } elseif (count($this->Db_model->li_fetch(array(
+        } elseif (count($this->Db_model->tr_fetch(array(
                 'tr_timestamp >=' => date("Y-m-d H:i:s", (time() - (1800))), //Messages sent from us less than 30 minutes ago
                 'tr_en_type_id' => 4280, //Messages sent from us
                 'tr_en_creator_id' => 4148, //We log Facebook Inbox UI messages sent with this entity ID

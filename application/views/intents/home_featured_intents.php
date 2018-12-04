@@ -1,5 +1,5 @@
 <div>
-    <h3>Hi, I'm Mench, a human-trained personal assistant on a mission to <?= $this->lang->line('platform_intent') ?>
+    <h3>Hi, I'm Mench, a human-trained personal assistant on a mission to <?= $this->config->item('primary_in_name') ?>
         .</h3>
     <h3>How can I help you today?</h3>
     <div class="list-group actionplan_list" style="margin-top: 10px;">

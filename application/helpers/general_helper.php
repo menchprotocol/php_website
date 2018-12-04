@@ -10,7 +10,7 @@ function lock_cron_for_processing($e_items)
     $CI =& get_instance();
     foreach ($e_items as $e) {
         if ($e['tr_id'] > 0 && $e['tr_status'] == 0) {
-            $CI->Db_model->li_update($e['tr_id'], array(
+            $CI->Db_model->tr_update($e['tr_id'], array(
                 'tr_status' => 1, //Working on...
             ));
         }
@@ -183,6 +183,34 @@ function mime_type($mime)
     }
 }
 
+function detect_tr_en_type_id($string)
+{
+
+    /*
+     * Detect what type of entity-to-entity URL type should we create
+     * based on options listed here: https://mench.com/entities/4227
+     * */
+
+    $string = trim($string);
+
+    if(!$string || strlen($string)==0){
+        //Naked:
+        return 4230;
+    } elseif(DateTime::createFromFormat('Y-m-d G:i:s', $string)!==FALSE){
+        //Date/time:
+        return 4318;
+    } elseif(is_int($string) || is_double($string)){
+        //Number:
+        return 4319;
+    } elseif(filter_var($string, FILTER_VALIDATE_URL)){
+        //It's a URL, see what type:
+        $curl = curl_html($string, true);
+        return $curl['tr_en_type_id'];
+    } else {
+        //Regular text link:
+        return 4255;
+    }
+}
 
 function array_any_key_exists(array $keys, array $arr)
 {
@@ -440,7 +468,7 @@ function curl_html($url, $return_breakdown = false)
 
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.1) Gecko/20061204 Firefox/2.0.0.1");
-    curl_setopt($ch, CURLOPT_REFERER, "https://www.mench.com");
+    curl_setopt($ch, CURLOPT_REFERER, "https://mench.com");
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
     curl_setopt($ch, CURLOPT_POST, FALSE);
@@ -458,51 +486,41 @@ function curl_html($url, $return_breakdown = false)
 
     if ($return_breakdown) {
 
-        $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $clean_url = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
-        $effective_url = (strlen($clean_url) < 1 || $clean_url == $url ? $url : $clean_url);
-
-        $url_parts = parse_url($effective_url);
-        $body_html = substr($response, $header_size);
+        $body_html = substr($response, curl_getinfo($ch, CURLINFO_HEADER_SIZE));
         $content_type = one_two_explode('', ';', curl_getinfo($ch, CURLINFO_CONTENT_TYPE));
-
-        $embed_code = echo_embed($effective_url, $effective_url, true);
-        $clean_url = ($embed_code['status'] && !($clean_url == $embed_code['clean_url']) ? $embed_code['clean_url'] : $clean_url);
+        $embed_code = echo_embed($url, $url, true);
 
         // Now see if this is a specific file type:
         // Audio File URL: https://s3foundation.s3-us-west-2.amazonaws.com/672b41ff20fece4b3e7ae2cf4b58389f.mp3
         // Video File URL: https://s3foundation.s3-us-west-2.amazonaws.com/8c5a1cc4e8558f422a4003d126502db9.mp4
         // Image File URL: https://s3foundation.s3-us-west-2.amazonaws.com/d673c17d7164817025a000416da3be3f.png
-        // Reglr File URL: https://s3foundation.s3-us-west-2.amazonaws.com/611695da5d0d199e2d95dd2eabe484cf.zip
+        // Downloadable File URL: https://s3foundation.s3-us-west-2.amazonaws.com/611695da5d0d199e2d95dd2eabe484cf.zip
 
         if (substr_count($content_type, 'application/') == 1) {
-            $x_type = 5;
+            //File URL
+            $tr_en_type_id = 4261;
         } elseif (substr_count($content_type, 'image/') == 1) {
-            $x_type = 4;
+            //Image URL
+            $tr_en_type_id = 4260;
         } elseif (substr_count($content_type, 'audio/') == 1) {
-            $x_type = 3;
+            //Audio URL
+            $tr_en_type_id = 4259;
         } elseif (substr_count($content_type, 'video/') == 1) {
-            $x_type = 2;
+            //Video URL
+            $tr_en_type_id = 4258;
         } elseif ($embed_code['status']) {
-            //Embed enabled URL:
-            $x_type = 1;
+            //Embeddable URL:
+            $tr_en_type_id = 4257;
         } else {
             //Generic URL:
-            $x_type = 0;
+            $tr_en_type_id = 4256;
         }
 
-        $return_array = array(
+        return array(
             //used all the time, also when updating en entity:
-            'input_url' => $url,
-            'url_is_broken' => (in_array($httpcode, array(0, 403, 404)) && substr_count($url, 'www.facebook.com') == 0 ? 1 : 0),
-            'x_type' => $x_type,
-            'clean_url' => (!$clean_url || $clean_url == $url ? null : $clean_url),
-            'httpcode' => $httpcode,
+            'tr_en_type_id' => $tr_en_type_id,
             'page_title' => clean_title(one_two_explode('>', '', one_two_explode('<title', '</title', $body_html))),
         );
-
-        return $return_array;
 
     } else {
         //Simply return the response:

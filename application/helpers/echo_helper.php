@@ -57,6 +57,16 @@ function echo_content_url($x_clean_url, $x_type)
 function echo_embed($url, $full_message = null, $return_array = false, $start_sec = 0, $end_sec = 0)
 {
 
+
+    /*
+     * Detects if a URL is from a website that we support an embed widget for it
+     *
+     * NOTE: Changes to this function requires us to re-calculate all current
+     *       values for tr_en_type_id as this could change the equation for those
+     *       link types. Change with care...
+     *
+     * */
+
     $clean_url = null;
     $embed_html_code = null;
     $prefix_message = null;
@@ -475,27 +485,110 @@ function echo_link($text)
     return preg_replace('!(((f|ht)tp(s)?://)[-a-zA-Zа-яА-Я()0-9@:%_+.~#?&;//=]+)!i', '<a href="$1" target="_blank"><u>$1</u></a>', $text);
 }
 
-function echo_big_num($number, $micro = true)
+function echo_number($number, $micro = true, $fb_format = false)
 {
-    if ($number >= 1000000000) {
-        return '<span title="' . $number . '">' . round(($number / 1000000), 0) . ($micro ? 'b' : ' Billion') . '</span>';
-    } elseif ($number >= 10000000) {
-        return '<span title="' . $number . '">' . round(($number / 1000000), 0) . ($micro ? '' : '') . 'm</span>';
-    } elseif ($number >= 1000000) {
-        return '<span title="' . $number . '">' . round(($number / 1000000), 1) . ($micro ? '' : '') . 'm</span>';
-    } elseif ($number >= 10000) {
-        return '<span title="' . $number . '">' . round(($number / 1000), 0) . ($micro ? '' : '') . 'k</span>';
-    } elseif ($number >= 1000) {
-        return '<span title="' . $number . '">' . round(($number / 1000), 1) . ($micro ? '' : '') . 'k</span>';
-    } else {
-        return $number;
-    }
-}
 
-function echo_number($number, $micro = false)
-{
-    if ($number == 0) {
-        return '<span title="' . $number . '">' . ($micro ? '0' : 'Zero') . '</span>';
+    //Let's see if we need to apply special formatting:
+    $formatting = null;
+
+    if ($number > 0 && $number < 1) {
+
+        $original_format = $number; //Keep as is
+
+        //Decimal number, format based on decimal points:
+        if ($number < 0.000001) {
+            $formatting = array(
+                'multiplier' => 1000000000,
+                'decimals' => 0,
+                'micro_1' => 'n',
+                'micro_0' => ' Nano',
+            );
+        } elseif ($number < 0.001) {
+            $formatting = array(
+                'multiplier' => 1000000,
+                'decimals' => 0,
+                'micro_1' => 'µ',
+                'micro_0' => ' Micro',
+            );
+        } elseif ($number < 0.01) {
+            $formatting = array(
+                'multiplier' => 100000,
+                'decimals' => 0,
+                'micro_1' => 'm',
+                'micro_0' => ' Milli',
+            );
+        } else {
+            //Must be cents
+            $formatting = array(
+                'multiplier' => 100,
+                'decimals' => 0,
+                'micro_1' => 'c',
+                'micro_0' => ' Cent',
+            );
+        }
+
+    } elseif ($number>=1000) {
+
+        $original_format = number_format($number); //Add commas
+
+        if ($number >= 1000000000) {
+            $formatting = array(
+                'multiplier' => (1 / 1000000000),
+                'decimals' => 1,
+                'micro_1' => 'B',
+                'micro_0' => ' Billion',
+            );
+        } elseif ($number >= 10000000) {
+            $formatting = array(
+                'multiplier' => (1 / 1000000),
+                'decimals' => 0,
+                'micro_1' => 'M',
+                'micro_0' => ' Million',
+            );
+        } elseif ($number >= 1000000) {
+            $formatting = array(
+                'multiplier' => (1 / 1000000),
+                'decimals' => 1,
+                'micro_1' => 'M',
+                'micro_0' => ' Million',
+            );
+        } elseif ($number >= 10000) {
+            $formatting = array(
+                'multiplier' => (1 / 1000),
+                'decimals' => 0,
+                'micro_1' => 'k',
+                'micro_0' => ' Thousand',
+            );
+        } elseif ($number >= 1000) {
+            $formatting = array(
+                'multiplier' => (1 / 1000),
+                'decimals' => 1,
+                'micro_1' => 'k',
+                'micro_0' => ' Thousand',
+            );
+        }
+
+    }
+
+
+    if ($formatting) {
+
+        //See what to show:
+        $rounded = round(($number * $formatting['multiplier']), $formatting['decimals']);
+        $append = $formatting['micro_' . (int)$micro] . (!$micro ? echo__s($rounded) : '');
+
+        if ($fb_format) {
+            //Messaging format, show using plain text:
+            return $rounded . $append . ' (' . $original_format . ')';
+        } else {
+            //HTML, so we can show Tooltip:
+            return '<span title="' . $original_format . '" data-toggle="tooltip" data-placement="top" class="underdot">' . $rounded . $append . '</span>';
+        }
+
+    } else {
+
+        return $number;
+
     }
 }
 
@@ -801,7 +894,7 @@ function echo_contents($c, $fb_format = 0)
         $type_count = 0;
         $type_all_count = count($c['c__tree_contents']);
         $CI =& get_instance();
-        $content_types = $CI->config->item('content_types');
+        $en_convert_3000 = $CI->config->item('en_convert_3000');
         $has_console_access = auth(array(1308), 0);
         //More than 3:
         $text_overview = '';
@@ -816,7 +909,7 @@ function echo_contents($c, $fb_format = 0)
             }
 
             //Show category:
-            $cat_contribution = count($current_us) . ' ' . $content_types[$type_id] . echo__s(count($current_us));
+            $cat_contribution = count($current_us) . ' ' . $en_convert_3000[$type_id] . echo__s(count($current_us));
             if ($fb_format) {
 
                 $text_overview .= ' ' . $cat_contribution;
@@ -1377,7 +1470,7 @@ function echo_status($object = null, $status = null, $micro_status = false, $dat
             if (is_null($data_placement) && $micro_status) {
                 return (isset($result['s_icon']) ? '<i class="' . $result['s_icon'] . ' initial"></i> ' : '<i class="fas fa-sliders-h initial"></i> ');
             } else {
-                return '<span class="status-label" ' . ((isset($result['s_desc']) || $micro_status) && !is_null($data_placement) ? 'data-toggle="tooltip" data-placement="' . $data_placement . '" title="' . ($micro_status ? $CI->lang->line('obj_' . $object . '_name') . ' is ' . $result['s_name'] : '') . (isset($result['s_desc']) ? ($micro_status ? ': ' : '') . $result['s_desc'] : '') . '" style="border-bottom:1px dotted #444; padding-bottom:1px; line-height:140%;"' : 'style="cursor:pointer;"') . '>' . (isset($result['s_icon']) ? '<i class="' . $result['s_icon'] . ' initial"></i>' : '<i class="fas fa-sliders-h initial"></i>') . ' ' . ($micro_status ? '' : $result['s_name']) . '</span>';
+                return '<span class="status-label" ' . ((isset($result['s_desc']) || $micro_status) && !is_null($data_placement) ? 'data-toggle="tooltip" data-placement="' . $data_placement . '" title="' . ($micro_status ? $result['s_name'] : '') . (isset($result['s_desc']) ? ($micro_status ? ': ' : '') . $result['s_desc'] : '') . '" style="border-bottom:1px dotted #444; padding-bottom:1px; line-height:140%;"' : 'style="cursor:pointer;"') . '>' . (isset($result['s_icon']) ? '<i class="' . $result['s_icon'] . ' initial"></i>' : '<i class="fas fa-sliders-h initial"></i>') . ' ' . ($micro_status ? '' : $result['s_name']) . '</span>';
             }
 
         }
@@ -1415,7 +1508,7 @@ function echo_c($c, $level, $c_parent_id = 0, $is_parent = false)
     $udata = $CI->session->userdata('user');
 
     //Count engagements for this intent:
-    $e_count = count($CI->Db_model->li_fetch(array(
+    $e_count = count($CI->Db_model->tr_fetch(array(
         '(tr_in_parent_id=' . $c['c_id'] . ' OR tr_in_child_id=' . $c['c_id'] . ')' => null,
     ), $CI->config->item('max_counter')));
 
@@ -1643,7 +1736,7 @@ function echo_u($u, $level, $is_parent = false)
     ));
 
     //Check total key engagement for this user:
-    $e_count = count($CI->Db_model->li_fetch(array(
+    $e_count = count($CI->Db_model->tr_fetch(array(
         '(tr_en_parent_id=' . $u['u_id'] . ' OR  tr_en_child_id=' . $u['u_id'] . ')' => null,
         '(tr_en_type_id NOT IN (' . join(',', $CI->config->item('exclude_es')) . '))' => null,
     ), $CI->config->item('max_counter')));
@@ -1656,7 +1749,7 @@ function echo_u($u, $level, $is_parent = false)
     $ui .= '<' . (count($messages) > 0 ? 'a href="#loadmessages-' . $u['u_id'] . '" onclick="u_load_messages(' . $u['u_id'] . ')" class="badge badge-secondary"' : 'span class="badge badge-secondary grey"') . ' style="width:40px;">' . (count($messages) > 0 ? '<span class="btn-counter">' . count($messages) . '</span>' : '') . '<i class="fas fa-comment-dots"></i></' . (count($messages) > 0 ? 'a' : 'span') . '>';
 
 
-    $ui .= '<a href="#loadmodify-' . $u['u_id'] . '-' . $ur_id . '" onclick="u_load_modify(' . $u['u_id'] . ',' . $ur_id . ')" class="badge badge-secondary" style="margin:-2px -6px 0 2px; width:40px;">' . ($u['u__e_score'] > 0 ? '<span class="btn-counter" data-toggle="tooltip" data-placement="left" title="Engagement Score">' . echo_big_num($u['u__e_score']) . '</span>' : '') . '<i class="fas fa-cog" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i></a> &nbsp;';
+    $ui .= '<a href="#loadmodify-' . $u['u_id'] . '-' . $ur_id . '" onclick="u_load_modify(' . $u['u_id'] . ',' . $ur_id . ')" class="badge badge-secondary" style="margin:-2px -6px 0 2px; width:40px;">' . ($u['u__e_score'] > 0 ? '<span class="btn-counter" data-toggle="tooltip" data-placement="left" title="Engagement Score">' . echo_number($u['u__e_score']) . '</span>' : '') . '<i class="fas fa-cog" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i></a> &nbsp;';
 
     $ui .= '<a class="badge badge-secondary" href="/entities/' . $u['u_id'] . '" style="display:inline-block; margin-right:6px; width:40px; margin-left:1px;">' . (isset($u['u__children_count']) && $u['u__children_count'] > 0 ? '<span class="btn-counter ' . ($level == 1 ? 'li-children-count' : '') . '">' . $u['u__children_count'] . '</span>' : '') . '<i class="' . ($is_parent ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90') . '"></i></a>';
 

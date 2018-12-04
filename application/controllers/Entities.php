@@ -46,8 +46,8 @@ class Entities extends CI_Controller
 
         //Fetch entity itself:
         $entities = $this->Db_model->en_fetch(array('u_id' => $parent_u_id));
-        $child_entities_count = count($this->Db_model->ur_children_fetch($filters));
-        $child_entities = $this->Db_model->ur_children_fetch($filters, array('u__children_count'), $items_per_page, ($page * $items_per_page));
+        $child_entities_count = count($this->Db_model->en_children_fetch($filters));
+        $child_entities = $this->Db_model->en_children_fetch($filters, array('u__children_count'), $items_per_page, ($page * $items_per_page));
 
         foreach ($child_entities as $u) {
             echo echo_u($u, 2, false /* Load more only for children */);
@@ -462,7 +462,7 @@ class Entities extends CI_Controller
 
         //Fetch their passwords to authenticate login:
         $password_matched = false;
-        $login_passwords = $this->Db_model->li_fetch(array(
+        $login_passwords = $this->Db_model->tr_fetch(array(
             'tr_status >=' => 2, //Must be published or verified
             'tr_en_parent_id' => 3286, //Mench Login Password
             'tr_en_child_id' => $entities[0]['en_id'], //For this user
@@ -615,7 +615,7 @@ class Entities extends CI_Controller
         } else {
 
             //Fetch their passwords to authenticate login:
-            $login_passwords = $this->Db_model->li_fetch(array(
+            $login_passwords = $this->Db_model->tr_fetch(array(
                 'tr_status >=' => 2, //Must be published or verified
                 'tr_en_parent_id' => 3286, //Mench Login Password
                 'tr_en_child_id' => $_POST['u_id'], //For this user
@@ -626,7 +626,7 @@ class Entities extends CI_Controller
             if (count($login_passwords) > 0) {
 
                 //Update existing password:
-                $this->Db_model->li_update($login_passwords[0]['tr_id'], array(
+                $this->Db_model->tr_update($login_passwords[0]['tr_id'], array(
                     'tr_content' => $new_password,
                 ));
 

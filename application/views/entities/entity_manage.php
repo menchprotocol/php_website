@@ -4,7 +4,7 @@
 $udata = $this->session->userdata('user');
 
 //Fetch other data:
-$child_entities = $this->Db_model->ur_children_fetch(array(
+$child_entities = $this->Db_model->en_children_fetch(array(
     'ur_parent_u_id' => $entity['u_id'],
     'ur_status' => 1, //Only active
 ), array('u__children_count'), $this->config->item('items_per_page'));
@@ -80,7 +80,7 @@ $ws = $this->Db_model->w_fetch(array(
         echo '<td style="text-align: right;"><div class="btn-group btn-group-sm" style="margin-top:-5px;" role="group">';
 
         //Fetch current count for each status from DB:
-        $counts = $this->Db_model->ur_children_fetch(array(
+        $counts = $this->Db_model->en_children_fetch(array(
             'ur_parent_u_id' => $entity['u_id'],
             'ur_status' => 1, //Only active
             'u_status >=' => 0,

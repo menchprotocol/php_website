@@ -830,7 +830,6 @@ input::-webkit-inner-spin-button {
     border-radius: 5px;
 }
 
-
 .inline_block {
     display: inline-block;
 }
@@ -3365,9 +3364,9 @@ h4 .tip-badge {
 }
 
 .profile-icon {
-    width: 20px;
-    height: 20px;
-    margin: -2px 5px 0 0;
+    width: 22px;
+    height: 22px;
+    margin: -2px 0 0 0;
     border-radius: 50%;
 }
 

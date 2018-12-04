@@ -117,7 +117,7 @@ class Cron extends CI_Controller
         );
 
         //Fetch child entities:
-        $entities = $this->Db_model->ur_children_fetch(array(
+        $entities = $this->Db_model->en_children_fetch(array(
             'ur_parent_u_id' => (count($u) > 0 ? $u['u_id'] : $this->config->item('primary_en_id')),
             'ur_status >=' => 0, //Pending or Active
             'u_status >=' => 0, //Pending or Active
@@ -136,10 +136,10 @@ class Cron extends CI_Controller
             //Update this row:
             $score += count($entities) * $score_weights['u__childrens'];
 
-            $score += count($this->Db_model->li_fetch(array(
+            $score += count($this->Db_model->tr_fetch(array(
                     'tr_en_child_id' => $u['u_id'],
                 ), 5000)) * $score_weights['tr_en_child_id'];
-            $score += count($this->Db_model->li_fetch(array(
+            $score += count($this->Db_model->tr_fetch(array(
                     'tr_en_creator_id' => $u['u_id'],
                 ), 5000)) * $score_weights['tr_en_creator_id'];
 
@@ -179,7 +179,7 @@ class Cron extends CI_Controller
         //Cron Settings: */5 * * * *
 
         //Fetch pending drips
-        $e_pending = $this->Db_model->li_fetch(array(
+        $e_pending = $this->Db_model->tr_fetch(array(
             'tr_status' => 0, //Pending work
             'tr_en_type_id' => 4281, //Scheduled Drip
             'tr_timestamp <=' => date("Y-m-d H:i:s"), //Message is due
@@ -213,7 +213,7 @@ class Cron extends CI_Controller
                 ));
 
                 //Update Engagement:
-                $this->Db_model->li_update($tr_content['tr_id'], array(
+                $this->Db_model->tr_update($tr_content['tr_id'], array(
                     'tr_status' => 2, //Publish
                 ));
 
@@ -241,7 +241,7 @@ class Cron extends CI_Controller
         echo '$config[\'en_metadata\'] = array(<br />';
         foreach ($fetch as $array_key => $en_id) {
             //Fetch all children for this entity:
-            $entities = $this->Db_model->ur_children_fetch(array(
+            $entities = $this->Db_model->en_children_fetch(array(
                 'ur_parent_u_id' => $en_id,
                 'ur_status >=' => 0, //Pending or Active
                 'u_status >=' => 0, //Pending or Active
@@ -263,7 +263,7 @@ class Cron extends CI_Controller
 
         $max_per_batch = 20; //Max number of scans per run
 
-        $e_pending = $this->Db_model->li_fetch(array(
+        $e_pending = $this->Db_model->tr_fetch(array(
             'tr_status' => 0, //Pending
             'tr_en_type_id' => 4299, //Save media file to Mench cloud
         ), $max_per_batch);
@@ -282,8 +282,6 @@ class Cron extends CI_Controller
 
             if (!$curl) {
                 $error_message = 'Invalid URL (start with http:// or https://)';
-            } elseif ($curl['url_is_broken']) {
-                $error_message = 'URL Seems broken with http code [' . $curl['httpcode'] . ']';
             } elseif ($curl['x_type'] != 4) {
                 $error_message = 'URL [Type ' . $curl['x_type'] . '] Does not point to an image';
             }
@@ -347,7 +345,7 @@ class Cron extends CI_Controller
             }
 
             //Update engagement:
-            $this->Db_model->li_update($u['tr_id'], array(
+            $this->Db_model->tr_update($u['tr_id'], array(
                 'tr_content' => ($error_message ? 'ERROR: ' . $error_message : 'Success') . ' (Original Image URL: ' . $u['tr_content'] . ')',
                 'tr_status' => 2, //Publish
             ));
@@ -371,7 +369,7 @@ class Cron extends CI_Controller
 
         $max_per_batch = 10; //Max number of scans per run
 
-        $e_pending = $this->Db_model->li_fetch(array(
+        $e_pending = $this->Db_model->tr_fetch(array(
             'tr_status' => 0, //Pending file upload to S3
             'tr_en_type_id IN (4277,4280)' => null, //Sent/Received messages
         ), $max_per_batch);
@@ -405,7 +403,7 @@ class Cron extends CI_Controller
                                         $new_file_url = save_file($att['payload']['url'], $json_data);
 
                                         //Update engagement data:
-                                        $this->Db_model->li_update($ep['tr_id'], array(
+                                        $this->Db_model->tr_update($ep['tr_id'], array(
                                             'tr_content' => (strlen($ep['tr_content']) > 0 ? $ep['tr_content'] . "\n\n" : '') . '/attach ' . $att['type'] . ':' . $new_file_url, //Makes the file preview available on the message
                                             'tr_status' => 2, //Mark as done
                                         ));
@@ -654,7 +652,7 @@ class Cron extends CI_Controller
                     if ($subscription['w__progress'] < $logic['progress_below']) {
 
                         //See if we have reminded them already about this:
-                        $reminders_sent = $this->Db_model->li_fetch(array(
+                        $reminders_sent = $this->Db_model->tr_fetch(array(
                             'tr_en_type_id IN (4280,4276)' => null, //Email or Message sent
                             'tr_en_child_id' => $subscription['u_id'],
                             'tr_in_child_id' => $logic['reminder_c_id'],

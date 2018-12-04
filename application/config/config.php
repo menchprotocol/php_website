@@ -5,15 +5,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  * Global variables used throughout the platform.
  * Ctrl+F is your friend to explore where they are implemented and how they work ;)
- * use-case format: $this->config->item('default_graph_version')
+ * use-case format: $this->config->item('primary_in_name')
  *
  */
 
 date_default_timezone_set('America/Los_Angeles'); //Settime zone to PST
 
+//Global app variables:
 $config['app_version'] = '0.63'; //Cache buster in URLs for static js/css files
 $config['password_salt'] = '40s96As9ZkdAcwQ9PhZm'; //Used for hashing the user password for Mench logins
 $config['primary_in_id'] = 6903; //The default platform intent that would be recommended to new students
+$config['primary_in_name'] = 'advance your tech career'; //What is the purposes of Mench at this point?
 $config['primary_en_id'] = 3463; //The default console entity that is loaded when Entities is clicked
 $config['tr_content_max'] = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
 $config['max_counter'] = 999; //Used in counting things of engagements in console UI. If more that this will add a "+" sign to the end
@@ -26,16 +28,6 @@ $config['fb_max_message'] = 2000; //The maximum length of a Message accepted via
 $config['in_points_options'] = array(-89, -55, -34, -21, -13, -8, -5, -3, -2, -1, 0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610);
 $config['exclude_es'] = array(1, 2); //The engagements that should be ignored
 $config['k_status_incomplete'] = array(1, 0, -2); //The K statuses that indicate the task is not complete...
-$config['en_child_4227'] = array(4230, 4256, 4318, 4260, 4259, 4261, 4255, 4257, 4319, 4258); //All entity link types based on content types
-$config['en_child_4423'] = array(4410, 4425, 4424); //Different Coin Transaction Types that could modify coins
-$config['content_types'] = array( //This should mirror child intents of @3000, and the order of the items would be used in the Landing page:
-    3147 => 'Online Course',
-    3005 => 'Book',
-    2999 => 'Podcast',
-    2997 => 'Article',
-    2998 => 'Video',
-    3192 => 'Tool',
-);
 $config['fb_settings'] = array(
     'page_id' => '381488558920384',
     'app_id' => '1782431902047009',
@@ -47,6 +39,25 @@ $config['aws_credentials'] = [ //Learn more: https://console.aws.amazon.com/iam/
     'key' => 'AKIAJOLBLKFSYCCYYDRA',
     'secret' => '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',
 ];
+
+
+//Keep a cache of certain parts of the Intent tree for faster processing:
+$config['en_child_4227'] = array(4230, 4256, 4318, 4260, 4259, 4261, 4255, 4257, 4319, 4258); //All entity link types based on content types
+$config['en_child_4454'] = array(4455, 4456, 4457, 4458); //All entity link types based on content types
+$config['en_convert_4454'] = array( //Mench Communication Levels to Facebook Messenger format which is only supported if NOT unsubscribed:
+    4456 => 'REGULAR',
+    4457 => 'SILENT_PUSH',
+    4458 => 'NO_PUSH',
+);
+$config['en_convert_3000'] = array( //This should mirror child intents of @3000, and the order of the items would be used in the Landing page:
+    3147 => 'Online Course',
+    3005 => 'Book',
+    2999 => 'Podcast',
+    2997 => 'Article',
+    2998 => 'Video',
+    3192 => 'Tool',
+    4446 => 'Assessment',
+);
 $config['notify_admins'] = array( //Email-based engagements subscriptions
     1 => array(
         'admin_emails' => array('shervin@mench.com'),
@@ -76,9 +87,14 @@ $config['object_statuses'] = array(
             's_icon' => 'fas fa-spinner fa-spin',
         ),
         2 => array(
-            's_name' => 'Syncing',
+            's_name' => 'Published',
             's_desc' => 'Entity is completed and live',
             's_icon' => 'fas fa-check-circle',
+        ),
+        3 => array(
+            's_name' => 'Claimed',
+            's_desc' => 'Entity is claimed by its owner',
+            's_icon' => 'fas fa-badge-check',
         ),
     ),
     'in_status' => array(
@@ -98,7 +114,7 @@ $config['object_statuses'] = array(
             's_icon' => 'fas fa-spinner fa-spin',
         ),
         2 => array(
-            's_name' => 'Syncing',
+            's_name' => 'Published',
             's_desc' => 'Intent is published live and ready to accept subscriptions',
             's_icon' => 'fas fa-check-circle',
         ),
@@ -137,6 +153,8 @@ $config['object_statuses'] = array(
         ),
     ),
 
+
+
     'en_communication' => array(
         -1 => array(
             's_name' => 'Unsubscribed',
@@ -169,7 +187,6 @@ $config['object_statuses'] = array(
             's_icon' => 'fas fa-bell-slash',
         ),
     ),
-
 
     'u' => array(
         -1 => array(
@@ -366,58 +383,6 @@ $config['object_statuses'] = array(
             's_fb_key' => 'NO_PUSH',
             's_desc' => 'Does not trigger any notification',
             's_icon' => 'fas fa-bell-slash',
-        ),
-    ),
-
-
-    'ur_note_type' => array(
-        0 => array(
-            's_name' => 'Not Set',
-            's_fb_key' => null,
-            's_desc' => 'Entity link note not set',
-            's_icon' => 'fas fa-atlas',
-        ),
-        1 => array(
-            's_name' => 'Text',
-            's_fb_key' => 'text',
-            's_desc' => 'Generic text',
-            's_icon' => 'fas fa-atlas',
-        ),
-        2 => array(
-            's_name' => 'Web Page URL',
-            's_fb_key' => 'text',
-            's_desc' => 'URL point to a generic website on the internet',
-            's_icon' => 'fas fa-atlas',
-        ),
-        3 => array(
-            's_name' => 'Embeddable URL',
-            's_fb_key' => 'text',
-            's_desc' => 'A recognized URL with an embeddable widget',
-            's_icon' => 'fas fa-file-code',
-        ),
-        4 => array(
-            's_name' => 'Video URL',
-            's_fb_key' => 'video',
-            's_desc' => 'URL of a raw video file',
-            's_icon' => 'fas fa-file-video',
-        ),
-        5 => array(
-            's_name' => 'Audio URL',
-            's_fb_key' => 'audio',
-            's_desc' => 'URL of a raw audio file',
-            's_icon' => 'fas fa-file-audio',
-        ),
-        6 => array(
-            's_name' => 'Image URL',
-            's_fb_key' => 'image',
-            's_desc' => 'URL of a raw image file',
-            's_icon' => 'fas fa-file-image',
-        ),
-        7 => array(
-            's_name' => 'File URL',
-            's_fb_key' => 'file',
-            's_desc' => 'URL of a raw generic file',
-            's_icon' => 'fas fa-file-pdf',
         ),
     ),
 

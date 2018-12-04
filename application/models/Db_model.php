@@ -11,6 +11,38 @@ class Db_model extends CI_Model
     }
 
 
+    function en_dropdown_set($en_parent_id, $set_en_child_id)
+    {
+        /*
+         * Creates an artificial drop down menu with the children of a given entity to enable better data management
+         * */
+
+        $children = $this->config->item('en_child_'.$en_parent_id);
+        if($en_parent_id<1){
+            return false;
+        } elseif(!$children){
+            return false;
+        } elseif($set_en_child_id>0 && !in_array($set_en_child_id, $children)){
+            return false;
+        }
+
+        //First remove existing parent/child transactions:
+        $current_transactions = $this->Db_model->tr_fetch(array(
+            'tr_en_parent_id' => $en_parent_id,
+            'tr_en_child_id IN ('.join(',', $children).')' => null, //Current children
+        ), 200);
+
+        //Make sure $set_en_child_id belongs to parent if set (Could be null which means remove all)
+        if($set_en_child_id>0){
+
+        } else {
+            //Remove any links that might be the child:
+
+        }
+
+    }
+
+
     function w_update($id, $update_columns)
     {
         //Update first
@@ -395,7 +427,7 @@ class Db_model extends CI_Model
                                 'tr_en_child_id' => $intents[0]['w_child_u_id'],
                                 'tr_in_child_id' => $intents[0]['w_c_id'],
                                 'e_w_id' => $intents[0]['w_id'],
-                                'i_message' => 'How else can I help you ' . $this->lang->line('platform_intent') . '? ' . echo_pa_lets(),
+                                'i_message' => 'How else can I help you ' . $this->config->item('primary_in_name') . '? ' . echo_pa_lets(),
                             ),
                         ));
 
@@ -715,7 +747,7 @@ class Db_model extends CI_Model
 
             if (in_array('u__children_count', $join_objects)) {
                 //Fetch the messages for this entity:
-                $res[$key]['u__children_count'] = count($this->Db_model->ur_children_fetch(array(
+                $res[$key]['u__children_count'] = count($this->Db_model->en_children_fetch(array(
                     'ur_parent_u_id' => $val['u_id'],
                     'ur_status >=' => 0, //Pending or Active
                     'u_status >=' => 0, //Pending or Active
@@ -1019,7 +1051,7 @@ class Db_model extends CI_Model
                         'k_status NOT IN (' . join(',', $this->config->item('k_status_incomplete')) . ')' => null, //complete
                     ))),
                     //fetch all user engagements:
-                    'e_all_count' => count($this->Db_model->li_fetch(array(
+                    'e_all_count' => count($this->Db_model->tr_fetch(array(
                         '( tr_en_child_id=' . $value['w_child_u_id'] . ' OR tr_en_parent_id=' . $value['w_child_u_id'] . ')' => null,
                         '(tr_en_type_id NOT IN (' . join(',', $this->config->item('exclude_es')) . '))' => null,
                     ), $this->config->item('max_counter'))),
@@ -1284,7 +1316,7 @@ class Db_model extends CI_Model
         //Once it finds it, then it would place it under that as long as it does not exist...
 
         //first make sure not already assigned:
-        $found_parent = $this->Db_model->ur_children_fetch(array(
+        $found_parent = $this->Db_model->en_children_fetch(array(
             'ur_parent_u_id' => $parent_parent_u_id,
             'LOWER(ur_notes)' => trim(strtolower($ur_notes_search)),
         ));
@@ -1303,7 +1335,7 @@ class Db_model extends CI_Model
         //This function would attempt to place $child_u_id as a child of $parent_u_id
 
         //first make sure not already assigned:
-        $existing = $this->Db_model->ur_children_fetch(array(
+        $existing = $this->Db_model->en_children_fetch(array(
             'ur_parent_u_id' => $parent_u_id,
             'ur_child_u_id' => $child_u_id,
         ));
@@ -1428,11 +1460,6 @@ class Db_model extends CI_Model
                     'message' => 'URL is already being used by [' . $dup_urls[0]['u_full_name'] . ']. URLs cannot belong to multiple entities.',
                 );
             }
-        } elseif ($curl['url_is_broken']) {
-            return array(
-                'status' => 0,
-                'message' => 'URL seems broken with http code [' . $curl['httpcode'] . ']',
-            );
         } elseif (count($children_us) < 1) {
             return array(
                 'status' => 0,
@@ -1446,7 +1473,7 @@ class Db_model extends CI_Model
             //We need to create a new entity and add this URL below it:
             $x_types = echo_status('x_type', null);
             $u_full_name = null;
-            $url_code = substr(md5(($curl['clean_url'] ? $curl['clean_url'] : $curl['input_url'])), 0, 8);
+            $url_code = substr(md5($x_url), 0, 8);
 
             if (strlen($curl['page_title']) > 0) {
 
@@ -1496,7 +1523,6 @@ class Db_model extends CI_Model
             'x_parent_u_id' => $udata['u_id'],
             'x_u_id' => $new_content['u_id'],
             'x_url' => $x_url,
-            'x_http_code' => $curl['httpcode'],
             'x_clean_url' => ($curl['clean_url'] ? $curl['clean_url'] : $x_url),
             'x_type' => $curl['x_type'],
             'x_status' => ($curl['url_is_broken'] ? -1 : 1), //Either Published or Seems Broken
@@ -1546,7 +1572,7 @@ class Db_model extends CI_Model
     }
 
 
-    function ur_children_fetch($match_columns, $join_objects = array(), $limit = 0, $limit_offset = 0, $select = '*', $group_by = null, $order_columns = array(
+    function en_children_fetch($match_columns, $join_objects = array(), $limit = 0, $limit_offset = 0, $select = '*', $group_by = null, $order_columns = array(
         'u__e_score' => 'DESC',
     ))
     {
@@ -1582,7 +1608,7 @@ class Db_model extends CI_Model
         if (in_array('u__children_count', $join_objects)) {
             foreach ($res as $key => $val) {
                 //Fetch the messages for this entity:
-                $res[$key]['u__children_count'] = count($this->Db_model->ur_children_fetch(array(
+                $res[$key]['u__children_count'] = count($this->Db_model->en_children_fetch(array(
                     'ur_parent_u_id' => $val['u_id'],
                     'ur_status >=' => 0, //Pending or Active
                     'u_status >=' => 0, //Pending or Active
@@ -1636,7 +1662,7 @@ class Db_model extends CI_Model
     }
 
 
-    function li_update($id, $update_columns)
+    function tr_update($id, $update_columns)
     {
         $this->db->where('tr_id', $id);
         $this->db->update('table_ledger', $update_columns);
@@ -1675,11 +1701,9 @@ class Db_model extends CI_Model
             return false;
         }
 
-        //Set some zero defaults if not set:
-        foreach (array('en_communication', 'en_messenger_psid', 'en_rating', 'en_algolia_id') as $dz) {
-            if (!isset($insert_columns[$dz])) {
-                $insert_columns[$dz] = 0;
-            }
+        if (!isset($insert_columns['en_trust_score'])) {
+            //Will be later calculated via a cron job:
+            $insert_columns['en_trust_score'] = 0;
         }
 
         //Lets now add:
@@ -1829,7 +1853,7 @@ class Db_model extends CI_Model
     }
 
 
-    function li_fetch($match_columns = array(), $limit = 100, $join_objects = array(), $order_columns = array('tr_timestamp' => 'DESC'), $select = '*', $group_by = null)
+    function tr_fetch($match_columns = array(), $limit = 100, $join_objects = array(), $order_columns = array('tr_timestamp' => 'DESC'), $select = '*', $group_by = null)
     {
 
         $this->db->select($select);
@@ -1880,6 +1904,16 @@ class Db_model extends CI_Model
             return false;
         }
 
+
+        //Unset un-allowed columns to be manually added:
+        if (isset($insert_columns['tr_int_content'])) {
+            unset($insert_columns['tr_int_content']);
+        }
+        if (isset($insert_columns['tr_coins'])) {
+            unset($insert_columns['tr_coins']);
+        }
+
+
         //Try to auto detect user:
         if (!isset($insert_columns['tr_en_creator_id']) || $insert_columns['tr_en_creator_id'] <= 0) {
             //Try to fetch entity ID from user session:
@@ -1895,6 +1929,9 @@ class Db_model extends CI_Model
         //Set some defaults:
         if (!isset($insert_columns['tr_content'])) {
             $insert_columns['tr_content'] = null;
+        } elseif(is_int($insert_columns['tr_content']) && intval($insert_columns['tr_content'])>0) {
+            //Also store an integer cache copy for faster searching/indexing:
+            $insert_columns['tr_int_content'] = intval($insert_columns['tr_content']);
         }
         if (!isset($insert_columns['tr_timestamp'])) {
             //Time with milliseconds:
@@ -1904,17 +1941,31 @@ class Db_model extends CI_Model
             $insert_columns['tr_timestamp'] = $d->format("Y-m-d H:i:s.u");
         }
 
-
         if (!isset($insert_columns['tr_status'])) {
             $insert_columns['tr_status'] = 2; //Auto Published
         }
 
         //Set some zero defaults if not set:
-        foreach (array('tr_in_child_id', 'tr_in_parent_id', 'tr_en_child_id', 'tr_en_parent_id', 'tr_tr_parent_id', 'tr_coins') as $dz) {
+        foreach (array('tr_in_child_id', 'tr_in_parent_id', 'tr_en_child_id', 'tr_en_parent_id', 'tr_tr_parent_id') as $dz) {
             if (!isset($insert_columns[$dz])) {
                 $insert_columns[$dz] = 0;
             }
         }
+
+
+        //Do we need to adjust coins?
+        $award_coins = $this->Db_model->tr_fetch(array(
+            'tr_en_type_id' => 4319, //Number Link
+            'tr_en_parent_id' => 4374, //Transaction Coins
+            'tr_en_child_id' => $insert_columns['tr_en_type_id'], //This type of transaction
+            'tr_status >=' => 2, //Must be published+
+            'en_status >=' => 2, //Must be published+
+        ), 1, array('en_child'));
+        if(count($award_coins)>0){
+            //Yes, we have to issue coins:
+            $insert_columns['tr_coins'] = doubleval($award_coins[0]['tr_content']);
+        }
+
 
         //Lets log:
         $this->db->insert('table_ledger', $insert_columns);
@@ -1922,14 +1973,32 @@ class Db_model extends CI_Model
         //Fetch inserted id:
         $insert_columns['tr_id'] = $this->db->insert_id();
 
-
-        //Now see if we need to award any tokens:
-        if (1) {
-            echo 'hi';
+        //All good huh?
+        if($insert_columns['tr_id']<1){
+            return false;
         }
 
 
-        if ($insert_columns['tr_id'] > 0 && 0) {
+        //Now we might need to cache if this is a Video, Audio, Image or File URL:
+        if(in_array($insert_columns['tr_en_type_id'], array(4258,4259,4260,4261))){
+            $this->Db_model->tr_create(array(
+                'tr_status' => 0, //New
+                'tr_en_type_id' => 4299, //Media Uploaded
+                'tr_tr_parent_id' => $insert_columns['tr_id'],
+                //Replicate remaining fields:
+                'tr_en_creator_id' => $insert_columns['tr_en_creator_id'],
+                'tr_en_parent_id' => $insert_columns['tr_en_parent_id'],
+                'tr_en_child_id' => $insert_columns['tr_en_child_id'],
+                'tr_in_parent_id' => $insert_columns['tr_in_parent_id'],
+                'tr_in_child_id' => $insert_columns['tr_in_child_id'],
+                'tr_content' => $insert_columns['tr_content'],
+            ));
+        }
+
+        //TODO Notify subscribers for this event:
+
+
+        if ($insert_columns['tr_id']>0 && 0) {
 
             //Individual subscriptions:
             foreach ($this->config->item('notify_admins') as $admin_u_id => $subscription) {
@@ -1944,7 +2013,7 @@ class Db_model extends CI_Model
                     //Just do this one:
                     if (!isset($engagements[0])) {
                         //Fetch Engagement Data:
-                        $engagements = $this->Db_model->li_fetch(array(
+                        $engagements = $this->Db_model->tr_fetch(array(
                             'tr_id' => $insert_columns['tr_id']
                         ));
                     }
@@ -2304,7 +2373,7 @@ class Db_model extends CI_Model
                         foreach ($us_fetch[0]['en__parents'] as $parent_u) {
 
                             //Is this a particular content type?
-                            if (array_key_exists($parent_u['u_id'], $this->config->item('content_types'))) {
+                            if (array_key_exists($parent_u['u_id'], $this->config->item('en_convert_3000'))) {
                                 //yes! Add it to the list if it does not already exist:
                                 if (!isset($intents[0]['c1__tree_contents'][$parent_u['u_id']][$us_fetch[0]['u_id']])) {
                                     $intents[0]['c1__tree_contents'][$parent_u['u_id']][$us_fetch[0]['u_id']] = u_essentials($us_fetch[0]);
@@ -2328,7 +2397,7 @@ class Db_model extends CI_Model
             if (count($parent_ids) > 0) {
 
                 //Lets make a query search to see how many of those involved are industry experts:
-                $ixs = $this->Db_model->ur_children_fetch(array(
+                $ixs = $this->Db_model->en_children_fetch(array(
                     'ur_parent_u_id' => 3084, //Industry expert entity
                     'ur_child_u_id IN (' . join(',', $parent_ids) . ')' => null,
                     'ur_status >=' => 0, //Pending review or higher

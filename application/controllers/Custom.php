@@ -45,7 +45,7 @@ class Custom extends CI_Controller
         } elseif (1 || (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] == 'mench.co')) {
 
             $this->load->view('shared/public_header', array(
-                'title' => ucwords($this->lang->line('platform_intent')),
+                'title' => ucwords($this->config->item('primary_in_name')),
             ));
             $this->load->view('entities/mench-co-intro');
             $this->load->view('shared/public_footer');

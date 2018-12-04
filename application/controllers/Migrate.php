@@ -16,7 +16,7 @@ class Migrate extends CI_Controller
 
     function ff()
     {
-        echo_json($this->Db_model->li_fetch(array(
+        echo_json($this->Db_model->tr_fetch(array(
             'tr_en_parent_id' => 4227, //All Entity Link Types
             'tr_en_child_id >' => 0, //Must have a child
             'tr_en_child_id !=' => 4230, //Not a Naked link as that is already the default option
@@ -66,7 +66,9 @@ class Migrate extends CI_Controller
                 'in_usd' => $c['c_cost_estimate'],
                 'in_points' => $c['c_points'],
                 'in_is_any' => $c['c_is_any'],
-                'in_algolia_id' => $c['c_algolia_id'],
+                'in_metadata' => serialize(array(
+                    'in__algolia_id' => $c['c_algolia_id'],
+                )),
             ));
             //Create new intent creation link:
             $stats['total_links']++;
@@ -152,71 +154,108 @@ class Migrate extends CI_Controller
 
         //Delete everything before starting:
         $this->db->query("DELETE FROM table_entities WHERE en_id>0");
-        $this->db->query("DELETE FROM table_ledger WHERE tr_en_type_id IN (" . join(',', array_merge($this->config->item('en_child_4227'), array(4235))) . ")"); //The link types we could create with this function
+        $this->db->query("DELETE FROM table_ledger WHERE tr_en_type_id IN (" . join(',', array_merge($this->config->item('en_child_4227'), array(4251))) . ")"); //The link types we could create with this function
 
         $u_status_conv = array(
-            -2 => 0,
-            -1 => -1,
-            0 => 0,
-            1 => 0,
-            2 => 2,
+            -2 => 3, //Unsubscribe
+            -1 => -1, //Archived
+            0 => 0,//New
+            1 => 0,//Working on
+            2 => 2,//Published
         );
+        $x_type_conv = array(
+            0 => 4256,
+            1 => 4257,
+            2 => 4258,
+            3 => 4259,
+            4 => 4260,
+            5 => 4261,
+        );
+
+
+        $matching_patterns = $this->Db_model->en_children_fetch(array(
+            'ur_parent_u_id' => 3307, //Entity Matching Patterns
+            'ur_status >=' => 0, //Pending or Active
+            'u_status >=' => 0, //Pending or Active
+        ));
+
 
         $entities = $this->Db_model->en_fetch(array(
             'u_id' => 2,
             'u_status >=' => 0, //new+
         ), array('skip_en__parents', 'u__urls', 'u__ws'));
 
-        echo_json($entities);
-        exit;
+        echo_json($entities); exit;
 
         $stats = array(
             'entities' => 0,
-            'entity_links' => 0,
-            'urls' => 0,
             'set_icons' => 0,
+            'entity_links' => 0,
+            'entity_urls' => 0,
             'action_plans' => 0,
             'total_links' => 0,
         );
 
         foreach ($entities as $u) {
 
+            //Does this entity have a cover photo?
+            if($u['u_cover_x_id']>0 && isset($u['x_url'])){
+                //Yes, fetch it:
+                $stats['set_icons']++;
+                $en_icon = '<img class="profile-icon" src="'.$u['x_url'].'" />';
+            } else {
+                $en_icon = null;
+            }
+
             //Create new entity:
             $stats['entities']++;
             $this->Db_model->en_create(array(
                 'en_id' => $u['u_id'],
-                'en_status' => $u_status_conv[$u['u_status']],
-                'en_icon' => $u['u_icon'],
+                'en_status' => ( $u['u_fb_psid']>0 ? 3 /* Claimed */ : $u_status_conv[$u['u_status']] ),
+                'en_icon' => $en_icon,
                 'en_name' => $u['u_full_name'],
-                'en_messenger_psid' => intval($u['u_fb_psid']),
-                'en_communication' => ($u['u_fb_psid'] > 0 ? ($u['u_status'] == -2 ? -1 : $u['u_fb_notification']) : 0),
-                'en_rating' => $u['u__e_score'],
-                'en_is_any' => $u['u_is_any'],
-                'en_algolia_id' => $u['u_algolia_id'],
+                'en_trust_score' => $u['u__e_score'],
+                'en_metadata' => serialize(array(
+                    'en__algolia_id' => $u['u_algolia_id'],
+                )),
             ));
             //Create new entity creation link:
             $stats['total_links']++;
             $this->Db_model->tr_create(array(
                 'tr_timestamp' => $u['u_timestamp'],
                 'tr_en_type_id' => 4251, //Entity created
-                'tr_en_creator_id' => $u['u_id'],
-                'tr_in_child_id' => $u['u_id'],
+                'tr_en_creator_id' => 1, //Shervin
+                'tr_en_child_id' => $u['u_id'],
             ));
 
 
-            //Email/password?:
-            if (strlen($u['u_email']) > 0 && filter_var($u['u_email'], FILTER_VALIDATE_EMAIL)) {
+            //Messenger Subscription?
+            if($u['u_fb_psid']>0){
+
                 $stats['total_links']++;
                 $this->Db_model->tr_create(array(
                     'tr_timestamp' => $u['u_timestamp'],
-                    'tr_en_type_id' => 4255, //Text link
+                    'tr_en_type_id' => 4319, //Number Link
                     'tr_en_creator_id' => $u['u_id'],
-                    'tr_en_parent_id' => 3288, //Primary email
+                    'tr_en_parent_id' => 4451, //Mench Personal Assistant on Messenger
                     'tr_en_child_id' => $u['u_id'],
-                    'tr_content' => $u['u_email'],
+                    'tr_content' => $u['u_fb_psid'],
+                ));
+
+                //Subscription Level:
+                $stats['total_links']++;
+                $this->Db_model->tr_create(array(
+                    'tr_timestamp' => $u['u_timestamp'],
+                    'tr_en_type_id' => 4230, //Naked link
+                    'tr_en_creator_id' => $u['u_id'],
+                    'tr_en_parent_id' => ($u['u_status']==-2 ? 4455 : 4456), //Either Unsubscribed or normal
+                    'tr_en_child_id' => $u['u_id'],
                 ));
             }
-            if (strlen($u['u_password']) > 0) {
+
+
+            //Email:
+            if (strlen($u['u_email']) > 0 && filter_var($u['u_email'], FILTER_VALIDATE_EMAIL)) {
                 $stats['total_links']++;
                 $this->Db_model->tr_create(array(
                     'tr_timestamp' => $u['u_timestamp'],
@@ -276,58 +315,77 @@ class Migrate extends CI_Controller
             }
 
 
-            if ($u['u_require_url_to_complete']) {
-                $stats['total_links']++;
-                $this->Db_model->tr_create(array(
-                    'tr_timestamp' => $u['u_timestamp'],
-                    'tr_en_type_id' => 4331, //Intent Response Limitor
-                    'tr_en_creator_id' => $u['u_parent_u_id'],
-                    'tr_in_child_id' => $u['u_id'],
-                    'tr_en_child_id' => 4256, //Link Content Type = URL Link
-                ));
-            }
-
 
             //convert active children:
-            $children = $this->Db_model->cr_children_fetch(array(
-                'cr_parent_c_id' => $u['u_id'],
-                'cr_status' => 1,
+            $children = $this->Db_model->en_children_fetch(array(
+                'ur_parent_u_id' => $u['u_id'],
+                'ur_status >=' => 0,
+                'u_status >=' => 0,
+            ));
+            foreach ($children as $ur) {
+                $stats['entity_links']++;
+                $stats['total_links']++;
+                //Create new link
+                $this->Db_model->tr_create(array(
+                    'tr_timestamp' => $ur['ur_timestamp'],
+                    'tr_en_type_id' => detect_tr_en_type_id($ur['ur_notes']), //Depends on content
+                    'tr_en_creator_id' => 1, //Shervin
+                    'tr_en_parent_id' => $ur['ur_parent_u_id'],
+                    'tr_en_child_id' => $ur['ur_child_u_id'],
+                    'tr_content' => $ur['ur_notes'],
+                 ));
+            }
+
+
+            //convert active URLs:
+            $urls = $this->Db_model->x_fetch(array(
+                'x_status >' => -2,
+                'x_u_id' => $u['u_id'],
+            ));
+            foreach ($urls as $x) {
+
+                if($x['x_id']==$u['u_cover_x_id']){
+                    //Skip this as we've already done this:
+                    continue;
+                }
+
+                //Fetch the appropriate parent using current patterns:
+                $tr_en_parent_id = 1326; //Reference
+                foreach($matching_patterns as $match){
+                    if(substr_count($x['x_url'], $match['ur_notes'])>0){
+                        //yes we found a pattern match:
+                        $tr_en_parent_id = $match['u_id'];
+                        break;
+                    }
+                }
+
+                //Insert as URL relation:
+                $stats['entity_urls']++;
+                $stats['total_links']++;
+                //Create new URL Link
+                $this->Db_model->tr_create(array(
+                    'tr_timestamp' => $x['x_timestamp'],
+                    'tr_en_type_id' => $x_type_conv[$x['x_type']], //Depends on content
+                    'tr_en_creator_id' => $x['x_parent_u_id'],
+                    'tr_en_parent_id' => $tr_en_parent_id,
+                    'tr_en_child_id' => $x['x_u_id'],
+                    'tr_content' => $x['x_url'],
+                ));
+
+            }
+
+
+            //Convert Action Plans for this user:
+            $ws = $this->Db_model->w_fetch(array(
+                'u_id' => $u['u_id'],
+                'w_status >=' => 1,
                 'c_status >=' => 1,
-            ));
-            foreach ($children as $cr) {
-                $stats['intents_links']++;
-                $stats['total_links']++;
-                //Create new link
-                $this->Db_model->tr_create(array(
-                    'tr_timestamp' => $cr['cr_timestamp'],
-                    'tr_en_type_id' => 4228, //Child intent link
-                    'tr_en_creator_id' => $cr['cr_parent_u_id'],
-                    'tr_in_parent_id' => $cr['cr_parent_c_id'],
-                    'tr_in_child_id' => $cr['cr_child_c_id'],
-                    'tr_rank' => $cr['cr_child_rank'],
-                ));
-            }
+                'w_last_heard >=' => date("Y-m-d H:i:s", (time() + ($bot_settings['reminder_frequency_min'] * 60))),
+            ), array('in', 'en'), array(
+                'w_last_heard' => 'ASC', //Fetch users who have not been served the longest, so we can pay attention to them...
+            ), $bot_settings['max_per_run']);
 
 
-            //convert active messages:
-            $i_messages = $this->Db_model->i_fetch(array(
-                'i_c_id' => $c['c_id'],
-                'i_status >=' => 1, //active
-            ));
-            foreach ($i_messages as $i) {
-                $stats['messages']++;
-                $stats['total_links']++;
-                //Create new link
-                $this->Db_model->tr_create(array(
-                    'tr_timestamp' => $i['i_timestamp'],
-                    'tr_content' => $i['i_message'],
-                    'tr_en_type_id' => $message_status_converter[$i['i_status']], //Message status migrating into new link type entity reference
-                    'tr_en_creator_id' => $i['i_parent_u_id'],
-                    'tr_en_parent_id' => $i['i_u_id'],
-                    'tr_in_child_id' => $i['i_c_id'],
-                    'tr_rank' => $i['i_rank'],
-                ));
-            }
         }
 
         echo_json($stats);
