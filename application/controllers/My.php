@@ -150,13 +150,13 @@ class My extends CI_Controller
 
             //We have a single item to load:
             //Now we need to load the action plan:
-            $k_ins = $this->Db_model->k_fetch(array(
+            $k_ins = $this->Db_model->tr_fetch(array(
                 'w_id' => $w_id,
                 'in_status >=' => 2,
                 'cr_child_c_id' => $c_id,
             ), array('w', 'cr', 'cr_c_parent'));
 
-            $k_outs = $this->Db_model->k_fetch(array(
+            $k_outs = $this->Db_model->tr_fetch(array(
                 'w_id' => $w_id,
                 'in_status >=' => 2,
                 'cr_parent_c_id' => $c_id,
@@ -285,18 +285,18 @@ class My extends CI_Controller
         $this->load->view('shared/messenger_footer');
     }
 
-    function skip_tree($w_id, $c_id, $k_id)
+    function skip_tree($w_id, $c_id, $tr_id)
     {
         //Start skipping:
-        $total_skipped = count($this->Db_model->k_skip_recursive_down($w_id, $c_id, $k_id));
+        $total_skipped = count($this->Db_model->k_skip_recursive_down($w_id, $c_id, $tr_id));
 
         //Draft message:
         $message = '<div class="alert alert-success" role="alert">' . $total_skipped . ' insight' . echo__s($total_skipped) . ' successfully skipped.</div>';
 
         //Find the next item to navigate them to:
-        $ks_next = $this->Db_model->k_next_fetch($w_id);
-        if ($ks_next) {
-            redirect_message('/my/actionplan/' . $ks_next[0]['k_w_id'] . '/' . $ks_next[0]['c_id'], $message);
+        $trs_next = $this->Db_model->k_next_fetch($w_id);
+        if ($trs_next) {
+            redirect_message('/my/actionplan/' . $trs_next[0]['k_w_id'] . '/' . $trs_next[0]['c_id'], $message);
         } else {
             redirect_message('/my/actionplan', $message);
         }
@@ -318,79 +318,67 @@ class My extends CI_Controller
     {
 
         //Validate integrity of request:
-        if (!isset($_POST['k_id']) || intval($_POST['k_id']) <= 0 || !isset($_POST['k_notes'])) {
+        if (!isset($_POST['tr_id']) || intval($_POST['tr_id']) <= 0 || !isset($_POST['tr_content'])) {
             return redirect_message('/my/actionplan', '<div class="alert alert-danger" role="alert">Error: Missing Core Data.</div>');
         }
 
         //Fetch student name and details:
         $udata = $this->session->userdata('user');
-        $ks = $this->Db_model->k_fetch(array(
-            'k_id' => $_POST['k_id'],
+        $trs = $this->Db_model->tr_fetch(array(
+            'tr_id' => $_POST['tr_id'],
         ), array('w', 'cr', 'cr_c_child'));
 
-        if (!(count($ks) == 1)) {
+        if (!(count($trs) == 1)) {
             return redirect_message('/my/actionplan', '<div class="alert alert-danger" role="alert">Error: Invalid submission ID.</div>');
         }
-        $k_url = '/my/actionplan/' . $ks[0]['k_w_id'] . '/' . $ks[0]['c_id'];
+        $k_url = '/my/actionplan/' . $trs[0]['k_w_id'] . '/' . $trs[0]['c_id'];
 
 
         //Do we have what it takes to mark as complete?
-        if ($ks[0]['c_require_url_to_complete'] && count(extract_urls($_POST['k_notes'])) < 1) {
-            return redirect_message($k_url, '<div class="alert alert-danger" role="alert">Error: URL Required to mark [' . $ks[0]['c_outcome'] . '] as complete.</div>');
-        } elseif ($ks[0]['c_require_notes_to_complete'] && strlen($_POST['k_notes']) < 1) {
-            return redirect_message($k_url, '<div class="alert alert-danger" role="alert">Error: Notes Required to mark [' . $ks[0]['c_outcome'] . '] as complete.</div>');
+        if ($trs[0]['c_require_url_to_complete'] && count(extract_urls($_POST['tr_content'])) < 1) {
+            return redirect_message($k_url, '<div class="alert alert-danger" role="alert">Error: URL Required to mark [' . $trs[0]['c_outcome'] . '] as complete.</div>');
+        } elseif ($trs[0]['c_require_notes_to_complete'] && strlen($_POST['tr_content']) < 1) {
+            return redirect_message($k_url, '<div class="alert alert-danger" role="alert">Error: Notes Required to mark [' . $trs[0]['c_outcome'] . '] as complete.</div>');
         }
 
 
         //Did anything change?
-        $status_changed = ($ks[0]['k_status'] <= 1);
-        $notes_changed = !($ks[0]['k_notes'] == trim($_POST['k_notes']));
+        $status_changed = ($trs[0]['k_status'] <= 1);
+        $notes_changed = !($trs[0]['tr_content'] == trim($_POST['tr_content']));
         if (!$notes_changed && !$status_changed) {
             //Nothing seemed to change! Let them know:
             return redirect_message($k_url, '<div class="alert alert-info" role="alert">Note: Nothing saved because nothing was changed.</div>');
         }
 
-        //All good, move forward with the update:
-        //Save a copy of the student completion report:
-        $this->Db_model->tr_create(array(
-            'tr_en_creator_id' => (isset($udata['u_id']) ? $udata['u_id'] : $ks[0]['k_children_u_id']),
-            'tr_content' => ($notes_changed ? trim($_POST['k_notes']) : ''),
-            'tr_en_type_id' => 4242, //Completion Report
-            'tr_in_child_id' => $ks[0]['c_id'],
-            'tr_metadata' => array(
-                'input_data' => $_POST,
-                'k' => $ks[0],
-            ),
-        ));
-
+        //Has anything changed?
         if ($notes_changed) {
             //Updates k notes:
-            $this->Db_model->k_update($ks[0]['k_id'], array(
-                'k_last_updated' => date("Y-m-d H:i:s"),
-                'k_notes' => trim($_POST['k_notes']),
-            ));
+            $this->Db_model->tr_update($trs[0]['tr_id'], array(
+                'tr_content' => trim($_POST['tr_content']),
+                'tr_en_type_id' => detect_tr_en_type_id($_POST['tr_content']),
+            ), (isset($udata['u_id']) ? $udata['u_id'] : $trs[0]['k_children_u_id']));
         }
 
         if ($status_changed) {
             //Also update k_status, determine what it should be:
-            $this->Db_model->k_complete_recursive_up($ks[0], $ks[0]);
+            $this->Db_model->k_complete_recursive_up($trs[0], $trs[0]);
         }
 
 
         //Redirect back to page with success message:
         if (isset($_POST['k_next_redirect']) && intval($_POST['k_next_redirect']) > 0) {
             //Go to next item:
-            $ks_next = $this->Db_model->k_next_fetch($ks[0]['w_id'], (intval($_POST['k_next_redirect']) > 1 ? intval($_POST['k_next_redirect']) : 0));
-            if ($ks_next) {
+            $trs_next = $this->Db_model->k_next_fetch($trs[0]['w_id'], (intval($_POST['k_next_redirect']) > 1 ? intval($_POST['k_next_redirect']) : 0));
+            if ($trs_next) {
                 //Override original item:
-                $k_url = '/my/actionplan/' . $ks_next[0]['k_w_id'] . '/' . $ks_next[0]['c_id'];
+                $k_url = '/my/actionplan/' . $trs_next[0]['k_w_id'] . '/' . $trs_next[0]['c_id'];
 
                 if (intval($_POST['is_from_messenger'])) {
                     //Also send confirmation messages via messenger:
                     $this->Comm_model->compose_messages(array(
-                        'tr_en_child_id' => $ks[0]['k_children_u_id'],
-                        'tr_in_child_id' => $ks_next[0]['c_id'],
-                        'e_w_id' => $ks[0]['k_w_id'],
+                        'tr_en_child_id' => $trs[0]['k_children_u_id'],
+                        'tr_in_child_id' => $trs_next[0]['c_id'],
+                        'e_w_id' => $trs[0]['k_w_id'],
                     ));
                 }
             }

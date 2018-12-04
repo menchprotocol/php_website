@@ -430,25 +430,19 @@ function save_file($file_url, $json_data, $is_local = false)
     }
 }
 
-function readable_updates($before, $after, $remove_prefix)
-{
-    $message = null;
-    foreach ($after as $key => $after_value) {
-        if (isset($before[$key]) && !($before[$key] == $after_value)) {
-            //Change detected!
-            if ($message) {
-                $message .= "\n";
-            }
-            $message .= '- Updated ' . ucwords(str_replace('_', ' ', str_replace($remove_prefix, '', $key))) . ' from [' . strip_tags($before[$key]) . '] to [' . strip_tags($after_value) . ']';
-        }
-    }
 
-    if (!$message) {
-        //No changes detected!
-        $message = 'Nothing updated!';
-    }
+function fetch_metadata($object, $field, $update_value=null){
 
-    return $message;
+    /*
+     *
+     * Enables the easy manipulation of the text metadata field which holds cache data for developers
+     *
+     *   $object is the original object
+     *   $field is the array key within the metadata
+     *   $update_value enables the updating of the metadata field
+     *
+     * */
+
 }
 
 function fb_time($unix_time)

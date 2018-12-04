@@ -243,24 +243,17 @@ class Entities extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Session. Refresh the page and try again.',
             ));
-        } elseif (!isset($_POST['ur_id']) || intval($_POST['ur_id']) < 1) {
+        } elseif (!isset($_POST['tr_id']) || intval($_POST['tr_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing entity link ID',
             ));
         }
 
-        //Archive this:
-        $this->Db_model->ur_update($_POST['ur_id'], array(
-            'ur_status' => -1,
-        ));
-
-        //Log unlinking engagement:
-        $this->Db_model->tr_create(array(
-            'tr_en_creator_id' => $udata['u_id'],
-            'e_ur_id' => $_POST['ur_id'],
-            'tr_en_type_id' => 4241, //Entity Link Removed
-        ));
+        //Remove transaction:
+        $this->Db_model->tr_update($_POST['tr_id'], array(
+            'tr_status' => -1,
+        ), $udata['u_id']);
 
         return echo_json(array(
             'status' => 1,
@@ -301,7 +294,7 @@ class Entities extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing status',
             ));
-        } elseif (!isset($_POST['ur_id']) || !isset($_POST['ur_notes'])) {
+        } elseif (!isset($_POST['tr_id']) || !isset($_POST['tr_content'])) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing entity link data',
@@ -323,11 +316,11 @@ class Entities extends CI_Controller
         );
 
         //DO we have a link to update?
-        if (intval($_POST['ur_id']) > 0) {
+        if (intval($_POST['tr_id']) > 0) {
 
             //Yes, first validate this link:
             $urs = $this->Db_model->ur_parent_fetch(array(
-                'ur_id' => $_POST['ur_id'],
+                'tr_id' => $_POST['tr_id'],
             ));
 
             if (count($urs) == 0) {
@@ -338,28 +331,14 @@ class Entities extends CI_Controller
             }
 
             //Has the link value changes?
-            if (!($urs[0]['ur_notes'] == $_POST['ur_notes'])) {
-
-                //Do we have a URL? Use it to determine link type
-                //$this->Db_model->x_sync($_POST['x_url'],$_POST['x_u_id'],1)
+            if (!($urs[0]['tr_content'] == $_POST['tr_content'])) {
 
                 //Something has changed, log this:
-                $this->Db_model->ur_update($_POST['ur_id'], array(
-                    'ur_notes' => $_POST['ur_notes'],
-                ));
+                $this->Db_model->tr_update($_POST['tr_id'], array(
+                    'tr_content' => $_POST['tr_content'],
+                    'tr_en_type_id' => detect_tr_en_type_id($_POST['tr_content']),
+                ), $udata['u_id']);
 
-                //Log engagement:
-                $this->Db_model->tr_create(array(
-                    'tr_en_creator_id' => $udata['u_id'], //The user that updated the account
-                    'tr_content' => 'Updates from [' . $urs[0]['ur_notes'] . '] to [' . $_POST['ur_notes'] . ']',
-                    'tr_metadata' => array(
-                        'input_data' => $_POST,
-                        'initial_data' => $urs[0]['ur_notes'],
-                        'after' => $_POST['ur_notes'],
-                    ),
-                    'tr_en_type_id' => 4242, //entity link note modification
-                    'e_ur_id' => $_POST['ur_id'],
-                ));
             }
 
         }
@@ -381,7 +360,7 @@ class Entities extends CI_Controller
         //Log engagement:
         $this->Db_model->tr_create(array(
             'tr_en_creator_id' => $udata['u_id'], //The user that updated the account
-            'tr_content' => readable_updates($u_current[0], $u_update, 'u_'),
+            'tr_content' => echo_changelog($u_current[0], $u_update, 'u_'),
             'tr_metadata' => array(
                 'input_data' => $_POST,
                 'initial_data' => $u_current[0],
@@ -396,7 +375,7 @@ class Entities extends CI_Controller
             'status' => 1,
             'message' => '<span><i class="fas fa-check"></i> Saved</span>',
             'status_u_ui' => echo_status('en', $_POST['u_status'], true, 'left'),
-            'ur__notes' => echo_link($_POST['ur_notes']),
+            'ur__notes' => echo_link($_POST['tr_content']),
         ));
 
     }
@@ -628,21 +607,7 @@ class Entities extends CI_Controller
                 //Update existing password:
                 $this->Db_model->tr_update($login_passwords[0]['tr_id'], array(
                     'tr_content' => $new_password,
-                ));
-
-                //Log update engagement:
-                $this->Db_model->tr_create(array(
-                    'tr_en_type_id' => 4242, //Link modified
-                    'tr_en_creator_id' => $login_passwords[0]['tr_en_child_id'],
-                    'tr_en_parent_id' => $login_passwords[0]['tr_en_parent_id'],
-                    'tr_en_child_id' => $login_passwords[0]['tr_en_child_id'],
-                    'tr_tr_parent_id' => $login_passwords[0]['tr_id'],
-                    'tr_content' => 'Password updated from [' . $login_passwords[0]['tr_content'] . '] to [' . $new_password . ']', //Link modified
-                    'tr_metadata' => array(
-                        'initial_data' => $login_passwords[0],
-                        'input_data' => $_POST,
-                    ),
-                ));
+                ), $login_passwords[0]['tr_en_child_id']);
 
             } else {
                 //Create new password link:

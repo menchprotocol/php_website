@@ -231,9 +231,9 @@ $ws = $this->Db_model->w_fetch(array(
                 <div class="li_component" style="margin-top:15px;">
                     <div class="title" style="margin-bottom:0; padding-bottom:0;"><h4><i class="fas fa-file-alt"></i>
                             Link Notes [<span style="margin:0 0 10px 0; font-size:0.8em;"><span
-                                        id="charur_notesNum">0</span>/<?= $this->config->item('tr_content_max') ?></span>]
+                                        id="chartr_contentNum">0</span>/<?= $this->config->item('tr_content_max') ?></span>]
                         </h4></div>
-                    <textarea class="form-control text-edit border msg" id="ur_notes" onkeyup="ur_notes_word_count()"
+                    <textarea class="form-control text-edit border msg" id="tr_content" onkeyup="tr_content_word_count()"
                               maxlength="<?= $this->config->item('tr_content_max') ?>" data-lpignore="true"
                               style="height:66px;"></textarea>
                 </div>

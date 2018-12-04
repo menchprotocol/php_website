@@ -855,8 +855,8 @@ input::-webkit-inner-spin-button {
 }
 
 .card-description img, .mini-image {
-    width: 24px;
-    height: 24px;
+    width: 22px;
+    height: 22px;
     margin-top: -2px;
     border-radius: 50%;
 }

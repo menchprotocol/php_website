@@ -241,12 +241,12 @@ function u_full_name_word_count() {
     }
 }
 
-function ur_notes_word_count() {
-    var len = $('#ur_notes').val().length;
+function tr_content_word_count() {
+    var len = $('#tr_content').val().length;
     if (len > tr_content_max) {
-        $('#charur_notesNum').addClass('overload').text(len);
+        $('#chartr_contentNum').addClass('overload').text(len);
     } else {
-        $('#charur_notesNum').removeClass('overload').text(len);
+        $('#chartr_contentNum').removeClass('overload').text(len);
     }
 }
 
@@ -289,12 +289,12 @@ function u_load_next_page(page, load_new_filter = 0) {
 
 function ur_unlink() {
 
-    var ur_id = ($('#modifybox').hasClass('hidden') ? 0 : parseInt($('#modifybox').attr('entity-link-id')));
+    var tr_id = ($('#modifybox').hasClass('hidden') ? 0 : parseInt($('#modifybox').attr('entity-link-id')));
     var u_level1_name = $('.top_entity .u_full_name').text();
-    var u_level2_name = $('.ur_' + ur_id + ' .u_full_name').text();
-    var direction = (parseInt($('.ur_' + ur_id).attr('is-parent')) == 1 ? 'parent' : 'children');
+    var u_level2_name = $('.ur_' + tr_id + ' .u_full_name').text();
+    var direction = (parseInt($('.ur_' + tr_id).attr('is-parent')) == 1 ? 'parent' : 'children');
     var counter_class = '.li-' + direction + '-count';
-    var current_status = parseInt($('.ur_' + ur_id).attr('entity-status'));
+    var current_status = parseInt($('.ur_' + tr_id).attr('entity-status'));
 
     //Confirm that they want to do this:
     var r = confirm("Unlink [" + u_level2_name + "] from [" + u_level1_name + "]?");
@@ -304,12 +304,12 @@ function ur_unlink() {
 
 
     //Show loader:
-    $('.ur_' + ur_id).html('<img src="/img/round_load.gif" class="loader" style="width:24px !important; height:24px !important;" /> Unlinking...').hide().fadeIn();
+    $('.ur_' + tr_id).html('<img src="/img/round_load.gif" class="loader" style="width:24px !important; height:24px !important;" /> Unlinking...').hide().fadeIn();
 
     //Save the rest of the content:
     $.post("/entities/unlink_entities", {
 
-        ur_id: ur_id,
+        tr_id: tr_id,
 
     }, function (data) {
 
@@ -317,7 +317,7 @@ function ur_unlink() {
         if (data.status) {
 
             //Update UI to confirm with user:
-            $('.ur_' + ur_id).fadeOut();
+            $('.ur_' + tr_id).fadeOut();
             $('#modifybox').addClass('hidden');
 
             //Update counter:
@@ -326,14 +326,14 @@ function ur_unlink() {
 
         } else {
             //There was an error, show to user:
-            $('.ur_' + ur_id).html('<b style="color:#FF0000 !important;">Error: ' + data.message + '</b>');
+            $('.ur_' + tr_id).html('<b style="color:#FF0000 !important;">Error: ' + data.message + '</b>');
         }
 
     });
 }
 
 
-function u_load_modify(u_id, ur_id) {
+function u_load_modify(u_id, tr_id) {
 
     //Make sure inputs are valid:
     if (!$('.u__' + u_id).length) {
@@ -342,7 +342,7 @@ function u_load_modify(u_id, ur_id) {
 
     //Update variables:
     $('.save_entity_changes').html('');
-    $('#modifybox').attr('entity-link-id', ur_id);
+    $('#modifybox').attr('entity-link-id', tr_id);
     $('#modifybox').attr('entity-id', u_id);
 
 
@@ -357,16 +357,16 @@ function u_load_modify(u_id, ur_id) {
     $('#u_email').val($(".u__" + u_id + ":first").attr('entity-email'));
 
     //Only show unlink button if not level 1
-    if (parseInt(ur_id) > 0) {
+    if (parseInt(tr_id) > 0) {
 
         //Make the UI link and the notes in the edit box:
         $('.unlink-entity, .li_component').removeClass('hidden');
 
         //Assign value:
-        $('#ur_notes').val($(".ur_notes_val_" + ur_id + ":first").text());
+        $('#tr_content').val($(".tr_content_val_" + tr_id + ":first").text());
 
         //Update count:
-        ur_notes_word_count();
+        tr_content_word_count();
 
     } else {
 
@@ -398,8 +398,8 @@ function u_save_modify() {
 
     //Prepare data to be modified for this intent:
     var modify_data = {
-        ur_id: parseInt($('#modifybox').attr('entity-link-id')),
-        ur_notes: $('#ur_notes').val(),
+        tr_id: parseInt($('#modifybox').attr('entity-link-id')),
+        tr_content: $('#tr_content').val(),
         u_id: parseInt($('#modifybox').attr('entity-id')),
         u_full_name: $('#u_full_name').val(),
         u_status: $('#u_status').val(), //The new status (might not have changed too)
@@ -422,10 +422,10 @@ function u_save_modify() {
             $(".u_icon_val_" + modify_data['u_id']).html(modify_data['u_icon']);
 
             //Did we have notes to update?
-            if (modify_data['ur_id'] > 0) {
+            if (modify_data['tr_id'] > 0) {
                 //Yes, update the notes:
-                $(".ur__notes_" + modify_data['ur_id']).html(data.ur__notes);
-                $(".ur_notes_val_" + modify_data['ur_id']).text(modify_data['ur_notes']);
+                $(".ur__notes_" + modify_data['tr_id']).html(data.ur__notes);
+                $(".tr_content_val_" + modify_data['tr_id']).text(modify_data['tr_content']);
             }
 
             if (modify_data['u_icon'].length > 0) {

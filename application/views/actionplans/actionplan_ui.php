@@ -26,13 +26,13 @@ if (count($k_ins) == 1) {
 $next_button = null;
 if ($w['w_status'] == 1) {
     //Active subscription, attempt to find next item, which we should be able to find:
-    $ks_next = $this->Db_model->k_next_fetch($w['w_id']);
-    if ($ks_next) {
-        if ($ks_next[0]['c_id'] == $c['c_id']) {
+    $trs_next = $this->Db_model->k_next_fetch($w['w_id']);
+    if ($trs_next) {
+        if ($trs_next[0]['c_id'] == $c['c_id']) {
             //$next_button = '<span style="font-size: 0.7em; padding-left:5px; display:inline-block;"><i class="fas fa-shield-check"></i> This is the next-in-line intent</span>';
             $next_button = null;
         } else {
-            $next_button = '<a href="/my/actionplan/' . $ks_next[0]['k_w_id'] . '/' . $ks_next[0]['c_id'] . '" class="btn ' . (count($k_ins) == 1 && !$show_written_input && !$is_incomplete ? 'btn-md btn-primary' : 'btn-xs btn-black') . '" data-toggle="tooltip" data-placement="top" title="Next intent-in-line is to ' . $ks_next[0]['c_outcome'] . '">Next-in-line <i class="fas fa-angle-right"></i></a>';
+            $next_button = '<a href="/my/actionplan/' . $trs_next[0]['k_w_id'] . '/' . $trs_next[0]['c_id'] . '" class="btn ' . (count($k_ins) == 1 && !$show_written_input && !$is_incomplete ? 'btn-md btn-primary' : 'btn-xs btn-black') . '" data-toggle="tooltip" data-placement="top" title="Next intent-in-line is to ' . $trs_next[0]['c_outcome'] . '">Next-in-line <i class="fas fa-angle-right"></i></a>';
         }
     }
 }
@@ -79,8 +79,8 @@ if (count($k_ins) == 0) {
         echo ' &nbsp;&nbsp;<i class="fas fa-clock"></i> ' . echo_hours($c['c_time_estimate']) . ' to complete';
     }
 
-    if (strlen($k_ins[0]['k_notes']) > 0) {
-        echo '<div style="margin:15px 0 0 3px;"><i class="fas fa-edit"></i> ' . echo_link(nl2br(htmlentities($k_ins[0]['k_notes']))) . '</div>';
+    if (strlen($k_ins[0]['tr_content']) > 0) {
+        echo '<div style="margin:15px 0 0 3px;"><i class="fas fa-edit"></i> ' . echo_link(nl2br(htmlentities($k_ins[0]['tr_content']))) . '</div>';
     }
 
     echo '</div>';
@@ -114,7 +114,7 @@ if (count($messages) > 0) {
 //Show completion options below messages:
 if (count($k_ins) == 1 && ($has_completion_info || (!intval($c['in_is_any']) && !$has_outs))) {
 
-    if (!$show_written_input && !$is_incomplete && strlen($k_ins[0]['k_notes']) > 0 /* For now only allow is complete */) {
+    if (!$show_written_input && !$is_incomplete && strlen($k_ins[0]['tr_content']) > 0 /* For now only allow is complete */) {
         //Show button to make text visible:
         echo '<div class="left-grey"><a href="javascript:void(0);" onclick="$(\'.toggle_text\').toggle();" class="toggle_text btn btn-xs btn-black"><i class="fas fa-edit"></i> ' . ($is_incomplete ? 'Add Written Answer' : 'Modify Answer') . '</a></div>';
     }
@@ -122,16 +122,16 @@ if (count($k_ins) == 1 && ($has_completion_info || (!intval($c['in_is_any']) && 
     echo '<div class="left-grey">';
     echo '<form method="POST" action="/my/update_k_save">';
 
-    echo '<input type="hidden" name="k_id"  value="' . $k_ins[0]['k_id'] . '" />';
+    echo '<input type="hidden" name="tr_id"  value="' . $k_ins[0]['tr_id'] . '" />';
     echo '<input type="hidden" name="is_from_messenger"  value="' . (isset($_GET['is_from_messenger']) ? 1 : 0) . '" />';
 
-    //echo '<input type="hidden" name="k_key" value="'.md5($k_ins[0]['k_id'].'k_key_SALT555').'" />'; //TODO Wire in for more security?!
+    //echo '<input type="hidden" name="k_key" value="'.md5($k_ins[0]['tr_id'].'k_key_SALT555').'" />'; //TODO Wire in for more security?!
 
     echo '<div class="toggle_text" style="' . ($show_written_input ? '' : 'display:none; ') . '">';
     if ($requirement_notes) {
         echo '<div style="color:#2b2b2b; font-size:0.7em; margin:0 !important; padding:0;"><i class="fas fa-exclamation-triangle"></i> ' . $requirement_notes . '</div>';
     }
-    echo '<textarea name="k_notes" class="form-control maxout" style="padding:5px !important; margin:0 !important;">' . $k_ins[0]['k_notes'] . '</textarea>';
+    echo '<textarea name="tr_content" class="form-control maxout" style="padding:5px !important; margin:0 !important;">' . $k_ins[0]['tr_content'] . '</textarea>';
     echo '</div>';
 
 
@@ -166,7 +166,7 @@ echo $next_button;
 
 //Give a skip option if not complete:
 if (count($k_ins) == 1 && in_array($k_ins[0]['k_status'], $this->config->item('k_status_incomplete'))) {
-    echo '<span class="skippable">or <a href="javascript:void(0);" onclick="confirm_skip(' . $w['w_id'] . ',' . $c['c_id'] . ',' . $k_ins[0]['k_id'] . ')">skip intent</a></span>';
+    echo '<span class="skippable">or <a href="javascript:void(0);" onclick="confirm_skip(' . $w['w_id'] . ',' . $c['c_id'] . ',' . $k_ins[0]['tr_id'] . ')">skip intent</a></span>';
 }
 
 ?>

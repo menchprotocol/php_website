@@ -248,7 +248,7 @@ class Cron extends CI_Controller
             ));
             echo '&nbsp;&nbsp;&nbsp;\'' . $array_key . '\' => array(<br />';
             foreach ($entities as $en) {
-                echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'' . strtolower($en['ur_notes']) . '\' => ' . $en['ur_child_u_id'] . ',<br />';
+                echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'' . strtolower($en['tr_content']) . '\' => ' . $en['ur_child_u_id'] . ',<br />';
             }
             echo '&nbsp;&nbsp;&nbsp;),<br />';
         }
@@ -584,9 +584,9 @@ class Cron extends CI_Controller
             array_push($user_ids_served, intval($w['u_id']));
 
             //See where this user is in their subscription:
-            $ks_next = $this->Db_model->k_next_fetch($w['w_id']);
+            $trs_next = $this->Db_model->k_next_fetch($w['w_id']);
 
-            if (!$ks_next) {
+            if (!$trs_next) {
                 //Should not happen, bug already reported:
                 return false;
             }
@@ -600,7 +600,7 @@ class Cron extends CI_Controller
             //Give them next step again:
             $this->Comm_model->k_next_fetch($w['w_id']);
 
-            //$ks_next[0]['c_outcome']
+            //$trs_next[0]['c_outcome']
         }
 
 

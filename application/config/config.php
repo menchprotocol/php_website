@@ -155,38 +155,6 @@ $config['object_statuses'] = array(
 
 
 
-    'en_communication' => array(
-        -1 => array(
-            's_name' => 'Unsubscribed',
-            's_fb_key' => null,
-            's_desc' => 'User was connected but requested to be unsubscribed, so we can no longer reach-out to them',
-            's_icon' => 'fas fa-minus-circle',
-        ),
-        0 => array(
-            's_name' => 'Not Connected',
-            's_fb_key' => null,
-            's_desc' => 'User is not yet connected to Mench on Facebook Messenger',
-            's_icon' => 'fas fa-empty-set',
-        ),
-        1 => array(
-            's_name' => 'Regular',
-            's_fb_key' => 'REGULAR',
-            's_desc' => 'User is connected and will be notified by sound & vibration for new Mench messages',
-            's_icon' => 'fas fa-bell',
-        ),
-        2 => array(
-            's_name' => 'Silent Push',
-            's_fb_key' => 'SILENT_PUSH',
-            's_desc' => 'User is connected and will be notified by on-screen notification only for new Mench messages',
-            's_icon' => 'fal fa-bell',
-        ),
-        3 => array(
-            's_name' => 'No Push',
-            's_fb_key' => 'NO_PUSH',
-            's_desc' => 'User is connected but will not be notified for new Mench messages except the red icon indicator on the Messenger app which would indicate the total number of new messages they have',
-            's_icon' => 'fas fa-bell-slash',
-        ),
-    ),
 
     'u' => array(
         -1 => array(
@@ -249,23 +217,6 @@ $config['object_statuses'] = array(
             's_icon' => 'fas fa-badge-check',
         ),
     ),
-    'tr_status' => array(
-        -1 => array(
-            's_name' => 'Archived',
-            's_desc' => 'Remove Intent link',
-            's_icon' => 'fas fa-trash-alt',
-        ),
-        1 => array(
-            's_name' => 'Published',
-            's_desc' => 'Intent link published and added to user Action Plans up-front',
-            's_icon' => 'fas fa-check-circle',
-        ),
-        2 => array(
-            's_name' => 'Conditional',
-            's_desc' => 'Intent added to Action Plans after parent intent is complete AND the user\'s % score falls within the defined min/max range',
-            's_icon' => 'fas fa-question-circle fa-spin',
-        ),
-    ),
 
     'in_is_any' => array(
         0 => array(
@@ -279,30 +230,6 @@ $config['object_statuses'] = array(
             's_icon' => 'fas fa-code-merge',
         ),
     ),
-
-    'i_status' => array(
-        -1 => array(
-            's_name' => 'Archived',
-            's_desc' => 'Message removed',
-            's_icon' => 'fas fa-trash-alt',
-        ),
-        1 => array(
-            's_name' => 'On-Start',
-            's_desc' => 'Initial messages with instructions on how to effectively complete this intent',
-            's_icon' => 'fas fa-bolt',
-        ),
-        2 => array(
-            's_name' => 'Extra Note',
-            's_desc' => 'Extra messages that student can receive, or else would be dripped in intervals after students complete intent to re-iterate key insights & retain learnings',
-            's_icon' => 'fas fa-comment-exclamation',
-        ),
-        3 => array(
-            's_name' => 'On-Complete',
-            's_desc' => 'Messages sent when intent is complete to re-iterate key insights & retain learnings',
-            's_icon' => 'fas fa-calendar-check',
-        ),
-    ),
-
 
     'k_status' => array(
         -2 => array(
@@ -362,27 +289,6 @@ $config['object_statuses'] = array(
             's_name' => 'Accomplished',
             's_desc' => 'Student realized their intent and made it real',
             's_icon' => 'fas fa-badge-check',
-        ),
-    ),
-
-    'u_fb_notification' => array(
-        1 => array(
-            's_name' => 'Regular',
-            's_fb_key' => 'REGULAR',
-            's_desc' => 'Triggers sound & vibration',
-            's_icon' => 'fas fa-bell',
-        ),
-        2 => array(
-            's_name' => 'Silent Push',
-            's_fb_key' => 'SILENT_PUSH',
-            's_desc' => 'Triggers on-screen notification only',
-            's_icon' => 'fal fa-bell',
-        ),
-        3 => array(
-            's_name' => 'No Push',
-            's_fb_key' => 'NO_PUSH',
-            's_desc' => 'Does not trigger any notification',
-            's_icon' => 'fas fa-bell-slash',
         ),
     ),
 
@@ -451,15 +357,19 @@ $config['engagement_references'] = array( //The core objects of the platform:
         'object_code' => 'en',
     ),
     'tr_en_child_id' => array(
-        'name' => 'Recipient Entity',
+        'name' => 'Child Entity',
         'object_code' => 'en',
     ),
-    'tr_en_type_id' => array(
-        'name' => 'Link Type Entity',
+    'tr_en_parent_id' => array(
+        'name' => 'Parent Entity',
         'object_code' => 'en',
     ),
     'tr_in_child_id' => array(
-        'name' => 'Intent',
+        'name' => 'Child Intent',
+        'object_code' => 'in',
+    ),
+    'tr_in_parent_id' => array(
+        'name' => 'Parent Intent',
         'object_code' => 'in',
     ),
 );

@@ -170,7 +170,7 @@ class Intents extends CI_Controller
 
 
         //Make the move:
-        $this->Db_model->cr_update(intval($_POST['tr_id']), array(
+        $this->Db_model->tr_update(intval($_POST['tr_id']), array(
             'cr_parent_u_id' => $udata['u_id'],
             'cr_timestamp' => date("Y-m-d H:i:s"),
             'cr_parent_c_id' => intval($_POST['to_c_id']),
@@ -382,7 +382,7 @@ class Intents extends CI_Controller
             //Log Engagement for New Intent Link:
             $this->Db_model->tr_create(array(
                 'tr_en_creator_id' => $udata['u_id'],
-                'tr_content' => readable_updates($intents[0], $c_update, 'c_'),
+                'tr_content' => echo_changelog($intents[0], $c_update, 'c_'),
                 'tr_metadata' => array(
                     'input_data' => $_POST,
                     'initial_data' => $intents[0],
@@ -473,36 +473,14 @@ class Intents extends CI_Controller
         $updated_recursively = $this->Db_model->c_update_tree($in__active_parents[0]['cr_parent_c_id'], $recursive_query);
 
 
-        //Now we can remove the link:
-        $this->Db_model->cr_update($_POST['tr_id'], array(
+        //Remove Transaction:
+        $this->Db_model->tr_update($_POST['tr_id'], array(
             'cr_parent_u_id' => $udata['u_id'],
             'cr_timestamp' => date("Y-m-d H:i:s"),
             'tr_status' => -1, //Archived
-        ));
-
-
-        //Did this intent become an orphan? Does it still have any other parents?
-        if (0 == count($this->Db_model->in_parents_fetch(array(
-                'cr_child_c_id' => $_POST['c_id'],
-                'tr_status' => 1,
-            )))) {
-            //We made this orphan!
-            $this->Db_model->c_update(intval($_POST['c_id']), array(
-                'c__is_orphan' => 1,
-            ));
-        }
-
-        //Log Engagement for Link removal:
-        $this->Db_model->tr_create(array(
-            'tr_en_creator_id' => $udata['u_id'],
-            'tr_en_type_id' => 4241, //Intent Link Archived
-            'tr_in_child_id' => intval($_POST['c_id']),
-            'e_tr_id' => intval($_POST['tr_id']),
-            'tr_metadata' => array(
-                'input_data' => $_POST,
-                'recursive_query' => $recursive_query,
-                'updated_recursively' => $updated_recursively,
-            ),
+        ), $udata['u_id'], array(
+            'recursive_query' => $recursive_query,
+            'updated_recursively' => $updated_recursively,
         ));
 
         //Show success:
@@ -556,7 +534,7 @@ class Intents extends CI_Controller
 
                 //Update them all:
                 foreach ($_POST['new_sort'] as $rank => $tr_id) {
-                    $this->Db_model->cr_update(intval($tr_id), array(
+                    $this->Db_model->tr_update(intval($tr_id), array(
                         'cr_parent_u_id' => $udata['u_id'],
                         'cr_timestamp' => date("Y-m-d H:i:s"),
                         'cr_child_rank' => intval($rank),
@@ -950,25 +928,12 @@ class Intents extends CI_Controller
         }
 
         //Now update the DB:
-        $this->Db_model->i_update(intval($_POST['i_id']), $to_update);
+        $this->Db_model->tr_update(intval($_POST['i_id']), $to_update, $udata['u_id']);
 
         //Re-fetch the message for display purposes:
         $new_messages = $this->Db_model->i_fetch(array(
             'i_id' => intval($_POST['i_id']),
         ), 0);
-
-        //Log engagement:
-        $this->Db_model->tr_create(array(
-            'tr_en_creator_id' => $udata['u_id'],
-            'tr_metadata' => array(
-                'input_data' => $_POST,
-                'initial_data' => $messages[0],
-                'after' => $new_messages[0],
-            ),
-            'tr_en_type_id' => 4242, //Message link edited
-            'e_i_id' => $messages[0]['i_id'],
-            'tr_in_child_id' => intval($_POST['c_id']),
-        ));
 
         //Print the challenge:
         return echo_json(array(
@@ -1014,11 +979,11 @@ class Intents extends CI_Controller
             } else {
 
                 //Now update the DB:
-                $this->Db_model->i_update(intval($_POST['i_id']), array(
+                $this->Db_model->tr_update(intval($_POST['i_id']), array(
                     'i_parent_u_id' => $udata['u_id'],
                     'i_timestamp' => date("Y-m-d H:i:s"),
                     'i_status' => -1, //Archived
-                ));
+                ), $udata['u_id']);
 
                 //Update intent count:
                 $this->db->query("UPDATE tb_intents SET c__this_messages=c__this_messages-1 WHERE c_id=" . intval($_POST['c_id']));
@@ -1026,18 +991,6 @@ class Intents extends CI_Controller
                 //Update tree:
                 $updated_recursively = $this->Db_model->c_update_tree(intval($_POST['c_id']), array(
                     'c__tree_messages' => -1,
-                ));
-
-                //Log engagement:
-                $this->Db_model->tr_create(array(
-                    'tr_en_creator_id' => $udata['u_id'],
-                    'tr_metadata' => array(
-                        'input_data' => $_POST,
-                        'initial_data' => $messages[0],
-                    ),
-                    'tr_en_type_id' => 4241, //Message Archived
-                    'e_i_id' => intval($messages[0]['i_id']),
-                    'tr_in_child_id' => intval($_POST['c_id']),
                 ));
 
                 echo_json(array(
@@ -1075,7 +1028,7 @@ class Intents extends CI_Controller
             foreach ($_POST['new_sort'] as $i_rank => $i_id) {
                 if (intval($i_id) > 0) {
                     $sort_count++;
-                    $this->Db_model->i_update($i_id, array(
+                    $this->Db_model->tr_update($i_id, array(
                         'i_rank' => intval($i_rank),
                     ));
                 }

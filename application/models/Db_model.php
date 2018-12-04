@@ -11,29 +11,44 @@ class Db_model extends CI_Model
     }
 
 
-    function en_dropdown_set($en_parent_id, $set_en_child_id)
+    function en_dropdown_set($en_parent_bucket_id, $en_master_id, $set_en_child_id, $tr_en_creator_id = 0)
     {
+
         /*
-         * Creates an artificial drop down menu with the children of a given entity to enable better data management
+         * Treats an entity child group as a drop down menu where:
+         *
+         *  $en_parent_bucket_id is the parent of the drop down
+         *  $en_master_id is the master entity ID that one of the children of $en_parent_bucket_id should be assigned (like a drop down)
+         *  $set_en_child_id is the new value to be assigned, which could also be null (meaning just remove all current values)
+         *
+         * This function is helpful to manage things like Master communication levels
+         *
          * */
 
-        $children = $this->config->item('en_child_'.$en_parent_id);
-        if($en_parent_id<1){
+        $children = $this->config->item('en_child_' . $en_parent_bucket_id);
+        if ($en_parent_bucket_id < 1) {
             return false;
-        } elseif(!$children){
+        } elseif (!$children) {
             return false;
-        } elseif($set_en_child_id>0 && !in_array($set_en_child_id, $children)){
+        } elseif ($set_en_child_id > 0 && !in_array($set_en_child_id, $children)) {
             return false;
         }
 
-        //First remove existing parent/child transactions:
+        //First remove existing parent/child transactions for this drop down:
         $current_transactions = $this->Db_model->tr_fetch(array(
-            'tr_en_parent_id' => $en_parent_id,
-            'tr_en_child_id IN ('.join(',', $children).')' => null, //Current children
+            'tr_en_parent_id' => $en_master_id,
+            'tr_en_child_id IN (' . join(',', $children) . ')' => null, //Current children
+            'tr_status >=' => 0,
         ), 200);
+        foreach ($current_transactions as $tr) {
+            $this->Db_model->tr_update($tr['tr_id'], array(
+                'tr_status' => -1, //Removed
+            ), $tr_en_creator_id);
+        }
+
 
         //Make sure $set_en_child_id belongs to parent if set (Could be null which means remove all)
-        if($set_en_child_id>0){
+        if ($set_en_child_id > 0) {
 
         } else {
             //Remove any links that might be the child:
@@ -45,17 +60,8 @@ class Db_model extends CI_Model
 
     function w_update($id, $update_columns)
     {
-        //Update first
         $this->db->where('w_id', $id);
         $this->db->update('tb_actionplans', $update_columns);
-        return $this->db->affected_rows();
-    }
-
-    function k_update($id, $update_columns)
-    {
-        //Update first
-        $this->db->where('k_id', $id);
-        $this->db->update('tb_actionplan_links', $update_columns);
         return $this->db->affected_rows();
     }
 
@@ -64,7 +70,7 @@ class Db_model extends CI_Model
     {
 
         //Two things need to be fetched:
-        $last_working_on_any = $this->Db_model->k_fetch(array(
+        $last_working_on_any = $this->Db_model->tr_fetch(array(
             'w_id' => $w_id,
             'w_status' => 1, //Active subscriptions
             'in_status >=' => 2,
@@ -76,7 +82,7 @@ class Db_model extends CI_Model
         ), 1);
 
         //We did not find it? Ok fetch the first one and replace:
-        $first_pending_all = $this->Db_model->k_fetch(array(
+        $first_pending_all = $this->Db_model->tr_fetch(array(
             'w_id' => $w_id,
             'w_status' => 1, //Active subscriptions
             'in_status >=' => 2,
@@ -98,11 +104,11 @@ class Db_model extends CI_Model
     }
 
 
-    function k_status_update($k_id, $new_k_status)
+    function k_status_update($tr_id, $new_k_status)
     {
 
         //Marks a single subscription intent as complete:
-        $this->Db_model->k_update($k_id, array(
+        $this->Db_model->tr_update($tr_id, array(
             'k_last_updated' => date("Y-m-d H:i:s"),
             'k_status' => $new_k_status, //Working On...
         ));
@@ -111,24 +117,24 @@ class Db_model extends CI_Model
 
             //It's complete!
             //Fetch full $k object
-            $ks = $this->Db_model->k_fetch(array(
-                'k_id' => $k_id,
+            $trs = $this->Db_model->tr_fetch(array(
+                'tr_id' => $tr_id,
             ), array('w', 'cr'));
-            if (count($ks) == 0) {
+            if (count($trs) == 0) {
                 return false;
             }
 
             //Dispatch all on-complete messages of $c_id
             $messages = $this->Db_model->i_fetch(array(
-                'i_c_id' => $ks[0]['cr_child_c_id'],
+                'i_c_id' => $trs[0]['cr_child_c_id'],
                 'i_status' => 3, //On complete messages
             ));
             if (count($messages) > 0) {
                 $send_messages = array();
                 foreach ($messages as $i) {
                     array_push($send_messages, array_merge($i, array(
-                        'e_w_id' => $ks[0]['w_id'],
-                        'tr_en_child_id' => $ks[0]['w_child_u_id'],
+                        'e_w_id' => $trs[0]['w_id'],
+                        'tr_en_child_id' => $trs[0]['w_child_u_id'],
                         'i_c_id' => $i['i_c_id'],
                     )));
                 }
@@ -142,33 +148,33 @@ class Db_model extends CI_Model
     }
 
 
-    function k_skip_recursive_down($w_id, $c_id, $k_id, $update_db = true)
+    function k_skip_recursive_down($w_id, $c_id, $tr_id, $update_db = true)
     {
 
         //User has requested to skip an intent starting from:
         $dwn_tree = $this->Db_model->k_recursive_fetch($w_id, $c_id, true);
-        $skip_ks = array_merge(array(intval($k_id)), $dwn_tree['k_flat']);
+        $skip_ks = array_merge(array(intval($tr_id)), $dwn_tree['k_flat']);
 
         //Now see how many should we actually skip based on current status:
-        $skippable_ks = $this->Db_model->k_fetch(array(
+        $skippable_ks = $this->Db_model->tr_fetch(array(
             'k_status IN (' . join(',', $this->config->item('k_status_incomplete')) . ')' => null, //incomplete
-            'k_id IN (' . join(',', $skip_ks) . ')' => null,
+            'tr_id IN (' . join(',', $skip_ks) . ')' => null,
         ), ($update_db ? array() : array('cr', 'cr_c_child')), array('k_rank' => 'ASC'));
 
         if ($update_db) {
 
             //Now start skipping:
             foreach ($skippable_ks as $k) {
-                $this->Db_model->k_status_update($k['k_id'], -1); //skip
+                $this->Db_model->k_status_update($k['tr_id'], -1); //skip
             }
 
             //There is a chance that the subscription might be now completed due to this skipping, lets check:
             /*
-            $ks = $this->Db_model->k_fetch(array(
-                'k_id' => $k_id,
+            $trs = $this->Db_model->tr_fetch(array(
+                'tr_id' => $tr_id,
             ), array('w','cr','cr_c_parent'));
-            if(count($ks)>0){
-                $this->Db_model->k_complete_recursive_up($ks[0],$ks[0],-1);
+            if(count($trs)>0){
+                $this->Db_model->k_complete_recursive_up($trs[0],$trs[0],-1);
             }
             */
 
@@ -184,7 +190,7 @@ class Db_model extends CI_Model
     {
         //$c_id is the chosen path for the options of $cr_parent_c_id
         //When a user chooses an answer to an ANY intent, this function would mark that answer as complete while marking all siblings as SKIPPED
-        $chosen_path = $this->Db_model->k_fetch(array(
+        $chosen_path = $this->Db_model->tr_fetch(array(
             'k_w_id' => $w_id,
             'cr_parent_c_id' => $cr_parent_c_id, //Fetch children of parent intent which are the siblings of current intent
             'cr_child_c_id' => $c_id, //The answer
@@ -194,7 +200,7 @@ class Db_model extends CI_Model
         if (count($chosen_path) == 1) {
 
             //Also fetch children to see if we requires any notes/url to mark as complete:
-            $path_requirements = $this->Db_model->k_fetch(array(
+            $path_requirements = $this->Db_model->tr_fetch(array(
                 'k_w_id' => $w_id,
                 'cr_parent_c_id' => $cr_parent_c_id, //Fetch children of parent intent which are the siblings of current intent
                 'cr_child_c_id' => $c_id, //The answer
@@ -231,14 +237,14 @@ class Db_model extends CI_Model
     {
 
         //Check if parent of this item is not started, because if not, we need to mark that as Working On:
-        $parent_ks = $this->Db_model->k_fetch(array(
+        $parent_ks = $this->Db_model->tr_fetch(array(
             'k_w_id' => $w['w_id'],
             'k_status' => 0, //skip intents that are not stared or working on...
             'cr_child_c_id' => $cr['cr_parent_c_id'],
         ), array('cr'));
         if (count($parent_ks) == 1) {
             //Update status (It might not work if it was working on AND new k_status=1)
-            $this->Db_model->k_status_update($parent_ks[0]['k_id'], 1);
+            $this->Db_model->k_status_update($parent_ks[0]['tr_id'], 1);
         }
 
         //See if current intent children are complete...
@@ -251,7 +257,7 @@ class Db_model extends CI_Model
             //$cr['cr_child_c_id'] is the chosen path that we're trying to find its siblings for the parent $cr['cr_parent_c_id']
 
             //First search for other options that need to be skipped because of this selection:
-            $none_chosen_paths = $this->Db_model->k_fetch(array(
+            $none_chosen_paths = $this->Db_model->tr_fetch(array(
                 'k_w_id' => $w['w_id'],
                 'cr_parent_c_id' => $cr['cr_parent_c_id'], //Fetch children of parent intent which are the siblings of current intent
                 'cr_child_c_id !=' => $cr['cr_child_c_id'], //NOT The answer (we need its siblings)
@@ -262,7 +268,7 @@ class Db_model extends CI_Model
             //This is the none chosen answers, if any:
             foreach ($none_chosen_paths as $k) {
                 //Skip this intent:
-                $total_skipped += count($this->Db_model->k_skip_recursive_down($w['w_id'], $k['c_id'], $k['k_id']));
+                $total_skipped += count($this->Db_model->k_skip_recursive_down($w['w_id'], $k['c_id'], $k['tr_id']));
             }
         }
 
@@ -276,9 +282,9 @@ class Db_model extends CI_Model
             //Does it have OUTs?
             if (count($dwn_tree['k_flat']) > 0) {
                 //We do have down, let's check their status:
-                $dwn_incomplete_ks = $this->Db_model->k_fetch(array(
+                $dwn_incomplete_ks = $this->Db_model->tr_fetch(array(
                     'k_status IN (' . join(',', $this->config->item('k_status_incomplete')) . ')' => null, //incomplete
-                    'k_id IN (' . join(',', $dwn_tree['k_flat']) . ')' => null, //All OUT links
+                    'tr_id IN (' . join(',', $dwn_tree['k_flat']) . ')' => null, //All OUT links
                 ), array('cr'));
                 if (count($dwn_incomplete_ks) > 0) {
                     //We do have some incomplete children, so this is not complete:
@@ -292,7 +298,7 @@ class Db_model extends CI_Model
         $new_k_status = (!is_null($force_k_status) ? $force_k_status : ($down_is_complete ? 2 : 1));
 
         //Update this intent:
-        $this->Db_model->k_status_update($cr['k_id'], $new_k_status);
+        $this->Db_model->k_status_update($cr['tr_id'], $new_k_status);
 
 
         //We are done with this branch if the status is any of the following:
@@ -306,11 +312,11 @@ class Db_model extends CI_Model
             $w_might_be_complete = true;
 
             //Now loop through each level and see whatssup:
-            foreach ($up_tree['k_flat'] as $parent_k_id) {
+            foreach ($up_tree['k_flat'] as $parent_tr_id) {
 
                 //Fetch details to see whatssup:
-                $parent_ks = $this->Db_model->k_fetch(array(
-                    'k_id' => $parent_k_id,
+                $parent_ks = $this->Db_model->tr_fetch(array(
+                    'tr_id' => $parent_tr_id,
                     'k_w_id' => $w['w_id'],
                     'in_status >=' => 2,
                     'k_status <' => 2, //Not completed in any way
@@ -326,7 +332,7 @@ class Db_model extends CI_Model
                     //If it's an ALL intent, we need to check to make sure all children are complete:
                     if (intval($parent_ks[0]['in_is_any'])) {
                         //We need a single immediate child to be complete:
-                        $complete_child_cs = $this->Db_model->k_fetch(array(
+                        $complete_child_cs = $this->Db_model->tr_fetch(array(
                             'k_w_id' => $w['w_id'],
                             'k_status NOT IN (' . join(',', $this->config->item('k_status_incomplete')) . ')' => null, //complete
                             'cr_parent_c_id' => $parent_ks[0]['cr_child_c_id'],
@@ -336,7 +342,7 @@ class Db_model extends CI_Model
                         }
                     } else {
                         //We need all immediate children to be complete (i.e. No incomplete)
-                        $incomplete_child_cs = $this->Db_model->k_fetch(array(
+                        $incomplete_child_cs = $this->Db_model->tr_fetch(array(
                             'k_w_id' => $w['w_id'],
                             'k_status IN (' . join(',', $this->config->item('k_status_incomplete')) . ')' => null, //incomplete
                             'cr_parent_c_id' => $parent_ks[0]['cr_child_c_id'],
@@ -348,10 +354,10 @@ class Db_model extends CI_Model
 
                     if ($is_complete) {
                         //Update this:
-                        $this->Db_model->k_status_update($parent_ks[0]['k_id'], (!is_null($force_k_status) ? $force_k_status : 2));
+                        $this->Db_model->k_status_update($parent_ks[0]['tr_id'], (!is_null($force_k_status) ? $force_k_status : 2));
                     } elseif ($parent_ks[0]['k_status'] == 0) {
                         //Status is not started, let's set to started:
-                        $this->Db_model->k_status_update($parent_ks[0]['k_id'], 1); //Started
+                        $this->Db_model->k_status_update($parent_ks[0]['tr_id'], 1); //Started
                         //So subscription cannot be complete:
                         $w_might_be_complete = false;
                     } else {
@@ -378,7 +384,7 @@ class Db_model extends CI_Model
 
                 if ($intents[0]['in_is_any']) {
                     //We need a single one to be completed:
-                    $complete_child_cs = $this->Db_model->k_fetch(array(
+                    $complete_child_cs = $this->Db_model->tr_fetch(array(
                         'k_w_id' => $intents[0]['w_id'],
                         'cr_parent_c_id' => $intents[0]['w_c_id'],
                         'k_status NOT IN (' . join(',', $this->config->item('k_status_incomplete')) . ')' => null, //complete
@@ -388,7 +394,7 @@ class Db_model extends CI_Model
                     }
                 } else {
                     //We need all to be completed:
-                    $incomplete_child_cs = $this->Db_model->k_fetch(array(
+                    $incomplete_child_cs = $this->Db_model->tr_fetch(array(
                         'k_w_id' => $intents[0]['w_id'],
                         'cr_parent_c_id' => $intents[0]['w_c_id'],
                         'k_status IN (' . join(',', $this->config->item('k_status_incomplete')) . ')' => null, //incomplete
@@ -472,7 +478,7 @@ class Db_model extends CI_Model
         $this->db->insert('tb_actionplan_links', $insert_columns);
 
         //Fetch inserted id:
-        $insert_columns['k_id'] = $this->db->insert_id();
+        $insert_columns['tr_id'] = $this->db->insert_id();
 
         return $insert_columns;
     }
@@ -930,80 +936,6 @@ class Db_model extends CI_Model
         return $insert_columns;
     }
 
-    function i_update($id, $update_columns)
-    {
-        $this->db->where('i_id', $id);
-        $this->db->update('tb_intent_messages', $update_columns);
-        return $this->db->affected_rows();
-    }
-
-
-    function k_fetch($match_columns, $join_objects = array(), $order_columns = array(), $limit = 0, $select = '*', $group_by = null)
-    {
-        //Fetch the target gems:
-        $this->db->select($select);
-        $this->db->from('tb_actionplan_links k');
-
-        if (in_array('cr', $join_objects)) {
-
-            $this->db->join('tb_intent_links cr', 'k.k_cr_id = tr_id');
-
-            if (in_array('cr_c_child', $join_objects)) {
-                //Also join with subscription row:
-                $this->db->join('tb_intents c', 'c_id = cr_child_c_id');
-            } elseif (in_array('cr_c_parent', $join_objects)) {
-                //Also join with subscription row:
-                $this->db->join('tb_intents c', 'c_id = cr_parent_c_id');
-            }
-        }
-
-        if (in_array('w', $join_objects)) {
-            //Also join with subscription row:
-            $this->db->join('tb_actionplans w', 'w.w_id = k.k_w_id');
-
-            if (in_array('w_c', $join_objects)) {
-                //Also join with subscription row:
-                $this->db->join('tb_intents c', 'c_id = w.w_c_id');
-            }
-            if (in_array('w_u', $join_objects)) {
-                //Also add subscriber and their profile picture:
-                $this->db->join('tb_entities u', 'u_id = w.w_child_u_id');
-                $this->db->join('tb_entity_urls x', 'x.x_id = u_cover_x_id', 'left'); //Fetch the cover photo if >0
-            }
-        }
-
-        foreach ($match_columns as $key => $value) {
-            if (!is_null($value)) {
-                $this->db->where($key, $value);
-            } else {
-                $this->db->where($key);
-            }
-        }
-
-        if ($group_by) {
-            $this->db->group_by($group_by);
-        }
-
-        if (count($order_columns) > 0) {
-            foreach ($order_columns as $key => $value) {
-                $this->db->order_by($key, $value);
-            }
-        } elseif (in_array('cr_c_child', $join_objects)) {
-            //Intent links are cached upon subscription and its important to keep the same order:
-            $this->db->order_by('k_cr_child_rank', 'ASC');
-        }
-
-        if ($limit > 0) {
-            $this->db->limit($limit);
-        }
-
-        $q = $this->db->get();
-        $results = $q->result_array();
-
-        //Return everything that was collected:
-        return $results;
-    }
-
     function w_fetch($match_columns, $join_objects = array(), $order_columns = array('w_c_rank' => 'ASC'), $limit = 0)
     {
         //Fetch the target gems:
@@ -1042,11 +974,11 @@ class Db_model extends CI_Model
                 //Count related items:
                 $results[$key]['w_stats'] = array(
                     //Fetch intent engagements cached per subscription:
-                    'k_count_undone' => count($this->Db_model->k_fetch(array(
+                    'k_count_undone' => count($this->Db_model->tr_fetch(array(
                         'k_w_id' => $value['w_id'],
                         'k_status IN (' . join(',', $this->config->item('k_status_incomplete')) . ')' => null, //incomplete
                     ))),
-                    'k_count_done' => count($this->Db_model->k_fetch(array(
+                    'k_count_done' => count($this->Db_model->tr_fetch(array(
                         'k_w_id' => $value['w_id'],
                         'k_status NOT IN (' . join(',', $this->config->item('k_status_incomplete')) . ')' => null, //complete
                     ))),
@@ -1212,13 +1144,6 @@ class Db_model extends CI_Model
     }
 
 
-    function cr_update($id, $update_columns, $column = 'tr_id')
-    {
-        $this->db->where($column, $id);
-        $this->db->update('tb_intent_links', $update_columns);
-        return $this->db->affected_rows();
-    }
-
 
     function max_value($table, $column, $match_columns)
     {
@@ -1283,8 +1208,8 @@ class Db_model extends CI_Model
             $insert_columns['ur_timestamp'] = date("Y-m-d H:i:s");
         }
 
-        if (!isset($insert_columns['ur_notes']) || strlen(trim($insert_columns['ur_notes'])) < 1) {
-            $insert_columns['ur_notes'] = null;
+        if (!isset($insert_columns['tr_content']) || strlen(trim($insert_columns['tr_content'])) < 1) {
+            $insert_columns['tr_content'] = null;
         }
 
         if (!isset($insert_columns['ur_status'])) {
@@ -1295,41 +1220,33 @@ class Db_model extends CI_Model
         $this->db->insert('tb_entity_links', $insert_columns);
 
         //Fetch inserted id:
-        $insert_columns['ur_id'] = $this->db->insert_id();
+        $insert_columns['tr_id'] = $this->db->insert_id();
 
         return $insert_columns;
     }
 
-    function ur_update($id, $update_columns)
-    {
-        //Update first
-        $this->db->where('ur_id', $id);
-        $this->db->update('tb_entity_links', $update_columns);
-        return $this->db->affected_rows();
-    }
 
-
-    function ur_search_place($child_u_id, $ur_notes_search, $parent_parent_u_id, $ur_notes_update = null)
+    function ur_search_place($child_u_id, $tr_content_search, $parent_parent_u_id, $tr_content_update = null)
     {
 
-        //This function would attempt to find a child of $parent_parent_u_id that its ur_notes=$ur_notes
+        //This function would attempt to find a child of $parent_parent_u_id that its tr_content=$tr_content
         //Once it finds it, then it would place it under that as long as it does not exist...
 
         //first make sure not already assigned:
         $found_parent = $this->Db_model->en_children_fetch(array(
             'ur_parent_u_id' => $parent_parent_u_id,
-            'LOWER(ur_notes)' => trim(strtolower($ur_notes_search)),
+            'LOWER(tr_content)' => trim(strtolower($tr_content_search)),
         ));
 
         if (count($found_parent) > 0) {
-            return $this->Db_model->ur_place($child_u_id, $found_parent[0]['u_id'], $ur_notes_update);
+            return $this->Db_model->ur_place($child_u_id, $found_parent[0]['u_id'], $tr_content_update);
         } else {
             //Unable to locate the parent:
             return false;
         }
     }
 
-    function ur_place($child_u_id, $parent_u_id, $ur_notes = null)
+    function ur_place($child_u_id, $parent_u_id, $tr_content = null)
     {
 
         //This function would attempt to place $child_u_id as a child of $parent_u_id
@@ -1346,22 +1263,22 @@ class Db_model extends CI_Model
             //We have it already! We might need to update it:
             if ($existing[0]['ur_status'] == -1) {
                 $update_array['ur_status'] = 1; //Bring back to life
-                $update_array['ur_notes'] = $ur_notes; //Assign notes anyways since this was deleted!
-            } elseif (strlen($existing[0]['ur_notes']) == 0) {
+                $update_array['tr_content'] = $tr_content; //Assign notes anyways since this was deleted!
+            } elseif (strlen($existing[0]['tr_content']) == 0) {
                 //We can update its notes since there is nothing there:
-                $update_array['ur_notes'] = $ur_notes;
+                $update_array['tr_content'] = $tr_content;
             } else {
                 //We can't do anything since its an active entity link with a note
                 return false;
             }
 
             //Still here? Update then:
-            $this->Db_model->ur_update($existing[0]['ur_id'], $update_array);
+            $this->Db_model->tr_update($existing[0]['tr_id'], $update_array);
 
             //Log engagement:
             $this->Db_model->tr_create(array(
                 'tr_en_type_id' => 4242, //entity link note modification
-                'e_ur_id' => $existing[0]['ur_id'],
+                'e_tr_id' => $existing[0]['tr_id'],
                 'tr_metadata' => array(
                     'initial_data' => $existing[0],
                     'after' => $update_array,
@@ -1376,7 +1293,7 @@ class Db_model extends CI_Model
             $new_ur = $this->Db_model->ur_create(array(
                 'ur_child_u_id' => $child_u_id,
                 'ur_parent_u_id' => $parent_u_id,
-                'ur_notes' => $ur_notes,
+                'tr_content' => $tr_content,
             ));
 
             return true;
@@ -1662,11 +1579,43 @@ class Db_model extends CI_Model
     }
 
 
-    function tr_update($id, $update_columns)
+    function tr_update($id, $update_columns, $tr_en_creator_id = 0, $append_metadata = array())
     {
+
+        //Fetch transaction before updating:
+        $current_trs = $this->Db_model->tr_fetch(array(
+            'tr_id' => $id,
+        ), 1);
+        if (count($current_trs) < 1) {
+            //This was an invalid Transaction ID:
+            return false;
+        }
+
+        //Try to update Transaction:
         $this->db->where('tr_id', $id);
         $this->db->update('table_ledger', $update_columns);
-        return $this->db->affected_rows();
+        $affected_rows = $this->db->affected_rows();
+
+        //Log changes if successful:
+        if ($affected_rows) {
+            $this->Db_model->tr_create(array(
+                'tr_tr_parent_id' => $id, //Parent Transaction ID
+                'tr_en_creator_id' => $tr_en_creator_id, //Give the credit
+                'tr_en_type_id' => (isset($update_columns['tr_status']) && $update_columns['tr_status'] < 0 ? 4241 /*Removed*/ : 4242 /*Modified*/),
+                'tr_content' => echo_changelog($current_trs[0], $update_columns, 'tr_'),
+                'tr_metadata' => array_merge(array(
+                    'before' => $current_trs[0],
+                    'after' => $update_columns,
+                ), $append_metadata),
+                //Copy others:
+                'tr_en_parent_id' => $current_trs[0]['tr_en_parent_id'],
+                'tr_en_child_id' => $current_trs[0]['tr_en_child_id'],
+                'tr_in_parent_id' => $current_trs[0]['tr_in_parent_id'],
+                'tr_in_child_id' => $current_trs[0]['tr_in_child_id'],
+            ));
+        }
+
+        return $affected_rows;
     }
 
 
@@ -1915,24 +1864,25 @@ class Db_model extends CI_Model
 
 
         //Try to auto detect user:
-        if (!isset($insert_columns['tr_en_creator_id']) || $insert_columns['tr_en_creator_id'] <= 0) {
-            //Try to fetch entity ID from user session:
+        if (!isset($insert_columns['tr_en_creator_id']) || $insert_columns['tr_en_creator_id'] < 1) {
+            //Attempt to fetch creator ID from session:
             $entity_data = $this->session->userdata('user');
             if (isset($entity_data['u_id']) && intval($entity_data['u_id']) > 0) {
                 $insert_columns['tr_en_creator_id'] = $entity_data['u_id'];
             } else {
-                //Mench Personal Assistant is the default creator if not set!
-                $insert_columns['tr_en_creator_id'] = 2738;
+                //Do not issue credit to anyone:
+                $insert_columns['tr_en_creator_id'] = 0;
             }
         }
 
         //Set some defaults:
         if (!isset($insert_columns['tr_content'])) {
             $insert_columns['tr_content'] = null;
-        } elseif(is_int($insert_columns['tr_content']) && intval($insert_columns['tr_content'])>0) {
-            //Also store an integer cache copy for faster searching/indexing:
+        } elseif (is_int($insert_columns['tr_content']) && intval($insert_columns['tr_content']) > 0) {
+            //Store integer separately for faster query access later on:
             $insert_columns['tr_int_content'] = intval($insert_columns['tr_content']);
         }
+
         if (!isset($insert_columns['tr_timestamp'])) {
             //Time with milliseconds:
             $t = microtime(true);
@@ -1961,7 +1911,7 @@ class Db_model extends CI_Model
             'tr_status >=' => 2, //Must be published+
             'en_status >=' => 2, //Must be published+
         ), 1, array('en_child'));
-        if(count($award_coins)>0){
+        if (count($award_coins) > 0) {
             //Yes, we have to issue coins:
             $insert_columns['tr_coins'] = doubleval($award_coins[0]['tr_content']);
         }
@@ -1974,13 +1924,13 @@ class Db_model extends CI_Model
         $insert_columns['tr_id'] = $this->db->insert_id();
 
         //All good huh?
-        if($insert_columns['tr_id']<1){
+        if ($insert_columns['tr_id'] < 1) {
             return false;
         }
 
 
         //Now we might need to cache if this is a Video, Audio, Image or File URL:
-        if(in_array($insert_columns['tr_en_type_id'], array(4258,4259,4260,4261))){
+        if (in_array($insert_columns['tr_en_type_id'], array(4258, 4259, 4260, 4261))) {
             $this->Db_model->tr_create(array(
                 'tr_status' => 0, //New
                 'tr_en_type_id' => 4299, //Media Uploaded
@@ -1995,58 +1945,53 @@ class Db_model extends CI_Model
             ));
         }
 
-        //TODO Notify subscribers for this event:
 
+        //Notify subscribers for this event
+        //TODO update to new system
+        foreach ($this->config->item('notify_admins') as $admin_u_id => $subscription) {
 
-        if ($insert_columns['tr_id']>0 && 0) {
-
-            //Individual subscriptions:
-            foreach ($this->config->item('notify_admins') as $admin_u_id => $subscription) {
-
-                //Do not notify about own actions:
-                if (intval($insert_columns['tr_en_creator_id']) == $admin_u_id) {
-                    continue;
-                }
-
-                if (in_array($insert_columns['tr_en_type_id'], $subscription['subscription'])) {
-
-                    //Just do this one:
-                    if (!isset($engagements[0])) {
-                        //Fetch Engagement Data:
-                        $engagements = $this->Db_model->tr_fetch(array(
-                            'tr_id' => $insert_columns['tr_id']
-                        ));
-                    }
-
-                    //Did we find it? We should have:
-                    if (isset($engagements[0])) {
-
-                        $subject = 'Notification: ' . trim(strip_tags($engagements[0]['c_outcome'])) . ' - ' . (isset($engagements[0]['u_full_name']) ? $engagements[0]['u_full_name'] : 'System');
-
-                        //Compose email:
-                        $html_message = null; //Start
-
-                        if (strlen($engagements[0]['tr_content']) > 0) {
-                            $html_message .= '<div>' . format_tr_content($engagements[0]['tr_content']) . '</div><br />';
-                        }
-
-                        //Lets go through all references to see what is there:
-                        foreach ($this->config->item('engagement_references') as $engagement_field => $er) {
-                            if (intval($engagements[0][$engagement_field]) > 0) {
-                                //Yes we have a value here:
-                                $html_message .= '<div>' . $er['name'] . ': ' . echo_object($er['object_code'], $engagements[0][$engagement_field], $engagement_field, null) . '</div>';
-                            }
-                        }
-
-                        //Append ID:
-                        $html_message .= '<div>Engagement ID: <a href="https://mench.com/adminpanel/li_list_blob/' . $engagements[0]['tr_id'] . '">#' . $engagements[0]['tr_id'] . '</a></div>';
-
-                        //Send email:
-                        $this->Comm_model->send_email($subscription['admin_emails'], $subject, $html_message);
-                    }
-                }
+            //Do not notify about own actions:
+            if (intval($insert_columns['tr_en_creator_id']) == $admin_u_id) {
+                continue;
             }
 
+            if (in_array($insert_columns['tr_en_type_id'], $subscription['subscription'])) {
+
+                //Just do this one:
+                if (!isset($engagements[0])) {
+                    //Fetch Engagement Data:
+                    $engagements = $this->Db_model->tr_fetch(array(
+                        'tr_id' => $insert_columns['tr_id']
+                    ));
+                }
+
+                //Did we find it? We should have:
+                if (isset($engagements[0])) {
+
+                    $subject = 'Notification: ' . trim(strip_tags($engagements[0]['c_outcome'])) . ' - ' . (isset($engagements[0]['u_full_name']) ? $engagements[0]['u_full_name'] : 'System');
+
+                    //Compose email:
+                    $html_message = null; //Start
+
+                    if (strlen($engagements[0]['tr_content']) > 0) {
+                        $html_message .= '<div>' . format_tr_content($engagements[0]['tr_content']) . '</div><br />';
+                    }
+
+                    //Lets go through all references to see what is there:
+                    foreach ($this->config->item('engagement_references') as $engagement_field => $er) {
+                        if (intval($engagements[0][$engagement_field]) > 0) {
+                            //Yes we have a value here:
+                            $html_message .= '<div>' . $er['name'] . ': ' . echo_object($er['object_code'], $engagements[0][$engagement_field], $engagement_field, null) . '</div>';
+                        }
+                    }
+
+                    //Append ID:
+                    $html_message .= '<div>Engagement ID: <a href="https://mench.com/adminpanel/li_list_blob/' . $engagements[0]['tr_id'] . '">#' . $engagements[0]['tr_id'] . '</a></div>';
+
+                    //Send email:
+                    $this->Comm_model->send_email($subscription['admin_emails'], $subject, $html_message);
+                }
+            }
         }
 
         //Return:
@@ -2461,8 +2406,7 @@ class Db_model extends CI_Model
                 ((!$intents[0]['c__tree_contents'] && count($intents[0]['c1__tree_contents']) < 1) || (serialize($intents[0]['c1__tree_contents']) == $intents[0]['c__tree_contents'])) &&
                 $intents[0]['c1__tree_all_count'] == $intents[0]['in__tree_count'] &&
                 $intents[0]['c1__this_messages'] == $intents[0]['c__this_messages'] &&
-                $intents[0]['c1__tree_messages'] == $intents[0]['c__tree_messages'] &&
-                intval($intents[0]['c__is_orphan']) == 0
+                $intents[0]['c1__tree_messages'] == $intents[0]['c__tree_messages']
             )) {
 
                 //Something was not up to date, let's update:
@@ -2477,12 +2421,11 @@ class Db_model extends CI_Model
                     'c__tree_experts' => (count($intents[0]['c1__tree_experts']) > 0 ? serialize($intents[0]['c1__tree_experts']) : null),
                     'c__tree_trainers' => (count($intents[0]['c1__tree_trainers']) > 0 ? serialize($intents[0]['c1__tree_trainers']) : null),
                     'c__tree_contents' => (count($intents[0]['c1__tree_contents']) > 0 ? serialize($intents[0]['c1__tree_contents']) : null),
-                    'c__is_orphan' => 0, //It cannot be orphan since its part of the main tree
                 ));
 
                 $immediate_children['db_updated']++;
 
-                array_push($immediate_children['db_queries'], '[' . $c_id . '] Seconds:' . intval($intents[0]['c__tree_max_hours']) . '=>' . intval($intents[0]['c1__tree_max_hours']) . ' / All Count:' . $intents[0]['in__tree_count'] . '=>' . $intents[0]['c1__tree_all_count'] . ' / Message:' . $intents[0]['c__this_messages'] . '=>' . $intents[0]['c1__this_messages'] . ' / Tree Message:' . $intents[0]['c__tree_messages'] . '=>' . $intents[0]['c1__tree_messages'] . ' / Orphan:' . intval($intents[0]['c__is_orphan']) . '=>0 (' . $intents[0]['c_outcome'] . ')');
+                array_push($immediate_children['db_queries'], '[' . $c_id . '] Seconds:' . intval($intents[0]['c__tree_max_hours']) . '=>' . intval($intents[0]['c1__tree_max_hours']) . ' / All Count:' . $intents[0]['in__tree_count'] . '=>' . $intents[0]['c1__tree_all_count'] . ' / Message:' . $intents[0]['c__this_messages'] . '=>' . $intents[0]['c1__this_messages'] . ' / Tree Message:' . $intents[0]['c__tree_messages'] . '=>' . $intents[0]['c1__tree_messages'] . ' (' . $intents[0]['c_outcome'] . ')');
 
             }
         }
@@ -2526,7 +2469,7 @@ class Db_model extends CI_Model
 
         } else {
             //Recursive item:
-            $intents = $this->Db_model->k_fetch(array(
+            $intents = $this->Db_model->tr_fetch(array(
                 'k_w_id' => $w_id,
                 'k_cr_id' => $parent_c['tr_id'],
             ), array('cr', ($fetch_children ? 'cr_c_child' : 'cr_c_parent')));
@@ -2542,12 +2485,12 @@ class Db_model extends CI_Model
         array_push($immediate_children['c_flat'], intval($c_id));
         if (isset($intents[0]['tr_id'])) {
             array_push($immediate_children['cr_flat'], intval($intents[0]['tr_id']));
-            array_push($immediate_children['k_flat'], intval($intents[0]['k_id']));
+            array_push($immediate_children['k_flat'], intval($intents[0]['tr_id']));
         }
 
 
         //A recursive function to fetch all Tree for a given intent, either upwards or downwards
-        $child_cs = $this->Db_model->k_fetch(array(
+        $child_cs = $this->Db_model->tr_fetch(array(
             'k_w_id' => $w_id,
             'in_status >=' => 2,
             ($fetch_children ? 'cr_parent_c_id' : 'cr_child_c_id') => $c_id,
@@ -2636,16 +2579,13 @@ class Db_model extends CI_Model
         if (!$obj_id) {
             //Clear this index before re-creating it from scratch:
             $search_index->clearIndex();
-
-            //Reset the local algolia IDs for this:
-            $this->db->query("UPDATE " . $algolia_local_tables[$obj] . " SET " . $obj . "_algolia_id=0 WHERE " . $obj . "_algolia_id>0");
         }
 
         //Prepare universal query limits:
         if ($obj_id) {
             $limits[$obj . '_id'] = $obj_id;
         } else {
-            $limits[$obj . '_status >='] = 0; //Intents and Entities that are status New or higher should be part of the index!
+            $limits[$obj . '_status >='] = 0; //Intents and Entities that are status New+
         }
 
         //Fetch item(s) for updates:
@@ -2653,14 +2593,13 @@ class Db_model extends CI_Model
             $items = $this->Db_model->in_fetch($limits);
         } elseif ($obj == 'en') {
             $items = $this->Db_model->en_fetch($limits);
-            $parent_names = array(); //To cache names of parents
         }
 
         //Go through selection and update:
         if (count($items) == 0) {
             return array(
                 'status' => 0,
-                'message' => 'No items found for [' . $obj . '] with id [' . $obj_id . ']',
+                'message' => 'No items found for [' . $obj . ']',
             );
         }
 
@@ -2671,8 +2610,12 @@ class Db_model extends CI_Model
             $new_item = array();
 
             //Is this already indexed?
-            if ($item[$obj . '_algolia_id'] > 0) {
-                $new_item['objectID'] = $item[$obj . '_algolia_id'];
+            if ($item[$obj . '_algolia_id']>0 && $obj_id) {
+                $current_algolia_id = fetch_metadata($item[$obj.'_metadata'], $obj.'__algolia_id');
+                if($current_algolia_id){
+                    //Update existing object:
+                    $new_item['objectID'] = $current_algolia_id;
+                }
             }
 
             if ($obj == 'en') {
@@ -2753,21 +2696,9 @@ class Db_model extends CI_Model
                     foreach ($child_cs as $c) {
                         array_push($new_item['_tags'], 'in' . $c['c_id']);
                     }
-                    //Sync orphan status if not appropriate:
-                    if (intval($item['c__is_orphan'])) {
-                        $this->Db_model->c_update($item['c_id'], array(
-                            'c__is_orphan' => 0,
-                        ));
-                    }
                 } else {
                     //No parents!
                     array_push($new_item['_tags'], 'isorphan');
-                    //Sync orphan status if not appropriate:
-                    if (!intval($item['c__is_orphan'])) {
-                        $this->Db_model->c_update($item['c_id'], array(
-                            'c__is_orphan' => 1,
-                        ));
-                    }
                 }
             }
 

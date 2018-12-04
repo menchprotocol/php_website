@@ -702,7 +702,7 @@ function echo_w_console($w)
         //Loop through parents and show those that have u_icon set:
         foreach ($w['en__parents'] as $in_u) {
             if (strlen($in_u['u_icon']) > 0) {
-                $w_title .= ' &nbsp;<span data-toggle="tooltip" title="' . $in_u['u_full_name'] . (strlen($in_u['ur_notes']) > 0 ? ': ' . $in_u['ur_notes'] : '') . '" data-placement="top" class="u_icon_child_' . $in_u['u_id'] . '">' . $in_u['u_icon'] . '</span>';
+                $w_title .= ' &nbsp;<span data-toggle="tooltip" title="' . $in_u['u_full_name'] . (strlen($in_u['tr_content']) > 0 ? ': ' . $in_u['tr_content'] : '') . '" data-placement="top" class="u_icon_child_' . $in_u['u_id'] . '">' . $in_u['u_icon'] . '</span>';
             }
         }
 
@@ -800,8 +800,8 @@ function echo_k_console($k)
     $ui .= $k['u_full_name'];
     $ui .= echo_status('w_status', $k['w_status'], true, 'top') . ' ' . $k['c_outcome'];
 
-    if (strlen($k['k_notes']) > 0) {
-        $ui .= '<div class="e-msg ">' . $k['k_notes'] . '</div>';
+    if (strlen($k['tr_content']) > 0) {
+        $ui .= '<div class="e-msg ">' . $k['tr_content'] . '</div>';
     }
 
     $ui .= '</div>';
@@ -837,8 +837,8 @@ function echo_k($k, $is_parent, $in_is_any_tr_in_parent_id = 0)
     }
 
     $ui .= ' ' . $k['c_outcome'];
-    if (strlen($k['k_notes']) > 0) {
-        $ui .= ' <i class="fas fa-edit"></i> ' . htmlentities($k['k_notes']);
+    if (strlen($k['tr_content']) > 0) {
+        $ui .= ' <i class="fas fa-edit"></i> ' . htmlentities($k['tr_content']);
     }
 
     $ui .= '</a>';
@@ -988,18 +988,6 @@ function echo_pa_lets()
     $options = array(
         'You can give me a command by starting a sentence with "Lets", for example: [Lets land a dream job], [Lets book new interviews] or [Lets create a great resume].',
         'You can command me using "Lets", for example: [Lets create a cover letter] or [Lets do better at interviews].', //[Lets get hired],
-    );
-    return $options[rand(0, (count($options) - 1))];
-}
-
-function echo_skip_statements()
-{
-    //TODO Not in use for now, maybe remove?
-    $options = array(
-        'You may also skip and do none of the above, even though I would not recommend that.',
-        'You can skip and move on, which I don\'t think is a good idea.',
-        'You may also skip this entire section and move on, which I would vote against.',
-        'There is a skip option as well...',
     );
     return $options[rand(0, (count($options) - 1))];
 }
@@ -1268,6 +1256,28 @@ function echo_hour_range($c, $micro = false)
 }
 
 
+function echo_changelog($before, $after, $remove_prefix)
+{
+    $message = null;
+    foreach ($after as $key => $after_value) {
+        if (isset($before[$key]) && !($before[$key] == $after_value)) {
+            //Change detected!
+            if ($message) {
+                $message .= "\n";
+            }
+            $message .= '- Updated ' . ucwords(str_replace('_', ' ', str_replace($remove_prefix, '', $key))) . ' from [' . strip_tags($before[$key]) . '] to [' . strip_tags($after_value) . ']';
+        }
+    }
+
+    if (!$message) {
+        //No changes detected!
+        $message = 'Nothing updated!';
+    }
+
+    return $message;
+}
+
+
 function echo_object($object, $id, $engagement_field, $button_type)
 {
 
@@ -1519,14 +1529,14 @@ function echo_c($c, $level, $c_parent_id = 0, $is_parent = false)
     );
 
     //Fetch K stats:
-    $k_stat_fetch = $CI->Db_model->k_fetch(array(
+    $k_stat_fetch = $CI->Db_model->tr_fetch(array(
         'cr_child_c_id' => $c['c_id'],
-    ), array('cr'), array(), 0, 'k_status, COUNT(k_id) as cr_count', 'k_status');
-    foreach ($k_stat_fetch as $ks) {
-        $k_stats['k_all'] += $ks['cr_count'];
+    ), array('cr'), array(), 0, 'k_status, COUNT(tr_id) as cr_count', 'k_status');
+    foreach ($k_stat_fetch as $trs) {
+        $k_stats['k_all'] += $trs['cr_count'];
         //Calculate real completion:
-        if ($ks['k_status'] >= 2) {
-            $k_stats['k_completed'] += $ks['cr_count'];
+        if ($trs['k_status'] >= 2) {
+            $k_stats['k_completed'] += $trs['cr_count'];
         }
     }
 
@@ -1710,16 +1720,16 @@ function echo_u($u, $level, $is_parent = false)
     $CI =& get_instance();
     $udata = $CI->session->userdata('user');
     $status_index = $CI->config->item('object_statuses');
-    $ur_id = (isset($u['ur_id']) ? $u['ur_id'] : 0);
+    $tr_id = (isset($u['tr_id']) ? $u['tr_id'] : 0);
     $ui = null;
 
 
-    $ui .= '<div id="u_' . $u['u_id'] . '" entity-id="' . $u['u_id'] . '" entity-email="' . $u['u_email'] . '" entity-status="' . $u['u_status'] . '" has-password="' . (strlen($u['u_password']) > 0 ? 1 : 0) . '" is-parent="' . ($is_parent ? 1 : 0) . '" class="list-group-item u-item u__' . $u['u_id'] . ' ' . ($level == 1 ? 'top_entity' : 'ur_' . $u['ur_id']) . '">';
+    $ui .= '<div id="u_' . $u['u_id'] . '" entity-id="' . $u['u_id'] . '" entity-email="' . $u['u_email'] . '" entity-status="' . $u['u_status'] . '" has-password="' . (strlen($u['u_password']) > 0 ? 1 : 0) . '" is-parent="' . ($is_parent ? 1 : 0) . '" class="list-group-item u-item u__' . $u['u_id'] . ' ' . ($level == 1 ? 'top_entity' : 'ur_' . $u['tr_id']) . '">';
 
     //Hidden fields to store dynamic value!
     $ui .= '<span class="u_icon_val_' . $u['u_id'] . ' hidden">' . $u['u_icon'] . '</span>';
-    if ($ur_id > 0) {
-        $ui .= '<span class="ur_notes_val_' . $ur_id . ' hidden">' . $u['ur_notes'] . '</span>';
+    if ($tr_id > 0) {
+        $ui .= '<span class="tr_content_val_' . $tr_id . ' hidden">' . $u['tr_content'] . '</span>';
     }
 
 
@@ -1749,7 +1759,7 @@ function echo_u($u, $level, $is_parent = false)
     $ui .= '<' . (count($messages) > 0 ? 'a href="#loadmessages-' . $u['u_id'] . '" onclick="u_load_messages(' . $u['u_id'] . ')" class="badge badge-secondary"' : 'span class="badge badge-secondary grey"') . ' style="width:40px;">' . (count($messages) > 0 ? '<span class="btn-counter">' . count($messages) . '</span>' : '') . '<i class="fas fa-comment-dots"></i></' . (count($messages) > 0 ? 'a' : 'span') . '>';
 
 
-    $ui .= '<a href="#loadmodify-' . $u['u_id'] . '-' . $ur_id . '" onclick="u_load_modify(' . $u['u_id'] . ',' . $ur_id . ')" class="badge badge-secondary" style="margin:-2px -6px 0 2px; width:40px;">' . ($u['u__e_score'] > 0 ? '<span class="btn-counter" data-toggle="tooltip" data-placement="left" title="Engagement Score">' . echo_number($u['u__e_score']) . '</span>' : '') . '<i class="fas fa-cog" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i></a> &nbsp;';
+    $ui .= '<a href="#loadmodify-' . $u['u_id'] . '-' . $tr_id . '" onclick="u_load_modify(' . $u['u_id'] . ',' . $tr_id . ')" class="badge badge-secondary" style="margin:-2px -6px 0 2px; width:40px;">' . ($u['u__e_score'] > 0 ? '<span class="btn-counter" data-toggle="tooltip" data-placement="left" title="Engagement Score">' . echo_number($u['u__e_score']) . '</span>' : '') . '<i class="fas fa-cog" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i></a> &nbsp;';
 
     $ui .= '<a class="badge badge-secondary" href="/entities/' . $u['u_id'] . '" style="display:inline-block; margin-right:6px; width:40px; margin-left:1px;">' . (isset($u['u__children_count']) && $u['u__children_count'] > 0 ? '<span class="btn-counter ' . ($level == 1 ? 'li-children-count' : '') . '">' . $u['u__children_count'] . '</span>' : '') . '<i class="' . ($is_parent ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90') . '"></i></a>';
 
@@ -1773,7 +1783,7 @@ function echo_u($u, $level, $is_parent = false)
 
         }
 
-        //All of the following could be merged/migrated to ur_notes once that structure is introduced, but for now let's give visibility:
+        //All of the following could be merged/migrated to tr_content once that structure is introduced, but for now let's give visibility:
         if ($u['u_country_code']) {
             $u['u_country_code'] = strtoupper($u['u_country_code']);
             $countries_all = $CI->config->item('countries_all');
@@ -1836,14 +1846,14 @@ function echo_u($u, $level, $is_parent = false)
     //Loop through parents and show those that have u_icon set:
     foreach ($u['en__parents'] as $in_u) {
         if (strlen($in_u['u_icon']) > 0) {
-            $ui .= ' &nbsp;<a href="/entities/' . $in_u['u_id'] . '" data-toggle="tooltip" title="' . $in_u['u_full_name'] . (strlen($in_u['ur_notes']) > 0 ? ' = ' . $in_u['ur_notes'] : '') . '" data-placement="top" class="u_icon_child_' . $in_u['u_id'] . '">' . $in_u['u_icon'] . '</a>';
+            $ui .= ' &nbsp;<a href="/entities/' . $in_u['u_id'] . '" data-toggle="tooltip" title="' . $in_u['u_full_name'] . (strlen($in_u['tr_content']) > 0 ? ' = ' . $in_u['tr_content'] : '') . '" data-placement="top" class="u_icon_child_' . $in_u['u_id'] . '">' . $in_u['u_icon'] . '</a>';
         }
     }
 
     //Does it have a UR value?
-    if ($ur_id > 0) {
+    if ($tr_id > 0) {
         //show the link box for updating:
-        $ui .= ' <span class="ur__notes ur__notes_' . $ur_id . '">' . echo_link($u['ur_notes']) . '</span>';
+        $ui .= ' <span class="ur__notes ur__notes_' . $tr_id . '">' . echo_link($u['tr_content']) . '</span>';
 
         //How about a URL in the message?
         /*
