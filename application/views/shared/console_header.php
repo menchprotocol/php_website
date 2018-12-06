@@ -84,7 +84,7 @@ if (!isset($_GET['skip_header'])) {
                         <table style="width: 100%; border:0; padding:0; margin:0;">
                             <tr>
                                 <td style="width:40px;"><img
-                                            src="//theme.zdassets.com/theme_assets/2085893/cabe5e69ca093a3e91eadfb22bc5bee28d66cdeb.png"/></td>
+                                            src="/img/mench_white.png"/></td>
                                 <td><input type="text" class="algolia_search" id="console_search" data-lpignore="true"
                                            placeholder="Search Entities/Intents"></td>
                             </tr>
@@ -114,7 +114,7 @@ if (!isset($_GET['skip_header'])) {
                                         class="icon-left"><i class="fas fa-shield"></i></span> Admin</a></li>
                         <li class="extra-toggle" style="display: none;"><a href="/entities/<?= $udata['u_id'] ?>"><span
                                         class="icon-left"><i class="fas fa-user-circle"></i></span> Me</a></li>
-                        <li class="extra-toggle" style="display: none;"><a href="/logout"><span class="icon-left"><i
+                        <li class="extra-toggle" style="display: none;"><a href="/logout"><span class="icon-left"><i`
                                             class="fas fa-power-off"></i></span> Logout</a></li>
                     </ul>
                 </div>
