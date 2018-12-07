@@ -574,7 +574,7 @@ function extract_references($prefix, $message)
     return $matches;
 }
 
-function message_validation($i_status, $i_message, $i_c_id)
+function message_validation($i_status, $tr_content, $i_c_id)
 {
 
 
@@ -582,9 +582,9 @@ function message_validation($i_status, $i_message, $i_c_id)
     $tr_content_max = $CI->config->item('tr_content_max');
 
     //Extract details from this message:
-    $urls = extract_urls($i_message);
-    $u_ids = extract_references('@', $i_message);
-    $c_ids = extract_references('#', $i_message);
+    $urls = extract_urls($tr_content);
+    $u_ids = extract_references('@', $tr_content);
+    $c_ids = extract_references('#', $tr_content);
 
 
     if (!isset($i_status) || !(intval($i_status) == $i_status)) {
@@ -592,27 +592,27 @@ function message_validation($i_status, $i_message, $i_c_id)
             'status' => 0,
             'message' => 'Missing Status',
         );
-    } elseif (!isset($i_message) || strlen($i_message) <= 0) {
+    } elseif (!isset($tr_content) || strlen($tr_content) <= 0) {
         return array(
             'status' => 0,
             'message' => 'Missing Message',
         );
-    } elseif (substr_count($i_message, '/firstname') > 1) {
+    } elseif (substr_count($tr_content, '/firstname') > 1) {
         return array(
             'status' => 0,
             'message' => '/firstname can be used only once',
         );
-    } elseif (strlen($i_message) > $tr_content_max) {
+    } elseif (strlen($tr_content) > $tr_content_max) {
         return array(
             'status' => 0,
             'message' => 'Max is ' . $tr_content_max . ' Characters',
         );
-    } elseif ($i_message != strip_tags($i_message)) {
+    } elseif ($tr_content != strip_tags($tr_content)) {
         return array(
             'status' => 0,
             'message' => 'HTML Code is not allowed',
         );
-    } elseif (!preg_match('//u', $i_message)) {
+    } elseif (!preg_match('//u', $tr_content)) {
         return array(
             'status' => 0,
             'message' => 'Message must be UTF8',
@@ -637,7 +637,7 @@ function message_validation($i_status, $i_message, $i_c_id)
             'status' => 0,
             'message' => 'You must reference an entity before being able to affirm an intent',
         );
-    } elseif ((count($u_ids) == 0 && count($urls) == 0) && substr_count($i_message, '/slice') > 0) {
+    } elseif ((count($u_ids) == 0 && count($urls) == 0) && substr_count($tr_content, '/slice') > 0) {
         return array(
             'status' => 0,
             'message' => '/slice command required an entity reference [@' . count($u_ids) . ']',
@@ -739,15 +739,15 @@ function message_validation($i_status, $i_message, $i_c_id)
         $u_ids[0] = $url_create['en']['u_id'];
 
         //Replace the URL with this new @entity in message:
-        $i_message = str_replace($urls[0], '@' . $u_ids[0], $i_message);
+        $tr_content = str_replace($urls[0], '@' . $u_ids[0], $tr_content);
 
     }
 
     //Do we have any commands?
-    if (substr_count($i_message, '/slice') > 0) {
+    if (substr_count($tr_content, '/slice') > 0) {
 
         //Validate the format of this command:
-        $slice_times = explode(':', one_two_explode('/slice:', ' ', $i_message), 2);
+        $slice_times = explode(':', one_two_explode('/slice:', ' ', $tr_content), 2);
         if (intval($slice_times[0]) < 1 || intval($slice_times[1]) < 1 || strlen($slice_times[0]) != strlen(intval($slice_times[0])) || strlen($slice_times[1]) != strlen(intval($slice_times[1]))) {
             //Not valid format!
             return array(
@@ -787,7 +787,7 @@ function message_validation($i_status, $i_message, $i_c_id)
         'status' => 1,
         'message' => 'Success',
         //Return cleaned data:
-        'i_message' => trim($i_message), //It might have been modified if URL was added
+        'tr_content' => trim($tr_content), //It might have been modified if URL was added
         'i_u_id' => (count($u_ids) > 0 ? $u_ids[0] : 0), //Referencing an entity?
     );
 }

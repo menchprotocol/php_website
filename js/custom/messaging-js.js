@@ -1,5 +1,5 @@
 function add_first_name() {
-    $('#i_message' + c_id).insertAtCaret('/firstname ');
+    $('#tr_content' + c_id).insertAtCaret('/firstname ');
     changeMessage();
 }
 
@@ -7,7 +7,7 @@ function add_first_name() {
 //Count text area characters:
 function changeMessage() {
     //Update count:
-    var len = $('#i_message' + c_id).val().length;
+    var len = $('#tr_content' + c_id).val().length;
     if (len > max_length) {
         $('#charNum' + c_id).addClass('overload').text(len);
     } else {
@@ -118,7 +118,7 @@ $(document).ready(function () {
     });
 
     //Watch for message creation:
-    $('#i_message' + c_id).keydown(function (e) {
+    $('#tr_content' + c_id).keydown(function (e) {
         if (e.ctrlKey && e.keyCode == 13) {
             msg_create();
         }
@@ -335,7 +335,7 @@ function message_save_updates(i_id, initial_i_status) {
     $.post("/intents/i_modify", {
 
         i_id: i_id,
-        i_message: $("#ul-nav-" + i_id + " textarea").val(),
+        tr_content: $("#ul-nav-" + i_id + " textarea").val(),
         initial_i_status: initial_i_status,
         i_status: new_i_status,
         c_id: c_id,
@@ -405,7 +405,7 @@ function message_form_lock() {
     $('#add_message_' + i_status + '_' + c_id).attr('href', '#');
 
     $('.add-msg' + c_id).addClass('is-working');
-    $('#i_message' + c_id).prop("disabled", true);
+    $('#tr_content' + c_id).prop("disabled", true);
     $('.remove_loading').hide();
 }
 
@@ -426,7 +426,7 @@ function message_form_unlock(result) {
     }
 
     //Reset Focus:
-    $("#i_message" + c_id).prop("disabled", false).focus();
+    $("#tr_content" + c_id).prop("disabled", false).focus();
 
     //What was the result?
     if (result.status) {
@@ -511,7 +511,7 @@ function save_attachment(droppedFiles, uploadType) {
 
 function msg_create() {
 
-    if ($('#i_message' + c_id).val().length == 0) {
+    if ($('#tr_content' + c_id).val().length == 0) {
         alert('ERROR: Enter a message');
         return false;
     }
@@ -523,7 +523,7 @@ function msg_create() {
     $.post("/intents/i_create", {
 
         c_id: c_id, //Synonymous
-        i_message: $('#i_message' + c_id).val(),
+        tr_content: $('#tr_content' + c_id).val(),
         i_status: $('#i_status_focus').val(),
 
     }, function (data) {
@@ -538,7 +538,7 @@ function msg_create() {
             $('.msg-badge-' + c_id).removeClass('grey');
 
             //Reset input field:
-            $("#i_message" + c_id).val("");
+            $("#tr_content" + c_id).val("");
             changeMessage();
         } else {
             //Show error:

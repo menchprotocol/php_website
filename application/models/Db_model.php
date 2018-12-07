@@ -148,9 +148,9 @@ class Db_model extends CI_Model
     }
 
 
-    function k_skip_recursive_down($w_id, $c_id, $tr_id, $update_db = true)
+    function k_skip_recursive_down($tr_id, $update_db = true)
     {
-
+        //TODO Readjust the removal of $w_id, $c_id variables
         //User has requested to skip an intent starting from:
         $dwn_tree = $this->Db_model->k_recursive_fetch($w_id, $c_id, true);
         $skip_ks = array_merge(array(intval($tr_id)), $dwn_tree['k_flat']);
@@ -268,7 +268,7 @@ class Db_model extends CI_Model
             //This is the none chosen answers, if any:
             foreach ($none_chosen_paths as $k) {
                 //Skip this intent:
-                $total_skipped += count($this->Db_model->k_skip_recursive_down($w['w_id'], $k['c_id'], $k['tr_id']));
+                $total_skipped += count($this->Db_model->k_skip_recursive_down($k['tr_id']));
             }
         }
 
@@ -427,13 +427,13 @@ class Db_model extends CI_Model
                                 'tr_en_child_id' => $intents[0]['w_child_u_id'],
                                 'tr_in_child_id' => $intents[0]['w_c_id'],
                                 'e_w_id' => $intents[0]['w_id'],
-                                'i_message' => 'Congratulations for completing your ' . echo_ordinal((count($completed_ws) + 1)) . ' Subscription 🎉 Over time I will keep sharing new insights (based on my new training data) that could help you to ' . $intents[0]['c_outcome'] . ' 🙌 You can, at any time, stop updates on your subscriptions by saying "quit".',
+                                'tr_content' => 'Congratulations for completing your ' . echo_ordinal((count($completed_ws) + 1)) . ' Subscription 🎉 Over time I will keep sharing new insights (based on my new training data) that could help you to ' . $intents[0]['c_outcome'] . ' 🙌 You can, at any time, stop updates on your subscriptions by saying "quit".',
                             ),
                             array(
                                 'tr_en_child_id' => $intents[0]['w_child_u_id'],
                                 'tr_in_child_id' => $intents[0]['w_c_id'],
                                 'e_w_id' => $intents[0]['w_id'],
-                                'i_message' => 'How else can I help you ' . $this->config->item('primary_in_name') . '? ' . echo_pa_lets(),
+                                'tr_content' => 'How else can I help you ' . $this->config->item('primary_in_name') . '? ' . echo_pa_lets(),
                             ),
                         ));
 
@@ -532,7 +532,7 @@ class Db_model extends CI_Model
                 'c__tree_max_hours' => $default_new_seconds,
             ));
 
-            //Log Engagement for New Intent:
+            //Log transaction for New Intent:
             $this->Db_model->tr_create(array(
                 'tr_en_creator_id' => $parent_u_id,
                 'tr_content' => 'Intent [' . $new_c['c_outcome'] . '] created',
@@ -685,7 +685,7 @@ class Db_model extends CI_Model
                     array(
                         'tr_en_child_id' => $insert_columns['w_child_u_id'],
                         'tr_in_child_id' => $insert_columns['w_c_id'],
-                        'i_message' => 'Subscription failed',
+                        'tr_content' => 'Subscription failed',
                     ),
                 ));
 
@@ -903,7 +903,7 @@ class Db_model extends CI_Model
         }
 
         //Other required fields:
-        if (detect_missing_columns($insert_columns, array('i_message'))) {
+        if (detect_missing_columns($insert_columns, array('tr_content'))) {
             return false;
         }
 
@@ -1275,7 +1275,7 @@ class Db_model extends CI_Model
             //Still here? Update then:
             $this->Db_model->tr_update($existing[0]['tr_id'], $update_array);
 
-            //Log engagement:
+            //Log transaction:
             $this->Db_model->tr_create(array(
                 'tr_en_type_id' => 4242, //entity link note modification
                 'e_tr_id' => $existing[0]['tr_id'],
@@ -1416,7 +1416,7 @@ class Db_model extends CI_Model
                 'u_full_name' => $u_full_name,
             ));
 
-            //Log Engagement new entity:
+            //Log transaction new entity:
             $this->Db_model->tr_create(array(
                 'tr_en_creator_id' => $udata['u_id'],
                 'tr_en_child_id' => $new_content['u_id'],
@@ -1864,7 +1864,7 @@ class Db_model extends CI_Model
 
 
         //Try to auto detect user:
-        if (!isset($insert_columns['tr_en_creator_id']) || $insert_columns['tr_en_creator_id'] < 1) {
+        if (!isset($insert_columns['tr_en_creator_id'])) {
             //Attempt to fetch creator ID from session:
             $entity_data = $this->session->userdata('user');
             if (isset($entity_data['u_id']) && intval($entity_data['u_id']) > 0) {

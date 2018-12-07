@@ -246,7 +246,7 @@ class Bot extends CI_Controller
                     $en = $this->Comm_model->fb_identify_activate($im['sender']['id']);
 
                     //Note: Never seen this happen yet!
-                    //Log engagement:
+                    //Log transaction:
                     $this->Db_model->tr_create(array(
                         'tr_metadata' => $json_data,
                         'tr_en_type_id' => 4266, //Messenger Optin

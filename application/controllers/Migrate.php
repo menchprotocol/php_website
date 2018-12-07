@@ -125,11 +125,11 @@ class Migrate extends CI_Controller
 
 
             //convert active messages:
-            $i_messages = $this->Db_model->i_fetch(array(
+            $tr_contents = $this->Db_model->i_fetch(array(
                 'i_c_id' => $c['c_id'],
                 'i_status >=' => 1, //active
             ));
-            foreach ($i_messages as $i) {
+            foreach ($tr_contents as $i) {
                 $stats['messages']++;
                 $stats['total_links']++;
                 //Create new link
@@ -192,7 +192,8 @@ class Migrate extends CI_Controller
             'set_icons' => 0,
             'entity_links' => 0,
             'entity_urls' => 0,
-            'action_plans' => 0,
+            'entity_urls_matched' => 0,
+            'action_plan_intent' => 0,
             'total_links' => 0,
         );
 
@@ -350,11 +351,12 @@ class Migrate extends CI_Controller
                 }
 
                 //Fetch the appropriate parent using current patterns:
-                $tr_en_parent_id = 1326; //Reference
+                $tr_en_parent_id = 1326; //URL Reference
                 foreach($matching_patterns as $match){
                     if(substr_count($x['x_url'], $match['ur_notes'])>0){
                         //yes we found a pattern match:
                         $tr_en_parent_id = $match['u_id'];
+                        $stats['entity_urls_matched']++;
                         break;
                     }
                 }
@@ -362,28 +364,55 @@ class Migrate extends CI_Controller
                 //Insert as URL relation:
                 $stats['entity_urls']++;
                 $stats['total_links']++;
+
                 //Create new URL Link
                 $this->Db_model->tr_create(array(
                     'tr_timestamp' => $x['x_timestamp'],
-                    'tr_en_type_id' => $x_type_conv[$x['x_type']], //Depends on content
                     'tr_en_creator_id' => $x['x_parent_u_id'],
+                    'tr_en_type_id' => $x_type_conv[$x['x_type']], //Depends on content
                     'tr_en_parent_id' => $tr_en_parent_id,
                     'tr_en_child_id' => $x['x_u_id'],
                     'tr_content' => $x['x_url'],
                 ));
 
+                //Do we have an attachment? Save that too:
+                if($x['x_fb_att_id']>0){
+                    $stats['total_links']++;
+                    $this->Db_model->tr_create(array(
+                        'tr_timestamp' => $x['x_timestamp'],
+                        'tr_en_creator_id' => 0, //System
+                        'tr_en_type_id' => 4319, //Number Link
+                        'tr_en_parent_id' => 4505, //Facebook Attachment Upload API
+                        'tr_en_child_id' => $x['x_u_id'],
+                        'tr_content' => $x['x_fb_att_id'],
+                    ));
+                }
+
             }
 
 
             //Convert Action Plans for this user:
+            $action_plan_rank = 1; //We add items in order...
             $ws = $this->Db_model->w_fetch(array(
-                'u_id' => $u['u_id'],
+                'w_child_u_id' => $u['u_id'],
                 'w_status >=' => 1,
                 'c_status >=' => 1,
-                'w_last_heard >=' => date("Y-m-d H:i:s", (time() + ($bot_settings['reminder_frequency_min'] * 60))),
             ), array('in', 'en'), array(
-                'w_last_heard' => 'ASC', //Fetch users who have not been served the longest, so we can pay attention to them...
-            ), $bot_settings['max_per_run']);
+                'w_id' => 'ASC',
+            ), 999);
+
+            foreach($ws as $w){
+                //Insert top of the action plan item that is being added:
+                $stats['action_plan_intent']++;
+                $stats['total_links']++;
+                $this->Db_model->tr_create(array(
+                    'tr_timestamp' => $w['w_timestamp'],
+                    'tr_en_creator_id' => $u['u_id'],
+                    'tr_en_type_id' => 4235, //Action Plan Intent Add
+                    'tr_en_child_id' => $u['u_id'], //Belongs to this user
+                    'tr_in_parent_id' => 0, //This indicates that this is a top-level intent in the Action Plan
+                ));
+            }
 
 
         }
@@ -434,7 +463,6 @@ class Migrate extends CI_Controller
 
             //Personal Assistant links
             40 => 4273, //Log console tip read
-            //0 => 4235, //Log new Action Plan intent [to be implemented]
             7703 => 4275, //Log subscription intent search
             28 => 4276, //Log user email sent
             6 => 4277, //Log message received
@@ -445,9 +473,6 @@ class Migrate extends CI_Controller
             55 => 4282, //Log my account access
             32 => 4283, //Log action plan access
             33 => 4242, //Log action plan intent completion [Link updated]
-            7730 => 4284, //Log Skip Initiation
-            7731 => 4285, //Log Skip Cancellation
-            7732 => 4286, //Log Skip Confirmation
             7718 => 4287, //Log unrecognized message
 
             //Platform Operations Links:

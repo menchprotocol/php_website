@@ -288,7 +288,7 @@ class My extends CI_Controller
     function skip_tree($w_id, $c_id, $tr_id)
     {
         //Start skipping:
-        $total_skipped = count($this->Db_model->k_skip_recursive_down($w_id, $c_id, $tr_id));
+        $total_skipped = count($this->Db_model->k_skip_recursive_down($tr_id));
 
         //Draft message:
         $message = '<div class="alert alert-success" role="alert">' . $total_skipped . ' insight' . echo__s($total_skipped) . ' successfully skipped.</div>';

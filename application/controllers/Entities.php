@@ -357,7 +357,7 @@ class Entities extends CI_Controller
             }
         }
 
-        //Log engagement:
+        //Log transaction:
         $this->Db_model->tr_create(array(
             'tr_en_creator_id' => $udata['u_id'], //The user that updated the account
             'tr_content' => echo_changelog($u_current[0], $u_update, 'u_'),
@@ -503,7 +503,7 @@ class Entities extends CI_Controller
         }
 
 
-        //Log engagement
+        //Log transaction
         $this->Db_model->tr_create(array(
             'tr_en_creator_id' => $entities[0]['u_id'],
             'tr_metadata' => $entities[0],
@@ -539,7 +539,7 @@ class Entities extends CI_Controller
 
     function logout()
     {
-        //Log engagement:
+        //Log transaction:
         $udata = $this->session->userdata('user');
         $this->Db_model->tr_create(array(
             'tr_en_creator_id' => (isset($udata['u_id']) && $udata['u_id'] > 0 ? $udata['u_id'] : 0),

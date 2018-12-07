@@ -191,7 +191,7 @@ class Intents extends CI_Controller
         ));
 
 
-        //Log engagement:
+        //Log transaction:
         $this->Db_model->tr_create(array(
             'tr_en_creator_id' => $udata['u_id'],
             'tr_metadata' => array(
@@ -379,7 +379,7 @@ class Intents extends CI_Controller
             //Update Algolia object:
             $this->Db_model->algolia_sync('in', $_POST['c_id']);
 
-            //Log Engagement for New Intent Link:
+            //Log transaction for New Intent Link:
             $this->Db_model->tr_create(array(
                 'tr_en_creator_id' => $udata['u_id'],
                 'tr_content' => echo_changelog($intents[0], $c_update, 'c_'),
@@ -547,7 +547,7 @@ class Intents extends CI_Controller
                     'tr_status' => 1,
                 ));
 
-                //Log Engagement:
+                //Log transaction:
                 $this->Db_model->tr_create(array(
                     'tr_en_creator_id' => $udata['u_id'],
                     'tr_content' => 'Sorted child intents for [' . $parent_intents[0]['c_outcome'] . ']',
@@ -765,7 +765,7 @@ class Intents extends CI_Controller
             'i_parent_u_id' => $udata['u_id'],
             'i_u_id' => $url_create['en']['u_id'],
             'i_c_id' => intval($_POST['c_id']),
-            'i_message' => '@' . $url_create['en']['u_id'],
+            'tr_content' => '@' . $url_create['en']['u_id'],
             'i_status' => $_POST['i_status'],
             'i_rank' => 1 + $this->Db_model->max_value('tb_intent_messages', 'i_rank', array(
                     'i_status' => $_POST['i_status'],
@@ -813,7 +813,7 @@ class Intents extends CI_Controller
         }
 
         //Make sure message is all good:
-        $validation = message_validation($_POST['i_status'], $_POST['i_message'], $_POST['c_id']);
+        $validation = message_validation($_POST['i_status'], $_POST['tr_content'], $_POST['c_id']);
         if (!$validation['status']) {
             //There was some sort of an error:
             return echo_json($validation);
@@ -830,7 +830,7 @@ class Intents extends CI_Controller
                     'i_c_id' => intval($_POST['c_id']),
                 )),
             //Referencing attributes:
-            'i_message' => $validation['i_message'],
+            'tr_content' => $validation['tr_content'],
             'i_u_id' => $validation['i_u_id'],
         ));
 
@@ -872,7 +872,7 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Message ID',
             ));
-        } elseif (!isset($_POST['i_message'])) {
+        } elseif (!isset($_POST['tr_content'])) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Message',
@@ -898,7 +898,7 @@ class Intents extends CI_Controller
         }
 
         //Make sure message is all good:
-        $validation = message_validation($_POST['i_status'], $_POST['i_message'], $_POST['c_id']);
+        $validation = message_validation($_POST['i_status'], $_POST['tr_content'], $_POST['c_id']);
 
         if (!$validation['status']) {
             //There was some sort of an error:
@@ -912,7 +912,7 @@ class Intents extends CI_Controller
             'i_parent_u_id' => $udata['u_id'],
             'i_timestamp' => date("Y-m-d H:i:s"),
             //Could have been modified:
-            'i_message' => $validation['i_message'],
+            'tr_content' => $validation['tr_content'],
             'i_u_id' => $validation['i_u_id'],
         );
 
@@ -1034,7 +1034,7 @@ class Intents extends CI_Controller
                 }
             }
 
-            //Log engagement:
+            //Log transaction:
             $this->Db_model->tr_create(array(
                 'tr_en_creator_id' => $udata['u_id'],
                 'tr_metadata' => $_POST,

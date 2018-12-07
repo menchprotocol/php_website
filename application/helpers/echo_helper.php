@@ -177,7 +177,7 @@ function echo_i($i, $u_full_name = null, $fb_format = false)
         $fb_message = array();
     } else {
         //HTML format:
-        $i['i_message'] = nl2br($i['i_message']);
+        $i['tr_content'] = nl2br($i['tr_content']);
         $ui .= '<div class="i_content">';
     }
 
@@ -217,11 +217,11 @@ function echo_i($i, $u_full_name = null, $fb_format = false)
             if ($fb_format) {
 
                 //Show an option to open action plan:
-                $i['i_message'] = str_replace('@' . $i['i_u_id'], $us[0]['u_full_name'], $i['i_message']);
+                $i['tr_content'] = str_replace('@' . $i['i_u_id'], $us[0]['u_full_name'], $i['tr_content']);
 
-                if (substr_count($i['i_message'], '/slice') > 0) {
-                    $time_range = explode(':', one_two_explode('/slice:', ' ', $i['i_message']), 2);
-                    $i['i_message'] = str_replace('/slice:' . $time_range[0] . ':' . $time_range[1], '', $i['i_message']);
+                if (substr_count($i['tr_content'], '/slice') > 0) {
+                    $time_range = explode(':', one_two_explode('/slice:', ' ', $i['tr_content']), 2);
+                    $i['tr_content'] = str_replace('/slice:' . $time_range[0] . ':' . $time_range[1], '', $i['tr_content']);
                 }
 
             } else {
@@ -232,9 +232,9 @@ function echo_i($i, $u_full_name = null, $fb_format = false)
                 $button_url = '/entities/' . $us[0]['u_id'] . '?skip_header=1'; //To loadup the entity
                 $embed_html_code = null;
 
-                if (substr_count($i['i_message'], '/slice') > 0) {
+                if (substr_count($i['tr_content'], '/slice') > 0) {
 
-                    $time_range = explode(':', one_two_explode('/slice:', ' ', $i['i_message']), 2);
+                    $time_range = explode(':', one_two_explode('/slice:', ' ', $i['tr_content']), 2);
 
                     //Try finding a compatible URL for slicing:
                     foreach ($us[0]['u__urls'] as $x) {
@@ -245,7 +245,7 @@ function echo_i($i, $u_full_name = null, $fb_format = false)
                     }
 
                     //Remove slice command:
-                    $i['i_message'] = str_replace('/slice:' . $time_range[0] . ':' . $time_range[1], '', $i['i_message']);
+                    $i['tr_content'] = str_replace('/slice:' . $time_range[0] . ':' . $time_range[1], '', $i['tr_content']);
 
 
                 } elseif (!$is_focus_entity) {
@@ -276,20 +276,20 @@ function echo_i($i, $u_full_name = null, $fb_format = false)
                 if ($is_intent || ($is_entity && !$is_focus_entity)) {
 
                     //HTML format:
-                    $i['i_message'] = str_replace('@' . $i['i_u_id'], ' <a href="javascript:void(0);" onclick="url_modal(\'' . $button_url . '\')">' . $us[0]['u_full_name'] . '</a>', $i['i_message']);
+                    $i['tr_content'] = str_replace('@' . $i['i_u_id'], ' <a href="javascript:void(0);" onclick="url_modal(\'' . $button_url . '\')">' . $us[0]['u_full_name'] . '</a>', $i['tr_content']);
 
                 } else {
 
                     //HTML format:
                     //TODO Fetch text description from parent entity notes
                     $entity_title = (0 ? '<span data-toggle="tooltip" title="' . 'notes here' . '" data-placement="top" class="underdot">' . $us[0]['u_full_name'] . '</span>' : $us[0]['u_full_name']);
-                    $i['i_message'] = str_replace('@' . $i['i_u_id'], $entity_title . ' ', $i['i_message']);
+                    $i['tr_content'] = str_replace('@' . $i['i_u_id'], $entity_title . ' ', $i['tr_content']);
 
                 }
 
                 //Did we have an embed code to be attached?
                 if ($embed_html_code) {
-                    $i['i_message'] .= $embed_html_code;
+                    $i['tr_content'] .= $embed_html_code;
                 }
 
             }
@@ -299,32 +299,32 @@ function echo_i($i, $u_full_name = null, $fb_format = false)
 
 
     //Do we have any commands?
-    if ($u_full_name && substr_count($i['i_message'], '/firstname') > 0) {
+    if ($u_full_name && substr_count($i['tr_content'], '/firstname') > 0) {
         //Tweak the name:
         $command = '/firstname';
-        $i['i_message'] = str_replace('/firstname', one_two_explode('', ' ', $u_full_name), $i['i_message']);
+        $i['tr_content'] = str_replace('/firstname', one_two_explode('', ' ', $u_full_name), $i['tr_content']);
     }
 
 
-    if (substr_count($i['i_message'], '/open_actionplan') > 0 && isset($i['e_w_id']) && $i['e_w_id'] > 0 && isset($i['i_c_id']) && $i['i_c_id'] > 0) {
+    if (substr_count($i['tr_content'], '/open_actionplan') > 0 && isset($i['e_w_id']) && $i['e_w_id'] > 0 && isset($i['i_c_id']) && $i['i_c_id'] > 0) {
         $button_title = 'Open in 🚩Action Plan';
         $command = '/open_actionplan';
         $button_url = 'https://mench.com/my/actionplan/' . $i['e_w_id'] . '/' . $i['i_c_id'] . '?is_from_messenger=1';
     }
 
 
-    if (substr_count($i['i_message'], '/typing') > 0) {
+    if (substr_count($i['tr_content'], '/typing') > 0) {
         $command = '/typing';
         if ($fb_format) {
             //TODO include sender actions https://developers.facebook.com/docs/messenger-platform/send-messages/sender-actions/
         } else {
             //HTML format:
-            $i['i_message'] = str_replace($command, '<img src="/img/typing.gif" height="35px" />', $i['i_message']);
+            $i['tr_content'] = str_replace($command, '<img src="/img/typing.gif" height="35px" />', $i['tr_content']);
         }
     }
 
 
-    if (substr_count($i['i_message'], '/resetpassurl') > 0 && isset($i['tr_en_child_id'])) {
+    if (substr_count($i['tr_content'], '/resetpassurl') > 0 && isset($i['tr_en_child_id'])) {
         //append their My Account Button/URL:
         $timestamp = time();
         $button_title = '👉 Set New Password';
@@ -339,7 +339,7 @@ function echo_i($i, $u_full_name = null, $fb_format = false)
         if ($fb_format) {
 
             //Remove the command from the message:
-            $i['i_message'] = trim(str_replace($command, '', $i['i_message']));
+            $i['tr_content'] = trim(str_replace($command, '', $i['tr_content']));
 
             //Return Messenger array:
             $fb_message = array(
@@ -347,7 +347,7 @@ function echo_i($i, $u_full_name = null, $fb_format = false)
                     'type' => 'template',
                     'payload' => array(
                         'template_type' => 'button',
-                        'text' => $i['i_message'],
+                        'text' => $i['tr_content'],
                         'buttons' => array(
                             array(
                                 'title' => $button_title,
@@ -368,11 +368,11 @@ function echo_i($i, $u_full_name = null, $fb_format = false)
 
             if ($button_url && $button_title) {
                 //HTML format replaces the button with the command:
-                $i['i_message'] = trim(str_replace($command, '<div class="msg" style="padding-top:15px;"><a href="' . $button_url . '" target="_blank"><b>' . $button_title . '</b></a></div>', $i['i_message']));
+                $i['tr_content'] = trim(str_replace($command, '<div class="msg" style="padding-top:15px;"><a href="' . $button_url . '" target="_blank"><b>' . $button_title . '</b></a></div>', $i['tr_content']));
             }
 
             //Return HTML code:
-            $ui .= '<div class="msg">' . $i['i_message'] . '</div>';
+            $ui .= '<div class="msg">' . $i['tr_content'] . '</div>';
 
         }
 
@@ -384,7 +384,7 @@ function echo_i($i, $u_full_name = null, $fb_format = false)
 
             //Messenger array:
             $fb_message = array(
-                'text' => $i['i_message'],
+                'text' => $i['tr_content'],
                 'metadata' => 'system_logged', //Prevents from duplicate logging via the echo webhook
             );
 
@@ -395,13 +395,13 @@ function echo_i($i, $u_full_name = null, $fb_format = false)
 
         } else {
             //HTML format:
-            $ui .= '<div class="msg">' . $i['i_message'] . '</div>';
+            $ui .= '<div class="msg">' . $i['tr_content'] . '</div>';
         }
 
     }
 
 
-    //Log engagement if Facebook and return:
+    //Log transaction if Facebook and return:
     if ($fb_format) {
 
         if (count($fb_message) > 0) {
@@ -443,7 +443,7 @@ function echo_message($i)
 
 
     //Text editing:
-    $ui .= '<textarea onkeyup="changeMessageEditing(' . $i['i_id'] . ')" name="i_message" id="message_body_' . $i['i_id'] . '" class="edit-on hidden msg msgin algolia_search" placeholder="Write Message..." style="margin-top: 4px;">' . $i['i_message'] . '</textarea>';
+    $ui .= '<textarea onkeyup="changeMessageEditing(' . $i['i_id'] . ')" name="tr_content" id="message_body_' . $i['i_id'] . '" class="edit-on hidden msg msgin algolia_search" placeholder="Write Message..." style="margin-top: 4px;">' . $i['tr_content'] . '</textarea>';
 
     //Editing menu:
     $ui .= '<ul class="msg-nav">';

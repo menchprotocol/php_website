@@ -5,7 +5,7 @@ $tr_content_max = $this->config->item('tr_content_max');
 $i_statuses = echo_status('i_status', null);
 $i_desc = echo_status('i_status');
 $udata = $this->session->userdata('user');
-$i_messages = $this->Db_model->i_fetch(array(
+$tr_contents = $this->Db_model->i_fetch(array(
     'i_c_id' => $c_id,
     'i_status >=' => 0, //Not Archived
 ), 0);
@@ -25,7 +25,7 @@ if (!isset($intents[0])) {
     //pass core variables to JS:
     var c_id = <?= $c_id ?>;
     var max_length = <?= $tr_content_max ?>;
-    var message_count = <?= count($i_messages) ?>;
+    var message_count = <?= count($tr_contents) ?>;
 </script>
 <script src="/js/custom/messaging-js.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
 
@@ -52,9 +52,9 @@ if (!isset($intents[0])) {
     $message_count_2 = 0;
     $message_count_3 = 0;
 
-    if (count($i_messages) > 0) {
+    if (count($tr_contents) > 0) {
         echo '<div id="message-sorting' . $c_id . '" class="list-group list-messages">';
-        foreach ($i_messages as $i) {
+        foreach ($tr_contents as $i) {
             echo echo_message(array_merge($i, array(
                 'tr_en_child_id' => $udata['u_id'],
             )));
@@ -89,9 +89,9 @@ if (!isset($intents[0])) {
     echo '<div class="add-msg add-msg' . $c_id . '">';
     echo '<form class="box box' . $c_id . '" method="post" enctype="multipart/form-data">'; //Used for dropping files
 
-    echo '<textarea onkeyup="changeMessage()" class="form-control msg msgin algolia_search" style="min-height:80px; box-shadow: none; resize: none; margin-bottom: 0px;" id="i_message' . $c_id . '" placeholder="Write Message, Drop a File or Paste URL"></textarea>';
+    echo '<textarea onkeyup="changeMessage()" class="form-control msg msgin algolia_search" style="min-height:80px; box-shadow: none; resize: none; margin-bottom: 0px;" id="tr_content' . $c_id . '" placeholder="Write Message, Drop a File or Paste URL"></textarea>';
 
-    echo '<div id="i_message_counter" style="margin:0 0 1px 0; font-size:0.8em;">';
+    echo '<div id="tr_content_counter" style="margin:0 0 1px 0; font-size:0.8em;">';
     //File counter:
     echo '<span id="charNum' . $c_id . '">0</span>/' . $tr_content_max;
 

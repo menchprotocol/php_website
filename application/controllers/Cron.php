@@ -332,7 +332,7 @@ class Cron extends CI_Controller
                             'u_cover_x_id' => $new_x['x_id'],
                         ));
 
-                        //Log engagement:
+                        //Log transaction:
                         $this->Db_model->tr_create(array(
                             'tr_en_creator_id' => $u['u_id'],
                             'tr_en_child_id' => $u['u_id'],
