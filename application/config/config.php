@@ -623,6 +623,7 @@ $config['en_metadata'] = array(
         'zw' => 4127,
     ),
     'en_languages' => array(
+        'bp' => 4514,
         'en' => 3504,
         'ar' => 3505,
         'aa' => 3506,

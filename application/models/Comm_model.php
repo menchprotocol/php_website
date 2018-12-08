@@ -711,10 +711,12 @@ class Comm_model extends CI_Model
             //List their Action Plan intents:
             $actionplans = $this->Db_model->tr_fetch(array(
                 'tr_en_type_id' => 4235, //Intents added to the action plan
-                'tr_en_child_id' => $u['u_id'], //Belongs to this user
-                'tr_in_parent_id' => 0, //This indicates that this is a top-level intent in the Action Plan
+                'tr_en_parent_id' => $u['u_id'], //Belongs to this user
                 'tr_status IN (0,1,2)' => null, //Actively working on
-            ), 100, array('in_child'), array('tr_rank' => 'ASC'));
+                //These indicate that this is a top-level intent in the Action Plan:
+                'tr_in_parent_id' => 0,
+                'tr_tr_parent_id' => 0,
+            ), 100, array('in_child'), array('tr_order' => 'ASC'));
 
 
             //Do they have anything in their Action Plan?

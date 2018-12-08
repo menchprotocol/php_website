@@ -248,10 +248,8 @@ function en_match_metadata($key, $value)
         return $en_metadata[$key][strtolower($value)];
     } else {
         //Ooops, this value did not exist! Notify the admin so we can look into this:
-        $error_message = 'en_match_metadata() failed to find cached variable [' . $key . ']=[' . $value . ']. Look into the cron/en_metadata() function and update this accordingly.';
-        die($error_message);
         $CI->Db_model->tr_create(array(
-            'tr_content' => $error_message,
+            'tr_content' => 'en_match_metadata() failed to find cached variable [' . $key . ']=[' . $value . ']. Look into the cron/en_metadata() function and update this accordingly.',
             'tr_en_type_id' => 4246, //Platform Error
         ));
         return false;
@@ -525,7 +523,7 @@ function curl_html($url, $return_breakdown = false)
 function boost_power()
 {
     ini_set('memory_limit', '-1');
-    ini_set('max_execution_time', 600);
+    ini_set('max_execution_time', 0);
 }
 
 

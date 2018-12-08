@@ -206,7 +206,7 @@ if (isset($orphan_intents)) {
                                     'tr_en_child_id !=' => 4230, //Not a Naked link as that is already the default option
                                     'tr_status >=' => 0, //Not removed
                                     'en_status >=' => 2, //Syncing
-                                ), 100, array('en_child'), array('tr_rank' => 'ASC'));
+                                ), 100, array('en_child'), array('tr_order' => 'ASC'));
 
                                 foreach ($valid_responses as $en) {
                                     echo '<label style="display: block; font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" id="" /><i class="fas fa-pencil"></i> Require ...</label>';

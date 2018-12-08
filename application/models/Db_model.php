@@ -11,6 +11,77 @@ class Db_model extends CI_Model
     }
 
 
+
+
+    function k_fetch($match_columns, $join_objects=array(), $order_columns=array(), $limit=0, $select='*', $group_by=null){
+        //Fetch the target gems:
+        $this->db->select($select);
+        $this->db->from('tb_actionplan_links k');
+
+        if(in_array('cr',$join_objects)){
+
+            $this->db->join('tb_intent_links cr', 'k.k_cr_id = cr.cr_id');
+
+            if(in_array('cr_c_child',$join_objects)){
+                //Also join with subscription row:
+                $this->db->join('tb_intents c', 'c.c_id = cr.cr_child_c_id');
+            } elseif(in_array('cr_c_parent',$join_objects)){
+                //Also join with subscription row:
+                $this->db->join('tb_intents c', 'c.c_id = cr.cr_parent_c_id');
+            }
+        }
+
+        if(in_array('w',$join_objects)){
+            //Also join with subscription row:
+            $this->db->join('tb_actionplans w', 'w.w_id = k.k_w_id');
+
+            if(in_array('w_c',$join_objects)){
+                //Also join with subscription row:
+                $this->db->join('tb_intents c', 'c.c_id = w.w_c_id');
+            }
+            if(in_array('w_u',$join_objects)){
+                //Also add subscriber and their profile picture:
+                $this->db->join('tb_entities u', 'u.u_id = w.w_child_u_id');
+                $this->db->join('tb_entity_urls x', 'x.x_id = u.u_cover_x_id','left'); //Fetch the cover photo if >0
+            }
+        }
+
+        foreach($match_columns as $key=>$value){
+            if(!is_null($value)){
+                $this->db->where($key,$value);
+            } else {
+                $this->db->where($key);
+            }
+        }
+
+        if($group_by){
+            $this->db->group_by($group_by);
+        }
+
+        if(count($order_columns)>0){
+            foreach($order_columns as $key=>$value){
+                $this->db->order_by($key,$value);
+            }
+        } elseif(in_array('cr_c_child',$join_objects)){
+            //Intent links are cached upon subscription and its important to keep the same order:
+            $this->db->order_by('k_cr_child_rank','ASC');
+        }
+
+        if($limit>0){
+            $this->db->limit($limit);
+        }
+
+        $q = $this->db->get();
+        $results = $q->result_array();
+
+        //Return everything that was collected:
+        return $results;
+    }
+
+
+
+
+
     function en_dropdown_set($en_parent_bucket_id, $en_master_id, $set_en_child_id, $tr_en_creator_id = 0)
     {
 
@@ -1948,51 +2019,54 @@ class Db_model extends CI_Model
 
         //Notify subscribers for this event
         //TODO update to new system
-        foreach ($this->config->item('notify_admins') as $admin_u_id => $subscription) {
+        if(0){
+            foreach ($this->config->item('notify_admins') as $admin_u_id => $subscription) {
 
-            //Do not notify about own actions:
-            if (intval($insert_columns['tr_en_creator_id']) == $admin_u_id) {
-                continue;
-            }
-
-            if (in_array($insert_columns['tr_en_type_id'], $subscription['subscription'])) {
-
-                //Just do this one:
-                if (!isset($engagements[0])) {
-                    //Fetch Engagement Data:
-                    $engagements = $this->Db_model->tr_fetch(array(
-                        'tr_id' => $insert_columns['tr_id']
-                    ));
+                //Do not notify about own actions:
+                if (intval($insert_columns['tr_en_creator_id']) == $admin_u_id) {
+                    continue;
                 }
 
-                //Did we find it? We should have:
-                if (isset($engagements[0])) {
+                if (in_array($insert_columns['tr_en_type_id'], $subscription['admin_notify'])) {
 
-                    $subject = 'Notification: ' . trim(strip_tags($engagements[0]['c_outcome'])) . ' - ' . (isset($engagements[0]['u_full_name']) ? $engagements[0]['u_full_name'] : 'System');
-
-                    //Compose email:
-                    $html_message = null; //Start
-
-                    if (strlen($engagements[0]['tr_content']) > 0) {
-                        $html_message .= '<div>' . format_tr_content($engagements[0]['tr_content']) . '</div><br />';
+                    //Just do this one:
+                    if (!isset($engagements[0])) {
+                        //Fetch Engagement Data:
+                        $engagements = $this->Db_model->tr_fetch(array(
+                            'tr_id' => $insert_columns['tr_id']
+                        ));
                     }
 
-                    //Lets go through all references to see what is there:
-                    foreach ($this->config->item('engagement_references') as $engagement_field => $er) {
-                        if (intval($engagements[0][$engagement_field]) > 0) {
-                            //Yes we have a value here:
-                            $html_message .= '<div>' . $er['name'] . ': ' . echo_object($er['object_code'], $engagements[0][$engagement_field], $engagement_field, null) . '</div>';
+                    //Did we find it? We should have:
+                    if (isset($engagements[0])) {
+
+                        $subject = 'Notification: ' . trim(strip_tags($engagements[0]['c_outcome'])) . ' - ' . (isset($engagements[0]['u_full_name']) ? $engagements[0]['u_full_name'] : 'System');
+
+                        //Compose email:
+                        $html_message = null; //Start
+
+                        if (strlen($engagements[0]['tr_content']) > 0) {
+                            $html_message .= '<div>' . format_tr_content($engagements[0]['tr_content']) . '</div><br />';
                         }
+
+                        //Lets go through all references to see what is there:
+                        foreach ($this->config->item('engagement_references') as $engagement_field => $er) {
+                            if (intval($engagements[0][$engagement_field]) > 0) {
+                                //Yes we have a value here:
+                                $html_message .= '<div>' . $er['name'] . ': ' . echo_object($er['object_code'], $engagements[0][$engagement_field], $engagement_field, null) . '</div>';
+                            }
+                        }
+
+                        //Append ID:
+                        $html_message .= '<div>Engagement ID: <a href="https://mench.com/adminpanel/li_list_blob/' . $engagements[0]['tr_id'] . '">#' . $engagements[0]['tr_id'] . '</a></div>';
+
+                        //Send email:
+                        $this->Comm_model->send_email($subscription['admin_emails'], $subject, $html_message);
                     }
-
-                    //Append ID:
-                    $html_message .= '<div>Engagement ID: <a href="https://mench.com/adminpanel/li_list_blob/' . $engagements[0]['tr_id'] . '">#' . $engagements[0]['tr_id'] . '</a></div>';
-
-                    //Send email:
-                    $this->Comm_model->send_email($subscription['admin_emails'], $subject, $html_message);
                 }
             }
         }
+
 
         //Return:
         return $insert_columns;

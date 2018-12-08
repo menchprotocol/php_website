@@ -22,19 +22,19 @@ class Migrate extends CI_Controller
             'tr_en_child_id !=' => 4230, //Not a Naked link as that is already the default option
             'tr_status >=' => 0, //Not removed
             'en_status >=' => 2, //Syncing
-        ), 100, array('en_child'), array('tr_rank' => 'ASC')));
+        ), 100, array('en_child'), array('tr_order' => 'ASC')));
     }
 
     function c()
     {
 
-        exit;
         boost_power();
 
         //Delete everything before starting:
         $this->db->query("DELETE FROM table_intents WHERE in_id>0");
-        $this->db->query("DELETE FROM table_ledger WHERE tr_en_type_id IN (4231,4232,4233,4250,4228,4331)"); //The link types we could create with this function
+        $this->db->query("DELETE FROM table_ledger WHERE tr_en_type_id IN (4231,4232,4233,4250,4228,4331);"); //The link types we could create with this function
 
+        die('hiii');
 
         $message_status_converter = array(
             1 => 4231,
@@ -53,7 +53,6 @@ class Migrate extends CI_Controller
         );
 
         foreach ($intents as $c) {
-
 
             //Create new intent:
             $stats['intents']++;
@@ -119,7 +118,7 @@ class Migrate extends CI_Controller
                     'tr_en_creator_id' => $cr['cr_parent_u_id'],
                     'tr_in_parent_id' => $cr['cr_parent_c_id'],
                     'tr_in_child_id' => $cr['cr_child_c_id'],
-                    'tr_rank' => $cr['cr_child_rank'],
+                    'tr_order' => $cr['cr_child_rank'],
                 ));
             }
 
@@ -140,7 +139,7 @@ class Migrate extends CI_Controller
                     'tr_en_creator_id' => $i['i_parent_u_id'],
                     'tr_en_parent_id' => $i['i_u_id'],
                     'tr_in_child_id' => $i['i_c_id'],
-                    'tr_rank' => $i['i_rank'],
+                    'tr_order' => $i['i_rank'],
                 ));
             }
         }
@@ -154,7 +153,7 @@ class Migrate extends CI_Controller
 
         //Delete everything before starting:
         $this->db->query("DELETE FROM table_entities WHERE en_id>0");
-        $this->db->query("DELETE FROM table_ledger WHERE tr_en_type_id IN (" . join(',', array_merge($this->config->item('en_child_4227'), array(4251))) . ")"); //The link types we could create with this function
+        $this->db->query("DELETE FROM table_ledger WHERE tr_en_type_id IN (" . join(',', array_merge($this->config->item('en_child_4227'), array(4251,4235,4299))) . ")"); //The link types we could create with this function
 
         $u_status_conv = array(
             -2 => 3, //Unsubscribe
@@ -171,22 +170,6 @@ class Migrate extends CI_Controller
             4 => 4260,
             5 => 4261,
         );
-
-
-        $matching_patterns = $this->Db_model->en_children_fetch(array(
-            'ur_parent_u_id' => 3307, //Entity Matching Patterns
-            'ur_status >=' => 0, //Pending or Active
-            'u_status >=' => 0, //Pending or Active
-        ));
-
-
-        $entities = $this->Db_model->en_fetch(array(
-            'u_id' => 2,
-            'u_status >=' => 0, //new+
-        ), array('skip_en__parents', 'u__urls', 'u__ws'));
-
-        echo_json($entities); exit;
-
         $stats = array(
             'entities' => 0,
             'set_icons' => 0,
@@ -196,6 +179,17 @@ class Migrate extends CI_Controller
             'action_plan_intent' => 0,
             'total_links' => 0,
         );
+
+        $matching_patterns = $this->Db_model->en_children_fetch(array(
+            'ur_parent_u_id' => 3307, //Entity Matching Patterns
+            'ur_status >=' => 0, //Pending or Active
+            'u_status >=' => 0, //Pending or Active
+        ));
+
+
+        $entities = $this->Db_model->en_fetch(array(
+            'u_status >=' => 0, //new+
+        ), array('skip_en__parents'), 0, 0, array('u_id' => 'ASC'));
 
         foreach ($entities as $u) {
 
@@ -401,17 +395,57 @@ class Migrate extends CI_Controller
                 'w_id' => 'ASC',
             ), 999);
 
+            $counter = 0;
             foreach($ws as $w){
+
+                $counter++; //We need to rank top level as well!
                 //Insert top of the action plan item that is being added:
                 $stats['action_plan_intent']++;
                 $stats['total_links']++;
-                $this->Db_model->tr_create(array(
+                $actionplan_tr = $this->Db_model->tr_create(array(
                     'tr_timestamp' => $w['w_timestamp'],
-                    'tr_en_creator_id' => $u['u_id'],
+                    'tr_status' => $w['w_status'], //Same status meaning for all 5 levels
+
                     'tr_en_type_id' => 4235, //Action Plan Intent Add
-                    'tr_en_child_id' => $u['u_id'], //Belongs to this user
+                    'tr_en_creator_id' => $u['u_id'],
+                    'tr_en_parent_id' => $u['u_id'], //Belongs to this user
+
                     'tr_in_parent_id' => 0, //This indicates that this is a top-level intent in the Action Plan
+                    'tr_tr_parent_id' => 0, //Again, indicates the top of the Action Plan
+                    'tr_in_child_id' => $w['w_c_id'],
+                    'tr_order' => $counter,
                 ));
+
+                //Now fetch all intents for this Action Plan:
+                $ks = $this->Db_model->k_fetch(array(
+                    'k_w_id' => $w['w_id'],
+                ), array('cr'), array(
+                    'k_rank' => 'ASC',
+                ), 9999);
+
+                foreach($ks as $k){
+
+                    $stats['action_plan_intent']++;
+                    $stats['total_links']++;
+                    $this->Db_model->tr_create(array(
+                        'tr_timestamp' => $k['k_timestamp'],
+                        'tr_status' => $k['k_status'], //Same status meaning for all 5 levels
+
+                        'tr_en_type_id' => 4235, //Action Plan Intent Add
+                        'tr_en_creator_id' => $u['u_id'],
+                        'tr_en_parent_id' => $u['u_id'], //Belongs to this user
+
+                        'tr_in_parent_id' => $k['cr_parent_c_id'], //This indicates that this is a top-level intent in the Action Plan
+                        'tr_in_child_id' => $k['cr_child_c_id'],
+                        'tr_order' => $k['k_rank'],
+                        'tr_content' => $k['k_notes'],
+
+                        'tr_tr_parent_id' => $actionplan_tr['tr_id'], //Instantly show the top of the intention for that action plan
+                    ));
+
+                }
+
+
             }
 
 
