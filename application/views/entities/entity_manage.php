@@ -5,14 +5,14 @@ $udata = $this->session->userdata('user');
 
 //Fetch other data:
 $child_entities = $this->Db_model->en_children_fetch(array(
-    'ur_parent_u_id' => $entity['u_id'],
-    'ur_status' => 1, //Only active
+    'tr_en_parent_id' => $entity['u_id'],
+    'tr_status' => 1, //Only active
 ), array('u__children_count'), $this->config->item('items_per_page'));
 
 //Intents subscribed:
 $limit = (is_dev() ? 10 : 100);
 $ws = $this->Db_model->w_fetch(array(
-    'w_child_u_id' => $entity['u_id'],
+    'tr_en_parent_id' => $entity['u_id'],
 ), array('en', 'in', 'w_stats'), array(
     'w_id' => 'DESC',
 ), $limit);
@@ -81,8 +81,8 @@ $ws = $this->Db_model->w_fetch(array(
 
         //Fetch current count for each status from DB:
         $counts = $this->Db_model->en_children_fetch(array(
-            'ur_parent_u_id' => $entity['u_id'],
-            'ur_status' => 1, //Only active
+            'tr_en_parent_id' => $entity['u_id'],
+            'tr_status' => 1, //Only active
             'u_status >=' => 0,
         ), array(), 0, 0, 'COUNT(u_id) as u_counts, u_status', 'u_status', array(
             'u_status' => 'ASC',
@@ -124,7 +124,7 @@ $ws = $this->Db_model->w_fetch(array(
         <div class="input-group">
             <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search bottom-add" data-lpignore="true" placeholder="Add ' . stripslashes($entity['u_full_name']) . '"></div>
             <span class="input-group-addon">
-                <a class="badge badge-secondary new-btn" href="javascript:ur_add(0,' . $entity['u_id'] . ', 0);">ADD</a>
+                <a class="badge badge-secondary new-btn" href="javascript:tr_add(0,' . $entity['u_id'] . ', 0);">ADD</a>
             </span>
         </div>
     </div>';
@@ -216,7 +216,7 @@ $ws = $this->Db_model->w_fetch(array(
 
                         <div class="li_component" style="margin-top:15px;">
                             <div class="title"><h4><i class="fas fa-atlas"></i> Transaction Status</h4></div>
-                            <select class="form-control" id="ur_status">
+                            <select class="form-control" id="tr_status">
                                 <?php
                                 foreach (echo_status('tr_status') as $status_id => $status) {
                                     echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
@@ -245,7 +245,7 @@ $ws = $this->Db_model->w_fetch(array(
                         </td>
                         <td><span class="save_entity_changes"></span></td>
                         <td style="width:100px; text-align:right;">
-                            <div class="unlink-entity"><a href="javascript:ur_unlink();" data-toggle="tooltip"
+                            <div class="unlink-entity"><a href="javascript:tr_unlink();" data-toggle="tooltip"
                                                           title="Only remove entity link while NOT Archiving the entity itself"
                                                           data-placement="left" style="text-decoration:none;"><i
                                             class="fas fa-unlink"></i> Unlink</a></div>

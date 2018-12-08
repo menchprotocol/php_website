@@ -40,7 +40,7 @@ class Custom extends CI_Controller
         if (isset($udata['en__parents'][0]) && filter_array($udata['en__parents'], 'en_id', 1308)) {
 
             //Lead coach and above, go to console:
-            redirect_message('/intents/' . $this->config->item('primary_in_id'));
+            redirect_message('/intents/' . $this->config->item('in_primary_id'));
 
         } elseif (1 || (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] == 'mench.co')) {
 
@@ -60,12 +60,12 @@ class Custom extends CI_Controller
             if (count($featured_cs) == 0) {
 
                 //Go to default landing page:
-                return redirect_message('/' . $this->config->item('primary_in_id'));
+                return redirect_message('/' . $this->config->item('in_primary_id'));
 
             } elseif (count($featured_cs) == 1) {
 
                 //TO to single feature:
-                return redirect_message('/' . $featured_cs[0]['c_id']);
+                return redirect_message('/' . $featured_cs[0]['in_id']);
 
             } else {
 
@@ -90,7 +90,7 @@ class Custom extends CI_Controller
         $udata = $this->session->userdata('user');
         if (isset($udata['en__parents'][0]) && filter_array($udata['en__parents'], 'en_id', 1308)) {
             //Lead coach and above, go to console:
-            redirect_message('/intents/' . $this->config->item('primary_in_id'));
+            redirect_message('/intents/' . $this->config->item('in_primary_id'));
         }
 
         $this->load->view('shared/public_header', array(

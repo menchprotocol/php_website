@@ -1,13 +1,13 @@
 <?php
 $udata = $this->session->userdata('user');
 if (isset($orphan_intents)) {
-    $c['c_id'] = 0;
+    $c['in_id'] = 0;
 }
 ?>
 
 <script>
     //Define some global variables:
-    var c_top_id = <?= $c['c_id'] ?>;
+    var c_top_id = <?= $c['in_id'] ?>;
     var current_time = '<?= date("H:i") ?>';
 </script>
 <script src="/js/custom/intent-manage-js.js?v=v<?= $this->config->item('app_version') ?>"
@@ -28,7 +28,7 @@ if (isset($orphan_intents)) {
         } else {
 
             //Start with parents:
-            echo '<h5 class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-parent-count parent-counter-' . $c['c_id'] . '">' . count($in__active_parents) . '</span> Parent' . echo__s(count($in__active_parents)) . '</h5>';
+            echo '<h5 class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-parent-count parent-counter-' . $c['in_id'] . '">' . count($in__active_parents) . '</span> Parent' . echo__s(count($in__active_parents)) . '</h5>';
 
             if (count($in__active_parents) > 0) {
                 echo '<div class="list-group list-level-2">';
@@ -49,7 +49,7 @@ if (isset($orphan_intents)) {
 
             //Expand/Contract buttons
             echo '<div class="indent2">';
-            echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-children-count children-counter-' . $c['c_id'] . '">' . $c['in__tree_count'] . '</span> Children</h5>';
+            echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-children-count children-counter-' . $c['in_id'] . '">' . $c['in__tree_count'] . '</span> Children</h5>';
 
             echo '<div id="expand_intents" style="padding-left:8px; display: inline-block;">';
             echo '<i class="fas fa-plus-square expand_all" style="font-size: 1.2em;"></i> &nbsp;';
@@ -58,7 +58,7 @@ if (isset($orphan_intents)) {
 
 
             //Count orphans IF we are in the top parent root:
-            if ($this->config->item('primary_in_id') == $c['c_id']) {
+            if ($this->config->item('in_primary_id') == $c['in_id']) {
                 $orphans_count = count($this->Db_model->in_orphans_fetch());
                 if ($orphans_count > 0) {
                     echo '<span style="padding-left:8px; display: inline-block;"><a href="/intents/orphan">' . $orphans_count . ' Orphans &raquo;</a></span>';
@@ -69,9 +69,9 @@ if (isset($orphan_intents)) {
 
             echo '<div id="outs_error indent2"></div>'; //Show potential errors detected in the Action Plan via our JS functions...
 
-            echo '<div id="list-c-' . $c['c_id'] . '" class="list-group list-is-children list-level-2 indent2">';
+            echo '<div id="list-c-' . $c['in_id'] . '" class="list-group list-is-children list-level-2 indent2">';
             foreach ($c['in__active_children'] as $sub_intent) {
-                echo echo_c($sub_intent, 2, $c['c_id']);
+                echo echo_c($sub_intent, 2, $c['in_id']);
             }
             ?>
             <div class="list-group-item list_input grey-block">
@@ -79,8 +79,8 @@ if (isset($orphan_intents)) {
                     <div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text"
                                                                                            class="form-control intentadder-level-2 algolia_search bottom-add"
                                                                                            maxlength="<?= $this->config->item('in_outcome_max') ?>"
-                                                                                           intent-id="<?= $c['c_id'] ?>"
-                                                                                           id="addintent-c-<?= $c['c_id'] ?>"
+                                                                                           intent-id="<?= $c['in_id'] ?>"
+                                                                                           id="addintent-c-<?= $c['in_id'] ?>"
                                                                                            placeholder="Add #Intent">
                     </div>
                     <span class="input-group-addon" style="padding-right:8px;">
@@ -99,7 +99,7 @@ if (isset($orphan_intents)) {
             //Intent subscribers:
             $limit = (is_dev() ? 10 : 100);
             $ws = $this->Db_model->w_fetch(array(
-                'w_c_id' => $c['c_id'],
+                'w_in_id' => $c['in_id'],
             ), array('en', 'u_x', 'w_stats'), array(
                 'w_id' => 'DESC',
             ), $limit);

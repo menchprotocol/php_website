@@ -92,19 +92,19 @@ function switch_to(hashtag_name) {
     $('#topnav a[href="#' + hashtag_name + '"]').tab('show');
 }
 
-function view_el(u_id, c_id) {
+function view_el(u_id, in_id) {
     //This function toggles the student card report
     //Determine its current state:
-    if ($('#c_el_' + u_id + '_' + c_id).hasClass('hidden')) {
+    if ($('#c_el_' + u_id + '_' + in_id).hasClass('hidden')) {
         //Need to show it now:
-        $('#c_el_' + u_id + '_' + c_id).removeClass('hidden');
-        $('#pointer_' + u_id + '_' + c_id).removeClass('fa-caret-right');
-        $('#pointer_' + u_id + '_' + c_id).addClass('fa-caret-down');
+        $('#c_el_' + u_id + '_' + in_id).removeClass('hidden');
+        $('#pointer_' + u_id + '_' + in_id).removeClass('fa-caret-right');
+        $('#pointer_' + u_id + '_' + in_id).addClass('fa-caret-down');
     } else {
         //Need to hide it now:
-        $('#c_el_' + u_id + '_' + c_id).addClass('hidden');
-        $('#pointer_' + u_id + '_' + c_id).removeClass('fa-caret-down');
-        $('#pointer_' + u_id + '_' + c_id).addClass('fa-caret-right');
+        $('#c_el_' + u_id + '_' + in_id).addClass('hidden');
+        $('#pointer_' + u_id + '_' + in_id).removeClass('fa-caret-down');
+        $('#pointer_' + u_id + '_' + in_id).addClass('fa-caret-right');
     }
 }
 
@@ -159,7 +159,7 @@ $(document).ready(function () {
     $("#console_search").on('autocomplete:selected', function (event, suggestion, dataset) {
 
         if (dataset == 1) {
-            window.location = "/intents/" + suggestion.c_id;
+            window.location = "/intents/" + suggestion.in_id;
         } else if (dataset == 2) {
             window.location = "/entities/" + suggestion.u_id;
         }

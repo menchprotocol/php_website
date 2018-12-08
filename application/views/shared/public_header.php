@@ -46,7 +46,7 @@ $url_part_1 = $this->uri->segment(1);
             <ul class="nav navbar-nav navbar-right">
                 <?php
                 if (isset($udata['u_id'])) {
-                    echo '<li id="isloggedin"><a href="/intents/' . (isset($c['c_id']) ? $c['c_id'] : $this->config->item('primary_in_id')) . '">Console <i class="fas fa-chevron-circle-right"></i></a></li>';
+                    echo '<li id="isloggedin"><a href="/intents/' . (isset($c['in_id']) ? $c['in_id'] : $this->config->item('in_primary_id')) . '">Console <i class="fas fa-chevron-circle-right"></i></a></li>';
                 } elseif (isset($udata['u__ws']) && count($udata['u__ws']) > 0) {
 
                     echo '<li id="isloggedin"><a href="/my/actionplan">Action Plan <i class="fas fa-chevron-circle-right"></i></a></li>';

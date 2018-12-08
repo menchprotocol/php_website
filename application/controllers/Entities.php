@@ -34,9 +34,9 @@ class Entities extends CI_Controller
         $page = intval($_POST['page']);
         $udata = auth(null); //Just be logged in to browse
         $filters = array(
-            'ur_parent_u_id' => $parent_u_id,
+            'tr_en_parent_id' => $parent_u_id,
             'u_status' . ($u_status_filter < 0 ? ' >=' : '') => ($u_status_filter < 0 ? 0 : intval($u_status_filter)), //Pending or Active
-            'ur_status' => 1, //Active link
+            'tr_status' => 1, //Active link
         );
 
         if (!$udata) {
@@ -165,9 +165,9 @@ class Entities extends CI_Controller
             } else {
 
                 //We should add a new entity:
-                $new_u = $this->Db_model->u_create(array(
+                $new_u = $this->Db_model->en_create(array(
                     'u_full_name' => trim($_POST['new_u_input']),
-                ));
+                ), true);
 
                 if (!isset($new_u['u_id']) || $new_u['u_id'] < 1) {
                     return echo_json(array(
@@ -180,9 +180,9 @@ class Entities extends CI_Controller
                 if (intval($_POST['secondary_parent_u_id']) > 0) {
 
                     //Link entity to a parent:
-                    $ur1 = $this->Db_model->ur_create(array(
-                        'ur_child_u_id' => $new_u['u_id'],
-                        'ur_parent_u_id' => $_POST['secondary_parent_u_id'],
+                    $ur1 = $this->Db_model->tr_create(array(
+                        'tr_en_child_id' => $new_u['u_id'],
+                        'tr_en_parent_id' => $_POST['secondary_parent_u_id'],
                     ));
 
                 }
@@ -197,29 +197,25 @@ class Entities extends CI_Controller
 
             //Add links only if not already added by the URL function:
             if ($_POST['is_parent']) {
-                $ur_child_u_id = $current_us[0]['u_id'];
-                $ur_parent_u_id = $new_u['u_id'];
+                $tr_en_child_id = $current_us[0]['u_id'];
+                $tr_en_parent_id = $new_u['u_id'];
             } else {
-                $ur_child_u_id = $new_u['u_id'];
-                $ur_parent_u_id = $current_us[0]['u_id'];
+                $tr_en_child_id = $new_u['u_id'];
+                $tr_en_parent_id = $current_us[0]['u_id'];
             }
 
             //Let's make sure this is not the same as the secondary category:
-            if (!($_POST['secondary_parent_u_id'] == $ur_parent_u_id)) {
+            if (!($_POST['secondary_parent_u_id'] == $tr_en_parent_id)) {
                 //Link to new OR existing entity:
-                $ur2 = $this->Db_model->ur_create(array(
-                    'ur_child_u_id' => $ur_child_u_id,
-                    'ur_parent_u_id' => $ur_parent_u_id,
+                $ur2 = $this->Db_model->tr_create(array(
+                    'tr_en_child_id' => $tr_en_child_id,
+                    'tr_en_parent_id' => $tr_en_parent_id,
                 ));
 
             } else {
                 //This has already been added:
                 $ur2 = $ur1;
             }
-
-            //Update Algolia:
-            $this->Db_model->algolia_sync('en', $ur_child_u_id);
-            $this->Db_model->algolia_sync('en', $ur_parent_u_id);
         }
 
 
@@ -319,7 +315,7 @@ class Entities extends CI_Controller
         if (intval($_POST['tr_id']) > 0) {
 
             //Yes, first validate this link:
-            $urs = $this->Db_model->ur_parent_fetch(array(
+            $urs = $this->Db_model->tr_parent_fetch(array(
                 'tr_id' => $_POST['tr_id'],
             ));
 
@@ -344,7 +340,7 @@ class Entities extends CI_Controller
         }
 
         //Now update the DB:
-        $this->Db_model->u_update(intval($_POST['u_id']), $u_update);
+        $this->Db_model->en_update(intval($_POST['u_id']), $u_update);
         //Above call would also update algolia index...
 
         //Refetch some DB (to keep consistency with login session format) & update the Session:
@@ -375,7 +371,7 @@ class Entities extends CI_Controller
             'status' => 1,
             'message' => '<span><i class="fas fa-check"></i> Saved</span>',
             'status_u_ui' => echo_status('en', $_POST['u_status'], true, 'left'),
-            'ur__notes' => echo_link($_POST['tr_content']),
+            'tr_content' => echo_link($_POST['tr_content']),
         ));
 
     }
@@ -417,7 +413,7 @@ class Entities extends CI_Controller
 
         //Fetch user data using email:
         $entities = $this->Db_model->en_fetch(array(
-            'u_email' => strtolower($_POST['u_email']),
+            'LOWER(u_email)' => strtolower($_POST['u_email']),
         ), array('u__ws'));
 
         if (count($entities) == 0) {
@@ -529,7 +525,7 @@ class Entities extends CI_Controller
             //Default:
             if ($is_coach) {
                 //Coach default:
-                header('Location: /intents/' . $this->config->item('primary_in_id'));
+                header('Location: /intents/' . $this->config->item('in_primary_id'));
             } else {
                 //Student default:
                 header('Location: /my/actionplan');

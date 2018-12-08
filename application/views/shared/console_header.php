@@ -101,7 +101,7 @@ if (!isset($_GET['skip_header'])) {
                         <li <?= ($uri_segment_1 == 'ledger' ? 'class="entity-active"' : '') ?>><a href="/ledger"><i
                                         class="fas fa-atlas"></i> Ledger</a></li>
                         <li <?= ($uri_segment_1 == 'intents' ? 'class="intent-active"' : '') ?>><a
-                                    href="/intents/<?= $this->config->item('primary_in_id') ?>"><i
+                                    href="/intents/<?= $this->config->item('in_primary_id') ?>"><i
                                         class="fas fa-hashtag"></i> Intents</a></li>
 
 

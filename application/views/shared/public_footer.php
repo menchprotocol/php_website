@@ -6,7 +6,7 @@
         <nav>
             <ul class="footer-a">
                 <li class="social-li">
-                    <a href="https://m.me/askmench?ref=ACTIONPLANADD10_<?= $this->config->item('primary_in_id') ?>"
+                    <a href="https://m.me/askmench?ref=ACTIONPLANADD10_<?= $this->config->item('in_primary_id') ?>"
                        class="social-link" data-toggle="tooltip"
                        title="Get started with Mench Personal Assistant on Facebook Messenger" data-placement="top"><i
                                 class="fab fa-facebook-messenger"></i></a>

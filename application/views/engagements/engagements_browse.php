@@ -64,7 +64,7 @@ foreach ($engagement_filters as $key => $value) {
 
         //Fetch all engagements from intent #6653
         $all_engs = $this->Db_model->cr_children_fetch(array(
-            'cr_parent_c_id IN (7720,7719,7722,7723)' => null, //The 4 branches of #Log platform engagements #6653
+            'tr_in_parent_id IN (7720,7719,7722,7723)' => null, //The 4 branches of #Log platform engagements #6653
             'tr_status' => 1,
             'in_status >=' => 0,
         ));
@@ -72,7 +72,7 @@ foreach ($engagement_filters as $key => $value) {
         echo '<select name="' . $key . '" class="border" style="width:160px;">';
         echo '<option value="0">' . $value . '</option>';
         foreach ($all_engs as $c_eng) {
-            echo '<option value="' . $c_eng['c_id'] . '" ' . ((isset($_GET[$key]) && $_GET[$key] == $c_eng['c_id']) ? 'selected="selected"' : '') . '>' . $c_eng['c_outcome'] . '</option>';
+            echo '<option value="' . $c_eng['in_id'] . '" ' . ((isset($_GET[$key]) && $_GET[$key] == $c_eng['in_id']) ? 'selected="selected"' : '') . '>' . $c_eng['c_outcome'] . '</option>';
         }
         echo '</select>';
         //echo '<div><a href="/console/360/actionplan" target="_blank">Open in Action Plan <i class="fas fa-external-link-square"></i></a></div>'; //TODO NO CLUE what this is!

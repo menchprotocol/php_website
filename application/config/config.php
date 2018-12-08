@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  * Global variables used throughout the platform.
  * Ctrl+F is your friend to explore where they are implemented and how they work ;)
- * use-case format: $this->config->item('primary_in_name')
+ * use-case format: $this->config->item('en_name_max')
  *
  */
 
@@ -14,7 +14,7 @@ date_default_timezone_set('America/Los_Angeles'); //Settime zone to PST
 //Global app variables:
 $config['app_version'] = '0.63'; //Cache buster in URLs for static js/css files
 $config['password_salt'] = '40s96As9ZkdAcwQ9PhZm'; //Used for hashing the user password for Mench logins
-$config['primary_in_id'] = 6903; //The default platform intent that would be recommended to new students
+$config['in_primary_id'] = 6903; //The default platform intent that would be recommended to new students
 $config['primary_in_name'] = 'advance your tech career'; //What is the purposes of Mench at this point?
 $config['primary_en_id'] = 3463; //The default console entity that is loaded when Entities is clicked
 $config['tr_content_max'] = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
@@ -41,7 +41,14 @@ $config['aws_credentials'] = [ //Learn more: https://console.aws.amazon.com/iam/
 ];
 
 
-//Keep a cache of certain parts of the Intent tree for faster processing:
+/*
+ * Keep a cache of certain parts of the Intent tree for faster processing
+ * So we don't have to make DB calls to figure them out every time:
+ *
+ */
+$config['en_child_4487'] = array(4331, 4332); //Intent Settings
+$config['en_child_4486'] = array(4228, 4229); //Intent-to-Intent Links
+$config['en_child_4485'] = array(4231, 4232, 4233, 4234); //Intent messages
 $config['en_child_4227'] = array(4230, 4256, 4318, 4260, 4259, 4261, 4255, 4257, 4319, 4258); //All entity link types based on content types
 $config['en_child_4454'] = array(4455, 4456, 4457, 4458); //All entity link types based on content types
 $config['en_convert_4454'] = array( //Mench Communication Levels to Facebook Messenger format which is only supported if NOT unsubscribed:
@@ -71,6 +78,16 @@ $config['notify_admins'] = array( //Email-based engagements subscriptions
 );
 $config['object_statuses'] = array(
     'en_status' => array(
+        -3 => array(
+            's_name' => 'Flagged',
+            's_desc' => 'Removed because it violated community guidelines',
+            's_icon' => 'fal fa-minus-square',
+        ),
+        -2 => array(
+            's_name' => 'Merged',
+            's_desc' => 'Entity merged with another entity',
+            's_icon' => 'fal fa-minus-square',
+        ),
         -1 => array(
             's_name' => 'Removed',
             's_desc' => 'Entity has been removed',
@@ -98,6 +115,16 @@ $config['object_statuses'] = array(
         ),
     ),
     'in_status' => array(
+        -3 => array(
+            's_name' => 'Flagged',
+            's_desc' => 'Removed because it violated community guidelines',
+            's_icon' => 'fal fa-minus-square',
+        ),
+        -2 => array(
+            's_name' => 'Merged',
+            's_desc' => 'Intent merged with another intent',
+            's_icon' => 'fal fa-minus-square',
+        ),
         -1 => array(
             's_name' => 'Removed',
             's_desc' => 'Intent has been archived and all its links has been removed',
@@ -126,6 +153,16 @@ $config['object_statuses'] = array(
     ),
 
     'tr_status' => array(
+        -3 => array(
+            's_name' => 'Flagged',
+            's_desc' => 'Removed because it violated community guidelines',
+            's_icon' => 'fal fa-minus-square',
+        ),
+        -2 => array(
+            's_name' => 'Iterated',
+            's_desc' => 'Content updated with newer content',
+            's_icon' => 'fal fa-minus-square',
+        ),
         -1 => array(
             's_name' => 'Removed',
             's_desc' => 'User decided to skip this link',

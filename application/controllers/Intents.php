@@ -21,9 +21,9 @@ class Intents extends CI_Controller
 
         //Fetch intent with 2 levels of depth:
         $intents = $this->Db_model->in_fetch(array(
-            'c_id' => $in_id,
+            'in_id' => $in_id,
             'in_status >=' => 0,
-        ), 2);
+        ), array('fetch_grandchildren'));
 
         //Found it?
         if (!isset($intents[0])) {
@@ -40,7 +40,7 @@ class Intents extends CI_Controller
             'title' => $intents[0]['c_outcome'],
             'in' => $intents[0],
             'in__active_parents' => $this->Db_model->in_parents_fetch(array(
-                'cr_child_c_id' => $in_id,
+                'tr_in_child_id' => $in_id,
                 'tr_status' => 1,
             ), array('in__active_children')),
         );
@@ -68,20 +68,20 @@ class Intents extends CI_Controller
     }
 
 
-    function intent_public($c_id)
+    function intent_public($in_id)
     {
 
         //Fetch data:
         $intents = $this->Db_model->in_fetch(array(
-            'c_id' => $c_id,
+            'in_id' => $in_id,
             'in_status >=' => 2, //Published or featured
-        ), 2, array('in__active_messages', 'in__active_parents'));
+        ), array('fetch_grandchildren', 'in__active_messages', 'in__active_parents'));
 
 
         //Validate Intent:
         if (!isset($intents[0])) {
             //Invalid key, redirect back:
-            redirect_message('/' . $this->config->item('primary_in_id'), '<div class="alert alert-danger" role="alert">Invalid Intent ID</div>');
+            redirect_message('/' . $this->config->item('in_primary_id'), '<div class="alert alert-danger" role="alert">Invalid Intent ID</div>');
         }
 
         //Load home page:
@@ -107,13 +107,13 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Session. Refresh the Page to Continue',
             );
-        } elseif (!isset($_POST['c_id']) || !isset($_POST['c_outcome']) || !isset($_POST['link_c_id']) || !isset($_POST['next_level'])) {
+        } elseif (!isset($_POST['in_id']) || !isset($_POST['c_outcome']) || !isset($_POST['in_linkto_id']) || !isset($_POST['next_level'])) {
             echo_json(array(
                 'status' => 0,
                 'message' => 'Missing core inputs',
             ));
         } else {
-            echo_json($this->Db_model->c_new($_POST['c_id'], $_POST['c_outcome'], $_POST['link_c_id'], $_POST['next_level'], $udata['u_id']));
+            echo_json($this->Db_model->c_new($_POST['in_id'], $_POST['c_outcome'], $_POST['in_linkto_id'], $_POST['next_level'], $udata['u_id']));
         }
     }
 
@@ -132,33 +132,33 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid tr_id',
             ));
-        } elseif (!isset($_POST['c_id']) || intval($_POST['c_id']) <= 0) {
+        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) <= 0) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid c_id',
+                'message' => 'Invalid in_id',
             ));
-        } elseif (!isset($_POST['from_c_id']) || intval($_POST['from_c_id']) <= 0) {
+        } elseif (!isset($_POST['from_in_id']) || intval($_POST['from_in_id']) <= 0) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing from_c_id',
+                'message' => 'Missing from_in_id',
             ));
-        } elseif (!isset($_POST['to_c_id']) || intval($_POST['to_c_id']) <= 0) {
+        } elseif (!isset($_POST['to_in_id']) || intval($_POST['to_in_id']) <= 0) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing to_c_id',
+                'message' => 'Missing to_in_id',
             ));
         }
 
 
         //Fetch all three intents to ensure they are all valid and use them for engagement logging:
         $subject = $this->Db_model->in_fetch(array(
-            'c_id' => intval($_POST['c_id']),
+            'in_id' => intval($_POST['in_id']),
         ));
         $from = $this->Db_model->in_fetch(array(
-            'c_id' => intval($_POST['from_c_id']),
+            'in_id' => intval($_POST['from_in_id']),
         ));
         $to = $this->Db_model->in_fetch(array(
-            'c_id' => intval($_POST['to_c_id']),
+            'in_id' => intval($_POST['to_in_id']),
         ));
 
         if (!isset($subject[0]) || !isset($from[0]) || !isset($to[0])) {
@@ -171,20 +171,20 @@ class Intents extends CI_Controller
 
         //Make the move:
         $this->Db_model->tr_update(intval($_POST['tr_id']), array(
-            'cr_parent_u_id' => $udata['u_id'],
-            'cr_timestamp' => date("Y-m-d H:i:s"),
-            'cr_parent_c_id' => intval($_POST['to_c_id']),
+            'tr_en_parent_id' => $udata['u_id'],
+            'tr_timestamp' => date("Y-m-d H:i:s"),
+            'tr_in_parent_id' => intval($_POST['to_in_id']),
             //No need to update sorting here as a separate JS function would call that within half a second after the move...
         ));
 
 
         //Adjust tree on both branches:
-        $updated_from_recursively = $this->Db_model->c_update_tree($from[0]['c_id'], array(
+        $updated_from_recursively = $this->Db_model->c_update_tree($from[0]['in_id'], array(
             'in__tree_count' => -($subject[0]['in__tree_count']),
             'c__tree_max_hours' => -(intval($subject[0]['c__tree_max_hours'])),
             'c__tree_messages' => -($subject[0]['c__tree_messages']),
         ));
-        $updated_to_recursively = $this->Db_model->c_update_tree($to[0]['c_id'], array(
+        $updated_to_recursively = $this->Db_model->c_update_tree($to[0]['in_id'], array(
             'in__tree_count' => +($subject[0]['in__tree_count']),
             'c__tree_max_hours' => +(intval($subject[0]['c__tree_max_hours'])),
             'c__tree_messages' => +($subject[0]['c__tree_messages']),
@@ -201,7 +201,7 @@ class Intents extends CI_Controller
             ),
             'tr_content' => '[' . $subject[0]['c_outcome'] . '] was migrated from [' . $from[0]['c_outcome'] . '] to [' . $to[0]['c_outcome'] . ']', //Message migrated
             'tr_en_type_id' => 4254, //Intent migrated
-            'tr_in_child_id' => intval($_POST['c_id']),
+            'tr_in_child_id' => intval($_POST['in_id']),
             'e_tr_id' => intval($_POST['tr_id']),
         ));
 
@@ -221,15 +221,15 @@ class Intents extends CI_Controller
 
         //Validate Original intent:
         $intents = $this->Db_model->in_fetch(array(
-            'c_id' => intval($_POST['c_id']),
-        ), 0);
+            'in_id' => intval($_POST['in_id']),
+        ));
 
         if (!$udata) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Session Expired',
             ));
-        } elseif (!isset($_POST['c_id']) || intval($_POST['c_id']) <= 0) {
+        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) <= 0) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Intent ID',
@@ -292,7 +292,7 @@ class Intents extends CI_Controller
         } elseif (count($intents) <= 0) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Invalid c_id',
+                'message' => 'Invalid Invalid in_id',
             ));
         }
 
@@ -339,11 +339,11 @@ class Intents extends CI_Controller
         if (count($c_update) > 0) {
 
             //YES, update the DB:
-            $this->Db_model->c_update(intval($_POST['c_id']), $c_update);
+            $this->Db_model->in_update($_POST['in_id'], $c_update, true);
 
             //Any recursive updates needed?
             if (count($recursive_query) > 0) {
-                $updated_recursively = $this->Db_model->c_update_tree(intval($_POST['c_id']), $recursive_query);
+                $updated_recursively = $this->Db_model->c_update_tree($_POST['in_id'], $recursive_query);
             }
 
             //Any recursive down status sync requests?
@@ -351,11 +351,11 @@ class Intents extends CI_Controller
             if (intval($_POST['apply_recurively']) && !(intval($_POST['in_status']) == intval($intents[0]['in_status']))) {
 
                 //Yes, sync downwards where current statuses match:
-                $children = $this->Db_model->c_recursive_fetch(intval($_POST['c_id']), true);
-                foreach ($children['c_flat'] as $child_c_id) {
+                $children = $this->Db_model->c_recursive_fetch(intval($_POST['in_id']), true);
+                foreach ($children['c_flat'] as $child_in_id) {
 
                     //See what the status of this is, and update only if status matches:
-                    $this->db->query("UPDATE tb_intents SET in_status=" . intval($_POST['in_status']) . " WHERE in_status=" . intval($intents[0]['in_status']) . " AND c_id=" . $child_c_id);
+                    $this->db->query("UPDATE tb_intents SET in_status=" . intval($_POST['in_status']) . " WHERE in_status=" . intval($intents[0]['in_status']) . " AND in_id=" . $child_in_id);
 
                     //Did it work?! Maybe not if the status was different...
                     if ($this->db->affected_rows()) {
@@ -368,16 +368,14 @@ class Intents extends CI_Controller
                         //Log modify engagement for this intent:
                         $this->Db_model->tr_create(array(
                             'tr_en_creator_id' => $udata['u_id'],
-                            'tr_content' => 'Status recursively updated from [' . $intents[0]['in_status'] . '] to [' . $_POST['in_status'] . '] initiated from parent intent #' . $intents[0]['c_id'] . ' [' . $intents[0]['c_outcome'] . ']',
+                            'tr_content' => 'Status recursively updated from [' . $intents[0]['in_status'] . '] to [' . $_POST['in_status'] . '] initiated from parent intent #' . $intents[0]['in_id'] . ' [' . $intents[0]['c_outcome'] . ']',
                             'tr_en_type_id' => 4264, //Intent Modification
-                            'tr_in_child_id' => $child_c_id,
+                            'tr_in_child_id' => $child_in_id,
                         ));
+
                     }
                 }
             }
-
-            //Update Algolia object:
-            $this->Db_model->algolia_sync('in', $_POST['c_id']);
 
             //Log transaction for New Intent Link:
             $this->Db_model->tr_create(array(
@@ -392,7 +390,7 @@ class Intents extends CI_Controller
                     'recursive_query' => $recursive_query,
                 ),
                 'tr_en_type_id' => ($_POST['level'] >= 2 && isset($c_update['in_status']) && $c_update['in_status'] < 0 ? 4252 : 4264), //Intent Archived OR Modification
-                'tr_in_child_id' => intval($_POST['c_id']),
+                'tr_in_child_id' => intval($_POST['in_id']),
             ));
 
         }
@@ -422,7 +420,7 @@ class Intents extends CI_Controller
                 'message' => 'Session Expired',
             ));
             return false;
-        } elseif (!isset($_POST['c_id']) || intval($_POST['c_id']) <= 0) {
+        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) <= 0) {
             echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Intent ID',
@@ -438,7 +436,7 @@ class Intents extends CI_Controller
 
         //Fetch intent to see what kind is it:
         $intents = $this->Db_model->in_fetch(array(
-            'c_id' => intval($_POST['c_id']),
+            'in_id' => intval($_POST['in_id']),
             'in_status >=' => 0,
         ));
         if (!isset($intents[0])) {
@@ -470,13 +468,13 @@ class Intents extends CI_Controller
             'c__tree_max_hours' => -(intval($intents[0]['c__tree_max_hours'])),
             'c__tree_messages' => -($intents[0]['c__tree_messages']),
         );
-        $updated_recursively = $this->Db_model->c_update_tree($in__active_parents[0]['cr_parent_c_id'], $recursive_query);
+        $updated_recursively = $this->Db_model->c_update_tree($in__active_parents[0]['tr_in_parent_id'], $recursive_query);
 
 
         //Remove Transaction:
         $this->Db_model->tr_update($_POST['tr_id'], array(
-            'cr_parent_u_id' => $udata['u_id'],
-            'cr_timestamp' => date("Y-m-d H:i:s"),
+            'tr_en_parent_id' => $udata['u_id'],
+            'tr_timestamp' => date("Y-m-d H:i:s"),
             'tr_status' => -1, //Archived
         ), $udata['u_id'], array(
             'recursive_query' => $recursive_query,
@@ -486,7 +484,7 @@ class Intents extends CI_Controller
         //Show success:
         echo_json(array(
             'status' => 1,
-            'c_parent' => $in__active_parents[0]['cr_parent_c_id'],
+            'c_parent' => $in__active_parents[0]['tr_in_parent_id'],
             'adjusted_c_count' => -($intents[0]['in__tree_count']),
         ));
 
@@ -503,10 +501,10 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Session. Login again to Continue.',
             ));
-        } elseif (!isset($_POST['c_id']) || intval($_POST['c_id']) <= 0) {
+        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) <= 0) {
             echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid c_id',
+                'message' => 'Invalid in_id',
             ));
         } elseif (!isset($_POST['new_sort']) || !is_array($_POST['new_sort']) || count($_POST['new_sort']) <= 0) {
             echo_json(array(
@@ -517,33 +515,33 @@ class Intents extends CI_Controller
 
             //Validate Parent intent:
             $parent_intents = $this->Db_model->in_fetch(array(
-                'c_id' => intval($_POST['c_id']),
+                'in_id' => intval($_POST['in_id']),
             ));
             if (count($parent_intents) <= 0) {
                 echo_json(array(
                     'status' => 0,
-                    'message' => 'Invalid c_id',
+                    'message' => 'Invalid in_id',
                 ));
             } else {
 
                 //Fetch for the record:
                 $children_before = $this->Db_model->cr_children_fetch(array(
-                    'cr_parent_c_id' => intval($_POST['c_id']),
+                    'tr_in_parent_id' => intval($_POST['in_id']),
                     'tr_status' => 1,
                 ));
 
                 //Update them all:
                 foreach ($_POST['new_sort'] as $rank => $tr_id) {
                     $this->Db_model->tr_update(intval($tr_id), array(
-                        'cr_parent_u_id' => $udata['u_id'],
-                        'cr_timestamp' => date("Y-m-d H:i:s"),
-                        'cr_child_rank' => intval($rank),
+                        'tr_en_parent_id' => $udata['u_id'],
+                        'tr_timestamp' => date("Y-m-d H:i:s"),
+                        'tr_order' => intval($rank),
                     ));
                 }
 
                 //Fetch for the record:
                 $children_after = $this->Db_model->cr_children_fetch(array(
-                    'cr_parent_c_id' => intval($_POST['c_id']),
+                    'tr_in_parent_id' => intval($_POST['in_id']),
                     'tr_status' => 1,
                 ));
 
@@ -557,7 +555,7 @@ class Intents extends CI_Controller
                         'after' => $children_after,
                     ),
                     'tr_en_type_id' => 4262, //Links Sorted
-                    'tr_in_child_id' => intval($_POST['c_id']),
+                    'tr_in_child_id' => intval($_POST['in_id']),
                 ));
 
                 //Display message:
@@ -582,7 +580,7 @@ class Intents extends CI_Controller
 
         //Fetch Messages and the User's Got It Engagement History:
         $messages = $this->Db_model->i_fetch(array(
-            'i_c_id' => intval($_POST['intent_id']),
+            'i_in_id' => intval($_POST['intent_id']),
             'i_status >' => 0, //Published in any form
         ));
         if (count($messages) == 0) {
@@ -616,7 +614,7 @@ class Intents extends CI_Controller
     }
 
 
-    function in_actionplans_load($c_id)
+    function in_actionplans_load($in_id)
     {
 
         //Auth user and check required variables:
@@ -624,8 +622,8 @@ class Intents extends CI_Controller
 
         if (!$udata) {
             die('<div class="alert alert-danger" role="alert">Session Expired</div>');
-        } elseif (intval($c_id) <= 0) {
-            die('<div class="alert alert-danger" role="alert">Missing Intent ID [' . $c_id . ']</div>');
+        } elseif (intval($in_id) <= 0) {
+            die('<div class="alert alert-danger" role="alert">Missing Intent ID [' . $in_id . ']</div>');
         }
 
         //Load view for this iFrame:
@@ -633,13 +631,13 @@ class Intents extends CI_Controller
             'title' => 'User Engagements',
         ));
         $this->load->view('engagements/intent_engagements', array(
-            'c_id' => $c_id,
+            'in_id' => $in_id,
         ));
         $this->load->view('shared/messenger_footer');
     }
 
 
-    function in_tr_load($c_id)
+    function in_tr_load($in_id)
     {
 
         //Auth user and check required variables:
@@ -647,7 +645,7 @@ class Intents extends CI_Controller
 
         if (!$udata) {
             die('<div class="alert alert-danger" role="alert">Session Expired</div>');
-        } elseif (intval($c_id) <= 0) {
+        } elseif (intval($in_id) <= 0) {
             die('<div class="alert alert-danger" role="alert">Missing Intent ID</div>');
         }
 
@@ -656,7 +654,7 @@ class Intents extends CI_Controller
             'title' => 'User Engagements',
         ));
         $this->load->view('engagements/in_tr_load', array(
-            'c_id' => $c_id,
+            'in_id' => $in_id,
         ));
         $this->load->view('shared/messenger_footer');
     }
@@ -666,13 +664,13 @@ class Intents extends CI_Controller
 	 * i Messages
 	 ****************************** */
 
-    function in_messages_load($c_id)
+    function in_messages_load($in_id)
     {
         $udata = auth();
         if (!$udata) {
             //Display error:
             die('<span style="color:#FF0000;">Error: Invalid Session. Login again to continue.</span>');
-        } elseif (intval($c_id) <= 0) {
+        } elseif (intval($in_id) <= 0) {
             die('<span style="color:#FF0000;">Error: Invalid Intent id.</span>');
         }
 
@@ -681,10 +679,10 @@ class Intents extends CI_Controller
 
         //Load view:
         $this->load->view('shared/console_header', array(
-            'title' => 'Intent #' . $c_id . ' Messages',
+            'title' => 'Intent #' . $in_id . ' Messages',
         ));
         $this->load->view('intents/frame_messages', array(
-            'c_id' => $c_id,
+            'in_id' => $in_id,
         ));
         $this->load->view('shared/console_footer');
     }
@@ -699,7 +697,7 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Session. Refresh to Continue',
             ));
-        } elseif (!isset($_POST['c_id']) || !isset($_POST['i_status'])) {
+        } elseif (!isset($_POST['in_id']) || !isset($_POST['i_status'])) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing intent data.',
@@ -764,19 +762,19 @@ class Intents extends CI_Controller
         $i = $this->Db_model->i_create(array(
             'i_parent_u_id' => $udata['u_id'],
             'i_u_id' => $url_create['en']['u_id'],
-            'i_c_id' => intval($_POST['c_id']),
+            'i_in_id' => intval($_POST['in_id']),
             'tr_content' => '@' . $url_create['en']['u_id'],
             'i_status' => $_POST['i_status'],
             'i_rank' => 1 + $this->Db_model->max_value('tb_intent_messages', 'i_rank', array(
                     'i_status' => $_POST['i_status'],
-                    'i_c_id' => $_POST['c_id'],
+                    'i_in_id' => $_POST['in_id'],
                 )),
         ));
 
 
         //Update intent count & tree:
-        $this->db->query("UPDATE tb_intents SET c__this_messages=c__this_messages+1 WHERE c_id=" . intval($_POST['c_id']));
-        $updated_recursively = $this->Db_model->c_update_tree(intval($_POST['c_id']), array(
+        $this->db->query("UPDATE tb_intents SET c__this_messages=c__this_messages+1 WHERE in_id=" . intval($_POST['in_id']));
+        $updated_recursively = $this->Db_model->c_update_tree(intval($_POST['in_id']), array(
             'c__tree_messages' => 1,
         ));
 
@@ -805,7 +803,7 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Session Expired. Login and Try again.',
             ));
-        } elseif (!isset($_POST['c_id']) || intval($_POST['c_id']) <= 0 || !is_valid_intent($_POST['c_id'])) {
+        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) <= 0 || !is_valid_intent($_POST['in_id'])) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Step',
@@ -813,7 +811,7 @@ class Intents extends CI_Controller
         }
 
         //Make sure message is all good:
-        $validation = message_validation($_POST['i_status'], $_POST['tr_content'], $_POST['c_id']);
+        $validation = message_validation($_POST['i_status'], $_POST['tr_content'], $_POST['in_id']);
         if (!$validation['status']) {
             //There was some sort of an error:
             return echo_json($validation);
@@ -823,11 +821,11 @@ class Intents extends CI_Controller
         //Create Message:
         $i = $this->Db_model->i_create(array(
             'i_parent_u_id' => $udata['u_id'],
-            'i_c_id' => intval($_POST['c_id']),
+            'i_in_id' => intval($_POST['in_id']),
             'i_status' => $_POST['i_status'],
             'i_rank' => 1 + $this->Db_model->max_value('tb_intent_messages', 'i_rank', array(
                     'i_status' => $_POST['i_status'],
-                    'i_c_id' => intval($_POST['c_id']),
+                    'i_in_id' => intval($_POST['in_id']),
                 )),
             //Referencing attributes:
             'tr_content' => $validation['tr_content'],
@@ -835,10 +833,10 @@ class Intents extends CI_Controller
         ));
 
         //Update intent count:
-        $this->db->query("UPDATE tb_intents SET c__this_messages=c__this_messages+1 WHERE c_id=" . intval($_POST['c_id']));
+        $this->db->query("UPDATE tb_intents SET c__this_messages=c__this_messages+1 WHERE in_id=" . intval($_POST['in_id']));
 
         //Update tree:
-        $updated_recursively = $this->Db_model->c_update_tree(intval($_POST['c_id']), array(
+        $updated_recursively = $this->Db_model->c_update_tree(intval($_POST['in_id']), array(
             'c__tree_messages' => 1,
         ));
 
@@ -877,7 +875,7 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Message',
             ));
-        } elseif (!isset($_POST['c_id']) || intval($_POST['c_id']) <= 0 || !is_valid_intent($_POST['c_id'])) {
+        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) <= 0 || !is_valid_intent($_POST['in_id'])) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Intent ID',
@@ -898,7 +896,7 @@ class Intents extends CI_Controller
         }
 
         //Make sure message is all good:
-        $validation = message_validation($_POST['i_status'], $_POST['tr_content'], $_POST['c_id']);
+        $validation = message_validation($_POST['i_status'], $_POST['tr_content'], $_POST['in_id']);
 
         if (!$validation['status']) {
             //There was some sort of an error:
@@ -923,7 +921,7 @@ class Intents extends CI_Controller
             //Put it at the end of the new list:
             $to_update['i_rank'] = 1 + $this->Db_model->max_value('tb_intent_messages', 'i_rank', array(
                     'i_status' => $_POST['i_status'],
-                    'i_c_id' => intval($_POST['c_id']),
+                    'i_in_id' => intval($_POST['in_id']),
                 ));
         }
 
@@ -959,7 +957,7 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Message ID',
             ));
-        } elseif (!isset($_POST['c_id']) || intval($_POST['c_id']) <= 0 || !is_valid_intent($_POST['c_id'])) {
+        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) <= 0 || !is_valid_intent($_POST['in_id'])) {
             echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Intent ID',
@@ -986,10 +984,10 @@ class Intents extends CI_Controller
                 ), $udata['u_id']);
 
                 //Update intent count:
-                $this->db->query("UPDATE tb_intents SET c__this_messages=c__this_messages-1 WHERE c_id=" . intval($_POST['c_id']));
+                $this->db->query("UPDATE tb_intents SET c__this_messages=c__this_messages-1 WHERE in_id=" . intval($_POST['in_id']));
 
                 //Update tree:
-                $updated_recursively = $this->Db_model->c_update_tree(intval($_POST['c_id']), array(
+                $updated_recursively = $this->Db_model->c_update_tree(intval($_POST['in_id']), array(
                     'c__tree_messages' => -1,
                 ));
 
@@ -1016,7 +1014,7 @@ class Intents extends CI_Controller
                 'status' => 1, //Do not treat this as error as it could happen in moving Messages between types
                 'message' => 'There was nothing to sort',
             ));
-        } elseif (!isset($_POST['c_id']) || intval($_POST['c_id']) <= 0 || !is_valid_intent($_POST['c_id'])) {
+        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) <= 0 || !is_valid_intent($_POST['in_id'])) {
             echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Intent ID',
@@ -1039,7 +1037,7 @@ class Intents extends CI_Controller
                 'tr_en_creator_id' => $udata['u_id'],
                 'tr_metadata' => $_POST,
                 'tr_en_type_id' => 4262, //Messages sorted
-                'tr_in_child_id' => intval($_POST['c_id']),
+                'tr_in_child_id' => intval($_POST['in_id']),
             ));
 
             echo_json(array(

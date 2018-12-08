@@ -2,7 +2,7 @@ function u_load_child_search() {
 
     $("#new-children .new-input").on('autocomplete:selected', function (event, suggestion, dataset) {
 
-        ur_add(suggestion.u_id, 0, 0);
+        tr_add(suggestion.u_id, 0, 0);
 
     }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
 
@@ -19,22 +19,22 @@ function u_load_child_search() {
         },
         templates: {
             suggestion: function (suggestion) {
-                //If clicked, would trigger the autocomplete:selected above which will trigger the ur_add() function
+                //If clicked, would trigger the autocomplete:selected above which will trigger the tr_add() function
                 return '<span><i class="fas fa-at"></i></span> ' + suggestion.u_full_name;
             },
             header: function (data) {
                 if (!data.isEmpty) {
-                    return '<a href="javascript:ur_add(0,' + top_u_id + ',0)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + top_u_full_name + ']</a>';
+                    return '<a href="javascript:tr_add(0,' + top_u_id + ',0)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + top_u_full_name + ']</a>';
                 }
             },
             empty: function (data) {
-                return '<a href="javascript:ur_add(0,' + top_u_id + ',0)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create</span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + top_u_full_name + ']</a>';
+                return '<a href="javascript:tr_add(0,' + top_u_id + ',0)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create</span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + top_u_full_name + ']</a>';
             },
         }
     }]).keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            ur_add(0, top_u_id);
+            tr_add(0, top_u_id);
             return true;
         }
     });
@@ -101,7 +101,7 @@ $(document).ready(function () {
 
 
     $("#new-parent .new-input").on('autocomplete:selected', function (event, suggestion, dataset) {
-        ur_add(suggestion.u_id, 0, 1);
+        tr_add(suggestion.u_id, 0, 1);
     }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
         source: function (q, cb) {
             algolia_u_index.search(q, {
@@ -116,16 +116,16 @@ $(document).ready(function () {
         },
         templates: {
             suggestion: function (suggestion) {
-                //If clicked, would trigger the autocomplete:selected above which will trigger the ur_add() function
+                //If clicked, would trigger the autocomplete:selected above which will trigger the tr_add() function
                 return '<span><i class="fas fa-at"></i></span> ' + suggestion.u_full_name;
             },
             header: function (data) {
                 if (!data.isEmpty) {
-                    return '<a href="javascript:ur_add(0,' + top_u_id + ',1)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + top_u_full_name + ']</a>';
+                    return '<a href="javascript:tr_add(0,' + top_u_id + ',1)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + top_u_full_name + ']</a>';
                 }
             },
             empty: function (data) {
-                return '<a href="javascript:ur_add(0,' + top_u_id + ',1)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + top_u_full_name + ']</a>';
+                return '<a href="javascript:tr_add(0,' + top_u_id + ',1)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + top_u_full_name + ']</a>';
             },
         }
     }]);
@@ -134,7 +134,7 @@ $(document).ready(function () {
 });
 
 //Adds OR links authors and content for entities
-function ur_add(new_u_id, secondary_parent_u_id=0, is_parent) {
+function tr_add(new_u_id, secondary_parent_u_id=0, is_parent) {
 
     //if new_u_id>0 it means we're linking to an existing entity, in which case new_u_input should be null
     //If new_u_id=0 it means we are creating a new entity and then linking it, in which case new_u_input is required
@@ -287,14 +287,14 @@ function u_load_next_page(page, load_new_filter = 0) {
 
 }
 
-function ur_unlink() {
+function tr_unlink() {
 
     var tr_id = ($('#modifybox').hasClass('hidden') ? 0 : parseInt($('#modifybox').attr('entity-link-id')));
     var u_level1_name = $('.top_entity .u_full_name').text();
-    var u_level2_name = $('.ur_' + tr_id + ' .u_full_name').text();
-    var direction = (parseInt($('.ur_' + tr_id).attr('is-parent')) == 1 ? 'parent' : 'children');
+    var u_level2_name = $('.tr_' + tr_id + ' .u_full_name').text();
+    var direction = (parseInt($('.tr_' + tr_id).attr('is-parent')) == 1 ? 'parent' : 'children');
     var counter_class = '.li-' + direction + '-count';
-    var current_status = parseInt($('.ur_' + tr_id).attr('entity-status'));
+    var current_status = parseInt($('.tr_' + tr_id).attr('entity-status'));
 
     //Confirm that they want to do this:
     var r = confirm("Unlink [" + u_level2_name + "] from [" + u_level1_name + "]?");
@@ -304,7 +304,7 @@ function ur_unlink() {
 
 
     //Show loader:
-    $('.ur_' + tr_id).html('<img src="/img/round_load.gif" class="loader" style="width:24px !important; height:24px !important;" /> Unlinking...').hide().fadeIn();
+    $('.tr_' + tr_id).html('<img src="/img/round_load.gif" class="loader" style="width:24px !important; height:24px !important;" /> Unlinking...').hide().fadeIn();
 
     //Save the rest of the content:
     $.post("/entities/unlink_entities", {
@@ -317,7 +317,7 @@ function ur_unlink() {
         if (data.status) {
 
             //Update UI to confirm with user:
-            $('.ur_' + tr_id).fadeOut();
+            $('.tr_' + tr_id).fadeOut();
             $('#modifybox').addClass('hidden');
 
             //Update counter:
@@ -326,7 +326,7 @@ function ur_unlink() {
 
         } else {
             //There was an error, show to user:
-            $('.ur_' + tr_id).html('<b style="color:#FF0000 !important;">Error: ' + data.message + '</b>');
+            $('.tr_' + tr_id).html('<b style="color:#FF0000 !important;">Error: ' + data.message + '</b>');
         }
 
     });
@@ -424,7 +424,7 @@ function u_save_modify() {
             //Did we have notes to update?
             if (modify_data['tr_id'] > 0) {
                 //Yes, update the notes:
-                $(".ur__notes_" + modify_data['tr_id']).html(data.ur__notes);
+                $(".tr_content_" + modify_data['tr_id']).html(data.tr_content);
                 $(".tr_content_val_" + modify_data['tr_id']).text(modify_data['tr_content']);
             }
 

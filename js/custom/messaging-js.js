@@ -1,5 +1,5 @@
 function add_first_name() {
-    $('#tr_content' + c_id).insertAtCaret('/firstname ');
+    $('#tr_content' + in_id).insertAtCaret('/firstname ');
     changeMessage();
 }
 
@@ -7,11 +7,11 @@ function add_first_name() {
 //Count text area characters:
 function changeMessage() {
     //Update count:
-    var len = $('#tr_content' + c_id).val().length;
+    var len = $('#tr_content' + in_id).val().length;
     if (len > max_length) {
-        $('#charNum' + c_id).addClass('overload').text(len);
+        $('#charNum' + in_id).addClass('overload').text(len);
     } else {
-        $('#charNum' + c_id).removeClass('overload').text(len);
+        $('#charNum' + in_id).removeClass('overload').text(len);
     }
 }
 
@@ -34,8 +34,8 @@ var isAdvancedUpload = function () {
     return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window;
 }();
 
-var $input = $('.box' + c_id).find('input[type="file"]'),
-    $label = $('.box' + c_id).find('label'),
+var $input = $('.box' + in_id).find('input[type="file"]'),
+    $label = $('.box' + in_id).find('label'),
     showFiles = function (files) {
         $label.text(files.length > 1 ? ($input.attr('data-multiple-caption') || '').replace('{count}', files.length) : files[0].name);
     };
@@ -107,18 +107,18 @@ function initiate_search() {
 
 $(document).ready(function () {
 
-    $(".messages-counter-" + c_id, window.parent.document).text(message_count);
+    $(".messages-counter-" + in_id, window.parent.document).text(message_count);
 
     initiate_search();
 
     //Load Nice sort for iPhone X
-    new SimpleBar(document.getElementById('intent_messages' + c_id), {
+    new SimpleBar(document.getElementById('intent_messages' + in_id), {
         // option1: value1,
         // option2: value2
     });
 
     //Watch for message creation:
-    $('#tr_content' + c_id).keydown(function (e) {
+    $('#tr_content' + in_id).keydown(function (e) {
         if (e.ctrlKey && e.keyCode == 13) {
             msg_create();
         }
@@ -150,7 +150,7 @@ $(document).ready(function () {
 
 
     //Watchout for file uplods:
-    $('.box' + c_id).find('input[type="file"]').change(function () {
+    $('.box' + in_id).find('input[type="file"]').change(function () {
         save_attachment(droppedFiles, 'file');
     });
 
@@ -158,18 +158,18 @@ $(document).ready(function () {
     //Should we auto start?
     if (isAdvancedUpload) {
 
-        $('.box' + c_id).addClass('has-advanced-upload');
+        $('.box' + in_id).addClass('has-advanced-upload');
         var droppedFiles = false;
 
-        $('.box' + c_id).on('drag dragstart dragend dragover dragenter dragleave drop', function (e) {
+        $('.box' + in_id).on('drag dragstart dragend dragover dragenter dragleave drop', function (e) {
             e.preventDefault();
             e.stopPropagation();
         })
             .on('dragover dragenter', function () {
-                $('.add-msg' + c_id).addClass('is-working');
+                $('.add-msg' + in_id).addClass('is-working');
             })
             .on('dragleave dragend drop', function () {
-                $('.add-msg' + c_id).removeClass('is-working');
+                $('.add-msg' + in_id).removeClass('is-working');
             })
             .on('drop', function (e) {
                 droppedFiles = e.originalEvent.dataTransfer.files;
@@ -184,7 +184,7 @@ function apply_message_sorting(i_status) {
     var new_sort = [];
     var sort_rank = 0;
     var this_iid = 0;
-    $("#message-sorting" + c_id + ">div.msg_" + i_status).each(function () {
+    $("#message-sorting" + in_id + ">div.msg_" + i_status).each(function () {
         this_iid = parseInt($(this).attr('iid'));
         if (this_iid > 0) {
             sort_rank++;
@@ -193,7 +193,7 @@ function apply_message_sorting(i_status) {
     });
 
     //Update backend:
-    $.post("/intents/i_sort", {new_sort: new_sort, c_id: c_id}, function (data) {
+    $.post("/intents/i_sort", {new_sort: new_sort, in_id: in_id}, function (data) {
         if (!data.status) {
             //Show error:
             alert('ERROR: ' + data.message);
@@ -202,7 +202,7 @@ function apply_message_sorting(i_status) {
 }
 
 function load_message_sorting() {
-    var theobject = document.getElementById("message-sorting" + c_id);
+    var theobject = document.getElementById("message-sorting" + in_id);
     var inner_content = null;
     var sort_msg = Sortable.create(theobject, {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
@@ -243,7 +243,7 @@ function i_archive(i_id) {
         $("#ul-nav-" + i_id).html('<div><img src="/img/round_load.gif" class="loader" /> Archiving...</div>');
 
         //Archive and remove:
-        $.post("/intents/i_archive", {i_id: i_id, c_id: c_id}, function (data) {
+        $.post("/intents/i_archive", {i_id: i_id, in_id: in_id}, function (data) {
 
             //Update UI to confirm with user:
             if (!data.status) {
@@ -263,10 +263,10 @@ function i_archive(i_id) {
 
                 //Adjust counter by one:
                 message_count--;
-                $(".messages-counter-" + c_id, window.parent.document).text(message_count);
+                $(".messages-counter-" + in_id, window.parent.document).text(message_count);
 
                 if (message_count == 0) {
-                    $('.msg-badge-' + c_id).addClass('grey');
+                    $('.msg-badge-' + in_id).addClass('grey');
                 }
 
                 //Disapper in a while:
@@ -338,7 +338,7 @@ function message_save_updates(i_id, initial_i_status) {
         tr_content: $("#ul-nav-" + i_id + " textarea").val(),
         initial_i_status: initial_i_status,
         i_status: new_i_status,
-        c_id: c_id,
+        in_id: in_id,
 
     }, function (data) {
 
@@ -358,8 +358,8 @@ function message_save_updates(i_id, initial_i_status) {
                 //Note that we don't need to sort the new list as the new item would be added to its end
 
                 //Remove possible "No message" info box:
-                if ($('.no-messages' + c_id + '_' + new_i_status).length) {
-                    $('.no-messages' + c_id + '_' + new_i_status).hide();
+                if ($('.no-messages' + in_id + '_' + new_i_status).length) {
+                    $('.no-messages' + in_id + '_' + new_i_status).hide();
                 }
 
                 setTimeout(function () {
@@ -368,7 +368,7 @@ function message_save_updates(i_id, initial_i_status) {
                     load_message_type(new_i_status);
 
                     //Move item to last:
-                    $("#message-sorting" + c_id).append($("#ul-nav-" + i_id));
+                    $("#message-sorting" + in_id).append($("#ul-nav-" + i_id));
 
                     //Sort original list as 1 message has been removed from it:
                     apply_message_sorting(initial_i_status);
@@ -400,12 +400,12 @@ var button_value = null;
 
 function message_form_lock() {
     var i_status = $('#i_status_focus').val();
-    button_value = $('#add_message_' + i_status + '_' + c_id).html();
-    $('#add_message_' + i_status + '_' + c_id).html('<span><img src="/img/round_load.gif" class="loader" /></span>');
-    $('#add_message_' + i_status + '_' + c_id).attr('href', '#');
+    button_value = $('#add_message_' + i_status + '_' + in_id).html();
+    $('#add_message_' + i_status + '_' + in_id).html('<span><img src="/img/round_load.gif" class="loader" /></span>');
+    $('#add_message_' + i_status + '_' + in_id).attr('href', '#');
 
-    $('.add-msg' + c_id).addClass('is-working');
-    $('#tr_content' + c_id).prop("disabled", true);
+    $('.add-msg' + in_id).addClass('is-working');
+    $('#tr_content' + in_id).prop("disabled", true);
     $('.remove_loading').hide();
 }
 
@@ -414,25 +414,25 @@ function message_form_unlock(result) {
     var i_status = $('#i_status_focus').val();
 
     //Update UI to unlock:
-    $('.add-msg' + c_id).removeClass('is-working');
+    $('.add-msg' + in_id).removeClass('is-working');
     $('.remove_loading').fadeIn();
 
-    $('#add_message_' + i_status + '_' + c_id).html(button_value);
-    $('#add_message_' + i_status + '_' + c_id).attr('href', 'javascript:msg_create();');
+    $('#add_message_' + i_status + '_' + in_id).html(button_value);
+    $('#add_message_' + i_status + '_' + in_id).attr('href', 'javascript:msg_create();');
 
     //Remove possible "No message" info box:
-    if ($('.no-messages' + c_id + '_' + i_status).length) {
-        $('.no-messages' + c_id + '_' + i_status).hide();
+    if ($('.no-messages' + in_id + '_' + i_status).length) {
+        $('.no-messages' + in_id + '_' + i_status).hide();
     }
 
     //Reset Focus:
-    $("#tr_content" + c_id).prop("disabled", false).focus();
+    $("#tr_content" + in_id).prop("disabled", false).focus();
 
     //What was the result?
     if (result.status) {
 
         //Append data:
-        $("#message-sorting" + c_id).append(result.message);
+        $("#message-sorting" + in_id).append(result.message);
 
         //Resort/Re-adjust:
         load_message_type(i_status);
@@ -454,7 +454,7 @@ function message_form_unlock(result) {
 
 function save_attachment(droppedFiles, uploadType) {
 
-    if ($('.box' + c_id).hasClass('is-uploading')) {
+    if ($('.box' + in_id).hasClass('is-uploading')) {
         return false;
     }
 
@@ -463,7 +463,7 @@ function save_attachment(droppedFiles, uploadType) {
         //Lock message:
         message_form_lock();
 
-        var ajaxData = new FormData($('.box' + c_id).get(0));
+        var ajaxData = new FormData($('.box' + in_id).get(0));
         if (droppedFiles) {
             $.each(droppedFiles, function (i, file) {
                 var thename = $input.attr('name');
@@ -476,26 +476,26 @@ function save_attachment(droppedFiles, uploadType) {
 
         ajaxData.append('upload_type', uploadType);
         ajaxData.append('i_status', $('#i_status_focus').val());
-        ajaxData.append('c_id', c_id);
+        ajaxData.append('in_id', in_id);
 
         $.ajax({
             url: '/intents/i_attach',
-            type: $('.box' + c_id).attr('method'),
+            type: $('.box' + in_id).attr('method'),
             data: ajaxData,
             dataType: 'json',
             cache: false,
             contentType: false,
             processData: false,
             complete: function () {
-                $('.box' + c_id).removeClass('is-uploading');
-                $('.msg-badge-' + c_id).removeClass('grey');
+                $('.box' + in_id).removeClass('is-uploading');
+                $('.msg-badge-' + in_id).removeClass('grey');
             },
             success: function (data) {
                 message_form_unlock(data);
 
                 //Adjust Action Plan counter by one:
                 message_count++;
-                $(".messages-counter-" + c_id, window.parent.document).text(message_count);
+                $(".messages-counter-" + in_id, window.parent.document).text(message_count);
             },
             error: function (data) {
                 var result = [];
@@ -511,7 +511,7 @@ function save_attachment(droppedFiles, uploadType) {
 
 function msg_create() {
 
-    if ($('#tr_content' + c_id).val().length == 0) {
+    if ($('#tr_content' + in_id).val().length == 0) {
         alert('ERROR: Enter a message');
         return false;
     }
@@ -522,8 +522,8 @@ function msg_create() {
     //Update backend:
     $.post("/intents/i_create", {
 
-        c_id: c_id, //Synonymous
-        tr_content: $('#tr_content' + c_id).val(),
+        in_id: in_id, //Synonymous
+        tr_content: $('#tr_content' + in_id).val(),
         i_status: $('#i_status_focus').val(),
 
     }, function (data) {
@@ -533,12 +533,12 @@ function msg_create() {
 
             //Adjust counter by one:
             message_count++;
-            $(".messages-counter-" + c_id, window.parent.document).text(message_count);
+            $(".messages-counter-" + in_id, window.parent.document).text(message_count);
 
-            $('.msg-badge-' + c_id).removeClass('grey');
+            $('.msg-badge-' + in_id).removeClass('grey');
 
             //Reset input field:
-            $("#tr_content" + c_id).val("");
+            $("#tr_content" + in_id).val("");
             changeMessage();
         } else {
             //Show error:

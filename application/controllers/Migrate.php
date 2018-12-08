@@ -28,13 +28,13 @@ class Migrate extends CI_Controller
     function c()
     {
 
+        die('pending final migration');
+
         boost_power();
 
         //Delete everything before starting:
         $this->db->query("DELETE FROM table_intents WHERE in_id>0");
         $this->db->query("DELETE FROM table_ledger WHERE tr_en_type_id IN (4231,4232,4233,4250,4228,4331);"); //The link types we could create with this function
-
-        die('hiii');
 
         $message_status_converter = array(
             1 => 4231,
@@ -66,7 +66,7 @@ class Migrate extends CI_Controller
                 'in_points' => $c['c_points'],
                 'in_is_any' => $c['c_is_any'],
                 'in_metadata' => serialize(array(
-                    'in__algolia_id' => $c['c_algolia_id'],
+                    'in__algolia_id' => intval($c['c_algolia_id']),
                 )),
             ));
             //Create new intent creation link:
@@ -100,7 +100,6 @@ class Migrate extends CI_Controller
                     'tr_en_child_id' => 4256, //Link Content Type = URL Link
                 ));
             }
-
 
             //convert active children:
             $children = $this->Db_model->cr_children_fetch(array(
@@ -149,6 +148,9 @@ class Migrate extends CI_Controller
 
     function u()
     {
+
+        die('pending final migration');
+
         boost_power();
 
         //Delete everything before starting:
@@ -187,14 +189,17 @@ class Migrate extends CI_Controller
         ));
 
 
-        $entities = $this->Db_model->en_fetch(array(
+        $entities = $this->Db_model->u_fetch(array(
             'u_status >=' => 0, //new+
         ), array('skip_en__parents'), 0, 0, array('u_id' => 'ASC'));
 
         foreach ($entities as $u) {
 
             //Does this entity have a cover photo?
-            if($u['u_cover_x_id']>0 && isset($u['x_url'])){
+            if($u['u_icon']>0){
+                $stats['set_icons']++;
+                $en_icon = $u['u_icon'];
+            } elseif($u['u_cover_x_id']>0 && isset($u['x_url'])){
                 //Yes, fetch it:
                 $stats['set_icons']++;
                 $en_icon = '<img class="profile-icon" src="'.$u['x_url'].'" />';
@@ -211,7 +216,7 @@ class Migrate extends CI_Controller
                 'en_name' => $u['u_full_name'],
                 'en_trust_score' => $u['u__e_score'],
                 'en_metadata' => serialize(array(
-                    'en__algolia_id' => $u['u_algolia_id'],
+                    'en__algolia_id' => intval($u['u_algolia_id']),
                 )),
             ));
             //Create new entity creation link:
@@ -227,6 +232,17 @@ class Migrate extends CI_Controller
             //Messenger Subscription?
             if($u['u_fb_psid']>0){
 
+                //Add them to masters group:
+                $stats['total_links']++;
+                $this->Db_model->tr_create(array(
+                    'tr_timestamp' => $u['u_timestamp'],
+                    'tr_en_type_id' => 4230, //Naked link
+                    'tr_en_creator_id' => $u['u_id'],
+                    'tr_en_parent_id' => 4430, //Mench Master
+                    'tr_en_child_id' => $u['u_id'],
+                ));
+
+                //Store their messenger ID:
                 $stats['total_links']++;
                 $this->Db_model->tr_create(array(
                     'tr_timestamp' => $u['u_timestamp'],
@@ -246,6 +262,7 @@ class Migrate extends CI_Controller
                     'tr_en_parent_id' => ($u['u_status']==-2 ? 4455 : 4456), //Either Unsubscribed or normal
                     'tr_en_child_id' => $u['u_id'],
                 ));
+
             }
 
 

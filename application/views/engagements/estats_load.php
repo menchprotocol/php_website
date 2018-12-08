@@ -1,7 +1,7 @@
 <?php
 
 $engagements = $this->Db_model->tr_fetch(array(
-    '(tr_in_parent_id=' . $c_id . ' OR tr_in_child_id=' . $c_id . ')' => null,
+    '(tr_in_parent_id=' . $in_id . ' OR tr_in_child_id=' . $in_id . ')' => null,
 ), (is_dev() ? 20 : 100));
 
 //Fetch objects

@@ -16,7 +16,7 @@ if ((isset($udata['u__ws']) && count($udata['u__ws'])) || (isset($udata['en__par
     //Fetch page instantly as we know who this is:
     ?>
     <script>
-        $.post("/my/display_actionplan/0/<?= (isset($w_id) ? intval($w_id) : $udata['u__ws'][0]['w_id']) ?>/<?= (isset($c_id) ? intval($c_id) : $udata['u__ws'][0]['w_c_id']) ?>", {}, function (data) {
+        $.post("/my/display_actionplan/0/<?= (isset($w_id) ? intval($w_id) : $udata['u__ws'][0]['w_id']) ?>/<?= (isset($in_id) ? intval($in_id) : $udata['u__ws'][0]['w_in_id']) ?>", {}, function (data) {
             $("#page_content").html(data);
 
             //Load tooldip:
@@ -51,7 +51,7 @@ if ((isset($udata['u__ws']) && count($udata['u__ws'])) || (isset($udata['en__par
                     var psid = thread_context.psid;
                     var signed_request = thread_context.signed_request;
                     //Fetch Page:
-                    $.post("/my/display_actionplan/" + psid + "/<?= (isset($w_id) ? intval($w_id) : 0) ?>/<?= (isset($c_id) ? intval($c_id) : 0) ?>?sr=" + signed_request, {}, function (data) {
+                    $.post("/my/display_actionplan/" + psid + "/<?= (isset($w_id) ? intval($w_id) : 0) ?>/<?= (isset($in_id) ? intval($in_id) : 0) ?>?sr=" + signed_request, {}, function (data) {
                         //Update UI to confirm with user:
                         $("#page_content").html(data);
                     });

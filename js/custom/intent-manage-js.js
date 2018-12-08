@@ -118,7 +118,7 @@ $(document).ready(function () {
     //Load Algolia:
     $(".intentadder-level-2").on('autocomplete:selected', function (event, suggestion, dataset) {
 
-        c_js_new($(this).attr('intent-id'), 2, suggestion.c_id);
+        c_js_new($(this).attr('intent-id'), 2, suggestion.in_id);
 
     }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
 
@@ -205,7 +205,7 @@ function in_load_search_level3() {
 
     $(".intentadder-level-3").on('autocomplete:selected', function (event, suggestion, dataset) {
 
-        c_js_new($(this).attr('intent-id'), 3, suggestion.c_id);
+        c_js_new($(this).attr('intent-id'), 3, suggestion.in_id);
 
     }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
 
@@ -244,13 +244,13 @@ function in_load_search_level3() {
 }
 
 
-function in_sort_save(c_id, level) {
+function in_sort_save(in_id, level) {
 
     if (level == 2) {
         var s_element = "list-c-" + c_top_id;
         var s_draggable = ".is_level2_sortable";
     } else if (level == 3) {
-        var s_element = "list-cr-" + $('.intent_line_' + c_id).attr('data-link-id');
+        var s_element = "list-cr-" + $('.intent_line_' + in_id).attr('data-link-id');
         var s_draggable = ".is_level3_sortable";
     } else {
         //Should not happen!
@@ -268,7 +268,7 @@ function in_sort_save(c_id, level) {
         if (!$(this).hasClass('dropin-box')) {
 
             //Fetch variables for this intent:
-            var c_id = parseInt($(this).attr('intent-id'));
+            var in_id = parseInt($(this).attr('intent-id'));
             var tr_id = parseInt($(this).attr('data-link-id'));
 
             sort_rank++;
@@ -277,11 +277,11 @@ function in_sort_save(c_id, level) {
             new_sort[sort_rank] = tr_id;
 
             //Is the Child rank correct? Check DB value:
-            var db_rank = parseInt($('.c_outcome_' + c_id).attr('children-rank'));
+            var db_rank = parseInt($('.c_outcome_' + in_id).attr('children-rank'));
 
-            if (level == 2 && !(db_rank == sort_rank) && !c_id) {
+            if (level == 2 && !(db_rank == sort_rank) && !in_id) {
                 is_properly_sorted = false;
-                console.log('Intent #' + c_id + ' detected out of sync.');
+                console.log('Intent #' + in_id + ' detected out of sync.');
             }
 
             //Update sort handler:
@@ -290,15 +290,15 @@ function in_sort_save(c_id, level) {
     });
 
 
-    if (level == 2 && !is_properly_sorted && !c_id) {
+    if (level == 2 && !is_properly_sorted && !in_id) {
         //Sorting issue detected on Task load:
-        c_id = parseInt(c_top_id);
+        in_id = parseInt(c_top_id);
     }
 
     //It might be zero for lists that have jsut been emptied
-    if (sort_rank > 0 && c_id) {
+    if (sort_rank > 0 && in_id) {
         //Update backend:
-        $.post("/intents/in_sort_save", {c_id: c_id, new_sort: new_sort}, function (data) {
+        $.post("/intents/in_sort_save", {in_id: in_id, new_sort: new_sort}, function (data) {
             //Update UI to confirm with user:
             if (!data.status) {
                 //There was some sort of an error returned!
@@ -309,14 +309,14 @@ function in_sort_save(c_id, level) {
 }
 
 
-function in_sort_load(c_id, level) {
+function in_sort_load(in_id, level) {
 
     if (level == 2) {
         var element_key = null;
         var s_element = "list-c-" + c_top_id;
         var s_draggable = ".is_level2_sortable";
     } else if (level == 3) {
-        var element_key = '.intent_line_' + c_id;
+        var element_key = '.intent_line_' + in_id;
         var s_element = "list-cr-" + $(element_key).attr('data-link-id');
         var s_draggable = ".is_level3_sortable";
     } else {
@@ -345,7 +345,7 @@ function in_sort_load(c_id, level) {
         draggable: s_draggable, // Specifies which items inside the element should be sortable
         handle: ".fa-bars", // Restricts sort start click/touch to the specified element
         onUpdate: function (evt/**Event*/) {
-            in_sort_save(c_id, level);
+            in_sort_save(in_id, level);
         }
     };
 
@@ -359,9 +359,9 @@ function in_sort_load(c_id, level) {
             //Define variables:
             var inputs = {
                 tr_id: evt.item.attributes[1].nodeValue,
-                c_id: evt.item.attributes[2].nodeValue,
-                from_c_id: evt.from.attributes[2].value,
-                to_c_id: evt.to.attributes[2].value,
+                in_id: evt.item.attributes[2].nodeValue,
+                from_in_id: evt.from.attributes[2].value,
+                to_in_id: evt.to.attributes[2].value,
             };
             //Update:
             $.post("/intents/c_move_c", inputs, function (data) {
@@ -375,27 +375,27 @@ function in_sort_load(c_id, level) {
 
                     //All good as expected!
                     //Moved the parent pointer:
-                    $('.intent_line_' + inputs.c_id).attr('parent-intent-id', inputs.to_c_id);
+                    $('.intent_line_' + inputs.in_id).attr('parent-intent-id', inputs.to_in_id);
 
                     //Determine core variables for hour move calculations:
-                    var step_hours = parseFloat($('.t_estimate_' + inputs.c_id + ':first').attr('tree-max-seconds'));
-                    var intent_count = parseInt($('.children-counter-' + inputs.c_id + ':first').text());
+                    var step_hours = parseFloat($('.t_estimate_' + inputs.in_id + ':first').attr('tree-max-seconds'));
+                    var intent_count = parseInt($('.children-counter-' + inputs.in_id + ':first').text());
 
                     if (!(step_hours == 0)) {
                         //Remove from old one:
-                        var from_hours_new = parseFloat($('.t_estimate_' + inputs.from_c_id + ':first').attr('tree-max-seconds')) - step_hours;
-                        $('.t_estimate_' + inputs.from_c_id).attr('tree-max-seconds', from_hours_new).text(echo_js_hours(from_hours_new));
-                        $('.children-counter-' + inputs.from_c_id).text(parseInt($('.children-counter-' + inputs.from_c_id + ':first').text()) - intent_count);
+                        var from_hours_new = parseFloat($('.t_estimate_' + inputs.from_in_id + ':first').attr('tree-max-seconds')) - step_hours;
+                        $('.t_estimate_' + inputs.from_in_id).attr('tree-max-seconds', from_hours_new).text(echo_js_hours(from_hours_new));
+                        $('.children-counter-' + inputs.from_in_id).text(parseInt($('.children-counter-' + inputs.from_in_id + ':first').text()) - intent_count);
 
                         //Add to new:
-                        var to_hours_new = parseFloat($('.t_estimate_' + inputs.to_c_id + ':first').attr('tree-max-seconds')) + step_hours;
-                        $('.t_estimate_' + inputs.to_c_id).attr('tree-max-seconds', to_hours_new).text(echo_js_hours(to_hours_new));
-                        $('.children-counter-' + inputs.to_c_id).text(parseInt($('.children-counter-' + inputs.to_c_id + ':first').text()) + intent_count);
+                        var to_hours_new = parseFloat($('.t_estimate_' + inputs.to_in_id + ':first').attr('tree-max-seconds')) + step_hours;
+                        $('.t_estimate_' + inputs.to_in_id).attr('tree-max-seconds', to_hours_new).text(echo_js_hours(to_hours_new));
+                        $('.children-counter-' + inputs.to_in_id).text(parseInt($('.children-counter-' + inputs.to_in_id + ':first').text()) + intent_count);
                     }
 
                     //Update sorting for both lists:
-                    in_sort_save(inputs.from_c_id, 3);
-                    in_sort_save(inputs.to_c_id, 3);
+                    in_sort_save(inputs.from_in_id, 3);
+                    in_sort_save(inputs.to_in_id, 3);
 
                 }
             });
@@ -406,59 +406,59 @@ function in_sort_load(c_id, level) {
 }
 
 
-function in_messages_load(c_id) {
+function in_messages_load(in_id) {
     //Start loading:
     $('.fixed-box, .ajax-frame').addClass('hidden');
     $('#load_w_frame, .frame-loader').removeClass('hidden').hide().fadeIn();
     //Set title:
-    $('#w_title').html('<i class="fas fa-comment-dots"></i> ' + $('.c_outcome_' + c_id + ':first').text());
+    $('#w_title').html('<i class="fas fa-comment-dots"></i> ' + $('.c_outcome_' + in_id + ':first').text());
 
     //Load content via a URL:
     $('.frame-loader').addClass('hidden');
-    $('.ajax-frame').attr('src', '/intents/in_messages_load/' + c_id).removeClass('hidden').css('margin-top', '0');
+    $('.ajax-frame').attr('src', '/intents/in_messages_load/' + in_id).removeClass('hidden').css('margin-top', '0');
 
     //Tooltips:
     $('[data-toggle="tooltip"]').tooltip();
 }
 
 
-function in_tr_load(c_id) {
+function in_tr_load(in_id) {
     //Start loading:
     $('.fixed-box, .ajax-frame').addClass('hidden');
     $('#load_w_frame, .frame-loader').removeClass('hidden').hide().fadeIn();
 
     //Set title:
-    $('#w_title').html('<i class="fas fa-atlas"></i> ' + $('.c_outcome_' + c_id + ':first').text());
+    $('#w_title').html('<i class="fas fa-atlas"></i> ' + $('.c_outcome_' + in_id + ':first').text());
 
     //Load content via a URL:
     $('.frame-loader').addClass('hidden');
-    $('.ajax-frame').attr('src', '/intents/in_tr_load/' + c_id).removeClass('hidden').css('margin-top', '0');
+    $('.ajax-frame').attr('src', '/intents/in_tr_load/' + in_id).removeClass('hidden').css('margin-top', '0');
 
     //Tooltips:
     $('[data-toggle="tooltip"]').tooltip();
 }
 
-function in_actionplans_load(c_id) {
+function in_actionplans_load(in_id) {
     //Start loading:
     $('.fixed-box, .ajax-frame').addClass('hidden');
     $('#load_w_frame, .frame-loader').removeClass('hidden').hide().fadeIn();
     //Set title:
-    $('#w_title').html('<i class="fas fa-flag"></i> ' + $('.c_outcome_' + c_id + ':first').text());
+    $('#w_title').html('<i class="fas fa-flag"></i> ' + $('.c_outcome_' + in_id + ':first').text());
 
     //Load content via a URL:
     $('.frame-loader').addClass('hidden');
-    $('.ajax-frame').attr('src', '/intents/in_actionplans_load/' + c_id).removeClass('hidden').css('margin-top', '0');
+    $('.ajax-frame').attr('src', '/intents/in_actionplans_load/' + in_id).removeClass('hidden').css('margin-top', '0');
 
     //Tooltips:
     $('[data-toggle="tooltip"]').tooltip();
 }
 
 
-function adjust_js_ui(c_id, level, new_hours, intent_deficit_count=0, apply_to_tree=0, skip_intent_adjustments=0) {
+function adjust_js_ui(in_id, level, new_hours, intent_deficit_count=0, apply_to_tree=0, skip_intent_adjustments=0) {
 
     intent_deficit_count = parseInt(intent_deficit_count);
-    var in_seconds = parseFloat($('.t_estimate_' + c_id + ':first').attr('intent-seconds'));
-    var in__tree_seconds = parseFloat($('.t_estimate_' + c_id + ':first').attr('tree-max-seconds'));
+    var in_seconds = parseFloat($('.t_estimate_' + in_id + ':first').attr('intent-seconds'));
+    var in__tree_seconds = parseFloat($('.t_estimate_' + in_id + ':first').attr('tree-max-seconds'));
     var in_deficit_seconds = new_hours - (skip_intent_adjustments ? 0 : (apply_to_tree ? in__tree_seconds : in_seconds));
 
     if (in_deficit_seconds == 0 && intent_deficit_count == 0) {
@@ -469,12 +469,12 @@ function adjust_js_ui(c_id, level, new_hours, intent_deficit_count=0, apply_to_t
     //Adjust same level hours:
     if (!skip_intent_adjustments) {
         var in_new__tree_seconds = in__tree_seconds + in_deficit_seconds;
-        $('.t_estimate_' + c_id)
+        $('.t_estimate_' + in_id)
             .attr('tree-max-seconds', in_new__tree_seconds)
             .text(echo_js_hours(in_new__tree_seconds));
 
         if (!apply_to_tree) {
-            $('.t_estimate_' + c_id).attr('intent-seconds', new_hours).text(echo_js_hours(in_new__tree_seconds));
+            $('.t_estimate_' + in_id).attr('intent-seconds', new_hours).text(echo_js_hours(in_new__tree_seconds));
         }
     }
 
@@ -490,7 +490,7 @@ function adjust_js_ui(c_id, level, new_hours, intent_deficit_count=0, apply_to_t
     if (level >= 2) {
 
         //Adjust the parent level hours:
-        var in_parent_id = parseInt($('.intent_line_' + c_id).attr('parent-intent-id'));
+        var in_parent_id = parseInt($('.intent_line_' + in_id).attr('parent-intent-id'));
         var in_parent__tree_seconds = parseFloat($('.t_estimate_' + in_parent_id + ':first').attr('tree-max-seconds'));
         var in_new_parent__tree_seconds = in_parent__tree_seconds + in_deficit_seconds;
 
@@ -536,10 +536,10 @@ function in_outcome_counter() {
 }
 
 
-function in_modify_load(c_id, tr_id) {
+function in_modify_load(in_id, tr_id) {
 
     //Make sure inputs are valid:
-    if (!$('.t_estimate_' + c_id + ':first').length) {
+    if (!$('.t_estimate_' + in_id + ':first').length) {
         return false;
     }
 
@@ -547,21 +547,21 @@ function in_modify_load(c_id, tr_id) {
 
     //Update variables:
     $('#modifybox').attr('intent-link-id', tr_id);
-    $('#modifybox').attr('intent-id', c_id);
+    $('#modifybox').attr('intent-id', in_id);
     $('#modifybox').attr('level', level);
 
     //Set variables:
-    var in_seconds = parseFloat($('.t_estimate_' + c_id + ':first').attr('intent-seconds'));
-    var in__tree_seconds = $('.t_estimate_' + c_id + ':first').attr('tree-max-seconds');
+    var in_seconds = parseFloat($('.t_estimate_' + in_id + ':first').attr('intent-seconds'));
+    var in__tree_seconds = $('.t_estimate_' + in_id + ':first').attr('tree-max-seconds');
 
-    $('#c_outcome').val($(".c_outcome_" + c_id + ":first").text());
+    $('#c_outcome').val($(".c_outcome_" + in_id + ":first").text());
     in_outcome_counter();
 
-    $('#in_status').val($('.c_outcome_' + c_id).attr('in_status'));
-    $('#c_points').val($('.c_outcome_' + c_id).attr('c_points'));
-    $('#c_trigger_statements').val($('.c_outcome_' + c_id).attr('c_trigger_statements'));
+    $('#in_status').val($('.c_outcome_' + in_id).attr('in_status'));
+    $('#c_points').val($('.c_outcome_' + in_id).attr('c_points'));
+    $('#c_trigger_statements').val($('.c_outcome_' + in_id).attr('c_trigger_statements'));
     $('#c_time_estimate').val(Math.round(in_seconds));
-    $('#c_cost_estimate').val(parseFloat($('.c_outcome_' + c_id).attr('c_cost_estimate')));
+    $('#c_cost_estimate').val(parseFloat($('.c_outcome_' + in_id).attr('c_cost_estimate')));
 
     //Load intent links if any:
     if (tr_id > 0) {
@@ -571,11 +571,11 @@ function in_modify_load(c_id, tr_id) {
     }
 
     //Adjust Radio buttons:
-    $("input[name=in_is_any][value='" + $('.c_outcome_' + c_id).attr('in_is_any') + "']").prop("checked", true);
+    $("input[name=in_is_any][value='" + $('.c_outcome_' + in_id).attr('in_is_any') + "']").prop("checked", true);
 
     //Adjust checkboxes:
-    document.getElementById("c_require_url_to_complete").checked = parseInt($('.c_outcome_' + c_id).attr('c_require_url_to_complete'));
-    document.getElementById("c_require_notes_to_complete").checked = parseInt($('.c_outcome_' + c_id).attr('c_require_notes_to_complete'));
+    document.getElementById("c_require_url_to_complete").checked = parseInt($('.c_outcome_' + in_id).attr('c_require_url_to_complete'));
+    document.getElementById("c_require_notes_to_complete").checked = parseInt($('.c_outcome_' + in_id).attr('c_require_notes_to_complete'));
     document.getElementById("apply_recurively").checked = false; //Always remove this so the user can choose
 
     //Run UI Updating functions:
@@ -626,7 +626,7 @@ function c_save_modify() {
 
     //Prepare data to be modified for this intent:
     var modify_data = {
-        c_id: parseInt($('#modifybox').attr('intent-id')),
+        in_id: parseInt($('#modifybox').attr('intent-id')),
         tr_id: parseInt($('#modifybox').attr('intent-link-id')), //Will be zero for Level 1 intent!
         level: parseInt($('#modifybox').attr('level')),
         c_outcome: $('#c_outcome').val(),
@@ -647,7 +647,7 @@ function c_save_modify() {
     }
 
     //Take a snapshot of the current status:
-    var original_in_status = parseInt($('.c_outcome_' + modify_data['c_id']).attr('in_status'));
+    var original_in_status = parseInt($('.c_outcome_' + modify_data['in_id']).attr('in_status'));
 
     //Show spinner:
     $('.save_intent_changes').html('<span><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
@@ -658,15 +658,15 @@ function c_save_modify() {
         if (data.status) {
 
             //Update variables:
-            $(".c_outcome_" + modify_data['c_id']).html(modify_data['c_outcome']);
-            $('.c_outcome_' + modify_data['c_id']).attr('c_require_url_to_complete', modify_data['c_require_url_to_complete']);
-            $('.c_outcome_' + modify_data['c_id']).attr('c_require_notes_to_complete', modify_data['c_require_notes_to_complete']);
-            $('.c_outcome_' + modify_data['c_id']).attr('in_is_any', modify_data['in_is_any']);
-            $('.c_outcome_' + modify_data['c_id']).attr('c_cost_estimate', modify_data['c_cost_estimate']);
+            $(".c_outcome_" + modify_data['in_id']).html(modify_data['c_outcome']);
+            $('.c_outcome_' + modify_data['in_id']).attr('c_require_url_to_complete', modify_data['c_require_url_to_complete']);
+            $('.c_outcome_' + modify_data['in_id']).attr('c_require_notes_to_complete', modify_data['c_require_notes_to_complete']);
+            $('.c_outcome_' + modify_data['in_id']).attr('in_is_any', modify_data['in_is_any']);
+            $('.c_outcome_' + modify_data['in_id']).attr('c_cost_estimate', modify_data['c_cost_estimate']);
 
-            $('.c_outcome_' + modify_data['c_id']).attr('in_status', modify_data['in_status']);
-            $('.c_outcome_' + modify_data['c_id']).attr('c_points', modify_data['c_points']);
-            $('.c_outcome_' + modify_data['c_id']).attr('c_trigger_statements', modify_data['c_trigger_statements']);
+            $('.c_outcome_' + modify_data['in_id']).attr('in_status', modify_data['in_status']);
+            $('.c_outcome_' + modify_data['in_id']).attr('c_points', modify_data['c_points']);
+            $('.c_outcome_' + modify_data['in_id']).attr('c_trigger_statements', modify_data['c_trigger_statements']);
 
 
             //has intent link status updated? If so update the UI:
@@ -680,7 +680,7 @@ function c_save_modify() {
             //has intent status updated? If so update the UI:
             if (original_in_status != modify_data['in_status']) {
                 //Update status:
-                $('.in_status_' + modify_data['c_id']).html(data.status_c_ui);
+                $('.in_status_' + modify_data['in_id']).html(data.status_c_ui);
             }
 
 
@@ -689,11 +689,11 @@ function c_save_modify() {
                 //We're archiving this...
                 if (modify_data['level'] == 1) {
                     //move up as this item has been removed!
-                    window.location = "/intents/" + ($('.intent_line_' + modify_data['c_id']).attr('parent-intent-id'));
+                    window.location = "/intents/" + ($('.intent_line_' + modify_data['in_id']).attr('parent-intent-id'));
                 } else {
                     //hide removed item:
                     //Adjust hours:
-                    adjust_js_ui(modify_data['c_id'], modify_data['level'], 0, data.adjusted_c_count, 1);
+                    adjust_js_ui(modify_data['in_id'], modify_data['level'], 0, data.adjusted_c_count, 1);
 
                     //Remove from UI:
                     $('#cr_' + modify_data['tr_id']).html('<span style="color:#2f2739;"><i class="fas fa-trash-alt"></i> Removed</span>');
@@ -711,7 +711,7 @@ function c_save_modify() {
                         $('#modifybox').addClass('hidden');
 
                         //Resort all Tasks to illustrate changes on UI:
-                        in_sort_save(parseInt($('.intent_line_' + modify_data['c_id']).attr('parent-intent-id')), modify_data['level']);
+                        in_sort_save(parseInt($('.intent_line_' + modify_data['in_id']).attr('parent-intent-id')), modify_data['level']);
 
                     }, 377);
                 }
@@ -719,34 +719,34 @@ function c_save_modify() {
 
             //Adjust UI Icons:
             if (modify_data['in_is_any']) {
-                $('.in_is_any_icon' + modify_data['c_id']).addClass('fa-code-merge').removeClass('fa-sitemap');
+                $('.in_is_any_icon' + modify_data['in_id']).addClass('fa-code-merge').removeClass('fa-sitemap');
             } else {
-                $('.in_is_any_icon' + modify_data['c_id']).removeClass('fa-code-merge').addClass('fa-sitemap');
+                $('.in_is_any_icon' + modify_data['in_id']).removeClass('fa-code-merge').addClass('fa-sitemap');
             }
 
             //Update trigger statements:
-            if ($('.c_trigger_statements_' + modify_data['c_id']).length) {
+            if ($('.c_trigger_statements_' + modify_data['in_id']).length) {
                 //This is the top intent that's loaded, update expanded trigger UI:
-                $(".c_trigger_statements_" + modify_data['c_id']).html(nl2br(modify_data['c_trigger_statements']));
+                $(".c_trigger_statements_" + modify_data['in_id']).html(nl2br(modify_data['c_trigger_statements']));
             } else {
                 //This is a level 2+ intent, let's update the tooltip UI:
                 if (modify_data['c_trigger_statements'].length > 0) {
-                    $(".c_outcome_" + modify_data['c_id']).addClass('has-desc').attr('data-toggle', 'tooltip').attr('data-original-title', modify_data['c_trigger_statements']);
+                    $(".c_outcome_" + modify_data['in_id']).addClass('has-desc').attr('data-toggle', 'tooltip').attr('data-original-title', modify_data['c_trigger_statements']);
                 } else {
-                    $(".c_outcome_" + modify_data['c_id']).removeClass('has-desc').attr('data-toggle', '').attr('data-original-title', '');
+                    $(".c_outcome_" + modify_data['in_id']).removeClass('has-desc').attr('data-toggle', '').attr('data-original-title', '');
                 }
             }
 
 
             //Update other UI elements:
-            $(".ui_c_points_" + modify_data['c_id']).html((modify_data['c_points'] > 0 ? '<i class="fas fa-weight" style="margin-right: 2px;"></i>' + modify_data['c_points'] : ''));
-            $(".ui_c_require_notes_to_complete_" + modify_data['c_id']).html((modify_data['c_require_notes_to_complete'] > 0 ? '<i class="fas fa-pencil"></i>' : ''));
-            $(".ui_c_require_url_to_complete_" + modify_data['c_id']).html((modify_data['c_require_url_to_complete'] > 0 ? '<i class="fas fa-link"></i>' : ''));
-            $(".ui_c_cost_estimate_" + modify_data['c_id']).html((modify_data['c_cost_estimate'] > 0 ? '<i class="fas fa-usd-circle" style="margin-right: 2px;"></i>' + modify_data['c_cost_estimate'] : ''));
+            $(".ui_c_points_" + modify_data['in_id']).html((modify_data['c_points'] > 0 ? '<i class="fas fa-weight" style="margin-right: 2px;"></i>' + modify_data['c_points'] : ''));
+            $(".ui_c_require_notes_to_complete_" + modify_data['in_id']).html((modify_data['c_require_notes_to_complete'] > 0 ? '<i class="fas fa-pencil"></i>' : ''));
+            $(".ui_c_require_url_to_complete_" + modify_data['in_id']).html((modify_data['c_require_url_to_complete'] > 0 ? '<i class="fas fa-link"></i>' : ''));
+            $(".ui_c_cost_estimate_" + modify_data['in_id']).html((modify_data['c_cost_estimate'] > 0 ? '<i class="fas fa-usd-circle" style="margin-right: 2px;"></i>' + modify_data['c_cost_estimate'] : ''));
 
 
             //Adjust hours if needed:
-            adjust_js_ui(modify_data['c_id'], modify_data['level'], modify_data['c_time_estimate']);
+            adjust_js_ui(modify_data['in_id'], modify_data['level'], modify_data['c_time_estimate']);
 
             //Update UI to confirm with user:
             $('.save_intent_changes').html(data.message).hide().fadeIn();
@@ -774,19 +774,19 @@ function c_save_modify() {
 }
 
 
-function c_js_new(c_id, next_level, link_c_id=0) {
+function c_js_new(in_id, next_level, in_linkto_id=0) {
 
-    //If link_c_id>0 this means we're only linking
+    //If in_linkto_id>0 this means we're only linking
     //Set variables mostly based on level:
 
     if (next_level == 2) {
         var sort_handler = ".is_level2_sortable";
         var sort_list_id = "list-c-" + c_top_id;
-        var input_field = $('#addintent-c-' + c_id);
+        var input_field = $('#addintent-c-' + in_id);
     } else if (next_level == 3) {
         var sort_handler = ".is_level3_sortable";
-        var sort_list_id = "list-cr-" + $('.intent_line_' + c_id).attr('data-link-id');
-        var input_field = $('#addintent-cr-' + $('.intent_line_' + c_id).attr('data-link-id'));
+        var sort_list_id = "list-cr-" + $('.intent_line_' + in_id).attr('data-link-id');
+        var input_field = $('#addintent-cr-' + $('.intent_line_' + in_id).attr('data-link-id'));
     } else {
         alert('Invalid next_level value [' + next_level + ']');
         return false;
@@ -795,7 +795,7 @@ function c_js_new(c_id, next_level, link_c_id=0) {
 
     var intent_name = input_field.val();
 
-    if (!link_c_id && intent_name.length < 1) {
+    if (!in_linkto_id && intent_name.length < 1) {
         alert('Error: Missing Intent. Try Again...');
         input_field.focus();
         return false;
@@ -806,10 +806,10 @@ function c_js_new(c_id, next_level, link_c_id=0) {
 
     //Update backend:
     $.post("/intents/c_new", {
-        c_id: c_id,
+        in_id: in_id,
         c_outcome: intent_name,
         next_level: next_level,
-        link_c_id: link_c_id
+        in_linkto_id: in_linkto_id
     }, function (data) {
 
         //Remove loader:
@@ -821,10 +821,10 @@ function c_js_new(c_id, next_level, link_c_id=0) {
             add_to_list(sort_list_id, sort_handler, data.html);
 
             //Re-adjust sorting:
-            in_sort_load(c_id, next_level);
+            in_sort_load(in_id, next_level);
 
             //Remove potential grey class:
-            $('.tree-badge-' + c_id).removeClass('grey');
+            $('.tree-badge-' + in_id).removeClass('grey');
 
 
             if (next_level == 2) {
@@ -833,21 +833,21 @@ function c_js_new(c_id, next_level, link_c_id=0) {
                 in_sort_save(0, 2);
 
                 //Re-adjust sorting for inner Steps:
-                in_sort_load(data.c_id, 3);
+                in_sort_load(data.in_id, 3);
 
                 //Load search again:
                 in_load_search_level3();
 
             } else {
                 //Adjust Step sorting:
-                in_sort_save(c_id, next_level);
+                in_sort_save(in_id, next_level);
             }
 
             //Tooltips:
             $('[data-toggle="tooltip"]').tooltip();
 
             //Adjust time:
-            adjust_js_ui(data.c_id, next_level, data.c__tree_max_hours, data.adjusted_c_count, 0, 1);
+            adjust_js_ui(data.in_id, next_level, data.c__tree_max_hours, data.adjusted_c_count, 0, 1);
 
         } else {
             //Show errors:

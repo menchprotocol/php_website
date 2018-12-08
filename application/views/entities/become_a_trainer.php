@@ -174,7 +174,7 @@ $udata = $this->session->userdata('user');
             <div class="col-md-8 col-md-offset-2" style="text-align:center;">
                 <?php
                 if (isset($udata['u_id'])) {
-                    echo '<a href="/intents/' . $this->config->item('primary_in_id') . '" class="btn btn-danger btn-raised btn-lg">Console <i class="fas fa-chevron-circle-right" style="font-size:1.2em;"></i></a>';
+                    echo '<a href="/intents/' . $this->config->item('in_primary_id') . '" class="btn btn-danger btn-raised btn-lg">Console <i class="fas fa-chevron-circle-right" style="font-size:1.2em;"></i></a>';
                 } else {
                     echo '<a href="https://mench.typeform.com/to/nh4s2u" class="btn btn-danger btn-raised btn-lg">Signup As Coach <i class="fas fa-sign-in" style="font-size:1.2em;"></i><div class="ripple-container"></div></a>';
                     echo '<p class="sub-button"><a href="#testimonials" class="testimonials" onclick="$(\'.testimonials\').toggle()">Read Student Testimonials</a> or <a href="/login">Login</a></p>';

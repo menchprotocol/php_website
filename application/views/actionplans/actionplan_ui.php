@@ -2,7 +2,7 @@
 
 //Prepare some variables to better understand out situation here:
 $messages = $this->Db_model->i_fetch(array(
-    'i_c_id' => $c['c_id'],
+    'i_in_id' => $c['in_id'],
     'i_status' => 1, //On start messages only
 ));
 $has_outs = (count($k_outs) > 0);
@@ -28,11 +28,11 @@ if ($w['w_status'] == 1) {
     //Active subscription, attempt to find next item, which we should be able to find:
     $trs_next = $this->Db_model->k_next_fetch($w['w_id']);
     if ($trs_next) {
-        if ($trs_next[0]['c_id'] == $c['c_id']) {
+        if ($trs_next[0]['in_id'] == $c['in_id']) {
             //$next_button = '<span style="font-size: 0.7em; padding-left:5px; display:inline-block;"><i class="fas fa-shield-check"></i> This is the next-in-line intent</span>';
             $next_button = null;
         } else {
-            $next_button = '<a href="/my/actionplan/' . $trs_next[0]['k_w_id'] . '/' . $trs_next[0]['c_id'] . '" class="btn ' . (count($k_ins) == 1 && !$show_written_input && !$is_incomplete ? 'btn-md btn-primary' : 'btn-xs btn-black') . '" data-toggle="tooltip" data-placement="top" title="Next intent-in-line is to ' . $trs_next[0]['c_outcome'] . '">Next-in-line <i class="fas fa-angle-right"></i></a>';
+            $next_button = '<a href="/my/actionplan/' . $trs_next[0]['tr_tr_parent_id'] . '/' . $trs_next[0]['in_id'] . '" class="btn ' . (count($k_ins) == 1 && !$show_written_input && !$is_incomplete ? 'btn-md btn-primary' : 'btn-xs btn-black') . '" data-toggle="tooltip" data-placement="top" title="Next intent-in-line is to ' . $trs_next[0]['c_outcome'] . '">Next-in-line <i class="fas fa-angle-right"></i></a>';
         }
     }
 }
@@ -40,7 +40,7 @@ if ($w['w_status'] == 1) {
 //Include JS file:
 echo '<script src="/js/custom/actionplan-js.js?v=v' . $this->config->item('app_version') . '" type="text/javascript"></script>';
 
-//Fetch parent tree all the way to the top of subscription w_c_id
+//Fetch parent tree all the way to the top of subscription w_in_id
 echo '<div class="list-group" style="margin-top: 10px;">';
 foreach ($k_ins as $k) {
     echo echo_k($k, 1);
@@ -154,7 +154,7 @@ if ($has_outs && $list_outs) {
     echo '<h5 class="badge badge-hy">' . ($c['in_is_any'] ? '<i class="fas fa-code-merge"></i> Choose One' : '<i class="fas fa-sitemap"></i> Complete All') . ':</h5>';
     echo '<div class="list-group">';
     foreach ($k_outs as $k) {
-        echo echo_k($k, 0, ($c['in_is_any'] && $k['k_status'] == 0 ? $c['c_id'] : 0));
+        echo echo_k($k, 0, ($c['in_is_any'] && $k['k_status'] == 0 ? $c['in_id'] : 0));
     }
     echo '</div>';
     echo '</div>';
@@ -166,7 +166,7 @@ echo $next_button;
 
 //Give a skip option if not complete:
 if (count($k_ins) == 1 && in_array($k_ins[0]['k_status'], $this->config->item('k_status_incomplete'))) {
-    echo '<span class="skippable">or <a href="javascript:void(0);" onclick="confirm_skip(' . $w['w_id'] . ',' . $c['c_id'] . ',' . $k_ins[0]['tr_id'] . ')">skip intent</a></span>';
+    echo '<span class="skippable">or <a href="javascript:void(0);" onclick="confirm_skip(' . $w['w_id'] . ',' . $c['in_id'] . ',' . $k_ins[0]['tr_id'] . ')">skip intent</a></span>';
 }
 
 ?>

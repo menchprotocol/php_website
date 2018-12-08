@@ -21,7 +21,7 @@ $route['logout'] = "entities/logout"; //Logout from entites
 $route['entities/(:num)'] = "entities/entity_manage/$1";
 $route['entities'] = "entities/entity_manage/" . $this->config->item('primary_en_id');
 $route['intents/(:num)'] = "intents/intent_manage/$1";
-$route['intents'] = "intents/intent_manage/" . $this->config->item('primary_in_id');
+$route['intents'] = "intents/intent_manage/" . $this->config->item('in_primary_id');
 
 //Front facing landing page for intents:
 $route['(:num)'] = "intents/intent_public/$1"; //Public intent browser

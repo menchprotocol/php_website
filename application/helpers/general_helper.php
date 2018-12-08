@@ -257,11 +257,11 @@ function en_match_metadata($key, $value)
 }
 
 
-function is_valid_intent($c_id)
+function is_valid_intent($in_id)
 {
     $CI =& get_instance();
     $intents = $CI->Db_model->in_fetch(array(
-        'c_id' => intval($c_id),
+        'in_id' => intval($in_id),
         'in_status >=' => 0,
     ));
     return (count($intents) == 1);
@@ -330,7 +330,7 @@ function auth($entity_groups = null, $force_redirect = 0)
         return false;
     } else {
         //Block access:
-        redirect_message((isset($udata['en__parents'][0]) && filter_array($udata['en__parents'], 'en_id', 1308) ? '/intents/' . $this->config->item('primary_in_id') : '/login?url=' . urlencode($_SERVER['REQUEST_URI'])), '<div class="alert alert-danger maxout" role="alert">' . (isset($udata['u_id']) ? 'Access not authorized.' : 'Session Expired. Login to continue.') . '</div>');
+        redirect_message((isset($udata['en__parents'][0]) && filter_array($udata['en__parents'], 'en_id', 1308) ? '/intents/' . $this->config->item('in_primary_id') : '/login?url=' . urlencode($_SERVER['REQUEST_URI'])), '<div class="alert alert-danger maxout" role="alert">' . (isset($udata['u_id']) ? 'Access not authorized.' : 'Session Expired. Login to continue.') . '</div>');
     }
 
 }
@@ -572,7 +572,7 @@ function extract_references($prefix, $message)
     return $matches;
 }
 
-function message_validation($i_status, $tr_content, $i_c_id)
+function message_validation($i_status, $tr_content, $i_in_id)
 {
 
 
@@ -582,7 +582,7 @@ function message_validation($i_status, $tr_content, $i_c_id)
     //Extract details from this message:
     $urls = extract_urls($tr_content);
     $u_ids = extract_references('@', $tr_content);
-    $c_ids = extract_references('#', $tr_content);
+    $in_ids = extract_references('#', $tr_content);
 
 
     if (!isset($i_status) || !(intval($i_status) == $i_status)) {
@@ -630,7 +630,7 @@ function message_validation($i_status, $tr_content, $i_c_id)
             'status' => 0,
             'message' => 'Max 1 URL per Message',
         );
-    } elseif ((count($u_ids) == 0 && count($urls) == 0) && count($c_ids) > 0) {
+    } elseif ((count($u_ids) == 0 && count($urls) == 0) && count($in_ids) > 0) {
         return array(
             'status' => 0,
             'message' => 'You must reference an entity before being able to affirm an intent',
@@ -640,7 +640,7 @@ function message_validation($i_status, $tr_content, $i_c_id)
             'status' => 0,
             'message' => '/slice command required an entity reference [@' . count($u_ids) . ']',
         );
-    } elseif (count($c_ids) > 1) {
+    } elseif (count($in_ids) > 1) {
         return array(
             'status' => 0,
             'message' => 'You can reference a maximum of 1 intent per message',
@@ -649,30 +649,30 @@ function message_validation($i_status, $tr_content, $i_c_id)
 
 
     //Validate Intent:
-    if (count($c_ids) > 0) {
+    if (count($in_ids) > 0) {
 
         //Validate this:
         $i_parent_cs = $CI->Db_model->in_fetch(array(
-            'c_id' => $c_ids[0],
+            'in_id' => $in_ids[0],
         ));
 
         $i_cs = $CI->Db_model->in_fetch(array(
-            'c_id' => $i_c_id,
-        ), 0, array('in__active_parents'));
+            'in_id' => $i_in_id,
+        ), array('in__active_parents'));
 
         if (count($i_cs) == 0) {
             //Invalid ID:
             return array(
                 'status' => 0,
-                'message' => 'Parent Intent #' . $c_ids[0] . ' does not exist',
+                'message' => 'Parent Intent #' . $in_ids[0] . ' does not exist',
             );
         } elseif (count($i_parent_cs) == 0) {
             //Invalid ID:
             return array(
                 'status' => 0,
-                'message' => 'Intent #' . $c_ids[0] . ' does not exist',
+                'message' => 'Intent #' . $in_ids[0] . ' does not exist',
             );
-        } elseif ($c_ids[0] == $i_c_id) {
+        } elseif ($in_ids[0] == $i_in_id) {
             return array(
                 'status' => 0,
                 'message' => 'You cannot affirm the message intent itself. Choose another intent to continue',
@@ -687,7 +687,7 @@ function message_validation($i_status, $tr_content, $i_c_id)
 
         $parent_found = false;
         foreach ($i_cs[0]['in__active_parents'] as $c) {
-            if ($c['c_id'] == $c_ids[0]) {
+            if ($c['in_id'] == $in_ids[0]) {
                 $parent_found = true;
                 break;
             }

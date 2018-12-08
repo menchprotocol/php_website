@@ -58,7 +58,7 @@ class My extends CI_Controller
      * Messenger Persistent Menu
      ****************************** */
 
-    function actionplan($w_id = 0, $c_id = 0)
+    function actionplan($w_id = 0, $in_id = 0)
     {
 
         $this->load->view('shared/messenger_header', array(
@@ -66,13 +66,13 @@ class My extends CI_Controller
         ));
         //include main body:
         $this->load->view('actionplans/actionplan_frame', array(
-            'c_id' => $c_id,
+            'in_id' => $in_id,
             'w_id' => $w_id,
         ));
         $this->load->view('shared/messenger_footer');
     }
 
-    function display_actionplan($u_fb_psid, $w_id = 0, $c_id = 0)
+    function display_actionplan($u_fb_psid, $w_id = 0, $in_id = 0)
     {
 
         //Get session data in case user is doing a browser login:
@@ -96,7 +96,7 @@ class My extends CI_Controller
             $w_filter['w_id'] = $w_id;
         } elseif (count($udata['u__ws']) > 0) {
             //Yes! It seems to be a desktop login:
-            $w_filter['w_child_u_id'] = $udata['u__ws'][0]['w_child_u_id'];
+            $w_filter['tr_en_parent_id'] = $udata['u__ws'][0]['tr_en_parent_id'];
             $w_filter['w_status >='] = 0;
         }
 
@@ -133,18 +133,18 @@ class My extends CI_Controller
         } elseif (count($ws) == 1) {
 
             //We found a single subscription, load this by default:
-            if (!$w_id || !$c_id) {
+            if (!$w_id || !$in_id) {
                 //User with a single subscription
                 $w_id = $ws[0]['w_id'];
-                $c_id = $ws[0]['c_id']; //TODO set to current/focused intent
+                $in_id = $ws[0]['in_id']; //TODO set to current/focused intent
             }
 
             //Log action plan view engagement:
             $this->Db_model->tr_create(array(
                 'tr_en_type_id' => 4283,
                 'tr_en_creator_id' => $ws[0]['u_id'],
-                'tr_in_child_id' => $c_id,
-                'e_w_id' => $w_id,
+                'tr_in_child_id' => $in_id,
+                'tr_tr_parent_id' => $w_id,
             ));
 
 
@@ -153,19 +153,19 @@ class My extends CI_Controller
             $k_ins = $this->Db_model->tr_fetch(array(
                 'w_id' => $w_id,
                 'in_status >=' => 2,
-                'cr_child_c_id' => $c_id,
+                'tr_in_child_id' => $in_id,
             ), array('w', 'cr', 'cr_c_parent'));
 
             $k_outs = $this->Db_model->tr_fetch(array(
                 'w_id' => $w_id,
                 'in_status >=' => 2,
-                'cr_parent_c_id' => $c_id,
+                'tr_in_parent_id' => $in_id,
             ), array('w', 'cr', 'cr_c_child'));
 
 
             $intents = $this->Db_model->in_fetch(array(
                 'in_status >=' => 2,
-                'c_id' => $c_id,
+                'in_id' => $in_id,
             ));
 
             if (count($intents) < 1 || (!count($k_ins) && !count($k_outs))) {
@@ -176,8 +176,8 @@ class My extends CI_Controller
                     'tr_metadata' => $ws,
                     'tr_content' => 'Unable to load a specific intent for the student Action Plan! Should not happen...',
                     'tr_en_type_id' => 4246,
-                    'e_w_id' => $w_id,
-                    'tr_in_child_id' => $c_id,
+                    'tr_tr_parent_id' => $w_id,
+                    'tr_in_child_id' => $in_id,
                 ));
 
                 die('<div class="alert alert-danger" role="alert">Invalid Intent ID.</div>');
@@ -211,10 +211,10 @@ class My extends CI_Controller
         $this->db->query("DELETE FROM tb_actionplans WHERE w_id=" . $w_id);
         $archive_stats['tb_actionplans'] = $this->db->affected_rows();
 
-        $this->db->query("DELETE FROM tb_actionplan_links WHERE k_w_id=" . $w_id);
+        $this->db->query("DELETE FROM tb_actionplan_links WHERE tr_tr_parent_id=" . $w_id);
         $archive_stats['tb_actionplan_links'] = $this->db->affected_rows();
 
-        $this->db->query("DELETE FROM table_ledger WHERE e_w_id=" . $w_id);
+        $this->db->query("DELETE FROM table_ledger WHERE tr_tr_parent_id=" . $w_id);
         $archive_stats['table_ledger'] = $this->db->affected_rows();
 
         return echo_json(array(
@@ -257,7 +257,7 @@ class My extends CI_Controller
         //Load Action Plan iFrame:
         return echo_json(array(
             'status' => 1,
-            'url' => '/my/actionplan/' . $w['w_id'] . '/' . $w['w_c_id'],
+            'url' => '/my/actionplan/' . $w['w_id'] . '/' . $w['w_in_id'],
         ));
 
     }
@@ -285,7 +285,7 @@ class My extends CI_Controller
         $this->load->view('shared/messenger_footer');
     }
 
-    function skip_tree($w_id, $c_id, $tr_id)
+    function skip_tree($w_id, $in_id, $tr_id)
     {
         //Start skipping:
         $total_skipped = count($this->Db_model->k_skip_recursive_down($tr_id));
@@ -296,20 +296,20 @@ class My extends CI_Controller
         //Find the next item to navigate them to:
         $trs_next = $this->Db_model->k_next_fetch($w_id);
         if ($trs_next) {
-            redirect_message('/my/actionplan/' . $trs_next[0]['k_w_id'] . '/' . $trs_next[0]['c_id'], $message);
+            redirect_message('/my/actionplan/' . $trs_next[0]['tr_tr_parent_id'] . '/' . $trs_next[0]['in_id'], $message);
         } else {
             redirect_message('/my/actionplan', $message);
         }
     }
 
-    function choose_any_path($w_id, $cr_parent_c_id, $c_id, $w_key)
+    function choose_any_path($w_id, $tr_in_parent_id, $in_id, $w_key)
     {
-        if (md5($w_id . 'kjaghksjha*(^' . $c_id . $cr_parent_c_id) == $w_key) {
-            if ($this->Db_model->k_choose_or($w_id, $cr_parent_c_id, $c_id)) {
-                redirect_message('/my/actionplan/' . $w_id . '/' . $c_id, '<div class="alert alert-success" role="alert">Your answer was saved.</div>');
+        if (md5($w_id . 'kjaghksjha*(^' . $in_id . $tr_in_parent_id) == $w_key) {
+            if ($this->Db_model->k_choose_or($w_id, $tr_in_parent_id, $in_id)) {
+                redirect_message('/my/actionplan/' . $w_id . '/' . $in_id, '<div class="alert alert-success" role="alert">Your answer was saved.</div>');
             } else {
                 //We had some sort of an error:
-                redirect_message('/my/actionplan/' . $w_id . '/' . $cr_parent_c_id, '<div class="alert alert-danger" role="alert">There was an error saving your answer.</div>');
+                redirect_message('/my/actionplan/' . $w_id . '/' . $tr_in_parent_id, '<div class="alert alert-danger" role="alert">There was an error saving your answer.</div>');
             }
         }
     }
@@ -331,7 +331,7 @@ class My extends CI_Controller
         if (!(count($trs) == 1)) {
             return redirect_message('/my/actionplan', '<div class="alert alert-danger" role="alert">Error: Invalid submission ID.</div>');
         }
-        $k_url = '/my/actionplan/' . $trs[0]['k_w_id'] . '/' . $trs[0]['c_id'];
+        $k_url = '/my/actionplan/' . $trs[0]['tr_tr_parent_id'] . '/' . $trs[0]['in_id'];
 
 
         //Do we have what it takes to mark as complete?
@@ -371,14 +371,14 @@ class My extends CI_Controller
             $trs_next = $this->Db_model->k_next_fetch($trs[0]['w_id'], (intval($_POST['k_next_redirect']) > 1 ? intval($_POST['k_next_redirect']) : 0));
             if ($trs_next) {
                 //Override original item:
-                $k_url = '/my/actionplan/' . $trs_next[0]['k_w_id'] . '/' . $trs_next[0]['c_id'];
+                $k_url = '/my/actionplan/' . $trs_next[0]['tr_tr_parent_id'] . '/' . $trs_next[0]['in_id'];
 
                 if (intval($_POST['is_from_messenger'])) {
                     //Also send confirmation messages via messenger:
                     $this->Comm_model->compose_messages(array(
                         'tr_en_child_id' => $trs[0]['k_children_u_id'],
-                        'tr_in_child_id' => $trs_next[0]['c_id'],
-                        'e_w_id' => $trs[0]['k_w_id'],
+                        'tr_in_child_id' => $trs_next[0]['in_id'],
+                        'tr_tr_parent_id' => $trs[0]['tr_tr_parent_id'],
                     ));
                 }
             }

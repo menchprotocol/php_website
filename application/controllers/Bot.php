@@ -22,12 +22,12 @@ class Bot extends CI_Controller
     {
         //Fetch all engagements from intent #6653
         $all_engs = $this->Db_model->cr_children_fetch(array(
-            'cr_parent_c_id IN (7723)' => null, //,,
+            'tr_in_parent_id IN (7723)' => null, //,,
             'tr_status' => 1,
             'in_status >=' => 0,
         ));
         foreach ($all_engs as $c_eng) {
-            echo ' ' . $c_eng['c_id'] . ' => 000000000000000000, //' . $c_eng['c_outcome'] . '<br />';
+            echo ' ' . $c_eng['in_id'] . ' => 000000000000000000, //' . $c_eng['c_outcome'] . '<br />';
         }
     }
 
@@ -188,7 +188,7 @@ class Bot extends CI_Controller
 
                             //The very first payload, set defaults:
                             $referral_array = array(
-                                'ref' => 'ACTIONPLANADD10_' . $this->config->item('primary_in_id'),
+                                'ref' => 'ACTIONPLANADD10_' . $this->config->item('in_primary_id'),
                             );
 
                         } else {

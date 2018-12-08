@@ -28,10 +28,10 @@ class Cron extends CI_Controller
 
     function show_missing_us()
     {
-        $q = $this->db->query("SELECT DISTINCT(ur_child_u_id) as p_id FROM tb_entity_links ur WHERE NOT EXISTS (
+        $q = $this->db->query("SELECT DISTINCT(tr_en_child_id) as p_id FROM tb_entity_links ur WHERE NOT EXISTS (
    SELECT 1
    FROM   tb_entities u
-   WHERE  u_id = ur_child_u_id
+   WHERE  u_id = tr_en_child_id
    );");
 
         $results = $q->result_array();
@@ -39,11 +39,11 @@ class Cron extends CI_Controller
         echo_json($results);
     }
 
-    function intent_sync($c_id = 7240, $update_c_table = 1)
+    function intent_sync($in_id = 7240, $update_c_table = 1)
     {
         //Cron Settings: 31 * * * *
         //Syncs intents with latest caching data:
-        $sync = $this->Db_model->c_recursive_fetch($c_id, true, $update_c_table);
+        $sync = $this->Db_model->c_recursive_fetch($in_id, true, $update_c_table);
         if (isset($_GET['redirect']) && strlen($_GET['redirect']) > 0) {
             //Now redirect;
             header('Location: ' . $_GET['redirect']);
@@ -54,10 +54,12 @@ class Cron extends CI_Controller
     }
 
 
+    //I cannot update algolia from my local server so if is_dev() is true I will call mench.com/cron/algolia_sync to sync my local change using a live end-point:
     function algolia_sync($obj, $obj_id = 0)
     {
         echo_json($this->Db_model->algolia_sync($obj, $obj_id));
     }
+
 
     function list_duplicate_cs()
     {
@@ -73,7 +75,7 @@ class Cron extends CI_Controller
                 $prev_title = $c['c_outcome'];
             }
 
-            echo '<a href="/intents/' . $c['c_id'] . '">#' . $c['c_id'] . '</a> ' . $c['c_outcome'] . '<br />';
+            echo '<a href="/intents/' . $c['in_id'] . '">#' . $c['in_id'] . '</a> ' . $c['c_outcome'] . '<br />';
         }
     }
 
@@ -112,22 +114,21 @@ class Cron extends CI_Controller
             'x_parent_u_id' => 5, //URL Creator
             'x_u_id' => 8, //URL Referenced to them
 
-            'w_child_u_id' => 13, //Subscriptions
-            'c_parent_u_id' => 21, //Active Intents
+            'tr_en_parent_id' => 13, //Subscriptions
         );
 
         //Fetch child entities:
         $entities = $this->Db_model->en_children_fetch(array(
-            'ur_parent_u_id' => (count($u) > 0 ? $u['u_id'] : $this->config->item('primary_en_id')),
-            'ur_status >=' => 0, //Pending or Active
+            'tr_en_parent_id' => (count($u) > 0 ? $u['u_id'] : $this->config->item('primary_en_id')),
+            'tr_status >=' => 0, //Pending or Active
             'u_status >=' => 0, //Pending or Active
         ));
 
         //Recursively loops through child entities:
         $score = 0;
-        foreach ($entities as $u_child) {
+        foreach ($entities as $$en) {
             //Addup all child sores:
-            $score += $this->e_score_recursive($u_child);
+            $score += $this->e_score_recursive($$en);
         }
 
         //Anything to update?
@@ -152,15 +153,12 @@ class Cron extends CI_Controller
                     'x_parent_u_id' => $u['u_id'],
                 ))) * $score_weights['x_parent_u_id'];
 
-            $score += count($this->Db_model->in_fetch(array(
-                    'c_parent_u_id' => $u['u_id'],
-                ))) * $score_weights['c_parent_u_id'];
             $score += count($this->Db_model->w_fetch(array(
-                    'w_child_u_id' => $u['u_id'],
-                ))) * $score_weights['w_child_u_id'];
+                    'tr_en_parent_id' => $u['u_id'],
+                ))) * $score_weights['tr_en_parent_id'];
 
             //Update the score:
-            $this->Db_model->u_update($u['u_id'], array(
+            $this->Db_model->en_update($u['u_id'], array(
                 'u__e_score' => $score,
             ));
 
@@ -208,7 +206,7 @@ class Cron extends CI_Controller
                 $this->Comm_model->send_message(array(
                     array_merge($json_data['i'], array(
                         'tr_en_child_id' => $ws[0]['u_id'],
-                        'i_c_id' => $json_data['i']['i_c_id'],
+                        'i_in_id' => $json_data['i']['i_in_id'],
                     )),
                 ));
 
@@ -242,13 +240,13 @@ class Cron extends CI_Controller
         foreach ($fetch as $array_key => $en_id) {
             //Fetch all children for this entity:
             $entities = $this->Db_model->en_children_fetch(array(
-                'ur_parent_u_id' => $en_id,
-                'ur_status >=' => 0, //Pending or Active
+                'tr_en_parent_id' => $en_id,
+                'tr_status >=' => 0, //Pending or Active
                 'u_status >=' => 0, //Pending or Active
             ));
             echo '&nbsp;&nbsp;&nbsp;\'' . $array_key . '\' => array(<br />';
             foreach ($entities as $en) {
-                echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'' . strtolower($en['tr_content']) . '\' => ' . $en['ur_child_u_id'] . ',<br />';
+                echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'' . strtolower($en['tr_content']) . '\' => ' . $en['tr_en_child_id'] . ',<br />';
             }
             echo '&nbsp;&nbsp;&nbsp;),<br />';
         }
@@ -328,7 +326,7 @@ class Cron extends CI_Controller
                     if (!(intval($u['u_cover_x_id']) > 0)) {
 
                         //Update Cover ID:
-                        $this->Db_model->u_update($u['u_id'], array(
+                        $this->Db_model->en_update($u['u_id'], array(
                             'u_cover_x_id' => $new_x['x_id'],
                         ));
 
@@ -535,9 +533,9 @@ class Cron extends CI_Controller
             if (!filter_array($u['en__parents'], 'en_id', 1278)) {
                 //Add parent:
                 echo '<a href="/entities/' . $u['u_id'] . '">' . $u['u_full_name'] . '</a><br />';
-                $ur1 = $this->Db_model->ur_create(array(
-                    'ur_child_u_id' => $u['u_id'],
-                    'ur_parent_u_id' => 1278,
+                $ur1 = $this->Db_model->tr_create(array(
+                    'tr_en_child_id' => $u['u_id'],
+                    'tr_en_parent_id' => 1278,
                 ));
             }
         }
@@ -557,7 +555,7 @@ class Cron extends CI_Controller
         //If both $w_id and $u_id are present, it would auto register the user in an idle subscription if they are not part of it yet, and if they are, it would step them forward.
 
         $bot_settings = array(
-            'max_per_run' => 10, //How many subscriptions to server per run (Might include duplicate w_child_u_id's that will be excluded)
+            'max_per_run' => 10, //How many subscriptions to server per run (Might include duplicate tr_en_parent_id's that will be excluded)
             'reminder_frequency_min' => 1440, //Every 24 hours
         );
 
@@ -616,27 +614,27 @@ class Cron extends CI_Controller
             array(
                 'time_elapsed' => 0.90,
                 'progress_below' => 0.99,
-                'reminder_c_id' => 3139,
+                'reminder_in_id' => 3139,
             ),
             array(
                 'time_elapsed' => 0.75,
                 'progress_below' => 0.50,
-                'reminder_c_id' => 3138,
+                'reminder_in_id' => 3138,
             ),
             array(
                 'time_elapsed' => 0.50,
                 'progress_below' => 0.25,
-                'reminder_c_id' => 3137,
+                'reminder_in_id' => 3137,
             ),
             array(
                 'time_elapsed' => 0.20,
                 'progress_below' => 0.10,
-                'reminder_c_id' => 3136,
+                'reminder_in_id' => 3136,
             ),
             array(
                 'time_elapsed' => 0.05,
                 'progress_below' => 0.01,
-                'reminder_c_id' => 3358,
+                'reminder_in_id' => 3358,
             ),
         );
 
@@ -655,7 +653,7 @@ class Cron extends CI_Controller
                         $reminders_sent = $this->Db_model->tr_fetch(array(
                             'tr_en_type_id IN (4280,4276)' => null, //Email or Message sent
                             'tr_en_child_id' => $subscription['u_id'],
-                            'tr_in_child_id' => $logic['reminder_c_id'],
+                            'tr_in_child_id' => $logic['reminder_in_id'],
                         ));
 
                         if (count($reminders_sent) == 0) {
@@ -664,11 +662,11 @@ class Cron extends CI_Controller
                             $this->Comm_model->compose_messages(array(
                                 'tr_en_creator_id' => 0, //System
                                 'tr_en_child_id' => $subscription['u_id'],
-                                'tr_in_child_id' => $logic['reminder_c_id'],
+                                'tr_in_child_id' => $logic['reminder_in_id'],
                             ));
 
                             //Show in stats:
-                            array_push($stats, $subscription['u_full_name'] . ' done ' . round($subscription['w__progress'] * 100) . '% (less than target ' . round($logic['progress_below'] * 100) . '%) where class is ' . round($elapsed_class_percentage * 100) . '% complete and got reminded via c_id ' . $logic['reminder_c_id']);
+                            array_push($stats, $subscription['u_full_name'] . ' done ' . round($subscription['w__progress'] * 100) . '% (less than target ' . round($logic['progress_below'] * 100) . '%) where class is ' . round($elapsed_class_percentage * 100) . '% complete and got reminded via in_id ' . $logic['reminder_in_id']);
                         }
                     }
 
