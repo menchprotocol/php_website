@@ -20,9 +20,9 @@ class Entities extends CI_Controller
         $view_data = fetch_entity_tree($u_id);
 
         //Load views
-        $this->load->view('shared/console_header', $view_data);
+        $this->load->view('shared/matrix_header', $view_data);
         $this->load->view('entities/entity_manage', $view_data);
-        $this->load->view('shared/console_footer');
+        $this->load->view('shared/matrix_footer');
     }
 
     function u_load_next_page()

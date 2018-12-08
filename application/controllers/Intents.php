@@ -45,9 +45,9 @@ class Intents extends CI_Controller
             ), array('in__active_children')),
         );
 
-        $this->load->view('shared/console_header', $data);
+        $this->load->view('shared/matrix_header', $data);
         $this->load->view('intents/intent_manage', $data);
-        $this->load->view('shared/console_footer');
+        $this->load->view('shared/matrix_footer');
     }
 
     function orphan()
@@ -57,14 +57,14 @@ class Intents extends CI_Controller
         $udata = auth(array(1308), 1);
 
         //Load view and passon data:
-        $this->load->view('shared/console_header', array(
+        $this->load->view('shared/matrix_header', array(
             'title' => 'Orphan Intents',
         ));
         $this->load->view('intents/intent_manage', array(
             //Passing this will load the orphans instead of the regular intent tree view:
             'orphan_intents' => $this->Db_model->in_orphans_fetch()
         ));
-        $this->load->view('shared/console_footer');
+        $this->load->view('shared/matrix_footer');
     }
 
 
@@ -99,7 +99,7 @@ class Intents extends CI_Controller
      * c Intent Processing
      ****************************** */
 
-    function c_new()
+    function in_combo_create()
     {
         $udata = auth(array(1308));
         if (!$udata) {
@@ -113,7 +113,7 @@ class Intents extends CI_Controller
                 'message' => 'Missing core inputs',
             ));
         } else {
-            echo_json($this->Db_model->c_new($_POST['in_id'], $_POST['c_outcome'], $_POST['in_linkto_id'], $_POST['next_level'], $udata['u_id']));
+            echo_json($this->Db_model->in_combo_create($_POST['in_id'], $_POST['c_outcome'], $_POST['in_linkto_id'], $_POST['next_level'], $udata['u_id']));
         }
     }
 
@@ -180,14 +180,14 @@ class Intents extends CI_Controller
 
         //Adjust tree on both branches:
         $updated_from_recursively = $this->Db_model->c_update_tree($from[0]['in_id'], array(
-            'in__tree_count' => -($subject[0]['in__tree_count']),
-            'c__tree_max_hours' => -(intval($subject[0]['c__tree_max_hours'])),
-            'c__tree_messages' => -($subject[0]['c__tree_messages']),
+            'in__tree_in_count' => -($subject[0]['in__tree_in_count']),
+            'in__tree_max_seconds' => -(intval($subject[0]['in__tree_max_seconds'])),
+            'in__messages_tree_count' => -($subject[0]['in__messages_tree_count']),
         ));
         $updated_to_recursively = $this->Db_model->c_update_tree($to[0]['in_id'], array(
-            'in__tree_count' => +($subject[0]['in__tree_count']),
-            'c__tree_max_hours' => +(intval($subject[0]['c__tree_max_hours'])),
-            'c__tree_messages' => +($subject[0]['c__tree_messages']),
+            'in__tree_in_count' => +($subject[0]['in__tree_in_count']),
+            'in__tree_max_seconds' => +(intval($subject[0]['in__tree_max_seconds'])),
+            'in__messages_tree_count' => +($subject[0]['in__messages_tree_count']),
         ));
 
 
@@ -244,12 +244,12 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Intent',
             ));
-        } elseif (!isset($_POST['c_time_estimate'])) {
+        } elseif (!isset($_POST['in_seconds'])) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Time Estimate',
             ));
-        } elseif (intval($_POST['c_time_estimate']) > $this->config->item('in_seconds_max')) {
+        } elseif (intval($_POST['in_seconds']) > $this->config->item('in_seconds_max')) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Maximum estimated time is ' . round(($this->config->item('in_seconds_max') / 3600), 2) . ' hours for each intent. If larger, break the intent down into smaller intents.',
@@ -301,7 +301,7 @@ class Intents extends CI_Controller
             'c_outcome' => trim($_POST['c_outcome']),
             //These are also in the recursive adjustment array as they affect metadata
             'c_cost_estimate' => doubleval($_POST['c_cost_estimate']),
-            'c_time_estimate' => intval($_POST['c_time_estimate']),
+            'in_seconds' => intval($_POST['in_seconds']),
             'in_is_any' => intval($_POST['in_is_any']),
             'in_status' => intval($_POST['in_status']),
             'c_points' => intval($_POST['c_points']),
@@ -327,8 +327,8 @@ class Intents extends CI_Controller
 
                 //Something was updated!
                 //Does it required a recursive upward update on the tree?
-                if ($key == 'c_time_estimate') {
-                    $recursive_query['c__tree_max_hours'] = intval($_POST[$key]) - intval($intents[0][$key]);
+                if ($key == 'in_seconds') {
+                    $recursive_query['in__tree_max_seconds'] = intval($_POST[$key]) - intval($intents[0][$key]);
                 }
 
             }
@@ -352,7 +352,7 @@ class Intents extends CI_Controller
 
                 //Yes, sync downwards where current statuses match:
                 $children = $this->Db_model->c_recursive_fetch(intval($_POST['in_id']), true);
-                foreach ($children['c_flat'] as $child_in_id) {
+                foreach ($children['in_flat_tree'] as $child_in_id) {
 
                     //See what the status of this is, and update only if status matches:
                     $this->db->query("UPDATE tb_intents SET in_status=" . intval($_POST['in_status']) . " WHERE in_status=" . intval($intents[0]['in_status']) . " AND in_id=" . $child_in_id);
@@ -399,7 +399,7 @@ class Intents extends CI_Controller
         return echo_json(array(
             'status' => 1,
             'children_updated' => $children_updated,
-            'adjusted_c_count' => -($intents[0]['in__tree_count']),
+            'adjusted_c_count' => -($intents[0]['in__tree_in_count']),
             'message' => '<span><i class="fas fa-check"></i> Saved' . ($children_updated > 0 ? ' & ' . $children_updated . ' Recursive Updates' : '') . '</span>',
             'status_c_ui' => echo_status('in', $_POST['in_status'], true, 'left'),
             'status_cr_ui' => echo_status('tr_status', $_POST['tr_status'], true, 'left'),
@@ -464,9 +464,9 @@ class Intents extends CI_Controller
 
         //Update parent tree (and upwards) based on the intent type BEFORE removing the link:
         $recursive_query = array(
-            'in__tree_count' => -($intents[0]['in__tree_count']),
-            'c__tree_max_hours' => -(intval($intents[0]['c__tree_max_hours'])),
-            'c__tree_messages' => -($intents[0]['c__tree_messages']),
+            'in__tree_in_count' => -($intents[0]['in__tree_in_count']),
+            'in__tree_max_seconds' => -(intval($intents[0]['in__tree_max_seconds'])),
+            'in__messages_tree_count' => -($intents[0]['in__messages_tree_count']),
         );
         $updated_recursively = $this->Db_model->c_update_tree($in__active_parents[0]['tr_in_parent_id'], $recursive_query);
 
@@ -485,7 +485,7 @@ class Intents extends CI_Controller
         echo_json(array(
             'status' => 1,
             'c_parent' => $in__active_parents[0]['tr_in_parent_id'],
-            'adjusted_c_count' => -($intents[0]['in__tree_count']),
+            'adjusted_c_count' => -($intents[0]['in__tree_in_count']),
         ));
 
     }
@@ -678,13 +678,13 @@ class Intents extends CI_Controller
         $_GET['skip_header'] = true;
 
         //Load view:
-        $this->load->view('shared/console_header', array(
+        $this->load->view('shared/matrix_header', array(
             'title' => 'Intent #' . $in_id . ' Messages',
         ));
         $this->load->view('intents/frame_messages', array(
             'in_id' => $in_id,
         ));
-        $this->load->view('shared/console_footer');
+        $this->load->view('shared/matrix_footer');
     }
 
     function i_attach()
@@ -773,9 +773,9 @@ class Intents extends CI_Controller
 
 
         //Update intent count & tree:
-        $this->db->query("UPDATE tb_intents SET c__this_messages=c__this_messages+1 WHERE in_id=" . intval($_POST['in_id']));
+        $this->db->query("UPDATE tb_intents SET in__messages_count=in__messages_count+1 WHERE in_id=" . intval($_POST['in_id']));
         $updated_recursively = $this->Db_model->c_update_tree(intval($_POST['in_id']), array(
-            'c__tree_messages' => 1,
+            'in__messages_tree_count' => 1,
         ));
 
 
@@ -833,11 +833,11 @@ class Intents extends CI_Controller
         ));
 
         //Update intent count:
-        $this->db->query("UPDATE tb_intents SET c__this_messages=c__this_messages+1 WHERE in_id=" . intval($_POST['in_id']));
+        $this->db->query("UPDATE tb_intents SET in__messages_count=in__messages_count+1 WHERE in_id=" . intval($_POST['in_id']));
 
         //Update tree:
         $updated_recursively = $this->Db_model->c_update_tree(intval($_POST['in_id']), array(
-            'c__tree_messages' => 1,
+            'in__messages_tree_count' => 1,
         ));
 
 
@@ -937,7 +937,7 @@ class Intents extends CI_Controller
         return echo_json(array(
             'status' => 1,
             'message' => echo_i(array_merge($new_messages[0], array('tr_en_child_id' => $udata['u_id'])), $udata['u_full_name']),
-            'new_status' => echo_status('i_status', $new_messages[0]['i_status'], 1, 'right'),
+            'tr_status' => echo_status('i_status', $new_messages[0]['i_status'], 1, 'right'),
             'success_icon' => '<span><i class="fas fa-check"></i> Saved</span>',
         ));
     }
@@ -984,11 +984,11 @@ class Intents extends CI_Controller
                 ), $udata['u_id']);
 
                 //Update intent count:
-                $this->db->query("UPDATE tb_intents SET c__this_messages=c__this_messages-1 WHERE in_id=" . intval($_POST['in_id']));
+                $this->db->query("UPDATE tb_intents SET in__messages_count=in__messages_count-1 WHERE in_id=" . intval($_POST['in_id']));
 
                 //Update tree:
                 $updated_recursively = $this->Db_model->c_update_tree(intval($_POST['in_id']), array(
-                    'c__tree_messages' => -1,
+                    'in__messages_tree_count' => -1,
                 ));
 
                 echo_json(array(

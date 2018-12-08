@@ -195,9 +195,9 @@ class Cron extends CI_Controller
         foreach ($e_pending as $tr_content) {
 
             //Fetch user data:
-            $ws = $this->Db_model->w_fetch(array());
+            $trs = $this->Db_model->w_fetch(array());
 
-            if (count($ws) > 0) {
+            if (count($trs) > 0) {
 
                 //Prepare variables:
                 $json_data = unserialize($tr_content['tr_metadata']);
@@ -205,7 +205,7 @@ class Cron extends CI_Controller
                 //Send this message:
                 $this->Comm_model->send_message(array(
                     array_merge($json_data['i'], array(
-                        'tr_en_child_id' => $ws[0]['u_id'],
+                        'tr_en_child_id' => $trs[0]['u_id'],
                         'i_in_id' => $json_data['i']['i_in_id'],
                     )),
                 ));
@@ -551,8 +551,8 @@ class Cron extends CI_Controller
         //Will ask the student why they are stuck and try to get them to engage with the material
         //TODO implement social features to maybe connect to other students at the same level
         //The primary function that would pro-actively communicate the subscription to the user
-        //If $w_id is provided it would step forward a specific subscription
-        //If both $w_id and $u_id are present, it would auto register the user in an idle subscription if they are not part of it yet, and if they are, it would step them forward.
+        //If $tr_id is provided it would step forward a specific subscription
+        //If both $tr_id and $u_id are present, it would auto register the user in an idle subscription if they are not part of it yet, and if they are, it would step them forward.
 
         $bot_settings = array(
             'max_per_run' => 10, //How many subscriptions to server per run (Might include duplicate tr_en_parent_id's that will be excluded)
@@ -563,7 +563,7 @@ class Cron extends CI_Controller
         //Fetch all active subscriptions:
         $user_ids_served = array(); //We use this to ensure we're only service one subscription per user
         $active_ws = $this->Db_model->w_fetch(array(
-            'w_status' => 1,
+            'tr_status' => 1,
             'u_status >=' => 0,
             'in_status >=' => 2,
             'w_last_heard >=' => date("Y-m-d H:i:s", (time() + ($bot_settings['reminder_frequency_min'] * 60))),
@@ -582,7 +582,7 @@ class Cron extends CI_Controller
             array_push($user_ids_served, intval($w['u_id']));
 
             //See where this user is in their subscription:
-            $trs_next = $this->Db_model->k_next_fetch($w['w_id']);
+            $trs_next = $this->Db_model->k_next_fetch($w['tr_id']);
 
             if (!$trs_next) {
                 //Should not happen, bug already reported:
@@ -590,13 +590,13 @@ class Cron extends CI_Controller
             }
 
             //Update the serving timestamp:
-            $this->Db_model->w_update($w['w_id'], array(
+            $this->Db_model->w_update($w['tr_id'], array(
                 'w_last_heard' => date("Y-m-d H:i:s"),
             ));
 
 
             //Give them next step again:
-            $this->Comm_model->k_next_fetch($w['w_id']);
+            $this->Comm_model->k_next_fetch($w['tr_id']);
 
             //$trs_next[0]['c_outcome']
         }
@@ -607,7 +607,7 @@ class Cron extends CI_Controller
         //Cron Settings: 45 * * * *
         //Send reminders to students to complete their intent:
 
-        $ws = $this->Db_model->w_fetch(array());
+        $trs = $this->Db_model->w_fetch(array());
 
         //Define the logic of these reminders
         $reminder_index = array(
@@ -639,7 +639,7 @@ class Cron extends CI_Controller
         );
 
         $stats = array();
-        foreach ($ws as $subscription) {
+        foreach ($trs as $subscription) {
 
             //See what % of the class time has elapsed?
             //TODO calculate $elapsed_class_percentage

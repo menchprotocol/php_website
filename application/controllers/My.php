@@ -58,7 +58,7 @@ class My extends CI_Controller
      * Messenger Persistent Menu
      ****************************** */
 
-    function actionplan($w_id = 0, $in_id = 0)
+    function actionplan($tr_id = 0, $in_id = 0)
     {
 
         $this->load->view('shared/messenger_header', array(
@@ -67,12 +67,12 @@ class My extends CI_Controller
         //include main body:
         $this->load->view('actionplans/actionplan_frame', array(
             'in_id' => $in_id,
-            'w_id' => $w_id,
+            'tr_id' => $tr_id,
         ));
         $this->load->view('shared/messenger_footer');
     }
 
-    function display_actionplan($u_fb_psid, $w_id = 0, $in_id = 0)
+    function display_actionplan($u_fb_psid, $tr_id = 0, $in_id = 0)
     {
 
         //Get session data in case user is doing a browser login:
@@ -91,73 +91,73 @@ class My extends CI_Controller
         $w_filter = array();
 
         //Do we have a use session?
-        if ($w_id > 0) {
+        if ($tr_id > 0) {
             //Yes! It seems to be a desktop login:
-            $w_filter['w_id'] = $w_id;
+            $w_filter['tr_id'] = $tr_id;
         } elseif (count($udata['u__ws']) > 0) {
             //Yes! It seems to be a desktop login:
             $w_filter['tr_en_parent_id'] = $udata['u__ws'][0]['tr_en_parent_id'];
-            $w_filter['w_status >='] = 0;
+            $w_filter['tr_status >='] = 0;
         }
 
         if ($u_fb_psid > 0) {
             //No, we should have a Facebook PSID to try to find them:
             $w_filter['u_fb_psid'] = $u_fb_psid;
-            $w_filter['w_status >='] = 0;
+            $w_filter['tr_status >='] = 0;
         }
 
         //Try finding them:
-        $ws = $this->Db_model->w_fetch($w_filter, array('in', 'en'));
+        $trs = $this->Db_model->w_fetch($w_filter, array('in', 'en'));
 
-        if (count($ws) == 0) {
+        if (count($trs) == 0) {
 
             //No subscriptions found:
             die('<div class="alert alert-danger" role="alert">You have no active subscriptions yet. ' . echo_pa_lets() . '</div>');
 
-        } elseif (count($ws) > 1) {
+        } elseif (count($trs) > 1) {
 
             //Log action plan view engagement:
             $this->Db_model->tr_create(array(
                 'tr_en_type_id' => 4283,
-                'tr_en_creator_id' => $ws[0]['u_id'],
+                'tr_en_creator_id' => $trs[0]['u_id'],
             ));
 
             //Let them choose between subscriptions:
             echo '<h3 class="student-h3 primary-title">My Subscriptions</h3>';
             echo '<div class="list-group" style="margin-top: 10px;">';
-            foreach ($ws as $w) {
+            foreach ($trs as $w) {
                 echo echo_w_students($w);
             }
             echo '</div>';
 
-        } elseif (count($ws) == 1) {
+        } elseif (count($trs) == 1) {
 
             //We found a single subscription, load this by default:
-            if (!$w_id || !$in_id) {
+            if (!$tr_id || !$in_id) {
                 //User with a single subscription
-                $w_id = $ws[0]['w_id'];
-                $in_id = $ws[0]['in_id']; //TODO set to current/focused intent
+                $tr_id = $trs[0]['tr_id'];
+                $in_id = $trs[0]['in_id']; //TODO set to current/focused intent
             }
 
             //Log action plan view engagement:
             $this->Db_model->tr_create(array(
                 'tr_en_type_id' => 4283,
-                'tr_en_creator_id' => $ws[0]['u_id'],
+                'tr_en_creator_id' => $trs[0]['u_id'],
                 'tr_in_child_id' => $in_id,
-                'tr_tr_parent_id' => $w_id,
+                'tr_tr_parent_id' => $tr_id,
             ));
 
 
             //We have a single item to load:
             //Now we need to load the action plan:
             $k_ins = $this->Db_model->tr_fetch(array(
-                'w_id' => $w_id,
+                'tr_id' => $tr_id,
                 'in_status >=' => 2,
                 'tr_in_child_id' => $in_id,
             ), array('w', 'cr', 'cr_c_parent'));
 
             $k_outs = $this->Db_model->tr_fetch(array(
-                'w_id' => $w_id,
+                'tr_id' => $tr_id,
                 'in_status >=' => 2,
                 'tr_in_parent_id' => $in_id,
             ), array('w', 'cr', 'cr_c_child'));
@@ -172,11 +172,11 @@ class My extends CI_Controller
 
                 //Ooops, we had issues finding th is intent! Should not happen, report:
                 $this->Db_model->tr_create(array(
-                    'tr_en_creator_id' => $ws[0]['u_id'],
-                    'tr_metadata' => $ws,
+                    'tr_en_creator_id' => $trs[0]['u_id'],
+                    'tr_metadata' => $trs,
                     'tr_content' => 'Unable to load a specific intent for the student Action Plan! Should not happen...',
                     'tr_en_type_id' => 4246,
-                    'tr_tr_parent_id' => $w_id,
+                    'tr_tr_parent_id' => $tr_id,
                     'tr_in_child_id' => $in_id,
                 ));
 
@@ -185,7 +185,7 @@ class My extends CI_Controller
 
             //All good, Load UI:
             $this->load->view('actionplans/actionplan_ui.php', array(
-                'w' => $ws[0], //We must have 1 by now!
+                'w' => $trs[0], //We must have 1 by now!
                 'in' => $intents[0],
                 'k_ins' => $k_ins,
                 'k_outs' => $k_outs,
@@ -194,7 +194,7 @@ class My extends CI_Controller
         }
     }
 
-    function w_delete($w_id)
+    function w_delete($tr_id)
     {
 
         //Validate it's an admin:
@@ -208,18 +208,18 @@ class My extends CI_Controller
         //Delete subscription and report back:
         $archive_stats = array();
 
-        $this->db->query("DELETE FROM tb_actionplans WHERE w_id=" . $w_id);
+        $this->db->query("DELETE FROM tb_actionplans WHERE tr_id=" . $tr_id);
         $archive_stats['tb_actionplans'] = $this->db->affected_rows();
 
-        $this->db->query("DELETE FROM tb_actionplan_links WHERE tr_tr_parent_id=" . $w_id);
+        $this->db->query("DELETE FROM tb_actionplan_links WHERE tr_tr_parent_id=" . $tr_id);
         $archive_stats['tb_actionplan_links'] = $this->db->affected_rows();
 
-        $this->db->query("DELETE FROM table_ledger WHERE tr_tr_parent_id=" . $w_id);
+        $this->db->query("DELETE FROM table_ledger WHERE tr_tr_parent_id=" . $tr_id);
         $archive_stats['table_ledger'] = $this->db->affected_rows();
 
         return echo_json(array(
             'status' => 1,
-            'w_id' => $w_id,
+            'tr_id' => $tr_id,
             'stats' => $archive_stats,
         ));
     }
@@ -235,7 +235,7 @@ class My extends CI_Controller
                 'status' => 0,
                 'message' => 'Session Expired',
             ));
-        } elseif (!isset($_POST['w_id']) || intval($_POST['w_id']) <= 0) {
+        } elseif (!isset($_POST['tr_id']) || intval($_POST['tr_id']) <= 0) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Subscriptions ID',
@@ -244,7 +244,7 @@ class My extends CI_Controller
 
         //Fetch subscription
         $validate_subscription = $this->Db_model->w_fetch(array(
-            'w_id' => $_POST['w_id'], //Other than this one...
+            'tr_id' => $_POST['tr_id'], //Other than this one...
         ));
         if (!(count($validate_subscription) == 1)) {
             return echo_json(array(
@@ -257,7 +257,7 @@ class My extends CI_Controller
         //Load Action Plan iFrame:
         return echo_json(array(
             'status' => 1,
-            'url' => '/my/actionplan/' . $w['w_id'] . '/' . $w['w_in_id'],
+            'url' => '/my/actionplan/' . $w['tr_id'] . '/' . $w['tr_in_child_id'],
         ));
 
     }
@@ -285,7 +285,7 @@ class My extends CI_Controller
         $this->load->view('shared/messenger_footer');
     }
 
-    function skip_tree($w_id, $in_id, $tr_id)
+    function skip_tree($tr_id, $in_id, $tr_id)
     {
         //Start skipping:
         $total_skipped = count($this->Db_model->k_skip_recursive_down($tr_id));
@@ -294,7 +294,7 @@ class My extends CI_Controller
         $message = '<div class="alert alert-success" role="alert">' . $total_skipped . ' insight' . echo__s($total_skipped) . ' successfully skipped.</div>';
 
         //Find the next item to navigate them to:
-        $trs_next = $this->Db_model->k_next_fetch($w_id);
+        $trs_next = $this->Db_model->k_next_fetch($tr_id);
         if ($trs_next) {
             redirect_message('/my/actionplan/' . $trs_next[0]['tr_tr_parent_id'] . '/' . $trs_next[0]['in_id'], $message);
         } else {
@@ -302,14 +302,14 @@ class My extends CI_Controller
         }
     }
 
-    function choose_any_path($w_id, $tr_in_parent_id, $in_id, $w_key)
+    function choose_any_path($tr_id, $tr_in_parent_id, $in_id, $w_key)
     {
-        if (md5($w_id . 'kjaghksjha*(^' . $in_id . $tr_in_parent_id) == $w_key) {
-            if ($this->Db_model->k_choose_or($w_id, $tr_in_parent_id, $in_id)) {
-                redirect_message('/my/actionplan/' . $w_id . '/' . $in_id, '<div class="alert alert-success" role="alert">Your answer was saved.</div>');
+        if (md5($tr_id . 'kjaghksjha*(^' . $in_id . $tr_in_parent_id) == $w_key) {
+            if ($this->Db_model->k_choose_or($tr_id, $tr_in_parent_id, $in_id)) {
+                redirect_message('/my/actionplan/' . $tr_id . '/' . $in_id, '<div class="alert alert-success" role="alert">Your answer was saved.</div>');
             } else {
                 //We had some sort of an error:
-                redirect_message('/my/actionplan/' . $w_id . '/' . $tr_in_parent_id, '<div class="alert alert-danger" role="alert">There was an error saving your answer.</div>');
+                redirect_message('/my/actionplan/' . $tr_id . '/' . $tr_in_parent_id, '<div class="alert alert-danger" role="alert">There was an error saving your answer.</div>');
             }
         }
     }
@@ -343,7 +343,7 @@ class My extends CI_Controller
 
 
         //Did anything change?
-        $status_changed = ($trs[0]['k_status'] <= 1);
+        $status_changed = ($trs[0]['tr_status'] <= 1);
         $notes_changed = !($trs[0]['tr_content'] == trim($_POST['tr_content']));
         if (!$notes_changed && !$status_changed) {
             //Nothing seemed to change! Let them know:
@@ -360,7 +360,7 @@ class My extends CI_Controller
         }
 
         if ($status_changed) {
-            //Also update k_status, determine what it should be:
+            //Also update tr_status, determine what it should be:
             $this->Db_model->k_complete_recursive_up($trs[0], $trs[0]);
         }
 
@@ -368,7 +368,7 @@ class My extends CI_Controller
         //Redirect back to page with success message:
         if (isset($_POST['k_next_redirect']) && intval($_POST['k_next_redirect']) > 0) {
             //Go to next item:
-            $trs_next = $this->Db_model->k_next_fetch($trs[0]['w_id'], (intval($_POST['k_next_redirect']) > 1 ? intval($_POST['k_next_redirect']) : 0));
+            $trs_next = $this->Db_model->k_next_fetch($trs[0]['tr_id'], (intval($_POST['k_next_redirect']) > 1 ? intval($_POST['k_next_redirect']) : 0));
             if ($trs_next) {
                 //Override original item:
                 $k_url = '/my/actionplan/' . $trs_next[0]['tr_tr_parent_id'] . '/' . $trs_next[0]['in_id'];

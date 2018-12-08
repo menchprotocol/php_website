@@ -16,9 +16,9 @@ $config['app_version'] = '0.63'; //Cache buster in URLs for static js/css files
 $config['password_salt'] = '40s96As9ZkdAcwQ9PhZm'; //Used for hashing the user password for Mench logins
 $config['in_primary_id'] = 6903; //The default platform intent that would be recommended to new students
 $config['primary_in_name'] = 'advance your tech career'; //What is the purposes of Mench at this point?
-$config['primary_en_id'] = 3463; //The default console entity that is loaded when Entities is clicked
+$config['primary_en_id'] = 3463; //The default matrix entity that is loaded when Entities is clicked
 $config['tr_content_max'] = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
-$config['max_counter'] = 999; //Used in counting things of engagements in console UI. If more that this will add a "+" sign to the end
+$config['max_counter'] = 999; //Used in counting things of engagements in matrix UI. If more that this will add a "+" sign to the end
 $config['in_outcome_max'] = 89; //Max number of characters allowed in the title of intents
 $config['in_seconds_max'] = 28800; //The maximum seconds allowed per intent. If larger, the trainer is asked to break it down into smaller intents
 $config['en_name_max'] = 250; //Max number of characters allowed in the title of intents
@@ -27,7 +27,7 @@ $config['items_per_page'] = 50; //Even number
 $config['fb_max_message'] = 2000; //The maximum length of a Message accepted via Messenger API
 $config['in_points_options'] = array(-89, -55, -34, -21, -13, -8, -5, -3, -2, -1, 0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610);
 $config['exclude_es'] = array(1, 2); //The engagements that should be ignored
-$config['k_status_incomplete'] = array(1, 0, -2); //The K statuses that indicate the task is not complete...
+$config['tr_status_incomplete'] = array(1, 0, -2); //The K statuses that indicate the task is not complete...
 $config['fb_settings'] = array(
     'page_id' => '381488558920384',
     'app_id' => '1782431902047009',
@@ -268,7 +268,7 @@ $config['object_statuses'] = array(
         ),
     ),
 
-    'k_status' => array(
+    'tr_status' => array(
         -2 => array(
             's_name' => 'Revision Needed',
             's_desc' => 'Mench moderator has reviewed submission and recommends additional work to better accomplish intent outcome',
@@ -301,7 +301,7 @@ $config['object_statuses'] = array(
         ),
     ),
 
-    'w_status' => array(
+    'tr_status' => array(
         -1 => array(
             's_name' => 'Skipped',
             's_desc' => 'User skipped their Action Plan',

@@ -428,21 +428,6 @@ function save_file($file_url, $json_data, $is_local = false)
     }
 }
 
-
-function fetch_metadata($object, $field, $update_value=null){
-
-    /*
-     *
-     * Enables the easy manipulation of the text metadata field which holds cache data for developers
-     *
-     *   $object is the original object
-     *   $field is the array key within the metadata
-     *   $update_value enables the updating of the metadata field
-     *
-     * */
-
-}
-
 function fb_time($unix_time)
 {
     //It has milliseconds like "1458668856253", which we need to tranform for DB insertion:

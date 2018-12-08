@@ -58,7 +58,7 @@ $uri_segment_2 = $this->uri->segment(2);
 </head>
 
 
-<body id="console_body" class="<?= (isset($_GET['skip_header']) ? 'grey-bg' : '') ?>">
+<body id="matrix_body" class="<?= (isset($_GET['skip_header']) ? 'grey-bg' : '') ?>">
 
 <?php
 if (!isset($_GET['skip_header'])) {
@@ -85,7 +85,7 @@ if (!isset($_GET['skip_header'])) {
                             <tr>
                                 <td style="width:40px;"><img
                                             src="/img/mench_white.png"/></td>
-                                <td><input type="text" class="algolia_search" id="console_search" data-lpignore="true"
+                                <td><input type="text" class="algolia_search" id="matrix_search" data-lpignore="true"
                                            placeholder="Search Entities/Intents"></td>
                             </tr>
                         </table>

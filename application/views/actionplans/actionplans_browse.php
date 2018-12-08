@@ -1,8 +1,8 @@
 <?php
 
 //Fetch most recent subscriptions:
-$ws = $this->Db_model->w_fetch(array(), array('in', 'en', 'u_x', 'w_stats'), array(
-    'w_id' => 'DESC',
+$trs = $this->Db_model->w_fetch(array(), array('in', 'en', 'u_x', 'w_stats'), array(
+    'tr_id' => 'DESC',
 ), (is_dev() ? 10 : 100));
 ?>
 
@@ -11,7 +11,7 @@ $ws = $this->Db_model->w_fetch(array(), array('in', 'en', 'u_x', 'w_stats'), arr
         <?php
         echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-comment-plus"></i> Action Plans</h5>';
         echo '<div class="list-group list-grey">';
-        foreach ($ws as $w) {
+        foreach ($trs as $w) {
             echo echo_w_console($w);
         }
         echo '</div>';

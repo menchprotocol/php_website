@@ -667,7 +667,7 @@ function echo_w_console($w)
 
 
     //Display the item
-    $ui = '<div class="list-group-item" id="w_div_' . $w['w_id'] . '">';
+    $ui = '<div class="list-group-item" id="w_div_' . $w['tr_id'] . '">';
 
     //Right content:
     $ui .= '<span class="pull-right">';
@@ -677,7 +677,7 @@ function echo_w_console($w)
 
 
     //Show user notification level:
-    $ui .= ' <span>' . echo_status('w_status', $w['w_status'], true, 'left') . '</span> ';
+    $ui .= ' <span>' . echo_status('tr_status', $w['tr_status'], true, 'left') . '</span> ';
 
 
     //Then customize based on request location:
@@ -707,7 +707,7 @@ function echo_w_console($w)
         }
 
         //Engagements made by subscriber:
-        $ui .= '<a href="#wengagements-' . $w['tr_en_parent_id'] . '-' . $w['w_id'] . '" onclick="load_u_engagements(' . $w['tr_en_parent_id'] . ',' . $w['w_id'] . ')" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="' . $w['w_stats']['e_all_count'] . ' engagements"><span class="btn-counter">' . $w['w_stats']['e_all_count'] . ($w['w_stats']['e_all_count'] == $CI->config->item('max_counter') ? '+' : '') . '</span><i class="fas fa-atlas"></i></a>';
+        $ui .= '<a href="#wengagements-' . $w['tr_en_parent_id'] . '-' . $w['tr_id'] . '" onclick="load_u_engagements(' . $w['tr_en_parent_id'] . ',' . $w['tr_id'] . ')" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="' . $w['w_stats']['e_all_count'] . ' engagements"><span class="btn-counter">' . $w['w_stats']['e_all_count'] . ($w['w_stats']['e_all_count'] == $CI->config->item('max_counter') ? '+' : '') . '</span><i class="fas fa-atlas"></i></a>';
 
         //Link to subscriber, but count total subscriptions first:
         $ui .= '<a href="/entities/' . $w['tr_en_parent_id'] . '" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="top" title="Student has ' . count($user_ws) . ' total subsciptions"><span class="btn-counter">' . count($user_ws) . '</span><i class="fas fa-sign-out-alt rotate90"></i></a>';
@@ -716,19 +716,19 @@ function echo_w_console($w)
 
 
     //Number of intents in Student Action Plan:
-    $ui .= '<a href="#wactionplan-' . $w['w_id'] . '-' . $w['tr_en_parent_id'] . '" onclick="load_w_actionplan(' . $w['w_id'] . ',' . $w['tr_en_parent_id'] . ')" class="badge badge-primary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="' . $w['w_stats']['k_count_done'] . '/' . ($w['w_stats']['k_count_done'] + $w['w_stats']['k_count_undone']) . ' intents are marked as complete. Click to open Action Plan."><span class="btn-counter">' . (($w['w_stats']['k_count_undone'] + $w['w_stats']['k_count_done']) > 0 ? number_format(($w['w_stats']['k_count_done'] / ($w['w_stats']['k_count_undone'] + $w['w_stats']['k_count_done']) * 100), 0) . '%' : '0%') . '</span><i class="fas fa-flag" style="font-size:0.85em;"></i></a>';
+    $ui .= '<a href="#wactionplan-' . $w['tr_id'] . '-' . $w['tr_en_parent_id'] . '" onclick="load_w_actionplan(' . $w['tr_id'] . ',' . $w['tr_en_parent_id'] . ')" class="badge badge-primary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="' . $w['w_stats']['k_count_done'] . '/' . ($w['w_stats']['k_count_done'] + $w['w_stats']['k_count_undone']) . ' intents are marked as complete. Click to open Action Plan."><span class="btn-counter">' . (($w['w_stats']['k_count_undone'] + $w['w_stats']['k_count_done']) > 0 ? number_format(($w['w_stats']['k_count_done'] / ($w['w_stats']['k_count_undone'] + $w['w_stats']['k_count_done']) * 100), 0) . '%' : '0%') . '</span><i class="fas fa-flag" style="font-size:0.85em;"></i></a>';
 
 
     if ($is_entity || $is_adminpanel) {
 
         //Link to subscription's main intent:
         $intent_ws = $CI->Db_model->w_fetch(array(
-            'w_in_id' => $w['in_id'],
+            'tr_in_child_id' => $w['in_id'],
         ));
         $ui .= '<a href="/intents/' . $w['in_id'] . '" class="badge badge-primary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="Open subscribed intention to ' . $w['c_outcome'] . ' with ' . count($intent_ws) . ' subscriptions"><span class="btn-counter">' . count($intent_ws) . '</span><i class="fas fa-sign-in-alt"></i></a>';
 
         $w_title .= ($is_adminpanel ? '<div style="margin: 3px 0 0 3px;"><i class="fas fa-hashtag"></i> ' : '');
-        $w_title .= '<span class="w_intent_' . $w['w_id'] . '">' . $w['c_outcome'] . '</span>';
+        $w_title .= '<span class="w_intent_' . $w['tr_id'] . '">' . $w['c_outcome'] . '</span>';
         $w_title .= ($is_adminpanel ? '</div>' : '');
     }
 
@@ -747,13 +747,13 @@ function echo_w_console($w)
 
 function echo_w_students($w)
 {
-    $ui = '<a href="/my/actionplan/' . $w['w_id'] . '/' . $w['w_in_id'] . '" class="list-group-item">';
+    $ui = '<a href="/my/actionplan/' . $w['tr_id'] . '/' . $w['tr_in_child_id'] . '" class="list-group-item">';
     $ui .= '<span class="pull-right">';
     $ui .= '<span class="badge badge-primary"><i class="fas fa-angle-right"></i></span>';
     $ui .= '</span>';
-    $ui .= echo_status('w_status', $w['w_status'], 1, 'right');
+    $ui .= echo_status('tr_status', $w['tr_status'], 1, 'right');
     $ui .= ' ' . $w['c_outcome'];
-    $ui .= '  ' . $w['in__tree_count'];
+    $ui .= '  ' . $w['in__tree_in_count'];
     $ui .= ' &nbsp;<i class="fas fa-clock"></i> ' . echo_hours_range($w, 1);
     $ui .= '</a>';
     return $ui;
@@ -772,7 +772,7 @@ function echo_k_console($k)
         'tr_en_parent_id' => $k['u_id'],
     ));
     $intent_ws = $CI->Db_model->w_fetch(array(
-        'w_in_id' => $k['in_id'],
+        'tr_in_child_id' => $k['in_id'],
     ));
 
 
@@ -798,7 +798,7 @@ function echo_k_console($k)
     //Show user who has subscribed:
     $ui .= echo_cover($k, 'micro-image', 1) . ' ';
     $ui .= $k['u_full_name'];
-    $ui .= echo_status('w_status', $k['w_status'], true, 'top') . ' ' . $k['c_outcome'];
+    $ui .= echo_status('tr_status', $k['tr_status'], true, 'top') . ' ' . $k['c_outcome'];
 
     if (strlen($k['tr_content']) > 0) {
         $ui .= '<div class="e-msg ">' . $k['tr_content'] . '</div>';
@@ -814,7 +814,7 @@ function echo_k_console($k)
 function echo_k($k, $is_parent, $in_is_any_tr_in_parent_id = 0)
 {
 
-    $ui = '<a href="' . ($in_is_any_tr_in_parent_id ? '/my/choose_any_path/' . $k['w_id'] . '/' . $in_is_any_tr_in_parent_id . '/' . $k['in_id'] . '/' . md5($k['w_id'] . 'kjaghksjha*(^' . $k['in_id'] . $in_is_any_tr_in_parent_id) : '/my/actionplan/' . $k['tr_tr_parent_id'] . '/' . $k['in_id']) . '" class="list-group-item">';
+    $ui = '<a href="' . ($in_is_any_tr_in_parent_id ? '/my/choose_any_path/' . $k['tr_id'] . '/' . $in_is_any_tr_in_parent_id . '/' . $k['in_id'] . '/' . md5($k['tr_id'] . 'kjaghksjha*(^' . $k['in_id'] . $in_is_any_tr_in_parent_id) : '/my/actionplan/' . $k['tr_tr_parent_id'] . '/' . $k['in_id']) . '" class="list-group-item">';
 
     //Different pointer position based on direction:
     if ($is_parent) {
@@ -832,7 +832,7 @@ function echo_k($k, $is_parent, $in_is_any_tr_in_parent_id = 0)
             $ui .= '<span class="status-label" style="padding-bottom:1px;"><i class="fal fa-circle"></i> </span>';
         } else {
             //Proper status:
-            $ui .= echo_status('k_status', $k['k_status'], 1, 'right');
+            $ui .= echo_status('tr_status', $k['tr_status'], 1, 'right');
         }
     }
 
@@ -871,20 +871,20 @@ function echo_contents($c, $fb_format = 0)
 {
 
     //Do we have anything to return?
-    if (strlen($c['c__tree_contents']) <= 0) {
+    if (strlen($c['in__tree_contents']) <= 0) {
         return false;
     }
 
 
     //Make initial variables:
-    $c['c__tree_contents'] = unserialize($c['c__tree_contents']);
+    $c['in__tree_contents'] = unserialize($c['in__tree_contents']);
 
-    if (count($c['c__tree_contents']) < 1) {
+    if (count($c['in__tree_contents']) < 1) {
         return false;
     }
 
     $all_count = 0;
-    foreach ($c['c__tree_contents'] as $type_u_id => $current_us) {
+    foreach ($c['in__tree_contents'] as $type_u_id => $current_us) {
         $all_count += count($current_us);
     }
 
@@ -892,13 +892,13 @@ function echo_contents($c, $fb_format = 0)
 
         $visible_ppl = 3;
         $type_count = 0;
-        $type_all_count = count($c['c__tree_contents']);
+        $type_all_count = count($c['in__tree_contents']);
         $CI =& get_instance();
         $en_convert_3000 = $CI->config->item('en_convert_3000');
-        $has_console_access = auth(array(1308), 0);
+        $has_matrix_access = auth(array(1308), 0);
         //More than 3:
         $text_overview = '';
-        foreach ($c['c__tree_contents'] as $type_id => $current_us) {
+        foreach ($c['in__tree_contents'] as $type_id => $current_us) {
 
             if ($type_count > 0) {
                 if (($type_count + 1) >= $type_all_count) {
@@ -932,7 +932,7 @@ function echo_contents($c, $fb_format = 0)
 
                     $text_overview .= ' ';
 
-                    if ($has_console_access) {
+                    if ($has_matrix_access) {
                         $text_overview .= '<a href="/entities/' . $u['u_id'] . '">';
                     }
 
@@ -945,7 +945,7 @@ function echo_contents($c, $fb_format = 0)
                         $text_overview .= $u['u_full_name'];
                     }
 
-                    if ($has_console_access) {
+                    if ($has_matrix_access) {
                         $text_overview .= '</a>';
                     }
                     $count++;
@@ -1040,14 +1040,14 @@ function echo_pa_oneway()
 function echo_costs($c, $fb_format = 0)
 {
 
-    if ($c['c__tree_max_cost'] <= 0) {
+    if ($c['in__tree_max_cost'] <= 0) {
         return false;
-    } elseif (round($c['c__tree_max_cost']) == round($c['c__tree_min_cost']) || $c['c__tree_min_cost'] == 0) {
+    } elseif (round($c['in__tree_max_cost']) == round($c['in__tree_min_cost']) || $c['in__tree_min_cost'] == 0) {
         //Single price:
-        $price_range = '$' . round($c['c__tree_max_cost']) . ' USD';
+        $price_range = '$' . round($c['in__tree_max_cost']) . ' USD';
     } else {
         //Price range:
-        $price_range = 'between $' . round($c['c__tree_min_cost']) . ' to $' . round($c['c__tree_max_cost']) . ' USD';
+        $price_range = 'between $' . round($c['in__tree_min_cost']) . ' to $' . round($c['in__tree_max_cost']) . ' USD';
     }
 
 
@@ -1075,7 +1075,7 @@ function echo_costs($c, $fb_format = 0)
 function echo_intent_overview($c, $fb_format = 0)
 {
 
-    $pitch = 'Action Plan contains ' . $c['in__tree_count'] . ' insights that will help you ' . $c['c_outcome'] . '.';
+    $pitch = 'Action Plan contains ' . $c['in__tree_in_count'] . ' insights that will help you ' . $c['c_outcome'] . '.';
 
     if ($fb_format) {
         return '🚩 ' . $pitch . "\n";
@@ -1086,7 +1086,7 @@ function echo_intent_overview($c, $fb_format = 0)
             <div class="panel-heading" role="tab" id="heading' . $id . '">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="false" aria-controls="collapse' . $id . '">
-                    <i class="fas" style="transform:none !important;">💡</i> ' . $c['in__tree_count'] . ' Insights<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                    <i class="fas" style="transform:none !important;">💡</i> ' . $c['in__tree_in_count'] . ' Insights<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                 </a>
             </h4>
         </div>
@@ -1124,25 +1124,25 @@ function echo_experts($c, $fb_format = 0)
 {
 
     //Do we have any intents?
-    if (strlen($c['c__tree_experts']) <= 0) {
+    if (strlen($c['in__tree_experts']) <= 0) {
         return false;
     }
 
     //Make initial variables:
-    $c['c__tree_experts'] = unserialize($c['c__tree_experts']);
-    $all_count = count($c['c__tree_experts']);
+    $c['in__tree_experts'] = unserialize($c['in__tree_experts']);
+    $all_count = count($c['in__tree_experts']);
     if ($all_count == 0) {
-        //Should never happen since strlen($c['c__tree_experts'])>0
+        //Should never happen since strlen($c['in__tree_experts'])>0
         return false;
     }
 
 
     $visible_html = 4; //Landing page, beyond this is hidden and visible with a click
     $visible_bot = 10; //Plain text style, but beyond this is cut out!
-    $has_console_access = auth(array(1308), 0);
+    $has_matrix_access = auth(array(1308), 0);
     $text_overview = '';
 
-    foreach ($c['c__tree_experts'] as $count => $u) {
+    foreach ($c['in__tree_experts'] as $count => $u) {
 
         $is_last_fb_item = ($fb_format && $count >= $visible_bot);
 
@@ -1168,7 +1168,7 @@ function echo_experts($c, $fb_format = 0)
         } else {
 
             //HTML Format:
-            if ($has_console_access) {
+            if ($has_matrix_access) {
                 $text_overview .= '<a href="/entities/' . $u['u_id'] . '">';
             }
 
@@ -1181,7 +1181,7 @@ function echo_experts($c, $fb_format = 0)
                 $text_overview .= $u['u_full_name'];
             }
 
-            if ($has_console_access) {
+            if ($has_matrix_access) {
                 $text_overview .= '</a>';
             }
 
@@ -1227,18 +1227,18 @@ function echo_experts($c, $fb_format = 0)
 function echo_hours_range($c, $micro = false)
 {
 
-    if ($c['c__tree_max_hours'] == $c['c__tree_min_hours']) {
+    if ($c['in__tree_max_seconds'] == $c['in__tree_min_seconds']) {
         //Exactly the same, show a single value:
-        return echo_hours($c['c__tree_max_hours'], $micro);
-    } elseif ($c['c__tree_min_hours'] < 3600) {
-        if ($c['c__tree_min_hours'] < 7200 && $c['c__tree_max_hours'] < 10800 && ($c['c__tree_max_hours'] - $c['c__tree_min_hours']) > 1800) {
+        return echo_hours($c['in__tree_max_seconds'], $micro);
+    } elseif ($c['in__tree_min_seconds'] < 3600) {
+        if ($c['in__tree_min_seconds'] < 7200 && $c['in__tree_max_seconds'] < 10800 && ($c['in__tree_max_seconds'] - $c['in__tree_min_seconds']) > 1800) {
             $is_minutes = true;
-        } elseif ($c['c__tree_min_hours'] < 36000) {
+        } elseif ($c['in__tree_min_seconds'] < 36000) {
             $is_minutes = false;
             $hours_decimal = 1;
         } else {
             //Number too large to matter, just treat as one:
-            return echo_hours($c['c__tree_max_hours'], $micro);
+            return echo_hours($c['in__tree_max_seconds'], $micro);
         }
     } else {
         $is_minutes = false;
@@ -1246,9 +1246,9 @@ function echo_hours_range($c, $micro = false)
     }
 
     //Generate hours range:
-    $ui_time = ($is_minutes ? round($c['c__tree_min_hours'] / 60) : round(($c['c__tree_min_hours'] / 3600), $hours_decimal));
+    $ui_time = ($is_minutes ? round($c['in__tree_min_seconds'] / 60) : round(($c['in__tree_min_seconds'] / 3600), $hours_decimal));
     $ui_time .= '-';
-    $ui_time .= ($is_minutes ? round($c['c__tree_max_hours'] / 60) : round(($c['c__tree_max_hours'] / 3600), $hours_decimal));
+    $ui_time .= ($is_minutes ? round($c['in__tree_max_seconds'] / 60) : round(($c['in__tree_max_seconds'] / 3600), $hours_decimal));
     $ui_time .= ($is_minutes ? ($micro ? 'm' : ' Minutes') : ($micro ? 'h' : ' Hours'));
 
     //Generate UI to return:
@@ -1315,16 +1315,16 @@ function echo_object($object, $id, $engagement_field, $button_type)
 
         } elseif ($object == 'w') {
 
-            $ws = $CI->Db_model->w_fetch(array(
-                'w_id' => $id,
+            $trs = $CI->Db_model->w_fetch(array(
+                'tr_id' => $id,
             ), array('in'));
-            if (count($ws) > 0) {
+            if (count($trs) > 0) {
                 if (!$button_type) {
                     //Plain view:
-                    return '<a href="https://mench.com/intents/' . $ws[0]['w_in_id'] . '">' . $ws[0]['c_outcome'] . '</a>';
+                    return '<a href="https://mench.com/intents/' . $trs[0]['tr_in_child_id'] . '">' . $trs[0]['c_outcome'] . '</a>';
                 } else {
                     //TODO replace with Action Plan flag that would show student progress and load up their action plan...
-                    return '<a href="/intents/' . $ws[0]['w_in_id'] . '" target="_parent" class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="Subscribed to ' . $ws[0]['c_outcome'] . ' [Subscription #' . $id . ']"><i class="fas fa-comment-plus"></i></a> ';
+                    return '<a href="/intents/' . $trs[0]['tr_in_child_id'] . '" target="_parent" class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="Subscribed to ' . $trs[0]['c_outcome'] . ' [Subscription #' . $id . ']"><i class="fas fa-comment-plus"></i></a> ';
                 }
             }
 
@@ -1497,7 +1497,7 @@ function echo_featured_c($c)
 
     $ui .= $c['c_outcome'];
     $ui .= '<span style="font-size:0.8em; font-weight:300; margin-left:5px; display:inline-block;">';
-    //$ui .= ( $c['in__tree_count']>0 ? '<span style="padding-right:5px;"><i class="fas fa-lightbulb-on"></i>'.$c['in__tree_count'].'</span>' : '' );
+    //$ui .= ( $c['in__tree_in_count']>0 ? '<span style="padding-right:5px;"><i class="fas fa-lightbulb-on"></i>'.$c['in__tree_in_count'].'</span>' : '' );
     $ui .= '<span><i class="fas fa-clock"></i>' . echo_hours_range($c, false) . '</span>';
     $ui .= '</span>';
     $ui .= '</a>';
@@ -1531,11 +1531,11 @@ function echo_c($c, $level, $c_parent_id = 0, $is_parent = false)
     //Fetch K stats:
     $k_stat_fetch = $CI->Db_model->tr_fetch(array(
         'tr_in_child_id' => $c['in_id'],
-    ), array('cr'), array(), 0, 'k_status, COUNT(tr_id) as cr_count', 'k_status');
+    ), array('cr'), array(), 0, 'tr_status, COUNT(tr_id) as cr_count', 'tr_status');
     foreach ($k_stat_fetch as $trs) {
         $k_stats['k_all'] += $trs['cr_count'];
         //Calculate real completion:
-        if ($trs['k_status'] >= 2) {
+        if ($trs['tr_status'] >= 2) {
             $k_stats['k_completed'] += $trs['cr_count'];
         }
     }
@@ -1578,14 +1578,14 @@ function echo_c($c, $level, $c_parent_id = 0, $is_parent = false)
         $ui .= '<a href="#loadlinks-' . $c['in_id'] . '" onclick="in_tr_load(' . $c['in_id'] . ')" class="badge badge-primary" style="width:40px; margin-right:2px;"><span class="btn-counter">' . $e_count . ($e_count == $CI->config->item('max_counter') ? '+' : '') . '</span><i class="fas fa-atlas"></i></a>';
     }
 
-    $ui .= '<a href="#loadmessages-' . $c['in_id'] . '" onclick="in_messages_load(' . $c['in_id'] . ')" class="msg-badge-' . $c['in_id'] . ' badge badge-primary ' . ($c['c__this_messages'] == 0 ? 'grey' : '') . '" style="width:40px;"><span class="btn-counter messages-counter-' . $c['in_id'] . '">' . $c['c__this_messages'] . '</span><i class="fas fa-comment-dots"></i></a>';
+    $ui .= '<a href="#loadmessages-' . $c['in_id'] . '" onclick="in_messages_load(' . $c['in_id'] . ')" class="msg-badge-' . $c['in_id'] . ' badge badge-primary ' . ($c['in__messages_count'] == 0 ? 'grey' : '') . '" style="width:40px;"><span class="btn-counter messages-counter-' . $c['in_id'] . '">' . $c['in__messages_count'] . '</span><i class="fas fa-comment-dots"></i></a>';
 
     //Show total tree time here:
-    $ui .= '<a class="badge badge-primary" onclick="in_modify_load(' . $c['in_id'] . ',' . (isset($c['tr_id']) ? $c['tr_id'] : 0) . ')" style="margin:-2px -8px 0 2px; width:40px;" href="#loadmodify-' . $c['in_id'] . '-' . (isset($c['tr_id']) ? $c['tr_id'] : 0) . '"><span class="btn-counter slim-time t_estimate_' . $c['in_id'] . '" tree-max-seconds="' . $c['c__tree_max_hours'] . '" intent-seconds="' . $c['c_time_estimate'] . '">' . echo_hours($c['c__tree_max_hours'], true) . '</span><i class="fas fa-cog"></i></a> &nbsp;';
+    $ui .= '<a class="badge badge-primary" onclick="in_modify_load(' . $c['in_id'] . ',' . (isset($c['tr_id']) ? $c['tr_id'] : 0) . ')" style="margin:-2px -8px 0 2px; width:40px;" href="#loadmodify-' . $c['in_id'] . '-' . (isset($c['tr_id']) ? $c['tr_id'] : 0) . '"><span class="btn-counter slim-time t_estimate_' . $c['in_id'] . '" tree-max-seconds="' . $c['in__tree_max_seconds'] . '" intent-seconds="' . $c['in_seconds'] . '">' . echo_hours($c['in__tree_max_seconds'], true) . '</span><i class="fas fa-cog"></i></a> &nbsp;';
 
     //Show link to travel down the tree:
     //TODO Disable link if level 1 to reduce confusion as users cannot click on it?
-    $ui .= '&nbsp;<a href="/intents/' . $c['in_id'] . '" class="tree-badge-' . $c['in_id'] . ' badge badge-primary ' . ($c['in__tree_count'] <= 1 ? 'grey' : '') . '" style="display:inline-block; margin-right:-1px; width:40px;"><span class="btn-counter children-counter-' . $c['in_id'] . ' ' . ($is_parent && $level == 2 ? 'inb-counter' : '') . '">' . $c['in__tree_count'] . '</span><i class="' . ($is_parent && $level <= 2 ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90') . '"></i></a> ';
+    $ui .= '&nbsp;<a href="/intents/' . $c['in_id'] . '" class="tree-badge-' . $c['in_id'] . ' badge badge-primary ' . ($c['in__tree_in_count'] <= 1 ? 'grey' : '') . '" style="display:inline-block; margin-right:-1px; width:40px;"><span class="btn-counter children-counter-' . $c['in_id'] . ' ' . ($is_parent && $level == 2 ? 'inb-counter' : '') . '">' . $c['in__tree_in_count'] . '</span><i class="' . ($is_parent && $level <= 2 ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90') . '"></i></a> ';
 
     //Keep an eye out for inner message counter changes:
     $ui .= '</span> ';

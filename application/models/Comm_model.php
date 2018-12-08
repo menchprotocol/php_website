@@ -137,7 +137,7 @@ class Comm_model extends CI_Model
                 //User wants completely out...
 
                 //Skip everything from their Action Plan
-                $this->db->query("UPDATE tb_actionplans SET w_status=-1 WHERE w_status>=0 AND tr_en_parent_id=" . $u['u_id']);
+                $this->db->query("UPDATE tb_actionplans SET tr_status=-1 WHERE tr_status>=0 AND tr_en_parent_id=" . $u['u_id']);
                 $intents_skipped = $this->db->affected_rows();
 
                 //Update User communication status:
@@ -157,22 +157,22 @@ class Comm_model extends CI_Model
             } elseif (intval($unsub_value) > 0) {
 
                 //User wants to skip a specific intent from their Action Plan, validate it:
-                $ws = $this->Db_model->w_fetch(array(
-                    'w_id' => intval($unsub_value),
-                    'w_status >=' => 0,
+                $trs = $this->Db_model->w_fetch(array(
+                    'tr_id' => intval($unsub_value),
+                    'tr_status >=' => 0,
                 ), array('in'));
 
                 //All good?
-                if (count($ws) == 1) {
+                if (count($trs) == 1) {
 
                     //Update status for this single subscription:
-                    $this->db->query("UPDATE tb_actionplans SET w_status=-1 WHERE w_id=" . intval($unsub_value));
+                    $this->db->query("UPDATE tb_actionplans SET tr_status=-1 WHERE tr_id=" . intval($unsub_value));
 
                     //Show success message to user:
                     $this->Comm_model->send_message(array(
                         array(
                             'tr_en_child_id' => $u['u_id'],
-                            'tr_content' => 'I have successfully skipped the intention to ' . $ws[0]['c_outcome'] . '. Say "Unsubscribe" if you wish to stop all future communications. ' . echo_pa_lets(),
+                            'tr_content' => 'I have successfully skipped the intention to ' . $trs[0]['c_outcome'] . '. Say "Unsubscribe" if you wish to stop all future communications. ' . echo_pa_lets(),
                         ),
                     ));
 
@@ -296,9 +296,9 @@ class Comm_model extends CI_Model
         } elseif (substr_count($fb_ref, 'ACTIONPLANADD20_') == 1) {
 
             //Initiating an intent Subscription:
-            $w_in_id = intval(one_two_explode('ACTIONPLANADD20_', '', $fb_ref));
+            $tr_in_child_id = intval(one_two_explode('ACTIONPLANADD20_', '', $fb_ref));
             $fetch_cs = $this->Db_model->in_fetch(array(
-                'in_id' => $w_in_id,
+                'in_id' => $tr_in_child_id,
                 'in_status >=' => 2,
             ));
             if (count($fetch_cs) == 1) {
@@ -307,8 +307,8 @@ class Comm_model extends CI_Model
                 //See if this intent belong to any of these subscriptions:
                 $trs = $this->Db_model->tr_fetch(array(
                     'tr_en_parent_id' => $u['u_id'], //All subscriptions belonging to this user
-                    'w_status >=' => 0, //Any type of past subscription
-                    '(tr_in_parent_id=' . $w_in_id . ' OR tr_in_child_id=' . $w_in_id . ')' => null,
+                    'tr_status >=' => 0, //Any type of past subscription
+                    '(tr_in_parent_id=' . $tr_in_child_id . ' OR tr_in_child_id=' . $tr_in_child_id . ')' => null,
                 ), array('cr', 'w', 'w_c'));
 
                 if (count($trs) > 0) {
@@ -319,7 +319,7 @@ class Comm_model extends CI_Model
                             'tr_en_child_id' => $u['u_id'],
                             'tr_in_child_id' => $fetch_cs[0]['in_id'],
                             'tr_tr_parent_id' => $trs[0]['tr_tr_parent_id'],
-                            'tr_content' => ($trs[0]['in_id'] == $w_in_id ? 'You have already subscribed to ' . $fetch_cs[0]['c_outcome'] . '. We have been working on it together since ' . echo_time($trs[0]['w_timestamp'], 2) . '. /open_actionplan' : 'Your subscription to ' . $trs[0]['c_outcome'] . ' already covers the intention to ' . $fetch_cs[0]['c_outcome'] . ', so I will not create a duplicate subscription. /open_actionplan'),
+                            'tr_content' => ($trs[0]['in_id'] == $tr_in_child_id ? 'You have already subscribed to ' . $fetch_cs[0]['c_outcome'] . '. We have been working on it together since ' . echo_time($trs[0]['w_timestamp'], 2) . '. /open_actionplan' : 'Your subscription to ' . $trs[0]['c_outcome'] . ' already covers the intention to ' . $fetch_cs[0]['c_outcome'] . ', so I will not create a duplicate subscription. /open_actionplan'),
                         ),
                     ));
 
@@ -328,11 +328,11 @@ class Comm_model extends CI_Model
                     //Now we need to confirm if they really want to subscribe to this...
 
                     //Fetch all the messages for this intent:
-                    $tree = $this->Db_model->c_recursive_fetch($w_in_id, true, false);
+                    $tree = $this->Db_model->c_recursive_fetch($tr_in_child_id, true, false);
 
                     //Show messages for this intent:
                     $messages = $this->Db_model->i_fetch(array(
-                        'i_in_id' => $w_in_id,
+                        'i_in_id' => $tr_in_child_id,
                         'i_status >=' => 0, //Published in any form
                     ));
 
@@ -348,7 +348,7 @@ class Comm_model extends CI_Model
                     $this->Comm_model->send_message(array(
                         array(
                             'tr_en_child_id' => $u['u_id'],
-                            'tr_in_child_id' => $w_in_id,
+                            'tr_in_child_id' => $tr_in_child_id,
                             'tr_content' => 'Here is an overview:' . "\n\n" .
                                 echo_intent_overview($fetch_cs[0], 1) .
                                 echo_contents($fetch_cs[0], 1) .
@@ -360,7 +360,7 @@ class Comm_model extends CI_Model
                                 array(
                                     'content_type' => 'text',
                                     'title' => 'Yes, Subscribe',
-                                    'payload' => 'ACTIONPLANADD99_' . $w_in_id,
+                                    'payload' => 'ACTIONPLANADD99_' . $tr_in_child_id,
                                 ),
                                 array(
                                     'content_type' => 'text',
@@ -377,10 +377,10 @@ class Comm_model extends CI_Model
 
         } elseif (substr_count($fb_ref, 'ACTIONPLANADD99_') == 1) {
 
-            $w_in_id = intval(one_two_explode('ACTIONPLANADD99_', '', $fb_ref));
+            $tr_in_child_id = intval(one_two_explode('ACTIONPLANADD99_', '', $fb_ref));
             //Validate Intent ID:
             $fetch_cs = $this->Db_model->in_fetch(array(
-                'in_id' => $w_in_id,
+                'in_id' => $tr_in_child_id,
                 'in_status >=' => 2,
             ));
 
@@ -388,19 +388,19 @@ class Comm_model extends CI_Model
 
                 //Add to intent to user's action plan and create a cache of all intent links:
                 $w = $this->Db_model->w_create(array(
-                    'w_in_id' => $w_in_id,
+                    'tr_in_child_id' => $tr_in_child_id,
                     'tr_en_parent_id' => $u['u_id'],
                 ));
 
                 //Was this added successfully?
-                if (isset($w['w_id']) && $w['w_id'] > 0) {
+                if (isset($w['tr_id']) && $w['tr_id'] > 0) {
 
                     //Confirm with them that we're now ready:
                     $this->Comm_model->send_message(array(
                         array(
                             'tr_en_child_id' => $u['u_id'],
-                            'tr_in_child_id' => $w_in_id,
-                            'tr_tr_parent_id' => $w['w_id'],
+                            'tr_in_child_id' => $tr_in_child_id,
+                            'tr_tr_parent_id' => $w['tr_id'],
                             'tr_content' => 'Success! I have added the intention to ' . $fetch_cs[0]['c_outcome'] . ' to your Action Plan 🙌 /open_actionplan',
                         ),
                     ));
@@ -408,8 +408,8 @@ class Comm_model extends CI_Model
                     //Initiate first message for action plan tree:
                     $this->Comm_model->compose_messages(array(
                         'tr_en_child_id' => $u['u_id'],
-                        'tr_in_child_id' => $w_in_id,
-                        'tr_tr_parent_id' => $w['w_id'],
+                        'tr_in_child_id' => $tr_in_child_id,
+                        'tr_tr_parent_id' => $w['tr_id'],
                     ), true);
 
                 }
@@ -560,13 +560,13 @@ class Comm_model extends CI_Model
                 ));
 
                 //Find the next item to navigate them to:
-                $trs_next = $this->Db_model->k_next_fetch($w_id, $k_rank);
+                $trs_next = $this->Db_model->k_next_fetch($tr_id, $k_rank);
                 if ($trs_next) {
                     //Now move on to communicate the next step.
                     $this->Comm_model->compose_messages(array(
                         'tr_en_child_id' => $u['u_id'],
                         'tr_in_child_id' => $trs_next[0]['in_id'],
-                        'tr_tr_parent_id' => $w_id,
+                        'tr_tr_parent_id' => $tr_id,
                     ));
                 }
 
@@ -576,14 +576,14 @@ class Comm_model extends CI_Model
 
             //Student consumed AND tree content, and is ready to move on to next intent...
             $input_parts = explode('_', one_two_explode('MARKCOMPLETE_', '', $fb_ref));
-            $w_id = intval($input_parts[0]);
+            $tr_id = intval($input_parts[0]);
             $tr_id = intval($input_parts[1]);
             $k_rank = intval($input_parts[2]);
-            if ($w_id > 0 && $tr_id > 0 && $k_rank > 0) {
+            if ($tr_id > 0 && $tr_id > 0 && $k_rank > 0) {
 
                 //Fetch child intent first to check requirements:
                 $k_children = $this->Db_model->tr_fetch(array(
-                    'w_id' => $w_id,
+                    'tr_id' => $tr_id,
                     'tr_id' => $tr_id,
                 ), array('w', 'cr', 'cr_c_child'));
 
@@ -596,7 +596,7 @@ class Comm_model extends CI_Model
                         array(
                             'tr_en_child_id' => $u['u_id'],
                             'tr_in_child_id' => $k_children[0]['in_id'],
-                            'tr_tr_parent_id' => $w_id,
+                            'tr_tr_parent_id' => $tr_id,
                             'tr_content' => $requirement_notes,
                         ),
                     ));
@@ -605,7 +605,7 @@ class Comm_model extends CI_Model
 
                     //Fetch parent intent to mark as complete:
                     $k_parents = $this->Db_model->tr_fetch(array(
-                        'w_id' => $w_id,
+                        'tr_id' => $tr_id,
                         'tr_id' => $tr_id,
                     ), array('w', 'cr', 'cr_c_parent'));
 
@@ -613,13 +613,13 @@ class Comm_model extends CI_Model
                     $this->Db_model->k_complete_recursive_up($k_parents[0], $k_parents[0]);
 
                     //Go to next item:
-                    $trs_next = $this->Db_model->k_next_fetch($w_id);
+                    $trs_next = $this->Db_model->k_next_fetch($tr_id);
                     if ($trs_next) {
                         //Now move on to communicate the next step.
                         $this->Comm_model->compose_messages(array(
                             'tr_en_child_id' => $u['u_id'],
                             'tr_in_child_id' => $trs_next[0]['in_id'],
-                            'tr_tr_parent_id' => $w_id,
+                            'tr_tr_parent_id' => $tr_id,
                         ));
                     }
                 }
@@ -629,18 +629,18 @@ class Comm_model extends CI_Model
 
             //Student has responded to a multiple-choice OR tree
             $input_parts = explode('_', one_two_explode('CHOOSEOR_', '', $fb_ref));
-            $w_id = intval($input_parts[0]);
+            $tr_id = intval($input_parts[0]);
             $tr_in_parent_id = intval($input_parts[1]);
             $in_id = intval($input_parts[2]);
             $k_rank = intval($input_parts[3]);
 
-            if (!($w_id > 0 && $tr_in_parent_id > 0 && $in_id > 0 && $k_rank > 0)) {
+            if (!($tr_id > 0 && $tr_in_parent_id > 0 && $in_id > 0 && $k_rank > 0)) {
                 //Log Unknown error:
                 $this->Db_model->tr_create(array(
                     'tr_content' => 'fb_ref_process() failed to fetch proper data for CHOOSEOR_ request with reference value [' . $fb_ref . ']',
                     'tr_en_type_id' => 4246, //Platform Error
                     'tr_metadata' => $u,
-                    'tr_tr_parent_id' => $w_id,
+                    'tr_tr_parent_id' => $tr_id,
                     'tr_in_child_id' => $in_id,
                 ));
                 return false;
@@ -651,21 +651,21 @@ class Comm_model extends CI_Model
                 array(
                     'tr_en_child_id' => $u['u_id'],
                     'tr_in_child_id' => $in_id,
-                    'tr_tr_parent_id' => $w_id,
+                    'tr_tr_parent_id' => $tr_id,
                     'tr_content' => echo_pa_saved(),
                 ),
             ));
 
             //Now save answer:
-            if ($this->Db_model->k_choose_or($w_id, $tr_in_parent_id, $in_id)) {
+            if ($this->Db_model->k_choose_or($tr_id, $tr_in_parent_id, $in_id)) {
                 //Find the next item to navigate them to:
-                $trs_next = $this->Db_model->k_next_fetch($w_id, $k_rank);
+                $trs_next = $this->Db_model->k_next_fetch($tr_id, $k_rank);
                 if ($trs_next) {
                     //Now move on to communicate the next step.
                     $this->Comm_model->compose_messages(array(
                         'tr_en_child_id' => $u['u_id'],
                         'tr_in_child_id' => $trs_next[0]['in_id'],
-                        'tr_tr_parent_id' => $w_id,
+                        'tr_tr_parent_id' => $tr_id,
                     ));
                 }
             }
@@ -832,7 +832,7 @@ class Comm_model extends CI_Model
             ));
 
             //Check to see if we have a single result without any children:
-            if ($res['nbHits'] == 1 && $res['hits'][0]['in__tree_count'] == 1) {
+            if ($res['nbHits'] == 1 && $res['hits'][0]['in__tree_in_count'] == 1) {
 
                 //Yes, just send the messages of this intent as the response:
 
@@ -880,7 +880,7 @@ class Comm_model extends CI_Model
                 ));
 
                 //Create new intent in the suggestion bucket:
-                //$this->Db_model->c_new(000, $c_target_outcome, 0, 2, $u['u_id']);
+                //$this->Db_model->in_combo_create(000, $c_target_outcome, 0, 2, $u['u_id']);
 
             }
 
@@ -895,7 +895,7 @@ class Comm_model extends CI_Model
             //Fetch their currently working on subscriptions:
             $actionplans = $this->Db_model->w_fetch(array(
                 'tr_en_parent_id' => $u['u_id'],
-                'w_status' => 1, //Working on...
+                'tr_status' => 1, //Working on...
             ));
 
             if (count($actionplans) == 0) {
@@ -943,7 +943,7 @@ class Comm_model extends CI_Model
                     'tr_content' => $fb_message_received,
                     'tr_en_type_id' => 4287, //Log Unrecognizable Message Received
                     'tr_en_creator_id' => $u['u_id'], //User who initiated this message
-                    'tr_tr_parent_id' => $actionplans[0]['w_id'],
+                    'tr_tr_parent_id' => $actionplans[0]['tr_id'],
                 ));
 
                 //Notify the user that we don't understand:
@@ -955,12 +955,12 @@ class Comm_model extends CI_Model
                 ));
 
                 //Remind user of their next step, if any:
-                $trs_next = $this->Db_model->k_next_fetch($actionplans[0]['w_id']);
+                $trs_next = $this->Db_model->k_next_fetch($actionplans[0]['tr_id']);
                 if ($trs_next) {
                     $this->Comm_model->compose_messages(array(
                         'tr_en_child_id' => $u['u_id'],
                         'tr_in_child_id' => $trs_next[0]['in_id'],
-                        'tr_tr_parent_id' => $actionplans[0]['w_id'],
+                        'tr_tr_parent_id' => $actionplans[0]['tr_id'],
                     ));
                 }
 
@@ -1320,13 +1320,13 @@ class Comm_model extends CI_Model
 
             //Lets see how many child intents there are
             $k_outs = $this->Db_model->tr_fetch(array(
-                'w_id' => $e['tr_tr_parent_id'],
-                'w_status IN (0,1)' => null, //Active subscriptions only
+                'tr_id' => $e['tr_tr_parent_id'],
+                'tr_status IN (0,1)' => null, //Active subscriptions only
                 'tr_in_parent_id' => $e['tr_in_child_id'],
-                //We are fetching with any k_status just to see what is available/possible from here
+                //We are fetching with any tr_status just to see what is available/possible from here
             ), array('w', 'cr', 'cr_c_child'));
 
-            if (count($k_outs) > 0 && !($k_outs[0]['w_in_id'] == $e['tr_in_child_id'])) {
+            if (count($k_outs) > 0 && !($k_outs[0]['tr_in_child_id'] == $e['tr_in_child_id'])) {
                 //Only confirm the intention if its not the top-level action plan intention:
                 array_push($instant_messages, array(
                     'tr_en_child_id' => $e['tr_en_child_id'],
@@ -1441,10 +1441,10 @@ class Comm_model extends CI_Model
                 }
 
 
-                //As long as $e['tr_in_child_id'] is NOT equal to w_in_id, then we will have a k_out relation so we can give the option to skip:
+                //As long as $e['tr_in_child_id'] is NOT equal to tr_in_child_id, then we will have a k_out relation so we can give the option to skip:
                 $k_ins = $this->Db_model->tr_fetch(array(
-                    'w_id' => $e['tr_tr_parent_id'],
-                    'w_status IN (0,1)' => null, //Active subscriptions only
+                    'tr_id' => $e['tr_tr_parent_id'],
+                    'tr_status IN (0,1)' => null, //Active subscriptions only
                     'tr_in_child_id' => $e['tr_in_child_id'],
                 ), array('w', 'cr', 'cr_c_child'));
 

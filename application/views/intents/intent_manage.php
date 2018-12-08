@@ -49,7 +49,7 @@ if (isset($orphan_intents)) {
 
             //Expand/Contract buttons
             echo '<div class="indent2">';
-            echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-children-count children-counter-' . $c['in_id'] . '">' . $c['in__tree_count'] . '</span> Children</h5>';
+            echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-children-count children-counter-' . $c['in_id'] . '">' . $c['in__tree_in_count'] . '</span> Children</h5>';
 
             echo '<div id="expand_intents" style="padding-left:8px; display: inline-block;">';
             echo '<i class="fas fa-plus-square expand_all" style="font-size: 1.2em;"></i> &nbsp;';
@@ -98,17 +98,17 @@ if (isset($orphan_intents)) {
 
             //Intent subscribers:
             $limit = (is_dev() ? 10 : 100);
-            $ws = $this->Db_model->w_fetch(array(
-                'w_in_id' => $c['in_id'],
+            $trs = $this->Db_model->w_fetch(array(
+                'tr_in_child_id' => $c['in_id'],
             ), array('en', 'u_x', 'w_stats'), array(
-                'w_id' => 'DESC',
+                'tr_id' => 'DESC',
             ), $limit);
 
-            if (count($ws) > 0) {
+            if (count($trs) > 0) {
                 //Show these subscriptions:
-                echo '<h5 class="badge badge-h indent1" style="display: inline-block;"><i class="fas fa-comment-plus"></i> ' . count($ws) . ($limit == count($ws) ? '+' : '') . ' Subscriptions</h5>';
+                echo '<h5 class="badge badge-h indent1" style="display: inline-block;"><i class="fas fa-comment-plus"></i> ' . count($trs) . ($limit == count($trs) ? '+' : '') . ' Subscriptions</h5>';
                 echo '<div class="list-group list-grey indent1" style="margin-bottom: 40px;">';
-                foreach ($ws as $w) {
+                foreach ($trs as $w) {
                     echo echo_w_console($w);
                 }
                 echo '</div>';
@@ -275,7 +275,7 @@ if (isset($orphan_intents)) {
                                 <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;"><i
                                             class="fas fa-clock"></i></span>
                                 <input style="padding-left:0;" type="number" step="1" min="0"
-                                       max="<?= $this->config->item('in_seconds_max') ?>" id="c_time_estimate" value=""
+                                       max="<?= $this->config->item('in_seconds_max') ?>" id="in_seconds" value=""
                                        class="form-control">
                                 <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;">Minutes</span>
                             </div>

@@ -350,7 +350,7 @@ function message_save_updates(i_id, initial_i_status) {
             //Did the status change?
             if (!(new_i_status == initial_i_status)) {
                 //Update new status:
-                $("#ul-nav-" + i_id + " .msg_status").html(data.new_status);
+                $("#ul-nav-" + i_id + " .msg_status").html(data.tr_status);
 
                 //Switch message over to its section and inform the user:
                 $("#ul-nav-" + i_id).removeClass('msg_' + initial_i_status).addClass('msg_' + new_i_status)

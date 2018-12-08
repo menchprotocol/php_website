@@ -1,10 +1,10 @@
 @CHARSET "ISO-8859-1";
 
-#console_body {
+#matrix_body {
     background-color: #FFF;
 }
 
-#console_body .navbar {
+#matrix_body .navbar {
     background-color: #2f2739;
 }
 
@@ -20,7 +20,7 @@ body.grey-bg {
     box-shadow: none;
 }
 
-#console_body .navbar-nav > .active > a, #console_body .navbar-nav > .active > a:hover, #console_body .navbar-nav > .active > a:focus {
+#matrix_body .navbar-nav > .active > a, #matrix_body .navbar-nav > .active > a:hover, #matrix_body .navbar-nav > .active > a:focus {
     background-color: #FFF !important;
     color: #2f2739 !important;
     cursor: default !important;
@@ -32,17 +32,17 @@ body.grey-bg {
 }
 
 
-#console_body .navbar-nav a:hover, #console_body .navbar-nav a:focus {
+#matrix_body .navbar-nav a:hover, #matrix_body .navbar-nav a:focus {
     background-color: #FFF !important;
     color: #2f2739 !important;
 }
 
-#console_body .navbar-nav a {
+#matrix_body .navbar-nav a {
     color: #FFF;
     background-color: #2f2739;
 }
 
-#console_body .navbar.navbar-transparent .navbar-toggle .icon-bar {
+#matrix_body .navbar.navbar-transparent .navbar-toggle .icon-bar {
     color: #FFF;
 }
 

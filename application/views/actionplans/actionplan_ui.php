@@ -9,7 +9,7 @@ $has_outs = (count($k_outs) > 0);
 //We want to show the child intents in specific conditions to ensure a step-by-step navigation by the user through the browser Action Plan
 //(Note that the conversational UI already has this step-by-step navigation in mind, but the user has more flexibility in the Browser side)
 $has_completion_info = (intval($c['c_require_url_to_complete']) || intval($c['c_require_notes_to_complete']));
-$list_outs = (count($k_ins) == 0 || !($k_ins[0]['k_status'] == 0) || intval($c['in_is_any']) || !$has_completion_info || count($messages) == 0);
+$list_outs = (count($k_ins) == 0 || !($k_ins[0]['tr_status'] == 0) || intval($c['in_is_any']) || !$has_completion_info || count($messages) == 0);
 
 
 if (count($k_ins) == 1) {
@@ -17,16 +17,16 @@ if (count($k_ins) == 1) {
     $requirement_notes = echo_c_requirements($c);
 
     //Submission button visible after first button was clicked:
-    $is_incomplete = ($k_ins[0]['k_status'] <= 0 || ($k_ins[0]['k_status'] == 1 && count($k_outs) == 0));
+    $is_incomplete = ($k_ins[0]['tr_status'] <= 0 || ($k_ins[0]['tr_status'] == 1 && count($k_outs) == 0));
     $show_written_input = ($requirement_notes && $is_incomplete);
 }
 
 
 //Do we have a next item?
 $next_button = null;
-if ($w['w_status'] == 1) {
+if ($w['tr_status'] == 1) {
     //Active subscription, attempt to find next item, which we should be able to find:
-    $trs_next = $this->Db_model->k_next_fetch($w['w_id']);
+    $trs_next = $this->Db_model->k_next_fetch($w['tr_id']);
     if ($trs_next) {
         if ($trs_next[0]['in_id'] == $c['in_id']) {
             //$next_button = '<span style="font-size: 0.7em; padding-left:5px; display:inline-block;"><i class="fas fa-shield-check"></i> This is the next-in-line intent</span>';
@@ -40,7 +40,7 @@ if ($w['w_status'] == 1) {
 //Include JS file:
 echo '<script src="/js/custom/actionplan-js.js?v=v' . $this->config->item('app_version') . '" type="text/javascript"></script>';
 
-//Fetch parent tree all the way to the top of subscription w_in_id
+//Fetch parent tree all the way to the top of subscription tr_in_child_id
 echo '<div class="list-group" style="margin-top: 10px;">';
 foreach ($k_ins as $k) {
     echo echo_k($k, 1);
@@ -58,25 +58,25 @@ if (count($k_ins) == 0) {
 
     //This must be top level subscription, show subscription data:
     echo '<div class="sub_title">';
-    echo echo_status('w_status', $w['w_status']);
+    echo echo_status('tr_status', $w['tr_status']);
     echo ' &nbsp;&nbsp;<i class="fas fa-calendar-check"></i> ' . echo_diff_time($w['w_timestamp']) . ' ago';
     //TODO show subscription pace data such as start/end time, weekly rate & notification type
     echo '</div>';
 
 } elseif (count($k_ins) == 1) {
 
-    $hide_messages = ($has_completion_info && !in_array($k_ins[0]['k_status'], $this->config->item('k_status_incomplete')));
+    $hide_messages = ($has_completion_info && !in_array($k_ins[0]['tr_status'], $this->config->item('tr_status_incomplete')));
 
     //Show completion progress for the single parent intent:
     echo '<div class="sub_title">';
 
-    echo echo_status('k_status', $k_ins[0]['k_status']);
+    echo echo_status('tr_status', $k_ins[0]['tr_status']);
 
     //Either show completion time or when it was completed:
     if ($k_ins[0]['k_last_updated']) {
         echo ' &nbsp;&nbsp;<i class="fas fa-calendar-check"></i> ' . echo_diff_time($k_ins[0]['k_last_updated']) . ' ago';
     } else {
-        echo ' &nbsp;&nbsp;<i class="fas fa-clock"></i> ' . echo_hours($c['c_time_estimate']) . ' to complete';
+        echo ' &nbsp;&nbsp;<i class="fas fa-clock"></i> ' . echo_hours($c['in_seconds']) . ' to complete';
     }
 
     if (strlen($k_ins[0]['tr_content']) > 0) {
@@ -90,7 +90,7 @@ if (count($k_ins) == 0) {
 
 //Show all messages:
 if (count($messages) > 0) {
-    $hide_messages_onload = (count($k_ins) == 0 || $k_ins[0]['k_status'] <= 0);
+    $hide_messages_onload = (count($k_ins) == 0 || $k_ins[0]['tr_status'] <= 0);
     echo '<div class="tips_content message_content left-grey" style="display: ' . ($hide_messages ? 'none' : 'block') . ';">';
     echo '<h5 class="badge badge-hy"><i class="fas fa-comment-dots"></i> ' . count($messages) . ' Message' . echo__s(count($messages)) . ':</h5>';
     foreach ($messages as $i) {
@@ -154,7 +154,7 @@ if ($has_outs && $list_outs) {
     echo '<h5 class="badge badge-hy">' . ($c['in_is_any'] ? '<i class="fas fa-code-merge"></i> Choose One' : '<i class="fas fa-sitemap"></i> Complete All') . ':</h5>';
     echo '<div class="list-group">';
     foreach ($k_outs as $k) {
-        echo echo_k($k, 0, ($c['in_is_any'] && $k['k_status'] == 0 ? $c['in_id'] : 0));
+        echo echo_k($k, 0, ($c['in_is_any'] && $k['tr_status'] == 0 ? $c['in_id'] : 0));
     }
     echo '</div>';
     echo '</div>';
@@ -165,8 +165,8 @@ if ($has_outs && $list_outs) {
 echo $next_button;
 
 //Give a skip option if not complete:
-if (count($k_ins) == 1 && in_array($k_ins[0]['k_status'], $this->config->item('k_status_incomplete'))) {
-    echo '<span class="skippable">or <a href="javascript:void(0);" onclick="confirm_skip(' . $w['w_id'] . ',' . $c['in_id'] . ',' . $k_ins[0]['tr_id'] . ')">skip intent</a></span>';
+if (count($k_ins) == 1 && in_array($k_ins[0]['tr_status'], $this->config->item('tr_status_incomplete'))) {
+    echo '<span class="skippable">or <a href="javascript:void(0);" onclick="confirm_skip(' . $w['tr_id'] . ',' . $c['in_id'] . ',' . $k_ins[0]['tr_id'] . ')">skip intent</a></span>';
 }
 
 ?>

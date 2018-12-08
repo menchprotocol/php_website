@@ -139,7 +139,7 @@ $(document).ready(function () {
         templates: {
             suggestion: function (suggestion) {
                 var fancy_hours = fancy_time(suggestion);
-                return '<span class="suggest-prefix"><i class="fas fa-hashtag"></i></span> ' + suggestion._highlightResult.c_outcome.value + (fancy_hours ? '<span class="search-info">' + (parseFloat(suggestion.c__count) > 1 ? ' <i class="fas fa-sitemap"></i> ' + suggestion.c__count : '') + ' <i class="fas fa-clock"></i> ' + fancy_hours + '</span>' : '');
+                return '<span class="suggest-prefix"><i class="fas fa-hashtag"></i></span> ' + suggestion._highlightResult.c_outcome.value + (fancy_hours ? '<span class="search-info">' + (parseFloat(suggestion.in__count) > 1 ? ' <i class="fas fa-sitemap"></i> ' + suggestion.in__count : '') + ' <i class="fas fa-clock"></i> ' + fancy_hours + '</span>' : '');
             },
             header: function (data) {
                 if (!data.isEmpty) {
@@ -226,7 +226,7 @@ function in_load_search_level3() {
         templates: {
             suggestion: function (suggestion) {
                 var fancy_hours = fancy_time(suggestion);
-                return '<span class="suggest-prefix"><i class="fas fa-hashtag"></i></span> ' + suggestion._highlightResult.c_outcome.value + (fancy_hours ? '<span class="search-info">' + (parseInt(suggestion.in__tree_count) > 1 ? ' <i class="' + (parseInt(suggestion.in_is_any) ? 'fas fa-code-merge' : 'fas fa-sitemap') + '"></i> ' + parseInt(suggestion.in__tree_count) : '') + ' <i class="fas fa-clock"></i> ' + fancy_hours + '</span>' : '');
+                return '<span class="suggest-prefix"><i class="fas fa-hashtag"></i></span> ' + suggestion._highlightResult.c_outcome.value + (fancy_hours ? '<span class="search-info">' + (parseInt(suggestion.in__tree_in_count) > 1 ? ' <i class="' + (parseInt(suggestion.in_is_any) ? 'fas fa-code-merge' : 'fas fa-sitemap') + '"></i> ' + parseInt(suggestion.in__tree_in_count) : '') + ' <i class="fas fa-clock"></i> ' + fancy_hours + '</span>' : '');
             },
             header: function (data) {
                 if (!data.isEmpty) {
@@ -560,7 +560,7 @@ function in_modify_load(in_id, tr_id) {
     $('#in_status').val($('.c_outcome_' + in_id).attr('in_status'));
     $('#c_points').val($('.c_outcome_' + in_id).attr('c_points'));
     $('#c_trigger_statements').val($('.c_outcome_' + in_id).attr('c_trigger_statements'));
-    $('#c_time_estimate').val(Math.round(in_seconds));
+    $('#in_seconds').val(in_seconds);
     $('#c_cost_estimate').val(parseFloat($('.c_outcome_' + in_id).attr('c_cost_estimate')));
 
     //Load intent links if any:
@@ -631,7 +631,7 @@ function c_save_modify() {
         level: parseInt($('#modifybox').attr('level')),
         c_outcome: $('#c_outcome').val(),
         in_status: parseInt($('#in_status').val()),
-        c_time_estimate: parseInt($('#c_time_estimate').val()),
+        in_seconds: parseInt($('#in_seconds').val()),
         c_cost_estimate: parseFloat($('#c_cost_estimate').val()),
         c_require_url_to_complete: (document.getElementById('c_require_url_to_complete').checked ? 1 : 0),
         c_require_notes_to_complete: (document.getElementById('c_require_notes_to_complete').checked ? 1 : 0),
@@ -746,7 +746,7 @@ function c_save_modify() {
 
 
             //Adjust hours if needed:
-            adjust_js_ui(modify_data['in_id'], modify_data['level'], modify_data['c_time_estimate']);
+            adjust_js_ui(modify_data['in_id'], modify_data['level'], modify_data['in_seconds']);
 
             //Update UI to confirm with user:
             $('.save_intent_changes').html(data.message).hide().fadeIn();
@@ -805,7 +805,7 @@ function c_js_new(in_id, next_level, in_linkto_id=0) {
     add_to_list(sort_list_id, sort_handler, '<div id="temp' + next_level + '" class="list-group-item"><img src="/img/round_load.gif" class="loader" /> Adding... </div>');
 
     //Update backend:
-    $.post("/intents/c_new", {
+    $.post("/intents/in_combo_create", {
         in_id: in_id,
         c_outcome: intent_name,
         next_level: next_level,
@@ -847,7 +847,7 @@ function c_js_new(in_id, next_level, in_linkto_id=0) {
             $('[data-toggle="tooltip"]').tooltip();
 
             //Adjust time:
-            adjust_js_ui(data.in_id, next_level, data.c__tree_max_hours, data.adjusted_c_count, 0, 1);
+            adjust_js_ui(data.in_id, next_level, data.in__tree_max_seconds, data.adjusted_c_count, 0, 1);
 
         } else {
             //Show errors:

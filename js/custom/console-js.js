@@ -156,7 +156,7 @@ $(document).ready(function () {
         }
     });
 
-    $("#console_search").on('autocomplete:selected', function (event, suggestion, dataset) {
+    $("#matrix_search").on('autocomplete:selected', function (event, suggestion, dataset) {
 
         if (dataset == 1) {
             window.location = "/intents/" + suggestion.in_id;
@@ -237,11 +237,11 @@ $(document).ready(function () {
 });
 
 
-function load_u_engagements(u_id, w_id=0) {
+function load_u_engagements(u_id, tr_id=0) {
 
-    w_id = parseInt(w_id);
+    tr_id = parseInt(tr_id);
     u_id = parseInt(u_id);
-    var frame_title = frame_loader(w_id, u_id, true);
+    var frame_title = frame_loader(tr_id, u_id, true);
     $('#w_title').html('<i class="fas fa-atlas"></i> ' + frame_title);
 
     //Load content via a URL:

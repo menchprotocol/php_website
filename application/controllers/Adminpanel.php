@@ -20,20 +20,20 @@ class Adminpanel extends CI_Controller
 
     function engagements()
     {
-        $this->load->view('shared/console_header', array(
+        $this->load->view('shared/matrix_header', array(
             'title' => 'Platform Engagements',
         ));
         $this->load->view('engagements/engagements_browse');
-        $this->load->view('shared/console_footer');
+        $this->load->view('shared/matrix_footer');
     }
 
     function subscriptions()
     {
-        $this->load->view('shared/console_header', array(
+        $this->load->view('shared/matrix_header', array(
             'title' => 'Subscriptions Browser',
         ));
         $this->load->view('actionplans/actionplans_browse');
-        $this->load->view('shared/console_footer');
+        $this->load->view('shared/matrix_footer');
     }
 
     function li_list_blob($tr_id)
@@ -61,11 +61,11 @@ class Adminpanel extends CI_Controller
     function statuslegend()
     {
         //Load views
-        $this->load->view('shared/console_header', array(
+        $this->load->view('shared/matrix_header', array(
             'title' => 'Status Legend',
         ));
         $this->load->view('other/statuslegend');
-        $this->load->view('shared/console_footer');
+        $this->load->view('shared/matrix_footer');
     }
 
 

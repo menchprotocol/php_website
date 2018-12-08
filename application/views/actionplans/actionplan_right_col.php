@@ -54,7 +54,7 @@
 
     });
 
-    function frame_loader(w_id, u_id, hide_intent=false) {
+    function frame_loader(tr_id, u_id, hide_intent=false) {
 
         //Start loading:
         $('.fixed-box, .ajax-frame').addClass('hidden');
@@ -67,9 +67,9 @@
         }
 
         var w_intent = null;
-        if (w_id > 0 && $('.w_intent_' + w_id).length) {
+        if (tr_id > 0 && $('.w_intent_' + tr_id).length) {
             w_intent = (w_entity ? ' / ' : '');
-            w_intent = w_intent + $('.w_intent_' + w_id).text();
+            w_intent = w_intent + $('.w_intent_' + tr_id).text();
         }
 
         return (w_entity ? w_entity : '') + (w_intent && !hide_intent ? w_intent : '');
@@ -77,20 +77,20 @@
     }
 
 
-    function confirm_w_delete(w_id) {
+    function confirm_w_delete(tr_id) {
         var r = confirm("Are you sure you want to permanently delete this subscription?");
         if (r == true) {
 
             //Make ajax call and remove item:
-            $.post("/my/w_delete/" + w_id, {}, function (data) {
+            $.post("/my/w_delete/" + tr_id, {}, function (data) {
                 if (data.status) {
                     //Hide boxed:
                     $('.frame-loader').addClass('hidden');
 
                     //Remove frame
-                    $('#w_div_' + w_id).html('<span style="color:#2f2739;"><i class="fas fa-trash-alt"></i> Archived</span>');
+                    $('#w_div_' + tr_id).html('<span style="color:#2f2739;"><i class="fas fa-trash-alt"></i> Archived</span>');
                     setTimeout(function () {
-                        $('#w_div_' + w_id).fadeOut();
+                        $('#w_div_' + tr_id).fadeOut();
                     }, 377);
                 }
             });
@@ -98,21 +98,21 @@
     }
 
 
-    function load_w_actionplan(w_id, u_id) {
+    function load_w_actionplan(tr_id, u_id) {
 
-        w_id = parseInt(w_id);
+        tr_id = parseInt(tr_id);
         u_id = parseInt(u_id);
-        var frame_title = frame_loader(w_id, u_id);
+        var frame_title = frame_loader(tr_id, u_id);
         $('#w_title').html('<i class="fas fa-flag"></i> ' + frame_title);
 
         //Is this user an admin? if so, give them a delete option:
         if (jQuery.inArray(1281, js_parent_u_ids) !== -1) {
             //Append delete button:
-            $('#w_title').prepend('<a href="javascript:void(0);" onclick="confirm_w_delete(' + w_id + ')" data-toggle="tooltip" title="Permanently delete this subscription and its related data" data-placement="bottom"><i class="fas fa-trash-alt" style="color:#FFF;"></i></a> &nbsp;');
+            $('#w_title').prepend('<a href="javascript:void(0);" onclick="confirm_w_delete(' + tr_id + ')" data-toggle="tooltip" title="Permanently delete this subscription and its related data" data-placement="bottom"><i class="fas fa-trash-alt" style="color:#FFF;"></i></a> &nbsp;');
         }
 
         //Add via Ajax:
-        $.post("/my/load_w_actionplan", {w_id: w_id}, function (data) {
+        $.post("/my/load_w_actionplan", {tr_id: tr_id}, function (data) {
             if (data.status) {
 
                 //Load content:

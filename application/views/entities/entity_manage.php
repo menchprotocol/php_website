@@ -11,10 +11,10 @@ $child_entities = $this->Db_model->en_children_fetch(array(
 
 //Intents subscribed:
 $limit = (is_dev() ? 10 : 100);
-$ws = $this->Db_model->w_fetch(array(
+$trs = $this->Db_model->w_fetch(array(
     'tr_en_parent_id' => $entity['u_id'],
 ), array('en', 'in', 'w_stats'), array(
-    'w_id' => 'DESC',
+    'tr_id' => 'DESC',
 ), $limit);
 
 
@@ -132,11 +132,11 @@ $ws = $this->Db_model->w_fetch(array(
 
 
         //Only show if data exists (users cannot modify this anyways)
-        if (count($ws) > 0) {
+        if (count($trs) > 0) {
             //Show these subscriptions:
-            echo '<h5 class="badge badge-h indent1" style="display: inline-block;"><i class="fas fa-comment-plus"></i> ' . count($ws) . ($limit == count($ws) ? '+' : '') . ' Subscriptions</h5>';
+            echo '<h5 class="badge badge-h indent1" style="display: inline-block;"><i class="fas fa-comment-plus"></i> ' . count($trs) . ($limit == count($trs) ? '+' : '') . ' Subscriptions</h5>';
             echo '<div class="list-group list-grey indent1" style="margin-bottom:10px;">';
-            foreach ($ws as $w) {
+            foreach ($trs as $w) {
                 echo echo_w_console($w);
             }
             echo '</div>';
