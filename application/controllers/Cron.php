@@ -26,6 +26,80 @@ class Cron extends CI_Controller
     //30 3 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron e_score_recursive
 
 
+    function treecache(){
+
+        /*
+         * This function prepares a PHP-friendly text to be copies to treecache.php
+         * (which is auto loaded) to provide a cache image of some entities in
+         * the tree for faster application processing.
+         *
+         * */
+
+        //First first all entities that have Cache in PHP Config @4527 as their parent:
+        $config_ens = $this->Db_model->tr_fetch(array(
+            'tr_status >=' => 0,
+            'tr_en_child_id >' => 0,
+            'tr_en_parent_id' => 4527,
+        ), 0, array('en_child'));
+
+        //Which ones should we do an extended "all" array?
+        $enable_extended = array(3000);
+
+        foreach($config_ens as $en){
+
+            //Now fetch all its children:
+            $children = $this->Db_model->tr_fetch(array(
+                'tr_status >=' => 0,
+                'en_status >=' => 0,
+                'tr_en_parent_id' => $en['tr_en_child_id'],
+                'tr_en_child_id >' => 0,
+            ), 0, array('en_child'), array('tr_en_child_id' => 'ASC'), 'en_id, en_name, en_icon');
+
+            $child_ids = array();
+            foreach($children as $child){
+                array_push($child_ids , $child['en_id']);
+            }
+
+            echo '<br />//'.$en['en_name'].':<br />';
+            echo '$config[\'en_ids_'.$en['tr_en_child_id'].'\'] = array('.join(', ',$child_ids).');<br />';
+            if(in_array($en['tr_en_child_id'], $enable_extended)){
+                echo '$config[\'en_all_'.$en['tr_en_child_id'].'\'] = array(<br />';
+                foreach($children as $child){
+                    echo '&nbsp;&nbsp;&nbsp;&nbsp;'.$child['en_id'].' => \''.$child['en_name'].'\',<br />';
+                }
+                echo ');<br />';
+            }
+        }
+
+
+        //Now lets do some other elements:
+        $fetch = array(
+            'en_countries' => 3089,
+            'en_languages' => 3287,
+            'en_timezones' => 3289,
+            'en_gender' => 3290,
+        );
+        echo '<br /><br />//Here are the user metadata elements:<br />';
+        echo '$config[\'en_user_metadata\'] = array(<br />';
+        foreach ($fetch as $array_key => $en_id) {
+            //Fetch all children for this entity:
+            $entities = $this->Db_model->tr_fetch(array(
+                'tr_en_parent_id' => $en_id,
+                'tr_status >=' => 0, //Pending or Active
+                'en_status >=' => 0, //Pending or Active
+            ), 0, array('en_child'));
+            echo '&nbsp;&nbsp;&nbsp;\'' . $array_key . '\' => array(<br />';
+            foreach ($entities as $en) {
+                echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'' . strtolower($en['tr_content']) . '\' => ' . $en['tr_en_child_id'] . ',<br />';
+            }
+            echo '&nbsp;&nbsp;&nbsp;),<br />';
+        }
+
+        //Also add gender:
+        echo ');';
+    }
+
+
     function show_missing_us()
     {
         $q = $this->db->query("SELECT DISTINCT(tr_en_child_id) as p_id FROM tb_entity_links ur WHERE NOT EXISTS (
@@ -43,7 +117,7 @@ class Cron extends CI_Controller
     {
         //Cron Settings: 31 * * * *
         //Syncs intents with latest caching data:
-        $sync = $this->Db_model->c_recursive_fetch($in_id, true, $update_c_table);
+        $sync = $this->Db_model->in_recursive_fetch($in_id, true, $update_c_table);
         if (isset($_GET['redirect']) && strlen($_GET['redirect']) > 0) {
             //Now redirect;
             header('Location: ' . $_GET['redirect']);
@@ -109,7 +183,7 @@ class Cron extends CI_Controller
             'u__childrens' => 0, //Child entities are just containers, no score on the link
 
             'tr_en_child_id' => 1, //Engagement initiator
-            'tr_en_creator_id' => 1, //Engagement recipient
+            'tr_en_credit_id' => 1, //Engagement recipient
 
             'x_parent_u_id' => 5, //URL Creator
             'x_u_id' => 8, //URL Referenced to them
@@ -118,7 +192,7 @@ class Cron extends CI_Controller
         );
 
         //Fetch child entities:
-        $entities = $this->Db_model->en_children_fetch(array(
+        $entities = $this->Old_model->ur_children_fetch(array(
             'tr_en_parent_id' => (count($u) > 0 ? $u['u_id'] : $this->config->item('primary_en_id')),
             'tr_status >=' => 0, //Pending or Active
             'u_status >=' => 0, //Pending or Active
@@ -141,14 +215,14 @@ class Cron extends CI_Controller
                     'tr_en_child_id' => $u['u_id'],
                 ), 5000)) * $score_weights['tr_en_child_id'];
             $score += count($this->Db_model->tr_fetch(array(
-                    'tr_en_creator_id' => $u['u_id'],
-                ), 5000)) * $score_weights['tr_en_creator_id'];
+                    'tr_en_credit_id' => $u['u_id'],
+                ), 5000)) * $score_weights['tr_en_credit_id'];
 
-            $score += count($this->Db_model->x_fetch(array(
+            $score += count($this->Old_model->x_fetch(array(
                     'x_status >' => -2,
                     'x_u_id' => $u['u_id'],
                 ))) * $score_weights['x_u_id'];
-            $score += count($this->Db_model->x_fetch(array(
+            $score += count($this->Old_model->x_fetch(array(
                     'x_status >' => -2,
                     'x_parent_u_id' => $u['u_id'],
                 ))) * $score_weights['x_parent_u_id'];
@@ -206,7 +280,7 @@ class Cron extends CI_Controller
                 $this->Comm_model->send_message(array(
                     array_merge($json_data['i'], array(
                         'tr_en_child_id' => $trs[0]['u_id'],
-                        'i_in_id' => $json_data['i']['i_in_id'],
+                        'tr_in_child_id' => $json_data['i']['tr_in_child_id'],
                     )),
                 ));
 
@@ -223,36 +297,6 @@ class Cron extends CI_Controller
         //Echo message for cron job:
         echo $drip_sent . ' Drip messages sent';
 
-    }
-
-
-    function en_metadata()
-    {
-        //A function that creates a cache array to be saved in config for country/language/time-zone conversion into entities
-        $fetch = array(
-            'en_countries' => 3089,
-            'en_languages' => 3287,
-            'en_timezones' => 3289,
-            'en_gender' => 3290,
-        );
-        echo '//Copy/paste this into the config.php file and replace with old variable:<br /><br />';
-        echo '$config[\'en_metadata\'] = array(<br />';
-        foreach ($fetch as $array_key => $en_id) {
-            //Fetch all children for this entity:
-            $entities = $this->Db_model->en_children_fetch(array(
-                'tr_en_parent_id' => $en_id,
-                'tr_status >=' => 0, //Pending or Active
-                'u_status >=' => 0, //Pending or Active
-            ));
-            echo '&nbsp;&nbsp;&nbsp;\'' . $array_key . '\' => array(<br />';
-            foreach ($entities as $en) {
-                echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'' . strtolower($en['tr_content']) . '\' => ' . $en['tr_en_child_id'] . ',<br />';
-            }
-            echo '&nbsp;&nbsp;&nbsp;),<br />';
-        }
-
-        //Also add gender:
-        echo ');';
     }
 
     function save_profile_pic()
@@ -332,7 +376,7 @@ class Cron extends CI_Controller
 
                         //Log transaction:
                         $this->Db_model->tr_create(array(
-                            'tr_en_creator_id' => $u['u_id'],
+                            'tr_en_credit_id' => $u['u_id'],
                             'tr_en_child_id' => $u['u_id'],
                             'tr_en_type_id' => 4263, //Entity Modified
                             'tr_content' => 'Profile cover photo updates from Facebook Image [' . $u['tr_content'] . '] to Mench CDN [' . $new_file_url . ']',
@@ -449,7 +493,7 @@ class Cron extends CI_Controller
         $tr_metadata = array();
         $x_types = echo_status('x_type', null);
 
-        $pending_urls = $this->Db_model->x_fetch(array(
+        $pending_urls = $this->Old_model->x_fetch(array(
             'x_type >=' => 2,
             'x_type <=' => 5, //These are the file URLs that need syncing
             'x_fb_att_id' => 0, //Pending Facebook Sync
@@ -660,7 +704,7 @@ class Cron extends CI_Controller
 
                             //Nope, send this message out:
                             $this->Comm_model->compose_messages(array(
-                                'tr_en_creator_id' => 0, //System
+                                'tr_en_credit_id' => 0, //System
                                 'tr_en_child_id' => $subscription['u_id'],
                                 'tr_in_child_id' => $logic['reminder_in_id'],
                             ));

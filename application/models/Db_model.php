@@ -11,62 +11,9 @@ class Db_model extends CI_Model
     }
 
 
-    function k_fetch($match_columns, $join_objects = array(), $order_columns = array(), $limit = 0, $select = '*', $group_by = null)
-    {
-        //Fetch the target gems:
-        $this->db->select($select);
-        $this->db->from('tb_actionplan_links k');
 
 
-        if (in_array('w', $join_objects)) {
-            //Also join with subscription row:
-            $this->db->join('tb_actionplans w', 'w.tr_id = k.tr_tr_parent_id');
-
-            if (in_array('w_c', $join_objects)) {
-                //Also join with subscription row:
-                $this->db->join('tb_intents c', 'c.in_id = w.tr_in_child_id');
-            }
-            if (in_array('w_u', $join_objects)) {
-                //Also add subscriber and their profile picture:
-                $this->db->join('tb_entities u', 'u.u_id = w.tr_en_parent_id');
-                $this->db->join('tb_entity_urls x', 'x.x_id = u.u_cover_x_id', 'left'); //Fetch the cover photo if >0
-            }
-        }
-
-        foreach ($match_columns as $key => $value) {
-            if (!is_null($value)) {
-                $this->db->where($key, $value);
-            } else {
-                $this->db->where($key);
-            }
-        }
-
-        if ($group_by) {
-            $this->db->group_by($group_by);
-        }
-
-        if (count($order_columns) > 0) {
-            foreach ($order_columns as $key => $value) {
-                $this->db->order_by($key, $value);
-            }
-        } elseif (in_array('cr_c_child', $join_objects)) {
-            //Intent links are cached upon subscription and its important to keep the same order:
-            $this->db->order_by('tr_order', 'ASC');
-        }
-
-        if ($limit > 0) {
-            $this->db->limit($limit);
-        }
-
-        $q = $this->db->get();
-        $results = $q->result_array();
-
-        //Return everything that was collected:
-        return $results;
-    }
-
-
-    function en_dropdown_set($en_parent_bucket_id, $en_master_id, $set_en_child_id, $tr_en_creator_id = 0)
+    function en_radio_set($en_parent_bucket_id, $set_en_child_id = 0, $en_master_id, $tr_en_credit_id = 0)
     {
 
         /*
@@ -80,7 +27,9 @@ class Db_model extends CI_Model
          *
          * */
 
-        $children = $this->config->item('en_child_' . $en_parent_bucket_id);
+
+        //Fetch all the child entities for $en_parent_bucket_id and make sure they match $set_en_child_id
+        $children = $this->config->item('en_ids_' . $en_parent_bucket_id);
         if ($en_parent_bucket_id < 1) {
             return false;
         } elseif (!$children) {
@@ -90,24 +39,39 @@ class Db_model extends CI_Model
         }
 
         //First remove existing parent/child transactions for this drop down:
-        $current_transactions = $this->Db_model->tr_fetch(array(
-            'tr_en_parent_id' => $en_master_id,
-            'tr_en_child_id IN (' . join(',', $children) . ')' => null, //Current children
+        $already_assigned = ( $set_en_child_id<1 );
+        $updated_tr_id = 0;
+        foreach ($this->Db_model->tr_fetch(array(
+            'tr_en_child_id' => $en_master_id,
+            'tr_en_parent_id IN (' . join(',', $children) . ')' => null, //Current children
             'tr_status >=' => 0,
-        ), 200);
-        foreach ($current_transactions as $tr) {
-            $this->Db_model->tr_update($tr['tr_id'], array(
-                'tr_status' => -1, //Removed
-            ), $tr_en_creator_id);
+        ), 200) as $tr) {
+
+            if (!$already_assigned && $tr['tr_en_parent_id'] == $set_en_child_id) {
+                $already_assigned = true;
+            } else {
+                //Remove assignment:
+                $updated_tr_id = $tr['tr_id'];
+
+                //Do not log update transaction here as we would log it further below:
+                $this->Db_model->tr_update($tr['tr_id'], array(
+                    'tr_status' => ( $set_en_child_id>0 ? -2 /* Being Updated */ : -1 /* Being Removed */ ), //Updated or Removed
+                ));
+            }
+
         }
 
 
         //Make sure $set_en_child_id belongs to parent if set (Could be null which means remove all)
-        if ($set_en_child_id > 0) {
-
-        } else {
-            //Remove any links that might be the child:
-
+        if (!$already_assigned) {
+            //Let's go ahead and add desired entity as parent:
+            $this->Db_model->tr_create(array(
+                'tr_en_credit_id' => $tr_en_credit_id,
+                'tr_en_child_id' => $en_master_id,
+                'tr_en_parent_id' => $set_en_child_id,
+                'tr_en_type_id' => 4230, //Naked link
+                'tr_tr_parent_id' => $updated_tr_id,
+            ));
         }
 
     }
@@ -181,7 +145,7 @@ class Db_model extends CI_Model
 
             //Dispatch all on-complete messages of $in_id
             $messages = $this->Db_model->i_fetch(array(
-                'i_in_id' => $trs[0]['tr_in_child_id'],
+                'tr_in_child_id' => $trs[0]['tr_in_child_id'],
                 'i_status' => 3, //On complete messages
             ));
             if (count($messages) > 0) {
@@ -190,7 +154,7 @@ class Db_model extends CI_Model
                     array_push($send_messages, array_merge($i, array(
                         'tr_tr_parent_id' => $trs[0]['tr_id'],
                         'tr_en_child_id' => $trs[0]['tr_en_parent_id'],
-                        'i_in_id' => $i['i_in_id'],
+                        'tr_in_child_id' => $i['tr_in_child_id'],
                     )));
                 }
                 //Sendout messages:
@@ -515,7 +479,7 @@ class Db_model extends CI_Model
 
         if (!isset($insert_columns['k_rank'])) {
             //Determine the highest rank for this subscription:
-            $insert_columns['k_rank'] = 1 + $this->Db_model->max_value('tb_actionplan_links', 'k_rank', array(
+            $insert_columns['k_rank'] = 1 + $this->Db_model->tr_max_order('tb_actionplan_links', 'k_rank', array(
                     'tr_tr_parent_id' => $insert_columns['tr_tr_parent_id'],
                 ));
         }
@@ -535,7 +499,7 @@ class Db_model extends CI_Model
         return $insert_columns;
     }
 
-    function in_combo_create($in_id, $c_outcome, $in_linkto_id, $next_level, $parent_u_id)
+    function in_combo_create($in_id, $c_outcome, $in_linkto_id, $next_level, $tr_en_credit_id)
     {
 
         if (intval($in_id) <= 0) {
@@ -585,11 +549,9 @@ class Db_model extends CI_Model
 
             //Log transaction for New Intent:
             $this->Db_model->tr_create(array(
-                'tr_en_creator_id' => $parent_u_id,
-                'tr_content' => 'Intent [' . $new_intent['c_outcome'] . '] created',
+                'tr_en_credit_id' => $tr_en_credit_id,
                 'tr_metadata' => array(
                     'input_data' => $_POST,
-                    'initial_data' => null,
                     'after' => $new_intent,
                 ),
                 'tr_en_type_id' => 4250, //New Intent
@@ -616,7 +578,7 @@ class Db_model extends CI_Model
 
 
             //check for all parents:
-            $parent_tree = $this->Db_model->c_recursive_fetch($in_id);
+            $parent_tree = $this->Db_model->in_recursive_fetch($in_id);
             if (in_array($new_intent['in_id'], $parent_tree['in_flat_tree'])) {
                 return array(
                     'status' => 0,
@@ -626,10 +588,16 @@ class Db_model extends CI_Model
 
 
             //Make sure this is not a duplicate intent for its parent:
-            $dup_links = $this->Db_model->cr_children_fetch(array(
+            //cr_children_fetch
+            $dup_links = $this->Db_model->tr_fetch(array(
                 'tr_in_parent_id' => intval($in_id),
                 'tr_in_child_id' => $new_intent['in_id'],
-            ));
+                'tr_en_type_id IN (' . join(', ', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
+                'tr_status >=' => 0,
+                'in_status >=' => 0,
+            ), 0, array('in_child'), array('tr_order' => 'ASC'));
+
+
             if (count($dup_links) > 0) {
                 //What is the status? If achived, we can bring back to life!
                 if ($dup_links[0]['tr_status'] < 0) {
@@ -660,25 +628,37 @@ class Db_model extends CI_Model
         }
 
 
-        //Create Link:
-        $relation = $this->Db_model->cr_create(array(
-            'tr_en_parent_id' => $parent_u_id,
+        //Create Intent Link:
+        $relation = $this->Db_model->tr_create(array(
+            'tr_en_credit_id' => $tr_en_credit_id,
+            'tr_en_type_id' => 4228,
+
             'tr_in_parent_id' => intval($in_id),
             'tr_in_child_id' => $new_intent['in_id'],
-            'tr_order' => 1 + $this->Db_model->max_value('tb_intent_links', 'tr_order', array(
-                    'tr_status' => 1,
-                    'in_status >=' => 0,
-                    'tr_in_parent_id' => intval($in_id),
-                )),
-        ));
+
+            'tr_order' => 1 + $this->Db_model->tr_max_order('table_ledger', 'tr_order', array(
+                'tr_status >=' => 0,
+                'in_status >=' => 0,
+                'tr_en_type_id' => 4228,
+                'tr_in_parent_id' => intval($in_id),
+            )),
+        ), true);
 
         //Update tree count from parent and above:
         $updated_recursively = $this->Db_model->c_update_tree($in_id, $recursive_query);
 
 
-        $relations = $this->Db_model->cr_children_fetch(array(
+        $relations = $this->Old_model->cr_children_fetch(array(
             'tr_id' => $relation['tr_id'],
         ));
+
+        $relations = $this->Db_model->tr_fetch(array(
+            'tr_in_parent_id' => intval($in_id),
+            'tr_in_child_id' => $new_intent['in_id'],
+            'tr_en_type_id IN (' . join(', ', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
+            'tr_status >=' => 0,
+            'in_status >=' => 0,
+        ), 0, array('in_child'), array('tr_order' => 'ASC'));
 
         //Return result:
         return array(
@@ -709,7 +689,7 @@ class Db_model extends CI_Model
 
         if (!isset($insert_columns['w_c_rank'])) {
             //Place this new action plan after the last one the user currently has:
-            $insert_columns['w_c_rank'] = 1 + $this->Db_model->max_value('tb_actionplans', 'w_c_rank', array(
+            $insert_columns['w_c_rank'] = 1 + $this->Db_model->tr_max_order('tb_actionplans', 'w_c_rank', array(
                     'tr_status >=' => 1, //Anything they are working on...
                     'tr_en_parent_id' => $insert_columns['tr_en_parent_id'],
                 )); //No coach assigned
@@ -724,7 +704,7 @@ class Db_model extends CI_Model
         if ($insert_columns['tr_id'] > 0) {
 
             //Now let's create a cache of the Action Plan for this subscription:
-            $tree = $this->Db_model->c_recursive_fetch($insert_columns['tr_in_child_id'], true, false, $insert_columns['tr_id']);
+            $tree = $this->Db_model->in_recursive_fetch($insert_columns['tr_in_child_id'], true, false, $insert_columns['tr_id']);
 
             if (count($tree['in_tr_flat_tree']) > 0) {
 
@@ -773,82 +753,6 @@ class Db_model extends CI_Model
     }
 
 
-    function u_fetch($match_columns, $join_objects = array(), $limit = 0, $limit_offset = 0, $order_columns = array('u__e_score' => 'DESC'), $select = '*', $group_by = null)
-    {
-
-        //Fetch the target entities:
-        $this->db->select($select);
-        $this->db->from('tb_entities u');
-        $this->db->join('tb_entity_urls x', 'x.x_id = u_cover_x_id', 'left'); //Fetch the cover photo if >0
-        foreach ($match_columns as $key => $value) {
-            if (!is_null($value)) {
-                $this->db->where($key, $value);
-            } else {
-                $this->db->where($key);
-            }
-        }
-        if ($group_by) {
-            $this->db->group_by($group_by);
-        }
-        foreach ($order_columns as $key => $value) {
-            $this->db->order_by($key, $value);
-        }
-        if ($limit > 0) {
-            $this->db->limit($limit, $limit_offset);
-        }
-
-        $q = $this->db->get();
-        $res = $q->result_array();
-
-
-        //Now fetch parents:
-        foreach ($res as $key => $val) {
-
-            if (in_array('u__children_count', $join_objects)) {
-                //Fetch the messages for this entity:
-                $res[$key]['u__children_count'] = count($this->Db_model->en_children_fetch(array(
-                    'tr_en_parent_id' => $val['u_id'],
-                    'tr_status >=' => 0, //Pending or Active
-                    'u_status >=' => 0, //Pending or Active
-                )));
-            }
-
-
-            if (in_array('u__urls', $join_objects)) {
-                //Fetch the messages for this entity:
-                $res[$key]['u__urls'] = $this->Db_model->x_fetch(array(
-                    'x_status >' => -2,
-                    'x_u_id' => $val['u_id'],
-                ), array(), array(
-                    'x_type' => 'ASC'
-                ));
-            }
-
-            if (in_array('u__ws', $join_objects)) {
-                //Fetch the subscriptions for this entity:
-                $res[$key]['u__ws'] = $this->Db_model->w_fetch(array(
-                    'tr_en_parent_id' => $val['u_id'],
-                    'tr_status IN (1,2)' => null, //Active subscriptions (Passive ones have a more targetted distribution)
-                ), array('in'), array(
-                    'w_last_heard' => 'ASC'
-                ));
-            }
-
-
-            //Fetch the messages for this entity:
-            if (in_array('skip_en__parents', $join_objects)) {
-                $res[$key]['en__parents'] = array();
-            } else {
-                $res[$key]['en__parents'] = $this->Db_model->tr_parent_fetch(array(
-                    'tr_en_child_id' => $val['u_id'],
-                    'tr_status >=' => 0, //Pending or Active
-                    'u_status >=' => 0, //Pending or Active
-                ));
-            }
-        }
-
-        return $res;
-    }
 
 
     function en_fetch($match_columns, $join_objects = array(), $limit = 0, $limit_offset = 0, $order_columns = array('u__e_score' => 'DESC'), $select = '*', $group_by = null)
@@ -856,8 +760,7 @@ class Db_model extends CI_Model
 
         //Fetch the target entities:
         $this->db->select($select);
-        $this->db->from('tb_entities u');
-        $this->db->join('tb_entity_urls x', 'x.x_id = u_cover_x_id', 'left'); //Fetch the cover photo if >0
+        $this->db->from('table_entities');
         foreach ($match_columns as $key => $value) {
             if (!is_null($value)) {
                 $this->db->where($key, $value);
@@ -882,9 +785,9 @@ class Db_model extends CI_Model
         //Now fetch parents:
         foreach ($res as $key => $val) {
 
-            if (in_array('u__children_count', $join_objects)) {
+            if (in_array('in__children_count', $join_objects)) {
                 //Fetch the messages for this entity:
-                $res[$key]['u__children_count'] = count($this->Db_model->en_children_fetch(array(
+                $res[$key]['in__children_count'] = count($this->Old_model->ur_children_fetch(array(
                     'tr_en_parent_id' => $val['u_id'],
                     'tr_status >=' => 0, //Pending or Active
                     'u_status >=' => 0, //Pending or Active
@@ -894,7 +797,7 @@ class Db_model extends CI_Model
 
             if (in_array('u__urls', $join_objects)) {
                 //Fetch the messages for this entity:
-                $res[$key]['u__urls'] = $this->Db_model->x_fetch(array(
+                $res[$key]['u__urls'] = $this->Old_model->x_fetch(array(
                     'x_status >' => -2,
                     'x_u_id' => $val['u_id'],
                 ), array(), array(
@@ -938,6 +841,12 @@ class Db_model extends CI_Model
             return false;
         }
 
+        if (isset($insert_columns['en_metadata'])) {
+            $insert_columns['en_metadata'] = serialize($insert_columns['en_metadata']);
+        } else {
+            $insert_columns['en_metadata'] = null;
+        }
+
         if (!isset($insert_columns['en_trust_score'])) {
             //Will be later calculated via a cron job:
             $insert_columns['en_trust_score'] = 0;
@@ -947,7 +856,9 @@ class Db_model extends CI_Model
         $this->db->insert('table_entities', $insert_columns);
 
         //Fetch inserted id:
-        $insert_columns['en_id'] = $this->db->insert_id();
+        if(!isset($insert_columns['en_id'])){
+            $insert_columns['en_id'] = $this->db->insert_id();
+        }
 
         if ($insert_columns['en_id'] > 0) {
 
@@ -981,7 +892,11 @@ class Db_model extends CI_Model
 
     function en_update($id, $update_columns, $external_sync = false)
     {
-        //Update first
+
+        //Cleanup if needed:
+        $update_columns['en_metadata'] = (isset($update_columns['en_metadata']) ? serialize($update_columns['en_metadata']) : null );
+
+        //Update:
         $this->db->where('en_id', $id);
         $this->db->update('table_entities', $update_columns);
 
@@ -997,40 +912,12 @@ class Db_model extends CI_Model
      * i Messages
      ****************************** */
 
-    function i_fetch($match_columns, $limit = 0, $join_objects = array(), $order_columns = array(
-        'i_rank' => 'ASC',
-    ))
-    {
-
-        $this->db->select('*');
-        $this->db->from('tb_intent_messages i');
-        $this->db->join('tb_intents c', 'i_in_id = in_id');
-        foreach ($match_columns as $key => $value) {
-            if (!is_null($value)) {
-                $this->db->where($key, $value);
-            } else {
-                $this->db->where($key);
-            }
-        }
-        if ($limit > 0) {
-            $this->db->limit($limit);
-        }
-
-        foreach ($order_columns as $key => $value) {
-            $this->db->order_by($key, $value);
-        }
-
-        $this->db->order_by('i_rank');
-        $q = $this->db->get();
-        return $q->result_array();
-    }
-
 
     function i_create($insert_columns)
     {
 
         //Need either entity or intent:
-        if (!isset($insert_columns['i_in_id'])) {
+        if (!isset($insert_columns['tr_in_child_id'])) {
             $this->Db_model->tr_create(array(
                 'tr_content' => 'A new message requires either an Entity or Intent to be referenced to',
                 'tr_metadata' => $insert_columns,
@@ -1050,17 +937,17 @@ class Db_model extends CI_Model
         if (!isset($insert_columns['i_status'])) {
             $insert_columns['i_status'] = 1;
         }
-        if (!isset($insert_columns['i_rank'])) {
-            $insert_columns['i_rank'] = 1;
+        if (!isset($insert_columns['tr_order'])) {
+            $insert_columns['tr_order'] = 1;
         }
 
-        if (!isset($insert_columns['i_u_id'])) {
+        if (!isset($insert_columns['tr_en_parent_id'])) {
             //Describes an entity:
-            $insert_columns['i_u_id'] = 0;
+            $insert_columns['tr_en_parent_id'] = 0;
         }
-        if (!isset($insert_columns['i_in_id'])) {
+        if (!isset($insert_columns['tr_in_child_id'])) {
             //Describes an entity:
-            $insert_columns['i_in_id'] = 0;
+            $insert_columns['tr_in_child_id'] = 0;
         }
 
 
@@ -1071,137 +958,6 @@ class Db_model extends CI_Model
         $insert_columns['i_id'] = $this->db->insert_id();
 
         return $insert_columns;
-    }
-
-    function w_fetch($match_columns, $join_objects = array(), $order_columns = array('w_c_rank' => 'ASC'), $limit = 0)
-    {
-        //Fetch the target gems:
-        $this->db->select('*');
-        $this->db->from('tb_actionplans w');
-        if (in_array('in', $join_objects)) {
-            $this->db->join('tb_intents c', 'w.tr_in_child_id = in_id');
-        }
-        if (in_array('en', $join_objects)) {
-            $this->db->join('tb_entities u', 'w.tr_en_parent_id = u_id');
-            if (in_array('u_x', $join_objects)) {
-                $this->db->join('tb_entity_urls x', 'x.x_id = u_cover_x_id', 'left'); //Fetch the cover photo if >0
-            }
-        }
-        foreach ($match_columns as $key => $value) {
-            if (!is_null($value)) {
-                $this->db->where($key, $value);
-            } else {
-                $this->db->where($key);
-            }
-        }
-        if (count($order_columns) > 0) {
-            foreach ($order_columns as $key => $value) {
-                $this->db->order_by($key, $value);
-            }
-        }
-        if ($limit > 0) {
-            $this->db->limit($limit);
-        }
-        $q = $this->db->get();
-        $results = $q->result_array();
-
-        if (in_array('w_stats', $join_objects)) {
-            //We need to append subscription stats:
-            foreach ($results as $key => $value) {
-                //Count related items:
-                $results[$key]['w_stats'] = array(
-                    //Fetch intent engagements cached per subscription:
-                    'k_count_undone' => count($this->Db_model->tr_fetch(array(
-                        'tr_tr_parent_id' => $value['tr_id'],
-                        'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
-                    ))),
-                    'k_count_done' => count($this->Db_model->tr_fetch(array(
-                        'tr_tr_parent_id' => $value['tr_id'],
-                        'tr_status NOT IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //complete
-                    ))),
-                    //fetch all user engagements:
-                    'e_all_count' => count($this->Db_model->tr_fetch(array(
-                        '( tr_en_child_id=' . $value['tr_en_parent_id'] . ' OR tr_en_parent_id=' . $value['tr_en_parent_id'] . ')' => null,
-                        '(tr_en_type_id NOT IN (' . join(',', $this->config->item('exclude_es')) . '))' => null,
-                    ), $this->config->item('max_counter'))),
-                );
-            }
-        }
-
-
-        //Return everything that was collected:
-        return $results;
-    }
-
-
-    function c_fetch($match_columns, $fetch_child_levels = 0, $join_objects = array(), $order_columns = array(), $limit = 0, $limit_offset = 0, $select = '*', $group_by = null)
-    {
-
-        //The basic fetcher for intents
-        $this->db->select($select);
-        $this->db->from('tb_intents c');
-        foreach ($match_columns as $key => $value) {
-            $this->db->where($key, $value);
-        }
-
-        if ($group_by) {
-            $this->db->group_by($group_by);
-        }
-        if (count($order_columns) > 0) {
-            foreach ($order_columns as $key => $value) {
-                $this->db->order_by($key, $value);
-            }
-        }
-        if ($limit > 0) {
-            $this->db->limit($limit, $limit_offset);
-        }
-        $q = $this->db->get();
-        $intents = $q->result_array();
-
-        foreach ($intents as $key => $value) {
-
-            //Should we append messaging link types?
-            if (in_array('in__active_messages', $join_objects)) {
-                $intents[$key]['in__active_messages'] = $this->Db_model->i_fetch(array(
-                    'i_in_id' => $value['in_id'],
-                    'i_status >=' => 0, //Published in any form
-                ));
-            }
-
-            //Should we fetch all parent intentions?
-            if (in_array('in__active_parents', $join_objects)) {
-                $intents[$key]['in__active_parents'] = $this->Db_model->in_parents_fetch(array(
-                    'tr_in_child_id' => $value['in_id'],
-                    'tr_status' => 1,
-                ), $join_objects);
-            }
-
-            //Have we been asked to append any children to this query?
-            if ($fetch_child_levels >= 1) {
-
-                //Do the first level:
-                $intents[$key]['in__active_children'] = $this->Db_model->cr_children_fetch(array(
-                    'tr_in_parent_id' => $value['in_id'],
-                    'tr_status' => 1,
-                    'in_status >=' => 0,
-                ), $join_objects);
-
-                //We can also do a second level, just like how the Intents are displayed using a 2-level navigation:
-                if ($fetch_child_levels >= 2) {
-                    //Start the second level:
-                    foreach ($intents[$key]['in__active_children'] as $key2 => $value2) {
-                        $intents[$key]['in__active_children'][$key2]['in__active_children'] = $this->Db_model->cr_children_fetch(array(
-                            'tr_in_parent_id' => $value2['in_id'],
-                            'tr_status' => 1,
-                            'in_status >=' => 0,
-                        ), $join_objects);
-                    }
-                }
-            }
-        }
-
-        //Return everything that was collected:
-        return $intents;
     }
 
 
@@ -1243,7 +999,7 @@ class Db_model extends CI_Model
 
             //Should we fetch all parent intentions?
             if (in_array('in__active_parents', $join_objects)) {
-                $intents[$key]['in__active_parents'] = $this->Db_model->in_parents_fetch(array(
+                $intents[$key]['in__active_parents'] = $this->Old_model->cr_parents_fetch(array(
                     'tr_in_child_id' => $value['in_id'],
                     'tr_status' => 1,
                 ), $join_objects);
@@ -1253,7 +1009,7 @@ class Db_model extends CI_Model
             if (in_array('fetch_children', $join_objects) || in_array('fetch_grandchildren', $join_objects)) {
 
                 //Fetch immediate children:
-                $intents[$key]['in__active_children'] = $this->Db_model->cr_children_fetch(array(
+                $intents[$key]['in__active_children'] = $this->Old_model->cr_children_fetch(array(
                     'tr_in_parent_id' => $value['in_id'],
                     'tr_status' => 1,
                     'in_status >=' => 0,
@@ -1262,7 +1018,7 @@ class Db_model extends CI_Model
                 //Fetch second-level granchildren?
                 if (in_array('fetch_grandchildren', $join_objects)) {
                     foreach ($intents[$key]['in__active_children'] as $key2 => $value2) {
-                        $intents[$key]['in__active_children'][$key2]['in__active_children'] = $this->Db_model->cr_children_fetch(array(
+                        $intents[$key]['in__active_children'][$key2]['in__active_children'] = $this->Old_model->cr_children_fetch(array(
                             'tr_in_parent_id' => $value2['in_id'],
                             'tr_status' => 1,
                             'in_status >=' => 0,
@@ -1277,157 +1033,25 @@ class Db_model extends CI_Model
     }
 
 
-    function cr_children_fetch($match_columns, $join_objects = array())
+
+
+    function tr_max_order($match_columns)
     {
 
-        //Missing anything?
-        $this->db->select('*');
-        $this->db->from('tb_intents c');
-        $this->db->join('tb_intent_links cr', 'tr_in_child_id = in_id');
-        foreach ($match_columns as $key => $value) {
-            if (!is_null($value)) {
-                $this->db->where($key, $value);
-            } else {
-                $this->db->where($key);
-            }
-        }
-        $this->db->order_by('tr_order', 'ASC');
-        $q = $this->db->get();
-        $return = $q->result_array();
-
-        //We had anything?
-        if (count($join_objects) > 0) {
-            foreach ($return as $key => $value) {
-                if (in_array('in__active_messages', $join_objects)) {
-                    //Fetch Messages:
-                    $return[$key]['in__active_messages'] = $this->Db_model->i_fetch(array(
-                        'i_in_id' => $value['in_id'],
-                        'i_status >=' => 0, //Published in any form
-                    ));
-                }
-            }
-        }
-
-        //Return the package:
-        return $return;
-    }
-
-    function in_parents_fetch($match_columns, $join_objects = array())
-    {
-        //Missing anything?
-        $this->db->select('*');
-        $this->db->from('tb_intents c');
-        $this->db->join('tb_intent_links cr', 'tr_in_parent_id = in_id');
-        foreach ($match_columns as $key => $value) {
-            $this->db->where($key, $value);
-        }
-        $q = $this->db->get();
-        $return = $q->result_array();
-
-        if (count($join_objects) > 0) {
-            foreach ($return as $key => $value) {
-
-                if (in_array('in__active_children', $join_objects)) {
-                    //Fetch children:
-                    $return[$key]['in__active_children'] = $this->Db_model->cr_children_fetch(array(
-                        'tr_in_parent_id' => $value['in_id'],
-                        'tr_status' => 1,
-                        'in_status >=' => 0,
-                    ));
-                }
-
-                if (in_array('in__active_messages', $join_objects)) {
-                    //Fetch Messages:
-                    $return[$key]['in__active_messages'] = $this->Db_model->i_fetch(array(
-                        'i_in_id' => $value['in_id'],
-                        'i_status >=' => 0, //Published in any form
-                    ));
-                }
-            }
-        }
-
-        return $return;
-    }
-
-
-    function max_value($table, $column, $match_columns)
-    {
-        $this->db->select('MAX(' . $column . ') as largest');
-        if ($table == 'tb_intent_links') {
-            //This is a HACK :D
-            $this->db->from('tb_intent_links cr');
-            $this->db->join('tb_intents c', 'tr_in_child_id = in_id');
-        } else {
-            $this->db->from($table);
-        }
+        //Counts the current highest order value
+        $this->db->select('MAX(tr_order) as largest_order');
+        $this->db->from('table_ledger');
         foreach ($match_columns as $key => $value) {
             $this->db->where($key, $value);
         }
         $q = $this->db->get();
         $stats = $q->row_array();
         if (count($stats) > 0) {
-            return intval($stats['largest']);
+            return intval($stats['largest_order']);
         } else {
             //Nothing found:
             return 0;
         }
-    }
-
-
-    function cr_create($insert_columns)
-    {
-
-        if (detect_missing_columns($insert_columns, array('tr_in_child_id', 'tr_in_parent_id', 'tr_en_parent_id'))) {
-            return false;
-        }
-
-        if (!isset($insert_columns['tr_timestamp'])) {
-            $insert_columns['tr_timestamp'] = date("Y-m-d H:i:s");
-        }
-
-        if (!isset($insert_columns['tr_status'])) {
-            $insert_columns['tr_status'] = 1;
-        }
-        if (!isset($insert_columns['tr_order'])) {
-            $insert_columns['tr_order'] = 1;
-        }
-
-        //Lets now add:
-        $this->db->insert('tb_intent_links', $insert_columns);
-
-        //Fetch inserted id:
-        $insert_columns['tr_id'] = $this->db->insert_id();
-
-        return $insert_columns;
-    }
-
-
-    function tr_create($insert_columns)
-    {
-
-        if (detect_missing_columns($insert_columns, array('tr_en_child_id', 'tr_en_parent_id'))) {
-            return false;
-        }
-
-        if (!isset($insert_columns['tr_timestamp'])) {
-            $insert_columns['tr_timestamp'] = date("Y-m-d H:i:s");
-        }
-
-        if (!isset($insert_columns['tr_content']) || strlen(trim($insert_columns['tr_content'])) < 1) {
-            $insert_columns['tr_content'] = null;
-        }
-
-        if (!isset($insert_columns['tr_status'])) {
-            $insert_columns['tr_status'] = 1; //Live link
-        }
-
-        //Lets now add:
-        $this->db->insert('tb_entity_links', $insert_columns);
-
-        //Fetch inserted id:
-        $insert_columns['tr_id'] = $this->db->insert_id();
-
-        return $insert_columns;
     }
 
 
@@ -1438,7 +1062,7 @@ class Db_model extends CI_Model
         //Once it finds it, then it would place it under that as long as it does not exist...
 
         //first make sure not already assigned:
-        $found_parent = $this->Db_model->en_children_fetch(array(
+        $found_parent = $this->Old_model->ur_children_fetch(array(
             'tr_en_parent_id' => $parent_parent_u_id,
             'LOWER(tr_content)' => trim(strtolower($tr_content_search)),
         ));
@@ -1451,14 +1075,14 @@ class Db_model extends CI_Model
         }
     }
 
-    function tr_place($tr_en_child_id, $parent_u_id, $tr_content = null)
+    function tr_place($tr_en_child_id, $tr_en_credit_id, $tr_content = null)
     {
 
-        //This function would attempt to place $tr_en_child_id as a child of $parent_u_id
+        //This function would attempt to place $tr_en_child_id as a child of $tr_en_credit_id
 
         //first make sure not already assigned:
-        $existing = $this->Db_model->en_children_fetch(array(
-            'tr_en_parent_id' => $parent_u_id,
+        $existing = $this->Old_model->ur_children_fetch(array(
+            'tr_en_parent_id' => $tr_en_credit_id,
             'tr_en_child_id' => $tr_en_child_id,
         ));
 
@@ -1497,7 +1121,7 @@ class Db_model extends CI_Model
             //Create new one:
             $new_ur = $this->Db_model->tr_create(array(
                 'tr_en_child_id' => $tr_en_child_id,
-                'tr_en_parent_id' => $parent_u_id,
+                'tr_en_parent_id' => $tr_en_credit_id,
                 'tr_content' => $tr_content,
             ));
 
@@ -1547,7 +1171,7 @@ class Db_model extends CI_Model
         ));
 
         //Make sure this URL does not exist:
-        $dup_urls = $this->Db_model->x_fetch(array(
+        $dup_urls = $this->Old_model->x_fetch(array(
             'x_status >' => -2,
             '(x_url LIKE \'' . $x_url . '\' OR x_clean_url LIKE \'' . $x_url . '\')' => null,
         ), array('en'));
@@ -1623,7 +1247,7 @@ class Db_model extends CI_Model
 
             //Log transaction new entity:
             $this->Db_model->tr_create(array(
-                'tr_en_creator_id' => $udata['u_id'],
+                'tr_en_credit_id' => $udata['u_id'],
                 'tr_en_child_id' => $new_entity['u_id'],
                 'tr_en_type_id' => 4251, //Entity Created
             ));
@@ -1694,63 +1318,6 @@ class Db_model extends CI_Model
     }
 
 
-    function en_children_fetch($match_columns, $join_objects = array(), $limit = 0, $limit_offset = 0, $select = '*', $group_by = null, $order_columns = array(
-        'u__e_score' => 'DESC',
-    ))
-    {
-
-        //Missing anything?
-        $this->db->select($select);
-        $this->db->from('tb_entities u');
-        $this->db->join('tb_entity_links ur', 'tr_en_child_id = u_id');
-        $this->db->join('tb_entity_urls x', 'x.x_id = u_cover_x_id', 'left'); //Fetch the cover photo if >0
-        foreach ($match_columns as $key => $value) {
-            if (!is_null($value)) {
-                $this->db->where($key, $value);
-            } else {
-                $this->db->where($key);
-            }
-        }
-
-        if ($group_by) {
-            $this->db->group_by($group_by);
-        }
-        foreach ($order_columns as $key => $value) {
-            $this->db->order_by($key, $value);
-        }
-
-        if ($limit > 0) {
-            $this->db->limit($limit, $limit_offset);
-        }
-
-        $q = $this->db->get();
-        $res = $q->result_array();
-
-
-        if (in_array('u__children_count', $join_objects)) {
-            foreach ($res as $key => $val) {
-                //Fetch the messages for this entity:
-                $res[$key]['u__children_count'] = count($this->Db_model->en_children_fetch(array(
-                    'tr_en_parent_id' => $val['u_id'],
-                    'tr_status >=' => 0, //Pending or Active
-                    'u_status >=' => 0, //Pending or Active
-                )));
-            }
-        }
-
-        if (in_array('en__parents', $join_objects)) {
-            foreach ($res as $key => $val) {
-                //Fetch the messages for this entity:
-                $res[$key]['en__parents'] = $this->Db_model->tr_parent_fetch(array(
-                    'tr_en_child_id' => $val['u_id'],
-                    'tr_status >=' => 0, //Pending or Active
-                    'u_status >=' => 0, //Pending or Active
-                ));
-            }
-        }
-
-        return $res;
-    }
 
     function tr_parent_fetch($match_columns, $join_objects = array())
     {
@@ -1774,6 +1341,10 @@ class Db_model extends CI_Model
 
     function in_update($id, $update_columns, $external_sync = false)
     {
+        //Cleanup if needed:
+        $update_columns['in_metadata'] = (isset($update_columns['in_metadata']) ? serialize($update_columns['in_metadata']) : null );
+
+        //Update:
         $this->db->where('in_id', $id);
         $this->db->update('table_intents', $update_columns);
 
@@ -1786,7 +1357,7 @@ class Db_model extends CI_Model
     }
 
 
-    function tr_update($id, $update_columns, $tr_en_creator_id = 0, $append_metadata = array())
+    function tr_update($id, $update_columns, $tr_en_credit_id = 0, $append_metadata = array())
     {
 
         //Fetch transaction before updating:
@@ -1798,27 +1369,33 @@ class Db_model extends CI_Model
             return false;
         }
 
-        //Try to update Transaction:
+        //Cleanup if needed:
+        $update_columns['tr_metadata'] = (isset($update_columns['tr_metadata']) ? serialize($update_columns['tr_metadata']) : null );
+
+        //Update:
         $this->db->where('tr_id', $id);
         $this->db->update('table_ledger', $update_columns);
         $affected_rows = $this->db->affected_rows();
 
+        $base_metadata = array(
+            'initial_data' => $current_trs[0],
+            'after' => $update_columns,
+        );
+
         //Log changes if successful:
-        if ($affected_rows) {
+        if ($affected_rows && $tr_en_credit_id) {
+
             $this->Db_model->tr_create(array(
                 'tr_tr_parent_id' => $id, //Parent Transaction ID
-                'tr_en_creator_id' => $tr_en_creator_id, //Give the credit
-                'tr_en_type_id' => (isset($update_columns['tr_status']) && $update_columns['tr_status'] < 0 ? 4241 /*Removed*/ : 4242 /*Modified*/),
+                'tr_en_credit_id' => $tr_en_credit_id, //Give the credit
+                'tr_en_type_id' => (isset($update_columns['tr_status']) && in_array($update_columns['tr_status'], array(-1, -3)) ? 4241 /*Removed*/ : 4242 /*Modified*/),
                 'tr_content' => echo_changelog($current_trs[0], $update_columns, 'tr_'),
-                'tr_metadata' => array_merge(array(
-                    'before' => $current_trs[0],
-                    'after' => $update_columns,
-                ), $append_metadata),
+                'tr_metadata' => ( count($append_metadata)>0 ? array_merge($base_metadata, $append_metadata) : $base_metadata ),
                 //Copy others:
                 'tr_en_parent_id' => $current_trs[0]['tr_en_parent_id'],
-                'tr_en_child_id' => $current_trs[0]['tr_en_child_id'],
+                'tr_en_child_id'  => $current_trs[0]['tr_en_child_id'],
                 'tr_in_parent_id' => $current_trs[0]['tr_in_parent_id'],
-                'tr_in_child_id' => $current_trs[0]['tr_in_child_id'],
+                'tr_in_child_id'  => $current_trs[0]['tr_in_child_id'],
             ));
         }
 
@@ -1832,6 +1409,12 @@ class Db_model extends CI_Model
         //What is required to create a new intent?
         if (detect_missing_columns($insert_columns, array('in_status', 'in_outcome'))) {
             return false;
+        }
+
+        if (isset($insert_columns['in_metadata'])) {
+            $insert_columns['in_metadata'] = serialize($insert_columns['in_metadata']);
+        } else {
+            $insert_columns['in_metadata'] = null;
         }
 
         //Lets now add:
@@ -1855,37 +1438,7 @@ class Db_model extends CI_Model
      * Other
      ****************************** */
 
-    function x_fetch($match_columns, $join_objects = array(), $order_columns = array(), $limit = 0)
-    {
-        //Fetch the target entities:
-        $this->db->select('*');
-        $this->db->from('tb_entity_urls x');
-        if (in_array('en', $join_objects)) {
-            $this->db->join('tb_entities u', 'u_id=x.x_u_id', 'left');
-        }
-        foreach ($match_columns as $key => $value) {
-            if (!is_null($value)) {
-                $this->db->where($key, $value);
-            } else {
-                $this->db->where($key);
-            }
-        }
 
-        if (count($order_columns) > 0) {
-            foreach ($order_columns as $key => $value) {
-                $this->db->order_by($key, $value);
-            }
-        }
-
-        if ($limit > 0) {
-            $this->db->limit($limit);
-        }
-
-        $q = $this->db->get();
-        $res = $q->result_array();
-
-        return $res;
-    }
 
     function x_update($id, $update_columns)
     {
@@ -1906,7 +1459,7 @@ class Db_model extends CI_Model
         }
 
         //Check to see if this URL exists, if so, return that:
-        $urls = $this->Db_model->x_fetch(array(
+        $urls = $this->Old_model->x_fetch(array(
             '(x_url LIKE \'' . $insert_columns['x_url'] . '\' OR x_url LIKE \'' . $insert_columns['x_clean_url'] . '\')' => null,
         ));
 
@@ -1921,7 +1474,7 @@ class Db_model extends CI_Model
 
                 //Save this engagement as we have an issue here...
                 $this->Db_model->tr_create(array(
-                    'tr_en_creator_id' => $insert_columns['x_parent_u_id'],
+                    'tr_en_credit_id' => $insert_columns['x_parent_u_id'],
                     'tr_en_child_id' => $insert_columns['x_u_id'],
                     'tr_en_type_id' => 4246, //System error
                     'tr_content' => 'x_create() found a duplicate URL ID [' . $urls[0]['x_id'] . ']',
@@ -2009,23 +1562,30 @@ class Db_model extends CI_Model
 
 
         //Unset un-allowed columns to be manually added:
-        if (isset($insert_columns['tr_int_content'])) {
-            unset($insert_columns['tr_int_content']);
+        if (isset($insert_columns['tr_obj_id'])) {
+            unset($insert_columns['tr_obj_id']);
         }
         if (isset($insert_columns['tr_coins'])) {
             unset($insert_columns['tr_coins']);
         }
+        if (isset($insert_columns['tr_metadata'])) {
+            $insert_columns['tr_metadata'] = serialize($insert_columns['tr_metadata']);
+        } else {
+            $insert_columns['tr_metadata'] = null;
+        }
+
+
 
 
         //Try to auto detect user:
-        if (!isset($insert_columns['tr_en_creator_id'])) {
+        if (!isset($insert_columns['tr_en_credit_id'])) {
             //Attempt to fetch creator ID from session:
             $entity_data = $this->session->userdata('user');
             if (isset($entity_data['u_id']) && intval($entity_data['u_id']) > 0) {
-                $insert_columns['tr_en_creator_id'] = $entity_data['u_id'];
+                $insert_columns['tr_en_credit_id'] = $entity_data['u_id'];
             } else {
                 //Do not issue credit to anyone:
-                $insert_columns['tr_en_creator_id'] = 0;
+                $insert_columns['tr_en_credit_id'] = 0;
             }
         }
 
@@ -2034,7 +1594,7 @@ class Db_model extends CI_Model
             $insert_columns['tr_content'] = null;
         } elseif (is_int($insert_columns['tr_content']) && intval($insert_columns['tr_content']) > 0) {
             //Store integer separately for faster query access later on:
-            $insert_columns['tr_int_content'] = intval($insert_columns['tr_content']);
+            $insert_columns['tr_obj_id'] = intval($insert_columns['tr_content']);
         }
 
         if (!isset($insert_columns['tr_timestamp'])) {
@@ -2058,6 +1618,7 @@ class Db_model extends CI_Model
 
 
         //Do we need to adjust coins?
+        /*
         $award_coins = $this->Db_model->tr_fetch(array(
             'tr_en_type_id' => 4319, //Number Link
             'tr_en_parent_id' => 4374, //Transaction Coins
@@ -2069,7 +1630,7 @@ class Db_model extends CI_Model
             //Yes, we have to issue coins:
             $insert_columns['tr_coins'] = doubleval($award_coins[0]['tr_content']);
         }
-
+        */
 
         //Lets log:
         $this->db->insert('table_ledger', $insert_columns);
@@ -2090,7 +1651,7 @@ class Db_model extends CI_Model
                 'tr_en_type_id' => 4299, //Media Uploaded
                 'tr_tr_parent_id' => $insert_columns['tr_id'],
                 //Replicate remaining fields:
-                'tr_en_creator_id' => $insert_columns['tr_en_creator_id'],
+                'tr_en_credit_id' => $insert_columns['tr_en_credit_id'],
                 'tr_en_parent_id' => $insert_columns['tr_en_parent_id'],
                 'tr_en_child_id' => $insert_columns['tr_en_child_id'],
                 'tr_in_parent_id' => $insert_columns['tr_in_parent_id'],
@@ -2128,7 +1689,7 @@ class Db_model extends CI_Model
             foreach ($this->config->item('notify_admins') as $admin_u_id => $subscription) {
 
                 //Do not notify about own actions:
-                if (intval($insert_columns['tr_en_creator_id']) == $admin_u_id) {
+                if (intval($insert_columns['tr_en_credit_id']) == $admin_u_id) {
                     continue;
                 }
 
@@ -2182,7 +1743,7 @@ class Db_model extends CI_Model
     {
 
         //Will fetch the recursive tree and update
-        $tree = $this->Db_model->c_recursive_fetch($in_id, $direction_is_downward);
+        $tree = $this->Db_model->in_recursive_fetch($in_id, $direction_is_downward);
 
         if (count($c_update_columns) == 0 || count($tree['in_flat_tree']) == 0) {
             return false;
@@ -2218,7 +1779,7 @@ class Db_model extends CI_Model
     }
 
 
-    function metadata_update( $obj_type, $obj, $new_fields)
+    function metadata_update($obj_type, $obj, $new_fields)
     {
 
         /*
@@ -2230,32 +1791,32 @@ class Db_model extends CI_Model
          *
          * */
 
-        if(!in_array($obj_type, array('in','en')) || !isset($obj[$obj_type.'_metadata']) || count($new_fields)<1){
+        if (!in_array($obj_type, array('in', 'en')) || !isset($obj[$obj_type . '_metadata']) || count($new_fields) < 1) {
             return false;
         }
 
         //Prepare metadata:
-        $metadata = unserialize($obj[$obj_type.'_metadata']);
+        $metadata = unserialize($obj[$obj_type . '_metadata']);
 
         //Go through all the new fields and see if they differ from current metadata fields:
-        foreach($new_fields as $metadata_key=>$metadata_value){
-            if(!(isset($metadata[$metadata_key]) && $metadata[$metadata_key]==$metadata_value)){
+        foreach ($new_fields as $metadata_key => $metadata_value) {
+            if (!(isset($metadata[$metadata_key]) && $metadata[$metadata_key] == $metadata_value)) {
                 //Either new field or value has changed, so we need to adjust:
                 $metadata[$metadata_key] = $metadata_value;
             }
         }
 
         //Now update DB without logging any transactions as this is considered a back-end update:
-        if($obj_type=='in'){
+        if ($obj_type == 'in') {
 
             $affected_rows = $this->Db_model->in_update($obj['in_id'], array(
-                'in_metadata' => serialize($metadata),
+                'in_metadata' => $metadata,
             ), false);
 
-        } elseif($obj_type=='en'){
+        } elseif ($obj_type == 'en') {
 
             $affected_rows = $this->Db_model->en_update($obj['en_id'], array(
-                'en_metadata' => serialize($metadata),
+                'en_metadata' => $metadata,
             ), false);
 
         }
@@ -2280,7 +1841,7 @@ class Db_model extends CI_Model
 
     }
 
-    function c_recursive_fetch($in_id, $direction_is_downward = false, $update_db_table = false, $tr_actionplan_id = 0, $parent_c = array(), $recursive_children = null)
+    function in_recursive_fetch($in_id, $direction_is_downward = false, $update_db_table = false, $tr_actionplan_id = 0, $parent_c = array(), $recursive_children = null)
     {
 
         //Get core data:
@@ -2314,11 +1875,11 @@ class Db_model extends CI_Model
         if (isset($parent_c['tr_id'])) {
 
             if ($direction_is_downward) {
-                $intents = $this->Db_model->cr_children_fetch(array(
+                $intents = $this->Old_model->cr_children_fetch(array(
                     'tr_id' => $parent_c['tr_id'],
                 ), ($update_db_table ? array('in__active_messages') : array()));
             } else {
-                $intents = $this->Db_model->in_parents_fetch(array(
+                $intents = $this->Old_model->cr_parents_fetch(array(
                     'tr_id' => $parent_c['tr_id'],
                 ), ($update_db_table ? array('in__active_messages') : array()));
             }
@@ -2368,13 +1929,13 @@ class Db_model extends CI_Model
 
         //A recursive function to fetch all Tree for a given intent, either upwards or downwards
         if ($direction_is_downward) {
-            $child_cs = $this->Db_model->cr_children_fetch(array(
+            $child_cs = $this->Old_model->cr_children_fetch(array(
                 'tr_in_parent_id' => $in_id,
                 'tr_status' => 1,
                 'in_status >=' => 0,
             ));
         } else {
-            $child_cs = $this->Db_model->in_parents_fetch(array(
+            $child_cs = $this->Old_model->cr_parents_fetch(array(
                 'tr_in_child_id' => $in_id,
                 'tr_status' => 1,
                 'in_status >=' => 0,
@@ -2402,7 +1963,7 @@ class Db_model extends CI_Model
                 } else {
 
                     //Fetch children for this intent, if any:
-                    $granchildren = $this->Db_model->c_recursive_fetch($c['in_id'], $direction_is_downward, $update_db_table, $tr_actionplan_id, $c, $immediate_children);
+                    $granchildren = $this->Db_model->in_recursive_fetch($c['in_id'], $direction_is_downward, $update_db_table, $tr_actionplan_id, $c, $immediate_children);
 
                     if (!$granchildren) {
                         //There was an infinity break
@@ -2512,7 +2073,7 @@ class Db_model extends CI_Model
             //Count messages:
             $intents[0]['___messages_count'] = count($this->Db_model->i_fetch(array(
                 'i_status >=' => 0,
-                'i_in_id' => $in_id,
+                'tr_in_child_id' => $in_id,
             )));
             $immediate_children['___messages_tree_count'] += $intents[0]['___messages_count'];
             $intents[0]['___messages_tree_count'] = $immediate_children['___messages_tree_count'];
@@ -2525,35 +2086,35 @@ class Db_model extends CI_Model
                 //Who are the parent authors of this message?
 
 
-                if (!in_array($i['i_parent_u_id'], $parent_ids)) {
-                    array_push($parent_ids, $i['i_parent_u_id']);
+                if (!in_array($i['tr_en_credit_id'], $parent_ids)) {
+                    array_push($parent_ids, $i['tr_en_credit_id']);
                 }
 
 
                 //Check the author of this message (The trainer) in the trainer array:
-                if (!isset($intents[0]['___tree_miners'][$i['i_parent_u_id']])) {
+                if (!isset($intents[0]['___tree_miners'][$i['tr_en_credit_id']])) {
                     //Add the entire message which would also hold the trainer details:
-                    $intents[0]['___tree_miners'][$i['i_parent_u_id']] = u_essentials($i);
+                    $intents[0]['___tree_miners'][$i['tr_en_credit_id']] = u_essentials($i);
                 }
                 //How about the parent of this one?
-                if (!isset($immediate_children['___tree_miners'][$i['i_parent_u_id']])) {
+                if (!isset($immediate_children['___tree_miners'][$i['tr_en_credit_id']])) {
                     //Yes, add them to the list:
-                    $immediate_children['___tree_miners'][$i['i_parent_u_id']] = u_essentials($i);
+                    $immediate_children['___tree_miners'][$i['tr_en_credit_id']] = u_essentials($i);
                 }
 
 
                 //Does this message have any entity references?
-                if ($i['i_u_id'] > 0) {
+                if ($i['tr_en_parent_id'] > 0) {
 
 
                     //Add the reference it self:
-                    if (!in_array($i['i_u_id'], $parent_ids)) {
-                        array_push($parent_ids, $i['i_u_id']);
+                    if (!in_array($i['tr_en_parent_id'], $parent_ids)) {
+                        array_push($parent_ids, $i['tr_en_parent_id']);
                     }
 
                     //Yes! Let's see if any of the parents/creators are industry experts:
                     $us_fetch = $this->Db_model->en_fetch(array(
-                        'u_id' => $i['i_u_id'],
+                        'u_id' => $i['tr_en_parent_id'],
                     ));
 
                     if (isset($us_fetch[0]) && count($us_fetch[0]['en__parents']) > 0) {
@@ -2561,7 +2122,7 @@ class Db_model extends CI_Model
                         foreach ($us_fetch[0]['en__parents'] as $parent_u) {
 
                             //Is this a particular content type?
-                            if (array_key_exists($parent_u['u_id'], $this->config->item('en_convert_3000'))) {
+                            if (in_array($parent_u['u_id'], $this->config->item('en_ids_3000'))) {
                                 //yes! Add it to the list if it does not already exist:
                                 if (!isset($intents[0]['___tree_contents'][$parent_u['u_id']][$us_fetch[0]['u_id']])) {
                                     $intents[0]['___tree_contents'][$parent_u['u_id']][$us_fetch[0]['u_id']] = u_essentials($us_fetch[0]);
@@ -2585,7 +2146,7 @@ class Db_model extends CI_Model
             if (count($parent_ids) > 0) {
 
                 //Lets make a query search to see how many of those involved are industry experts:
-                $ixs = $this->Db_model->en_children_fetch(array(
+                $ixs = $this->Old_model->ur_children_fetch(array(
                     'tr_en_parent_id' => 3084, //Industry expert entity
                     'tr_en_child_id IN (' . join(',', $parent_ids) . ')' => null,
                     'tr_status >=' => 0, //Pending review or higher
@@ -2653,7 +2214,7 @@ class Db_model extends CI_Model
             )) {
 
                 //Something was not up to date, let's update:
-                if($this->Db_model->metadata_update( 'in', $intents[0] , array(
+                if ($this->Db_model->metadata_update('in', $intents[0], array(
                     'in__tree_min_seconds' => intval($intents[0]['___tree_min_seconds']),
                     'in__tree_max_seconds' => intval($intents[0]['___tree_max_seconds']),
                     'in__tree_min_cost' => number_format($intents[0]['___tree_min_cost'], 2),
@@ -2661,10 +2222,10 @@ class Db_model extends CI_Model
                     'in__tree_in_count' => $intents[0]['___tree_all_count'],
                     'in__messages_count' => $intents[0]['___messages_count'],
                     'in__messages_tree_count' => $intents[0]['___messages_tree_count'],
-                    'in__tree_experts' => (count($intents[0]['___tree_experts']) > 0 ? serialize($intents[0]['___tree_experts']) : null),
-                    'in__tree_miners' => (count($intents[0]['___tree_miners']) > 0 ? serialize($intents[0]['___tree_miners']) : null),
-                    'in__tree_contents' => (count($intents[0]['___tree_contents']) > 0 ? serialize($intents[0]['___tree_contents']) : null),
-                ))){
+                    'in__tree_experts' => $intents[0]['___tree_experts'],
+                    'in__tree_miners' => $intents[0]['___tree_miners'],
+                    'in__tree_contents' => $intents[0]['___tree_contents'],
+                ))) {
                     //Yes update was successful:
                     $immediate_children['metadatas_updated']++;
                 }
@@ -2893,7 +2454,7 @@ class Db_model extends CI_Model
                 }
 
                 //Append additional information:
-                $urls = $this->Db_model->x_fetch(array(
+                $urls = $this->Old_model->x_fetch(array(
                     'x_status >' => -2,
                     'x_u_id' => $item['u_id'],
                 ));
@@ -2930,7 +2491,7 @@ class Db_model extends CI_Model
                 //Append parent intents:
                 $new_item['_tags'] = array();
 
-                $child_cs = $this->Db_model->in_parents_fetch(array(
+                $child_cs = $this->Old_model->cr_parents_fetch(array(
                     'tr_in_child_id' => $item['in_id'],
                     'tr_status' => 1,
                     'in_status >=' => 0,

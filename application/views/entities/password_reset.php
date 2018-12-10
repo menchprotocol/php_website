@@ -52,7 +52,7 @@ if (!isset($_GET['u_id']) || intval($_GET['u_id']) <= 0 || !isset($_GET['timesta
         }
     });
 </script>
-<div class="alert alert-info" role="alert" id="mobile-no" style="display:none; margin-top:30px;"><i class="fas fa-exclamation-triangle"></i> Mench Console v<?= $this->config->item('app_version') ?> is not fully optimized for a mobile device. We recommend using a desktop computer instead.</div>
+<div class="alert alert-info" role="alert" id="mobile-no" style="display:none; margin-top:30px;"><i class="fas fa-exclamation-triangle"></i> Mench matrix v<?= $this->config->item('app_version') ?> is not fully optimized for a mobile device. We recommend using a desktop computer instead.</div>
 */ ?>
 
     <div id="loginb" class="submit-btn pass_success">

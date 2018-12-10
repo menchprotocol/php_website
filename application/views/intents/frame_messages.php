@@ -6,7 +6,7 @@ $i_statuses = echo_status('i_status', null);
 $i_desc = echo_status('i_status');
 $udata = $this->session->userdata('user');
 $tr_contents = $this->Db_model->i_fetch(array(
-    'i_in_id' => $in_id,
+    'tr_in_child_id' => $in_id,
     'i_status >=' => 0, //Not Archived
 ), 0);
 

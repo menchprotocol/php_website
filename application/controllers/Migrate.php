@@ -14,16 +14,24 @@ class Migrate extends CI_Controller
         $this->output->enable_profiler(FALSE);
     }
 
-    function ff()
+
+    function test()
     {
+
+
+        echo_json($this->config->item('en_ids_4486'));
+
+        exit;
+
         echo_json($this->Db_model->tr_fetch(array(
-            'tr_en_parent_id' => 4227, //All Entity Link Types
-            'tr_en_child_id >' => 0, //Must have a child
-            'tr_en_child_id !=' => 4230, //Not a Naked link as that is already the default option
-            'tr_status >=' => 0, //Not removed
-            'en_status >=' => 2, //Syncing
-        ), 100, array('en_child'), array('tr_order' => 'ASC')));
+            'tr_status >=' => 0,
+            'en_status >=' => 0,
+        ), 0, array('en_type'), array('en_name' => 'ASC'), 'COUNT(tr_en_type_id) as totals, en_name, tr_en_type_id', 'tr_en_type_id, en_name'));
+
+        exit;
+
     }
+
 
     function c()
     {
@@ -42,7 +50,7 @@ class Migrate extends CI_Controller
             3 => 4233,
         );
 
-        $intents = $this->Db_model->in_fetch(array(
+        $intents = $this->Old_model->c_fetch(array(
             'c_status >=' => 1, //working on or more
         ));
         $stats = array(
@@ -65,16 +73,16 @@ class Migrate extends CI_Controller
                 'in_usd' => $c['c_cost_estimate'],
                 'in_points' => $c['c_points'],
                 'in_is_any' => $c['c_is_any'],
-                'in_metadata' => serialize(array(
+                'in_metadata' => array(
                     'in__algolia_id' => intval($c['c_algolia_id']),
-                )),
+                ),
             ));
             //Create new intent creation link:
             $stats['total_links']++;
             $this->Db_model->tr_create(array(
                 'tr_timestamp' => $c['c_timestamp'],
                 'tr_en_type_id' => 4250, //Intent created
-                'tr_en_creator_id' => $c['c_parent_u_id'],
+                'tr_en_credit_id' => $c['c_parent_u_id'],
                 'tr_in_child_id' => $c['c_id'],
             ));
 
@@ -84,7 +92,7 @@ class Migrate extends CI_Controller
                 $this->Db_model->tr_create(array(
                     'tr_timestamp' => $c['c_timestamp'],
                     'tr_en_type_id' => 4331, //Intent Response Limitor
-                    'tr_en_creator_id' => $c['c_parent_u_id'],
+                    'tr_en_credit_id' => $c['c_parent_u_id'],
                     'tr_in_child_id' => $c['c_id'],
                     'tr_en_child_id' => 4255, //Link Content Type = Text Link
                 ));
@@ -95,14 +103,14 @@ class Migrate extends CI_Controller
                 $this->Db_model->tr_create(array(
                     'tr_timestamp' => $c['c_timestamp'],
                     'tr_en_type_id' => 4331, //Intent Response Limitor
-                    'tr_en_creator_id' => $c['c_parent_u_id'],
+                    'tr_en_credit_id' => $c['c_parent_u_id'],
                     'tr_in_child_id' => $c['c_id'],
                     'tr_en_child_id' => 4256, //Link Content Type = URL Link
                 ));
             }
 
             //convert active children:
-            $children = $this->Db_model->cr_children_fetch(array(
+            $children = $this->Old_model->cr_children_fetch(array(
                 'cr_parent_c_id' => $c['c_id'],
                 'cr_status' => 1,
                 'c_status >=' => 1,
@@ -114,7 +122,7 @@ class Migrate extends CI_Controller
                 $this->Db_model->tr_create(array(
                     'tr_timestamp' => $cr['cr_timestamp'],
                     'tr_en_type_id' => 4228, //Child intent link
-                    'tr_en_creator_id' => $cr['cr_parent_u_id'],
+                    'tr_en_credit_id' => $cr['cr_parent_u_id'],
                     'tr_in_parent_id' => $cr['cr_parent_c_id'],
                     'tr_in_child_id' => $cr['cr_child_c_id'],
                     'tr_order' => $cr['cr_child_rank'],
@@ -123,7 +131,7 @@ class Migrate extends CI_Controller
 
 
             //convert active messages:
-            $tr_contents = $this->Db_model->i_fetch(array(
+            $tr_contents = $this->Old_model->i_fetch(array(
                 'i_c_id' => $c['c_id'],
                 'i_status >=' => 1, //active
             ));
@@ -135,7 +143,7 @@ class Migrate extends CI_Controller
                     'tr_timestamp' => $i['i_timestamp'],
                     'tr_content' => $i['i_message'],
                     'tr_en_type_id' => $message_status_converter[$i['i_status']], //Message status migrating into new link type entity reference
-                    'tr_en_creator_id' => $i['i_parent_u_id'],
+                    'tr_en_credit_id' => $i['i_parent_u_id'],
                     'tr_en_parent_id' => $i['i_u_id'],
                     'tr_in_child_id' => $i['i_c_id'],
                     'tr_order' => $i['i_rank'],
@@ -154,8 +162,10 @@ class Migrate extends CI_Controller
         boost_power();
 
         //Delete everything before starting:
-        $this->db->query("DELETE FROM table_entities WHERE en_id>0");
-        $this->db->query("DELETE FROM table_ledger WHERE tr_en_type_id IN (" . join(',', array_merge($this->config->item('en_child_4227'), array(4251,4235,4299))) . ")"); //The link types we could create with this function
+        if(0){
+            $this->db->query("DELETE FROM table_entities WHERE en_id>0");
+            $this->db->query("DELETE FROM table_ledger WHERE tr_en_type_id IN (" . join(',', array_merge($this->config->item('en_ids_4537'), $this->config->item('en_ids_4538'), array(4251, 4235, 4299))) . ")"); //The link types we could create with this function
+        }
 
         $u_status_conv = array(
             -2 => 3, //Unsubscribe
@@ -182,27 +192,29 @@ class Migrate extends CI_Controller
             'total_links' => 0,
         );
 
-        $matching_patterns = $this->Db_model->en_children_fetch(array(
+        $matching_patterns = $this->Old_model->ur_children_fetch(array(
             'ur_parent_u_id' => 3307, //Entity Matching Patterns
             'ur_status >=' => 0, //Pending or Active
             'u_status >=' => 0, //Pending or Active
         ));
 
 
-        $entities = $this->Db_model->u_fetch(array(
+        $entities = $this->Old_model->u_fetch(array(
+            'u_id >' => 4518,
             'u_status >=' => 0, //new+
         ), array('skip_en__parents'), 0, 0, array('u_id' => 'ASC'));
+
 
         foreach ($entities as $u) {
 
             //Does this entity have a cover photo?
-            if($u['u_icon']>0){
+            if ($u['u_icon'] > 0) {
                 $stats['set_icons']++;
                 $en_icon = $u['u_icon'];
-            } elseif($u['u_cover_x_id']>0 && isset($u['x_url'])){
+            } elseif ($u['u_cover_x_id'] > 0 && isset($u['x_url'])) {
                 //Yes, fetch it:
                 $stats['set_icons']++;
-                $en_icon = '<img class="profile-icon" src="'.$u['x_url'].'" />';
+                $en_icon = '<img class="profile-icon" src="' . $u['x_url'] . '" />';
             } else {
                 $en_icon = null;
             }
@@ -211,33 +223,34 @@ class Migrate extends CI_Controller
             $stats['entities']++;
             $this->Db_model->en_create(array(
                 'en_id' => $u['u_id'],
-                'en_status' => ( $u['u_fb_psid']>0 ? 3 /* Claimed */ : $u_status_conv[$u['u_status']] ),
+                'en_status' => ($u['u_fb_psid'] > 0 ? 3 /* Claimed */ : $u_status_conv[$u['u_status']]),
                 'en_icon' => $en_icon,
                 'en_name' => $u['u_full_name'],
                 'en_trust_score' => $u['u__e_score'],
-                'en_metadata' => serialize(array(
+                'en_metadata' => array(
                     'en__algolia_id' => intval($u['u_algolia_id']),
-                )),
+                ),
             ));
+
             //Create new entity creation link:
             $stats['total_links']++;
             $this->Db_model->tr_create(array(
                 'tr_timestamp' => $u['u_timestamp'],
                 'tr_en_type_id' => 4251, //Entity created
-                'tr_en_creator_id' => 1, //Shervin
+                'tr_en_credit_id' => 1, //Shervin
                 'tr_en_child_id' => $u['u_id'],
             ));
 
 
             //Messenger Subscription?
-            if($u['u_fb_psid']>0){
+            if ($u['u_fb_psid'] > 0) {
 
                 //Add them to masters group:
                 $stats['total_links']++;
                 $this->Db_model->tr_create(array(
                     'tr_timestamp' => $u['u_timestamp'],
                     'tr_en_type_id' => 4230, //Naked link
-                    'tr_en_creator_id' => $u['u_id'],
+                    'tr_en_credit_id' => $u['u_id'],
                     'tr_en_parent_id' => 4430, //Mench Master
                     'tr_en_child_id' => $u['u_id'],
                 ));
@@ -247,7 +260,7 @@ class Migrate extends CI_Controller
                 $this->Db_model->tr_create(array(
                     'tr_timestamp' => $u['u_timestamp'],
                     'tr_en_type_id' => 4319, //Number Link
-                    'tr_en_creator_id' => $u['u_id'],
+                    'tr_en_credit_id' => $u['u_id'],
                     'tr_en_parent_id' => 4451, //Mench Personal Assistant on Messenger
                     'tr_en_child_id' => $u['u_id'],
                     'tr_content' => $u['u_fb_psid'],
@@ -258,8 +271,8 @@ class Migrate extends CI_Controller
                 $this->Db_model->tr_create(array(
                     'tr_timestamp' => $u['u_timestamp'],
                     'tr_en_type_id' => 4230, //Naked link
-                    'tr_en_creator_id' => $u['u_id'],
-                    'tr_en_parent_id' => ($u['u_status']==-2 ? 4455 : 4456), //Either Unsubscribed or normal
+                    'tr_en_credit_id' => $u['u_id'],
+                    'tr_en_parent_id' => ($u['u_status'] == -2 ? 4455 : 4456), //Either Unsubscribed or normal
                     'tr_en_child_id' => $u['u_id'],
                 ));
 
@@ -272,7 +285,7 @@ class Migrate extends CI_Controller
                 $this->Db_model->tr_create(array(
                     'tr_timestamp' => $u['u_timestamp'],
                     'tr_en_type_id' => 4255, //Text link
-                    'tr_en_creator_id' => $u['u_id'],
+                    'tr_en_credit_id' => $u['u_id'],
                     'tr_en_parent_id' => 3288, //Primary email
                     'tr_en_child_id' => $u['u_id'],
                     'tr_content' => $u['u_email'],
@@ -285,7 +298,7 @@ class Migrate extends CI_Controller
                 $this->Db_model->tr_create(array(
                     'tr_timestamp' => $u['u_timestamp'],
                     'tr_en_type_id' => 4230, //Naked link
-                    'tr_en_creator_id' => $u['u_id'],
+                    'tr_en_credit_id' => $u['u_id'],
                     'tr_en_parent_id' => en_match_metadata('en_timezones', $u['u_timezone']),
                     'tr_en_child_id' => $u['u_id'],
                 ));
@@ -295,7 +308,7 @@ class Migrate extends CI_Controller
                 $this->Db_model->tr_create(array(
                     'tr_timestamp' => $u['u_timestamp'],
                     'tr_en_type_id' => 4230, //Naked link
-                    'tr_en_creator_id' => $u['u_id'],
+                    'tr_en_credit_id' => $u['u_id'],
                     'tr_en_parent_id' => en_match_metadata('en_countries', $u['u_country_code']),
                     'tr_en_child_id' => $u['u_id'],
                 ));
@@ -308,7 +321,7 @@ class Migrate extends CI_Controller
                         $this->Db_model->tr_create(array(
                             'tr_timestamp' => $u['u_timestamp'],
                             'tr_en_type_id' => 4230, //Naked link
-                            'tr_en_creator_id' => $u['u_id'],
+                            'tr_en_credit_id' => $u['u_id'],
                             'tr_en_parent_id' => en_match_metadata('en_languages', $part),
                             'tr_en_child_id' => $u['u_id'],
                         ));
@@ -320,16 +333,15 @@ class Migrate extends CI_Controller
                 $this->Db_model->tr_create(array(
                     'tr_timestamp' => $u['u_timestamp'],
                     'tr_en_type_id' => 4230, //Naked link
-                    'tr_en_creator_id' => $u['u_id'],
+                    'tr_en_credit_id' => $u['u_id'],
                     'tr_en_parent_id' => en_match_metadata('en_gender', $u['u_gender']),
                     'tr_en_child_id' => $u['u_id'],
                 ));
             }
 
 
-
             //convert active children:
-            $children = $this->Db_model->en_children_fetch(array(
+            $children = $this->Old_model->ur_children_fetch(array(
                 'ur_parent_u_id' => $u['u_id'],
                 'ur_status >=' => 0,
                 'u_status >=' => 0,
@@ -341,30 +353,41 @@ class Migrate extends CI_Controller
                 $this->Db_model->tr_create(array(
                     'tr_timestamp' => $ur['ur_timestamp'],
                     'tr_en_type_id' => detect_tr_en_type_id($ur['ur_notes']), //Depends on content
-                    'tr_en_creator_id' => 1, //Shervin
+                    'tr_en_credit_id' => 1, //Shervin
                     'tr_en_parent_id' => $ur['ur_parent_u_id'],
                     'tr_en_child_id' => $ur['ur_child_u_id'],
                     'tr_content' => $ur['ur_notes'],
-                 ));
+                ));
             }
 
 
             //convert active URLs:
-            $urls = $this->Db_model->x_fetch(array(
+            $urls = $this->Old_model->x_fetch(array(
                 'x_status >' => -2,
                 'x_u_id' => $u['u_id'],
             ));
             foreach ($urls as $x) {
 
-                if($x['x_id']==$u['u_cover_x_id']){
+                if ($x['x_id'] == $u['u_cover_x_id']) {
                     //Skip this as we've already done this:
+                    continue;
+                }
+
+                //Check to make sure URL does not already existed in ledger:
+                $duplicates = $this->Db_model->tr_fetch(array(
+                    'tr_status >=' => 0, //Active in any way
+                    'tr_content' => $x['x_url'],
+                    'tr_en_type_id IN ('.join(',', $this->config->item('en_ids_4537')).')' => null, //Entity URL Links
+                ));
+                if (count($duplicates) > 0) {
+                    //Ooops, already there:
                     continue;
                 }
 
                 //Fetch the appropriate parent using current patterns:
                 $tr_en_parent_id = 1326; //URL Reference
-                foreach($matching_patterns as $match){
-                    if(substr_count($x['x_url'], $match['ur_notes'])>0){
+                foreach ($matching_patterns as $match) {
+                    if (substr_count($x['x_url'], $match['ur_notes']) > 0) {
                         //yes we found a pattern match:
                         $tr_en_parent_id = $match['u_id'];
                         $stats['entity_urls_matched']++;
@@ -379,7 +402,7 @@ class Migrate extends CI_Controller
                 //Create new URL Link
                 $this->Db_model->tr_create(array(
                     'tr_timestamp' => $x['x_timestamp'],
-                    'tr_en_creator_id' => $x['x_parent_u_id'],
+                    'tr_en_credit_id' => $x['x_parent_u_id'],
                     'tr_en_type_id' => $x_type_conv[$x['x_type']], //Depends on content
                     'tr_en_parent_id' => $tr_en_parent_id,
                     'tr_en_child_id' => $x['x_u_id'],
@@ -387,11 +410,11 @@ class Migrate extends CI_Controller
                 ));
 
                 //Do we have an attachment? Save that too:
-                if($x['x_fb_att_id']>0){
+                if ($x['x_fb_att_id'] > 0) {
                     $stats['total_links']++;
                     $this->Db_model->tr_create(array(
                         'tr_timestamp' => $x['x_timestamp'],
-                        'tr_en_creator_id' => 0, //System
+                        'tr_en_credit_id' => 0, //System
                         'tr_en_type_id' => 4319, //Number Link
                         'tr_en_parent_id' => 4505, //Facebook Attachment Upload API
                         'tr_en_child_id' => $x['x_u_id'],
@@ -404,7 +427,7 @@ class Migrate extends CI_Controller
 
             //Convert Action Plans for this user:
             $action_plan_rank = 1; //We add items in order...
-            $ws = $this->Db_model->w_fetch(array(
+            $ws = $this->Old_model->w_fetch(array(
                 'w_child_u_id' => $u['u_id'],
                 'w_status >=' => 1,
                 'c_status >=' => 1,
@@ -413,7 +436,7 @@ class Migrate extends CI_Controller
             ), 999);
 
             $counter = 0;
-            foreach($ws as $w){
+            foreach ($ws as $w) {
 
                 $counter++; //We need to rank top level as well!
                 //Insert top of the action plan item that is being added:
@@ -424,7 +447,7 @@ class Migrate extends CI_Controller
                     'tr_status' => $w['w_status'], //Same status meaning for all 5 levels
 
                     'tr_en_type_id' => 4235, //Action Plan Intent Add
-                    'tr_en_creator_id' => $u['u_id'],
+                    'tr_en_credit_id' => $u['u_id'],
                     'tr_en_parent_id' => $u['u_id'], //Belongs to this user
 
                     'tr_in_parent_id' => 0, //This indicates that this is a top-level intent in the Action Plan
@@ -434,13 +457,13 @@ class Migrate extends CI_Controller
                 ));
 
                 //Now fetch all intents for this Action Plan:
-                $ks = $this->Db_model->k_fetch(array(
+                $ks = $this->Old_model->k_fetch(array(
                     'k_w_id' => $w['w_id'],
                 ), array('cr'), array(
                     'k_rank' => 'ASC',
                 ), 9999);
 
-                foreach($ks as $k){
+                foreach ($ks as $k) {
 
                     $stats['action_plan_intent']++;
                     $stats['total_links']++;
@@ -449,7 +472,7 @@ class Migrate extends CI_Controller
                         'tr_status' => $k['k_status'], //Same status meaning for all 5 levels
 
                         'tr_en_type_id' => 4235, //Action Plan Intent Add
-                        'tr_en_creator_id' => $u['u_id'],
+                        'tr_en_credit_id' => $u['u_id'],
                         'tr_en_parent_id' => $u['u_id'], //Belongs to this user
 
                         'tr_in_parent_id' => $k['cr_parent_c_id'], //This indicates that this is a top-level intent in the Action Plan

@@ -21,7 +21,7 @@ class Bot extends CI_Controller
     function ff()
     {
         //Fetch all engagements from intent #6653
-        $all_engs = $this->Db_model->cr_children_fetch(array(
+        $all_engs = $this->Old_model->cr_children_fetch(array(
             'tr_in_parent_id IN (7723)' => null, //,,
             'tr_status' => 1,
             'in_status >=' => 0,
@@ -146,7 +146,7 @@ class Bot extends CI_Controller
                     $this->Db_model->tr_create(array(
                         'tr_metadata' => $json_data,
                         'tr_en_type_id' => 4278, //Message Read
-                        'tr_en_creator_id' => (isset($en['u_id']) ? $en['u_id'] : 0),
+                        'tr_en_credit_id' => (isset($en['u_id']) ? $en['u_id'] : 0),
                         'tr_timestamp' => echo_mili($im['timestamp']), //The Facebook time
 
                     ));
@@ -161,7 +161,7 @@ class Bot extends CI_Controller
                     $this->Db_model->tr_create(array(
                         'tr_metadata' => $json_data,
                         'tr_en_type_id' => 4279, //Message Delivered
-                        'tr_en_creator_id' => (isset($en['u_id']) ? $en['u_id'] : 0),
+                        'tr_en_credit_id' => (isset($en['u_id']) ? $en['u_id'] : 0),
                         'tr_timestamp' => echo_mili($im['timestamp']), //The Facebook time
                     ));
 
@@ -232,7 +232,7 @@ class Bot extends CI_Controller
                     $this->Db_model->tr_create(array(
                         'tr_en_type_id' => (isset($im['referral']) ? 4267 : 4268), //Messenger Referral/Postback
                         'tr_metadata' => $json_data,
-                        'tr_en_creator_id' => (isset($en['u_id']) ? $en['u_id'] : 0),
+                        'tr_en_credit_id' => (isset($en['u_id']) ? $en['u_id'] : 0),
                         'tr_timestamp' => echo_mili($im['timestamp']), //The Facebook time
                     ));
 
@@ -250,7 +250,7 @@ class Bot extends CI_Controller
                     $this->Db_model->tr_create(array(
                         'tr_metadata' => $json_data,
                         'tr_en_type_id' => 4266, //Messenger Optin
-                        'tr_en_creator_id' => (isset($en['u_id']) ? $en['u_id'] : 0),
+                        'tr_en_credit_id' => (isset($en['u_id']) ? $en['u_id'] : 0),
                         'tr_timestamp' => echo_mili($im['timestamp']), //The Facebook time
                     ));
 
@@ -286,7 +286,7 @@ class Bot extends CI_Controller
                     $en = $this->Comm_model->fb_identify_activate($user_id);
 
                     $eng_data = array(
-                        'tr_en_creator_id' => ($sent_from_us ? 4148 /* Log on behalf of Mench Admins as it was sent via Facebook Inbox UI */ : $en['u_id']),
+                        'tr_en_credit_id' => ($sent_from_us ? 4148 /* Log on behalf of Mench Admins as it was sent via Facebook Inbox UI */ : $en['u_id']),
                         'tr_metadata' => $json_data,
                         'tr_content' => $fb_message,
                         'tr_en_type_id' => ($sent_from_us ? 4280 : 4277), //Message Sent/Received

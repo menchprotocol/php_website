@@ -4,10 +4,10 @@
 $udata = $this->session->userdata('user');
 
 //Fetch other data:
-$child_entities = $this->Db_model->en_children_fetch(array(
+$child_entities = $this->Old_model->ur_children_fetch(array(
     'tr_en_parent_id' => $entity['u_id'],
     'tr_status' => 1, //Only active
-), array('u__children_count'), $this->config->item('items_per_page'));
+), array('in__children_count'), $this->config->item('items_per_page'));
 
 //Intents subscribed:
 $limit = (is_dev() ? 10 : 100);
@@ -67,7 +67,7 @@ $trs = $this->Db_model->w_fetch(array(
 
         //Children:
         echo '<div class="indent2"><table width="100%" style="margin-top:10px;"><tr>';
-        echo '<td style="width: 100px;"><h5 class="badge badge-h"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-children-count">' . $entity['u__children_count'] . '</span> Children</h5></td>';
+        echo '<td style="width: 100px;"><h5 class="badge badge-h"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-children-count">' . $entity['in__children_count'] . '</span> Children</h5></td>';
         //Count orphans IF we are in the top parent root:
         if ($this->config->item('primary_en_id') == $entity['u_id']) {
             $orphans_count = count($this->Db_model->en_orphans_fetch());
@@ -80,7 +80,7 @@ $trs = $this->Db_model->w_fetch(array(
         echo '<td style="text-align: right;"><div class="btn-group btn-group-sm" style="margin-top:-5px;" role="group">';
 
         //Fetch current count for each status from DB:
-        $counts = $this->Db_model->en_children_fetch(array(
+        $counts = $this->Old_model->ur_children_fetch(array(
             'tr_en_parent_id' => $entity['u_id'],
             'tr_status' => 1, //Only active
             'u_status >=' => 0,
@@ -90,13 +90,13 @@ $trs = $this->Db_model->w_fetch(array(
 
 
         //Only show filtering UI if we find entities with different statuses
-        if (count($counts) > 0 && $counts[0]['u_counts'] < $entity['u__children_count']) {
+        if (count($counts) > 0 && $counts[0]['u_counts'] < $entity['in__children_count']) {
 
             //Load status definitions:
             $status_index = $this->config->item('object_statuses');
 
             //Show fixed All button:
-            echo '<a href="javascript:void(0)" onclick="u_load_filter_status(-1)" class="btn btn-default btn-secondary u-status-filter u-status--1" data-toggle="tooltip" data-placement="top" title="View all entities"><i class="fas fa-at"></i><span class="hide-small"> All</span> [<span class="li-children-count">' . $entity['u__children_count'] . '</span>]</a>';
+            echo '<a href="javascript:void(0)" onclick="u_load_filter_status(-1)" class="btn btn-default btn-secondary u-status-filter u-status--1" data-toggle="tooltip" data-placement="top" title="View all entities"><i class="fas fa-at"></i><span class="hide-small"> All</span> [<span class="li-children-count">' . $entity['in__children_count'] . '</span>]</a>';
 
             //Show each specific filter based on DB counts:
             foreach ($counts as $c_c) {
@@ -115,8 +115,8 @@ $trs = $this->Db_model->w_fetch(array(
         foreach ($child_entities as $u) {
             echo echo_u($u, 2);
         }
-        if ($entity['u__children_count'] > count($child_entities)) {
-            echo_next_u(1, $this->config->item('items_per_page'), $entity['u__children_count']);
+        if ($entity['in__children_count'] > count($child_entities)) {
+            echo_next_u(1, $this->config->item('items_per_page'), $entity['in__children_count']);
         }
 
         //Input to add new parents:
@@ -137,7 +137,7 @@ $trs = $this->Db_model->w_fetch(array(
             echo '<h5 class="badge badge-h indent1" style="display: inline-block;"><i class="fas fa-comment-plus"></i> ' . count($trs) . ($limit == count($trs) ? '+' : '') . ' Subscriptions</h5>';
             echo '<div class="list-group list-grey indent1" style="margin-bottom:10px;">';
             foreach ($trs as $w) {
-                echo echo_w_console($w);
+                echo echo_w_matrix($w);
             }
             echo '</div>';
         }
@@ -171,10 +171,10 @@ $trs = $this->Db_model->w_fetch(array(
         <div id="modifybox" class="fixed-box hidden" entity-id="0" entity-link-id="0">
 
             <h5 class="badge badge-h"><i class="fas fa-cog"></i> Modify Entity</h5>
-            <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;"><a href="javascript:void(0)"
-                                                                                         onclick="$('#modifybox').addClass('hidden')"><i
-                            class="fas fa-times-circle"></i></a></div>
-
+            <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;">
+                <a href="javascript:void(0)" onclick="$('#modifybox').addClass('hidden')"><i
+                            class="fas fa-times-circle"></i></a>
+            </div>
             <div class="grey-box">
 
 
@@ -182,7 +182,7 @@ $trs = $this->Db_model->w_fetch(array(
                     <div class="col-md-6">
 
                         <div class="title" style="margin-bottom:0; padding-bottom:0; margin-top:15px;"><h4><i
-                                        class="fas fa-fingerprint"></i> Name [<span
+                                        class="fas fa-fingerprint"></i> Entity Name [<span
                                         style="margin:0 0 10px 0; font-size:0.8em;"><span
                                             id="charNameNum">0</span>/<?= $this->config->item('en_name_max') ?></span>]
                             </h4></div>
@@ -205,7 +205,7 @@ $trs = $this->Db_model->w_fetch(array(
                     <div class="col-md-6">
 
                         <div class="title" style="margin-bottom:0; padding-bottom:0; margin-top:15px;"><h4><i
-                                        class="fas fa-code"></i> Icon [<span
+                                        class="fas fa-user-circle"></i> Entity Icon [<span
                                         style="margin:0 0 10px 0; font-size:0.8em;"><span
                                             id="charu_iconNum">0</span>/<?= $this->config->item('en_name_max') ?></span>]
                             </h4></div>
@@ -233,7 +233,8 @@ $trs = $this->Db_model->w_fetch(array(
                             Link Notes [<span style="margin:0 0 10px 0; font-size:0.8em;"><span
                                         id="chartr_contentNum">0</span>/<?= $this->config->item('tr_content_max') ?></span>]
                         </h4></div>
-                    <textarea class="form-control text-edit border msg" id="tr_content" onkeyup="tr_content_word_count()"
+                    <textarea class="form-control text-edit border msg" id="tr_content"
+                              onkeyup="tr_content_word_count()"
                               maxlength="<?= $this->config->item('tr_content_max') ?>" data-lpignore="true"
                               style="height:66px;"></textarea>
                 </div>

@@ -62,20 +62,18 @@ foreach ($engagement_filters as $key => $value) {
     echo '<td><div style="padding-right:5px;">';
     if ($key == 'tr_en_type_id') { //We have a list to show:
 
-        //Fetch all engagements from intent #6653
-        $all_engs = $this->Db_model->cr_children_fetch(array(
-            'tr_in_parent_id IN (7720,7719,7722,7723)' => null, //The 4 branches of #Log platform engagements #6653
-            'tr_status' => 1,
-            'in_status >=' => 0,
-        ));
+        //Fetch all unique engagement types that have been logged on the ledger so far:
+        $all_engs = $this->Db_model->tr_fetch(array(
+            'tr_status >=' => 0,
+            'en_status >=' => 0,
+        ), 0, array('en_type'), array('trs_count' => 'DESC'), 'COUNT(tr_en_type_id) as trs_count, en_name, tr_en_type_id', 'tr_en_type_id, en_name');
 
         echo '<select name="' . $key . '" class="border" style="width:160px;">';
         echo '<option value="0">' . $value . '</option>';
-        foreach ($all_engs as $c_eng) {
-            echo '<option value="' . $c_eng['in_id'] . '" ' . ((isset($_GET[$key]) && $_GET[$key] == $c_eng['in_id']) ? 'selected="selected"' : '') . '>' . $c_eng['c_outcome'] . '</option>';
+        foreach ($all_engs as $tr) {
+            echo '<option value="' . $tr['in_id'] . '" ' . ((isset($_GET[$key]) && $_GET[$key] == $tr['in_id']) ? 'selected="selected"' : '') . '>' . $tr['en_name'] . ' ('  . $tr['trs_count'] . ')</option>';
         }
         echo '</select>';
-        //echo '<div><a href="/console/360/actionplan" target="_blank">Open in Action Plan <i class="fas fa-external-link-square"></i></a></div>'; //TODO NO CLUE what this is!
 
     } else {
         //show text input

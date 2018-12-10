@@ -31,7 +31,7 @@ $uri_segment_2 = $this->uri->segment(2);
     <script src="/js/lib/algoliasearch.min.js"></script>
 
     <script src="/js/lib/sortable.min.js" type="text/javascript"></script>
-    <script src="/js/custom/console-js.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
+    <script src="/js/custom/matrix-js.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
 
 
     <script>
@@ -67,7 +67,7 @@ if (!isset($_GET['skip_header'])) {
 }
 ?>
 
-<div class="wrapper" id="console">
+<div class="wrapper" id="matrix">
 
     <?php if (!isset($_GET['skip_header'])) { ?>
         <nav class="navbar navbar-transparent navbar-absolute">

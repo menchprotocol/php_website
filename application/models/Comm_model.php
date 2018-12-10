@@ -140,11 +140,8 @@ class Comm_model extends CI_Model
                 $this->db->query("UPDATE tb_actionplans SET tr_status=-1 WHERE tr_status>=0 AND tr_en_parent_id=" . $u['u_id']);
                 $intents_skipped = $this->db->affected_rows();
 
-                //Update User communication status:
-
-                $this->Db_model->en_update($u['u_id'], array(
-                    'en_communication' => -1, //Unsubscribed
-                ));
+                //Update User communication level to Unsubscribe:
+                $this->Db_model->en_radio_set(4454, 4455, $u['u_id'], $u['u_id']);
 
                 //Let them know:
                 $this->Comm_model->send_message(array(
@@ -188,7 +185,7 @@ class Comm_model extends CI_Model
 
                     //Log error engagement:
                     $this->Db_model->tr_create(array(
-                        'tr_en_creator_id' => $u['u_id'],
+                        'tr_en_credit_id' => $u['u_id'],
                         'tr_content' => 'Failed to skip an intent from the student Action Plan',
                         'tr_en_type_id' => 4246, //System error
                         'tr_tr_parent_id' => intval($unsub_value),
@@ -328,11 +325,11 @@ class Comm_model extends CI_Model
                     //Now we need to confirm if they really want to subscribe to this...
 
                     //Fetch all the messages for this intent:
-                    $tree = $this->Db_model->c_recursive_fetch($tr_in_child_id, true, false);
+                    $tree = $this->Db_model->in_recursive_fetch($tr_in_child_id, true, false);
 
                     //Show messages for this intent:
                     $messages = $this->Db_model->i_fetch(array(
-                        'i_in_id' => $tr_in_child_id,
+                        'tr_in_child_id' => $tr_in_child_id,
                         'i_status >=' => 0, //Published in any form
                     ));
 
@@ -475,7 +472,7 @@ class Comm_model extends CI_Model
 
                 //Log transaction for skip request:
                 $new_tr = $this->Db_model->tr_create(array(
-                    'tr_en_creator_id' => $u['u_id'], //user who searched
+                    'tr_en_credit_id' => $u['u_id'], //user who searched
                     'tr_en_type_id' => 4284, //Skip Intent
                     'tr_tr_parent_id' => $tr_id, //The parent transaction that points to this intent in the Masters Action Plan
                     'tr_status' => 1, //Working on... not yet decided to skip or not as they need to see the consequences before making an informed decision. Will be updated to -1 or 2 based on their response...
@@ -696,9 +693,17 @@ class Comm_model extends CI_Model
         }
 
 
+        //Check if this user is already un-subscribed:
+        $is_unsubscribed = $this->Db_model->tr_fetch(array(
+            'tr_en_child_id' => $u['u_id'],
+            'tr_en_parent_id' => 4455, //Unsubscribed
+            'tr_status >=' => 0,
+        ));
+
+
         if (includes_any($fb_message_received, array('unsubscribe', 'quit', 'skip'))) {
 
-            if ($u['en_communication'] < 0) {
+            if (count($is_unsubscribed)>0) {
                 //User is already unsubscribed, let them know:
                 return $this->Comm_model->send_message(array(
                     array(
@@ -789,7 +794,7 @@ class Comm_model extends CI_Model
 
             }
 
-        } elseif ($fb_message_received && $u['en_communication'] < 0) {
+        } elseif ($fb_message_received && count($is_unsubscribed)>0) {
 
             //We got a message from an unsubscribed user, let them know:
             return $this->Comm_model->send_message(array(
@@ -827,7 +832,7 @@ class Comm_model extends CI_Model
                     'input_data' => $c_target_outcome,
                     'output' => $res,
                 ),
-                'tr_en_creator_id' => $u['u_id'], //user who searched
+                'tr_en_credit_id' => $u['u_id'], //user who searched
                 'tr_en_type_id' => 4275, //Search for New Intent Subscription
             ));
 
@@ -889,7 +894,7 @@ class Comm_model extends CI_Model
         } elseif (count($this->Db_model->tr_fetch(array(
                 'tr_timestamp >=' => date("Y-m-d H:i:s", (time() - (1800))), //Messages sent from us less than 30 minutes ago
                 'tr_en_type_id' => 4280, //Messages sent from us
-                'tr_en_creator_id' => 4148, //We log Facebook Inbox UI messages sent with this entity ID
+                'tr_en_credit_id' => 4148, //We log Facebook Inbox UI messages sent with this entity ID
             ), 1)) == 0) {
 
             //Fetch their currently working on subscriptions:
@@ -906,7 +911,7 @@ class Comm_model extends CI_Model
                 $this->Db_model->tr_create(array(
                     'tr_content' => $fb_message_received,
                     'tr_en_type_id' => 4287, //Log Unrecognizable Message Received
-                    'tr_en_creator_id' => $u['u_id'], //User who initiated this message
+                    'tr_en_credit_id' => $u['u_id'], //User who initiated this message
                 ));
 
                 //Recommend to subscribe to our default intent:
@@ -942,7 +947,7 @@ class Comm_model extends CI_Model
                 $this->Db_model->tr_create(array(
                     'tr_content' => $fb_message_received,
                     'tr_en_type_id' => 4287, //Log Unrecognizable Message Received
-                    'tr_en_creator_id' => $u['u_id'], //User who initiated this message
+                    'tr_en_credit_id' => $u['u_id'], //User who initiated this message
                     'tr_tr_parent_id' => $actionplans[0]['tr_id'],
                 ));
 
@@ -1051,14 +1056,14 @@ class Comm_model extends CI_Model
 
         //Log new user engagement:
         $this->Db_model->tr_create(array(
-            'tr_en_creator_id' => $u['u_id'],
+            'tr_en_credit_id' => $u['u_id'],
             'tr_en_type_id' => 4265, //User Joined
             'tr_metadata' => $u,
         ));
 
         //Save picture locally:
         $this->Db_model->tr_create(array(
-            'tr_en_creator_id' => $u['u_id'],
+            'tr_en_credit_id' => $u['u_id'],
             'tr_content' => $fb_profile['profile_pic'], //Image to be saved
             'tr_status' => 0, //Pending upload
             'tr_en_type_id' => 4299, //Save media file to Mench cloud
@@ -1178,7 +1183,7 @@ class Comm_model extends CI_Model
 
                 //Log Child Message Engagement:
                 $this->Db_model->tr_create(array(
-                    'tr_en_creator_id' => (isset($message['tr_en_creator_id']) ? $message['tr_en_creator_id'] : 0),
+                    'tr_en_credit_id' => (isset($message['tr_en_credit_id']) ? $message['tr_en_credit_id'] : 0),
                     'tr_en_child_id' => (isset($message['tr_en_child_id']) ? $message['tr_en_child_id'] : 0),
                     'tr_content' => $message['tr_content'],
                     'tr_metadata' => array(
@@ -1188,7 +1193,7 @@ class Comm_model extends CI_Model
                     ),
                     'tr_en_type_id' => 4280, //Child message
                     'e_i_id' => (isset($message['i_id']) ? $message['i_id'] : 0), //The message that is being dripped
-                    'tr_in_child_id' => (isset($message['i_in_id']) ? $message['i_in_id'] : 0),
+                    'tr_in_child_id' => (isset($message['tr_in_child_id']) ? $message['tr_in_child_id'] : 0),
                 ));
 
                 if (!$process['status']) {
@@ -1213,12 +1218,12 @@ class Comm_model extends CI_Model
 
                     $e_var_create = array(
                         'e_var_create' => array(
-                            'tr_en_creator_id' => (isset($message['tr_en_creator_id']) ? $message['tr_en_creator_id'] : 0), //If set...
+                            'tr_en_credit_id' => (isset($message['tr_en_credit_id']) ? $message['tr_en_credit_id'] : 0), //If set...
                             'tr_en_child_id' => $u['u_id'],
                             'tr_content' => $email_variables['subject_line'],
                             'tr_metadata' => $email_variables,
                             'tr_en_type_id' => 4276, //Email message sent
-                            'tr_in_child_id' => (isset($message['i_in_id']) ? $message['i_in_id'] : 0),
+                            'tr_in_child_id' => (isset($message['tr_in_child_id']) ? $message['tr_in_child_id'] : 0),
                         ),
                     );
 
@@ -1301,7 +1306,7 @@ class Comm_model extends CI_Model
                 'tr_metadata' => $e,
                 'tr_en_child_id' => $e['tr_en_child_id'],
                 'tr_in_child_id' => $e['tr_in_child_id'],
-                'tr_en_creator_id' => $e['tr_en_creator_id'],
+                'tr_en_credit_id' => $e['tr_en_credit_id'],
             ));
 
             //Return error:

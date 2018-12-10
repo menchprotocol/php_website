@@ -109,7 +109,7 @@ if (isset($orphan_intents)) {
                 echo '<h5 class="badge badge-h indent1" style="display: inline-block;"><i class="fas fa-comment-plus"></i> ' . count($trs) . ($limit == count($trs) ? '+' : '') . ' Subscriptions</h5>';
                 echo '<div class="list-group list-grey indent1" style="margin-bottom: 40px;">';
                 foreach ($trs as $w) {
-                    echo echo_w_console($w);
+                    echo echo_w_matrix($w);
                 }
                 echo '</div>';
             }
@@ -199,23 +199,19 @@ if (isset($orphan_intents)) {
                         <div class="form-group label-floating is-empty completion-settings">
                             <div class="checkbox is_task">
                                 <?php
-                                //List all the input options and allow user to pick between them:
-                                $valid_responses = $this->Db_model->tr_fetch(array(
-                                    'tr_en_parent_id' => 4227, //All Entity Link Types
-                                    'tr_en_child_id >' => 0, //Must have a child
-                                    'tr_en_child_id !=' => 4230, //Not a Naked link as that is already the default option
-                                    'tr_status >=' => 0, //Not removed
-                                    'en_status >=' => 2, //Syncing
-                                ), 100, array('en_child'), array('tr_order' => 'ASC'));
 
-                                foreach ($valid_responses as $en) {
-                                    echo '<label style="display: block; font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" id="" /><i class="fas fa-pencil"></i> Require ...</label>';
+                                //List all the input options and allow user to pick between them:
+                                $entity_links = $this->Db_model->en_fetch(array(
+                                    'en_id IN ('.join(',', array_merge($this->config->item('en_ids_4537'), $this->config->item('en_ids_4538'))).')' => null, //All Entity Link Types
+                                    'en_id !=' => 4230, //Not a Naked link as that is already the default option
+                                    'en_status >=' => 2, //Published
+                                ));
+
+                                foreach ($entity_links as $en) {
+                                    echo '<label style="display: block; font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" id="require__'.$en['en_id'].'" /><i class="fas fa-pencil"></i> Require '.$en['en_icon'].' '.$en['en_name'].'</label>';
                                 }
 
                                 ?>
-                                <label style="display: block; font-size: 0.9em !important; margin-left:8px;"><input
-                                            type="checkbox" id="c_require_url_to_complete"/><i class="fas fa-link"></i>
-                                    Require URL in response</label>
                             </div>
                         </div>
 

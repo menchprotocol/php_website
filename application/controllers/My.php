@@ -119,7 +119,7 @@ class My extends CI_Controller
             //Log action plan view engagement:
             $this->Db_model->tr_create(array(
                 'tr_en_type_id' => 4283,
-                'tr_en_creator_id' => $trs[0]['u_id'],
+                'tr_en_credit_id' => $trs[0]['u_id'],
             ));
 
             //Let them choose between subscriptions:
@@ -142,7 +142,7 @@ class My extends CI_Controller
             //Log action plan view engagement:
             $this->Db_model->tr_create(array(
                 'tr_en_type_id' => 4283,
-                'tr_en_creator_id' => $trs[0]['u_id'],
+                'tr_en_credit_id' => $trs[0]['u_id'],
                 'tr_in_child_id' => $in_id,
                 'tr_tr_parent_id' => $tr_id,
             ));
@@ -172,7 +172,7 @@ class My extends CI_Controller
 
                 //Ooops, we had issues finding th is intent! Should not happen, report:
                 $this->Db_model->tr_create(array(
-                    'tr_en_creator_id' => $trs[0]['u_id'],
+                    'tr_en_credit_id' => $trs[0]['u_id'],
                     'tr_metadata' => $trs,
                     'tr_content' => 'Unable to load a specific intent for the student Action Plan! Should not happen...',
                     'tr_en_type_id' => 4246,

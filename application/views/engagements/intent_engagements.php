@@ -16,7 +16,7 @@ foreach ($k_outs as $k) {
         //Update pointer:
         $current_status = $k['tr_status'];
     }
-    echo echo_k_console($k);
+    echo echo_k_matrix($k);
 }
 echo '</div>';
 

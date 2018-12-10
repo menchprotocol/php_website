@@ -143,7 +143,7 @@ function load_js_algolia() {
     });
 }
 
-//Function to load all help messages throughout the console:
+//Function to load all help messages throughout the matrix:
 $(document).ready(function () {
 
     load_js_algolia();

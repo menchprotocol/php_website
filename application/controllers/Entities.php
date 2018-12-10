@@ -46,8 +46,8 @@ class Entities extends CI_Controller
 
         //Fetch entity itself:
         $entities = $this->Db_model->en_fetch(array('u_id' => $parent_u_id));
-        $child_entities_count = count($this->Db_model->en_children_fetch($filters));
-        $child_entities = $this->Db_model->en_children_fetch($filters, array('u__children_count'), $items_per_page, ($page * $items_per_page));
+        $child_entities_count = count($this->Old_model->ur_children_fetch($filters));
+        $child_entities = $this->Old_model->ur_children_fetch($filters, array('in__children_count'), $items_per_page, ($page * $items_per_page));
 
         foreach ($child_entities as $u) {
             echo echo_u($u, 2, false /* Load more only for children */);
@@ -355,7 +355,7 @@ class Entities extends CI_Controller
 
         //Log transaction:
         $this->Db_model->tr_create(array(
-            'tr_en_creator_id' => $udata['u_id'], //The user that updated the account
+            'tr_en_credit_id' => $udata['u_id'], //The user that updated the account
             'tr_content' => echo_changelog($u_current[0], $u_update, 'u_'),
             'tr_metadata' => array(
                 'input_data' => $_POST,
@@ -390,7 +390,7 @@ class Entities extends CI_Controller
 
         $messages = $this->Db_model->i_fetch(array(
             'i_status >=' => 0,
-            'i_u_id' => $_POST['u_id'],
+            'tr_en_parent_id' => $_POST['u_id'],
         ), 0);
         echo '<div id="list-messages" class="list-group  grey-list">';
         foreach ($messages as $i) {
@@ -425,7 +425,7 @@ class Entities extends CI_Controller
 
             //Archived entity
             $this->Db_model->tr_create(array(
-                'tr_en_creator_id' => $entities[0]['u_id'],
+                'tr_en_credit_id' => $entities[0]['u_id'],
                 'tr_content' => 'login() denied because account is not active.',
                 'tr_metadata' => $_POST,
                 'tr_en_type_id' => 4247, //Support Needing Graceful Errors
@@ -479,13 +479,13 @@ class Entities extends CI_Controller
 
             if ($is_student) {
 
-                //Remove coach privileges as they cannot use the Console with non-chrome Browser:
+                //Remove coach privileges as they cannot use the matrix with non-chrome Browser:
                 $is_coach = false;
                 unset($session_data['user']);
 
             } else {
 
-                redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Login Denied. Mench Console v' . $this->config->item('app_version') . ' support <a href="https://www.google.com/chrome/browser/" target="_blank"><u>Google Chrome</u></a> only.</div>');
+                redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Login Denied. The Matrix v' . $this->config->item('app_version') . ' supports <a href="https://www.google.com/chrome/browser/" target="_blank"><u>Google Chrome</u></a> only.</div>');
                 return false;
 
             }
@@ -501,7 +501,7 @@ class Entities extends CI_Controller
 
         //Log transaction
         $this->Db_model->tr_create(array(
-            'tr_en_creator_id' => $entities[0]['u_id'],
+            'tr_en_credit_id' => $entities[0]['u_id'],
             'tr_metadata' => $entities[0],
             'tr_en_type_id' => 4269, //login
         ));
@@ -538,7 +538,7 @@ class Entities extends CI_Controller
         //Log transaction:
         $udata = $this->session->userdata('user');
         $this->Db_model->tr_create(array(
-            'tr_en_creator_id' => (isset($udata['u_id']) && $udata['u_id'] > 0 ? $udata['u_id'] : 0),
+            'tr_en_credit_id' => (isset($udata['u_id']) && $udata['u_id'] > 0 ? $udata['u_id'] : 0),
             'tr_metadata' => $udata,
             'tr_en_type_id' => 4270, //User Logout
         ));

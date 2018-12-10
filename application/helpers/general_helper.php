@@ -87,7 +87,7 @@ function fetch_entity_tree($u_id, $is_edit = false)
     $CI =& get_instance();
     $entities = $CI->Db_model->en_fetch(array(
         'u_id' => $u_id,
-    ), array('u__children_count', 'u__urls'));
+    ), array('in__children_count', 'u__urls'));
 
     if (count($entities) < 1) {
         return redirect_message('/entities', '<div class="alert alert-danger" role="alert">Invalid Entity ID</div>');
@@ -188,7 +188,7 @@ function detect_tr_en_type_id($string)
 
     /*
      * Detect what type of entity-to-entity URL type should we create
-     * based on options listed here: https://mench.com/entities/4227
+     * based on options listed in this tree: https://mench.com/entities/4227
      * */
 
     $string = trim($string);
@@ -207,8 +207,9 @@ function detect_tr_en_type_id($string)
         $curl = curl_html($string, true);
         return $curl['tr_en_type_id'];
     } else {
+        $words = explode(' ',$string);
         //Regular text link:
-        return 4255;
+        return ( count($words)==1 ? 4526 /* Single word */ : 4255 /* Multi-word */ );
     }
 }
 
@@ -227,7 +228,7 @@ function en_match_metadata($key, $value)
 {
     //Uses the en_metadata variable in config to determine if the current item has a valid entity parent or not.
     $CI =& get_instance();
-    $en_metadata = $CI->config->item('en_metadata');
+    $en_user_metadata = $CI->config->item('en_user_metadata');
 
     //Is this a timezone? We might need some adjustments if so...
     if ($key == 'en_timezones') {
@@ -243,9 +244,9 @@ function en_match_metadata($key, $value)
         }
     }
 
-    if (isset($en_metadata[$key][strtolower($value)])) {
+    if (isset($en_user_metadata[$key][strtolower($value)])) {
         //Found it, return entity ID:
-        return $en_metadata[$key][strtolower($value)];
+        return $en_user_metadata[$key][strtolower($value)];
     } else {
         //Ooops, this value did not exist! Notify the admin so we can look into this:
         $CI->Db_model->tr_create(array(
@@ -557,7 +558,7 @@ function extract_references($prefix, $message)
     return $matches;
 }
 
-function message_validation($i_status, $tr_content, $i_in_id)
+function message_validation($i_status, $tr_content, $tr_in_child_id)
 {
 
 
@@ -642,7 +643,7 @@ function message_validation($i_status, $tr_content, $i_in_id)
         ));
 
         $i_cs = $CI->Db_model->in_fetch(array(
-            'in_id' => $i_in_id,
+            'in_id' => $tr_in_child_id,
         ), array('in__active_parents'));
 
         if (count($i_cs) == 0) {
@@ -657,7 +658,7 @@ function message_validation($i_status, $tr_content, $i_in_id)
                 'status' => 0,
                 'message' => 'Intent #' . $in_ids[0] . ' does not exist',
             );
-        } elseif ($in_ids[0] == $i_in_id) {
+        } elseif ($in_ids[0] == $tr_in_child_id) {
             return array(
                 'status' => 0,
                 'message' => 'You cannot affirm the message intent itself. Choose another intent to continue',
@@ -771,7 +772,7 @@ function message_validation($i_status, $tr_content, $i_in_id)
         'message' => 'Success',
         //Return cleaned data:
         'tr_content' => trim($tr_content), //It might have been modified if URL was added
-        'i_u_id' => (count($u_ids) > 0 ? $u_ids[0] : 0), //Referencing an entity?
+        'tr_en_parent_id' => (count($u_ids) > 0 ? $u_ids[0] : 0), //Referencing an entity?
     );
 }
 

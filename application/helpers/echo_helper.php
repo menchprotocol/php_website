@@ -1,7 +1,7 @@
 <?php
 
 
-function echo_next_u($page, $limit, $u__children_count)
+function echo_next_u($page, $limit, $in__children_count)
 {
     //We have more child entities than what was listed here.
     //Give user a way to access them:
@@ -12,8 +12,8 @@ function echo_next_u($page, $limit, $u__children_count)
 
     //Regular section:
     $max_entities = (($page + 1) * $limit);
-    $max_entities = ($max_entities > $u__children_count ? $u__children_count : $max_entities);
-    echo 'Load ' . (($page * $limit) + 1) . '-' . $max_entities . ' from ' . $u__children_count . ' total';
+    $max_entities = ($max_entities > $in__children_count ? $in__children_count : $max_entities);
+    echo 'Load ' . (($page * $limit) + 1) . '-' . $max_entities . ' from ' . $in__children_count . ' total';
 
     echo '</a>';
 }
@@ -154,10 +154,10 @@ function echo_i($i, $u_full_name = null, $fb_format = false)
 {
 
     //HACK: Make these two variables inter-changeable:
-    if (isset($i['i_in_id']) && $i['i_in_id'] > 0 && !isset($i['tr_in_child_id'])) {
-        $i['tr_in_child_id'] = $i['i_in_id'];
-    } elseif (isset($i['tr_in_child_id']) && $i['tr_in_child_id'] > 0 && !isset($i['i_in_id'])) {
-        $i['i_in_id'] = $i['tr_in_child_id'];
+    if (isset($i['tr_in_child_id']) && $i['tr_in_child_id'] > 0 && !isset($i['tr_in_child_id'])) {
+        $i['tr_in_child_id'] = $i['tr_in_child_id'];
+    } elseif (isset($i['tr_in_child_id']) && $i['tr_in_child_id'] > 0 && !isset($i['tr_in_child_id'])) {
+        $i['tr_in_child_id'] = $i['tr_in_child_id'];
     }
 
     $CI =& get_instance();
@@ -167,7 +167,7 @@ function echo_i($i, $u_full_name = null, $fb_format = false)
     $is_intent = ($CI->uri->segment(1) == 'intents');
     $is_entity = ($CI->uri->segment(1) == 'entities');
     $is_public = (!$is_intent && !$is_entity); //The public landing pages that users use to get started
-    $is_focus_entity = ($is_entity && $CI->uri->segment(2) == $i['i_u_id']);
+    $is_focus_entity = ($is_entity && $CI->uri->segment(2) == $i['tr_en_parent_id']);
     $ui = null;
     $original_cs = array();
 
@@ -185,15 +185,15 @@ function echo_i($i, $u_full_name = null, $fb_format = false)
     if ($is_entity && !$fb_format) {
 
         $original_cs = $CI->Db_model->in_fetch(array(
-            'in_id' => $i['i_in_id'],
+            'in_id' => $i['tr_in_child_id'],
         ));
         if (count($original_cs) > 0) {
 
             $ui .= '<div class="entities-msg">';
             $ui .= '<span class="pull-right" style="margin:6px 10px 0 0;">';
-            $ui .= '<span data-toggle="tooltip" title="This is the ' . echo_ordinal($i['i_rank']) . ' message for this intent" data-placement="left" class="underdot" style="padding-bottom:4px;">' . echo_ordinal($i['i_rank']) . '</span> ';
+            $ui .= '<span data-toggle="tooltip" title="This is the ' . echo_ordinal($i['tr_order']) . ' message for this intent" data-placement="left" class="underdot" style="padding-bottom:4px;">' . echo_ordinal($i['tr_order']) . '</span> ';
             $ui .= '<span>' . echo_status('i_status', $i['i_status'], 1, 'left') . '</span> ';
-            $ui .= '<a href="/intents/' . $i['i_in_id'] . '#loadmessages-' . $i['i_in_id'] . '"><span class="badge badge-primary" style="display:inline-block; margin-left:3px; width:40px;"><i class="fas fa-sign-out-alt rotate90"></i></span></a>';
+            $ui .= '<a href="/intents/' . $i['tr_in_child_id'] . '#loadmessages-' . $i['tr_in_child_id'] . '"><span class="badge badge-primary" style="display:inline-block; margin-left:3px; width:40px;"><i class="fas fa-sign-out-alt rotate90"></i></span></a>';
             $ui .= '</span>';
             $ui .= '<h4><i class="fas fa-hashtag" style="font-size:1em;"></i> ' . $original_cs[0]['c_outcome'] . '</h4>';
             $ui .= '<div>';
@@ -203,12 +203,12 @@ function echo_i($i, $u_full_name = null, $fb_format = false)
 
 
     //Does this have a entity reference?
-    if (isset($i['i_u_id']) && $i['i_u_id'] > 0) {
+    if (isset($i['tr_en_parent_id']) && $i['tr_en_parent_id'] > 0) {
 
         //This message has a referenced entity
         //See if that entity has a URL:
         $us = $CI->Db_model->en_fetch(array(
-            'u_id' => $i['i_u_id'],
+            'u_id' => $i['tr_en_parent_id'],
         ), array('skip_en__parents', 'u__urls'));
 
         if (count($us) > 0) {
@@ -217,7 +217,7 @@ function echo_i($i, $u_full_name = null, $fb_format = false)
             if ($fb_format) {
 
                 //Show an option to open action plan:
-                $i['tr_content'] = str_replace('@' . $i['i_u_id'], $us[0]['u_full_name'], $i['tr_content']);
+                $i['tr_content'] = str_replace('@' . $i['tr_en_parent_id'], $us[0]['u_full_name'], $i['tr_content']);
 
                 if (substr_count($i['tr_content'], '/slice') > 0) {
                     $time_range = explode(':', one_two_explode('/slice:', ' ', $i['tr_content']), 2);
@@ -276,14 +276,14 @@ function echo_i($i, $u_full_name = null, $fb_format = false)
                 if ($is_intent || ($is_entity && !$is_focus_entity)) {
 
                     //HTML format:
-                    $i['tr_content'] = str_replace('@' . $i['i_u_id'], ' <a href="javascript:void(0);" onclick="url_modal(\'' . $button_url . '\')">' . $us[0]['u_full_name'] . '</a>', $i['tr_content']);
+                    $i['tr_content'] = str_replace('@' . $i['tr_en_parent_id'], ' <a href="javascript:void(0);" onclick="url_modal(\'' . $button_url . '\')">' . $us[0]['u_full_name'] . '</a>', $i['tr_content']);
 
                 } else {
 
                     //HTML format:
                     //TODO Fetch text description from parent entity notes
                     $entity_title = (0 ? '<span data-toggle="tooltip" title="' . 'notes here' . '" data-placement="top" class="underdot">' . $us[0]['u_full_name'] . '</span>' : $us[0]['u_full_name']);
-                    $i['tr_content'] = str_replace('@' . $i['i_u_id'], $entity_title . ' ', $i['tr_content']);
+                    $i['tr_content'] = str_replace('@' . $i['tr_en_parent_id'], $entity_title . ' ', $i['tr_content']);
 
                 }
 
@@ -306,10 +306,10 @@ function echo_i($i, $u_full_name = null, $fb_format = false)
     }
 
 
-    if (substr_count($i['tr_content'], '/open_actionplan') > 0 && isset($i['tr_tr_parent_id']) && $i['tr_tr_parent_id'] > 0 && isset($i['i_in_id']) && $i['i_in_id'] > 0) {
+    if (substr_count($i['tr_content'], '/open_actionplan') > 0 && isset($i['tr_tr_parent_id']) && $i['tr_tr_parent_id'] > 0 && isset($i['tr_in_child_id']) && $i['tr_in_child_id'] > 0) {
         $button_title = 'Open in 🚩Action Plan';
         $command = '/open_actionplan';
-        $button_url = 'https://mench.com/my/actionplan/' . $i['tr_tr_parent_id'] . '/' . $i['i_in_id'] . '?is_from_messenger=1';
+        $button_url = 'https://mench.com/my/actionplan/' . $i['tr_tr_parent_id'] . '/' . $i['tr_in_child_id'] . '?is_from_messenger=1';
     }
 
 
@@ -653,7 +653,7 @@ function echo_e($e)
     return $ui;
 }
 
-function echo_w_console($w)
+function echo_w_matrix($w)
 {
 
     //Assumes w_stats has been added to w_fetch so we can display proper stats here...
@@ -760,7 +760,7 @@ function echo_w_students($w)
 }
 
 
-function echo_k_console($k)
+function echo_k_matrix($k)
 {
 
     //NOTE: Assumes the subscription, its intent and entity subscriber are loaded in $k
@@ -894,7 +894,7 @@ function echo_contents($c, $fb_format = 0)
         $type_count = 0;
         $type_all_count = count($c['in__tree_contents']);
         $CI =& get_instance();
-        $en_convert_3000 = $CI->config->item('en_convert_3000');
+        $en_all_3000 = $CI->config->item('en_all_3000');
         $has_matrix_access = auth(array(1308), 0);
         //More than 3:
         $text_overview = '';
@@ -909,7 +909,7 @@ function echo_contents($c, $fb_format = 0)
             }
 
             //Show category:
-            $cat_contribution = count($current_us) . ' ' . $en_convert_3000[$type_id] . echo__s(count($current_us));
+            $cat_contribution = count($current_us) . ' ' . $en_all_3000[$type_id] . echo__s(count($current_us));
             if ($fb_format) {
 
                 $text_overview .= ' ' . $cat_contribution;
@@ -1344,7 +1344,7 @@ function echo_object($object, $id, $engagement_field, $button_type)
 
         } elseif ($object == 'x' && $id > 0) {
 
-            $matching_urls = $CI->Db_model->x_fetch(array(
+            $matching_urls = $CI->Old_model->x_fetch(array(
                 'x_id' => $id,
             ));
             if (isset($matching_urls[0])) {
@@ -1742,7 +1742,7 @@ function echo_u($u, $level, $is_parent = false)
     //Count messages:
     $messages = $CI->Db_model->i_fetch(array(
         'i_status >=' => 0,
-        'i_u_id' => $u['u_id'], //Referenced content in messages
+        'tr_en_parent_id' => $u['u_id'], //Referenced content in messages
     ));
 
     //Check total key engagement for this user:
@@ -1761,7 +1761,7 @@ function echo_u($u, $level, $is_parent = false)
 
     $ui .= '<a href="#loadmodify-' . $u['u_id'] . '-' . $tr_id . '" onclick="u_load_modify(' . $u['u_id'] . ',' . $tr_id . ')" class="badge badge-secondary" style="margin:-2px -6px 0 2px; width:40px;">' . ($u['u__e_score'] > 0 ? '<span class="btn-counter" data-toggle="tooltip" data-placement="left" title="Engagement Score">' . echo_number($u['u__e_score']) . '</span>' : '') . '<i class="fas fa-cog" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i></a> &nbsp;';
 
-    $ui .= '<a class="badge badge-secondary" href="/entities/' . $u['u_id'] . '" style="display:inline-block; margin-right:6px; width:40px; margin-left:1px;">' . (isset($u['u__children_count']) && $u['u__children_count'] > 0 ? '<span class="btn-counter ' . ($level == 1 ? 'li-children-count' : '') . '">' . $u['u__children_count'] . '</span>' : '') . '<i class="' . ($is_parent ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90') . '"></i></a>';
+    $ui .= '<a class="badge badge-secondary" href="/entities/' . $u['u_id'] . '" style="display:inline-block; margin-right:6px; width:40px; margin-left:1px;">' . (isset($u['in__children_count']) && $u['in__children_count'] > 0 ? '<span class="btn-counter ' . ($level == 1 ? 'li-children-count' : '') . '">' . $u['in__children_count'] . '</span>' : '') . '<i class="' . ($is_parent ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90') . '"></i></a>';
 
     $ui .= '</span>';
 
@@ -1774,55 +1774,8 @@ function echo_u($u, $level, $is_parent = false)
 
         $ui .= ' <span class="obj-id underdot" data-toggle="tooltip" data-placement="top" title="Entity ID">@' . $u['u_id'] . '</span>';
 
-
-        if ($u['u_fb_psid']) {
-            //Also show their notification settings now that they are on Mench:
-            $ui .= ' ' . echo_status('u_fb_notification', $u['u_fb_notification'], true, 'top');
-            //Show Mench icon:
-            $ui .= ' <a href="/my/fb_profile/' . $u['u_id'] . '" target="_blank" data-toggle="tooltip" title="User connected to Mench. Hit to ping Facebook profile data." data-placement="top"><img src="/img/bp_128.png" class="mench-mini"></a>';
-
-        }
-
-        //All of the following could be merged/migrated to tr_content once that structure is introduced, but for now let's give visibility:
-        if ($u['u_country_code']) {
-            $u['u_country_code'] = strtoupper($u['u_country_code']);
-            $countries_all = $CI->config->item('countries_all');
-            $ui .= ' &nbsp;<img src="/img/flags/' . strtolower($u['u_country_code']) . '.png" style="height:16px; border-radius:2px; margin-top:-3px;" data-toggle="tooltip" title="User country set to ' . (isset($countries_all[$u['u_country_code']]) ? $countries_all[$u['u_country_code']] : $u['u_country_code']) . '" data-placement="top">';
-        }
-
-        if ($u['u_language']) {
-            $languages = $CI->config->item('languages');
-            $parts = explode(',', $u['u_language']);
-            $languages_fancy = '';
-            foreach ($parts as $counter => $part) {
-                if ($counter > 0) {
-                    $languages_fancy .= ', ';
-                }
-                $languages_fancy .= (isset($languages[$part]) ? $languages[$part] : $part);
-            }
-            $ui .= ' &nbsp;<i class="fas fa-language" data-toggle="tooltip" title="User language set to ' . $languages_fancy . '" data-placement="top"></i>';
-        }
-
-        if ($u['u_timezone']) {
-            $timezones = $CI->config->item('timezones');
-            $ui .= ' &nbsp;<i class="fas fa-map" data-toggle="tooltip" title="User timezene set: ' . (isset($timezones[$u['u_timezone']]) ? $timezones[$u['u_timezone']] : $u['u_timezone']) . '" data-placement="top"></i>';
-        }
-
-        if ($u['u_gender']) {
-            $gender = ($u['u_gender'] == 'm' ? 'male' : ($u['u_gender'] == 'f' ? 'female' : 'Unknown'));
-            $ui .= ' &nbsp;<i class="fas fa-' . $gender . '" data-toggle="tooltip" title="User identified themselves as ' . $gender . '" data-placement="top"></i>';
-        }
-
-        //are they connected to Mench?
-        if (strlen($u['u_password']) > 0) {
-            $ui .= ' &nbsp;<i class="fas fa-key" data-toggle="tooltip" title="User has an assigned login password" data-placement="top"></i>';
-        }
-        if (strlen($u['u_email']) > 0) {
-            $ui .= ' &nbsp;<a href="mailto:' . $u['u_email'] . '" data-toggle="tooltip" title="User email set: ' . $u['u_email'] . '" data-placement="top"><i class="fas fa-envelope"></i></a>';
-        }
-
         //Google search:
-        $ui .= ' &nbsp;<a href="https://www.google.com/search?q=' . urlencode($u['u_full_name']) . '" target="_blank" data-toggle="tooltip" title="Search on Google" data-placement="top"><i class="fab fa-google"></i></a>';
+        //$ui .= ' &nbsp;<a href="https://www.google.com/search?q=' . urlencode($u['u_full_name']) . '" target="_blank" data-toggle="tooltip" title="Search on Google" data-placement="top"><i class="fab fa-google"></i></a>';
 
     } else {
 

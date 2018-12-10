@@ -475,7 +475,7 @@ function save_attachment(droppedFiles, uploadType) {
         }
 
         ajaxData.append('upload_type', uploadType);
-        ajaxData.append('i_status', $('#i_status_focus').val());
+        ajaxData.append('i_status', $('#i_status_focus').val()); //TODO Change to message en type ID
         ajaxData.append('in_id', in_id);
 
         $.ajax({

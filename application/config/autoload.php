@@ -103,7 +103,7 @@ $autoload['helper'] = array('general_helper','echo_helper');
 | config files.  Otherwise, leave it blank.
 |
 */
-$autoload['config'] = array();
+$autoload['config'] = array('treecache');
 
 /*
 | -------------------------------------------------------------------
@@ -132,4 +132,4 @@ $autoload['language'] = array();
 |
 |	$autoload['model'] = array('first_model' => 'first');
 */
-$autoload['model'] = array('Db_model','Comm_model');
+$autoload['model'] = array('Db_model','Comm_model', 'Old_model');

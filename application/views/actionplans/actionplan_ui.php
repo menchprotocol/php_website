@@ -2,7 +2,7 @@
 
 //Prepare some variables to better understand out situation here:
 $messages = $this->Db_model->i_fetch(array(
-    'i_in_id' => $c['in_id'],
+    'tr_in_child_id' => $c['in_id'],
     'i_status' => 1, //On start messages only
 ));
 $has_outs = (count($k_outs) > 0);
