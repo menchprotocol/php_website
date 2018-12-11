@@ -528,7 +528,7 @@ class Comm_model extends CI_Model
                     $message = 'I am happy you changed your mind! Let\'s continue...';
 
                     //Reset ranking to find the next real item:
-                    $k_rank = 0;
+                    $tr_order = 0;
 
                 } elseif ($tr_status == 2) {
 
@@ -552,10 +552,10 @@ class Comm_model extends CI_Model
                 //Update transaction status accordingly:
                 $this->Db_model->tr_update($tr_id, array(
                     'tr_status' => $tr_status,
-                ));
+                ), $u['u_id']);
 
                 //Find the next item to navigate them to:
-                $trs_next = $this->Db_model->k_next_fetch($tr_id, $k_rank);
+                $trs_next = $this->Db_model->k_next_fetch($tr_id, $tr_order);
                 if ($trs_next) {
                     //Now move on to communicate the next step.
                     $this->Comm_model->compose_messages(array(
@@ -573,8 +573,8 @@ class Comm_model extends CI_Model
             $input_parts = explode('_', one_two_explode('MARKCOMPLETE_', '', $fb_ref));
             $tr_id = intval($input_parts[0]);
             $tr_id = intval($input_parts[1]);
-            $k_rank = intval($input_parts[2]);
-            if ($tr_id > 0 && $tr_id > 0 && $k_rank > 0) {
+            $tr_order = intval($input_parts[2]);
+            if ($tr_id > 0 && $tr_id > 0 && $tr_order > 0) {
 
                 //Fetch child intent first to check requirements:
                 $k_children = $this->Db_model->tr_fetch(array(
@@ -627,9 +627,9 @@ class Comm_model extends CI_Model
             $tr_id = intval($input_parts[0]);
             $tr_in_parent_id = intval($input_parts[1]);
             $in_id = intval($input_parts[2]);
-            $k_rank = intval($input_parts[3]);
+            $tr_order = intval($input_parts[3]);
 
-            if (!($tr_id > 0 && $tr_in_parent_id > 0 && $in_id > 0 && $k_rank > 0)) {
+            if (!($tr_id > 0 && $tr_in_parent_id > 0 && $in_id > 0 && $tr_order > 0)) {
                 //Log Unknown error:
                 $this->Db_model->tr_create(array(
                     'tr_content' => 'fb_ref_process() failed to fetch proper data for CHOOSEOR_ request with reference value [' . $fb_ref . ']',
@@ -654,7 +654,7 @@ class Comm_model extends CI_Model
             //Now save answer:
             if ($this->Db_model->k_choose_or($tr_id, $tr_in_parent_id, $in_id)) {
                 //Find the next item to navigate them to:
-                $trs_next = $this->Db_model->k_next_fetch($tr_id, $k_rank);
+                $trs_next = $this->Db_model->k_next_fetch($tr_id, $tr_order);
                 if ($trs_next) {
                     //Now move on to communicate the next step.
                     $this->Comm_model->compose_messages(array(
@@ -1232,7 +1232,7 @@ class Comm_model extends CI_Model
                         'results' => $process,
                     ),
                     'tr_en_type_id' => 4280, //Child message
-                    'e_i_id' => (isset($message['i_id']) ? $message['i_id'] : 0), //The message that is being dripped
+                    'e_tr_id' => (isset($message['tr_id']) ? $message['tr_id'] : 0), //The message that is being dripped
                     'tr_in_child_id' => (isset($message['tr_in_child_id']) ? $message['tr_in_child_id'] : 0),
                 ));
 
@@ -1430,7 +1430,7 @@ class Comm_model extends CI_Model
                     array_push($quick_replies, array(
                         'content_type' => 'text',
                         'title' => 'Ok Continue ▶️',
-                        'payload' => 'MARKCOMPLETE_' . $e['tr_tr_parent_id'] . '_' . $k_outs[0]['tr_id'] . '_' . $k_outs[0]['k_rank'], //Here are are using MARKCOMPLETE_ also for OR branches with a single option... Maybe we need to change this later?! For now it feels ok to do so...
+                        'payload' => 'MARKCOMPLETE_' . $e['tr_tr_parent_id'] . '_' . $k_outs[0]['tr_id'] . '_' . $k_outs[0]['tr_order'], //Here are are using MARKCOMPLETE_ also for OR branches with a single option... Maybe we need to change this later?! For now it feels ok to do so...
                     ));
 
                 }
@@ -1453,7 +1453,7 @@ class Comm_model extends CI_Model
                         array_push($quick_replies, array(
                             'content_type' => 'text',
                             'title' => '/' . ($counter + 1),
-                            'payload' => 'CHOOSEOR_' . $e['tr_tr_parent_id'] . '_' . $e['tr_in_child_id'] . '_' . $k['in_id'] . '_' . $k['k_rank'],
+                            'payload' => 'CHOOSEOR_' . $e['tr_tr_parent_id'] . '_' . $e['tr_in_child_id'] . '_' . $k['in_id'] . '_' . $k['tr_order'],
                         ));
                     }
 
@@ -1467,7 +1467,7 @@ class Comm_model extends CI_Model
                             array_push($quick_replies, array(
                                 'content_type' => 'text',
                                 'title' => 'Start Step 1 ▶️',
-                                'payload' => 'MARKCOMPLETE_' . $e['tr_tr_parent_id'] . '_' . $k['tr_id'] . '_' . $k['k_rank'],
+                                'payload' => 'MARKCOMPLETE_' . $e['tr_tr_parent_id'] . '_' . $k['tr_id'] . '_' . $k['tr_order'],
                             ));
                         }
 

@@ -365,7 +365,7 @@ class Entities extends CI_Controller
         }
 
         $messages = $this->Db_model->i_fetch(array(
-            'tr_status >=' => 0,
+            'i_status >=' => 0,
             'tr_en_parent_id' => $_POST['u_id'],
         ), 0);
         echo '<div id="list-messages" class="list-group  grey-list">';

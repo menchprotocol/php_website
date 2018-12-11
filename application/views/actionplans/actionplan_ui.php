@@ -73,8 +73,8 @@ if (count($k_ins) == 0) {
     echo echo_status('tr_status', $k_ins[0]['tr_status']);
 
     //Either show completion time or when it was completed:
-    if ($k_ins[0]['k_last_updated']) {
-        echo ' &nbsp;&nbsp;<i class="fas fa-calendar-check"></i> ' . echo_diff_time($k_ins[0]['k_last_updated']) . ' ago';
+    if ($k_ins[0]['tr_timestamp']) {
+        echo ' &nbsp;&nbsp;<i class="fas fa-calendar-check"></i> ' . echo_diff_time($k_ins[0]['tr_timestamp']) . ' ago';
     } else {
         echo ' &nbsp;&nbsp;<i class="fas fa-clock"></i> ' . echo_hours($c['in_seconds']) . ' to complete';
     }

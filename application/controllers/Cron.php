@@ -343,10 +343,7 @@ class Cron extends CI_Controller
             }
 
             //Update engagement:
-            $new_content = ($error_message ? 'ERROR: ' . $error_message : 'Success') . ' (Original Image URL: ' . $u['tr_content'] . ')';
             $this->Db_model->tr_update($u['tr_id'], array(
-                'tr_content' => $new_content,
-                'tr_en_type_id' => detect_tr_en_type_id($new_content),
                 'tr_status' => 2, //Publish
             ));
 

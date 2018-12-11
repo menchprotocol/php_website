@@ -516,7 +516,7 @@ function extract_references($prefix, $message)
     return $matches;
 }
 
-function message_validation($tr_status, $tr_content, $tr_in_child_id)
+function message_validation($tr_content)
 {
 
 
@@ -526,15 +526,9 @@ function message_validation($tr_status, $tr_content, $tr_in_child_id)
     //Extract details from this message:
     $urls = extract_urls($tr_content);
     $u_ids = extract_references('@', $tr_content);
-    $in_ids = extract_references('#', $tr_content);
 
 
-    if (!isset($tr_status) || !(intval($tr_status) == $tr_status)) {
-        return array(
-            'status' => 0,
-            'message' => 'Missing Status',
-        );
-    } elseif (!isset($tr_content) || strlen($tr_content) <= 0) {
+    if (!isset($tr_content) || strlen($tr_content) <= 0) {
         return array(
             'status' => 0,
             'message' => 'Missing Message',
@@ -574,76 +568,11 @@ function message_validation($tr_status, $tr_content, $tr_in_child_id)
             'status' => 0,
             'message' => 'Max 1 URL per Message',
         );
-    } elseif ((count($u_ids) == 0 && count($urls) == 0) && count($in_ids) > 0) {
-        return array(
-            'status' => 0,
-            'message' => 'You must reference an entity before being able to affirm an intent',
-        );
     } elseif ((count($u_ids) == 0 && count($urls) == 0) && substr_count($tr_content, '/slice') > 0) {
         return array(
             'status' => 0,
             'message' => '/slice command required an entity reference [@' . count($u_ids) . ']',
         );
-    } elseif (count($in_ids) > 1) {
-        return array(
-            'status' => 0,
-            'message' => 'You can reference a maximum of 1 intent per message',
-        );
-    }
-
-
-    //Validate Intent:
-    if (count($in_ids) > 0) {
-
-        //Validate this:
-        $i_parent_cs = $CI->Db_model->in_fetch(array(
-            'in_id' => $in_ids[0],
-        ));
-
-        $i_cs = $CI->Db_model->in_fetch(array(
-            'in_id' => $tr_in_child_id,
-        ), array('in__active_parents'));
-
-        if (count($i_cs) == 0) {
-            //Invalid ID:
-            return array(
-                'status' => 0,
-                'message' => 'Parent Intent #' . $in_ids[0] . ' does not exist',
-            );
-        } elseif (count($i_parent_cs) == 0) {
-            //Invalid ID:
-            return array(
-                'status' => 0,
-                'message' => 'Intent #' . $in_ids[0] . ' does not exist',
-            );
-        } elseif ($in_ids[0] == $tr_in_child_id) {
-            return array(
-                'status' => 0,
-                'message' => 'You cannot affirm the message intent itself. Choose another intent to continue',
-            );
-        } elseif ($i_parent_cs[0]['in_status'] < 0) {
-            //Inactive:
-            return array(
-                'status' => 0,
-                'message' => 'Intent [' . $i_parent_cs[0]['c_outcome'] . '] is not active so you cannot link to it',
-            );
-        }
-
-        $parent_found = false;
-        foreach ($i_cs[0]['in__active_parents'] as $c) {
-            if ($c['in_id'] == $in_ids[0]) {
-                $parent_found = true;
-                break;
-            }
-        }
-
-        if (!$parent_found) {
-            //Inactive:
-            return array(
-                'status' => 0,
-                'message' => 'Intent [' . $i_cs[0]['c_outcome'] . '] is not associated with [' . $i_parent_cs[0]['c_outcome'] . '] so it cannot be used to affirm it. First add it as a parent and then try affirming it.',
-            );
-        }
     }
 
 

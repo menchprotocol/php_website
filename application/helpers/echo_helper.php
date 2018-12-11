@@ -433,31 +433,31 @@ function echo_message($i)
     $tr_content_max = $CI->config->item('tr_content_max');
 
     $ui = '';
-    $ui .= '<div class="list-group-item is-msg is_level2_sortable all_msg msg_' . $i['tr_status'] . '" id="ul-nav-' . $i['i_id'] . '" iid="' . $i['i_id'] . '">';
+    $ui .= '<div class="list-group-item is-msg is_level2_sortable all_msg msg_' . $i['tr_status'] . '" id="ul-nav-' . $i['tr_id'] . '" iid="' . $i['tr_id'] . '">';
     $ui .= '<div style="overflow:visible !important;">';
 
     //Type & Delivery Method:
-    $ui .= '<div class="edit-off text_message" id="msg_body_' . $i['i_id'] . '" style="margin:2px 0 0 0;">';
+    $ui .= '<div class="edit-off text_message" id="msg_body_' . $i['tr_id'] . '" style="margin:2px 0 0 0;">';
     $ui .= echo_i($i);
     $ui .= '</div>';
 
 
     //Text editing:
-    $ui .= '<textarea onkeyup="changeMessageEditing(' . $i['i_id'] . ')" name="tr_content" id="message_body_' . $i['i_id'] . '" class="edit-on hidden msg msgin algolia_search" placeholder="Write Message..." style="margin-top: 4px;">' . $i['tr_content'] . '</textarea>';
+    $ui .= '<textarea onkeyup="changeMessageEditing(' . $i['tr_id'] . ')" name="tr_content" id="message_body_' . $i['tr_id'] . '" class="edit-on hidden msg msgin algolia_search" placeholder="Write Message..." style="margin-top: 4px;">' . $i['tr_content'] . '</textarea>';
 
     //Editing menu:
     $ui .= '<ul class="msg-nav">';
 
     $ui .= '<li class="edit-off msg_status" style="margin: 0 1px 0 -1px;">' . echo_status('tr_status', $i['tr_status'], 1, 'right') . '</li>';
-    $ui .= '<li class="edit-on hidden"><span id="charNumEditing' . $i['i_id'] . '">0</span>/' . $tr_content_max . '</li>';
+    $ui .= '<li class="edit-on hidden"><span id="charNumEditing' . $i['tr_id'] . '">0</span>/' . $tr_content_max . '</li>';
 
-    $ui .= '<li class="edit-off" style="margin: 0 0 0 8px;"><span class="on-hover"><i class="fas fa-bars sort_message" iid="' . $i['i_id'] . '" style="color:#2f2739;"></i></span></li>';
-    $ui .= '<li class="edit-off" style="margin-right: 10px; margin-left: 6px;"><span class="on-hover"><a href="javascript:i_archive(' . $i['i_id'] . ');"><i class="fas fa-trash-alt" style="margin:0 7px 0 5px;"></i></a></span></li>';
-    $ui .= '<li class="edit-off" style="margin-left:-4px;"><span class="on-hover"><a href="javascript:msg_start_edit(' . $i['i_id'] . ',' . $i['tr_status'] . ');"><i class="fas fa-pen-square"></i></a></span></li>';
+    $ui .= '<li class="edit-off" style="margin: 0 0 0 8px;"><span class="on-hover"><i class="fas fa-bars sort_message" iid="' . $i['tr_id'] . '" style="color:#2f2739;"></i></span></li>';
+    $ui .= '<li class="edit-off" style="margin-right: 10px; margin-left: 6px;"><span class="on-hover"><a href="javascript:i_archive(' . $i['tr_id'] . ');"><i class="fas fa-trash-alt" style="margin:0 7px 0 5px;"></i></a></span></li>';
+    $ui .= '<li class="edit-off" style="margin-left:-4px;"><span class="on-hover"><a href="javascript:msg_start_edit(' . $i['tr_id'] . ',' . $i['tr_status'] . ');"><i class="fas fa-pen-square"></i></a></span></li>';
     //Right side reverse:
-    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-primary" href="javascript:message_save_updates(' . $i['i_id'] . ',' . $i['tr_status'] . ');" style="text-decoration:none; font-weight:bold; padding: 1px 8px 4px;"><i class="fas fa-check"></i></a></li>';
-    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-hidden" href="javascript:msg_cancel_edit(' . $i['i_id'] . ');"><i class="fas fa-times" style="color:#2f2739"></i></a></li>';
-    $ui .= '<li class="pull-right edit-on hidden">' . echo_dropdown_status('tr_status', 'tr_status_' . $i['i_id'], $i['tr_status'], array(-1, 0), 'dropup', 1) . '</li>';
+    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-primary" href="javascript:message_save_updates(' . $i['tr_id'] . ',' . $i['tr_status'] . ');" style="text-decoration:none; font-weight:bold; padding: 1px 8px 4px;"><i class="fas fa-check"></i></a></li>';
+    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-hidden" href="javascript:msg_cancel_edit(' . $i['tr_id'] . ');"><i class="fas fa-times" style="color:#2f2739"></i></a></li>';
+    $ui .= '<li class="pull-right edit-on hidden">' . echo_dropdown_status('tr_status', 'tr_status_' . $i['tr_id'], $i['tr_status'], array(-1, 0), 'dropup', 1) . '</li>';
     $ui .= '<li class="pull-right edit-updates"></li>'; //Show potential errors
 
     $ui .= '</ul>';
@@ -626,13 +626,13 @@ function echo_e($e)
     $main_content_title = null;
     if (strlen($e['tr_content']) > 0) {
         $main_content = format_tr_content($e['tr_content']);
-    } elseif ($e['e_i_id'] > 0) {
+    } elseif ($e['e_tr_id'] > 0) {
         //Fetch message conent:
         $matching_messages = $CI->Db_model->i_fetch(array(
-            'i_id' => $e['e_i_id'],
+            'tr_id' => $e['e_tr_id'],
         ));
         if (count($matching_messages) > 0) {
-            $main_content_title = ' Message #' . $e['e_i_id'];
+            $main_content_title = ' Message #' . $e['e_tr_id'];
             $main_content = echo_i($matching_messages[0]);
         }
     }
@@ -782,10 +782,9 @@ function echo_k_matrix($k)
     //Right content:
     $ui .= '<span class="pull-right">';
 
-    //Show last update time, if any:
-    if ($k['k_last_updated']) {
-        $ui .= ' <span data-toggle="tooltip" data-placement="top" title="Submitted on  ' . $k['k_last_updated'] . '" style="font-size:0.8em;">' . echo_diff_time($k['k_last_updated']) . '</span> ';
-    }
+    //Show submission time:
+    $ui .= ' <span data-toggle="tooltip" data-placement="top" title="Submitted on  ' . $k['tr_timestamp'] . '" style="font-size:0.8em;">' . echo_diff_time($k['tr_timestamp']) . '</span> ';
+
 
     //Link to subscriber, but count total subscriptions first:
     $ui .= '<a href="/entities/' . $k['u_id'] . '" target="_parent" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="Open Subscriber ' . $k['en_name'] . ' with ' . count($user_ws) . ' subscriptions"><span class="btn-counter">' . count($user_ws) . '</span><i class="fas fa-sign-out-alt rotate90"></i></a>';
