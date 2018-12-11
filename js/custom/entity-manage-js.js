@@ -353,9 +353,6 @@ function u_load_modify(en_id, tr_id) {
     en_name_word_count();
     en_icon_word_count();
 
-    //Update password reset UI:
-    $('#u_email').val($(".u__" + en_id + ":first").attr('entity-email'));
-
     //Only show unlink button if not level 1
     if (parseInt(tr_id) > 0) {
 

@@ -49,11 +49,11 @@ echo '</div>';
 
 
 //Show title
-echo '<h3 class="student-h3 primary-title">' . $c['in_outcome'] . '</h3>';
+echo '<h3 class="master-h3 primary-title">' . $c['in_outcome'] . '</h3>';
 
 if (count($k_ins) == 0) {
 
-    //Always hide messages on the subscription-level to have students focus on Action Plan
+    //Always hide messages on the subscription-level to have masters focus on Action Plan
     $hide_messages = true;
 
     //This must be top level subscription, show subscription data:

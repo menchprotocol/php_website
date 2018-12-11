@@ -39,7 +39,7 @@ class Custom extends CI_Controller
 
         if (isset($udata['en__parents'][0]) && filter_array($udata['en__parents'], 'en_id', 1308)) {
 
-            //Lead coach and above, go to matrix:
+            //Lead miner and above, go to matrix:
             redirect_message('/intents/' . $this->config->item('in_primary_id'));
 
         } elseif (1 || (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] == 'mench.co')) {
@@ -89,7 +89,7 @@ class Custom extends CI_Controller
         //Check to see if they are already logged in?
         $udata = $this->session->userdata('user');
         if (isset($udata['en__parents'][0]) && filter_array($udata['en__parents'], 'en_id', 1308)) {
-            //Lead coach and above, go to console:
+            //Lead miner and above, go to console:
             redirect_message('/intents/' . $this->config->item('in_primary_id'));
         }
 

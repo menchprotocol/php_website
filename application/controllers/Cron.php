@@ -20,7 +20,7 @@ class Cron extends CI_Controller
     //*/5 * * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron message_drip
     //*/6 * * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron save_profile_pic
     //31 * * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron intent_sync
-    //45 * * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron student_reminder_complete_task
+    //45 * * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron master_reminder_complete_task
     //30 2 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron algolia_sync b 0
     //30 4 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron algolia_sync u 0
     //30 3 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron e_score_recursive
@@ -545,13 +545,13 @@ class Cron extends CI_Controller
 
     }
 
-    function student_reminder_complete_task()
+    function master_reminder_complete_task()
     {
 
         exit; //Needs optimization
 
-        //Will ask the student why they are stuck and try to get them to engage with the material
-        //TODO implement social features to maybe connect to other students at the same level
+        //Will ask the master why they are stuck and try to get them to engage with the material
+        //TODO implement social features to maybe connect to other masters at the same level
         //The primary function that would pro-actively communicate the subscription to the user
         //If $tr_id is provided it would step forward a specific subscription
         //If both $tr_id and $en_id are present, it would auto register the user in an idle subscription if they are not part of it yet, and if they are, it would step them forward.
@@ -607,7 +607,7 @@ class Cron extends CI_Controller
         exit;
 
         //Cron Settings: 45 * * * *
-        //Send reminders to students to complete their intent:
+        //Send reminders to masters to complete their intent:
 
         $trs = $this->Db_model->w_fetch(array());
 

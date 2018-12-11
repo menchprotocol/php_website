@@ -123,10 +123,10 @@ class My extends CI_Controller
             ));
 
             //Let them choose between subscriptions:
-            echo '<h3 class="student-h3 primary-title">My Subscriptions</h3>';
+            echo '<h3 class="master-h3 primary-title">My Subscriptions</h3>';
             echo '<div class="list-group" style="margin-top: 10px;">';
             foreach ($trs as $w) {
-                echo echo_w_students($w);
+                echo echo_w_masters($w);
             }
             echo '</div>';
 
@@ -174,7 +174,7 @@ class My extends CI_Controller
                 $this->Db_model->tr_create(array(
                     'tr_en_credit_id' => $trs[0]['en_id'],
                     'tr_metadata' => $trs,
-                    'tr_content' => 'Unable to load a specific intent for the student Action Plan! Should not happen...',
+                    'tr_content' => 'Unable to load a specific intent for the master Action Plan! Should not happen...',
                     'tr_en_type_id' => 4246,
                     'tr_tr_parent_id' => $tr_id,
                     'tr_in_child_id' => $in_id,
@@ -322,7 +322,7 @@ class My extends CI_Controller
             return redirect_message('/my/actionplan', '<div class="alert alert-danger" role="alert">Error: Missing Core Data.</div>');
         }
 
-        //Fetch student name and details:
+        //Fetch master name and details:
         $udata = $this->session->userdata('user');
         $trs = $this->Db_model->tr_fetch(array(
             'tr_id' => $_POST['tr_id'],

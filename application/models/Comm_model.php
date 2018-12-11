@@ -186,7 +186,7 @@ class Comm_model extends CI_Model
                     //Log error engagement:
                     $this->Db_model->tr_create(array(
                         'tr_en_credit_id' => $u['en_id'],
-                        'tr_content' => 'Failed to skip an intent from the student Action Plan',
+                        'tr_content' => 'Failed to skip an intent from the master Action Plan',
                         'tr_en_type_id' => 4246, //System error
                         'tr_tr_parent_id' => intval($unsub_value),
                     ));
@@ -569,7 +569,7 @@ class Comm_model extends CI_Model
 
         } elseif (substr_count($fb_ref, 'MARKCOMPLETE_') == 1) {
 
-            //Student consumed AND tree content, and is ready to move on to next intent...
+            //Master consumed AND tree content, and is ready to move on to next intent...
             $input_parts = explode('_', one_two_explode('MARKCOMPLETE_', '', $fb_ref));
             $tr_id = intval($input_parts[0]);
             $tr_id = intval($input_parts[1]);
@@ -622,7 +622,7 @@ class Comm_model extends CI_Model
 
         } elseif (substr_count($fb_ref, 'CHOOSEOR_') == 1) {
 
-            //Student has responded to a multiple-choice OR tree
+            //Master has responded to a multiple-choice OR tree
             $input_parts = explode('_', one_two_explode('CHOOSEOR_', '', $fb_ref));
             $tr_id = intval($input_parts[0]);
             $tr_in_parent_id = intval($input_parts[1]);
@@ -863,7 +863,7 @@ class Comm_model extends CI_Model
                     'payload' => 'ACTIONPLANADD10_0',
                 ));
 
-                //return what we found to the student to decide:
+                //return what we found to the master to decide:
                 $this->Comm_model->send_message(array(
                     array(
                         'tr_en_child_id' => $u['en_id'],
@@ -1121,7 +1121,7 @@ class Comm_model extends CI_Model
         if (count($messages) < 1) {
             return array(
                 'status' => 0,
-                'message' => 'No messages set',
+                'message' => 'Missing input messages',
             );
         }
 
@@ -1143,62 +1143,60 @@ class Comm_model extends CI_Model
                     'tr_en_type_id' => 4246, //Platform error
                     'tr_content' => 'send_message() failed to send message as it was missing  tr_en_child_id',
                 ));
+
                 continue;
 
             }
 
-            //TODO Implement simple caching to remember $dispatch_fp_psid && $en IF some details remain the same
-            if (1) {
+            //Fetch user communication preferences:
+            $entities = array();
 
-                //Fetch user communication preferences:
-                $entities = array();
+            if (count($entities) < 1) {
+                //Fetch user profile via their account:
+                $entities = $this->Db_model->en_fetch(array(
+                    'en_id' => $message['tr_en_child_id'],
+                ));
+            }
 
-                if (count($entities) < 1) {
-                    //Fetch user profile via their account:
-                    $entities = $this->Db_model->en_fetch(array(
-                        'en_id' => $message['tr_en_child_id'],
-                    ));
-                }
 
-                if (count($entities) < 1) {
+            if (count($entities) < 1) {
 
+                //Log error:
+                $failed_count++;
+                $this->Db_model->tr_create(array(
+                    'tr_en_child_id' => $message['tr_en_child_id'],
+                    'tr_metadata' => $message,
+                    'tr_en_type_id' => 4246, //Platform error
+                    'tr_content' => 'send_message() failed to fetch user details message as it was missing core variables',
+                ));
+                continue;
+
+            } else {
+
+                //Determine communication method:
+                $dispatch_fp_psid = 0;
+                $en = array();
+
+                if ($entities[0]['u_fb_psid'] > 0) {
+                    //We fetched an subscription with an active Messenger connection:
+                    $dispatch_fp_psid = $entities[0]['u_fb_psid'];
+                    $en = $entities[0];
+                } elseif (strlen($entities[0]['u_email']) > 0) {
+                    //User has not activated Messenger but has email:
+                    $en = $entities[0];
+                } else {
+
+                    //This should technically not happen!
                     //Log error:
                     $failed_count++;
                     $this->Db_model->tr_create(array(
                         'tr_en_child_id' => $message['tr_en_child_id'],
                         'tr_metadata' => $message,
                         'tr_en_type_id' => 4246, //Platform error
-                        'tr_content' => 'send_message() failed to fetch user details message as it was missing core variables',
+                        'tr_content' => 'send_message() detected user without an active email/Messenger',
                     ));
                     continue;
 
-                } else {
-
-                    //Determine communication method:
-                    $dispatch_fp_psid = 0;
-                    $en = array();
-
-                    if ($entities[0]['u_fb_psid'] > 0) {
-                        //We fetched an subscription with an active Messenger connection:
-                        $dispatch_fp_psid = $entities[0]['u_fb_psid'];
-                        $en = $entities[0];
-                    } elseif (strlen($entities[0]['u_email']) > 0 && filter_var($entities[0]['u_email'], FILTER_VALIDATE_EMAIL)) {
-                        //User has not activated Messenger but has email:
-                        $en = $entities[0];
-                    } else {
-
-                        //This should technically not happen!
-                        //Log error:
-                        $failed_count++;
-                        $this->Db_model->tr_create(array(
-                            'tr_en_child_id' => $message['tr_en_child_id'],
-                            'tr_metadata' => $message,
-                            'tr_en_type_id' => 4246, //Platform error
-                            'tr_content' => 'send_message() detected user without an active email/Messenger',
-                        ));
-                        continue;
-
-                    }
                 }
             }
 

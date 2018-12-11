@@ -4,11 +4,11 @@
 <div class="login-content">
     <script>
         //Show loading:
-        function u_password_reset_initiate() {
+        function password_initiate_reset() {
             //Show loading:
             $('#pass_reset').html('<span><img src="/img/round_load.gif" style="width:16px; height:16px; margin-top:-2px;" class="loader" /></span>');
             //Hide the editor & saving results:
-            $.post("/entities/u_password_reset_initiate", {
+            $.post("/entities/password_initiate_reset", {
                 email: $('#u_email').val(),
             }, function (data) {
                 //Show success:
@@ -32,7 +32,7 @@
 			<span class="input-group-addon">
 				<i class="material-icons">lock_outline</i>
 			</span>
-            <div class="form-group is-empty"><input type="password" name="u_password" required="required"
+            <div class="form-group is-empty"><input type="password" name="input_password" required="required"
                                                     placeholder="Password" class="form-control"><span
                         class="material-input"></span></div>
         </div>
@@ -40,7 +40,7 @@
         <div id="loginb" class="submit-btn pass_success">
             <input type="submit" class="btn btn-primary pass btn-raised btn-round" value="Login">
             <a class="btn btn-primary pass btn-raised btn-round" style="display: none;"
-               href="javascript:u_password_reset_initiate();">Request Password Reset</a>
+               href="javascript:password_initiate_reset();">Request Password Reset</a>
             <span class="pass" style="width:294px; display:inline-block; font-size:0.9em; text-align: right;"><a
                         href="javascript:void(0)" onclick="$('.pass').toggle()">Forgot Password</a></span>
             <span class="pass" style="font-size:0.9em; display: none;">or <a href="javascript:void(0)"

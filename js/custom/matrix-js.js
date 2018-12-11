@@ -93,7 +93,7 @@ function switch_to(hashtag_name) {
 }
 
 function view_el(en_id, in_id) {
-    //This function toggles the student card report
+    //This function toggles the master card report
     //Determine its current state:
     if ($('#c_el_' + en_id + '_' + in_id).hasClass('hidden')) {
         //Need to show it now:

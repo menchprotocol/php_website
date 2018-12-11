@@ -92,7 +92,7 @@ $trs = $this->Db_model->i_fetch(array(
     echo '<span id="charNum' . $in_id . '">0</span>/' . $tr_content_max;
 
     ///firstname
-    echo '<a href="javascript:add_first_name();" class="textarea_buttons remove_loading" style="float:right;" data-toggle="tooltip" title="Replaced with student\'s First Name for a more personal message." data-placement="left"><i class="fas fa-fingerprint"></i> /firstname</a>';
+    echo '<a href="javascript:add_first_name();" class="textarea_buttons remove_loading" style="float:right;" data-toggle="tooltip" title="Replaced with master\'s First Name for a more personal message." data-placement="left"><i class="fas fa-fingerprint"></i> /firstname</a>';
 
     //Choose a file:
     $file_size_max = $this->config->item('file_size_max');

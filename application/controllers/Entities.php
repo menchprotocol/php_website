@@ -382,25 +382,32 @@ class Entities extends CI_Controller
 
         if (!isset($_POST['u_email']) || !filter_var($_POST['u_email'], FILTER_VALIDATE_EMAIL)) {
             return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Enter valid email to continue.</div>');
-        } elseif (!isset($_POST['u_password'])) {
+        } elseif (!isset($_POST['input_password'])) {
             return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Enter valid password to continue.</div>');
         }
 
-        //Fetch user data using email:
-        $entities = $this->Db_model->en_fetch(array(
-            'LOWER(u_email)' => strtolower($_POST['u_email']),
-        ), array('u__ws'));
+        //Validate user email:
+        $trs = $this->Db_model->tr_fetch(array(
+            'tr_en_parent_id' => 3288, //Primary email
+            'LOWER(tr_content)' => strtolower($_POST['u_email']),
+        ));
 
-        if (count($entities) == 0) {
-
+        if (count($trs) == 0) {
             //Not found!
             return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: ' . $_POST['u_email'] . ' not found.</div>');
+        }
 
-        } elseif ($entities[0]['en_status'] < 0) {
+        //Fetch full entity data with their active subscriptions:
+        $entities = $this->Db_model->en_fetch(array(
+            'en_id' => $trs[0]['tr_en_child_id'],
+        ), array('u__ws'));
+
+        if ($entities[0]['en_status'] < 0 || $trs[0]['tr_status'] < 0) {
 
             //Removed entity
             $this->Db_model->tr_create(array(
                 'tr_en_credit_id' => $entities[0]['en_id'],
+                'tr_en_child_id' => $entities[0]['en_id'],
                 'tr_content' => 'login() denied because account is not active.',
                 'tr_metadata' => $_POST,
                 'tr_en_type_id' => 4247, //Support Needing Graceful Errors
@@ -410,27 +417,18 @@ class Entities extends CI_Controller
 
         }
 
-        //Fetch their passwords to authenticate login:
-        $password_matched = false;
+        //Authenticate their password:
         $login_passwords = $this->Db_model->tr_fetch(array(
-            'tr_status >=' => 2, //Must be published or verified
             'tr_en_parent_id' => 3286, //Mench Login Password
-            'tr_en_child_id' => $entities[0]['en_id'], //For this user
+            'tr_en_child_id' => $entities[0]['en_id'],
         ));
-
-        //Should not happen, but possible to have multiple...
-        foreach ($login_passwords as $li) {
-            if ($li['tr_content'] == hash('sha256', $this->config->item('password_salt') . $_POST['u_password'])) {
-                //We found a matching password:
-                $password_matched = true;
-                break;
-            }
-        }
-
         if (count($login_passwords) == 0) {
             //They do not have a password assigned yet!
-            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: A login password has not been assigned to your account yet. You can assign a password using the Forgot Password Button.</div>');
-        } elseif (!$password_matched) {
+            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: An active login password has not been assigned to your account yet. You can assign a new password using the Forgot Password Button.</div>');
+        } elseif ($login_passwords[0]['tr_status'] < 2) {
+            //They do not have a password assigned yet!
+            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Password is not activated.</div>');
+        } elseif (!($login_passwords[0]['tr_content'] == hash('sha256', $this->config->item('password_salt') . $_POST['input_password']))) {
             //Bad password
             return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Incorrect password for [' . $_POST['u_email'] . ']</div>');
         }
@@ -438,38 +436,37 @@ class Entities extends CI_Controller
 
         $session_data = array();
         $is_chrome = (strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome') !== false || strpos($_SERVER['HTTP_USER_AGENT'], 'CriOS') !== false);
-        $is_coach = false;
-        $is_student = false;
+        $is_miner = false;
+        $is_master = false;
 
-        //Are they admin?
+
+        //Are they miner? Give them login access:
         if (filter_array($entities[0]['en__parents'], 'en_id', 1308)) {
             //They have admin rights:
             $session_data['user'] = $entities[0];
-            $is_coach = true;
+            $is_miner = true;
         }
 
 
-        //Applicable for coaches only:
+        //Applicable for miners only:
         if (!$is_chrome) {
 
-            if ($is_student) {
+            if ($is_master) {
 
-                //Remove coach privileges as they cannot use the matrix with non-chrome Browser:
-                $is_coach = false;
+                //Remove miner privileges as they cannot use the matrix with non-chrome Browser:
+                $is_miner = false;
                 unset($session_data['user']);
 
             } else {
 
-                redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Login Denied. The Matrix v' . $this->config->item('app_version') . ' supports <a href="https://www.google.com/chrome/browser/" target="_blank"><u>Google Chrome</u></a> only.</div>');
-                return false;
+                return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Login Denied. The Matrix v' . $this->config->item('app_version') . ' supports <a href="https://www.google.com/chrome/browser/" target="_blank"><u>Google Chrome</u></a> only.</div>');
 
             }
 
-        } elseif (!$is_coach && !$is_student) {
+        } elseif (!$is_miner && !$is_master) {
 
-            //We assume this is a student request:
-            redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: You have not been enrolled to any Bootcamps yet. You can only login as a student after you have been approved by your coach.</div>');
-            return false;
+            //We assume this is a master request:
+            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: You have not been enrolled to any Bootcamps yet. You can only login as a master after you have been approved by your miner.</div>');
 
         }
 
@@ -486,8 +483,8 @@ class Entities extends CI_Controller
         $this->session->set_userdata($session_data);
 
         //Append user IP and agent information
-        if (isset($_POST['u_password'])) {
-            unset($_POST['u_password']); //Sensitive information to be removed and NOT logged
+        if (isset($_POST['input_password'])) {
+            unset($_POST['input_password']); //Sensitive information to be removed and NOT logged
         }
         $entities[0]['login_ip'] = $_SERVER['REMOTE_ADDR'];
         $entities[0]['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
@@ -498,11 +495,11 @@ class Entities extends CI_Controller
             header('Location: ' . $_POST['url']);
         } else {
             //Default:
-            if ($is_coach) {
-                //Coach default:
+            if ($is_miner) {
+                //miner default:
                 header('Location: /intents/' . $this->config->item('in_primary_id'));
             } else {
-                //Student default:
+                //Master default:
                 header('Location: /my/actionplan');
             }
         }
@@ -524,7 +521,7 @@ class Entities extends CI_Controller
     }
 
 
-    function u_password_reset_initiate()
+    function password_initiate_reset()
     {
 
         //We need an email input:
@@ -553,12 +550,12 @@ class Entities extends CI_Controller
     }
 
 
-    function u_password_reset_apply()
+    function password_reset()
     {
         //This function updates the user's new password as requested via a password reset:
         if (!isset($_POST['en_id']) || intval($_POST['en_id']) <= 0 || !isset($_POST['timestamp']) || intval($_POST['timestamp']) <= 0 || !isset($_POST['p_hash']) || strlen($_POST['p_hash']) < 10) {
             echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Missing Core Variables.</div>';
-        } elseif (!($_POST['p_hash'] == md5($_POST['en_id'] . 'p@ssWordR3s3t' . $_POST['timestamp']))) {
+        } elseif (!($_POST['p_hash'] == md5($_POST['en_id'] . $this->config->item('password_salt') . $_POST['timestamp']))) {
             echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Invalid hash key.</div>';
         } elseif (!isset($_POST['new_pass']) || strlen($_POST['new_pass']) < 6) {
             echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: New password must be longer than 6 characters. Try again.</div>';

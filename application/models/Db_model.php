@@ -682,7 +682,7 @@ class Db_model extends CI_Model
             $insert_columns['tr_status'] = 1;
         }
         if (!isset($insert_columns['w_parent_en_id'])) {
-            $insert_columns['w_parent_en_id'] = 0; //No coach assigned
+            $insert_columns['w_parent_en_id'] = 0; //No miner assigned
         }
 
         if (!isset($insert_columns['w_c_rank'])) {
@@ -690,7 +690,7 @@ class Db_model extends CI_Model
             $insert_columns['w_c_rank'] = 1 + $this->Db_model->tr_max_order('tb_actionplans', 'w_c_rank', array(
                     'tr_status >=' => 1, //Anything they are working on...
                     'tr_en_parent_id' => $insert_columns['tr_en_parent_id'],
-                )); //No coach assigned
+                )); //No miner assigned
         }
 
         //Lets now add:
@@ -2535,10 +2535,6 @@ class Db_model extends CI_Model
                     if (!($x['x_url'] == $x['x_clean_url'])) {
                         $new_item['u_keywords'] .= ' ' . $x['x_clean_url'];
                     }
-                }
-
-                if (strlen($item['u_email']) > 0) {
-                    $new_item['u_keywords'] .= ' ' . $item['u_email'];
                 }
 
                 //Clean keywords

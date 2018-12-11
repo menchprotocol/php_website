@@ -143,7 +143,7 @@ body.grey-bg {
     color: #2f2739 !important;
 }
 
-.student-h3 {
+.master-h3 {
     font-size: 1.6em;
     line-height: 110% !important;
     margin: 0 0 15px 0 !important;
@@ -859,13 +859,6 @@ input::-webkit-inner-spin-button {
     height: 22px;
     margin-top: -2px;
     border-radius: 50%;
-}
-
-.coach-face {
-    width: 128px;
-    height: 128px;
-    border-radius: 50%;
-    margin: 15px 0;
 }
 
 .micro-image {
@@ -3005,14 +2998,6 @@ h4 .tip-badge {
 
 .radio-box p {
     font-size: 1.2em !important;
-}
-
-.coaching-box {
-    text-align: center;
-}
-
-.coaching-box p {
-    font-size: 1em !important;
 }
 
 .price-box {

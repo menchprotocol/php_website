@@ -100,7 +100,7 @@ function echo_embed($url, $full_message = null, $return_array = false, $start_se
             //Set the Clean URL:
             $clean_url = 'https://www.youtube.com/watch?v=' . $video_id;
 
-            //Inform Student that this video has been sliced:
+            //Inform Master that this video has been sliced:
             if ($start_sec || $end_sec) {
                 $embed_html_code .= '<div class="video-prefix"><i class="fab fa-youtube"></i> Watch ' . (($start_sec && $end_sec) ? 'this <b>' . echo_min_from_sec(($end_sec - $start_sec)) . '</b> video clip' : 'from <b>' . ($start_sec ? echo_min_from_sec($start_sec) : 'start') . '</b> to <b>' . ($end_sec ? echo_min_from_sec($end_sec) : 'end') . '</b>') . ':</div>';
             }
@@ -328,7 +328,7 @@ function echo_i($i, $en_name = null, $fb_format = false)
         //append their My Account Button/URL:
         $timestamp = time();
         $button_title = '👉 Set New Password';
-        $button_url = 'https://mench.com/my/reset_pass?en_id=' . $i['tr_en_child_id'] . '&timestamp=' . $timestamp . '&p_hash=' . md5($i['tr_en_child_id'] . 'p@ssWordR3s3t' . $timestamp);
+        $button_url = 'https://mench.com/my/reset_pass?en_id=' . $i['tr_en_child_id'] . '&timestamp=' . $timestamp . '&p_hash=' . md5($i['tr_en_child_id'] . $CI->config->item('password_salt') . $timestamp);
         $command = '/resetpassurl';
     }
 
@@ -683,7 +683,7 @@ function echo_w_matrix($w)
     $ui .= '<span class="pull-right">';
 
     //Show subscription time:
-    $ui .= ' <span data-toggle="tooltip" data-placement="top" title="Student initiated subscription on ' . $w['w_timestamp'] . '" style="font-size:0.8em;">' . echo_diff_time($w['w_timestamp']) . '</span> ';
+    $ui .= ' <span data-toggle="tooltip" data-placement="top" title="Master initiated subscription on ' . $w['w_timestamp'] . '" style="font-size:0.8em;">' . echo_diff_time($w['w_timestamp']) . '</span> ';
 
 
     //Show user notification level:
@@ -720,12 +720,12 @@ function echo_w_matrix($w)
         $ui .= '<a href="#wengagements-' . $w['tr_en_parent_id'] . '-' . $w['tr_id'] . '" onclick="load_u_engagements(' . $w['tr_en_parent_id'] . ',' . $w['tr_id'] . ')" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="' . $w['w_stats']['e_all_count'] . ' engagements"><span class="btn-counter">' . $w['w_stats']['e_all_count'] . ($w['w_stats']['e_all_count'] == $CI->config->item('max_counter') ? '+' : '') . '</span><i class="fas fa-atlas"></i></a>';
 
         //Link to subscriber, but count total subscriptions first:
-        $ui .= '<a href="/entities/' . $w['tr_en_parent_id'] . '" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="top" title="Student has ' . count($user_ws) . ' total subsciptions"><span class="btn-counter">' . count($user_ws) . '</span><i class="fas fa-sign-out-alt rotate90"></i></a>';
+        $ui .= '<a href="/entities/' . $w['tr_en_parent_id'] . '" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="top" title="Master has ' . count($user_ws) . ' total subsciptions"><span class="btn-counter">' . count($user_ws) . '</span><i class="fas fa-sign-out-alt rotate90"></i></a>';
 
     }
 
 
-    //Number of intents in Student Action Plan:
+    //Number of intents in Master Action Plan:
     $ui .= '<a href="#wactionplan-' . $w['tr_id'] . '-' . $w['tr_en_parent_id'] . '" onclick="load_w_actionplan(' . $w['tr_id'] . ',' . $w['tr_en_parent_id'] . ')" class="badge badge-primary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="' . $w['w_stats']['k_count_done'] . '/' . ($w['w_stats']['k_count_done'] + $w['w_stats']['k_count_undone']) . ' intents are marked as complete. Click to open Action Plan."><span class="btn-counter">' . (($w['w_stats']['k_count_undone'] + $w['w_stats']['k_count_done']) > 0 ? number_format(($w['w_stats']['k_count_done'] / ($w['w_stats']['k_count_undone'] + $w['w_stats']['k_count_done']) * 100), 0) . '%' : '0%') . '</span><i class="fas fa-flag" style="font-size:0.85em;"></i></a>';
 
 
@@ -755,7 +755,7 @@ function echo_w_matrix($w)
 }
 
 
-function echo_w_students($w)
+function echo_w_masters($w)
 {
     $ui = '<a href="/my/actionplan/' . $w['tr_id'] . '/' . $w['tr_in_child_id'] . '" class="list-group-item">';
     $ui .= '<span class="pull-right">';
@@ -1311,7 +1311,7 @@ function echo_object($object, $id, $engagement_field, $button_type)
                     //Plain view:
                     return '<a href="https://mench.com/intents/' . $trs[0]['tr_in_child_id'] . '">' . $trs[0]['in_outcome'] . '</a>';
                 } else {
-                    //TODO replace with Action Plan flag that would show student progress and load up their action plan...
+                    //TODO replace with Action Plan flag that would show master progress and load up their action plan...
                     return '<a href="/intents/' . $trs[0]['tr_in_child_id'] . '" target="_parent" class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="Subscribed to ' . $trs[0]['in_outcome'] . ' [Subscription #' . $id . ']"><i class="fas fa-comment-plus"></i></a> ';
                 }
             }
@@ -1712,7 +1712,7 @@ function echo_u($u, $level, $is_parent = false)
     $ui = null;
 
 
-    $ui .= '<div id="u_' . $u['en_id'] . '" entity-id="' . $u['en_id'] . '" entity-email="' . $u['u_email'] . '" entity-status="' . $u['en_status'] . '" has-password="' . (strlen($u['u_password']) > 0 ? 1 : 0) . '" is-parent="' . ($is_parent ? 1 : 0) . '" class="list-group-item u-item u__' . $u['en_id'] . ' ' . ($level == 1 ? 'top_entity' : 'tr_' . $u['tr_id']) . '">';
+    $ui .= '<div id="u_' . $u['en_id'] . '" entity-id="' . $u['en_id'] . '" entity-status="' . $u['en_status'] . '" is-parent="' . ($is_parent ? 1 : 0) . '" class="list-group-item u-item u__' . $u['en_id'] . ' ' . ($level == 1 ? 'top_entity' : 'tr_' . $u['tr_id']) . '">';
 
     //Hidden fields to store dynamic value!
     $ui .= '<span class="en_icon_val_' . $u['en_id'] . ' hidden">' . $u['en_icon'] . '</span>';
