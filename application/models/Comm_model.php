@@ -198,10 +198,8 @@ class Comm_model extends CI_Model
 
             if ($fb_ref == 'ACTIVATE_YES') {
 
-                //Update User table status:
-                $this->Db_model->en_update($u['u_id'], array(
-                    'u_status' => 1,
-                ));
+                //Update User communication level to Receive Silent Push Notifications:
+                $this->Db_model->en_radio_set(4454, 4457, $u['u_id'], $u['u_id']);
 
                 //Inform them:
                 $this->Comm_model->send_message(array(
@@ -330,7 +328,7 @@ class Comm_model extends CI_Model
                     //Show messages for this intent:
                     $messages = $this->Db_model->i_fetch(array(
                         'tr_in_child_id' => $tr_in_child_id,
-                        'i_status >=' => 0, //Published in any form
+                        'tr_status >=' => 0, //Published in any form
                     ));
 
                     foreach ($messages as $i) {
@@ -428,7 +426,7 @@ class Comm_model extends CI_Model
             $tr_id = intval($input_parts[1]);
 
             //Validate inputs:
-            if (!in_array($tr_status, array(-1,1,2)) || $tr_id<1) {
+            if (!in_array($tr_status, array(-1, 1, 2)) || $tr_id < 1) {
                 //Log Unknown error:
                 return $this->Db_model->tr_create(array(
                     'tr_content' => 'fb_ref_process() failed to fetch proper data for a skip request with reference value [' . $fb_ref . ']',
@@ -440,7 +438,7 @@ class Comm_model extends CI_Model
 
 
             //Was this initiating?
-            if ($tr_status==1) {
+            if ($tr_status == 1) {
 
                 //User has indicated they want to skip this tree and move on to the next item in-line:
                 //Lets confirm the implications of this SKIP to ensure they are aware:
@@ -509,12 +507,12 @@ class Comm_model extends CI_Model
                             array(
                                 'content_type' => 'text',
                                 'title' => 'Skip ' . $would_be_skipped_count . ' insight' . echo__s($would_be_skipped_count) . ' 🚫',
-                                'payload' => 'SKIPREQUEST_2_'.$new_tr['tr_id'], //Confirm and skip
+                                'payload' => 'SKIPREQUEST_2_' . $new_tr['tr_id'], //Confirm and skip
                             ),
                             array(
                                 'content_type' => 'text',
                                 'title' => 'Continue ▶️',
-                                'payload' => 'SKIPREQUEST_-1_'.$new_tr['tr_id'], //Cancel skipping
+                                'payload' => 'SKIPREQUEST_-1_' . $new_tr['tr_id'], //Cancel skipping
                             ),
                         ),
                     ),
@@ -524,7 +522,7 @@ class Comm_model extends CI_Model
 
 
                 //They have either confirmed or cancelled the skip:
-                if ($tr_status==-1) {
+                if ($tr_status == -1) {
 
                     //user changed their mind and does not want to skip anymore
                     $message = 'I am happy you changed your mind! Let\'s continue...';
@@ -532,7 +530,7 @@ class Comm_model extends CI_Model
                     //Reset ranking to find the next real item:
                     $k_rank = 0;
 
-                } elseif ($tr_status==2) {
+                } elseif ($tr_status == 2) {
 
                     //Actually skip and see if we've finished this Action Plan:
                     $skippable_ks = $this->Db_model->k_skip_recursive_down($tr_id);
@@ -703,7 +701,7 @@ class Comm_model extends CI_Model
 
         if (includes_any($fb_message_received, array('unsubscribe', 'quit', 'skip'))) {
 
-            if (count($is_unsubscribed)>0) {
+            if (count($is_unsubscribed) > 0) {
                 //User is already unsubscribed, let them know:
                 return $this->Comm_model->send_message(array(
                     array(
@@ -721,7 +719,7 @@ class Comm_model extends CI_Model
                 //These indicate that this is a top-level intent in the Action Plan:
                 'tr_in_parent_id' => 0,
                 'tr_tr_parent_id' => 0,
-            ), 100, array('in_child'), array('tr_order' => 'ASC'));
+            ), array('in_child'), 100, 0, array('tr_order' => 'ASC'));
 
 
             //Do they have anything in their Action Plan?
@@ -794,7 +792,7 @@ class Comm_model extends CI_Model
 
             }
 
-        } elseif ($fb_message_received && count($is_unsubscribed)>0) {
+        } elseif ($fb_message_received && count($is_unsubscribed) > 0) {
 
             //We got a message from an unsubscribed user, let them know:
             return $this->Comm_model->send_message(array(
@@ -895,7 +893,7 @@ class Comm_model extends CI_Model
                 'tr_timestamp >=' => date("Y-m-d H:i:s", (time() - (1800))), //Messages sent from us less than 30 minutes ago
                 'tr_en_type_id' => 4280, //Messages sent from us
                 'tr_en_credit_id' => 4148, //We log Facebook Inbox UI messages sent with this entity ID
-            ), 1)) == 0) {
+            ), array(), 1)) == 0) {
 
             //Fetch their currently working on subscriptions:
             $actionplans = $this->Db_model->w_fetch(array(
@@ -1016,14 +1014,13 @@ class Comm_model extends CI_Model
             //No profile!
             //This happens when user has signed uo to messenger with their phone number or for any reason that Facebook does not provide profile details
             $en = $this->Db_model->en_create(array(
-                'u_full_name' => 'Candidate ' . rand(100000000, 999999999),
-                'u_fb_psid' => $fp_psid,
+                'en_name' => 'Candidate ' . rand(100000000, 999999999),
             ), true);
 
             //Inform the user:
             $this->Comm_model->send_message(array(
                 array(
-                    'tr_en_child_id' => $u['u_id'],
+                    'tr_en_child_id' => $en['en_id'],
                     'tr_content' => 'Hi stranger! Let\'s get started by completing your profile information by opening the My Account tab in the menu below.',
                 ),
             ));
@@ -1033,20 +1030,63 @@ class Comm_model extends CI_Model
             //We did find the profile, move ahead:
             $fb_profile = $graph_fetch['tr_metadata']['result'];
 
+            //Create user
+            $en = $this->Db_model->en_create(array(
+                'en_name' => $fb_profile['first_name'] . ' ' . $fb_profile['last_name'],
+            ), true);
+
             //Split locale into language and country
             $locale = explode('_', $fb_profile['locale'], 2);
 
-            //Create user
-            $en = $this->Db_model->en_create(array(
-                'u_full_name' => $fb_profile['first_name'] . ' ' . $fb_profile['last_name'],
-                'u_timezone' => $fb_profile['timezone'],
-                'u_gender' => strtolower(substr($fb_profile['gender'], 0, 1)),
-                'u_language' => $locale[0],
-                'u_country_code' => $locale[1],
-                'u_fb_psid' => $fp_psid,
-            ), true);
+            //Try to match Facebook profile data to internal entities and create links for the ones we find:
+            foreach (array(
+                         $this->Db_model->en_search_match(3289, $fb_profile['timezone']), //Timezone
+                         $this->Db_model->en_search_match(3290, strtolower(substr($fb_profile['gender'], 0, 1))), //Gender either m/f
+                         $this->Db_model->en_search_match(3287, strtolower($locale[0])), //Language
+                         $this->Db_model->en_search_match(3089, strtolower($locale[1])), //Country
+                     ) as $tr_en_parent_id) {
+                //Did we find this item?
+                if ($tr_en_parent_id > 0) {
+                    $this->Db_model->tr_create(array(
+                        'tr_en_type_id' => 4230, //Naked link
+                        'tr_en_credit_id' => $en['en_id'],
+                        'tr_en_parent_id' => $tr_en_parent_id,
+                        'tr_en_child_id' => $en['en_id'],
+                    ));
+                }
+            }
 
         }
+
+        //Now create messenger related fields:
+        if ($fp_psid > 0) {
+
+            //Store their messenger ID:
+            $this->Db_model->tr_create(array(
+                'tr_en_type_id' => 4319, //Number Link
+                'tr_en_credit_id' => $en['en_id'],
+                'tr_en_parent_id' => 4451, //Mench Personal Assistant on Messenger
+                'tr_en_child_id' => $en['en_id'],
+                'tr_content' => $fp_psid,
+            ));
+
+            //Add them to masters group:
+            $this->Db_model->tr_create(array(
+                'tr_en_type_id' => 4230, //Naked link
+                'tr_en_credit_id' => $en['en_id'],
+                'tr_en_parent_id' => 4430, //Mench Master
+                'tr_en_child_id' => $en['en_id'],
+            ));
+
+            //Subscription Level:
+            $this->Db_model->tr_create(array(
+                'tr_en_type_id' => 4230, //Naked link
+                'tr_en_credit_id' => $en['en_id'],
+                'tr_en_parent_id' => 4456, //Receive Regular Notifications (This is the starting point that the Master can change later on...)
+                'tr_en_child_id' => $en['en_id'],
+            ));
+        }
+
 
         //Assign people group as we know this is who they are:
         $ur1 = $this->Db_model->tr_create(array(
@@ -1173,7 +1213,7 @@ class Comm_model extends CI_Model
                     'recipient' => array(
                         'id' => $dispatch_fp_psid,
                     ),
-                    'message' => echo_i($message, $u['u_full_name'], true),
+                    'message' => echo_i($message, $u['en_name'], true),
                     'messaging_type' => 'NON_PROMOTIONAL_SUBSCRIPTION', //https://developers.facebook.com/docs/messenger-platform/send-messages#messaging_types
                     // TODO fetch from u_fb_notification & translate 'notification_type' => $u_fb_notifications[$w['u_fb_notification']]['s_fb_key'],
                 );
@@ -1212,7 +1252,7 @@ class Comm_model extends CI_Model
                     $email_variables = array(
                         'u_email' => $u['u_email'],
                         'subject_line' => $subject_line,
-                        'html_message' => echo_i($message, $u['u_full_name'], false),
+                        'html_message' => echo_i($message, $u['en_name'], false),
                     );
 
 
@@ -1231,7 +1271,7 @@ class Comm_model extends CI_Model
 
                 } else {
                     //Append message to this user:
-                    $email_to_send[$u['u_id']]['html_message'] .= '<div style="padding-top:12px;">' . echo_i($message, $u['u_full_name'], false) . '</div>';
+                    $email_to_send[$u['u_id']]['html_message'] .= '<div style="padding-top:12px;">' . echo_i($message, $u['en_name'], false) . '</div>';
                 }
 
             }
@@ -1348,7 +1388,7 @@ class Comm_model extends CI_Model
         if (!$skip_messages && isset($intents[0]['in__active_messages']) && count($intents[0]['in__active_messages']) > 0) {
             //We have messages for the very first level!
             foreach ($intents[0]['in__active_messages'] as $key => $i) {
-                if ($i['i_status'] == 1) {
+                if ($i['tr_status'] == 1) {
                     //Add message to instant stream:
                     array_push($instant_messages, array_merge($e, $i));
                 }

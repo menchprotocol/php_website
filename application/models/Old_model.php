@@ -12,6 +12,42 @@ class Old_model extends CI_Model
 
 
 
+    function en_match_metadata($key, $value)
+    {
+
+        //Uses the en_metadata variable in config to determine if the current item has a valid entity parent or not.
+        $en_user_metadata = $this->config->item('en_user_metadata');
+
+        //Is this a timezone? We might need some adjustments if so...
+        if ($key == 'en_timezones') {
+            $valid_halfs = array(-4, -3, 3, 4, 9); //These are timezones with half values so far
+            $decimal = fmod(doubleval($value), 1);
+            if (!($decimal == 0)) {
+                $whole = intval(str_replace('.' . $decimal, '', $value));
+                if (in_array(intval($whole), $valid_halfs)) {
+                    $value = $whole + ($whole < 0 ? -0.5 : +0.5);
+                } else {
+                    $value = round(doubleval($value));
+                }
+            }
+        }
+
+        if (isset($en_user_metadata[$key][strtolower($value)])) {
+            //Found it, return entity ID:
+            return $en_user_metadata[$key][strtolower($value)];
+        } else {
+            //Ooops, this value did not exist! Notify the admin so we can look into this:
+            $this->Db_model->tr_create(array(
+                'tr_content' => 'en_match_metadata() failed to find cached variable [' . $key . ']=[' . $value . ']. Look into the cron/en_metadata() function and update this accordingly.',
+                'tr_en_type_id' => 4246, //Platform Error
+            ));
+            return false;
+        }
+    }
+
+
+
+
     function u_fetch($match_columns, $join_objects = array(), $limit = 0, $limit_offset = 0, $order_columns = array('u__e_score' => 'DESC'), $select = '*', $group_by = null)
     {
 

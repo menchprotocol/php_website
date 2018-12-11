@@ -3,7 +3,7 @@
 //Prepare some variables to better understand out situation here:
 $messages = $this->Db_model->i_fetch(array(
     'tr_in_child_id' => $c['in_id'],
-    'i_status' => 1, //On start messages only
+    'tr_status' => 1, //On start messages only
 ));
 $has_outs = (count($k_outs) > 0);
 //We want to show the child intents in specific conditions to ensure a step-by-step navigation by the user through the browser Action Plan
@@ -94,11 +94,11 @@ if (count($messages) > 0) {
     echo '<div class="tips_content message_content left-grey" style="display: ' . ($hide_messages ? 'none' : 'block') . ';">';
     echo '<h5 class="badge badge-hy"><i class="fas fa-comment-dots"></i> ' . count($messages) . ' Message' . echo__s(count($messages)) . ':</h5>';
     foreach ($messages as $i) {
-        if ($i['i_status'] == 1) {
+        if ($i['tr_status'] == 1) {
             echo '<div class="tip_bubble">';
             echo echo_i(array_merge($i, array(
                 'tr_en_child_id' => $w['u_id'],
-            )), $w['u_full_name']);
+            )), $w['en_name']);
             echo '</div>';
         }
     }

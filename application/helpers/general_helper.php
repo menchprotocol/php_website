@@ -5,18 +5,6 @@ function is_dev()
     return (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] == 'local.mench.co');
 }
 
-function lock_cron_for_processing($e_items)
-{
-    $CI =& get_instance();
-    foreach ($e_items as $e) {
-        if ($e['tr_id'] > 0 && $e['tr_status'] == 0) {
-            $CI->Db_model->tr_update($e['tr_id'], array(
-                'tr_status' => 1, //Working on...
-            ));
-        }
-    }
-}
-
 function includes_any($string, $items)
 {
     foreach ($items as $item) {
@@ -29,13 +17,13 @@ function includes_any($string, $items)
 
 function sortByScore($a, $b)
 {
-    return intval($b['u__e_score']) - intval($a['u__e_score']);
+    return intval($b['en_trust_score']) - intval($a['en_trust_score']);
 }
 
 function u_essentials($full_array)
 {
     $return_array = array();
-    foreach (array('u_id', 'u_full_name', 'u__e_score', 'x_url') as $key) {
+    foreach (array('u_id', 'en_name', 'en_trust_score', 'x_url') as $key) {
         if (isset($full_array[$key])) {
             $return_array[$key] = $full_array[$key];
         }
@@ -96,7 +84,7 @@ function fetch_entity_tree($u_id, $is_edit = false)
     $view_data = array(
         'parent_u_id' => $u_id,
         'entity' => $entities[0],
-        'title' => ($is_edit ? 'Modify ' : '') . $entities[0]['u_full_name'],
+        'title' => ($is_edit ? 'Modify ' : '') . $entities[0]['en_name'],
     );
 
     return $view_data;
@@ -224,38 +212,8 @@ function array_any_key_exists(array $keys, array $arr)
 }
 
 
-function en_match_metadata($key, $value)
-{
-    //Uses the en_metadata variable in config to determine if the current item has a valid entity parent or not.
-    $CI =& get_instance();
-    $en_user_metadata = $CI->config->item('en_user_metadata');
 
-    //Is this a timezone? We might need some adjustments if so...
-    if ($key == 'en_timezones') {
-        $valid_halfs = array(-4, -3, 3, 4, 9); //These are timezones with half values so far
-        $decimal = fmod(doubleval($value), 1);
-        if (!($decimal == 0)) {
-            $whole = intval(str_replace('.' . $decimal, '', $value));
-            if (in_array(intval($whole), $valid_halfs)) {
-                $value = $whole + ($whole < 0 ? -0.5 : +0.5);
-            } else {
-                $value = round(doubleval($value));
-            }
-        }
-    }
 
-    if (isset($en_user_metadata[$key][strtolower($value)])) {
-        //Found it, return entity ID:
-        return $en_user_metadata[$key][strtolower($value)];
-    } else {
-        //Ooops, this value did not exist! Notify the admin so we can look into this:
-        $CI->Db_model->tr_create(array(
-            'tr_content' => 'en_match_metadata() failed to find cached variable [' . $key . ']=[' . $value . ']. Look into the cron/en_metadata() function and update this accordingly.',
-            'tr_en_type_id' => 4246, //Platform Error
-        ));
-        return false;
-    }
-}
 
 
 function is_valid_intent($in_id)
@@ -558,7 +516,7 @@ function extract_references($prefix, $message)
     return $matches;
 }
 
-function message_validation($i_status, $tr_content, $tr_in_child_id)
+function message_validation($tr_status, $tr_content, $tr_in_child_id)
 {
 
 
@@ -571,7 +529,7 @@ function message_validation($i_status, $tr_content, $tr_in_child_id)
     $in_ids = extract_references('#', $tr_content);
 
 
-    if (!isset($i_status) || !(intval($i_status) == $i_status)) {
+    if (!isset($tr_status) || !(intval($tr_status) == $tr_status)) {
         return array(
             'status' => 0,
             'message' => 'Missing Status',
@@ -702,11 +660,11 @@ function message_validation($i_status, $tr_content, $tr_in_child_id)
                 'status' => 0,
                 'message' => 'Entity [@' . $u_ids[0] . '] does not exist',
             );
-        } elseif ($i_children_us[0]['u_status'] < 0) {
+        } elseif ($i_children_us[0]['en_status'] < 0) {
             //Inactive:
             return array(
                 'status' => 0,
-                'message' => 'Entity [' . $i_children_us[0]['u_full_name'] . '] is not active so you cannot link to it',
+                'message' => 'Entity [' . $i_children_us[0]['en_name'] . '] is not active so you cannot link to it',
             );
         }
 

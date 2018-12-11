@@ -46,7 +46,7 @@ $uri_segment_2 = $this->uri->segment(2);
 
         //Translate intent/entity icons to make them available in JS functions:
         echo ' var in_statuses = ' . json_encode(echo_status('in')) . '; ';
-        echo ' var u_statuses = ' . json_encode(echo_status('en')) . '; ';
+        echo ' var en_statuses = ' . json_encode(echo_status('en')) . '; ';
         ?>
 
         //Define global js variables:

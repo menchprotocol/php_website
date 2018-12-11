@@ -22,9 +22,9 @@ $trs = $this->Db_model->w_fetch(array(
 ?>
 <script>
     //Set global variables:
-    var u_status_filter = -1; //No filter, show all!
+    var en_status_filter = -1; //No filter, show all!
     var top_u_id = <?= $entity['u_id'] ?>;
-    var top_u_full_name = '<?= str_replace('\'', '’', $entity['u_full_name']) ?>';
+    var top_en_name = '<?= str_replace('\'', '’', $entity['en_name']) ?>';
 </script>
 <script src="/js/custom/entity-manage-js.js?v=v<?= $this->config->item('app_version') ?>"
         type="text/javascript"></script>
@@ -70,7 +70,10 @@ $trs = $this->Db_model->w_fetch(array(
         echo '<td style="width: 100px;"><h5 class="badge badge-h"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-children-count">' . $entity['in__children_count'] . '</span> Children</h5></td>';
         //Count orphans IF we are in the top parent root:
         if ($this->config->item('primary_en_id') == $entity['u_id']) {
-            $orphans_count = count($this->Db_model->en_orphans_fetch());
+            $orphans_count = count($this->Db_model->en_fetch(array(
+                ' NOT EXISTS (SELECT 1 FROM table_ledger WHERE en_id=tr_en_child_id AND tr_status>=0) ' => null,
+            ), array('skip_en__parents')));
+
             if ($orphans_count > 0) {
                 echo '<td style="width:130px;">';
                 echo '<span style="padding-left:8px; display: inline-block;"><a href="/entities/orphan">' . $orphans_count . ' Orphans &raquo;</a></span>';
@@ -83,9 +86,9 @@ $trs = $this->Db_model->w_fetch(array(
         $counts = $this->Old_model->ur_children_fetch(array(
             'tr_en_parent_id' => $entity['u_id'],
             'tr_status' => 1, //Only active
-            'u_status >=' => 0,
-        ), array(), 0, 0, 'COUNT(u_id) as u_counts, u_status', 'u_status', array(
-            'u_status' => 'ASC',
+            'en_status >=' => 0,
+        ), array(), 0, 0, 'COUNT(u_id) as u_counts, en_status', 'en_status', array(
+            'en_status' => 'ASC',
         ));
 
 
@@ -100,8 +103,8 @@ $trs = $this->Db_model->w_fetch(array(
 
             //Show each specific filter based on DB counts:
             foreach ($counts as $c_c) {
-                $st = $status_index['en'][$c_c['u_status']];
-                echo '<a href="#status-' . $c_c['u_status'] . '" onclick="u_load_filter_status(' . $c_c['u_status'] . ')" class="btn btn-default u-status-filter u-status-' . $c_c['u_status'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['s_desc'] . '"><i class="' . $st['s_icon'] . '"></i><span class="hide-small"> ' . $st['s_name'] . '</span> [<span class="count-u-status-' . $c_c['u_status'] . '">' . $c_c['u_counts'] . '</span>]</a>';
+                $st = $status_index['en'][$c_c['en_status']];
+                echo '<a href="#status-' . $c_c['en_status'] . '" onclick="u_load_filter_status(' . $c_c['en_status'] . ')" class="btn btn-default u-status-filter u-status-' . $c_c['en_status'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['s_desc'] . '"><i class="' . $st['s_icon'] . '"></i><span class="hide-small"> ' . $st['s_name'] . '</span> [<span class="count-u-status-' . $c_c['en_status'] . '">' . $c_c['u_counts'] . '</span>]</a>';
             }
 
         }
@@ -122,7 +125,7 @@ $trs = $this->Db_model->w_fetch(array(
         //Input to add new parents:
         echo '<div id="new-children" class="list-group-item list_input grey-input">
         <div class="input-group">
-            <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search bottom-add" data-lpignore="true" placeholder="Add ' . stripslashes($entity['u_full_name']) . '"></div>
+            <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search bottom-add" data-lpignore="true" placeholder="Add ' . stripslashes($entity['en_name']) . '"></div>
             <span class="input-group-addon">
                 <a class="badge badge-secondary new-btn" href="javascript:tr_add(0,' . $entity['u_id'] . ', 0);">ADD</a>
             </span>
@@ -186,14 +189,14 @@ $trs = $this->Db_model->w_fetch(array(
                                         style="margin:0 0 10px 0; font-size:0.8em;"><span
                                             id="charNameNum">0</span>/<?= $this->config->item('en_name_max') ?></span>]
                             </h4></div>
-                        <input type="text" id="u_full_name" value="" onkeyup="u_full_name_word_count()"
+                        <input type="text" id="en_name" value="" onkeyup="en_name_word_count()"
                                maxlength="<?= $this->config->item('en_name_max') ?>" data-lpignore="true"
                                placeholder="Name" class="form-control border">
 
 
                         <div class="title" style="margin-top:15px;"><h4><i class="fas fa-sliders-h"></i> Entity Status
                             </h4></div>
-                        <select class="form-control" id="u_status">
+                        <select class="form-control" id="en_status">
                             <?php
                             foreach (echo_status('en') as $status_id => $status) {
                                 echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';

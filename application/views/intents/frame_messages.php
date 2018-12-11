@@ -2,12 +2,12 @@
 
 //Fetch Messages based on in_id:
 $tr_content_max = $this->config->item('tr_content_max');
-$i_statuses = echo_status('i_status', null);
-$i_desc = echo_status('i_status');
+$tr_statuses = echo_status('tr_status', null);
+$i_desc = echo_status('tr_status');
 $udata = $this->session->userdata('user');
 $tr_contents = $this->Db_model->i_fetch(array(
     'tr_in_child_id' => $in_id,
-    'i_status >=' => 0, //Not Archived
+    'tr_status >=' => 0, //Not Removed
 ), 0);
 
 //Fetch intent details:
@@ -33,16 +33,16 @@ if (!isset($intents[0])) {
 <ul class="nav nav-tabs iphone-nav-tabs">
     <li role="presentation" class="nav_1 active" data-toggle="tooltip" title="<?= $i_desc[1]['s_desc'] ?>"
         data-placement="bottom"><a
-                href="#loadmessages-<?= $in_id ?>-1"><?= echo_status('i_status', 1, false, null) ?></a></li>
+                href="#loadmessages-<?= $in_id ?>-1"><?= echo_status('tr_status', 1, false, null) ?></a></li>
     <li role="presentation" class="nav_2" data-toggle="tooltip" title="<?= $i_desc[2]['s_desc'] ?>"
         data-placement="bottom"><a
-                href="#loadmessages-<?= $in_id ?>-2"><?= echo_status('i_status', 2, false, null) ?></a></li>
+                href="#loadmessages-<?= $in_id ?>-2"><?= echo_status('tr_status', 2, false, null) ?></a></li>
     <li role="presentation" class="nav_3" data-toggle="tooltip" title="<?= $i_desc[3]['s_desc'] ?>"
         data-placement="bottom"><a
-                href="#loadmessages-<?= $in_id ?>-3"><?= echo_status('i_status', 3, false, null) ?></a></li>
+                href="#loadmessages-<?= $in_id ?>-3"><?= echo_status('tr_status', 3, false, null) ?></a></li>
 </ul>
 
-<input type="hidden" id="i_status_focus" value="1"/>
+<input type="hidden" id="tr_status_focus" value="1"/>
 
 <div id="intent_messages<?= $in_id ?>">
 
@@ -59,7 +59,7 @@ if (!isset($intents[0])) {
                 'tr_en_child_id' => $udata['u_id'],
             )));
             //Increase counter:
-            ${'message_count_' . $i['i_status']}++;
+            ${'message_count_' . $i['tr_status']}++;
         }
         echo '</div>';
     } else {
@@ -69,13 +69,13 @@ if (!isset($intents[0])) {
 
     //Show no Message errors:
     if ($message_count_1 == 0) {
-        echo '<div class="ix-tip no-messages' . $in_id . '_1 all_msg msg_1"><i class="fas fa-exclamation-triangle"></i> No ' . echo_status('i_status', 1, false, null) . ' Messages added yet</div>';
+        echo '<div class="ix-tip no-messages' . $in_id . '_1 all_msg msg_1"><i class="fas fa-exclamation-triangle"></i> No ' . echo_status('tr_status', 1, false, null) . ' Messages added yet</div>';
     }
     if ($message_count_2 == 0) {
-        echo '<div class="ix-tip no-messages' . $in_id . '_2 all_msg msg_2 hidden"><i class="fas fa-exclamation-triangle"></i> No ' . echo_status('i_status', 2, false, null) . ' Messages added yet</div>';
+        echo '<div class="ix-tip no-messages' . $in_id . '_2 all_msg msg_2 hidden"><i class="fas fa-exclamation-triangle"></i> No ' . echo_status('tr_status', 2, false, null) . ' Messages added yet</div>';
     }
     if ($message_count_3 == 0) {
-        echo '<div class="ix-tip no-messages' . $in_id . '_3 all_msg msg_3 hidden"><i class="fas fa-exclamation-triangle"></i> No ' . echo_status('i_status', 3, false, null) . ' Messages added yet</div>';
+        echo '<div class="ix-tip no-messages' . $in_id . '_3 all_msg msg_3 hidden"><i class="fas fa-exclamation-triangle"></i> No ' . echo_status('tr_status', 3, false, null) . ' Messages added yet</div>';
     }
 
     ?>
@@ -104,9 +104,9 @@ if (!isset($intents[0])) {
     echo '</div>';
 
 
-    echo '<div class="iphone-add-btn all_msg msg_1"><a href="javascript:msg_create();" id="add_message_1_' . $in_id . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="top" class="btn btn-primary">ADD ' . echo_status('i_status', 1, false, null) . ' &nbsp; MESSAGE</a></div>';
-    echo '<div class="iphone-add-btn all_msg msg_2 hidden"><a href="javascript:msg_create();" id="add_message_2_' . $in_id . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="top" class="btn btn-primary">ADD ' . echo_status('i_status', 2, false, null) . ' &nbsp; MESSAGE</a></div>';
-    echo '<div class="iphone-add-btn all_msg msg_3 hidden"><a href="javascript:msg_create();" id="add_message_3_' . $in_id . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="top" class="btn btn-primary">ADD ' . echo_status('i_status', 3, false, null) . ' &nbsp; MESSAGE</a></div>';
+    echo '<div class="iphone-add-btn all_msg msg_1"><a href="javascript:msg_create();" id="add_message_1_' . $in_id . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="top" class="btn btn-primary">ADD ' . echo_status('tr_status', 1, false, null) . ' &nbsp; MESSAGE</a></div>';
+    echo '<div class="iphone-add-btn all_msg msg_2 hidden"><a href="javascript:msg_create();" id="add_message_2_' . $in_id . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="top" class="btn btn-primary">ADD ' . echo_status('tr_status', 2, false, null) . ' &nbsp; MESSAGE</a></div>';
+    echo '<div class="iphone-add-btn all_msg msg_3 hidden"><a href="javascript:msg_create();" id="add_message_3_' . $in_id . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="top" class="btn btn-primary">ADD ' . echo_status('tr_status', 3, false, null) . ' &nbsp; MESSAGE</a></div>';
 
 
     echo '</form>';

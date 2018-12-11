@@ -205,7 +205,7 @@ $(document).ready(function () {
             templates: {
                 suggestion: function (suggestion) {
                     console.log(suggestion);
-                    return '<i class="' + u_statuses[suggestion.u_status]["s_icon"] + '"></i> <i class="fas fa-at"></i> ' + suggestion.u_full_name;
+                    return '<i class="' + en_statuses[suggestion.en_status]["s_icon"] + '"></i> <i class="fas fa-at"></i> ' + suggestion.en_name;
                 },
             }
         }

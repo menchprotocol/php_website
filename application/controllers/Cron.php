@@ -40,7 +40,7 @@ class Cron extends CI_Controller
             'tr_status >=' => 0,
             'tr_en_child_id >' => 0,
             'tr_en_parent_id' => 4527,
-        ), 0, array('en_child'));
+        ), array('en_child'), 0);
 
         //Which ones should we do an extended "all" array?
         $enable_extended = array(3000);
@@ -53,7 +53,7 @@ class Cron extends CI_Controller
                 'en_status >=' => 0,
                 'tr_en_parent_id' => $en['tr_en_child_id'],
                 'tr_en_child_id >' => 0,
-            ), 0, array('en_child'), array('tr_en_child_id' => 'ASC'), 'en_id, en_name, en_icon');
+            ), array('en_child'), 0, 0, array('tr_en_child_id' => 'ASC'), 'en_id, en_name, en_icon');
 
             $child_ids = array();
             foreach($children as $child){
@@ -70,33 +70,6 @@ class Cron extends CI_Controller
                 echo ');<br />';
             }
         }
-
-
-        //Now lets do some other elements:
-        $fetch = array(
-            'en_countries' => 3089,
-            'en_languages' => 3287,
-            'en_timezones' => 3289,
-            'en_gender' => 3290,
-        );
-        echo '<br /><br />//Here are the user metadata elements:<br />';
-        echo '$config[\'en_user_metadata\'] = array(<br />';
-        foreach ($fetch as $array_key => $en_id) {
-            //Fetch all children for this entity:
-            $entities = $this->Db_model->tr_fetch(array(
-                'tr_en_parent_id' => $en_id,
-                'tr_status >=' => 0, //Pending or Active
-                'en_status >=' => 0, //Pending or Active
-            ), 0, array('en_child'));
-            echo '&nbsp;&nbsp;&nbsp;\'' . $array_key . '\' => array(<br />';
-            foreach ($entities as $en) {
-                echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'' . strtolower($en['tr_content']) . '\' => ' . $en['tr_en_child_id'] . ',<br />';
-            }
-            echo '&nbsp;&nbsp;&nbsp;),<br />';
-        }
-
-        //Also add gender:
-        echo ');';
     }
 
 
@@ -156,18 +129,18 @@ class Cron extends CI_Controller
     function list_duplicate_us()
     {
 
-        $q = $this->db->query('select u1.* from tb_entities u1 where (select count(*) from tb_entities u2 where u2.u_full_name = u1.u_full_name) > 1 ORDER BY u1.u_full_name ASC');
+        $q = $this->db->query('select u1.* from tb_entities u1 where (select count(*) from tb_entities u2 where u2.en_name = u1.en_name) > 1 ORDER BY u1.en_name ASC');
         $duplicates = $q->result_array();
 
 
         $prev_title = null;
         foreach ($duplicates as $u) {
-            if ($prev_title != $u['u_full_name']) {
+            if ($prev_title != $u['en_name']) {
                 echo '<hr />';
-                $prev_title = $u['u_full_name'];
+                $prev_title = $u['en_name'];
             }
 
-            echo '<a href="/entities/' . $u['u_id'] . '">#' . $u['u_id'] . '</a> ' . $u['u_full_name'] . '<br />';
+            echo '<a href="/entities/' . $u['u_id'] . '">#' . $u['u_id'] . '</a> ' . $u['en_name'] . '<br />';
         }
     }
 
@@ -175,7 +148,7 @@ class Cron extends CI_Controller
     function e_score_recursive($u = array())
     {
 
-        //Updates u__e_score based on number/value of connections to other intents/entities
+        //Updates en_trust_score based on number/value of connections to other intents/entities
         //Cron Settings: 2 * * * 30
 
         //Define weights:
@@ -195,7 +168,7 @@ class Cron extends CI_Controller
         $entities = $this->Old_model->ur_children_fetch(array(
             'tr_en_parent_id' => (count($u) > 0 ? $u['u_id'] : $this->config->item('primary_en_id')),
             'tr_status >=' => 0, //Pending or Active
-            'u_status >=' => 0, //Pending or Active
+            'en_status >=' => 0, //Pending or Active
         ));
 
         //Recursively loops through child entities:
@@ -213,10 +186,10 @@ class Cron extends CI_Controller
 
             $score += count($this->Db_model->tr_fetch(array(
                     'tr_en_child_id' => $u['u_id'],
-                ), 5000)) * $score_weights['tr_en_child_id'];
+                ), array(), 5000)) * $score_weights['tr_en_child_id'];
             $score += count($this->Db_model->tr_fetch(array(
                     'tr_en_credit_id' => $u['u_id'],
-                ), 5000)) * $score_weights['tr_en_credit_id'];
+                ), array(), 5000)) * $score_weights['tr_en_credit_id'];
 
             $score += count($this->Old_model->x_fetch(array(
                     'x_status >' => -2,
@@ -233,7 +206,7 @@ class Cron extends CI_Controller
 
             //Update the score:
             $this->Db_model->en_update($u['u_id'], array(
-                'u__e_score' => $score,
+                'en_trust_score' => $score,
             ));
 
             //return the score:
@@ -258,11 +231,11 @@ class Cron extends CI_Controller
             //Some standard checks to make sure, these should all be true:
             'tr_en_child_id >' => 0,
             'tr_in_child_id >' => 0,
-        ), 200);
+        ), array(), 200);
 
 
         //Lock item so other Cron jobs don't pick this up:
-        lock_cron_for_processing($e_pending);
+        $this->Db_model->tr_status_processing($e_pending);
 
 
         $drip_sent = 0;
@@ -308,11 +281,11 @@ class Cron extends CI_Controller
         $e_pending = $this->Db_model->tr_fetch(array(
             'tr_status' => 0, //Pending
             'tr_en_type_id' => 4299, //Save media file to Mench cloud
-        ), $max_per_batch);
+        ), array(), $max_per_batch);
 
 
         //Lock item so other Cron jobs don't pick this up:
-        lock_cron_for_processing($e_pending);
+        $this->Db_model->tr_status_processing($e_pending);
 
 
         $counter = 0;
@@ -324,8 +297,8 @@ class Cron extends CI_Controller
 
             if (!$curl) {
                 $error_message = 'Invalid URL (start with http:// or https://)';
-            } elseif ($curl['x_type'] != 4) {
-                $error_message = 'URL [Type ' . $curl['x_type'] . '] Does not point to an image';
+            } elseif ($curl['tr_en_type_id'] != 4260) {
+                $error_message = 'URL [Type ' . $curl['tr_en_type_id'] . '] is not a valid image URL';
             }
 
             if (!$error_message) {
@@ -338,6 +311,7 @@ class Cron extends CI_Controller
                 }
 
                 //Check to make sure this is not a Generic FB URL:
+                //TODO This function needs updating as its unable to fetch all generic/blank user icons that it sometimes sends us...
                 foreach (array(
                              'ecd274930db69ba4b2d9137949026300',
                              '5bf2d884209d168608b02f3d0850210d',
@@ -356,39 +330,23 @@ class Cron extends CI_Controller
 
                 if (!$error_message) {
 
-                    //Save URL:
-                    $new_x = $this->Db_model->x_create(array(
-                        'x_parent_u_id' => $u['u_id'],
-                        'x_u_id' => $u['u_id'],
-                        'x_url' => $new_file_url,
-                        'x_clean_url' => $new_file_url,
-                        'x_type' => 4, //Image
-                        'x_status' => 1, //Published
-                    ));
-
                     //Replace cover photo only if this user has no cover photo set:
-                    if (!(intval($u['u_cover_x_id']) > 0)) {
+                    if (strlen($u['en_icon'])<1) {
 
                         //Update Cover ID:
                         $this->Db_model->en_update($u['u_id'], array(
-                            'u_cover_x_id' => $new_x['x_id'],
-                        ));
+                            'en_icon' => '<img class="profile-icon" src="' . $new_file_url . '" />',
+                        ), true);
 
-                        //Log transaction:
-                        $this->Db_model->tr_create(array(
-                            'tr_en_credit_id' => $u['u_id'],
-                            'tr_en_child_id' => $u['u_id'],
-                            'tr_en_type_id' => 4263, //Entity Modified
-                            'tr_content' => 'Profile cover photo updates from Facebook Image [' . $u['tr_content'] . '] to Mench CDN [' . $new_file_url . ']',
-                            'e_x_id' => $new_x['x_id'],
-                        ));
                     }
                 }
             }
 
             //Update engagement:
+            $new_content = ($error_message ? 'ERROR: ' . $error_message : 'Success') . ' (Original Image URL: ' . $u['tr_content'] . ')';
             $this->Db_model->tr_update($u['tr_id'], array(
-                'tr_content' => ($error_message ? 'ERROR: ' . $error_message : 'Success') . ' (Original Image URL: ' . $u['tr_content'] . ')',
+                'tr_content' => $new_content,
+                'tr_en_type_id' => detect_tr_en_type_id($new_content),
                 'tr_status' => 2, //Publish
             ));
 
@@ -414,11 +372,11 @@ class Cron extends CI_Controller
         $e_pending = $this->Db_model->tr_fetch(array(
             'tr_status' => 0, //Pending file upload to S3
             'tr_en_type_id IN (4277,4280)' => null, //Sent/Received messages
-        ), $max_per_batch);
+        ), array(), $max_per_batch);
 
 
         //Lock item so other Cron jobs don't pick this up:
-        lock_cron_for_processing($e_pending);
+        $this->Db_model->tr_status_processing($e_pending);
 
 
         $counter = 0;
@@ -446,8 +404,9 @@ class Cron extends CI_Controller
 
                                         //Update engagement data:
                                         $this->Db_model->tr_update($ep['tr_id'], array(
-                                            'tr_content' => (strlen($ep['tr_content']) > 0 ? $ep['tr_content'] . "\n\n" : '') . '/attach ' . $att['type'] . ':' . $new_file_url, //Makes the file preview available on the message
-                                            'tr_status' => 2, //Mark as done
+                                            'tr_content' => $new_file_url,
+                                            'tr_en_type_id' => detect_tr_en_type_id($new_file_url),
+                                            'tr_status' => 2, //Publish
                                         ));
 
                                         //Increase counter:
@@ -576,7 +535,7 @@ class Cron extends CI_Controller
         foreach ($fetch_us as $u) {
             if (!filter_array($u['en__parents'], 'en_id', 1278)) {
                 //Add parent:
-                echo '<a href="/entities/' . $u['u_id'] . '">' . $u['u_full_name'] . '</a><br />';
+                echo '<a href="/entities/' . $u['u_id'] . '">' . $u['en_name'] . '</a><br />';
                 $ur1 = $this->Db_model->tr_create(array(
                     'tr_en_child_id' => $u['u_id'],
                     'tr_en_parent_id' => 1278,
@@ -608,7 +567,7 @@ class Cron extends CI_Controller
         $user_ids_served = array(); //We use this to ensure we're only service one subscription per user
         $active_ws = $this->Db_model->w_fetch(array(
             'tr_status' => 1,
-            'u_status >=' => 0,
+            'en_status >=' => 0,
             'in_status >=' => 2,
             'w_last_heard >=' => date("Y-m-d H:i:s", (time() + ($bot_settings['reminder_frequency_min'] * 60))),
         ), array('in', 'en'), array(
@@ -710,7 +669,7 @@ class Cron extends CI_Controller
                             ));
 
                             //Show in stats:
-                            array_push($stats, $subscription['u_full_name'] . ' done ' . round($subscription['w__progress'] * 100) . '% (less than target ' . round($logic['progress_below'] * 100) . '%) where class is ' . round($elapsed_class_percentage * 100) . '% complete and got reminded via in_id ' . $logic['reminder_in_id']);
+                            array_push($stats, $subscription['en_name'] . ' done ' . round($subscription['w__progress'] * 100) . '% (less than target ' . round($logic['progress_below'] * 100) . '%) where class is ' . round($elapsed_class_percentage * 100) . '% complete and got reminded via in_id ' . $logic['reminder_in_id']);
                         }
                     }
 

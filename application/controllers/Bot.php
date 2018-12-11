@@ -256,7 +256,7 @@ class Bot extends CI_Controller
 
                 } elseif (isset($im['message_request']) && $im['message_request'] == 'accept') {
 
-                    //This is when we message them and they accept to chat because they had Archived Messenger or something...
+                    //This is when we message them and they accept to chat because they had Removed Messenger or something...
                     $en = $this->Comm_model->fb_identify_activate($im['sender']['id']);
 
                 } elseif (isset($im['message'])) {

@@ -20,15 +20,15 @@ function u_load_child_search() {
         templates: {
             suggestion: function (suggestion) {
                 //If clicked, would trigger the autocomplete:selected above which will trigger the tr_add() function
-                return '<span><i class="fas fa-at"></i></span> ' + suggestion.u_full_name;
+                return '<span><i class="fas fa-at"></i></span> ' + suggestion.en_name;
             },
             header: function (data) {
                 if (!data.isEmpty) {
-                    return '<a href="javascript:tr_add(0,' + top_u_id + ',0)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + top_u_full_name + ']</a>';
+                    return '<a href="javascript:tr_add(0,' + top_u_id + ',0)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + top_en_name + ']</a>';
                 }
             },
             empty: function (data) {
-                return '<a href="javascript:tr_add(0,' + top_u_id + ',0)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create</span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + top_u_full_name + ']</a>';
+                return '<a href="javascript:tr_add(0,' + top_u_id + ',0)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create</span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + top_en_name + ']</a>';
             },
         }
     }]).keypress(function (e) {
@@ -117,15 +117,15 @@ $(document).ready(function () {
         templates: {
             suggestion: function (suggestion) {
                 //If clicked, would trigger the autocomplete:selected above which will trigger the tr_add() function
-                return '<span><i class="fas fa-at"></i></span> ' + suggestion.u_full_name;
+                return '<span><i class="fas fa-at"></i></span> ' + suggestion.en_name;
             },
             header: function (data) {
                 if (!data.isEmpty) {
-                    return '<a href="javascript:tr_add(0,' + top_u_id + ',1)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + top_u_full_name + ']</a>';
+                    return '<a href="javascript:tr_add(0,' + top_u_id + ',1)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + top_en_name + ']</a>';
                 }
             },
             empty: function (data) {
-                return '<a href="javascript:tr_add(0,' + top_u_id + ',1)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + top_u_full_name + ']</a>';
+                return '<a href="javascript:tr_add(0,' + top_u_id + ',1)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + top_en_name + ']</a>';
             },
         }
     }]);
@@ -134,10 +134,10 @@ $(document).ready(function () {
 });
 
 //Adds OR links authors and content for entities
-function tr_add(new_u_id, secondary_parent_u_id=0, is_parent) {
+function tr_add(new_en_id, assign_en_parent_id=0, is_parent) {
 
-    //if new_u_id>0 it means we're linking to an existing entity, in which case new_u_input should be null
-    //If new_u_id=0 it means we are creating a new entity and then linking it, in which case new_u_input is required
+    //if new_en_id>0 it means we're linking to an existing entity, in which case new_en_name should be null
+    //If new_en_id=0 it means we are creating a new entity and then linking it, in which case new_en_name is required
 
     if (is_parent) {
         var input = $('#new-parent .new-input');
@@ -152,10 +152,10 @@ function tr_add(new_u_id, secondary_parent_u_id=0, is_parent) {
     }
 
 
-    var new_u_input = null;
-    if (new_u_id == 0) {
-        new_u_input = input.val();
-        if (new_u_input.length < 1) {
+    var new_en_name = null;
+    if (new_en_id == 0) {
+        new_en_name = input.val();
+        if (new_en_name.length < 1) {
             alert('ERROR: Missing entity name or URL, try again');
             input.focus();
             return false;
@@ -173,10 +173,10 @@ function tr_add(new_u_id, secondary_parent_u_id=0, is_parent) {
     $.post("/entities/link_entities", {
 
         u_id: top_u_id,
-        new_u_id: new_u_id,
-        new_u_input: new_u_input,
+        new_en_id: new_en_id,
+        new_en_name: new_en_name,
         is_parent: (is_parent ? 1 : 0),
-        secondary_parent_u_id: secondary_parent_u_id,
+        assign_en_parent_id: assign_en_parent_id,
 
     }, function (data) {
 
@@ -190,11 +190,11 @@ function tr_add(new_u_id, secondary_parent_u_id=0, is_parent) {
             input.focus();
 
             //Add new object to list:
-            add_to_list(list_id, '.u-item', data.new_u);
+            add_to_list(list_id, '.u-item', data.new_en);
 
             //Adjust counters:
             $(counter_class).text((parseInt($(counter_class + ':first').text()) + 1));
-            $('.count-u-status-' + data.new_u_status).text((parseInt($('.count-u-status-' + data.new_u_status).text()) + 1));
+            $('.count-u-status-' + data.new_en_status).text((parseInt($('.count-u-status-' + data.new_en_status).text()) + 1));
 
             //Tooltips:
             $('[data-toggle="tooltip"]').tooltip();
@@ -213,7 +213,7 @@ function u_load_filter_status(new_val) {
         //Remove active class:
         $('.u-status-filter').removeClass('btn-secondary');
         //We do have a filter:
-        u_status_filter = parseInt(new_val);
+        en_status_filter = parseInt(new_val);
         $('.u-status-' + new_val).addClass('btn-secondary');
         u_load_next_page(0, 1);
     } else {
@@ -232,8 +232,8 @@ function u_icon_word_count() {
     }
 }
 
-function u_full_name_word_count() {
-    var len = $('#u_full_name').val().length;
+function en_name_word_count() {
+    var len = $('#en_name').val().length;
     if (len > en_name_max) {
         $('#charNameNum').addClass('overload').text(len);
     } else {
@@ -266,7 +266,7 @@ function u_load_next_page(page, load_new_filter = 0) {
     $.post("/entities/u_load_next_page", {
         page: page,
         parent_u_id: top_u_id,
-        u_status_filter: u_status_filter,
+        en_status_filter: en_status_filter,
     }, function (data) {
 
         //Appending to existing content:
@@ -290,8 +290,8 @@ function u_load_next_page(page, load_new_filter = 0) {
 function tr_unlink() {
 
     var tr_id = ($('#modifybox').hasClass('hidden') ? 0 : parseInt($('#modifybox').attr('entity-link-id')));
-    var u_level1_name = $('.top_entity .u_full_name').text();
-    var u_level2_name = $('.tr_' + tr_id + ' .u_full_name').text();
+    var u_level1_name = $('.top_entity .en_name').text();
+    var u_level2_name = $('.tr_' + tr_id + ' .en_name').text();
     var direction = (parseInt($('.tr_' + tr_id).attr('is-parent')) == 1 ? 'parent' : 'children');
     var counter_class = '.li-' + direction + '-count';
     var current_status = parseInt($('.tr_' + tr_id).attr('entity-status'));
@@ -346,11 +346,11 @@ function u_load_modify(u_id, tr_id) {
     $('#modifybox').attr('entity-id', u_id);
 
 
-    $('#u_full_name').val($(".u_full_name_" + u_id + ":first").text());
-    $('#u_status').val($(".u__" + u_id + ":first").attr('entity-status'));
+    $('#en_name').val($(".en_name_" + u_id + ":first").text());
+    $('#en_status').val($(".u__" + u_id + ":first").attr('entity-status'));
     $('#u_icon').val($(".u_icon_val_" + u_id + ":first").html().replace('\\', ''));
 
-    u_full_name_word_count();
+    en_name_word_count();
     u_icon_word_count();
 
     //Update password reset UI:
@@ -401,13 +401,13 @@ function u_save_modify() {
         tr_id: parseInt($('#modifybox').attr('entity-link-id')),
         tr_content: $('#tr_content').val(),
         u_id: parseInt($('#modifybox').attr('entity-id')),
-        u_full_name: $('#u_full_name').val(),
-        u_status: $('#u_status').val(), //The new status (might not have changed too)
+        en_name: $('#en_name').val(),
+        en_status: $('#en_status').val(), //The new status (might not have changed too)
         u_icon: $('#u_icon').val(),
     };
 
     //Take a snapshot of the status:
-    var original_u_status = parseInt($('.u__' + modify_data['u_id']).attr('entity-status'));
+    var original_en_status = parseInt($('.u__' + modify_data['u_id']).attr('entity-status'));
 
     //Show spinner:
     $('.save_entity_changes').html('<span><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
@@ -418,7 +418,7 @@ function u_save_modify() {
         if (data.status) {
 
             //Update variables:
-            $(".u_full_name_" + modify_data['u_id']).text(modify_data['u_full_name']);
+            $(".en_name_" + modify_data['u_id']).text(modify_data['en_name']);
             $(".u_icon_val_" + modify_data['u_id']).html(modify_data['u_icon']);
 
             //Did we have notes to update?
@@ -438,24 +438,24 @@ function u_save_modify() {
             }
 
             //has status updated? If so update the UI:
-            if (original_u_status != modify_data['u_status']) {
+            if (original_en_status != modify_data['en_status']) {
 
                 //Update status:
-                $('.u_status_' + modify_data['u_id']).html(data.status_u_ui);
+                $('.en_status_' + modify_data['u_id']).html(data.status_u_ui);
 
                 //Adjust counters for the filtering system as that also will change:
-                $('.count-u-status-' + modify_data['u_status']).text((parseInt($('.count-u-status-' + modify_data['u_status']).text()) + 1));
-                $('.count-u-status-' + original_u_status).text((parseInt($('.count-u-status-' + original_u_status).text()) - 1));
+                $('.count-u-status-' + modify_data['en_status']).text((parseInt($('.count-u-status-' + modify_data['en_status']).text()) + 1));
+                $('.count-u-status-' + original_en_status).text((parseInt($('.count-u-status-' + original_en_status).text()) - 1));
                 //TODO maybe the new counter element does not exist and we need to create it! Handle this case later...
 
-                if (u_status_filter >= 0 && !(modify_data['u_status'] == u_status_filter)) {
+                if (en_status_filter >= 0 && !(modify_data['en_status'] == en_status_filter)) {
                     //We have the filter on and it does not match the new status, so hide this:
                     setTimeout(function () {
                         $('.u__' + modify_data['u_id']).fadeOut();
                     }, 377);
                 } else {
                     //Update status:
-                    $('.u__' + modify_data['u_id']).attr('entity-status', modify_data['u_status']);
+                    $('.u__' + modify_data['u_id']).attr('entity-status', modify_data['en_status']);
                 }
 
             }
@@ -487,7 +487,7 @@ function u_load_messages(u_id) {
     //Make the frame visible:
     $('.fixed-box').addClass('hidden');
     $("#message-frame").removeClass('hidden').hide().fadeIn().attr('entity-id', u_id);
-    $("#message-frame h4").text($(".u_full_name_" + u_id + ":first").text());
+    $("#message-frame h4").text($(".en_name_" + u_id + ":first").text());
 
     var handler = $("#loaded-messages");
 

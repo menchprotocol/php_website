@@ -30,7 +30,7 @@ foreach ($engagement_filters as $key => $value) {
 }
 
 //Fetch engagements with possible filters:
-$engagements = $this->Db_model->tr_fetch($match_columns, (is_dev() ? 20 : 100));
+$engagements = $this->Db_model->tr_fetch($match_columns, array(), (is_dev() ? 20 : 100));
 
 ?>
 
@@ -66,7 +66,7 @@ foreach ($engagement_filters as $key => $value) {
         $all_engs = $this->Db_model->tr_fetch(array(
             'tr_status >=' => 0,
             'en_status >=' => 0,
-        ), 0, array('en_type'), array('trs_count' => 'DESC'), 'COUNT(tr_en_type_id) as trs_count, en_name, tr_en_type_id', 'tr_en_type_id, en_name');
+        ), array('en_type'), 0, 0, array('trs_count' => 'DESC'), 'COUNT(tr_en_type_id) as trs_count, en_name, tr_en_type_id', 'tr_en_type_id, en_name');
 
         echo '<select name="' . $key . '" class="border" style="width:160px;">';
         echo '<option value="0">' . $value . '</option>';

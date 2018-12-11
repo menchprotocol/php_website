@@ -228,7 +228,7 @@ $config['object_statuses'] = array(
 
     'x_status' => array(
         -2 => array(
-            's_name' => 'Archived',
+            's_name' => 'Removed',
             's_desc' => 'URL removed by User',
             's_icon' => 'fas fa-trash-alt',
         ),

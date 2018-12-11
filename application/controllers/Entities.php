@@ -30,12 +30,12 @@ class Entities extends CI_Controller
 
         $items_per_page = $this->config->item('items_per_page');
         $parent_u_id = intval($_POST['parent_u_id']);
-        $u_status_filter = intval($_POST['u_status_filter']);
+        $en_status_filter = intval($_POST['en_status_filter']);
         $page = intval($_POST['page']);
         $udata = auth(null); //Just be logged in to browse
         $filters = array(
             'tr_en_parent_id' => $parent_u_id,
-            'u_status' . ($u_status_filter < 0 ? ' >=' : '') => ($u_status_filter < 0 ? 0 : intval($u_status_filter)), //Pending or Active
+            'en_status' . ($en_status_filter < 0 ? ' >=' : '') => ($en_status_filter < 0 ? 0 : intval($en_status_filter)), //Pending or Active
             'tr_status' => 1, //Active link
         );
 
@@ -79,7 +79,7 @@ class Entities extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Parent Entity',
             ));
-        } elseif (!isset($_POST['secondary_parent_u_id'])) {
+        } elseif (!isset($_POST['assign_en_parent_id'])) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Parent Entity',
@@ -89,7 +89,7 @@ class Entities extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Entity Link Direction',
             ));
-        } elseif (!isset($_POST['new_u_id']) || !isset($_POST['new_u_input']) || (intval($_POST['new_u_id']) < 1 && strlen($_POST['new_u_input']) < 1)) {
+        } elseif (!isset($_POST['new_en_id']) || !isset($_POST['new_en_name']) || (intval($_POST['new_en_id']) < 1 && strlen($_POST['new_en_name']) < 1)) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Either New Entity ID or Name is required',
@@ -110,79 +110,69 @@ class Entities extends CI_Controller
 
         //Set some variables:
         $_POST['is_parent'] = intval($_POST['is_parent']);
-        $_POST['new_u_id'] = intval($_POST['new_u_id']);
+        $_POST['new_en_id'] = intval($_POST['new_en_id']);
         $linking_to_existing_u = false;
         $is_url_input = false;
 
         //Are we linking to an existing entity?
-        if (intval($_POST['new_u_id']) > 0) {
+        if (intval($_POST['new_en_id']) > 0) {
 
             //We're linking to an existing entity:
             $linking_to_existing_u = true;
 
             //Validate this existing entity
-            $new_us = $this->Db_model->en_fetch(array(
-                'u_id' => $_POST['new_u_id'],
-                'u_status >=' => 1, //Active only
+            $new_ens = $this->Db_model->en_fetch(array(
+                'u_id' => $_POST['new_en_id'],
+                'en_status >=' => 1, //Active only
             ));
-            if (count($new_us) < 1) {
+            if (count($new_ens) < 1) {
                 return echo_json(array(
                     'status' => 0,
                     'message' => 'Invalid active entity',
                 ));
             } else {
-                $new_u = $new_us[0];
+                $new_en = $new_ens[0];
             }
 
         } else {
 
-            if (filter_var(trim($_POST['new_u_input']), FILTER_VALIDATE_URL)) {
+            if (filter_var(trim($_POST['new_en_name']), FILTER_VALIDATE_URL)) {
 
 
-                if ($_POST['secondary_parent_u_id'] == 1326) {
+                //It's a URL, create an entity from this URL:
+                $accept_existing_url = (!$_POST['is_parent'] && $current_us[0]['u_id'] != 1326); //We can accept duplicates if we're not adding directly under content
+                $url_create = $this->Db_model->x_sync(trim($_POST['new_en_name']), 1326, 1, $accept_existing_url);
 
-                    //It's a URL, create an entity from this URL:
-                    $accept_existing_url = (!$_POST['is_parent'] && $current_us[0]['u_id'] != 1326); //We can accept duplicates if we're not adding directly under content
-                    $url_create = $this->Db_model->x_sync(trim($_POST['new_u_input']), 1326, 1, $accept_existing_url);
-
-                    //Did we have an error?
-                    if (!$url_create['status']) {
-                        return echo_json($url_create);
-                    } else {
-                        $linking_to_existing_u = (isset($url_create['is_existing']));
-                        $is_url_input = true;
-                        $new_u = $url_create['en'];
-                    }
-
+                //Did we have an error?
+                if (!$url_create['status']) {
+                    return echo_json($url_create);
                 } else {
-                    //We only support URL creation for content:
-                    return echo_json(array(
-                        'status' => 0,
-                        'message' => 'You can only use a URL for content entry',
-                    ));
+                    $linking_to_existing_u = (isset($url_create['is_existing']));
+                    $is_url_input = true;
+                    $new_en = $url_create['en'];
                 }
 
             } else {
 
                 //We should add a new entity:
-                $new_u = $this->Db_model->en_create(array(
-                    'u_full_name' => trim($_POST['new_u_input']),
-                ), true);
+                $new_en = $this->Db_model->en_create(array(
+                    'en_name' => trim($_POST['new_en_name']),
+                ), true, $udata['u_id']);
 
-                if (!isset($new_u['u_id']) || $new_u['u_id'] < 1) {
+                if (!isset($new_en['u_id']) || $new_en['u_id'] < 1) {
                     return echo_json(array(
                         'status' => 0,
-                        'message' => 'Failed to create new entity for [' . $_POST['new_u_input'] . ']',
+                        'message' => 'Failed to create new entity for [' . $_POST['new_en_name'] . ']',
                     ));
                 }
 
                 //Do we need to add this new entity to a secondary parent?
-                if (intval($_POST['secondary_parent_u_id']) > 0) {
+                if (intval($_POST['assign_en_parent_id']) > 0) {
 
                     //Link entity to a parent:
                     $ur1 = $this->Db_model->tr_create(array(
-                        'tr_en_child_id' => $new_u['u_id'],
-                        'tr_en_parent_id' => $_POST['secondary_parent_u_id'],
+                        'tr_en_child_id' => $new_en['u_id'],
+                        'tr_en_parent_id' => $_POST['assign_en_parent_id'],
                     ));
 
                 }
@@ -198,14 +188,14 @@ class Entities extends CI_Controller
             //Add links only if not already added by the URL function:
             if ($_POST['is_parent']) {
                 $tr_en_child_id = $current_us[0]['u_id'];
-                $tr_en_parent_id = $new_u['u_id'];
+                $tr_en_parent_id = $new_en['u_id'];
             } else {
-                $tr_en_child_id = $new_u['u_id'];
+                $tr_en_child_id = $new_en['u_id'];
                 $tr_en_parent_id = $current_us[0]['u_id'];
             }
 
             //Let's make sure this is not the same as the secondary category:
-            if (!($_POST['secondary_parent_u_id'] == $tr_en_parent_id)) {
+            if (!($_POST['assign_en_parent_id'] == $tr_en_parent_id)) {
                 //Link to new OR existing entity:
                 $ur2 = $this->Db_model->tr_create(array(
                     'tr_en_child_id' => $tr_en_child_id,
@@ -223,8 +213,8 @@ class Entities extends CI_Controller
         return echo_json(array(
             'status' => 1,
             'message' => 'Success',
-            'new_u_status' => $new_u['u_status'],
-            'new_u' => echo_u(array_merge($new_u, $ur2), 2, $_POST['is_parent']),
+            'new_en_status' => $new_en['en_status'],
+            'new_en' => echo_u(array_merge($new_en, $ur2), 2, $_POST['is_parent']),
         ));
     }
 
@@ -280,12 +270,12 @@ class Entities extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid ID',
             ));
-        } elseif (!isset($_POST['u_full_name']) || strlen($_POST['u_full_name']) <= 0) {
+        } elseif (!isset($_POST['en_name']) || strlen($_POST['en_name']) <= 0) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing name',
             ));
-        } elseif (!isset($_POST['u_status'])) {
+        } elseif (!isset($_POST['en_status'])) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing status',
@@ -295,7 +285,7 @@ class Entities extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing entity link data',
             ));
-        } elseif (strlen($_POST['u_full_name']) > $this->config->item('en_name_max')) {
+        } elseif (strlen($_POST['en_name']) > $this->config->item('en_name_max')) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Name is longer than the allowed ' . $this->config->item('en_name_max') . ' characters. Shorten and try again.',
@@ -305,8 +295,8 @@ class Entities extends CI_Controller
 
         //Prepare data to be updated:
         $u_update = array(
-            'u_status' => intval($_POST['u_status']),
-            'u_full_name' => trim($_POST['u_full_name']),
+            'en_status' => intval($_POST['en_status']),
+            'en_name' => trim($_POST['en_name']),
             'u_icon' => trim($_POST['u_icon']),
             'u_email' => (isset($_POST['u_email']) && strlen($_POST['u_email']) > 0 ? trim(strtolower($_POST['u_email'])) : null),
         );
@@ -340,10 +330,9 @@ class Entities extends CI_Controller
         }
 
         //Now update the DB:
-        $this->Db_model->en_update(intval($_POST['u_id']), $u_update);
-        //Above call would also update algolia index...
+        $this->Db_model->en_update(intval($_POST['u_id']), $u_update, true, $udata['u_id']);
 
-        //Refetch some DB (to keep consistency with login session format) & update the Session:
+        //Reset user session data if this data belongs to the logged-in user:
         if ($_POST['u_id'] == $udata['u_id']) {
             $entities = $this->Db_model->en_fetch(array(
                 'u_id' => intval($_POST['u_id']),
@@ -353,24 +342,11 @@ class Entities extends CI_Controller
             }
         }
 
-        //Log transaction:
-        $this->Db_model->tr_create(array(
-            'tr_en_credit_id' => $udata['u_id'], //The user that updated the account
-            'tr_content' => echo_changelog($u_current[0], $u_update, 'u_'),
-            'tr_metadata' => array(
-                'input_data' => $_POST,
-                'initial_data' => $u_current[0],
-                'after' => $u_update,
-            ),
-            'tr_en_type_id' => 4263, //Entity modified
-            'tr_en_child_id' => intval($_POST['u_id']), //The user that their account was updated
-        ));
-
         //Show success:
         return echo_json(array(
             'status' => 1,
             'message' => '<span><i class="fas fa-check"></i> Saved</span>',
-            'status_u_ui' => echo_status('en', $_POST['u_status'], true, 'left'),
+            'status_u_ui' => echo_status('en', $_POST['en_status'], true, 'bottom'),
             'tr_content' => echo_link($_POST['tr_content']),
         ));
 
@@ -389,7 +365,7 @@ class Entities extends CI_Controller
         }
 
         $messages = $this->Db_model->i_fetch(array(
-            'i_status >=' => 0,
+            'tr_status >=' => 0,
             'tr_en_parent_id' => $_POST['u_id'],
         ), 0);
         echo '<div id="list-messages" class="list-group  grey-list">';
@@ -421,9 +397,9 @@ class Entities extends CI_Controller
             //Not found!
             return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: ' . $_POST['u_email'] . ' not found.</div>');
 
-        } elseif ($entities[0]['u_status'] < 0) {
+        } elseif ($entities[0]['en_status'] < 0) {
 
-            //Archived entity
+            //Removed entity
             $this->Db_model->tr_create(array(
                 'tr_en_credit_id' => $entities[0]['u_id'],
                 'tr_content' => 'login() denied because account is not active.',
@@ -603,6 +579,7 @@ class Entities extends CI_Controller
                 //Update existing password:
                 $this->Db_model->tr_update($login_passwords[0]['tr_id'], array(
                     'tr_content' => $new_password,
+                    'tr_en_type_id' => detect_tr_en_type_id($new_password),
                 ), $login_passwords[0]['tr_en_child_id']);
 
             } else {

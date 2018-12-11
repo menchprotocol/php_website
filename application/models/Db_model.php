@@ -11,8 +11,6 @@ class Db_model extends CI_Model
     }
 
 
-
-
     function en_radio_set($en_parent_bucket_id, $set_en_child_id = 0, $en_master_id, $tr_en_credit_id = 0)
     {
 
@@ -39,13 +37,13 @@ class Db_model extends CI_Model
         }
 
         //First remove existing parent/child transactions for this drop down:
-        $already_assigned = ( $set_en_child_id<1 );
+        $already_assigned = ($set_en_child_id < 1);
         $updated_tr_id = 0;
         foreach ($this->Db_model->tr_fetch(array(
             'tr_en_child_id' => $en_master_id,
             'tr_en_parent_id IN (' . join(',', $children) . ')' => null, //Current children
             'tr_status >=' => 0,
-        ), 200) as $tr) {
+        ), array(), 200) as $tr) {
 
             if (!$already_assigned && $tr['tr_en_parent_id'] == $set_en_child_id) {
                 $already_assigned = true;
@@ -55,7 +53,7 @@ class Db_model extends CI_Model
 
                 //Do not log update transaction here as we would log it further below:
                 $this->Db_model->tr_update($tr['tr_id'], array(
-                    'tr_status' => ( $set_en_child_id>0 ? -2 /* Being Updated */ : -1 /* Being Removed */ ), //Updated or Removed
+                    'tr_status' => ($set_en_child_id > 0 ? -2 /* Being Updated */ : -1 /* Being Removed */), //Updated or Removed
                 ));
             }
 
@@ -96,9 +94,9 @@ class Db_model extends CI_Model
             'k_rank >' => $min_k_rank,
             //The first case is for OR intents that a child is not yet selected, and the second part is for regular incompleted items:
             '(tr_status IN (1,-2) AND in_is_any=1)' => null, //Not completed or not yet started
-        ), array('w', 'cr', 'cr_c_child'), array(
+        ), array('w', 'cr', 'cr_c_child'), 1, 0, array(
             'k_rank' => 'DESC',
-        ), 1);
+        ));
 
         //We did not find it? Ok fetch the first one and replace:
         $first_pending_all = $this->Db_model->tr_fetch(array(
@@ -108,9 +106,9 @@ class Db_model extends CI_Model
             'k_rank >' => $min_k_rank,
             //The first case is for OR intents that a child is not yet selected, and the second part is for regular incompleted items:
             'tr_status IN (0,-2)' => null, //Not completed or not yet started
-        ), array('w', 'cr', 'cr_c_child'), array(
+        ), array('w', 'cr', 'cr_c_child'), 1, 0, array(
             'k_rank' => 'ASC', //Items are cached in order ;)
-        ), 1);
+        ));
 
         if (isset($first_pending_all[0]) && (!isset($last_working_on_any[0]) || $first_pending_all[0]['k_rank'] < $last_working_on_any[0]['k_rank'])) {
             return $first_pending_all;
@@ -146,7 +144,7 @@ class Db_model extends CI_Model
             //Dispatch all on-complete messages of $in_id
             $messages = $this->Db_model->i_fetch(array(
                 'tr_in_child_id' => $trs[0]['tr_in_child_id'],
-                'i_status' => 3, //On complete messages
+                'tr_status' => 3, //On complete messages
             ));
             if (count($messages) > 0) {
                 $send_messages = array();
@@ -178,7 +176,7 @@ class Db_model extends CI_Model
         $skippable_ks = $this->Db_model->tr_fetch(array(
             'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
             'tr_id IN (' . join(',', $skip_ks) . ')' => null,
-        ), ($update_db ? array() : array('cr', 'cr_c_child')), array('k_rank' => 'ASC'));
+        ), ($update_db ? array() : array('cr', 'cr_c_child')), 0, 0, array('k_rank' => 'ASC'));
 
         if ($update_db) {
 
@@ -595,7 +593,7 @@ class Db_model extends CI_Model
                 'tr_en_type_id IN (' . join(', ', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
                 'tr_status >=' => 0,
                 'in_status >=' => 0,
-            ), 0, array('in_child'), array('tr_order' => 'ASC'));
+            ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
 
 
             if (count($dup_links) > 0) {
@@ -637,15 +635,15 @@ class Db_model extends CI_Model
             'tr_in_child_id' => $new_intent['in_id'],
 
             'tr_order' => 1 + $this->Db_model->tr_max_order('table_ledger', 'tr_order', array(
-                'tr_status >=' => 0,
-                'in_status >=' => 0,
-                'tr_en_type_id' => 4228,
-                'tr_in_parent_id' => intval($in_id),
-            )),
+                    'tr_status >=' => 0,
+                    'in_status >=' => 0,
+                    'tr_en_type_id' => 4228,
+                    'tr_in_parent_id' => intval($in_id),
+                )),
         ), true);
 
         //Update tree count from parent and above:
-        $updated_recursively = $this->Db_model->c_update_tree($in_id, $recursive_query);
+        $updated_recursively = $this->Db_model->metadata_tree_update('in', $in_id, $recursive_query);
 
 
         $relations = $this->Old_model->cr_children_fetch(array(
@@ -658,7 +656,7 @@ class Db_model extends CI_Model
             'tr_en_type_id IN (' . join(', ', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
             'tr_status >=' => 0,
             'in_status >=' => 0,
-        ), 0, array('in_child'), array('tr_order' => 'ASC'));
+        ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
 
         //Return result:
         return array(
@@ -733,29 +731,7 @@ class Db_model extends CI_Model
     }
 
 
-    function en_orphans_fetch()
-    {
-        return array();
-        //TODO Fetches the orphan entities:
-        return $this->Db_model->in_fetch(array(
-            ' NOT EXISTS (SELECT 1 FROM tb_entity_links ur WHERE u_id = tr_en_child_id AND tr_status>0) ' => null,
-        ), array('skip_en__parents'));
-    }
-
-
-    function in_orphans_fetch()
-    {
-        return array();
-        //TODO Fetches the orphan intents:
-        return $this->Db_model->in_fetch(array(
-            ' NOT EXISTS (SELECT 1 FROM tb_entity_links ur WHERE u_id = tr_en_child_id AND tr_status>0) ' => null,
-        ));
-    }
-
-
-
-
-    function en_fetch($match_columns, $join_objects = array(), $limit = 0, $limit_offset = 0, $order_columns = array('u__e_score' => 'DESC'), $select = '*', $group_by = null)
+    function en_fetch($match_columns, $join_objects = array(), $limit = 0, $limit_offset = 0, $order_columns = array('en_trust_score' => 'DESC'), $select = '*', $group_by = null)
     {
 
         //Fetch the target entities:
@@ -790,7 +766,7 @@ class Db_model extends CI_Model
                 $res[$key]['in__children_count'] = count($this->Old_model->ur_children_fetch(array(
                     'tr_en_parent_id' => $val['u_id'],
                     'tr_status >=' => 0, //Pending or Active
-                    'u_status >=' => 0, //Pending or Active
+                    'en_status >=' => 0, //Pending or Active
                 )));
             }
 
@@ -816,14 +792,14 @@ class Db_model extends CI_Model
             }
 
 
-            //Fetch the messages for this entity:
+            //Always fetch entity parents unless explicitly requested not to:
             if (in_array('skip_en__parents', $join_objects)) {
                 $res[$key]['en__parents'] = array();
             } else {
                 $res[$key]['en__parents'] = $this->Db_model->tr_parent_fetch(array(
                     'tr_en_child_id' => $val['u_id'],
                     'tr_status >=' => 0, //Pending or Active
-                    'u_status >=' => 0, //Pending or Active
+                    'en_status >=' => 0, //Pending or Active
                 ));
             }
         }
@@ -832,10 +808,9 @@ class Db_model extends CI_Model
     }
 
 
-    function en_create($insert_columns, $external_sync = false)
+    function en_create($insert_columns, $external_sync = false, $tr_en_credit_id = 0)
     {
 
-        //Name cannot be longer than this:
         //What is required to create a new intent?
         if (detect_missing_columns($insert_columns, array('en_status', 'en_name'))) {
             return false;
@@ -856,13 +831,20 @@ class Db_model extends CI_Model
         $this->db->insert('table_entities', $insert_columns);
 
         //Fetch inserted id:
-        if(!isset($insert_columns['en_id'])){
+        if (!isset($insert_columns['en_id'])) {
             $insert_columns['en_id'] = $this->db->insert_id();
         }
 
         if ($insert_columns['en_id'] > 0) {
 
             if ($external_sync) {
+
+                //Log transaction new entity:
+                $this->Db_model->tr_create(array(
+                    'tr_en_credit_id' => ($tr_en_credit_id > 0 ? $tr_en_credit_id : $insert_columns['en_id']),
+                    'tr_en_child_id' => $insert_columns['en_id'],
+                    'tr_en_type_id' => 4251, //New Entity Created
+                ));
 
                 //Update Algolia:
                 $this->Db_model->algolia_sync('en', $insert_columns['en_id']);
@@ -890,27 +872,16 @@ class Db_model extends CI_Model
         }
     }
 
-    function en_update($id, $update_columns, $external_sync = false)
+    function tr_status_processing($e_items)
     {
-
-        //Cleanup if needed:
-        $update_columns['en_metadata'] = (isset($update_columns['en_metadata']) ? serialize($update_columns['en_metadata']) : null );
-
-        //Update:
-        $this->db->where('en_id', $id);
-        $this->db->update('table_entities', $update_columns);
-
-        if ($external_sync) {
-            $this->Db_model->algolia_sync('en', $id);
+        foreach ($e_items as $e) {
+            if ($e['tr_id'] > 0 && $e['tr_status'] == 0) {
+                $this->Db_model->tr_update($e['tr_id'], array(
+                    'tr_status' => 1, //Working on... (So other cron jobs do not pickup this item again)
+                ));
+            }
         }
-
-        return $this->db->affected_rows();
     }
-
-
-    /* ******************************
-     * i Messages
-     ****************************** */
 
 
     function i_create($insert_columns)
@@ -931,11 +902,8 @@ class Db_model extends CI_Model
             return false;
         }
 
-        if (!isset($insert_columns['i_timestamp'])) {
-            $insert_columns['i_timestamp'] = date("Y-m-d H:i:s");
-        }
-        if (!isset($insert_columns['i_status'])) {
-            $insert_columns['i_status'] = 1;
+        if (!isset($insert_columns['tr_status'])) {
+            $insert_columns['tr_status'] = 1;
         }
         if (!isset($insert_columns['tr_order'])) {
             $insert_columns['tr_order'] = 1;
@@ -961,7 +929,7 @@ class Db_model extends CI_Model
     }
 
 
-    function in_fetch($match_columns, $join_objects = array(), $order_columns = array(), $limit = 0, $limit_offset = 0, $select = '*', $group_by = null)
+    function in_fetch($match_columns, $join_objects = array(), $limit = 0, $limit_offset = 0, $order_columns = array(), $select = '*', $group_by = null)
     {
 
         //The basic fetcher for intents
@@ -994,7 +962,7 @@ class Db_model extends CI_Model
                     'tr_status >=' => 0, //New+ status which is considered active (not removed)
                     'tr_en_type_id IN (' . join(',', $this->config->item('en_child_4485')) . ')' => null, //All Intent messages
                     'tr_in_child_id' => $value['in_id'],
-                ), 200, array(), array('tr_order' => 'ASC'));
+                ), array(), 200, 0, array('tr_order' => 'ASC'));
             }
 
             //Should we fetch all parent intentions?
@@ -1033,8 +1001,6 @@ class Db_model extends CI_Model
     }
 
 
-
-
     function tr_max_order($match_columns)
     {
 
@@ -1051,82 +1017,6 @@ class Db_model extends CI_Model
         } else {
             //Nothing found:
             return 0;
-        }
-    }
-
-
-    function tr_search_place($tr_en_child_id, $tr_content_search, $parent_parent_u_id, $tr_content_update = null)
-    {
-
-        //This function would attempt to find a child of $parent_parent_u_id that its tr_content=$tr_content
-        //Once it finds it, then it would place it under that as long as it does not exist...
-
-        //first make sure not already assigned:
-        $found_parent = $this->Old_model->ur_children_fetch(array(
-            'tr_en_parent_id' => $parent_parent_u_id,
-            'LOWER(tr_content)' => trim(strtolower($tr_content_search)),
-        ));
-
-        if (count($found_parent) > 0) {
-            return $this->Db_model->tr_place($tr_en_child_id, $found_parent[0]['u_id'], $tr_content_update);
-        } else {
-            //Unable to locate the parent:
-            return false;
-        }
-    }
-
-    function tr_place($tr_en_child_id, $tr_en_credit_id, $tr_content = null)
-    {
-
-        //This function would attempt to place $tr_en_child_id as a child of $tr_en_credit_id
-
-        //first make sure not already assigned:
-        $existing = $this->Old_model->ur_children_fetch(array(
-            'tr_en_parent_id' => $tr_en_credit_id,
-            'tr_en_child_id' => $tr_en_child_id,
-        ));
-
-        if (count($existing) > 0) {
-
-            $update_array = array();
-            //We have it already! We might need to update it:
-            if ($existing[0]['tr_status'] == -1) {
-                $update_array['tr_status'] = 1; //Bring back to life
-                $update_array['tr_content'] = $tr_content; //Assign notes anyways since this was deleted!
-            } elseif (strlen($existing[0]['tr_content']) == 0) {
-                //We can update its notes since there is nothing there:
-                $update_array['tr_content'] = $tr_content;
-            } else {
-                //We can't do anything since its an active entity link with a note
-                return false;
-            }
-
-            //Still here? Update then:
-            $this->Db_model->tr_update($existing[0]['tr_id'], $update_array);
-
-            //Log transaction:
-            $this->Db_model->tr_create(array(
-                'tr_en_type_id' => 4242, //entity link note modification
-                'e_tr_id' => $existing[0]['tr_id'],
-                'tr_metadata' => array(
-                    'initial_data' => $existing[0],
-                    'after' => $update_array,
-                ),
-            ));
-
-            return true;
-
-        } else {
-
-            //Create new one:
-            $new_ur = $this->Db_model->tr_create(array(
-                'tr_en_child_id' => $tr_en_child_id,
-                'tr_en_parent_id' => $tr_en_credit_id,
-                'tr_content' => $tr_content,
-            ));
-
-            return true;
-
         }
     }
 
@@ -1203,7 +1093,7 @@ class Db_model extends CI_Model
             } else {
                 return array(
                     'status' => 0,
-                    'message' => 'URL is already being used by [' . $dup_urls[0]['u_full_name'] . ']. URLs cannot belong to multiple entities.',
+                    'message' => 'URL is already being used by [' . $dup_urls[0]['en_name'] . ']. URLs cannot belong to multiple entities.',
                 );
             }
         } elseif (count($children_us) < 1) {
@@ -1218,39 +1108,32 @@ class Db_model extends CI_Model
 
             //We need to create a new entity and add this URL below it:
             $x_types = echo_status('x_type', null);
-            $u_full_name = null;
+            $en_name = null;
             $url_code = substr(md5($x_url), 0, 8);
 
             if (strlen($curl['page_title']) > 0) {
 
                 //Make sure this is not a duplicate name:
                 $dup_name_us = $this->Db_model->en_fetch(array(
-                    'u_status >=' => 0,
-                    'u_full_name' => $curl['page_title'],
+                    'en_status >=' => 0,
+                    'en_name' => $curl['page_title'],
                 ));
 
                 if (count($dup_name_us) > 0) {
                     //Yes, we did find a duplicate name! Change this slightly:
-                    $u_full_name = $curl['page_title'] . ' ' . $url_code;
+                    $en_name = $curl['page_title'] . ' ' . $url_code;
                 } else {
                     //No duplicate detected, all good to go:
-                    $u_full_name = $curl['page_title'];
+                    $en_name = $curl['page_title'];
                 }
 
             } else {
-                $u_full_name = $x_types[$curl['x_type']]['s_name'] . ' ' . $url_code;
+                $en_name = $x_types[$curl['x_type']]['s_name'] . ' ' . $url_code;
             }
 
             $new_entity = $this->Db_model->en_create(array(
-                'u_full_name' => $u_full_name,
-            ), true);
-
-            //Log transaction new entity:
-            $this->Db_model->tr_create(array(
-                'tr_en_credit_id' => $udata['u_id'],
-                'tr_en_child_id' => $new_entity['u_id'],
-                'tr_en_type_id' => 4251, //Entity Created
-            ));
+                'en_name' => $en_name,
+            ), true, $udata['u_id']);
 
             //Place this new entity in $x_u_id [Content]
             $ur1 = $this->Db_model->tr_create(array(
@@ -1299,7 +1182,7 @@ class Db_model extends CI_Model
                 'curl' => $curl,
                 'en' => array_merge($new_entity, $ur1),
                 'set_cover_x_id' => $set_cover_x_id,
-                'new_u' => ($accept_existing_url ? null : echo_u(array_merge($new_entity, $ur1), 2)),
+                'new_en' => ($accept_existing_url ? null : echo_u(array_merge($new_entity, $ur1), 2)),
             );
 
         } else {
@@ -1318,7 +1201,6 @@ class Db_model extends CI_Model
     }
 
 
-
     function tr_parent_fetch($match_columns, $join_objects = array())
     {
         //Missing anything?
@@ -1333,70 +1215,193 @@ class Db_model extends CI_Model
                 $this->db->where($key);
             }
         }
-        $this->db->order_by('u__e_score', 'DESC');
+        $this->db->order_by('en_trust_score', 'DESC');
         $q = $this->db->get();
         return $q->result_array();
     }
 
 
-    function in_update($id, $update_columns, $external_sync = false)
+    function en_update($id, $update_columns, $external_sync = false, $tr_en_credit_id = 0)
     {
-        //Cleanup if needed:
-        $update_columns['in_metadata'] = (isset($update_columns['in_metadata']) ? serialize($update_columns['in_metadata']) : null );
+
+        /*
+         *
+         * $external_sync helps log a transaction for the new entity that is about to
+         * be created but we yet dont have its entity ID to use in $tr_en_credit_id!
+         *
+         * */
+
+        if (count($update_columns) == 0) {
+            return false;
+        }
+
+        if ($external_sync) {
+            //Fetch current entity filed values so we can compare later on after we've updated it:
+            $before_data = $this->Db_model->en_fetch(array('en_id' => $id));
+
+            //Make sure this was a valid id:
+            if (!(count($before_data) == 1)) {
+                return false;
+            }
+        }
+
+        //Cleanup metadata if needed:
+        $update_columns['en_metadata'] = (isset($update_columns['en_metadata']) ? serialize($update_columns['en_metadata']) : null);
+
+        //Update:
+        $this->db->where('en_id', $id);
+        $this->db->update('table_entities', $update_columns);
+        $affected_rows = $this->db->affected_rows();
+
+        //Do we need to do any additional work?
+        if ($affected_rows && $external_sync) {
+
+            //Log modification transaction for every field changed:
+            foreach ($update_columns as $key => $value) {
+
+                //Has this value changed compared to what we initially had in DB?
+                if (!($before_data[0][$key] == $value) && !in_array($key, array('en_metadata', 'en_trust_score'))) {
+
+                    //Value has changed, log engagement:
+                    $this->Db_model->tr_create(array(
+                        'tr_en_credit_id' => ($tr_en_credit_id > 0 ? $tr_en_credit_id : $id),
+                        'tr_en_type_id' => ($key == 'en_status' && intval($value) < 0 ? 4253 /* Removed */ : 4263 /* Attribute Modified */),
+                        'tr_en_child_id' => $id,
+                        'tr_content' => 'Entity ' . ucwords(str_replace('_', ' ', str_replace('en_', '', $key))) . ' modified from [' . $before_data[0][$key] . '] to [' . $value . ']',
+                        'tr_metadata' => array(
+                            'en_id' => $id,
+                            'field' => $key,
+                            'before' => $before_data[0][$key],
+                            'after' => $value,
+                        ),
+                    ));
+
+                }
+
+            }
+
+            //Sync algolia:
+            $this->Db_model->algolia_sync('en', $id);
+
+        }
+
+        return $affected_rows;
+    }
+
+
+    function in_update($id, $update_columns, $tr_en_credit_id = 0)
+    {
+
+        if (count($update_columns) == 0) {
+            return false;
+        }
+
+        if ($tr_en_credit_id > 0) {
+            //Fetch current intent filed values so we can compare later on after we've updated it:
+            $before_data = $this->Db_model->in_fetch(array('in_id' => $id));
+
+            //Make sure this was a valid id:
+            if (!(count($before_data) == 1)) {
+                return false;
+            }
+        }
+
+        //Cleanup metadata if needed:
+        $update_columns['in_metadata'] = (isset($update_columns['in_metadata']) ? serialize($update_columns['in_metadata']) : null);
 
         //Update:
         $this->db->where('in_id', $id);
         $this->db->update('table_intents', $update_columns);
+        $affected_rows = $this->db->affected_rows();
 
-        //Update Algolia:
-        if ($external_sync) {
+        //Do we need to do any additional work?
+        if ($affected_rows && $tr_en_credit_id) {
+
+            //Note that unlike entity modification, we require a creditor entity ID to log the modification transaction:
+            //Log modification transaction for every field changed:
+            foreach ($update_columns as $key => $value) {
+
+                //Has this value changed compared to what we initially had in DB?
+                if (!($before_data[0][$key] == $value) && !in_array($key, array('in_metadata'))) {
+
+                    //Value has changed, log engagement:
+                    $this->Db_model->tr_create(array(
+                        'tr_en_credit_id' => $tr_en_credit_id,
+                        'tr_en_type_id' => ($key == 'in_status' && intval($value) < 0 ? 4252 /* Removed */ : 4264 /* Attribute Modified */),
+                        'tr_in_child_id' => $id,
+                        'tr_content' => 'Intent ' . ucwords(str_replace('_', ' ', str_replace('in_', '', $key))) . ' modified from [' . $before_data[0][$key] . '] to [' . $value . ']',
+                        'tr_metadata' => array(
+                            'in_id' => $id,
+                            'field' => $key,
+                            'before' => $before_data[0][$key],
+                            'after' => $value,
+                        ),
+                    ));
+
+                }
+
+            }
+
+            //Sync algolia:
             $this->Db_model->algolia_sync('in', $id);
+
         }
 
-        return $this->db->affected_rows();
+        return $affected_rows;
     }
 
 
-    function tr_update($id, $update_columns, $tr_en_credit_id = 0, $append_metadata = array())
+    function tr_update($id, $update_columns, $tr_en_credit_id = 0)
     {
 
-        //Fetch transaction before updating:
-        $current_trs = $this->Db_model->tr_fetch(array(
-            'tr_id' => $id,
-        ), 1);
-        if (count($current_trs) < 1) {
-            //This was an invalid Transaction ID:
+        if (count($update_columns) == 0) {
             return false;
         }
 
+        if ($tr_en_credit_id > 0) {
+            //Fetch transaction before updating:
+            $before_data = $this->Db_model->tr_fetch(array(
+                'tr_id' => $id,
+            ));
+
+            //Make sure this was a valid id:
+            if (!(count($before_data) == 1)) {
+                return false;
+            }
+        }
+
         //Cleanup if needed:
-        $update_columns['tr_metadata'] = (isset($update_columns['tr_metadata']) ? serialize($update_columns['tr_metadata']) : null );
+        $update_columns['tr_metadata'] = (isset($update_columns['tr_metadata']) ? serialize($update_columns['tr_metadata']) : null);
 
         //Update:
         $this->db->where('tr_id', $id);
         $this->db->update('table_ledger', $update_columns);
         $affected_rows = $this->db->affected_rows();
 
-        $base_metadata = array(
-            'initial_data' => $current_trs[0],
-            'after' => $update_columns,
-        );
-
         //Log changes if successful:
         if ($affected_rows && $tr_en_credit_id) {
 
-            $this->Db_model->tr_create(array(
-                'tr_tr_parent_id' => $id, //Parent Transaction ID
-                'tr_en_credit_id' => $tr_en_credit_id, //Give the credit
-                'tr_en_type_id' => (isset($update_columns['tr_status']) && in_array($update_columns['tr_status'], array(-1, -3)) ? 4241 /*Removed*/ : 4242 /*Modified*/),
-                'tr_content' => echo_changelog($current_trs[0], $update_columns, 'tr_'),
-                'tr_metadata' => ( count($append_metadata)>0 ? array_merge($base_metadata, $append_metadata) : $base_metadata ),
-                //Copy others:
-                'tr_en_parent_id' => $current_trs[0]['tr_en_parent_id'],
-                'tr_en_child_id'  => $current_trs[0]['tr_en_child_id'],
-                'tr_in_parent_id' => $current_trs[0]['tr_in_parent_id'],
-                'tr_in_child_id'  => $current_trs[0]['tr_in_child_id'],
-            ));
+            //Log modification transaction for every field changed:
+            foreach ($update_columns as $key => $value) {
+
+                //Has this value changed compared to what we initially had in DB?
+                if (in_array($key, array('tr_status', 'tr_content', 'tr_order', 'tr_en_parent_id', 'tr_en_child_id', 'tr_in_parent_id', 'tr_in_child_id')) && !($before_data[0][$key] == $value)) {
+
+                    //Value has changed, log engagement:
+                    $this->Db_model->tr_create(array(
+                        'tr_tr_parent_id' => $id, //Parent Transaction ID
+                        'tr_en_credit_id' => $tr_en_credit_id,
+                        'tr_en_type_id' => ($key == 'tr_status' && in_array(intval($value), array(-1, -3)) ? 4241 /* Removed */ : 4242 /* Attribute Modified */),
+                        'tr_content' => 'Transaction ' . ucwords(str_replace('_', ' ', str_replace('tr_', '', $key))) . ' modified from [' . $before_data[0][$key] . '] to [' . $value . ']',
+                        'tr_metadata' => array(
+                            'tr_id' => $id,
+                            'field' => $key,
+                            'before' => $before_data[0][$key],
+                            'after' => $value,
+                        ),
+                    ));
+                }
+            }
         }
 
         return $affected_rows;
@@ -1437,7 +1442,6 @@ class Db_model extends CI_Model
     /* ******************************
      * Other
      ****************************** */
-
 
 
     function x_update($id, $update_columns)
@@ -1509,7 +1513,7 @@ class Db_model extends CI_Model
     }
 
 
-    function tr_fetch($match_columns = array(), $limit = 100, $join_objects = array(), $order_columns = array('tr_timestamp' => 'DESC'), $select = '*', $group_by = null)
+    function tr_fetch($match_columns = array(), $join_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('tr_timestamp' => 'DESC'), $select = '*', $group_by = null)
     {
 
         $this->db->select($select);
@@ -1546,12 +1550,57 @@ class Db_model extends CI_Model
         }
 
         if ($limit > 0) {
-            $this->db->limit($limit);
+            $this->db->limit($limit, $limit_offset);
         }
         $q = $this->db->get();
         return $q->result_array();
     }
 
+
+    function en_search_match($en_parent_id, $value)
+    {
+
+        //Is this a timezone? We need to adjust the timezone according to our limited timezone entities
+        if ($en_parent_id == 3289) {
+            $valid_halfs = array(-4, -3, 3, 4, 9); //These are timezones with half values so far
+            $decimal = fmod(doubleval($value), 1);
+            if (!($decimal == 0)) {
+                $whole = intval(str_replace('.' . $decimal, '', $value));
+                if (in_array(intval($whole), $valid_halfs)) {
+                    $value = $whole + ($whole < 0 ? -0.5 : +0.5);
+                } else {
+                    $value = round(doubleval($value));
+                }
+            }
+        }
+
+
+        //Search and see if we can find $value in the transaction content:
+        $matching_entities = $this->Db_model->tr_fetch(array(
+            'tr_en_parent_id' => $en_parent_id,
+            'tr_en_child_id > ' => 0,
+            'tr_content' => $value,
+            'tr_status >=' => 0, //Pending or Active
+        ), array(), 0);
+
+
+        if (count($matching_entities) == 1) {
+
+            //Bingo, return result:
+            return intval($matching_entities[0]['tr_en_child_id']);
+
+        } else {
+
+            //Ooooopsi, this value did not exist! Notify the admin so we can look into this:
+            $this->Db_model->tr_create(array(
+                'tr_content' => 'en_search_match() found [' . count($matching_entities) . '] results as the children of en_id=[' . $en_parent_id . '] that had the value of [' . $value . '].',
+                'tr_en_type_id' => 4246, //Platform Error
+                'tr_en_child_id' => $en_parent_id,
+            ));
+
+            return 0;
+        }
+    }
 
     function tr_create($insert_columns, $external_sync = false)
     {
@@ -1575,8 +1624,6 @@ class Db_model extends CI_Model
         }
 
 
-
-
         //Try to auto detect user:
         if (!isset($insert_columns['tr_en_credit_id'])) {
             //Attempt to fetch creator ID from session:
@@ -1592,6 +1639,7 @@ class Db_model extends CI_Model
         //Set some defaults:
         if (!isset($insert_columns['tr_content'])) {
             $insert_columns['tr_content'] = null;
+            $insert_columns['tr_obj_id'] = 0;
         } elseif (is_int($insert_columns['tr_content']) && intval($insert_columns['tr_content']) > 0) {
             //Store integer separately for faster query access later on:
             $insert_columns['tr_obj_id'] = intval($insert_columns['tr_content']);
@@ -1625,7 +1673,7 @@ class Db_model extends CI_Model
             'tr_en_child_id' => $insert_columns['tr_en_type_id'], //This type of transaction
             'tr_status >=' => 2, //Must be published+
             'en_status >=' => 2, //Must be published+
-        ), 1, array('en_child'));
+        ), array('en_child'), 1);
         if (count($award_coins) > 0) {
             //Yes, we have to issue coins:
             $insert_columns['tr_coins'] = doubleval($award_coins[0]['tr_content']);
@@ -1706,7 +1754,7 @@ class Db_model extends CI_Model
                     //Did we find it? We should have:
                     if (isset($engagements[0])) {
 
-                        $subject = 'Notification: ' . trim(strip_tags($engagements[0]['c_outcome'])) . ' - ' . (isset($engagements[0]['u_full_name']) ? $engagements[0]['u_full_name'] : 'System');
+                        $subject = 'Notification: ' . trim(strip_tags($engagements[0]['c_outcome'])) . ' - ' . (isset($engagements[0]['en_name']) ? $engagements[0]['en_name'] : 'System');
 
                         //Compose email:
                         $html_message = null; //Start
@@ -1739,47 +1787,55 @@ class Db_model extends CI_Model
     }
 
 
-    function c_update_tree($in_id, $c_update_columns = array(), $direction_is_downward = 0)
+    function metadata_tree_update($obj_type, $obj_id, $metadata_new = array(), $direction_is_downward = 0)
     {
 
-        //Will fetch the recursive tree and update
-        $tree = $this->Db_model->in_recursive_fetch($in_id, $direction_is_downward);
+        /*
+         *
+         * Keeps intent/entity metadata field in-sync when adjustments are made to tree items
+         *
+         * */
 
-        if (count($c_update_columns) == 0 || count($tree['in_flat_tree']) == 0) {
+        //Currently only supports intents:
+        if (count($metadata_new) == 0) {
             return false;
         }
 
-        //Found results, update them relative to their current value:
-        $c_relative_update = 'UPDATE "tb_intents" SET';
-        $update_columns = 0;
-        foreach ($c_update_columns as $key => $value) {
-            if (doubleval($value) == 0) {
-                continue; //No adjustment needed
-            }
-            if ($update_columns > 0) {
-                $c_relative_update .= ',';
-            }
-            $c_relative_update .= ' ' . $key . ' = ' . $key . ' + (' . $value . ')';
-            $update_columns++;
-        }
-        //Close the query:
-        $c_relative_update .= ' WHERE "in_id" = '; //$in_id to be inserted later...
 
-        if ($update_columns == 0) {
-            return 0;
+        if (in_array($obj_type, array('in'))) {
+
+            //Fetch tree that needs adjustment:
+            $tree = $this->Db_model->in_recursive_fetch($obj_id, $direction_is_downward);
+
+            if (count($tree['in_flat_tree']) == 0) {
+                return false;
+            }
+
+            //Now fetch them all:
+            $objects = $this->Db_model->in_fetch(array(
+                'in_id IN (' . join(',', $tree['in_flat_tree']) . ')' => null,
+            ));
+
+        } elseif (in_array($obj_type, array('en'))) {
+
+            //TODO add entity support
+
         }
 
-        //Run Query for all intents:
+        //Apply relative changes to all objects:
         $affected_rows = 0;
-        foreach ($tree['in_flat_tree'] as $c_this_id) {
-            $this->db->query($c_relative_update . $c_this_id . ';');
-            $affected_rows += $this->db->affected_rows();
+        foreach ($objects as $obj) {
+            //Make a relative adjustment compared to what is currently there:
+            $affected_rows += $this->Db_model->metadata_update($obj_type, $obj, $metadata_new, false);
         }
+
+        //Return total affected rows:
         return $affected_rows;
+
     }
 
 
-    function metadata_update($obj_type, $obj, $new_fields)
+    function metadata_update($obj_type, $obj, $new_fields, $absolute_adjustment = true)
     {
 
         /*
@@ -1800,9 +1856,20 @@ class Db_model extends CI_Model
 
         //Go through all the new fields and see if they differ from current metadata fields:
         foreach ($new_fields as $metadata_key => $metadata_value) {
-            if (!(isset($metadata[$metadata_key]) && $metadata[$metadata_key] == $metadata_value)) {
-                //Either new field or value has changed, so we need to adjust:
-                $metadata[$metadata_key] = $metadata_value;
+            if (!$absolute_adjustment) {
+                //We need to do a relative adjustment:
+                $metadata[$metadata_key] = (isset($metadata[$metadata_key]) ? $metadata[$metadata_key] : 0) + $metadata_value;
+            } else {
+
+                //We are doing an absolute adjustment if needed:
+                if (is_null($metadata_value)) {
+                    //User asked to remove this value:
+                    unset($metadata[$metadata_key]);
+                } elseif (!isset($metadata[$metadata_key]) || $metadata[$metadata_key] !== $metadata_value) {
+                    //Value has changed, adjust:
+                    $metadata[$metadata_key] = $metadata_value;
+                }
+
             }
         }
 
@@ -1811,13 +1878,13 @@ class Db_model extends CI_Model
 
             $affected_rows = $this->Db_model->in_update($obj['in_id'], array(
                 'in_metadata' => $metadata,
-            ), false);
+            ));
 
         } elseif ($obj_type == 'en') {
 
             $affected_rows = $this->Db_model->en_update($obj['en_id'], array(
                 'en_metadata' => $metadata,
-            ), false);
+            ));
 
         }
 
@@ -2072,7 +2139,7 @@ class Db_model extends CI_Model
 
             //Count messages:
             $intents[0]['___messages_count'] = count($this->Db_model->i_fetch(array(
-                'i_status >=' => 0,
+                'tr_status >=' => 0,
                 'tr_in_child_id' => $in_id,
             )));
             $immediate_children['___messages_tree_count'] += $intents[0]['___messages_count'];
@@ -2150,8 +2217,8 @@ class Db_model extends CI_Model
                     'tr_en_parent_id' => 3084, //Industry expert entity
                     'tr_en_child_id IN (' . join(',', $parent_ids) . ')' => null,
                     'tr_status >=' => 0, //Pending review or higher
-                    'u_status >=' => 0, //Pending review or higher
-                ), array(), 0, 0, 'u_id, u_full_name, u__e_score, x_url');
+                    'en_status >=' => 0, //Pending review or higher
+                ), array(), 0, 0, 'u_id, en_name, en_trust_score, x_url');
 
                 //Put unique IDs in array key for faster searching:
                 foreach ($ixs as $ixsu) {
@@ -2428,9 +2495,9 @@ class Db_model extends CI_Model
 
                 $new_item['u_id'] = intval($item['u_id']); //rquired for all objects
                 $new_item['u_id'] = intval($item['u_id']); //rquired for all objects
-                $new_item['u__e_score'] = intval($item['u__e_score']);
-                $new_item['u_status'] = intval($item['u_status']);
-                $new_item['u_full_name'] = '';
+                $new_item['en_trust_score'] = intval($item['en_trust_score']);
+                $new_item['en_status'] = intval($item['en_status']);
+                $new_item['en_name'] = '';
                 $new_item['_tags'] = array();
 
                 //Tags map parent relation:
@@ -2542,7 +2609,7 @@ class Db_model extends CI_Model
 
             } elseif (intval($items[0][$obj . '_algolia_id']) > 0) {
 
-                //item has been Archived locally but its still indexed on Algolia
+                //item has been Removed locally but its still indexed on Algolia
 
                 //Remove from algolia:
                 $search_index->deleteObject($items[0][$obj . '_algolia_id']);
@@ -2552,7 +2619,7 @@ class Db_model extends CI_Model
 
                 return array(
                     'status' => 1,
-                    'message' => 'Item Archived',
+                    'message' => 'Item Removed',
                 );
 
             }
@@ -2560,7 +2627,7 @@ class Db_model extends CI_Model
         } else {
 
             //Mass update request
-            //All remote items have been Archived from algolia index and local algolia_ids have been set to zero
+            //All remote items have been Removed from algolia index and local algolia_ids have been set to zero
             //we're ready to create new items and update local:
             $obj_add_message = $search_index->addObjects($return_items);
 

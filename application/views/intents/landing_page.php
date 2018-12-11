@@ -72,7 +72,7 @@
 
     //Show all instant messages for this intent:
     foreach ($c['in__active_messages'] as $i) {
-        if ($i['i_status'] == 1) {
+        if ($i['tr_status'] == 1) {
             //Publish to Landing Page!
             echo echo_i($i);
         }
@@ -148,7 +148,7 @@
 
                 //First show all messages for this intent:
                 foreach ($c1['in__active_messages'] as $i) {
-                    if ($i['i_status'] == 1) {
+                    if ($i['tr_status'] == 1) {
                         echo echo_i(array_merge($i, array(
                             'noshow' => 1,
                         )), 'Dear candidate'); //As they are a guest at this point

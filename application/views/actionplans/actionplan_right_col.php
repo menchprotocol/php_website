@@ -62,8 +62,8 @@
 
         //Construct title:
         var w_entity = null;
-        if (u_id > 0 && $('.u_full_name_' + u_id + ':first').length) {
-            w_entity = $('.u_full_name_' + u_id + ':first').text();
+        if (u_id > 0 && $('.en_name_' + u_id + ':first').length) {
+            w_entity = $('.en_name_' + u_id + ':first').text();
         }
 
         var w_intent = null;
@@ -88,7 +88,7 @@
                     $('.frame-loader').addClass('hidden');
 
                     //Remove frame
-                    $('#w_div_' + tr_id).html('<span style="color:#2f2739;"><i class="fas fa-trash-alt"></i> Archived</span>');
+                    $('#w_div_' + tr_id).html('<span style="color:#2f2739;"><i class="fas fa-trash-alt"></i> Removed</span>');
                     setTimeout(function () {
                         $('#w_div_' + tr_id).fadeOut();
                     }, 377);

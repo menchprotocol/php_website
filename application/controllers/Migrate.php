@@ -18,17 +18,9 @@ class Migrate extends CI_Controller
     function test()
     {
 
-
-        echo_json($this->config->item('en_ids_4486'));
-
-        exit;
-
-        echo_json($this->Db_model->tr_fetch(array(
-            'tr_status >=' => 0,
-            'en_status >=' => 0,
-        ), 0, array('en_type'), array('en_name' => 'ASC'), 'COUNT(tr_en_type_id) as totals, en_name, tr_en_type_id', 'tr_en_type_id, en_name'));
-
-        exit;
+        echo echo_json($this->Db_model->in_fetch(array(
+            ' NOT EXISTS (SELECT 1 FROM table_ledger WHERE in_id=tr_in_child_id AND tr_status>=0) ' => null,
+        )));
 
     }
 
@@ -293,48 +285,48 @@ class Migrate extends CI_Controller
             }
 
             //Convert 4x relations:
-            if (strlen($u['u_timezone']) > 0 && en_match_metadata('en_timezones', $u['u_timezone'])) {
+            if (strlen($u['u_timezone']) > 0 && $this->Old_model->en_match_metadata('en_timezones', $u['u_timezone'])) {
                 $stats['total_links']++;
                 $this->Db_model->tr_create(array(
                     'tr_timestamp' => $u['u_timestamp'],
                     'tr_en_type_id' => 4230, //Naked link
                     'tr_en_credit_id' => $u['u_id'],
-                    'tr_en_parent_id' => en_match_metadata('en_timezones', $u['u_timezone']),
+                    'tr_en_parent_id' => $this->Old_model->en_match_metadata('en_timezones', $u['u_timezone']),
                     'tr_en_child_id' => $u['u_id'],
                 ));
             }
-            if (strlen($u['u_country_code']) == 2 && en_match_metadata('en_countries', $u['u_country_code'])) {
+            if (strlen($u['u_country_code']) == 2 && $this->Old_model->en_match_metadata('en_countries', $u['u_country_code'])) {
                 $stats['total_links']++;
                 $this->Db_model->tr_create(array(
                     'tr_timestamp' => $u['u_timestamp'],
                     'tr_en_type_id' => 4230, //Naked link
                     'tr_en_credit_id' => $u['u_id'],
-                    'tr_en_parent_id' => en_match_metadata('en_countries', $u['u_country_code']),
+                    'tr_en_parent_id' => $this->Old_model->en_match_metadata('en_countries', $u['u_country_code']),
                     'tr_en_child_id' => $u['u_id'],
                 ));
             }
             if (strlen($u['u_language']) > 0) {
                 $parts = explode(',', $u['u_language']);
                 foreach ($parts as $part) {
-                    if (strlen($part) == 2 && en_match_metadata('en_languages', $part)) {
+                    if (strlen($part) == 2 && $this->Old_model->en_match_metadata('en_languages', $part)) {
                         $stats['total_links']++;
                         $this->Db_model->tr_create(array(
                             'tr_timestamp' => $u['u_timestamp'],
                             'tr_en_type_id' => 4230, //Naked link
                             'tr_en_credit_id' => $u['u_id'],
-                            'tr_en_parent_id' => en_match_metadata('en_languages', $part),
+                            'tr_en_parent_id' => $this->Old_model->en_match_metadata('en_languages', $part),
                             'tr_en_child_id' => $u['u_id'],
                         ));
                     }
                 }
             }
-            if (strlen($u['u_gender']) == 1 && en_match_metadata('en_gender', $u['u_gender'])) {
+            if (strlen($u['u_gender']) == 1 && $this->Old_model->en_match_metadata('en_gender', $u['u_gender'])) {
                 $stats['total_links']++;
                 $this->Db_model->tr_create(array(
                     'tr_timestamp' => $u['u_timestamp'],
                     'tr_en_type_id' => 4230, //Naked link
                     'tr_en_credit_id' => $u['u_id'],
-                    'tr_en_parent_id' => en_match_metadata('en_gender', $u['u_gender']),
+                    'tr_en_parent_id' => $this->Old_model->en_match_metadata('en_gender', $u['u_gender']),
                     'tr_en_child_id' => $u['u_id'],
                 ));
             }

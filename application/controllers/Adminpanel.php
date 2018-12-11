@@ -43,7 +43,7 @@ class Adminpanel extends CI_Controller
         //Fetch blob of engagement and display it on screen:
         $blobs = $this->Db_model->tr_fetch(array(
             'tr_id' => $tr_id,
-        ), 1);
+        ), array(), 1);
         if (count($blobs) == 1) {
             $blob = $blobs[0]['tr_metadata'];
             unset($blobs[0]['tr_metadata']);

@@ -62,7 +62,9 @@ class Intents extends CI_Controller
         ));
         $this->load->view('intents/intent_manage', array(
             //Passing this will load the orphans instead of the regular intent tree view:
-            'orphan_intents' => $this->Db_model->in_orphans_fetch()
+            'orphan_intents' => $this->Db_model->in_fetch(array(
+                ' NOT EXISTS (SELECT 1 FROM table_ledger WHERE in_id=tr_in_child_id AND tr_status>=0) ' => null,
+            )),
         ));
         $this->load->view('shared/matrix_footer');
     }
@@ -172,39 +174,22 @@ class Intents extends CI_Controller
         //Make the move:
         $this->Db_model->tr_update(intval($_POST['tr_id']), array(
             'tr_en_parent_id' => $udata['u_id'],
-            'tr_timestamp' => date("Y-m-d H:i:s"),
             'tr_in_parent_id' => intval($_POST['to_in_id']),
             //No need to update sorting here as a separate JS function would call that within half a second after the move...
-        ));
+        ), $udata['u_id']);
 
 
-        //Adjust tree on both branches:
-        $updated_from_recursively = $this->Db_model->c_update_tree($from[0]['in_id'], array(
+        //Adjust tree on both branches that have been affected:
+        $updated_from_recursively = $this->Db_model->metadata_tree_update('in', $from[0]['in_id'], array(
             'in__tree_in_count' => -($subject[0]['in__tree_in_count']),
             'in__tree_max_seconds' => -(intval($subject[0]['in__tree_max_seconds'])),
             'in__messages_tree_count' => -($subject[0]['in__messages_tree_count']),
         ));
-        $updated_to_recursively = $this->Db_model->c_update_tree($to[0]['in_id'], array(
+        $updated_to_recursively = $this->Db_model->metadata_tree_update('in', $to[0]['in_id'], array(
             'in__tree_in_count' => +($subject[0]['in__tree_in_count']),
             'in__tree_max_seconds' => +(intval($subject[0]['in__tree_max_seconds'])),
             'in__messages_tree_count' => +($subject[0]['in__messages_tree_count']),
         ));
-
-
-        //Log transaction:
-        $this->Db_model->tr_create(array(
-            'tr_en_credit_id' => $udata['u_id'],
-            'tr_metadata' => array(
-                'post' => $_POST,
-                'updated_from_recursively' => $updated_from_recursively,
-                'updated_to_recursively' => $updated_to_recursively,
-            ),
-            'tr_content' => '[' . $subject[0]['c_outcome'] . '] was migrated from [' . $from[0]['c_outcome'] . '] to [' . $to[0]['c_outcome'] . ']', //Message migrated
-            'tr_en_type_id' => 4254, //Intent migrated
-            'tr_in_child_id' => intval($_POST['in_id']),
-            'e_tr_id' => intval($_POST['tr_id']),
-        ));
-
 
         //Return success
         echo_json(array(
@@ -339,11 +324,11 @@ class Intents extends CI_Controller
         if (count($c_update) > 0) {
 
             //YES, update the DB:
-            $this->Db_model->in_update($_POST['in_id'], $c_update, true);
+            $this->Db_model->in_update($_POST['in_id'], $c_update, $udata['u_id']);
 
             //Any recursive updates needed?
             if (count($recursive_query) > 0) {
-                $updated_recursively = $this->Db_model->c_update_tree($_POST['in_id'], $recursive_query);
+                $updated_recursively = $this->Db_model->metadata_tree_update('in', $_POST['in_id'], $recursive_query);
             }
 
             //Any recursive down status sync requests?
@@ -352,47 +337,18 @@ class Intents extends CI_Controller
 
                 //Yes, sync downwards where current statuses match:
                 $children = $this->Db_model->in_recursive_fetch(intval($_POST['in_id']), true);
-                foreach ($children['in_flat_tree'] as $child_in_id) {
 
-                    //See what the status of this is, and update only if status matches:
-                    $this->db->query("UPDATE tb_intents SET in_status=" . intval($_POST['in_status']) . " WHERE in_status=" . intval($intents[0]['in_status']) . " AND in_id=" . $child_in_id);
+                //Fetch all intents that match parent intent status:
+                $child_intents = $this->Db_model->in_fetch(array(
+                    'in_id IN ('.join(',' , $children['in_flat_tree']).')' => null,
+                    'in_status' => intval($intents[0]['in_status']),
+                ));
 
-                    //Did it work?! Maybe not if the status was different...
-                    if ($this->db->affected_rows()) {
-
-                        //Yes it did update!
-
-                        //Update counter:
-                        $children_updated++;
-
-                        //Log modify engagement for this intent:
-                        $this->Db_model->tr_create(array(
-                            'tr_en_credit_id' => $udata['u_id'],
-                            'tr_content' => 'Status recursively updated from [' . $intents[0]['in_status'] . '] to [' . $_POST['in_status'] . '] initiated from parent intent #' . $intents[0]['in_id'] . ' [' . $intents[0]['c_outcome'] . ']',
-                            'tr_en_type_id' => 4264, //Intent Modification
-                            'tr_in_child_id' => $child_in_id,
-                        ));
-
-                    }
+                foreach ($child_intents as $child_in) {
+                    //Update this intent as the status did match:
+                    $children_updated += $this->Db_model->in_update($child_in['in_id'], array('in_status' => intval($_POST['in_status'])), $udata['u_id']);
                 }
             }
-
-            //Log transaction for New Intent Link:
-            $this->Db_model->tr_create(array(
-                'tr_en_credit_id' => $udata['u_id'],
-                'tr_content' => echo_changelog($intents[0], $c_update, 'c_'),
-                'tr_metadata' => array(
-                    'input_data' => $_POST,
-                    'initial_data' => $intents[0],
-                    'after' => $c_update,
-                    'updated_recursively' => $updated_recursively,
-                    'children_updated' => $children_updated,
-                    'recursive_query' => $recursive_query,
-                ),
-                'tr_en_type_id' => ($_POST['level'] >= 2 && isset($c_update['in_status']) && $c_update['in_status'] < 0 ? 4252 : 4264), //Intent Archived OR Modification
-                'tr_in_child_id' => intval($_POST['in_id']),
-            ));
-
         }
 
         //Show success:
@@ -468,18 +424,13 @@ class Intents extends CI_Controller
             'in__tree_max_seconds' => -(intval($intents[0]['in__tree_max_seconds'])),
             'in__messages_tree_count' => -($intents[0]['in__messages_tree_count']),
         );
-        $updated_recursively = $this->Db_model->c_update_tree($in__active_parents[0]['tr_in_parent_id'], $recursive_query);
+        $updated_recursively = $this->Db_model->metadata_tree_update('in', $in__active_parents[0]['tr_in_parent_id'], $recursive_query);
 
 
         //Remove Transaction:
         $this->Db_model->tr_update($_POST['tr_id'], array(
-            'tr_en_parent_id' => $udata['u_id'],
-            'tr_timestamp' => date("Y-m-d H:i:s"),
-            'tr_status' => -1, //Archived
-        ), $udata['u_id'], array(
-            'recursive_query' => $recursive_query,
-            'updated_recursively' => $updated_recursively,
-        ));
+            'tr_status' => -1, //Removed
+        ), $udata['u_id']);
 
         //Show success:
         echo_json(array(
@@ -530,15 +481,13 @@ class Intents extends CI_Controller
                     'tr_en_type_id IN (' . join(', ', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
                     'tr_status >=' => 0,
                     'in_status >=' => 0,
-                ), 0, array('in_child'), array('tr_order' => 'ASC'));
+                ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
 
                 //Update them all:
                 foreach ($_POST['new_sort'] as $rank => $tr_id) {
                     $this->Db_model->tr_update(intval($tr_id), array(
-                        'tr_en_parent_id' => $udata['u_id'],
-                        'tr_timestamp' => date("Y-m-d H:i:s"),
                         'tr_order' => intval($rank),
-                    ));
+                    ), $udata['u_id']);
                 }
 
                 //Fetch again for the record:
@@ -547,7 +496,7 @@ class Intents extends CI_Controller
                     'tr_en_type_id IN (' . join(', ', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
                     'tr_status >=' => 0,
                     'in_status >=' => 0,
-                ), 0, array('in_child'), array('tr_order' => 'ASC'));
+                ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
 
                 //Log transaction:
                 $this->Db_model->tr_create(array(
@@ -555,7 +504,7 @@ class Intents extends CI_Controller
                     'tr_content' => 'Sorted child intents for [' . $parent_intents[0]['c_outcome'] . ']',
                     'tr_metadata' => array(
                         'input_data' => $_POST,
-                        'initial_data' => $children_before,
+                        'before' => $children_before,
                         'after' => $children_after,
                     ),
                     'tr_en_type_id' => 4262, //Links Sorted
@@ -585,7 +534,7 @@ class Intents extends CI_Controller
         //Fetch Messages and the User's Got It Engagement History:
         $messages = $this->Db_model->i_fetch(array(
             'tr_in_child_id' => intval($_POST['intent_id']),
-            'i_status >' => 0, //Published in any form
+            'tr_status >' => 0, //Published in any form
         ));
         if (count($messages) == 0) {
             return echo_json(array(
@@ -606,7 +555,7 @@ class Intents extends CI_Controller
             ));
 
             //Build UI friendly Message:
-            $help_content .= echo_i(array_merge($i, array('tr_en_child_id' => $udata['u_id'])), $udata['u_full_name']);
+            $help_content .= echo_i(array_merge($i, array('tr_en_child_id' => $udata['u_id'])), $udata['en_name']);
         }
 
         //Return results:
@@ -701,7 +650,7 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Session. Refresh to Continue',
             ));
-        } elseif (!isset($_POST['in_id']) || !isset($_POST['i_status'])) {
+        } elseif (!isset($_POST['in_id']) || !isset($_POST['tr_status'])) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing intent data.',
@@ -765,12 +714,12 @@ class Intents extends CI_Controller
         //Create message:
         $i = $this->Db_model->tr_create(array(
             'tr_en_credit_id' => $udata['u_id'],
-            'tr_en_type_id' => $_POST['i_status'], //TODO What type of message is this? find its entity ID
+            'tr_en_type_id' => $_POST['tr_status'], //TODO What type of message is this? find its entity ID
             'tr_en_parent_id' => $url_create['en']['u_id'],
             'tr_in_child_id' => intval($_POST['in_id']),
             'tr_content' => '@' . $url_create['en']['u_id'], //Just place the reference inside the message content
             'tr_order' => 1 + $this->Db_model->tr_max_order('tb_intent_messages', 'tr_order', array(
-                'i_status' => $_POST['i_status'],
+                'tr_status' => $_POST['tr_status'],
                 'tr_in_child_id' => $_POST['in_id'],
             )),
         ));
@@ -778,7 +727,7 @@ class Intents extends CI_Controller
 
         //Update intent count & tree:
         $this->db->query("UPDATE tb_intents SET in__messages_count=in__messages_count+1 WHERE in_id=" . intval($_POST['in_id']));
-        $updated_recursively = $this->Db_model->c_update_tree(intval($_POST['in_id']), array(
+        $updated_recursively = $this->Db_model->metadata_tree_update('in', intval($_POST['in_id']), array(
             'in__messages_tree_count' => 1,
         ));
 
@@ -815,7 +764,7 @@ class Intents extends CI_Controller
         }
 
         //Make sure message is all good:
-        $validation = message_validation($_POST['i_status'], $_POST['tr_content'], $_POST['in_id']);
+        $validation = message_validation($_POST['tr_status'], $_POST['tr_content'], $_POST['in_id']);
         if (!$validation['status']) {
             //There was some sort of an error:
             return echo_json($validation);
@@ -826,9 +775,9 @@ class Intents extends CI_Controller
         $i = $this->Db_model->i_create(array(
             'tr_en_credit_id' => $udata['u_id'],
             'tr_in_child_id' => intval($_POST['in_id']),
-            'i_status' => $_POST['i_status'],
+            'tr_status' => $_POST['tr_status'],
             'tr_order' => 1 + $this->Db_model->tr_max_order('tb_intent_messages', 'tr_order', array(
-                    'i_status' => $_POST['i_status'],
+                    'tr_status' => $_POST['tr_status'],
                     'tr_in_child_id' => intval($_POST['in_id']),
                 )),
             //Referencing attributes:
@@ -840,7 +789,7 @@ class Intents extends CI_Controller
         $this->db->query("UPDATE tb_intents SET in__messages_count=in__messages_count+1 WHERE in_id=" . intval($_POST['in_id']));
 
         //Update tree:
-        $updated_recursively = $this->Db_model->c_update_tree(intval($_POST['in_id']), array(
+        $updated_recursively = $this->Db_model->metadata_tree_update('in', intval($_POST['in_id']), array(
             'in__messages_tree_count' => 1,
         ));
 
@@ -890,7 +839,7 @@ class Intents extends CI_Controller
         //Fetch Message:
         $messages = $this->Db_model->i_fetch(array(
             'i_id' => intval($_POST['i_id']),
-            'i_status >=' => 0,
+            'tr_status >=' => 0,
         ));
         if (count($messages) < 1) {
             return echo_json(array(
@@ -900,7 +849,7 @@ class Intents extends CI_Controller
         }
 
         //Make sure message is all good:
-        $validation = message_validation($_POST['i_status'], $_POST['tr_content'], $_POST['in_id']);
+        $validation = message_validation($_POST['tr_status'], $_POST['tr_content'], $_POST['in_id']);
 
         if (!$validation['status']) {
             //There was some sort of an error:
@@ -912,19 +861,17 @@ class Intents extends CI_Controller
         //Define what needs to be updated:
         $to_update = array(
             'tr_en_credit_id' => $udata['u_id'],
-            'i_timestamp' => date("Y-m-d H:i:s"),
-            //Could have been modified:
             'tr_content' => $validation['tr_content'],
             'tr_en_parent_id' => $validation['tr_en_parent_id'],
         );
 
 
-        if (!($_POST['initial_i_status'] == $_POST['i_status'])) {
+        if (!($_POST['initial_tr_status'] == $_POST['tr_status'])) {
             //Change the status:
-            $to_update['i_status'] = $_POST['i_status'];
+            $to_update['tr_status'] = $_POST['tr_status'];
             //Put it at the end of the new list:
             $to_update['tr_order'] = 1 + $this->Db_model->tr_max_order('tb_intent_messages', 'tr_order', array(
-                    'i_status' => $_POST['i_status'],
+                    'tr_status' => $_POST['tr_status'],
                     'tr_in_child_id' => intval($_POST['in_id']),
                 ));
         }
@@ -940,8 +887,8 @@ class Intents extends CI_Controller
         //Print the challenge:
         return echo_json(array(
             'status' => 1,
-            'message' => echo_i(array_merge($new_messages[0], array('tr_en_child_id' => $udata['u_id'])), $udata['u_full_name']),
-            'tr_status' => echo_status('i_status', $new_messages[0]['i_status'], 1, 'right'),
+            'message' => echo_i(array_merge($new_messages[0], array('tr_en_child_id' => $udata['u_id'])), $udata['en_name']),
+            'tr_status' => echo_status('tr_status', $new_messages[0]['tr_status'], 1, 'right'),
             'success_icon' => '<span><i class="fas fa-check"></i> Saved</span>',
         ));
     }
@@ -971,7 +918,7 @@ class Intents extends CI_Controller
             //Fetch Message:
             $messages = $this->Db_model->i_fetch(array(
                 'i_id' => intval($_POST['i_id']),
-                'i_status >=' => 0, //Not Archived
+                'tr_status >=' => 0, //Not Removed
             ));
             if (!isset($messages[0])) {
                 echo_json(array(
@@ -983,21 +930,20 @@ class Intents extends CI_Controller
                 //Now update the DB:
                 $this->Db_model->tr_update(intval($_POST['i_id']), array(
                     'tr_en_credit_id' => $udata['u_id'],
-                    'i_timestamp' => date("Y-m-d H:i:s"),
-                    'i_status' => -1, //Archived
+                    'tr_status' => -1, //Removed
                 ), $udata['u_id']);
 
                 //Update intent count:
                 $this->db->query("UPDATE tb_intents SET in__messages_count=in__messages_count-1 WHERE in_id=" . intval($_POST['in_id']));
 
                 //Update tree:
-                $updated_recursively = $this->Db_model->c_update_tree(intval($_POST['in_id']), array(
+                $updated_recursively = $this->Db_model->metadata_tree_update('in', intval($_POST['in_id']), array(
                     'in__messages_tree_count' => -1,
                 ));
 
                 echo_json(array(
                     'status' => 1,
-                    'message' => '<span style="color:#2f2739;"><i class="fas fa-trash-alt"></i> Archived</span>',
+                    'message' => '<span style="color:#2f2739;"><i class="fas fa-trash-alt"></i> Removed</span>',
                 ));
             }
         }

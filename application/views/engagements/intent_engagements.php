@@ -4,7 +4,7 @@ $k_outs = $this->Db_model->tr_fetch(array(
     'tr_in_child_id' => $in_id, //Active subscriptions only
     'tr_status >=' => 0, //Real completion [You can remove this to see all submissions with all statuses]
     //We are fetching with any tr_status just to see what is available/possible from here
-), array('w', 'w_u', 'cr', 'cr_c_parent'), array('tr_status' => 'ASC'), 0);
+), array('w', 'w_u', 'cr', 'cr_c_parent'), 0, 0, array('tr_status' => 'ASC'));
 
 //Fetch objects
 $current_status = -999; //This would keep going higher as we print each heather...
