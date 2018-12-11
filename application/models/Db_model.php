@@ -598,13 +598,6 @@ class Db_model extends CI_Model {
                 );
             }
 
-            //Remove orphan status if that was the case before:
-            if(intval($new_c['c__is_orphan'])){
-                $this->Db_model->c_update( $new_c['c_id'] , array(
-                    'c__is_orphan' => 0,
-                ));
-            }
-
             //Prepare recursive update:
             $recursive_query = array(
                 'c__tree_all_count' => $new_c['c__tree_all_count'],
