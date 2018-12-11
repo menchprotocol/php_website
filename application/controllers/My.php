@@ -20,12 +20,12 @@ class My extends CI_Controller
         header('Location: /');
     }
 
-    function fb_profile($u_id)
+    function fb_profile($en_id)
     {
 
         $udata = auth(array(1308));
         $current_us = $this->Db_model->en_fetch(array(
-            'u_id' => $u_id,
+            'en_id' => $en_id,
         ));
 
         if (!$udata) {
@@ -119,7 +119,7 @@ class My extends CI_Controller
             //Log action plan view engagement:
             $this->Db_model->tr_create(array(
                 'tr_en_type_id' => 4283,
-                'tr_en_credit_id' => $trs[0]['u_id'],
+                'tr_en_credit_id' => $trs[0]['en_id'],
             ));
 
             //Let them choose between subscriptions:
@@ -142,7 +142,7 @@ class My extends CI_Controller
             //Log action plan view engagement:
             $this->Db_model->tr_create(array(
                 'tr_en_type_id' => 4283,
-                'tr_en_credit_id' => $trs[0]['u_id'],
+                'tr_en_credit_id' => $trs[0]['en_id'],
                 'tr_in_child_id' => $in_id,
                 'tr_tr_parent_id' => $tr_id,
             ));
@@ -172,7 +172,7 @@ class My extends CI_Controller
 
                 //Ooops, we had issues finding th is intent! Should not happen, report:
                 $this->Db_model->tr_create(array(
-                    'tr_en_credit_id' => $trs[0]['u_id'],
+                    'tr_en_credit_id' => $trs[0]['en_id'],
                     'tr_metadata' => $trs,
                     'tr_content' => 'Unable to load a specific intent for the student Action Plan! Should not happen...',
                     'tr_en_type_id' => 4246,
@@ -263,7 +263,7 @@ class My extends CI_Controller
     }
 
 
-    function load_u_engagements($u_id)
+    function load_u_engagements($en_id)
     {
 
         //Auth user and check required variables:
@@ -271,7 +271,7 @@ class My extends CI_Controller
 
         if (!$udata) {
             die('<div class="alert alert-danger" role="alert">Session Expired</div>');
-        } elseif (intval($u_id) <= 0) {
+        } elseif (intval($en_id) <= 0) {
             die('<div class="alert alert-danger" role="alert">Missing User ID</div>');
         }
 
@@ -280,7 +280,7 @@ class My extends CI_Controller
             'title' => 'User Engagements',
         ));
         $this->load->view('engagements/engagement_list', array(
-            'u_id' => $u_id,
+            'en_id' => $en_id,
         ));
         $this->load->view('shared/messenger_footer');
     }
@@ -336,9 +336,9 @@ class My extends CI_Controller
 
         //Do we have what it takes to mark as complete?
         if ($trs[0]['c_require_url_to_complete'] && count(extract_urls($_POST['tr_content'])) < 1) {
-            return redirect_message($k_url, '<div class="alert alert-danger" role="alert">Error: URL Required to mark [' . $trs[0]['c_outcome'] . '] as complete.</div>');
+            return redirect_message($k_url, '<div class="alert alert-danger" role="alert">Error: URL Required to mark [' . $trs[0]['in_outcome'] . '] as complete.</div>');
         } elseif ($trs[0]['c_require_notes_to_complete'] && strlen($_POST['tr_content']) < 1) {
-            return redirect_message($k_url, '<div class="alert alert-danger" role="alert">Error: Notes Required to mark [' . $trs[0]['c_outcome'] . '] as complete.</div>');
+            return redirect_message($k_url, '<div class="alert alert-danger" role="alert">Error: Notes Required to mark [' . $trs[0]['in_outcome'] . '] as complete.</div>');
         }
 
 
@@ -356,7 +356,7 @@ class My extends CI_Controller
             $this->Db_model->tr_update($trs[0]['tr_id'], array(
                 'tr_content' => trim($_POST['tr_content']),
                 'tr_en_type_id' => detect_tr_en_type_id($_POST['tr_content']),
-            ), (isset($udata['u_id']) ? $udata['u_id'] : $trs[0]['k_children_u_id']));
+            ), (isset($udata['en_id']) ? $udata['en_id'] : $trs[0]['k_children_en_id']));
         }
 
         if ($status_changed) {
@@ -376,7 +376,7 @@ class My extends CI_Controller
                 if (intval($_POST['is_from_messenger'])) {
                     //Also send confirmation messages via messenger:
                     $this->Comm_model->compose_messages(array(
-                        'tr_en_child_id' => $trs[0]['k_children_u_id'],
+                        'tr_en_child_id' => $trs[0]['k_children_en_id'],
                         'tr_in_child_id' => $trs_next[0]['in_id'],
                         'tr_tr_parent_id' => $trs[0]['tr_tr_parent_id'],
                     ));

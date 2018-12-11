@@ -1,65 +1,65 @@
 <?php
 
 //Fetch Messages based on in_id:
-$tr_content_max = $this->config->item('tr_content_max');
-$tr_statuses = echo_status('tr_status', null);
-$i_desc = echo_status('tr_status');
 $udata = $this->session->userdata('user');
-$tr_contents = $this->Db_model->i_fetch(array(
+$tr_content_max = $this->config->item('tr_content_max');
+$en_ids_4485 = $this->config->item('en_ids_4485');
+$en_all_4485 = $this->config->item('en_all_4485');
+
+//Fetch all messages:
+$trs = $this->Db_model->i_fetch(array(
+    'tr_en_type_id IN ('.join(',' , $en_ids_4485).')' => null, //Fetch all intent message types
     'tr_in_child_id' => $in_id,
     'tr_status >=' => 0, //Not Removed
 ), 0);
 
-//Fetch intent details:
-$intents = $this->Db_model->in_fetch(array(
-    'in_id' => $in_id,
-));
-
-if (!isset($intents[0])) {
-    //This should never happen:
-    die('Invalid intent id.');
-}
 ?>
+
 
 <script>
     //pass core variables to JS:
     var in_id = <?= $in_id ?>;
-    var max_length = <?= $tr_content_max ?>;
-    var message_count = <?= count($tr_contents) ?>;
+    var tr_content_max = <?= $tr_content_max ?>;
+    var message_count = <?= count($trs) ?>;
+    var focus_tr_en_type_id = <?= $en_ids_4485[0] ?>; //The message type that is the focus on-start.
 </script>
 <script src="/js/custom/messaging-js.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
 
 
+
+<!-- Message types navigation menu -->
 <ul class="nav nav-tabs iphone-nav-tabs">
-    <li role="presentation" class="nav_1 active" data-toggle="tooltip" title="<?= $i_desc[1]['s_desc'] ?>"
-        data-placement="bottom"><a
-                href="#loadmessages-<?= $in_id ?>-1"><?= echo_status('tr_status', 1, false, null) ?></a></li>
-    <li role="presentation" class="nav_2" data-toggle="tooltip" title="<?= $i_desc[2]['s_desc'] ?>"
-        data-placement="bottom"><a
-                href="#loadmessages-<?= $in_id ?>-2"><?= echo_status('tr_status', 2, false, null) ?></a></li>
-    <li role="presentation" class="nav_3" data-toggle="tooltip" title="<?= $i_desc[3]['s_desc'] ?>"
-        data-placement="bottom"><a
-                href="#loadmessages-<?= $in_id ?>-3"><?= echo_status('tr_status', 3, false, null) ?></a></li>
+    <?php
+    foreach ($en_all_4485 as $tr_en_type_id => $value) {
+        echo '<li role="presentation" class="nav_' . $tr_en_type_id . ' active" data-toggle="tooltip" title="' . $value['tr_content'] . '" data-placement="bottom">';
+        echo '<a href="#loadmessages-' . $in_id . '-' . $tr_en_type_id . '">' . $value['en_icon'] . ' ' . $value['en_name'] . '</a>';
+        echo '</li>';
+    }
+    ?>
 </ul>
 
-<input type="hidden" id="tr_status_focus" value="1"/>
 
 <div id="intent_messages<?= $in_id ?>">
 
     <?php
 
-    $message_count_1 = 0;
-    $message_count_2 = 0;
-    $message_count_3 = 0;
-
-    if (count($tr_contents) > 0) {
+    //Count each message type:
+    $counters = array();
+    if (count($trs) > 0) {
         echo '<div id="message-sorting' . $in_id . '" class="list-group list-messages">';
-        foreach ($tr_contents as $i) {
-            echo echo_message(array_merge($i, array(
-                'tr_en_child_id' => $udata['u_id'],
+        foreach ($trs as $tr) {
+
+            echo echo_message(array_merge($tr, array(
+                'tr_en_child_id' => $udata['en_id'],
             )));
+
             //Increase counter:
-            ${'message_count_' . $i['tr_status']}++;
+            if (isset($counters[$tr['tr_en_type_id']])) {
+                $counters[$tr['tr_en_type_id']]++;
+            } else {
+                $counters[$tr['tr_en_type_id']] = 1;
+            }
+
         }
         echo '</div>';
     } else {
@@ -67,15 +67,11 @@ if (!isset($intents[0])) {
         echo '<div id="message-sorting' . $in_id . '" class="list-group list-messages"></div>';
     }
 
-    //Show no Message errors:
-    if ($message_count_1 == 0) {
-        echo '<div class="ix-tip no-messages' . $in_id . '_1 all_msg msg_1"><i class="fas fa-exclamation-triangle"></i> No ' . echo_status('tr_status', 1, false, null) . ' Messages added yet</div>';
-    }
-    if ($message_count_2 == 0) {
-        echo '<div class="ix-tip no-messages' . $in_id . '_2 all_msg msg_2 hidden"><i class="fas fa-exclamation-triangle"></i> No ' . echo_status('tr_status', 2, false, null) . ' Messages added yet</div>';
-    }
-    if ($message_count_3 == 0) {
-        echo '<div class="ix-tip no-messages' . $in_id . '_3 all_msg msg_3 hidden"><i class="fas fa-exclamation-triangle"></i> No ' . echo_status('tr_status', 3, false, null) . ' Messages added yet</div>';
+    //Show no-Message notifications for each message type:
+    foreach ($en_all_4485 as $tr_en_type_id => $value) {
+        if (!isset($counters[$tr_en_type_id])) {
+            echo '<div class="ix-tip no-messages' . $in_id . '_' . $tr_en_type_id . ' all_msg msg_' . $tr_en_type_id . '"><i class="fas fa-exclamation-triangle"></i> No ' . $value['en_icon'] . ' ' . $value['en_name'] . ' added yet</div>';
+        }
     }
 
     ?>
@@ -104,10 +100,10 @@ if (!isset($intents[0])) {
     echo '</div>';
 
 
-    echo '<div class="iphone-add-btn all_msg msg_1"><a href="javascript:msg_create();" id="add_message_1_' . $in_id . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="top" class="btn btn-primary">ADD ' . echo_status('tr_status', 1, false, null) . ' &nbsp; MESSAGE</a></div>';
-    echo '<div class="iphone-add-btn all_msg msg_2 hidden"><a href="javascript:msg_create();" id="add_message_2_' . $in_id . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="top" class="btn btn-primary">ADD ' . echo_status('tr_status', 2, false, null) . ' &nbsp; MESSAGE</a></div>';
-    echo '<div class="iphone-add-btn all_msg msg_3 hidden"><a href="javascript:msg_create();" id="add_message_3_' . $in_id . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="top" class="btn btn-primary">ADD ' . echo_status('tr_status', 3, false, null) . ' &nbsp; MESSAGE</a></div>';
-
+    //Fetch for all message types:
+    foreach ($en_all_4485 as $tr_en_type_id => $value) {
+        echo '<div class="iphone-add-btn all_msg msg_' . $tr_en_type_id . '"><a href="javascript:msg_create();" id="add_message_' . $tr_en_type_id . '_' . $in_id . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="top" class="btn btn-primary">ADD ' . $value['en_icon'] . ' ' . $value['en_name'] . '</a></div>';
+    }
 
     echo '</form>';
     echo '</div>';

@@ -1,3 +1,11 @@
+
+/*
+*
+* Javascript function to manage intent messages
+*
+* */
+
+
 function add_first_name() {
     $('#tr_content' + in_id).insertAtCaret('/firstname ');
     changeMessage();
@@ -8,24 +16,24 @@ function add_first_name() {
 function changeMessage() {
     //Update count:
     var len = $('#tr_content' + in_id).val().length;
-    if (len > max_length) {
+    if (len > tr_content_max) {
         $('#charNum' + in_id).addClass('overload').text(len);
     } else {
         $('#charNum' + in_id).removeClass('overload').text(len);
     }
 }
 
-function changeMessageEditing(i_id) {
+function changeMessageEditing(tr_id) {
     //See if this is a valid text message editing:
-    if (!($('#charNumEditing' + i_id).length)) {
+    if (!($('#charNumEditing' + tr_id).length)) {
         return false;
     }
     //Update count:
-    var len = $('#message_body_' + i_id).val().length;
-    if (len > max_length) {
-        $('#charNumEditing' + i_id).addClass('overload').text(len);
+    var len = $('#message_body_' + tr_id).val().length;
+    if (len > tr_content_max) {
+        $('#charNumEditing' + tr_id).addClass('overload').text(len);
     } else {
-        $('#charNumEditing' + i_id).removeClass('overload').text(len);
+        $('#charNumEditing' + tr_id).removeClass('overload').text(len);
     }
 }
 
@@ -54,18 +62,18 @@ $input.on('change', function (e) {
 });
 
 
-function load_message_type(tr_status) {
+function load_message_type(tr_en_type_id) {
 
     //Change Nav header:
     $('.iphone-nav-tabs li').removeClass('active');
-    $('.nav_' + tr_status).addClass('active');
+    $('.nav_' + tr_en_type_id).addClass('active');
 
     //Change the master status:
-    $('#tr_status_focus').val(tr_status);
+    focus_tr_en_type_id = tr_en_type_id;
 
     //Adjust UI for Messages:
     $('.all_msg').addClass('hidden');
-    $('.msg_' + tr_status).removeClass('hidden');
+    $('.msg_' + tr_en_type_id).removeClass('hidden');
 
     //Load sorting:
     load_message_sorting();
@@ -95,10 +103,10 @@ function initiate_search() {
             },
             template: function (hit) {
                 // Returns the highlighted version of the name attribute
-                return '<span class="inline34">@' + hit.u_id + '</span> ' + hit._highlightResult.en_name.value;
+                return '<span class="inline34">@' + hit.en_id + '</span> ' + hit._highlightResult.en_name.value;
             },
             replace: function (hit) {
-                return ' @' + hit.u_id + ' ';
+                return ' @' + hit.en_id + ' ';
             }
         },
     ]);
@@ -124,28 +132,26 @@ $(document).ready(function () {
         }
     });
 
-    var loading_tr_status;
-    loading_tr_status = 1; // We start off with ON-START messages
+    //Have we loaded a different message type?
     if (window.location.hash) {
         var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
         var hash_parts = hash.split("-");
         if (hash_parts.length == 3) {
             //Seems right, lets assign:
-            loading_tr_status = hash_parts[2];
+            focus_tr_en_type_id = hash_parts[2];
         }
     }
 
     //Function to control clicks on iPhone Message type header:
-    load_message_type(loading_tr_status);
+    load_message_type(focus_tr_en_type_id);
 
 
     $('.iphone-nav-tabs a').click(function (e) {
         //Detect new tab:
         var parts = $(this).attr('href').split("-");
-        var tr_status = parts[2];
 
         //Load new message body into view:
-        load_message_type(tr_status);
+        load_message_type(parts[2]);
     });
 
 
@@ -180,11 +186,11 @@ $(document).ready(function () {
 });
 
 
-function apply_message_sorting(tr_status) {
+function apply_message_sorting(tr_en_type_id) {
     var new_sort = [];
     var sort_rank = 0;
     var this_iid = 0;
-    $("#message-sorting" + in_id + ">div.msg_" + tr_status).each(function () {
+    $("#message-sorting" + in_id + ">div.msg_" + tr_en_type_id).each(function () {
         this_iid = parseInt($(this).attr('iid'));
         if (this_iid > 0) {
             sort_rank++;
@@ -210,8 +216,7 @@ function load_message_sorting() {
         draggable: ".is_level2_sortable", // Specifies which items inside the element should be sortable
         onUpdate: function (evt/**Event*/) {
             //Apply new sort:
-            var tr_status = $('#tr_status_focus').val();
-            apply_message_sorting(tr_status);
+            apply_message_sorting(focus_tr_en_type_id);
         },
         //The next two functions resolve a Bug with sorting iframes like YouTube embeds while also making the UI more informative
         onChoose: function (evt/**Event*/) {
@@ -234,16 +239,16 @@ function load_message_sorting() {
 }
 
 
-function i_archive(i_id) {
+function i_archive(tr_id) {
     //Double check:
     var r = confirm("Archive Message?");
     if (r == true) {
         //Show processing:
-        var original_message = $("#ul-nav-" + i_id).html();
-        $("#ul-nav-" + i_id).html('<div><img src="/img/round_load.gif" class="loader" /> Archiving...</div>');
+        var original_message = $("#ul-nav-" + tr_id).html();
+        $("#ul-nav-" + tr_id).html('<div><img src="/img/round_load.gif" class="loader" /> Archiving...</div>');
 
         //Archive and remove:
-        $.post("/intents/i_archive", {i_id: i_id, in_id: in_id}, function (data) {
+        $.post("/intents/i_archive", {tr_id: tr_id, in_id: in_id}, function (data) {
 
             //Update UI to confirm with user:
             if (!data.status) {
@@ -252,14 +257,14 @@ function i_archive(i_id) {
                 alert('ERROR: ' + data.message);
 
                 //Put original message back:
-                $("#ul-nav-" + i_id).html(original_message);
+                $("#ul-nav-" + tr_id).html(original_message);
 
                 //Tooltips:
                 $('[data-toggle="tooltip"]').tooltip();
 
             } else {
 
-                $("#ul-nav-" + i_id).html('<div>' + data.message + '</div>');
+                $("#ul-nav-" + tr_id).html('<div>' + data.message + '</div>');
 
                 //Adjust counter by one:
                 message_count--;
@@ -271,13 +276,13 @@ function i_archive(i_id) {
 
                 //Disapper in a while:
                 setTimeout(function () {
-                    $("#ul-nav-" + i_id).fadeOut();
+                    $("#ul-nav-" + tr_id).fadeOut();
                     setTimeout(function () {
                         //Remove first:
-                        $("#ul-nav-" + i_id).remove();
+                        $("#ul-nav-" + tr_id).remove();
 
                         //Adjust sort:
-                        apply_message_sorting($('#tr_status_focus').val());
+                        apply_message_sorting(focus_tr_en_type_id);
                     }, 377);
                 }, 377);
 
@@ -286,58 +291,58 @@ function i_archive(i_id) {
     }
 }
 
-function msg_start_edit(i_id, initial_tr_status) {
+function msg_start_edit(tr_id, initial_tr_en_type_id) {
 
     //Start editing:
-    $("#ul-nav-" + i_id).addClass('in-editing');
-    $("#ul-nav-" + i_id + " .edit-off").addClass('hidden');
-    $("#ul-nav-" + i_id + " .edit-on").removeClass('hidden');
-    $("#ul-nav-" + i_id + ">div").css('width', '100%');
-    $("#ul-nav-" + i_id + " textarea").focus();
+    $("#ul-nav-" + tr_id).addClass('in-editing');
+    $("#ul-nav-" + tr_id + " .edit-off").addClass('hidden');
+    $("#ul-nav-" + tr_id + " .edit-on").removeClass('hidden');
+    $("#ul-nav-" + tr_id + ">div").css('width', '100%');
+    $("#ul-nav-" + tr_id + " textarea").focus();
 
     //Initiate search:
     initiate_search();
 
     //Try to initiate the editor, which only applies to text messages:
-    changeMessageEditing(i_id);
+    changeMessageEditing(tr_id);
 
     //Watch typing:
     $(document).keyup(function (e) {
         //Watch for action keys:
         if (e.ctrlKey && e.keyCode === 13) {
-            message_save_updates(i_id, initial_tr_status);
+            message_save_updates(tr_id, initial_tr_en_type_id);
         } else if (e.keyCode === 27) {
-            msg_cancel_edit(i_id);
+            msg_cancel_edit(tr_id);
         }
     });
 }
 
-function msg_cancel_edit(i_id, success=0) {
+function msg_cancel_edit(tr_id, success=0) {
     //Revert editing:
-    $("#ul-nav-" + i_id).removeClass('in-editing');
-    $("#ul-nav-" + i_id + " .edit-off").removeClass('hidden');
-    $("#ul-nav-" + i_id + " .edit-on").addClass('hidden');
-    $("#ul-nav-" + i_id + ">div").css('width', 'inherit');
+    $("#ul-nav-" + tr_id).removeClass('in-editing');
+    $("#ul-nav-" + tr_id + " .edit-off").removeClass('hidden');
+    $("#ul-nav-" + tr_id + " .edit-on").addClass('hidden');
+    $("#ul-nav-" + tr_id + ">div").css('width', 'inherit');
 }
 
-function message_save_updates(i_id, initial_tr_status) {
+function message_save_updates(tr_id, initial_tr_en_type_id) {
 
     //Show loader:
-    $("#ul-nav-" + i_id + " .edit-updates").html('<div><img src="/img/round_load.gif" class="loader" /></div>');
+    $("#ul-nav-" + tr_id + " .edit-updates").html('<div><img src="/img/round_load.gif" class="loader" /></div>');
 
     //Revert View:
-    msg_cancel_edit(i_id, 1);
+    msg_cancel_edit(tr_id, 1);
 
     //Detect new status, and a potential change:
-    var new_tr_status = $("#tr_status_" + i_id).val();
+    var new_tr_en_type_id = $("#en_all_4485_" + tr_id).val();
 
     //Update message:
     $.post("/intents/i_modify", {
 
-        i_id: i_id,
-        tr_content: $("#ul-nav-" + i_id + " textarea").val(),
-        initial_tr_status: initial_tr_status,
-        tr_status: new_tr_status,
+        tr_id: tr_id,
+        tr_content: $("#ul-nav-" + tr_id + " textarea").val(),
+        initial_tr_en_type_id: initial_tr_en_type_id,
+        focus_tr_en_type_id: new_tr_en_type_id,
         in_id: in_id,
 
     }, function (data) {
@@ -345,44 +350,44 @@ function message_save_updates(i_id, initial_tr_status) {
         if (data.status) {
 
             //All good, lets show new text:
-            $("#ul-nav-" + i_id + " .text_message").html(data.message);
+            $("#ul-nav-" + tr_id + " .text_message").html(data.message);
 
             //Did the status change?
-            if (!(new_tr_status == initial_tr_status)) {
+            if (!(new_tr_en_type_id == initial_tr_en_type_id)) {
                 //Update new status:
-                $("#ul-nav-" + i_id + " .msg_status").html(data.tr_status);
+                $("#ul-nav-" + tr_id + " .msg_status").html(data.tr_en_type_id);
 
                 //Switch message over to its section and inform the user:
-                $("#ul-nav-" + i_id).removeClass('msg_' + initial_tr_status).addClass('msg_' + new_tr_status)
+                $("#ul-nav-" + tr_id).removeClass('msg_' + initial_tr_en_type_id).addClass('msg_' + new_tr_en_type_id)
 
                 //Note that we don't need to sort the new list as the new item would be added to its end
 
                 //Remove possible "No message" info box:
-                if ($('.no-messages' + in_id + '_' + new_tr_status).length) {
-                    $('.no-messages' + in_id + '_' + new_tr_status).hide();
+                if ($('.no-messages' + in_id + '_' + new_tr_en_type_id).length) {
+                    $('.no-messages' + in_id + '_' + new_tr_en_type_id).hide();
                 }
 
                 setTimeout(function () {
 
                     //Now move over to the new status tab:
-                    load_message_type(new_tr_status);
+                    load_message_type(new_tr_en_type_id);
 
                     //Move item to last:
-                    $("#message-sorting" + in_id).append($("#ul-nav-" + i_id));
+                    $("#message-sorting" + in_id).append($("#ul-nav-" + tr_id));
 
                     //Sort original list as 1 message has been removed from it:
-                    apply_message_sorting(initial_tr_status);
+                    apply_message_sorting(initial_tr_en_type_id);
 
                 }, 500);
 
             }
 
             //Show success here
-            $("#ul-nav-" + i_id + " .edit-updates").html('<b>' + data.success_icon + '</b>');
+            $("#ul-nav-" + tr_id + " .edit-updates").html('<b>' + data.success_icon + '</b>');
 
         } else {
             //Oops, some sort of an error, lets
-            $("#ul-nav-" + i_id + " .edit-updates").html('<b style="color:#FF0000 !important; line-height: 110% !important;"><i class="fas fa-exclamation-triangle"></i> ' + data.message + '</b>');
+            $("#ul-nav-" + tr_id + " .edit-updates").html('<b style="color:#FF0000 !important; line-height: 110% !important;"><i class="fas fa-exclamation-triangle"></i> ' + data.message + '</b>');
         }
 
         //Tooltips:
@@ -390,7 +395,7 @@ function message_save_updates(i_id, initial_tr_status) {
 
         //Disapper in a while:
         setTimeout(function () {
-            $("#ul-nav-" + i_id + " .edit-updates>b").fadeOut();
+            $("#ul-nav-" + tr_id + " .edit-updates>b").fadeOut();
         }, 5000);
     });
 }
@@ -399,10 +404,9 @@ function message_save_updates(i_id, initial_tr_status) {
 var button_value = null;
 
 function message_form_lock() {
-    var tr_status = $('#tr_status_focus').val();
-    button_value = $('#add_message_' + tr_status + '_' + in_id).html();
-    $('#add_message_' + tr_status + '_' + in_id).html('<span><img src="/img/round_load.gif" class="loader" /></span>');
-    $('#add_message_' + tr_status + '_' + in_id).attr('href', '#');
+    button_value = $('#add_message_' + focus_tr_en_type_id + '_' + in_id).html();
+    $('#add_message_' + focus_tr_en_type_id + '_' + in_id).html('<span><img src="/img/round_load.gif" class="loader" /></span>');
+    $('#add_message_' + focus_tr_en_type_id + '_' + in_id).attr('href', '#');
 
     $('.add-msg' + in_id).addClass('is-working');
     $('#tr_content' + in_id).prop("disabled", true);
@@ -411,18 +415,17 @@ function message_form_lock() {
 
 
 function message_form_unlock(result) {
-    var tr_status = $('#tr_status_focus').val();
 
     //Update UI to unlock:
     $('.add-msg' + in_id).removeClass('is-working');
     $('.remove_loading').fadeIn();
 
-    $('#add_message_' + tr_status + '_' + in_id).html(button_value);
-    $('#add_message_' + tr_status + '_' + in_id).attr('href', 'javascript:msg_create();');
+    $('#add_message_' + focus_tr_en_type_id + '_' + in_id).html(button_value);
+    $('#add_message_' + focus_tr_en_type_id + '_' + in_id).attr('href', 'javascript:msg_create();');
 
     //Remove possible "No message" info box:
-    if ($('.no-messages' + in_id + '_' + tr_status).length) {
-        $('.no-messages' + in_id + '_' + tr_status).hide();
+    if ($('.no-messages' + in_id + '_' + focus_tr_en_type_id).length) {
+        $('.no-messages' + in_id + '_' + focus_tr_en_type_id).hide();
     }
 
     //Reset Focus:
@@ -435,7 +438,7 @@ function message_form_unlock(result) {
         $("#message-sorting" + in_id).append(result.message);
 
         //Resort/Re-adjust:
-        load_message_type(tr_status);
+        load_message_type(focus_tr_en_type_id);
 
         //Tooltips:
         $('[data-toggle="tooltip"]').tooltip();
@@ -475,7 +478,7 @@ function save_attachment(droppedFiles, uploadType) {
         }
 
         ajaxData.append('upload_type', uploadType);
-        ajaxData.append('tr_status', $('#tr_status_focus').val()); //TODO Change to message en type ID
+        ajaxData.append('focus_tr_en_type_id', focus_tr_en_type_id);
         ajaxData.append('in_id', in_id);
 
         $.ajax({
@@ -524,7 +527,7 @@ function msg_create() {
 
         in_id: in_id, //Synonymous
         tr_content: $('#tr_content' + in_id).val(),
-        tr_status: $('#tr_status_focus').val(),
+        focus_tr_en_type_id: focus_tr_en_type_id,
 
     }, function (data) {
 

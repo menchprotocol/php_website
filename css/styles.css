@@ -707,18 +707,18 @@ input::-webkit-inner-spin-button {
     text-align: center;
 }
 
-.c_outcome {
+.in_outcome {
     line-height: 100%;
 }
 
-.c_outcome .title-main {
+.in_outcome .title-main {
     display: block;
     padding: 0 !important;
     font-size: 0.45em;
     line-height: 110% !important;
 }
 
-.c_outcome .title-sub {
+.in_outcome .title-sub {
     display: block;
     font-size: 0.3em;
     color: #999;
@@ -728,7 +728,7 @@ input::-webkit-inner-spin-button {
     margin: 5px 0 !important;
 }
 
-.c_outcome .title-sub i {
+.in_outcome .title-sub i {
     width: 20px;
     text-align: center;
 }
@@ -3197,11 +3197,11 @@ h4 .tip-badge {
     color: #FFF !important;
 }
 
-#b_c_outcome, #b_c_outcome::placeholder {
+#b_in_outcome, #b_in_outcome::placeholder {
     font-size: 18px !important;
 }
 
-#b_c_outcome::placeholder {
+#b_in_outcome::placeholder {
     color: #999;
 }
 

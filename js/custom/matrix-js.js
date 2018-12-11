@@ -92,19 +92,19 @@ function switch_to(hashtag_name) {
     $('#topnav a[href="#' + hashtag_name + '"]').tab('show');
 }
 
-function view_el(u_id, in_id) {
+function view_el(en_id, in_id) {
     //This function toggles the student card report
     //Determine its current state:
-    if ($('#c_el_' + u_id + '_' + in_id).hasClass('hidden')) {
+    if ($('#c_el_' + en_id + '_' + in_id).hasClass('hidden')) {
         //Need to show it now:
-        $('#c_el_' + u_id + '_' + in_id).removeClass('hidden');
-        $('#pointer_' + u_id + '_' + in_id).removeClass('fa-caret-right');
-        $('#pointer_' + u_id + '_' + in_id).addClass('fa-caret-down');
+        $('#c_el_' + en_id + '_' + in_id).removeClass('hidden');
+        $('#pointer_' + en_id + '_' + in_id).removeClass('fa-caret-right');
+        $('#pointer_' + en_id + '_' + in_id).addClass('fa-caret-down');
     } else {
         //Need to hide it now:
-        $('#c_el_' + u_id + '_' + in_id).addClass('hidden');
-        $('#pointer_' + u_id + '_' + in_id).removeClass('fa-caret-down');
-        $('#pointer_' + u_id + '_' + in_id).addClass('fa-caret-right');
+        $('#c_el_' + en_id + '_' + in_id).addClass('hidden');
+        $('#pointer_' + en_id + '_' + in_id).removeClass('fa-caret-down');
+        $('#pointer_' + en_id + '_' + in_id).addClass('fa-caret-right');
     }
 }
 
@@ -161,7 +161,7 @@ $(document).ready(function () {
         if (dataset == 1) {
             window.location = "/intents/" + suggestion.in_id;
         } else if (dataset == 2) {
-            window.location = "/entities/" + suggestion.u_id;
+            window.location = "/entities/" + suggestion.en_id;
         }
 
     }).autocomplete({hint: false, minLength: 3, autoselect: true, keyboardShortcuts: ['s']}, [
@@ -183,7 +183,7 @@ $(document).ready(function () {
             templates: {
                 suggestion: function (suggestion) {
                     var fancy_hours = fancy_time(suggestion);
-                    return '<i class="' + in_statuses[suggestion.in_status]["s_icon"] + '"></i> <i class="fas fa-hashtag"></i> ' + suggestion._highlightResult.c_outcome.value + (fancy_hours ? '<span class="search-info">' + ' <i class="fas fa-clock"></i>' + fancy_hours + '</span>' : '');
+                    return '<i class="' + in_statuses[suggestion.in_status]["s_icon"] + '"></i> <i class="fas fa-hashtag"></i> ' + suggestion._highlightResult.in_outcome.value + (fancy_hours ? '<span class="search-info">' + ' <i class="fas fa-clock"></i>' + fancy_hours + '</span>' : '');
                 },
             }
         },
@@ -237,16 +237,16 @@ $(document).ready(function () {
 });
 
 
-function load_u_engagements(u_id, tr_id=0) {
+function load_u_engagements(en_id, tr_id=0) {
 
     tr_id = parseInt(tr_id);
-    u_id = parseInt(u_id);
-    var frame_title = frame_loader(tr_id, u_id, true);
+    en_id = parseInt(en_id);
+    var frame_title = frame_loader(tr_id, en_id, true);
     $('#w_title').html('<i class="fas fa-atlas"></i> ' + frame_title);
 
     //Load content via a URL:
     $('.frame-loader').addClass('hidden');
-    $('.ajax-frame').attr('src', '/my/load_u_engagements/' + u_id).removeClass('hidden').css('margin-top', '0');
+    $('.ajax-frame').attr('src', '/my/load_u_engagements/' + en_id).removeClass('hidden').css('margin-top', '0');
 
     //Tooltips:
     $('[data-toggle="tooltip"]').tooltip();

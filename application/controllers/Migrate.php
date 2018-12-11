@@ -192,7 +192,6 @@ class Migrate extends CI_Controller
 
 
         $entities = $this->Old_model->u_fetch(array(
-            'u_id >' => 4518,
             'u_status >=' => 0, //new+
         ), array('skip_en__parents'), 0, 0, array('u_id' => 'ASC'));
 
@@ -200,7 +199,7 @@ class Migrate extends CI_Controller
         foreach ($entities as $u) {
 
             //Does this entity have a cover photo?
-            if ($u['u_icon'] > 0) {
+            if (strlen($u['u_icon']) > 0) {
                 $stats['set_icons']++;
                 $en_icon = $u['u_icon'];
             } elseif ($u['u_cover_x_id'] > 0 && isset($u['x_url'])) {

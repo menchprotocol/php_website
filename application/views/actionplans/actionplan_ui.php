@@ -32,7 +32,7 @@ if ($w['tr_status'] == 1) {
             //$next_button = '<span style="font-size: 0.7em; padding-left:5px; display:inline-block;"><i class="fas fa-shield-check"></i> This is the next-in-line intent</span>';
             $next_button = null;
         } else {
-            $next_button = '<a href="/my/actionplan/' . $trs_next[0]['tr_tr_parent_id'] . '/' . $trs_next[0]['in_id'] . '" class="btn ' . (count($k_ins) == 1 && !$show_written_input && !$is_incomplete ? 'btn-md btn-primary' : 'btn-xs btn-black') . '" data-toggle="tooltip" data-placement="top" title="Next intent-in-line is to ' . $trs_next[0]['c_outcome'] . '">Next-in-line <i class="fas fa-angle-right"></i></a>';
+            $next_button = '<a href="/my/actionplan/' . $trs_next[0]['tr_tr_parent_id'] . '/' . $trs_next[0]['in_id'] . '" class="btn ' . (count($k_ins) == 1 && !$show_written_input && !$is_incomplete ? 'btn-md btn-primary' : 'btn-xs btn-black') . '" data-toggle="tooltip" data-placement="top" title="Next intent-in-line is to ' . $trs_next[0]['in_outcome'] . '">Next-in-line <i class="fas fa-angle-right"></i></a>';
         }
     }
 }
@@ -49,7 +49,7 @@ echo '</div>';
 
 
 //Show title
-echo '<h3 class="student-h3 primary-title">' . $c['c_outcome'] . '</h3>';
+echo '<h3 class="student-h3 primary-title">' . $c['in_outcome'] . '</h3>';
 
 if (count($k_ins) == 0) {
 
@@ -97,7 +97,7 @@ if (count($messages) > 0) {
         if ($i['tr_status'] == 1) {
             echo '<div class="tip_bubble">';
             echo echo_i(array_merge($i, array(
-                'tr_en_child_id' => $w['u_id'],
+                'tr_en_child_id' => $w['en_id'],
             )), $w['en_name']);
             echo '</div>';
         }

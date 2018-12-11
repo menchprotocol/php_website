@@ -37,7 +37,7 @@ class Intents extends CI_Controller
 
         //Load view:
         $data = array(
-            'title' => $intents[0]['c_outcome'],
+            'title' => $intents[0]['in_outcome'],
             'in' => $intents[0],
             'in__active_parents' => $this->Old_model->cr_parents_fetch(array(
                 'tr_in_child_id' => $in_id,
@@ -88,7 +88,7 @@ class Intents extends CI_Controller
 
         //Load home page:
         $this->load->view('shared/public_header', array(
-            'title' => $intents[0]['c_outcome'],
+            'title' => $intents[0]['in_outcome'],
             'in' => $intents[0],
         ));
         $this->load->view('intents/landing_page', array(
@@ -109,13 +109,13 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Session. Refresh the Page to Continue',
             );
-        } elseif (!isset($_POST['in_id']) || !isset($_POST['c_outcome']) || !isset($_POST['in_linkto_id']) || !isset($_POST['next_level'])) {
+        } elseif (!isset($_POST['in_id']) || !isset($_POST['in_outcome']) || !isset($_POST['in_linkto_id']) || !isset($_POST['next_level'])) {
             echo_json(array(
                 'status' => 0,
                 'message' => 'Missing core inputs',
             ));
         } else {
-            echo_json($this->Db_model->in_combo_create($_POST['in_id'], $_POST['c_outcome'], $_POST['in_linkto_id'], $_POST['next_level'], $udata['u_id']));
+            echo_json($this->Db_model->in_combo_create($_POST['in_id'], $_POST['in_outcome'], $_POST['in_linkto_id'], $_POST['next_level'], $udata['en_id']));
         }
     }
 
@@ -173,10 +173,10 @@ class Intents extends CI_Controller
 
         //Make the move:
         $this->Db_model->tr_update(intval($_POST['tr_id']), array(
-            'tr_en_parent_id' => $udata['u_id'],
+            'tr_en_parent_id' => $udata['en_id'],
             'tr_in_parent_id' => intval($_POST['to_in_id']),
             //No need to update sorting here as a separate JS function would call that within half a second after the move...
-        ), $udata['u_id']);
+        ), $udata['en_id']);
 
 
         //Adjust tree on both branches that have been affected:
@@ -224,7 +224,7 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing level',
             ));
-        } elseif (!isset($_POST['c_outcome']) || strlen($_POST['c_outcome']) <= 0) {
+        } elseif (!isset($_POST['in_outcome']) || strlen($_POST['in_outcome']) <= 0) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Intent',
@@ -283,7 +283,7 @@ class Intents extends CI_Controller
 
         //Update array:
         $c_update = array(
-            'c_outcome' => trim($_POST['c_outcome']),
+            'in_outcome' => trim($_POST['in_outcome']),
             //These are also in the recursive adjustment array as they affect metadata
             'c_cost_estimate' => doubleval($_POST['c_cost_estimate']),
             'in_seconds' => intval($_POST['in_seconds']),
@@ -324,7 +324,7 @@ class Intents extends CI_Controller
         if (count($c_update) > 0) {
 
             //YES, update the DB:
-            $this->Db_model->in_update($_POST['in_id'], $c_update, $udata['u_id']);
+            $this->Db_model->in_update($_POST['in_id'], $c_update, $udata['en_id']);
 
             //Any recursive updates needed?
             if (count($recursive_query) > 0) {
@@ -346,7 +346,7 @@ class Intents extends CI_Controller
 
                 foreach ($child_intents as $child_in) {
                     //Update this intent as the status did match:
-                    $children_updated += $this->Db_model->in_update($child_in['in_id'], array('in_status' => intval($_POST['in_status'])), $udata['u_id']);
+                    $children_updated += $this->Db_model->in_update($child_in['in_id'], array('in_status' => intval($_POST['in_status'])), $udata['en_id']);
                 }
             }
         }
@@ -430,7 +430,7 @@ class Intents extends CI_Controller
         //Remove Transaction:
         $this->Db_model->tr_update($_POST['tr_id'], array(
             'tr_status' => -1, //Removed
-        ), $udata['u_id']);
+        ), $udata['en_id']);
 
         //Show success:
         echo_json(array(
@@ -487,7 +487,7 @@ class Intents extends CI_Controller
                 foreach ($_POST['new_sort'] as $rank => $tr_id) {
                     $this->Db_model->tr_update(intval($tr_id), array(
                         'tr_order' => intval($rank),
-                    ), $udata['u_id']);
+                    ), $udata['en_id']);
                 }
 
                 //Fetch again for the record:
@@ -500,8 +500,8 @@ class Intents extends CI_Controller
 
                 //Log transaction:
                 $this->Db_model->tr_create(array(
-                    'tr_en_credit_id' => $udata['u_id'],
-                    'tr_content' => 'Sorted child intents for [' . $parent_intents[0]['c_outcome'] . ']',
+                    'tr_en_credit_id' => $udata['en_id'],
+                    'tr_content' => 'Sorted child intents for [' . $parent_intents[0]['in_outcome'] . ']',
                     'tr_metadata' => array(
                         'input_data' => $_POST,
                         'before' => $children_before,
@@ -547,7 +547,7 @@ class Intents extends CI_Controller
 
             //Log an engagement for all messages
             $this->Db_model->tr_create(array(
-                'tr_en_credit_id' => $udata['u_id'],
+                'tr_en_credit_id' => $udata['en_id'],
                 'tr_metadata' => $i,
                 'tr_en_type_id' => 4273, //Got It
                 'tr_in_child_id' => intval($_POST['intent_id']),
@@ -555,7 +555,7 @@ class Intents extends CI_Controller
             ));
 
             //Build UI friendly Message:
-            $help_content .= echo_i(array_merge($i, array('tr_en_child_id' => $udata['u_id'])), $udata['en_name']);
+            $help_content .= echo_i(array_merge($i, array('tr_en_child_id' => $udata['en_id'])), $udata['en_name']);
         }
 
         //Return results:
@@ -713,11 +713,11 @@ class Intents extends CI_Controller
 
         //Create message:
         $i = $this->Db_model->tr_create(array(
-            'tr_en_credit_id' => $udata['u_id'],
+            'tr_en_credit_id' => $udata['en_id'],
             'tr_en_type_id' => $_POST['tr_status'], //TODO What type of message is this? find its entity ID
-            'tr_en_parent_id' => $url_create['en']['u_id'],
+            'tr_en_parent_id' => $url_create['en']['en_id'],
             'tr_in_child_id' => intval($_POST['in_id']),
-            'tr_content' => '@' . $url_create['en']['u_id'], //Just place the reference inside the message content
+            'tr_content' => '@' . $url_create['en']['en_id'], //Just place the reference inside the message content
             'tr_order' => 1 + $this->Db_model->tr_max_order(array(
                 'tr_status' => $_POST['tr_status'],
                 'tr_in_child_id' => $_POST['in_id'],
@@ -742,7 +742,7 @@ class Intents extends CI_Controller
         echo_json(array(
             'status' => 1,
             'message' => echo_message(array_merge($new_messages[0], array(
-                'tr_en_child_id' => $udata['u_id'],
+                'tr_en_child_id' => $udata['en_id'],
             ))),
         ));
     }
@@ -784,15 +784,16 @@ class Intents extends CI_Controller
 
         //Create Message Transaction:
         $tr = $this->Db_model->tr_create(array(
-            'tr_en_credit_id' => $udata['u_id'],
+            'tr_en_credit_id' => $udata['en_id'],
             'tr_in_child_id' => intval($_POST['in_id']),
-            'tr_status' => $_POST['tr_status'],
             'tr_order' => 1 + $this->Db_model->tr_max_order(array(
-                'tr_status' => $_POST['tr_status'],
+                'tr_status >=' => 0, //New+
+                'tr_en_type_id' => 123, //TODO Put message type
                 'tr_in_child_id' => intval($_POST['in_id']),
             )),
             //Referencing attributes:
             'tr_content' => $validation['tr_content'],
+            'tr_en_type_id' => 123, //TODO Put message type
             'tr_en_parent_id' => $validation['tr_en_parent_id'],
         ), true);
 
@@ -810,7 +811,7 @@ class Intents extends CI_Controller
         return echo_json(array(
             'status' => 1,
             'message' => echo_message(array_merge($tr, array(
-                'tr_en_child_id' => $udata['u_id'],
+                'tr_en_child_id' => $udata['en_id'],
             ))),
         ));
     }
@@ -872,7 +873,7 @@ class Intents extends CI_Controller
         );
 
 
-        if (!($_POST['initial_tr_status'] == $_POST['tr_status'])) {
+        if (!($_POST['initial_tr_en_type_id'] == $_POST['tr_status'])) {
             //Change the status:
             $to_update['tr_status'] = $_POST['tr_status'];
             //Put it at the end of the new list:
@@ -883,7 +884,7 @@ class Intents extends CI_Controller
         }
 
         //Now update the DB:
-        $this->Db_model->tr_update(intval($_POST['tr_id']), $to_update, $udata['u_id']);
+        $this->Db_model->tr_update(intval($_POST['tr_id']), $to_update, $udata['en_id']);
 
         //Re-fetch the message for display purposes:
         $new_messages = $this->Db_model->tr_fetch(array(
@@ -893,8 +894,8 @@ class Intents extends CI_Controller
         //Print the challenge:
         return echo_json(array(
             'status' => 1,
-            'message' => echo_i(array_merge($new_messages[0], array('tr_en_child_id' => $udata['u_id'])), $udata['en_name']),
-            'tr_status' => echo_status('tr_status', $new_messages[0]['tr_status'], 1, 'right'),
+            'message' => echo_i(array_merge($new_messages[0], array('tr_en_child_id' => $udata['en_id'])), $udata['en_name']),
+            'tr_en_type_id' => echo_status('en_all_4485', $new_messages[0]['tr_en_type_id'], 1, 'right'),
             'success_icon' => '<span><i class="fas fa-check"></i> Saved</span>',
         ));
     }
@@ -936,7 +937,7 @@ class Intents extends CI_Controller
                 //Now update the DB:
                 $this->Db_model->tr_update(intval($_POST['tr_id']), array(
                     'tr_status' => -1, //Removed
-                ), $udata['u_id']);
+                ), $udata['en_id']);
 
                 //Update intent count:
                 $this->db->query("UPDATE tb_intents SET in__messages_count=in__messages_count-1 WHERE in_id=" . intval($_POST['in_id']));
@@ -983,7 +984,7 @@ class Intents extends CI_Controller
                     $sort_count++;
                     $this->Db_model->tr_update($tr_id, array(
                         'tr_order' => intval($tr_order),
-                    ), $udata['u_id']);
+                    ), $udata['en_id']);
                 }
             }
 

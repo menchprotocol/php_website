@@ -22,9 +22,9 @@
 <script>
     function confirm_child_go(in_id) {
         $('.alink-' + in_id).attr('href', 'javascript:void(0);');
-        var c_outcome_parent = $('#title-parent').text();
-        var c_outcome_child = $('#title-' + in_id).text();
-        var r = confirm("Press OK to ONLY " + c_outcome_child + "\nPress CANCEL to " + c_outcome_parent);
+        var in_outcome_parent = $('#title-parent').text();
+        var in_outcome_child = $('#title-' + in_id).text();
+        var r = confirm("Press OK to ONLY " + in_outcome_child + "\nPress CANCEL to " + in_outcome_parent);
         if (r == true) {
             //Go to target intent:
             window.location = "/" + in_id;
@@ -43,7 +43,7 @@
         $parent_intents = null;
         //Show all parent intents for this intent:
         foreach ($c['in__active_parents'] as $ci) {
-            $parent_intents .= '<a class="list-group-item" href="/' . $ci['in_id'] . '"><span class="badge badge-primary"><i class="fas fa-angle-left"></i></span> ' . $ci['c_outcome'] . '</a>';
+            $parent_intents .= '<a class="list-group-item" href="/' . $ci['in_id'] . '"><span class="badge badge-primary"><i class="fas fa-angle-left"></i></span> ' . $ci['in_outcome'] . '</a>';
             if ($ci['in_id'] == $this->config->item('in_primary_id')) {
                 //Already included:
                 $need_grandpa = false;
@@ -55,7 +55,7 @@
             $gps = $this->Db_model->in_fetch(array(
                 'in_id' => $this->config->item('in_primary_id'),
             ));
-            $grandpa_intent = '<a class="list-group-item" href="/' . $gps[0]['in_id'] . '"><span class="badge badge-primary"><i class="fas fa-angle-left"></i></span> ' . $gps[0]['c_outcome'] . '</a>';
+            $grandpa_intent = '<a class="list-group-item" href="/' . $gps[0]['in_id'] . '"><span class="badge badge-primary"><i class="fas fa-angle-left"></i></span> ' . $gps[0]['in_outcome'] . '</a>';
         }
 
         //Display generated parents:
@@ -67,7 +67,7 @@
     }
 
     //Intent Title:
-    echo '<h1 style="margin-bottom:30px;" id="title-parent">' . $c['c_outcome'] . '</h1>';
+    echo '<h1 style="margin-bottom:30px;" id="title-parent">' . $c['in_outcome'] . '</h1>';
 
 
     //Show all instant messages for this intent:
@@ -105,7 +105,7 @@
         ?>
     </div>
 
-    <p style="padding:15px 0 0 0;">Ready to <?= $c['c_outcome'] ?>?</p>
+    <p style="padding:15px 0 0 0;">Ready to <?= $c['in_outcome'] ?>?</p>
 
     <!-- Call to Actions -->
     <a class="btn btn-primary" href="https://m.me/askmench?ref=ACTIONPLANADD10_<?= $c['in_id'] ?>"
@@ -135,7 +135,7 @@
             <div class="panel-heading" role="tab" id="heading' . $c1_counter . '">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open' . $c1_counter . '" href="#collapse' . $c1_counter . '" aria-expanded="false" aria-controls="collapse' . $c1_counter . '">
-                       ' . ($c['in_is_any'] ? 'Option' : 'Step') . ' ' . ($c1_counter + 1) . ': <span id="title-' . $c1['in_id'] . '">' . $c1['c_outcome'] . '</span><i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                       ' . ($c['in_is_any'] ? 'Option' : 'Step') . ' ' . ($c1_counter + 1) . ': <span id="title-' . $c1['in_id'] . '">' . $c1['in_outcome'] . '</span><i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                     </a>
                 </h4>
             </div>
@@ -159,7 +159,7 @@
 
                     echo '<ul style="list-style:none; margin-left:-30px; font-size:1em;">';
                     foreach ($c1['in__active_children'] as $c2_counter => $c2) {
-                        echo '<li>Part ' . ($c1_counter + 1) . '.' . ($c2_counter + 1) . '. ' . $c2['c_outcome'] . '</li>';
+                        echo '<li>Part ' . ($c1_counter + 1) . '.' . ($c2_counter + 1) . '. ' . $c2['in_outcome'] . '</li>';
                     }
                     echo '</ul>';
 
@@ -226,7 +226,7 @@
                 </h4>
             </div>
             <div id="collapse' . $id . '" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="heading' . $id . '">
-                <div class="panel-body" style="padding:5px 0 0 5px; font-size:1.1em;">Choose the number of hours you can commit each week to ' . $c['c_outcome'] . ' and Mench will streamline your progress based on your availability. Go as fast or slow as you like to achieve the right balance for success.</div>
+                <div class="panel-body" style="padding:5px 0 0 5px; font-size:1.1em;">Choose the number of hours you can commit each week to ' . $c['in_outcome'] . ' and Mench will streamline your progress based on your availability. Go as fast or slow as you like to achieve the right balance for success.</div>
             </div>
         </div></div>';
 
@@ -264,7 +264,7 @@
                 </h4>
             </div>
             <div id="collapse' . $id . '" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="heading' . $id . '">
-                <div class="panel-body" style="padding:5px 0 0 5px; font-size:1.1em;">The first question that Mench will ask you is to confirm if you are interested to ' . $c['c_outcome'] . '. Answering Yes will add this intention to your Action Plan so Mench can help you accomplish it.</div>
+                <div class="panel-body" style="padding:5px 0 0 5px; font-size:1.1em;">The first question that Mench will ask you is to confirm if you are interested to ' . $c['in_outcome'] . '. Answering Yes will add this intention to your Action Plan so Mench can help you accomplish it.</div>
             </div>
         </div></div>';
 
@@ -279,7 +279,7 @@
                 </h4>
             </div>
             <div id="collapse' . $id . '" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="heading' . $id . '">
-                <div class="panel-body" style="padding:5px 0 0 5px; font-size:1.1em;">Mench will continue the conversation and provide you with a step by step Action Plan that helps you ' . $c['c_outcome'] . '.</div>
+                <div class="panel-body" style="padding:5px 0 0 5px; font-size:1.1em;">Mench will continue the conversation and provide you with a step by step Action Plan that helps you ' . $c['in_outcome'] . '.</div>
             </div>
         </div></div>';
 

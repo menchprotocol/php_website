@@ -54,7 +54,7 @@
 
     });
 
-    function frame_loader(tr_id, u_id, hide_intent=false) {
+    function frame_loader(tr_id, en_id, hide_intent=false) {
 
         //Start loading:
         $('.fixed-box, .ajax-frame').addClass('hidden');
@@ -62,8 +62,8 @@
 
         //Construct title:
         var w_entity = null;
-        if (u_id > 0 && $('.en_name_' + u_id + ':first').length) {
-            w_entity = $('.en_name_' + u_id + ':first').text();
+        if (en_id > 0 && $('.en_name_' + en_id + ':first').length) {
+            w_entity = $('.en_name_' + en_id + ':first').text();
         }
 
         var w_intent = null;
@@ -98,15 +98,15 @@
     }
 
 
-    function load_w_actionplan(tr_id, u_id) {
+    function load_w_actionplan(tr_id, en_id) {
 
         tr_id = parseInt(tr_id);
-        u_id = parseInt(u_id);
-        var frame_title = frame_loader(tr_id, u_id);
+        en_id = parseInt(en_id);
+        var frame_title = frame_loader(tr_id, en_id);
         $('#w_title').html('<i class="fas fa-flag"></i> ' + frame_title);
 
         //Is this user an admin? if so, give them a delete option:
-        if (jQuery.inArray(1281, js_parent_u_ids) !== -1) {
+        if (jQuery.inArray(1281, js_parent_en_ids) !== -1) {
             //Append delete button:
             $('#w_title').prepend('<a href="javascript:void(0);" onclick="confirm_w_delete(' + tr_id + ')" data-toggle="tooltip" title="Permanently delete this subscription and its related data" data-placement="bottom"><i class="fas fa-trash-alt" style="color:#FFF;"></i></a> &nbsp;');
         }

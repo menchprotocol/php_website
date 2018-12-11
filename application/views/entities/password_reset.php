@@ -1,8 +1,8 @@
 <?php
 //Make sure we have all key variables:
-if (!isset($_GET['u_id']) || intval($_GET['u_id']) <= 0 || !isset($_GET['timestamp']) || intval($_GET['timestamp']) <= 0 || !isset($_GET['p_hash']) || strlen($_GET['p_hash']) < 10) {
+if (!isset($_GET['en_id']) || intval($_GET['en_id']) <= 0 || !isset($_GET['timestamp']) || intval($_GET['timestamp']) <= 0 || !isset($_GET['p_hash']) || strlen($_GET['p_hash']) < 10) {
     echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Missing Core Variables.</div>';
-} elseif (!($_GET['p_hash'] == md5($_GET['u_id'] . 'p@ssWordR3s3t' . $_GET['timestamp']))) {
+} elseif (!($_GET['p_hash'] == md5($_GET['en_id'] . 'p@ssWordR3s3t' . $_GET['timestamp']))) {
     echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Invalid hash key.</div>';
 } elseif (($_GET['timestamp'] + (24 * 3600)) < time()) {
     echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Password reset link has expired. You can request another one <a href="/login">here</a>.</div>';
@@ -18,7 +18,7 @@ if (!isset($_GET['u_id']) || intval($_GET['u_id']) <= 0 || !isset($_GET['timesta
             $('#pass_reset').html('<span><img src="/img/round_load.gif" class="loader" /></span>');
             //Hide the editor & saving results:
             $.post("/entities/u_password_reset_apply", {
-                u_id:<?= $_GET['u_id'] ?>,
+                en_id:<?= $_GET['en_id'] ?>,
                 timestamp:<?= $_GET['timestamp'] ?>,
                 p_hash: "<?= $_GET['p_hash'] ?>",
                 new_pass: $('#u_password').val(),

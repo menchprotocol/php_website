@@ -173,7 +173,7 @@ $udata = $this->session->userdata('user');
         <div class="row">
             <div class="col-md-8 col-md-offset-2" style="text-align:center;">
                 <?php
-                if (isset($udata['u_id'])) {
+                if (isset($udata['en_id'])) {
                     echo '<a href="/intents/' . $this->config->item('in_primary_id') . '" class="btn btn-danger btn-raised btn-lg">The Matrix <i class="fas fa-chevron-circle-right" style="font-size:1.2em;"></i></a>';
                 } else {
                     echo '<a href="https://mench.typeform.com/to/nh4s2u" class="btn btn-danger btn-raised btn-lg">Signup As Coach <i class="fas fa-sign-in" style="font-size:1.2em;"></i><div class="ripple-container"></div></a>';

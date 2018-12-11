@@ -37,10 +37,10 @@ $uri_segment_2 = $this->uri->segment(2);
     <script>
         <?php
         //Create flat list of JS variables:
-        $js_parent_u_ids = array();
+        $js_parent_en_ids = array();
         if ($udata) {
             foreach ($udata['en__parents'] as $privilege) {
-                array_push($js_parent_u_ids, intval($privilege['u_id']));
+                array_push($js_parent_en_ids, intval($privilege['en_id']));
             }
         }
 
@@ -50,8 +50,8 @@ $uri_segment_2 = $this->uri->segment(2);
         ?>
 
         //Define global js variables:
-        var js_u_id = <?= $udata['u_id'] ?>;
-        var js_parent_u_ids = [<?= join(',', $js_parent_u_ids) ?>];
+        var js_en_id = <?= $udata['en_id'] ?>;
+        var js_parent_en_ids = [<?= join(',', $js_parent_en_ids) ?>];
 
     </script>
 
@@ -112,7 +112,7 @@ if (!isset($_GET['skip_header'])) {
                                         class="fas fa-flag"></i> Action Plans</a></li>
                         <li class="extra-toggle" style="display: none;"><a href="/adminpanel/statuslegend"><span
                                         class="icon-left"><i class="fas fa-shield"></i></span> Admin</a></li>
-                        <li class="extra-toggle" style="display: none;"><a href="/entities/<?= $udata['u_id'] ?>"><span
+                        <li class="extra-toggle" style="display: none;"><a href="/entities/<?= $udata['en_id'] ?>"><span
                                         class="icon-left"><i class="fas fa-user-circle"></i></span> Me</a></li>
                         <li class="extra-toggle" style="display: none;"><a href="/logout"><span class="icon-left"><i`
                                             class="fas fa-power-off"></i></span> Logout</a></li>

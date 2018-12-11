@@ -434,7 +434,7 @@ class Db_model extends CI_Model
                         //What subscription number is this?
                         $completed_ws = $this->Db_model->w_fetch(array(
                             'tr_id !=' => $intents[0]['tr_id'], //Other than this one...
-                            'w_parent_u_id' => $intents[0]['tr_en_parent_id'],
+                            'w_parent_en_id' => $intents[0]['tr_en_parent_id'],
                             'tr_status >=' => 2, //Completed subscriptions
                         ));
 
@@ -444,7 +444,7 @@ class Db_model extends CI_Model
                                 'tr_en_child_id' => $intents[0]['tr_en_parent_id'],
                                 'tr_in_child_id' => $intents[0]['tr_in_child_id'],
                                 'tr_tr_parent_id' => $intents[0]['tr_id'],
-                                'tr_content' => 'Congratulations for completing your ' . echo_ordinal((count($completed_ws) + 1)) . ' Subscription 🎉 Over time I will keep sharing new insights (based on my new training data) that could help you to ' . $intents[0]['c_outcome'] . ' 🙌 You can, at any time, stop updates on your subscriptions by saying "quit".',
+                                'tr_content' => 'Congratulations for completing your ' . echo_ordinal((count($completed_ws) + 1)) . ' Subscription 🎉 Over time I will keep sharing new insights (based on my new training data) that could help you to ' . $intents[0]['in_outcome'] . ' 🙌 You can, at any time, stop updates on your subscriptions by saying "quit".',
                             ),
                             array(
                                 'tr_en_child_id' => $intents[0]['tr_en_parent_id'],
@@ -497,7 +497,7 @@ class Db_model extends CI_Model
         return $insert_columns;
     }
 
-    function in_combo_create($in_id, $c_outcome, $in_linkto_id, $next_level, $tr_en_credit_id)
+    function in_combo_create($in_id, $in_outcome, $in_linkto_id, $next_level, $tr_en_credit_id)
     {
 
         if (intval($in_id) <= 0) {
@@ -505,7 +505,7 @@ class Db_model extends CI_Model
                 'status' => 0,
                 'message' => 'Invalid Intent ID',
             );
-        } elseif (strlen($c_outcome) <= 0) {
+        } elseif (strlen($in_outcome) <= 0) {
             return array(
                 'status' => 0,
                 'message' => 'Missing Intent Outcome',
@@ -539,7 +539,7 @@ class Db_model extends CI_Model
 
             //Create intent:
             $new_intent = $this->Db_model->in_create(array(
-                'c_outcome' => trim($c_outcome),
+                'in_outcome' => trim($in_outcome),
                 'in_seconds' => $default_new_seconds,
                 'in__tree_in_count' => 1, //We just added one
                 'in__tree_max_seconds' => $default_new_seconds,
@@ -580,7 +580,7 @@ class Db_model extends CI_Model
             if (in_array($new_intent['in_id'], $parent_tree['in_flat_tree'])) {
                 return array(
                     'status' => 0,
-                    'message' => 'You cannot add "' . $new_intent['c_outcome'] . '" as its own child.',
+                    'message' => 'You cannot add "' . $new_intent['in_outcome'] . '" as its own child.',
                 );
             }
 
@@ -605,7 +605,7 @@ class Db_model extends CI_Model
                     //Ooops, this is a duplicate!
                     return array(
                         'status' => 0,
-                        'message' => '[' . $new_intent['c_outcome'] . '] is already linked here.',
+                        'message' => '[' . $new_intent['in_outcome'] . '] is already linked here.',
                     );
                     //TODO maybe trigger a notice to admin on how to not add duplicates!
                 }
@@ -613,7 +613,7 @@ class Db_model extends CI_Model
                 //Make sure none of the parents are the same:
                 return array(
                     'status' => 0,
-                    'message' => 'You cannot add "' . $new_intent['c_outcome'] . '" as its own child.',
+                    'message' => 'You cannot add "' . $new_intent['in_outcome'] . '" as its own child.',
                 );
             }
 
@@ -681,8 +681,8 @@ class Db_model extends CI_Model
         if (!isset($insert_columns['tr_status'])) {
             $insert_columns['tr_status'] = 1;
         }
-        if (!isset($insert_columns['w_parent_u_id'])) {
-            $insert_columns['w_parent_u_id'] = 0; //No coach assigned
+        if (!isset($insert_columns['w_parent_en_id'])) {
+            $insert_columns['w_parent_en_id'] = 0; //No coach assigned
         }
 
         if (!isset($insert_columns['w_c_rank'])) {
@@ -764,7 +764,7 @@ class Db_model extends CI_Model
             if (in_array('in__children_count', $join_objects)) {
                 //Fetch the messages for this entity:
                 $res[$key]['in__children_count'] = count($this->Old_model->ur_children_fetch(array(
-                    'tr_en_parent_id' => $val['u_id'],
+                    'tr_en_parent_id' => $val['en_id'],
                     'tr_status >=' => 0, //Pending or Active
                     'en_status >=' => 0, //Pending or Active
                 )));
@@ -775,7 +775,7 @@ class Db_model extends CI_Model
                 //Fetch the messages for this entity:
                 $res[$key]['u__urls'] = $this->Old_model->x_fetch(array(
                     'x_status >' => -2,
-                    'x_u_id' => $val['u_id'],
+                    'x_en_id' => $val['en_id'],
                 ), array(), array(
                     'x_type' => 'ASC'
                 ));
@@ -784,7 +784,7 @@ class Db_model extends CI_Model
             if (in_array('u__ws', $join_objects)) {
                 //Fetch the subscriptions for this entity:
                 $res[$key]['u__ws'] = $this->Db_model->w_fetch(array(
-                    'tr_en_parent_id' => $val['u_id'],
+                    'tr_en_parent_id' => $val['en_id'],
                     'tr_status IN (1,2)' => null, //Active subscriptions (Passive ones have a more targetted distribution)
                 ), array('in'), array(
                     'w_last_heard' => 'ASC'
@@ -797,7 +797,7 @@ class Db_model extends CI_Model
                 $res[$key]['en__parents'] = array();
             } else {
                 $res[$key]['en__parents'] = $this->Db_model->tr_parent_fetch(array(
-                    'tr_en_child_id' => $val['u_id'],
+                    'tr_en_child_id' => $val['en_id'],
                     'tr_status >=' => 0, //Pending or Active
                     'en_status >=' => 0, //Pending or Active
                 ));
@@ -923,7 +923,7 @@ class Db_model extends CI_Model
         $this->db->insert('tb_intent_messages', $insert_columns);
 
         //Fetch inserted id:
-        $insert_columns['i_id'] = $this->db->insert_id();
+        $insert_columns['tr_id'] = $this->db->insert_id();
 
         return $insert_columns;
     }
@@ -1021,7 +1021,7 @@ class Db_model extends CI_Model
     }
 
 
-    function x_sync($x_url, $x_u_id, $cad_edit, $accept_existing_url = false)
+    function x_sync($x_url, $x_en_id, $cad_edit, $accept_existing_url = false)
     {
 
         //Auth user and check required variables:
@@ -1033,7 +1033,7 @@ class Db_model extends CI_Model
                 'status' => 0,
                 'message' => 'Invalid Session. Refresh the page and try again.',
             );
-        } elseif (!isset($x_u_id)) {
+        } elseif (!isset($x_en_id)) {
             return array(
                 'status' => 0,
                 'message' => 'Missing Child Entity ID',
@@ -1057,7 +1057,7 @@ class Db_model extends CI_Model
 
         //Validate parent entity:
         $children_us = $this->Db_model->en_fetch(array(
-            'u_id' => $x_u_id,
+            'en_id' => $x_en_id,
         ));
 
         //Make sure this URL does not exist:
@@ -1085,7 +1085,7 @@ class Db_model extends CI_Model
                     'curl' => $curl,
                     'en' => array_merge($children_us[0], $dup_urls[0]),
                 );
-            } elseif ($dup_urls[0]['u_id'] == $x_u_id) {
+            } elseif ($dup_urls[0]['en_id'] == $x_en_id) {
                 return array(
                     'status' => 0,
                     'message' => 'This URL has already been added!',
@@ -1099,12 +1099,12 @@ class Db_model extends CI_Model
         } elseif (count($children_us) < 1) {
             return array(
                 'status' => 0,
-                'message' => 'Invalid Child Entity ID [' . $x_u_id . ']',
+                'message' => 'Invalid Child Entity ID [' . $x_en_id . ']',
             );
         }
 
 
-        if ($x_u_id == 1326) { //Content
+        if ($x_en_id == 1326) { //Content
 
             //We need to create a new entity and add this URL below it:
             $x_types = echo_status('x_type', null);
@@ -1133,12 +1133,12 @@ class Db_model extends CI_Model
 
             $new_entity = $this->Db_model->en_create(array(
                 'en_name' => $en_name,
-            ), true, $udata['u_id']);
+            ), true, $udata['en_id']);
 
-            //Place this new entity in $x_u_id [Content]
+            //Place this new entity in $x_en_id [Content]
             $ur1 = $this->Db_model->tr_create(array(
-                'tr_en_child_id' => $new_entity['u_id'],
-                'tr_en_parent_id' => $x_u_id,
+                'tr_en_child_id' => $new_entity['en_id'],
+                'tr_en_parent_id' => $x_en_id,
             ));
 
         } else {
@@ -1149,8 +1149,8 @@ class Db_model extends CI_Model
 
         //All good, Save URL:
         $new_x = $this->Db_model->x_create(array(
-            'x_parent_u_id' => $udata['u_id'],
-            'x_u_id' => $new_entity['u_id'],
+            'x_parent_en_id' => $udata['en_id'],
+            'x_en_id' => $new_entity['en_id'],
             'x_url' => $x_url,
             'x_clean_url' => ($curl['clean_url'] ? $curl['clean_url'] : $x_url),
             'x_type' => $curl['x_type'],
@@ -1170,10 +1170,10 @@ class Db_model extends CI_Model
 
 
         //Update Algolia:
-        $this->Db_model->algolia_sync('en', $new_entity['u_id']);
+        $this->Db_model->algolia_sync('en', $new_entity['en_id']);
 
 
-        if ($x_u_id == 1326) {
+        if ($x_en_id == 1326) {
 
             //Return entity object:
             return array(
@@ -1206,7 +1206,7 @@ class Db_model extends CI_Model
         //Missing anything?
         $this->db->select('*');
         $this->db->from('tb_entities u');
-        $this->db->join('tb_entity_links ur', 'tr_en_parent_id = u_id');
+        $this->db->join('tb_entity_links ur', 'tr_en_parent_id = en_id');
         $this->db->join('tb_entity_urls x', 'x.x_id = u_cover_x_id', 'left'); //Fetch the cover photo if >0
         foreach ($match_columns as $key => $value) {
             if (!is_null($value)) {
@@ -1454,7 +1454,7 @@ class Db_model extends CI_Model
     function x_create($insert_columns)
     {
 
-        if (detect_missing_columns($insert_columns, array('x_url', 'x_clean_url', 'x_type', 'x_parent_u_id', 'x_u_id', 'x_status'))) {
+        if (detect_missing_columns($insert_columns, array('x_url', 'x_clean_url', 'x_type', 'x_parent_en_id', 'x_en_id', 'x_status'))) {
             return false;
         } elseif (!filter_var($insert_columns['x_url'], FILTER_VALIDATE_URL)) {
             return false;
@@ -1469,7 +1469,7 @@ class Db_model extends CI_Model
 
         if (count($urls) > 0) {
 
-            if ($insert_columns['x_u_id'] == $urls[0]['x_u_id']) {
+            if ($insert_columns['x_en_id'] == $urls[0]['x_en_id']) {
 
                 //For same object, we're all good, return this URL:
                 return $urls[0];
@@ -1478,8 +1478,8 @@ class Db_model extends CI_Model
 
                 //Save this engagement as we have an issue here...
                 $this->Db_model->tr_create(array(
-                    'tr_en_credit_id' => $insert_columns['x_parent_u_id'],
-                    'tr_en_child_id' => $insert_columns['x_u_id'],
+                    'tr_en_credit_id' => $insert_columns['x_parent_en_id'],
+                    'tr_en_child_id' => $insert_columns['x_en_id'],
                     'tr_en_type_id' => 4246, //System error
                     'tr_content' => 'x_create() found a duplicate URL ID [' . $urls[0]['x_id'] . ']',
                     'tr_metadata' => $insert_columns,
@@ -1628,8 +1628,8 @@ class Db_model extends CI_Model
         if (!isset($insert_columns['tr_en_credit_id'])) {
             //Attempt to fetch creator ID from session:
             $entity_data = $this->session->userdata('user');
-            if (isset($entity_data['u_id']) && intval($entity_data['u_id']) > 0) {
-                $insert_columns['tr_en_credit_id'] = $entity_data['u_id'];
+            if (isset($entity_data['en_id']) && intval($entity_data['en_id']) > 0) {
+                $insert_columns['tr_en_credit_id'] = $entity_data['en_id'];
             } else {
                 //Do not issue credit to anyone:
                 $insert_columns['tr_en_credit_id'] = 0;
@@ -1734,10 +1734,10 @@ class Db_model extends CI_Model
         //TODO update to new system
         if (0) {
 
-            foreach ($this->config->item('notify_admins') as $admin_u_id => $subscription) {
+            foreach ($this->config->item('notify_admins') as $admin_en_id => $subscription) {
 
                 //Do not notify about own actions:
-                if (intval($insert_columns['tr_en_credit_id']) == $admin_u_id) {
+                if (intval($insert_columns['tr_en_credit_id']) == $admin_en_id) {
                     continue;
                 }
 
@@ -1754,7 +1754,7 @@ class Db_model extends CI_Model
                     //Did we find it? We should have:
                     if (isset($engagements[0])) {
 
-                        $subject = 'Notification: ' . trim(strip_tags($engagements[0]['c_outcome'])) . ' - ' . (isset($engagements[0]['en_name']) ? $engagements[0]['en_name'] : 'System');
+                        $subject = 'Notification: ' . trim(strip_tags($engagements[0]['in_outcome'])) . ' - ' . (isset($engagements[0]['en_name']) ? $engagements[0]['en_name'] : 'System');
 
                         //Compose email:
                         $html_message = null; //Start
@@ -2073,29 +2073,29 @@ class Db_model extends CI_Model
                         }
 
                         //Addup unique experts:
-                        foreach ($granchildren['___tree_experts'] as $u_id => $tex) {
+                        foreach ($granchildren['___tree_experts'] as $en_id => $tex) {
                             //Is this a new expert?
-                            if (!isset($immediate_children['___tree_experts'][$u_id])) {
+                            if (!isset($immediate_children['___tree_experts'][$en_id])) {
                                 //Yes, add them to the list:
-                                $immediate_children['___tree_experts'][$u_id] = $tex;
+                                $immediate_children['___tree_experts'][$en_id] = $tex;
                             }
                         }
 
                         //Addup unique trainers:
-                        foreach ($granchildren['___tree_miners'] as $u_id => $tet) {
+                        foreach ($granchildren['___tree_miners'] as $en_id => $tet) {
                             //Is this a new expert?
-                            if (!isset($immediate_children['___tree_miners'][$u_id])) {
+                            if (!isset($immediate_children['___tree_miners'][$en_id])) {
                                 //Yes, add them to the list:
-                                $immediate_children['___tree_miners'][$u_id] = $tet;
+                                $immediate_children['___tree_miners'][$en_id] = $tet;
                             }
                         }
 
                         //Addup content types:
-                        foreach ($granchildren['___tree_contents'] as $type_u_id => $current_us) {
-                            foreach ($current_us as $u_id => $u_obj) {
-                                if (!isset($immediate_children['___tree_contents'][$type_u_id][$u_id])) {
+                        foreach ($granchildren['___tree_contents'] as $type_en_id => $current_us) {
+                            foreach ($current_us as $en_id => $u_obj) {
+                                if (!isset($immediate_children['___tree_contents'][$type_en_id][$en_id])) {
                                     //Yes, add them to the list:
-                                    $immediate_children['___tree_contents'][$type_u_id][$u_id] = $u_obj;
+                                    $immediate_children['___tree_contents'][$type_en_id][$en_id] = $u_obj;
                                 }
                             }
                         }
@@ -2181,7 +2181,7 @@ class Db_model extends CI_Model
 
                     //Yes! Let's see if any of the parents/creators are industry experts:
                     $us_fetch = $this->Db_model->en_fetch(array(
-                        'u_id' => $i['tr_en_parent_id'],
+                        'en_id' => $i['tr_en_parent_id'],
                     ));
 
                     if (isset($us_fetch[0]) && count($us_fetch[0]['en__parents']) > 0) {
@@ -2189,20 +2189,20 @@ class Db_model extends CI_Model
                         foreach ($us_fetch[0]['en__parents'] as $parent_u) {
 
                             //Is this a particular content type?
-                            if (in_array($parent_u['u_id'], $this->config->item('en_ids_3000'))) {
+                            if (in_array($parent_u['en_id'], $this->config->item('en_ids_3000'))) {
                                 //yes! Add it to the list if it does not already exist:
-                                if (!isset($intents[0]['___tree_contents'][$parent_u['u_id']][$us_fetch[0]['u_id']])) {
-                                    $intents[0]['___tree_contents'][$parent_u['u_id']][$us_fetch[0]['u_id']] = u_essentials($us_fetch[0]);
+                                if (!isset($intents[0]['___tree_contents'][$parent_u['en_id']][$us_fetch[0]['en_id']])) {
+                                    $intents[0]['___tree_contents'][$parent_u['en_id']][$us_fetch[0]['en_id']] = u_essentials($us_fetch[0]);
                                 }
 
                                 //How about the parent tree?
-                                if (!isset($immediate_children['___tree_contents'][$parent_u['u_id']][$us_fetch[0]['u_id']])) {
-                                    $immediate_children['___tree_contents'][$parent_u['u_id']][$us_fetch[0]['u_id']] = u_essentials($us_fetch[0]);
+                                if (!isset($immediate_children['___tree_contents'][$parent_u['en_id']][$us_fetch[0]['en_id']])) {
+                                    $immediate_children['___tree_contents'][$parent_u['en_id']][$us_fetch[0]['en_id']] = u_essentials($us_fetch[0]);
                                 }
                             }
 
-                            if (!in_array($parent_u['u_id'], $parent_ids)) {
-                                array_push($parent_ids, $parent_u['u_id']);
+                            if (!in_array($parent_u['en_id'], $parent_ids)) {
+                                array_push($parent_ids, $parent_u['en_id']);
                             }
                         }
                     }
@@ -2218,12 +2218,12 @@ class Db_model extends CI_Model
                     'tr_en_child_id IN (' . join(',', $parent_ids) . ')' => null,
                     'tr_status >=' => 0, //Pending review or higher
                     'en_status >=' => 0, //Pending review or higher
-                ), array(), 0, 0, 'u_id, en_name, en_trust_score, x_url');
+                ), array(), 0, 0, 'en_id, en_name, en_trust_score, x_url');
 
                 //Put unique IDs in array key for faster searching:
                 foreach ($ixs as $ixsu) {
-                    if (!isset($intents[0]['___tree_experts'][$ixsu['u_id']])) {
-                        $intents[0]['___tree_experts'][$ixsu['u_id']] = $ixsu;
+                    if (!isset($intents[0]['___tree_experts'][$ixsu['en_id']])) {
+                        $intents[0]['___tree_experts'][$ixsu['en_id']] = $ixsu;
                     }
                 }
             }
@@ -2235,9 +2235,9 @@ class Db_model extends CI_Model
                 //Yes, lets add them uniquely to the mother array assuming they are not already there:
                 foreach ($intents[0]['___tree_experts'] as $new_ixs) {
                     //Is this a new expert?
-                    if (!isset($immediate_children['___tree_experts'][$new_ixs['u_id']])) {
+                    if (!isset($immediate_children['___tree_experts'][$new_ixs['en_id']])) {
                         //Yes, add them to the list:
-                        $immediate_children['___tree_experts'][$new_ixs['u_id']] = $new_ixs;
+                        $immediate_children['___tree_experts'][$new_ixs['en_id']] = $new_ixs;
                     }
                 }
             }
@@ -2260,9 +2260,9 @@ class Db_model extends CI_Model
             if (is_array($intents[0]['___tree_miners']) && count($intents[0]['___tree_miners']) > 0) {
                 usort($intents[0]['___tree_miners'], 'sortByScore');
             }
-            foreach ($intents[0]['___tree_contents'] as $type_u_id => $current_us) {
-                if (isset($intents[0]['___tree_contents'][$type_u_id]) && count($intents[0]['___tree_contents'][$type_u_id]) > 0) {
-                    usort($intents[0]['___tree_contents'][$type_u_id], 'sortByScore');
+            foreach ($intents[0]['___tree_contents'] as $type_en_id => $current_us) {
+                if (isset($intents[0]['___tree_contents'][$type_en_id]) && count($intents[0]['___tree_contents'][$type_en_id]) > 0) {
+                    usort($intents[0]['___tree_contents'][$type_en_id], 'sortByScore');
                 }
             }
 
@@ -2298,7 +2298,7 @@ class Db_model extends CI_Model
                 }
 
 
-                array_push($immediate_children['db_queries'], '[' . $in_id . '] Seconds:' . intval($intents[0]['in__tree_max_seconds']) . '=>' . intval($intents[0]['___tree_max_seconds']) . ' / All Count:' . $intents[0]['in__tree_in_count'] . '=>' . $intents[0]['___tree_all_count'] . ' / Message:' . $intents[0]['in__messages_count'] . '=>' . $intents[0]['___messages_count'] . ' / Tree Message:' . $intents[0]['in__messages_tree_count'] . '=>' . $intents[0]['___messages_tree_count'] . ' (' . $intents[0]['c_outcome'] . ')');
+                array_push($immediate_children['db_queries'], '[' . $in_id . '] Seconds:' . intval($intents[0]['in__tree_max_seconds']) . '=>' . intval($intents[0]['___tree_max_seconds']) . ' / All Count:' . $intents[0]['in__tree_in_count'] . '=>' . $intents[0]['___tree_all_count'] . ' / Message:' . $intents[0]['in__messages_count'] . '=>' . $intents[0]['___messages_count'] . ' / Tree Message:' . $intents[0]['in__messages_tree_count'] . '=>' . $intents[0]['___messages_tree_count'] . ' (' . $intents[0]['in_outcome'] . ')');
 
             }
         }
@@ -2417,6 +2417,8 @@ class Db_model extends CI_Model
     function algolia_sync($obj, $obj_id = 0)
     {
 
+        return false; //Algolia is disabled for now
+
         //Define the support objects indexed on algolia:
         $obj_id = intval($obj_id);
 
@@ -2493,8 +2495,8 @@ class Db_model extends CI_Model
 
             if ($obj == 'en') {
 
-                $new_item['u_id'] = intval($item['u_id']); //rquired for all objects
-                $new_item['u_id'] = intval($item['u_id']); //rquired for all objects
+                $new_item['en_id'] = intval($item['en_id']); //rquired for all objects
+                $new_item['en_id'] = intval($item['en_id']); //rquired for all objects
                 $new_item['en_trust_score'] = intval($item['en_trust_score']);
                 $new_item['en_status'] = intval($item['en_status']);
                 $new_item['en_name'] = '';
@@ -2504,7 +2506,7 @@ class Db_model extends CI_Model
                 if (count($item['en__parents']) > 0) {
                     //Loop through parent entities:
                     foreach ($item['en__parents'] as $u) {
-                        array_push($new_item['_tags'], 'en' . $u['u_id']);
+                        array_push($new_item['_tags'], 'en' . $u['en_id']);
                     }
                 } else {
                     //Orphan Entity:
@@ -2516,14 +2518,14 @@ class Db_model extends CI_Model
 
 
                 //Add primary Entity as tag of Entity itself for search management:
-                if ($item['u_id'] == $this->config->item('primary_en_id')) {
+                if ($item['en_id'] == $this->config->item('primary_en_id')) {
                     array_push($new_item['_tags'], 'en' . $this->config->item('primary_en_id'));
                 }
 
                 //Append additional information:
                 $urls = $this->Old_model->x_fetch(array(
                     'x_status >' => -2,
-                    'x_u_id' => $item['u_id'],
+                    'x_en_id' => $item['en_id'],
                 ));
                 foreach ($urls as $x) {
                     //Add main URL:
@@ -2545,7 +2547,7 @@ class Db_model extends CI_Model
             } elseif ($obj == 'in') {
 
                 $new_item['in_id'] = intval($item['in_id']);
-                $new_item['c_outcome'] = $item['c_outcome'];
+                $new_item['in_outcome'] = $item['in_outcome'];
                 $new_item['in_is_any'] = intval($item['in_is_any']);
                 $new_item['c_keywords'] = trim($item['c_trigger_statements']);
                 $new_item['in_status'] = intval($item['in_status']);

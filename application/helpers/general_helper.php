@@ -23,7 +23,7 @@ function sortByScore($a, $b)
 function u_essentials($full_array)
 {
     $return_array = array();
-    foreach (array('u_id', 'en_name', 'en_trust_score', 'x_url') as $key) {
+    foreach (array('en_id', 'en_name', 'en_trust_score', 'x_url') as $key) {
         if (isset($full_array[$key])) {
             $return_array[$key] = $full_array[$key];
         }
@@ -69,12 +69,12 @@ function migrate_submissions($c_require_notes_to_complete, $c_require_url_to_com
 }
 
 
-function fetch_entity_tree($u_id, $is_edit = false)
+function fetch_entity_tree($en_id, $is_edit = false)
 {
 
     $CI =& get_instance();
     $entities = $CI->Db_model->en_fetch(array(
-        'u_id' => $u_id,
+        'en_id' => $en_id,
     ), array('in__children_count', 'u__urls'));
 
     if (count($entities) < 1) {
@@ -82,7 +82,7 @@ function fetch_entity_tree($u_id, $is_edit = false)
     }
 
     $view_data = array(
-        'parent_u_id' => $u_id,
+        'parent_en_id' => $en_id,
         'entity' => $entities[0],
         'title' => ($is_edit ? 'Modify ' : '') . $entities[0]['en_name'],
     );
@@ -276,7 +276,7 @@ function auth($entity_groups = null, $force_redirect = 0)
         //Always grant access to Trainers:
         return $udata;
 
-    } elseif (isset($udata['u_id']) && filter_array($udata['en__parents'], 'en_id', $entity_groups)) {
+    } elseif (isset($udata['en_id']) && filter_array($udata['en__parents'], 'en_id', $entity_groups)) {
 
         //They are part of one of the levels assigned to them:
         return $udata;
@@ -289,7 +289,7 @@ function auth($entity_groups = null, $force_redirect = 0)
         return false;
     } else {
         //Block access:
-        redirect_message((isset($udata['en__parents'][0]) && filter_array($udata['en__parents'], 'en_id', 1308) ? '/intents/' . $this->config->item('in_primary_id') : '/login?url=' . urlencode($_SERVER['REQUEST_URI'])), '<div class="alert alert-danger maxout" role="alert">' . (isset($udata['u_id']) ? 'Access not authorized.' : 'Session Expired. Login to continue.') . '</div>');
+        redirect_message((isset($udata['en__parents'][0]) && filter_array($udata['en__parents'], 'en_id', 1308) ? '/intents/' . $this->config->item('in_primary_id') : '/login?url=' . urlencode($_SERVER['REQUEST_URI'])), '<div class="alert alert-danger maxout" role="alert">' . (isset($udata['en_id']) ? 'Access not authorized.' : 'Session Expired. Login to continue.') . '</div>');
     }
 
 }
@@ -525,7 +525,7 @@ function message_validation($tr_content)
 
     //Extract details from this message:
     $urls = extract_urls($tr_content);
-    $u_ids = extract_references('@', $tr_content);
+    $en_ids = extract_references('@', $tr_content);
 
 
     if (!isset($tr_content) || strlen($tr_content) <= 0) {
@@ -553,12 +553,12 @@ function message_validation($tr_content)
             'status' => 0,
             'message' => 'Message must be UTF8',
         );
-    } elseif (count($u_ids) > 1) {
+    } elseif (count($en_ids) > 1) {
         return array(
             'status' => 0,
             'message' => 'You can reference a maximum of 1 entity per message',
         );
-    } elseif (count($u_ids) > 0 && count($urls) > 0) {
+    } elseif (count($en_ids) > 0 && count($urls) > 0) {
         return array(
             'status' => 0,
             'message' => 'You can either reference 1 entity or include 1 URL which would transform into an entity',
@@ -568,26 +568,26 @@ function message_validation($tr_content)
             'status' => 0,
             'message' => 'Max 1 URL per Message',
         );
-    } elseif ((count($u_ids) == 0 && count($urls) == 0) && substr_count($tr_content, '/slice') > 0) {
+    } elseif ((count($en_ids) == 0 && count($urls) == 0) && substr_count($tr_content, '/slice') > 0) {
         return array(
             'status' => 0,
-            'message' => '/slice command required an entity reference [@' . count($u_ids) . ']',
+            'message' => '/slice command required an entity reference [@' . count($en_ids) . ']',
         );
     }
 
 
     //Validate Entity:
-    if (count($u_ids) > 0) {
+    if (count($en_ids) > 0) {
 
         $i_children_us = $CI->Db_model->en_fetch(array(
-            'u_id' => $u_ids[0],
+            'en_id' => $en_ids[0],
         ), array('skip_en__parents', 'u__urls'));
 
         if (count($i_children_us) == 0) {
             //Invalid ID:
             return array(
                 'status' => 0,
-                'message' => 'Entity [@' . $u_ids[0] . '] does not exist',
+                'message' => 'Entity [@' . $en_ids[0] . '] does not exist',
             );
         } elseif ($i_children_us[0]['en_status'] < 0) {
             //Inactive:
@@ -607,10 +607,10 @@ function message_validation($tr_content)
             return $url_create;
         }
 
-        $u_ids[0] = $url_create['en']['u_id'];
+        $en_ids[0] = $url_create['en']['en_id'];
 
         //Replace the URL with this new @entity in message:
-        $tr_content = str_replace($urls[0], '@' . $u_ids[0], $tr_content);
+        $tr_content = str_replace($urls[0], '@' . $en_ids[0], $tr_content);
 
     }
 
@@ -659,7 +659,7 @@ function message_validation($tr_content)
         'message' => 'Success',
         //Return cleaned data:
         'tr_content' => trim($tr_content), //It might have been modified if URL was added
-        'tr_en_parent_id' => (count($u_ids) > 0 ? $u_ids[0] : 0), //Referencing an entity?
+        'tr_en_parent_id' => (count($en_ids) > 0 ? $en_ids[0] : 0), //Referencing an entity?
     );
 }
 

@@ -3,14 +3,14 @@
 $engagement_filters = array(
     'tr_en_type_id' => 'Link Types',
     'tr_id' => 'Engagement ID',
-    'e_u_id' => 'Entity ID',
+    'e_en_id' => 'Entity ID',
     'tr_in_child_id' => 'Intent ID',
 );
 
 $match_columns = array();
 foreach ($engagement_filters as $key => $value) {
     if (isset($_GET[$key])) {
-        if ($key == 'e_u_id') {
+        if ($key == 'e_en_id') {
             //We need to look for both inititors and recipients:
             if (substr_count($_GET[$key], ',') > 0) {
                 //This is multiple IDs:

@@ -2,7 +2,7 @@ function u_load_child_search() {
 
     $("#new-children .new-input").on('autocomplete:selected', function (event, suggestion, dataset) {
 
-        tr_add(suggestion.u_id, 0, 0);
+        tr_add(suggestion.en_id, 0, 0);
 
     }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
 
@@ -24,17 +24,17 @@ function u_load_child_search() {
             },
             header: function (data) {
                 if (!data.isEmpty) {
-                    return '<a href="javascript:tr_add(0,' + top_u_id + ',0)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + top_en_name + ']</a>';
+                    return '<a href="javascript:tr_add(0,' + top_en_id + ',0)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + top_en_name + ']</a>';
                 }
             },
             empty: function (data) {
-                return '<a href="javascript:tr_add(0,' + top_u_id + ',0)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create</span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + top_en_name + ']</a>';
+                return '<a href="javascript:tr_add(0,' + top_en_id + ',0)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create</span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + top_en_name + ']</a>';
             },
         }
     }]).keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            tr_add(0, top_u_id);
+            tr_add(0, top_en_id);
             return true;
         }
     });
@@ -101,7 +101,7 @@ $(document).ready(function () {
 
 
     $("#new-parent .new-input").on('autocomplete:selected', function (event, suggestion, dataset) {
-        tr_add(suggestion.u_id, 0, 1);
+        tr_add(suggestion.en_id, 0, 1);
     }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
         source: function (q, cb) {
             algolia_u_index.search(q, {
@@ -121,11 +121,11 @@ $(document).ready(function () {
             },
             header: function (data) {
                 if (!data.isEmpty) {
-                    return '<a href="javascript:tr_add(0,' + top_u_id + ',1)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + top_en_name + ']</a>';
+                    return '<a href="javascript:tr_add(0,' + top_en_id + ',1)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + top_en_name + ']</a>';
                 }
             },
             empty: function (data) {
-                return '<a href="javascript:tr_add(0,' + top_u_id + ',1)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + top_en_name + ']</a>';
+                return '<a href="javascript:tr_add(0,' + top_en_id + ',1)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + top_en_name + ']</a>';
             },
         }
     }]);
@@ -172,7 +172,7 @@ function tr_add(new_en_id, assign_en_parent_id=0, is_parent) {
     //Add via Ajax:
     $.post("/entities/link_entities", {
 
-        u_id: top_u_id,
+        en_id: top_en_id,
         new_en_id: new_en_id,
         new_en_name: new_en_name,
         is_parent: (is_parent ? 1 : 0),
@@ -223,12 +223,12 @@ function u_load_filter_status(new_val) {
 }
 
 
-function u_icon_word_count() {
-    var len = $('#u_icon').val().length;
+function en_icon_word_count() {
+    var len = $('#en_icon').val().length;
     if (len > en_name_max) {
-        $('#charu_iconNum').addClass('overload').text(len);
+        $('#charen_iconNum').addClass('overload').text(len);
     } else {
-        $('#charu_iconNum').removeClass('overload').text(len);
+        $('#charen_iconNum').removeClass('overload').text(len);
     }
 }
 
@@ -265,7 +265,7 @@ function u_load_next_page(page, load_new_filter = 0) {
 
     $.post("/entities/u_load_next_page", {
         page: page,
-        parent_u_id: top_u_id,
+        parent_en_id: top_en_id,
         en_status_filter: en_status_filter,
     }, function (data) {
 
@@ -333,28 +333,28 @@ function tr_unlink() {
 }
 
 
-function u_load_modify(u_id, tr_id) {
+function u_load_modify(en_id, tr_id) {
 
     //Make sure inputs are valid:
-    if (!$('.u__' + u_id).length) {
+    if (!$('.u__' + en_id).length) {
         return false;
     }
 
     //Update variables:
     $('.save_entity_changes').html('');
     $('#modifybox').attr('entity-link-id', tr_id);
-    $('#modifybox').attr('entity-id', u_id);
+    $('#modifybox').attr('entity-id', en_id);
 
 
-    $('#en_name').val($(".en_name_" + u_id + ":first").text());
-    $('#en_status').val($(".u__" + u_id + ":first").attr('entity-status'));
-    $('#u_icon').val($(".u_icon_val_" + u_id + ":first").html().replace('\\', ''));
+    $('#en_name').val($(".en_name_" + en_id + ":first").text());
+    $('#en_status').val($(".u__" + en_id + ":first").attr('entity-status'));
+    $('#en_icon').val($(".en_icon_val_" + en_id + ":first").html().replace('\\', ''));
 
     en_name_word_count();
-    u_icon_word_count();
+    en_icon_word_count();
 
     //Update password reset UI:
-    $('#u_email').val($(".u__" + u_id + ":first").attr('entity-email'));
+    $('#u_email').val($(".u__" + en_id + ":first").attr('entity-email'));
 
     //Only show unlink button if not level 1
     if (parseInt(tr_id) > 0) {
@@ -400,14 +400,14 @@ function u_save_modify() {
     var modify_data = {
         tr_id: parseInt($('#modifybox').attr('entity-link-id')),
         tr_content: $('#tr_content').val(),
-        u_id: parseInt($('#modifybox').attr('entity-id')),
+        en_id: parseInt($('#modifybox').attr('entity-id')),
         en_name: $('#en_name').val(),
         en_status: $('#en_status').val(), //The new status (might not have changed too)
-        u_icon: $('#u_icon').val(),
+        en_icon: $('#en_icon').val(),
     };
 
     //Take a snapshot of the status:
-    var original_en_status = parseInt($('.u__' + modify_data['u_id']).attr('entity-status'));
+    var original_en_status = parseInt($('.u__' + modify_data['en_id']).attr('entity-status'));
 
     //Show spinner:
     $('.save_entity_changes').html('<span><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
@@ -418,8 +418,8 @@ function u_save_modify() {
         if (data.status) {
 
             //Update variables:
-            $(".en_name_" + modify_data['u_id']).text(modify_data['en_name']);
-            $(".u_icon_val_" + modify_data['u_id']).html(modify_data['u_icon']);
+            $(".en_name_" + modify_data['en_id']).text(modify_data['en_name']);
+            $(".en_icon_val_" + modify_data['en_id']).html(modify_data['en_icon']);
 
             //Did we have notes to update?
             if (modify_data['tr_id'] > 0) {
@@ -428,20 +428,20 @@ function u_save_modify() {
                 $(".tr_content_val_" + modify_data['tr_id']).text(modify_data['tr_content']);
             }
 
-            if (modify_data['u_icon'].length > 0) {
-                $('.u_icon_ui_' + modify_data['u_id']).removeClass('hidden').html('&nbsp;[' + modify_data['u_icon'] + ']');
-                $('.u_icon_child_' + modify_data['u_id']).html(modify_data['u_icon']);
+            if (modify_data['en_icon'].length > 0) {
+                $('.en_icon_ui_' + modify_data['en_id']).removeClass('hidden').html('&nbsp;[' + modify_data['en_icon'] + ']');
+                $('.en_icon_child_' + modify_data['en_id']).html(modify_data['en_icon']);
             } else {
                 //hide that section
-                $('.u_icon_ui_' + modify_data['u_id']).addClass('hidden');
-                $('.u_icon_child_' + modify_data['u_id']).html('');
+                $('.en_icon_ui_' + modify_data['en_id']).addClass('hidden');
+                $('.en_icon_child_' + modify_data['en_id']).html('');
             }
 
             //has status updated? If so update the UI:
             if (original_en_status != modify_data['en_status']) {
 
                 //Update status:
-                $('.en_status_' + modify_data['u_id']).html(data.status_u_ui);
+                $('.en_status_' + modify_data['en_id']).html(data.status_u_ui);
 
                 //Adjust counters for the filtering system as that also will change:
                 $('.count-u-status-' + modify_data['en_status']).text((parseInt($('.count-u-status-' + modify_data['en_status']).text()) + 1));
@@ -451,11 +451,11 @@ function u_save_modify() {
                 if (en_status_filter >= 0 && !(modify_data['en_status'] == en_status_filter)) {
                     //We have the filter on and it does not match the new status, so hide this:
                     setTimeout(function () {
-                        $('.u__' + modify_data['u_id']).fadeOut();
+                        $('.u__' + modify_data['en_id']).fadeOut();
                     }, 377);
                 } else {
                     //Update status:
-                    $('.u__' + modify_data['u_id']).attr('entity-status', modify_data['en_status']);
+                    $('.u__' + modify_data['en_id']).attr('entity-status', modify_data['en_status']);
                 }
 
             }
@@ -482,12 +482,12 @@ function u_save_modify() {
 }
 
 
-function u_load_messages(u_id) {
+function u_load_messages(en_id) {
 
     //Make the frame visible:
     $('.fixed-box').addClass('hidden');
-    $("#message-frame").removeClass('hidden').hide().fadeIn().attr('entity-id', u_id);
-    $("#message-frame h4").text($(".en_name_" + u_id + ":first").text());
+    $("#message-frame").removeClass('hidden').hide().fadeIn().attr('entity-id', en_id);
+    $("#message-frame h4").text($(".en_name_" + en_id + ":first").text());
 
     var handler = $("#loaded-messages");
 
@@ -502,7 +502,7 @@ function u_load_messages(u_id) {
     }
 
     //Load the frame:
-    $.post("/entities/load_messages", {u_id: u_id}, function (data) {
+    $.post("/entities/load_messages", {en_id: en_id}, function (data) {
         //Empty Inputs Fields if success:
         handler.html(data);
 

@@ -5,14 +5,14 @@ $udata = $this->session->userdata('user');
 
 //Fetch other data:
 $child_entities = $this->Old_model->ur_children_fetch(array(
-    'tr_en_parent_id' => $entity['u_id'],
+    'tr_en_parent_id' => $entity['en_id'],
     'tr_status' => 1, //Only active
 ), array('in__children_count'), $this->config->item('items_per_page'));
 
 //Intents subscribed:
 $limit = (is_dev() ? 10 : 100);
 $trs = $this->Db_model->w_fetch(array(
-    'tr_en_parent_id' => $entity['u_id'],
+    'tr_en_parent_id' => $entity['en_id'],
 ), array('en', 'in', 'w_stats'), array(
     'tr_id' => 'DESC',
 ), $limit);
@@ -23,7 +23,7 @@ $trs = $this->Db_model->w_fetch(array(
 <script>
     //Set global variables:
     var en_status_filter = -1; //No filter, show all!
-    var top_u_id = <?= $entity['u_id'] ?>;
+    var top_en_id = <?= $entity['en_id'] ?>;
     var top_en_name = '<?= str_replace('\'', '’', $entity['en_name']) ?>';
 </script>
 <script src="/js/custom/entity-manage-js.js?v=v<?= $this->config->item('app_version') ?>"
@@ -37,7 +37,7 @@ $trs = $this->Db_model->w_fetch(array(
         //Entity & Components:
 
         //Parents
-        if ($entity['u_id'] != $this->config->item('primary_en_id') || count($entity['en__parents']) > 0) {
+        if ($entity['en_id'] != $this->config->item('primary_en_id') || count($entity['en__parents']) > 0) {
 
             echo '<h5><span class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-parent-count">' . count($entity['en__parents']) . '</span> Parent' . echo__s(count($entity['en__parents'])) . '</span></h5>';
             echo '<div id="list-parent" class="list-group  grey-list">';
@@ -69,7 +69,7 @@ $trs = $this->Db_model->w_fetch(array(
         echo '<div class="indent2"><table width="100%" style="margin-top:10px;"><tr>';
         echo '<td style="width: 100px;"><h5 class="badge badge-h"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-children-count">' . $entity['in__children_count'] . '</span> Children</h5></td>';
         //Count orphans IF we are in the top parent root:
-        if ($this->config->item('primary_en_id') == $entity['u_id']) {
+        if ($this->config->item('primary_en_id') == $entity['en_id']) {
             $orphans_count = count($this->Db_model->en_fetch(array(
                 ' NOT EXISTS (SELECT 1 FROM table_ledger WHERE en_id=tr_en_child_id AND tr_status>=0) ' => null,
             ), array('skip_en__parents')));
@@ -84,10 +84,10 @@ $trs = $this->Db_model->w_fetch(array(
 
         //Fetch current count for each status from DB:
         $counts = $this->Old_model->ur_children_fetch(array(
-            'tr_en_parent_id' => $entity['u_id'],
+            'tr_en_parent_id' => $entity['en_id'],
             'tr_status' => 1, //Only active
             'en_status >=' => 0,
-        ), array(), 0, 0, 'COUNT(u_id) as u_counts, en_status', 'en_status', array(
+        ), array(), 0, 0, 'COUNT(en_id) as u_counts, en_status', 'en_status', array(
             'en_status' => 'ASC',
         ));
 
@@ -127,7 +127,7 @@ $trs = $this->Db_model->w_fetch(array(
         <div class="input-group">
             <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search bottom-add" data-lpignore="true" placeholder="Add ' . stripslashes($entity['en_name']) . '"></div>
             <span class="input-group-addon">
-                <a class="badge badge-secondary new-btn" href="javascript:tr_add(0,' . $entity['u_id'] . ', 0);">ADD</a>
+                <a class="badge badge-secondary new-btn" href="javascript:tr_add(0,' . $entity['en_id'] . ', 0);">ADD</a>
             </span>
         </div>
     </div>';
@@ -210,9 +210,9 @@ $trs = $this->Db_model->w_fetch(array(
                         <div class="title" style="margin-bottom:0; padding-bottom:0; margin-top:15px;"><h4><i
                                         class="fas fa-user-circle"></i> Entity Icon [<span
                                         style="margin:0 0 10px 0; font-size:0.8em;"><span
-                                            id="charu_iconNum">0</span>/<?= $this->config->item('en_name_max') ?></span>]
+                                            id="charen_iconNum">0</span>/<?= $this->config->item('en_name_max') ?></span>]
                             </h4></div>
-                        <input type="text" id="u_icon" value="" onkeyup="u_icon_word_count()"
+                        <input type="text" id="en_icon" value="" onkeyup="en_icon_word_count()"
                                maxlength="<?= $this->config->item('en_name_max') ?>" data-lpignore="true" placeholder=""
                                class="form-control border">
 

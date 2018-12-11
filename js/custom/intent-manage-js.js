@@ -139,7 +139,7 @@ $(document).ready(function () {
         templates: {
             suggestion: function (suggestion) {
                 var fancy_hours = fancy_time(suggestion);
-                return '<span class="suggest-prefix"><i class="fas fa-hashtag"></i></span> ' + suggestion._highlightResult.c_outcome.value + (fancy_hours ? '<span class="search-info">' + (parseFloat(suggestion.in__count) > 1 ? ' <i class="fas fa-sitemap"></i> ' + suggestion.in__count : '') + ' <i class="fas fa-clock"></i> ' + fancy_hours + '</span>' : '');
+                return '<span class="suggest-prefix"><i class="fas fa-hashtag"></i></span> ' + suggestion._highlightResult.in_outcome.value + (fancy_hours ? '<span class="search-info">' + (parseFloat(suggestion.in__count) > 1 ? ' <i class="fas fa-sitemap"></i> ' + suggestion.in__count : '') + ' <i class="fas fa-clock"></i> ' + fancy_hours + '</span>' : '');
             },
             header: function (data) {
                 if (!data.isEmpty) {
@@ -226,7 +226,7 @@ function in_load_search_level3() {
         templates: {
             suggestion: function (suggestion) {
                 var fancy_hours = fancy_time(suggestion);
-                return '<span class="suggest-prefix"><i class="fas fa-hashtag"></i></span> ' + suggestion._highlightResult.c_outcome.value + (fancy_hours ? '<span class="search-info">' + (parseInt(suggestion.in__tree_in_count) > 1 ? ' <i class="' + (parseInt(suggestion.in_is_any) ? 'fas fa-code-merge' : 'fas fa-sitemap') + '"></i> ' + parseInt(suggestion.in__tree_in_count) : '') + ' <i class="fas fa-clock"></i> ' + fancy_hours + '</span>' : '');
+                return '<span class="suggest-prefix"><i class="fas fa-hashtag"></i></span> ' + suggestion._highlightResult.in_outcome.value + (fancy_hours ? '<span class="search-info">' + (parseInt(suggestion.in__tree_in_count) > 1 ? ' <i class="' + (parseInt(suggestion.in_is_any) ? 'fas fa-code-merge' : 'fas fa-sitemap') + '"></i> ' + parseInt(suggestion.in__tree_in_count) : '') + ' <i class="fas fa-clock"></i> ' + fancy_hours + '</span>' : '');
             },
             header: function (data) {
                 if (!data.isEmpty) {
@@ -277,7 +277,7 @@ function in_sort_save(in_id, level) {
             new_sort[sort_rank] = tr_id;
 
             //Is the Child rank correct? Check DB value:
-            var db_rank = parseInt($('.c_outcome_' + in_id).attr('children-rank'));
+            var db_rank = parseInt($('.in_outcome_' + in_id).attr('children-rank'));
 
             if (level == 2 && !(db_rank == sort_rank) && !in_id) {
                 is_properly_sorted = false;
@@ -411,7 +411,7 @@ function in_messages_load(in_id) {
     $('.fixed-box, .ajax-frame').addClass('hidden');
     $('#load_w_frame, .frame-loader').removeClass('hidden').hide().fadeIn();
     //Set title:
-    $('#w_title').html('<i class="fas fa-comment-dots"></i> ' + $('.c_outcome_' + in_id + ':first').text());
+    $('#w_title').html('<i class="fas fa-comment-dots"></i> ' + $('.in_outcome_' + in_id + ':first').text());
 
     //Load content via a URL:
     $('.frame-loader').addClass('hidden');
@@ -428,7 +428,7 @@ function in_tr_load(in_id) {
     $('#load_w_frame, .frame-loader').removeClass('hidden').hide().fadeIn();
 
     //Set title:
-    $('#w_title').html('<i class="fas fa-atlas"></i> ' + $('.c_outcome_' + in_id + ':first').text());
+    $('#w_title').html('<i class="fas fa-atlas"></i> ' + $('.in_outcome_' + in_id + ':first').text());
 
     //Load content via a URL:
     $('.frame-loader').addClass('hidden');
@@ -443,7 +443,7 @@ function in_actionplans_load(in_id) {
     $('.fixed-box, .ajax-frame').addClass('hidden');
     $('#load_w_frame, .frame-loader').removeClass('hidden').hide().fadeIn();
     //Set title:
-    $('#w_title').html('<i class="fas fa-flag"></i> ' + $('.c_outcome_' + in_id + ':first').text());
+    $('#w_title').html('<i class="fas fa-flag"></i> ' + $('.in_outcome_' + in_id + ':first').text());
 
     //Load content via a URL:
     $('.frame-loader').addClass('hidden');
@@ -527,7 +527,7 @@ function adjust_js_ui(in_id, level, new_hours, intent_deficit_count=0, apply_to_
 
 
 function in_outcome_counter() {
-    var len = $('#c_outcome').val().length;
+    var len = $('#in_outcome').val().length;
     if (len > in_outcome_max) {
         $('#charNameNum').addClass('overload').text(len);
     } else {
@@ -554,14 +554,14 @@ function in_modify_load(in_id, tr_id) {
     var in_seconds = parseFloat($('.t_estimate_' + in_id + ':first').attr('intent-seconds'));
     var in__tree_seconds = $('.t_estimate_' + in_id + ':first').attr('tree-max-seconds');
 
-    $('#c_outcome').val($(".c_outcome_" + in_id + ":first").text());
+    $('#in_outcome').val($(".in_outcome_" + in_id + ":first").text());
     in_outcome_counter();
 
-    $('#in_status').val($('.c_outcome_' + in_id).attr('in_status'));
-    $('#c_points').val($('.c_outcome_' + in_id).attr('c_points'));
-    $('#c_trigger_statements').val($('.c_outcome_' + in_id).attr('c_trigger_statements'));
+    $('#in_status').val($('.in_outcome_' + in_id).attr('in_status'));
+    $('#c_points').val($('.in_outcome_' + in_id).attr('c_points'));
+    $('#c_trigger_statements').val($('.in_outcome_' + in_id).attr('c_trigger_statements'));
     $('#in_seconds').val(in_seconds);
-    $('#c_cost_estimate').val(parseFloat($('.c_outcome_' + in_id).attr('c_cost_estimate')));
+    $('#c_cost_estimate').val(parseFloat($('.in_outcome_' + in_id).attr('c_cost_estimate')));
 
     //Load intent links if any:
     if (tr_id > 0) {
@@ -571,11 +571,11 @@ function in_modify_load(in_id, tr_id) {
     }
 
     //Adjust Radio buttons:
-    $("input[name=in_is_any][value='" + $('.c_outcome_' + in_id).attr('in_is_any') + "']").prop("checked", true);
+    $("input[name=in_is_any][value='" + $('.in_outcome_' + in_id).attr('in_is_any') + "']").prop("checked", true);
 
     //Adjust checkboxes:
-    document.getElementById("c_require_url_to_complete").checked = parseInt($('.c_outcome_' + in_id).attr('c_require_url_to_complete'));
-    document.getElementById("c_require_notes_to_complete").checked = parseInt($('.c_outcome_' + in_id).attr('c_require_notes_to_complete'));
+    document.getElementById("c_require_url_to_complete").checked = parseInt($('.in_outcome_' + in_id).attr('c_require_url_to_complete'));
+    document.getElementById("c_require_notes_to_complete").checked = parseInt($('.in_outcome_' + in_id).attr('c_require_notes_to_complete'));
     document.getElementById("apply_recurively").checked = false; //Always remove this so the user can choose
 
     //Run UI Updating functions:
@@ -629,7 +629,7 @@ function c_save_modify() {
         in_id: parseInt($('#modifybox').attr('intent-id')),
         tr_id: parseInt($('#modifybox').attr('intent-link-id')), //Will be zero for Level 1 intent!
         level: parseInt($('#modifybox').attr('level')),
-        c_outcome: $('#c_outcome').val(),
+        in_outcome: $('#in_outcome').val(),
         in_status: parseInt($('#in_status').val()),
         in_seconds: parseInt($('#in_seconds').val()),
         c_cost_estimate: parseFloat($('#c_cost_estimate').val()),
@@ -647,7 +647,7 @@ function c_save_modify() {
     }
 
     //Take a snapshot of the current status:
-    var original_in_status = parseInt($('.c_outcome_' + modify_data['in_id']).attr('in_status'));
+    var original_in_status = parseInt($('.in_outcome_' + modify_data['in_id']).attr('in_status'));
 
     //Show spinner:
     $('.save_intent_changes').html('<span><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
@@ -658,15 +658,15 @@ function c_save_modify() {
         if (data.status) {
 
             //Update variables:
-            $(".c_outcome_" + modify_data['in_id']).html(modify_data['c_outcome']);
-            $('.c_outcome_' + modify_data['in_id']).attr('c_require_url_to_complete', modify_data['c_require_url_to_complete']);
-            $('.c_outcome_' + modify_data['in_id']).attr('c_require_notes_to_complete', modify_data['c_require_notes_to_complete']);
-            $('.c_outcome_' + modify_data['in_id']).attr('in_is_any', modify_data['in_is_any']);
-            $('.c_outcome_' + modify_data['in_id']).attr('c_cost_estimate', modify_data['c_cost_estimate']);
+            $(".in_outcome_" + modify_data['in_id']).html(modify_data['in_outcome']);
+            $('.in_outcome_' + modify_data['in_id']).attr('c_require_url_to_complete', modify_data['c_require_url_to_complete']);
+            $('.in_outcome_' + modify_data['in_id']).attr('c_require_notes_to_complete', modify_data['c_require_notes_to_complete']);
+            $('.in_outcome_' + modify_data['in_id']).attr('in_is_any', modify_data['in_is_any']);
+            $('.in_outcome_' + modify_data['in_id']).attr('c_cost_estimate', modify_data['c_cost_estimate']);
 
-            $('.c_outcome_' + modify_data['in_id']).attr('in_status', modify_data['in_status']);
-            $('.c_outcome_' + modify_data['in_id']).attr('c_points', modify_data['c_points']);
-            $('.c_outcome_' + modify_data['in_id']).attr('c_trigger_statements', modify_data['c_trigger_statements']);
+            $('.in_outcome_' + modify_data['in_id']).attr('in_status', modify_data['in_status']);
+            $('.in_outcome_' + modify_data['in_id']).attr('c_points', modify_data['c_points']);
+            $('.in_outcome_' + modify_data['in_id']).attr('c_trigger_statements', modify_data['c_trigger_statements']);
 
 
             //has intent link status updated? If so update the UI:
@@ -731,9 +731,9 @@ function c_save_modify() {
             } else {
                 //This is a level 2+ intent, let's update the tooltip UI:
                 if (modify_data['c_trigger_statements'].length > 0) {
-                    $(".c_outcome_" + modify_data['in_id']).addClass('has-desc').attr('data-toggle', 'tooltip').attr('data-original-title', modify_data['c_trigger_statements']);
+                    $(".in_outcome_" + modify_data['in_id']).addClass('has-desc').attr('data-toggle', 'tooltip').attr('data-original-title', modify_data['c_trigger_statements']);
                 } else {
-                    $(".c_outcome_" + modify_data['in_id']).removeClass('has-desc').attr('data-toggle', '').attr('data-original-title', '');
+                    $(".in_outcome_" + modify_data['in_id']).removeClass('has-desc').attr('data-toggle', '').attr('data-original-title', '');
                 }
             }
 
@@ -807,7 +807,7 @@ function c_js_new(in_id, next_level, in_linkto_id=0) {
     //Update backend:
     $.post("/intents/in_combo_create", {
         in_id: in_id,
-        c_outcome: intent_name,
+        in_outcome: intent_name,
         next_level: next_level,
         in_linkto_id: in_linkto_id
     }, function (data) {

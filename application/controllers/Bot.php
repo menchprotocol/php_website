@@ -27,7 +27,7 @@ class Bot extends CI_Controller
             'in_status >=' => 0,
         ));
         foreach ($all_engs as $c_eng) {
-            echo ' ' . $c_eng['in_id'] . ' => 000000000000000000, //' . $c_eng['c_outcome'] . '<br />';
+            echo ' ' . $c_eng['in_id'] . ' => 000000000000000000, //' . $c_eng['in_outcome'] . '<br />';
         }
     }
 
@@ -146,7 +146,7 @@ class Bot extends CI_Controller
                     $this->Db_model->tr_create(array(
                         'tr_metadata' => $json_data,
                         'tr_en_type_id' => 4278, //Message Read
-                        'tr_en_credit_id' => (isset($en['u_id']) ? $en['u_id'] : 0),
+                        'tr_en_credit_id' => (isset($en['en_id']) ? $en['en_id'] : 0),
                         'tr_timestamp' => echo_mili($im['timestamp']), //The Facebook time
 
                     ));
@@ -161,7 +161,7 @@ class Bot extends CI_Controller
                     $this->Db_model->tr_create(array(
                         'tr_metadata' => $json_data,
                         'tr_en_type_id' => 4279, //Message Delivered
-                        'tr_en_credit_id' => (isset($en['u_id']) ? $en['u_id'] : 0),
+                        'tr_en_credit_id' => (isset($en['en_id']) ? $en['en_id'] : 0),
                         'tr_timestamp' => echo_mili($im['timestamp']), //The Facebook time
                     ));
 
@@ -232,7 +232,7 @@ class Bot extends CI_Controller
                     $this->Db_model->tr_create(array(
                         'tr_en_type_id' => (isset($im['referral']) ? 4267 : 4268), //Messenger Referral/Postback
                         'tr_metadata' => $json_data,
-                        'tr_en_credit_id' => (isset($en['u_id']) ? $en['u_id'] : 0),
+                        'tr_en_credit_id' => (isset($en['en_id']) ? $en['en_id'] : 0),
                         'tr_timestamp' => echo_mili($im['timestamp']), //The Facebook time
                     ));
 
@@ -250,7 +250,7 @@ class Bot extends CI_Controller
                     $this->Db_model->tr_create(array(
                         'tr_metadata' => $json_data,
                         'tr_en_type_id' => 4266, //Messenger Optin
-                        'tr_en_credit_id' => (isset($en['u_id']) ? $en['u_id'] : 0),
+                        'tr_en_credit_id' => (isset($en['en_id']) ? $en['en_id'] : 0),
                         'tr_timestamp' => echo_mili($im['timestamp']), //The Facebook time
                     ));
 
@@ -286,11 +286,11 @@ class Bot extends CI_Controller
                     $en = $this->Comm_model->fb_identify_activate($user_id);
 
                     $eng_data = array(
-                        'tr_en_credit_id' => ($sent_from_us ? 4148 /* Log on behalf of Mench Admins as it was sent via Facebook Inbox UI */ : $en['u_id']),
+                        'tr_en_credit_id' => ($sent_from_us ? 4148 /* Log on behalf of Mench Admins as it was sent via Facebook Inbox UI */ : $en['en_id']),
                         'tr_metadata' => $json_data,
                         'tr_content' => $fb_message,
                         'tr_en_type_id' => ($sent_from_us ? 4280 : 4277), //Message Sent/Received
-                        'tr_en_child_id' => ($sent_from_us && isset($en['u_id']) ? $en['u_id'] : 0),
+                        'tr_en_child_id' => ($sent_from_us && isset($en['en_id']) ? $en['en_id'] : 0),
                     );
 
                     //We only have a timestamp for received messages (not sent ones):

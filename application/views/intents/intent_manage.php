@@ -146,7 +146,7 @@ if (isset($orphan_intents)) {
                         <div class="input-group border">
                             <span class="input-group-addon addon-lean"
                                   style="color:#2f2739; font-weight: 300;">To</span>
-                            <input style="padding-left:0;" type="text" id="c_outcome" onkeyup="in_outcome_counter()"
+                            <input style="padding-left:0;" type="text" id="in_outcome" onkeyup="in_outcome_counter()"
                                    maxlength="<?= $this->config->item('in_outcome_max') ?>" value=""
                                    class="form-control">
                         </div>

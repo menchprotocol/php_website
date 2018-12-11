@@ -42,18 +42,15 @@ class Cron extends CI_Controller
             'tr_en_parent_id' => 4527,
         ), array('en_child'), 0);
 
-        //Which ones should we do an extended "all" array?
-        $enable_extended = array(3000);
-
         foreach($config_ens as $en){
 
             //Now fetch all its children:
             $children = $this->Db_model->tr_fetch(array(
-                'tr_status >=' => 0,
-                'en_status >=' => 0,
+                'tr_status >=' => 2,
+                'en_status >=' => 2,
                 'tr_en_parent_id' => $en['tr_en_child_id'],
-                'tr_en_child_id >' => 0,
-            ), array('en_child'), 0, 0, array('tr_en_child_id' => 'ASC'), 'en_id, en_name, en_icon');
+            ), array('en_child'), 0, 0, array('en_id' => 'ASC'));
+
 
             $child_ids = array();
             foreach($children as $child){
@@ -62,13 +59,19 @@ class Cron extends CI_Controller
 
             echo '<br />//'.$en['en_name'].':<br />';
             echo '$config[\'en_ids_'.$en['tr_en_child_id'].'\'] = array('.join(', ',$child_ids).');<br />';
-            if(in_array($en['tr_en_child_id'], $enable_extended)){
-                echo '$config[\'en_all_'.$en['tr_en_child_id'].'\'] = array(<br />';
-                foreach($children as $child){
-                    echo '&nbsp;&nbsp;&nbsp;&nbsp;'.$child['en_id'].' => \''.$child['en_name'].'\',<br />';
-                }
-                echo ');<br />';
+            echo '$config[\'en_all_'.$en['tr_en_child_id'].'\'] = array(<br />';
+            foreach($children as $child){
+
+                echo '&nbsp;&nbsp;&nbsp;&nbsp; '.$child['en_id'].' => array(<br />';
+
+                echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'en_icon\' => \''.htmlentities($child['en_icon']).'\',<br />';
+                echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'en_name\' => \''.$child['en_name'].'\',<br />';
+                echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'tr_content\' => \''.str_replace('\'','\\\'',$child['tr_content']).'\',<br />';
+
+                echo '&nbsp;&nbsp;&nbsp;&nbsp; ),<br />';
+
             }
+            echo ');<br />';
         }
     }
 
@@ -78,7 +81,7 @@ class Cron extends CI_Controller
         $q = $this->db->query("SELECT DISTINCT(tr_en_child_id) as p_id FROM tb_entity_links ur WHERE NOT EXISTS (
    SELECT 1
    FROM   tb_entities u
-   WHERE  u_id = tr_en_child_id
+   WHERE  en_id = tr_en_child_id
    );");
 
         $results = $q->result_array();
@@ -108,30 +111,29 @@ class Cron extends CI_Controller
     }
 
 
-    function list_duplicate_cs()
+    function list_duplicate_ins()
     {
 
-        $q = $this->db->query('select c1.* from tb_intents c1 where (select count(*) from tb_intents c2 where c2.c_outcome = c1.c_outcome) > 1 ORDER BY c1.c_outcome ASC');
+        $q = $this->db->query('select in1.* from table_intents in1 where (select count(*) from table_intents in2 where in2.in_outcome = in1.in_outcome) > 1 ORDER BY in1.in_outcome ASC');
         $duplicates = $q->result_array();
 
 
         $prev_title = null;
-        foreach ($duplicates as $c) {
-            if ($prev_title != $c['c_outcome']) {
+        foreach ($duplicates as $in) {
+            if ($prev_title != $in['in_outcome']) {
                 echo '<hr />';
-                $prev_title = $c['c_outcome'];
+                $prev_title = $in['in_outcome'];
             }
 
-            echo '<a href="/intents/' . $c['in_id'] . '">#' . $c['in_id'] . '</a> ' . $c['c_outcome'] . '<br />';
+            echo '<a href="/intents/' . $in['in_id'] . '">#' . $in['in_id'] . '</a> ' . $in['in_outcome'] . '<br />';
         }
     }
 
-    function list_duplicate_us()
+    function list_duplicate_ens()
     {
 
-        $q = $this->db->query('select u1.* from tb_entities u1 where (select count(*) from tb_entities u2 where u2.en_name = u1.en_name) > 1 ORDER BY u1.en_name ASC');
+        $q = $this->db->query('select en1.* from tb_entities en1 where (select count(*) from tb_entities en2 where en2.en_name = en1.en_name) > 1 ORDER BY en1.en_name ASC');
         $duplicates = $q->result_array();
-
 
         $prev_title = null;
         foreach ($duplicates as $u) {
@@ -140,7 +142,7 @@ class Cron extends CI_Controller
                 $prev_title = $u['en_name'];
             }
 
-            echo '<a href="/entities/' . $u['u_id'] . '">#' . $u['u_id'] . '</a> ' . $u['en_name'] . '<br />';
+            echo '<a href="/entities/' . $u['en_id'] . '">#' . $u['en_id'] . '</a> ' . $u['en_name'] . '<br />';
         }
     }
 
@@ -158,15 +160,15 @@ class Cron extends CI_Controller
             'tr_en_child_id' => 1, //Engagement initiator
             'tr_en_credit_id' => 1, //Engagement recipient
 
-            'x_parent_u_id' => 5, //URL Creator
-            'x_u_id' => 8, //URL Referenced to them
+            'x_parent_en_id' => 5, //URL Creator
+            'x_en_id' => 8, //URL Referenced to them
 
             'tr_en_parent_id' => 13, //Subscriptions
         );
 
         //Fetch child entities:
         $entities = $this->Old_model->ur_children_fetch(array(
-            'tr_en_parent_id' => (count($u) > 0 ? $u['u_id'] : $this->config->item('primary_en_id')),
+            'tr_en_parent_id' => (count($u) > 0 ? $u['en_id'] : $this->config->item('primary_en_id')),
             'tr_status >=' => 0, //Pending or Active
             'en_status >=' => 0, //Pending or Active
         ));
@@ -185,27 +187,27 @@ class Cron extends CI_Controller
             $score += count($entities) * $score_weights['u__childrens'];
 
             $score += count($this->Db_model->tr_fetch(array(
-                    'tr_en_child_id' => $u['u_id'],
+                    'tr_en_child_id' => $u['en_id'],
                 ), array(), 5000)) * $score_weights['tr_en_child_id'];
             $score += count($this->Db_model->tr_fetch(array(
-                    'tr_en_credit_id' => $u['u_id'],
+                    'tr_en_credit_id' => $u['en_id'],
                 ), array(), 5000)) * $score_weights['tr_en_credit_id'];
 
             $score += count($this->Old_model->x_fetch(array(
                     'x_status >' => -2,
-                    'x_u_id' => $u['u_id'],
-                ))) * $score_weights['x_u_id'];
+                    'x_en_id' => $u['en_id'],
+                ))) * $score_weights['x_en_id'];
             $score += count($this->Old_model->x_fetch(array(
                     'x_status >' => -2,
-                    'x_parent_u_id' => $u['u_id'],
-                ))) * $score_weights['x_parent_u_id'];
+                    'x_parent_en_id' => $u['en_id'],
+                ))) * $score_weights['x_parent_en_id'];
 
             $score += count($this->Db_model->w_fetch(array(
-                    'tr_en_parent_id' => $u['u_id'],
+                    'tr_en_parent_id' => $u['en_id'],
                 ))) * $score_weights['tr_en_parent_id'];
 
             //Update the score:
-            $this->Db_model->en_update($u['u_id'], array(
+            $this->Db_model->en_update($u['en_id'], array(
                 'en_trust_score' => $score,
             ));
 
@@ -252,7 +254,7 @@ class Cron extends CI_Controller
                 //Send this message:
                 $this->Comm_model->send_message(array(
                     array_merge($json_data['i'], array(
-                        'tr_en_child_id' => $trs[0]['u_id'],
+                        'tr_en_child_id' => $trs[0]['en_id'],
                         'tr_in_child_id' => $json_data['i']['tr_in_child_id'],
                     )),
                 ));
@@ -334,7 +336,7 @@ class Cron extends CI_Controller
                     if (strlen($u['en_icon'])<1) {
 
                         //Update Cover ID:
-                        $this->Db_model->en_update($u['u_id'], array(
+                        $this->Db_model->en_update($u['en_id'], array(
                             'en_icon' => '<img class="profile-icon" src="' . $new_file_url . '" />',
                         ), true);
 
@@ -532,9 +534,9 @@ class Cron extends CI_Controller
         foreach ($fetch_us as $u) {
             if (!filter_array($u['en__parents'], 'en_id', 1278)) {
                 //Add parent:
-                echo '<a href="/entities/' . $u['u_id'] . '">' . $u['en_name'] . '</a><br />';
+                echo '<a href="/entities/' . $u['en_id'] . '">' . $u['en_name'] . '</a><br />';
                 $ur1 = $this->Db_model->tr_create(array(
-                    'tr_en_child_id' => $u['u_id'],
+                    'tr_en_child_id' => $u['en_id'],
                     'tr_en_parent_id' => 1278,
                 ));
             }
@@ -552,7 +554,7 @@ class Cron extends CI_Controller
         //TODO implement social features to maybe connect to other students at the same level
         //The primary function that would pro-actively communicate the subscription to the user
         //If $tr_id is provided it would step forward a specific subscription
-        //If both $tr_id and $u_id are present, it would auto register the user in an idle subscription if they are not part of it yet, and if they are, it would step them forward.
+        //If both $tr_id and $en_id are present, it would auto register the user in an idle subscription if they are not part of it yet, and if they are, it would step them forward.
 
         $bot_settings = array(
             'max_per_run' => 10, //How many subscriptions to server per run (Might include duplicate tr_en_parent_id's that will be excluded)
@@ -573,13 +575,13 @@ class Cron extends CI_Controller
 
         foreach ($active_ws as $w) {
 
-            if (in_array(intval($w['u_id']), $user_ids_served)) {
+            if (in_array(intval($w['en_id']), $user_ids_served)) {
                 //Skip this as we do not want to handle two subscriptions from the same user:
                 continue;
             }
 
             //Add this user to the queue:
-            array_push($user_ids_served, intval($w['u_id']));
+            array_push($user_ids_served, intval($w['en_id']));
 
             //See where this user is in their subscription:
             $trs_next = $this->Db_model->k_next_fetch($w['tr_id']);
@@ -598,7 +600,7 @@ class Cron extends CI_Controller
             //Give them next step again:
             $this->Comm_model->k_next_fetch($w['tr_id']);
 
-            //$trs_next[0]['c_outcome']
+            //$trs_next[0]['in_outcome']
         }
 
 
@@ -652,7 +654,7 @@ class Cron extends CI_Controller
                         //See if we have reminded them already about this:
                         $reminders_sent = $this->Db_model->tr_fetch(array(
                             'tr_en_type_id IN (4280,4276)' => null, //Email or Message sent
-                            'tr_en_child_id' => $subscription['u_id'],
+                            'tr_en_child_id' => $subscription['en_id'],
                             'tr_in_child_id' => $logic['reminder_in_id'],
                         ));
 
@@ -661,7 +663,7 @@ class Cron extends CI_Controller
                             //Nope, send this message out:
                             $this->Comm_model->compose_messages(array(
                                 'tr_en_credit_id' => 0, //System
-                                'tr_en_child_id' => $subscription['u_id'],
+                                'tr_en_child_id' => $subscription['en_id'],
                                 'tr_in_child_id' => $logic['reminder_in_id'],
                             ));
 
