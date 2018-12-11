@@ -358,7 +358,7 @@ class Intents extends CI_Controller
             }
         }
 
-
+        $children_updated = 0;
 
         //Did anything change?
         if(count($c_update)>0){
@@ -372,7 +372,6 @@ class Intents extends CI_Controller
             }
 
             //Any recursive down status sync requests?
-            $children_updated = 0;
             if(intval($_POST['apply_recurively']) && !(intval($_POST['c_status'])==intval($cs[0]['c_status']))){
 
                 //Yes, sync downwards where current statuses match:
@@ -427,7 +426,7 @@ class Intents extends CI_Controller
             'status' => 1,
             'children_updated' => $children_updated,
             'message' => '<span><i class="fas fa-check"></i> Saved'.( $children_updated>0 ? ' & '.$children_updated.' Recursive Updates' : '').'</span>',
-            'status_ui' => echo_status('c', $_POST['c_status'], true, 'left'),
+            'status_ui' => 'Updated',
         ));
 
     }
