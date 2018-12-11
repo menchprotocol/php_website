@@ -7,14 +7,14 @@ date_default_timezone_set('America/Los_Angeles');
 //Cache buster for static files
 $config['app_version'] = '0.6095'.( ( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='local.mench.co' ) ? microtime(true) : '' ); //Updates status css/js cache files
 
-//User case: $this->config->item('')
+//User case: $this->config->item('timezones')
 
 $config['primary_c'] = 6903; //The default platform intent that would be recommended to new students
-$config['primary_u'] = 2738; //The default console entity that is loaded when Entities is clicked
+$config['primary_u'] = 3463; //The default console entity that is loaded when Entities is clicked
 $config['message_max'] = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
 $config['max_counter'] = 999; //Used in counting things of engagements in console UI. If more that this will add a "+" sign to the end
 $config['c_outcome_max'] = 89; //Max number of characters allowed in the title of intents
-$config['u_full_name_max'] = 233; //Max number of characters allowed in the title of intents
+$config['u_full_name_max'] = 250; //Max number of characters allowed in the title of intents
 $config['file_limit_mb'] = 25; //Server setting is 32MB. see here: mench.com/ses
 $config['items_per_page'] = 50; //Even number
 $config['c_point_options'] = array(0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610);
@@ -75,14 +75,9 @@ $config['object_statuses'] = array(
             's_desc'  => 'Entity has been removed',
             's_icon' => 'fas fa-trash-alt',
         ),
-        0 => array(
-            's_name'  => 'New',
-            's_desc'  => 'Entity is newly added by a user and is pending review by a moderator',
-            's_icon' => 'fal fa-question-circle',
-        ),
         1 => array(
-            's_name'  => 'Referencing',
-            's_desc'  => 'Entity is accepted and is in the referencing process',
+            's_name'  => 'Working On',
+            's_desc'  => 'Entity is accepted and its being patternized',
             's_icon' => 'fas fa-spinner fa-spin',
         ),
         2 => array(
@@ -97,11 +92,6 @@ $config['object_statuses'] = array(
             's_desc'  => 'Entity link is removed',
             's_icon' => 'fas fa-trash-alt',
         ),
-        0 => array(
-            's_name'  => 'New',
-            's_desc'  => 'Entity link is newly added and is pending review by a moderator',
-            's_icon' => 'fal fa-question-circle',
-        ),
         1 => array(
             's_name'  => 'Published',
             's_desc'  => 'Entity link is active',
@@ -114,14 +104,9 @@ $config['object_statuses'] = array(
             's_desc'  => 'Intent has been archived and all its links has been removed',
             's_icon' => 'fas fa-trash-alt',
         ),
-        0 => array(
-            's_name'  => 'New',
-            's_desc'  => 'Intent is newly added by a user and is pending review by a moderator',
-            's_icon' => 'fal fa-question-circle',
-        ),
         1 => array(
             's_name'  => 'Working On',
-            's_desc'  => 'Curating intent tree & messages until ready to be published',
+            's_desc'  => 'Intent tree/messages are being patternized from the internet',
             's_icon' => 'fas fa-spinner fa-spin',
         ),
         2 => array(
@@ -135,16 +120,21 @@ $config['object_statuses'] = array(
             's_icon' => 'fas fa-badge-check',
         ),
     ),
-    'cr' => array(
+    'cr_status' => array(
         -1 => array(
             's_name'  => 'Archived',
-            's_desc'  => 'Intent link is removed',
+            's_desc'  => 'Remove Intent link',
             's_icon' => 'fas fa-trash-alt',
         ),
         1 => array(
             's_name'  => 'Published',
-            's_desc'  => 'Intent link is active',
+            's_desc'  => 'Intent link published and added to user Action Plans up-front',
             's_icon' => 'fas fa-check-circle',
+        ),
+        2 => array(
+            's_name'  => 'Conditional',
+            's_desc'  => 'Intent added to Action Plans after parent intent is complete AND the user\'s % score falls within the defined min/max range',
+            's_icon' => 'fas fa-question-circle fa-spin',
         ),
     ),
 
@@ -166,11 +156,6 @@ $config['object_statuses'] = array(
             's_name'  => 'Archived',
             's_desc'  => 'Message removed',
             's_icon' => 'fas fa-trash-alt',
-        ),
-        0 => array(
-            's_name'  => 'New',
-            's_desc'  => 'Message is added and pending review by a moderator',
-            's_icon' => 'fal fa-question-circle',
         ),
         1 => array(
             's_name'  => 'On-Start',
@@ -229,20 +214,25 @@ $config['object_statuses'] = array(
             's_desc'  => 'User skipped their Action Plan',
             's_icon' => 'fas fa-minus-circle',
         ),
+        0 => array(
+            's_name'  => 'Suggested',
+            's_desc'  => 'Intention has been recommended and pending user approval',
+            's_icon' => 'fal fa-plus-circle',
+        ),
         1 => array(
-             's_name'  => 'Working On',
-             's_desc'  => 'Work to accomplish intent has started and pending completion',
-             's_icon' => 'fas fa-spinner fa-spin',
+            's_name'  => 'Working On',
+            's_desc'  => 'Work to accomplish intent has started and pending completion',
+            's_icon' => 'fas fa-spinner fa-spin',
         ),
         2 => array(
-             's_name'  => 'Syncing Updates',
-             's_desc'  => 'All subscription intents are marked as complete and student is receiving updates from new changes happening to their subscription tree',
-             's_icon' => 'fas fa-sync fa-spin',
+            's_name'  => 'Syncing Updates',
+            's_desc'  => 'All subscription intents are marked as complete and student is receiving updates from new changes happening to their subscription tree',
+            's_icon' => 'fas fa-sync fa-spin',
         ),
         3 => array(
-             's_name'  => 'Accomplished',
-             's_desc'  => 'Student realized their intent and made it real',
-             's_icon' => 'fas fa-badge-check',
+            's_name'  => 'Accomplished',
+            's_desc'  => 'Student realized their intent and made it real',
+            's_icon' => 'fas fa-badge-check',
         ),
     ),
 
@@ -272,7 +262,7 @@ $config['object_statuses'] = array(
         0 => array(
             's_name'  => 'New',
             's_desc'  => 'New engagement is added and pending verification',
-            's_icon' => 'fal fa-question-circle',
+            's_icon' => 'fal fa-plus-circle',
         ),
         1 => array(
             's_name'  => 'Working On',
@@ -388,11 +378,6 @@ $config['object_statuses'] = array(
             's_desc'  => 'URL detected broken and pending moderator review',
             's_icon' => 'fas fa-exclamation-triangle',
         ),
-        0 => array(
-            's_name'  => 'New',
-            's_desc'  => 'URL is newly added and pending moderator review',
-            's_icon' => 'fal fa-question-circle',
-        ),
         1 => array(
             's_name'  => 'Published',
             's_desc'  => 'URL is live and being distributed across Action Plans',
@@ -434,7 +419,7 @@ $config['engagement_references'] = array(
     ),
     'e_cr_id' => array(
         'name' => 'Intent Link',
-        'object_code' => 'cr',
+        'object_code' => 'cr_status',
     ),
     'e_i_id' => array(
         'name' => 'Message',
@@ -444,35 +429,35 @@ $config['engagement_references'] = array(
 
 
 $config['timezones'] = array(
-    '-11'       => "(GMT-11:00) Midway Island, Samoa",
-    '-10'       => "(GMT-10:00) Hawaii",
-    '-9'        => "(GMT-09:00) Alaska",
-    '-8'        => "(GMT-08:00) Pacific Standard Time, Tijuana",
-    '-7'        => "(GMT-07:00) Arizona, Mountain Time, Chihuahua",
-    '-6'        => "(GMT-06:00) Central Time, Mexico City, etc...",
-    '-5'        => "(GMT-05:00) Eastern Time, Indiana, Bogota, Lima",
-    '-4.5'      => "(GMT-04:30) Caracas",
-    '-4'        => "(GMT-04:00) Atlantic Time, La Paz, Santiago",
-    '-3.5'      => "(GMT-03:30) Newfoundland",
-    '-3'        => "(GMT-03:00) Buenos Aires, Greenland",
-    '-2'        => "(GMT-02:00) Stanley",
-    '-1'        => "(GMT-01:00) Azores, Cape Verde Is.",
-    '0'         => "(GMT 0:00) London, Dublin, Lisbon, Casablanca",
-    '1'         => "(GMT+01:00) Amsterdam, Berlin, Paris, etc...",
-    '2'         => "(GMT+02:00) Athens, Istanbul, Jerusalem, etc...",
-    '3'         => "(GMT+03:00) Moscow, Baghdad, Kuwait, Riyadh",
-    '3.5'       => "(GMT+03:30) Tehran",
-    '4'         => "(GMT+04:00) Baku, Volgograd, Muscat, etc...",
-    '4.5'       => "(GMT+04:30) Kabul",
-    '5'         => "(GMT+05:00) Karachi, Tashkent, Kolkata, etc...",
-    '6'         => "(GMT+06:00) Ekaterinburg, Almaty, Dhaka",
-    '7'         => "(GMT+07:00) Novosibirsk, Bangkok, Jakarta",
-    '8'         => "(GMT+08:00) Hong Kong, Perth, Singapore, etc...",
-    '9'         => "(GMT+09:00) Irkutsk, Seoul, Tokyo",
-    '9.5'       => "(GMT+09:30) Adelaide, Darwin",
-    '10'        => "(GMT+10:00) Melbourne, Sydney, Guam, etc...",
-    '11'        => "(GMT+11:00) Vladivostok",
-    '12'        => "(GMT+12:00) Magadan, Auckland, Fiji",
+    '-11'       => "GMT-11:00 Midway Island, Samoa",
+    '-10'       => "GMT-10:00 Hawaii",
+    '-9'        => "GMT-09:00 Alaska",
+    '-8'        => "GMT-08:00 Pacific Standard Time, Tijuana",
+    '-7'        => "GMT-07:00 Arizona, Mountain Time, Chihuahua",
+    '-6'        => "GMT-06:00 Central Time, Mexico City ",
+    '-5'        => "GMT-05:00 Eastern Time, Indiana, Bogota, Lima",
+    '-4.5'      => "GMT-04:30 Caracas",
+    '-4'        => "GMT-04:00 Atlantic Time, La Paz, Santiago",
+    '-3.5'      => "GMT-03:30 Newfoundland",
+    '-3'        => "GMT-03:00 Buenos Aires, Greenland",
+    '-2'        => "GMT-02:00 Stanley",
+    '-1'        => "GMT-01:00 Azores, Cape Verde Is.",
+    '0'         => "GMT 0:00 London, Dublin, Lisbon, Casablanca",
+    '1'         => "GMT+01:00 Amsterdam, Berlin, Paris ",
+    '2'         => "GMT+02:00 Athens, Istanbul, Jerusalem ",
+    '3'         => "GMT+03:00 Moscow, Baghdad, Kuwait, Riyadh",
+    '3.5'       => "GMT+03:30 Tehran",
+    '4'         => "GMT+04:00 Baku, Volgograd, Muscat ",
+    '4.5'       => "GMT+04:30 Kabul",
+    '5'         => "GMT+05:00 Karachi, Tashkent, Kolkata ",
+    '6'         => "GMT+06:00 Ekaterinburg, Almaty, Dhaka",
+    '7'         => "GMT+07:00 Novosibirsk, Bangkok, Jakarta",
+    '8'         => "GMT+08:00 Hong Kong, Perth, Singapore ",
+    '9'         => "GMT+09:00 Irkutsk, Seoul, Tokyo",
+    '9.5'       => "GMT+09:30 Adelaide, Darwin",
+    '10'        => "GMT+10:00 Melbourne, Sydney, Guam ",
+    '11'        => "GMT+11:00 Vladivostok",
+    '12'        => "GMT+12:00 Magadan, Auckland, Fiji",
 );
 
 $config['languages'] = array(
@@ -686,7 +671,7 @@ $config['countries_all'] = array(
     "CL" => "Chile",
     "CN" => "China",
     "CX" => "Christmas Island",
-    "CC" => "Cocos (Keeling) Islands",
+    "CC" => "Cocos Keeling Islands",
     "CO" => "Colombia",
     "KM" => "Comoros",
     "CG" => "Congo",

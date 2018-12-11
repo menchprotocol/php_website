@@ -2644,8 +2644,6 @@ class Db_model extends CI_Model {
 
     function algolia_sync($obj,$obj_id=0){
 
-        return false; //Disabled Algolia
-
 	    //Define the support objects indexed on algolia:
         $obj_id = intval($obj_id);
 

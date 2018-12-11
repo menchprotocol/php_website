@@ -10,6 +10,7 @@ if(isset($orphan_cs)){
     var c_top_id = <?= $c['c_id'] ?>;
     var current_time = '<?= date("H:i") ?>';
     var c_outcome_max = <?= $this->config->item('c_outcome_max') ?>;
+    var u_full_name_max = <?= $this->config->item('u_full_name_max') ?>;
 </script>
 <script src="/js/custom/intent-manage-js.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
 
@@ -132,7 +133,7 @@ if(isset($orphan_cs)){
                     <div class="form-group label-floating is-empty">
                         <div class="input-group border">
                             <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;">To</span>
-                            <input style="padding-left:0;" type="text" id="c_outcome" onkeyup="c_outcome_word_count()" maxlength="<?= $this->config->item('c_outcome_max') ?>" value="" class="form-control algolia_search">
+                            <input style="padding-left:0;" type="text" id="c_outcome" onkeyup="c_outcome_word_count()" maxlength="<?= $this->config->item('c_outcome_max') ?>" value="" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -141,53 +142,35 @@ if(isset($orphan_cs)){
 
                 <div class="title" style="margin-top:15px;"><h4><i class="fas fa-comment-edit"></i> Trigger Statements <span id="hb_7724" class="help_button" intent-id="7724"></span></h4></div>
                 <div class="help_body maxout" id="content_7724"></div>
-                <textarea class="form-control text-edit border msg" id="c_trigger_statements" style="height:86px; background-color:#FFFFFF !important;"></textarea>
+                <textarea class="form-control text-edit border msg" id="c_trigger_statements" style="height:56px; background-color:#FFFFFF !important;"></textarea>
 
 
 
 
                 <div class="row">
-                    <div class="col-md-6 inlineform" style="margin-top:20px;">
-                        <div class="title"><h4><i class="fas fa-sliders-h"></i> Status</h4></div>
+                    <div class="col-md-6 inlineform">
+
+                        <div class="title" style="margin-top:15px;"><h4><i class="fas fa-hashtag"></i> <?= $this->lang->line('obj_c_name') ?></h4></div>
                         <select class="form-control" id="c_status" style="display: inline-block !important;">
-                        <?php
-                        foreach(echo_status('c') as $status_id=>$status){
-                            echo '<option value="'.$status_id.'" title="'.$status['s_desc'].'">'.$status['s_name'].'</option>';
-                        }
-                        ?>
-                        </select>
-                        <span class="checkbox" style="display: inline-block !important;">
-                            <label style="display:inline-block !important; font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" id="apply_recurively" /><span class="underdot" data-toggle="tooltip" title="Applies the new status recursively down to all children/grandchildren that have the same starting status. Page will refresh after saving." data-placement="top">Recursive Down</span> <i class="fas fa-sign-out-alt rotate90"></i></label>
-                        </span>
-                    </div>
-                    <div class="col-md-6" style="margin-top:20px;">
-                        <div class="title"><h4><i class="fas fa-weight"></i> Assessment Points</h4></div>
-                        <select class="form-control" id="c_points">
                             <?php
-                            foreach($this->config->item('c_point_options') as $point){
-                                echo '<option value="'.$point.'">'.$point.' Point'.echo__s($point).'</option>';
+                            foreach(echo_status('c') as $status_id=>$status){
+                                echo '<option value="'.$status_id.'" title="'.$status['s_desc'].'">'.$status['s_name'].'</option>';
                             }
                             ?>
                         </select>
-                    </div>
-                </div>
+                        <span class="checkbox" style="display: inline-block !important;">
+                            <label style="display:inline-block !important; font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" id="apply_recurively" /><span class="underdot" data-toggle="tooltip" title="Applies the new status recursively down to all children/grandchildren that have the same starting status. Page will refresh after saving." data-placement="top">Apply Recursively <i class="fas fa-info-circle"></i></span></label>
+                        </span>
 
 
 
-
-
-
-                <div class="row">
-                    <div class="col-md-6" style="margin-top:20px;">
-
-                        <div class="title"><h4><i class="fas fa-shield-check"></i> Completion Settings</h4></div>
+                        <div class="title" style="margin-top:15px;"><h4><i class="fas fa-check-square"></i> Completion Method</h4></div>
                         <div class="form-group label-floating is-empty">
                             <?php
-                            $intent_types = echo_status('c_is_any');
-                            foreach($intent_types as $c_is_any=>$intent_type){
+                            foreach(echo_status('c_is_any') as $c_val=>$intent_type){
                                 echo '<div class="radio" style="display:inline-block; border-bottom:1px dotted #999; margin-top: 0 !important;" data-toggle="tooltip" title="'.$intent_type['s_desc'].'" data-placement="right">
                                     <label style="display:inline-block;">
-                                        <input type="radio" id="c_is_any_'.$c_is_any.'" name="c_is_any" value="'.$c_is_any.'" />
+                                        <input type="radio" id="c_is_any_'.$c_val.'" name="c_is_any" value="'.$c_val.'" />
                                         <i class="'.$intent_type['s_icon'].'"></i> '.$intent_type['s_name'].'
                                     </label>
                                 </div>';
@@ -202,10 +185,48 @@ if(isset($orphan_cs)){
                             </div>
                         </div>
 
-                    </div>
-                    <div class="col-md-6" style="margin-top:20px;">
-                        <div class="title"><h4><i class="fas fa-box-check"></i> Completion Resources</h4></div>
 
+
+
+                        <div class="title" style="margin-top:15px;"><h4><i class="fas fa-weight"></i> Completion Points</h4></div>
+                        <select class="form-control" id="c_points">
+                            <?php
+                            foreach($this->config->item('c_point_options') as $point){
+                                echo '<option value="'.$point.'">'.( $point==0 ? 'Disabled' : $point.' Point'.echo__s($point) ).'</option>';
+                            }
+                            ?>
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-6" style="margin-top:15px;">
+
+                        <div id="c_link_access" class="hidden">
+                            <div class="title"><h4><i class="fas fa-link"></i> <?= $this->lang->line('obj_cr_status_name') ?></h4></div>
+                            <select class="form-control" id="cr_status" style="display: inline-block !important;">
+                                <?php
+                                foreach(echo_status('cr_status') as $status_id=>$status){
+                                    echo '<option value="'.$status_id.'" title="'.$status['s_desc'].'">'.$status['s_name'].'</option>';
+                                }
+                                ?>
+                            </select>
+                            <div class="notify_cr_delete hidden">
+                                <div class="alert alert-warning" style="margin:5px 0px; padding:7px;"><i class="fas fa-exclamation-triangle"></i> Warning: You are about to remove this link</div>
+                            </div>
+                            <div class="form-group label-floating is-empty score_range_box hidden" style="max-width:230px;">
+                                <div class="input-group border">
+                                    <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;">If scores </span>
+                                    <input style="padding-left:0; padding-right:0; text-align:right;" type="text" maxlength="3" id="cr_condition_min" value="" class="form-control">
+                                    <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;"><i class="fal fa-fas fa-percentage"></i> to </span>
+                                    <input style="padding-left:0; padding-right:0; text-align:right;" type="text" maxlength="3" id="cr_condition_max" value="" class="form-control">
+                                    <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;"><i class="fal fa-fas fa-percentage"></i></span>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="title" style="margin-top:15px;"><h4><i class="fas fa-piggy-bank"></i> Resources</h4></div>
                         <div class="form-group label-floating is-empty" style="max-width:150px;">
                             <div class="input-group border">
                                 <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;"><i class="fas fa-clock"></i></span>
@@ -213,6 +234,7 @@ if(isset($orphan_cs)){
                                 <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;">Minutes</span>
                             </div>
                         </div>
+
                         <div id="child-hours" style="margin-left:6px;"></div>
 
                         <div class="form-group label-floating is-empty" style="max-width:150px;">
@@ -222,23 +244,31 @@ if(isset($orphan_cs)){
                                 <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;">USD</span>
                             </div>
                         </div>
+
+
+
+                        <div class="title" style="margin-top:15px;"><h4><i class="fas fa-cloud-upload"></i> Webhook URL [<span style="margin:0 0 10px 0; font-size:0.8em;"><span id="charWebhookNum">0</span>/<?= $this->config->item('u_full_name_max') ?></span>]</h4></div>
+                        <div class="form-group label-floating is-empty">
+                            <div class="input-group border">
+                                <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;" data-toggle="tooltip" title="Secure HTTPS URLs are required for webhooks" data-placement="top">https://</span>
+                                <input style="padding-left:0;" type="text" id="c_webhook_url" onkeyup="c_webhook_word_count()" maxlength="<?= $this->config->item('u_full_name_max') ?>" value="" class="form-control">
+                            </div>
+                        </div>
+
+
                     </div>
                 </div>
+
+
+
+
 
 
                 <table width="100%" style="margin-top:10px;">
                     <tr>
                         <td class="save-td"><a href="javascript:c_save_modify();" class="btn btn-primary">Save</a></td>
                         <td><span class="save_intent_changes"></span></td>
-                        <td style="width:80px; text-align:right;">
-
-                            <div><a href="javascript:c_unlink();" class="unlink-intent" data-toggle="tooltip" title="Only remove intent link while NOT Archiving the intent itself" data-placement="left" style="text-decoration:none;"><i class="fas fa-unlink"></i> Unlink</a></div>
-
-                            <?php if(array_key_exists(1281, $udata['u__parents'])){ ?>
-                                <div><a href="javascript:c_delete();" data-toggle="tooltip" title="Delete intent AND remove all its links, messages & references" data-placement="left" style="text-decoration:none;"><i class="fas fa-trash-alt"></i> Delete</a></div>
-                            <?php } ?>
-
-                        </td>
+                        <td style="width:80px; text-align:right;"></td>
                     </tr>
                 </table>
             </div>

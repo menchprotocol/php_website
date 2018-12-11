@@ -478,34 +478,6 @@ function ur_unlink(){
     });
 }
 
-function u_delete(){
-
-    //Confirm with user:
-    var u_id = ( $('#modifybox').hasClass('hidden') ? 0 : parseInt($('#modifybox').attr('entity-id')) );
-    var direction = ( parseInt($('#u_'+u_id).attr('is-parent'))==1 ? 'parent' : 'children' );
-    var counter_class = '.li-'+direction+'-count';
-    var current_status = parseInt($('#u_'+u_id).attr('entity-status'));
-    var u_level2_name = $('#u_'+u_id+' .u_full_name').text();
-
-    var r = confirm("Are you sure you want to PERMANENTLY delete ["+u_level2_name+"] and all its associated URLs, Messages, etc...?");
-    if (!(r == true)){
-        return false;
-    }
-
-    if(u_id==0){
-        return false;
-    }
-
-    //Save the rest of the content:
-    $.get("/entities/hard_delete/"+u_id, function(data) {
-        $('#u_'+u_id).fadeOut();
-
-        //Update counter:
-        $(counter_class).text((parseInt($(counter_class+':first').text())-1));
-        $('.count-u-status-'+current_status).text((parseInt($('.count-u-status-'+current_status).text())-1));
-    });
-}
-
 
 function u_load_modify(u_id, ur_id){
 
@@ -635,7 +607,7 @@ function u_save_modify(){
             if(original_u_status!=modify_data['u_status']){
 
                 //Update status:
-                $('.u_status_'+modify_data['u_id']).html(data.status_ui);
+                $('.u_status_'+modify_data['u_id']).html(data.status_u_ui);
 
                 //Adjust counters for the filtering system as that also will change:
                 $('.count-u-status-'+modify_data['u_status']).text((parseInt($('.count-u-status-'+modify_data['u_status']).text())+1));

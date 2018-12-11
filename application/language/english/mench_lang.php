@@ -1,12 +1,12 @@
 <?php
-/* Sample use case: <?= $this->lang->line('platform_intent') ?> */
+/* Sample use case: <?= $this->lang->line('obj_cr_name') ?> */
 
 //Core Databae Objects:
 $lang['obj_u_name'] = 'Entity Status';
 $lang['obj_ur_name'] = 'Entity Link';
 $lang['obj_ur_note_type_name'] = 'Entity Link Type';
 $lang['obj_c_name'] = 'Intent Status';
-$lang['obj_cr_name'] = 'Intent Link';
+$lang['obj_cr_status_name'] = 'Intent Link Status';
 
 $lang['obj_i_name'] = 'Message Status';
 $lang['obj_i_status_name'] = 'Message Status';
