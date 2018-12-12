@@ -84,9 +84,9 @@ class Comm_model extends CI_Model
         if (!$result) {
 
             //Failed to fetch this profile:
-            $error_message = 'Comm_model->fb_graph() failed to ' . $action . ' ' . $url;
+            $message_error = 'Comm_model->fb_graph() failed to ' . $action . ' ' . $url;
             $this->Db_model->tr_create(array(
-                'tr_content' => $error_message,
+                'tr_content' => $message_error,
                 'tr_en_type_id' => 4246, //Platform Error
                 'tr_metadata' => $tr_metadata,
             ));
@@ -94,7 +94,7 @@ class Comm_model extends CI_Model
             //There was an issue accessing this on FB
             return array(
                 'status' => 0,
-                'message' => $error_message,
+                'message' => $message_error,
                 'tr_metadata' => $tr_metadata,
             );
 
@@ -1126,16 +1126,16 @@ class Comm_model extends CI_Model
         }
 
         //Prepare needed variables:
-        $failed_count = 0;
-        $en_convert_4454 = $this->config->item('en_convert_4454');
-        $master_cache = array(); //Caches communication settings for duplicate Masters in $trs messages!
+        $failed_count = 0; //Keeps track of failed $trs that we could not send
+        $en_convert_4454 = $this->config->item('en_convert_4454'); //Translates our settings to Facebook Notification Settings
+        $master_cache = array(); //Simple caching mechanism for communication settings to prevent fetching data multiple times...
 
 
         //Let's run through all input messages:
         foreach ($trs as $tr) {
 
             //Make sure we have the Master ID that we need to send this message to:
-            if (!isset($tr['tr_en_child_id']) || !isset($tr['tr_content']) || strlen($tr['tr_content'])<1) {
+            if (!isset($tr['tr_en_child_id']) || !isset($tr['tr_content']) || strlen($tr['tr_content']) < 1) {
 
                 //This should never happen! Log error:
                 $failed_count++;
@@ -1153,7 +1153,7 @@ class Comm_model extends CI_Model
 
 
             //Did we already fetch this Master's communication settings in a previous $trs message?
-            if(isset($master_cache[$tr['tr_en_child_id']])){
+            if (isset($master_cache[$tr['tr_en_child_id']])) {
 
                 //We already have this user in cache, no need to fetch/validate communication settings as it has already been done:
                 $trs_fb_psid = $master_cache[$tr['tr_en_child_id']]['trs_fb_psid'];
@@ -1170,50 +1170,60 @@ class Comm_model extends CI_Model
                  *
                  * */
 
+                //Mench Personal Assistant on Messenger:
                 $trs_fb_psid = $this->Db_model->tr_fetch(array(
-                    'tr_en_parent_id' => 4451, //Mench Personal Assistant on Messenger (tr_content will have the Facebook PSID we need to communicate with them)
+                    'tr_en_parent_id' => 4451,
                     'tr_en_child_id' => $tr['tr_en_child_id'],
                     'tr_status >=' => 2,
                 ), array('en_child')); //Also fetch user details as we need their name....
+                //Note: tr_content will have the Facebook PSID we need to communicate with them
+                //Note: If we find multiple of these, we'd only consider the first one: $trs_fb_psid[0]
 
+
+                //Mench Notification Levels:
                 $trs_comm_level = $this->Db_model->tr_fetch(array(
-                    'tr_en_parent_id IN (' . join(', ', $this->config->item('en_ids_4454') ) . ')' => null, //Mench Notification Levels (Make sure they are not unsubscribed!)
+                    'tr_en_parent_id IN (' . join(', ', $this->config->item('en_ids_4454')) . ')' => null,
                     'tr_en_child_id' => $tr['tr_en_child_id'],
                     'tr_status >=' => 2,
                 ));
+                //Note: This should find exactly one result as it belongs to Master Radio Entity @4461
 
-                //Validate the communication settings to make sure everything is as expected:
-                $error_message = null;
 
-                if (!(count($trs_fb_psid) == 1)) {
+
+                //Start validating communication settings we fetched to ensure everything is A-OK:
+                $message_error = null;
+
+                if (count($trs_fb_psid) < 1) {
 
                     //Log error, should not happen!
-                    $error_message = 'send_message() failed to fetch Master relation to Mench Personal Assistant on Messenger.';
+                    $message_error = 'send_message() failed to fetch Master relation to Mench Personal Assistant on Messenger.';
 
                 } elseif (!(count($trs_comm_level) == 1)) {
 
-                    //Log error, should not happen!
-                    $error_message = 'send_message() failed to fetch Master relation to any Mench Notification Level.';
+                    //Log error, should not happen! Since this is part of
+                    $message_error = 'send_message() failed to fetch Master relation to any Mench Notification Level.';
 
-                } elseif($trs_comm_level[0]['tr_en_parent_id'] == 4455){
+                } elseif ($trs_comm_level[0]['tr_en_parent_id'] == 4455) {
 
                     //This Master is unsubscribed, so we cannot contact them!
-                    $error_message = 'send_message() attempted to send a message to an unsubscribed Master which is not allowed.';
+                    $message_error = 'send_message() attempted to send a message to an unsubscribed Master which is not allowed.';
 
-                } elseif(intval($trs_fb_psid[0]['tr_content'])<1){
+                } elseif (intval($trs_fb_psid[0]['tr_content']) < 1) {
 
                     //The Mench Personal Assistant on Messenger relation is not storing an integer (Facebook PSID) as expected!
-                    $error_message = 'send_message() was unable to locate the Messenger PSID for this Master.';
+                    $message_error = 'send_message() was unable to locate the Messenger PSID for this Master.';
 
-                } elseif(!array_key_exists($trs_comm_level[0]['tr_en_parent_id'], $en_convert_4454)){
+                } elseif (!array_key_exists($trs_comm_level[0]['tr_en_parent_id'], $en_convert_4454)) {
 
                     //This is an unknown communication level (should never happen!):
-                    $error_message = 'send_message() fetched an unknown ['.$trs_comm_level[0]['tr_en_parent_id'].'] Mench Notification Level!';
+                    $message_error = 'send_message() fetched an unknown [' . $trs_comm_level[0]['tr_en_parent_id'] . '] Mench Notification Level!';
 
                 }
 
+
+
                 //Did we find an error?
-                if($error_message){
+                if ($message_error) {
 
                     $failed_count++;
                     $this->Db_model->tr_create(array(
@@ -1224,7 +1234,7 @@ class Comm_model extends CI_Model
                             'trs_comm_level' => $trs_comm_level,
                             'tr' => $tr,
                         ),
-                        'tr_content' => $error_message,
+                        'tr_content' => $message_error,
                         'tr_tr_parent_id' => (isset($tr['tr_id']) ? $tr['tr_id'] : 0),
                     ));
                     continue;
@@ -1244,7 +1254,7 @@ class Comm_model extends CI_Model
 
             //Prepare Payload:
             $payload = array(
-                'recipient' => array( 'id' => $trs_fb_psid[0]['tr_content'] ),
+                'recipient' => array('id' => $trs_fb_psid[0]['tr_content']),
                 'message' => echo_i($tr, $trs_fb_psid[0]['en_name'], true),
                 'notification_type' => $en_convert_4454[$trs_comm_level[0]['tr_en_parent_id']], //Appropriate notification level
                 'messaging_type' => 'NON_PROMOTIONAL_SUBSCRIPTION', //We are always educating users without promoting anything! Learn more at: https://developers.facebook.com/docs/messenger-platform/send-messages#messaging_types
@@ -1271,7 +1281,7 @@ class Comm_model extends CI_Model
                     'tr_en_credit_id' => (isset($tr['tr_en_credit_id']) ? $tr['tr_en_credit_id'] : 0),
                     'tr_en_parent_id' => (isset($tr['tr_en_parent_id']) ? $tr['tr_en_parent_id'] : 0),
                     'tr_in_parent_id' => (isset($tr['tr_in_parent_id']) ? $tr['tr_in_parent_id'] : 0),
-                    'tr_in_child_id'  => (isset($tr['tr_in_child_id'])  ? $tr['tr_in_child_id']  : 0),
+                    'tr_in_child_id' => (isset($tr['tr_in_child_id']) ? $tr['tr_in_child_id'] : 0),
                     'tr_tr_parent_id' => (isset($tr['tr_id']) ? $tr['tr_id'] : 0),
                 ));
 
@@ -1317,29 +1327,49 @@ class Comm_model extends CI_Model
         }
     }
 
-    function compose_messages($e, $skip_messages = false)
+    function compose_messages($tr, $skip_messages = false)
     {
 
-        //Validate key components that are required:
-        $error_message = null;
-        if (count($e) < 1) {
-            $error_message = 'Missing $e';
-        } elseif (!isset($e['tr_in_child_id']) || $e['tr_in_child_id'] < 1) {
-            $error_message = 'Missing tr_in_child_id';
-        } elseif (!isset($e['tr_en_child_id']) || $e['tr_en_child_id'] < 1) {
-            $error_message = 'Missing  tr_en_child_id';
+        /*
+         *
+         * Construct a message from Intent Messages for a given Intent Tree
+         * This function considers the logic behind the Intent/Entity Trees in constructing messages
+         * The goal is to have all messages sent using this function which
+         * means everything is stored on the tree (Rather than in the code base using the send_messages() function)
+         * Related to: https://github.com/askmench/mench-web-app/issues/2078
+         *
+         * */
+
+        //Start input validation:
+        $message_error = null;
+
+        if (count($tr) < 1) {
+
+            //Make sure we got an input:
+            $message_error = 'Missing input settings';
+
+        } elseif (!isset($tr['tr_in_child_id']) || $tr['tr_in_child_id'] < 1) {
+
+            //Make sure we got the intent to build this message from
+            $message_error = 'Missing intent ID';
+
+        } elseif (!isset($tr['tr_en_child_id']) || $tr['tr_en_child_id'] < 1) {
+
+            //Make sure we've got the entity ID to send this message to:
+            $message_error = 'Missing Master entity ID';
         }
 
-        if (!$error_message) {
+        //If no errors so far, let's do some more validation:
+        if (!$message_error) {
 
             //Fetch intent and its messages with an appropriate depth
             $intents = $this->Db_model->in_fetch(array(
-                'in_id' => $e['tr_in_child_id'],
+                'in_id' => $tr['tr_in_child_id'],
             ), array('in__active_messages')); //Supports up to 2 levels deep for now...
 
             //Check to see if we have any other errors:
             if (!isset($intents[0])) {
-                $error_message = 'Invalid Intent ID [' . $e['tr_in_child_id'] . ']';
+                $message_error = 'Invalid Intent ID [' . $tr['tr_in_child_id'] . ']';
             } else {
                 //Check the required notes as we'll use this later:
                 $requirement_notes = echo_c_requirements($intents[0], true);
@@ -1347,21 +1377,21 @@ class Comm_model extends CI_Model
         }
 
         //Did we catch any errors?
-        if ($error_message) {
+        if ($message_error) {
             //Log error:
             $this->Db_model->tr_create(array(
-                'tr_content' => 'compose_messages() error: ' . $error_message,
+                'tr_content' => 'compose_messages() error: ' . $message_error,
                 'tr_en_type_id' => 4246, //Platform Error
-                'tr_metadata' => $e,
-                'tr_en_child_id' => $e['tr_en_child_id'],
-                'tr_in_child_id' => $e['tr_in_child_id'],
-                'tr_en_credit_id' => $e['tr_en_credit_id'],
+                'tr_metadata' => $tr,
+                'tr_en_child_id' => $tr['tr_en_child_id'],
+                'tr_in_child_id' => $tr['tr_in_child_id'],
+                'tr_en_credit_id' => $tr['tr_en_credit_id'],
             ));
 
             //Return error:
             return array(
                 'status' => 0,
-                'message' => $error_message,
+                'message' => $message_error,
             );
         }
 
@@ -1370,22 +1400,22 @@ class Comm_model extends CI_Model
         $instant_messages = array();
 
         //Give some context on the current intent:
-        if (isset($e['tr_tr_parent_id']) && $e['tr_tr_parent_id'] > 0) {
+        if (isset($tr['tr_tr_parent_id']) && $tr['tr_tr_parent_id'] > 0) {
 
             //Lets see how many child intents there are
             $k_outs = $this->Db_model->tr_fetch(array(
-                'tr_id' => $e['tr_tr_parent_id'],
+                'tr_id' => $tr['tr_tr_parent_id'],
                 'tr_status IN (0,1)' => null, //Active subscriptions only
-                'tr_in_parent_id' => $e['tr_in_child_id'],
+                'tr_in_parent_id' => $tr['tr_in_child_id'],
                 //We are fetching with any tr_status just to see what is available/possible from here
             ), array('w', 'cr', 'cr_c_child'));
 
-            if (count($k_outs) > 0 && !($k_outs[0]['tr_in_child_id'] == $e['tr_in_child_id'])) {
+            if (count($k_outs) > 0 && !($k_outs[0]['tr_in_child_id'] == $tr['tr_in_child_id'])) {
                 //Only confirm the intention if its not the top-level action plan intention:
                 array_push($instant_messages, array(
-                    'tr_en_child_id' => $e['tr_en_child_id'],
-                    'tr_in_child_id' => $e['tr_in_child_id'],
-                    'tr_tr_parent_id' => $e['tr_tr_parent_id'],
+                    'tr_en_child_id' => $tr['tr_en_child_id'],
+                    'tr_in_child_id' => $tr['tr_in_child_id'],
+                    'tr_tr_parent_id' => $tr['tr_tr_parent_id'],
                     'tr_content' => 'Let’s ' . $intents[0]['in_outcome'] . '.',
                 ));
             }
@@ -1399,7 +1429,7 @@ class Comm_model extends CI_Model
             foreach ($intents[0]['in__active_messages'] as $key => $i) {
                 if ($i['tr_status'] == 1) {
                     //Add message to instant stream:
-                    array_push($instant_messages, array_merge($e, $i));
+                    array_push($instant_messages, array_merge($tr, $i));
                 }
             }
         }
@@ -1410,13 +1440,13 @@ class Comm_model extends CI_Model
 
             //URL or a written response is required, let them know that they should complete using the Action Plan:
             array_push($instant_messages, array(
-                'tr_en_child_id' => $e['tr_en_child_id'],
-                'tr_in_child_id' => $e['tr_in_child_id'],
-                'tr_tr_parent_id' => $e['tr_tr_parent_id'],
+                'tr_en_child_id' => $tr['tr_en_child_id'],
+                'tr_in_child_id' => $tr['tr_in_child_id'],
+                'tr_tr_parent_id' => $tr['tr_tr_parent_id'],
                 'tr_content' => $requirement_notes,
             ));
 
-        } elseif (isset($e['tr_tr_parent_id']) && $e['tr_tr_parent_id'] > 0) {
+        } elseif (isset($tr['tr_tr_parent_id']) && $tr['tr_tr_parent_id'] > 0) {
 
             $tr_content = null;
             $quick_replies = array();
@@ -1428,7 +1458,7 @@ class Comm_model extends CI_Model
                 //We have 0-1 child intents! If zero, let's see what the next step:
                 if (count($k_outs) == 0) {
                     //Let's try to find the next item in tree:
-                    $k_outs = $this->Db_model->k_next_fetch($e['tr_tr_parent_id']);
+                    $k_outs = $this->Db_model->k_next_fetch($tr['tr_tr_parent_id']);
                 }
 
                 //Do we have a next intent?
@@ -1439,7 +1469,7 @@ class Comm_model extends CI_Model
                     array_push($quick_replies, array(
                         'content_type' => 'text',
                         'title' => 'Ok Continue ▶️',
-                        'payload' => 'MARKCOMPLETE_' . $e['tr_tr_parent_id'] . '_' . $k_outs[0]['tr_id'] . '_' . $k_outs[0]['tr_order'], //Here are are using MARKCOMPLETE_ also for OR branches with a single option... Maybe we need to change this later?! For now it feels ok to do so...
+                        'payload' => 'MARKCOMPLETE_' . $tr['tr_tr_parent_id'] . '_' . $k_outs[0]['tr_id'] . '_' . $k_outs[0]['tr_order'], //Here are are using MARKCOMPLETE_ also for OR branches with a single option... Maybe we need to change this later?! For now it feels ok to do so...
                     ));
 
                 }
@@ -1462,7 +1492,7 @@ class Comm_model extends CI_Model
                         array_push($quick_replies, array(
                             'content_type' => 'text',
                             'title' => '/' . ($counter + 1),
-                            'payload' => 'CHOOSEOR_' . $e['tr_tr_parent_id'] . '_' . $e['tr_in_child_id'] . '_' . $k['in_id'] . '_' . $k['tr_order'],
+                            'payload' => 'CHOOSEOR_' . $tr['tr_tr_parent_id'] . '_' . $tr['tr_in_child_id'] . '_' . $k['in_id'] . '_' . $k['tr_order'],
                         ));
                     }
 
@@ -1476,7 +1506,7 @@ class Comm_model extends CI_Model
                             array_push($quick_replies, array(
                                 'content_type' => 'text',
                                 'title' => 'Start Step 1 ▶️',
-                                'payload' => 'MARKCOMPLETE_' . $e['tr_tr_parent_id'] . '_' . $k['tr_id'] . '_' . $k['tr_order'],
+                                'payload' => 'MARKCOMPLETE_' . $tr['tr_tr_parent_id'] . '_' . $k['tr_id'] . '_' . $k['tr_order'],
                             ));
                         }
 
@@ -1495,11 +1525,11 @@ class Comm_model extends CI_Model
                 }
 
 
-                //As long as $e['tr_in_child_id'] is NOT equal to tr_in_child_id, then we will have a k_out relation so we can give the option to skip:
+                //As long as $tr['tr_in_child_id'] is NOT equal to tr_in_child_id, then we will have a k_out relation so we can give the option to skip:
                 $k_ins = $this->Db_model->tr_fetch(array(
-                    'tr_id' => $e['tr_tr_parent_id'],
+                    'tr_id' => $tr['tr_tr_parent_id'],
                     'tr_status IN (0,1)' => null, //Active subscriptions only
-                    'tr_in_child_id' => $e['tr_in_child_id'],
+                    'tr_in_child_id' => $tr['tr_in_child_id'],
                 ), array('w', 'cr', 'cr_c_child'));
 
 
@@ -1515,9 +1545,9 @@ class Comm_model extends CI_Model
 
             //Append next-step message:
             array_push($instant_messages, array(
-                'tr_en_child_id' => $e['tr_en_child_id'],
-                'tr_in_child_id' => $e['tr_in_child_id'],
-                'tr_tr_parent_id' => $e['tr_tr_parent_id'],
+                'tr_en_child_id' => $tr['tr_en_child_id'],
+                'tr_in_child_id' => $tr['tr_in_child_id'],
+                'tr_tr_parent_id' => $tr['tr_tr_parent_id'],
                 'tr_content' => $tr_content,
                 'quick_replies' => $quick_replies,
             ));
@@ -1540,15 +1570,15 @@ class Comm_model extends CI_Model
     }
 
 
-    function send_email($to_array, $subject, $html_message, $e_var_create = array(), $reply_to = null)
+    function send_email($to_array, $subject, $html_message, $tr_create = array(), $reply_to = null)
     {
 
         /*
          *
-         * DEPRECATED!
+         * DEPRECATED for now!
          *
-         * We used to support sending emails but recently we've just
-         * focused on Messenger as the only medium of communication!
+         * We used to support sending emails but since Dec 2018 we've
+         * focused on Messenger as the only medium of communication.
          *
          * */
 
@@ -1572,8 +1602,8 @@ class Comm_model extends CI_Model
         }
 
         //Log transaction once:
-        if (count($e_var_create) > 0) {
-            $this->Db_model->tr_create($e_var_create);
+        if (count($tr_create) > 0) {
+            $this->Db_model->tr_create($tr_create);
         }
 
         return $this->CLIENT->sendEmail(array(

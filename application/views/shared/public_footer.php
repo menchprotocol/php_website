@@ -10,6 +10,9 @@
                        class="social-link" data-toggle="tooltip"
                        title="Get started with Mench Personal Assistant on Facebook Messenger" data-placement="top"><i
                                 class="fab fa-facebook-messenger"></i></a>
+                    <a href="https://github.com/askmench" target="_blank"
+                       class="social-link" data-toggle="tooltip" title="Help develop Mench on GitHub"
+                       data-placement="top"><i class="fab fa-github"></i></a>
                     <a href="https://www.youtube.com/channel/UCOH64HiAIfJlz73tTSI8n-g" target="_blank"
                        class="social-link" data-toggle="tooltip" title="Subscribe to our YouTube Channel"
                        data-placement="top"><i class="fab fa-youtube"></i></a>
