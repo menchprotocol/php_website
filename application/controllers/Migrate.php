@@ -15,15 +15,28 @@ class Migrate extends CI_Controller
     }
 
 
-    function test()
-    {
+    function ff(){
 
-        echo echo_json($this->Db_model->in_fetch(array(
-            ' NOT EXISTS (SELECT 1 FROM table_ledger WHERE in_id=tr_in_child_id AND tr_status>=0) ' => null,
+        echo_json($this->Comm_model->send_message(array(
+            array(
+                'tr_en_child_id' => 1,
+                'tr_content' => 'Hello hello 👋',
+                'quick_replies' => array(
+                    array(
+                        'content_type' => 'text',
+                        'title' => 'Yes, Learn More',
+                        'payload' => 'ACTIONPLANADD20_',
+                    ),
+                    array(
+                        'content_type' => 'text',
+                        'title' => 'No',
+                        'payload' => 'ACTIONPLANADD10_0',
+                    ),
+                ),
+            ),
         )));
 
     }
-
 
     function c()
     {

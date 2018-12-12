@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  * Global variables used throughout the platform.
  * Ctrl+F is your friend to explore where they are implemented and how they work ;)
- * use-case format: $this->config->item('password_salt')
+ * use-case format: $this->config->item('en_convert_4454')
  *
  */
 
@@ -43,7 +43,7 @@ $config['aws_credentials'] = [ //Learn more: https://console.aws.amazon.com/iam/
 ];
 
 
-//Mench Communication Levels to Facebook Messenger format which is only supported if NOT unsubscribed:
+//Mench Notification Levels to Facebook Messenger format which is only supported if NOT unsubscribed:
 //This is a manual converter of the Facebook Notification Level based on communication level Entity ID
 $config['en_convert_4454'] = array(
     4456 => 'REGULAR',

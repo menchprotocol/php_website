@@ -554,8 +554,8 @@ class Intents extends CI_Controller
                 'e_tr_id' => $i['tr_id'],
             ));
 
-            //Build UI friendly Message:
-            $help_content .= echo_i(array_merge($i, array('tr_en_child_id' => $udata['en_id'])), $udata['en_name']);
+            //Build UI friendly HTML Message:
+            $help_content .= echo_i(array_merge($i, array('tr_en_child_id' => $udata['en_id'])), $udata['en_name'], false);
         }
 
         //Return results:

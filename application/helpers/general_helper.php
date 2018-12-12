@@ -171,6 +171,21 @@ function mime_type($mime)
     }
 }
 
+
+function isDate($value)
+{
+    if (!$value) {
+        return false;
+    }
+
+    try {
+        new \DateTime($value);
+        return true;
+    } catch (\Exception $e) {
+        return false;
+    }
+}
+
 function detect_tr_en_type_id($string)
 {
 
@@ -184,7 +199,7 @@ function detect_tr_en_type_id($string)
     if(!$string || strlen($string)==0){
         //Naked:
         return 4230;
-    } elseif(DateTime::createFromFormat('Y-m-d G:i:s', $string)!==FALSE){
+    } elseif(isDate($string)){
         //Date/time:
         return 4318;
     } elseif(is_int($string) || is_double($string)){

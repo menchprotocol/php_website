@@ -119,7 +119,7 @@ $config['en_all_3000'] = array(
     ),
 );
 
-//Mench Communication Levels:
+//Mench Notification Levels:
 $config['en_ids_4454'] = array(4455, 4456, 4457, 4458);
 $config['en_all_4454'] = array(
     4455 => array(

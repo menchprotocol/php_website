@@ -326,12 +326,12 @@ class Comm_model extends CI_Model
                     $tree = $this->Db_model->in_recursive_fetch($tr_in_child_id, true, false);
 
                     //Show messages for this intent:
-                    $messages = $this->Db_model->i_fetch(array(
+                    $trs = $this->Db_model->i_fetch(array(
                         'tr_in_child_id' => $tr_in_child_id,
                         'tr_status >=' => 0, //Published in any form
                     ));
 
-                    foreach ($messages as $i) {
+                    foreach ($trs as $i) {
                         $this->Comm_model->send_message(array(
                             array_merge($i, array(
                                 'tr_en_child_id' => $u['en_id'],
@@ -482,27 +482,27 @@ class Comm_model extends CI_Model
 
 
                 //Construct the message to give more details on skipping:
-                $message = 'You are about to skip these ' . $would_be_skipped_count . ' insight' . echo__s($would_be_skipped_count) . ':';
+                $tr_content = 'You are about to skip these ' . $would_be_skipped_count . ' insight' . echo__s($would_be_skipped_count) . ':';
                 foreach ($would_be_skipped as $counter => $k_c) {
-                    if (strlen($message) < ($this->config->item('fb_max_message') - 200)) {
+                    if (strlen($tr_content) < ($this->config->item('fb_max_message') - 200)) {
                         //We have enough room to add more:
-                        $message .= "\n\n" . ($counter + 1) . '/ ' . $k_c['in_outcome'];
+                        $tr_content .= "\n\n" . ($counter + 1) . '/ ' . $k_c['in_outcome'];
                     } else {
                         //We cannot add any more, indicate truncating:
                         $remainder = $would_be_skipped_count - $counter;
-                        $message .= "\n\n" . 'And ' . $remainder . ' more insight' . echo__s($remainder) . '!';
+                        $tr_content .= "\n\n" . 'And ' . $remainder . ' more insight' . echo__s($remainder) . '!';
                         break;
                     }
                 }
 
                 //Recommend against it:
-                $message .= "\n\n" . 'I would not recommend skipping unless you feel comfortable learning these concepts on your own.';
+                $tr_content .= "\n\n" . 'I would not recommend skipping unless you feel comfortable learning these concepts on your own.';
 
                 //Send them the message:
                 $this->Comm_model->send_message(array(
                     array(
                         'tr_en_child_id' => $u['en_id'],
-                        'tr_content' => $message,
+                        'tr_content' => $tr_content,
                         'quick_replies' => array(
                             array(
                                 'content_type' => 'text',
@@ -525,7 +525,7 @@ class Comm_model extends CI_Model
                 if ($tr_status == -1) {
 
                     //user changed their mind and does not want to skip anymore
-                    $message = 'I am happy you changed your mind! Let\'s continue...';
+                    $tr_content = 'I am happy you changed your mind! Let\'s continue...';
 
                     //Reset ranking to find the next real item:
                     $tr_order = 0;
@@ -536,7 +536,7 @@ class Comm_model extends CI_Model
                     $skippable_ks = $this->Db_model->k_skip_recursive_down($tr_id);
 
                     //Confirm the skip:
-                    $message = 'Confirmed, I marked this section as skipped. You can always re-visit these insights in your Action Plan and complete them at any time. /open_actionplan';
+                    $tr_content = 'Confirmed, I marked this section as skipped. You can always re-visit these insights in your Action Plan and complete them at any time. /open_actionplan';
 
                 }
 
@@ -545,7 +545,7 @@ class Comm_model extends CI_Model
                     array(
                         'tr_en_child_id' => $u['en_id'],
                         'tr_tr_parent_id' => $tr_id,
-                        'tr_content' => $message,
+                        'tr_content' => $tr_content,
                     ),
                 ));
 
@@ -1115,192 +1115,203 @@ class Comm_model extends CI_Model
     }
 
 
-    function send_message($messages)
+    function send_message($trs)
     {
 
-        if (count($messages) < 1) {
+        if (count($trs) < 1) {
             return array(
                 'status' => 0,
                 'message' => 'Missing input messages',
             );
         }
 
+        //Prepare needed variables:
         $failed_count = 0;
-        $email_to_send = array();
-        $tr_metadata = array(
-            'messages' => array(),
-            'email' => array(),
-        );
-
-        foreach ($messages as $message) {
-
-            //Make sure we have the necessary fields:
-            if (!isset($message['tr_en_child_id'])) {
-
-                //Log error:
-                $this->Db_model->tr_create(array(
-                    'tr_metadata' => $message,
-                    'tr_en_type_id' => 4246, //Platform error
-                    'tr_content' => 'send_message() failed to send message as it was missing  tr_en_child_id',
-                ));
-
-                continue;
-
-            }
-
-            //Fetch user communication preferences:
-            $entities = array();
-
-            if (count($entities) < 1) {
-                //Fetch user profile via their account:
-                $entities = $this->Db_model->en_fetch(array(
-                    'en_id' => $message['tr_en_child_id'],
-                ));
-            }
+        $en_convert_4454 = $this->config->item('en_convert_4454');
+        $master_cache = array(); //Caches communication settings for duplicate Masters in $trs messages!
 
 
-            if (count($entities) < 1) {
+        //Let's run through all input messages:
+        foreach ($trs as $tr) {
 
-                //Log error:
+            //Make sure we have the Master ID that we need to send this message to:
+            if (!isset($tr['tr_en_child_id']) || !isset($tr['tr_content']) || strlen($tr['tr_content'])<1) {
+
+                //This should never happen! Log error:
                 $failed_count++;
+
                 $this->Db_model->tr_create(array(
-                    'tr_en_child_id' => $message['tr_en_child_id'],
-                    'tr_metadata' => $message,
+                    'tr_metadata' => $tr,
                     'tr_en_type_id' => 4246, //Platform error
-                    'tr_content' => 'send_message() failed to fetch user details message as it was missing core variables',
+                    'tr_content' => 'send_message() failed to send message as it was missing tr_en_child_id/tr_content',
+                    'tr_tr_parent_id' => $tr['tr_id'],
                 ));
+
                 continue;
+
+            }
+
+
+            //Did we already fetch this Master's communication settings in a previous $trs message?
+            if(isset($master_cache[$tr['tr_en_child_id']])){
+
+                //We already have this user in cache, no need to fetch/validate communication settings as it has already been done:
+                $trs_fb_psid = $master_cache[$tr['tr_en_child_id']]['trs_fb_psid'];
+                $trs_comm_level = $master_cache[$tr['tr_en_child_id']]['trs_comm_level'];
 
             } else {
 
-                //Determine communication method:
-                $dispatch_fp_psid = 0;
-                $en = array();
+                /*
+                 *
+                 * Now let's grab this user's communication preferences including their Messenger PSID and communication level
+                 *
+                 * This is a great example of how to learn more about a user with a pre-determined view-point
+                 * (In this case to learn more about their communication preferences)
+                 *
+                 * */
 
-                if ($entities[0]['u_fb_psid'] > 0) {
-                    //We fetched an subscription with an active Messenger connection:
-                    $dispatch_fp_psid = $entities[0]['u_fb_psid'];
-                    $en = $entities[0];
-                } elseif (strlen($entities[0]['u_email']) > 0) {
-                    //User has not activated Messenger but has email:
-                    $en = $entities[0];
-                } else {
+                $trs_fb_psid = $this->Db_model->tr_fetch(array(
+                    'tr_en_parent_id' => 4451, //Mench Personal Assistant on Messenger (tr_content will have the Facebook PSID we need to communicate with them)
+                    'tr_en_child_id' => $tr['tr_en_child_id'],
+                    'tr_status >=' => 2,
+                ), array('en_child')); //Also fetch user details as we need their name....
 
-                    //This should technically not happen!
-                    //Log error:
+                $trs_comm_level = $this->Db_model->tr_fetch(array(
+                    'tr_en_parent_id IN (' . join(', ', $this->config->item('en_ids_4454') ) . ')' => null, //Mench Notification Levels (Make sure they are not unsubscribed!)
+                    'tr_en_child_id' => $tr['tr_en_child_id'],
+                    'tr_status >=' => 2,
+                ));
+
+                //Validate the communication settings to make sure everything is as expected:
+                $error_message = null;
+
+                if (!(count($trs_fb_psid) == 1)) {
+
+                    //Log error, should not happen!
+                    $error_message = 'send_message() failed to fetch Master relation to Mench Personal Assistant on Messenger.';
+
+                } elseif (!(count($trs_comm_level) == 1)) {
+
+                    //Log error, should not happen!
+                    $error_message = 'send_message() failed to fetch Master relation to any Mench Notification Level.';
+
+                } elseif($trs_comm_level[0]['tr_en_parent_id'] == 4455){
+
+                    //This Master is unsubscribed, so we cannot contact them!
+                    $error_message = 'send_message() attempted to send a message to an unsubscribed Master which is not allowed.';
+
+                } elseif(intval($trs_fb_psid[0]['tr_content'])<1){
+
+                    //The Mench Personal Assistant on Messenger relation is not storing an integer (Facebook PSID) as expected!
+                    $error_message = 'send_message() was unable to locate the Messenger PSID for this Master.';
+
+                } elseif(!array_key_exists($trs_comm_level[0]['tr_en_parent_id'], $en_convert_4454)){
+
+                    //This is an unknown communication level (should never happen!):
+                    $error_message = 'send_message() fetched an unknown ['.$trs_comm_level[0]['tr_en_parent_id'].'] Mench Notification Level!';
+
+                }
+
+                //Did we find an error?
+                if($error_message){
+
                     $failed_count++;
                     $this->Db_model->tr_create(array(
-                        'tr_en_child_id' => $message['tr_en_child_id'],
-                        'tr_metadata' => $message,
+                        'tr_en_child_id' => $tr['tr_en_child_id'],
                         'tr_en_type_id' => 4246, //Platform error
-                        'tr_content' => 'send_message() detected user without an active email/Messenger',
+                        'tr_metadata' => array(
+                            'trs_fb_psid' => $trs_fb_psid,
+                            'trs_comm_level' => $trs_comm_level,
+                            'tr' => $tr,
+                        ),
+                        'tr_content' => $error_message,
+                        'tr_tr_parent_id' => $tr['tr_id'],
                     ));
                     continue;
 
+                } else {
+
+                    //Add this to user cache in case this user is repeated multiple times within $trs messages:
+                    $master_cache[$tr['tr_en_child_id']] = array(
+                        'trs_fb_psid' => $trs_fb_psid,
+                        'trs_comm_level' => $trs_comm_level,
+                    );
+
                 }
+
             }
 
 
-            //Send using email or Messenger?
-            if ($dispatch_fp_psid) {
+            //Prepare Payload:
+            $payload = array(
+                'recipient' => array( 'id' => $trs_fb_psid[0]['tr_content'] ),
+                'message' => echo_i($tr, $trs_fb_psid[0]['en_name'], true),
+                'notification_type' => $en_convert_4454[$trs_comm_level[0]['tr_en_parent_id']], //Appropriate notification level
+                'messaging_type' => 'NON_PROMOTIONAL_SUBSCRIPTION', //We are always educating users without promoting anything! Learn more at: https://developers.facebook.com/docs/messenger-platform/send-messages#messaging_types
+            );
 
-                $u_fb_notifications = echo_status('u_fb_notification');
+            //Send message via Facebook Graph API:
+            $process = $this->Comm_model->fb_graph('POST', '/me/messages', $payload);
 
-                //Prepare Payload:
-                $payload = array(
-                    'recipient' => array(
-                        'id' => $dispatch_fp_psid,
-                    ),
-                    'message' => echo_i($message, $u['en_name'], true),
-                    'messaging_type' => 'NON_PROMOTIONAL_SUBSCRIPTION', //https://developers.facebook.com/docs/messenger-platform/send-messages#messaging_types
-                    // TODO fetch from u_fb_notification & translate 'notification_type' => $u_fb_notifications[$w['u_fb_notification']]['s_fb_key'],
-                );
 
-                //Messenger:
-                $process = $this->Comm_model->fb_graph('POST', '/me/messages', $payload);
+            //How did it go?
+            if ($process['status']) {
 
-                //Log Child Message Engagement:
+                //Log Successful Transaction:
                 $this->Db_model->tr_create(array(
-                    'tr_en_credit_id' => (isset($message['tr_en_credit_id']) ? $message['tr_en_credit_id'] : 0),
-                    'tr_en_child_id' => (isset($message['tr_en_child_id']) ? $message['tr_en_child_id'] : 0),
-                    'tr_content' => $message['tr_content'],
+                    'tr_en_type_id' => 4280, //Message Sent
+                    'tr_en_child_id' => $tr['tr_en_child_id'],
+                    'tr_tr_parent_id' => $tr['tr_id'],
+                    'tr_content' => $tr['tr_content'],
                     'tr_metadata' => array(
-                        'input_message' => $message,
+                        'input_message' => $tr,
                         'payload' => $payload,
                         'results' => $process,
                     ),
-                    'tr_en_type_id' => 4280, //Child message
-                    'e_tr_id' => (isset($message['tr_id']) ? $message['tr_id'] : 0), //The message that is being dripped
-                    'tr_in_child_id' => (isset($message['tr_in_child_id']) ? $message['tr_in_child_id'] : 0),
+                    //Store some optional fields if available:
+                    'tr_en_credit_id' => (isset($tr['tr_en_credit_id']) ? $tr['tr_en_credit_id'] : 0),
+                    'tr_en_parent_id' => (isset($tr['tr_en_parent_id']) ? $tr['tr_en_parent_id'] : 0),
+                    'tr_in_child_id'  => (isset($tr['tr_in_child_id'])  ? $tr['tr_in_child_id']  : 0),
+                    'tr_in_parent_id' => (isset($tr['tr_in_parent_id']) ? $tr['tr_in_parent_id'] : 0),
                 ));
-
-                if (!$process['status']) {
-                    $failed_count++;
-                }
-
-                array_push($tr_metadata['messages'], $process);
 
             } else {
 
-                //This is an email request, combine the emails per user:
-                if (!isset($email_to_send[$u['en_id']])) {
+                //Oooopsi, something went wrong from the Facebook side:
+                $failed_count++;
 
-                    $subject_line = 'New Message from Mench';
-
-                    $email_variables = array(
-                        'u_email' => $u['u_email'],
-                        'subject_line' => $subject_line,
-                        'html_message' => echo_i($message, $u['en_name'], false),
-                    );
-
-
-                    $e_var_create = array(
-                        'e_var_create' => array(
-                            'tr_en_credit_id' => (isset($message['tr_en_credit_id']) ? $message['tr_en_credit_id'] : 0), //If set...
-                            'tr_en_child_id' => $u['en_id'],
-                            'tr_content' => $email_variables['subject_line'],
-                            'tr_metadata' => $email_variables,
-                            'tr_en_type_id' => 4276, //Email message sent
-                            'tr_in_child_id' => (isset($message['tr_in_child_id']) ? $message['tr_in_child_id'] : 0),
-                        ),
-                    );
-
-                    $email_to_send[$u['en_id']] = array_merge($email_variables, $e_var_create);
-
-                } else {
-                    //Append message to this user:
-                    $email_to_send[$u['en_id']]['html_message'] .= '<div style="padding-top:12px;">' . echo_i($message, $u['en_name'], false) . '</div>';
-                }
+                //Log error:
+                $this->Db_model->tr_create(array(
+                    'tr_en_type_id' => 4246, //Platform error
+                    'tr_metadata' => $tr,
+                    'tr_content' => 'send_message() encountered a Facebook Graph error when trying to send a message to a Master.',
+                    'tr_tr_parent_id' => $tr['tr_id'],
+                    'tr_en_child_id' => $tr['tr_en_child_id'],
+                    'tr_metadata' => array(
+                        'input_message' => $tr,
+                        'payload' => $payload,
+                        'results' => $process,
+                    ),
+                ));
 
             }
+
         }
 
 
-        //Do we have to send message?
-        if (count($email_to_send) > 0) {
-            //Yes, go through these emails and send them:
-            foreach ($email_to_send as $email) {
-                $process = $this->Comm_model->send_email(array($email['u_email']), $email['subject_line'], $email['html_message'], $email['e_var_create'], 'support@mench.com' /*Hack! To be replaced with ceo email*/);
-
-                array_push($tr_metadata['email'], $process);
-            }
-        }
-
-
+        //Return results:
         if ($failed_count > 0) {
 
             return array(
                 'status' => 0,
-                'message' => 'Failed to send ' . $failed_count . '/' . count($messages) . ' message' . echo__s(count($messages)) . '.',
-                'tr_metadata' => $tr_metadata,
+                'message' => 'Failed to send ' . $failed_count . '/' . count($trs) . ' message' . echo__s(count($trs)),
             );
 
         } else {
 
             return array(
                 'status' => 1,
-                'message' => 'Successfully sent ' . count($messages) . ' message' . echo__s(count($messages)),
-                'tr_metadata' => $tr_metadata,
+                'message' => 'Successfully sent ' . count($trs) . ' message' . echo__s(count($trs)),
             );
 
         }
@@ -1407,7 +1418,7 @@ class Comm_model extends CI_Model
 
         } elseif (isset($e['tr_tr_parent_id']) && $e['tr_tr_parent_id'] > 0) {
 
-            $message = null;
+            $tr_content = null;
             $quick_replies = array();
 
             //Nothing is required to mark as complete, which means we can move forward with this:
@@ -1424,7 +1435,7 @@ class Comm_model extends CI_Model
                 if (count($k_outs) > 0 && !($k_outs[0]['in_id'] == $intents[0]['in_id'])) {
 
                     //Give option to move on:
-                    $message .= 'The next step to ' . $intents[0]['in_outcome'] . ' is to ' . $k_outs[0]['in_outcome'] . '.';
+                    $tr_content .= 'The next step to ' . $intents[0]['in_outcome'] . ' is to ' . $k_outs[0]['in_outcome'] . '.';
                     array_push($quick_replies, array(
                         'content_type' => 'text',
                         'title' => 'Ok Continue ▶️',
@@ -1441,13 +1452,13 @@ class Comm_model extends CI_Model
 
                     //Note that ANY nodes cannot require a written response or a URL
                     //User needs to choose one of the following:
-                    $message .= 'Choose one of these ' . count($k_outs) . ' options to ' . $intents[0]['in_outcome'] . ':';
+                    $tr_content .= 'Choose one of these ' . count($k_outs) . ' options to ' . $intents[0]['in_outcome'] . ':';
                     foreach ($k_outs as $counter => $k) {
                         if ($counter == 10) {
                             break; //Quick reply accepts 11 options max!
-                            //We know that the $message length cannot surpass the limit defined by fb_max_message variable!
+                            //We know that the $tr_content length cannot surpass the limit defined by fb_max_message variable!
                         }
-                        $message .= "\n\n" . ($counter + 1) . '/ ' . $k['in_outcome'];
+                        $tr_content .= "\n\n" . ($counter + 1) . '/ ' . $k['in_outcome'];
                         array_push($quick_replies, array(
                             'content_type' => 'text',
                             'title' => '/' . ($counter + 1),
@@ -1458,7 +1469,7 @@ class Comm_model extends CI_Model
                 } else {
 
                     //User needs to complete all children, and we'd recommend the first item as their next step:
-                    $message .= 'There are ' . count($k_outs) . ' steps to ' . $intents[0]['in_outcome'] . ':';
+                    $tr_content .= 'There are ' . count($k_outs) . ' steps to ' . $intents[0]['in_outcome'] . ':';
                     foreach ($k_outs as $counter => $k) {
 
                         if ($counter == 0) {
@@ -1470,13 +1481,13 @@ class Comm_model extends CI_Model
                         }
 
                         //make sure message is within range:
-                        if (strlen($message) < ($this->config->item('fb_max_message') - 200)) {
+                        if (strlen($tr_content) < ($this->config->item('fb_max_message') - 200)) {
                             //Add message:
-                            $message .= "\n\n" . 'Step ' . ($counter + 1) . ': ' . $k['in_outcome'];
+                            $tr_content .= "\n\n" . 'Step ' . ($counter + 1) . ': ' . $k['in_outcome'];
                         } else {
                             //We cannot add any more, indicate truncating:
                             $remainder = count($k_outs) - $counter;
-                            $message .= "\n\n" . 'And ' . $remainder . ' more step' . echo__s($remainder) . '!';
+                            $tr_content .= "\n\n" . 'And ' . $remainder . ' more step' . echo__s($remainder) . '!';
                             break;
                         }
                     }
@@ -1507,7 +1518,7 @@ class Comm_model extends CI_Model
                 'tr_en_child_id' => $e['tr_en_child_id'],
                 'tr_in_child_id' => $e['tr_in_child_id'],
                 'tr_tr_parent_id' => $e['tr_tr_parent_id'],
-                'tr_content' => $message,
+                'tr_content' => $tr_content,
                 'quick_replies' => $quick_replies,
             ));
 
@@ -1528,8 +1539,20 @@ class Comm_model extends CI_Model
 
     }
 
+
     function send_email($to_array, $subject, $html_message, $e_var_create = array(), $reply_to = null)
     {
+
+        /*
+         *
+         * DEPRECATED!
+         *
+         * We used to support sending emails but recently we've just
+         * focused on Messenger as the only medium of communication!
+         *
+         * */
+
+        return true;
 
         if (is_dev()) {
             return true;

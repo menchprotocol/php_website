@@ -147,19 +147,19 @@ class Db_model extends CI_Model
                 'tr_status' => 3, //On complete messages
             ));
             if (count($messages) > 0) {
-                $send_messages = array();
+                $prepared_messages = array();
                 foreach ($messages as $i) {
-                    array_push($send_messages, array_merge($i, array(
+                    array_push($prepared_messages, array_merge($i, array(
                         'tr_tr_parent_id' => $trs[0]['tr_id'],
                         'tr_en_child_id' => $trs[0]['tr_en_parent_id'],
                         'tr_in_child_id' => $i['tr_in_child_id'],
                     )));
                 }
                 //Sendout messages:
-                $this->Comm_model->send_message($send_messages);
+                $this->Comm_model->send_message($prepared_messages);
             }
 
-            //TODO Update w__progress at this point based on intent data
+            //TODO Update Action Plan progress (In tr_metadata) at this point
             //TODO implement drip 'tr_en_type_id' => 4281, //Pending Drip
         }
     }
@@ -1775,7 +1775,10 @@ class Db_model extends CI_Model
                         $html_message .= '<div>Engagement ID: <a href="https://mench.com/adminpanel/li_list_blob/' . $engagements[0]['tr_id'] . '">#' . $engagements[0]['tr_id'] . '</a></div>';
 
                         //Send email:
-                        $this->Comm_model->send_email($subscription['admin_emails'], $subject, $html_message);
+                        //$this->Comm_model->send_email($subscription['admin_emails'], $subject, $html_message);
+
+                        //TODO Send messenger
+
                     }
                 }
             }
