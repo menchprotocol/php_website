@@ -15,7 +15,7 @@ class Bot extends CI_Controller
 
     function profile()
     {
-        echo_json($this->Comm_model->fb_graph('GET', '/2375537049154935', array()));
+        echo_json($this->Chat_model->fb_graph('GET', '/2375537049154935', array()));
     }
 
     function ff()
@@ -36,7 +36,7 @@ class Bot extends CI_Controller
     {
 
         $res = array();
-        array_push($res, $this->Comm_model->fb_graph('POST', '/me/messenger_profile', array(
+        array_push($res, $this->Chat_model->fb_graph('POST', '/me/messenger_profile', array(
             'get_started' => array(
                 'payload' => 'GET_STARTED',
             ),
@@ -50,7 +50,7 @@ class Bot extends CI_Controller
         //Wait until Facebook pro-pagates changes of our whitelisted_domains setting:
         sleep(2);
 
-        array_push($res, $this->Comm_model->fb_graph('POST', '/me/messenger_profile', array(
+        array_push($res, $this->Chat_model->fb_graph('POST', '/me/messenger_profile', array(
             'persistent_menu' => array(
                 array(
                     'locale' => 'default',
@@ -140,7 +140,7 @@ class Bot extends CI_Controller
 
                     //TODO Only log IF last engagement was 5 minutes+ ago
 
-                    $en = $this->Comm_model->fb_identify_activate($im['sender']['id']);
+                    $en = $this->Chat_model->fb_identify_activate($im['sender']['id']);
 
                     //This callback will occur when a message a page has sent has been read by the user.
                     $this->Db_model->tr_create(array(
@@ -155,7 +155,7 @@ class Bot extends CI_Controller
 
                     //TODO Only log IF last engagement was 5 minutes+ ago
 
-                    $en = $this->Comm_model->fb_identify_activate($im['sender']['id']);
+                    $en = $this->Chat_model->fb_identify_activate($im['sender']['id']);
 
                     //This callback will occur when a message a page has sent has been delivered.
                     $this->Db_model->tr_create(array(
@@ -205,7 +205,7 @@ class Bot extends CI_Controller
                     //Did we have a ref from Messenger?
                     $ref = ($referral_array && isset($referral_array['ref']) && strlen($referral_array['ref']) > 0 ? $referral_array['ref'] : null);
 
-                    $en = $this->Comm_model->fb_identify_activate($im['sender']['id']);
+                    $en = $this->Chat_model->fb_identify_activate($im['sender']['id']);
 
                     /*
                     if($ref){
@@ -238,12 +238,12 @@ class Bot extends CI_Controller
 
 
                     //We might need to respond based on the reference:
-                    $this->Comm_model->fb_ref_process($u, $ref);
+                    $this->Chat_model->fb_ref_process($u, $ref);
 
 
                 } elseif (isset($im['optin'])) {
 
-                    $en = $this->Comm_model->fb_identify_activate($im['sender']['id']);
+                    $en = $this->Chat_model->fb_identify_activate($im['sender']['id']);
 
                     //Note: Never seen this happen yet!
                     //Log transaction:
@@ -257,7 +257,7 @@ class Bot extends CI_Controller
                 } elseif (isset($im['message_request']) && $im['message_request'] == 'accept') {
 
                     //This is when we message them and they accept to chat because they had Removed Messenger or something...
-                    $en = $this->Comm_model->fb_identify_activate($im['sender']['id']);
+                    $en = $this->Chat_model->fb_identify_activate($im['sender']['id']);
 
                 } elseif (isset($im['message'])) {
 
@@ -283,7 +283,7 @@ class Bot extends CI_Controller
                     $quick_reply_payload = (isset($im['message']['quick_reply']['payload']) && strlen($im['message']['quick_reply']['payload']) > 0 ? $im['message']['quick_reply']['payload'] : null);
                     $fb_message = (isset($im['message']['text']) ? $im['message']['text'] : null);
 
-                    $en = $this->Comm_model->fb_identify_activate($user_id);
+                    $en = $this->Chat_model->fb_identify_activate($user_id);
 
                     $eng_data = array(
                         'tr_en_credit_id' => ($sent_from_us ? 4148 /* Log on behalf of Mench Admins as it was sent via Facebook Inbox UI */ : $en['en_id']),
@@ -344,9 +344,9 @@ class Bot extends CI_Controller
 
                     //Process both
                     if ($quick_reply_payload) {
-                        $this->Comm_model->fb_ref_process($u, $quick_reply_payload);
+                        $this->Chat_model->fb_ref_process($u, $quick_reply_payload);
                     } elseif (!$sent_from_us) {
-                        $this->Comm_model->fb_message_process($u, $fb_message);
+                        $this->Chat_model->fb_message_process($u, $fb_message);
                     }
 
                 } else {

@@ -14,6 +14,61 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
 
+//Intent Response Limiters:
+$config['en_ids_4331'] = array(4255, 4256, 4257, 4258, 4259, 4260, 4261, 4318, 4319, 4526);
+$config['en_all_4331'] = array(
+    4255 => array(
+        'en_icon' => '<i class="fas fa-file-alt"></i>',
+        'en_name' => 'Multi-word Text Link',
+        'tr_content' => '',
+    ),
+    4256 => array(
+        'en_icon' => '<i class="fas fa-external-link"></i>',
+        'en_name' => 'Generic URL',
+        'tr_content' => 'A URL that is not any other type of URL',
+    ),
+    4257 => array(
+        'en_icon' => '<i class="fas fa-file-code"></i>',
+        'en_name' => 'Embed Widget URL',
+        'tr_content' => '',
+    ),
+    4258 => array(
+        'en_icon' => '<i class="fas fa-file-video"></i>',
+        'en_name' => 'Video URL',
+        'tr_content' => '',
+    ),
+    4259 => array(
+        'en_icon' => '<i class="fas fa-file-audio"></i>',
+        'en_name' => 'Audio URL',
+        'tr_content' => '',
+    ),
+    4260 => array(
+        'en_icon' => '<i class="fas fa-file-image"></i>',
+        'en_name' => 'Image URL',
+        'tr_content' => '',
+    ),
+    4261 => array(
+        'en_icon' => '<i class="fas fa-file-pdf"></i>',
+        'en_name' => 'File URL',
+        'tr_content' => 'Non-media files like PDF, DOC, etc...',
+    ),
+    4318 => array(
+        'en_icon' => '<i class="fas fa-calendar"></i>',
+        'en_name' => 'Date & Time Link',
+        'tr_content' => '',
+    ),
+    4319 => array(
+        'en_icon' => '<i class="fas fa-sort-numeric-down"></i>',
+        'en_name' => 'Number Link',
+        'tr_content' => '',
+    ),
+    4526 => array(
+        'en_icon' => '<i class="fas fa-file"></i>',
+        'en_name' => 'Single-word Link',
+        'tr_content' => '',
+    ),
+);
+
 //Entity Non-URL Links:
 $config['en_ids_4538'] = array(4230, 4255, 4318, 4319, 4526);
 $config['en_all_4538'] = array(
@@ -119,7 +174,7 @@ $config['en_all_3000'] = array(
     ),
 );
 
-//Mench Notification Levels:
+//Mench Communication Levels:
 $config['en_ids_4454'] = array(4455, 4456, 4457, 4458);
 $config['en_all_4454'] = array(
     4455 => array(
@@ -189,7 +244,7 @@ $config['en_ids_4487'] = array(4331, 4332);
 $config['en_all_4487'] = array(
     4331 => array(
         'en_icon' => '<i class="fas fa-clipboard-list"></i>',
-        'en_name' => 'Intent Response Limitor',
+        'en_name' => 'Intent Response Limiters',
         'tr_content' => 'If applied as the parent of a child intent, would limit the type of responses users can submit for that intent when marking it as complete. Multiple links will enable multiple response types to be accepted, which the user will be informed by Mench.',
     ),
     4332 => array(

@@ -537,7 +537,7 @@ class Entities extends CI_Controller
         ));
         if (count($matching_users) > 0) {
             //Dispatch the password reset Intent:
-            $this->Comm_model->compose_messages(array(
+            $this->Chat_model->compose_messages(array(
                 'tr_en_child_id' => $matching_users[0]['en_id'],
                 'tr_in_child_id' => 59,
             ));

@@ -132,4 +132,4 @@ $autoload['language'] = array();
 |
 |	$autoload['model'] = array('first_model' => 'first');
 */
-$autoload['model'] = array('Db_model','Comm_model', 'Old_model');
+$autoload['model'] = array('Db_model','Chat_model', 'Matrix_model', 'Old_model' /* To be deprecated after Migration */ );

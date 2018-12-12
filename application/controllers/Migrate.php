@@ -17,7 +17,7 @@ class Migrate extends CI_Controller
 
     function ff(){
 
-        echo_json($this->Comm_model->send_message(array(
+        echo_json($this->Chat_model->send_message(array(
             array(
                 'tr_en_child_id' => 1,
                 'tr_content' => 'Hello hello 👋',
@@ -103,17 +103,6 @@ class Migrate extends CI_Controller
                 ));
             }
 
-            if ($c['c_require_url_to_complete']) {
-                $stats['total_links']++;
-                $this->Db_model->tr_create(array(
-                    'tr_timestamp' => $c['c_timestamp'],
-                    'tr_en_type_id' => 4331, //Intent Response Limitor
-                    'tr_en_credit_id' => $c['c_parent_u_id'],
-                    'tr_in_child_id' => $c['c_id'],
-                    'tr_en_child_id' => 4256, //Link Content Type = URL Link
-                ));
-            }
-
             //convert active children:
             $children = $this->Old_model->cr_children_fetch(array(
                 'cr_parent_c_id' => $c['c_id'],
@@ -159,10 +148,12 @@ class Migrate extends CI_Controller
         echo_json($stats);
     }
 
-    function u()
+    function u($u_id = 0)
     {
 
-        die('pending final migration');
+        if(!$u_id){
+            die('pending final migration');
+        }
 
         boost_power();
 
@@ -204,9 +195,13 @@ class Migrate extends CI_Controller
         ));
 
 
-        $entities = $this->Old_model->u_fetch(array(
+        $filters = array(
             'u_status >=' => 0, //new+
-        ), array('skip_en__parents'), 0, 0, array('u_id' => 'ASC'));
+        );
+        if($u_id>0){
+            $filters['u_id'] = $u_id;
+        }
+        $entities = $this->Old_model->u_fetch($filters, array('skip_en__parents'), 0, 0, array('u_id' => 'ASC'));
 
 
         foreach ($entities as $u) {
@@ -224,26 +219,28 @@ class Migrate extends CI_Controller
             }
 
             //Create new entity:
-            $stats['entities']++;
-            $this->Db_model->en_create(array(
-                'en_id' => $u['u_id'],
-                'en_status' => ($u['u_fb_psid'] > 0 ? 3 /* Claimed */ : $u_status_conv[$u['u_status']]),
-                'en_icon' => $en_icon,
-                'en_name' => $u['u_full_name'],
-                'en_trust_score' => $u['u__e_score'],
-                'en_metadata' => array(
-                    'en__algolia_id' => intval($u['u_algolia_id']),
-                ),
-            ));
+            if(!$u_id){
+                $stats['entities']++;
+                $this->Db_model->en_create(array(
+                    'en_id' => $u['u_id'],
+                    'en_status' => ($u['u_fb_psid'] > 0 ? 3 /* Claimed */ : $u_status_conv[$u['u_status']]),
+                    'en_icon' => $en_icon,
+                    'en_name' => $u['u_full_name'],
+                    'en_trust_score' => $u['u__e_score'],
+                    'en_metadata' => array(
+                        'en__algolia_id' => intval($u['u_algolia_id']),
+                    ),
+                ));
 
-            //Create new entity creation link:
-            $stats['total_links']++;
-            $this->Db_model->tr_create(array(
-                'tr_timestamp' => $u['u_timestamp'],
-                'tr_en_type_id' => 4251, //Entity created
-                'tr_en_credit_id' => 1, //Shervin
-                'tr_en_child_id' => $u['u_id'],
-            ));
+                //Create new entity creation link:
+                $stats['total_links']++;
+                $this->Db_model->tr_create(array(
+                    'tr_timestamp' => $u['u_timestamp'],
+                    'tr_en_type_id' => 4251, //Entity created
+                    'tr_en_credit_id' => 1, //Shervin
+                    'tr_en_child_id' => $u['u_id'],
+                ));
+            }
 
 
             //Messenger Subscription?

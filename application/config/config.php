@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  * Global variables used throughout the platform.
  * Ctrl+F is your friend to explore where they are implemented and how they work ;)
- * use-case format: $this->config->item('en_convert_4454')
+ * use-case format: $this->config->item('enable_algolia')
  *
  */
 
@@ -16,6 +16,7 @@ date_default_timezone_set('America/Los_Angeles'); //Settime zone to PST
 $config['app_version'] = '0.64'; //Cache buster in URLs for static js/css files
 $config['password_salt'] = '40s96As9ZkdAcwQ9PhZm'; //Used for hashing the user password for Mench logins
 $config['in_primary_id'] = 6903; //The default platform intent that would be recommended to new masters
+$config['enable_algolia'] = false; //Currently reached our monthly free quota
 $config['primary_in_name'] = 'advance your tech career'; //What is the purposes of Mench at this point?
 $config['primary_in_name'] = 'advance your tech career'; //What is the purposes of Mench at this point?
 $config['primary_en_id'] = 3463; //The default matrix entity that is loaded when Entities is clicked

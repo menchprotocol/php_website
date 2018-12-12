@@ -47,7 +47,7 @@ class My extends CI_Controller
 
             //Fetch results and show:
             return echo_json(array(
-                'fb_profile' => $this->Comm_model->fb_graph('GET', '/' . $current_us[0]['u_fb_psid'], array()),
+                'fb_profile' => $this->Chat_model->fb_graph('GET', '/' . $current_us[0]['u_fb_psid'], array()),
                 'en' => $current_us[0],
             ));
 
@@ -375,7 +375,7 @@ class My extends CI_Controller
 
                 if (intval($_POST['is_from_messenger'])) {
                     //Also send confirmation messages via messenger:
-                    $this->Comm_model->compose_messages(array(
+                    $this->Chat_model->compose_messages(array(
                         'tr_en_child_id' => $trs[0]['k_children_en_id'],
                         'tr_in_child_id' => $trs_next[0]['in_id'],
                         'tr_tr_parent_id' => $trs[0]['tr_tr_parent_id'],

@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Comm_model extends CI_Model
+class Chat_model extends CI_Model
 {
 
     function __construct()
@@ -84,7 +84,7 @@ class Comm_model extends CI_Model
         if (!$result) {
 
             //Failed to fetch this profile:
-            $message_error = 'Comm_model->fb_graph() failed to ' . $action . ' ' . $url;
+            $message_error = 'Chat_model->fb_graph() failed to ' . $action . ' ' . $url;
             $this->Db_model->tr_create(array(
                 'tr_content' => $message_error,
                 'tr_en_type_id' => 4246, //Platform Error
@@ -125,7 +125,7 @@ class Comm_model extends CI_Model
             if ($unsub_value == 'CANCEL') {
 
                 //User changed their mind, confirm:
-                $this->Comm_model->send_message(array(
+                $this->Chat_model->send_message(array(
                     array(
                         'tr_en_child_id' => $u['en_id'],
                         'tr_content' => 'Awesome, I am excited to continue helping you to ' . $this->config->item('primary_in_name') . '. ' . echo_pa_lets(),
@@ -144,7 +144,7 @@ class Comm_model extends CI_Model
                 $this->Db_model->en_radio_set(4454, 4455, $u['en_id'], $u['en_id']);
 
                 //Let them know:
-                $this->Comm_model->send_message(array(
+                $this->Chat_model->send_message(array(
                     array(
                         'tr_en_child_id' => $u['en_id'],
                         'tr_content' => 'Confirmed, I skipped all ' . $intents_skipped . ' intent' . echo__s($intents_skipped) . ' in your Action Plan. This is the final message you will receive from me unless you message me. Take care of your self and I hope to talk to you soon 😘',
@@ -166,7 +166,7 @@ class Comm_model extends CI_Model
                     $this->db->query("UPDATE tb_actionplans SET tr_status=-1 WHERE tr_id=" . intval($unsub_value));
 
                     //Show success message to user:
-                    $this->Comm_model->send_message(array(
+                    $this->Chat_model->send_message(array(
                         array(
                             'tr_en_child_id' => $u['en_id'],
                             'tr_content' => 'I have successfully skipped the intention to ' . $trs[0]['in_outcome'] . '. Say "Unsubscribe" if you wish to stop all future communications. ' . echo_pa_lets(),
@@ -176,7 +176,7 @@ class Comm_model extends CI_Model
                 } else {
 
                     //let them know we had error:
-                    $this->Comm_model->send_message(array(
+                    $this->Chat_model->send_message(array(
                         array(
                             'tr_en_child_id' => $u['en_id'],
                             'tr_content' => 'Unable to process your request as I could not locate your subscription. Please try again.',
@@ -202,7 +202,7 @@ class Comm_model extends CI_Model
                 $this->Db_model->en_radio_set(4454, 4457, $u['en_id'], $u['en_id']);
 
                 //Inform them:
-                $this->Comm_model->send_message(array(
+                $this->Chat_model->send_message(array(
                     array(
                         'tr_en_child_id' => $u['en_id'],
                         'tr_content' => 'Sweet, you account is now activated but you are not subscribed to any intents yet. ' . echo_pa_lets(),
@@ -211,7 +211,7 @@ class Comm_model extends CI_Model
 
             } elseif ($fb_ref == 'ACTIVATE_NO') {
 
-                $this->Comm_model->send_message(array(
+                $this->Chat_model->send_message(array(
                     array(
                         'tr_en_child_id' => $u['en_id'],
                         'tr_content' => 'Ok, your account will remain unsubscribed. If you changed your mind, ' . echo_pa_lets(),
@@ -228,7 +228,7 @@ class Comm_model extends CI_Model
             if ($in_id == 0) {
 
                 //They rejected the offer... Acknowledge and give response:
-                $this->Comm_model->send_message(array(
+                $this->Chat_model->send_message(array(
                     array(
                         'tr_en_child_id' => $u['en_id'],
                         'tr_content' => 'Ok, so how can I help you ' . $this->config->item('primary_in_name') . '? ' . echo_pa_lets(),
@@ -245,7 +245,7 @@ class Comm_model extends CI_Model
                 if (count($fetch_cs) < 1) {
 
                     //Ooops we could not find that C:
-                    $this->Comm_model->send_message(array(
+                    $this->Chat_model->send_message(array(
                         array(
                             'tr_en_child_id' => $u['en_id'],
                             'tr_content' => 'I was unable to locate intent #' . $in_id . ' [' . $fb_ref . ']',
@@ -255,7 +255,7 @@ class Comm_model extends CI_Model
                 } elseif ($fetch_cs[0]['in_status'] < 2) {
 
                     //Ooops C is no longer active:
-                    $this->Comm_model->send_message(array(
+                    $this->Chat_model->send_message(array(
                         array(
                             'tr_en_child_id' => $u['en_id'],
                             'tr_content' => 'I was unable to subscribe you to ' . $fetch_cs[0]['in_outcome'] . ' as its not published',
@@ -265,7 +265,7 @@ class Comm_model extends CI_Model
                 } else {
 
                     //Confirm if they are interested for this intention:
-                    $this->Comm_model->send_message(array(
+                    $this->Chat_model->send_message(array(
                         array(
                             'tr_en_child_id' => $u['en_id'],
                             'tr_in_child_id' => $fetch_cs[0]['in_id'],
@@ -309,7 +309,7 @@ class Comm_model extends CI_Model
                 if (count($trs) > 0) {
 
                     //Let the user know that this is a duplicate:
-                    $this->Comm_model->send_message(array(
+                    $this->Chat_model->send_message(array(
                         array(
                             'tr_en_child_id' => $u['en_id'],
                             'tr_in_child_id' => $fetch_cs[0]['in_id'],
@@ -332,7 +332,7 @@ class Comm_model extends CI_Model
                     ));
 
                     foreach ($trs as $i) {
-                        $this->Comm_model->send_message(array(
+                        $this->Chat_model->send_message(array(
                             array_merge($i, array(
                                 'tr_en_child_id' => $u['en_id'],
                             )),
@@ -340,7 +340,7 @@ class Comm_model extends CI_Model
                     }
 
                     //Send message for final confirmation:
-                    $this->Comm_model->send_message(array(
+                    $this->Chat_model->send_message(array(
                         array(
                             'tr_en_child_id' => $u['en_id'],
                             'tr_in_child_id' => $tr_in_child_id,
@@ -391,7 +391,7 @@ class Comm_model extends CI_Model
                 if (isset($w['tr_id']) && $w['tr_id'] > 0) {
 
                     //Confirm with them that we're now ready:
-                    $this->Comm_model->send_message(array(
+                    $this->Chat_model->send_message(array(
                         array(
                             'tr_en_child_id' => $u['en_id'],
                             'tr_in_child_id' => $tr_in_child_id,
@@ -401,7 +401,7 @@ class Comm_model extends CI_Model
                     ));
 
                     //Initiate first message for action plan tree:
-                    $this->Comm_model->compose_messages(array(
+                    $this->Chat_model->compose_messages(array(
                         'tr_en_child_id' => $u['en_id'],
                         'tr_in_child_id' => $tr_in_child_id,
                         'tr_tr_parent_id' => $w['tr_id'],
@@ -458,7 +458,7 @@ class Comm_model extends CI_Model
                     ));
 
                     //Inform user:
-                    return $this->Comm_model->send_message(array(
+                    return $this->Chat_model->send_message(array(
                         array(
                             'tr_en_child_id' => $u['en_id'],
                             'tr_content' => 'I did not find anything to skip!',
@@ -499,7 +499,7 @@ class Comm_model extends CI_Model
                 $tr_content .= "\n\n" . 'I would not recommend skipping unless you feel comfortable learning these concepts on your own.';
 
                 //Send them the message:
-                $this->Comm_model->send_message(array(
+                $this->Chat_model->send_message(array(
                     array(
                         'tr_en_child_id' => $u['en_id'],
                         'tr_content' => $tr_content,
@@ -541,7 +541,7 @@ class Comm_model extends CI_Model
                 }
 
                 //Send message:
-                $this->Comm_model->send_message(array(
+                $this->Chat_model->send_message(array(
                     array(
                         'tr_en_child_id' => $u['en_id'],
                         'tr_tr_parent_id' => $tr_id,
@@ -558,7 +558,7 @@ class Comm_model extends CI_Model
                 $trs_next = $this->Db_model->k_next_fetch($tr_id, $tr_order);
                 if ($trs_next) {
                     //Now move on to communicate the next step.
-                    $this->Comm_model->compose_messages(array(
+                    $this->Chat_model->compose_messages(array(
                         'tr_en_child_id' => $u['en_id'],
                         'tr_in_child_id' => $trs_next[0]['in_id'],
                         'tr_tr_parent_id' => $tr_id,
@@ -582,22 +582,25 @@ class Comm_model extends CI_Model
                     'tr_id' => $tr_id,
                 ), array('w', 'cr', 'cr_c_child'));
 
-                //Do we need any additional information?
-                $requirement_notes = echo_c_requirements($k_children[0], true);
-                if ($requirement_notes) {
+
+                //Does this intent have any requirements to be marked as complete?
+                $message_in_requirements = $this->Matrix_model->matrix_in_requirements($k_children[0], true);
+
+                if ($message_in_requirements) {
 
                     //yes do, let them know that they can only complete via the Action Plan:
-                    $this->Comm_model->send_message(array(
+                    $this->Chat_model->send_message(array(
                         array(
                             'tr_en_child_id' => $u['en_id'],
                             'tr_in_child_id' => $k_children[0]['in_id'],
                             'tr_tr_parent_id' => $tr_id,
-                            'tr_content' => $requirement_notes,
+                            'tr_content' => $message_in_requirements,
                         ),
                     ));
 
                 } else {
 
+                    //The intent did not have any requirements to be marked as complete!
                     //Fetch parent intent to mark as complete:
                     $k_parents = $this->Db_model->tr_fetch(array(
                         'tr_id' => $tr_id,
@@ -611,7 +614,7 @@ class Comm_model extends CI_Model
                     $trs_next = $this->Db_model->k_next_fetch($tr_id);
                     if ($trs_next) {
                         //Now move on to communicate the next step.
-                        $this->Comm_model->compose_messages(array(
+                        $this->Chat_model->compose_messages(array(
                             'tr_en_child_id' => $u['en_id'],
                             'tr_in_child_id' => $trs_next[0]['in_id'],
                             'tr_tr_parent_id' => $tr_id,
@@ -642,7 +645,7 @@ class Comm_model extends CI_Model
             }
 
             //Confirm answer received:
-            $this->Comm_model->send_message(array(
+            $this->Chat_model->send_message(array(
                 array(
                     'tr_en_child_id' => $u['en_id'],
                     'tr_in_child_id' => $in_id,
@@ -657,7 +660,7 @@ class Comm_model extends CI_Model
                 $trs_next = $this->Db_model->k_next_fetch($tr_id, $tr_order);
                 if ($trs_next) {
                     //Now move on to communicate the next step.
-                    $this->Comm_model->compose_messages(array(
+                    $this->Chat_model->compose_messages(array(
                         'tr_en_child_id' => $u['en_id'],
                         'tr_in_child_id' => $trs_next[0]['in_id'],
                         'tr_tr_parent_id' => $tr_id,
@@ -703,7 +706,7 @@ class Comm_model extends CI_Model
 
             if (count($is_unsubscribed) > 0) {
                 //User is already unsubscribed, let them know:
-                return $this->Comm_model->send_message(array(
+                return $this->Chat_model->send_message(array(
                     array(
                         'tr_en_child_id' => $u['en_id'],
                         'tr_content' => 'You are already unsubscribed from Mench and will no longer receive any communication from us. To subscribe again, ' . echo_pa_lets(),
@@ -760,7 +763,7 @@ class Comm_model extends CI_Model
                 ));
 
                 //Send out message and let them confirm:
-                $this->Comm_model->send_message(array(
+                $this->Chat_model->send_message(array(
                     array(
                         'tr_en_child_id' => $u['en_id'],
                         'tr_content' => $tr_content,
@@ -771,7 +774,7 @@ class Comm_model extends CI_Model
             } else {
 
                 //They do not have anything in their Action Plan, so we assume they just want to Unsubscribe and stop all future communications:
-                $this->Comm_model->send_message(array(
+                $this->Chat_model->send_message(array(
                     array(
                         'tr_en_child_id' => $u['en_id'],
                         'tr_content' => 'Got it, just to confirm, you want to unsubscribe and stop all future communications with me?',
@@ -795,7 +798,7 @@ class Comm_model extends CI_Model
         } elseif ($fb_message_received && count($is_unsubscribed) > 0) {
 
             //We got a message from an unsubscribed user, let them know:
-            return $this->Comm_model->send_message(array(
+            return $this->Chat_model->send_message(array(
                 array(
                     'tr_en_child_id' => $u['en_id'],
                     'tr_content' => 'You are currently unsubscribed. Would you like me to re-activate your account?',
@@ -864,7 +867,7 @@ class Comm_model extends CI_Model
                 ));
 
                 //return what we found to the master to decide:
-                $this->Comm_model->send_message(array(
+                $this->Chat_model->send_message(array(
                     array(
                         'tr_en_child_id' => $u['en_id'],
                         'tr_content' => $tr_content,
@@ -875,7 +878,7 @@ class Comm_model extends CI_Model
             } else {
 
                 //Respond to user:
-                $this->Comm_model->send_message(array(
+                $this->Chat_model->send_message(array(
                     array(
                         'tr_en_child_id' => $u['en_id'],
                         'tr_content' => 'Got it! I have made a note on empowering you to "' . $c_target_outcome . '". I will let you know as soon as I am trained on this. Is there anything else I can help you with right now?',
@@ -913,7 +916,7 @@ class Comm_model extends CI_Model
                 ));
 
                 //Recommend to subscribe to our default intent:
-                $this->Comm_model->fb_ref_process($u, 'ACTIONPLANADD10_' . $this->config->item('in_primary_id'));
+                $this->Chat_model->fb_ref_process($u, 'ACTIONPLANADD10_' . $this->config->item('in_primary_id'));
 
             } elseif (in_array($fb_message_received, array('yes', 'yeah', 'ya', 'ok', 'continue', 'ok continue', 'ok continue ▶️', '▶️', 'ok continue', 'go', 'yass', 'yas', 'yea', 'yup', 'next', 'yes, learn more'))) {
 
@@ -950,7 +953,7 @@ class Comm_model extends CI_Model
                 ));
 
                 //Notify the user that we don't understand:
-                $this->Comm_model->send_message(array(
+                $this->Chat_model->send_message(array(
                     array(
                         'tr_en_child_id' => $u['en_id'],
                         'tr_content' => echo_pa_oneway(),
@@ -960,7 +963,7 @@ class Comm_model extends CI_Model
                 //Remind user of their next step, if any:
                 $trs_next = $this->Db_model->k_next_fetch($actionplans[0]['tr_id']);
                 if ($trs_next) {
-                    $this->Comm_model->compose_messages(array(
+                    $this->Chat_model->compose_messages(array(
                         'tr_en_child_id' => $u['en_id'],
                         'tr_in_child_id' => $trs_next[0]['in_id'],
                         'tr_tr_parent_id' => $actionplans[0]['tr_id'],
@@ -1005,7 +1008,7 @@ class Comm_model extends CI_Model
 
         //This is a new user that needs to be registered!
         //Call facebook messenger API and get user profile
-        $graph_fetch = $this->Comm_model->fb_graph('GET', '/' . $fp_psid, array());
+        $graph_fetch = $this->Chat_model->fb_graph('GET', '/' . $fp_psid, array());
 
 
         //Did we find the profile from FB?
@@ -1018,7 +1021,7 @@ class Comm_model extends CI_Model
             ), true);
 
             //Inform the user:
-            $this->Comm_model->send_message(array(
+            $this->Chat_model->send_message(array(
                 array(
                     'tr_en_child_id' => $en['en_id'],
                     'tr_content' => 'Hi stranger! Let\'s get started by completing your profile information by opening the My Account tab in the menu below.',
@@ -1182,7 +1185,7 @@ class Comm_model extends CI_Model
 
                 //Mench Notification Levels:
                 $trs_comm_level = $this->Db_model->tr_fetch(array(
-                    'tr_en_parent_id IN (' . join(', ', $this->config->item('en_ids_4454')) . ')' => null,
+                    'tr_en_parent_id IN (' . join(',', $this->config->item('en_ids_4454')) . ')' => null,
                     'tr_en_child_id' => $tr['tr_en_child_id'],
                     'tr_status >=' => 2,
                 ));
@@ -1261,7 +1264,7 @@ class Comm_model extends CI_Model
             );
 
             //Send message via Facebook Graph API:
-            $process = $this->Comm_model->fb_graph('POST', '/me/messages', $payload);
+            $process = $this->Chat_model->fb_graph('POST', '/me/messages', $payload);
 
 
             //How did it go?
@@ -1362,7 +1365,7 @@ class Comm_model extends CI_Model
         //If no errors so far, let's do some more validation:
         if (!$message_error) {
 
-            //Fetch intent and its messages with an appropriate depth
+            //Fetch intent and its messages:
             $intents = $this->Db_model->in_fetch(array(
                 'in_id' => $tr['tr_in_child_id'],
             ), array('in__active_messages')); //Supports up to 2 levels deep for now...
@@ -1372,7 +1375,7 @@ class Comm_model extends CI_Model
                 $message_error = 'Invalid Intent ID [' . $tr['tr_in_child_id'] . ']';
             } else {
                 //Check the required notes as we'll use this later:
-                $requirement_notes = echo_c_requirements($intents[0], true);
+                $message_in_requirements = $this->Matrix_model->matrix_in_requirements($intents[0], true);
             }
         }
 
@@ -1436,14 +1439,14 @@ class Comm_model extends CI_Model
 
 
         //Do we have a subscription, if so, we need to add a next step message:
-        if ($requirement_notes) {
+        if ($message_in_requirements) {
 
             //URL or a written response is required, let them know that they should complete using the Action Plan:
             array_push($instant_messages, array(
                 'tr_en_child_id' => $tr['tr_en_child_id'],
                 'tr_in_child_id' => $tr['tr_in_child_id'],
                 'tr_tr_parent_id' => $tr['tr_tr_parent_id'],
-                'tr_content' => $requirement_notes,
+                'tr_content' => $message_in_requirements,
             ));
 
         } elseif (isset($tr['tr_tr_parent_id']) && $tr['tr_tr_parent_id'] > 0) {
@@ -1565,7 +1568,7 @@ class Comm_model extends CI_Model
         }
 
         //All good, attempt to Dispatch all messages, their engagements have already been logged:
-        return $this->Comm_model->send_message($instant_messages);
+        return $this->Chat_model->send_message($instant_messages);
 
     }
 

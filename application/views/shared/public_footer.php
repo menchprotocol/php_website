@@ -5,6 +5,7 @@
     <div class="container">
         <nav>
             <ul class="footer-a">
+
                 <li class="social-li">
 
                     <a href="https://m.me/askmench?ref=ACTIONPLANADD10_<?= $this->config->item('in_primary_id') ?>"
@@ -45,11 +46,10 @@
                     <a href="/terms" class="social-link" data-toggle="tooltip"
                        title="Read our terms of service and privacy policy" data-placement="top"><i
                                 class="fas fa-balance-scale"></i></a>
+
                 </li>
 
                 <li class="legal-name"><i>v<?= $this->config->item('app_version') ?></i></li>
-
-                <!-- <li style="padding-right: 1px;"><a href="https://angel.co/askmench/jobs" target="_blank">We're Hiring!</a></li> -->
 
             </ul>
         </nav>

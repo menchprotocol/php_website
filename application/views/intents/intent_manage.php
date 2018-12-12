@@ -200,20 +200,14 @@ if (isset($orphan_intents)) {
 
                         <div class="form-group label-floating is-empty completion-settings">
                             <div class="checkbox is_task">
+                                <p>Require Any Of:</p>
                                 <?php
-
                                 //List all the input options and allow user to pick between them:
-                                $entity_links = $this->Db_model->en_fetch(array(
-                                    'en_id IN ('.join(',', array_merge($this->config->item('en_ids_4537'), $this->config->item('en_ids_4538'))).')' => null, //All Entity Link Types
-                                    'en_id !=' => 4230, //Not a Naked link as that is already the default option
-                                    'en_status >=' => 2, //Published
-                                ));
-
-                                foreach ($entity_links as $en) {
-                                    echo '<label style="display: block; font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" id="require__'.$en['en_id'].'" /><i class="fas fa-pencil"></i> Require '.$en['en_icon'].' '.$en['en_name'].'</label>';
+                                foreach ($this->config->item('en_all_4331') as $en_id=>$en) {
+                                    echo '<label '.( strlen($en['tr_content'])>0 ? ' class="underdot" data-toggle="tooltip" title="'.stripslashes($en['tr_content']).'" data-placement="top" ' : '' ).' style="display: block; font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" id="require__'.$en_id.'" />'.$en['en_icon'].' '.$en['en_name'].'</label>';
                                 }
-
                                 ?>
+                                <p style="color: #999;">(No Requirements if none selected)</p>
                             </div>
                         </div>
 

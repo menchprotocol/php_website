@@ -156,7 +156,7 @@ class Db_model extends CI_Model
                     )));
                 }
                 //Sendout messages:
-                $this->Comm_model->send_message($prepared_messages);
+                $this->Chat_model->send_message($prepared_messages);
             }
 
             //TODO Update Action Plan progress (In tr_metadata) at this point
@@ -439,7 +439,7 @@ class Db_model extends CI_Model
                         ));
 
                         //Inform user that they are now complete with all tasks:
-                        $this->Comm_model->send_message(array(
+                        $this->Chat_model->send_message(array(
                             array(
                                 'tr_en_child_id' => $intents[0]['tr_en_parent_id'],
                                 'tr_in_child_id' => $intents[0]['tr_in_child_id'],
@@ -590,7 +590,7 @@ class Db_model extends CI_Model
             $dup_links = $this->Db_model->tr_fetch(array(
                 'tr_in_parent_id' => intval($in_id),
                 'tr_in_child_id' => $new_intent['in_id'],
-                'tr_en_type_id IN (' . join(', ', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
+                'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
                 'tr_status >=' => 0,
                 'in_status >=' => 0,
             ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
@@ -653,7 +653,7 @@ class Db_model extends CI_Model
         $relations = $this->Db_model->tr_fetch(array(
             'tr_in_parent_id' => intval($in_id),
             'tr_in_child_id' => $new_intent['in_id'],
-            'tr_en_type_id IN (' . join(', ', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
+            'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
             'tr_status >=' => 0,
             'in_status >=' => 0,
         ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
@@ -712,7 +712,7 @@ class Db_model extends CI_Model
 
                 //This would happen if the user subscribes to an intent without any children...
                 //This should not happen, inform user and log error:
-                $this->Comm_model->send_message(array(
+                $this->Chat_model->send_message(array(
                     array(
                         'tr_en_child_id' => $insert_columns['tr_en_parent_id'],
                         'tr_in_child_id' => $insert_columns['tr_in_child_id'],
@@ -1775,7 +1775,7 @@ class Db_model extends CI_Model
                         $html_message .= '<div>Engagement ID: <a href="https://mench.com/adminpanel/li_list_blob/' . $engagements[0]['tr_id'] . '">#' . $engagements[0]['tr_id'] . '</a></div>';
 
                         //Send email:
-                        //$this->Comm_model->send_email($subscription['admin_emails'], $subject, $html_message);
+                        //$this->Chat_model->send_email($subscription['admin_emails'], $subject, $html_message);
 
                         //TODO Send messenger
 
@@ -2420,7 +2420,10 @@ class Db_model extends CI_Model
     function algolia_sync($obj, $obj_id = 0)
     {
 
-        return false; //Algolia is disabled for now
+        if(!$this->config->item('enable_algolia')){
+            //Algolia is disabled:
+            return false;
+        }
 
         //Define the support objects indexed on algolia:
         $obj_id = intval($obj_id);

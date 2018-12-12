@@ -19,7 +19,7 @@ class Intents extends CI_Controller
         //Authenticate, redirect if not:
         $udata = auth(array(1308), 1);
 
-        //Fetch intent with 2 levels of depth:
+        //Fetch intent with 2 levels of children:
         $intents = $this->Db_model->in_fetch(array(
             'in_id' => $in_id,
             'in_status >=' => 0,
@@ -478,7 +478,7 @@ class Intents extends CI_Controller
                 //Fetch for the record:
                 $children_before = $this->Db_model->tr_fetch(array(
                     'tr_in_parent_id' => intval($_POST['in_id']),
-                    'tr_en_type_id IN (' . join(', ', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
+                    'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
                     'tr_status >=' => 0,
                     'in_status >=' => 0,
                 ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
@@ -493,7 +493,7 @@ class Intents extends CI_Controller
                 //Fetch again for the record:
                 $children_after = $this->Db_model->tr_fetch(array(
                     'tr_in_parent_id' => intval($_POST['in_id']),
-                    'tr_en_type_id IN (' . join(', ', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
+                    'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
                     'tr_status >=' => 0,
                     'in_status >=' => 0,
                 ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));

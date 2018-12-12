@@ -252,7 +252,7 @@ class Cron extends CI_Controller
                 $json_data = unserialize($tr_content['tr_metadata']);
 
                 //Send this message:
-                $this->Comm_model->send_message(array(
+                $this->Chat_model->send_message(array(
                     array_merge($json_data['i'], array(
                         'tr_en_child_id' => $trs[0]['en_id'],
                         'tr_in_child_id' => $json_data['i']['tr_in_child_id'],
@@ -474,7 +474,7 @@ class Cron extends CI_Controller
                 );
 
                 //Attempt to save this:
-                $result = $this->Comm_model->fb_graph('POST', '/me/message_attachments', $payload);
+                $result = $this->Chat_model->fb_graph('POST', '/me/message_attachments', $payload);
                 $db_result = false;
 
                 if ($result['status'] && isset($result['tr_metadata']['result']['attachment_id'])) {
@@ -598,7 +598,7 @@ class Cron extends CI_Controller
 
 
             //Give them next step again:
-            $this->Comm_model->k_next_fetch($w['tr_id']);
+            $this->Chat_model->k_next_fetch($w['tr_id']);
 
             //$trs_next[0]['in_outcome']
         }
@@ -661,7 +661,7 @@ class Cron extends CI_Controller
                         if (count($reminders_sent) == 0) {
 
                             //Nope, send this message out:
-                            $this->Comm_model->compose_messages(array(
+                            $this->Chat_model->compose_messages(array(
                                 'tr_en_credit_id' => 0, //System
                                 'tr_en_child_id' => $subscription['en_id'],
                                 'tr_in_child_id' => $logic['reminder_in_id'],

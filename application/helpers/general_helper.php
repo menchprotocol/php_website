@@ -33,9 +33,12 @@ function u_essentials($full_array)
 
 function load_php_algolia($index_name)
 {
-    require_once('application/libraries/algoliasearch.php');
-    $client = new \AlgoliaSearch\Client("49OCX1ZXLJ", "84a8df1fecf21978299e31c5b535ebeb");
-    return $client->initIndex($index_name);
+    $CI =& get_instance();
+    if($CI->config->item('enable_algolia')){
+        require_once('application/libraries/algoliasearch.php');
+        $client = new \AlgoliaSearch\Client("49OCX1ZXLJ", "84a8df1fecf21978299e31c5b535ebeb");
+        return $client->initIndex($index_name);
+    }
 }
 
 function detect_missing_columns($insert_columns, $required_columns)

@@ -14,11 +14,11 @@ $list_outs = (count($k_ins) == 0 || !($k_ins[0]['tr_status'] == 0) || intval($c[
 
 if (count($k_ins) == 1) {
     //Inform the user of any completion requirements:
-    $requirement_notes = echo_c_requirements($c);
+    $message_in_requirements = $this->Matrix_model->matrix_in_requirements($c);
 
     //Submission button visible after first button was clicked:
     $is_incomplete = ($k_ins[0]['tr_status'] <= 0 || ($k_ins[0]['tr_status'] == 1 && count($k_outs) == 0));
-    $show_written_input = ($requirement_notes && $is_incomplete);
+    $show_written_input = ($message_in_requirements && $is_incomplete);
 }
 
 
@@ -128,8 +128,8 @@ if (count($k_ins) == 1 && ($has_completion_info || (!intval($c['in_is_any']) && 
     //echo '<input type="hidden" name="k_key" value="'.md5($k_ins[0]['tr_id'].'k_key_SALT555').'" />'; //TODO Wire in for more security?!
 
     echo '<div class="toggle_text" style="' . ($show_written_input ? '' : 'display:none; ') . '">';
-    if ($requirement_notes) {
-        echo '<div style="color:#2b2b2b; font-size:0.7em; margin:0 !important; padding:0;"><i class="fas fa-exclamation-triangle"></i> ' . $requirement_notes . '</div>';
+    if ($message_in_requirements) {
+        echo '<div style="color:#2b2b2b; font-size:0.7em; margin:0 !important; padding:0;"><i class="fas fa-exclamation-triangle"></i> ' . $message_in_requirements . '</div>';
     }
     echo '<textarea name="tr_content" class="form-control maxout" style="padding:5px !important; margin:0 !important;">' . $k_ins[0]['tr_content'] . '</textarea>';
     echo '</div>';

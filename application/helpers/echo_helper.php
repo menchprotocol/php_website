@@ -1002,21 +1002,6 @@ function echo_pa_lets()
 }
 
 
-function echo_c_requirements($c, $include_instructions = false)
-{
-
-    $instructions = ($include_instructions ? ', which you can submit using your Action Plan. /open_actionplan' : '');
-
-    if ($c['c_require_url_to_complete'] && $c['c_require_notes_to_complete']) {
-        return 'Marking as complete requires both a URL & a written response' . $instructions;
-    } elseif ($c['c_require_url_to_complete']) {
-        return 'Marking as complete requires a URL' . $instructions;
-    } elseif ($c['c_require_notes_to_complete']) {
-        return 'Marking as complete requires a written response' . $instructions;
-    } else {
-        return null;
-    }
-}
 
 function echo_pa_saved()
 {
