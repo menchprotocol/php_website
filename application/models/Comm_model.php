@@ -1144,7 +1144,7 @@ class Comm_model extends CI_Model
                     'tr_metadata' => $tr,
                     'tr_en_type_id' => 4246, //Platform error
                     'tr_content' => 'send_message() failed to send message as it was missing tr_en_child_id/tr_content',
-                    'tr_tr_parent_id' => $tr['tr_id'],
+                    'tr_tr_parent_id' => (isset($tr['tr_id']) ? $tr['tr_id'] : 0),
                 ));
 
                 continue;
@@ -1225,7 +1225,7 @@ class Comm_model extends CI_Model
                             'tr' => $tr,
                         ),
                         'tr_content' => $error_message,
-                        'tr_tr_parent_id' => $tr['tr_id'],
+                        'tr_tr_parent_id' => (isset($tr['tr_id']) ? $tr['tr_id'] : 0),
                     ));
                     continue;
 
@@ -1261,7 +1261,6 @@ class Comm_model extends CI_Model
                 $this->Db_model->tr_create(array(
                     'tr_en_type_id' => 4280, //Message Sent
                     'tr_en_child_id' => $tr['tr_en_child_id'],
-                    'tr_tr_parent_id' => $tr['tr_id'],
                     'tr_content' => $tr['tr_content'],
                     'tr_metadata' => array(
                         'input_message' => $tr,
@@ -1271,8 +1270,9 @@ class Comm_model extends CI_Model
                     //Store some optional fields if available:
                     'tr_en_credit_id' => (isset($tr['tr_en_credit_id']) ? $tr['tr_en_credit_id'] : 0),
                     'tr_en_parent_id' => (isset($tr['tr_en_parent_id']) ? $tr['tr_en_parent_id'] : 0),
-                    'tr_in_child_id'  => (isset($tr['tr_in_child_id'])  ? $tr['tr_in_child_id']  : 0),
                     'tr_in_parent_id' => (isset($tr['tr_in_parent_id']) ? $tr['tr_in_parent_id'] : 0),
+                    'tr_in_child_id'  => (isset($tr['tr_in_child_id'])  ? $tr['tr_in_child_id']  : 0),
+                    'tr_tr_parent_id' => (isset($tr['tr_id']) ? $tr['tr_id'] : 0),
                 ));
 
             } else {
