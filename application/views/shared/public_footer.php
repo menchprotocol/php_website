@@ -9,7 +9,7 @@
 
                     <a href="https://m.me/askmench?ref=ACTIONPLANADD10_<?= $this->config->item('in_primary_id') ?>"
                        class="social-link" data-toggle="tooltip"
-                       title="Connect to your Mench Personal Assistant on Messenger" data-placement="top"><i
+                       title="Connect to Mench Personal Assistant on Messenger" data-placement="top"><i
                                 class="fab fa-facebook-messenger"></i></a>
 
                     <a href="https://github.com/askmench" target="_blank"
@@ -21,11 +21,11 @@
                        data-placement="top"><i class="fab fa-angellist"></i></a>
 
                     <a href="https://www.youtube.com/channel/UCOH64HiAIfJlz73tTSI8n-g" target="_blank"
-                       class="social-link" data-toggle="tooltip" title="Subscribe to Mench on YouTube"
+                       class="social-link" data-toggle="tooltip" title="Subscribe on YouTube"
                        data-placement="top"><i class="fab fa-youtube"></i></a>
 
                     <a href="https://www.facebook.com/askmench" target="_blank" class="social-link"
-                       data-toggle="tooltip" title="Like Mench on Facebook" data-placement="top"><i
+                       data-toggle="tooltip" title="Follow Mench on Facebook" data-placement="top"><i
                                 class="fab fa-facebook"></i></a>
 
                     <a href="https://www.linkedin.com/company/askmench/" target="_blank" class="social-link"
