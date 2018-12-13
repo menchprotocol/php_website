@@ -1,7 +1,7 @@
 <?php
 
 //Fetch most recent subscriptions:
-$trs = $this->Db_model->w_fetch(array(), array('in', 'en', 'u_x', 'w_stats'), array(
+$trs = $this->Database_model->w_fetch(array(), array('in', 'en', 'u_x', 'w_stats'), array(
     'tr_id' => 'DESC',
 ), (is_dev() ? 10 : 100));
 ?>

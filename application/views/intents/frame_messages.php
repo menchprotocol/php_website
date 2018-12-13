@@ -7,7 +7,7 @@ $en_ids_4485 = $this->config->item('en_ids_4485');
 $en_all_4485 = $this->config->item('en_all_4485');
 
 //Fetch all messages:
-$trs = $this->Db_model->i_fetch(array(
+$trs = $this->Database_model->i_fetch(array(
     'tr_en_type_id IN ('.join(',' , $en_ids_4485).')' => null, //Fetch all intent message types
     'tr_in_child_id' => $in_id,
     'tr_status >=' => 0, //Not Removed

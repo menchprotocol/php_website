@@ -184,7 +184,7 @@ function echo_i($i, $en_name = null, $fb_format = false)
     //Is it being displayed under entities? Show the original intent as well:
     if ($is_entity && !$fb_format) {
 
-        $original_cs = $CI->Db_model->in_fetch(array(
+        $original_cs = $CI->Database_model->in_fetch(array(
             'in_id' => $i['tr_in_child_id'],
         ));
         if (count($original_cs) > 0) {
@@ -207,7 +207,7 @@ function echo_i($i, $en_name = null, $fb_format = false)
 
         //This message has a referenced entity
         //See if that entity has a URL:
-        $us = $CI->Db_model->en_fetch(array(
+        $us = $CI->Database_model->en_fetch(array(
             'en_id' => $i['tr_en_parent_id'],
         ), array('skip_en__parents', 'u__urls'));
 
@@ -642,7 +642,7 @@ function echo_e($e)
         $main_content = format_tr_content($e['tr_content']);
     } elseif ($e['e_tr_id'] > 0) {
         //Fetch message conent:
-        $matching_messages = $CI->Db_model->i_fetch(array(
+        $matching_messages = $CI->Database_model->i_fetch(array(
             'tr_id' => $e['e_tr_id'],
         ));
         if (count($matching_messages) > 0) {
@@ -698,13 +698,13 @@ function echo_w_matrix($w)
     if ($is_intent || $is_adminpanel) {
 
         //Show user who has subscribed:
-        $user_ws = $CI->Db_model->w_fetch(array(
+        $user_ws = $CI->Database_model->w_fetch(array(
             'tr_en_parent_id' => $w['tr_en_parent_id'],
         ));
 
         if (!isset($w['en__parents'])) {
             //Fetch parents at this point:
-            $w['en__parents'] = $CI->Db_model->tr_parent_fetch(array(
+            $w['en__parents'] = $CI->Database_model->tr_parent_fetch(array(
                 'tr_en_child_id' => $w['tr_en_parent_id'],
                 'tr_status >=' => 0, //Pending or Active
                 'en_status >=' => 0, //Pending or Active
@@ -736,7 +736,7 @@ function echo_w_matrix($w)
     if ($is_entity || $is_adminpanel) {
 
         //Link to subscription's main intent:
-        $intent_ws = $CI->Db_model->w_fetch(array(
+        $intent_ws = $CI->Database_model->w_fetch(array(
             'tr_in_child_id' => $w['in_id'],
         ));
         $ui .= '<a href="/intents/' . $w['in_id'] . '" class="badge badge-primary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="Open subscribed intention to ' . $w['in_outcome'] . ' with ' . count($intent_ws) . ' subscriptions"><span class="btn-counter">' . count($intent_ws) . '</span><i class="fas fa-sign-in-alt"></i></a>';
@@ -782,10 +782,10 @@ function echo_k_matrix($k)
     $CI =& get_instance();
 
     //Fetch some additional subscription stats:
-    $user_ws = $CI->Db_model->w_fetch(array(
+    $user_ws = $CI->Database_model->w_fetch(array(
         'tr_en_parent_id' => $k['en_id'],
     ));
-    $intent_ws = $CI->Db_model->w_fetch(array(
+    $intent_ws = $CI->Database_model->w_fetch(array(
         'tr_in_child_id' => $k['in_id'],
     ));
 
@@ -1269,7 +1269,7 @@ function echo_object($object, $id, $engagement_field, $button_type)
             $is_parent = ($engagement_field == 'tr_in_parent_id' ? true : false);
 
             //Fetch intent/Step:
-            $intents = $CI->Db_model->in_fetch(array(
+            $intents = $CI->Database_model->in_fetch(array(
                 'in_id' => $id,
             ));
             if (isset($intents[0])) {
@@ -1292,7 +1292,7 @@ function echo_object($object, $id, $engagement_field, $button_type)
 
         } elseif ($object == 'w') {
 
-            $trs = $CI->Db_model->w_fetch(array(
+            $trs = $CI->Database_model->w_fetch(array(
                 'tr_id' => $id,
             ), array('in'));
             if (count($trs) > 0) {
@@ -1307,7 +1307,7 @@ function echo_object($object, $id, $engagement_field, $button_type)
 
         } elseif ($object == 'en') {
 
-            $matching_users = $CI->Db_model->en_fetch(array(
+            $matching_users = $CI->Database_model->en_fetch(array(
                 'en_id' => $id,
             ));
             if (count($matching_users) > 0) {
@@ -1495,7 +1495,7 @@ function echo_c($c, $level, $c_parent_id = 0, $is_parent = false)
     $udata = $CI->session->userdata('user');
 
     //Count engagements for this intent:
-    $e_count = count($CI->Db_model->tr_fetch(array(
+    $e_count = count($CI->Database_model->tr_fetch(array(
         '(tr_in_parent_id=' . $c['in_id'] . ' OR tr_in_child_id=' . $c['in_id'] . ')' => null,
     ), array(), $CI->config->item('max_counter')));
 
@@ -1506,7 +1506,7 @@ function echo_c($c, $level, $c_parent_id = 0, $is_parent = false)
     );
 
     //Fetch K stats:
-    $k_stat_fetch = $CI->Db_model->tr_fetch(array(
+    $k_stat_fetch = $CI->Database_model->tr_fetch(array(
         'tr_in_child_id' => $c['in_id'],
     ), array('cr'), 0, 0, array(), 'tr_status, COUNT(tr_id) as cr_count', 'tr_status');
     foreach ($k_stat_fetch as $trs) {
@@ -1717,13 +1717,13 @@ function echo_u($u, $level, $is_parent = false)
     $ui .= '<span class="en_status_' . $u['en_id'] . '">' . echo_status('en', $u['en_status'], true, 'left') . '</span> ';
 
     //Count messages:
-    $messages = $CI->Db_model->i_fetch(array(
+    $messages = $CI->Database_model->i_fetch(array(
         'tr_status >=' => 0,
         'tr_en_parent_id' => $u['en_id'], //Referenced content in messages
     ));
 
     //Check total key engagement for this user:
-    $e_count = count($CI->Db_model->tr_fetch(array(
+    $e_count = count($CI->Database_model->tr_fetch(array(
         '(tr_en_parent_id=' . $u['en_id'] . ' OR  tr_en_child_id=' . $u['en_id'] . ')' => null,
         '(tr_en_type_id NOT IN (' . join(',', $CI->config->item('exclude_es')) . '))' => null,
     ), array(), $CI->config->item('max_counter')));
@@ -1766,7 +1766,7 @@ function echo_u($u, $level, $is_parent = false)
 
     if (!isset($u['en__parents'])) {
         //Fetch parents at this point:
-        $u['en__parents'] = $CI->Db_model->tr_parent_fetch(array(
+        $u['en__parents'] = $CI->Database_model->tr_parent_fetch(array(
             'tr_en_child_id' => $u['en_id'],
             'tr_status >=' => 0, //Pending or Active
             'en_status >=' => 0, //Pending or Active

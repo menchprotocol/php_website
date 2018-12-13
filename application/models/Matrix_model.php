@@ -7,7 +7,8 @@ class Matrix_model extends CI_Model
      *
      * This model contains all Database functions that
      * interpret the Matrix from a particular perspective
-     * to gain insights from it
+     * to gain insights from it and to perform pre-defined
+     * operations.
      *
      * */
 
@@ -26,7 +27,7 @@ class Matrix_model extends CI_Model
          * Construct a message from Intent Messages for a given Intent Tree
          * This function considers the logic behind the Intent/Entity Trees in constructing messages
          * The goal is to have all messages sent using this function which
-         * means everything is stored on the tree (Rather than in the code base using the send_messages() function)
+         * means everything is stored on the tree (Rather than in the code base using the dispatch_messages() function)
          * Related to: https://github.com/askmench/mench-web-app/issues/2078
          *
          * */
@@ -54,7 +55,7 @@ class Matrix_model extends CI_Model
         if (!$message_error) {
 
             //Fetch intent and its messages:
-            $intents = $this->Db_model->in_fetch(array(
+            $intents = $this->Database_model->in_fetch(array(
                 'in_id' => $tr['tr_in_child_id'],
             ), array('in__active_messages')); //Supports up to 2 levels deep for now...
 
@@ -70,7 +71,7 @@ class Matrix_model extends CI_Model
         //Did we catch any errors?
         if ($message_error) {
             //Log error:
-            $this->Db_model->tr_create(array(
+            $this->Database_model->tr_create(array(
                 'tr_content' => 'compose_messages() error: ' . $message_error,
                 'tr_en_type_id' => 4246, //Platform Error
                 'tr_metadata' => $tr,
@@ -94,7 +95,7 @@ class Matrix_model extends CI_Model
         if (isset($tr['tr_tr_parent_id']) && $tr['tr_tr_parent_id'] > 0) {
 
             //Lets see how many child intents there are
-            $k_outs = $this->Db_model->tr_fetch(array(
+            $k_outs = $this->Database_model->tr_fetch(array(
                 'tr_id' => $tr['tr_tr_parent_id'],
                 'tr_status IN (0,1)' => null, //Active subscriptions only
                 'tr_in_parent_id' => $tr['tr_in_child_id'],
@@ -149,7 +150,7 @@ class Matrix_model extends CI_Model
                 //We have 0-1 child intents! If zero, let's see what the next step:
                 if (count($k_outs) == 0) {
                     //Let's try to find the next item in tree:
-                    $k_outs = $this->Db_model->k_next_fetch($tr['tr_tr_parent_id']);
+                    $k_outs = $this->Database_model->k_next_fetch($tr['tr_tr_parent_id']);
                 }
 
                 //Do we have a next intent?
@@ -217,7 +218,7 @@ class Matrix_model extends CI_Model
 
 
                 //As long as $tr['tr_in_child_id'] is NOT equal to tr_in_child_id, then we will have a k_out relation so we can give the option to skip:
-                $k_ins = $this->Db_model->tr_fetch(array(
+                $k_ins = $this->Database_model->tr_fetch(array(
                     'tr_id' => $tr['tr_tr_parent_id'],
                     'tr_status IN (0,1)' => null, //Active subscriptions only
                     'tr_in_child_id' => $tr['tr_in_child_id'],
@@ -256,7 +257,7 @@ class Matrix_model extends CI_Model
         }
 
         //All good, attempt to Dispatch all messages, their engagements have already been logged:
-        return $this->Chat_model->send_message($instant_messages);
+        return $this->Chat_model->dispatch_message($instant_messages);
 
     }
 
@@ -278,7 +279,7 @@ class Matrix_model extends CI_Model
          * */
 
         //Fetch all possible Intent Response Limiters
-        $response_options = $this->Db_model->tr_fetch(array(
+        $response_options = $this->Database_model->tr_fetch(array(
             'tr_status >=' => 2, //Published
             'tr_en_type_id' => 4331, //Intent Response Limiters
             'tr_en_child_id IN (' . join(',', $this->config->item('en_ids_4331')) . ')' => null, //Intent Response Limiters
@@ -349,7 +350,7 @@ class Matrix_model extends CI_Model
 
         if ($psid < 1) {
             //Ooops, this should never happen:
-            $this->Db_model->tr_create(array(
+            $this->Database_model->tr_create(array(
                 'tr_content' => 'authenticate_messenger_user() got called without a valid Facebook $psid variable',
                 'tr_en_type_id' => 4246, //Platform Error
             ));
@@ -358,7 +359,7 @@ class Matrix_model extends CI_Model
 
 
         //Try finding existing Master PSID:
-        $trs_psid = $this->Db_model->tr_fetch(array(
+        $trs_psid = $this->Database_model->tr_fetch(array(
             'tr_status >=' => 2, //Published
             'tr_en_parent_id' => 4451, //Mench Personal Assistant on Messenger
             'tr_en_child_id >' => 0, //Looking for this ID to determine Master Entity ID
@@ -387,7 +388,7 @@ class Matrix_model extends CI_Model
 
 
         //Call facebook messenger API and get user graph profile:
-        $graph_fetch = $this->Chat_model->facebook_graph_api('GET', '/' . $psid, array());
+        $graph_fetch = $this->Chat_model->facebook_graph('GET', '/' . $psid, array());
 
 
         //Did we find the profile from FB?
@@ -403,12 +404,12 @@ class Matrix_model extends CI_Model
 
 
             //We will create this master with a random & temporary name:
-            $en = $this->Db_model->en_create(array(
+            $en = $this->Database_model->en_create(array(
                 'en_name' => 'Candidate ' . rand(100000000, 999999999),
             ), true);
 
             //Inform the master:
-            $this->Chat_model->send_message(array(
+            $this->Chat_model->dispatch_message(array(
                 array(
                     'tr_en_child_id' => $en['en_id'],
                     'tr_content' => 'Hi stranger! Let\'s get started by completing your profile information by opening the My Account tab in the menu below. /open_myaccount',
@@ -421,7 +422,7 @@ class Matrix_model extends CI_Model
             $fb_profile = $graph_fetch['tr_metadata']['result'];
 
             //Create Master with their Facebook Graph name:
-            $en = $this->Db_model->en_create(array(
+            $en = $this->Database_model->en_create(array(
                 'en_name' => $fb_profile['first_name'] . ' ' . $fb_profile['last_name'],
             ), true);
 
@@ -430,14 +431,14 @@ class Matrix_model extends CI_Model
 
             //Try to match Facebook profile data to internal entities and create links for the ones we find:
             foreach (array(
-                         $this->Db_model->en_search_match(3289, $fb_profile['timezone']), //Timezone
-                         $this->Db_model->en_search_match(3290, strtolower(substr($fb_profile['gender'], 0, 1))), //Gender either m/f
-                         $this->Db_model->en_search_match(3287, strtolower($locale[0])), //Language
-                         $this->Db_model->en_search_match(3089, strtolower($locale[1])), //Country
+                         $this->Database_model->en_search_match(3289, $fb_profile['timezone']), //Timezone
+                         $this->Database_model->en_search_match(3290, strtolower(substr($fb_profile['gender'], 0, 1))), //Gender either m/f
+                         $this->Database_model->en_search_match(3287, strtolower($locale[0])), //Language
+                         $this->Database_model->en_search_match(3089, strtolower($locale[1])), //Country
                      ) as $tr_en_parent_id) {
                 //Did we find a relation? Create the transaction:
                 if ($tr_en_parent_id > 0) {
-                    $this->Db_model->tr_create(array(
+                    $this->Database_model->tr_create(array(
                         'tr_en_type_id' => 4230, //Naked link
                         'tr_en_credit_id' => $en['en_id'], //Master gets credit as they added themselves
                         'tr_en_parent_id' => $tr_en_parent_id,
@@ -452,7 +453,7 @@ class Matrix_model extends CI_Model
         if ($psid > 0) {
 
             //Store their messenger ID:
-            $this->Db_model->tr_create(array(
+            $this->Database_model->tr_create(array(
                 'tr_en_type_id' => 4319, //Number Link
                 'tr_en_credit_id' => $en['en_id'],
                 'tr_en_parent_id' => 4451, //Mench Personal Assistant on Messenger
@@ -461,7 +462,7 @@ class Matrix_model extends CI_Model
             ));
 
             //Add them to masters group:
-            $this->Db_model->tr_create(array(
+            $this->Database_model->tr_create(array(
                 'tr_en_type_id' => 4230, //Naked link
                 'tr_en_credit_id' => $en['en_id'],
                 'tr_en_parent_id' => 4430, //Mench Master
@@ -469,7 +470,7 @@ class Matrix_model extends CI_Model
             ));
 
             //Subscription Level:
-            $this->Db_model->tr_create(array(
+            $this->Database_model->tr_create(array(
                 'tr_en_type_id' => 4230, //Naked link
                 'tr_en_credit_id' => $en['en_id'],
                 'tr_en_parent_id' => 4456, //Receive Regular Notifications (This is the starting point that the Master can change later on...)
@@ -479,20 +480,20 @@ class Matrix_model extends CI_Model
 
 
         //Assign people group as we know this is who they are:
-        $ur1 = $this->Db_model->tr_create(array(
+        $ur1 = $this->Database_model->tr_create(array(
             'tr_en_child_id' => $u['en_id'],
             'tr_en_parent_id' => 1278,
         ));
 
         //Log new user engagement:
-        $this->Db_model->tr_create(array(
+        $this->Database_model->tr_create(array(
             'tr_en_credit_id' => $u['en_id'],
             'tr_en_type_id' => 4265, //User Joined
             'tr_metadata' => $u,
         ));
 
         //Save picture locally:
-        $this->Db_model->tr_create(array(
+        $this->Database_model->tr_create(array(
             'tr_en_credit_id' => $u['en_id'],
             'tr_content' => $fb_profile['profile_pic'], //Image to be saved
             'tr_status' => 0, //Pending upload

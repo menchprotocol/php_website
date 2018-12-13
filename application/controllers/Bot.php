@@ -15,7 +15,7 @@ class Bot extends CI_Controller
 
     function profile()
     {
-        echo_json($this->Chat_model->facebook_graph_api('GET', '/2375537049154935', array()));
+        echo_json($this->Chat_model->facebook_graph('GET', '/2375537049154935', array()));
     }
 
     function ff()
@@ -36,7 +36,7 @@ class Bot extends CI_Controller
     {
 
         $res = array();
-        array_push($res, $this->Chat_model->facebook_graph_api('POST', '/me/messenger_profile', array(
+        array_push($res, $this->Chat_model->facebook_graph('POST', '/me/messenger_profile', array(
             'get_started' => array(
                 'payload' => 'GET_STARTED',
             ),
@@ -50,7 +50,7 @@ class Bot extends CI_Controller
         //Wait until Facebook pro-pagates changes of our whitelisted_domains setting:
         sleep(2);
 
-        array_push($res, $this->Chat_model->facebook_graph_api('POST', '/me/messenger_profile', array(
+        array_push($res, $this->Chat_model->facebook_graph('POST', '/me/messenger_profile', array(
             'persistent_menu' => array(
                 array(
                     'locale' => 'default',
@@ -101,14 +101,14 @@ class Bot extends CI_Controller
 
         //Do some basic checks:
         if (!isset($json_data['object']) || !isset($json_data['entry'])) {
-            $this->Db_model->tr_create(array(
+            $this->Database_model->tr_create(array(
                 'tr_content' => 'facebook_webhook() Function missing either [object] or [entry] variable.',
                 'tr_metadata' => $json_data,
                 'tr_en_type_id' => 4246, //Platform Error
             ));
             return false;
         } elseif (!$json_data['object'] == 'page') {
-            $this->Db_model->tr_create(array(
+            $this->Database_model->tr_create(array(
                 'tr_content' => 'facebook_webhook() Function call object value is not equal to [page], which is what was expected.',
                 'tr_metadata' => $json_data,
                 'tr_en_type_id' => 4246, //Platform Error
@@ -125,7 +125,7 @@ class Bot extends CI_Controller
                 //This can happen for the older webhook that we offered to other FB pages:
                 continue;
             } elseif (!isset($entry['messaging'])) {
-                $this->Db_model->tr_create(array(
+                $this->Database_model->tr_create(array(
                     'tr_content' => 'facebook_webhook() call missing messaging Array().',
                     'tr_metadata' => $json_data,
                     'tr_en_type_id' => 4246, //Platform Error
@@ -143,7 +143,7 @@ class Bot extends CI_Controller
                     $en = $this->Matrix_model->authenticate_messenger_user($im['sender']['id']);
 
                     //This callback will occur when a message a page has sent has been read by the user.
-                    $this->Db_model->tr_create(array(
+                    $this->Database_model->tr_create(array(
                         'tr_metadata' => $json_data,
                         'tr_en_type_id' => 4278, //Message Read
                         'tr_en_credit_id' => (isset($en['en_id']) ? $en['en_id'] : 0),
@@ -158,7 +158,7 @@ class Bot extends CI_Controller
                     $en = $this->Matrix_model->authenticate_messenger_user($im['sender']['id']);
 
                     //This callback will occur when a message a page has sent has been delivered.
-                    $this->Db_model->tr_create(array(
+                    $this->Database_model->tr_create(array(
                         'tr_metadata' => $json_data,
                         'tr_en_type_id' => 4279, //Message Delivered
                         'tr_en_credit_id' => (isset($en['en_id']) ? $en['en_id'] : 0),
@@ -229,7 +229,7 @@ class Bot extends CI_Controller
                     */
 
                     //Log primary engagement:
-                    $this->Db_model->tr_create(array(
+                    $this->Database_model->tr_create(array(
                         'tr_en_type_id' => (isset($im['referral']) ? 4267 : 4268), //Messenger Referral/Postback
                         'tr_metadata' => $json_data,
                         'tr_en_credit_id' => (isset($en['en_id']) ? $en['en_id'] : 0),
@@ -238,7 +238,7 @@ class Bot extends CI_Controller
 
 
                     //We might need to respond based on the reference:
-                    $this->Chat_model->listen_chat_metadata($u, $ref);
+                    $this->Chat_model->digest_metadata($u, $ref);
 
 
                 } elseif (isset($im['optin'])) {
@@ -247,7 +247,7 @@ class Bot extends CI_Controller
 
                     //Note: Never seen this happen yet!
                     //Log transaction:
-                    $this->Db_model->tr_create(array(
+                    $this->Database_model->tr_create(array(
                         'tr_metadata' => $json_data,
                         'tr_en_type_id' => 4266, //Messenger Optin
                         'tr_en_credit_id' => (isset($en['en_id']) ? $en['en_id'] : 0),
@@ -329,7 +329,7 @@ class Bot extends CI_Controller
 
                             } else {
                                 //This should really not happen!
-                                $this->Db_model->tr_create(array(
+                                $this->Database_model->tr_create(array(
                                     'tr_content' => 'facebook_webhook() Received message with unknown attachment type [' . $att['type'] . '].',
                                     'tr_metadata' => $json_data,
                                     'tr_en_type_id' => 4246, //Platform Error
@@ -340,19 +340,19 @@ class Bot extends CI_Controller
                     }
 
                     //Log incoming engagement:
-                    $this->Db_model->tr_create($eng_data);
+                    $this->Database_model->tr_create($eng_data);
 
                     //Process both
                     if ($quick_reply_payload) {
-                        $this->Chat_model->listen_chat_metadata($u, $quick_reply_payload);
+                        $this->Chat_model->digest_metadata($u, $quick_reply_payload);
                     } elseif (!$sent_from_us) {
-                        $this->Chat_model->listen_chat_message($u, $fb_message);
+                        $this->Chat_model->digest_message($u, $fb_message);
                     }
 
                 } else {
 
                     //This should really not happen!
-                    $this->Db_model->tr_create(array(
+                    $this->Database_model->tr_create(array(
                         'tr_content' => 'facebook_webhook() received unrecognized webhook call.',
                         'tr_metadata' => $json_data,
                         'tr_en_type_id' => 4246, //Platform Error

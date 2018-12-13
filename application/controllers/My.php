@@ -24,7 +24,7 @@ class My extends CI_Controller
     {
 
         $udata = auth(array(1308));
-        $current_us = $this->Db_model->en_fetch(array(
+        $current_us = $this->Database_model->en_fetch(array(
             'en_id' => $en_id,
         ));
 
@@ -47,11 +47,12 @@ class My extends CI_Controller
 
             //Fetch results and show:
             return echo_json(array(
-                'fb_profile' => $this->Chat_model->facebook_graph_api('GET', '/' . $current_us[0]['u_fb_psid'], array()),
+                'fb_profile' => $this->Chat_model->facebook_graph('GET', '/' . $current_us[0]['u_fb_psid'], array()),
                 'en' => $current_us[0],
             ));
 
         }
+
     }
 
     /* ******************************
@@ -107,7 +108,7 @@ class My extends CI_Controller
         }
 
         //Try finding them:
-        $trs = $this->Db_model->w_fetch($w_filter, array('in', 'en'));
+        $trs = $this->Database_model->w_fetch($w_filter, array('in', 'en'));
 
         if (count($trs) == 0) {
 
@@ -117,7 +118,7 @@ class My extends CI_Controller
         } elseif (count($trs) > 1) {
 
             //Log action plan view engagement:
-            $this->Db_model->tr_create(array(
+            $this->Database_model->tr_create(array(
                 'tr_en_type_id' => 4283,
                 'tr_en_credit_id' => $trs[0]['en_id'],
             ));
@@ -140,7 +141,7 @@ class My extends CI_Controller
             }
 
             //Log action plan view engagement:
-            $this->Db_model->tr_create(array(
+            $this->Database_model->tr_create(array(
                 'tr_en_type_id' => 4283,
                 'tr_en_credit_id' => $trs[0]['en_id'],
                 'tr_in_child_id' => $in_id,
@@ -150,20 +151,20 @@ class My extends CI_Controller
 
             //We have a single item to load:
             //Now we need to load the action plan:
-            $k_ins = $this->Db_model->tr_fetch(array(
+            $k_ins = $this->Database_model->tr_fetch(array(
                 'tr_id' => $tr_id,
                 'in_status >=' => 2,
                 'tr_in_child_id' => $in_id,
             ), array('w', 'cr', 'cr_c_parent'));
 
-            $k_outs = $this->Db_model->tr_fetch(array(
+            $k_outs = $this->Database_model->tr_fetch(array(
                 'tr_id' => $tr_id,
                 'in_status >=' => 2,
                 'tr_in_parent_id' => $in_id,
             ), array('w', 'cr', 'cr_c_child'));
 
 
-            $intents = $this->Db_model->in_fetch(array(
+            $intents = $this->Database_model->in_fetch(array(
                 'in_status >=' => 2,
                 'in_id' => $in_id,
             ));
@@ -171,7 +172,7 @@ class My extends CI_Controller
             if (count($intents) < 1 || (!count($k_ins) && !count($k_outs))) {
 
                 //Ooops, we had issues finding th is intent! Should not happen, report:
-                $this->Db_model->tr_create(array(
+                $this->Database_model->tr_create(array(
                     'tr_en_credit_id' => $trs[0]['en_id'],
                     'tr_metadata' => $trs,
                     'tr_content' => 'Unable to load a specific intent for the master Action Plan! Should not happen...',
@@ -243,7 +244,7 @@ class My extends CI_Controller
         }
 
         //Fetch subscription
-        $validate_subscription = $this->Db_model->w_fetch(array(
+        $validate_subscription = $this->Database_model->w_fetch(array(
             'tr_id' => $_POST['tr_id'], //Other than this one...
         ));
         if (!(count($validate_subscription) == 1)) {
@@ -288,13 +289,13 @@ class My extends CI_Controller
     function skip_tree($tr_id, $in_id, $tr_id)
     {
         //Start skipping:
-        $total_skipped = count($this->Db_model->k_skip_recursive_down($tr_id));
+        $total_skipped = count($this->Database_model->k_skip_recursive_down($tr_id));
 
         //Draft message:
         $message = '<div class="alert alert-success" role="alert">' . $total_skipped . ' insight' . echo__s($total_skipped) . ' successfully skipped.</div>';
 
         //Find the next item to navigate them to:
-        $trs_next = $this->Db_model->k_next_fetch($tr_id);
+        $trs_next = $this->Database_model->k_next_fetch($tr_id);
         if ($trs_next) {
             redirect_message('/my/actionplan/' . $trs_next[0]['tr_tr_parent_id'] . '/' . $trs_next[0]['in_id'], $message);
         } else {
@@ -305,7 +306,7 @@ class My extends CI_Controller
     function choose_any_path($tr_id, $tr_in_parent_id, $in_id, $w_key)
     {
         if (md5($tr_id . 'kjaghksjha*(^' . $in_id . $tr_in_parent_id) == $w_key) {
-            if ($this->Db_model->k_choose_or($tr_id, $tr_in_parent_id, $in_id)) {
+            if ($this->Database_model->k_choose_or($tr_id, $tr_in_parent_id, $in_id)) {
                 redirect_message('/my/actionplan/' . $tr_id . '/' . $in_id, '<div class="alert alert-success" role="alert">Your answer was saved.</div>');
             } else {
                 //We had some sort of an error:
@@ -324,7 +325,7 @@ class My extends CI_Controller
 
         //Fetch master name and details:
         $udata = $this->session->userdata('user');
-        $trs = $this->Db_model->tr_fetch(array(
+        $trs = $this->Database_model->tr_fetch(array(
             'tr_id' => $_POST['tr_id'],
         ), array('w', 'cr', 'cr_c_child'));
 
@@ -353,7 +354,7 @@ class My extends CI_Controller
         //Has anything changed?
         if ($notes_changed) {
             //Updates k notes:
-            $this->Db_model->tr_update($trs[0]['tr_id'], array(
+            $this->Database_model->tr_update($trs[0]['tr_id'], array(
                 'tr_content' => trim($_POST['tr_content']),
                 'tr_en_type_id' => detect_tr_en_type_id($_POST['tr_content']),
             ), (isset($udata['en_id']) ? $udata['en_id'] : $trs[0]['k_children_en_id']));
@@ -361,14 +362,14 @@ class My extends CI_Controller
 
         if ($status_changed) {
             //Also update tr_status, determine what it should be:
-            $this->Db_model->k_complete_recursive_up($trs[0], $trs[0]);
+            $this->Database_model->k_complete_recursive_up($trs[0], $trs[0]);
         }
 
 
         //Redirect back to page with success message:
         if (isset($_POST['k_next_redirect']) && intval($_POST['k_next_redirect']) > 0) {
             //Go to next item:
-            $trs_next = $this->Db_model->k_next_fetch($trs[0]['tr_id'], (intval($_POST['k_next_redirect']) > 1 ? intval($_POST['k_next_redirect']) : 0));
+            $trs_next = $this->Database_model->k_next_fetch($trs[0]['tr_id'], (intval($_POST['k_next_redirect']) > 1 ? intval($_POST['k_next_redirect']) : 0));
             if ($trs_next) {
                 //Override original item:
                 $k_url = '/my/actionplan/' . $trs_next[0]['tr_tr_parent_id'] . '/' . $trs_next[0]['in_id'];

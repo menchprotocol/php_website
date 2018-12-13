@@ -45,7 +45,7 @@ class Entities extends CI_Controller
         }
 
         //Fetch entity itself:
-        $entities = $this->Db_model->en_fetch(array('en_id' => $parent_en_id));
+        $entities = $this->Database_model->en_fetch(array('en_id' => $parent_en_id));
         $child_entities_count = count($this->Old_model->ur_children_fetch($filters));
         $child_entities = $this->Old_model->ur_children_fetch($filters, array('in__children_count'), $items_per_page, ($page * $items_per_page));
 
@@ -97,7 +97,7 @@ class Entities extends CI_Controller
         }
 
         //Validate parent entity:
-        $current_us = $this->Db_model->en_fetch(array(
+        $current_us = $this->Database_model->en_fetch(array(
             'en_id' => $_POST['en_id'],
         ));
         if (count($current_us) < 1) {
@@ -121,7 +121,7 @@ class Entities extends CI_Controller
             $linking_to_existing_u = true;
 
             //Validate this existing entity
-            $new_ens = $this->Db_model->en_fetch(array(
+            $new_ens = $this->Database_model->en_fetch(array(
                 'en_id' => $_POST['new_en_id'],
                 'en_status >=' => 1, //Active only
             ));
@@ -141,7 +141,7 @@ class Entities extends CI_Controller
 
                 //It's a URL, create an entity from this URL:
                 $accept_existing_url = (!$_POST['is_parent'] && $current_us[0]['en_id'] != 1326); //We can accept duplicates if we're not adding directly under content
-                $url_create = $this->Db_model->x_sync(trim($_POST['new_en_name']), 1326, 1, $accept_existing_url);
+                $url_create = $this->Database_model->x_sync(trim($_POST['new_en_name']), 1326, 1, $accept_existing_url);
 
                 //Did we have an error?
                 if (!$url_create['status']) {
@@ -155,7 +155,7 @@ class Entities extends CI_Controller
             } else {
 
                 //We should add a new entity:
-                $new_en = $this->Db_model->en_create(array(
+                $new_en = $this->Database_model->en_create(array(
                     'en_name' => trim($_POST['new_en_name']),
                 ), true, $udata['en_id']);
 
@@ -170,7 +170,7 @@ class Entities extends CI_Controller
                 if (intval($_POST['assign_en_parent_id']) > 0) {
 
                     //Link entity to a parent:
-                    $ur1 = $this->Db_model->tr_create(array(
+                    $ur1 = $this->Database_model->tr_create(array(
                         'tr_en_child_id' => $new_en['en_id'],
                         'tr_en_parent_id' => $_POST['assign_en_parent_id'],
                     ));
@@ -197,7 +197,7 @@ class Entities extends CI_Controller
             //Let's make sure this is not the same as the secondary category:
             if (!($_POST['assign_en_parent_id'] == $tr_en_parent_id)) {
                 //Link to new OR existing entity:
-                $ur2 = $this->Db_model->tr_create(array(
+                $ur2 = $this->Database_model->tr_create(array(
                     'tr_en_child_id' => $tr_en_child_id,
                     'tr_en_parent_id' => $tr_en_parent_id,
                 ));
@@ -237,7 +237,7 @@ class Entities extends CI_Controller
         }
 
         //Remove transaction:
-        $this->Db_model->tr_update($_POST['tr_id'], array(
+        $this->Database_model->tr_update($_POST['tr_id'], array(
             'tr_status' => -1,
         ), $udata['en_id']);
 
@@ -256,7 +256,7 @@ class Entities extends CI_Controller
         $tr_content_max = $this->config->item('tr_content_max');
 
         //Fetch current data:
-        $u_current = $this->Db_model->en_fetch(array(
+        $u_current = $this->Database_model->en_fetch(array(
             'en_id' => intval($_POST['en_id']),
         ));
 
@@ -304,7 +304,7 @@ class Entities extends CI_Controller
         if (intval($_POST['tr_id']) > 0) {
 
             //Yes, first validate this link:
-            $urs = $this->Db_model->tr_parent_fetch(array(
+            $urs = $this->Database_model->tr_parent_fetch(array(
                 'tr_id' => $_POST['tr_id'],
             ));
 
@@ -319,7 +319,7 @@ class Entities extends CI_Controller
             if (!($urs[0]['tr_content'] == $_POST['tr_content'])) {
 
                 //Something has changed, log this:
-                $this->Db_model->tr_update($_POST['tr_id'], array(
+                $this->Database_model->tr_update($_POST['tr_id'], array(
                     'tr_content' => $_POST['tr_content'],
                     'tr_en_type_id' => detect_tr_en_type_id($_POST['tr_content']),
                 ), $udata['en_id']);
@@ -329,11 +329,11 @@ class Entities extends CI_Controller
         }
 
         //Now update the DB:
-        $this->Db_model->en_update(intval($_POST['en_id']), $u_update, true, $udata['en_id']);
+        $this->Database_model->en_update(intval($_POST['en_id']), $u_update, true, $udata['en_id']);
 
         //Reset user session data if this data belongs to the logged-in user:
         if ($_POST['en_id'] == $udata['en_id']) {
-            $entities = $this->Db_model->en_fetch(array(
+            $entities = $this->Database_model->en_fetch(array(
                 'en_id' => intval($_POST['en_id']),
             ));
             if (isset($entities[0])) {
@@ -363,7 +363,7 @@ class Entities extends CI_Controller
             die('<span style="color:#FF0000;">Error: Invalid entity id.</span>');
         }
 
-        $messages = $this->Db_model->i_fetch(array(
+        $messages = $this->Database_model->i_fetch(array(
             'i_status >=' => 0,
             'tr_en_parent_id' => $_POST['en_id'],
         ), 0);
@@ -387,7 +387,7 @@ class Entities extends CI_Controller
         }
 
         //Validate user email:
-        $trs = $this->Db_model->tr_fetch(array(
+        $trs = $this->Database_model->tr_fetch(array(
             'tr_en_parent_id' => 3288, //Primary email
             'LOWER(tr_content)' => strtolower($_POST['input_email']),
         ));
@@ -398,14 +398,14 @@ class Entities extends CI_Controller
         }
 
         //Fetch full entity data with their active subscriptions:
-        $entities = $this->Db_model->en_fetch(array(
+        $entities = $this->Database_model->en_fetch(array(
             'en_id' => $trs[0]['tr_en_child_id'],
         ), array('u__ws'));
 
         if ($entities[0]['en_status'] < 0 || $trs[0]['tr_status'] < 0) {
 
             //Removed entity
-            $this->Db_model->tr_create(array(
+            $this->Database_model->tr_create(array(
                 'tr_en_credit_id' => $entities[0]['en_id'],
                 'tr_en_child_id' => $entities[0]['en_id'],
                 'tr_content' => 'login() denied because account is not active.',
@@ -418,7 +418,7 @@ class Entities extends CI_Controller
         }
 
         //Authenticate their password:
-        $login_passwords = $this->Db_model->tr_fetch(array(
+        $login_passwords = $this->Database_model->tr_fetch(array(
             'tr_en_parent_id' => 3286, //Mench Login Password
             'tr_en_child_id' => $entities[0]['en_id'],
         ));
@@ -472,7 +472,7 @@ class Entities extends CI_Controller
 
 
         //Log transaction
-        $this->Db_model->tr_create(array(
+        $this->Database_model->tr_create(array(
             'tr_en_credit_id' => $entities[0]['en_id'],
             'tr_metadata' => $entities[0],
             'tr_en_type_id' => 4269, //login
@@ -509,7 +509,7 @@ class Entities extends CI_Controller
     {
         //Log transaction:
         $udata = $this->session->userdata('user');
-        $this->Db_model->tr_create(array(
+        $this->Database_model->tr_create(array(
             'tr_en_credit_id' => (isset($udata['en_id']) && $udata['en_id'] > 0 ? $udata['en_id'] : 0),
             'tr_metadata' => $udata,
             'tr_en_type_id' => 4270, //User Logout
@@ -532,7 +532,7 @@ class Entities extends CI_Controller
         }
 
         //Attempt to fetch this user:
-        $matching_users = $this->Db_model->en_fetch(array(
+        $matching_users = $this->Database_model->en_fetch(array(
             'input_email' => strtolower($_POST['email']),
         ));
         if (count($matching_users) > 0) {
@@ -562,7 +562,7 @@ class Entities extends CI_Controller
         } else {
 
             //Fetch their passwords to authenticate login:
-            $login_passwords = $this->Db_model->tr_fetch(array(
+            $login_passwords = $this->Database_model->tr_fetch(array(
                 'tr_status >=' => 2, //Must be published or verified
                 'tr_en_parent_id' => 3286, //Mench Login Password
                 'tr_en_child_id' => $_POST['en_id'], //For this user
@@ -573,7 +573,7 @@ class Entities extends CI_Controller
             if (count($login_passwords) > 0) {
 
                 //Update existing password:
-                $this->Db_model->tr_update($login_passwords[0]['tr_id'], array(
+                $this->Database_model->tr_update($login_passwords[0]['tr_id'], array(
                     'tr_content' => $new_password,
                     'tr_en_type_id' => detect_tr_en_type_id($new_password),
                 ), $login_passwords[0]['tr_en_child_id']);

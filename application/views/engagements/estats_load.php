@@ -1,6 +1,6 @@
 <?php
 
-$engagements = $this->Db_model->tr_fetch(array(
+$engagements = $this->Database_model->tr_fetch(array(
     '(tr_in_parent_id=' . $in_id . ' OR tr_in_child_id=' . $in_id . ')' => null,
 ), array(), (is_dev() ? 20 : 100));
 

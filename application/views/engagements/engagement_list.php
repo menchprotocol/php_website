@@ -1,7 +1,7 @@
 <?php
 
 //Fetch data:
-$engagements = $this->Db_model->tr_fetch(array(
+$engagements = $this->Database_model->tr_fetch(array(
     '( tr_en_child_id = ' . $en_id . ' OR tr_en_parent_id = ' . $en_id . ')' => null,
     '(tr_en_type_id NOT IN (' . join(',', $this->config->item('exclude_es')) . '))' => null,
 ), array(), (is_dev() ? 20 : 100));

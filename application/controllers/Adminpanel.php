@@ -41,7 +41,7 @@ class Adminpanel extends CI_Controller
         //Authenticate trainer access:
         $udata = auth(array(1308), 1);
         //Fetch blob of engagement and display it on screen:
-        $blobs = $this->Db_model->tr_fetch(array(
+        $blobs = $this->Database_model->tr_fetch(array(
             'tr_id' => $tr_id,
         ), array(), 1);
         if (count($blobs) == 1) {

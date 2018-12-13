@@ -1,7 +1,7 @@
 <?php
 
 //Prepare some variables to better understand out situation here:
-$messages = $this->Db_model->i_fetch(array(
+$messages = $this->Database_model->i_fetch(array(
     'tr_in_child_id' => $c['in_id'],
     'tr_status' => 1, //On start messages only
 ));
@@ -26,7 +26,7 @@ if (count($k_ins) == 1) {
 $next_button = null;
 if ($w['tr_status'] == 1) {
     //Active subscription, attempt to find next item, which we should be able to find:
-    $trs_next = $this->Db_model->k_next_fetch($w['tr_id']);
+    $trs_next = $this->Database_model->k_next_fetch($w['tr_id']);
     if ($trs_next) {
         if ($trs_next[0]['in_id'] == $c['in_id']) {
             //$next_button = '<span style="font-size: 0.7em; padding-left:5px; display:inline-block;"><i class="fas fa-shield-check"></i> This is the next-in-line intent</span>';

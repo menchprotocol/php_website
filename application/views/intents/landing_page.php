@@ -52,7 +52,7 @@
 
         if ($need_grandpa) {
             //Fetch top intent and include it here:
-            $gps = $this->Db_model->in_fetch(array(
+            $gps = $this->Database_model->in_fetch(array(
                 'in_id' => $this->config->item('in_primary_id'),
             ));
             $grandpa_intent = '<a class="list-group-item" href="/' . $gps[0]['in_id'] . '"><span class="badge badge-primary"><i class="fas fa-angle-left"></i></span> ' . $gps[0]['in_outcome'] . '</a>';
@@ -291,7 +291,7 @@
 
 
 <?php
-$featured_cs = $fetch_cs = $this->Db_model->in_fetch(array(
+$featured_cs = $fetch_cs = $this->Database_model->in_fetch(array(
     'in_status' => 3, //Featured Intents
     'in_id !=' => $c['in_id'],
 ));

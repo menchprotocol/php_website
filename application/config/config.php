@@ -15,9 +15,8 @@ date_default_timezone_set('America/Los_Angeles'); //Settime zone to PST
 //Global app variables:
 $config['app_version'] = '0.64'; //Cache buster in URLs for static js/css files
 $config['password_salt'] = '40s96As9ZkdAcwQ9PhZm'; //Used for hashing the user password for Mench logins
-$config['in_primary_id'] = 6903; //The default platform intent that would be recommended to new masters
 $config['enable_algolia'] = false; //Currently reached our monthly free quota
-$config['primary_in_name'] = 'advance your tech career'; //What is the purposes of Mench at this point?
+$config['in_primary_id'] = 6903; //The default platform intent that would be recommended to new masters
 $config['primary_in_name'] = 'advance your tech career'; //What is the purposes of Mench at this point?
 $config['primary_en_id'] = 3463; //The default matrix entity that is loaded when Entities is clicked
 $config['tr_content_max'] = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
@@ -27,10 +26,18 @@ $config['in_seconds_max'] = 28800; //The maximum seconds allowed per intent. If 
 $config['en_name_max'] = 250; //Max number of characters allowed in the title of intents
 $config['file_size_max'] = 25; //Server setting is 32MB. see here: mench.com/ses
 $config['items_per_page'] = 50; //Even number
-$config['fb_max_message'] = 2000; //The maximum length of a Message accepted via Messenger API
 $config['in_points_options'] = array(-89, -55, -34, -21, -13, -8, -5, -3, -2, -1, 0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610);
-$config['exclude_es'] = array(1, 2); //The engagements that should be ignored
-$config['tr_status_incomplete'] = array(1, 0, -2); //The K statuses that indicate the task is not complete...
+$config['exclude_es'] = array(4278, 4279); //These transaction types will be ignored in statistical models as there are too many of them!
+$config['tr_status_incomplete'] = array(0, 1); //Transactions with these tr_status values are considered in-complete
+
+
+//Facebook-Related:
+$config['fb_max_message'] = 2000; //The maximum length of a Message accepted via Messenger API
+$config['en_convert_4454'] = array( //Mench Notification Levels to Facebook Messenger - This is a manual converter of our internal entities to Facebook API language
+    4456 => 'REGULAR',
+    4457 => 'SILENT_PUSH',
+    4458 => 'NO_PUSH',
+);
 $config['fb_settings'] = array(
     'page_id' => '381488558920384',
     'app_id' => '1782431902047009',
@@ -38,19 +45,15 @@ $config['fb_settings'] = array(
     'default_graph_version' => 'v2.10', //Note: This variable also exists in the Facebook Library. Search "v2.10"
     'mench_access_token' => 'EAAZAVHMRbmyEBAEfN8zsRJ3UOIUJJrNLqeFutPXVQZCoDZA3EO1rgkkzayMtNhisHHEhAos08AmKZCYD7zcZAPIDSMTcBjZAHxxWzbfWyTyp85Fna2bGDfv5JUIBuFTSeQOZBaDHRG7k0kbW8E7kQQN3W6x47VB1dZBPJAU1oNSW1QZDZD',
 );
+
+
+//Amazon:
 $config['aws_credentials'] = [ //Learn more: https://console.aws.amazon.com/iam/home?region=us-west-2#/users/foundation?section=security_credentials
     'key' => 'AKIAJOLBLKFSYCCYYDRA',
     'secret' => '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',
 ];
 
 
-//Mench Notification Levels to Facebook Messenger format which is only supported if NOT unsubscribed:
-//This is a manual converter of the Facebook Notification Level based on communication level Entity ID
-$config['en_convert_4454'] = array(
-    4456 => 'REGULAR',
-    4457 => 'SILENT_PUSH',
-    4458 => 'NO_PUSH',
-);
 
 
 $config['notify_admins'] = array( //Email-based engagements subscriptions
@@ -67,7 +70,7 @@ $config['notify_admins'] = array( //Email-based engagements subscriptions
 $config['object_statuses'] = array(
     'en_status' => array(
         -3 => array(
-            's_name' => 'Flagged',
+            's_name' => 'Denied',
             's_desc' => 'Removed because it violated community guidelines',
             's_icon' => 'fal fa-minus-square',
         ),
@@ -104,7 +107,7 @@ $config['object_statuses'] = array(
     ),
     'in_status' => array(
         -3 => array(
-            's_name' => 'Flagged',
+            's_name' => 'Denied',
             's_desc' => 'Removed because it violated community guidelines',
             's_icon' => 'fal fa-minus-square',
         ),
@@ -155,7 +158,7 @@ $config['object_statuses'] = array(
 
     'tr_status' => array(
         -3 => array(
-            's_name' => 'Flagged',
+            's_name' => 'Denied',
             's_desc' => 'Removed because it violated community guidelines',
             's_icon' => 'fal fa-minus-square',
         ),
@@ -165,7 +168,7 @@ $config['object_statuses'] = array(
             's_icon' => 'fal fa-minus-square',
         ),
         -1 => array(
-            's_name' => 'Removed',
+            's_name' => 'Removed', //or skipped
             's_desc' => 'User decided to skip this link',
             's_icon' => 'fal fa-minus-square',
         ),

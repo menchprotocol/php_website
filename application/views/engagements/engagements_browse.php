@@ -30,7 +30,7 @@ foreach ($engagement_filters as $key => $value) {
 }
 
 //Fetch engagements with possible filters:
-$engagements = $this->Db_model->tr_fetch($match_columns, array(), (is_dev() ? 20 : 100));
+$engagements = $this->Database_model->tr_fetch($match_columns, array(), (is_dev() ? 20 : 100));
 
 ?>
 
@@ -63,7 +63,7 @@ foreach ($engagement_filters as $key => $value) {
     if ($key == 'tr_en_type_id') { //We have a list to show:
 
         //Fetch all unique engagement types that have been logged on the ledger so far:
-        $all_engs = $this->Db_model->tr_fetch(array(
+        $all_engs = $this->Database_model->tr_fetch(array(
             'tr_status >=' => 0,
             'en_status >=' => 0,
         ), array('en_type'), 0, 0, array('trs_count' => 'DESC'), 'COUNT(tr_en_type_id) as trs_count, en_name, tr_en_type_id', 'tr_en_type_id, en_name');

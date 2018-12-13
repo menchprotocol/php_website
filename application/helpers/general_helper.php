@@ -47,7 +47,7 @@ function detect_missing_columns($insert_columns, $required_columns)
         if (!isset($insert_columns[$req_field]) || strlen($insert_columns[$req_field]) == 0) {
             //Ooops, we're missing this required field:
             $CI =& get_instance();
-            $CI->Db_model->tr_create(array(
+            $CI->Database_model->tr_create(array(
                 'tr_content' => 'Missing required field [' . $req_field . '] for inserting new DB row',
                 'tr_metadata' => array(
                     'insert_columns' => $insert_columns,
@@ -76,7 +76,7 @@ function fetch_entity_tree($en_id, $is_edit = false)
 {
 
     $CI =& get_instance();
-    $entities = $CI->Db_model->en_fetch(array(
+    $entities = $CI->Database_model->en_fetch(array(
         'en_id' => $en_id,
     ), array('in__children_count', 'u__urls'));
 
@@ -237,7 +237,7 @@ function array_any_key_exists(array $keys, array $arr)
 function is_valid_intent($in_id)
 {
     $CI =& get_instance();
-    $intents = $CI->Db_model->in_fetch(array(
+    $intents = $CI->Database_model->in_fetch(array(
         'in_id' => intval($in_id),
         'in_status >=' => 0,
     ));
@@ -391,7 +391,7 @@ function save_file($file_url, $json_data, $is_local = false)
             @unlink(($is_local ? $file_url : $file_path . $file_name));
             return $result['ObjectURL'];
         } else {
-            $CI->Db_model->tr_create(array(
+            $CI->Database_model->tr_create(array(
                 'tr_content' => 'save_file() Unable to upload file [' . $file_url . '] to Mench cloud.',
                 'tr_metadata' => $json_data,
                 'tr_en_type_id' => 4246, //Platform Error
@@ -597,7 +597,7 @@ function message_validation($tr_content)
     //Validate Entity:
     if (count($en_ids) > 0) {
 
-        $i_children_us = $CI->Db_model->en_fetch(array(
+        $i_children_us = $CI->Database_model->en_fetch(array(
             'en_id' => $en_ids[0],
         ), array('skip_en__parents', 'u__urls'));
 
@@ -618,7 +618,7 @@ function message_validation($tr_content)
     } elseif (count($urls) > 0) {
 
         //No entity linked, but we have a URL that we should turn into an entity:
-        $url_create = $CI->Db_model->x_sync($urls[0], 1326, false, true);
+        $url_create = $CI->Database_model->x_sync($urls[0], 1326, false, true);
 
         //Did we have an error?
         if (!$url_create['status']) {

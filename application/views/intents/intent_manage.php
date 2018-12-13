@@ -59,7 +59,7 @@ if (isset($orphan_intents)) {
 
             //Count orphans IF we are in the top parent root:
             if ($this->config->item('in_primary_id') == $c['in_id']) {
-                $orphans_count = count($this->Db_model->in_fetch(array(
+                $orphans_count = count($this->Database_model->in_fetch(array(
                     ' NOT EXISTS (SELECT 1 FROM table_ledger WHERE in_id=tr_in_child_id AND tr_status>=0) ' => null,
                 )));
                 if ($orphans_count > 0) {
@@ -100,7 +100,7 @@ if (isset($orphan_intents)) {
 
             //Intent subscribers:
             $limit = (is_dev() ? 10 : 100);
-            $trs = $this->Db_model->w_fetch(array(
+            $trs = $this->Database_model->w_fetch(array(
                 'tr_in_child_id' => $c['in_id'],
             ), array('en', 'u_x', 'w_stats'), array(
                 'tr_id' => 'DESC',

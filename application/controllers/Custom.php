@@ -53,7 +53,7 @@ class Custom extends CI_Controller
         } else {
 
             //How many featured intents do we have?
-            $featured_cs = $fetch_cs = $this->Db_model->in_fetch(array(
+            $featured_cs = $fetch_cs = $this->Database_model->in_fetch(array(
                 'in_status' => 3, //Featured Intents
             ));
 

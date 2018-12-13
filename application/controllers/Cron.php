@@ -26,17 +26,17 @@ class Cron extends CI_Controller
     //30 3 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron e_score_recursive
 
 
-    function treecache(){
+    function matrix_cache(){
 
         /*
-         * This function prepares a PHP-friendly text to be copies to treecache.php
+         * This function prepares a PHP-friendly text to be copies to matrix_cache.php
          * (which is auto loaded) to provide a cache image of some entities in
          * the tree for faster application processing.
          *
          * */
 
         //First first all entities that have Cache in PHP Config @4527 as their parent:
-        $config_ens = $this->Db_model->tr_fetch(array(
+        $config_ens = $this->Database_model->tr_fetch(array(
             'tr_status >=' => 0,
             'tr_en_child_id >' => 0,
             'tr_en_parent_id' => 4527,
@@ -45,7 +45,7 @@ class Cron extends CI_Controller
         foreach($config_ens as $en){
 
             //Now fetch all its children:
-            $children = $this->Db_model->tr_fetch(array(
+            $children = $this->Database_model->tr_fetch(array(
                 'tr_status >=' => 2,
                 'en_status >=' => 2,
                 'tr_en_parent_id' => $en['tr_en_child_id'],
@@ -93,7 +93,7 @@ class Cron extends CI_Controller
     {
         //Cron Settings: 31 * * * *
         //Syncs intents with latest caching data:
-        $sync = $this->Db_model->in_recursive_fetch($in_id, true, $update_c_table);
+        $sync = $this->Database_model->in_recursive_fetch($in_id, true, $update_c_table);
         if (isset($_GET['redirect']) && strlen($_GET['redirect']) > 0) {
             //Now redirect;
             header('Location: ' . $_GET['redirect']);
@@ -107,7 +107,7 @@ class Cron extends CI_Controller
     //I cannot update algolia from my local server so if is_dev() is true I will call mench.com/cron/algolia_sync to sync my local change using a live end-point:
     function algolia_sync($obj, $obj_id = 0)
     {
-        echo_json($this->Db_model->algolia_sync($obj, $obj_id));
+        echo_json($this->Database_model->algolia_sync($obj, $obj_id));
     }
 
 
@@ -186,10 +186,10 @@ class Cron extends CI_Controller
             //Update this row:
             $score += count($entities) * $score_weights['u__childrens'];
 
-            $score += count($this->Db_model->tr_fetch(array(
+            $score += count($this->Database_model->tr_fetch(array(
                     'tr_en_child_id' => $u['en_id'],
                 ), array(), 5000)) * $score_weights['tr_en_child_id'];
-            $score += count($this->Db_model->tr_fetch(array(
+            $score += count($this->Database_model->tr_fetch(array(
                     'tr_en_credit_id' => $u['en_id'],
                 ), array(), 5000)) * $score_weights['tr_en_credit_id'];
 
@@ -202,12 +202,12 @@ class Cron extends CI_Controller
                     'x_parent_en_id' => $u['en_id'],
                 ))) * $score_weights['x_parent_en_id'];
 
-            $score += count($this->Db_model->w_fetch(array(
+            $score += count($this->Database_model->w_fetch(array(
                     'tr_en_parent_id' => $u['en_id'],
                 ))) * $score_weights['tr_en_parent_id'];
 
             //Update the score:
-            $this->Db_model->en_update($u['en_id'], array(
+            $this->Database_model->en_update($u['en_id'], array(
                 'en_trust_score' => $score,
             ));
 
@@ -226,7 +226,7 @@ class Cron extends CI_Controller
         //Cron Settings: */5 * * * *
 
         //Fetch pending drips
-        $e_pending = $this->Db_model->tr_fetch(array(
+        $e_pending = $this->Database_model->tr_fetch(array(
             'tr_status' => 0, //Pending work
             'tr_en_type_id' => 4281, //Scheduled Drip
             'tr_timestamp <=' => date("Y-m-d H:i:s"), //Message is due
@@ -237,14 +237,14 @@ class Cron extends CI_Controller
 
 
         //Lock item so other Cron jobs don't pick this up:
-        $this->Db_model->tr_status_processing($e_pending);
+        $this->Database_model->tr_status_processing($e_pending);
 
 
         $drip_sent = 0;
         foreach ($e_pending as $tr_content) {
 
             //Fetch user data:
-            $trs = $this->Db_model->w_fetch(array());
+            $trs = $this->Database_model->w_fetch(array());
 
             if (count($trs) > 0) {
 
@@ -252,7 +252,7 @@ class Cron extends CI_Controller
                 $json_data = unserialize($tr_content['tr_metadata']);
 
                 //Send this message:
-                $this->Chat_model->send_message(array(
+                $this->Chat_model->dispatch_message(array(
                     array_merge($json_data['i'], array(
                         'tr_en_child_id' => $trs[0]['en_id'],
                         'tr_in_child_id' => $json_data['i']['tr_in_child_id'],
@@ -260,7 +260,7 @@ class Cron extends CI_Controller
                 ));
 
                 //Update Engagement:
-                $this->Db_model->tr_update($tr_content['tr_id'], array(
+                $this->Database_model->tr_update($tr_content['tr_id'], array(
                     'tr_status' => 2, //Publish
                 ));
 
@@ -280,14 +280,14 @@ class Cron extends CI_Controller
 
         $max_per_batch = 20; //Max number of scans per run
 
-        $e_pending = $this->Db_model->tr_fetch(array(
+        $e_pending = $this->Database_model->tr_fetch(array(
             'tr_status' => 0, //Pending
             'tr_en_type_id' => 4299, //Save media file to Mench cloud
         ), array(), $max_per_batch);
 
 
         //Lock item so other Cron jobs don't pick this up:
-        $this->Db_model->tr_status_processing($e_pending);
+        $this->Database_model->tr_status_processing($e_pending);
 
 
         $counter = 0;
@@ -336,7 +336,7 @@ class Cron extends CI_Controller
                     if (strlen($u['en_icon'])<1) {
 
                         //Update Cover ID:
-                        $this->Db_model->en_update($u['en_id'], array(
+                        $this->Database_model->en_update($u['en_id'], array(
                             'en_icon' => '<img class="profile-icon" src="' . $new_file_url . '" />',
                         ), true);
 
@@ -345,7 +345,7 @@ class Cron extends CI_Controller
             }
 
             //Update engagement:
-            $this->Db_model->tr_update($u['tr_id'], array(
+            $this->Database_model->tr_update($u['tr_id'], array(
                 'tr_status' => 2, //Publish
             ));
 
@@ -368,14 +368,14 @@ class Cron extends CI_Controller
 
         $max_per_batch = 10; //Max number of scans per run
 
-        $e_pending = $this->Db_model->tr_fetch(array(
+        $e_pending = $this->Database_model->tr_fetch(array(
             'tr_status' => 0, //Pending file upload to S3
             'tr_en_type_id IN (4277,4280)' => null, //Sent/Received messages
         ), array(), $max_per_batch);
 
 
         //Lock item so other Cron jobs don't pick this up:
-        $this->Db_model->tr_status_processing($e_pending);
+        $this->Database_model->tr_status_processing($e_pending);
 
 
         $counter = 0;
@@ -402,7 +402,7 @@ class Cron extends CI_Controller
                                         $new_file_url = save_file($att['payload']['url'], $json_data);
 
                                         //Update engagement data:
-                                        $this->Db_model->tr_update($ep['tr_id'], array(
+                                        $this->Database_model->tr_update($ep['tr_id'], array(
                                             'tr_content' => $new_file_url,
                                             'tr_en_type_id' => detect_tr_en_type_id($new_file_url),
                                             'tr_status' => 2, //Publish
@@ -418,7 +418,7 @@ class Cron extends CI_Controller
                 }
             } else {
                 //This should not happen, report:
-                $this->Db_model->tr_create(array(
+                $this->Database_model->tr_create(array(
                     'tr_content' => 'cron/bot_save_files() fetched tr_metadata() that was missing its [entry] value',
                     'tr_metadata' => $json_data,
                     'tr_en_type_id' => 4246, //System Error
@@ -474,12 +474,12 @@ class Cron extends CI_Controller
                 );
 
                 //Attempt to save this:
-                $result = $this->Chat_model->facebook_graph_api('POST', '/me/message_attachments', $payload);
+                $result = $this->Chat_model->facebook_graph('POST', '/me/message_attachments', $payload);
                 $db_result = false;
 
                 if ($result['status'] && isset($result['tr_metadata']['result']['attachment_id'])) {
                     //Save attachment to DB:
-                    $db_result = $this->Db_model->x_update($x['x_id'], array(
+                    $db_result = $this->Database_model->x_update($x['x_id'], array(
                         'x_fb_att_id' => $result['tr_metadata']['result']['attachment_id'],
                     ));
                 }
@@ -490,7 +490,7 @@ class Cron extends CI_Controller
                 } else {
 
                     //Log error:
-                    $this->Db_model->tr_create(array(
+                    $this->Database_model->tr_create(array(
                         'tr_content' => 'message_fb_sync_attachments() Failed to sync attachment using Facebook API',
                         'tr_metadata' => array(
                             'payload' => $payload,
@@ -500,7 +500,7 @@ class Cron extends CI_Controller
                     ));
 
                     //Disable future attempts:
-                    $this->Db_model->x_update($x['x_id'], array(
+                    $this->Database_model->x_update($x['x_id'], array(
                         'x_fb_att_id' => -1, //No more checks on this guy
                     ));
                 }
@@ -544,7 +544,7 @@ class Cron extends CI_Controller
         //Run even minute by the cron job and determines which users to talk to...
         //Fetch all active subscriptions:
         $user_ids_served = array(); //We use this to ensure we're only service one subscription per user
-        $active_ws = $this->Db_model->w_fetch(array(
+        $active_ws = $this->Database_model->w_fetch(array(
             'tr_status' => 1,
             'en_status >=' => 0,
             'in_status >=' => 2,
@@ -564,7 +564,7 @@ class Cron extends CI_Controller
             array_push($user_ids_served, intval($w['en_id']));
 
             //See where this user is in their subscription:
-            $trs_next = $this->Db_model->k_next_fetch($w['tr_id']);
+            $trs_next = $this->Database_model->k_next_fetch($w['tr_id']);
 
             if (!$trs_next) {
                 //Should not happen, bug already reported:
@@ -572,7 +572,7 @@ class Cron extends CI_Controller
             }
 
             //Update the serving timestamp:
-            $this->Db_model->w_update($w['tr_id'], array(
+            $this->Database_model->w_update($w['tr_id'], array(
                 'w_last_heard' => date("Y-m-d H:i:s"),
             ));
 
@@ -589,7 +589,7 @@ class Cron extends CI_Controller
         //Cron Settings: 45 * * * *
         //Send reminders to masters to complete their intent:
 
-        $trs = $this->Db_model->w_fetch(array());
+        $trs = $this->Database_model->w_fetch(array());
 
         //Define the logic of these reminders
         $reminder_index = array(
@@ -632,7 +632,7 @@ class Cron extends CI_Controller
                     if ($subscription['w__progress'] < $logic['progress_below']) {
 
                         //See if we have reminded them already about this:
-                        $reminders_sent = $this->Db_model->tr_fetch(array(
+                        $reminders_sent = $this->Database_model->tr_fetch(array(
                             'tr_en_type_id IN (4280,4276)' => null, //Email or Message sent
                             'tr_en_child_id' => $subscription['en_id'],
                             'tr_in_child_id' => $logic['reminder_in_id'],

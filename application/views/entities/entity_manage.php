@@ -11,7 +11,7 @@ $child_entities = $this->Old_model->ur_children_fetch(array(
 
 //Intents subscribed:
 $limit = (is_dev() ? 10 : 100);
-$trs = $this->Db_model->w_fetch(array(
+$trs = $this->Database_model->w_fetch(array(
     'tr_en_parent_id' => $entity['en_id'],
 ), array('en', 'in', 'w_stats'), array(
     'tr_id' => 'DESC',
@@ -70,7 +70,7 @@ $trs = $this->Db_model->w_fetch(array(
         echo '<td style="width: 100px;"><h5 class="badge badge-h"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-children-count">' . $entity['in__children_count'] . '</span> Children</h5></td>';
         //Count orphans IF we are in the top parent root:
         if ($this->config->item('primary_en_id') == $entity['en_id']) {
-            $orphans_count = count($this->Db_model->en_fetch(array(
+            $orphans_count = count($this->Database_model->en_fetch(array(
                 ' NOT EXISTS (SELECT 1 FROM table_ledger WHERE en_id=tr_en_child_id AND tr_status>=0) ' => null,
             ), array('skip_en__parents')));
 
