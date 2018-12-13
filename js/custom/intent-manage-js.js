@@ -110,7 +110,7 @@ $(document).ready(function () {
 
 
     $("#add_in_btn").click(function () {
-        //Trainer clicked on the add new intent button at level 2:
+        //miner clicked on the add new intent button at level 2:
         c_js_new(c_top_id, 2);
     });
 

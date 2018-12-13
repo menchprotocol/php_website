@@ -14,7 +14,7 @@ $list_outs = (count($k_ins) == 0 || !($k_ins[0]['tr_status'] == 0) || intval($c[
 
 if (count($k_ins) == 1) {
     //Inform the user of any completion requirements:
-    $message_in_requirements = $this->Matrix_model->matrix_in_requirements($c);
+    $message_in_requirements = $this->Matrix_model->in_completion_requirements($c);
 
     //Submission button visible after first button was clicked:
     $is_incomplete = ($k_ins[0]['tr_status'] <= 0 || ($k_ins[0]['tr_status'] == 1 && count($k_outs) == 0));

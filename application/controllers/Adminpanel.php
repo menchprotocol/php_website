@@ -14,7 +14,7 @@ class Adminpanel extends CI_Controller
         //Load our buddies:
         $this->output->enable_profiler(FALSE);
 
-        //Authenticate Trainers, redirect if not:
+        //Authenticate miners, redirect if not:
         $this->udata = auth(array(1308), 1);
     }
 
@@ -38,7 +38,7 @@ class Adminpanel extends CI_Controller
 
     function li_list_blob($tr_id)
     {
-        //Authenticate trainer access:
+        //Authenticate miner access:
         $udata = auth(array(1308), 1);
         //Fetch blob of engagement and display it on screen:
         $blobs = $this->Database_model->tr_fetch(array(

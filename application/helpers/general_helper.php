@@ -291,7 +291,7 @@ function auth($entity_groups = null, $force_redirect = 0)
 
     } elseif (isset($udata['en__parents']) && filter_array($udata['en__parents'], 'en_id', 1308)) {
 
-        //Always grant access to Trainers:
+        //Always grant access to miners:
         return $udata;
 
     } elseif (isset($udata['en_id']) && filter_array($udata['en__parents'], 'en_id', $entity_groups)) {

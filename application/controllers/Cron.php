@@ -168,7 +168,7 @@ class Cron extends CI_Controller
 
         //Fetch child entities:
         $entities = $this->Old_model->ur_children_fetch(array(
-            'tr_en_parent_id' => (count($u) > 0 ? $u['en_id'] : $this->config->item('primary_en_id')),
+            'tr_en_parent_id' => (count($u) > 0 ? $u['en_id'] : $this->config->item('en_primary_id')),
             'tr_status >=' => 0, //Pending or Active
             'en_status >=' => 0, //Pending or Active
         ));
@@ -421,7 +421,7 @@ class Cron extends CI_Controller
                 $this->Database_model->tr_create(array(
                     'tr_content' => 'cron/bot_save_files() fetched tr_metadata() that was missing its [entry] value',
                     'tr_metadata' => $json_data,
-                    'tr_en_type_id' => 4246, //System Error
+                    'tr_en_type_id' => 4246, //Platform Error
                 ));
             }
 

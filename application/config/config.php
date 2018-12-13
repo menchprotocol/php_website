@@ -3,71 +3,95 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
 /*
+ *
  * Global variables used throughout the platform.
- * Ctrl+F is your friend to explore where they are implemented and how they work ;)
- * use-case format: $this->config->item('enable_algolia')
+ * use-case format: $this->config->item('tr_status_incomplete')
  *
  */
 
 
-date_default_timezone_set('America/Los_Angeles'); //Settime zone to PST
+//Settime zone to PST:
+date_default_timezone_set('America/Los_Angeles');
 
-//Global app variables:
-$config['app_version'] = '0.64'; //Cache buster in URLs for static js/css files
-$config['password_salt'] = '40s96As9ZkdAcwQ9PhZm'; //Used for hashing the user password for Mench logins
-$config['enable_algolia'] = false; //Currently reached our monthly free quota
+
+//Matrix defaults:
+$config['in_primary_name'] = 'advance your tech career'; //What is the purposes of Mench at this point?
 $config['in_primary_id'] = 6903; //The default platform intent that would be recommended to new masters
-$config['primary_in_name'] = 'advance your tech career'; //What is the purposes of Mench at this point?
-$config['primary_en_id'] = 3463; //The default matrix entity that is loaded when Entities is clicked
-$config['tr_content_max'] = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
-$config['max_counter'] = 999; //Used in counting things of engagements in matrix UI. If more that this will add a "+" sign to the end
-$config['in_outcome_max'] = 89; //Max number of characters allowed in the title of intents
-$config['in_seconds_max'] = 28800; //The maximum seconds allowed per intent. If larger, the trainer is asked to break it down into smaller intents
-$config['en_name_max'] = 250; //Max number of characters allowed in the title of intents
+$config['en_primary_id'] = 3463; //The default matrix entity that is loaded when Entities is clicked
+
+
+//UI Display:
+$config['app_version'] = '0.64'; //Cache buster in URLs for static js/css files
+$config['en_per_page'] = 50; //Limits the maximum entities loaded per page
+$config['tr_max_count'] = 999; //TODO Deprecate... (Used in counting things of engagements in matrix UI. If more that this will add a "+" sign to the end)
+
+
+//App Functionality:
+$config['enable_algolia'] = false; //Currently reached our monthly free quota
 $config['file_size_max'] = 25; //Server setting is 32MB. see here: mench.com/ses
-$config['items_per_page'] = 50; //Even number
-$config['in_points_options'] = array(-89, -55, -34, -21, -13, -8, -5, -3, -2, -1, 0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610);
-$config['exclude_es'] = array(4278, 4279); //These transaction types will be ignored in statistical models as there are too many of them!
+$config['password_salt'] = '40s96As9ZkdAcwQ9PhZm'; //Used for hashing the user password for Mench logins
+$config['tr_types_exclude'] = array(4278, 4279); //These transaction types will be ignored in statistical models as there are too many of them!
 $config['tr_status_incomplete'] = array(0, 1); //Transactions with these tr_status values are considered in-complete
 
 
-//Facebook-Related:
-$config['fb_max_message'] = 2000; //The maximum length of a Message accepted via Messenger API
+//App Inputs:
+$config['in_points_options'] = array(-89, -55, -34, -21, -13, -8, -5, -3, -2, -1, 0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610);
+$config['in_seconds_max'] = 28800; //The maximum seconds allowed per intent. If larger, the miner is asked to break it down into smaller intents
+$config['in_outcome_max'] = 89; //Max number of characters allowed in the title of intents
+$config['en_name_max'] = 250; //Max number of characters allowed in the title of intents
+$config['tr_content_max'] = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
+
+
+//Third-Party Settings:
+$config['fb_max_message'] = 2000; //The maximum length of a Message accepted via Messenger API (This used to be 610 before, then Facebook expanded it!)
 $config['en_convert_4454'] = array( //Mench Notification Levels to Facebook Messenger - This is a manual converter of our internal entities to Facebook API language
     4456 => 'REGULAR',
     4457 => 'SILENT_PUSH',
     4458 => 'NO_PUSH',
+    //There is also an Unsubscribe @4455 entity which is not here obviously since there would be no communication with the Master at all!
 );
 $config['fb_settings'] = array(
     'page_id' => '381488558920384',
     'app_id' => '1782431902047009',
     'client_secret' => '05aea76d11b062951b40a5bee4251620',
-    'default_graph_version' => 'v2.10', //Note: This variable also exists in the Facebook Library. Search "v2.10"
+    'default_graph_version' => 'v2.10', //Note: This variable also exists in the Facebook Library too! Search "v2.10"
     'mench_access_token' => 'EAAZAVHMRbmyEBAEfN8zsRJ3UOIUJJrNLqeFutPXVQZCoDZA3EO1rgkkzayMtNhisHHEhAos08AmKZCYD7zcZAPIDSMTcBjZAHxxWzbfWyTyp85Fna2bGDfv5JUIBuFTSeQOZBaDHRG7k0kbW8E7kQQN3W6x47VB1dZBPJAU1oNSW1QZDZD',
 );
-
-
-//Amazon:
 $config['aws_credentials'] = [ //Learn more: https://console.aws.amazon.com/iam/home?region=us-west-2#/users/foundation?section=security_credentials
     'key' => 'AKIAJOLBLKFSYCCYYDRA',
     'secret' => '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',
 ];
 
 
-
-
-$config['notify_admins'] = array( //Email-based engagements subscriptions
-    1 => array(
-        'admin_emails' => array('shervin@mench.com'),
-        'admin_notify' => array(
-            9, //User attention
-            8, //System error
-            10, //user login
-            7703, //Search for New Intent Subscription
-        ),
+//Ledger filters:
+$config['ledger_filters'] = array(
+    'tr_en_credit_id' => array(
+        'name' => 'Initiator Entity',
+        'object_code' => 'en',
+    ),
+    'tr_en_child_id' => array(
+        'name' => 'Child Entity',
+        'object_code' => 'en',
+    ),
+    'tr_en_parent_id' => array(
+        'name' => 'Parent Entity',
+        'object_code' => 'en',
+    ),
+    'tr_in_child_id' => array(
+        'name' => 'Child Intent',
+        'object_code' => 'in',
+    ),
+    'tr_in_parent_id' => array(
+        'name' => 'Parent Intent',
+        'object_code' => 'in',
     ),
 );
+
+
+//3x Table Statuses:
 $config['object_statuses'] = array(
+
+    //Entity 7 Statuses:
     'en_status' => array(
         -3 => array(
             's_name' => 'Denied',
@@ -105,57 +129,8 @@ $config['object_statuses'] = array(
             's_icon' => 'fas fa-badge-check',
         ),
     ),
-    'in_status' => array(
-        -3 => array(
-            's_name' => 'Denied',
-            's_desc' => 'Removed because it violated community guidelines',
-            's_icon' => 'fal fa-minus-square',
-        ),
-        -2 => array(
-            's_name' => 'Merged',
-            's_desc' => 'Intent merged with another intent',
-            's_icon' => 'fal fa-minus-square',
-        ),
-        -1 => array(
-            's_name' => 'Removed',
-            's_desc' => 'Intent has been archived and all its links has been removed',
-            's_icon' => 'fas fa-trash-alt',
-        ),
-        0 => array(
-            's_name' => 'New',
-            's_desc' => 'Intent is newly added and pending completion',
-            's_icon' => 'fal fa-plus-circle',
-        ),
-        1 => array(
-            's_name' => 'Working On',
-            's_desc' => 'Intent tree/messages are being patternized from the internet',
-            's_icon' => 'fas fa-spinner fa-spin',
-        ),
-        2 => array(
-            's_name' => 'Published',
-            's_desc' => 'Intent is published live and ready to accept subscriptions',
-            's_icon' => 'fas fa-check-circle',
-        ),
-        3 => array(
-            's_name' => 'Featured',
-            's_desc' => 'Intent is recommended on mench.com home page',
-            's_icon' => 'fas fa-badge-check',
-        ),
-    ),
 
-    'in_is_any' => array(
-        0 => array(
-            's_name' => 'All Children',
-            's_desc' => 'Intent is complete when all children are marked as complete',
-            's_icon' => 'fas fa-sitemap',
-        ),
-        1 => array(
-            's_name' => 'Any Child',
-            's_desc' => 'Intent is complete when a single child is marked as complete',
-            's_icon' => 'fas fa-code-merge',
-        ),
-    ),
-
+    //Transaction 7 Statuses:
     'tr_status' => array(
         -3 => array(
             's_name' => 'Denied',
@@ -194,6 +169,61 @@ $config['object_statuses'] = array(
         ),
     ),
 
+
+    //Intent 7 Statuses:
+    'in_status' => array(
+        -3 => array(
+            's_name' => 'Denied',
+            's_desc' => 'Removed because it violated community guidelines',
+            's_icon' => 'fal fa-minus-square',
+        ),
+        -2 => array(
+            's_name' => 'Merged',
+            's_desc' => 'Intent merged with another intent',
+            's_icon' => 'fal fa-minus-square',
+        ),
+        -1 => array(
+            's_name' => 'Removed',
+            's_desc' => 'Intent has been archived and all its links has been removed',
+            's_icon' => 'fas fa-trash-alt',
+        ),
+        0 => array(
+            's_name' => 'New',
+            's_desc' => 'Intent is newly added and pending completion',
+            's_icon' => 'fal fa-plus-circle',
+        ),
+        1 => array(
+            's_name' => 'Working On',
+            's_desc' => 'Intent tree/messages are being patternized from the internet',
+            's_icon' => 'fas fa-spinner fa-spin',
+        ),
+        2 => array(
+            's_name' => 'Published',
+            's_desc' => 'Intent is published live and ready to accept subscriptions',
+            's_icon' => 'fas fa-check-circle',
+        ),
+        3 => array(
+            's_name' => 'Featured',
+            's_desc' => 'Intent is recommended on mench.com home page',
+            's_icon' => 'fas fa-badge-check',
+        ),
+    ),
+
+    //Intent Is Any setting:
+    'in_is_any' => array(
+        0 => array(
+            's_name' => 'All Children',
+            's_desc' => 'Intent is complete when all children are marked as complete',
+            's_icon' => 'fas fa-sitemap',
+        ),
+        1 => array(
+            's_name' => 'Any Child',
+            's_desc' => 'Intent is complete when a single child is marked as complete',
+            's_icon' => 'fas fa-code-merge',
+        ),
+    ),
+
+    //TODO Deprecate:
     'x_type' => array(
         0 => array(
             's_name' => 'Web Page',
@@ -252,33 +282,21 @@ $config['object_statuses'] = array(
     ),
 );
 
-$config['engagement_references'] = array( //The core objects of the platform:
-    'tr_en_credit_id' => array(
-        'name' => 'Initiator Entity',
-        'object_code' => 'en',
-    ),
-    'tr_en_child_id' => array(
-        'name' => 'Child Entity',
-        'object_code' => 'en',
-    ),
-    'tr_en_parent_id' => array(
-        'name' => 'Parent Entity',
-        'object_code' => 'en',
-    ),
-    'tr_in_child_id' => array(
-        'name' => 'Child Intent',
-        'object_code' => 'in',
-    ),
-    'tr_in_parent_id' => array(
-        'name' => 'Parent Intent',
-        'object_code' => 'in',
+
+
+
+//TODO Deprecating:
+$config['notify_admins'] = array( //Email-based engagements subscriptions
+    1 => array(
+        'admin_emails' => array('shervin@mench.com'),
+        'admin_notify' => array(
+            9, //User attention
+            8, //System error
+            10, //user login
+            7703, //Search for New Intent Subscription
+        ),
     ),
 );
-
-
-
-
-//Here are the user metadata elements:
 $config['en_user_metadata'] = array(
     'en_countries' => array(
         'vg' => 4121,
@@ -698,6 +716,8 @@ $config['en_user_metadata'] = array(
         'm' => 3291,
     ),
 );
+
+
 
 /*
  |--------------------------------------------------------------------------

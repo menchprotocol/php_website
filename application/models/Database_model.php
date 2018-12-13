@@ -254,7 +254,7 @@ class Database_model extends CI_Model
             //Oooopsi, we could not find it! Log error and return false:
             $this->Database_model->tr_create(array(
                 'tr_content' => 'Unable to locate OR selection for this subscription',
-                'tr_en_type_id' => 4246, //System error
+                'tr_en_type_id' => 4246, //Platform Error
                 'tr_in_child_id' => $in_id,
                 'tr_tr_parent_id' => $tr_id,
             ));
@@ -463,7 +463,7 @@ class Database_model extends CI_Model
                                 'tr_en_child_id' => $intents[0]['tr_en_parent_id'],
                                 'tr_in_child_id' => $intents[0]['tr_in_child_id'],
                                 'tr_tr_parent_id' => $intents[0]['tr_id'],
-                                'tr_content' => 'How else can I help you ' . $this->config->item('primary_in_name') . '? ' . echo_pa_lets(),
+                                'tr_content' => 'How else can I help you ' . $this->config->item('in_primary_name') . '? ' . echo_pa_lets(),
                             ),
                         ));
 
@@ -973,7 +973,7 @@ class Database_model extends CI_Model
             if (in_array('in__active_messages', $join_objects)) {
                 $intents[$key]['in__active_messages'] = $this->Database_model->tr_fetch(array(
                     'tr_status >=' => 0, //New+ status which is considered active (not removed)
-                    'tr_en_type_id IN (' . join(',', $this->config->item('en_child_4485')) . ')' => null, //All Intent messages
+                    'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent messages
                     'tr_in_child_id' => $value['in_id'],
                 ), array(), 200, 0, array('tr_order' => 'ASC'));
             }
@@ -1493,7 +1493,7 @@ class Database_model extends CI_Model
                 $this->Database_model->tr_create(array(
                     'tr_en_credit_id' => $insert_columns['x_parent_en_id'],
                     'tr_en_child_id' => $insert_columns['x_en_id'],
-                    'tr_en_type_id' => 4246, //System error
+                    'tr_en_type_id' => 4246, //Platform Error
                     'tr_content' => 'x_create() found a duplicate URL ID [' . $urls[0]['x_id'] . ']',
                     'tr_metadata' => $insert_columns,
                     'e_x_id' => $urls[0]['x_id'],
@@ -1777,7 +1777,7 @@ class Database_model extends CI_Model
                         }
 
                         //Lets go through all references to see what is there:
-                        foreach ($this->config->item('engagement_references') as $engagement_field => $er) {
+                        foreach ($this->config->item('ledger_filters') as $engagement_field => $er) {
                             if (intval($engagements[0][$engagement_field]) > 0) {
                                 //Yes we have a value here:
                                 $html_message .= '<div>' . $er['name'] . ': ' . echo_object($er['object_code'], $engagements[0][$engagement_field], $engagement_field, null) . '</div>';
@@ -1939,7 +1939,7 @@ class Database_model extends CI_Model
             '___tree_max_cost' => 0,
 
             '___tree_experts' => array(), //Expert references across all contributions
-            '___tree_miners' => array(), //Trainer references considering intent messages
+            '___tree_miners' => array(), //miner references considering intent messages
             '___tree_contents' => array(), //Content types entity references on messages
 
             'metadatas_updated' => 0, //Keeps count of database metadata fields that were not in sync with the latest version of the cahced data
@@ -2097,7 +2097,7 @@ class Database_model extends CI_Model
                             }
                         }
 
-                        //Addup unique trainers:
+                        //Addup unique miners:
                         foreach ($granchildren['___tree_miners'] as $en_id => $tet) {
                             //Is this a new expert?
                             if (!isset($immediate_children['___tree_miners'][$en_id])) {
@@ -2174,9 +2174,9 @@ class Database_model extends CI_Model
                 }
 
 
-                //Check the author of this message (The trainer) in the trainer array:
+                //Check the author of this message (The miner) in the miner array:
                 if (!isset($intents[0]['___tree_miners'][$i['tr_en_credit_id']])) {
-                    //Add the entire message which would also hold the trainer details:
+                    //Add the entire message which would also hold the miner details:
                     $intents[0]['___tree_miners'][$i['tr_en_credit_id']] = u_essentials($i);
                 }
                 //How about the parent of this one?
@@ -2537,8 +2537,8 @@ class Database_model extends CI_Model
 
 
                 //Add primary Entity as tag of Entity itself for search management:
-                if ($item['en_id'] == $this->config->item('primary_en_id')) {
-                    array_push($new_item['_tags'], 'en' . $this->config->item('primary_en_id'));
+                if ($item['en_id'] == $this->config->item('en_primary_id')) {
+                    array_push($new_item['_tags'], 'en' . $this->config->item('en_primary_id'));
                 }
 
                 //Append additional information:

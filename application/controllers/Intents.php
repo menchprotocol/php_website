@@ -12,7 +12,7 @@ class Intents extends CI_Controller
     }
 
 
-    //For trainers to see and manage an intent:
+    //For miners to see and manage an intent:
     function intent_manage($in_id)
     {
 
@@ -571,7 +571,7 @@ class Intents extends CI_Controller
     {
 
         //Auth user and check required variables:
-        $udata = auth(array(1308)); //Trainers
+        $udata = auth(array(1308)); //miners
 
         if (!$udata) {
             die('<div class="alert alert-danger" role="alert">Session Expired</div>');
@@ -594,7 +594,7 @@ class Intents extends CI_Controller
     {
 
         //Auth user and check required variables:
-        $udata = auth(array(1308)); //Trainers
+        $udata = auth(array(1308)); //miners
 
         if (!$udata) {
             die('<div class="alert alert-danger" role="alert">Session Expired</div>');

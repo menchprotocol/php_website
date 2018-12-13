@@ -7,7 +7,7 @@ $udata = $this->session->userdata('user');
 $child_entities = $this->Old_model->ur_children_fetch(array(
     'tr_en_parent_id' => $entity['en_id'],
     'tr_status' => 1, //Only active
-), array('in__children_count'), $this->config->item('items_per_page'));
+), array('in__children_count'), $this->config->item('en_per_page'));
 
 //Intents subscribed:
 $limit = (is_dev() ? 10 : 100);
@@ -37,7 +37,7 @@ $trs = $this->Database_model->w_fetch(array(
         //Entity & Components:
 
         //Parents
-        if ($entity['en_id'] != $this->config->item('primary_en_id') || count($entity['en__parents']) > 0) {
+        if ($entity['en_id'] != $this->config->item('en_primary_id') || count($entity['en__parents']) > 0) {
 
             echo '<h5><span class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-parent-count">' . count($entity['en__parents']) . '</span> Parent' . echo__s(count($entity['en__parents'])) . '</span></h5>';
             echo '<div id="list-parent" class="list-group  grey-list">';
@@ -69,7 +69,7 @@ $trs = $this->Database_model->w_fetch(array(
         echo '<div class="indent2"><table width="100%" style="margin-top:10px;"><tr>';
         echo '<td style="width: 100px;"><h5 class="badge badge-h"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-children-count">' . $entity['in__children_count'] . '</span> Children</h5></td>';
         //Count orphans IF we are in the top parent root:
-        if ($this->config->item('primary_en_id') == $entity['en_id']) {
+        if ($this->config->item('en_primary_id') == $entity['en_id']) {
             $orphans_count = count($this->Database_model->en_fetch(array(
                 ' NOT EXISTS (SELECT 1 FROM table_ledger WHERE en_id=tr_en_child_id AND tr_status>=0) ' => null,
             ), array('skip_en__parents')));
@@ -119,7 +119,7 @@ $trs = $this->Database_model->w_fetch(array(
             echo echo_u($u, 2);
         }
         if ($entity['in__children_count'] > count($child_entities)) {
-            echo_next_u(1, $this->config->item('items_per_page'), $entity['in__children_count']);
+            echo_next_u(1, $this->config->item('en_per_page'), $entity['in__children_count']);
         }
 
         //Input to add new parents:

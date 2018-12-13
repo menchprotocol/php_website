@@ -45,7 +45,7 @@ class Custom extends CI_Controller
         } elseif (1 || (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] == 'mench.co')) {
 
             $this->load->view('shared/public_header', array(
-                'title' => ucwords($this->config->item('primary_in_name')),
+                'title' => ucwords($this->config->item('in_primary_name')),
             ));
             $this->load->view('entities/mench-co-intro');
             $this->load->view('shared/public_footer');
@@ -130,10 +130,10 @@ class Custom extends CI_Controller
     {
         $data = array(
             'title' => 'Train Mench to become the best Personal Assistant',
-            'landing_page' => 'entities/splash_trainers_why',
+            'landing_page' => 'entities/splash_miners_why',
         );
         $this->load->view('shared/public_header', $data);
-        $this->load->view('entities/become_a_trainer', $data);
+        $this->load->view('entities/become_a_miner', $data);
         $this->load->view('shared/public_footer');
     }
 

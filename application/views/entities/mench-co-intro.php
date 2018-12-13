@@ -1,4 +1,4 @@
-<h1><?= ucwords($this->config->item('primary_in_name')) ?></h1>
+<h1><?= ucwords($this->config->item('in_primary_name')) ?></h1>
 <p>We’re building a learning marketplace to aggregate best-practices from industry experts. Best-practices for any given
     intention are distributed among Books, Articles, Videos, Podcasts, Online Courses and other mediums. We're building
     a centralized and curated index of all best-practices across any medium that will quote the industry expert who

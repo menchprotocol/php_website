@@ -152,7 +152,7 @@ class Chat_model extends CI_Model
                 $this->Chat_model->dispatch_message(array(
                     array(
                         'tr_en_child_id' => $u['en_id'],
-                        'tr_content' => 'Awesome, I am excited to continue helping you to ' . $this->config->item('primary_in_name') . '. ' . echo_pa_lets(),
+                        'tr_content' => 'Awesome, I am excited to continue helping you to ' . $this->config->item('in_primary_name') . '. ' . echo_pa_lets(),
                     ),
                 ));
 
@@ -211,7 +211,7 @@ class Chat_model extends CI_Model
                     $this->Database_model->tr_create(array(
                         'tr_en_credit_id' => $u['en_id'],
                         'tr_content' => 'Failed to skip an intent from the master Action Plan',
-                        'tr_en_type_id' => 4246, //System error
+                        'tr_en_type_id' => 4246, //Platform Error
                         'tr_tr_parent_id' => intval($unsub_value),
                     ));
 
@@ -255,7 +255,7 @@ class Chat_model extends CI_Model
                 $this->Chat_model->dispatch_message(array(
                     array(
                         'tr_en_child_id' => $u['en_id'],
-                        'tr_content' => 'Ok, so how can I help you ' . $this->config->item('primary_in_name') . '? ' . echo_pa_lets(),
+                        'tr_content' => 'Ok, so how can I help you ' . $this->config->item('in_primary_name') . '? ' . echo_pa_lets(),
                     ),
                 ));
 
@@ -608,7 +608,7 @@ class Chat_model extends CI_Model
 
 
                 //Does this intent have any requirements to be marked as complete?
-                $message_in_requirements = $this->Matrix_model->matrix_in_requirements($k_children[0], true);
+                $message_in_requirements = $this->Matrix_model->in_completion_requirements($k_children[0], true);
 
                 if ($message_in_requirements) {
 

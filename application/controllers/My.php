@@ -176,7 +176,7 @@ class My extends CI_Controller
                     'tr_en_credit_id' => $trs[0]['en_id'],
                     'tr_metadata' => $trs,
                     'tr_content' => 'Unable to load a specific intent for the master Action Plan! Should not happen...',
-                    'tr_en_type_id' => 4246,
+                    'tr_en_type_id' => 4246, //Platform Error
                     'tr_tr_parent_id' => $tr_id,
                     'tr_in_child_id' => $in_id,
                 ));
@@ -229,7 +229,7 @@ class My extends CI_Controller
     {
 
         //Auth user and check required variables:
-        $udata = auth(array(1308)); //Trainers
+        $udata = auth(array(1308)); //miners
 
         if (!$udata) {
             return echo_json(array(
@@ -268,7 +268,7 @@ class My extends CI_Controller
     {
 
         //Auth user and check required variables:
-        $udata = auth(array(1308)); //Trainers
+        $udata = auth(array(1308)); //miners
 
         if (!$udata) {
             die('<div class="alert alert-danger" role="alert">Session Expired</div>');

@@ -96,7 +96,7 @@ if (!isset($_GET['skip_header'])) {
                     <ul class="nav navbar-nav navbar-main navbar-right">
 
                         <li <?= ($uri_segment_1 == 'entities' ? 'class="entity-active"' : '') ?>><a
-                                    href="/entities/<?= $this->config->item('primary_en_id') ?>"><i
+                                    href="/entities/<?= $this->config->item('en_primary_id') ?>"><i
                                         class="fas fa-at"></i> Entities</a></li>
                         <li <?= ($uri_segment_1 == 'ledger' ? 'class="entity-active"' : '') ?>><a href="/ledger"><i
                                         class="fas fa-atlas"></i> Ledger</a></li>

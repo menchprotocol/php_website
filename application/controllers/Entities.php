@@ -28,7 +28,7 @@ class Entities extends CI_Controller
     function u_load_next_page()
     {
 
-        $items_per_page = $this->config->item('items_per_page');
+        $en_per_page = $this->config->item('en_per_page');
         $parent_en_id = intval($_POST['parent_en_id']);
         $en_status_filter = intval($_POST['en_status_filter']);
         $page = intval($_POST['page']);
@@ -47,15 +47,15 @@ class Entities extends CI_Controller
         //Fetch entity itself:
         $entities = $this->Database_model->en_fetch(array('en_id' => $parent_en_id));
         $child_entities_count = count($this->Old_model->ur_children_fetch($filters));
-        $child_entities = $this->Old_model->ur_children_fetch($filters, array('in__children_count'), $items_per_page, ($page * $items_per_page));
+        $child_entities = $this->Old_model->ur_children_fetch($filters, array('in__children_count'), $en_per_page, ($page * $en_per_page));
 
         foreach ($child_entities as $u) {
             echo echo_u($u, 2, false /* Load more only for children */);
         }
 
         //Do we need another load more button?
-        if ($child_entities_count > (($page * $items_per_page) + count($child_entities))) {
-            echo_next_u(($page + 1), $items_per_page, $child_entities_count);
+        if ($child_entities_count > (($page * $en_per_page) + count($child_entities))) {
+            echo_next_u(($page + 1), $en_per_page, $child_entities_count);
         }
 
     }

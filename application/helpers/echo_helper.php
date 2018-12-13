@@ -622,7 +622,7 @@ function echo_e($e)
     $ui .= ' <span>' . echo_status('tr_status', $e['tr_status'], true, 'left') . '</span> ';
 
     //Lets go through all references to see what is there:
-    foreach ($CI->config->item('engagement_references') as $engagement_field => $er) {
+    foreach ($CI->config->item('ledger_filters') as $engagement_field => $er) {
         if (intval($e[$engagement_field]) > 0) {
             //Yes we have a value here:
             $ui .= echo_object($er['object_code'], $e[$engagement_field], $engagement_field, $er['name']);
@@ -721,7 +721,7 @@ function echo_w_matrix($w)
         }
 
         //Engagements made by subscriber:
-        $ui .= '<a href="#wengagements-' . $w['tr_en_parent_id'] . '-' . $w['tr_id'] . '" onclick="load_u_engagements(' . $w['tr_en_parent_id'] . ',' . $w['tr_id'] . ')" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="' . $w['w_stats']['e_all_count'] . ' engagements"><span class="btn-counter">' . $w['w_stats']['e_all_count'] . ($w['w_stats']['e_all_count'] == $CI->config->item('max_counter') ? '+' : '') . '</span><i class="fas fa-atlas"></i></a>';
+        $ui .= '<a href="#wengagements-' . $w['tr_en_parent_id'] . '-' . $w['tr_id'] . '" onclick="load_u_engagements(' . $w['tr_en_parent_id'] . ',' . $w['tr_id'] . ')" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="' . $w['w_stats']['e_all_count'] . ' engagements"><span class="btn-counter">' . $w['w_stats']['e_all_count'] . ($w['w_stats']['e_all_count'] == $CI->config->item('tr_max_count') ? '+' : '') . '</span><i class="fas fa-atlas"></i></a>';
 
         //Link to subscriber, but count total subscriptions first:
         $ui .= '<a href="/entities/' . $w['tr_en_parent_id'] . '" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="top" title="Master has ' . count($user_ws) . ' total subsciptions"><span class="btn-counter">' . count($user_ws) . '</span><i class="fas fa-sign-out-alt rotate90"></i></a>';
@@ -1497,7 +1497,7 @@ function echo_c($c, $level, $c_parent_id = 0, $is_parent = false)
     //Count engagements for this intent:
     $e_count = count($CI->Database_model->tr_fetch(array(
         '(tr_in_parent_id=' . $c['in_id'] . ' OR tr_in_child_id=' . $c['in_id'] . ')' => null,
-    ), array(), $CI->config->item('max_counter')));
+    ), array(), $CI->config->item('tr_max_count')));
 
     //Count subscription caches for this intent link:
     $k_stats = array(
@@ -1552,7 +1552,7 @@ function echo_c($c, $level, $c_parent_id = 0, $is_parent = false)
 
     if ($e_count > 0) {
         //Show link to load these engagements:
-        $ui .= '<a href="#loadlinks-' . $c['in_id'] . '" onclick="in_tr_load(' . $c['in_id'] . ')" class="badge badge-primary" style="width:40px; margin-right:2px;"><span class="btn-counter">' . $e_count . ($e_count == $CI->config->item('max_counter') ? '+' : '') . '</span><i class="fas fa-atlas"></i></a>';
+        $ui .= '<a href="#loadlinks-' . $c['in_id'] . '" onclick="in_tr_load(' . $c['in_id'] . ')" class="badge badge-primary" style="width:40px; margin-right:2px;"><span class="btn-counter">' . $e_count . ($e_count == $CI->config->item('tr_max_count') ? '+' : '') . '</span><i class="fas fa-atlas"></i></a>';
     }
 
     $ui .= '<a href="#loadmessages-' . $c['in_id'] . '" onclick="in_messages_load(' . $c['in_id'] . ')" class="msg-badge-' . $c['in_id'] . ' badge badge-primary ' . ($c['in__messages_count'] == 0 ? 'grey' : '') . '" style="width:40px;"><span class="btn-counter messages-counter-' . $c['in_id'] . '">' . $c['in__messages_count'] . '</span><i class="fas fa-comment-dots"></i></a>';
@@ -1725,11 +1725,11 @@ function echo_u($u, $level, $is_parent = false)
     //Check total key engagement for this user:
     $e_count = count($CI->Database_model->tr_fetch(array(
         '(tr_en_parent_id=' . $u['en_id'] . ' OR  tr_en_child_id=' . $u['en_id'] . ')' => null,
-        '(tr_en_type_id NOT IN (' . join(',', $CI->config->item('exclude_es')) . '))' => null,
-    ), array(), $CI->config->item('max_counter')));
+        '(tr_en_type_id NOT IN (' . join(',', $CI->config->item('tr_types_exclude')) . '))' => null,
+    ), array(), $CI->config->item('tr_max_count')));
     if ($e_count > 0) {
         //Show the engagement button:
-        $ui .= '<a href="#wengagements-' . $u['en_id'] . '" onclick="load_u_engagements(' . $u['en_id'] . ')" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="' . $e_count . ' entity engagements"><span class="btn-counter">' . $e_count . ($e_count == $CI->config->item('max_counter') ? '+' : '') . '</span><i class="fas fa-atlas"></i></a>';
+        $ui .= '<a href="#wengagements-' . $u['en_id'] . '" onclick="load_u_engagements(' . $u['en_id'] . ')" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="' . $e_count . ' entity engagements"><span class="btn-counter">' . $e_count . ($e_count == $CI->config->item('tr_max_count') ? '+' : '') . '</span><i class="fas fa-atlas"></i></a>';
     }
 
 

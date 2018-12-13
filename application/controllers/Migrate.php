@@ -15,28 +15,6 @@ class Migrate extends CI_Controller
     }
 
 
-    function ff(){
-
-        echo_json($this->Chat_model->dispatch_message(array(
-            array(
-                'tr_en_child_id' => 1,
-                'tr_content' => 'Hello hello 👋',
-                'quick_replies' => array(
-                    array(
-                        'content_type' => 'text',
-                        'title' => 'Yes, Learn More',
-                        'payload' => 'ACTIONPLANADD20_',
-                    ),
-                    array(
-                        'content_type' => 'text',
-                        'title' => 'No',
-                        'payload' => 'ACTIONPLANADD10_0',
-                    ),
-                ),
-            ),
-        )));
-
-    }
 
     function c()
     {
@@ -551,7 +529,7 @@ class Migrate extends CI_Controller
             7718 => 4287, //Log unrecognized message
 
             //Platform Operations Links:
-            8 => 4246, //Log system bug
+            8 => 4246, //Platform Error
             9 => 4247, //Log user attention request
             72 => 4248, //Log user review
         );
