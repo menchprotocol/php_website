@@ -380,7 +380,7 @@ class Entities extends CI_Controller
 
         //Setting for admin logins:
 
-        if (!isset($_POST['u_email']) || !filter_var($_POST['u_email'], FILTER_VALIDATE_EMAIL)) {
+        if (!isset($_POST['input_email']) || !filter_var($_POST['input_email'], FILTER_VALIDATE_EMAIL)) {
             return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Enter valid email to continue.</div>');
         } elseif (!isset($_POST['input_password'])) {
             return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Enter valid password to continue.</div>');
@@ -389,12 +389,12 @@ class Entities extends CI_Controller
         //Validate user email:
         $trs = $this->Db_model->tr_fetch(array(
             'tr_en_parent_id' => 3288, //Primary email
-            'LOWER(tr_content)' => strtolower($_POST['u_email']),
+            'LOWER(tr_content)' => strtolower($_POST['input_email']),
         ));
 
         if (count($trs) == 0) {
             //Not found!
-            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: ' . $_POST['u_email'] . ' not found.</div>');
+            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: ' . $_POST['input_email'] . ' not found.</div>');
         }
 
         //Fetch full entity data with their active subscriptions:
@@ -430,7 +430,7 @@ class Entities extends CI_Controller
             return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Password is not activated.</div>');
         } elseif (!($login_passwords[0]['tr_content'] == hash('sha256', $this->config->item('password_salt') . $_POST['input_password']))) {
             //Bad password
-            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Incorrect password for [' . $_POST['u_email'] . ']</div>');
+            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Incorrect password for [' . $_POST['input_email'] . ']</div>');
         }
 
 
@@ -533,11 +533,11 @@ class Entities extends CI_Controller
 
         //Attempt to fetch this user:
         $matching_users = $this->Db_model->en_fetch(array(
-            'u_email' => strtolower($_POST['email']),
+            'input_email' => strtolower($_POST['email']),
         ));
         if (count($matching_users) > 0) {
             //Dispatch the password reset Intent:
-            $this->Chat_model->compose_messages(array(
+            $this->Matrix_model->compose_messages(array(
                 'tr_en_child_id' => $matching_users[0]['en_id'],
                 'tr_in_child_id' => 59,
             ));

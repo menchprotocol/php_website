@@ -310,6 +310,10 @@ function echo_i($i, $en_name = null, $fb_format = false)
         $button_title = 'Open in 🚩Action Plan';
         $command = '/open_actionplan';
         $button_url = 'https://mench.com/my/actionplan/' . $i['tr_tr_parent_id'] . '/' . $i['tr_in_child_id'] . '?is_from_messenger=1';
+    } elseif (substr_count($i['tr_content'], '/open_myaccount') > 0) {
+        $button_title = 'Open 👤 My Account';
+        $command = '/open_myaccount';
+        $button_url = 'https://mench.com/my/account?is_from_messenger=1';
     }
 
 

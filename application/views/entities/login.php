@@ -9,7 +9,7 @@
             $('#pass_reset').html('<span><img src="/img/round_load.gif" style="width:16px; height:16px; margin-top:-2px;" class="loader" /></span>');
             //Hide the editor & saving results:
             $.post("/entities/password_initiate_reset", {
-                email: $('#u_email').val(),
+                email: $('#input_email').val(),
             }, function (data) {
                 //Show success:
                 $('#pass_reset').html(data);
@@ -23,7 +23,7 @@
 			<span class="input-group-addon">
 				<i class="material-icons">email</i>
 			</span>
-            <div class="form-group is-empty"><input type="email" id="u_email" name="u_email" required="required"
+            <div class="form-group is-empty"><input type="email" id="input_email" name="input_email" required="required"
                                                     class="form-control" placeholder="Email"><span
                         class="material-input"></span></div>
         </div>

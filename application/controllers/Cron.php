@@ -474,7 +474,7 @@ class Cron extends CI_Controller
                 );
 
                 //Attempt to save this:
-                $result = $this->Chat_model->fb_graph('POST', '/me/message_attachments', $payload);
+                $result = $this->Chat_model->facebook_graph_api('POST', '/me/message_attachments', $payload);
                 $db_result = false;
 
                 if ($result['status'] && isset($result['tr_metadata']['result']['attachment_id'])) {
@@ -524,26 +524,6 @@ class Cron extends CI_Controller
 
     }
 
-
-    function fix_people_missing_parent()
-    {
-        //TODO Run on more time later, should return nothing... Then delete this...
-        $fetch_us = $this->Db_model->en_fetch(array(
-            'u_fb_psid >' => 0,
-        ));
-        foreach ($fetch_us as $u) {
-            if (!filter_array($u['en__parents'], 'en_id', 1278)) {
-                //Add parent:
-                echo '<a href="/entities/' . $u['en_id'] . '">' . $u['en_name'] . '</a><br />';
-                $ur1 = $this->Db_model->tr_create(array(
-                    'tr_en_child_id' => $u['en_id'],
-                    'tr_en_parent_id' => 1278,
-                ));
-            }
-        }
-
-
-    }
 
     function master_reminder_complete_task()
     {
@@ -661,7 +641,7 @@ class Cron extends CI_Controller
                         if (count($reminders_sent) == 0) {
 
                             //Nope, send this message out:
-                            $this->Chat_model->compose_messages(array(
+                            $this->Matrix_model->compose_messages(array(
                                 'tr_en_credit_id' => 0, //System
                                 'tr_en_child_id' => $subscription['en_id'],
                                 'tr_in_child_id' => $logic['reminder_in_id'],
