@@ -59,7 +59,7 @@ class My extends CI_Controller
      * Messenger Persistent Menu
      ****************************** */
 
-    function actionplan($tr_id = 0, $in_id = 0)
+    function actionplan($actionplan_tr_id = 0, $in_id = 0)
     {
 
         $this->load->view('shared/messenger_header', array(
@@ -68,17 +68,17 @@ class My extends CI_Controller
         //include main body:
         $this->load->view('actionplans/actionplan_frame', array(
             'in_id' => $in_id,
-            'tr_id' => $tr_id,
+            'actionplan_tr_id' => $actionplan_tr_id,
         ));
         $this->load->view('shared/messenger_footer');
     }
 
-    function display_actionplan($u_fb_psid, $tr_id = 0, $in_id = 0)
+    function display_actionplan($u_fb_psid, $actionplan_tr_id = 0, $in_id = 0)
     {
 
         //Get session data in case user is doing a browser login:
         $udata = $this->session->userdata('user');
-        $no_session_w = (!isset($udata['u__ws']) || count($udata['u__ws']) < 1);
+        $no_session_w = (!isset($udata['en__actionplans']) || count($udata['en__actionplans']) < 1);
 
         //Fetch Bootcamps for this user:
         if (!$u_fb_psid && $no_session_w && !filter_array($udata['en__parents'], 'en_id', 1308)) {
@@ -92,12 +92,12 @@ class My extends CI_Controller
         $w_filter = array();
 
         //Do we have a use session?
-        if ($tr_id > 0) {
+        if ($actionplan_tr_id > 0) {
             //Yes! It seems to be a desktop login:
-            $w_filter['tr_id'] = $tr_id;
-        } elseif (count($udata['u__ws']) > 0) {
+            $w_filter['tr_id'] = $actionplan_tr_id;
+        } elseif (count($udata['en__actionplans']) > 0) {
             //Yes! It seems to be a desktop login:
-            $w_filter['tr_en_parent_id'] = $udata['u__ws'][0]['tr_en_parent_id'];
+            $w_filter['tr_en_parent_id'] = $udata['en__actionplans'][0]['tr_en_parent_id'];
             $w_filter['tr_status >='] = 0;
         }
 
@@ -134,9 +134,9 @@ class My extends CI_Controller
         } elseif (count($trs) == 1) {
 
             //We found a single subscription, load this by default:
-            if (!$tr_id || !$in_id) {
+            if (!$actionplan_tr_id || !$in_id) {
                 //User with a single subscription
-                $tr_id = $trs[0]['tr_id'];
+                $actionplan_tr_id = $trs[0]['tr_id'];
                 $in_id = $trs[0]['in_id']; //TODO set to current/focused intent
             }
 
@@ -145,20 +145,20 @@ class My extends CI_Controller
                 'tr_en_type_id' => 4283,
                 'tr_en_credit_id' => $trs[0]['en_id'],
                 'tr_in_child_id' => $in_id,
-                'tr_tr_parent_id' => $tr_id,
+                'tr_tr_parent_id' => $actionplan_tr_id,
             ));
 
 
             //We have a single item to load:
             //Now we need to load the action plan:
             $k_ins = $this->Database_model->tr_fetch(array(
-                'tr_id' => $tr_id,
+                'tr_id' => $actionplan_tr_id,
                 'in_status >=' => 2,
                 'tr_in_child_id' => $in_id,
             ), array('w', 'cr', 'cr_c_parent'));
 
             $k_outs = $this->Database_model->tr_fetch(array(
-                'tr_id' => $tr_id,
+                'tr_id' => $actionplan_tr_id,
                 'in_status >=' => 2,
                 'tr_in_parent_id' => $in_id,
             ), array('w', 'cr', 'cr_c_child'));
@@ -177,7 +177,7 @@ class My extends CI_Controller
                     'tr_metadata' => $trs,
                     'tr_content' => 'Unable to load a specific intent for the master Action Plan! Should not happen...',
                     'tr_en_type_id' => 4246, //Platform Error
-                    'tr_tr_parent_id' => $tr_id,
+                    'tr_tr_parent_id' => $actionplan_tr_id,
                     'tr_in_child_id' => $in_id,
                 ));
 
@@ -280,7 +280,7 @@ class My extends CI_Controller
         $this->load->view('shared/messenger_header', array(
             'title' => 'User Engagements',
         ));
-        $this->load->view('engagements/engagement_list', array(
+        $this->load->view('ledger/engagement_list', array(
             'en_id' => $en_id,
         ));
         $this->load->view('shared/messenger_footer');
@@ -292,12 +292,12 @@ class My extends CI_Controller
         $total_skipped = count($this->Database_model->k_skip_recursive_down($tr_id));
 
         //Draft message:
-        $message = '<div class="alert alert-success" role="alert">' . $total_skipped . ' insight' . echo__s($total_skipped) . ' successfully skipped.</div>';
+        $message = '<div class="alert alert-success" role="alert">' . $total_skipped . ' concept' . echo__s($total_skipped) . ' successfully skipped.</div>';
 
         //Find the next item to navigate them to:
-        $trs_next = $this->Database_model->k_next_fetch($tr_id);
-        if ($trs_next) {
-            redirect_message('/my/actionplan/' . $trs_next[0]['tr_tr_parent_id'] . '/' . $trs_next[0]['in_id'], $message);
+        $next_ins = $this->Matrix_model->in_next_actionplan($tr_id);
+        if ($next_ins) {
+            redirect_message('/my/actionplan/' . $next_ins[0]['tr_tr_parent_id'] . '/' . $next_ins[0]['in_id'], $message);
         } else {
             redirect_message('/my/actionplan', $message);
         }
@@ -369,16 +369,16 @@ class My extends CI_Controller
         //Redirect back to page with success message:
         if (isset($_POST['k_next_redirect']) && intval($_POST['k_next_redirect']) > 0) {
             //Go to next item:
-            $trs_next = $this->Database_model->k_next_fetch($trs[0]['tr_id'], (intval($_POST['k_next_redirect']) > 1 ? intval($_POST['k_next_redirect']) : 0));
-            if ($trs_next) {
+            $next_ins = $this->Matrix_model->in_next_actionplan($trs[0]['tr_id'], (intval($_POST['k_next_redirect']) > 1 ? intval($_POST['k_next_redirect']) : 0));
+            if ($next_ins) {
                 //Override original item:
-                $k_url = '/my/actionplan/' . $trs_next[0]['tr_tr_parent_id'] . '/' . $trs_next[0]['in_id'];
+                $k_url = '/my/actionplan/' . $next_ins[0]['tr_tr_parent_id'] . '/' . $next_ins[0]['in_id'];
 
                 if (intval($_POST['is_from_messenger'])) {
                     //Also send confirmation messages via messenger:
                     $this->Matrix_model->compose_messages(array(
                         'tr_en_child_id' => $trs[0]['k_children_en_id'],
-                        'tr_in_child_id' => $trs_next[0]['in_id'],
+                        'tr_in_child_id' => $next_ins[0]['in_id'],
                         'tr_tr_parent_id' => $trs[0]['tr_tr_parent_id'],
                     ));
                 }

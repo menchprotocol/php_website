@@ -17,11 +17,22 @@ class Entities extends CI_Controller
     {
 
         $udata = auth(null, 1); //Just be logged in to browse
-        $view_data = fetch_entity_tree($en_id);
 
-        //Load views
-        $this->load->view('shared/matrix_header', $view_data);
-        $this->load->view('entities/entity_manage', $view_data);
+        $entities = $this->Database_model->en_fetch(array(
+            'en_id' => $en_id,
+        ), array('en__child_count', 'en__children', 'en__actionplans'));
+
+        if (count($entities) < 1) {
+            return redirect_message('/entities', '<div class="alert alert-danger" role="alert">Invalid Entity ID</div>');
+        }
+
+        //Load views:
+        $this->load->view('shared/matrix_header', array(
+            'title' => $entities[0]['en_name'],
+        ));
+        $this->load->view('entities/entity_manage', array(
+            'entity' => $entities[0],
+        ));
         $this->load->view('shared/matrix_footer');
     }
 
@@ -47,7 +58,7 @@ class Entities extends CI_Controller
         //Fetch entity itself:
         $entities = $this->Database_model->en_fetch(array('en_id' => $parent_en_id));
         $child_entities_count = count($this->Old_model->ur_children_fetch($filters));
-        $child_entities = $this->Old_model->ur_children_fetch($filters, array('in__children_count'), $en_per_page, ($page * $en_per_page));
+        $child_entities = $this->Old_model->ur_children_fetch($filters, array('en__child_count'), $en_per_page, ($page * $en_per_page));
 
         foreach ($child_entities as $u) {
             echo echo_u($u, 2, false /* Load more only for children */);
@@ -375,7 +386,23 @@ class Entities extends CI_Controller
     }
 
 
-    function login()
+    function login_ui()
+    {
+        //Check to see if they are already logged in?
+        $udata = $this->session->userdata('user');
+        if (isset($udata['en__parents'][0]) && filter_array($udata['en__parents'], 'en_id', 1308)) {
+            //Lead miner and above, go to console:
+            redirect_message('/intents/' . $this->config->item('in_primary_id'));
+        }
+
+        $this->load->view('shared/public_header', array(
+            'title' => 'Login',
+        ));
+        $this->load->view('entities/login_ui');
+        $this->load->view('shared/public_footer');
+    }
+
+    function login_process()
     {
 
         //Setting for admin logins:
@@ -400,7 +427,7 @@ class Entities extends CI_Controller
         //Fetch full entity data with their active subscriptions:
         $entities = $this->Database_model->en_fetch(array(
             'en_id' => $trs[0]['tr_en_child_id'],
-        ), array('u__ws'));
+        ), array('en__actionplans'));
 
         if ($entities[0]['en_status'] < 0 || $trs[0]['tr_status'] < 0) {
 

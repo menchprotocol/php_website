@@ -506,7 +506,7 @@ class Chat_model extends CI_Model
 
 
                 //Construct the message to give more details on skipping:
-                $tr_content = 'You are about to skip these ' . $would_be_skipped_count . ' insight' . echo__s($would_be_skipped_count) . ':';
+                $tr_content = 'You are about to skip these ' . $would_be_skipped_count . ' concept' . echo__s($would_be_skipped_count) . ':';
                 foreach ($would_be_skipped as $counter => $k_c) {
                     if (strlen($tr_content) < ($this->config->item('fb_max_message') - 200)) {
                         //We have enough room to add more:
@@ -514,7 +514,7 @@ class Chat_model extends CI_Model
                     } else {
                         //We cannot add any more, indicate truncating:
                         $remainder = $would_be_skipped_count - $counter;
-                        $tr_content .= "\n\n" . 'And ' . $remainder . ' more insight' . echo__s($remainder) . '!';
+                        $tr_content .= "\n\n" . 'And ' . $remainder . ' more concept' . echo__s($remainder) . '!';
                         break;
                     }
                 }
@@ -530,7 +530,7 @@ class Chat_model extends CI_Model
                         'quick_replies' => array(
                             array(
                                 'content_type' => 'text',
-                                'title' => 'Skip ' . $would_be_skipped_count . ' insight' . echo__s($would_be_skipped_count) . ' 🚫',
+                                'title' => 'Skip ' . $would_be_skipped_count . ' concept' . echo__s($would_be_skipped_count) . ' 🚫',
                                 'payload' => 'SKIPREQUEST_2_' . $new_tr['tr_id'], //Confirm and skip
                             ),
                             array(
@@ -560,7 +560,7 @@ class Chat_model extends CI_Model
                     $skippable_ks = $this->Database_model->k_skip_recursive_down($tr_id);
 
                     //Confirm the skip:
-                    $tr_content = 'Confirmed, I marked this section as skipped. You can always re-visit these insights in your Action Plan and complete them at any time. /open_actionplan';
+                    $tr_content = 'Confirmed, I marked this section as skipped. You can always re-visit these concepts in your Action Plan and complete them at any time. /open_actionplan';
 
                 }
 
@@ -579,12 +579,12 @@ class Chat_model extends CI_Model
                 ), $u['en_id']);
 
                 //Find the next item to navigate them to:
-                $trs_next = $this->Database_model->k_next_fetch($tr_id, $tr_order);
-                if ($trs_next) {
+                $next_ins = $this->Matrix_model->in_next_actionplan($tr_id, $tr_order);
+                if ($next_ins) {
                     //Now move on to communicate the next step.
                     $this->Matrix_model->compose_messages(array(
                         'tr_en_child_id' => $u['en_id'],
-                        'tr_in_child_id' => $trs_next[0]['in_id'],
+                        'tr_in_child_id' => $next_ins[0]['in_id'],
                         'tr_tr_parent_id' => $tr_id,
                     ));
                 }
@@ -635,12 +635,12 @@ class Chat_model extends CI_Model
                     $this->Database_model->k_complete_recursive_up($k_parents[0], $k_parents[0]);
 
                     //Go to next item:
-                    $trs_next = $this->Database_model->k_next_fetch($tr_id);
-                    if ($trs_next) {
+                    $next_ins = $this->Matrix_model->in_next_actionplan($tr_id);
+                    if ($next_ins) {
                         //Now move on to communicate the next step.
                         $this->Matrix_model->compose_messages(array(
                             'tr_en_child_id' => $u['en_id'],
-                            'tr_in_child_id' => $trs_next[0]['in_id'],
+                            'tr_in_child_id' => $next_ins[0]['in_id'],
                             'tr_tr_parent_id' => $tr_id,
                         ));
                     }
@@ -681,12 +681,12 @@ class Chat_model extends CI_Model
             //Now save answer:
             if ($this->Database_model->k_choose_or($tr_id, $tr_in_parent_id, $in_id)) {
                 //Find the next item to navigate them to:
-                $trs_next = $this->Database_model->k_next_fetch($tr_id, $tr_order);
-                if ($trs_next) {
+                $next_ins = $this->Matrix_model->in_next_actionplan($tr_id, $tr_order);
+                if ($next_ins) {
                     //Now move on to communicate the next step.
                     $this->Matrix_model->compose_messages(array(
                         'tr_en_child_id' => $u['en_id'],
-                        'tr_in_child_id' => $trs_next[0]['in_id'],
+                        'tr_in_child_id' => $next_ins[0]['in_id'],
                         'tr_tr_parent_id' => $tr_id,
                     ));
                 }
@@ -1002,11 +1002,11 @@ class Chat_model extends CI_Model
                 ));
 
                 //Remind user of their next step, if any:
-                $trs_next = $this->Database_model->k_next_fetch($actionplans[0]['tr_id']);
-                if ($trs_next) {
+                $next_ins = $this->Matrix_model->in_next_actionplan($actionplans[0]['tr_id']);
+                if ($next_ins) {
                     $this->Matrix_model->compose_messages(array(
                         'tr_en_child_id' => $u['en_id'],
-                        'tr_in_child_id' => $trs_next[0]['in_id'],
+                        'tr_in_child_id' => $next_ins[0]['in_id'],
                         'tr_tr_parent_id' => $actionplans[0]['tr_id'],
                     ));
                 }

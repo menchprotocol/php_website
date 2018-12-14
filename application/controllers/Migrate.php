@@ -15,6 +15,12 @@ class Migrate extends CI_Controller
     }
 
 
+    function ff($en_id=1278){
+        echo_json($this->Database_model->en_fetch(array(
+            'en_id' => $en_id,
+        ), array('en__child_count', 'en__actionplans')));
+    }
+
 
     function c()
     {

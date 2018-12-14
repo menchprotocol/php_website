@@ -1,7 +1,7 @@
 <?php
 
 
-function echo_next_u($page, $limit, $in__children_count)
+function echo_next_u($page, $limit, $en__child_count)
 {
     //We have more child entities than what was listed here.
     //Give user a way to access them:
@@ -12,8 +12,8 @@ function echo_next_u($page, $limit, $in__children_count)
 
     //Regular section:
     $max_entities = (($page + 1) * $limit);
-    $max_entities = ($max_entities > $in__children_count ? $in__children_count : $max_entities);
-    echo 'Load ' . (($page * $limit) + 1) . '-' . $max_entities . ' from ' . $in__children_count . ' total';
+    $max_entities = ($max_entities > $en__child_count ? $en__child_count : $max_entities);
+    echo 'Load ' . (($page * $limit) + 1) . '-' . $max_entities . ' from ' . $en__child_count . ' total';
 
     echo '</a>';
 }
@@ -209,7 +209,7 @@ function echo_i($i, $en_name = null, $fb_format = false)
         //See if that entity has a URL:
         $us = $CI->Database_model->en_fetch(array(
             'en_id' => $i['tr_en_parent_id'],
-        ), array('skip_en__parents', 'u__urls'));
+        ));
 
         if (count($us) > 0) {
 
@@ -236,10 +236,10 @@ function echo_i($i, $en_name = null, $fb_format = false)
 
                     $time_range = explode(':', one_two_explode('/slice:', ' ', $i['tr_content']), 2);
 
-                    //Try finding a compatible URL for slicing:
-                    foreach ($us[0]['u__urls'] as $x) {
-                        if ($x['x_type'] == 1 && substr_count($x['x_url'], 'youtube.com') > 0) {
-                            $embed_html_code = '<div style="margin-top:7px;">' . echo_embed($x['x_clean_url'], $x['x_clean_url'], false, $time_range[0], $time_range[1]) . '</div>';
+                    //Try finding a compatible URL for the /slice command:
+                    foreach ($us[0]['en__parents'] as $en) {
+                        if (substr_count($en['tr_content'], 'youtube.com') > 0) {
+                            $embed_html_code = '<div style="margin-top:7px;">' . echo_embed($en['tr_content'], $en['tr_content'], false, $time_range[0], $time_range[1]) . '</div>';
                             break;
                         }
                     }
@@ -254,20 +254,33 @@ function echo_i($i, $en_name = null, $fb_format = false)
                     //Note: The reason we don't need these for entities is that they already list all URLs with embed codes, so no need to repeat
                     //Let's see if we have any other embeddable content that we can append to message:
 
-                    foreach ($us[0]['u__urls'] as $x) {
-                        //Find all the ways we could use this URL:
-                        if ($x['x_type'] == 0) {
-                            if ($is_public) {
-                                //Replace the name:
+                    foreach ($us[0]['en__parents'] as $en) {
+
+                        //Is this a URL of any sort?
+                        if (in_array($en['tr_en_type_id'], $CI->config->item('en_ids_4537'))) {
+
+                            if ($en['tr_en_type_id'] == 4256 /* Generic URL */) {
+                                if ($is_public) {
+
+                                    //Replace the name:
+
+                                } else {
+
+                                    //Regular website:
+                                    $embed_html_code .= '<div style="margin-top:7px;"><a href="' . $en['tr_content'] . '" target="_blank"><span class="url_truncate"><i class="fas fa-atlas" style="margin-right:3px;"></i>' . echo_clean_url($en['tr_content']) . '</span></a></div>';
+
+                                }
+                            } elseif ($en['tr_en_type_id'] == 4257 /* Embed Widget URL? */) {
+
+                                $embed_html_code .= '<div style="margin-top:7px;">' . echo_embed($x['x_clean_url'], $x['x_clean_url']) . '</div>';
 
                             } else {
-                                //Regular website:
-                                $embed_html_code .= '<div style="margin-top:7px;"><a href="' . $x['x_url'] . '" target="_blank"><span class="url_truncate"><i class="fas fa-atlas" style="margin-right:3px;"></i>' . echo_clean_url($x['x_url']) . '</span></a></div>';
+
+                                //Other Entity URL connectors that are all direct file downloads:
+                                $embed_html_code .= '<div style="margin-top:7px;">' . echo_content_url($x['x_clean_url'], $x['x_type']) . '</div>';
+
                             }
-                        } elseif ($x['x_type'] == 1) {
-                            $embed_html_code .= '<div style="margin-top:7px;">' . echo_embed($x['x_clean_url'], $x['x_clean_url']) . '</div>';
-                        } elseif ($x['x_type'] > 1) {
-                            $embed_html_code .= '<div style="margin-top:7px;">' . echo_content_url($x['x_clean_url'], $x['x_type']) . '</div>';
+
                         }
                     }
                 }
@@ -465,9 +478,9 @@ function echo_message($i)
 
     //Show drop down for message type adjustment:
     $ui .= '<li class="pull-right edit-on hidden">';
-    $ui .= '<select id="en_all_4485_'.$i['tr_id'].'">';
+    $ui .= '<select id="en_all_4485_' . $i['tr_id'] . '">';
     foreach ($en_all_4485 as $tr_en_type_id => $value) {
-        $ui .= '<option value="'.$tr_en_type_id.'">'.$value['en_name'].'</option>';
+        $ui .= '<option value="' . $tr_en_type_id . '">' . $value['en_name'] . '</option>';
     }
     $ui .= '</select>';
     $ui .= '</li>';
@@ -541,7 +554,7 @@ function echo_number($number, $micro = true, $fb_format = false)
             );
         }
 
-    } elseif ($number>=1000) {
+    } elseif ($number >= 1000) {
 
         $original_format = number_format($number); //Add commas
 
@@ -715,6 +728,7 @@ function echo_w_matrix($w)
         $w_title .= '<span class="en_name en_name_' . $w['en_id'] . '">' . $w['en_name'] . '</span>';
         //Loop through parents and show those that have en_icon set:
         foreach ($w['en__parents'] as $in_u) {
+            //Note: We ONLY show here if there is an Icon set
             if (strlen($in_u['en_icon']) > 0) {
                 $w_title .= ' &nbsp;<span data-toggle="tooltip" title="' . $in_u['en_name'] . (strlen($in_u['tr_content']) > 0 ? ': ' . $in_u['tr_content'] : '') . '" data-placement="top" class="en_icon_child_' . $in_u['en_id'] . '">' . $in_u['en_icon'] . '</span>';
             }
@@ -1006,7 +1020,6 @@ function echo_pa_lets()
 }
 
 
-
 function echo_pa_saved()
 {
     //Informs the user that their answer is saved!
@@ -1073,7 +1086,7 @@ function echo_costs($c, $fb_format = 0)
 function echo_intent_overview($c, $fb_format = 0)
 {
 
-    $pitch = 'Action Plan contains ' . $c['in__tree_in_count'] . ' insights that will help you ' . $c['in_outcome'] . '.';
+    $pitch = 'Action Plan contains ' . $c['in__tree_in_count'] . ' concepts that will help you ' . $c['in_outcome'] . '.';
 
     if ($fb_format) {
         return '🚩 ' . $pitch . "\n";
@@ -1084,7 +1097,7 @@ function echo_intent_overview($c, $fb_format = 0)
             <div class="panel-heading" role="tab" id="heading' . $id . '">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="false" aria-controls="collapse' . $id . '">
-                    <i class="fas" style="transform:none !important;">💡</i> ' . $c['in__tree_in_count'] . ' Insights<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                    <i class="fas" style="transform:none !important;">💡</i> ' . $c['in__tree_in_count'] . ' concepts<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                 </a>
             </h4>
         </div>
@@ -1097,6 +1110,12 @@ function echo_intent_overview($c, $fb_format = 0)
 
 function echo_completion_estimate($c, $fb_format = 0)
 {
+
+    //Return null if we don't have a time estimate at all:
+    if ($c['in__tree_max_seconds'] == 0) {
+        return false;
+    }
+
     $pitch = 'Action Plan estimates that it will take ' . strtolower(echo_hours_range($c)) . ' to ' . $c['in_outcome'] . '.';
     if ($fb_format) {
         return '⏰ ' . $pitch . "\n";
@@ -1252,7 +1271,6 @@ function echo_hours_range($c, $micro = false)
     //Generate UI to return:
     return $ui_time;
 }
-
 
 
 function echo_object($object, $id, $engagement_field, $button_type)
@@ -1661,9 +1679,9 @@ function echo_c($c, $level, $c_parent_id = 0, $is_parent = false)
         $ui .= '<div class="is_level3_sortable dropin-box" style="height:1px;">&nbsp;</div>';
 
 
-        if (isset($c['in__active_children']) && count($c['in__active_children']) > 0) {
-            foreach ($c['in__active_children'] as $key => $sub_intent) {
-                $ui .= echo_c($sub_intent, ($level + 1), $c['in_id'], $is_parent);
+        if (isset($c['in__grandchildren']) && count($c['in__grandchildren']) > 0) {
+            foreach ($c['in__grandchildren'] as $grandchild_in) {
+                $ui .= echo_c($grandchild_in, ($level + 1), $c['in_id'], $is_parent);
             }
         }
 
@@ -1738,7 +1756,7 @@ function echo_u($u, $level, $is_parent = false)
 
     $ui .= '<a href="#loadmodify-' . $u['en_id'] . '-' . $tr_id . '" onclick="u_load_modify(' . $u['en_id'] . ',' . $tr_id . ')" class="badge badge-secondary" style="margin:-2px -6px 0 2px; width:40px;">' . ($u['en_trust_score'] > 0 ? '<span class="btn-counter" data-toggle="tooltip" data-placement="left" title="Engagement Score">' . echo_number($u['en_trust_score']) . '</span>' : '') . '<i class="fas fa-cog" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i></a> &nbsp;';
 
-    $ui .= '<a class="badge badge-secondary" href="/entities/' . $u['en_id'] . '" style="display:inline-block; margin-right:6px; width:40px; margin-left:1px;">' . (isset($u['in__children_count']) && $u['in__children_count'] > 0 ? '<span class="btn-counter ' . ($level == 1 ? 'li-children-count' : '') . '">' . $u['in__children_count'] . '</span>' : '') . '<i class="' . ($is_parent ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90') . '"></i></a>';
+    $ui .= '<a class="badge badge-secondary" href="/entities/' . $u['en_id'] . '" style="display:inline-block; margin-right:6px; width:40px; margin-left:1px;">' . (isset($u['en__child_count']) && $u['en__child_count'] > 0 ? '<span class="btn-counter ' . ($level == 1 ? 'li-children-count' : '') . '">' . $u['en__child_count'] . '</span>' : '') . '<i class="' . ($is_parent ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90') . '"></i></a>';
 
     $ui .= '</span>';
 

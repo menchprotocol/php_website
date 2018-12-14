@@ -1,25 +1,4 @@
-<?php
 
-//Fetch Data Components
-$udata = $this->session->userdata('user');
-
-//Fetch other data:
-$child_entities = $this->Old_model->ur_children_fetch(array(
-    'tr_en_parent_id' => $entity['en_id'],
-    'tr_status' => 1, //Only active
-), array('in__children_count'), $this->config->item('en_per_page'));
-
-//Intents subscribed:
-$limit = (is_dev() ? 10 : 100);
-$trs = $this->Database_model->w_fetch(array(
-    'tr_en_parent_id' => $entity['en_id'],
-), array('en', 'in', 'w_stats'), array(
-    'tr_id' => 'DESC',
-), $limit);
-
-
-//Javascript Logic:
-?>
 <script>
     //Set global variables:
     var en_status_filter = -1; //No filter, show all!
@@ -34,18 +13,14 @@ $trs = $this->Database_model->w_fetch(array(
     <div class="col-xs-6 cols">
 
         <?php
-        //Entity & Components:
-
         //Parents
-        if ($entity['en_id'] != $this->config->item('en_primary_id') || count($entity['en__parents']) > 0) {
-
-            echo '<h5><span class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-parent-count">' . count($entity['en__parents']) . '</span> Parent' . echo__s(count($entity['en__parents'])) . '</span></h5>';
-            echo '<div id="list-parent" class="list-group  grey-list">';
-            foreach ($entity['en__parents'] as $ur) {
-                echo echo_u($ur, 2, true);
-            }
-            //Input to add new parents:
-            echo '<div id="new-parent" class="list-group-item list_input grey-input">
+        echo '<h5><span class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-parent-count">' . count($entity['en__parents']) . '</span> Parent' . echo__s(count($entity['en__parents'])) . '</span></h5>';
+        echo '<div id="list-parent" class="list-group  grey-list">';
+        foreach ($entity['en__parents'] as $en) {
+            echo echo_u($en, 2, true);
+        }
+        //Input to add new parents:
+        echo '<div id="new-parent" class="list-group-item list_input grey-input">
                 <div class="input-group">
                     <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search" data-lpignore="true" placeholder="Add Entity..."></div>
                     <span class="input-group-addon">
@@ -54,8 +29,10 @@ $trs = $this->Database_model->w_fetch(array(
                 </div>
             </div>';
 
-            echo '</div>';
-        }
+        echo '</div>';
+
+
+
 
 
         //Focused/current entity:
@@ -65,9 +42,11 @@ $trs = $this->Database_model->w_fetch(array(
         echo '</div>';
 
 
+
+
         //Children:
         echo '<div class="indent2"><table width="100%" style="margin-top:10px;"><tr>';
-        echo '<td style="width: 100px;"><h5 class="badge badge-h"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-children-count">' . $entity['in__children_count'] . '</span> Children</h5></td>';
+        echo '<td style="width: 100px;"><h5 class="badge badge-h"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-children-count">' . $entity['en__child_count'] . '</span> Children</h5></td>';
         //Count orphans IF we are in the top parent root:
         if ($this->config->item('en_primary_id') == $entity['en_id']) {
             $orphans_count = count($this->Database_model->en_fetch(array(
@@ -93,13 +72,13 @@ $trs = $this->Database_model->w_fetch(array(
 
 
         //Only show filtering UI if we find entities with different statuses
-        if (count($counts) > 0 && $counts[0]['u_counts'] < $entity['in__children_count']) {
+        if (count($counts) > 0 && $counts[0]['u_counts'] < $entity['en__child_count']) {
 
             //Load status definitions:
             $status_index = $this->config->item('object_statuses');
 
             //Show fixed All button:
-            echo '<a href="javascript:void(0)" onclick="u_load_filter_status(-1)" class="btn btn-default btn-secondary u-status-filter u-status--1" data-toggle="tooltip" data-placement="top" title="View all entities"><i class="fas fa-at"></i><span class="hide-small"> All</span> [<span class="li-children-count">' . $entity['in__children_count'] . '</span>]</a>';
+            echo '<a href="javascript:void(0)" onclick="u_load_filter_status(-1)" class="btn btn-default btn-secondary u-status-filter u-status--1" data-toggle="tooltip" data-placement="top" title="View all entities"><i class="fas fa-at"></i><span class="hide-small"> All</span> [<span class="li-children-count">' . $entity['en__child_count'] . '</span>]</a>';
 
             //Show each specific filter based on DB counts:
             foreach ($counts as $c_c) {
@@ -115,12 +94,13 @@ $trs = $this->Database_model->w_fetch(array(
 
         echo '<div id="list-children" class="list-group grey-list indent2">';
 
-        foreach ($child_entities as $u) {
+        foreach ($entity['en__children'] as $u) {
             echo echo_u($u, 2);
         }
-        if ($entity['in__children_count'] > count($child_entities)) {
-            echo_next_u(1, $this->config->item('en_per_page'), $entity['in__children_count']);
+        if ($entity['en__child_count'] > count($entity['en__children'])) {
+            echo_next_u(1, $this->config->item('en_per_page'), $entity['en__child_count']);
         }
+
 
         //Input to add new parents:
         echo '<div id="new-children" class="list-group-item list_input grey-input">
@@ -135,35 +115,15 @@ $trs = $this->Database_model->w_fetch(array(
 
 
         //Only show if data exists (users cannot modify this anyways)
-        if (count($trs) > 0) {
+        if (count($entity['en__actionplans']) > 0) {
             //Show these subscriptions:
-            echo '<h5 class="badge badge-h indent1" style="display: inline-block;"><i class="fas fa-comment-plus"></i> ' . count($trs) . ($limit == count($trs) ? '+' : '') . ' Subscriptions</h5>';
+            echo '<h5 class="badge badge-h indent1" style="display: inline-block;"><i class="fas fa-comment-plus"></i> ' . count($entity['en__actionplans']) . ' Action Plans</h5>';
             echo '<div class="list-group list-grey indent1" style="margin-bottom:10px;">';
-            foreach ($trs as $w) {
-                echo echo_w_matrix($w);
+            foreach ($entity['en__actionplans'] as $in) {
+                echo echo_w_matrix($in);
             }
             echo '</div>';
         }
-
-
-        //URLs
-        echo '<h5 class="badge badge-h indent1"><i class="fas fa-atlas"></i> <span class="li-urls-count">' . count($entity['u__urls']) . '</span> URLs</h5>';
-        echo '<div id="list-urls" class="list-group indent1 grey-list" style="margin-bottom:40px;">';
-        foreach ($entity['u__urls'] as $x) {
-            echo echo_x($entity, $x);
-        }
-
-        //Add new Reference:
-        echo '<div class="list-group-item list_input grey-input">
-            <div class="input-group">
-                <div class="form-group is-empty"><input type="url" class="form-control" data-lpignore="true" id="add_url_input" placeholder="Paste URL here..."></div>
-                <span class="input-group-addon">
-                    <a class="badge badge-secondary" id="add_url_btn" href="javascript:x_add();">ADD</a>
-                </span>
-            </div>
-        </div>';
-        echo '</div>';
-
 
         ?>
     </div>

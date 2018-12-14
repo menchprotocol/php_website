@@ -47,7 +47,7 @@ $url_part_1 = $this->uri->segment(1);
                 <?php
                 if (isset($udata['en_id'])) {
                     echo '<li id="isloggedin"><a href="/intents/' . (isset($c['in_id']) ? $c['in_id'] : $this->config->item('in_primary_id')) . '">The Matrix <i class="fas fa-chevron-circle-right"></i></a></li>';
-                } elseif (isset($udata['u__ws']) && count($udata['u__ws']) > 0) {
+                } elseif (isset($udata['en__actionplans']) && count($udata['en__actionplans']) > 0) {
 
                     echo '<li id="isloggedin"><a href="/my/actionplan">Action Plan <i class="fas fa-chevron-circle-right"></i></a></li>';
 

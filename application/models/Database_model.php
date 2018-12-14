@@ -3,20 +3,20 @@
 class Database_model extends CI_Model
 {
 
-     /*
-      *
-      * This model does basic CRUD (Create, Read,
-      * Update & Delete) operations on Mench's
-      * three main tables:
-      *
-      * - table_entities
-      * - table_intents
-      * - table_ledger
-      *
-      * Think of this as the most internal layer
-      * input/output processor for our platform.
-      *
-      * */
+    /*
+     *
+     * This model does basic CRUD (Create, Read,
+     * Update & Delete) operations on Mench's
+     * three main tables:
+     *
+     * - table_entities
+     * - table_intents
+     * - table_ledger
+     *
+     * Think of this as the most internal layer
+     * input/output processor for our platform.
+     *
+     * */
 
     function __construct()
     {
@@ -96,44 +96,6 @@ class Database_model extends CI_Model
     }
 
 
-    function k_next_fetch($tr_id, $min_k_rank = 0)
-    {
-
-        //Two things need to be fetched:
-        $last_working_on_any = $this->Database_model->tr_fetch(array(
-            'tr_id' => $tr_id,
-            'tr_status' => 1, //Active subscriptions
-            'in_status >=' => 2,
-            'k_rank >' => $min_k_rank,
-            //The first case is for OR intents that a child is not yet selected, and the second part is for regular incompleted items:
-            '(tr_status IN (1,-2) AND in_is_any=1)' => null, //Not completed or not yet started
-        ), array('w', 'cr', 'cr_c_child'), 1, 0, array(
-            'k_rank' => 'DESC',
-        ));
-
-        //We did not find it? Ok fetch the first one and replace:
-        $first_pending_all = $this->Database_model->tr_fetch(array(
-            'tr_id' => $tr_id,
-            'tr_status' => 1, //Active subscriptions
-            'in_status >=' => 2,
-            'k_rank >' => $min_k_rank,
-            //The first case is for OR intents that a child is not yet selected, and the second part is for regular incompleted items:
-            'tr_status IN (0,-2)' => null, //Not completed or not yet started
-        ), array('w', 'cr', 'cr_c_child'), 1, 0, array(
-            'k_rank' => 'ASC', //Items are cached in order ;)
-        ));
-
-        if (isset($first_pending_all[0]) && (!isset($last_working_on_any[0]) || $first_pending_all[0]['k_rank'] < $last_working_on_any[0]['k_rank'])) {
-            return $first_pending_all;
-        } elseif (isset($last_working_on_any[0])) {
-            return $last_working_on_any;
-        } else {
-            //Neither case was found!
-            return false;
-        }
-    }
-
-
     function tr_status_update($tr_id, $new_tr_status)
     {
 
@@ -189,7 +151,7 @@ class Database_model extends CI_Model
         $skippable_ks = $this->Database_model->tr_fetch(array(
             'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
             'tr_id IN (' . join(',', $skip_ks) . ')' => null,
-        ), ($update_db ? array() : array('cr', 'cr_c_child')), 0, 0, array('k_rank' => 'ASC'));
+        ), ($update_db ? array() : array('cr', 'cr_c_child')), 0, 0, array('tr_order' => 'ASC'));
 
         if ($update_db) {
 
@@ -398,6 +360,7 @@ class Database_model extends CI_Model
             }
 
             if ($w_might_be_complete) {
+
                 //There is a chance that entire subscription might be complete
                 //To determine if the subscription is complete we need to look at the top level siblings...
                 //What kind of an intent (AND node or OR node) is this subscription tr_in_child_id?
@@ -444,34 +407,7 @@ class Database_model extends CI_Model
 
                     if (count($validate_subscription) == 1) {
 
-                        //What subscription number is this?
-                        $completed_ws = $this->Database_model->w_fetch(array(
-                            'tr_id !=' => $intents[0]['tr_id'], //Other than this one...
-                            'w_parent_en_id' => $intents[0]['tr_en_parent_id'],
-                            'tr_status >=' => 2, //Completed subscriptions
-                        ));
-
-                        //Inform user that they are now complete with all tasks:
-                        $this->Chat_model->dispatch_message(array(
-                            array(
-                                'tr_en_child_id' => $intents[0]['tr_en_parent_id'],
-                                'tr_in_child_id' => $intents[0]['tr_in_child_id'],
-                                'tr_tr_parent_id' => $intents[0]['tr_id'],
-                                'tr_content' => 'Congratulations for completing your ' . echo_ordinal((count($completed_ws) + 1)) . ' Subscription 🎉 Over time I will keep sharing new insights (based on my new training data) that could help you to ' . $intents[0]['in_outcome'] . ' 🙌 You can, at any time, stop updates on your subscriptions by saying "quit".',
-                            ),
-                            array(
-                                'tr_en_child_id' => $intents[0]['tr_en_parent_id'],
-                                'tr_in_child_id' => $intents[0]['tr_in_child_id'],
-                                'tr_tr_parent_id' => $intents[0]['tr_id'],
-                                'tr_content' => 'How else can I help you ' . $this->config->item('in_primary_name') . '? ' . echo_pa_lets(),
-                            ),
-                        ));
-
-                        //The entire subscription is now complete!
-                        $this->Database_model->w_update($intents[0]['tr_id'], array(
-                            'tr_status' => 2, //Subscription is now complete
-                            //TODO Maybe change to status 3 directly if the nature of the intent is not verifiable
-                        ));
+                        //TODO Remove this entire section
 
                     }
                 }
@@ -488,9 +424,9 @@ class Database_model extends CI_Model
             $insert_columns['k_timestamp'] = date("Y-m-d H:i:s");
         }
 
-        if (!isset($insert_columns['k_rank'])) {
+        if (!isset($insert_columns['tr_order'])) {
             //Determine the highest rank for this subscription:
-            $insert_columns['k_rank'] = 1 + $this->Database_model->tr_max_order('tb_actionplan_links', 'k_rank', array(
+            $insert_columns['tr_order'] = 1 + $this->Database_model->tr_max_order('tb_actionplan_links', 'tr_order', array(
                     'tr_tr_parent_id' => $insert_columns['tr_tr_parent_id'],
                 ));
         }
@@ -530,7 +466,7 @@ class Database_model extends CI_Model
         //Validate Original intent:
         $parent_intents = $this->Database_model->in_fetch(array(
             'in_id' => intval($in_id),
-        ), array('fetch_children'));
+        ), array('in__children'));
         if (count($parent_intents) <= 0) {
             return array(
                 'status' => 0,
@@ -575,9 +511,9 @@ class Database_model extends CI_Model
             $new_intents = $this->Database_model->in_fetch(array(
                 'in_id' => $in_linkto_id,
                 'in_status >=' => 0,
-            ), ($next_level == 2 ? array('fetch_children') : array()));
+            ), ($next_level == 2 ? array('in__children') : array()));
 
-            //, array('fetch_grandchildren')
+            //, array('in__grandchildren')
 
             if (count($new_intents) <= 0) {
                 return array(
@@ -774,46 +710,88 @@ class Database_model extends CI_Model
         //Now fetch parents:
         foreach ($res as $key => $val) {
 
-            if (in_array('in__children_count', $join_objects)) {
-                //Fetch the messages for this entity:
-                $res[$key]['in__children_count'] = count($this->Old_model->ur_children_fetch(array(
+            //This will Count ALL the children:
+            if (in_array('en__child_count', $join_objects)) {
+
+                //Assume none:
+                $res[$key]['en__child_count'] = 0;
+
+                //Do a child count:
+                $child_trs = $this->Database_model->tr_fetch(array(
                     'tr_en_parent_id' => $val['en_id'],
-                    'tr_status >=' => 0, //Pending or Active
-                    'en_status >=' => 0, //Pending or Active
-                )));
+                    'tr_en_child_id >' => 0, //Any type of children is accepted
+                    'tr_status >=' => 0, //New+
+                    'en_status >=' => 0, //New+
+                ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as en__child_count');
+
+                if (count($child_trs) > 0) {
+                    $res[$key]['en__child_count'] = intval($child_trs[0]['en__child_count']);
+                }
+
+            }
+
+            //This will fetch Children up to a maximum of $this->config->item('en_per_page')
+            if (in_array('en__children', $join_objects)) {
+
+                $res[$key]['en__children'] = $this->Database_model->tr_fetch(array(
+                    'tr_en_parent_id' => $val['en_id'],
+                    'tr_en_child_id >' => 0, //Any type of children is accepted
+                    'tr_status >=' => 0, //New+
+                    'en_status >=' => 0, //New+
+                ), array('en_child'), $this->config->item('en_per_page'), 0, array('en_trust_score' => 'DESC'));
+
+                //TODO maybe consider en__grandchildren someday and add to UI?
+
             }
 
 
-            if (in_array('u__urls', $join_objects)) {
-                //Fetch the messages for this entity:
-                $res[$key]['u__urls'] = $this->Old_model->x_fetch(array(
-                    'x_status >' => -2,
-                    'x_en_id' => $val['en_id'],
-                ), array(), array(
-                    'x_type' => 'ASC'
-                ));
-            }
 
-            if (in_array('u__ws', $join_objects)) {
-                //Fetch the subscriptions for this entity:
-                $res[$key]['u__ws'] = $this->Database_model->w_fetch(array(
+
+            if (in_array('en__actionplans', $join_objects)) {
+
+                //Search & Append this Master's Action Plans:
+                $res[$key]['en__actionplans'] = $this->Database_model->tr_fetch(array(
                     'tr_en_parent_id' => $val['en_id'],
-                    'tr_status IN (1,2)' => null, //Active subscriptions (Passive ones have a more targetted distribution)
-                ), array('in'), array(
-                    'w_last_heard' => 'ASC'
-                ));
+                    'tr_en_type_id' => 4235, //Action Plan Intent Add
+                    'tr_in_parent_id' => 0, //Top-level Action Plan intents only...
+                    'tr_status >=' => 0, //New+
+                ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
+
             }
 
 
             //Always fetch entity parents unless explicitly requested not to:
             if (in_array('skip_en__parents', $join_objects)) {
+
                 $res[$key]['en__parents'] = array();
+
             } else {
-                $res[$key]['en__parents'] = $this->Database_model->tr_parent_fetch(array(
-                    'tr_en_child_id' => $val['en_id'],
-                    'tr_status >=' => 0, //Pending or Active
-                    'en_status >=' => 0, //Pending or Active
-                ));
+
+                //Fetch parents by default:
+                $res[$key]['en__parents'] = $this->Database_model->tr_fetch(array(
+                    'tr_en_parent_id >' => 0, //Also has a parent assigned of any transaction type
+                    'tr_en_child_id' => $val['en_id'], //This child entity
+                    'tr_status >=' => 0, //New+
+                    'en_status >=' => 0, //New+
+                ), array('en_parent'), 0, 0, array('en_trust_score' => 'DESC'));
+
+                //Do we also want the parents of parnets? This can be helpful in some cases...
+                if (in_array('en__grandparents', $join_objects)) {
+
+                    foreach($res[$key]['en__parents'] as $key => $value){
+
+                        //Append grandparents:
+                        $res[$key]['en__parents'][$key]['en__grandparents'] = $this->Database_model->tr_fetch(array(
+                            'tr_en_parent_id >' => 0, //Also has a parent assigned of any transaction type
+                            'tr_en_child_id' => $value['en_id'], //This child entity
+                            'tr_status >=' => 0, //New+
+                            'en_status >=' => 0, //New+
+                        ), array('en_parent'), 0, 0, array('en_trust_score' => 'DESC'));
+
+                    }
+
+                }
+
             }
         }
 
@@ -970,8 +948,8 @@ class Database_model extends CI_Model
         foreach ($intents as $key => $value) {
 
             //Should we append intent messages?
-            if (in_array('in__active_messages', $join_objects)) {
-                $intents[$key]['in__active_messages'] = $this->Database_model->tr_fetch(array(
+            if (in_array('in__messages', $join_objects)) {
+                $intents[$key]['in__messages'] = $this->Database_model->tr_fetch(array(
                     'tr_status >=' => 0, //New+ status which is considered active (not removed)
                     'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent messages
                     'tr_in_child_id' => $value['in_id'],
@@ -979,27 +957,27 @@ class Database_model extends CI_Model
             }
 
             //Should we fetch all parent intentions?
-            if (in_array('in__active_parents', $join_objects)) {
-                $intents[$key]['in__active_parents'] = $this->Old_model->cr_parents_fetch(array(
+            if (in_array('in__parents', $join_objects)) {
+                $intents[$key]['in__parents'] = $this->Old_model->cr_parents_fetch(array(
                     'tr_in_child_id' => $value['in_id'],
                     'tr_status' => 1,
                 ), $join_objects);
             }
 
             //Have we been asked to append any children/granchildren to this query?
-            if (in_array('fetch_children', $join_objects) || in_array('fetch_grandchildren', $join_objects)) {
+            if (in_array('in__children', $join_objects) || in_array('in__grandchildren', $join_objects)) {
 
                 //Fetch immediate children:
-                $intents[$key]['in__active_children'] = $this->Old_model->cr_children_fetch(array(
+                $intents[$key]['in__children'] = $this->Old_model->cr_children_fetch(array(
                     'tr_in_parent_id' => $value['in_id'],
                     'tr_status' => 1,
                     'in_status >=' => 0,
                 ), $join_objects);
 
-                //Fetch second-level granchildren?
-                if (in_array('fetch_grandchildren', $join_objects)) {
-                    foreach ($intents[$key]['in__active_children'] as $key2 => $value2) {
-                        $intents[$key]['in__active_children'][$key2]['in__active_children'] = $this->Old_model->cr_children_fetch(array(
+                //Fetch second-level granchildren intents?
+                if (in_array('in__grandchildren', $join_objects)) {
+                    foreach ($intents[$key]['in__children'] as $key2 => $value2) {
+                        $intents[$key]['in__children'][$key2]['in__grandchildren'] = $this->Old_model->cr_children_fetch(array(
                             'tr_in_parent_id' => $value2['in_id'],
                             'tr_status' => 1,
                             'in_status >=' => 0,
@@ -1960,11 +1938,11 @@ class Database_model extends CI_Model
             if ($direction_is_downward) {
                 $intents = $this->Old_model->cr_children_fetch(array(
                     'tr_id' => $parent_c['tr_id'],
-                ), ($update_db_table ? array('in__active_messages') : array()));
+                ), ($update_db_table ? array('in__messages') : array()));
             } else {
                 $intents = $this->Old_model->cr_parents_fetch(array(
                     'tr_id' => $parent_c['tr_id'],
-                ), ($update_db_table ? array('in__active_messages') : array()));
+                ), ($update_db_table ? array('in__messages') : array()));
             }
 
         } else {
@@ -1972,7 +1950,7 @@ class Database_model extends CI_Model
             //This is the very first item that
             $intents = $this->Database_model->in_fetch(array(
                 'in_id' => $in_id,
-            ), ($update_db_table ? array('in__active_messages') : array()));
+            ), ($update_db_table ? array('in__messages') : array()));
 
         }
 
@@ -2164,7 +2142,7 @@ class Database_model extends CI_Model
 
             //See who's involved:
             $parent_ids = array();
-            foreach ($intents[0]['in__active_messages'] as $i) {
+            foreach ($intents[0]['in__messages'] as $i) {
 
                 //Who are the parent authors of this message?
 
@@ -2433,7 +2411,7 @@ class Database_model extends CI_Model
     function algolia_sync($obj, $obj_id = 0)
     {
 
-        if(!$this->config->item('enable_algolia')){
+        if (!$this->config->item('enable_algolia')) {
             //Algolia is disabled:
             return false;
         }

@@ -43,8 +43,8 @@
                     <a href="mailto:support@mench.com" class="social-link" data-toggle="tooltip"
                        title="Send us an email" data-placement="top"><i class="fas fa-envelope"></i></a>
 
-                    <a href="/terms" class="social-link" data-toggle="tooltip"
-                       title="Read our terms of service and privacy policy" data-placement="top"><i
+                    <a href="/8263?do_expand=1" class="social-link" data-toggle="tooltip"
+                       title="Understand Mench's Terms of Service" data-placement="top"><i
                                 class="fas fa-balance-scale"></i></a>
 
                 </li>

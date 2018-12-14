@@ -23,7 +23,7 @@ class Intents extends CI_Controller
         $intents = $this->Database_model->in_fetch(array(
             'in_id' => $in_id,
             'in_status >=' => 0,
-        ), array('fetch_grandchildren'));
+        ), array('in__grandchildren'));
 
         //Found it?
         if (!isset($intents[0])) {
@@ -39,10 +39,10 @@ class Intents extends CI_Controller
         $data = array(
             'title' => $intents[0]['in_outcome'],
             'in' => $intents[0],
-            'in__active_parents' => $this->Old_model->cr_parents_fetch(array(
+            'in__parents' => $this->Old_model->cr_parents_fetch(array(
                 'tr_in_child_id' => $in_id,
                 'tr_status' => 1,
-            ), array('in__active_children')),
+            ), array('in__children')),
         );
 
         $this->load->view('shared/matrix_header', $data);
@@ -77,7 +77,7 @@ class Intents extends CI_Controller
         $intents = $this->Database_model->in_fetch(array(
             'in_id' => $in_id,
             'in_status >=' => 2, //Published or featured
-        ), array('fetch_grandchildren', 'in__active_messages', 'in__active_parents'));
+        ), array('in__grandchildren', 'in__messages', 'in__parents'));
 
 
         //Validate Intent:
@@ -405,11 +405,11 @@ class Intents extends CI_Controller
 
 
         //Fetch parent ID:
-        $in__active_parents = $this->Old_model->cr_parents_fetch(array(
+        $in__parents = $this->Old_model->cr_parents_fetch(array(
             'tr_id' => $_POST['tr_id'],
             'tr_status' => 1,
         ));
-        if (!isset($in__active_parents[0])) {
+        if (!isset($in__parents[0])) {
             echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Intent Link ID',
@@ -424,7 +424,7 @@ class Intents extends CI_Controller
             'in__tree_max_seconds' => -(intval($intents[0]['in__tree_max_seconds'])),
             'in__messages_tree_count' => -($intents[0]['in__messages_tree_count']),
         );
-        $updated_recursively = $this->Database_model->metadata_tree_update('in', $in__active_parents[0]['tr_in_parent_id'], $recursive_query);
+        $updated_recursively = $this->Database_model->metadata_tree_update('in', $in__parents[0]['tr_in_parent_id'], $recursive_query);
 
 
         //Remove Transaction:
@@ -435,7 +435,7 @@ class Intents extends CI_Controller
         //Show success:
         echo_json(array(
             'status' => 1,
-            'c_parent' => $in__active_parents[0]['tr_in_parent_id'],
+            'c_parent' => $in__parents[0]['tr_in_parent_id'],
             'adjusted_c_count' => -($intents[0]['in__tree_in_count']),
         ));
 
@@ -583,7 +583,7 @@ class Intents extends CI_Controller
         $this->load->view('shared/messenger_header', array(
             'title' => 'User Engagements',
         ));
-        $this->load->view('engagements/intent_engagements', array(
+        $this->load->view('ledger/intent_engagements', array(
             'in_id' => $in_id,
         ));
         $this->load->view('shared/messenger_footer');
@@ -606,7 +606,7 @@ class Intents extends CI_Controller
         $this->load->view('shared/messenger_header', array(
             'title' => 'User Engagements',
         ));
-        $this->load->view('engagements/in_tr_load', array(
+        $this->load->view('ledger/in_tr_load', array(
             'in_id' => $in_id,
         ));
         $this->load->view('shared/messenger_footer');

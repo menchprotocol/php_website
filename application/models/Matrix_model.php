@@ -7,7 +7,7 @@ class Matrix_model extends CI_Model
      *
      * This model contains all Database functions that
      * interpret the Matrix from a particular perspective
-     * to gain insights from it and to perform pre-defined
+     * to gain understanding from it and to perform pre-defined
      * operations.
      *
      * */
@@ -15,6 +15,70 @@ class Matrix_model extends CI_Model
     function __construct()
     {
         parent::__construct();
+    }
+
+
+    function in_next_actionplan($actionplan_tr_id, $tr_order_larger_than = 0)
+    {
+
+        //Let's first check if we have an OR Intent that is working On, which means it's children have not been answered!
+        $first_pending_or_intent = $this->Database_model->tr_fetch(array(
+            'tr_tr_parent_id' => $actionplan_tr_id, //This action Plan
+            'in_status >=' => 2, //Published+
+            'in_is_any' => 1, //OR Branch
+            'tr_status' => 1, //Working On, which means OR branch has not been answered yet
+            'tr_order >' => $tr_order_larger_than,
+        ), array('in_child'), 1, 0, array('tr_order' => 'ASC'));
+
+        if (count($first_pending_or_intent) > 0) {
+            return $first_pending_or_intent;
+        }
+
+
+        //Now check the next AND intent that has not been started:
+        $next_new_intent = $this->Database_model->tr_fetch(array(
+            'tr_tr_parent_id' => $actionplan_tr_id, //This action Plan
+            'in_status >=' => 2, //Published+
+            'tr_status' => 0, //New (not started yet) for either AND/OR branches
+            'tr_order >' => $tr_order_larger_than,
+        ), array('in_child'), 1, 0, array('tr_order' => 'ASC'));
+
+        if (count($next_new_intent) > 0) {
+            return $next_new_intent;
+        }
+
+
+        //Now check the next AND intent that is working on:
+        //I don't think this situation should ever happen...
+        //Because if we don't have any of the previous ones,
+        //how can we have this? 🤔 But let's keep it for now...
+        $next_working_on_intent = $this->Database_model->tr_fetch(array(
+            'tr_tr_parent_id' => $actionplan_tr_id, //This action Plan
+            'in_status >=' => 2, //Published+
+            'in_is_any' => 0, //AND Branch
+            'tr_status' => 1, //Working On
+            'tr_order >' => $tr_order_larger_than,
+        ), array('in_child'), 1, 0, array('tr_order' => 'ASC'));
+
+        if (count($next_working_on_intent) > 0) {
+            return $next_working_on_intent;
+        }
+
+
+        //Do one last try with any item without the recommended $tr_order_larger_than limitation:
+        $next_intent = $this->Database_model->tr_fetch(array(
+            'tr_tr_parent_id' => $actionplan_tr_id, //This action Plan
+            'in_status >=' => 2, //Published+
+            'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
+        ), array('in_child'), 1, 0, array('tr_order' => 'ASC'));
+
+        if (count($next_intent) > 0) {
+            return $next_intent;
+        }
+
+        //The Action Plan must be complete as we could not find any pending intent:
+        return false;
+
     }
 
 
@@ -151,17 +215,17 @@ class Matrix_model extends CI_Model
              * Yes, this is an Action Plan Intent.
              *
              * We can now append more messages to give Masters
-             * more insight on what to do to move forward
+             * more understanding on what to do to move forward
              *
              * */
 
 
             //Now see whether it's the top level intent or not:
-            $actionplan_tr_id = ($tr['tr_in_parent_id'] == 0 ? $tr['tr_tr_id'] /* IS top-level */ : $tr['tr_tr_parent_id'] /* NOT top-level */ ) ;
+            $actionplan_tr_id = ($tr['tr_in_parent_id'] == 0 ? $tr['tr_tr_id'] /* IS top-level */ : $tr['tr_tr_parent_id'] /* NOT top-level */);
 
 
             //Check Intent completion Requirements ONLY IF action plan intent is not completed yet:
-            if(in_array($tr['tr_status'], $this->config->item('tr_status_incomplete'))){
+            if (in_array($tr['tr_status'], $this->config->item('tr_status_incomplete'))) {
 
                 //Check the required notes as we'll use this later:
                 $message_in_requirements = $this->Matrix_model->in_completion_requirements($ins[0], true);
@@ -169,12 +233,12 @@ class Matrix_model extends CI_Model
                 //Do we have a subscription, if so, we need to add a next step message:
                 if ($message_in_requirements) {
 
-                    //URL or a written response is required:
+                    //Let the user know what they need to do:
                     array_push($messages, array_merge($tr, array(
                         'tr_content' => $message_in_requirements,
                     )));
 
-                    //This is what the Master has to do next, return results:
+                    //Completing this requirement is the next step, return results:
                     return $this->Chat_model->dispatch_message($messages);
 
                     //EXIT!
@@ -184,18 +248,20 @@ class Matrix_model extends CI_Model
             }
 
 
-
             /*
              *
              * Still here? It either does not have requirements or
-             * the requirements have been submitted by the Master
+             * the requirements have been completed by the Master
+             *
+             * Let's attempt to give direction on what's next...
              *
              * */
 
 
-            //Let's attempt to give direction on what's next...
-            $next_step_message = null; //To be populated soon...
-            $quick_replies = array(); //In case we needed to give quick reply options
+            //To be populated soon:
+            $next_step_message = null;
+            $quick_replies = array();
+
 
             //Lets see how many incomplete child intents there are in Master's Action Plan:
             $actionplan_child_ins = $this->Database_model->tr_fetch(array(
@@ -206,31 +272,73 @@ class Matrix_model extends CI_Model
                 //We are fetching with any tr_status just to see what is available/possible from here
             ), array('en_child'));
 
-            //Nothing is required to mark as complete, which means we can move forward with this:
+
             //How many children do we have for this intent?
-            if (count($actionplan_child_ins) <= 1) {
+            if (count($actionplan_child_ins) == 0) {
 
-                //We have 0-1 child intents! This means we have a single path forward...
-                //If zero, let's see what the next step:
-                if (count($actionplan_child_ins) == 0) {
+                //No children! So there is a single path forward, the next intent in line...
+                //let's see what the next intent:
+                $next_ins = $this->Matrix_model->in_next_actionplan($actionplan_tr_id);
 
-                    //This intent does not have any children, attempt to find the next intent in line to determine next step:
-                    $actionplan_child_ins = $this->Database_model->k_next_fetch($actionplan_tr_id);
-
-                }
 
                 //Did we find the next intent in line in case we had zero?
-                if (count($actionplan_child_ins) > 0) {
+                if (count($next_ins) > 0) {
 
                     //Give option to move on:
-                    $next_step_message .= 'The next step to ' . $ins[0]['in_outcome'] . ' is to ' . $actionplan_child_ins[0]['in_outcome'] . '.';
+                    $next_step_message .= 'The next step to ' . $ins[0]['in_outcome'] . ' is to ' . $next_ins[0]['in_outcome'] . '.';
                     array_push($quick_replies, array(
                         'content_type' => 'text',
                         'title' => 'Ok Continue ▶️',
-                        'payload' => 'MARKCOMPLETE_' . $actionplan_tr_id . '_' . $actionplan_child_ins[0]['tr_id'] . '_' . $actionplan_child_ins[0]['tr_order'], //Here we are using MARKCOMPLETE_ also for OR branches with a single option... Maybe we need to change this later?! For now it feels ok to do so...
+                        'payload' => 'MARKCOMPLETE_' . $actionplan_tr_id . '_' . $next_ins[0]['tr_id'], //Here we are using MARKCOMPLETE_ also for OR branches with a single option... Maybe we need to change this later?! For now it feels ok to do so...
                     ));
 
+                } else {
+
+                    //Nothing else left to do, we must be done with this Action Plan:
+                    //What is the Action Plan Status?
+                    $actionplans = $this->Database_model->tr_fetch(array(
+                        'tr_id' => $actionplan_tr_id,
+                    ), array('in_child'));
+
+                    if(count($actionplans)>0 && in_array($actionplans[0]['tr_status'], $this->config->item('tr_status_incomplete'))){
+
+                        //Inform user that they are now complete with all tasks:
+                        $this->Chat_model->dispatch_message(array(
+                            array(
+                                'tr_en_child_id' => $actionplans[0]['tr_en_parent_id'],
+                                'tr_in_child_id' => $actionplans[0]['tr_in_child_id'],
+                                'tr_tr_parent_id' => $actionplans[0]['tr_id'],
+                                'tr_content' => 'Congratulations for completing your Action Plan 🎉 Over time I will keep sharing new concepts (based on my new training data) that could help you to ' . $actionplans[0]['in_outcome'] . ' 🙌 You can, at any time, stop updates on your subscriptions by saying "quit".',
+                            ),
+                            array(
+                                'tr_en_child_id' => $actionplans[0]['tr_en_parent_id'],
+                                'tr_in_child_id' => $actionplans[0]['tr_in_child_id'],
+                                'tr_tr_parent_id' => $actionplans[0]['tr_id'],
+                                'tr_content' => 'How else can I help you ' . $this->config->item('in_primary_name') . '? ' . echo_pa_lets(),
+                            ),
+                        ));
+
+                        //The entire subscription is now complete!
+                        $this->Database_model->tr_update($actionplan_tr_id, array(
+                            'tr_status' => 2, //Completed
+                        ), $actionplans[0]['tr_en_parent_id']);
+
+                        //TODO Log Action Plan completion transaction?
+
+                    }
+
                 }
+
+
+            } elseif (count($actionplan_child_ins) == 1) {
+
+                //We 1 child intents, which means again that we have a single path forward...
+                $next_step_message .= 'The next step to ' . $ins[0]['in_outcome'] . ' is to ' . $actionplan_child_ins[0]['in_outcome'] . '.';
+                array_push($quick_replies, array(
+                    'content_type' => 'text',
+                    'title' => 'Ok Continue ▶️',
+                    'payload' => 'MARKCOMPLETE_' . $actionplan_tr_id . '_' . $actionplan_child_ins[0]['tr_id'] . '_' . $actionplan_child_ins[0]['tr_order'], //Here we are using MARKCOMPLETE_ also for OR branches with a single option... Maybe we need to change this later?! For now it feels ok to do so...
+                ));
 
             } else {
 
@@ -253,10 +361,19 @@ class Matrix_model extends CI_Model
                     foreach ($actionplan_child_ins as $counter => $or_child_in) {
                         if ($counter == 10) {
 
-                            //TODO Log Transaction to notify admin to improve this branch
+                            //Log error transaction:
+                            $this->Database_model->tr_create(array(
+                                'tr_en_credit_id' => 1, //Shervin Enayati - 13 Dec 2018
+                                'tr_content' => 'compose_messages() encountered intent with too many children to be listed as OR Intent options! Trim and iterate that intent tree.',
+                                'tr_en_type_id' => 4246, //Platform Error
+                                'tr_tr_parent_id' => $actionplan_tr_id, //The action plan
+                                'tr_in_parent_id' => $tr['tr_in_child_id'],
+                                'tr_in_child_id' => $or_child_in['in_id'],
+                            ));
 
-                            break; //Quick reply accepts 11 options max!
-                            //We know that the $next_step_message length cannot surpass the limit defined by fb_max_message variable!
+                            //Quick reply accepts 11 options max:
+                            break;
+
                         }
                         $next_step_message .= "\n\n" . ($counter + 1) . '/ ' . $or_child_in['in_outcome'];
                         array_push($quick_replies, array(
@@ -270,25 +387,33 @@ class Matrix_model extends CI_Model
 
                     //User needs to complete all children, and we'd recommend the first item as their next step:
                     $next_step_message .= 'There are ' . count($actionplan_child_ins) . ' steps to ' . $ins[0]['in_outcome'] . ':';
+
                     foreach ($actionplan_child_ins as $counter => $and_child_in) {
 
                         if ($counter == 0) {
+
                             array_push($quick_replies, array(
                                 'content_type' => 'text',
                                 'title' => 'Start Step 1 ▶️',
                                 'payload' => 'MARKCOMPLETE_' . $actionplan_tr_id . '_' . $and_child_in['tr_id'] . '_' . $and_child_in['tr_order'],
                             ));
+
                         }
 
+                        //We know that the $next_step_message length cannot surpass the limit defined by fb_max_message variable!
                         //make sure message is within range:
-                        if (strlen($next_step_message) < ($this->config->item('fb_max_message') - 200)) {
+                        if (strlen($next_step_message) < ($this->config->item('fb_max_message') - 200 /* Cushion for appendix messages */)) {
+
                             //Add message:
                             $next_step_message .= "\n\n" . 'Step ' . ($counter + 1) . ': ' . $and_child_in['in_outcome'];
+
                         } else {
+
                             //We cannot add any more, indicate truncating:
                             $remainder = count($actionplan_child_ins) - $counter;
                             $next_step_message .= "\n\n" . 'And ' . $remainder . ' more step' . echo__s($remainder) . '!';
                             break;
+
                         }
                     }
 

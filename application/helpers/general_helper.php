@@ -72,27 +72,6 @@ function migrate_submissions($c_require_notes_to_complete, $c_require_url_to_com
 }
 
 
-function fetch_entity_tree($en_id, $is_edit = false)
-{
-
-    $CI =& get_instance();
-    $entities = $CI->Database_model->en_fetch(array(
-        'en_id' => $en_id,
-    ), array('in__children_count', 'u__urls'));
-
-    if (count($entities) < 1) {
-        return redirect_message('/entities', '<div class="alert alert-danger" role="alert">Invalid Entity ID</div>');
-    }
-
-    $view_data = array(
-        'parent_en_id' => $en_id,
-        'entity' => $entities[0],
-        'title' => ($is_edit ? 'Modify ' : '') . $entities[0]['en_name'],
-    );
-
-    return $view_data;
-}
-
 function join_keys($input_array, $joiner = ',')
 {
     $joined_string = null;
@@ -599,7 +578,7 @@ function message_validation($tr_content)
 
         $i_children_us = $CI->Database_model->en_fetch(array(
             'en_id' => $en_ids[0],
-        ), array('skip_en__parents', 'u__urls'));
+        ));
 
         if (count($i_children_us) == 0) {
             //Invalid ID:
@@ -651,13 +630,20 @@ function message_validation($tr_content)
             );
         }
 
-        //Ensure entity has a sliceable content
-        //
-        //currently supporting: YouTube Only! See error message below...
-        //
+        /*
+         *
+         * Ensure entity has a sliceable content
+         * currently supporting: YouTube Only!
+         * See error message below...
+         *
+         * TODO This logic is not mapped on the Matrix in any way!
+         * TODO Maybe create a @SlicableURL entity to index all objects that accept the /slice command
+         *
+         * */
+
         $found_slicable_url = false;
-        foreach ($i_children_us[0]['u__urls'] as $x) {
-            if ($x['x_type'] == 1 && substr_count($x['x_url'], 'youtube.com') > 0) {
+        foreach ($i_children_us[0]['en__parents'] as $en) {
+            if (substr_count($en['tr_content'], 'youtube.com') > 0) {
                 $found_slicable_url = true;
                 break;
             }

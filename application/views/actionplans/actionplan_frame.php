@@ -4,7 +4,7 @@
 $udata = $this->session->userdata('user');
 $fb_settings = $this->config->item('fb_settings');
 
-if ((isset($udata['u__ws']) && count($udata['u__ws'])) || (isset($udata['en__parents']) && count($udata['en__parents']) > 0 && filter_array($udata['en__parents'], 'en_id', 1308))) {
+if ((isset($udata['en__actionplans']) && count($udata['en__actionplans'])) || (isset($udata['en__parents']) && count($udata['en__parents']) > 0 && filter_array($udata['en__parents'], 'en_id', 1308))) {
 
     //User is accessing the Action Plan from their browser
 
@@ -16,7 +16,7 @@ if ((isset($udata['u__ws']) && count($udata['u__ws'])) || (isset($udata['en__par
     //Fetch page instantly as we know who this is:
     ?>
     <script>
-        $.post("/my/display_actionplan/0/<?= (isset($tr_id) ? intval($tr_id) : $udata['u__ws'][0]['tr_id']) ?>/<?= (isset($in_id) ? intval($in_id) : $udata['u__ws'][0]['tr_in_child_id']) ?>", {}, function (data) {
+        $.post("/my/display_actionplan/0/<?= ( isset($actionplan_tr_id) ? $actionplan_tr_id : $udata['en__actionplans'][0]['tr_id']) ?>/<?= (isset($in_id) ? intval($in_id) : $udata['en__actionplans'][0]['tr_in_child_id']) ?>", {}, function (data) {
             $("#page_content").html(data);
 
             //Load tooldip:
@@ -51,7 +51,7 @@ if ((isset($udata['u__ws']) && count($udata['u__ws'])) || (isset($udata['en__par
                     var psid = thread_context.psid;
                     var signed_request = thread_context.signed_request;
                     //Fetch Page:
-                    $.post("/my/display_actionplan/" + psid + "/<?= (isset($tr_id) ? intval($tr_id) : 0) ?>/<?= (isset($in_id) ? intval($in_id) : 0) ?>?sr=" + signed_request, {}, function (data) {
+                    $.post("/my/display_actionplan/" + psid + "/<?= (isset($actionplan_tr_id) ? intval($actionplan_tr_id) : 0) ?>/<?= (isset($in_id) ? intval($in_id) : 0) ?>?sr=" + signed_request, {}, function (data) {
                         //Update UI to confirm with user:
                         $("#page_content").html(data);
                     });

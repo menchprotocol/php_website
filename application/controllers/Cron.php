@@ -564,9 +564,9 @@ class Cron extends CI_Controller
             array_push($user_ids_served, intval($w['en_id']));
 
             //See where this user is in their subscription:
-            $trs_next = $this->Database_model->k_next_fetch($w['tr_id']);
+            $next_ins = $this->Matrix_model->in_next_actionplan($w['tr_id']);
 
-            if (!$trs_next) {
+            if (!$next_ins) {
                 //Should not happen, bug already reported:
                 return false;
             }
@@ -578,9 +578,9 @@ class Cron extends CI_Controller
 
 
             //Give them next step again:
-            $this->Chat_model->k_next_fetch($w['tr_id']);
+            $this->Chat_model->in_next_actionplan($w['tr_id']);
 
-            //$trs_next[0]['in_outcome']
+            //$next_ins[0]['in_outcome']
         }
 
 

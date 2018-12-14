@@ -28,11 +28,11 @@ if (isset($orphan_intents)) {
         } else {
 
             //Start with parents:
-            echo '<h5 class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-parent-count parent-counter-' . $c['in_id'] . '">' . count($in__active_parents) . '</span> Parent' . echo__s(count($in__active_parents)) . '</h5>';
+            echo '<h5 class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-parent-count parent-counter-' . $c['in_id'] . '">' . count($in__parents) . '</span> Parent' . echo__s(count($in__parents)) . '</h5>';
 
-            if (count($in__active_parents) > 0) {
+            if (count($in__parents) > 0) {
                 echo '<div class="list-group list-level-2">';
-                foreach ($in__active_parents as $sub_intent) {
+                foreach ($in__parents as $sub_intent) {
                     echo echo_c($sub_intent, 2, 0, true);
                 }
                 echo '</div>';
@@ -72,26 +72,27 @@ if (isset($orphan_intents)) {
             echo '<div id="outs_error indent2"></div>'; //Show potential errors detected in the Action Plan via our JS functions...
 
             echo '<div id="list-c-' . $c['in_id'] . '" class="list-group list-is-children list-level-2 indent2">';
-            foreach ($c['in__active_children'] as $sub_intent) {
+            foreach ($c['in__children'] as $sub_intent) {
                 echo echo_c($sub_intent, 2, $c['in_id']);
             }
             ?>
             <div class="list-group-item list_input grey-block">
                 <div class="input-group">
-                    <div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text"
-                                                                                           class="form-control intentadder-level-2 algolia_search bottom-add"
-                                                                                           maxlength="<?= $this->config->item('in_outcome_max') ?>"
-                                                                                           intent-id="<?= $c['in_id'] ?>"
-                                                                                           id="addintent-c-<?= $c['in_id'] ?>"
-                                                                                           placeholder="Add #Intent">
+                    <div class="form-group is-empty" style="margin: 0; padding: 0;">
+                        <input type="text"
+                               class="form-control intentadder-level-2 algolia_search bottom-add"
+                               maxlength="<?= $this->config->item('in_outcome_max') ?>"
+                               intent-id="<?= $c['in_id'] ?>"
+                               id="addintent-c-<?= $c['in_id'] ?>"
+                               placeholder="Add #Intent">
                     </div>
                     <span class="input-group-addon" style="padding-right:8px;">
-                                        <span id="add_in_btn" data-toggle="tooltip" title="or press ENTER ;)"
-                                              data-placement="top" class="badge badge-primary pull-right"
-                                              style="cursor:pointer; margin: 1px 3px 0 6px;">
-                                            <div><i class="fas fa-plus"></i></div>
-                                        </span>
-                                    </span>
+                        <span id="add_in_btn" data-toggle="tooltip" title="or press ENTER ;)"
+                              data-placement="top" class="badge badge-primary pull-right"
+                              style="cursor:pointer; margin: 1px 3px 0 6px;">
+                            <div><i class="fas fa-plus"></i></div>
+                        </span>
+                    </span>
                 </div>
             </div>
             <?php
@@ -203,8 +204,8 @@ if (isset($orphan_intents)) {
                                 <p>Require Any Of:</p>
                                 <?php
                                 //List all the input options and allow user to pick between them:
-                                foreach ($this->config->item('en_all_4331') as $en_id=>$en) {
-                                    echo '<label '.( strlen($en['tr_content'])>0 ? ' class="underdot" data-toggle="tooltip" title="'.stripslashes($en['tr_content']).'" data-placement="top" ' : '' ).' style="display: block; font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" id="require__'.$en_id.'" />'.$en['en_icon'].' '.$en['en_name'].'</label>';
+                                foreach ($this->config->item('en_all_4331') as $en_id => $en) {
+                                    echo '<label ' . (strlen($en['tr_content']) > 0 ? ' class="underdot" data-toggle="tooltip" title="' . stripslashes($en['tr_content']) . '" data-placement="top" ' : '') . ' style="display: block; font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" id="require__' . $en_id . '" />' . $en['en_icon'] . ' ' . $en['en_name'] . '</label>';
                                 }
                                 ?>
                                 <p style="color: #999;">(No Requirements if none selected)</p>

@@ -23,7 +23,7 @@ class Adminpanel extends CI_Controller
         $this->load->view('shared/matrix_header', array(
             'title' => 'Platform Engagements',
         ));
-        $this->load->view('engagements/engagements_browse');
+        $this->load->view('ledger/engagements_browse');
         $this->load->view('shared/matrix_footer');
     }
 
@@ -64,7 +64,7 @@ class Adminpanel extends CI_Controller
         $this->load->view('shared/matrix_header', array(
             'title' => 'Status Legend',
         ));
-        $this->load->view('other/statuslegend');
+        $this->load->view('shared/statuslegend');
         $this->load->view('shared/matrix_footer');
     }
 

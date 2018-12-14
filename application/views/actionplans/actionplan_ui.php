@@ -26,13 +26,13 @@ if (count($k_ins) == 1) {
 $next_button = null;
 if ($w['tr_status'] == 1) {
     //Active subscription, attempt to find next item, which we should be able to find:
-    $trs_next = $this->Database_model->k_next_fetch($w['tr_id']);
-    if ($trs_next) {
-        if ($trs_next[0]['in_id'] == $c['in_id']) {
+    $next_ins = $this->Matrix_model->in_next_actionplan($w['tr_id']);
+    if ($next_ins) {
+        if ($next_ins[0]['in_id'] == $c['in_id']) {
             //$next_button = '<span style="font-size: 0.7em; padding-left:5px; display:inline-block;"><i class="fas fa-shield-check"></i> This is the next-in-line intent</span>';
             $next_button = null;
         } else {
-            $next_button = '<a href="/my/actionplan/' . $trs_next[0]['tr_tr_parent_id'] . '/' . $trs_next[0]['in_id'] . '" class="btn ' . (count($k_ins) == 1 && !$show_written_input && !$is_incomplete ? 'btn-md btn-primary' : 'btn-xs btn-black') . '" data-toggle="tooltip" data-placement="top" title="Next intent-in-line is to ' . $trs_next[0]['in_outcome'] . '">Next-in-line <i class="fas fa-angle-right"></i></a>';
+            $next_button = '<a href="/my/actionplan/' . $next_ins[0]['tr_tr_parent_id'] . '/' . $next_ins[0]['in_id'] . '" class="btn ' . (count($k_ins) == 1 && !$show_written_input && !$is_incomplete ? 'btn-md btn-primary' : 'btn-xs btn-black') . '" data-toggle="tooltip" data-placement="top" title="Next intent-in-line is to ' . $next_ins[0]['in_outcome'] . '">Next-in-line <i class="fas fa-angle-right"></i></a>';
         }
     }
 }

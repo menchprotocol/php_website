@@ -84,32 +84,6 @@ class Custom extends CI_Controller
     }
 
 
-    function login()
-    {
-        //Check to see if they are already logged in?
-        $udata = $this->session->userdata('user');
-        if (isset($udata['en__parents'][0]) && filter_array($udata['en__parents'], 'en_id', 1308)) {
-            //Lead miner and above, go to console:
-            redirect_message('/intents/' . $this->config->item('in_primary_id'));
-        }
-
-        $this->load->view('shared/public_header', array(
-            'title' => 'Login',
-        ));
-        $this->load->view('entities/login');
-        $this->load->view('shared/public_footer');
-    }
-
-
-    function terms()
-    {
-        $this->load->view('shared/public_header', array(
-            'title' => 'Terms & Privacy Policy',
-        ));
-        $this->load->view('other/terms');
-        $this->load->view('shared/public_footer');
-    }
-
     function ses()
     {
         echo_json($this->session->all_userdata());
@@ -119,23 +93,5 @@ class Custom extends CI_Controller
     {
         echo phpinfo();
     }
-
-
-    /* ******************************
-     * Pitch Pages
-     ****************************** */
-
-
-    function train()
-    {
-        $data = array(
-            'title' => 'Train Mench to become the best Personal Assistant',
-            'landing_page' => 'entities/splash_miners_why',
-        );
-        $this->load->view('shared/public_header', $data);
-        $this->load->view('entities/become_a_miner', $data);
-        $this->load->view('shared/public_footer');
-    }
-
 
 }
