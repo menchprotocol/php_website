@@ -166,7 +166,7 @@ class Database_model extends CI_Model
                 'tr_id' => $tr_id,
             ), array('w','cr','cr_c_parent'));
             if(count($trs)>0){
-                $this->Database_model->k_complete_recursive_up($trs[0],$trs[0],-1);
+                $this->Matrix_model->in_actionplan_complete_up($trs[0],$trs[0],-1);
             }
             */
 
@@ -204,7 +204,7 @@ class Database_model extends CI_Model
                 $force_working_on = ((intval($path_requirements[0]['c_require_notes_to_complete']) || intval($path_requirements[0]['c_require_url_to_complete'])) ? 1 : null);
 
                 //Now mark intent as complete (and this will SKIP all siblings) and move on:
-                $this->Database_model->k_complete_recursive_up($chosen_path[0], $chosen_path[0], $force_working_on);
+                $this->Matrix_model->in_actionplan_complete_up($chosen_path[0], $chosen_path[0], $force_working_on);
 
                 //Successful:
                 return true;
@@ -225,195 +225,6 @@ class Database_model extends CI_Model
         }
     }
 
-    function k_complete_recursive_up($cr, $w, $force_tr_status = null)
-    {
-
-        //Check if parent of this item is not started, because if not, we need to mark that as Working On:
-        $parent_ks = $this->Database_model->tr_fetch(array(
-            'tr_tr_parent_id' => $w['tr_id'],
-            'tr_status' => 0, //skip intents that are not stared or working on...
-            'tr_in_child_id' => $cr['tr_in_parent_id'],
-        ), array('cr'));
-        if (count($parent_ks) == 1) {
-            //Update status (It might not work if it was working on AND new tr_status=1)
-            $this->Database_model->tr_status_update($parent_ks[0]['tr_id'], 1);
-        }
-
-        //See if current intent children are complete...
-        //We'll assume complete unless proven otherwise:
-        $down_is_complete = true;
-        $total_skipped = 0;
-        //Is this an OR branch? Because if it is, we need to skip its siblings:
-        if (intval($cr['in_is_any'])) {
-            //Skip all eligible siblings, if any:
-            //$cr['tr_in_child_id'] is the chosen path that we're trying to find its siblings for the parent $cr['tr_in_parent_id']
-
-            //First search for other options that need to be skipped because of this selection:
-            $none_chosen_paths = $this->Database_model->tr_fetch(array(
-                'tr_tr_parent_id' => $w['tr_id'],
-                'tr_in_parent_id' => $cr['tr_in_parent_id'], //Fetch children of parent intent which are the siblings of current intent
-                'tr_in_child_id !=' => $cr['tr_in_child_id'], //NOT The answer (we need its siblings)
-                'in_status >=' => 2,
-                'tr_status IN (0,1)' => null,
-            ), array('w', 'cr', 'cr_c_child'));
-
-            //This is the none chosen answers, if any:
-            foreach ($none_chosen_paths as $k) {
-                //Skip this intent:
-                $total_skipped += count($this->Database_model->k_skip_recursive_down($k['tr_id']));
-            }
-        }
-
-
-        if (!$force_tr_status) {
-            //Regardless of Branch type, we need all children to be complete if we are to mark this as complete...
-            //If not, we will mark is as working on...
-            //So lets fetch the down tree and see Whatssup:
-            $dwn_tree = $this->Database_model->k_recursive_fetch($w['tr_id'], $cr['tr_in_child_id'], true);
-
-            //Does it have OUTs?
-            if (count($dwn_tree['k_flat']) > 0) {
-                //We do have down, let's check their status:
-                $dwn_incomplete_ks = $this->Database_model->tr_fetch(array(
-                    'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
-                    'tr_id IN (' . join(',', $dwn_tree['k_flat']) . ')' => null, //All OUT links
-                ), array('cr'));
-                if (count($dwn_incomplete_ks) > 0) {
-                    //We do have some incomplete children, so this is not complete:
-                    $down_is_complete = false;
-                }
-            }
-        }
-
-
-        //Ok now define the new status here:
-        $new_tr_status = (!is_null($force_tr_status) ? $force_tr_status : ($down_is_complete ? 2 : 1));
-
-        //Update this intent:
-        $this->Database_model->tr_status_update($cr['tr_id'], $new_tr_status);
-
-
-        //We are done with this branch if the status is any of the following:
-        if (in_array($new_tr_status, array(3, 2, -1))) {
-
-            //Since down tree is now complete, see if up tree needs completion as well:
-            //Fetch all parents:
-            $up_tree = $this->Database_model->k_recursive_fetch($w['tr_id'], $cr['tr_in_child_id'], false);
-
-            //Track completion for all top parents, because if they are all complete, the Subscription might be complete:
-            $w_might_be_complete = true;
-
-            //Now loop through each level and see whatssup:
-            foreach ($up_tree['k_flat'] as $parent_tr_id) {
-
-                //Fetch details to see whatssup:
-                $parent_ks = $this->Database_model->tr_fetch(array(
-                    'tr_id' => $parent_tr_id,
-                    'tr_tr_parent_id' => $w['tr_id'],
-                    'in_status >=' => 2,
-                    'tr_status <' => 2, //Not completed in any way
-                ), array('cr', 'cr_c_child'));
-
-                if (count($parent_ks) == 1) {
-
-                    //We did find an incomplete parent, let's see if its now completed:
-                    //Assume complete unless proven otherwise:
-                    $is_complete = true;
-
-                    //Any intents would always be complete since we already marked one of its children as complete!
-                    //If it's an ALL intent, we need to check to make sure all children are complete:
-                    if (intval($parent_ks[0]['in_is_any'])) {
-                        //We need a single immediate child to be complete:
-                        $complete_child_cs = $this->Database_model->tr_fetch(array(
-                            'tr_tr_parent_id' => $w['tr_id'],
-                            'tr_status NOT IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //complete
-                            'tr_in_parent_id' => $parent_ks[0]['tr_in_child_id'],
-                        ), array('cr'));
-                        if (count($complete_child_cs) == 0) {
-                            $is_complete = false;
-                        }
-                    } else {
-                        //We need all immediate children to be complete (i.e. No incomplete)
-                        $incomplete_child_cs = $this->Database_model->tr_fetch(array(
-                            'tr_tr_parent_id' => $w['tr_id'],
-                            'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
-                            'tr_in_parent_id' => $parent_ks[0]['tr_in_child_id'],
-                        ), array('cr'));
-                        if (count($incomplete_child_cs) > 0) {
-                            $is_complete = false;
-                        }
-                    }
-
-                    if ($is_complete) {
-                        //Update this:
-                        $this->Database_model->tr_status_update($parent_ks[0]['tr_id'], (!is_null($force_tr_status) ? $force_tr_status : 2));
-                    } elseif ($parent_ks[0]['tr_status'] == 0) {
-                        //Status is not started, let's set to started:
-                        $this->Database_model->tr_status_update($parent_ks[0]['tr_id'], 1); //Started
-                        //So subscription cannot be complete:
-                        $w_might_be_complete = false;
-                    } else {
-                        //So subscription cannot be complete:
-                        $w_might_be_complete = false;
-                    }
-                }
-            }
-
-            if ($w_might_be_complete) {
-
-                //There is a chance that entire subscription might be complete
-                //To determine if the subscription is complete we need to look at the top level siblings...
-                //What kind of an intent (AND node or OR node) is this subscription tr_in_child_id?
-                $intents = $this->Database_model->w_fetch(array(
-                    'tr_id' => $w['tr_id'],
-                ), array('in'));
-
-                if (count($intents) == 0) {
-                    return false;
-                }
-
-                //Assume true unless otherwise:
-                $w_is_complete = true;
-
-                if ($intents[0]['in_is_any']) {
-                    //We need a single one to be completed:
-                    $complete_child_cs = $this->Database_model->tr_fetch(array(
-                        'tr_tr_parent_id' => $intents[0]['tr_id'],
-                        'tr_in_parent_id' => $intents[0]['tr_in_child_id'],
-                        'tr_status NOT IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //complete
-                    ), array('cr'));
-                    if (count($complete_child_cs) == 0) {
-                        $w_is_complete = false;
-                    }
-                } else {
-                    //We need all to be completed:
-                    $incomplete_child_cs = $this->Database_model->tr_fetch(array(
-                        'tr_tr_parent_id' => $intents[0]['tr_id'],
-                        'tr_in_parent_id' => $intents[0]['tr_in_child_id'],
-                        'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
-                    ), array('cr'));
-                    if (count($incomplete_child_cs) > 0) {
-                        $w_is_complete = false;
-                    }
-                }
-
-                if ($w_is_complete) {
-
-                    //We do this check as a hack to a bug that was running this piece of code 10 times!
-                    $validate_subscription = $this->Database_model->w_fetch(array(
-                        'tr_id' => $intents[0]['tr_id'], //Other than this one...
-                        'tr_status <' => 2, //Not Completed subscriptions
-                    ));
-
-                    if (count($validate_subscription) == 1) {
-
-                        //TODO Remove this entire section
-
-                    }
-                }
-            }
-        }
-    }
 
 
     function k_create($insert_columns)
@@ -1602,8 +1413,8 @@ class Database_model extends CI_Model
 
 
         //Unset un-allowed columns to be manually added:
-        if (isset($insert_columns['tr_obj_id'])) {
-            unset($insert_columns['tr_obj_id']);
+        if (isset($insert_columns['tr_content_int'])) {
+            unset($insert_columns['tr_content_int']);
         }
         if (isset($insert_columns['tr_coins'])) {
             unset($insert_columns['tr_coins']);
@@ -1630,10 +1441,10 @@ class Database_model extends CI_Model
         //Set some defaults:
         if (!isset($insert_columns['tr_content'])) {
             $insert_columns['tr_content'] = null;
-            $insert_columns['tr_obj_id'] = 0;
+            $insert_columns['tr_content_int'] = 0;
         } elseif (is_int($insert_columns['tr_content']) && intval($insert_columns['tr_content']) > 0) {
             //Store integer separately for faster query access later on:
-            $insert_columns['tr_obj_id'] = intval($insert_columns['tr_content']);
+            $insert_columns['tr_content_int'] = intval($insert_columns['tr_content']);
         }
 
         if (!isset($insert_columns['tr_timestamp'])) {

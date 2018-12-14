@@ -140,7 +140,7 @@ class Bot extends CI_Controller
 
                     //TODO Only log IF last engagement was 5 minutes+ ago
 
-                    $en = $this->Matrix_model->authenticate_messenger_user($im['sender']['id']);
+                    $en = $this->Matrix_model->fn___authenticate_messenger_user($im['sender']['id']);
 
                     //This callback will occur when a message a page has sent has been read by the user.
                     $this->Database_model->tr_create(array(
@@ -155,7 +155,7 @@ class Bot extends CI_Controller
 
                     //TODO Only log IF last engagement was 5 minutes+ ago
 
-                    $en = $this->Matrix_model->authenticate_messenger_user($im['sender']['id']);
+                    $en = $this->Matrix_model->fn___authenticate_messenger_user($im['sender']['id']);
 
                     //This callback will occur when a message a page has sent has been delivered.
                     $this->Database_model->tr_create(array(
@@ -205,7 +205,7 @@ class Bot extends CI_Controller
                     //Did we have a ref from Messenger?
                     $ref = ($referral_array && isset($referral_array['ref']) && strlen($referral_array['ref']) > 0 ? $referral_array['ref'] : null);
 
-                    $en = $this->Matrix_model->authenticate_messenger_user($im['sender']['id']);
+                    $en = $this->Matrix_model->fn___authenticate_messenger_user($im['sender']['id']);
 
                     /*
                     if($ref){
@@ -243,7 +243,7 @@ class Bot extends CI_Controller
 
                 } elseif (isset($im['optin'])) {
 
-                    $en = $this->Matrix_model->authenticate_messenger_user($im['sender']['id']);
+                    $en = $this->Matrix_model->fn___authenticate_messenger_user($im['sender']['id']);
 
                     //Note: Never seen this happen yet!
                     //Log transaction:
@@ -257,7 +257,7 @@ class Bot extends CI_Controller
                 } elseif (isset($im['message_request']) && $im['message_request'] == 'accept') {
 
                     //This is when we message them and they accept to chat because they had Removed Messenger or something...
-                    $en = $this->Matrix_model->authenticate_messenger_user($im['sender']['id']);
+                    $en = $this->Matrix_model->fn___authenticate_messenger_user($im['sender']['id']);
 
                 } elseif (isset($im['message'])) {
 
@@ -283,7 +283,7 @@ class Bot extends CI_Controller
                     $quick_reply_payload = (isset($im['message']['quick_reply']['payload']) && strlen($im['message']['quick_reply']['payload']) > 0 ? $im['message']['quick_reply']['payload'] : null);
                     $fb_message = (isset($im['message']['text']) ? $im['message']['text'] : null);
 
-                    $en = $this->Matrix_model->authenticate_messenger_user($user_id);
+                    $en = $this->Matrix_model->fn___authenticate_messenger_user($user_id);
 
                     $eng_data = array(
                         'tr_en_credit_id' => ($sent_from_us ? 4148 /* Log on behalf of Mench Admins as it was sent via Facebook Inbox UI */ : $en['en_id']),

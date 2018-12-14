@@ -18,8 +18,15 @@ class Matrix_model extends CI_Model
     }
 
 
-    function in_next_actionplan($actionplan_tr_id, $tr_order_larger_than = 0)
+    function in_next_actionplan($actionplan_tr_id)
     {
+
+        /*
+         *
+         * Attempts to find the next item in the Action Plan
+         * And if not, it would mark the Action Plan as complete!
+         *
+         * */
 
         //Let's first check if we have an OR Intent that is working On, which means it's children have not been answered!
         $first_pending_or_intent = $this->Database_model->tr_fetch(array(
@@ -27,7 +34,6 @@ class Matrix_model extends CI_Model
             'in_status >=' => 2, //Published+
             'in_is_any' => 1, //OR Branch
             'tr_status' => 1, //Working On, which means OR branch has not been answered yet
-            'tr_order >' => $tr_order_larger_than,
         ), array('in_child'), 1, 0, array('tr_order' => 'ASC'));
 
         if (count($first_pending_or_intent) > 0) {
@@ -40,7 +46,6 @@ class Matrix_model extends CI_Model
             'tr_tr_parent_id' => $actionplan_tr_id, //This action Plan
             'in_status >=' => 2, //Published+
             'tr_status' => 0, //New (not started yet) for either AND/OR branches
-            'tr_order >' => $tr_order_larger_than,
         ), array('in_child'), 1, 0, array('tr_order' => 'ASC'));
 
         if (count($next_new_intent) > 0) {
@@ -57,7 +62,6 @@ class Matrix_model extends CI_Model
             'in_status >=' => 2, //Published+
             'in_is_any' => 0, //AND Branch
             'tr_status' => 1, //Working On
-            'tr_order >' => $tr_order_larger_than,
         ), array('in_child'), 1, 0, array('tr_order' => 'ASC'));
 
         if (count($next_working_on_intent) > 0) {
@@ -65,18 +69,46 @@ class Matrix_model extends CI_Model
         }
 
 
-        //Do one last try with any item without the recommended $tr_order_larger_than limitation:
-        $next_intent = $this->Database_model->tr_fetch(array(
-            'tr_tr_parent_id' => $actionplan_tr_id, //This action Plan
-            'in_status >=' => 2, //Published+
-            'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
-        ), array('in_child'), 1, 0, array('tr_order' => 'ASC'));
 
-        if (count($next_intent) > 0) {
-            return $next_intent;
+
+
+        /*
+         *
+         * The Action Plan seems to be completed as we could not find any pending intent!
+         * Nothing else left to do, we must be done with this Action Plan:
+         * What is the Action Plan Status?
+         *
+         * */
+
+        $actionplans = $this->Database_model->tr_fetch(array(
+            'tr_id' => $actionplan_tr_id,
+        ), array('in_child'));
+
+        if(count($actionplans)>0 && in_array($actionplans[0]['tr_status'], $this->config->item('tr_status_incomplete'))){
+
+            //Inform user that they are now complete with all tasks:
+            $this->Chat_model->dispatch_message(array(
+                array(
+                    'tr_en_child_id' => $actionplans[0]['tr_en_parent_id'],
+                    'tr_in_child_id' => $actionplans[0]['tr_in_child_id'],
+                    'tr_tr_parent_id' => $actionplans[0]['tr_id'],
+                    'tr_content' => 'Congratulations for completing your Action Plan 🎉 Over time I will keep sharing new concepts (based on my new training data) that will help you to ' . $actionplans[0]['in_outcome'] . ' 🙌 You can, at any time, stop updates on your subscriptions by saying "quit".',
+                ),
+                array(
+                    'tr_en_child_id' => $actionplans[0]['tr_en_parent_id'],
+                    'tr_in_child_id' => $actionplans[0]['tr_in_child_id'],
+                    'tr_tr_parent_id' => $actionplans[0]['tr_id'],
+                    'tr_content' => 'How else can I help you ' . $this->config->item('in_primary_name') . '? ' . echo_pa_lets(),
+                ),
+            ));
+
+            //The entire subscription is now complete!
+            $this->Database_model->tr_update($actionplan_tr_id, array(
+                'tr_status' => 2, //Completed
+            ), $actionplans[0]['tr_en_parent_id']);
+
         }
 
-        //The Action Plan must be complete as we could not find any pending intent:
         return false;
 
     }
@@ -93,6 +125,12 @@ class Matrix_model extends CI_Model
          * means everything is stored on the tree (Rather than in the code base using the dispatch_messages() function)
          * Related to: https://github.com/askmench/mench-web-app/issues/2078
          *
+         * Required inputs in $tr are:
+         *
+         * - tr_in_child_id
+         * - tr_en_child_id (OR IF tr_en_child_id=0 AND tr_en_parent_id>0 THEN tr_en_child_id=tr_en_parent_id AND tr_en_parent_id=0)
+         * - IF Action Plan intent we need these inputs: tr_status & tr_in_parent_id & tr_tr_parent_id & tr_tr_id & tr_en_type_id==4235
+         *
          * */
 
         //Start input validation:
@@ -106,12 +144,25 @@ class Matrix_model extends CI_Model
         } elseif (!isset($tr['tr_in_child_id']) || $tr['tr_in_child_id'] < 1) {
 
             //Make sure we got the intent to build this message from
-            $message_error = 'Missing intent ID';
+            $message_error = 'Missing Intent ID';
 
         } elseif (!isset($tr['tr_en_child_id']) || $tr['tr_en_child_id'] < 1) {
 
-            //Make sure we've got the entity ID to send this message to:
-            $message_error = 'Missing Master entity ID';
+            //Maybe the parent entity is set? If so flip it:
+            if(isset($tr['tr_en_parent_id']) && intval($tr['tr_en_parent_id'])>0){
+
+                //Pass this on to the child:
+                $tr['tr_en_child_id'] = $tr['tr_en_parent_id'];
+
+                //Remove from parent:
+                $tr['tr_en_parent_id'] = 0;
+
+            } else {
+
+                //Error! Make sure we've got the entity ID to send this message to:
+                $message_error = 'Missing Master entity ID';
+
+            }
 
         }
 
@@ -124,36 +175,39 @@ class Matrix_model extends CI_Model
                 'in_id' => $tr['tr_in_child_id'],
             ));
 
-
-            //Also fetch relevant intent messages:
-            $in_messages = array(
-
-                //If we have rotating we'd need to pick one and send randomly:
-                'messages_rotating' => $this->Database_model->tr_fetch(array(
-                    'tr_status >=' => 2, //Published+
-                    'tr_en_type_id' => 4234, //Rotating
-                    'tr_in_child_id' => $tr['tr_in_child_id'],
-                ), array(), 0, 0, array('tr_order' => 'ASC')),
-
-                //These messages all need to be sent first:
-                'messages_on_start' => $this->Database_model->tr_fetch(array(
-                    'tr_status >=' => 2, //Published+
-                    'tr_en_type_id' => 4231, //On-Start Messages
-                    'tr_in_child_id' => $tr['tr_in_child_id'],
-                ), array(), 0, 0, array('tr_order' => 'ASC')),
-
-                //If we have learn more we'd need to give the option to learn more...
-                'messages_learn_more' => $this->Database_model->tr_fetch(array(
-                    'tr_status >=' => 2, //Published+
-                    'tr_en_type_id' => 4232, //Learn More Messages
-                    'tr_in_child_id' => $tr['tr_in_child_id'],
-                ), array(), 1, 0, array('tr_order' => 'ASC')), //Notice how we only fetch 1 item since we need to know if we have any!
-
-            );
-
             //Check to see if we have any other errors:
             if (!isset($ins[0])) {
+
                 $message_error = 'Invalid Intent ID [' . $tr['tr_in_child_id'] . ']';
+
+            } else {
+
+                //Also fetch relevant intent messages:
+                $in_messages = array(
+
+                    //If we have rotating we'd need to pick one and send randomly:
+                    'messages_rotating' => $this->Database_model->tr_fetch(array(
+                        'tr_status >=' => 2, //Published+
+                        'tr_en_type_id' => 4234, //Rotating
+                        'tr_in_child_id' => $tr['tr_in_child_id'],
+                    ), array(), 0, 0, array('tr_order' => 'ASC')),
+
+                    //These messages all need to be sent first:
+                    'messages_on_start' => $this->Database_model->tr_fetch(array(
+                        'tr_status >=' => 2, //Published+
+                        'tr_en_type_id' => 4231, //On-Start Messages
+                        'tr_in_child_id' => $tr['tr_in_child_id'],
+                    ), array(), 0, 0, array('tr_order' => 'ASC')),
+
+                    //If we have learn more we'd need to give the option to learn more...
+                    'messages_learn_more' => $this->Database_model->tr_fetch(array(
+                        'tr_status >=' => 2, //Published+
+                        'tr_en_type_id' => 4232, //Learn More Messages
+                        'tr_in_child_id' => $tr['tr_in_child_id'],
+                    ), array(), 1, 0, array('tr_order' => 'ASC')), //Notice how we only fetch 1 item since we need to know if we have any!
+
+                );
+
             }
 
         }
@@ -182,6 +236,7 @@ class Matrix_model extends CI_Model
         }
 
 
+
         //Ok we've had no errors so far...
 
         //Add-up intent messages IF not skipped:
@@ -195,16 +250,33 @@ class Matrix_model extends CI_Model
             if (count($in_messages['messages_rotating']) > 0) {
                 //yes, pick 1 random one and echo:
                 $random_pick = $in_messages['messages_rotating'][rand(0, (count($in_messages['messages_rotating']) - 1))];
-                array_push($messages, array_merge($random_pick, $tr));
+
+                array_push($messages, array(
+                    'tr_id' => $random_pick['tr_id'],
+                    'tr_content' => $random_pick['tr_content'], //Message itself
+                    'tr_en_parent_id' => $random_pick['tr_en_parent_id'], //Reference in the message
+                    'tr_en_child_id' => $tr['tr_en_parent_id'], //Send message to this entity
+                    'tr_tr_parent_id' => $tr['tr_id'],
+                ));
             }
 
             //We have messages for the very first level!
             //Append only if not the top-level item of the Action Plan (Since we've already communicated them)
             foreach ($in_messages['messages_on_start'] as $message_tr) {
-                array_push($messages, array_merge($message_tr, $tr));
+
+                array_push($messages, array(
+                    'tr_id' => $message_tr['tr_id'],
+                    'tr_content' => $message_tr['tr_content'], //Message itself
+                    'tr_en_parent_id' => $message_tr['tr_en_parent_id'], //Reference in the message
+                    'tr_en_child_id' => $tr['tr_en_parent_id'], //Send message to this entity
+                    'tr_tr_parent_id' => $tr['tr_id'],
+                ));
+
             }
 
         }
+
+        return $messages;
 
 
         //Is $tr an Action Plan intent? It must meet all these conditions to be one:
@@ -234,6 +306,15 @@ class Matrix_model extends CI_Model
                 if ($message_in_requirements) {
 
                     //Let the user know what they need to do:
+                    array_push($messages, array(
+                        'tr_id' => $message_tr['tr_id'],
+                        'tr_content' => $message_in_requirements, //Message itself
+                        'tr_en_parent_id' => $message_tr['tr_en_parent_id'], //Reference in the message
+                        'tr_en_child_id' => $tr['tr_en_parent_id'], //Send message to this entity
+                        'tr_tr_parent_id' => $tr['tr_id'],
+                    ));
+
+
                     array_push($messages, array_merge($tr, array(
                         'tr_content' => $message_in_requirements,
                     )));
@@ -280,7 +361,6 @@ class Matrix_model extends CI_Model
                 //let's see what the next intent:
                 $next_ins = $this->Matrix_model->in_next_actionplan($actionplan_tr_id);
 
-
                 //Did we find the next intent in line in case we had zero?
                 if (count($next_ins) > 0) {
 
@@ -289,46 +369,10 @@ class Matrix_model extends CI_Model
                     array_push($quick_replies, array(
                         'content_type' => 'text',
                         'title' => 'Ok Continue ▶️',
-                        'payload' => 'MARKCOMPLETE_' . $actionplan_tr_id . '_' . $next_ins[0]['tr_id'], //Here we are using MARKCOMPLETE_ also for OR branches with a single option... Maybe we need to change this later?! For now it feels ok to do so...
+                        'payload' => 'MARKCOMPLETE_' . $next_ins[0]['tr_id'], //Here we are using MARKCOMPLETE_ also for OR branches with a single option... Maybe we need to change this later?! For now it feels ok to do so...
                     ));
 
-                } else {
-
-                    //Nothing else left to do, we must be done with this Action Plan:
-                    //What is the Action Plan Status?
-                    $actionplans = $this->Database_model->tr_fetch(array(
-                        'tr_id' => $actionplan_tr_id,
-                    ), array('in_child'));
-
-                    if(count($actionplans)>0 && in_array($actionplans[0]['tr_status'], $this->config->item('tr_status_incomplete'))){
-
-                        //Inform user that they are now complete with all tasks:
-                        $this->Chat_model->dispatch_message(array(
-                            array(
-                                'tr_en_child_id' => $actionplans[0]['tr_en_parent_id'],
-                                'tr_in_child_id' => $actionplans[0]['tr_in_child_id'],
-                                'tr_tr_parent_id' => $actionplans[0]['tr_id'],
-                                'tr_content' => 'Congratulations for completing your Action Plan 🎉 Over time I will keep sharing new concepts (based on my new training data) that could help you to ' . $actionplans[0]['in_outcome'] . ' 🙌 You can, at any time, stop updates on your subscriptions by saying "quit".',
-                            ),
-                            array(
-                                'tr_en_child_id' => $actionplans[0]['tr_en_parent_id'],
-                                'tr_in_child_id' => $actionplans[0]['tr_in_child_id'],
-                                'tr_tr_parent_id' => $actionplans[0]['tr_id'],
-                                'tr_content' => 'How else can I help you ' . $this->config->item('in_primary_name') . '? ' . echo_pa_lets(),
-                            ),
-                        ));
-
-                        //The entire subscription is now complete!
-                        $this->Database_model->tr_update($actionplan_tr_id, array(
-                            'tr_status' => 2, //Completed
-                        ), $actionplans[0]['tr_en_parent_id']);
-
-                        //TODO Log Action Plan completion transaction?
-
-                    }
-
                 }
-
 
             } elseif (count($actionplan_child_ins) == 1) {
 
@@ -337,7 +381,7 @@ class Matrix_model extends CI_Model
                 array_push($quick_replies, array(
                     'content_type' => 'text',
                     'title' => 'Ok Continue ▶️',
-                    'payload' => 'MARKCOMPLETE_' . $actionplan_tr_id . '_' . $actionplan_child_ins[0]['tr_id'] . '_' . $actionplan_child_ins[0]['tr_order'], //Here we are using MARKCOMPLETE_ also for OR branches with a single option... Maybe we need to change this later?! For now it feels ok to do so...
+                    'payload' => 'MARKCOMPLETE_' . $actionplan_child_ins[0]['tr_id'], //Here we are using MARKCOMPLETE_ also for OR branches with a single option... Maybe we need to change this later?! For now it feels ok to do so...
                 ));
 
             } else {
@@ -395,7 +439,7 @@ class Matrix_model extends CI_Model
                             array_push($quick_replies, array(
                                 'content_type' => 'text',
                                 'title' => 'Start Step 1 ▶️',
-                                'payload' => 'MARKCOMPLETE_' . $actionplan_tr_id . '_' . $and_child_in['tr_id'] . '_' . $and_child_in['tr_order'],
+                                'payload' => 'MARKCOMPLETE_' . $and_child_in['tr_id'],
                             ));
 
                         }
@@ -463,9 +507,10 @@ class Matrix_model extends CI_Model
 
 
         //Did we compile any messages to be dispatched?
-        if (count($messages) < 1) {
+        if (count($messages) > 0) {
 
             //All good, Dispatch all messages:
+            return $messages;
             return $this->Chat_model->dispatch_message($messages);
 
         } else {
@@ -552,7 +597,7 @@ class Matrix_model extends CI_Model
     }
 
 
-    function authenticate_messenger_user($psid)
+    function fn___authenticate_messenger_user($psid)
     {
 
         /*
@@ -567,7 +612,7 @@ class Matrix_model extends CI_Model
         if ($psid < 1) {
             //Ooops, this should never happen:
             $this->Database_model->tr_create(array(
-                'tr_content' => 'authenticate_messenger_user() got called without a valid Facebook $psid variable',
+                'tr_content' => 'fn___authenticate_messenger_user() got called without a valid Facebook $psid variable',
                 'tr_en_type_id' => 4246, //Platform Error
             ));
             return false;
@@ -579,7 +624,7 @@ class Matrix_model extends CI_Model
             'tr_status >=' => 2, //Published
             'tr_en_parent_id' => 4451, //Mench Personal Assistant on Messenger
             'tr_en_child_id >' => 0, //Looking for this ID to determine Master Entity ID
-            'tr_obj_id' => intval($psid), //Since the PSID is a full integer, it is cached in tr_obj_id for faster indexing
+            'tr_content_int' => intval($psid), //Since the PSID is a full integer, it is cached in tr_content_int for faster indexing
         ), array('en_child'));
 
 
@@ -591,14 +636,148 @@ class Matrix_model extends CI_Model
         } else {
 
             //Master not found, create new Master:
-            return $this->Matrix_model->add_messenger_user($psid);
+            return $this->Matrix_model->fn___add_messenger_user($psid);
 
         }
 
     }
 
 
-    function add_messenger_user($psid)
+    function in_actionplan_complete_up($cr, $w, $force_tr_status = null)
+    {
+
+        //Check if parent of this item is not started, because if not, we need to mark that as Working On:
+        $parent_ks = $this->Database_model->tr_fetch(array(
+            'tr_tr_parent_id' => $w['tr_id'],
+            'tr_status' => 0, //skip intents that are not stared or working on...
+            'tr_in_child_id' => $cr['tr_in_parent_id'],
+        ), array('cr'));
+        if (count($parent_ks) == 1) {
+            //Update status (It might not work if it was working on AND new tr_status=1)
+            $this->Database_model->tr_status_update($parent_ks[0]['tr_id'], 1);
+        }
+
+        //See if current intent children are complete...
+        //We'll assume complete unless proven otherwise:
+        $down_is_complete = true;
+        $total_skipped = 0;
+        //Is this an OR branch? Because if it is, we need to skip its siblings:
+        if (intval($cr['in_is_any'])) {
+            //Skip all eligible siblings, if any:
+            //$cr['tr_in_child_id'] is the chosen path that we're trying to find its siblings for the parent $cr['tr_in_parent_id']
+
+            //First search for other options that need to be skipped because of this selection:
+            $none_chosen_paths = $this->Database_model->tr_fetch(array(
+                'tr_tr_parent_id' => $w['tr_id'],
+                'tr_in_parent_id' => $cr['tr_in_parent_id'], //Fetch children of parent intent which are the siblings of current intent
+                'tr_in_child_id !=' => $cr['tr_in_child_id'], //NOT The answer (we need its siblings)
+                'in_status >=' => 2,
+                'tr_status IN (0,1)' => null,
+            ), array('w', 'cr', 'cr_c_child'));
+
+            //This is the none chosen answers, if any:
+            foreach ($none_chosen_paths as $k) {
+                //Skip this intent:
+                $total_skipped += count($this->Database_model->k_skip_recursive_down($k['tr_id']));
+            }
+        }
+
+
+        if (!$force_tr_status) {
+            //Regardless of Branch type, we need all children to be complete if we are to mark this as complete...
+            //If not, we will mark is as working on...
+            //So lets fetch the down tree and see Whatssup:
+            $dwn_tree = $this->Database_model->k_recursive_fetch($w['tr_id'], $cr['tr_in_child_id'], true);
+
+            //Does it have OUTs?
+            if (count($dwn_tree['k_flat']) > 0) {
+                //We do have down, let's check their status:
+                $dwn_incomplete_ks = $this->Database_model->tr_fetch(array(
+                    'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
+                    'tr_id IN (' . join(',', $dwn_tree['k_flat']) . ')' => null, //All OUT links
+                ), array('cr'));
+                if (count($dwn_incomplete_ks) > 0) {
+                    //We do have some incomplete children, so this is not complete:
+                    $down_is_complete = false;
+                }
+            }
+        }
+
+
+        //Ok now define the new status here:
+        $new_tr_status = (!is_null($force_tr_status) ? $force_tr_status : ($down_is_complete ? 2 : 1));
+
+        //Update this intent:
+        $this->Database_model->tr_status_update($cr['tr_id'], $new_tr_status);
+
+
+        //We are done with this branch if the status is any of the following:
+        if (!in_array($new_tr_status, $this->config->item('tr_status_incomplete'))) {
+
+            //Since down tree is now complete, see if up tree needs completion as well:
+            //Fetch all parents:
+            $up_tree = $this->Database_model->k_recursive_fetch($w['tr_id'], $cr['tr_in_child_id'], false);
+
+            //Now loop through each level and see whatssup:
+            foreach ($up_tree['k_flat'] as $parent_tr_id) {
+
+                //Fetch details to see whatssup:
+                $parent_ks = $this->Database_model->tr_fetch(array(
+                    'tr_id' => $parent_tr_id,
+                    'tr_tr_parent_id' => $w['tr_id'],
+                    'in_status >=' => 2,
+                    'tr_status <' => 2, //Not completed in any way
+                ), array('cr', 'cr_c_child'));
+
+                if (count($parent_ks) == 1) {
+
+                    //We did find an incomplete parent, let's see if its now completed:
+                    //Assume complete unless proven otherwise:
+                    $is_complete = true;
+
+                    //Any intents would always be complete since we already marked one of its children as complete!
+                    //If it's an ALL intent, we need to check to make sure all children are complete:
+                    if (intval($parent_ks[0]['in_is_any'])) {
+                        //We need a single immediate child to be complete:
+                        $complete_child_cs = $this->Database_model->tr_fetch(array(
+                            'tr_tr_parent_id' => $w['tr_id'],
+                            'tr_status NOT IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //complete
+                            'tr_in_parent_id' => $parent_ks[0]['tr_in_child_id'],
+                        ), array('cr'));
+                        if (count($complete_child_cs) == 0) {
+                            $is_complete = false;
+                        }
+                    } else {
+                        //We need all immediate children to be complete (i.e. No incomplete)
+                        $incomplete_child_cs = $this->Database_model->tr_fetch(array(
+                            'tr_tr_parent_id' => $w['tr_id'],
+                            'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
+                            'tr_in_parent_id' => $parent_ks[0]['tr_in_child_id'],
+                        ), array('cr'));
+                        if (count($incomplete_child_cs) > 0) {
+                            $is_complete = false;
+                        }
+                    }
+
+                    if ($is_complete) {
+
+                        //Update this:
+                        $this->Database_model->tr_status_update($parent_ks[0]['tr_id'], (!is_null($force_tr_status) ? $force_tr_status : 2));
+
+                    } elseif ($parent_ks[0]['tr_status'] == 0) {
+
+                        //Status is not started, let's set to started:
+                        $this->Database_model->tr_status_update($parent_ks[0]['tr_id'], 1); //Working On
+
+                    }
+                }
+            }
+        }
+    }
+
+
+
+    function fn___add_messenger_user($psid)
     {
 
         /*
@@ -611,7 +790,7 @@ class Matrix_model extends CI_Model
         if ($psid < 1) {
             //Ooops, this should never happen:
             $this->Database_model->tr_create(array(
-                'tr_content' => 'add_messenger_user() got called without a valid Facebook $psid variable',
+                'tr_content' => 'fn___add_messenger_user() got called without a valid Facebook $psid variable',
                 'tr_en_type_id' => 4246, //Platform Error
             ));
             return false;
@@ -708,7 +887,7 @@ class Matrix_model extends CI_Model
             'tr_en_credit_id' => $en['en_id'],
             'tr_en_parent_id' => 4451, //Mench Personal Assistant on Messenger
             'tr_en_child_id' => $en['en_id'],
-            'tr_content' => $psid, //Used later-on to match Messenger user to entity. $psid is cached in tr_obj_id since its an integer
+            'tr_content' => $psid, //Used later-on to match Messenger user to entity. $psid is cached in tr_content_int since its an integer
         ));
 
         //Add default Subscription Level:

@@ -150,24 +150,43 @@ function echo_embed($url, $full_message = null, $return_array = false, $start_se
 }
 
 
-function echo_i($i, $en_name = null, $fb_format = false)
+function echo_message_chat($i, $en_name = null, $fb_format = false)
 {
 
-    //HACK: Make these two variables inter-changeable:
-    if (isset($i['tr_in_child_id']) && $i['tr_in_child_id'] > 0 && !isset($i['tr_in_child_id'])) {
-        $i['tr_in_child_id'] = $i['tr_in_child_id'];
-    } elseif (isset($i['tr_in_child_id']) && $i['tr_in_child_id'] > 0 && !isset($i['tr_in_child_id'])) {
-        $i['tr_in_child_id'] = $i['tr_in_child_id'];
-    }
+    /*
+     *
+     * Constructs a message ready to be dispatched via
+     * facebook_graph() or an HTML web page depending
+     * on the required $ui_format. Inputs are:
+     *
+     *  - $message_content - The chat message itself.
+     *  - $recipient_en - Default NULL - The entity object of who is about to receive this message
+     *  - $actionplan_tr_id - If provided, this is the Action Plan ID that this chat is being prepared for
+     *  - $ui_format - which can be either:
+     *     - 'messenger_chat' - Optimized for Facebook Messenger based on these guides: https://developers.facebook.com/docs/messenger-platform/reference/send-api/
+     *     - 'intent_html' - HTML format optimized for an intent
+     *     - 'entity_html' - HTML format optimized for an entity
+     *     - 'public_html' - HTML format optimized for public viewing on landing pages
+     *
+     * Other things to consider:
+     *
+     * quick_replies
+     * button_url
+     * button_title
+     * fb_attachment_id
+     *
+     *
+     * */
 
     $CI =& get_instance();
     $button_url = (isset($i['button_url']) ? $i['button_url'] : null);
     $button_title = (isset($i['button_title']) ? $i['button_title'] : null);
     $command = null;
+
+    //Determine from which location is echo_message_chat() being called, which would affect the UI:
     $is_intent = ($CI->uri->segment(1) == 'intents');
     $is_entity = ($CI->uri->segment(1) == 'entities');
     $is_public = (!$is_intent && !$is_entity); //The public landing pages that users use to get started
-    $is_focus_entity = ($is_entity && $CI->uri->segment(2) == $i['tr_en_parent_id']);
     $ui = null;
     $original_cs = array();
 
@@ -181,7 +200,9 @@ function echo_i($i, $en_name = null, $fb_format = false)
         $ui .= '<div class="i_content">';
     }
 
-    //Is it being displayed under entities? Show the original intent as well:
+
+
+    //Is it being displayed under entities? This needs a unique UI:
     if ($is_entity && !$fb_format) {
 
         $original_cs = $CI->Database_model->in_fetch(array(
@@ -189,6 +210,13 @@ function echo_i($i, $en_name = null, $fb_format = false)
         ));
         if (count($original_cs) > 0) {
 
+            /*
+             *
+             * The UI for showing messages on the entity side
+             * where Miners cannot edit messages because messages
+             * can only be managed from the intent side.
+             *
+             * */
             $ui .= '<div class="entities-msg">';
             $ui .= '<span class="pull-right" style="margin:6px 10px 0 0;">';
             $ui .= '<span data-toggle="tooltip" title="This is the ' . echo_ordinal($i['tr_order']) . ' message for this intent" data-placement="left" class="underdot" style="padding-bottom:4px;">' . echo_ordinal($i['tr_order']) . '</span> ';
@@ -206,19 +234,19 @@ function echo_i($i, $en_name = null, $fb_format = false)
     if (isset($i['tr_en_parent_id']) && $i['tr_en_parent_id'] > 0) {
 
         //This message has a referenced entity
-        //See if that entity has a URL:
+        //See if that entity has a URL by analyzing its parents:
         $us = $CI->Database_model->en_fetch(array(
             'en_id' => $i['tr_en_parent_id'],
         ));
 
         if (count($us) > 0) {
 
-            //Is there a slice command?
             if ($fb_format) {
 
                 //Show an option to open action plan:
                 $i['tr_content'] = str_replace('@' . $i['tr_en_parent_id'], $us[0]['en_name'], $i['tr_content']);
 
+                //Is there a slice command?
                 if (substr_count($i['tr_content'], '/slice') > 0) {
                     $time_range = explode(':', one_two_explode('/slice:', ' ', $i['tr_content']), 2);
                     $i['tr_content'] = str_replace('/slice:' . $time_range[0] . ':' . $time_range[1], '', $i['tr_content']);
@@ -232,6 +260,7 @@ function echo_i($i, $en_name = null, $fb_format = false)
                 $button_url = '/entities/' . $us[0]['en_id'] . '?skip_header=1'; //To loadup the entity
                 $embed_html_code = null;
 
+                //Is there a slice command?
                 if (substr_count($i['tr_content'], '/slice') > 0) {
 
                     $time_range = explode(':', one_two_explode('/slice:', ' ', $i['tr_content']), 2);
@@ -248,7 +277,7 @@ function echo_i($i, $en_name = null, $fb_format = false)
                     $i['tr_content'] = str_replace('/slice:' . $time_range[0] . ':' . $time_range[1], '', $i['tr_content']);
 
 
-                } elseif (!$is_focus_entity) {
+                } else {
 
                     //So we did not have a slice command and this is an HTML request for a non-entity page
                     //Note: The reason we don't need these for entities is that they already list all URLs with embed codes, so no need to repeat
@@ -286,7 +315,7 @@ function echo_i($i, $en_name = null, $fb_format = false)
                 }
 
 
-                if ($is_intent || ($is_entity && !$is_focus_entity)) {
+                if ($is_intent || $is_entity) {
 
                     //HTML format:
                     $i['tr_content'] = str_replace('@' . $i['tr_en_parent_id'], ' <a href="javascript:void(0);" onclick="url_modal(\'' . $button_url . '\')">' . $us[0]['en_name'] . '</a>', $i['tr_content']);
@@ -308,6 +337,7 @@ function echo_i($i, $en_name = null, $fb_format = false)
             }
 
         }
+
     }
 
 
@@ -319,10 +349,10 @@ function echo_i($i, $en_name = null, $fb_format = false)
     }
 
 
-    if (substr_count($i['tr_content'], '/open_actionplan') > 0 && isset($i['tr_tr_parent_id']) && $i['tr_tr_parent_id'] > 0 && isset($i['tr_in_child_id']) && $i['tr_in_child_id'] > 0) {
+    if (substr_count($i['tr_content'], '/open_actionplan') > 0) {
         $button_title = 'Open in 🚩Action Plan';
         $command = '/open_actionplan';
-        $button_url = 'https://mench.com/my/actionplan/' . $i['tr_tr_parent_id'] . '/' . $i['tr_in_child_id'] . '?is_from_messenger=1';
+        $button_url = 'https://mench.com/my/actionplan/' . ( isset($i['tr_tr_parent_id']) && isset($i['tr_in_child_id']) ?  $i['tr_tr_parent_id'] . '/' . $i['tr_in_child_id'] : '' ) . '?is_from_messenger=1';
     } elseif (substr_count($i['tr_content'], '/open_myaccount') > 0) {
         $button_title = 'Open 👤 My Account';
         $command = '/open_myaccount';
@@ -443,42 +473,56 @@ function echo_i($i, $en_name = null, $fb_format = false)
 }
 
 
-function echo_message($i)
+function fn___echo_message_matrix($tr)
 {
 
+    /*
+     *
+     * A wrapper function that complements echo_message_chat()
+     * by giving the message additional matrix functions
+     * such as editing and changing message type.
+     *
+     * */
+
     $CI =& get_instance();
-    $tr_content_max = $CI->config->item('tr_content_max');
+
+    //Fetch all possible Intent Messages to enable the Miner to change message type:
     $en_all_4485 = $CI->config->item('en_all_4485');
 
+
+    //Build the HTML UI:
     $ui = '';
-    $ui .= '<div class="list-group-item is-msg is_level2_sortable all_msg msg_' . $i['tr_en_type_id'] . '" id="ul-nav-' . $i['tr_id'] . '" iid="' . $i['tr_id'] . '">';
+    $ui .= '<div class="list-group-item is-msg is_level2_sortable all_msg msg_' . $tr['tr_en_type_id'] . '" id="ul-nav-' . $tr['tr_id'] . '" iid="' . $tr['tr_id'] . '">';
     $ui .= '<div style="overflow:visible !important;">';
 
     //Type & Delivery Method:
-    $ui .= '<div class="edit-off text_message" id="msg_body_' . $i['tr_id'] . '" style="margin:2px 0 0 0;">';
-    $ui .= echo_i($i);
+    $ui .= '<div class="edit-off text_message" id="msg_body_' . $tr['tr_id'] . '" style="margin:2px 0 0 0;">';
+
+    //Now get the message snippet:
+    $ui .= echo_message_chat($tr);
+
     $ui .= '</div>';
 
 
     //Text editing:
-    $ui .= '<textarea onkeyup="changeMessageEditing(' . $i['tr_id'] . ')" name="tr_content" id="message_body_' . $i['tr_id'] . '" class="edit-on hidden msg msgin algolia_search" placeholder="Write Message..." style="margin-top: 4px;">' . $i['tr_content'] . '</textarea>';
+    $ui .= '<textarea onkeyup="fn___changeMessageEditing(' . $tr['tr_id'] . ')" name="tr_content" id="message_body_' . $tr['tr_id'] . '" class="edit-on hidden msg msgin algolia_search" placeholder="Write Message..." style="margin-top: 4px;">' . $tr['tr_content'] . '</textarea>';
 
     //Editing menu:
     $ui .= '<ul class="msg-nav">';
 
-    $ui .= '<li class="edit-off msg_status" style="margin: 0 1px 0 -1px;">' . echo_status('tr_en_type_id', $i['tr_en_type_id'], 1, 'right') . '</li>';
-    $ui .= '<li class="edit-on hidden"><span id="charNumEditing' . $i['tr_id'] . '">0</span>/' . $tr_content_max . '</li>';
+    $ui .= '<li class="edit-off msg_status" style="margin: 0 1px 0 -1px;"><span title="' . $en_all_4485[$tr['tr_en_type_id']]['en_name'] . ': ' . stripslashes($en_all_4485[$tr['tr_en_type_id']]['tr_content']) . '" data-toggle="tooltip" data-placement="top">' . $en_all_4485[$tr['tr_en_type_id']]['en_icon'] . '</span></li>';
+    $ui .= '<li class="edit-on hidden"><span id="charNumEditing' . $tr['tr_id'] . '">0</span>/' . $CI->config->item('tr_content_max') . '</li>';
 
-    $ui .= '<li class="edit-off" style="margin: 0 0 0 8px;"><span class="on-hover"><i class="fas fa-bars sort_message" iid="' . $i['tr_id'] . '" style="color:#2f2739;"></i></span></li>';
-    $ui .= '<li class="edit-off" style="margin-right: 10px; margin-left: 6px;"><span class="on-hover"><a href="javascript:i_archive(' . $i['tr_id'] . ');"><i class="fas fa-trash-alt" style="margin:0 7px 0 5px;"></i></a></span></li>';
-    $ui .= '<li class="edit-off" style="margin-left:-4px;"><span class="on-hover"><a href="javascript:msg_start_edit(' . $i['tr_id'] . ',' . $i['tr_en_type_id'] . ');"><i class="fas fa-pen-square"></i></a></span></li>';
+    $ui .= '<li class="edit-off" style="margin: 0 0 0 8px;"><span class="on-hover"><i class="fas fa-bars sort_message" iid="' . $tr['tr_id'] . '" style="color:#2f2739;"></i></span></li>';
+    $ui .= '<li class="edit-off" style="margin-right: 10px; margin-left: 6px;"><span class="on-hover"><a href="javascript:i_archive(' . $tr['tr_id'] . ');"><i class="fas fa-trash-alt" style="margin:0 7px 0 5px;"></i></a></span></li>';
+    $ui .= '<li class="edit-off" style="margin-left:-4px;"><span class="on-hover"><a href="javascript:msg_start_edit(' . $tr['tr_id'] . ',' . $tr['tr_en_type_id'] . ');"><i class="fas fa-pen-square"></i></a></span></li>';
     //Right side reverse:
-    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-primary" href="javascript:message_save_updates(' . $i['tr_id'] . ',' . $i['tr_en_type_id'] . ');" style="text-decoration:none; font-weight:bold; padding: 1px 8px 4px;"><i class="fas fa-check"></i></a></li>';
-    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-hidden" href="javascript:msg_cancel_edit(' . $i['tr_id'] . ');"><i class="fas fa-times" style="color:#2f2739"></i></a></li>';
+    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-primary" href="javascript:message_save_updates(' . $tr['tr_id'] . ',' . $tr['tr_en_type_id'] . ');" style="text-decoration:none; font-weight:bold; padding: 1px 8px 4px;"><i class="fas fa-check"></i></a></li>';
+    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-hidden" href="javascript:msg_cancel_edit(' . $tr['tr_id'] . ');"><i class="fas fa-times" style="color:#2f2739"></i></a></li>';
 
     //Show drop down for message type adjustment:
     $ui .= '<li class="pull-right edit-on hidden">';
-    $ui .= '<select id="en_all_4485_' . $i['tr_id'] . '">';
+    $ui .= '<select id="en_all_4485_' . $tr['tr_id'] . '">';
     foreach ($en_all_4485 as $tr_en_type_id => $value) {
         $ui .= '<option value="' . $tr_en_type_id . '">' . $value['en_name'] . '</option>';
     }
@@ -660,7 +704,7 @@ function echo_e($e)
         ));
         if (count($matching_messages) > 0) {
             $main_content_title = ' Message #' . $e['e_tr_id'];
-            $main_content = echo_i($matching_messages[0]);
+            $main_content = echo_message_chat($matching_messages[0]);
         }
     }
 
@@ -1083,7 +1127,7 @@ function echo_costs($c, $fb_format = 0)
     }
 }
 
-function echo_intent_overview($c, $fb_format = 0)
+function echo_overview_in($c, $fb_format = 0)
 {
 
     $pitch = 'Action Plan contains ' . $c['in__tree_in_count'] . ' concepts that will help you ' . $c['in_outcome'] . '.';

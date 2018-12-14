@@ -15,10 +15,15 @@ class Migrate extends CI_Controller
     }
 
 
-    function ff($en_id=1278){
-        echo_json($this->Database_model->en_fetch(array(
+    function ff($en_id=1){
+
+        $ens = $this->Database_model->en_fetch(array(
             'en_id' => $en_id,
-        ), array('en__child_count', 'en__actionplans')));
+        ), array('en__child_count', 'en__actionplans'));
+
+        //echo_json($ens[0]['en__actionplans'][0]); exit;
+
+        echo_json($this->Matrix_model->compose_messages($ens[0]['en__actionplans'][0]));
     }
 
 

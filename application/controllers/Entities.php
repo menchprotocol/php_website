@@ -380,7 +380,7 @@ class Entities extends CI_Controller
         ), 0);
         echo '<div id="list-messages" class="list-group  grey-list">';
         foreach ($messages as $i) {
-            echo echo_i($i);
+            echo echo_message_chat($i);
         }
         echo '</div>';
     }

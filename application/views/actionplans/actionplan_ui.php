@@ -96,7 +96,7 @@ if (count($messages) > 0) {
     foreach ($messages as $i) {
         if ($i['tr_status'] == 1) {
             echo '<div class="tip_bubble">';
-            echo echo_i(array_merge($i, array(
+            echo echo_message_chat(array_merge($i, array(
                 'tr_en_child_id' => $w['en_id'],
             )), $w['en_name']);
             echo '</div>';
@@ -138,7 +138,7 @@ if (count($k_ins) == 1 && ($has_completion_info || (!intval($c['in_is_any']) && 
     if ($has_outs && !$list_outs) {
         echo '<button type="submit" class="btn btn-primary"><i class="fas fa-check-square"></i> Got It, Continue <i class="fas fa-angle-right"></i></button>';
     } elseif ($is_incomplete) {
-        echo '<button type="submit" name="k_next_redirect" value="1" class="btn btn-primary"><i class="fas fa-check-square"></i> Mark Complete & Go Next <i class="fas fa-angle-right"></i></button>';
+        echo '<button type="submit" name="in_next_actionplan" value="1" class="btn btn-primary"><i class="fas fa-check-square"></i> Mark Complete & Go Next <i class="fas fa-angle-right"></i></button>';
     } elseif (!$show_written_input) {
         echo '<button type="submit" class="btn btn-primary toggle_text" style="display:none;"><i class="fas fa-edit"></i> Update Answer</button>';
     } else {

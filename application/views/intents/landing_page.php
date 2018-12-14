@@ -74,7 +74,7 @@
     foreach ($c['in__messages'] as $i) {
         if ($i['tr_status'] == 1) {
             //Publish to Landing Page!
-            echo echo_i($i);
+            echo echo_message_chat($i);
         }
     }
     ?>
@@ -83,7 +83,7 @@
 
     <h3 style="margin-top:0px !important;">Overview:</h3>
     <div style="margin:12px 0 0 5px;">
-        <?= echo_intent_overview($c, 0) ?>
+        <?= echo_overview_in($c, 0) ?>
         <?= echo_contents($c, 0) ?>
         <?= echo_experts($c, 0) ?>
         <?= echo_completion_estimate($c, 0) ?>
@@ -122,7 +122,7 @@
                 //First show all messages for this intent:
                 foreach ($c1['in__messages'] as $i) {
                     if ($i['tr_status'] == 1) {
-                        echo echo_i(array_merge($i, array(
+                        echo echo_message_chat(array_merge($i, array(
                             'noshow' => 1,
                         )), 'Dear candidate'); //As they are a guest at this point
                     }

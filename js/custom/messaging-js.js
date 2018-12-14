@@ -23,7 +23,7 @@ function changeMessage() {
     }
 }
 
-function changeMessageEditing(tr_id) {
+function fn___changeMessageEditing(tr_id) {
     //See if this is a valid text message editing:
     if (!($('#charNumEditing' + tr_id).length)) {
         return false;
@@ -304,7 +304,7 @@ function msg_start_edit(tr_id, initial_tr_en_type_id) {
     initiate_search();
 
     //Try to initiate the editor, which only applies to text messages:
-    changeMessageEditing(tr_id);
+    fn___changeMessageEditing(tr_id);
 
     //Watch typing:
     $(document).keyup(function (e) {

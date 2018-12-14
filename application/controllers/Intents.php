@@ -555,7 +555,7 @@ class Intents extends CI_Controller
             ));
 
             //Build UI friendly HTML Message:
-            $help_content .= echo_i(array_merge($i, array('tr_en_child_id' => $udata['en_id'])), $udata['en_name'], false);
+            $help_content .= echo_message_chat(array_merge($i, array('tr_en_child_id' => $udata['en_id'])), $udata['en_name'], false);
         }
 
         //Return results:
@@ -741,7 +741,7 @@ class Intents extends CI_Controller
         //Echo message:
         echo_json(array(
             'status' => 1,
-            'message' => echo_message(array_merge($new_messages[0], array(
+            'message' => fn___echo_message_matrix(array_merge($new_messages[0], array(
                 'tr_en_child_id' => $udata['en_id'],
             ))),
         ));
@@ -810,7 +810,7 @@ class Intents extends CI_Controller
         //Print the challenge:
         return echo_json(array(
             'status' => 1,
-            'message' => echo_message(array_merge($tr, array(
+            'message' => fn___echo_message_matrix(array_merge($tr, array(
                 'tr_en_child_id' => $udata['en_id'],
             ))),
         ));
@@ -894,7 +894,7 @@ class Intents extends CI_Controller
         //Print the challenge:
         return echo_json(array(
             'status' => 1,
-            'message' => echo_i(array_merge($new_messages[0], array('tr_en_child_id' => $udata['en_id'])), $udata['en_name']),
+            'message' => echo_message_chat(array_merge($new_messages[0], array('tr_en_child_id' => $udata['en_id'])), $udata['en_name']),
             'tr_en_type_id' => echo_status('en_all_4485', $new_messages[0]['tr_en_type_id'], 1, 'right'),
             'success_icon' => '<span><i class="fas fa-check"></i> Saved</span>',
         ));
@@ -939,8 +939,25 @@ class Intents extends CI_Controller
                     'tr_status' => -1, //Removed
                 ), $udata['en_id']);
 
+
+
+
+                //TODO Here:
+
+                //Do a relative adjustment for this intent's metadata
+                $this->Database_model->metadata_update('in', $intents[0], array(
+                    'in__messages_count' => 1, //Add one to existing value
+                ), false);
+
                 //Update intent count:
                 $this->db->query("UPDATE tb_intents SET in__messages_count=in__messages_count-1 WHERE in_id=" . intval($_POST['in_id']));
+
+
+
+
+
+
+
 
                 //Update tree:
                 $updated_recursively = $this->Database_model->metadata_tree_update('in', intval($_POST['in_id']), array(

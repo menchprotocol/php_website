@@ -362,14 +362,14 @@ class My extends CI_Controller
 
         if ($status_changed) {
             //Also update tr_status, determine what it should be:
-            $this->Database_model->k_complete_recursive_up($trs[0], $trs[0]);
+            $this->Matrix_model->in_actionplan_complete_up($trs[0], $trs[0]);
         }
 
 
         //Redirect back to page with success message:
-        if (isset($_POST['k_next_redirect']) && intval($_POST['k_next_redirect']) > 0) {
+        if (isset($_POST['in_next_actionplan'])) {
             //Go to next item:
-            $next_ins = $this->Matrix_model->in_next_actionplan($trs[0]['tr_id'], (intval($_POST['k_next_redirect']) > 1 ? intval($_POST['k_next_redirect']) : 0));
+            $next_ins = $this->Matrix_model->in_next_actionplan($trs[0]['tr_id']);
             if ($next_ins) {
                 //Override original item:
                 $k_url = '/my/actionplan/' . $next_ins[0]['tr_tr_parent_id'] . '/' . $next_ins[0]['in_id'];

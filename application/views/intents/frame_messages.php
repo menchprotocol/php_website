@@ -49,7 +49,7 @@ $trs = $this->Database_model->i_fetch(array(
         echo '<div id="message-sorting' . $in_id . '" class="list-group list-messages">';
         foreach ($trs as $tr) {
 
-            echo echo_message(array_merge($tr, array(
+            echo fn___echo_message_matrix(array_merge($tr, array(
                 'tr_en_child_id' => $udata['en_id'],
             )));
 

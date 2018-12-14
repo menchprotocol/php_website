@@ -369,7 +369,7 @@ class Chat_model extends CI_Model
                             'tr_en_child_id' => $u['en_id'],
                             'tr_in_child_id' => $tr_in_child_id,
                             'tr_content' => 'Here is an overview:' . "\n\n" .
-                                echo_intent_overview($fetch_cs[0], 1) .
+                                echo_overview_in($fetch_cs[0], 1) .
                                 echo_contents($fetch_cs[0], 1) .
                                 echo_experts($fetch_cs[0], 1) .
                                 echo_completion_estimate($fetch_cs[0], 1) .
@@ -579,7 +579,7 @@ class Chat_model extends CI_Model
                 ), $u['en_id']);
 
                 //Find the next item to navigate them to:
-                $next_ins = $this->Matrix_model->in_next_actionplan($tr_id, $tr_order);
+                $next_ins = $this->Matrix_model->in_next_actionplan($tr_id);
                 if ($next_ins) {
                     //Now move on to communicate the next step.
                     $this->Matrix_model->compose_messages(array(
@@ -594,57 +594,31 @@ class Chat_model extends CI_Model
         } elseif (substr_count($fb_ref, 'MARKCOMPLETE_') == 1) {
 
             //Master consumed AND tree content, and is ready to move on to next intent...
-            $input_parts = explode('_', one_two_explode('MARKCOMPLETE_', '', $fb_ref));
-            $tr_id = intval($input_parts[0]);
-            $tr_id = intval($input_parts[1]);
-            $tr_order = intval($input_parts[2]);
-            if ($tr_id > 0 && $tr_id > 0 && $tr_order > 0) {
+            $tr_id = intval(one_two_explode('MARKCOMPLETE_', '', $fb_ref));
 
-                //Fetch child intent first to check requirements:
-                $k_children = $this->Database_model->tr_fetch(array(
+            if ($tr_id > 0) {
+
+                //Fetch Action Plan intent with its Master:
+                $actionplan_ins = $this->Database_model->tr_fetch(array(
                     'tr_id' => $tr_id,
-                    'tr_id' => $tr_id,
-                ), array('w', 'cr', 'cr_c_child'));
+                ), array('en_parent','in_parent'));
 
+                //Mark this intent as complete:
+                $this->Matrix_model->in_actionplan_complete_up($actionplan_ins[0], $actionplan_ins[0]);
 
-                //Does this intent have any requirements to be marked as complete?
-                $message_in_requirements = $this->Matrix_model->in_completion_requirements($k_children[0], true);
+                //Go to next item:
+                $next_ins = $this->Matrix_model->in_next_actionplan($tr_id);
 
-                if ($message_in_requirements) {
-
-                    //yes do, let them know that they can only complete via the Action Plan:
-                    $this->Chat_model->dispatch_message(array(
-                        array(
-                            'tr_en_child_id' => $u['en_id'],
-                            'tr_in_child_id' => $k_children[0]['in_id'],
-                            'tr_tr_parent_id' => $tr_id,
-                            'tr_content' => $message_in_requirements,
-                        ),
+                if ($next_ins) {
+                    //Now move on to communicate the next step.
+                    $this->Matrix_model->compose_messages(array(
+                        'tr_en_child_id' => $u['en_id'],
+                        'tr_in_child_id' => $next_ins[0]['in_id'],
+                        'tr_id' => $next_ins[0]['tr_id'],
+                        'tr_tr_parent_id' => $tr_id,
                     ));
-
-                } else {
-
-                    //The intent did not have any requirements to be marked as complete!
-                    //Fetch parent intent to mark as complete:
-                    $k_parents = $this->Database_model->tr_fetch(array(
-                        'tr_id' => $tr_id,
-                        'tr_id' => $tr_id,
-                    ), array('w', 'cr', 'cr_c_parent'));
-
-                    //No requirements, Update this intent and move on:
-                    $this->Database_model->k_complete_recursive_up($k_parents[0], $k_parents[0]);
-
-                    //Go to next item:
-                    $next_ins = $this->Matrix_model->in_next_actionplan($tr_id);
-                    if ($next_ins) {
-                        //Now move on to communicate the next step.
-                        $this->Matrix_model->compose_messages(array(
-                            'tr_en_child_id' => $u['en_id'],
-                            'tr_in_child_id' => $next_ins[0]['in_id'],
-                            'tr_tr_parent_id' => $tr_id,
-                        ));
-                    }
                 }
+
             }
 
         } elseif (substr_count($fb_ref, 'CHOOSEOR_') == 1) {
@@ -681,7 +655,7 @@ class Chat_model extends CI_Model
             //Now save answer:
             if ($this->Database_model->k_choose_or($tr_id, $tr_in_parent_id, $in_id)) {
                 //Find the next item to navigate them to:
-                $next_ins = $this->Matrix_model->in_next_actionplan($tr_id, $tr_order);
+                $next_ins = $this->Matrix_model->in_next_actionplan($tr_id);
                 if ($next_ins) {
                     //Now move on to communicate the next step.
                     $this->Matrix_model->compose_messages(array(
@@ -1024,7 +998,10 @@ class Chat_model extends CI_Model
          * Will attempt to send a message to the Master using the
          * messaging platform of their choice based on the Entity
          * relations we find for the given master for each message
-         * that is passed on in $trs
+         * that is passed on in $trs with these fields:
+         *
+         * - tr_en_child_id
+         * - tr_content
          *
          * */
 
@@ -1165,7 +1142,7 @@ class Chat_model extends CI_Model
             //Prepare Payload:
             $payload = array(
                 'recipient' => array('id' => $trs_fb_psid[0]['tr_content']),
-                'message' => echo_i($tr, $trs_fb_psid[0]['en_name'], true),
+                'message' => echo_message_chat($tr, $trs_fb_psid[0]['en_name'], true),
                 'notification_type' => $en_convert_4454[$trs_comm_level[0]['tr_en_parent_id']], //Appropriate notification level
                 'messaging_type' => 'NON_PROMOTIONAL_SUBSCRIPTION', //We are always educating users without promoting anything! Learn more at: https://developers.facebook.com/docs/messenger-platform/send-messages#messaging_types
             );

@@ -147,18 +147,18 @@ $config['object_statuses'] = array(
             's_desc' => 'User decided to skip this link',
             's_icon' => 'fal fa-minus-square',
         ),
-        0 => array(
+        0 => array( //This status is considered incomplete, see tr_status_incomplete variable above
             's_name' => 'New',
             's_desc' => 'New link pending acceptance',
             's_icon' => 'fal fa-square',
         ),
-        1 => array(
+        1 => array( //This status is considered incomplete, see tr_status_incomplete variable above
             's_name' => 'Working On',
             's_desc' => 'Work has started and but some intents are pending completion',
             's_icon' => 'fas fa-spinner fa-spin',
         ),
         2 => array(
-            's_name' => 'Published',
+            's_name' => 'Syncing',
             's_desc' => 'Completed and ready for updates to be synced',
             's_icon' => 'fas fa-check-square',
         ),
