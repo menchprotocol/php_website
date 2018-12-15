@@ -686,7 +686,7 @@ class Database_model extends CI_Model
     }
 
 
-    function i_create($insert_columns)
+    function fn___tr_create($insert_columns)
     {
 
         //Need either entity or intent:

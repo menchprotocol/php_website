@@ -457,7 +457,7 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid in_id',
             ));
-        } elseif (!isset($_POST['new_sort']) || !is_array($_POST['new_sort']) || count($_POST['new_sort']) <= 0) {
+        } elseif (!isset($_POST['new_tr_orders']) || !is_array($_POST['new_tr_orders']) || count($_POST['new_tr_orders']) <= 0) {
             echo_json(array(
                 'status' => 0,
                 'message' => 'Nothing passed for sorting',
@@ -484,7 +484,7 @@ class Intents extends CI_Controller
                 ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
 
                 //Update them all:
-                foreach ($_POST['new_sort'] as $rank => $tr_id) {
+                foreach ($_POST['new_tr_orders'] as $rank => $tr_id) {
                     $this->Database_model->tr_update(intval($tr_id), array(
                         'tr_order' => intval($rank),
                     ), $udata['en_id']);
@@ -619,7 +619,9 @@ class Intents extends CI_Controller
 
     function in_messages_load($in_id)
     {
-        $udata = auth();
+
+        //Authenticate as a Miner:
+        $udata = auth(array(1308));
         if (!$udata) {
             //Display error:
             die('<span style="color:#FF0000;">Error: Invalid Session. Login again to continue.</span>');
@@ -643,6 +645,7 @@ class Intents extends CI_Controller
     function i_attach()
     {
 
+        //Authenticate as a Miner:
         $udata = auth(array(1308));
         $file_size_max = $this->config->item('file_size_max');
         if (!$udata) {
@@ -747,74 +750,6 @@ class Intents extends CI_Controller
         ));
     }
 
-    function i_create()
-    {
-
-        $udata = auth(array(1308));
-        if (!$udata) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Session Expired. Login and Try again.',
-            ));
-        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) <= 0) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid Intent ID',
-            ));
-        }
-
-        //Fetch/Validate the intent:
-        $intents = $this->Database_model->in_fetch(array(
-            'in_id' => intval($_POST['in_id']),
-            'in_status >=' => 0,
-        ));
-        if(count($intents)<1){
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid Intent',
-            ));
-        }
-
-        //Make sure message is all good:
-        $validation = message_validation($_POST['tr_content']);
-        if (!$validation['status']) {
-            //There was some sort of an error:
-            return echo_json($validation);
-        }
-
-        //Create Message Transaction:
-        $tr = $this->Database_model->tr_create(array(
-            'tr_en_credit_id' => $udata['en_id'],
-            'tr_in_child_id' => intval($_POST['in_id']),
-            'tr_order' => 1 + $this->Database_model->tr_max_order(array(
-                'tr_status >=' => 0, //New+
-                'tr_en_type_id' => 123, //TODO Put message type
-                'tr_in_child_id' => intval($_POST['in_id']),
-            )),
-            //Referencing attributes:
-            'tr_content' => $validation['tr_content'],
-            'tr_en_type_id' => 123, //TODO Put message type
-            'tr_en_parent_id' => $validation['tr_en_parent_id'],
-        ), true);
-
-        //Do a relative adjustment for this intent's metadata
-        $this->Database_model->metadata_update('in', $intents[0], array(
-            'in__messages_count' => 1, //Add one to existing value
-        ), false);
-
-        //Update tree as well:
-        $updated_recursively = $this->Database_model->metadata_tree_update('in', $intents[0]['in_id'], array(
-            'in__messages_tree_count' => 1,
-        ));
-
-        //Print the challenge:
-        return echo_json(array(
-            'status' => 1,
-            'message' => fn___echo_message_matrix(array_merge($tr, array(
-                'tr_en_child_id' => $udata['en_id'],
-            ))),
-        ));
-    }
 
     function i_modify()
     {
@@ -898,118 +833,6 @@ class Intents extends CI_Controller
             'tr_en_type_id' => echo_status('en_all_4485', $new_messages[0]['tr_en_type_id'], 1, 'right'),
             'success_icon' => '<span><i class="fas fa-check"></i> Saved</span>',
         ));
-    }
-
-    function i_archive()
-    {
-        //Auth user and Load object:
-        $udata = auth(array(1308));
-
-        if (!$udata) {
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Session Expired. Login and try again',
-            ));
-        } elseif (!isset($_POST['tr_id']) || intval($_POST['tr_id']) <= 0) {
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Message ID',
-            ));
-        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) <= 0 || !is_valid_intent($_POST['in_id'])) {
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid Intent ID',
-            ));
-        } else {
-
-            //Fetch Message:
-            $messages = $this->Database_model->i_fetch(array(
-                'tr_id' => intval($_POST['tr_id']),
-                'tr_status >=' => 0, //Not Removed
-            ));
-            if (!isset($messages[0])) {
-                echo_json(array(
-                    'status' => 0,
-                    'message' => 'Message Not Found',
-                ));
-            } else {
-
-                //Now update the DB:
-                $this->Database_model->tr_update(intval($_POST['tr_id']), array(
-                    'tr_status' => -1, //Removed
-                ), $udata['en_id']);
-
-
-
-
-                //TODO Here:
-
-                //Do a relative adjustment for this intent's metadata
-                $this->Database_model->metadata_update('in', $intents[0], array(
-                    'in__messages_count' => 1, //Add one to existing value
-                ), false);
-
-                //Update intent count:
-                $this->db->query("UPDATE tb_intents SET in__messages_count=in__messages_count-1 WHERE in_id=" . intval($_POST['in_id']));
-
-
-
-
-
-
-
-
-                //Update tree:
-                $updated_recursively = $this->Database_model->metadata_tree_update('in', intval($_POST['in_id']), array(
-                    'in__messages_tree_count' => -1,
-                ));
-
-                echo_json(array(
-                    'status' => 1,
-                    'message' => '<span style="color:#2f2739;"><i class="fas fa-trash-alt"></i> Removed</span>',
-                ));
-            }
-        }
-    }
-
-    function i_sort()
-    {
-
-        //Auth user and Load object:
-        $udata = auth(array(1308));
-        if (!$udata) {
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Session Expired. Login and try again',
-            ));
-        } elseif (!isset($_POST['new_sort']) || !is_array($_POST['new_sort']) || count($_POST['new_sort']) <= 0) {
-            echo_json(array(
-                'status' => 1, //Do not treat this as error as it could happen in moving Messages between types
-                'message' => 'There was nothing to sort',
-            ));
-        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) <= 0 || !is_valid_intent($_POST['in_id'])) {
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid Intent ID',
-            ));
-        } else {
-
-            //Update them all:
-            $sort_count = 0;
-            foreach ($_POST['new_sort'] as $tr_order => $tr_id) {
-                if (intval($tr_id) > 0) {
-                    $sort_count++;
-                    $this->Database_model->tr_update($tr_id, array(
-                        'tr_order' => intval($tr_order),
-                    ), $udata['en_id']);
-                }
-            }
-
-            echo_json(array(
-                'status' => 1,
-                'message' => $sort_count . ' Sorted', //Does not matter as its currently not displayed in UI
-            ));
-        }
     }
 
 }

@@ -34,7 +34,7 @@ function u_essentials($full_array)
 function load_php_algolia($index_name)
 {
     $CI =& get_instance();
-    if($CI->config->item('enable_algolia')){
+    if ($CI->config->item('enable_algolia')) {
         require_once('application/libraries/algoliasearch.php');
         $client = new \AlgoliaSearch\Client("49OCX1ZXLJ", "84a8df1fecf21978299e31c5b535ebeb");
         return $client->initIndex($index_name);
@@ -124,19 +124,28 @@ function base64_url_decode($input)
 }
 
 
-function extract_urls($text, $inverse = false)
+function fn___text_analyze($tr_content)
 {
-    $text = preg_replace('/[[:^print:]]/', ' ', $text); //Replace non-ascii characters with space
-    $parts = preg_split('/\s+/', $text);
-    $return = array();
+
+    //Replace non-ascii characters with space:
+    $tr_content = preg_replace('/[[:^print:]]/', ' ', $tr_content);
+    $parts = preg_split('/\s+/', $tr_content);
+
+    //Analyze the message to find referencing URLs and Entities in the message text:
+    $obj_breakdown = array(
+        'en_urls' => array(),
+        'en_refs' => array(),
+    );
+
+    //See what we can find:
     foreach ($parts as $part) {
-        if (!$inverse && filter_var($part, FILTER_VALIDATE_URL)) {
-            array_push($return, $part);
-        } elseif ($inverse && !filter_var($part, FILTER_VALIDATE_URL) && strlen($part) > 0) {
-            array_push($return, $part);
+        if (filter_var($part, FILTER_VALIDATE_URL)) {
+            array_push($obj_breakdown['en_urls'], $part);
+        } elseif (substr($part, 0, 1) == '@' && intval($part) > 0) {
+            array_push($obj_breakdown['en_refs'], intval($part));
         }
     }
-    return $return;
+    return $obj_breakdown;
 }
 
 
@@ -178,23 +187,23 @@ function detect_tr_en_type_id($string)
 
     $string = trim($string);
 
-    if(!$string || strlen($string)==0){
+    if (!$string || strlen($string) == 0) {
         //Naked:
         return 4230;
-    } elseif(isDate($string)){
+    } elseif (isDate($string)) {
         //Date/time:
         return 4318;
-    } elseif(is_int($string) || is_double($string)){
+    } elseif (is_int($string) || is_double($string)) {
         //Number:
         return 4319;
-    } elseif(filter_var($string, FILTER_VALIDATE_URL)){
+    } elseif (filter_var($string, FILTER_VALIDATE_URL)) {
         //It's a URL, see what type:
         $curl = curl_html($string, true);
         return $curl['tr_en_type_id'];
     } else {
-        $words = explode(' ',$string);
+        $words = explode(' ', $string);
         //Regular text link:
-        return ( count($words)==1 ? 4526 /* Single word */ : 4255 /* Multi-word */ );
+        return (count($words) == 1 ? 4526 /* Single word */ : 4255 /* Multi-word */);
     }
 }
 
@@ -207,10 +216,6 @@ function array_any_key_exists(array $keys, array $arr)
     }
     return false;
 }
-
-
-
-
 
 
 function is_valid_intent($in_id)
@@ -495,37 +500,24 @@ function arrayToObject($array)
     return $obj;
 }
 
-function extract_references($prefix, $message)
-{
-    //$words = explode(' ',trim($message));
-    $words = preg_split('/[\s]+/', trim($message));
-    $matches = array();
-    foreach ($words as $word) {
-        if (substr($word, 0, 1) == $prefix) {
-            //Looks like it, is the rest all integers?
-            $id = substr($word, 1);
-            if (strlen($id) == strlen(intval($id))) {
-                //Yea seems like all integers, append:
-                array_push($matches, intval($id));
-            }
-        }
-    }
-    return $matches;
-}
 
 function message_validation($tr_content)
 {
 
+    /*
+     *
+     * A function to validate the content of the message
+     *
+     * */
 
     $CI =& get_instance();
     $tr_content_max = $CI->config->item('tr_content_max');
+    $tr_content = trim($tr_content);
 
-    //Extract details from this message:
-    $urls = extract_urls($tr_content);
-    $en_ids = extract_references('@', $tr_content);
+    //Extract details from this message including its URLs and referenced entities (like "@123")
+    $obj_breakdown = fn___text_analyze($tr_content);
 
-
-    if (!isset($tr_content) || strlen($tr_content) <= 0) {
+    if (strlen($tr_content) < 1) {
         return array(
             'status' => 0,
             'message' => 'Missing Message',
@@ -533,7 +525,7 @@ function message_validation($tr_content)
     } elseif (substr_count($tr_content, '/firstname') > 1) {
         return array(
             'status' => 0,
-            'message' => '/firstname can be used only once',
+            'message' => '/firstname command can only be used only once',
         );
     } elseif (strlen($tr_content) > $tr_content_max) {
         return array(
@@ -550,66 +542,71 @@ function message_validation($tr_content)
             'status' => 0,
             'message' => 'Message must be UTF8',
         );
-    } elseif (count($en_ids) > 1) {
+    } elseif (count($obj_breakdown['en_refs']) > 1) {
         return array(
             'status' => 0,
             'message' => 'You can reference a maximum of 1 entity per message',
         );
-    } elseif (count($en_ids) > 0 && count($urls) > 0) {
+    } elseif (count($obj_breakdown['en_refs']) > 0 && count($obj_breakdown['en_urls']) > 0) {
         return array(
             'status' => 0,
             'message' => 'You can either reference 1 entity or include 1 URL which would transform into an entity',
         );
-    } elseif (count($urls) > 1) {
+    } elseif (count($obj_breakdown['en_urls']) > 1) {
         return array(
             'status' => 0,
-            'message' => 'Max 1 URL per Message',
+            'message' => 'You can reference a maximum of 1 URL per message',
         );
-    } elseif ((count($en_ids) == 0 && count($urls) == 0) && substr_count($tr_content, '/slice') > 0) {
+    } elseif (count($obj_breakdown['en_refs']) == 0 && count($obj_breakdown['en_urls']) == 0 && substr_count($tr_content, '/slice') > 0) {
         return array(
             'status' => 0,
-            'message' => '/slice command required an entity reference [@' . count($en_ids) . ']',
+            'message' => '/slice command required an entity reference',
         );
     }
 
 
-    //Validate Entity:
-    if (count($en_ids) > 0) {
+    //Validate Entity Reference if Any:
+    if (count($obj_breakdown['en_refs']) > 0) {
 
-        $i_children_us = $CI->Database_model->en_fetch(array(
-            'en_id' => $en_ids[0],
+        $ens = $CI->Database_model->en_fetch(array(
+            'en_id' => $obj_breakdown['en_refs'][0],
         ));
 
-        if (count($i_children_us) == 0) {
+        if (count($ens) == 0) {
             //Invalid ID:
             return array(
                 'status' => 0,
-                'message' => 'Entity [@' . $en_ids[0] . '] does not exist',
+                'message' => 'Entity [@' . $obj_breakdown['en_refs'][0] . '] does not exist',
             );
-        } elseif ($i_children_us[0]['en_status'] < 0) {
+        } elseif ($ens[0]['en_status'] < 0) {
             //Inactive:
             return array(
                 'status' => 0,
-                'message' => 'Entity [' . $i_children_us[0]['en_name'] . '] is not active so you cannot link to it',
+                'message' => 'Entity [' . $ens[0]['en_name'] . '] is not active so you cannot reference it',
             );
         }
 
-    } elseif (count($urls) > 0) {
+    } elseif (count($obj_breakdown['en_urls']) > 0) {
+
+
+        //TODO HERE:::
+
 
         //No entity linked, but we have a URL that we should turn into an entity:
-        $url_create = $CI->Database_model->x_sync($urls[0], 1326, false, true);
+        $url_create = $CI->Database_model->x_sync($obj_breakdown['en_urls'][0], 1326, false, true);
 
         //Did we have an error?
         if (!$url_create['status']) {
             return $url_create;
         }
 
-        $en_ids[0] = $url_create['en']['en_id'];
+        $obj_breakdown['en_refs'][0] = $url_create['en']['en_id'];
 
         //Replace the URL with this new @entity in message:
-        $tr_content = str_replace($urls[0], '@' . $en_ids[0], $tr_content);
+        $tr_content = str_replace($obj_breakdown['en_urls'][0], '@' . $obj_breakdown['en_refs'][0], $tr_content);
 
     }
+
 
     //Do we have any commands?
     if (substr_count($tr_content, '/slice') > 0) {
@@ -642,7 +639,7 @@ function message_validation($tr_content)
          * */
 
         $found_slicable_url = false;
-        foreach ($i_children_us[0]['en__parents'] as $en) {
+        foreach ($ens[0]['en__parents'] as $en) {
             if (substr_count($en['tr_content'], 'youtube.com') > 0) {
                 $found_slicable_url = true;
                 break;
@@ -658,13 +655,15 @@ function message_validation($tr_content)
     }
 
 
+    //All seems good, return success:
     return array(
         'status' => 1,
         'message' => 'Success',
         //Return cleaned data:
         'tr_content' => trim($tr_content), //It might have been modified if URL was added
-        'tr_en_parent_id' => (count($en_ids) > 0 ? $en_ids[0] : 0), //Referencing an entity?
+        'tr_en_parent_id' => (count($obj_breakdown['en_refs']) > 0 ? $obj_breakdown['en_refs'][0] : 0), //Referencing an entity?
     );
+
 }
 
 

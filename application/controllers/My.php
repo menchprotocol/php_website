@@ -336,7 +336,9 @@ class My extends CI_Controller
 
 
         //Do we have what it takes to mark as complete?
-        if ($trs[0]['c_require_url_to_complete'] && count(extract_urls($_POST['tr_content'])) < 1) {
+        $obj_breakdown = fn___text_analyze($_POST['tr_content']);
+
+        if ($trs[0]['c_require_url_to_complete'] && count($obj_breakdown['en_urls']) < 1) {
             return redirect_message($k_url, '<div class="alert alert-danger" role="alert">Error: URL Required to mark [' . $trs[0]['in_outcome'] . '] as complete.</div>');
         } elseif ($trs[0]['c_require_notes_to_complete'] && strlen($_POST['tr_content']) < 1) {
             return redirect_message($k_url, '<div class="alert alert-danger" role="alert">Error: Notes Required to mark [' . $trs[0]['in_outcome'] . '] as complete.</div>');

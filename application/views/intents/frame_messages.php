@@ -45,32 +45,27 @@ $trs = $this->Database_model->i_fetch(array(
 
     //Count each message type:
     $counters = array();
-    if (count($trs) > 0) {
-        echo '<div id="message-sorting' . $in_id . '" class="list-group list-messages">';
-        foreach ($trs as $tr) {
+    echo '<div id="message-sorting" class="list-group list-messages">';
+    foreach ($trs as $tr) {
 
-            echo fn___echo_message_matrix(array_merge($tr, array(
-                'tr_en_child_id' => $udata['en_id'],
-            )));
+        echo fn___echo_message_matrix(array_merge($tr, array(
+            'tr_en_child_id' => $udata['en_id'],
+        )));
 
-            //Increase counter:
-            if (isset($counters[$tr['tr_en_type_id']])) {
-                $counters[$tr['tr_en_type_id']]++;
-            } else {
-                $counters[$tr['tr_en_type_id']] = 1;
-            }
-
+        //Increase counter:
+        if (isset($counters[$tr['tr_en_type_id']])) {
+            $counters[$tr['tr_en_type_id']]++;
+        } else {
+            $counters[$tr['tr_en_type_id']] = 1;
         }
-        echo '</div>';
-    } else {
-        //Now show empty shell
-        echo '<div id="message-sorting' . $in_id . '" class="list-group list-messages"></div>';
+
     }
+    echo '</div>';
 
     //Show no-Message notifications for each message type:
     foreach ($en_all_4485 as $tr_en_type_id => $value) {
         if (!isset($counters[$tr_en_type_id])) {
-            echo '<div class="ix-tip no-messages' . $in_id . '_' . $tr_en_type_id . ' all_msg msg_' . $tr_en_type_id . '"><i class="fas fa-exclamation-triangle"></i> No ' . $value['en_icon'] . ' ' . $value['en_name'] . ' added yet</div>';
+            echo '<div class="ix-tip no-messages' . $in_id . '_' . $tr_en_type_id . ' all_msg msg_en_type_' . $tr_en_type_id . '"><i class="fas fa-exclamation-triangle"></i> No ' . $value['en_icon'] . ' ' . $value['en_name'] . ' added yet</div>';
         }
     }
 
@@ -102,7 +97,7 @@ $trs = $this->Database_model->i_fetch(array(
 
     //Fetch for all message types:
     foreach ($en_all_4485 as $tr_en_type_id => $value) {
-        echo '<div class="iphone-add-btn all_msg msg_' . $tr_en_type_id . '"><a href="javascript:msg_create();" id="add_message_' . $tr_en_type_id . '_' . $in_id . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="top" class="btn btn-primary">ADD ' . $value['en_icon'] . ' ' . $value['en_name'] . '</a></div>';
+        echo '<div class="iphone-add-btn all_msg msg_en_type_' . $tr_en_type_id . '"><a href="javascript:message_create();" id="add_message_' . $tr_en_type_id . '_' . $in_id . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="top" class="btn btn-primary">ADD ' . $value['en_icon'] . ' ' . $value['en_name'] . '</a></div>';
     }
 
     echo '</form>';

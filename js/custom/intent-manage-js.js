@@ -258,7 +258,7 @@ function in_sort_save(in_id, level) {
     }
 
     //Fetch new sort:
-    var new_sort = [];
+    var new_tr_orders = [];
     var sort_rank = 0;
     var is_properly_sorted = true; //Assume good unless proven otherwise
 
@@ -274,7 +274,7 @@ function in_sort_save(in_id, level) {
             sort_rank++;
 
             //Store in DB:
-            new_sort[sort_rank] = tr_id;
+            new_tr_orders[sort_rank] = tr_id;
 
             //Is the Child rank correct? Check DB value:
             var db_rank = parseInt($('.in_outcome_' + in_id).attr('children-rank'));
@@ -298,7 +298,7 @@ function in_sort_save(in_id, level) {
     //It might be zero for lists that have jsut been emptied
     if (sort_rank > 0 && in_id) {
         //Update backend:
-        $.post("/intents/in_sort_save", {in_id: in_id, new_sort: new_sort}, function (data) {
+        $.post("/intents/in_sort_save", {in_id: in_id, new_tr_orders: new_tr_orders}, function (data) {
             //Update UI to confirm with user:
             if (!data.status) {
                 //There was some sort of an error returned!
