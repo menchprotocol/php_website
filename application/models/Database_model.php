@@ -24,68 +24,6 @@ class Database_model extends CI_Model
     }
 
 
-    function en_radio_set($en_parent_bucket_id, $set_en_child_id = 0, $en_master_id, $tr_en_credit_id = 0)
-    {
-
-        /*
-         * Treats an entity child group as a drop down menu where:
-         *
-         *  $en_parent_bucket_id is the parent of the drop down
-         *  $en_master_id is the master entity ID that one of the children of $en_parent_bucket_id should be assigned (like a drop down)
-         *  $set_en_child_id is the new value to be assigned, which could also be null (meaning just remove all current values)
-         *
-         * This function is helpful to manage things like Master communication levels
-         *
-         * */
-
-
-        //Fetch all the child entities for $en_parent_bucket_id and make sure they match $set_en_child_id
-        $children = $this->config->item('en_ids_' . $en_parent_bucket_id);
-        if ($en_parent_bucket_id < 1) {
-            return false;
-        } elseif (!$children) {
-            return false;
-        } elseif ($set_en_child_id > 0 && !in_array($set_en_child_id, $children)) {
-            return false;
-        }
-
-        //First remove existing parent/child transactions for this drop down:
-        $already_assigned = ($set_en_child_id < 1);
-        $updated_tr_id = 0;
-        foreach ($this->Database_model->tr_fetch(array(
-            'tr_en_child_id' => $en_master_id,
-            'tr_en_parent_id IN (' . join(',', $children) . ')' => null, //Current children
-            'tr_status >=' => 0,
-        ), array(), 200) as $tr) {
-
-            if (!$already_assigned && $tr['tr_en_parent_id'] == $set_en_child_id) {
-                $already_assigned = true;
-            } else {
-                //Remove assignment:
-                $updated_tr_id = $tr['tr_id'];
-
-                //Do not log update transaction here as we would log it further below:
-                $this->Database_model->tr_update($tr['tr_id'], array(
-                    'tr_status' => ($set_en_child_id > 0 ? -2 /* Being Updated */ : -1 /* Being Removed */), //Updated or Removed
-                ));
-            }
-
-        }
-
-
-        //Make sure $set_en_child_id belongs to parent if set (Could be null which means remove all)
-        if (!$already_assigned) {
-            //Let's go ahead and add desired entity as parent:
-            $this->Database_model->tr_create(array(
-                'tr_en_credit_id' => $tr_en_credit_id,
-                'tr_en_child_id' => $en_master_id,
-                'tr_en_parent_id' => $set_en_child_id,
-                'tr_en_type_id' => 4230, //Naked link
-                'tr_tr_parent_id' => $updated_tr_id,
-            ));
-        }
-
-    }
 
 
     function w_update($id, $update_columns)
@@ -99,7 +37,7 @@ class Database_model extends CI_Model
     function tr_status_update($tr_id, $new_tr_status)
     {
 
-        //Marks a single subscription intent as complete:
+        //Marks a single Action Plan intent as complete:
         $this->Database_model->tr_update($tr_id, array(
             'k_last_updated' => date("Y-m-d H:i:s"),
             'tr_status' => $new_tr_status, //Working On...
@@ -160,7 +98,7 @@ class Database_model extends CI_Model
                 $this->Database_model->tr_status_update($k['tr_id'], -1); //skip
             }
 
-            //There is a chance that the subscription might be now completed due to this skipping, lets check:
+            //There is a chance that the Action Plan might be now completed due to this skipping, lets check:
             /*
             $trs = $this->Database_model->tr_fetch(array(
                 'tr_id' => $tr_id,
@@ -215,7 +153,7 @@ class Database_model extends CI_Model
         } else {
             //Oooopsi, we could not find it! Log error and return false:
             $this->Database_model->tr_create(array(
-                'tr_content' => 'Unable to locate OR selection for this subscription',
+                'tr_content' => 'Unable to locate OR selection for this Action Plan',
                 'tr_en_type_id' => 4246, //Platform Error
                 'tr_in_child_id' => $in_id,
                 'tr_tr_parent_id' => $tr_id,
@@ -236,7 +174,7 @@ class Database_model extends CI_Model
         }
 
         if (!isset($insert_columns['tr_order'])) {
-            //Determine the highest rank for this subscription:
+            //Determine the highest rank for this Action Plan:
             $insert_columns['tr_order'] = 1 + $this->Database_model->tr_max_order('tb_actionplan_links', 'tr_order', array(
                     'tr_tr_parent_id' => $insert_columns['tr_tr_parent_id'],
                 ));
@@ -403,7 +341,7 @@ class Database_model extends CI_Model
         ), true);
 
         //Update tree count from parent and above:
-        $updated_recursively = $this->Database_model->metadata_tree_update('in', $in_id, $recursive_query);
+        $this->Database_model->metadata_tree_update('in', $in_id, $recursive_query);
 
 
         $relations = $this->Old_model->cr_children_fetch(array(
@@ -428,67 +366,6 @@ class Database_model extends CI_Model
         );
     }
 
-    function w_create($insert_columns)
-    {
-
-        if (detect_missing_columns($insert_columns, array('tr_en_parent_id', 'tr_in_child_id'))) {
-            return false;
-        }
-
-        if (!isset($insert_columns['w_timestamp'])) {
-            $insert_columns['w_timestamp'] = date("Y-m-d H:i:s");
-        }
-        if (!isset($insert_columns['tr_status'])) {
-            $insert_columns['tr_status'] = 1;
-        }
-        if (!isset($insert_columns['w_parent_en_id'])) {
-            $insert_columns['w_parent_en_id'] = 0; //No miner assigned
-        }
-
-        if (!isset($insert_columns['w_c_rank'])) {
-            //Place this new action plan after the last one the user currently has:
-            $insert_columns['w_c_rank'] = 1 + $this->Database_model->tr_max_order('tb_actionplans', 'w_c_rank', array(
-                    'tr_status >=' => 1, //Anything they are working on...
-                    'tr_en_parent_id' => $insert_columns['tr_en_parent_id'],
-                )); //No miner assigned
-        }
-
-        //Lets now add:
-        $this->db->insert('tb_actionplans', $insert_columns);
-
-        //Fetch inserted id:
-        $insert_columns['tr_id'] = $this->db->insert_id();
-
-        if ($insert_columns['tr_id'] > 0) {
-
-            //Now let's create a cache of the Action Plan for this subscription:
-            $tree = $this->Database_model->in_recursive_fetch($insert_columns['tr_in_child_id'], true, false, $insert_columns['tr_id']);
-
-            if (count($tree['in_tr_flat_tree']) > 0) {
-
-                $intent = end($tree['in_tree']);
-
-            } else {
-
-                //This would happen if the user subscribes to an intent without any children...
-                //This should not happen, inform user and log error:
-                $this->Chat_model->dispatch_message(array(
-                    array(
-                        'tr_en_child_id' => $insert_columns['tr_en_parent_id'],
-                        'tr_in_child_id' => $insert_columns['tr_in_child_id'],
-                        'tr_content' => 'Subscription failed',
-                    ),
-                ));
-
-            }
-
-            //Return results:
-            return $insert_columns;
-
-        } else {
-            return false;
-        }
-    }
 
 
     function en_fetch($match_columns, $join_objects = array(), $limit = 0, $limit_offset = 0, $order_columns = array('en_trust_score' => 'DESC'), $select = '*', $group_by = null)
@@ -823,185 +700,6 @@ class Database_model extends CI_Model
     }
 
 
-    function x_sync($x_url, $x_en_id, $cad_edit, $accept_existing_url = false)
-    {
-
-        //Auth user and check required variables:
-        $udata = auth(array(1308));
-        $x_url = trim($x_url);
-
-        if (!$udata) {
-            return array(
-                'status' => 0,
-                'message' => 'Invalid Session. Refresh the page and try again.',
-            );
-        } elseif (!isset($x_en_id)) {
-            return array(
-                'status' => 0,
-                'message' => 'Missing Child Entity ID',
-            );
-        } elseif (!isset($cad_edit)) {
-            return array(
-                'status' => 0,
-                'message' => 'Missing Editing Permission',
-            );
-        } elseif (!isset($x_url) || strlen($x_url) < 1) {
-            return array(
-                'status' => 0,
-                'message' => 'Missing URL',
-            );
-        } elseif (!filter_var($x_url, FILTER_VALIDATE_URL)) {
-            return array(
-                'status' => 0,
-                'message' => 'Invalid URL',
-            );
-        }
-
-        //Validate parent entity:
-        $children_us = $this->Database_model->en_fetch(array(
-            'en_id' => $x_en_id,
-        ));
-
-        //Make sure this URL does not exist:
-        $dup_urls = $this->Old_model->x_fetch(array(
-            'x_status >' => -2,
-            '(x_url LIKE \'' . $x_url . '\' OR x_clean_url LIKE \'' . $x_url . '\')' => null,
-        ), array('en'));
-
-        //Call URL to validate it further:
-        $curl = curl_html($x_url, true);
-
-        if (!$curl) {
-            return array(
-                'status' => 0,
-                'message' => 'Invalid URL',
-            );
-        } elseif (count($dup_urls) > 0) {
-
-            if ($accept_existing_url) {
-                //Return the object as this is expected:
-                return array(
-                    'status' => 1,
-                    'message' => 'Found existing URL',
-                    'is_existing' => 1,
-                    'curl' => $curl,
-                    'en' => array_merge($children_us[0], $dup_urls[0]),
-                );
-            } elseif ($dup_urls[0]['en_id'] == $x_en_id) {
-                return array(
-                    'status' => 0,
-                    'message' => 'This URL has already been added!',
-                );
-            } else {
-                return array(
-                    'status' => 0,
-                    'message' => 'URL is already being used by [' . $dup_urls[0]['en_name'] . ']. URLs cannot belong to multiple entities.',
-                );
-            }
-        } elseif (count($children_us) < 1) {
-            return array(
-                'status' => 0,
-                'message' => 'Invalid Child Entity ID [' . $x_en_id . ']',
-            );
-        }
-
-
-        if ($x_en_id == 1326) { //Content
-
-            //We need to create a new entity and add this URL below it:
-            $x_types = echo_status('x_type', null);
-            $en_name = null;
-            $url_code = substr(md5($x_url), 0, 8);
-
-            if (strlen($curl['page_title']) > 0) {
-
-                //Make sure this is not a duplicate name:
-                $dup_name_us = $this->Database_model->en_fetch(array(
-                    'en_status >=' => 0,
-                    'en_name' => $curl['page_title'],
-                ));
-
-                if (count($dup_name_us) > 0) {
-                    //Yes, we did find a duplicate name! Change this slightly:
-                    $en_name = $curl['page_title'] . ' ' . $url_code;
-                } else {
-                    //No duplicate detected, all good to go:
-                    $en_name = $curl['page_title'];
-                }
-
-            } else {
-                $en_name = $x_types[$curl['x_type']]['s_name'] . ' ' . $url_code;
-            }
-
-            $new_entity = $this->Database_model->en_create(array(
-                'en_name' => $en_name,
-            ), true, $udata['en_id']);
-
-            //Place this new entity in $x_en_id [Content]
-            $ur1 = $this->Database_model->tr_create(array(
-                'tr_en_child_id' => $new_entity['en_id'],
-                'tr_en_parent_id' => $x_en_id,
-            ));
-
-        } else {
-            $new_entity = $children_us[0];
-            $ur1 = array();
-        }
-
-
-        //All good, Save URL:
-        $new_x = $this->Database_model->x_create(array(
-            'x_parent_en_id' => $udata['en_id'],
-            'x_en_id' => $new_entity['en_id'],
-            'x_url' => $x_url,
-            'x_clean_url' => ($curl['clean_url'] ? $curl['clean_url'] : $x_url),
-            'x_type' => $curl['x_type'],
-            'x_status' => ($curl['url_is_broken'] ? -1 : 1), //Either Published or Seems Broken
-        ));
-
-        if (!isset($new_x['x_id']) || $new_x['x_id'] < 1) {
-            return array(
-                'status' => 0,
-                'message' => 'There was an issue creating the URL',
-            );
-        }
-
-
-        //Is this a image suitable to become the Entity icon? If so, set this as the default:
-        $set_cover_x_id = (!$children_us[0]['u_cover_x_id'] && $new_x['x_type'] == 4 /* Image file */ ? $new_x['x_id'] : 0);
-
-
-        //Update Algolia:
-        $this->Database_model->algolia_sync('en', $new_entity['en_id']);
-
-
-        if ($x_en_id == 1326) {
-
-            //Return entity object:
-            return array(
-                'status' => 1,
-                'message' => 'Success',
-                'curl' => $curl,
-                'en' => array_merge($new_entity, $ur1),
-                'set_cover_x_id' => $set_cover_x_id,
-                'new_en' => ($accept_existing_url ? null : echo_u(array_merge($new_entity, $ur1), 2)),
-            );
-
-        } else {
-
-            //Return URL object:
-            return array(
-                'status' => 1,
-                'message' => 'Success',
-                'curl' => $curl,
-                'en' => $children_us[0],
-                'set_cover_x_id' => $set_cover_x_id,
-                'new_x' => echo_x($children_us[0], $new_x),
-            );
-
-        }
-    }
-
 
     function tr_parent_fetch($match_columns, $join_objects = array())
     {
@@ -1253,66 +951,7 @@ class Database_model extends CI_Model
         return $this->db->affected_rows();
     }
 
-    function x_create($insert_columns)
-    {
 
-        if (detect_missing_columns($insert_columns, array('x_url', 'x_clean_url', 'x_type', 'x_parent_en_id', 'x_en_id', 'x_status'))) {
-            return false;
-        } elseif (!filter_var($insert_columns['x_url'], FILTER_VALIDATE_URL)) {
-            return false;
-        } elseif (!filter_var($insert_columns['x_clean_url'], FILTER_VALIDATE_URL)) {
-            return false;
-        }
-
-        //Check to see if this URL exists, if so, return that:
-        $urls = $this->Old_model->x_fetch(array(
-            '(x_url LIKE \'' . $insert_columns['x_url'] . '\' OR x_url LIKE \'' . $insert_columns['x_clean_url'] . '\')' => null,
-        ));
-
-        if (count($urls) > 0) {
-
-            if ($insert_columns['x_en_id'] == $urls[0]['x_en_id']) {
-
-                //For same object, we're all good, return this URL:
-                return $urls[0];
-
-            } else {
-
-                //Save this engagement as we have an issue here...
-                $this->Database_model->tr_create(array(
-                    'tr_en_credit_id' => $insert_columns['x_parent_en_id'],
-                    'tr_en_child_id' => $insert_columns['x_en_id'],
-                    'tr_en_type_id' => 4246, //Platform Error
-                    'tr_content' => 'x_create() found a duplicate URL ID [' . $urls[0]['x_id'] . ']',
-                    'tr_metadata' => $insert_columns,
-                    'e_x_id' => $urls[0]['x_id'],
-                ));
-
-                return false;
-            }
-        }
-
-        if (!isset($insert_columns['x_timestamp'])) {
-            $insert_columns['x_timestamp'] = date("Y-m-d H:i:s");
-        }
-
-        if (!isset($insert_columns['x_check_timestamp'])) {
-            $insert_columns['x_check_timestamp'] = date("Y-m-d H:i:s");
-        }
-
-        if (!isset($insert_columns['x_http_code'])) {
-            $insert_columns['x_http_code'] = 200; //As the URL was just added
-        }
-
-
-        //Lets now add:
-        $this->db->insert('tb_entity_urls', $insert_columns);
-
-        //Fetch inserted id:
-        $insert_columns['x_id'] = $this->db->insert_id();
-
-        return $insert_columns;
-    }
 
 
     function tr_fetch($match_columns = array(), $join_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('tr_timestamp' => 'DESC'), $select = '*', $group_by = null)
@@ -1536,14 +1175,14 @@ class Database_model extends CI_Model
         //TODO update to new system
         if (0) {
 
-            foreach ($this->config->item('notify_admins') as $admin_en_id => $subscription) {
+            foreach ($this->config->item('notify_admins') as $admin_en_id => $actionplan) {
 
                 //Do not notify about own actions:
                 if (intval($insert_columns['tr_en_credit_id']) == $admin_en_id) {
                     continue;
                 }
 
-                if (in_array($insert_columns['tr_en_type_id'], $subscription['admin_notify'])) {
+                if (in_array($insert_columns['tr_en_type_id'], $actionplan['admin_notify'])) {
 
                     //Just do this one:
                     if (!isset($engagements[0])) {
@@ -1577,7 +1216,7 @@ class Database_model extends CI_Model
                         $html_message .= '<div>Engagement ID: <a href="https://mench.com/adminpanel/li_list_blob/' . $engagements[0]['tr_id'] . '">#' . $engagements[0]['tr_id'] . '</a></div>';
 
                         //Send email:
-                        //$this->Chat_model->dispatch_email($subscription['admin_emails'], $subject, $html_message);
+                        //$this->Chat_model->fn___dispatch_email($actionplan['admin_emails'], $subject, $html_message);
 
                         //TODO Send messenger
 
@@ -1713,7 +1352,7 @@ class Database_model extends CI_Model
 
     }
 
-    function in_recursive_fetch($in_id, $direction_is_downward = false, $update_db_table = false, $tr_actionplan_id = 0, $parent_c = array(), $recursive_children = null)
+    function in_recursive_fetch($in_id, $direction_is_downward = false, $update_db_table = false, $actionplan_tr_id = 0, $parent_c = array(), $recursive_children = null)
     {
 
         //Get core data:
@@ -1783,10 +1422,10 @@ class Database_model extends CI_Model
             array_push($immediate_children['in_tr_flat_tree'], intval($intents[0]['tr_id']));
 
             //Are we caching an Action Plan?
-            if ($tr_actionplan_id > 0) {
+            if ($actionplan_tr_id > 0) {
                 //Yes we are, create a cache of this link for this Action Plan:
                 $this->Database_model->k_create(array(
-                    'tr_tr_parent_id' => $tr_actionplan_id,
+                    'tr_tr_parent_id' => $actionplan_tr_id,
                     'k_cr_id' => $intents[0]['tr_id'],
                     'tr_order' => $intents[0]['tr_order'],
                 ));
@@ -1794,8 +1433,9 @@ class Database_model extends CI_Model
 
         }
 
-        //Terminate at OR branches for Action Plan caching (when $tr_actionplan_id>0)
-        if ($tr_actionplan_id > 0 && $intents[0]['in_is_any']) {
+        //TODO Terminate at OR branches for Action Plan caching (when $actionplan_tr_id>0)
+
+        if ($actionplan_tr_id > 0 && $intents[0]['in_is_any']) {
             //return false;
         }
 
@@ -1835,7 +1475,7 @@ class Database_model extends CI_Model
                 } else {
 
                     //Fetch children for this intent, if any:
-                    $granchildren = $this->Database_model->in_recursive_fetch($c['in_id'], $direction_is_downward, $update_db_table, $tr_actionplan_id, $c, $immediate_children);
+                    $granchildren = $this->Database_model->in_recursive_fetch($c['in_id'], $direction_is_downward, $update_db_table, $actionplan_tr_id, $c, $immediate_children);
 
                     if (!$granchildren) {
                         //There was an infinity break

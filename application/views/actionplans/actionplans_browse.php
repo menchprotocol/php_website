@@ -1,6 +1,6 @@
 <?php
 
-//Fetch most recent subscriptions:
+//Fetch most recent Action Plans:
 $trs = $this->Database_model->w_fetch(array(), array('in', 'en', 'u_x', 'w_stats'), array(
     'tr_id' => 'DESC',
 ), (is_dev() ? 10 : 100));

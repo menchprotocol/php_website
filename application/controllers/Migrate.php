@@ -438,7 +438,7 @@ class Migrate extends CI_Controller
 
                     'tr_en_type_id' => 4235, //Action Plan Intent Add
                     'tr_en_credit_id' => $u['u_id'],
-                    'tr_en_parent_id' => $u['u_id'], //Belongs to this user
+                    'tr_en_parent_id' => $u['u_id'], //Belongs to this Master
 
                     'tr_in_parent_id' => 0, //This indicates that this is a top-level intent in the Action Plan
                     'tr_tr_parent_id' => 0, //Again, indicates the top of the Action Plan
@@ -463,7 +463,7 @@ class Migrate extends CI_Controller
 
                         'tr_en_type_id' => 4235, //Action Plan Intent Add
                         'tr_en_credit_id' => $u['u_id'],
-                        'tr_en_parent_id' => $u['u_id'], //Belongs to this user
+                        'tr_en_parent_id' => $u['u_id'], //Belongs to this Master
 
                         'tr_in_parent_id' => $k['cr_parent_c_id'], //This indicates that this is a top-level intent in the Action Plan
                         'tr_in_child_id' => $k['cr_child_c_id'],

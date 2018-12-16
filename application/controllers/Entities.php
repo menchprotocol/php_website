@@ -100,7 +100,7 @@ class Entities extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Entity Link Direction',
             ));
-        } elseif (!isset($_POST['new_en_id']) || !isset($_POST['new_en_name']) || (intval($_POST['new_en_id']) < 1 && strlen($_POST['new_en_name']) < 1)) {
+        } elseif (!isset($_POST['en_new_id']) || !isset($_POST['en_new_name']) || (intval($_POST['en_new_id']) < 1 && strlen($_POST['en_new_name']) < 1)) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Either New Entity ID or Name is required',
@@ -121,74 +121,55 @@ class Entities extends CI_Controller
 
         //Set some variables:
         $_POST['is_parent'] = intval($_POST['is_parent']);
-        $_POST['new_en_id'] = intval($_POST['new_en_id']);
+        $_POST['en_new_id'] = intval($_POST['en_new_id']);
         $linking_to_existing_u = false;
         $is_url_input = false;
 
         //Are we linking to an existing entity?
-        if (intval($_POST['new_en_id']) > 0) {
+        if (intval($_POST['en_new_id']) > 0) {
 
             //We're linking to an existing entity:
             $linking_to_existing_u = true;
 
             //Validate this existing entity
-            $new_ens = $this->Database_model->en_fetch(array(
-                'en_id' => $_POST['new_en_id'],
+            $ens = $this->Database_model->en_fetch(array(
+                'en_id' => $_POST['en_new_id'],
                 'en_status >=' => 1, //Active only
             ));
-            if (count($new_ens) < 1) {
+            if (count($ens) < 1) {
                 return echo_json(array(
                     'status' => 0,
                     'message' => 'Invalid active entity',
                 ));
             } else {
-                $new_en = $new_ens[0];
+                $entity_new = $ens[0];
             }
 
         } else {
 
-            if (filter_var(trim($_POST['new_en_name']), FILTER_VALIDATE_URL)) {
+            //We should add a new entity:
+            $entity_new = $this->Database_model->en_create(array(
+                'en_name' => trim($_POST['en_new_name']),
+            ), true, $udata['en_id']);
 
+            if (!isset($entity_new['en_id']) || $entity_new['en_id'] < 1) {
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => 'Failed to create new entity for [' . $_POST['en_new_name'] . ']',
+                ));
+            }
 
-                //It's a URL, create an entity from this URL:
-                $accept_existing_url = (!$_POST['is_parent'] && $current_us[0]['en_id'] != 1326); //We can accept duplicates if we're not adding directly under content
-                $url_create = $this->Database_model->x_sync(trim($_POST['new_en_name']), 1326, 1, $accept_existing_url);
+            //Do we need to add this new entity to a secondary parent?
+            if (intval($_POST['assign_en_parent_id']) > 0) {
 
-                //Did we have an error?
-                if (!$url_create['status']) {
-                    return echo_json($url_create);
-                } else {
-                    $linking_to_existing_u = (isset($url_create['is_existing']));
-                    $is_url_input = true;
-                    $new_en = $url_create['en'];
-                }
-
-            } else {
-
-                //We should add a new entity:
-                $new_en = $this->Database_model->en_create(array(
-                    'en_name' => trim($_POST['new_en_name']),
-                ), true, $udata['en_id']);
-
-                if (!isset($new_en['en_id']) || $new_en['en_id'] < 1) {
-                    return echo_json(array(
-                        'status' => 0,
-                        'message' => 'Failed to create new entity for [' . $_POST['new_en_name'] . ']',
-                    ));
-                }
-
-                //Do we need to add this new entity to a secondary parent?
-                if (intval($_POST['assign_en_parent_id']) > 0) {
-
-                    //Link entity to a parent:
-                    $ur1 = $this->Database_model->tr_create(array(
-                        'tr_en_child_id' => $new_en['en_id'],
-                        'tr_en_parent_id' => $_POST['assign_en_parent_id'],
-                    ));
-
-                }
+                //Link entity to a parent:
+                $ur1 = $this->Database_model->tr_create(array(
+                    'tr_en_child_id' => $entity_new['en_id'],
+                    'tr_en_parent_id' => $_POST['assign_en_parent_id'],
+                ));
 
             }
+
         }
 
         //We need to check to ensure this is not a duplicate link if linking to an existing entity:
@@ -199,9 +180,9 @@ class Entities extends CI_Controller
             //Add links only if not already added by the URL function:
             if ($_POST['is_parent']) {
                 $tr_en_child_id = $current_us[0]['en_id'];
-                $tr_en_parent_id = $new_en['en_id'];
+                $tr_en_parent_id = $entity_new['en_id'];
             } else {
-                $tr_en_child_id = $new_en['en_id'];
+                $tr_en_child_id = $entity_new['en_id'];
                 $tr_en_parent_id = $current_us[0]['en_id'];
             }
 
@@ -223,9 +204,8 @@ class Entities extends CI_Controller
         //Return newly added/linked entity:
         return echo_json(array(
             'status' => 1,
-            'message' => 'Success',
-            'new_en_status' => $new_en['en_status'],
-            'new_en' => echo_u(array_merge($new_en, $ur2), 2, $_POST['is_parent']),
+            'en_new_status' => $entity_new['en_status'],
+            'en_new_echo' => echo_u(array_merge($entity_new, $ur2), 2, $_POST['is_parent']),
         ));
     }
 
@@ -424,7 +404,7 @@ class Entities extends CI_Controller
             return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: ' . $_POST['input_email'] . ' not found.</div>');
         }
 
-        //Fetch full entity data with their active subscriptions:
+        //Fetch full entity data with their active Action Plans:
         $entities = $this->Database_model->en_fetch(array(
             'en_id' => $trs[0]['tr_en_child_id'],
         ), array('en__actionplans'));

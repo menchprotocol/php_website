@@ -27,10 +27,10 @@ class Adminpanel extends CI_Controller
         $this->load->view('shared/matrix_footer');
     }
 
-    function subscriptions()
+    function actionplans()
     {
         $this->load->view('shared/matrix_header', array(
-            'title' => 'Subscriptions Browser',
+            'title' => 'Action Plans Browser',
         ));
         $this->load->view('actionplans/actionplans_browse');
         $this->load->view('shared/matrix_footer');

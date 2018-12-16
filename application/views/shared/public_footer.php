@@ -8,7 +8,7 @@
 
                 <li class="social-li">
 
-                    <a href="https://m.me/askmench?ref=ACTIONPLANADD10_<?= $this->config->item('in_primary_id') ?>"
+                    <a href="https://m.me/askmench?ref=AP-ADD-INITIATE_<?= $this->config->item('in_primary_id') ?>"
                        class="social-link" data-toggle="tooltip"
                        title="Connect to Mench Personal Assistant on Messenger" data-placement="top"><i
                                 class="fab fa-facebook-messenger"></i></a>

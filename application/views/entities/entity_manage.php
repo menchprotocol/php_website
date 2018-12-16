@@ -116,7 +116,7 @@
 
         //Only show if data exists (users cannot modify this anyways)
         if (count($entity['en__actionplans']) > 0) {
-            //Show these subscriptions:
+            //Show these Action Plans:
             echo '<h5 class="badge badge-h indent1" style="display: inline-block;"><i class="fas fa-comment-plus"></i> ' . count($entity['en__actionplans']) . ' Action Plans</h5>';
             echo '<div class="list-group list-grey indent1" style="margin-bottom:10px;">';
             foreach ($entity['en__actionplans'] as $in) {

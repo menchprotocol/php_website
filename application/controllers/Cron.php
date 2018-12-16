@@ -163,7 +163,7 @@ class Cron extends CI_Controller
             'x_parent_en_id' => 5, //URL Creator
             'x_en_id' => 8, //URL Referenced to them
 
-            'tr_en_parent_id' => 13, //Subscriptions
+            'tr_en_parent_id' => 13, //Action Plan Items
         );
 
         //Fetch child entities:
@@ -474,7 +474,7 @@ class Cron extends CI_Controller
                 );
 
                 //Attempt to save this:
-                $result = $this->Chat_model->facebook_graph('POST', '/me/message_attachments', $payload);
+                $result = $this->Chat_model->fn___facebook_graph('POST', '/me/message_attachments', $payload);
                 $db_result = false;
 
                 if ($result['status'] && isset($result['tr_metadata']['result']['attachment_id'])) {
@@ -532,18 +532,18 @@ class Cron extends CI_Controller
 
         //Will ask the master why they are stuck and try to get them to engage with the material
         //TODO implement social features to maybe connect to other masters at the same level
-        //The primary function that would pro-actively communicate the subscription to the user
-        //If $tr_id is provided it would step forward a specific subscription
-        //If both $tr_id and $en_id are present, it would auto register the user in an idle subscription if they are not part of it yet, and if they are, it would step them forward.
+        //A function that would pro-actively encourage the Master to progress their Action Plan
+        //If $tr_id is provided it would step forward a specific Action Plan
+        //If both $tr_id and $en_id are present, it would auto register the user in an idle Action Plan if they are not part of it yet, and if they are, it would step them forward.
 
         $bot_settings = array(
-            'max_per_run' => 10, //How many subscriptions to server per run (Might include duplicate tr_en_parent_id's that will be excluded)
+            'max_per_run' => 10, //How many Action Plans to server per run (Might include duplicate tr_en_parent_id's that will be excluded)
             'reminder_frequency_min' => 1440, //Every 24 hours
         );
 
         //Run even minute by the cron job and determines which users to talk to...
-        //Fetch all active subscriptions:
-        $user_ids_served = array(); //We use this to ensure we're only service one subscription per user
+        //Fetch all active Action Plans:
+        $user_ids_served = array(); //We use this to ensure we're only service one Action Plan per user at a time
         $active_ws = $this->Database_model->w_fetch(array(
             'tr_status' => 1,
             'en_status >=' => 0,
@@ -556,14 +556,14 @@ class Cron extends CI_Controller
         foreach ($active_ws as $w) {
 
             if (in_array(intval($w['en_id']), $user_ids_served)) {
-                //Skip this as we do not want to handle two subscriptions from the same user:
+                //Skip this as we do not want to handle two Action Plans from the same user:
                 continue;
             }
 
             //Add this user to the queue:
             array_push($user_ids_served, intval($w['en_id']));
 
-            //See where this user is in their subscription:
+            //See where this user is in their Action Plan:
             $next_ins = $this->Matrix_model->in_next_actionplan($w['tr_id']);
 
             if (!$next_ins) {
@@ -621,7 +621,7 @@ class Cron extends CI_Controller
         );
 
         $stats = array();
-        foreach ($trs as $subscription) {
+        foreach ($trs as $actionplan) {
 
             //See what % of the class time has elapsed?
             //TODO calculate $elapsed_class_percentage
@@ -629,12 +629,12 @@ class Cron extends CI_Controller
             foreach ($reminder_index as $logic) {
                 if ($elapsed_class_percentage >= $logic['time_elapsed']) {
 
-                    if ($subscription['w__progress'] < $logic['progress_below']) {
+                    if ($actionplan['w__progress'] < $logic['progress_below']) {
 
                         //See if we have reminded them already about this:
                         $reminders_sent = $this->Database_model->tr_fetch(array(
                             'tr_en_type_id IN (4280,4276)' => null, //Email or Message sent
-                            'tr_en_child_id' => $subscription['en_id'],
+                            'tr_en_child_id' => $actionplan['en_id'],
                             'tr_in_child_id' => $logic['reminder_in_id'],
                         ));
 
@@ -643,12 +643,12 @@ class Cron extends CI_Controller
                             //Nope, send this message out:
                             $this->Matrix_model->compose_messages(array(
                                 'tr_en_credit_id' => 0, //System
-                                'tr_en_child_id' => $subscription['en_id'],
+                                'tr_en_child_id' => $actionplan['en_id'],
                                 'tr_in_child_id' => $logic['reminder_in_id'],
                             ));
 
                             //Show in stats:
-                            array_push($stats, $subscription['en_name'] . ' done ' . round($subscription['w__progress'] * 100) . '% (less than target ' . round($logic['progress_below'] * 100) . '%) where class is ' . round($elapsed_class_percentage * 100) . '% complete and got reminded via in_id ' . $logic['reminder_in_id']);
+                            array_push($stats, $actionplan['en_name'] . ' done ' . round($actionplan['w__progress'] * 100) . '% (less than target ' . round($logic['progress_below'] * 100) . '%) where class is ' . round($elapsed_class_percentage * 100) . '% complete and got reminded via in_id ' . $logic['reminder_in_id']);
                         }
                     }
 

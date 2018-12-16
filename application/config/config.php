@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  *
  * Global variables used throughout the platform.
- * use-case format: $this->config->item('tr_status_incomplete')
+ * use-case format: $this->config->item('en_url_bucket')
  *
  */
 
@@ -18,6 +18,7 @@ date_default_timezone_set('America/Los_Angeles');
 $config['in_primary_name'] = 'advance your tech career'; //What is the purposes of Mench at this point?
 $config['in_primary_id'] = 6903; //The default platform intent that would be recommended to new masters
 $config['en_primary_id'] = 3463; //The default matrix entity that is loaded when Entities is clicked
+$config['en_url_bucket'] = 1326; //The entity that would be the parent to all new URLs added via Messages
 
 
 //UI Display:
@@ -199,7 +200,7 @@ $config['object_statuses'] = array(
         ),
         2 => array(
             's_name' => 'Published',
-            's_desc' => 'Intent is published live and ready to accept subscriptions',
+            's_desc' => 'Intent is published live and ready to be added to Action Plans',
             's_icon' => 'fas fa-check-circle',
         ),
         3 => array(
@@ -286,14 +287,13 @@ $config['object_statuses'] = array(
 
 
 //TODO Deprecating:
-$config['notify_admins'] = array( //Email-based engagements subscriptions
+$config['notify_admins'] = array( //Email-based engagements
     1 => array(
         'admin_emails' => array('shervin@mench.com'),
         'admin_notify' => array(
             9, //User attention
             8, //System error
             10, //user login
-            7703, //Search for New Intent Subscription
         ),
     ),
 );

@@ -143,7 +143,7 @@ if (!isset($_GET['skip_header'])) {
             //The the Admin Panel Menu for the Mench team:
             echo '<li class="li-sep ' . ($uri_segment_2 == 'engagements' ? 'active' : '') . '"><a href="/adminpanel/engagements"><i class="fas fa-atlas"></i><p>Engagements</p></a></li>';
 
-            echo '<li class="li-sep ' . ($uri_segment_2 == 'subscriptions' ? 'active' : '') . '"><a href="/adminpanel/subscriptions"><i class="fas fa-comment-plus"></i><p>Subscriptions</p></a></li>';
+            echo '<li class="li-sep ' . ($uri_segment_2 == 'actionplans' ? 'active' : '') . '"><a href="/adminpanel/actionplans"><i class="fas fa-comment-plus"></i><p>Action Plans</p></a></li>';
 
             echo '<li class="li-sep ' . ($uri_segment_2 == 'statuslegend' ? 'active' : '') . '"><a href="/adminpanel/statuslegend"><i class="fas fa-shapes"></i><p>Status Legend</p></a></li>';
 

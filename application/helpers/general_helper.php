@@ -9,7 +9,7 @@ function includes_any($string, $items)
 {
     foreach ($items as $item) {
         if (substr_count($string, $items) > 0) {
-            return true;
+            return $item;
         }
     }
     return false;
@@ -512,6 +512,7 @@ function message_validation($tr_content)
 
     $CI =& get_instance();
     $tr_content_max = $CI->config->item('tr_content_max');
+    $status_index = $CI->config->item('object_statuses');
     $tr_content = trim($tr_content);
 
     //Extract details from this message including its URLs and referenced entities (like "@123")
@@ -525,7 +526,7 @@ function message_validation($tr_content)
     } elseif (substr_count($tr_content, '/firstname') > 1) {
         return array(
             'status' => 0,
-            'message' => '/firstname command can only be used only once',
+            'message' => '/firstname command can be used only once',
         );
     } elseif (strlen($tr_content) > $tr_content_max) {
         return array(
@@ -547,15 +548,20 @@ function message_validation($tr_content)
             'status' => 0,
             'message' => 'You can reference a maximum of 1 entity per message',
         );
-    } elseif (count($obj_breakdown['en_refs']) > 0 && count($obj_breakdown['en_urls']) > 0) {
-        return array(
-            'status' => 0,
-            'message' => 'You can either reference 1 entity or include 1 URL which would transform into an entity',
-        );
     } elseif (count($obj_breakdown['en_urls']) > 1) {
         return array(
             'status' => 0,
             'message' => 'You can reference a maximum of 1 URL per message',
+        );
+    } elseif (count($obj_breakdown['en_refs']) > 0 && count($obj_breakdown['en_urls']) > 0) {
+        return array(
+            'status' => 0,
+            'message' => 'You can either reference 1 entity OR 1 URL (As the URL will be transformed into an entity)',
+        );
+    } elseif (substr_count($tr_content, '/slice') > 1) {
+        return array(
+            'status' => 0,
+            'message' => '/slice command can be used only once',
         );
     } elseif (count($obj_breakdown['en_refs']) == 0 && count($obj_breakdown['en_urls']) == 0 && substr_count($tr_content, '/slice') > 0) {
         return array(
@@ -582,25 +588,22 @@ function message_validation($tr_content)
             //Inactive:
             return array(
                 'status' => 0,
-                'message' => 'Entity [' . $ens[0]['en_name'] . '] is not active so you cannot reference it',
+                'message' => 'Entity [' . $ens[0]['en_name'] . '] status is ['.$status_index['en_status'][$ens[0]['en_status']]['s_name'].'] so its unavailable for referencing.',
             );
         }
 
     } elseif (count($obj_breakdown['en_urls']) > 0) {
 
-
-        //TODO HERE:::
-
-
         //No entity linked, but we have a URL that we should turn into an entity:
-        $url_create = $CI->Database_model->x_sync($obj_breakdown['en_urls'][0], 1326, false, true);
+        $created_url = $CI->Matrix_model->fn___create_en_from_url($obj_breakdown['en_urls'][0]);
 
         //Did we have an error?
-        if (!$url_create['status']) {
-            return $url_create;
+        if (!$created_url['status']) {
+            return $created_url;
         }
 
-        $obj_breakdown['en_refs'][0] = $url_create['en']['en_id'];
+        //Transform this URL into an entity:
+        $obj_breakdown['en_refs'][0] = $created_url['en_by_url']['en_id'];
 
         //Replace the URL with this new @entity in message:
         $tr_content = str_replace($obj_breakdown['en_urls'][0], '@' . $obj_breakdown['en_refs'][0], $tr_content);

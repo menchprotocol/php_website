@@ -92,7 +92,7 @@ class Matrix_model extends CI_Model
                     'tr_en_child_id' => $actionplans[0]['tr_en_parent_id'],
                     'tr_in_child_id' => $actionplans[0]['tr_in_child_id'],
                     'tr_tr_parent_id' => $actionplans[0]['tr_id'],
-                    'tr_content' => 'Congratulations for completing your Action Plan 🎉 Over time I will keep sharing new concepts (based on my new training data) that will help you to ' . $actionplans[0]['in_outcome'] . ' 🙌 You can, at any time, stop updates on your subscriptions by saying "quit".',
+                    'tr_content' => 'Congratulations for completing your Action Plan 🎉 Over time I will keep sharing new concepts (based on my new training data) that will help you to ' . $actionplans[0]['in_outcome'] . ' 🙌 You can, at any time, stop updates on your Action Plans by saying "unsubscribe".',
                 ),
                 array(
                     'tr_en_child_id' => $actionplans[0]['tr_en_parent_id'],
@@ -102,7 +102,7 @@ class Matrix_model extends CI_Model
                 ),
             ));
 
-            //The entire subscription is now complete!
+            //The entire Action Plan is now complete!
             $this->Database_model->tr_update($actionplan_tr_id, array(
                 'tr_status' => 2, //Completed
             ), $actionplans[0]['tr_en_parent_id']);
@@ -110,6 +110,71 @@ class Matrix_model extends CI_Model
         }
 
         return false;
+
+    }
+
+
+
+    function fn___en_radio_set($en_parent_bucket_id, $set_en_child_id = 0, $en_master_id, $tr_en_credit_id = 0)
+    {
+
+        /*
+         * Treats an entity child group as a drop down menu where:
+         *
+         *  $en_parent_bucket_id is the parent of the drop down
+         *  $en_master_id is the master entity ID that one of the children of $en_parent_bucket_id should be assigned (like a drop down)
+         *  $set_en_child_id is the new value to be assigned, which could also be null (meaning just remove all current values)
+         *
+         * This function is helpful to manage things like Master communication levels
+         *
+         * */
+
+
+        //Fetch all the child entities for $en_parent_bucket_id and make sure they match $set_en_child_id
+        $children = $this->config->item('en_ids_' . $en_parent_bucket_id);
+        if ($en_parent_bucket_id < 1) {
+            return false;
+        } elseif (!$children) {
+            return false;
+        } elseif ($set_en_child_id > 0 && !in_array($set_en_child_id, $children)) {
+            return false;
+        }
+
+        //First remove existing parent/child transactions for this drop down:
+        $already_assigned = ($set_en_child_id < 1);
+        $updated_tr_id = 0;
+        foreach ($this->Database_model->tr_fetch(array(
+            'tr_en_child_id' => $en_master_id,
+            'tr_en_parent_id IN (' . join(',', $children) . ')' => null, //Current children
+            'tr_status >=' => 0,
+        ), array(), 200) as $tr) {
+
+            if (!$already_assigned && $tr['tr_en_parent_id'] == $set_en_child_id) {
+                $already_assigned = true;
+            } else {
+                //Remove assignment:
+                $updated_tr_id = $tr['tr_id'];
+
+                //Do not log update transaction here as we would log it further below:
+                $this->Database_model->tr_update($tr['tr_id'], array(
+                    'tr_status' => ($set_en_child_id > 0 ? -2 /* Being Updated */ : -1 /* Being Removed */), //Updated or Removed
+                ));
+            }
+
+        }
+
+
+        //Make sure $set_en_child_id belongs to parent if set (Could be null which means remove all)
+        if (!$already_assigned) {
+            //Let's go ahead and add desired entity as parent:
+            $this->Database_model->tr_create(array(
+                'tr_en_credit_id' => $tr_en_credit_id,
+                'tr_en_child_id' => $en_master_id,
+                'tr_en_parent_id' => $set_en_child_id,
+                'tr_en_type_id' => 4230, //Naked link
+                'tr_tr_parent_id' => $updated_tr_id,
+            ));
+        }
 
     }
 
@@ -276,8 +341,6 @@ class Matrix_model extends CI_Model
 
         }
 
-        return $messages;
-
 
         //Is $tr an Action Plan intent? It must meet all these conditions to be one:
         if (isset($tr['tr_status']) && isset($tr['tr_in_parent_id']) && isset($tr['tr_tr_parent_id']) && isset($tr['tr_tr_id']) && isset($tr['tr_en_type_id']) && $tr['tr_en_type_id'] == 4235) {
@@ -302,7 +365,7 @@ class Matrix_model extends CI_Model
                 //Check the required notes as we'll use this later:
                 $message_in_requirements = $this->Matrix_model->in_completion_requirements($ins[0], true);
 
-                //Do we have a subscription, if so, we need to add a next step message:
+                //Do we have a Action Plan, if so, we need to add a next step message:
                 if ($message_in_requirements) {
 
                     //Let the user know what they need to do:
@@ -467,7 +530,7 @@ class Matrix_model extends CI_Model
                 //As long as $tr['tr_in_child_id'] is NOT equal to tr_in_child_id, then we will have a k_out relation so we can give the option to skip:
                 $k_ins = $this->Database_model->tr_fetch(array(
                     'tr_id' => $tr['tr_tr_parent_id'],
-                    'tr_status IN (0,1)' => null, //Active subscriptions only
+                    'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
                     'tr_in_child_id' => $tr['tr_in_child_id'],
                 ), array('w', 'cr', 'cr_c_child'));
 
@@ -477,7 +540,7 @@ class Matrix_model extends CI_Model
                     array_push($quick_replies, array(
                         'content_type' => 'text',
                         'title' => 'Skip',
-                        'payload' => 'SKIPREQUEST_1_' . $k_ins[0]['tr_id'],
+                        'payload' => 'AP-SKIP-INITIATE_1_' . $k_ins[0]['tr_id'],
                     ));
                 }
             }
@@ -524,6 +587,131 @@ class Matrix_model extends CI_Model
         }
 
     }
+
+
+
+
+    function fn___create_en_from_url($input_url, $tr_en_credit_id = 0)
+    {
+
+        /*
+         *
+         * The function that would add/validate new URLs
+         * which would also check for duplicates, etc...
+         * And create a new entity under config variable en_url_bucket
+         * Note that this function is mainly used in intent message
+         * related functions as that's when we need to turn URLs into
+         * entities to be stored properly on the matrix
+         *
+         * */
+
+        if (!filter_var($input_url, FILTER_VALIDATE_URL)) {
+            return array(
+                'status' => 0,
+                'message' => 'Invalid URL',
+            );
+        }
+
+
+        //Check if this URL has already been added:
+        //TODO This part can be improved to better detect duplicate URLs as it current does an exact matching, which is OK but not the best...
+        $input_url = trim($input_url);
+        $dup_urls = $this->Old_model->tr_fetch(array(
+            'tr_en_type_id IN ('.join(',', $this->config->item('en_ids_4537')).')' => null, //Entity URL Links
+            'tr_content LIKE \'' . $input_url . '\'' => null,
+        ), array('en_child'));
+
+        if (count($dup_urls) > 0) {
+
+            //Yes, we already have this URL added to an entity, return the entity:
+            //Not removed?
+            if ($dup_urls[0]['tr_status'] < 0) {
+
+                $status_index = $this->config->item('object_statuses');
+
+                //This URL was removed, which is an issue:
+                return array(
+                    'status' => 0,
+                    'message' => 'This URL has had been added before but then removed with status ['.$status_index['en_status'][$dup_urls[0]['en_status']]['s_name'].']',
+                );
+
+            } else {
+
+                //Return the object as this is expected:
+                return array(
+                    'status' => 1,
+                    'is_existing' => 1,
+                    'message' => 'Entity already existed',
+                    'en_by_url' => $dup_urls[0],
+                );
+
+            }
+        }
+
+
+        //This is a new URL that has never been added before...
+        //Call URL to validate it further:
+        $curl = curl_html($input_url, true);
+
+        if (!$curl) {
+            return array(
+                'status' => 0,
+                'message' => 'Invalid URL',
+            );
+        }
+
+        //We need to create a new entity and add this URL to it...
+        //Was curl_html() able to fetch the URL's <title> tag?
+        if (strlen($curl['page_title']) > 0) {
+
+            //Make sure this is not a duplicate name:
+            $dup_name_us = $this->Database_model->en_fetch(array(
+                'en_status >=' => 0, //New+
+                'en_name' => $curl['page_title'],
+            ));
+
+            if (count($dup_name_us) > 0) {
+                //Yes, we did find a duplicate name! Append a unique identifier:
+                $en_name = $curl['page_title'] . ' ' . substr(md5($input_url), 0, 8);
+            } else {
+                //No duplicate detected, we can use page title as is:
+                $en_name = $curl['page_title'];
+            }
+
+        } else {
+
+            //curl_html() did not find a <title> tag:
+            //Use URL Type as its name:
+            $en_all_4537 = $this->config->item('en_all_4537');
+            $en_name = $en_all_4537[$curl['tr_en_type_id']]['en_name'] . ' ' . substr(md5($input_url), 0, 8); //Append a unique identifier
+
+        }
+
+
+        //Create a new entity:
+        $en = $this->Database_model->en_create(array(
+            'en_name' => $en_name,
+        ), true, $tr_en_credit_id);
+
+        //Place this new entity in the default URL bucket:
+        $entity_tr = $this->Database_model->tr_create(array(
+            'tr_en_credit_id' => $tr_en_credit_id,
+            'tr_en_type_id' => $curl['tr_en_type_id'],
+            'tr_en_parent_id' => $this->config->item('en_url_bucket'),
+            'tr_en_child_id' => $en['en_id'],
+            'tr_content' => $input_url,
+        ));
+
+        //Return entity object:
+        return array(
+            'status' => 1,
+            'is_existing' => 0,
+            'message' => 'New Entity created from URL',
+            'en_by_url' => array_merge($en, $entity_tr),
+        );
+
+    }
+
 
 
     function in_completion_requirements($in, $include_instructions = false)
@@ -672,7 +860,7 @@ class Matrix_model extends CI_Model
                 'tr_in_parent_id' => $cr['tr_in_parent_id'], //Fetch children of parent intent which are the siblings of current intent
                 'tr_in_child_id !=' => $cr['tr_in_child_id'], //NOT The answer (we need its siblings)
                 'in_status >=' => 2,
-                'tr_status IN (0,1)' => null,
+                'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
             ), array('w', 'cr', 'cr_c_child'));
 
             //This is the none chosen answers, if any:
@@ -798,7 +986,7 @@ class Matrix_model extends CI_Model
 
 
         //Call facebook messenger API and get user graph profile:
-        $graph_fetch = $this->Chat_model->facebook_graph('GET', '/' . $psid, array());
+        $graph_fetch = $this->Chat_model->fn___facebook_graph('GET', '/' . $psid, array());
 
 
         //Did we find the profile from FB?
@@ -890,7 +1078,7 @@ class Matrix_model extends CI_Model
             'tr_content' => $psid, //Used later-on to match Messenger user to entity. $psid is cached in tr_content_int since its an integer
         ));
 
-        //Add default Subscription Level:
+        //Add default Action Plan Level:
         $this->Database_model->tr_create(array(
             'tr_en_type_id' => 4230, //Naked link
             'tr_en_credit_id' => $en['en_id'],

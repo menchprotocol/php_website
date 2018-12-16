@@ -108,8 +108,8 @@ if (isset($orphan_intents)) {
             ), $limit);
 
             if (count($trs) > 0) {
-                //Show these subscriptions:
-                echo '<h5 class="badge badge-h indent1" style="display: inline-block;"><i class="fas fa-comment-plus"></i> ' . count($trs) . ($limit == count($trs) ? '+' : '') . ' Subscriptions</h5>';
+                //Show these Action Plans:
+                echo '<h5 class="badge badge-h indent1" style="display: inline-block;"><i class="fas fa-comment-plus"></i> ' . count($trs) . ($limit == count($trs) ? '+' : '') . ' Action Plans</h5>';
                 echo '<div class="list-group list-grey indent1" style="margin-bottom: 40px;">';
                 foreach ($trs as $w) {
                     echo echo_w_matrix($w);

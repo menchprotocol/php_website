@@ -115,7 +115,7 @@
 
                 //Show time if we have it:
                 if ($c['in__tree_max_seconds'] > 0) {
-                    echo '<div style="margin:0 0 5px; padding-top:5px; font-size:1.1em;">It is estimated to take ' . echo_hours_range($c1, false) . ' to complete this part.</div>';
+                    echo '<div style="margin:0 0 5px; padding-top:5px; font-size:1.1em;">It is estimated to take ' . fn___echo_hours_range($c1) . ' to complete this part.</div>';
                 }
 
 
@@ -157,7 +157,7 @@
     <p style="padding:15px 0 0 0;">Ready to <?= $c['in_outcome'] ?>?</p>
 
     <!-- Call to Actions -->
-    <a class="btn btn-primary" href="https://m.me/askmench?ref=ACTIONPLANADD10_<?= $c['in_id'] ?>"
+    <a class="btn btn-primary" href="https://m.me/askmench?ref=AP-ADD-INITIATE_<?= $c['in_id'] ?>"
        style="display: inline-block; padding: 12px 36px;">Get Started [Free] <i class="fas fa-angle-right"></i></a>
 
     <span class="learn_more_toggle" style="display: inline-block;">or <a class="btn btn-primary grey" href="#learnMore"
@@ -281,7 +281,7 @@
 
 
 <?php
-$featured_cs = $fetch_cs = $this->Database_model->in_fetch(array(
+$featured_cs = $ins = $this->Database_model->in_fetch(array(
     'in_status' => 3, //Featured Intents
     'in_id !=' => $c['in_id'],
 ));

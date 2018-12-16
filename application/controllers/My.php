@@ -47,7 +47,7 @@ class My extends CI_Controller
 
             //Fetch results and show:
             return echo_json(array(
-                'fb_profile' => $this->Chat_model->facebook_graph('GET', '/' . $current_us[0]['u_fb_psid'], array()),
+                'fb_profile' => $this->Chat_model->fn___facebook_graph('GET', '/'.$current_us[0]['u_fb_psid'], array()),
                 'en' => $current_us[0],
             ));
 
@@ -88,7 +88,7 @@ class My extends CI_Controller
             die('<div class="alert alert-danger" role="alert">Unable to authenticate your origin.</div>');
         }
 
-        //Set subscription filters:
+        //Set Action Plan filters:
         $w_filter = array();
 
         //Do we have a use session?
@@ -112,8 +112,8 @@ class My extends CI_Controller
 
         if (count($trs) == 0) {
 
-            //No subscriptions found:
-            die('<div class="alert alert-danger" role="alert">You have no active subscriptions yet. ' . echo_pa_lets() . '</div>');
+            //No Action Plans found:
+            die('<div class="alert alert-danger" role="alert">You have no active Action Plans yet. ' . echo_pa_lets() . '</div>');
 
         } elseif (count($trs) > 1) {
 
@@ -123,8 +123,8 @@ class My extends CI_Controller
                 'tr_en_credit_id' => $trs[0]['en_id'],
             ));
 
-            //Let them choose between subscriptions:
-            echo '<h3 class="master-h3 primary-title">My Subscriptions</h3>';
+            //Let them choose between Action Plans:
+            echo '<h3 class="master-h3 primary-title">My Action Plan</h3>';
             echo '<div class="list-group" style="margin-top: 10px;">';
             foreach ($trs as $w) {
                 echo echo_w_masters($w);
@@ -133,9 +133,9 @@ class My extends CI_Controller
 
         } elseif (count($trs) == 1) {
 
-            //We found a single subscription, load this by default:
+            //We found a single Action Plan, load this by default:
             if (!$actionplan_tr_id || !$in_id) {
-                //User with a single subscription
+                //User with a single Action Plan
                 $actionplan_tr_id = $trs[0]['tr_id'];
                 $in_id = $trs[0]['in_id']; //TODO set to current/focused intent
             }
@@ -206,7 +206,7 @@ class My extends CI_Controller
             ));
         }
 
-        //Delete subscription and report back:
+        //Delete Action Plan and report back:
         $archive_stats = array();
 
         $this->db->query("DELETE FROM tb_actionplans WHERE tr_id=" . $tr_id);
@@ -239,21 +239,21 @@ class My extends CI_Controller
         } elseif (!isset($_POST['tr_id']) || intval($_POST['tr_id']) <= 0) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Subscriptions ID',
+                'message' => 'Missing Action Plan ID',
             ));
         }
 
-        //Fetch subscription
-        $validate_subscription = $this->Database_model->w_fetch(array(
+        //Fetch Action Plan
+        $actionplans = $this->Database_model->w_fetch(array(
             'tr_id' => $_POST['tr_id'], //Other than this one...
         ));
-        if (!(count($validate_subscription) == 1)) {
+        if (!(count($actionplans) == 1)) {
             return echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Subscriptions ID',
+                'message' => 'Invalid Action Plan ID',
             ));
         }
-        $w = $validate_subscription[0];
+        $w = $actionplans[0];
 
         //Load Action Plan iFrame:
         return echo_json(array(

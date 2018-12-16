@@ -13,30 +13,11 @@ class Bot extends CI_Controller
     }
 
 
-    function profile()
-    {
-        echo_json($this->Chat_model->facebook_graph('GET', '/2375537049154935', array()));
-    }
-
-    function ff()
-    {
-        //Fetch all engagements from intent #6653
-        $all_engs = $this->Old_model->cr_children_fetch(array(
-            'tr_in_parent_id IN (7723)' => null, //,,
-            'tr_status' => 1,
-            'in_status >=' => 0,
-        ));
-        foreach ($all_engs as $c_eng) {
-            echo ' ' . $c_eng['in_id'] . ' => 000000000000000000, //' . $c_eng['in_outcome'] . '<br />';
-        }
-    }
-
-
     function sync_menu()
     {
 
         $res = array();
-        array_push($res, $this->Chat_model->facebook_graph('POST', '/me/messenger_profile', array(
+        array_push($res, $this->Chat_model->fn___facebook_graph('POST', '/me/messenger_profile', array(
             'get_started' => array(
                 'payload' => 'GET_STARTED',
             ),
@@ -50,7 +31,7 @@ class Bot extends CI_Controller
         //Wait until Facebook pro-pagates changes of our whitelisted_domains setting:
         sleep(2);
 
-        array_push($res, $this->Chat_model->facebook_graph('POST', '/me/messenger_profile', array(
+        array_push($res, $this->Chat_model->fn___facebook_graph('POST', '/me/messenger_profile', array(
             'persistent_menu' => array(
                 array(
                     'locale' => 'default',
@@ -188,7 +169,7 @@ class Bot extends CI_Controller
 
                             //The very first payload, set defaults:
                             $referral_array = array(
-                                'ref' => 'ACTIONPLANADD10_' . $this->config->item('in_primary_id'),
+                                'ref' => 'AP-ADD-INITIATE_' . $this->config->item('in_primary_id'),
                             );
 
                         } else {
@@ -238,7 +219,7 @@ class Bot extends CI_Controller
 
 
                     //We might need to respond based on the reference:
-                    $this->Chat_model->digest_metadata($u, $ref);
+                    $this->Chat_model->digest_reference($u, $ref);
 
 
                 } elseif (isset($im['optin'])) {
@@ -344,9 +325,9 @@ class Bot extends CI_Controller
 
                     //Process both
                     if ($quick_reply_payload) {
-                        $this->Chat_model->digest_metadata($u, $quick_reply_payload);
+                        $this->Chat_model->digest_reference($u, $quick_reply_payload);
                     } elseif (!$sent_from_us) {
-                        $this->Chat_model->digest_message($u, $fb_message);
+                        $this->Chat_model->fn___digest_message($u, $fb_message);
                     }
 
                 } else {

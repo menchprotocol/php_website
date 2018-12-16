@@ -95,7 +95,7 @@ class Ledger extends CI_Controller
             ), false);
 
             //Update intent tree:
-            $updated_recursively = $this->Database_model->metadata_tree_update('in', $trs[0]['tr_in_child_id'], array(
+            $this->Database_model->metadata_tree_update('in', $trs[0]['tr_in_child_id'], array(
                 'in__messages_tree_count' => -1,
             ));
 
@@ -216,7 +216,7 @@ class Ledger extends CI_Controller
         ), false);
 
         //Update tree as well:
-        $updated_recursively = $this->Database_model->metadata_tree_update('in', $intents[0]['in_id'], array(
+        $this->Database_model->metadata_tree_update('in', $intents[0]['in_id'], array(
             'in__messages_tree_count' => 1,
         ));
 

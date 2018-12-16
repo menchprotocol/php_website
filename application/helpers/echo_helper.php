@@ -156,7 +156,7 @@ function echo_message_chat($i, $en_name = null, $fb_format = false)
     /*
      *
      * Constructs a message ready to be dispatched via
-     * facebook_graph() or an HTML web page depending
+     * fn___facebook_graph() or an HTML web page depending
      * on the required $ui_format. Inputs are:
      *
      *  - $message_content - The chat message itself.
@@ -231,12 +231,15 @@ function echo_message_chat($i, $en_name = null, $fb_format = false)
 
 
     //Does this have a entity reference?
-    if (isset($i['tr_en_parent_id']) && $i['tr_en_parent_id'] > 0) {
+    $obj_breakdown = fn___text_analyze($i['tr_content']);
+    //We know that this fn___text_analyze() has already been validated through message_validation() so it cannot have more than 1 reference
+
+    if (count($obj_breakdown['en_refs']) > 0) {
 
         //This message has a referenced entity
         //See if that entity has a URL by analyzing its parents:
         $us = $CI->Database_model->en_fetch(array(
-            'en_id' => $i['tr_en_parent_id'],
+            'en_id' => $obj_breakdown['en_refs'][0],
         ));
 
         if (count($us) > 0) {
@@ -244,7 +247,7 @@ function echo_message_chat($i, $en_name = null, $fb_format = false)
             if ($fb_format) {
 
                 //Show an option to open action plan:
-                $i['tr_content'] = str_replace('@' . $i['tr_en_parent_id'], $us[0]['en_name'], $i['tr_content']);
+                $i['tr_content'] = str_replace('@' . $obj_breakdown['en_refs'][0], $us[0]['en_name'], $i['tr_content']);
 
                 //Is there a slice command?
                 if (substr_count($i['tr_content'], '/slice') > 0) {
@@ -318,14 +321,14 @@ function echo_message_chat($i, $en_name = null, $fb_format = false)
                 if ($is_intent || $is_entity) {
 
                     //HTML format:
-                    $i['tr_content'] = str_replace('@' . $i['tr_en_parent_id'], ' <a href="javascript:void(0);" onclick="url_modal(\'' . $button_url . '\')">' . $us[0]['en_name'] . '</a>', $i['tr_content']);
+                    $i['tr_content'] = str_replace('@' . $obj_breakdown['en_refs'][0], ' <a href="javascript:void(0);" onclick="url_modal(\'' . $button_url . '\')">' . $us[0]['en_name'] . '</a>', $i['tr_content']);
 
                 } else {
 
                     //HTML format:
                     //TODO Fetch text description from parent entity notes
                     $entity_title = (0 ? '<span data-toggle="tooltip" title="' . 'notes here' . '" data-placement="top" class="underdot">' . $us[0]['en_name'] . '</span>' : $us[0]['en_name']);
-                    $i['tr_content'] = str_replace('@' . $i['tr_en_parent_id'], $entity_title . ' ', $i['tr_content']);
+                    $i['tr_content'] = str_replace('@' . $obj_breakdown['en_refs'][0], $entity_title . ' ', $i['tr_content']);
 
                 }
 
@@ -743,8 +746,8 @@ function echo_w_matrix($w)
     //Right content:
     $ui .= '<span class="pull-right">';
 
-    //Show subscription time:
-    $ui .= ' <span data-toggle="tooltip" data-placement="top" title="Master initiated subscription on ' . $w['w_timestamp'] . '" style="font-size:0.8em;">' . echo_diff_time($w['w_timestamp']) . '</span> ';
+    //Show Action Plan time:
+    $ui .= ' <span data-toggle="tooltip" data-placement="top" title="Master initiated Action Plan on ' . $w['w_timestamp'] . '" style="font-size:0.8em;">' . echo_diff_time($w['w_timestamp']) . '</span> ';
 
 
     //Show user notification level:
@@ -781,7 +784,7 @@ function echo_w_matrix($w)
         //Engagements made by subscriber:
         $ui .= '<a href="#wengagements-' . $w['tr_en_parent_id'] . '-' . $w['tr_id'] . '" onclick="load_u_engagements(' . $w['tr_en_parent_id'] . ',' . $w['tr_id'] . ')" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="' . $w['w_stats']['e_all_count'] . ' engagements"><span class="btn-counter">' . $w['w_stats']['e_all_count'] . ($w['w_stats']['e_all_count'] == $CI->config->item('tr_max_count') ? '+' : '') . '</span><i class="fas fa-atlas"></i></a>';
 
-        //Link to subscriber, but count total subscriptions first:
+        //Link to Master, but count total Action Plan first:
         $ui .= '<a href="/entities/' . $w['tr_en_parent_id'] . '" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="top" title="Master has ' . count($user_ws) . ' total subsciptions"><span class="btn-counter">' . count($user_ws) . '</span><i class="fas fa-sign-out-alt rotate90"></i></a>';
 
     }
@@ -793,11 +796,11 @@ function echo_w_matrix($w)
 
     if ($is_entity || $is_adminpanel) {
 
-        //Link to subscription's main intent:
+        //Link to Action Plan's main intent:
         $intent_ws = $CI->Database_model->w_fetch(array(
             'tr_in_child_id' => $w['in_id'],
         ));
-        $ui .= '<a href="/intents/' . $w['in_id'] . '" class="badge badge-primary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="Open subscribed intention to ' . $w['in_outcome'] . ' with ' . count($intent_ws) . ' subscriptions"><span class="btn-counter">' . count($intent_ws) . '</span><i class="fas fa-sign-in-alt"></i></a>';
+        $ui .= '<a href="/intents/' . $w['in_id'] . '" class="badge badge-primary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="Open subscribed intention to ' . $w['in_outcome'] . ' with ' . count($intent_ws) . ' Action Plans"><span class="btn-counter">' . count($intent_ws) . '</span><i class="fas fa-sign-in-alt"></i></a>';
 
         $w_title .= ($is_adminpanel ? '<div style="margin: 3px 0 0 3px;"><i class="fas fa-hashtag"></i> ' : '');
         $w_title .= '<span class="w_intent_' . $w['tr_id'] . '">' . $w['in_outcome'] . '</span>';
@@ -808,7 +811,7 @@ function echo_w_matrix($w)
     $ui .= '</span>';
 
 
-    //Start with subscription status:
+    //Start with Action Plan status:
     $ui .= $w_title;
     $ui .= '</div>';
 
@@ -826,7 +829,7 @@ function echo_w_masters($w)
     $ui .= echo_status('tr_status', $w['tr_status'], 1, 'right');
     $ui .= ' ' . $w['in_outcome'];
     $ui .= '  ' . $w['in__tree_in_count'];
-    $ui .= ' &nbsp;<i class="fas fa-clock"></i> ' . echo_hours_range($w, 1);
+    $ui .= ' &nbsp;<i class="fas fa-clock"></i> ' . fn___echo_hours_range($w, true);
     $ui .= '</a>';
     return $ui;
 }
@@ -835,11 +838,11 @@ function echo_w_masters($w)
 function echo_k_matrix($k)
 {
 
-    //NOTE: Assumes the subscription, its intent and entity subscriber are loaded in $k
+    //NOTE: Assumes the Action Plan, its intent and entity subscriber are loaded in $k
 
     $CI =& get_instance();
 
-    //Fetch some additional subscription stats:
+    //Fetch some additional Action Plan stats:
     $user_ws = $CI->Database_model->w_fetch(array(
         'tr_en_parent_id' => $k['en_id'],
     ));
@@ -858,11 +861,11 @@ function echo_k_matrix($k)
     $ui .= ' <span data-toggle="tooltip" data-placement="top" title="Submitted on  ' . $k['tr_timestamp'] . '" style="font-size:0.8em;">' . echo_diff_time($k['tr_timestamp']) . '</span> ';
 
 
-    //Link to subscriber, but count total subscriptions first:
-    $ui .= '<a href="/entities/' . $k['en_id'] . '" target="_parent" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="Open Subscriber ' . $k['en_name'] . ' with ' . count($user_ws) . ' subscriptions"><span class="btn-counter">' . count($user_ws) . '</span><i class="fas fa-sign-out-alt rotate90"></i></a>';
+    //Link to Master, but count total Action Plans first:
+    $ui .= '<a href="/entities/' . $k['en_id'] . '" target="_parent" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="Open Subscriber ' . $k['en_name'] . ' with ' . count($user_ws) . ' Action Plans"><span class="btn-counter">' . count($user_ws) . '</span><i class="fas fa-sign-out-alt rotate90"></i></a>';
 
-    //Link to subscription's main intent:
-    $ui .= '<a href="/intents/' . $k['in_id'] . '" target="_parent" class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="Open subscribed intention to ' . $k['in_outcome'] . ' with ' . count($intent_ws) . ' subscriptions"><span class="btn-counter">' . count($intent_ws) . '</span><i class="fas fa-sign-in-alt"></i></a>';
+    //Link to Action Plan's main intent:
+    $ui .= '<a href="/intents/' . $k['in_id'] . '" target="_parent" class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="Open subscribed intention to ' . $k['in_outcome'] . ' with ' . count($intent_ws) . ' Action Plans"><span class="btn-counter">' . count($intent_ws) . '</span><i class="fas fa-sign-in-alt"></i></a>';
 
     $ui .= '</span>';
 
@@ -1160,7 +1163,7 @@ function echo_completion_estimate($c, $fb_format = 0)
         return false;
     }
 
-    $pitch = 'Action Plan estimates that it will take ' . strtolower(echo_hours_range($c)) . ' to ' . $c['in_outcome'] . '.';
+    $pitch = 'Action Plan estimates that it will take ' . strtolower(fn___echo_hours_range($c)) . ' to ' . $c['in_outcome'] . '.';
     if ($fb_format) {
         return '⏰ ' . $pitch . "\n";
     } else {
@@ -1170,7 +1173,7 @@ function echo_completion_estimate($c, $fb_format = 0)
             <div class="panel-heading" role="tab" id="heading' . $id . '">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="false" aria-controls="collapse' . $id . '">
-                        <i class="fas" style="transform:none !important;">⏰</i> ' . ucwords(echo_hours_range($c)) . '<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                        <i class="fas" style="transform:none !important;">⏰</i> ' . ucwords(fn___echo_hours_range($c)) . '<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                     </a>
                 </h4>
             </div>
@@ -1285,21 +1288,39 @@ function echo_experts($c, $fb_format = 0)
 }
 
 
-function echo_hours_range($c, $micro = false)
+function fn___echo_hours_range($in, $micro = false)
 {
 
-    if ($c['in__tree_max_seconds'] == $c['in__tree_min_seconds']) {
+    //Make sure we have metadata passed on via $in as sometimes it might miss it (Like when passed on via Algolia results...)
+    if(!isset($in['in_metadata'])){
+        //We don't have it, so fetch it:
+        $CI =& get_instance();
+        $ins = $CI->Database_model->in_fetch(array(
+            'in_id' => $in['in_id'], //We should always have Intent ID
+        ));
+        if(count($ins)>0){
+            $in = $ins[0];
+        } else {
+            return false;
+        }
+    }
+
+    //By now we have the metadata, extract it:
+    $metadata = unserialize($in['in_metadata']);
+
+    //Construct the UI:
+    if ($metadata['in__tree_max_seconds'] == $metadata['in__tree_min_seconds']) {
         //Exactly the same, show a single value:
-        return echo_hours($c['in__tree_max_seconds'], $micro);
-    } elseif ($c['in__tree_min_seconds'] < 3600) {
-        if ($c['in__tree_min_seconds'] < 7200 && $c['in__tree_max_seconds'] < 10800 && ($c['in__tree_max_seconds'] - $c['in__tree_min_seconds']) > 1800) {
+        return echo_hours($metadata['in__tree_max_seconds'], $micro);
+    } elseif ($metadata['in__tree_min_seconds'] < 3600) {
+        if ($metadata['in__tree_min_seconds'] < 7200 && $metadata['in__tree_max_seconds'] < 10800 && ($metadata['in__tree_max_seconds'] - $metadata['in__tree_min_seconds']) > 1800) {
             $is_minutes = true;
-        } elseif ($c['in__tree_min_seconds'] < 36000) {
+        } elseif ($metadata['in__tree_min_seconds'] < 36000) {
             $is_minutes = false;
             $hours_decimal = 1;
         } else {
             //Number too large to matter, just treat as one:
-            return echo_hours($c['in__tree_max_seconds'], $micro);
+            return echo_hours($metadata['in__tree_max_seconds'], $micro);
         }
     } else {
         $is_minutes = false;
@@ -1307,9 +1328,9 @@ function echo_hours_range($c, $micro = false)
     }
 
     //Generate hours range:
-    $ui_time = ($is_minutes ? round($c['in__tree_min_seconds'] / 60) : round(($c['in__tree_min_seconds'] / 3600), $hours_decimal));
+    $ui_time = ($is_minutes ? round($metadata['in__tree_min_seconds'] / 60) : round(($metadata['in__tree_min_seconds'] / 3600), $hours_decimal));
     $ui_time .= '-';
-    $ui_time .= ($is_minutes ? round($c['in__tree_max_seconds'] / 60) : round(($c['in__tree_max_seconds'] / 3600), $hours_decimal));
+    $ui_time .= ($is_minutes ? round($metadata['in__tree_max_seconds'] / 60) : round(($metadata['in__tree_max_seconds'] / 3600), $hours_decimal));
     $ui_time .= ($is_minutes ? ($micro ? 'm' : ' Minutes') : ($micro ? 'h' : ' Hours'));
 
     //Generate UI to return:
@@ -1363,7 +1384,7 @@ function echo_object($object, $id, $engagement_field, $button_type)
                     return '<a href="https://mench.com/intents/' . $trs[0]['tr_in_child_id'] . '">' . $trs[0]['in_outcome'] . '</a>';
                 } else {
                     //TODO replace with Action Plan flag that would show master progress and load up their action plan...
-                    return '<a href="/intents/' . $trs[0]['tr_in_child_id'] . '" target="_parent" class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="Subscribed to ' . $trs[0]['in_outcome'] . ' [Subscription #' . $id . ']"><i class="fas fa-comment-plus"></i></a> ';
+                    return '<a href="/intents/' . $trs[0]['tr_in_child_id'] . '" target="_parent" class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="Subscribed to ' . $trs[0]['in_outcome'] . ' [Action Plan #' . $id . ']"><i class="fas fa-comment-plus"></i></a> ';
                 }
             }
 
@@ -1537,7 +1558,7 @@ function echo_featured_c($c)
     $ui .= $c['in_outcome'];
     $ui .= '<span style="font-size:0.8em; font-weight:300; margin-left:5px; display:inline-block;">';
     //$ui .= ( $c['in__tree_in_count']>0 ? '<span style="padding-right:5px;"><i class="fas fa-lightbulb-on"></i>'.$c['in__tree_in_count'].'</span>' : '' );
-    $ui .= '<span><i class="fas fa-clock"></i>' . echo_hours_range($c, false) . '</span>';
+    $ui .= '<span><i class="fas fa-clock"></i>' . fn___echo_hours_range($c) . '</span>';
     $ui .= '</span>';
     $ui .= '</a>';
     return $ui;
@@ -1561,7 +1582,7 @@ function echo_c($c, $level, $c_parent_id = 0, $is_parent = false)
         '(tr_in_parent_id=' . $c['in_id'] . ' OR tr_in_child_id=' . $c['in_id'] . ')' => null,
     ), array(), $CI->config->item('tr_max_count')));
 
-    //Count subscription caches for this intent link:
+    //Count Action Plan caches for this intent link:
     $k_stats = array(
         'k_all' => 0,
         'k_completed' => 0,
@@ -1608,7 +1629,7 @@ function echo_c($c, $level, $c_parent_id = 0, $is_parent = false)
 
     //Show submission stats
     if ($k_stats['k_all'] > 0) {
-        //Show link to load these intents in user subscriptions:
+        //Show link to load these intents in Master Action Plans:
         $ui .= '<a href="#loadactionplans-' . $c['in_id'] . '" onclick="in_actionplans_load(' . $c['in_id'] . ')" class="badge badge-primary" style="width:40px; margin-right:2px;" data-toggle="tooltip" title="' . $k_stats['k_completed'] . '/' . $k_stats['k_all'] . ' marked as complete across all Action Plans" data-placement="top"><span class="btn-counter">' . round($k_stats['k_completed'] / $k_stats['k_all'] * 100) . '%</span><i class="fas fa-flag" style="font-size:0.85em;"></i></a>';
     }
 
@@ -1681,7 +1702,7 @@ function echo_c($c, $level, $c_parent_id = 0, $is_parent = false)
         $ui .= ' <a href="/cron/intent_sync/' . $c['in_id'] . '/1?redirect=/' . $c['in_id'] . '" onclick="turn_off()" data-toggle="tooltip" title="Updates Intent tree cache which controls landing page counters for intent, hours, content types and industry expert" data-placement="top"><i class="fas fa-sync-alt"></i></a>';
 
         //Show Landing Page URL:
-        $ui .= ' <a href="/' . $c['in_id'] . '" data-toggle="tooltip" title="Open Landing Page with Intent tree overview & Messenger subscription button" data-placement="top"><i class="fas fa-shopping-cart"></i></a>';
+        $ui .= ' <a href="/' . $c['in_id'] . '" data-toggle="tooltip" title="Open Landing Page with Intent tree overview & Messenger Action Plan button" data-placement="top"><i class="fas fa-shopping-cart"></i></a>';
 
         $ui .= $extra_ui;
 

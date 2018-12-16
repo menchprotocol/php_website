@@ -86,15 +86,6 @@ $(document).ready(function () {
     }
 
 
-    //Watch for URL adding:
-    $('#add_url_input').keydown(function (event) {
-        if ((event.keyCode == 10 || event.keyCode == 13) && event.ctrlKey) {
-            event.preventDefault();
-            return false;
-        }
-    });
-
-
     //Loadup various search bars:
     u_load_child_search();
 
@@ -133,10 +124,10 @@ $(document).ready(function () {
 });
 
 //Adds OR links authors and content for entities
-function tr_add(new_en_id, assign_en_parent_id=0, is_parent) {
+function tr_add(en_new_id, assign_en_parent_id=0, is_parent) {
 
-    //if new_en_id>0 it means we're linking to an existing entity, in which case new_en_name should be null
-    //If new_en_id=0 it means we are creating a new entity and then linking it, in which case new_en_name is required
+    //if en_new_id>0 it means we're linking to an existing entity, in which case en_new_name should be null
+    //If en_new_id=0 it means we are creating a new entity and then linking it, in which case en_new_name is required
 
     if (is_parent) {
         var input = $('#new-parent .new-input');
@@ -151,10 +142,10 @@ function tr_add(new_en_id, assign_en_parent_id=0, is_parent) {
     }
 
 
-    var new_en_name = null;
-    if (new_en_id == 0) {
-        new_en_name = input.val();
-        if (new_en_name.length < 1) {
+    var en_new_name = null;
+    if (en_new_id == 0) {
+        en_new_name = input.val();
+        if (en_new_name.length < 1) {
             alert('ERROR: Missing entity name or URL, try again');
             input.focus();
             return false;
@@ -172,8 +163,8 @@ function tr_add(new_en_id, assign_en_parent_id=0, is_parent) {
     $.post("/entities/link_entities", {
 
         en_id: top_en_id,
-        new_en_id: new_en_id,
-        new_en_name: new_en_name,
+        en_new_id: en_new_id,
+        en_new_name: en_new_name,
         is_parent: (is_parent ? 1 : 0),
         assign_en_parent_id: assign_en_parent_id,
 
@@ -189,11 +180,11 @@ function tr_add(new_en_id, assign_en_parent_id=0, is_parent) {
             input.focus();
 
             //Add new object to list:
-            add_to_list(list_id, '.u-item', data.new_en);
+            add_to_list(list_id, '.u-item', data.en_new_echo);
 
             //Adjust counters:
             $(counter_class).text((parseInt($(counter_class + ':first').text()) + 1));
-            $('.count-u-status-' + data.new_en_status).text((parseInt($('.count-u-status-' + data.new_en_status).text()) + 1));
+            $('.count-u-status-' + data.en_new_status).text((parseInt($('.count-u-status-' + data.en_new_status).text()) + 1));
 
             //Tooltips:
             $('[data-toggle="tooltip"]').tooltip();

@@ -295,7 +295,6 @@ class Intents extends CI_Controller
 
 
         //This determines if there are any recursive updates needed on the tree:
-        $updated_recursively = 0;
         $recursive_query = array();
 
 
@@ -328,7 +327,7 @@ class Intents extends CI_Controller
 
             //Any recursive updates needed?
             if (count($recursive_query) > 0) {
-                $updated_recursively = $this->Database_model->metadata_tree_update('in', $_POST['in_id'], $recursive_query);
+                $this->Database_model->metadata_tree_update('in', $_POST['in_id'], $recursive_query);
             }
 
             //Any recursive down status sync requests?
@@ -424,7 +423,7 @@ class Intents extends CI_Controller
             'in__tree_max_seconds' => -(intval($intents[0]['in__tree_max_seconds'])),
             'in__messages_tree_count' => -($intents[0]['in__messages_tree_count']),
         );
-        $updated_recursively = $this->Database_model->metadata_tree_update('in', $in__parents[0]['tr_in_parent_id'], $recursive_query);
+        $this->Database_model->metadata_tree_update('in', $in__parents[0]['tr_in_parent_id'], $recursive_query);
 
 
         //Remove Transaction:
@@ -675,6 +674,18 @@ class Intents extends CI_Controller
             ));
         }
 
+        //Validate Intent:
+        $intents = $this->Database_model->in_fetch(array(
+            'in_id' => $_POST['in_id'],
+            'in_status >=' => 0,
+        ));
+        if(count($intents)<1){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Intent ID',
+            ));
+        }
+
 
         //Attempt to save file locally:
         $file_parts = explode('.', $_FILES[$_POST['upload_type']]["name"]);
@@ -702,15 +713,13 @@ class Intents extends CI_Controller
         }
 
 
-        $url_create = $this->Database_model->x_sync($new_file_url, 1326, 1, 1);
+        //Now save URL:
+        $created_url = $this->Matrix_model->fn___create_en_from_url($new_file_url);
 
         //Did we have an error?
-        if (!$url_create['status']) {
+        if (!$created_url['status']) {
             //Oops something went wrong:
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Failed to create internal URL from cloud URL',
-            ));
+            return $created_url;
         }
 
 
@@ -718,9 +727,9 @@ class Intents extends CI_Controller
         $i = $this->Database_model->tr_create(array(
             'tr_en_credit_id' => $udata['en_id'],
             'tr_en_type_id' => $_POST['tr_status'], //TODO What type of message is this? find its entity ID
-            'tr_en_parent_id' => $url_create['en']['en_id'],
+            'tr_en_parent_id' => $created_url['en_by_url']['en_id'],
             'tr_in_child_id' => intval($_POST['in_id']),
-            'tr_content' => '@' . $url_create['en']['en_id'], //Just place the reference inside the message content
+            'tr_content' => '@' . $created_url['en_by_url']['en_id'], //Just place the reference inside the message content
             'tr_order' => 1 + $this->Database_model->tr_max_order(array(
                 'tr_status' => $_POST['tr_status'],
                 'tr_in_child_id' => $_POST['in_id'],
@@ -729,8 +738,12 @@ class Intents extends CI_Controller
 
 
         //Update intent count & tree:
-        $this->db->query("UPDATE tb_intents SET in__messages_count=in__messages_count+1 WHERE in_id=" . intval($_POST['in_id']));
-        $updated_recursively = $this->Database_model->metadata_tree_update('in', intval($_POST['in_id']), array(
+        //Do a relative adjustment for this intent's metadata
+        $this->Database_model->metadata_update('in', $intents[0], array(
+            'in__messages_count' => 1, //Add 1 to existing value
+        ), false);
+
+        $this->Database_model->metadata_tree_update('in', $intents[0]['in_id'], array(
             'in__messages_tree_count' => 1,
         ));
 

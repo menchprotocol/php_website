@@ -25,7 +25,7 @@ if (count($k_ins) == 1) {
 //Do we have a next item?
 $next_button = null;
 if ($w['tr_status'] == 1) {
-    //Active subscription, attempt to find next item, which we should be able to find:
+    //Active Action Plan, attempt to find next item, which we should be able to find:
     $next_ins = $this->Matrix_model->in_next_actionplan($w['tr_id']);
     if ($next_ins) {
         if ($next_ins[0]['in_id'] == $c['in_id']) {
@@ -40,7 +40,7 @@ if ($w['tr_status'] == 1) {
 //Include JS file:
 echo '<script src="/js/custom/actionplan-js.js?v=v' . $this->config->item('app_version') . '" type="text/javascript"></script>';
 
-//Fetch parent tree all the way to the top of subscription tr_in_child_id
+//Fetch parent tree all the way to the top of Action Plan tr_in_child_id
 echo '<div class="list-group" style="margin-top: 10px;">';
 foreach ($k_ins as $k) {
     echo echo_k($k, 1);
@@ -53,14 +53,14 @@ echo '<h3 class="master-h3 primary-title">' . $c['in_outcome'] . '</h3>';
 
 if (count($k_ins) == 0) {
 
-    //Always hide messages on the subscription-level to have masters focus on Action Plan
+    //Always hide messages on the Action Plan-level to have masters focus on Action Plan
     $hide_messages = true;
 
-    //This must be top level subscription, show subscription data:
+    //This must be top level Action Plan, show Action Plan data:
     echo '<div class="sub_title">';
     echo echo_status('tr_status', $w['tr_status']);
     echo ' &nbsp;&nbsp;<i class="fas fa-calendar-check"></i> ' . echo_diff_time($w['w_timestamp']) . ' ago';
-    //TODO show subscription pace data such as start/end time, weekly rate & notification type
+    //TODO show Action Plan pace data such as start/end time, weekly rate & notification type
     echo '</div>';
 
 } elseif (count($k_ins) == 1) {
