@@ -295,7 +295,7 @@ class My extends CI_Controller
         $message = '<div class="alert alert-success" role="alert">' . $total_skipped . ' concept' . echo__s($total_skipped) . ' successfully skipped.</div>';
 
         //Find the next item to navigate them to:
-        $next_ins = $this->Matrix_model->in_next_actionplan($tr_id);
+        $next_ins = $this->Matrix_model->fn___in_next_actionplan($tr_id);
         if ($next_ins) {
             redirect_message('/my/actionplan/' . $next_ins[0]['tr_tr_parent_id'] . '/' . $next_ins[0]['in_id'], $message);
         } else {
@@ -369,9 +369,9 @@ class My extends CI_Controller
 
 
         //Redirect back to page with success message:
-        if (isset($_POST['in_next_actionplan'])) {
+        if (isset($_POST['fn___in_next_actionplan'])) {
             //Go to next item:
-            $next_ins = $this->Matrix_model->in_next_actionplan($trs[0]['tr_id']);
+            $next_ins = $this->Matrix_model->fn___in_next_actionplan($trs[0]['tr_id']);
             if ($next_ins) {
                 //Override original item:
                 $k_url = '/my/actionplan/' . $next_ins[0]['tr_tr_parent_id'] . '/' . $next_ins[0]['in_id'];

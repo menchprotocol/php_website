@@ -18,7 +18,7 @@ class Matrix_model extends CI_Model
     }
 
 
-    function in_next_actionplan($actionplan_tr_id)
+    function fn___in_next_actionplan($actionplan_tr_id)
     {
 
         /*
@@ -422,7 +422,7 @@ class Matrix_model extends CI_Model
 
                 //No children! So there is a single path forward, the next intent in line...
                 //let's see what the next intent:
-                $next_ins = $this->Matrix_model->in_next_actionplan($actionplan_tr_id);
+                $next_ins = $this->Matrix_model->fn___in_next_actionplan($actionplan_tr_id);
 
                 //Did we find the next intent in line in case we had zero?
                 if (count($next_ins) > 0) {

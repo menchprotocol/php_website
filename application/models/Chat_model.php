@@ -390,7 +390,7 @@ class Chat_model extends CI_Model
                                     'title' => 'No',
                                     'payload' => 'AP-ADD-INITIATE_REJECT',
                                 ),
-                                //TODO Maybe Show a "7 Extra Notes" if Learn More messages were available
+                                //TODO Maybe Show a "Learn More" if Learn More messages were available
                             ),
                         ),
                     ));
@@ -590,7 +590,7 @@ class Chat_model extends CI_Model
                 ), $en['en_id']);
 
                 //Find the next item to navigate them to:
-                $next_ins = $this->Matrix_model->in_next_actionplan($tr_id);
+                $next_ins = $this->Matrix_model->fn___in_next_actionplan($tr_id);
                 if ($next_ins) {
                     //Now move on to communicate the next step.
                     $this->Matrix_model->compose_messages(array(
@@ -618,7 +618,7 @@ class Chat_model extends CI_Model
                 $this->Matrix_model->in_actionplan_complete_up($actionplan_ins[0], $actionplan_ins[0]);
 
                 //Go to next item:
-                $next_ins = $this->Matrix_model->in_next_actionplan($tr_id);
+                $next_ins = $this->Matrix_model->fn___in_next_actionplan($tr_id);
 
                 if ($next_ins) {
                     //Now move on to communicate the next step.
@@ -666,7 +666,7 @@ class Chat_model extends CI_Model
             //Now save answer:
             if ($this->Database_model->k_choose_or($tr_id, $tr_in_parent_id, $in_id)) {
                 //Find the next item to navigate them to:
-                $next_ins = $this->Matrix_model->in_next_actionplan($tr_id);
+                $next_ins = $this->Matrix_model->fn___in_next_actionplan($tr_id);
                 if ($next_ins) {
                     //Now move on to communicate the next step.
                     $this->Matrix_model->compose_messages(array(
@@ -1003,7 +1003,7 @@ class Chat_model extends CI_Model
             if (count($actionplans) > 0) {
 
                 //They have an Action Plan that they are working on, Remind user of their next step:
-                $next_ins = $this->Matrix_model->in_next_actionplan($actionplans[0]['tr_id']);
+                $next_ins = $this->Matrix_model->fn___in_next_actionplan($actionplans[0]['tr_id']);
 
                 if ($next_ins) {
                     $this->Matrix_model->compose_messages(array(

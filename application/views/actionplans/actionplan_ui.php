@@ -26,7 +26,7 @@ if (count($k_ins) == 1) {
 $next_button = null;
 if ($w['tr_status'] == 1) {
     //Active Action Plan, attempt to find next item, which we should be able to find:
-    $next_ins = $this->Matrix_model->in_next_actionplan($w['tr_id']);
+    $next_ins = $this->Matrix_model->fn___in_next_actionplan($w['tr_id']);
     if ($next_ins) {
         if ($next_ins[0]['in_id'] == $c['in_id']) {
             //$next_button = '<span style="font-size: 0.7em; padding-left:5px; display:inline-block;"><i class="fas fa-shield-check"></i> This is the next-in-line intent</span>';
@@ -138,7 +138,7 @@ if (count($k_ins) == 1 && ($has_completion_info || (!intval($c['in_is_any']) && 
     if ($has_outs && !$list_outs) {
         echo '<button type="submit" class="btn btn-primary"><i class="fas fa-check-square"></i> Got It, Continue <i class="fas fa-angle-right"></i></button>';
     } elseif ($is_incomplete) {
-        echo '<button type="submit" name="in_next_actionplan" value="1" class="btn btn-primary"><i class="fas fa-check-square"></i> Mark Complete & Go Next <i class="fas fa-angle-right"></i></button>';
+        echo '<button type="submit" name="fn___in_next_actionplan" value="1" class="btn btn-primary"><i class="fas fa-check-square"></i> Mark Complete & Go Next <i class="fas fa-angle-right"></i></button>';
     } elseif (!$show_written_input) {
         echo '<button type="submit" class="btn btn-primary toggle_text" style="display:none;"><i class="fas fa-edit"></i> Update Answer</button>';
     } else {
