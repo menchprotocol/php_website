@@ -15,7 +15,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
 //Intent Response Limiters:
-$config['en_ids_4331'] = array(4255, 4256, 4257, 4258, 4259, 4260, 4261, 4318, 4319, 4526);
+$config['en_ids_4331'] = array(4255, 4256, 4257, 4258, 4259, 4260, 4261, 4318, 4319);
 $config['en_all_4331'] = array(
     4255 => array(
         'en_icon' => '<i class="fas fa-file-alt"></i>',
@@ -62,15 +62,10 @@ $config['en_all_4331'] = array(
         'en_name' => 'Number Link',
         'tr_content' => '',
     ),
-    4526 => array(
-        'en_icon' => '<i class="fas fa-file"></i>',
-        'en_name' => 'Single-word Link',
-        'tr_content' => '',
-    ),
 );
 
 //Entity Non-URL Links:
-$config['en_ids_4538'] = array(4230, 4255, 4318, 4319, 4526);
+$config['en_ids_4538'] = array(4230, 4255, 4318, 4319);
 $config['en_all_4538'] = array(
     4230 => array(
         'en_icon' => '<i class="fas fa-link"></i>',
@@ -91,11 +86,6 @@ $config['en_all_4538'] = array(
         'en_icon' => '<i class="fas fa-sort-numeric-down"></i>',
         'en_name' => 'Number Link',
         'tr_content' => '',
-    ),
-    4526 => array(
-        'en_icon' => '<i class="fas fa-file"></i>',
-        'en_name' => 'Single-word Link',
-        'tr_content' => 'Links that contain a single word in its content. This helps us not show this in UI and not treat it like a text snippet of useful information.',
     ),
 );
 

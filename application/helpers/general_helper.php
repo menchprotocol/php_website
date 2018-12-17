@@ -201,9 +201,8 @@ function detect_tr_en_type_id($string)
         $curl = curl_html($string, true);
         return $curl['tr_en_type_id'];
     } else {
-        $words = explode(' ', $string);
         //Regular text link:
-        return (count($words) == 1 ? 4526 /* Single word */ : 4255 /* Multi-word */);
+        return 4255;
     }
 }
 
@@ -425,7 +424,7 @@ function curl_html($url, $return_breakdown = false)
     if ($return_breakdown) {
 
         $body_html = substr($response, curl_getinfo($ch, CURLINFO_HEADER_SIZE));
-        $content_type = one_two_explode('', ';', curl_getinfo($ch, CURLINFO_CONTENT_TYPE));
+        $content_type = fn___one_two_explode('', ';', curl_getinfo($ch, CURLINFO_CONTENT_TYPE));
         $embed_code = echo_embed($url, $url, true);
 
         // Now see if this is a specific file type:
@@ -457,7 +456,7 @@ function curl_html($url, $return_breakdown = false)
         return array(
             //used all the time, also when updating en entity:
             'tr_en_type_id' => $tr_en_type_id,
-            'page_title' => clean_title(one_two_explode('>', '', one_two_explode('<title', '</title', $body_html))),
+            'page_title' => clean_title(fn___one_two_explode('>', '', fn___one_two_explode('<title', '</title', $body_html))),
         );
 
     } else {
@@ -615,7 +614,7 @@ function message_validation($tr_content)
     if (substr_count($tr_content, '/slice') > 0) {
 
         //Validate the format of this command:
-        $slice_times = explode(':', one_two_explode('/slice:', ' ', $tr_content), 2);
+        $slice_times = explode(':', fn___one_two_explode('/slice:', ' ', $tr_content), 2);
         if (intval($slice_times[0]) < 1 || intval($slice_times[1]) < 1 || strlen($slice_times[0]) != strlen(intval($slice_times[0])) || strlen($slice_times[1]) != strlen(intval($slice_times[1]))) {
             //Not valid format!
             return array(
@@ -669,23 +668,7 @@ function message_validation($tr_content)
 
 }
 
-
-function generate_hashtag($text)
-{
-    //These hashtags cannot be taken
-    $CI =& get_instance();
-
-    //Cleanup the text:
-    $text = trim($text);
-    $text = ucwords($text);
-    $text = str_replace('&', 'And', $text);
-    $text = preg_replace("/[^a-zA-Z0-9]/", "", $text);
-    $text = substr($text, 0, 30);
-
-    return $text;
-}
-
-function one_two_explode($one, $two, $content)
+function fn___one_two_explode($one, $two, $content)
 {
     if (strlen($one) > 0) {
         if (substr_count($content, $one) < 1) {
@@ -703,89 +686,5 @@ function one_two_explode($one, $two, $content)
         return trim($temp[0]);
     }
 }
-
-
-function format_tr_content($tr_content)
-{
-
-    //Do replacements:
-    if (substr_count($tr_content, '/attach ') > 0) {
-        $attachments = explode('/attach ', $tr_content);
-        foreach ($attachments as $key => $attachment) {
-            if ($key == 0) {
-                //We're gonna start buiolding this message from scrach:
-                $tr_content = $attachment;
-                continue;
-            }
-            $segments = explode(':', $attachment, 2);
-            $sub_segments = preg_split('/[\s]+/', $segments[1]);
-
-            if ($segments[0] == 'image') {
-                $tr_content .= '<img src="' . $sub_segments[0] . '" style="max-width:100%" />';
-            } elseif ($segments[0] == 'audio') {
-                $tr_content .= '<audio controls><source src="' . $sub_segments[0] . '" type="audio/mpeg"></audio>';
-            } elseif ($segments[0] == 'video') {
-                $tr_content .= '<video width="100%" onclick="this.play()" controls><source src="' . $sub_segments[0] . '" type="video/mp4"></video>';
-            } elseif ($segments[0] == 'file') {
-                $tr_content .= '<a href="' . $sub_segments[0] . '" class="btn btn-primary" target="_blank"><i class="fas fa-cloud-download"></i> Download File</a>';
-            }
-
-            //Do we have any leftovers after the URL? If so, append:
-            if (isset($sub_segments[1])) {
-                $tr_content = ' ' . $sub_segments[1];
-            }
-        }
-    } else {
-        $tr_content = echo_link($tr_content);
-    }
-    $tr_content = nl2br($tr_content);
-    return $tr_content;
-}
-
-
-function bigintval($value)
-{
-    $value = trim($value);
-    if (ctype_digit($value)) {
-        return $value;
-    }
-    $value = preg_replace("/[^0-9](.*)$/", '', $value);
-    if (ctype_digit($value)) {
-        return $value;
-    }
-    return 0;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

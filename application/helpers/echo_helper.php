@@ -82,15 +82,15 @@ function echo_embed($url, $full_message = null, $return_array = false, $start_se
         if (substr_count($url, 'youtube.com/embed/') == 1) {
 
             //We might have start and end here too!
-            $video_id = trim(one_two_explode('youtube.com/embed/', '?', $url));
+            $video_id = trim(fn___one_two_explode('youtube.com/embed/', '?', $url));
 
         } elseif (substr_count($url, 'youtube.com/watch?v=') == 1) {
 
-            $video_id = trim(one_two_explode('youtube.com/watch?v=', '&', $url));
+            $video_id = trim(fn___one_two_explode('youtube.com/watch?v=', '&', $url));
 
         } elseif (substr_count($url, 'youtu.be/') == 1) {
 
-            $video_id = trim(one_two_explode('youtu.be/', '?', $url));
+            $video_id = trim(fn___one_two_explode('youtu.be/', '?', $url));
 
         }
 
@@ -112,7 +112,7 @@ function echo_embed($url, $full_message = null, $return_array = false, $start_se
     } elseif (substr_count($url, 'vimeo.com/') == 1) {
 
         //Seems to be Vimeo:
-        $video_id = trim(one_two_explode('vimeo.com/', '?', $url));
+        $video_id = trim(fn___one_two_explode('vimeo.com/', '?', $url));
 
         //This should be an integer!
         if (intval($video_id) == $video_id) {
@@ -123,8 +123,8 @@ function echo_embed($url, $full_message = null, $return_array = false, $start_se
     } elseif (substr_count($url, 'wistia.com/medias/') == 1) {
 
         //Seems to be Wistia:
-        $video_id = trim(one_two_explode('wistia.com/medias/', '?', $url));
-        $clean_url = trim(one_two_explode('', '?', $url));
+        $video_id = trim(fn___one_two_explode('wistia.com/medias/', '?', $url));
+        $clean_url = trim(fn___one_two_explode('', '?', $url));
         $embed_html_code = '<script src="https://fast.wistia.com/embed/medias/' . $video_id . '.jsonp" async></script><script src="https://fast.wistia.com/assets/external/E-v1.js" async></script><div class="wistia_responsive_padding video-sorting" style="padding:56.25% 0 0 0;position:relative;"><div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;"><div class="wistia_embed wistia_async_' . $video_id . ' seo=false videoFoam=true" style="height:100%;width:100%">&nbsp;</div></div></div>';
 
     }
@@ -251,7 +251,7 @@ function echo_message_chat($i, $en_name = null, $fb_format = false)
 
                 //Is there a slice command?
                 if (substr_count($i['tr_content'], '/slice') > 0) {
-                    $time_range = explode(':', one_two_explode('/slice:', ' ', $i['tr_content']), 2);
+                    $time_range = explode(':', fn___one_two_explode('/slice:', ' ', $i['tr_content']), 2);
                     $i['tr_content'] = str_replace('/slice:' . $time_range[0] . ':' . $time_range[1], '', $i['tr_content']);
                 }
 
@@ -266,7 +266,7 @@ function echo_message_chat($i, $en_name = null, $fb_format = false)
                 //Is there a slice command?
                 if (substr_count($i['tr_content'], '/slice') > 0) {
 
-                    $time_range = explode(':', one_two_explode('/slice:', ' ', $i['tr_content']), 2);
+                    $time_range = explode(':', fn___one_two_explode('/slice:', ' ', $i['tr_content']), 2);
 
                     //Try finding a compatible URL for the /slice command:
                     foreach ($us[0]['en__parents'] as $en) {
@@ -348,7 +348,7 @@ function echo_message_chat($i, $en_name = null, $fb_format = false)
     if ($en_name && substr_count($i['tr_content'], '/firstname') > 0) {
         //Tweak the name:
         $command = '/firstname';
-        $i['tr_content'] = str_replace('/firstname', one_two_explode('', ' ', $en_name), $i['tr_content']);
+        $i['tr_content'] = str_replace('/firstname', fn___one_two_explode('', ' ', $en_name), $i['tr_content']);
     }
 
 
@@ -699,7 +699,9 @@ function echo_e($e)
     $main_content = null;
     $main_content_title = null;
     if (strlen($e['tr_content']) > 0) {
-        $main_content = format_tr_content($e['tr_content']);
+
+        $main_content = echo_link(nl2br($e['tr_content']));
+
     } elseif ($e['e_tr_id'] > 0) {
         //Fetch message conent:
         $matching_messages = $CI->Database_model->i_fetch(array(
@@ -1567,7 +1569,7 @@ function echo_featured_c($c)
 function echo_mili($microtime)
 {
     $time = $microtime / 1000;
-    echo date("Y-m-d H:i:s", floor($time)) . '.' . one_two_explode('.', '', $time);
+    echo date("Y-m-d H:i:s", floor($time)) . '.' . fn___one_two_explode('.', '', $time);
 }
 
 

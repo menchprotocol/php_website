@@ -36,23 +36,13 @@ $uri_segment_2 = $this->uri->segment(2);
 
     <script>
         <?php
-        //Create flat list of JS variables:
-        $js_parent_en_ids = array();
-        if ($udata) {
-            foreach ($udata['en__parents'] as $privilege) {
-                array_push($js_parent_en_ids, intval($privilege['en_id']));
-            }
-        }
-
-        //Translate intent/entity icons to make them available in JS functions:
-        echo ' var in_statuses = ' . json_encode(echo_status('in')) . '; ';
-        echo ' var en_statuses = ' . json_encode(echo_status('en')) . '; ';
+        //Translate key variables into JS variables to have them available throughout all JS functions:
+        $object_statuses = $this->config->item('object_statuses');
+        echo ' var js_in_statuses = ' . json_encode($object_statuses['in_status']) . '; ';
+        echo ' var js_en_statuses = ' . json_encode($object_statuses['en_status']) . '; ';
+        echo ' var js_tr_statuses = ' . json_encode($object_statuses['tr_status']) . '; ';
+        echo ' var js_en_id = ' . $udata['en_id'] . '; ';
         ?>
-
-        //Define global js variables:
-        var js_en_id = <?= $udata['en_id'] ?>;
-        var js_parent_en_ids = [<?= join(',', $js_parent_en_ids) ?>];
-
     </script>
 
 </head>

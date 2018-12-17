@@ -117,16 +117,17 @@ class Chat_model extends CI_Model
         /*
          *
          * With the assumption that chat platforms like Messenger,
-         * Slack and Telegram offer a mechanism to manage a reference
+         * Slack and Telegram all offer a mechanism to manage a reference
          * field other than the actual message itself (Facebook calls
          * this the Reference key or Metadata), this function will
-         * process that metadata string and take appropriate action
-         * based on the value of the metadata.
+         * process that metadata string from incoming messages sent to Mench
+         * by its Masters and take appropriate action.
          *
          * Inputs:
          *
-         * - $en - The Master who made the equest
-         * - $reference - The reference passed by chat medium like Messenger
+         * - $en - The Master who made the request
+         * - $reference - The reference string attached to the chat message
+         *
          *
          * */
 
@@ -134,13 +135,13 @@ class Chat_model extends CI_Model
 
             return false;
 
-        } elseif (substr_count($reference, 'APSKIP_') == 1) {
+        } elseif (substr_count($reference, 'ACTIONPLAN-SKIP_') == 1) {
 
-            $action_unsubscribe = one_two_explode('APSKIP_', '', $reference);
+            $action_unsubscribe = fn___one_two_explode('ACTIONPLAN-SKIP_', '', $reference);
 
             if ($action_unsubscribe == 'CANCEL') {
 
-                //User changed their mind, confirm:
+                //Master seems to have changed their mind, confirm with them:
                 $this->Chat_model->dispatch_message(array(
                     array(
                         'tr_en_child_id' => $en['en_id'],
@@ -224,9 +225,9 @@ class Chat_model extends CI_Model
                 }
             }
 
-        } elseif (substr_count($reference, 'ACTIVATE_') == 1) {
+        } elseif (substr_count($reference, 'REACTIVATE_') == 1) {
 
-            if ($reference == 'ACTIVATE_YES') {
+            if ($reference == 'REACTIVATE_YES') {
 
                 //Update User communication level to Receive Silent Push Notifications:
                 $this->Matrix_model->fn___en_radio_set(4454, 4457, $en['en_id'], $en['en_id']);
@@ -239,7 +240,7 @@ class Chat_model extends CI_Model
                     ),
                 ));
 
-            } elseif ($reference == 'ACTIVATE_NO') {
+            } elseif ($reference == 'REACTIVATE_NO') {
 
                 $this->Chat_model->dispatch_message(array(
                     array(
@@ -250,12 +251,12 @@ class Chat_model extends CI_Model
 
             }
 
-        } elseif (substr_count($reference, 'AP-ADD-INITIATE_') == 1) {
+        } elseif (substr_count($reference, 'ACTIONPLAN-ADD-INITIATE_') == 1) {
 
             //Validate this intent:
-            $in_id = one_two_explode('AP-ADD-INITIATE_', '', $reference);
+            $ref_value = fn___one_two_explode('ACTIONPLAN-ADD-INITIATE_', '', $reference);
 
-            if ($in_id == 'REJECT') {
+            if ($ref_value == 'REJECT') {
 
                 //They rejected the offer... Acknowledge and give response:
                 $this->Chat_model->dispatch_message(array(
@@ -267,9 +268,12 @@ class Chat_model extends CI_Model
 
             } else {
 
+                //This reference must be a specific intent ID:
+                $in_id = intval($ref_value);
+
                 //They confirmed they want to add this intention to their Action Plan:
                 $ins = $this->Database_model->in_fetch(array(
-                    'in_id' => intval($in_id),
+                    'in_id' => $in_id,
                 ));
 
                 //Any issues?
@@ -285,7 +289,7 @@ class Chat_model extends CI_Model
 
                 } elseif ($ins[0]['in_status'] < 2) {
 
-                    //Ooops Intention is no longer published:
+                    //Ooopsi Intention is no longer published:
                     $this->Chat_model->dispatch_message(array(
                         array(
                             'tr_en_child_id' => $en['en_id'],
@@ -305,12 +309,12 @@ class Chat_model extends CI_Model
                                 array(
                                     'content_type' => 'text',
                                     'title' => 'Yes, Learn More',
-                                    'payload' => 'AP-ADD-CONFIRM_' . $ins[0]['in_id'],
+                                    'payload' => 'ACTIONPLAN-ADD-CONFIRM_' . $ins[0]['in_id'],
                                 ),
                                 array(
                                     'content_type' => 'text',
                                     'title' => 'No',
-                                    'payload' => 'AP-ADD-INITIATE_REJECT',
+                                    'payload' => 'ACTIONPLAN-ADD-INITIATE_REJECT',
                                 ),
                             ),
                         ),
@@ -319,11 +323,11 @@ class Chat_model extends CI_Model
                 }
             }
 
-        } elseif (substr_count($reference, 'AP-ADD-CONFIRM_') == 1) {
+        } elseif (substr_count($reference, 'ACTIONPLAN-ADD-CONFIRM_') == 1) {
 
             //Initiating an intent Action Plan:
             $ins = $this->Database_model->in_fetch(array(
-                'in_id' => intval(one_two_explode('AP-ADD-CONFIRM_', '', $reference)),
+                'in_id' => intval(fn___one_two_explode('ACTIONPLAN-ADD-CONFIRM_', '', $reference)),
                 'in_status >=' => 2,
             ));
             if (count($ins) == 1) {
@@ -383,12 +387,12 @@ class Chat_model extends CI_Model
                                 array(
                                     'content_type' => 'text',
                                     'title' => 'Yes, Subscribe',
-                                    'payload' => 'AP-ADD-CONFIRMED_' . $ins[0]['in_id'],
+                                    'payload' => 'ACTIONPLAN-ADD-CONFIRMED_' . $ins[0]['in_id'],
                                 ),
                                 array(
                                     'content_type' => 'text',
                                     'title' => 'No',
-                                    'payload' => 'AP-ADD-INITIATE_REJECT',
+                                    'payload' => 'ACTIONPLAN-ADD-INITIATE_REJECT',
                                 ),
                                 //TODO Maybe Show a "Learn More" if Learn More messages were available
                             ),
@@ -398,11 +402,11 @@ class Chat_model extends CI_Model
                 }
             }
 
-        } elseif (substr_count($reference, 'AP-ADD-CONFIRMED_') == 1) {
+        } elseif (substr_count($reference, 'ACTIONPLAN-ADD-CONFIRMED_') == 1) {
 
             //Validate Intent ID:
             $ins = $this->Database_model->in_fetch(array(
-                'in_id' => intval(one_two_explode('AP-ADD-CONFIRMED_', '', $reference)),
+                'in_id' => intval(fn___one_two_explode('ACTIONPLAN-ADD-CONFIRMED_', '', $reference)),
                 'in_status >=' => 2,
             ));
 
@@ -450,13 +454,13 @@ class Chat_model extends CI_Model
             }
 
 
-        } elseif (includes_any($reference, array('AP-SKIP-CONFIRMED_', 'AP-SKIP-INITIATE_', 'AP-SKIP-CANCEL_'))) {
+        } elseif (includes_any($reference, array('ACTIONPLAN-SKIP-CONFIRMED_', 'ACTIONPLAN-SKIP-INITIATE_', 'ACTIONPLAN-SKIP-CANCEL_'))) {
 
             //See which stage of the skip request they are:
-            $handler = includes_any($reference, array('AP-SKIP-CONFIRMED_', 'AP-SKIP-INITIATE_', 'AP-SKIP-CANCEL_'));
+            $handler = includes_any($reference, array('ACTIONPLAN-SKIP-CONFIRMED_', 'ACTIONPLAN-SKIP-INITIATE_', 'ACTIONPLAN-SKIP-CANCEL_'));
 
             //Extract varibales from REF:
-            $input_parts = explode('_', one_two_explode($handler, '', $reference));
+            $input_parts = explode('_', fn___one_two_explode($handler, '', $reference));
             $tr_status = intval($input_parts[0]); //It would be $tr_status=1 initial (working on) and then would change to either -1 IF skip was cancelled or 2 IF skip was confirmed.
             $tr_id = intval($input_parts[1]);
 
@@ -542,12 +546,12 @@ class Chat_model extends CI_Model
                             array(
                                 'content_type' => 'text',
                                 'title' => 'Skip ' . $would_be_skipped_count . ' concept' . echo__s($would_be_skipped_count) . ' 🚫',
-                                'payload' => 'AP-SKIP-INITIATE_2_' . $new_tr['tr_id'], //Confirm and skip
+                                'payload' => 'ACTIONPLAN-SKIP-INITIATE_2_' . $new_tr['tr_id'], //Confirm and skip
                             ),
                             array(
                                 'content_type' => 'text',
                                 'title' => 'Continue ▶️',
-                                'payload' => 'AP-SKIP-INITIATE_-1_' . $new_tr['tr_id'], //Cancel skipping
+                                'payload' => 'ACTIONPLAN-SKIP-INITIATE_-1_' . $new_tr['tr_id'], //Cancel skipping
                             ),
                         ),
                     ),
@@ -605,7 +609,7 @@ class Chat_model extends CI_Model
         } elseif (substr_count($reference, 'MARKCOMPLETE_') == 1) {
 
             //Master consumed AND tree content, and is ready to move on to next intent...
-            $tr_id = intval(one_two_explode('MARKCOMPLETE_', '', $reference));
+            $tr_id = intval(fn___one_two_explode('MARKCOMPLETE_', '', $reference));
 
             if ($tr_id > 0) {
 
@@ -635,7 +639,7 @@ class Chat_model extends CI_Model
         } elseif (substr_count($reference, 'CHOOSEOR_') == 1) {
 
             //Master has responded to a multiple-choice OR tree
-            $input_parts = explode('_', one_two_explode('CHOOSEOR_', '', $reference));
+            $input_parts = explode('_', fn___one_two_explode('CHOOSEOR_', '', $reference));
             $tr_id = intval($input_parts[0]);
             $tr_in_parent_id = intval($input_parts[1]);
             $in_id = intval($input_parts[2]);
@@ -721,12 +725,12 @@ class Chat_model extends CI_Model
                         array(
                             'content_type' => 'text',
                             'title' => 'Yes, Re-Activate',
-                            'payload' => 'ACTIVATE_YES',
+                            'payload' => 'REACTIVATE_YES',
                         ),
                         array(
                             'content_type' => 'text',
                             'title' => 'Stay Unsubscribed',
-                            'payload' => 'ACTIVATE_NO',
+                            'payload' => 'REACTIVATE_NO',
                         ),
                     ),
                 ),
@@ -799,7 +803,7 @@ class Chat_model extends CI_Model
                     array_push($quick_replies, array(
                         'content_type' => 'text',
                         'title' => '/' . ($counter + $increment),
-                        'payload' => 'APSKIP_' . $in['in_id'],
+                        'payload' => 'ACTIONPLAN-SKIP_' . $in['in_id'],
                     ));
                 }
 
@@ -810,7 +814,7 @@ class Chat_model extends CI_Model
                     array_push($quick_replies, array(
                         'content_type' => 'text',
                         'title' => '/' . ($counter + $increment),
-                        'payload' => 'APSKIP_ALL',
+                        'payload' => 'ACTIONPLAN-SKIP_ALL',
                     ));
                 }
 
@@ -820,7 +824,7 @@ class Chat_model extends CI_Model
                 array_push($quick_replies, array(
                     'content_type' => 'text',
                     'title' => '/' . ($counter + $increment),
-                    'payload' => 'APSKIP_CANCEL',
+                    'payload' => 'ACTIONPLAN-SKIP_CANCEL',
                 ));
 
                 //Send out message and let them confirm:
@@ -843,12 +847,12 @@ class Chat_model extends CI_Model
                             array(
                                 'content_type' => 'text',
                                 'title' => 'Yes, Unsubscribe',
-                                'payload' => 'APSKIP_ALL',
+                                'payload' => 'ACTIONPLAN-SKIP_ALL',
                             ),
                             array(
                                 'content_type' => 'text',
                                 'title' => 'No, Stay Friends',
-                                'payload' => 'APSKIP_CANCEL',
+                                'payload' => 'ACTIONPLAN-SKIP_CANCEL',
                             ),
                         ),
                     ),
@@ -865,11 +869,11 @@ class Chat_model extends CI_Model
             if ($fb_message_received) {
                 $fb_message_received = trim(strtolower($fb_message_received));
                 if (substr_count($fb_message_received, 'lets ') > 0) {
-                    $master_command = one_two_explode('lets ', '', $fb_message_received);
+                    $master_command = fn___one_two_explode('lets ', '', $fb_message_received);
                 } elseif (substr_count($fb_message_received, 'let’s ') > 0) {
-                    $master_command = one_two_explode('let’s ', '', $fb_message_received);
+                    $master_command = fn___one_two_explode('let’s ', '', $fb_message_received);
                 } elseif (substr_count($fb_message_received, 'let\'s ') > 0) {
-                    $master_command = one_two_explode('let\'s ', '', $fb_message_received);
+                    $master_command = fn___one_two_explode('let\'s ', '', $fb_message_received);
                 } elseif (substr_count($fb_message_received, '?') > 0) {
                     //Them seem to be asking a question, lets treat this as a command:
                     $master_command = str_replace('?', '', $fb_message_received);
@@ -920,7 +924,7 @@ class Chat_model extends CI_Model
                     array_push($quick_replies, array(
                         'content_type' => 'text',
                         'title' => ($count + 1) . '/',
-                        'payload' => 'AP-ADD-CONFIRM_' . $in['in_id'],
+                        'payload' => 'ACTIONPLAN-ADD-CONFIRM_' . $in['in_id'],
                     ));
                 }
 
@@ -929,7 +933,7 @@ class Chat_model extends CI_Model
                 array_push($quick_replies, array(
                     'content_type' => 'text',
                     'title' => ($count + 2) . '/',
-                    'payload' => 'AP-ADD-INITIATE_REJECT',
+                    'payload' => 'ACTIONPLAN-ADD-INITIATE_REJECT',
                 ));
 
                 //return what we found to the master to decide:
@@ -1024,7 +1028,7 @@ class Chat_model extends CI_Model
                 if (count($default_actionplans) == 0) {
 
                     //They have never taken the default intent, recommend it to them:
-                    $this->Chat_model->digest_reference($en, 'AP-ADD-INITIATE_' . $this->config->item('in_primary_id'));
+                    $this->Chat_model->digest_reference($en, 'ACTIONPLAN-ADD-INITIATE_' . $this->config->item('in_primary_id'));
 
                 }
 

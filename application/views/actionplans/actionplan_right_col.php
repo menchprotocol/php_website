@@ -77,25 +77,6 @@
     }
 
 
-    function confirm_w_delete(tr_id) {
-        var r = confirm("Are you sure you want to permanently delete this Action Plan?");
-        if (r == true) {
-
-            //Make ajax call and remove item:
-            $.post("/my/w_delete/" + tr_id, {}, function (data) {
-                if (data.status) {
-                    //Hide boxed:
-                    $('.frame-loader').addClass('hidden');
-
-                    //Remove frame
-                    $('#w_div_' + tr_id).html('<span style="color:#2f2739;"><i class="fas fa-trash-alt"></i> Removed</span>');
-                    setTimeout(function () {
-                        $('#w_div_' + tr_id).fadeOut();
-                    }, 377);
-                }
-            });
-        }
-    }
 
 
     function load_w_actionplan(tr_id, en_id) {
@@ -104,12 +85,6 @@
         en_id = parseInt(en_id);
         var frame_title = frame_loader(tr_id, en_id);
         $('#w_title').html('<i class="fas fa-flag"></i> ' + frame_title);
-
-        //Is this user an admin? if so, give them a delete option:
-        if (jQuery.inArray(1281, js_parent_en_ids) !== -1) {
-            //Append delete button:
-            $('#w_title').prepend('<a href="javascript:void(0);" onclick="confirm_w_delete(' + tr_id + ')" data-toggle="tooltip" title="Permanently delete this Action Plan and its related data" data-placement="bottom"><i class="fas fa-trash-alt" style="color:#FFF;"></i></a> &nbsp;');
-        }
 
         //Add via Ajax:
         $.post("/my/load_w_actionplan", {tr_id: tr_id}, function (data) {

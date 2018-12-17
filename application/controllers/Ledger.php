@@ -24,7 +24,10 @@ class Ledger extends CI_Controller
 
         /*
          *
-         * A function to adjust a transaction status
+         * A function to adjust a transaction statuses
+         * This function will also make additional adjusttments
+         * based on transaction type. See the "custom adjustments"
+         * section below for more details.
          *
          * */
 
@@ -83,8 +86,15 @@ class Ledger extends CI_Controller
         ), $udata['en_id']);
 
 
-        //We might need to do additional adjustments depending on what type of transaction this is...
-        //Is this an intent message being deleted?
+
+        /*
+         * Custom Adjustments:
+         *
+         * We might need to do additional adjustments depending
+         * on what type of transaction this is...
+         * Is this an intent message being deleted?
+         *
+         * */
         if (in_array($trs[0]['tr_en_type_id'], $this->config->item('en_ids_4485')) && $trs[0]['tr_in_child_id'] > 0) {
 
             //Yes! We need to adjust the intent cache

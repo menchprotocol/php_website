@@ -195,35 +195,6 @@ class My extends CI_Controller
         }
     }
 
-    function w_delete($tr_id)
-    {
-
-        //Validate it's an admin:
-        if (!auth(array(1281))) {
-            return echo_json(array(
-                'status' => 0,
-                'message' => 'Session Expired, login to continue...',
-            ));
-        }
-
-        //Delete Action Plan and report back:
-        $archive_stats = array();
-
-        $this->db->query("DELETE FROM tb_actionplans WHERE tr_id=" . $tr_id);
-        $archive_stats['tb_actionplans'] = $this->db->affected_rows();
-
-        $this->db->query("DELETE FROM tb_actionplan_links WHERE tr_tr_parent_id=" . $tr_id);
-        $archive_stats['tb_actionplan_links'] = $this->db->affected_rows();
-
-        $this->db->query("DELETE FROM table_ledger WHERE tr_tr_parent_id=" . $tr_id);
-        $archive_stats['table_ledger'] = $this->db->affected_rows();
-
-        return echo_json(array(
-            'status' => 1,
-            'tr_id' => $tr_id,
-            'stats' => $archive_stats,
-        ));
-    }
 
     function load_w_actionplan()
     {

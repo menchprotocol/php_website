@@ -75,20 +75,6 @@ class Cron extends CI_Controller
         }
     }
 
-
-    function show_missing_us()
-    {
-        $q = $this->db->query("SELECT DISTINCT(tr_en_child_id) as p_id FROM tb_entity_links ur WHERE NOT EXISTS (
-   SELECT 1
-   FROM   tb_entities u
-   WHERE  en_id = tr_en_child_id
-   );");
-
-        $results = $q->result_array();
-
-        echo_json($results);
-    }
-
     function intent_sync($in_id = 7240, $update_c_table = 1)
     {
         //Cron Settings: 31 * * * *
@@ -111,12 +97,12 @@ class Cron extends CI_Controller
     }
 
 
-    function list_duplicate_ins()
+    function fn___list_duplicate_ins()
     {
 
+        //Do a query to detect intents with the exact same title:
         $q = $this->db->query('select in1.* from table_intents in1 where (select count(*) from table_intents in2 where in2.in_outcome = in1.in_outcome) > 1 ORDER BY in1.in_outcome ASC');
         $duplicates = $q->result_array();
-
 
         $prev_title = null;
         foreach ($duplicates as $in) {
@@ -129,10 +115,10 @@ class Cron extends CI_Controller
         }
     }
 
-    function list_duplicate_ens()
+    function fn___list_duplicate_ens()
     {
 
-        $q = $this->db->query('select en1.* from tb_entities en1 where (select count(*) from tb_entities en2 where en2.en_name = en1.en_name) > 1 ORDER BY en1.en_name ASC');
+        $q = $this->db->query('select en1.* from table_entities en1 where (select count(*) from table_entities en2 where en2.en_name = en1.en_name) > 1 ORDER BY en1.en_name ASC');
         $duplicates = $q->result_array();
 
         $prev_title = null;

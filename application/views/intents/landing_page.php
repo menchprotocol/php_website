@@ -157,7 +157,7 @@
     <p style="padding:15px 0 0 0;">Ready to <?= $c['in_outcome'] ?>?</p>
 
     <!-- Call to Actions -->
-    <a class="btn btn-primary" href="https://m.me/askmench?ref=AP-ADD-INITIATE_<?= $c['in_id'] ?>"
+    <a class="btn btn-primary" href="https://m.me/askmench?ref=ACTIONPLAN-ADD-INITIATE_<?= $c['in_id'] ?>"
        style="display: inline-block; padding: 12px 36px;">Get Started [Free] <i class="fas fa-angle-right"></i></a>
 
     <span class="learn_more_toggle" style="display: inline-block;">or <a class="btn btn-primary grey" href="#learnMore"

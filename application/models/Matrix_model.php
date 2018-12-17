@@ -540,7 +540,7 @@ class Matrix_model extends CI_Model
                     array_push($quick_replies, array(
                         'content_type' => 'text',
                         'title' => 'Skip',
-                        'payload' => 'AP-SKIP-INITIATE_1_' . $k_ins[0]['tr_id'],
+                        'payload' => 'ACTIONPLAN-SKIP-INITIATE_1_' . $k_ins[0]['tr_id'],
                     ));
                 }
             }
@@ -598,7 +598,8 @@ class Matrix_model extends CI_Model
          *
          * The function that would add/validate new URLs
          * which would also check for duplicates, etc...
-         * And create a new entity under config variable en_url_bucket
+         * And create a new entity.
+         *
          * Note that this function is mainly used in intent message
          * related functions as that's when we need to turn URLs into
          * entities to be stored properly on the matrix
@@ -693,11 +694,41 @@ class Matrix_model extends CI_Model
             'en_name' => $en_name,
         ), true, $tr_en_credit_id);
 
+
+        /*
+         *
+         * Now we need to place this new entity under the right parent entity.
+         *
+         * See if we can pattern match the URL to a more relevant parent
+         * We will start assuming that the parent should be the
+         * en_default_url_parent defined in config unless we can match
+         * the URL to another entity pattern
+         *
+         * */
+
+        //Set default parent to start:
+        $tr_en_parent_id = $this->config->item('en_default_url_parent');
+
+        //Now see if we can find a better match:
+        $matching_patterns = $this->Database_model->tr_fetch(array(
+            'tr_en_type_id' => 4255, //Text Link that contains the pattern match
+            'tr_en_parent_id' => 3307, //Entity URL Pattern Match
+            'tr_status >=' => 2, //Published+
+        ));
+        foreach ($matching_patterns as $match) {
+            if (substr_count($input_url, $match['tr_content']) > 0) {
+                //yes we found a pattern match:
+                $tr_en_parent_id = $match['tr_en_child_id'];
+                break;
+            }
+        }
+
+
         //Place this new entity in the default URL bucket:
         $entity_tr = $this->Database_model->tr_create(array(
             'tr_en_credit_id' => $tr_en_credit_id,
             'tr_en_type_id' => $curl['tr_en_type_id'],
-            'tr_en_parent_id' => $this->config->item('en_url_bucket'),
+            'tr_en_parent_id' => $tr_en_parent_id,
             'tr_en_child_id' => $en['en_id'],
             'tr_content' => $input_url,
         ));

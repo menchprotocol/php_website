@@ -169,7 +169,7 @@ class Bot extends CI_Controller
 
                             //The very first payload, set defaults:
                             $referral_array = array(
-                                'ref' => 'AP-ADD-INITIATE_' . $this->config->item('in_primary_id'),
+                                'ref' => 'ACTIONPLAN-ADD-INITIATE_' . $this->config->item('in_primary_id'),
                             );
 
                         } else {
@@ -293,10 +293,10 @@ class Bot extends CI_Controller
                             } elseif ($att['type'] == 'location') {
 
                                 //Message with location attachment
-                                //TODO test to make sure this works!
+                                //TODO test to make sure this works! Not sure why this would be useful at this point...
                                 $loc_lat = $att['payload']['coordinates']['lat'];
                                 $loc_long = $att['payload']['coordinates']['long'];
-                                $eng_data['tr_content'] .= (strlen($eng_data['tr_content']) > 0 ? "\n\n" : '') . '/attach location:' . $loc_lat . ',' . $loc_long;
+                                $eng_data['tr_content'] .= (strlen($eng_data['tr_content']) > 0 ? "\n\n" : '') . 'Location Lat/Lng is: ' . $loc_lat . ',' . $loc_long;
 
                             } elseif ($att['type'] == 'template') {
 

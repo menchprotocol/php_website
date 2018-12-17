@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  *
  * Global variables used throughout the platform.
- * use-case format: $this->config->item('en_url_bucket')
+ * use-case format: $this->config->item('object_statuses')
  *
  */
 
@@ -18,7 +18,7 @@ date_default_timezone_set('America/Los_Angeles');
 $config['in_primary_name'] = 'advance your tech career'; //What is the purposes of Mench at this point?
 $config['in_primary_id'] = 6903; //The default platform intent that would be recommended to new masters
 $config['en_primary_id'] = 3463; //The default matrix entity that is loaded when Entities is clicked
-$config['en_url_bucket'] = 1326; //The entity that would be the parent to all new URLs added via Messages
+$config['en_default_url_parent'] = 1326; //The entity that would be the parent to all new URLs added via Messages
 
 
 //UI Display:
@@ -62,6 +62,60 @@ $config['aws_credentials'] = [ //Learn more: https://console.aws.amazon.com/iam/
     'key' => 'AKIAJOLBLKFSYCCYYDRA',
     'secret' => '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',
 ];
+
+$config['eng_converter'] = array(
+    //Patternization Links
+    20 => 4250, //Log intent creation
+    6971 => 4251, //Log entity creation
+    21 => 4252, //Log intent archived
+    50 => 4254, //Log intent migration
+    19 => 4264, //Log intent modification
+    //0 => 4253, //Entity Archived (Did not have this!)
+
+    36 => 4242, //Log intent message update
+    7727 => 4242, //Log entity link note modification
+
+    12 => 4263, //Log entity modification
+    7001 => 4299, //Log pending image upload sync to cloud
+
+    89 => 4241, //Log intent unlinked
+    7292 => 4241, //Log entity unlinked
+    35 => 4241, //Log intent message archived
+    6912 => 4241, //Log entity URL archived
+
+    39 => 4262, //Log intent message sorting
+    22 => 4262, //Log intent children sorted
+
+
+    //Growth links
+    27 => 4265, //Log user joined
+    5 => 4266, //Log Messenger optin
+    4 => 4267, //Log Messenger referral
+    3 => 4268, //Log Messenger postback
+    10 => 4269, //Log user sign in
+    11 => 4270, //Log user sign out
+    59 => 4271, //Log user password reset
+
+
+    //Personal Assistant links
+    40 => 4273, //Log console tip read
+    7703 => 4275, //Log subscription intent search
+    28 => 4276, //Log user email sent
+    6 => 4277, //Log message received
+    1 => 4278, //Log message read
+    2 => 4279, //Log message delivered
+    7 => 4280, //Log message sent
+    52 => 4281, //Log message queued
+    55 => 4282, //Log my account access
+    32 => 4283, //Log action plan access
+    33 => 4242, //Log action plan intent completion [Link updated]
+    7718 => 4287, //Log unrecognized message
+
+    //Platform Operations Links:
+    8 => 4246, //Platform Error
+    9 => 4247, //Log user attention request
+    72 => 4248, //Log user review
+);
 
 
 //Ledger filters:
