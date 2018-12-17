@@ -74,7 +74,7 @@ class Custom extends CI_Controller
                 $this->load->view('shared/public_header', array(
                     'title' => 'Advance Your Tech Career',
                 ));
-                $this->load->view('intents/home_featured_intents', array(
+                $this->load->view('view_intents/in_home_featured', array(
                     'featured_cs' => $featured_cs,
                 ));
                 $this->load->view('shared/public_footer');

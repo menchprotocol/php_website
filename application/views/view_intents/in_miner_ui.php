@@ -1,14 +1,12 @@
 <?php
-$udata = $this->session->userdata('user');
-if (isset($orphan_intents)) {
-    $c['in_id'] = 0;
+if (isset($orphan_ins)) {
+    $in['in_id'] = 0;
 }
 ?>
 
 <script>
     //Define some global variables:
-    var c_top_id = <?= $c['in_id'] ?>;
-    var current_time = '<?= date("H:i") ?>';
+    var in_focus_id = <?= $in['in_id'] ?>;
 </script>
 <script src="/js/custom/intent-manage-js.js?v=v<?= $this->config->item('app_version') ?>"
         type="text/javascript"></script>
@@ -17,10 +15,10 @@ if (isset($orphan_intents)) {
 <div class="row">
     <div class="col-xs-6 cols">
         <?php
-        if (isset($orphan_intents)) {
+        if (isset($orphan_ins)) {
 
             echo '<div id="bootcamp-objective" class="list-group">';
-            foreach ($orphan_intents as $oc) {
+            foreach ($orphan_ins as $oc) {
                 echo echo_c($oc, 1);
             }
             echo '</div>';
@@ -28,11 +26,11 @@ if (isset($orphan_intents)) {
         } else {
 
             //Start with parents:
-            echo '<h5 class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-parent-count parent-counter-' . $c['in_id'] . '">' . count($in__parents) . '</span> Parent' . echo__s(count($in__parents)) . '</h5>';
+            echo '<h5 class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-parent-count parent-counter-' . $in['in_id'] . '">' . count($in['in__parents']) . '</span> Parent' . echo__s(count($in['in__parents'])) . '</h5>';
 
-            if (count($in__parents) > 0) {
+            if (count($in['in__parents']) > 0) {
                 echo '<div class="list-group list-level-2">';
-                foreach ($in__parents as $sub_intent) {
+                foreach ($in['in__parents'] as $sub_intent) {
                     echo echo_c($sub_intent, 2, 0, true);
                 }
                 echo '</div>';
@@ -43,13 +41,13 @@ if (isset($orphan_intents)) {
 
             echo '<h5 class="badge badge-h indent1"><i class="fas fa-hashtag"></i> Intent</h5>';
             echo '<div id="bootcamp-objective" class="list-group indent1">';
-            echo echo_c($c, 1);
+            echo echo_c($in, 1);
             echo '</div>';
 
 
             //Expand/Contract buttons
             echo '<div class="indent2">';
-            echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-children-count children-counter-' . $c['in_id'] . '">' . $c['in__tree_in_count'] . '</span> Children</h5>';
+            echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-children-count children-counter-' . $in['in_id'] . '">' . $in['in__tree_in_count'] . '</span> Children</h5>';
 
             echo '<div id="expand_intents" style="padding-left:8px; display: inline-block;">';
             echo '<i class="fas fa-plus-square expand_all" style="font-size: 1.2em;"></i> &nbsp;';
@@ -58,12 +56,12 @@ if (isset($orphan_intents)) {
 
 
             //Count orphans IF we are in the top parent root:
-            if ($this->config->item('in_primary_id') == $c['in_id']) {
+            if ($this->config->item('in_primary_id') == $in['in_id']) {
                 $orphans_count = count($this->Database_model->in_fetch(array(
                     ' NOT EXISTS (SELECT 1 FROM table_ledger WHERE in_id=tr_in_child_id AND tr_status>=0) ' => null,
                 )));
                 if ($orphans_count > 0) {
-                    echo '<span style="padding-left:8px; display: inline-block;"><a href="/intents/orphan">' . $orphans_count . ' Orphans &raquo;</a></span>';
+                    echo '<span style="padding-left:8px; display: inline-block;"><a href="/intents/fn___in_orphans">' . $orphans_count . ' Orphans &raquo;</a></span>';
                 }
             }
 
@@ -71,9 +69,9 @@ if (isset($orphan_intents)) {
 
             echo '<div id="outs_error indent2"></div>'; //Show potential errors detected in the Action Plan via our JS functions...
 
-            echo '<div id="list-c-' . $c['in_id'] . '" class="list-group list-is-children list-level-2 indent2">';
-            foreach ($c['in__children'] as $sub_intent) {
-                echo echo_c($sub_intent, 2, $c['in_id']);
+            echo '<div id="list-c-' . $in['in_id'] . '" class="list-group list-is-children list-level-2 indent2">';
+            foreach ($in['in__children'] as $sub_intent) {
+                echo echo_c($sub_intent, 2, $in['in_id']);
             }
             ?>
             <div class="list-group-item list_input grey-block">
@@ -82,8 +80,8 @@ if (isset($orphan_intents)) {
                         <input type="text"
                                class="form-control intentadder-level-2 algolia_search bottom-add"
                                maxlength="<?= $this->config->item('in_outcome_max') ?>"
-                               intent-id="<?= $c['in_id'] ?>"
-                               id="addintent-c-<?= $c['in_id'] ?>"
+                               intent-id="<?= $in['in_id'] ?>"
+                               id="addintent-c-<?= $in['in_id'] ?>"
                                placeholder="Add #Intent">
                     </div>
                     <span class="input-group-addon" style="padding-right:8px;">
@@ -102,7 +100,7 @@ if (isset($orphan_intents)) {
             //Intent subscribers:
             $limit = (is_dev() ? 10 : 100);
             $trs = $this->Database_model->w_fetch(array(
-                'tr_in_child_id' => $c['in_id'],
+                'tr_in_child_id' => $in['in_id'],
             ), array('en', 'u_x', 'w_stats'), array(
                 'tr_id' => 'DESC',
             ), $limit);
@@ -188,10 +186,10 @@ if (isset($orphan_intents)) {
                                 Method</h4></div>
                         <div class="form-group label-floating is-empty">
                             <?php
-                            foreach (echo_status('in_is_any') as $c_val => $intent_type) {
+                            foreach (echo_status('in_is_any') as $in_val => $intent_type) {
                                 echo '<div class="radio" style="display:inline-block; border-bottom:1px dotted #999; margin-top: 0 !important;" data-toggle="tooltip" title="' . $intent_type['s_desc'] . '" data-placement="right">
                                     <label style="display:inline-block;">
-                                        <input type="radio" id="in_is_any_' . $c_val . '" name="in_is_any" value="' . $c_val . '" />
+                                        <input type="radio" id="in_is_any_' . $in_val . '" name="in_is_any" value="' . $in_val . '" />
                                         <i class="' . $intent_type['s_icon'] . '"></i> ' . $intent_type['s_name'] . '
                                     </label>
                                 </div>';

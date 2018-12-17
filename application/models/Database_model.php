@@ -172,7 +172,7 @@ class Database_model extends CI_Model
 
         if (!isset($insert_columns['tr_order'])) {
             //Determine the highest rank for this Action Plan:
-            $insert_columns['tr_order'] = 1 + $this->Database_model->tr_max_order('tb_actionplan_links', 'tr_order', array(
+            $insert_columns['tr_order'] = 1 + $this->Database_model->tr_max_order(array(
                     'tr_tr_parent_id' => $insert_columns['tr_tr_parent_id'],
                 ));
         }
@@ -192,176 +192,6 @@ class Database_model extends CI_Model
         return $insert_columns;
     }
 
-    function in_combo_create($in_id, $in_outcome, $in_linkto_id, $next_level, $tr_en_credit_id)
-    {
-
-        if (intval($in_id) <= 0) {
-            return array(
-                'status' => 0,
-                'message' => 'Invalid Intent ID',
-            );
-        } elseif (strlen($in_outcome) <= 0) {
-            return array(
-                'status' => 0,
-                'message' => 'Missing Intent Outcome',
-            );
-        }
-
-        $in_linkto_id = intval($in_linkto_id);
-
-        //Validate Original intent:
-        $parent_intents = $this->Database_model->in_fetch(array(
-            'in_id' => intval($in_id),
-        ), array('in__children'));
-        if (count($parent_intents) <= 0) {
-            return array(
-                'status' => 0,
-                'message' => 'Invalid Intent ID',
-            );
-        }
-
-        if (!$in_linkto_id) {
-
-            //We are NOT linking to an existing intent, but instead, we're creating a new intent:
-            //Set default new hours:
-
-            $default_new_seconds = 0;
-
-            $recursive_query = array(
-                'in__tree_max_seconds' => $default_new_seconds,
-                'in__tree_in_count' => 1, //We just added one
-            );
-
-            //Create intent:
-            $new_intent = $this->Database_model->in_create(array(
-                'in_outcome' => trim($in_outcome),
-                'in_seconds' => $default_new_seconds,
-                'in__tree_in_count' => 1, //We just added one
-                'in__tree_max_seconds' => $default_new_seconds,
-            ));
-
-            //Log transaction for New Intent:
-            $this->Database_model->tr_create(array(
-                'tr_en_credit_id' => $tr_en_credit_id,
-                'tr_metadata' => array(
-                    'input_data' => $_POST,
-                    'after' => $new_intent,
-                ),
-                'tr_en_type_id' => 4250, //New Intent
-                'tr_in_child_id' => $new_intent['in_id'],
-            ));
-
-        } else {
-
-            //We are linking to $in_linkto_id, lets make sure it exists:
-            $new_intents = $this->Database_model->in_fetch(array(
-                'in_id' => $in_linkto_id,
-                'in_status >=' => 0,
-            ), ($next_level == 2 ? array('in__children') : array()));
-
-            //, array('in__grandchildren')
-
-            if (count($new_intents) <= 0) {
-                return array(
-                    'status' => 0,
-                    'message' => 'Invalid Linked Intent ID',
-                );
-            }
-            $new_intent = $new_intents[0];
-
-
-            //check for all parents:
-            $parent_tree = $this->Database_model->in_recursive_fetch($in_id);
-            if (in_array($new_intent['in_id'], $parent_tree['in_flat_tree'])) {
-                return array(
-                    'status' => 0,
-                    'message' => 'You cannot add "' . $new_intent['in_outcome'] . '" as its own child.',
-                );
-            }
-
-
-            //Make sure this is not a duplicate intent for its parent:
-            //cr_children_fetch
-            $dup_links = $this->Database_model->tr_fetch(array(
-                'tr_in_parent_id' => intval($in_id),
-                'tr_in_child_id' => $new_intent['in_id'],
-                'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
-                'tr_status >=' => 0,
-                'in_status >=' => 0,
-            ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
-
-
-            if (count($dup_links) > 0) {
-                //What is the status? If achived, we can bring back to life!
-                if ($dup_links[0]['tr_status'] < 0) {
-                    //Yes, we can bring back to life!
-                    //TODO update old link here?
-                } else {
-                    //Ooops, this is a duplicate!
-                    return array(
-                        'status' => 0,
-                        'message' => '[' . $new_intent['in_outcome'] . '] is already linked here.',
-                    );
-                    //TODO maybe trigger a notice to admin on how to not add duplicates!
-                }
-            } elseif ($new_intent['in_id'] == $in_id) {
-                //Make sure none of the parents are the same:
-                return array(
-                    'status' => 0,
-                    'message' => 'You cannot add "' . $new_intent['in_outcome'] . '" as its own child.',
-                );
-            }
-
-            //Prepare recursive update:
-            $recursive_query = array(
-                'in__tree_in_count' => $new_intent['in__tree_in_count'],
-                'in__tree_max_seconds' => intval($new_intent['in__tree_max_seconds']),
-                'in__messages_tree_count' => $new_intent['in__messages_tree_count'],
-            );
-        }
-
-
-        //Create Intent Link:
-        $relation = $this->Database_model->tr_create(array(
-            'tr_en_credit_id' => $tr_en_credit_id,
-            'tr_en_type_id' => 4228,
-
-            'tr_in_parent_id' => intval($in_id),
-            'tr_in_child_id' => $new_intent['in_id'],
-
-            'tr_order' => 1 + $this->Database_model->tr_max_order('table_ledger', 'tr_order', array(
-                    'tr_status >=' => 0,
-                    'in_status >=' => 0,
-                    'tr_en_type_id' => 4228,
-                    'tr_in_parent_id' => intval($in_id),
-                )),
-        ), true);
-
-        //Update tree count from parent and above:
-        $this->Database_model->metadata_tree_update('in', $in_id, $recursive_query);
-
-
-        $relations = $this->Old_model->cr_children_fetch(array(
-            'tr_id' => $relation['tr_id'],
-        ));
-
-        $relations = $this->Database_model->tr_fetch(array(
-            'tr_in_parent_id' => intval($in_id),
-            'tr_in_child_id' => $new_intent['in_id'],
-            'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
-            'tr_status >=' => 0,
-            'in_status >=' => 0,
-        ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
-
-        //Return result:
-        return array(
-            'status' => 1,
-            'in_id' => $new_intent['in_id'],
-            'in__tree_max_seconds' => $new_intent['in__tree_max_seconds'],
-            'adjusted_c_count' => intval($new_intent['in__tree_in_count']),
-            'html' => echo_c(array_merge($new_intent, $relations[0]), $next_level, intval($in_id)),
-        );
-    }
 
 
     function en_fetch($match_columns, $join_objects = array(), $limit = 0, $limit_offset = 0, $order_columns = array('en_trust_score' => 'DESC'), $select = '*', $group_by = null)
@@ -632,7 +462,7 @@ class Database_model extends CI_Model
             //Should we append intent messages?
             if (in_array('in__messages', $join_objects)) {
                 $intents[$key]['in__messages'] = $this->Database_model->tr_fetch(array(
-                    'tr_status >=' => 0, //New+ status which is considered active (not removed)
+                    'tr_status >=' => 0, //New+
                     'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent messages
                     'tr_in_child_id' => $value['in_id'],
                 ), array(), 200, 0, array('tr_order' => 'ASC'));
@@ -640,30 +470,39 @@ class Database_model extends CI_Model
 
             //Should we fetch all parent intentions?
             if (in_array('in__parents', $join_objects)) {
-                $intents[$key]['in__parents'] = $this->Old_model->cr_parents_fetch(array(
+
+                $intents[$key]['in__parents'] = $this->Database_model->tr_fetch(array(
+                    'tr_status >=' => 0, //New+
+                    'in_status >=' => 0, //New+
+                    'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
                     'tr_in_child_id' => $value['in_id'],
-                    'tr_status' => 1,
-                ), $join_objects);
+                ), array('in_parent')); //Note that parents do not need any sorting, since we only sort child intents
+
             }
 
             //Have we been asked to append any children/granchildren to this query?
             if (in_array('in__children', $join_objects) || in_array('in__grandchildren', $join_objects)) {
 
                 //Fetch immediate children:
-                $intents[$key]['in__children'] = $this->Old_model->cr_children_fetch(array(
+                $intents[$key]['in__children'] = $this->Database_model->tr_fetch(array(
+                    'tr_status >=' => 0, //New+
+                    'in_status >=' => 0, //New+
+                    'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
                     'tr_in_parent_id' => $value['in_id'],
-                    'tr_status' => 1,
-                    'in_status >=' => 0,
-                ), $join_objects);
+                ), array('in_child'), 0, 0, array('tr_order' => 'ASC')); //Child intents must be ordered
 
-                //Fetch second-level granchildren intents?
-                if (in_array('in__grandchildren', $join_objects)) {
+
+                if (in_array('in__grandchildren', $join_objects) && count($intents[$key]['in__children'])>0) {
+                    //Fetch second-level grandchildren intents:
                     foreach ($intents[$key]['in__children'] as $key2 => $value2) {
-                        $intents[$key]['in__children'][$key2]['in__grandchildren'] = $this->Old_model->cr_children_fetch(array(
+
+                        $intents[$key]['in__children'][$key2]['in__grandchildren'] = $this->Database_model->tr_fetch(array(
+                            'tr_status >=' => 0, //New+
+                            'in_status >=' => 0, //New+
+                            'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
                             'tr_in_parent_id' => $value2['in_id'],
-                            'tr_status' => 1,
-                            'in_status >=' => 0,
-                        ), $join_objects);
+                        ), array('in_child'), 0, 0, array('tr_order' => 'ASC')); //Child intents must be ordered
+
                     }
                 }
             }
@@ -909,7 +748,7 @@ class Database_model extends CI_Model
             return false;
         }
 
-        if (isset($insert_columns['in_metadata'])) {
+        if (isset($insert_columns['in_metadata']) && count($insert_columns['in_metadata']) > 0) {
             $insert_columns['in_metadata'] = serialize($insert_columns['in_metadata']);
         } else {
             $insert_columns['in_metadata'] = null;
@@ -1698,8 +1537,8 @@ class Database_model extends CI_Model
                 ((!$intents[0]['in__tree_miners'] && count($intents[0]['___tree_miners']) < 1) || (serialize($intents[0]['___tree_miners']) == $intents[0]['in__tree_miners'])) &&
                 ((!$intents[0]['in__tree_contents'] && count($intents[0]['___tree_contents']) < 1) || (serialize($intents[0]['___tree_contents']) == $intents[0]['in__tree_contents'])) &&
                 $intents[0]['___tree_all_count'] == $intents[0]['in__tree_in_count'] &&
-                $intents[0]['___messages_count'] == $intents[0]['in__messages_count'] &&
-                $intents[0]['___messages_tree_count'] == $intents[0]['in__messages_tree_count']
+                $intents[0]['___messages_count'] == $intents[0]['in__message_count'] &&
+                $intents[0]['___messages_tree_count'] == $intents[0]['in__message_tree_count']
             )) {
 
                 //Something was not up to date, let's update:
@@ -1709,8 +1548,8 @@ class Database_model extends CI_Model
                     'in__tree_min_cost' => number_format($intents[0]['___tree_min_cost'], 2),
                     'in__tree_max_cost' => number_format($intents[0]['___tree_max_cost'], 2),
                     'in__tree_in_count' => $intents[0]['___tree_all_count'],
-                    'in__messages_count' => $intents[0]['___messages_count'],
-                    'in__messages_tree_count' => $intents[0]['___messages_tree_count'],
+                    'in__message_count' => $intents[0]['___messages_count'],
+                    'in__message_tree_count' => $intents[0]['___messages_tree_count'],
                     'in__tree_experts' => $intents[0]['___tree_experts'],
                     'in__tree_miners' => $intents[0]['___tree_miners'],
                     'in__tree_contents' => $intents[0]['___tree_contents'],
@@ -1720,7 +1559,7 @@ class Database_model extends CI_Model
                 }
 
 
-                array_push($immediate_children['db_queries'], '[' . $in_id . '] Seconds:' . intval($intents[0]['in__tree_max_seconds']) . '=>' . intval($intents[0]['___tree_max_seconds']) . ' / All Count:' . $intents[0]['in__tree_in_count'] . '=>' . $intents[0]['___tree_all_count'] . ' / Message:' . $intents[0]['in__messages_count'] . '=>' . $intents[0]['___messages_count'] . ' / Tree Message:' . $intents[0]['in__messages_tree_count'] . '=>' . $intents[0]['___messages_tree_count'] . ' (' . $intents[0]['in_outcome'] . ')');
+                array_push($immediate_children['db_queries'], '[' . $in_id . '] Seconds:' . intval($intents[0]['in__tree_max_seconds']) . '=>' . intval($intents[0]['___tree_max_seconds']) . ' / All Count:' . $intents[0]['in__tree_in_count'] . '=>' . $intents[0]['___tree_all_count'] . ' / Message:' . $intents[0]['in__message_count'] . '=>' . $intents[0]['___messages_count'] . ' / Tree Message:' . $intents[0]['in__message_tree_count'] . '=>' . $intents[0]['___messages_tree_count'] . ' (' . $intents[0]['in_outcome'] . ')');
 
             }
         }
@@ -1930,8 +1769,8 @@ class Database_model extends CI_Model
                 $new_item['en_name'] = $item['en_name'];
                 $new_item['en_trust_score'] = intval($item['en_trust_score']);
 
-                //Add parent relation data:
-                $new_item['en_parent_content'] .= '';
+                //Add parent data:
+                $new_item['en_parent_content'] = '';
                 $new_item['_tags'] = array();
                 foreach ($item['en__parents'] as $tr) {
 
@@ -1939,7 +1778,7 @@ class Database_model extends CI_Model
 
                     //Also index the content value if any:
                     if(strlen($tr['tr_content'])>0){
-                        $new_item['en_parent_content'] .= ' ' . $tr['tr_content'];
+                        $new_item['en_parent_content'] .= $tr['tr_content'] . ' ';
                     }
                 }
 
@@ -1959,10 +1798,12 @@ class Database_model extends CI_Model
                 $new_item['in__tree_max_secs'] = ( $metadata && isset($metadata['in__tree_max_seconds']) ? intval($metadata['in__tree_max_seconds']) : 0 );
                 $new_item['in__tree_min_secs'] = ( $metadata && isset($metadata['in__tree_min_secs']) ? intval($metadata['in__tree_min_secs']) : 0 );
                 $new_item['in__tree_in_count'] = ( $metadata && isset($metadata['in__tree_in_count']) ? intval($metadata['in__tree_in_count']) : 0 );
-                $new_item['in__messages_tree_count'] = ( $metadata && isset($metadata['in__messages_tree_count']) ? intval($metadata['in__messages_tree_count']) : 0 );
+                $new_item['in__message_tree_count'] = ( $metadata && isset($metadata['in__message_tree_count']) ? intval($metadata['in__message_tree_count']) : 0 );
 
                 //Append parent intents IDs:
                 $new_item['_tags'] = array();
+                $parent_ins =
+
                 $child_cs = $this->Old_model->cr_parents_fetch(array(
                     'tr_in_child_id' => $item['in_id'],
                     'tr_status' => 1,

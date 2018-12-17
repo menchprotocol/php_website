@@ -17,7 +17,7 @@ if (count($k_ins) == 1) {
     $message_in_requirements = $this->Matrix_model->in_completion_requirements($c);
 
     //Submission button visible after first button was clicked:
-    $is_incomplete = ($k_ins[0]['tr_status'] <= 0 || ($k_ins[0]['tr_status'] == 1 && count($k_outs) == 0));
+    $is_incomplete = ($k_ins[0]['tr_status'] < 1 || ($k_ins[0]['tr_status'] == 1 && count($k_outs) == 0));
     $show_written_input = ($message_in_requirements && $is_incomplete);
 }
 
@@ -90,7 +90,7 @@ if (count($k_ins) == 0) {
 
 //Show all messages:
 if (count($messages) > 0) {
-    $hide_messages_onload = (count($k_ins) == 0 || $k_ins[0]['tr_status'] <= 0);
+    $hide_messages_onload = (count($k_ins) == 0 || $k_ins[0]['tr_status'] < 1);
     echo '<div class="tips_content message_content left-grey" style="display: ' . ($hide_messages ? 'none' : 'block') . ';">';
     echo '<h5 class="badge badge-hy"><i class="fas fa-comment-dots"></i> ' . count($messages) . ' Message' . echo__s(count($messages)) . ':</h5>';
     foreach ($messages as $i) {

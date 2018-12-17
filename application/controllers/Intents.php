@@ -12,139 +12,162 @@ class Intents extends CI_Controller
     }
 
 
-    //For miners to see and manage an intent:
-    function intent_manage($in_id)
+    function fn___in_miner_ui($in_id)
     {
 
-        //Authenticate, redirect if not:
+        /*
+         *
+         * Main intent view that Miners use to manage the
+         * intent networks.
+         *
+         * */
+
+        //Authenticate Miner, redirect if failed:
         $udata = auth(array(1308), 1);
 
         //Fetch intent with 2 levels of children:
         $intents = $this->Database_model->in_fetch(array(
             'in_id' => $in_id,
-            'in_status >=' => 0,
-        ), array('in__grandchildren'));
+            'in_status >=' => 0, //New+ (Since Miners are moderating it)
+        ), array('in__parents','in__grandchildren'));
 
-        //Found it?
-        if (!isset($intents[0])) {
-            die('Error: Intent ID ' . $in_id . ' not found');
+        //Make sure we found it:
+        if ( count($intents) < 1) {
+            return redirect_message('/intents/' . $this->config->item('in_primary_id'), '<div class="alert alert-danger" role="alert">Intent ID [' . $in_id . '] not found</div>');
         }
 
-        //Do we just wanna look at the raw data blob?
-        if (isset($_GET['raw'])) {
-            return echo_json($intents);
-        }
-
-        //Load view:
-        $data = array(
-            'title' => $intents[0]['in_outcome'],
-            'in' => $intents[0],
-            'in__parents' => $this->Old_model->cr_parents_fetch(array(
-                'tr_in_child_id' => $in_id,
-                'tr_status' => 1,
-            ), array('in__children')),
-        );
-
-        $this->load->view('shared/matrix_header', $data);
-        $this->load->view('intents/intent_manage', $data);
+        //Load views:
+        $this->load->view('shared/matrix_header', array( 'title' => $intents[0]['in_outcome'] ));
+        $this->load->view('view_intents/in_miner_ui', array( 'in' => $intents[0] ));
         $this->load->view('shared/matrix_footer');
+
     }
 
-    function orphan()
+
+    function fn___in_orphans()
     {
 
-        //Authenticate, redirect if not:
+        /*
+         *
+         * Lists all orphan intents (without a parent intent)
+         * so Miners can review and organize them accordingly.
+         *
+         * */
+
+        //Authenticate Miner, redirect if failed:
         $udata = auth(array(1308), 1);
 
-        //Load view and passon data:
-        $this->load->view('shared/matrix_header', array(
-            'title' => 'Orphan Intents',
-        ));
-        $this->load->view('intents/intent_manage', array(
+        //Load views:
+        $this->load->view('shared/matrix_header', array( 'title' => 'Orphan Intents' ));
+        $this->load->view('view_intents/in_miner_ui', array(
             //Passing this will load the orphans instead of the regular intent tree view:
-            'orphan_intents' => $this->Database_model->in_fetch(array(
-                ' NOT EXISTS (SELECT 1 FROM table_ledger WHERE in_id=tr_in_child_id AND tr_status>=0) ' => null,
+            'orphan_ins' => $this->Database_model->in_fetch(array(
+                'NOT EXISTS (SELECT 1 FROM table_ledger WHERE in_id=tr_in_child_id AND tr_status>=0)' => null,
             )),
         ));
         $this->load->view('shared/matrix_footer');
+
     }
 
 
-    function intent_public($in_id)
+    function fn___in_public_ui($in_id)
     {
+
+        /*
+         *
+         * Loads public landing page that Masters can use
+         * to review intents before adding to Action Plan
+         *
+         * */
 
         //Fetch data:
         $intents = $this->Database_model->in_fetch(array(
             'in_id' => $in_id,
-            'in_status >=' => 2, //Published or featured
-        ), array('in__grandchildren', 'in__messages', 'in__parents'));
+            'in_status >=' => 2, //Published+ (Since it's a public landing page)
+        ), array('in__parents', 'in__grandchildren', 'in__messages'));
 
-
-        //Validate Intent:
-        if (!isset($intents[0])) {
-            //Invalid key, redirect back:
-            redirect_message('/' . $this->config->item('in_primary_id'), '<div class="alert alert-danger" role="alert">Invalid Intent ID</div>');
+        //Make sure we found it:
+        if ( count($intents) < 1) {
+            return redirect_message('/' . $this->config->item('in_primary_id'), '<div class="alert alert-danger" role="alert">Intent ID [' . $in_id . '] not found</div>');
         }
 
         //Load home page:
-        $this->load->view('shared/public_header', array(
-            'title' => $intents[0]['in_outcome'],
-            'in' => $intents[0],
-        ));
-        $this->load->view('intents/landing_page', array(
-            'in' => $intents[0],
-        ));
+        $this->load->view('shared/public_header', array( 'title' => $intents[0]['in_outcome'] ));
+        $this->load->view('view_intents/in_public_ui', array( 'in' => $intents[0] ));
         $this->load->view('shared/public_footer');
+
     }
 
-    /* ******************************
-     * c Intent Processing
-     ****************************** */
 
-    function in_combo_create()
+    function fn___in_create_or_link()
     {
+
+        /*
+         *
+         * Either creates an intent link between in_parent_id & in_link_child_id
+         * OR will create a new intent with outcome in_outcome and then link it
+         * to in_parent_id (In this case in_link_child_id=0)
+         *
+         * */
+
+        //Authenticate Miner:
         $udata = auth(array(1308));
         if (!$udata) {
-            return array(
+            return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Session. Refresh the Page to Continue',
-            );
-        } elseif (!isset($_POST['in_id']) || !isset($_POST['in_outcome']) || !isset($_POST['in_linkto_id']) || !isset($_POST['next_level'])) {
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Missing core inputs',
             ));
-        } else {
-            echo_json($this->Database_model->in_combo_create($_POST['in_id'], $_POST['in_outcome'], $_POST['in_linkto_id'], $_POST['next_level'], $udata['en_id']));
+        } elseif (!isset($_POST['in_parent_id']) || intval($_POST['in_parent_id']) < 1) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Parent Intent ID',
+            ));
+        } elseif (!isset($_POST['next_level']) || !in_array(intval($_POST['next_level']), array(2,3))) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Intent Level',
+            ));
+        } elseif (!isset($_POST['in_outcome']) || !isset($_POST['in_link_child_id']) || ( strlen($_POST['in_outcome']) < 1 && intval($_POST['in_link_child_id']) < 1)) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing either Intent Outcome OR Child Intent ID',
+            ));
         }
+
+        //All seems good, go ahead and try creating the intent:
+        return echo_json($this->Matrix_model->fn___in_create_or_link($_POST['in_parent_id'], $_POST['in_outcome'], $_POST['in_link_child_id'], $_POST['next_level'], $udata['en_id']));
+
     }
+
+
+
 
     function c_move_c()
     {
 
-        //Auth user and Load object:
+        //Authenticate Miner:
         $udata = auth(array(1308));
         if (!$udata) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Session. Login again to Continue.',
             ));
-        } elseif (!isset($_POST['tr_id']) || intval($_POST['tr_id']) <= 0) {
+        } elseif (!isset($_POST['tr_id']) || intval($_POST['tr_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid tr_id',
             ));
-        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) <= 0) {
+        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid in_id',
             ));
-        } elseif (!isset($_POST['from_in_id']) || intval($_POST['from_in_id']) <= 0) {
+        } elseif (!isset($_POST['from_in_id']) || intval($_POST['from_in_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing from_in_id',
             ));
-        } elseif (!isset($_POST['to_in_id']) || intval($_POST['to_in_id']) <= 0) {
+        } elseif (!isset($_POST['to_in_id']) || intval($_POST['to_in_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing to_in_id',
@@ -183,12 +206,12 @@ class Intents extends CI_Controller
         $updated_from_recursively = $this->Database_model->metadata_tree_update('in', $from[0]['in_id'], array(
             'in__tree_in_count' => -($subject[0]['in__tree_in_count']),
             'in__tree_max_seconds' => -(intval($subject[0]['in__tree_max_seconds'])),
-            'in__messages_tree_count' => -($subject[0]['in__messages_tree_count']),
+            'in__message_tree_count' => -($subject[0]['in__message_tree_count']),
         ));
         $updated_to_recursively = $this->Database_model->metadata_tree_update('in', $to[0]['in_id'], array(
             'in__tree_in_count' => +($subject[0]['in__tree_in_count']),
             'in__tree_max_seconds' => +(intval($subject[0]['in__tree_max_seconds'])),
-            'in__messages_tree_count' => +($subject[0]['in__messages_tree_count']),
+            'in__message_tree_count' => +($subject[0]['in__message_tree_count']),
         ));
 
         //Return success
@@ -201,7 +224,7 @@ class Intents extends CI_Controller
     function c_save_settings()
     {
 
-        //Auth user and check required variables:
+        //Authenticate Miner:
         $udata = auth(array(1308));
 
         //Validate Original intent:
@@ -214,7 +237,7 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Session Expired',
             ));
-        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) <= 0) {
+        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Intent ID',
@@ -224,7 +247,7 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing level',
             ));
-        } elseif (!isset($_POST['in_outcome']) || strlen($_POST['in_outcome']) <= 0) {
+        } elseif (!isset($_POST['in_outcome']) || strlen($_POST['in_outcome']) < 1) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Intent',
@@ -274,7 +297,7 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Completion Settings',
             ));
-        } elseif (count($intents) <= 0) {
+        } elseif (count($intents) < 1) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Invalid in_id',
@@ -295,7 +318,7 @@ class Intents extends CI_Controller
 
 
         //This determines if there are any recursive updates needed on the tree:
-        $recursive_query = array();
+        $in_metadata_modify = array();
 
 
         //Check to see which variables actually changed:
@@ -312,7 +335,7 @@ class Intents extends CI_Controller
                 //Something was updated!
                 //Does it required a recursive upward update on the tree?
                 if ($key == 'in_seconds') {
-                    $recursive_query['in__tree_max_seconds'] = intval($_POST[$key]) - intval($intents[0][$key]);
+                    $in_metadata_modify['in__tree_max_seconds'] = intval($_POST[$key]) - intval($intents[0][$key]);
                 }
 
             }
@@ -326,8 +349,8 @@ class Intents extends CI_Controller
             $this->Database_model->in_update($_POST['in_id'], $c_update, $udata['en_id']);
 
             //Any recursive updates needed?
-            if (count($recursive_query) > 0) {
-                $this->Database_model->metadata_tree_update('in', $_POST['in_id'], $recursive_query);
+            if (count($in_metadata_modify) > 0) {
+                $this->Database_model->metadata_tree_update('in', $_POST['in_id'], $in_metadata_modify);
             }
 
             //Any recursive down status sync requests?
@@ -338,12 +361,12 @@ class Intents extends CI_Controller
                 $children = $this->Database_model->in_recursive_fetch(intval($_POST['in_id']), true);
 
                 //Fetch all intents that match parent intent status:
-                $child_intents = $this->Database_model->in_fetch(array(
+                $child_ins = $this->Database_model->in_fetch(array(
                     'in_id IN ('.join(',' , $children['in_flat_tree']).')' => null,
                     'in_status' => intval($intents[0]['in_status']),
                 ));
 
-                foreach ($child_intents as $child_in) {
+                foreach ($child_ins as $child_in) {
                     //Update this intent as the status did match:
                     $children_updated += $this->Database_model->in_update($child_in['in_id'], array('in_status' => intval($_POST['in_status'])), $udata['en_id']);
                 }
@@ -354,7 +377,7 @@ class Intents extends CI_Controller
         return echo_json(array(
             'status' => 1,
             'children_updated' => $children_updated,
-            'adjusted_c_count' => -($intents[0]['in__tree_in_count']),
+            'in__tree_in_count' => -($intents[0]['in__tree_in_count']),
             'message' => '<span><i class="fas fa-check"></i> Saved' . ($children_updated > 0 ? ' & ' . $children_updated . ' Recursive Updates' : '') . '</span>',
             'status_c_ui' => echo_status('in', $_POST['in_status'], true, 'left'),
             'status_cr_ui' => echo_status('tr_status', $_POST['tr_status'], true, 'left'),
@@ -366,7 +389,7 @@ class Intents extends CI_Controller
     {
 
 
-        //Auth user and check required variables:
+        //Authenticate Miner:
         $udata = auth(array(1308));
 
         if (!$udata) {
@@ -375,13 +398,13 @@ class Intents extends CI_Controller
                 'message' => 'Session Expired',
             ));
             return false;
-        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) <= 0) {
+        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
             echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Intent ID',
             ));
             return false;
-        } elseif (!isset($_POST['tr_id']) || intval($_POST['tr_id']) <= 0) {
+        } elseif (!isset($_POST['tr_id']) || intval($_POST['tr_id']) < 1) {
             echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Intent Link ID',
@@ -418,12 +441,12 @@ class Intents extends CI_Controller
 
 
         //Update parent tree (and upwards) based on the intent type BEFORE removing the link:
-        $recursive_query = array(
+        $in_metadata_modify = array(
             'in__tree_in_count' => -($intents[0]['in__tree_in_count']),
             'in__tree_max_seconds' => -(intval($intents[0]['in__tree_max_seconds'])),
-            'in__messages_tree_count' => -($intents[0]['in__messages_tree_count']),
+            'in__message_tree_count' => -($intents[0]['in__message_tree_count']),
         );
-        $this->Database_model->metadata_tree_update('in', $in__parents[0]['tr_in_parent_id'], $recursive_query);
+        $this->Database_model->metadata_tree_update('in', $in__parents[0]['tr_in_parent_id'], $in_metadata_modify);
 
 
         //Remove Transaction:
@@ -435,7 +458,7 @@ class Intents extends CI_Controller
         echo_json(array(
             'status' => 1,
             'c_parent' => $in__parents[0]['tr_in_parent_id'],
-            'adjusted_c_count' => -($intents[0]['in__tree_in_count']),
+            'in__tree_in_count' => -($intents[0]['in__tree_in_count']),
         ));
 
     }
@@ -444,19 +467,19 @@ class Intents extends CI_Controller
     function in_sort_save()
     {
 
-        //Auth user and Load object:
+        //Authenticate Miner:
         $udata = auth(array(1308));
         if (!$udata) {
             echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Session. Login again to Continue.',
             ));
-        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) <= 0) {
+        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
             echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid in_id',
             ));
-        } elseif (!isset($_POST['new_tr_orders']) || !is_array($_POST['new_tr_orders']) || count($_POST['new_tr_orders']) <= 0) {
+        } elseif (!isset($_POST['new_tr_orders']) || !is_array($_POST['new_tr_orders']) || count($_POST['new_tr_orders']) < 1) {
             echo_json(array(
                 'status' => 0,
                 'message' => 'Nothing passed for sorting',
@@ -464,10 +487,10 @@ class Intents extends CI_Controller
         } else {
 
             //Validate Parent intent:
-            $parent_intents = $this->Database_model->in_fetch(array(
+            $parent_ins = $this->Database_model->in_fetch(array(
                 'in_id' => intval($_POST['in_id']),
             ));
-            if (count($parent_intents) <= 0) {
+            if (count($parent_ins) < 1) {
                 echo_json(array(
                     'status' => 0,
                     'message' => 'Invalid in_id',
@@ -477,7 +500,7 @@ class Intents extends CI_Controller
                 //Fetch for the record:
                 $children_before = $this->Database_model->tr_fetch(array(
                     'tr_in_parent_id' => intval($_POST['in_id']),
-                    'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
+                    'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
                     'tr_status >=' => 0,
                     'in_status >=' => 0,
                 ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
@@ -492,7 +515,7 @@ class Intents extends CI_Controller
                 //Fetch again for the record:
                 $children_after = $this->Database_model->tr_fetch(array(
                     'tr_in_parent_id' => intval($_POST['in_id']),
-                    'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent-to-Intent Links
+                    'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
                     'tr_status >=' => 0,
                     'in_status >=' => 0,
                 ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
@@ -500,7 +523,7 @@ class Intents extends CI_Controller
                 //Log transaction:
                 $this->Database_model->tr_create(array(
                     'tr_en_credit_id' => $udata['en_id'],
-                    'tr_content' => 'Sorted child intents for [' . $parent_intents[0]['in_outcome'] . ']',
+                    'tr_content' => 'Sorted child intents for [' . $parent_ins[0]['in_outcome'] . ']',
                     'tr_metadata' => array(
                         'input_data' => $_POST,
                         'before' => $children_before,
@@ -574,7 +597,7 @@ class Intents extends CI_Controller
 
         if (!$udata) {
             die('<div class="alert alert-danger" role="alert">Session Expired</div>');
-        } elseif (intval($in_id) <= 0) {
+        } elseif (intval($in_id) < 1) {
             die('<div class="alert alert-danger" role="alert">Missing Intent ID [' . $in_id . ']</div>');
         }
 
@@ -597,7 +620,7 @@ class Intents extends CI_Controller
 
         if (!$udata) {
             die('<div class="alert alert-danger" role="alert">Session Expired</div>');
-        } elseif (intval($in_id) <= 0) {
+        } elseif (intval($in_id) < 1) {
             die('<div class="alert alert-danger" role="alert">Missing Intent ID</div>');
         }
 
@@ -624,7 +647,7 @@ class Intents extends CI_Controller
         if (!$udata) {
             //Display error:
             die('<span style="color:#FF0000;">Error: Invalid Session. Login again to continue.</span>');
-        } elseif (intval($in_id) <= 0) {
+        } elseif (intval($in_id) < 1) {
             die('<span style="color:#FF0000;">Error: Invalid Intent id.</span>');
         }
 
@@ -635,7 +658,7 @@ class Intents extends CI_Controller
         $this->load->view('shared/matrix_header', array(
             'title' => 'Intent #' . $in_id . ' Messages',
         ));
-        $this->load->view('intents/frame_messages', array(
+        $this->load->view('view_intents/in_message_iframe', array(
             'in_id' => $in_id,
         ));
         $this->load->view('shared/matrix_footer');
@@ -740,11 +763,11 @@ class Intents extends CI_Controller
         //Update intent count & tree:
         //Do a relative adjustment for this intent's metadata
         $this->Database_model->metadata_update('in', $intents[0], array(
-            'in__messages_count' => 1, //Add 1 to existing value
+            'in__message_count' => 1, //Add 1 to existing value
         ), false);
 
         $this->Database_model->metadata_tree_update('in', $intents[0]['in_id'], array(
-            'in__messages_tree_count' => 1,
+            'in__message_tree_count' => 1,
         ));
 
 
@@ -767,14 +790,14 @@ class Intents extends CI_Controller
     function i_modify()
     {
 
-        //Auth user and Load object:
+        //Authenticate Miner:
         $udata = auth(array(1308));
         if (!$udata) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Session. Refresh.',
             ));
-        } elseif (!isset($_POST['tr_id']) || intval($_POST['tr_id']) <= 0) {
+        } elseif (!isset($_POST['tr_id']) || intval($_POST['tr_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Transaction ID',
@@ -784,7 +807,7 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Message',
             ));
-        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) <= 0 || !is_valid_intent($_POST['in_id'])) {
+        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1 || !is_valid_intent($_POST['in_id'])) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Intent ID',

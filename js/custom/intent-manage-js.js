@@ -1,7 +1,7 @@
 //This also has an equal PHP function echo_hours() which we want to make sure has more/less the same logic:
 function echo_js_hours(in_seconds) {
     in_seconds = parseInt(in_seconds);
-    if (in_seconds <= 0) {
+    if (in_seconds < 1) {
         return '0';
     } else if (in_seconds < 3600) {
         //Show this in minutes:
@@ -68,7 +68,7 @@ $(document).ready(function () {
     });
 
     //Load Sortable for level 2:
-    in_sort_load(c_top_id, 2);
+    in_sort_load(in_focus_id, 2);
 
 
     $('input[type=radio][name=in_is_any]').change(function () {
@@ -111,14 +111,14 @@ $(document).ready(function () {
 
     $("#add_in_btn").click(function () {
         //miner clicked on the add new intent button at level 2:
-        c_js_new(c_top_id, 2);
+        fn___in_create_or_link(in_focus_id, 2);
     });
 
 
     //Load Algolia:
     $(".intentadder-level-2").on('autocomplete:selected', function (event, suggestion, dataset) {
 
-        c_js_new($(this).attr('intent-id'), 2, suggestion.in_id);
+        fn___in_create_or_link($(this).attr('intent-id'), 2, suggestion.in_id);
 
     }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
 
@@ -143,17 +143,17 @@ $(document).ready(function () {
             },
             header: function (data) {
                 if (!data.isEmpty) {
-                    return '<a href="javascript:c_js_new(\'' + $(".intentadder-level-2").attr('intent-id') + '\',2)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-hashtag"></i> ' + data.query + '</a>';
+                    return '<a href="javascript:fn___in_create_or_link(\'' + $(".intentadder-level-2").attr('intent-id') + '\',2)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-hashtag"></i> ' + data.query + '</a>';
                 }
             },
             empty: function (data) {
-                return '<a href="javascript:c_js_new(\'' + $(".intentadder-level-2").attr('intent-id') + '\',2)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-hashtag"></i> ' + data.query + '</a>';
+                return '<a href="javascript:fn___in_create_or_link(\'' + $(".intentadder-level-2").attr('intent-id') + '\',2)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-hashtag"></i> ' + data.query + '</a>';
             },
         }
     }]).keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            return c_js_new($(this).attr('intent-id'), 2);
+            return fn___in_create_or_link($(this).attr('intent-id'), 2);
         }
     });
 
@@ -205,7 +205,7 @@ function in_load_search_level3() {
 
     $(".intentadder-level-3").on('autocomplete:selected', function (event, suggestion, dataset) {
 
-        c_js_new($(this).attr('intent-id'), 3, suggestion.in_id);
+        fn___in_create_or_link($(this).attr('intent-id'), 3, suggestion.in_id);
 
     }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
 
@@ -230,14 +230,14 @@ function in_load_search_level3() {
             },
             header: function (data) {
                 if (!data.isEmpty) {
-                    return '<a href="javascript:c_js_new(\'' + $(".intentadder-level-3").attr('intent-id') + '\',3)" class="suggestion"><span><i class="fas fa-plus-circle"></i></span> ' + data.query + '</a>';
+                    return '<a href="javascript:fn___in_create_or_link(\'' + $(".intentadder-level-3").attr('intent-id') + '\',3)" class="suggestion"><span><i class="fas fa-plus-circle"></i></span> ' + data.query + '</a>';
                 }
             },
         }
     }]).keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            return c_js_new($(this).attr('intent-id'), 3);
+            return fn___in_create_or_link($(this).attr('intent-id'), 3);
         }
     });
 
@@ -247,7 +247,7 @@ function in_load_search_level3() {
 function in_sort_save(in_id, level) {
 
     if (level == 2) {
-        var s_element = "list-c-" + c_top_id;
+        var s_element = "list-c-" + in_focus_id;
         var s_draggable = ".is_level2_sortable";
     } else if (level == 3) {
         var s_element = "list-cr-" + $('.intent_line_' + in_id).attr('data-link-id');
@@ -292,7 +292,7 @@ function in_sort_save(in_id, level) {
 
     if (level == 2 && !is_properly_sorted && !in_id) {
         //Sorting issue detected on Task load:
-        in_id = parseInt(c_top_id);
+        in_id = parseInt(in_focus_id);
     }
 
     //It might be zero for lists that have jsut been emptied
@@ -313,7 +313,7 @@ function in_sort_load(in_id, level) {
 
     if (level == 2) {
         var element_key = null;
-        var s_element = "list-c-" + c_top_id;
+        var s_element = "list-c-" + in_focus_id;
         var s_draggable = ".is_level2_sortable";
     } else if (level == 3) {
         var element_key = '.intent_line_' + in_id;
@@ -693,7 +693,7 @@ function c_save_modify() {
                 } else {
                     //hide removed item:
                     //Adjust hours:
-                    adjust_js_ui(modify_data['in_id'], modify_data['level'], 0, data.adjusted_c_count, 1);
+                    adjust_js_ui(modify_data['in_id'], modify_data['level'], 0, data.in__tree_in_count, 1);
 
                     //Remove from UI:
                     $('#cr_' + modify_data['tr_id']).html('<span style="color:#2f2739;"><i class="fas fa-trash-alt"></i> Removed</span>');
@@ -758,7 +758,7 @@ function c_save_modify() {
             setTimeout(function () {
                 if (modify_data['apply_recurively'] && data.children_updated > 0) {
                     //Refresh page soon to show new status for children:
-                    window.location = "/intents/" + c_top_id;
+                    window.location = "/intents/" + in_focus_id;
                 } else {
                     //Hide the editor & saving results:
                     $('.save_intent_changes').hide();
@@ -774,20 +774,26 @@ function c_save_modify() {
 }
 
 
-function c_js_new(in_id, next_level, in_linkto_id=0) {
+function fn___in_create_or_link(in_parent_id, next_level, in_link_child_id=0) {
 
-    //If in_linkto_id>0 this means we're only linking
-    //Set variables mostly based on level:
+    /*
+     *
+     * Either creates an intent link between in_parent_id & in_link_child_id
+     * OR will create a new intent based on input text and then link it
+     * to in_parent_id (In this case in_link_child_id=0)
+     *
+     * */
 
     if (next_level == 2) {
         var sort_handler = ".is_level2_sortable";
-        var sort_list_id = "list-c-" + c_top_id;
-        var input_field = $('#addintent-c-' + in_id);
+        var sort_list_id = "list-c-" + in_focus_id;
+        var input_field = $('#addintent-c-' + in_parent_id);
     } else if (next_level == 3) {
         var sort_handler = ".is_level3_sortable";
-        var sort_list_id = "list-cr-" + $('.intent_line_' + in_id).attr('data-link-id');
-        var input_field = $('#addintent-cr-' + $('.intent_line_' + in_id).attr('data-link-id'));
+        var sort_list_id = "list-cr-" + $('.intent_line_' + in_parent_id).attr('data-link-id');
+        var input_field = $('#addintent-cr-' + $('.intent_line_' + in_parent_id).attr('data-link-id'));
     } else {
+        //Ooooopsi, this should not happen:
         alert('Invalid next_level value [' + next_level + ']');
         return false;
     }
@@ -795,7 +801,8 @@ function c_js_new(in_id, next_level, in_linkto_id=0) {
 
     var intent_name = input_field.val();
 
-    if (!in_linkto_id && intent_name.length < 1) {
+    //We either need the intent name (to create a new intent) or the in_link_child_id>0 to create an intent link:
+    if (!in_link_child_id && intent_name.length < 1) {
         alert('Error: Missing Intent. Try Again...');
         input_field.focus();
         return false;
@@ -805,11 +812,11 @@ function c_js_new(in_id, next_level, in_linkto_id=0) {
     add_to_list(sort_list_id, sort_handler, '<div id="temp' + next_level + '" class="list-group-item"><img src="/img/round_load.gif" class="loader" /> Adding... </div>');
 
     //Update backend:
-    $.post("/intents/in_combo_create", {
-        in_id: in_id,
+    $.post("/intents/fn___in_create_or_link", {
+        in_parent_id: in_parent_id,
         in_outcome: intent_name,
         next_level: next_level,
-        in_linkto_id: in_linkto_id
+        in_link_child_id: in_link_child_id
     }, function (data) {
 
         //Remove loader:
@@ -818,47 +825,46 @@ function c_js_new(in_id, next_level, in_linkto_id=0) {
         if (data.status) {
 
             //Add new
-            add_to_list(sort_list_id, sort_handler, data.html);
+            add_to_list(sort_list_id, sort_handler, data.in_child_html);
 
-            //Re-adjust sorting:
-            in_sort_load(in_id, next_level);
+            //Reload sorting to enable sorting for the newly added intent:
+            in_sort_load(in_parent_id, next_level);
 
             //Remove potential grey class:
-            $('.tree-badge-' + in_id).removeClass('grey');
-
+            $('.tree-badge-' + in_parent_id).removeClass('grey');
 
             if (next_level == 2) {
 
                 //Adjust the Task count:
                 in_sort_save(0, 2);
 
-                //Re-adjust sorting for inner Steps:
-                in_sort_load(data.in_id, 3);
+                //Reload sorting to enable sorting for the newly added intent:
+                in_sort_load(data.in_child_id, 3);
 
                 //Load search again:
                 in_load_search_level3();
 
             } else {
+
                 //Adjust Step sorting:
-                in_sort_save(in_id, next_level);
+                in_sort_save(in_parent_id, next_level);
+
             }
 
             //Tooltips:
             $('[data-toggle="tooltip"]').tooltip();
 
             //Adjust time:
-            adjust_js_ui(data.in_id, next_level, data.in__tree_max_seconds, data.adjusted_c_count, 0, 1);
+            adjust_js_ui(data.in_child_id, next_level, data.in__tree_max_seconds, data.in__tree_in_count, 0, 1);
 
         } else {
             //Show errors:
             alert('ERROR: ' + data.message);
         }
 
-        //Empty Input:
-        input_field.focus();
-
     });
 
-    //Prevent form submission:
+    //Return false to prevent <form> submission:
     return false;
+
 }

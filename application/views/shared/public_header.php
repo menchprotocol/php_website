@@ -28,7 +28,7 @@ $url_part_1 = $this->uri->segment(1);
 
 <?php $this->load->view('shared/messenger_web_chat'); ?>
 
-<nav class="navbar navbar-warning navbar-fixed-top navbar-color-on-scroll <?= (isset($landing_page) ? 'navbar-transparent' : 'no-adj') ?>">
+<nav class="navbar navbar-warning navbar-fixed-top navbar-color-on-scroll no-adj">
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -63,22 +63,15 @@ $url_part_1 = $this->uri->segment(1);
     </div>
 </nav>
 
+
+<div class="main main-raised main-plain">
+    <div class="container body-container">
+
 <?php
-//Any landing pages?
-if (isset($landing_page)) {
-
-    //Yes, load the page:
-    $this->load->view($landing_page, (isset($lp_variables) ? $lp_variables : null));
-
-} else {
-    //Regular content page:
-    echo '<div class="main main-raised main-plain">';
-    echo '<div class="container body-container">';
-
-    $hm = $this->session->flashdata('hm');
-    if ($hm) {
-        echo $hm;
-    }
+//Show possible flash message:
+$hm = $this->session->flashdata('hm');
+if ($hm) {
+    echo $hm;
 }
 
 if (isset($message)) {

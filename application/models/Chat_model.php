@@ -223,6 +223,7 @@ class Chat_model extends CI_Model
                     ));
 
                 }
+
             }
 
         } elseif (substr_count($reference, 'REACTIVATE_') == 1) {

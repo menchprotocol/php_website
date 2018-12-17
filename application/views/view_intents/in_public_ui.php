@@ -33,17 +33,17 @@
 </script>
 
 
-<div id="landing_page">
+<div id="in_public_ui">
 
     <?php
     if (!($c['in_id'] == $this->config->item('in_primary_id')) && 0) {
         //TODO Re-active later... For now we have the bottom section for related intentions
         $need_grandpa = true;
         $grandpa_intent = null;
-        $parent_intents = null;
+        $parent_ins = null;
         //Show all parent intents for this intent:
         foreach ($c['in__parents'] as $ci) {
-            $parent_intents .= '<a class="list-group-item" href="/' . $ci['in_id'] . '"><span class="badge badge-primary"><i class="fas fa-angle-left"></i></span> ' . $ci['in_outcome'] . '</a>';
+            $parent_ins .= '<a class="list-group-item" href="/' . $ci['in_id'] . '"><span class="badge badge-primary"><i class="fas fa-angle-left"></i></span> ' . $ci['in_outcome'] . '</a>';
             if ($ci['in_id'] == $this->config->item('in_primary_id')) {
                 //Already included:
                 $need_grandpa = false;
@@ -61,7 +61,7 @@
         //Display generated parents:
         echo '<div class="list-group" style="margin-top: 10px;">';
         echo($need_grandpa ? $grandpa_intent : '');
-        echo $parent_intents;
+        echo $parent_ins;
         echo '</div>';
 
     }

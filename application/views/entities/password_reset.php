@@ -3,7 +3,7 @@
 
 
 //Make sure we have all key variables to show password reset UI:
-if (!isset($_GET['en_id']) || intval($_GET['en_id']) <= 0 || !isset($_GET['timestamp']) || intval($_GET['timestamp']) <= 0 || !isset($_GET['p_hash']) || strlen($_GET['p_hash']) < 10) {
+if (!isset($_GET['en_id']) || intval($_GET['en_id']) < 1 || !isset($_GET['timestamp']) || intval($_GET['timestamp']) < 1 || !isset($_GET['p_hash']) || strlen($_GET['p_hash']) < 10) {
 
     die('<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Missing Core Variables.</div>');
 

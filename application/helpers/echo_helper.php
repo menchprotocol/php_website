@@ -932,7 +932,7 @@ function echo_clean_url($url)
 //This also has an equal Javascript function echo_js_hours() which we want to make sure has more/less the same logic:
 function echo_hours($seconds, $micro = false)
 {
-    if ($seconds <= 0) {
+    if ($seconds < 1) {
         return '0' . ($micro ? 'm' : ' Minutes ');
     } elseif ($seconds <= 5400) {
         return round($seconds / 60) . ($micro ? 'm' : ' Minutes');
@@ -947,7 +947,7 @@ function echo_contents($c, $fb_format = 0)
 {
 
     //Do we have anything to return?
-    if (strlen($c['in__tree_contents']) <= 0) {
+    if (strlen($c['in__tree_contents']) < 1) {
         return false;
     }
 
@@ -1100,7 +1100,7 @@ function echo_pa_oneway()
 function echo_costs($c, $fb_format = 0)
 {
 
-    if ($c['in__tree_max_cost'] <= 0) {
+    if ($c['in__tree_max_cost'] < 1) {
         return false;
     } elseif (round($c['in__tree_max_cost']) == round($c['in__tree_min_cost']) || $c['in__tree_min_cost'] == 0) {
         //Single price:
@@ -1190,7 +1190,7 @@ function echo_experts($c, $fb_format = 0)
 {
 
     //Do we have any intents?
-    if (strlen($c['in__tree_experts']) <= 0) {
+    if (strlen($c['in__tree_experts']) < 1) {
         return false;
     }
 
@@ -1640,7 +1640,7 @@ function echo_c($c, $level, $c_parent_id = 0, $is_parent = false)
         $ui .= '<a href="#loadlinks-' . $c['in_id'] . '" onclick="in_tr_load(' . $c['in_id'] . ')" class="badge badge-primary" style="width:40px; margin-right:2px;"><span class="btn-counter">' . $e_count . ($e_count == $CI->config->item('tr_max_count') ? '+' : '') . '</span><i class="fas fa-atlas"></i></a>';
     }
 
-    $ui .= '<a href="#loadmessages-' . $c['in_id'] . '" onclick="in_messages_load(' . $c['in_id'] . ')" class="msg-badge-' . $c['in_id'] . ' badge badge-primary ' . ($c['in__messages_count'] == 0 ? 'grey' : '') . '" style="width:40px;"><span class="btn-counter messages-counter-' . $c['in_id'] . '">' . $c['in__messages_count'] . '</span><i class="fas fa-comment-dots"></i></a>';
+    $ui .= '<a href="#loadmessages-' . $c['in_id'] . '" onclick="in_messages_load(' . $c['in_id'] . ')" class="msg-badge-' . $c['in_id'] . ' badge badge-primary ' . ($c['in__message_count'] == 0 ? 'grey' : '') . '" style="width:40px;"><span class="btn-counter messages-counter-' . $c['in_id'] . '">' . $c['in__message_count'] . '</span><i class="fas fa-comment-dots"></i></a>';
 
     //Show total tree time here:
     $ui .= '<a class="badge badge-primary" onclick="in_modify_load(' . $c['in_id'] . ',' . (isset($c['tr_id']) ? $c['tr_id'] : 0) . ')" style="margin:-2px -8px 0 2px; width:40px;" href="#loadmodify-' . $c['in_id'] . '-' . (isset($c['tr_id']) ? $c['tr_id'] : 0) . '"><span class="btn-counter slim-time t_estimate_' . $c['in_id'] . '" tree-max-seconds="' . $c['in__tree_max_seconds'] . '" intent-seconds="' . $c['in_seconds'] . '">' . echo_hours($c['in__tree_max_seconds'], true) . '</span><i class="fas fa-cog"></i></a> &nbsp;';
@@ -1756,9 +1756,9 @@ function echo_c($c, $level, $c_parent_id = 0, $is_parent = false)
         //Step Input field:
         $ui .= '<div class="list-group-item list_input new-step-input">
             <div class="input-group">
-                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="c_js_new(' . $c['in_id'] . ',3);" intent-id="' . $c['in_id'] . '"><input type="text" class="form-control autosearch intentadder-level-3 algolia_search bottom-add" maxlength="' . $CI->config->item('in_outcome_max') . '" id="addintent-cr-' . $c['tr_id'] . '" intent-id="' . $c['in_id'] . '" placeholder="Add #Intent"></form></div>
+                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="fn___in_create_or_link(' . $c['in_id'] . ',3);" intent-id="' . $c['in_id'] . '"><input type="text" class="form-control autosearch intentadder-level-3 algolia_search bottom-add" maxlength="' . $CI->config->item('in_outcome_max') . '" id="addintent-cr-' . $c['tr_id'] . '" intent-id="' . $c['in_id'] . '" placeholder="Add #Intent"></form></div>
                 <span class="input-group-addon" style="padding-right:8px;">
-                    <span data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" onclick="c_js_new(' . $c['in_id'] . ',3);" class="badge badge-primary pull-right" intent-id="' . $c['in_id'] . '" style="cursor:pointer; margin: 13px -6px 1px 13px;">
+                    <span data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" onclick="fn___in_create_or_link(' . $c['in_id'] . ',3);" class="badge badge-primary pull-right" intent-id="' . $c['in_id'] . '" style="cursor:pointer; margin: 13px -6px 1px 13px;">
                         <div><i class="fas fa-plus"></i></div>
                     </span>
                 </span>

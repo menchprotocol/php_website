@@ -1189,14 +1189,6 @@ h5, .h5 {
     margin-bottom: 10px;
 }
 
-.landing_page_url {
-    color: #2f2739 !important;
-    text-decoration: none;
-}
-
-.landing_page_url:hover {
-    color: #2f2739;
-}
 
 .bold {
     font-weight: bold !important;
@@ -2983,10 +2975,6 @@ h4 .tip-badge {
     text-align: right;
 }
 
-#landing_page_enroll {
-    text-decoration: underline;
-}
-
 .radio-box {
     margin-left: 30px;
 }
@@ -3297,7 +3285,7 @@ h4 .tip-badge {
     cursor: default !important;
 }
 
-#landing_page h3 {
+#in_public_ui h3 {
     margin: 45px 0 0px 3px !important;
     padding-bottom: 0px !important;
     border-bottom: 0 !important;

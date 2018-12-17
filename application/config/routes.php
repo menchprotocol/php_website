@@ -19,9 +19,9 @@ $route['logout'] = "entities/logout"; //Logout from entites
 //Matrix:
 $route['entities/(:num)'] = "entities/entity_manage/$1";
 $route['entities'] = "entities/entity_manage/" . $this->config->item('en_primary_id');
-$route['intents/(:num)'] = "intents/intent_manage/$1";
-$route['intents'] = "intents/intent_manage/" . $this->config->item('in_primary_id');
+$route['intents/(:num)'] = "intents/fn___in_miner_ui/$1";
+$route['intents'] = "intents/fn___in_miner_ui/" . $this->config->item('in_primary_id');
 
 //Intent Landing Page:
-$route['(:num)'] = "intents/intent_public/$1"; //Public intent browser
+$route['(:num)'] = "intents/fn___in_public_ui/$1"; //Public intent browser
 

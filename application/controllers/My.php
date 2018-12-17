@@ -207,7 +207,7 @@ class My extends CI_Controller
                 'status' => 0,
                 'message' => 'Session Expired',
             ));
-        } elseif (!isset($_POST['tr_id']) || intval($_POST['tr_id']) <= 0) {
+        } elseif (!isset($_POST['tr_id']) || intval($_POST['tr_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Action Plan ID',
@@ -243,7 +243,7 @@ class My extends CI_Controller
 
         if (!$udata) {
             die('<div class="alert alert-danger" role="alert">Session Expired</div>');
-        } elseif (intval($en_id) <= 0) {
+        } elseif (intval($en_id) < 1) {
             die('<div class="alert alert-danger" role="alert">Missing User ID</div>');
         }
 
@@ -290,7 +290,7 @@ class My extends CI_Controller
     {
 
         //Validate integrity of request:
-        if (!isset($_POST['tr_id']) || intval($_POST['tr_id']) <= 0 || !isset($_POST['tr_content'])) {
+        if (!isset($_POST['tr_id']) || intval($_POST['tr_id']) < 1 || !isset($_POST['tr_content'])) {
             return redirect_message('/my/actionplan', '<div class="alert alert-danger" role="alert">Error: Missing Core Data.</div>');
         }
 

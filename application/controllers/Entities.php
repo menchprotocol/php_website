@@ -256,12 +256,12 @@ class Entities extends CI_Controller
                 'status' => 0,
                 'message' => 'Session Expired',
             ));
-        } elseif (!isset($_POST['en_id']) || intval($_POST['en_id']) <= 0 || !(count($u_current) == 1)) {
+        } elseif (!isset($_POST['en_id']) || intval($_POST['en_id']) < 1 || !(count($u_current) == 1)) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid ID',
             ));
-        } elseif (!isset($_POST['en_name']) || strlen($_POST['en_name']) <= 0) {
+        } elseif (!isset($_POST['en_name']) || strlen($_POST['en_name']) < 1) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Missing name',
@@ -350,7 +350,7 @@ class Entities extends CI_Controller
         if (!$udata) {
             //Display error:
             die('<span style="color:#FF0000;">Error: Invalid Session. Login again to continue.</span>');
-        } elseif (!isset($_POST['en_id']) || intval($_POST['en_id']) <= 0) {
+        } elseif (!isset($_POST['en_id']) || intval($_POST['en_id']) < 1) {
             die('<span style="color:#FF0000;">Error: Invalid entity id.</span>');
         }
 
@@ -560,7 +560,7 @@ class Entities extends CI_Controller
     function password_reset()
     {
         //This function updates the user's new password as requested via a password reset:
-        if (!isset($_POST['en_id']) || intval($_POST['en_id']) <= 0 || !isset($_POST['timestamp']) || intval($_POST['timestamp']) <= 0 || !isset($_POST['p_hash']) || strlen($_POST['p_hash']) < 10) {
+        if (!isset($_POST['en_id']) || intval($_POST['en_id']) < 1 || !isset($_POST['timestamp']) || intval($_POST['timestamp']) < 1 || !isset($_POST['p_hash']) || strlen($_POST['p_hash']) < 10) {
             echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Missing Core Variables.</div>';
         } elseif (!($_POST['p_hash'] == md5($_POST['en_id'] . $this->config->item('password_salt') . $_POST['timestamp']))) {
             echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Invalid hash key.</div>';

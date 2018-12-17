@@ -69,9 +69,6 @@ class Matrix_model extends CI_Model
         }
 
 
-
-
-
         /*
          *
          * The Action Plan seems to be completed as we could not find any pending intent!
@@ -84,7 +81,7 @@ class Matrix_model extends CI_Model
             'tr_id' => $actionplan_tr_id,
         ), array('in_child'));
 
-        if(count($actionplans)>0 && in_array($actionplans[0]['tr_status'], $this->config->item('tr_status_incomplete'))){
+        if (count($actionplans) > 0 && in_array($actionplans[0]['tr_status'], $this->config->item('tr_status_incomplete'))) {
 
             //Inform user that they are now complete with all tasks:
             $this->Chat_model->dispatch_message(array(
@@ -112,7 +109,6 @@ class Matrix_model extends CI_Model
         return false;
 
     }
-
 
 
     function fn___en_radio_set($en_parent_bucket_id, $set_en_child_id = 0, $en_master_id, $tr_en_credit_id = 0)
@@ -214,7 +210,7 @@ class Matrix_model extends CI_Model
         } elseif (!isset($tr['tr_en_child_id']) || $tr['tr_en_child_id'] < 1) {
 
             //Maybe the parent entity is set? If so flip it:
-            if(isset($tr['tr_en_parent_id']) && intval($tr['tr_en_parent_id'])>0){
+            if (isset($tr['tr_en_parent_id']) && intval($tr['tr_en_parent_id']) > 0) {
 
                 //Pass this on to the child:
                 $tr['tr_en_child_id'] = $tr['tr_en_parent_id'];
@@ -299,7 +295,6 @@ class Matrix_model extends CI_Model
             //EXIT!
 
         }
-
 
 
         //Ok we've had no errors so far...
@@ -589,8 +584,6 @@ class Matrix_model extends CI_Model
     }
 
 
-
-
     function fn___create_en_from_url($input_url, $tr_en_credit_id = 0)
     {
 
@@ -618,7 +611,7 @@ class Matrix_model extends CI_Model
         //TODO This part can be improved to better detect duplicate URLs as it current does an exact matching, which is OK but not the best...
         $input_url = trim($input_url);
         $dup_urls = $this->Old_model->tr_fetch(array(
-            'tr_en_type_id IN ('.join(',', $this->config->item('en_ids_4537')).')' => null, //Entity URL Links
+            'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null, //Entity URL Links
             'tr_content LIKE \'' . $input_url . '\'' => null,
         ), array('en_child'));
 
@@ -633,7 +626,7 @@ class Matrix_model extends CI_Model
                 //This URL was removed, which is an issue:
                 return array(
                     'status' => 0,
-                    'message' => 'This URL has had been added before but then removed with status ['.$status_index['en_status'][$dup_urls[0]['en_status']]['s_name'].']',
+                    'message' => 'This URL has had been added before but then removed with status [' . $status_index['en_status'][$dup_urls[0]['en_status']]['s_name'] . ']',
                 );
 
             } else {
@@ -742,7 +735,6 @@ class Matrix_model extends CI_Model
         );
 
     }
-
 
 
     function in_completion_requirements($in, $include_instructions = false)
@@ -995,7 +987,6 @@ class Matrix_model extends CI_Model
     }
 
 
-
     function fn___add_messenger_user($psid)
     {
 
@@ -1135,6 +1126,171 @@ class Matrix_model extends CI_Model
 
         //Return entity object:
         return $en;
+
+    }
+
+
+    function fn___in_create_or_link($in_parent_id, $in_outcome, $in_link_child_id, $next_level, $tr_en_credit_id)
+    {
+
+        /*
+         *
+         * The main intent creation function that would create
+         * appropriate links and return the intent view.
+         *
+         * Either creates an intent link between $in_parent_id & $in_link_child_id
+         * (IF $in_link_child_id>0) OR will create a new intent with outcome $in_outcome
+         * and link it to $in_parent_id (In this case $in_link_child_id will be 0)
+         *
+         * p.s. Inputs have already been validated via intents/fn___in_create_or_link() function
+         *
+         * */
+        
+        //Validate Original intent:
+        $parent_ins = $this->Database_model->in_fetch(array(
+            'in_id' => intval($in_parent_id),
+        ), array('in__children')); //We'd need either Children (If adding in Level 2) or nothing (If adding in Level 3), so 'in__children' would be enough
+
+        if (count($parent_ins) < 1) {
+            return array(
+                'status' => 0,
+                'message' => 'Invalid Intent ID',
+            );
+        }
+
+        if (intval($in_link_child_id) > 0) {
+
+            //We are linking to $in_link_child_id, We are NOT creating any new intents...
+
+            //Fetch more details on the child intent we're about to link:
+            $ins = $this->Database_model->in_fetch(array(
+                'in_id' => $in_link_child_id,
+                'in_status >=' => 0,
+            ), ($next_level == 2 ? array('in__children') : array()));
+
+            if (count($ins) < 1) {
+                return array(
+                    'status' => 0,
+                    'message' => 'Invalid Linked Intent ID',
+                );
+            }
+
+            //All good so far, continue with linking:
+            $child_in = $ins[0];
+
+            //check all parents as this intent cannot be duplicated with any of its parents:
+            $parent_tree = $this->Database_model->in_recursive_fetch($in_parent_id);
+            if (in_array($child_in['in_id'], $parent_tree['in_flat_tree'])) {
+                return array(
+                    'status' => 0,
+                    'message' => 'You cannot link to "' . $child_in['in_outcome'] . '" as it already belongs to the parent/grandparent tree.',
+                );
+            }
+
+            //Make sure this is not a duplicate intent for its parent:
+            $dup_links = $this->Database_model->tr_fetch(array(
+                'tr_in_parent_id' => $in_parent_id,
+                'tr_in_child_id' => $in_link_child_id,
+                'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
+                'tr_status >=' => 0, //New+
+                'in_status >=' => 0, //New+
+            ));
+
+            //Check for issues:
+            if (count($dup_links) > 0) {
+
+                //Ooopsi, this is a duplicate!
+                return array(
+                    'status' => 0,
+                    'message' => '[' . $child_in['in_outcome'] . '] is already linked here.',
+                );
+
+            } elseif ($in_link_child_id == $in_parent_id) {
+
+                //Make sure none of the parents are the same:
+                return array(
+                    'status' => 0,
+                    'message' => 'You cannot add "' . $child_in['in_outcome'] . '" as its own child.',
+                );
+
+            }
+
+            //Prepare recursive update:
+            $metadata = unserialize($child_in['in_metadata']);
+            //Fetch and adjust the intent tree based on these values:
+            $in_metadata_modify = array(
+                'in__tree_in_count' => ( isset($metadata['in__tree_in_count']) ? intval($metadata['in__tree_in_count']) : 0 ),
+                'in__tree_max_seconds' => ( isset($metadata['in__tree_max_seconds']) ? intval($metadata['in__tree_max_seconds']) : 0 ),
+                'in__message_tree_count' => ( isset($metadata['in__message_tree_count']) ? intval($metadata['in__message_tree_count']) : 0 ),
+            );
+
+        } else {
+
+            //We are NOT linking to an existing intent, but instead, we're creating a new intent:
+
+            //Prepare recursive update:
+            $in_metadata_modify = array(
+                'in__tree_in_count' => 1, //We just added 1 new intent to this tree
+            );
+
+            //Create child intent:
+            $child_in = $this->Database_model->in_create(array(
+                'in_status' => 1, //Working On
+                'in_outcome' => trim($in_outcome),
+                'in_metadata' => $in_metadata_modify, //Will use serialize() inside of in_create() to store properly
+            ));
+
+            //Log transaction for New Intent:
+            $this->Database_model->tr_create(array(
+                'tr_en_credit_id' => $tr_en_credit_id,
+                'tr_metadata' => array(
+                    'in_parent_id' => $in_parent_id,
+                    'after' => $child_in,
+                ),
+                'tr_en_type_id' => 4250, //New Intent
+                'tr_in_child_id' => $child_in['in_id'],
+            ));
+            
+        }
+
+
+        //Create Intent Link:
+        $relation = $this->Database_model->tr_create(array(
+            'tr_en_credit_id' => $tr_en_credit_id,
+            'tr_en_type_id' => 4228,
+            'tr_in_parent_id' => $in_parent_id,
+            'tr_in_child_id' => $child_in['in_id'],
+            'tr_order' => 1 + $this->Database_model->tr_max_order(array(
+                'tr_status >=' => 0,
+                'tr_en_type_id' => 4228,
+                'tr_in_parent_id' => $in_parent_id,
+            )),
+        ), true);
+
+
+        //Update Metadata for tree:
+        $this->Database_model->metadata_tree_update('in', $in_parent_id, $in_metadata_modify);
+
+
+        //Fetch and return full data to be properly shown on the UI using the echo_c() function
+        $new_ins = $this->Database_model->tr_fetch(array(
+            'tr_in_parent_id' => $in_parent_id,
+            'tr_in_child_id' => $child_in['in_id'],
+            'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
+            'tr_status >=' => 0,
+            'in_status >=' => 0,
+        ), array('in_child'), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
+
+
+        //Return result:
+        return array(
+            'status' => 1,
+            'in_child_id' => $child_in['in_id'],
+            'in_child_html' => echo_c($new_ins[0], $next_level, $in_parent_id),
+            //Also append some tree insights for UI modifications via JS functions:
+            'in__tree_max_seconds' => ( isset($in_metadata_modify['in__tree_max_seconds']) ? intval($in_metadata_modify['in__tree_max_seconds']) : 0 ), //Seconds added because of this
+            'in__tree_in_count' => intval($in_metadata_modify['in__tree_in_count']), //We must have this (Either if we're linking OR creating) to show new intents in the tree
+        );
 
     }
 

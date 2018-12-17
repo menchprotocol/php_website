@@ -31,7 +31,7 @@ class Ledger extends CI_Controller
          *
          * */
 
-        //Auth user and Load object:
+        //Authenticate Miner:
         $udata = auth(array(1308));
 
         if (!$udata) {
@@ -41,7 +41,7 @@ class Ledger extends CI_Controller
                 'message' => 'Session Expired. Login and try again',
             ));
 
-        } elseif (!isset($_POST['tr_id']) || intval($_POST['tr_id']) <= 0) {
+        } elseif (!isset($_POST['tr_id']) || intval($_POST['tr_id']) < 1) {
 
             return echo_json(array(
                 'status' => 0,
@@ -101,12 +101,12 @@ class Ledger extends CI_Controller
 
             //Do a relative adjustment for this intent's metadata
             $this->Database_model->metadata_update('in', $trs[0], array(
-                'in__messages_count' => -1, //Remove 1 from existing value
+                'in__message_count' => -1, //Remove 1 from existing value
             ), false);
 
             //Update intent tree:
             $this->Database_model->metadata_tree_update('in', $trs[0]['tr_in_child_id'], array(
-                'in__messages_tree_count' => -1,
+                'in__message_tree_count' => -1,
             ));
 
         }
@@ -123,7 +123,7 @@ class Ledger extends CI_Controller
     function fn___tr_order_update()
     {
 
-        //Auth user and Load object:
+        //Authenticate Miner:
         $udata = auth(array(1308));
         if (!$udata) {
 
@@ -166,7 +166,7 @@ class Ledger extends CI_Controller
     function fn___tr_create()
     {
 
-        //Auth user and Load object:
+        //Authenticate Miner:
         $udata = auth(array(1308));
 
         if (!$udata) {
@@ -176,7 +176,7 @@ class Ledger extends CI_Controller
                 'message' => 'Session Expired. Login and Try again.',
             ));
 
-        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) <= 0) {
+        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
 
             return echo_json(array(
                 'status' => 0,
@@ -222,12 +222,12 @@ class Ledger extends CI_Controller
 
         //Do a relative adjustment for this intent's metadata
         $this->Database_model->metadata_update('in', $intents[0], array(
-            'in__messages_count' => 1, //Add 1 to existing value
+            'in__message_count' => 1, //Add 1 to existing value
         ), false);
 
         //Update tree as well:
         $this->Database_model->metadata_tree_update('in', $intents[0]['in_id'], array(
-            'in__messages_tree_count' => 1,
+            'in__message_tree_count' => 1,
         ));
 
         //Print the challenge:

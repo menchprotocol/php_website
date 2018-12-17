@@ -55,7 +55,7 @@
 
             if ($orphans_count > 0) {
                 echo '<td style="width:130px;">';
-                echo '<span style="padding-left:8px; display: inline-block;"><a href="/entities/orphan">' . $orphans_count . ' Orphans &raquo;</a></span>';
+                echo '<span style="padding-left:8px; display: inline-block;"><a href="/entities/fn___in_orphans">' . $orphans_count . ' Orphans &raquo;</a></span>';
                 echo '</td>';
             }
         }
