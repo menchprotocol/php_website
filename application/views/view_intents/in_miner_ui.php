@@ -73,15 +73,15 @@ if (isset($orphan_ins)) {
             foreach ($in['in__children'] as $sub_intent) {
                 echo echo_c($sub_intent, 2, $in['in_id']);
             }
-            ?>
-            <div class="list-group-item list_input grey-block">
+
+            echo '<div class="list-group-item list_input grey-block">
                 <div class="input-group">
                     <div class="form-group is-empty" style="margin: 0; padding: 0;">
                         <input type="text"
                                class="form-control intentadder-level-2 algolia_search bottom-add"
-                               maxlength="<?= $this->config->item('in_outcome_max') ?>"
-                               intent-id="<?= $in['in_id'] ?>"
-                               id="addintent-c-<?= $in['in_id'] ?>"
+                               maxlength="'.$this->config->item('in_outcome_max').'"
+                               intent-id="'.$in['in_id'].'"
+                               id="addintent-c-'.$in['in_id'].'"
                                placeholder="Add #Intent">
                     </div>
                     <span class="input-group-addon" style="padding-right:8px;">
@@ -92,28 +92,9 @@ if (isset($orphan_ins)) {
                         </span>
                     </span>
                 </div>
-            </div>
-            <?php
+            </div>';
+
             echo '</div>';
-
-
-            //Intent subscribers:
-            $limit = (is_dev() ? 10 : 100);
-            $trs = $this->Database_model->w_fetch(array(
-                'tr_in_child_id' => $in['in_id'],
-            ), array('en', 'u_x', 'w_stats'), array(
-                'tr_id' => 'DESC',
-            ), $limit);
-
-            if (count($trs) > 0) {
-                //Show these Action Plans:
-                echo '<h5 class="badge badge-h indent1" style="display: inline-block;"><i class="fas fa-comment-plus"></i> ' . count($trs) . ($limit == count($trs) ? '+' : '') . ' Action Plans</h5>';
-                echo '<div class="list-group list-grey indent1" style="margin-bottom: 40px;">';
-                foreach ($trs as $w) {
-                    echo echo_w_matrix($w);
-                }
-                echo '</div>';
-            }
 
         }
         ?>
@@ -301,7 +282,7 @@ if (isset($orphan_ins)) {
 
         </div>
 
-        <?php $this->load->view('actionplans/actionplan_right_col'); ?>
+        <?php $this->load->view('view_ledger/tr_actionplan_right_column'); ?>
 
 
     </div>

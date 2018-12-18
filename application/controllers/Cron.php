@@ -21,8 +21,8 @@ class Cron extends CI_Controller
     //*/6 * * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron save_profile_pic
     //31 * * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron intent_sync
     //45 * * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron master_reminder_complete_task
-    //30 2 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron algolia_sync b 0
-    //30 4 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron algolia_sync u 0
+    //30 2 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron fn___algolia_sync b 0
+    //30 4 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron fn___algolia_sync u 0
     //30 3 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron e_score_recursive
 
 
@@ -90,10 +90,10 @@ class Cron extends CI_Controller
     }
 
 
-    //I cannot update algolia from my local server so if is_dev() is true I will call mench.com/cron/algolia_sync to sync my local change using a live end-point:
-    function algolia_sync($obj, $obj_id = 0)
+    //I cannot update algolia from my local server so if fn___is_dev() is true I will call mench.com/cron/fn___algolia_sync to sync my local change using a live end-point:
+    function fn___algolia_sync($obj, $obj_id = 0)
     {
-        echo_json($this->Database_model->algolia_sync($obj, $obj_id));
+        echo_json($this->Database_model->fn___algolia_sync($obj, $obj_id));
     }
 
 
@@ -281,7 +281,7 @@ class Cron extends CI_Controller
 
             //Check URL and validate:
             $error_message = null;
-            $curl = curl_html($u['tr_content'], true);
+            $curl = fn___curl_html($u['tr_content'], true);
 
             if (!$curl) {
                 $error_message = 'Invalid URL (start with http:// or https://)';
@@ -292,7 +292,7 @@ class Cron extends CI_Controller
             if (!$error_message) {
 
                 //Save the file to S3
-                $new_file_url = save_file($u['tr_content'], $u);
+                $new_file_url = fn___upload_to_cdn($u['tr_content'], $u);
 
                 if (!$new_file_url) {
                     $error_message = 'Failed to upload the file to Mench CDN';
@@ -385,12 +385,12 @@ class Cron extends CI_Controller
                                     if (in_array($att['type'], array('image', 'audio', 'video', 'file'))) {
 
                                         //Store to local DB:
-                                        $new_file_url = save_file($att['payload']['url'], $json_data);
+                                        $new_file_url = fn___upload_to_cdn($att['payload']['url'], $json_data);
 
                                         //Update engagement data:
                                         $this->Database_model->tr_update($ep['tr_id'], array(
                                             'tr_content' => $new_file_url,
-                                            'tr_en_type_id' => detect_tr_en_type_id($new_file_url),
+                                            'tr_en_type_id' => fn___detect_tr_en_type_id($new_file_url),
                                             'tr_status' => 2, //Publish
                                         ));
 
@@ -405,7 +405,7 @@ class Cron extends CI_Controller
             } else {
                 //This should not happen, report:
                 $this->Database_model->tr_create(array(
-                    'tr_content' => 'cron/bot_save_files() fetched tr_metadata() that was missing its [entry] value',
+                    'tr_content' => 'cron/message_file_save() fetched tr_metadata() that was missing its [entry] value',
                     'tr_metadata' => $json_data,
                     'tr_en_type_id' => 4246, //Platform Error
                 ));

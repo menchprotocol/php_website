@@ -24,7 +24,7 @@ $uri_segment_2 = $this->uri->segment(2);
 
     <link href="/css/lib/devices.min.css" rel="stylesheet"/>
     <link href="/css/lib/jquery.mCustomScrollbar.min.css" rel="stylesheet"/>
-    <?php $this->load->view('shared/global_js_css'); ?>
+    <?php $this->load->view('view_shared/global_js_css'); ?>
 
     <script src="/js/lib/jquery.textcomplete.min.js"></script>
     <script src="/js/lib/autocomplete.jquery.min.js"></script>
@@ -53,7 +53,7 @@ $uri_segment_2 = $this->uri->segment(2);
 <?php
 if (!isset($_GET['skip_header'])) {
     //Include the chat plugin:
-    $this->load->view('shared/messenger_web_chat');
+    $this->load->view('view_shared/messenger_web_chat');
 }
 ?>
 
@@ -100,7 +100,7 @@ if (!isset($_GET['skip_header'])) {
 
                         <li class="extra-toggle" style="display: none;"><a href="/my/actionplan"><i
                                         class="fas fa-flag"></i> Action Plans</a></li>
-                        <li class="extra-toggle" style="display: none;"><a href="/adminpanel/statuslegend"><span
+                        <li class="extra-toggle" style="display: none;"><a href="/custom/status_legend"><span
                                         class="icon-left"><i class="fas fa-shield"></i></span> Admin</a></li>
                         <li class="extra-toggle" style="display: none;"><a href="/entities/<?= $udata['en_id'] ?>"><span
                                         class="icon-left"><i class="fas fa-user-circle"></i></span> Me</a></li>
@@ -116,14 +116,14 @@ if (!isset($_GET['skip_header'])) {
 
 
 
-    <?php if ($uri_segment_1 == 'adminpanel'){ ?>
+    <?php if ($uri_segment_1 == 'ledger'){ ?>
     <div class="sidebar" id="mainsidebar">
         <div class="sidebar-wrapper">
 
             <?php
             //Side menu header:
             echo '<div class="left-li-title">';
-            echo '<i class="fas fa-user-shield" style="margin-right:3px;"></i> Admin Panel';
+            echo '<i class="fas fa-user-shield" style="margin-right:3px;"></i> Mench Ledger';
             echo '</div>';
 
 
@@ -131,12 +131,11 @@ if (!isset($_GET['skip_header'])) {
 
 
             //The the Admin Panel Menu for the Mench team:
-            echo '<li class="li-sep ' . ($uri_segment_2 == 'engagements' ? 'active' : '') . '"><a href="/adminpanel/engagements"><i class="fas fa-atlas"></i><p>Engagements</p></a></li>';
+            echo '<li class="li-sep ' . ($uri_segment_2 == 'engagements' ? 'active' : '') . '"><a href="/ledger/transactions"><i class="fas fa-atlas"></i><p>Transactions</p></a></li>';
 
-            echo '<li class="li-sep ' . ($uri_segment_2 == 'actionplans' ? 'active' : '') . '"><a href="/adminpanel/actionplans"><i class="fas fa-comment-plus"></i><p>Action Plans</p></a></li>';
+            echo '<li class="li-sep ' . ($uri_segment_2 == 'actionplans' ? 'active' : '') . '"><a href="/ledger/actionplans"><i class="fas fa-comment-plus"></i><p>Action Plans</p></a></li>';
 
-            echo '<li class="li-sep ' . ($uri_segment_2 == 'statuslegend' ? 'active' : '') . '"><a href="/adminpanel/statuslegend"><i class="fas fa-shapes"></i><p>Status Legend</p></a></li>';
-
+            echo '<li class="li-sep ' . ($uri_segment_2 == 'status_legend' ? 'active' : '') . '"><a href="/custom/status_legend"><i class="fas fa-shapes"></i><p>Status Legend</p></a></li>';
 
             echo '</ul>';
             ?>

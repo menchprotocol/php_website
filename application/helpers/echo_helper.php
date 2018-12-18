@@ -1,10 +1,13 @@
 <?php
 
 
-function echo_next_u($page, $limit, $en__child_count)
+function fn___echo_load_more_ens($page, $limit, $en__child_count)
 {
-    //We have more child entities than what was listed here.
-    //Give user a way to access them:
+
+    /*
+     * Gives an option to "Load More" entities when we have too many to show in one go
+     * */
+
     echo '<a class="load-more list-group-item" href="javascript:void(0);" onclick="u_load_next_page(' . $page . ')">';
 
     //Right content:
@@ -18,18 +21,10 @@ function echo_next_u($page, $limit, $en__child_count)
     echo '</a>';
 }
 
-function echo_social_profiles($social_profiles)
-{
-    $ui = null;
-    foreach ($social_profiles as $sp) {
-        $ui .= '<a href="' . $sp['url'] . '" target="_blank" class="social-link"><i class="' . $sp['fa_icon'] . '"></i></a>';
-    }
-    return $ui;
-}
 
-
-function echo_min_from_sec($sec_int)
+function fn___echo_min_from_sec($sec_int)
 {
+    //Turns seconds into a nice format with minutes, like "1m 23s"
     $sec_int = intval($sec_int);
     $min = 0;
     $sec = fmod($sec_int, 60);
@@ -39,27 +34,64 @@ function echo_min_from_sec($sec_int)
     return ($min ? $min . 'm' : '') . ($sec ? ($min ? ' ' : '') . $sec . 's' : '');
 }
 
-function echo_content_url($x_clean_url, $x_type)
+
+function fn___echo_en_url($url, $en_type_id)
 {
-    if ($x_type == 4) {
-        return '<img src="' . $x_clean_url . '" style="max-width:100%" />';
-    } elseif ($x_type == 3) {
-        return '<audio controls><source src="' . $x_clean_url . '" type="audio/mpeg"></audio>';
-    } elseif ($x_type == 2) {
-        return '<video width="100%" onclick="this.play()" controls><source src="' . $x_clean_url . '" type="video/mp4"></video>';
-    } elseif ($x_type == 5) {
-        return '<a href="' . $x_clean_url . '" class="btn btn-primary" target="_blank"><i class="fas fa-cloud-download"></i> Download File</a>';
+
+    /*
+     *
+     * Displays Entity Links that are a URL based on their
+     * $en_type_id as listed under Entity URL Links:
+     * https://mench.com/entities/4537
+     *
+     * */
+    if ($en_type_id == 4256 /* Generic URL */) {
+
+        return '<a href="' . $url . '" target="_blank"><span class="url_truncate"><i class="fas fa-link" style="margin-right:3px;"></i>' . echo_clean_url($url) . '</span></a>';
+
+    } elseif ($en_type_id == 4257 /* Embed Widget URL? */) {
+
+        return fn___echo_en_embed_url($url, $url);
+
+    } elseif ($en_type_id == 4260 /* Image URL */) {
+
+        return '<img src="' . $url . '" style="max-width:100%" />';
+
+    } elseif ($en_type_id == 4259 /* Audio URL */) {
+
+        return '<audio controls><source src="' . $url . '" type="audio/mpeg"></audio>';
+
+    } elseif ($en_type_id == 4258 /* Video URL */) {
+
+        return '<video width="100%" onclick="this.play()" controls><source src="' . $url . '" type="video/mp4"></video>';
+
+    } elseif ($en_type_id == 4261 /* File URL */) {
+
+        return '<a href="' . $url . '" class="btn btn-primary" target="_blank"><i class="fas fa-cloud-download"></i> Download File</a>';
+
     } else {
+
+        //Unknown URL type! Log error and return false:
+        $CI =& get_instance();
+        $CI->Database_model->tr_create(array(
+            'tr_content' => 'fn___echo_en_url() encountered an unknown URL entity type ID ['.$en_type_id.'] with URL value ['.$url.']',
+            'tr_en_type_id' => 4246, //Platform Error
+        ));
+
         return false;
+
     }
+
 }
 
-function echo_embed($url, $full_message = null, $return_array = false, $start_sec = 0, $end_sec = 0)
+
+function fn___echo_en_embed_url($url, $full_message = null, $return_array = false, $start_sec = 0, $end_sec = 0)
 {
 
 
     /*
-     * Detects if a URL is from a website that we support an embed widget for it
+     *
+     * Detects and displays URLs from supported website with an embed widget
      *
      * NOTE: Changes to this function requires us to re-calculate all current
      *       values for tr_en_type_id as this could change the equation for those
@@ -102,7 +134,7 @@ function echo_embed($url, $full_message = null, $return_array = false, $start_se
 
             //Inform Master that this video has been sliced:
             if ($start_sec || $end_sec) {
-                $embed_html_code .= '<div class="video-prefix"><i class="fab fa-youtube"></i> Watch ' . (($start_sec && $end_sec) ? 'this <b>' . echo_min_from_sec(($end_sec - $start_sec)) . '</b> video clip' : 'from <b>' . ($start_sec ? echo_min_from_sec($start_sec) : 'start') . '</b> to <b>' . ($end_sec ? echo_min_from_sec($end_sec) : 'end') . '</b>') . ':</div>';
+                $embed_html_code .= '<div class="video-prefix"><i class="fab fa-youtube"></i> Watch ' . (($start_sec && $end_sec) ? 'this <b>' . fn___echo_min_from_sec(($end_sec - $start_sec)) . '</b> video clip' : 'from <b>' . ($start_sec ? fn___echo_min_from_sec($start_sec) : 'start') . '</b> to <b>' . ($end_sec ? fn___echo_min_from_sec($end_sec) : 'end') . '</b>') . ':</div>';
             }
 
             $embed_html_code .= '<div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/' . $video_id . '?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_sec . ($end_sec ? '&end=' . $end_sec : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div>';
@@ -231,8 +263,8 @@ function echo_message_chat($i, $en_name = null, $fb_format = false)
 
 
     //Does this have a entity reference?
-    $obj_breakdown = fn___text_analyze($i['tr_content']);
-    //We know that this fn___text_analyze() has already been validated through message_validation() so it cannot have more than 1 reference
+    $obj_breakdown = fn___extract_message_references($i['tr_content']);
+    //We know that this fn___extract_message_references() has already been validated through fn___validate_message() so it cannot have more than 1 reference
 
     if (count($obj_breakdown['en_refs']) > 0) {
 
@@ -271,7 +303,7 @@ function echo_message_chat($i, $en_name = null, $fb_format = false)
                     //Try finding a compatible URL for the /slice command:
                     foreach ($us[0]['en__parents'] as $en) {
                         if (substr_count($en['tr_content'], 'youtube.com') > 0) {
-                            $embed_html_code = '<div style="margin-top:7px;">' . echo_embed($en['tr_content'], $en['tr_content'], false, $time_range[0], $time_range[1]) . '</div>';
+                            $embed_html_code = '<div style="margin-top:7px;">' . fn___echo_en_embed_url($en['tr_content'], $en['tr_content'], false, $time_range[0], $time_range[1]) . '</div>';
                             break;
                         }
                     }
@@ -287,34 +319,14 @@ function echo_message_chat($i, $en_name = null, $fb_format = false)
                     //Let's see if we have any other embeddable content that we can append to message:
 
                     foreach ($us[0]['en__parents'] as $en) {
-
                         //Is this a URL of any sort?
                         if (in_array($en['tr_en_type_id'], $CI->config->item('en_ids_4537'))) {
 
-                            if ($en['tr_en_type_id'] == 4256 /* Generic URL */) {
-                                if ($is_public) {
-
-                                    //Replace the name:
-
-                                } else {
-
-                                    //Regular website:
-                                    $embed_html_code .= '<div style="margin-top:7px;"><a href="' . $en['tr_content'] . '" target="_blank"><span class="url_truncate"><i class="fas fa-atlas" style="margin-right:3px;"></i>' . echo_clean_url($en['tr_content']) . '</span></a></div>';
-
-                                }
-                            } elseif ($en['tr_en_type_id'] == 4257 /* Embed Widget URL? */) {
-
-                                $embed_html_code .= '<div style="margin-top:7px;">' . echo_embed($x['x_clean_url'], $x['x_clean_url']) . '</div>';
-
-                            } else {
-
-                                //Other Entity URL connectors that are all direct file downloads:
-                                $embed_html_code .= '<div style="margin-top:7px;">' . echo_content_url($x['x_clean_url'], $x['x_type']) . '</div>';
-
-                            }
+                            $embed_html_code .= '<div style="margin-top:7px;">' . fn___echo_en_url($en['tr_content'], $en['tr_en_type_id']) . '</div>';
 
                         }
                     }
+
                 }
 
 
@@ -543,24 +555,27 @@ function fn___echo_message_matrix($tr)
 }
 
 
-function echo_cover($u, $img_class = null, $return_anyways = false, $tooltip_content = null)
+function fn___echo_en_icon($en)
 {
-    if ($u['u_cover_x_id'] > 0 && isset($u['x_url'])) {
-        return '<img src="' . $u['x_url'] . '" class="' . $img_class . '" ' . $tooltip_content . ' />';
-    } elseif ($return_anyways) {
-        return '<i class="fas fa-at" ' . $tooltip_content . ' ></i>';
+    //A simple function to display the Entity Icon OR the default icon if not available:
+    if (strlen($en['en_icon']) > 0) {
+        return $en['en_icon'];
     } else {
-        return null;
+        return '<i class="fas fa-at" style="color:#AAA;"></i>';
     }
 }
 
-function echo_link($text)
+function fn___echo_link($text)
 {
+    //Find and makes links within $text clickable
     return preg_replace('!(((f|ht)tp(s)?://)[-a-zA-Zа-яА-Я()0-9@:%_+.~#?&;//=]+)!i', '<a href="$1" target="_blank"><u>$1</u></a>', $text);
 }
 
-function echo_number($number, $micro = true, $fb_format = false)
+
+function fn___echo_number($number, $micro = true, $fb_format = false)
 {
+
+    //Displays number with a nice format
 
     //Let's see if we need to apply special formatting:
     $formatting = null;
@@ -667,7 +682,7 @@ function echo_number($number, $micro = true, $fb_format = false)
 }
 
 
-function echo_e($e)
+function fn___echo_tr($tr)
 {
 
     $CI =& get_instance();
@@ -678,48 +693,42 @@ function echo_e($e)
     //Right content:
     $ui .= '<span class="pull-right">';
 
-    //Show user notification level:
-    $ui .= ' <span>' . echo_status('tr_status', $e['tr_status'], true, 'left') . '</span> ';
+    //Show transaction status
+    $ui .= ' <span>' . echo_status('tr_status', $tr['tr_status'], true, 'left') . '</span> ';
 
     //Lets go through all references to see what is there:
     foreach ($CI->config->item('ledger_filters') as $engagement_field => $er) {
-        if (intval($e[$engagement_field]) > 0) {
+        if (intval($tr[$engagement_field]) > 0) {
             //Yes we have a value here:
-            $ui .= echo_object($er['object_code'], $e[$engagement_field], $engagement_field, $er['name']);
+            $ui .= echo_object($er['object_code'], $tr[$engagement_field], $engagement_field, $er['name']);
         }
     }
 
-    if (strlen($e['tr_metadata']) > 0) {
-        $ui .= '<a href="/adminpanel/li_list_blob/' . $e['tr_id'] . '" class="badge badge-primary grey" target="_blank" data-toggle="tooltip" title="Analyze Engagement JSON Blob in a new window" data-placement="left"><i class="fas fa-search-plus"></i></a>';
+    if (strlen($tr['tr_metadata']) > 0) {
+        $ui .= '<a href="/ledger/fn___tr_print/' . $tr['tr_id'] . '" class="badge badge-primary grey" target="_blank" data-toggle="tooltip" title="See Transaction Details in a new window" data-placement="left"><i class="fas fa-search-plus"></i></a>';
     }
 
     $ui .= '</span>';
 
     //What type of main content do we have, if any?
     $main_content = null;
-    $main_content_title = null;
-    if (strlen($e['tr_content']) > 0) {
 
-        $main_content = echo_link(nl2br($e['tr_content']));
+    if (in_array($tr['tr_en_type_id'], $CI->config->item('en_ids_4537'))) {
 
-    } elseif ($e['e_tr_id'] > 0) {
-        //Fetch message conent:
-        $matching_messages = $CI->Database_model->i_fetch(array(
-            'tr_id' => $e['e_tr_id'],
-        ));
-        if (count($matching_messages) > 0) {
-            $main_content_title = ' Message #' . $e['e_tr_id'];
-            $main_content = echo_message_chat($matching_messages[0]);
-        }
+        $main_content = fn___echo_en_url($tr['tr_content'], $tr['tr_en_type_id']);
+
+    } elseif(strlen($tr['tr_content']) > 0) {
+
+        $main_content = fn___echo_link($tr['tr_content']);
+
     }
 
 
-    $ui .= '<b>' . str_replace('Log ', '', $e['in_outcome']) . '</b>';
-    $ui .= ' <span data-toggle="tooltip" data-placement="right" title="' . $e['tr_timestamp'] . ' Engagement #' . $e['tr_id'] . '" style="font-size:0.8em;">' . echo_diff_time(strtotime($e['tr_timestamp'])) . ' ago</span> ';
-    $ui .= $main_content_title;
+    $ui .= '<b>' . $tr['en_name'] . '</b>';
+    $ui .= ' <span data-toggle="tooltip" data-placement="right" title="' . $tr['tr_timestamp'] . ' Engagement #' . $tr['tr_id'] . '" style="font-size:0.8em;">' . echo_diff_time(strtotime($tr['tr_timestamp'])) . ' ago</span> ';
 
     //Do we have a message?
-    $ui .= '<div class="e-msg ' . ($main_content && strlen($main_content) > 0 ? '' : 'hidden') . '">';
+    $ui .= '<div class="e-msg ' . ($main_content ? '' : 'hidden') . '">';
     $ui .= $main_content;
     $ui .= '</div>';
 
@@ -735,10 +744,11 @@ function echo_w_matrix($w)
     //Assumes w_stats has been added to w_fetch so we can display proper stats here...
 
     $CI =& get_instance();
+
     //This function will be called from 3 areas:
     $is_intent = ($CI->uri->segment(1) == 'intents');
     $is_entity = ($CI->uri->segment(1) == 'entities');
-    $is_adminpanel = ($CI->uri->segment(1) == 'adminpanel');
+    $is_ledger = ($CI->uri->segment(1) == 'ledger');
     $w_title = ''; //Build as we go depending on which view is loaded...
 
 
@@ -752,12 +762,12 @@ function echo_w_matrix($w)
     $ui .= ' <span data-toggle="tooltip" data-placement="top" title="Master initiated Action Plan on ' . $w['w_timestamp'] . '" style="font-size:0.8em;">' . echo_diff_time($w['w_timestamp']) . '</span> ';
 
 
-    //Show user notification level:
+    //Show Action Plan Status:
     $ui .= ' <span>' . echo_status('tr_status', $w['tr_status'], true, 'left') . '</span> ';
 
 
     //Then customize based on request location:
-    if ($is_intent || $is_adminpanel) {
+    if ($is_intent || $is_ledger) {
 
         //Show user who has subscribed:
         $user_ws = $CI->Database_model->w_fetch(array(
@@ -773,7 +783,7 @@ function echo_w_matrix($w)
             ));
         }
 
-        $w_title .= echo_cover($w, 'micro-image', 1) . ' ';
+        $w_title .= fn___echo_en_icon($w) . ' ';
         $w_title .= '<span class="en_name en_name_' . $w['en_id'] . '">' . $w['en_name'] . '</span>';
         //Loop through parents and show those that have en_icon set:
         foreach ($w['en__parents'] as $in_u) {
@@ -796,7 +806,7 @@ function echo_w_matrix($w)
     $ui .= '<a href="#wactionplan-' . $w['tr_id'] . '-' . $w['tr_en_parent_id'] . '" onclick="load_w_actionplan(' . $w['tr_id'] . ',' . $w['tr_en_parent_id'] . ')" class="badge badge-primary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="' . $w['w_stats']['k_count_done'] . '/' . ($w['w_stats']['k_count_done'] + $w['w_stats']['k_count_undone']) . ' intents are marked as complete. Click to open Action Plan."><span class="btn-counter">' . (($w['w_stats']['k_count_undone'] + $w['w_stats']['k_count_done']) > 0 ? number_format(($w['w_stats']['k_count_done'] / ($w['w_stats']['k_count_undone'] + $w['w_stats']['k_count_done']) * 100), 0) . '%' : '0%') . '</span><i class="fas fa-flag" style="font-size:0.85em;"></i></a>';
 
 
-    if ($is_entity || $is_adminpanel) {
+    if ($is_entity || $is_ledger) {
 
         //Link to Action Plan's main intent:
         $intent_ws = $CI->Database_model->w_fetch(array(
@@ -804,9 +814,9 @@ function echo_w_matrix($w)
         ));
         $ui .= '<a href="/intents/' . $w['in_id'] . '" class="badge badge-primary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="Open subscribed intention to ' . $w['in_outcome'] . ' with ' . count($intent_ws) . ' Action Plans"><span class="btn-counter">' . count($intent_ws) . '</span><i class="fas fa-sign-in-alt"></i></a>';
 
-        $w_title .= ($is_adminpanel ? '<div style="margin: 3px 0 0 3px;"><i class="fas fa-hashtag"></i> ' : '');
+        $w_title .= ($is_ledger ? '<div style="margin: 3px 0 0 3px;"><i class="fas fa-hashtag"></i> ' : '');
         $w_title .= '<span class="w_intent_' . $w['tr_id'] . '">' . $w['in_outcome'] . '</span>';
-        $w_title .= ($is_adminpanel ? '</div>' : '');
+        $w_title .= ($is_ledger ? '</div>' : '');
     }
 
 
@@ -872,7 +882,7 @@ function echo_k_matrix($k)
     $ui .= '</span>';
 
     //Show user who has subscribed:
-    $ui .= echo_cover($k, 'micro-image', 1) . ' ';
+    $ui .= fn___echo_en_icon($k) . ' ';
     $ui .= $k['en_name'];
     $ui .= echo_status('tr_status', $k['tr_status'], true, 'top') . ' ' . $k['in_outcome'];
 
@@ -971,7 +981,7 @@ function echo_contents($c, $fb_format = 0)
         $type_all_count = count($c['in__tree_contents']);
         $CI =& get_instance();
         $en_all_3000 = $CI->config->item('en_all_3000');
-        $has_matrix_access = auth(array(1308), 0);
+        $has_matrix_access = fn___en_auth(array(1308));
         //More than 3:
         $text_overview = '';
         foreach ($c['in__tree_contents'] as $type_id => $current_us) {
@@ -1205,7 +1215,7 @@ function echo_experts($c, $fb_format = 0)
 
     $visible_html = 4; //Landing page, beyond this is hidden and visible with a click
     $visible_bot = 10; //Plain text style, but beyond this is cut out!
-    $has_matrix_access = auth(array(1308), 0);
+    $has_matrix_access = fn___en_auth(array(1308));
     $text_overview = '';
 
     foreach ($c['in__tree_experts'] as $count => $u) {
@@ -1400,7 +1410,7 @@ function echo_object($object, $id, $engagement_field, $button_type)
                     //Plain view:
                     return '<a href="https://mench.com/entities/' . $id . '" title="Entity ID ' . $id . '">' . $matching_users[0]['en_name'] . '</a>';
                 } else {
-                    return '<a href="/entities/' . $id . '" target="_parent" class="badge badge-secondary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="' . $button_type . ': ' . stripslashes($matching_users[0]['en_name']) . '">' . echo_cover($matching_users[0], 'profile-icon2', true) . '</a> ';
+                    return '<a href="/entities/' . $id . '" target="_parent" class="badge badge-secondary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="' . $button_type . ': ' . stripslashes($matching_users[0]['en_name']) . '">' . fn___echo_en_icon($matching_users[0]) . '</a> ';
                 }
             }
 
@@ -1821,7 +1831,7 @@ function echo_u($u, $level, $is_parent = false)
     $ui .= '<' . (count($messages) > 0 ? 'a href="#loadmessages-' . $u['en_id'] . '" onclick="u_load_messages(' . $u['en_id'] . ')" class="badge badge-secondary"' : 'span class="badge badge-secondary grey"') . ' style="width:40px;">' . (count($messages) > 0 ? '<span class="btn-counter">' . count($messages) . '</span>' : '') . '<i class="fas fa-comment-dots"></i></' . (count($messages) > 0 ? 'a' : 'span') . '>';
 
 
-    $ui .= '<a href="#loadmodify-' . $u['en_id'] . '-' . $tr_id . '" onclick="u_load_modify(' . $u['en_id'] . ',' . $tr_id . ')" class="badge badge-secondary" style="margin:-2px -6px 0 2px; width:40px;">' . ($u['en_trust_score'] > 0 ? '<span class="btn-counter" data-toggle="tooltip" data-placement="left" title="Engagement Score">' . echo_number($u['en_trust_score']) . '</span>' : '') . '<i class="fas fa-cog" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i></a> &nbsp;';
+    $ui .= '<a href="#loadmodify-' . $u['en_id'] . '-' . $tr_id . '" onclick="u_load_modify(' . $u['en_id'] . ',' . $tr_id . ')" class="badge badge-secondary" style="margin:-2px -6px 0 2px; width:40px;">' . ($u['en_trust_score'] > 0 ? '<span class="btn-counter" data-toggle="tooltip" data-placement="left" title="Engagement Score">' . fn___echo_number($u['en_trust_score']) . '</span>' : '') . '<i class="fas fa-cog" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i></a> &nbsp;';
 
     $ui .= '<a class="badge badge-secondary" href="/entities/' . $u['en_id'] . '" style="display:inline-block; margin-right:6px; width:40px; margin-left:1px;">' . (isset($u['en__child_count']) && $u['en__child_count'] > 0 ? '<span class="btn-counter ' . ($level == 1 ? 'li-children-count' : '') . '">' . $u['en__child_count'] . '</span>' : '') . '<i class="' . ($is_parent ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90') . '"></i></a>';
 
@@ -1831,7 +1841,7 @@ function echo_u($u, $level, $is_parent = false)
     if ($level == 1) {
 
         //Regular section:
-        $ui .= echo_cover($u, 'profile-icon2');
+        $ui .= fn___echo_en_icon($u);
         $ui .= '<b id="u_title" class="en_name en_name_' . $u['en_id'] . '">' . $u['en_name'] . '</b>';
 
         $ui .= ' <span class="obj-id underdot" data-toggle="tooltip" data-placement="top" title="Entity ID">@' . $u['en_id'] . '</span>';
@@ -1842,7 +1852,7 @@ function echo_u($u, $level, $is_parent = false)
     } else {
 
         //Regular section:
-        $ui .= echo_cover($u, 'micro-image', true) . ' ';
+        $ui .= fn___echo_en_icon($u) . ' ';
         $ui .= '<span class="en_name en_name_' . $u['en_id'] . '">' . $u['en_name'] . '</span>';
 
     }
@@ -1865,24 +1875,21 @@ function echo_u($u, $level, $is_parent = false)
         }
     }
 
-    //Does it have a UR value?
+    //Does this entity also include a transaction?
     if ($tr_id > 0) {
-        //show the link box for updating:
-        $ui .= ' <span class="tr_content tr_content_' . $tr_id . '">' . echo_link($u['tr_content']) . '</span>';
 
-        //How about a URL in the message?
-        /*
-        $ui .= '<a href="'.$x['x_url'].'" target="_blank" '.( strlen($x['x_url'])>0 && !($x['x_url']==$x['x_url']) ? '' : '' ).'>';
-        $ui .= '<span class="url_truncate">'.echo_clean_url($x['x_url']).'</span>';
-        $ui .= '<i class="fas fa-external-link-square"></i></a>';
+        //Is this Entity transaction a URL type or not?
+        if (in_array($u['tr_en_type_id'], $CI->config->item('en_ids_4537'))) {
 
-        //Can we display this URL?
-        if($x['x_type']==1){
-            $ui .= '<div style="margin-top:7px;">'.echo_embed($x['x_clean_url'],$x['x_clean_url']).'</div>';
-        } elseif($x['x_type']>1){
-            $ui .= '<div style="margin-top:7px;">'.echo_content_url($x['x_clean_url'],$x['x_type']).'</div>';
+            //Yes, this is
+            $ui .= '<div style="margin-top:7px;">' . fn___echo_en_url($u['tr_content'], $u['tr_en_type_id']) . '</div>';
+
+        } elseif(strlen($u['tr_content']) > 0) {
+
+            $ui .= ' <span class="tr_content tr_content_' . $tr_id . '">' . fn___echo_link($u['tr_content']) . '</span>';
+
         }
-        */
+
     }
 
     $ui .= '</div>';

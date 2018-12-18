@@ -72,7 +72,7 @@ class Chat_model extends CI_Model
         curl_setopt_array($ch, $ch_setting);
 
         //Process results and produce tr_metadata
-        $result = objectToArray(json_decode(curl_exec($ch)));
+        $result = fn___objectToArray(json_decode(curl_exec($ch)));
         $tr_metadata = array(
             'action' => $action,
             'payload' => $payload,
@@ -455,10 +455,10 @@ class Chat_model extends CI_Model
             }
 
 
-        } elseif (includes_any($reference, array('ACTIONPLAN-SKIP-CONFIRMED_', 'ACTIONPLAN-SKIP-INITIATE_', 'ACTIONPLAN-SKIP-CANCEL_'))) {
+        } elseif (fn___includes_any($reference, array('ACTIONPLAN-SKIP-CONFIRMED_', 'ACTIONPLAN-SKIP-INITIATE_', 'ACTIONPLAN-SKIP-CANCEL_'))) {
 
             //See which stage of the skip request they are:
-            $handler = includes_any($reference, array('ACTIONPLAN-SKIP-CONFIRMED_', 'ACTIONPLAN-SKIP-INITIATE_', 'ACTIONPLAN-SKIP-CANCEL_'));
+            $handler = fn___includes_any($reference, array('ACTIONPLAN-SKIP-CONFIRMED_', 'ACTIONPLAN-SKIP-INITIATE_', 'ACTIONPLAN-SKIP-CANCEL_'));
 
             //Extract varibales from REF:
             $input_parts = explode('_', fn___one_two_explode($handler, '', $reference));
@@ -778,7 +778,7 @@ class Chat_model extends CI_Model
             //Likely an OR response with a specific number in mind...
             //TODO Implement...
 
-        } elseif (includes_any($fb_message_received, array('unsubscribe', 'stop', 'cancel'))) {
+        } elseif (fn___includes_any($fb_message_received, array('unsubscribe', 'stop', 'cancel'))) {
 
             //They seem to want to unsubscribe
             //List their Action Plan intents:
@@ -861,7 +861,7 @@ class Chat_model extends CI_Model
 
             }
 
-        } elseif (includes_any($fb_message_received, array('lets ', 'let’s ', 'let\'s ', '?'))) {
+        } elseif (fn___includes_any($fb_message_received, array('lets ', 'let’s ', 'let\'s ', '?'))) {
 
             //This looks like they are giving us a command:
             $master_command = null;
@@ -884,7 +884,7 @@ class Chat_model extends CI_Model
             //Do a search to see what we find...
             if ($this->config->item('enable_algolia')) {
 
-                $search_index = load_php_algolia('alg_intents');
+                $search_index = fn___load_php_algolia('alg_intents');
                 $res = $search_index->search($master_command, [
                     'hitsPerPage' => $result_limit,
                     'filters' => 'in_status>=2', //Search published intents
@@ -1274,7 +1274,7 @@ class Chat_model extends CI_Model
 
         return true;
 
-        if (is_dev()) {
+        if (fn___is_dev()) {
             return true;
         }
 

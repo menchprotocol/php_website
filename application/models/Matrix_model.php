@@ -645,7 +645,7 @@ class Matrix_model extends CI_Model
 
         //This is a new URL that has never been added before...
         //Call URL to validate it further:
-        $curl = curl_html($input_url, true);
+        $curl = fn___curl_html($input_url, true);
 
         if (!$curl) {
             return array(
@@ -655,7 +655,7 @@ class Matrix_model extends CI_Model
         }
 
         //We need to create a new entity and add this URL to it...
-        //Was curl_html() able to fetch the URL's <title> tag?
+        //Was fn___curl_html() able to fetch the URL's <title> tag?
         if (strlen($curl['page_title']) > 0) {
 
             //Make sure this is not a duplicate name:
@@ -674,7 +674,7 @@ class Matrix_model extends CI_Model
 
         } else {
 
-            //curl_html() did not find a <title> tag:
+            //fn___curl_html() did not find a <title> tag:
             //Use URL Type as its name:
             $en_all_4537 = $this->config->item('en_all_4537');
             $en_name = $en_all_4537[$curl['tr_en_type_id']]['en_name'] . ' ' . substr(md5($input_url), 0, 8); //Append a unique identifier

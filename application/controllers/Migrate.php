@@ -32,7 +32,7 @@ class Migrate extends CI_Controller
 
         die('pending final migration');
 
-        boost_power();
+        fn___boost_power();
 
         //Delete everything before starting:
         $this->db->query("DELETE FROM table_intents WHERE in_id>0");
@@ -153,7 +153,7 @@ class Migrate extends CI_Controller
             die('pending final migration');
         }
 
-        boost_power();
+        fn___boost_power();
 
         //Delete everything before starting:
         if(0){
@@ -351,7 +351,7 @@ class Migrate extends CI_Controller
                 //Create new link
                 $this->Database_model->tr_create(array(
                     'tr_timestamp' => $ur['ur_timestamp'],
-                    'tr_en_type_id' => detect_tr_en_type_id($ur['ur_notes']), //Depends on content
+                    'tr_en_type_id' => fn___detect_tr_en_type_id($ur['ur_notes']), //Depends on content
                     'tr_en_credit_id' => 1, //Shervin
                     'tr_en_parent_id' => $ur['ur_parent_u_id'],
                     'tr_en_child_id' => $ur['ur_child_u_id'],
@@ -496,7 +496,7 @@ class Migrate extends CI_Controller
     function e()
     {
 
-        boost_power();
+        fn___boost_power();
 
 
 

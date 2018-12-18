@@ -1,5 +1,5 @@
 <?php
-$udata = auth(array(1308)); //Is miners
+$udata = fn___en_auth(array(1308)); //Is miners
 ?>
 <div class="p-header <?= ($udata ? 'hidden' : '') ?>">
     <ul class="nav nav-pills nav-pills-primary full-width">

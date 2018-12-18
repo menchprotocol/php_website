@@ -13,27 +13,27 @@ class Entities extends CI_Controller
 
 
     //Lists entities
-    function entity_manage($en_id)
+    function en_miner_ui($en_id)
     {
 
-        $udata = auth(null, 1); //Just be logged in to browse
+        $udata = fn___en_auth(null, true); //Just be logged in to browse
 
         $entities = $this->Database_model->en_fetch(array(
             'en_id' => $en_id,
         ), array('en__child_count', 'en__children', 'en__actionplans'));
 
         if (count($entities) < 1) {
-            return redirect_message('/entities', '<div class="alert alert-danger" role="alert">Invalid Entity ID</div>');
+            return fn___redirect_message('/entities', '<div class="alert alert-danger" role="alert">Invalid Entity ID</div>');
         }
 
         //Load views:
-        $this->load->view('shared/matrix_header', array(
+        $this->load->view('view_shared/matrix_header', array(
             'title' => $entities[0]['en_name'],
         ));
-        $this->load->view('entities/entity_manage', array(
+        $this->load->view('view_entities/en_miner_ui', array(
             'entity' => $entities[0],
         ));
-        $this->load->view('shared/matrix_footer');
+        $this->load->view('view_shared/matrix_footer');
     }
 
     function u_load_next_page()
@@ -43,7 +43,7 @@ class Entities extends CI_Controller
         $parent_en_id = intval($_POST['parent_en_id']);
         $en_status_filter = intval($_POST['en_status_filter']);
         $page = intval($_POST['page']);
-        $udata = auth(null); //Just be logged in to browse
+        $udata = fn___en_auth(null); //Just be logged in to browse
         $filters = array(
             'tr_en_parent_id' => $parent_en_id,
             'en_status' . ($en_status_filter < 0 ? ' >=' : '') => ($en_status_filter < 0 ? 0 : intval($en_status_filter)), //Pending or Active
@@ -66,7 +66,7 @@ class Entities extends CI_Controller
 
         //Do we need another load more button?
         if ($child_entities_count > (($page * $en_per_page) + count($child_entities))) {
-            echo_next_u(($page + 1), $en_per_page, $child_entities_count);
+            fn___echo_load_more_ens(($page + 1), $en_per_page, $child_entities_count);
         }
 
     }
@@ -75,10 +75,10 @@ class Entities extends CI_Controller
     function link_entities()
     {
 
-        //Responsible to link parent/children entities to each other via a JS function on entity_manage.php
+        //Responsible to link parent/children entities to each other via a JS function on en_miner_ui.php
 
         //Auth user and check required variables:
-        $udata = auth(array(1308));
+        $udata = fn___en_auth(array(1308));
 
         if (!$udata) {
             return echo_json(array(
@@ -213,7 +213,7 @@ class Entities extends CI_Controller
     {
 
         //Auth user and check required variables:
-        $udata = auth(array(1308));
+        $udata = fn___en_auth(array(1308));
 
         if (!$udata) {
             return echo_json(array(
@@ -243,7 +243,7 @@ class Entities extends CI_Controller
     {
 
         //Auth user and check required variables:
-        $udata = auth(array(1308));
+        $udata = fn___en_auth(array(1308));
         $tr_content_max = $this->config->item('tr_content_max');
 
         //Fetch current data:
@@ -312,7 +312,7 @@ class Entities extends CI_Controller
                 //Something has changed, log this:
                 $this->Database_model->tr_update($_POST['tr_id'], array(
                     'tr_content' => $_POST['tr_content'],
-                    'tr_en_type_id' => detect_tr_en_type_id($_POST['tr_content']),
+                    'tr_en_type_id' => fn___detect_tr_en_type_id($_POST['tr_content']),
                 ), $udata['en_id']);
 
             }
@@ -337,7 +337,7 @@ class Entities extends CI_Controller
             'status' => 1,
             'message' => '<span><i class="fas fa-check"></i> Saved</span>',
             'status_u_ui' => echo_status('en', $_POST['en_status'], true, 'bottom'),
-            'tr_content' => echo_link($_POST['tr_content']),
+            'tr_content' => fn___echo_link($_POST['tr_content']),
         ));
 
     }
@@ -346,7 +346,7 @@ class Entities extends CI_Controller
     function load_messages()
     {
 
-        $udata = auth();
+        $udata = fn___en_auth();
         if (!$udata) {
             //Display error:
             die('<span style="color:#FF0000;">Error: Invalid Session. Login again to continue.</span>');
@@ -366,20 +366,20 @@ class Entities extends CI_Controller
     }
 
 
-    function login_ui()
+    function en_login_ui()
     {
         //Check to see if they are already logged in?
         $udata = $this->session->userdata('user');
-        if (isset($udata['en__parents'][0]) && filter_array($udata['en__parents'], 'en_id', 1308)) {
+        if (isset($udata['en__parents'][0]) && fn___filter_array($udata['en__parents'], 'en_id', 1308)) {
             //Lead miner and above, go to console:
-            redirect_message('/intents/' . $this->config->item('in_primary_id'));
+            return fn___redirect_message('/intents/' . $this->config->item('in_primary_id'));
         }
 
-        $this->load->view('shared/public_header', array(
+        $this->load->view('view_shared/public_header', array(
             'title' => 'Login',
         ));
-        $this->load->view('entities/login_ui');
-        $this->load->view('shared/public_footer');
+        $this->load->view('view_entities/en_login_ui');
+        $this->load->view('view_shared/public_footer');
     }
 
     function login_process()
@@ -388,9 +388,9 @@ class Entities extends CI_Controller
         //Setting for admin logins:
 
         if (!isset($_POST['input_email']) || !filter_var($_POST['input_email'], FILTER_VALIDATE_EMAIL)) {
-            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Enter valid email to continue.</div>');
+            return fn___redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Enter valid email to continue.</div>');
         } elseif (!isset($_POST['input_password'])) {
-            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Enter valid password to continue.</div>');
+            return fn___redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Enter valid password to continue.</div>');
         }
 
         //Validate user email:
@@ -401,7 +401,7 @@ class Entities extends CI_Controller
 
         if (count($trs) == 0) {
             //Not found!
-            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: ' . $_POST['input_email'] . ' not found.</div>');
+            return fn___redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: ' . $_POST['input_email'] . ' not found.</div>');
         }
 
         //Fetch full entity data with their active Action Plans:
@@ -420,7 +420,7 @@ class Entities extends CI_Controller
                 'tr_en_type_id' => 4247, //Support Needing Graceful Errors
             ));
 
-            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Your account has been de-activated. Contact us to re-active your account.</div>');
+            return fn___redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Your account has been de-activated. Contact us to re-active your account.</div>');
 
         }
 
@@ -431,13 +431,13 @@ class Entities extends CI_Controller
         ));
         if (count($login_passwords) == 0) {
             //They do not have a password assigned yet!
-            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: An active login password has not been assigned to your account yet. You can assign a new password using the Forgot Password Button.</div>');
+            return fn___redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: An active login password has not been assigned to your account yet. You can assign a new password using the Forgot Password Button.</div>');
         } elseif ($login_passwords[0]['tr_status'] < 2) {
             //They do not have a password assigned yet!
-            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Password is not activated.</div>');
+            return fn___redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Password is not activated.</div>');
         } elseif (!($login_passwords[0]['tr_content'] == hash('sha256', $this->config->item('password_salt') . $_POST['input_password']))) {
             //Bad password
-            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Incorrect password for [' . $_POST['input_email'] . ']</div>');
+            return fn___redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Incorrect password for [' . $_POST['input_email'] . ']</div>');
         }
 
 
@@ -448,7 +448,7 @@ class Entities extends CI_Controller
 
 
         //Are they miner? Give them login access:
-        if (filter_array($entities[0]['en__parents'], 'en_id', 1308)) {
+        if (fn___filter_array($entities[0]['en__parents'], 'en_id', 1308)) {
             //They have admin rights:
             $session_data['user'] = $entities[0];
             $is_miner = true;
@@ -466,14 +466,14 @@ class Entities extends CI_Controller
 
             } else {
 
-                return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Login Denied. The Matrix v' . $this->config->item('app_version') . ' supports <a href="https://www.google.com/chrome/browser/" target="_blank"><u>Google Chrome</u></a> only.</div>');
+                return fn___redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Login Denied. The Matrix v' . $this->config->item('app_version') . ' supports <a href="https://www.google.com/chrome/browser/" target="_blank"><u>Google Chrome</u></a> only.</div>');
 
             }
 
         } elseif (!$is_miner && !$is_master) {
 
             //We assume this is a master request:
-            return redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: You have not been enrolled to any Bootcamps yet. You can only login as a master after you have been approved by your miner.</div>');
+            return fn___redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: You have not been enrolled to any Bootcamps yet. You can only login as a master after you have been approved by your miner.</div>');
 
         }
 
@@ -557,7 +557,7 @@ class Entities extends CI_Controller
     }
 
 
-    function password_reset()
+    function en_password_reset()
     {
         //This function updates the user's new password as requested via a password reset:
         if (!isset($_POST['en_id']) || intval($_POST['en_id']) < 1 || !isset($_POST['timestamp']) || intval($_POST['timestamp']) < 1 || !isset($_POST['p_hash']) || strlen($_POST['p_hash']) < 10) {
@@ -582,7 +582,7 @@ class Entities extends CI_Controller
                 //Update existing password:
                 $this->Database_model->tr_update($login_passwords[0]['tr_id'], array(
                     'tr_content' => $new_password,
-                    'tr_en_type_id' => detect_tr_en_type_id($new_password),
+                    'tr_en_type_id' => fn___detect_tr_en_type_id($new_password),
                 ), $login_passwords[0]['tr_en_child_id']);
 
             } else {

@@ -193,7 +193,6 @@ class Database_model extends CI_Model
     }
 
 
-
     function en_fetch($match_columns, $join_objects = array(), $limit = 0, $limit_offset = 0, $order_columns = array('en_trust_score' => 'DESC'), $select = '*', $group_by = null)
     {
 
@@ -315,7 +314,7 @@ class Database_model extends CI_Model
     {
 
         //What is required to create a new intent?
-        if (detect_missing_columns($insert_columns, array('en_status', 'en_name'))) {
+        if (fn___detect_missing_columns($insert_columns, array('en_status', 'en_name'))) {
             return false;
         }
 
@@ -350,7 +349,7 @@ class Database_model extends CI_Model
                 ));
 
                 //Update Algolia:
-                $this->Database_model->algolia_sync('en', $insert_columns['en_id']);
+                $this->Database_model->fn___algolia_sync('en', $insert_columns['en_id']);
 
                 //Fetch to return the complete entity data:
                 $entities = $this->Database_model->en_fetch(array(
@@ -401,7 +400,7 @@ class Database_model extends CI_Model
         }
 
         //Other required fields:
-        if (detect_missing_columns($insert_columns, array('tr_content'))) {
+        if (fn___detect_missing_columns($insert_columns, array('tr_content'))) {
             return false;
         }
 
@@ -465,7 +464,7 @@ class Database_model extends CI_Model
                     'tr_status >=' => 0, //New+
                     'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent messages
                     'tr_in_child_id' => $value['in_id'],
-                ), array(), 200, 0, array('tr_order' => 'ASC'));
+                ), array(), 0, 0, array('tr_order' => 'ASC'));
             }
 
             //Should we fetch all parent intentions?
@@ -492,7 +491,7 @@ class Database_model extends CI_Model
                 ), array('in_child'), 0, 0, array('tr_order' => 'ASC')); //Child intents must be ordered
 
 
-                if (in_array('in__grandchildren', $join_objects) && count($intents[$key]['in__children'])>0) {
+                if (in_array('in__grandchildren', $join_objects) && count($intents[$key]['in__children']) > 0) {
                     //Fetch second-level grandchildren intents:
                     foreach ($intents[$key]['in__children'] as $key2 => $value2) {
 
@@ -613,7 +612,7 @@ class Database_model extends CI_Model
             }
 
             //Sync algolia:
-            $this->Database_model->algolia_sync('en', $id);
+            $this->Database_model->fn___algolia_sync('en', $id);
 
         }
 
@@ -675,7 +674,7 @@ class Database_model extends CI_Model
             }
 
             //Sync algolia:
-            $this->Database_model->algolia_sync('in', $id);
+            $this->Database_model->fn___algolia_sync('in', $id);
 
         }
 
@@ -744,7 +743,7 @@ class Database_model extends CI_Model
     {
 
         //What is required to create a new intent?
-        if (detect_missing_columns($insert_columns, array('in_status', 'in_outcome'))) {
+        if (fn___detect_missing_columns($insert_columns, array('in_status', 'in_outcome'))) {
             return false;
         }
 
@@ -764,7 +763,7 @@ class Database_model extends CI_Model
 
         if ($external_sync) {
             //Update Algolia:
-            $this->Database_model->algolia_sync('in', $insert_columns['in_id']);
+            $this->Database_model->fn___algolia_sync('in', $insert_columns['in_id']);
         }
 
         return $insert_columns;
@@ -876,7 +875,7 @@ class Database_model extends CI_Model
     function tr_create($insert_columns, $external_sync = false)
     {
 
-        if (detect_missing_columns($insert_columns, array('tr_en_type_id'))) {
+        if (fn___detect_missing_columns($insert_columns, array('tr_en_type_id'))) {
             return false;
         }
 
@@ -984,19 +983,19 @@ class Database_model extends CI_Model
         if ($external_sync) {
 
             if ($insert_columns['tr_en_parent_id'] > 0) {
-                $this->Database_model->algolia_sync('en', $insert_columns['tr_en_parent_id']);
+                $this->Database_model->fn___algolia_sync('en', $insert_columns['tr_en_parent_id']);
             }
 
             if ($insert_columns['tr_en_child_id'] > 0) {
-                $this->Database_model->algolia_sync('en', $insert_columns['tr_en_child_id']);
+                $this->Database_model->fn___algolia_sync('en', $insert_columns['tr_en_child_id']);
             }
 
             if ($insert_columns['tr_in_parent_id'] > 0) {
-                $this->Database_model->algolia_sync('in', $insert_columns['tr_in_parent_id']);
+                $this->Database_model->fn___algolia_sync('in', $insert_columns['tr_in_parent_id']);
             }
 
             if ($insert_columns['tr_in_child_id'] > 0) {
-                $this->Database_model->algolia_sync('in', $insert_columns['tr_in_child_id']);
+                $this->Database_model->fn___algolia_sync('in', $insert_columns['tr_in_child_id']);
             }
 
         }
@@ -1031,7 +1030,7 @@ class Database_model extends CI_Model
                         $html_message = null; //Start
 
                         if (strlen($engagements[0]['tr_content']) > 0) {
-                            $html_message .= '<div>' . echo_link(nl2br($engagements[0]['tr_content'])) . '</div><br />';
+                            $html_message .= '<div>' . fn___echo_link(nl2br($engagements[0]['tr_content'])) . '</div><br />';
                         }
 
                         //Lets go through all references to see what is there:
@@ -1043,7 +1042,7 @@ class Database_model extends CI_Model
                         }
 
                         //Append ID:
-                        $html_message .= '<div>Engagement ID: <a href="https://mench.com/adminpanel/li_list_blob/' . $engagements[0]['tr_id'] . '">#' . $engagements[0]['tr_id'] . '</a></div>';
+                        $html_message .= '<div>Engagement ID: <a href="https://mench.com/ledger/fn___tr_print/' . $engagements[0]['tr_id'] . '">#' . $engagements[0]['tr_id'] . '</a></div>';
 
                         //Send email:
                         //$this->Chat_model->fn___dispatch_email($actionplan['admin_emails'], $subject, $html_message);
@@ -1061,7 +1060,7 @@ class Database_model extends CI_Model
     }
 
 
-    function metadata_tree_update($obj_type, $obj_id, $metadata_new = array(), $direction_is_downward = 0)
+    function metadata_tree_update($obj_type, $focus_obj_id, $metadata_new = array(), $direction_is_downward = 0)
     {
 
         /*
@@ -1079,7 +1078,7 @@ class Database_model extends CI_Model
         if (in_array($obj_type, array('in'))) {
 
             //Fetch tree that needs adjustment:
-            $tree = $this->Database_model->in_recursive_fetch($obj_id, $direction_is_downward);
+            $tree = $this->Database_model->in_recursive_fetch($focus_obj_id, $direction_is_downward);
 
             if (count($tree['in_flat_tree']) == 0) {
                 return false;
@@ -1422,12 +1421,12 @@ class Database_model extends CI_Model
                 //Check the author of this message (The miner) in the miner array:
                 if (!isset($intents[0]['___tree_miners'][$i['tr_en_credit_id']])) {
                     //Add the entire message which would also hold the miner details:
-                    $intents[0]['___tree_miners'][$i['tr_en_credit_id']] = u_essentials($i);
+                    $intents[0]['___tree_miners'][$i['tr_en_credit_id']] = fn___en_essentials($i);
                 }
                 //How about the parent of this one?
                 if (!isset($immediate_children['___tree_miners'][$i['tr_en_credit_id']])) {
                     //Yes, add them to the list:
-                    $immediate_children['___tree_miners'][$i['tr_en_credit_id']] = u_essentials($i);
+                    $immediate_children['___tree_miners'][$i['tr_en_credit_id']] = fn___en_essentials($i);
                 }
 
 
@@ -1453,12 +1452,12 @@ class Database_model extends CI_Model
                             if (in_array($parent_u['en_id'], $this->config->item('en_ids_3000'))) {
                                 //yes! Add it to the list if it does not already exist:
                                 if (!isset($intents[0]['___tree_contents'][$parent_u['en_id']][$us_fetch[0]['en_id']])) {
-                                    $intents[0]['___tree_contents'][$parent_u['en_id']][$us_fetch[0]['en_id']] = u_essentials($us_fetch[0]);
+                                    $intents[0]['___tree_contents'][$parent_u['en_id']][$us_fetch[0]['en_id']] = fn___en_essentials($us_fetch[0]);
                                 }
 
                                 //How about the parent tree?
                                 if (!isset($immediate_children['___tree_contents'][$parent_u['en_id']][$us_fetch[0]['en_id']])) {
-                                    $immediate_children['___tree_contents'][$parent_u['en_id']][$us_fetch[0]['en_id']] = u_essentials($us_fetch[0]);
+                                    $immediate_children['___tree_contents'][$parent_u['en_id']][$us_fetch[0]['en_id']] = fn___en_essentials($us_fetch[0]);
                                 }
                             }
 
@@ -1516,14 +1515,14 @@ class Database_model extends CI_Model
 
             //Start sorting:
             if (is_array($intents[0]['___tree_experts']) && count($intents[0]['___tree_experts']) > 0) {
-                usort($intents[0]['___tree_experts'], 'sortByScore');
+                usort($intents[0]['___tree_experts'], 'fn___sortByScore');
             }
             if (is_array($intents[0]['___tree_miners']) && count($intents[0]['___tree_miners']) > 0) {
-                usort($intents[0]['___tree_miners'], 'sortByScore');
+                usort($intents[0]['___tree_miners'], 'fn___sortByScore');
             }
             foreach ($intents[0]['___tree_contents'] as $type_en_id => $current_us) {
                 if (isset($intents[0]['___tree_contents'][$type_en_id]) && count($intents[0]['___tree_contents'][$type_en_id]) > 0) {
-                    usort($intents[0]['___tree_contents'][$type_en_id], 'sortByScore');
+                    usort($intents[0]['___tree_contents'][$type_en_id], 'fn___sortByScore');
                 }
             }
 
@@ -1675,22 +1674,25 @@ class Database_model extends CI_Model
     }
 
 
-    function algolia_sync($obj, $obj_id = 0)
+    function fn___algolia_sync($obj_type, $focus_obj_id = 0)
     {
 
         /*
          *
-         * Syncs intents/entities with their Algolia Index
+         * Syncs intents/entities with Algolia Index
          *
          * */
 
         if (!$this->config->item('enable_algolia')) {
             //Algolia is disabled, so avoid syncing:
-            return false;
+            return array(
+                'status' => 0,
+                'message' => 'Algolia disabled via config.php',
+            );
         }
 
         //Define the support objects indexed on algolia:
-        $obj_id = intval($obj_id);
+        $focus_obj_id = intval($focus_obj_id);
 
         //Names of Algolia indexes for each data type:
         $alg_indexes = array(
@@ -1698,198 +1700,228 @@ class Database_model extends CI_Model
             'en' => 'alg_entities',
         );
 
-        if (!array_key_exists($obj, $alg_indexes)) {
+        if (!array_key_exists($obj_type, $alg_indexes)) {
             return array(
                 'status' => 0,
-                'message' => 'Invalid object [' . $obj . ']',
+                'message' => 'Invalid object [' . $obj_type . ']',
             );
         }
 
-        boost_power();
-
-
-        if (is_dev()) {
+        if (fn___is_dev()) {
             //Do a call on live as this does not work on local due to security limitations:
-            return json_decode(curl_html("https://mench.com/cron/algolia_sync/" . $obj . "/" . $obj_id));
+            return json_decode(fn___curl_html("https://mench.com/cron/fn___algolia_sync/" . $obj_type . "/" . $focus_obj_id));
         }
 
         //Load algolia
-        $search_index = load_php_algolia($alg_indexes[$obj]);
+        $search_index = fn___load_php_algolia($alg_indexes[$obj_type]);
 
-        if (!$obj_id) {
-            //Since no $obj_id is passed this means we need to update the entire index, so clear it first:
-            $search_index->clearIndex();
-        }
+        //Boost processing power:
+        fn___boost_power();
 
         //Prepare query limits:
-        if ($obj_id) {
-            $limits[$obj . '_id'] = $obj_id;
+        if ($focus_obj_id) {
+            $limits[$obj_type . '_id'] = $focus_obj_id;
         } else {
-            $limits[$obj . '_status >='] = 0; //New+
+            $limits[$obj_type . '_status >='] = 0; //New+ to be indexed in Search
         }
 
-        //Fetch item(s) for updates:
-        if ($obj == 'in') {
-            $items = $this->Database_model->in_fetch($limits);
-        } elseif ($obj == 'en') {
-            $items = $this->Database_model->en_fetch($limits);
+        //Fetch item(s) for updates including their parents:
+        if ($obj_type == 'in') {
+            $db_objects = $this->Database_model->in_fetch($limits, array('in__parents', 'in__messages'));
+        } elseif ($obj_type == 'en') {
+            $db_objects = $this->Database_model->en_fetch($limits, array('en__parents'));
         }
 
         //Go through selection and update:
-        if (count($items) == 0) {
+        if (count($db_objects) == 0) {
             return array(
                 'status' => 0,
-                'message' => 'No items found for [' . $obj . ']',
+                'message' => 'No items found for [' . $obj_type . ']',
             );
         }
 
-        $return_items = array();
-        foreach ($items as $item) {
+        //Is this a Mass Update? If so, we need to do some adjustments:
+        if (!$focus_obj_id) {
+            //Yes it is! We need to update the entire index, so clear it first:
+            $search_index->clearIndex();
+        }
 
-            unset($new_item);
-            $new_item = array();
+        //Build the index:
+        $alg_objects = array();
+        foreach ($db_objects as $db_obj) {
 
-            //Prepare metadata:
+            //Prepare variables:
+            unset($alg_obj);
+            $alg_obj = array();
             $metadata = null;
-            if (strlen($item[$obj . '_metadata']) > 0) {
-                $metadata = unserialize($item[$obj . '_metadata']);
-                //Is this already indexed?
-                if ($obj_id && isset($metadata[$obj . '_algolia_id']) && $metadata[$obj . '_algolia_id'] > 0) {
-                    //Update existing object:
-                    $new_item['objectID'] = $metadata[$obj . '_algolia_id'];
+
+            if (strlen($db_obj[$obj_type . '_metadata']) > 0) {
+
+                //We have a metadata, so we might have the Algolia ID stored as well:
+                $metadata = unserialize($db_obj[$obj_type . '_metadata']);
+                if (isset($metadata[$obj_type . '_algolia_id']) && $metadata[$obj_type . '_algolia_id'] > 0) {
+
+                    //Yes, we have the Algolia ID! Now let's see what to do:
+                    if (!$focus_obj_id) {
+                        //Also clear all metadata algolia ID's that have been cached:
+                        $this->Database_model->metadata_update($obj_type, $db_obj, array(
+                            $obj_type.'_algolia_id' => null, //Since this object has been removed!
+                        ));
+                    } else {
+                        //This is a focused request and we have metadata that might include the Algolia ID:
+                        $alg_obj['objectID'] = $metadata[$obj_type . '_algolia_id'];
+                    }
                 }
             }
 
-            if ($obj == 'en') {
+            //Now build the index depending on the object type:
+            if ($obj_type == 'en') {
 
                 //Add basic entity details:
-                $new_item['en_id'] = intval($item['en_id']);
-                $new_item['en_status'] = intval($item['en_status']);
-                $new_item['en_icon'] = $item['en_icon'];
-                $new_item['en_name'] = $item['en_name'];
-                $new_item['en_trust_score'] = intval($item['en_trust_score']);
+                $alg_obj['en_id'] = intval($db_obj['en_id']);
+                $alg_obj['en_status'] = intval($db_obj['en_status']);
+                $alg_obj['en_icon'] = $db_obj['en_icon'];
+                $alg_obj['en_name'] = $db_obj['en_name'];
+                $alg_obj['en_trust_score'] = intval($db_obj['en_trust_score']);
 
                 //Add parent data:
-                $new_item['en_parent_content'] = '';
-                $new_item['_tags'] = array();
-                foreach ($item['en__parents'] as $tr) {
+                $alg_obj['en_parent_content'] = '';
+                $alg_obj['_tags'] = array();
+                foreach ($db_obj['en__parents'] as $tr) {
 
-                    array_push($new_item['_tags'], 'en' . $tr['en_id']);
+                    //Save the ID of parent for search filtering options if needed:
+                    array_push($alg_obj['_tags'], 'en' . $tr['en_id']);
 
                     //Also index the content value if any:
-                    if(strlen($tr['tr_content'])>0){
-                        $new_item['en_parent_content'] .= $tr['tr_content'] . ' ';
+                    if (strlen($tr['tr_content']) > 0) {
+                        $alg_obj['en_parent_content'] .= $tr['tr_content'] . ' ';
                     }
+
                 }
 
                 //Clean keywords
-                $new_item['en_parent_content'] = trim(strip_tags($new_item['en_parent_content']));
+                $alg_obj['en_parent_content'] = trim(strip_tags($alg_obj['en_parent_content']));
 
-            } elseif ($obj == 'in') {
+            } elseif ($obj_type == 'in') {
 
                 //Add basic intent details:
-                $new_item['in_id'] = intval($item['in_id']);
-                $new_item['in_status'] = intval($item['in_status']);
-                $new_item['in_outcome'] = $item['in_outcome'];
-                $new_item['in_alternatives'] = $item['in_alternatives'];
-                $new_item['in_is_any'] = intval($item['in_is_any']);
+                $alg_obj['in_id'] = intval($db_obj['in_id']);
+                $alg_obj['in_status'] = intval($db_obj['in_status']);
+                $alg_obj['in_outcome'] = $db_obj['in_outcome'];
+                $alg_obj['in_alternatives'] = $db_obj['in_alternatives'];
+                $alg_obj['in_is_any'] = intval($db_obj['in_is_any']);
 
-                //Append some tree insights from Metadata:
-                $new_item['in__tree_max_secs'] = ( $metadata && isset($metadata['in__tree_max_seconds']) ? intval($metadata['in__tree_max_seconds']) : 0 );
-                $new_item['in__tree_min_secs'] = ( $metadata && isset($metadata['in__tree_min_secs']) ? intval($metadata['in__tree_min_secs']) : 0 );
-                $new_item['in__tree_in_count'] = ( $metadata && isset($metadata['in__tree_in_count']) ? intval($metadata['in__tree_in_count']) : 0 );
-                $new_item['in__message_tree_count'] = ( $metadata && isset($metadata['in__message_tree_count']) ? intval($metadata['in__message_tree_count']) : 0 );
+                //Append some of the intent Metadata for better contextual searching:
+                $alg_obj['in__tree_max_secs'] = ($metadata && isset($metadata['in__tree_max_seconds']) ? intval($metadata['in__tree_max_seconds']) : 0);
+                $alg_obj['in__tree_min_secs'] = ($metadata && isset($metadata['in__tree_min_secs']) ? intval($metadata['in__tree_min_secs']) : 0);
+                $alg_obj['in__tree_in_count'] = ($metadata && isset($metadata['in__tree_in_count']) ? intval($metadata['in__tree_in_count']) : 0);
+                $alg_obj['in__message_tree_count'] = ($metadata && isset($metadata['in__message_tree_count']) ? intval($metadata['in__message_tree_count']) : 0);
 
                 //Append parent intents IDs:
-                $new_item['_tags'] = array();
-                $parent_ins =
-
-                $child_cs = $this->Old_model->cr_parents_fetch(array(
-                    'tr_in_child_id' => $item['in_id'],
-                    'tr_status' => 1,
-                    'in_status >=' => 0,
-                ));
-                //Loop through intent children:
-                foreach ($child_cs as $c) {
-                    array_push($new_item['_tags'], 'in' . $c['in_id']);
+                $alg_obj['_tags'] = array();
+                foreach ($db_obj['in__parents'] as $tr) {
+                    //Save the ID of parent for search filtering options if needed:
+                    array_push($alg_obj['_tags'], 'in' . $tr['in_id']);
                 }
 
                 //Append intent messages:
-                $new_item['in_messages'] = '';
-                $intent_messages = $this->Database_model->tr_fetch(array(
-                    'tr_status >=' => 0, //New+ status which is considered active (not removed)
-                    'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent messages
-                    'tr_in_child_id' => $item['in_id'],
-                ));
-                foreach($intent_messages as $tr){
-                    $new_item['in_messages'] .= ' ' . $tr['tr_content'];
+                $alg_obj['in_messages'] = '';
+                foreach ($db_obj['in__messages'] as $tr) {
+                    //Include Messages as well which will be configured with a lower search weight relative to the intent outcome:
+                    $alg_obj['in_messages'] .= ' ' . $tr['tr_content'];
                 }
-
 
             }
 
             //Add to main array
-            array_push($return_items, $new_item);
+            array_push($alg_objects, $alg_obj);
 
         }
 
 
-        //Now let's see what to do:
-        if ($obj_id) {
+        //Now let's see what to do with the index (Update, Create or delete)
+        if ($focus_obj_id) {
 
-            //We should have fetched a single item only, meaning $items[0] is what we care about...
+            //We should have fetched a single item only, meaning $alg_objects[0] is what we are focused on...
 
-            if ($items[0][$obj . '_status'] >= 0) {
+            //What's the status? Is it active or should it be removed?
+            if ($db_objects[0][$obj_type . '_status'] >= 0) {
 
-                if (intval($items[0][$obj . '_algolia_id']) > 0) {
+                if (isset($alg_objects[0]['objectID'])) {
 
                     //Update existing index:
-                    $obj_add_message = $search_index->saveObjects($return_items);
+                    $alg_sync_message = $search_index->saveObjects($alg_objects);
 
                 } else {
 
-                    //Create new index:
-                    $obj_add_message = $search_index->addObjects($return_items);
+                    //We do not have an index to an Algolia object locally, so create a new index:
+                    $alg_sync_message = $search_index->addObjects($alg_objects);
 
-                    //Now update local database with the objectIDs:
-                    if (isset($obj_add_message['objectIDs']) && count($obj_add_message['objectIDs']) > 0) {
-                        foreach ($obj_add_message['objectIDs'] as $key => $algolia_id) {
-                            $this->db->query("UPDATE " . $algolia_local_tables[$obj] . " SET " . $obj . "_algolia_id=" . $algolia_id . " WHERE " . $obj . "_id=" . $return_items[$key][$obj . '_id']);
+
+                    //Now update local database with the new objectIDs:
+                    if (isset($alg_sync_message['objectIDs']) && count($alg_sync_message['objectIDs']) > 0) {
+                        foreach ($alg_sync_message['objectIDs'] as $key => $algolia_id) {
+                            $this->Database_model->metadata_update($obj_type, $db_objects[0], array(
+                                $obj_type.'_algolia_id' => $algolia_id, //The newly created algolia object
+                            ));
                         }
                     }
 
                 }
 
-            } elseif (intval($items[0][$obj . '_algolia_id']) > 0) {
-
-                //item has been Removed locally but its still indexed on Algolia
-
-                //Remove from algolia:
-                $search_index->deleteObject($items[0][$obj . '_algolia_id']);
-
-                //also set its algolia_id to 0 locally:
-                $this->db->query("UPDATE " . $algolia_local_tables[$obj] . " SET " . $obj . "_algolia_id=0 WHERE " . $obj . "_id=" . $obj_id);
-
+                //Return results:
                 return array(
                     'status' => 1,
-                    'message' => 'Item Removed',
+                    'message' => 'Object Added',
+                );
+
+            } else {
+
+                if(isset($alg_objects[0]['objectID'])){
+
+                    //Object is removed locally but still indexed remotely on Algolia, so let's remove it from Algolia:
+
+                    //Remove from algolia:
+                    $search_index->deleteObject($alg_objects[0]['objectID']);
+
+                    //also set its algolia_id to 0 locally:
+                    $this->Database_model->metadata_update($obj_type, $db_objects[0], array(
+                        $obj_type.'_algolia_id' => null, //Since this item has been removed!
+                    ));
+
+                } else {
+                    //Nothing to do here since we don't have the Algolia object locally!
+                }
+
+                //Return results:
+                return array(
+                    'status' => 1,
+                    'message' => 'Object Removed',
                 );
 
             }
 
         } else {
 
-            //Mass update request
-            //All remote items have been Removed from algolia index and local algolia_ids have been set to zero
-            //we're ready to create new items and update local:
-            $obj_add_message = $search_index->addObjects($return_items);
+            /*
+             *
+             * This is a mass update request.
+             *
+             * All remote objects have already been removed from the Algolia
+             * index & metadata algolia_ids have all been set to zero!
+             *
+             * We're ready to create new items and update local
+             *
+             * */
+
+            $alg_sync_message = $search_index->addObjects($alg_objects);
 
             //Now update database with the objectIDs:
-            if (isset($obj_add_message['objectIDs']) && count($obj_add_message['objectIDs']) > 0) {
-                foreach ($obj_add_message['objectIDs'] as $key => $algolia_id) {
-
-                    $this->db->query("UPDATE " . $algolia_local_tables[$obj] . " SET " . $obj . "_algolia_id=" . $algolia_id . " WHERE " . $obj . "_id=" . $return_items[$key][$obj . '_id']);
-
+            if (isset($alg_sync_message['objectIDs']) && count($alg_sync_message['objectIDs']) > 0) {
+                foreach ($alg_sync_message['objectIDs'] as $key => $algolia_id) {
+                    $this->Database_model->metadata_update($obj_type, $db_objects[$key] /* Not sure if this works! TODO Test this to ensure, or else use $alg_objects[$key][$obj_type . '_id'] to re-fetch data */, array(
+                        $obj_type.'_algolia_id' => $algolia_id,
+                    ));
                 }
             }
 
@@ -1897,8 +1929,8 @@ class Database_model extends CI_Model
 
         //Return results:
         return array(
-            'status' => (isset($obj_add_message['objectIDs']) && count($obj_add_message['objectIDs']) > 0 ? 1 : 0),
-            'message' => (isset($obj_add_message['objectIDs']) ? count($obj_add_message['objectIDs']) : 0) . ' items updated',
+            'status' => (isset($alg_sync_message['objectIDs']) && count($alg_sync_message['objectIDs']) > 0 ? 1 : 0),
+            'message' => (isset($alg_sync_message['objectIDs']) ? count($alg_sync_message['objectIDs']) : 0) . ' objects updated on Algolia',
         );
 
     }

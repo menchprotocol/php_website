@@ -32,7 +32,7 @@ class Ledger extends CI_Controller
          * */
 
         //Authenticate Miner:
-        $udata = auth(array(1308));
+        $udata = fn___en_auth(array(1308));
 
         if (!$udata) {
 
@@ -124,7 +124,7 @@ class Ledger extends CI_Controller
     {
 
         //Authenticate Miner:
-        $udata = auth(array(1308));
+        $udata = fn___en_auth(array(1308));
         if (!$udata) {
 
             return echo_json(array(
@@ -162,12 +162,54 @@ class Ledger extends CI_Controller
     }
 
 
+    function fn___tr_print($tr_id)
+    {
+        //Authenticate miner access:
+        $udata = fn___en_auth(array(1308), true);
+
+        //Fetch transaction metadata and display it:
+        $trs = $this->Database_model->tr_fetch(array(
+            'tr_id' => $tr_id,
+        ));
+
+        //Did we find it?
+        if (count($trs) == 1) {
+            //unserialize metadata first:
+            $trs[0]['tr_metadata'] = unserialize($trs[0]['tr_metadata']);
+            //Print on scree:
+            echo_json($trs[0]);
+        } else {
+            //Ooops
+            echo_json(array('error' => 'Not Found'));
+        }
+    }
+
+    function engagements()
+    {
+        //List all recent engagements:
+        $this->load->view('view_shared/matrix_header', array(
+            'title' => 'Platform Engagements',
+        ));
+        $this->load->view('view_ledger/tr_miner_ui');
+        $this->load->view('view_shared/matrix_footer');
+    }
+
+    function actionplans()
+    {
+        //List all recent action plans:
+        $this->load->view('view_shared/matrix_header', array(
+            'title' => 'All Action Plans',
+        ));
+        $this->load->view('view_ledger/tr_actionplan_list_all');
+        $this->load->view('view_shared/matrix_footer');
+    }
+
 
     function fn___tr_create()
     {
 
         //Authenticate Miner:
-        $udata = auth(array(1308));
+        $udata = fn___en_auth(array(1308));
 
         if (!$udata) {
 
@@ -198,7 +240,7 @@ class Ledger extends CI_Controller
         }
 
         //Make sure message is all good:
-        $validation = message_validation($_POST['tr_content']);
+        $validation = fn___validate_message($_POST['tr_content']);
 
         if (!$validation['status']) {
             //There was some sort of an error:

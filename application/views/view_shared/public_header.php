@@ -21,12 +21,12 @@ $url_part_1 = $this->uri->segment(1);
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <title><?= (isset($title) ? $title . ' | ' : '') . 'Mench' ?></title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'/>
-    <?php $this->load->view('shared/global_js_css'); ?>
+    <?php $this->load->view('view_shared/global_js_css'); ?>
 </head>
 
 <body class="landing-page">
 
-<?php $this->load->view('shared/messenger_web_chat'); ?>
+<?php $this->load->view('view_shared/messenger_web_chat'); ?>
 
 <nav class="navbar navbar-warning navbar-fixed-top navbar-color-on-scroll no-adj">
     <div class="container">

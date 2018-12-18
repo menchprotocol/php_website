@@ -98,7 +98,7 @@
             echo echo_u($u, 2);
         }
         if ($entity['en__child_count'] > count($entity['en__children'])) {
-            echo_next_u(1, $this->config->item('en_per_page'), $entity['en__child_count']);
+            fn___echo_load_more_ens(1, $this->config->item('en_per_page'), $entity['en__child_count']);
         }
 
 
@@ -112,18 +112,6 @@
         </div>
     </div>';
         echo '</div>';
-
-
-        //Only show if data exists (users cannot modify this anyways)
-        if (count($entity['en__actionplans']) > 0) {
-            //Show these Action Plans:
-            echo '<h5 class="badge badge-h indent1" style="display: inline-block;"><i class="fas fa-comment-plus"></i> ' . count($entity['en__actionplans']) . ' Action Plans</h5>';
-            echo '<div class="list-group list-grey indent1" style="margin-bottom:10px;">';
-            foreach ($entity['en__actionplans'] as $in) {
-                echo echo_w_matrix($in);
-            }
-            echo '</div>';
-        }
 
         ?>
     </div>
@@ -238,7 +226,7 @@
         </div>
 
 
-        <?php $this->load->view('actionplans/actionplan_right_col'); ?>
+        <?php $this->load->view('view_ledger/tr_actionplan_right_column'); ?>
 
 
     </div>

@@ -1,12 +1,14 @@
 <?php
 
-function is_dev()
+function fn___is_dev()
 {
+    //Determines if our development environment is development or not
     return (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] == 'local.mench.co');
 }
 
-function includes_any($string, $items)
+function fn___includes_any($string, $items)
 {
+    //Determines if any of the items in array $items includes $string
     foreach ($items as $item) {
         if (substr_count($string, $items) > 0) {
             return $item;
@@ -15,15 +17,17 @@ function includes_any($string, $items)
     return false;
 }
 
-function sortByScore($a, $b)
+function fn___sortByScore($a, $b)
 {
+    //An array sorting function for entities based on their trust score:
     return intval($b['en_trust_score']) - intval($a['en_trust_score']);
 }
 
-function u_essentials($full_array)
+function fn___en_essentials($full_array)
 {
+    //Extracts what is determined to be the essential fields of an entity for metadata caching purposes
     $return_array = array();
-    foreach (array('en_id', 'en_name', 'en_trust_score', 'x_url') as $key) {
+    foreach (array('en_id', 'en_name', 'en_trust_score', 'en_icon') as $key) {
         if (isset($full_array[$key])) {
             $return_array[$key] = $full_array[$key];
         }
@@ -31,8 +35,9 @@ function u_essentials($full_array)
     return $return_array;
 }
 
-function load_php_algolia($index_name)
+function fn___load_php_algolia($index_name)
 {
+    //Loads up algolia search engine functions
     $CI =& get_instance();
     if ($CI->config->item('enable_algolia')) {
         require_once('application/libraries/algoliasearch.php');
@@ -41,8 +46,9 @@ function load_php_algolia($index_name)
     }
 }
 
-function detect_missing_columns($insert_columns, $required_columns)
+function fn___detect_missing_columns($insert_columns, $required_columns)
 {
+    //A function used to review and require certain fields when inserting new rows in DB
     foreach ($required_columns as $req_field) {
         if (!isset($insert_columns[$req_field]) || strlen($insert_columns[$req_field]) == 0) {
             //Ooops, we're missing this required field:
@@ -65,28 +71,10 @@ function detect_missing_columns($insert_columns, $required_columns)
 }
 
 
-//TODO Remove after migration:
-function migrate_submissions($c_require_notes_to_complete, $c_require_url_to_complete)
+
+function fn___fetch_file_ext($url)
 {
-
-}
-
-
-function join_keys($input_array, $joiner = ',')
-{
-    $joined_string = null;
-    foreach ($input_array as $key => $value) {
-        if ($joined_string) {
-            $joined_string .= $joiner;
-        }
-        $joined_string .= $key;
-    }
-    return $joined_string;
-}
-
-
-function fetch_file_ext($url)
-{
+    //A function that attempts to fetch the file extension of an input URL:
     //https://cdn.fbsbx.com/v/t59.3654-21/19359558_10158969505640587_4006997452564463616_n.aac/audioclip-1500335487327-1590.aac?oh=5344e3d423b14dee5efe93edd432d245&oe=596FEA95
     $url_parts = explode('?', $url, 2);
     $url_parts = explode('/', $url_parts[0]);
@@ -95,9 +83,10 @@ function fetch_file_ext($url)
 }
 
 
-function parse_signed_request($signed_request)
+function fn___parse_signed_request($signed_request)
 {
 
+    //A function recommended by Facebook tp parse the signed request we receive from Facebook servers
     //Fetch app settings:
     $CI =& get_instance();
     $fb_settings = $CI->config->item('fb_settings');
@@ -105,8 +94,8 @@ function parse_signed_request($signed_request)
     list($encoded_sig, $payload) = explode('.', $signed_request, 2);
 
     // Decode the data
-    $sig = base64_url_decode($encoded_sig);
-    $data = json_decode(base64_url_decode($payload), true);
+    $sig = fn___base64_url_decode($encoded_sig);
+    $data = json_decode(fn___base64_url_decode($payload), true);
 
     // Confirm the signature
     $expected_sig = hash_hmac('sha256', $payload, $fb_settings['client_secret'], $raw = true);
@@ -118,14 +107,17 @@ function parse_signed_request($signed_request)
     return $data;
 }
 
-function base64_url_decode($input)
+function fn___base64_url_decode($input)
 {
+    //Another Facebook Recommended function that supports the fn___parse_signed_request() function
     return base64_decode(strtr($input, '-_', '+/'));
 }
 
 
-function fn___text_analyze($tr_content)
+function fn___extract_message_references($tr_content)
 {
+
+    //Analyzes a message text to extract Entity References (Like @123) and URLs
 
     //Replace non-ascii characters with space:
     $tr_content = preg_replace('/[[:^print:]]/', ' ', $tr_content);
@@ -149,35 +141,23 @@ function fn___text_analyze($tr_content)
 }
 
 
-function mime_type($mime)
-{
-    if (strstr($mime, "video/")) {
-        return 'video';
-    } else if (strstr($mime, "image/")) {
-        return 'image';
-    } else if (strstr($mime, "audio/")) {
-        return 'audio';
-    } else {
-        return 'file';
-    }
-}
 
-
-function isDate($value)
+function fn___isDate($string)
 {
-    if (!$value) {
+    //Determines if the input $string is a valid date
+    if (!$string) {
         return false;
     }
 
     try {
-        new \DateTime($value);
+        new \DateTime($string);
         return true;
     } catch (\Exception $e) {
         return false;
     }
 }
 
-function detect_tr_en_type_id($string)
+function fn___detect_tr_en_type_id($string)
 {
 
     /*
@@ -190,7 +170,7 @@ function detect_tr_en_type_id($string)
     if (!$string || strlen($string) == 0) {
         //Naked:
         return 4230;
-    } elseif (isDate($string)) {
+    } elseif (fn___isDate($string)) {
         //Date/time:
         return 4318;
     } elseif (is_int($string) || is_double($string)) {
@@ -198,7 +178,7 @@ function detect_tr_en_type_id($string)
         return 4319;
     } elseif (filter_var($string, FILTER_VALIDATE_URL)) {
         //It's a URL, see what type:
-        $curl = curl_html($string, true);
+        $curl = fn___curl_html($string, true);
         return $curl['tr_en_type_id'];
     } else {
         //Regular text link:
@@ -206,30 +186,11 @@ function detect_tr_en_type_id($string)
     }
 }
 
-function array_any_key_exists(array $keys, array $arr)
-{
-    foreach ($keys as $key) {
-        if (array_key_exists($key, $arr)) {
-            return true;
-        }
-    }
-    return false;
-}
 
-
-function is_valid_intent($in_id)
-{
-    $CI =& get_instance();
-    $intents = $CI->Database_model->in_fetch(array(
-        'in_id' => intval($in_id),
-        'in_status >=' => 0,
-    ));
-    return (count($intents) == 1);
-}
-
-function filter_array($array, $match_key, $match_value)
+function fn___filter_array($array, $match_key, $match_value)
 {
 
+    //Searches through $array and attempts to find $array[$match_key] = $match_value
     if (!is_array($array) || count($array) < 1) {
         return false;
     }
@@ -242,42 +203,26 @@ function filter_array($array, $match_key, $match_value)
     return false;
 }
 
-function clean_title($title)
-{
-    $common_end_exploders = array('-', '|');
-    foreach ($common_end_exploders as $keyword) {
-        if (substr_count($title, $keyword) > 0) {
-            $parts = explode($keyword, $title);
-            $last_peace = $parts[(count($parts) - 1)];
 
-            //Should we remove the last part if not too long?
-            if (substr($last_peace, 0, 1) == ' ' && strlen($last_peace) < 16) {
-                $title = str_replace($keyword . $last_peace, '', $title);
-                break; //Only a single extension, so break the loop
-            }
-        }
-    }
-    return trim($title);
-}
-
-function auth($entity_groups = null, $force_redirect = 0)
+function fn___en_auth($en_permission_group = null, $force_redirect = 0)
 {
 
+    //Authenticates logged-in users with their session information
     $CI =& get_instance();
     $udata = $CI->session->userdata('user');
 
     //Let's start checking various ways we can give user access:
-    if (!$entity_groups && is_array($udata) && count($udata) > 0) {
+    if (!$en_permission_group && is_array($udata) && count($udata) > 0) {
 
-        //No minimum level required, grant access IF logged in:
+        //No minimum level required, grant access IF user is logged in:
         return $udata;
 
-    } elseif (isset($udata['en__parents']) && filter_array($udata['en__parents'], 'en_id', 1308)) {
+    } elseif (isset($udata['en__parents']) && fn___filter_array($udata['en__parents'], 'en_id', 1308)) {
 
         //Always grant access to miners:
         return $udata;
 
-    } elseif (isset($udata['en_id']) && filter_array($udata['en__parents'], 'en_id', $entity_groups)) {
+    } elseif (isset($udata['en_id']) && fn___filter_array($udata['en__parents'], 'en_id', $en_permission_group)) {
 
         //They are part of one of the levels assigned to them:
         return $udata;
@@ -290,46 +235,38 @@ function auth($entity_groups = null, $force_redirect = 0)
         return false;
     } else {
         //Block access:
-        redirect_message((isset($udata['en__parents'][0]) && filter_array($udata['en__parents'], 'en_id', 1308) ? '/intents/' . $this->config->item('in_primary_id') : '/login?url=' . urlencode($_SERVER['REQUEST_URI'])), '<div class="alert alert-danger maxout" role="alert">' . (isset($udata['en_id']) ? 'Access not authorized.' : 'Session Expired. Login to continue.') . '</div>');
+        return fn___redirect_message((isset($udata['en__parents'][0]) && fn___filter_array($udata['en__parents'], 'en_id', 1308) ? '/intents/' . $CI->config->item('in_primary_id') : '/login?url=' . urlencode($_SERVER['REQUEST_URI'])), '<div class="alert alert-danger maxout" role="alert">' . (isset($udata['en_id']) ? 'Access not authorized.' : 'Session Expired. Login to continue.') . '</div>');
     }
 
 }
 
-function redirect_message($url, $message = null, $response_code = null)
+function fn___redirect_message($url, $message = null)
 {
-
+    //An error handling function that would redirect user to $url with optional $message
     //Do we have a Message?
     if ($message) {
         $CI =& get_instance();
         $CI->session->set_flashdata('hm', $message);
     }
 
-    //What's the default response code?
-    $response_code = (!$response_code && !$message ? 301 : ($response_code ? $response_code : null));
-    if ($response_code) {
-        header("Location: " . $url, true, $response_code);
+    if (!$message) {
+        //Do a permanent redirect if message not available:
+        return header("Location: " . $url, true, 301);
     } else {
-        header("Location: " . $url, true);
+        return header("Location: " . $url, true);
     }
-    die();
 }
 
-function remote_mime($file_url)
-{
-    //Fetch Remote:
-    $ch = curl_init($file_url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_exec($ch);
-    $mime = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
-    curl_close($ch);
-    return $mime;
-}
 
-function save_file($file_url, $json_data, $is_local = false)
+function fn___upload_to_cdn($file_url, $json_data, $is_local = false)
 {
+
+    /*
+     * A function that would save a file from URL to our Amazon CDN
+     * */
     $CI =& get_instance();
 
-    $file_name = md5($file_url . 'fileSavingSa!t') . '.' . fetch_file_ext($file_url);
+    $file_name = md5($file_url . 'fileSavingSa!t') . '.' . fn___fetch_file_ext($file_url);
 
     if (!$is_local) {
         //Save this remote file to local first:
@@ -375,7 +312,7 @@ function save_file($file_url, $json_data, $is_local = false)
             return $result['ObjectURL'];
         } else {
             $CI->Database_model->tr_create(array(
-                'tr_content' => 'save_file() Unable to upload file [' . $file_url . '] to Mench cloud.',
+                'tr_content' => 'fn___upload_to_cdn() Unable to upload file [' . $file_url . '] to Mench cloud.',
                 'tr_metadata' => $json_data,
                 'tr_en_type_id' => 4246, //Platform Error
             ));
@@ -388,15 +325,13 @@ function save_file($file_url, $json_data, $is_local = false)
     }
 }
 
-function fb_time($unix_time)
-{
-    //It has milliseconds like "1458668856253", which we need to tranform for DB insertion:
-    return date("Y-m-d H:i:s", round($unix_time / 1000));
-}
 
-
-function curl_html($url, $return_breakdown = false)
+function fn___curl_html($url, $return_breakdown = false)
 {
+
+    /*
+     * A CURL function to fetch more details on $url
+     * */
 
     //Validate URL:
     if (!filter_var($url, FILTER_VALIDATE_URL)) {
@@ -414,7 +349,7 @@ function curl_html($url, $return_breakdown = false)
     curl_setopt($ch, CURLOPT_HEADER, 1);
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 8); //If site takes longer than this to connect, we have an issue!
 
-    if (is_dev()) {
+    if (fn___is_dev()) {
         //SSL does not work on my local PC.
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
@@ -425,7 +360,7 @@ function curl_html($url, $return_breakdown = false)
 
         $body_html = substr($response, curl_getinfo($ch, CURLINFO_HEADER_SIZE));
         $content_type = fn___one_two_explode('', ';', curl_getinfo($ch, CURLINFO_CONTENT_TYPE));
-        $embed_code = echo_embed($url, $url, true);
+        $embed_code = fn___echo_en_embed_url($url, $url, true);
 
         // Now see if this is a specific file type:
         // Audio File URL: https://s3foundation.s3-us-west-2.amazonaws.com/672b41ff20fece4b3e7ae2cf4b58389f.mp3
@@ -453,10 +388,27 @@ function curl_html($url, $return_breakdown = false)
             $tr_en_type_id = 4256;
         }
 
+
+        //Cleanup Page Title:
+        $title = fn___one_two_explode('>', '', fn___one_two_explode('<title', '</title', $body_html));
+        $common_end_exploders = array('-', '|');
+        foreach ($common_end_exploders as $keyword) {
+            if (substr_count($title, $keyword) > 0) {
+                $parts = explode($keyword, $title);
+                $last_peace = $parts[(count($parts) - 1)];
+
+                //Should we remove the last part if not too long?
+                if (substr($last_peace, 0, 1) == ' ' && strlen($last_peace) < 16) {
+                    $title = str_replace($keyword . $last_peace, '', $title);
+                    break; //Only a single extension, so break the loop
+                }
+            }
+        }
+
         return array(
             //used all the time, also when updating en entity:
             'tr_en_type_id' => $tr_en_type_id,
-            'page_title' => clean_title(fn___one_two_explode('>', '', fn___one_two_explode('<title', '</title', $body_html))),
+            'page_title' => trim($title),
         );
 
     } else {
@@ -465,57 +417,43 @@ function curl_html($url, $return_breakdown = false)
     }
 }
 
-function boost_power()
+function fn___boost_power()
 {
+    //Give php page instance more processing power
     ini_set('memory_limit', '-1');
     ini_set('max_execution_time', 0);
 }
 
 
-function objectToArray($object)
+function fn___objectToArray($object)
 {
+    //Transform an object into an array
     if (!is_object($object) && !is_array($object)) {
         return $object;
     }
     if (is_object($object)) {
         $object = (array)$object;
     }
-    return array_map('objectToArray', $object);
+    return array_map('fn___objectToArray', $object);
 }
 
 
-function arrayToObject($array)
-{
-    $obj = new stdClass;
-    foreach ($array as $k => $v) {
-        if (strlen($k)) {
-            if (is_array($v)) {
-                $obj->{$k} = arrayToObject($v); //RECURSION
-            } else {
-                $obj->{$k} = $v;
-            }
-        }
-    }
-    return $obj;
-}
-
-
-function message_validation($tr_content)
+function fn___validate_message($tr_content)
 {
 
     /*
      *
-     * A function to validate the content of the message
+     * Validate Intent messages based on various factors
      *
      * */
 
     $CI =& get_instance();
-    $tr_content_max = $CI->config->item('tr_content_max');
+    $tr_content_max = $CI->config->item('tr_content_max'); //Maximum allowed length
     $status_index = $CI->config->item('object_statuses');
     $tr_content = trim($tr_content);
 
-    //Extract details from this message including its URLs and referenced entities (like "@123")
-    $obj_breakdown = fn___text_analyze($tr_content);
+    //Extract references from this message including its URLs and referenced entities (like "@123")
+    $obj_breakdown = fn___extract_message_references($tr_content);
 
     if (strlen($tr_content) < 1) {
         return array(
@@ -668,13 +606,14 @@ function message_validation($tr_content)
 
 }
 
-function fn___one_two_explode($one, $two, $content)
+function fn___one_two_explode($one, $two, $string)
 {
+    //A quick function to extract a subset of $string between $one and $two
     if (strlen($one) > 0) {
-        if (substr_count($content, $one) < 1) {
+        if (substr_count($string, $one) < 1) {
             return NULL;
         }
-        $temp = explode($one, $content, 2);
+        $temp = explode($one, $string, 2);
         if (strlen($two) > 0) {
             $temp = explode($two, $temp[1], 2);
             return trim($temp[0]);
@@ -682,7 +621,7 @@ function fn___one_two_explode($one, $two, $content)
             return trim($temp[1]);
         }
     } else {
-        $temp = explode($two, $content, 2);
+        $temp = explode($two, $string, 2);
         return trim($temp[0]);
     }
 }

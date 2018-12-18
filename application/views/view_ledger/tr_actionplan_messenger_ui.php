@@ -38,7 +38,7 @@ if ($w['tr_status'] == 1) {
 }
 
 //Include JS file:
-echo '<script src="/js/custom/actionplan-js.js?v=v' . $this->config->item('app_version') . '" type="text/javascript"></script>';
+echo '<script src="/js/custom/actionplan-master-js.js?v=v' . $this->config->item('app_version') . '" type="text/javascript"></script>';
 
 //Fetch parent tree all the way to the top of Action Plan tr_in_child_id
 echo '<div class="list-group" style="margin-top: 10px;">';
@@ -80,7 +80,7 @@ if (count($k_ins) == 0) {
     }
 
     if (strlen($k_ins[0]['tr_content']) > 0) {
-        echo '<div style="margin:15px 0 0 3px;"><i class="fas fa-edit"></i> ' . echo_link(nl2br(htmlentities($k_ins[0]['tr_content']))) . '</div>';
+        echo '<div style="margin:15px 0 0 3px;"><i class="fas fa-edit"></i> ' . fn___echo_link(nl2br(htmlentities($k_ins[0]['tr_content']))) . '</div>';
     }
 
     echo '</div>';

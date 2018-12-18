@@ -30,7 +30,7 @@ foreach ($engagement_filters as $key => $value) {
 }
 
 //Fetch engagements with possible filters:
-$engagements = $this->Database_model->tr_fetch($match_columns, array(), (is_dev() ? 20 : 100));
+$engagements = $this->Database_model->tr_fetch($match_columns, array('en_type'), (fn___is_dev() ? 20 : 100));
 
 ?>
 
@@ -89,7 +89,7 @@ echo '</form>';
 //Fetch objects
 echo '<div class="list-group list-grey maxout">';
 foreach ($engagements as $e) {
-    echo echo_e($e);
+    echo fn___echo_tr($e);
 }
 echo '</div>';
 

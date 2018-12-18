@@ -4,12 +4,12 @@
 $udata = $this->session->userdata('user');
 $fb_settings = $this->config->item('fb_settings');
 
-if ((isset($udata['en__actionplans']) && count($udata['en__actionplans'])) || (isset($udata['en__parents']) && count($udata['en__parents']) > 0 && filter_array($udata['en__parents'], 'en_id', 1308))) {
+if ((isset($udata['en__actionplans']) && count($udata['en__actionplans'])) || (isset($udata['en__parents']) && count($udata['en__parents']) > 0 && fn___filter_array($udata['en__parents'], 'en_id', 1308))) {
 
     //User is accessing the Action Plan from their browser
 
     //Include header:
-    $this->load->view('shared/messenger_nav', array(
+    $this->load->view('view_shared/messenger_nav', array(
         'current' => 'actionplan',
     ));
 

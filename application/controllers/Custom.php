@@ -14,22 +14,14 @@ class Custom extends CI_Controller
 
     function error()
     {
-        $this->load->view('shared/public_header', array(
+        $this->load->view('view_shared/public_header', array(
             'title' => 'Page Not Found',
         ));
         $this->load->view('other/404_page_not_found');
-        $this->load->view('shared/public_footer');
+        $this->load->view('view_shared/public_footer');
     }
 
 
-    function jobs()
-    {
-        $this->load->view('shared/public_header', array(
-            'title' => 'Work at Mench',
-        ));
-        $this->load->view('entities/mench-co-jobs');
-        $this->load->view('shared/public_footer');
-    }
 
 
     function index()
@@ -37,18 +29,15 @@ class Custom extends CI_Controller
 
         $udata = $this->session->userdata('user');
 
-        if (isset($udata['en__parents'][0]) && filter_array($udata['en__parents'], 'en_id', 1308)) {
+        if (isset($udata['en__parents'][0]) && fn___filter_array($udata['en__parents'], 'en_id', 1308)) {
 
             //Lead miner and above, go to matrix:
-            redirect_message('/intents/' . $this->config->item('in_primary_id'));
+            fn___redirect_message('/intents/' . $this->config->item('in_primary_id'));
 
-        } elseif (1 || (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] == 'mench.co')) {
+        } elseif (0 && (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] == 'mench.co')) {
 
-            $this->load->view('shared/public_header', array(
-                'title' => ucwords($this->config->item('in_primary_name')),
-            ));
-            $this->load->view('entities/mench-co-intro');
-            $this->load->view('shared/public_footer');
+            //Show the Hiring Ad:
+            fn___redirect_message('/8327?do_expand=1');
 
         } else {
 
@@ -60,24 +49,24 @@ class Custom extends CI_Controller
             if (count($featured_cs) == 0) {
 
                 //Go to default landing page:
-                return redirect_message('/' . $this->config->item('in_primary_id'));
+                return fn___redirect_message('/' . $this->config->item('in_primary_id'));
 
             } elseif (count($featured_cs) == 1) {
 
                 //TO to single feature:
-                return redirect_message('/' . $featured_cs[0]['in_id']);
+                return fn___redirect_message('/' . $featured_cs[0]['in_id']);
 
             } else {
 
                 //We have more featured, list them so user can choose:
                 //Show index page:
-                $this->load->view('shared/public_header', array(
+                $this->load->view('view_shared/public_header', array(
                     'title' => 'Advance Your Tech Career',
                 ));
-                $this->load->view('view_intents/in_home_featured', array(
+                $this->load->view('view_intents/in_home_featured_ui', array(
                     'featured_cs' => $featured_cs,
                 ));
-                $this->load->view('shared/public_footer');
+                $this->load->view('view_shared/public_footer');
 
             }
         }
@@ -92,6 +81,16 @@ class Custom extends CI_Controller
     function info()
     {
         echo phpinfo();
+    }
+
+    function status_legend()
+    {
+        //Display statuses for intents, entities and ledger transactions:
+        $this->load->view('view_shared/matrix_header', array(
+            'title' => 'Status Legend',
+        ));
+        $this->load->view('view_shared/status_legend');
+        $this->load->view('view_shared/matrix_footer');
     }
 
 }

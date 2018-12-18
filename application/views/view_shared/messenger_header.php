@@ -10,7 +10,7 @@ $udata = $this->session->userdata('user');
     <title><?= 'Mench' . (isset($title) ? ' | ' . $title : '') ?></title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'/>
 
-    <?php $this->load->view('shared/global_js_css'); ?>
+    <?php $this->load->view('view_shared/global_js_css'); ?>
 
 </head>
 

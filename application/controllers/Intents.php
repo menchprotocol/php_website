@@ -23,7 +23,7 @@ class Intents extends CI_Controller
          * */
 
         //Authenticate Miner, redirect if failed:
-        $udata = auth(array(1308), 1);
+        $udata = fn___en_auth(array(1308), true);
 
         //Fetch intent with 2 levels of children:
         $intents = $this->Database_model->in_fetch(array(
@@ -33,13 +33,13 @@ class Intents extends CI_Controller
 
         //Make sure we found it:
         if ( count($intents) < 1) {
-            return redirect_message('/intents/' . $this->config->item('in_primary_id'), '<div class="alert alert-danger" role="alert">Intent ID [' . $in_id . '] not found</div>');
+            return fn___redirect_message('/intents/' . $this->config->item('in_primary_id'), '<div class="alert alert-danger" role="alert">Intent ID [' . $in_id . '] not found</div>');
         }
 
         //Load views:
-        $this->load->view('shared/matrix_header', array( 'title' => $intents[0]['in_outcome'] ));
+        $this->load->view('view_shared/matrix_header', array( 'title' => $intents[0]['in_outcome'] ));
         $this->load->view('view_intents/in_miner_ui', array( 'in' => $intents[0] ));
-        $this->load->view('shared/matrix_footer');
+        $this->load->view('view_shared/matrix_footer');
 
     }
 
@@ -55,17 +55,17 @@ class Intents extends CI_Controller
          * */
 
         //Authenticate Miner, redirect if failed:
-        $udata = auth(array(1308), 1);
+        $udata = fn___en_auth(array(1308), true);
 
         //Load views:
-        $this->load->view('shared/matrix_header', array( 'title' => 'Orphan Intents' ));
+        $this->load->view('view_shared/matrix_header', array( 'title' => 'Orphan Intents' ));
         $this->load->view('view_intents/in_miner_ui', array(
             //Passing this will load the orphans instead of the regular intent tree view:
             'orphan_ins' => $this->Database_model->in_fetch(array(
                 'NOT EXISTS (SELECT 1 FROM table_ledger WHERE in_id=tr_in_child_id AND tr_status>=0)' => null,
             )),
         ));
-        $this->load->view('shared/matrix_footer');
+        $this->load->view('view_shared/matrix_footer');
 
     }
 
@@ -88,13 +88,13 @@ class Intents extends CI_Controller
 
         //Make sure we found it:
         if ( count($intents) < 1) {
-            return redirect_message('/' . $this->config->item('in_primary_id'), '<div class="alert alert-danger" role="alert">Intent ID [' . $in_id . '] not found</div>');
+            return fn___redirect_message('/' . $this->config->item('in_primary_id'), '<div class="alert alert-danger" role="alert">Intent ID [' . $in_id . '] not found</div>');
         }
 
         //Load home page:
-        $this->load->view('shared/public_header', array( 'title' => $intents[0]['in_outcome'] ));
+        $this->load->view('view_shared/public_header', array( 'title' => $intents[0]['in_outcome'] ));
         $this->load->view('view_intents/in_public_ui', array( 'in' => $intents[0] ));
-        $this->load->view('shared/public_footer');
+        $this->load->view('view_shared/public_footer');
 
     }
 
@@ -111,7 +111,7 @@ class Intents extends CI_Controller
          * */
 
         //Authenticate Miner:
-        $udata = auth(array(1308));
+        $udata = fn___en_auth(array(1308));
         if (!$udata) {
             return echo_json(array(
                 'status' => 0,
@@ -146,7 +146,7 @@ class Intents extends CI_Controller
     {
 
         //Authenticate Miner:
-        $udata = auth(array(1308));
+        $udata = fn___en_auth(array(1308));
         if (!$udata) {
             return echo_json(array(
                 'status' => 0,
@@ -225,7 +225,7 @@ class Intents extends CI_Controller
     {
 
         //Authenticate Miner:
-        $udata = auth(array(1308));
+        $udata = fn___en_auth(array(1308));
 
         //Validate Original intent:
         $intents = $this->Database_model->in_fetch(array(
@@ -390,7 +390,7 @@ class Intents extends CI_Controller
 
 
         //Authenticate Miner:
-        $udata = auth(array(1308));
+        $udata = fn___en_auth(array(1308));
 
         if (!$udata) {
             echo_json(array(
@@ -468,7 +468,7 @@ class Intents extends CI_Controller
     {
 
         //Authenticate Miner:
-        $udata = auth(array(1308));
+        $udata = fn___en_auth(array(1308));
         if (!$udata) {
             echo_json(array(
                 'status' => 0,
@@ -545,7 +545,7 @@ class Intents extends CI_Controller
     function c_echo_tip()
     {
 
-        $udata = auth(array(1308));
+        $udata = fn___en_auth(array(1308));
         //Used to load all the help messages within the matrix:
         if (!$udata || !isset($_POST['intent_id']) || intval($_POST['intent_id']) < 1) {
             return echo_json(array(
@@ -593,7 +593,7 @@ class Intents extends CI_Controller
     {
 
         //Auth user and check required variables:
-        $udata = auth(array(1308)); //miners
+        $udata = fn___en_auth(array(1308)); //miners
 
         if (!$udata) {
             die('<div class="alert alert-danger" role="alert">Session Expired</div>');
@@ -602,13 +602,14 @@ class Intents extends CI_Controller
         }
 
         //Load view for this iFrame:
-        $this->load->view('shared/messenger_header', array(
+        $this->load->view('view_shared/messenger_header', array(
             'title' => 'User Engagements',
         ));
-        $this->load->view('ledger/intent_engagements', array(
+        $this->load->view('view_ledger/tr_intent_history', array(
             'in_id' => $in_id,
         ));
-        $this->load->view('shared/messenger_footer');
+        $this->load->view('view_shared/messenger_footer');
+
     }
 
 
@@ -616,7 +617,7 @@ class Intents extends CI_Controller
     {
 
         //Auth user and check required variables:
-        $udata = auth(array(1308)); //miners
+        $udata = fn___en_auth(array(1308)); //miners
 
         if (!$udata) {
             die('<div class="alert alert-danger" role="alert">Session Expired</div>');
@@ -625,13 +626,13 @@ class Intents extends CI_Controller
         }
 
         //Load view for this iFrame:
-        $this->load->view('shared/messenger_header', array(
+        $this->load->view('view_shared/messenger_header', array(
             'title' => 'User Engagements',
         ));
-        $this->load->view('ledger/in_tr_load', array(
+        $this->load->view('view_ledger/in_tr_load', array(
             'in_id' => $in_id,
         ));
-        $this->load->view('shared/messenger_footer');
+        $this->load->view('view_shared/messenger_footer');
     }
 
 
@@ -643,7 +644,7 @@ class Intents extends CI_Controller
     {
 
         //Authenticate as a Miner:
-        $udata = auth(array(1308));
+        $udata = fn___en_auth(array(1308));
         if (!$udata) {
             //Display error:
             die('<span style="color:#FF0000;">Error: Invalid Session. Login again to continue.</span>');
@@ -655,20 +656,20 @@ class Intents extends CI_Controller
         $_GET['skip_header'] = true;
 
         //Load view:
-        $this->load->view('shared/matrix_header', array(
+        $this->load->view('view_shared/matrix_header', array(
             'title' => 'Intent #' . $in_id . ' Messages',
         ));
-        $this->load->view('view_intents/in_message_iframe', array(
+        $this->load->view('view_intents/in_message_iframe_ui', array(
             'in_id' => $in_id,
         ));
-        $this->load->view('shared/matrix_footer');
+        $this->load->view('view_shared/matrix_footer');
     }
 
     function i_attach()
     {
 
         //Authenticate as a Miner:
-        $udata = auth(array(1308));
+        $udata = fn___en_auth(array(1308));
         $file_size_max = $this->config->item('file_size_max');
         if (!$udata) {
             return echo_json(array(
@@ -724,7 +725,7 @@ class Intents extends CI_Controller
         }
 
         //Upload to S3:
-        $new_file_url = trim(save_file($temp_local, $_FILES[$_POST['upload_type']], true));
+        $new_file_url = trim(fn___upload_to_cdn($temp_local, $_FILES[$_POST['upload_type']], true));
 
         //What happened?
         if (!$new_file_url) {
@@ -791,7 +792,7 @@ class Intents extends CI_Controller
     {
 
         //Authenticate Miner:
-        $udata = auth(array(1308));
+        $udata = fn___en_auth(array(1308));
         if (!$udata) {
             return echo_json(array(
                 'status' => 0,
@@ -807,13 +808,24 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Message',
             ));
-        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1 || !is_valid_intent($_POST['in_id'])) {
+        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Intent ID',
             ));
         }
 
+        //Validate Intent:
+        $intents = $this->Database_model->in_fetch(array(
+            'in_id' => $_POST['in_id'],
+            'in_status >=' => 0, //New+
+        ));
+        if (count($intents) < 1) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Intent Not Found',
+            ));
+        }
 
         //Fetch Message:
         $messages = $this->Database_model->i_fetch(array(
@@ -828,7 +840,7 @@ class Intents extends CI_Controller
         }
 
         //Make sure message is all good:
-        $validation = message_validation($_POST['tr_content']);
+        $validation = fn___validate_message($_POST['tr_content']);
 
         if (!$validation['status']) {
             //There was some sort of an error:

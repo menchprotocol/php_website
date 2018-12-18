@@ -23,7 +23,7 @@ class My extends CI_Controller
     function fb_profile($en_id)
     {
 
-        $udata = auth(array(1308));
+        $udata = fn___en_auth(array(1308));
         $current_us = $this->Database_model->en_fetch(array(
             'en_id' => $en_id,
         ));
@@ -62,15 +62,15 @@ class My extends CI_Controller
     function actionplan($actionplan_tr_id = 0, $in_id = 0)
     {
 
-        $this->load->view('shared/messenger_header', array(
+        $this->load->view('view_shared/messenger_header', array(
             'title' => '🚩 Action Plan',
         ));
         //include main body:
-        $this->load->view('actionplans/actionplan_frame', array(
+        $this->load->view('view_ledger/tr_actionplan_messenger_frame', array(
             'in_id' => $in_id,
             'actionplan_tr_id' => $actionplan_tr_id,
         ));
-        $this->load->view('shared/messenger_footer');
+        $this->load->view('view_shared/messenger_footer');
     }
 
     function display_actionplan($u_fb_psid, $actionplan_tr_id = 0, $in_id = 0)
@@ -81,10 +81,10 @@ class My extends CI_Controller
         $no_session_w = (!isset($udata['en__actionplans']) || count($udata['en__actionplans']) < 1);
 
         //Fetch Bootcamps for this user:
-        if (!$u_fb_psid && $no_session_w && !filter_array($udata['en__parents'], 'en_id', 1308)) {
+        if (!$u_fb_psid && $no_session_w && !fn___filter_array($udata['en__parents'], 'en_id', 1308)) {
             //There is an issue here!
             die('<div class="alert alert-danger" role="alert">Invalid Credentials</div>');
-        } elseif ($no_session_w && !is_dev() && isset($_GET['sr']) && !parse_signed_request($_GET['sr'])) {
+        } elseif ($no_session_w && !fn___is_dev() && isset($_GET['sr']) && !fn___parse_signed_request($_GET['sr'])) {
             die('<div class="alert alert-danger" role="alert">Unable to authenticate your origin.</div>');
         }
 
@@ -185,7 +185,7 @@ class My extends CI_Controller
             }
 
             //All good, Load UI:
-            $this->load->view('actionplans/actionplan_ui.php', array(
+            $this->load->view('view_ledger/tr_actionplan_messenger_ui.php', array(
                 'w' => $trs[0], //We must have 1 by now!
                 'in' => $intents[0],
                 'k_ins' => $k_ins,
@@ -200,7 +200,7 @@ class My extends CI_Controller
     {
 
         //Auth user and check required variables:
-        $udata = auth(array(1308)); //miners
+        $udata = fn___en_auth(array(1308)); //miners
 
         if (!$udata) {
             return echo_json(array(
@@ -239,7 +239,7 @@ class My extends CI_Controller
     {
 
         //Auth user and check required variables:
-        $udata = auth(array(1308)); //miners
+        $udata = fn___en_auth(array(1308)); //miners
 
         if (!$udata) {
             die('<div class="alert alert-danger" role="alert">Session Expired</div>');
@@ -248,13 +248,13 @@ class My extends CI_Controller
         }
 
         //Load view for this iFrame:
-        $this->load->view('shared/messenger_header', array(
+        $this->load->view('view_shared/messenger_header', array(
             'title' => 'User Engagements',
         ));
-        $this->load->view('ledger/engagement_list', array(
+        $this->load->view('view_ledger/tr_entity_history', array(
             'en_id' => $en_id,
         ));
-        $this->load->view('shared/messenger_footer');
+        $this->load->view('view_shared/messenger_footer');
     }
 
     function skip_tree($tr_id, $in_id, $tr_id)
@@ -268,9 +268,9 @@ class My extends CI_Controller
         //Find the next item to navigate them to:
         $next_ins = $this->Matrix_model->fn___in_next_actionplan($tr_id);
         if ($next_ins) {
-            redirect_message('/my/actionplan/' . $next_ins[0]['tr_tr_parent_id'] . '/' . $next_ins[0]['in_id'], $message);
+            return fn___redirect_message('/my/actionplan/' . $next_ins[0]['tr_tr_parent_id'] . '/' . $next_ins[0]['in_id'], $message);
         } else {
-            redirect_message('/my/actionplan', $message);
+            return fn___redirect_message('/my/actionplan', $message);
         }
     }
 
@@ -278,10 +278,10 @@ class My extends CI_Controller
     {
         if (md5($tr_id . 'kjaghksjha*(^' . $in_id . $tr_in_parent_id) == $w_key) {
             if ($this->Database_model->k_choose_or($tr_id, $tr_in_parent_id, $in_id)) {
-                redirect_message('/my/actionplan/' . $tr_id . '/' . $in_id, '<div class="alert alert-success" role="alert">Your answer was saved.</div>');
+                return fn___redirect_message('/my/actionplan/' . $tr_id . '/' . $in_id, '<div class="alert alert-success" role="alert">Your answer was saved.</div>');
             } else {
                 //We had some sort of an error:
-                redirect_message('/my/actionplan/' . $tr_id . '/' . $tr_in_parent_id, '<div class="alert alert-danger" role="alert">There was an error saving your answer.</div>');
+                return fn___redirect_message('/my/actionplan/' . $tr_id . '/' . $tr_in_parent_id, '<div class="alert alert-danger" role="alert">There was an error saving your answer.</div>');
             }
         }
     }
@@ -291,7 +291,7 @@ class My extends CI_Controller
 
         //Validate integrity of request:
         if (!isset($_POST['tr_id']) || intval($_POST['tr_id']) < 1 || !isset($_POST['tr_content'])) {
-            return redirect_message('/my/actionplan', '<div class="alert alert-danger" role="alert">Error: Missing Core Data.</div>');
+            return fn___redirect_message('/my/actionplan', '<div class="alert alert-danger" role="alert">Error: Missing Core Data.</div>');
         }
 
         //Fetch master name and details:
@@ -301,18 +301,18 @@ class My extends CI_Controller
         ), array('w', 'cr', 'cr_c_child'));
 
         if (!(count($trs) == 1)) {
-            return redirect_message('/my/actionplan', '<div class="alert alert-danger" role="alert">Error: Invalid submission ID.</div>');
+            return fn___redirect_message('/my/actionplan', '<div class="alert alert-danger" role="alert">Error: Invalid submission ID.</div>');
         }
         $k_url = '/my/actionplan/' . $trs[0]['tr_tr_parent_id'] . '/' . $trs[0]['in_id'];
 
 
         //Do we have what it takes to mark as complete?
-        $obj_breakdown = fn___text_analyze($_POST['tr_content']);
+        $obj_breakdown = fn___extract_message_references($_POST['tr_content']);
 
         if ($trs[0]['c_require_url_to_complete'] && count($obj_breakdown['en_urls']) < 1) {
-            return redirect_message($k_url, '<div class="alert alert-danger" role="alert">Error: URL Required to mark [' . $trs[0]['in_outcome'] . '] as complete.</div>');
+            return fn___redirect_message($k_url, '<div class="alert alert-danger" role="alert">Error: URL Required to mark [' . $trs[0]['in_outcome'] . '] as complete.</div>');
         } elseif ($trs[0]['c_require_notes_to_complete'] && strlen($_POST['tr_content']) < 1) {
-            return redirect_message($k_url, '<div class="alert alert-danger" role="alert">Error: Notes Required to mark [' . $trs[0]['in_outcome'] . '] as complete.</div>');
+            return fn___redirect_message($k_url, '<div class="alert alert-danger" role="alert">Error: Notes Required to mark [' . $trs[0]['in_outcome'] . '] as complete.</div>');
         }
 
 
@@ -321,7 +321,7 @@ class My extends CI_Controller
         $notes_changed = !($trs[0]['tr_content'] == trim($_POST['tr_content']));
         if (!$notes_changed && !$status_changed) {
             //Nothing seemed to change! Let them know:
-            return redirect_message($k_url, '<div class="alert alert-info" role="alert">Note: Nothing saved because nothing was changed.</div>');
+            return fn___redirect_message($k_url, '<div class="alert alert-info" role="alert">Note: Nothing saved because nothing was changed.</div>');
         }
 
         //Has anything changed?
@@ -329,7 +329,7 @@ class My extends CI_Controller
             //Updates k notes:
             $this->Database_model->tr_update($trs[0]['tr_id'], array(
                 'tr_content' => trim($_POST['tr_content']),
-                'tr_en_type_id' => detect_tr_en_type_id($_POST['tr_content']),
+                'tr_en_type_id' => fn___detect_tr_en_type_id($_POST['tr_content']),
             ), (isset($udata['en_id']) ? $udata['en_id'] : $trs[0]['k_children_en_id']));
         }
 
@@ -358,7 +358,7 @@ class My extends CI_Controller
             }
         }
 
-        return redirect_message($k_url, '<div class="alert alert-success" role="alert"><i class="fal fa-check-circle"></i> Successfully Saved</div>');
+        return fn___redirect_message($k_url, '<div class="alert alert-success" role="alert"><i class="fal fa-check-circle"></i> Successfully Saved</div>');
     }
 
 
@@ -367,9 +367,9 @@ class My extends CI_Controller
         $data = array(
             'title' => 'Password Reset',
         );
-        $this->load->view('shared/messenger_header', $data);
-        $this->load->view('entities/password_reset');
-        $this->load->view('shared/messenger_footer');
+        $this->load->view('view_shared/messenger_header', $data);
+        $this->load->view('view_entities/en_pass_reset_ui');
+        $this->load->view('view_shared/messenger_footer');
     }
 
 }

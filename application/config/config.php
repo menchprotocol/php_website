@@ -140,6 +140,10 @@ $config['ledger_filters'] = array(
         'name' => 'Parent Intent',
         'object_code' => 'in',
     ),
+    'tr_tr_parent_id' => array(
+        'name' => 'Parent Transaction',
+        'object_code' => 'tr',
+    ),
 );
 
 

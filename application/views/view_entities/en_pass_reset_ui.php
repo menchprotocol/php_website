@@ -22,10 +22,10 @@ if (!isset($_GET['en_id']) || intval($_GET['en_id']) < 1 || !isset($_GET['timest
 
 <script>
     //Show loading:
-    function password_reset() {
+    function en_password_reset() {
         $('#pass_reset').html('<span><img src="/img/round_load.gif" class="loader" /></span>');
         //Hide the editor & saving results:
-        $.post("/entities/password_reset", {
+        $.post("/entities/en_password_reset", {
             en_id:<?= $_GET['en_id'] ?>,
             timestamp:<?= $_GET['timestamp'] ?>,
             p_hash: "<?= $_GET['p_hash'] ?>",
@@ -50,6 +50,6 @@ if (!isset($_GET['en_id']) || intval($_GET['en_id']) < 1 || !isset($_GET['timest
 
 <div id="loginb" class="submit-btn pass_success">
     <a class="btn btn-black btn-round btn-md" style="font-size: 0.9em; font-weight: 500;"
-       href="javascript:password_reset();">Update Password</a>
+       href="javascript:en_password_reset();">Update Password</a>
 </div>
 <div id="pass_reset"></div>
