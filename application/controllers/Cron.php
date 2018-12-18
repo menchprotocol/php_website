@@ -85,7 +85,7 @@ class Cron extends CI_Controller
             header('Location: ' . $_GET['redirect']);
         } else {
             //Show json:
-            echo_json($sync);
+            fn___echo_json($sync);
         }
     }
 
@@ -93,7 +93,7 @@ class Cron extends CI_Controller
     //I cannot update algolia from my local server so if fn___is_dev() is true I will call mench.com/cron/fn___algolia_sync to sync my local change using a live end-point:
     function fn___algolia_sync($obj, $obj_id = 0)
     {
-        echo_json($this->Database_model->fn___algolia_sync($obj, $obj_id));
+        fn___echo_json($this->Database_model->fn___algolia_sync($obj, $obj_id));
     }
 
 
@@ -337,7 +337,7 @@ class Cron extends CI_Controller
 
         }
 
-        echo_json($e_pending);
+        fn___echo_json($e_pending);
     }
 
     function message_file_save()
@@ -502,9 +502,9 @@ class Cron extends CI_Controller
         }
 
         //Echo message for cron job:
-        echo_json(array(
+        fn___echo_json(array(
             'status' => ($success_count == count($pending_urls) && $success_count > 0 ? 1 : 0),
-            'message' => $success_count . '/' . count($pending_urls) . ' Message' . echo__s(count($pending_urls)) . ' successfully synced their attachment with Facebook',
+            'message' => $success_count . '/' . count($pending_urls) . ' Message' . fn___echo__s(count($pending_urls)) . ' successfully synced their attachment with Facebook',
             'tr_metadata' => $tr_metadata,
         ));
 
@@ -644,7 +644,7 @@ class Cron extends CI_Controller
             }
         }
 
-        echo_json($stats);
+        fn___echo_json($stats);
     }
 
 }

@@ -1,7 +1,7 @@
 <?php
 
 
-function fn___echo_load_more_ens($page, $limit, $en__child_count)
+function fn___echo_en_load_more($page, $limit, $en__child_count)
 {
 
     /*
@@ -22,7 +22,7 @@ function fn___echo_load_more_ens($page, $limit, $en__child_count)
 }
 
 
-function fn___echo_min_from_sec($sec_int)
+function fn___echo_time_minutes($sec_int)
 {
     //Turns seconds into a nice format with minutes, like "1m 23s"
     $sec_int = intval($sec_int);
@@ -35,7 +35,7 @@ function fn___echo_min_from_sec($sec_int)
 }
 
 
-function fn___echo_en_url($url, $en_type_id)
+function fn___echo_url_type($url, $en_type_id)
 {
 
     /*
@@ -47,11 +47,11 @@ function fn___echo_en_url($url, $en_type_id)
      * */
     if ($en_type_id == 4256 /* Generic URL */) {
 
-        return '<a href="' . $url . '" target="_blank"><span class="url_truncate"><i class="fas fa-link" style="margin-right:3px;"></i>' . fn___echo_clean_url($url) . '</span></a>';
+        return '<a href="' . $url . '" target="_blank"><span class="url_truncate"><i class="fas fa-link" style="margin-right:3px;"></i>' . fn___echo_url_clean($url) . '</span></a>';
 
     } elseif ($en_type_id == 4257 /* Embed Widget URL? */) {
 
-        return fn___echo_en_embed_url($url, $url);
+        return fn___echo_url_embed($url, $url);
 
     } elseif ($en_type_id == 4260 /* Image URL */) {
 
@@ -74,7 +74,7 @@ function fn___echo_en_url($url, $en_type_id)
         //Unknown URL type! Log error and return false:
         $CI =& get_instance();
         $CI->Database_model->tr_create(array(
-            'tr_content' => 'fn___echo_en_url() encountered an unknown URL entity type ID ['.$en_type_id.'] with URL value ['.$url.']',
+            'tr_content' => 'fn___echo_url_type() encountered an unknown URL entity type ID [' . $en_type_id . '] with URL value [' . $url . ']',
             'tr_en_type_id' => 4246, //Platform Error
         ));
 
@@ -85,7 +85,7 @@ function fn___echo_en_url($url, $en_type_id)
 }
 
 
-function fn___echo_en_embed_url($url, $full_message = null, $return_array = false, $start_sec = 0, $end_sec = 0)
+function fn___echo_url_embed($url, $full_message = null, $return_array = false, $start_sec = 0, $end_sec = 0)
 {
 
 
@@ -134,7 +134,7 @@ function fn___echo_en_embed_url($url, $full_message = null, $return_array = fals
 
             //Inform Master that this video has been sliced:
             if ($start_sec || $end_sec) {
-                $embed_html_code .= '<div class="video-prefix"><i class="fab fa-youtube"></i> Watch ' . (($start_sec && $end_sec) ? 'this <b>' . fn___echo_min_from_sec(($end_sec - $start_sec)) . '</b> video clip' : 'from <b>' . ($start_sec ? fn___echo_min_from_sec($start_sec) : 'start') . '</b> to <b>' . ($end_sec ? fn___echo_min_from_sec($end_sec) : 'end') . '</b>') . ':</div>';
+                $embed_html_code .= '<div class="video-prefix"><i class="fab fa-youtube"></i> Watch ' . (($start_sec && $end_sec) ? 'this <b>' . fn___echo_time_minutes(($end_sec - $start_sec)) . '</b> video clip' : 'from <b>' . ($start_sec ? fn___echo_time_minutes($start_sec) : 'start') . '</b> to <b>' . ($end_sec ? fn___echo_time_minutes($end_sec) : 'end') . '</b>') . ':</div>';
             }
 
             $embed_html_code .= '<div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/' . $video_id . '?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_sec . ($end_sec ? '&end=' . $end_sec : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div>';
@@ -233,7 +233,6 @@ function echo_message_chat($i, $en_name = null, $fb_format = false)
     }
 
 
-
     //Is it being displayed under entities? This needs a unique UI:
     if ($is_entity && !$fb_format) {
 
@@ -251,7 +250,7 @@ function echo_message_chat($i, $en_name = null, $fb_format = false)
              * */
             $ui .= '<div class="entities-msg">';
             $ui .= '<span class="pull-right" style="margin:6px 10px 0 0;">';
-            $ui .= '<span data-toggle="tooltip" title="This is the ' . echo_ordinal($i['tr_order']) . ' message for this intent" data-placement="left" class="underdot" style="padding-bottom:4px;">' . echo_ordinal($i['tr_order']) . '</span> ';
+            $ui .= '<span data-toggle="tooltip" title="This is the ' . fn___echo_number_ordinal($i['tr_order']) . ' message for this intent" data-placement="left" class="underdot" style="padding-bottom:4px;">' . fn___echo_number_ordinal($i['tr_order']) . '</span> ';
             $ui .= '<span>' . echo_status('tr_status', $i['tr_status'], 1, 'left') . '</span> ';
             $ui .= '<a href="/intents/' . $i['tr_in_child_id'] . '#loadmessages-' . $i['tr_in_child_id'] . '"><span class="badge badge-primary" style="display:inline-block; margin-left:3px; width:40px;"><i class="fas fa-sign-out-alt rotate90"></i></span></a>';
             $ui .= '</span>';
@@ -303,7 +302,7 @@ function echo_message_chat($i, $en_name = null, $fb_format = false)
                     //Try finding a compatible URL for the /slice command:
                     foreach ($us[0]['en__parents'] as $en) {
                         if (substr_count($en['tr_content'], 'youtube.com') > 0) {
-                            $embed_html_code = '<div style="margin-top:7px;">' . fn___echo_en_embed_url($en['tr_content'], $en['tr_content'], false, $time_range[0], $time_range[1]) . '</div>';
+                            $embed_html_code = '<div style="margin-top:7px;">' . fn___echo_url_embed($en['tr_content'], $en['tr_content'], false, $time_range[0], $time_range[1]) . '</div>';
                             break;
                         }
                     }
@@ -322,7 +321,7 @@ function echo_message_chat($i, $en_name = null, $fb_format = false)
                         //Is this a URL of any sort?
                         if (in_array($en['tr_en_type_id'], $CI->config->item('en_ids_4537'))) {
 
-                            $embed_html_code .= '<div style="margin-top:7px;">' . fn___echo_en_url($en['tr_content'], $en['tr_en_type_id']) . '</div>';
+                            $embed_html_code .= '<div style="margin-top:7px;">' . fn___echo_url_type($en['tr_content'], $en['tr_en_type_id']) . '</div>';
 
                         }
                     }
@@ -367,7 +366,7 @@ function echo_message_chat($i, $en_name = null, $fb_format = false)
     if (substr_count($i['tr_content'], '/open_actionplan') > 0) {
         $button_title = 'Open in 🚩Action Plan';
         $command = '/open_actionplan';
-        $button_url = 'https://mench.com/my/actionplan/' . ( isset($i['tr_tr_parent_id']) && isset($i['tr_in_child_id']) ?  $i['tr_tr_parent_id'] . '/' . $i['tr_in_child_id'] : '' ) . '?is_from_messenger=1';
+        $button_url = 'https://mench.com/my/actionplan/' . (isset($i['tr_tr_parent_id']) && isset($i['tr_in_child_id']) ? $i['tr_tr_parent_id'] . '/' . $i['tr_in_child_id'] : '') . '?is_from_messenger=1';
     } elseif (substr_count($i['tr_content'], '/open_myaccount') > 0) {
         $button_title = 'Open 👤 My Account';
         $command = '/open_myaccount';
@@ -488,7 +487,7 @@ function echo_message_chat($i, $en_name = null, $fb_format = false)
 }
 
 
-function fn___echo_message_matrix($tr)
+function fn___echo_in_message_matrix($tr)
 {
 
     /*
@@ -664,7 +663,7 @@ function fn___echo_number($number, $micro = true, $fb_format = false)
 
         //See what to show:
         $rounded = round(($number * $formatting['multiplier']), $formatting['decimals']);
-        $append = $formatting['micro_' . (int)$micro] . (!$micro ? echo__s($rounded) : '');
+        $append = $formatting['micro_' . (int)$micro] . (!$micro ? fn___echo__s($rounded) : '');
 
         if ($fb_format) {
             //Messaging format, show using plain text:
@@ -697,10 +696,10 @@ function fn___echo_tr($tr)
     $ui .= ' <span>' . echo_status('tr_status', $tr['tr_status'], true, 'left') . '</span> ';
 
     //Lets go through all references to see what is there:
-    foreach ($CI->config->item('ledger_filters') as $engagement_field => $er) {
+    foreach ($CI->config->item('ledger_filters') as $engagement_field => $obj_type) {
         if (intval($tr[$engagement_field]) > 0) {
             //Yes we have a value here:
-            $ui .= echo_object($er['object_code'], $tr[$engagement_field], $engagement_field, $er['name']);
+            $ui .= fn___echo_tr_column($obj_type, $tr[$engagement_field], $engagement_field, false);
         }
     }
 
@@ -715,9 +714,9 @@ function fn___echo_tr($tr)
 
     if (in_array($tr['tr_en_type_id'], $CI->config->item('en_ids_4537'))) {
 
-        $main_content = fn___echo_en_url($tr['tr_content'], $tr['tr_en_type_id']);
+        $main_content = fn___echo_url_type($tr['tr_content'], $tr['tr_en_type_id']);
 
-    } elseif(strlen($tr['tr_content']) > 0) {
+    } elseif (strlen($tr['tr_content']) > 0) {
 
         $main_content = fn___echo_link($tr['tr_content']);
 
@@ -725,7 +724,7 @@ function fn___echo_tr($tr)
 
 
     $ui .= '<b>' . $tr['en_name'] . '</b>';
-    $ui .= ' <span data-toggle="tooltip" data-placement="right" title="' . $tr['tr_timestamp'] . ' Engagement #' . $tr['tr_id'] . '" style="font-size:0.8em;">' . echo_diff_time(strtotime($tr['tr_timestamp'])) . ' ago</span> ';
+    $ui .= ' <span data-toggle="tooltip" data-placement="right" title="' . $tr['tr_timestamp'] . ' Engagement #' . $tr['tr_id'] . '" style="font-size:0.8em;">' . fn___echo_time_difference(strtotime($tr['tr_timestamp'])) . ' ago</span> ';
 
     //Do we have a message?
     $ui .= '<div class="e-msg ' . ($main_content ? '' : 'hidden') . '">';
@@ -759,7 +758,7 @@ function echo_w_matrix($w)
     $ui .= '<span class="pull-right">';
 
     //Show Action Plan time:
-    $ui .= ' <span data-toggle="tooltip" data-placement="top" title="Master initiated Action Plan on ' . $w['w_timestamp'] . '" style="font-size:0.8em;">' . echo_diff_time($w['w_timestamp']) . '</span> ';
+    $ui .= ' <span data-toggle="tooltip" data-placement="top" title="Master initiated Action Plan on ' . $w['w_timestamp'] . '" style="font-size:0.8em;">' . fn___echo_time_difference($w['w_timestamp']) . '</span> ';
 
 
     //Show Action Plan Status:
@@ -841,7 +840,7 @@ function echo_w_masters($w)
     $ui .= echo_status('tr_status', $w['tr_status'], 1, 'right');
     $ui .= ' ' . $w['in_outcome'];
     $ui .= '  ' . $w['in__tree_in_count'];
-    $ui .= ' &nbsp;<i class="fas fa-clock"></i> ' . fn___echo_hours_range($w, true);
+    $ui .= ' &nbsp;<i class="fas fa-clock"></i> ' . fn___echo_time_range($w, true);
     $ui .= '</a>';
     return $ui;
 }
@@ -870,7 +869,7 @@ function echo_k_matrix($k)
     $ui .= '<span class="pull-right">';
 
     //Show submission time:
-    $ui .= ' <span data-toggle="tooltip" data-placement="top" title="Submitted on  ' . $k['tr_timestamp'] . '" style="font-size:0.8em;">' . echo_diff_time($k['tr_timestamp']) . '</span> ';
+    $ui .= ' <span data-toggle="tooltip" data-placement="top" title="Submitted on  ' . $k['tr_timestamp'] . '" style="font-size:0.8em;">' . fn___echo_time_difference($k['tr_timestamp']) . '</span> ';
 
 
     //Link to Master, but count total Action Plans first:
@@ -933,15 +932,14 @@ function echo_k($k, $is_parent, $in_is_any_tr_in_parent_id = 0)
 }
 
 
-function fn___echo_clean_url($url)
+function fn___echo_url_clean($url)
 {
     //Returns the watered-down version of the URL for a cleaner UI:
     return rtrim(str_replace('http://', '', str_replace('https://', '', str_replace('www.', '', $url))), '/');
 }
 
 
-
-function fn___echo_hours($seconds, $micro = false)
+function fn___echo_time_hours($seconds, $micro = false)
 {
 
     /*
@@ -959,14 +957,14 @@ function fn___echo_hours($seconds, $micro = false)
     } else {
         //Roundup the hours:
         $hours = round($seconds / 3600);
-        return $hours . ($micro ? 'h' : ' Hour' . echo__s($hours));
+        return $hours . ($micro ? 'h' : ' Hour' . fn___echo__s($hours));
     }
 }
 
 
 function fn___echo_in_referenced_content($in, $fb_format = false)
 {
-    
+
     /*
      * 
      * An intent function to display the cached referenced content
@@ -1007,7 +1005,7 @@ function fn___echo_in_referenced_content($in, $fb_format = false)
             }
 
             //Show category:
-            $cat_contribution = count($referenced_ens) . ' ' . $en_all_3000[$type_id]['en_name'] . echo__s(count($referenced_ens));
+            $cat_contribution = count($referenced_ens) . ' ' . $en_all_3000[$type_id]['en_name'] . fn___echo__s(count($referenced_ens));
             if ($fb_format) {
 
                 $text_overview .= ' ' . $cat_contribution;
@@ -1065,7 +1063,7 @@ function fn___echo_in_referenced_content($in, $fb_format = false)
             <div class="panel-heading" role="tab" id="heading' . $id . '">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="false" aria-controls="collapse' . $id . '">
-                        <i class="fas" style="transform:none !important;">📚</i> ' . $all_count . ' Reference' . echo__s($all_count) . '<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                        <i class="fas" style="transform:none !important;">📚</i> ' . $all_count . ' Reference' . fn___echo__s($all_count) . '<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                     </a>
                 </h4>
             </div>
@@ -1077,17 +1075,29 @@ function fn___echo_in_referenced_content($in, $fb_format = false)
 }
 
 
-function echo_costs($in, $fb_format = 0)
+function fn___echo_in_cost_range($in, $fb_format = 0)
 {
 
-    if ($in['in__tree_max_cost'] < 1) {
+    /*
+     * 
+     * An intent function to display the cached cost of the 
+     * intent tree that is stored in the metadata field.
+     * 
+     * */
+
+    //Do we have anything to return?
+    $metadata = unserialize($in['in_metadata']);
+    if (!isset($metadata['in__tree_max_cost']) || $metadata['in__tree_max_cost'] <= 0) {
         return false;
-    } elseif (round($in['in__tree_max_cost']) == round($in['in__tree_min_cost']) || $in['in__tree_min_cost'] == 0) {
+    }
+
+    //Construct UI:
+    if (round($metadata['in__tree_max_cost']) == round($metadata['in__tree_min_cost']) || $metadata['in__tree_min_cost'] == 0) {
         //Single price:
-        $price_range = '$' . round($in['in__tree_max_cost']) . ' USD';
+        $price_range = '$' . round($metadata['in__tree_max_cost']) . ' USD';
     } else {
         //Price range:
-        $price_range = 'between $' . round($in['in__tree_min_cost']) . ' to $' . round($in['in__tree_max_cost']) . ' USD';
+        $price_range = 'between $' . round($metadata['in__tree_min_cost']) . ' to $' . round($metadata['in__tree_max_cost']) . ' USD';
     }
 
 
@@ -1112,10 +1122,23 @@ function echo_costs($in, $fb_format = 0)
     }
 }
 
-function echo_overview_in($in, $fb_format = 0)
+function fn___echo_in_overview($in, $fb_format = 0)
 {
 
-    $pitch = 'Action Plan contains ' . $in['in__tree_in_count'] . ' concepts that will help you ' . $in['in_outcome'] . '.';
+    /*
+     * 
+     * An intent function to display the total tree intents
+     * stored in the metadata field.
+     * 
+     * */
+
+    //Do we have anything to return?
+    $metadata = unserialize($in['in_metadata']);
+    if (!isset($metadata['in__tree_in_count']) || $metadata['in__tree_in_count'] < 1) {
+        return false;
+    }
+
+    $pitch = 'Action Plan contains ' . $metadata['in__tree_in_count'] . ' concepts that will help you ' . $in['in_outcome'] . '.';
 
     if ($fb_format) {
         return '🚩 ' . $pitch . "\n";
@@ -1126,7 +1149,7 @@ function echo_overview_in($in, $fb_format = 0)
             <div class="panel-heading" role="tab" id="heading' . $id . '">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="false" aria-controls="collapse' . $id . '">
-                    <i class="fas" style="transform:none !important;">💡</i> ' . $in['in__tree_in_count'] . ' concepts<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                    <i class="fas" style="transform:none !important;">💡</i> ' . $metadata['in__tree_in_count'] . ' concepts<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                 </a>
             </h4>
         </div>
@@ -1135,17 +1158,26 @@ function echo_overview_in($in, $fb_format = 0)
         </div>
     </div></div>';
     }
+
 }
 
-function echo_completion_estimate($in, $fb_format = 0)
+function fn___echo_in_time_estimate($in, $fb_format = 0)
 {
 
-    //Return null if we don't have a time estimate at all:
-    if ($in['in__tree_max_seconds'] == 0) {
+    /*
+     *
+     * An intent function to display estimated completion range
+     * for the entire intent tree stored in the metadata field.
+     *
+     * */
+
+    //Do we have anything to return?
+    $metadata = unserialize($in['in_metadata']);
+    if (!isset($metadata['in__tree_max_seconds']) || $metadata['in__tree_max_seconds'] == 0) {
         return false;
     }
 
-    $pitch = 'Action Plan estimates that it will take ' . strtolower(fn___echo_hours_range($in)) . ' to ' . $in['in_outcome'] . '.';
+    $pitch = 'Action Plan estimates that it will take ' . strtolower(fn___echo_time_range($in)) . ' to ' . $in['in_outcome'] . '.';
     if ($fb_format) {
         return '⏰ ' . $pitch . "\n";
     } else {
@@ -1155,7 +1187,7 @@ function echo_completion_estimate($in, $fb_format = 0)
             <div class="panel-heading" role="tab" id="heading' . $id . '">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="false" aria-controls="collapse' . $id . '">
-                        <i class="fas" style="transform:none !important;">⏰</i> ' . ucwords(fn___echo_hours_range($in)) . '<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                        <i class="fas" style="transform:none !important;">⏰</i> ' . ucwords(fn___echo_time_range($in)) . '<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                     </a>
                 </h4>
             </div>
@@ -1166,29 +1198,30 @@ function echo_completion_estimate($in, $fb_format = 0)
     }
 }
 
-function echo_experts($in, $fb_format = 0)
+function fn___echo_in_experts($in, $fb_format = 0)
 {
 
-    //Do we have any intents?
-    if (strlen($in['in__tree_experts']) < 1) {
+    /*
+     * 
+     * An intent function to display referenced experts for 
+     * the entire intent tree stored in the metadata field.
+     * 
+     * */
+
+    //Do we have anything to return?
+    $metadata = unserialize($in['in_metadata']);
+    if (!isset($metadata['in__tree_experts']) || count($metadata['in__tree_experts']) < 1) {
         return false;
     }
 
-    //Make initial variables:
-    $in['in__tree_experts'] = unserialize($in['in__tree_experts']);
-    $all_count = count($in['in__tree_experts']);
-    if ($all_count == 0) {
-        //Should never happen since strlen($in['in__tree_experts'])>0
-        return false;
-    }
-
-
+    //Define some variables to get stared:
+    $all_count = count($metadata['in__tree_experts']);
     $visible_html = 4; //Landing page, beyond this is hidden and visible with a click
     $visible_bot = 10; //Plain text style, but beyond this is cut out!
     $is_miner = fn___en_auth(array(1308)); //If true, will link referenced entities to the Matrix for easier management
     $text_overview = '';
 
-    foreach ($in['in__tree_experts'] as $count => $en) {
+    foreach ($metadata['in__tree_experts'] as $count => $en) {
 
         $is_last_fb_item = ($fb_format && $count >= $visible_bot);
 
@@ -1218,14 +1251,7 @@ function echo_experts($in, $fb_format = 0)
                 $text_overview .= '<a href="/entities/' . $en['en_id'] . '">';
             }
 
-            //TODO Share parent entity link notes/urls
-            if (0) {
-                //Has description, show it here:
-                $text_overview .= ' <span data-toggle="tooltip" title="' . 'nots here' . '" data-placement="top" class="underdot" style="display:inline-block;">' . $en['en_name'] . '</span>';
-            } else {
-                //Just the name:
-                $text_overview .= $en['en_name'];
-            }
+            $text_overview .= $en['en_name'];
 
             if ($is_miner) {
                 $text_overview .= '</a>';
@@ -1246,7 +1272,7 @@ function echo_experts($in, $fb_format = 0)
     }
 
 
-    $pitch = 'Action Plan quotes ' . $all_count . ' industry expert' . echo__s($all_count) . ($all_count == 1 ? ':' : ' including') . $text_overview;
+    $pitch = 'Action Plan quotes ' . $all_count . ' industry expert' . fn___echo__s($all_count) . ($all_count == 1 ? ':' : ' including') . $text_overview;
     if ($fb_format) {
         return '🎓 ' . $pitch . "\n";
     } else {
@@ -1256,7 +1282,7 @@ function echo_experts($in, $fb_format = 0)
             <div class="panel-heading" role="tab" id="heading' . $id . '">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="false" aria-controls="collapse' . $id . '">
-                        <i class="fas" style="transform:none !important;">🎓</i> ' . $all_count . ' Industry Expert' . echo__s($all_count) . '<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                        <i class="fas" style="transform:none !important;">🎓</i> ' . $all_count . ' Industry Expert' . fn___echo__s($all_count) . '<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                     </a>
                 </h4>
             </div>
@@ -1270,17 +1296,17 @@ function echo_experts($in, $fb_format = 0)
 }
 
 
-function fn___echo_hours_range($in, $micro = false)
+function fn___echo_time_range($in, $micro = false)
 {
 
     //Make sure we have metadata passed on via $in as sometimes it might miss it (Like when passed on via Algolia results...)
-    if(!isset($in['in_metadata'])){
+    if (!isset($in['in_metadata'])) {
         //We don't have it, so fetch it:
         $CI =& get_instance();
         $ins = $CI->Database_model->in_fetch(array(
             'in_id' => $in['in_id'], //We should always have Intent ID
         ));
-        if(count($ins)>0){
+        if (count($ins) > 0) {
             $in = $ins[0];
         } else {
             return false;
@@ -1293,7 +1319,7 @@ function fn___echo_hours_range($in, $micro = false)
     //Construct the UI:
     if ($metadata['in__tree_max_seconds'] == $metadata['in__tree_min_seconds']) {
         //Exactly the same, show a single value:
-        return fn___echo_hours($metadata['in__tree_max_seconds'], $micro);
+        return fn___echo_time_hours($metadata['in__tree_max_seconds'], $micro);
     } elseif ($metadata['in__tree_min_seconds'] < 3600) {
         if ($metadata['in__tree_min_seconds'] < 7200 && $metadata['in__tree_max_seconds'] < 10800 && ($metadata['in__tree_max_seconds'] - $metadata['in__tree_min_seconds']) > 1800) {
             $is_minutes = true;
@@ -1302,7 +1328,7 @@ function fn___echo_hours_range($in, $micro = false)
             $hours_decimal = 1;
         } else {
             //Number too large to matter, just treat as one:
-            return fn___echo_hours($metadata['in__tree_max_seconds'], $micro);
+            return fn___echo_time_hours($metadata['in__tree_max_seconds'], $micro);
         }
     } else {
         $is_minutes = false;
@@ -1320,103 +1346,83 @@ function fn___echo_hours_range($in, $micro = false)
 }
 
 
-function echo_object($object, $id, $engagement_field, $button_type)
+function fn___echo_tr_column($obj_type, $id, $engagement_field, $fb_format = false)
 {
 
+    /*
+     *
+     * Displays intents, entities and transactions from the Ledger
+     * Loads the name (and possibly URL) for $obj_type with id=$id
+     *
+     * */
 
-    //Loads the name (and possibly URL) for $object with id=$id
     $CI =& get_instance();
     $id = intval($id);
-
-    if ($id > 0) {
-        if ($object == 'in') {
-
-            $is_parent = ($engagement_field == 'tr_in_parent_id' ? true : false);
-
-            //Fetch intent/Step:
-            $intents = $CI->Database_model->in_fetch(array(
-                'in_id' => $id,
-            ));
-            if (isset($intents[0])) {
-                if (!$button_type) {
-                    //Plain view:
-                    return '<a href="https://mench.com/intents/' . $intents[0]['in_id'] . '">' . $intents[0]['in_outcome'] . '</a>';
-                } else {
-                    return '<a href="/intents/' . $intents[0]['in_id'] . '" target="_parent" class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="' . $button_type . ': ' . stripslashes($intents[0]['in_outcome']) . '"><i class="' . ($is_parent ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90') . '"></i></a> ';
-
-                }
-            }
-        } elseif ($object == 'i') {
-
-            if (!$button_type) {
-                //Plain view:
-                return '#' . $id;
-            } else {
-                return NULL;
-            }
-
-        } elseif ($object == 'w') {
-
-            $trs = $CI->Database_model->w_fetch(array(
-                'tr_id' => $id,
-            ), array('in'));
-            if (count($trs) > 0) {
-                if (!$button_type) {
-                    //Plain view:
-                    return '<a href="https://mench.com/intents/' . $trs[0]['tr_in_child_id'] . '">' . $trs[0]['in_outcome'] . '</a>';
-                } else {
-                    //TODO replace with Action Plan flag that would show master progress and load up their action plan...
-                    return '<a href="/intents/' . $trs[0]['tr_in_child_id'] . '" target="_parent" class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="Subscribed to ' . $trs[0]['in_outcome'] . ' [Action Plan #' . $id . ']"><i class="fas fa-comment-plus"></i></a> ';
-                }
-            }
-
-        } elseif ($object == 'en') {
-
-            $matching_users = $CI->Database_model->en_fetch(array(
-                'en_id' => $id,
-            ));
-            if (count($matching_users) > 0) {
-                if (!$button_type) {
-                    //Plain view:
-                    return '<a href="https://mench.com/entities/' . $id . '" title="Entity ID ' . $id . '">' . $matching_users[0]['en_name'] . '</a>';
-                } else {
-                    return '<a href="/entities/' . $id . '" target="_parent" class="badge badge-secondary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="' . $button_type . ': ' . stripslashes($matching_users[0]['en_name']) . '">' . fn___echo_en_icon($matching_users[0]) . '</a> ';
-                }
-            }
-
-        } elseif ($object == 'x' && $id > 0) {
-
-            $matching_urls = $CI->Old_model->x_fetch(array(
-                'x_id' => $id,
-            ));
-            if (isset($matching_urls[0])) {
-                if (!$button_type) {
-                    //Plain view:
-                    return '<a href="' . $matching_urls[0]['x_url'] . '" target="_blank" title="Reference ID ' . $id . '">' . fn___echo_clean_url($matching_urls[0]['x_url']) . '</a>';
-                } else {
-                    return '<a href="' . $matching_urls[0]['x_url'] . '" target="_blank" class="badge badge-secondary" style="width:40px;">' . echo_status('x_status', $matching_urls[0]['x_status'], true, 'top') . '</a> ';
-                }
-            }
-
-        }
-        //We would not do the other engagement types...
+    if ($id < 1 || !in_array($obj_type, array('in', 'en', 'tr'))) {
+        return false;
     }
 
-    //Still here? Return default:
-    if ($id > 0) {
-        if (!$button_type) {
-            //Plain view:
-            return '#' . $id;
-        } else {
-            return '<span class="badge badge-primary grey" data-toggle="tooltip" data-placement="left" title="' . $button_type . ' #' . $id . '"><i class="fas fa-question-circle"></i></span> ';
+
+    if ($obj_type == 'in') {
+
+        //Fetch Intent:
+        $ins = $CI->Database_model->in_fetch(array(
+            'in_id' => $id,
+        ));
+        if (count($ins) < 1) {
+            //Should not happen:
+            return false;
         }
-    } else {
-        return NULL;
+
+        if ($fb_format) {
+            //Plain view:
+            return $ins[0]['in_outcome'] . ' [https://mench.com/intents/' . $ins[0]['in_id'] . ']';
+        } else {
+            //HTML view:
+            return '<a href="/intents/' . $ins[0]['in_id'] . '" target="_parent" class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="' . stripslashes($ins[0]['in_outcome']) . '"><i class="' . ($engagement_field == 'tr_in_parent_id' ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90') . '"></i></a> ';
+        }
+
+    } elseif ($obj_type == 'en') {
+
+        $ens = $CI->Database_model->en_fetch(array(
+            'en_id' => $id,
+        ));
+        if (count($ens) < 1) {
+            //Should not happen:
+            return false;
+        }
+
+        if ($fb_format) {
+            //Plain view:
+            return $ens[0]['en_name'] . ' [https://mench.com/entities/' . $id . ']';
+        } else {
+            //HTML Format:
+            return '<a href="/entities/' . $id . '" target="_parent" class="badge badge-secondary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="' . stripslashes($ens[0]['en_name']) . '">' . fn___echo_en_icon($ens[0]) . '</a> ';
+        }
+
+    } elseif ($obj_type == 'tr') {
+
+        $trs = $CI->Database_model->tr_fetch(array(
+            'tr_id' => $id,
+        ), array('en_type'));
+        if (count($trs) < 1) {
+            //Should not happen:
+            return false;
+        }
+
+        if ($fb_format) {
+            //Plain view:
+            return $trs[0]['en_name'] . ' [https://mench.com/ledger/' . $trs[0]['tr_id'] . ']';
+        } else {
+            //HTML View:
+            return '<a href="/ledger/' . $trs[0]['tr_id'] . '" target="_parent" class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="Transaction type ' . $trs[0]['en_name'] . ' #' . $trs[0]['tr_id'] . '"><i class="fas fa-atlas"></i></a> ';
+        }
+
     }
 }
 
 
-function echo_diff_time($t, $second_time = null)
+function fn___echo_time_difference($t, $second_time = null)
 {
     if (!$second_time) {
         $second_time = time(); //Now
@@ -1427,7 +1433,7 @@ function echo_diff_time($t, $second_time = null)
     $time = $second_time - (is_int($t) ? $t : strtotime(substr($t, 0, 19))); // to get the time since that moment
     $is_future = ($time < 0);
     $time = abs($time);
-    $tokens = array(
+    $time_units = array(
         31536000 => 'Year',
         2592000 => 'Month',
         604800 => 'Week',
@@ -1437,7 +1443,7 @@ function echo_diff_time($t, $second_time = null)
         1 => 'Second'
     );
 
-    foreach ($tokens as $unit => $text) {
+    foreach ($time_units as $unit => $period) {
         if ($time < $unit && $unit > 1) continue;
         if ($unit >= 2592000 && fmod(($time / $unit), 1) >= 0.33 && fmod(($time / $unit), 1) <= .67) {
             $numberOfUnits = number_format(($time / $unit), 1);
@@ -1449,41 +1455,23 @@ function echo_diff_time($t, $second_time = null)
             $numberOfUnits = 1; //Change "0 seconds" to "1 second"
         }
 
-        return $numberOfUnits . ' ' . $text . (($numberOfUnits > 1) ? 's' : '');
+        return $numberOfUnits . ' ' . $period . (($numberOfUnits > 1) ? 's' : '');
     }
 }
 
-function echo_time($t, $format = 0, $adjust_seconds = 0)
+
+function fn___echo_time_date($t, $format = 0)
 {
     if (!$t) {
         return 'NOW';
     }
-
-    $timestamp = (is_numeric($t) ? $t : strtotime(substr($t, 0, 19))) + $adjust_seconds; //Added this last part to consider the end of days for dates
+    $timestamp = (is_numeric($t) ? $t : strtotime(substr($t, 0, 19)));
     $year = (date("Y") == date("Y", $timestamp));
-    if ($format == 0) {
-        return date(($year ? "M j, g:i a" : "M j, Y, g:i a"), $timestamp);
-    } elseif ($format == 1) {
-        return date(($year ? "j M" : "j M Y"), $timestamp);
-    } elseif ($format == 2) {
-        return date(($year ? "D M j " : "j M Y"), $timestamp);
-    } elseif ($format == 3) {
-        return $timestamp;
-    } elseif ($format == 4) {
-        return date(($year ? "M j" : "M j Y"), $timestamp);
-    } elseif ($format == 5) {
-        return date(($year ? "D M j" : "D M j Y"), $timestamp);
-    } elseif ($format == 6) {
-        return date("Y/m/d", $timestamp);
-    } elseif ($format == 7) {
-        return date(($year ? "D M j, g:i a" : "D M j, Y, g:i a"), $timestamp);
-    } elseif ($format == 8) {
-        return date(($year ? "M j" : "M j Y"), $timestamp);
-    }
+    return date(($year ? "D M j " : "j M Y"), $timestamp);
 }
 
 
-function echo_status($object = null, $status = null, $micro_status = false, $data_placement = 'bottom')
+function echo_status($obj_type = null, $status = null, $micro_status = false, $data_placement = 'bottom')
 {
 
     //IF you make any changes, make sure to also reflect in the echo_status.php as well
@@ -1491,7 +1479,7 @@ function echo_status($object = null, $status = null, $micro_status = false, $dat
     $status_index = $CI->config->item('object_statuses');
 
     //Return results:
-    if (is_null($object)) {
+    if (is_null($obj_type)) {
 
         //Everything
         return $status_index;
@@ -1499,19 +1487,19 @@ function echo_status($object = null, $status = null, $micro_status = false, $dat
     } elseif (is_null($status)) {
 
         //Object Specific
-        if (is_array($object) && count($object) > 0) {
-            return $object;
+        if (is_array($obj_type) && count($obj_type) > 0) {
+            return $obj_type;
         } else {
-            return (isset($status_index[$object]) ? $status_index[$object] : false);
+            return (isset($status_index[$obj_type]) ? $status_index[$obj_type] : false);
         }
 
     } else {
 
         $status = intval($status);
-        if (is_array($object) && count($object) > 0) {
-            $result = $object[$status];
+        if (is_array($obj_type) && count($obj_type) > 0) {
+            $result = $obj_type[$status];
         } else {
-            $result = $status_index[$object][$status];
+            $result = $status_index[$obj_type][$status];
         }
 
         if (!$result) {
@@ -1529,7 +1517,8 @@ function echo_status($object = null, $status = null, $micro_status = false, $dat
     }
 }
 
-function echo_featured_c($in)
+
+function fn___echo_in_featured($in)
 {
     $ui = '<a href="/' . $in['in_id'] . '" class="list-group-item">';
 
@@ -1539,14 +1528,13 @@ function echo_featured_c($in)
 
     $ui .= $in['in_outcome'];
     $ui .= '<span style="font-size:0.8em; font-weight:300; margin-left:5px; display:inline-block;">';
-    //$ui .= ( $in['in__tree_in_count']>0 ? '<span style="padding-right:5px;"><i class="fas fa-lightbulb-on"></i>'.$in['in__tree_in_count'].'</span>' : '' );
-    $ui .= '<span><i class="fas fa-clock"></i>' . fn___echo_hours_range($in) . '</span>';
+    $ui .= '<span><i class="fas fa-clock"></i>' . fn___echo_time_range($in) . '</span>';
     $ui .= '</span>';
     $ui .= '</a>';
     return $ui;
 }
 
-function echo_mili($microtime)
+function fn___echo_time_milliseconds($microtime)
 {
     $time = $microtime / 1000;
     echo date("Y-m-d H:i:s", floor($time)) . '.' . fn___one_two_explode('.', '', $time);
@@ -1623,11 +1611,11 @@ function echo_c($in, $level, $in_parent_id = 0, $is_parent = false)
     $ui .= '<a href="#loadmessages-' . $in['in_id'] . '" onclick="in_messages_load(' . $in['in_id'] . ')" class="msg-badge-' . $in['in_id'] . ' badge badge-primary ' . ($in['in__message_count'] == 0 ? 'grey' : '') . '" style="width:40px;"><span class="btn-counter messages-counter-' . $in['in_id'] . '">' . $in['in__message_count'] . '</span><i class="fas fa-comment-dots"></i></a>';
 
     //Show total tree time here:
-    $ui .= '<a class="badge badge-primary" onclick="in_modify_load(' . $in['in_id'] . ',' . (isset($in['tr_id']) ? $in['tr_id'] : 0) . ')" style="margin:-2px -8px 0 2px; width:40px;" href="#loadmodify-' . $in['in_id'] . '-' . (isset($in['tr_id']) ? $in['tr_id'] : 0) . '"><span class="btn-counter slim-time t_estimate_' . $in['in_id'] . '" tree-max-seconds="' . $in['in__tree_max_seconds'] . '" intent-seconds="' . $in['in_seconds'] . '">' . fn___echo_hours($in['in__tree_max_seconds'], true) . '</span><i class="fas fa-cog"></i></a> &nbsp;';
+    $ui .= '<a class="badge badge-primary" onclick="in_modify_load(' . $in['in_id'] . ',' . (isset($in['tr_id']) ? $in['tr_id'] : 0) . ')" style="margin:-2px -8px 0 2px; width:40px;" href="#loadmodify-' . $in['in_id'] . '-' . (isset($in['tr_id']) ? $in['tr_id'] : 0) . '"><span class="btn-counter slim-time t_estimate_' . $in['in_id'] . '" tree-max-seconds="' . $in['in__tree_max_seconds'] . '" intent-seconds="' . $in['in_seconds'] . '">' . fn___echo_time_hours($in['in__tree_max_seconds'], true) . '</span><i class="fas fa-cog"></i></a> &nbsp;';
 
     //Show link to travel down the tree:
     //TODO Disable link if level 1 to reduce confusion as users cannot click on it?
-    $ui .= '&nbsp;<a href="/intents/' . $in['in_id'] . '" class="tree-badge-' . $in['in_id'] . ' badge badge-primary ' . ($in['in__tree_in_count'] <= 1 ? 'grey' : '') . '" style="display:inline-block; margin-right:-1px; width:40px;"><span class="btn-counter children-counter-' . $in['in_id'] . ' ' . ($is_parent && $level == 2 ? 'inb-counter' : '') . '">' . $in['in__tree_in_count'] . '</span><i class="' . ($is_parent && $level <= 2 ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90') . '"></i></a> ';
+    $ui .= '&nbsp;<a href="/intents/' . $in['in_id'] . '" class="tree-badge-' . $in['in_id'] . ' badge badge-primary ' . ($metadata['in__tree_in_count'] <= 1 ? 'grey' : '') . '" style="display:inline-block; margin-right:-1px; width:40px;"><span class="btn-counter children-counter-' . $in['in_id'] . ' ' . ($is_parent && $level == 2 ? 'inb-counter' : '') . '">' . $metadata['in__tree_in_count'] . '</span><i class="' . ($is_parent && $level <= 2 ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90') . '"></i></a> ';
 
     //Keep an eye out for inner message counter changes:
     $ui .= '</span> ';
@@ -1709,7 +1697,6 @@ function echo_c($in, $level, $in_parent_id = 0, $is_parent = false)
 
     } elseif ($level == 3) {
 
-        //Steps
         $ui .= '<span class="inline-level inline-level-' . $level . '">#' . $in['tr_order'] . '</span>';
         $ui .= '<span id="title_' . $in['tr_id'] . '" class="tree_title in_outcome_' . $in['in_id'] . (strlen($in['c_trigger_statements']) > 0 ? ' has-desc ' : '') . '" children-rank="' . $in['tr_order'] . '" ' . $c_settings . ' data-toggle="tooltip" data-placement="right" title="' . $in['c_trigger_statements'] . '">' . $in['in_outcome'] . '</span> ';
 
@@ -1733,8 +1720,8 @@ function echo_c($in, $level, $in_parent_id = 0, $is_parent = false)
         }
 
 
-        //Step Input field:
-        $ui .= '<div class="list-group-item list_input new-step-input">
+        //Intent Level 3 Input field:
+        $ui .= '<div class="list-group-item list_input new-in3-input">
             <div class="input-group">
                 <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="fn___in_create_or_link(' . $in['in_id'] . ',3);" intent-id="' . $in['in_id'] . '"><input type="text" class="form-control autosearch intentadder-level-3 algolia_search bottom-add" maxlength="' . $CI->config->item('in_outcome_max') . '" id="addintent-cr-' . $in['tr_id'] . '" intent-id="' . $in['in_id'] . '" placeholder="Add #Intent"></form></div>
                 <span class="input-group-addon" style="padding-right:8px;">
@@ -1852,9 +1839,9 @@ function echo_u($u, $level, $is_parent = false)
         if (in_array($u['tr_en_type_id'], $CI->config->item('en_ids_4537'))) {
 
             //Yes, this is
-            $ui .= '<div style="margin-top:7px;">' . fn___echo_en_url($u['tr_content'], $u['tr_en_type_id']) . '</div>';
+            $ui .= '<div style="margin-top:7px;">' . fn___echo_url_type($u['tr_content'], $u['tr_en_type_id']) . '</div>';
 
-        } elseif(strlen($u['tr_content']) > 0) {
+        } elseif (strlen($u['tr_content']) > 0) {
 
             $ui .= ' <span class="tr_content tr_content_' . $tr_id . '">' . fn___echo_link($u['tr_content']) . '</span>';
 
@@ -1869,14 +1856,14 @@ function echo_u($u, $level, $is_parent = false)
 }
 
 
-function echo_json($array)
+function fn___echo_json($array)
 {
     header('Content-Type: application/json');
     echo json_encode($array);
 }
 
 
-function echo_ordinal($number)
+function fn___echo_number_ordinal($number)
 {
     $ends = array('th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th');
     if (($number % 100) >= 11 && ($number % 100) <= 13) {
@@ -1886,8 +1873,9 @@ function echo_ordinal($number)
     }
 }
 
-function echo__s($count, $is_es = 0)
+function fn___echo__s($count, $is_es = 0)
 {
+    //A cute little function to either display the plural "s" or not based on $count
     return ($count == 1 ? '' : ($is_es ? 'es' : 's'));
 }
 

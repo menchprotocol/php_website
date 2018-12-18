@@ -1584,7 +1584,7 @@ h5, .h5 {
     font-weight: 300;
 }
 
-.new-step-input input[type=text]::placeholder {
+.new-in3-input input[type=text]::placeholder {
     font-size: 16px !important;
     font-family: Lato;
     line-height: 27px !important;
@@ -1593,7 +1593,7 @@ h5, .h5 {
     font-weight: 300;
 }
 
-.new-step-input input[type=text] {
+.new-in3-input input[type=text] {
     font-weight: 300;
 }
 

@@ -83,11 +83,11 @@
 
     <h3 style="margin-top:0px !important;">Overview:</h3>
     <div style="margin:12px 0 0 5px;">
-        <?= echo_overview_in($c, false) ?>
+        <?= fn___echo_in_overview($c, false) ?>
         <?= fn___echo_in_referenced_content($c, false) ?>
-        <?= echo_experts($c, false) ?>
-        <?= echo_completion_estimate($c, false) ?>
-        <?= echo_costs($c, false) ?>
+        <?= fn___echo_in_experts($c, false) ?>
+        <?= fn___echo_in_time_estimate($c, false) ?>
+        <?= fn___echo_in_cost_range($c, false) ?>
     </div>
 
 
@@ -115,7 +115,7 @@
 
                 //Show time if we have it:
                 if ($c['in__tree_max_seconds'] > 0) {
-                    echo '<div style="margin:0 0 5px; padding-top:5px; font-size:1.1em;">It is estimated to take ' . fn___echo_hours_range($c1) . ' to complete this part.</div>';
+                    echo '<div style="margin:0 0 5px; padding-top:5px; font-size:1.1em;">It is estimated to take ' . fn___echo_time_range($c1) . ' to complete this part.</div>';
                 }
 
 
@@ -290,7 +290,7 @@ if (count($featured_cs) > 0) {
     echo '<h3>More Intentions:</h3>';
     echo '<div class="list-group actionplan_list">';
     foreach ($featured_cs as $featured_c) {
-        echo echo_featured_c($featured_c);
+        echo fn___echo_in_featured($featured_c);
     }
     echo '</div>';
     echo '</div>';

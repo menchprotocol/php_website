@@ -26,7 +26,7 @@ if (isset($orphan_ins)) {
         } else {
 
             //Start with parents:
-            echo '<h5 class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-parent-count parent-counter-' . $in['in_id'] . '">' . count($in['in__parents']) . '</span> Parent' . echo__s(count($in['in__parents'])) . '</h5>';
+            echo '<h5 class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-parent-count parent-counter-' . $in['in_id'] . '">' . count($in['in__parents']) . '</span> Parent' . fn___echo__s(count($in['in__parents'])) . '</h5>';
 
             if (count($in['in__parents']) > 0) {
                 echo '<div class="list-group list-level-2">';
@@ -197,7 +197,7 @@ if (isset($orphan_ins)) {
                         <select class="form-control" id="c_points">
                             <?php
                             foreach ($this->config->item('in_points_options') as $point) {
-                                echo '<option value="' . $point . '">' . ($point == 0 ? 'Disabled' : $point . ' Point' . echo__s($point)) . '</option>';
+                                echo '<option value="' . $point . '">' . ($point == 0 ? 'Disabled' : $point . ' Point' . fn___echo__s($point)) . '</option>';
                             }
                             ?>
                         </select>

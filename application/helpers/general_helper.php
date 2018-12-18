@@ -360,7 +360,7 @@ function fn___curl_html($url, $return_breakdown = false)
 
         $body_html = substr($response, curl_getinfo($ch, CURLINFO_HEADER_SIZE));
         $content_type = fn___one_two_explode('', ';', curl_getinfo($ch, CURLINFO_CONTENT_TYPE));
-        $embed_code = fn___echo_en_embed_url($url, $url, true);
+        $embed_code = fn___echo_url_embed($url, $url, true);
 
         // Now see if this is a specific file type:
         // Audio File URL: https://s3foundation.s3-us-west-2.amazonaws.com/672b41ff20fece4b3e7ae2cf4b58389f.mp3

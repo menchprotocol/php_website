@@ -36,21 +36,21 @@ class Ledger extends CI_Controller
 
         if (!$udata) {
 
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Session Expired. Login and try again',
             ));
 
         } elseif (!isset($_POST['tr_id']) || intval($_POST['tr_id']) < 1) {
 
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Transaction ID',
             ));
 
         } elseif (!isset($_POST['tr_status_new'])) {
 
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing New Transaction Status ID',
             ));
@@ -65,14 +65,14 @@ class Ledger extends CI_Controller
 
         if (!isset($trs[0])) {
 
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Transaction Not Found',
             ));
 
         } elseif (intval($trs[0]['tr_status']) == intval($_POST['tr_status_new'])) {
 
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Transaction Status is already set to [' . $_POST['tr_status_new'] . ']',
             ));
@@ -112,7 +112,7 @@ class Ledger extends CI_Controller
         }
 
         //Return success:
-        echo_json(array(
+        fn___echo_json(array(
             'status' => 1,
             'message' => '<span style="color:#2f2739;"><i class="fas fa-trash-alt"></i> Removed</span>',
         ));
@@ -127,7 +127,7 @@ class Ledger extends CI_Controller
         $udata = fn___en_auth(array(1308));
         if (!$udata) {
 
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Session Expired. Login and try again',
             ));
@@ -135,7 +135,7 @@ class Ledger extends CI_Controller
         } elseif (!isset($_POST['new_tr_orders']) || !is_array($_POST['new_tr_orders']) || count($_POST['new_tr_orders']) < 1) {
 
             //Do not treat this case as error as it could happen in moving Messages between types:
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 1,
                 'message' => 'There was nothing to sort',
             ));
@@ -155,7 +155,7 @@ class Ledger extends CI_Controller
         }
 
         //Return success:
-        return echo_json(array(
+        return fn___echo_json(array(
             'status' => 1,
             'message' => $sort_count . ' Sorted', //Does not matter as its currently not displayed in UI
         ));
@@ -177,10 +177,10 @@ class Ledger extends CI_Controller
             //unserialize metadata first:
             $trs[0]['tr_metadata'] = unserialize($trs[0]['tr_metadata']);
             //Print on scree:
-            echo_json($trs[0]);
+            fn___echo_json($trs[0]);
         } else {
             //Ooops
-            echo_json(array('error' => 'Not Found'));
+            fn___echo_json(array('error' => 'Not Found'));
         }
     }
 
@@ -213,14 +213,14 @@ class Ledger extends CI_Controller
 
         if (!$udata) {
 
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Session Expired. Login and Try again.',
             ));
 
         } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
 
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Intent ID',
             ));
@@ -233,7 +233,7 @@ class Ledger extends CI_Controller
             'in_status >=' => 0, //New+
         ));
         if(count($intents)<1){
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Intent',
             ));
@@ -244,7 +244,7 @@ class Ledger extends CI_Controller
 
         if (!$validation['status']) {
             //There was some sort of an error:
-            return echo_json($validation);
+            return fn___echo_json($validation);
         }
 
         //Create Message Transaction:
@@ -273,9 +273,9 @@ class Ledger extends CI_Controller
         ));
 
         //Print the challenge:
-        return echo_json(array(
+        return fn___echo_json(array(
             'status' => 1,
-            'message' => fn___echo_message_matrix(array_merge($tr, array(
+            'message' => fn___echo_in_message_matrix(array_merge($tr, array(
                 'tr_en_child_id' => $udata['en_id'],
             ))),
         ));

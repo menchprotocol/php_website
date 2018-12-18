@@ -14,7 +14,7 @@
 
         <?php
         //Parents
-        echo '<h5><span class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-parent-count">' . count($entity['en__parents']) . '</span> Parent' . echo__s(count($entity['en__parents'])) . '</span></h5>';
+        echo '<h5><span class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-parent-count">' . count($entity['en__parents']) . '</span> Parent' . fn___echo__s(count($entity['en__parents'])) . '</span></h5>';
         echo '<div id="list-parent" class="list-group  grey-list">';
         foreach ($entity['en__parents'] as $en) {
             echo echo_u($en, 2, true);
@@ -98,7 +98,7 @@
             echo echo_u($u, 2);
         }
         if ($entity['en__child_count'] > count($entity['en__children'])) {
-            fn___echo_load_more_ens(1, $this->config->item('en_per_page'), $entity['en__child_count']);
+            fn___echo_en_load_more(1, $this->config->item('en_per_page'), $entity['en__child_count']);
         }
 
 

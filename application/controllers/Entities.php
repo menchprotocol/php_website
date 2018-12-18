@@ -66,7 +66,7 @@ class Entities extends CI_Controller
 
         //Do we need another load more button?
         if ($child_entities_count > (($page * $en_per_page) + count($child_entities))) {
-            fn___echo_load_more_ens(($page + 1), $en_per_page, $child_entities_count);
+            fn___echo_en_load_more(($page + 1), $en_per_page, $child_entities_count);
         }
 
     }
@@ -81,27 +81,27 @@ class Entities extends CI_Controller
         $udata = fn___en_auth(array(1308));
 
         if (!$udata) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Session. Refresh the page and try again.',
             ));
         } elseif (!isset($_POST['en_id']) || intval($_POST['en_id']) < 1) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Parent Entity',
             ));
         } elseif (!isset($_POST['assign_en_parent_id'])) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Parent Entity',
             ));
         } elseif (!isset($_POST['is_parent'])) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Entity Link Direction',
             ));
         } elseif (!isset($_POST['en_new_id']) || !isset($_POST['en_new_name']) || (intval($_POST['en_new_id']) < 1 && strlen($_POST['en_new_name']) < 1)) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Either New Entity ID or Name is required',
             ));
@@ -112,7 +112,7 @@ class Entities extends CI_Controller
             'en_id' => $_POST['en_id'],
         ));
         if (count($current_us) < 1) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid current entity ID',
             ));
@@ -137,7 +137,7 @@ class Entities extends CI_Controller
                 'en_status >=' => 1, //Active only
             ));
             if (count($ens) < 1) {
-                return echo_json(array(
+                return fn___echo_json(array(
                     'status' => 0,
                     'message' => 'Invalid active entity',
                 ));
@@ -153,7 +153,7 @@ class Entities extends CI_Controller
             ), true, $udata['en_id']);
 
             if (!isset($entity_new['en_id']) || $entity_new['en_id'] < 1) {
-                return echo_json(array(
+                return fn___echo_json(array(
                     'status' => 0,
                     'message' => 'Failed to create new entity for [' . $_POST['en_new_name'] . ']',
                 ));
@@ -202,7 +202,7 @@ class Entities extends CI_Controller
 
 
         //Return newly added/linked entity:
-        return echo_json(array(
+        return fn___echo_json(array(
             'status' => 1,
             'en_new_status' => $entity_new['en_status'],
             'en_new_echo' => echo_u(array_merge($entity_new, $ur2), 2, $_POST['is_parent']),
@@ -216,12 +216,12 @@ class Entities extends CI_Controller
         $udata = fn___en_auth(array(1308));
 
         if (!$udata) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Session. Refresh the page and try again.',
             ));
         } elseif (!isset($_POST['tr_id']) || intval($_POST['tr_id']) < 1) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing entity link ID',
             ));
@@ -232,7 +232,7 @@ class Entities extends CI_Controller
             'tr_status' => -1,
         ), $udata['en_id']);
 
-        return echo_json(array(
+        return fn___echo_json(array(
             'status' => 1,
             'message' => 'Successfully unlinked entity',
         ));
@@ -252,32 +252,32 @@ class Entities extends CI_Controller
         ));
 
         if (!$udata) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Session Expired',
             ));
         } elseif (!isset($_POST['en_id']) || intval($_POST['en_id']) < 1 || !(count($u_current) == 1)) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid ID',
             ));
         } elseif (!isset($_POST['en_name']) || strlen($_POST['en_name']) < 1) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing name',
             ));
         } elseif (!isset($_POST['en_status'])) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing status',
             ));
         } elseif (!isset($_POST['tr_id']) || !isset($_POST['tr_content'])) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing entity link data',
             ));
         } elseif (strlen($_POST['en_name']) > $this->config->item('en_name_max')) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Name is longer than the allowed ' . $this->config->item('en_name_max') . ' characters. Shorten and try again.',
             ));
@@ -300,7 +300,7 @@ class Entities extends CI_Controller
             ));
 
             if (count($urs) == 0) {
-                return echo_json(array(
+                return fn___echo_json(array(
                     'status' => 0,
                     'message' => 'Invalid Entity Link ID',
                 ));
@@ -333,7 +333,7 @@ class Entities extends CI_Controller
         }
 
         //Show success:
-        return echo_json(array(
+        return fn___echo_json(array(
             'status' => 1,
             'message' => '<span><i class="fas fa-check"></i> Saved</span>',
             'status_u_ui' => echo_status('en', $_POST['en_status'], true, 'bottom'),
@@ -382,7 +382,7 @@ class Entities extends CI_Controller
         $this->load->view('view_shared/public_footer');
     }
 
-    function login_process()
+    function en_login_process()
     {
 
         //Setting for admin logins:
@@ -438,6 +438,27 @@ class Entities extends CI_Controller
         } elseif (!($login_passwords[0]['tr_content'] == hash('sha256', $this->config->item('password_salt') . $_POST['input_password']))) {
             //Bad password
             return fn___redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Incorrect password for [' . $_POST['input_email'] . ']</div>');
+        }
+
+        //Now let's do a few more checks:
+
+        //Make sure Master is connected to Mench:
+        if(count($this->Database_model->tr_fetch(array(
+                'tr_en_parent_id' => 4451,
+                'tr_en_child_id' => $entities[0]['en_id'],
+                'tr_status >=' => 2,
+            ))) < 1){
+            return fn___redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: You are not connected to Mench on Messenger, which is required to login to the Matrix.</div>');
+        }
+
+
+        //Make sure Master is not unsubscribed:
+        if(count($this->Database_model->tr_fetch(array(
+            'tr_en_child_id' => $entities[0]['en_id'],,
+            'tr_en_parent_id' => 4455, //Unsubscribed
+            'tr_status >=' => 0,
+        ))) > 0){
+            return fn___redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: You cannot login to the Matrix because you are unsubscribed from Mench. You can re-active your account by sending a message to Mench on Messenger.</div>');
         }
 
 

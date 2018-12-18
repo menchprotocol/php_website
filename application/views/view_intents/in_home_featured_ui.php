@@ -5,7 +5,7 @@
     <div class="list-group actionplan_list" style="margin-top: 10px;">
         <?php
         foreach ($featured_cs as $featured_c) {
-            echo echo_featured_c($featured_c);
+            echo fn___echo_in_featured($featured_c);
         }
         ?>
     </div>

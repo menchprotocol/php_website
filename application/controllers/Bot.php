@@ -51,7 +51,7 @@ class Bot extends CI_Controller
             ),
         )));
 
-        echo_json($res);
+        fn___echo_json($res);
     }
 
 
@@ -128,7 +128,7 @@ class Bot extends CI_Controller
                         'tr_metadata' => $json_data,
                         'tr_en_type_id' => 4278, //Message Read
                         'tr_en_credit_id' => (isset($en['en_id']) ? $en['en_id'] : 0),
-                        'tr_timestamp' => echo_mili($im['timestamp']), //The Facebook time
+                        'tr_timestamp' => fn___echo_time_milliseconds($im['timestamp']), //The Facebook time
 
                     ));
 
@@ -143,7 +143,7 @@ class Bot extends CI_Controller
                         'tr_metadata' => $json_data,
                         'tr_en_type_id' => 4279, //Message Delivered
                         'tr_en_credit_id' => (isset($en['en_id']) ? $en['en_id'] : 0),
-                        'tr_timestamp' => echo_mili($im['timestamp']), //The Facebook time
+                        'tr_timestamp' => fn___echo_time_milliseconds($im['timestamp']), //The Facebook time
                     ));
 
                 } elseif (isset($im['referral']) || isset($im['postback'])) {
@@ -214,7 +214,7 @@ class Bot extends CI_Controller
                         'tr_en_type_id' => (isset($im['referral']) ? 4267 : 4268), //Messenger Referral/Postback
                         'tr_metadata' => $json_data,
                         'tr_en_credit_id' => (isset($en['en_id']) ? $en['en_id'] : 0),
-                        'tr_timestamp' => echo_mili($im['timestamp']), //The Facebook time
+                        'tr_timestamp' => fn___echo_time_milliseconds($im['timestamp']), //The Facebook time
                     ));
 
 
@@ -232,7 +232,7 @@ class Bot extends CI_Controller
                         'tr_metadata' => $json_data,
                         'tr_en_type_id' => 4266, //Messenger Optin
                         'tr_en_credit_id' => (isset($en['en_id']) ? $en['en_id'] : 0),
-                        'tr_timestamp' => echo_mili($im['timestamp']), //The Facebook time
+                        'tr_timestamp' => fn___echo_time_milliseconds($im['timestamp']), //The Facebook time
                     ));
 
                 } elseif (isset($im['message_request']) && $im['message_request'] == 'accept') {
@@ -252,7 +252,7 @@ class Bot extends CI_Controller
                     $metadata = (isset($im['message']['metadata']) ? $im['message']['metadata'] : null); //Send API custom string [metadata field]
                     if ($metadata == 'system_logged') {
                         //This is already logged! No need to take further action!
-                        echo_json(array('complete' => 'yes'));
+                        fn___echo_json(array('complete' => 'yes'));
                         return false;
                         exit;
                     }
@@ -276,7 +276,7 @@ class Bot extends CI_Controller
 
                     //We only have a timestamp for received messages (not sent ones):
                     if (!$sent_from_us) {
-                        $eng_data['tr_timestamp'] = echo_mili($im['timestamp']); //The Facebook time
+                        $eng_data['tr_timestamp'] = fn___echo_time_milliseconds($im['timestamp']); //The Facebook time
                     }
 
                     //It may also have an attachment

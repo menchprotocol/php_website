@@ -75,7 +75,7 @@ class Custom extends CI_Controller
 
     function ses()
     {
-        echo_json($this->session->all_userdata());
+        fn___echo_json($this->session->all_userdata());
     }
 
     function info()

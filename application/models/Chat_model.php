@@ -373,7 +373,7 @@ class Chat_model extends CI_Model
                             'tr_en_child_id' => $en['en_id'],
                             'tr_in_child_id' => $ins[0]['in_id'],
                             'tr_tr_parent_id' => ( $actionplans[0]['tr_tr_parent_id']>0 ? $actionplans[0]['tr_tr_parent_id'] : $actionplans[0]['tr_id'] ),
-                            'tr_content' => 'The intention to ' . $ins[0]['in_outcome'] . ' has already been added to your Action Plan. We have been working on it together since ' . echo_time($actionplans[0]['tr_timestamp'], 2) . '. /open_actionplan',
+                            'tr_content' => 'The intention to ' . $ins[0]['in_outcome'] . ' has already been added to your Action Plan. We have been working on it together since ' . fn___echo_time_date($actionplans[0]['tr_timestamp']) . '. /open_actionplan',
                         ),
                     ));
 
@@ -402,11 +402,11 @@ class Chat_model extends CI_Model
                             'tr_en_child_id' => $en['en_id'],
                             'tr_in_child_id' => $ins[0]['in_id'],
                             'tr_content' => 'Here is an overview:' . "\n\n" .
-                                echo_overview_in($ins[0], true) .
+                                fn___echo_in_overview($ins[0], true) .
                                 fn___echo_in_referenced_content($ins[0], true) .
-                                echo_experts($ins[0], true) .
-                                echo_completion_estimate($ins[0], true) .
-                                echo_costs($ins[0], true) .
+                                fn___echo_in_experts($ins[0], true) .
+                                fn___echo_in_time_estimate($ins[0], true) .
+                                fn___echo_in_cost_range($ins[0], true) .
                                 "\n" . 'Are you ready to ' . $ins[0]['in_outcome'] . '?',
                             'quick_replies' => array(
                                 array(
@@ -546,7 +546,7 @@ class Chat_model extends CI_Model
 
 
                 //Construct the message to give more details on skipping:
-                $tr_content = 'You are about to skip these ' . $would_be_skipped_count . ' concept' . echo__s($would_be_skipped_count) . ':';
+                $tr_content = 'You are about to skip these ' . $would_be_skipped_count . ' concept' . fn___echo__s($would_be_skipped_count) . ':';
                 foreach ($would_be_skipped as $counter => $k_c) {
                     if (strlen($tr_content) < ($this->config->item('fb_max_message') - 200)) {
                         //We have enough room to add more:
@@ -554,7 +554,7 @@ class Chat_model extends CI_Model
                     } else {
                         //We cannot add any more, indicate truncating:
                         $remainder = $would_be_skipped_count - $counter;
-                        $tr_content .= "\n\n" . 'And ' . $remainder . ' more concept' . echo__s($remainder) . '!';
+                        $tr_content .= "\n\n" . 'And ' . $remainder . ' more concept' . fn___echo__s($remainder) . '!';
                         break;
                     }
                 }
@@ -570,7 +570,7 @@ class Chat_model extends CI_Model
                         'quick_replies' => array(
                             array(
                                 'content_type' => 'text',
-                                'title' => 'Skip ' . $would_be_skipped_count . ' concept' . echo__s($would_be_skipped_count) . ' 🚫',
+                                'title' => 'Skip ' . $would_be_skipped_count . ' concept' . fn___echo__s($would_be_skipped_count) . ' 🚫',
                                 'payload' => 'ACTIONPLAN-SKIP-INITIATE_2_' . $new_tr['tr_id'], //Confirm and skip
                             ),
                             array(
@@ -926,7 +926,7 @@ class Chat_model extends CI_Model
 
             //Log intent search:
             $this->Database_model->tr_create(array(
-                'tr_content' => 'Found ' . count($search_results) . ' intent' . echo__s(count($search_results)) . ' matching "' . $master_command . '"',
+                'tr_content' => 'Found ' . count($search_results) . ' intent' . fn___echo__s(count($search_results)) . ' matching "' . $master_command . '"',
                 'tr_metadata' => array(
                     'input_data' => $master_command,
                     'output' => $search_results,
@@ -943,7 +943,7 @@ class Chat_model extends CI_Model
                 $tr_content = 'I found these intents:';
 
                 foreach ($search_results as $count => $in) {
-                    $tr_content .= "\n\n" . ($count + 1) . '/ ' . $in['in_outcome'] . ' in ' . strip_tags(fn___echo_hours_range($in));
+                    $tr_content .= "\n\n" . ($count + 1) . '/ ' . $in['in_outcome'] . ' in ' . strip_tags(fn___echo_time_range($in));
                     array_push($quick_replies, array(
                         'content_type' => 'text',
                         'title' => ($count + 1) . '/',
@@ -1268,14 +1268,14 @@ class Chat_model extends CI_Model
 
             return array(
                 'status' => 0,
-                'message' => 'Failed to send ' . $failed_count . '/' . count($trs) . ' message' . echo__s(count($trs)),
+                'message' => 'Failed to send ' . $failed_count . '/' . count($trs) . ' message' . fn___echo__s(count($trs)),
             );
 
         } else {
 
             return array(
                 'status' => 1,
-                'message' => 'Successfully sent ' . count($trs) . ' message' . echo__s(count($trs)),
+                'message' => 'Successfully sent ' . count($trs) . ' message' . fn___echo__s(count($trs)),
             );
 
         }

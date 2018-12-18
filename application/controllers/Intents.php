@@ -113,29 +113,29 @@ class Intents extends CI_Controller
         //Authenticate Miner:
         $udata = fn___en_auth(array(1308));
         if (!$udata) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Session. Refresh the Page to Continue',
             ));
         } elseif (!isset($_POST['in_parent_id']) || intval($_POST['in_parent_id']) < 1) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Parent Intent ID',
             ));
         } elseif (!isset($_POST['next_level']) || !in_array(intval($_POST['next_level']), array(2,3))) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Intent Level',
             ));
         } elseif (!isset($_POST['in_outcome']) || !isset($_POST['in_link_child_id']) || ( strlen($_POST['in_outcome']) < 1 && intval($_POST['in_link_child_id']) < 1)) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing either Intent Outcome OR Child Intent ID',
             ));
         }
 
         //All seems good, go ahead and try creating the intent:
-        return echo_json($this->Matrix_model->fn___in_create_or_link($_POST['in_parent_id'], $_POST['in_outcome'], $_POST['in_link_child_id'], $_POST['next_level'], $udata['en_id']));
+        return fn___echo_json($this->Matrix_model->fn___in_create_or_link($_POST['in_parent_id'], $_POST['in_outcome'], $_POST['in_link_child_id'], $_POST['next_level'], $udata['en_id']));
 
     }
 
@@ -148,27 +148,27 @@ class Intents extends CI_Controller
         //Authenticate Miner:
         $udata = fn___en_auth(array(1308));
         if (!$udata) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Session. Login again to Continue.',
             ));
         } elseif (!isset($_POST['tr_id']) || intval($_POST['tr_id']) < 1) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid tr_id',
             ));
         } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid in_id',
             ));
         } elseif (!isset($_POST['from_in_id']) || intval($_POST['from_in_id']) < 1) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing from_in_id',
             ));
         } elseif (!isset($_POST['to_in_id']) || intval($_POST['to_in_id']) < 1) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing to_in_id',
             ));
@@ -187,7 +187,7 @@ class Intents extends CI_Controller
         ));
 
         if (!isset($subject[0]) || !isset($from[0]) || !isset($to[0])) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid intent IDs',
             ));
@@ -215,7 +215,7 @@ class Intents extends CI_Controller
         ));
 
         //Return success
-        echo_json(array(
+        fn___echo_json(array(
             'status' => 1,
             'message' => 'Move completed',
         ));
@@ -233,72 +233,72 @@ class Intents extends CI_Controller
         ));
 
         if (!$udata) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Session Expired',
             ));
         } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Intent ID',
             ));
         } elseif (!isset($_POST['level']) || intval($_POST['level']) < 0) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing level',
             ));
         } elseif (!isset($_POST['in_outcome']) || strlen($_POST['in_outcome']) < 1) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Intent',
             ));
         } elseif (!isset($_POST['in_seconds'])) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Time Estimate',
             ));
         } elseif (intval($_POST['in_seconds']) > $this->config->item('in_seconds_max')) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Maximum estimated time is ' . round(($this->config->item('in_seconds_max') / 3600), 2) . ' hours for each intent. If larger, break the intent down into smaller intents.',
             ));
         } elseif (!isset($_POST['apply_recurively'])) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Recursive setting',
             ));
         } elseif (!isset($_POST['c_cost_estimate'])) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Cost Estimate',
             ));
         } elseif (!isset($_POST['in_status'])) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Status',
             ));
         } elseif (!isset($_POST['c_points'])) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Points',
             ));
         } elseif (!isset($_POST['c_trigger_statements'])) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Trigger Statements',
             ));
         } elseif (intval($_POST['c_cost_estimate']) < 0 || intval($_POST['c_cost_estimate']) > 300) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Cost estimate must be $0-5000 USD',
             ));
         } elseif (!isset($_POST['in_is_any']) || !isset($_POST['c_require_url_to_complete']) || !isset($_POST['c_require_notes_to_complete'])) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Completion Settings',
             ));
         } elseif (count($intents) < 1) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Invalid in_id',
             ));
@@ -374,7 +374,7 @@ class Intents extends CI_Controller
         }
 
         //Show success:
-        return echo_json(array(
+        return fn___echo_json(array(
             'status' => 1,
             'children_updated' => $children_updated,
             'in__tree_in_count' => -($intents[0]['in__tree_in_count']),
@@ -393,19 +393,19 @@ class Intents extends CI_Controller
         $udata = fn___en_auth(array(1308));
 
         if (!$udata) {
-            echo_json(array(
+            fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Session Expired',
             ));
             return false;
         } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
-            echo_json(array(
+            fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Intent ID',
             ));
             return false;
         } elseif (!isset($_POST['tr_id']) || intval($_POST['tr_id']) < 1) {
-            echo_json(array(
+            fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Intent Link ID',
             ));
@@ -418,7 +418,7 @@ class Intents extends CI_Controller
             'in_status >=' => 0,
         ));
         if (!isset($intents[0])) {
-            echo_json(array(
+            fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Intent ID',
             ));
@@ -432,7 +432,7 @@ class Intents extends CI_Controller
             'tr_status' => 1,
         ));
         if (!isset($in__parents[0])) {
-            echo_json(array(
+            fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Intent Link ID',
             ));
@@ -455,7 +455,7 @@ class Intents extends CI_Controller
         ), $udata['en_id']);
 
         //Show success:
-        echo_json(array(
+        fn___echo_json(array(
             'status' => 1,
             'c_parent' => $in__parents[0]['tr_in_parent_id'],
             'in__tree_in_count' => -($intents[0]['in__tree_in_count']),
@@ -470,17 +470,17 @@ class Intents extends CI_Controller
         //Authenticate Miner:
         $udata = fn___en_auth(array(1308));
         if (!$udata) {
-            echo_json(array(
+            fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Session. Login again to Continue.',
             ));
         } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
-            echo_json(array(
+            fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid in_id',
             ));
         } elseif (!isset($_POST['new_tr_orders']) || !is_array($_POST['new_tr_orders']) || count($_POST['new_tr_orders']) < 1) {
-            echo_json(array(
+            fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Nothing passed for sorting',
             ));
@@ -491,7 +491,7 @@ class Intents extends CI_Controller
                 'in_id' => intval($_POST['in_id']),
             ));
             if (count($parent_ins) < 1) {
-                echo_json(array(
+                fn___echo_json(array(
                     'status' => 0,
                     'message' => 'Invalid in_id',
                 ));
@@ -534,7 +534,7 @@ class Intents extends CI_Controller
                 ));
 
                 //Display message:
-                echo_json(array(
+                fn___echo_json(array(
                     'status' => 1,
                     'message' => '<i class="fas fa-check"></i> Sorted',
                 ));
@@ -548,7 +548,7 @@ class Intents extends CI_Controller
         $udata = fn___en_auth(array(1308));
         //Used to load all the help messages within the matrix:
         if (!$udata || !isset($_POST['intent_id']) || intval($_POST['intent_id']) < 1) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'success' => 0,
             ));
         }
@@ -559,7 +559,7 @@ class Intents extends CI_Controller
             'tr_status >' => 0, //Published in any form
         ));
         if (count($messages) == 0) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'success' => 0,
             ));
         }
@@ -581,7 +581,7 @@ class Intents extends CI_Controller
         }
 
         //Return results:
-        echo_json(array(
+        fn___echo_json(array(
             'success' => 1,
             'intent_id' => intval($_POST['intent_id']),
             'help_content' => $help_content,
@@ -672,27 +672,27 @@ class Intents extends CI_Controller
         $udata = fn___en_auth(array(1308));
         $file_size_max = $this->config->item('file_size_max');
         if (!$udata) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Session. Refresh to Continue',
             ));
         } elseif (!isset($_POST['in_id']) || !isset($_POST['tr_status'])) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing intent data.',
             ));
         } elseif (!isset($_POST['upload_type']) || !in_array($_POST['upload_type'], array('file', 'drop'))) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Unknown upload type.',
             ));
         } elseif (!isset($_FILES[$_POST['upload_type']]['tmp_name']) || strlen($_FILES[$_POST['upload_type']]['tmp_name']) == 0 || intval($_FILES[$_POST['upload_type']]['size']) == 0) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Unable to save file. Max file size allowed is ' . $file_size_max . ' MB.',
             ));
         } elseif ($_FILES[$_POST['upload_type']]['size'] > ($file_size_max * 1024 * 1024)) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'File is larger than ' . $file_size_max . ' MB.',
             ));
@@ -704,7 +704,7 @@ class Intents extends CI_Controller
             'in_status >=' => 0,
         ));
         if(count($intents)<1){
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Intent ID',
             ));
@@ -730,7 +730,7 @@ class Intents extends CI_Controller
         //What happened?
         if (!$new_file_url) {
             //Oops something went wrong:
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Could not save to cloud!',
             ));
@@ -779,9 +779,9 @@ class Intents extends CI_Controller
 
 
         //Echo message:
-        echo_json(array(
+        fn___echo_json(array(
             'status' => 1,
-            'message' => fn___echo_message_matrix(array_merge($new_messages[0], array(
+            'message' => fn___echo_in_message_matrix(array_merge($new_messages[0], array(
                 'tr_en_child_id' => $udata['en_id'],
             ))),
         ));
@@ -794,22 +794,22 @@ class Intents extends CI_Controller
         //Authenticate Miner:
         $udata = fn___en_auth(array(1308));
         if (!$udata) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Session. Refresh.',
             ));
         } elseif (!isset($_POST['tr_id']) || intval($_POST['tr_id']) < 1) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Transaction ID',
             ));
         } elseif (!isset($_POST['tr_content'])) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Message',
             ));
         } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Intent ID',
             ));
@@ -821,7 +821,7 @@ class Intents extends CI_Controller
             'in_status >=' => 0, //New+
         ));
         if (count($intents) < 1) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Intent Not Found',
             ));
@@ -833,7 +833,7 @@ class Intents extends CI_Controller
             'tr_status >=' => 0,
         ));
         if (count($messages) < 1) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Message Not Found',
             ));
@@ -844,7 +844,7 @@ class Intents extends CI_Controller
 
         if (!$validation['status']) {
             //There was some sort of an error:
-            return echo_json($validation);
+            return fn___echo_json($validation);
         }
 
 
@@ -875,7 +875,7 @@ class Intents extends CI_Controller
         ));
 
         //Print the challenge:
-        return echo_json(array(
+        return fn___echo_json(array(
             'status' => 1,
             'message' => echo_message_chat(array_merge($new_messages[0], array('tr_en_child_id' => $udata['en_id'])), $udata['en_name']),
             'tr_en_type_id' => echo_status('en_all_4485', $new_messages[0]['tr_en_type_id'], 1, 'right'),

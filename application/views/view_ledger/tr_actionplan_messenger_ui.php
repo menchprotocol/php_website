@@ -59,7 +59,7 @@ if (count($k_ins) == 0) {
     //This must be top level Action Plan, show Action Plan data:
     echo '<div class="sub_title">';
     echo echo_status('tr_status', $w['tr_status']);
-    echo ' &nbsp;&nbsp;<i class="fas fa-calendar-check"></i> ' . echo_diff_time($w['w_timestamp']) . ' ago';
+    echo ' &nbsp;&nbsp;<i class="fas fa-calendar-check"></i> ' . fn___echo_time_difference($w['w_timestamp']) . ' ago';
     //TODO show Action Plan pace data such as start/end time, weekly rate & notification type
     echo '</div>';
 
@@ -74,9 +74,9 @@ if (count($k_ins) == 0) {
 
     //Either show completion time or when it was completed:
     if ($k_ins[0]['tr_timestamp']) {
-        echo ' &nbsp;&nbsp;<i class="fas fa-calendar-check"></i> ' . echo_diff_time($k_ins[0]['tr_timestamp']) . ' ago';
+        echo ' &nbsp;&nbsp;<i class="fas fa-calendar-check"></i> ' . fn___echo_time_difference($k_ins[0]['tr_timestamp']) . ' ago';
     } else {
-        echo ' &nbsp;&nbsp;<i class="fas fa-clock"></i> ' . fn___echo_hours($c['in_seconds']) . ' to complete';
+        echo ' &nbsp;&nbsp;<i class="fas fa-clock"></i> ' . fn___echo_time_hours($c['in_seconds']) . ' to complete';
     }
 
     if (strlen($k_ins[0]['tr_content']) > 0) {
@@ -92,7 +92,7 @@ if (count($k_ins) == 0) {
 if (count($messages) > 0) {
     $hide_messages_onload = (count($k_ins) == 0 || $k_ins[0]['tr_status'] < 1);
     echo '<div class="tips_content message_content left-grey" style="display: ' . ($hide_messages ? 'none' : 'block') . ';">';
-    echo '<h5 class="badge badge-hy"><i class="fas fa-comment-dots"></i> ' . count($messages) . ' Message' . echo__s(count($messages)) . ':</h5>';
+    echo '<h5 class="badge badge-hy"><i class="fas fa-comment-dots"></i> ' . count($messages) . ' Message' . fn___echo__s(count($messages)) . ':</h5>';
     foreach ($messages as $i) {
         if ($i['tr_status'] == 1) {
             echo '<div class="tip_bubble">';
@@ -106,7 +106,7 @@ if (count($messages) > 0) {
 
     if ($hide_messages) {
         //Show button to show messages:
-        echo '<div class="left-grey"><a href="javascript:void(0);" onclick="$(\'.message_content\').toggle();" class="message_content btn btn-xs btn-black"><i class="fas fa-comment-dots"></i> See ' . count($messages) . ' Message' . echo__s(count($messages)) . '</a></div>';
+        echo '<div class="left-grey"><a href="javascript:void(0);" onclick="$(\'.message_content\').toggle();" class="message_content btn btn-xs btn-black"><i class="fas fa-comment-dots"></i> See ' . count($messages) . ' Message' . fn___echo__s(count($messages)) . '</a></div>';
     }
 }
 

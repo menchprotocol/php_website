@@ -120,30 +120,12 @@ $config['eng_converter'] = array(
 
 //Ledger filters:
 $config['ledger_filters'] = array(
-    'tr_en_credit_id' => array(
-        'name' => 'Initiator Entity',
-        'object_code' => 'en',
-    ),
-    'tr_en_child_id' => array(
-        'name' => 'Child Entity',
-        'object_code' => 'en',
-    ),
-    'tr_en_parent_id' => array(
-        'name' => 'Parent Entity',
-        'object_code' => 'en',
-    ),
-    'tr_in_child_id' => array(
-        'name' => 'Child Intent',
-        'object_code' => 'in',
-    ),
-    'tr_in_parent_id' => array(
-        'name' => 'Parent Intent',
-        'object_code' => 'in',
-    ),
-    'tr_tr_parent_id' => array(
-        'name' => 'Parent Transaction',
-        'object_code' => 'tr',
-    ),
+    'tr_en_credit_id' => 'en',
+    'tr_en_child_id'  => 'en',
+    'tr_en_parent_id' => 'en',
+    'tr_in_child_id'  => 'in',
+    'tr_in_parent_id' => 'in',
+    'tr_tr_parent_id' => 'tr',
 );
 
 

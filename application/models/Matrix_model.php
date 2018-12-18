@@ -519,7 +519,7 @@ class Matrix_model extends CI_Model
 
                             //We cannot add any more, indicate truncating:
                             $remainder = count($actionplan_child_ins) - $counter;
-                            $next_step_message .= "\n\n" . 'And ' . $remainder . ' more step' . echo__s($remainder) . '!';
+                            $next_step_message .= "\n\n" . 'And ' . $remainder . ' more step' . fn___echo__s($remainder) . '!';
                             break;
 
                         }
@@ -1293,7 +1293,7 @@ class Matrix_model extends CI_Model
             'status' => 1,
             'in_child_id' => $child_in['in_id'],
             'in_child_html' => echo_c($new_ins[0], $next_level, $in_parent_id),
-            //Also append some tree insights for UI modifications via JS functions:
+            //Also append some tree data for UI modifications via JS functions:
             'in__tree_max_seconds' => ( isset($in_metadata_modify['in__tree_max_seconds']) ? intval($in_metadata_modify['in__tree_max_seconds']) : 0 ), //Seconds added because of this
             'in__tree_in_count' => intval($in_metadata_modify['in__tree_in_count']), //We must have this (Either if we're linking OR creating) to show new intents in the tree
         );

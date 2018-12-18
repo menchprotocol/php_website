@@ -17,7 +17,7 @@
         }
     </script>
 
-    <form method="post" action="/entities/login_process">
+    <form method="post" action="/entities/en_login_process">
         <input type="hidden" name="url" value="<?= @$_GET['url'] ?>"/>
         <div class="input-group pass_success" style="margin-bottom: 5px;">
 			<span class="input-group-addon">

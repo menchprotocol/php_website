@@ -29,24 +29,24 @@ class My extends CI_Controller
         ));
 
         if (!$udata) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Session Expired. Login and Try again.',
             ));
         } elseif (count($current_us) == 0) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'User not found!',
             ));
         } elseif (strlen($current_us[0]['u_fb_psid']) < 10) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'User does not seem to be connected to Mench, so profile data cannot be fetched',
             ));
         } else {
 
             //Fetch results and show:
-            return echo_json(array(
+            return fn___echo_json(array(
                 'fb_profile' => $this->Chat_model->fn___facebook_graph('GET', '/'.$current_us[0]['u_fb_psid'], array()),
                 'en' => $current_us[0],
             ));
@@ -203,12 +203,12 @@ class My extends CI_Controller
         $udata = fn___en_auth(array(1308)); //miners
 
         if (!$udata) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Session Expired',
             ));
         } elseif (!isset($_POST['tr_id']) || intval($_POST['tr_id']) < 1) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Action Plan ID',
             ));
@@ -219,7 +219,7 @@ class My extends CI_Controller
             'tr_id' => $_POST['tr_id'], //Other than this one...
         ));
         if (!(count($actionplans) == 1)) {
-            return echo_json(array(
+            return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Action Plan ID',
             ));
@@ -227,7 +227,7 @@ class My extends CI_Controller
         $w = $actionplans[0];
 
         //Load Action Plan iFrame:
-        return echo_json(array(
+        return fn___echo_json(array(
             'status' => 1,
             'url' => '/my/actionplan/' . $w['tr_id'] . '/' . $w['tr_in_child_id'],
         ));
@@ -263,7 +263,7 @@ class My extends CI_Controller
         $total_skipped = count($this->Database_model->k_skip_recursive_down($tr_id));
 
         //Draft message:
-        $message = '<div class="alert alert-success" role="alert">' . $total_skipped . ' concept' . echo__s($total_skipped) . ' successfully skipped.</div>';
+        $message = '<div class="alert alert-success" role="alert">' . $total_skipped . ' concept' . fn___echo__s($total_skipped) . ' successfully skipped.</div>';
 
         //Find the next item to navigate them to:
         $next_ins = $this->Matrix_model->fn___in_next_actionplan($tr_id);

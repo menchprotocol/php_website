@@ -1034,18 +1034,15 @@ class Database_model extends CI_Model
                         }
 
                         //Lets go through all references to see what is there:
-                        foreach ($this->config->item('ledger_filters') as $engagement_field => $er) {
+                        foreach ($this->config->item('ledger_filters') as $engagement_field => $obj_type) {
                             if (intval($engagements[0][$engagement_field]) > 0) {
                                 //Yes we have a value here:
-                                $html_message .= '<div>' . $er['name'] . ': ' . echo_object($er['object_code'], $engagements[0][$engagement_field], $engagement_field, null) . '</div>';
+                                $html_message .= '<div>' . ucwrods(str_replace('tr','Transaction',str_replace('en','Entity',str_replace('in','Intent',str_replace('_',' ',str_replace('tr_','',$engagement_field)))))) . ': ' . fn___echo_tr_column($obj_type, $engagements[0][$engagement_field], $engagement_field, true) . '</div>';
                             }
                         }
 
                         //Append ID:
                         $html_message .= '<div>Engagement ID: <a href="https://mench.com/ledger/fn___tr_print/' . $engagements[0]['tr_id'] . '">#' . $engagements[0]['tr_id'] . '</a></div>';
-
-                        //Send email:
-                        //$this->Chat_model->fn___dispatch_email($actionplan['admin_emails'], $subject, $html_message);
 
                         //TODO Send messenger
 

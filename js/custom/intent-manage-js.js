@@ -1,4 +1,4 @@
-//This also has an equal PHP function fn___echo_hours() which we want to make sure has more/less the same logic:
+//This also has an equal PHP function fn___echo_time_hours() which we want to make sure has more/less the same logic:
 function echo_js_hours(in_seconds) {
     in_seconds = parseInt(in_seconds);
     if (in_seconds < 1) {
@@ -846,7 +846,7 @@ function fn___in_create_or_link(in_parent_id, next_level, in_link_child_id=0) {
 
             } else {
 
-                //Adjust Step sorting:
+                //Adjust Intent Level 3 sorting:
                 in_sort_save(in_parent_id, next_level);
 
             }
