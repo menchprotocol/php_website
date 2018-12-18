@@ -113,7 +113,7 @@ class My extends CI_Controller
         if (count($trs) == 0) {
 
             //No Action Plans found:
-            die('<div class="alert alert-danger" role="alert">You have no active Action Plans yet. ' . echo_pa_lets() . '</div>');
+            die('<div class="alert alert-danger" role="alert">You have no active Action Plans yet.</div>');
 
         } elseif (count($trs) > 1) {
 

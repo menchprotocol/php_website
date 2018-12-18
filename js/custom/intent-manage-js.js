@@ -1,4 +1,4 @@
-//This also has an equal PHP function echo_hours() which we want to make sure has more/less the same logic:
+//This also has an equal PHP function fn___echo_hours() which we want to make sure has more/less the same logic:
 function echo_js_hours(in_seconds) {
     in_seconds = parseInt(in_seconds);
     if (in_seconds < 1) {

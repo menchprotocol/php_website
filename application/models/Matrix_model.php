@@ -95,8 +95,14 @@ class Matrix_model extends CI_Model
                     'tr_en_child_id' => $actionplans[0]['tr_en_parent_id'],
                     'tr_in_child_id' => $actionplans[0]['tr_in_child_id'],
                     'tr_tr_parent_id' => $actionplans[0]['tr_id'],
-                    'tr_content' => 'How else can I help you ' . $this->config->item('in_primary_name') . '? ' . echo_pa_lets(),
+                    'tr_content' => 'How else can I help you ' . $this->config->item('in_primary_name') . '?',
                 ),
+            ));
+
+            //Inform Master on how to can command Mench:
+            $this->Matrix_model->compose_messages(array(
+                'tr_en_child_id' => $en['en_id'],
+                'tr_in_child_id' => 8332, //Train Master to command Mench
             ));
 
             //The entire Action Plan is now complete!
@@ -308,15 +314,16 @@ class Matrix_model extends CI_Model
             //Do we have any rotating messages?
             //Here we are deciding to show rotating first... It's just the way it is unless we feel we need to flip it with the one below
             if (count($in_messages['messages_rotating']) > 0) {
+
                 //yes, pick 1 random one and echo:
                 $random_pick = $in_messages['messages_rotating'][rand(0, (count($in_messages['messages_rotating']) - 1))];
 
                 array_push($messages, array(
                     'tr_id' => $random_pick['tr_id'],
                     'tr_content' => $random_pick['tr_content'], //Message itself
-                    'tr_en_parent_id' => $random_pick['tr_en_parent_id'], //Reference in the message
-                    'tr_en_child_id' => $tr['tr_en_parent_id'], //Send message to this entity
-                    'tr_tr_parent_id' => $tr['tr_id'],
+                    'tr_en_parent_id' => $random_pick['tr_en_parent_id'], //Reference in the message, if any
+                    'tr_en_child_id' => $tr['tr_en_child_id'], //Send message to this entity
+                    'tr_tr_parent_id' => @intval($tr['tr_id']),
                 ));
             }
 
@@ -327,13 +334,12 @@ class Matrix_model extends CI_Model
                 array_push($messages, array(
                     'tr_id' => $message_tr['tr_id'],
                     'tr_content' => $message_tr['tr_content'], //Message itself
-                    'tr_en_parent_id' => $message_tr['tr_en_parent_id'], //Reference in the message
-                    'tr_en_child_id' => $tr['tr_en_parent_id'], //Send message to this entity
+                    'tr_en_parent_id' => $message_tr['tr_en_parent_id'], //Reference in the message, if any
+                    'tr_en_child_id' => $tr['tr_en_child_id'], //Send message to this entity
                     'tr_tr_parent_id' => $tr['tr_id'],
                 ));
 
             }
-
         }
 
 
@@ -368,7 +374,7 @@ class Matrix_model extends CI_Model
                         'tr_id' => $message_tr['tr_id'],
                         'tr_content' => $message_in_requirements, //Message itself
                         'tr_en_parent_id' => $message_tr['tr_en_parent_id'], //Reference in the message
-                        'tr_en_child_id' => $tr['tr_en_parent_id'], //Send message to this entity
+                        'tr_en_child_id' => $tr['tr_en_child_id'], //Send message to this entity
                         'tr_tr_parent_id' => $tr['tr_id'],
                     ));
 

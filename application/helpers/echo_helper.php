@@ -47,7 +47,7 @@ function fn___echo_en_url($url, $en_type_id)
      * */
     if ($en_type_id == 4256 /* Generic URL */) {
 
-        return '<a href="' . $url . '" target="_blank"><span class="url_truncate"><i class="fas fa-link" style="margin-right:3px;"></i>' . echo_clean_url($url) . '</span></a>';
+        return '<a href="' . $url . '" target="_blank"><span class="url_truncate"><i class="fas fa-link" style="margin-right:3px;"></i>' . fn___echo_clean_url($url) . '</span></a>';
 
     } elseif ($en_type_id == 4257 /* Embed Widget URL? */) {
 
@@ -933,15 +933,25 @@ function echo_k($k, $is_parent, $in_is_any_tr_in_parent_id = 0)
 }
 
 
-function echo_clean_url($url)
+function fn___echo_clean_url($url)
 {
+    //Returns the watered-down version of the URL for a cleaner UI:
     return rtrim(str_replace('http://', '', str_replace('https://', '', str_replace('www.', '', $url))), '/');
 }
 
 
-//This also has an equal Javascript function echo_js_hours() which we want to make sure has more/less the same logic:
-function echo_hours($seconds, $micro = false)
+
+function fn___echo_hours($seconds, $micro = false)
 {
+
+    /*
+     * A function that will return a fancy string representing hours & minutes
+     *
+     * This also has an equal Javascript function echo_js_hours() which we
+     * want to make sure has more/less the same logic...
+     *
+     * */
+
     if ($seconds < 1) {
         return '0' . ($micro ? 'm' : ' Minutes ');
     } elseif ($seconds <= 5400) {
@@ -953,38 +963,40 @@ function echo_hours($seconds, $micro = false)
     }
 }
 
-function echo_contents($c, $fb_format = 0)
+
+function fn___echo_in_referenced_content($in, $fb_format = false)
 {
+    
+    /*
+     * 
+     * An intent function to display the cached referenced content
+     * that is stored in the metadata field.
+     * 
+     * */
 
     //Do we have anything to return?
-    if (strlen($c['in__tree_contents']) < 1) {
+    $metadata = unserialize($in['in_metadata']);
+    if (!isset($metadata['in__tree_contents']) || count($metadata['in__tree_contents']) < 1) {
         return false;
     }
 
-
-    //Make initial variables:
-    $c['in__tree_contents'] = unserialize($c['in__tree_contents']);
-
-    if (count($c['in__tree_contents']) < 1) {
-        return false;
-    }
-
+    //Let's count to see how many content pieces we have references for this intent tree:
     $all_count = 0;
-    foreach ($c['in__tree_contents'] as $type_en_id => $current_us) {
-        $all_count += count($current_us);
+    foreach ($metadata['in__tree_contents'] as $type_en_id => $referenced_ens) {
+        $all_count += count($referenced_ens);
     }
 
     if ($all_count > 0) {
 
-        $visible_ppl = 3;
-        $type_count = 0;
-        $type_all_count = count($c['in__tree_contents']);
+        //Set some variables and settings to get started:
         $CI =& get_instance();
+        $type_all_count = count($metadata['in__tree_contents']);
         $en_all_3000 = $CI->config->item('en_all_3000');
-        $has_matrix_access = fn___en_auth(array(1308));
-        //More than 3:
+        $is_miner = fn___en_auth(array(1308));
+        $visible_ppl = 3; //How many people to show before clicking on "see more"
+        $type_count = 0;
         $text_overview = '';
-        foreach ($c['in__tree_contents'] as $type_id => $current_us) {
+        foreach ($metadata['in__tree_contents'] as $type_id => $referenced_ens) {
 
             if ($type_count > 0) {
                 if (($type_count + 1) >= $type_all_count) {
@@ -995,7 +1007,7 @@ function echo_contents($c, $fb_format = 0)
             }
 
             //Show category:
-            $cat_contribution = count($current_us) . ' ' . $en_all_3000[$type_id]['en_name'] . echo__s(count($current_us));
+            $cat_contribution = count($referenced_ens) . ' ' . $en_all_3000[$type_id]['en_name'] . echo__s(count($referenced_ens));
             if ($fb_format) {
 
                 $text_overview .= ' ' . $cat_contribution;
@@ -1006,10 +1018,10 @@ function echo_contents($c, $fb_format = 0)
 
                 //We only show details on our website's HTML landing pages:
                 $count = 0;
-                foreach ($current_us as $u) {
+                foreach ($referenced_ens as $en) {
 
                     if ($count > 0) {
-                        if (($count + 1) >= count($current_us)) {
+                        if (($count + 1) >= count($referenced_ens)) {
                             $text_overview .= ' &';
                         } else {
                             $text_overview .= ',';
@@ -1018,25 +1030,20 @@ function echo_contents($c, $fb_format = 0)
 
                     $text_overview .= ' ';
 
-                    if ($has_matrix_access) {
-                        $text_overview .= '<a href="/entities/' . $u['en_id'] . '">';
+                    if ($is_miner) {
+                        //Show link to matrix:
+                        $text_overview .= '<a href="/entities/' . $en['en_id'] . '">';
                     }
 
-                    //TODO fetch text parent entity notes to share description.
-                    if (0) {
-                        //Has description, show it here:
-                        $text_overview .= ' <span data-toggle="tooltip" title="' . 'notes here' . '" data-placement="top" class="underdot">' . $u['en_name'] . '</span>';
-                    } else {
-                        //Just the name:
-                        $text_overview .= $u['en_name'];
-                    }
+                    $text_overview .= $en['en_name'];
 
-                    if ($has_matrix_access) {
+                    if ($is_miner) {
                         $text_overview .= '</a>';
                     }
                     $count++;
                 }
                 $text_overview .= '</span>';
+
             }
             $type_count++;
         }
@@ -1069,55 +1076,18 @@ function echo_contents($c, $fb_format = 0)
     }
 }
 
-function echo_pa_lets()
-{
-    $options = array(
-        'You can give me a command by starting a sentence with "Lets", for example: [Lets land a dream job], [Lets book new interviews] or [Lets create a great resume].',
-        'You can command me using "Lets", for example: [Lets create a cover letter] or [Lets do better at interviews].', //[Lets get hired],
-    );
-    return $options[rand(0, (count($options) - 1))];
-}
 
-
-function echo_pa_saved()
-{
-    //Informs the user that their answer is saved!
-    $options = array(
-        'Got it 👍',
-        'Noted',
-        'Ok sweet',
-        'Nice answer',
-        'Nice 👍',
-        'Gotcha 🙌',
-        'Fabulous',
-        'Confirmed',
-        '👌',
-    );
-    return $options[rand(0, (count($options) - 1))];
-}
-
-function echo_pa_oneway()
-{
-    //Informs the user that the PA cannot speak, unless you give it a specific command like Lets
-    $options = array(
-        'I am not designed to respond to custom text messages. I can understand you only when you choose one of the multiple-choice options I provide.',
-        'What was that? I would only understand if you choose one of the multiple-choice options I provide.',
-        'I did not get that as I cannot respond to your text messages. Select multiple-choice option to continue...',
-    );
-    return $options[rand(0, (count($options) - 1))];
-}
-
-function echo_costs($c, $fb_format = 0)
+function echo_costs($in, $fb_format = 0)
 {
 
-    if ($c['in__tree_max_cost'] < 1) {
+    if ($in['in__tree_max_cost'] < 1) {
         return false;
-    } elseif (round($c['in__tree_max_cost']) == round($c['in__tree_min_cost']) || $c['in__tree_min_cost'] == 0) {
+    } elseif (round($in['in__tree_max_cost']) == round($in['in__tree_min_cost']) || $in['in__tree_min_cost'] == 0) {
         //Single price:
-        $price_range = '$' . round($c['in__tree_max_cost']) . ' USD';
+        $price_range = '$' . round($in['in__tree_max_cost']) . ' USD';
     } else {
         //Price range:
-        $price_range = 'between $' . round($c['in__tree_min_cost']) . ' to $' . round($c['in__tree_max_cost']) . ' USD';
+        $price_range = 'between $' . round($in['in__tree_min_cost']) . ' to $' . round($in['in__tree_max_cost']) . ' USD';
     }
 
 
@@ -1142,10 +1112,10 @@ function echo_costs($c, $fb_format = 0)
     }
 }
 
-function echo_overview_in($c, $fb_format = 0)
+function echo_overview_in($in, $fb_format = 0)
 {
 
-    $pitch = 'Action Plan contains ' . $c['in__tree_in_count'] . ' concepts that will help you ' . $c['in_outcome'] . '.';
+    $pitch = 'Action Plan contains ' . $in['in__tree_in_count'] . ' concepts that will help you ' . $in['in_outcome'] . '.';
 
     if ($fb_format) {
         return '🚩 ' . $pitch . "\n";
@@ -1156,7 +1126,7 @@ function echo_overview_in($c, $fb_format = 0)
             <div class="panel-heading" role="tab" id="heading' . $id . '">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="false" aria-controls="collapse' . $id . '">
-                    <i class="fas" style="transform:none !important;">💡</i> ' . $c['in__tree_in_count'] . ' concepts<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                    <i class="fas" style="transform:none !important;">💡</i> ' . $in['in__tree_in_count'] . ' concepts<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                 </a>
             </h4>
         </div>
@@ -1167,15 +1137,15 @@ function echo_overview_in($c, $fb_format = 0)
     }
 }
 
-function echo_completion_estimate($c, $fb_format = 0)
+function echo_completion_estimate($in, $fb_format = 0)
 {
 
     //Return null if we don't have a time estimate at all:
-    if ($c['in__tree_max_seconds'] == 0) {
+    if ($in['in__tree_max_seconds'] == 0) {
         return false;
     }
 
-    $pitch = 'Action Plan estimates that it will take ' . strtolower(fn___echo_hours_range($c)) . ' to ' . $c['in_outcome'] . '.';
+    $pitch = 'Action Plan estimates that it will take ' . strtolower(fn___echo_hours_range($in)) . ' to ' . $in['in_outcome'] . '.';
     if ($fb_format) {
         return '⏰ ' . $pitch . "\n";
     } else {
@@ -1185,7 +1155,7 @@ function echo_completion_estimate($c, $fb_format = 0)
             <div class="panel-heading" role="tab" id="heading' . $id . '">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="false" aria-controls="collapse' . $id . '">
-                        <i class="fas" style="transform:none !important;">⏰</i> ' . ucwords(fn___echo_hours_range($c)) . '<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                        <i class="fas" style="transform:none !important;">⏰</i> ' . ucwords(fn___echo_hours_range($in)) . '<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                     </a>
                 </h4>
             </div>
@@ -1196,29 +1166,29 @@ function echo_completion_estimate($c, $fb_format = 0)
     }
 }
 
-function echo_experts($c, $fb_format = 0)
+function echo_experts($in, $fb_format = 0)
 {
 
     //Do we have any intents?
-    if (strlen($c['in__tree_experts']) < 1) {
+    if (strlen($in['in__tree_experts']) < 1) {
         return false;
     }
 
     //Make initial variables:
-    $c['in__tree_experts'] = unserialize($c['in__tree_experts']);
-    $all_count = count($c['in__tree_experts']);
+    $in['in__tree_experts'] = unserialize($in['in__tree_experts']);
+    $all_count = count($in['in__tree_experts']);
     if ($all_count == 0) {
-        //Should never happen since strlen($c['in__tree_experts'])>0
+        //Should never happen since strlen($in['in__tree_experts'])>0
         return false;
     }
 
 
     $visible_html = 4; //Landing page, beyond this is hidden and visible with a click
     $visible_bot = 10; //Plain text style, but beyond this is cut out!
-    $has_matrix_access = fn___en_auth(array(1308));
+    $is_miner = fn___en_auth(array(1308)); //If true, will link referenced entities to the Matrix for easier management
     $text_overview = '';
 
-    foreach ($c['in__tree_experts'] as $count => $u) {
+    foreach ($in['in__tree_experts'] as $count => $en) {
 
         $is_last_fb_item = ($fb_format && $count >= $visible_bot);
 
@@ -1239,30 +1209,30 @@ function echo_experts($c, $fb_format = 0)
         if ($fb_format) {
 
             //Just the name:
-            $text_overview .= $u['en_name'];
+            $text_overview .= $en['en_name'];
 
         } else {
 
             //HTML Format:
-            if ($has_matrix_access) {
-                $text_overview .= '<a href="/entities/' . $u['en_id'] . '">';
+            if ($is_miner) {
+                $text_overview .= '<a href="/entities/' . $en['en_id'] . '">';
             }
 
             //TODO Share parent entity link notes/urls
             if (0) {
                 //Has description, show it here:
-                $text_overview .= ' <span data-toggle="tooltip" title="' . 'nots here' . '" data-placement="top" class="underdot" style="display:inline-block;">' . $u['en_name'] . '</span>';
+                $text_overview .= ' <span data-toggle="tooltip" title="' . 'nots here' . '" data-placement="top" class="underdot" style="display:inline-block;">' . $en['en_name'] . '</span>';
             } else {
                 //Just the name:
-                $text_overview .= $u['en_name'];
+                $text_overview .= $en['en_name'];
             }
 
-            if ($has_matrix_access) {
+            if ($is_miner) {
                 $text_overview .= '</a>';
             }
 
             if (($count + 1) == $visible_html && ($all_count - $visible_html) > 0) {
-                $text_overview .= '<span class="show_more_' . $c['in_id'] . '"> & <a href="javascript:void(0);" onclick="$(\'.show_more_' . $c['in_id'] . '\').toggle()" style="text-decoration:underline;">' . ($all_count - $visible_html) . ' more</a>.</span><span class="show_more_' . $c['in_id'] . '" style="display:none;">';
+                $text_overview .= '<span class="show_more_' . $in['in_id'] . '"> & <a href="javascript:void(0);" onclick="$(\'.show_more_' . $in['in_id'] . '\').toggle()" style="text-decoration:underline;">' . ($all_count - $visible_html) . ' more</a>.</span><span class="show_more_' . $in['in_id'] . '" style="display:none;">';
             }
         }
     }
@@ -1323,7 +1293,7 @@ function fn___echo_hours_range($in, $micro = false)
     //Construct the UI:
     if ($metadata['in__tree_max_seconds'] == $metadata['in__tree_min_seconds']) {
         //Exactly the same, show a single value:
-        return echo_hours($metadata['in__tree_max_seconds'], $micro);
+        return fn___echo_hours($metadata['in__tree_max_seconds'], $micro);
     } elseif ($metadata['in__tree_min_seconds'] < 3600) {
         if ($metadata['in__tree_min_seconds'] < 7200 && $metadata['in__tree_max_seconds'] < 10800 && ($metadata['in__tree_max_seconds'] - $metadata['in__tree_min_seconds']) > 1800) {
             $is_minutes = true;
@@ -1332,7 +1302,7 @@ function fn___echo_hours_range($in, $micro = false)
             $hours_decimal = 1;
         } else {
             //Number too large to matter, just treat as one:
-            return echo_hours($metadata['in__tree_max_seconds'], $micro);
+            return fn___echo_hours($metadata['in__tree_max_seconds'], $micro);
         }
     } else {
         $is_minutes = false;
@@ -1422,7 +1392,7 @@ function echo_object($object, $id, $engagement_field, $button_type)
             if (isset($matching_urls[0])) {
                 if (!$button_type) {
                     //Plain view:
-                    return '<a href="' . $matching_urls[0]['x_url'] . '" target="_blank" title="Reference ID ' . $id . '">' . echo_clean_url($matching_urls[0]['x_url']) . '</a>';
+                    return '<a href="' . $matching_urls[0]['x_url'] . '" target="_blank" title="Reference ID ' . $id . '">' . fn___echo_clean_url($matching_urls[0]['x_url']) . '</a>';
                 } else {
                     return '<a href="' . $matching_urls[0]['x_url'] . '" target="_blank" class="badge badge-secondary" style="width:40px;">' . echo_status('x_status', $matching_urls[0]['x_status'], true, 'top') . '</a> ';
                 }
@@ -1559,18 +1529,18 @@ function echo_status($object = null, $status = null, $micro_status = false, $dat
     }
 }
 
-function echo_featured_c($c)
+function echo_featured_c($in)
 {
-    $ui = '<a href="/' . $c['in_id'] . '" class="list-group-item">';
+    $ui = '<a href="/' . $in['in_id'] . '" class="list-group-item">';
 
     $ui .= '<span class="pull-right">';
     $ui .= '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-right"></i></span>';
     $ui .= '</span>';
 
-    $ui .= $c['in_outcome'];
+    $ui .= $in['in_outcome'];
     $ui .= '<span style="font-size:0.8em; font-weight:300; margin-left:5px; display:inline-block;">';
-    //$ui .= ( $c['in__tree_in_count']>0 ? '<span style="padding-right:5px;"><i class="fas fa-lightbulb-on"></i>'.$c['in__tree_in_count'].'</span>' : '' );
-    $ui .= '<span><i class="fas fa-clock"></i>' . fn___echo_hours_range($c) . '</span>';
+    //$ui .= ( $in['in__tree_in_count']>0 ? '<span style="padding-right:5px;"><i class="fas fa-lightbulb-on"></i>'.$in['in__tree_in_count'].'</span>' : '' );
+    $ui .= '<span><i class="fas fa-clock"></i>' . fn___echo_hours_range($in) . '</span>';
     $ui .= '</span>';
     $ui .= '</a>';
     return $ui;
@@ -1583,7 +1553,7 @@ function echo_mili($microtime)
 }
 
 
-function echo_c($c, $level, $c_parent_id = 0, $is_parent = false)
+function echo_c($in, $level, $in_parent_id = 0, $is_parent = false)
 {
 
     $CI =& get_instance();
@@ -1591,7 +1561,7 @@ function echo_c($c, $level, $c_parent_id = 0, $is_parent = false)
 
     //Count engagements for this intent:
     $e_count = count($CI->Database_model->tr_fetch(array(
-        '(tr_in_parent_id=' . $c['in_id'] . ' OR tr_in_child_id=' . $c['in_id'] . ')' => null,
+        '(tr_in_parent_id=' . $in['in_id'] . ' OR tr_in_child_id=' . $in['in_id'] . ')' => null,
     ), array(), $CI->config->item('tr_max_count')));
 
     //Count Action Plan caches for this intent link:
@@ -1602,7 +1572,7 @@ function echo_c($c, $level, $c_parent_id = 0, $is_parent = false)
 
     //Fetch K stats:
     $k_stat_fetch = $CI->Database_model->tr_fetch(array(
-        'tr_in_child_id' => $c['in_id'],
+        'tr_in_child_id' => $in['in_id'],
     ), array('cr'), 0, 0, array(), 'tr_status, COUNT(tr_id) as cr_count', 'tr_status');
     foreach ($k_stat_fetch as $trs) {
         $k_stats['k_all'] += $trs['cr_count'];
@@ -1622,7 +1592,7 @@ function echo_c($c, $level, $c_parent_id = 0, $is_parent = false)
 
         //ATTENTION: DO NOT CHANGE THE ORDER OF data-link-id & intent-id AS the sorting logic depends on their exact position to sort!
         //CHANGE WITH CAUTION!
-        $ui = '<div id="cr_' . $c['tr_id'] . '" data-link-id="' . $c['tr_id'] . '" tr_status="' . $c['tr_status'] . '" cr_condition_min="' . $c['cr_condition_min'] . '" cr_condition_max="' . $c['cr_condition_max'] . '" intent-id="' . $c['in_id'] . '" parent-intent-id="' . $c_parent_id . '" intent-level="' . $level . '" class="list-group-item ' . ($level == 3 ? 'is_level3_sortable' : 'is_level2_sortable') . ' intent_line_' . $c['in_id'] . '">';
+        $ui = '<div id="cr_' . $in['tr_id'] . '" data-link-id="' . $in['tr_id'] . '" tr_status="' . $in['tr_status'] . '" cr_condition_min="' . $in['cr_condition_min'] . '" cr_condition_max="' . $in['cr_condition_max'] . '" intent-id="' . $in['in_id'] . '" parent-intent-id="' . $in_parent_id . '" intent-level="' . $level . '" class="list-group-item ' . ($level == 3 ? 'is_level3_sortable' : 'is_level2_sortable') . ' intent_line_' . $in['in_id'] . '">';
 
     }
 
@@ -1632,42 +1602,42 @@ function echo_c($c, $level, $c_parent_id = 0, $is_parent = false)
 
     //Show Intent Link conditional status: (The intent link status is either Published or Removed, which would make it invisible)
     if ($level > 1) {
-        $ui .= '<span class="tr_status_' . $c['tr_id'] . '">' . echo_status('tr_status', $c['tr_status'], true, 'left') . '</span> ';
+        $ui .= '<span class="tr_status_' . $in['tr_id'] . '">' . echo_status('tr_status', $in['tr_status'], true, 'left') . '</span> ';
     }
 
     //Always show intent status:
-    $ui .= '<span class="in_status_' . $c['in_id'] . '">' . echo_status('in', $c['in_status'], true, 'left') . '</span> ';
+    $ui .= '<span class="in_status_' . $in['in_id'] . '">' . echo_status('in', $in['in_status'], true, 'left') . '</span> ';
 
 
     //Show submission stats
     if ($k_stats['k_all'] > 0) {
         //Show link to load these intents in Master Action Plans:
-        $ui .= '<a href="#loadactionplans-' . $c['in_id'] . '" onclick="in_actionplans_load(' . $c['in_id'] . ')" class="badge badge-primary" style="width:40px; margin-right:2px;" data-toggle="tooltip" title="' . $k_stats['k_completed'] . '/' . $k_stats['k_all'] . ' marked as complete across all Action Plans" data-placement="top"><span class="btn-counter">' . round($k_stats['k_completed'] / $k_stats['k_all'] * 100) . '%</span><i class="fas fa-flag" style="font-size:0.85em;"></i></a>';
+        $ui .= '<a href="#loadactionplans-' . $in['in_id'] . '" onclick="in_actionplans_load(' . $in['in_id'] . ')" class="badge badge-primary" style="width:40px; margin-right:2px;" data-toggle="tooltip" title="' . $k_stats['k_completed'] . '/' . $k_stats['k_all'] . ' marked as complete across all Action Plans" data-placement="top"><span class="btn-counter">' . round($k_stats['k_completed'] / $k_stats['k_all'] * 100) . '%</span><i class="fas fa-flag" style="font-size:0.85em;"></i></a>';
     }
 
     if ($e_count > 0) {
         //Show link to load these engagements:
-        $ui .= '<a href="#loadlinks-' . $c['in_id'] . '" onclick="in_tr_load(' . $c['in_id'] . ')" class="badge badge-primary" style="width:40px; margin-right:2px;"><span class="btn-counter">' . $e_count . ($e_count == $CI->config->item('tr_max_count') ? '+' : '') . '</span><i class="fas fa-atlas"></i></a>';
+        $ui .= '<a href="#loadlinks-' . $in['in_id'] . '" onclick="in_tr_load(' . $in['in_id'] . ')" class="badge badge-primary" style="width:40px; margin-right:2px;"><span class="btn-counter">' . $e_count . ($e_count == $CI->config->item('tr_max_count') ? '+' : '') . '</span><i class="fas fa-atlas"></i></a>';
     }
 
-    $ui .= '<a href="#loadmessages-' . $c['in_id'] . '" onclick="in_messages_load(' . $c['in_id'] . ')" class="msg-badge-' . $c['in_id'] . ' badge badge-primary ' . ($c['in__message_count'] == 0 ? 'grey' : '') . '" style="width:40px;"><span class="btn-counter messages-counter-' . $c['in_id'] . '">' . $c['in__message_count'] . '</span><i class="fas fa-comment-dots"></i></a>';
+    $ui .= '<a href="#loadmessages-' . $in['in_id'] . '" onclick="in_messages_load(' . $in['in_id'] . ')" class="msg-badge-' . $in['in_id'] . ' badge badge-primary ' . ($in['in__message_count'] == 0 ? 'grey' : '') . '" style="width:40px;"><span class="btn-counter messages-counter-' . $in['in_id'] . '">' . $in['in__message_count'] . '</span><i class="fas fa-comment-dots"></i></a>';
 
     //Show total tree time here:
-    $ui .= '<a class="badge badge-primary" onclick="in_modify_load(' . $c['in_id'] . ',' . (isset($c['tr_id']) ? $c['tr_id'] : 0) . ')" style="margin:-2px -8px 0 2px; width:40px;" href="#loadmodify-' . $c['in_id'] . '-' . (isset($c['tr_id']) ? $c['tr_id'] : 0) . '"><span class="btn-counter slim-time t_estimate_' . $c['in_id'] . '" tree-max-seconds="' . $c['in__tree_max_seconds'] . '" intent-seconds="' . $c['in_seconds'] . '">' . echo_hours($c['in__tree_max_seconds'], true) . '</span><i class="fas fa-cog"></i></a> &nbsp;';
+    $ui .= '<a class="badge badge-primary" onclick="in_modify_load(' . $in['in_id'] . ',' . (isset($in['tr_id']) ? $in['tr_id'] : 0) . ')" style="margin:-2px -8px 0 2px; width:40px;" href="#loadmodify-' . $in['in_id'] . '-' . (isset($in['tr_id']) ? $in['tr_id'] : 0) . '"><span class="btn-counter slim-time t_estimate_' . $in['in_id'] . '" tree-max-seconds="' . $in['in__tree_max_seconds'] . '" intent-seconds="' . $in['in_seconds'] . '">' . fn___echo_hours($in['in__tree_max_seconds'], true) . '</span><i class="fas fa-cog"></i></a> &nbsp;';
 
     //Show link to travel down the tree:
     //TODO Disable link if level 1 to reduce confusion as users cannot click on it?
-    $ui .= '&nbsp;<a href="/intents/' . $c['in_id'] . '" class="tree-badge-' . $c['in_id'] . ' badge badge-primary ' . ($c['in__tree_in_count'] <= 1 ? 'grey' : '') . '" style="display:inline-block; margin-right:-1px; width:40px;"><span class="btn-counter children-counter-' . $c['in_id'] . ' ' . ($is_parent && $level == 2 ? 'inb-counter' : '') . '">' . $c['in__tree_in_count'] . '</span><i class="' . ($is_parent && $level <= 2 ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90') . '"></i></a> ';
+    $ui .= '&nbsp;<a href="/intents/' . $in['in_id'] . '" class="tree-badge-' . $in['in_id'] . ' badge badge-primary ' . ($in['in__tree_in_count'] <= 1 ? 'grey' : '') . '" style="display:inline-block; margin-right:-1px; width:40px;"><span class="btn-counter children-counter-' . $in['in_id'] . ' ' . ($is_parent && $level == 2 ? 'inb-counter' : '') . '">' . $in['in__tree_in_count'] . '</span><i class="' . ($is_parent && $level <= 2 ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90') . '"></i></a> ';
 
     //Keep an eye out for inner message counter changes:
     $ui .= '</span> ';
 
 
-    $c_settings = ' c_require_url_to_complete="' . $c['c_require_url_to_complete'] . '" c_require_notes_to_complete="' . $c['c_require_notes_to_complete'] . '" c_cost_estimate="' . $c['c_cost_estimate'] . '" in_status="' . $c['in_status'] . '" c_points="' . $c['c_points'] . '" c_trigger_statements="' . $c['c_trigger_statements'] . '" in_is_any="' . $c['in_is_any'] . '" ';
+    $c_settings = ' c_require_url_to_complete="' . $in['c_require_url_to_complete'] . '" c_require_notes_to_complete="' . $in['c_require_notes_to_complete'] . '" c_cost_estimate="' . $in['c_cost_estimate'] . '" in_status="' . $in['in_status'] . '" c_points="' . $in['c_points'] . '" c_trigger_statements="' . $in['c_trigger_statements'] . '" in_is_any="' . $in['in_is_any'] . '" ';
 
 
     //Show intent type:
-    $ui .= '<i class="in_is_any_icon' . $c['in_id'] . ' ' . ($c['in_is_any'] ? 'fas fa-code-merge' : 'fas fa-sitemap') . '" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i> ';
+    $ui .= '<i class="in_is_any_icon' . $in['in_id'] . ' ' . ($in['in_is_any'] ? 'fas fa-code-merge' : 'fas fa-sitemap') . '" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i> ';
 
     //Sorting & Then Left Content:
     if ($level > 1 && (!$is_parent || $level == 3)) {
@@ -1677,27 +1647,27 @@ function echo_c($c, $level, $c_parent_id = 0, $is_parent = false)
 
     //Build points UI if any:
     $extra_ui = '';
-    $extra_ui .= '<span class="ui_c_points_' . $c['in_id'] . '" style="display:inline-block; margin-left:5px;">';
-    if ($c['c_points'] > 0) {
-        $extra_ui .= '<i class="fas fa-weight" style="margin-right: 2px;"></i>' . $c['c_points'];
+    $extra_ui .= '<span class="ui_c_points_' . $in['in_id'] . '" style="display:inline-block; margin-left:5px;">';
+    if ($in['c_points'] > 0) {
+        $extra_ui .= '<i class="fas fa-weight" style="margin-right: 2px;"></i>' . $in['c_points'];
     }
     $extra_ui .= '</span> ';
 
-    $extra_ui .= '<span class="ui_c_require_notes_to_complete_' . $c['in_id'] . '">';
-    if (intval($c['c_require_notes_to_complete'])) {
+    $extra_ui .= '<span class="ui_c_require_notes_to_complete_' . $in['in_id'] . '">';
+    if (intval($in['c_require_notes_to_complete'])) {
         $extra_ui .= '<i class="fas fa-pencil"></i>';
     }
     $extra_ui .= '</span> ';
 
-    $extra_ui .= '<span class="ui_c_require_url_to_complete_' . $c['in_id'] . '">';
-    if (intval($c['c_require_url_to_complete'])) {
+    $extra_ui .= '<span class="ui_c_require_url_to_complete_' . $in['in_id'] . '">';
+    if (intval($in['c_require_url_to_complete'])) {
         $extra_ui .= '<i class="fas fa-link"></i>';
     }
     $extra_ui .= '</span> ';
 
-    $extra_ui .= '<span class="ui_c_cost_estimate_' . $c['in_id'] . '">';
-    if ($c['c_cost_estimate'] > 0) {
-        $extra_ui .= '<i class="fas fa-usd-circle" style="margin-right:2px; display:inline-block;"></i>' . $c['c_cost_estimate'];
+    $extra_ui .= '<span class="ui_c_cost_estimate_' . $in['in_id'] . '">';
+    if ($in['c_cost_estimate'] > 0) {
+        $extra_ui .= '<i class="fas fa-usd-circle" style="margin-right:2px; display:inline-block;"></i>' . $in['c_cost_estimate'];
     }
     $extra_ui .= '</span> ';
 
@@ -1706,42 +1676,42 @@ function echo_c($c, $level, $c_parent_id = 0, $is_parent = false)
 
         //Bootcamp Outcome:
         $ui .= '<span><b id="b_objective" style="font-size: 1.3em;">';
-        $ui .= '<span class="in_outcome_' . $c['in_id'] . '" ' . $c_settings . '>' . $c['in_outcome'] . '</span>';
+        $ui .= '<span class="in_outcome_' . $in['in_id'] . '" ' . $c_settings . '>' . $in['in_outcome'] . '</span>';
         $ui .= '</b></span>';
-        $ui .= ' <span class="obj-id underdot" data-toggle="tooltip" data-placement="top" title="Intent ID">#' . $c['in_id'] . '</span>';
+        $ui .= ' <span class="obj-id underdot" data-toggle="tooltip" data-placement="top" title="Intent ID">#' . $in['in_id'] . '</span>';
 
         //Give option to update the cache:
-        $ui .= ' <a href="/cron/intent_sync/' . $c['in_id'] . '/1?redirect=/' . $c['in_id'] . '" onclick="turn_off()" data-toggle="tooltip" title="Updates Intent tree cache which controls landing page counters for intent, hours, content types and industry expert" data-placement="top"><i class="fas fa-sync-alt"></i></a>';
+        $ui .= ' <a href="/cron/intent_sync/' . $in['in_id'] . '/1?redirect=/' . $in['in_id'] . '" onclick="turn_off()" data-toggle="tooltip" title="Updates Intent tree cache which controls landing page counters for intent, hours, content types and industry expert" data-placement="top"><i class="fas fa-sync-alt"></i></a>';
 
         //Show Landing Page URL:
-        $ui .= ' <a href="/' . $c['in_id'] . '" data-toggle="tooltip" title="Open Landing Page with Intent tree overview & Messenger Action Plan button" data-placement="top"><i class="fas fa-shopping-cart"></i></a>';
+        $ui .= ' <a href="/' . $in['in_id'] . '" data-toggle="tooltip" title="Open Landing Page with Intent tree overview & Messenger Action Plan button" data-placement="top"><i class="fas fa-shopping-cart"></i></a>';
 
         $ui .= $extra_ui;
 
         //Expand trigger statements:
-        $ui .= '<div class="c_trigger_statements_' . $c['in_id'] . '" style="margin-top:2px;">' . nl2br($c['c_trigger_statements']) . '</div>';
+        $ui .= '<div class="c_trigger_statements_' . $in['in_id'] . '" style="margin-top:2px;">' . nl2br($in['c_trigger_statements']) . '</div>';
 
     } elseif ($level == 2) {
 
         //Task:
         $ui .= '<span class="inline-level">';
 
-        $ui .= '<a href="javascript:ms_toggle(' . $c['tr_id'] . ');"><i id="handle-' . $c['tr_id'] . '" class="fal fa-plus-square"></i></a> &nbsp;';
+        $ui .= '<a href="javascript:ms_toggle(' . $in['tr_id'] . ');"><i id="handle-' . $in['tr_id'] . '" class="fal fa-plus-square"></i></a> &nbsp;';
 
         if (!$is_parent) {
-            $ui .= '<span class="inline-level-' . $level . '">#' . $c['tr_order'] . '</span>';
+            $ui .= '<span class="inline-level-' . $level . '">#' . $in['tr_order'] . '</span>';
         }
         $ui .= '</span>';
 
-        $ui .= '<span id="title_' . $c['tr_id'] . '" class="cdr_crnt tree_title in_outcome_' . $c['in_id'] . (strlen($c['c_trigger_statements']) > 0 ? ' has-desc ' : '') . '" children-rank="' . $c['tr_order'] . '" ' . $c_settings . ' data-toggle="tooltip" data-placement="right" title="' . $c['c_trigger_statements'] . '">' . $c['in_outcome'] . '</span> ';
+        $ui .= '<span id="title_' . $in['tr_id'] . '" class="cdr_crnt tree_title in_outcome_' . $in['in_id'] . (strlen($in['c_trigger_statements']) > 0 ? ' has-desc ' : '') . '" children-rank="' . $in['tr_order'] . '" ' . $c_settings . ' data-toggle="tooltip" data-placement="right" title="' . $in['c_trigger_statements'] . '">' . $in['in_outcome'] . '</span> ';
 
         $ui .= $extra_ui;
 
     } elseif ($level == 3) {
 
         //Steps
-        $ui .= '<span class="inline-level inline-level-' . $level . '">#' . $c['tr_order'] . '</span>';
-        $ui .= '<span id="title_' . $c['tr_id'] . '" class="tree_title in_outcome_' . $c['in_id'] . (strlen($c['c_trigger_statements']) > 0 ? ' has-desc ' : '') . '" children-rank="' . $c['tr_order'] . '" ' . $c_settings . ' data-toggle="tooltip" data-placement="right" title="' . $c['c_trigger_statements'] . '">' . $c['in_outcome'] . '</span> ';
+        $ui .= '<span class="inline-level inline-level-' . $level . '">#' . $in['tr_order'] . '</span>';
+        $ui .= '<span id="title_' . $in['tr_id'] . '" class="tree_title in_outcome_' . $in['in_id'] . (strlen($in['c_trigger_statements']) > 0 ? ' has-desc ' : '') . '" children-rank="' . $in['tr_order'] . '" ' . $c_settings . ' data-toggle="tooltip" data-placement="right" title="' . $in['c_trigger_statements'] . '">' . $in['in_outcome'] . '</span> ';
 
         $ui .= $extra_ui;
 
@@ -1751,14 +1721,14 @@ function echo_c($c, $level, $c_parent_id = 0, $is_parent = false)
     //Any Tree?
     if ($level == 2) {
 
-        $ui .= '<div id="list-cr-' . $c['tr_id'] . '" class="cr-class-' . $c['tr_id'] . ' list-group step-group hidden list-level-3" intent-id="' . $c['in_id'] . '">';
+        $ui .= '<div id="list-cr-' . $in['tr_id'] . '" class="cr-class-' . $in['tr_id'] . ' list-group step-group hidden list-level-3" intent-id="' . $in['in_id'] . '">';
         //This line enables the in-between list moves to happen for empty lists:
         $ui .= '<div class="is_level3_sortable dropin-box" style="height:1px;">&nbsp;</div>';
 
 
-        if (isset($c['in__grandchildren']) && count($c['in__grandchildren']) > 0) {
-            foreach ($c['in__grandchildren'] as $grandchild_in) {
-                $ui .= echo_c($grandchild_in, ($level + 1), $c['in_id'], $is_parent);
+        if (isset($in['in__grandchildren']) && count($in['in__grandchildren']) > 0) {
+            foreach ($in['in__grandchildren'] as $grandchild_in) {
+                $ui .= echo_c($grandchild_in, ($level + 1), $in['in_id'], $is_parent);
             }
         }
 
@@ -1766,9 +1736,9 @@ function echo_c($c, $level, $c_parent_id = 0, $is_parent = false)
         //Step Input field:
         $ui .= '<div class="list-group-item list_input new-step-input">
             <div class="input-group">
-                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="fn___in_create_or_link(' . $c['in_id'] . ',3);" intent-id="' . $c['in_id'] . '"><input type="text" class="form-control autosearch intentadder-level-3 algolia_search bottom-add" maxlength="' . $CI->config->item('in_outcome_max') . '" id="addintent-cr-' . $c['tr_id'] . '" intent-id="' . $c['in_id'] . '" placeholder="Add #Intent"></form></div>
+                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="fn___in_create_or_link(' . $in['in_id'] . ',3);" intent-id="' . $in['in_id'] . '"><input type="text" class="form-control autosearch intentadder-level-3 algolia_search bottom-add" maxlength="' . $CI->config->item('in_outcome_max') . '" id="addintent-cr-' . $in['tr_id'] . '" intent-id="' . $in['in_id'] . '" placeholder="Add #Intent"></form></div>
                 <span class="input-group-addon" style="padding-right:8px;">
-                    <span data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" onclick="fn___in_create_or_link(' . $c['in_id'] . ',3);" class="badge badge-primary pull-right" intent-id="' . $c['in_id'] . '" style="cursor:pointer; margin: 13px -6px 1px 13px;">
+                    <span data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" onclick="fn___in_create_or_link(' . $in['in_id'] . ',3);" class="badge badge-primary pull-right" intent-id="' . $in['in_id'] . '" style="cursor:pointer; margin: 13px -6px 1px 13px;">
                         <div><i class="fas fa-plus"></i></div>
                     </span>
                 </span>

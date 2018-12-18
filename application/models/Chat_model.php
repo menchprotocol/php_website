@@ -145,8 +145,14 @@ class Chat_model extends CI_Model
                 $this->Chat_model->dispatch_message(array(
                     array(
                         'tr_en_child_id' => $en['en_id'],
-                        'tr_content' => 'Awesome, I am excited to continue helping you to ' . $this->config->item('in_primary_name') . '. ' . echo_pa_lets(),
+                        'tr_content' => 'Awesome, I am excited to continue helping you to ' . $this->config->item('in_primary_name') . '.',
                     ),
+                ));
+
+                //Inform Master on how to can command Mench:
+                $this->Matrix_model->compose_messages(array(
+                    'tr_en_child_id' => $en['en_id'],
+                    'tr_in_child_id' => 8332, //Train Master to command Mench
                 ));
 
             } elseif ($action_unsubscribe == 'ALL') {
@@ -199,8 +205,14 @@ class Chat_model extends CI_Model
                     $this->Chat_model->dispatch_message(array(
                         array(
                             'tr_en_child_id' => $en['en_id'],
-                            'tr_content' => 'I have successfully removed the intention to ' . $actionplans[0]['in_outcome'] . ' from your Action Plan. Say "Unsubscribe" if you wish to stop all future communications. ' . echo_pa_lets(),
+                            'tr_content' => 'I have successfully removed the intention to ' . $actionplans[0]['in_outcome'] . ' from your Action Plan. Say "Unsubscribe" if you wish to stop all future communications.',
                         ),
+                    ));
+
+                    //Inform Master on how to can command Mench:
+                    $this->Matrix_model->compose_messages(array(
+                        'tr_en_child_id' => $en['en_id'],
+                        'tr_in_child_id' => 8332, //Train Master to command Mench
                     ));
 
                 } else {
@@ -237,8 +249,14 @@ class Chat_model extends CI_Model
                 $this->Chat_model->dispatch_message(array(
                     array(
                         'tr_en_child_id' => $en['en_id'],
-                        'tr_content' => 'Sweet, you account is now activated but you are not subscribed to any intents yet. ' . echo_pa_lets(),
+                        'tr_content' => 'Sweet, you account is now activated but you are not subscribed to any intents yet.',
                     ),
+                ));
+
+                //Inform Master on how to can command Mench:
+                $this->Matrix_model->compose_messages(array(
+                    'tr_en_child_id' => $en['en_id'],
+                    'tr_in_child_id' => 8332, //Train Master to command Mench
                 ));
 
             } elseif ($reference == 'REACTIVATE_NO') {
@@ -246,7 +264,7 @@ class Chat_model extends CI_Model
                 $this->Chat_model->dispatch_message(array(
                     array(
                         'tr_en_child_id' => $en['en_id'],
-                        'tr_content' => 'Ok, your account will remain unsubscribed. If you changed your mind, ' . echo_pa_lets(),
+                        'tr_content' => 'Ok, your account will remain unsubscribed.',
                     ),
                 ));
 
@@ -263,8 +281,14 @@ class Chat_model extends CI_Model
                 $this->Chat_model->dispatch_message(array(
                     array(
                         'tr_en_child_id' => $en['en_id'],
-                        'tr_content' => 'Ok, so how can I help you ' . $this->config->item('in_primary_name') . '? ' . echo_pa_lets(),
+                        'tr_content' => 'Ok, so how can I help you ' . $this->config->item('in_primary_name') . '?',
                     ),
+                ));
+
+                //Inform Master on how to can command Mench:
+                $this->Matrix_model->compose_messages(array(
+                    'tr_en_child_id' => $en['en_id'],
+                    'tr_in_child_id' => 8332, //Train Master to command Mench
                 ));
 
             } else {
@@ -378,11 +402,11 @@ class Chat_model extends CI_Model
                             'tr_en_child_id' => $en['en_id'],
                             'tr_in_child_id' => $ins[0]['in_id'],
                             'tr_content' => 'Here is an overview:' . "\n\n" .
-                                echo_overview_in($ins[0], 1) .
-                                echo_contents($ins[0], 1) .
-                                echo_experts($ins[0], 1) .
-                                echo_completion_estimate($ins[0], 1) .
-                                echo_costs($ins[0], 1) .
+                                echo_overview_in($ins[0], true) .
+                                fn___echo_in_referenced_content($ins[0], true) .
+                                echo_experts($ins[0], true) .
+                                echo_completion_estimate($ins[0], true) .
+                                echo_costs($ins[0], true) .
                                 "\n" . 'Are you ready to ' . $ins[0]['in_outcome'] . '?',
                             'quick_replies' => array(
                                 array(
@@ -659,13 +683,11 @@ class Chat_model extends CI_Model
             }
 
             //Confirm answer received:
-            $this->Chat_model->dispatch_message(array(
-                array(
-                    'tr_en_child_id' => $en['en_id'],
-                    'tr_in_child_id' => $in_id,
-                    'tr_tr_parent_id' => $tr_id,
-                    'tr_content' => echo_pa_saved(),
-                ),
+            $this->Matrix_model->compose_messages(array(
+                'tr_en_child_id' => $en['en_id'],
+                'tr_in_parent_id' => $in_id,
+                'tr_in_child_id' => 8333, //Acknowledge progress with Master
+                'tr_tr_parent_id' => $tr_id,
             ));
 
             //Now save answer:
@@ -981,13 +1003,13 @@ class Chat_model extends CI_Model
                 return false;
             }
 
+
             //Let them know that we did not understand their message:
-            $this->Chat_model->dispatch_message(array(
-                array(
-                    'tr_en_child_id' => $en['en_id'],
-                    'tr_content' => echo_pa_oneway(),
-                ),
+            $this->Matrix_model->compose_messages(array(
+                'tr_en_child_id' => $en['en_id'],
+                'tr_in_child_id' => 8334, //Inform Master of Mench's one-way communication limitation
             ));
+
 
             //Log transaction:
             $this->Database_model->tr_create(array(

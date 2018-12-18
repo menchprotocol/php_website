@@ -15,6 +15,13 @@ class Migrate extends CI_Controller
     }
 
 
+    function rotate($in_id=8333){
+        echo_json($this->Matrix_model->compose_messages(array(
+            'tr_en_child_id' => 1, //Shervin
+            'tr_in_child_id' => $in_id,
+        )));
+    }
+
     function ff($en_id=1){
 
         $ens = $this->Database_model->en_fetch(array(
@@ -27,16 +34,21 @@ class Migrate extends CI_Controller
     }
 
 
-    function c()
+    function in()
     {
 
-        die('pending final migration');
+        //die('pending final migration');
 
         fn___boost_power();
 
         //Delete everything before starting:
-        $this->db->query("DELETE FROM table_intents WHERE in_id>0");
-        $this->db->query("DELETE FROM table_ledger WHERE tr_en_type_id IN (4231,4232,4233,4250,4228,4331);"); //The link types we could create with this function
+        if(0){
+            $this->db->query("DELETE FROM table_intents WHERE in_id>0");
+            $this->db->query("DELETE FROM table_ledger WHERE tr_en_type_id IN (4231,4232,4233,4250,4228,4331);"); //The link types we could create with this function
+        }
+
+        //These intents will have their messages converted to rotational from on-start:
+        $in_onstart_to_rotational = array(8332,8333,8334);
 
         $message_status_converter = array(
             1 => 4231,
@@ -45,6 +57,7 @@ class Migrate extends CI_Controller
         );
 
         $intents = $this->Old_model->c_fetch(array(
+            'c_id >=' => 8331,
             'c_status >=' => 1, //working on or more
         ));
         $stats = array(
@@ -134,7 +147,7 @@ class Migrate extends CI_Controller
                 $this->Database_model->tr_create(array(
                     'tr_timestamp' => $i['i_timestamp'],
                     'tr_content' => $i['i_message'],
-                    'tr_en_type_id' => $message_status_converter[$i['i_status']], //Message status migrating into new link type entity reference
+                    'tr_en_type_id' => ( in_array($c['c_id'],$in_onstart_to_rotational) ? 4234 /* Rotating Message */ : $message_status_converter[$i['i_status']] ), //Message status migrating into new link type entity reference
                     'tr_en_credit_id' => $i['i_parent_u_id'],
                     'tr_en_parent_id' => $i['i_u_id'],
                     'tr_in_child_id' => $i['i_c_id'],
@@ -146,7 +159,7 @@ class Migrate extends CI_Controller
         echo_json($stats);
     }
 
-    function u($u_id = 0)
+    function en($u_id = 0)
     {
 
         if(!$u_id){
@@ -493,14 +506,10 @@ class Migrate extends CI_Controller
     }
 
 
-    function e()
+    function tr()
     {
 
         fn___boost_power();
-
-
-
-
 
     }
 

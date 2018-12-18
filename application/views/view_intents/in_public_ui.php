@@ -83,11 +83,11 @@
 
     <h3 style="margin-top:0px !important;">Overview:</h3>
     <div style="margin:12px 0 0 5px;">
-        <?= echo_overview_in($c, 0) ?>
-        <?= echo_contents($c, 0) ?>
-        <?= echo_experts($c, 0) ?>
-        <?= echo_completion_estimate($c, 0) ?>
-        <?= echo_costs($c, 0) ?>
+        <?= echo_overview_in($c, false) ?>
+        <?= fn___echo_in_referenced_content($c, false) ?>
+        <?= echo_experts($c, false) ?>
+        <?= echo_completion_estimate($c, false) ?>
+        <?= echo_costs($c, false) ?>
     </div>
 
 

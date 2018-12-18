@@ -76,7 +76,7 @@ if (count($k_ins) == 0) {
     if ($k_ins[0]['tr_timestamp']) {
         echo ' &nbsp;&nbsp;<i class="fas fa-calendar-check"></i> ' . echo_diff_time($k_ins[0]['tr_timestamp']) . ' ago';
     } else {
-        echo ' &nbsp;&nbsp;<i class="fas fa-clock"></i> ' . echo_hours($c['in_seconds']) . ' to complete';
+        echo ' &nbsp;&nbsp;<i class="fas fa-clock"></i> ' . fn___echo_hours($c['in_seconds']) . ' to complete';
     }
 
     if (strlen($k_ins[0]['tr_content']) > 0) {

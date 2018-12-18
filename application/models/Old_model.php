@@ -217,7 +217,7 @@ class Old_model extends CI_Model
 
 
     function i_fetch($match_columns, $limit = 0, $join_objects = array(), $order_columns = array(
-        'tr_order' => 'ASC',
+        'i_rank' => 'ASC',
     ))
     {
 
