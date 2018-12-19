@@ -294,7 +294,19 @@ class Old_model extends CI_Model
         $this->db->from('tb_actionplan_links k');
 
 
+        if(in_array('cr',$join_objects)){
+            $this->db->join('tb_intent_links cr', 'k.k_cr_id = cr.cr_id');
+            if(in_array('cr_c_child',$join_objects)){
+                //Also join with subscription row:
+                $this->db->join('tb_intents c', 'c.c_id = cr.cr_child_c_id');
+            } elseif(in_array('cr_c_parent',$join_objects)){
+                //Also join with subscription row:
+                $this->db->join('tb_intents c', 'c.c_id = cr.cr_parent_c_id');
+            }
+        }
+
         if (in_array('w', $join_objects)) {
+
             //Also join with subscription row:
             $this->db->join('tb_actionplans w', 'w_id = k_w_id');
 
@@ -307,6 +319,7 @@ class Old_model extends CI_Model
                 $this->db->join('tb_entities u', 'u_id = w_child_u_id');
                 $this->db->join('tb_entity_urls x', 'x.x_id = u.u_cover_x_id', 'left'); //Fetch the cover photo if >0
             }
+
         }
 
         foreach ($match_columns as $key => $value) {

@@ -94,8 +94,8 @@
 
         echo '<div id="list-children" class="list-group grey-list indent2">';
 
-        foreach ($entity['en__children'] as $u) {
-            echo echo_u($u, 2);
+        foreach ($entity['en__children'] as $en) {
+            echo echo_u($en, 2);
         }
         if ($entity['en__child_count'] > count($entity['en__children'])) {
             fn___echo_en_load_more(1, $this->config->item('en_per_page'), $entity['en__child_count']);

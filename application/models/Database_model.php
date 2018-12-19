@@ -71,7 +71,7 @@ class Database_model extends CI_Model
             }
 
             //TODO Update Action Plan progress (In tr_metadata) at this point
-            //TODO implement drip 'tr_en_type_id' => 4281, //Pending Drip
+            //TODO implement drip?
         }
     }
 
@@ -775,13 +775,6 @@ class Database_model extends CI_Model
      ****************************** */
 
 
-    function x_update($id, $update_columns)
-    {
-        $this->db->where('x_id', $id);
-        $this->db->update('tb_entity_urls', $update_columns);
-        return $this->db->affected_rows();
-    }
-
 
     function tr_fetch($match_columns = array(), $join_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('tr_timestamp' => 'DESC'), $select = '*', $group_by = null)
     {
@@ -879,20 +872,17 @@ class Database_model extends CI_Model
             return false;
         }
 
-
         //Unset un-allowed columns to be manually added:
-        if (isset($insert_columns['tr_content_int'])) {
-            unset($insert_columns['tr_content_int']);
-        }
         if (isset($insert_columns['tr_coins'])) {
             unset($insert_columns['tr_coins']);
         }
+
+        //Clean metadata is provided:
         if (isset($insert_columns['tr_metadata'])) {
             $insert_columns['tr_metadata'] = serialize($insert_columns['tr_metadata']);
         } else {
             $insert_columns['tr_metadata'] = null;
         }
-
 
         //Try to auto detect user:
         if (!isset($insert_columns['tr_en_credit_id'])) {
@@ -909,10 +899,9 @@ class Database_model extends CI_Model
         //Set some defaults:
         if (!isset($insert_columns['tr_content'])) {
             $insert_columns['tr_content'] = null;
-            $insert_columns['tr_content_int'] = 0;
-        } elseif (is_int($insert_columns['tr_content']) && intval($insert_columns['tr_content']) > 0) {
+        } elseif (is_int($insert_columns['tr_content']) && intval($insert_columns['tr_content']) > 0 && !isset($insert_columns['tr_external_id'])) {
             //Store integer separately for faster query access later on:
-            $insert_columns['tr_content_int'] = intval($insert_columns['tr_content']);
+            $insert_columns['tr_external_id'] = intval($insert_columns['tr_content']);
         }
 
         if (!isset($insert_columns['tr_timestamp'])) {
@@ -959,23 +948,6 @@ class Database_model extends CI_Model
         //All good huh?
         if ($insert_columns['tr_id'] < 1) {
             return false;
-        }
-
-
-        //Now we might need to cache if this is a Video, Audio, Image or File URL:
-        if (in_array($insert_columns['tr_en_type_id'], array(4258, 4259, 4260, 4261))) {
-            $this->Database_model->tr_create(array(
-                'tr_status' => 0, //New
-                'tr_en_type_id' => 4299, //Media Uploaded
-                'tr_tr_parent_id' => $insert_columns['tr_id'],
-                //Replicate remaining fields:
-                'tr_en_credit_id' => $insert_columns['tr_en_credit_id'],
-                'tr_en_parent_id' => $insert_columns['tr_en_parent_id'],
-                'tr_en_child_id' => $insert_columns['tr_en_child_id'],
-                'tr_in_parent_id' => $insert_columns['tr_in_parent_id'],
-                'tr_in_child_id' => $insert_columns['tr_in_child_id'],
-                'tr_content' => $insert_columns['tr_content'],
-            ));
         }
 
 

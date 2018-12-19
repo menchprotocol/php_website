@@ -308,15 +308,19 @@ function fn___upload_to_cdn($file_url, $json_data, $is_local = false)
         ));
 
         if (isset($result['ObjectURL']) && strlen($result['ObjectURL']) > 10) {
+
             @unlink(($is_local ? $file_url : $file_path . $file_name));
             return $result['ObjectURL'];
+
         } else {
+
             $CI->Database_model->tr_create(array(
+                'tr_en_type_id' => 4246, //Platform Error
                 'tr_content' => 'fn___upload_to_cdn() Unable to upload file [' . $file_url . '] to Mench cloud.',
                 'tr_metadata' => $json_data,
-                'tr_en_type_id' => 4246, //Platform Error
             ));
             return false;
+
         }
 
     } else {

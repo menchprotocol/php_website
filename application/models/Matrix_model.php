@@ -841,7 +841,7 @@ class Matrix_model extends CI_Model
             'tr_status >=' => 2, //Published
             'tr_en_parent_id' => 4451, //Mench Personal Assistant on Messenger
             'tr_en_child_id >' => 0, //Looking for this ID to determine Master Entity ID
-            'tr_content_int' => intval($psid), //Since the PSID is a full integer, it is cached in tr_content_int for faster indexing
+            'tr_external_id' => intval($psid), //Since the PSID is a full integer, it is cached in tr_external_id for faster indexing
         ), array('en_child'));
 
 
@@ -1057,11 +1057,12 @@ class Matrix_model extends CI_Model
 
             //Try to match Facebook profile data to internal entities and create links for the ones we find:
             foreach (array(
-                         $this->Database_model->en_search_match(3289, $fb_profile['timezone']), //Timezone
-                         $this->Database_model->en_search_match(3290, strtolower(substr($fb_profile['gender'], 0, 1))), //Gender either m/f
-                         $this->Database_model->en_search_match(3287, strtolower($locale[0])), //Language
-                         $this->Database_model->en_search_match(3089, strtolower($locale[1])), //Country
-                     ) as $tr_en_parent_id) {
+                 $this->Database_model->en_search_match(3289, $fb_profile['timezone']), //Timezone
+                 $this->Database_model->en_search_match(3290, strtolower(substr($fb_profile['gender'], 0, 1))), //Gender either m/f
+                 $this->Database_model->en_search_match(3287, strtolower($locale[0])), //Language
+                 $this->Database_model->en_search_match(3089, strtolower($locale[1])), //Country
+             ) as $tr_en_parent_id) {
+
                 //Did we find a relation? Create the transaction:
                 if ($tr_en_parent_id > 0) {
 
@@ -1078,9 +1079,10 @@ class Matrix_model extends CI_Model
 
             //Create transaction to save profile picture:
             $this->Database_model->tr_create(array(
-                'tr_status' => 0, //Pending processing via cron job...
-                'tr_en_type_id' => 4299, //Save media file to Mench cloud
-                'tr_en_credit_id' => $en['en_id'],
+                'tr_status' => 0, //New
+                'tr_en_type_id' => 4299, //Save URL to Mench Cloud
+                'tr_en_credit_id' => $en['en_id'], //The Master who added this
+                'tr_en_parent_id' => 4260, //Indicates URL file Type (Image)
                 'tr_content' => $fb_profile['profile_pic'], //Image to be saved
             ));
 
@@ -1103,7 +1105,7 @@ class Matrix_model extends CI_Model
             'tr_en_credit_id' => $en['en_id'],
             'tr_en_parent_id' => 4451, //Mench Personal Assistant on Messenger
             'tr_en_child_id' => $en['en_id'],
-            'tr_content' => $psid, //Used later-on to match Messenger user to entity. $psid is cached in tr_content_int since its an integer
+            'tr_content' => $psid, //Used later-on to match Messenger user to entity. $psid is cached in tr_external_id since its an integer
         ));
 
         //Add default Action Plan Level:

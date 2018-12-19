@@ -13,6 +13,75 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 
 
+//Messages Sent:
+$config['en_ids_4280'] = array(4552, 4553, 4554, 4555, 4556);
+$config['en_all_4280'] = array(
+    4552 => array(
+        'en_icon' => '',
+        'en_name' => 'Text Message Sent',
+        'tr_content' => '',
+    ),
+    4553 => array(
+        'en_icon' => '',
+        'en_name' => 'Video Message Sent',
+        'tr_content' => '',
+    ),
+    4554 => array(
+        'en_icon' => '',
+        'en_name' => 'Audio Message Sent',
+        'tr_content' => '',
+    ),
+    4555 => array(
+        'en_icon' => '',
+        'en_name' => 'Image Message Sent',
+        'tr_content' => '',
+    ),
+    4556 => array(
+        'en_icon' => '',
+        'en_name' => 'File Message Sent',
+        'tr_content' => '',
+    ),
+);
+
+//Messages Received:
+$config['en_ids_4277'] = array(4547, 4548, 4549, 4550, 4551, 4557, 4460);
+$config['en_all_4277'] = array(
+    4547 => array(
+        'en_icon' => '',
+        'en_name' => 'Text Message Received',
+        'tr_content' => '',
+    ),
+    4548 => array(
+        'en_icon' => '',
+        'en_name' => 'Video Message Received',
+        'tr_content' => '',
+    ),
+    4549 => array(
+        'en_icon' => '',
+        'en_name' => 'Audio Message Received',
+        'tr_content' => '',
+    ),
+    4550 => array(
+        'en_icon' => '',
+        'en_name' => 'Image Message Received',
+        'tr_content' => '',
+    ),
+    4551 => array(
+        'en_icon' => '',
+        'en_name' => 'File Message Received',
+        'tr_content' => '',
+    ),
+    4557 => array(
+        'en_icon' => '',
+        'en_name' => 'Location Message Received',
+        'tr_content' => '',
+    ),
+    4460 => array(
+        'en_icon' => '',
+        'en_name' => 'Quick Reply Answer Received',
+        'tr_content' => '',
+    ),
+);
 
 //Intent Response Limiters:
 $config['en_ids_4331'] = array(4255, 4256, 4257, 4258, 4259, 4260, 4261, 4318, 4319);

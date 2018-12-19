@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  *
  * Global variables used throughout the platform.
- * use-case format: $this->config->item('object_statuses')
+ * use-case format: $this->config->item('en_convert_4537')
  *
  */
 
@@ -51,6 +51,13 @@ $config['en_convert_4454'] = array( //Mench Notification Levels to Facebook Mess
     4458 => 'NO_PUSH',
     //There is also an Unsubscribe @4455 entity which is not here obviously since there would be no communication with the Master at all!
 );
+$config['en_convert_4537'] = array( //Used for saving media to Facebook Servers to speed-up delivery over Messenger
+    4258 => 'video',
+    4259 => 'audio',
+    4260 => 'image',
+    4261 => 'file',
+);
+
 $config['fb_settings'] = array(
     'page_id' => '381488558920384',
     'app_id' => '1782431902047009',
@@ -105,7 +112,6 @@ $config['eng_converter'] = array(
     1 => 4278, //Log message read
     2 => 4279, //Log message delivered
     7 => 4280, //Log message sent
-    52 => 4281, //Log message queued
     55 => 4282, //Log my account access
     32 => 4283, //Log action plan access
     33 => 4242, //Log action plan intent completion [Link updated]

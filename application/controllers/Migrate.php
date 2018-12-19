@@ -14,7 +14,6 @@ class Migrate extends CI_Controller
         $this->output->enable_profiler(FALSE);
     }
 
-
     function rotate($in_id=8333){
         fn___echo_json($this->Matrix_model->compose_messages(array(
             'tr_en_child_id' => 1, //Shervin
@@ -163,7 +162,7 @@ class Migrate extends CI_Controller
     {
 
         if(!$u_id){
-            die('pending final migration');
+            //die('pending final migration');
         }
 
         fn___boost_power();
@@ -211,6 +210,8 @@ class Migrate extends CI_Controller
         );
         if($u_id>0){
             $filters['u_id'] = $u_id;
+        } else {
+            //$filters['u_id >'] = 4539;
         }
         $entities = $this->Old_model->u_fetch($filters, array('skip_en__parents'), 0, 0, array('u_id' => 'ASC'));
 
@@ -419,20 +420,8 @@ class Migrate extends CI_Controller
                     'tr_en_parent_id' => $tr_en_parent_id,
                     'tr_en_child_id' => $x['x_u_id'],
                     'tr_content' => $x['x_url'],
+                    'tr_external_id' => ($x['x_fb_att_id'] > 0 ? $x['x_fb_att_id'] : 0),
                 ));
-
-                //Do we have an attachment? Save that too:
-                if ($x['x_fb_att_id'] > 0) {
-                    $stats['total_links']++;
-                    $this->Database_model->tr_create(array(
-                        'tr_timestamp' => $x['x_timestamp'],
-                        'tr_en_credit_id' => 0, //System
-                        'tr_en_type_id' => 4319, //Number Link
-                        'tr_en_parent_id' => 4505, //Facebook Attachment Upload API
-                        'tr_en_child_id' => $x['x_u_id'],
-                        'tr_content' => $x['x_fb_att_id'],
-                    ));
-                }
 
             }
 

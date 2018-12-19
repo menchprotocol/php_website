@@ -119,7 +119,7 @@ class Bot extends CI_Controller
 
                 if (isset($im['read'])) {
 
-                    //TODO Only log IF last engagement was 5 minutes+ ago
+                    //TODO Only log IF last read engagement was 5+ minutes ago
 
                     $en = $this->Matrix_model->fn___authenticate_messenger_user($im['sender']['id']);
 
@@ -134,7 +134,7 @@ class Bot extends CI_Controller
 
                 } elseif (isset($im['delivery'])) {
 
-                    //TODO Only log IF last engagement was 5 minutes+ ago
+                    //TODO Only log IF last delivery engagement was 5+ minutes ago
 
                     $en = $this->Matrix_model->fn___authenticate_messenger_user($im['sender']['id']);
 
@@ -219,7 +219,7 @@ class Bot extends CI_Controller
 
 
                     //We might need to respond based on the reference:
-                    $this->Chat_model->digest_reference($u, $ref);
+                    $this->Chat_model->digest_quick_reply_payload($en, $ref);
 
 
                 } elseif (isset($im['optin'])) {
@@ -243,92 +243,196 @@ class Bot extends CI_Controller
                 } elseif (isset($im['message'])) {
 
                     /*
-                     * Triggered for both incoming and outgoing messages on behalf of our team
+                     *
+                     * Triggered for all incoming messages and also for
+                     * outgoing messages sent using the Facebook Inbox UI.
                      *
                      * */
 
-
                     //Is this a non loggable message? If so, this has already been logged by Mench:
-                    $metadata = (isset($im['message']['metadata']) ? $im['message']['metadata'] : null); //Send API custom string [metadata field]
-                    if ($metadata == 'system_logged') {
+                    if (isset($im['message']['metadata']) && $im['message']['metadata'] == 'system_logged') {
+
                         //This is already logged! No need to take further action!
-                        fn___echo_json(array('complete' => 'yes'));
-                        return false;
-                        exit;
+                        return fn___echo_json(array('is_logged_already' => 1));
+
                     }
 
 
                     //Set variables:
-                    $sent_from_us = (isset($im['message']['is_echo'])); //Indicates the message sent from the page itself
-                    $user_id = ($sent_from_us ? $im['recipient']['id'] : $im['sender']['id']);
-                    $quick_reply_payload = (isset($im['message']['quick_reply']['payload']) && strlen($im['message']['quick_reply']['payload']) > 0 ? $im['message']['quick_reply']['payload'] : null);
-                    $fb_message = (isset($im['message']['text']) ? $im['message']['text'] : null);
-
-                    $en = $this->Matrix_model->fn___authenticate_messenger_user($user_id);
-
+                    unset($eng_data); //Reset everything in case its set from the previous loop!
+                    $sent_by_mench = (isset($im['message']['is_echo'])); //Indicates the message sent from the page itself
+                    $en = $this->Matrix_model->fn___authenticate_messenger_user(($sent_by_mench ? $im['recipient']['id'] : $im['sender']['id']));
                     $eng_data = array(
-                        'tr_en_credit_id' => ($sent_from_us ? 4148 /* Log on behalf of Mench Admins as it was sent via Facebook Inbox UI */ : $en['en_id']),
-                        'tr_metadata' => $json_data,
-                        'tr_content' => $fb_message,
-                        'tr_en_type_id' => ($sent_from_us ? 4280 : 4277), //Message Sent/Received
-                        'tr_en_child_id' => ($sent_from_us && isset($en['en_id']) ? $en['en_id'] : 0),
+                        'tr_en_credit_id' => ($sent_by_mench ? 4148 /* Mench Admins via Facebook Inbox UI */ : $en['en_id']),
+                        'tr_en_child_id' => ($sent_by_mench ? $en['en_id'] : 0),
+                        'tr_timestamp' => ($sent_by_mench ? null : fn___echo_time_milliseconds($im['timestamp']) ), //Facebook time if received from Master
+                        'tr_metadata' => $json_data, //Entire JSON object received by Facebook API
                     );
 
-                    //We only have a timestamp for received messages (not sent ones):
-                    if (!$sent_from_us) {
-                        $eng_data['tr_timestamp'] = fn___echo_time_milliseconds($im['timestamp']); //The Facebook time
-                    }
+                    /*
+                     *
+                     * Now complete the transaction data based on message type.
+                     * We will generally receive 3 types of Facebook Messages:
+                     *
+                     * - Quick Replies
+                     * - Text Messages
+                     * - Attachments
+                     *
+                     * And we will deal with each group, and their sub-group
+                     * appropriately based on who sent the message (Mench/Master)
+                     *
+                     * */
 
-                    //It may also have an attachment
-                    if (isset($im['message']['attachments'])) {
+                    if(isset($im['message']['quick_reply']['payload'])){
+
+                        //Quick Reply Answer Received (Cannot be sent as we never send quick replies)
+                        $eng_data['tr_en_type_id'] = 4460;
+                        $eng_data['tr_content'] = $im['message']['text']; //Quick reply always has a text
+
+                        //Digest the Quick Reply payload:
+                        $this->Chat_model->digest_quick_reply_payload($en, $im['message']['quick_reply']['payload']);
+
+                    } elseif(isset($im['message']['text'])){
+
+                        //Set message content:
+                        $eng_data['tr_content'] = $im['message']['text'];
+
+                        //Who sent this?
+                        if ($sent_by_mench) {
+
+                            //Text Message Sent (By Mench Admin via Facebook Inbox UI)
+                            $eng_data['tr_en_type_id'] = 4552;
+
+                        } else {
+
+                            //Text Message Received:
+                            $eng_data['tr_en_type_id'] = 4547;
+
+                            //Digest message & try to make sense of it:
+                            $this->Chat_model->fn___digest_message($en, $im['message']['text']);
+
+                        }
+
+                    } elseif (isset($im['message']['attachments'])) {
+
                         //We have some attachments, lets loops through them:
                         foreach ($im['message']['attachments'] as $att) {
 
-                            if (in_array($att['type'], array('image', 'audio', 'video', 'file'))) {
+                            //Define 4 main Attachment Message Types:
+                            $att_media_types = array(
+                                'video' => array(
+                                    'sent' => 4553,
+                                    'received' => 4548,
+                                ),
+                                'audio' => array(
+                                    'sent' => 4554,
+                                    'received' => 4549,
+                                ),
+                                'image' => array(
+                                    'sent' => 4555,
+                                    'received' => 4550,
+                                ),
+                                'file' => array(
+                                    'sent' => 4556,
+                                    'received' => 4551,
+                                ),
+                            );
 
-                                //Indicate that we need to save this file on our servers:
-                                $eng_data['tr_status'] = 0;
-                                //We do not save instantly as we need to respond to facebook's webhook call ASAP or else FB resend attachment!
+                            if (array_key_exists($att['type'], $att_media_types)) {
+
+                                /*
+                                 *
+                                 * This is a media attachment.
+                                 *
+                                 * We cannot save this Media on-demand because it takes
+                                 * a few seconds depending on the file size which would
+                                 * delay our response long-enough that Facebook thinks
+                                 * our server is none-responsive which would cause
+                                 * Facebook to resent this Attachment!
+                                 *
+                                 * The solution is to create a @4299 transaction to save
+                                 * this attachment using a cron job later on.
+                                 *
+                                 * */
+
+                                $eng_data['tr_en_type_id'] = $att_media_types[$att['type']][( $sent_by_mench ? 'sent' : 'received' )];
+                                $eng_data['tr_content'] = $att['payload']['url']; //Media Attachment Temporary Facebook URL
+                                $eng_data['tr_status'] = 0; //Temporary Facebook URL to be uploaded to Mench CDN via Cron Job
 
                             } elseif ($att['type'] == 'location') {
 
-                                //Message with location attachment
-                                //TODO test to make sure this works! Not sure why this would be useful at this point...
+                                //Location Message Received:
+                                $eng_data['tr_en_type_id'] = 4557;
+
+                                /*
+                                 *
+                                 * We do not have the ability to send this
+                                 * type of message at this time and we will
+                                 * only receive it if the Master decides to
+                                 * send us their location for some reason.
+                                 *
+                                 * Message with location attachment which
+                                 * could have up to 4 main elements:
+                                 *
+                                 * */
+
                                 $loc_lat = $att['payload']['coordinates']['lat'];
                                 $loc_long = $att['payload']['coordinates']['long'];
-                                $eng_data['tr_content'] .= (strlen($eng_data['tr_content']) > 0 ? "\n\n" : '') . 'Location Lat/Lng is: ' . $loc_lat . ',' . $loc_long;
+                                $loc_title = ( isset($att['title']) && strlen($att['title'])>0 ? $att['title'] : null );
+                                $loc_url = ( isset($att['url']) && strlen($att['url'])>0 ? $att['url'] : null );
+
+                                //Construct the body based on these 4 elements:
+                                $eng_data['tr_content'] = 'Location Lat/Lng is: ' . $loc_lat . ',' . $loc_long;
 
                             } elseif ($att['type'] == 'template') {
 
-                                //Message with template attachment, like a button or something...
-                                $template_type = $att['payload']['template_type'];
+                                /*
+                                 *
+                                 * Message with template attachment, like a
+                                 * button or something...
+                                 *
+                                 * Will have value $att['payload']['template_type'];
+                                 *
+                                 * TODO implement later on maybe? Not sure how this is useful...
+                                 *
+                                 * */
 
                             } elseif ($att['type'] == 'fallback') {
 
-                                //A fallback attachment is any attachment not currently recognized or supported by the Message Echo feature.
-                                //We can ignore them for now :)
+                                /*
+                                 *
+                                 * A fallback attachment is any attachment
+                                 * not currently recognized or supported
+                                 * by the Message Echo feature.
+                                 *
+                                 * We can ignore them for now :)
+                                 * TODO implement later on maybe? Not sure how this is useful...
+                                 *
+                                 * */
 
-                            } else {
-                                //This should really not happen!
-                                $this->Database_model->tr_create(array(
-                                    'tr_content' => 'facebook_webhook() Received message with unknown attachment type [' . $att['type'] . '].',
-                                    'tr_metadata' => $json_data,
-                                    'tr_en_type_id' => 4246, //Platform Error
-                                    'tr_en_child_id' => $eng_data['tr_en_child_id'],
-                                ));
                             }
                         }
                     }
 
-                    //Log incoming engagement:
-                    $this->Database_model->tr_create($eng_data);
 
-                    //Process both
-                    if ($quick_reply_payload) {
-                        $this->Chat_model->digest_reference($u, $quick_reply_payload);
-                    } elseif (!$sent_from_us) {
-                        $this->Chat_model->fn___digest_message($u, $fb_message);
+                    //So did we recognized the
+                    if(isset($eng_data['tr_en_type_id'])){
+
+                        //We're all good, log this message:
+                        $this->Database_model->tr_create($eng_data);
+
+                    } else {
+
+                        //Ooooopsi, this seems to be an unknown message type:
+                        $this->Database_model->tr_create(array(
+                            'tr_en_type_id' => 4246, //Platform Error
+                            'tr_content' => 'facebook_webhook() Received unknown message type! Analyze metadata for more details.',
+                            'tr_metadata' => $json_data,
+                            'tr_en_child_id' => $en['en_id'],
+                        ));
+
                     }
+
 
                 } else {
 

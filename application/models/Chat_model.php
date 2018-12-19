@@ -111,7 +111,7 @@ class Chat_model extends CI_Model
     }
 
 
-    function digest_reference($en, $reference)
+    function digest_quick_reply_payload($en, $quick_reply_payload)
     {
 
         /*
@@ -126,18 +126,18 @@ class Chat_model extends CI_Model
          * Inputs:
          *
          * - $en - The Master who made the request
-         * - $reference - The reference string attached to the chat message
+         * - $quick_reply_payload - The reference string attached to the chat message
          *
          *
          * */
 
-        if (!$reference || strlen($reference) < 1) {
+        if (!$quick_reply_payload || strlen($quick_reply_payload) < 1) {
 
             return false;
 
-        } elseif (substr_count($reference, 'ACTIONPLAN-SKIP_') == 1) {
+        } elseif (substr_count($quick_reply_payload, 'ACTIONPLAN-SKIP_') == 1) {
 
-            $action_unsubscribe = fn___one_two_explode('ACTIONPLAN-SKIP_', '', $reference);
+            $action_unsubscribe = fn___one_two_explode('ACTIONPLAN-SKIP_', '', $quick_reply_payload);
 
             if ($action_unsubscribe == 'CANCEL') {
 
@@ -238,9 +238,9 @@ class Chat_model extends CI_Model
 
             }
 
-        } elseif (substr_count($reference, 'REACTIVATE_') == 1) {
+        } elseif (substr_count($quick_reply_payload, 'REACTIVATE_') == 1) {
 
-            if ($reference == 'REACTIVATE_YES') {
+            if ($quick_reply_payload == 'REACTIVATE_YES') {
 
                 //Update User communication level to Receive Silent Push Notifications:
                 $this->Matrix_model->fn___en_radio_set(4454, 4457, $en['en_id'], $en['en_id']);
@@ -259,7 +259,7 @@ class Chat_model extends CI_Model
                     'tr_in_child_id' => 8332, //Train Master to command Mench
                 ));
 
-            } elseif ($reference == 'REACTIVATE_NO') {
+            } elseif ($quick_reply_payload == 'REACTIVATE_NO') {
 
                 $this->Chat_model->dispatch_message(array(
                     array(
@@ -270,10 +270,10 @@ class Chat_model extends CI_Model
 
             }
 
-        } elseif (substr_count($reference, 'ACTIONPLAN-ADD-INITIATE_') == 1) {
+        } elseif (substr_count($quick_reply_payload, 'ACTIONPLAN-ADD-INITIATE_') == 1) {
 
             //Validate this intent:
-            $ref_value = fn___one_two_explode('ACTIONPLAN-ADD-INITIATE_', '', $reference);
+            $ref_value = fn___one_two_explode('ACTIONPLAN-ADD-INITIATE_', '', $quick_reply_payload);
 
             if ($ref_value == 'REJECT') {
 
@@ -308,7 +308,7 @@ class Chat_model extends CI_Model
                     $this->Chat_model->dispatch_message(array(
                         array(
                             'tr_en_child_id' => $en['en_id'],
-                            'tr_content' => 'I was unable to locate intent #' . $in_id . ' [' . $reference . ']',
+                            'tr_content' => 'I was unable to locate intent #' . $in_id . ' [' . $quick_reply_payload . ']',
                         ),
                     ));
 
@@ -348,11 +348,11 @@ class Chat_model extends CI_Model
                 }
             }
 
-        } elseif (substr_count($reference, 'ACTIONPLAN-ADD-CONFIRM_') == 1) {
+        } elseif (substr_count($quick_reply_payload, 'ACTIONPLAN-ADD-CONFIRM_') == 1) {
 
             //Initiating an intent Action Plan:
             $ins = $this->Database_model->in_fetch(array(
-                'in_id' => intval(fn___one_two_explode('ACTIONPLAN-ADD-CONFIRM_', '', $reference)),
+                'in_id' => intval(fn___one_two_explode('ACTIONPLAN-ADD-CONFIRM_', '', $quick_reply_payload)),
                 'in_status >=' => 2,
             ));
             if (count($ins) == 1) {
@@ -427,11 +427,11 @@ class Chat_model extends CI_Model
                 }
             }
 
-        } elseif (substr_count($reference, 'ACTIONPLAN-ADD-CONFIRMED_') == 1) {
+        } elseif (substr_count($quick_reply_payload, 'ACTIONPLAN-ADD-CONFIRMED_') == 1) {
 
             //Validate Intent ID:
             $ins = $this->Database_model->in_fetch(array(
-                'in_id' => intval(fn___one_two_explode('ACTIONPLAN-ADD-CONFIRMED_', '', $reference)),
+                'in_id' => intval(fn___one_two_explode('ACTIONPLAN-ADD-CONFIRMED_', '', $quick_reply_payload)),
                 'in_status >=' => 2,
             ));
 
@@ -479,13 +479,13 @@ class Chat_model extends CI_Model
             }
 
 
-        } elseif (fn___includes_any($reference, array('ACTIONPLAN-SKIP-CONFIRMED_', 'ACTIONPLAN-SKIP-INITIATE_', 'ACTIONPLAN-SKIP-CANCEL_'))) {
+        } elseif (fn___includes_any($quick_reply_payload, array('ACTIONPLAN-SKIP-CONFIRMED_', 'ACTIONPLAN-SKIP-INITIATE_', 'ACTIONPLAN-SKIP-CANCEL_'))) {
 
             //See which stage of the skip request they are:
-            $handler = fn___includes_any($reference, array('ACTIONPLAN-SKIP-CONFIRMED_', 'ACTIONPLAN-SKIP-INITIATE_', 'ACTIONPLAN-SKIP-CANCEL_'));
+            $handler = fn___includes_any($quick_reply_payload, array('ACTIONPLAN-SKIP-CONFIRMED_', 'ACTIONPLAN-SKIP-INITIATE_', 'ACTIONPLAN-SKIP-CANCEL_'));
 
             //Extract varibales from REF:
-            $input_parts = explode('_', fn___one_two_explode($handler, '', $reference));
+            $input_parts = explode('_', fn___one_two_explode($handler, '', $quick_reply_payload));
             $tr_status = intval($input_parts[0]); //It would be $tr_status=1 initial (working on) and then would change to either -1 IF skip was cancelled or 2 IF skip was confirmed.
             $tr_id = intval($input_parts[1]);
 
@@ -493,7 +493,7 @@ class Chat_model extends CI_Model
             if (!in_array($tr_status, array(-1, 1, 2)) || $tr_id < 1) {
                 //Log Unknown error:
                 return $this->Database_model->tr_create(array(
-                    'tr_content' => 'digest_reference() failed to fetch proper data for a skip request with reference value [' . $reference . ']',
+                    'tr_content' => 'digest_quick_reply_payload() failed to fetch proper data for a skip request with reference value [' . $quick_reply_payload . ']',
                     'tr_en_type_id' => 4246, //Platform Error
                     'tr_metadata' => $en,
                     'tr_tr_parent_id' => $tr_id,
@@ -515,7 +515,7 @@ class Chat_model extends CI_Model
 
                     //Nothing found to skip! This should not happen, log error:
                     $this->Database_model->tr_create(array(
-                        'tr_content' => 'digest_reference() did not find anything to skip for [' . $reference . ']',
+                        'tr_content' => 'digest_quick_reply_payload() did not find anything to skip for [' . $quick_reply_payload . ']',
                         'tr_en_type_id' => 4246, //Platform Error
                         'tr_tr_parent_id' => $tr_id,
                         'tr_metadata' => $en,
@@ -540,7 +540,7 @@ class Chat_model extends CI_Model
                     'tr_status' => 1, //Working on... not yet decided to skip or not as they need to see the consequences before making an informed decision. Will be updated to -1 or 2 based on their response...
                     'tr_metadata' => array(
                         'would_be_skipped' => $would_be_skipped,
-                        'ref' => $reference,
+                        'ref' => $quick_reply_payload,
                     ),
                 ));
 
@@ -631,10 +631,10 @@ class Chat_model extends CI_Model
 
             }
 
-        } elseif (substr_count($reference, 'MARKCOMPLETE_') == 1) {
+        } elseif (substr_count($quick_reply_payload, 'MARKCOMPLETE_') == 1) {
 
             //Master consumed AND tree content, and is ready to move on to next intent...
-            $tr_id = intval(fn___one_two_explode('MARKCOMPLETE_', '', $reference));
+            $tr_id = intval(fn___one_two_explode('MARKCOMPLETE_', '', $quick_reply_payload));
 
             if ($tr_id > 0) {
 
@@ -661,10 +661,10 @@ class Chat_model extends CI_Model
 
             }
 
-        } elseif (substr_count($reference, 'CHOOSEOR_') == 1) {
+        } elseif (substr_count($quick_reply_payload, 'CHOOSEOR_') == 1) {
 
             //Master has responded to a multiple-choice OR tree
-            $input_parts = explode('_', fn___one_two_explode('CHOOSEOR_', '', $reference));
+            $input_parts = explode('_', fn___one_two_explode('CHOOSEOR_', '', $quick_reply_payload));
             $tr_id = intval($input_parts[0]);
             $tr_in_parent_id = intval($input_parts[1]);
             $in_id = intval($input_parts[2]);
@@ -673,7 +673,7 @@ class Chat_model extends CI_Model
             if (!($tr_id > 0 && $tr_in_parent_id > 0 && $in_id > 0 && $tr_order > 0)) {
                 //Log Unknown error:
                 $this->Database_model->tr_create(array(
-                    'tr_content' => 'digest_reference() failed to fetch proper data for CHOOSEOR_ request with reference value [' . $reference . ']',
+                    'tr_content' => 'digest_quick_reply_payload() failed to fetch proper data for CHOOSEOR_ request with reference value [' . $quick_reply_payload . ']',
                     'tr_en_type_id' => 4246, //Platform Error
                     'tr_metadata' => $en,
                     'tr_tr_parent_id' => $tr_id,
@@ -713,7 +713,7 @@ class Chat_model extends CI_Model
         /*
          *
          * Will process the chat message only in the absence of a chat metadata
-         * otherwise the digest_reference() will process the message since we
+         * otherwise the digest_quick_reply_payload() will process the message since we
          * know that the medata would have more precise instructions on what
          * needs to be done for the Master response.
          *
@@ -1051,7 +1051,7 @@ class Chat_model extends CI_Model
                 if (count($default_actionplans) == 0) {
 
                     //They have never taken the default intent, recommend it to them:
-                    $this->Chat_model->digest_reference($en, 'ACTIONPLAN-ADD-INITIATE_' . $this->config->item('in_primary_id'));
+                    $this->Chat_model->digest_quick_reply_payload($en, 'ACTIONPLAN-ADD-INITIATE_' . $this->config->item('in_primary_id'));
 
                 }
 

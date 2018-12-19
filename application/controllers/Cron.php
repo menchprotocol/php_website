@@ -9,18 +9,14 @@ class Cron extends CI_Controller
         parent::__construct();
 
         $this->output->enable_profiler(FALSE);
-
-        //Example: /usr/bin/php /home/ubuntu/mench-web-app/index.php cron save_profile_pic
     }
 
 
     //Cache of cron jobs as of now [keep in sync when updating cron file]
-    //* * * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron message_file_save
-    //* * * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron message_fb_sync_attachments
+    //* * * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron fn___facebook_attachment_sync
     //*/5 * * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron message_drip
-    //*/6 * * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron save_profile_pic
+    //*/6 * * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron fn___save_media_to_cdn
     //31 * * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron intent_sync
-    //45 * * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron master_reminder_complete_task
     //30 2 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron fn___algolia_sync b 0
     //30 4 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron fn___algolia_sync u 0
     //30 3 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron e_score_recursive
@@ -204,65 +200,20 @@ class Cron extends CI_Controller
     }
 
 
-    function message_drip()
+    function fn___save_media_to_cdn()
     {
 
-        exit; //Logic needs updating
-
-        //Cron Settings: */5 * * * *
-
-        //Fetch pending drips
-        $e_pending = $this->Database_model->tr_fetch(array(
-            'tr_status' => 0, //Pending work
-            'tr_en_type_id' => 4281, //Scheduled Drip
-            'tr_timestamp <=' => date("Y-m-d H:i:s"), //Message is due
-            //Some standard checks to make sure, these should all be true:
-            'tr_en_child_id >' => 0,
-            'tr_in_child_id >' => 0,
-        ), array(), 200);
-
-
-        //Lock item so other Cron jobs don't pick this up:
-        $this->Database_model->tr_status_processing($e_pending);
-
-
-        $drip_sent = 0;
-        foreach ($e_pending as $tr_content) {
-
-            //Fetch user data:
-            $trs = $this->Database_model->w_fetch(array());
-
-            if (count($trs) > 0) {
-
-                //Prepare variables:
-                $json_data = unserialize($tr_content['tr_metadata']);
-
-                //Send this message:
-                $this->Chat_model->dispatch_message(array(
-                    array_merge($json_data['i'], array(
-                        'tr_en_child_id' => $trs[0]['en_id'],
-                        'tr_in_child_id' => $json_data['i']['tr_in_child_id'],
-                    )),
-                ));
-
-                //Update Engagement:
-                $this->Database_model->tr_update($tr_content['tr_id'], array(
-                    'tr_status' => 2, //Publish
-                ));
-
-                //Increase counter:
-                $drip_sent++;
-            }
-        }
-
-        //Echo message for cron job:
-        echo $drip_sent . ' Drip messages sent';
-
-    }
-
-    function save_profile_pic()
-    {
-
+        /*
+         *
+         * Every time we receive a media file from Facebook
+         * we need to upload it to our own CDNs using the
+         * short-lived URL provided by Facebook so we can
+         * access it indefinitely without restriction.
+         * This process is managed by creating a @4299
+         * Transaction Type which this cron job grabs and
+         * uploads to Mench CDN
+         *
+         * */
 
         $max_per_batch = 20; //Max number of scans per run
 
@@ -275,376 +226,137 @@ class Cron extends CI_Controller
         //Lock item so other Cron jobs don't pick this up:
         $this->Database_model->tr_status_processing($e_pending);
 
-
-        $counter = 0;
+        //Go through and upload to CDN:
         foreach ($e_pending as $u) {
 
-            //Check URL and validate:
-            $error_message = null;
-            $curl = fn___curl_html($u['tr_content'], true);
-
-            if (!$curl) {
-                $error_message = 'Invalid URL (start with http:// or https://)';
-            } elseif ($curl['tr_en_type_id'] != 4260) {
-                $error_message = 'URL [Type ' . $curl['tr_en_type_id'] . '] is not a valid image URL';
-            }
-
-            if (!$error_message) {
-
-                //Save the file to S3
-                $new_file_url = fn___upload_to_cdn($u['tr_content'], $u);
-
-                if (!$new_file_url) {
-                    $error_message = 'Failed to upload the file to Mench CDN';
-                }
-
-                //Check to make sure this is not a Generic FB URL:
-                //TODO This function needs updating as its unable to fetch all generic/blank user icons that it sometimes sends us...
-                foreach (array(
-                             'ecd274930db69ba4b2d9137949026300',
-                             '5bf2d884209d168608b02f3d0850210d',
-                             'b3575aa3d0a67fb7d7a076198b442b93',
-                             'e35cf96f814f6509d8a202efbda18d3c',
-                             '5d2524cb2bdd09422832fa2d25399049',
-                             '164c8275278f05c770418258313fb4f4',
-                             '',
-                         ) as $generic_url) {
-                    if (substr_count($new_file_url, $generic_url) > 0) {
-                        //This is the hashkey for the Facebook Generic User icon:
-                        $error_message = 'This is the user generic icon on Facebook';
-                        break;
-                    }
-                }
-
-                if (!$error_message) {
-
-                    //Replace cover photo only if this user has no cover photo set:
-                    if (strlen($u['en_icon'])<1) {
-
-                        //Update Cover ID:
-                        $this->Database_model->en_update($u['en_id'], array(
-                            'en_icon' => '<img class="profile-icon" src="' . $new_file_url . '" />',
-                        ), true);
-
-                    }
-                }
-            }
-
-            //Update engagement:
-            $this->Database_model->tr_update($u['tr_id'], array(
+            //Update engagement data:
+            $this->Database_model->tr_update($ep['tr_id'], array(
+                'tr_content' => $new_file_url,
+                'tr_en_type_id' => fn___detect_tr_en_type_id($new_file_url),
                 'tr_status' => 2, //Publish
             ));
 
+
+            //Save the file to S3
+            $new_file_url = fn___upload_to_cdn($u['tr_content'], $u);
+
+            if ($new_file_url) {
+
+                //Success! Is this an image to be added as the entity icon?
+                if (strlen($u['en_icon'])<1) {
+                    //Update Cover ID:
+                    $this->Database_model->en_update($u['en_id'], array(
+                        'en_icon' => '<img class="profile-icon" src="' . $new_file_url . '" />',
+                    ), true);
+                }
+
+                //Update engagement:
+                $this->Database_model->tr_update($u['tr_id'], array(
+                    'tr_status' => 2, //Publish
+                ));
+
+            } else {
+
+                //Error has already been logged in the CDN function, so just update engagement:
+                $this->Database_model->tr_update($u['tr_id'], array(
+                    'tr_status' => -1, //Removed
+                ));
+
+            }
         }
 
         fn___echo_json($e_pending);
     }
 
-    function message_file_save()
+    function fn___facebook_attachment_sync()
     {
 
-        //Cron Settings: * * * * *
-
         /*
-         * This cron job looks for all engagements with Facebook attachments
-         * that are pending upload (i.e. tr_status=0) and uploads their
-         * attachments to amazon S3 and then changes status to Published
+         * This cron job looks for all requests to sync
+         * Media files with Facebook so we can instantly
+         * deliver them over Messenger.
+         *
+         * Cron Settings: * * * * *
          *
          */
 
-        $max_per_batch = 10; //Max number of scans per run
-
-        $e_pending = $this->Database_model->tr_fetch(array(
-            'tr_status' => 0, //Pending file upload to S3
-            'tr_en_type_id IN (4277,4280)' => null, //Sent/Received messages
-        ), array(), $max_per_batch);
-
-
-        //Lock item so other Cron jobs don't pick this up:
-        $this->Database_model->tr_status_processing($e_pending);
-
-
-        $counter = 0;
-        foreach ($e_pending as $ep) {
-
-            //Prepare variables:
-            $json_data = unserialize($ep['tr_metadata']);
-
-            //Loop through entries:
-            if (is_array($json_data) && isset($json_data['entry']) && count($json_data['entry']) > 0) {
-                foreach ($json_data['entry'] as $entry) {
-                    //loop though the messages:
-                    foreach ($entry['messaging'] as $im) {
-                        //This should only be a message
-                        if (isset($im['message'])) {
-                            //This should be here
-                            if (isset($im['message']['attachments'])) {
-                                //We should have attachments:
-                                foreach ($im['message']['attachments'] as $att) {
-                                    //This one too! It should be one of these:
-                                    if (in_array($att['type'], array('image', 'audio', 'video', 'file'))) {
-
-                                        //Store to local DB:
-                                        $new_file_url = fn___upload_to_cdn($att['payload']['url'], $json_data);
-
-                                        //Update engagement data:
-                                        $this->Database_model->tr_update($ep['tr_id'], array(
-                                            'tr_content' => $new_file_url,
-                                            'tr_en_type_id' => fn___detect_tr_en_type_id($new_file_url),
-                                            'tr_status' => 2, //Publish
-                                        ));
-
-                                        //Increase counter:
-                                        $counter++;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            } else {
-                //This should not happen, report:
-                $this->Database_model->tr_create(array(
-                    'tr_content' => 'cron/message_file_save() fetched tr_metadata() that was missing its [entry] value',
-                    'tr_metadata' => $json_data,
-                    'tr_en_type_id' => 4246, //Platform Error
-                ));
-            }
-
-            if ($counter >= $max_per_batch) {
-                break; //done for now
-            }
-        }
-        //Echo message for cron job:
-        echo $counter . ' Incoming Messenger file' . ($counter == 1 ? '' : 's') . ' saved to Mench cloud.';
-    }
-
-    function message_fb_sync_attachments()
-    {
-
-        exit; //Logic needs updating
-
-        //Cron Settings: * * * * *
-
-        /*
-         * This cron job looks for all requests to sync Message attachments
-         * with Facebook, gets them done and marks the engagement as done
-         *
-         */
-
+        $max_per_batch = 20; //Max number of syncs per cron run
         $success_count = 0; //Track success
-        $max_per_batch = 5; //Max number of syncs per cron run
+        $en_convert_4537 = $this->config->item('en_convert_4537'); //Supported Media Types
         $tr_metadata = array();
-        $x_types = echo_status('x_type', null);
-
-        $pending_urls = $this->Old_model->x_fetch(array(
-            'x_type >=' => 2,
-            'x_type <=' => 5, //These are the file URLs that need syncing
-            'x_fb_att_id' => 0, //Pending Facebook Sync
-        ), array(), array(), $max_per_batch);
 
 
-        if (count($pending_urls) > 0) {
-            foreach ($pending_urls as $x) {
+        //Let's fetch all Media files without a Facebook attachment ID:
+        $pending_urls = $this->Database_model->tr_fetch(array(
+            'tr_en_type_id IN (' . join(',',array_keys($en_convert_4537)) . ')' => null,
+            'tr_external_id' => 0, //Missing Facebook Attachment ID
+        ), array(), $max_per_batch, 0 , array('tr_id' => 'ASC')); //Sort by oldest added first
 
-                $payload = array(
-                    'message' => array(
-                        'attachment' => array(
-                            'type' => $x_types[$x['x_type']]['s_fb_key'],
-                            'payload' => array(
-                                'is_reusable' => true,
-                                'url' => $x['x_url'],
-                            ),
+        foreach ($pending_urls as $tr) {
+
+            $payload = array(
+                'message' => array(
+                    'attachment' => array(
+                        'type' => $en_convert_4537[$tr['tr_en_type_id']],
+                        'payload' => array(
+                            'is_reusable' => true,
+                            'url' => $tr['tr_content'], //The URL to the media file
                         ),
-                    )
-                );
+                    ),
+                )
+            );
 
-                //Attempt to save this:
-                $result = $this->Chat_model->fn___facebook_graph('POST', '/me/message_attachments', $payload);
-                $db_result = false;
+            //Attempt to sync Media to Facebook:
+            $result = $this->Chat_model->fn___facebook_graph('POST', '/me/message_attachments', $payload);
+            $db_result = false;
 
-                if ($result['status'] && isset($result['tr_metadata']['result']['attachment_id'])) {
-                    //Save attachment to DB:
-                    $db_result = $this->Database_model->x_update($x['x_id'], array(
-                        'x_fb_att_id' => $result['tr_metadata']['result']['attachment_id'],
-                    ));
-                }
+            if ($result['status'] && isset($result['tr_metadata']['result']['attachment_id'])) {
+                //Save attachment to DB:
+                $db_result = $this->Database_model->tr_update($tr['tr_id'], array(
+                    'tr_external_id' => intval($result['tr_metadata']['result']['attachment_id']),
+                ));
+            }
 
-                //Did it go well?
-                if ($db_result > 0) {
-                    $success_count++;
-                } else {
+            //Did it go well?
+            if ($db_result) {
 
-                    //Log error:
-                    $this->Database_model->tr_create(array(
-                        'tr_content' => 'message_fb_sync_attachments() Failed to sync attachment using Facebook API',
-                        'tr_metadata' => array(
-                            'payload' => $payload,
-                            'result' => $result,
-                        ),
-                        'tr_en_type_id' => 4246, //Platform Error
-                    ));
+                $success_count++;
 
-                    //Disable future attempts:
-                    $this->Database_model->x_update($x['x_id'], array(
-                        'x_fb_att_id' => -1, //No more checks on this guy
-                    ));
-                }
+            } else {
 
+                //Log error:
+                $this->Database_model->tr_create(array(
+                    'tr_en_type_id' => 4246, //Platform Error
+                    'tr_content' => 'fn___facebook_attachment_sync() Failed to sync attachment using Facebook API',
+                    'tr_metadata' => array(
+                        'payload' => $payload,
+                        'result' => $result,
+                    ),
+                ));
 
-                //Save stats either way:
-                array_push($tr_metadata, array(
-                    'payload' => $payload,
-                    'fb_result' => $result,
+                //Also disable future attempts for this transaction:
+                $this->Database_model->tr_update($tr['tr_id'], array(
+                    'tr_external_id' => -1,
                 ));
 
             }
+
+            //Save stats:
+            array_push($tr_metadata, array(
+                'payload' => $payload,
+                'fb_result' => $result,
+            ));
+
         }
 
-        //Echo message for cron job:
+        //Echo message:
         fn___echo_json(array(
             'status' => ($success_count == count($pending_urls) && $success_count > 0 ? 1 : 0),
-            'message' => $success_count . '/' . count($pending_urls) . ' Message' . fn___echo__s(count($pending_urls)) . ' successfully synced their attachment with Facebook',
+            'message' => $success_count . '/' . count($pending_urls) . ' synced using Facebook Attachment API',
             'tr_metadata' => $tr_metadata,
         ));
 
     }
 
-
-    function master_reminder_complete_task()
-    {
-
-        exit; //Needs optimization
-
-        //Will ask the master why they are stuck and try to get them to engage with the material
-        //TODO implement social features to maybe connect to other masters at the same level
-        //A function that would pro-actively encourage the Master to progress their Action Plan
-        //If $tr_id is provided it would step forward a specific Action Plan
-        //If both $tr_id and $en_id are present, it would auto register the user in an idle Action Plan if they are not part of it yet, and if they are, it would step them forward.
-
-        $bot_settings = array(
-            'max_per_run' => 10, //How many Action Plans to server per run (Might include duplicate tr_en_parent_id's that will be excluded)
-            'reminder_frequency_min' => 1440, //Every 24 hours
-        );
-
-        //Run even minute by the cron job and determines which users to talk to...
-        //Fetch all active Action Plans:
-        $user_ids_served = array(); //We use this to ensure we're only service one Action Plan per user at a time
-        $active_ws = $this->Database_model->w_fetch(array(
-            'tr_status' => 1,
-            'en_status >=' => 0,
-            'in_status >=' => 2,
-            'w_last_heard >=' => date("Y-m-d H:i:s", (time() + ($bot_settings['reminder_frequency_min'] * 60))),
-        ), array('in', 'en'), array(
-            'w_last_heard' => 'ASC', //Fetch users who have not been served the longest, so we can pay attention to them...
-        ), $bot_settings['max_per_run']);
-
-        foreach ($active_ws as $w) {
-
-            if (in_array(intval($w['en_id']), $user_ids_served)) {
-                //Skip this as we do not want to handle two Action Plans from the same user:
-                continue;
-            }
-
-            //Add this user to the queue:
-            array_push($user_ids_served, intval($w['en_id']));
-
-            //See where this user is in their Action Plan:
-            $next_ins = $this->Matrix_model->fn___in_next_actionplan($w['tr_id']);
-
-            if (!$next_ins) {
-                //Should not happen, bug already reported:
-                return false;
-            }
-
-            //Update the serving timestamp:
-            $this->Database_model->w_update($w['tr_id'], array(
-                'w_last_heard' => date("Y-m-d H:i:s"),
-            ));
-
-
-            //Give them next step again:
-            $this->Chat_model->fn___in_next_actionplan($w['tr_id']);
-
-            //$next_ins[0]['in_outcome']
-        }
-
-
-        exit;
-
-        //Cron Settings: 45 * * * *
-        //Send reminders to masters to complete their intent:
-
-        $trs = $this->Database_model->w_fetch(array());
-
-        //Define the logic of these reminders
-        $reminder_index = array(
-            array(
-                'time_elapsed' => 0.90,
-                'progress_below' => 0.99,
-                'reminder_in_id' => 3139,
-            ),
-            array(
-                'time_elapsed' => 0.75,
-                'progress_below' => 0.50,
-                'reminder_in_id' => 3138,
-            ),
-            array(
-                'time_elapsed' => 0.50,
-                'progress_below' => 0.25,
-                'reminder_in_id' => 3137,
-            ),
-            array(
-                'time_elapsed' => 0.20,
-                'progress_below' => 0.10,
-                'reminder_in_id' => 3136,
-            ),
-            array(
-                'time_elapsed' => 0.05,
-                'progress_below' => 0.01,
-                'reminder_in_id' => 3358,
-            ),
-        );
-
-        $stats = array();
-        foreach ($trs as $actionplan) {
-
-            //See what % of the class time has elapsed?
-            //TODO calculate $elapsed_class_percentage
-
-            foreach ($reminder_index as $logic) {
-                if ($elapsed_class_percentage >= $logic['time_elapsed']) {
-
-                    if ($actionplan['w__progress'] < $logic['progress_below']) {
-
-                        //See if we have reminded them already about this:
-                        $reminders_sent = $this->Database_model->tr_fetch(array(
-                            'tr_en_type_id IN (4280,4276)' => null, //Email or Message sent
-                            'tr_en_child_id' => $actionplan['en_id'],
-                            'tr_in_child_id' => $logic['reminder_in_id'],
-                        ));
-
-                        if (count($reminders_sent) == 0) {
-
-                            //Nope, send this message out:
-                            $this->Matrix_model->compose_messages(array(
-                                'tr_en_credit_id' => 0, //System
-                                'tr_en_child_id' => $actionplan['en_id'],
-                                'tr_in_child_id' => $logic['reminder_in_id'],
-                            ));
-
-                            //Show in stats:
-                            array_push($stats, $actionplan['en_name'] . ' done ' . round($actionplan['w__progress'] * 100) . '% (less than target ' . round($logic['progress_below'] * 100) . '%) where class is ' . round($elapsed_class_percentage * 100) . '% complete and got reminded via in_id ' . $logic['reminder_in_id']);
-                        }
-                    }
-
-                    //Do not go further down the reminder types:
-                    break;
-                }
-            }
-        }
-
-        fn___echo_json($stats);
-    }
 
 }

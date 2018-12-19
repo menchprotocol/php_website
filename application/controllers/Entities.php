@@ -60,8 +60,8 @@ class Entities extends CI_Controller
         $child_entities_count = count($this->Old_model->ur_children_fetch($filters));
         $child_entities = $this->Old_model->ur_children_fetch($filters, array('en__child_count'), $en_per_page, ($page * $en_per_page));
 
-        foreach ($child_entities as $u) {
-            echo echo_u($u, 2, false /* Load more only for children */);
+        foreach ($child_entities as $en) {
+            echo echo_u($en, 2, false /* Load more only for children */);
         }
 
         //Do we need another load more button?
