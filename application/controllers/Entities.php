@@ -18,20 +18,20 @@ class Entities extends CI_Controller
 
         $udata = fn___en_auth(null, true); //Just be logged in to browse
 
-        $entities = $this->Database_model->en_fetch(array(
+        $ens = $this->Database_model->en_fetch(array(
             'en_id' => $en_id,
         ), array('en__child_count', 'en__children', 'en__actionplans'));
 
-        if (count($entities) < 1) {
+        if (count($ens) < 1) {
             return fn___redirect_message('/entities', '<div class="alert alert-danger" role="alert">Invalid Entity ID</div>');
         }
 
         //Load views:
         $this->load->view('view_shared/matrix_header', array(
-            'title' => $entities[0]['en_name'],
+            'title' => $ens[0]['en_name'],
         ));
         $this->load->view('view_entities/en_miner_ui', array(
-            'entity' => $entities[0],
+            'entity' => $ens[0],
         ));
         $this->load->view('view_shared/matrix_footer');
     }
@@ -56,7 +56,7 @@ class Entities extends CI_Controller
         }
 
         //Fetch entity itself:
-        $entities = $this->Database_model->en_fetch(array('en_id' => $parent_en_id));
+        $ens = $this->Database_model->en_fetch(array('en_id' => $parent_en_id));
         $child_entities_count = count($this->Old_model->ur_children_fetch($filters));
         $child_entities = $this->Old_model->ur_children_fetch($filters, array('en__child_count'), $en_per_page, ($page * $en_per_page));
 
@@ -324,11 +324,11 @@ class Entities extends CI_Controller
 
         //Reset user session data if this data belongs to the logged-in user:
         if ($_POST['en_id'] == $udata['en_id']) {
-            $entities = $this->Database_model->en_fetch(array(
+            $ens = $this->Database_model->en_fetch(array(
                 'en_id' => intval($_POST['en_id']),
             ));
-            if (isset($entities[0])) {
-                $this->session->set_userdata(array('user' => $entities[0]));
+            if (isset($ens[0])) {
+                $this->session->set_userdata(array('user' => $ens[0]));
             }
         }
 
@@ -336,14 +336,14 @@ class Entities extends CI_Controller
         return fn___echo_json(array(
             'status' => 1,
             'message' => '<span><i class="fas fa-check"></i> Saved</span>',
-            'status_u_ui' => echo_status('en', $_POST['en_status'], true, 'bottom'),
+            'status_u_ui' => echo_status('en_status', $_POST['en_status'], true, 'bottom'),
             'tr_content' => fn___echo_link($_POST['tr_content']),
         ));
 
     }
 
 
-    function load_messages()
+    function fn___load_en_messages()
     {
 
         $udata = fn___en_auth();
@@ -354,13 +354,15 @@ class Entities extends CI_Controller
             die('<span style="color:#FF0000;">Error: Invalid entity id.</span>');
         }
 
-        $messages = $this->Database_model->i_fetch(array(
-            'i_status >=' => 0,
+        $messages = $this->Database_model->tr_fetch(array(
+            'tr_status >=' => 0, //New+
+            'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent messages
             'tr_en_parent_id' => $_POST['en_id'],
-        ), 0);
+        ), array(), 0, 0, array('tr_order' => 'ASC'));
+
         echo '<div id="list-messages" class="list-group  grey-list">';
-        foreach ($messages as $i) {
-            echo echo_message_chat($i);
+        foreach ($messages as $tr) {
+            echo echo_message_chat($tr);
         }
         echo '</div>';
     }
@@ -405,16 +407,16 @@ class Entities extends CI_Controller
         }
 
         //Fetch full entity data with their active Action Plans:
-        $entities = $this->Database_model->en_fetch(array(
+        $ens = $this->Database_model->en_fetch(array(
             'en_id' => $trs[0]['tr_en_child_id'],
         ), array('en__actionplans'));
 
-        if ($entities[0]['en_status'] < 0 || $trs[0]['tr_status'] < 0) {
+        if ($ens[0]['en_status'] < 0 || $trs[0]['tr_status'] < 0) {
 
             //Removed entity
             $this->Database_model->tr_create(array(
-                'tr_en_credit_id' => $entities[0]['en_id'],
-                'tr_en_child_id' => $entities[0]['en_id'],
+                'tr_en_credit_id' => $ens[0]['en_id'],
+                'tr_en_child_id' => $ens[0]['en_id'],
                 'tr_content' => 'login() denied because account is not active.',
                 'tr_metadata' => $_POST,
                 'tr_en_type_id' => 4247, //Support Needing Graceful Errors
@@ -427,7 +429,7 @@ class Entities extends CI_Controller
         //Authenticate their password:
         $login_passwords = $this->Database_model->tr_fetch(array(
             'tr_en_parent_id' => 3286, //Mench Login Password
-            'tr_en_child_id' => $entities[0]['en_id'],
+            'tr_en_child_id' => $ens[0]['en_id'],
         ));
         if (count($login_passwords) == 0) {
             //They do not have a password assigned yet!
@@ -445,7 +447,7 @@ class Entities extends CI_Controller
         //Make sure Master is connected to Mench:
         if(count($this->Database_model->tr_fetch(array(
                 'tr_en_parent_id' => 4451,
-                'tr_en_child_id' => $entities[0]['en_id'],
+                'tr_en_child_id' => $ens[0]['en_id'],
                 'tr_status >=' => 2,
             ))) < 1){
             return fn___redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: You are not connected to Mench on Messenger, which is required to login to the Matrix.</div>');
@@ -454,7 +456,7 @@ class Entities extends CI_Controller
 
         //Make sure Master is not unsubscribed:
         if(count($this->Database_model->tr_fetch(array(
-            'tr_en_child_id' => $entities[0]['en_id'],,
+            'tr_en_child_id' => $ens[0]['en_id'],
             'tr_en_parent_id' => 4455, //Unsubscribed
             'tr_status >=' => 0,
         ))) > 0){
@@ -469,9 +471,9 @@ class Entities extends CI_Controller
 
 
         //Are they miner? Give them login access:
-        if (fn___filter_array($entities[0]['en__parents'], 'en_id', 1308)) {
+        if (fn___filter_array($ens[0]['en__parents'], 'en_id', 1308)) {
             //They have admin rights:
-            $session_data['user'] = $entities[0];
+            $session_data['user'] = $ens[0];
             $is_miner = true;
         }
 
@@ -501,8 +503,8 @@ class Entities extends CI_Controller
 
         //Log transaction
         $this->Database_model->tr_create(array(
-            'tr_en_credit_id' => $entities[0]['en_id'],
-            'tr_metadata' => $entities[0],
+            'tr_en_credit_id' => $ens[0]['en_id'],
+            'tr_metadata' => $ens[0],
             'tr_en_type_id' => 4269, //login
         ));
 
@@ -514,9 +516,9 @@ class Entities extends CI_Controller
         if (isset($_POST['input_password'])) {
             unset($_POST['input_password']); //Sensitive information to be removed and NOT logged
         }
-        $entities[0]['login_ip'] = $_SERVER['REMOTE_ADDR'];
-        $entities[0]['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
-        $entities[0]['input_post_data'] = $_POST;
+        $ens[0]['login_ip'] = $_SERVER['REMOTE_ADDR'];
+        $ens[0]['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
+        $ens[0]['input_post_data'] = $_POST;
 
 
         if (isset($_POST['url']) && strlen($_POST['url']) > 0) {

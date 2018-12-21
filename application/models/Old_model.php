@@ -208,10 +208,10 @@ class Old_model extends CI_Model
             $this->db->limit($limit, $limit_offset);
         }
         $q = $this->db->get();
-        $intents = $q->result_array();
+        $ins = $q->result_array();
 
         //Return everything that was collected:
-        return $intents;
+        return $ins;
     }
 
 

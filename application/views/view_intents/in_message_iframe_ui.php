@@ -7,11 +7,11 @@ $en_ids_4485 = $this->config->item('en_ids_4485');
 $en_all_4485 = $this->config->item('en_all_4485');
 
 //Fetch all messages:
-$trs = $this->Database_model->i_fetch(array(
-    'tr_en_type_id IN ('.join(',' , $en_ids_4485).')' => null, //Fetch all intent message types
+$messages = $this->Database_model->tr_fetch(array(
+    'tr_status >=' => 0, //New+
+    'tr_en_type_id IN (' . join(',', $en_ids_4485) . ')' => null, //All Intent messages
     'tr_in_child_id' => $in_id,
-    'tr_status >=' => 0, //Not Removed
-), 0);
+), array(), 0, 0, array('tr_order' => 'ASC'));
 
 ?>
 
@@ -20,7 +20,7 @@ $trs = $this->Database_model->i_fetch(array(
     //pass core variables to JS:
     var in_id = <?= $in_id ?>;
     var tr_content_max = <?= $tr_content_max ?>;
-    var message_count = <?= count($trs) ?>;
+    var message_count = <?= count($messages) ?>;
     var focus_tr_en_type_id = <?= $en_ids_4485[0] ?>; //The message type that is the focus on-start.
 </script>
 <script src="/js/custom/messaging-js.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
@@ -46,7 +46,7 @@ $trs = $this->Database_model->i_fetch(array(
     //Count each message type:
     $counters = array();
     echo '<div id="message-sorting" class="list-group list-messages">';
-    foreach ($trs as $tr) {
+    foreach ($messages as $tr) {
 
         echo fn___echo_in_message_matrix(array_merge($tr, array(
             'tr_en_child_id' => $udata['en_id'],

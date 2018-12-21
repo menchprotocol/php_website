@@ -529,19 +529,19 @@ class Matrix_model extends CI_Model
 
 
                 //As long as $tr['tr_in_child_id'] is NOT equal to tr_in_child_id, then we will have a k_out relation so we can give the option to skip:
-                $k_ins = $this->Database_model->tr_fetch(array(
+                $actionplan_parents = $this->Database_model->tr_fetch(array(
                     'tr_id' => $tr['tr_tr_parent_id'],
                     'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
                     'tr_in_child_id' => $tr['tr_in_child_id'],
                 ), array('w', 'cr', 'cr_c_child'));
 
 
-                if (count($k_ins) > 0) {
+                if (count($actionplan_parents) > 0) {
                     //Give option to skip if NOT the top-level intent:
                     array_push($quick_replies, array(
                         'content_type' => 'text',
                         'title' => 'Skip',
-                        'payload' => 'ACTIONPLAN-SKIP-INITIATE_1_' . $k_ins[0]['tr_id'],
+                        'payload' => 'ACTIONPLAN-SKIP-INITIATE_1_' . $actionplan_parents[0]['tr_id'],
                     ));
                 }
             }
@@ -642,7 +642,7 @@ class Matrix_model extends CI_Model
                     'status' => 1,
                     'is_existing' => 1,
                     'message' => 'Entity already existed',
-                    'en_by_url' => $dup_urls[0],
+                    'en_from_url' => $dup_urls[0],
                 );
 
             }
@@ -737,7 +737,7 @@ class Matrix_model extends CI_Model
             'status' => 1,
             'is_existing' => 0,
             'message' => 'New Entity created from URL',
-            'en_by_url' => array_merge($en, $entity_tr),
+            'en_from_url' => array_merge($en, $entity_tr),
         );
 
     }
@@ -840,7 +840,6 @@ class Matrix_model extends CI_Model
         $masters_found = $this->Database_model->tr_fetch(array(
             'tr_status >=' => 2, //Published
             'tr_en_parent_id' => 4451, //Mench Personal Assistant on Messenger
-            'tr_en_child_id >' => 0, //Looking for this ID to determine Master Entity ID
             'tr_external_id' => intval($psid), //Since the PSID is a full integer, it is cached in tr_external_id for faster indexing
         ), array('en_child'));
 
@@ -860,6 +859,58 @@ class Matrix_model extends CI_Model
     }
 
 
+    function fn___actionplan_update($tr_id, $new_tr_status)
+    {
+
+        /*
+         *
+         * Marks an Action Plan intent as complete
+         *
+         * */
+
+        //Validate Action Plan Intent:
+        $actionplan_ins = $this->Database_model->tr_fetch(array(
+            'tr_id' => $tr_id,
+        ), array('in_child'));
+        if(count($actionplan_ins) < 1){
+            return false;
+        }
+
+        //Update status:
+        $this->Database_model->tr_update($tr_id, array(
+            'tr_status' => $new_tr_status,
+        ), $actionplan_ins[0]['tr_en_parent_id']);
+
+        //Take additional action if Action Plan Intent is Complete:
+        if ($new_tr_status == 2) {
+
+            //It's complete!
+
+            //Dispatch all on-complete messages if we have any:
+            $on_complete_messages = $this->Database_model->tr_fetch(array(
+                'tr_status >=' => 2, //Published+
+                'tr_en_type_id' => 4233, //On-Complete Messages
+                'tr_in_child_id' => $actionplan_ins[0]['tr_in_child_id'],
+            ), array(), 0, 0, array('tr_order' => 'ASC'));
+
+            if (count($on_complete_messages) > 0) {
+                $messages = array();
+                foreach ($on_complete_messages as $tr) {
+                    array_push($messages, array_merge($tr, array(
+                        'tr_tr_parent_id' => $actionplan_ins[0]['tr_tr_parent_id'],
+                        'tr_en_child_id' => $actionplan_ins[0]['tr_en_parent_id'],
+                    )));
+                }
+                //Sendout messages:
+                $this->Chat_model->dispatch_message($messages);
+            }
+
+            //TODO Update Action Plan progress (In tr_metadata) at this point
+            //TODO implement drip?
+        }
+    }
+
+
     function in_actionplan_complete_up($cr, $w, $force_tr_status = null)
     {
 
@@ -871,7 +922,7 @@ class Matrix_model extends CI_Model
         ), array('cr'));
         if (count($parent_ks) == 1) {
             //Update status (It might not work if it was working on AND new tr_status=1)
-            $this->Database_model->tr_status_update($parent_ks[0]['tr_id'], 1);
+            $this->Matrix_model->fn___actionplan_update($parent_ks[0]['tr_id'], 1);
         }
 
         //See if current intent children are complete...
@@ -925,7 +976,7 @@ class Matrix_model extends CI_Model
         $new_tr_status = (!is_null($force_tr_status) ? $force_tr_status : ($down_is_complete ? 2 : 1));
 
         //Update this intent:
-        $this->Database_model->tr_status_update($cr['tr_id'], $new_tr_status);
+        $this->Matrix_model->fn___actionplan_update($cr['tr_id'], $new_tr_status);
 
 
         //We are done with this branch if the status is any of the following:
@@ -979,12 +1030,12 @@ class Matrix_model extends CI_Model
                     if ($is_complete) {
 
                         //Update this:
-                        $this->Database_model->tr_status_update($parent_ks[0]['tr_id'], (!is_null($force_tr_status) ? $force_tr_status : 2));
+                        $this->Matrix_model->fn___actionplan_update($parent_ks[0]['tr_id'], (!is_null($force_tr_status) ? $force_tr_status : 2));
 
                     } elseif ($parent_ks[0]['tr_status'] == 0) {
 
                         //Status is not started, let's set to started:
-                        $this->Database_model->tr_status_update($parent_ks[0]['tr_id'], 1); //Working On
+                        $this->Matrix_model->fn___actionplan_update($parent_ks[0]['tr_id'], 1); //Working On
 
                     }
                 }
@@ -1088,7 +1139,7 @@ class Matrix_model extends CI_Model
 
         }
 
-        //Note that new entity engagement is already logged via en_create()
+        //Note that new entity transaction is already logged via en_create()
         //Now create more relevant transactions:
 
         //Log new Master transaction:
@@ -1105,7 +1156,7 @@ class Matrix_model extends CI_Model
             'tr_en_credit_id' => $en['en_id'],
             'tr_en_parent_id' => 4451, //Mench Personal Assistant on Messenger
             'tr_en_child_id' => $en['en_id'],
-            'tr_content' => $psid, //Used later-on to match Messenger user to entity. $psid is cached in tr_external_id since its an integer
+            'tr_external_id' => $psid, //Used later-on to match Messenger user to entity. $psid is cached in tr_external_id since its an integer
         ));
 
         //Add default Action Plan Level:

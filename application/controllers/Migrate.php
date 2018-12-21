@@ -55,7 +55,7 @@ class Migrate extends CI_Controller
             3 => 4233,
         );
 
-        $intents = $this->Old_model->c_fetch(array(
+        $ins = $this->Old_model->c_fetch(array(
             'c_id >=' => 8331,
             'c_status >=' => 1, //working on or more
         ));
@@ -69,9 +69,9 @@ class Migrate extends CI_Controller
 
         $eng_converter = $this->config->item('eng_converter');
 
-        foreach ($intents as $c) {
+        foreach ($ins as $c) {
 
-            //Do not migrate the old engagement intents as they have now been moved to entities:
+            //Do not migrate the old transaction intents as they have now been moved to entities:
             if(array_key_exists($c['c_id'], $eng_converter)){
                 $stats['intents_skipped']++;
                 continue;
@@ -213,10 +213,10 @@ class Migrate extends CI_Controller
         } else {
             //$filters['u_id >'] = 4539;
         }
-        $entities = $this->Old_model->u_fetch($filters, array('skip_en__parents'), 0, 0, array('u_id' => 'ASC'));
+        $ens = $this->Old_model->u_fetch($filters, array('skip_en__parents'), 0, 0, array('u_id' => 'ASC'));
 
 
-        foreach ($entities as $u) {
+        foreach ($ens as $u) {
 
             //Does this entity have a cover photo?
             if (strlen($u['u_icon']) > 0) {
@@ -276,7 +276,7 @@ class Migrate extends CI_Controller
                     'tr_en_credit_id' => $u['u_id'],
                     'tr_en_parent_id' => 4451, //Mench Personal Assistant on Messenger
                     'tr_en_child_id' => $u['u_id'],
-                    'tr_content' => $u['u_fb_psid'],
+                    'tr_external_id' => $u['u_fb_psid'],
                 ));
 
                 //Subscription Level:

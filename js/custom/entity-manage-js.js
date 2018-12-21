@@ -73,14 +73,14 @@ $(document).ready(function () {
         if (hash_parts.length >= 2) {
             //Fetch level if available:
             if (hash_parts[0] == 'loadmessages') {
-                u_load_messages(hash_parts[1]);
+                fn___load_en_messages(hash_parts[1]);
             } else if (hash_parts[0] == 'loadmodify') {
                 u_load_modify(hash_parts[1], hash_parts[2]);
             } else if (hash_parts[0] == 'status') {
                 //Update status:
                 u_load_filter_status(hash_parts[1]);
-            } else if (hash_parts[0] == 'wengagements') {
-                load_u_engagements(hash_parts[1]);
+            } else if (hash_parts[0] == 'wtrs') {
+                load_u_trs(hash_parts[1]);
             }
         }
     }
@@ -469,7 +469,7 @@ function u_save_modify() {
 }
 
 
-function u_load_messages(en_id) {
+function fn___load_en_messages(en_id) {
 
     //Make the frame visible:
     $('.fixed-box').addClass('hidden');
@@ -489,7 +489,7 @@ function u_load_messages(en_id) {
     }
 
     //Load the frame:
-    $.post("/entities/load_messages", {en_id: en_id}, function (data) {
+    $.post("/entities/fn___load_en_messages", {en_id: en_id}, function (data) {
         //Empty Inputs Fields if success:
         handler.html(data);
 

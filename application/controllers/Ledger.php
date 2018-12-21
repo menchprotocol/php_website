@@ -184,11 +184,11 @@ class Ledger extends CI_Controller
         }
     }
 
-    function engagements()
+    function trs()
     {
-        //List all recent engagements:
+        //List all recent transactions:
         $this->load->view('view_shared/matrix_header', array(
-            'title' => 'Platform Engagements',
+            'title' => 'Platform Transactions',
         ));
         $this->load->view('view_ledger/tr_miner_ui');
         $this->load->view('view_shared/matrix_footer');
@@ -228,11 +228,11 @@ class Ledger extends CI_Controller
         }
 
         //Fetch/Validate the intent:
-        $intents = $this->Database_model->in_fetch(array(
+        $ins = $this->Database_model->in_fetch(array(
             'in_id' => intval($_POST['in_id']),
             'in_status >=' => 0, //New+
         ));
-        if(count($intents)<1){
+        if(count($ins)<1){
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Intent',
@@ -263,12 +263,12 @@ class Ledger extends CI_Controller
         ), true);
 
         //Do a relative adjustment for this intent's metadata
-        $this->Database_model->metadata_update('in', $intents[0], array(
+        $this->Database_model->metadata_update('in', $ins[0], array(
             'in__message_count' => 1, //Add 1 to existing value
         ), false);
 
         //Update tree as well:
-        $this->Database_model->metadata_tree_update('in', $intents[0]['in_id'], array(
+        $this->Database_model->metadata_tree_update('in', $ins[0]['in_id'], array(
             'in__message_tree_count' => 1,
         ));
 

@@ -531,7 +531,7 @@ function fn___echo_in_message_matrix($tr)
     $ui .= '<li class="edit-off" style="margin-right: 10px; margin-left: 6px;"><span class="on-hover"><a href="javascript:fn___message_remove(' . $tr['tr_id'] . ');"><i class="fas fa-trash-alt" style="margin:0 7px 0 5px;"></i></a></span></li>';
     $ui .= '<li class="edit-off" style="margin-left:-4px;"><span class="on-hover"><a href="javascript:message_modify_start(' . $tr['tr_id'] . ',' . $tr['tr_en_type_id'] . ');"><i class="fas fa-pen-square"></i></a></span></li>';
     //Right side reverse:
-    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-primary" href="javascript:message_save_updates(' . $tr['tr_id'] . ',' . $tr['tr_en_type_id'] . ');" style="text-decoration:none; font-weight:bold; padding: 1px 8px 4px;"><i class="fas fa-check"></i></a></li>';
+    $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-primary" href="javascript:fn___in_message_modify(' . $tr['tr_id'] . ',' . $tr['tr_en_type_id'] . ');" style="text-decoration:none; font-weight:bold; padding: 1px 8px 4px;"><i class="fas fa-check"></i></a></li>';
     $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-hidden" href="javascript:message_modify_cancel(' . $tr['tr_id'] . ');"><i class="fas fa-times" style="color:#2f2739"></i></a></li>';
 
     //Show drop down for message type adjustment:
@@ -696,10 +696,10 @@ function fn___echo_tr($tr)
     $ui .= ' <span>' . echo_status('tr_status', $tr['tr_status'], true, 'left') . '</span> ';
 
     //Lets go through all references to see what is there:
-    foreach ($CI->config->item('ledger_filters') as $engagement_field => $obj_type) {
-        if (intval($tr[$engagement_field]) > 0) {
+    foreach ($CI->config->item('ledger_filters') as $tr_field => $obj_type) {
+        if (intval($tr[$tr_field]) > 0) {
             //Yes we have a value here:
-            $ui .= fn___echo_tr_column($obj_type, $tr[$engagement_field], $engagement_field, false);
+            $ui .= fn___echo_tr_column($obj_type, $tr[$tr_field], $tr_field, false);
         }
     }
 
@@ -724,7 +724,7 @@ function fn___echo_tr($tr)
 
 
     $ui .= '<b>' . $tr['en_name'] . '</b>';
-    $ui .= ' <span data-toggle="tooltip" data-placement="right" title="' . $tr['tr_timestamp'] . ' Engagement #' . $tr['tr_id'] . '" style="font-size:0.8em;">' . fn___echo_time_difference(strtotime($tr['tr_timestamp'])) . ' ago</span> ';
+    $ui .= ' <span data-toggle="tooltip" data-placement="right" title="' . $tr['tr_timestamp'] . ' Transaction #' . $tr['tr_id'] . '" style="font-size:0.8em;">' . fn___echo_time_difference(strtotime($tr['tr_timestamp'])) . ' ago</span> ';
 
     //Do we have a message?
     $ui .= '<div class="e-msg ' . ($main_content ? '' : 'hidden') . '">';
@@ -792,8 +792,8 @@ function echo_w_matrix($w)
             }
         }
 
-        //Engagements made by subscriber:
-        $ui .= '<a href="#wengagements-' . $w['tr_en_parent_id'] . '-' . $w['tr_id'] . '" onclick="load_u_engagements(' . $w['tr_en_parent_id'] . ',' . $w['tr_id'] . ')" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="' . $w['w_stats']['e_all_count'] . ' engagements"><span class="btn-counter">' . $w['w_stats']['e_all_count'] . ($w['w_stats']['e_all_count'] == $CI->config->item('tr_max_count') ? '+' : '') . '</span><i class="fas fa-atlas"></i></a>';
+        //Transactions made by subscriber:
+        $ui .= '<a href="#wtrs-' . $w['tr_en_parent_id'] . '-' . $w['tr_id'] . '" onclick="load_u_trs(' . $w['tr_en_parent_id'] . ',' . $w['tr_id'] . ')" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="' . $w['w_stats']['e_all_count'] . ' trs"><span class="btn-counter">' . $w['w_stats']['e_all_count'] . ($w['w_stats']['e_all_count'] == $CI->config->item('tr_max_count') ? '+' : '') . '</span><i class="fas fa-atlas"></i></a>';
 
         //Link to Master, but count total Action Plan first:
         $ui .= '<a href="/entities/' . $w['tr_en_parent_id'] . '" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="top" title="Master has ' . count($user_ws) . ' total subsciptions"><span class="btn-counter">' . count($user_ws) . '</span><i class="fas fa-sign-out-alt rotate90"></i></a>';
@@ -830,20 +830,6 @@ function echo_w_matrix($w)
     return $ui;
 }
 
-
-function echo_w_masters($w)
-{
-    $ui = '<a href="/my/actionplan/' . $w['tr_id'] . '/' . $w['tr_in_child_id'] . '" class="list-group-item">';
-    $ui .= '<span class="pull-right">';
-    $ui .= '<span class="badge badge-primary"><i class="fas fa-angle-right"></i></span>';
-    $ui .= '</span>';
-    $ui .= echo_status('tr_status', $w['tr_status'], 1, 'right');
-    $ui .= ' ' . $w['in_outcome'];
-    $ui .= '  ' . $w['in__tree_in_count'];
-    $ui .= ' &nbsp;<i class="fas fa-clock"></i> ' . fn___echo_time_range($w, true);
-    $ui .= '</a>';
-    return $ui;
-}
 
 
 function echo_k_matrix($k)
@@ -1346,7 +1332,7 @@ function fn___echo_time_range($in, $micro = false)
 }
 
 
-function fn___echo_tr_column($obj_type, $id, $engagement_field, $fb_format = false)
+function fn___echo_tr_column($obj_type, $id, $tr_field, $fb_format = false)
 {
 
     /*
@@ -1379,7 +1365,7 @@ function fn___echo_tr_column($obj_type, $id, $engagement_field, $fb_format = fal
             return $ins[0]['in_outcome'] . ' [https://mench.com/intents/' . $ins[0]['in_id'] . ']';
         } else {
             //HTML view:
-            return '<a href="/intents/' . $ins[0]['in_id'] . '" target="_parent" class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="' . stripslashes($ins[0]['in_outcome']) . '"><i class="' . ($engagement_field == 'tr_in_parent_id' ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90') . '"></i></a> ';
+            return '<a href="/intents/' . $ins[0]['in_id'] . '" target="_parent" class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="' . stripslashes($ins[0]['in_outcome']) . '"><i class="' . ($tr_field == 'tr_in_parent_id' ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90') . '"></i></a> ';
         }
 
     } elseif ($obj_type == 'en') {
@@ -1547,7 +1533,18 @@ function echo_c($in, $level, $in_parent_id = 0, $is_parent = false)
     $CI =& get_instance();
     $udata = $CI->session->userdata('user');
 
-    //Count engagements for this intent:
+    //Prepare metadata:
+    $metadata = unserialize($in['in_metadata']);
+
+    //Count Messages:
+    $message_count = $CI->Database_model->tr_fetch(array(
+        'tr_status >=' => 0, //New+
+        'tr_en_type_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //All Intent messages
+        'tr_in_child_id' => $in['in_id'],
+    ), array(), 0, 0, array(), 'COUNT(tr_id) as message_count');
+
+    //Count transactions for this intent:
+    //TODO optimize query to COUNT() only
     $e_count = count($CI->Database_model->tr_fetch(array(
         '(tr_in_parent_id=' . $in['in_id'] . ' OR tr_in_child_id=' . $in['in_id'] . ')' => null,
     ), array(), $CI->config->item('tr_max_count')));
@@ -1580,7 +1577,7 @@ function echo_c($in, $level, $in_parent_id = 0, $is_parent = false)
 
         //ATTENTION: DO NOT CHANGE THE ORDER OF data-link-id & intent-id AS the sorting logic depends on their exact position to sort!
         //CHANGE WITH CAUTION!
-        $ui = '<div id="cr_' . $in['tr_id'] . '" data-link-id="' . $in['tr_id'] . '" tr_status="' . $in['tr_status'] . '" cr_condition_min="' . $in['cr_condition_min'] . '" cr_condition_max="' . $in['cr_condition_max'] . '" intent-id="' . $in['in_id'] . '" parent-intent-id="' . $in_parent_id . '" intent-level="' . $level . '" class="list-group-item ' . ($level == 3 ? 'is_level3_sortable' : 'is_level2_sortable') . ' intent_line_' . $in['in_id'] . '">';
+        $ui = '<div id="cr_' . $in['tr_id'] . '" data-link-id="' . $in['tr_id'] . '" tr_status="' . $in['tr_status'] . '" intent-id="' . $in['in_id'] . '" parent-intent-id="' . $in_parent_id . '" intent-level="' . $level . '" class="list-group-item ' . ($level == 3 ? 'is_level3_sortable' : 'is_level2_sortable') . ' intent_line_' . $in['in_id'] . '">';
 
     }
 
@@ -1594,7 +1591,7 @@ function echo_c($in, $level, $in_parent_id = 0, $is_parent = false)
     }
 
     //Always show intent status:
-    $ui .= '<span class="in_status_' . $in['in_id'] . '">' . echo_status('in', $in['in_status'], true, 'left') . '</span> ';
+    $ui .= '<span class="in_status_' . $in['in_id'] . '">' . echo_status('in_status', $in['in_status'], true, 'left') . '</span> ';
 
 
     //Show submission stats
@@ -1604,11 +1601,11 @@ function echo_c($in, $level, $in_parent_id = 0, $is_parent = false)
     }
 
     if ($e_count > 0) {
-        //Show link to load these engagements:
+        //Show link to load these transactions:
         $ui .= '<a href="#loadlinks-' . $in['in_id'] . '" onclick="in_tr_load(' . $in['in_id'] . ')" class="badge badge-primary" style="width:40px; margin-right:2px;"><span class="btn-counter">' . $e_count . ($e_count == $CI->config->item('tr_max_count') ? '+' : '') . '</span><i class="fas fa-atlas"></i></a>';
     }
 
-    $ui .= '<a href="#loadmessages-' . $in['in_id'] . '" onclick="in_messages_load(' . $in['in_id'] . ')" class="msg-badge-' . $in['in_id'] . ' badge badge-primary ' . ($in['in__message_count'] == 0 ? 'grey' : '') . '" style="width:40px;"><span class="btn-counter messages-counter-' . $in['in_id'] . '">' . $in['in__message_count'] . '</span><i class="fas fa-comment-dots"></i></a>';
+    $ui .= '<a href="#loadmessages-' . $in['in_id'] . '" onclick="in_messages_load(' . $in['in_id'] . ')" class="msg-badge-' . $in['in_id'] . ' badge badge-primary ' . ($message_count[0]['message_count'] == 0 ? 'grey' : '') . '" style="width:40px;"><span class="btn-counter messages-counter-' . $in['in_id'] . '">' . $message_count[0]['message_count'] . '</span><i class="fas fa-comment-dots"></i></a>';
 
     //Show total tree time here:
     $ui .= '<a class="badge badge-primary" onclick="in_modify_load(' . $in['in_id'] . ',' . (isset($in['tr_id']) ? $in['tr_id'] : 0) . ')" style="margin:-2px -8px 0 2px; width:40px;" href="#loadmodify-' . $in['in_id'] . '-' . (isset($in['tr_id']) ? $in['tr_id'] : 0) . '"><span class="btn-counter slim-time t_estimate_' . $in['in_id'] . '" tree-max-seconds="' . $in['in__tree_max_seconds'] . '" intent-seconds="' . $in['in_seconds'] . '">' . fn___echo_time_hours($in['in__tree_max_seconds'], true) . '</span><i class="fas fa-cog"></i></a> &nbsp;';
@@ -1766,29 +1763,29 @@ function echo_u($u, $level, $is_parent = false)
     $ui .= '<span class="pull-right">';
 
     //Start by showing entity status:
-    $ui .= '<span class="en_status_' . $u['en_id'] . '">' . echo_status('en', $u['en_status'], true, 'left') . '</span> ';
+    $ui .= '<span class="en_status_' . $u['en_id'] . '">' . echo_status('en_status', $u['en_status'], true, 'left') . '</span> ';
 
-    //Count messages:
-    $messages = $CI->Database_model->i_fetch(array(
-        'tr_status >=' => 0,
-        'tr_en_parent_id' => $u['en_id'], //Referenced content in messages
-    ));
-
-    //Check total key engagement for this user:
+    //Check total key transaction for this user:
     $e_count = count($CI->Database_model->tr_fetch(array(
         '(tr_en_parent_id=' . $u['en_id'] . ' OR  tr_en_child_id=' . $u['en_id'] . ')' => null,
         '(tr_en_type_id NOT IN (' . join(',', $CI->config->item('tr_types_exclude')) . '))' => null,
     ), array(), $CI->config->item('tr_max_count')));
     if ($e_count > 0) {
-        //Show the engagement button:
-        $ui .= '<a href="#wengagements-' . $u['en_id'] . '" onclick="load_u_engagements(' . $u['en_id'] . ')" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="' . $e_count . ' entity engagements"><span class="btn-counter">' . $e_count . ($e_count == $CI->config->item('tr_max_count') ? '+' : '') . '</span><i class="fas fa-atlas"></i></a>';
+        //Show the transaction button:
+        $ui .= '<a href="#wtrs-' . $u['en_id'] . '" onclick="load_u_trs(' . $u['en_id'] . ')" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="' . $e_count . ' entity trs"><span class="btn-counter">' . $e_count . ($e_count == $CI->config->item('tr_max_count') ? '+' : '') . '</span><i class="fas fa-atlas"></i></a>';
     }
 
+    //Count messages:
+    $messages = $CI->Database_model->tr_fetch(array(
+        'tr_status >=' => 0, //New+
+        'tr_en_type_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //All Intent messages
+        'tr_en_parent_id' => $u['en_id'], //Referenced content in messages
+    ), array(), 0, 0, array(), 'COUNT(tr_id) AS total_messages');
 
-    $ui .= '<' . (count($messages) > 0 ? 'a href="#loadmessages-' . $u['en_id'] . '" onclick="u_load_messages(' . $u['en_id'] . ')" class="badge badge-secondary"' : 'span class="badge badge-secondary grey"') . ' style="width:40px;">' . (count($messages) > 0 ? '<span class="btn-counter">' . count($messages) . '</span>' : '') . '<i class="fas fa-comment-dots"></i></' . (count($messages) > 0 ? 'a' : 'span') . '>';
+    $ui .= '<' . ($messages[0]['total_messages'] > 0 ? 'a href="#loadmessages-' . $u['en_id'] . '" onclick="fn___load_en_messages(' . $u['en_id'] . ')" class="badge badge-secondary"' : 'span class="badge badge-secondary grey"') . ' style="width:40px;">' . ($messages[0]['total_messages'] > 0 ? '<span class="btn-counter">' . $messages[0]['total_messages'] . '</span>' : '') . '<i class="fas fa-comment-dots"></i></' . ($messages[0]['total_messages'] > 0 ? 'a' : 'span') . '>';
 
 
-    $ui .= '<a href="#loadmodify-' . $u['en_id'] . '-' . $tr_id . '" onclick="u_load_modify(' . $u['en_id'] . ',' . $tr_id . ')" class="badge badge-secondary" style="margin:-2px -6px 0 2px; width:40px;">' . ($u['en_trust_score'] > 0 ? '<span class="btn-counter" data-toggle="tooltip" data-placement="left" title="Engagement Score">' . fn___echo_number($u['en_trust_score']) . '</span>' : '') . '<i class="fas fa-cog" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i></a> &nbsp;';
+    $ui .= '<a href="#loadmodify-' . $u['en_id'] . '-' . $tr_id . '" onclick="u_load_modify(' . $u['en_id'] . ',' . $tr_id . ')" class="badge badge-secondary" style="margin:-2px -6px 0 2px; width:40px;">' . ($u['en_trust_score'] > 0 ? '<span class="btn-counter" data-toggle="tooltip" data-placement="left" title="Transaction Score">' . fn___echo_number($u['en_trust_score']) . '</span>' : '') . '<i class="fas fa-cog" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i></a> &nbsp;';
 
     $ui .= '<a class="badge badge-secondary" href="/entities/' . $u['en_id'] . '" style="display:inline-block; margin-right:6px; width:40px; margin-left:1px;">' . (isset($u['en__child_count']) && $u['en__child_count'] > 0 ? '<span class="btn-counter ' . ($level == 1 ? 'li-children-count' : '') . '">' . $u['en__child_count'] . '</span>' : '') . '<i class="' . ($is_parent ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90') . '"></i></a>';
 

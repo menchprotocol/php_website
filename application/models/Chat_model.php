@@ -226,7 +226,7 @@ class Chat_model extends CI_Model
                         ),
                     ));
 
-                    //Log error engagement:
+                    //Log error transaction:
                     $this->Database_model->tr_create(array(
                         'tr_en_credit_id' => $en['en_id'],
                         'tr_content' => 'Failed to skip an intent from the master Action Plan',
@@ -783,7 +783,7 @@ class Chat_model extends CI_Model
         } elseif (in_array($fb_message_received, array('help', 'support', 'f1', 'sos'))) {
 
             //Ask the user if they like to be connected to a human
-            //IF yes, create a ATTENTION NEEDED engagement that would notify admin so admin can start a manual conversation
+            //IF yes, create a ATTENTION NEEDED transaction that would notify admin so admin can start a manual conversation
             //TODO Implement...
 
         } elseif (in_array($fb_message_received, array('learn', 'learn more', 'explain', 'explain more'))) {

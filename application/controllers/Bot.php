@@ -16,6 +16,13 @@ class Bot extends CI_Controller
     function sync_menu()
     {
 
+        /*
+         * A function that will sync the fixed
+         * menu of Mench's Facebook Messenger.
+         *
+         * */
+
+        //Let's first give permission to our pages to do so:
         $res = array();
         array_push($res, $this->Chat_model->fn___facebook_graph('POST', '/me/messenger_profile', array(
             'get_started' => array(
@@ -31,6 +38,7 @@ class Bot extends CI_Controller
         //Wait until Facebook pro-pagates changes of our whitelisted_domains setting:
         sleep(2);
 
+        //Now let's update the menu:
         array_push($res, $this->Chat_model->fn___facebook_graph('POST', '/me/messenger_profile', array(
             'persistent_menu' => array(
                 array(
@@ -51,6 +59,7 @@ class Bot extends CI_Controller
             ),
         )));
 
+        //Show results:
         fn___echo_json($res);
     }
 
@@ -69,6 +78,7 @@ class Bot extends CI_Controller
         $verify_token = (isset($_GET['hub_verify_token']) ? $_GET['hub_verify_token'] : null);
         $fb_settings = $this->config->item('fb_settings');
 
+        //We need this only for the first time to authenticate that we own the server:
         if ($verify_token == '722bb4e2bac428aa697cc97a605b2c5a') {
             echo $challenge;
         }
@@ -119,7 +129,7 @@ class Bot extends CI_Controller
 
                 if (isset($im['read'])) {
 
-                    //TODO Only log IF last read engagement was 5+ minutes ago
+                    //TODO Only log IF last read transaction was 5+ minutes ago
 
                     $en = $this->Matrix_model->fn___authenticate_messenger_user($im['sender']['id']);
 
@@ -134,7 +144,7 @@ class Bot extends CI_Controller
 
                 } elseif (isset($im['delivery'])) {
 
-                    //TODO Only log IF last delivery engagement was 5+ minutes ago
+                    //TODO Only log IF last delivery transaction was 5+ minutes ago
 
                     $en = $this->Matrix_model->fn___authenticate_messenger_user($im['sender']['id']);
 
@@ -209,7 +219,7 @@ class Bot extends CI_Controller
                     }
                     */
 
-                    //Log primary engagement:
+                    //Log primary transaction:
                     $this->Database_model->tr_create(array(
                         'tr_en_type_id' => (isset($im['referral']) ? 4267 : 4268), //Messenger Referral/Postback
                         'tr_metadata' => $json_data,
@@ -226,7 +236,6 @@ class Bot extends CI_Controller
 
                     $en = $this->Matrix_model->fn___authenticate_messenger_user($im['sender']['id']);
 
-                    //Note: Never seen this happen yet!
                     //Log transaction:
                     $this->Database_model->tr_create(array(
                         'tr_metadata' => $json_data,
@@ -376,13 +385,14 @@ class Bot extends CI_Controller
                                  *
                                  * */
 
-                                $loc_lat = $att['payload']['coordinates']['lat'];
-                                $loc_long = $att['payload']['coordinates']['long'];
-                                $loc_title = ( isset($att['title']) && strlen($att['title'])>0 ? $att['title'] : null );
-                                $loc_url = ( isset($att['url']) && strlen($att['url'])>0 ? $att['url'] : null );
-
-                                //Construct the body based on these 4 elements:
-                                $eng_data['tr_content'] = 'Location Lat/Lng is: ' . $loc_lat . ',' . $loc_long;
+                                //Generate a URL from this location data:
+                                if(isset($att['url']) && strlen($att['url'])>0 ){
+                                    //Sometimes Facebook Might provide a full URL:
+                                    $eng_data['tr_content'] = $att['url'];
+                                } else {
+                                    //If not, we can generate our own URL using the Lat/Lng that will always be provided:
+                                    $eng_data['tr_content'] = 'https://www.google.com/maps?q='.$att['payload']['coordinates']['lat'].'+'.$att['payload']['coordinates']['long'];
+                                }
 
                             } elseif ($att['type'] == 'template') {
 

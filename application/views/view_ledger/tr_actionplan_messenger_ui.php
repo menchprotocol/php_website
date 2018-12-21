@@ -1,38 +1,40 @@
 <?php
 
 //Prepare some variables to better understand out situation here:
-$messages = $this->Database_model->i_fetch(array(
-    'tr_in_child_id' => $c['in_id'],
-    'tr_status' => 1, //On start messages only
-));
-$has_outs = (count($k_outs) > 0);
+$on_start_messages = $this->Database_model->tr_fetch(array(
+    'tr_status >=' => 2, //Published+
+    'tr_en_type_id' => 4231, //On-Start Messages
+    'tr_in_child_id' => $value['in_id'],
+), array(), 0, 0, array('tr_order' => 'ASC'));
+
+$has_children = (count($actionplan_children) > 0);
 //We want to show the child intents in specific conditions to ensure a step-by-step navigation by the user through the browser Action Plan
 //(Note that the conversational UI already has this step-by-step navigation in mind, but the user has more flexibility in the Browser side)
-$has_completion_info = (intval($c['c_require_url_to_complete']) || intval($c['c_require_notes_to_complete']));
-$list_outs = (count($k_ins) == 0 || !($k_ins[0]['tr_status'] == 0) || intval($c['in_is_any']) || !$has_completion_info || count($messages) == 0);
+$has_completion_info = (intval($in['c_require_url_to_complete']) || intval($in['c_require_notes_to_complete']));
+$list_children = (count($actionplan_parents) == 0 || !($actionplan_parents[0]['tr_status'] == 0) || intval($in['in_is_any']) || !$has_completion_info || count($on_start_messages) == 0);
 
 
-if (count($k_ins) == 1) {
+if (count($actionplan_parents) == 1) {
     //Inform the user of any completion requirements:
-    $message_in_requirements = $this->Matrix_model->in_completion_requirements($c);
+    $message_in_requirements = $this->Matrix_model->in_completion_requirements($in);
 
     //Submission button visible after first button was clicked:
-    $is_incomplete = ($k_ins[0]['tr_status'] < 1 || ($k_ins[0]['tr_status'] == 1 && count($k_outs) == 0));
+    $is_incomplete = ($actionplan_parents[0]['tr_status'] < 1 || ($actionplan_parents[0]['tr_status'] == 1 && count($actionplan_children) == 0));
     $show_written_input = ($message_in_requirements && $is_incomplete);
 }
 
 
 //Do we have a next item?
 $next_button = null;
-if ($w['tr_status'] == 1) {
+if ($actionplan['tr_status'] == 1) {
     //Active Action Plan, attempt to find next item, which we should be able to find:
-    $next_ins = $this->Matrix_model->fn___in_next_actionplan($w['tr_id']);
+    $next_ins = $this->Matrix_model->fn___in_next_actionplan($actionplan['tr_id']);
     if ($next_ins) {
-        if ($next_ins[0]['in_id'] == $c['in_id']) {
+        if ($next_ins[0]['in_id'] == $in['in_id']) {
             //$next_button = '<span style="font-size: 0.7em; padding-left:5px; display:inline-block;"><i class="fas fa-shield-check"></i> This is the next-in-line intent</span>';
             $next_button = null;
         } else {
-            $next_button = '<a href="/my/actionplan/' . $next_ins[0]['tr_tr_parent_id'] . '/' . $next_ins[0]['in_id'] . '" class="btn ' . (count($k_ins) == 1 && !$show_written_input && !$is_incomplete ? 'btn-md btn-primary' : 'btn-xs btn-black') . '" data-toggle="tooltip" data-placement="top" title="Next intent-in-line is to ' . $next_ins[0]['in_outcome'] . '">Next-in-line <i class="fas fa-angle-right"></i></a>';
+            $next_button = '<a href="/my/actionplan/' . $next_ins[0]['tr_tr_parent_id'] . '/' . $next_ins[0]['in_id'] . '" class="btn ' . (count($actionplan_parents) == 1 && !$show_written_input && !$is_incomplete ? 'btn-md btn-primary' : 'btn-xs btn-black') . '" data-toggle="tooltip" data-placement="top" title="Next intent-in-line is to ' . $next_ins[0]['in_outcome'] . '">Next-in-line <i class="fas fa-angle-right"></i></a>';
         }
     }
 }
@@ -42,45 +44,45 @@ echo '<script src="/js/custom/actionplan-master-js.js?v=v' . $this->config->item
 
 //Fetch parent tree all the way to the top of Action Plan tr_in_child_id
 echo '<div class="list-group" style="margin-top: 10px;">';
-foreach ($k_ins as $k) {
+foreach ($actionplan_parents as $k) {
     echo echo_k($k, 1);
 }
 echo '</div>';
 
 
 //Show title
-echo '<h3 class="master-h3 primary-title">' . $c['in_outcome'] . '</h3>';
+echo '<h3 class="master-h3 primary-title">' . $in['in_outcome'] . '</h3>';
 
-if (count($k_ins) == 0) {
+if (count($actionplan_parents) == 0) {
 
     //Always hide messages on the Action Plan-level to have masters focus on Action Plan
     $hide_messages = true;
 
     //This must be top level Action Plan, show Action Plan data:
     echo '<div class="sub_title">';
-    echo echo_status('tr_status', $w['tr_status']);
-    echo ' &nbsp;&nbsp;<i class="fas fa-calendar-check"></i> ' . fn___echo_time_difference($w['w_timestamp']) . ' ago';
+    echo echo_status('tr_status', $actionplan['tr_status']);
+    echo ' &nbsp;&nbsp;<i class="fas fa-calendar-check"></i> ' . fn___echo_time_difference($actionplan['w_timestamp']) . ' ago';
     //TODO show Action Plan pace data such as start/end time, weekly rate & notification type
     echo '</div>';
 
-} elseif (count($k_ins) == 1) {
+} elseif (count($actionplan_parents) == 1) {
 
-    $hide_messages = ($has_completion_info && !in_array($k_ins[0]['tr_status'], $this->config->item('tr_status_incomplete')));
+    $hide_messages = ($has_completion_info && !in_array($actionplan_parents[0]['tr_status'], $this->config->item('tr_status_incomplete')));
 
     //Show completion progress for the single parent intent:
     echo '<div class="sub_title">';
 
-    echo echo_status('tr_status', $k_ins[0]['tr_status']);
+    echo echo_status('tr_status', $actionplan_parents[0]['tr_status']);
 
     //Either show completion time or when it was completed:
-    if ($k_ins[0]['tr_timestamp']) {
-        echo ' &nbsp;&nbsp;<i class="fas fa-calendar-check"></i> ' . fn___echo_time_difference($k_ins[0]['tr_timestamp']) . ' ago';
+    if ($actionplan_parents[0]['tr_timestamp']) {
+        echo ' &nbsp;&nbsp;<i class="fas fa-calendar-check"></i> ' . fn___echo_time_difference($actionplan_parents[0]['tr_timestamp']) . ' ago';
     } else {
-        echo ' &nbsp;&nbsp;<i class="fas fa-clock"></i> ' . fn___echo_time_hours($c['in_seconds']) . ' to complete';
+        echo ' &nbsp;&nbsp;<i class="fas fa-clock"></i> ' . fn___echo_time_hours($in['in_seconds']) . ' to complete';
     }
 
-    if (strlen($k_ins[0]['tr_content']) > 0) {
-        echo '<div style="margin:15px 0 0 3px;"><i class="fas fa-edit"></i> ' . fn___echo_link(nl2br(htmlentities($k_ins[0]['tr_content']))) . '</div>';
+    if (strlen($actionplan_parents[0]['tr_content']) > 0) {
+        echo '<div style="margin:15px 0 0 3px;"><i class="fas fa-edit"></i> ' . fn___echo_link(nl2br(htmlentities($actionplan_parents[0]['tr_content']))) . '</div>';
     }
 
     echo '</div>';
@@ -89,16 +91,16 @@ if (count($k_ins) == 0) {
 
 
 //Show all messages:
-if (count($messages) > 0) {
-    $hide_messages_onload = (count($k_ins) == 0 || $k_ins[0]['tr_status'] < 1);
+if (count($on_start_messages) > 0) {
+    $hide_messages_onload = (count($actionplan_parents) == 0 || $actionplan_parents[0]['tr_status'] < 1);
     echo '<div class="tips_content message_content left-grey" style="display: ' . ($hide_messages ? 'none' : 'block') . ';">';
-    echo '<h5 class="badge badge-hy"><i class="fas fa-comment-dots"></i> ' . count($messages) . ' Message' . fn___echo__s(count($messages)) . ':</h5>';
-    foreach ($messages as $i) {
+    echo '<h5 class="badge badge-hy"><i class="fas fa-comment-dots"></i> ' . count($on_start_messages) . ' Message' . fn___echo__s(count($on_start_messages)) . ':</h5>';
+    foreach ($on_start_messages as $i) {
         if ($i['tr_status'] == 1) {
             echo '<div class="tip_bubble">';
             echo echo_message_chat(array_merge($i, array(
-                'tr_en_child_id' => $w['en_id'],
-            )), $w['en_name']);
+                'tr_en_child_id' => $actionplan['en_id'],
+            )), $actionplan['en_name']);
             echo '</div>';
         }
     }
@@ -106,15 +108,15 @@ if (count($messages) > 0) {
 
     if ($hide_messages) {
         //Show button to show messages:
-        echo '<div class="left-grey"><a href="javascript:void(0);" onclick="$(\'.message_content\').toggle();" class="message_content btn btn-xs btn-black"><i class="fas fa-comment-dots"></i> See ' . count($messages) . ' Message' . fn___echo__s(count($messages)) . '</a></div>';
+        echo '<div class="left-grey"><a href="javascript:void(0);" onclick="$(\'.message_content\').toggle();" class="message_content btn btn-xs btn-black"><i class="fas fa-comment-dots"></i> See ' . count($on_start_messages) . ' Message' . fn___echo__s(count($on_start_messages)) . '</a></div>';
     }
 }
 
 
 //Show completion options below messages:
-if (count($k_ins) == 1 && ($has_completion_info || (!intval($c['in_is_any']) && !$has_outs))) {
+if (count($actionplan_parents) == 1 && ($has_completion_info || (!intval($in['in_is_any']) && !$has_children))) {
 
-    if (!$show_written_input && !$is_incomplete && strlen($k_ins[0]['tr_content']) > 0 /* For now only allow is complete */) {
+    if (!$show_written_input && !$is_incomplete && strlen($actionplan_parents[0]['tr_content']) > 0 /* For now only allow is complete */) {
         //Show button to make text visible:
         echo '<div class="left-grey"><a href="javascript:void(0);" onclick="$(\'.toggle_text\').toggle();" class="toggle_text btn btn-xs btn-black"><i class="fas fa-edit"></i> ' . ($is_incomplete ? 'Add Written Answer' : 'Modify Answer') . '</a></div>';
     }
@@ -122,20 +124,20 @@ if (count($k_ins) == 1 && ($has_completion_info || (!intval($c['in_is_any']) && 
     echo '<div class="left-grey">';
     echo '<form method="POST" action="/my/update_k_save">';
 
-    echo '<input type="hidden" name="tr_id"  value="' . $k_ins[0]['tr_id'] . '" />';
+    echo '<input type="hidden" name="tr_id"  value="' . $actionplan_parents[0]['tr_id'] . '" />';
     echo '<input type="hidden" name="is_from_messenger"  value="' . (isset($_GET['is_from_messenger']) ? 1 : 0) . '" />';
 
-    //echo '<input type="hidden" name="k_key" value="'.md5($k_ins[0]['tr_id'].'k_key_SALT555').'" />'; //TODO Wire in for more security?!
+    //echo '<input type="hidden" name="k_key" value="'.md5($actionplan_parents[0]['tr_id'].'k_key_SALT555').'" />'; //TODO Wire in for more security?!
 
     echo '<div class="toggle_text" style="' . ($show_written_input ? '' : 'display:none; ') . '">';
     if ($message_in_requirements) {
         echo '<div style="color:#2b2b2b; font-size:0.7em; margin:0 !important; padding:0;"><i class="fas fa-exclamation-triangle"></i> ' . $message_in_requirements . '</div>';
     }
-    echo '<textarea name="tr_content" class="form-control maxout" style="padding:5px !important; margin:0 !important;">' . $k_ins[0]['tr_content'] . '</textarea>';
+    echo '<textarea name="tr_content" class="form-control maxout" style="padding:5px !important; margin:0 !important;">' . $actionplan_parents[0]['tr_content'] . '</textarea>';
     echo '</div>';
 
 
-    if ($has_outs && !$list_outs) {
+    if ($has_children && !$list_children) {
         echo '<button type="submit" class="btn btn-primary"><i class="fas fa-check-square"></i> Got It, Continue <i class="fas fa-angle-right"></i></button>';
     } elseif ($is_incomplete) {
         echo '<button type="submit" name="fn___in_next_actionplan" value="1" class="btn btn-primary"><i class="fas fa-check-square"></i> Mark Complete & Go Next <i class="fas fa-angle-right"></i></button>';
@@ -149,12 +151,12 @@ if (count($k_ins) == 1 && ($has_completion_info || (!intval($c['in_is_any']) && 
     echo '</div>';
 }
 
-if ($has_outs && $list_outs) {
+if ($has_children && $list_children) {
     echo '<div class="left-grey">';
-    echo '<h5 class="badge badge-hy">' . ($c['in_is_any'] ? '<i class="fas fa-code-merge"></i> Choose One' : '<i class="fas fa-sitemap"></i> Complete All') . ':</h5>';
+    echo '<h5 class="badge badge-hy">' . ($in['in_is_any'] ? '<i class="fas fa-code-merge"></i> Choose One' : '<i class="fas fa-sitemap"></i> Complete All') . ':</h5>';
     echo '<div class="list-group">';
-    foreach ($k_outs as $k) {
-        echo echo_k($k, 0, ($c['in_is_any'] && $k['tr_status'] == 0 ? $c['in_id'] : 0));
+    foreach ($actionplan_children as $k) {
+        echo echo_k($k, 0, ($in['in_is_any'] && $k['tr_status'] == 0 ? $in['in_id'] : 0));
     }
     echo '</div>';
     echo '</div>';
@@ -165,8 +167,8 @@ if ($has_outs && $list_outs) {
 echo $next_button;
 
 //Give a skip option if not complete:
-if (count($k_ins) == 1 && in_array($k_ins[0]['tr_status'], $this->config->item('tr_status_incomplete'))) {
-    echo '<span class="skippable">or <a href="javascript:void(0);" onclick="confirm_skip(' . $w['tr_id'] . ',' . $c['in_id'] . ',' . $k_ins[0]['tr_id'] . ')">skip intent</a></span>';
+if (count($actionplan_parents) == 1 && in_array($actionplan_parents[0]['tr_status'], $this->config->item('tr_status_incomplete'))) {
+    echo '<span class="skippable">or <a href="javascript:void(0);" onclick="confirm_skip(' . $actionplan['tr_id'] . ',' . $in['in_id'] . ',' . $actionplan_parents[0]['tr_id'] . ')">skip intent</a></span>';
 }
 
 ?>

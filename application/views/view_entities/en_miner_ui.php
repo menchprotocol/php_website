@@ -146,7 +146,7 @@
                             </h4></div>
                         <select class="form-control" id="en_status">
                             <?php
-                            foreach (echo_status('en') as $status_id => $status) {
+                            foreach (echo_status('en_status') as $status_id => $status) {
                                 echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
                             }
                             ?>

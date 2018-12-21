@@ -148,7 +148,7 @@ if (isset($orphan_ins)) {
                                         class="fas fa-hashtag"></i> Intent Status</h4></div>
                         <select class="form-control" id="in_status" style="display: inline-block !important;">
                             <?php
-                            foreach (echo_status('in') as $status_id => $status) {
+                            foreach (echo_status('in_status') as $status_id => $status) {
                                 echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
                             }
                             ?>

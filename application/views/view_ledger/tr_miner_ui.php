@@ -1,14 +1,14 @@
 <?php
 
-$engagement_filters = array(
+$tr_filters = array(
     'tr_en_type_id' => 'Link Types',
-    'tr_id' => 'Engagement ID',
+    'tr_id' => 'Transaction ID',
     'e_en_id' => 'Entity ID',
     'tr_in_child_id' => 'Intent ID',
 );
 
 $match_columns = array();
-foreach ($engagement_filters as $key => $value) {
+foreach ($tr_filters as $key => $value) {
     if (isset($_GET[$key])) {
         if ($key == 'e_en_id') {
             //We need to look for both inititors and recipients:
@@ -29,8 +29,8 @@ foreach ($engagement_filters as $key => $value) {
     }
 }
 
-//Fetch engagements with possible filters:
-$engagements = $this->Database_model->tr_fetch($match_columns, array('en_type'), (fn___is_dev() ? 20 : 100));
+//Fetch transactions with possible filters:
+$trs = $this->Database_model->tr_fetch($match_columns, array('en_type'), (fn___is_dev() ? 20 : 100));
 
 ?>
 
@@ -53,16 +53,16 @@ $engagements = $this->Database_model->tr_fetch($match_columns, array('en_type'),
 
 <?php
 //Display filters:
-echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-atlas"></i> Platform Engagements</h5>';
+echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-atlas"></i> Platform Transactions</h5>';
 
 
 echo '<form action="" method="GET">';
 echo '<table class="table table-condensed"><tr>';
-foreach ($engagement_filters as $key => $value) {
+foreach ($tr_filters as $key => $value) {
     echo '<td><div style="padding-right:5px;">';
     if ($key == 'tr_en_type_id') { //We have a list to show:
 
-        //Fetch all unique engagement types that have been logged on the ledger so far:
+        //Fetch all unique transaction types that have been logged on the ledger so far:
         $all_engs = $this->Database_model->tr_fetch(array(
             'tr_status >=' => 0,
             'en_status >=' => 0,
@@ -88,7 +88,7 @@ echo '</form>';
 
 //Fetch objects
 echo '<div class="list-group list-grey maxout">';
-foreach ($engagements as $e) {
+foreach ($trs as $e) {
     echo fn___echo_tr($e);
 }
 echo '</div>';

@@ -55,9 +55,6 @@ class My extends CI_Controller
 
     }
 
-    /* ******************************
-     * Messenger Persistent Menu
-     ****************************** */
 
     function actionplan($actionplan_tr_id = 0, $in_id = 0)
     {
@@ -73,125 +70,136 @@ class My extends CI_Controller
         $this->load->view('view_shared/messenger_footer');
     }
 
-    function display_actionplan($u_fb_psid, $actionplan_tr_id = 0, $in_id = 0)
+    function fn___display_actionplan($psid, $actionplan_tr_id = 0, $in_id = 0)
     {
 
         //Get session data in case user is doing a browser login:
         $udata = $this->session->userdata('user');
-        $no_session_w = (!isset($udata['en__actionplans']) || count($udata['en__actionplans']) < 1);
+        $empty_session = (!isset($udata['en__actionplans']) || count($udata['en__actionplans']) < 1);
+        $is_miner = fn___filter_array($udata['en__parents'], 'en_id', 1308);
 
-        //Fetch Bootcamps for this user:
-        if (!$u_fb_psid && $no_session_w && !fn___filter_array($udata['en__parents'], 'en_id', 1308)) {
-            //There is an issue here!
+        //Authenticate user:
+        if (!$psid && $empty_session && !$is_miner) {
             die('<div class="alert alert-danger" role="alert">Invalid Credentials</div>');
-        } elseif ($no_session_w && !fn___is_dev() && isset($_GET['sr']) && !fn___parse_signed_request($_GET['sr'])) {
+        } elseif ($empty_session && !fn___is_dev() && isset($_GET['sr']) && !fn___parse_signed_request($_GET['sr'])) {
             die('<div class="alert alert-danger" role="alert">Unable to authenticate your origin.</div>');
         }
 
-        //Set Action Plan filters:
-        $w_filter = array();
-
-        //Do we have a use session?
-        if ($actionplan_tr_id > 0) {
-            //Yes! It seems to be a desktop login:
-            $w_filter['tr_id'] = $actionplan_tr_id;
-        } elseif (count($udata['en__actionplans']) > 0) {
-            //Yes! It seems to be a desktop login:
-            $w_filter['tr_en_parent_id'] = $udata['en__actionplans'][0]['tr_en_parent_id'];
-            $w_filter['tr_status >='] = 0;
+        if($empty_session && $psid > 0){
+            //Authenticate this user:
+            $udata = $this->Matrix_model->fn___authenticate_messenger_user($psid);
         }
 
-        if ($u_fb_psid > 0) {
-            //No, we should have a Facebook PSID to try to find them:
-            $w_filter['u_fb_psid'] = $u_fb_psid;
-            $w_filter['tr_status >='] = 0;
+        //Set Action Plan filters:
+        $filters = array();
+        $filters['tr_en_type_id'] = 4235; //Action Plan Intent
+
+        //Do we have a use session?
+        if ($actionplan_tr_id > 0 && $in_id > 0) {
+            //Yes! It seems to be a desktop login:
+            $filters['tr_tr_parent_id'] = $actionplan_tr_id;
+            $filters['tr_in_child_id'] = $in_id;
+        } elseif (!$empty_session) {
+            //Yes! It seems to be a desktop login (versus Facebook Messenger)
+            $filters['tr_en_parent_id'] = $udata['en_id'];
+            $filters['tr_in_parent_id'] = 0; //Top-level Action Plans
+            $filters['tr_status >='] = 0;
         }
 
         //Try finding them:
-        $trs = $this->Database_model->w_fetch($w_filter, array('in', 'en'));
+        $trs = $this->Database_model->tr_fetch($filters, array('in_child'));
 
-        if (count($trs) == 0) {
+        if (count($trs) < 1) {
 
             //No Action Plans found:
             die('<div class="alert alert-danger" role="alert">You have no active Action Plans yet.</div>');
 
         } elseif (count($trs) > 1) {
 
-            //Log action plan view engagement:
-            $this->Database_model->tr_create(array(
-                'tr_en_type_id' => 4283,
-                'tr_en_credit_id' => $trs[0]['en_id'],
-            ));
-
-            //Let them choose between Action Plans:
-            echo '<h3 class="master-h3 primary-title">My Action Plan</h3>';
-            echo '<div class="list-group" style="margin-top: 10px;">';
-            foreach ($trs as $w) {
-                echo echo_w_masters($w);
-            }
-            echo '</div>';
-
-        } elseif (count($trs) == 1) {
-
-            //We found a single Action Plan, load this by default:
-            if (!$actionplan_tr_id || !$in_id) {
-                //User with a single Action Plan
-                $actionplan_tr_id = $trs[0]['tr_id'];
-                $in_id = $trs[0]['in_id']; //TODO set to current/focused intent
+            //Determine Action Plan IDs if not provided:
+            if(!$actionplan_tr_id || !$in_id){
+                $actionplan_tr_id = ( $trs[0]['tr_tr_parent_id'] == 0 ? $trs[0]['tr_id'] : $trs[0]['tr_tr_parent_id'] );
+                $in_id = $trs[0]['tr_in_child_id'];
             }
 
-            //Log action plan view engagement:
+            //Log action plan view transaction:
             $this->Database_model->tr_create(array(
                 'tr_en_type_id' => 4283,
-                'tr_en_credit_id' => $trs[0]['en_id'],
-                'tr_in_child_id' => $in_id,
+                'tr_en_credit_id' => $trs[0]['tr_en_parent_id'],
+                'tr_en_parent_id' => $trs[0]['tr_en_parent_id'],
                 'tr_tr_parent_id' => $actionplan_tr_id,
-            ));
-
-
-            //We have a single item to load:
-            //Now we need to load the action plan:
-            $k_ins = $this->Database_model->tr_fetch(array(
-                'tr_id' => $actionplan_tr_id,
-                'in_status >=' => 2,
                 'tr_in_child_id' => $in_id,
-            ), array('w', 'cr', 'cr_c_parent'));
-
-            $k_outs = $this->Database_model->tr_fetch(array(
-                'tr_id' => $actionplan_tr_id,
-                'in_status >=' => 2,
-                'tr_in_parent_id' => $in_id,
-            ), array('w', 'cr', 'cr_c_child'));
-
-
-            $intents = $this->Database_model->in_fetch(array(
-                'in_status >=' => 2,
-                'in_id' => $in_id,
             ));
 
-            if (count($intents) < 1 || (!count($k_ins) && !count($k_outs))) {
+            if(count($trs) > 1) {
 
-                //Ooops, we had issues finding th is intent! Should not happen, report:
-                $this->Database_model->tr_create(array(
-                    'tr_en_credit_id' => $trs[0]['en_id'],
-                    'tr_metadata' => $trs,
-                    'tr_content' => 'Unable to load a specific intent for the master Action Plan! Should not happen...',
-                    'tr_en_type_id' => 4246, //Platform Error
+                //List all Action Plans to allow Master to choose:
+                echo '<h3 class="master-h3 primary-title">My Action Plan</h3>';
+                echo '<div class="list-group" style="margin-top: 10px;">';
+                foreach ($trs as $tr) {
+                    //Prepare metadata:
+                    $metadata = unserialize($tr['in_metadata']);
+                    //Display row:
+                    echo '<a href="/my/actionplan/' . $tr['tr_id'] . '/' . $tr['tr_in_child_id'] . '" class="list-group-item">';
+                    echo '<span class="pull-right">';
+                    echo '<span class="badge badge-primary"><i class="fas fa-angle-right"></i></span>';
+                    echo '</span>';
+                    echo echo_status('tr_status', $tr['tr_status'], 1, 'right');
+                    echo ' ' . $tr['in_outcome'];
+                    echo ' ' . $metadata['in__tree_in_count'];
+                    echo ' &nbsp;<i class="fas fa-clock"></i> ' . fn___echo_time_range($tr, true);
+                    echo '</a>';
+                }
+                echo '</div>';
+
+            } elseif(count($trs)==1){
+
+                //We have a single item to load:
+                //Now we need to load the action plan:
+                $actionplan_parents = $this->Database_model->tr_fetch(array(
+                    'tr_en_type_id' => 4235, //Action Plan Intent
                     'tr_tr_parent_id' => $actionplan_tr_id,
+                    'in_status >=' => 2, //Published+ Intents
                     'tr_in_child_id' => $in_id,
+                ), array('in_parent'));
+
+                $actionplan_children = $this->Database_model->tr_fetch(array(
+                    'tr_en_type_id' => 4235, //Action Plan Intent
+                    'tr_tr_parent_id' => $actionplan_tr_id,
+                    'in_status >=' => 2, //Published+ Intents
+                    'tr_in_parent_id' => $in_id,
+                ), array('in_child'));
+
+
+                $ins = $this->Database_model->in_fetch(array(
+                    'in_status >=' => 2,
+                    'in_id' => $in_id,
                 ));
 
-                die('<div class="alert alert-danger" role="alert">Invalid Intent ID.</div>');
+                if (count($ins) < 1 || (!count($actionplan_parents) && !count($actionplan_children))) {
+
+                    //Ooops, we had issues finding th is intent! Should not happen, report:
+                    $this->Database_model->tr_create(array(
+                        'tr_en_credit_id' => $trs[0]['en_id'],
+                        'tr_metadata' => $trs,
+                        'tr_content' => 'Unable to load a specific intent for the master Action Plan! Should not happen...',
+                        'tr_en_type_id' => 4246, //Platform Error
+                        'tr_tr_parent_id' => $actionplan_tr_id,
+                        'tr_in_child_id' => $in_id,
+                    ));
+
+                    die('<div class="alert alert-danger" role="alert">Invalid Intent ID.</div>');
+                }
+
+                //All good, Load UI:
+                $this->load->view('view_ledger/tr_actionplan_messenger_ui.php', array(
+                    'actionplan' => $trs[0], //We must have 1 by now!
+                    'in' => $ins[0],
+                    'actionplan_parents' => $actionplan_parents,
+                    'actionplan_children' => $actionplan_children,
+                ));
+
             }
-
-            //All good, Load UI:
-            $this->load->view('view_ledger/tr_actionplan_messenger_ui.php', array(
-                'w' => $trs[0], //We must have 1 by now!
-                'in' => $intents[0],
-                'k_ins' => $k_ins,
-                'k_outs' => $k_outs,
-            ));
-
         }
     }
 
@@ -235,7 +243,7 @@ class My extends CI_Controller
     }
 
 
-    function load_u_engagements($en_id)
+    function load_u_trs($en_id)
     {
 
         //Auth user and check required variables:
@@ -249,7 +257,7 @@ class My extends CI_Controller
 
         //Load view for this iFrame:
         $this->load->view('view_shared/messenger_header', array(
-            'title' => 'User Engagements',
+            'title' => 'User Transactions',
         ));
         $this->load->view('view_ledger/tr_entity_history', array(
             'en_id' => $en_id,

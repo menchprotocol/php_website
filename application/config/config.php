@@ -24,7 +24,7 @@ $config['en_default_url_parent'] = 1326; //The entity that would be the parent t
 //UI Display:
 $config['app_version'] = '0.64'; //Cache buster in URLs for static js/css files
 $config['en_per_page'] = 50; //Limits the maximum entities loaded per page
-$config['tr_max_count'] = 999; //TODO Deprecate... (Used in counting things of engagements in matrix UI. If more that this will add a "+" sign to the end)
+$config['tr_max_count'] = 999; //TODO Deprecate... (Used in counting things of transactions in matrix UI. If more that this will add a "+" sign to the end)
 
 
 //App Functionality:
@@ -333,7 +333,7 @@ $config['object_statuses'] = array(
 
 
 //TODO Deprecating:
-$config['notify_admins'] = array( //Email-based engagements
+$config['notify_admins'] = array( //Email-based transactions
     1 => array(
         'admin_emails' => array('shervin@mench.com'),
         'admin_notify' => array(

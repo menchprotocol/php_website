@@ -32,49 +32,6 @@ class Database_model extends CI_Model
     }
 
 
-    function tr_status_update($tr_id, $new_tr_status)
-    {
-
-        //Marks a single Action Plan intent as complete:
-        $this->Database_model->tr_update($tr_id, array(
-            'k_last_updated' => date("Y-m-d H:i:s"),
-            'tr_status' => $new_tr_status, //Working On...
-        ));
-
-        if ($new_tr_status == 2) {
-
-            //It's complete!
-            //Fetch full $k object
-            $trs = $this->Database_model->tr_fetch(array(
-                'tr_id' => $tr_id,
-            ), array('w', 'cr'));
-            if (count($trs) == 0) {
-                return false;
-            }
-
-            //Dispatch all on-complete messages of $in_id
-            $messages = $this->Database_model->i_fetch(array(
-                'tr_in_child_id' => $trs[0]['tr_in_child_id'],
-                'tr_status' => 3, //On complete messages
-            ));
-            if (count($messages) > 0) {
-                $prepared_messages = array();
-                foreach ($messages as $i) {
-                    array_push($prepared_messages, array_merge($i, array(
-                        'tr_tr_parent_id' => $trs[0]['tr_id'],
-                        'tr_en_child_id' => $trs[0]['tr_en_parent_id'],
-                        'tr_in_child_id' => $i['tr_in_child_id'],
-                    )));
-                }
-                //Sendout messages:
-                $this->Chat_model->dispatch_message($prepared_messages);
-            }
-
-            //TODO Update Action Plan progress (In tr_metadata) at this point
-            //TODO implement drip?
-        }
-    }
-
 
     function k_skip_recursive_down($tr_id, $update_db = true)
     {
@@ -93,7 +50,7 @@ class Database_model extends CI_Model
 
             //Now start skipping:
             foreach ($skippable_ks as $k) {
-                $this->Database_model->tr_status_update($k['tr_id'], -1); //skip
+                $this->Matrix_model->fn___actionplan_update($k['tr_id'], -1); //skip
             }
 
             //There is a chance that the Action Plan might be now completed due to this skipping, lets check:
@@ -352,11 +309,11 @@ class Database_model extends CI_Model
                 $this->Database_model->fn___algolia_sync('en', $insert_columns['en_id']);
 
                 //Fetch to return the complete entity data:
-                $entities = $this->Database_model->en_fetch(array(
+                $ens = $this->Database_model->en_fetch(array(
                     'en_id' => $insert_columns['en_id'],
                 ));
 
-                return $entities[0];
+                return $ens[0];
 
             } else {
 
@@ -454,13 +411,13 @@ class Database_model extends CI_Model
             $this->db->limit($limit, $limit_offset);
         }
         $q = $this->db->get();
-        $intents = $q->result_array();
+        $ins = $q->result_array();
 
-        foreach ($intents as $key => $value) {
+        foreach ($ins as $key => $value) {
 
             //Should we append intent messages?
             if (in_array('in__messages', $join_objects)) {
-                $intents[$key]['in__messages'] = $this->Database_model->tr_fetch(array(
+                $ins[$key]['in__messages'] = $this->Database_model->tr_fetch(array(
                     'tr_status >=' => 0, //New+
                     'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent messages
                     'tr_in_child_id' => $value['in_id'],
@@ -470,7 +427,7 @@ class Database_model extends CI_Model
             //Should we fetch all parent intentions?
             if (in_array('in__parents', $join_objects)) {
 
-                $intents[$key]['in__parents'] = $this->Database_model->tr_fetch(array(
+                $ins[$key]['in__parents'] = $this->Database_model->tr_fetch(array(
                     'tr_status >=' => 0, //New+
                     'in_status >=' => 0, //New+
                     'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
@@ -483,7 +440,7 @@ class Database_model extends CI_Model
             if (in_array('in__children', $join_objects) || in_array('in__grandchildren', $join_objects)) {
 
                 //Fetch immediate children:
-                $intents[$key]['in__children'] = $this->Database_model->tr_fetch(array(
+                $ins[$key]['in__children'] = $this->Database_model->tr_fetch(array(
                     'tr_status >=' => 0, //New+
                     'in_status >=' => 0, //New+
                     'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
@@ -491,11 +448,11 @@ class Database_model extends CI_Model
                 ), array('in_child'), 0, 0, array('tr_order' => 'ASC')); //Child intents must be ordered
 
 
-                if (in_array('in__grandchildren', $join_objects) && count($intents[$key]['in__children']) > 0) {
+                if (in_array('in__grandchildren', $join_objects) && count($ins[$key]['in__children']) > 0) {
                     //Fetch second-level grandchildren intents:
-                    foreach ($intents[$key]['in__children'] as $key2 => $value2) {
+                    foreach ($ins[$key]['in__children'] as $key2 => $value2) {
 
-                        $intents[$key]['in__children'][$key2]['in__grandchildren'] = $this->Database_model->tr_fetch(array(
+                        $ins[$key]['in__children'][$key2]['in__grandchildren'] = $this->Database_model->tr_fetch(array(
                             'tr_status >=' => 0, //New+
                             'in_status >=' => 0, //New+
                             'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
@@ -508,7 +465,7 @@ class Database_model extends CI_Model
         }
 
         //Return everything that was collected:
-        return $intents;
+        return $ins;
     }
 
 
@@ -593,7 +550,7 @@ class Database_model extends CI_Model
                 //Has this value changed compared to what we initially had in DB?
                 if (!($before_data[0][$key] == $value) && !in_array($key, array('en_metadata', 'en_trust_score'))) {
 
-                    //Value has changed, log engagement:
+                    //Value has changed, log transaction:
                     $this->Database_model->tr_create(array(
                         'tr_en_credit_id' => ($tr_en_credit_id > 0 ? $tr_en_credit_id : $id),
                         'tr_en_type_id' => ($key == 'en_status' && intval($value) < 0 ? 4253 /* Removed */ : 4263 /* Attribute Modified */),
@@ -655,7 +612,7 @@ class Database_model extends CI_Model
                 //Has this value changed compared to what we initially had in DB?
                 if (!($before_data[0][$key] == $value) && !in_array($key, array('in_metadata'))) {
 
-                    //Value has changed, log engagement:
+                    //Value has changed, log transaction:
                     $this->Database_model->tr_create(array(
                         'tr_en_credit_id' => $tr_en_credit_id,
                         'tr_en_type_id' => ($key == 'in_status' && intval($value) < 0 ? 4252 /* Removed */ : 4264 /* Attribute Modified */),
@@ -718,7 +675,7 @@ class Database_model extends CI_Model
                 //Has this value changed compared to what we initially had in DB?
                 if (in_array($key, array('tr_status', 'tr_content', 'tr_order', 'tr_en_parent_id', 'tr_en_child_id', 'tr_in_parent_id', 'tr_in_child_id')) && !($before_data[0][$key] == $value)) {
 
-                    //Value has changed, log engagement:
+                    //Value has changed, log transaction:
                     $this->Database_model->tr_create(array(
                         'tr_tr_parent_id' => $id, //Parent Transaction ID
                         'tr_en_credit_id' => $tr_en_credit_id,
@@ -899,9 +856,6 @@ class Database_model extends CI_Model
         //Set some defaults:
         if (!isset($insert_columns['tr_content'])) {
             $insert_columns['tr_content'] = null;
-        } elseif (is_int($insert_columns['tr_content']) && intval($insert_columns['tr_content']) > 0 && !isset($insert_columns['tr_external_id'])) {
-            //Store integer separately for faster query access later on:
-            $insert_columns['tr_external_id'] = intval($insert_columns['tr_content']);
         }
 
         if (!isset($insert_columns['tr_timestamp'])) {
@@ -986,35 +940,35 @@ class Database_model extends CI_Model
                 if (in_array($insert_columns['tr_en_type_id'], $actionplan['admin_notify'])) {
 
                     //Just do this one:
-                    if (!isset($engagements[0])) {
-                        //Fetch Engagement Data:
-                        $engagements = $this->Database_model->tr_fetch(array(
+                    if (!isset($trs[0])) {
+                        //Fetch Transaction Data:
+                        $trs = $this->Database_model->tr_fetch(array(
                             'tr_id' => $insert_columns['tr_id']
                         ));
                     }
 
                     //Did we find it? We should have:
-                    if (isset($engagements[0])) {
+                    if (isset($trs[0])) {
 
-                        $subject = 'Notification: ' . trim(strip_tags($engagements[0]['in_outcome'])) . ' - ' . (isset($engagements[0]['en_name']) ? $engagements[0]['en_name'] : 'System');
+                        $subject = 'Notification: ' . trim(strip_tags($trs[0]['in_outcome'])) . ' - ' . (isset($trs[0]['en_name']) ? $trs[0]['en_name'] : 'System');
 
                         //Compose email:
                         $html_message = null; //Start
 
-                        if (strlen($engagements[0]['tr_content']) > 0) {
-                            $html_message .= '<div>' . fn___echo_link(nl2br($engagements[0]['tr_content'])) . '</div><br />';
+                        if (strlen($trs[0]['tr_content']) > 0) {
+                            $html_message .= '<div>' . fn___echo_link(nl2br($trs[0]['tr_content'])) . '</div><br />';
                         }
 
                         //Lets go through all references to see what is there:
-                        foreach ($this->config->item('ledger_filters') as $engagement_field => $obj_type) {
-                            if (intval($engagements[0][$engagement_field]) > 0) {
+                        foreach ($this->config->item('ledger_filters') as $tr_field => $obj_type) {
+                            if (intval($trs[0][$tr_field]) > 0) {
                                 //Yes we have a value here:
-                                $html_message .= '<div>' . ucwrods(str_replace('tr','Transaction',str_replace('en','Entity',str_replace('in','Intent',str_replace('_',' ',str_replace('tr_','',$engagement_field)))))) . ': ' . fn___echo_tr_column($obj_type, $engagements[0][$engagement_field], $engagement_field, true) . '</div>';
+                                $html_message .= '<div>' . ucwrods(str_replace('tr','Transaction',str_replace('en','Entity',str_replace('in','Intent',str_replace('_',' ',str_replace('tr_','',$tr_field)))))) . ': ' . fn___echo_tr_column($obj_type, $trs[0][$tr_field], $tr_field, true) . '</div>';
                             }
                         }
 
                         //Append ID:
-                        $html_message .= '<div>Engagement ID: <a href="https://mench.com/ledger/fn___tr_print/' . $engagements[0]['tr_id'] . '">#' . $engagements[0]['tr_id'] . '</a></div>';
+                        $html_message .= '<div>Transaction ID: <a href="https://mench.com/ledger/fn___tr_print/' . $trs[0]['tr_id'] . '">#' . $trs[0]['tr_id'] . '</a></div>';
 
                         //TODO Send messenger
 
@@ -1170,11 +1124,11 @@ class Database_model extends CI_Model
         if (isset($parent_c['tr_id'])) {
 
             if ($direction_is_downward) {
-                $intents = $this->Old_model->cr_children_fetch(array(
+                $ins = $this->Old_model->cr_children_fetch(array(
                     'tr_id' => $parent_c['tr_id'],
                 ), ($update_db_table ? array('in__messages') : array()));
             } else {
-                $intents = $this->Old_model->cr_parents_fetch(array(
+                $ins = $this->Old_model->cr_parents_fetch(array(
                     'tr_id' => $parent_c['tr_id'],
                 ), ($update_db_table ? array('in__messages') : array()));
             }
@@ -1182,7 +1136,7 @@ class Database_model extends CI_Model
         } else {
 
             //This is the very first item that
-            $intents = $this->Database_model->in_fetch(array(
+            $ins = $this->Database_model->in_fetch(array(
                 'in_id' => $in_id,
             ), ($update_db_table ? array('in__messages') : array()));
 
@@ -1190,7 +1144,7 @@ class Database_model extends CI_Model
 
 
         //We should have found an item by now:
-        if (count($intents) < 1) {
+        if (count($ins) < 1) {
             return false;
         }
 
@@ -1200,18 +1154,18 @@ class Database_model extends CI_Model
 
 
         //Add the link relations before we start recursion so we can have the Tree in up-custom order:
-        if (isset($intents[0]['tr_id'])) {
+        if (isset($ins[0]['tr_id'])) {
 
             //Add intent link:
-            array_push($immediate_children['in_tr_flat_tree'], intval($intents[0]['tr_id']));
+            array_push($immediate_children['in_tr_flat_tree'], intval($ins[0]['tr_id']));
 
             //Are we caching an Action Plan?
             if ($actionplan_tr_id > 0) {
                 //Yes we are, create a cache of this link for this Action Plan:
                 $this->Database_model->k_create(array(
                     'tr_tr_parent_id' => $actionplan_tr_id,
-                    'k_cr_id' => $intents[0]['tr_id'],
-                    'tr_order' => $intents[0]['tr_order'],
+                    'k_cr_id' => $ins[0]['tr_id'],
+                    'tr_order' => $ins[0]['tr_order'],
                 ));
             }
 
@@ -1219,7 +1173,7 @@ class Database_model extends CI_Model
 
         //TODO Terminate at OR branches for Action Plan caching (when $actionplan_tr_id>0)
 
-        if ($actionplan_tr_id > 0 && $intents[0]['in_is_any']) {
+        if ($actionplan_tr_id > 0 && $ins[0]['in_is_any']) {
             //return false;
         }
 
@@ -1269,7 +1223,7 @@ class Database_model extends CI_Model
                     //Addup children if any:
                     $immediate_children['___tree_all_count'] += $granchildren['___tree_all_count'];
 
-                    if ($intents[0]['in_is_any']) {
+                    if ($ins[0]['in_is_any']) {
                         //OR Branch, figure out the logic:
                         if ($granchildren['___tree_min_seconds'] < $local_values['in___tree_min_seconds'] || is_null($local_values['in___tree_min_seconds'])) {
                             $local_values['in___tree_min_seconds'] = $granchildren['___tree_min_seconds'];
@@ -1346,38 +1300,41 @@ class Database_model extends CI_Model
 
 
         $immediate_children['___tree_all_count']++;
-        $immediate_children['___tree_min_seconds'] += intval($intents[0]['in_seconds']);
-        $immediate_children['___tree_max_seconds'] += intval($intents[0]['in_seconds']);
-        $immediate_children['___tree_min_cost'] += number_format($intents[0]['c_cost_estimate'], 2);
-        $immediate_children['___tree_max_cost'] += number_format($intents[0]['c_cost_estimate'], 2);
+        $immediate_children['___tree_min_seconds'] += intval($ins[0]['in_seconds']);
+        $immediate_children['___tree_max_seconds'] += intval($ins[0]['in_seconds']);
+        $immediate_children['___tree_min_cost'] += number_format($ins[0]['c_cost_estimate'], 2);
+        $immediate_children['___tree_max_cost'] += number_format($ins[0]['c_cost_estimate'], 2);
 
         //Set the data for this intent:
-        $intents[0]['___tree_all_count'] = $immediate_children['___tree_all_count'];
-        $intents[0]['___tree_min_seconds'] = $immediate_children['___tree_min_seconds'];
-        $intents[0]['___tree_max_seconds'] = $immediate_children['___tree_max_seconds'];
-        $intents[0]['___tree_min_cost'] = $immediate_children['___tree_min_cost'];
-        $intents[0]['___tree_max_cost'] = $immediate_children['___tree_max_cost'];
+        $ins[0]['___tree_all_count'] = $immediate_children['___tree_all_count'];
+        $ins[0]['___tree_min_seconds'] = $immediate_children['___tree_min_seconds'];
+        $ins[0]['___tree_max_seconds'] = $immediate_children['___tree_max_seconds'];
+        $ins[0]['___tree_min_cost'] = $immediate_children['___tree_min_cost'];
+        $ins[0]['___tree_max_cost'] = $immediate_children['___tree_max_cost'];
 
 
         //Count messages only if DB updating:
         if ($update_db_table) {
 
-            $intents[0]['___tree_experts'] = array();
-            $intents[0]['___tree_miners'] = array();
-            $intents[0]['___tree_contents'] = array();
+            $ins[0]['___tree_experts'] = array();
+            $ins[0]['___tree_miners'] = array();
+            $ins[0]['___tree_contents'] = array();
 
             //Count messages:
-            $intents[0]['___messages_count'] = count($this->Database_model->i_fetch(array(
-                'tr_status >=' => 0,
+            $messages = $this->Database_model->tr_fetch(array(
+                'tr_status >=' => 0, //New+
+                'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent messages
                 'tr_in_child_id' => $in_id,
-            )));
-            $immediate_children['___messages_tree_count'] += $intents[0]['___messages_count'];
-            $intents[0]['___messages_tree_count'] = $immediate_children['___messages_tree_count'];
+            ), array(), 0, 0, array(), 'COUNT(tr_id) AS total_messages');
+
+            $ins[0]['___messages_count'] = $messages[0]['total_messages'];
+            $immediate_children['___messages_tree_count'] += $ins[0]['___messages_count'];
+            $ins[0]['___messages_tree_count'] = $immediate_children['___messages_tree_count'];
 
 
             //See who's involved:
             $parent_ids = array();
-            foreach ($intents[0]['in__messages'] as $i) {
+            foreach ($ins[0]['in__messages'] as $i) {
 
                 //Who are the parent authors of this message?
 
@@ -1388,9 +1345,9 @@ class Database_model extends CI_Model
 
 
                 //Check the author of this message (The miner) in the miner array:
-                if (!isset($intents[0]['___tree_miners'][$i['tr_en_credit_id']])) {
+                if (!isset($ins[0]['___tree_miners'][$i['tr_en_credit_id']])) {
                     //Add the entire message which would also hold the miner details:
-                    $intents[0]['___tree_miners'][$i['tr_en_credit_id']] = fn___en_essentials($i);
+                    $ins[0]['___tree_miners'][$i['tr_en_credit_id']] = fn___en_essentials($i);
                 }
                 //How about the parent of this one?
                 if (!isset($immediate_children['___tree_miners'][$i['tr_en_credit_id']])) {
@@ -1420,8 +1377,8 @@ class Database_model extends CI_Model
                             //Is this a particular content type?
                             if (in_array($parent_u['en_id'], $this->config->item('en_ids_3000'))) {
                                 //yes! Add it to the list if it does not already exist:
-                                if (!isset($intents[0]['___tree_contents'][$parent_u['en_id']][$us_fetch[0]['en_id']])) {
-                                    $intents[0]['___tree_contents'][$parent_u['en_id']][$us_fetch[0]['en_id']] = fn___en_essentials($us_fetch[0]);
+                                if (!isset($ins[0]['___tree_contents'][$parent_u['en_id']][$us_fetch[0]['en_id']])) {
+                                    $ins[0]['___tree_contents'][$parent_u['en_id']][$us_fetch[0]['en_id']] = fn___en_essentials($us_fetch[0]);
                                 }
 
                                 //How about the parent tree?
@@ -1451,18 +1408,18 @@ class Database_model extends CI_Model
 
                 //Put unique IDs in array key for faster searching:
                 foreach ($ixs as $ixsu) {
-                    if (!isset($intents[0]['___tree_experts'][$ixsu['en_id']])) {
-                        $intents[0]['___tree_experts'][$ixsu['en_id']] = $ixsu;
+                    if (!isset($ins[0]['___tree_experts'][$ixsu['en_id']])) {
+                        $ins[0]['___tree_experts'][$ixsu['en_id']] = $ixsu;
                     }
                 }
             }
 
 
             //Did we find any new industry experts?
-            if (count($intents[0]['___tree_experts']) > 0) {
+            if (count($ins[0]['___tree_experts']) > 0) {
 
                 //Yes, lets add them uniquely to the mother array assuming they are not already there:
-                foreach ($intents[0]['___tree_experts'] as $new_ixs) {
+                foreach ($ins[0]['___tree_experts'] as $new_ixs) {
                     //Is this a new expert?
                     if (!isset($immediate_children['___tree_experts'][$new_ixs['en_id']])) {
                         //Yes, add them to the list:
@@ -1472,62 +1429,62 @@ class Database_model extends CI_Model
             }
         }
 
-        array_push($immediate_children['in_tree'], $intents[0]);
+        array_push($immediate_children['in_tree'], $ins[0]);
 
 
         if ($update_db_table) {
 
             //Assign aggregates:
-            $intents[0]['___tree_experts'] = $immediate_children['___tree_experts'];
-            $intents[0]['___tree_miners'] = $immediate_children['___tree_miners'];
-            $intents[0]['___tree_contents'] = $immediate_children['___tree_contents'];
+            $ins[0]['___tree_experts'] = $immediate_children['___tree_experts'];
+            $ins[0]['___tree_miners'] = $immediate_children['___tree_miners'];
+            $ins[0]['___tree_contents'] = $immediate_children['___tree_contents'];
 
             //Start sorting:
-            if (is_array($intents[0]['___tree_experts']) && count($intents[0]['___tree_experts']) > 0) {
-                usort($intents[0]['___tree_experts'], 'fn___sortByScore');
+            if (is_array($ins[0]['___tree_experts']) && count($ins[0]['___tree_experts']) > 0) {
+                usort($ins[0]['___tree_experts'], 'fn___sortByScore');
             }
-            if (is_array($intents[0]['___tree_miners']) && count($intents[0]['___tree_miners']) > 0) {
-                usort($intents[0]['___tree_miners'], 'fn___sortByScore');
+            if (is_array($ins[0]['___tree_miners']) && count($ins[0]['___tree_miners']) > 0) {
+                usort($ins[0]['___tree_miners'], 'fn___sortByScore');
             }
-            foreach ($intents[0]['___tree_contents'] as $type_en_id => $current_us) {
-                if (isset($intents[0]['___tree_contents'][$type_en_id]) && count($intents[0]['___tree_contents'][$type_en_id]) > 0) {
-                    usort($intents[0]['___tree_contents'][$type_en_id], 'fn___sortByScore');
+            foreach ($ins[0]['___tree_contents'] as $type_en_id => $current_us) {
+                if (isset($ins[0]['___tree_contents'][$type_en_id]) && count($ins[0]['___tree_contents'][$type_en_id]) > 0) {
+                    usort($ins[0]['___tree_contents'][$type_en_id], 'fn___sortByScore');
                 }
             }
 
             //Update DB only if any single field is not synced:
             if (!(
-                intval($intents[0]['___tree_min_seconds']) == intval($intents[0]['in__tree_min_seconds']) &&
-                intval($intents[0]['___tree_max_seconds']) == intval($intents[0]['in__tree_max_seconds']) &&
-                number_format($intents[0]['___tree_min_cost'], 2) == number_format($intents[0]['in__tree_min_cost'], 2) &&
-                number_format($intents[0]['___tree_max_cost'], 2) == number_format($intents[0]['in__tree_max_cost'], 2) &&
-                ((!$intents[0]['in__tree_experts'] && count($intents[0]['___tree_experts']) < 1) || (serialize($intents[0]['___tree_experts']) == $intents[0]['in__tree_experts'])) &&
-                ((!$intents[0]['in__tree_miners'] && count($intents[0]['___tree_miners']) < 1) || (serialize($intents[0]['___tree_miners']) == $intents[0]['in__tree_miners'])) &&
-                ((!$intents[0]['in__tree_contents'] && count($intents[0]['___tree_contents']) < 1) || (serialize($intents[0]['___tree_contents']) == $intents[0]['in__tree_contents'])) &&
-                $intents[0]['___tree_all_count'] == $intents[0]['in__tree_in_count'] &&
-                $intents[0]['___messages_count'] == $intents[0]['in__message_count'] &&
-                $intents[0]['___messages_tree_count'] == $intents[0]['in__message_tree_count']
+                intval($ins[0]['___tree_min_seconds']) == intval($ins[0]['in__tree_min_seconds']) &&
+                intval($ins[0]['___tree_max_seconds']) == intval($ins[0]['in__tree_max_seconds']) &&
+                number_format($ins[0]['___tree_min_cost'], 2) == number_format($ins[0]['in__tree_min_cost'], 2) &&
+                number_format($ins[0]['___tree_max_cost'], 2) == number_format($ins[0]['in__tree_max_cost'], 2) &&
+                ((!$ins[0]['in__tree_experts'] && count($ins[0]['___tree_experts']) < 1) || (serialize($ins[0]['___tree_experts']) == $ins[0]['in__tree_experts'])) &&
+                ((!$ins[0]['in__tree_miners'] && count($ins[0]['___tree_miners']) < 1) || (serialize($ins[0]['___tree_miners']) == $ins[0]['in__tree_miners'])) &&
+                ((!$ins[0]['in__tree_contents'] && count($ins[0]['___tree_contents']) < 1) || (serialize($ins[0]['___tree_contents']) == $ins[0]['in__tree_contents'])) &&
+                $ins[0]['___tree_all_count'] == $ins[0]['in__tree_in_count'] &&
+                $ins[0]['___messages_count'] == $ins[0]['in__message_count'] &&
+                $ins[0]['___messages_tree_count'] == $ins[0]['in__message_tree_count']
             )) {
 
                 //Something was not up to date, let's update:
-                if ($this->Database_model->metadata_update('in', $intents[0], array(
-                    'in__tree_min_seconds' => intval($intents[0]['___tree_min_seconds']),
-                    'in__tree_max_seconds' => intval($intents[0]['___tree_max_seconds']),
-                    'in__tree_min_cost' => number_format($intents[0]['___tree_min_cost'], 2),
-                    'in__tree_max_cost' => number_format($intents[0]['___tree_max_cost'], 2),
-                    'in__tree_in_count' => $intents[0]['___tree_all_count'],
-                    'in__message_count' => $intents[0]['___messages_count'],
-                    'in__message_tree_count' => $intents[0]['___messages_tree_count'],
-                    'in__tree_experts' => $intents[0]['___tree_experts'],
-                    'in__tree_miners' => $intents[0]['___tree_miners'],
-                    'in__tree_contents' => $intents[0]['___tree_contents'],
+                if ($this->Database_model->metadata_update('in', $ins[0], array(
+                    'in__tree_min_seconds' => intval($ins[0]['___tree_min_seconds']),
+                    'in__tree_max_seconds' => intval($ins[0]['___tree_max_seconds']),
+                    'in__tree_min_cost' => number_format($ins[0]['___tree_min_cost'], 2),
+                    'in__tree_max_cost' => number_format($ins[0]['___tree_max_cost'], 2),
+                    'in__tree_in_count' => $ins[0]['___tree_all_count'],
+                    'in__message_count' => $ins[0]['___messages_count'],
+                    'in__message_tree_count' => $ins[0]['___messages_tree_count'],
+                    'in__tree_experts' => $ins[0]['___tree_experts'],
+                    'in__tree_miners' => $ins[0]['___tree_miners'],
+                    'in__tree_contents' => $ins[0]['___tree_contents'],
                 ))) {
                     //Yes update was successful:
                     $immediate_children['metadatas_updated']++;
                 }
 
 
-                array_push($immediate_children['db_queries'], '[' . $in_id . '] Seconds:' . intval($intents[0]['in__tree_max_seconds']) . '=>' . intval($intents[0]['___tree_max_seconds']) . ' / All Count:' . $intents[0]['in__tree_in_count'] . '=>' . $intents[0]['___tree_all_count'] . ' / Message:' . $intents[0]['in__message_count'] . '=>' . $intents[0]['___messages_count'] . ' / Tree Message:' . $intents[0]['in__message_tree_count'] . '=>' . $intents[0]['___messages_tree_count'] . ' (' . $intents[0]['in_outcome'] . ')');
+                array_push($immediate_children['db_queries'], '[' . $in_id . '] Seconds:' . intval($ins[0]['in__tree_max_seconds']) . '=>' . intval($ins[0]['___tree_max_seconds']) . ' / All Count:' . $ins[0]['in__tree_in_count'] . '=>' . $ins[0]['___tree_all_count'] . ' / Message:' . $ins[0]['in__message_count'] . '=>' . $ins[0]['___messages_count'] . ' / Tree Message:' . $ins[0]['in__message_tree_count'] . '=>' . $ins[0]['___messages_tree_count'] . ' (' . $ins[0]['in_outcome'] . ')');
 
             }
         }
@@ -1565,29 +1522,29 @@ class Database_model extends CI_Model
         if (!$recursive_children && !isset($parent_c['tr_id'])) {
             //First item:
             $recursive_children = $immediate_children;
-            $intents = $this->Database_model->in_fetch(array(
+            $ins = $this->Database_model->in_fetch(array(
                 'in_id' => $in_id,
             ));
 
         } else {
             //Recursive item:
-            $intents = $this->Database_model->tr_fetch(array(
+            $ins = $this->Database_model->tr_fetch(array(
                 'tr_tr_parent_id' => $tr_id,
                 'k_cr_id' => $parent_c['tr_id'],
             ), array('cr', ($direction_is_downward ? 'cr_c_child' : 'cr_c_parent')));
         }
 
         //We should have found an item by now:
-        if (count($intents) < 1) {
+        if (count($ins) < 1) {
             return false;
         }
 
 
         //Add the link relations before we start recursion so we can have the Tree in up-custom order:
         array_push($immediate_children['in_flat_tree'], intval($in_id));
-        if (isset($intents[0]['tr_id'])) {
-            array_push($immediate_children['in_tr_flat_tree'], intval($intents[0]['tr_id']));
-            array_push($immediate_children['k_flat'], intval($intents[0]['tr_id']));
+        if (isset($ins[0]['tr_id'])) {
+            array_push($immediate_children['in_tr_flat_tree'], intval($ins[0]['tr_id']));
+            array_push($immediate_children['k_flat'], intval($ins[0]['tr_id']));
         }
 
 

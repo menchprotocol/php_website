@@ -14,34 +14,34 @@ function update_dropdown(name, intvalue, count) {
 //Define tip style:
 var tips_button = '<span class="badge tip-badge"><i class="fas fa-info-circle"></i></span>';
 
-function open_tip(intent_id) {
+function fn___in_matrix_tips(in_id) {
 
     //See if this tip needs to be loaded:
-    if (!$("div#content_" + intent_id).html().length) {
+    if (!$("div#content_" + in_id).html().length) {
 
         //Show loader:
-        $("div#content_" + intent_id).html('<img src="/img/round_yellow_load.gif" class="loader" />');
+        $("div#content_" + in_id).html('<img src="/img/round_yellow_load.gif" class="loader" />');
 
         //Let's check to see if this user has already seen this:
-        $.post("/intents/c_echo_tip", {intent_id: intent_id}, function (data) {
+        $.post("/intents/fn___in_matrix_tips", {in_id: in_id}, function (data) {
             //Let's see what we got:
-            if (data.success) {
+            if (data.status) {
                 //Load the content:
-                $("div#content_" + data.intent_id).html('<div class="row"><div class="col-xs-6"><a href="javascript:close_tip(' + data.intent_id + ')">' + tips_button + '</a></div><div class="col-xs-6" style="text-align:right;"><a href="javascript:close_tip(' + data.intent_id + ')"><i class="fas fa-times"></i></a></div></div>'); //Show the same button at top for UX
-                $("div#content_" + data.intent_id).append(data.help_content);
+                $("div#content_" + data.in_id).html('<div class="row"><div class="col-xs-6"><a href="javascript:close_tip(' + data.in_id + ')">' + tips_button + '</a></div><div class="col-xs-6" style="text-align:right;"><a href="javascript:close_tip(' + data.in_id + ')"><i class="fas fa-times"></i></a></div></div>'); //Show the same button at top for UX
+                $("div#content_" + data.in_id).append(data.tip_messages);
 
                 //Reload tooldip:
                 $('[data-toggle="tooltip"]').tooltip();
             } else {
                 //Show error:
-
+                alert('ERROR: ' + data.message);
             }
         });
     }
 
     //Expand the tip:
-    $('#hb_' + intent_id).hide();
-    $("div#content_" + intent_id).fadeIn();
+    $('#hb_' + in_id).hide();
+    $("div#content_" + in_id).fadeIn();
 }
 
 function add_to_list(sort_list_id, sort_handler, html_content) {
@@ -55,9 +55,9 @@ function add_to_list(sort_list_id, sort_handler, html_content) {
     }
 }
 
-function close_tip(intent_id) {
-    $("div#content_" + intent_id).hide();
-    $('#hb_' + intent_id).fadeIn('slow');
+function close_tip(in_id) {
+    $("div#content_" + in_id).hide();
+    $('#hb_' + in_id).fadeIn('slow');
 }
 
 
@@ -126,9 +126,9 @@ function ms_toggle(tr_id, new_state=-1) {
     }
 }
 
-function load_help(intent_id) {
+function load_help(in_id) {
     //Loads the help button:
-    $('#hb_' + intent_id).html('<a class="tipbtn" href="javascript:open_tip(' + intent_id + ')">' + tips_button + '</a>');
+    $('#hb_' + in_id).html('<a class="tipbtn" href="javascript:fn___in_matrix_tips(' + in_id + ')">' + tips_button + '</a>');
 }
 
 function load_js_algolia() {
@@ -214,14 +214,14 @@ $(document).ready(function () {
 
     if ($("span.help_button")[0]) {
         var loaded_messages = [];
-        var intent_id = 0;
+        var in_id = 0;
         $("span.help_button").each(function () {
-            intent_id = parseInt($(this).attr('intent-id'));
-            if (intent_id > 0 && $("div#content_" + intent_id)[0] && !(jQuery.inArray(intent_id, loaded_messages) != -1)) {
+            in_id = parseInt($(this).attr('intent-id'));
+            if (in_id > 0 && $("div#content_" + in_id)[0] && !(jQuery.inArray(in_id, loaded_messages) != -1)) {
                 //Its valid as all elements match! Let's continue:
-                loaded_messages.push(intent_id);
+                loaded_messages.push(in_id);
                 //Load the Tip icon so they can access the tip if they like:
-                load_help(intent_id);
+                load_help(in_id);
             }
         });
     }
@@ -237,7 +237,7 @@ $(document).ready(function () {
 });
 
 
-function load_u_engagements(en_id, tr_id=0) {
+function load_u_trs(en_id, tr_id=0) {
 
     tr_id = parseInt(tr_id);
     en_id = parseInt(en_id);
@@ -246,7 +246,7 @@ function load_u_engagements(en_id, tr_id=0) {
 
     //Load content via a URL:
     $('.frame-loader').addClass('hidden');
-    $('.ajax-frame').attr('src', '/my/load_u_engagements/' + en_id).removeClass('hidden').css('margin-top', '0');
+    $('.ajax-frame').attr('src', '/my/load_u_trs/' + en_id).removeClass('hidden').css('margin-top', '0');
 
     //Tooltips:
     $('[data-toggle="tooltip"]').tooltip();

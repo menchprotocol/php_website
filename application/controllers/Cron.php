@@ -139,8 +139,8 @@ class Cron extends CI_Controller
         $score_weights = array(
             'u__childrens' => 0, //Child entities are just containers, no score on the link
 
-            'tr_en_child_id' => 1, //Engagement initiator
-            'tr_en_credit_id' => 1, //Engagement recipient
+            'tr_en_child_id' => 1, //Transaction initiator
+            'tr_en_credit_id' => 1, //Transaction recipient
 
             'x_parent_en_id' => 5, //URL Creator
             'x_en_id' => 8, //URL Referenced to them
@@ -149,7 +149,7 @@ class Cron extends CI_Controller
         );
 
         //Fetch child entities:
-        $entities = $this->Old_model->ur_children_fetch(array(
+        $ens = $this->Old_model->ur_children_fetch(array(
             'tr_en_parent_id' => (count($u) > 0 ? $u['en_id'] : $this->config->item('en_primary_id')),
             'tr_status >=' => 0, //Pending or Active
             'en_status >=' => 0, //Pending or Active
@@ -157,7 +157,7 @@ class Cron extends CI_Controller
 
         //Recursively loops through child entities:
         $score = 0;
-        foreach ($entities as $$en) {
+        foreach ($ens as $$en) {
             //Addup all child sores:
             $score += $this->e_score_recursive($$en);
         }
@@ -166,7 +166,7 @@ class Cron extends CI_Controller
         if (count($u) > 0) {
 
             //Update this row:
-            $score += count($entities) * $score_weights['u__childrens'];
+            $score += count($ens) * $score_weights['u__childrens'];
 
             $score += count($this->Database_model->tr_fetch(array(
                     'tr_en_child_id' => $u['en_id'],
@@ -229,7 +229,7 @@ class Cron extends CI_Controller
         //Go through and upload to CDN:
         foreach ($e_pending as $u) {
 
-            //Update engagement data:
+            //Update transaction data:
             $this->Database_model->tr_update($ep['tr_id'], array(
                 'tr_content' => $new_file_url,
                 'tr_en_type_id' => fn___detect_tr_en_type_id($new_file_url),
@@ -250,14 +250,14 @@ class Cron extends CI_Controller
                     ), true);
                 }
 
-                //Update engagement:
+                //Update transaction:
                 $this->Database_model->tr_update($u['tr_id'], array(
                     'tr_status' => 2, //Publish
                 ));
 
             } else {
 
-                //Error has already been logged in the CDN function, so just update engagement:
+                //Error has already been logged in the CDN function, so just update transaction:
                 $this->Database_model->tr_update($u['tr_id'], array(
                     'tr_status' => -1, //Removed
                 ));

@@ -86,23 +86,23 @@ $(document).ready(function () {
 
         $(".step-group").each(function () {
 
-            var intent_id = parseInt($(this).attr('intent-id'));
+            var in_id = parseInt($(this).attr('intent-id'));
 
             //Load sorting for level 3 intents:
-            in_sort_load(intent_id, 3);
+            in_sort_load(in_id, 3);
 
             //Load time:
-            $('.t_estimate_' + intent_id).text(echo_js_hours($('.t_estimate_' + intent_id + ':first').attr('tree-max-seconds')));
+            $('.t_estimate_' + in_id).text(echo_js_hours($('.t_estimate_' + in_id + ':first').attr('tree-max-seconds')));
 
         });
 
         if ($('.is_level3_sortable').length) {
             //Goo through all Steps:
             $(".is_level3_sortable").each(function () {
-                var intent_id = $(this).attr('intent-id');
-                if (intent_id) {
+                var in_id = $(this).attr('intent-id');
+                if (in_id) {
                     //Load time:
-                    $('.t_estimate_' + intent_id).text(echo_js_hours($('.t_estimate_' + intent_id + ':first').attr('tree-max-seconds')));
+                    $('.t_estimate_' + in_id).text(echo_js_hours($('.t_estimate_' + in_id + ':first').attr('tree-max-seconds')));
                 }
             });
         }

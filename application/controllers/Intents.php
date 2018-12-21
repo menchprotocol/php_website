@@ -26,19 +26,19 @@ class Intents extends CI_Controller
         $udata = fn___en_auth(array(1308), true);
 
         //Fetch intent with 2 levels of children:
-        $intents = $this->Database_model->in_fetch(array(
+        $ins = $this->Database_model->in_fetch(array(
             'in_id' => $in_id,
             'in_status >=' => 0, //New+ (Since Miners are moderating it)
         ), array('in__parents','in__grandchildren'));
 
         //Make sure we found it:
-        if ( count($intents) < 1) {
+        if ( count($ins) < 1) {
             return fn___redirect_message('/intents/' . $this->config->item('in_primary_id'), '<div class="alert alert-danger" role="alert">Intent ID [' . $in_id . '] not found</div>');
         }
 
         //Load views:
-        $this->load->view('view_shared/matrix_header', array( 'title' => $intents[0]['in_outcome'] ));
-        $this->load->view('view_intents/in_miner_ui', array( 'in' => $intents[0] ));
+        $this->load->view('view_shared/matrix_header', array( 'title' => $ins[0]['in_outcome'] ));
+        $this->load->view('view_intents/in_miner_ui', array( 'in' => $ins[0] ));
         $this->load->view('view_shared/matrix_footer');
 
     }
@@ -81,19 +81,19 @@ class Intents extends CI_Controller
          * */
 
         //Fetch data:
-        $intents = $this->Database_model->in_fetch(array(
+        $ins = $this->Database_model->in_fetch(array(
             'in_id' => $in_id,
             'in_status >=' => 2, //Published+ (Since it's a public landing page)
         ), array('in__parents', 'in__grandchildren', 'in__messages'));
 
         //Make sure we found it:
-        if ( count($intents) < 1) {
+        if ( count($ins) < 1) {
             return fn___redirect_message('/' . $this->config->item('in_primary_id'), '<div class="alert alert-danger" role="alert">Intent ID [' . $in_id . '] not found</div>');
         }
 
         //Load home page:
-        $this->load->view('view_shared/public_header', array( 'title' => $intents[0]['in_outcome'] ));
-        $this->load->view('view_intents/in_public_ui', array( 'in' => $intents[0] ));
+        $this->load->view('view_shared/public_header', array( 'title' => $ins[0]['in_outcome'] ));
+        $this->load->view('view_intents/in_public_ui', array( 'in' => $ins[0] ));
         $this->load->view('view_shared/public_footer');
 
     }
@@ -175,7 +175,7 @@ class Intents extends CI_Controller
         }
 
 
-        //Fetch all three intents to ensure they are all valid and use them for engagement logging:
+        //Fetch all three intents to ensure they are all valid and use them for transaction logging:
         $subject = $this->Database_model->in_fetch(array(
             'in_id' => intval($_POST['in_id']),
         ));
@@ -228,7 +228,7 @@ class Intents extends CI_Controller
         $udata = fn___en_auth(array(1308));
 
         //Validate Original intent:
-        $intents = $this->Database_model->in_fetch(array(
+        $ins = $this->Database_model->in_fetch(array(
             'in_id' => intval($_POST['in_id']),
         ));
 
@@ -297,7 +297,7 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Completion Settings',
             ));
-        } elseif (count($intents) < 1) {
+        } elseif (count($ins) < 1) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Invalid in_id',
@@ -325,7 +325,7 @@ class Intents extends CI_Controller
         foreach ($c_update as $key => $value) {
 
             //Did this value change?
-            if ($_POST[$key] == $intents[0][$key]) {
+            if ($_POST[$key] == $ins[0][$key]) {
 
                 //No it did not! Remove it!
                 unset($c_update[$key]);
@@ -335,7 +335,7 @@ class Intents extends CI_Controller
                 //Something was updated!
                 //Does it required a recursive upward update on the tree?
                 if ($key == 'in_seconds') {
-                    $in_metadata_modify['in__tree_max_seconds'] = intval($_POST[$key]) - intval($intents[0][$key]);
+                    $in_metadata_modify['in__tree_max_seconds'] = intval($_POST[$key]) - intval($ins[0][$key]);
                 }
 
             }
@@ -355,7 +355,7 @@ class Intents extends CI_Controller
 
             //Any recursive down status sync requests?
             $children_updated = 0;
-            if (intval($_POST['apply_recurively']) && !(intval($_POST['in_status']) == intval($intents[0]['in_status']))) {
+            if (intval($_POST['apply_recurively']) && !(intval($_POST['in_status']) == intval($ins[0]['in_status']))) {
 
                 //Yes, sync downwards where current statuses match:
                 $children = $this->Database_model->in_recursive_fetch(intval($_POST['in_id']), true);
@@ -363,7 +363,7 @@ class Intents extends CI_Controller
                 //Fetch all intents that match parent intent status:
                 $child_ins = $this->Database_model->in_fetch(array(
                     'in_id IN ('.join(',' , $children['in_flat_tree']).')' => null,
-                    'in_status' => intval($intents[0]['in_status']),
+                    'in_status' => intval($ins[0]['in_status']),
                 ));
 
                 foreach ($child_ins as $child_in) {
@@ -377,9 +377,9 @@ class Intents extends CI_Controller
         return fn___echo_json(array(
             'status' => 1,
             'children_updated' => $children_updated,
-            'in__tree_in_count' => -($intents[0]['in__tree_in_count']),
+            'in__tree_in_count' => -($ins[0]['in__tree_in_count']),
             'message' => '<span><i class="fas fa-check"></i> Saved' . ($children_updated > 0 ? ' & ' . $children_updated . ' Recursive Updates' : '') . '</span>',
-            'status_c_ui' => echo_status('in', $_POST['in_status'], true, 'left'),
+            'status_c_ui' => echo_status('in_status', $_POST['in_status'], true, 'left'),
             'status_cr_ui' => echo_status('tr_status', $_POST['tr_status'], true, 'left'),
         ));
 
@@ -413,11 +413,11 @@ class Intents extends CI_Controller
         }
 
         //Fetch intent to see what kind is it:
-        $intents = $this->Database_model->in_fetch(array(
+        $ins = $this->Database_model->in_fetch(array(
             'in_id' => intval($_POST['in_id']),
             'in_status >=' => 0,
         ));
-        if (!isset($intents[0])) {
+        if (!isset($ins[0])) {
             fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Intent ID',
@@ -442,9 +442,9 @@ class Intents extends CI_Controller
 
         //Update parent tree (and upwards) based on the intent type BEFORE removing the link:
         $in_metadata_modify = array(
-            'in__tree_in_count' => -($intents[0]['in__tree_in_count']),
-            'in__tree_max_seconds' => -(intval($intents[0]['in__tree_max_seconds'])),
-            'in__message_tree_count' => -($intents[0]['in__message_tree_count']),
+            'in__tree_in_count' => -($ins[0]['in__tree_in_count']),
+            'in__tree_max_seconds' => -(intval($ins[0]['in__tree_max_seconds'])),
+            'in__message_tree_count' => -($ins[0]['in__message_tree_count']),
         );
         $this->Database_model->metadata_tree_update('in', $in__parents[0]['tr_in_parent_id'], $in_metadata_modify);
 
@@ -458,7 +458,7 @@ class Intents extends CI_Controller
         fn___echo_json(array(
             'status' => 1,
             'c_parent' => $in__parents[0]['tr_in_parent_id'],
-            'in__tree_in_count' => -($intents[0]['in__tree_in_count']),
+            'in__tree_in_count' => -($ins[0]['in__tree_in_count']),
         ));
 
     }
@@ -542,49 +542,66 @@ class Intents extends CI_Controller
         }
     }
 
-    function c_echo_tip()
+    function fn___in_matrix_tips()
     {
 
+        /*
+         *
+         * A function to display Matrix Tips to give Miners
+         * more information on each field and their use-case.
+         *
+         * */
+
+        //Validate Miner:
         $udata = fn___en_auth(array(1308));
-        //Used to load all the help messages within the matrix:
-        if (!$udata || !isset($_POST['intent_id']) || intval($_POST['intent_id']) < 1) {
+        if (!$udata) {
             return fn___echo_json(array(
                 'success' => 0,
+                'message' => 'Session Expired',
+            ));
+        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
+            return fn___echo_json(array(
+                'success' => 0,
+                'message' => 'Missing Intent ID',
             ));
         }
 
-        //Fetch Messages and the User's Got It Engagement History:
-        $messages = $this->Database_model->i_fetch(array(
-            'tr_in_child_id' => intval($_POST['intent_id']),
-            'tr_status >' => 0, //Published in any form
-        ));
-        if (count($messages) == 0) {
+        //Fetch On-Start Messages for this intent:
+        $on_start_messages = $this->Database_model->tr_fetch(array(
+            'tr_status >=' => 2, //Published+
+            'tr_en_type_id' => 4231, //On-Start Messages
+            'tr_in_child_id' => intval($_POST['in_id']),
+        ), array(), 0, 0, array('tr_order' => 'ASC'));
+
+        if (count($on_start_messages) < 1) {
             return fn___echo_json(array(
-                'success' => 0,
+                'status' => 0,
+                'message' => 'Intent Missing On-Start Messages',
             ));
         }
 
-        $help_content = null;
-        foreach ($messages as $i) {
+        $tip_messages = null;
+        foreach ($on_start_messages as $tr) {
 
-            //Log an engagement for all messages
+            //Log transaction for all messages
             $this->Database_model->tr_create(array(
                 'tr_en_credit_id' => $udata['en_id'],
-                'tr_metadata' => $i,
-                'tr_en_type_id' => 4273, //Got It
-                'tr_in_child_id' => intval($_POST['intent_id']),
-                'e_tr_id' => $i['tr_id'],
+                'tr_en_child_id' => $udata['en_id'],
+                'tr_en_type_id' => 4273, //Matrix Tip Read
+                'tr_in_child_id' => intval($_POST['in_id']),
+                'tr_tr_parent_id' => $tr['tr_id'],
+                'tr_metadata' => $tr, //A copy of the message
             ));
 
             //Build UI friendly HTML Message:
-            $help_content .= echo_message_chat(array_merge($i, array('tr_en_child_id' => $udata['en_id'])), $udata['en_name'], false);
+            $tip_messages .= echo_message_chat(array_merge($tr, array('tr_en_child_id' => $udata['en_id'])), $udata['en_name'], false);
         }
 
         //Return results:
-        fn___echo_json(array(
-            'success' => 1,
-            'intent_id' => intval($_POST['intent_id']),
-            'help_content' => $help_content,
+        return fn___echo_json(array(
+            'status' => 1,
+            'in_id' => intval($_POST['in_id']),
+            'tip_messages' => $tip_messages,
         ));
     }
 
@@ -603,7 +620,7 @@ class Intents extends CI_Controller
 
         //Load view for this iFrame:
         $this->load->view('view_shared/messenger_header', array(
-            'title' => 'User Engagements',
+            'title' => 'User Transactions',
         ));
         $this->load->view('view_ledger/tr_intent_history', array(
             'in_id' => $in_id,
@@ -627,7 +644,7 @@ class Intents extends CI_Controller
 
         //Load view for this iFrame:
         $this->load->view('view_shared/messenger_header', array(
-            'title' => 'User Engagements',
+            'title' => 'User Transactions',
         ));
         $this->load->view('view_ledger/in_tr_load', array(
             'in_id' => $in_id,
@@ -665,18 +682,17 @@ class Intents extends CI_Controller
         $this->load->view('view_shared/matrix_footer');
     }
 
-    function i_attach()
+    function fn___in_new_message_from_attachment()
     {
 
-        //Authenticate as a Miner:
+        //Authenticate Miner:
         $udata = fn___en_auth(array(1308));
-        $file_size_max = $this->config->item('file_size_max');
         if (!$udata) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Session. Refresh to Continue',
             ));
-        } elseif (!isset($_POST['in_id']) || !isset($_POST['tr_status'])) {
+        } elseif (!isset($_POST['in_id']) || !isset($_POST['focus_tr_en_type_id'])) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing intent data.',
@@ -689,21 +705,21 @@ class Intents extends CI_Controller
         } elseif (!isset($_FILES[$_POST['upload_type']]['tmp_name']) || strlen($_FILES[$_POST['upload_type']]['tmp_name']) == 0 || intval($_FILES[$_POST['upload_type']]['size']) == 0) {
             return fn___echo_json(array(
                 'status' => 0,
-                'message' => 'Unable to save file. Max file size allowed is ' . $file_size_max . ' MB.',
+                'message' => 'Unknown error while trying to save file.',
             ));
-        } elseif ($_FILES[$_POST['upload_type']]['size'] > ($file_size_max * 1024 * 1024)) {
+        } elseif ($_FILES[$_POST['upload_type']]['size'] > ($this->config->item('file_size_max') * 1024 * 1024)) {
             return fn___echo_json(array(
                 'status' => 0,
-                'message' => 'File is larger than ' . $file_size_max . ' MB.',
+                'message' => 'File is larger than ' . $this->config->item('file_size_max') . ' MB.',
             ));
         }
 
         //Validate Intent:
-        $intents = $this->Database_model->in_fetch(array(
+        $ins = $this->Database_model->in_fetch(array(
             'in_id' => $_POST['in_id'],
             'in_status >=' => 0,
         ));
-        if(count($intents)<1){
+        if(count($ins)<1){
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Intent ID',
@@ -717,14 +733,13 @@ class Intents extends CI_Controller
         move_uploaded_file($_FILES[$_POST['upload_type']]['tmp_name'], $temp_local);
 
 
-        //Attempt to store in Cloud:
+        //Attempt to store in Mench Cloud on Amazon S3:
         if (isset($_FILES[$_POST['upload_type']]['type']) && strlen($_FILES[$_POST['upload_type']]['type']) > 0) {
             $mime = $_FILES[$_POST['upload_type']]['type'];
         } else {
             $mime = mime_content_type($temp_local);
         }
 
-        //Upload to S3:
         $new_file_url = trim(fn___upload_to_cdn($temp_local, $_FILES[$_POST['upload_type']], true));
 
         //What happened?
@@ -732,30 +747,29 @@ class Intents extends CI_Controller
             //Oops something went wrong:
             return fn___echo_json(array(
                 'status' => 0,
-                'message' => 'Could not save to cloud!',
+                'message' => 'Failed to save file to Mench cloud',
             ));
         }
 
-
-        //Now save URL:
+        //Now save URL as a new entity:
         $created_url = $this->Matrix_model->fn___create_en_from_url($new_file_url);
 
         //Did we have an error?
         if (!$created_url['status']) {
-            //Oops something went wrong:
+            //Oops something went wrong, return error:
             return $created_url;
         }
 
 
         //Create message:
-        $i = $this->Database_model->tr_create(array(
+        $tr = $this->Database_model->tr_create(array(
             'tr_en_credit_id' => $udata['en_id'],
-            'tr_en_type_id' => $_POST['tr_status'], //TODO What type of message is this? find its entity ID
-            'tr_en_parent_id' => $created_url['en_by_url']['en_id'],
+            'tr_en_type_id' => $_POST['focus_tr_en_type_id'],
+            'tr_en_parent_id' => $created_url['en_from_url']['en_id'],
             'tr_in_child_id' => intval($_POST['in_id']),
-            'tr_content' => '@' . $created_url['en_by_url']['en_id'], //Just place the reference inside the message content
+            'tr_content' => '@' . $created_url['en_from_url']['en_id'], //Just place the entity reference as the entire message
             'tr_order' => 1 + $this->Database_model->tr_max_order(array(
-                'tr_status' => $_POST['tr_status'],
+                'tr_en_type_id' => $_POST['focus_tr_en_type_id'],
                 'tr_in_child_id' => $_POST['in_id'],
             )),
         ));
@@ -763,20 +777,19 @@ class Intents extends CI_Controller
 
         //Update intent count & tree:
         //Do a relative adjustment for this intent's metadata
-        $this->Database_model->metadata_update('in', $intents[0], array(
+        $this->Database_model->metadata_update('in', $ins[0], array(
             'in__message_count' => 1, //Add 1 to existing value
         ), false);
 
-        $this->Database_model->metadata_tree_update('in', $intents[0]['in_id'], array(
+        $this->Database_model->metadata_tree_update('in', $ins[0]['in_id'], array(
             'in__message_tree_count' => 1,
         ));
 
 
-        //Fetch full message:
-        $new_messages = $this->Database_model->i_fetch(array(
-            'tr_id' => $i['tr_id'],
+        //Fetch full message for proper UI display:
+        $new_messages = $this->Database_model->tr_fetch(array(
+            'tr_id' => $tr['tr_id'],
         ));
-
 
         //Echo message:
         fn___echo_json(array(
@@ -788,7 +801,7 @@ class Intents extends CI_Controller
     }
 
 
-    function i_modify()
+    function fn___in_message_modify()
     {
 
         //Authenticate Miner:
@@ -816,19 +829,19 @@ class Intents extends CI_Controller
         }
 
         //Validate Intent:
-        $intents = $this->Database_model->in_fetch(array(
+        $ins = $this->Database_model->in_fetch(array(
             'in_id' => $_POST['in_id'],
             'in_status >=' => 0, //New+
         ));
-        if (count($intents) < 1) {
+        if (count($ins) < 1) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Intent Not Found',
             ));
         }
 
-        //Fetch Message:
-        $messages = $this->Database_model->i_fetch(array(
+        //Fetch this specific Message:
+        $messages = $this->Database_model->tr_fetch(array(
             'tr_id' => intval($_POST['tr_id']),
             'tr_status >=' => 0,
         ));
@@ -856,12 +869,12 @@ class Intents extends CI_Controller
         );
 
 
-        if (!($_POST['initial_tr_en_type_id'] == $_POST['tr_status'])) {
+        if (!($_POST['initial_tr_en_type_id'] == $_POST['focus_tr_en_type_id'])) {
             //Change the status:
-            $to_update['tr_status'] = $_POST['tr_status'];
+            $to_update['tr_en_type_id'] = $_POST['focus_tr_en_type_id'];
             //Put it at the end of the new list:
             $to_update['tr_order'] = 1 + $this->Database_model->tr_max_order(array(
-                'tr_status' => $_POST['tr_status'],
+                'tr_en_type_id' => $_POST['focus_tr_en_type_id'],
                 'tr_in_child_id' => intval($_POST['in_id']),
             ));
         }
@@ -874,11 +887,13 @@ class Intents extends CI_Controller
             'tr_id' => intval($_POST['tr_id']),
         ));
 
+        $en_all_4485 = $this->config->item('en_all_4485');
+
         //Print the challenge:
         return fn___echo_json(array(
             'status' => 1,
             'message' => echo_message_chat(array_merge($new_messages[0], array('tr_en_child_id' => $udata['en_id'])), $udata['en_name']),
-            'tr_en_type_id' => echo_status('en_all_4485', $new_messages[0]['tr_en_type_id'], 1, 'right'),
+            'tr_en_type_id' => $en_all_4485[$new_messages[0]['tr_en_type_id']]['en_icon'].' '.$en_all_4485[$new_messages[0]['tr_en_type_id']]['en_name'],
             'success_icon' => '<span><i class="fas fa-check"></i> Saved</span>',
         ));
     }

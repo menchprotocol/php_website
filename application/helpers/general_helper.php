@@ -544,7 +544,7 @@ function fn___validate_message($tr_content)
         }
 
         //Transform this URL into an entity:
-        $obj_breakdown['en_refs'][0] = $created_url['en_by_url']['en_id'];
+        $obj_breakdown['en_refs'][0] = $created_url['en_from_url']['en_id'];
 
         //Replace the URL with this new @entity in message:
         $tr_content = str_replace($obj_breakdown['en_urls'][0], '@' . $obj_breakdown['en_refs'][0], $tr_content);

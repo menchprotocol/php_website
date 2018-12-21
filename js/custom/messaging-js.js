@@ -158,7 +158,7 @@ $(document).ready(function () {
 
     //Watchout for file uplods:
     $('.box' + in_id).find('input[type="file"]').change(function () {
-        save_attachment(droppedFiles, 'file');
+        fn___in_new_message_from_attachment(droppedFiles, 'file');
     });
 
 
@@ -181,7 +181,7 @@ $(document).ready(function () {
             .on('drop', function (e) {
                 droppedFiles = e.originalEvent.dataTransfer.files;
                 e.preventDefault();
-                save_attachment(droppedFiles, 'drop');
+                fn___in_new_message_from_attachment(droppedFiles, 'drop');
             });
     }
 });
@@ -315,7 +315,7 @@ function message_modify_start(tr_id, initial_tr_en_type_id) {
     $(document).keyup(function (e) {
         //Watch for action keys:
         if (e.ctrlKey && e.keyCode === 13) {
-            message_save_updates(tr_id, initial_tr_en_type_id);
+            fn___in_message_modify(tr_id, initial_tr_en_type_id);
         } else if (e.keyCode === 27) {
             message_modify_cancel(tr_id);
         }
@@ -330,7 +330,7 @@ function message_modify_cancel(tr_id, success=0) {
     $("#ul-nav-" + tr_id + ">div").css('width', 'inherit');
 }
 
-function message_save_updates(tr_id, initial_tr_en_type_id) {
+function fn___in_message_modify(tr_id, initial_tr_en_type_id) {
 
     //Show loader:
     $("#ul-nav-" + tr_id + " .edit-updates").html('<div><img src="/img/round_load.gif" class="loader" /></div>');
@@ -342,7 +342,7 @@ function message_save_updates(tr_id, initial_tr_en_type_id) {
     var new_tr_en_type_id = $("#en_all_4485_" + tr_id).val();
 
     //Update message:
-    $.post("/intents/i_modify", {
+    $.post("/intents/fn___in_message_modify", {
 
         tr_id: tr_id,
         tr_content: $("#ul-nav-" + tr_id + " textarea").val(),
@@ -461,8 +461,9 @@ function message_form_unlock(result) {
     }
 }
 
-function save_attachment(droppedFiles, uploadType) {
+function fn___in_new_message_from_attachment(droppedFiles, uploadType) {
 
+    //Prevent multiple concurrent uploads:
     if ($('.box' + in_id).hasClass('is-uploading')) {
         return false;
     }
@@ -488,7 +489,7 @@ function save_attachment(droppedFiles, uploadType) {
         ajaxData.append('in_id', in_id);
 
         $.ajax({
-            url: '/intents/i_attach',
+            url: '/intents/fn___in_new_message_from_attachment',
             type: $('.box' + in_id).attr('method'),
             data: ajaxData,
             dataType: 'json',
