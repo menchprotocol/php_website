@@ -24,17 +24,17 @@ function u_load_child_search() {
             },
             header: function (data) {
                 if (!data.isEmpty) {
-                    return '<a href="javascript:tr_add(0,' + top_en_id + ',0)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + top_en_name + ']</a>';
+                    return '<a href="javascript:tr_add(0,' + en_focus_id + ',0)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + en_focus_name + ']</a>';
                 }
             },
             empty: function (data) {
-                return '<a href="javascript:tr_add(0,' + top_en_id + ',0)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create</span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + top_en_name + ']</a>';
+                return '<a href="javascript:tr_add(0,' + en_focus_id + ',0)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create</span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + en_focus_name + ']</a>';
             },
         }
     }]).keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            tr_add(0, top_en_id);
+            tr_add(0, en_focus_id);
             return true;
         }
     });
@@ -111,11 +111,11 @@ $(document).ready(function () {
             },
             header: function (data) {
                 if (!data.isEmpty) {
-                    return '<a href="javascript:tr_add(0,' + top_en_id + ',1)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + top_en_name + ']</a>';
+                    return '<a href="javascript:tr_add(0,' + en_focus_id + ',1)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + en_focus_name + ']</a>';
                 }
             },
             empty: function (data) {
-                return '<a href="javascript:tr_add(0,' + top_en_id + ',1)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + top_en_name + ']</a>';
+                return '<a href="javascript:tr_add(0,' + en_focus_id + ',1)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + en_focus_name + ']</a>';
             },
         }
     }]);
@@ -162,7 +162,7 @@ function tr_add(en_new_id, assign_en_parent_id=0, is_parent) {
     //Add via Ajax:
     $.post("/entities/link_entities", {
 
-        en_id: top_en_id,
+        en_id: en_focus_id,
         en_new_id: en_new_id,
         en_new_name: en_new_name,
         is_parent: (is_parent ? 1 : 0),
@@ -203,7 +203,7 @@ function u_load_filter_status(new_val) {
         //Remove active class:
         $('.u-status-filter').removeClass('btn-secondary');
         //We do have a filter:
-        en_status_filter = parseInt(new_val);
+        en_focus_filter = parseInt(new_val);
         $('.u-status-' + new_val).addClass('btn-secondary');
         u_load_next_page(0, 1);
     } else {
@@ -255,8 +255,8 @@ function u_load_next_page(page, load_new_filter = 0) {
 
     $.post("/entities/u_load_next_page", {
         page: page,
-        parent_en_id: top_en_id,
-        en_status_filter: en_status_filter,
+        parent_en_id: en_focus_id,
+        en_focus_filter: en_focus_filter,
     }, function (data) {
 
         //Appending to existing content:
@@ -435,7 +435,7 @@ function u_save_modify() {
                 $('.count-u-status-' + original_en_status).text((parseInt($('.count-u-status-' + original_en_status).text()) - 1));
                 //TODO maybe the new counter element does not exist and we need to create it! Handle this case later...
 
-                if (en_status_filter >= 0 && !(modify_data['en_status'] == en_status_filter)) {
+                if (en_focus_filter >= 0 && !(modify_data['en_status'] == en_focus_filter)) {
                     //We have the filter on and it does not match the new status, so hide this:
                     setTimeout(function () {
                         $('.u__' + modify_data['en_id']).fadeOut();

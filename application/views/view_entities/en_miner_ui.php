@@ -1,9 +1,9 @@
 
 <script>
     //Set global variables:
-    var en_status_filter = -1; //No filter, show all!
-    var top_en_id = <?= $entity['en_id'] ?>;
-    var top_en_name = '<?= str_replace('\'', '’', $entity['en_name']) ?>';
+    var en_focus_filter = -1; //No filter, show all
+    var en_focus_id = <?= $entity['en_id'] ?>;
+    var en_focus_name = '<?= str_replace('\'', '’', $entity['en_name']) ?>';
 </script>
 <script src="/js/custom/entity-manage-js.js?v=v<?= $this->config->item('app_version') ?>"
         type="text/javascript"></script>

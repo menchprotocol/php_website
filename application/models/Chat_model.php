@@ -270,10 +270,10 @@ class Chat_model extends CI_Model
 
             }
 
-        } elseif (substr_count($quick_reply_payload, 'ACTIONPLAN-ADD-INITIATE_') == 1) {
+        } elseif (is_int($quick_reply_payload)) {
 
             //Validate this intent:
-            $ref_value = fn___one_two_explode('ACTIONPLAN-ADD-INITIATE_', '', $quick_reply_payload);
+            $ref_value = intval($quick_reply_payload);
 
             if ($ref_value == 'REJECT') {
 
@@ -1051,7 +1051,7 @@ class Chat_model extends CI_Model
                 if (count($default_actionplans) == 0) {
 
                     //They have never taken the default intent, recommend it to them:
-                    $this->Chat_model->digest_quick_reply_payload($en, 'ACTIONPLAN-ADD-INITIATE_' . $this->config->item('in_primary_id'));
+                    $this->Chat_model->digest_quick_reply_payload($en, $this->config->item('in_primary_id'));
 
                 }
 
@@ -1209,7 +1209,7 @@ class Chat_model extends CI_Model
             //Prepare Payload:
             $payload = array(
                 'recipient' => array('id' => $trs_fb_psid[0]['tr_content']),
-                'message' => echo_message_chat($tr, $trs_fb_psid[0]['en_name'], true),
+                'message' => echo_message_body($tr, $trs_fb_psid[0]['en_name'], true),
                 'notification_type' => $en_convert_4454[$trs_comm_level[0]['tr_en_parent_id']], //Appropriate notification level
                 'messaging_type' => 'NON_PROMOTIONAL_SUBSCRIPTION', //We are always educating users without promoting anything! Learn more at: https://developers.facebook.com/docs/messenger-platform/send-messages#messaging_types
             );

@@ -6,7 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * So we don't have to make DB calls to figure them out every time!
  * This is the cron function that creates this: matrix_cache()
  * See here for all entities cached: https://mench.com/entities/4527
- * use-case format: $this->config->item('en_ids_4485')
+ * use-case format: $this->config->item('en_all_4486')
  *
  * ATTENTION: Also search for "en_ids_" and "en_all_" when trying to manage these throughout the code base
  *
@@ -84,52 +84,17 @@ $config['en_all_4277'] = array(
 );
 
 //Intent Response Limiters:
-$config['en_ids_4331'] = array(4255, 4256, 4257, 4258, 4259, 4260, 4261, 4318, 4319);
+$config['en_ids_4331'] = array(4255, 4256);
 $config['en_all_4331'] = array(
     4255 => array(
         'en_icon' => '<i class="fas fa-file-alt"></i>',
-        'en_name' => 'Multi-word Text Link',
-        'tr_content' => '',
+        'en_name' => 'Text Snippet',
+        'tr_content' => 'At-least 10 characters or 2+ words of text',
     ),
     4256 => array(
         'en_icon' => '<i class="fas fa-external-link"></i>',
         'en_name' => 'Generic URL',
         'tr_content' => 'A URL that is not any other type of URL',
-    ),
-    4257 => array(
-        'en_icon' => '<i class="fas fa-file-code"></i>',
-        'en_name' => 'Embed Widget URL',
-        'tr_content' => '',
-    ),
-    4258 => array(
-        'en_icon' => '<i class="fas fa-file-video"></i>',
-        'en_name' => 'Video URL',
-        'tr_content' => '',
-    ),
-    4259 => array(
-        'en_icon' => '<i class="fas fa-file-audio"></i>',
-        'en_name' => 'Audio URL',
-        'tr_content' => '',
-    ),
-    4260 => array(
-        'en_icon' => '<i class="fas fa-file-image"></i>',
-        'en_name' => 'Image URL',
-        'tr_content' => '',
-    ),
-    4261 => array(
-        'en_icon' => '<i class="fas fa-file-pdf"></i>',
-        'en_name' => 'File URL',
-        'tr_content' => 'Non-media files like PDF, DOC, etc...',
-    ),
-    4318 => array(
-        'en_icon' => '<i class="fas fa-calendar"></i>',
-        'en_name' => 'Date & Time Link',
-        'tr_content' => '',
-    ),
-    4319 => array(
-        'en_icon' => '<i class="fas fa-sort-numeric-down"></i>',
-        'en_name' => 'Number Link',
-        'tr_content' => '',
     ),
 );
 

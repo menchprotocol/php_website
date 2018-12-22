@@ -58,10 +58,10 @@ class Ledger extends CI_Controller
         }
 
 
-        //Fetch Transaction (and its child intents) in case this was a message transaction...
+        //Fetch/validate Transaction:
         $trs = $this->Database_model->tr_fetch(array(
             'tr_id' => intval($_POST['tr_id']),
-        ), array('in_child'));
+        ));
 
         if (!isset($trs[0])) {
 
@@ -80,36 +80,69 @@ class Ledger extends CI_Controller
         }
 
 
-        //Now update the DB while giving credit to the Miner:
+
+        /*
+         *
+         * Custom Adjustments might be needed
+         *
+         * We might need to do additional adjustments
+         * BEFORE adjusting link status depending
+         * on what type of transaction this is...
+         *
+         * */
+
+        if ($_POST['tr_status_new'] < 0 && in_array($trs[0]['tr_en_type_id'], $this->config->item('en_ids_4485'))) {
+
+            //Intent message being deleted..
+
+            //Fetch child intent:
+            $ins = $this->Database_model->in_fetch(array(
+                'in_id' => $trs[0]['tr_in_child_id'],
+            ));
+
+            //Do a relative adjustment for this intent's metadata
+            $this->Database_model->metadata_update('in', $ins[0], array(
+                'in__message_count' => -1, //Remove 1 from existing value
+            ), false);
+
+            //Update intent tree:
+            $this->Database_model->metadata_tree_update('in', $ins[0]['in_id'], array(
+                'in__message_tree_count' => -1,
+            ));
+
+        } elseif($_POST['tr_status_new'] < 0 && in_array($trs[0]['tr_en_type_id'], $this->config->item('en_ids_4486'))) {
+
+            //Intent link being deleted...
+
+            //Fetch child intent metadata:
+            $ins = $this->Database_model->in_fetch(array(
+                'in_id' => $trs[0]['tr_in_child_id'],
+            ));
+
+            //Prep metadata:
+            $metadata = unserialize($trs[0]['in_metadata']);
+
+            //Update parent intent tree (and upwards) to reduce totals based on child intent metadata:
+            $this->Database_model->metadata_tree_update('in', $trs[0]['tr_in_parent_id'], array(
+                'in__tree_in_count' => -( isset($metadata['in__tree_in_count']) ? $metadata['in__tree_in_count'] :0 ),
+                'in__tree_max_seconds' => -( isset($metadata['in__tree_max_seconds']) ? $metadata['in__tree_max_seconds'] :0 ),
+                'in__message_tree_count' => -( isset($metadata['in__message_tree_count']) ? $metadata['in__message_tree_count'] :0 ),
+            ));
+
+        }
+
+
+        /*
+         *
+         * Adjust link status and give Miner credit:
+         *
+         * */
         $this->Database_model->tr_update($trs[0]['tr_id'], array(
             'tr_status' => intval($_POST['tr_status_new']),
         ), $udata['en_id']);
 
 
 
-        /*
-         * Custom Adjustments:
-         *
-         * We might need to do additional adjustments depending
-         * on what type of transaction this is...
-         * Is this an intent message being deleted?
-         *
-         * */
-        if (in_array($trs[0]['tr_en_type_id'], $this->config->item('en_ids_4485')) && $trs[0]['tr_in_child_id'] > 0) {
-
-            //Yes! We need to adjust the intent cache
-
-            //Do a relative adjustment for this intent's metadata
-            $this->Database_model->metadata_update('in', $trs[0], array(
-                'in__message_count' => -1, //Remove 1 from existing value
-            ), false);
-
-            //Update intent tree:
-            $this->Database_model->metadata_tree_update('in', $trs[0]['tr_in_child_id'], array(
-                'in__message_tree_count' => -1,
-            ));
-
-        }
 
         //Return success:
         fn___echo_json(array(
@@ -275,7 +308,7 @@ class Ledger extends CI_Controller
         //Print the challenge:
         return fn___echo_json(array(
             'status' => 1,
-            'message' => fn___echo_in_message_matrix(array_merge($tr, array(
+            'message' => fn___echo_in_message_manage(array_merge($tr, array(
                 'tr_en_child_id' => $udata['en_id'],
             ))),
         ));

@@ -182,12 +182,12 @@ function fn___echo_url_embed($url, $full_message = null, $return_array = false, 
 }
 
 
-function echo_message_chat($i, $en_name = null, $fb_format = false)
+function echo_message_body($i, $en_name = null, $fb_format = false)
 {
 
     /*
      *
-     * Constructs a message ready to be dispatched via
+     * Constructs a message body ready to be dispatched via
      * fn___facebook_graph() or an HTML web page depending
      * on the required $ui_format. Inputs are:
      *
@@ -215,7 +215,7 @@ function echo_message_chat($i, $en_name = null, $fb_format = false)
     $button_title = (isset($i['button_title']) ? $i['button_title'] : null);
     $command = null;
 
-    //Determine from which location is echo_message_chat() being called, which would affect the UI:
+    //Determine from which location is echo_message_body() being called, which would affect the UI:
     $is_intent = ($CI->uri->segment(1) == 'intents');
     $is_entity = ($CI->uri->segment(1) == 'entities');
     $is_public = (!$is_intent && !$is_entity); //The public landing pages that users use to get started
@@ -484,15 +484,16 @@ function echo_message_chat($i, $en_name = null, $fb_format = false)
         return $ui;
 
     }
+
 }
 
 
-function fn___echo_in_message_matrix($tr)
+function fn___echo_in_message_manage($tr)
 {
 
     /*
      *
-     * A wrapper function that complements echo_message_chat()
+     * A wrapper function that complements echo_message_body()
      * by giving the message additional matrix functions
      * such as editing and changing message type.
      *
@@ -513,7 +514,7 @@ function fn___echo_in_message_matrix($tr)
     $ui .= '<div class="edit-off text_message" id="msgbody_' . $tr['tr_id'] . '" style="margin:2px 0 0 0;">';
 
     //Now get the message snippet:
-    $ui .= echo_message_chat($tr);
+    $ui .= echo_message_body($tr);
 
     $ui .= '</div>';
 
@@ -670,7 +671,7 @@ function fn___echo_number($number, $micro = true, $fb_format = false)
             return $rounded . $append . ' (' . $original_format . ')';
         } else {
             //HTML, so we can show Tooltip:
-            return '<span title="' . $original_format . '" data-toggle="tooltip" data-placement="top" class="underdot">' . $rounded . $append . '</span>';
+            return '<span>' . $rounded . $append . '</span>';
         }
 
     } else {
@@ -829,7 +830,6 @@ function echo_w_matrix($w)
 
     return $ui;
 }
-
 
 
 function echo_k_matrix($k)
@@ -1135,7 +1135,7 @@ function fn___echo_in_overview($in, $fb_format = 0)
             <div class="panel-heading" role="tab" id="heading' . $id . '">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="false" aria-controls="collapse' . $id . '">
-                    <i class="fas" style="transform:none !important;">💡</i> ' . $metadata['in__tree_in_count'] . ' concepts<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                    <i class="fas" style="transform:none !important;">💡</i> ' . $metadata['in__tree_in_count'] . ' Concepts<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                 </a>
             </h4>
         </div>
@@ -1527,143 +1527,153 @@ function fn___echo_time_milliseconds($microtime)
 }
 
 
-function echo_c($in, $level, $in_parent_id = 0, $is_parent = false)
+function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 {
+
+    /*
+     *
+     * The Main function to display intents across three levels:
+     *
+     * - Level 1: Where the user is focused on
+     * - Level 2: The Children of the focused intent
+     * - Level 3: The Grandchildren of the focused intent
+     *
+     * */
 
     $CI =& get_instance();
     $udata = $CI->session->userdata('user');
 
-    //Prepare metadata:
+    //Prepare Intent Metadata:
     $metadata = unserialize($in['in_metadata']);
-
-    //Count Messages:
-    $message_count = $CI->Database_model->tr_fetch(array(
-        'tr_status >=' => 0, //New+
-        'tr_en_type_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //All Intent messages
-        'tr_in_child_id' => $in['in_id'],
-    ), array(), 0, 0, array(), 'COUNT(tr_id) as message_count');
-
-    //Count transactions for this intent:
-    //TODO optimize query to COUNT() only
-    $e_count = count($CI->Database_model->tr_fetch(array(
-        '(tr_in_parent_id=' . $in['in_id'] . ' OR tr_in_child_id=' . $in['in_id'] . ')' => null,
-    ), array(), $CI->config->item('tr_max_count')));
-
-    //Count Action Plan caches for this intent link:
-    $k_stats = array(
-        'k_all' => 0,
-        'k_completed' => 0,
-    );
-
-    //Fetch K stats:
-    $k_stat_fetch = $CI->Database_model->tr_fetch(array(
-        'tr_in_child_id' => $in['in_id'],
-    ), array('cr'), 0, 0, array(), 'tr_status, COUNT(tr_id) as cr_count', 'tr_status');
-    foreach ($k_stat_fetch as $trs) {
-        $k_stats['k_all'] += $trs['cr_count'];
-        //Calculate real completion:
-        if ($trs['tr_status'] >= 2) {
-            $k_stats['k_completed'] += $trs['cr_count'];
-        }
-    }
 
 
     if ($level == 1) {
 
-        //Bootcamp Outcome:
         $ui = '<div class="list-group-item">';
 
     } else {
 
-        //ATTENTION: DO NOT CHANGE THE ORDER OF data-link-id & intent-id AS the sorting logic depends on their exact position to sort!
-        //CHANGE WITH CAUTION!
+        //WARNING: Do not change the order of data-link-id & intent-id as the sorting logic depends on their exact position to sort (Not sure why lol)
         $ui = '<div id="cr_' . $in['tr_id'] . '" data-link-id="' . $in['tr_id'] . '" tr_status="' . $in['tr_status'] . '" intent-id="' . $in['in_id'] . '" parent-intent-id="' . $in_parent_id . '" intent-level="' . $level . '" class="list-group-item ' . ($level == 3 ? 'is_level3_sortable' : 'is_level2_sortable') . ' intent_line_' . $in['in_id'] . '">';
 
     }
 
 
-    //Right content
+    /*
+     *
+     * Start Right Side
+     *
+     * */
+
     $ui .= '<span class="pull-right" style="' . ($level < 3 ? 'margin-right: 8px;' : '') . '">';
 
-    //Show Intent Link conditional status: (The intent link status is either Published or Removed, which would make it invisible)
-    if ($level > 1) {
-        $ui .= '<span class="tr_status_' . $in['tr_id'] . '">' . echo_status('tr_status', $in['tr_status'], true, 'left') . '</span> ';
+        //Show Intent Link conditional status: (The intent link status is either Published or Removed, which would make it invisible)
+        if ($level > 1) {
+            $ui .= '<span class="tr_status_' . $in['tr_id'] . '">' . echo_status('tr_status', $in['tr_status'], true, 'left') . '</span> ';
+        }
+
+        //Always show intent status:
+        $ui .= '<span class="in_status_' . $in['in_id'] . '">' . echo_status('in_status', $in['in_status'], true, 'left') . '</span> ';
+
+
+        //Intent Action Plan Stats:
+        $count_in_actionplans = $CI->Database_model->tr_fetch(array(
+            'tr_en_type_id' => 4235, //Action Plan Intent
+            'tr_in_child_id' => $in['in_id'],
+        ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
+        if ($count_in_actionplans[0]['totals'] > 0) {
+
+            //Yes, this intent has been added to some Action Plans, let's see what % is completed so far:
+            $count_in_actionplans_complete = $CI->Database_model->tr_fetch(array(
+                'tr_en_type_id' => 4235, //Action Plan Intent
+                'tr_in_child_id' => $in['in_id'],
+                'tr_status NOT IN (' . join(',', $CI->config->item('tr_status_incomplete')) . ')' => null, //completed
+            ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
+
+            //Show link to load these intents in Master Action Plans:
+            $ui .= '<a href="#loadactionplans-' . $in['in_id'] . '" onclick="in_actionplans_load(' . $in['in_id'] . ')" class="badge badge-primary" style="width:40px; margin-right:2px;" data-toggle="tooltip" title="' . $count_in_actionplans_complete[0]['totals'] . '/' . $count_in_actionplans[0]['totals'] . ' completed (or skipped) across all Action Plans" data-placement="top"><span class="btn-counter">' . round($count_in_actionplans_complete[0]['totals'] / $count_in_actionplans[0]['totals'] * 100) . '%</span><i class="fas fa-flag" style="font-size:0.85em;"></i></a>';
+
+        }
+
+
+        //Intent Transactions:
+        $count_in_trs = $CI->Database_model->tr_fetch(array(
+            '(tr_in_parent_id=' . $in['in_id'] . ' OR tr_in_child_id=' . $in['in_id'] . ')' => null,
+        ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
+        if ($count_in_trs[0]['totals'] > 0) {
+            //Show link to load these transactions:
+            $ui .= '<a href="#loadlinks-' . $in['in_id'] . '" onclick="in_tr_load(' . $in['in_id'] . ')" class="badge badge-primary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="top" title="' . number_format($count_in_trs[0]['totals'], 0) . ' Transactions"><span class="btn-counter">' . fn___echo_number($count_in_trs[0]['totals']) . '</span><i class="fas fa-atlas"></i></a>';
+        }
+
+
+        //Intent Messages:
+        $count_in_messages = $CI->Database_model->tr_fetch(array(
+            'tr_status >=' => 0, //New+
+            'tr_en_type_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //All Intent messages
+            'tr_in_child_id' => $in['in_id'],
+        ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
+        $ui .= '<a href="#loadmessages-' . $in['in_id'] . '" onclick="in_messages_load(' . $in['in_id'] . ')" class="msg-badge-' . $in['in_id'] . ' badge badge-primary ' . ($count_in_messages[0]['totals'] == 0 ? 'grey' : '') . '" style="width:40px;"><span class="btn-counter messages-counter-' . $in['in_id'] . '">' . $count_in_messages[0]['totals'] . '</span><i class="fas fa-comment-dots"></i></a>';
+
+
+        //Intent Modification + Completion Time Estimate:
+        $ui .= '<a class="badge badge-primary" onclick="in_modify_load(' . $in['in_id'] . ',' . (isset($in['tr_id']) ? $in['tr_id'] : 0) . ')" style="margin:-2px -8px 0 2px; width:40px;" href="#loadmodify-' . $in['in_id'] . '-' . (isset($in['tr_id']) ? $in['tr_id'] : 0) . '">' . '<span class="btn-counter slim-time t_estimate_' . $in['in_id'] . '" tree-max-seconds="' . ( isset($metadata['in__tree_max_seconds']) ? $metadata['in__tree_max_seconds'] : 0 ) . '" intent-seconds="' . $in['in_seconds'] . '">' . ( isset($metadata['in__tree_max_seconds']) ? fn___echo_time_hours($metadata['in__tree_max_seconds'], true) : 0 ) . '</span>' . '<i class="fas fa-cog"></i></a> &nbsp;';
+
+
+        //Intent Link to Travel Down/UP the Tree:
+        $ui .= '&nbsp;<a href="' . ($level == 1 ? 'javascript:alert(\'You are already here!\')' : '/intents/' . $in['in_id']) . '" class="tree-badge-' . $in['in_id'] . ' badge badge-primary ' . (isset($metadata['in__tree_in_count']) && $metadata['in__tree_in_count'] <= 1 ? 'grey' : '') . '" style="display:inline-block; margin-right:-1px; width:40px;">' . (isset($metadata['in__tree_in_count']) ? '<span class="btn-counter children-counter-' . $in['in_id'] . ' ' . ($is_parent && $level == 2 ? 'inb-counter' : '') . '">' . $metadata['in__tree_in_count'] . '</span>' : '') . '<i class="in_is_any_icon' . $in['in_id'] . ' ' . ($in['in_is_any'] ? 'fas fa-code-merge' : 'fas fa-sitemap') . '" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i></a> ';
+
+    $ui .= '</span> '; //End of right column
+
+
+
+
+    /*
+     *
+     * Prepare meta data fields for JS functions to
+     * manage intent modifications on the fly while
+     * also showing other attributes like cost and
+     * points.
+     *
+     * */
+
+    $in_settings = ' in_usd="' . $in['in_usd'] . '" in_status="' . $in['in_status'] . '" in_points="' . $in['in_points'] . '" in_alternatives="' . $in['in_alternatives'] . '" in_is_any="' . $in['in_is_any'] . '" ';
+
+    //Intenet Points Icon indicator:
+    $extra_ui = '';
+    $extra_ui .= '<span class="ui_in_points_' . $in['in_id'] . '" style="display:inline-block; margin-left:5px;">';
+    if ($in['in_points'] > 0) {
+        $extra_ui .= '<i class="fas fa-weight" style="margin-right: 2px;"></i>' . $in['in_points'];
     }
-
-    //Always show intent status:
-    $ui .= '<span class="in_status_' . $in['in_id'] . '">' . echo_status('in_status', $in['in_status'], true, 'left') . '</span> ';
+    $extra_ui .= '</span> ';
 
 
-    //Show submission stats
-    if ($k_stats['k_all'] > 0) {
-        //Show link to load these intents in Master Action Plans:
-        $ui .= '<a href="#loadactionplans-' . $in['in_id'] . '" onclick="in_actionplans_load(' . $in['in_id'] . ')" class="badge badge-primary" style="width:40px; margin-right:2px;" data-toggle="tooltip" title="' . $k_stats['k_completed'] . '/' . $k_stats['k_all'] . ' marked as complete across all Action Plans" data-placement="top"><span class="btn-counter">' . round($k_stats['k_completed'] / $k_stats['k_all'] * 100) . '%</span><i class="fas fa-flag" style="font-size:0.85em;"></i></a>';
+    //Intent USD Cost Icon Indicator:
+    $extra_ui .= '<span class="ui_in_usd_' . $in['in_id'] . '">';
+    if ($in['in_usd'] > 0) {
+        $extra_ui .= '<i class="fas fa-usd-circle" style="margin-right:2px; display:inline-block;"></i>' . $in['in_usd'];
     }
-
-    if ($e_count > 0) {
-        //Show link to load these transactions:
-        $ui .= '<a href="#loadlinks-' . $in['in_id'] . '" onclick="in_tr_load(' . $in['in_id'] . ')" class="badge badge-primary" style="width:40px; margin-right:2px;"><span class="btn-counter">' . $e_count . ($e_count == $CI->config->item('tr_max_count') ? '+' : '') . '</span><i class="fas fa-atlas"></i></a>';
-    }
-
-    $ui .= '<a href="#loadmessages-' . $in['in_id'] . '" onclick="in_messages_load(' . $in['in_id'] . ')" class="msg-badge-' . $in['in_id'] . ' badge badge-primary ' . ($message_count[0]['message_count'] == 0 ? 'grey' : '') . '" style="width:40px;"><span class="btn-counter messages-counter-' . $in['in_id'] . '">' . $message_count[0]['message_count'] . '</span><i class="fas fa-comment-dots"></i></a>';
-
-    //Show total tree time here:
-    $ui .= '<a class="badge badge-primary" onclick="in_modify_load(' . $in['in_id'] . ',' . (isset($in['tr_id']) ? $in['tr_id'] : 0) . ')" style="margin:-2px -8px 0 2px; width:40px;" href="#loadmodify-' . $in['in_id'] . '-' . (isset($in['tr_id']) ? $in['tr_id'] : 0) . '"><span class="btn-counter slim-time t_estimate_' . $in['in_id'] . '" tree-max-seconds="' . $in['in__tree_max_seconds'] . '" intent-seconds="' . $in['in_seconds'] . '">' . fn___echo_time_hours($in['in__tree_max_seconds'], true) . '</span><i class="fas fa-cog"></i></a> &nbsp;';
-
-    //Show link to travel down the tree:
-    //TODO Disable link if level 1 to reduce confusion as users cannot click on it?
-    $ui .= '&nbsp;<a href="/intents/' . $in['in_id'] . '" class="tree-badge-' . $in['in_id'] . ' badge badge-primary ' . ($metadata['in__tree_in_count'] <= 1 ? 'grey' : '') . '" style="display:inline-block; margin-right:-1px; width:40px;"><span class="btn-counter children-counter-' . $in['in_id'] . ' ' . ($is_parent && $level == 2 ? 'inb-counter' : '') . '">' . $metadata['in__tree_in_count'] . '</span><i class="' . ($is_parent && $level <= 2 ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90') . '"></i></a> ';
-
-    //Keep an eye out for inner message counter changes:
-    $ui .= '</span> ';
+    $extra_ui .= '</span> ';
 
 
-    $c_settings = ' c_require_url_to_complete="' . $in['c_require_url_to_complete'] . '" c_require_notes_to_complete="' . $in['c_require_notes_to_complete'] . '" c_cost_estimate="' . $in['c_cost_estimate'] . '" in_status="' . $in['in_status'] . '" c_points="' . $in['c_points'] . '" c_trigger_statements="' . $in['c_trigger_statements'] . '" in_is_any="' . $in['in_is_any'] . '" ';
 
+    /*
+     *
+     * Start Left Side
+     *
+     * */
 
-    //Show intent type:
-    $ui .= '<i class="in_is_any_icon' . $in['in_id'] . ' ' . ($in['in_is_any'] ? 'fas fa-code-merge' : 'fas fa-sitemap') . '" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i> ';
-
-    //Sorting & Then Left Content:
+    //Sorting handlers:
     if ($level > 1 && (!$is_parent || $level == 3)) {
         $ui .= '<i class="fas fa-bars"></i> &nbsp;';
     }
 
-
-    //Build points UI if any:
-    $extra_ui = '';
-    $extra_ui .= '<span class="ui_c_points_' . $in['in_id'] . '" style="display:inline-block; margin-left:5px;">';
-    if ($in['c_points'] > 0) {
-        $extra_ui .= '<i class="fas fa-weight" style="margin-right: 2px;"></i>' . $in['c_points'];
-    }
-    $extra_ui .= '</span> ';
-
-    $extra_ui .= '<span class="ui_c_require_notes_to_complete_' . $in['in_id'] . '">';
-    if (intval($in['c_require_notes_to_complete'])) {
-        $extra_ui .= '<i class="fas fa-pencil"></i>';
-    }
-    $extra_ui .= '</span> ';
-
-    $extra_ui .= '<span class="ui_c_require_url_to_complete_' . $in['in_id'] . '">';
-    if (intval($in['c_require_url_to_complete'])) {
-        $extra_ui .= '<i class="fas fa-link"></i>';
-    }
-    $extra_ui .= '</span> ';
-
-    $extra_ui .= '<span class="ui_c_cost_estimate_' . $in['in_id'] . '">';
-    if ($in['c_cost_estimate'] > 0) {
-        $extra_ui .= '<i class="fas fa-usd-circle" style="margin-right:2px; display:inline-block;"></i>' . $in['c_cost_estimate'];
-    }
-    $extra_ui .= '</span> ';
-
-
+    //Intent UI based on level:
     if ($level == 1) {
 
-        //Bootcamp Outcome:
-        $ui .= '<span><b id="b_objective" style="font-size: 1.3em;">';
-        $ui .= '<span class="in_outcome_' . $in['in_id'] . '" ' . $c_settings . '>' . $in['in_outcome'] . '</span>';
+        $ui .= '<span><b id="in_level1_outcome" style="font-size: 1.3em;">';
+        $ui .= '<span class="in_outcome_' . $in['in_id'] . '" ' . $in_settings . '>' . $in['in_outcome'] . '</span>';
         $ui .= '</b></span>';
-        $ui .= ' <span class="obj-id underdot" data-toggle="tooltip" data-placement="top" title="Intent ID">#' . $in['in_id'] . '</span>';
+        $ui .= ' <span class="obj-id underdot" data-toggle="tooltip" data-placement="top" title="Intent #' . $in['in_id'] . '">#' . $in['in_id'] . '</span>';
 
         //Give option to update the cache:
         $ui .= ' <a href="/cron/intent_sync/' . $in['in_id'] . '/1?redirect=/' . $in['in_id'] . '" onclick="turn_off()" data-toggle="tooltip" title="Updates Intent tree cache which controls landing page counters for intent, hours, content types and industry expert" data-placement="top"><i class="fas fa-sync-alt"></i></a>';
@@ -1673,36 +1683,39 @@ function echo_c($in, $level, $in_parent_id = 0, $is_parent = false)
 
         $ui .= $extra_ui;
 
-        //Expand trigger statements:
-        $ui .= '<div class="c_trigger_statements_' . $in['in_id'] . '" style="margin-top:2px;">' . nl2br($in['c_trigger_statements']) . '</div>';
+        //Expand alternative outcomes for Level 1 intent:
+        $ui .= '<div class="in_alternatives_' . $in['in_id'] . '" style="margin-top:2px;">' . nl2br($in['in_alternatives']) . '</div>';
 
     } elseif ($level == 2) {
 
-        //Task:
         $ui .= '<span class="inline-level">';
-
-        $ui .= '<a href="javascript:ms_toggle(' . $in['tr_id'] . ');"><i id="handle-' . $in['tr_id'] . '" class="fal fa-plus-square"></i></a> &nbsp;';
-
+        $ui .= '<a href="javascript:ms_toggle(' . $in['tr_id'] . ');"><i id="handle-' . $in['tr_id'] . '" class="fal fa-plus-square" ' . ($is_parent ? 'data-toggle="tooltip" data-placement="right" title="View Siblings for this Intent"' : '') . '></i></a> &nbsp;';
         if (!$is_parent) {
             $ui .= '<span class="inline-level-' . $level . '">#' . $in['tr_order'] . '</span>';
         }
         $ui .= '</span>';
 
-        $ui .= '<span id="title_' . $in['tr_id'] . '" class="cdr_crnt tree_title in_outcome_' . $in['in_id'] . (strlen($in['c_trigger_statements']) > 0 ? ' has-desc ' : '') . '" children-rank="' . $in['tr_order'] . '" ' . $c_settings . ' data-toggle="tooltip" data-placement="right" title="' . $in['c_trigger_statements'] . '">' . $in['in_outcome'] . '</span> ';
+        $ui .= '<span id="title_' . $in['tr_id'] . '" class="cdr_crnt tree_title in_outcome_' . $in['in_id'] . (strlen($in['in_alternatives']) > 0 ? ' has-desc ' : '') . '" children-rank="' . $in['tr_order'] . '" ' . $in_settings . ' data-toggle="tooltip" data-placement="right" title="' . $in['in_alternatives'] . '">' . $in['in_outcome'] . '</span> ';
+
+        $ui .= ' <span class="obj-id underdot" data-toggle="tooltip" data-placement="top" title="Intent #' . $in['in_id'] . '">#' . $in['in_id'] . '</span>';
 
         $ui .= $extra_ui;
 
     } elseif ($level == 3) {
 
         $ui .= '<span class="inline-level inline-level-' . $level . '">#' . $in['tr_order'] . '</span>';
-        $ui .= '<span id="title_' . $in['tr_id'] . '" class="tree_title in_outcome_' . $in['in_id'] . (strlen($in['c_trigger_statements']) > 0 ? ' has-desc ' : '') . '" children-rank="' . $in['tr_order'] . '" ' . $c_settings . ' data-toggle="tooltip" data-placement="right" title="' . $in['c_trigger_statements'] . '">' . $in['in_outcome'] . '</span> ';
+        $ui .= '<span id="title_' . $in['tr_id'] . '" class="tree_title in_outcome_' . $in['in_id'] . (strlen($in['in_alternatives']) > 0 ? ' has-desc ' : '') . '" children-rank="' . $in['tr_order'] . '" ' . $in_settings . ' data-toggle="tooltip" data-placement="right" title="' . $in['in_alternatives'] . '">' . $in['in_outcome'] . '</span> ';
 
         $ui .= $extra_ui;
 
     }
 
 
-    //Any Tree?
+    /*
+     *
+     * Child Intents
+     *
+     * */
     if ($level == 2) {
 
         $ui .= '<div id="list-cr-' . $in['tr_id'] . '" class="cr-class-' . $in['tr_id'] . ' list-group step-group hidden list-level-3" intent-id="' . $in['in_id'] . '">';
@@ -1712,7 +1725,7 @@ function echo_c($in, $level, $in_parent_id = 0, $is_parent = false)
 
         if (isset($in['in__grandchildren']) && count($in['in__grandchildren']) > 0) {
             foreach ($in['in__grandchildren'] as $grandchild_in) {
-                $ui .= echo_c($grandchild_in, ($level + 1), $in['in_id'], $is_parent);
+                $ui .= fn___echo_in($grandchild_in, ($level + 1), $in['in_id'], $is_parent);
             }
         }
 
@@ -1766,13 +1779,13 @@ function echo_u($u, $level, $is_parent = false)
     $ui .= '<span class="en_status_' . $u['en_id'] . '">' . echo_status('en_status', $u['en_status'], true, 'left') . '</span> ';
 
     //Check total key transaction for this user:
-    $e_count = count($CI->Database_model->tr_fetch(array(
+    $count_in_trs = $CI->Database_model->tr_fetch(array(
         '(tr_en_parent_id=' . $u['en_id'] . ' OR  tr_en_child_id=' . $u['en_id'] . ')' => null,
         '(tr_en_type_id NOT IN (' . join(',', $CI->config->item('tr_types_exclude')) . '))' => null,
-    ), array(), $CI->config->item('tr_max_count')));
-    if ($e_count > 0) {
+    ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
+    if ($count_in_trs[0]['totals'] > 0) {
         //Show the transaction button:
-        $ui .= '<a href="#wtrs-' . $u['en_id'] . '" onclick="load_u_trs(' . $u['en_id'] . ')" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="' . $e_count . ' entity trs"><span class="btn-counter">' . $e_count . ($e_count == $CI->config->item('tr_max_count') ? '+' : '') . '</span><i class="fas fa-atlas"></i></a>';
+        $ui .= '<a href="#wtrs-' . $u['en_id'] . '" onclick="load_u_trs(' . $u['en_id'] . ')" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="top" title="' . number_format($count_in_trs[0]['totals'], 0) . ' Transactions"><span class="btn-counter">' . fn___echo_number($count_in_trs[0]['totals']) . '</span><i class="fas fa-atlas"></i></a>';
     }
 
     //Count messages:

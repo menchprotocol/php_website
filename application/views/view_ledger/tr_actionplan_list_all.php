@@ -2,7 +2,7 @@
 
 //Fetch most recent Action Plans:
 $trs = $this->Database_model->tr_fetch(array(
-    'tr_en_type_id' => 4235, //Action Plan Intent Add
+    'tr_en_type_id' => 4235, //Action Plan Intent
     'tr_in_parent_id' => 0, //Top-level Action Plan intents only...
     'tr_status >=' => 0, //New+
 ), array('in_child', 'en_parent'), (fn___is_dev() ? 10 : 100));

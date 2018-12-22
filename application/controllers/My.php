@@ -314,13 +314,51 @@ class My extends CI_Controller
         $k_url = '/my/actionplan/' . $trs[0]['tr_tr_parent_id'] . '/' . $trs[0]['in_id'];
 
 
-        //Do we have what it takes to mark as complete?
-        $obj_breakdown = fn___extract_message_references($_POST['tr_content']);
+        //Fetch completion requirements:
+        $completion_requirements = $this->Database_model->tr_fetch(array(
+            'tr_en_type_id' => 4331, //Intent Response Limiters
+            'tr_in_child_id' => $trs[0]['tr_in_child_id'], //For this intent
+            'tr_status >=' => 2, //Published+
+            'tr_en_parent_id IN (' . join(',', $this->config->item('en_ids_4331')) . ')' => null, //The Requirement
+        ));
 
-        if ($trs[0]['c_require_url_to_complete'] && count($obj_breakdown['en_urls']) < 1) {
-            return fn___redirect_message($k_url, '<div class="alert alert-danger" role="alert">Error: URL Required to mark [' . $trs[0]['in_outcome'] . '] as complete.</div>');
-        } elseif ($trs[0]['c_require_notes_to_complete'] && strlen($_POST['tr_content']) < 1) {
-            return fn___redirect_message($k_url, '<div class="alert alert-danger" role="alert">Error: Notes Required to mark [' . $trs[0]['in_outcome'] . '] as complete.</div>');
+        if(count($completion_requirements)>0){
+
+            //Yes, it does have requirements! let's check them one by one:
+
+            //Intent Response Limiters:
+            $en_all_4331 = $this->config->item('en_all_4331');
+
+            //Extract references to see what we have:
+            $obj_breakdown = fn___extract_message_references($_POST['tr_content']);
+
+            //TODO we later need to check URL type to enable other requirements live video/audio URLs if they are to be added as an option.
+
+            $requirement_notes = array();
+            $did_meet_requirements = false; //Assume false unless proven otherwise
+
+            //Check to see if Master meets ANY of the requirements:
+            foreach($completion_requirements as $tr){
+
+                //Check requirements:
+                if($tr['tr_en_parent_id']==4255 && strlen($_POST['tr_content']) > 0){
+                    $did_meet_requirements = true;
+                } elseif($tr['tr_en_parent_id']==4256 && count($obj_breakdown['en_urls']) > 0){
+                    $did_meet_requirements = true;
+                }
+
+                if($did_meet_requirements){
+                    //We only need to meet a single requirement:
+                    break;
+                } else {
+                    //Add this to list of what is needed to mark as complete so we can inform Master:
+                    array_push($requirement_notes, $en_all_4331[$tr['tr_en_parent_id']]['en_name']);
+                }
+            }
+
+            if(!$did_meet_requirements){
+                return fn___redirect_message($k_url, '<div class="alert alert-danger" role="alert">Error: You are required to submit any of ['.join(', ', $requirement_notes).'] to mark [' . $trs[0]['in_outcome'] . '] as complete.</div>');
+            }
         }
 
 

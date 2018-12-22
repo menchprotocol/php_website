@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  *
  * Global variables used throughout the platform.
- * use-case format: $this->config->item('en_convert_4537')
+ * use-case format: $this->config->item('in_primary_id')
  *
  */
 
@@ -14,17 +14,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 date_default_timezone_set('America/Los_Angeles');
 
 
+//UI Display:
+$config['app_version'] = '0.66'; //Cache buster in URLs for static js/css files
+$config['en_per_page'] = 50; //Limits the maximum entities loaded per page
+$config['tr_max_count'] = 999; //TODO Deprecate... (Used in counting things of transactions in matrix UI. If more that this will add a "+" sign to the end)
+
+
 //Matrix defaults:
 $config['in_primary_name'] = 'advance your tech career'; //What is the purposes of Mench at this point?
 $config['in_primary_id'] = 6903; //The default platform intent that would be recommended to new masters
 $config['en_primary_id'] = 3463; //The default matrix entity that is loaded when Entities is clicked
 $config['en_default_url_parent'] = 1326; //The entity that would be the parent to all new URLs added via Messages
-
-
-//UI Display:
-$config['app_version'] = '0.64'; //Cache buster in URLs for static js/css files
-$config['en_per_page'] = 50; //Limits the maximum entities loaded per page
-$config['tr_max_count'] = 999; //TODO Deprecate... (Used in counting things of transactions in matrix UI. If more that this will add a "+" sign to the end)
 
 
 //App Functionality:
@@ -71,7 +71,7 @@ $config['aws_credentials'] = [ //Learn more: https://console.aws.amazon.com/iam/
 ];
 
 $config['eng_converter'] = array(
-    //Patternization Links
+    //Mining Links
     20 => 4250, //Log intent creation
     6971 => 4251, //Log entity creation
     21 => 4252, //Log intent archived
@@ -137,126 +137,87 @@ $config['ledger_filters'] = array(
 
 //3x Table Statuses:
 $config['object_statuses'] = array(
-
-    //Entity 7 Statuses:
-    'en_status' => array(
-        -3 => array(
-            's_name' => 'Denied',
-            's_desc' => 'Removed because it violated community guidelines',
-            's_icon' => 'fal fa-minus-square',
-        ),
-        -2 => array(
-            's_name' => 'Merged',
-            's_desc' => 'Entity merged with another entity',
-            's_icon' => 'fal fa-minus-square',
-        ),
+    'tr_status' => array(
         -1 => array(
             's_name' => 'Removed',
-            's_desc' => 'Entity has been removed',
-            's_icon' => 'fas fa-trash-alt',
+            's_desc' => 'Transaction removed by Master or Miner',
+            's_icon' => 'fal fa-minus-square',
         ),
-        0 => array(
+        0 => array( //Considered incomplete, see tr_status_incomplete for more details
             's_name' => 'New',
-            's_desc' => 'Entity newly added and pending work',
-            's_icon' => 'fal fa-plus-circle',
-        ),
-        1 => array(
-            's_name' => 'Working On',
-            's_desc' => 'Entity is accepted and its being patternized',
-            's_icon' => 'fas fa-spinner fa-spin',
-        ),
-        2 => array(
-            's_name' => 'Published',
-            's_desc' => 'Entity is completed and live',
-            's_icon' => 'fas fa-check-circle',
-        ),
-        3 => array(
-            's_name' => 'Claimed',
-            's_desc' => 'Entity is claimed by its owner',
-            's_icon' => 'fas fa-badge-check',
-        ),
-    ),
-
-    //Transaction 7 Statuses:
-    'tr_status' => array(
-        -3 => array(
-            's_name' => 'Denied',
-            's_desc' => 'Removed because it violated community guidelines',
-            's_icon' => 'fal fa-minus-square',
-        ),
-        -2 => array(
-            's_name' => 'Iterated',
-            's_desc' => 'Content updated with newer content',
-            's_icon' => 'fal fa-minus-square',
-        ),
-        -1 => array(
-            's_name' => 'Removed', //or skipped
-            's_desc' => 'User decided to skip this link',
-            's_icon' => 'fal fa-minus-square',
-        ),
-        0 => array( //This status is considered incomplete, see tr_status_incomplete variable above
-            's_name' => 'New',
-            's_desc' => 'New link pending acceptance',
+            's_desc' => 'Newly added transaction pending review by Miner',
             's_icon' => 'fal fa-square',
         ),
-        1 => array( //This status is considered incomplete, see tr_status_incomplete variable above
+        1 => array( //Considered incomplete, see tr_status_incomplete for more details
             's_name' => 'Working On',
-            's_desc' => 'Work has started and but some intents are pending completion',
+            's_desc' => 'Transaction is being worked on but is not yet completed',
             's_icon' => 'fas fa-spinner fa-spin',
         ),
         2 => array(
-            's_name' => 'Syncing',
-            's_desc' => 'Completed and ready for updates to be synced',
+            's_name' => 'Completed',
+            's_desc' => 'Transaction is completed and ready for updates to be synced',
             's_icon' => 'fas fa-check-square',
         ),
         3 => array(
             's_name' => 'Verified',
-            's_desc' => 'Intent successfully accomplished as verified by Mench', //The most precious link :)
+            's_desc' => 'Transaction has been reviewed and verified by a Miner',
             's_icon' => 'fas fa-badge-check',
         ),
     ),
-
-
-    //Intent 7 Statuses:
-    'in_status' => array(
-        -3 => array(
-            's_name' => 'Denied',
-            's_desc' => 'Removed because it violated community guidelines',
-            's_icon' => 'fal fa-minus-square',
-        ),
-        -2 => array(
-            's_name' => 'Merged',
-            's_desc' => 'Intent merged with another intent',
-            's_icon' => 'fal fa-minus-square',
-        ),
+    'en_status' => array(
         -1 => array(
             's_name' => 'Removed',
-            's_desc' => 'Intent has been archived and all its links has been removed',
+            's_desc' => 'Entity removed by Miner',
             's_icon' => 'fas fa-trash-alt',
         ),
         0 => array(
             's_name' => 'New',
-            's_desc' => 'Intent is newly added and pending completion',
+            's_desc' => 'Entity is newly added and is pending review by a Miner',
             's_icon' => 'fal fa-plus-circle',
         ),
         1 => array(
             's_name' => 'Working On',
-            's_desc' => 'Intent tree/messages are being patternized from the internet',
+            's_desc' => 'Entity is being mined by Miners and not yet ready to be published live',
+            's_icon' => 'fas fa-spinner fa-spin'
+        ),
+        2 => array(
+            's_name' => 'Published',
+            's_desc' => 'Entity is published live and ready to be distributed to Masters',
+            's_icon' => 'fas fa-check-circle',
+        ),
+        3 => array(
+            's_name' => 'Claimed',
+            's_desc' => 'Entity references a human which has been claimed by that person',
+            's_icon' => 'fas fa-badge-check',
+        ),
+    ),
+    'in_status' => array(
+        -1 => array(
+            's_name' => 'Removed',
+            's_desc' => 'Intent removed by Miner',
+            's_icon' => 'fas fa-trash-alt',
+        ),
+        0 => array(
+            's_name' => 'New',
+            's_desc' => 'Intent is newly added and is pending review by a Miner',
+            's_icon' => 'fal fa-plus-circle',
+        ),
+        1 => array(
+            's_name' => 'Working On',
+            's_desc' => 'Intent is being mined by Miners and not yet ready to be published live',
             's_icon' => 'fas fa-spinner fa-spin',
         ),
         2 => array(
             's_name' => 'Published',
-            's_desc' => 'Intent is published live and ready to be added to Action Plans',
+            's_desc' => 'Intent is published live and ready to be distributed to Masters',
             's_icon' => 'fas fa-check-circle',
         ),
         3 => array(
             's_name' => 'Featured',
-            's_desc' => 'Intent is recommended on mench.com home page',
+            's_desc' => 'Intent recommended to Masters',
             's_icon' => 'fas fa-badge-check',
         ),
     ),
-
-    //Intent Is Any setting:
     'in_is_any' => array(
         0 => array(
             's_name' => 'All Children',
@@ -267,64 +228,6 @@ $config['object_statuses'] = array(
             's_name' => 'Any Child',
             's_desc' => 'Intent is complete when a single child is marked as complete',
             's_icon' => 'fas fa-code-merge',
-        ),
-    ),
-
-    //TODO Deprecate:
-    'x_type' => array(
-        0 => array(
-            's_name' => 'Web Page',
-            's_fb_key' => 'text',
-            's_desc' => 'URL point to a generic website on the internet',
-            's_icon' => 'fas fa-atlas',
-        ),
-        1 => array(
-            's_name' => 'Embeddable',
-            's_fb_key' => 'text',
-            's_desc' => 'A recognized URL with an embeddable widget',
-            's_icon' => 'fas fa-file-code',
-        ),
-        2 => array(
-            's_name' => 'Video',
-            's_fb_key' => 'video',
-            's_desc' => 'URL of a raw video file',
-            's_icon' => 'fas fa-file-video',
-        ),
-        3 => array(
-            's_name' => 'Audio',
-            's_fb_key' => 'audio',
-            's_desc' => 'URL of a raw audio file',
-            's_icon' => 'fas fa-file-audio',
-        ),
-        4 => array(
-            's_name' => 'Image',
-            's_fb_key' => 'image',
-            's_desc' => 'URL of a raw image file',
-            's_icon' => 'fas fa-file-image',
-        ),
-        5 => array(
-            's_name' => 'File',
-            's_fb_key' => 'file',
-            's_desc' => 'URL of a raw generic file',
-            's_icon' => 'fas fa-file-pdf',
-        ),
-    ),
-
-    'x_status' => array(
-        -2 => array(
-            's_name' => 'Removed',
-            's_desc' => 'URL removed by User',
-            's_icon' => 'fas fa-trash-alt',
-        ),
-        -1 => array(
-            's_name' => 'Seems Broken',
-            's_desc' => 'URL detected broken and pending moderator review',
-            's_icon' => 'fas fa-exclamation-triangle',
-        ),
-        1 => array(
-            's_name' => 'Published',
-            's_desc' => 'URL is live and being distributed across Action Plans',
-            's_icon' => 'fas fa-check-circle',
         ),
     ),
 );

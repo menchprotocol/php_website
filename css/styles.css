@@ -320,7 +320,7 @@ a.badge-primary:hover {
     cursor: pointer;
 }
 
-#b_objective {
+#in_level1_outcome {
     font-family: "Roboto Slab", "Times New Roman", serif;
 }
 
@@ -334,7 +334,7 @@ a.badge-primary:hover {
     font-size: 1.0em;
 }
 
-#b_objective .fas {
+#in_level1_outcome .fas {
     padding-right: 3px;
 }
 

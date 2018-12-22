@@ -7,11 +7,20 @@ $on_start_messages = $this->Database_model->tr_fetch(array(
     'tr_in_child_id' => $value['in_id'],
 ), array(), 0, 0, array('tr_order' => 'ASC'));
 
+
+//Fetch completion requirements:
+$completion_requirements = $this->Database_model->tr_fetch(array(
+    'tr_en_type_id' => 4331, //Intent Response Limiters
+    'tr_in_child_id' => $value['in_id'], //For this intent
+    'tr_status >=' => 2, //Published+
+    'tr_en_parent_id IN (' . join(',', $this->config->item('en_ids_4331')) . ')' => null, //The Requirement
+));
+
+
 $has_children = (count($actionplan_children) > 0);
 //We want to show the child intents in specific conditions to ensure a step-by-step navigation by the user through the browser Action Plan
 //(Note that the conversational UI already has this step-by-step navigation in mind, but the user has more flexibility in the Browser side)
-$has_completion_info = (intval($in['c_require_url_to_complete']) || intval($in['c_require_notes_to_complete']));
-$list_children = (count($actionplan_parents) == 0 || !($actionplan_parents[0]['tr_status'] == 0) || intval($in['in_is_any']) || !$has_completion_info || count($on_start_messages) == 0);
+$list_children = (count($actionplan_parents) == 0 || !($actionplan_parents[0]['tr_status'] == 0) || intval($in['in_is_any']) || count($completion_requirements)==0 || count($on_start_messages) == 0);
 
 
 if (count($actionplan_parents) == 1) {
@@ -67,7 +76,7 @@ if (count($actionplan_parents) == 0) {
 
 } elseif (count($actionplan_parents) == 1) {
 
-    $hide_messages = ($has_completion_info && !in_array($actionplan_parents[0]['tr_status'], $this->config->item('tr_status_incomplete')));
+    $hide_messages = (count($completion_requirements)>0 && !in_array($actionplan_parents[0]['tr_status'], $this->config->item('tr_status_incomplete')));
 
     //Show completion progress for the single parent intent:
     echo '<div class="sub_title">';
@@ -98,7 +107,7 @@ if (count($on_start_messages) > 0) {
     foreach ($on_start_messages as $i) {
         if ($i['tr_status'] == 1) {
             echo '<div class="tip_bubble">';
-            echo echo_message_chat(array_merge($i, array(
+            echo echo_message_body(array_merge($i, array(
                 'tr_en_child_id' => $actionplan['en_id'],
             )), $actionplan['en_name']);
             echo '</div>';
@@ -114,7 +123,7 @@ if (count($on_start_messages) > 0) {
 
 
 //Show completion options below messages:
-if (count($actionplan_parents) == 1 && ($has_completion_info || (!intval($in['in_is_any']) && !$has_children))) {
+if (count($actionplan_parents) == 1 && (count($completion_requirements)>0 || (!intval($in['in_is_any']) && !$has_children))) {
 
     if (!$show_written_input && !$is_incomplete && strlen($actionplan_parents[0]['tr_content']) > 0 /* For now only allow is complete */) {
         //Show button to make text visible:

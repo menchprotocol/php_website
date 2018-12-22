@@ -71,10 +71,15 @@ class Cron extends CI_Controller
         }
     }
 
-    function intent_sync($in_id = 7240, $update_c_table = 1)
+    function intent_sync($in_id = 0, $update_c_table = 1)
     {
+
+        if(!$in_id){
+            $in_id = $this->config->item('in_primary_id');
+        }
         //Cron Settings: 31 * * * *
         //Syncs intents with latest caching data:
+
         $sync = $this->Database_model->in_recursive_fetch($in_id, true, $update_c_table);
         if (isset($_GET['redirect']) && strlen($_GET['redirect']) > 0) {
             //Now redirect;
@@ -142,9 +147,6 @@ class Cron extends CI_Controller
             'tr_en_child_id' => 1, //Transaction initiator
             'tr_en_credit_id' => 1, //Transaction recipient
 
-            'x_parent_en_id' => 5, //URL Creator
-            'x_en_id' => 8, //URL Referenced to them
-
             'tr_en_parent_id' => 13, //Action Plan Items
         );
 
@@ -174,16 +176,6 @@ class Cron extends CI_Controller
             $score += count($this->Database_model->tr_fetch(array(
                     'tr_en_credit_id' => $u['en_id'],
                 ), array(), 5000)) * $score_weights['tr_en_credit_id'];
-
-            $score += count($this->Old_model->x_fetch(array(
-                    'x_status >' => -2,
-                    'x_en_id' => $u['en_id'],
-                ))) * $score_weights['x_en_id'];
-            $score += count($this->Old_model->x_fetch(array(
-                    'x_status >' => -2,
-                    'x_parent_en_id' => $u['en_id'],
-                ))) * $score_weights['x_parent_en_id'];
-
             $score += count($this->Database_model->w_fetch(array(
                     'tr_en_parent_id' => $u['en_id'],
                 ))) * $score_weights['tr_en_parent_id'];

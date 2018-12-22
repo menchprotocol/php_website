@@ -32,7 +32,7 @@ $messages = $this->Database_model->tr_fetch(array(
     <?php
     foreach ($en_all_4485 as $tr_en_type_id => $value) {
         echo '<li role="presentation" class="nav_' . $tr_en_type_id . ' active" data-toggle="tooltip" title="' . $value['tr_content'] . '" data-placement="bottom">';
-        echo '<a href="#loadmessages-' . $in_id . '-' . $tr_en_type_id . '">' . $value['en_icon'] . ' ' . $value['en_name'] . '</a>';
+        echo '<a href="#loadmessages-' . $in_id . '-' . $tr_en_type_id . '"> ' . $value['en_icon'] . ' ' . str_replace(' Intent Message','',$value['en_name']) . ' </a>';
         echo '</li>';
     }
     ?>
@@ -48,7 +48,7 @@ $messages = $this->Database_model->tr_fetch(array(
     echo '<div id="message-sorting" class="list-group list-messages">';
     foreach ($messages as $tr) {
 
-        echo fn___echo_in_message_matrix(array_merge($tr, array(
+        echo fn___echo_in_message_manage(array_merge($tr, array(
             'tr_en_child_id' => $udata['en_id'],
         )));
 

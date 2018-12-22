@@ -41,12 +41,12 @@ class Entities extends CI_Controller
 
         $en_per_page = $this->config->item('en_per_page');
         $parent_en_id = intval($_POST['parent_en_id']);
-        $en_status_filter = intval($_POST['en_status_filter']);
+        $en_focus_filter = intval($_POST['en_focus_filter']);
         $page = intval($_POST['page']);
         $udata = fn___en_auth(null); //Just be logged in to browse
         $filters = array(
             'tr_en_parent_id' => $parent_en_id,
-            'en_status' . ($en_status_filter < 0 ? ' >=' : '') => ($en_status_filter < 0 ? 0 : intval($en_status_filter)), //Pending or Active
+            'en_status' . ($en_focus_filter < 0 ? ' >=' : '') => ($en_focus_filter < 0 ? 0 : intval($en_focus_filter)), //Pending or Active
             'tr_status' => 1, //Active link
         );
 
@@ -362,7 +362,7 @@ class Entities extends CI_Controller
 
         echo '<div id="list-messages" class="list-group  grey-list">';
         foreach ($messages as $tr) {
-            echo echo_message_chat($tr);
+            echo echo_message_body($tr);
         }
         echo '</div>';
     }
@@ -496,7 +496,7 @@ class Entities extends CI_Controller
         } elseif (!$is_miner && !$is_master) {
 
             //We assume this is a master request:
-            return fn___redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: You have not been enrolled to any Bootcamps yet. You can only login as a master after you have been approved by your miner.</div>');
+            return fn___redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: You have not added any intentions to your Action Plan yet.</div>');
 
         }
 

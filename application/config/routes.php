@@ -4,18 +4,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['404_override'] = 'other/404_page_not_found';
 $route['translate_uri_dashes'] = FALSE;
 
-/* ******************************
- * Front
- ****************************** */
+$route['default_controller'] = "custom";
+$route['ses'] = "custom/ses";
+$route['info'] = "custom/info";
+$route['login'] = "entities/en_login_ui";
+$route['logout'] = "entities/logout";
 
-
-$route['default_controller'] = "custom"; // Home page
-$route['ses'] = "custom/ses"; //Raw session logs
-$route['info'] = "custom/info"; //PHP Info
-$route['login'] = "entities/en_login_ui"; //Bootcamp Operator login
-$route['logout'] = "entities/logout"; //Logout from entites
-
-//Matrix:
+//Matrix UI:
 $route['entities/(:num)'] = "entities/en_miner_ui/$1";
 $route['entities'] = "entities/en_miner_ui/" . $this->config->item('en_primary_id');
 $route['intents/(:num)'] = "intents/fn___in_miner_ui/$1";

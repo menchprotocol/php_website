@@ -106,10 +106,10 @@ class Migrate extends CI_Controller
                 $stats['total_links']++;
                 $this->Database_model->tr_create(array(
                     'tr_timestamp' => $c['c_timestamp'],
-                    'tr_en_type_id' => 4331, //Intent Response Limitor
+                    'tr_en_type_id' => 4331, //Intent Response Limiters
                     'tr_en_credit_id' => $c['c_parent_u_id'],
                     'tr_in_child_id' => $c['c_id'],
-                    'tr_en_child_id' => 4255, //Link Content Type = Text Link
+                    'tr_en_parent_id' => 4255, //Link Content Type = Text Link
                 ));
             }
 
@@ -181,12 +181,12 @@ class Migrate extends CI_Controller
             2 => 2,//Published
         );
         $x_type_conv = array(
-            0 => 4256,
-            1 => 4257,
-            2 => 4258,
-            3 => 4259,
-            4 => 4260,
-            5 => 4261,
+            0 => 4256, //Generic URL
+            1 => 4257, //Embed
+            2 => 4258, //Video
+            3 => 4259, //Audio
+            4 => 4260, //Image
+            5 => 4261, //File
         );
         $stats = array(
             'entities' => 0,

@@ -101,7 +101,7 @@ if (!isset($_GET['skip_header'])) {
                         <li class="extra-toggle" style="display: none;"><a href="/my/actionplan"><i
                                         class="fas fa-flag"></i> Action Plans</a></li>
                         <li class="extra-toggle" style="display: none;"><a href="/custom/status_legend"><span
-                                        class="icon-left"><i class="fas fa-shield"></i></span> Admin</a></li>
+                                        class="icon-left"><i class="fas fa-shapes"></i></span> Status Legend</a></li>
                         <li class="extra-toggle" style="display: none;"><a href="/entities/<?= $udata['en_id'] ?>"><span
                                         class="icon-left"><i class="fas fa-user-circle"></i></span> Me</a></li>
                         <li class="extra-toggle" style="display: none;"><a href="/logout"><span class="icon-left"><i`

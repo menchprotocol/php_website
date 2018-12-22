@@ -1,3 +1,10 @@
+<?php
+//Prepare variables:
+$metadata = unserialize($in['in_metadata']);
+$do_expand = ( isset($_GET['do_expand']) && intval($_GET['do_expand']) );
+$is_primary_in = ( $in['in_id'] == $this->config->item('in_primary_id') );
+$guest_name = 'Dear candidate'; //To replace /first_name in messages (if any) since we do not know this Master yet
+?>
 <style>
     .body-container .msg, .body-container li, p, .body-container a {
         font-size: 1.1em !important;
@@ -36,13 +43,13 @@
 <div id="in_public_ui">
 
     <?php
-    if (!($c['in_id'] == $this->config->item('in_primary_id')) && 0) {
-        //TODO Re-active later... For now we have the bottom section for related intentions
+    if (!$is_primary_in && count($in['in__parents']) > 0) {
+        //Show Parents:
         $need_grandpa = true;
         $grandpa_intent = null;
         $parent_ins = null;
         //Show all parent intents for this intent:
-        foreach ($c['in__parents'] as $ci) {
+        foreach ($in['in__parents'] as $ci) {
             $parent_ins .= '<a class="list-group-item" href="/' . $ci['in_id'] . '"><span class="badge badge-primary"><i class="fas fa-angle-left"></i></span> ' . $ci['in_outcome'] . '</a>';
             if ($ci['in_id'] == $this->config->item('in_primary_id')) {
                 //Already included:
@@ -67,15 +74,18 @@
     }
 
     //Intent Title:
-    echo '<h1 style="margin-bottom:30px;" id="title-parent">' . $c['in_outcome'] . '</h1>';
+    echo '<h1 style="margin-bottom:30px;" id="title-parent">' . $in['in_outcome'] . '</h1>';
 
 
-    //Show all instant messages for this intent:
-    foreach ($c['in__messages'] as $i) {
-        if ($i['tr_status'] == 1) {
-            //Publish to Landing Page!
-            echo echo_message_chat($i);
-        }
+    //Fetch & Display On-Start Messages for this intent:
+    foreach ($this->Database_model->tr_fetch(array(
+        'tr_status >=' => 2, //Published+
+        'tr_en_type_id' => 4231, //On-Start Messages
+        'tr_in_child_id' => $in['in_id'],
+    ), array(), 0, 0, array('tr_order' => 'ASC')) as $tr) {
+        echo echo_message_body(array_merge($tr, array(
+            'noshow' => 1,
+        )), $guest_name);
     }
     ?>
 
@@ -83,62 +93,63 @@
 
     <h3 style="margin-top:0px !important;">Overview:</h3>
     <div style="margin:12px 0 0 5px;">
-        <?= fn___echo_in_overview($c, false) ?>
-        <?= fn___echo_in_referenced_content($c, false) ?>
-        <?= fn___echo_in_experts($c, false) ?>
-        <?= fn___echo_in_time_estimate($c, false) ?>
-        <?= fn___echo_in_cost_range($c, false) ?>
+        <?= fn___echo_in_overview($in, false) ?>
+        <?= fn___echo_in_referenced_content($in, false) ?>
+        <?= fn___echo_in_experts($in, false) ?>
+        <?= fn___echo_in_time_estimate($in, false) ?>
+        <?= fn___echo_in_cost_range($in, false) ?>
     </div>
 
 
-    <?php if (count($c['in__children']) > 0) { ?>
+    <?php if (count($in['in__children']) > 0) { ?>
 
         <h3>Action Plan:</h3>
         <div class="list-group actionplan_list" style="margin:12px 0 0 5px;">
             <?php
-            $do_expand = ( isset($_GET['do_expand']) && intval($_GET['do_expand']) );
-            $c1_counter = 0;
-            foreach ($c['in__children'] as $c1_counter => $c1) {
+            $in_level2_counter = 0;
+            foreach ($in['in__children'] as $in_level2_counter => $in_level2) {
 
 
-                echo '<div class="panel-group" id="open' . $c1_counter . '" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
-            <div class="panel-heading" role="tab" id="heading' . $c1_counter . '">
+                echo '<div class="panel-group" id="open' . $in_level2_counter . '" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
+            <div class="panel-heading" role="tab" id="heading' . $in_level2_counter . '">
                 <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" data-parent="#open' . $c1_counter . '" href="#collapse' . $c1_counter . '" aria-expanded="'.( $do_expand ? 'true' : 'false' ).'" aria-controls="collapse' . $c1_counter . '">
-                       ' . ($c['in_is_any'] ? 'Option' : 'Step') . ' ' . ($c1_counter + 1) . ': <span id="title-' . $c1['in_id'] . '">' . $c1['in_outcome'] . '</span><i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                    <a role="button" data-toggle="collapse" data-parent="#open' . $in_level2_counter . '" href="#collapse' . $in_level2_counter . '" aria-expanded="'.( $do_expand ? 'true' : 'false' ).'" aria-controls="collapse' . $in_level2_counter . '">
+                       ' . ($in['in_is_any'] ? 'Option' : 'Step') . ' ' . ($in_level2_counter + 1) . ': <span id="title-' . $in_level2['in_id'] . '">' . $in_level2['in_outcome'] . '</span><i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                     </a>
                 </h4>
             </div>
-            <div id="collapse' . $c1_counter . '" class="panel-collapse collapse '.( $do_expand ? 'in' : 'out' ).'" role="tabpanel" aria-labelledby="heading' . $c1_counter . '">
+            <div id="collapse' . $in_level2_counter . '" class="panel-collapse collapse '.( $do_expand ? 'in' : 'out' ).'" role="tabpanel" aria-labelledby="heading' . $in_level2_counter . '">
                 <div class="panel-body" style="padding:5px 0 0 5px;">';
 
 
                 //Show time if we have it:
-                if ($c['in__tree_max_seconds'] > 0) {
-                    echo '<div style="margin:0 0 5px; padding-top:5px; font-size:1.1em;">It is estimated to take ' . fn___echo_time_range($c1) . ' to complete this part.</div>';
+                if ($metadata['in__tree_max_seconds'] > 0) {
+                    echo '<div style="margin:0 0 5px; padding-top:5px; font-size:1.1em;">It is estimated to take ' . fn___echo_time_range($in_level2) . ' to complete this part.</div>';
                 }
 
 
-                //First show all messages for this intent:
-                foreach ($c1['in__messages'] as $i) {
-                    if ($i['tr_status'] == 1) {
-                        echo echo_message_chat(array_merge($i, array(
-                            'noshow' => 1,
-                        )), 'Dear candidate'); //As they are a guest at this point
-                    }
+                //Fetch & Display On-Start Messages for this intent:
+                foreach ($this->Database_model->tr_fetch(array(
+                    'tr_status >=' => 2, //Published+
+                    'tr_en_type_id' => 4231, //On-Start Messages
+                    'tr_in_child_id' => $in_level2['in_id'],
+                ), array(), 0, 0, array('tr_order' => 'ASC')) as $tr) {
+                    echo echo_message_body(array_merge($tr, array(
+                        'noshow' => 1,
+                    )), $guest_name);
                 }
 
-                if (count($c1['in__grandchildren']) > 0) {
+                if (count($in_level2['in__grandchildren']) > 0) {
 
                     echo '<ul style="list-style:none; margin-left:-30px; font-size:1em;">';
-                    foreach ($c1['in__grandchildren'] as $c2_counter => $c2) {
-                        echo '<li>Part ' . ($c1_counter + 1) . '.' . ($c2_counter + 1) . '. ' . $c2['in_outcome'] . '</li>';
+                    foreach ($in_level2['in__grandchildren'] as $in_level3_counter => $in_level3) {
+                        echo '<li>Part ' . ($in_level2_counter + 1) . '.' . ($in_level3_counter + 1) . '. ' . $in_level3['in_outcome'] . '</li>';
                     }
                     echo '</ul>';
 
                     //Since it has children, lets also give the option to navigate downwards ONLY IF...
-                    if ($c1['in_status'] >= 2) {
-                        echo '<div>You can choose to <a href="/' . $c1['in_id'] . '" ' . ($c['in_id'] == $this->config->item('in_primary_id') ? 'onclick="confirm_child_go(' . $c1['in_id'] . ')"' : '') . ' class="alink-' . $c1['in_id'] . '" style="text-decoration:underline;">subscribe to this part only</a>.</div>';
+                    if ($in_level2['in_status'] >= 2 && !$do_expand) {
+                        echo '<div>You can choose to <a href="/' . $in_level2['in_id'] . '" ' . ( $is_primary_in ? 'onclick="confirm_child_go(' . $in_level2['in_id'] . ')"' : '') . ' class="alink-' . $in_level2['in_id'] . '" style="text-decoration:underline;">subscribe to this part only</a>.</div>';
                     }
 
                 }
@@ -154,10 +165,10 @@
     <?php } ?>
 
 
-    <p style="padding:15px 0 0 0;">Ready to <?= $c['in_outcome'] ?>?</p>
+    <p style="padding:5px 0 0 0;">Ready to <?= $in['in_outcome'] ?>?</p>
 
     <!-- Call to Actions -->
-    <a class="btn btn-primary" href="https://m.me/askmench?ref=ACTIONPLAN-ADD-INITIATE_<?= $c['in_id'] ?>"
+    <a class="btn btn-primary" href="https://m.me/askmench?ref=<?= $in['in_id'] ?>"
        style="display: inline-block; padding: 12px 36px;">Get Started [Free] <i class="fas fa-angle-right"></i></a>
 
     <span class="learn_more_toggle" style="display: inline-block;">or <a class="btn btn-primary grey" href="#learnMore"
@@ -171,7 +182,7 @@
 <a name="learnMore"></a>
 <div style="display: none;" class="learn_more_toggle">
 
-    <h3 style="margin-top: 0px !important;">Advance Your Tech Career:</h3>
+    <h3 style="margin-top:20px !important;">Advance Your Tech Career:</h3>
     <div style="margin:12px 0 0 5px;">
 
         <?php
@@ -216,7 +227,7 @@
                 </h4>
             </div>
             <div id="collapse' . $id . '" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="heading' . $id . '">
-                <div class="panel-body" style="padding:5px 0 0 5px; font-size:1.1em;">Choose the number of hours you can commit each week to ' . $c['in_outcome'] . ' and Mench will streamline your progress based on your availability. Go as fast or slow as you like to achieve the right balance for success.</div>
+                <div class="panel-body" style="padding:5px 0 0 5px; font-size:1.1em;">Choose the number of hours you can commit each week to ' . $in['in_outcome'] . ' and Mench will streamline your progress based on your availability. Go as fast or slow as you like to achieve the right balance for success.</div>
             </div>
         </div></div>';
 
@@ -254,7 +265,7 @@
                 </h4>
             </div>
             <div id="collapse' . $id . '" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="heading' . $id . '">
-                <div class="panel-body" style="padding:5px 0 0 5px; font-size:1.1em;">The first question that Mench will ask you is to confirm if you are interested to ' . $c['in_outcome'] . '. Answering Yes will add this intention to your Action Plan so Mench can help you accomplish it.</div>
+                <div class="panel-body" style="padding:5px 0 0 5px; font-size:1.1em;">The first question that Mench will ask you is to confirm if you are interested to ' . $in['in_outcome'] . '. Answering Yes will add this intention to your Action Plan so Mench can help you accomplish it.</div>
             </div>
         </div></div>';
 
@@ -269,7 +280,7 @@
                 </h4>
             </div>
             <div id="collapse' . $id . '" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="heading' . $id . '">
-                <div class="panel-body" style="padding:5px 0 0 5px; font-size:1.1em;">Mench will continue the conversation and provide you with a step by step Action Plan that helps you ' . $c['in_outcome'] . '.</div>
+                <div class="panel-body" style="padding:5px 0 0 5px; font-size:1.1em;">Mench will continue the conversation and provide you with a step by step Action Plan that helps you ' . $in['in_outcome'] . '.</div>
             </div>
         </div></div>';
 
@@ -281,9 +292,10 @@
 
 
 <?php
+//Display other featured intents:
 $featured_cs = $ins = $this->Database_model->in_fetch(array(
     'in_status' => 3, //Featured Intents
-    'in_id !=' => $c['in_id'],
+    'in_id !=' => $in['in_id'],
 ));
 if (count($featured_cs) > 0) {
     echo '<div>';

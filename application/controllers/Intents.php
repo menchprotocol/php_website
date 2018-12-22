@@ -84,7 +84,7 @@ class Intents extends CI_Controller
         $ins = $this->Database_model->in_fetch(array(
             'in_id' => $in_id,
             'in_status >=' => 2, //Published+ (Since it's a public landing page)
-        ), array('in__parents', 'in__grandchildren', 'in__messages'));
+        ), array('in__parents', 'in__grandchildren'));
 
         //Make sure we found it:
         if ( count($ins) < 1) {
@@ -267,7 +267,7 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Recursive setting',
             ));
-        } elseif (!isset($_POST['c_cost_estimate'])) {
+        } elseif (!isset($_POST['in_usd'])) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Cost Estimate',
@@ -277,22 +277,22 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Status',
             ));
-        } elseif (!isset($_POST['c_points'])) {
+        } elseif (!isset($_POST['in_points'])) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Points',
             ));
-        } elseif (!isset($_POST['c_trigger_statements'])) {
+        } elseif (!isset($_POST['in_alternatives'])) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Trigger Statements',
             ));
-        } elseif (intval($_POST['c_cost_estimate']) < 0 || intval($_POST['c_cost_estimate']) > 300) {
+        } elseif (intval($_POST['in_usd']) < 0 || intval($_POST['in_usd']) > 300) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Cost estimate must be $0-5000 USD',
             ));
-        } elseif (!isset($_POST['in_is_any']) || !isset($_POST['c_require_url_to_complete']) || !isset($_POST['c_require_notes_to_complete'])) {
+        } elseif (!isset($_POST['in_is_any'])) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Completion Settings',
@@ -308,12 +308,12 @@ class Intents extends CI_Controller
         $c_update = array(
             'in_outcome' => trim($_POST['in_outcome']),
             //These are also in the recursive adjustment array as they affect metadata
-            'c_cost_estimate' => doubleval($_POST['c_cost_estimate']),
+            'in_usd' => doubleval($_POST['in_usd']),
             'in_seconds' => intval($_POST['in_seconds']),
             'in_is_any' => intval($_POST['in_is_any']),
             'in_status' => intval($_POST['in_status']),
-            'c_points' => intval($_POST['c_points']),
-            'c_trigger_statements' => trim($_POST['c_trigger_statements']),
+            'in_points' => intval($_POST['in_points']),
+            'in_alternatives' => trim($_POST['in_alternatives']),
         );
 
 
@@ -381,84 +381,6 @@ class Intents extends CI_Controller
             'message' => '<span><i class="fas fa-check"></i> Saved' . ($children_updated > 0 ? ' & ' . $children_updated . ' Recursive Updates' : '') . '</span>',
             'status_c_ui' => echo_status('in_status', $_POST['in_status'], true, 'left'),
             'status_cr_ui' => echo_status('tr_status', $_POST['tr_status'], true, 'left'),
-        ));
-
-    }
-
-    function c_unlink()
-    {
-
-
-        //Authenticate Miner:
-        $udata = fn___en_auth(array(1308));
-
-        if (!$udata) {
-            fn___echo_json(array(
-                'status' => 0,
-                'message' => 'Session Expired',
-            ));
-            return false;
-        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
-            fn___echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Intent ID',
-            ));
-            return false;
-        } elseif (!isset($_POST['tr_id']) || intval($_POST['tr_id']) < 1) {
-            fn___echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Intent Link ID',
-            ));
-            return false;
-        }
-
-        //Fetch intent to see what kind is it:
-        $ins = $this->Database_model->in_fetch(array(
-            'in_id' => intval($_POST['in_id']),
-            'in_status >=' => 0,
-        ));
-        if (!isset($ins[0])) {
-            fn___echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid Intent ID',
-            ));
-            return false;
-        }
-
-
-        //Fetch parent ID:
-        $in__parents = $this->Old_model->cr_parents_fetch(array(
-            'tr_id' => $_POST['tr_id'],
-            'tr_status' => 1,
-        ));
-        if (!isset($in__parents[0])) {
-            fn___echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid Intent Link ID',
-            ));
-            return false;
-        }
-
-
-        //Update parent tree (and upwards) based on the intent type BEFORE removing the link:
-        $in_metadata_modify = array(
-            'in__tree_in_count' => -($ins[0]['in__tree_in_count']),
-            'in__tree_max_seconds' => -(intval($ins[0]['in__tree_max_seconds'])),
-            'in__message_tree_count' => -($ins[0]['in__message_tree_count']),
-        );
-        $this->Database_model->metadata_tree_update('in', $in__parents[0]['tr_in_parent_id'], $in_metadata_modify);
-
-
-        //Remove Transaction:
-        $this->Database_model->tr_update($_POST['tr_id'], array(
-            'tr_status' => -1, //Removed
-        ), $udata['en_id']);
-
-        //Show success:
-        fn___echo_json(array(
-            'status' => 1,
-            'c_parent' => $in__parents[0]['tr_in_parent_id'],
-            'in__tree_in_count' => -($ins[0]['in__tree_in_count']),
         ));
 
     }
@@ -594,7 +516,7 @@ class Intents extends CI_Controller
             ));
 
             //Build UI friendly HTML Message:
-            $tip_messages .= echo_message_chat(array_merge($tr, array('tr_en_child_id' => $udata['en_id'])), $udata['en_name'], false);
+            $tip_messages .= echo_message_body(array_merge($tr, array('tr_en_child_id' => $udata['en_id'])), $udata['en_name'], false);
         }
 
         //Return results:
@@ -653,9 +575,6 @@ class Intents extends CI_Controller
     }
 
 
-    /* ******************************
-	 * i Messages
-	 ****************************** */
 
     function in_messages_load($in_id)
     {
@@ -680,6 +599,7 @@ class Intents extends CI_Controller
             'in_id' => $in_id,
         ));
         $this->load->view('view_shared/matrix_footer');
+
     }
 
     function fn___in_new_message_from_attachment()
@@ -794,10 +714,57 @@ class Intents extends CI_Controller
         //Echo message:
         fn___echo_json(array(
             'status' => 1,
-            'message' => fn___echo_in_message_matrix(array_merge($new_messages[0], array(
+            'message' => fn___echo_in_message_manage(array_merge($new_messages[0], array(
                 'tr_en_child_id' => $udata['en_id'],
             ))),
         ));
+    }
+
+
+    function fn___in_check_requirements()
+    {
+
+        /*
+         *
+         * An AJAX function that is triggered every time a Miner
+         * selects to modify an intent. It will check the
+         * completion requirements of an intent so it can
+         * check proper boxes to help Miner modify the intent.
+         *
+         * */
+
+        $udata = fn___en_auth(array(1308));
+        if (!$udata) {
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Session. Refresh.',
+            ));
+        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Intent ID',
+            ));
+        }
+
+        //Fetch intent requirements:
+        $completion_requirements = $this->Database_model->tr_fetch(array(
+            'tr_en_type_id' => 4331, //Intent Response Limiters
+            'tr_in_child_id' => $_POST['in_id'], //For this intent
+            'tr_status >=' => 2, //Published+
+            'tr_en_parent_id IN (' . join(',', $this->config->item('en_ids_4331')) . ')' => null, //The Requirement
+        ));
+
+        $requirement_array = array();
+        foreach($completion_requirements as $tr){
+            array_push($requirement_array, intval($tr['tr_en_parent_id']));
+        }
+
+        //Return results:
+        return fn___echo_json(array(
+            'status' => 1,
+            'requirement_array' => $requirement_array,
+        ));
+
     }
 
 
@@ -892,7 +859,7 @@ class Intents extends CI_Controller
         //Print the challenge:
         return fn___echo_json(array(
             'status' => 1,
-            'message' => echo_message_chat(array_merge($new_messages[0], array('tr_en_child_id' => $udata['en_id'])), $udata['en_name']),
+            'message' => echo_message_body(array_merge($new_messages[0], array('tr_en_child_id' => $udata['en_id'])), $udata['en_name']),
             'tr_en_type_id' => $en_all_4485[$new_messages[0]['tr_en_type_id']]['en_icon'].' '.$en_all_4485[$new_messages[0]['tr_en_type_id']]['en_name'],
             'success_icon' => '<span><i class="fas fa-check"></i> Saved</span>',
         ));

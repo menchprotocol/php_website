@@ -179,7 +179,7 @@ class Bot extends CI_Controller
 
                             //The very first payload, set defaults:
                             $referral_array = array(
-                                'ref' => 'ACTIONPLAN-ADD-INITIATE_' . $this->config->item('in_primary_id'),
+                                'ref' => $this->config->item('in_primary_id'),
                             );
 
                         } else {

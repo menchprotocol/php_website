@@ -1331,7 +1331,7 @@ class Matrix_model extends CI_Model
         $this->Database_model->metadata_tree_update('in', $in_parent_id, $in_metadata_modify);
 
 
-        //Fetch and return full data to be properly shown on the UI using the echo_c() function
+        //Fetch and return full data to be properly shown on the UI using the fn___echo_in() function
         $new_ins = $this->Database_model->tr_fetch(array(
             'tr_in_parent_id' => $in_parent_id,
             'tr_in_child_id' => $child_in['in_id'],
@@ -1345,7 +1345,7 @@ class Matrix_model extends CI_Model
         return array(
             'status' => 1,
             'in_child_id' => $child_in['in_id'],
-            'in_child_html' => echo_c($new_ins[0], $next_level, $in_parent_id),
+            'in_child_html' => fn___echo_in($new_ins[0], $next_level, $in_parent_id),
             //Also append some tree data for UI modifications via JS functions:
             'in__tree_max_seconds' => ( isset($in_metadata_modify['in__tree_max_seconds']) ? intval($in_metadata_modify['in__tree_max_seconds']) : 0 ), //Seconds added because of this
             'in__tree_in_count' => intval($in_metadata_modify['in__tree_in_count']), //We must have this (Either if we're linking OR creating) to show new intents in the tree

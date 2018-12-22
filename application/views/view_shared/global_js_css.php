@@ -19,13 +19,6 @@
 
 
 <!-- Core JS File/Variables -->
-<script>
-    //Passon some variables from PHP config to global JS:
-    var is_compact = (is_mobile() || $(window).width() < 767); //Manages UI view based on browse width (For example removed fixed right column for mobile)
-    var in_outcome_max = <?= $this->config->item('in_outcome_max') ?>;
-    var tr_content_max = <?= $this->config->item('tr_content_max') ?>;
-    var en_name_max = <?= $this->config->item('en_name_max') ?>;
-</script>
 <script src="/js/lib/jquery-3.1.0.min.js" type="text/javascript"></script>
 <script src="/js/lib/jquery-ui.min.js" type="text/javascript"></script>
 <script src="/js/lib/bootstrap.min.js" type="text/javascript"></script>
@@ -35,5 +28,13 @@
 <script src="/js/lib/highlight.min.js"></script>
 <script src="/js/lib/simplebar.js"></script>
 <script src="/js/custom/global-js.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
+
+<script>
+    //Passon some variables from PHP config to global JS:
+    var is_compact = (is_mobile() || $(window).width() < 767); //Manages UI view based on browse width (For example removed fixed right column for mobile)
+    var in_outcome_max = <?= $this->config->item('in_outcome_max') ?>;
+    var tr_content_max = <?= $this->config->item('tr_content_max') ?>;
+    var en_name_max = <?= $this->config->item('en_name_max') ?>;
+</script>
 
 <!-- END GLOBAL STATIC RESOURCES -->

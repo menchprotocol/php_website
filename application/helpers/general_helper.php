@@ -23,18 +23,6 @@ function fn___sortByScore($a, $b)
     return intval($b['en_trust_score']) - intval($a['en_trust_score']);
 }
 
-function fn___en_essentials($full_array)
-{
-    //Extracts what is determined to be the essential fields of an entity for metadata caching purposes
-    $return_array = array();
-    foreach (array('en_id', 'en_name', 'en_trust_score', 'en_icon') as $key) {
-        if (isset($full_array[$key])) {
-            $return_array[$key] = $full_array[$key];
-        }
-    }
-    return $return_array;
-}
-
 function fn___load_php_algolia($index_name)
 {
     //Loads up algolia search engine functions
