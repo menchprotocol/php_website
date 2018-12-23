@@ -10,7 +10,7 @@ $trs = $this->Database_model->tr_fetch(array(
 //Fetch objects
 echo '<div class="list-group list-grey" style="margin:-14px -5px -16px;">';
 foreach ($trs as $e) {
-    echo fn___echo_tr($e);
+    echo fn___echo_tr_row($e);
 }
 echo '</div>';
 ?>

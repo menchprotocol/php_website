@@ -159,7 +159,7 @@ class Matrix_model extends CI_Model
 
                 //Do not log update transaction here as we would log it further below:
                 $this->Database_model->tr_update($tr['tr_id'], array(
-                    'tr_status' => ($set_en_child_id > 0 ? -2 /* Being Updated */ : -1 /* Being Removed */), //Updated or Removed
+                    'tr_status' => -1, //Removed
                 ));
             }
 

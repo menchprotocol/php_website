@@ -58,7 +58,7 @@ class Migrate extends CI_Controller
         $ins = $this->Old_model->c_fetch(array(
             'c_id >=' => 8331,
             'c_status >=' => 1, //working on or more
-        ));
+        ), 0, array(), array('c_id' => 'ASC'));
         $stats = array(
             'intents' => 0,
             'intents_skipped' => 0,
@@ -154,6 +154,10 @@ class Migrate extends CI_Controller
                 ));
             }
         }
+
+        //Update the table sequence:
+        $this->db->query("SELECT setval('table_intents_in_id_seq', ".$c['c_id'].", true);");
+
 
         fn___echo_json($stats);
     }
@@ -489,6 +493,11 @@ class Migrate extends CI_Controller
 
             }
 
+        }
+
+        //Update the table sequence after a mass update:
+        if(!$u_id){
+            $this->db->query("SELECT setval('table_entities_en_id_seq', ".$u['u_id'].", true);");
         }
 
         fn___echo_json($stats);

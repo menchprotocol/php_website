@@ -15,7 +15,19 @@ class Ledger extends CI_Controller
 
     function index()
     {
-        echo 'List all transactions';
+
+        /*
+         *
+         * List all Transactions on reverse chronological order
+         *
+         * */
+
+        $this->load->view('view_shared/matrix_header', array(
+            'title' => 'Ledger Transactions',
+        ));
+        $this->load->view('view_ledger/tr_miner_ui');
+        $this->load->view('view_shared/matrix_footer');
+
     }
 
 
@@ -195,7 +207,7 @@ class Ledger extends CI_Controller
     }
 
 
-    function fn___tr_print($tr_id)
+    function fn___tr_json($tr_id)
     {
         //Authenticate miner access:
         $udata = fn___en_auth(array(1308), true);
@@ -217,17 +229,8 @@ class Ledger extends CI_Controller
         }
     }
 
-    function trs()
-    {
-        //List all recent transactions:
-        $this->load->view('view_shared/matrix_header', array(
-            'title' => 'Platform Transactions',
-        ));
-        $this->load->view('view_ledger/tr_miner_ui');
-        $this->load->view('view_shared/matrix_footer');
-    }
 
-    function actionplans()
+    function fn___tr_actionplans()
     {
         //List all recent action plans:
         $this->load->view('view_shared/matrix_header', array(

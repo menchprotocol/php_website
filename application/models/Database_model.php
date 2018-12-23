@@ -973,7 +973,7 @@ class Database_model extends CI_Model
                         }
 
                         //Append ID:
-                        $html_message .= '<div>Transaction ID: <a href="https://mench.com/ledger/fn___tr_print/' . $trs[0]['tr_id'] . '">#' . $trs[0]['tr_id'] . '</a></div>';
+                        $html_message .= '<div>Transaction ID: <a href="https://mench.com/ledger/fn___tr_json/' . $trs[0]['tr_id'] . '">#' . $trs[0]['tr_id'] . '</a></div>';
 
                         //TODO Send messenger
 

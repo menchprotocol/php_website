@@ -682,7 +682,7 @@ function fn___echo_number($number, $micro = true, $fb_format = false)
 }
 
 
-function fn___echo_tr($tr)
+function fn___echo_tr_row($tr)
 {
 
     $CI =& get_instance();
@@ -705,7 +705,7 @@ function fn___echo_tr($tr)
     }
 
     if (strlen($tr['tr_metadata']) > 0) {
-        $ui .= '<a href="/ledger/fn___tr_print/' . $tr['tr_id'] . '" class="badge badge-primary grey" target="_blank" data-toggle="tooltip" title="See Transaction Details in a new window" data-placement="left"><i class="fas fa-search-plus"></i></a>';
+        $ui .= '<a href="/ledger/fn___tr_json/' . $tr['tr_id'] . '" class="badge badge-primary grey" target="_blank" data-toggle="tooltip" title="See Transaction Details in a new window" data-placement="left"><i class="fas fa-search-plus"></i></a>';
     }
 
     $ui .= '</span>';
@@ -738,93 +738,111 @@ function fn___echo_tr($tr)
     return $ui;
 }
 
-function echo_w_matrix($w)
+function fn___echo_actionplan($tr)
 {
 
-    //Assumes w_stats has been added to w_fetch so we can display proper stats here...
-
+    /*
+     *
+     * Displays Action Plan Row and customized view based on
+     * where the request is coming from (intent/entity/ledger)
+     *
+     * */
     $CI =& get_instance();
 
     //This function will be called from 3 areas:
     $is_intent = ($CI->uri->segment(1) == 'intents');
     $is_entity = ($CI->uri->segment(1) == 'entities');
     $is_ledger = ($CI->uri->segment(1) == 'ledger');
-    $w_title = ''; //Build as we go depending on which view is loaded...
+    $tr_title = ''; //Build as we go depending on which view is loaded...
 
 
     //Display the item
-    $ui = '<div class="list-group-item" id="w_div_' . $w['tr_id'] . '">';
+    $ui = '<div class="list-group-item" id="w_div_' . $tr['tr_id'] . '">';
 
     //Right content:
     $ui .= '<span class="pull-right">';
 
     //Show Action Plan time:
-    $ui .= ' <span data-toggle="tooltip" data-placement="top" title="Master initiated Action Plan on ' . $w['w_timestamp'] . '" style="font-size:0.8em;">' . fn___echo_time_difference($w['w_timestamp']) . '</span> ';
+    $ui .= ' <span data-toggle="tooltip" data-placement="left" title="' . $tr['tr_timestamp'] . '" style="font-size:0.8em;">' . fn___echo_time_difference($tr['tr_timestamp']) . '</span> ';
 
 
     //Show Action Plan Status:
-    $ui .= ' <span>' . echo_status('tr_status', $w['tr_status'], true, 'left') . '</span> ';
+    $ui .= ' <span>' . echo_status('tr_status', $tr['tr_status'], true, 'left') . '</span> ';
 
 
     //Then customize based on request location:
     if ($is_intent || $is_ledger) {
 
-        //Show user who has subscribed:
-        $user_ws = $CI->Database_model->w_fetch(array(
-            'tr_en_parent_id' => $w['tr_en_parent_id'],
-        ));
-
-        if (!isset($w['en__parents'])) {
-            //Fetch parents at this point:
-            $w['en__parents'] = $CI->Database_model->tr_parent_fetch(array(
-                'tr_en_child_id' => $w['tr_en_parent_id'],
-                'tr_status >=' => 0, //Pending or Active
-                'en_status >=' => 0, //Pending or Active
-            ));
+        if (!isset($tr['en__parents'])) {
+            //Fetch entity parents at this point:
+            $tr['en__parents'] = $CI->Database_model->tr_fetch(array(
+                'tr_en_parent_id >' => 0, //Also has a parent assigned of any transaction type
+                'tr_en_child_id' => $tr['tr_en_parent_id'], //This child entity
+                'tr_status >=' => 0, //New+
+                'en_status >=' => 0, //New+
+            ), array('en_parent'), 0, 0, array('en_trust_score' => 'DESC'));
         }
 
-        $w_title .= fn___echo_en_icon($w) . ' ';
-        $w_title .= '<span class="en_name en_name_' . $w['en_id'] . '">' . $w['en_name'] . '</span>';
+        $tr_title .= fn___echo_en_icon($tr) . ' ';
+        $tr_title .= '<span class="en_name en_name_' . $tr['en_id'] . '">' . $tr['en_name'] . '</span>';
         //Loop through parents and show those that have en_icon set:
-        foreach ($w['en__parents'] as $in_u) {
+        foreach ($tr['en__parents'] as $en_parent) {
             //Note: We ONLY show here if there is an Icon set
-            if (strlen($in_u['en_icon']) > 0) {
-                $w_title .= ' &nbsp;<span data-toggle="tooltip" title="' . $in_u['en_name'] . (strlen($in_u['tr_content']) > 0 ? ': ' . $in_u['tr_content'] : '') . '" data-placement="top" class="en_icon_child_' . $in_u['en_id'] . '">' . $in_u['en_icon'] . '</span>';
+            if (strlen($en_parent['en_icon']) > 0) {
+                $tr_title .= ' &nbsp;<span data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['tr_content']) > 0 ? ': ' . $en_parent['tr_content'] : '') . '" data-placement="top" class="en_icon_child_' . $en_parent['en_id'] . '">' . $en_parent['en_icon'] . '</span>';
             }
         }
 
-        //Transactions made by subscriber:
-        $ui .= '<a href="#wtrs-' . $w['tr_en_parent_id'] . '-' . $w['tr_id'] . '" onclick="load_u_trs(' . $w['tr_en_parent_id'] . ',' . $w['tr_id'] . ')" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="' . $w['w_stats']['e_all_count'] . ' trs"><span class="btn-counter">' . $w['w_stats']['e_all_count'] . ($w['w_stats']['e_all_count'] == $CI->config->item('tr_max_count') ? '+' : '') . '</span><i class="fas fa-atlas"></i></a>';
+        //Count Total Transactions made by Action Plan Master:
+        $count_en_trs = $CI->Database_model->tr_fetch(array(
+            'tr_en_credit_id' => $tr['tr_en_parent_id'],
+        ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
+        $ui .= '<a href="#enactionplans-' . $tr['tr_en_parent_id'] . '-' . $tr['tr_id'] . '" onclick="load_u_trs(' . $tr['tr_en_parent_id'] . ',' . $tr['tr_id'] . ')" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="' . $count_en_trs[0]['totals'] . ' Total Transactions credited to '.$tr['en_name'].'"><span class="btn-counter">' . fn___echo_number($count_en_trs[0]['totals']) . '</span><i class="fas fa-atlas"></i></a>';
 
-        //Link to Master, but count total Action Plan first:
-        $ui .= '<a href="/entities/' . $w['tr_en_parent_id'] . '" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="top" title="Master has ' . count($user_ws) . ' total subsciptions"><span class="btn-counter">' . count($user_ws) . '</span><i class="fas fa-sign-out-alt rotate90"></i></a>';
+
+        //Link to Master:
+        $ui .= '<a href="/entities/' . $tr['tr_en_parent_id'] . '" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="' . $tr['en_name'] . '">'.fn___echo_en_icon($tr).'</a>';
 
     }
 
 
-    //Number of intents in Master Action Plan:
-    $ui .= '<a href="#wactionplan-' . $w['tr_id'] . '-' . $w['tr_en_parent_id'] . '" onclick="load_w_actionplan(' . $w['tr_id'] . ',' . $w['tr_en_parent_id'] . ')" class="badge badge-primary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="' . $w['w_stats']['k_count_done'] . '/' . ($w['w_stats']['k_count_done'] + $w['w_stats']['k_count_undone']) . ' intents are marked as complete. Click to open Action Plan."><span class="btn-counter">' . (($w['w_stats']['k_count_undone'] + $w['w_stats']['k_count_done']) > 0 ? number_format(($w['w_stats']['k_count_done'] / ($w['w_stats']['k_count_undone'] + $w['w_stats']['k_count_done']) * 100), 0) . '%' : '0%') . '</span><i class="fas fa-flag" style="font-size:0.85em;"></i></a>';
+    //Number of intents in Master Action Plan & Its completion Percentage:
+    $count_in_actionplans = $CI->Database_model->tr_fetch(array(
+        'tr_en_type_id' => 4235, //Action Plan Intent
+        'tr_tr_parent_id' => $tr['tr_id'],
+    ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
+    if ($count_in_actionplans[0]['totals'] > 0) {
+
+        //Yes, this intent has been added to some Action Plans, let's see what % is completed so far:
+        $count_in_actionplans_complete = $CI->Database_model->tr_fetch(array(
+            'tr_en_type_id' => 4235, //Action Plan Intent
+            'tr_tr_parent_id' => $tr['tr_id'],
+            'tr_status NOT IN (' . join(',', $CI->config->item('tr_status_incomplete')) . ')' => null, //completed
+        ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
+
+        //Show link to load these intents in Master Action Plans:
+        $ui .= '<a href="#wactionplan-' . $tr['tr_id'] . '-' . $tr['tr_en_parent_id'] . '" onclick="load_w_actionplan(' . $tr['tr_id'] . ',' . $tr['tr_en_parent_id'] . ')" class="badge badge-primary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="' . $count_in_actionplans_complete[0]['totals'] . '/' . $count_in_actionplans[0]['totals'] . ' completed (or skipped)"><span class="btn-counter">' . round($count_in_actionplans_complete[0]['totals'] / $count_in_actionplans[0]['totals'] * 100) . '%</span><i class="fas fa-flag" style="font-size:0.85em;"></i></a>';
+
+    }
 
 
     if ($is_entity || $is_ledger) {
 
         //Link to Action Plan's main intent:
-        $intent_ws = $CI->Database_model->w_fetch(array(
-            'tr_in_child_id' => $w['in_id'],
-        ));
-        $ui .= '<a href="/intents/' . $w['in_id'] . '" class="badge badge-primary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="Open subscribed intention to ' . $w['in_outcome'] . ' with ' . count($intent_ws) . ' Action Plans"><span class="btn-counter">' . count($intent_ws) . '</span><i class="fas fa-sign-in-alt"></i></a>';
+        $ui .= '<a href="/intents/' . $tr['in_id'] . '" class="badge badge-primary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="' . $tr['in_outcome'] . '"><i class="fas fa-hashtag"></i></a>';
 
-        $w_title .= ($is_ledger ? '<div style="margin: 3px 0 0 3px;"><i class="fas fa-hashtag"></i> ' : '');
-        $w_title .= '<span class="w_intent_' . $w['tr_id'] . '">' . $w['in_outcome'] . '</span>';
-        $w_title .= ($is_ledger ? '</div>' : '');
+        $tr_title .= ($is_ledger ? '<div style="margin: 3px 0 0 3px;"><i class="fas fa-hashtag"></i> ' : '');
+        $tr_title .= '<span class="w_intent_' . $tr['tr_id'] . '">' . $tr['in_outcome'] . '</span>';
+        $tr_title .= ($is_ledger ? '</div>' : '');
+
     }
 
 
     $ui .= '</span>';
 
+    //Show extra titles based on where this function is being called from:
+    $ui .= $tr_title;
 
-    //Start with Action Plan status:
-    $ui .= $w_title;
     $ui .= '</div>';
 
 
@@ -1785,7 +1803,7 @@ function echo_u($u, $level, $is_parent = false)
     ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
     if ($count_in_trs[0]['totals'] > 0) {
         //Show the transaction button:
-        $ui .= '<a href="#wtrs-' . $u['en_id'] . '" onclick="load_u_trs(' . $u['en_id'] . ')" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="top" title="' . number_format($count_in_trs[0]['totals'], 0) . ' Transactions"><span class="btn-counter">' . fn___echo_number($count_in_trs[0]['totals']) . '</span><i class="fas fa-atlas"></i></a>';
+        $ui .= '<a href="#enactionplans-' . $u['en_id'] . '" onclick="load_u_trs(' . $u['en_id'] . ')" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="top" title="' . number_format($count_in_trs[0]['totals'], 0) . ' Transactions"><span class="btn-counter">' . fn___echo_number($count_in_trs[0]['totals']) . '</span><i class="fas fa-atlas"></i></a>';
     }
 
     //Count messages:
@@ -1836,9 +1854,9 @@ function echo_u($u, $level, $is_parent = false)
     }
 
     //Loop through parents and show those that have en_icon set:
-    foreach ($u['en__parents'] as $in_u) {
-        if (strlen($in_u['en_icon']) > 0) {
-            $ui .= ' &nbsp;<a href="/entities/' . $in_u['en_id'] . '" data-toggle="tooltip" title="' . $in_u['en_name'] . (strlen($in_u['tr_content']) > 0 ? ' = ' . $in_u['tr_content'] : '') . '" data-placement="top" class="en_icon_child_' . $in_u['en_id'] . '">' . $in_u['en_icon'] . '</a>';
+    foreach ($u['en__parents'] as $en_parent) {
+        if (strlen($en_parent['en_icon']) > 0) {
+            $ui .= ' &nbsp;<a href="/entities/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['tr_content']) > 0 ? ' = ' . $en_parent['tr_content'] : '') . '" data-placement="top" class="en_icon_child_' . $en_parent['en_id'] . '">' . $en_parent['en_icon'] . '</a>';
         }
     }
 
