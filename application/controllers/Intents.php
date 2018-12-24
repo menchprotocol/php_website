@@ -379,8 +379,8 @@ class Intents extends CI_Controller
             'children_updated' => $children_updated,
             'in__tree_in_count' => -($ins[0]['in__tree_in_count']),
             'message' => '<span><i class="fas fa-check"></i> Saved' . ($children_updated > 0 ? ' & ' . $children_updated . ' Recursive Updates' : '') . '</span>',
-            'status_c_ui' => echo_status('in_status', $_POST['in_status'], true, 'left'),
-            'status_cr_ui' => echo_status('tr_status', $_POST['tr_status'], true, 'left'),
+            'status_c_ui' => fn___echo_status('in_status', $_POST['in_status'], true, 'left'),
+            'status_cr_ui' => fn___echo_status('tr_status', $_POST['tr_status'], true, 'left'),
         ));
 
     }

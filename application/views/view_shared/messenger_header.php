@@ -1,7 +1,4 @@
-<?php
-//Attempt to fetch session variables:
-$udata = $this->session->userdata('user');
-?><!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>

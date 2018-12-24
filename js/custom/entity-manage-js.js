@@ -75,7 +75,7 @@ $(document).ready(function () {
             if (hash_parts[0] == 'loadmessages') {
                 fn___load_en_messages(hash_parts[1]);
             } else if (hash_parts[0] == 'loadmodify') {
-                u_load_modify(hash_parts[1], hash_parts[2]);
+                en_load_modify(hash_parts[1], hash_parts[2]);
             } else if (hash_parts[0] == 'status') {
                 //Update status:
                 u_load_filter_status(hash_parts[1]);
@@ -180,7 +180,7 @@ function tr_add(en_new_id, assign_en_parent_id=0, is_parent) {
             input.focus();
 
             //Add new object to list:
-            add_to_list(list_id, '.u-item', data.en_new_echo);
+            add_to_list(list_id, '.en-item', data.en_new_echo);
 
             //Adjust counters:
             $(counter_class).text((parseInt($(counter_class + ':first').text()) + 1));
@@ -277,56 +277,11 @@ function u_load_next_page(page, load_new_filter = 0) {
 
 }
 
-function tr_unlink() {
 
-    var tr_id = ($('#modifybox').hasClass('hidden') ? 0 : parseInt($('#modifybox').attr('entity-link-id')));
-    var u_level1_name = $('.top_entity .en_name').text();
-    var u_level2_name = $('.tr_' + tr_id + ' .en_name').text();
-    var direction = (parseInt($('.tr_' + tr_id).attr('is-parent')) == 1 ? 'parent' : 'children');
-    var counter_class = '.li-' + direction + '-count';
-    var current_status = parseInt($('.tr_' + tr_id).attr('entity-status'));
-
-    //Confirm that they want to do this:
-    var r = confirm("Unlink [" + u_level2_name + "] from [" + u_level1_name + "]?");
-    if (!(r == true)) {
-        return false;
-    }
-
-
-    //Show loader:
-    $('.tr_' + tr_id).html('<img src="/img/round_load.gif" class="loader" style="width:24px !important; height:24px !important;" /> Unlinking...').hide().fadeIn();
-
-    //Save the rest of the content:
-    $.post("/entities/unlink_entities", {
-
-        tr_id: tr_id,
-
-    }, function (data) {
-
-        //OK, what happened?
-        if (data.status) {
-
-            //Update UI to confirm with user:
-            $('.tr_' + tr_id).fadeOut();
-            $('#modifybox').addClass('hidden');
-
-            //Update counter:
-            $(counter_class).text((parseInt($(counter_class + ':first').text()) - 1));
-            $('.count-u-status-' + current_status).text((parseInt($('.count-u-status-' + current_status).text()) - 1));
-
-        } else {
-            //There was an error, show to user:
-            $('.tr_' + tr_id).html('<b style="color:#FF0000 !important;">Error: ' + data.message + '</b>');
-        }
-
-    });
-}
-
-
-function u_load_modify(en_id, tr_id) {
+function en_load_modify(en_id, tr_id) {
 
     //Make sure inputs are valid:
-    if (!$('.u__' + en_id).length) {
+    if (!$('.en___' + en_id).length) {
         return false;
     }
 
@@ -337,7 +292,7 @@ function u_load_modify(en_id, tr_id) {
 
 
     $('#en_name').val($(".en_name_" + en_id + ":first").text());
-    $('#en_status').val($(".u__" + en_id + ":first").attr('entity-status'));
+    $('#en_status').val($(".en___" + en_id + ":first").attr('entity-status'));
     $('#en_icon').val($(".en_icon_val_" + en_id + ":first").html().replace('\\', ''));
 
     en_name_word_count();
@@ -394,7 +349,7 @@ function u_save_modify() {
     };
 
     //Take a snapshot of the status:
-    var original_en_status = parseInt($('.u__' + modify_data['en_id']).attr('entity-status'));
+    var original_en_status = parseInt($('.en___' + modify_data['en_id']).attr('entity-status'));
 
     //Show spinner:
     $('.save_entity_changes').html('<span><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
@@ -416,11 +371,11 @@ function u_save_modify() {
             }
 
             if (modify_data['en_icon'].length > 0) {
-                $('.en_icon_ui_' + modify_data['en_id']).removeClass('hidden').html('&nbsp;[' + modify_data['en_icon'] + ']');
+                $('.en_icon_ui_' + modify_data['en_id']).html(modify_data['en_icon']);
                 $('.en_icon_child_' + modify_data['en_id']).html(modify_data['en_icon']);
             } else {
                 //hide that section
-                $('.en_icon_ui_' + modify_data['en_id']).addClass('hidden');
+                $('.en_icon_ui_' + modify_data['en_id']).html('<i class="fas fa-at grey-at"></i>');
                 $('.en_icon_child_' + modify_data['en_id']).html('');
             }
 
@@ -438,11 +393,11 @@ function u_save_modify() {
                 if (en_focus_filter >= 0 && !(modify_data['en_status'] == en_focus_filter)) {
                     //We have the filter on and it does not match the new status, so hide this:
                     setTimeout(function () {
-                        $('.u__' + modify_data['en_id']).fadeOut();
+                        $('.en___' + modify_data['en_id']).fadeOut();
                     }, 377);
                 } else {
                     //Update status:
-                    $('.u__' + modify_data['en_id']).attr('entity-status', modify_data['en_status']);
+                    $('.en___' + modify_data['en_id']).attr('entity-status', modify_data['en_status']);
                 }
 
             }

@@ -1,20 +1,3 @@
-<style>
-    table, tr, td, th {
-        text-align: left !important;
-        font-size: 14px;
-        cursor: default !important;
-        line-height: 120% !important;
-    }
-
-    th {
-        font-weight: bold !important;
-    }
-
-    td {
-        padding: 5px 0 !important;
-    }
-</style>
-
 <?php
 
 $tr_filters = array(
@@ -67,7 +50,7 @@ if(isset($_GET['end_range']) && fn___isDate($_GET['end_range'])){
 }
 
 //Fetch transactions:
-$trs = $this->Database_model->tr_fetch($filters, array('en_type'), 100);
+$trs = $this->Database_model->tr_fetch($filters, array('en_type'), (fn___is_dev() ? 30 : 100));
 
 
 
@@ -75,6 +58,8 @@ $trs = $this->Database_model->tr_fetch($filters, array('en_type'), 100);
 
 //Display filters:
 echo '<h5 class="badge badge-h"><i class="fas fa-filter"></i> Filters</h5>';
+
+
 
 echo '<form action="" method="GET">';
 echo '<table class="table table-condensed"><tr>';
@@ -100,12 +85,12 @@ foreach ($tr_filters as $key => $value) {
         //Give option to select:
         $select_ui = '';
         foreach ($all_engs as $tr) {
-            $select_ui .= '<option value="' . $tr['tr_en_type_id'] . '" ' . ((isset($_GET[$key]) && $_GET[$key] == $tr['tr_en_type_id']) ? 'selected="selected"' : '') . '>' . $tr['en_name'] . ' ('  . fn___echo_number($tr['trs_count']) . ')</option>';
+            $select_ui .= '<option value="' . $tr['tr_en_type_id'] . '" ' . ((isset($_GET['tr_en_type_id']) && $_GET['tr_en_type_id'] == $tr['tr_en_type_id']) ? 'selected="selected"' : '') . '>' . $tr['en_name'] . ' ('  . fn___echo_number($tr['trs_count']) . ')</option>';
             $all_transaction_count += $tr['trs_count'];
         }
 
         //Echo Transaction filters:
-        echo '<select class="form-control border" name="' . $key . '" class="border" data-toggle="tooltip" data-placement="top" title="Transaction Types" style="width:160px;">';
+        echo '<select class="form-control border" name="tr_en_type_id" class="border" data-toggle="tooltip" data-placement="top" title="Transaction Types" style="width:160px;">';
         echo '<option value="0">All Transactions ('  . fn___echo_number($all_transaction_count) . ')</option>';
         echo $select_ui;
         echo '</select>';

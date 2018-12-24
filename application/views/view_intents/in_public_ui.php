@@ -3,7 +3,7 @@
 $metadata = unserialize($in['in_metadata']);
 $do_expand = ( isset($_GET['do_expand']) && intval($_GET['do_expand']) );
 $is_primary_in = ( $in['in_id'] == $this->config->item('in_primary_id') );
-$guest_name = 'Dear candidate'; //To replace /first_name in messages (if any) since we do not know this Master yet
+$guest_name = 'Dear candidate'; //To replace /firstname in messages (if any) since we do not know this Master yet
 ?>
 <style>
     .body-container .msg, .body-container li, p, .body-container a {
@@ -44,33 +44,23 @@ $guest_name = 'Dear candidate'; //To replace /first_name in messages (if any) si
 
     <?php
     if (!$is_primary_in && count($in['in__parents']) > 0) {
-        //Show Parents:
-        $need_grandpa = true;
-        $grandpa_intent = null;
+
+        //Fetch Parent Intents:
         $parent_ins = null;
+
         //Show all parent intents for this intent:
-        foreach ($in['in__parents'] as $ci) {
-            $parent_ins .= '<a class="list-group-item" href="/' . $ci['in_id'] . '"><span class="badge badge-primary"><i class="fas fa-angle-left"></i></span> ' . $ci['in_outcome'] . '</a>';
-            if ($ci['in_id'] == $this->config->item('in_primary_id')) {
-                //Already included:
-                $need_grandpa = false;
+        foreach ($in['in__parents'] as $in_parent) {
+            if($in_parent['in_status'] >= 2){
+                $parent_ins .= '<a class="list-group-item" href="/' . $in_parent['in_id'] . '"><span class="badge badge-primary"><i class="fas fa-angle-left"></i></span> ' . $in_parent['in_outcome'] . '</a>';
             }
         }
 
-        if ($need_grandpa) {
-            //Fetch top intent and include it here:
-            $gps = $this->Database_model->in_fetch(array(
-                'in_id' => $this->config->item('in_primary_id'),
-            ));
-            $grandpa_intent = '<a class="list-group-item" href="/' . $gps[0]['in_id'] . '"><span class="badge badge-primary"><i class="fas fa-angle-left"></i></span> ' . $gps[0]['in_outcome'] . '</a>';
+        if($parent_ins){
+            //Display generated parents:
+            echo '<div class="list-group" style="margin-top: 10px;">';
+            echo $parent_ins;
+            echo '</div>';
         }
-
-        //Display generated parents:
-        echo '<div class="list-group" style="margin-top: 10px;">';
-        echo($need_grandpa ? $grandpa_intent : '');
-        echo $parent_ins;
-        echo '</div>';
-
     }
 
     //Intent Title:
@@ -123,7 +113,7 @@ $guest_name = 'Dear candidate'; //To replace /first_name in messages (if any) si
 
 
                 //Show time if we have it:
-                if ($metadata['in__tree_max_seconds'] > 0) {
+                if (isset($metadata['in__tree_max_seconds']) && $metadata['in__tree_max_seconds'] > 0) {
                     echo '<div style="margin:0 0 5px; padding-top:5px; font-size:1.1em;">It is estimated to take ' . fn___echo_time_range($in_level2) . ' to complete this part.</div>';
                 }
 

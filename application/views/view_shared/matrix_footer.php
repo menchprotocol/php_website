@@ -29,6 +29,7 @@
     </div>
 </div>
 
+<div class="app-version">v<?= $this->config->item('app_version') ?></div>
 
 </body>
 </html>

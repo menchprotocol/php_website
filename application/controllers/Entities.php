@@ -61,7 +61,7 @@ class Entities extends CI_Controller
         $child_entities = $this->Old_model->ur_children_fetch($filters, array('en__child_count'), $en_per_page, ($page * $en_per_page));
 
         foreach ($child_entities as $en) {
-            echo echo_u($en, 2, false /* Load more only for children */);
+            echo fn___echo_en($en, 2, false /* Load more only for children */);
         }
 
         //Do we need another load more button?
@@ -205,38 +205,10 @@ class Entities extends CI_Controller
         return fn___echo_json(array(
             'status' => 1,
             'en_new_status' => $entity_new['en_status'],
-            'en_new_echo' => echo_u(array_merge($entity_new, $ur2), 2, $_POST['is_parent']),
+            'en_new_echo' => fn___echo_en(array_merge($entity_new, $ur2), 2, $_POST['is_parent']),
         ));
     }
 
-    function unlink_entities()
-    {
-
-        //Auth user and check required variables:
-        $udata = fn___en_auth(array(1308));
-
-        if (!$udata) {
-            return fn___echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid Session. Refresh the page and try again.',
-            ));
-        } elseif (!isset($_POST['tr_id']) || intval($_POST['tr_id']) < 1) {
-            return fn___echo_json(array(
-                'status' => 0,
-                'message' => 'Missing entity link ID',
-            ));
-        }
-
-        //Remove transaction:
-        $this->Database_model->tr_update($_POST['tr_id'], array(
-            'tr_status' => -1,
-        ), $udata['en_id']);
-
-        return fn___echo_json(array(
-            'status' => 1,
-            'message' => 'Successfully unlinked entity',
-        ));
-    }
 
 
     function u_save_settings()
@@ -336,7 +308,7 @@ class Entities extends CI_Controller
         return fn___echo_json(array(
             'status' => 1,
             'message' => '<span><i class="fas fa-check"></i> Saved</span>',
-            'status_u_ui' => echo_status('en_status', $_POST['en_status'], true, 'bottom'),
+            'status_u_ui' => fn___echo_status('en_status', $_POST['en_status'], true, 'bottom'),
             'tr_content' => fn___echo_link($_POST['tr_content']),
         ));
 
@@ -412,15 +384,6 @@ class Entities extends CI_Controller
         ), array('en__actionplans'));
 
         if ($ens[0]['en_status'] < 0 || $trs[0]['tr_status'] < 0) {
-
-            //Removed entity
-            $this->Database_model->tr_create(array(
-                'tr_en_credit_id' => $ens[0]['en_id'],
-                'tr_en_child_id' => $ens[0]['en_id'],
-                'tr_content' => 'login() denied because account is not active.',
-                'tr_metadata' => $_POST,
-                'tr_en_type_id' => 4247, //Support Needing Graceful Errors
-            ));
 
             return fn___redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Your account has been de-activated. Contact us to re-active your account.</div>');
 
@@ -500,13 +463,13 @@ class Entities extends CI_Controller
 
         }
 
-
-        //Log transaction
+        //Log Sign In Transaction
         $this->Database_model->tr_create(array(
             'tr_en_credit_id' => $ens[0]['en_id'],
             'tr_metadata' => $ens[0],
-            'tr_en_type_id' => 4269, //login
+            'tr_en_type_id' => ( $is_miner ? 4269 /* Miner Sign in */ : 4563 /* Master Sign in */ ),
         ));
+
 
         //All good to go!
         //Load session and redirect:
@@ -537,15 +500,7 @@ class Entities extends CI_Controller
 
     function logout()
     {
-        //Log transaction:
-        $udata = $this->session->userdata('user');
-        $this->Database_model->tr_create(array(
-            'tr_en_credit_id' => (isset($udata['en_id']) && $udata['en_id'] > 0 ? $udata['en_id'] : 0),
-            'tr_metadata' => $udata,
-            'tr_en_type_id' => 4270, //User Logout
-        ));
-
-        //Called via AJAX to destroy user session:
+        //Destroys Session
         $this->session->sess_destroy();
         header('Location: /');
     }

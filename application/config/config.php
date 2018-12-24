@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  *
  * Global variables used throughout the platform.
- * use-case format: $this->config->item('in_primary_id')
+ * use-case format: $this->config->item('en_convert_4537')
  *
  */
 
@@ -31,7 +31,6 @@ $config['en_default_url_parent'] = 1326; //The entity that would be the parent t
 $config['enable_algolia'] = false; //Currently reached our monthly free quota
 $config['file_size_max'] = 25; //Server setting is 32MB. see here: mench.com/ses
 $config['password_salt'] = '40s96As9ZkdAcwQ9PhZm'; //Used for hashing the user password for Mench logins
-$config['tr_types_exclude'] = array(4278, 4279); //These transaction types will be ignored in statistical models as there are too many of them!
 $config['tr_status_incomplete'] = array(0, 1); //Transactions with these tr_status values are considered in-complete
 
 
@@ -41,7 +40,12 @@ $config['in_seconds_max'] = 28800; //The maximum seconds allowed per intent. If 
 $config['in_outcome_max'] = 89; //Max number of characters allowed in the title of intents
 $config['en_name_max'] = 250; //Max number of characters allowed in the title of intents
 $config['tr_content_max'] = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
-
+$config['message_commands'] = array( //The list of commands supported within a message content
+    '/firstname', //Will be replaced by the first name of the recipient
+    '/typing:', //Will show a typing for the number of seconds followed, like /typing:5 which will show it for 5 seconds
+    '/slice:', //Will Slice all supporting videos (YouTube) of the referenced entity within a message like /slice:180:202 (22 seconds starting from minute 3:00
+    '/button:', //Will display a custom button like /button:Search for Batman:https://google.com/?q=Batman (Note that middle part cannot be longer than 20 characters)
+);
 
 //Third-Party Settings:
 $config['fb_max_message'] = 2000; //The maximum length of a Message accepted via Messenger API (This used to be 610 before, then Facebook expanded it!)
@@ -100,7 +104,6 @@ $config['eng_converter'] = array(
     4 => 4267, //Log Messenger referral
     3 => 4268, //Log Messenger postback
     10 => 4269, //Log user sign in
-    11 => 4270, //Log user sign out
     59 => 4271, //Log user password reset
 
 
@@ -114,12 +117,11 @@ $config['eng_converter'] = array(
     7 => 4280, //Log message sent
     55 => 4282, //Log my account access
     32 => 4283, //Log action plan access
-    33 => 4242, //Log action plan intent completion [Link updated]
+    33 => 4242, //Log Action Plan completion [Link updated]
     7718 => 4287, //Log unrecognized message
 
     //Platform Operations Links:
     8 => 4246, //Platform Error
-    9 => 4247, //Log user attention request
     72 => 4248, //Log user review
 );
 
@@ -168,12 +170,12 @@ $config['object_statuses'] = array(
         -1 => array(
             's_name' => 'Removed',
             's_desc' => 'Entity removed by Miner',
-            's_icon' => 'fas fa-trash-alt',
+            's_icon' => 'fal fa-minus-square',
         ),
         0 => array(
             's_name' => 'New',
             's_desc' => 'Entity is newly added and is pending review by a Miner',
-            's_icon' => 'fal fa-plus-circle',
+            's_icon' => 'fal fa-square',
         ),
         1 => array(
             's_name' => 'Working On',
@@ -183,7 +185,7 @@ $config['object_statuses'] = array(
         2 => array(
             's_name' => 'Published',
             's_desc' => 'Entity is published live and ready to be distributed to Masters',
-            's_icon' => 'fas fa-check-circle',
+            's_icon' => 'fas fa-check-square',
         ),
         3 => array(
             's_name' => 'Claimed',
@@ -195,12 +197,12 @@ $config['object_statuses'] = array(
         -1 => array(
             's_name' => 'Removed',
             's_desc' => 'Intent removed by Miner',
-            's_icon' => 'fas fa-trash-alt',
+            's_icon' => 'fal fa-minus-square',
         ),
         0 => array(
             's_name' => 'New',
             's_desc' => 'Intent is newly added and is pending review by a Miner',
-            's_icon' => 'fal fa-plus-circle',
+            's_icon' => 'fal fa-square',
         ),
         1 => array(
             's_name' => 'Working On',
@@ -210,7 +212,7 @@ $config['object_statuses'] = array(
         2 => array(
             's_name' => 'Published',
             's_desc' => 'Intent is published live and ready to be distributed to Masters',
-            's_icon' => 'fas fa-check-circle',
+            's_icon' => 'fas fa-check-square',
         ),
         3 => array(
             's_name' => 'Featured',

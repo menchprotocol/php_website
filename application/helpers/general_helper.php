@@ -106,6 +106,7 @@ function fn___extract_message_references($tr_content)
 {
 
     //Analyzes a message text to extract Entity References (Like @123) and URLs
+    $CI =& get_instance();
 
     //Replace non-ascii characters with space:
     $tr_content = preg_replace('/[[:^print:]]/', ' ', $tr_content);
@@ -115,6 +116,7 @@ function fn___extract_message_references($tr_content)
     $obj_breakdown = array(
         'en_urls' => array(),
         'en_refs' => array(),
+        'en_commands' => array(),
     );
 
     //See what we can find:
@@ -123,6 +125,13 @@ function fn___extract_message_references($tr_content)
             array_push($obj_breakdown['en_urls'], $part);
         } elseif (substr($part, 0, 1) == '@' && intval($part) > 0) {
             array_push($obj_breakdown['en_refs'], intval($part));
+        } else {
+            //Check maybe it's a command?
+            $command = fn___includes_any($part, $CI->config->item('message_commands'));
+            if($command){
+                //Yes!
+                array_push($obj_breakdown['en_refs'], $command);
+            }
         }
     }
     return $obj_breakdown;
@@ -158,9 +167,6 @@ function fn___detect_tr_en_type_id($string)
     if (!$string || strlen($string) == 0) {
         //Naked:
         return 4230;
-    } elseif (fn___isDate($string)) {
-        //Date/time:
-        return 4318;
     } elseif (is_int($string) || is_double($string)) {
         //Number:
         return 4319;
@@ -168,6 +174,9 @@ function fn___detect_tr_en_type_id($string)
         //It's a URL, see what type:
         $curl = fn___curl_html($string, true);
         return $curl['tr_en_type_id'];
+    } elseif (fn___isDate($string)) {
+        //Date/time:
+        return 4318;
     } else {
         //Regular text link:
         return 4255;

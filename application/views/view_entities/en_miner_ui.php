@@ -17,7 +17,7 @@
         echo '<h5><span class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-parent-count">' . count($entity['en__parents']) . '</span> Parent' . fn___echo__s(count($entity['en__parents'])) . '</span></h5>';
         echo '<div id="list-parent" class="list-group  grey-list">';
         foreach ($entity['en__parents'] as $en) {
-            echo echo_u($en, 2, true);
+            echo fn___echo_en($en, 2, true);
         }
         //Input to add new parents:
         echo '<div id="new-parent" class="list-group-item list_input grey-input">
@@ -38,7 +38,7 @@
         //Focused/current entity:
         echo '<h5 class="badge badge-h indent1"><i class="fas fa-at"></i> Entity</h5>';
         echo '<div id="entity-box" class="list-group indent1">';
-        echo echo_u($entity, 1);
+        echo fn___echo_en($entity, 1);
         echo '</div>';
 
 
@@ -47,6 +47,7 @@
         //Children:
         echo '<div class="indent2"><table width="100%" style="margin-top:10px;"><tr>';
         echo '<td style="width: 100px;"><h5 class="badge badge-h"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-children-count">' . $entity['en__child_count'] . '</span> Children</h5></td>';
+        
         //Count orphans IF we are in the top parent root:
         if ($this->config->item('en_primary_id') == $entity['en_id']) {
             $orphans_count = count($this->Database_model->en_fetch(array(
@@ -55,24 +56,23 @@
 
             if ($orphans_count > 0) {
                 echo '<td style="width:130px;">';
-                echo '<span style="padding-left:8px; display: inline-block;"><a href="/entities/fn___in_orphans">' . $orphans_count . ' Orphans &raquo;</a></span>';
+                echo '<span style="padding-left:8px; display: inline-block;"><a href="/entities/fn___en_orphans">' . $orphans_count . ' Orphans &raquo;</a></span>';
                 echo '</td>';
             }
         }
         echo '<td style="text-align: right;"><div class="btn-group btn-group-sm" style="margin-top:-5px;" role="group">';
 
         //Fetch current count for each status from DB:
-        $counts = $this->Old_model->ur_children_fetch(array(
+        $child_en_filters = $this->Database_model->tr_fetch(array(
             'tr_en_parent_id' => $entity['en_id'],
-            'tr_status' => 1, //Only active
-            'en_status >=' => 0,
-        ), array(), 0, 0, 'COUNT(en_id) as u_counts, en_status', 'en_status', array(
-            'en_status' => 'ASC',
-        ));
+            'tr_en_child_id >' => 0, //Any type of children is accepted
+            'tr_status >=' => 0, //New+
+            'en_status >=' => 0, //New+
+        ), array('en_child'), 0, 0, array('en_status' => 'ASC'), 'COUNT(en_id) as totals, en_status', 'en_status');
 
 
-        //Only show filtering UI if we find entities with different statuses
-        if (count($counts) > 0 && $counts[0]['u_counts'] < $entity['en__child_count']) {
+        //Only show filtering UI if we find child entities with different statuses (Otherwise no need to filter):
+        if (count($child_en_filters) > 0 && $child_en_filters[0]['totals'] < $entity['en__child_count']) {
 
             //Load status definitions:
             $status_index = $this->config->item('object_statuses');
@@ -81,9 +81,9 @@
             echo '<a href="javascript:void(0)" onclick="u_load_filter_status(-1)" class="btn btn-default btn-secondary u-status-filter u-status--1" data-toggle="tooltip" data-placement="top" title="View all entities"><i class="fas fa-at"></i><span class="hide-small"> All</span> [<span class="li-children-count">' . $entity['en__child_count'] . '</span>]</a>';
 
             //Show each specific filter based on DB counts:
-            foreach ($counts as $c_c) {
-                $st = $status_index['en'][$c_c['en_status']];
-                echo '<a href="#status-' . $c_c['en_status'] . '" onclick="u_load_filter_status(' . $c_c['en_status'] . ')" class="btn btn-default u-status-filter u-status-' . $c_c['en_status'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['s_desc'] . '"><i class="' . $st['s_icon'] . '"></i><span class="hide-small"> ' . $st['s_name'] . '</span> [<span class="count-u-status-' . $c_c['en_status'] . '">' . $c_c['u_counts'] . '</span>]</a>';
+            foreach ($child_en_filters as $c_c) {
+                $st = $status_index['en_status'][$c_c['en_status']];
+                echo '<a href="#status-' . $c_c['en_status'] . '" onclick="u_load_filter_status(' . $c_c['en_status'] . ')" class="btn btn-default u-status-filter u-status-' . $c_c['en_status'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['s_desc'] . '"><i class="' . $st['s_icon'] . '"></i><span class="hide-small"> ' . $st['s_name'] . '</span> [<span class="count-u-status-' . $c_c['en_status'] . '">' . $c_c['totals'] . '</span>]</a>';
             }
 
         }
@@ -95,7 +95,7 @@
         echo '<div id="list-children" class="list-group grey-list indent2">';
 
         foreach ($entity['en__children'] as $en) {
-            echo echo_u($en, 2);
+            echo fn___echo_en($en, 2);
         }
         if ($entity['en__child_count'] > count($entity['en__children'])) {
             fn___echo_en_load_more(1, $this->config->item('en_per_page'), $entity['en__child_count']);
@@ -146,7 +146,7 @@
                             </h4></div>
                         <select class="form-control" id="en_status">
                             <?php
-                            foreach (echo_status('en_status') as $status_id => $status) {
+                            foreach (fn___echo_status('en_status') as $status_id => $status) {
                                 echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
                             }
                             ?>
@@ -169,7 +169,7 @@
                             <div class="title"><h4><i class="fas fa-atlas"></i> Transaction Status</h4></div>
                             <select class="form-control" id="tr_status">
                                 <?php
-                                foreach (echo_status('tr_status') as $status_id => $status) {
+                                foreach (fn___echo_status('tr_status') as $status_id => $status) {
                                     echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
                                 }
                                 ?>
@@ -181,7 +181,7 @@
 
                 <div class="li_component" style="margin-top:15px;">
                     <div class="title" style="margin-bottom:0; padding-bottom:0;"><h4><i class="fas fa-file-alt"></i>
-                            Link Notes [<span style="margin:0 0 10px 0; font-size:0.8em;"><span
+                            Transaction Content [<span style="margin:0 0 10px 0; font-size:0.8em;"><span
                                         id="chartr_contentNum">0</span>/<?= $this->config->item('tr_content_max') ?></span>]
                         </h4></div>
                     <textarea class="form-control text-edit border msg" id="tr_content"
@@ -196,13 +196,7 @@
                         <td class="save-td"><a href="javascript:u_save_modify();" class="btn btn-secondary">Save</a>
                         </td>
                         <td><span class="save_entity_changes"></span></td>
-                        <td style="width:100px; text-align:right;">
-                            <div class="unlink-entity"><a href="javascript:tr_unlink();" data-toggle="tooltip"
-                                                          title="Only remove entity link while NOT Archiving the entity itself"
-                                                          data-placement="left" style="text-decoration:none;"><i
-                                            class="fas fa-unlink"></i> Unlink</a></div>
-
-                        </td>
+                        <td style="width:100px; text-align:right;"></td>
                     </tr>
                 </table>
             </div>

@@ -196,7 +196,7 @@ class Matrix_model extends CI_Model
          *
          * - tr_in_child_id
          * - tr_en_child_id (OR IF tr_en_child_id=0 AND tr_en_parent_id>0 THEN tr_en_child_id=tr_en_parent_id AND tr_en_parent_id=0)
-         * - IF Action Plan intent we need these inputs: tr_status & tr_in_parent_id & tr_tr_parent_id & tr_tr_id & tr_en_type_id==4235
+         * - IF Action Plan we need these inputs: tr_status & tr_in_parent_id & tr_tr_parent_id & tr_tr_id & tr_en_type_id==4559
          *
          * */
 
@@ -327,8 +327,8 @@ class Matrix_model extends CI_Model
                 ));
             }
 
-            //We have messages for the very first level!
-            //Append only if not the top-level item of the Action Plan (Since we've already communicated them)
+            //We have messages for the Action Plan!
+            //Append only if this is an Action Plan Intent (Since we've already communicated them)
             foreach ($in_messages['messages_on_start'] as $message_tr) {
 
                 array_push($messages, array(
@@ -343,12 +343,12 @@ class Matrix_model extends CI_Model
         }
 
 
-        //Is $tr an Action Plan intent? It must meet all these conditions to be one:
-        if (isset($tr['tr_status']) && isset($tr['tr_in_parent_id']) && isset($tr['tr_tr_parent_id']) && isset($tr['tr_tr_id']) && isset($tr['tr_en_type_id']) && $tr['tr_en_type_id'] == 4235) {
+        //Is $tr an Action Plan? It must meet all these conditions to be one:
+        if (isset($tr['tr_status']) && isset($tr['tr_in_parent_id']) && isset($tr['tr_tr_parent_id']) && isset($tr['tr_tr_id']) && isset($tr['tr_en_type_id']) && $tr['tr_en_type_id'] == 4559) {
 
 
             /*
-             * Yes, this is an Action Plan Intent.
+             * Yes, this is an Action Plan.
              *
              * We can now append more messages to give Masters
              * more understanding on what to do to move forward
@@ -360,7 +360,7 @@ class Matrix_model extends CI_Model
             $actionplan_tr_id = ($tr['tr_in_parent_id'] == 0 ? $tr['tr_tr_id'] /* IS top-level */ : $tr['tr_tr_parent_id'] /* NOT top-level */);
 
 
-            //Check Intent completion Requirements ONLY IF action plan intent is not completed yet:
+            //Check Intent completion Requirements ONLY IF Action Plan is not completed yet:
             if (in_array($tr['tr_status'], $this->config->item('tr_status_incomplete'))) {
 
                 //Check the required notes as we'll use this later:
@@ -411,11 +411,11 @@ class Matrix_model extends CI_Model
             //Lets see how many incomplete child intents there are in Master's Action Plan:
             $actionplan_child_ins = $this->Database_model->tr_fetch(array(
                 'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //Incomplete
-                'tr_en_type_id' => 4235, //Action Plan Intent
+                'tr_en_type_id' => 4559, //Action Plan Intents
                 'tr_tr_parent_id' => $tr['tr_id'], //Intents belonging to this Action Plan
                 'tr_in_parent_id' => $tr['tr_in_child_id'], //Intents that are direct children of $tr
                 //We are fetching with any tr_status just to see what is available/possible from here
-            ), array('en_child'));
+            ), array('in_child'));
 
 
             //How many children do we have for this intent?
@@ -537,7 +537,7 @@ class Matrix_model extends CI_Model
 
 
                 if (count($actionplan_parents) > 0) {
-                    //Give option to skip if NOT the top-level intent:
+                    //Give option to skip Action Plan Intent:
                     array_push($quick_replies, array(
                         'content_type' => 'text',
                         'title' => 'Skip',
@@ -864,11 +864,11 @@ class Matrix_model extends CI_Model
 
         /*
          *
-         * Marks an Action Plan intent as complete
+         * Marks an Action Plan as complete
          *
          * */
 
-        //Validate Action Plan Intent:
+        //Validate Action Plan:
         $actionplan_ins = $this->Database_model->tr_fetch(array(
             'tr_id' => $tr_id,
         ), array('in_child'));
@@ -881,7 +881,7 @@ class Matrix_model extends CI_Model
             'tr_status' => $new_tr_status,
         ), $actionplan_ins[0]['tr_en_parent_id']);
 
-        //Take additional action if Action Plan Intent is Complete:
+        //Take additional action if Action Plan is Complete:
         if ($new_tr_status == 2) {
 
             //It's complete!

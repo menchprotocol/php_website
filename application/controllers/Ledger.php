@@ -229,18 +229,6 @@ class Ledger extends CI_Controller
         }
     }
 
-
-    function fn___tr_actionplans()
-    {
-        //List all recent action plans:
-        $this->load->view('view_shared/matrix_header', array(
-            'title' => 'All Action Plans',
-        ));
-        $this->load->view('view_ledger/tr_actionplan_list_all');
-        $this->load->view('view_shared/matrix_footer');
-    }
-
-
     function fn___tr_create()
     {
 

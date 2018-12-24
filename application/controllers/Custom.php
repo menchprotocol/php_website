@@ -83,13 +83,13 @@ class Custom extends CI_Controller
         echo phpinfo();
     }
 
-    function status_legend()
+    function mench_legend()
     {
         //Display statuses for intents, entities and ledger transactions:
         $this->load->view('view_shared/matrix_header', array(
-            'title' => 'Status Legend',
+            'title' => 'Mench Legend',
         ));
-        $this->load->view('view_shared/status_legend');
+        $this->load->view('view_shared/mench_legend');
         $this->load->view('view_shared/matrix_footer');
     }
 

@@ -2,8 +2,7 @@
 
 //Fetch data:
 $trs = $this->Database_model->tr_fetch(array(
-    '( tr_en_child_id = ' . $en_id . ' OR tr_en_parent_id = ' . $en_id . ')' => null,
-    '(tr_en_type_id NOT IN (' . join(',', $this->config->item('tr_types_exclude')) . '))' => null,
+    '( tr_en_child_id = ' . $en_id . ' OR tr_en_parent_id = ' . $en_id . ' OR tr_en_credit_id = ' . $en_id . ')' => null,
 ), array('en_type'), (fn___is_dev() ? 20 : 100));
 
 //Show this data:

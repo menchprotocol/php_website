@@ -153,7 +153,7 @@ if (isset($orphan_ins)) {
                                         class="fas fa-hashtag"></i> Intent Status</h4></div>
                         <select class="form-control" id="in_status" style="display: inline-block !important;">
                             <?php
-                            foreach (echo_status('in_status') as $status_id => $status) {
+                            foreach (fn___echo_status('in_status') as $status_id => $status) {
                                 echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
                             }
                             ?>
@@ -178,7 +178,7 @@ if (isset($orphan_ins)) {
                         </div>
                         <div class="form-group label-floating is-empty">
                             <?php
-                            foreach (echo_status('in_is_any') as $in_val => $intent_type) {
+                            foreach (fn___echo_status('in_is_any') as $in_val => $intent_type) {
                                 echo '<div class="radio" style="display:inline-block; border-bottom:1px dotted #999; margin-top: 0 !important;" data-toggle="tooltip" title="' . $intent_type['s_desc'] . '" data-placement="right">
                                     <label style="display:inline-block;">
                                         <input type="radio" id="in_is_any_' . $in_val . '" name="in_is_any" value="' . $in_val . '" />
@@ -214,7 +214,7 @@ if (isset($orphan_ins)) {
                             </div>
                             <select class="form-control" id="tr_status" style="display: inline-block !important;">
                                 <?php
-                                foreach (echo_status('tr_status') as $status_id => $status) {
+                                foreach (fn___echo_status('tr_status') as $status_id => $status) {
                                     echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
                                 }
                                 ?>
@@ -222,7 +222,7 @@ if (isset($orphan_ins)) {
                             <div class="notify_cr_delete hidden">
                                 <div class="alert alert-warning" style="margin:5px 0px; padding:7px;">
                                     <i class="fas fa-exclamation-triangle"></i>
-                                    Warning: You're about to remove this intent link
+                                    You're about to unlink this intent
                                 </div>
                             </div>
 
@@ -230,7 +230,7 @@ if (isset($orphan_ins)) {
                             <div class="title" style="margin-top:15px;">
                                 <h4>
                                     <i class="fas fa-link"></i>
-                                    Link Type
+                                    Link Transaction Type
                                 </h4>
                             </div>
                             <select class="form-control" id="tr_status" style="display: inline-block !important;">

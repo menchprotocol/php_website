@@ -92,17 +92,17 @@ class My extends CI_Controller
 
         //Set Action Plan filters:
         $filters = array();
-        $filters['tr_en_type_id'] = 4235; //Action Plan Intent
 
         //Do we have a use session?
         if ($actionplan_tr_id > 0 && $in_id > 0) {
             //Yes! It seems to be a desktop login:
+            $filters['tr_en_type_id'] = 4559; //Action Plan Intent
             $filters['tr_tr_parent_id'] = $actionplan_tr_id;
             $filters['tr_in_child_id'] = $in_id;
         } elseif (!$empty_session) {
             //Yes! It seems to be a desktop login (versus Facebook Messenger)
+            $filters['tr_en_type_id'] = 4235; //Action Plan
             $filters['tr_en_parent_id'] = $udata['en_id'];
-            $filters['tr_in_parent_id'] = 0; //Top-level Action Plans
             $filters['tr_status >='] = 0;
         }
 
@@ -133,7 +133,7 @@ class My extends CI_Controller
 
             if(count($trs) > 1) {
 
-                //List all Action Plans to allow Master to choose:
+                //Master has multiple Action Plans, so list all Action Plans to enable Master to choose:
                 echo '<h3 class="master-h3 primary-title">My Action Plan</h3>';
                 echo '<div class="list-group" style="margin-top: 10px;">';
                 foreach ($trs as $tr) {
@@ -144,7 +144,7 @@ class My extends CI_Controller
                     echo '<span class="pull-right">';
                     echo '<span class="badge badge-primary"><i class="fas fa-angle-right"></i></span>';
                     echo '</span>';
-                    echo echo_status('tr_status', $tr['tr_status'], 1, 'right');
+                    echo fn___echo_status('tr_status', $tr['tr_status'], 1, 'right');
                     echo ' ' . $tr['in_outcome'];
                     echo ' ' . $metadata['in__tree_in_count'];
                     echo ' &nbsp;<i class="fas fa-clock"></i> ' . fn___echo_time_range($tr, true);
@@ -154,17 +154,17 @@ class My extends CI_Controller
 
             } elseif(count($trs)==1){
 
-                //We have a single item to load:
+                //We have a single Action Plan Intent to load:
                 //Now we need to load the action plan:
                 $actionplan_parents = $this->Database_model->tr_fetch(array(
-                    'tr_en_type_id' => 4235, //Action Plan Intent
+                    'tr_en_type_id' => 4559, //Action Plan Intents
                     'tr_tr_parent_id' => $actionplan_tr_id,
                     'in_status >=' => 2, //Published+ Intents
                     'tr_in_child_id' => $in_id,
                 ), array('in_parent'));
 
                 $actionplan_children = $this->Database_model->tr_fetch(array(
-                    'tr_en_type_id' => 4235, //Action Plan Intent
+                    'tr_en_type_id' => 4559, //Action Plan Intents
                     'tr_tr_parent_id' => $actionplan_tr_id,
                     'in_status >=' => 2, //Published+ Intents
                     'tr_in_parent_id' => $in_id,

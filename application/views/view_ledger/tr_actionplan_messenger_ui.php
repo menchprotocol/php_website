@@ -69,7 +69,7 @@ if (count($actionplan_parents) == 0) {
 
     //This must be top level Action Plan, show Action Plan data:
     echo '<div class="sub_title">';
-    echo echo_status('tr_status', $actionplan['tr_status']);
+    echo fn___echo_status('tr_status', $actionplan['tr_status']);
     echo ' &nbsp;&nbsp;<i class="fas fa-calendar-check"></i> ' . fn___echo_time_difference($actionplan['w_timestamp']) . ' ago';
     //TODO show Action Plan pace data such as start/end time, weekly rate & notification type
     echo '</div>';
@@ -81,7 +81,7 @@ if (count($actionplan_parents) == 0) {
     //Show completion progress for the single parent intent:
     echo '<div class="sub_title">';
 
-    echo echo_status('tr_status', $actionplan_parents[0]['tr_status']);
+    echo fn___echo_status('tr_status', $actionplan_parents[0]['tr_status']);
 
     //Either show completion time or when it was completed:
     if ($actionplan_parents[0]['tr_timestamp']) {

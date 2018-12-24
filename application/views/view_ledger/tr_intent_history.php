@@ -12,7 +12,7 @@ echo '<div class="list-group list-grey">';
 foreach ($actionplan_children as $k) {
     if ($k['tr_status'] > $current_status) {
         //Print header:
-        echo '<h3 style="margin-top:15px;">' . echo_status('tr_status', $k['tr_status']) . '</h3>';
+        echo '<h3 style="margin-top:15px;">' . fn___echo_status('tr_status', $k['tr_status']) . '</h3>';
         //Update pointer:
         $current_status = $k['tr_status'];
     }

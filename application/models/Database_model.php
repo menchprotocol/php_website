@@ -226,8 +226,7 @@ class Database_model extends CI_Model
                 //Search & Append this Master's Action Plans:
                 $res[$key]['en__actionplans'] = $this->Database_model->tr_fetch(array(
                     'tr_en_parent_id' => $val['en_id'],
-                    'tr_en_type_id' => 4235, //Action Plan Intent
-                    'tr_in_parent_id' => 0, //Top-level Action Plan intents only...
+                    'tr_en_type_id' => 4235, //Action Plan
                     'tr_status >=' => 0, //New+
                 ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
 
@@ -645,7 +644,7 @@ class Database_model extends CI_Model
     }
 
 
-    function tr_update($id, $update_columns, $tr_en_credit_id = 0)
+    function tr_update($id, $update_columns, $tr_en_credit_id = 0, $tr_en_type_id = 0)
     {
 
         if (count($update_columns) == 0) {
@@ -685,7 +684,7 @@ class Database_model extends CI_Model
                     $this->Database_model->tr_create(array(
                         'tr_tr_parent_id' => $id, //Parent Transaction ID
                         'tr_en_credit_id' => $tr_en_credit_id,
-                        'tr_en_type_id' => ($key == 'tr_status' && in_array(intval($value), array(-1, -3)) ? 4241 /* Removed */ : 4242 /* Attribute Modified */),
+                        'tr_en_type_id' => (( $tr_en_type_id > 0 ? $tr_en_type_id : ( $key == 'tr_status' && in_array(intval($value), array(-1, -3)) ? 4241 /* Removed */ : 4242 /* Attribute Modified */ ))),
                         'tr_content' => 'Transaction ' . ucwords(str_replace('_', ' ', str_replace('tr_', '', $key))) . ' modified from [' . $before_data[0][$key] . '] to [' . $value . ']',
                         'tr_metadata' => array(
                             'tr_id' => $id,
@@ -694,6 +693,7 @@ class Database_model extends CI_Model
                             'after' => $value,
                         ),
                     ));
+
                 }
             }
         }
@@ -1179,16 +1179,16 @@ class Database_model extends CI_Model
             //Are we caching an Action Plan?
             if ($actionplan_tr_id > 0) {
 
-                //Yes we are, create a cache of this link for this Action Plan:
+                //Yes we are, create a cache of this Intent link to be added to their Action Plan:
                 $this->Database_model->tr_create(array(
                     'tr_status' => 0, //New
-                    'tr_en_type_id' => 4235, //Action Plan Intent
+                    'tr_en_type_id' => 4559, //Action Plan Intent
                     'tr_en_credit_id' => $ins[0]['tr_en_parent_id'], //Credit goes to Master
                     'tr_en_parent_id' => $ins[0]['tr_en_parent_id'], //Belongs to this Master
                     'tr_in_parent_id' => $ins[0]['tr_in_parent_id'],
                     'tr_in_child_id' => $ins[0]['tr_in_child_id'],
                     'tr_order' => $ins[0]['tr_order'],
-                    'tr_tr_parent_id' => $actionplan_tr_id, //Instantly show the top of the intention for that action plan
+                    'tr_tr_parent_id' => $actionplan_tr_id, //Indicates the parent Action Plan Transaction ID
                 ));
 
             }

@@ -56,7 +56,7 @@ class Migrate extends CI_Controller
         );
 
         $ins = $this->Old_model->c_fetch(array(
-            'c_id >=' => 8331,
+            //'c_id >=' => 8331,
             'c_status >=' => 1, //working on or more
         ), 0, array(), array('c_id' => 'ASC'));
         $stats = array(
@@ -174,7 +174,7 @@ class Migrate extends CI_Controller
         //Delete everything before starting:
         if(0){
             $this->db->query("DELETE FROM table_entities WHERE en_id>0");
-            $this->db->query("DELETE FROM table_ledger WHERE tr_en_type_id IN (" . join(',', array_merge($this->config->item('en_ids_4537'), $this->config->item('en_ids_4538'), array(4251, 4235, 4299))) . ")"); //The link types we could create with this function
+            $this->db->query("DELETE FROM table_ledger WHERE tr_en_type_id IN (" . join(',', array_merge($this->config->item('en_ids_4537'), $this->config->item('en_ids_4538'), array(4251, 4235, 4559, 4299))) . ")"); //The link types we could create with this function
         }
 
         $u_status_conv = array(
@@ -215,7 +215,7 @@ class Migrate extends CI_Controller
         if($u_id>0){
             $filters['u_id'] = $u_id;
         } else {
-            //$filters['u_id >'] = 4539;
+            //$filters['u_id >'] = 4556;
         }
         $ens = $this->Old_model->u_fetch($filters, array('skip_en__parents'), 0, 0, array('u_id' => 'ASC'));
 
@@ -424,11 +424,12 @@ class Migrate extends CI_Controller
                     'tr_en_parent_id' => $tr_en_parent_id,
                     'tr_en_child_id' => $x['x_u_id'],
                     'tr_content' => $x['x_url'],
-                    'tr_external_id' => ($x['x_fb_att_id'] > 0 ? $x['x_fb_att_id'] : 0),
+                    'tr_metadata' => ( $x['x_fb_att_id'] > 0 ? array( 'fb_att_id' => $x['x_fb_att_id'] ) : null ),
                 ));
 
             }
 
+            /*
 
             //Convert Action Plans for this user:
             $action_plan_rank = 1; //We add items in order...
@@ -450,13 +451,9 @@ class Migrate extends CI_Controller
                 $actionplan_tr = $this->Database_model->tr_create(array(
                     'tr_timestamp' => $w['w_timestamp'],
                     'tr_status' => $w['w_status'], //Same status meaning for all 5 levels
-
-                    'tr_en_type_id' => 4235, //Action Plan Intent Add
+                    'tr_en_type_id' => 4235, //Action Plan
                     'tr_en_credit_id' => $u['u_id'],
                     'tr_en_parent_id' => $u['u_id'], //Belongs to this Master
-
-                    'tr_in_parent_id' => 0, //This indicates that this is a top-level intent in the Action Plan
-                    'tr_tr_parent_id' => 0, //Again, indicates the top of the Action Plan
                     'tr_in_child_id' => $w['w_c_id'],
                     'tr_order' => $counter,
                 ));
@@ -475,23 +472,22 @@ class Migrate extends CI_Controller
                     $this->Database_model->tr_create(array(
                         'tr_timestamp' => $k['k_timestamp'],
                         'tr_status' => $k['k_status'], //Same status meaning for all 5 levels
-
-                        'tr_en_type_id' => 4235, //Action Plan Intent Add
+                        'tr_en_type_id' => 4559, //Action Plan Intent
+                        'tr_tr_parent_id' => $actionplan_tr['tr_id'], //Indicates parent Action Plan ID
                         'tr_en_credit_id' => $u['u_id'],
                         'tr_en_parent_id' => $u['u_id'], //Belongs to this Master
-
                         'tr_in_parent_id' => $k['cr_parent_c_id'], //This indicates that this is a top-level intent in the Action Plan
                         'tr_in_child_id' => $k['cr_child_c_id'],
                         'tr_order' => $k['k_rank'],
                         'tr_content' => $k['k_notes'],
-
-                        'tr_tr_parent_id' => $actionplan_tr['tr_id'], //Instantly show the top of the intention for that action plan
                     ));
 
                 }
 
 
             }
+
+            */
 
         }
 

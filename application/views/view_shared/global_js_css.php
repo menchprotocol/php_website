@@ -9,9 +9,7 @@
 
 <!-- CSS -->
 <link href="/css/lib/bootstrap.min.css" rel="stylesheet"/>
-<link href="/css/lib/animate.css" rel="stylesheet"/>
 <link href="/css/lib/jquery-ui.min.css" rel="stylesheet"/>
-<link href="/css/lib/default.min.css" rel="stylesheet"/>
 <link href="/css/lib/simplebar.css" rel="stylesheet"/>
 <link href="/css/lib/material-dashboard.css" rel="stylesheet"/>
 <link href="/css/lib/material-kit.css" rel="stylesheet"/>
@@ -24,8 +22,6 @@
 <script src="/js/lib/bootstrap.min.js" type="text/javascript"></script>
 <script src="/js/lib/material.min.js" type="text/javascript"></script>
 <script src="/js/lib/material-dashboard.js" type="text/javascript"></script>
-<script src="/js/lib/jquery.countdownTimer.min.js" type="text/javascript"></script>
-<script src="/js/lib/highlight.min.js"></script>
 <script src="/js/lib/simplebar.js"></script>
 <script src="/js/custom/global-js.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
 

@@ -159,15 +159,14 @@ class Chat_model extends CI_Model
 
                 //Master wants completely out...
 
-                //Skip everything from their Action Plans:
+                //Remove all Action Plans:
                 $actionplans = $this->Database_model->tr_fetch(array(
-                    'tr_en_type_id' => 4235, //Intents added to the action plan
+                    'tr_en_type_id' => 4235, //Action Plans
                     'tr_en_parent_id' => $en['en_id'], //Belongs to this Master
-                    'tr_status IN (0,1,2)' => null, //Actively working on
-                    'tr_in_parent_id' => 0, //These indicate that this is a top-level intent in the Action Plan
+                    'tr_status IN (0,1,2)' => null, //Actively working on (Status 2 is syncing updates, and they want out)
                 ));
-                foreach ($actionplans as $actionplan) {
-                    $this->Database_model->tr_update($actionplan['tr_id'], array(
+                foreach ($actionplans as $tr) {
+                    $this->Database_model->tr_update($tr['tr_id'], array(
                         'tr_status' => -1, //Removed
                     ), $en['en_id']); //Give credit to them
                 }
@@ -179,17 +178,16 @@ class Chat_model extends CI_Model
                 $this->Chat_model->dispatch_message(array(
                     array(
                         'tr_en_child_id' => $en['en_id'],
-                        'tr_content' => 'Confirmed, I removed all ' . count($actionplans) . ' intents from your Action Plan. This is the final message you will receive from me unless you message me. Take care of your self and I hope to talk to you soon 😘',
+                        'tr_content' => 'Confirmed, I removed ' . count($actionplans) . ' Action Plan' . fn___echo__s(count($actionplans)) . ' from your account. This is the final message you will receive from me unless you message me. Take care of your self and I hope to talk to you soon 😘',
                     ),
                 ));
 
             } elseif (intval($action_unsubscribe) > 0) {
 
-                //User wants to skip a specific intent from their Action Plan, validate it:
+                //User wants to Remove a specific Action Plan, validate it:
                 $actionplans = $this->Database_model->tr_fetch(array(
-                    'tr_en_type_id' => 4235, //Intents added to the action plan
+                    'tr_en_type_id' => 4235, //Action Plan
                     'tr_en_parent_id' => $en['en_id'], //Belongs to this Master
-                    'tr_in_parent_id' => 0, //These indicate that this is a top-level intent in the Action Plan
                     'tr_in_child_id' => intval($action_unsubscribe),
                 ), array('en_child'));
 
@@ -358,9 +356,9 @@ class Chat_model extends CI_Model
             if (count($ins) == 1) {
 
                 //Intent seems good...
-                //See if this intent belong to any of these Action Plans:
+                //See if this intent belong to ANY of this Master's Action Plans or Action Plan Intents:
                 $actionplans = $this->Database_model->tr_fetch(array(
-                    'tr_en_type_id' => 4235, //Intents added to the action plan
+                    'tr_en_type_id IN (4235,4559)' => null, //Action Plans or Action Plan Intents
                     'tr_en_parent_id' => $en['en_id'], //Belongs to this Master
                     'tr_in_child_id' => $ins[0]['in_id'],
                 ));
@@ -437,18 +435,16 @@ class Chat_model extends CI_Model
 
             if (count($ins) == 1) {
 
-                //Add to intent to user's action plan:
+                //Add intent to Master's Action Plan:
                 $actionplan = $this->Database_model->tr_create(array(
-                    'tr_en_type_id' => 4235, //Action Plan Intent
-                    'tr_en_parent_id' => $en['en_id'], //Belongs to this Master
-                    'tr_status' => 1, //Working On
-                    'tr_in_parent_id' => 0, //These indicate that this is a top-level intent in the Action Plan
+                    'tr_en_type_id' => 4235, //Action Plan
                     'tr_in_child_id' => $ins[0]['in_id'], //The Intent they are adding
+                    'tr_en_parent_id' => $en['en_id'], //Belongs to this Master
+                    'tr_status' => 0, //New
                     'tr_order' => 1 + $this->Database_model->tr_max_order(array( //Place this intent at the end of all intents the Master is working on...
+                        'tr_en_type_id' => 4235, //Action Plan
                         'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
                         'tr_en_parent_id' => $en['en_id'], //Belongs to this Master
-                        'tr_en_type_id' => 4235, //Action Plan Intent
-                        'tr_in_parent_id' => 0, //These indicate that this is a top-level intent in the Action Plan
                     )),
                 ));
 
@@ -638,7 +634,7 @@ class Chat_model extends CI_Model
 
             if ($tr_id > 0) {
 
-                //Fetch Action Plan intent with its Master:
+                //Fetch Action Plans with its Master:
                 $actionplan_ins = $this->Database_model->tr_fetch(array(
                     'tr_id' => $tr_id,
                 ), array('en_parent', 'in_parent'));
@@ -803,12 +799,11 @@ class Chat_model extends CI_Model
         } elseif (fn___includes_any($fb_message_received, array('unsubscribe', 'stop', 'cancel'))) {
 
             //They seem to want to unsubscribe
-            //List their Action Plan intents:
+            //List their Action Plans:
             $actionplans = $this->Database_model->tr_fetch(array(
                 'tr_en_type_id' => 4235, //Intents added to the action plan
                 'tr_en_parent_id' => $en['en_id'], //Belongs to this Master
                 'tr_status IN (0,1,2)' => null, //Actively working on
-                'tr_in_parent_id' => 0, //These indicate that this is a top-level intent in the Action Plan
             ), array('in_child'), 10 /* Max quick replies allowed */, 0, array('tr_order' => 'ASC'));
 
 
@@ -1019,12 +1014,12 @@ class Chat_model extends CI_Model
             ));
 
 
-            //Any other suggestions based on their current Action Plan(s)?
+            //Do they have an Action Plan that they are working on?
+            //If so, we can recommend the next step within that Action Plan...
             $actionplans = $this->Database_model->tr_fetch(array(
-                'tr_en_type_id' => 4235, //Intents added to the action plan
+                'tr_en_type_id' => 4235, //Action Plan
                 'tr_en_parent_id' => $en['en_id'], //Belongs to this Master
                 'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
-                'tr_in_parent_id' => 0, //These indicate that this is a top-level intent in the Action Plan
             ), array('in_child'), 1, 0, array('tr_order' => 'ASC'));
 
             if (count($actionplans) > 0) {
@@ -1042,9 +1037,17 @@ class Chat_model extends CI_Model
 
             } else {
 
-                //No action plan, so we can suggest to subscribe to our default intent IF they have not done so already:
+                /*
+                 *
+                 * Master has no action plan...
+                 *
+                 * Suggest to subscribe to our default intent
+                 * only IF they have not done so already:
+                 *
+                 * */
+
                 $default_actionplans = $this->Database_model->tr_fetch(array(
-                    'tr_en_type_id' => 4235, //Intents added to the action plan
+                    'tr_en_type_id IN (4235,4559)' => null, //Action Plan or Action Plan Intents
                     'tr_en_parent_id' => $en['en_id'], //Belongs to this Master
                     'tr_in_child_id' => $this->config->item('in_primary_id'),
                 ));
