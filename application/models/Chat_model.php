@@ -371,7 +371,7 @@ class Chat_model extends CI_Model
                             'tr_en_child_id' => $en['en_id'],
                             'tr_in_child_id' => $ins[0]['in_id'],
                             'tr_tr_parent_id' => ( $actionplans[0]['tr_tr_parent_id']>0 ? $actionplans[0]['tr_tr_parent_id'] : $actionplans[0]['tr_id'] ),
-                            'tr_content' => 'The intention to ' . $ins[0]['in_outcome'] . ' has already been added to your Action Plan. We have been working on it together since ' . fn___echo_time_date($actionplans[0]['tr_timestamp']) . '. /open_actionplan',
+                            'tr_content' => 'The intention to ' . $ins[0]['in_outcome'] . ' has already been added to your Action Plan. We have been working on it together since ' . fn___echo_time_date($actionplans[0]['tr_timestamp']) . '. /link:See in 🚩Action Plan:https://mench.com/my/actionplan/'.$actionplans[0]['tr_tr_parent_id'].'/'.$actionplans[0]['tr_in_child_id']
                         ),
                     ));
 
@@ -460,7 +460,7 @@ class Chat_model extends CI_Model
                             'tr_en_child_id' => $en['en_id'],
                             'tr_in_child_id' => $ins[0]['in_id'],
                             'tr_tr_parent_id' => $actionplan['tr_id'],
-                            'tr_content' => 'Success! I have added the intention to ' . $ins[0]['in_outcome'] . ' to your Action Plan 🙌 /open_actionplan',
+                            'tr_content' => 'Success! I have added the intention to ' . $ins[0]['in_outcome'] . ' to your Action Plan 🙌 /link:See in 🚩Action Plan:https://mench.com/my/actionplan/'.$actionplan['tr_id'].'/'.$ins[0]['in_id'],
                         ),
                     ));
 
@@ -480,13 +480,19 @@ class Chat_model extends CI_Model
             //See which stage of the skip request they are:
             $handler = fn___includes_any($quick_reply_payload, array('ACTIONPLAN-SKIP-CONFIRMED_', 'ACTIONPLAN-SKIP-INITIATE_', 'ACTIONPLAN-SKIP-CANCEL_'));
 
-            //Extract varibales from REF:
+            //Extract variables from REF:
             $input_parts = explode('_', fn___one_two_explode($handler, '', $quick_reply_payload));
             $tr_status = intval($input_parts[0]); //It would be $tr_status=1 initial (working on) and then would change to either -1 IF skip was cancelled or 2 IF skip was confirmed.
             $tr_id = intval($input_parts[1]);
 
+            //Fetch this transaction:
+            $actionplans = $this->Database_model->tr_fetch(array(
+                'tr_id' => $tr_id,
+                'tr_en_type_id' => 4559, //Action Plan Intents
+            ), array('in_child'));
+
             //Validate inputs:
-            if (!in_array($tr_status, array(-1, 1, 2)) || $tr_id < 1) {
+            if (!in_array($tr_status, array(-1, 1, 2)) || count($actionplans) < 1) {
                 //Log Unknown error:
                 return $this->Database_model->tr_create(array(
                     'tr_content' => 'digest_quick_reply_payload() failed to fetch proper data for a skip request with reference value [' . $quick_reply_payload . ']',
@@ -596,7 +602,7 @@ class Chat_model extends CI_Model
                     $skippable_ks = $this->Database_model->k_skip_recursive_down($tr_id);
 
                     //Confirm the skip:
-                    $tr_content = 'Confirmed, I marked this section as skipped. You can always re-visit these concepts in your Action Plan and complete them at any time. /open_actionplan';
+                    $tr_content = 'Confirmed, I marked this section as skipped. You can always re-visit these concepts in your Action Plan and complete them at any time. /link:See in 🚩Action Plan:https://mench.com/my/actionplan/'.$actionplans[0]['tr_tr_parent_id'].'/'.$actionplans[0]['tr_in_child_id'];
 
                 }
 
@@ -1130,13 +1136,14 @@ class Chat_model extends CI_Model
                  * */
 
                 //Mench Personal Assistant on Messenger:
+
+                //TODO Deprecate in new function...
+
                 $trs_fb_psid = $this->Database_model->tr_fetch(array(
                     'tr_en_parent_id' => 4451,
                     'tr_en_child_id' => $tr['tr_en_child_id'],
                     'tr_status >=' => 2,
                 ), array('en_child')); //Also fetch user details as we need their name....
-                //Note: tr_content will have the Facebook PSID we need to communicate with them
-                //Note: If we find multiple of these, we'd only consider the first one: $trs_fb_psid[0]
 
 
                 //Mench Notification Levels:

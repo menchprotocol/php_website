@@ -330,7 +330,7 @@ class My extends CI_Controller
             $en_all_4331 = $this->config->item('en_all_4331');
 
             //Extract references to see what we have:
-            $obj_breakdown = fn___extract_message_references($_POST['tr_content']);
+            $msg_breakdown = fn___extract_message_references($_POST['tr_content']);
 
             //TODO we later need to check URL type to enable other requirements live video/audio URLs if they are to be added as an option.
 
@@ -343,7 +343,7 @@ class My extends CI_Controller
                 //Check requirements:
                 if($tr['tr_en_parent_id']==4255 && strlen($_POST['tr_content']) > 0){
                     $did_meet_requirements = true;
-                } elseif($tr['tr_en_parent_id']==4256 && count($obj_breakdown['en_urls']) > 0){
+                } elseif($tr['tr_en_parent_id']==4256 && count($msg_breakdown['en_urls']) > 0){
                     $did_meet_requirements = true;
                 }
 

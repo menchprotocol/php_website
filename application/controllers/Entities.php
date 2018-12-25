@@ -72,7 +72,7 @@ class Entities extends CI_Controller
     }
 
 
-    function link_entities()
+    function ens_link()
     {
 
         //Responsible to link parent/children entities to each other via a JS function on en_miner_ui.php
@@ -162,7 +162,7 @@ class Entities extends CI_Controller
             //Do we need to add this new entity to a secondary parent?
             if (intval($_POST['assign_en_parent_id']) > 0) {
 
-                //Link entity to a parent:
+                // Link entity to a parent:
                 $ur1 = $this->Database_model->tr_create(array(
                     'tr_en_child_id' => $entity_new['en_id'],
                     'tr_en_parent_id' => $_POST['assign_en_parent_id'],
@@ -188,7 +188,7 @@ class Entities extends CI_Controller
 
             //Let's make sure this is not the same as the secondary category:
             if (!($_POST['assign_en_parent_id'] == $tr_en_parent_id)) {
-                //Link to new OR existing entity:
+                // Link to new OR existing entity:
                 $ur2 = $this->Database_model->tr_create(array(
                     'tr_en_child_id' => $tr_en_child_id,
                     'tr_en_parent_id' => $tr_en_parent_id,
@@ -201,7 +201,7 @@ class Entities extends CI_Controller
         }
 
 
-        //Return newly added/linked entity:
+        //Return newly added or linked entity:
         return fn___echo_json(array(
             'status' => 1,
             'en_new_status' => $entity_new['en_status'],
@@ -330,11 +330,28 @@ class Entities extends CI_Controller
             'tr_status >=' => 0, //New+
             'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent messages
             'tr_en_parent_id' => $_POST['en_id'],
-        ), array(), 0, 0, array('tr_order' => 'ASC'));
+        ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
 
         echo '<div id="list-messages" class="list-group  grey-list">';
         foreach ($messages as $tr) {
-            echo echo_message_body($tr);
+
+            echo '<div class="entities-msg">';
+
+                echo '<span class="pull-right" style="margin:6px 10px 0 0;">';
+                    echo '<span data-toggle="tooltip" title="This is the ' . fn___echo_number_ordinal($tr['tr_order']) . ' message for this intent" data-placement="left" class="underdot" style="padding-bottom:4px;">' . fn___echo_number_ordinal($tr['tr_order']) . '</span> ';
+                    echo '<span>' . fn___echo_status('tr_status', $tr['tr_status'], 1, 'left') . '</span> ';
+                    echo '<a href="/intents/' . $tr['tr_in_child_id'] . '#loadmessages-' . $tr['tr_in_child_id'] . '"><span class="badge badge-primary" style="display:inline-block; margin-left:3px; width:40px;"><i class="fas fa-sign-out-alt rotate90"></i></span></a>';
+                echo '</span>';
+
+                echo '<h4><i class="fas fa-hashtag" style="font-size:1em;"></i> ' . $tr['in_outcome'] . '</h4>';
+
+                echo '<div>';
+                    echo echo_message_body($tr);
+                echo '</div>';
+
+            echo '</div>';
+
+
         }
         echo '</div>';
     }
@@ -408,14 +425,9 @@ class Entities extends CI_Controller
         //Now let's do a few more checks:
 
         //Make sure Master is connected to Mench:
-        if(count($this->Database_model->tr_fetch(array(
-                'tr_en_parent_id' => 4451,
-                'tr_en_child_id' => $ens[0]['en_id'],
-                'tr_status >=' => 2,
-            ))) < 1){
+        if(!intval($ens[0]['en_psid'])){
             return fn___redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: You are not connected to Mench on Messenger, which is required to login to the Matrix.</div>');
         }
-
 
         //Make sure Master is not unsubscribed:
         if(count($this->Database_model->tr_fetch(array(
@@ -516,16 +528,23 @@ class Entities extends CI_Controller
             die('<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Invalid Email.</div>');
         }
 
+
         //Attempt to fetch this user:
         $matching_users = $this->Database_model->en_fetch(array(
             'input_email' => strtolower($_POST['email']),
         ));
         if (count($matching_users) > 0) {
+
+            $timestamp = time();
+
             //Dispatch the password reset Intent:
-            $this->Matrix_model->compose_messages(array(
-                'tr_en_child_id' => $matching_users[0]['en_id'],
-                'tr_in_child_id' => 59,
+            $this->Chat_model->dispatch_message(array(
+                array(
+                    'tr_en_child_id' => $matching_users[0]['en_id'],
+                    'tr_content' => 'Hi /firstname 👋​ You can reset your Mench password here: /link:🔑 Reset Password:https://mench.com/my/reset_pass?en_id=' . $matching_users[0]['en_id'] . '&timestamp=' . $timestamp . '&p_hash=' . md5($matching_users[0]['en_id'] . $this->config->item('password_salt') . $timestamp).' (URL Active for 24 hours only)',
+                ),
             ));
+
         }
 
         //Show message:

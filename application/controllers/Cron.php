@@ -281,7 +281,7 @@ class Cron extends CI_Controller
         //Let's fetch all Media files without a Facebook attachment ID:
         $pending_urls = $this->Database_model->tr_fetch(array(
             'tr_en_type_id IN (' . join(',',array_keys($en_convert_4537)) . ')' => null,
-            'tr_external_id' => 0, //Missing Facebook Attachment ID
+            'tr_metadata' => null, //Missing Facebook Attachment ID
         ), array(), $max_per_batch, 0 , array('tr_id' => 'ASC')); //Sort by oldest added first
 
         foreach ($pending_urls as $tr) {
@@ -303,10 +303,12 @@ class Cron extends CI_Controller
             $db_result = false;
 
             if ($result['status'] && isset($result['tr_metadata']['result']['attachment_id'])) {
-                //Save attachment to DB:
-                $db_result = $this->Database_model->tr_update($tr['tr_id'], array(
-                    'tr_external_id' => intval($result['tr_metadata']['result']['attachment_id']),
+
+                //Save Facebook Attachment ID to DB:
+                $db_result = $this->Database_model->metadata_update('tr', $tr, array(
+                    'fb_att_id' => intval($result['tr_metadata']['result']['attachment_id']),
                 ));
+
             }
 
             //Did it go well?
@@ -327,8 +329,8 @@ class Cron extends CI_Controller
                 ));
 
                 //Also disable future attempts for this transaction:
-                $this->Database_model->tr_update($tr['tr_id'], array(
-                    'tr_external_id' => -1,
+                $db_result = $this->Database_model->metadata_update('tr', $tr, array(
+                    'fb_att_id_failed' => true,
                 ));
 
             }

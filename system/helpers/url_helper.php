@@ -44,7 +44,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @subpackage	Helpers
  * @category	Helpers
  * @author		EllisLab Dev Team
- * @link		https://codeigniter.com/user_guide/helpers/url_helper.html
  */
 
 // ------------------------------------------------------------------------
@@ -403,7 +402,7 @@ if ( ! function_exists('auto_link'))
 			// moved as we add more HTML.
 			foreach (array_reverse($matches) as $match)
 			{
-				// $match[0] is the matched string/link
+				// $match[0] is the matched string or link
 				// $match[1] is either a protocol prefix or 'www.'
 				//
 				// With PREG_OFFSET_CAPTURE, both of the above is an array,

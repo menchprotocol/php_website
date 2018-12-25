@@ -683,7 +683,6 @@ class CI_Pagination {
 	/**
 	 * Add "rel" attribute
 	 *
-	 * @link	http://www.w3.org/TR/html5/links.html#linkTypes
 	 * @param	string	$type
 	 * @return	string
 	 */

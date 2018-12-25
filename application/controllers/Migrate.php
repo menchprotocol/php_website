@@ -109,7 +109,7 @@ class Migrate extends CI_Controller
                     'tr_en_type_id' => 4331, //Intent Response Limiters
                     'tr_en_credit_id' => $c['c_parent_u_id'],
                     'tr_in_child_id' => $c['c_id'],
-                    'tr_en_parent_id' => 4255, //Link Content Type = Text Link
+                    'tr_en_parent_id' => 4255, // Link Content Type = Text Link
                 ));
             }
 
@@ -243,6 +243,7 @@ class Migrate extends CI_Controller
                     'en_icon' => $en_icon,
                     'en_name' => $u['u_full_name'],
                     'en_trust_score' => $u['u__e_score'],
+                    'en_psid' => ( $u['u_fb_psid'] > 0 ? $u['u_fb_psid'] : null ),
                     'en_metadata' => array(
                         'en__algolia_id' => intval($u['u_algolia_id']),
                     ),
@@ -270,17 +271,6 @@ class Migrate extends CI_Controller
                     'tr_en_credit_id' => $u['u_id'],
                     'tr_en_parent_id' => 4430, //Mench Master
                     'tr_en_child_id' => $u['u_id'],
-                ));
-
-                //Store their messenger ID:
-                $stats['total_links']++;
-                $this->Database_model->tr_create(array(
-                    'tr_timestamp' => $u['u_timestamp'],
-                    'tr_en_type_id' => 4319, //Number Link
-                    'tr_en_credit_id' => $u['u_id'],
-                    'tr_en_parent_id' => 4451, //Mench Personal Assistant on Messenger
-                    'tr_en_child_id' => $u['u_id'],
-                    'tr_external_id' => $u['u_fb_psid'],
                 ));
 
                 //Subscription Level:
@@ -402,7 +392,7 @@ class Migrate extends CI_Controller
                 }
 
                 //Fetch the appropriate parent using current patterns:
-                $tr_en_parent_id = $this->config->item('en_default_url_parent'); //URL Reference
+                $tr_en_parent_id = $this->config->item('en_default_url_parent'); // URL Reference
                 foreach ($matching_patterns as $match) {
                     if (substr_count($x['x_url'], $match['ur_notes']) > 0) {
                         //yes we found a pattern match:

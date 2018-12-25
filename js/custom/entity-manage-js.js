@@ -160,7 +160,7 @@ function tr_add(en_new_id, assign_en_parent_id=0, is_parent) {
 
 
     //Add via Ajax:
-    $.post("/entities/link_entities", {
+    $.post("/entities/ens_link", {
 
         en_id: en_focus_id,
         en_new_id: en_new_id,

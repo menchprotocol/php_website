@@ -181,12 +181,115 @@ function fn___echo_url_embed($url, $full_message = null, $return_array = false, 
     }
 }
 
-
-
-function echo_message_2body($message_content, $recipient_en = array, $fb_messenger_format = false, $message_tr_id = 0, $quick_replies = array())
+function echo_msg($message_content, $recipient_en = array(), $fb_messenger_format = false, $quick_replies = array(), $tr_append = array())
 {
 
-    //Start by validating inputs:
+    /*
+     *
+     * The primary function that constructs messages based on the following inputs:
+     *
+     *
+     * - $message_content:      The message text which may include entity
+     *                          references like "@123" or commands like
+     *                          "/firstname". This may NOT include direct
+     *                          URLs as they must be first turned into an
+     *                          entity and then referenced within a message.
+     *
+     *
+     * - $recipient_en:         The entity object that this message is supposed
+     *                          to be delivered to. May be an empty array for
+     *                          when we want to show these messages to guests,
+     *                          and it may contain the full entity object or it
+     *                          may only contain the entity ID, which enables this
+     *                          function to fetch further information from that
+     *                          entity as required based on its other parameters.
+     *                          The 3 key columns that this function uses are:
+     *
+     *                          - $recipient_en['en_id'] - As who to send to
+     *                          - $recipient_en['en_name'] - To replace with /firstname
+     *                          - $recipient_en['en_psid'] - Needed if $fb_messenger_format = TRUE
+     *
+     *
+     * - $fb_messenger_format:  If True this function will prepare a message to be
+     *                          delivered via Facebook Messenger, and if False, it
+     *                          would prepare a message for HTML view. The HTML
+     *                          format will consider if a Miner is logged in or not,
+     *                          which will alter the HTML format.
+     *
+     *
+     * - $quick_replies:        Only supported if $fb_messenger_format = TRUE, and
+     *                          will append an array of quick replies that will give
+     *                          Masters an easy way to tap and select their next step.
+     *
+     *
+     * - $tr_append:            Since this function logs a "message sent" engagement for
+     *                          every message it processes, the $tr_append will append
+     *                          additional data to capture more context for this message.
+     *                          Supported fields only include:
+     *
+     *                          - $tr_append['tr_in_parent_id']
+     *                          - $tr_append['tr_in_child_id']
+     *                          - $tr_append['tr_tr_parent_id']
+     *                          - $tr_append['tr_metadata']
+     *
+     *                          Following fields are not allowed, because:
+     *
+     *                          - $tr_append['tr_timestamp']: Auto generated to current timestamp
+     *                          - $tr_append['tr_status']: Will always equal 2 as a completed message
+     *                          - $tr_append['tr_en_type_id']: Auto calculated based on message content (or error)
+     *                          - $tr_append['tr_en_credit_id']: Mench will always get credit, so this is set to zero
+     *                          - $tr_append['tr_en_parent_id']: This is auto set with an entity reference within $message_content
+     *                          - $tr_append['tr_en_child_id']: This will be equal to $recipient_en['en_id']
+     *
+     * */
+
+    //Prepare Transaction Logging:
+    $allowed_tr_append = array('tr_in_parent_id','tr_in_child_id','tr_tr_parent_id','tr_metadata');
+    $filtered_tr_append = array();
+    foreach($tr_append as $key=>$value){
+        if(in_array($key, $allowed_tr_append)){
+            $filtered_tr_append[$key] = $value;
+        }
+    }
+
+    //Process the message:
+    $results = echo_body_msg($message_content, $recipient_en, $fb_messenger_format, $quick_replies);
+
+
+    //Log results either way:
+    $CI =& get_instance();
+    if($results['status']){
+        //All good, log Transaction and return:
+        $CI->Database_model->tr_create(array_merge($filtered_tr_append , array(
+            'tr_content' => $message_content,
+            'tr_en_type_id' => $results['tr_en_type_id'], //echo_body_msg() Determines message sent type
+            'tr_en_child_id' => ( isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0 ),
+            'tr_en_parent_id' => $results['tr_en_parent_id'], //Might be set if message had a referenced entity
+        )));
+    } else {
+        //Oooopsi, we seem to have some error, log and return:
+        $CI->Database_model->tr_create(array_merge($filtered_tr_append , array(
+            'tr_content' => 'echo_msg() returned error ['.$results['message'].'] with the input message ['.$message_content.']',
+            'tr_en_type_id' => 4246, //Platform Error
+            'tr_en_child_id' => ( isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0 ),
+        )));
+    }
+
+    //Return results:
+    return $results;
+
+}
+function echo_body_msg($message_content, $recipient_en, $fb_messenger_format, $quick_replies)
+{
+
+    /*
+     *
+     * This function is exclusively called from within echo_msg()
+     * See there for more information on input variables
+     *
+     * */
+
+    //Start by some early input validations:
     if(strlen($message_content)<1){
         return array(
             'status' => 0,
@@ -197,47 +300,118 @@ function echo_message_2body($message_content, $recipient_en = array, $fb_messeng
             'status' => 0,
             'message' => 'Facebook Messenger Format requires a recipient entity ID for constructing a message',
         );
-    } elseif(count($quick_replies)>0 && !$fb_messenger_format){
+    } elseif(!$fb_messenger_format && count($quick_replies)>0){
         return array(
             'status' => 0,
             'message' => 'Quick Replies are only supported for Facebook Messenger Format',
         );
     }
 
+    /*
+     * Start by analyzing this message...
+     *
+     * Do we need full entity data? Only if we have a
+     * /firstname command OR $fb_messenger_format = TRUE
+     *
+     * */
 
-    //Analyze this message:
     $CI =& get_instance();
-    $obj_breakdown = fn___extract_message_references($message_content);
+    $is_miner = fn___en_auth(array(1308)); //Is this Miner? Will affect Message...
+    $msg_breakdown = fn___extract_message_references($message_content);
+    $firstname_command = (count($msg_breakdown['en_commands']) > 0 && in_array('/firstname', $msg_breakdown['en_commands']) > 0);
+    $require_full_en = ( $fb_messenger_format || $firstname_command ); //We we require
+    $found_slicable_url = false; //Must turn TRUE if the /slice command is used within $message_content
 
+    //There is a situation where we might have the /firstname command but no entity, in which case we can set a default:
+    if($firstname_command && !isset($recipient_en['en_id']) && !isset($recipient_en['en_name'])){
+        //We have a First name Command but no entity reference. This is likely for a guest, so use the default:
+        $recipient_en['en_name'] = 'Dear Master'; //Default Master name when needed and not available
+    }
 
-    //Make sure it does not have any direct URLs:
-    if(count($obj_breakdown['en_urls']) > 0){
+    //Now do more checks on this:
+    if(count($msg_breakdown['en_urls']) > 0){
+
+        //Direct URLs are not allowed in the message... (use /link command instead)
         return array(
             'status' => 0,
-            'message' => 'Message URLs are not allowed directly within the message content.',
+            'message' => 'Message URLs are not allowed directly within the message content',
         );
+
+    } elseif(count($msg_breakdown['en_refs']) > 1){
+
+        //Direct URLs are not allowed in the message... (use /link command instead)
+        return array(
+            'status' => 0,
+            'message' => 'Message can include a maximum of 1 entity reference',
+        );
+
+    } elseif(($firstname_command && !isset($recipient_en['en_name'])) || ($fb_messenger_format && !isset($recipient_en['en_psid']))){
+
+        //We have partial entity data, but we're missing some needed information...
+
+        //Fetch full entity data:
+        $ens = $this->Database_model->en_fetch(array(
+            'en_id' => $recipient_en['en_id'],
+            'en_status >=' => 0, //New+
+        ));
+
+        if(count($ens) < 1){
+            //Ooops, invalid entity ID provided
+            return array(
+                'status' => 0,
+                'message' => 'Invalid Entity ID provided',
+            );
+        } elseif($fb_messenger_format && $ens[0]['en_psid'] < 1) {
+            //This Master does not have their Messenger connected yet:
+            return array(
+                'status' => 0,
+                'message' => 'Master @'.$recipient_en['en_id'].' does not have Messenger connected yet',
+            );
+        } else {
+            //Assign data:
+            $recipient_en = $ens[0];
+        }
+
     }
 
 
 
-    if(isset($message_tr['tr_id']) && isset($recipient_en['en_id'])){
-        //Log engagement for this message being sent
 
+    if ($fb_messenger_format) {
+        //This is what will be returned to be sent via messenger:
+        $fb_message = array();
+    } else {
+        //HTML format:
+        $message_content = nl2br($message_content);
+        $html_message = '<div class="i_content">';
     }
 
 
 
-    if(count($obj_breakdown['en_refs']) > 0){
+
+
+
+    if(count($msg_breakdown['en_refs']) > 0){
 
         //We have a reference within this message, let's fetch it to better understand it:
         $ens = $CI->Database_model->en_fetch(array(
-            'en_id' => $obj_breakdown['en_refs'][0], //Note: We will only have a single reference per message
+            'en_id' => $msg_breakdown['en_refs'][0], //Note: We will only have a single reference per message
+            'en_status >=' => 0, //New+
         ));
 
+        if(count($ens) < 1){
+            return array(
+                'status' => 0,
+                'message' => 'The referenced entity @'.$msg_breakdown['en_refs'][0].' not found.',
+            );
+        }
+
+        //Determine what type of reference this is?
         foreach($ens[0]['en__parents'] as $parent_en){
 
             //Is this a direct media file?
             if(array_key_exists($parent_en['tr_en_type_id'], $CI->config->item('en_convert_4537'))){
+
                 //Yes, this is one of the four supported media types...
 
                 //Is this a Facebook Format?
@@ -252,223 +426,120 @@ function echo_message_2body($message_content, $recipient_en = array, $fb_messeng
                             //TODO Implement
                         }
                     }
+                } else {
+
+                    //HTML Format:
+
+
                 }
+
+            } elseif($parent_en['tr_en_type_id']==4257 /* Embed URL */ && substr_count($parent_en['tr_content'], 'youtube.com') > 0) {
+
+                $found_slicable_url = true;
+
+                //https://www.youtube.com/embed/ujGlt8x4Z4I?autoplay=1&start=100&end=110
+
             }
-        }
-    }
-
-}
-
-function echo_message_body($i, $en_name = null, $fb_messenger_format = false)
-{
-
-    /*
-     *
-     * Constructs a message body ready to be dispatched via
-     * fn___facebook_graph() or an HTML web page depending
-     * on the required $ui_format. Inputs are:
-     *
-     *  - $message_content - The chat message itself.
-     *  - $recipient_en - Default NULL - The entity object of who is about to receive this message
-     *  - $actionplan_tr_id - If provided, this is the Action Plan ID that this chat is being prepared for
-     *  - $ui_format - which can be either:
-     *     - 'messenger_chat' - Optimized for Facebook Messenger based on these guides: https://developers.facebook.com/docs/messenger-platform/reference/send-api/
-     *     - 'intent_html' - HTML format optimized for an intent
-     *     - 'entity_html' - HTML format optimized for an entity
-     *     - 'public_html' - HTML format optimized for public viewing on landing pages
-     *
-     * Other things to consider:
-     *
-     * quick_replies
-     * button_url
-     * button_title
-     * fb_attachment_id
-     *
-     *
-     * */
-
-    $CI =& get_instance();
-    $button_url = (isset($i['button_url']) ? $i['button_url'] : null);
-    $button_title = (isset($i['button_title']) ? $i['button_title'] : null);
-    $command = null;
-
-    //Determine from which location is echo_message_body() being called, which would affect the UI:
-    $is_intent = ($CI->uri->segment(1) == 'intents');
-    $is_entity = ($CI->uri->segment(1) == 'entities');
-    $is_public = (!$is_intent && !$is_entity); //The public landing pages that users use to get started
-    $ui = null;
-    $original_cs = array();
-
-
-    if ($fb_messenger_format) {
-        //This is what will be returned to be sent via messenger:
-        $fb_message = array();
-    } else {
-        //HTML format:
-        $i['tr_content'] = nl2br($i['tr_content']);
-        $ui .= '<div class="i_content">';
-    }
-
-
-    //Is it being displayed under entities? This needs a unique UI:
-    if ($is_entity && !$fb_messenger_format) {
-
-        $original_cs = $CI->Database_model->in_fetch(array(
-            'in_id' => $i['tr_in_child_id'],
-        ));
-        if (count($original_cs) > 0) {
-
-            /*
-             *
-             * The UI for showing messages on the entity side
-             * where Miners cannot edit messages because messages
-             * can only be managed from the intent side.
-             *
-             * */
-            $ui .= '<div class="entities-msg">';
-            $ui .= '<span class="pull-right" style="margin:6px 10px 0 0;">';
-            $ui .= '<span data-toggle="tooltip" title="This is the ' . fn___echo_number_ordinal($i['tr_order']) . ' message for this intent" data-placement="left" class="underdot" style="padding-bottom:4px;">' . fn___echo_number_ordinal($i['tr_order']) . '</span> ';
-            $ui .= '<span>' . fn___echo_status('tr_status', $i['tr_status'], 1, 'left') . '</span> ';
-            $ui .= '<a href="/intents/' . $i['tr_in_child_id'] . '#loadmessages-' . $i['tr_in_child_id'] . '"><span class="badge badge-primary" style="display:inline-block; margin-left:3px; width:40px;"><i class="fas fa-sign-out-alt rotate90"></i></span></a>';
-            $ui .= '</span>';
-            $ui .= '<h4><i class="fas fa-hashtag" style="font-size:1em;"></i> ' . $original_cs[0]['in_outcome'] . '</h4>';
-            $ui .= '<div>';
 
         }
-    }
 
 
-    //Does this have a entity reference?
-    $obj_breakdown = fn___extract_message_references($i['tr_content']);
-    //We know that this fn___extract_message_references() has already been validated through fn___validate_message() so it cannot have more than 1 reference
+        if ($fb_messenger_format) {
 
-    if (count($obj_breakdown['en_refs']) > 0) {
+            //Show an option to open action plan:
+            $message_content = str_replace('@' . $msg_breakdown['en_refs'][0], $ens[0]['en_name'], $message_content);
 
-        //This message has a referenced entity
-        //See if that entity has a URL by analyzing its parents:
-        $us = $CI->Database_model->en_fetch(array(
-            'en_id' => $obj_breakdown['en_refs'][0],
-        ));
+            //Is there a slice command?
+            if (substr_count($message_content, '/slice') > 0) {
+                $time_range = explode(':', fn___one_two_explode('/slice:', ' ', $message_content), 2);
+                $message_content = str_replace('/slice:' . $time_range[0] . ':' . $time_range[1], '', $message_content);
+            }
 
-        if (count($us) > 0) {
+        } else {
 
-            if ($fb_messenger_format) {
+            //HTML Format:
+            $time_range = array();
+            $button_title = 'Open Entity';
+            $button_url = '/entities/' . $ens[0]['en_id'] . '?skip_header=1'; //To loadup the entity
+            $embed_html_code = null;
 
-                //Show an option to open action plan:
-                $i['tr_content'] = str_replace('@' . $obj_breakdown['en_refs'][0], $us[0]['en_name'], $i['tr_content']);
+            //Is there a slice command?
+            if (substr_count($message_content, '/slice') > 0) {
 
-                //Is there a slice command?
-                if (substr_count($i['tr_content'], '/slice') > 0) {
-                    $time_range = explode(':', fn___one_two_explode('/slice:', ' ', $i['tr_content']), 2);
-                    $i['tr_content'] = str_replace('/slice:' . $time_range[0] . ':' . $time_range[1], '', $i['tr_content']);
+                $time_range = explode(':', fn___one_two_explode('/slice:', ' ', $message_content), 2);
+
+                //Try finding a compatible URL for the /slice command:
+                foreach ($ens[0]['en__parents'] as $en) {
+                    if (substr_count($en['tr_content'], 'youtube.com') > 0) {
+                        $embed_html_code = '<div style="margin-top:7px;">' . fn___echo_url_embed($en['tr_content'], $en['tr_content'], false, $time_range[0], $time_range[1]) . '</div>';
+                        break;
+                    }
                 }
+
+                //Remove slice command:
+                $message_content = str_replace('/slice:' . $time_range[0] . ':' . $time_range[1], '', $message_content);
+
 
             } else {
 
-                //HTML Format:
-                $time_range = array();
-                $button_title = 'Open Entity';
-                $button_url = '/entities/' . $us[0]['en_id'] . '?skip_header=1'; //To loadup the entity
-                $embed_html_code = null;
+                //So we did not have a slice command and this is an HTML request for a non-entity page
+                //Note: The reason we don't need these for entities is that they already list all URLs with embed codes, so no need to repeat
+                //Let's see if we have any other embeddable content that we can append to message:
 
-                //Is there a slice command?
-                if (substr_count($i['tr_content'], '/slice') > 0) {
+                foreach ($ens[0]['en__parents'] as $en) {
+                    //Is this a URL of any sort?
+                    if (in_array($en['tr_en_type_id'], $CI->config->item('en_ids_4537'))) {
 
-                    $time_range = explode(':', fn___one_two_explode('/slice:', ' ', $i['tr_content']), 2);
+                        $embed_html_code .= '<div style="margin-top:7px;">' . fn___echo_url_type($en['tr_content'], $en['tr_en_type_id']) . '</div>';
 
-                    //Try finding a compatible URL for the /slice command:
-                    foreach ($us[0]['en__parents'] as $en) {
-                        if (substr_count($en['tr_content'], 'youtube.com') > 0) {
-                            $embed_html_code = '<div style="margin-top:7px;">' . fn___echo_url_embed($en['tr_content'], $en['tr_content'], false, $time_range[0], $time_range[1]) . '</div>';
-                            break;
-                        }
                     }
-
-                    //Remove slice command:
-                    $i['tr_content'] = str_replace('/slice:' . $time_range[0] . ':' . $time_range[1], '', $i['tr_content']);
-
-
-                } else {
-
-                    //So we did not have a slice command and this is an HTML request for a non-entity page
-                    //Note: The reason we don't need these for entities is that they already list all URLs with embed codes, so no need to repeat
-                    //Let's see if we have any other embeddable content that we can append to message:
-
-                    foreach ($us[0]['en__parents'] as $en) {
-                        //Is this a URL of any sort?
-                        if (in_array($en['tr_en_type_id'], $CI->config->item('en_ids_4537'))) {
-
-                            $embed_html_code .= '<div style="margin-top:7px;">' . fn___echo_url_type($en['tr_content'], $en['tr_en_type_id']) . '</div>';
-
-                        }
-                    }
-
-                }
-
-
-                if ($is_intent || $is_entity) {
-
-                    //HTML format:
-                    $i['tr_content'] = str_replace('@' . $obj_breakdown['en_refs'][0], ' <a href="javascript:void(0);" onclick="url_modal(\'' . $button_url . '\')">' . $us[0]['en_name'] . '</a>', $i['tr_content']);
-
-                } else {
-
-                    //HTML format:
-                    //TODO Fetch text description from parent entity notes
-                    $entity_title = (0 ? '<span data-toggle="tooltip" title="' . 'notes here' . '" data-placement="top" class="underdot">' . $us[0]['en_name'] . '</span>' : $us[0]['en_name']);
-                    $i['tr_content'] = str_replace('@' . $obj_breakdown['en_refs'][0], $entity_title . ' ', $i['tr_content']);
-
-                }
-
-                //Did we have an embed code to be attached?
-                if ($embed_html_code) {
-                    $i['tr_content'] .= $embed_html_code;
                 }
 
             }
 
-        }
 
+            if ($is_miner) {
+
+                //Show Modal for Miners to further drill in:
+                $message_content = str_replace('@' . $msg_breakdown['en_refs'][0], ' <a href="javascript:void(0);" onclick="url_modal(\'' . $button_url . '\')">' . $ens[0]['en_name'] . '</a>', $message_content);
+
+            } else {
+
+                //Show simple HTML for non-Miners:
+                $message_content = str_replace('@' . $msg_breakdown['en_refs'][0], $ens[0]['en_name'], $message_content);
+
+            }
+
+            //Did we have an embed code to be attached?
+            if ($embed_html_code) {
+                $message_content .= $embed_html_code;
+            }
+
+        }
     }
+
+
+
+
 
 
     //Do we have any commands?
-    if ($en_name && substr_count($i['tr_content'], '/firstname') > 0) {
+    if ($en_name && substr_count($message_content, '/firstname') > 0) {
         //Tweak the name:
-        $command = '/firstname';
-        $i['tr_content'] = str_replace('/firstname', fn___one_two_explode('', ' ', $en_name), $i['tr_content']);
+        $message_content = str_replace('/firstname', fn___one_two_explode('', ' ', $en_name), $message_content);
     }
 
 
-    if (substr_count($i['tr_content'], '/open_actionplan') > 0) {
-        $button_title = 'Open in 🚩Action Plan';
-        $command = '/open_actionplan';
-        $button_url = 'https://mench.com/my/actionplan/' . (isset($i['tr_tr_parent_id']) && isset($i['tr_in_child_id']) ? $i['tr_tr_parent_id'] . '/' . $i['tr_in_child_id'] : '') . '?is_from_messenger=1';
-    } elseif (substr_count($i['tr_content'], '/open_myaccount') > 0) {
-        $button_title = 'Open 👤 My Account';
-        $command = '/open_myaccount';
-        $button_url = 'https://mench.com/my/account?is_from_messenger=1';
-    }
-
-
-    if (substr_count($i['tr_content'], '/typing') > 0) {
-        $command = '/typing';
+    if (substr_count($message_content, '/typing') > 0) {
         if ($fb_messenger_format) {
             //TODO include sender actions https://developers.facebook.com/docs/messenger-platform/send-messages/sender-actions/
         } else {
             //HTML format:
-            $i['tr_content'] = str_replace($command, '<img src="/img/typing.gif" height="35px" />', $i['tr_content']);
+            $message_content = str_replace('/typing', '<img src="/img/typing.gif" height="35px" />', $message_content);
         }
     }
 
 
-    if (substr_count($i['tr_content'], '/resetpassurl') > 0 && isset($i['tr_en_child_id'])) {
-        //append their My Account Button/URL:
-        $timestamp = time();
-        $button_title = '👉 Set New Password';
-        $button_url = 'https://mench.com/my/reset_pass?en_id=' . $i['tr_en_child_id'] . '&timestamp=' . $timestamp . '&p_hash=' . md5($i['tr_en_child_id'] . $CI->config->item('password_salt') . $timestamp);
-        $command = '/resetpassurl';
-    }
 
 
     if ($command || $button_url) {
@@ -477,7 +548,7 @@ function echo_message_body($i, $en_name = null, $fb_messenger_format = false)
         if ($fb_messenger_format) {
 
             //Remove the command from the message:
-            $i['tr_content'] = trim(str_replace($command, '', $i['tr_content']));
+            $message_content = trim(str_replace($command, '', $message_content));
 
             //Return Messenger array:
             $fb_message = array(
@@ -485,7 +556,7 @@ function echo_message_body($i, $en_name = null, $fb_messenger_format = false)
                     'type' => 'template',
                     'payload' => array(
                         'template_type' => 'button',
-                        'text' => $i['tr_content'],
+                        'text' => $message_content,
                         'buttons' => array(
                             array(
                                 'title' => $button_title,
@@ -505,11 +576,11 @@ function echo_message_body($i, $en_name = null, $fb_messenger_format = false)
 
             if ($button_url && $button_title) {
                 //HTML format replaces the button with the command:
-                $i['tr_content'] = trim(str_replace($command, '<div class="msg" style="padding-top:15px;"><a href="' . $button_url . '" target="_blank"><b>' . $button_title . '</b></a></div>', $i['tr_content']));
+                $message_content = trim(str_replace($command, '<div class="msg" style="padding-top:15px;"><a href="' . $button_url . '" target="_blank"><b>' . $button_title . '</b></a></div>', $message_content));
             }
 
             //Return HTML code:
-            $ui .= '<div class="msg">' . $i['tr_content'] . '</div>';
+            $html_message .= '<div class="msg">' . $message_content . '</div>';
 
         }
 
@@ -521,7 +592,7 @@ function echo_message_body($i, $en_name = null, $fb_messenger_format = false)
 
             //Messenger array:
             $fb_message = array(
-                'text' => $i['tr_content'],
+                'text' => $message_content,
                 'metadata' => 'system_logged', //Prevents from duplicate logging via the echo webhook
             );
 
@@ -532,7 +603,7 @@ function echo_message_body($i, $en_name = null, $fb_messenger_format = false)
 
         } else {
             //HTML format:
-            $ui .= '<div class="msg">' . $i['tr_content'] . '</div>';
+            $html_message .= '<div class="msg">' . $message_content . '</div>';
         }
 
     }
@@ -551,15 +622,24 @@ function echo_message_body($i, $en_name = null, $fb_messenger_format = false)
 
     } else {
 
-        //This must be HTML if we're still here, return:
-        if (count($original_cs) > 0) {
-            $ui .= '</div></div>';
-        }
-
-        $ui .= '</div>';
-        return $ui;
+        $html_message .= '</div>';
+        return $html_message;
 
     }
+
+
+}
+
+function echo_message_body($i, $en_name = null, $fb_messenger_format = false)
+{
+
+    //TODO Deprecate
+
+
+    $button_url = null;
+    $button_title = null;
+
+
 
 }
 
@@ -809,7 +889,7 @@ function fn___echo_tr_row($tr)
         }
 
 
-        //Link to Action Plan's main intent:
+        // Link to Action Plan's main intent:
         //$ui .= '<a href="/intents/' . $tr['in_id'] . '" class="badge badge-primary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="' . $tr['in_outcome'] . '"><i class="fas fa-hashtag"></i></a>';
 
     }
@@ -875,10 +955,10 @@ function echo_k_matrix($k)
     $ui .= ' <span data-toggle="tooltip" data-placement="top" title="Submitted on  ' . $k['tr_timestamp'] . '" style="font-size:0.8em;">' . fn___echo_time_difference($k['tr_timestamp']) . '</span> ';
 
 
-    //Link to Master, but count total Action Plans first:
+    // Link to Master, but count total Action Plans first:
     $ui .= '<a href="/entities/' . $k['en_id'] . '" target="_parent" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="Open Subscriber ' . $k['en_name'] . ' with ' . count($user_ws) . ' Action Plans"><span class="btn-counter">' . count($user_ws) . '</span><i class="fas fa-sign-out-alt rotate90"></i></a>';
 
-    //Link to Action Plan's main intent:
+    // Link to Action Plan's main intent:
     $ui .= '<a href="/intents/' . $k['in_id'] . '" target="_parent" class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="Open subscribed intention to ' . $k['in_outcome'] . ' with ' . count($intent_ws) . ' Action Plans"><span class="btn-counter">' . count($intent_ws) . '</span><i class="fas fa-sign-in-alt"></i></a>';
 
     $ui .= '</span>';
@@ -1569,6 +1649,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
     $CI =& get_instance();
     $udata = $CI->session->userdata('user');
+    $tr_id = (isset($in['tr_id']) ? $in['tr_id'] : 0);
 
     //Prepare Intent Metadata:
     $metadata = unserialize($in['in_metadata']);
@@ -1581,7 +1662,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     } else {
 
         //WARNING: Do not change the order of data-link-id & intent-id as the sorting logic depends on their exact position to sort (Not sure why lol)
-        $ui = '<div id="cr_' . $in['tr_id'] . '" data-link-id="' . $in['tr_id'] . '" tr_status="' . $in['tr_status'] . '" intent-id="' . $in['in_id'] . '" parent-intent-id="' . $in_parent_id . '" intent-level="' . $level . '" class="list-group-item ' . ($level == 3 ? 'is_level3_sortable' : 'is_level2_sortable') . ' intent_line_' . $in['in_id'] . '">';
+        $ui = '<div id="cr_' . $tr_id . '" data-link-id="' . $tr_id . '" tr_status="' . $in['tr_status'] . '" intent-id="' . $in['in_id'] . '" parent-intent-id="' . $in_parent_id . '" intent-level="' . $level . '" class="list-group-item ' . ($level == 3 ? 'is_level3_sortable' : 'is_level2_sortable') . ' intent_line_' . $in['in_id'] . '">';
 
     }
 
@@ -1596,7 +1677,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
         //Show Intent Link conditional status: (The intent link status is either Published or Removed, which would make it invisible)
         if ($level > 1) {
-            $ui .= '<span class="tr_status_' . $in['tr_id'] . '">' . fn___echo_status('tr_status', $in['tr_status'], true, 'left') . '</span> ';
+            $ui .= '<span class="tr_status_' . $tr_id . '">' . fn___echo_status('tr_status', $in['tr_status'], true, 'left') . '</span> ';
         }
 
         //Always show intent status:
@@ -1625,7 +1706,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
         //Intent Transactions:
         $count_in_trs = $CI->Database_model->tr_fetch(array(
-            '(tr_in_parent_id=' . $in['in_id'] . ' OR tr_in_child_id=' . $in['in_id'] . ')' => null,
+            '(tr_in_parent_id=' . $in['in_id'] . ' OR tr_in_child_id=' . $in['in_id'] . ( $tr_id > 0 ? ' OR tr_tr_parent_id=' . $tr_id : '' ) . ')' => null,
         ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
         if ($count_in_trs[0]['totals'] > 0) {
             //Show link to load these transactions:
@@ -1643,7 +1724,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
 
         //Intent Modification + Completion Time Estimate:
-        $ui .= '<a class="badge badge-primary" onclick="in_modify_load(' . $in['in_id'] . ',' . (isset($in['tr_id']) ? $in['tr_id'] : 0) . ')" style="margin:-2px -8px 0 2px; width:40px;" href="#loadmodify-' . $in['in_id'] . '-' . (isset($in['tr_id']) ? $in['tr_id'] : 0) . '">' . '<span class="btn-counter slim-time t_estimate_' . $in['in_id'] . '" tree-max-seconds="' . ( isset($metadata['in__tree_max_seconds']) ? $metadata['in__tree_max_seconds'] : 0 ) . '" intent-seconds="' . $in['in_seconds'] . '">' . ( isset($metadata['in__tree_max_seconds']) ? fn___echo_time_hours($metadata['in__tree_max_seconds'], true) : 0 ) . '</span>' . '<i class="fas fa-cog"></i></a> &nbsp;';
+        $ui .= '<a class="badge badge-primary" onclick="in_modify_load(' . $in['in_id'] . ',' . $tr_id . ')" style="margin:-2px -8px 0 2px; width:40px;" href="#loadmodify-' . $in['in_id'] . '-' . $tr_id . '">' . '<span class="btn-counter slim-time t_estimate_' . $in['in_id'] . '" tree-max-seconds="' . ( isset($metadata['in__tree_max_seconds']) ? $metadata['in__tree_max_seconds'] : 0 ) . '" intent-seconds="' . $in['in_seconds'] . '">' . ( isset($metadata['in__tree_max_seconds']) ? fn___echo_time_hours($metadata['in__tree_max_seconds'], true) : 0 ) . '</span>' . '<i class="fas fa-cog"></i></a> &nbsp;';
 
 
         //Intent Link to Travel Down/UP the Tree:
@@ -1716,13 +1797,13 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     } elseif ($level == 2) {
 
         $ui .= '<span class="inline-level">';
-        $ui .= '<a href="javascript:ms_toggle(' . $in['tr_id'] . ');"><i id="handle-' . $in['tr_id'] . '" class="fal fa-plus-square" ' . ($is_parent ? 'data-toggle="tooltip" data-placement="right" title="View Siblings for this Intent"' : '') . '></i></a> &nbsp;';
+        $ui .= '<a href="javascript:ms_toggle(' . $tr_id . ');"><i id="handle-' . $tr_id . '" class="fal fa-plus-square" ' . ($is_parent ? 'data-toggle="tooltip" data-placement="right" title="View Siblings for this Intent"' : '') . '></i></a> &nbsp;';
         if (!$is_parent) {
             $ui .= '<span class="inline-level-' . $level . '">#' . $in['tr_order'] . '</span>';
         }
         $ui .= '</span>';
 
-        $ui .= '<span id="title_' . $in['tr_id'] . '" class="cdr_crnt tree_title in_outcome_' . $in['in_id'] . (strlen($in['in_alternatives']) > 0 ? ' has-desc ' : '') . '" children-rank="' . $in['tr_order'] . '" ' . $in_settings . ' data-toggle="tooltip" data-placement="right" title="' . $in['in_alternatives'] . '">' . $in['in_outcome'] . '</span> ';
+        $ui .= '<span id="title_' . $tr_id . '" class="cdr_crnt tree_title in_outcome_' . $in['in_id'] . (strlen($in['in_alternatives']) > 0 ? ' has-desc ' : '') . '" children-rank="' . $in['tr_order'] . '" ' . $in_settings . ' data-toggle="tooltip" data-placement="right" title="' . $in['in_alternatives'] . '">' . $in['in_outcome'] . '</span> ';
 
         $ui .= ' <span class="obj-id underdot" data-toggle="tooltip" data-placement="top" title="Intent #' . $in['in_id'] . '">#' . $in['in_id'] . '</span>';
 
@@ -1731,7 +1812,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     } elseif ($level == 3) {
 
         $ui .= '<span class="inline-level inline-level-' . $level . '">#' . $in['tr_order'] . '</span>';
-        $ui .= '<span id="title_' . $in['tr_id'] . '" class="tree_title in_outcome_' . $in['in_id'] . (strlen($in['in_alternatives']) > 0 ? ' has-desc ' : '') . '" children-rank="' . $in['tr_order'] . '" ' . $in_settings . ' data-toggle="tooltip" data-placement="right" title="' . $in['in_alternatives'] . '">' . $in['in_outcome'] . '</span> ';
+        $ui .= '<span id="title_' . $tr_id . '" class="tree_title in_outcome_' . $in['in_id'] . (strlen($in['in_alternatives']) > 0 ? ' has-desc ' : '') . '" children-rank="' . $in['tr_order'] . '" ' . $in_settings . ' data-toggle="tooltip" data-placement="right" title="' . $in['in_alternatives'] . '">' . $in['in_outcome'] . '</span> ';
 
         $ui .= $extra_ui;
 
@@ -1745,7 +1826,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
      * */
     if ($level == 2) {
 
-        $ui .= '<div id="list-cr-' . $in['tr_id'] . '" class="cr-class-' . $in['tr_id'] . ' list-group step-group hidden list-level-3" intent-id="' . $in['in_id'] . '">';
+        $ui .= '<div id="list-cr-' . $tr_id . '" class="cr-class-' . $tr_id . ' list-group step-group hidden list-level-3" intent-id="' . $in['in_id'] . '">';
         //This line enables the in-between list moves to happen for empty lists:
         $ui .= '<div class="is_level3_sortable dropin-box" style="height:1px;">&nbsp;</div>';
 
@@ -1760,7 +1841,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         //Intent Level 3 Input field:
         $ui .= '<div class="list-group-item list_input new-in3-input">
             <div class="input-group">
-                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="fn___in_create_or_link(' . $in['in_id'] . ',3);" intent-id="' . $in['in_id'] . '"><input type="text" class="form-control autosearch intentadder-level-3 algolia_search bottom-add" maxlength="' . $CI->config->item('in_outcome_max') . '" id="addintent-cr-' . $in['tr_id'] . '" intent-id="' . $in['in_id'] . '" placeholder="Add #Intent"></form></div>
+                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="fn___in_create_or_link(' . $in['in_id'] . ',3);" intent-id="' . $in['in_id'] . '"><input type="text" class="form-control autosearch intentadder-level-3 algolia_search bottom-add" maxlength="' . $CI->config->item('in_outcome_max') . '" id="addintent-cr-' . $tr_id . '" intent-id="' . $in['in_id'] . '" placeholder="Add #Intent"></form></div>
                 <span class="input-group-addon" style="padding-right:8px;">
                     <span data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" onclick="fn___in_create_or_link(' . $in['in_id'] . ',3);" class="badge badge-primary pull-right" intent-id="' . $in['in_id'] . '" style="cursor:pointer; margin: 13px -6px 1px 13px;">
                         <div><i class="fas fa-plus"></i></div>
@@ -1817,7 +1898,7 @@ function fn___echo_en($en, $level, $is_parent = false)
 
     //Count & Display all Entity transaction:
     $count_in_trs = $CI->Database_model->tr_fetch(array(
-        '(tr_en_parent_id=' . $en['en_id'] . ' OR  tr_en_child_id=' . $en['en_id'] . ' OR  tr_en_credit_id=' . $en['en_id'] . ')' => null,
+        '(tr_en_parent_id=' . $en['en_id'] . ' OR  tr_en_child_id=' . $en['en_id'] . ' OR  tr_en_credit_id=' . $en['en_id'] . ( $tr_id > 0 ? ' OR tr_tr_parent_id=' . $tr_id : '' ) . ')' => null,
     ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
     if ($count_in_trs[0]['totals'] > 0) {
         //Show the transaction button:
@@ -1865,11 +1946,6 @@ function fn___echo_en($en, $level, $is_parent = false)
     $ui .= '<span class="en_icon_ui en_icon_ui_' . $en['en_id'] . '">'.fn___echo_en_icon($en).'</span>';
     $ui .= '<span class="en_name en_name_' . $en['en_id'] . '">' . $en['en_name'] . '</span>';
 
-    //Does it have an external ID?
-    if ($tr_id > 0 && $en['tr_external_id'] > 0) {
-        $ui .= ' <span class="underdot" data-toggle="tooltip" data-placement="top" title="External ID" style="font-size: 0.8em;">#' . $en['tr_external_id'] . '</span>';
-    }
-
 
     if ($level == 1) {
 
@@ -1903,6 +1979,11 @@ function fn___echo_en($en, $level, $is_parent = false)
 
     }
 
+
+    //Does entity have a Messenger PSID?
+    if ($en['en_psid'] > 0) {
+        $ui .= ' &nbsp;<img src="/img/bp_128.png" style="width: 22px;" data-toggle="tooltip" data-placement="top" title="Connected to Mench on Messenger">';
+    }
 
 
     //Does this entity also include a transaction?

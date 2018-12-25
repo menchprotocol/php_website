@@ -42,9 +42,9 @@ $config['en_name_max'] = 250; //Max number of characters allowed in the title of
 $config['tr_content_max'] = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
 $config['message_commands'] = array( //The list of commands supported within a message content
     '/firstname', //Will be replaced by the first name of the recipient
-    '/typing:', //Will show a typing for the number of seconds followed, like /typing:5 which will show it for 5 seconds
-    '/slice:', //Will Slice all supporting videos (YouTube) of the referenced entity within a message like /slice:180:202 (22 seconds starting from minute 3:00
-    '/button:', //Will display a custom button like /button:Search for Batman:https://google.com/?q=Batman (Note that middle part cannot be longer than 20 characters)
+    '/slice', //Will Slice all supporting videos (YouTube) of the referenced entity within a message like /slice:180:202 (22 seconds starting from minute 3:00
+    '/link', //Will display a custom link like /link:Search for Batman:https://google.com/?q=Batman (Note that middle part cannot be longer than 20 characters)
+    '/typing', //Will show a typing for the number of seconds followed, like /typing:5 which will show it for 5 seconds
 );
 
 //Third-Party Settings:

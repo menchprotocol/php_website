@@ -802,7 +802,7 @@ class Matrix_model extends CI_Model
             }
 
             //Return Master-friendly message for completion requirements:
-            return $message . ($include_instructions ? ', which you can submit using your Action Plan. /open_actionplan' : '');
+            return $message . ($include_instructions ? ', which you can submit using your Action Plan.' : '');
 
         } else {
 
@@ -835,19 +835,17 @@ class Matrix_model extends CI_Model
             return false;
         }
 
-
         //Try matching Facebook PSID to existing Masters:
-        $masters_found = $this->Database_model->tr_fetch(array(
-            'tr_status >=' => 2, //Published
-            'tr_en_parent_id' => 4451, //Mench Personal Assistant on Messenger
-            'tr_external_id' => intval($psid), //Since the PSID is a full integer, it is cached in tr_external_id for faster indexing
-        ), array('en_child'));
+        $ens = $this->Database_model->en_fetch(array(
+            'en_status >=' => 0, //New+
+            'en_psid' => intval($psid),
+        ), array('skip_en__parents'));
 
-
-        if (count($masters_found) > 0) {
+        //So, did we find them?
+        if (count($ens) > 0) {
 
             //Master found:
-            return $masters_found[0];
+            return $ens[0];
 
         } else {
 
@@ -1082,14 +1080,15 @@ class Matrix_model extends CI_Model
 
             //We will create this master with a random & temporary name:
             $en = $this->Database_model->en_create(array(
-                'en_name' => 'Candidate ' . rand(100000000, 999999999),
+                'en_name' => 'Master ' . rand(100000000, 999999999),
+                'en_psid' => $psid,
             ), true);
 
             //Inform the master:
             $this->Chat_model->dispatch_message(array(
                 array(
                     'tr_en_child_id' => $en['en_id'],
-                    'tr_content' => 'Hi stranger! Let\'s get started by completing your profile information by opening the My Account tab in the menu below. /open_myaccount',
+                    'tr_content' => 'Hi stranger! Let\'s get started by completing your profile information by opening the My Account tab in the menu below. /link:Open 👤My Account:https://mench.com/my/account',
                 ),
             ));
 
@@ -1101,6 +1100,7 @@ class Matrix_model extends CI_Model
             //Create Master with their Facebook Graph name:
             $en = $this->Database_model->en_create(array(
                 'en_name' => $fb_profile['first_name'] . ' ' . $fb_profile['last_name'],
+                'en_psid' => $psid,
             ), true);
 
             //Split locale variable into language and country like "EN_GB" for English in England
@@ -1144,22 +1144,13 @@ class Matrix_model extends CI_Model
 
         //Log new Master transaction:
         $this->Database_model->tr_create(array(
-            'tr_en_type_id' => 4265, //User Joined
+            'tr_en_type_id' => 4265, //New Master Joined
             'tr_en_credit_id' => $en['en_id'],
             'tr_en_child_id' => $en['en_id'],
             'tr_metadata' => $en,
         ));
 
-        //Store Master's Messenger PSID:
-        $this->Database_model->tr_create(array(
-            'tr_en_type_id' => 4319, //Number Link
-            'tr_en_credit_id' => $en['en_id'],
-            'tr_en_parent_id' => 4451, //Mench Personal Assistant on Messenger
-            'tr_en_child_id' => $en['en_id'],
-            'tr_external_id' => $psid, //Used later-on to match Messenger user to entity. $psid is cached in tr_external_id since its an integer
-        ));
-
-        //Add default Action Plan Level:
+        //Add default Notification Level:
         $this->Database_model->tr_create(array(
             'tr_en_type_id' => 4230, //Naked link
             'tr_en_credit_id' => $en['en_id'],

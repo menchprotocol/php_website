@@ -10,7 +10,7 @@ function fn___includes_any($string, $items)
 {
     //Determines if any of the items in array $items includes $string
     foreach ($items as $item) {
-        if (substr_count($string, $items) > 0) {
+        if (substr_count($string, $item) > 0) {
             return $item;
         }
     }
@@ -113,7 +113,7 @@ function fn___extract_message_references($tr_content)
     $parts = preg_split('/\s+/', $tr_content);
 
     //Analyze the message to find referencing URLs and Entities in the message text:
-    $obj_breakdown = array(
+    $msg_breakdown = array(
         'en_urls' => array(),
         'en_refs' => array(),
         'en_commands' => array(),
@@ -122,19 +122,19 @@ function fn___extract_message_references($tr_content)
     //See what we can find:
     foreach ($parts as $part) {
         if (filter_var($part, FILTER_VALIDATE_URL)) {
-            array_push($obj_breakdown['en_urls'], $part);
+            array_push($msg_breakdown['en_urls'], $part);
         } elseif (substr($part, 0, 1) == '@' && intval($part) > 0) {
-            array_push($obj_breakdown['en_refs'], intval($part));
+            array_push($msg_breakdown['en_refs'], intval($part));
         } else {
             //Check maybe it's a command?
             $command = fn___includes_any($part, $CI->config->item('message_commands'));
             if($command){
                 //Yes!
-                array_push($obj_breakdown['en_refs'], $command);
+                array_push($msg_breakdown['en_refs'], $command);
             }
         }
     }
-    return $obj_breakdown;
+    return $msg_breakdown;
 }
 
 
@@ -454,7 +454,7 @@ function fn___validate_message($tr_content)
     $tr_content = trim($tr_content);
 
     //Extract references from this message including its URLs and referenced entities (like "@123")
-    $obj_breakdown = fn___extract_message_references($tr_content);
+    $msg_breakdown = fn___extract_message_references($tr_content);
 
     if (strlen($tr_content) < 1) {
         return array(
@@ -481,17 +481,17 @@ function fn___validate_message($tr_content)
             'status' => 0,
             'message' => 'Message must be UTF8',
         );
-    } elseif (count($obj_breakdown['en_refs']) > 1) {
+    } elseif (count($msg_breakdown['en_refs']) > 1) {
         return array(
             'status' => 0,
             'message' => 'You can reference a maximum of 1 entity per message',
         );
-    } elseif (count($obj_breakdown['en_urls']) > 1) {
+    } elseif (count($msg_breakdown['en_urls']) > 1) {
         return array(
             'status' => 0,
             'message' => 'You can reference a maximum of 1 URL per message',
         );
-    } elseif (count($obj_breakdown['en_refs']) > 0 && count($obj_breakdown['en_urls']) > 0) {
+    } elseif (count($msg_breakdown['en_refs']) > 0 && count($msg_breakdown['en_urls']) > 0) {
         return array(
             'status' => 0,
             'message' => 'You can either reference 1 entity OR 1 URL (As the URL will be transformed into an entity)',
@@ -501,7 +501,7 @@ function fn___validate_message($tr_content)
             'status' => 0,
             'message' => '/slice command can be used only once',
         );
-    } elseif (count($obj_breakdown['en_refs']) == 0 && count($obj_breakdown['en_urls']) == 0 && substr_count($tr_content, '/slice') > 0) {
+    } elseif (count($msg_breakdown['en_refs']) == 0 && count($msg_breakdown['en_urls']) == 0 && substr_count($tr_content, '/slice') > 0) {
         return array(
             'status' => 0,
             'message' => '/slice command required an entity reference',
@@ -510,17 +510,17 @@ function fn___validate_message($tr_content)
 
 
     //Validate Entity Reference if Any:
-    if (count($obj_breakdown['en_refs']) > 0) {
+    if (count($msg_breakdown['en_refs']) > 0) {
 
         $ens = $CI->Database_model->en_fetch(array(
-            'en_id' => $obj_breakdown['en_refs'][0],
+            'en_id' => $msg_breakdown['en_refs'][0],
         ));
 
         if (count($ens) == 0) {
             //Invalid ID:
             return array(
                 'status' => 0,
-                'message' => 'Entity [@' . $obj_breakdown['en_refs'][0] . '] does not exist',
+                'message' => 'Entity [@' . $msg_breakdown['en_refs'][0] . '] does not exist',
             );
         } elseif ($ens[0]['en_status'] < 0) {
             //Inactive:
@@ -530,10 +530,10 @@ function fn___validate_message($tr_content)
             );
         }
 
-    } elseif (count($obj_breakdown['en_urls']) > 0) {
+    } elseif (count($msg_breakdown['en_urls']) > 0) {
 
         //No entity linked, but we have a URL that we should turn into an entity:
-        $created_url = $CI->Matrix_model->fn___create_en_from_url($obj_breakdown['en_urls'][0]);
+        $created_url = $CI->Matrix_model->fn___create_en_from_url($msg_breakdown['en_urls'][0]);
 
         //Did we have an error?
         if (!$created_url['status']) {
@@ -541,10 +541,10 @@ function fn___validate_message($tr_content)
         }
 
         //Transform this URL into an entity:
-        $obj_breakdown['en_refs'][0] = $created_url['en_from_url']['en_id'];
+        $msg_breakdown['en_refs'][0] = $created_url['en_from_url']['en_id'];
 
         //Replace the URL with this new @entity in message:
-        $tr_content = str_replace($obj_breakdown['en_urls'][0], '@' . $obj_breakdown['en_refs'][0], $tr_content);
+        $tr_content = str_replace($msg_breakdown['en_urls'][0], '@' . $msg_breakdown['en_refs'][0], $tr_content);
 
     }
 
@@ -602,7 +602,7 @@ function fn___validate_message($tr_content)
         'message' => 'Success',
         //Return cleaned data:
         'tr_content' => trim($tr_content), //It might have been modified if URL was added
-        'tr_en_parent_id' => (count($obj_breakdown['en_refs']) > 0 ? $obj_breakdown['en_refs'][0] : 0), //Referencing an entity?
+        'tr_en_parent_id' => (count($msg_breakdown['en_refs']) > 0 ? $msg_breakdown['en_refs'][0] : 0), //Referencing an entity?
     );
 
 }

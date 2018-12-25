@@ -451,7 +451,7 @@ class Intents extends CI_Controller
                         'before' => $children_before,
                         'after' => $children_after,
                     ),
-                    'tr_en_type_id' => 4262, //Links Sorted
+                    'tr_en_type_id' => 4262, // Links Sorted
                     'tr_in_child_id' => intval($_POST['in_id']),
                 ));
 

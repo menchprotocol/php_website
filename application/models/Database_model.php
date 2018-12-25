@@ -1043,17 +1043,32 @@ class Database_model extends CI_Model
          *
          * Enables the easy manipulation of the text metadata field which holds cache data for developers
          *
-         *   $obj_type is either in or en
-         *   $field is the array key within the metadata
+         * $obj_type:               Either in, en or tr
+         *
+         * $obj:                    The Entity, Intent or Transaction itself.
+         *                          We're looking for the $obj ID and METADATA
+         *
+         * $new_fields:             The new array of metadata fields to be Set,
+         *                          Updated or Removed (If set to null)
+         *
+         * $absolute_adjustment:    TRUE by default, meaning that values within
+         *                          $new_fields will be updated as they are. If
+         *                          this is FALSE, then this would be a relative
+         *                          adjustment (add or subtract) compared to what
+         *                          is already in the metadata field of $obj.
          *
          * */
 
-        if (!in_array($obj_type, array('in', 'en')) || !isset($obj[$obj_type . '_metadata']) || count($new_fields) < 1) {
+        if (!in_array($obj_type, array('in', 'en', 'tr')) || !isset($obj[$obj_type . '_id']) || !isset($obj[$obj_type . '_metadata']) || count($new_fields) < 1) {
             return false;
         }
 
         //Prepare metadata:
-        $metadata = unserialize($obj[$obj_type . '_metadata']);
+        if(strlen($obj[$obj_type . '_metadata']) > 0){
+            $metadata = unserialize($obj[$obj_type . '_metadata']);
+        } else {
+            $metadata = array();
+        }
 
         //Go through all the new fields and see if they differ from current metadata fields:
         foreach ($new_fields as $metadata_key => $metadata_value) {
@@ -1065,12 +1080,13 @@ class Database_model extends CI_Model
                 //We are doing an absolute adjustment if needed:
                 if (is_null($metadata_value)) {
                     //User asked to remove this value:
-                    unset($metadata[$metadata_key]);
+                    if(isset($metadata[$metadata_key])){
+                        unset($metadata[$metadata_key]);
+                    }
                 } elseif (!isset($metadata[$metadata_key]) || $metadata[$metadata_key] !== $metadata_value) {
                     //Value has changed, adjust:
                     $metadata[$metadata_key] = $metadata_value;
                 }
-
             }
         }
 
@@ -1085,6 +1101,12 @@ class Database_model extends CI_Model
 
             $affected_rows = $this->Database_model->en_update($obj['en_id'], array(
                 'en_metadata' => $metadata,
+            ));
+
+        } elseif ($obj_type == 'tr') {
+
+            $affected_rows = $this->Database_model->tr_update($obj['tr_id'], array(
+                'tr_metadata' => $metadata,
             ));
 
         }

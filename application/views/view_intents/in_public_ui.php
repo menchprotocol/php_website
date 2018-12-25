@@ -3,7 +3,7 @@
 $metadata = unserialize($in['in_metadata']);
 $do_expand = ( isset($_GET['do_expand']) && intval($_GET['do_expand']) );
 $is_primary_in = ( $in['in_id'] == $this->config->item('in_primary_id') );
-$guest_name = 'Dear candidate'; //To replace /firstname in messages (if any) since we do not know this Master yet
+$guest_name = 'Dear Master'; //To replace /firstname in messages (if any) since we do not know this Master yet
 ?>
 <style>
     .body-container .msg, .body-container li, p, .body-container a {
