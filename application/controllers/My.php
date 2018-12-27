@@ -265,7 +265,7 @@ class My extends CI_Controller
         $this->load->view('view_shared/messenger_footer');
     }
 
-    function skip_tree($tr_id, $in_id, $tr_id)
+    function skip_tree($tr_id, $in_id, $tr_id2)
     {
         //Start skipping:
         $total_skipped = count($this->Database_model->k_skip_recursive_down($tr_id));
