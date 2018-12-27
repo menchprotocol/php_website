@@ -981,12 +981,11 @@ class Chat_model extends CI_Model
             if ($action_unsubscribe == 'CANCEL') {
 
                 //Master seems to have changed their mind, confirm with them:
-                $this->Chat_model->dispatch_message(array(
-                    array(
-                        'tr_en_child_id' => $en['en_id'],
-                        'tr_content' => 'Awesome, I am excited to continue helping you to ' . $this->config->item('in_primary_name') . '.',
-                    ),
-                ));
+                $this->Chat_model->echo_message(
+                    'Awesome, I am excited to continue helping you to ' . $this->config->item('in_primary_name') . '.',
+                    $en,
+                    true
+                );
 
                 //Inform Master on how to can command Mench:
                 $this->Matrix_model->compose_messages(array(
@@ -1014,12 +1013,11 @@ class Chat_model extends CI_Model
                 $this->Matrix_model->fn___en_radio_set(4454, 4455, $en['en_id'], $en['en_id']);
 
                 //Let them know about these changes:
-                $this->Chat_model->dispatch_message(array(
-                    array(
-                        'tr_en_child_id' => $en['en_id'],
-                        'tr_content' => 'Confirmed, I removed ' . count($actionplans) . ' Action Plan' . fn___echo__s(count($actionplans)) . ' from your account. This is the final message you will receive from me unless you message me. Take care of your self and I hope to talk to you soon 😘',
-                    ),
-                ));
+                $this->Chat_model->echo_message(
+                    'Confirmed, I removed ' . count($actionplans) . ' Action Plan' . fn___echo__s(count($actionplans)) . ' from your account. This is the final message you will receive from me unless you message me. Take care of your self and I hope to talk to you soon 😘',
+                    $en,
+                    true
+                );
 
             } elseif (intval($action_unsubscribe) > 0) {
 
@@ -1039,12 +1037,11 @@ class Chat_model extends CI_Model
                     ), $en['en_id']); //Give credit to them
 
                     //Show success message to user:
-                    $this->Chat_model->dispatch_message(array(
-                        array(
-                            'tr_en_child_id' => $en['en_id'],
-                            'tr_content' => 'I have successfully removed the intention to ' . $actionplans[0]['in_outcome'] . ' from your Action Plan. Say "Unsubscribe" if you wish to stop all future communications.',
-                        ),
-                    ));
+                    $this->Chat_model->echo_message(
+                        'I have successfully removed the intention to ' . $actionplans[0]['in_outcome'] . ' from your Action Plan. Say "Unsubscribe" if you wish to stop all future communications.',
+                        $en,
+                        true
+                    );
 
                     //Inform Master on how to can command Mench:
                     $this->Matrix_model->compose_messages(array(
@@ -1056,12 +1053,11 @@ class Chat_model extends CI_Model
 
                     //Oooops, this should not happen
                     //let them know we had error:
-                    $this->Chat_model->dispatch_message(array(
-                        array(
-                            'tr_en_child_id' => $en['en_id'],
-                            'tr_content' => 'Unable to process your request as I could not locate your Action Plan. Please try again.',
-                        ),
-                    ));
+                    $this->Chat_model->echo_message(
+                        'Unable to process your request as I could not locate your Action Plan. Please try again.',
+                        $en,
+                        true
+                    );
 
                     //Log error transaction:
                     $this->Database_model->tr_create(array(
@@ -1083,12 +1079,11 @@ class Chat_model extends CI_Model
                 $this->Matrix_model->fn___en_radio_set(4454, 4457, $en['en_id'], $en['en_id']);
 
                 //Inform them:
-                $this->Chat_model->dispatch_message(array(
-                    array(
-                        'tr_en_child_id' => $en['en_id'],
-                        'tr_content' => 'Sweet, you account is now activated but you are not subscribed to any intents yet.',
-                    ),
-                ));
+                $this->Chat_model->echo_message(
+                    'Sweet, you account is now activated but you are not subscribed to any intents yet.',
+                    $en,
+                    true
+                );
 
                 //Inform Master on how to can command Mench:
                 $this->Matrix_model->compose_messages(array(
@@ -1098,12 +1093,11 @@ class Chat_model extends CI_Model
 
             } elseif ($quick_reply_payload == 'REACTIVATE_NO') {
 
-                $this->Chat_model->dispatch_message(array(
-                    array(
-                        'tr_en_child_id' => $en['en_id'],
-                        'tr_content' => 'Ok, your account will remain unsubscribed.',
-                    ),
-                ));
+                $this->Chat_model->echo_message(
+                    'Ok, your account will remain unsubscribed.',
+                    $en,
+                    true
+                );
 
             }
 
@@ -1115,12 +1109,11 @@ class Chat_model extends CI_Model
             if ($ref_value == 'REJECT') {
 
                 //They rejected the offer... Acknowledge and give response:
-                $this->Chat_model->dispatch_message(array(
-                    array(
-                        'tr_en_child_id' => $en['en_id'],
-                        'tr_content' => 'Ok, so how can I help you ' . $this->config->item('in_primary_name') . '?',
-                    ),
-                ));
+                $this->Chat_model->echo_message(
+                    'Ok, so how can I help you ' . $this->config->item('in_primary_name') . '?',
+                    $en,
+                    true
+                );
 
                 //Inform Master on how to can command Mench:
                 $this->Matrix_model->compose_messages(array(
@@ -1142,45 +1135,44 @@ class Chat_model extends CI_Model
                 if (count($ins) < 1) {
 
                     //Ooops we could not find the intention:
-                    $this->Chat_model->dispatch_message(array(
-                        array(
-                            'tr_en_child_id' => $en['en_id'],
-                            'tr_content' => 'I was unable to locate intent #' . $in_id . ' [' . $quick_reply_payload . ']',
-                        ),
-                    ));
+                    $this->Chat_model->echo_message(
+                        'I was unable to locate intent #' . $in_id . ' [' . $quick_reply_payload . ']',
+                        $en,
+                        true
+                    );
 
                 } elseif ($ins[0]['in_status'] < 2) {
 
                     //Ooopsi Intention is no longer published:
-                    $this->Chat_model->dispatch_message(array(
-                        array(
-                            'tr_en_child_id' => $en['en_id'],
-                            'tr_content' => 'I was unable to subscribe you to ' . $ins[0]['in_outcome'] . ' as its not published',
-                        ),
-                    ));
+                    $this->Chat_model->echo_message(
+                        'I was unable to subscribe you to ' . $ins[0]['in_outcome'] . ' as its not published',
+                        $en,
+                        true
+                    );
 
                 } else {
 
                     //Confirm if they are interested for this intention:
-                    $this->Chat_model->dispatch_message(array(
+                    $this->Chat_model->echo_message(
+                        'Hello hello 👋 are you interested to ' . $ins[0]['in_outcome'] . '?',
+                        $en,
+                        true,
                         array(
-                            'tr_en_child_id' => $en['en_id'],
-                            'tr_in_child_id' => $ins[0]['in_id'],
-                            'tr_content' => 'Hello hello 👋 are you interested to ' . $ins[0]['in_outcome'] . '?',
-                            'quick_replies' => array(
-                                array(
-                                    'content_type' => 'text',
-                                    'title' => 'Yes, Learn More',
-                                    'payload' => 'ACTIONPLAN-ADD-CONFIRM_' . $ins[0]['in_id'],
-                                ),
-                                array(
-                                    'content_type' => 'text',
-                                    'title' => 'No',
-                                    'payload' => 'ACTIONPLAN-ADD-INITIATE_REJECT',
-                                ),
+                            array(
+                                'content_type' => 'text',
+                                'title' => 'Yes, Learn More',
+                                'payload' => 'ACTIONPLAN-ADD-CONFIRM_' . $ins[0]['in_id'],
+                            ),
+                            array(
+                                'content_type' => 'text',
+                                'title' => 'No',
+                                'payload' => 'ACTIONPLAN-ADD-INITIATE_REJECT',
                             ),
                         ),
-                    ));
+                        array(
+                            'tr_in_child_id' => $ins[0]['in_id'],
+                        )
+                    );
 
                 }
             }
@@ -1205,14 +1197,16 @@ class Chat_model extends CI_Model
                 if (count($actionplans) > 0) {
 
                     //Let the user know that this is a duplicate:
-                    $this->Chat_model->dispatch_message(array(
+                    $this->Chat_model->echo_message(
+                        'The intention to ' . $ins[0]['in_outcome'] . ' has already been added to your Action Plan. We have been working on it together since ' . fn___echo_time_date($actionplans[0]['tr_timestamp']) . '. /link:See in 🚩Action Plan:https://mench.com/my/actionplan/' . $actionplans[0]['tr_tr_parent_id'] . '/' . $actionplans[0]['tr_in_child_id'],
+                        $en,
+                        true,
+                        array(),
                         array(
-                            'tr_en_child_id' => $en['en_id'],
                             'tr_in_child_id' => $ins[0]['in_id'],
                             'tr_tr_parent_id' => ($actionplans[0]['tr_tr_parent_id'] > 0 ? $actionplans[0]['tr_tr_parent_id'] : $actionplans[0]['tr_id']),
-                            'tr_content' => 'The intention to ' . $ins[0]['in_outcome'] . ' has already been added to your Action Plan. We have been working on it together since ' . fn___echo_time_date($actionplans[0]['tr_timestamp']) . '. /link:See in 🚩Action Plan:https://mench.com/my/actionplan/' . $actionplans[0]['tr_tr_parent_id'] . '/' . $actionplans[0]['tr_in_child_id']
-                        ),
-                    ));
+                        )
+                    );
 
                 } else {
 
@@ -1226,40 +1220,46 @@ class Chat_model extends CI_Model
                     ), array(), 0, 0, array('tr_order' => 'ASC'));
 
                     foreach ($messages_on_start as $tr) {
-                        $this->Chat_model->dispatch_message(array(
-                            array_merge($tr, array(
-                                'tr_en_child_id' => $en['en_id'],
-                            )),
-                        ));
+                        $this->Chat_model->echo_message(
+                            $tr['tr_content'],
+                            $en,
+                            true,
+                            array(),
+                            array(
+                                'tr_tr_parent_id' => $tr['tr_id'],
+                                'tr_in_child_id' => $ins[0]['in_id'],
+                            )
+                        );
                     }
 
                     //Send message for final confirmation with the overview of how long/difficult it would be to accomplish this intention:
-                    $this->Chat_model->dispatch_message(array(
+                    $this->Chat_model->echo_message(
+                        'Here is an overview:' . "\n\n" .
+                        fn___echo_in_overview($ins[0], true) .
+                        fn___echo_in_referenced_content($ins[0], true) .
+                        fn___echo_in_experts($ins[0], true) .
+                        fn___echo_in_time_estimate($ins[0], true) .
+                        fn___echo_in_cost_range($ins[0], true) .
+                        "\n" . 'Are you ready to ' . $ins[0]['in_outcome'] . '?',
+                        $en,
+                        true,
                         array(
-                            'tr_en_child_id' => $en['en_id'],
-                            'tr_in_child_id' => $ins[0]['in_id'],
-                            'tr_content' => 'Here is an overview:' . "\n\n" .
-                                fn___echo_in_overview($ins[0], true) .
-                                fn___echo_in_referenced_content($ins[0], true) .
-                                fn___echo_in_experts($ins[0], true) .
-                                fn___echo_in_time_estimate($ins[0], true) .
-                                fn___echo_in_cost_range($ins[0], true) .
-                                "\n" . 'Are you ready to ' . $ins[0]['in_outcome'] . '?',
-                            'quick_replies' => array(
-                                array(
-                                    'content_type' => 'text',
-                                    'title' => 'Yes, Subscribe',
-                                    'payload' => 'ACTIONPLAN-ADD-CONFIRMED_' . $ins[0]['in_id'],
-                                ),
-                                array(
-                                    'content_type' => 'text',
-                                    'title' => 'No',
-                                    'payload' => 'ACTIONPLAN-ADD-INITIATE_REJECT',
-                                ),
-                                //TODO Maybe Show a "Learn More" if Learn More messages were available
+                            array(
+                                'content_type' => 'text',
+                                'title' => 'Yes, Subscribe',
+                                'payload' => 'ACTIONPLAN-ADD-CONFIRMED_' . $ins[0]['in_id'],
                             ),
+                            array(
+                                'content_type' => 'text',
+                                'title' => 'No',
+                                'payload' => 'ACTIONPLAN-ADD-INITIATE_REJECT',
+                            ),
+                            //TODO Show a "Learn More" if Learn More messages were available
                         ),
-                    ));
+                        array(
+                            'tr_in_child_id' => $ins[0]['in_id'],
+                        )
+                    );
 
                 }
             }
@@ -1294,14 +1294,16 @@ class Chat_model extends CI_Model
                     $this->Database_model->in_recursive_fetch($ins[0]['in_id'], true, false, $actionplan['tr_id']);
 
                     //Confirm with them that we're now ready:
-                    $this->Chat_model->dispatch_message(array(
+                    $this->Chat_model->echo_message(
+                        'Success! I have added the intention to ' . $ins[0]['in_outcome'] . ' to your Action Plan 🙌 /link:See in 🚩Action Plan:https://mench.com/my/actionplan/' . $actionplan['tr_id'] . '/' . $ins[0]['in_id'],
+                        $en,
+                        true,
+                        array(),
                         array(
-                            'tr_en_child_id' => $en['en_id'],
                             'tr_in_child_id' => $ins[0]['in_id'],
                             'tr_tr_parent_id' => $actionplan['tr_id'],
-                            'tr_content' => 'Success! I have added the intention to ' . $ins[0]['in_outcome'] . ' to your Action Plan 🙌 /link:See in 🚩Action Plan:https://mench.com/my/actionplan/' . $actionplan['tr_id'] . '/' . $ins[0]['in_id'],
-                        ),
-                    ));
+                        )
+                    );
 
                     //Initiate first message for action plan tree:
                     $this->Matrix_model->compose_messages(array(
@@ -1363,12 +1365,15 @@ class Chat_model extends CI_Model
                     ));
 
                     //Inform user:
-                    return $this->Chat_model->dispatch_message(array(
+                    $this->Chat_model->echo_message(
+                        'I did not find anything to skip!',
+                        $en,
+                        true,
+                        array(),
                         array(
-                            'tr_en_child_id' => $en['en_id'],
-                            'tr_content' => 'I did not find anything to skip!',
-                        ),
-                    ));
+                            'tr_tr_parent_id' => $tr_id,
+                        )
+                    );
 
                 }
 
@@ -1404,24 +1409,26 @@ class Chat_model extends CI_Model
                 $tr_content .= "\n\n" . 'I would not recommend skipping unless you feel comfortable learning these concepts on your own.';
 
                 //Send them the message:
-                $this->Chat_model->dispatch_message(array(
+                $this->Chat_model->echo_message(
+                    $tr_content,
+                    $en,
+                    true,
                     array(
-                        'tr_en_child_id' => $en['en_id'],
-                        'tr_content' => $tr_content,
-                        'quick_replies' => array(
-                            array(
-                                'content_type' => 'text',
-                                'title' => 'Skip ' . $would_be_skipped_count . ' concept' . fn___echo__s($would_be_skipped_count) . ' 🚫',
-                                'payload' => 'ACTIONPLAN-SKIP-INITIATE_2_' . $new_tr['tr_id'], //Confirm and skip
-                            ),
-                            array(
-                                'content_type' => 'text',
-                                'title' => 'Continue ▶️',
-                                'payload' => 'ACTIONPLAN-SKIP-INITIATE_-1_' . $new_tr['tr_id'], //Cancel skipping
-                            ),
+                        array(
+                            'content_type' => 'text',
+                            'title' => 'Skip ' . $would_be_skipped_count . ' concept' . fn___echo__s($would_be_skipped_count) . ' 🚫',
+                            'payload' => 'ACTIONPLAN-SKIP-INITIATE_2_' . $new_tr['tr_id'], //Confirm and skip
+                        ),
+                        array(
+                            'content_type' => 'text',
+                            'title' => 'Continue ▶️',
+                            'payload' => 'ACTIONPLAN-SKIP-INITIATE_-1_' . $new_tr['tr_id'], //Cancel skipping
                         ),
                     ),
-                ));
+                    array(
+                        'tr_tr_parent_id' => $tr_id,
+                    )
+                );
 
             } else {
 
@@ -1446,13 +1453,15 @@ class Chat_model extends CI_Model
                 }
 
                 //Send message:
-                $this->Chat_model->dispatch_message(array(
+                $this->Chat_model->echo_message(
+                    $tr_content,
+                    $en,
+                    true,
+                    array(),
                     array(
-                        'tr_en_child_id' => $en['en_id'],
                         'tr_tr_parent_id' => $tr_id,
-                        'tr_content' => $tr_content,
-                    ),
-                ));
+                    )
+                );
 
                 //Update transaction status accordingly:
                 $this->Database_model->tr_update($tr_id, array(
@@ -1581,24 +1590,23 @@ class Chat_model extends CI_Model
             ))) > 0) {
 
             //Yes, this Master is Unsubscribed! Give them an option to re-activate their Mench account:
-            return $this->Chat_model->dispatch_message(array(
+            $this->Chat_model->echo_message(
+                'You are currently unsubscribed. Would you like me to re-activate your account?',
+                $en,
+                true,
                 array(
-                    'tr_en_child_id' => $en['en_id'],
-                    'tr_content' => 'You are currently unsubscribed. Would you like me to re-activate your account?',
-                    'quick_replies' => array(
-                        array(
-                            'content_type' => 'text',
-                            'title' => 'Yes, Re-Activate',
-                            'payload' => 'REACTIVATE_YES',
-                        ),
-                        array(
-                            'content_type' => 'text',
-                            'title' => 'Stay Unsubscribed',
-                            'payload' => 'REACTIVATE_NO',
-                        ),
+                    array(
+                        'content_type' => 'text',
+                        'title' => 'Yes, Re-Activate',
+                        'payload' => 'REACTIVATE_YES',
                     ),
-                ),
-            ));
+                    array(
+                        'content_type' => 'text',
+                        'title' => 'Stay Unsubscribed',
+                        'payload' => 'REACTIVATE_NO',
+                    ),
+                )
+            );
         }
 
 
@@ -1691,35 +1699,33 @@ class Chat_model extends CI_Model
                 ));
 
                 //Send out message and let them confirm:
-                $this->Chat_model->dispatch_message(array(
-                    array(
-                        'tr_en_child_id' => $en['en_id'],
-                        'tr_content' => $tr_content,
-                        'quick_replies' => $quick_replies,
-                    ),
-                ));
+                $this->Chat_model->echo_message(
+                    $tr_content,
+                    $en,
+                    true,
+                    $quick_replies
+                );
 
             } else {
 
                 //They do not have anything in their Action Plan, so we assume they just want to Unsubscribe and stop all future communications:
-                $this->Chat_model->dispatch_message(array(
+                $this->Chat_model->echo_message(
+                    'Got it, just to confirm, you want to unsubscribe and stop all future communications with me?',
+                    $en,
+                    true,
                     array(
-                        'tr_en_child_id' => $en['en_id'],
-                        'tr_content' => 'Got it, just to confirm, you want to unsubscribe and stop all future communications with me?',
-                        'quick_replies' => array(
-                            array(
-                                'content_type' => 'text',
-                                'title' => 'Yes, Unsubscribe',
-                                'payload' => 'ACTIONPLAN-SKIP_ALL',
-                            ),
-                            array(
-                                'content_type' => 'text',
-                                'title' => 'No, Stay Friends',
-                                'payload' => 'ACTIONPLAN-SKIP_CANCEL',
-                            ),
+                        array(
+                            'content_type' => 'text',
+                            'title' => 'Yes, Unsubscribe',
+                            'payload' => 'ACTIONPLAN-SKIP_ALL',
                         ),
-                    ),
-                ));
+                        array(
+                            'content_type' => 'text',
+                            'title' => 'No, Stay Friends',
+                            'payload' => 'ACTIONPLAN-SKIP_CANCEL',
+                        ),
+                    )
+                );
 
             }
 
@@ -1800,23 +1806,21 @@ class Chat_model extends CI_Model
                 ));
 
                 //return what we found to the master to decide:
-                $this->Chat_model->dispatch_message(array(
-                    array(
-                        'tr_en_child_id' => $en['en_id'],
-                        'tr_content' => $tr_content,
-                        'quick_replies' => $quick_replies,
-                    ),
-                ));
+                $this->Chat_model->echo_message(
+                    $tr_content,
+                    $en,
+                    true,
+                    $quick_replies
+                );
 
             } else {
 
                 //Respond to user:
-                $this->Chat_model->dispatch_message(array(
-                    array(
-                        'tr_en_child_id' => $en['en_id'],
-                        'tr_content' => 'I did not find any intentions to "' . $master_command . '", but I will let you know as soon as I am trained on this. Is there anything else I can help you with right now?',
-                    ),
-                ));
+                $this->Chat_model->echo_message(
+                    'I did not find any intentions to "' . $master_command . '", but I will let you know as soon as I am trained on this. Is there anything else I can help you with right now?',
+                    $en,
+                    true
+                );
 
             }
 
@@ -1911,223 +1915,8 @@ class Chat_model extends CI_Model
     function dispatch_message($trs)
     {
 
-        /*
-         * Will attempt to send a message to the Master using the
-         * messaging platform of their choice based on the Entity
-         * relations we find for the given master for each message
-         * that is passed on in $trs with these fields:
-         *
-         * - tr_en_child_id
-         * - tr_content
-         *
-         * */
+        //TODO Deprecate
 
-        if (count($trs) < 1) {
-            return array(
-                'status' => 0,
-                'message' => 'Missing input messages',
-            );
-        }
-
-        //Prepare needed variables:
-        $failed_count = 0; //Keeps track of failed $trs that we could not send
-        $en_convert_4454 = $this->config->item('en_convert_4454'); //Translates our settings to Facebook Notification Settings
-        $master_cache = array(); //Simple caching mechanism for communication settings to prevent fetching data multiple times...
-
-
-        //Let's run through all input messages:
-        foreach ($trs as $tr) {
-
-            //Make sure we have the Master ID that we need to send this message to:
-            if (!isset($tr['tr_en_child_id']) || !isset($tr['tr_content']) || strlen($tr['tr_content']) < 1) {
-
-                //This should never happen! Log error:
-                $failed_count++;
-
-                $this->Database_model->tr_create(array(
-                    'tr_metadata' => $tr,
-                    'tr_en_type_id' => 4246, //Platform error
-                    'tr_content' => 'dispatch_message() failed to send message as it was missing tr_en_child_id/tr_content',
-                    'tr_tr_parent_id' => (isset($tr['tr_id']) ? $tr['tr_id'] : 0),
-                ));
-
-                continue;
-
-            }
-
-
-            //Did we already fetch this Master's communication settings in a previous $trs message?
-            if (isset($master_cache[$tr['tr_en_child_id']])) {
-
-                //We already have this user in cache, no need to fetch/validate communication settings as it has already been done:
-                $trs_fb_psid = $master_cache[$tr['tr_en_child_id']]['trs_fb_psid'];
-                $trs_comm_level = $master_cache[$tr['tr_en_child_id']]['trs_comm_level'];
-
-            } else {
-
-                /*
-                 *
-                 * Now let's grab this user's communication preferences including their Messenger PSID and communication level
-                 *
-                 * This is a great example of how to learn more about a user with a pre-determined view-point
-                 * (In this case to learn more about their communication preferences)
-                 *
-                 * */
-
-                //Mench Personal Assistant on Messenger:
-
-                //TODO Deprecate in new function...
-
-                $trs_fb_psid = $this->Database_model->tr_fetch(array(
-                    'tr_en_parent_id' => 4451,
-                    'tr_en_child_id' => $tr['tr_en_child_id'],
-                    'tr_status >=' => 2,
-                ), array('en_child')); //Also fetch user details as we need their name....
-
-
-                //Mench Notification Levels:
-                $trs_comm_level = $this->Database_model->tr_fetch(array(
-                    'tr_en_parent_id IN (' . join(',', $this->config->item('en_ids_4454')) . ')' => null,
-                    'tr_en_child_id' => $tr['tr_en_child_id'],
-                    'tr_status >=' => 2,
-                ));
-                //Note: This should find exactly one result as it belongs to Master Radio Entity @4461
-
-
-                //Start validating communication settings we fetched to ensure everything is A-OK:
-                $message_error = null;
-
-                if (count($trs_fb_psid) < 1) {
-
-                    //Log error, should not happen!
-                    $message_error = 'dispatch_message() failed to fetch Master relation to Mench Personal Assistant on Messenger.';
-
-                } elseif (!(count($trs_comm_level) == 1)) {
-
-                    //Log error, should not happen! Since this is part of
-                    $message_error = 'dispatch_message() failed to fetch Master relation to any Mench Notification Level.';
-
-                } elseif ($trs_comm_level[0]['tr_en_parent_id'] == 4455) {
-
-                    //This Master is unsubscribed, so we cannot contact them!
-                    $message_error = 'dispatch_message() attempted to send a message to an unsubscribed Master which is not allowed.';
-
-                } elseif (intval($trs_fb_psid[0]['tr_content']) < 1) {
-
-                    //The Mench Personal Assistant on Messenger relation is not storing an integer (Facebook PSID) as expected!
-                    $message_error = 'dispatch_message() was unable to locate the Messenger PSID for this Master.';
-
-                } elseif (!array_key_exists($trs_comm_level[0]['tr_en_parent_id'], $en_convert_4454)) {
-
-                    //This is an unknown communication level (should never happen!):
-                    $message_error = 'dispatch_message() fetched an unknown [' . $trs_comm_level[0]['tr_en_parent_id'] . '] Mench Notification Level!';
-
-                }
-
-
-                //Did we find an error?
-                if ($message_error) {
-
-                    $failed_count++;
-                    $this->Database_model->tr_create(array(
-                        'tr_en_child_id' => $tr['tr_en_child_id'],
-                        'tr_en_type_id' => 4246, //Platform error
-                        'tr_metadata' => array(
-                            'trs_fb_psid' => $trs_fb_psid,
-                            'trs_comm_level' => $trs_comm_level,
-                            'tr' => $tr,
-                        ),
-                        'tr_content' => $message_error,
-                        'tr_tr_parent_id' => (isset($tr['tr_id']) ? $tr['tr_id'] : 0),
-                    ));
-                    continue;
-
-                } else {
-
-                    //Add this to user cache in case this user is repeated multiple times within $trs messages:
-                    $master_cache[$tr['tr_en_child_id']] = array(
-                        'trs_fb_psid' => $trs_fb_psid,
-                        'trs_comm_level' => $trs_comm_level,
-                    );
-
-                }
-
-            }
-
-
-            //Prepare Payload:
-            $payload = array(
-                'recipient' => array('id' => $trs_fb_psid[0]['tr_content']),
-                'message' => echo_body_message($tr, $trs_fb_psid[0]['en_name'], true),
-                'notification_type' => $en_convert_4454[$trs_comm_level[0]['tr_en_parent_id']], //Appropriate notification level
-                'messaging_type' => 'NON_PROMOTIONAL_SUBSCRIPTION', //We're always educating users without promoting anything! Learn more at: https://developers.facebook.com/docs/messenger-platform/send-messages#messaging_types
-            );
-
-            //Send message via Facebook Graph API:
-            $fb_graph_process = $this->Chat_model->fn___facebook_graph('POST', '/me/messages', $payload);
-
-
-            //How did it go?
-            if ($fb_graph_process['status']) {
-
-                //Log Successful Transaction:
-                $this->Database_model->tr_create(array(
-                    'tr_en_type_id' => 4280, //Message Sent
-                    'tr_en_child_id' => $tr['tr_en_child_id'],
-                    'tr_content' => $tr['tr_content'],
-                    'tr_metadata' => array(
-                        'input_message' => $tr,
-                        'payload' => $payload,
-                        'results' => $fb_graph_process,
-                    ),
-                    //Store some optional fields if available:
-                    'tr_en_credit_id' => (isset($tr['tr_en_credit_id']) ? $tr['tr_en_credit_id'] : 0),
-                    'tr_en_parent_id' => (isset($tr['tr_en_parent_id']) ? $tr['tr_en_parent_id'] : 0),
-                    'tr_in_parent_id' => (isset($tr['tr_in_parent_id']) ? $tr['tr_in_parent_id'] : 0),
-                    'tr_in_child_id' => (isset($tr['tr_in_child_id']) ? $tr['tr_in_child_id'] : 0),
-                    'tr_tr_parent_id' => (isset($tr['tr_id']) ? $tr['tr_id'] : 0),
-                ));
-
-            } else {
-
-                //Oooopsi, something went wrong from the Facebook side:
-                $failed_count++;
-
-                //Log error:
-                $this->Database_model->tr_create(array(
-                    'tr_en_type_id' => 4246, //Platform error
-                    'tr_metadata' => $tr,
-                    'tr_content' => 'dispatch_message() encountered a Facebook Graph error when trying to send a message to a Master.',
-                    'tr_tr_parent_id' => $tr['tr_id'],
-                    'tr_en_child_id' => $tr['tr_en_child_id'],
-                    'tr_metadata' => array(
-                        'input_message' => $tr,
-                        'payload' => $payload,
-                        'results' => $fb_graph_process,
-                    ),
-                ));
-
-            }
-
-        }
-
-
-        //Return results:
-        if ($failed_count > 0) {
-
-            return array(
-                'status' => 0,
-                'message' => 'Failed to send ' . $failed_count . '/' . count($trs) . ' message' . fn___echo__s(count($trs)),
-            );
-
-        } else {
-
-            return array(
-                'status' => 1,
-                'message' => 'Successfully sent ' . count($trs) . ' message' . fn___echo__s(count($trs)),
-            );
-
-        }
     }
 
 

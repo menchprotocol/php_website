@@ -84,24 +84,31 @@ class Matrix_model extends CI_Model
         if (count($actionplans) > 0 && in_array($actionplans[0]['tr_status'], $this->config->item('tr_status_incomplete'))) {
 
             //Inform user that they are now complete with all tasks:
-            $this->Chat_model->dispatch_message(array(
+            $this->Chat_model->echo_message(
+                'Congratulations for completing your Action Plan 🎉 Over time I will keep sharing new concepts (based on my new training data) that will help you to ' . $actionplans[0]['in_outcome'] . ' 🙌 You can, at any time, stop updates on your Action Plans by saying "unsubscribe".',
+                array( 'en_id' => $actionplans[0]['tr_en_parent_id'] ),
+                true,
+                array(),
                 array(
-                    'tr_en_child_id' => $actionplans[0]['tr_en_parent_id'],
                     'tr_in_child_id' => $actionplans[0]['tr_in_child_id'],
                     'tr_tr_parent_id' => $actionplans[0]['tr_id'],
-                    'tr_content' => 'Congratulations for completing your Action Plan 🎉 Over time I will keep sharing new concepts (based on my new training data) that will help you to ' . $actionplans[0]['in_outcome'] . ' 🙌 You can, at any time, stop updates on your Action Plans by saying "unsubscribe".',
-                ),
+                )
+            );
+
+            $this->Chat_model->echo_message(
+                'How else can I help you ' . $this->config->item('in_primary_name') . '?',
+                array( 'en_id' => $actionplans[0]['tr_en_parent_id'] ),
+                true,
+                array(),
                 array(
-                    'tr_en_child_id' => $actionplans[0]['tr_en_parent_id'],
                     'tr_in_child_id' => $actionplans[0]['tr_in_child_id'],
                     'tr_tr_parent_id' => $actionplans[0]['tr_id'],
-                    'tr_content' => 'How else can I help you ' . $this->config->item('in_primary_name') . '?',
-                ),
-            ));
+                )
+            );
 
             //Inform Master on how to can command Mench:
             $this->Matrix_model->compose_messages(array(
-                'tr_en_child_id' => $en['en_id'],
+                'tr_en_child_id' => $actionplans[0]['tr_en_parent_id'],
                 'tr_in_child_id' => 8332, //Train Master to command Mench
             ));
 
@@ -189,7 +196,7 @@ class Matrix_model extends CI_Model
          * Construct a message from Intent Messages for a given Intent Tree
          * This function considers the logic behind the Intent/Entity Trees in constructing messages
          * The goal is to have all messages sent using this function which
-         * means everything is stored on the tree (Rather than in the code base using the dispatch_messages() function)
+         * means everything is stored on the tree (Rather than in the code base using the message function)
          * Related to: https://github.com/askmench/mench-web-app/issues/2078
          *
          * Required inputs in $tr are:
@@ -869,7 +876,7 @@ class Matrix_model extends CI_Model
         //Validate Action Plan:
         $actionplan_ins = $this->Database_model->tr_fetch(array(
             'tr_id' => $tr_id,
-        ), array('in_child'));
+        ), array('in_child', 'en_parent'));
         if(count($actionplan_ins) < 1){
             return false;
         }
@@ -889,18 +896,18 @@ class Matrix_model extends CI_Model
                 'tr_status >=' => 2, //Published+
                 'tr_en_type_id' => 4233, //On-Complete Messages
                 'tr_in_child_id' => $actionplan_ins[0]['tr_in_child_id'],
-            ), array(), 0, 0, array('tr_order' => 'ASC'));
+            ), array('en_parent'), 0, 0, array('tr_order' => 'ASC'));
 
-            if (count($on_complete_messages) > 0) {
-                $messages = array();
-                foreach ($on_complete_messages as $tr) {
-                    array_push($messages, array_merge($tr, array(
+            foreach ($on_complete_messages as $tr) {
+                $this->Chat_model->echo_message(
+                    $tr['tr_content'], //Message content
+                    $actionplan_ins[0], //Includes entity data for Action Plan Master
+                    true,
+                    array(),
+                    array(
                         'tr_tr_parent_id' => $actionplan_ins[0]['tr_tr_parent_id'],
-                        'tr_en_child_id' => $actionplan_ins[0]['tr_en_parent_id'],
-                    )));
-                }
-                //Sendout messages:
-                $this->Chat_model->dispatch_message($messages);
+                    )
+                );
             }
 
             //TODO Update Action Plan progress (In tr_metadata) at this point
@@ -1085,12 +1092,11 @@ class Matrix_model extends CI_Model
             ), true);
 
             //Inform the master:
-            $this->Chat_model->dispatch_message(array(
-                array(
-                    'tr_en_child_id' => $en['en_id'],
-                    'tr_content' => 'Hi stranger! Let\'s get started by completing your profile information by opening the My Account tab in the menu below. /link:Open 👤My Account:https://mench.com/my/account',
-                ),
-            ));
+            $this->Chat_model->echo_message(
+                'Hi stranger! Let\'s get started by completing your profile information by opening the My Account tab in the menu below. /link:Open 👤My Account:https://mench.com/my/account',
+                $en,
+                true
+            );
 
         } else {
 
