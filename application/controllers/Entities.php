@@ -346,7 +346,7 @@ class Entities extends CI_Controller
                 echo '<h4><i class="fas fa-hashtag" style="font-size:1em;"></i> ' . $tr['in_outcome'] . '</h4>';
 
                 echo '<div>';
-                    echo echo_message_body($tr);
+                    echo echo_body_message($tr);
                 echo '</div>';
 
             echo '</div>';

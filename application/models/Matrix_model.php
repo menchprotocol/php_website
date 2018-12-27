@@ -616,9 +616,9 @@ class Matrix_model extends CI_Model
         //Check if this URL has already been added:
         //TODO This part can be improved to better detect duplicate URLs as it current does an exact matching, which is OK but not the best...
         $input_url = trim($input_url);
-        $dup_urls = $this->Old_model->tr_fetch(array(
+        $dup_urls = $this->Database_model->tr_fetch(array(
             'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null, //Entity URL Links
-            'tr_content LIKE \'' . $input_url . '\'' => null,
+            'tr_content' => $input_url, //Exact Match!
         ), array('en_child'));
 
         if (count($dup_urls) > 0) {

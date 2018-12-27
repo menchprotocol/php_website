@@ -22,6 +22,34 @@ class Cron extends CI_Controller
     //30 3 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron e_score_recursive
 
 
+    function test($fb_messenger_format = 0){
+
+        $quick_replies = array();
+
+        if(isset($_POST['inputt'])){
+
+            $p = $this->Chat_model->echo_message($_POST['inputt'], ( intval($_POST['recipient_en']) ? array('en_id' => $_POST['recipient_en']) : array() ), $fb_messenger_format, $quick_replies);
+
+            if($fb_messenger_format || !$p['status']){
+                fn___echo_json(array(
+                    'analyze' => fn___extract_message_references($_POST['inputt']),
+                    'results' => $p,
+                ));
+            } else {
+                //HTML:
+                echo $p['output_messages'][0]['message_body'];
+            }
+
+        } else {
+            echo '<form method="POST" action="">';
+            echo '<textarea name="inputt" style="width:400px; height: 200px;"></textarea><br />';
+            echo '<input type="number" name="recipient_en" value="1"><br />';
+            echo '<input type="submit" value="GO">';
+            echo '</form>';
+        }
+
+    }
+
     function matrix_cache(){
 
         /*

@@ -44,7 +44,6 @@ $config['message_commands'] = array( //The list of commands supported within a m
     '/firstname', //Will be replaced by the first name of the recipient
     '/slice', //Will Slice all supporting videos (YouTube) of the referenced entity within a message like /slice:180:202 (22 seconds starting from minute 3:00
     '/link', //Will display a custom link like /link:Search for Batman:https://google.com/?q=Batman (Note that middle part cannot be longer than 20 characters)
-    '/typing', //Will show a typing for the number of seconds followed, like /typing:5 which will show it for 5 seconds
 );
 
 //Third-Party Settings:

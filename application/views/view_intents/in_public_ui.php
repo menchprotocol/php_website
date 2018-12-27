@@ -73,7 +73,7 @@ $guest_name = 'Dear Master'; //To replace /firstname in messages (if any) since 
         'tr_en_type_id' => 4231, //On-Start Messages
         'tr_in_child_id' => $in['in_id'],
     ), array(), 0, 0, array('tr_order' => 'ASC')) as $tr) {
-        echo echo_message_body(array_merge($tr, array(
+        echo echo_body_message(array_merge($tr, array(
             'noshow' => 1,
         )), $guest_name);
     }
@@ -124,7 +124,7 @@ $guest_name = 'Dear Master'; //To replace /firstname in messages (if any) since 
                     'tr_en_type_id' => 4231, //On-Start Messages
                     'tr_in_child_id' => $in_level2['in_id'],
                 ), array(), 0, 0, array('tr_order' => 'ASC')) as $tr) {
-                    echo echo_message_body(array_merge($tr, array(
+                    echo echo_body_message(array_merge($tr, array(
                         'noshow' => 1,
                     )), $guest_name);
                 }

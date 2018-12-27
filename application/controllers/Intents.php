@@ -516,7 +516,7 @@ class Intents extends CI_Controller
             ));
 
             //Build UI friendly HTML Message:
-            $tip_messages .= echo_message_body(array_merge($tr, array('tr_en_child_id' => $udata['en_id'])), $udata['en_name'], false);
+            $tip_messages .= echo_body_message(array_merge($tr, array('tr_en_child_id' => $udata['en_id'])), $udata['en_name'], false);
         }
 
         //Return results:
@@ -820,19 +820,19 @@ class Intents extends CI_Controller
         }
 
         //Make sure message is all good:
-        $validation = fn___validate_message($_POST['tr_content']);
+        $msg_validation = $this->Chat_model->validate_message($_POST['tr_content']);
 
-        if (!$validation['status']) {
+        if (!$msg_validation['status']) {
             //There was some sort of an error:
-            return fn___echo_json($validation);
+            return fn___echo_json($msg_validation);
         }
 
 
         //All good, lets move on:
         //Define what needs to be updated:
         $to_update = array(
-            'tr_content' => $validation['tr_content'],
-            'tr_en_parent_id' => $validation['tr_en_parent_id'],
+            'tr_content' => $msg_validation['input_message'],
+            'tr_en_parent_id' => $msg_validation['tr_en_parent_id'],
         );
 
 
@@ -859,7 +859,7 @@ class Intents extends CI_Controller
         //Print the challenge:
         return fn___echo_json(array(
             'status' => 1,
-            'message' => echo_message_body(array_merge($new_messages[0], array('tr_en_child_id' => $udata['en_id'])), $udata['en_name']),
+            'message' => echo_body_message(array_merge($new_messages[0], array('tr_en_child_id' => $udata['en_id'])), $udata['en_name']),
             'tr_en_type_id' => $en_all_4485[$new_messages[0]['tr_en_type_id']]['en_icon'].' '.$en_all_4485[$new_messages[0]['tr_en_type_id']]['en_name'],
             'success_icon' => '<span><i class="fas fa-check"></i> Saved</span>',
         ));

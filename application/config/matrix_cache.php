@@ -41,6 +41,16 @@ $config['en_all_4280'] = array(
         'en_name' => 'File Message Sent',
         'tr_content' => '',
     ),
+    4276 => array(
+        'en_icon' => '',
+        'en_name' => 'Email Message Sent',
+        'tr_content' => '',
+    ),
+    4570 => array(
+        'en_icon' => '',
+        'en_name' => 'HTML Message Sent',
+        'tr_content' => '',
+    ),
 );
 
 //Messages Received:

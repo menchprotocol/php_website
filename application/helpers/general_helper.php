@@ -113,28 +113,28 @@ function fn___extract_message_references($tr_content)
     $parts = preg_split('/\s+/', $tr_content);
 
     //Analyze the message to find referencing URLs and Entities in the message text:
-    $msg_breakdown = array(
-        'en_urls' => array(),
-        'en_refs' => array(),
-        'en_commands' => array(),
+    $msg_references = array(
+        'ref_urls' => array(),
+        'ref_entities' => array(),
+        'ref_commands' => array(),
     );
 
     //See what we can find:
     foreach ($parts as $part) {
         if (filter_var($part, FILTER_VALIDATE_URL)) {
-            array_push($msg_breakdown['en_urls'], $part);
-        } elseif (substr($part, 0, 1) == '@' && intval($part) > 0) {
-            array_push($msg_breakdown['en_refs'], intval($part));
+            array_push($msg_references['ref_urls'], $part);
+        } elseif (substr($part, 0, 1) == '@' && is_numeric(substr($part, 1))) {
+            array_push($msg_references['ref_entities'], intval(substr($part, 1)));
         } else {
             //Check maybe it's a command?
             $command = fn___includes_any($part, $CI->config->item('message_commands'));
             if($command){
                 //Yes!
-                array_push($msg_breakdown['en_refs'], $command);
+                array_push($msg_references['ref_commands'], $command);
             }
         }
     }
-    return $msg_breakdown;
+    return $msg_references;
 }
 
 
@@ -438,174 +438,6 @@ function fn___objectToArray($object)
     return array_map('fn___objectToArray', $object);
 }
 
-
-function fn___validate_message($tr_content)
-{
-
-    /*
-     *
-     * Validate Intent messages based on various factors
-     *
-     * */
-
-    $CI =& get_instance();
-    $tr_content_max = $CI->config->item('tr_content_max'); //Maximum allowed length
-    $status_index = $CI->config->item('object_statuses');
-    $tr_content = trim($tr_content);
-
-    //Extract references from this message including its URLs and referenced entities (like "@123")
-    $msg_breakdown = fn___extract_message_references($tr_content);
-
-    if (strlen($tr_content) < 1) {
-        return array(
-            'status' => 0,
-            'message' => 'Missing Message',
-        );
-    } elseif (substr_count($tr_content, '/firstname') > 1) {
-        return array(
-            'status' => 0,
-            'message' => '/firstname command can be used only once',
-        );
-    } elseif (strlen($tr_content) > $tr_content_max) {
-        return array(
-            'status' => 0,
-            'message' => 'Max is ' . $tr_content_max . ' Characters',
-        );
-    } elseif ($tr_content != strip_tags($tr_content)) {
-        return array(
-            'status' => 0,
-            'message' => 'HTML Code is not allowed',
-        );
-    } elseif (!preg_match('//u', $tr_content)) {
-        return array(
-            'status' => 0,
-            'message' => 'Message must be UTF8',
-        );
-    } elseif (count($msg_breakdown['en_refs']) > 1) {
-        return array(
-            'status' => 0,
-            'message' => 'You can reference a maximum of 1 entity per message',
-        );
-    } elseif (count($msg_breakdown['en_urls']) > 1) {
-        return array(
-            'status' => 0,
-            'message' => 'You can reference a maximum of 1 URL per message',
-        );
-    } elseif (count($msg_breakdown['en_refs']) > 0 && count($msg_breakdown['en_urls']) > 0) {
-        return array(
-            'status' => 0,
-            'message' => 'You can either reference 1 entity OR 1 URL (As the URL will be transformed into an entity)',
-        );
-    } elseif (substr_count($tr_content, '/slice') > 1) {
-        return array(
-            'status' => 0,
-            'message' => '/slice command can be used only once',
-        );
-    } elseif (count($msg_breakdown['en_refs']) == 0 && count($msg_breakdown['en_urls']) == 0 && substr_count($tr_content, '/slice') > 0) {
-        return array(
-            'status' => 0,
-            'message' => '/slice command required an entity reference',
-        );
-    }
-
-
-    //Validate Entity Reference if Any:
-    if (count($msg_breakdown['en_refs']) > 0) {
-
-        $ens = $CI->Database_model->en_fetch(array(
-            'en_id' => $msg_breakdown['en_refs'][0],
-        ));
-
-        if (count($ens) == 0) {
-            //Invalid ID:
-            return array(
-                'status' => 0,
-                'message' => 'Entity [@' . $msg_breakdown['en_refs'][0] . '] does not exist',
-            );
-        } elseif ($ens[0]['en_status'] < 0) {
-            //Inactive:
-            return array(
-                'status' => 0,
-                'message' => 'Entity [' . $ens[0]['en_name'] . '] status is ['.$status_index['en_status'][$ens[0]['en_status']]['s_name'].'] so its unavailable for referencing.',
-            );
-        }
-
-    } elseif (count($msg_breakdown['en_urls']) > 0) {
-
-        //No entity linked, but we have a URL that we should turn into an entity:
-        $created_url = $CI->Matrix_model->fn___create_en_from_url($msg_breakdown['en_urls'][0]);
-
-        //Did we have an error?
-        if (!$created_url['status']) {
-            return $created_url;
-        }
-
-        //Transform this URL into an entity:
-        $msg_breakdown['en_refs'][0] = $created_url['en_from_url']['en_id'];
-
-        //Replace the URL with this new @entity in message:
-        $tr_content = str_replace($msg_breakdown['en_urls'][0], '@' . $msg_breakdown['en_refs'][0], $tr_content);
-
-    }
-
-
-    //Do we have any commands?
-    if (substr_count($tr_content, '/slice') > 0) {
-
-        //Validate the format of this command:
-        $slice_times = explode(':', fn___one_two_explode('/slice:', ' ', $tr_content), 2);
-        if (intval($slice_times[0]) < 1 || intval($slice_times[1]) < 1 || strlen($slice_times[0]) != strlen(intval($slice_times[0])) || strlen($slice_times[1]) != strlen(intval($slice_times[1]))) {
-            //Not valid format!
-            return array(
-                'status' => 0,
-                'message' => 'Invalid format for /slice command. For example, to slice first 60 seconds use: /slice:0:60',
-            );
-        } elseif ((intval($slice_times[0]) + 3) > intval($slice_times[1])) {
-            //Not valid format!
-            return array(
-                'status' => 0,
-                'message' => 'Sliced clip must be at-least 3 seconds long',
-            );
-        }
-
-        /*
-         *
-         * Ensure entity has a sliceable content
-         * currently supporting: YouTube Only!
-         * See error message below...
-         *
-         * TODO This logic is not mapped on the Matrix in any way!
-         * TODO Maybe create a @SlicableURL entity to index all objects that accept the /slice command
-         *
-         * */
-
-        $found_slicable_url = false;
-        foreach ($ens[0]['en__parents'] as $en) {
-            if (substr_count($en['tr_content'], 'youtube.com') > 0) {
-                $found_slicable_url = true;
-                break;
-            }
-        }
-        if (!$found_slicable_url) {
-            return array(
-                'status' => 0,
-                'message' => 'The /slice command requires the entity to have a YouTube URL',
-            );
-        }
-
-    }
-
-
-    //All seems good, return success:
-    return array(
-        'status' => 1,
-        'message' => 'Success',
-        //Return cleaned data:
-        'tr_content' => trim($tr_content), //It might have been modified if URL was added
-        'tr_en_parent_id' => (count($msg_breakdown['en_refs']) > 0 ? $msg_breakdown['en_refs'][0] : 0), //Referencing an entity?
-    );
-
-}
 
 function fn___one_two_explode($one, $two, $string)
 {

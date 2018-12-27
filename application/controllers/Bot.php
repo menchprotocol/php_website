@@ -229,7 +229,7 @@ class Bot extends CI_Controller
 
 
                     //We might need to respond based on the reference:
-                    $this->Chat_model->digest_quick_reply_payload($en, $ref);
+                    $this->Chat_model->digest_incoming_quick_reply($en, $ref);
 
 
                 } elseif (isset($im['optin'])) {
@@ -299,7 +299,7 @@ class Bot extends CI_Controller
                         $eng_data['tr_content'] = $im['message']['text']; //Quick reply always has a text
 
                         //Digest the Quick Reply payload:
-                        $this->Chat_model->digest_quick_reply_payload($en, $im['message']['quick_reply']['payload']);
+                        $this->Chat_model->digest_incoming_quick_reply($en, $im['message']['quick_reply']['payload']);
 
                     } elseif(isset($im['message']['text'])){
 
@@ -309,8 +309,8 @@ class Bot extends CI_Controller
                         //Who sent this?
                         if ($sent_by_mench) {
 
-                            //Text Message Sent (By Mench Admin via Facebook Inbox UI)
-                            $eng_data['tr_en_type_id'] = 4552;
+                            //Text Message Sent By Mench Admin via Facebook Inbox UI
+                            $eng_data['tr_en_type_id'] = 4552; //Text Message Sent
 
                         } else {
 
@@ -318,7 +318,7 @@ class Bot extends CI_Controller
                             $eng_data['tr_en_type_id'] = 4547;
 
                             //Digest message & try to make sense of it:
-                            $this->Chat_model->fn___digest_message($en, $im['message']['text']);
+                            $this->Chat_model->fn___digest_incoming_message($en, $im['message']['text']);
 
                         }
 

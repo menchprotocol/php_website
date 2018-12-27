@@ -107,7 +107,7 @@ if (count($on_start_messages) > 0) {
     foreach ($on_start_messages as $i) {
         if ($i['tr_status'] == 1) {
             echo '<div class="tip_bubble">';
-            echo echo_message_body(array_merge($i, array(
+            echo echo_body_message(array_merge($i, array(
                 'tr_en_child_id' => $actionplan['en_id'],
             )), $actionplan['en_name']);
             echo '</div>';

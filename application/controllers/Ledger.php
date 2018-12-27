@@ -249,7 +249,16 @@ class Ledger extends CI_Controller
                 'message' => 'Invalid Intent ID',
             ));
 
+        } elseif (!isset($_POST['focus_tr_en_type_id']) || intval($_POST['focus_tr_en_type_id']) < 1) {
+
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Message Type',
+            ));
+
         }
+
+
 
         //Fetch/Validate the intent:
         $ins = $this->Database_model->in_fetch(array(
@@ -264,11 +273,11 @@ class Ledger extends CI_Controller
         }
 
         //Make sure message is all good:
-        $validation = fn___validate_message($_POST['tr_content']);
+        $msg_validation = $this->Chat_model->validate_message($_POST['tr_content']);
 
-        if (!$validation['status']) {
+        if (!$msg_validation['status']) {
             //There was some sort of an error:
-            return fn___echo_json($validation);
+            return fn___echo_json($msg_validation);
         }
 
         //Create Message Transaction:
@@ -277,13 +286,13 @@ class Ledger extends CI_Controller
             'tr_in_child_id' => intval($_POST['in_id']),
             'tr_order' => 1 + $this->Database_model->tr_max_order(array(
                     'tr_status >=' => 0, //New+
-                    'tr_en_type_id' => 123, //TODO Put message type
+                    'tr_en_type_id' => intval($_POST['focus_tr_en_type_id']),
                     'tr_in_child_id' => intval($_POST['in_id']),
                 )),
             //Referencing attributes:
-            'tr_content' => $validation['tr_content'],
-            'tr_en_type_id' => 123, //TODO Put message type
-            'tr_en_parent_id' => $validation['tr_en_parent_id'],
+            'tr_content' => $msg_validation['input_message'],
+            'tr_en_type_id' => intval($_POST['focus_tr_en_type_id']),
+            'tr_en_parent_id' => $msg_validation['tr_en_parent_id'],
         ), true);
 
         //Do a relative adjustment for this intent's metadata

@@ -85,6 +85,35 @@ function fn___echo_url_type($url, $en_type_id)
 }
 
 
+function fn___echo_youtube_id($url){
+
+    //Attemp to extract YouTube ID from URL:
+    $video_id = null;
+
+    if (substr_count($url, 'youtube.com/embed/') == 1) {
+
+        //We might have start and end here too!
+        $video_id = trim(fn___one_two_explode('youtube.com/embed/', '?', $url));
+
+    } elseif (substr_count($url, 'youtube.com/watch?v=') == 1) {
+
+        $video_id = trim(fn___one_two_explode('youtube.com/watch?v=', '&', $url));
+
+    } elseif (substr_count($url, 'youtu.be/') == 1) {
+
+        $video_id = trim(fn___one_two_explode('youtu.be/', '?', $url));
+
+    }
+
+    //This should be 11 characters!
+    if (strlen($video_id) == 11) {
+        return $video_id;
+    } else {
+        return false;
+    }
+}
+
+
 function fn___echo_url_embed($url, $full_message = null, $return_array = false, $start_sec = 0, $end_sec = 0)
 {
 
@@ -110,24 +139,9 @@ function fn___echo_url_embed($url, $full_message = null, $return_array = false, 
     //See if $url has a valid embed video in it, and transform it if it does:
     if (substr_count($url, 'youtube.com/watch?v=') == 1 || substr_count($url, 'youtu.be/') == 1 || substr_count($url, 'youtube.com/embed/') == 1) {
 
-        //Seems to be youtube:
-        if (substr_count($url, 'youtube.com/embed/') == 1) {
+        $video_id = fn___echo_youtube_id($url);
 
-            //We might have start and end here too!
-            $video_id = trim(fn___one_two_explode('youtube.com/embed/', '?', $url));
-
-        } elseif (substr_count($url, 'youtube.com/watch?v=') == 1) {
-
-            $video_id = trim(fn___one_two_explode('youtube.com/watch?v=', '&', $url));
-
-        } elseif (substr_count($url, 'youtu.be/') == 1) {
-
-            $video_id = trim(fn___one_two_explode('youtu.be/', '?', $url));
-
-        }
-
-        //This should be 11 characters!
-        if (strlen($video_id) == 11) {
+        if ($video_id) {
 
             //Set the Clean URL:
             $clean_url = 'https://www.youtube.com/watch?v=' . $video_id;
@@ -181,456 +195,9 @@ function fn___echo_url_embed($url, $full_message = null, $return_array = false, 
     }
 }
 
-function echo_msg($message_content, $recipient_en = array(), $fb_messenger_format = false, $quick_replies = array(), $tr_append = array())
-{
 
-    /*
-     *
-     * The primary function that constructs messages based on the following inputs:
-     *
-     *
-     * - $message_content:      The message text which may include entity
-     *                          references like "@123" or commands like
-     *                          "/firstname". This may NOT include direct
-     *                          URLs as they must be first turned into an
-     *                          entity and then referenced within a message.
-     *
-     *
-     * - $recipient_en:         The entity object that this message is supposed
-     *                          to be delivered to. May be an empty array for
-     *                          when we want to show these messages to guests,
-     *                          and it may contain the full entity object or it
-     *                          may only contain the entity ID, which enables this
-     *                          function to fetch further information from that
-     *                          entity as required based on its other parameters.
-     *                          The 3 key columns that this function uses are:
-     *
-     *                          - $recipient_en['en_id'] - As who to send to
-     *                          - $recipient_en['en_name'] - To replace with /firstname
-     *                          - $recipient_en['en_psid'] - Needed if $fb_messenger_format = TRUE
-     *
-     *
-     * - $fb_messenger_format:  If True this function will prepare a message to be
-     *                          delivered via Facebook Messenger, and if False, it
-     *                          would prepare a message for HTML view. The HTML
-     *                          format will consider if a Miner is logged in or not,
-     *                          which will alter the HTML format.
-     *
-     *
-     * - $quick_replies:        Only supported if $fb_messenger_format = TRUE, and
-     *                          will append an array of quick replies that will give
-     *                          Masters an easy way to tap and select their next step.
-     *
-     *
-     * - $tr_append:            Since this function logs a "message sent" engagement for
-     *                          every message it processes, the $tr_append will append
-     *                          additional data to capture more context for this message.
-     *                          Supported fields only include:
-     *
-     *                          - $tr_append['tr_in_parent_id']
-     *                          - $tr_append['tr_in_child_id']
-     *                          - $tr_append['tr_tr_parent_id']
-     *                          - $tr_append['tr_metadata']
-     *
-     *                          Following fields are not allowed, because:
-     *
-     *                          - $tr_append['tr_timestamp']: Auto generated to current timestamp
-     *                          - $tr_append['tr_status']: Will always equal 2 as a completed message
-     *                          - $tr_append['tr_en_type_id']: Auto calculated based on message content (or error)
-     *                          - $tr_append['tr_en_credit_id']: Mench will always get credit, so this is set to zero
-     *                          - $tr_append['tr_en_parent_id']: This is auto set with an entity reference within $message_content
-     *                          - $tr_append['tr_en_child_id']: This will be equal to $recipient_en['en_id']
-     *
-     * */
 
-    //Prepare Transaction Logging:
-    $allowed_tr_append = array('tr_in_parent_id','tr_in_child_id','tr_tr_parent_id','tr_metadata');
-    $filtered_tr_append = array();
-    foreach($tr_append as $key=>$value){
-        if(in_array($key, $allowed_tr_append)){
-            $filtered_tr_append[$key] = $value;
-        }
-    }
-
-    //Process the message:
-    $results = echo_body_msg($message_content, $recipient_en, $fb_messenger_format, $quick_replies);
-
-
-    //Log results either way:
-    $CI =& get_instance();
-    if($results['status']){
-        //All good, log Transaction and return:
-        $CI->Database_model->tr_create(array_merge($filtered_tr_append , array(
-            'tr_content' => $message_content,
-            'tr_en_type_id' => $results['tr_en_type_id'], //echo_body_msg() Determines message sent type
-            'tr_en_child_id' => ( isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0 ),
-            'tr_en_parent_id' => $results['tr_en_parent_id'], //Might be set if message had a referenced entity
-        )));
-    } else {
-        //Oooopsi, we seem to have some error, log and return:
-        $CI->Database_model->tr_create(array_merge($filtered_tr_append , array(
-            'tr_content' => 'echo_msg() returned error ['.$results['message'].'] with the input message ['.$message_content.']',
-            'tr_en_type_id' => 4246, //Platform Error
-            'tr_en_child_id' => ( isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0 ),
-        )));
-    }
-
-    //Return results:
-    return $results;
-
-}
-function echo_body_msg($message_content, $recipient_en, $fb_messenger_format, $quick_replies)
-{
-
-    /*
-     *
-     * This function is exclusively called from within echo_msg()
-     * See there for more information on input variables
-     *
-     * */
-
-    //Start by some early input validations:
-    if(strlen($message_content)<1){
-        return array(
-            'status' => 0,
-            'message' => 'Missing Message Content',
-        );
-    } elseif($fb_messenger_format && !isset($recipient_en['en_id'])){
-        return array(
-            'status' => 0,
-            'message' => 'Facebook Messenger Format requires a recipient entity ID for constructing a message',
-        );
-    } elseif(!$fb_messenger_format && count($quick_replies)>0){
-        return array(
-            'status' => 0,
-            'message' => 'Quick Replies are only supported for Facebook Messenger Format',
-        );
-    }
-
-    /*
-     * Start by analyzing this message...
-     *
-     * Do we need full entity data? Only if we have a
-     * /firstname command OR $fb_messenger_format = TRUE
-     *
-     * */
-
-    $CI =& get_instance();
-    $is_miner = fn___en_auth(array(1308)); //Is this Miner? Will affect Message...
-    $msg_breakdown = fn___extract_message_references($message_content);
-    $firstname_command = (count($msg_breakdown['en_commands']) > 0 && in_array('/firstname', $msg_breakdown['en_commands']) > 0);
-    $require_full_en = ( $fb_messenger_format || $firstname_command ); //We we require
-    $found_slicable_url = false; //Must turn TRUE if the /slice command is used within $message_content
-
-    //There is a situation where we might have the /firstname command but no entity, in which case we can set a default:
-    if($firstname_command && !isset($recipient_en['en_id']) && !isset($recipient_en['en_name'])){
-        //We have a First name Command but no entity reference. This is likely for a guest, so use the default:
-        $recipient_en['en_name'] = 'Dear Master'; //Default Master name when needed and not available
-    }
-
-    //Now do more checks on this:
-    if(count($msg_breakdown['en_urls']) > 0){
-
-        //Direct URLs are not allowed in the message... (use /link command instead)
-        return array(
-            'status' => 0,
-            'message' => 'Message URLs are not allowed directly within the message content',
-        );
-
-    } elseif(count($msg_breakdown['en_refs']) > 1){
-
-        //Direct URLs are not allowed in the message... (use /link command instead)
-        return array(
-            'status' => 0,
-            'message' => 'Message can include a maximum of 1 entity reference',
-        );
-
-    } elseif(($firstname_command && !isset($recipient_en['en_name'])) || ($fb_messenger_format && !isset($recipient_en['en_psid']))){
-
-        //We have partial entity data, but we're missing some needed information...
-
-        //Fetch full entity data:
-        $ens = $this->Database_model->en_fetch(array(
-            'en_id' => $recipient_en['en_id'],
-            'en_status >=' => 0, //New+
-        ));
-
-        if(count($ens) < 1){
-            //Ooops, invalid entity ID provided
-            return array(
-                'status' => 0,
-                'message' => 'Invalid Entity ID provided',
-            );
-        } elseif($fb_messenger_format && $ens[0]['en_psid'] < 1) {
-            //This Master does not have their Messenger connected yet:
-            return array(
-                'status' => 0,
-                'message' => 'Master @'.$recipient_en['en_id'].' does not have Messenger connected yet',
-            );
-        } else {
-            //Assign data:
-            $recipient_en = $ens[0];
-        }
-
-    }
-
-
-
-
-    if ($fb_messenger_format) {
-        //This is what will be returned to be sent via messenger:
-        $fb_message = array();
-    } else {
-        //HTML format:
-        $message_content = nl2br($message_content);
-        $html_message = '<div class="i_content">';
-    }
-
-
-
-
-
-
-    if(count($msg_breakdown['en_refs']) > 0){
-
-        //We have a reference within this message, let's fetch it to better understand it:
-        $ens = $CI->Database_model->en_fetch(array(
-            'en_id' => $msg_breakdown['en_refs'][0], //Note: We will only have a single reference per message
-            'en_status >=' => 0, //New+
-        ));
-
-        if(count($ens) < 1){
-            return array(
-                'status' => 0,
-                'message' => 'The referenced entity @'.$msg_breakdown['en_refs'][0].' not found.',
-            );
-        }
-
-        //Determine what type of reference this is?
-        foreach($ens[0]['en__parents'] as $parent_en){
-
-            //Is this a direct media file?
-            if(array_key_exists($parent_en['tr_en_type_id'], $CI->config->item('en_convert_4537'))){
-
-                //Yes, this is one of the four supported media types...
-
-                //Is this a Facebook Format?
-                if($fb_messenger_format){
-
-                    //Do we have a Facebook Messenger ID cached in the Metadata for it?
-                    if(strlen($parent_en['tr_metadata']) > 0){
-                        //We might have a Facebook Attachment ID saved in Metadata, check to see:
-                        $metadata = unserialize($parent_en['tr_metadata']);
-                        if(isset($metadata['fb_att_id']) && intval($metadata['fb_att_id']) > 0){
-                            //Yes we do, use this for faster media attachments:
-                            //TODO Implement
-                        }
-                    }
-                } else {
-
-                    //HTML Format:
-
-
-                }
-
-            } elseif($parent_en['tr_en_type_id']==4257 /* Embed URL */ && substr_count($parent_en['tr_content'], 'youtube.com') > 0) {
-
-                $found_slicable_url = true;
-
-                //https://www.youtube.com/embed/ujGlt8x4Z4I?autoplay=1&start=100&end=110
-
-            }
-
-        }
-
-
-        if ($fb_messenger_format) {
-
-            //Show an option to open action plan:
-            $message_content = str_replace('@' . $msg_breakdown['en_refs'][0], $ens[0]['en_name'], $message_content);
-
-            //Is there a slice command?
-            if (substr_count($message_content, '/slice') > 0) {
-                $time_range = explode(':', fn___one_two_explode('/slice:', ' ', $message_content), 2);
-                $message_content = str_replace('/slice:' . $time_range[0] . ':' . $time_range[1], '', $message_content);
-            }
-
-        } else {
-
-            //HTML Format:
-            $time_range = array();
-            $button_title = 'Open Entity';
-            $button_url = '/entities/' . $ens[0]['en_id'] . '?skip_header=1'; //To loadup the entity
-            $embed_html_code = null;
-
-            //Is there a slice command?
-            if (substr_count($message_content, '/slice') > 0) {
-
-                $time_range = explode(':', fn___one_two_explode('/slice:', ' ', $message_content), 2);
-
-                //Try finding a compatible URL for the /slice command:
-                foreach ($ens[0]['en__parents'] as $en) {
-                    if (substr_count($en['tr_content'], 'youtube.com') > 0) {
-                        $embed_html_code = '<div style="margin-top:7px;">' . fn___echo_url_embed($en['tr_content'], $en['tr_content'], false, $time_range[0], $time_range[1]) . '</div>';
-                        break;
-                    }
-                }
-
-                //Remove slice command:
-                $message_content = str_replace('/slice:' . $time_range[0] . ':' . $time_range[1], '', $message_content);
-
-
-            } else {
-
-                //So we did not have a slice command and this is an HTML request for a non-entity page
-                //Note: The reason we don't need these for entities is that they already list all URLs with embed codes, so no need to repeat
-                //Let's see if we have any other embeddable content that we can append to message:
-
-                foreach ($ens[0]['en__parents'] as $en) {
-                    //Is this a URL of any sort?
-                    if (in_array($en['tr_en_type_id'], $CI->config->item('en_ids_4537'))) {
-
-                        $embed_html_code .= '<div style="margin-top:7px;">' . fn___echo_url_type($en['tr_content'], $en['tr_en_type_id']) . '</div>';
-
-                    }
-                }
-
-            }
-
-
-            if ($is_miner) {
-
-                //Show Modal for Miners to further drill in:
-                $message_content = str_replace('@' . $msg_breakdown['en_refs'][0], ' <a href="javascript:void(0);" onclick="url_modal(\'' . $button_url . '\')">' . $ens[0]['en_name'] . '</a>', $message_content);
-
-            } else {
-
-                //Show simple HTML for non-Miners:
-                $message_content = str_replace('@' . $msg_breakdown['en_refs'][0], $ens[0]['en_name'], $message_content);
-
-            }
-
-            //Did we have an embed code to be attached?
-            if ($embed_html_code) {
-                $message_content .= $embed_html_code;
-            }
-
-        }
-    }
-
-
-
-
-
-
-    //Do we have any commands?
-    if ($en_name && substr_count($message_content, '/firstname') > 0) {
-        //Tweak the name:
-        $message_content = str_replace('/firstname', fn___one_two_explode('', ' ', $en_name), $message_content);
-    }
-
-
-    if (substr_count($message_content, '/typing') > 0) {
-        if ($fb_messenger_format) {
-            //TODO include sender actions https://developers.facebook.com/docs/messenger-platform/send-messages/sender-actions/
-        } else {
-            //HTML format:
-            $message_content = str_replace('/typing', '<img src="/img/typing.gif" height="35px" />', $message_content);
-        }
-    }
-
-
-
-
-    if ($command || $button_url) {
-
-        //Append the button to the message:
-        if ($fb_messenger_format) {
-
-            //Remove the command from the message:
-            $message_content = trim(str_replace($command, '', $message_content));
-
-            //Return Messenger array:
-            $fb_message = array(
-                'attachment' => array(
-                    'type' => 'template',
-                    'payload' => array(
-                        'template_type' => 'button',
-                        'text' => $message_content,
-                        'buttons' => array(
-                            array(
-                                'title' => $button_title,
-                                'type' => 'web_url',
-                                'url' => $button_url,
-                                'webview_height_ratio' => 'tall',
-                                'webview_share_button' => 'hide',
-                                'messenger_extensions' => true,
-                            ),
-                        ),
-                    ),
-                ),
-                'metadata' => 'system_logged', //Prevents from duplicate logging via the echo webhook
-            );
-
-        } else {
-
-            if ($button_url && $button_title) {
-                //HTML format replaces the button with the command:
-                $message_content = trim(str_replace($command, '<div class="msg" style="padding-top:15px;"><a href="' . $button_url . '" target="_blank"><b>' . $button_title . '</b></a></div>', $message_content));
-            }
-
-            //Return HTML code:
-            $html_message .= '<div class="msg">' . $message_content . '</div>';
-
-        }
-
-    } else {
-
-        //Regular without any special commands in it!
-        //Now return the template:
-        if ($fb_messenger_format) {
-
-            //Messenger array:
-            $fb_message = array(
-                'text' => $message_content,
-                'metadata' => 'system_logged', //Prevents from duplicate logging via the echo webhook
-            );
-
-            //Should we append a Quick reply to this message?
-            if (isset($i['quick_replies']) && count($i['quick_replies']) > 0) {
-                $fb_message['quick_replies'] = $i['quick_replies'];
-            }
-
-        } else {
-            //HTML format:
-            $html_message .= '<div class="msg">' . $message_content . '</div>';
-        }
-
-    }
-
-
-    //Log transaction if Facebook and return:
-    if ($fb_messenger_format) {
-
-        if (count($fb_message) > 0) {
-            //Return Facebook Message to be sent out:
-            return $fb_message;
-        } else {
-            //Should not happen!
-            return false;
-        }
-
-    } else {
-
-        $html_message .= '</div>';
-        return $html_message;
-
-    }
-
-
-}
-
-function echo_message_body($i, $en_name = null, $fb_messenger_format = false)
+function echo_body_message($i, $en_name = null, $fb_messenger_format = false)
 {
 
     //TODO Deprecate
@@ -649,7 +216,7 @@ function fn___echo_in_message_manage($tr)
 
     /*
      *
-     * A wrapper function that complements echo_message_body()
+     * A wrapper function that complements echo_body_message()
      * by giving the message additional matrix functions
      * such as editing and changing message type.
      *
@@ -670,7 +237,7 @@ function fn___echo_in_message_manage($tr)
     $ui .= '<div class="edit-off text_message" id="msgbody_' . $tr['tr_id'] . '" style="margin:2px 0 0 0;">';
 
     //Now get the message snippet:
-    $ui .= echo_message_body($tr);
+    $ui .= echo_body_message($tr);
 
     $ui .= '</div>';
 
