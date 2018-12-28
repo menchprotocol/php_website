@@ -932,52 +932,51 @@ class Database_model extends CI_Model
         }
 
         //Notify admins for certain subscriptions
-        if (!fn___is_dev()) {
+        foreach ($this->config->item('notify_admins') as $subscription) {
 
-            foreach ( as $admin_en_id => $subscription) {
+            //Do not notify about own actions:
+            if (in_array($insert_columns['tr_en_credit_id'], $subscription['admin_en_ids'])) {
+                continue;
+            }
 
-                //Do not notify about own actions:
-                if (intval($insert_columns['tr_en_credit_id']) == $admin_en_id) {
-                    continue;
+            //Does this transaction Match?
+            if (in_array($insert_columns['tr_en_type_id'], $subscription['admin_notify'])) {
+
+                //Just do this one:
+                if (!isset($trs[0])) {
+                    //Fetch Transaction Data:
+                    $trs = $this->Database_model->tr_fetch(array(
+                        'tr_id' => $insert_columns['tr_id']
+                    ));
                 }
 
-                if (in_array($insert_columns['tr_en_type_id'], $subscription['admin_notify'])) {
+                //Did we find it? We should have:
+                if (isset($trs[0])) {
 
-                    //Just do this one:
-                    if (!isset($trs[0])) {
-                        //Fetch Transaction Data:
-                        $trs = $this->Database_model->tr_fetch(array(
-                            'tr_id' => $insert_columns['tr_id']
-                        ));
+                    $subject = 'Notification: ' . trim(strip_tags($trs[0]['in_outcome'])) . ' - ' . (isset($trs[0]['en_name']) ? $trs[0]['en_name'] : 'System');
+
+                    //Compose email:
+                    $html_message = null; //Start
+
+                    if (strlen($trs[0]['tr_content']) > 0) {
+                        $html_message .= '<div>' . fn___echo_link(nl2br($trs[0]['tr_content'])) . '</div><br />';
                     }
 
-                    //Did we find it? We should have:
-                    if (isset($trs[0])) {
-
-                        $subject = 'Notification: ' . trim(strip_tags($trs[0]['in_outcome'])) . ' - ' . (isset($trs[0]['en_name']) ? $trs[0]['en_name'] : 'System');
-
-                        //Compose email:
-                        $html_message = null; //Start
-
-                        if (strlen($trs[0]['tr_content']) > 0) {
-                            $html_message .= '<div>' . fn___echo_link(nl2br($trs[0]['tr_content'])) . '</div><br />';
+                    //Lets go through all references to see what is there:
+                    foreach ($this->config->item('ledger_filters') as $tr_field => $obj_type) {
+                        if (intval($trs[0][$tr_field]) > 0) {
+                            //Yes we have a value here:
+                            $html_message .= '<div>' . ucwrods(str_replace('tr','Transaction',str_replace('en','Entity',str_replace('in','Intent',str_replace('_',' ',str_replace('tr_','',$tr_field)))))) . ': ' . fn___echo_tr_column($obj_type, $trs[0][$tr_field], $tr_field, true) . '</div>';
                         }
-
-                        //Lets go through all references to see what is there:
-                        foreach ($this->config->item('ledger_filters') as $tr_field => $obj_type) {
-                            if (intval($trs[0][$tr_field]) > 0) {
-                                //Yes we have a value here:
-                                $html_message .= '<div>' . ucwrods(str_replace('tr','Transaction',str_replace('en','Entity',str_replace('in','Intent',str_replace('_',' ',str_replace('tr_','',$tr_field)))))) . ': ' . fn___echo_tr_column($obj_type, $trs[0][$tr_field], $tr_field, true) . '</div>';
-                            }
-                        }
-
-                        //Append ID:
-                        $html_message .= '<div>Transaction ID: <a href="https://mench.com/ledger/fn___tr_json/' . $trs[0]['tr_id'] . '">#' . $trs[0]['tr_id'] . '</a></div>';
-
-                        //Send Email:
-
-
                     }
+
+                    //Append ID:
+                    $html_message .= '<div>Transaction ID: <a href="https://mench.com/ledger/fn___tr_json/' . $trs[0]['tr_id'] . '">#' . $trs[0]['tr_id'] . '</a></div>';
+
+                    //Send Email:
+                    $this->Chat_model->fn___dispatch_email($subscription['admin_emails'], $subscription['admin_en_ids'], $subject, $html_message);
+
+
                 }
             }
         }

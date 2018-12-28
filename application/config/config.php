@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  *
  * Global variables used throughout the platform.
- * use-case format: $this->config->item('en_convert_4537')
+ * use-case format: $this->config->item('notify_admins')
  *
  */
 
@@ -75,8 +75,9 @@ $config['aws_credentials'] = [ //Learn more: https://console.aws.amazon.com/iam/
 
 //Admin notification via Email:
 $config['notify_admins'] = array(
-    1 => array(
+    array(
         'admin_emails' => array('shervin@mench.com'),
+        'admin_en_ids' => array(1),
         'admin_notify' => array(
             4246, //Platform Error
             4269, //Miner login

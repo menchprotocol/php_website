@@ -2271,22 +2271,17 @@ class Chat_model extends CI_Model
 
 
 
-    function fn___dispatch_email($to_array, $subject, $html_message, $tr_create = array(), $reply_to = null)
+    function fn___dispatch_email($to_array, $to_en_ids, $subject, $html_message)
     {
 
         /*
          *
-         * DEPRECATED for now!
-         *
-         * We used to support sending emails but since Dec 2018 we've
-         * focused on Messenger as the only medium of communication.
+         * Send an email via our Amazon server
          *
          * */
 
-        return true;
-
         if (fn___is_dev()) {
-            return true;
+            return false; //We cannot send emails on Dev server
         }
 
         //Loadup amazon SES:
@@ -2297,17 +2292,7 @@ class Chat_model extends CI_Model
             'credentials' => $this->config->item('aws_credentials'),
         ]);
 
-        if (!$reply_to) {
-            //Set default:
-            $reply_to = 'support@mench.com';
-        }
-
-        //Log transaction once:
-        if (count($tr_create) > 0) {
-            $this->Database_model->tr_create($tr_create);
-        }
-
-        return $this->CLIENT->sendEmail(array(
+        $result = $this->CLIENT->sendEmail(array(
             // Source is required
             'Source' => 'support@mench.com',
             // Destination is required
@@ -2338,9 +2323,25 @@ class Chat_model extends CI_Model
                     ),
                 ),
             ),
-            'ReplyToAddresses' => array($reply_to),
+            'ReplyToAddresses' => array('support@mench.com'),
             'ReturnPath' => 'support@mench.com',
         ));
+
+        foreach($to_en_ids as $to_en_id){
+            $this->Database_model->tr_create(array(
+                'tr_en_type_id' => 4276, //Email Message Sent
+                'tr_en_child_id' => $to_en_id, //Email Recipient
+                'tr_content' => 'Email Sent: ' . $subject,
+                'tr_metadata' => array(
+                    'to_array' => $to_array,
+                    'subject' => $subject,
+                    'html_message' => $html_message,
+                    'result' => $result,
+                ),
+            ));
+        }
+
+        return $result;
 
     }
 
