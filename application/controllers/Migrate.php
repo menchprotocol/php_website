@@ -14,23 +14,6 @@ class Migrate extends CI_Controller
         $this->output->enable_profiler(FALSE);
     }
 
-    function rotate($in_id=8333){
-        fn___echo_json($this->Matrix_model->compose_messages(array(
-            'tr_en_child_id' => 1, //Shervin
-            'tr_in_child_id' => $in_id,
-        )));
-    }
-
-    function ff($en_id=1){
-
-        $ens = $this->Database_model->en_fetch(array(
-            'en_id' => $en_id,
-        ), array('en__child_count', 'en__actionplans'));
-
-        //fn___echo_json($ens[0]['en__actionplans'][0]); exit;
-
-        fn___echo_json($this->Matrix_model->compose_messages($ens[0]['en__actionplans'][0]));
-    }
 
 
     function in()

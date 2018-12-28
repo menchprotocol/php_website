@@ -134,7 +134,6 @@ if (count($actionplan_parents) == 1 && (count($completion_requirements)>0 || (!i
     echo '<form method="POST" action="/my/update_k_save">';
 
     echo '<input type="hidden" name="tr_id"  value="' . $actionplan_parents[0]['tr_id'] . '" />';
-    echo '<input type="hidden" name="is_from_messenger"  value="' . (isset($_GET['is_from_messenger']) ? 1 : 0) . '" />';
 
     //echo '<input type="hidden" name="k_key" value="'.md5($actionplan_parents[0]['tr_id'].'k_key_SALT555').'" />'; //TODO Wire in for more security?!
 

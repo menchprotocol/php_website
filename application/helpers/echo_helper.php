@@ -1549,7 +1549,7 @@ function fn___echo_en($en, $level, $is_parent = false)
 
     //Does entity have a Messenger PSID?
     if ($en['en_psid'] > 0) {
-        $ui .= ' &nbsp;<img src="/img/bp_128.png" style="width: 22px;" data-toggle="tooltip" data-placement="top" title="Connected to Mench on Messenger">';
+        $ui .= ' &nbsp;<img src="/img/bp_128.png" style="width: 22px; margin-top:-3px;" data-toggle="tooltip" data-placement="top" title="Connected to Mench on Messenger">';
     }
 
 

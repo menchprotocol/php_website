@@ -195,7 +195,7 @@ class Database_model extends CI_Model
                 //Do a child count:
                 $child_trs = $this->Database_model->tr_fetch(array(
                     'tr_en_parent_id' => $val['en_id'],
-                    'tr_en_child_id >' => 0, //Any type of children is accepted
+                    'tr_en_type_id IN ('.join(',',array_merge($this->config->item('en_ids_4537') , $this->config->item('en_ids_4538'))).')' => null, //Entity Link Connectors
                     'tr_status >=' => 0, //New+
                     'en_status >=' => 0, //New+
                 ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as en__child_count');
@@ -211,7 +211,7 @@ class Database_model extends CI_Model
 
                 $res[$key]['en__children'] = $this->Database_model->tr_fetch(array(
                     'tr_en_parent_id' => $val['en_id'],
-                    'tr_en_child_id >' => 0, //Any type of children is accepted
+                    'tr_en_type_id IN ('.join(',',array_merge($this->config->item('en_ids_4537') , $this->config->item('en_ids_4538'))).')' => null, //Entity Link Connectors
                     'tr_status >=' => 0, //New+
                     'en_status >=' => 0, //New+
                 ), array('en_child'), $this->config->item('en_per_page'), 0, array('en_trust_score' => 'DESC'));
@@ -242,7 +242,7 @@ class Database_model extends CI_Model
 
                 //Fetch parents by default:
                 $res[$key]['en__parents'] = $this->Database_model->tr_fetch(array(
-                    'tr_en_parent_id >' => 0, //Also has a parent assigned of any transaction type
+                    'tr_en_type_id IN ('.join(',',array_merge($this->config->item('en_ids_4537') , $this->config->item('en_ids_4538'))).')' => null, //Entity Link Connectors
                     'tr_en_child_id' => $val['en_id'], //This child entity
                     'tr_status >=' => 0, //New+
                     'en_status >=' => 0, //New+
@@ -255,7 +255,7 @@ class Database_model extends CI_Model
 
                         //Append grandparents:
                         $res[$key]['en__parents'][$key]['en__grandparents'] = $this->Database_model->tr_fetch(array(
-                            'tr_en_parent_id >' => 0, //Also has a parent assigned of any transaction type
+                            'tr_en_type_id IN ('.join(',',array_merge($this->config->item('en_ids_4537') , $this->config->item('en_ids_4538'))).')' => null, //Entity Link Connectors
                             'tr_en_child_id' => $value['en_id'], //This child entity
                             'tr_status >=' => 0, //New+
                             'en_status >=' => 0, //New+
@@ -931,18 +931,17 @@ class Database_model extends CI_Model
 
         }
 
-        //Notify subscribers for this event
-        //TODO update to new system
-        if (0) {
+        //Notify admins for certain subscriptions
+        if (!fn___is_dev()) {
 
-            foreach ($this->config->item('notify_admins') as $admin_en_id => $actionplan) {
+            foreach ( as $admin_en_id => $subscription) {
 
                 //Do not notify about own actions:
                 if (intval($insert_columns['tr_en_credit_id']) == $admin_en_id) {
                     continue;
                 }
 
-                if (in_array($insert_columns['tr_en_type_id'], $actionplan['admin_notify'])) {
+                if (in_array($insert_columns['tr_en_type_id'], $subscription['admin_notify'])) {
 
                     //Just do this one:
                     if (!isset($trs[0])) {
@@ -975,7 +974,8 @@ class Database_model extends CI_Model
                         //Append ID:
                         $html_message .= '<div>Transaction ID: <a href="https://mench.com/ledger/fn___tr_json/' . $trs[0]['tr_id'] . '">#' . $trs[0]['tr_id'] . '</a></div>';
 
-                        //TODO Send messenger
+                        //Send Email:
+
 
                     }
                 }

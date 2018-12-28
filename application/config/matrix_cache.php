@@ -254,7 +254,7 @@ $config['en_all_4485'] = array(
     4234 => array(
         'en_icon' => '<i class="fas fa-random"></i>',
         'en_name' => 'Rotating Intent Message',
-        'tr_content' => 'Triggered in various spots of the code base that powers the logic of Mench personal assistant. Search for the compose_messages() function which is part of the Comm Model.',
+        'tr_content' => 'Triggered in various spots of the code base that powers the logic of Mench personal assistant. Search for the fn___compose_message() function which is part of the Comm Model.',
     ),
 );
 

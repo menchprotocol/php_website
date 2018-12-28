@@ -392,15 +392,6 @@ class My extends CI_Controller
             if ($next_ins) {
                 //Override original item:
                 $k_url = '/my/actionplan/' . $next_ins[0]['tr_tr_parent_id'] . '/' . $next_ins[0]['in_id'];
-
-                if (intval($_POST['is_from_messenger'])) {
-                    //Also send confirmation messages via messenger:
-                    $this->Matrix_model->compose_messages(array(
-                        'tr_en_child_id' => $trs[0]['k_children_en_id'],
-                        'tr_in_child_id' => $next_ins[0]['in_id'],
-                        'tr_tr_parent_id' => $trs[0]['tr_tr_parent_id'],
-                    ));
-                }
             }
         }
 

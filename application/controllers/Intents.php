@@ -820,7 +820,7 @@ class Intents extends CI_Controller
         }
 
         //Make sure message is all good:
-        $msg_validation = $this->Chat_model->validate_message($_POST['tr_content']);
+        $msg_validation = $this->Chat_model->fn___validate_message($_POST['tr_content']);
 
         if (!$msg_validation['status']) {
             //There was some sort of an error:
