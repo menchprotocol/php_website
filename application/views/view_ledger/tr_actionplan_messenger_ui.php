@@ -104,12 +104,10 @@ if (count($on_start_messages) > 0) {
     $hide_messages_onload = (count($actionplan_parents) == 0 || $actionplan_parents[0]['tr_status'] < 1);
     echo '<div class="tips_content message_content left-grey" style="display: ' . ($hide_messages ? 'none' : 'block') . ';">';
     echo '<h5 class="badge badge-hy"><i class="fas fa-comment-dots"></i> ' . count($on_start_messages) . ' Message' . fn___echo__s(count($on_start_messages)) . ':</h5>';
-    foreach ($on_start_messages as $i) {
-        if ($i['tr_status'] == 1) {
+    foreach ($on_start_messages as $tr) {
+        if ($tr['tr_status'] == 1) {
             echo '<div class="tip_bubble">';
-            echo echo_body_message(array_merge($i, array(
-                'tr_en_child_id' => $actionplan['en_id'],
-            )), $actionplan['en_name']);
+            echo $this->Chat_model->fn___echo_message($tr['tr_content'], $actionplan);
             echo '</div>';
         }
     }

@@ -24,7 +24,11 @@ class Cron extends CI_Controller
     function test1(){
         $timestamp = time();
         $matching_users[0]['en_id'] = 1;
-        $this->Chat_model->fn___echo_message('Hi /firstname 👋​ You can reset your Mench password here: /link:🔑 Reset Password:https://mench.com/my/reset_pass?en_id=' . $matching_users[0]['en_id'] . '&timestamp=' . $timestamp . '&p_hash=' . md5($matching_users[0]['en_id'] . $this->config->item('password_salt') . $timestamp).' (URL Active for 24 hours only)', array('en_id' => 1), true);
+        $this->Chat_model->fn___echo_message(
+            'Hi /firstname 👋​ You can reset your Mench password here: /link:🔑 Reset Password:https://mench.com/my/reset_pass?en_id=' . $matching_users[0]['en_id'] . '&timestamp=' . $timestamp . '&p_hash=' . md5($matching_users[0]['en_id'] . $this->config->item('password_salt') . $timestamp).' (URL Active for 24 hours only)',
+            array('en_id' => 1),
+            true
+        );
     }
 
     function test($fb_messenger_format = 0){

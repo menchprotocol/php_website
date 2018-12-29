@@ -196,33 +196,19 @@ function fn___echo_url_embed($url, $full_message = null, $return_array = false, 
 }
 
 
-
-function echo_body_message($i, $en_name = null, $fb_messenger_format = false)
-{
-
-    //TODO Deprecate
-
-
-    $button_url = null;
-    $button_title = null;
-
-
-
-}
-
-
 function fn___echo_in_message_manage($tr)
 {
 
     /*
      *
-     * A wrapper function that complements echo_body_message()
+     * A wrapper function that helps manage messages
      * by giving the message additional matrix functions
      * such as editing and changing message type.
      *
      * */
 
     $CI =& get_instance();
+    $udata = $CI->session->userdata('user');
 
     //Fetch all possible Intent Messages to enable the Miner to change message type:
     $en_all_4485 = $CI->config->item('en_all_4485');
@@ -237,7 +223,7 @@ function fn___echo_in_message_manage($tr)
     $ui .= '<div class="edit-off text_message" id="msgbody_' . $tr['tr_id'] . '" style="margin:2px 0 0 0;">';
 
     //Now get the message snippet:
-    $ui .= echo_body_message($tr);
+    $ui .= $CI->Chat_model->fn___echo_message($tr['tr_content'], $udata);
 
     $ui .= '</div>';
 

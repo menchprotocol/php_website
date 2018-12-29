@@ -516,7 +516,8 @@ class Intents extends CI_Controller
             ));
 
             //Build UI friendly HTML Message:
-            $tip_messages .= echo_body_message(array_merge($tr, array('tr_en_child_id' => $udata['en_id'])), $udata['en_name'], false);
+            $tip_messages .= $this->Chat_model->fn___echo_message($tr['tr_content'], $udata, false);
+
         }
 
         //Return results:
@@ -859,7 +860,7 @@ class Intents extends CI_Controller
         //Print the challenge:
         return fn___echo_json(array(
             'status' => 1,
-            'message' => echo_body_message(array_merge($new_messages[0], array('tr_en_child_id' => $udata['en_id'])), $udata['en_name']),
+            'message' => $this->Chat_model->fn___echo_message($msg_validation['input_message'], $udata, false),
             'tr_en_type_id' => $en_all_4485[$new_messages[0]['tr_en_type_id']]['m_icon'].' '.$en_all_4485[$new_messages[0]['tr_en_type_id']]['m_name'],
             'success_icon' => '<span><i class="fas fa-check"></i> Saved</span>',
         ));

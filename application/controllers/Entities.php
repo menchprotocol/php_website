@@ -347,7 +347,7 @@ class Entities extends CI_Controller
                 echo '<h4><i class="fas fa-hashtag" style="font-size:1em;"></i> ' . $tr['in_outcome'] . '</h4>';
 
                 echo '<div>';
-                    echo echo_body_message($tr);
+                    echo $this->Chat_model->fn___echo_message($tr['tr_content'], $udata, false);
                 echo '</div>';
 
             echo '</div>';

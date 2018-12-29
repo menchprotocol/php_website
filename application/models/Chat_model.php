@@ -87,7 +87,7 @@ class Chat_model extends CI_Model
 
         //Validate message:
         $msg_validation = $this->Chat_model->fn___validate_echo_message($input_message, $recipient_en, $fb_messenger_format, $quick_replies);
-
+        $is_miner = fn___en_auth(array(1308));
 
         //Prepare data to be appended to success/fail transaction:
         $allowed_tr_append = array('tr_in_parent_id', 'tr_in_child_id', 'tr_tr_parent_id');
@@ -113,6 +113,8 @@ class Chat_model extends CI_Model
         }
 
         //Message validation passed...
+        $html_message_body = '';
+
         //Log message sent transaction:
         foreach ($msg_validation['output_messages'] as $output_message) {
 
@@ -144,31 +146,33 @@ class Chat_model extends CI_Model
 
             } else {
 
-                //HTML Format, simply echo message on-screen to finalize delivery:
-                echo $output_message['message_body'];
+                //HTML Format, add to message variable that will be returned at the end:
+                $html_message_body .= $output_message['message_body'];
 
                 //NULL placeholder for the Facebook Graph Call since this is an HTML delivery:
                 $fb_graph_process = null;
 
             }
 
-            //Log successful Transaction for message delivery:
-            $this->Database_model->fn___tr_create(array_merge(array(
-                'tr_content' => $msg_validation['input_message'],
-                'tr_en_type_id' => $output_message['message_type'],
-                'tr_en_child_id' => (isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0),
-                'tr_en_parent_id' => $msg_validation['tr_en_parent_id'], //Might be set if message had a referenced entity
-                'tr_metadata' => array(
-                    'input_message' => $input_message,
-                    'output_message' => $output_message['message_body'],
-                    'fb_graph_process' => $fb_graph_process,
-                ),
-            ), $filtered_tr_append));
+            //Log successful Transaction for message delivery (Unless Miners viewing HTML):
+            if(!($is_miner && !$fb_messenger_format)){
+                $this->Database_model->fn___tr_create(array_merge(array(
+                    'tr_content' => $msg_validation['input_message'],
+                    'tr_en_type_id' => $output_message['message_type'],
+                    'tr_en_child_id' => (isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0),
+                    'tr_en_parent_id' => $msg_validation['tr_en_parent_id'], //Might be set if message had a referenced entity
+                    'tr_metadata' => array(
+                        'input_message' => $input_message,
+                        'output_message' => $output_message['message_body'],
+                        'fb_graph_process' => $fb_graph_process,
+                    ),
+                ), $filtered_tr_append));
+            }
 
         }
 
         //If we're here it's all good:
-        return true;
+        return ( $fb_messenger_format ? true : $html_message_body );
 
     }
 

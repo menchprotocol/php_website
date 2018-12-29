@@ -3,7 +3,6 @@
 $metadata = unserialize($in['in_metadata']);
 $do_expand = ( isset($_GET['do_expand']) && intval($_GET['do_expand']) );
 $is_primary_in = ( $in['in_id'] == $this->config->item('in_primary_id') );
-$guest_name = 'Dear Master'; //To replace /firstname in messages (if any) since we do not know this Master yet
 ?>
 <style>
     .body-container .msg, .body-container li, p, .body-container a {
@@ -73,9 +72,7 @@ $guest_name = 'Dear Master'; //To replace /firstname in messages (if any) since 
         'tr_en_type_id' => 4231, //On-Start Messages
         'tr_in_child_id' => $in['in_id'],
     ), array(), 0, 0, array('tr_order' => 'ASC')) as $tr) {
-        echo echo_body_message(array_merge($tr, array(
-            'noshow' => 1,
-        )), $guest_name);
+        echo $this->Chat_model->fn___echo_message($tr['tr_content']);
     }
     ?>
 
@@ -124,9 +121,7 @@ $guest_name = 'Dear Master'; //To replace /firstname in messages (if any) since 
                     'tr_en_type_id' => 4231, //On-Start Messages
                     'tr_in_child_id' => $in_level2['in_id'],
                 ), array(), 0, 0, array('tr_order' => 'ASC')) as $tr) {
-                    echo echo_body_message(array_merge($tr, array(
-                        'noshow' => 1,
-                    )), $guest_name);
+                    echo $this->Chat_model->fn___echo_message($tr['tr_content']);
                 }
 
                 if (count($in_level2['in__grandchildren']) > 0) {
