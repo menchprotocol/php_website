@@ -1,7 +1,7 @@
 <?php
 
 //Prepare some variables to better understand out situation here:
-$on_start_messages = $this->Database_model->tr_fetch(array(
+$on_start_messages = $this->Database_model->fn___tr_fetch(array(
     'tr_status >=' => 2, //Published+
     'tr_en_type_id' => 4231, //On-Start Messages
     'tr_in_child_id' => $value['in_id'],
@@ -9,7 +9,7 @@ $on_start_messages = $this->Database_model->tr_fetch(array(
 
 
 //Fetch completion requirements:
-$completion_requirements = $this->Database_model->tr_fetch(array(
+$completion_requirements = $this->Database_model->fn___tr_fetch(array(
     'tr_en_type_id' => 4331, //Intent Response Limiters
     'tr_in_child_id' => $value['in_id'], //For this intent
     'tr_status >=' => 2, //Published+
@@ -25,7 +25,7 @@ $list_children = (count($actionplan_parents) == 0 || !($actionplan_parents[0]['t
 
 if (count($actionplan_parents) == 1) {
     //Inform the user of any completion requirements:
-    $message_in_requirements = $this->Matrix_model->in_completion_requirements($in);
+    $message_in_requirements = $this->Matrix_model->fn___in_completion_requirements($in['in_id']);
 
     //Submission button visible after first button was clicked:
     $is_incomplete = ($actionplan_parents[0]['tr_status'] < 1 || ($actionplan_parents[0]['tr_status'] == 1 && count($actionplan_children) == 0));

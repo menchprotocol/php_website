@@ -50,7 +50,7 @@ if(isset($_GET['end_range']) && fn___isDate($_GET['end_range'])){
 }
 
 //Fetch transactions:
-$trs = $this->Database_model->tr_fetch($filters, array('en_type'), (fn___is_dev() ? 30 : 100));
+$trs = $this->Database_model->fn___tr_fetch($filters, array('en_type'), (fn___is_dev() ? 30 : 100));
 
 
 
@@ -80,7 +80,7 @@ foreach ($tr_filters as $key => $value) {
 
         //Fetch unique transaction types recorded so far:
         unset($filters['tr_en_type_id']); //So we show all transaction types
-        $all_engs = $this->Database_model->tr_fetch($filters, array('en_type'), 0, 0, array('trs_count' => 'DESC'), 'COUNT(tr_en_type_id) as trs_count, en_name, tr_en_type_id', 'tr_en_type_id, en_name');
+        $all_engs = $this->Database_model->fn___tr_fetch($filters, array('en_type'), 0, 0, array('trs_count' => 'DESC'), 'COUNT(tr_en_type_id) as trs_count, en_name, tr_en_type_id', 'tr_en_type_id, en_name');
 
         //Give option to select:
         $select_ui = '';

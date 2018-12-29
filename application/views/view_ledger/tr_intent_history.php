@@ -1,6 +1,6 @@
 <?php
 
-$actionplan_children = $this->Database_model->tr_fetch(array(
+$actionplan_children = $this->Database_model->fn___tr_fetch(array(
     'tr_in_child_id' => $in_id, //Active Action Plans only
     'tr_status >=' => 0, //Real completion [You can remove this to see all submissions with all statuses]
     //We are fetching with any tr_status just to see what is available/possible from here

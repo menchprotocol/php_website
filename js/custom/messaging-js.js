@@ -530,7 +530,7 @@ function message_create() {
     message_form_lock();
 
     //Update backend:
-    $.post("/ledger/fn___tr_create", {
+    $.post("/ledger/fn___add_message", {
 
         in_id: in_id, //Synonymous
         tr_content: $('#tr_content' + in_id).val(),

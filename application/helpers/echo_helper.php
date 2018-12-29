@@ -73,7 +73,7 @@ function fn___echo_url_type($url, $en_type_id)
 
         //Unknown URL type! Log error and return false:
         $CI =& get_instance();
-        $CI->Database_model->tr_create(array(
+        $CI->Database_model->fn___tr_create(array(
             'tr_content' => 'fn___echo_url_type() encountered an unknown URL entity type ID [' . $en_type_id . '] with URL value [' . $url . ']',
             'tr_en_type_id' => 4246, //Platform Error
         ));
@@ -248,7 +248,7 @@ function fn___echo_in_message_manage($tr)
     //Editing menu:
     $ui .= '<ul class="msg-nav">';
 
-    $ui .= '<li class="edit-off message_status" style="margin: 0 1px 0 -1px;"><span title="' . $en_all_4485[$tr['tr_en_type_id']]['en_name'] . ': ' . stripslashes($en_all_4485[$tr['tr_en_type_id']]['tr_content']) . '" data-toggle="tooltip" data-placement="top">' . $en_all_4485[$tr['tr_en_type_id']]['en_icon'] . '</span></li>';
+    $ui .= '<li class="edit-off message_status" style="margin: 0 1px 0 -1px;"><span title="' . $en_all_4485[$tr['tr_en_type_id']]['m_name'] . ': ' . stripslashes($en_all_4485[$tr['tr_en_type_id']]['m_desc']) . '" data-toggle="tooltip" data-placement="top">' . $en_all_4485[$tr['tr_en_type_id']]['m_icon'] . '</span></li>';
     $ui .= '<li class="edit-on hidden"><span id="charNumEditing' . $tr['tr_id'] . '">0</span>/' . $CI->config->item('tr_content_max') . '</li>';
 
     $ui .= '<li class="edit-off" style="margin: 0 0 0 8px;"><span class="on-hover"><i class="fas fa-bars sort_message" tr-id="' . $tr['tr_id'] . '" style="color:#2f2739;"></i></span></li>';
@@ -261,8 +261,8 @@ function fn___echo_in_message_manage($tr)
     //Show drop down for message type adjustment:
     $ui .= '<li class="pull-right edit-on hidden">';
     $ui .= '<select id="en_all_4485_' . $tr['tr_id'] . '">';
-    foreach ($en_all_4485 as $tr_en_type_id => $value) {
-        $ui .= '<option value="' . $tr_en_type_id . '">' . $value['en_name'] . '</option>';
+    foreach ($en_all_4485 as $tr_en_type_id => $m) {
+        $ui .= '<option value="' . $tr_en_type_id . '">' . $m['m_name'] . '</option>';
     }
     $ui .= '</select>';
     $ui .= '</li>';
@@ -430,21 +430,21 @@ function fn___echo_tr_row($tr)
     if($tr['tr_en_type_id']==4235){
 
         //Count Total Transactions made by Action Plan Master:
-        $count_en_trs = $CI->Database_model->tr_fetch(array(
+        $count_en_trs = $CI->Database_model->fn___tr_fetch(array(
             'tr_en_credit_id' => $tr['tr_en_parent_id'],
         ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
         $ui .= '<a href="#enactionplans-' . $tr['tr_en_parent_id'] . '-' . $tr['tr_id'] . '" onclick="load_u_trs(' . $tr['tr_en_parent_id'] . ',' . $tr['tr_id'] . ')" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="' . $count_en_trs[0]['totals'] . ' Total Transactions credited to this Master"><span class="btn-counter">' . fn___echo_number($count_en_trs[0]['totals']) . '</span><i class="fas fa-atlas"></i></a>';
 
 
         //Number of intents in Master Action Plan & Its completion Percentage:
-        $count_in_actionplans = $CI->Database_model->tr_fetch(array(
+        $count_in_actionplans = $CI->Database_model->fn___tr_fetch(array(
             'tr_en_type_id' => 4559, //Action Plan Intents
             'tr_tr_parent_id' => $tr['tr_id'],
         ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
         if ($count_in_actionplans[0]['totals'] > 0) {
 
             //Yes, this intent has been added to some Action Plans, let's see what % is completed so far:
-            $count_in_actionplans_complete = $CI->Database_model->tr_fetch(array(
+            $count_in_actionplans_complete = $CI->Database_model->fn___tr_fetch(array(
                 'tr_en_type_id' => 4559, //Action Plan Intents
                 'tr_tr_parent_id' => $tr['tr_id'],
                 'tr_status NOT IN (' . join(',', $CI->config->item('tr_status_incomplete')) . ')' => null, //completed
@@ -655,7 +655,7 @@ function fn___echo_in_referenced_content($in, $fb_messenger_format = false)
             }
 
             //Show category:
-            $cat_contribution = count($referenced_ens) . ' ' . $en_all_3000[$type_id]['en_name'] . fn___echo__s(count($referenced_ens));
+            $cat_contribution = count($referenced_ens) . ' ' . $en_all_3000[$type_id]['m_name'] . fn___echo__s(count($referenced_ens));
             if ($fb_messenger_format) {
 
                 $text_overview .= ' ' . $cat_contribution;
@@ -788,7 +788,7 @@ function fn___echo_in_overview($in, $fb_messenger_format = 0)
         return false;
     }
 
-    $pitch = 'Action Plan contains ' . $metadata['in__tree_in_count'] . ' concepts that will help you ' . $in['in_outcome'] . '.';
+    $pitch = 'Action Plan contains ' . $metadata['in__tree_in_count'] . ' key ideas that will help you ' . $in['in_outcome'] . '.';
 
     if ($fb_messenger_format) {
         return '🚩 ' . $pitch . "\n";
@@ -799,7 +799,7 @@ function fn___echo_in_overview($in, $fb_messenger_format = 0)
             <div class="panel-heading" role="tab" id="heading' . $id . '">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="false" aria-controls="collapse' . $id . '">
-                    <i class="fas" style="transform:none !important;">💡</i> ' . $metadata['in__tree_in_count'] . ' Concepts<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                    <i class="fas" style="transform:none !important;">💡</i> ' . $metadata['in__tree_in_count'] . ' key ideas<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                 </a>
             </h4>
         </div>
@@ -953,7 +953,7 @@ function fn___echo_time_range($in, $micro = false)
     if (!isset($in['in_metadata'])) {
         //We don't have it, so fetch it:
         $CI =& get_instance();
-        $ins = $CI->Database_model->in_fetch(array(
+        $ins = $CI->Database_model->fn___in_fetch(array(
             'in_id' => $in['in_id'], //We should always have Intent ID
         ));
         if (count($ins) > 0) {
@@ -1020,7 +1020,7 @@ function fn___echo_tr_column($obj_type, $id, $tr_field, $fb_messenger_format = f
     if ($obj_type == 'in') {
 
         //Fetch Intent:
-        $ins = $CI->Database_model->in_fetch(array(
+        $ins = $CI->Database_model->fn___in_fetch(array(
             'in_id' => $id,
         ));
         if (count($ins) < 1) {
@@ -1038,7 +1038,7 @@ function fn___echo_tr_column($obj_type, $id, $tr_field, $fb_messenger_format = f
 
     } elseif ($obj_type == 'en') {
 
-        $ens = $CI->Database_model->en_fetch(array(
+        $ens = $CI->Database_model->fn___en_fetch(array(
             'en_id' => $id,
         ));
         if (count($ens) < 1) {
@@ -1056,7 +1056,7 @@ function fn___echo_tr_column($obj_type, $id, $tr_field, $fb_messenger_format = f
 
     } elseif ($obj_type == 'tr') {
 
-        $trs = $CI->Database_model->tr_fetch(array(
+        $trs = $CI->Database_model->fn___tr_fetch(array(
             'tr_id' => $id,
         ), array('en_type'));
         if (count($trs) < 1) {
@@ -1252,14 +1252,14 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
 
         //Action Plan Stats:
-        $count_in_actionplans = $CI->Database_model->tr_fetch(array(
+        $count_in_actionplans = $CI->Database_model->fn___tr_fetch(array(
             'tr_en_type_id' => 4559, //Action Plan Intents
             'tr_in_child_id' => $in['in_id'], //For this Intent
         ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
         if ($count_in_actionplans[0]['totals'] > 0) {
 
             //Yes, this intent has been added to some Action Plans, let's see what % is completed so far:
-            $count_in_actionplans_complete = $CI->Database_model->tr_fetch(array(
+            $count_in_actionplans_complete = $CI->Database_model->fn___tr_fetch(array(
                 'tr_en_type_id' => 4559, //Action Plan Intents
                 'tr_in_child_id' => $in['in_id'], //For this Intent
                 'tr_status NOT IN (' . join(',', $CI->config->item('tr_status_incomplete')) . ')' => null, //completed
@@ -1272,7 +1272,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
 
         //Intent Transactions:
-        $count_in_trs = $CI->Database_model->tr_fetch(array(
+        $count_in_trs = $CI->Database_model->fn___tr_fetch(array(
             '(tr_in_parent_id=' . $in['in_id'] . ' OR tr_in_child_id=' . $in['in_id'] . ( $tr_id > 0 ? ' OR tr_tr_parent_id=' . $tr_id : '' ) . ')' => null,
         ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
         if ($count_in_trs[0]['totals'] > 0) {
@@ -1282,7 +1282,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
 
         //Intent Messages:
-        $count_in_messages = $CI->Database_model->tr_fetch(array(
+        $count_in_messages = $CI->Database_model->fn___tr_fetch(array(
             'tr_status >=' => 0, //New+
             'tr_en_type_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //All Intent messages
             'tr_in_child_id' => $in['in_id'],
@@ -1408,9 +1408,9 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         //Intent Level 3 Input field:
         $ui .= '<div class="list-group-item list_input new-in3-input">
             <div class="input-group">
-                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="fn___in_create_or_link(' . $in['in_id'] . ',3);" intent-id="' . $in['in_id'] . '"><input type="text" class="form-control autosearch intentadder-level-3 algolia_search bottom-add" maxlength="' . $CI->config->item('in_outcome_max') . '" id="addintent-cr-' . $tr_id . '" intent-id="' . $in['in_id'] . '" placeholder="Add #Intent"></form></div>
+                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="fn___in_link_or_create(' . $in['in_id'] . ',3);" intent-id="' . $in['in_id'] . '"><input type="text" class="form-control autosearch intentadder-level-3 algolia_search bottom-add" maxlength="' . $CI->config->item('in_outcome_max') . '" id="addintent-cr-' . $tr_id . '" intent-id="' . $in['in_id'] . '" placeholder="Add #Intent"></form></div>
                 <span class="input-group-addon" style="padding-right:8px;">
-                    <span data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" onclick="fn___in_create_or_link(' . $in['in_id'] . ',3);" class="badge badge-primary pull-right" intent-id="' . $in['in_id'] . '" style="cursor:pointer; margin: 13px -6px 1px 13px;">
+                    <span data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" onclick="fn___in_link_or_create(' . $in['in_id'] . ',3);" class="badge badge-primary pull-right" intent-id="' . $in['in_id'] . '" style="cursor:pointer; margin: 13px -6px 1px 13px;">
                         <div><i class="fas fa-plus"></i></div>
                     </span>
                 </span>
@@ -1455,7 +1455,7 @@ function fn___echo_en($en, $level, $is_parent = false)
     if ($tr_id > 0) {
         //Show Link Type:
         $entity_links = $CI->config->item('en_all_4537') + $CI->config->item('en_all_4538'); //Will Contain every possible Entity Link Connector!
-        $ui .= '<span class="tr_type_' . $tr_id . ' underdot" data-toggle="tooltip" data-placement="top" title="'. $entity_links[$en['tr_en_type_id']]['en_name'] .': '. $entity_links[$en['tr_en_type_id']]['tr_content'] .'">' . $entity_links[$en['tr_en_type_id']]['en_icon'] . '</span> ';
+        $ui .= '<span class="tr_type_' . $tr_id . ' underdot" data-toggle="tooltip" data-placement="top" title="'. $entity_links[$en['tr_en_type_id']]['m_name'] .': '. $entity_links[$en['tr_en_type_id']]['m_desc'] .'">' . $entity_links[$en['tr_en_type_id']]['m_icon'] . '</span> ';
         $ui .= '<span class="tr_status_' . $tr_id . '">' . fn___echo_status('tr_status', $en['tr_status'], true, 'left') . '</span> ';
     }
 
@@ -1464,7 +1464,7 @@ function fn___echo_en($en, $level, $is_parent = false)
 
 
     //Count & Display all Entity transaction:
-    $count_in_trs = $CI->Database_model->tr_fetch(array(
+    $count_in_trs = $CI->Database_model->fn___tr_fetch(array(
         '(tr_en_parent_id=' . $en['en_id'] . ' OR  tr_en_child_id=' . $en['en_id'] . ' OR  tr_en_credit_id=' . $en['en_id'] . ( $tr_id > 0 ? ' OR tr_tr_parent_id=' . $tr_id : '' ) . ')' => null,
     ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
     if ($count_in_trs[0]['totals'] > 0) {
@@ -1474,7 +1474,7 @@ function fn___echo_en($en, $level, $is_parent = false)
 
 
     //Count & Display active Intent messages that this entity has been referenced within:
-    $messages = $CI->Database_model->tr_fetch(array(
+    $messages = $CI->Database_model->fn___tr_fetch(array(
         'tr_status >=' => 0, //New+
         'tr_en_type_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //All Intent messages
         'tr_en_parent_id' => $en['en_id'], //Entity Referenced in message content
@@ -1493,7 +1493,7 @@ function fn___echo_en($en, $level, $is_parent = false)
         $en['en__child_count'] = 0;
 
         //Do a child count:
-        $child_trs = $CI->Database_model->tr_fetch(array(
+        $child_trs = $CI->Database_model->fn___tr_fetch(array(
             'tr_en_parent_id' => $en['en_id'],
             'tr_en_child_id >' => 0, //Any type of children is accepted
             'tr_status >=' => 0, //New+
@@ -1529,7 +1529,7 @@ function fn___echo_en($en, $level, $is_parent = false)
         //Do we have entity parents loaded in our data-set?
         if (!isset($en['en__parents'])) {
             //Fetch parents at this point:
-            $en['en__parents'] = $CI->Database_model->tr_fetch(array(
+            $en['en__parents'] = $CI->Database_model->fn___tr_fetch(array(
                 'tr_en_parent_id >' => 0, //Also has a parent assigned of any transaction type
                 'tr_en_child_id' => $en['en_id'], //This child entity
                 'tr_status >=' => 0, //New+

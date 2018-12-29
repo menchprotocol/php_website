@@ -24,7 +24,7 @@ class My extends CI_Controller
     {
 
         $udata = fn___en_auth(array(1308));
-        $current_us = $this->Database_model->en_fetch(array(
+        $current_us = $this->Database_model->fn___en_fetch(array(
             'en_id' => $en_id,
         ));
 
@@ -107,7 +107,7 @@ class My extends CI_Controller
         }
 
         //Try finding them:
-        $trs = $this->Database_model->tr_fetch($filters, array('in_child'));
+        $trs = $this->Database_model->fn___tr_fetch($filters, array('in_child'));
 
         if (count($trs) < 1) {
 
@@ -123,7 +123,7 @@ class My extends CI_Controller
             }
 
             //Log action plan view transaction:
-            $this->Database_model->tr_create(array(
+            $this->Database_model->fn___tr_create(array(
                 'tr_en_type_id' => 4283,
                 'tr_en_credit_id' => $trs[0]['tr_en_parent_id'],
                 'tr_en_parent_id' => $trs[0]['tr_en_parent_id'],
@@ -156,14 +156,14 @@ class My extends CI_Controller
 
                 //We have a single Action Plan Intent to load:
                 //Now we need to load the action plan:
-                $actionplan_parents = $this->Database_model->tr_fetch(array(
+                $actionplan_parents = $this->Database_model->fn___tr_fetch(array(
                     'tr_en_type_id' => 4559, //Action Plan Intents
                     'tr_tr_parent_id' => $actionplan_tr_id,
                     'in_status >=' => 2, //Published+ Intents
                     'tr_in_child_id' => $in_id,
                 ), array('in_parent'));
 
-                $actionplan_children = $this->Database_model->tr_fetch(array(
+                $actionplan_children = $this->Database_model->fn___tr_fetch(array(
                     'tr_en_type_id' => 4559, //Action Plan Intents
                     'tr_tr_parent_id' => $actionplan_tr_id,
                     'in_status >=' => 2, //Published+ Intents
@@ -171,7 +171,7 @@ class My extends CI_Controller
                 ), array('in_child'));
 
 
-                $ins = $this->Database_model->in_fetch(array(
+                $ins = $this->Database_model->fn___in_fetch(array(
                     'in_status >=' => 2,
                     'in_id' => $in_id,
                 ));
@@ -179,7 +179,7 @@ class My extends CI_Controller
                 if (count($ins) < 1 || (!count($actionplan_parents) && !count($actionplan_children))) {
 
                     //Ooops, we had issues finding th is intent! Should not happen, report:
-                    $this->Database_model->tr_create(array(
+                    $this->Database_model->fn___tr_create(array(
                         'tr_en_credit_id' => $trs[0]['en_id'],
                         'tr_metadata' => $trs,
                         'tr_content' => 'Unable to load a specific intent for the master Action Plan! Should not happen...',
@@ -268,10 +268,10 @@ class My extends CI_Controller
     function skip_tree($tr_id, $in_id, $tr_id2)
     {
         //Start skipping:
-        $total_skipped = count($this->Database_model->k_skip_recursive_down($tr_id));
+        $total_skipped = count($this->Matrix_model->k_skip_recursive_down($tr_id));
 
         //Draft message:
-        $message = '<div class="alert alert-success" role="alert">' . $total_skipped . ' concept' . fn___echo__s($total_skipped) . ' successfully skipped.</div>';
+        $message = '<div class="alert alert-success" role="alert">' . $total_skipped . ' key idea' . fn___echo__s($total_skipped) . ' successfully skipped.</div>';
 
         //Find the next item to navigate them to:
         $next_ins = $this->Matrix_model->fn___in_next_actionplan($tr_id);
@@ -282,14 +282,14 @@ class My extends CI_Controller
         }
     }
 
-    function choose_any_path($tr_id, $tr_in_parent_id, $in_id, $w_key)
+    function choose_any_path($actionplan_tr_id, $tr_in_parent_id, $in_id, $w_key)
     {
-        if (md5($tr_id . 'kjaghksjha*(^' . $in_id . $tr_in_parent_id) == $w_key) {
-            if ($this->Database_model->k_choose_or($tr_id, $tr_in_parent_id, $in_id)) {
-                return fn___redirect_message('/my/actionplan/' . $tr_id . '/' . $in_id, '<div class="alert alert-success" role="alert">Your answer was saved.</div>');
+        if (md5($actionplan_tr_id . 'kjaghksjha*(^' . $in_id . $tr_in_parent_id) == $w_key) {
+            if ($this->Matrix_model->k_choose_or($actionplan_tr_id, $tr_in_parent_id, $in_id)) {
+                return fn___redirect_message('/my/actionplan/' . $actionplan_tr_id . '/' . $in_id, '<div class="alert alert-success" role="alert">Your answer was saved.</div>');
             } else {
                 //We had some sort of an error:
-                return fn___redirect_message('/my/actionplan/' . $tr_id . '/' . $tr_in_parent_id, '<div class="alert alert-danger" role="alert">There was an error saving your answer.</div>');
+                return fn___redirect_message('/my/actionplan/' . $actionplan_tr_id . '/' . $tr_in_parent_id, '<div class="alert alert-danger" role="alert">There was an error saving your answer.</div>');
             }
         }
     }
@@ -304,7 +304,7 @@ class My extends CI_Controller
 
         //Fetch master name and details:
         $udata = $this->session->userdata('user');
-        $trs = $this->Database_model->tr_fetch(array(
+        $trs = $this->Database_model->fn___tr_fetch(array(
             'tr_id' => $_POST['tr_id'],
         ), array('w', 'cr', 'cr_c_child'));
 
@@ -315,7 +315,7 @@ class My extends CI_Controller
 
 
         //Fetch completion requirements:
-        $completion_requirements = $this->Database_model->tr_fetch(array(
+        $completion_requirements = $this->Database_model->fn___tr_fetch(array(
             'tr_en_type_id' => 4331, //Intent Response Limiters
             'tr_in_child_id' => $trs[0]['tr_in_child_id'], //For this intent
             'tr_status >=' => 2, //Published+
@@ -352,7 +352,7 @@ class My extends CI_Controller
                     break;
                 } else {
                     //Add this to list of what is needed to mark as complete so we can inform Master:
-                    array_push($requirement_notes, $en_all_4331[$tr['tr_en_parent_id']]['en_name']);
+                    array_push($requirement_notes, $en_all_4331[$tr['tr_en_parent_id']]['m_name']);
                 }
             }
 
@@ -373,7 +373,7 @@ class My extends CI_Controller
         //Has anything changed?
         if ($notes_changed) {
             //Updates k notes:
-            $this->Database_model->tr_update($trs[0]['tr_id'], array(
+            $this->Database_model->fn___tr_update($trs[0]['tr_id'], array(
                 'tr_content' => trim($_POST['tr_content']),
                 'tr_en_type_id' => fn___detect_tr_en_type_id($_POST['tr_content']),
             ), (isset($udata['en_id']) ? $udata['en_id'] : $trs[0]['k_children_en_id']));

@@ -7,7 +7,7 @@ $en_ids_4485 = $this->config->item('en_ids_4485');
 $en_all_4485 = $this->config->item('en_all_4485');
 
 //Fetch all messages:
-$messages = $this->Database_model->tr_fetch(array(
+$messages = $this->Database_model->fn___tr_fetch(array(
     'tr_status >=' => 0, //New+
     'tr_en_type_id IN (' . join(',', $en_ids_4485) . ')' => null, //All Intent messages
     'tr_in_child_id' => $in_id,
@@ -30,9 +30,9 @@ $messages = $this->Database_model->tr_fetch(array(
 <!-- Message types navigation menu -->
 <ul class="nav nav-tabs iphone-nav-tabs">
     <?php
-    foreach ($en_all_4485 as $tr_en_type_id => $value) {
-        echo '<li role="presentation" class="nav_' . $tr_en_type_id . ' active" data-toggle="tooltip" title="' . $value['tr_content'] . '" data-placement="bottom">';
-        echo '<a href="#loadmessages-' . $in_id . '-' . $tr_en_type_id . '"> ' . $value['en_icon'] . ' ' . str_replace(' Intent Message','',$value['en_name']) . ' </a>';
+    foreach ($en_all_4485 as $tr_en_type_id => $m) {
+        echo '<li role="presentation" class="nav_' . $tr_en_type_id . ' active" data-toggle="tooltip" title="' . $m['m_desc'] . '" data-placement="bottom">';
+        echo '<a href="#loadmessages-' . $in_id . '-' . $tr_en_type_id . '"> ' . $m['m_icon'] . ' ' . str_replace(' Intent Message','',$m['m_name']) . ' </a>';
         echo '</li>';
     }
     ?>
@@ -63,9 +63,9 @@ $messages = $this->Database_model->tr_fetch(array(
     echo '</div>';
 
     //Show no-Message notifications for each message type:
-    foreach ($en_all_4485 as $tr_en_type_id => $value) {
+    foreach ($en_all_4485 as $tr_en_type_id => $m) {
         if (!isset($counters[$tr_en_type_id])) {
-            echo '<div class="ix-tip no-messages' . $in_id . '_' . $tr_en_type_id . ' all_msg msg_en_type_' . $tr_en_type_id . '"><i class="fas fa-exclamation-triangle"></i> No ' . $value['en_icon'] . ' ' . $value['en_name'] . ' added yet</div>';
+            echo '<div class="ix-tip no-messages' . $in_id . '_' . $tr_en_type_id . ' all_msg msg_en_type_' . $tr_en_type_id . '"><i class="fas fa-exclamation-triangle"></i> No ' . $m['m_icon'] . ' ' . $m['m_name'] . ' added yet</div>';
         }
     }
 
@@ -96,8 +96,8 @@ $messages = $this->Database_model->tr_fetch(array(
 
 
     //Fetch for all message types:
-    foreach ($en_all_4485 as $tr_en_type_id => $value) {
-        echo '<div class="iphone-add-btn all_msg msg_en_type_' . $tr_en_type_id . '"><a href="javascript:message_create();" id="add_message_' . $tr_en_type_id . '_' . $in_id . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="top" class="btn btn-primary">ADD ' . $value['en_icon'] . ' ' . $value['en_name'] . '</a></div>';
+    foreach ($en_all_4485 as $tr_en_type_id => $m) {
+        echo '<div class="iphone-add-btn all_msg msg_en_type_' . $tr_en_type_id . '"><a href="javascript:message_create();" id="add_message_' . $tr_en_type_id . '_' . $in_id . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="top" class="btn btn-primary">ADD ' . $m['m_icon'] . ' ' . $m['m_name'] . '</a></div>';
     }
 
     echo '</form>';

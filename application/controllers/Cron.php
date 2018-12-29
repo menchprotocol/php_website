@@ -17,8 +17,8 @@ class Cron extends CI_Controller
     //*/5 * * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron message_drip
     //*/6 * * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron fn___save_media_to_cdn
     //31 * * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron intent_sync
-    //30 2 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron fn___algolia_sync b 0
-    //30 4 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron fn___algolia_sync u 0
+    //30 2 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron fn___update_algolia b 0
+    //30 4 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron fn___update_algolia u 0
     //30 3 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron e_score_recursive
 
     function test1(){
@@ -58,6 +58,7 @@ class Cron extends CI_Controller
     function matrix_cache(){
 
         /*
+         *
          * This function prepares a PHP-friendly text to be copies to matrix_cache.php
          * (which is auto loaded) to provide a cache image of some entities in
          * the tree for faster application processing.
@@ -65,7 +66,7 @@ class Cron extends CI_Controller
          * */
 
         //First first all entities that have Cache in PHP Config @4527 as their parent:
-        $config_ens = $this->Database_model->tr_fetch(array(
+        $config_ens = $this->Database_model->fn___tr_fetch(array(
             'tr_status >=' => 0,
             'tr_en_child_id >' => 0,
             'tr_en_parent_id' => 4527,
@@ -74,7 +75,7 @@ class Cron extends CI_Controller
         foreach($config_ens as $en){
 
             //Now fetch all its children:
-            $children = $this->Database_model->tr_fetch(array(
+            $children = $this->Database_model->fn___tr_fetch(array(
                 'tr_status >=' => 2,
                 'en_status >=' => 2,
                 'tr_en_parent_id' => $en['tr_en_child_id'],
@@ -93,9 +94,9 @@ class Cron extends CI_Controller
 
                 echo '&nbsp;&nbsp;&nbsp;&nbsp; '.$child['en_id'].' => array(<br />';
 
-                echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'en_icon\' => \''.htmlentities($child['en_icon']).'\',<br />';
-                echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'en_name\' => \''.$child['en_name'].'\',<br />';
-                echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'tr_content\' => \''.str_replace('\'','\\\'',$child['tr_content']).'\',<br />';
+                echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_icon\' => \''.htmlentities($child['en_icon']).'\',<br />';
+                echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_name\' => \''.$child['en_name'].'\',<br />';
+                echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_desc\' => \''.str_replace('\'','\\\'',$child['tr_content']).'\',<br />';
 
                 echo '&nbsp;&nbsp;&nbsp;&nbsp; ),<br />';
 
@@ -113,7 +114,7 @@ class Cron extends CI_Controller
         //Cron Settings: 31 * * * *
         //Syncs intents with latest caching data:
 
-        $sync = $this->Database_model->in_recursive_fetch($in_id, true, $update_c_table);
+        $sync = $this->Matrix_model->in_recursive_fetch($in_id, true, $update_c_table);
         if (isset($_GET['redirect']) && strlen($_GET['redirect']) > 0) {
             //Now redirect;
             header('Location: ' . $_GET['redirect']);
@@ -124,10 +125,10 @@ class Cron extends CI_Controller
     }
 
 
-    //I cannot update algolia from my local server so if fn___is_dev() is true I will call mench.com/cron/fn___algolia_sync to sync my local change using a live end-point:
-    function fn___algolia_sync($obj, $obj_id = 0)
+    //I cannot update algolia from my local server so if fn___is_dev() is true I will call mench.com/cron/fn___update_algolia to sync my local change using a live end-point:
+    function fn___update_algolia($obj, $obj_id = 0)
     {
-        fn___echo_json($this->Database_model->fn___algolia_sync($obj, $obj_id));
+        fn___echo_json($this->Database_model->fn___update_algolia($obj, $obj_id));
     }
 
 
@@ -184,7 +185,7 @@ class Cron extends CI_Controller
         );
 
         //Fetch child entities:
-        $ens = $this->Old_model->ur_children_fetch(array(
+        $ens = $this->Old_model->ur_child_fetch(array(
             'tr_en_parent_id' => (count($u) > 0 ? $u['en_id'] : $this->config->item('en_primary_id')),
             'tr_status >=' => 0, //Pending or Active
             'en_status >=' => 0, //Pending or Active
@@ -203,10 +204,10 @@ class Cron extends CI_Controller
             //Update this row:
             $score += count($ens) * $score_weights['u__childrens'];
 
-            $score += count($this->Database_model->tr_fetch(array(
+            $score += count($this->Database_model->fn___tr_fetch(array(
                     'tr_en_child_id' => $u['en_id'],
                 ), array(), 5000)) * $score_weights['tr_en_child_id'];
-            $score += count($this->Database_model->tr_fetch(array(
+            $score += count($this->Database_model->fn___tr_fetch(array(
                     'tr_en_credit_id' => $u['en_id'],
                 ), array(), 5000)) * $score_weights['tr_en_credit_id'];
             $score += count($this->Database_model->w_fetch(array(
@@ -214,7 +215,7 @@ class Cron extends CI_Controller
                 ))) * $score_weights['tr_en_parent_id'];
 
             //Update the score:
-            $this->Database_model->en_update($u['en_id'], array(
+            $this->Database_model->fn___en_update($u['en_id'], array(
                 'en_trust_score' => $score,
             ));
 
@@ -242,20 +243,26 @@ class Cron extends CI_Controller
 
         $max_per_batch = 20; //Max number of scans per run
 
-        $e_pending = $this->Database_model->tr_fetch(array(
+        $tr_pending = $this->Database_model->fn___tr_fetch(array(
             'tr_status' => 0, //Pending
             'tr_en_type_id' => 4299, //Save media file to Mench cloud
         ), array(), $max_per_batch);
 
 
         //Lock item so other Cron jobs don't pick this up:
-        $this->Database_model->tr_status_processing($e_pending);
+        foreach ($tr_pending as $tr) {
+            if ($tr['tr_id'] > 0 && $tr['tr_status'] == 0) {
+                $this->Database_model->fn___tr_update($tr['tr_id'], array(
+                    'tr_status' => 1, //Working on... (So other cron jobs do not pickup this item again)
+                ));
+            }
+        }
 
         //Go through and upload to CDN:
-        foreach ($e_pending as $u) {
+        foreach ($tr_pending as $u) {
 
             //Update transaction data:
-            $this->Database_model->tr_update($ep['tr_id'], array(
+            $this->Database_model->fn___tr_update($trp['tr_id'], array(
                 'tr_content' => $new_file_url,
                 'tr_en_type_id' => fn___detect_tr_en_type_id($new_file_url),
                 'tr_status' => 2, //Publish
@@ -270,27 +277,27 @@ class Cron extends CI_Controller
                 //Success! Is this an image to be added as the entity icon?
                 if (strlen($u['en_icon'])<1) {
                     //Update Cover ID:
-                    $this->Database_model->en_update($u['en_id'], array(
+                    $this->Database_model->fn___en_update($u['en_id'], array(
                         'en_icon' => '<img class="profile-icon" src="' . $new_file_url . '" />',
                     ), true);
                 }
 
                 //Update transaction:
-                $this->Database_model->tr_update($u['tr_id'], array(
+                $this->Database_model->fn___tr_update($u['tr_id'], array(
                     'tr_status' => 2, //Publish
                 ));
 
             } else {
 
                 //Error has already been logged in the CDN function, so just update transaction:
-                $this->Database_model->tr_update($u['tr_id'], array(
+                $this->Database_model->fn___tr_update($u['tr_id'], array(
                     'tr_status' => -1, //Removed
                 ));
 
             }
         }
 
-        fn___echo_json($e_pending);
+        fn___echo_json($tr_pending);
     }
 
     function fn___facebook_attachment_sync()
@@ -312,7 +319,7 @@ class Cron extends CI_Controller
 
 
         //Let's fetch all Media files without a Facebook attachment ID:
-        $pending_urls = $this->Database_model->tr_fetch(array(
+        $pending_urls = $this->Database_model->fn___tr_fetch(array(
             'tr_en_type_id IN (' . join(',',array_keys($en_convert_4537)) . ')' => null,
             'tr_metadata' => null, //Missing Facebook Attachment ID
         ), array(), $max_per_batch, 0 , array('tr_id' => 'ASC')); //Sort by oldest added first
@@ -338,7 +345,7 @@ class Cron extends CI_Controller
             if ($result['status'] && isset($result['tr_metadata']['result']['attachment_id'])) {
 
                 //Save Facebook Attachment ID to DB:
-                $db_result = $this->Database_model->metadata_update('tr', $tr, array(
+                $db_result = $this->Matrix_model->fn___metadata_update('tr', $tr, array(
                     'fb_att_id' => intval($result['tr_metadata']['result']['attachment_id']),
                 ));
 
@@ -352,7 +359,7 @@ class Cron extends CI_Controller
             } else {
 
                 //Log error:
-                $this->Database_model->tr_create(array(
+                $this->Database_model->fn___tr_create(array(
                     'tr_en_type_id' => 4246, //Platform Error
                     'tr_content' => 'fn___facebook_attachment_sync() Failed to sync attachment using Facebook API',
                     'tr_metadata' => array(
@@ -362,7 +369,7 @@ class Cron extends CI_Controller
                 ));
 
                 //Also disable future attempts for this transaction:
-                $db_result = $this->Database_model->metadata_update('tr', $tr, array(
+                $db_result = $this->Matrix_model->fn___metadata_update('tr', $tr, array(
                     'fb_att_id_failed' => true,
                 ));
 

@@ -62,7 +62,7 @@ if (isset($orphan_ins)) {
 
             //Count orphans only IF we are in the top parent root:
             if ($this->config->item('in_primary_id') == $in['in_id']) {
-                $orphans_count = count($this->Database_model->in_fetch(array(
+                $orphans_count = count($this->Database_model->fn___in_fetch(array(
                     ' NOT EXISTS (SELECT 1 FROM table_ledger WHERE in_id=tr_in_child_id AND tr_status>=0) ' => null,
                 )));
                 if ($orphans_count > 0) {
@@ -194,8 +194,8 @@ if (isset($orphan_ins)) {
                                 <p style="padding: :0; margin:-10px 0 5px 0;">Completing Requires Either:</p>
                                 <?php
                                 //List all the input options and allow user to pick between them:
-                                foreach ($this->config->item('en_all_4331') as $en_id => $en) {
-                                    echo '<label style="font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" class="in_input_requirements" id="require__' . $en_id . '" /><span ' . (strlen($en['tr_content']) > 0 ? ' class="underdot" data-toggle="tooltip" title="' . stripslashes($en['tr_content']) . '" data-placement="right" ' : '') . '>' . $en['en_icon'] . ' ' . $en['en_name'] . '</span></label><br />';
+                                foreach ($this->config->item('en_all_4331') as $en_id => $m) {
+                                    echo '<label style="font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" class="in_input_requirements" id="require__' . $en_id . '" /><span ' . (strlen($m['m_desc']) > 0 ? ' class="underdot" data-toggle="tooltip" title="' . stripslashes($m['m_desc']) . '" data-placement="right" ' : '') . '>' . $m['m_icon'] . ' ' . $m['m_name'] . '</span></label><br />';
                                 }
                                 ?>
                             </div>
@@ -235,8 +235,8 @@ if (isset($orphan_ins)) {
                             </div>
                             <select class="form-control" id="tr_status" style="display: inline-block !important;">
                                 <?php
-                                foreach ($this->config->item('en_all_4486') as $en_id => $en_type) {
-                                    echo '<option value="' . $en_id . '" title="' . $en_type['tr_content'] . '">' . $en_type['en_name'] . '</option>';
+                                foreach ($this->config->item('en_all_4486') as $en_id => $m) {
+                                    echo '<option value="' . $en_id . '" title="' . $m['m_desc'] . '">' . $m['m_name'] . '</option>';
                                 }
                                 ?>
                             </select>

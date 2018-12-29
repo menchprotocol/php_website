@@ -41,7 +41,7 @@ function fn___detect_missing_columns($insert_columns, $required_columns)
         if (!isset($insert_columns[$req_field]) || strlen($insert_columns[$req_field]) == 0) {
             //Ooops, we're missing this required field:
             $CI =& get_instance();
-            $CI->Database_model->tr_create(array(
+            $CI->Database_model->fn___tr_create(array(
                 'tr_content' => 'Missing required field [' . $req_field . '] for inserting new DB row',
                 'tr_metadata' => array(
                     'insert_columns' => $insert_columns,
@@ -311,7 +311,7 @@ function fn___upload_to_cdn($file_url, $json_data, $is_local = false)
 
         } else {
 
-            $CI->Database_model->tr_create(array(
+            $CI->Database_model->fn___tr_create(array(
                 'tr_en_type_id' => 4246, //Platform Error
                 'tr_content' => 'fn___upload_to_cdn() Unable to upload file [' . $file_url . '] to Mench cloud.',
                 'tr_metadata' => $json_data,

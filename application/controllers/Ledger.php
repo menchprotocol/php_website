@@ -71,7 +71,7 @@ class Ledger extends CI_Controller
 
 
         //Fetch/validate Transaction:
-        $trs = $this->Database_model->tr_fetch(array(
+        $trs = $this->Database_model->fn___tr_fetch(array(
             'tr_id' => intval($_POST['tr_id']),
         ));
 
@@ -108,17 +108,17 @@ class Ledger extends CI_Controller
             //Intent message being deleted..
 
             //Fetch child intent:
-            $ins = $this->Database_model->in_fetch(array(
+            $ins = $this->Database_model->fn___in_fetch(array(
                 'in_id' => $trs[0]['tr_in_child_id'],
             ));
 
             //Do a relative adjustment for this intent's metadata
-            $this->Database_model->metadata_update('in', $ins[0], array(
+            $this->Matrix_model->fn___metadata_update('in', $ins[0], array(
                 'in__message_count' => -1, //Remove 1 from existing value
             ), false);
 
             //Update intent tree:
-            $this->Database_model->metadata_tree_update('in', $ins[0]['in_id'], array(
+            $this->Matrix_model->fn___metadata_tree_update('in', $ins[0]['in_id'], array(
                 'in__message_tree_count' => -1,
             ));
 
@@ -127,7 +127,7 @@ class Ledger extends CI_Controller
             //Intent link being deleted...
 
             //Fetch child intent metadata:
-            $ins = $this->Database_model->in_fetch(array(
+            $ins = $this->Database_model->fn___in_fetch(array(
                 'in_id' => $trs[0]['tr_in_child_id'],
             ));
 
@@ -135,7 +135,7 @@ class Ledger extends CI_Controller
             $metadata = unserialize($trs[0]['in_metadata']);
 
             //Update parent intent tree (and upwards) to reduce totals based on child intent metadata:
-            $this->Database_model->metadata_tree_update('in', $trs[0]['tr_in_parent_id'], array(
+            $this->Matrix_model->fn___metadata_tree_update('in', $trs[0]['tr_in_parent_id'], array(
                 'in__tree_in_count' => -( isset($metadata['in__tree_in_count']) ? $metadata['in__tree_in_count'] :0 ),
                 'in__tree_max_seconds' => -( isset($metadata['in__tree_max_seconds']) ? $metadata['in__tree_max_seconds'] :0 ),
                 'in__message_tree_count' => -( isset($metadata['in__message_tree_count']) ? $metadata['in__message_tree_count'] :0 ),
@@ -149,7 +149,7 @@ class Ledger extends CI_Controller
          * Adjust link status and give Miner credit:
          *
          * */
-        $this->Database_model->tr_update($trs[0]['tr_id'], array(
+        $this->Database_model->fn___tr_update($trs[0]['tr_id'], array(
             'tr_status' => intval($_POST['tr_status_new']),
         ), $udata['en_id']);
 
@@ -193,7 +193,7 @@ class Ledger extends CI_Controller
             if (intval($tr_id) > 0) {
                 $sort_count++;
                 //Log update and give credit to the session Miner:
-                $this->Database_model->tr_update($tr_id, array(
+                $this->Database_model->fn___tr_update($tr_id, array(
                     'tr_order' => intval($tr_order),
                 ), $udata['en_id']);
             }
@@ -213,7 +213,7 @@ class Ledger extends CI_Controller
         $udata = fn___en_auth(array(1308), true);
 
         //Fetch transaction metadata and display it:
-        $trs = $this->Database_model->tr_fetch(array(
+        $trs = $this->Database_model->fn___tr_fetch(array(
             'tr_id' => $tr_id,
         ));
 
@@ -229,7 +229,7 @@ class Ledger extends CI_Controller
         }
     }
 
-    function fn___tr_create()
+    function fn___add_message()
     {
 
         //Authenticate Miner:
@@ -261,7 +261,7 @@ class Ledger extends CI_Controller
 
 
         //Fetch/Validate the intent:
-        $ins = $this->Database_model->in_fetch(array(
+        $ins = $this->Database_model->fn___in_fetch(array(
             'in_id' => intval($_POST['in_id']),
             'in_status >=' => 0, //New+
         ));
@@ -273,7 +273,7 @@ class Ledger extends CI_Controller
         }
 
         //Make sure message is all good:
-        $msg_validation = $this->Chat_model->fn___validate_message($_POST['tr_content']);
+        $msg_validation = $this->Chat_model->fn___validate_echo_message($_POST['tr_content']);
 
         if (!$msg_validation['status']) {
             //There was some sort of an error:
@@ -281,10 +281,10 @@ class Ledger extends CI_Controller
         }
 
         //Create Message Transaction:
-        $tr = $this->Database_model->tr_create(array(
+        $tr = $this->Database_model->fn___tr_create(array(
             'tr_en_credit_id' => $udata['en_id'],
             'tr_in_child_id' => intval($_POST['in_id']),
-            'tr_order' => 1 + $this->Database_model->tr_max_order(array(
+            'tr_order' => 1 + $this->Database_model->fn___tr_max_order(array(
                     'tr_status >=' => 0, //New+
                     'tr_en_type_id' => intval($_POST['focus_tr_en_type_id']),
                     'tr_in_child_id' => intval($_POST['in_id']),
@@ -296,12 +296,12 @@ class Ledger extends CI_Controller
         ), true);
 
         //Do a relative adjustment for this intent's metadata
-        $this->Database_model->metadata_update('in', $ins[0], array(
+        $this->Matrix_model->fn___metadata_update('in', $ins[0], array(
             'in__message_count' => 1, //Add 1 to existing value
         ), false);
 
         //Update tree as well:
-        $this->Database_model->metadata_tree_update('in', $ins[0]['in_id'], array(
+        $this->Matrix_model->fn___metadata_tree_update('in', $ins[0]['in_id'], array(
             'in__message_tree_count' => 1,
         ));
 

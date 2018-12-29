@@ -68,7 +68,7 @@ $guest_name = 'Dear Master'; //To replace /firstname in messages (if any) since 
 
 
     //Fetch & Display On-Start Messages for this intent:
-    foreach ($this->Database_model->tr_fetch(array(
+    foreach ($this->Database_model->fn___tr_fetch(array(
         'tr_status >=' => 2, //Published+
         'tr_en_type_id' => 4231, //On-Start Messages
         'tr_in_child_id' => $in['in_id'],
@@ -119,7 +119,7 @@ $guest_name = 'Dear Master'; //To replace /firstname in messages (if any) since 
 
 
                 //Fetch & Display On-Start Messages for this intent:
-                foreach ($this->Database_model->tr_fetch(array(
+                foreach ($this->Database_model->fn___tr_fetch(array(
                     'tr_status >=' => 2, //Published+
                     'tr_en_type_id' => 4231, //On-Start Messages
                     'tr_in_child_id' => $in_level2['in_id'],
@@ -283,7 +283,7 @@ $guest_name = 'Dear Master'; //To replace /firstname in messages (if any) since 
 
 <?php
 //Display other featured intents:
-$featured_cs = $ins = $this->Database_model->in_fetch(array(
+$featured_cs = $ins = $this->Database_model->fn___in_fetch(array(
     'in_status' => 3, //Featured Intents
     'in_id !=' => $in['in_id'],
 ));

@@ -92,14 +92,14 @@ class Bot extends CI_Controller
 
         //Do some basic checks:
         if (!isset($json_data['object']) || !isset($json_data['entry'])) {
-            $this->Database_model->tr_create(array(
+            $this->Database_model->fn___tr_create(array(
                 'tr_content' => 'facebook_webhook() Function missing either [object] or [entry] variable.',
                 'tr_metadata' => $json_data,
                 'tr_en_type_id' => 4246, //Platform Error
             ));
             return false;
         } elseif (!$json_data['object'] == 'page') {
-            $this->Database_model->tr_create(array(
+            $this->Database_model->fn___tr_create(array(
                 'tr_content' => 'facebook_webhook() Function call object value is not equal to [page], which is what was expected.',
                 'tr_metadata' => $json_data,
                 'tr_en_type_id' => 4246, //Platform Error
@@ -116,7 +116,7 @@ class Bot extends CI_Controller
                 //This can happen for the older webhook that we offered to other FB pages:
                 continue;
             } elseif (!isset($entry['messaging'])) {
-                $this->Database_model->tr_create(array(
+                $this->Database_model->fn___tr_create(array(
                     'tr_content' => 'facebook_webhook() call missing messaging Array().',
                     'tr_metadata' => $json_data,
                     'tr_en_type_id' => 4246, //Platform Error
@@ -134,7 +134,7 @@ class Bot extends CI_Controller
                     $en = $this->Matrix_model->fn___authenticate_messenger_user($im['sender']['id']);
 
                     //This callback will occur when a message a page has sent has been read by the user.
-                    $this->Database_model->tr_create(array(
+                    $this->Database_model->fn___tr_create(array(
                         'tr_metadata' => $json_data,
                         'tr_en_type_id' => 4278, //Message Read
                         'tr_en_credit_id' => (isset($en['en_id']) ? $en['en_id'] : 0),
@@ -149,7 +149,7 @@ class Bot extends CI_Controller
                     $en = $this->Matrix_model->fn___authenticate_messenger_user($im['sender']['id']);
 
                     //This callback will occur when a message a page has sent has been delivered.
-                    $this->Database_model->tr_create(array(
+                    $this->Database_model->fn___tr_create(array(
                         'tr_metadata' => $json_data,
                         'tr_en_type_id' => 4279, //Message Delivered
                         'tr_en_credit_id' => (isset($en['en_id']) ? $en['en_id'] : 0),
@@ -220,7 +220,7 @@ class Bot extends CI_Controller
                     */
 
                     //Log primary transaction:
-                    $this->Database_model->tr_create(array(
+                    $this->Database_model->fn___tr_create(array(
                         'tr_en_type_id' => (isset($im['referral']) ? 4267 : 4268), //Messenger Referral/Postback
                         'tr_metadata' => $json_data,
                         'tr_en_credit_id' => (isset($en['en_id']) ? $en['en_id'] : 0),
@@ -229,7 +229,7 @@ class Bot extends CI_Controller
 
 
                     //We might need to respond based on the reference:
-                    $this->Chat_model->digest_incoming_quick_reply($en, $ref);
+                    $this->Chat_model->fn___digest_incoming_quick_reply($en, $ref);
 
 
                 } elseif (isset($im['optin'])) {
@@ -237,7 +237,7 @@ class Bot extends CI_Controller
                     $en = $this->Matrix_model->fn___authenticate_messenger_user($im['sender']['id']);
 
                     //Log transaction:
-                    $this->Database_model->tr_create(array(
+                    $this->Database_model->fn___tr_create(array(
                         'tr_metadata' => $json_data,
                         'tr_en_type_id' => 4266, //Messenger Optin
                         'tr_en_credit_id' => (isset($en['en_id']) ? $en['en_id'] : 0),
@@ -299,7 +299,7 @@ class Bot extends CI_Controller
                         $eng_data['tr_content'] = $im['message']['text']; //Quick reply always has a text
 
                         //Digest the Quick Reply payload:
-                        $this->Chat_model->digest_incoming_quick_reply($en, $im['message']['quick_reply']['payload']);
+                        $this->Chat_model->fn___digest_incoming_quick_reply($en, $im['message']['quick_reply']['payload']);
 
                     } elseif(isset($im['message']['text'])){
 
@@ -429,12 +429,12 @@ class Bot extends CI_Controller
                     if(isset($eng_data['tr_en_type_id'])){
 
                         //We're all good, log this message:
-                        $this->Database_model->tr_create($eng_data);
+                        $this->Database_model->fn___tr_create($eng_data);
 
                     } else {
 
                         //Ooooopsi, this seems to be an unknown message type:
-                        $this->Database_model->tr_create(array(
+                        $this->Database_model->fn___tr_create(array(
                             'tr_en_type_id' => 4246, //Platform Error
                             'tr_content' => 'facebook_webhook() Received unknown message type! Analyze metadata for more details.',
                             'tr_metadata' => $json_data,
@@ -447,7 +447,7 @@ class Bot extends CI_Controller
                 } else {
 
                     //This should really not happen!
-                    $this->Database_model->tr_create(array(
+                    $this->Database_model->fn___tr_create(array(
                         'tr_content' => 'facebook_webhook() received unrecognized webhook call.',
                         'tr_metadata' => $json_data,
                         'tr_en_type_id' => 4246, //Platform Error

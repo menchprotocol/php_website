@@ -111,14 +111,14 @@ $(document).ready(function () {
 
     $("#add_in_btn").click(function () {
         //miner clicked on the add new intent button at level 2:
-        fn___in_create_or_link(in_focus_id, 2);
+        fn___in_link_or_create(in_focus_id, 2);
     });
 
 
     //Load Algolia:
     $(".intentadder-level-2").on('autocomplete:selected', function (event, suggestion, dataset) {
 
-        fn___in_create_or_link($(this).attr('intent-id'), 2, suggestion.in_id);
+        fn___in_link_or_create($(this).attr('intent-id'), 2, suggestion.in_id);
 
     }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
 
@@ -143,17 +143,17 @@ $(document).ready(function () {
             },
             header: function (data) {
                 if (!data.isEmpty) {
-                    return '<a href="javascript:fn___in_create_or_link(\'' + $(".intentadder-level-2").attr('intent-id') + '\',2)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-hashtag"></i> ' + data.query + '</a>';
+                    return '<a href="javascript:fn___in_link_or_create(\'' + $(".intentadder-level-2").attr('intent-id') + '\',2)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-hashtag"></i> ' + data.query + '</a>';
                 }
             },
             empty: function (data) {
-                return '<a href="javascript:fn___in_create_or_link(\'' + $(".intentadder-level-2").attr('intent-id') + '\',2)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-hashtag"></i> ' + data.query + '</a>';
+                return '<a href="javascript:fn___in_link_or_create(\'' + $(".intentadder-level-2").attr('intent-id') + '\',2)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-hashtag"></i> ' + data.query + '</a>';
             },
         }
     }]).keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            return fn___in_create_or_link($(this).attr('intent-id'), 2);
+            return fn___in_link_or_create($(this).attr('intent-id'), 2);
         }
     });
 
@@ -204,7 +204,7 @@ function in_load_search_level3() {
 
     $(".intentadder-level-3").on('autocomplete:selected', function (event, suggestion, dataset) {
 
-        fn___in_create_or_link($(this).attr('intent-id'), 3, suggestion.in_id);
+        fn___in_link_or_create($(this).attr('intent-id'), 3, suggestion.in_id);
 
     }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
 
@@ -229,14 +229,14 @@ function in_load_search_level3() {
             },
             header: function (data) {
                 if (!data.isEmpty) {
-                    return '<a href="javascript:fn___in_create_or_link(\'' + $(".intentadder-level-3").attr('intent-id') + '\',3)" class="suggestion"><span><i class="fas fa-plus-circle"></i></span> ' + data.query + '</a>';
+                    return '<a href="javascript:fn___in_link_or_create(\'' + $(".intentadder-level-3").attr('intent-id') + '\',3)" class="suggestion"><span><i class="fas fa-plus-circle"></i></span> ' + data.query + '</a>';
                 }
             },
         }
     }]).keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            return fn___in_create_or_link($(this).attr('intent-id'), 3);
+            return fn___in_link_or_create($(this).attr('intent-id'), 3);
         }
     });
 
@@ -761,7 +761,7 @@ function c_save_modify() {
 
             //What's the final action?
             setTimeout(function () {
-                if (modify_data['apply_recurively'] && data.children_updated > 0) {
+                if (modify_data['apply_recurively'] && data.updated_children > 0) {
                     //Refresh page soon to show new status for children:
                     window.location = "/intents/" + in_focus_id;
                 } else {
@@ -779,7 +779,7 @@ function c_save_modify() {
 }
 
 
-function fn___in_create_or_link(in_parent_id, next_level, in_link_child_id=0) {
+function fn___in_link_or_create(in_parent_id, next_level, in_link_child_id=0) {
 
     /*
      *
@@ -817,7 +817,7 @@ function fn___in_create_or_link(in_parent_id, next_level, in_link_child_id=0) {
     add_to_list(sort_list_id, sort_handler, '<div id="temp' + next_level + '" class="list-group-item"><img src="/img/round_load.gif" class="loader" /> Adding... </div>');
 
     //Update backend:
-    $.post("/intents/fn___in_create_or_link", {
+    $.post("/intents/fn___in_link_or_create", {
         in_parent_id: in_parent_id,
         in_outcome: intent_name,
         next_level: next_level,

@@ -50,7 +50,7 @@
         
         //Count orphans IF we are in the top parent root:
         if ($this->config->item('en_primary_id') == $entity['en_id']) {
-            $orphans_count = count($this->Database_model->en_fetch(array(
+            $orphans_count = count($this->Database_model->fn___en_fetch(array(
                 ' NOT EXISTS (SELECT 1 FROM table_ledger WHERE en_id=tr_en_child_id AND tr_status>=0) ' => null,
             ), array('skip_en__parents')));
 
@@ -63,7 +63,7 @@
         echo '<td style="text-align: right;"><div class="btn-group btn-group-sm" style="margin-top:-5px;" role="group">';
 
         //Fetch current count for each status from DB:
-        $child_en_filters = $this->Database_model->tr_fetch(array(
+        $child_en_filters = $this->Database_model->fn___tr_fetch(array(
             'tr_en_parent_id' => $entity['en_id'],
             'tr_en_child_id >' => 0, //Any type of children is accepted
             'tr_status >=' => 0, //New+
