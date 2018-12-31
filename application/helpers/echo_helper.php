@@ -8,7 +8,7 @@ function fn___echo_en_load_more($page, $limit, $en__child_count)
      * Gives an option to "Load More" entities when we have too many to show in one go
      * */
 
-    echo '<a class="load-more list-group-item" href="javascript:void(0);" onclick="u_load_next_page(' . $page . ')">';
+    echo '<a class="load-more list-group-item" href="javascript:void(0);" onclick="fn___en_load_next_page(' . $page . ')">';
 
     //Right content:
     echo '<span class="pull-right" style="margin-right: 6px;"><span class="badge badge-secondary"><i class="fas fa-search-plus"></i></span></span>';

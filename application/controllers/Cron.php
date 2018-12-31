@@ -102,6 +102,15 @@ class Cron extends CI_Controller
     function fn___in_metadata_update($in_id = 0, $update_c_table = 1)
     {
 
+        /*
+         *
+         * Updates the metadata cache data for intents starting at $in_id.
+         *
+         * If $in_id is not provided, it defaults to in_mission_id which
+         * is the highest level of intent in the Mench tree.
+         *
+         * */
+
         if(!$in_id){
             $in_id = $this->config->item('in_mission_id');
         }

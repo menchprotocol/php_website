@@ -428,9 +428,7 @@ class Database_model extends CI_Model
                         ), array('en_parent'), 0, 0, array('en_trust_score' => 'DESC'));
 
                     }
-
                 }
-
             }
         }
 

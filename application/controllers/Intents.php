@@ -496,7 +496,7 @@ class Intents extends CI_Controller
         $on_start_messages = $this->Database_model->fn___tr_fetch(array(
             'tr_status >=' => 2, //Published+
             'tr_en_type_id' => 4231, //On-Start Messages
-            'tr_in_child_id' => intval($_POST['in_id']),
+            'tr_in_child_id' => $_POST['in_id'],
         ), array(), 0, 0, array('tr_order' => 'ASC'));
 
         if (count($on_start_messages) < 1) {
@@ -510,7 +510,9 @@ class Intents extends CI_Controller
         $tip_messages = null;
         foreach ($on_start_messages as $tr) {
             //What type of message is this?
-            $tip_messages .= $this->Chat_model->fn___dispatch_message($tr['tr_content'], $udata, false);
+            $tip_messages .= $this->Chat_model->fn___dispatch_message($tr['tr_content'], $udata, false, array(), array(
+                'tr_in_parent_id' => $_POST['in_id'],
+            ));
         }
 
         //Return results:

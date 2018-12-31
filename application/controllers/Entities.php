@@ -36,18 +36,18 @@ class Entities extends CI_Controller
         $this->load->view('view_shared/matrix_footer');
     }
 
-    function u_load_next_page()
+    function fn___en_load_next_page()
     {
 
         $en_per_page = $this->config->item('en_per_page');
         $parent_en_id = intval($_POST['parent_en_id']);
         $en_focus_filter = intval($_POST['en_focus_filter']);
         $page = intval($_POST['page']);
-        $udata = fn___en_auth(null); //Just be logged in to browse
+        $udata = fn___en_auth(array(1308));
         $filters = array(
             'tr_en_parent_id' => $parent_en_id,
-            'en_status' . ($en_focus_filter < 0 ? ' >=' : '') => ($en_focus_filter < 0 ? 0 : intval($en_focus_filter)), //Pending or Active
-            'tr_status' => 1, //Active link
+            'en_status' . ($en_focus_filter < 0 ? ' >=' : '') => ($en_focus_filter < 0 ? 0 /* New+ */ : intval($en_focus_filter)), //Pending or Active
+            'tr_status >=' => 0, //New+
         );
 
         if (!$udata) {
@@ -55,18 +55,19 @@ class Entities extends CI_Controller
             return false;
         }
 
-        //Fetch entity itself:
-        $ens = $this->Database_model->fn___en_fetch(array('en_id' => $parent_en_id));
-        $child_entities_count = count($this->Old_model->ur_child_fetch($filters));
-        $child_entities = $this->Old_model->ur_child_fetch($filters, array('en__child_count'), $en_per_page, ($page * $en_per_page));
+        //Fetch & display next batch of children, ordered by en_trust_score DESC which is aligned with other entity ordering:
+        $child_entities = $this->Database_model->fn___tr_fetch($filters, array('en_child'), $en_per_page, ($page * $en_per_page), array('en_trust_score' => 'DESC'));
 
         foreach ($child_entities as $en) {
-            echo fn___echo_en($en, 2, false /* Load more only for children */);
+            echo fn___echo_en($en, 2, false);
         }
 
+        //Count total children:
+        $child_entities_count = $this->Database_model->fn___tr_fetch($filters, array('en_child'), 0, 0, array(), 'COUNT(tr_id) as totals');
+
         //Do we need another load more button?
-        if ($child_entities_count > (($page * $en_per_page) + count($child_entities))) {
-            fn___echo_en_load_more(($page + 1), $en_per_page, $child_entities_count);
+        if ($child_entities_count[0]['totals'] > (($page * $en_per_page) + count($child_entities))) {
+            fn___echo_en_load_more(($page + 1), $en_per_page, $child_entities_count[0]['totals']);
         }
 
     }

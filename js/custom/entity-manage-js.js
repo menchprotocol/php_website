@@ -205,7 +205,7 @@ function u_load_filter_status(new_val) {
         //We do have a filter:
         en_focus_filter = parseInt(new_val);
         $('.u-status-' + new_val).addClass('btn-secondary');
-        u_load_next_page(0, 1);
+        fn___en_load_next_page(0, 1);
     } else {
         alert('Invalid new status');
         return false;
@@ -241,7 +241,7 @@ function tr_content_word_count() {
 }
 
 
-function u_load_next_page(page, load_new_filter = 0) {
+function fn___en_load_next_page(page, load_new_filter = 0) {
 
     if (load_new_filter) {
         //Replace load more with spinner:
@@ -253,7 +253,7 @@ function u_load_next_page(page, load_new_filter = 0) {
         $('.load-more').html('<span class="load-more"><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
     }
 
-    $.post("/entities/u_load_next_page", {
+    $.post("/entities/fn___en_load_next_page", {
         page: page,
         parent_en_id: en_focus_id,
         en_focus_filter: en_focus_filter,
