@@ -21,16 +21,6 @@ class Cron extends CI_Controller
     //30 4 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron fn___update_algolia u 0
     //30 3 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron e_score_recursive
 
-    function test1(){
-        $timestamp = time();
-        $matching_users[0]['en_id'] = 1;
-        $this->Chat_model->fn___dispatch_message(
-            'Hi /firstname 👋​ You can reset your Mench password here: /link:🔑 Reset Password:https://mench.com/my/reset_pass?en_id=' . $matching_users[0]['en_id'] . '&timestamp=' . $timestamp . '&p_hash=' . md5($matching_users[0]['en_id'] . $this->config->item('password_salt') . $timestamp).' (URL Active for 24 hours only)',
-            array('en_id' => 1),
-            true
-        );
-    }
-
     function test($fb_messenger_format = 0){
 
         $quick_replies = array();
