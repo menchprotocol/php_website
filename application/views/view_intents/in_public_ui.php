@@ -284,7 +284,7 @@ $featured_cs = $ins = $this->Database_model->fn___in_fetch(array(
 ));
 if (count($featured_cs) > 0) {
     echo '<div>';
-    echo '<h3>More Intentions:</h3>';
+    echo '<h3>Featured Intentions:</h3>';
     echo '<div class="list-group actionplan_list">';
     foreach ($featured_cs as $featured_c) {
         echo fn___echo_in_featured($featured_c);

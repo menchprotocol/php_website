@@ -38,7 +38,7 @@ class My extends CI_Controller
                 'status' => 0,
                 'message' => 'User not found!',
             ));
-        } elseif (strlen($current_us[0]['u_fb_psid']) < 10) {
+        } elseif (strlen($current_us[0]['en_psid']) < 10) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'User does not seem to be connected to Mench, so profile data cannot be fetched',
@@ -47,7 +47,7 @@ class My extends CI_Controller
 
             //Fetch results and show:
             return fn___echo_json(array(
-                'fb_profile' => $this->Chat_model->fn___facebook_graph('GET', '/'.$current_us[0]['u_fb_psid'], array()),
+                'fb_profile' => $this->Chat_model->fn___facebook_graph('GET', '/'.$current_us[0]['en_psid'], array()),
                 'en' => $current_us[0],
             ));
 
@@ -87,7 +87,7 @@ class My extends CI_Controller
 
         if($empty_session && $psid > 0){
             //Authenticate this user:
-            $udata = $this->Matrix_model->fn___authenticate_messenger_user($psid);
+            $udata = $this->Matrix_model->fn___en_messenger_authenticate($psid);
         }
 
         //Set Action Plan filters:
@@ -146,7 +146,7 @@ class My extends CI_Controller
                     echo '</span>';
                     echo fn___echo_status('tr_status', $tr['tr_status'], 1, 'right');
                     echo ' ' . $tr['in_outcome'];
-                    echo ' ' . $metadata['in__tree_in_count'];
+                    echo ' ' . $metadata['in__tree_in_active_count'];
                     echo ' &nbsp;<i class="fas fa-clock"></i> ' . fn___echo_time_range($tr, true);
                     echo '</a>';
                 }
@@ -274,7 +274,7 @@ class My extends CI_Controller
         $message = '<div class="alert alert-success" role="alert">' . $total_skipped . ' key idea' . fn___echo__s($total_skipped) . ' successfully skipped.</div>';
 
         //Find the next item to navigate them to:
-        $next_ins = $this->Matrix_model->fn___in_next_actionplan($tr_id);
+        $next_ins = $this->Matrix_model->fn___actionplan_next_in($tr_id);
         if ($next_ins) {
             return fn___redirect_message('/my/actionplan/' . $next_ins[0]['tr_tr_parent_id'] . '/' . $next_ins[0]['in_id'], $message);
         } else {
@@ -285,7 +285,7 @@ class My extends CI_Controller
     function choose_any_path($actionplan_tr_id, $tr_in_parent_id, $in_id, $w_key)
     {
         if (md5($actionplan_tr_id . 'kjaghksjha*(^' . $in_id . $tr_in_parent_id) == $w_key) {
-            if ($this->Matrix_model->k_choose_or($actionplan_tr_id, $tr_in_parent_id, $in_id)) {
+            if ($this->Matrix_model->fn___actionplan_choose_or($actionplan_tr_id, $tr_in_parent_id, $in_id)) {
                 return fn___redirect_message('/my/actionplan/' . $actionplan_tr_id . '/' . $in_id, '<div class="alert alert-success" role="alert">Your answer was saved.</div>');
             } else {
                 //We had some sort of an error:
@@ -386,9 +386,9 @@ class My extends CI_Controller
 
 
         //Redirect back to page with success message:
-        if (isset($_POST['fn___in_next_actionplan'])) {
+        if (isset($_POST['fn___actionplan_next_in'])) {
             //Go to next item:
-            $next_ins = $this->Matrix_model->fn___in_next_actionplan($trs[0]['tr_id']);
+            $next_ins = $this->Matrix_model->fn___actionplan_next_in($trs[0]['tr_id']);
             if ($next_ins) {
                 //Override original item:
                 $k_url = '/my/actionplan/' . $next_ins[0]['tr_tr_parent_id'] . '/' . $next_ins[0]['in_id'];

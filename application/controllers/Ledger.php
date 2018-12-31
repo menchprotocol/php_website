@@ -136,7 +136,7 @@ class Ledger extends CI_Controller
 
             //Update parent intent tree (and upwards) to reduce totals based on child intent metadata:
             $this->Matrix_model->fn___metadata_tree_update('in', $trs[0]['tr_in_parent_id'], array(
-                'in__tree_in_count' => -( isset($metadata['in__tree_in_count']) ? $metadata['in__tree_in_count'] :0 ),
+                'in__tree_in_active_count' => -( isset($metadata['in__tree_in_active_count']) ? $metadata['in__tree_in_active_count'] :0 ),
                 'in__tree_max_seconds' => -( isset($metadata['in__tree_max_seconds']) ? $metadata['in__tree_max_seconds'] :0 ),
                 'in__message_tree_count' => -( isset($metadata['in__message_tree_count']) ? $metadata['in__message_tree_count'] :0 ),
             ));

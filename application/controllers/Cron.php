@@ -16,7 +16,7 @@ class Cron extends CI_Controller
     //* * * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron fn___facebook_attachment_sync
     //*/5 * * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron message_drip
     //*/6 * * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron fn___save_media_to_cdn
-    //31 * * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron intent_sync
+    //31 * * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron fn___in_metadata_update
     //30 2 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron fn___update_algolia b 0
     //30 4 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron fn___update_algolia u 0
     //30 3 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron e_score_recursive
@@ -109,16 +109,16 @@ class Cron extends CI_Controller
         }
     }
 
-    function intent_sync($in_id = 0, $update_c_table = 1)
+    function fn___in_metadata_update($in_id = 0, $update_c_table = 1)
     {
 
         if(!$in_id){
-            $in_id = $this->config->item('in_primary_id');
+            $in_id = $this->config->item('in_mission_id');
         }
         //Cron Settings: 31 * * * *
         //Syncs intents with latest caching data:
 
-        $sync = $this->Matrix_model->in_recursive_fetch($in_id, true, $update_c_table);
+        $sync = $this->Matrix_model->fn___in_recursive_fetch($in_id, true, $update_c_table);
         if (isset($_GET['redirect']) && strlen($_GET['redirect']) > 0) {
             //Now redirect;
             header('Location: ' . $_GET['redirect']);

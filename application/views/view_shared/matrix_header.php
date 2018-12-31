@@ -53,6 +53,9 @@ $uri_segment_1 = $this->uri->segment(1);
     if (!isset($_GET['skip_header'])) {
         //Include the chat plugin:
         $this->load->view('view_shared/messenger_web_chat');
+
+        //Include the App version:
+        echo '<div class="app-version">v'.$this->config->item('app_version').'</div>';
     }
     ?>
 
@@ -87,14 +90,14 @@ $uri_segment_1 = $this->uri->segment(1);
                     <div class="collapse navbar-collapse">
                         <ul class="nav navbar-nav navbar-main navbar-right">
 
-                            <li class="<?= ($uri_segment_1 == 'entities' ? 'entity-active' : 'entity-inactive') ?>">
-                                <a href="/entities/<?= $this->config->item('en_primary_id') ?>">
-                                    <i class="fas fa-at"></i> Entities
-                                </a>
-                            </li>
                             <li class="<?= ($uri_segment_1 == 'intents' ? 'intent-active' : 'intent-inactive') ?>">
                                 <a href="/intents/<?= $this->config->item('in_primary_id') ?>">
                                     <i class="fas fa-hashtag"></i> Intents
+                                </a>
+                            </li>
+                            <li class="<?= ($uri_segment_1 == 'entities' ? 'entity-active' : 'entity-inactive') ?>">
+                                <a href="/entities/<?= $this->config->item('en_primary_id') ?>">
+                                    <i class="fas fa-at"></i> Entities
                                 </a>
                             </li>
                             <li class="<?= ($uri_segment_1 == 'ledger' ? 'ledger-active' : 'ledger-inactive') ?>">

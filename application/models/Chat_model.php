@@ -364,7 +364,7 @@ class Chat_model extends CI_Model
         if (count($msg_references['ref_urls']) > 0) {
 
             //No entity linked, but we have a URL that we should turn into an entity:
-            $created_url = $this->Matrix_model->fn___create_en_from_url($msg_references['ref_urls'][0]);
+            $created_url = $this->Matrix_model->fn___en_url_add($msg_references['ref_urls'][0]);
 
             //Did we have an error?
             if (!$created_url['status']) {
@@ -1121,7 +1121,7 @@ class Chat_model extends CI_Model
         if (count($actionplan_child_ins) == 0) {
 
             //No children! So there is a single path forward, the next intent in line:
-            $next_ins = $this->Matrix_model->fn___in_next_actionplan($actionplan_tr_id);
+            $next_ins = $this->Matrix_model->fn___actionplan_next_in($actionplan_tr_id);
 
             //Did we find the next intent in line in case we had zero?
             if (count($next_ins) > 0) {
@@ -1139,7 +1139,7 @@ class Chat_model extends CI_Model
                 /*
                  *
                  * This likely means that the Action Plan is complete which
-                 * will be handled accordingly within fn___in_next_actionplan()
+                 * will be handled accordingly within fn___actionplan_next_in()
                  *
                  * */
 
@@ -1729,11 +1729,12 @@ class Chat_model extends CI_Model
                     )),
                 ));
 
+
                 //Was this added successfully?
                 if (isset($actionplan['tr_id']) && $actionplan['tr_id'] > 0) {
 
                     //Also add all relevant child intents:
-                    $this->Matrix_model->in_recursive_fetch($ins[0]['in_id'], true, false, $actionplan['tr_id']);
+                    $this->Matrix_model->fn___in_recursive_fetch($ins[0]['in_id'], true, false, $actionplan);
 
                     //Confirm with them that we're now ready:
                     $this->Chat_model->fn___echo_message(
@@ -1931,7 +1932,7 @@ class Chat_model extends CI_Model
 
 
                 //Find the next item to navigate them to:
-                $next_ins = $this->Matrix_model->fn___in_next_actionplan($actionplan_tr_id);
+                $next_ins = $this->Matrix_model->fn___actionplan_next_in($actionplan_tr_id);
                 if ($next_ins) {
                     //Now move on to communicate the next step:
                     $this->Chat_model->fn___compose_message($next_ins[0]['in_id'], $en, $actionplan_tr_id);
@@ -1981,7 +1982,7 @@ class Chat_model extends CI_Model
             $this->Matrix_model->in_actionplan_complete_up($actionplans[0], $actionplans[0]);
 
             //Go to next item:
-            $next_ins = $this->Matrix_model->fn___in_next_actionplan($actionplan_tr_id);
+            $next_ins = $this->Matrix_model->fn___actionplan_next_in($actionplan_tr_id);
 
             if ($next_ins) {
                 //Communicate next step:
@@ -1996,13 +1997,13 @@ class Chat_model extends CI_Model
             $tr_in_parent_id = intval($input_parts[1]);
             $in_id = intval($input_parts[2]);
 
-            if ($actionplan_tr_id > 0 && $tr_in_parent_id > 0 && $in_id > 0 && $this->Matrix_model->k_choose_or($actionplan_tr_id, $tr_in_parent_id, $in_id)) {
+            if ($actionplan_tr_id > 0 && $tr_in_parent_id > 0 && $in_id > 0 && $this->Matrix_model->fn___actionplan_choose_or($actionplan_tr_id, $tr_in_parent_id, $in_id)) {
 
                 //Confirm answer received by acknowledging progress with Master:
                 $this->Chat_model->fn___compose_message(8333, $en);
 
                 //Find the next item to navigate them to:
-                $next_ins = $this->Matrix_model->fn___in_next_actionplan($actionplan_tr_id);
+                $next_ins = $this->Matrix_model->fn___actionplan_next_in($actionplan_tr_id);
 
                 if ($next_ins) {
                     //Communicate next step:
@@ -2346,7 +2347,7 @@ class Chat_model extends CI_Model
             if (count($actionplans) > 0) {
 
                 //They have an Action Plan that they are working on, Remind user of their next step:
-                $next_ins = $this->Matrix_model->fn___in_next_actionplan($actionplans[0]['tr_id']);
+                $next_ins = $this->Matrix_model->fn___actionplan_next_in($actionplans[0]['tr_id']);
 
                 //Do we have a next step? (We should if Action Plan status is incomplete)
                 if ($next_ins) {

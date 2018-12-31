@@ -23,6 +23,7 @@ $config['tr_max_count'] = 999; //TODO Deprecate... (Used in counting things of t
 //Matrix defaults:
 $config['in_primary_name'] = 'advance your tech career'; //What is the purposes of Mench at this point?
 $config['in_primary_id'] = 6903; //The default platform intent that would be recommended to new masters
+$config['in_mission_id'] = 7766; //"Expand Human Potential" is the top level intent that will always contain every other intention we cover
 $config['en_primary_id'] = 3463; //The default matrix entity that is loaded when Entities is clicked
 $config['en_default_url_parent'] = 1326; //The entity that would be the parent to all new URLs added via Messages
 

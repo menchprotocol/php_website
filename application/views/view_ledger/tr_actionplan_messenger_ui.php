@@ -1,6 +1,6 @@
 <?php
 
-//Prepare some variables to better understand out situation here:
+//Prepare some variables to better understand our situation here:
 $on_start_messages = $this->Database_model->fn___tr_fetch(array(
     'tr_status >=' => 2, //Published+
     'tr_en_type_id' => 4231, //On-Start Messages
@@ -8,19 +8,14 @@ $on_start_messages = $this->Database_model->fn___tr_fetch(array(
 ), array(), 0, 0, array('tr_order' => 'ASC'));
 
 
-//Fetch completion requirements:
-$completion_requirements = $this->Database_model->fn___tr_fetch(array(
-    'tr_en_type_id' => 4331, //Intent Response Limiters
-    'tr_in_child_id' => $value['in_id'], //For this intent
-    'tr_status >=' => 2, //Published+
-    'tr_en_parent_id IN (' . join(',', $this->config->item('en_ids_4331')) . ')' => null, //The Requirement
-));
+//Fetch completion requirements for this intent:
+$message_in_requirements = $this->Matrix_model->fn___in_completion_requirements($value['in_id']);
 
 
 $has_children = (count($actionplan_children) > 0);
 //We want to show the child intents in specific conditions to ensure a step-by-step navigation by the user through the browser Action Plan
 //(Note that the conversational UI already has this step-by-step navigation in mind, but the user has more flexibility in the Browser side)
-$list_children = (count($actionplan_parents) == 0 || !($actionplan_parents[0]['tr_status'] == 0) || intval($in['in_is_any']) || count($completion_requirements)==0 || count($on_start_messages) == 0);
+$list_children = (count($actionplan_parents) == 0 || !($actionplan_parents[0]['tr_status'] == 0) || intval($in['in_is_any']) || !$message_in_requirements || count($on_start_messages) == 0);
 
 
 if (count($actionplan_parents) == 1) {
@@ -37,7 +32,7 @@ if (count($actionplan_parents) == 1) {
 $next_button = null;
 if ($actionplan['tr_status'] == 1) {
     //Active Action Plan, attempt to find next item, which we should be able to find:
-    $next_ins = $this->Matrix_model->fn___in_next_actionplan($actionplan['tr_id']);
+    $next_ins = $this->Matrix_model->fn___actionplan_next_in($actionplan['tr_id']);
     if ($next_ins) {
         if ($next_ins[0]['in_id'] == $in['in_id']) {
             //$next_button = '<span style="font-size: 0.7em; padding-left:5px; display:inline-block;"><i class="fas fa-shield-check"></i> This is the next-in-line intent</span>';
@@ -70,13 +65,13 @@ if (count($actionplan_parents) == 0) {
     //This must be top level Action Plan, show Action Plan data:
     echo '<div class="sub_title">';
     echo fn___echo_status('tr_status', $actionplan['tr_status']);
-    echo ' &nbsp;&nbsp;<i class="fas fa-calendar-check"></i> ' . fn___echo_time_difference($actionplan['w_timestamp']) . ' ago';
+    echo ' &nbsp;&nbsp;<i class="fas fa-calendar-check"></i> ' . fn___echo_time_difference($actionplan['tr_timestamp']) . ' ago';
     //TODO show Action Plan pace data such as start/end time, weekly rate & notification type
     echo '</div>';
 
 } elseif (count($actionplan_parents) == 1) {
 
-    $hide_messages = (count($completion_requirements)>0 && !in_array($actionplan_parents[0]['tr_status'], $this->config->item('tr_status_incomplete')));
+    $hide_messages = ($message_in_requirements && !in_array($actionplan_parents[0]['tr_status'], $this->config->item('tr_status_incomplete')));
 
     //Show completion progress for the single parent intent:
     echo '<div class="sub_title">';
@@ -121,7 +116,7 @@ if (count($on_start_messages) > 0) {
 
 
 //Show completion options below messages:
-if (count($actionplan_parents) == 1 && (count($completion_requirements)>0 || (!intval($in['in_is_any']) && !$has_children))) {
+if (count($actionplan_parents) == 1 && ($message_in_requirements || (!intval($in['in_is_any']) && !$has_children))) {
 
     if (!$show_written_input && !$is_incomplete && strlen($actionplan_parents[0]['tr_content']) > 0 /* For now only allow is complete */) {
         //Show button to make text visible:
@@ -146,7 +141,7 @@ if (count($actionplan_parents) == 1 && (count($completion_requirements)>0 || (!i
     if ($has_children && !$list_children) {
         echo '<button type="submit" class="btn btn-primary"><i class="fas fa-check-square"></i> Got It, Continue <i class="fas fa-angle-right"></i></button>';
     } elseif ($is_incomplete) {
-        echo '<button type="submit" name="fn___in_next_actionplan" value="1" class="btn btn-primary"><i class="fas fa-check-square"></i> Mark Complete & Go Next <i class="fas fa-angle-right"></i></button>';
+        echo '<button type="submit" name="fn___actionplan_next_in" value="1" class="btn btn-primary"><i class="fas fa-check-square"></i> Mark Complete & Go Next <i class="fas fa-angle-right"></i></button>';
     } elseif (!$show_written_input) {
         echo '<button type="submit" class="btn btn-primary toggle_text" style="display:none;"><i class="fas fa-edit"></i> Update Answer</button>';
     } else {

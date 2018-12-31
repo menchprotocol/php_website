@@ -18,7 +18,7 @@ class Matrix_model extends CI_Model
     }
 
 
-    function fn___in_next_actionplan($actionplan_tr_id)
+    function fn___actionplan_next_in($actionplan_tr_id)
     {
 
         /*
@@ -186,7 +186,7 @@ class Matrix_model extends CI_Model
 
 
 
-    function fn___create_en_from_url($input_url, $tr_en_credit_id = 0)
+    function fn___en_url_add($input_url, $tr_en_credit_id = 0)
     {
 
         /*
@@ -413,7 +413,7 @@ class Matrix_model extends CI_Model
     }
 
 
-    function fn___authenticate_messenger_user($psid)
+    function fn___en_messenger_authenticate($psid)
     {
 
         /*
@@ -428,7 +428,7 @@ class Matrix_model extends CI_Model
         if ($psid < 1) {
             //Ooops, this should never happen:
             $this->Database_model->fn___tr_create(array(
-                'tr_content' => 'fn___authenticate_messenger_user() got called without a valid Facebook $psid variable',
+                'tr_content' => 'fn___en_messenger_authenticate() got called without a valid Facebook $psid variable',
                 'tr_en_type_id' => 4246, //Platform Error
             ));
             return false;
@@ -449,7 +449,7 @@ class Matrix_model extends CI_Model
         } else {
 
             //Master not found, create new Master:
-            return $this->Matrix_model->fn___add_messenger_user($psid);
+            return $this->Matrix_model->fn___en_messenger_add($psid);
 
         }
 
@@ -529,7 +529,7 @@ class Matrix_model extends CI_Model
         if (in_array($obj_type, array('in'))) {
 
             //Fetch tree that needs adjustment:
-            $tree = $this->Matrix_model->in_recursive_fetch($focus_obj_id, $direction_is_downward);
+            $tree = $this->Matrix_model->fn___in_recursive_fetch($focus_obj_id, $direction_is_downward);
 
             if (count($tree['in_flat_tree']) == 0) {
                 return false;
@@ -567,7 +567,7 @@ class Matrix_model extends CI_Model
         //TODO Readjust the removal of $tr_id, $in_id variables
         //User has requested to skip an intent starting from:
         $dwn_tree = $this->Matrix_model->k_recursive_fetch($tr_id, $in_id, true);
-        $skip_ks = array_merge(array(intval($tr_id)), $dwn_tree['k_flat']);
+        $skip_ks = array_merge(array(intval($tr_id)), $dwn_tree['actionplan_ins_flat']);
 
         //Now see how many should we actually skip based on current status:
         $skippable_ks = $this->Database_model->fn___tr_fetch(array(
@@ -602,29 +602,32 @@ class Matrix_model extends CI_Model
 
 
 
-    function k_recursive_fetch($tr_id, $in_id, $direction_is_downward, $parent_in = array(), $recursive_children = null)
+    function k_recursive_fetch($tr_id, $in_id, $direction_is_downward, $parent_in = array(), $metadata_aggregate = null)
     {
 
         //Get core data:
-        $immediate_children = array(
+        $metadata_this = array(
             'in_flat_tree' => array(),
-            'in_tr_flat_tree' => array(),
-            'k_flat' => array(),
+            'in_links_flat_tree' => array(),
+            'actionplan_ins_flat' => array(),
         );
 
-        if (!$recursive_children && !isset($parent_in['tr_id'])) {
+        if (!$metadata_aggregate && !isset($parent_in['tr_id'])) {
+
             //First item:
-            $recursive_children = $immediate_children;
+            $metadata_aggregate = $metadata_this;
             $ins = $this->Database_model->fn___in_fetch(array(
                 'in_id' => $in_id,
             ));
 
         } else {
+
             //Recursive item:
             $ins = $this->Database_model->fn___tr_fetch(array(
                 'tr_tr_parent_id' => $tr_id,
-                'k_cr_id' => $parent_in['tr_id'],
-            ), array('cr', ($direction_is_downward ? 'cr_c_child' : 'cr_c_parent')));
+                'tr_id' => $parent_in['tr_id'],
+            ), array(($direction_is_downward ? 'in_child' : 'in_parent')));
+
         }
 
         //We should have found an item by now:
@@ -634,160 +637,198 @@ class Matrix_model extends CI_Model
 
 
         //Add the link relations before we start recursion so we can have the Tree in up-custom order:
-        array_push($immediate_children['in_flat_tree'], intval($in_id));
+        array_push($metadata_this['in_flat_tree'], intval($in_id));
         if (isset($ins[0]['tr_id'])) {
-            array_push($immediate_children['in_tr_flat_tree'], intval($ins[0]['tr_id']));
-            array_push($immediate_children['k_flat'], intval($ins[0]['tr_id']));
+            array_push($metadata_this['in_links_flat_tree'], intval($ins[0]['tr_id']));
+            array_push($metadata_this['actionplan_ins_flat'], intval($ins[0]['tr_id']));
         }
 
 
         //A recursive function to fetch all Tree for a given intent, either upwards or downwards
         $next_level_ins = $this->Database_model->fn___tr_fetch(array(
             'tr_tr_parent_id' => $tr_id,
-            'in_status >=' => 2,
+            'in_status >=' => 2, //Published+
             ($direction_is_downward ? 'tr_in_parent_id' : 'tr_in_child_id') => $in_id,
-        ), array('cr', ($direction_is_downward ? 'cr_c_child' : 'cr_c_parent')));
+        ), array(($direction_is_downward ? 'in_child' : 'in_parent')));
 
 
         if (count($next_level_ins) > 0) {
             foreach ($next_level_ins as $in) {
 
                 //Fetch children for this intent, if any:
-                $granchildren = $this->Matrix_model->k_recursive_fetch($tr_id, $in['in_id'], $direction_is_downward, $in, $immediate_children);
+                $recursion = $this->Matrix_model->k_recursive_fetch($tr_id, $in['in_id'], $direction_is_downward, $in, $metadata_this);
 
-                //return $granchildren;
+                //return $recursion;
 
-                if (!$granchildren) {
+                if (!$recursion) {
                     //There was an infinity break
                     return false;
                 }
 
                 //Addup values:
-                array_push($immediate_children['in_tr_flat_tree'], $granchildren['in_tr_flat_tree']);
-                array_push($immediate_children['k_flat'], $granchildren['k_flat']);
-                array_push($immediate_children['in_flat_tree'], $granchildren['in_flat_tree']);
+                array_push($metadata_this['in_links_flat_tree'], $recursion['in_links_flat_tree']);
+                array_push($metadata_this['actionplan_ins_flat'], $recursion['actionplan_ins_flat']);
+                array_push($metadata_this['in_flat_tree'], $recursion['in_flat_tree']);
             }
         }
 
         //Flatten intent ID array:
         $result = array();
-        array_walk_recursive($immediate_children['in_flat_tree'], function ($v, $k) use (&$result) {
+        array_walk_recursive($metadata_this['in_flat_tree'], function ($v, $k) use (&$result) {
             $result[] = $v;
         });
-        $immediate_children['in_flat_tree'] = $result;
+        $metadata_this['in_flat_tree'] = $result;
 
         $result = array();
-        array_walk_recursive($immediate_children['in_tr_flat_tree'], function ($v, $k) use (&$result) {
+        array_walk_recursive($metadata_this['in_links_flat_tree'], function ($v, $k) use (&$result) {
             $result[] = $v;
         });
-        $immediate_children['in_tr_flat_tree'] = $result;
+        $metadata_this['in_links_flat_tree'] = $result;
 
         $result = array();
-        array_walk_recursive($immediate_children['k_flat'], function ($v, $k) use (&$result) {
+        array_walk_recursive($metadata_this['actionplan_ins_flat'], function ($v, $k) use (&$result) {
             $result[] = $v;
         });
-        $immediate_children['k_flat'] = $result;
+        $metadata_this['actionplan_ins_flat'] = $result;
 
         //Return data:
-        return $immediate_children;
+        return $metadata_this;
     }
 
 
 
-    function k_choose_or($actionplan_tr_id, $tr_in_parent_id, $in_id)
+    function fn___actionplan_choose_or($actionplan_tr_id, $in_parent_id, $in_answer_id)
     {
-        //$in_id is the chosen path for the options of $tr_in_parent_id
-        //When a user chooses an answer to an ANY intent, this function would mark that answer as complete while marking all siblings as SKIPPED
+
+        /*
+         *
+         * Used when Masters choose an OR Intent path in their Action Plan.
+         * When a user chooses an answer to an ANY intent, this function
+         * would mark that answer as complete while marking all siblings
+         * as Removed/Skipped (tr_status = -1)
+         *
+         * Inputs:
+         *
+         * $actionplan_tr_id:   Action Plan ID
+         *
+         * $in_parent_id:       The OR Intent that one of its children need
+         *                      to be selected by the Master
+         *
+         * $in_answer_id:       The selected child intent
+         *
+         * */
+
         $chosen_path = $this->Database_model->fn___tr_fetch(array(
             'tr_tr_parent_id' => $actionplan_tr_id,
-            'tr_in_parent_id' => $tr_in_parent_id, //Fetch children of parent intent which are the siblings of current intent
-            'tr_in_child_id' => $in_id, //The answer
-            'in_status >=' => 2,
-        ), array('w', 'cr', 'cr_c_parent'));
+            'tr_in_parent_id' => $in_parent_id,
+            'tr_in_child_id' => $in_answer_id,
+        ), array('in_parent'));
 
-        if (count($chosen_path) == 1) {
 
-            //Also fetch children to see if we require specific responses to mark as complete:
-            $path_requirements = $this->Database_model->fn___tr_fetch(array(
-                'tr_tr_parent_id' => $actionplan_tr_id,
-                'tr_in_parent_id' => $tr_in_parent_id, //Fetch children of parent intent which are the siblings of current intent
-                'tr_in_child_id' => $in_id, //The answer
-                'in_status >=' => 2,
-            ), array('w', 'cr', 'cr_c_child'));
+        if (count($chosen_path) < 0) {
 
-            if (count($path_requirements) == 1) {
-
-                //Fetch completion requirements:
-                $completion_requirements = $this->Database_model->fn___tr_fetch(array(
-                    'tr_en_type_id' => 4331, //Intent Response Limiters
-                    'tr_in_child_id' => $in_id, //For this intent
-                    'tr_status >=' => 2, //Published+
-                    'tr_en_parent_id IN (' . join(',', $this->config->item('en_ids_4331')) . ')' => null, //The Requirement
-                ));
-
-                //Now mark intent as complete (and this will SKIP all siblings) and move on:
-                $this->Matrix_model->in_actionplan_complete_up($chosen_path[0], $chosen_path[0], ( count($completion_requirements) > 0 ? 1 : null ));
-
-                //Successful:
-                return true;
-            } else {
-                return false;
-            }
-
-        } else {
             //Oooopsi, we could not find it! Log error and return false:
             $this->Database_model->fn___tr_create(array(
                 'tr_content' => 'Unable to locate OR selection for this Action Plan',
                 'tr_en_type_id' => 4246, //Platform Error
-                'tr_in_child_id' => $in_id,
                 'tr_tr_parent_id' => $actionplan_tr_id,
+                'tr_in_parent_id' => $in_parent_id,
+                'tr_in_child_id' => $in_answer_id,
             ));
 
             return false;
         }
+
+        //Inform the user of any completion requirements:
+        $message_in_requirements = $this->Matrix_model->fn___in_completion_requirements($in_answer_id, $actionplan_tr_id);
+
+        //Now mark intent as complete (and this will SKIP all siblings) and move on:
+        $this->Matrix_model->in_actionplan_complete_up($chosen_path[0], $chosen_path[0], ( $message_in_requirements ? 1 /* Working On */ : null ));
+
+        //Successful:
+        return true;
     }
 
-    function in_recursive_fetch($in_id, $direction_is_downward = false, $update_db_table = false, $actionplan_tr_id = 0, $parent_in = array(), $recursive_children = null)
+    function fn___in_recursive_fetch($in_id, $direction_is_downward = false, $update_db_table = false, $actionplan = array(), $previous_in = array(), $metadata_aggregate = null)
     {
 
-        //Get core data:
-        $immediate_children = array(
-            '___tree_full_count' => 0,
-            '___messages_count' => 0,
-            '___messages_tree_count' => 0,
+        /*
+         *
+         * The nature of the Intent tree is best suited for a recursive function
+         * that will travel up/down and fetch all intent branches.
+         *
+         * Inputs:
+         *
+         * - $in_id:                    The point to get started in the tree
+         *
+         * - $direction_is_downward:    Whether to go up or down, sets the direction
+         *
+         * - $update_db_table:          Whether or not to update a copy of the
+         *                              $metadata_this array into in_metadata
+         *
+         * - $actionplan:               The Action Plan object which if provided, will
+         *                              get this function to create a copy of the intents
+         *                              of $in_id downwards
+         *
+         * - $previous_in:              Keeps track of the state of recursion by passing
+         *                              down/up the previous intent
+         *
+         * - $metadata_aggregate:       A variable used to addup the $metadata_this
+         *                              values that will eventually be stored in in_metadata
+         *
+         * */
 
-            '___tree_min_seconds' => 0,
-            '___tree_max_seconds' => 0,
-            '___tree_min_cost' => 0,
-            '___tree_max_cost' => 0,
+        
+        //Do basic input validation:
+        if($in_id < 1){
+            //Invalid Intent ID:
+            return false;
+        } elseif(count($actionplan) > 0 && !$direction_is_downward){
+            //Caching Action Plan intents only words in the downward direction:
+            return false;
+        }
 
+        //Calculate metadata variables:
+        $metadata_this = array(
+
+            //Fetch for New+ intents:
+            '___tree_active_count' => 0, //A count of all active (in_status >= 0) intents within the tree
+            '___messages_count' => 0, //A count of all messages for this intent only
+            'in_tree' => array(), //Fetches the intent tree with its full 2-dimensional & hierarchical beauty
+            'in_flat_tree' => array(), //Puts all the tree's intent IDs in a flat array, useful for quick processing
+            'in_links_flat_tree' => array(), //Puts all the tree's intent transaction (intent link) IDs in a flat array, useful for quick processing
+
+            //Fetched for Published+ Intents:
+            '___tree_published_count' => 0, //A count of all published (in_status >= 2) intents within the tree
+            '___messages_tree_count' => 0, //A count of all messages for all tree intents that are published
+            '___tree_min_seconds' => 0, //The minimum number of seconds required to complete tree
+            '___tree_max_seconds' => 0, //The maximum number of seconds required to complete tree
+            '___tree_min_cost' => 0, //The minimum cost of third-party product purchases recommended to complete tree
+            '___tree_max_cost' => 0, //The maximum cost of third-party product purchases recommended to complete tree
             '___tree_experts' => array(), //Expert references across all contributions
             '___tree_miners' => array(), //miner references considering intent messages
             '___tree_contents' => array(), //Content types entity references on messages
-
             'metadatas_updated' => 0, //Keeps count of database metadata fields that were not in sync with the latest version of the cahced data
-            'db_queries' => array(), //Useful for debugging to see what changed at each metadatas_updated request
-
-            'in_tree' => array(), //Fetches the intent tree with its full 2-dimensional & hierarchical beauty
-            'in_flat_tree' => array(), //Puts all the tree's intent IDs in a flat array, useful for quick processing
-            'in_tr_flat_tree' => array(), //Puts all the tree's intent transaction (intent link) IDs in a flat array, useful for quick processing
         );
 
-        if (!$recursive_children) {
-            $recursive_children = $immediate_children;
+        if (!$metadata_aggregate) {
+            //First level, no aggregate yet, set $metadata_this as the starting point to then start aggregating:
+            $metadata_aggregate = $metadata_this;
         }
 
-        //Fetch & add this item itself:
-        if (isset($parent_in['tr_id'])) {
+        //Are we 1+ levels deep? If so, we'll have $previous_in set
+        if (isset($previous_in['tr_id'])) {
+
+            //Yes, so now we can fetch children:
 
             if ($direction_is_downward) {
 
                 //Fetch children:
                 $ins = $this->Database_model->fn___tr_fetch(array(
                     'tr_status >=' => 2, //Published+
-                    'in_status >=' => 2, //Published+
+                    'in_status >=' => 0, //New+
                     'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
-                    'tr_id' => $parent_in['tr_id'],
+                    'tr_id' => $previous_in['tr_id'],
                 ), array('in_child'), 0, 0, array('tr_order' => 'ASC')); //Child intents must be ordered
 
             } else {
@@ -795,16 +836,16 @@ class Matrix_model extends CI_Model
                 //Fetch parents:
                 $ins = $this->Database_model->fn___tr_fetch(array(
                     'tr_status >=' => 2, //Published+
-                    'in_status >=' => 2, //Published+
+                    'in_status >=' => 0, //New+
                     'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
-                    'tr_id' => $parent_in['tr_id'],
+                    'tr_id' => $previous_in['tr_id'],
                 ), array('in_parent')); //Note that parents do not need any sorting, since we only sort child intents
 
             }
 
         } else {
 
-            //This is the very first item that
+            //This is the very first intent, fetch intention itself as we don't have any links yet:
             $ins = $this->Database_model->fn___in_fetch(array(
                 'in_id' => $in_id,
             ));
@@ -817,39 +858,50 @@ class Matrix_model extends CI_Model
             return false;
         }
 
+        //Set the current intent:
+        $this_in = $ins[0];
 
-        //Always add intent to tree:
-        array_push($immediate_children['in_flat_tree'], intval($in_id));
+
+        //Always add intent to the flat intent tree which is part of the metadata:
+        array_push($metadata_this['in_flat_tree'], intval($in_id));
 
 
         //Add the link relations before we start recursion so we can have the Tree in up-custom order:
-        if (isset($ins[0]['tr_id'])) {
+        if (isset($this_in['tr_id'])) {
 
-            //Add intent link:
-            array_push($immediate_children['in_tr_flat_tree'], intval($ins[0]['tr_id']));
+            //Add link to flat intent link tree:
+            array_push($metadata_this['in_links_flat_tree'], intval($this_in['tr_id']));
 
             //Are we caching an Action Plan?
-            if ($actionplan_tr_id > 0) {
+            if (count($actionplan) > 0) {
 
                 //Yes we are, create a cache of this Intent link to be added to their Action Plan:
                 $this->Database_model->fn___tr_create(array(
                     'tr_status' => 0, //New
                     'tr_en_type_id' => 4559, //Action Plan Intent
-                    'tr_en_credit_id' => $ins[0]['tr_en_parent_id'], //Credit goes to Master
-                    'tr_en_parent_id' => $ins[0]['tr_en_parent_id'], //Belongs to this Master
-                    'tr_in_parent_id' => $ins[0]['tr_in_parent_id'],
-                    'tr_in_child_id' => $ins[0]['tr_in_child_id'],
-                    'tr_order' => $ins[0]['tr_order'],
-                    'tr_tr_parent_id' => $actionplan_tr_id, //Indicates the parent Action Plan Transaction ID
+                    'tr_en_credit_id' => $actionplan['tr_en_parent_id'], //Credit goes to Master
+                    'tr_en_parent_id' => $actionplan['tr_en_parent_id'], //Belongs to this Master
+                    'tr_in_parent_id' => $this_in['tr_in_parent_id'],
+                    'tr_in_child_id' => $this_in['tr_in_child_id'],
+                    'tr_order' => $this_in['tr_order'],
+                    'tr_tr_parent_id' => $actionplan['tr_id'], //Indicates the parent Action Plan Transaction ID
                 ));
 
             }
 
         }
 
-        //TODO Terminate at OR branches for Action Plan caching (when $actionplan_tr_id>0)
-        if ($actionplan_tr_id > 0 && $ins[0]['in_is_any']) {
-            //return false;
+        //Terminate at OR branches for Action Plan caching
+        if (count($actionplan) > 0 && intval($this_in['in_is_any'])) {
+            /*
+             *
+             * We do this as we don't know which OR path will be
+             * chosen by Master so no point in adding every branch
+             * possible! We will then add a new Action Plan intent
+             * every time an OR branch poth is chosen.
+             *
+             * */
+            return false;
         }
 
 
@@ -858,227 +910,247 @@ class Matrix_model extends CI_Model
 
             //Fetch children:
             $next_level_ins = $this->Database_model->fn___tr_fetch(array(
-                'tr_status >=' => 2, //Published+
-                'in_status >=' => 2, //Published+
-                'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
                 'tr_in_parent_id' => $in_id,
+                'tr_status >=' => 2, //Published+
+                'in_status >=' => 0, //New+
+                'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
             ), array('in_child'), 0, 0, array('tr_order' => 'ASC')); //Child intents must be ordered
 
         } else {
 
             //Fetch parents:
             $next_level_ins = $this->Database_model->fn___tr_fetch(array(
-                'tr_status >=' => 2, //Published+
-                'in_status >=' => 2, //Published+
-                'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
                 'tr_in_child_id' => $in_id,
+                'tr_status >=' => 2, //Published+
+                'in_status >=' => 0, //New+
+                'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
             ), array('in_parent')); //Note that parents do not need any sorting, since we only sort child intents
 
         }
 
 
+        //Do we have any next level intents (up or down)?
         if (count($next_level_ins) > 0) {
 
-            //We need to determine this based on the tree AND/OR logic:
-            $local_values = array(
+            //$resource_estimates are determined based on the intent's AND/OR type:
+            $resource_estimates = array(
                 'in___tree_min_seconds' => null,
                 'in___tree_max_seconds' => null,
                 'in___tree_min_cost' => null,
                 'in___tree_max_cost' => null,
             );
 
-            foreach ($next_level_ins as $in) {
+            foreach ($next_level_ins as $next_in) {
 
-                if (in_array($in['in_id'], $recursive_children['in_flat_tree'])) {
+                if (in_array($next_in['in_id'], $metadata_aggregate['in_flat_tree'])) {
 
-                    //Ooooops, this has an error as it would result in an infinite loop:
+                    //Duplicate intent detected within tree
+                    //terminate function to prevent an infinite loop:
                     return false;
 
                 } else {
 
-                    //Fetch children for this intent, if any:
-                    $granchildren = $this->Matrix_model->in_recursive_fetch($in['in_id'], $direction_is_downward, $update_db_table, $actionplan_tr_id, $in, $immediate_children);
+                    //Recursively fetch the next level (up or down):
+                    $recursion = $this->Matrix_model->fn___in_recursive_fetch($next_in['in_id'], $direction_is_downward, $update_db_table, $actionplan, $next_in, $metadata_this);
 
-                    if (!$granchildren) {
+                    if (!$recursion) {
                         //There was an infinity break
                         return false;
                     }
 
-                    //Addup children if any:
-                    $immediate_children['___tree_full_count'] += $granchildren['___tree_full_count'];
+                    //Addup if any:
+                    $metadata_this['___tree_active_count'] += $recursion['___tree_active_count'];
+                    array_push($metadata_this['in_links_flat_tree'], $recursion['in_links_flat_tree']);
+                    array_push($metadata_this['in_flat_tree'], $recursion['in_flat_tree']);
+                    array_push($metadata_this['in_tree'], $recursion['in_tree']);
 
-                    if ($ins[0]['in_is_any']) {
+                    //Is this published?
+                    if($next_in['in_status'] < 2){
+                        continue;
+                    }
+
+
+                    $metadata_this['___tree_published_count'] += $recursion['___tree_published_count'];
+
+                    //Do calculations based on intent type (AND or OR)
+                    if ($this_in['in_is_any']) {
                         //OR Branch, figure out the logic:
-                        if ($granchildren['___tree_min_seconds'] < $local_values['in___tree_min_seconds'] || is_null($local_values['in___tree_min_seconds'])) {
-                            $local_values['in___tree_min_seconds'] = $granchildren['___tree_min_seconds'];
+                        if ($recursion['___tree_min_seconds'] < $resource_estimates['in___tree_min_seconds'] || is_null($resource_estimates['in___tree_min_seconds'])) {
+                            $resource_estimates['in___tree_min_seconds'] = $recursion['___tree_min_seconds'];
                         }
-                        if ($granchildren['___tree_max_seconds'] > $local_values['in___tree_max_seconds'] || is_null($local_values['in___tree_max_seconds'])) {
-                            $local_values['in___tree_max_seconds'] = $granchildren['___tree_max_seconds'];
+                        if ($recursion['___tree_max_seconds'] > $resource_estimates['in___tree_max_seconds'] || is_null($resource_estimates['in___tree_max_seconds'])) {
+                            $resource_estimates['in___tree_max_seconds'] = $recursion['___tree_max_seconds'];
                         }
-                        if ($granchildren['___tree_min_cost'] < $local_values['in___tree_min_cost'] || is_null($local_values['in___tree_min_cost'])) {
-                            $local_values['in___tree_min_cost'] = $granchildren['___tree_min_cost'];
+                        if ($recursion['___tree_min_cost'] < $resource_estimates['in___tree_min_cost'] || is_null($resource_estimates['in___tree_min_cost'])) {
+                            $resource_estimates['in___tree_min_cost'] = $recursion['___tree_min_cost'];
                         }
-                        if ($granchildren['___tree_max_cost'] > $local_values['in___tree_max_cost'] || is_null($local_values['in___tree_max_cost'])) {
-                            $local_values['in___tree_max_cost'] = $granchildren['___tree_max_cost'];
+                        if ($recursion['___tree_max_cost'] > $resource_estimates['in___tree_max_cost'] || is_null($resource_estimates['in___tree_max_cost'])) {
+                            $resource_estimates['in___tree_max_cost'] = $recursion['___tree_max_cost'];
                         }
                     } else {
                         //AND Branch, add them all up:
-                        $local_values['in___tree_min_seconds'] += intval($granchildren['___tree_min_seconds']);
-                        $local_values['in___tree_max_seconds'] += intval($granchildren['___tree_max_seconds']);
-                        $local_values['in___tree_min_cost'] += number_format($granchildren['___tree_min_cost'], 2);
-                        $local_values['in___tree_max_cost'] += number_format($granchildren['___tree_max_cost'], 2);
+                        $resource_estimates['in___tree_min_seconds'] += intval($recursion['___tree_min_seconds']);
+                        $resource_estimates['in___tree_max_seconds'] += intval($recursion['___tree_max_seconds']);
+                        $resource_estimates['in___tree_min_cost'] += number_format($recursion['___tree_min_cost'], 2);
+                        $resource_estimates['in___tree_max_cost'] += number_format($recursion['___tree_max_cost'], 2);
                     }
 
 
                     if ($update_db_table) {
 
                         //Update DB requested:
-                        $immediate_children['___messages_tree_count'] += $granchildren['___messages_tree_count'];
-                        $immediate_children['metadatas_updated'] += $granchildren['metadatas_updated'];
-                        if (!empty($granchildren['db_queries'])) {
-                            array_push($immediate_children['db_queries'], $granchildren['db_queries']);
-                        }
+                        $metadata_this['___messages_tree_count'] += $recursion['___messages_tree_count'];
+                        $metadata_this['metadatas_updated'] += $recursion['metadatas_updated'];
 
                         //Addup unique experts:
-                        foreach ($granchildren['___tree_experts'] as $en_id => $tex) {
+                        foreach ($recursion['___tree_experts'] as $en_id => $tex) {
                             //Is this a new expert?
-                            if (!isset($immediate_children['___tree_experts'][$en_id])) {
+                            if (!isset($metadata_this['___tree_experts'][$en_id])) {
                                 //Yes, add them to the list:
-                                $immediate_children['___tree_experts'][$en_id] = $tex;
+                                $metadata_this['___tree_experts'][$en_id] = $tex;
                             }
                         }
 
                         //Addup unique miners:
-                        foreach ($granchildren['___tree_miners'] as $en_id => $tet) {
+                        foreach ($recursion['___tree_miners'] as $en_id => $tet) {
                             //Is this a new expert?
-                            if (!isset($immediate_children['___tree_miners'][$en_id])) {
+                            if (!isset($metadata_this['___tree_miners'][$en_id])) {
                                 //Yes, add them to the list:
-                                $immediate_children['___tree_miners'][$en_id] = $tet;
+                                $metadata_this['___tree_miners'][$en_id] = $tet;
                             }
                         }
 
                         //Addup content types:
-                        foreach ($granchildren['___tree_contents'] as $type_en_id => $current_us) {
+                        foreach ($recursion['___tree_contents'] as $type_en_id => $current_us) {
                             foreach ($current_us as $en_id => $u_obj) {
-                                if (!isset($immediate_children['___tree_contents'][$type_en_id][$en_id])) {
+                                if (!isset($metadata_this['___tree_contents'][$type_en_id][$en_id])) {
                                     //Yes, add them to the list:
-                                    $immediate_children['___tree_contents'][$type_en_id][$en_id] = $u_obj;
+                                    $metadata_this['___tree_contents'][$type_en_id][$en_id] = $u_obj;
                                 }
                             }
                         }
-
                     }
-
-                    array_push($immediate_children['in_tr_flat_tree'], $granchildren['in_tr_flat_tree']);
-                    array_push($immediate_children['in_flat_tree'], $granchildren['in_flat_tree']);
-                    array_push($immediate_children['in_tree'], $granchildren['in_tree']);
                 }
             }
 
             //Addup the totals from this tree:
-            $immediate_children['___tree_min_seconds'] += $local_values['in___tree_min_seconds'];
-            $immediate_children['___tree_max_seconds'] += $local_values['in___tree_max_seconds'];
-            $immediate_children['___tree_min_cost'] += $local_values['in___tree_min_cost'];
-            $immediate_children['___tree_max_cost'] += $local_values['in___tree_max_cost'];
+            $metadata_this['___tree_min_seconds'] += $resource_estimates['in___tree_min_seconds'];
+            $metadata_this['___tree_max_seconds'] += $resource_estimates['in___tree_max_seconds'];
+            $metadata_this['___tree_min_cost'] += $resource_estimates['in___tree_min_cost'];
+            $metadata_this['___tree_max_cost'] += $resource_estimates['in___tree_max_cost'];
         }
 
 
-        $immediate_children['___tree_full_count']++;
-        $immediate_children['___tree_min_seconds'] += intval($ins[0]['in_seconds']);
-        $immediate_children['___tree_max_seconds'] += intval($ins[0]['in_seconds']);
-        $immediate_children['___tree_min_cost'] += number_format($ins[0]['in_usd'], 2);
-        $immediate_children['___tree_max_cost'] += number_format($ins[0]['in_usd'], 2);
+        //Increase metadata counters for this intent:
+        $metadata_this['___tree_active_count']++;
+        $this_in['___tree_active_count'] = $metadata_this['___tree_active_count'];
+
+
+        //Is this a published intent?
+        if($this_in['in_status'] >= 2){
+            $metadata_this['___tree_published_count']++;
+        }
+
+        $this_in['___tree_published_count'] = $metadata_this['___tree_published_count'];
+
+        $metadata_this['___tree_min_seconds'] += intval($this_in['in_seconds']);
+        $metadata_this['___tree_max_seconds'] += intval($this_in['in_seconds']);
+        $metadata_this['___tree_min_cost'] += number_format($this_in['in_usd'], 2);
+        $metadata_this['___tree_max_cost'] += number_format($this_in['in_usd'], 2);
 
         //Set the data for this intent:
-        $ins[0]['___tree_full_count'] = $immediate_children['___tree_full_count'];
-        $ins[0]['___tree_min_seconds'] = $immediate_children['___tree_min_seconds'];
-        $ins[0]['___tree_max_seconds'] = $immediate_children['___tree_max_seconds'];
-        $ins[0]['___tree_min_cost'] = $immediate_children['___tree_min_cost'];
-        $ins[0]['___tree_max_cost'] = $immediate_children['___tree_max_cost'];
+        $this_in['___tree_min_seconds'] = $metadata_this['___tree_min_seconds'];
+        $this_in['___tree_max_seconds'] = $metadata_this['___tree_max_seconds'];
+        $this_in['___tree_min_cost'] = $metadata_this['___tree_min_cost'];
+        $this_in['___tree_max_cost'] = $metadata_this['___tree_max_cost'];
 
 
         //Count messages only if DB updating:
         if ($update_db_table) {
 
-            $ins[0]['___tree_experts'] = array();
-            $ins[0]['___tree_miners'] = array();
-            $ins[0]['___tree_contents'] = array();
+            $this_in['___tree_experts'] = array();
+            $this_in['___tree_miners'] = array();
+            $this_in['___tree_contents'] = array();
 
             //Fetch intent messages to see who is involved:
             $in__messages = $this->Database_model->fn___tr_fetch(array(
                 'tr_status >=' => 0, //New+
                 'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent messages
-                'tr_in_child_id' => $ins[0]['in_id'],
+                'tr_in_child_id' => $this_in['in_id'],
             ), array('en_credit'), 0, 0, array('tr_order' => 'ASC'));
 
-            $ins[0]['___messages_count'] = count($in__messages);
-            $immediate_children['___messages_tree_count'] += $ins[0]['___messages_count'];
-            $ins[0]['___messages_tree_count'] = $immediate_children['___messages_tree_count'];
+            $this_in['___messages_count'] = count($in__messages);
+            $metadata_this['___messages_tree_count'] += $this_in['___messages_count'];
+            $this_in['___messages_tree_count'] = $metadata_this['___messages_tree_count'];
 
 
             $parent_ids = array();
-            foreach ($in__messages as $tr) {
 
-                //Who are the Miners of this message?
-                if (!in_array($tr['tr_en_credit_id'], $parent_ids)) {
-                    array_push($parent_ids, $tr['tr_en_credit_id']);
-                }
+            if($this_in['in_status'] >= 2){
+                foreach ($in__messages as $tr) {
 
-                //Check the Miners of this message in the miner array:
-                if (!isset($ins[0]['___tree_miners'][$tr['tr_en_credit_id']])) {
-                    //Add the entire message which would also hold the miner details:
-                    $ins[0]['___tree_miners'][$tr['tr_en_credit_id']] = $tr;
-                }
-                //How about the parent of this one?
-                if (!isset($immediate_children['___tree_miners'][$tr['tr_en_credit_id']])) {
-                    //Yes, add them to the list:
-                    $immediate_children['___tree_miners'][$tr['tr_en_credit_id']] = $tr;
-                }
-
-
-                //Does this message have any entity references?
-                if ($tr['tr_en_parent_id'] > 0) {
-
-                    //Add the reference it self:
-                    if (!in_array($tr['tr_en_parent_id'], $parent_ids)) {
-                        array_push($parent_ids, $tr['tr_en_parent_id']);
+                    //Who are the Miners of this message?
+                    if (!in_array($tr['tr_en_credit_id'], $parent_ids)) {
+                        array_push($parent_ids, $tr['tr_en_credit_id']);
                     }
 
-                    //Yes! Let's see if any of the parents/creators are industry experts:
-                    $ens = $this->Database_model->fn___en_fetch(array(
-                        'en_id' => $tr['tr_en_parent_id'],
-                    ), array('en__parents'));
+                    //Check the Miners of this message in the miner array:
+                    if (!isset($this_in['___tree_miners'][$tr['tr_en_credit_id']])) {
+                        //Add the entire message which would also hold the miner details:
+                        $this_in['___tree_miners'][$tr['tr_en_credit_id']] = $tr;
+                    }
+                    //How about the parent of this one?
+                    if (!isset($metadata_this['___tree_miners'][$tr['tr_en_credit_id']])) {
+                        //Yes, add them to the list:
+                        $metadata_this['___tree_miners'][$tr['tr_en_credit_id']] = $tr;
+                    }
 
-                    if (isset($ens[0]) && count($ens[0]['en__parents']) > 0) {
-                        //We found it, let's loop through the parents and aggregate their IDs for a single search:
-                        foreach ($ens[0]['en__parents'] as $en) {
 
-                            //We only accept published entities:
-                            if($en['en_status'] < 2){
-                                //Not yet ready:
-                                continue;
-                            }
+                    //Does this message have any entity references?
+                    if ($tr['tr_en_parent_id'] > 0) {
 
-                            //Is this a particular content type?
-                            if (in_array($en['en_id'], $this->config->item('en_ids_3000'))) {
-                                //yes! Add it to the list if it does not already exist:
-                                if (!isset($ins[0]['___tree_contents'][$en['en_id']][$ens[0]['en_id']])) {
-                                    $ins[0]['___tree_contents'][$en['en_id']][$ens[0]['en_id']] = $ens[0];
+                        //Add the reference it self:
+                        if (!in_array($tr['tr_en_parent_id'], $parent_ids)) {
+                            array_push($parent_ids, $tr['tr_en_parent_id']);
+                        }
+
+                        //Yes! Let's see if any of the parents/creators are industry experts:
+                        $ens = $this->Database_model->fn___en_fetch(array(
+                            'en_id' => $tr['tr_en_parent_id'],
+                        ), array('en__parents'));
+
+                        if (isset($ens[0]) && count($ens[0]['en__parents']) > 0) {
+                            //We found it, let's loop through the parents and aggregate their IDs for a single search:
+                            foreach ($ens[0]['en__parents'] as $en) {
+
+                                //We only accept published parent entities:
+                                if($en['en_status'] < 2){
+                                    //Not yet ready:
+                                    continue;
                                 }
 
-                                //How about the parent tree?
-                                if (!isset($immediate_children['___tree_contents'][$en['en_id']][$ens[0]['en_id']])) {
-                                    $immediate_children['___tree_contents'][$en['en_id']][$ens[0]['en_id']] = $ens[0];
-                                }
-                            }
+                                //Is this a particular content type?
+                                if (in_array($en['en_id'], $this->config->item('en_ids_3000'))) {
+                                    //yes! Add it to the list if it does not already exist:
+                                    if (!isset($this_in['___tree_contents'][$en['en_id']][$ens[0]['en_id']])) {
+                                        $this_in['___tree_contents'][$en['en_id']][$ens[0]['en_id']] = $ens[0];
+                                    }
 
-                            if (!in_array($en['en_id'], $parent_ids)) {
-                                array_push($parent_ids, $en['en_id']);
+                                    //How about the parent tree?
+                                    if (!isset($metadata_this['___tree_contents'][$en['en_id']][$ens[0]['en_id']])) {
+                                        $metadata_this['___tree_contents'][$en['en_id']][$ens[0]['en_id']] = $ens[0];
+                                    }
+                                }
+
+                                if (!in_array($en['en_id'], $parent_ids)) {
+                                    array_push($parent_ids, $en['en_id']);
+                                }
                             }
                         }
                     }
                 }
             }
+
 
             //Who was involved in mining this content?
             if (count($parent_ids) > 0) {
@@ -1092,105 +1164,103 @@ class Matrix_model extends CI_Model
 
                 //Put unique IDs in array key for faster searching:
                 foreach ($expert_ens as $en) {
-                    if (!isset($ins[0]['___tree_experts'][$en['en_id']])) {
-                        $ins[0]['___tree_experts'][$en['en_id']] = $en;
+                    if (!isset($this_in['___tree_experts'][$en['en_id']])) {
+                        $this_in['___tree_experts'][$en['en_id']] = $en;
                     }
                 }
             }
 
 
             //Did we find any new industry experts?
-            if (count($ins[0]['___tree_experts']) > 0) {
+            if (count($this_in['___tree_experts']) > 0) {
 
                 //Yes, lets add them uniquely to the mother array assuming they are not already there:
-                foreach ($ins[0]['___tree_experts'] as $new_ixs) {
+                foreach ($this_in['___tree_experts'] as $new_ixs) {
                     //Is this a new expert?
-                    if (!isset($immediate_children['___tree_experts'][$new_ixs['en_id']])) {
+                    if (!isset($metadata_this['___tree_experts'][$new_ixs['en_id']])) {
                         //Yes, add them to the list:
-                        $immediate_children['___tree_experts'][$new_ixs['en_id']] = $new_ixs;
+                        $metadata_this['___tree_experts'][$new_ixs['en_id']] = $new_ixs;
                     }
                 }
             }
         }
 
-        array_push($immediate_children['in_tree'], $ins[0]);
+        array_push($metadata_this['in_tree'], $this_in);
 
 
         if ($update_db_table) {
 
             //Assign aggregates:
-            $ins[0]['___tree_experts'] = $immediate_children['___tree_experts'];
-            $ins[0]['___tree_miners'] = $immediate_children['___tree_miners'];
-            $ins[0]['___tree_contents'] = $immediate_children['___tree_contents'];
+            $this_in['___tree_experts'] = $metadata_this['___tree_experts'];
+            $this_in['___tree_miners'] = $metadata_this['___tree_miners'];
+            $this_in['___tree_contents'] = $metadata_this['___tree_contents'];
 
             //Start sorting:
-            if (is_array($ins[0]['___tree_experts']) && count($ins[0]['___tree_experts']) > 0) {
-                usort($ins[0]['___tree_experts'], 'fn___sortByScore');
+            if (is_array($this_in['___tree_experts']) && count($this_in['___tree_experts']) > 0) {
+                usort($this_in['___tree_experts'], 'fn___sortByScore');
             }
-            if (is_array($ins[0]['___tree_miners']) && count($ins[0]['___tree_miners']) > 0) {
-                usort($ins[0]['___tree_miners'], 'fn___sortByScore');
+            if (is_array($this_in['___tree_miners']) && count($this_in['___tree_miners']) > 0) {
+                usort($this_in['___tree_miners'], 'fn___sortByScore');
             }
-            foreach ($ins[0]['___tree_contents'] as $type_en_id => $current_us) {
-                if (isset($ins[0]['___tree_contents'][$type_en_id]) && count($ins[0]['___tree_contents'][$type_en_id]) > 0) {
-                    usort($ins[0]['___tree_contents'][$type_en_id], 'fn___sortByScore');
+            foreach ($this_in['___tree_contents'] as $type_en_id => $current_us) {
+                if (isset($this_in['___tree_contents'][$type_en_id]) && count($this_in['___tree_contents'][$type_en_id]) > 0) {
+                    usort($this_in['___tree_contents'][$type_en_id], 'fn___sortByScore');
                 }
             }
 
             //Update DB only if any of these metadata fields have changed:
-            $metadata = unserialize($ins[0]['in_metadata']);
+            $metadata = unserialize($this_in['in_metadata']);
             if (!(
-                intval($ins[0]['___tree_min_seconds']) == intval(@$metadata['in__tree_min_seconds']) &&
-                intval($ins[0]['___tree_max_seconds']) == intval(@$metadata['in__tree_max_seconds']) &&
-                number_format($ins[0]['___tree_min_cost'], 2) == number_format(@$metadata['in__tree_min_cost'], 2) &&
-                number_format($ins[0]['___tree_max_cost'], 2) == number_format(@$metadata['in__tree_max_cost'], 2) &&
-                ((!@$metadata['in__tree_experts'] && count($ins[0]['___tree_experts']) < 1) || (serialize($ins[0]['___tree_experts']) == @$metadata['in__tree_experts'])) &&
-                ((!@$metadata['in__tree_miners'] && count($ins[0]['___tree_miners']) < 1) || (serialize($ins[0]['___tree_miners']) == @$metadata['in__tree_miners'])) &&
-                ((!@$metadata['in__tree_contents'] && count($ins[0]['___tree_contents']) < 1) || (serialize($ins[0]['___tree_contents']) == @$metadata['in__tree_contents'])) &&
-                $ins[0]['___tree_full_count'] == @$metadata['in__tree_in_count'] &&
-                $ins[0]['___messages_count'] == @$metadata['in__message_count'] &&
-                $ins[0]['___messages_tree_count'] == @$metadata['in__message_tree_count']
+                intval($this_in['___tree_min_seconds']) == intval(@$metadata['in__tree_min_seconds']) &&
+                intval($this_in['___tree_max_seconds']) == intval(@$metadata['in__tree_max_seconds']) &&
+                number_format($this_in['___tree_min_cost'], 2) == number_format(@$metadata['in__tree_min_cost'], 2) &&
+                number_format($this_in['___tree_max_cost'], 2) == number_format(@$metadata['in__tree_max_cost'], 2) &&
+                ((!@$metadata['in__tree_experts'] && count($this_in['___tree_experts']) < 1) || (serialize($this_in['___tree_experts']) == @$metadata['in__tree_experts'])) &&
+                ((!@$metadata['in__tree_miners'] && count($this_in['___tree_miners']) < 1) || (serialize($this_in['___tree_miners']) == @$metadata['in__tree_miners'])) &&
+                ((!@$metadata['in__tree_contents'] && count($this_in['___tree_contents']) < 1) || (serialize($this_in['___tree_contents']) == @$metadata['in__tree_contents'])) &&
+                $this_in['___tree_active_count'] == @$metadata['in__tree_in_active_count'] &&
+                $this_in['___tree_published_count'] == @$metadata['in__tree_in_published_count'] &&
+                $this_in['___messages_count'] == @$metadata['in__message_count'] &&
+                $this_in['___messages_tree_count'] == @$metadata['in__message_tree_count']
             )) {
 
                 //Something was not up to date, let's update:
-                if ($this->Matrix_model->fn___metadata_update('in', $ins[0], array(
-                    'in__tree_min_seconds' => intval($ins[0]['___tree_min_seconds']),
-                    'in__tree_max_seconds' => intval($ins[0]['___tree_max_seconds']),
-                    'in__tree_min_cost' => number_format($ins[0]['___tree_min_cost'], 2),
-                    'in__tree_max_cost' => number_format($ins[0]['___tree_max_cost'], 2),
-                    'in__tree_in_count' => $ins[0]['___tree_full_count'],
-                    'in__message_count' => $ins[0]['___messages_count'],
-                    'in__message_tree_count' => $ins[0]['___messages_tree_count'],
-                    'in__tree_experts' => $ins[0]['___tree_experts'],
-                    'in__tree_miners' => $ins[0]['___tree_miners'],
-                    'in__tree_contents' => $ins[0]['___tree_contents'],
+                if ($this->Matrix_model->fn___metadata_update('in', $this_in, array(
+                    'in__tree_min_seconds' => intval($this_in['___tree_min_seconds']),
+                    'in__tree_max_seconds' => intval($this_in['___tree_max_seconds']),
+                    'in__tree_min_cost' => number_format($this_in['___tree_min_cost'], 2),
+                    'in__tree_max_cost' => number_format($this_in['___tree_max_cost'], 2),
+                    'in__tree_in_active_count' => $this_in['___tree_active_count'],
+                    'in__tree_in_published_count' => $this_in['___tree_published_count'],
+                    'in__message_count' => $this_in['___messages_count'],
+                    'in__message_tree_count' => $this_in['___messages_tree_count'],
+                    'in__tree_experts' => $this_in['___tree_experts'],
+                    'in__tree_miners' => $this_in['___tree_miners'],
+                    'in__tree_contents' => $this_in['___tree_contents'],
                 ))) {
                     //Yes update was successful:
-                    $immediate_children['metadatas_updated']++;
+                    $metadata_this['metadatas_updated']++;
                 }
-
-
-                //array_push($immediate_children['db_queries'], '[' . $in_id . '] Seconds:' . intval(@$metadata['in__tree_max_seconds']) . '=>' . intval($ins[0]['___tree_max_seconds']) . ' / All Count:' . @$metadata['in__tree_in_count'] . '=>' . $ins[0]['___tree_full_count'] . ' / Message:' . @$metadata['in__message_count'] . '=>' . $ins[0]['___messages_count'] . ' / Tree Message:' . @$metadata['in__message_tree_count'] . '=>' . $ins[0]['___messages_tree_count'] . ' (' . @$metadata['in_outcome'] . ')');
-
             }
         }
 
 
         //Flatten intent ID array:
         $result = array();
-        array_walk_recursive($immediate_children['in_flat_tree'], function ($v, $k) use (&$result) {
+        array_walk_recursive($metadata_this['in_flat_tree'], function ($v, $k) use (&$result) {
             $result[] = $v;
         });
-        $immediate_children['in_flat_tree'] = $result;
+        $metadata_this['in_flat_tree'] = $result;
 
         $result = array();
-        array_walk_recursive($immediate_children['in_tr_flat_tree'], function ($v, $k) use (&$result) {
+        array_walk_recursive($metadata_this['in_links_flat_tree'], function ($v, $k) use (&$result) {
             $result[] = $v;
         });
-        $immediate_children['in_tr_flat_tree'] = $result;
+        $metadata_this['in_links_flat_tree'] = $result;
 
 
         //Return data:
-        return $immediate_children;
+        return $metadata_this;
     }
 
 
@@ -1368,11 +1438,11 @@ class Matrix_model extends CI_Model
             $dwn_tree = $this->Matrix_model->k_recursive_fetch($w['tr_id'], $cr['tr_in_child_id'], true);
 
             //Does it have OUTs?
-            if (count($dwn_tree['k_flat']) > 0) {
+            if (count($dwn_tree['actionplan_ins_flat']) > 0) {
                 //We do have down, let's check their status:
                 $dwn_incomplete_ks = $this->Database_model->fn___tr_fetch(array(
                     'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
-                    'tr_id IN (' . join(',', $dwn_tree['k_flat']) . ')' => null, //All OUT links
+                    'tr_id IN (' . join(',', $dwn_tree['actionplan_ins_flat']) . ')' => null, //All OUT links
                 ), array('cr'));
                 if (count($dwn_incomplete_ks) > 0) {
                     //We do have some incomplete children, so this is not complete:
@@ -1397,7 +1467,7 @@ class Matrix_model extends CI_Model
             $up_tree = $this->Matrix_model->k_recursive_fetch($w['tr_id'], $cr['tr_in_child_id'], false);
 
             //Now loop through each level and see whatssup:
-            foreach ($up_tree['k_flat'] as $parent_tr_id) {
+            foreach ($up_tree['actionplan_ins_flat'] as $parent_tr_id) {
 
                 //Fetch details to see whatssup:
                 $parent_ks = $this->Database_model->fn___tr_fetch(array(
@@ -1454,7 +1524,7 @@ class Matrix_model extends CI_Model
     }
 
 
-    function fn___add_messenger_user($psid)
+    function fn___en_messenger_add($psid)
     {
 
         /*
@@ -1467,7 +1537,7 @@ class Matrix_model extends CI_Model
         if ($psid < 1) {
             //Ooops, this should never happen:
             $this->Database_model->fn___tr_create(array(
-                'tr_content' => 'fn___add_messenger_user() got called without a valid Facebook $psid variable',
+                'tr_content' => 'fn___en_messenger_add() got called without a valid Facebook $psid variable',
                 'tr_en_type_id' => 4246, //Platform Error
             ));
             return false;
@@ -1642,7 +1712,7 @@ class Matrix_model extends CI_Model
             $child_in = $ins[0];
 
             //check all parents as this intent cannot be duplicated with any of its parents:
-            $parent_tree = $this->Matrix_model->in_recursive_fetch($in_parent_id);
+            $parent_tree = $this->Matrix_model->fn___in_recursive_fetch($in_parent_id);
             if (in_array($child_in['in_id'], $parent_tree['in_flat_tree'])) {
                 return array(
                     'status' => 0,
@@ -1682,7 +1752,7 @@ class Matrix_model extends CI_Model
             $metadata = unserialize($child_in['in_metadata']);
             //Fetch and adjust the intent tree based on these values:
             $in_metadata_modify = array(
-                'in__tree_in_count' => ( isset($metadata['in__tree_in_count']) ? intval($metadata['in__tree_in_count']) : 0 ),
+                'in__tree_in_active_count' => ( isset($metadata['in__tree_in_active_count']) ? intval($metadata['in__tree_in_active_count']) : 0 ),
                 'in__tree_max_seconds' => ( isset($metadata['in__tree_max_seconds']) ? intval($metadata['in__tree_max_seconds']) : 0 ),
                 'in__message_tree_count' => ( isset($metadata['in__message_tree_count']) ? intval($metadata['in__message_tree_count']) : 0 ),
             );
@@ -1693,7 +1763,7 @@ class Matrix_model extends CI_Model
 
             //Prepare recursive update:
             $in_metadata_modify = array(
-                'in__tree_in_count' => 1, //We just added 1 new intent to this tree
+                'in__tree_in_active_count' => 1, //We just added 1 new intent to this tree
             );
 
             //Create child intent:
@@ -1701,7 +1771,7 @@ class Matrix_model extends CI_Model
                 'in_status' => 1, //Working On
                 'in_outcome' => trim($in_outcome),
                 'in_metadata' => $in_metadata_modify,
-            ));
+            ), true, $tr_en_credit_id);
 
             //Log transaction for New Intent:
             $this->Database_model->fn___tr_create(array(
@@ -1713,6 +1783,9 @@ class Matrix_model extends CI_Model
                 'tr_en_type_id' => 4250, //New Intent
                 'tr_in_child_id' => $child_in['in_id'],
             ));
+
+            //Sync the metadata of this new intent:
+            $this->Matrix_model->fn___in_recursive_fetch($child_in['in_id'], true, true);
             
         }
 
@@ -1752,7 +1825,7 @@ class Matrix_model extends CI_Model
             'in_child_html' => fn___echo_in($new_ins[0], $next_level, $in_parent_id),
             //Also append some tree data for UI modifications via JS functions:
             'in__tree_max_seconds' => ( isset($in_metadata_modify['in__tree_max_seconds']) ? intval($in_metadata_modify['in__tree_max_seconds']) : 0 ), //Seconds added because of this
-            'in__tree_in_count' => intval($in_metadata_modify['in__tree_in_count']), //We must have this (Either if we're linking OR creating) to show new intents in the tree
+            'in__tree_in_active_count' => intval($in_metadata_modify['in__tree_in_active_count']), //We must have this (Either if we're linking OR creating) to show new intents in the tree
         );
 
     }

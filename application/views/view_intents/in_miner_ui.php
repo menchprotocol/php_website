@@ -35,8 +35,8 @@ if (isset($orphan_ins)) {
 
             if (count($in['in__parents']) > 0) {
                 echo '<div class="list-group list-level-2">';
-                foreach ($in['in__parents'] as $sub_intent) {
-                    echo fn___echo_in($sub_intent, 2, 0, true);
+                foreach ($in['in__parents'] as $parent_in) {
+                    echo fn___echo_in($parent_in, 2, 0, true);
                 }
                 echo '</div>';
             } else {
@@ -52,7 +52,7 @@ if (isset($orphan_ins)) {
 
             //Expand/Contract buttons
             echo '<div class="indent2">';
-            echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-children-count children-counter-' . $in['in_id'] . '">' . (isset($metadata['in__tree_in_count']) ? $metadata['in__tree_in_count'] : '') . '</span> Children</h5>';
+            echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-children-count children-counter-' . $in['in_id'] . '">' . (isset($metadata['in__tree_in_active_count']) ? $metadata['in__tree_in_active_count'] : '') . '</span> Children</h5>';
 
             echo '<div id="expand_intents" style="padding-left:8px; display: inline-block;">';
             echo '<i class="fas fa-plus-square expand_all" style="font-size: 1.2em;"></i> &nbsp;';
@@ -74,11 +74,12 @@ if (isset($orphan_ins)) {
 
             echo '<div id="in_children_errors indent2"></div>'; //Show potential errors detected in the Action Plan via our JS functions...
 
-            echo '<div id="list-c-' . $in['in_id'] . '" class="list-group list-is-children list-level-2 indent2">';
-            foreach ($in['in__children'] as $sub_intent) {
-                echo fn___echo_in($sub_intent, 2, $in['in_id']);
+            echo '<div id="list-in-' . $in['in_id'] . '" class="list-group list-is-children list-level-2 indent2">';
+            foreach ($in['in__children'] as $child_in) {
+                echo fn___echo_in($child_in, 2, $in['in_id']);
             }
 
+            //Enable Miner to add child intents:
             echo '<div class="list-group-item list_input grey-block">
                 <div class="input-group">
                     <div class="form-group is-empty" style="margin: 0; padding: 0;">
@@ -121,7 +122,7 @@ if (isset($orphan_ins)) {
 
 
                 <div>
-                    <div class="title"><h4><i class="fas fa-bullseye-arrow"></i> Target Outcome [<span
+                    <div class="title"><h4><i class="fas fa-bullseye-arrow"></i> Outcome [<span
                                     style="margin:0 0 10px 0; font-size:0.8em;"><span
                                         id="charNameNum">0</span>/<?= $this->config->item('in_outcome_max') ?></span>]
                             <span id="hb_598" class="help_button" intent-id="598"></span></h4></div>
@@ -139,7 +140,7 @@ if (isset($orphan_ins)) {
                 </div>
 
 
-                <div class="title" style="margin-top:15px;"><h4><i class="fas fa-comment-edit"></i> Trigger Statements
+                <div class="title" style="margin-top:15px;"><h4><i class="fas fa-comment-edit"></i> Alternative Outcomes
                         <span id="hb_7724" class="help_button" intent-id="7724"></span></h4></div>
                 <div class="help_body maxout" id="content_7724"></div>
                 <textarea class="form-control text-edit border msg" id="in_alternatives"
@@ -160,7 +161,7 @@ if (isset($orphan_ins)) {
                         </select>
                         <span class="checkbox" style="display: inline-block !important;">
                             <label style="display:inline-block !important; font-size: 0.9em !important; margin-left:8px;">
-                                <input type="checkbox" id="apply_recurively"/>
+                                <input type="checkbox" id="apply_recursively"/>
                                 <span class="underdot" data-toggle="tooltip" data-placement="top"
                                       title="Applies the new status recursively down to all children/grandchildren that have the same starting status. Page will refresh after saving.">
                                     Apply Recursively
@@ -168,6 +169,13 @@ if (isset($orphan_ins)) {
                                 </span>
                             </label>
                         </span>
+
+                        <div class="notify_in_remove hidden">
+                            <div class="alert alert-warning" style="margin:5px 0px; padding:7px;">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                You're about to archive this intent
+                            </div>
+                        </div>
 
 
                         <div class="title" style="margin-top:15px;">
@@ -219,7 +227,7 @@ if (isset($orphan_ins)) {
                                 }
                                 ?>
                             </select>
-                            <div class="notify_cr_delete hidden">
+                            <div class="notify_in_unlink hidden">
                                 <div class="alert alert-warning" style="margin:5px 0px; padding:7px;">
                                     <i class="fas fa-exclamation-triangle"></i>
                                     You're about to unlink this intent
@@ -245,11 +253,11 @@ if (isset($orphan_ins)) {
                                 <div class="input-group border">
                                     <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;">IF Scores </span>
                                     <input style="padding-left:0; padding-right:0; text-align:right;" type="text"
-                                           maxlength="3" id="cr_condition_min" value="" class="form-control">
+                                           maxlength="3" id="in__tree_master_score_min" value="" class="form-control">
                                     <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;"><i
                                                 class="fal fa-fas fa-percentage"></i> to </span>
                                     <input style="padding-left:0; padding-right:0; text-align:right;" type="text"
-                                           maxlength="3" id="cr_condition_max" value="" class="form-control">
+                                           maxlength="3" id="in__tree_master_score_max" value="" class="form-control">
                                     <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;"><i
                                                 class="fal fa-fas fa-percentage"></i></span>
                                 </div>
@@ -311,7 +319,7 @@ if (isset($orphan_ins)) {
 
                 <table width="100%" style="margin-top:10px;">
                     <tr>
-                        <td class="save-td"><a href="javascript:c_save_modify();" class="btn btn-primary">Save</a></td>
+                        <td class="save-td"><a href="javascript:in_save_modify();" class="btn btn-primary">Save</a></td>
                         <td><span class="save_intent_changes"></span></td>
                         <td style="width:80px; text-align:right;"></td>
                     </tr>

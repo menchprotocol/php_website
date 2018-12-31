@@ -142,7 +142,7 @@ class Intents extends CI_Controller
 
 
 
-    function c_move_c()
+    function fn___in_migrate()
     {
 
         //Authenticate Miner:
@@ -176,52 +176,65 @@ class Intents extends CI_Controller
 
 
         //Fetch all three intents to ensure they are all valid and use them for transaction logging:
-        $subject = $this->Database_model->fn___in_fetch(array(
+        $this_in = $this->Database_model->fn___in_fetch(array(
             'in_id' => intval($_POST['in_id']),
+            'in_status >=' => 0, //New+
         ));
-        $from = $this->Database_model->fn___in_fetch(array(
+        $from_in = $this->Database_model->fn___in_fetch(array(
             'in_id' => intval($_POST['from_in_id']),
+            'in_status >=' => 0, //New+
         ));
-        $to = $this->Database_model->fn___in_fetch(array(
+        $to_in = $this->Database_model->fn___in_fetch(array(
             'in_id' => intval($_POST['to_in_id']),
+            'in_status >=' => 0, //New+
         ));
 
-        if (!isset($subject[0]) || !isset($from[0]) || !isset($to[0])) {
+        if (!isset($this_in[0]) || !isset($from_in[0]) || !isset($to_in[0])) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid intent IDs',
             ));
         }
 
+        $this_metadata = unserialize($this_in[0]['in_metadata']);
+
+        //Make sure we have all metadata that is needed:
+        if(!isset($this_metadata['in__tree_in_active_count'])){
+            $this_metadata['in__tree_in_active_count'] = 1;
+        }
+        if(!isset($this_metadata['in__tree_max_seconds'])){
+            $this_metadata['in__tree_max_seconds'] = 0;
+        }
+        if(!isset($this_metadata['in__message_tree_count'])){
+            $this_metadata['in__message_tree_count'] = 0;
+        }
+
 
         //Make the move:
         $this->Database_model->fn___tr_update(intval($_POST['tr_id']), array(
-            'tr_en_parent_id' => $udata['en_id'],
-            'tr_in_parent_id' => intval($_POST['to_in_id']),
-            //No need to update sorting here as a separate JS function would call that within half a second after the move...
+            'tr_in_parent_id' => $to_in[0]['in_id'],
         ), $udata['en_id']);
 
 
-        //Adjust tree on both branches that have been affected:
-        $updated_from_recursively = $this->Matrix_model->fn___metadata_tree_update('in', $from[0]['in_id'], array(
-            'in__tree_in_count' => -($subject[0]['in__tree_in_count']),
-            'in__tree_max_seconds' => -(intval($subject[0]['in__tree_max_seconds'])),
-            'in__message_tree_count' => -($subject[0]['in__message_tree_count']),
+        //Adjust tree metadata on both branches that have been affected:
+        $updated_from_recursively = $this->Matrix_model->fn___metadata_tree_update('in', $from_in[0]['in_id'], array(
+            'in__tree_in_active_count' => -(intval($this_metadata['in__tree_in_active_count'])),
+            'in__tree_max_seconds' => -(intval($this_metadata['in__tree_max_seconds'])),
+            'in__message_tree_count' => -(intval($this_metadata['in__message_tree_count'])),
         ));
-        $updated_to_recursively = $this->Matrix_model->fn___metadata_tree_update('in', $to[0]['in_id'], array(
-            'in__tree_in_count' => +($subject[0]['in__tree_in_count']),
-            'in__tree_max_seconds' => +(intval($subject[0]['in__tree_max_seconds'])),
-            'in__message_tree_count' => +($subject[0]['in__message_tree_count']),
+        $updated_to_recursively = $this->Matrix_model->fn___metadata_tree_update('in', $to_in[0]['in_id'], array(
+            'in__tree_in_active_count' => +(intval($this_metadata['in__tree_in_active_count'])),
+            'in__tree_max_seconds' => +(intval($this_metadata['in__tree_max_seconds'])),
+            'in__message_tree_count' => +(intval($this_metadata['in__message_tree_count'])),
         ));
 
         //Return success
         fn___echo_json(array(
             'status' => 1,
-            'message' => 'Move completed',
         ));
     }
 
-    function c_save_settings()
+    function in_save_settings()
     {
 
         //Authenticate Miner:
@@ -242,7 +255,7 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Intent ID',
             ));
-        } elseif (!isset($_POST['level']) || intval($_POST['level']) < 0) {
+        } elseif (!isset($_POST['level']) || intval($_POST['level']) < 1) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing level',
@@ -250,9 +263,9 @@ class Intents extends CI_Controller
         } elseif (!isset($_POST['in_outcome']) || strlen($_POST['in_outcome']) < 1) {
             return fn___echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Intent',
+                'message' => 'Missing Outcome',
             ));
-        } elseif (!isset($_POST['in_seconds'])) {
+        } elseif (!isset($_POST['in_seconds']) || intval($_POST['in_seconds']) < 0) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Time Estimate',
@@ -262,12 +275,12 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Maximum estimated time is ' . round(($this->config->item('in_seconds_max') / 3600), 2) . ' hours for each intent. If larger, break the intent down into smaller intents.',
             ));
-        } elseif (!isset($_POST['apply_recurively'])) {
+        } elseif (!isset($_POST['apply_recursively'])) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Recursive setting',
             ));
-        } elseif (!isset($_POST['in_usd'])) {
+        } elseif (!isset($_POST['in_usd']) || doubleval($_POST['in_usd']) < 0) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Cost Estimate',
@@ -275,7 +288,7 @@ class Intents extends CI_Controller
         } elseif (!isset($_POST['in_status'])) {
             return fn___echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Status',
+                'message' => 'Missing Intent Status',
             ));
         } elseif (!isset($_POST['in_points'])) {
             return fn___echo_json(array(
@@ -305,9 +318,8 @@ class Intents extends CI_Controller
         }
 
         //Update array:
-        $c_update = array(
+        $in_update = array(
             'in_outcome' => trim($_POST['in_outcome']),
-            //These are also in the recursive adjustment array as they affect metadata
             'in_usd' => doubleval($_POST['in_usd']),
             'in_seconds' => intval($_POST['in_seconds']),
             'in_is_any' => intval($_POST['in_is_any']),
@@ -316,49 +328,53 @@ class Intents extends CI_Controller
             'in_alternatives' => trim($_POST['in_alternatives']),
         );
 
+        //Prep current intent metadata:
+        $metadata = unserialize($ins[0]['in_metadata']);
 
         //This determines if there are any recursive updates needed on the tree:
         $in_metadata_modify = array();
 
-
         //Check to see which variables actually changed:
-        foreach ($c_update as $key => $value) {
+        foreach ($in_update as $key => $value) {
 
             //Did this value change?
             if ($_POST[$key] == $ins[0][$key]) {
 
                 //No it did not! Remove it!
-                unset($c_update[$key]);
+                unset($in_update[$key]);
 
             } else {
 
                 //Something was updated!
-                //Does it required a recursive upward update on the tree?
+                //Does it required a recursive tree update?
                 if ($key == 'in_seconds') {
-                    $in_metadata_modify['in__tree_max_seconds'] = intval($_POST[$key]) - intval($ins[0][$key]);
+                    $in_metadata_modify['in__tree_max_seconds'] = intval($_POST[$key]) - ( isset($metadata[$key]) ? intval($metadata[$key]) : 0 );
                 }
+
+                //TODO this secion needs more work
 
             }
         }
 
 
         //Did anything change?
-        if (count($c_update) > 0) {
+        $updated_children = 0;
+
+        if (count($in_update) > 0) {
 
             //YES, update the DB:
-            $this->Database_model->fn___in_update($_POST['in_id'], $c_update, true, $udata['en_id']);
+            $this->Database_model->fn___in_update($_POST['in_id'], $in_update, true, $udata['en_id']);
 
-            //Any recursive updates needed?
+            //Any relative upward recursive updates needed?
             if (count($in_metadata_modify) > 0) {
                 $this->Matrix_model->fn___metadata_tree_update('in', $_POST['in_id'], $in_metadata_modify);
             }
 
             //Any recursive down status sync requests?
-            $updated_children = 0;
-            if (intval($_POST['apply_recurively']) && !(intval($_POST['in_status']) == intval($ins[0]['in_status']))) {
+            if (intval($_POST['apply_recursively']) && !(intval($_POST['in_status']) == intval($ins[0]['in_status']))) {
 
                 //Yes, sync downwards where current statuses match:
-                $children = $this->Matrix_model->in_recursive_fetch(intval($_POST['in_id']), true);
+                $children = $this->Matrix_model->fn___in_recursive_fetch(intval($_POST['in_id']), true);
 
                 //Fetch all intents that match parent intent status:
                 $child_ins = $this->Database_model->fn___in_fetch(array(
@@ -373,14 +389,15 @@ class Intents extends CI_Controller
             }
         }
 
+
         //Show success:
         return fn___echo_json(array(
             'status' => 1,
             'updated_children' => $updated_children,
-            'in__tree_in_count' => -($ins[0]['in__tree_in_count']),
+            'in__tree_in_active_count' => -( isset($metadata['in__tree_in_active_count']) ? $metadata['in__tree_in_active_count'] : 0 ),
             'message' => '<span><i class="fas fa-check"></i> Saved' . ($updated_children > 0 ? ' & ' . $updated_children . ' Recursive Updates' : '') . '</span>',
-            'status_c_ui' => fn___echo_status('in_status', $_POST['in_status'], true, 'left'),
-            'status_cr_ui' => fn___echo_status('tr_status', $_POST['tr_status'], true, 'left'),
+            'status_in_ui' => fn___echo_status('in_status', $_POST['in_status'], true, 'left'),
+            'status_in_tr_ui' => fn___echo_status('tr_status', $_POST['tr_status'], true, 'left'),
         ));
 
     }
@@ -673,7 +690,7 @@ class Intents extends CI_Controller
         }
 
         //Now save URL as a new entity:
-        $created_url = $this->Matrix_model->fn___create_en_from_url($new_file_url);
+        $created_url = $this->Matrix_model->fn___en_url_add($new_file_url);
 
         //Did we have an error?
         if (!$created_url['status']) {

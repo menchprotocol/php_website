@@ -770,11 +770,11 @@ function fn___echo_in_overview($in, $fb_messenger_format = 0)
 
     //Do we have anything to return?
     $metadata = unserialize($in['in_metadata']);
-    if (!isset($metadata['in__tree_in_count']) || $metadata['in__tree_in_count'] < 1) {
+    if (!isset($metadata['in__tree_in_published_count']) || $metadata['in__tree_in_published_count'] < 1) {
         return false;
     }
 
-    $pitch = 'Action Plan contains ' . $metadata['in__tree_in_count'] . ' key ideas that will help you ' . $in['in_outcome'] . '.';
+    $pitch = 'Action Plan contains ' . $metadata['in__tree_in_published_count'] . ' key ideas that will help you ' . $in['in_outcome'] . '.';
 
     if ($fb_messenger_format) {
         return '🚩 ' . $pitch . "\n";
@@ -785,7 +785,7 @@ function fn___echo_in_overview($in, $fb_messenger_format = 0)
             <div class="panel-heading" role="tab" id="heading' . $id . '">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="false" aria-controls="collapse' . $id . '">
-                    <i class="fas" style="transform:none !important;">💡</i> ' . $metadata['in__tree_in_count'] . ' key ideas<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                    <i class="fas" style="transform:none !important;">💡</i> ' . $metadata['in__tree_in_published_count'] . ' Key Ideas<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                 </a>
             </h4>
         </div>
@@ -1214,8 +1214,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
     } else {
 
-        //WARNING: Do not change the order of data-link-id & intent-id as the sorting logic depends on their exact position to sort (Not sure why lol)
-        $ui = '<div id="cr_' . $tr_id . '" data-link-id="' . $tr_id . '" tr_status="' . $in['tr_status'] . '" intent-id="' . $in['in_id'] . '" parent-intent-id="' . $in_parent_id . '" intent-level="' . $level . '" class="list-group-item ' . ($level == 3 ? 'is_level3_sortable' : 'is_level2_sortable') . ' intent_line_' . $in['in_id'] . '">';
+        $ui = '<div id="cr_' . $tr_id . '" in-tr-id="' . $tr_id . '" tr_status="' . $in['tr_status'] . '" intent-id="' . $in['in_id'] . '" parent-intent-id="' . $in_parent_id . '" intent-level="' . $level . '" class="list-group-item ' . ($level == 3 ? 'is_level3_sortable' : 'is_level2_sortable') . ' intent_line_' . $in['in_id'] . '">';
 
     }
 
@@ -1281,7 +1280,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
 
         //Intent Link to Travel Down/UP the Tree:
-        $ui .= '&nbsp;<a href="' . ($level == 1 ? 'javascript:alert(\'You are already here!\')' : '/intents/' . $in['in_id']) . '" class="tree-badge-' . $in['in_id'] . ' badge badge-primary ' . (isset($metadata['in__tree_in_count']) && $metadata['in__tree_in_count'] <= 1 ? 'grey' : '') . '" style="display:inline-block; margin-right:-1px; width:40px;">' . (isset($metadata['in__tree_in_count']) ? '<span class="btn-counter children-counter-' . $in['in_id'] . ' ' . ($is_parent && $level == 2 ? 'inb-counter' : '') . '">' . $metadata['in__tree_in_count'] . '</span>' : '') . '<i class="in_is_any_icon' . $in['in_id'] . ' ' . ($in['in_is_any'] ? 'fas fa-code-merge' : 'fas fa-sitemap') . '" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i></a> ';
+        $ui .= '&nbsp;<a href="' . ($level == 1 ? 'javascript:alert(\'You are already here!\')' : '/intents/' . $in['in_id']) . '" class="tree-badge-' . $in['in_id'] . ' badge badge-primary ' . (isset($metadata['in__tree_in_active_count']) && $metadata['in__tree_in_active_count'] <= 1 ? 'grey' : '') . '" style="display:inline-block; margin-right:-1px; width:40px;">' . (isset($metadata['in__tree_in_active_count']) ? '<span class="btn-counter children-counter-' . $in['in_id'] . ' ' . ($is_parent && $level == 2 ? 'inb-counter' : '') . '">' . $metadata['in__tree_in_active_count'] . '</span>' : '') . '<i class="in_is_any_icon' . $in['in_id'] . ' ' . ($in['in_is_any'] ? 'fas fa-code-merge' : 'fas fa-sitemap') . '" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i></a> ';
 
     $ui .= '</span> '; //End of right column
 
@@ -1337,7 +1336,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         $ui .= ' <span class="obj-id underdot" data-toggle="tooltip" data-placement="top" title="Intent #' . $in['in_id'] . '">#' . $in['in_id'] . '</span>';
 
         //Give option to update the cache:
-        $ui .= ' <a href="/cron/intent_sync/' . $in['in_id'] . '/1?redirect=/' . $in['in_id'] . '" onclick="turn_off()" data-toggle="tooltip" title="Updates Intent tree cache which controls landing page counters for intent, hours, content types and industry expert" data-placement="top"><i class="fas fa-sync-alt"></i></a>';
+        $ui .= ' <a href="/cron/fn___in_metadata_update/' . $in['in_id'] . '/1?redirect=/' . $in['in_id'] . '" onclick="turn_off()" data-toggle="tooltip" title="Updates Intent tree cache which controls landing page counters for intent, hours, content types and industry expert" data-placement="top"><i class="fas fa-sync-alt"></i></a>';
 
         //Show Landing Page URL:
         $ui .= ' <a href="/' . $in['in_id'] . '" data-toggle="tooltip" title="Open Landing Page with Intent tree overview & Messenger Action Plan button" data-placement="top"><i class="fas fa-shopping-cart"></i></a>';

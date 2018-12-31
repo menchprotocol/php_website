@@ -909,7 +909,7 @@ class Database_model extends CI_Model
                 //Append some of the intent Metadata for better contextual searching:
                 $alg_obj['in__tree_max_secs'] = ($metadata && isset($metadata['in__tree_max_seconds']) ? intval($metadata['in__tree_max_seconds']) : 0);
                 $alg_obj['in__tree_min_secs'] = ($metadata && isset($metadata['in__tree_min_secs']) ? intval($metadata['in__tree_min_secs']) : 0);
-                $alg_obj['in__tree_in_count'] = ($metadata && isset($metadata['in__tree_in_count']) ? intval($metadata['in__tree_in_count']) : 0);
+                $alg_obj['in__tree_in_active_count'] = ($metadata && isset($metadata['in__tree_in_active_count']) ? intval($metadata['in__tree_in_active_count']) : 0);
                 $alg_obj['in__message_tree_count'] = ($metadata && isset($metadata['in__message_tree_count']) ? intval($metadata['in__message_tree_count']) : 0);
 
                 //Append parent intents IDs:
