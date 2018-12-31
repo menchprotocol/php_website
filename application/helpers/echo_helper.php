@@ -223,7 +223,7 @@ function fn___echo_in_message_manage($tr)
     $ui .= '<div class="edit-off text_message" id="msgbody_' . $tr['tr_id'] . '" style="margin:2px 0 0 0;">';
 
     //Now get the message snippet:
-    $ui .= $CI->Chat_model->fn___echo_message($tr['tr_content'], $udata);
+    $ui .= $CI->Chat_model->fn___dispatch_message($tr['tr_content'], $udata);
 
     $ui .= '</div>';
 
@@ -1356,8 +1356,6 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         $ui .= '</span>';
 
         $ui .= '<span id="title_' . $tr_id . '" class="cdr_crnt tree_title in_outcome_' . $in['in_id'] . (strlen($in['in_alternatives']) > 0 ? ' has-desc ' : '') . '" children-rank="' . $in['tr_order'] . '" ' . $in_settings . ' data-toggle="tooltip" data-placement="right" title="' . $in['in_alternatives'] . '">' . $in['in_outcome'] . '</span> ';
-
-        $ui .= ' <span class="obj-id underdot" data-toggle="tooltip" data-placement="top" title="Intent #' . $in['in_id'] . '">#' . $in['in_id'] . '</span>';
 
         $ui .= $extra_ui;
 

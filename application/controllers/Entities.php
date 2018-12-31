@@ -347,7 +347,7 @@ class Entities extends CI_Controller
                 echo '<h4><i class="fas fa-hashtag" style="font-size:1em;"></i> ' . $tr['in_outcome'] . '</h4>';
 
                 echo '<div>';
-                    echo $this->Chat_model->fn___echo_message($tr['tr_content'], $udata, false);
+                    echo $this->Chat_model->fn___dispatch_message($tr['tr_content'], $udata, false);
                 echo '</div>';
 
             echo '</div>';
@@ -539,7 +539,7 @@ class Entities extends CI_Controller
             $timestamp = time();
 
             //Dispatch the password reset Intent:
-            $this->Chat_model->fn___echo_message(
+            $this->Chat_model->fn___dispatch_message(
                 'Hi /firstname 👋​ You can reset your Mench password here: /link:🔑 Reset Password:https://mench.com/my/reset_pass?en_id=' . $matching_users[0]['en_id'] . '&timestamp=' . $timestamp . '&p_hash=' . md5($matching_users[0]['en_id'] . $this->config->item('password_salt') . $timestamp).' (Link active for 24 hours)',
                 $matching_users[0],
                 true

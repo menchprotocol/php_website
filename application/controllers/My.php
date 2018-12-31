@@ -87,7 +87,7 @@ class My extends CI_Controller
 
         if($empty_session && $psid > 0){
             //Authenticate this user:
-            $udata = $this->Matrix_model->fn___en_messenger_authenticate($psid);
+            $udata = $this->Matrix_model->fn___en_master_messenger_authenticate($psid);
         }
 
         //Set Action Plan filters:

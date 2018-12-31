@@ -459,19 +459,6 @@ class Intents extends CI_Controller
                     'in_status >=' => 0,
                 ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
 
-                //Log transaction:
-                $this->Database_model->fn___tr_create(array(
-                    'tr_en_credit_id' => $udata['en_id'],
-                    'tr_content' => 'Sorted child intents for [' . $parent_ins[0]['in_outcome'] . ']',
-                    'tr_metadata' => array(
-                        'input_data' => $_POST,
-                        'before' => $children_before,
-                        'after' => $children_after,
-                    ),
-                    'tr_en_type_id' => 4262, // Links Sorted
-                    'tr_in_child_id' => intval($_POST['in_id']),
-                ));
-
                 //Display message:
                 fn___echo_json(array(
                     'status' => 1,
@@ -519,28 +506,16 @@ class Intents extends CI_Controller
             ));
         }
 
+        $_GET['log_miner_messages'] = 1; //Will log miner messages which normally do not get logged (so we prevent intent message editing logs)
         $tip_messages = null;
         foreach ($on_start_messages as $tr) {
-
-            //Log transaction for all messages
-            $this->Database_model->fn___tr_create(array(
-                'tr_en_credit_id' => $udata['en_id'],
-                'tr_en_child_id' => $udata['en_id'],
-                'tr_en_type_id' => 4273, //Matrix Tip Read
-                'tr_in_child_id' => intval($_POST['in_id']),
-                'tr_tr_parent_id' => $tr['tr_id'],
-                'tr_metadata' => $tr, //A copy of the message
-            ));
-
-            //Build UI friendly HTML Message:
-            $tip_messages .= $this->Chat_model->fn___echo_message($tr['tr_content'], $udata, false);
-
+            //What type of message is this?
+            $tip_messages .= $this->Chat_model->fn___dispatch_message($tr['tr_content'], $udata, false);
         }
 
         //Return results:
         return fn___echo_json(array(
             'status' => 1,
-            'in_id' => intval($_POST['in_id']),
             'tip_messages' => $tip_messages,
         ));
     }
@@ -838,7 +813,7 @@ class Intents extends CI_Controller
         }
 
         //Make sure message is all good:
-        $msg_validation = $this->Chat_model->fn___validate_echo_message($_POST['tr_content']);
+        $msg_validation = $this->Chat_model->fn___dispatch_validate_message($_POST['tr_content']);
 
         if (!$msg_validation['status']) {
             //There was some sort of an error:
@@ -877,7 +852,7 @@ class Intents extends CI_Controller
         //Print the challenge:
         return fn___echo_json(array(
             'status' => 1,
-            'message' => $this->Chat_model->fn___echo_message($msg_validation['input_message'], $udata, false),
+            'message' => $this->Chat_model->fn___dispatch_message($msg_validation['input_message'], $udata, false),
             'tr_en_type_id' => $en_all_4485[$new_messages[0]['tr_en_type_id']]['m_icon'].' '.$en_all_4485[$new_messages[0]['tr_en_type_id']]['m_name'],
             'success_icon' => '<span><i class="fas fa-check"></i> Saved</span>',
         ));

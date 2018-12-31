@@ -102,7 +102,7 @@ if (count($on_start_messages) > 0) {
     foreach ($on_start_messages as $tr) {
         if ($tr['tr_status'] == 1) {
             echo '<div class="tip_bubble">';
-            echo $this->Chat_model->fn___echo_message($tr['tr_content'], $actionplan);
+            echo $this->Chat_model->fn___dispatch_message($tr['tr_content'], $actionplan);
             echo '</div>';
         }
     }

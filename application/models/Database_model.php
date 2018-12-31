@@ -180,7 +180,7 @@ class Database_model extends CI_Model
         }
 
         //Try to auto detect user:
-        if (!isset($insert_columns['tr_en_credit_id'])) {
+        if (!isset($insert_columns['tr_en_credit_id']) || is_null($insert_columns['tr_en_credit_id'])) {
             //Attempt to fetch creator ID from session:
             $entity_data = $this->session->userdata('user');
             if (isset($entity_data['en_id']) && intval($entity_data['en_id']) > 0) {
@@ -196,7 +196,7 @@ class Database_model extends CI_Model
             $insert_columns['tr_content'] = null;
         }
 
-        if (!isset($insert_columns['tr_timestamp'])) {
+        if (!isset($insert_columns['tr_timestamp']) || is_null($insert_columns['tr_timestamp'])) {
             //Time with milliseconds:
             $t = microtime(true);
             $micro = sprintf("%06d", ($t - floor($t)) * 1000000);
@@ -204,7 +204,7 @@ class Database_model extends CI_Model
             $insert_columns['tr_timestamp'] = $d->format("Y-m-d H:i:s.u");
         }
 
-        if (!isset($insert_columns['tr_status'])) {
+        if (!isset($insert_columns['tr_status'])|| is_null($insert_columns['tr_status'])) {
             $insert_columns['tr_status'] = 2; //Auto Published
         }
 
@@ -523,20 +523,20 @@ class Database_model extends CI_Model
 
         //Any intent joins?
         if (in_array('in_parent', $join_objects)) {
-            $this->db->join('table_intents', 'tr_in_parent_id=in_id');
+            $this->db->join('table_intents', 'tr_in_parent_id=in_id','left');
         } elseif (in_array('in_child', $join_objects)) {
-            $this->db->join('table_intents', 'tr_in_child_id=in_id');
+            $this->db->join('table_intents', 'tr_in_child_id=in_id','left');
         }
 
         //Any entity joins?
         if (in_array('en_parent', $join_objects)) {
-            $this->db->join('table_entities', 'tr_en_parent_id=en_id');
+            $this->db->join('table_entities', 'tr_en_parent_id=en_id','left');
         } elseif (in_array('en_child', $join_objects)) {
-            $this->db->join('table_entities', 'tr_en_child_id=en_id');
+            $this->db->join('table_entities', 'tr_en_child_id=en_id','left');
         } elseif (in_array('en_type', $join_objects)) {
-            $this->db->join('table_entities', 'tr_en_type_id=en_id');
+            $this->db->join('table_entities', 'tr_en_type_id=en_id','left');
         } elseif (in_array('en_credit', $join_objects)) {
-            $this->db->join('table_entities', 'tr_en_credit_id=en_id');
+            $this->db->join('table_entities', 'tr_en_credit_id=en_id','left');
         }
 
         foreach ($match_columns as $key => $value) {
@@ -607,7 +607,7 @@ class Database_model extends CI_Model
                     //Value has changed, log transaction:
                     $this->Database_model->fn___tr_create(array(
                         'tr_en_credit_id' => ($tr_en_credit_id > 0 ? $tr_en_credit_id : $id),
-                        'tr_en_type_id' => ($key == 'en_status' && intval($value) < 0 ? 4253 /* Removed */ : 4263 /* Attribute Modified */),
+                        'tr_en_type_id' => 4253, //Entity Attribute Modified
                         'tr_en_child_id' => $id,
                         'tr_content' => 'Entity ' . ucwords(str_replace('_', ' ', str_replace('en_', '', $key))) . ' modified from [' . $before_data[0][$key] . '] to [' . $value . ']',
                         'tr_metadata' => array(
@@ -668,7 +668,7 @@ class Database_model extends CI_Model
                     //Value has changed, log transaction:
                     $this->Database_model->fn___tr_create(array(
                         'tr_en_credit_id' => $tr_en_credit_id,
-                        'tr_en_type_id' => ($key == 'in_status' && intval($value) < 0 ? 4252 /* Removed */ : 4264 /* Attribute Modified */),
+                        'tr_en_type_id' => 4264, //Intent Attribute Modified
                         'tr_in_child_id' => $id,
                         'tr_content' => 'Intent ' . ucwords(str_replace('_', ' ', str_replace('in_', '', $key))) . ' modified from [' . $before_data[0][$key] . '] to [' . $value . ']',
                         'tr_metadata' => array(
@@ -731,7 +731,7 @@ class Database_model extends CI_Model
                     $this->Database_model->fn___tr_create(array(
                         'tr_tr_parent_id' => $id, //Parent Transaction ID
                         'tr_en_credit_id' => $tr_en_credit_id,
-                        'tr_en_type_id' => ($key == 'tr_status' && in_array(intval($value), array(-1, -3)) ? 4241 /* Removed */ : 4242 /* Attribute Modified */),
+                        'tr_en_type_id' => 4242, //Transaction Attribute Modified
                         'tr_content' => 'Transaction ' . ucwords(str_replace('_', ' ', str_replace('tr_', '', $key))) . ' modified from [' . $before_data[0][$key] . '] to [' . $value . ']',
                         'tr_metadata' => array(
                             'tr_id' => $id,

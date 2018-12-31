@@ -91,7 +91,7 @@ foreach ($tr_filters as $key => $value) {
 
         //Echo Transaction filters:
         echo '<select class="form-control border" name="tr_en_type_id" class="border" data-toggle="tooltip" data-placement="top" title="Transaction Types" style="width:160px;">';
-        echo '<option value="0">All Transactions ('  . fn___echo_number($all_transaction_count) . ')</option>';
+        echo '<option value="0">All Transaction Types ('  . fn___echo_number($all_transaction_count) . ')</option>';
         echo $select_ui;
         echo '</select>';
 

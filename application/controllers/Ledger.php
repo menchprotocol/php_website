@@ -273,7 +273,7 @@ class Ledger extends CI_Controller
         }
 
         //Make sure message is all good:
-        $msg_validation = $this->Chat_model->fn___validate_echo_message($_POST['tr_content']);
+        $msg_validation = $this->Chat_model->fn___dispatch_validate_message($_POST['tr_content']);
 
         if (!$msg_validation['status']) {
             //There was some sort of an error:

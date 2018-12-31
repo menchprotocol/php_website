@@ -84,7 +84,7 @@ class Matrix_model extends CI_Model
         if (count($actionplans) > 0 && in_array($actionplans[0]['tr_status'], $this->config->item('tr_status_incomplete'))) {
 
             //Inform user that they are now complete with all tasks:
-            $this->Chat_model->fn___echo_message(
+            $this->Chat_model->fn___dispatch_message(
                 'Congratulations for completing your Action Plan 🎉 Over time I will keep sharing new key ideas (based on my new training data) that will help you to ' . $actionplans[0]['in_outcome'] . ' 🙌 You can, at any time, stop updates on your Action Plans by saying "unsubscribe".',
                 array( 'en_id' => $actionplans[0]['tr_en_parent_id'] ),
                 true,
@@ -95,7 +95,7 @@ class Matrix_model extends CI_Model
                 )
             );
 
-            $this->Chat_model->fn___echo_message(
+            $this->Chat_model->fn___dispatch_message(
                 'How else can I help you ' . $this->config->item('in_primary_name') . '?',
                 array( 'en_id' => $actionplans[0]['tr_en_parent_id'] ),
                 true,
@@ -413,7 +413,7 @@ class Matrix_model extends CI_Model
     }
 
 
-    function fn___en_messenger_authenticate($psid)
+    function fn___en_master_messenger_authenticate($psid)
     {
 
         /*
@@ -428,7 +428,7 @@ class Matrix_model extends CI_Model
         if ($psid < 1) {
             //Ooops, this should never happen:
             $this->Database_model->fn___tr_create(array(
-                'tr_content' => 'fn___en_messenger_authenticate() got called without a valid Facebook $psid variable',
+                'tr_content' => 'fn___en_master_messenger_authenticate() got called without a valid Facebook $psid variable',
                 'tr_en_type_id' => 4246, //Platform Error
             ));
             return false;
@@ -491,7 +491,7 @@ class Matrix_model extends CI_Model
             ), array('en_parent'), 0, 0, array('tr_order' => 'ASC'));
 
             foreach ($on_complete_messages as $tr) {
-                $this->Chat_model->fn___echo_message(
+                $this->Chat_model->fn___dispatch_message(
                     $tr['tr_content'], //Message content
                     $actionplan_ins[0], //Includes entity data for Action Plan Master
                     true,
@@ -1568,7 +1568,7 @@ class Matrix_model extends CI_Model
             ), true);
 
             //Inform the master:
-            $this->Chat_model->fn___echo_message(
+            $this->Chat_model->fn___dispatch_message(
                 'Hi stranger! Let\'s get started by completing your profile information by opening the My Account tab in the menu below. /link:Open 👤My Account:https://mench.com/my/account',
                 $en,
                 true
@@ -1772,17 +1772,6 @@ class Matrix_model extends CI_Model
                 'in_outcome' => trim($in_outcome),
                 'in_metadata' => $in_metadata_modify,
             ), true, $tr_en_credit_id);
-
-            //Log transaction for New Intent:
-            $this->Database_model->fn___tr_create(array(
-                'tr_en_credit_id' => $tr_en_credit_id,
-                'tr_metadata' => array(
-                    'in_parent_id' => $in_parent_id,
-                    'after' => $child_in,
-                ),
-                'tr_en_type_id' => 4250, //New Intent
-                'tr_in_child_id' => $child_in['in_id'],
-            ));
 
             //Sync the metadata of this new intent:
             $this->Matrix_model->fn___in_recursive_fetch($child_in['in_id'], true, true);

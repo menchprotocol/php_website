@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  *
  * Global variables used throughout the platform.
- * use-case format: $this->config->item('notify_admins')
+ * use-case format: $this->config->item('')
  *
  */
 
@@ -48,7 +48,7 @@ $config['message_commands'] = array( //The list of commands supported within a m
 );
 
 //Third-Party Settings:
-$config['fb_max_message'] = 2000; //The maximum length of a Message accepted via Messenger API (This used to be 610 before, then Facebook expanded it!)
+$config['fb_max_message'] = 2000; //The maximum length of a Message accepted via Messenger API
 $config['en_convert_4454'] = array( //Mench Notification Levels to Facebook Messenger - This is a manual converter of our internal entities to Facebook API language
     4456 => 'REGULAR',
     4457 => 'SILENT_PUSH',

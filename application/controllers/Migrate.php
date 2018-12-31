@@ -19,29 +19,16 @@ class Migrate extends CI_Controller
     function in()
     {
 
-        //die('pending final migration');
-
         fn___boost_power();
-
-        //Delete everything before starting:
-        if(0){
-            $this->db->query("DELETE FROM table_intents WHERE in_id>0");
-            $this->db->query("DELETE FROM table_ledger WHERE tr_en_type_id IN (4231,4232,4233,4250,4228,4331);"); //The link types we could create with this function
-        }
 
         //These intents will have their messages converted to rotational from on-start:
         $in_onstart_to_rotational = array(8332,8333,8334);
-
+        $eng_converter = $this->config->item('eng_converter');
         $message_status_converter = array(
             1 => 4231,
             2 => 4232,
             3 => 4233,
         );
-
-        $ins = $this->Old_model->c_fetch(array(
-            //'c_id >=' => 8331,
-            'c_status >=' => 1, //working on or more
-        ), 0, array(), array('c_id' => 'ASC'));
         $stats = array(
             'intents' => 0,
             'intents_skipped' => 0,
@@ -50,9 +37,9 @@ class Migrate extends CI_Controller
             'total_links' => 0,
         );
 
-        $eng_converter = $this->config->item('eng_converter');
-
-        foreach ($ins as $c) {
+        foreach ($this->Old_model->c_fetch(array(
+            'c_status >=' => 1, //working on or more
+        ), 0, array(), array('c_id' => 'ASC')) as $c) {
 
             //Do not migrate the old transaction intents as they have now been moved to entities:
             if(array_key_exists($c['c_id'], $eng_converter)){
@@ -145,20 +132,10 @@ class Migrate extends CI_Controller
         fn___echo_json($stats);
     }
 
-    function en($u_id = 0)
+    function en()
     {
 
-        if(!$u_id){
-            //die('pending final migration');
-        }
-
         fn___boost_power();
-
-        //Delete everything before starting:
-        if(0){
-            $this->db->query("DELETE FROM table_entities WHERE en_id>0");
-            $this->db->query("DELETE FROM table_ledger WHERE tr_en_type_id IN (" . join(',', array_merge($this->config->item('en_ids_4537'), $this->config->item('en_ids_4538'), array(4251, 4235, 4559, 4299))) . ")"); //The link types we could create with this function
-        }
 
         $u_status_conv = array(
             -2 => 3, //Unsubscribe
@@ -192,18 +169,9 @@ class Migrate extends CI_Controller
         ));
 
 
-        $filters = array(
+        foreach ($this->Old_model->u_fetch(array(
             'u_status >=' => 0, //new+
-        );
-        if($u_id>0){
-            $filters['u_id'] = $u_id;
-        } else {
-            //$filters['u_id >'] = 4556;
-        }
-        $ens = $this->Old_model->u_fetch($filters, array('skip_en__parents'), 0, 0, array('u_id' => 'ASC'));
-
-
-        foreach ($ens as $u) {
+        ), array('skip_en__parents'), 0, 0, array('u_id' => 'ASC')) as $u) {
 
             //Does this entity have a cover photo?
             if (strlen($u['u_icon']) > 0) {
@@ -218,29 +186,27 @@ class Migrate extends CI_Controller
             }
 
             //Create new entity:
-            if(!$u_id){
-                $stats['entities']++;
-                $this->Database_model->fn___en_create(array(
-                    'en_id' => $u['u_id'],
-                    'en_status' => ($u['u_fb_psid'] > 0 ? 3 /* Claimed */ : $u_status_conv[$u['u_status']]),
-                    'en_icon' => $en_icon,
-                    'en_name' => $u['u_full_name'],
-                    'en_trust_score' => $u['u__e_score'],
-                    'en_psid' => ( $u['u_fb_psid'] > 0 ? $u['u_fb_psid'] : null ),
-                    'en_metadata' => array(
-                        'en__algolia_id' => intval($u['u_algolia_id']),
-                    ),
-                ));
+            $stats['entities']++;
+            $this->Database_model->fn___en_create(array(
+                'en_id' => $u['u_id'],
+                'en_status' => ($u['u_fb_psid'] > 0 ? 3 /* Claimed */ : $u_status_conv[$u['u_status']]),
+                'en_icon' => $en_icon,
+                'en_name' => $u['u_full_name'],
+                'en_trust_score' => $u['u__e_score'],
+                'en_psid' => ( $u['u_fb_psid'] > 0 ? $u['u_fb_psid'] : null ),
+                'en_metadata' => array(
+                    'en__algolia_id' => intval($u['u_algolia_id']),
+                ),
+            ));
 
-                //Create new entity creation link:
-                $stats['total_links']++;
-                $this->Database_model->fn___tr_create(array(
-                    'tr_timestamp' => $u['u_timestamp'],
-                    'tr_en_type_id' => 4251, //Entity created
-                    'tr_en_credit_id' => 1, //Shervin
-                    'tr_en_child_id' => $u['u_id'],
-                ));
-            }
+            //Create new entity creation link:
+            $stats['total_links']++;
+            $this->Database_model->fn___tr_create(array(
+                'tr_timestamp' => $u['u_timestamp'],
+                'tr_en_type_id' => 4251, //Entity created
+                'tr_en_credit_id' => 1, //Shervin
+                'tr_en_child_id' => $u['u_id'],
+            ));
 
 
             //Messenger Subscription?
@@ -465,20 +431,9 @@ class Migrate extends CI_Controller
         }
 
         //Update the table sequence after a mass update:
-        if(!$u_id){
-            $this->db->query("SELECT setval('table_entities_en_id_seq', ".$u['u_id'].", true);");
-        }
+        $this->db->query("SELECT setval('table_entities_en_id_seq', ".$u['u_id'].", true);");
 
         fn___echo_json($stats);
     }
-
-
-    function tr()
-    {
-
-        fn___boost_power();
-
-    }
-
 
 }

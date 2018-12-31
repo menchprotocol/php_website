@@ -127,34 +127,31 @@ class Bot extends CI_Controller
             //loop though the messages:
             foreach ($entry['messaging'] as $im) {
 
-                if (isset($im['read'])) {
+                if (isset($im['read']) || isset($im['delivery'])) {
 
-                    //TODO Only log IF last read transaction was 5+ minutes ago
+                    //Message read OR delivered
+                    $tr_en_type_id = ( isset($im['delivery']) ? 4279 /* Message Delivered */ : 4278 /* Message Read */ );
 
-                    $en = $this->Matrix_model->fn___en_messenger_authenticate($im['sender']['id']);
+                    //Authenticate Master:
+                    $en = $this->Matrix_model->fn___en_master_messenger_authenticate($im['sender']['id']);
 
-                    //This callback will occur when a message a page has sent has been read by the user.
-                    $this->Database_model->fn___tr_create(array(
-                        'tr_metadata' => $json_data,
-                        'tr_en_type_id' => 4278, //Message Read
-                        'tr_en_credit_id' => (isset($en['en_id']) ? $en['en_id'] : 0),
-                        'tr_timestamp' => fn___echo_time_milliseconds($im['timestamp']), //The Facebook time
+                    //Log Transaction Only IF last delivery transaction was 3+ minutes ago (Since Facebook sends many of these):
+                    $last_trs_logged = $this->Database_model->fn___tr_fetch(array(
+                        'tr_en_type_id' => $tr_en_type_id,
+                        'tr_en_parent_id' => $en['en_id'],
+                        'tr_timestamp >=' => date("Y-m-d H:i:s", (time() - (180))), //Transactions logged less than 3 minutes ago
+                    ), array(), 1);
 
-                    ));
-
-                } elseif (isset($im['delivery'])) {
-
-                    //TODO Only log IF last delivery transaction was 5+ minutes ago
-
-                    $en = $this->Matrix_model->fn___en_messenger_authenticate($im['sender']['id']);
-
-                    //This callback will occur when a message a page has sent has been delivered.
-                    $this->Database_model->fn___tr_create(array(
-                        'tr_metadata' => $json_data,
-                        'tr_en_type_id' => 4279, //Message Delivered
-                        'tr_en_credit_id' => (isset($en['en_id']) ? $en['en_id'] : 0),
-                        'tr_timestamp' => fn___echo_time_milliseconds($im['timestamp']), //The Facebook time
-                    ));
+                    if(count($last_trs_logged) == 0){
+                        //We had no recent transactions of this kind, so go ahead and log:
+                        $this->Database_model->fn___tr_create(array(
+                            'tr_metadata' => $json_data,
+                            'tr_en_type_id' => $tr_en_type_id,
+                            'tr_en_credit_id' => $en['en_id'],
+                            'tr_en_parent_id' => $en['en_id'],
+                            'tr_timestamp' => fn___echo_time_milliseconds($im['timestamp']), //The Facebook time
+                        ));
+                    }
 
                 } elseif (isset($im['referral']) || isset($im['postback'])) {
 
@@ -166,6 +163,13 @@ class Bot extends CI_Controller
                      *
                      * */
 
+                    //Messenger Referral OR Postback
+                    $tr_en_type_id = ( isset($im['delivery']) ? 4267 /* Messenger Referral */ : 4268 /* Messenger Postback */ );
+
+                    //Authenticate Master:
+                    $en = $this->Matrix_model->fn___en_master_messenger_authenticate($im['sender']['id']);
+
+                    //Extract more insights:
                     if (isset($im['postback'])) {
 
                         //The payload field passed is defined in the above places.
@@ -173,38 +177,54 @@ class Bot extends CI_Controller
 
                         if (isset($im['postback']['referral']) && count($im['postback']['referral']) > 0) {
 
-                            $referral_array = $im['postback']['referral'];
+                            $array_ref = $im['postback']['referral'];
 
                         } elseif ($payload == 'GET_STARTED') {
 
                             //The very first payload, set defaults:
-                            $referral_array = array(
+                            $array_ref = array(
                                 'ref' => $this->config->item('in_primary_id'),
                             );
 
                         } else {
                             //Postback without referral!
-                            $referral_array = null;
+                            $array_ref = null;
                         }
 
                     } elseif (isset($im['referral'])) {
 
-                        $referral_array = $im['referral'];
+                        $array_ref = $im['referral'];
 
                     }
 
                     //Did we have a ref from Messenger?
-                    $ref = ($referral_array && isset($referral_array['ref']) && strlen($referral_array['ref']) > 0 ? $referral_array['ref'] : null);
+                    $quick_reply_payload = ($array_ref && isset($array_ref['ref']) && strlen($array_ref['ref']) > 0 ? $array_ref['ref'] : null);
 
-                    $en = $this->Matrix_model->fn___en_messenger_authenticate($im['sender']['id']);
+                    //Log primary transaction:
+                    $this->Database_model->fn___tr_create(array(
+                        'tr_en_type_id' => $tr_en_type_id,
+                        'tr_metadata' => $json_data,
+                        'tr_content' => $quick_reply_payload,
+                        'tr_en_credit_id' => $en['en_id'],
+                        'tr_en_parent_id' => $en['en_id'],
+                        'tr_timestamp' => fn___echo_time_milliseconds($im['timestamp']), //The Facebook time
+                    ));
+
+                    //Digest quick reply Payload if any:
+                    if($quick_reply_payload){
+                        $this->Chat_model->fn___digest_received_quick_reply($en, $quick_reply_payload);
+                    }
 
                     /*
-                    if($ref){
+                     *
+                     * We are currently not using any of the following information...
+                     *
+                    if($quick_reply_payload){
                         //We have referrer data, see what this is all about!
                         //We expect an integer which is the challenge ID
-                        $ref_source = $referral_array['source'];
-                        $ref_type = $referral_array['type'];
-                        $ad_id = ( isset($referral_array['ad_id']) ? $referral_array['ad_id'] : null ); //Only IF user comes from the Ad
+                        $ref_source = $array_ref['source'];
+                        $ref_type = $array_ref['type'];
+                        $ad_id = ( isset($array_ref['ad_id']) ? $array_ref['ad_id'] : null ); //Only IF user comes from the Ad
 
                         //Optional actions that may need to be taken on SOURCE:
                         if(strtoupper($ref_source)=='ADS' && $ad_id){
@@ -219,35 +239,32 @@ class Bot extends CI_Controller
                     }
                     */
 
-                    //Log primary transaction:
-                    $this->Database_model->fn___tr_create(array(
-                        'tr_en_type_id' => (isset($im['referral']) ? 4267 : 4268), //Messenger Referral/Postback
-                        'tr_metadata' => $json_data,
-                        'tr_en_credit_id' => (isset($en['en_id']) ? $en['en_id'] : 0),
-                        'tr_timestamp' => fn___echo_time_milliseconds($im['timestamp']), //The Facebook time
-                    ));
-
-
-                    //We might need to respond based on the reference:
-                    $this->Chat_model->fn___digest_incoming_quick_reply($en, $ref);
-
-
                 } elseif (isset($im['optin'])) {
 
-                    $en = $this->Matrix_model->fn___en_messenger_authenticate($im['sender']['id']);
+                    $en = $this->Matrix_model->fn___en_master_messenger_authenticate($im['sender']['id']);
 
                     //Log transaction:
                     $this->Database_model->fn___tr_create(array(
                         'tr_metadata' => $json_data,
                         'tr_en_type_id' => 4266, //Messenger Optin
-                        'tr_en_credit_id' => (isset($en['en_id']) ? $en['en_id'] : 0),
+                        'tr_en_credit_id' => $en['en_id'],
+                        'tr_en_parent_id' => $en['en_id'],
                         'tr_timestamp' => fn___echo_time_milliseconds($im['timestamp']), //The Facebook time
                     ));
 
                 } elseif (isset($im['message_request']) && $im['message_request'] == 'accept') {
 
                     //This is when we message them and they accept to chat because they had Removed Messenger or something...
-                    $en = $this->Matrix_model->fn___en_messenger_authenticate($im['sender']['id']);
+                    $en = $this->Matrix_model->fn___en_master_messenger_authenticate($im['sender']['id']);
+
+                    //Log transaction:
+                    $this->Database_model->fn___tr_create(array(
+                        'tr_metadata' => $json_data,
+                        'tr_en_type_id' => 4577, //Message Request Accepted
+                        'tr_en_credit_id' => $en['en_id'],
+                        'tr_en_parent_id' => $en['en_id'],
+                        'tr_timestamp' => fn___echo_time_milliseconds($im['timestamp']), //The Facebook time
+                    ));
 
                 } elseif (isset($im['message'])) {
 
@@ -268,11 +285,14 @@ class Bot extends CI_Controller
 
 
                     //Set variables:
-                    unset($eng_data); //Reset everything in case its set from the previous loop!
+                    unset($tr_data); //Reset everything in case its set from the previous loop!
                     $sent_by_mench = (isset($im['message']['is_echo'])); //Indicates the message sent from the page itself
-                    $en = $this->Matrix_model->fn___en_messenger_authenticate(($sent_by_mench ? $im['recipient']['id'] : $im['sender']['id']));
-                    $eng_data = array(
-                        'tr_en_credit_id' => ($sent_by_mench ? 4148 /* Mench Admins via Facebook Inbox UI */ : $en['en_id']),
+                    $en = $this->Matrix_model->fn___en_master_messenger_authenticate(($sent_by_mench ? $im['recipient']['id'] : $im['sender']['id']));
+                    $tr_en_parent_id = ($sent_by_mench ? 4148 /* Mench Admins via Facebook Inbox UI */ : $en['en_id']);
+                    
+                    $tr_data = array(
+                        'tr_en_credit_id' => $tr_en_parent_id,
+                        'tr_en_parent_id' => $tr_en_parent_id,
                         'tr_en_child_id' => ($sent_by_mench ? $en['en_id'] : 0),
                         'tr_timestamp' => ($sent_by_mench ? null : fn___echo_time_milliseconds($im['timestamp']) ), //Facebook time if received from Master
                         'tr_metadata' => $json_data, //Entire JSON object received by Facebook API
@@ -295,30 +315,30 @@ class Bot extends CI_Controller
                     if(isset($im['message']['quick_reply']['payload'])){
 
                         //Quick Reply Answer Received (Cannot be sent as we never send quick replies)
-                        $eng_data['tr_en_type_id'] = 4460;
-                        $eng_data['tr_content'] = $im['message']['text']; //Quick reply always has a text
+                        $tr_data['tr_en_type_id'] = 4460;
+                        $tr_data['tr_content'] = $im['message']['text']; //Quick reply always has a text
 
                         //Digest the Quick Reply payload:
-                        $this->Chat_model->fn___digest_incoming_quick_reply($en, $im['message']['quick_reply']['payload']);
+                        $this->Chat_model->fn___digest_received_quick_reply($en, $im['message']['quick_reply']['payload']);
 
                     } elseif(isset($im['message']['text'])){
 
                         //Set message content:
-                        $eng_data['tr_content'] = $im['message']['text'];
+                        $tr_data['tr_content'] = $im['message']['text'];
 
                         //Who sent this?
                         if ($sent_by_mench) {
 
                             //Text Message Sent By Mench Admin via Facebook Inbox UI
-                            $eng_data['tr_en_type_id'] = 4552; //Text Message Sent
+                            $tr_data['tr_en_type_id'] = 4552; //Text Message Sent
 
                         } else {
 
                             //Text Message Received:
-                            $eng_data['tr_en_type_id'] = 4547;
+                            $tr_data['tr_en_type_id'] = 4547;
 
                             //Digest message & try to make sense of it:
-                            $this->Chat_model->fn___digest_incoming_message($en, $im['message']['text']);
+                            $this->Chat_model->fn___digest_received_message($en, $im['message']['text']);
 
                         }
 
@@ -328,10 +348,10 @@ class Bot extends CI_Controller
                         foreach ($im['message']['attachments'] as $att) {
 
                             //Define 4 main Attachment Message Types:
-                            $att_media_types = array(
+                            $att_media_types = array( //Converts video, audio, image and file messages
                                 'video' => array(
-                                    'sent' => 4553,
-                                    'received' => 4548,
+                                    'sent' => 4553,     //Transaction type for when sent to Masters via Messenger
+                                    'received' => 4548, //Transaction type for when received from Masters via Messenger
                                 ),
                                 'audio' => array(
                                     'sent' => 4554,
@@ -364,14 +384,14 @@ class Bot extends CI_Controller
                                  *
                                  * */
 
-                                $eng_data['tr_en_type_id'] = $att_media_types[$att['type']][( $sent_by_mench ? 'sent' : 'received' )];
-                                $eng_data['tr_content'] = $att['payload']['url']; //Media Attachment Temporary Facebook URL
-                                $eng_data['tr_status'] = 0; //Temporary Facebook URL to be uploaded to Mench CDN via Cron Job
+                                $tr_data['tr_en_type_id'] = $att_media_types[$att['type']][( $sent_by_mench ? 'sent' : 'received' )];
+                                $tr_data['tr_content'] = $att['payload']['url']; //Media Attachment Temporary Facebook URL
+                                $tr_data['tr_status'] = 0; //Working On, since URL needs to be uploaded to Mench CDN via Cron Job
 
                             } elseif ($att['type'] == 'location') {
 
                                 //Location Message Received:
-                                $eng_data['tr_en_type_id'] = 4557;
+                                $tr_data['tr_en_type_id'] = 4557;
 
                                 /*
                                  *
@@ -388,10 +408,10 @@ class Bot extends CI_Controller
                                 //Generate a URL from this location data:
                                 if(isset($att['url']) && strlen($att['url'])>0 ){
                                     //Sometimes Facebook Might provide a full URL:
-                                    $eng_data['tr_content'] = $att['url'];
+                                    $tr_data['tr_content'] = $att['url'];
                                 } else {
                                     //If not, we can generate our own URL using the Lat/Lng that will always be provided:
-                                    $eng_data['tr_content'] = 'https://www.google.com/maps?q='.$att['payload']['coordinates']['lat'].'+'.$att['payload']['coordinates']['long'];
+                                    $tr_data['tr_content'] = 'https://www.google.com/maps?q='.$att['payload']['coordinates']['lat'].'+'.$att['payload']['coordinates']['long'];
                                 }
 
                             } elseif ($att['type'] == 'template') {
@@ -426,29 +446,28 @@ class Bot extends CI_Controller
 
 
                     //So did we recognized the
-                    if(isset($eng_data['tr_en_type_id'])){
+                    if(isset($tr_data['tr_en_type_id'])){
 
                         //We're all good, log this message:
-                        $this->Database_model->fn___tr_create($eng_data);
+                        $this->Database_model->fn___tr_create($tr_data);
 
                     } else {
 
                         //Ooooopsi, this seems to be an unknown message type:
                         $this->Database_model->fn___tr_create(array(
                             'tr_en_type_id' => 4246, //Platform Error
-                            'tr_content' => 'facebook_webhook() Received unknown message type! Analyze metadata for more details.',
+                            'tr_content' => 'facebook_webhook() Received unknown message type! Analyze metadata for more details',
                             'tr_metadata' => $json_data,
-                            'tr_en_child_id' => $en['en_id'],
+                            'tr_en_parent_id' => $en['en_id'],
                         ));
 
                     }
-
 
                 } else {
 
                     //This should really not happen!
                     $this->Database_model->fn___tr_create(array(
-                        'tr_content' => 'facebook_webhook() received unrecognized webhook call.',
+                        'tr_content' => 'facebook_webhook() received unrecognized webhook call',
                         'tr_metadata' => $json_data,
                         'tr_en_type_id' => 4246, //Platform Error
                     ));

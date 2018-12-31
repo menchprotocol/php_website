@@ -27,8 +27,8 @@ function fn___in_matrix_tips(in_id) {
             //Let's see what we got:
             if (data.status) {
                 //Load the content:
-                $("div#content_" + data.in_id).html('<div class="row"><div class="col-xs-6"><a href="javascript:close_tip(' + data.in_id + ')">' + tips_button + '</a></div><div class="col-xs-6" style="text-align:right;"><a href="javascript:close_tip(' + data.in_id + ')"><i class="fas fa-times"></i></a></div></div>'); //Show the same button at top for UX
-                $("div#content_" + data.in_id).append(data.tip_messages);
+                $("div#content_" + in_id).html('<div class="row"><div class="col-xs-6"><a href="javascript:close_tip(' + in_id + ')">' + tips_button + '</a></div><div class="col-xs-6" style="text-align:right;"><a href="javascript:close_tip(' + in_id + ')"><i class="fas fa-times"></i></a></div></div>'); //Show the same button at top for UX
+                $("div#content_" + in_id).append(data.tip_messages);
 
                 //Reload tooldip:
                 $('[data-toggle="tooltip"]').tooltip();

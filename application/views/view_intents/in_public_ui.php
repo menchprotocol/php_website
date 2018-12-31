@@ -72,7 +72,7 @@ $is_primary_in = ( $in['in_id'] == $this->config->item('in_primary_id') );
         'tr_en_type_id' => 4231, //On-Start Messages
         'tr_in_child_id' => $in['in_id'],
     ), array(), 0, 0, array('tr_order' => 'ASC')) as $tr) {
-        echo $this->Chat_model->fn___echo_message($tr['tr_content']);
+        echo $this->Chat_model->fn___dispatch_message($tr['tr_content']);
     }
     ?>
 
@@ -121,7 +121,7 @@ $is_primary_in = ( $in['in_id'] == $this->config->item('in_primary_id') );
                     'tr_en_type_id' => 4231, //On-Start Messages
                     'tr_in_child_id' => $in_level2['in_id'],
                 ), array(), 0, 0, array('tr_order' => 'ASC')) as $tr) {
-                    echo $this->Chat_model->fn___echo_message($tr['tr_content']);
+                    echo $this->Chat_model->fn___dispatch_message($tr['tr_content']);
                 }
 
                 if (count($in_level2['in__grandchildren']) > 0) {
