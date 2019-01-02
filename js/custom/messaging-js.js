@@ -230,7 +230,7 @@ function fn___message_tr_order_load() {
             var tr_id = $(evt.item).attr('tr-id');
             if ($('#ul-nav-' + tr_id).find('.video-sorting').length !== 0) {
                 inner_content = $('#msgbody_' + tr_id).html();
-                $('#msgbody_' + tr_id).css('height', $('#msgbody_' + tr_id).height()).html('<i class="fas fa-bars"></i> Drag up/down to sort video');
+                $('#msgbody_' + tr_id).css('height', $('#msgbody_' + tr_id).height()).html('<i class="fal fa-bars"></i> Drag up/down to sort video');
             } else {
                 inner_content = null;
             }

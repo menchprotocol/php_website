@@ -111,101 +111,109 @@ if (isset($orphan_ins)) {
     <div class="col-xs-6 cols">
 
 
-        <div id="modifybox" class="fixed-box hidden" intent-id="0" intent-link-id="0" level="0">
+        <div id="modifybox" class="fixed-box hidden" intent-id="0" intent-tr-id="0" level="0">
 
-            <h5 class="badge badge-h"><i class="fas fa-cog"></i> Modify Intent</h5>
+            <h5 class="badge badge-h"><i class="fas fa-cog"></i> Modify</h5>
             <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;">
                 <a href="javascript:void(0)" onclick="$('#modifybox').addClass('hidden')"><i
                             class="fas fa-times-circle"></i></a>
             </div>
             <div class="grey-box">
 
-
-                <div>
-                    <div class="title"><h4><i class="fas fa-bullseye-arrow"></i> Outcome [<span
-                                    style="margin:0 0 10px 0; font-size:0.8em;"><span
-                                        id="charNameNum">0</span>/<?= $this->config->item('in_outcome_max') ?></span>]
-                            <span id="hb_598" class="help_button" intent-id="598"></span></h4></div>
-                    <div class="help_body maxout" id="content_598"></div>
-
-                    <div class="form-group label-floating is-empty">
-                        <div class="input-group border">
-                            <span class="input-group-addon addon-lean"
-                                  style="color:#2f2739; font-weight: 300;">To</span>
-                            <input style="padding-left:0;" type="text" id="in_outcome" onkeyup="in_outcome_counter()"
-                                   maxlength="<?= $this->config->item('in_outcome_max') ?>" value=""
-                                   class="form-control">
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="title" style="margin-top:15px;"><h4><i class="fas fa-comment-edit"></i> Alternative Outcomes
-                        <span id="hb_7724" class="help_button" intent-id="7724"></span></h4></div>
-                <div class="help_body maxout" id="content_7724"></div>
-                <textarea class="form-control text-edit border msg" id="in_alternatives"
-                          style="height:56px; background-color:#FFFFFF !important;"></textarea>
-
-
                 <div class="row">
                     <div class="col-md-6 inlineform">
 
-                        <div class="title" style="margin-top:15px;"><h4><i
-                                        class="fas fa-hashtag"></i> Intent Status</h4></div>
-                        <select class="form-control" id="in_status" style="display: inline-block !important;">
-                            <?php
-                            foreach (fn___echo_status('in_status') as $status_id => $status) {
-                                echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
-                            }
-                            ?>
-                        </select>
-                        <span class="checkbox" style="display: inline-block !important;">
-                            <label style="display:inline-block !important; font-size: 0.9em !important; margin-left:8px;">
-                                <input type="checkbox" id="apply_recursively"/>
-                                <span class="underdot" data-toggle="tooltip" data-placement="top"
-                                      title="Applies the new status recursively down to all children/grandchildren that have the same starting status. Page will refresh after saving.">
-                                    Apply Recursively
-                                    <i class="fas fa-info-circle"></i>
-                                </span>
-                            </label>
-                        </span>
 
-                        <div class="notify_in_remove hidden">
-                            <div class="alert alert-warning" style="margin:5px 0px; padding:7px;">
-                                <i class="fas fa-exclamation-triangle"></i>
-                                You're about to archive this intent
+                        <div class="title"><h4><i class="fas fa-bullseye-arrow"></i> Primary Outcome [<span
+                                        style="margin:0 0 10px 0; font-size:0.8em;"><span
+                                            id="charNameNum">0</span>/<?= $this->config->item('in_outcome_max') ?></span>]
+                                <span id="hb_598" class="help_button" intent-id="598"></span></h4></div>
+
+                        <div class="inline-box">
+                            <div class="help_body maxout" id="content_598"></div>
+
+                            <div class="form-group label-floating is-empty">
+                                <div class="input-group border">
+                                <span class="input-group-addon addon-lean"
+                                      style="color:#2f2739; font-weight: 300;">To</span>
+                                    <input style="padding-left:0;" type="text" id="in_outcome" onkeyup="in_outcome_counter()"
+                                           maxlength="<?= $this->config->item('in_outcome_max') ?>" value=""
+                                           class="form-control">
+                                </div>
                             </div>
                         </div>
 
 
-                        <div class="title" style="margin-top:15px;">
-                            <h4>
-                                <i class="fas fa-check-square"></i>
-                                Completion Method
-                            </h4>
-                        </div>
-                        <div class="form-group label-floating is-empty">
-                            <?php
-                            foreach (fn___echo_status('in_is_any') as $in_val => $intent_type) {
-                                echo '<div class="radio" style="display:inline-block; border-bottom:1px dotted #999; margin-top: 0 !important;" data-toggle="tooltip" title="' . $intent_type['s_desc'] . '" data-placement="right">
-                                    <label style="display:inline-block;">
-                                        <input type="radio" id="in_is_any_' . $in_val . '" name="in_is_any" value="' . $in_val . '" />
-                                        <i class="' . $intent_type['s_icon'] . '"></i> ' . $intent_type['s_name'] . '
-                                    </label>
-                                </div>';
-                            }
-                            ?>
+
+
+                        <div class="title" style="margin-top:15px;"><h4><i class="fal fa-bullseye-arrow"></i> Alternative Outcomes
+                                <span id="hb_7724" class="help_button" intent-id="7724"></span></h4></div>
+                        <div class="inline-box">
+                            <div class="help_body maxout" id="content_7724"></div>
+                            <textarea class="form-control text-edit border msg" id="in_alternatives"
+                                      placeholder="Other forms of saying the same thing..."
+                                      style="height:54px !important; min-height: auto; background-color:#FFFFFF !important;"></textarea>
                         </div>
 
-                        <div class="form-group label-floating is-empty completion-settings">
-                            <div class="checkbox is_task">
-                                <p style="padding: :0; margin:-10px 0 5px 0;">Completing Requires Either:</p>
+
+
+
+                        <div class="title" style="margin-top:15px;"><h4><i
+                                        class="fas fa-hashtag"></i> Intent Settings</h4></div>
+
+                        <div class="inline-box">
+                            <span class="checkbox inline-block hidden">
+                                <label style="display:inline-block !important; font-size: 0.9em !important; margin-left:8px;">
+                                    <input type="checkbox" id="apply_recursively"/>
+                                    <span class="underdot" data-toggle="tooltip" data-placement="top"
+                                          title="Applies the new status recursively down to all children/grandchildren that have the same starting status. Page will refresh after saving.">
+                                        Apply Recursively
+                                    </span>
+                                </label>
+                            </span>
+
+                            <div class="form-group label-floating is-empty" style="margin-bottom: 0; padding-bottom: 0; display:block !important;">
                                 <?php
-                                //List all the input options and allow user to pick between them:
-                                foreach ($this->config->item('en_all_4331') as $en_id => $m) {
-                                    echo '<label style="font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" class="in_input_requirements" id="require__' . $en_id . '" /><span ' . (strlen($m['m_desc']) > 0 ? ' class="underdot" data-toggle="tooltip" title="' . stripslashes($m['m_desc']) . '" data-placement="right" ' : '') . '>' . $m['m_icon'] . ' ' . $m['m_name'] . '</span></label><br />';
+                                foreach (fn___echo_status('in_is_any') as $in_val => $intent_type) {
+                                    echo '<div class="radio" style="display:inline-block; border-bottom:1px dotted #999; margin-top: 0 !important;" data-toggle="tooltip" title="' . $intent_type['s_desc'] . '" data-placement="right">
+                                        <label style="display:inline-block;">
+                                            <input type="radio" id="in_is_any_' . $in_val . '" name="in_is_any" value="' . $in_val . '" />
+                                            <i class="' . $intent_type['s_icon'] . '"></i> ' . $intent_type['s_name'] . '
+                                        </label>
+                                    </div>';
                                 }
                                 ?>
+                            </div>
+
+
+                            <div class="completion-settings">
+                                <div class="form-group label-floating is-empty">
+                                    <div class="checkbox is_task" style="margin:0 0 10px 0;">
+                                        <?php
+                                        //List all the input options and allow user to pick between them:
+                                        foreach ($this->config->item('en_all_4331') as $en_id => $m) {
+                                            echo '<label style="font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" class="in_input_requirements" id="require__' . $en_id . '" req-en-id="' . $en_id . '" /><span ' . (strlen($m['m_desc']) > 0 ? ' class="underdot" data-toggle="tooltip" title="' . stripslashes($m['m_desc']) . '" data-placement="right" ' : '') . '>' . $m['m_icon'] . ' ' . str_replace(' Link','',$m['m_name']) . '</span></label><br />';
+                                        }
+                                        ?>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <select class="form-control border" id="in_status" data-toggle="tooltip" title="Intent Status" data-placement="top" style="display: inline-block !important;">
+                                <?php
+                                foreach (fn___echo_status('in_status') as $status_id => $status) {
+                                    echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
+                                }
+                                ?>
+                            </select>
+
+                            <div class="notify_in_remove hidden">
+                                <div class="alert alert-warning" style="margin:5px 0px; padding:7px;">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    Saving will archive intent
+                                </div>
                             </div>
                         </div>
 
@@ -213,117 +221,145 @@ if (isset($orphan_ins)) {
 
                     <div class="col-md-6">
 
-                        <div id="in_tr_status">
-                            <div class="title" style="margin-top:15px;">
+                        <div id="in_tr_box">
+
+                            <div class="title">
                                 <h4>
                                     <i class="fas fa-atlas"></i>
-                                    Link Transaction Status
+                                    Transaction Settings
                                 </h4>
                             </div>
-                            <select class="form-control" id="tr_status" style="display: inline-block !important;">
-                                <?php
-                                foreach (fn___echo_status('tr_status') as $status_id => $status) {
-                                    echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
-                                }
-                                ?>
-                            </select>
-                            <div class="notify_in_unlink hidden">
-                                <div class="alert alert-warning" style="margin:5px 0px; padding:7px;">
-                                    <i class="fas fa-exclamation-triangle"></i>
-                                    You're about to unlink this intent
+
+
+                            <div class="inline-box" style="margin-bottom: 15px;">
+
+                                <div class="form-group label-floating is-empty">
+                                    <?php
+                                    foreach ($this->config->item('en_all_4486') as $en_id => $m) {
+                                        echo '<div class="radio" style="display:inline-block; border-bottom:1px dotted #999; margin-top: 0 !important;" data-toggle="tooltip" title="' . $m['m_desc'] . '" data-placement="bottom">
+                                        <label style="display:inline-block;">
+                                            <input type="radio" id="in_tr_en_type_' . $en_id . '" name="in_tr_en_type" value="' . $en_id . '" />
+                                            '.$m['m_icon'].' ' . str_replace(' Intent','',$m['m_name']) . '
+                                        </label>
+                                    </div>';
+                                    }
+                                    ?>
                                 </div>
+
+                                <div class="score_range_box hidden">
+                                    <div class="form-group label-floating is-empty"
+                                         style="max-width:230px; margin:1px 0 10px;">
+                                        <div class="input-group border">
+                                            <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;">IF Scores </span>
+                                            <input style="padding-left:0; padding-right:0; text-align:right;" type="text"
+                                                   maxlength="3" id="in__conditional_score_min" value="" class="form-control">
+                                            <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;"><i
+                                                        class="fal fa-fas fa-percentage"></i> to </span>
+                                            <input style="padding-left:0; padding-right:0; text-align:right;" type="text"
+                                                   maxlength="3" id="in__conditional_score_max" value="" class="form-control">
+                                            <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;"><i
+                                                        class="fal fa-fas fa-percentage"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <select class="form-control border" data-toggle="tooltip" title="Transaction Status" data-placement="top" id="in_tr_status" style="display: inline-block !important;">
+                                    <?php
+                                    foreach (fn___echo_status('tr_status') as $status_id => $status) {
+                                        echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
+                                    }
+                                    ?>
+                                </select>
+
+                                <div class="notify_in_unlink hidden">
+                                    <div class="alert alert-warning" style="margin:5px 0px; padding:7px;">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                        Saving will unlink intent
+                                    </div>
+                                </div>
+
                             </div>
 
+                        </div>
 
-                            <div class="title" style="margin-top:15px;">
-                                <h4>
-                                    <i class="fas fa-link"></i>
-                                    Link Transaction Type
-                                </h4>
-                            </div>
-                            <select class="form-control" id="tr_status" style="display: inline-block !important;">
-                                <?php
-                                foreach ($this->config->item('en_all_4486') as $en_id => $m) {
-                                    echo '<option value="' . $en_id . '" title="' . $m['m_desc'] . '">' . $m['m_name'] . '</option>';
-                                }
-                                ?>
-                            </select>
-                            <div class="form-group label-floating is-empty score_range_box hidden"
-                                 style="max-width:230px; margin-top:1px;">
+
+                        <div class="title">
+                            <h4>
+                                <i class="fal fa-money-bill-wave"></i>
+                                Estimated Cost
+                            </h4>
+                        </div>
+
+                        <div class="inline-box">
+
+                            <div class="form-group label-floating is-empty" style="max-width:160px; margin-bottom:1px;">
                                 <div class="input-group border">
-                                    <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;">IF Scores </span>
-                                    <input style="padding-left:0; padding-right:0; text-align:right;" type="text"
-                                           maxlength="3" id="in__tree_master_score_min" value="" class="form-control">
                                     <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;"><i
-                                                class="fal fa-fas fa-percentage"></i> to </span>
-                                    <input style="padding-left:0; padding-right:0; text-align:right;" type="text"
-                                           maxlength="3" id="in__tree_master_score_max" value="" class="form-control">
+                                                class="fal fa-usd-circle"></i></span>
+                                    <input style="padding-left:0;" type="number" step="0.01" min="0" max="5000"
+                                           id="in_usd" value="" class="form-control">
+                                    <span class="input-group-addon addon-lean"
+                                          style="color:#2f2739; font-weight: 300;">USD</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group label-floating is-empty" style="max-width:160px;">
+                                <div class="input-group border">
                                     <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;"><i
-                                                class="fal fa-fas fa-percentage"></i></span>
+                                                class="fal fa-clock"></i></span>
+                                    <input style="padding-left:0;" type="number" step="1" min="0"
+                                           max="<?= $this->config->item('in_seconds_max') ?>" id="in_seconds" value=""
+                                           class="form-control">
+                                    <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;">Seconds</span>
+                                </div>
+                            </div>
+
+                            <div id="child-hours" style="margin-left:6px; font-size: 0.9em;"></div>
+
+                        </div>
+
+
+
+                        <div class="title" style="margin-top: 15px;"><h4><i class="fal fa-cloud-upload"></i> Webhook</h4></div>
+                        <div class="inline-box">
+                            <div class="form-group label-floating is-empty">
+                                <div class="input-group border">
+                                    <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;">https://</span>
+                                    <input style="padding-left:0;" type="text" id="in__secure_webhook" class="form-control">
                                 </div>
                             </div>
                         </div>
 
 
-                        <div class="title" style="margin-top:15px;">
-                            <h4>
-                                <i class="fas fa-piggy-bank"></i>
-                                Input Resources
-                            </h4>
-                        </div>
-                        <div class="form-group label-floating is-empty" style="max-width:150px;">
-                            <div class="input-group border">
-                                <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;"><i
-                                            class="fas fa-clock"></i></span>
-                                <input style="padding-left:0;" type="number" step="1" min="0"
-                                       max="<?= $this->config->item('in_seconds_max') ?>" id="in_seconds" value=""
-                                       class="form-control">
-                                <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;">Minutes</span>
-                            </div>
-                        </div>
-
-                        <div id="child-hours" style="margin-left:6px;"></div>
-
-                        <div class="form-group label-floating is-empty" style="max-width:150px;">
-                            <div class="input-group border">
-                                <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;"><i
-                                            class="fas fa-usd-circle"></i></span>
-                                <input style="padding-left:0;" type="number" step="0.01" min="0" max="5000"
-                                       id="in_usd" value="" class="form-control">
-                                <span class="input-group-addon addon-lean"
-                                      style="color:#2f2739; font-weight: 300;">USD</span>
-                            </div>
-                        </div>
-
 
 
                         <div class="title" style="margin-top:15px;">
                             <h4>
-                                <i class="fas fa-weight"></i>
-                                Output Points
+                                <i class="fal fa-weight"></i>
+                                Assessment Score
                             </h4>
                         </div>
-                        <select class="form-control" id="in_points">
-                            <?php
-                            foreach ($this->config->item('in_points_options') as $point) {
-                                echo '<option value="' . $point . '">' . ($point == 0 ? 'Disabled' : $point . ' Point' . fn___echo__s($point)) . '</option>';
-                            }
-                            ?>
-                        </select>
+                        <div class="inline-box">
+                            <select class="form-control border" id="in_points">
+                                <?php
+                                foreach ($this->config->item('in_points_options') as $point) {
+                                    echo '<option value="' . $point . '">' . ($point == 0 ? 'None' : $point . ' Point' . fn___echo__s($point)) . '</option>';
+                                }
+                                ?>
+                            </select>
+                        </div>
 
 
+                        <table width="100%" style="margin-top:10px;">
+                            <tr>
+                                <td style="text-align: right;"><span class="save_intent_changes"></span></td>
+                                <td class="save-td"><a href="javascript:in_save_modify();" class="btn btn-primary">Save</a></td>
+                            </tr>
+                        </table>
 
                     </div>
                 </div>
 
-
-                <table width="100%" style="margin-top:10px;">
-                    <tr>
-                        <td class="save-td"><a href="javascript:in_save_modify();" class="btn btn-primary">Save</a></td>
-                        <td><span class="save_intent_changes"></span></td>
-                        <td style="width:80px; text-align:right;"></td>
-                    </tr>
-                </table>
             </div>
 
         </div>

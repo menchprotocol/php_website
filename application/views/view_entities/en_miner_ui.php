@@ -121,7 +121,7 @@
 
         <div id="modifybox" class="fixed-box hidden" entity-id="0" entity-link-id="0">
 
-            <h5 class="badge badge-h"><i class="fas fa-cog"></i> Modify Entity</h5>
+            <h5 class="badge badge-h"><i class="fas fa-cog"></i> Modify</h5>
             <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;">
                 <a href="javascript:void(0)" onclick="$('#modifybox').addClass('hidden')"><i
                             class="fas fa-times-circle"></i></a>
@@ -132,73 +132,95 @@
                 <div class="row">
                     <div class="col-md-6">
 
-                        <div class="title" style="margin-bottom:0; padding-bottom:0; margin-top:15px;"><h4><i
-                                        class="fas fa-fingerprint"></i> Entity Name [<span
-                                        style="margin:0 0 10px 0; font-size:0.8em;"><span
-                                            id="charNameNum">0</span>/<?= $this->config->item('en_name_max') ?></span>]
+                        <div class="title" style="margin-bottom:0; padding-bottom:0;">
+                            <h4>
+                                <i class="fal fa-fingerprint"></i> Entity Name
+                                [<span style="margin:0 0 10px 0; font-size:0.8em;">
+                            <span id="charNameNum">0</span>/<?= $this->config->item('en_name_max') ?>
+                        </span>]
+                            </h4>
+                        </div>
+                        <div class="inline-box">
+                            <input type="text" id="en_name" value="" onkeyup="en_name_word_count()"
+                                   maxlength="<?= $this->config->item('en_name_max') ?>" data-lpignore="true"
+                                   placeholder="Name" class="form-control border">
+                        </div>
+
+                        <div class="title" style="margin-top:15px;"><h4><i class="fas fa-at"></i> Entity Settings
                             </h4></div>
-                        <input type="text" id="en_name" value="" onkeyup="en_name_word_count()"
-                               maxlength="<?= $this->config->item('en_name_max') ?>" data-lpignore="true"
-                               placeholder="Name" class="form-control border">
+                        <div class="inline-box">
 
+                            <!-- Entity Icon -->
+                            <div class="form-group label-floating is-empty"
+                                 style="margin:1px 0 10px;">
+                                <div class="input-group border" data-toggle="tooltip" title="Entity Icon" data-placement="top">
+                                    <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300; padding-left:7px !important; padding-right:2px !important;"><i class="fas fa-at grey-at"></i></span>
+                                    <input type="text" id="en_icon" value=""
+                                           maxlength="<?= $this->config->item('en_name_max') ?>" data-lpignore="true" placeholder=""
+                                           class="form-control">
+                                </div>
+                            </div>
 
-                        <div class="title" style="margin-top:15px;"><h4><i class="fas fa-sliders-h"></i> Entity Status
-                            </h4></div>
-                        <select class="form-control" id="en_status">
-                            <?php
-                            foreach (fn___echo_status('en_status') as $status_id => $status) {
-                                echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
-                            }
-                            ?>
-                        </select>
-
-                    </div>
-                    <div class="col-md-6">
-
-                        <div class="title" style="margin-bottom:0; padding-bottom:0; margin-top:15px;"><h4><i
-                                        class="fas fa-user-circle"></i> Entity Icon [<span
-                                        style="margin:0 0 10px 0; font-size:0.8em;"><span
-                                            id="charen_iconNum">0</span>/<?= $this->config->item('en_name_max') ?></span>]
-                            </h4></div>
-                        <input type="text" id="en_icon" value="" onkeyup="en_icon_word_count()"
-                               maxlength="<?= $this->config->item('en_name_max') ?>" data-lpignore="true" placeholder=""
-                               class="form-control border">
-
-
-                        <div class="li_component" style="margin-top:15px;">
-                            <div class="title"><h4><i class="fas fa-atlas"></i> Transaction Status</h4></div>
-                            <select class="form-control" id="tr_status">
+                            <!-- Entity Status -->
+                            <select class="form-control border" id="en_status" data-toggle="tooltip" title="Entity Status" data-placement="top">
                                 <?php
-                                foreach (fn___echo_status('tr_status') as $status_id => $status) {
+                                foreach (fn___echo_status('en_status') as $status_id => $status) {
                                     echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
                                 }
                                 ?>
                             </select>
+
                         </div>
 
                     </div>
+                    <div class="col-md-6">
+
+                        <div class="li_component">
+
+                            <div class="title"><h4><i class="fas fa-atlas"></i> Transaction Settings</h4></div>
+
+                            <div class="inline-box">
+
+                                <div class="li_component">
+                                    <textarea class="form-control text-edit border msg" id="tr_content"
+                                              onkeyup="tr_content_word_count()"
+                                              maxlength="<?= $this->config->item('tr_content_max') ?>" data-lpignore="true"
+                                              style="height:66px;">
+
+                                    </textarea>
+                                    <span style="margin:0 0 10px 0; font-size:0.8em;">
+                                        <span id="chartr_contentNum">0</span>/<?= $this->config->item('tr_content_max') ?>
+                                        & Link type detected as <b id="en_link_type_id"><i class="fas fa-atlas"></i> Naked</b>
+                                    </span>
+                                </div>
+
+                                <div style="margin: 0 0 8px 0; padding: 0;">
+
+                                </div>
+
+                                <select class="form-control border" id="tr_status" data-toggle="tooltip" title="Transaction Status" data-placement="top">
+                                    <?php
+                                    foreach (fn___echo_status('tr_status') as $status_id => $status) {
+                                        echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
+                                    }
+                                    ?>
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                        <table width="100%" style="margin-top:10px;">
+                            <tr>
+                                <td style="text-align: right;"><span class="save_entity_changes"></span></td>
+                                <td class="save-td"><a href="javascript:u_save_modify();" class="btn btn-secondary">Save</a></td>
+                            </tr>
+                        </table>
+
+                    </div>
+
                 </div>
 
-                <div class="li_component" style="margin-top:15px;">
-                    <div class="title" style="margin-bottom:0; padding-bottom:0;"><h4><i class="fas fa-file-alt"></i>
-                            Transaction Content [<span style="margin:0 0 10px 0; font-size:0.8em;"><span
-                                        id="chartr_contentNum">0</span>/<?= $this->config->item('tr_content_max') ?></span>]
-                        </h4></div>
-                    <textarea class="form-control text-edit border msg" id="tr_content"
-                              onkeyup="tr_content_word_count()"
-                              maxlength="<?= $this->config->item('tr_content_max') ?>" data-lpignore="true"
-                              style="height:66px;"></textarea>
-                </div>
-
-
-                <table width="100%" style="margin-top:10px;">
-                    <tr>
-                        <td class="save-td"><a href="javascript:u_save_modify();" class="btn btn-secondary">Save</a>
-                        </td>
-                        <td><span class="save_entity_changes"></span></td>
-                        <td style="width:100px; text-align:right;"></td>
-                    </tr>
-                </table>
             </div>
 
         </div>
@@ -210,9 +232,11 @@
                 title="Message management can only be done using Intents. Entity messages are listed below for view-only"
                 data-placement="bottom"><i class="fas fa-comment-dots"></i> Entity Messages <i class="fas fa-lock"></i>
             </h5>
-            <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;"><a href="javascript:void(0)"
-                                                                                         onclick="$('#message-frame').addClass('hidden');$('#loaded-messages').html('');"><i
-                            class="fas fa-times-circle"></i></a></div>
+            <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;">
+                <a href="javascript:void(0)" onclick="$('#message-frame').addClass('hidden');$('#loaded-messages').html('');">
+                    <i class="fas fa-times-circle"></i>
+                </a>
+            </div>
             <div class="grey-box">
                 <div id="loaded-messages"></div>
             </div>

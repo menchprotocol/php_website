@@ -212,16 +212,6 @@ function u_load_filter_status(new_val) {
     }
 }
 
-
-function en_icon_word_count() {
-    var len = $('#en_icon').val().length;
-    if (len > en_name_max) {
-        $('#charen_iconNum').addClass('overload').text(len);
-    } else {
-        $('#charen_iconNum').removeClass('overload').text(len);
-    }
-}
-
 function en_name_word_count() {
     var len = $('#en_name').val().length;
     if (len > en_name_max) {
@@ -296,7 +286,6 @@ function en_load_modify(en_id, tr_id) {
     $('#en_icon').val($(".en_icon_val_" + en_id + ":first").html().replace('\\', ''));
 
     en_name_word_count();
-    en_icon_word_count();
 
     //Only show unlink button if not level 1
     if (parseInt(tr_id) > 0) {

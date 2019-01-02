@@ -333,6 +333,10 @@ a.badge-primary:hover {
     text-align: center;
 }
 
+.inline-block{
+    display: inline-block;
+}
+
 .app-version{
     position: fixed;
     right:35px;
@@ -1673,8 +1677,9 @@ h5, .h5 {
 }
 
 .save-td {
-    width: 100px;
+    width:90px;
     vertical-align: text-top;
+    text-align: right;
 }
 
 .link-view {
@@ -2802,9 +2807,9 @@ h4 .tip-badge {
 }
 
 .inline-box {
-    padding: 8px 0px 8px 16px;
-    margin-left: 8px;
-    border-left: 5px solid #2f2739;
+    padding: 8px 0px 8px 12px;
+    margin-left: 5px;
+    border-left: 3px solid #2f2739;
 }
 
 .checkbox label {

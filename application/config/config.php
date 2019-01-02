@@ -168,7 +168,7 @@ $config['object_statuses'] = array(
             's_icon' => 'fas fa-spinner fa-spin',
         ),
         2 => array(
-            's_name' => 'Completed',
+            's_name' => 'Published',
             's_desc' => 'Transaction is completed and ready for updates to be synced',
             's_icon' => 'fas fa-check-square',
         ),
@@ -234,12 +234,12 @@ $config['object_statuses'] = array(
     ),
     'in_is_any' => array(
         0 => array(
-            's_name' => 'All Children',
+            's_name' => 'AND',
             's_desc' => 'Intent is complete when all children are marked as complete',
             's_icon' => 'fas fa-sitemap',
         ),
         1 => array(
-            's_name' => 'Any Child',
+            's_name' => 'OR',
             's_desc' => 'Intent is complete when a single child is marked as complete',
             's_icon' => 'fas fa-code-merge',
         ),

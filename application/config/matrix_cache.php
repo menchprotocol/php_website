@@ -6,7 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * So we don't have to make DB calls to figure them out every time!
  * This is the cron function that creates this: matrix_cache()
  * See here for all entities cached: https://mench.com/entities/4527
- * use-case format: $this->config->item('en_all_4538')
+ * use-case format: $this->config->item('en_all_4486')
  *
  * ATTENTION: Also search for "en_ids_" and "en_all_" when trying to manage these throughout the code base
  *
@@ -94,17 +94,37 @@ $config['en_all_4277'] = array(
 );
 
 //Intent Response Limiters:
-$config['en_ids_4331'] = array(4255, 4256);
+$config['en_ids_4331'] = array(4255, 4256, 4261, 4258, 4259, 4260);
 $config['en_all_4331'] = array(
     4255 => array(
-        'm_icon' => '<i class="fas fa-file-alt"></i>',
-        'm_name' => 'Text Snippet',
-        'm_desc' => 'At-least 10 characters or 2+ words of text',
+        'm_icon' => '<i class="fal fa-comment-alt-lines"></i>',
+        'm_name' => 'Text Snippet Link',
+        'm_desc' => '',
     ),
     4256 => array(
-        'm_icon' => '<i class="fas fa-external-link"></i>',
-        'm_name' => 'Generic URL',
-        'm_desc' => 'A URL that is not any other type of URL',
+        'm_icon' => '<i class="fal fa-link"></i>',
+        'm_name' => 'URL Link',
+        'm_desc' => '',
+    ),
+    4258 => array(
+        'm_icon' => '<i class="fal fa-file-video"></i>',
+        'm_name' => 'Video Link',
+        'm_desc' => '',
+    ),
+    4259 => array(
+        'm_icon' => '<i class="fal fa-file-audio"></i>',
+        'm_name' => 'Audio Link',
+        'm_desc' => '',
+    ),
+    4260 => array(
+        'm_icon' => '<i class="fal fa-file-image"></i>',
+        'm_name' => 'Image Link',
+        'm_desc' => '',
+    ),
+    4261 => array(
+        'm_icon' => '<i class="fal fa-file-pdf"></i>',
+        'm_name' => 'File Link',
+        'm_desc' => '',
     ),
 );
 
@@ -263,12 +283,12 @@ $config['en_ids_4486'] = array(4228, 4229);
 $config['en_all_4486'] = array(
     4228 => array(
         'm_icon' => '<i class="fas fa-link"></i>',
-        'm_name' => 'Fixed Intent Link',
+        'm_name' => 'Fixed Intent',
         'm_desc' => 'Intent link published and added to user Action Plans up-front',
     ),
     4229 => array(
         'm_icon' => '<i class="fas fa-question-circle fa-spin"></i>',
-        'm_name' => 'Conditional Intent Link',
+        'm_name' => 'Conditional Intent',
         'm_desc' => 'Intent added to Action Plans after parent intent is complete AND the user\'s % score falls within the defined min/max range',
     ),
 );

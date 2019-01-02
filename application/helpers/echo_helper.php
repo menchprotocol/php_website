@@ -237,7 +237,7 @@ function fn___echo_in_message_manage($tr)
     $ui .= '<li class="edit-off message_status" style="margin: 0 1px 0 -1px;"><span title="' . $en_all_4485[$tr['tr_en_type_id']]['m_name'] . ': ' . stripslashes($en_all_4485[$tr['tr_en_type_id']]['m_desc']) . '" data-toggle="tooltip" data-placement="top">' . $en_all_4485[$tr['tr_en_type_id']]['m_icon'] . '</span></li>';
     $ui .= '<li class="edit-on hidden"><span id="charNumEditing' . $tr['tr_id'] . '">0</span>/' . $CI->config->item('tr_content_max') . '</li>';
 
-    $ui .= '<li class="edit-off" style="margin: 0 0 0 8px;"><span class="on-hover"><i class="fas fa-bars sort_message" tr-id="' . $tr['tr_id'] . '" style="color:#2f2739;"></i></span></li>';
+    $ui .= '<li class="edit-off" style="margin: 0 0 0 8px;"><span class="on-hover"><i class="fal fa-bars sort_message" tr-id="' . $tr['tr_id'] . '" style="color:#2f2739;"></i></span></li>';
     $ui .= '<li class="edit-off" style="margin-right: 10px; margin-left: 6px;"><span class="on-hover"><a href="javascript:fn___message_remove(' . $tr['tr_id'] . ');"><i class="fas fa-trash-alt" style="margin:0 7px 0 5px;"></i></a></span></li>';
     $ui .= '<li class="edit-off" style="margin-left:-4px;"><span class="on-hover"><a href="javascript:message_modify_start(' . $tr['tr_id'] . ',' . $tr['tr_en_type_id'] . ');"><i class="fas fa-pen-square"></i></a></span></li>';
     //Right side reverse:
@@ -1214,7 +1214,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
     } else {
 
-        $ui = '<div id="cr_' . $tr_id . '" in-tr-id="' . $tr_id . '" tr_status="' . $in['tr_status'] . '" intent-id="' . $in['in_id'] . '" parent-intent-id="' . $in_parent_id . '" intent-level="' . $level . '" class="list-group-item ' . ($level == 3 ? 'is_level3_sortable' : 'is_level2_sortable') . ' intent_line_' . $in['in_id'] . '">';
+        $ui = '<div id="cr_' . $tr_id . '" in-tr-id="' . $tr_id . '" in-tr-status="' . $in['tr_status'] . '" in-tr-type="' . $in['tr_en_type_id'] . '" intent-id="' . $in['in_id'] . '" parent-intent-id="' . $in_parent_id . '" intent-level="' . $level . '" class="list-group-item ' . ($level == 3 ? 'is_level3_sortable' : 'is_level2_sortable') . ' intent_line_' . $in['in_id'] . '">';
 
     }
 
@@ -1229,6 +1229,19 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
         //Show Intent Link conditional status: (The intent link status is either Published or Removed, which would make it invisible)
         if ($level > 1) {
+            //Fetch intent link types:
+            $en_all_4486 = $CI->config->item('en_all_4486');
+
+            //Is this a conditional link?
+            if($in['tr_en_type_id']==4229){
+                //Yes, fetch the min/max score requirements:
+                //intval($metadata['in__conditional_score_min'])
+            } else {
+                //Regular fixed link:
+
+            }
+
+            $ui .= '<span class="in_tr_type_' . $tr_id . ' underdot" data-toggle="tooltip" data-placement="left" title="'. $en_all_4486[$in['tr_en_type_id']]['m_name'] .': '. $en_all_4486[$in['tr_en_type_id']]['m_desc'] .'">' . $en_all_4486[$in['tr_en_type_id']]['m_icon'] . '</span> ';
             $ui .= '<span class="tr_status_' . $tr_id . '">' . fn___echo_status('tr_status', $in['tr_status'], true, 'left') . '</span> ';
         }
 
@@ -1302,7 +1315,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     $extra_ui = '';
     $extra_ui .= '<span class="ui_in_points_' . $in['in_id'] . '" style="display:inline-block; margin-left:5px;">';
     if ($in['in_points'] > 0) {
-        $extra_ui .= '<i class="fas fa-weight" style="margin-right: 2px;"></i>' . $in['in_points'];
+        $extra_ui .= '<i class="fal fa-weight" style="margin-right: 2px;"></i>' . $in['in_points'];
     }
     $extra_ui .= '</span> ';
 
@@ -1324,7 +1337,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
     //Sorting handlers:
     if ($level > 1 && (!$is_parent || $level == 3)) {
-        $ui .= '<i class="fas fa-bars"></i> &nbsp;';
+        $ui .= '<i class="fal fa-bars"></i> &nbsp;';
     }
 
     //Intent UI based on level:
@@ -1438,7 +1451,7 @@ function fn___echo_en($en, $level, $is_parent = false)
     if ($tr_id > 0) {
         //Show Link Type:
         $entity_links = $CI->config->item('en_all_4537') + $CI->config->item('en_all_4538'); //Will Contain every possible Entity Link Connector!
-        $ui .= '<span class="tr_type_' . $tr_id . ' underdot" data-toggle="tooltip" data-placement="top" title="'. $entity_links[$en['tr_en_type_id']]['m_name'] .': '. $entity_links[$en['tr_en_type_id']]['m_desc'] .'">' . $entity_links[$en['tr_en_type_id']]['m_icon'] . '</span> ';
+        $ui .= '<span class="tr_type_' . $tr_id . ' underdot" data-toggle="tooltip" data-placement="left" title="'. $entity_links[$en['tr_en_type_id']]['m_name'] .': '. $entity_links[$en['tr_en_type_id']]['m_desc'] .'">' . $entity_links[$en['tr_en_type_id']]['m_icon'] . '</span> ';
         $ui .= '<span class="tr_status_' . $tr_id . '">' . fn___echo_status('tr_status', $en['tr_status'], true, 'left') . '</span> ';
     }
 
