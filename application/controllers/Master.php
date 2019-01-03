@@ -1,10 +1,10 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class My extends CI_Controller
+class Master extends CI_Controller
 {
 
-    //This controller is usually accessed via the /my/ URL prefix via the Messenger Bot
+    //This controller is usually accessed via the /master/ URL prefix via the Messenger Bot
 
     function __construct()
     {
@@ -140,7 +140,7 @@ class My extends CI_Controller
                     //Prepare metadata:
                     $metadata = unserialize($tr['in_metadata']);
                     //Display row:
-                    echo '<a href="/my/actionplan/' . $tr['tr_id'] . '/' . $tr['tr_in_child_id'] . '" class="list-group-item">';
+                    echo '<a href="/master/actionplan/' . $tr['tr_id'] . '/' . $tr['tr_in_child_id'] . '" class="list-group-item">';
                     echo '<span class="pull-right">';
                     echo '<span class="badge badge-primary"><i class="fas fa-angle-right"></i></span>';
                     echo '</span>';
@@ -204,66 +204,9 @@ class My extends CI_Controller
     }
 
 
-    function load_w_actionplan()
-    {
-
-        //Auth user and check required variables:
-        $udata = fn___en_auth(array(1308)); //miners
-
-        if (!$udata) {
-            return fn___echo_json(array(
-                'status' => 0,
-                'message' => 'Session Expired',
-            ));
-        } elseif (!isset($_POST['tr_id']) || intval($_POST['tr_id']) < 1) {
-            return fn___echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Action Plan ID',
-            ));
-        }
-
-        //Fetch Action Plan
-        $actionplans = $this->Database_model->w_fetch(array(
-            'tr_id' => $_POST['tr_id'], //Other than this one...
-        ));
-        if (!(count($actionplans) == 1)) {
-            return fn___echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid Action Plan ID',
-            ));
-        }
-        $w = $actionplans[0];
-
-        //Load Action Plan iFrame:
-        return fn___echo_json(array(
-            'status' => 1,
-            'url' => '/my/actionplan/' . $w['tr_id'] . '/' . $w['tr_in_child_id'],
-        ));
-
-    }
 
 
-    function load_u_trs($en_id)
-    {
 
-        //Auth user and check required variables:
-        $udata = fn___en_auth(array(1308)); //miners
-
-        if (!$udata) {
-            die('<div class="alert alert-danger" role="alert">Session Expired</div>');
-        } elseif (intval($en_id) < 1) {
-            die('<div class="alert alert-danger" role="alert">Missing User ID</div>');
-        }
-
-        //Load view for this iFrame:
-        $this->load->view('view_shared/messenger_header', array(
-            'title' => 'User Transactions',
-        ));
-        $this->load->view('view_ledger/tr_entity_history', array(
-            'en_id' => $en_id,
-        ));
-        $this->load->view('view_shared/messenger_footer');
-    }
 
     function skip_tree($tr_id, $in_id, $tr_id2)
     {
@@ -276,9 +219,9 @@ class My extends CI_Controller
         //Find the next item to navigate them to:
         $next_ins = $this->Matrix_model->fn___actionplan_next_in($tr_id);
         if ($next_ins) {
-            return fn___redirect_message('/my/actionplan/' . $next_ins[0]['tr_tr_parent_id'] . '/' . $next_ins[0]['in_id'], $message);
+            return fn___redirect_message('/master/actionplan/' . $next_ins[0]['tr_tr_parent_id'] . '/' . $next_ins[0]['in_id'], $message);
         } else {
-            return fn___redirect_message('/my/actionplan', $message);
+            return fn___redirect_message('/master/actionplan', $message);
         }
     }
 
@@ -286,10 +229,10 @@ class My extends CI_Controller
     {
         if (md5($actionplan_tr_id . 'kjaghksjha*(^' . $in_id . $tr_in_parent_id) == $w_key) {
             if ($this->Matrix_model->fn___actionplan_choose_or($actionplan_tr_id, $tr_in_parent_id, $in_id)) {
-                return fn___redirect_message('/my/actionplan/' . $actionplan_tr_id . '/' . $in_id, '<div class="alert alert-success" role="alert">Your answer was saved.</div>');
+                return fn___redirect_message('/master/actionplan/' . $actionplan_tr_id . '/' . $in_id, '<div class="alert alert-success" role="alert">Your answer was saved.</div>');
             } else {
                 //We had some sort of an error:
-                return fn___redirect_message('/my/actionplan/' . $actionplan_tr_id . '/' . $tr_in_parent_id, '<div class="alert alert-danger" role="alert">There was an error saving your answer.</div>');
+                return fn___redirect_message('/master/actionplan/' . $actionplan_tr_id . '/' . $tr_in_parent_id, '<div class="alert alert-danger" role="alert">There was an error saving your answer.</div>');
             }
         }
     }
@@ -299,7 +242,7 @@ class My extends CI_Controller
 
         //Validate integrity of request:
         if (!isset($_POST['tr_id']) || intval($_POST['tr_id']) < 1 || !isset($_POST['tr_content'])) {
-            return fn___redirect_message('/my/actionplan', '<div class="alert alert-danger" role="alert">Error: Missing Core Data.</div>');
+            return fn___redirect_message('/master/actionplan', '<div class="alert alert-danger" role="alert">Error: Missing Core Data.</div>');
         }
 
         //Fetch master name and details:
@@ -309,9 +252,9 @@ class My extends CI_Controller
         ), array('w', 'cr', 'cr_c_child'));
 
         if (!(count($trs) == 1)) {
-            return fn___redirect_message('/my/actionplan', '<div class="alert alert-danger" role="alert">Error: Invalid submission ID.</div>');
+            return fn___redirect_message('/master/actionplan', '<div class="alert alert-danger" role="alert">Error: Invalid submission ID.</div>');
         }
-        $k_url = '/my/actionplan/' . $trs[0]['tr_tr_parent_id'] . '/' . $trs[0]['in_id'];
+        $k_url = '/master/actionplan/' . $trs[0]['tr_tr_parent_id'] . '/' . $trs[0]['in_id'];
 
 
         //Fetch completion requirements:
@@ -391,7 +334,7 @@ class My extends CI_Controller
             $next_ins = $this->Matrix_model->fn___actionplan_next_in($trs[0]['tr_id']);
             if ($next_ins) {
                 //Override original item:
-                $k_url = '/my/actionplan/' . $next_ins[0]['tr_tr_parent_id'] . '/' . $next_ins[0]['in_id'];
+                $k_url = '/master/actionplan/' . $next_ins[0]['tr_tr_parent_id'] . '/' . $next_ins[0]['in_id'];
             }
         }
 
@@ -399,14 +342,5 @@ class My extends CI_Controller
     }
 
 
-    function reset_pass()
-    {
-        $data = array(
-            'title' => 'Password Reset',
-        );
-        $this->load->view('view_shared/messenger_header', $data);
-        $this->load->view('view_entities/en_pass_reset_ui');
-        $this->load->view('view_shared/messenger_footer');
-    }
 
 }

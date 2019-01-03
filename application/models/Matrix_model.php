@@ -404,7 +404,7 @@ class Matrix_model extends CI_Model
 
         //Give clear directions to complete if Action Plan ID is provided...
         if($actionplan_tr_id > 0){
-            $message .= ', which you can submit using your Action Plan. /link:See in 🚩Action Plan:https://mench.com/my/actionplan/' . $actionplan_tr_id . '/' . $in_id;
+            $message .= ', which you can submit using your Action Plan. /link:See in 🚩Action Plan:https://mench.com/master/actionplan/' . $actionplan_tr_id . '/' . $in_id;
         }
 
         //Return Master-friendly message for completion requirements:
@@ -1569,7 +1569,7 @@ class Matrix_model extends CI_Model
 
             //Inform the master:
             $this->Chat_model->fn___dispatch_message(
-                'Hi stranger! Let\'s get started by completing your profile information by opening the My Account tab in the menu below. /link:Open 👤My Account:https://mench.com/my/account',
+                'Hi stranger! Let\'s get started by completing your profile information by opening the My Account tab in the menu below. /link:Open 👤My Account:https://mench.com/master/account',
                 $en,
                 true
             );

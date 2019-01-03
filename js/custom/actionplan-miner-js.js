@@ -78,7 +78,7 @@ function load_w_actionplan(tr_id, en_id) {
     $('#w_title').html('<i class="fas fa-flag"></i> ' + frame_title);
 
     //Add via Ajax:
-    $.post("/my/load_w_actionplan", {tr_id: tr_id}, function (data) {
+    $.post("/ledger/load_w_actionplan", {tr_id: tr_id}, function (data) {
         if (data.status) {
 
             //Load content:

@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Bot extends CI_Controller
+class FacebookWebhook extends CI_Controller
 {
 
     function __construct()
@@ -13,58 +13,7 @@ class Bot extends CI_Controller
     }
 
 
-    function sync_menu()
-    {
-
-        /*
-         * A function that will sync the fixed
-         * menu of Mench's Facebook Messenger.
-         *
-         * */
-
-        //Let's first give permission to our pages to do so:
-        $res = array();
-        array_push($res, $this->Chat_model->fn___facebook_graph('POST', '/me/messenger_profile', array(
-            'get_started' => array(
-                'payload' => 'GET_STARTED',
-            ),
-            'whitelisted_domains' => array(
-                'http://local.mench.co',
-                'https://mench.co',
-                'https://mench.com',
-            ),
-        )));
-
-        //Wait until Facebook pro-pagates changes of our whitelisted_domains setting:
-        sleep(2);
-
-        //Now let's update the menu:
-        array_push($res, $this->Chat_model->fn___facebook_graph('POST', '/me/messenger_profile', array(
-            'persistent_menu' => array(
-                array(
-                    'locale' => 'default',
-                    'composer_input_disabled' => false,
-                    'disabled_surfaces' => array('CUSTOMER_CHAT_PLUGIN'),
-                    'call_to_actions' => array(
-                        array(
-                            'title' => '🚩 Action Plan',
-                            'type' => 'web_url',
-                            'url' => 'https://mench.com/my/actionplan',
-                            'webview_height_ratio' => 'tall',
-                            'webview_share_button' => 'hide',
-                            'messenger_extensions' => true,
-                        ),
-                    ),
-                ),
-            ),
-        )));
-
-        //Show results:
-        fn___echo_json($res);
-    }
-
-
-    function facebook_webhook()
+    function index()
     {
 
         /*
@@ -476,5 +425,56 @@ class Bot extends CI_Controller
             }
         }
     }
+
+    function sync_menu()
+    {
+
+        /*
+         * A function that will sync the fixed
+         * menu of Mench's Facebook Messenger.
+         *
+         * */
+
+        //Let's first give permission to our pages to do so:
+        $res = array();
+        array_push($res, $this->Chat_model->fn___facebook_graph('POST', '/me/messenger_profile', array(
+            'get_started' => array(
+                'payload' => 'GET_STARTED',
+            ),
+            'whitelisted_domains' => array(
+                'http://local.mench.co',
+                'https://mench.co',
+                'https://mench.com',
+            ),
+        )));
+
+        //Wait until Facebook pro-pagates changes of our whitelisted_domains setting:
+        sleep(2);
+
+        //Now let's update the menu:
+        array_push($res, $this->Chat_model->fn___facebook_graph('POST', '/me/messenger_profile', array(
+            'persistent_menu' => array(
+                array(
+                    'locale' => 'default',
+                    'composer_input_disabled' => false,
+                    'disabled_surfaces' => array('CUSTOMER_CHAT_PLUGIN'),
+                    'call_to_actions' => array(
+                        array(
+                            'title' => '🚩 Action Plan',
+                            'type' => 'web_url',
+                            'url' => 'https://mench.com/master/actionplan',
+                            'webview_height_ratio' => 'tall',
+                            'webview_share_button' => 'hide',
+                            'messenger_extensions' => true,
+                        ),
+                    ),
+                ),
+            ),
+        )));
+
+        //Show results:
+        fn___echo_json($res);
+    }
+
 
 }

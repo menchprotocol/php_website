@@ -84,7 +84,6 @@ class Chat_model extends CI_Model
          *
          * */
 
-
         //Validate message:
         $msg_validation = $this->Chat_model->fn___dispatch_validate_message($input_message, $recipient_en, $fb_messenger_format, $quick_replies);
         $is_miner = fn___en_auth(array(1308));
@@ -1636,7 +1635,7 @@ class Chat_model extends CI_Model
 
                     //Let Master know that they have already subscribed to this intention:
                     $this->Chat_model->fn___dispatch_message(
-                        'The intention to ' . $ins[0]['in_outcome'] . ' has already been added to your Action Plan. We have been working on it together since ' . fn___echo_time_date($actionplans[0]['tr_timestamp']) . '. /link:See in 🚩Action Plan:https://mench.com/my/actionplan/' . ( $actionplans[0]['tr_en_type_id']==4235 ? $actionplans[0]['tr_id'] : $actionplans[0]['tr_tr_parent_id'] ) . '/' . $actionplans[0]['tr_in_child_id'],
+                        'The intention to ' . $ins[0]['in_outcome'] . ' has already been added to your Action Plan. We have been working on it together since ' . fn___echo_time_date($actionplans[0]['tr_timestamp']) . '. /link:See in 🚩Action Plan:https://mench.com/master/actionplan/' . ( $actionplans[0]['tr_en_type_id']==4235 ? $actionplans[0]['tr_id'] : $actionplans[0]['tr_tr_parent_id'] ) . '/' . $actionplans[0]['tr_in_child_id'],
                         $en,
                         true,
                         array(),
@@ -1738,7 +1737,7 @@ class Chat_model extends CI_Model
 
                     //Confirm with them that we're now ready:
                     $this->Chat_model->fn___dispatch_message(
-                        'Success! I added the intention to ' . $ins[0]['in_outcome'] . ' to your Action Plan 🙌 /link:Open 🚩Action Plan:https://mench.com/my/actionplan/' . $actionplan['tr_id'] . '/' . $ins[0]['in_id'],
+                        'Success! I added the intention to ' . $ins[0]['in_outcome'] . ' to your Action Plan 🙌 /link:Open 🚩Action Plan:https://mench.com/master/actionplan/' . $actionplan['tr_id'] . '/' . $ins[0]['in_id'],
                         $en,
                         true,
                         array(),
@@ -1910,7 +1909,7 @@ class Chat_model extends CI_Model
                     $this->Matrix_model->k_skip_recursive_down($tr_id);
 
                     //Confirm the skip:
-                    $message = 'Confirmed, I marked this section as skipped. You can always re-visit these key ideas in your Action Plan and complete them at any time. /link:See in 🚩Action Plan:https://mench.com/my/actionplan/' . $actionplans[0]['tr_tr_parent_id'] . '/' . $actionplans[0]['tr_in_child_id'];
+                    $message = 'Confirmed, I marked this section as skipped. You can always re-visit these key ideas in your Action Plan and complete them at any time. /link:See in 🚩Action Plan:https://mench.com/master/actionplan/' . $actionplans[0]['tr_tr_parent_id'] . '/' . $actionplans[0]['tr_in_child_id'];
 
                 }
 

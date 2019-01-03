@@ -114,8 +114,8 @@ $uri_segment_1 = $this->uri->segment(1);
                             </li>
 
                             <li class="extra-toggle" style="display: none;">
-                                <a href="/custom/mench_legend">
-                                    <i class="fas fa-shapes"></i> Legend
+                                <a href="/stats">
+                                    <i class="fas fa-chart-bar"></i> Stats
                                 </a>
                             </li>
                             <li class="extra-toggle entity-inactive" style="display: none;">

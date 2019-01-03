@@ -314,4 +314,44 @@ class Ledger extends CI_Controller
         ));
     }
 
+
+
+    function load_w_actionplan()
+    {
+
+        //Auth user and check required variables:
+        $udata = fn___en_auth(array(1308)); //miners
+
+        if (!$udata) {
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Session Expired',
+            ));
+        } elseif (!isset($_POST['tr_id']) || intval($_POST['tr_id']) < 1) {
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Action Plan ID',
+            ));
+        }
+
+        //Fetch Action Plan
+        $actionplans = $this->Database_model->w_fetch(array(
+            'tr_id' => $_POST['tr_id'], //Other than this one...
+        ));
+        if (!(count($actionplans) == 1)) {
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Action Plan ID',
+            ));
+        }
+        $w = $actionplans[0];
+
+        //Load Action Plan iFrame:
+        return fn___echo_json(array(
+            'status' => 1,
+            'url' => '/master/actionplan/' . $w['tr_id'] . '/' . $w['tr_in_child_id'],
+        ));
+
+    }
+
 }

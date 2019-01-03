@@ -276,7 +276,6 @@ function en_load_modify(en_id, tr_id) {
     }
 
     //Update variables:
-    $('.save_entity_changes').html('');
     $('#modifybox').attr('entity-link-id', tr_id);
     $('#modifybox').attr('entity-id', en_id);
 
@@ -396,12 +395,6 @@ function u_save_modify() {
 
             //Update UI to confirm with user:
             $('.save_entity_changes').html(data.message).hide().fadeIn();
-
-            //Disapper in a while:
-            setTimeout(function () {
-                //Hide the editor & saving results:
-                $('.save_entity_changes').hide();
-            }, 377);
 
         } else {
             //Ooops there was an error!

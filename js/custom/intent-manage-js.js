@@ -787,9 +787,6 @@ function in_save_modify() {
                 if (modify_data['apply_recursively'] && data.updated_children > 0) {
                     //Refresh page soon to show new status for children:
                     window.location = "/intents/" + in_focus_id;
-                } else {
-                    //Hide the editor & saving results:
-                    $('.save_intent_changes').hide();
                 }
             }, 610);
 

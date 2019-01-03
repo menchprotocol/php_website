@@ -1682,6 +1682,24 @@ h5, .h5 {
     text-align: right;
 }
 
+.save-result-td {
+    font-size: 0.8em;
+    line-height:140%;
+    text-align: left;
+}
+
+.save-result-td a {
+    text-decoration: none;
+}
+
+.tr-last-updated {
+    margin:5px 0 10px 0;
+    padding: 0;
+    font-size:0.8em;
+    display: block;
+    line-height: 140%;
+}
+
 .link-view {
     font-size: 0.7em;
     color: #d6ba14 !important;

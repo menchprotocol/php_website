@@ -200,7 +200,7 @@ $config['object_statuses'] = array(
             's_icon' => 'fas fa-check-square',
         ),
         3 => array(
-            's_name' => 'Claimed',
+            's_name' => 'Verified',
             's_desc' => 'Entity references a human which has been claimed by that person',
             's_icon' => 'fas fa-badge-check',
         ),

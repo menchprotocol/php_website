@@ -106,18 +106,27 @@ echo '</tr></table>';
 echo '</form>';
 
 
-//Display Transactions:
-echo '<h5 class="badge badge-h"><i class="fas fa-atlas"></i> '.count($trs).'/'.fn___echo_number($all_transaction_count).' Transactions</h5>';
-if(count($trs)>0){
-    echo '<div class="list-group list-grey maxout">';
-    foreach ($trs as $tr) {
-        echo fn___echo_tr_row($tr);
-    }
+echo '<div class="row">';
+    echo '<div class="col-md-6">';
+
+        //Display Transactions:
+        echo '<h5 class="badge badge-h"><i class="fas fa-atlas"></i> '.count($trs).'/'.fn___echo_number($all_transaction_count).' Transactions</h5>';
+        if(count($trs)>0){
+            echo '<div class="list-group list-grey">';
+            foreach ($trs as $tr) {
+                echo fn___echo_tr_row($tr);
+            }
+            echo '</div>';
+        } else {
+            //Show no transaction warning:
+            echo '<div class="alert alert-info" role="alert" style="margin-top: 0;"><i class="fas fa-exclamation-triangle"></i> No Transactions found with the selected filters. Modify filters and try again.</div>';
+        }
+
     echo '</div>';
-} else {
-    //Show no transaction warning:
-    echo '<div class="alert alert-info" role="alert" style="margin-top: 0;"><i class="fas fa-exclamation-triangle"></i> No Transactions found with the selected filters. Modify filters and try again.</div>';
-}
+
+    echo '<div class="col-md-6">';
+    echo '</div>';
+echo '</div>';
 
 
 ?>

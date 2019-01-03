@@ -16,6 +16,11 @@ class Entities extends CI_Controller
     function en_miner_ui($en_id)
     {
 
+        if($en_id == 0){
+            //Set to default:
+            $en_id = $this->config->item('en_primary_id');
+        }
+
         $udata = fn___en_auth(null, true); //Just be logged in to browse
 
         $ens = $this->Database_model->fn___en_fetch(array(
@@ -28,12 +33,45 @@ class Entities extends CI_Controller
 
         //Load views:
         $this->load->view('view_shared/matrix_header', array(
-            'title' => $ens[0]['en_name'],
+            'title' => $ens[0]['en_name'].' | Entities',
         ));
         $this->load->view('view_entities/en_miner_ui', array(
             'entity' => $ens[0],
         ));
         $this->load->view('view_shared/matrix_footer');
+    }
+
+
+    function reset_pass()
+    {
+        $data = array(
+            'title' => 'Password Reset',
+        );
+        $this->load->view('view_shared/messenger_header', $data);
+        $this->load->view('view_entities/en_pass_reset_ui');
+        $this->load->view('view_shared/messenger_footer');
+    }
+
+    function load_u_trs($en_id)
+    {
+
+        //Auth user and check required variables:
+        $udata = fn___en_auth(array(1308)); //miners
+
+        if (!$udata) {
+            die('<div class="alert alert-danger" role="alert">Session Expired</div>');
+        } elseif (intval($en_id) < 1) {
+            die('<div class="alert alert-danger" role="alert">Missing User ID</div>');
+        }
+
+        //Load view for this iFrame:
+        $this->load->view('view_shared/messenger_header', array(
+            'title' => 'User Transactions',
+        ));
+        $this->load->view('view_ledger/tr_entity_history', array(
+            'en_id' => $en_id,
+        ));
+        $this->load->view('view_shared/messenger_footer');
     }
 
     function fn___en_load_next_page()
@@ -507,7 +545,7 @@ class Entities extends CI_Controller
                 header('Location: /intents/' . $this->config->item('in_primary_id'));
             } else {
                 //Master default:
-                header('Location: /my/actionplan');
+                header('Location: /master/actionplan');
             }
         }
     }
@@ -541,7 +579,7 @@ class Entities extends CI_Controller
 
             //Dispatch the password reset Intent:
             $this->Chat_model->fn___dispatch_message(
-                'Hi /firstname 👋​ You can reset your Mench password here: /link:🔑 Reset Password:https://mench.com/my/reset_pass?en_id=' . $matching_users[0]['en_id'] . '&timestamp=' . $timestamp . '&p_hash=' . md5($matching_users[0]['en_id'] . $this->config->item('password_salt') . $timestamp).' (Link active for 24 hours)',
+                'Hi /firstname 👋​ You can reset your Mench password here: /link:🔑 Reset Password:https://mench.com/entities/reset_pass?en_id=' . $matching_users[0]['en_id'] . '&timestamp=' . $timestamp . '&p_hash=' . md5($matching_users[0]['en_id'] . $this->config->item('password_salt') . $timestamp).' (Link active for 24 hours)',
                 $matching_users[0],
                 true
             );

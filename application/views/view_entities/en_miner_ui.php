@@ -141,9 +141,11 @@
                             </h4>
                         </div>
                         <div class="inline-box">
-                            <input type="text" id="en_name" value="" onkeyup="en_name_word_count()"
-                                   maxlength="<?= $this->config->item('en_name_max') ?>" data-lpignore="true"
-                                   placeholder="Name" class="form-control border">
+                            <textarea class="form-control text-edit border" id="en_name"
+                              onkeyup="en_name_word_count()"
+                              maxlength="<?= $this->config->item('en_name_max') ?>" data-lpignore="true"
+                              style="height:66px;">
+                            </textarea>
                         </div>
 
                         <div class="title" style="margin-top:15px;"><h4><i class="fas fa-at"></i> Entity Settings
@@ -177,25 +179,23 @@
 
                         <div class="li_component">
 
-                            <div class="title"><h4><i class="fas fa-atlas"></i> Transaction Settings</h4></div>
+                            <div class="title"><h4>
+                                    <i class="fas fa-atlas"></i> Ledger Transaction
+                                    [<span style="margin:0 0 10px 0; font-size:0.8em;">
+                                        <span id="chartr_contentNum">0</span>/<?= $this->config->item('tr_content_max') ?>
+                                    </span>]
+                                </h4></div>
 
                             <div class="inline-box">
 
-                                <div class="li_component">
-                                    <textarea class="form-control text-edit border msg" id="tr_content"
+                                <div class="li_component" style="margin-bottom: 15px !important;">
+                                    <textarea class="form-control text-edit border" id="tr_content"
                                               onkeyup="tr_content_word_count()"
                                               maxlength="<?= $this->config->item('tr_content_max') ?>" data-lpignore="true"
                                               style="height:66px;">
 
                                     </textarea>
-                                    <span style="margin:0 0 10px 0; font-size:0.8em;">
-                                        <span id="chartr_contentNum">0</span>/<?= $this->config->item('tr_content_max') ?>
-                                        & Link type detected as <b id="en_link_type_id"><i class="fas fa-atlas"></i> Naked</b>
-                                    </span>
-                                </div>
-
-                                <div style="margin: 0 0 8px 0; padding: 0;">
-
+                                    <span style="margin:0; padding: 0; font-size:0.8em; line-height: 110%;">Transaction type detected as <span id="en_link_type_id"><a href="/entities/1" style="font-weight: bold;"><i class="fas fa-atlas"></i> Naked</a></span>.</span>
                                 </div>
 
                                 <select class="form-control border" id="tr_status" data-toggle="tooltip" title="Transaction Status" data-placement="top">
@@ -206,13 +206,25 @@
                                     ?>
                                 </select>
 
+                                <div class="notify_en_remove hidden">
+                                    <div class="alert alert-warning" style="margin:5px 0px; padding:7px;">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                        Saving will archive entity
+                                    </div>
+                                </div>
+
+                                <span class="tr-last-updated">Transaction updated <b>15 min ago</b> <span style="display: inline-block">by <a href="/entities/2" style="font-weight: bold;"><img src="https://s3foundation.s3-us-west-2.amazonaws.com/4791be062df2e29227bf12d2171af4e7.jpg" class="profile-icon"> Miguel Hernandez</a></span>.</span>
+
+
                             </div>
 
                         </div>
 
                         <table width="100%" style="margin-top:10px;">
                             <tr>
-                                <td style="text-align: right;"><span class="save_entity_changes"></span></td>
+                                <td class="save-result-td"><span class="save_entity_changes">
+                                        Entity updated <b>15 min ago</b> <span style="display: inline-block">by <a href="/entities/2" style="font-weight: bold;"><img src="https://s3foundation.s3-us-west-2.amazonaws.com/4791be062df2e29227bf12d2171af4e7.jpg" class="profile-icon"> Miguel Hernandez</a></span>.
+                                    </span></td>
                                 <td class="save-td"><a href="javascript:u_save_modify();" class="btn btn-secondary">Save</a></td>
                             </tr>
                         </table>

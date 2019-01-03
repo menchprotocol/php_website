@@ -132,13 +132,12 @@ if (isset($orphan_ins)) {
                         <div class="inline-box">
                             <div class="help_body maxout" id="content_598"></div>
 
-                            <div class="form-group label-floating is-empty">
+                            <div class="form-group label-floating is-empty" style="height: 40px !important;">
                                 <div class="input-group border">
                                 <span class="input-group-addon addon-lean"
                                       style="color:#2f2739; font-weight: 300;">To</span>
-                                    <input style="padding-left:0;" type="text" id="in_outcome" onkeyup="in_outcome_counter()"
-                                           maxlength="<?= $this->config->item('in_outcome_max') ?>" value=""
-                                           class="form-control">
+                                    <textarea class="form-control text-edit msg" id="in_outcome" onkeyup="in_outcome_counter()"
+                                              maxlength="<?= $this->config->item('in_outcome_max') ?>" style="height:47px !important; min-height: auto !important;margin-bottom: -9px !important;"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -150,9 +149,15 @@ if (isset($orphan_ins)) {
                                 <span id="hb_7724" class="help_button" intent-id="7724"></span></h4></div>
                         <div class="inline-box">
                             <div class="help_body maxout" id="content_7724"></div>
-                            <textarea class="form-control text-edit border msg" id="in_alternatives"
-                                      placeholder="Other forms of saying the same thing..."
-                                      style="height:54px !important; min-height: auto; background-color:#FFFFFF !important;"></textarea>
+
+                            <div class="form-group label-floating is-empty" style="height: 40px !important;">
+                                <div class="input-group border">
+                                <span class="input-group-addon addon-lean"
+                                      style="color:#2f2739; font-weight: 300;">To</span>
+                                    <textarea class="form-control text-edit" id="in_alternatives"
+                                              placeholder="Other forms of saying the same thing..." style="margin-bottom: -9px !important;"></textarea>
+                                </div>
+                            </div>
                         </div>
 
 
@@ -215,6 +220,7 @@ if (isset($orphan_ins)) {
                                     Saving will archive intent
                                 </div>
                             </div>
+
                         </div>
 
                     </div>
@@ -226,7 +232,7 @@ if (isset($orphan_ins)) {
                             <div class="title">
                                 <h4>
                                     <i class="fas fa-atlas"></i>
-                                    Transaction Settings
+                                    Ledger Transaction
                                 </h4>
                             </div>
 
@@ -277,6 +283,9 @@ if (isset($orphan_ins)) {
                                         Saving will unlink intent
                                     </div>
                                 </div>
+
+                                <span class="tr-last-updated">Transaction updated <b>15 min ago</b> <span style="display: inline-block">by <a href="/entities/2" style="font-weight: bold;"><img src="https://s3foundation.s3-us-west-2.amazonaws.com/4791be062df2e29227bf12d2171af4e7.jpg" class="profile-icon"> Miguel Hernandez</a></span>.</span>
+
 
                             </div>
 
@@ -352,7 +361,9 @@ if (isset($orphan_ins)) {
 
                         <table width="100%" style="margin-top:10px;">
                             <tr>
-                                <td style="text-align: right;"><span class="save_intent_changes"></span></td>
+                                <td class="save-result-td"><span class="save_intent_changes">
+                                        Intent updated <b>15 min ago</b> <span style="display: inline-block">by <a href="/entities/2" style="font-weight: bold;"><img src="https://s3foundation.s3-us-west-2.amazonaws.com/4791be062df2e29227bf12d2171af4e7.jpg" class="profile-icon"> Miguel Hernandez</a></span>.
+                                    </span></td>
                                 <td class="save-td"><a href="javascript:in_save_modify();" class="btn btn-primary">Save</a></td>
                             </tr>
                         </table>

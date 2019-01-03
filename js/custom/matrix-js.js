@@ -246,7 +246,7 @@ function load_u_trs(en_id, tr_id=0) {
 
     //Load content via a URL:
     $('.frame-loader').addClass('hidden');
-    $('.ajax-frame').attr('src', '/my/load_u_trs/' + en_id).removeClass('hidden').css('margin-top', '0');
+    $('.ajax-frame').attr('src', '/entities/load_u_trs/' + en_id).removeClass('hidden').css('margin-top', '0');
 
     //Tooltips:
     $('[data-toggle="tooltip"]').tooltip();
