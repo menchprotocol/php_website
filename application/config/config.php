@@ -179,7 +179,7 @@ $config['object_statuses']          = array(
                                                 's_icon' => 'fas fa-check-square',
                                             ),
                                             3 => array(
-                                                's_name' => 'Featured',
+                                                's_name' => 'Verified',
                                                 's_desc' => 'Intent recommended to Masters',
                                                 's_icon' => 'fas fa-badge-check',
                                             ),

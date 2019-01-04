@@ -4,18 +4,43 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  * Keep a cache of certain parts of the Intent tree for faster processing
  * So we don't have to make DB calls to figure them out every time!
- * This is the cron function that creates this: matrix_cache()
+ * This is the cron function that creates this: fn___matrix_cache()
  * See here for all entities cached: https://mench.com/entities/4527
- * use-case format: $this->config->item('en_all_4486')
+ * use-case format: $this->config->item('en_all_4534')
  *
  * ATTENTION: Also search for "en_ids_" and "en_all_" when trying to manage these throughout the code base
  *
  */
 
 
-//Messages Sent:
-$config['en_ids_4280'] = array(4552, 4553, 4554, 4555, 4556);
+//Mench Core Objects:
+$config['en_ids_4534'] = array(4341, 4535, 4536);
+$config['en_all_4534'] = array(
+    4341 => array(
+        'm_icon' => '<i class="fas fa-atlas"></i>',
+        'm_name' => 'Ledger',
+        'm_desc' => '',
+    ),
+    4535 => array(
+        'm_icon' => '<i class="fas fa-hashtag"></i>',
+        'm_name' => 'Intents',
+        'm_desc' => '',
+    ),
+    4536 => array(
+        'm_icon' => '<i class="fas fa-at"></i>',
+        'm_name' => 'Entities',
+        'm_desc' => '',
+    ),
+);
+
+//Master Sent Message Transactions:
+$config['en_ids_4280'] = array(4276, 4552, 4553, 4554, 4555, 4556);
 $config['en_all_4280'] = array(
+    4276 => array(
+        'm_icon' => '',
+        'm_name' => 'Email Message Sent',
+        'm_desc' => '',
+    ),
     4552 => array(
         'm_icon' => '',
         'm_name' => 'Text Message Sent',
@@ -41,21 +66,21 @@ $config['en_all_4280'] = array(
         'm_name' => 'File Message Sent',
         'm_desc' => '',
     ),
-    4276 => array(
-        'm_icon' => '',
-        'm_name' => 'Email Message Sent',
-        'm_desc' => '',
-    ),
-    4570 => array(
-        'm_icon' => '',
-        'm_name' => 'HTML Message Sent',
-        'm_desc' => '',
-    ),
 );
 
-//Messages Received:
-$config['en_ids_4277'] = array(4547, 4548, 4549, 4550, 4551, 4557, 4460);
+//Master Received Message Transactions:
+$config['en_ids_4277'] = array(4248, 4460, 4547, 4548, 4549, 4550, 4551, 4557);
 $config['en_all_4277'] = array(
+    4248 => array(
+        'm_icon' => '<i class="fas fa-star-half-alt"></i>',
+        'm_name' => 'Net Promoter Score Received',
+        'm_desc' => 'Logged when masters submit their Net Promoter Score rating of Mench that shares how likely are they to share Mench with a friend from a scale of 1-10.',
+    ),
+    4460 => array(
+        'm_icon' => '',
+        'm_name' => 'Quick Reply Answer Received',
+        'm_desc' => 'When Master chooses their answer to an OR branch',
+    ),
     4547 => array(
         'm_icon' => '',
         'm_name' => 'Text Message Received',
@@ -86,104 +111,99 @@ $config['en_all_4277'] = array(
         'm_name' => 'Location Message Received',
         'm_desc' => '',
     ),
-    4460 => array(
-        'm_icon' => '',
-        'm_name' => 'Quick Reply Answer Received',
-        'm_desc' => '',
-    ),
 );
 
 //Intent Response Limiters:
-$config['en_ids_4331'] = array(4255, 4256, 4261, 4258, 4259, 4260);
+$config['en_ids_4331'] = array(4255, 4256, 4258, 4259, 4260, 4261);
 $config['en_all_4331'] = array(
     4255 => array(
         'm_icon' => '<i class="fal fa-comment-alt-lines"></i>',
-        'm_name' => 'Text Snippet Link',
+        'm_name' => 'Text Snippet Entity Link',
         'm_desc' => '',
     ),
     4256 => array(
         'm_icon' => '<i class="fal fa-link"></i>',
-        'm_name' => 'URL Link',
+        'm_name' => 'URL Entity Link',
         'm_desc' => '',
     ),
     4258 => array(
         'm_icon' => '<i class="fal fa-file-video"></i>',
-        'm_name' => 'Video Link',
+        'm_name' => 'Video Entity Link',
         'm_desc' => '',
     ),
     4259 => array(
         'm_icon' => '<i class="fal fa-file-audio"></i>',
-        'm_name' => 'Audio Link',
+        'm_name' => 'Audio Entity Link',
         'm_desc' => '',
     ),
     4260 => array(
         'm_icon' => '<i class="fal fa-file-image"></i>',
-        'm_name' => 'Image Link',
+        'm_name' => 'Image Entity Link',
         'm_desc' => '',
     ),
     4261 => array(
         'm_icon' => '<i class="fal fa-file-pdf"></i>',
-        'm_name' => 'File Link',
+        'm_name' => 'File Entity Link',
         'm_desc' => '',
     ),
 );
 
-//Entity Non-URL Links:
+//Non-URL Entity Links:
 $config['en_ids_4538'] = array(4230, 4255, 4318, 4319);
 $config['en_all_4538'] = array(
     4230 => array(
         'm_icon' => '<i class="fas fa-link"></i>',
-        'm_name' => 'Naked Link',
+        'm_name' => 'Naked Entity Link',
         'm_desc' => 'Entity is linked to another entity with no link notes.',
     ),
     4255 => array(
-        'm_icon' => '<i class="fas fa-file-alt"></i>',
-        'm_name' => 'Multi-word Text Link',
+        'm_icon' => '<i class="fal fa-comment-alt-lines"></i>',
+        'm_name' => 'Text Snippet Entity Link',
         'm_desc' => 'Link note contains a text snippet.',
     ),
     4318 => array(
         'm_icon' => '<i class="fas fa-calendar"></i>',
-        'm_name' => 'Date & Time Link',
+        'm_name' => 'Time Entity Link',
         'm_desc' => '',
     ),
     4319 => array(
         'm_icon' => '<i class="fas fa-sort-numeric-down"></i>',
-        'm_name' => 'Number Link',
+        'm_name' => 'Number Entity Link',
         'm_desc' => '',
     ),
 );
 
-//Entity URL Links:
+//URL Entity Links:
 $config['en_ids_4537'] = array(4256, 4257, 4258, 4259, 4260, 4261);
 $config['en_all_4537'] = array(
     4256 => array(
-        'm_icon' => '<i class="fas fa-external-link"></i>',
-        'm_name' => 'Generic URL',
+        'm_icon' => '<i class="fal fa-link"></i>',
+        'm_name' => 'URL Entity Link',
         'm_desc' => 'Link note contains a generic URL only.',
     ),
     4257 => array(
         'm_icon' => '<i class="fas fa-file-code"></i>',
-        'm_name' => 'Embed Widget URL',
+        'm_name' => 'Embed URL Entity Link',
         'm_desc' => 'Link note contain a recognizable URL that offers an embed widget for a more engaging play-back experience.',
     ),
     4258 => array(
-        'm_icon' => '<i class="fas fa-file-video"></i>',
-        'm_name' => 'Video URL',
+        'm_icon' => '<i class="fal fa-file-video"></i>',
+        'm_name' => 'Video Entity Link',
         'm_desc' => 'Link notes contain a URL to a raw video file.',
     ),
     4259 => array(
-        'm_icon' => '<i class="fas fa-file-audio"></i>',
-        'm_name' => 'Audio URL',
+        'm_icon' => '<i class="fal fa-file-audio"></i>',
+        'm_name' => 'Audio Entity Link',
         'm_desc' => 'Link notes contain a URL to a raw audio file.',
     ),
     4260 => array(
-        'm_icon' => '<i class="fas fa-file-image"></i>',
-        'm_name' => 'Image URL',
+        'm_icon' => '<i class="fal fa-file-image"></i>',
+        'm_name' => 'Image Entity Link',
         'm_desc' => 'Link notes contain a URL to a raw image file.',
     ),
     4261 => array(
-        'm_icon' => '<i class="fas fa-file-pdf"></i>',
-        'm_name' => 'File URL',
+        'm_icon' => '<i class="fal fa-file-pdf"></i>',
+        'm_name' => 'File Entity Link',
         'm_desc' => 'Link notes contain a URL to a raw file.',
     ),
 );
@@ -228,7 +248,7 @@ $config['en_all_3000'] = array(
     ),
 );
 
-//Mench Communication Levels:
+//Mench Notification Levels:
 $config['en_ids_4454'] = array(4455, 4456, 4457, 4458);
 $config['en_all_4454'] = array(
     4455 => array(
@@ -258,27 +278,27 @@ $config['en_ids_4485'] = array(4231, 4232, 4233, 4234);
 $config['en_all_4485'] = array(
     4231 => array(
         'm_icon' => '<i class="fas fa-bolt"></i>',
-        'm_name' => 'On-Start Intent Message',
+        'm_name' => 'On-Start Message',
         'm_desc' => 'Mench dispatches these messages, in order, when the Master reaches the intent that this message is assigned to. Miners write or upload media to create these messages, and their goal is/should-be to give an introduction of the intention, why its important and the latest overview of how Mench will empower the Master to accomplish the intent. On-start messaged are listed on the intent landing pages e.g. https://mench.com/6903 while also being dispatched when a Master is considering to add a new intent to their Action Plan. These on-start messages give them an overview of what to expect with this intent.',
     ),
     4232 => array(
         'm_icon' => '<i class="fas fa-comment-lines"></i>',
-        'm_name' => 'Learn More Intent Message',
+        'm_name' => 'Learn More Message',
         'm_desc' => 'Authored by Miners and ordered, [Learn More] messages offer Masters a Quick Reply options to get more perspectives on the intention with an additional message batch. If Masters choose to move on without learning more, Mench will communicate the message batch at a later time to deliver the extra perspective on the intention. This is known as "dripping content" that helps re-enforce their learnings and act as a effective reminder of the best-practice, and perhaps a a new twist on how to execute towards it. Learn-More messages will always be delivered, the Master chooses the timing of it.',
     ),
     4233 => array(
         'm_icon' => '<i class="fas fa-calendar-check"></i>',
-        'm_name' => 'On-Complete Intent Message',
+        'm_name' => 'On-Complete Message',
         'm_desc' => 'Authored by Miners, these messages are dispatched in-order as a batch of knowledge as soon as the Intent is marked as complete by the Master. On-complete messages can re-iterate key insights to help Masters retain their learnings.',
     ),
     4234 => array(
         'm_icon' => '<i class="fas fa-random"></i>',
-        'm_name' => 'Rotating Intent Message',
-        'm_desc' => 'Triggered in various spots of the code base that powers the logic of Mench personal assistant. Search for the fn___compose_message() function which is part of the Comm Model.',
+        'm_name' => 'Rotating Message',
+        'm_desc' => 'Triggered in various spots of the code base that powers the logic of Mench personal assistant. Search for the compose_messages() function which is part of the Comm Model.',
     ),
 );
 
-//Intent Link Types:
+//Intent Links:
 $config['en_ids_4486'] = array(4228, 4229);
 $config['en_all_4486'] = array(
     4228 => array(

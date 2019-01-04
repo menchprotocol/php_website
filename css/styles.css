@@ -1957,8 +1957,7 @@ select.form-control {
     margin-bottom: -4px;
 }
 .stats-table td {
-    border-radius: 3px;
-    padding: 4px !important;
+    padding: 5px !important;
 }
 .stats-table, .stats-table tr {
     width: 100%;

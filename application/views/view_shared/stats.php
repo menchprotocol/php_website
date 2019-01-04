@@ -5,7 +5,7 @@ echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-
 
 
 //Load core Mench Objects:
-
+$en_all_4534 = $this->config->item('en_all_4534');
 
 echo '<div class="row">';
 foreach (fn___echo_status() as $object_id => $statuses) {
@@ -14,17 +14,17 @@ foreach (fn___echo_status() as $object_id => $statuses) {
     //Define object type and run count query:
     if($object_id=='in_status'){
 
-        $object_name = 'Intents';
+        $obj_en_id = 4535; //Intents
         $objects_count = $this->Database_model->fn___in_fetch(array(), array(), 0, 0, array(), 'in_status, COUNT(in_id) as totals', 'in_status');
 
     } elseif($object_id=='en_status'){
 
-        $object_name = 'Entities';
+        $obj_en_id = 4536; //Entities
         $objects_count = $this->Database_model->fn___en_fetch(array(), array('skip_en__parents'), 0, 0, array(), 'en_status, COUNT(en_id) as totals', 'en_status');
 
     } elseif($object_id=='tr_status'){
 
-        $object_name = 'Ledger Transactions';
+        $obj_en_id = 4341; //Ledger
         $objects_count = $this->Database_model->fn___tr_fetch(array(), array(), 0, 0, array(), 'tr_status, COUNT(tr_id) as totals', 'tr_status');
 
     } else {
@@ -42,7 +42,7 @@ foreach (fn___echo_status() as $object_id => $statuses) {
 
     //Object Header:
     echo '<tr>';
-    echo '<td colspan="2" style="text-align: left;"><h3 style="margin:0 3px; padding: 0; font-weight:bold; font-size: 1.4em;">'.$object_name.'</h3></td>';
+    echo '<td colspan="2" style="text-align: left;"><h3 style="margin:0 5px; padding: 0; font-weight:bold; font-size: 1.4em;">'.$en_all_4534[$obj_en_id]['m_icon'].' '.$en_all_4534[$obj_en_id]['m_name'].'</h3></td>';
     echo '</tr>';
 
 
@@ -60,7 +60,7 @@ foreach (fn___echo_status() as $object_id => $statuses) {
 
         //Display this status count:
         echo '<tr>';
-        echo '<td style="text-align: left;"><span data-toggle="tooltip" title="'.$object_id.'='.$status_num.' in the '.$object_name.' database table" data-placement="top" style="width:34px; display: inline-block; text-align: center;">[<b class="underdot">'.$status_num.'</b>]</span>'.fn___echo_status($object_id, $status_num, false, 'top').'</td>';
+        echo '<td style="text-align: left;"><span data-toggle="tooltip" title="'.$object_id.'='.$status_num.' in the '.$en_all_4534[$obj_en_id]['m_name'].' database table" data-placement="top" style="width:34px; display: inline-block; text-align: center;">[<b class="underdot">'.$status_num.'</b>]</span>'.fn___echo_status($object_id, $status_num, false, 'top').'</td>';
         echo '<td style="text-align: right;">'.number_format($count,0).'</td>';
         echo '</tr>';
 

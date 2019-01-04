@@ -49,7 +49,7 @@ class Cron extends CI_Controller
 
     }
 
-    function matrix_cache(){
+    function fn___matrix_cache(){
 
         /*
          *
@@ -122,6 +122,9 @@ class Cron extends CI_Controller
             //Now redirect;
             header('Location: ' . $_GET['redirect']);
         } else {
+            //Remove the long "in_tree" variable which makes the page load slow:
+            unset($sync['in_tree']);
+
             //Show json:
             fn___echo_json($sync);
         }

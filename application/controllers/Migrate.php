@@ -35,6 +35,7 @@ class Migrate extends CI_Controller
             'intents_links' => 0,
             'messages' => 0,
             'total_links' => 0,
+            'metadata_cron_url' => 'https://mench.co/cron/fn___in_metadata_update',
         );
 
         foreach ($this->Old_model->c_fetch(array(
@@ -160,6 +161,7 @@ class Migrate extends CI_Controller
             'entity_urls_matched' => 0,
             'action_plan_intent' => 0,
             'total_links' => 0,
+            'php_cache_cron_url' => 'https://mench.co/cron/fn___matrix_cache',
         );
 
         $matching_patterns = $this->Old_model->ur_child_fetch(array(
