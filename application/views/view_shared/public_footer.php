@@ -8,7 +8,7 @@
 
                 <li class="social-li">
 
-                    <a href="https://m.me/askmench?ref=<?= $this->config->item('in_primary_id') ?>"
+                    <a href="https://m.me/askmench?ref=<?= $this->config->item('in_tactic_id') ?>"
                        class="social-link" data-toggle="tooltip"
                        title="Connect to Mench Personal Assistant on Messenger" data-placement="top"><i
                                 class="fab fa-facebook-messenger"></i></a>
@@ -43,7 +43,7 @@
                     <a href="mailto:support@mench.com" class="social-link" data-toggle="tooltip"
                        title="Send us an email" data-placement="top"><i class="fas fa-envelope"></i></a>
 
-                    <a href="/8263?do_expand=1" class="social-link" data-toggle="tooltip"
+                    <a href="/8263?expand_mode=1" class="social-link" data-toggle="tooltip"
                        title="Understand Mench's Terms of Service" data-placement="top"><i
                                 class="fas fa-balance-scale"></i></a>
 

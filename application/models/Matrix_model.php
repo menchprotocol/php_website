@@ -96,7 +96,7 @@ class Matrix_model extends CI_Model
             );
 
             $this->Chat_model->fn___dispatch_message(
-                'How else can I help you ' . $this->config->item('in_primary_name') . '?',
+                'How else can I help you ' . $this->config->item('in_strategy_name') . '?',
                 array( 'en_id' => $actionplans[0]['tr_en_parent_id'] ),
                 true,
                 array(),
@@ -297,13 +297,13 @@ class Matrix_model extends CI_Model
          *
          * See if we can pattern match the URL to a more relevant parent
          * We will start assuming that the parent should be the
-         * en_default_url_parent defined in config unless we can match
+         * en_default_parent_id defined in config unless we can match
          * the URL to another entity pattern
          *
          * */
 
         //Set default parent to start:
-        $tr_en_parent_id = $this->config->item('en_default_url_parent');
+        $tr_en_parent_id = $this->config->item('en_default_parent_id');
 
         //Now see if we can find a better match:
         $matching_patterns = $this->Database_model->fn___tr_fetch(array(
@@ -359,7 +359,7 @@ class Matrix_model extends CI_Model
         $response_options = $this->Database_model->fn___tr_fetch(array(
             'tr_status >=' => 2, //Published
             'tr_en_type_id' => 4331, //Intent Response Limiters
-            'tr_en_child_id IN (' . join(',', $this->config->item('en_ids_4331')) . ')' => null, //All Intent Response Limiters
+            'tr_en_child_id IN (' . join(',', $this->config->item('en_ids_4331')) . ')' => null, //Technically not needed, but here for extra clarity
             'tr_in_child_id' => $in_id, //For this intent
         ));
 

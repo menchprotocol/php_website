@@ -25,6 +25,6 @@ $fb_settings = $this->config->item('fb_settings');
 </script>
 
 <div class="fb-customerchat" minimized="true"
-     ref="<?= $this->config->item('in_primary_id') ?>" <?= ($udata ? 'logged_in_greeting="' . fn___one_two_explode('', ' ', $udata['en_name']) . ', how can we help you grow?"' : '') ?>
+     ref="<?= $this->config->item('in_tactic_id') ?>" <?= ($udata ? 'logged_in_greeting="' . fn___one_two_explode('', ' ', $udata['en_name']) . ', how can we help you grow?"' : '') ?>
      logged_out_greeting="Hi 👋 How can we help you?" greeting_dialog_display="hide" theme_color="#2f2739"
      page_id="<?= $fb_settings['page_id'] ?>"></div>

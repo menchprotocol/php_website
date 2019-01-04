@@ -283,12 +283,12 @@ $config['en_ids_4486'] = array(4228, 4229);
 $config['en_all_4486'] = array(
     4228 => array(
         'm_icon' => '<i class="fas fa-link"></i>',
-        'm_name' => 'Fixed Intent',
+        'm_name' => 'Fixed Intent Link',
         'm_desc' => 'Intent link published and added to user Action Plans up-front',
     ),
     4229 => array(
         'm_icon' => '<i class="fas fa-question-circle fa-spin"></i>',
-        'm_name' => 'Conditional Intent',
+        'm_name' => 'Conditional Intent Link',
         'm_desc' => 'Intent added to Action Plans after parent intent is complete AND the user\'s % score falls within the defined min/max range',
     ),
 );

@@ -1,8 +1,8 @@
 <?php
 //Prepare variables:
 $metadata = unserialize($in['in_metadata']);
-$do_expand = ( isset($_GET['do_expand']) && intval($_GET['do_expand']) );
-$is_primary_in = ( $in['in_id'] == $this->config->item('in_primary_id') );
+$expand_mode = ( isset($_GET['expand_mode']) && intval($_GET['expand_mode']) );
+$is_primary_in = ( $in['in_id'] == $this->config->item('in_tactic_id') );
 ?>
 <style>
     .body-container .msg, .body-container li, p, .body-container a {
@@ -80,11 +80,11 @@ $is_primary_in = ( $in['in_id'] == $this->config->item('in_primary_id') );
 
     <h3 style="margin-top:0px !important;">Overview:</h3>
     <div style="margin:12px 0 0 5px;">
-        <?= fn___echo_in_overview($in, false) ?>
-        <?= fn___echo_in_referenced_content($in, false) ?>
-        <?= fn___echo_in_experts($in, false) ?>
-        <?= fn___echo_in_time_estimate($in, false) ?>
-        <?= fn___echo_in_cost_range($in, false) ?>
+        <?= fn___echo_in_overview           ($in, false, $expand_mode) ?>
+        <?= fn___echo_in_referenced_content ($in, false, $expand_mode) ?>
+        <?= fn___echo_in_experts            ($in, false, $expand_mode) ?>
+        <?= fn___echo_in_time_estimate      ($in, false, $expand_mode) ?>
+        <?= fn___echo_in_cost_range         ($in, false, $expand_mode) ?>
     </div>
 
 
@@ -100,12 +100,12 @@ $is_primary_in = ( $in['in_id'] == $this->config->item('in_primary_id') );
                 echo '<div class="panel-group" id="open' . $in_level2_counter . '" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
             <div class="panel-heading" role="tab" id="heading' . $in_level2_counter . '">
                 <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" data-parent="#open' . $in_level2_counter . '" href="#collapse' . $in_level2_counter . '" aria-expanded="'.( $do_expand ? 'true' : 'false' ).'" aria-controls="collapse' . $in_level2_counter . '">
+                    <a role="button" data-toggle="collapse" data-parent="#open' . $in_level2_counter . '" href="#collapse' . $in_level2_counter . '" aria-expanded="'.( $expand_mode ? 'true' : 'false' ).'" aria-controls="collapse' . $in_level2_counter . '">
                        ' . ($in['in_is_any'] ? 'Option' : 'Step') . ' ' . ($in_level2_counter + 1) . ': <span id="title-' . $in_level2['in_id'] . '">' . $in_level2['in_outcome'] . '</span><i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                     </a>
                 </h4>
             </div>
-            <div id="collapse' . $in_level2_counter . '" class="panel-collapse collapse '.( $do_expand ? 'in' : 'out' ).'" role="tabpanel" aria-labelledby="heading' . $in_level2_counter . '">
+            <div id="collapse' . $in_level2_counter . '" class="panel-collapse collapse '.( $expand_mode ? 'in' : 'out' ).'" role="tabpanel" aria-labelledby="heading' . $in_level2_counter . '">
                 <div class="panel-body" style="padding:5px 0 0 5px;">';
 
 
@@ -133,7 +133,7 @@ $is_primary_in = ( $in['in_id'] == $this->config->item('in_primary_id') );
                     echo '</ul>';
 
                     //Since it has children, lets also give the option to navigate downwards ONLY IF...
-                    if ($in_level2['in_status'] >= 2 && !$do_expand) {
+                    if ($in_level2['in_status'] >= 2 && !$expand_mode) {
                         echo '<div>You can choose to <a href="/' . $in_level2['in_id'] . '" ' . ( $is_primary_in ? 'onclick="confirm_child_go(' . $in_level2['in_id'] . ')"' : '') . ' class="alink-' . $in_level2['in_id'] . '" style="text-decoration:underline;">subscribe to this part only</a>.</div>';
                     }
 
@@ -235,7 +235,7 @@ $is_primary_in = ( $in['in_id'] == $this->config->item('in_primary_id') );
                 </h4>
             </div>
             <div id="collapse' . $id . '" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="heading' . $id . '">
-                <div class="panel-body" style="padding:5px 0 0 5px; font-size:1.1em;">Mench Personal Assistant works on Facebook Messenger. Think of it as an expert friend on a mission to ' . $this->config->item('in_primary_name') . '! If you do not have (or want to have) a Facebook account, you can easily use Facebook Messenger <a href="https://newsroom.fb.com/news/2015/06/sign-up-for-messenger-without-a-facebook-account/" target="_blank" style="text-decoration: underline;">without a Facebook account</a>.</div>
+                <div class="panel-body" style="padding:5px 0 0 5px; font-size:1.1em;">Mench Personal Assistant works on Facebook Messenger. Think of it as an expert friend on a mission to ' . $this->config->item('in_strategy_name') . '! If you do not have (or want to have) a Facebook account, you can easily use Facebook Messenger <a href="https://newsroom.fb.com/news/2015/06/sign-up-for-messenger-without-a-facebook-account/" target="_blank" style="text-decoration: underline;">without a Facebook account</a>.</div>
             </div>
         </div></div>';
 

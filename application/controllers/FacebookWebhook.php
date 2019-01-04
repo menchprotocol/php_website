@@ -132,7 +132,7 @@ class FacebookWebhook extends CI_Controller
 
                             //The very first payload, set defaults:
                             $array_ref = array(
-                                'ref' => $this->config->item('in_primary_id'),
+                                'ref' => $this->config->item('in_tactic_id'),
                             );
 
                         } else {

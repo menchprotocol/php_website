@@ -598,7 +598,7 @@ function fn___echo_time_hours($seconds, $micro = false)
 }
 
 
-function fn___echo_in_referenced_content($in, $fb_messenger_format = false)
+function fn___echo_in_referenced_content($in, $fb_messenger_format = false, $expand_mode = false)
 {
 
     /*
@@ -698,12 +698,12 @@ function fn___echo_in_referenced_content($in, $fb_messenger_format = false)
         return '<div class="panel-group" id="open' . $id . '" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
             <div class="panel-heading" role="tab" id="heading' . $id . '">
                 <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="false" aria-controls="collapse' . $id . '">
+                    <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="'.( $expand_mode ? 'true' : 'false' ).'" aria-controls="collapse' . $id . '">
                         <i class="fas" style="transform:none !important;">📚</i> ' . $all_count . ' Reference' . fn___echo__s($all_count) . '<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                     </a>
                 </h4>
             </div>
-            <div id="collapse' . $id . '" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="heading' . $id . '">
+            <div id="collapse' . $id . '" class="panel-collapse collapse '.( $expand_mode ? 'in' : 'out' ).'" role="tabpanel" aria-labelledby="heading' . $id . '">
                 <div class="panel-body" style="padding:5px 0 0 5px; font-size:1.1em;">' . $pitch . '</div>
             </div>
         </div></div>';
@@ -711,7 +711,7 @@ function fn___echo_in_referenced_content($in, $fb_messenger_format = false)
 }
 
 
-function fn___echo_in_cost_range($in, $fb_messenger_format = 0)
+function fn___echo_in_cost_range($in, $fb_messenger_format = 0, $expand_mode = false)
 {
 
     /*
@@ -746,19 +746,19 @@ function fn___echo_in_cost_range($in, $fb_messenger_format = 0)
         return '<div class="panel-group" id="open' . $id . '" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
             <div class="panel-heading" role="tab" id="heading' . $id . '">
                 <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="false" aria-controls="collapse' . $id . '">
+                    <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="'.( $expand_mode ? 'true' : 'false' ).'" aria-controls="collapse' . $id . '">
                         <i class="fas" style="transform:none !important;">💸</i> ' . ucwords($price_range) . '<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                     </a>
                 </h4>
             </div>
-            <div id="collapse' . $id . '" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="heading' . $id . '">
+            <div id="collapse' . $id . '" class="panel-collapse collapse '.( $expand_mode ? 'in' : 'out' ).'" role="tabpanel" aria-labelledby="heading' . $id . '">
                 <div class="panel-body" style="padding:5px 0 0 5px; font-size:1.1em;">' . $pitch . '</div>
             </div>
         </div></div>';
     }
 }
 
-function fn___echo_in_overview($in, $fb_messenger_format = 0)
+function fn___echo_in_overview($in, $fb_messenger_format = 0, $expand_mode = false)
 {
 
     /*
@@ -784,12 +784,12 @@ function fn___echo_in_overview($in, $fb_messenger_format = 0)
         return '<div class="panel-group" id="open' . $id . '" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
             <div class="panel-heading" role="tab" id="heading' . $id . '">
                 <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="false" aria-controls="collapse' . $id . '">
+                    <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="'.( $expand_mode ? 'true' : 'false' ).'" aria-controls="collapse' . $id . '">
                     <i class="fas" style="transform:none !important;">💡</i> ' . $metadata['in__tree_in_published_count'] . ' Key Ideas<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                 </a>
             </h4>
         </div>
-        <div id="collapse' . $id . '" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="heading' . $id . '">
+        <div id="collapse' . $id . '" class="panel-collapse collapse '.( $expand_mode ? 'in' : 'out' ).'" role="tabpanel" aria-labelledby="heading' . $id . '">
             <div class="panel-body" style="padding:5px 0 0 5px; font-size:1.1em;">' . $pitch . '</div>
         </div>
     </div></div>';
@@ -797,7 +797,7 @@ function fn___echo_in_overview($in, $fb_messenger_format = 0)
 
 }
 
-function fn___echo_in_time_estimate($in, $fb_messenger_format = 0)
+function fn___echo_in_time_estimate($in, $fb_messenger_format = 0, $expand_mode = false)
 {
 
     /*
@@ -822,19 +822,19 @@ function fn___echo_in_time_estimate($in, $fb_messenger_format = 0)
         return '<div class="panel-group" id="open' . $id . '" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
             <div class="panel-heading" role="tab" id="heading' . $id . '">
                 <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="false" aria-controls="collapse' . $id . '">
+                    <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="'.( $expand_mode ? 'true' : 'false' ).'" aria-controls="collapse' . $id . '">
                         <i class="fas" style="transform:none !important;">⏰</i> ' . ucwords(fn___echo_time_range($in)) . '<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                     </a>
                 </h4>
             </div>
-            <div id="collapse' . $id . '" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="heading' . $id . '">
+            <div id="collapse' . $id . '" class="panel-collapse collapse '.( $expand_mode ? 'in' : 'out' ).'" role="tabpanel" aria-labelledby="heading' . $id . '">
                 <div class="panel-body" style="padding:5px 0 0 5px; font-size:1.1em;">' . $pitch . '</div>
             </div>
         </div></div>';
     }
 }
 
-function fn___echo_in_experts($in, $fb_messenger_format = 0)
+function fn___echo_in_experts($in, $fb_messenger_format = 0, $expand_mode = false)
 {
 
     /*
@@ -917,14 +917,14 @@ function fn___echo_in_experts($in, $fb_messenger_format = 0)
         return '<div class="panel-group" id="open' . $id . '" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
             <div class="panel-heading" role="tab" id="heading' . $id . '">
                 <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="false" aria-controls="collapse' . $id . '">
+                    <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="'.( $expand_mode ? 'true' : 'false' ).'" aria-controls="collapse' . $id . '">
                         <i class="fas" style="transform:none !important;">🎓</i> ' . $all_count . ' Industry Expert' . fn___echo__s($all_count) . '<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                     </a>
                 </h4>
             </div>
-            <div id="collapse' . $id . '" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="heading' . $id . '">
+            <div id="collapse' . $id . '" class="panel-collapse collapse '.( $expand_mode ? 'in' : 'out' ).'" role="tabpanel" aria-labelledby="heading' . $id . '">
                 <div class="panel-body" style="padding:5px 0 0 5px; font-size:1.1em;">
-                    ' . $pitch . ' <span style="font-size: 1em !important;">They are not affiliated with Mench, yet their work has been referenced by our training team.</span>
+                    ' . $pitch . ' <span style="font-size: 1em !important;">They are not affiliated with Mench, yet their work has been referenced by Mench Miners.</span>
                 </div>
             </div>
         </div></div>';
@@ -1100,14 +1100,14 @@ function fn___echo_time_difference($t, $second_time = null)
 }
 
 
-function fn___echo_time_date($t, $format = 0)
+function fn___echo_time_date($t, $date_only = false)
 {
     if (!$t) {
         return 'NOW';
     }
     $timestamp = (is_numeric($t) ? $t : strtotime(substr($t, 0, 19)));
     $year = (date("Y") == date("Y", $timestamp));
-    return date(($year ? "D M j " : "j M Y"), $timestamp);
+    return date(($year ? "D M j " : "j M Y").( $date_only ? "" : " H:i:s" ), $timestamp);
 }
 
 
@@ -1214,7 +1214,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
     } else {
 
-        $ui = '<div id="cr_' . $tr_id . '" in-tr-id="' . $tr_id . '" in-tr-status="' . $in['tr_status'] . '" in-tr-type="' . $in['tr_en_type_id'] . '" intent-id="' . $in['in_id'] . '" parent-intent-id="' . $in_parent_id . '" intent-level="' . $level . '" class="list-group-item ' . ($level == 3 ? 'is_level3_sortable' : 'is_level2_sortable') . ' intent_line_' . $in['in_id'] . '">';
+        $ui = '<div id="cr_' . $tr_id . '" in-tr-id="' . $tr_id . '" in-tr-type="' . $in['tr_en_type_id'] . '" intent-id="' . $in['in_id'] . '" parent-intent-id="' . $in_parent_id . '" intent-level="' . $level . '" class="list-group-item ' . ($level == 3 ? 'is_level3_sortable' : 'is_level2_sortable') . ' intent_line_' . $in['in_id'] . '">';
 
     }
 
@@ -1232,12 +1232,12 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
             //Fetch intent link types:
             $en_all_4486 = $CI->config->item('en_all_4486');
 
-            //Is this a conditional link?
+            //Is this a conditionl intent link?
             if($in['tr_en_type_id']==4229){
                 //Yes, fetch the min/max score requirements:
-                //intval($metadata['in__conditional_score_min'])
+                //intval($metadata['tr__conditional_score_min'])
             } else {
-                //Regular fixed link:
+                //Fixed Intent link:
 
             }
 
@@ -1309,7 +1309,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
      *
      * */
 
-    $in_settings = ' in_usd="' . $in['in_usd'] . '" in_status="' . $in['in_status'] . '" in_points="' . $in['in_points'] . '" in_alternatives="' . $in['in_alternatives'] . '" in_is_any="' . $in['in_is_any'] . '" ';
+    $in_settings = ' in_is_any="' . $in['in_is_any'] . '" ';
 
     //Intenet Points Icon indicator:
     $extra_ui = '';

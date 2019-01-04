@@ -1431,7 +1431,7 @@ class Chat_model extends CI_Model
 
                 //Master seems to have changed their mind, confirm with them:
                 $this->Chat_model->fn___dispatch_message(
-                    'Awesome, I am excited to continue helping you to ' . $this->config->item('in_primary_name') . '.',
+                    'Awesome, I am excited to continue helping you to ' . $this->config->item('in_strategy_name') . '.',
                     $en,
                     true
                 );
@@ -1546,7 +1546,7 @@ class Chat_model extends CI_Model
 
             //They rejected the offer... Acknowledge and give response:
             $this->Chat_model->fn___dispatch_message(
-                'Ok, so how can I help you ' . $this->config->item('in_primary_name') . '?',
+                'Ok, so how can I help you ' . $this->config->item('in_strategy_name') . '?',
                 $en,
                 true
             );
@@ -1635,7 +1635,7 @@ class Chat_model extends CI_Model
 
                     //Let Master know that they have already subscribed to this intention:
                     $this->Chat_model->fn___dispatch_message(
-                        'The intention to ' . $ins[0]['in_outcome'] . ' has already been added to your Action Plan. We have been working on it together since ' . fn___echo_time_date($actionplans[0]['tr_timestamp']) . '. /link:See in 🚩Action Plan:https://mench.com/master/actionplan/' . ( $actionplans[0]['tr_en_type_id']==4235 ? $actionplans[0]['tr_id'] : $actionplans[0]['tr_tr_parent_id'] ) . '/' . $actionplans[0]['tr_in_child_id'],
+                        'The intention to ' . $ins[0]['in_outcome'] . ' has already been added to your Action Plan. We have been working on it together since ' . fn___echo_time_date($actionplans[0]['tr_timestamp'], true) . '. /link:See in 🚩Action Plan:https://mench.com/master/actionplan/' . ( $actionplans[0]['tr_en_type_id']==4235 ? $actionplans[0]['tr_id'] : $actionplans[0]['tr_tr_parent_id'] ) . '/' . $actionplans[0]['tr_in_child_id'],
                         $en,
                         true,
                         array(),
@@ -2367,12 +2367,12 @@ class Chat_model extends CI_Model
                 $default_actionplans = $this->Database_model->fn___tr_fetch(array(
                     'tr_en_type_id IN (4235,4559)' => null, //Action Plan or Action Plan Intents
                     'tr_en_parent_id' => $en['en_id'], //Belongs to this Master
-                    'tr_in_child_id' => $this->config->item('in_primary_id'),
+                    'tr_in_child_id' => $this->config->item('in_tactic_id'),
                 ));
                 if (count($default_actionplans) == 0) {
 
                     //They have never taken the default intent, recommend it to them:
-                    $this->Chat_model->fn___digest_received_quick_reply($en, $this->config->item('in_primary_id'));
+                    $this->Chat_model->fn___digest_received_quick_reply($en, $this->config->item('in_tactic_id'));
 
                 }
 

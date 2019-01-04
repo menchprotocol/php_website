@@ -341,7 +341,7 @@ class Migrate extends CI_Controller
                 }
 
                 //Fetch the appropriate parent using current patterns:
-                $tr_en_parent_id = $this->config->item('en_default_url_parent'); // URL Reference
+                $tr_en_parent_id = $this->config->item('en_default_parent_id'); // URL Reference
                 foreach ($matching_patterns as $match) {
                     if (substr_count($x['x_url'], $match['ur_notes']) > 0) {
                         //yes we found a pattern match:

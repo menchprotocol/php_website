@@ -1682,10 +1682,17 @@ h5, .h5 {
     text-align: right;
 }
 
+
+
+.loadbox{
+    padding: 10px 0 20px 0;
+}
+
 .save-result-td {
     font-size: 0.8em;
     line-height:140%;
     text-align: left;
+    width: 100%;
 }
 
 .save-result-td a {
@@ -1733,20 +1740,6 @@ input.form-control, textarea.form-control, select {
     border-bottom-right-radius: 4px;
 }
 
-@media (max-width: 1150px) {
-    .hide-small {
-        display: none;
-    }
-
-    #matrix .navbar-header {
-        min-width: 400px;
-    }
-
-    .main-raised {
-        margin-left: 15px !important;
-        margin-right: 15px !important;
-    }
-}
 
 .nav-pills > li > a {
     min-width: auto;
@@ -1944,6 +1937,82 @@ select.form-control {
 
 .indent2 {
     margin-left: 30px;
+}
+
+.save-btn-spot{
+    height: 70px !important;
+}
+.save-btn-box{
+    margin-top: -67px !important;
+    display: block;
+    width:48%;
+    float:right;
+    font-size:1em;
+    text-align: right !important;
+}
+
+.bold-header .badge {
+    font-size: 1.1em;
+    padding: 6px 7px 5px;
+    margin-bottom: -4px;
+}
+.stats-table td {
+    border-radius: 3px;
+    padding: 4px !important;
+}
+.stats-table, .stats-table tr {
+    width: 100%;
+    text-align: left;
+}
+
+.table-striped>tbody>tr:nth-of-type(odd) {
+    background-color: #FFF;
+}
+.table-striped>tbody>tr:nth-of-type(even) {
+    background-color: #EFEFEF;
+}
+
+.white-wrapper {
+    /* Helps keep text input boxes white as they sometimes default to the background color! */
+    background-color: #FFFFFF;
+    display: inline-block;
+    width: 100%;
+}
+.or-settings{
+    font-size: 0.9em;
+    line-height: 120%;
+    max-width: 190px;
+    margin-bottom: 15px;
+}
+
+.en-no-tr, .in-no-tr{
+    font-size: 0.9em;
+    line-height: 120%;
+}
+
+.save-btn-box tbody {
+    width:100% !important;
+}
+
+@media (max-width: 1150px) {
+
+    .save-btn-box{
+        width:100% !important;
+    }
+
+
+    .hide-small {
+        display: none;
+    }
+
+    #matrix .navbar-header {
+        min-width: 400px;
+    }
+
+    .main-raised {
+        margin-left: 15px !important;
+        margin-right: 15px !important;
+    }
 }
 
 @media (max-width: 767px) {
@@ -3087,6 +3156,10 @@ h4 .tip-badge {
 .btn.btn-secondary, .btn.btn-secondary:hover, .btn.btn-secondary:focus, .btn.btn-secondary:active, .btn.btn-secondary.active, .btn.btn-secondary:active:focus, .btn.btn-secondary:active:hover, .btn.btn-secondary.active:focus, .btn.btn-secondary.active:hover, .open > .btn.btn-secondary.dropdown-toggle, .open > .btn.btn-secondary.dropdown-toggle:focus, .open > .btn.btn-secondary.dropdown-toggle:hover, .navbar .navbar-nav > li > a.btn.btn-secondary, .navbar .navbar-nav > li > a.btn.btn-secondary:hover, .navbar .navbar-nav > li > a.btn.btn-secondary:focus, .navbar .navbar-nav > li > a.btn.btn-secondary:active, .navbar .navbar-nav > li > a.btn.btn-secondary.active, .navbar .navbar-nav > li > a.btn.btn-secondary:active:focus, .navbar .navbar-nav > li > a.btn.btn-secondary:active:hover, .navbar .navbar-nav > li > a.btn.btn-secondary.active:focus, .navbar .navbar-nav > li > a.btn.btn-secondary.active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-secondary.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-secondary.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-secondary.dropdown-toggle:hover {
     background-color: #0084ff;
     color: #FFF;
+}
+
+.btn-secondary {
+    font-size:15px !important;
 }
 
 .dropdown-menu-secondary li a:hover, .dropdown-menu-secondary li a:focus, .dropdown-menu-secondary li a:active {

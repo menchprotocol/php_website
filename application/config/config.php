@@ -15,236 +15,243 @@ date_default_timezone_set('America/Los_Angeles');
 
 
 //UI Display:
-$config['app_version'] = '0.66'; //Cache buster in URLs for static js/css files
-$config['en_per_page'] = 50; //Limits the maximum entities loaded per page
-$config['tr_max_count'] = 999; //TODO Deprecate... (Used in counting things of transactions in matrix UI. If more that this will add a "+" sign to the end)
+$config['app_version']              = '0.68'; //Cache buster in URLs for static js/css files
+$config['en_per_page']              = 50; //Limits the maximum entities loaded per page
 
 
-//Matrix defaults:
-$config['in_primary_name'] = 'advance your tech career'; //What is the purposes of Mench at this point?
-$config['in_primary_id'] = 6903; //The default platform intent that would be recommended to new masters
-$config['in_mission_id'] = 7766; //"Expand Human Potential" is the top level intent that will always contain every other intention we cover
-$config['en_primary_id'] = 3463; //The default matrix entity that is loaded when Entities is clicked
-$config['en_default_url_parent'] = 1326; //The entity that would be the parent to all new URLs added via Messages
+//Focused Intents:
+$config['in_mission_name']          = 'expand human potential'; //is the top level intent that will always contain every other intention we cover
+$config['in_mission_id']            = 7766; //expand human potential
+$config['in_strategy_name']         = 'advance your tech career'; //The broader, more long-term strategic focus of Mench
+$config['in_strategy_id']           = 7240; //advance your tech career
+$config['in_tactic_id']             = 6903; //The shorter, more immediate focus recommended to Masters & Miners as the starting point
+
+
+//Entities:
+$config['en_start_here_id']         = 3463; //The default matrix entity that is loaded when Entities is clicked
+$config['en_default_parent_id']     = 1326; //The entity that would be the parent to all new URLs added via Messages
 
 
 //App Functionality:
-$config['enable_algolia'] = false; //Currently reached our monthly free quota
-$config['file_size_max'] = 25; //Server setting is 32MB. see here: mench.com/ses
-$config['password_salt'] = '40s96As9ZkdAcwQ9PhZm'; //Used for hashing the user password for Mench logins
-$config['tr_status_incomplete'] = array(0, 1); //Transactions with these tr_status values are considered in-complete
+$config['enable_algolia']           = false; //Currently reached our monthly free quota
+$config['file_size_max']            = 25; //Server setting is 32MB. see here: mench.com/ses
+$config['password_salt']            = '40s96As9ZkdAcwQ9PhZm'; //Used for hashing the user password for Mench logins
+$config['tr_status_incomplete']     = array(0, 1); //Transactions with these tr_status values are considered in-complete
 
 
 //App Inputs:
-$config['in_points_options'] = array(-89, -55, -34, -21, -13, -8, -5, -3, -2, -1, 0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610);
-$config['in_seconds_max'] = 28800; //The maximum seconds allowed per intent. If larger, the miner is asked to break it down into smaller intents
-$config['in_outcome_max'] = 89; //Max number of characters allowed in the title of intents
-$config['en_name_max'] = 250; //Max number of characters allowed in the title of intents
-$config['tr_content_max'] = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
-$config['message_commands'] = array( //The list of commands supported within a message content
-    '/firstname', //Will be replaced by the first name of the recipient
-    '/slice', //Will Slice all supporting videos (YouTube) of the referenced entity within a message like /slice:180:202 (22 seconds starting from minute 3:00
-    '/link', //Will display a custom link like /link:Search for Batman:https://google.com/?q=Batman (Note that middle part cannot be longer than 20 characters)
-);
+$config['in_points_options']        = array(-89, -55, -34, -21, -13, -8, -5, -3, -2, -1, 0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610);
+$config['in_seconds_max']           = 28800; //The maximum seconds allowed per intent. If larger, the miner is asked to break it down into smaller intents
+$config['in_outcome_max']           = 89; //Max number of characters allowed in the title of intents
+$config['en_name_max']              = 250; //Max number of characters allowed in the title of intents
+$config['tr_content_max']           = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
+$config['message_commands']         = array( //The list of commands supported within a message content
+                                        '/firstname', //replaced with first name
+                                        '/slice', //slice a part of a YouTube video like this: /slice:180:202 (22 seconds starting from minute 3:00
+                                        '/link', //Button link like this: /link:Open Mench:https://mench.com
+                                    );
 
 //Third-Party Settings:
-$config['fb_max_message'] = 2000; //The maximum length of a Message accepted via Messenger API
-$config['en_convert_4454'] = array( //Mench Notification Levels to Facebook Messenger - This is a manual converter of our internal entities to Facebook API language
-    4456 => 'REGULAR',
-    4457 => 'SILENT_PUSH',
-    4458 => 'NO_PUSH',
-    //There is also an Unsubscribe @4455 entity which is not here obviously since there would be no communication with the Master at all!
-);
-$config['en_convert_4537'] = array( //Used for saving media to Facebook Servers to speed-up delivery over Messenger
-    4258 => 'video',
-    4259 => 'audio',
-    4260 => 'image',
-    4261 => 'file',
-);
+$config['fb_max_message']           = 2000; //The maximum length of a Message accepted via Messenger API
+$config['en_convert_4454']          = array( //Facebook Messenger Notification Levels - This is a manual converter of our internal entities to Facebook API
+                                        4456 => 'REGULAR',
+                                        4457 => 'SILENT_PUSH',
+                                        4458 => 'NO_PUSH',
+                                        //@4455 => Unsubscribe NOT listed here since in that case all communication is blocked!
+                                    );
+$config['en_convert_4537']          = array( //Used for saving media to Facebook Servers to speed-up delivery over Messenger
+                                        4258 => 'video',
+                                        4259 => 'audio',
+                                        4260 => 'image',
+                                        4261 => 'file',
+                                    );
 
-$config['fb_settings'] = array(
-    'page_id' => '381488558920384',
-    'app_id' => '1782431902047009',
-    'client_secret' => '05aea76d11b062951b40a5bee4251620',
-    'default_graph_version' => 'v2.10', //Note: This variable also exists in the Facebook Library too! Search "v2.10"
-    'mench_access_token' => 'EAAZAVHMRbmyEBAEfN8zsRJ3UOIUJJrNLqeFutPXVQZCoDZA3EO1rgkkzayMtNhisHHEhAos08AmKZCYD7zcZAPIDSMTcBjZAHxxWzbfWyTyp85Fna2bGDfv5JUIBuFTSeQOZBaDHRG7k0kbW8E7kQQN3W6x47VB1dZBPJAU1oNSW1QZDZD',
-);
-$config['aws_credentials'] = [ //Learn more: https://console.aws.amazon.com/iam/home?region=us-west-2#/users/foundation?section=security_credentials
-    'key' => 'AKIAJOLBLKFSYCCYYDRA',
-    'secret' => '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',
-];
+$config['fb_settings']              = array(
+                                        'page_id' => '381488558920384',
+                                        'app_id' => '1782431902047009',
+                                        'client_secret' => '05aea76d11b062951b40a5bee4251620',
+                                        'default_graph_version' => 'v2.10', // ATT: Also exists in Facebook Library! Search "v2.10"
+                                        'mench_access_token' => 'EAAZAVHMRbmyEBAEfN8zsRJ3UOIUJJrNLqeFutPXVQZCoDZA3EO1rgkkzayMtNhisHHEhAos08AmKZCYD7zcZAPIDSMTcBjZAHxxWzbfWyTyp85Fna2bGDfv5JUIBuFTSeQOZBaDHRG7k0kbW8E7kQQN3W6x47VB1dZBPJAU1oNSW1QZDZD',
+                                    );
+
+//Learn more: https://console.aws.amazon.com/iam/home?region=us-west-2#/users/foundation?section=security_credentials
+$config['aws_credentials']          = [
+                                        'key' => 'AKIAJOLBLKFSYCCYYDRA',
+                                        'secret' => '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',
+                                    ];
 
 //Admin notification via Email:
-$config['notify_admins'] = array(
-    array(
-        'admin_emails' => array('shervin@mench.com'),
-        'admin_en_ids' => array(1),
-        'admin_notify' => array(
-            4246, //Platform Error
-            4269, //Miner login
-        ),
-    ),
-);
+$config['notify_admins']            = array(
+                                        array(
+                                            'admin_emails' => array('shervin@mench.com'),
+                                            'admin_en_ids' => array(1),
+                                            'admin_notify' => array(
+                                                4246, //Platform Error
+                                                4269, //Miner login
+                                            ),
+                                        ),
+                                    );
 
-$config['eng_converter'] = array(
-    //Mining Links
-    20 => 4250, //Log intent creation
-    6971 => 4251, //Log entity creation
-    21 => 4252, //Log intent archived
-    50 => 4254, //Log intent migration
-    19 => 4264, //Log intent modification
-    //0 => 4253, //Entity Archived (Did not have this!)
+$config['eng_converter']            = array(
+                                        //Mining Links
+                                        20 => 4250, //Log intent creation
+                                        6971 => 4251, //Log entity creation
+                                        21 => 4252, //Log intent archived
+                                        50 => 4254, //Log intent migration
+                                        19 => 4264, //Log intent modification
+                                        //0 => 4253, //Entity Archived (Did not have this!)
 
-    36 => 4242, //Log intent message update
-    7727 => 4242, //Log entity link note modification
+                                        36 => 4242, //Log intent message update
+                                        7727 => 4242, //Log entity link note modification
 
-    12 => 4263, //Log entity modification
-    7001 => 4299, //Log pending image upload sync to cloud
+                                        12 => 4263, //Log entity modification
+                                        7001 => 4299, //Log pending image upload sync to cloud
 
-    89 => 4241, //Log intent unlinked
-    7292 => 4241, //Log entity unlinked
-    35 => 4241, //Log intent message archived
-    6912 => 4241, //Log entity URL archived
+                                        89 => 4241, //Log intent unlinked
+                                        7292 => 4241, //Log entity unlinked
+                                        35 => 4241, //Log intent message archived
+                                        6912 => 4241, //Log entity URL archived
 
-    39 => 4262, //Log intent message sorting
-    22 => 4262, //Log intent children sorted
-
-
-    //Growth links
-    27 => 4265, //Log user joined
-    5 => 4266, //Log Messenger optin
-    4 => 4267, //Log Messenger referral
-    3 => 4268, //Log Messenger postback
-    10 => 4269, //Log user sign in
-    59 => 4271, //Log user password reset
+                                        39 => 4262, //Log intent message sorting
+                                        22 => 4262, //Log intent children sorted
 
 
-    //Personal Assistant links
-    40 => 4273, //Log console tip read
-    7703 => 4275, //Log subscription intent search
-    28 => 4276, //Log user email sent
-    6 => 4277, //Log message received
-    1 => 4278, //Log message read
-    2 => 4279, //Log message delivered
-    7 => 4280, //Log message sent
-    55 => 4282, //Log my account access
-    32 => 4283, //Log action plan access
-    33 => 4242, //Log Action Plan completion [Link updated]
-    7718 => 4287, //Log unrecognized message
+                                        //Growth links
+                                        27 => 4265, //Log user joined
+                                        5 => 4266, //Log Messenger optin
+                                        4 => 4267, //Log Messenger referral
+                                        3 => 4268, //Log Messenger postback
+                                        10 => 4269, //Log user sign in
+                                        59 => 4271, //Log user password reset
 
-    //Platform Operations Links:
-    8 => 4246, //Platform Error
-    72 => 4248, //Log user review
-);
+
+                                        //Personal Assistant links
+                                        40 => 4273, //Log console tip read
+                                        7703 => 4275, //Log subscription intent search
+                                        28 => 4276, //Log user email sent
+                                        6 => 4277, //Log message received
+                                        1 => 4278, //Log message read
+                                        2 => 4279, //Log message delivered
+                                        7 => 4280, //Log message sent
+                                        55 => 4282, //Log my account access
+                                        32 => 4283, //Log action plan access
+                                        33 => 4242, //Log Action Plan completion [Link updated]
+                                        7718 => 4287, //Log unrecognized message
+
+                                        //Platform Operations Links:
+                                        8 => 4246, //Platform Error
+                                        72 => 4248, //Log user review
+                                    );
 
 
 //Ledger filters:
-$config['ledger_filters'] = array(
-    'tr_en_credit_id' => 'en',
-    'tr_en_child_id'  => 'en',
-    'tr_en_parent_id' => 'en',
-    'tr_in_child_id'  => 'in',
-    'tr_in_parent_id' => 'in',
-    'tr_tr_parent_id' => 'tr',
-);
+$config['ledger_filters']           = array(
+                                        'tr_en_credit_id' => 'en',
+                                        'tr_en_child_id'  => 'en',
+                                        'tr_en_parent_id' => 'en',
+                                        'tr_in_child_id'  => 'in',
+                                        'tr_in_parent_id' => 'in',
+                                        'tr_tr_parent_id' => 'tr',
+                                    );
 
 
 //3x Table Statuses:
-$config['object_statuses'] = array(
-    'tr_status' => array(
-        -1 => array(
-            's_name' => 'Removed',
-            's_desc' => 'Transaction removed by Master or Miner',
-            's_icon' => 'fal fa-minus-square',
-        ),
-        0 => array( //Considered incomplete, see tr_status_incomplete for more details
-            's_name' => 'New',
-            's_desc' => 'Newly added transaction pending review by Miner',
-            's_icon' => 'fal fa-square',
-        ),
-        1 => array( //Considered incomplete, see tr_status_incomplete for more details
-            's_name' => 'Working On',
-            's_desc' => 'Transaction is being worked on but is not yet completed',
-            's_icon' => 'fas fa-spinner fa-spin',
-        ),
-        2 => array(
-            's_name' => 'Published',
-            's_desc' => 'Transaction is completed and ready for updates to be synced',
-            's_icon' => 'fas fa-check-square',
-        ),
-        3 => array(
-            's_name' => 'Verified',
-            's_desc' => 'Transaction has been reviewed and verified by a Miner',
-            's_icon' => 'fas fa-badge-check',
-        ),
-    ),
-    'en_status' => array(
-        -1 => array(
-            's_name' => 'Removed',
-            's_desc' => 'Entity removed by Miner',
-            's_icon' => 'fal fa-minus-square',
-        ),
-        0 => array(
-            's_name' => 'New',
-            's_desc' => 'Entity is newly added and is pending review by a Miner',
-            's_icon' => 'fal fa-square',
-        ),
-        1 => array(
-            's_name' => 'Working On',
-            's_desc' => 'Entity is being mined by Miners and not yet ready to be published live',
-            's_icon' => 'fas fa-spinner fa-spin'
-        ),
-        2 => array(
-            's_name' => 'Published',
-            's_desc' => 'Entity is published live and ready to be distributed to Masters',
-            's_icon' => 'fas fa-check-square',
-        ),
-        3 => array(
-            's_name' => 'Verified',
-            's_desc' => 'Entity references a human which has been claimed by that person',
-            's_icon' => 'fas fa-badge-check',
-        ),
-    ),
-    'in_status' => array(
-        -1 => array(
-            's_name' => 'Removed',
-            's_desc' => 'Intent removed by Miner',
-            's_icon' => 'fal fa-minus-square',
-        ),
-        0 => array(
-            's_name' => 'New',
-            's_desc' => 'Intent is newly added and is pending review by a Miner',
-            's_icon' => 'fal fa-square',
-        ),
-        1 => array(
-            's_name' => 'Working On',
-            's_desc' => 'Intent is being mined by Miners and not yet ready to be published live',
-            's_icon' => 'fas fa-spinner fa-spin',
-        ),
-        2 => array(
-            's_name' => 'Published',
-            's_desc' => 'Intent is published live and ready to be distributed to Masters',
-            's_icon' => 'fas fa-check-square',
-        ),
-        3 => array(
-            's_name' => 'Featured',
-            's_desc' => 'Intent recommended to Masters',
-            's_icon' => 'fas fa-badge-check',
-        ),
-    ),
-    'in_is_any' => array(
-        0 => array(
-            's_name' => 'AND',
-            's_desc' => 'Intent is complete when all children are marked as complete',
-            's_icon' => 'fas fa-sitemap',
-        ),
-        1 => array(
-            's_name' => 'OR',
-            's_desc' => 'Intent is complete when a single child is marked as complete',
-            's_icon' => 'fas fa-code-merge',
-        ),
-    ),
-);
+$config['object_statuses']          = array(
+                                        'in_status' => array(
+                                            -1 => array(
+                                                's_name' => 'Removed',
+                                                's_desc' => 'Intent removed by Miner',
+                                                's_icon' => 'fal fa-minus-square',
+                                            ),
+                                            0 => array(
+                                                's_name' => 'New',
+                                                's_desc' => 'Intent is newly added and is pending review by a Miner',
+                                                's_icon' => 'fal fa-square',
+                                            ),
+                                            1 => array(
+                                                's_name' => 'Working On',
+                                                's_desc' => 'Intent is being mined by Miners and not yet ready to be published live',
+                                                's_icon' => 'fas fa-spinner fa-spin',
+                                            ),
+                                            2 => array(
+                                                's_name' => 'Published',
+                                                's_desc' => 'Intent is published live and ready to be distributed to Masters',
+                                                's_icon' => 'fas fa-check-square',
+                                            ),
+                                            3 => array(
+                                                's_name' => 'Featured',
+                                                's_desc' => 'Intent recommended to Masters',
+                                                's_icon' => 'fas fa-badge-check',
+                                            ),
+                                        ),
+                                        'en_status' => array(
+                                            -1 => array(
+                                                's_name' => 'Removed',
+                                                's_desc' => 'Entity removed by Miner',
+                                                's_icon' => 'fal fa-minus-square',
+                                            ),
+                                            0 => array(
+                                                's_name' => 'New',
+                                                's_desc' => 'Entity is newly added and is pending review by a Miner',
+                                                's_icon' => 'fal fa-square',
+                                            ),
+                                            1 => array(
+                                                's_name' => 'Working On',
+                                                's_desc' => 'Entity is being mined by Miners and not yet ready to be published live',
+                                                's_icon' => 'fas fa-spinner fa-spin'
+                                            ),
+                                            2 => array(
+                                                's_name' => 'Published',
+                                                's_desc' => 'Entity is published live and ready to be distributed to Masters',
+                                                's_icon' => 'fas fa-check-square',
+                                            ),
+                                            3 => array(
+                                                's_name' => 'Verified',
+                                                's_desc' => 'Entity references a human which has been claimed by that person',
+                                                's_icon' => 'fas fa-badge-check',
+                                            ),
+                                        ),
+                                        'tr_status' => array(
+                                            -1 => array(
+                                                's_name' => 'Removed',
+                                                's_desc' => 'Transaction removed by Master or Miner',
+                                                's_icon' => 'fal fa-minus-square',
+                                            ),
+                                            0 => array( //Considered incomplete, see tr_status_incomplete for more details
+                                                's_name' => 'New',
+                                                's_desc' => 'Newly added transaction pending review by Miner',
+                                                's_icon' => 'fal fa-square',
+                                            ),
+                                            1 => array( //Considered incomplete, see tr_status_incomplete for more details
+                                                's_name' => 'Working On',
+                                                's_desc' => 'Transaction is being worked on but is not yet completed',
+                                                's_icon' => 'fas fa-spinner fa-spin',
+                                            ),
+                                            2 => array(
+                                                's_name' => 'Published',
+                                                's_desc' => 'Transaction is completed and ready for updates to be synced',
+                                                's_icon' => 'fas fa-check-square',
+                                            ),
+                                            3 => array(
+                                                's_name' => 'Verified',
+                                                's_desc' => 'Transaction has been reviewed and verified by a Miner',
+                                                's_icon' => 'fas fa-badge-check',
+                                            ),
+                                        ),
+                                        'in_is_any' => array(
+                                            0 => array(
+                                                's_name' => 'AND',
+                                                's_desc' => 'Intent is complete when all children are marked as complete',
+                                                's_icon' => 'fas fa-sitemap',
+                                            ),
+                                            1 => array(
+                                                's_name' => 'OR',
+                                                's_desc' => 'Intent is complete when a single child is marked as complete',
+                                                's_icon' => 'fas fa-code-merge',
+                                            ),
+                                        ),
+
+                                    );
 
 
 

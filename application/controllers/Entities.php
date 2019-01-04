@@ -18,7 +18,7 @@ class Entities extends CI_Controller
 
         if($en_id == 0){
             //Set to default:
-            $en_id = $this->config->item('en_primary_id');
+            $en_id = $this->config->item('en_start_here_id');
         }
 
         $udata = fn___en_auth(null, true); //Just be logged in to browse
@@ -403,7 +403,7 @@ class Entities extends CI_Controller
         $udata = $this->session->userdata('user');
         if (isset($udata['en__parents'][0]) && fn___filter_array($udata['en__parents'], 'en_id', 1308)) {
             //Lead miner and above, go to console:
-            return fn___redirect_message('/intents/' . $this->config->item('in_primary_id'));
+            return fn___redirect_message('/intents/' . $this->config->item('in_tactic_id'));
         }
 
         $this->load->view('view_shared/public_header', array(
@@ -542,7 +542,7 @@ class Entities extends CI_Controller
             //Default:
             if ($is_miner) {
                 //miner default:
-                header('Location: /intents/' . $this->config->item('in_primary_id'));
+                header('Location: /intents/' . $this->config->item('in_tactic_id'));
             } else {
                 //Master default:
                 header('Location: /master/actionplan');

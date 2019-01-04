@@ -262,7 +262,7 @@ class Master extends CI_Controller
             'tr_en_type_id' => 4331, //Intent Response Limiters
             'tr_in_child_id' => $trs[0]['tr_in_child_id'], //For this intent
             'tr_status >=' => 2, //Published+
-            'tr_en_parent_id IN (' . join(',', $this->config->item('en_ids_4331')) . ')' => null, //The Requirement
+            'tr_en_parent_id IN (' . join(',', $this->config->item('en_ids_4331')) . ')' => null, //Technically not needed, but here for extra clarity
         ));
 
         if(count($completion_requirements)>0){

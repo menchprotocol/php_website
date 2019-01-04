@@ -290,7 +290,8 @@ function en_load_modify(en_id, tr_id) {
     if (parseInt(tr_id) > 0) {
 
         //Make the UI link and the notes in the edit box:
-        $('.unlink-entity, .li_component').removeClass('hidden');
+        $('.unlink-entity, .en-has-tr').removeClass('hidden');
+        $('.en-no-tr').addClass('hidden');
 
         //Assign value:
         $('#tr_content').val($(".tr_content_val_" + tr_id + ":first").text());
@@ -301,7 +302,8 @@ function en_load_modify(en_id, tr_id) {
     } else {
 
         //Hide the section and clear it:
-        $('.unlink-entity, .li_component').addClass('hidden');
+        $('.unlink-entity, .en-has-tr').addClass('hidden');
+        $('.en-no-tr').removeClass('hidden');
 
     }
 

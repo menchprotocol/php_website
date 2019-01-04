@@ -22,12 +22,12 @@ class Intents extends CI_Controller
         if (isset($udata['en__parents'][0]) && fn___filter_array($udata['en__parents'], 'en_id', 1308)) {
 
             //Lead miner and above, go to matrix:
-            fn___redirect_message('/intents/' . $this->config->item('in_primary_id'));
+            fn___redirect_message('/intents/' . $this->config->item('in_tactic_id'));
 
         } elseif (0 && (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] == 'mench.co')) {
 
             //Show the Hiring Ad:
-            fn___redirect_message('/8327?do_expand=1');
+            fn___redirect_message('/8327?expand_mode=1');
 
         } else {
 
@@ -39,7 +39,7 @@ class Intents extends CI_Controller
             if (count($featured_cs) == 0) {
 
                 //Go to default landing page:
-                return fn___redirect_message('/' . $this->config->item('in_primary_id'));
+                return fn___redirect_message('/' . $this->config->item('in_tactic_id'));
 
             } elseif (count($featured_cs) == 1) {
 
@@ -75,7 +75,7 @@ class Intents extends CI_Controller
 
         if($in_id == 0){
             //Set to default:
-            $in_id = $this->config->item('in_primary_id');
+            $in_id = $this->config->item('in_tactic_id');
         }
 
         //Authenticate Miner, redirect if failed:
@@ -89,7 +89,7 @@ class Intents extends CI_Controller
 
         //Make sure we found it:
         if ( count($ins) < 1) {
-            return fn___redirect_message('/intents/' . $this->config->item('in_primary_id'), '<div class="alert alert-danger" role="alert">Intent ID [' . $in_id . '] not found</div>');
+            return fn___redirect_message('/intents/' . $this->config->item('in_tactic_id'), '<div class="alert alert-danger" role="alert">Intent ID [' . $in_id . '] not found</div>');
         }
 
         //Load views:
@@ -144,7 +144,7 @@ class Intents extends CI_Controller
 
         //Make sure we found it:
         if ( count($ins) < 1) {
-            return fn___redirect_message('/' . $this->config->item('in_primary_id'), '<div class="alert alert-danger" role="alert">Intent ID [' . $in_id . '] not found</div>');
+            return fn___redirect_message('/' . $this->config->item('in_tactic_id'), '<div class="alert alert-danger" role="alert">Intent ID [' . $in_id . '] not found</div>');
         }
 
         //Load home page:
@@ -456,6 +456,7 @@ class Intents extends CI_Controller
             'message' => '<span><i class="fas fa-check"></i> Saved' . ($updated_children > 0 ? ' & ' . $updated_children . ' Recursive Updates' : '') . '</span>',
             'status_in_ui' => fn___echo_status('in_status', $_POST['in_status'], true, 'left'),
             'status_in_tr_ui' => fn___echo_status('tr_status', $_POST['tr_status'], true, 'left'),
+            'remove_ui' => 0, //True if Intent has been removed/unlinked
         ));
 
     }
@@ -774,7 +775,7 @@ class Intents extends CI_Controller
     }
 
 
-    function fn___in_check_requirements()
+    function fn___in_fetch_data()
     {
 
         /*
@@ -797,25 +798,89 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Intent ID',
             ));
+        } elseif (!isset($_POST['tr_id'])) {
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Intent Link ID',
+            ));
         }
 
-        //Fetch intent requirements:
+        //Fetch Intent:
+        $ins = $this->Database_model->fn___in_fetch(array(
+            'in_id' => $_POST['in_id'],
+            'in_status >=' => 0, //New+
+        ));
+        if(count($ins) < 1){
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Intent ID',
+            ));
+        }
+
+        //Prep metadata:
+        $ins[0]['in_metadata'] = ( strlen($ins[0]['in_metadata']) > 0 ? unserialize($ins[0]['in_metadata']) : array());
+
+        //Fetch last intent update transaction:
+        $in_updated_trs = $this->Database_model->fn___tr_fetch(array(
+            'tr_status >=' => 0, //New+
+            'tr_en_type_id IN (4250, 4264)' => null, //Intent Created/Updated
+            'tr_in_child_id' => $_POST['in_id'],
+        ), array('en_credit'));
+        if(count($in_updated_trs) < 1){
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Intent Last Updated Data',
+            ));
+        }
+
+        //Prep last updated:
+        $ins[0]['in___last_updated'] = 'Intent updated <b data-toggle="tooltip" title="'.fn___echo_time_date($in_updated_trs[0]['tr_timestamp']).' PST" data-placement="top">'.fn___echo_time_difference(strtotime($in_updated_trs[0]['tr_timestamp'])).' ago</b>'.( $in_updated_trs[0]['tr_en_credit_id']>0 ? ' <span style="display: inline-block">by <a href="/entities/'.$in_updated_trs[0]['en_id'].'" style="font-weight: bold;">'.$in_updated_trs[0]['en_icon'].' '.$in_updated_trs[0]['en_name'].'</a></span>' : '' ).'.';
+
+
+        if(intval($_POST['tr_id'])>0){
+
+            //Fetch intent link:
+            $trs = $this->Database_model->fn___tr_fetch(array(
+                'tr_id' => $_POST['tr_id'],
+                'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
+                'tr_status >=' => 0, //New+
+            ), array('en_credit'));
+
+            if(count($trs) < 1){
+                return fn___echo_json(array(
+                    'status' => 0,
+                    'message' => 'Invalid Intent Link ID',
+                ));
+            }
+
+            //Prep metadata:
+            $trs[0]['tr_metadata'] = ( strlen($trs[0]['tr_metadata']) > 0 ? unserialize($trs[0]['tr_metadata']) : array());
+
+            //Prep last updated:
+            $trs[0]['tr___last_updated'] = 'Transaction updated <b data-toggle="tooltip" title="'.fn___echo_time_date($trs[0]['tr_timestamp']).' PST" data-placement="top">'.fn___echo_time_difference(strtotime($trs[0]['tr_timestamp'])).' ago</b>'.( $trs[0]['tr_en_credit_id']>0 ? ' <span style="display: inline-block">by <a href="/entities/'.$trs[0]['en_id'].'" style="font-weight: bold;">'.$trs[0]['en_icon'].' '.$trs[0]['en_name'].'</a></span>' : '' ).'.';
+
+        }
+
+
+        //Fetch intent completion requirements (if any):
         $completion_requirements = $this->Database_model->fn___tr_fetch(array(
             'tr_en_type_id' => 4331, //Intent Response Limiters
             'tr_in_child_id' => $_POST['in_id'], //For this intent
-            'tr_status >=' => 2, //Published+
-            'tr_en_parent_id IN (' . join(',', $this->config->item('en_ids_4331')) . ')' => null, //The Requirement
+            'tr_status >=' => 0, //New+
+            'tr_en_parent_id IN (' . join(',', $this->config->item('en_ids_4331')) . ')' => null, //Technically not needed, but here for extra clarity
         ));
 
-        $requirement_array = array();
+        $in_req_ens = array();
         foreach($completion_requirements as $tr){
-            array_push($requirement_array, intval($tr['tr_en_parent_id']));
+            array_push($in_req_ens, intval($tr['tr_en_parent_id']));
         }
 
         //Return results:
         return fn___echo_json(array(
             'status' => 1,
-            'requirement_array' => $requirement_array,
+            'in_req_ens' => $in_req_ens,
+            'in' => $ins[0],
+            'tr' => ( isset($trs[0]) ? $trs[0] : array() ),
         ));
 
     }

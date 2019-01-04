@@ -61,7 +61,7 @@ if (isset($orphan_ins)) {
 
 
             //Count orphans only IF we are in the top parent root:
-            if ($this->config->item('in_primary_id') == $in['in_id']) {
+            if ($this->config->item('in_tactic_id') == $in['in_id']) {
                 $orphans_count = count($this->Database_model->fn___in_fetch(array(
                     ' NOT EXISTS (SELECT 1 FROM table_ledger WHERE in_id=tr_in_child_id AND tr_status>=0) ' => null,
                 )));
@@ -113,25 +113,31 @@ if (isset($orphan_ins)) {
 
         <div id="modifybox" class="fixed-box hidden" intent-id="0" intent-tr-id="0" level="0">
 
-            <h5 class="badge badge-h"><i class="fas fa-cog"></i> Modify</h5>
+            <h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-cog"></i> Modify</h5>
+            <span id="hb_598" class="help_button bold-header" intent-id="598"></span>
             <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;">
                 <a href="javascript:void(0)" onclick="$('#modifybox').addClass('hidden')"><i
                             class="fas fa-times-circle"></i></a>
             </div>
             <div class="grey-box">
 
+                <div class="loadbox hidden"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+
                 <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="help_body" id="content_598"></div>
+                    </div>
+
                     <div class="col-md-6 inlineform">
 
 
                         <div class="title"><h4><i class="fas fa-bullseye-arrow"></i> Primary Outcome [<span
                                         style="margin:0 0 10px 0; font-size:0.8em;"><span
                                             id="charNameNum">0</span>/<?= $this->config->item('in_outcome_max') ?></span>]
-                                <span id="hb_598" class="help_button" intent-id="598"></span></h4></div>
+                                </h4></div>
 
                         <div class="inline-box">
-                            <div class="help_body maxout" id="content_598"></div>
-
                             <div class="form-group label-floating is-empty" style="height: 40px !important;">
                                 <div class="input-group border">
                                 <span class="input-group-addon addon-lean"
@@ -145,11 +151,8 @@ if (isset($orphan_ins)) {
 
 
 
-                        <div class="title" style="margin-top:15px;"><h4><i class="fal fa-bullseye-arrow"></i> Alternative Outcomes
-                                <span id="hb_7724" class="help_button" intent-id="7724"></span></h4></div>
+                        <div class="title" style="margin-top:15px;"><h4><i class="fal fa-bullseye-arrow"></i> Alternative Outcomes</h4></div>
                         <div class="inline-box">
-                            <div class="help_body maxout" id="content_7724"></div>
-
                             <div class="form-group label-floating is-empty" style="height: 40px !important;">
                                 <div class="input-group border">
                                 <span class="input-group-addon addon-lean"
@@ -166,7 +169,7 @@ if (isset($orphan_ins)) {
                         <div class="title" style="margin-top:15px;"><h4><i
                                         class="fas fa-hashtag"></i> Intent Settings</h4></div>
 
-                        <div class="inline-box">
+                        <div class="inline-box" style="margin-bottom: 15px;">
                             <span class="checkbox inline-block hidden">
                                 <label style="display:inline-block !important; font-size: 0.9em !important; margin-left:8px;">
                                     <input type="checkbox" id="apply_recursively"/>
@@ -191,19 +194,23 @@ if (isset($orphan_ins)) {
                             </div>
 
 
-                            <div class="completion-settings">
+                            <div class="and-settings">
                                 <div class="form-group label-floating is-empty">
                                     <div class="checkbox is_task" style="margin:0 0 10px 0;">
                                         <?php
                                         //List all the input options and allow user to pick between them:
                                         foreach ($this->config->item('en_all_4331') as $en_id => $m) {
-                                            echo '<label style="font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" class="in_input_requirements" id="require__' . $en_id . '" req-en-id="' . $en_id . '" /><span ' . (strlen($m['m_desc']) > 0 ? ' class="underdot" data-toggle="tooltip" title="' . stripslashes($m['m_desc']) . '" data-placement="right" ' : '') . '>' . $m['m_icon'] . ' ' . str_replace(' Link','',$m['m_name']) . '</span></label><br />';
+                                            $clean_name = str_replace(' Link','',$m['m_name']);
+                                            echo '<label style="font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" class="in_input_requirements" id="require__' . $en_id . '" req-en-id="' . $en_id . '" /><span class="underdot" data-toggle="tooltip" title="Completion requires a ' . $clean_name . ' submission (OR another selected requirement)" data-placement="right">' . $m['m_icon'] . ' ' . $clean_name . '</span></label><br />';
                                         }
                                         ?>
                                     </div>
                                 </div>
                             </div>
 
+                            <div class="or-settings hidden">
+                                <p>Master chooses one of the children as their pathway.</p>
+                            </div>
 
 
                             <select class="form-control border" id="in_status" data-toggle="tooltip" title="Intent Status" data-placement="top" style="display: inline-block !important;">
@@ -227,7 +234,7 @@ if (isset($orphan_ins)) {
 
                     <div class="col-md-6">
 
-                        <div id="in_tr_box">
+                        <div>
 
                             <div class="title">
                                 <h4>
@@ -239,53 +246,59 @@ if (isset($orphan_ins)) {
 
                             <div class="inline-box" style="margin-bottom: 15px;">
 
-                                <div class="form-group label-floating is-empty">
-                                    <?php
-                                    foreach ($this->config->item('en_all_4486') as $en_id => $m) {
-                                        echo '<div class="radio" style="display:inline-block; border-bottom:1px dotted #999; margin-top: 0 !important;" data-toggle="tooltip" title="' . $m['m_desc'] . '" data-placement="bottom">
+                                <div class="in-no-tr hidden">
+                                    <p>No transaction available as your viewing the intent itself.</p>
+                                </div>
+
+                                <div class="in-has-tr">
+                                    <div class="form-group label-floating is-empty">
+                                        <?php
+                                        foreach ($this->config->item('en_all_4486') as $en_id => $m) {
+                                            echo '<div class="radio" style="display:inline-block; border-bottom:1px dotted #999; margin-top: 0 !important;" data-toggle="tooltip" title="' . $m['m_desc'] . '" data-placement="bottom">
                                         <label style="display:inline-block;">
                                             <input type="radio" id="in_tr_en_type_' . $en_id . '" name="in_tr_en_type" value="' . $en_id . '" />
-                                            '.$m['m_icon'].' ' . str_replace(' Intent','',$m['m_name']) . '
+                                            '.$m['m_icon'].' ' . str_replace(' Intent Link','',$m['m_name']) . '
                                         </label>
                                     </div>';
-                                    }
-                                    ?>
-                                </div>
+                                        }
+                                        ?>
+                                    </div>
 
-                                <div class="score_range_box hidden">
-                                    <div class="form-group label-floating is-empty"
-                                         style="max-width:230px; margin:1px 0 10px;">
-                                        <div class="input-group border">
-                                            <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;">IF Scores </span>
-                                            <input style="padding-left:0; padding-right:0; text-align:right;" type="text"
-                                                   maxlength="3" id="in__conditional_score_min" value="" class="form-control">
-                                            <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;"><i
-                                                        class="fal fa-fas fa-percentage"></i> to </span>
-                                            <input style="padding-left:0; padding-right:0; text-align:right;" type="text"
-                                                   maxlength="3" id="in__conditional_score_max" value="" class="form-control">
-                                            <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;"><i
-                                                        class="fal fa-fas fa-percentage"></i></span>
+                                    <div class="score_range_box hidden">
+                                        <div class="form-group label-floating is-empty"
+                                             style="max-width:230px; margin:1px 0 10px;">
+                                            <div class="input-group border">
+                                                <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;">IF Scores </span>
+                                                <input style="padding-left:0; padding-right:0; text-align:right;" type="text"
+                                                       maxlength="3" id="tr__conditional_score_min" value="" class="form-control">
+                                                <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;"><i
+                                                            class="fal fa-fas fa-percentage"></i> to </span>
+                                                <input style="padding-left:0; padding-right:0; text-align:right;" type="text"
+                                                       maxlength="3" id="tr__conditional_score_max" value="" class="form-control">
+                                                <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;"><i
+                                                            class="fal fa-fas fa-percentage"></i></span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <select class="form-control border" data-toggle="tooltip" title="Transaction Status" data-placement="top" id="in_tr_status" style="display: inline-block !important;">
-                                    <?php
-                                    foreach (fn___echo_status('tr_status') as $status_id => $status) {
-                                        echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
-                                    }
-                                    ?>
-                                </select>
+                                    <select class="form-control border" data-toggle="tooltip" title="Transaction Status" data-placement="top" id="in_tr_status" style="display: inline-block !important;">
+                                        <?php
+                                        foreach (fn___echo_status('tr_status') as $status_id => $status) {
+                                            echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
+                                        }
+                                        ?>
+                                    </select>
 
-                                <div class="notify_in_unlink hidden">
-                                    <div class="alert alert-warning" style="margin:5px 0px; padding:7px;">
-                                        <i class="fas fa-exclamation-triangle"></i>
-                                        Saving will unlink intent
+                                    <div class="notify_in_unlink hidden">
+                                        <div class="alert alert-warning" style="margin:5px 0px; padding:7px;">
+                                            <i class="fas fa-exclamation-triangle"></i>
+                                            Saving will unlink intent
+                                        </div>
                                     </div>
+
+                                    <span class="tr-last-updated"></span>
+
                                 </div>
-
-                                <span class="tr-last-updated">Transaction updated <b>15 min ago</b> <span style="display: inline-block">by <a href="/entities/2" style="font-weight: bold;"><img src="https://s3foundation.s3-us-west-2.amazonaws.com/4791be062df2e29227bf12d2171af4e7.jpg" class="profile-icon"> Miguel Hernandez</a></span>.</span>
-
 
                             </div>
 
@@ -295,7 +308,7 @@ if (isset($orphan_ins)) {
                         <div class="title">
                             <h4>
                                 <i class="fal fa-money-bill-wave"></i>
-                                Estimated Cost
+                                Completion Cost
                             </h4>
                         </div>
 
@@ -323,18 +336,16 @@ if (isset($orphan_ins)) {
                                 </div>
                             </div>
 
-                            <div id="child-hours" style="margin-left:6px; font-size: 0.9em;"></div>
-
                         </div>
 
 
 
-                        <div class="title" style="margin-top: 15px;"><h4><i class="fal fa-cloud-upload"></i> Webhook</h4></div>
+                        <div class="title" style="margin-top: 15px;"><h4><i class="fal fa-cloud-upload"></i> Completion Webhook</h4></div>
                         <div class="inline-box">
                             <div class="form-group label-floating is-empty">
                                 <div class="input-group border">
                                     <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;">https://</span>
-                                    <input style="padding-left:0;" type="text" id="in__secure_webhook" class="form-control">
+                                    <input style="padding-left:0;" type="text" id="in_webhook" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -345,7 +356,7 @@ if (isset($orphan_ins)) {
                         <div class="title" style="margin-top:15px;">
                             <h4>
                                 <i class="fal fa-weight"></i>
-                                Assessment Score
+                                Completion Points
                             </h4>
                         </div>
                         <div class="inline-box">
@@ -358,18 +369,17 @@ if (isset($orphan_ins)) {
                             </select>
                         </div>
 
-
-                        <table width="100%" style="margin-top:10px;">
-                            <tr>
-                                <td class="save-result-td"><span class="save_intent_changes">
-                                        Intent updated <b>15 min ago</b> <span style="display: inline-block">by <a href="/entities/2" style="font-weight: bold;"><img src="https://s3foundation.s3-us-west-2.amazonaws.com/4791be062df2e29227bf12d2171af4e7.jpg" class="profile-icon"> Miguel Hernandez</a></span>.
-                                    </span></td>
-                                <td class="save-td"><a href="javascript:in_save_modify();" class="btn btn-primary">Save</a></td>
-                            </tr>
-                        </table>
+                        <div class="save-btn-spot">&nbsp;</div>
 
                     </div>
                 </div>
+
+                <table class="save-btn-box">
+                    <tr>
+                        <td class="save-result-td"><span class="save_intent_changes"></span></td>
+                        <td class="save-td"><a href="javascript:in_modify_save();" class="btn btn-primary">Save</a></td>
+                    </tr>
+                </table>
 
             </div>
 

@@ -166,11 +166,13 @@ $(document).ready(function () {
 function in_adjust_isany_ui() {
     if ($('#in_is_any_0').is(':checked')) {
         //Unlock settings:
-        $('.completion-settings').removeClass('hidden');
+        $('.and-settings').removeClass('hidden');
+        $('.or-settings').addClass('hidden');
     } else {
         //Any is selected, lock the completion settings as its not allowed for ANY Branches:
         $('.in_input_requirements').prop('checked', false);
-        $('.completion-settings').addClass('hidden');
+        $('.and-settings').addClass('hidden');
+        $('.or-settings').removeClass('hidden');
     }
 }
 
@@ -180,10 +182,11 @@ function in_adjust_link_ui() {
     //Fetch intent link ID:
     var tr_id = parseInt($('#modifybox').attr('intent-tr-id'));
 
-    if (!$('#modifybox').hasClass('hidden') && tr_id>0) {
+    if (!$('#modifybox').hasClass('hidden') && tr_id > 0) {
 
         //Yes show that section:
-        $('#in_tr_box').removeClass('hidden');
+        $('.in-has-tr').removeClass('hidden');
+        $('.in-no-tr').addClass('hidden');
 
         //What's the selected intent status?
         if (parseInt($('#in_tr_status').find(":selected").val()) < 0) {
@@ -204,7 +207,8 @@ function in_adjust_link_ui() {
 
     } else {
         //Main intent, no link, so hide entire section:
-        $('#in_tr_box').addClass('hidden');
+        $('.in-has-tr').addClass('hidden');
+        $('.in-no-tr').removeClass('hidden');
     }
 }
 
@@ -516,17 +520,17 @@ function adjust_js_ui(in_id, level, new_hours, intent_deficit_count=0, apply_to_
 
         if (level == 3) {
             //Adjust top level intent as well:
-            var in_primary_id = parseInt($('.intent_line_' + in_parent_id).attr('parent-intent-id'));
-            var in_primary__tree_seconds = parseFloat($('.t_estimate_' + in_primary_id + ':first').attr('tree-max-seconds'));
+            var in_tactic_id = parseInt($('.intent_line_' + in_parent_id).attr('parent-intent-id'));
+            var in_primary__tree_seconds = parseFloat($('.t_estimate_' + in_tactic_id + ':first').attr('tree-max-seconds'));
             var in_new__tree_seconds = in_primary__tree_seconds + in_deficit_seconds;
 
             if (!(intent_deficit_count == 0)) {
-                $('.children-counter-' + in_primary_id).text(parseInt($('.children-counter-' + in_primary_id + ':first').text()) + intent_deficit_count);
+                $('.children-counter-' + in_tactic_id).text(parseInt($('.children-counter-' + in_tactic_id + ':first').text()) + intent_deficit_count);
             }
 
             if (!(in_deficit_seconds == 0)) {
                 //Update Hours:
-                $('.t_estimate_' + in_primary_id)
+                $('.t_estimate_' + in_tactic_id)
                     .attr('tree-max-seconds', in_new__tree_seconds)
                     .text(echo_js_hours(in_new__tree_seconds));
             }
@@ -547,93 +551,92 @@ function in_outcome_counter() {
 
 function in_modify_load(in_id, tr_id) {
 
-    //Make sure inputs are valid:
-    if (!$('.t_estimate_' + in_id + ':first').length) {
-        alert('Intent Metadata is not yet cached');
-        return false;
-    }
+    //Indicate Loading:
+    $('#modifybox').attr('intent-tr-id', 0).attr('intent-id', 0).attr('level', 0);
+    $('#modifybox .grey-box .row').addClass('hidden');
+    $('#modifybox .grey-box .loadbox').removeClass('hidden');
 
-    var level = (tr_id == 0 ? 1 : parseInt($('#cr_' + tr_id).attr('intent-level'))); //Either 1, 2 or 3
+    //Fetch Intent Data to load modify widget:
+    $.post("/intents/fn___in_fetch_data", {in_id: in_id, tr_id: tr_id}, function (data) {
+        if (!data.status) {
 
-    //Update variables:
-    $('#modifybox').attr('intent-tr-id', tr_id);
-    $('#modifybox').attr('intent-id', in_id);
-    $('#modifybox').attr('level', level);
+            //Opppsi, show the error:
+            alert('Error Loading Intent: ' + data.message);
 
-    //Set variables:
-    var in_seconds = parseFloat($('.t_estimate_' + in_id + ':first').attr('intent-seconds'));
-    var in__tree_seconds = $('.t_estimate_' + in_id + ':first').attr('tree-max-seconds');
+        } else {
 
-    $('#in_outcome').val($(".in_outcome_" + in_id + ":first").text());
-    in_outcome_counter();
+            //All good, let's load the data into the Modify Widget...
 
-    $('#in_status').val($('.in_outcome_' + in_id).attr('in_status'));
-    $('#in_points').val($('.in_outcome_' + in_id).attr('in_points'));
-    $('#in_alternatives').val($('.in_outcome_' + in_id).attr('in_alternatives'));
-    $('#in_seconds').val(in_seconds);
-    $('#in_usd').val(parseFloat($('.in_outcome_' + in_id).attr('in_usd')));
+            //Update variables:
+            var level = (tr_id == 0 ? 1 : parseInt($('#cr_' + tr_id).attr('intent-level'))); //Either 1, 2 or 3
+            $('#modifybox').attr('intent-tr-id', tr_id);
+            $('#modifybox').attr('intent-id', in_id);
+            $('#modifybox').attr('level', level);
 
-    //Load intent links if any:
-    if (tr_id > 0) {
-        $("#in_tr_status").val($('#cr_' + tr_id).attr('in-tr-status')); //Drop down
-        $('#in__conditional_score_min').val($('#cr_' + tr_id).attr('in__conditional_score_min'));
-        $('#in__conditional_score_max').val($('#cr_' + tr_id).attr('in__conditional_score_max'));
-    }
+            //Load inputs:
+            $('#in_outcome').val(data.in.in_outcome);
+            $('#in_alternatives').val(data.in.in_alternatives);
+            $('#in_is_any_' + data.in.in_is_any).prop("checked", true);
+            $('.in_input_requirements').removeAttr('checked'); //Uncheck all
+            if (data.in_req_ens.length > 0) { //Check current ones:
+                for (var i = 0; i < in_req_ens.length; i++) {
+                    $('#require__' + in_req_ens[i]).attr('checked', 'checked');
+                }
+            }
+            $('#in_status').val(data.in.in_status);
+            $('#apply_recursively').removeAttr('checked'); //Always remove
+            $('#in_usd').val(data.in.in_usd);
+            $('#in_seconds').val(data.in.in_seconds);
+            $('#in_webhook').val(data.in.in_webhook);
+            $('#in_points').val(data.in.in_points);
+            $('#in_points').val(data.in.in_points);
+            $('.save_intent_changes').html(data.in.in___last_updated); //Load Last Updated box
 
-    //Adjust Radio buttons:
-    $("input[name=in_is_any][value='" + $('.in_outcome_' + in_id).attr('in_is_any') + "']").prop("checked", true);
+            //Load intent link data if available:
+            if (tr_id > 0) {
+                $("#in_tr_status").val(data.tr.tr_status);
 
-    //Adjust checkboxes:
-    document.getElementById("apply_recursively").checked = false; //Always remove this so the user can choose
+                //Is this a conditional link? If so, load the min/max range:
+                if (data.tr.tr_en_type_id == 4229) {
+                    //Yes, load the data (which must be there):
+                    $('#tr__conditional_score_min').val(data.tr.tr_metadata.tr__conditional_score_min);
+                    $('#tr__conditional_score_max').val(data.tr.tr_metadata.tr__conditional_score_max);
+                    $('#in_tr_en_type_4229').prop("checked", true);
+                } else {
+                    //Fixed link:
+                    $('#tr__conditional_score_min').val('');
+                    $('#tr__conditional_score_max').val('');
+                    $('#in_tr_en_type_4228').prop("checked", true);
+                }
 
-    //Fetch completion requirements data for this intent:
-    $.post("/intents/fn___in_check_requirements", {in_id:in_id}, function (data) {
-        //Did it have any requirements?
-        if (data.status && data.requirement_array.length>0) {
-            for (var i = 0; i < requirement_array.length; i++) {
-                document.getElementById("require__"+requirement_array[i]).checked = true;
+                $('.tr-last-updated').html(data.tr.tr___last_updated); //Load Last Updated box
+            }
+
+            //Make the frame visible:
+            $('#modifybox .grey-box .row').removeClass('hidden');
+            $('#modifybox .grey-box .loadbox').addClass('hidden');
+            $('.fixed-box, .ajax-frame').addClass('hidden');
+            $("#modifybox").removeClass('hidden').hide().fadeIn();
+
+            //Run UI Updating functions after we've removed the hidden class from #modifybox:
+            in_outcome_counter();
+            in_adjust_isany_ui();
+            in_adjust_link_ui();
+
+            //Reload Tooltip again:
+            $('[data-toggle="tooltip"]').tooltip();
+
+            //We might need to scroll if mobile:
+            if (is_compact) {
+                $('.main-panel').animate({
+                    scrollTop: 9999
+                }, 150);
             }
         }
     });
-
-    //Are the tree hours greater than the intent hours?
-    if (in__tree_seconds > in_seconds) {
-        //Yes, show remaining tree hours (Retired for now for a more simple UI)
-        $('#child-hours').html('<i class="fal fa-clock"></i> ' + echo_js_hours(in__tree_seconds - in_seconds) + ' for child intents');
-    } else {
-        //Nope, clear this field:
-        $('#child-hours').html('');
-    }
-
-    //Only show unlink button if not level 1
-    if (level == 1) {
-        $('.unlink-intent').addClass('hidden');
-    } else {
-        $('.unlink-intent').removeClass('hidden');
-    }
-
-
-    //Make the frame visible:
-    $('.fixed-box, .ajax-frame').addClass('hidden');
-    $("#modifybox").removeClass('hidden').hide().fadeIn();
-
-    //Run UI Updating functions after we've removed the hidden class from #modifybox:
-    in_adjust_isany_ui();
-    in_adjust_link_ui();
-
-    //Reload Tooltip again:
-    $('[data-toggle="tooltip"]').tooltip();
-
-    //We might need to scroll:
-    if (is_compact) {
-        $('.main-panel').animate({
-            scrollTop: 9999
-        }, 150);
-    }
-
 }
 
-function in_save_modify() {
+function in_modify_save() {
 
     //Validate that we have all we need:
     if ($('#modifybox').hasClass('hidden') || !parseInt($('#modifybox').attr('intent-id'))) {
@@ -654,32 +657,28 @@ function in_save_modify() {
         apply_recursively: (document.getElementById('apply_recursively').checked ? 1 : 0),
         in_points: parseInt($('#in_points').val()),
         in_alternatives: $('#in_alternatives').val().replace(/\"/g, ""), //Remove double quotes
-        in__secure_webhook: $('#in__secure_webhook').val(),
+        in_webhook: $('#in_webhook').val(),
         input_requirements: [], //Remove double quotes
     };
 
     //Append requirements
-    $('.in_input_requirements').each(function(i, obj) {
-        if(obj.checked){
+    $('.in_input_requirements').each(function (i, obj) {
+        if (obj.checked) {
             modify_data['input_requirements'].push(parseInt($(this).attr('req-en-id')));
         }
     });
 
     //Do we have the intent link Transaction?
     if (modify_data['tr_id'] > 0) {
-        var original_in_tr_status = parseInt($('#cr_' + modify_data['tr_id']).attr('in-tr-status'));
         var original_in_tr_type = parseInt($('#cr_' + modify_data['tr_id']).attr('in-tr-type')); //TODO implement
         modify_data['in_tr_status'] = parseInt($('#in_tr_status').val());
         modify_data['in_tr_en_type'] = parseInt($('#in_tr_en_type').val());
-        modify_data['in__conditional_score_min'] = parseInt($('#in__conditional_score_min').val());
-        modify_data['in__conditional_score_max'] = parseInt($('#in__conditional_score_max').val());
+        modify_data['tr__conditional_score_min'] = parseInt($('#tr__conditional_score_min').val());
+        modify_data['tr__conditional_score_max'] = parseInt($('#tr__conditional_score_max').val());
     }
 
     console.log(modify_data);
     return false;
-
-    //Take a snapshot of the current status:
-    var original_in_status = parseInt($('.in_outcome_' + modify_data['in_id']).attr('in_status'));
 
     //Show spinner:
     $('.save_intent_changes').html('<span><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
@@ -692,30 +691,16 @@ function in_save_modify() {
             //Update variables:
             $(".in_outcome_" + modify_data['in_id']).html(modify_data['in_outcome']);
             $('.in_outcome_' + modify_data['in_id']).attr('in_is_any', modify_data['in_is_any']);
-            $('.in_outcome_' + modify_data['in_id']).attr('in_usd', modify_data['in_usd']);
-
-            $('.in_outcome_' + modify_data['in_id']).attr('in_status', modify_data['in_status']);
-            $('.in_outcome_' + modify_data['in_id']).attr('in_points', modify_data['in_points']);
-            $('.in_outcome_' + modify_data['in_id']).attr('in_alternatives', modify_data['in_alternatives']);
-
 
             //has intent link status updated? If so update the UI:
-            if (modify_data['tr_id'] > 0 && original_in_tr_status != modify_data['in_tr_status']) {
-                //Update link status:
-                $('#cr_' + modify_data['tr_id']).attr('in-tr-status', modify_data['in_tr_status']);
-                //Update status:
-                $('.tr_status_' + modify_data['tr_id']).html(data.status_in_tr_ui);
-            }
+            $('.tr_status_' + modify_data['tr_id']).html(data.status_in_tr_ui);
 
             //has intent status updated? If so update the UI:
-            if (original_in_status != modify_data['in_status']) {
-                //Update status:
-                $('.in_status_' + modify_data['in_id']).html(data.status_in_ui);
-            }
+            $('.in_status_' + modify_data['in_id']).html(data.status_in_ui);
 
 
             //Has the intent/intent-link been archived? Either way, we need to hide this row:
-            if ((modify_data['tr_id'] > 0 && original_in_tr_status > 0 && modify_data['in_tr_status'] < 0) || (original_in_status > 0 && modify_data['in_status'] < 0)) {
+            if (data.remove_ui) {
                 //We're archiving this...
                 if (modify_data['level'] == 1) {
                     //move up as this item has been removed!

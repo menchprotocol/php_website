@@ -189,7 +189,7 @@ class Cron extends CI_Controller
 
         //Fetch child entities:
         $ens = $this->Old_model->ur_child_fetch(array(
-            'tr_en_parent_id' => (count($u) > 0 ? $u['en_id'] : $this->config->item('en_primary_id')),
+            'tr_en_parent_id' => (count($u) > 0 ? $u['en_id'] : $this->config->item('en_start_here_id')),
             'tr_status >=' => 0, //Pending or Active
             'en_status >=' => 0, //Pending or Active
         ));
