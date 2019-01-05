@@ -327,6 +327,10 @@ a.badge-primary:hover {
     font-weight: bold;
 }
 
+.en_name {
+    font-weight:500;
+}
+
 .en_icon_ui{
     width:30px;
     display: inline-block;
@@ -545,7 +549,7 @@ input::-webkit-inner-spin-button {
 }
 
 .step-group {
-    margin: 10px 0 0 13px;
+    margin: 10px 0 0 -8px;
 }
 
 .left-grey {
@@ -1959,9 +1963,43 @@ select.form-control {
 .stats-table td {
     padding: 5px !important;
 }
+.addon-grey {
+    background-color: #EFEFEF !important;
+    border-right: 1px solid #ccc !important;
+}
 .stats-table, .stats-table tr {
     width: 100%;
     text-align: left;
+}
+
+.double-icon {
+    position: relative;
+    display: inline-block;
+    height:28px;
+    width: 30px;
+    top:5px;
+    margin-right: 3px;
+    text-align: center;
+}
+
+.double-icon .icon-main {
+    font-size:1.2em;
+    margin-top:10px;
+    z-index: 1001;
+}
+
+.double-icon:first-child {
+    z-index: 1111111;
+}
+
+
+.double-icon .icon-sub {
+    font-size:0.7em;
+    margin-top: -5px;
+    position: absolute;
+    top:-12px;
+    right:1px;
+    z-index: 999;
 }
 
 .table-striped>tbody>tr:nth-of-type(odd) {
@@ -2411,7 +2449,7 @@ a.badge:focus, a.badge:hover {
     color: #bbb;
 }
 
-.is_level3_sortable .fa-bars {
+.is_level3_sortable .fa-sort {
     margin: -10px -7px -10px -7px; /* TODO -margin: -10px -5px -10px -39px; But needs hover-only CSS logic */
 }
 
@@ -3368,8 +3406,7 @@ h4 .tip-badge {
     text-align: center;
 }
 
-.list-group-item .fa-bars {
-    color: #AAA !important;
+.list-group-item .fa-sort {
     cursor: move; /* fallback if grab cursor is unsupported */
     cursor: grab;
     cursor: -moz-grab;

@@ -1,7 +1,7 @@
 <?php
 
 //Display filters:
-echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-chart-bar"></i> Stats</h5>';
+echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-chart-bar"></i> Platform Stats</h5>';
 
 
 //Load core Mench Objects:
@@ -60,7 +60,7 @@ foreach (fn___echo_status() as $object_id => $statuses) {
 
         //Display this status count:
         echo '<tr>';
-        echo '<td style="text-align: left;"><span data-toggle="tooltip" title="'.$object_id.'='.$status_num.' in the '.$en_all_4534[$obj_en_id]['m_name'].' database table" data-placement="top" style="width:34px; display: inline-block; text-align: center;">[<b class="underdot">'.$status_num.'</b>]</span>'.fn___echo_status($object_id, $status_num, false, 'top').'</td>';
+        echo '<td style="text-align: left;"><span data-toggle="tooltip" title="'.$object_id.'='.$status_num.' in the '.$en_all_4534[$obj_en_id]['m_name'].' database table" data-placement="top" style="width:34px; display: inline-block; text-align: center;">[<span class="underdot">'.$status_num.'</span>]</span>'.fn___echo_status($object_id, $status_num, false, 'top').'</td>';
         echo '<td style="text-align: right;">'.number_format($count,0).'</td>';
         echo '</tr>';
 

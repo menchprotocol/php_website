@@ -278,22 +278,22 @@ $config['en_ids_4485'] = array(4231, 4232, 4233, 4234);
 $config['en_all_4485'] = array(
     4231 => array(
         'm_icon' => '<i class="fas fa-bolt"></i>',
-        'm_name' => 'On-Start Message',
+        'm_name' => 'On-Start Intent Message',
         'm_desc' => 'Mench dispatches these messages, in order, when the Master reaches the intent that this message is assigned to. Miners write or upload media to create these messages, and their goal is/should-be to give an introduction of the intention, why its important and the latest overview of how Mench will empower the Master to accomplish the intent. On-start messaged are listed on the intent landing pages e.g. https://mench.com/6903 while also being dispatched when a Master is considering to add a new intent to their Action Plan. These on-start messages give them an overview of what to expect with this intent.',
     ),
     4232 => array(
         'm_icon' => '<i class="fas fa-comment-lines"></i>',
-        'm_name' => 'Learn More Message',
+        'm_name' => 'Learn More Intent Message',
         'm_desc' => 'Authored by Miners and ordered, [Learn More] messages offer Masters a Quick Reply options to get more perspectives on the intention with an additional message batch. If Masters choose to move on without learning more, Mench will communicate the message batch at a later time to deliver the extra perspective on the intention. This is known as "dripping content" that helps re-enforce their learnings and act as a effective reminder of the best-practice, and perhaps a a new twist on how to execute towards it. Learn-More messages will always be delivered, the Master chooses the timing of it.',
     ),
     4233 => array(
         'm_icon' => '<i class="fas fa-calendar-check"></i>',
-        'm_name' => 'On-Complete Message',
+        'm_name' => 'On-Complete Intent Message',
         'm_desc' => 'Authored by Miners, these messages are dispatched in-order as a batch of knowledge as soon as the Intent is marked as complete by the Master. On-complete messages can re-iterate key insights to help Masters retain their learnings.',
     ),
     4234 => array(
         'm_icon' => '<i class="fas fa-random"></i>',
-        'm_name' => 'Rotating Message',
+        'm_name' => 'Rotating Intent Message',
         'm_desc' => 'Triggered in various spots of the code base that powers the logic of Mench personal assistant. Search for the compose_messages() function which is part of the Comm Model.',
     ),
 );

@@ -139,9 +139,9 @@ if (count($actionplan_parents) == 1 && ($message_in_requirements || (!intval($in
 
 
     if ($has_children && !$list_children) {
-        echo '<button type="submit" class="btn btn-primary"><i class="fas fa-check-square"></i> Got It, Continue <i class="fas fa-angle-right"></i></button>';
+        echo '<button type="submit" class="btn btn-primary"><i class="fal fa-check-square"></i> Got It, Continue <i class="fas fa-angle-right"></i></button>';
     } elseif ($is_incomplete) {
-        echo '<button type="submit" name="fn___actionplan_next_in" value="1" class="btn btn-primary"><i class="fas fa-check-square"></i> Mark Complete & Go Next <i class="fas fa-angle-right"></i></button>';
+        echo '<button type="submit" name="fn___actionplan_next_in" value="1" class="btn btn-primary"><i class="fal fa-check-square"></i> Mark Complete & Go Next <i class="fas fa-angle-right"></i></button>';
     } elseif (!$show_written_input) {
         echo '<button type="submit" class="btn btn-primary toggle_text" style="display:none;"><i class="fas fa-edit"></i> Update Answer</button>';
     } else {

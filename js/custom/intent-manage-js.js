@@ -354,7 +354,7 @@ function in_sort_load(in_id, level) {
     var settings = {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
         draggable: s_draggable, // Specifies which items inside the element should be sortable
-        handle: ".fa-bars", // Restricts sort start click/touch to the specified element
+        handle: ".double-sort", // Restricts sort start click/touch to the specified element
         onUpdate: function (evt/**Event*/) {
             in_sort_save(in_id, level);
         }
@@ -754,7 +754,7 @@ function in_modify_save() {
 
 
             //Update other UI elements:
-            $(".ui_in_points_" + modify_data['in_id']).html((modify_data['in_points'] > 0 ? '<i class="fas fa-weight" style="margin-right: 2px;"></i>' + modify_data['in_points'] : ''));
+            $(".ui_in_points_" + modify_data['in_id']).html((modify_data['in_points'] > 0 ? modify_data['in_points'] : 0));
             $(".ui_in_usd_" + modify_data['in_id']).html((modify_data['in_usd'] > 0 ? '<i class="fas fa-usd-circle" style="margin-right: 2px;"></i>' + modify_data['in_usd'] : ''));
 
 

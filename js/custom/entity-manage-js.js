@@ -199,7 +199,7 @@ function tr_add(en_new_id, assign_en_parent_id=0, is_parent) {
 
 
 function u_load_filter_status(new_val) {
-    if (new_val == -1 || new_val == 0 || new_val == 1 || new_val == 2) {
+    if (new_val >= -1 || new_val <= 3) {
         //Remove active class:
         $('.u-status-filter').removeClass('btn-secondary');
         //We do have a filter:
@@ -282,7 +282,6 @@ function en_load_modify(en_id, tr_id) {
 
     $('#en_name').val($(".en_name_" + en_id + ":first").text());
     $('#en_status').val($(".en___" + en_id + ":first").attr('entity-status'));
-    $('#en_icon').val($(".en_icon_val_" + en_id + ":first").html().replace('\\', ''));
 
     en_name_word_count();
 
