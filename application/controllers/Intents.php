@@ -864,7 +864,7 @@ class Intents extends CI_Controller
 
         //Fetch intent completion requirements (if any):
         $completion_requirements = $this->Database_model->fn___tr_fetch(array(
-            'tr_en_type_id' => 4331, //Intent Response Limiters
+            'tr_en_type_id' => 4331, //Intent Completion Requirements
             'tr_in_child_id' => $_POST['in_id'], //For this intent
             'tr_status >=' => 0, //New+
             'tr_en_parent_id IN (' . join(',', $this->config->item('en_ids_4331')) . ')' => null, //Technically not needed, but here for extra clarity

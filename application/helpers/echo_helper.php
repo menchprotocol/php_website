@@ -1617,14 +1617,20 @@ function fn___echo_en($en, $level, $is_parent = false)
     if ($tr_id > 0) {
 
         //Is this Entity transaction an Embeddable URL type or not?
-        if ($en['tr_en_type_id'] != 4256 && in_array($en['tr_en_type_id'], $CI->config->item('en_ids_4537'))) {
+        if($en['tr_en_type_id'] == 4256){
+
+            //It Is URL:
+            $ui .= ' <span class="tr_content tr_content_' . $tr_id . '"><a href="'.$en['tr_content'].'" target="_blank">'.fn___echo_url_clean($en['tr_content']).'</a></span>';
+
+        } elseif (in_array($en['tr_en_type_id'], $CI->config->item('en_ids_4537'))) {
 
             //Yes, this is
             $ui .= '<div style="margin-top:7px;">' . fn___echo_url_type($en['tr_content'], $en['tr_en_type_id']) . '</div>';
 
         } elseif (strlen($en['tr_content']) > 0) {
 
-            $ui .= ' <span class="tr_content tr_content_' . $tr_id . '">' . fn___echo_link($en['tr_content']) . '</span>';
+            //Other text:
+            $ui .= ' <span class="tr_content tr_content_' . $tr_id . '">' . $en['tr_content'] . '</span>';
 
         }
 

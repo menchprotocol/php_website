@@ -97,7 +97,7 @@ $messages = $this->Database_model->fn___tr_fetch(array(
 
     //Fetch for all message types:
     foreach ($en_all_4485 as $tr_en_type_id => $m) {
-        echo '<div class="iphone-add-btn all_msg msg_en_type_' . $tr_en_type_id . '"><a href="javascript:message_create();" id="add_message_' . $tr_en_type_id . '_' . $in_id . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="top" class="btn btn-primary">ADD ' . $m['m_icon'] . ' ' . $m['m_name'] . '</a></div>';
+        echo '<div class="iphone-add-btn all_msg msg_en_type_' . $tr_en_type_id . '"><a href="javascript:message_create();" id="add_message_' . $tr_en_type_id . '_' . $in_id . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="right" class="btn btn-primary">ADD ' . $m['m_icon'] . ' ' . $m['m_name'] . '</a></div>';
     }
 
     echo '</form>';

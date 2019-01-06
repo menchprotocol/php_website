@@ -33,7 +33,7 @@ $config['en_default_parent_id']     = 1326; //The entity that would be the paren
 
 
 //App Functionality:
-$config['enable_algolia']           = false; //Currently reached our monthly free quota
+$config['enable_algolia']           = true; //Currently reached our monthly free quota
 $config['file_size_max']            = 25; //Server setting is 32MB. see here: mench.com/ses
 $config['password_salt']            = '40s96As9ZkdAcwQ9PhZm'; //Used for hashing the user password for Mench logins
 $config['tr_status_incomplete']     = array(0, 1); //Transactions with these tr_status values are considered in-complete

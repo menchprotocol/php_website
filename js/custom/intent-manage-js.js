@@ -552,9 +552,11 @@ function in_outcome_counter() {
 function in_modify_load(in_id, tr_id) {
 
     //Indicate Loading:
-    $('#modifybox').attr('intent-tr-id', 0).attr('intent-id', 0).attr('level', 0);
-    $('#modifybox .grey-box .row').addClass('hidden');
+    $('#modifybox .grey-box .loadcontent').addClass('hidden');
     $('#modifybox .grey-box .loadbox').removeClass('hidden');
+    $('.fixed-box, .ajax-frame').addClass('hidden');
+    $("#modifybox").removeClass('hidden').hide().fadeIn();
+    $('#modifybox').attr('intent-tr-id', 0).attr('intent-id', 0).attr('level', 0);
 
     //Fetch Intent Data to load modify widget:
     $.post("/intents/fn___in_fetch_data", {in_id: in_id, tr_id: tr_id}, function (data) {
@@ -613,10 +615,8 @@ function in_modify_load(in_id, tr_id) {
             }
 
             //Make the frame visible:
-            $('#modifybox .grey-box .row').removeClass('hidden');
+            $('#modifybox .grey-box .loadcontent').removeClass('hidden');
             $('#modifybox .grey-box .loadbox').addClass('hidden');
-            $('.fixed-box, .ajax-frame').addClass('hidden');
-            $("#modifybox").removeClass('hidden').hide().fadeIn();
 
             //Run UI Updating functions after we've removed the hidden class from #modifybox:
             in_outcome_counter();

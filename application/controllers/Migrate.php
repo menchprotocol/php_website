@@ -77,7 +77,7 @@ class Migrate extends CI_Controller
                 $stats['total_links']++;
                 $this->Database_model->fn___tr_create(array(
                     'tr_timestamp' => $c['c_timestamp'],
-                    'tr_en_type_id' => 4331, //Intent Response Limiters
+                    'tr_en_type_id' => 4331, //Intent Completion Requirements
                     'tr_en_credit_id' => $c['c_parent_u_id'],
                     'tr_in_child_id' => $c['c_id'],
                     'tr_en_parent_id' => 4255, // Link Content Type = Text Link

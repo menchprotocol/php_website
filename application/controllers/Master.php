@@ -259,7 +259,7 @@ class Master extends CI_Controller
 
         //Fetch completion requirements:
         $completion_requirements = $this->Database_model->fn___tr_fetch(array(
-            'tr_en_type_id' => 4331, //Intent Response Limiters
+            'tr_en_type_id' => 4331, //Intent Completion Requirements
             'tr_in_child_id' => $trs[0]['tr_in_child_id'], //For this intent
             'tr_status >=' => 2, //Published+
             'tr_en_parent_id IN (' . join(',', $this->config->item('en_ids_4331')) . ')' => null, //Technically not needed, but here for extra clarity
@@ -269,7 +269,7 @@ class Master extends CI_Controller
 
             //Yes, it does have requirements! let's check them one by one:
 
-            //Intent Response Limiters:
+            //Intent Completion Requirements:
             $en_all_4331 = $this->config->item('en_all_4331');
 
             //Extract references to see what we have:

@@ -355,10 +355,10 @@ class Matrix_model extends CI_Model
          *
          * */
 
-        //Fetch all possible Intent Response Limiters for this intent to see what is required:
+        //Fetch all possible Intent Completion Requirements for this intent to see what is required:
         $response_options = $this->Database_model->fn___tr_fetch(array(
             'tr_status >=' => 2, //Published
-            'tr_en_type_id' => 4331, //Intent Response Limiters
+            'tr_en_type_id' => 4331, //Intent Completion Requirements
             'tr_en_child_id IN (' . join(',', $this->config->item('en_ids_4331')) . ')' => null, //Technically not needed, but here for extra clarity
             'tr_in_child_id' => $in_id, //For this intent
         ));
@@ -371,7 +371,7 @@ class Matrix_model extends CI_Model
         //Construct the message accordingly...
 
         //Fetch latest cache tree:
-        $en_all_4331 = $this->config->item('en_all_4331'); //Intent Response Limiters
+        $en_all_4331 = $this->config->item('en_all_4331'); //Intent Completion Requirements
 
         //How many do we have?
         if (count($response_options) == 1) {

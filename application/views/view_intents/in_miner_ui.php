@@ -123,7 +123,7 @@ if (isset($orphan_ins)) {
 
                 <div class="loadbox hidden"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
 
-                <div class="row">
+                <div class="row loadcontent">
 
                     <div class="col-md-12">
                         <div class="help_body" id="content_598"></div>
@@ -158,7 +158,7 @@ if (isset($orphan_ins)) {
                                 <span class="input-group-addon addon-lean addon-grey"
                                       style="color:#2f2739; font-weight: 300;">To</span>
                                     <textarea class="form-control text-edit" id="in_alternatives"
-                                              placeholder="Other forms of saying the same thing..." style="height:94px !important; min-height:auto !important;margin-bottom: -9px !important;"></textarea>
+                                              placeholder="Other ways of mentioning the primary outcome..." style="height:94px !important; min-height:auto !important;margin-bottom: -9px !important;"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -307,7 +307,7 @@ if (isset($orphan_ins)) {
                         <div class="title" style="margin-top: 15px;">
                             <h4>
                                 <i class="fas fa-atlas"></i>
-                                Ledger Transaction
+                                Link Transaction
                             </h4>
                         </div>
 
@@ -378,7 +378,7 @@ if (isset($orphan_ins)) {
                     </div>
                 </div>
 
-                <table class="save-btn-box">
+                <table class="save-btn-box loadcontent">
                     <tr>
                         <td class="save-result-td"><span class="save_intent_changes"></span></td>
                         <td class="save-td"><a href="javascript:in_modify_save();" class="btn btn-primary">Save</a></td>

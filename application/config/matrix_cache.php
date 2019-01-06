@@ -113,12 +113,12 @@ $config['en_all_4277'] = array(
     ),
 );
 
-//Intent Response Limiters:
+//Intent Completion Requirements:
 $config['en_ids_4331'] = array(4255, 4256, 4258, 4259, 4260, 4261);
 $config['en_all_4331'] = array(
     4255 => array(
         'm_icon' => '<i class="fal fa-comment-alt-lines"></i>',
-        'm_name' => 'Text Snippet Entity Link',
+        'm_name' => 'Text Message Entity Link',
         'm_desc' => '',
     ),
     4256 => array(
@@ -158,8 +158,8 @@ $config['en_all_4538'] = array(
     ),
     4255 => array(
         'm_icon' => '<i class="fal fa-comment-alt-lines"></i>',
-        'm_name' => 'Text Snippet Entity Link',
-        'm_desc' => 'Link note contains a text snippet.',
+        'm_name' => 'Text Message Entity Link',
+        'm_desc' => 'Link note contains a Text Message.',
     ),
     4318 => array(
         'm_icon' => '<i class="fas fa-calendar"></i>',
@@ -318,7 +318,7 @@ $config['en_ids_4487'] = array(4331, 4332);
 $config['en_all_4487'] = array(
     4331 => array(
         'm_icon' => '<i class="fas fa-clipboard-list"></i>',
-        'm_name' => 'Intent Response Limiters',
+        'm_name' => 'Intent Completion Requirements',
         'm_desc' => 'If applied as the parent of a child intent, would limit the type of responses users can submit for that intent when marking it as complete. Multiple links will enable multiple response types to be accepted, which the user will be informed by Mench.',
     ),
     4332 => array(
