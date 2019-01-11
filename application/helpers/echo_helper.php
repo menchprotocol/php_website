@@ -1335,19 +1335,24 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     $ui .= '<span style="display:inline-block; margin-top:0px;">';
 
 
-    //We have numbering:
-    if($level == 3 || ($level == 2 && !$is_parent)){
-        //Always Show Entity Icons
-        $ui .= '<span class="double-icon double-sort">';
 
-        //Show larger intent icon (AND or OR):
-        $ui .= '<span class="icon-main"><span class="inline-level inline-level-' . $level . '" style="'.( $level == 2 ? 'font-weight:900;' : '' ).'">#' . $in['tr_order'] . '</span></span> ';
 
-        //Show smaller intent status:
-        $ui .= '<span class="icon-sub"><i class="fas fa-sort"></i></span> ';
 
-        $ui .= '</span>';
-    }
+
+
+
+    //Always Show Intent Icon (AND or OR)
+    $ui .= '<span class="double-icon" style="margin-right:5px;">';
+
+    //Show larger intent icon (AND or OR):
+    $ui .= '<span class="icon-main"><span data-toggle="tooltip" data-placement="right" title="'.$status_index['in_is_any'][$in['in_is_any']]['s_name'].': '.$status_index['in_is_any'][$in['in_is_any']]['s_desc'].'" class="in_is_any_icon' . $in['in_id'] . '">' . $status_index['in_is_any'][$in['in_is_any']]['s_icon'] . '</span></span> ';
+
+    //Show smaller intent status:
+    $ui .= '<span class="icon-sub"><span class="in_status_' . $in['in_id'] . '" data-toggle="tooltip" data-placement="right" title="sdasd">' . $status_index['in_status'][$in['in_status']]['s_icon'] . '</span></span> ';
+
+    $ui .= '</span>';
+
+
 
 
 
@@ -1381,17 +1386,19 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
 
 
+    //We have numbering:
+    if($level == 3 || ($level == 2 && !$is_parent)){
+        //Always Show Entity Icons
+        $ui .= '<span class="double-icon double-sort">';
 
-    //Always Show Entity Icons
-    $ui .= '<span class="double-icon" style="margin-right:5px;">';
+        //Show larger intent icon (AND or OR):
+        $ui .= '<span class="icon-main"><span class="inline-level inline-level-' . $level . '" style="'.( $level == 2 ? 'font-weight:900;' : '' ).'">#' . $in['tr_order'] . '</span></span> ';
 
-    //Show larger intent icon (AND or OR):
-    $ui .= '<span class="icon-main"><span data-toggle="tooltip" data-placement="right" title="'.$status_index['in_is_any'][$in['in_is_any']]['s_name'].': '.$status_index['in_is_any'][$in['in_is_any']]['s_desc'].'" class="in_is_any_icon' . $in['in_id'] . '">' . $status_index['in_is_any'][$in['in_is_any']]['s_icon'] . '</span></span> ';
+        //Show smaller intent status:
+        $ui .= '<span class="icon-sub"><i class="fas fa-sort"></i></span> ';
 
-    //Show smaller intent status:
-    $ui .= '<span class="icon-sub"><span class="in_status_' . $in['in_id'] . '" data-toggle="tooltip" data-placement="right" title="sdasd">' . $status_index['in_status'][$in['in_status']]['s_icon'] . '</span></span> ';
-
-    $ui .= '</span>';
+        $ui .= '</span>';
+    }
 
 
 

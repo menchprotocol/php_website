@@ -10,5 +10,5 @@
     </div>
     <div class="grey-box grey-box-w" style="padding-bottom: 10px;">
         <iframe class="ajax-frame hidden" src=""></iframe>
-        <span class="frame-loader hidden"><img src="/img/round_load.gif" class="loader"/> Loading...</span></div>
+        <span class="frame-loader hidden"><i class="fas fa-spinner fa-spin"></i> Loading...</span></div>
 </div>

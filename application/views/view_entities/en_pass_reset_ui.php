@@ -23,7 +23,7 @@ if (!isset($_GET['en_id']) || intval($_GET['en_id']) < 1 || !isset($_GET['timest
 <script>
     //Show loading:
     function en_password_reset() {
-        $('#pass_reset').html('<span><img src="/img/round_load.gif" class="loader" /></span>');
+        $('#pass_reset').html('<span><i class="fas fa-spinner fa-spin"></i></span>');
         //Hide the editor & saving results:
         $.post("/entities/en_password_reset", {
             en_id:<?= $_GET['en_id'] ?>,

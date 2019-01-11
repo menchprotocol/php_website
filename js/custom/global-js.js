@@ -24,7 +24,7 @@ function fancy_time(alg_obj) {
 }
 
 function turn_off() {
-    $('.dash').html('<span><img src="/img/round_load.gif" style="width:32px; height:32px; margin-top:-2px;" class="loader" /></span> Processing...');
+    $('.dash').html('<span><i class="fas fa-spinner fa-spin"></i></span> Processing...');
 }
 
 function nl2br(str, is_xhtml) {

@@ -76,7 +76,7 @@ $(document).ready(function () {
     });
 
     //Lookout for intent link related changes:
-    $('input[type=radio][name=in_tr_en_type], #in_tr_status').change(function () {
+    $('input[type=radio][name=tr_en_type_id], #tr_status').change(function () {
         in_adjust_link_ui();
     });
 
@@ -189,7 +189,7 @@ function in_adjust_link_ui() {
         $('.in-no-tr').addClass('hidden');
 
         //What's the selected intent status?
-        if (parseInt($('#in_tr_status').find(":selected").val()) < 0) {
+        if (parseInt($('#tr_status').find(":selected").val()) < 0) {
             //About to delete? Notify them:
             $('.notify_in_unlink').removeClass('hidden');
         } else {
@@ -197,7 +197,7 @@ function in_adjust_link_ui() {
         }
 
         //What's the intent link type?
-        if ($('#in_tr_en_type_4229').is(':checked')) {
+        if ($('#tr_en_type_id_4229').is(':checked')) {
             //Conditional link is checked:
             $('.score_range_box').removeClass('hidden');
         } else {
@@ -596,19 +596,19 @@ function in_modify_load(in_id, tr_id) {
 
             //Load intent link data if available:
             if (tr_id > 0) {
-                $("#in_tr_status").val(data.tr.tr_status);
+                $("#tr_status").val(data.tr.tr_status);
 
                 //Is this a conditional link? If so, load the min/max range:
                 if (data.tr.tr_en_type_id == 4229) {
                     //Yes, load the data (which must be there):
                     $('#tr__conditional_score_min').val(data.tr.tr_metadata.tr__conditional_score_min);
                     $('#tr__conditional_score_max').val(data.tr.tr_metadata.tr__conditional_score_max);
-                    $('#in_tr_en_type_4229').prop("checked", true);
+                    $('#tr_en_type_id_4229').prop("checked", true);
                 } else {
                     //Fixed link:
                     $('#tr__conditional_score_min').val('');
                     $('#tr__conditional_score_max').val('');
-                    $('#in_tr_en_type_4228').prop("checked", true);
+                    $('#tr_en_type_id_4228').prop("checked", true);
                 }
 
                 $('.tr-last-updated').html(data.tr.tr___last_updated); //Load Last Updated box
@@ -662,26 +662,38 @@ function in_modify_save() {
     };
 
     //Append requirements
-    $('.in_input_requirements').each(function (i, obj) {
-        if (obj.checked) {
-            modify_data['input_requirements'].push(parseInt($(this).attr('req-en-id')));
-        }
-    });
+    if ( !modify_data['in_is_any'] ) {
+        $('.in_input_requirements').each(function (i, obj) {
+            if (obj.checked) {
+                modify_data['input_requirements'].push(parseInt($(this).attr('req-en-id')));
+            }
+        });
+    }
+
 
     //Do we have the intent link Transaction?
     if (modify_data['tr_id'] > 0) {
-        var original_in_tr_type = parseInt($('#cr_' + modify_data['tr_id']).attr('in-tr-type')); //TODO implement
-        modify_data['in_tr_status'] = parseInt($('#in_tr_status').val());
-        modify_data['in_tr_en_type'] = parseInt($('#in_tr_en_type').val());
-        modify_data['tr__conditional_score_min'] = parseInt($('#tr__conditional_score_min').val());
-        modify_data['tr__conditional_score_max'] = parseInt($('#tr__conditional_score_max').val());
+
+        //TODO implement:
+        var original_in_tr_type = parseInt($('#cr_' + modify_data['tr_id']).attr('in-tr-type'));
+
+        modify_data['tr_status'] = parseInt($('#tr_status').val());
+        modify_data['tr_en_type_id'] = parseInt($('input[name=tr_en_type_id]:checked').val());
+
+        if(modify_data['tr_en_type_id'] == 4229){ //Conditional Intent Link
+            //Fetch condition range:
+            modify_data['tr__conditional_score_min'] = parseInt($('#tr__conditional_score_min').val());
+            modify_data['tr__conditional_score_max'] = parseInt($('#tr__conditional_score_max').val());
+        } else {
+            //Set condition range to zero:
+            modify_data['tr__conditional_score_min'] = 0;
+            modify_data['tr__conditional_score_max'] = 0;
+        }
+
     }
 
-    console.log(modify_data);
-    return false;
-
     //Show spinner:
-    $('.save_intent_changes').html('<span><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
+    $('.save_intent_changes').html('<span><i class="fas fa-spinner fa-spin"></i> Saving...</span>').hide().fadeIn();
 
     //Save the rest of the content:
     $.post("/intents/in_save_settings", modify_data, function (data) {
@@ -819,7 +831,7 @@ function fn___in_link_or_create(in_parent_id, next_level, in_link_child_id=0) {
     }
 
     //Set processing status:
-    add_to_list(sort_list_id, sort_handler, '<div id="temp' + next_level + '" class="list-group-item"><img src="/img/round_load.gif" class="loader" /> Adding... </div>');
+    add_to_list(sort_list_id, sort_handler, '<div id="temp' + next_level + '" class="list-group-item"><i class="fas fa-spinner fa-spin"></i> Adding... </div>');
 
     //Update backend:
     $.post("/intents/fn___in_link_or_create", {

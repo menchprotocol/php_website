@@ -71,5 +71,5 @@ if ((isset($udata['en__actionplans']) && count($udata['en__actionplans'])) || (i
 ?>
 
 <div id="page_content" class="maxout">
-    <div style="text-align:center; margin-top: 30px;"><img src="/img/round_load.gif" class="loader"/></div>
+    <div style="text-align:center; margin-top: 30px;"><i class="fas fa-spinner fa-spin"></i></div>
 </div>

@@ -249,7 +249,7 @@ if (isset($orphan_ins)) {
                                                 class="fal fa-usd-circle"></i></span>
                                     <input style="padding-left:3px;" type="number" step="0.01" min="0" max="5000"
                                            id="in_usd" value="" class="form-control">
-                                    <span class="input-group-addon addon-lean"
+                                    <span class="input-group-addon addon-lean addon-grey"
                                           style="color:#2f2739; font-weight: 300;">USD</span>
                                 </div>
                             </div>
@@ -261,7 +261,7 @@ if (isset($orphan_ins)) {
                                     <input style="padding-left:3px;" type="number" step="1" min="0"
                                            max="<?= $this->config->item('in_seconds_max') ?>" id="in_seconds" value=""
                                            class="form-control">
-                                    <span class="input-group-addon addon-lean" style="color:#2f2739; font-weight: 300;">Seconds</span>
+                                    <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;">Seconds</span>
                                 </div>
                             </div>
 
@@ -324,7 +324,7 @@ if (isset($orphan_ins)) {
                                     foreach ($this->config->item('en_all_4486') as $en_id => $m) {
                                         echo '<div class="radio" style="display:inline-block; border-bottom:1px dotted #999; margin-top: 0 !important;" data-toggle="tooltip" title="' . $m['m_desc'] . '" data-placement="top">
                                         <label style="display:inline-block;">
-                                            <input type="radio" id="in_tr_en_type_' . $en_id . '" name="in_tr_en_type" value="' . $en_id . '" />
+                                            <input type="radio" id="tr_en_type_id_' . $en_id . '" name="tr_en_type_id" value="' . $en_id . '" />
                                             '.$m['m_icon'].' ' . str_replace(' Intent Link','',$m['m_name']) . '
                                         </label>
                                     </div>';
@@ -349,7 +349,7 @@ if (isset($orphan_ins)) {
                                     </div>
                                 </div>
 
-                                <select class="form-control border" data-toggle="tooltip" title="Transaction Status" data-placement="top" id="in_tr_status" style="display: inline-block !important;">
+                                <select class="form-control border" data-toggle="tooltip" title="Transaction Status" data-placement="top" id="tr_status" style="display: inline-block !important;">
                                     <?php
                                     foreach (fn___echo_status('tr_status') as $status_id => $status) {
                                         echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';

@@ -298,7 +298,7 @@ class Intents extends CI_Controller
         //Authenticate Miner:
         $udata = fn___en_auth(array(1308));
 
-        //Validate Original intent:
+        //Validate intent:
         $ins = $this->Database_model->fn___in_fetch(array(
             'in_id' => intval($_POST['in_id']),
         ));
@@ -313,10 +313,35 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Intent ID',
             ));
-        } elseif (!isset($_POST['level']) || intval($_POST['level']) < 1) {
+        } elseif (!isset($_POST['in_webhook'])) {
             return fn___echo_json(array(
                 'status' => 0,
-                'message' => 'Missing level',
+                'message' => 'Missing Input Webhook variable',
+            ));
+        } elseif (intval($_POST['level'])==1 && intval($_POST['tr_id'])>0) {
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Level 1 intent should not have a transaction',
+            ));
+        } elseif (!filter_var('https://'.$_POST['in_webhook'], FILTER_VALIDATE_URL)) {
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Input Webhook URL',
+            ));
+        } elseif (!isset($_POST['input_requirements']) || !is_array($_POST['input_requirements'])) {
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Input Requirements',
+            ));
+        } elseif (!isset($_POST['tr__conditional_score_min']) || !isset($_POST['tr__conditional_score_max'])) {
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Score Min/Max Variables',
+            ));
+        } elseif (!isset($_POST['level']) || intval($_POST['level']) < 1 || intval($_POST['level']) > 3) {
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid level',
             ));
         } elseif (!isset($_POST['in_outcome']) || strlen($_POST['in_outcome']) < 1) {
             return fn___echo_json(array(
@@ -375,7 +400,7 @@ class Intents extends CI_Controller
             ));
         }
 
-        //Update array:
+        //entire pdate array:
         $in_update = array(
             'in_outcome' => trim($_POST['in_outcome']),
             'in_usd' => doubleval($_POST['in_usd']),
@@ -384,7 +409,82 @@ class Intents extends CI_Controller
             'in_status' => intval($_POST['in_status']),
             'in_points' => intval($_POST['in_points']),
             'in_alternatives' => trim($_POST['in_alternatives']),
+            'in_webhook' => trim($_POST['in_webhook']),
         );
+
+        $tr_id = intval($_POST['tr_id']);
+        if($tr_id > 0){
+
+            //Build transaction array:
+            $tr_update = array(
+                'tr_en_type_id' => intval($_POST['tr_en_type_id']),
+                'tr_status' => intval($_POST['tr_status']),
+            );
+
+            //Let's see what has changed:
+            foreach ($tr_update as $key => $value) {
+                //Did this value change?
+                if ($_POST[$key] == $ins[0][$key]) {
+                    //No it did not! Remove it!
+                    unset($tr_update[$key]);
+                } else {
+                    //To be adjusted:
+                    $this->Database_model->fn___tr_update($tr_id, array(
+                        $key => $tr_update[$key], //New value
+                    ), $udata['en_id']);
+                }
+            }
+        }
+
+        //Fetch current ANY Conditional input limters:
+        $completion_requirements = $this->Database_model->fn___tr_fetch(array(
+            'tr_en_type_id' => 4331, //Intent Completion Requirements
+            'tr_in_child_id' => $_POST['in_id'], //For this intent
+            'tr_status >=' => 0, //New+
+            'tr_en_parent_id IN (' . join(',', $this->config->item('en_ids_4331')) . ')' => null, //Technically not needed, but here for extra clarity
+        ));
+
+
+        //Save additional settings:
+        if($in_update['in_is_any'] && count($completion_requirements) > 0){
+            //Intent type changed to ANY, so remove current requirements:
+            foreach ($completion_requirements as $tr) {
+                //Remove this link:
+                $this->Database_model->fn___tr_update($tr['tr_id'], array(
+                    'tr_status' => -1, //Removed
+                ), $udata['en_id']);
+            }
+        } elseif(!$in_update['in_is_any']){
+
+            //Loop through existing links and moderate:
+            $selected_en_type_ids = array(); //Will build this with selected type IDs
+            foreach ($completion_requirements as $tr) {
+
+                //Push into array:
+                array_push($selected_en_type_ids , $tr['tr_en_type_id']);
+
+                //See if any of the existing links have been removed:
+                if(!in_array($tr['tr_id'], $_POST['input_requirements'])){
+                    //Yes its removed as it does not exist in the input array:
+                    $this->Database_model->fn___tr_update($tr['tr_id'], array(
+                        'tr_status' => -1, //Removed
+                    ), $udata['en_id']);
+                }
+            }
+
+            //Now see if any of the selected ones is missing and needed to be inserted:
+            foreach ($this->config->item('en_all_4331') as $en_id => $m) {
+                if(in_array($en_id, $_POST['input_requirements']) && !in_array($en_id, $selected_en_type_ids)){
+                    //Need to create a new row for this:
+                    $tr = $this->Database_model->fn___tr_create(array(
+                        'tr_en_credit_id' => $udata['en_id'],
+                        'tr_en_type_id' => 4331,
+                        'tr_en_parent_id' => $en_id,
+                        'tr_in_child_id' => intval($_POST['in_id']),
+                    ));
+                }
+            }
+        }
 
         //Prep current intent metadata:
         $metadata = unserialize($ins[0]['in_metadata']);
@@ -407,12 +507,39 @@ class Intents extends CI_Controller
                 //Does it required a recursive tree update?
                 if ($key == 'in_seconds') {
                     $in_metadata_modify['in__tree_max_seconds'] = intval($_POST[$key]) - ( isset($metadata[$key]) ? intval($metadata[$key]) : 0 );
+                    $in_metadata_modify['in__tree_max_seconds'] = intval($_POST[$key]) - ( isset($metadata[$key]) ? intval($metadata[$key]) : 0 );
+                } elseif ($key == 'in_usd') {
+                    $in_metadata_modify['in__tree_max_cost'] = intval($_POST[$key]) - ( isset($metadata[$key]) ? intval($metadata[$key]) : 0 );
+                    $in_metadata_modify['in__tree_max_cost'] = intval($_POST[$key]) - ( isset($metadata[$key]) ? intval($metadata[$key]) : 0 );
+                } elseif ($key == 'in_points') {
+                    $in_metadata_modify['in__tree_max_cost'] = intval($_POST[$key]) - ( isset($metadata[$key]) ? intval($metadata[$key]) : 0 );
+                    $in_metadata_modify['in__tree_max_cost'] = intval($_POST[$key]) - ( isset($metadata[$key]) ? intval($metadata[$key]) : 0 );
                 }
 
-                //TODO this secion needs more work
 
             }
         }
+
+        /*
+*
+apply_recursively: 0
+in_alternatives: "get hired as junior developer, land job as junior coder, work as junior programmer"
+in_id: 6623
+in_is_any: 0
+in_outcome: "Land your dream job as a junior developer"
+in_points: 0
+in_seconds: 0
+in_status: 1
+in_usd: 0
+in_webhook: ""
+input_requirements: (3) [4255, 4256, 4258]
+level: 2
+tr__conditional_score_max: 23
+tr__conditional_score_min: 1
+tr_en_type_id: 4229
+tr_id: 1077060
+tr_status: 2
+* */
 
 
         //Did anything change?
@@ -874,6 +1001,9 @@ class Intents extends CI_Controller
         foreach($completion_requirements as $tr){
             array_push($in_req_ens, intval($tr['tr_en_parent_id']));
         }
+
+        //Adjust formats:
+        $ins[0]['in_usd'] = number_format($ins[0]['in_usd'], 2);
 
         //Return results:
         return fn___echo_json(array(

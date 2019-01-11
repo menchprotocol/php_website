@@ -20,7 +20,7 @@ function fn___in_matrix_tips(in_id) {
     if (!$("div#content_" + in_id).html().length) {
 
         //Show loader:
-        $("div#content_" + in_id).html('<img src="/img/round_yellow_load.gif" class="loader" />');
+        $("div#content_" + in_id).html('<i class="fas fa-spinner fa-spin"></i>');
 
         //Let's check to see if this user has already seen this:
         $.post("/intents/fn___in_matrix_tips", {in_id: in_id}, function (data) {

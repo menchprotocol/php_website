@@ -252,7 +252,7 @@ function fn___message_remove(tr_id) {
     var r = confirm("Remove message?");
     if (r == true) {
 
-        $("#ul-nav-" + tr_id).html('<div><img src="/img/round_load.gif" class="loader" /> Removing...</div>');
+        $("#ul-nav-" + tr_id).html('<div><i class="fas fa-spinner fa-spin"></i> Removing...</div>');
 
         //Remove message transaction:
         $.post("/ledger/fn___tr_status_update", { tr_id:tr_id, tr_status_new:-1 }, function (data) {
@@ -333,7 +333,7 @@ function message_modify_cancel(tr_id, success=0) {
 function fn___in_message_modify(tr_id, initial_tr_en_type_id) {
 
     //Show loader:
-    $("#ul-nav-" + tr_id + " .edit-updates").html('<div><img src="/img/round_load.gif" class="loader" /></div>');
+    $("#ul-nav-" + tr_id + " .edit-updates").html('<div><i class="fas fa-spinner fa-spin"></i></div>');
 
     //Revert View:
     message_modify_cancel(tr_id, 1);
@@ -411,7 +411,7 @@ var button_value = null;
 
 function message_form_lock() {
     button_value = $('#add_message_' + focus_tr_en_type_id + '_' + in_id).html();
-    $('#add_message_' + focus_tr_en_type_id + '_' + in_id).html('<span><img src="/img/round_load.gif" class="loader" /></span>');
+    $('#add_message_' + focus_tr_en_type_id + '_' + in_id).html('<span><i class="fas fa-spinner fa-spin"></i></span>');
     $('#add_message_' + focus_tr_en_type_id + '_' + in_id).attr('href', '#');
 
     $('.add-msg' + in_id).addClass('is-working');

@@ -237,10 +237,10 @@ function fn___en_load_next_page(page, load_new_filter = 0) {
         //Replace load more with spinner:
         var append_div = $('#new-children').html();
         //The padding-bottom would remove the scrolling effect on the left side!
-        $('#list-children').html('<span class="load-more" style="padding-bottom:500px;"><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
+        $('#list-children').html('<span class="load-more" style="padding-bottom:500px;"><i class="fas fa-spinner fa-spin"></i></span>').hide().fadeIn();
     } else {
         //Replace load more with spinner:
-        $('.load-more').html('<span class="load-more"><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
+        $('.load-more').html('<span class="load-more"><i class="fas fa-spinner fa-spin"></i></span>').hide().fadeIn();
     }
 
     $.post("/entities/fn___en_load_next_page", {
@@ -341,7 +341,7 @@ function u_save_modify() {
     var original_en_status = parseInt($('.en___' + modify_data['en_id']).attr('entity-status'));
 
     //Show spinner:
-    $('.save_entity_changes').html('<span><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
+    $('.save_entity_changes').html('<span><i class="fas fa-spinner fa-spin"></i></span>').hide().fadeIn();
 
 
     $.post("/entities/u_save_settings", modify_data, function (data) {
@@ -417,7 +417,7 @@ function fn___load_en_messages(en_id) {
     var handler = $("#loaded-messages");
 
     //Show tem loader:
-    handler.html('<div style="text-align:center; padding:10px 0 50px;"><img src="/img/round_load.gif" class="loader" /></div>');
+    handler.html('<div style="text-align:center; padding:10px 0 50px;"><i class="fas fa-spinner fa-spin"></i></div>');
 
     //We might need to scroll:
     if (is_compact) {

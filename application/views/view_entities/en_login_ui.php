@@ -6,7 +6,7 @@
         //Show loading:
         function password_initiate_reset() {
             //Show loading:
-            $('#pass_reset').html('<span><img src="/img/round_load.gif" style="width:16px; height:16px; margin-top:-2px;" class="loader" /></span>');
+            $('#pass_reset').html('<span><i class="fas fa-spinner fa-spin"></i></span>');
             //Hide the editor & saving results:
             $.post("/entities/password_initiate_reset", {
                 email: $('#input_email').val(),

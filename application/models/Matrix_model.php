@@ -1226,10 +1226,13 @@ class Matrix_model extends CI_Model
 
                 //Something was not up to date, let's update:
                 if ($this->Matrix_model->fn___metadata_update('in', $this_in, array(
+
                     'in__tree_min_seconds' => intval($this_in['___tree_min_seconds']),
                     'in__tree_max_seconds' => intval($this_in['___tree_max_seconds']),
+
                     'in__tree_min_cost' => number_format($this_in['___tree_min_cost'], 2),
                     'in__tree_max_cost' => number_format($this_in['___tree_max_cost'], 2),
+
                     'in__tree_in_active_count' => $this_in['___tree_active_count'],
                     'in__tree_in_published_count' => $this_in['___tree_published_count'],
                     'in__message_count' => $this_in['___messages_count'],
