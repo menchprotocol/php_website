@@ -712,8 +712,10 @@ class Database_model extends CI_Model
 
         //Update metadata if needed:
         if(isset($update_columns['tr_metadata'])){
-            //Update metadata:
-            $this->Matrix_model->fn___metadata_update('tr', $update_columns, $update_columns['tr_metadata']);
+
+            if(is_array($update_columns['tr_metadata'])){
+                $update_columns['tr_metadata'] = serialize($update_columns['tr_metadata']);
+            }
 
             //No creditor allowed for this:
             $tr_en_credit_id = 0;

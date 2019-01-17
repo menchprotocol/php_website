@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  *
  * Global variables used throughout the platform.
- * use-case format: $this->config->item('in_strategy_name')
+ * use-case format: $this->config->item('core_objects')
  *
  */
 
@@ -15,16 +15,17 @@ date_default_timezone_set('America/Los_Angeles');
 
 
 //UI Display:
-$config['app_version']              = '0.681'; //Cache buster in URLs for static js/css files
+$config['app_version']              = '0.69'; //Cache buster in URLs for static js/css files
 $config['en_per_page']              = 50; //Limits the maximum entities loaded per page
 
 
-//Focused Intents:
+//Intents:
 $config['in_mission_name']          = 'expand human potential'; //is the top level intent that will always contain every other intention we cover
 $config['in_mission_id']            = 7766; //expand human potential
 $config['in_strategy_name']         = 'advance your tech career'; //The broader, more long-term strategic focus of Mench
 $config['in_strategy_id']           = 7240; //advance your tech career
 $config['in_tactic_id']             = 6903; //The shorter, more immediate focus recommended to Masters & Miners as the starting point
+$config['in_webhook_prefix']        = 'https://mench.com/webhooks/'; //The shorter, more immediate focus recommended to Masters & Miners as the starting point
 
 
 //Entities:
@@ -37,7 +38,11 @@ $config['enable_algolia']           = true; //Currently reached our monthly free
 $config['file_size_max']            = 25; //Server setting is 32MB. see here: mench.com/ses
 $config['password_salt']            = '40s96As9ZkdAcwQ9PhZm'; //Used for hashing the user password for Mench logins
 $config['tr_status_incomplete']     = array(0, 1); //Transactions with these tr_status values are considered in-complete
-
+$config['core_objects']             = array( //The 3 primary objects in the app
+    'in' => 'Intent',
+    'en' => 'Entity',
+    'tr' => 'Transaction'
+);
 
 //App Inputs:
 $config['in_points_options']        = array(-89, -55, -34, -21, -13, -8, -5, -3, -2, -1, 0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610);

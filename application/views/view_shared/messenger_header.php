@@ -14,7 +14,7 @@
 
 <body id="funnel">
 
-<div class="main main-raised maxout">
+<div class="main main-raised">
     <div class="container body-container">
 
 <?php

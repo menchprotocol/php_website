@@ -23,16 +23,6 @@ $uri_segment_1 = $this->uri->segment(1);
     <meta name="viewport" content="width=device-width"/>
     <title><?= (isset($title) ? $title . ' | ' : '') ?>Mench</title>
 
-    <script>
-        <?php
-        //Translate key variables into JS variables to have them available throughout all JS functions:
-        $object_statuses = $this->config->item('object_statuses');
-        echo ' var js_in_statuses = ' . json_encode($object_statuses['in_status']) . '; ';
-        echo ' var js_en_statuses = ' . json_encode($object_statuses['en_status']) . '; ';
-        echo ' var js_tr_statuses = ' . json_encode($object_statuses['tr_status']) . '; ';
-        echo ' var js_en_id = ' . $udata['en_id'] . '; ';
-        ?>
-    </script>
 
     <link href="/css/lib/devices.min.css" rel="stylesheet"/>
     <link href="/css/lib/jquery.mCustomScrollbar.min.css" rel="stylesheet"/>

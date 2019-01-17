@@ -10,6 +10,8 @@ if (isset($orphan_ins)) {
 <script>
     //Define some global variables:
     var in_focus_id = <?= $in['in_id'] ?>;
+    var en_all_4486 = <?= json_encode($this->config->item('en_all_4486')) ?>;
+    var en_all_4331 = <?= json_encode($this->config->item('en_all_4331')) ?>;
 </script>
 <script src="/js/custom/intent-manage-js.js?v=v<?= $this->config->item('app_version') ?>"
         type="text/javascript"></script>
@@ -201,7 +203,7 @@ if (isset($orphan_ins)) {
                                         //List all the input options and allow user to pick between them:
                                         foreach ($this->config->item('en_all_4331') as $en_id => $m) {
                                             $clean_name = str_replace(' Entity Link','',$m['m_name']);
-                                            echo '<label style="font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" class="in_input_requirements" id="require__' . $en_id . '" req-en-id="' . $en_id . '" /><span class="underdot" data-toggle="tooltip" title="Completion requires a ' . $clean_name . ' submission (OR another selected requirement)" data-placement="right">' . $m['m_icon'] . ' ' . $clean_name . '</span></label><br />';
+                                            echo '<label style="font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" class="in_input_requirements" id="require__' . $en_id . '" req-en-id="' . $en_id . '" /><span class="underdot" data-toggle="tooltip" title="Accepts ' . $clean_name . ' to be marked as complete" data-placement="right">' . $m['m_icon'] . ' ' . $clean_name . '</span></label><br />';
                                         }
                                         ?>
                                     </div>
@@ -294,7 +296,7 @@ if (isset($orphan_ins)) {
                         <div class="inline-box">
                             <div class="form-group label-floating is-empty">
                                 <div class="input-group border">
-                                    <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;">https://</span>
+                                    <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;"><?= $this->config->item('in_webhook_prefix') ?></span>
                                     <input style="padding-left:0;" type="text" id="in_webhook" class="form-control">
                                 </div>
                             </div>

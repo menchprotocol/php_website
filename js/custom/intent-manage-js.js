@@ -47,9 +47,7 @@ $(document).ready(function () {
             } else if (hash_parts[0] == 'loadmodify') {
                 in_modify_load(hash_parts[1], hash_parts[2]);
             } else if (hash_parts[0] == 'loadlinks') {
-                in_tr_load(hash_parts[1]);
-            } else if (hash_parts[0] == 'loadactionplans') {
-                in_actionplans_load(hash_parts[1]);
+                in_tr_load(hash_parts[1],hash_parts[2],hash_parts[3]);
             }
         }
     }
@@ -271,8 +269,6 @@ function in_sort_save(in_id, level) {
     //Fetch new sort:
     var new_tr_orders = [];
     var sort_rank = 0;
-    var is_properly_sorted = true; //Assume good unless proven otherwise
-
 
     $("#" + s_element + " " + s_draggable).each(function () {
         //Make sure this is NOT the dummy drag in box
@@ -287,24 +283,11 @@ function in_sort_save(in_id, level) {
             //Store in DB:
             new_tr_orders[sort_rank] = tr_id;
 
-            //Is the Child rank correct? Check DB value:
-            var db_rank = parseInt($('.in_outcome_' + in_id).attr('children-rank'));
-
-            if (level == 2 && !(db_rank == sort_rank) && !in_id) {
-                is_properly_sorted = false;
-                console.log('Intent #' + in_id + ' detected out of sync.');
-            }
-
             //Update sort handler:
-            $("#cr_" + tr_id + " .inline-level-" + level).html('#' + sort_rank);
+            $(".intent_line_" + in_id + " .inline-level-" + level).html('#' + sort_rank);
         }
     });
 
-
-    if (level == 2 && !is_properly_sorted && !in_id) {
-        //Sorting issue detected on Task load:
-        in_id = parseInt(in_focus_id);
-    }
 
     //It might be zero for lists that have jsut been emptied
     if (sort_rank > 0 && in_id) {
@@ -435,7 +418,7 @@ function in_messages_load(in_id) {
 }
 
 
-function in_tr_load(in_id) {
+function in_tr_load(in_id, tr_id, tr_en_type_id) {
     //Start loading:
     $('.fixed-box, .ajax-frame').addClass('hidden');
     $('#load_w_frame, .frame-loader').removeClass('hidden').hide().fadeIn();
@@ -445,27 +428,11 @@ function in_tr_load(in_id) {
 
     //Load content via a URL:
     $('.frame-loader').addClass('hidden');
-    $('.ajax-frame').attr('src', '/intents/in_tr_load/' + in_id).removeClass('hidden').css('margin-top', '0');
+    $('.ajax-frame').attr('src', '/intents/in_tr_load/' + in_id + '/' + tr_id + '/' + tr_en_type_id).removeClass('hidden').css('margin-top', '0');
 
     //Tooltips:
     $('[data-toggle="tooltip"]').tooltip();
 }
-
-function in_actionplans_load(in_id) {
-    //Start loading:
-    $('.fixed-box, .ajax-frame').addClass('hidden');
-    $('#load_w_frame, .frame-loader').removeClass('hidden').hide().fadeIn();
-    //Set title:
-    $('#w_title').html('<i class="fas fa-flag"></i> ' + $('.in_outcome_' + in_id + ':first').text());
-
-    //Load content via a URL:
-    $('.frame-loader').addClass('hidden');
-    $('.ajax-frame').attr('src', '/intents/in_actionplans_load/' + in_id).removeClass('hidden').css('margin-top', '0');
-
-    //Tooltips:
-    $('[data-toggle="tooltip"]').tooltip();
-}
-
 
 function adjust_js_ui(in_id, level, new_hours, intent_deficit_count=0, apply_to_tree=0, skip_intent_adjustments=0) {
 
@@ -559,7 +526,7 @@ function in_modify_load(in_id, tr_id) {
     $('#modifybox').attr('intent-tr-id', 0).attr('intent-id', 0).attr('level', 0);
 
     //Fetch Intent Data to load modify widget:
-    $.post("/intents/fn___in_fetch_data", {in_id: in_id, tr_id: tr_id}, function (data) {
+    $.post("/intents/fn___in_load_data", {in_id: in_id, tr_id: tr_id}, function (data) {
         if (!data.status) {
 
             //Opppsi, show the error:
@@ -570,7 +537,7 @@ function in_modify_load(in_id, tr_id) {
             //All good, let's load the data into the Modify Widget...
 
             //Update variables:
-            var level = (tr_id == 0 ? 1 : parseInt($('#cr_' + tr_id).attr('intent-level'))); //Either 1, 2 or 3
+            var level = (tr_id == 0 ? 1 : parseInt($('.in__tr_' + tr_id).attr('intent-level'))); //Either 1, 2 or 3
             $('#modifybox').attr('intent-tr-id', tr_id);
             $('#modifybox').attr('intent-id', in_id);
             $('#modifybox').attr('level', level);
@@ -581,8 +548,8 @@ function in_modify_load(in_id, tr_id) {
             $('#in_is_any_' + data.in.in_is_any).prop("checked", true);
             $('.in_input_requirements').removeAttr('checked'); //Uncheck all
             if (data.in_req_ens.length > 0) { //Check current ones:
-                for (var i = 0; i < in_req_ens.length; i++) {
-                    $('#require__' + in_req_ens[i]).attr('checked', 'checked');
+                for (var i = 0; i < data.in_req_ens.length; i++) {
+                    $('#require__' + data.in_req_ens[i]).attr('checked', 'checked');
                 }
             }
             $('#in_status').val(data.in.in_status);
@@ -596,18 +563,18 @@ function in_modify_load(in_id, tr_id) {
 
             //Load intent link data if available:
             if (tr_id > 0) {
+
+                //Always load:
                 $("#tr_status").val(data.tr.tr_status);
+                $('#tr__conditional_score_min').val(data.tr.tr_metadata.tr__conditional_score_min);
+                $('#tr__conditional_score_max').val(data.tr.tr_metadata.tr__conditional_score_max);
 
                 //Is this a conditional link? If so, load the min/max range:
                 if (data.tr.tr_en_type_id == 4229) {
                     //Yes, load the data (which must be there):
-                    $('#tr__conditional_score_min').val(data.tr.tr_metadata.tr__conditional_score_min);
-                    $('#tr__conditional_score_max').val(data.tr.tr_metadata.tr__conditional_score_max);
                     $('#tr_en_type_id_4229').prop("checked", true);
                 } else {
                     //Fixed link:
-                    $('#tr__conditional_score_min').val('');
-                    $('#tr__conditional_score_max').val('');
                     $('#tr_en_type_id_4228').prop("checked", true);
                 }
 
@@ -659,6 +626,8 @@ function in_modify_save() {
         in_alternatives: $('#in_alternatives').val().replace(/\"/g, ""), //Remove double quotes
         in_webhook: $('#in_webhook').val(),
         input_requirements: [], //Remove double quotes
+        tr__conditional_score_min: null, //Default
+        tr__conditional_score_max: null, //Default
     };
 
     //Append requirements
@@ -670,69 +639,64 @@ function in_modify_save() {
         });
     }
 
-
     //Do we have the intent link Transaction?
     if (modify_data['tr_id'] > 0) {
 
         //TODO implement:
-        var original_in_tr_type = parseInt($('#cr_' + modify_data['tr_id']).attr('in-tr-type'));
+        var original_in_tr_type = parseInt($('.in__tr_' + modify_data['tr_id']).attr('in-tr-type'));
 
         modify_data['tr_status'] = parseInt($('#tr_status').val());
         modify_data['tr_en_type_id'] = parseInt($('input[name=tr_en_type_id]:checked').val());
 
         if(modify_data['tr_en_type_id'] == 4229){ //Conditional Intent Link
             //Fetch condition range:
-            modify_data['tr__conditional_score_min'] = parseInt($('#tr__conditional_score_min').val());
-            modify_data['tr__conditional_score_max'] = parseInt($('#tr__conditional_score_max').val());
-        } else {
-            //Set condition range to zero:
-            modify_data['tr__conditional_score_min'] = 0;
-            modify_data['tr__conditional_score_max'] = 0;
+            modify_data['tr__conditional_score_min'] = $('#tr__conditional_score_min').val();
+            modify_data['tr__conditional_score_max'] = $('#tr__conditional_score_max').val();
         }
-
     }
 
     //Show spinner:
     $('.save_intent_changes').html('<span><i class="fas fa-spinner fa-spin"></i> Saving...</span>').hide().fadeIn();
 
+
     //Save the rest of the content:
     $.post("/intents/in_save_settings", modify_data, function (data) {
 
-        if (data.status) {
+        if (!data.status) {
 
-            //Update variables:
-            $(".in_outcome_" + modify_data['in_id']).html(modify_data['in_outcome']);
-            $('.in_outcome_' + modify_data['in_id']).attr('in_is_any', modify_data['in_is_any']);
+            //Ooops there was an error!
+            $('.save_intent_changes').html('<span style="color:#FF0000;"><i class="fas fa-exclamation-triangle"></i> ' + data.message + '</span>').hide().fadeIn();
 
-            //has intent link status updated? If so update the UI:
-            $('.tr_status_' + modify_data['tr_id']).html(data.status_in_tr_ui);
-
-            //has intent status updated? If so update the UI:
-            $('.in_status_' + modify_data['in_id']).html(data.status_in_ui);
-
+        } else {
 
             //Has the intent/intent-link been archived? Either way, we need to hide this row:
-            if (data.remove_ui) {
-                //We're archiving this...
+            if (data.remove_in_from_ui) {
+
+                //Intent has been either removed OR unlinked:
                 if (modify_data['level'] == 1) {
-                    //move up as this item has been removed!
+
+                    //move up 1 level as this was the focus intent:
                     window.location = "/intents/" + ($('.intent_line_' + modify_data['in_id']).attr('parent-intent-id'));
+
                 } else {
-                    //hide removed item:
+
+                    //Remove Hash:
+                    window.location.hash = '#';
+
                     //Adjust hours:
                     adjust_js_ui(modify_data['in_id'], modify_data['level'], 0, data.in__tree_in_active_count, 1);
 
                     //Remove from UI:
-                    $('#cr_' + modify_data['tr_id']).html('<span style="color:#2f2739;"><i class="fas fa-trash-alt"></i> Removed</span>');
+                    $('.in__tr_' + modify_data['tr_id']).html('<span style="color:#2f2739;"><i class="fas fa-trash-alt"></i> Removed</span>');
 
-                    //Disapper in a while:
                     //Hide the editor & saving results:
-                    $('#cr_' + modify_data['tr_id']).fadeOut();
+                    $('.in__tr_' + modify_data['tr_id']).fadeOut();
 
+                    //Disappear in a while:
                     setTimeout(function () {
 
                         //Hide the editor & saving results:
-                        $('#cr_' + modify_data['tr_id']).remove();
+                        $('.in__tr_' + modify_data['tr_id']).remove();
 
                         //Hide editing box:
                         $('#modifybox').addClass('hidden');
@@ -741,55 +705,113 @@ function in_modify_save() {
                         in_sort_save(parseInt($('.intent_line_' + modify_data['in_id']).attr('parent-intent-id')), modify_data['level']);
 
                     }, 377);
+
                 }
-            }
 
-            //Adjust UI Icons:
-            if (modify_data['in_is_any']) {
-                $('.in_is_any_icon' + modify_data['in_id']).addClass('fa-code-merge').removeClass('fa-sitemap');
             } else {
-                $('.in_is_any_icon' + modify_data['in_id']).removeClass('fa-code-merge').addClass('fa-sitemap');
-            }
 
-            //Update trigger statements:
-            if ($('.in_alternatives_' + modify_data['in_id']).length) {
-                //This is the top intent that's loaded, update expanded trigger UI:
-                $(".in_alternatives_" + modify_data['in_id']).html(nl2br(modify_data['in_alternatives']));
-            } else {
-                //This is a level 2+ intent, let's update the tooltip UI:
-                if (modify_data['in_alternatives'].length > 0) {
-                    $(".in_outcome_" + modify_data['in_id']).addClass('has-desc').attr('data-toggle', 'tooltip').attr('data-original-title', modify_data['in_alternatives']);
+                //Intent has not been updated:
+
+                //Did the Transaction update?
+                if (modify_data['tr_id'] > 0) {
+
+                    //Did we update it?
+                    if(data.tr_new_id > 0){
+                        //Update classes with new transaction link:
+                        $('.in_tr_type_' + modify_data['tr_id']).addClass('in_tr_type_' + data.tr_new_id).removeClass('in_tr_type_' + modify_data['tr_id']);
+                        $('.tr_status_' + modify_data['tr_id']).addClass('tr_status_' + data.tr_new_id).removeClass('tr_status_' + modify_data['tr_id']);
+                        $('.in__tr_' + modify_data['tr_id']).addClass('in__tr_' + data.tr_new_id).removeClass('in__tr_' + modify_data['tr_id']);
+
+                        //Update Transaction ID:
+                        modify_data['tr_id'] = data.tr_new_id;
+                        $('#modifybox').attr('intent-tr-id', data.tr_new_id);
+
+                        //Update Hash:
+                        window.location.hash = '#loadmodify-'+modify_data['in_id']+'-'+modify_data['tr_id'];
+                    }
+
+                    $('.in_tr_type_' + modify_data['tr_id']).html('<span class="in_tr_type_val" data-toggle="tooltip" data-placement="right" title="'+ en_all_4486[modify_data['tr_en_type_id']]["m_name"] + ': '+ en_all_4486[modify_data['tr_en_type_id']]["m_desc"] + '">'+ en_all_4486[modify_data['tr_en_type_id']]["m_icon"] +'</span>');
+
+                    $('.tr_status_' + modify_data['tr_id']).html('<span class="tr_status_val" data-toggle="tooltip" data-placement="right" title="'+ object_js_statuses['tr_status'][modify_data['tr_status']]["s_name"] + ': '+ object_js_statuses['tr_status'][modify_data['tr_status']]["s_desc"] + '">'+ object_js_statuses['tr_status'][modify_data['tr_status']]["s_icon"] +'</span>');
+
+                    //Update transaction time:
+                    $('.tr-last-updated').html(data.tr___last_updated).hide().fadeIn(); //Load Last Updated box
+                }
+
+
+                //Update UI components:
+                $(".in_outcome_" + modify_data['in_id']).html(modify_data['in_outcome']);
+
+
+                //Always update 2x Intent icons:
+                $('.in_is_any_' + modify_data['in_id']).html('<span class="in_is_any_val" data-toggle="tooltip" data-placement="right" title="'+ object_js_statuses['in_is_any'][modify_data['in_is_any']]["s_name"] + ': '+ object_js_statuses['in_is_any'][modify_data['in_is_any']]["s_desc"] + '">'+ object_js_statuses['in_is_any'][modify_data['in_is_any']]["s_icon"] +'</span>');
+
+                $('.in_status_' + modify_data['in_id']).html('<span class="in_status_val" data-toggle="tooltip" data-placement="right" title="'+ object_js_statuses['in_status'][modify_data['in_status']]["s_name"] + ': '+ object_js_statuses['in_status'][modify_data['in_status']]["s_desc"] + '">'+ object_js_statuses['in_status'][modify_data['in_status']]["s_icon"] +'</span>');
+
+
+
+                //Update UI to confirm with user:
+                $('.save_intent_changes').html(data.in___last_updated).hide().fadeIn();
+
+                //Update range:
+                $('.range_is_' + modify_data['in_id']).html(( modify_data['tr__conditional_score_min'] == null ? '' : modify_data['tr__conditional_score_min'] + '-' + modify_data['tr__conditional_score_max'] + '%' ));
+
+
+                if(!modify_data['input_requirements'].length){
+                    $('.input_requirements_' + modify_data['in_id']).html('');
                 } else {
-                    $(".in_outcome_" + modify_data['in_id']).removeClass('has-desc').attr('data-toggle', '').attr('data-original-title', '');
+                    //Generate Icons:
+                    var input_requirements_icons = '';
+
+                    for (var i = 0; i < modify_data['input_requirements'].length; i++) {
+                        //Append this icon:
+                        input_requirements_icons += ' <span data-toggle="tooltip" data-placement="top" title="Accepts '+ en_all_4331[modify_data['input_requirements'][i]]["m_name"] + ' to be marked as complete">'+ en_all_4331[modify_data['input_requirements'][i]]["m_icon"] +'</span>';
+                    }
+
+                    $('.input_requirements_' + modify_data['in_id']).html(input_requirements_icons);
                 }
+
+
+                //Update trigger statements:
+                if ($('.in_alternatives_' + modify_data['in_id']).length) {
+
+                    //This is the top intent that's loaded, update expanded trigger UI:
+                    $(".in_alternatives_" + modify_data['in_id']).html(nl2br(modify_data['in_alternatives']));
+
+                } else {
+
+                    //This is a level 2+ intent, let's update the tooltip UI:
+                    if (modify_data['in_alternatives'].length > 0) {
+                        $(".in_outcome_" + modify_data['in_id']).addClass('has-desc').attr('data-toggle', 'tooltip').attr('data-original-title', modify_data['in_alternatives']);
+                    } else {
+                        $(".in_outcome_" + modify_data['in_id']).removeClass('has-desc').attr('data-toggle', '').attr('data-original-title', '');
+                    }
+
+                }
+
+
+                //Update other UI elements:
+                $(".ui_in_points_" + modify_data['in_id']).html(modify_data['in_points']);
+                $(".ui_in_usd_" + modify_data['in_id']).html((modify_data['in_usd'] > 0 ? '<i class="fal fa-usd-circle" data-toggle="tooltip" title="$'+ modify_data['in_usd'] +' USD in product purchase recommendations" data-placement="top"></i>' : ''));
+                $(".in_setwebhook_" + modify_data['in_id']).html((modify_data['in_webhook'].length > 0 ? '<i class="fal fa-cloud-upload" data-toggle="tooltip" title="'+ modify_data['in_webhook'] +'" data-placement="top"></i>' : ''));
+
+
+                //Adjust hours if needed:
+                adjust_js_ui(modify_data['in_id'], modify_data['level'], modify_data['in_seconds']);
+
             }
-
-
-            //Update other UI elements:
-            $(".ui_in_points_" + modify_data['in_id']).html((modify_data['in_points'] > 0 ? modify_data['in_points'] : 0));
-            $(".ui_in_usd_" + modify_data['in_id']).html((modify_data['in_usd'] > 0 ? '<i class="fas fa-usd-circle" style="margin-right: 2px;"></i>' + modify_data['in_usd'] : ''));
-
-
-            //Adjust hours if needed:
-            adjust_js_ui(modify_data['in_id'], modify_data['level'], modify_data['in_seconds']);
-
-            //Update UI to confirm with user:
-            $('.save_intent_changes').html(data.message).hide().fadeIn();
 
             //Reload Tooltip again:
             $('[data-toggle="tooltip"]').tooltip();
 
             //What's the final action?
             setTimeout(function () {
-                if (modify_data['apply_recursively'] && data.updated_children > 0) {
+                if (modify_data['apply_recursively'] && data.status_update_children > 0) {
                     //Refresh page soon to show new status for children:
                     window.location = "/intents/" + in_focus_id;
                 }
             }, 610);
 
-        } else {
-            //Ooops there was an error!
-            $('.save_intent_changes').html('<span style="color:#FF0000;"><i class="fas fa-exclamation-triangle"></i> ' + data.message + '</span>').hide().fadeIn();
         }
     });
 

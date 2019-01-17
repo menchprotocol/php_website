@@ -1290,8 +1290,13 @@ class Matrix_model extends CI_Model
          *
          * */
 
-        if (!in_array($obj_type, array('in', 'en', 'tr')) || !isset($obj[$obj_type . '_id']) || !isset($obj[$obj_type . '_metadata']) || count($new_fields) < 1) {
+        if (!array_key_exists($obj_type, $this->config->item('core_objects')) || !isset($obj[$obj_type . '_id']) || count($new_fields) < 1) {
             return false;
+        }
+
+        //Do we have a metadata?
+        if(!isset($obj[$obj_type . '_metadata'])){
+            $obj[$obj_type . '_metadata'] = null;
         }
 
         //Prepare metadata:

@@ -272,7 +272,7 @@ function fn___message_remove(tr_id) {
                 $(".messages-counter-" + in_id, window.parent.document).text(message_count);
 
                 if (message_count == 0) {
-                    $('.msg-badge-' + in_id).addClass('grey');
+                    $('.msg-badge-' + in_id, window.parent.document).addClass('grey');
                 }
 
                 //Disapper in a while:
@@ -498,7 +498,7 @@ function fn___in_new_message_from_attachment(droppedFiles, uploadType) {
             processData: false,
             complete: function () {
                 $('.box' + in_id).removeClass('is-uploading');
-                $('.msg-badge-' + in_id).removeClass('grey');
+                $('.msg-badge-' + in_id, window.parent.document).removeClass('grey');
             },
             success: function (data) {
                 message_form_unlock(data);
@@ -545,7 +545,7 @@ function message_create() {
             message_count++;
             $(".messages-counter-" + in_id, window.parent.document).text(message_count);
 
-            $('.msg-badge-' + in_id).removeClass('grey');
+            $('.msg-badge-' + in_id, window.parent.document).removeClass('grey');
 
             //Reset input field:
             $("#tr_content" + in_id).val("");

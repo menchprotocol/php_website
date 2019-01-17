@@ -2362,6 +2362,12 @@ a.badge:focus, a.badge:hover {
     background-color: #CCC !important;
 }
 
+.white {
+    background-color: #FFF !important;
+}
+
+
+
 .search-info {
     color: #B8B8B8 !important;
     display: inline-block;
@@ -3516,4 +3522,9 @@ h4 .tip-badge {
 
 .grey-at{
     color: #AAA !important;
+}
+
+.transparent{
+    background-color: transparent !important;
+    border-color:transparent !important;
 }
