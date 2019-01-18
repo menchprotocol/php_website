@@ -69,6 +69,15 @@ $(document).ready(function () {
     in_sort_load(in_focus_id, 2);
 
 
+    //Watch for intent status change:
+    $("#in_status").change(function () {
+        if(parseInt(this.value) < 0){
+            $('.notify_in_remove').removeClass('hidden');
+        } else {
+            $('.notify_in_remove').addClass('hidden');
+        }
+    });
+
     $('input[type=radio][name=in_is_any]').change(function () {
         in_adjust_isany_ui();
     });
@@ -136,8 +145,7 @@ $(document).ready(function () {
         },
         templates: {
             suggestion: function (suggestion) {
-                var fancy_hours = fancy_time(suggestion);
-                return '<span class="suggest-prefix"><i class="fas fa-hashtag"></i></span> ' + suggestion._highlightResult.in_outcome.value + (fancy_hours ? '<span class="search-info">' + (parseFloat(suggestion.in__count) > 1 ? ' <i class="fas fa-sitemap"></i> ' + suggestion.in__count : '') + ' <i class="fas fa-clock"></i> ' + fancy_hours + '</span>' : '');
+                return echo_js_suggestion('in',suggestion);
             },
             header: function (data) {
                 if (!data.isEmpty) {
@@ -234,8 +242,7 @@ function in_load_search_level3() {
         },
         templates: {
             suggestion: function (suggestion) {
-                var fancy_hours = fancy_time(suggestion);
-                return '<span class="suggest-prefix"><i class="fas fa-hashtag"></i></span> ' + suggestion._highlightResult.in_outcome.value + (fancy_hours ? '<span class="search-info">' + (parseInt(suggestion.in__tree_in_active_count) > 1 ? ' <i class="' + (parseInt(suggestion.in_is_any) ? 'fas fa-code-merge' : 'fas fa-sitemap') + '"></i> ' + parseInt(suggestion.in__tree_in_active_count) : '') + ' <i class="fas fa-clock"></i> ' + fancy_hours + '</span>' : '');
+                return echo_js_suggestion('in',suggestion);
             },
             header: function (data) {
                 if (!data.isEmpty) {
@@ -582,6 +589,7 @@ function in_modify_load(in_id, tr_id) {
             }
 
             //Make the frame visible:
+            $('.notify_in_remove, .notify_in_unlink').addClass('hidden'); //Hide potential previous notices
             $('#modifybox .grey-box .loadcontent').removeClass('hidden');
             $('#modifybox .grey-box .loadbox').addClass('hidden');
 

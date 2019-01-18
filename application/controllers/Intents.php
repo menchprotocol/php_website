@@ -297,6 +297,7 @@ class Intents extends CI_Controller
 
         //Authenticate Miner:
         $udata = fn___en_auth(array(1308));
+        $tr_id = intval($_POST['tr_id']);
 
         //Validate intent:
         $ins = $this->Database_model->fn___in_fetch(array(
@@ -398,12 +399,31 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Intent Not Found',
             ));
+        } elseif($tr_id > 0 && intval($_POST['tr_en_type_id']) == 4229){
+            //Conditional links, we require range values:
+            if(strlen($_POST['tr__conditional_score_min']) < 1 || !is_numeric($_POST['tr__conditional_score_min'])){
+                return fn___echo_json(array(
+                    'status' => 0,
+                    'message' => 'Missing MIN range, enter 0 or greater',
+                ));
+            } elseif(strlen($_POST['tr__conditional_score_max']) < 1 || !is_numeric($_POST['tr__conditional_score_max'])){
+                return fn___echo_json(array(
+                    'status' => 0,
+                    'message' => 'Missing MAX range, enter 0 or greater',
+                ));
+            } elseif(doubleval($_POST['tr__conditional_score_min']) > doubleval($_POST['tr__conditional_score_max'])){
+                return fn___echo_json(array(
+                    'status' => 0,
+                    'message' => 'MIN range cannot be larger than MAX',
+                ));
+            }
         }
 
 
 
         //Prep Intent update array:
         $remove_in_from_ui = 0; //Determines if Intent has been removed OR unlinked
+        $transaction_was_updated = false;
         $in_update = array(
             'in_status' => intval($_POST['in_status']),
             'in_outcome' => trim($_POST['in_outcome']),
@@ -496,9 +516,91 @@ class Intents extends CI_Controller
 
 
 
+        //Prep current intent metadata:
+        $in_metadata = unserialize($ins[0]['in_metadata']);
+
+        //This determines if there are any recursive updates needed on the tree:
+        $in_metadata_modify = array();
+
+        //Did anything change?
+        $status_update_children = 0;
+
+        //Check to see which variables actually changed:
+        foreach ($in_update as $key => $value) {
+
+            //Did this value change?
+            if ($value == $ins[0][$key]) {
+
+                //No it did not! Remove it!
+                unset($in_update[$key]);
+
+            } else {
+
+                //This field has been updated, update one field at a time:
+                $this->Database_model->fn___in_update($_POST['in_id'], array( $key => $_POST[$key] ), true, $udata['en_id']);
+
+                //Does it required a recursive tree update?
+                if ($key == 'in_seconds') {
+
+                    $in_metadata_modify['in__tree_min_seconds'] = intval($_POST[$key]) - ( isset($in_metadata['in__tree_min_seconds']) ? intval($in_metadata['in__tree_min_seconds']) : 0 );
+                    $in_metadata_modify['in__tree_max_seconds'] = intval($_POST[$key]) - ( isset($in_metadata['in__tree_max_seconds']) ? intval($in_metadata['in__tree_max_seconds']) : 0 );
+
+                } elseif ($key == 'in_usd') {
+
+                    $in_metadata_modify['in__tree_min_cost'] = intval($_POST[$key]) - ( isset($in_metadata['in__tree_min_cost']) ? intval($in_metadata['in__tree_min_cost']) : 0 );
+                    $in_metadata_modify['in__tree_max_cost'] = intval($_POST[$key]) - ( isset($in_metadata['in__tree_max_cost']) ? intval($in_metadata['in__tree_max_cost']) : 0 );
+
+                } elseif ($key == 'in_points') {
+
+                    $in_metadata_modify['in__tree_min_points'] = intval($_POST[$key]) - ( isset($in_metadata['in__tree_min_points']) ? intval($in_metadata['in__tree_min_points']) : 0 );
+                    $in_metadata_modify['in__tree_max_points'] = intval($_POST[$key]) - ( isset($in_metadata['in__tree_max_points']) ? intval($in_metadata['in__tree_max_points']) : 0 );
+
+                } elseif ($key == 'in_status') {
+
+                    //Has intent been removed?
+                    if($value < 0){
+                        $remove_in_from_ui = 1; //Intent has been removed
+
+                        //Also make sure to unlink this intent:
+                        if($tr_id > 0){
+                            $_POST['tr_status'] = -1;
+                        }
+                    }
+
+                    if(intval($_POST['apply_recursively'])){
+                        //Intent status has changed and there is a recursive update request:
+                        //Yes, sync downwards where current statuses match:
+                        $children = $this->Matrix_model->fn___in_recursive_fetch(intval($_POST['in_id']), true);
+
+                        //Fetch all intents that match parent intent status:
+                        $child_ins = $this->Database_model->fn___in_fetch(array(
+                            'in_id IN ('.join(',' , $children['in_flat_tree']).')' => null,
+                            'in_status' => intval($ins[0]['in_status']), //Same as status before update
+                        ));
+
+                        foreach ($child_ins as $child_in) {
+                            //Update this intent as the status did match:
+                            $status_update_children += $this->Database_model->fn___in_update($child_in['in_id'], array(
+                                'in_status' => $in_update['in_status']
+                            ), true, $udata['en_id']);
+                        }
+                    }
+                }
+            }
+        }
+
+        //Any relative metadata upward recursive updates needed?
+        if (count($in_metadata_modify) > 0) {
+            $this->Matrix_model->fn___metadata_tree_update('in', $_POST['in_id'], $in_metadata_modify);
+        }
+
+
+
+
+
+
+
         //Does this request has an intent transaction?
-        $tr_id = intval($_POST['tr_id']);
-        $transaction_was_updated = false;
         if($tr_id > 0){
 
             //Fetch current link:
@@ -519,24 +621,6 @@ class Intents extends CI_Controller
                     'status' => 0,
                     'message' => 'Invalid link ID',
                 ));
-            } elseif($tr_update['tr_en_type_id'] == 4229){
-                //Conditional links, we require range values:
-                if(strlen($_POST['tr__conditional_score_min']) < 1 || !is_numeric($_POST['tr__conditional_score_min'])){
-                    return fn___echo_json(array(
-                        'status' => 0,
-                        'message' => 'Missing MIN range, enter 0 or greater',
-                    ));
-                } elseif(strlen($_POST['tr__conditional_score_max']) < 1 || !is_numeric($_POST['tr__conditional_score_max'])){
-                    return fn___echo_json(array(
-                        'status' => 0,
-                        'message' => 'Missing MAX range, enter 0 or greater',
-                    ));
-                } elseif(doubleval($_POST['tr__conditional_score_min']) > doubleval($_POST['tr__conditional_score_max'])){
-                    return fn___echo_json(array(
-                        'status' => 0,
-                        'message' => 'MIN range cannot be larger than MAX',
-                    ));
-                }
             }
 
             //Prep variables:
@@ -596,78 +680,6 @@ class Intents extends CI_Controller
 
 
 
-        //Prep current intent metadata:
-        $in_metadata = unserialize($ins[0]['in_metadata']);
-
-        //This determines if there are any recursive updates needed on the tree:
-        $in_metadata_modify = array();
-
-        //Did anything change?
-        $status_update_children = 0;
-
-        //Check to see which variables actually changed:
-        foreach ($in_update as $key => $value) {
-
-            //Did this value change?
-            if ($value == $ins[0][$key]) {
-
-                //No it did not! Remove it!
-                unset($in_update[$key]);
-
-            } else {
-
-                //This field has been updated, update one field at a time:
-                $this->Database_model->fn___in_update($_POST['in_id'], array( $key => $_POST[$key] ), true, $udata['en_id']);
-
-                //Does it required a recursive tree update?
-                if ($key == 'in_seconds') {
-
-                    $in_metadata_modify['in__tree_min_seconds'] = intval($_POST[$key]) - ( isset($in_metadata['in__tree_min_seconds']) ? intval($in_metadata['in__tree_min_seconds']) : 0 );
-                    $in_metadata_modify['in__tree_max_seconds'] = intval($_POST[$key]) - ( isset($in_metadata['in__tree_max_seconds']) ? intval($in_metadata['in__tree_max_seconds']) : 0 );
-
-                } elseif ($key == 'in_usd') {
-
-                    $in_metadata_modify['in__tree_min_cost'] = intval($_POST[$key]) - ( isset($in_metadata['in__tree_min_cost']) ? intval($in_metadata['in__tree_min_cost']) : 0 );
-                    $in_metadata_modify['in__tree_max_cost'] = intval($_POST[$key]) - ( isset($in_metadata['in__tree_max_cost']) ? intval($in_metadata['in__tree_max_cost']) : 0 );
-
-                } elseif ($key == 'in_points') {
-
-                    $in_metadata_modify['in__tree_min_points'] = intval($_POST[$key]) - ( isset($in_metadata['in__tree_min_points']) ? intval($in_metadata['in__tree_min_points']) : 0 );
-                    $in_metadata_modify['in__tree_max_points'] = intval($_POST[$key]) - ( isset($in_metadata['in__tree_max_points']) ? intval($in_metadata['in__tree_max_points']) : 0 );
-
-                } elseif ($key == 'in_status') {
-
-                    //Has intent been removed?
-                    if($value < 0){
-                        $remove_in_from_ui = 1; //Intent has been removed
-                    }
-
-                    if(intval($_POST['apply_recursively'])){
-                        //Intent status has changed and there is a recursive update request:
-                        //Yes, sync downwards where current statuses match:
-                        $children = $this->Matrix_model->fn___in_recursive_fetch(intval($_POST['in_id']), true);
-
-                        //Fetch all intents that match parent intent status:
-                        $child_ins = $this->Database_model->fn___in_fetch(array(
-                            'in_id IN ('.join(',' , $children['in_flat_tree']).')' => null,
-                            'in_status' => intval($ins[0]['in_status']), //Same as status before update
-                        ));
-
-                        foreach ($child_ins as $child_in) {
-                            //Update this intent as the status did match:
-                            $status_update_children += $this->Database_model->fn___in_update($child_in['in_id'], array(
-                                'in_status' => $in_update['in_status']
-                            ), true, $udata['en_id']);
-                        }
-                    }
-                }
-            }
-        }
-
-        //Any relative metadata upward recursive updates needed?
-        if (count($in_metadata_modify) > 0) {
-            $this->Matrix_model->fn___metadata_tree_update('in', $_POST['in_id'], $in_metadata_modify);
-        }
 
 
         //Fetch latest intent update:

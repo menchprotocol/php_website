@@ -20,7 +20,7 @@ function u_load_child_search() {
         templates: {
             suggestion: function (suggestion) {
                 //If clicked, would trigger the autocomplete:selected above which will trigger the tr_add() function
-                return '<span><i class="fas fa-at"></i></span> ' + suggestion.en_name;
+                return echo_js_suggestion('en',suggestion);
             },
             header: function (data) {
                 if (!data.isEmpty) {
@@ -107,7 +107,7 @@ $(document).ready(function () {
         templates: {
             suggestion: function (suggestion) {
                 //If clicked, would trigger the autocomplete:selected above which will trigger the tr_add() function
-                return '<span><i class="fas fa-at"></i></span> ' + suggestion.en_name;
+                return echo_js_suggestion('en',suggestion);
             },
             header: function (data) {
                 if (!data.isEmpty) {

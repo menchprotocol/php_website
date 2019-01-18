@@ -1734,7 +1734,6 @@ class Matrix_model extends CI_Model
                 'tr_in_child_id' => $in_link_child_id,
                 'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
                 'tr_status >=' => 0, //New+
-                'in_status >=' => 0, //New+
             ));
 
             //Check for issues:
