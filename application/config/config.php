@@ -15,7 +15,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 
 //UI Display:
-$config['app_version']              = '0.691'; //Cache buster in URLs for static js/css files
+$config['app_version']              = '0.692'; //Cache buster in URLs for static js/css files
 $config['en_per_page']              = 50; //Limits the maximum entities loaded per page
 
 
@@ -24,8 +24,8 @@ $config['in_mission_name']          = 'expand human potential'; //is the top lev
 $config['in_mission_id']            = 7766; //expand human potential
 $config['in_strategy_name']         = 'advance your tech career'; //The broader, more long-term strategic focus of Mench
 $config['in_strategy_id']           = 7240; //advance your tech career
-$config['in_tactic_id']             = 6903; //The shorter, more immediate focus recommended to Masters & Miners as the starting point
-$config['in_webhook_prefix']        = 'https://mench.com/webhooks/'; //The shorter, more immediate focus recommended to Masters & Miners as the starting point
+$config['in_tactic_id']             = 6903; //The shorter, more immediate focus recommended to Students & Miners as the starting point
+$config['in_webhook_prefix']        = 'https://'; //The prefix for completion Webhook URL
 
 
 //Entities:
@@ -180,12 +180,12 @@ $config['object_statuses']          = array(
                                             ),
                                             2 => array(
                                                 's_name' => 'Published',
-                                                's_desc' => 'Intent is published live and ready to be distributed to Masters',
+                                                's_desc' => 'Intent is published live and ready to be distributed to Students',
                                                 's_icon' => '<i class="fal fa-check-square"></i>',
                                             ),
                                             3 => array(
                                                 's_name' => 'Verified',
-                                                's_desc' => 'Intent recommended to Masters',
+                                                's_desc' => 'Intent recommended to Students',
                                                 's_icon' => '<i class="fas fa-badge-check"></i>',
                                             ),
                                         ),
@@ -207,7 +207,7 @@ $config['object_statuses']          = array(
                                             ),
                                             2 => array(
                                                 's_name' => 'Published',
-                                                's_desc' => 'Entity is published live and ready to be distributed to Masters',
+                                                's_desc' => 'Entity is published live and ready to be distributed to Students',
                                                 's_icon' => '<i class="fal fa-check-square"></i>',
                                             ),
                                             3 => array(
@@ -219,7 +219,7 @@ $config['object_statuses']          = array(
                                         'tr_status' => array(
                                             -1 => array(
                                                 's_name' => 'Removed',
-                                                's_desc' => 'Transaction removed by Master or Miner',
+                                                's_desc' => 'Transaction removed by Student or Miner',
                                                 's_icon' => '<i class="fal fa-minus-square"></i>',
                                             ),
                                             0 => array( //Considered incomplete, see tr_status_incomplete for more details
@@ -728,7 +728,7 @@ $config['compress_output'] = FALSE;
 
 /*
 |--------------------------------------------------------------------------
-| Master Time Reference
+| Student Time Reference
 |--------------------------------------------------------------------------
 |
 | Options are 'local' or any PHP supported timezone. This preference tells

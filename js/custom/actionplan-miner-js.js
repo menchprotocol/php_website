@@ -37,7 +37,7 @@ $(document).ready(function () {
             if (hash_parts[0] == 'wactionplan') {
                 load_w_actionplan(hash_parts[1], hash_parts[2]);
             } else if (hash_parts[0] == 'wtrs') {
-                load_u_trs(hash_parts[1], hash_parts[2]);
+                fn___load_en_ledger(hash_parts[1], hash_parts[2]);
             }
         }
     }

@@ -10,7 +10,7 @@
 
 
 <div class="row">
-    <div class="col-xs-6 cols">
+    <div class="col-xs-7 cols">
 
         <?php
         //Parents
@@ -116,7 +116,7 @@
         ?>
     </div>
 
-    <div class="col-xs-6 cols ">
+    <div class="col-xs-5 cols">
 
 
         <div id="modifybox" class="fixed-box hidden" entity-id="0" entity-link-id="0">
@@ -214,7 +214,9 @@
                                     <select class="form-control border" id="tr_status" data-toggle="tooltip" title="Transaction Status" data-placement="top">
                                         <?php
                                         foreach (fn___echo_status('tr_status') as $status_id => $status) {
-                                            echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
+                                            if($status_id < 3){ //No need to verify entity links!
+                                                echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
+                                            }
                                         }
                                         ?>
                                     </select>

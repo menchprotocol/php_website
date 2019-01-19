@@ -60,7 +60,7 @@ class Chat_model extends CI_Model
          *
          * - $quick_replies:        Only supported if $fb_messenger_format = TRUE, and
          *                          will append an array of quick replies that will give
-         *                          Masters an easy way to tap and select their next step.
+         *                          Students an easy way to tap and select their next step.
          *
          *
          * - $tr_append:            Since this function logs a "message sent" engagement for
@@ -286,10 +286,10 @@ class Chat_model extends CI_Model
                     'message' => 'Invalid Entity ID provided',
                 );
             } elseif ($fb_messenger_format && $ens[0]['en_psid'] < 1) {
-                //This Master does not have their Messenger connected yet:
+                //This Student does not have their Messenger connected yet:
                 return array(
                     'status' => 0,
-                    'message' => 'Master @' . $recipient_en['en_id'] . ' does not have Messenger connected yet',
+                    'message' => 'Student @' . $recipient_en['en_id'] . ' does not have Messenger connected yet',
                 );
             } else {
                 //Assign data:
@@ -321,22 +321,22 @@ class Chat_model extends CI_Model
 
                 return array(
                     'status' => 0,
-                    'message' => 'Master is missing their Notification Level parent entity relation',
+                    'message' => 'Student is missing their Notification Level parent entity relation',
                 );
 
             } elseif (count($trs_comm_level) > 1) {
 
-                //This should find exactly one result as it belongs to Master Radio Entity @4461
+                //This should find exactly one result as it belongs to Student Radio Entity @4461
                 return array(
                     'status' => 0,
-                    'message' => 'Master has more than 1 Notification Level parent entity relation',
+                    'message' => 'Student has more than 1 Notification Level parent entity relation',
                 );
 
             } elseif ($trs_comm_level[0]['tr_en_parent_id'] == 4455) {
 
                 return array(
                     'status' => 0,
-                    'message' => 'Master is unsubscribed',
+                    'message' => 'Student is unsubscribed',
                 );
 
             } elseif (!array_key_exists($trs_comm_level[0]['tr_en_parent_id'], $en_convert_4454)) {
@@ -396,8 +396,8 @@ class Chat_model extends CI_Model
 
             //We sometimes may need to set a default recipient entity name IF /firstname command used without any recipient entity passed:
             if (!isset($recipient_en['en_name'])) {
-                //This is a guest Master, so use the default:
-                $recipient_en['en_name'] = 'Master';
+                //This is a guest Student, so use the default:
+                $recipient_en['en_name'] = 'Student';
             }
 
             //Replace name with command:
@@ -523,7 +523,7 @@ class Chat_model extends CI_Model
 
             //We send Media in their original format IF $fb_messenger_format = TRUE, which means we need to convert transaction types:
             if ($fb_messenger_format) {
-                //Converts Entity Link Types to their corresponding Master Message Sent Transaction Types:
+                //Converts Entity Link Types to their corresponding Student Message Sent Transaction Types:
                 $master_media_sent_conv = array(
                     4258 => 4553, //video
                     4259 => 4554, //audio
@@ -781,7 +781,7 @@ class Chat_model extends CI_Model
             if (count($fb_media_attachments) > 0) {
 
                 //We do have additional messages...
-                //TODO Maybe add another message to give Master some context on these?
+                //TODO Maybe add another message to give Student some context on these?
 
                 //Append messages:
                 foreach ($fb_media_attachments as $fb_media_attachment) {
@@ -964,7 +964,7 @@ class Chat_model extends CI_Model
 
                 return array(
                     'status' => 0,
-                    'message' => 'Invalid Action Plan ID ['.$actionplan_tr_id.'] for Master [@'.$recipient_en['en_id'].']',
+                    'message' => 'Invalid Action Plan ID ['.$actionplan_tr_id.'] for Student [@'.$recipient_en['en_id'].']',
                 );
 
             } elseif (!in_array($actionplans[0]['tr_status'], array(0, 1, 2))) {
@@ -989,7 +989,7 @@ class Chat_model extends CI_Model
          *
          * Share intent messages if not the top-level Action Plan Intent.
          * In that case the intent messages have already been distributed
-         * and we only need to give Masters the next steps.
+         * and we only need to give Students the next steps.
          *
          * */
         if(!$is_top_level_actionplan){
@@ -1059,7 +1059,7 @@ class Chat_model extends CI_Model
 
         /*
          *
-         * Let's append more messages to give Masters a better
+         * Let's append more messages to give Students a better
          * understanding on what to do to move forward.
          *
          * */
@@ -1086,7 +1086,7 @@ class Chat_model extends CI_Model
 
             return array(
                 'status' => 1,
-                'message' => 'Master must now complete intent requirements',
+                'message' => 'Student must now complete intent requirements',
             );
 
         }
@@ -1097,7 +1097,7 @@ class Chat_model extends CI_Model
         /*
          *
          * Still here? It either does not have requirements or
-         * the requirements have been completed by the Master
+         * the requirements have been completed by the Student
          *
          * Let's attempt to give direction on what's next...
          *
@@ -1406,11 +1406,11 @@ class Chat_model extends CI_Model
          * field other than the actual message itself (Facebook calls
          * this the Reference key or Metadata), this function will
          * process that metadata string from incoming messages sent to Mench
-         * by its Masters and take appropriate action.
+         * by its Students and take appropriate action.
          *
          * Inputs:
          *
-         * - $en:                   The Master who made the request
+         * - $en:                   The Student who made the request
          *
          * - $quick_reply_payload:  The payload string attached to the chat message
          *
@@ -1429,24 +1429,24 @@ class Chat_model extends CI_Model
 
             if ($action_unsubscribe == 'CANCEL') {
 
-                //Master seems to have changed their mind, confirm with them:
+                //Student seems to have changed their mind, confirm with them:
                 $this->Chat_model->fn___dispatch_message(
                     'Awesome, I am excited to continue helping you to ' . $this->config->item('in_strategy_name') . '.',
                     $en,
                     true
                 );
 
-                //Inform Master on how to can command Mench:
+                //Inform Student on how to can command Mench:
                 $this->Chat_model->fn___compose_message(8332, $en);
 
             } elseif ($action_unsubscribe == 'ALL') {
 
-                //Master wants to completely unsubscribe from Mench...
+                //Student wants to completely unsubscribe from Mench...
 
                 //Remove all Action Plans:
                 $actionplans = $this->Database_model->fn___tr_fetch(array(
                     'tr_en_type_id' => 4235, //Action Plans
-                    'tr_en_parent_id' => $en['en_id'], //Belongs to this Master
+                    'tr_en_parent_id' => $en['en_id'], //Belongs to this Student
                     'tr_status IN (0,1,2)' => null, //Actively working on (Status 2 is syncing updates, and they want out)
                 ));
                 foreach ($actionplans as $tr) {
@@ -1455,7 +1455,7 @@ class Chat_model extends CI_Model
                     ), $en['en_id']); //Give credit to them
                 }
 
-                //Update Master communication level to Unsubscribe:
+                //Update Student communication level to Unsubscribe:
                 $this->Matrix_model->fn___en_radio_set(4454, 4455, $en['en_id'], $en['en_id']);
 
                 //Let them know about these changes:
@@ -1470,7 +1470,7 @@ class Chat_model extends CI_Model
                 //User wants to Remove a specific Action Plan, validate it:
                 $actionplans = $this->Database_model->fn___tr_fetch(array(
                     'tr_en_type_id' => 4235, //Action Plan
-                    'tr_en_parent_id' => $en['en_id'], //Belongs to this Master
+                    'tr_en_parent_id' => $en['en_id'], //Belongs to this Student
                     'tr_in_child_id' => intval($action_unsubscribe),
                 ), array('en_child'));
 
@@ -1489,7 +1489,7 @@ class Chat_model extends CI_Model
                         true
                     );
 
-                    //Inform Master on how to can command Mench:
+                    //Inform Student on how to can command Mench:
                     $this->Chat_model->fn___compose_message(8332, $en);
 
                 } else {
@@ -1529,7 +1529,7 @@ class Chat_model extends CI_Model
                     true
                 );
 
-                //Inform Master on how to can command Mench:
+                //Inform Student on how to can command Mench:
                 $this->Chat_model->fn___compose_message(8332, $en);
 
             } elseif ($quick_reply_payload == 'RESUBSCRIBE_NO') {
@@ -1551,7 +1551,7 @@ class Chat_model extends CI_Model
                 true
             );
 
-            //Inform Master on how to can command Mench:
+            //Inform Student on how to can command Mench:
             $this->Chat_model->fn___compose_message(8332, $en);
 
         } elseif (is_numeric($quick_reply_payload)) {
@@ -1612,7 +1612,7 @@ class Chat_model extends CI_Model
 
         } elseif (substr_count($quick_reply_payload, 'CONFIRM_') == 1) {
 
-            //Master has confirmed their desire to subscribe to an intention:
+            //Student has confirmed their desire to subscribe to an intention:
             $in_id = intval(fn___one_two_explode('CONFIRM_', '', $quick_reply_payload));
 
             //Initiating an intent Action Plan:
@@ -1624,16 +1624,16 @@ class Chat_model extends CI_Model
             if (count($ins) == 1) {
 
                 //Intent seems good...
-                //See if this intent belong to ANY of this Master's Action Plans or Action Plan Intents:
+                //See if this intent belong to ANY of this Student's Action Plans or Action Plan Intents:
                 $actionplans = $this->Database_model->fn___tr_fetch(array(
                     'tr_en_type_id IN (4235,4559)' => null, //Action Plans or Action Plan Intents
-                    'tr_en_parent_id' => $en['en_id'], //Belongs to this Master
+                    'tr_en_parent_id' => $en['en_id'], //Belongs to this Student
                     'tr_in_child_id' => $ins[0]['in_id'],
                 ));
 
                 if (count($actionplans) > 0) {
 
-                    //Let Master know that they have already subscribed to this intention:
+                    //Let Student know that they have already subscribed to this intention:
                     $this->Chat_model->fn___dispatch_message(
                         'The intention to ' . $ins[0]['in_outcome'] . ' has already been added to your Action Plan. We have been working on it together since ' . fn___echo_time_date($actionplans[0]['tr_timestamp'], true) . '. /link:See in 🚩Action Plan:https://mench.com/master/actionplan/' . ( $actionplans[0]['tr_en_type_id']==4235 ? $actionplans[0]['tr_id'] : $actionplans[0]['tr_tr_parent_id'] ) . '/' . $actionplans[0]['tr_in_child_id'],
                         $en,
@@ -1646,7 +1646,7 @@ class Chat_model extends CI_Model
 
                 } else {
 
-                    //Do final confirmation by giving Master more context on this intention before adding to their Action Plan...
+                    //Do final confirmation by giving Student more context on this intention before adding to their Action Plan...
 
                     //Send all on-start messages for this intention so they can review it:
                     $messages_on_start = $this->Database_model->fn___tr_fetch(array(
@@ -1701,7 +1701,7 @@ class Chat_model extends CI_Model
 
         } elseif (substr_count($quick_reply_payload, 'SUBSCRIBE-CONFIRM_') == 1) {
 
-            //Master has requested to add this intention to their Action Plan:
+            //Student has requested to add this intention to their Action Plan:
             $in_id = intval(fn___one_two_explode('SUBSCRIBE-CONFIRM_', '', $quick_reply_payload));
 
             //Validate Intent ID:
@@ -1712,19 +1712,19 @@ class Chat_model extends CI_Model
 
             if (count($ins) == 1) {
 
-                //Add intent to Master's Action Plan:
+                //Add intent to Student's Action Plan:
                 $actionplan = $this->Database_model->fn___tr_create(array(
 
                     'tr_en_type_id' => 4235, //Action Plan
                     'tr_status' => 0, //New
-                    'tr_en_parent_id' => $en['en_id'], //Belongs to this Master
+                    'tr_en_parent_id' => $en['en_id'], //Belongs to this Student
 
                     'tr_in_child_id' => $ins[0]['in_id'], //The Intent they are adding
 
-                    'tr_order' => 1 + $this->Database_model->fn___tr_max_order(array( //Place this intent at the end of all intents the Master is working on...
+                    'tr_order' => 1 + $this->Database_model->fn___tr_max_order(array( //Place this intent at the end of all intents the Student is working on...
                         'tr_en_type_id' => 4235, //Action Plan
                         'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
-                        'tr_en_parent_id' => $en['en_id'], //Belongs to this Master
+                        'tr_en_parent_id' => $en['en_id'], //Belongs to this Student
                     )),
                 ));
 
@@ -1768,7 +1768,7 @@ class Chat_model extends CI_Model
             $input_parts = explode('_', fn___one_two_explode('SKIP-ACTIONPLAN_', '', $quick_reply_payload));
             $tr_status = intval($input_parts[0]); //It would be $tr_status=1 initial (working on) and then would change to either -1 IF skip was cancelled or 2 IF skip was confirmed.
             $tr_id = intval($input_parts[1]); //Action Plan Intent Transaction ID
-            $skip_tr_id = intval($input_parts[2]); //Would initially be zero and would then be set to a Transaction ID when Master confirms/cancels skipping
+            $skip_tr_id = intval($input_parts[2]); //Would initially be zero and would then be set to a Transaction ID when Student confirms/cancels skipping
 
 
             if($tr_id > 0){
@@ -1776,7 +1776,7 @@ class Chat_model extends CI_Model
                 $actionplans = $this->Database_model->fn___tr_fetch(array(
                     'tr_id' => $tr_id,
                     'tr_en_type_id' => 4559, //Action Plan Intents
-                    'tr_en_parent_id' => $en['en_id'], //Belongs to this Master
+                    'tr_en_parent_id' => $en['en_id'], //Belongs to this Student
                 ), array('in_child'));
             }
 
@@ -1788,10 +1788,10 @@ class Chat_model extends CI_Model
                     'tr_content' => 'fn___digest_received_quick_reply() failed to fetch proper data for a skip request with reference value [' . $quick_reply_payload . ']',
                     'tr_en_type_id' => 4246, //Platform Error
                     'tr_tr_parent_id' => $tr_id,
-                    'tr_en_parent_id' => $en['en_id'], //Belongs to this Master
+                    'tr_en_parent_id' => $en['en_id'], //Belongs to this Student
                 ));
 
-                //Inform Master:
+                //Inform Student:
                 $this->Chat_model->fn___dispatch_message(
                     'I was unable to process your skip request',
                     $en,
@@ -1823,7 +1823,7 @@ class Chat_model extends CI_Model
                         'tr_content' => 'fn___digest_received_quick_reply() did not find anything to skip for [' . $quick_reply_payload . ']',
                         'tr_en_type_id' => 4246, //Platform Error
                         'tr_tr_parent_id' => $tr_id,
-                        'tr_en_parent_id' => $en['en_id'], //Belongs to this Master
+                        'tr_en_parent_id' => $en['en_id'], //Belongs to this Student
                     ));
 
                     //Inform user:
@@ -1847,7 +1847,7 @@ class Chat_model extends CI_Model
                     'tr_en_credit_id' => $en['en_id'],
                     'tr_en_parent_id' => $en['en_id'],
                     'tr_en_type_id' => 4284, //Skip Intent
-                    'tr_tr_parent_id' => $tr_id, //The parent transaction that points to this intent in the Masters Action Plan
+                    'tr_tr_parent_id' => $tr_id, //The parent transaction that points to this intent in the Students Action Plan
                     'tr_status' => 1, //Working on... not yet decided to skip or not as they need to see the consequences before making an informed decision. Will be updated to -1 or 2 based on their response...
                     'tr_metadata' => array(
                         'would_be_skipped' => $would_be_skipped,
@@ -1913,7 +1913,7 @@ class Chat_model extends CI_Model
 
                 }
 
-                //Inform Master of Skip status:
+                //Inform Student of Skip status:
                 $this->Chat_model->fn___dispatch_message(
                     $message,
                     $en,
@@ -1941,15 +1941,15 @@ class Chat_model extends CI_Model
 
         } elseif (substr_count($quick_reply_payload, 'MARKCOMPLETE_') == 1) {
 
-            //Master consumed AND tree content, and is ready to move on to next intent...
+            //Student consumed AND tree content, and is ready to move on to next intent...
             $tr_id = intval(fn___one_two_explode('MARKCOMPLETE_', '', $quick_reply_payload));
 
             if ($tr_id > 0) {
-                //Fetch Action Plan Intent with its Master:
+                //Fetch Action Plan Intent with its Student:
                 $actionplans = $this->Database_model->fn___tr_fetch(array(
                     'tr_id' => $tr_id,
                     'tr_en_type_id' => 4559, //Action Plan Intents
-                    'tr_en_parent_id' => $en['en_id'], //Belongs to this Master
+                    'tr_en_parent_id' => $en['en_id'], //Belongs to this Student
                 ), array('in_child', 'en_parent'));
             }
 
@@ -1961,10 +1961,10 @@ class Chat_model extends CI_Model
                     'tr_content' => 'fn___digest_received_quick_reply() failed to fetch proper data for intent completion request with reference value [' . $quick_reply_payload . ']',
                     'tr_en_type_id' => 4246, //Platform Error
                     'tr_tr_parent_id' => $tr_id,
-                    'tr_en_parent_id' => $en['en_id'], //Belongs to this Master
+                    'tr_en_parent_id' => $en['en_id'], //Belongs to this Student
                 ));
 
-                //Inform Master:
+                //Inform Student:
                 $this->Chat_model->fn___dispatch_message(
                     'I was unable to process your completion request',
                     $en,
@@ -1990,7 +1990,7 @@ class Chat_model extends CI_Model
 
         } elseif (substr_count($quick_reply_payload, 'CHOOSEOR_') == 1) {
 
-            //Master has responded to a multiple-choice OR tree
+            //Student has responded to a multiple-choice OR tree
             $input_parts = explode('_', fn___one_two_explode('CHOOSEOR_', '', $quick_reply_payload));
             $actionplan_tr_id = intval($input_parts[0]);
             $tr_in_parent_id = intval($input_parts[1]);
@@ -1998,7 +1998,7 @@ class Chat_model extends CI_Model
 
             if ($actionplan_tr_id > 0 && $tr_in_parent_id > 0 && $in_id > 0 && $this->Matrix_model->fn___actionplan_choose_or($actionplan_tr_id, $tr_in_parent_id, $in_id)) {
 
-                //Confirm answer received by acknowledging progress with Master:
+                //Confirm answer received by acknowledging progress with Student:
                 $this->Chat_model->fn___compose_message(8333, $en);
 
                 //Find the next item to navigate them to:
@@ -2020,7 +2020,7 @@ class Chat_model extends CI_Model
                     'tr_in_child_id' => $in_id,
                 ));
 
-                //Inform Master:
+                //Inform Student:
                 $this->Chat_model->fn___dispatch_message(
                     'I was unable to save your answer',
                     $en,
@@ -2040,10 +2040,10 @@ class Chat_model extends CI_Model
          * Will process the chat message only in the absence of a chat metadata
          * otherwise the fn___digest_received_quick_reply() will process the message since we
          * know that the medata would have more precise instructions on what
-         * needs to be done for the Master response.
+         * needs to be done for the Student response.
          *
          * This involves string analysis and matching terms to a intents, entities
-         * and known commands that will help us understand the Master and
+         * and known commands that will help us understand the Student and
          * hopefully provide them with the information they need, right now.
          *
          * We'd eventually need to migrate the search engine to an NLP platform
@@ -2057,14 +2057,14 @@ class Chat_model extends CI_Model
         }
 
 
-        //First check if this Master is unsubscribed:
+        //First check if this Student is unsubscribed:
         if (count($this->Database_model->fn___tr_fetch(array(
                 'tr_en_child_id' => $en['en_id'],
                 'tr_en_parent_id' => 4455, //Unsubscribed
                 'tr_status >=' => 0,
             ))) > 0) {
 
-            //Yes, this Master is Unsubscribed! Give them an option to re-activate their Mench account:
+            //Yes, this Student is Unsubscribed! Give them an option to re-activate their Mench account:
             $this->Chat_model->fn___dispatch_message(
                 'You are currently unsubscribed. Would you like me to re-activate your account?',
                 $en,
@@ -2087,7 +2087,7 @@ class Chat_model extends CI_Model
 
         /*
          *
-         * Ok, now attempt to understand Master's message intention.
+         * Ok, now attempt to understand Student's message intention.
          * We would do a very basic work pattern match to see what
          * we can understand from their message, and we would expand
          * upon this section as we improve our NLP technology.
@@ -2130,7 +2130,7 @@ class Chat_model extends CI_Model
             //List their Action Plans:
             $actionplans = $this->Database_model->fn___tr_fetch(array(
                 'tr_en_type_id' => 4235, //Intents added to the action plan
-                'tr_en_parent_id' => $en['en_id'], //Belongs to this Master
+                'tr_en_parent_id' => $en['en_id'], //Belongs to this Student
                 'tr_status IN (0,1,2)' => null, //Actively working on
             ), array('in_child'), 10 /* Max quick replies allowed */, 0, array('tr_order' => 'ASC'));
 
@@ -2259,7 +2259,7 @@ class Chat_model extends CI_Model
 
             if (count($search_results) > 0) {
 
-                //Show options for the Master to add to their Action Plan:
+                //Show options for the Student to add to their Action Plan:
                 $quick_replies = array();
                 $message = 'I found these intents:';
 
@@ -2305,7 +2305,7 @@ class Chat_model extends CI_Model
             /*
              *
              * Ok, if we're here it means we didn't really understand what
-             * the Master's intention was within their message.
+             * the Student's intention was within their message.
              * So let's run through a few more options before letting them
              * know that we did not understand them...
              *
@@ -2323,7 +2323,7 @@ class Chat_model extends CI_Model
             }
 
 
-            //Inform Master of Mench's one-way communication limitation & that Mench did not understand their message:
+            //Inform Student of Mench's one-way communication limitation & that Mench did not understand their message:
             $this->Chat_model->fn___compose_message(8334, $en);
 
 
@@ -2339,7 +2339,7 @@ class Chat_model extends CI_Model
             //If so, we can recommend the next step within that Action Plan...
             $actionplans = $this->Database_model->fn___tr_fetch(array(
                 'tr_en_type_id' => 4235, //Action Plan
-                'tr_en_parent_id' => $en['en_id'], //Belongs to this Master
+                'tr_en_parent_id' => $en['en_id'], //Belongs to this Student
                 'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
             ), array('in_child'), 1, 0, array('tr_order' => 'ASC'));
 
@@ -2357,7 +2357,7 @@ class Chat_model extends CI_Model
 
                 /*
                  *
-                 * Master has no action plan...
+                 * Student has no action plan...
                  *
                  * Suggest to subscribe to our default intent
                  * only IF they have not done so already:
@@ -2366,7 +2366,7 @@ class Chat_model extends CI_Model
 
                 $default_actionplans = $this->Database_model->fn___tr_fetch(array(
                     'tr_en_type_id IN (4235,4559)' => null, //Action Plan or Action Plan Intents
-                    'tr_en_parent_id' => $en['en_id'], //Belongs to this Master
+                    'tr_en_parent_id' => $en['en_id'], //Belongs to this Student
                     'tr_in_child_id' => $this->config->item('in_tactic_id'),
                 ));
                 if (count($default_actionplans) == 0) {

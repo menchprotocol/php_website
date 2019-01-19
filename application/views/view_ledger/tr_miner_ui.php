@@ -107,7 +107,7 @@ echo '</form>';
 
 
 echo '<div class="row">';
-    echo '<div class="col-md-6">';
+    echo '<div class="col-md-7">';
 
         //Display Transactions:
         echo '<h5 class="badge badge-h"><i class="fas fa-atlas"></i> '.count($trs).'/'.fn___echo_number($all_transaction_count).' Transactions</h5>';
@@ -124,7 +124,7 @@ echo '<div class="row">';
 
     echo '</div>';
 
-    echo '<div class="col-md-6">';
+    echo '<div class="col-md-5">';
     echo '</div>';
 echo '</div>';
 

@@ -81,7 +81,7 @@ class FacebookWebhook extends CI_Controller
                     //Message read OR delivered
                     $tr_en_type_id = ( isset($im['delivery']) ? 4279 /* Message Delivered */ : 4278 /* Message Read */ );
 
-                    //Authenticate Master:
+                    //Authenticate Student:
                     $en = $this->Matrix_model->fn___en_master_messenger_authenticate($im['sender']['id']);
 
                     //Log Transaction Only IF last delivery transaction was 3+ minutes ago (Since Facebook sends many of these):
@@ -115,7 +115,7 @@ class FacebookWebhook extends CI_Controller
                     //Messenger Referral OR Postback
                     $tr_en_type_id = ( isset($im['delivery']) ? 4267 /* Messenger Referral */ : 4268 /* Messenger Postback */ );
 
-                    //Authenticate Master:
+                    //Authenticate Student:
                     $en = $this->Matrix_model->fn___en_master_messenger_authenticate($im['sender']['id']);
 
                     //Extract more insights:
@@ -243,7 +243,7 @@ class FacebookWebhook extends CI_Controller
                         'tr_en_credit_id' => $tr_en_parent_id,
                         'tr_en_parent_id' => $tr_en_parent_id,
                         'tr_en_child_id' => ($sent_by_mench ? $en['en_id'] : 0),
-                        'tr_timestamp' => ($sent_by_mench ? null : fn___echo_time_milliseconds($im['timestamp']) ), //Facebook time if received from Master
+                        'tr_timestamp' => ($sent_by_mench ? null : fn___echo_time_milliseconds($im['timestamp']) ), //Facebook time if received from Student
                         'tr_metadata' => $json_data, //Entire JSON object received by Facebook API
                     );
 
@@ -257,7 +257,7 @@ class FacebookWebhook extends CI_Controller
                      * - Attachments
                      *
                      * And we will deal with each group, and their sub-group
-                     * appropriately based on who sent the message (Mench/Master)
+                     * appropriately based on who sent the message (Mench/Student)
                      *
                      * */
 
@@ -299,8 +299,8 @@ class FacebookWebhook extends CI_Controller
                             //Define 4 main Attachment Message Types:
                             $att_media_types = array( //Converts video, audio, image and file messages
                                 'video' => array(
-                                    'sent' => 4553,     //Transaction type for when sent to Masters via Messenger
-                                    'received' => 4548, //Transaction type for when received from Masters via Messenger
+                                    'sent' => 4553,     //Transaction type for when sent to Students via Messenger
+                                    'received' => 4548, //Transaction type for when received from Students via Messenger
                                 ),
                                 'audio' => array(
                                     'sent' => 4554,
@@ -346,7 +346,7 @@ class FacebookWebhook extends CI_Controller
                                  *
                                  * We do not have the ability to send this
                                  * type of message at this time and we will
-                                 * only receive it if the Master decides to
+                                 * only receive it if the Student decides to
                                  * send us their location for some reason.
                                  *
                                  * Message with location attachment which

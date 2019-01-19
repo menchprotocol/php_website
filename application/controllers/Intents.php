@@ -131,7 +131,7 @@ class Intents extends CI_Controller
 
         /*
          *
-         * Loads public landing page that Masters can use
+         * Loads public landing page that Students can use
          * to review intents before adding to Action Plan
          *
          * */
@@ -292,7 +292,7 @@ class Intents extends CI_Controller
         ));
     }
 
-    function in_save_settings()
+    function fn___in_save_settings()
     {
 
         //Authenticate Miner:
@@ -329,7 +329,7 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Level 1 intent should not have a transaction',
             ));
-        } elseif (!filter_var($this->config->item('in_webhook_prefix').$_POST['in_webhook'], FILTER_VALIDATE_URL)) {
+        } elseif ( strlen($_POST['in_webhook']) > 0 && !filter_var($this->config->item('in_webhook_prefix').$_POST['in_webhook'], FILTER_VALIDATE_URL)) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Input Webhook URL',
@@ -421,19 +421,6 @@ class Intents extends CI_Controller
 
 
 
-        //Prep Intent update array:
-        $remove_in_from_ui = 0; //Determines if Intent has been removed OR unlinked
-        $transaction_was_updated = false;
-        $in_update = array(
-            'in_status' => intval($_POST['in_status']),
-            'in_outcome' => trim($_POST['in_outcome']),
-            'in_alternatives' => trim($_POST['in_alternatives']),
-            'in_seconds' => intval($_POST['in_seconds']),
-            'in_usd' => doubleval($_POST['in_usd']),
-            'in_points' => intval($_POST['in_points']),
-            'in_is_any' => intval($_POST['in_is_any']),
-            'in_webhook' => trim($_POST['in_webhook']),
-        );
 
 
 
@@ -515,9 +502,23 @@ class Intents extends CI_Controller
 
 
 
+        //Prep new variables:
+        $in_update = array(
+            'in_status' => intval($_POST['in_status']),
+            'in_outcome' => trim($_POST['in_outcome']),
+            'in_alternatives' => trim($_POST['in_alternatives']),
+            'in_seconds' => intval($_POST['in_seconds']),
+            'in_usd' => doubleval($_POST['in_usd']),
+            'in_points' => intval($_POST['in_points']),
+            'in_is_any' => intval($_POST['in_is_any']),
+            'in_webhook' => trim($_POST['in_webhook']),
+        );
 
         //Prep current intent metadata:
         $in_metadata = unserialize($ins[0]['in_metadata']);
+
+        //Determines if Intent has been removed OR unlinked:
+        $remove_in_from_ui = 0; //Assume not
 
         //This determines if there are any recursive updates needed on the tree:
         $in_metadata_modify = array();
@@ -598,24 +599,18 @@ class Intents extends CI_Controller
 
 
 
-
+        //Assume transaction is not updated:
+        $transaction_was_updated = false;
 
         //Does this request has an intent transaction?
         if($tr_id > 0){
 
-            //Fetch current link:
-            $trs = $this->Database_model->fn___tr_fetch(array(
-                'tr_id' => $_POST['tr_id'],
-                'tr_status >=' => 0, //New+
-            ));
-
-            //Prep link Metadata to see if the conditional score variables have changed:
-            $tr_update = array(
-                'tr_en_type_id'     => intval($_POST['tr_en_type_id']),
-                'tr_status'         => intval($_POST['tr_status']),
-            );
 
             //Validate Transaction and inputs:
+            $trs = $this->Database_model->fn___tr_fetch(array(
+                'tr_id' => $tr_id,
+                'tr_status >=' => 0, //New+
+            ));
             if(count($trs) < 1){
                 return fn___echo_json(array(
                     'status' => 0,
@@ -623,59 +618,66 @@ class Intents extends CI_Controller
                 ));
             }
 
-            //Prep variables:
-            $tr_metadata = unserialize($trs[0]['tr_metadata']);
-            $remove_in_from_ui = (!($tr_update['tr_status']==$trs[0]['tr_status']) && $tr_update['tr_status'] < 0 ? 1 : 0); //Intent has been unlinked
+            //Prep link Metadata to see if the conditional score variables have changed:
+            $tr_update = array(
+                'tr_en_type_id'     => intval($_POST['tr_en_type_id']),
+                'tr_status'         => intval($_POST['tr_status']),
+            );
 
-            //Has anything changed in the transaction?
+            //Prep variables:
+            $tr_metadata = ( strlen($trs[0]['tr_metadata']) > 0 ? unserialize($trs[0]['tr_metadata']) : array() );
+
+            //Check to see if anything changed in the transaction?
             $transaction_meta_updated = ($tr_update['tr_en_type_id'] == 4229 && (
                     !isset($tr_metadata['tr__conditional_score_min']) ||
                     !isset($tr_metadata['tr__conditional_score_max']) ||
                     !(doubleval($tr_metadata['tr__conditional_score_max'])==doubleval($_POST['tr__conditional_score_max'])) ||
                     !(doubleval($tr_metadata['tr__conditional_score_min'])==doubleval($_POST['tr__conditional_score_min']))
                 ));
-            $transaction_was_updated = (
-                (!($tr_update['tr_status']==$trs[0]['tr_status']) || !($tr_update['tr_en_type_id']==$trs[0]['tr_en_type_id'])) ||
-                $transaction_meta_updated
-                );
+
+
+            foreach ($tr_update as $key => $value) {
+
+                //Did this value change?
+                if ($value == $trs[0][$key]) {
+
+                    //No it did not! Remove it!
+                    unset($tr_update[$key]);
+
+                } else {
+
+                    if($key=='tr_status' && $value < 1){
+                        $remove_in_from_ui = 1;
+                    }
+
+                }
+
+            }
+
+            //Was anything updated?
+            if(count($tr_update) > 0 || $transaction_meta_updated){
+                $transaction_was_updated = true;
+            }
+
 
 
             //Did anything change?
             if( $transaction_was_updated ){
 
-                //Something has changed, remove current transaction:
-                $this->Database_model->fn___tr_update($tr_id, array(
-                    'tr_status' => -1, //Removed
-                ), $udata['en_id']);
-
-                //What was the original metadata for this Transaction?
-                $original_meta = ( strlen($trs[0]['tr_metadata']) > 0 ? unserialize($trs[0]['tr_metadata']) : array() );
-
                 if($transaction_meta_updated){
-                    $tr_update['tr_metadata'] = array_merge( $original_meta, array(
+                    $tr_update['tr_metadata'] = array_merge( $tr_metadata, array(
                         'tr__conditional_score_min' => doubleval($_POST['tr__conditional_score_min']),
                         'tr__conditional_score_max' => doubleval($_POST['tr__conditional_score_max']),
                     ));
-                } else {
-                    $tr_update['tr_metadata'] = $original_meta;
                 }
 
-                //Add a new transactions:
-                $new_tr = $this->Database_model->fn___tr_create(array_merge(array(
-                    'tr_en_credit_id' => $udata['en_id'],
-                    'tr_en_child_id' => $trs[0]['tr_en_child_id'],
-                    'tr_en_parent_id' => $trs[0]['tr_en_parent_id'],
-                    'tr_in_child_id' => $trs[0]['tr_in_child_id'],
-                    'tr_in_parent_id' => $trs[0]['tr_in_parent_id'],
-                    'tr_tr_parent_id' => $tr_id,
-                    'tr_order' => $trs[0]['tr_order'],
-                ), $tr_update), true);
+                //Also update the timestamp:
+                $tr_update['tr_timestamp'] = date("Y-m-d H:i:s");
 
-                //Update variables:
-                $tr_id = $new_tr['tr_id'];
-                $trs[0] = $new_tr;
-
+                //Update transactions:
+                $this->Database_model->fn___tr_update($tr_id, $tr_update, $udata['en_id']);
             }
+
         }
 
 
@@ -696,7 +698,6 @@ class Intents extends CI_Controller
             'status_update_children' => $status_update_children,
             'in__tree_in_active_count' => -( isset($in_metadata['in__tree_in_active_count']) ? $in_metadata['in__tree_in_active_count'] : 0 ),
             'in___last_updated' => fn___echo_last_updated('in', $in_updated_trs[0]),
-            'tr_new_id' => 0,
         );
 
 
@@ -709,7 +710,6 @@ class Intents extends CI_Controller
             ), array('en_credit'));
 
             $return_data['tr___last_updated'] = fn___echo_last_updated('tr',$trs[0]);
-            $return_data['tr_new_id'] = $tr_id;
 
         }
 
@@ -719,7 +719,7 @@ class Intents extends CI_Controller
     }
 
 
-    function in_sort_save()
+    function fn___in_sort_save()
     {
 
         //Authenticate Miner:
@@ -839,7 +839,7 @@ class Intents extends CI_Controller
     }
 
 
-    function in_tr_load($in_id, $tr_id=0, $tr_en_type_id=0)
+    function fn___in_tr_load($in_id, $tr_id=0, $tr_en_type_id=0)
     {
 
         //Auth user and check required variables:
@@ -865,7 +865,7 @@ class Intents extends CI_Controller
 
 
 
-    function in_messages_load($in_id)
+    function fn___in_messages_load($in_id)
     {
 
         //Authenticate as a Miner:

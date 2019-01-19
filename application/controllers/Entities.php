@@ -52,7 +52,7 @@ class Entities extends CI_Controller
         $this->load->view('view_shared/messenger_footer');
     }
 
-    function load_u_trs($en_id)
+    function fn___load_en_ledger($en_id)
     {
 
         //Auth user and check required variables:
@@ -464,12 +464,12 @@ class Entities extends CI_Controller
 
         //Now let's do a few more checks:
 
-        //Make sure Master is connected to Mench:
+        //Make sure Student is connected to Mench:
         if(!intval($ens[0]['en_psid'])){
             return fn___redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: You are not connected to Mench on Messenger, which is required to login to the Matrix.</div>');
         }
 
-        //Make sure Master is not unsubscribed:
+        //Make sure Student is not unsubscribed:
         if(count($this->Database_model->fn___tr_fetch(array(
             'tr_en_child_id' => $ens[0]['en_id'],
             'tr_en_parent_id' => 4455, //Unsubscribed
@@ -519,7 +519,7 @@ class Entities extends CI_Controller
         $this->Database_model->fn___tr_create(array(
             'tr_en_credit_id' => $ens[0]['en_id'],
             'tr_metadata' => $ens[0],
-            'tr_en_type_id' => ( $is_miner ? 4269 /* Miner Sign in */ : 4563 /* Master Sign in */ ),
+            'tr_en_type_id' => ( $is_miner ? 4269 /* Miner Sign in */ : 4563 /* Student Sign in */ ),
         ));
 
 
@@ -544,7 +544,7 @@ class Entities extends CI_Controller
                 //miner default:
                 header('Location: /intents/' . $this->config->item('in_tactic_id'));
             } else {
-                //Master default:
+                //Student default:
                 header('Location: /master/actionplan');
             }
         }

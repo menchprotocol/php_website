@@ -111,7 +111,7 @@ class Matrix_model extends CI_Model
                 'tr_status' => 2, //Completed
             ), $actionplans[0]['tr_en_parent_id']);
 
-            //Inform Master on how to can command Mench:
+            //Inform Student on how to can command Mench:
             $this->Chat_model->fn___compose_message(8332, array('en_id' => $actionplans[0]['tr_en_parent_id']));
 
         }
@@ -131,7 +131,7 @@ class Matrix_model extends CI_Model
          *  $en_master_id is the master entity ID that one of the children of $en_parent_bucket_id should be assigned (like a drop down)
          *  $set_en_child_id is the new value to be assigned, which could also be null (meaning just remove all current values)
          *
-         * This function is helpful to manage things like Master communication levels
+         * This function is helpful to manage things like Student communication levels
          *
          * */
 
@@ -345,11 +345,11 @@ class Matrix_model extends CI_Model
 
         /*
          *
-         * Sometimes to mark an intent as complete the Masters might
+         * Sometimes to mark an intent as complete the Students might
          * need to meet certain requirements in what they submit to do so.
          * This function fetches those requirements from the Matrix and
          * Provides an easy to understand message to communicate
-         * these requirements to Master.
+         * these requirements to Student.
          *
          * Will return NULL if it detects no requirements...
          *
@@ -407,7 +407,7 @@ class Matrix_model extends CI_Model
             $message .= ', which you can submit using your Action Plan. /link:See in 🚩Action Plan:https://mench.com/master/actionplan/' . $actionplan_tr_id . '/' . $in_id;
         }
 
-        //Return Master-friendly message for completion requirements:
+        //Return Student-friendly message for completion requirements:
         return $message;
 
     }
@@ -418,9 +418,9 @@ class Matrix_model extends CI_Model
 
         /*
          *
-         * Detects the Master entity ID based on the
+         * Detects the Student entity ID based on the
          * PSID provided by the Facebook Webhook Call.
-         * This function returns the Master's entity object $en
+         * This function returns the Student's entity object $en
          *
          */
 
@@ -434,7 +434,7 @@ class Matrix_model extends CI_Model
             return false;
         }
 
-        //Try matching Facebook PSID to existing Masters:
+        //Try matching Facebook PSID to existing Students:
         $ens = $this->Database_model->fn___en_fetch(array(
             'en_status >=' => 0, //New+
             'en_psid' => intval($psid),
@@ -443,12 +443,12 @@ class Matrix_model extends CI_Model
         //So, did we find them?
         if (count($ens) > 0) {
 
-            //Master found:
+            //Student found:
             return $ens[0];
 
         } else {
 
-            //Master not found, create new Master:
+            //Student not found, create new Student:
             return $this->Matrix_model->fn___en_messenger_add($psid);
 
         }
@@ -493,7 +493,7 @@ class Matrix_model extends CI_Model
             foreach ($on_complete_messages as $tr) {
                 $this->Chat_model->fn___dispatch_message(
                     $tr['tr_content'], //Message content
-                    $actionplan_ins[0], //Includes entity data for Action Plan Master
+                    $actionplan_ins[0], //Includes entity data for Action Plan Student
                     true,
                     array(),
                     array(
@@ -702,7 +702,7 @@ class Matrix_model extends CI_Model
 
         /*
          *
-         * Used when Masters choose an OR Intent path in their Action Plan.
+         * Used when Students choose an OR Intent path in their Action Plan.
          * When a user chooses an answer to an ANY intent, this function
          * would mark that answer as complete while marking all siblings
          * as Removed/Skipped (tr_status = -1)
@@ -712,7 +712,7 @@ class Matrix_model extends CI_Model
          * $actionplan_tr_id:   Action Plan ID
          *
          * $in_parent_id:       The OR Intent that one of its children need
-         *                      to be selected by the Master
+         *                      to be selected by the Student
          *
          * $in_answer_id:       The selected child intent
          *
@@ -879,8 +879,8 @@ class Matrix_model extends CI_Model
                 $this->Database_model->fn___tr_create(array(
                     'tr_status' => 0, //New
                     'tr_en_type_id' => 4559, //Action Plan Intent
-                    'tr_en_credit_id' => $actionplan['tr_en_parent_id'], //Credit goes to Master
-                    'tr_en_parent_id' => $actionplan['tr_en_parent_id'], //Belongs to this Master
+                    'tr_en_credit_id' => $actionplan['tr_en_parent_id'], //Credit goes to Student
+                    'tr_en_parent_id' => $actionplan['tr_en_parent_id'], //Belongs to this Student
                     'tr_in_parent_id' => $this_in['tr_in_parent_id'],
                     'tr_in_child_id' => $this_in['tr_in_child_id'],
                     'tr_order' => $this_in['tr_order'],
@@ -896,7 +896,7 @@ class Matrix_model extends CI_Model
             /*
              *
              * We do this as we don't know which OR path will be
-             * chosen by Master so no point in adding every branch
+             * chosen by Student so no point in adding every branch
              * possible! We will then add a new Action Plan intent
              * every time an OR branch poth is chosen.
              *
@@ -1537,7 +1537,7 @@ class Matrix_model extends CI_Model
 
         /*
          *
-         * This function will attempt to create a new Master Entity
+         * This function will attempt to create a new Student Entity
          * Using the PSID provided by Facebook Graph API
          *
          * */
@@ -1570,7 +1570,7 @@ class Matrix_model extends CI_Model
 
             //We will create this master with a random & temporary name:
             $en = $this->Database_model->fn___en_create(array(
-                'en_name' => 'Master ' . rand(100000000, 999999999),
+                'en_name' => 'Student ' . rand(100000000, 999999999),
                 'en_psid' => $psid,
                 'en_status' => 3, //Claimed
             ), true);
@@ -1587,7 +1587,7 @@ class Matrix_model extends CI_Model
             //We did find the profile, move ahead:
             $fb_profile = $graph_fetch['tr_metadata']['result'];
 
-            //Create Master with their Facebook Graph name:
+            //Create Student with their Facebook Graph name:
             $en = $this->Database_model->fn___en_create(array(
                 'en_name' => $fb_profile['first_name'] . ' ' . $fb_profile['last_name'],
                 'en_psid' => $psid,
@@ -1611,7 +1611,7 @@ class Matrix_model extends CI_Model
                     //Create new transaction:
                     $this->Database_model->fn___tr_create(array(
                         'tr_en_type_id' => 4230, //Naked link
-                        'tr_en_credit_id' => $en['en_id'], //Master gets credit as they added themselves
+                        'tr_en_credit_id' => $en['en_id'], //Student gets credit as they added themselves
                         'tr_en_parent_id' => $tr_en_parent_id,
                         'tr_en_child_id' => $en['en_id'],
                     ));
@@ -1623,7 +1623,7 @@ class Matrix_model extends CI_Model
             $this->Database_model->fn___tr_create(array(
                 'tr_status' => 0, //New
                 'tr_en_type_id' => 4299, //Save URL to Mench Cloud
-                'tr_en_credit_id' => $en['en_id'], //The Master who added this
+                'tr_en_credit_id' => $en['en_id'], //The Student who added this
                 'tr_en_parent_id' => 4260, //Indicates URL file Type (Image)
                 'tr_content' => $fb_profile['profile_pic'], //Image to be saved
             ));
@@ -1633,9 +1633,9 @@ class Matrix_model extends CI_Model
         //Note that new entity transaction is already logged via fn___en_create()
         //Now create more relevant transactions:
 
-        //Log new Master transaction:
+        //Log new Student transaction:
         $this->Database_model->fn___tr_create(array(
-            'tr_en_type_id' => 4265, //New Master Joined
+            'tr_en_type_id' => 4265, //New Student Joined
             'tr_en_credit_id' => $en['en_id'],
             'tr_en_child_id' => $en['en_id'],
             'tr_metadata' => $en,
@@ -1645,15 +1645,15 @@ class Matrix_model extends CI_Model
         $this->Database_model->fn___tr_create(array(
             'tr_en_type_id' => 4230, //Naked link
             'tr_en_credit_id' => $en['en_id'],
-            'tr_en_parent_id' => 4456, //Receive Regular Notifications (Master can change later on...)
+            'tr_en_parent_id' => 4456, //Receive Regular Notifications (Student can change later on...)
             'tr_en_child_id' => $en['en_id'],
         ));
 
-        //Add them to Masters group:
+        //Add them to Students group:
         $this->Database_model->fn___tr_create(array(
             'tr_en_type_id' => 4230, //Naked link
             'tr_en_credit_id' => $en['en_id'],
-            'tr_en_parent_id' => 4430, //Mench Master
+            'tr_en_parent_id' => 4430, //Mench Student
             'tr_en_child_id' => $en['en_id'],
         ));
 

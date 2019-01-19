@@ -80,14 +80,14 @@ $messages = $this->Database_model->fn___tr_fetch(array(
     echo '<div class="add-msg add-msg' . $in_id . '">';
     echo '<form class="box box' . $in_id . '" method="post" enctype="multipart/form-data">'; //Used for dropping files
 
-    echo '<textarea onkeyup="changeMessage()" class="form-control msg msgin algolia_search" style="min-height:80px; box-shadow: none; resize: none; margin-bottom: 0px;" id="tr_content' . $in_id . '" placeholder="Write Message, Drop a File or Paste URL"></textarea>';
+    echo '<textarea onkeyup="fn___count_message()" class="form-control msg msgin algolia_search" style="min-height:80px; box-shadow: none; resize: none; margin-bottom: 0px;" id="tr_content' . $in_id . '" placeholder="Write Message, Drop a File or Paste URL"></textarea>';
 
     echo '<div id="tr_content_counter" style="margin:0 0 1px 0; font-size:0.8em;">';
     //File counter:
     echo '<span id="charNum' . $in_id . '">0</span>/' . $tr_content_max;
 
     ///firstname
-    echo '<a href="javascript:add_first_name();" class="textarea_buttons remove_loading" style="float:right;" data-toggle="tooltip" title="Replaced with master\'s First Name for a more personal message." data-placement="left"><i class="fas fa-fingerprint"></i> /firstname</a>';
+    echo '<a href="javascript:fn___add_first_name();" class="textarea_buttons remove_loading" style="float:right;" data-toggle="tooltip" title="Replaced with master\'s First Name for a more personal message." data-placement="left"><i class="fas fa-fingerprint"></i> /firstname</a>';
 
     //Choose a file:
     $file_size_max = $this->config->item('file_size_max');
@@ -97,7 +97,7 @@ $messages = $this->Database_model->fn___tr_fetch(array(
 
     //Fetch for all message types:
     foreach ($en_all_4485 as $tr_en_type_id => $m) {
-        echo '<div class="iphone-add-btn all_msg msg_en_type_' . $tr_en_type_id . '"><a href="javascript:message_create();" id="add_message_' . $tr_en_type_id . '_' . $in_id . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="right" class="btn btn-primary">ADD ' . $m['m_icon'] . ' ' . $m['m_name'] . '</a></div>';
+        echo '<div class="iphone-add-btn all_msg msg_en_type_' . $tr_en_type_id . '"><a href="javascript:fn___message_create();" id="add_message_' . $tr_en_type_id . '_' . $in_id . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="right" class="btn btn-primary">ADD ' . $m['m_icon'] . ' ' . $m['m_name'] . '</a></div>';
     }
 
     echo '</form>';

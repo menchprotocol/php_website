@@ -15,6 +15,6 @@ $route['intents']               = "intents/fn___in_miner_ui/0";
 //Public Intent Landing Page:
 $route['(:num)']                = "intents/fn___in_public_ui/$1";
 
-//Master/Miner login/logout:
+//Student/Miner login/logout:
 $route['login']                 = "entities/en_login_ui";
 $route['logout']                = "entities/logout";

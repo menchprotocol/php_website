@@ -2004,6 +2004,10 @@ select.form-control {
     z-index: 999;
 }
 
+.input-group .input-group-addon {
+    font-size: 0.9em;
+}
+
 
 
 .double-icon-search {
@@ -3566,4 +3570,29 @@ h4 .tip-badge {
 .transparent{
     background-color: transparent !important;
     border-color:transparent !important;
+}
+
+.white-secondary{
+    background-color: transparent;
+    cursor: pointer !important;
+    color: #2b2b2b !important;
+    border:2px solid #0084ff !important;
+}
+
+
+.white-secondary>i, .white-secondary .fas {
+    color: #2b2b2b !important;
+}
+
+
+.white-primary{
+    background-color: transparent;
+    cursor: pointer !important;
+    color: #2b2b2b !important;
+    border:2px solid #fedd16 !important;
+}
+
+
+.white-primary>i, .white-primary .fas {
+    color: #2b2b2b !important;
 }

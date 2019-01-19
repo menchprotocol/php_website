@@ -94,8 +94,12 @@ $is_primary_in = ( $in['in_id'] == $this->config->item('in_tactic_id') );
         <div class="list-group actionplan_list" style="margin:12px 0 0 5px;">
             <?php
             $in_level2_counter = 0;
-            foreach ($in['in__children'] as $in_level2_counter => $in_level2) {
+            foreach ($in['in__children'] as $in_level2) {
 
+                //Do not show if conditional:
+                if($in_level2['tr_en_type_id'] == 4229){
+                    continue;
+                }
 
                 echo '<div class="panel-group" id="open' . $in_level2_counter . '" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
             <div class="panel-heading" role="tab" id="heading' . $in_level2_counter . '">
@@ -126,9 +130,19 @@ $is_primary_in = ( $in['in_id'] == $this->config->item('in_tactic_id') );
 
                 if (count($in_level2['in__grandchildren']) > 0) {
 
+                    $in_level3_counter = 0;
                     echo '<ul style="list-style:none; margin-left:-30px; font-size:1em;">';
-                    foreach ($in_level2['in__grandchildren'] as $in_level3_counter => $in_level3) {
+                    foreach ($in_level2['in__grandchildren'] as $in_level3) {
+
+                        //Do not show if conditional:
+                        if($in_level3['tr_en_type_id'] == 4229){
+                            continue;
+                        }
+
                         echo '<li>Part ' . ($in_level2_counter + 1) . '.' . ($in_level3_counter + 1) . '. ' . $in_level3['in_outcome'] . '</li>';
+
+                        //Increase counter:
+                        $in_level3_counter++;
                     }
                     echo '</ul>';
 
@@ -142,6 +156,9 @@ $is_primary_in = ( $in['in_id'] == $this->config->item('in_tactic_id') );
                 echo '</div>
             </div>
         </div></div>';
+
+                //Increase counter:
+                $in_level2_counter++;
 
             }
             ?>

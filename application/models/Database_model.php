@@ -389,7 +389,7 @@ class Database_model extends CI_Model
 
             if (in_array('en__actionplans', $join_objects)) {
 
-                //Search & Append this Master's Action Plans:
+                //Search & Append this Student's Action Plans:
                 $res[$key]['en__actionplans'] = $this->Database_model->fn___tr_fetch(array(
                     'tr_en_parent_id' => $val['en_id'],
                     'tr_en_type_id' => 4235, //Action Plan
@@ -515,7 +515,7 @@ class Database_model extends CI_Model
         return $ins;
     }
 
-    function fn___tr_fetch($match_columns, $join_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('tr_timestamp' => 'DESC'), $select = '*', $group_by = null)
+    function fn___tr_fetch($match_columns, $join_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('tr_id' => 'DESC'), $select = '*', $group_by = null)
     {
 
         $this->db->select($select);
@@ -609,7 +609,7 @@ class Database_model extends CI_Model
                         'tr_en_credit_id' => ($tr_en_credit_id > 0 ? $tr_en_credit_id : $id),
                         'tr_en_type_id' => 4253, //Entity Attribute Modified
                         'tr_en_child_id' => $id,
-                        'tr_content' => 'Entity ' . ucwords(str_replace('_', ' ', str_replace('en_', '', $key))) . ' modified from [' . $before_data[0][$key] . '] to [' . $value . ']',
+                        'tr_content' => 'Entity ' . ucwords(str_replace('_', ' ', str_replace('en_', '', $key))) . ' changed from [' . $before_data[0][$key] . '] to [' . $value . ']',
                         'tr_metadata' => array(
                             'en_id' => $id,
                             'field' => $key,
@@ -670,7 +670,7 @@ class Database_model extends CI_Model
                         'tr_en_credit_id' => $tr_en_credit_id,
                         'tr_en_type_id' => 4264, //Intent Attribute Modified
                         'tr_in_child_id' => $id,
-                        'tr_content' => 'Intent ' . ucwords(str_replace('_', ' ', str_replace('in_', '', $key))) . ' modified from [' . $before_data[0][$key] . '] to [' . $value . ']',
+                        'tr_content' => 'Intent ' . ucwords(str_replace('_', ' ', str_replace('in_', '', $key))) . ' changed from [' . $before_data[0][$key] . '] to [' . $value . ']',
                         'tr_metadata' => array(
                             'in_id' => $id,
                             'field' => $key,
@@ -711,14 +711,8 @@ class Database_model extends CI_Model
         }
 
         //Update metadata if needed:
-        if(isset($update_columns['tr_metadata'])){
-
-            if(is_array($update_columns['tr_metadata'])){
-                $update_columns['tr_metadata'] = serialize($update_columns['tr_metadata']);
-            }
-
-            //No creditor allowed for this:
-            $tr_en_credit_id = 0;
+        if(isset($update_columns['tr_metadata']) && is_array($update_columns['tr_metadata'])){
+            $update_columns['tr_metadata'] = serialize($update_columns['tr_metadata']);
         }
 
         //Update:
@@ -733,14 +727,14 @@ class Database_model extends CI_Model
             foreach ($update_columns as $key => $value) {
 
                 //Has this value changed compared to what we initially had in DB?
-                if (in_array($key, array('tr_status', 'tr_content', 'tr_order', 'tr_en_parent_id', 'tr_en_child_id', 'tr_in_parent_id', 'tr_in_child_id')) && !($before_data[0][$key] == $value)) {
+                if ( !($before_data[0][$key] == $value) && in_array($key, array('tr_status', 'tr_content', 'tr_order', 'tr_en_parent_id', 'tr_en_child_id', 'tr_in_parent_id', 'tr_in_child_id', 'tr_metadata', 'tr_en_type_id'))) {
 
                     //Value has changed, log transaction:
                     $this->Database_model->fn___tr_create(array(
                         'tr_tr_parent_id' => $id, //Parent Transaction ID
                         'tr_en_credit_id' => $tr_en_credit_id,
                         'tr_en_type_id' => 4242, //Transaction Attribute Modified
-                        'tr_content' => 'Transaction ' . ucwords(str_replace('_', ' ', str_replace('tr_', '', $key))) . ' modified from [' . $before_data[0][$key] . '] to [' . $value . ']',
+                        'tr_content' => 'Transaction ' . ucwords(str_replace('_', ' ', str_replace('tr_', '', $key))) . ' changed from [' . $before_data[0][$key] . '] to [' . $value . ']',
                         'tr_metadata' => array(
                             'tr_id' => $id,
                             'field' => $key,

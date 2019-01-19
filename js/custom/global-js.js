@@ -32,7 +32,7 @@ function fancy_time(alg_obj) {
     return (minutes < 60 ? minutes + 'm' : hours + 'h');
 }
 
-function turn_off() {
+function fn___turn_off() {
     $('.dash').html('<span><i class="fas fa-spinner fa-spin"></i></span> Processing...');
 }
 

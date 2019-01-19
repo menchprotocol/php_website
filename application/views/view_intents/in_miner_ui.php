@@ -18,7 +18,7 @@ if (isset($orphan_ins)) {
 
 
 <div class="row">
-    <div class="col-xs-6 cols">
+    <div class="col-xs-7 cols">
         <?php
         //Are we showing Orphans?
         if (isset($orphan_ins)) {
@@ -110,12 +110,12 @@ if (isset($orphan_ins)) {
     </div>
 
 
-    <div class="col-xs-6 cols">
+    <div class="col-xs-5 cols">
 
 
         <div id="modifybox" class="fixed-box hidden" intent-id="0" intent-tr-id="0" level="0">
 
-            <h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-cog"></i> Modify</h5>
+            <h5 class="badge badge-h edit-header" style="display: inline-block;"><i class="fas fa-cog"></i> Modify</h5>
             <span id="hb_598" class="help_button bold-header" intent-id="598"></span>
             <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;">
                 <a href="javascript:void(0)" onclick="$('#modifybox').addClass('hidden')"><i
@@ -144,7 +144,7 @@ if (isset($orphan_ins)) {
                                 <div class="input-group border">
                                 <span class="input-group-addon addon-lean addon-grey"
                                       style="color:#2f2739; font-weight: 300;">To</span>
-                                    <textarea class="form-control text-edit msg" id="in_outcome" onkeyup="in_outcome_counter()"
+                                    <textarea class="form-control text-edit msg" id="in_outcome" onkeyup="fn___in_outcome_counter()"
                                               maxlength="<?= $this->config->item('in_outcome_max') ?>" style="height:58px !important; min-height: auto !important;margin-bottom: -9px !important;"></textarea>
                                 </div>
                             </div>
@@ -198,6 +198,7 @@ if (isset($orphan_ins)) {
 
                             <div class="and-settings">
                                 <div class="form-group label-floating is-empty">
+                                    <p style="margin: 0; padding: 0; font-size: 0.9em;">Response requires:</p>
                                     <div class="checkbox is_task" style="margin:0 0 10px 0;">
                                         <?php
                                         //List all the input options and allow user to pick between them:
@@ -211,7 +212,7 @@ if (isset($orphan_ins)) {
                             </div>
 
                             <div class="or-settings hidden">
-                                <p>Master chooses one of the children as their pathway.</p>
+                                <p>Student chooses one of the children as their pathway.</p>
                             </div>
 
 
@@ -245,17 +246,6 @@ if (isset($orphan_ins)) {
 
                         <div class="inline-box">
 
-                            <div class="form-group label-floating is-empty" style="max-width:160px; margin-bottom:1px;">
-                                <div class="input-group border">
-                                    <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;"><i
-                                                class="fal fa-usd-circle"></i></span>
-                                    <input style="padding-left:3px;" type="number" step="0.01" min="0" max="5000"
-                                           id="in_usd" value="" class="form-control">
-                                    <span class="input-group-addon addon-lean addon-grey"
-                                          style="color:#2f2739; font-weight: 300;">USD</span>
-                                </div>
-                            </div>
-
                             <div class="form-group label-floating is-empty" style="max-width:160px;">
                                 <div class="input-group border">
                                     <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;"><i
@@ -264,6 +254,17 @@ if (isset($orphan_ins)) {
                                            max="<?= $this->config->item('in_seconds_max') ?>" id="in_seconds" value=""
                                            class="form-control">
                                     <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;">Seconds</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group label-floating is-empty" style="max-width:160px; margin-bottom:1px;">
+                                <div class="input-group border">
+                                    <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;"><i
+                                                class="fal fa-usd-circle"></i></span>
+                                    <input style="padding-left:3px;" type="number" step="0.01" min="0" max="5000"
+                                           id="in_usd" value="" class="form-control">
+                                    <span class="input-group-addon addon-lean addon-grey"
+                                          style="color:#2f2739; font-weight: 300;">USD</span>
                                 </div>
                             </div>
 
@@ -354,7 +355,9 @@ if (isset($orphan_ins)) {
                                 <select class="form-control border" data-toggle="tooltip" title="Transaction Status" data-placement="top" id="tr_status" style="display: inline-block !important;">
                                     <?php
                                     foreach (fn___echo_status('tr_status') as $status_id => $status) {
-                                        echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
+                                        if($status_id < 3){ //No need to verify intent links!
+                                            echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
+                                        }
                                     }
                                     ?>
                                 </select>
@@ -383,7 +386,7 @@ if (isset($orphan_ins)) {
                 <table class="save-btn-box loadcontent">
                     <tr>
                         <td class="save-result-td"><span class="save_intent_changes"></span></td>
-                        <td class="save-td"><a href="javascript:in_modify_save();" class="btn btn-primary">Save</a></td>
+                        <td class="save-td"><a href="javascript:fn___in_modify_save();" class="btn btn-primary">Save</a></td>
                     </tr>
                 </table>
 

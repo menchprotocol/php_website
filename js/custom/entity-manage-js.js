@@ -80,7 +80,7 @@ $(document).ready(function () {
                 //Update status:
                 u_load_filter_status(hash_parts[1]);
             } else if (hash_parts[0] == 'wtrs') {
-                load_u_trs(hash_parts[1]);
+                fn___load_en_ledger(hash_parts[1]);
             }
         }
     }
@@ -180,7 +180,7 @@ function tr_add(en_new_id, assign_en_parent_id=0, is_parent) {
             input.focus();
 
             //Add new object to list:
-            add_to_list(list_id, '.en-item', data.en_new_echo);
+            fn___add_to_list(list_id, '.en-item', data.en_new_echo);
 
             //Adjust counters:
             $(counter_class).text((parseInt($(counter_class + ':first').text()) + 1));

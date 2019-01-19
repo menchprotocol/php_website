@@ -133,7 +133,7 @@ class Master extends CI_Controller
 
             if(count($trs) > 1) {
 
-                //Master has multiple Action Plans, so list all Action Plans to enable Master to choose:
+                //Student has multiple Action Plans, so list all Action Plans to enable Student to choose:
                 echo '<h3 class="master-h3 primary-title">My Action Plan</h3>';
                 echo '<div class="list-group" style="margin-top: 10px;">';
                 foreach ($trs as $tr) {
@@ -280,7 +280,7 @@ class Master extends CI_Controller
             $requirement_notes = array();
             $did_meet_requirements = false; //Assume false unless proven otherwise
 
-            //Check to see if Master meets ANY of the requirements:
+            //Check to see if Student meets ANY of the requirements:
             foreach($completion_requirements as $tr){
 
                 //Check requirements:
@@ -294,7 +294,7 @@ class Master extends CI_Controller
                     //We only need to meet a single requirement:
                     break;
                 } else {
-                    //Add this to list of what is needed to mark as complete so we can inform Master:
+                    //Add this to list of what is needed to mark as complete so we can inform Student:
                     array_push($requirement_notes, $en_all_4331[$tr['tr_en_parent_id']]['m_name']);
                 }
             }
