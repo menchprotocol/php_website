@@ -117,7 +117,7 @@ $config['en_all_4277'] = array(
 $config['en_ids_4331'] = array(4255, 4256, 4258, 4259, 4260, 4261);
 $config['en_all_4331'] = array(
     4255 => array(
-        'm_icon' => '<i class="fal fa-comment-alt-lines"></i>',
+        'm_icon' => '<i class="fal fa-file-alt"></i>',
         'm_name' => 'Text Message Entity Link',
         'm_desc' => '',
     ),

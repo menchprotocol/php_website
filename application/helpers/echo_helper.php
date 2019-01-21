@@ -268,11 +268,16 @@ function fn___echo_in_message_manage($tr)
 function fn___echo_en_icon($en)
 {
     //A simple function to display the Entity Icon OR the default icon if not available:
+    $return = '<span class="en-icon en_icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'">';
     if (strlen($en['en_icon']) > 0) {
-        return $en['en_icon'];
+        $return .= $en['en_icon'];
     } else {
-        return '<i class="fas fa-at grey-at"></i>';
+        $return .= '<i class="fas fa-at grey-at"></i>';
     }
+    $return .= '</span>';
+
+    return $return;
+
 }
 
 function fn___echo_link($text)
@@ -1468,6 +1473,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 }
 
 
+
 function fn___echo_en($en, $level, $is_parent = false)
 {
 
@@ -1478,7 +1484,7 @@ function fn___echo_en($en, $level, $is_parent = false)
     $ui = null;
 
 
-    $ui .= '<div entity-id="' . $en['en_id'] . '" entity-status="' . $en['en_status'] . '" is-parent="' . ($is_parent ? 1 : 0) . '" class="list-group-item en-item en___' . $en['en_id'] . ' ' . ($level == 1 ? 'top_entity' : 'tr_' . $en['tr_id']) . '">';
+    $ui .= '<div entity-id="' . $en['en_id'] . '" entity-status="' . $en['en_status'] . '" tr-id="'.$tr_id.'" tr-status="'.( $tr_id > 0 ? $en['tr_status'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '" class="list-group-item en-item en___' . $en['en_id'] . ' ' . ($level == 1 ? 'top_entity' : 'tr_' . $en['tr_id']) . '">';
 
 
     //Right content:

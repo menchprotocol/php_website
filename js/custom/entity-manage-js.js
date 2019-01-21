@@ -222,6 +222,10 @@ function en_name_word_count() {
 }
 
 function tr_content_word_count() {
+
+    //Also update type:
+    fn___update_link_type();
+
     var len = $('#tr_content').val().length;
     if (len > tr_content_max) {
         $('#chartr_contentNum').addClass('overload').text(len);
@@ -268,10 +272,33 @@ function fn___en_load_next_page(page, load_new_filter = 0) {
 }
 
 
+
+function fn___update_link_type()
+{
+    /*
+     * Updates the type of link based on the link content
+     *
+     * */
+
+    $('#en_link_type_id').html('<i class="fas fa-spinner fa-spin"></i> Loading...');
+
+
+    //Fetch Intent Data to load modify widget:
+    $.post("/entities/fn___update_link_type", {tr_content:$('#tr_content').val() }, function (data) {
+        //All good, let's load the data into the Modify Widget...
+        $('#en_link_type_id').html(( data.status ? data.html_ui : 'Error: ' + data.message ));
+
+        //Reload Tooltip again:
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+}
+
+
 function en_load_modify(en_id, tr_id) {
 
     //Make sure inputs are valid:
     if (!$('.en___' + en_id).length) {
+        alert('Error: Invalid Entity ID');
         return false;
     }
 
@@ -282,6 +309,18 @@ function en_load_modify(en_id, tr_id) {
 
     $('#en_name').val($(".en_name_" + en_id + ":first").text());
     $('#en_status').val($(".en___" + en_id + ":first").attr('entity-status'));
+    $('#tr_status').val($(".en___" + en_id + ":first").attr('tr-status'));
+
+    var has_icon_set = parseInt($('.en_icon_'+en_id).attr('en-is-set'));
+
+    if(has_icon_set){
+        $('.icon-demo').html($('.en_icon_'+en_id).html());
+        $('#en_icon').val($('.en_icon_'+en_id).html());
+    } else {
+        //Clear out input:
+        $('.icon-demo').html('<i class="fas fa-at grey-at"></i>');
+        $('#en_icon').val('');
+    }
 
     en_name_word_count();
 

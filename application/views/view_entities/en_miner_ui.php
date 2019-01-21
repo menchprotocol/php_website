@@ -158,7 +158,7 @@
                             <div class="form-group label-floating is-empty"
                                  style="margin:1px 0 10px;">
                                 <div class="input-group border" data-toggle="tooltip" title="Entity Icon" data-placement="top">
-                                    <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300; padding-left:7px !important; padding-right:6px !important;"><i class="fas fa-at grey-at"></i></span>
+                                    <span class="input-group-addon addon-lean addon-grey icon-demo" style="color:#2f2739; font-weight: 300; padding-left:7px !important; padding-right:6px !important;"><i class="fas fa-at grey-at"></i></span>
                                     <input type="text" id="en_icon" value=""
                                            maxlength="<?= $this->config->item('en_name_max') ?>" data-lpignore="true" placeholder=""
                                            class="form-control">
@@ -208,7 +208,7 @@
 
                                         </textarea>
                                     </span>
-                                        <span style="margin:0; padding: 0; font-size:0.8em; line-height: 110%;">Transaction type detected as <span id="en_link_type_id"><a href="/entities/1" style="font-weight: bold;"><i class="fas fa-atlas"></i> Naked</a></span>.</span>
+                                        <span style="margin:0; padding: 0; font-size:0.8em; line-height: 110%;">Transaction Type: <span id="en_link_type_id"></span>.</span>
                                     </div>
 
                                     <select class="form-control border" id="tr_status" data-toggle="tooltip" title="Transaction Status" data-placement="top">

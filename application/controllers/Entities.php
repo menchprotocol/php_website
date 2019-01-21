@@ -52,6 +52,29 @@ class Entities extends CI_Controller
         $this->load->view('view_shared/messenger_footer');
     }
 
+
+    function fn___update_link_type(){
+
+        if (!isset($_POST['tr_content'])) {
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Missing input',
+            ));
+        }
+
+        //Will Contain every possible Entity Link Connector:
+        $entity_links = $this->config->item('en_all_4537') + $this->config->item('en_all_4538');
+
+        //See what this is:
+        $en_id = fn___detect_tr_en_type_id($_POST['tr_content']);
+
+
+        return fn___echo_json(array(
+            'status' => 1,
+            'html_ui' => '<a href="/entities/'.$en_id.'" style="font-weight: bold;" data-toggle="tooltip" data-placement="top" title="'.$entity_links[$en_id]['m_desc'].'">'.$entity_links[$en_id]['m_icon'].' '.$entity_links[$en_id]['m_name'].'</a>',
+        ));
+    }
+
     function fn___load_en_ledger($en_id)
     {
 
