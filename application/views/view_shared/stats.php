@@ -174,7 +174,7 @@ foreach ($all_engs as $count=>$tr) {
     //Echo stats:
     echo '<tr>';
     echo '<td style="text-align: center;">#'.($count+1).'</td>';
-    echo '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;">'.( strlen($tr['en_icon']) > 0 ? $tr['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$tr['tr_en_credit_id'].'">'.$tr['en_name'].'</a></td>';
+    echo '<td style="text-align: left;"><span style="width: 29px; display: inline-block; text-align: center;">'.( strlen($tr['en_icon']) > 0 ? $tr['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$tr['tr_en_credit_id'].'">'.$tr['en_name'].'</a></td>';
     echo '<td style="text-align: right;">'.number_format($tr['trs_count'],0).'</td>';
     echo '<td style="text-align: right;">x'.round(($tr['coins_sum']/$tr['trs_count']),0).'</td>';
     echo '<td style="text-align: right;">'.number_format($tr['coins_sum'], 0).'</td>';
