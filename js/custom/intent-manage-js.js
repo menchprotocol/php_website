@@ -726,9 +726,10 @@ function fn___in_modify_save() {
                 //Did the Transaction update?
                 if (modify_data['tr_id'] > 0) {
 
-                    $('.tr_type_' + modify_data['tr_id']).html('<span class="tr_type_val" data-toggle="tooltip" data-placement="right" title="'+ entity_links[modify_data['tr_en_type_id']]["m_name"] + ': '+ entity_links[modify_data['tr_en_type_id']]["m_desc"] + '">'+ entity_links[modify_data['tr_en_type_id']]["m_icon"] +'</span>');
+                    $('.in_tr_type_' + modify_data['tr_id']).html('<span class="in_tr_type_val" data-toggle="tooltip" data-placement="right" title="'+ en_all_4486[modify_data['tr_en_type_id']]["m_name"] + ': '+ en_all_4486[modify_data['tr_en_type_id']]["m_desc"] + '">'+ en_all_4486[modify_data['tr_en_type_id']]["m_icon"] +'</span>');
 
                     $('.tr_status_' + modify_data['tr_id']).html('<span class="tr_status_val" data-toggle="tooltip" data-placement="right" title="'+ object_js_statuses['tr_status'][modify_data['tr_status']]["s_name"] + ': '+ object_js_statuses['tr_status'][modify_data['tr_status']]["s_desc"] + '">'+ object_js_statuses['tr_status'][modify_data['tr_status']]["s_icon"] +'</span>');
+
 
                     //Update transaction time:
                     $('.tr-last-updated').html(data.tr___last_updated).hide().fadeIn(); //Load Last Updated box
