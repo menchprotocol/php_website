@@ -493,6 +493,9 @@ function fn___en_new_url_from_attachment(droppedFiles, uploadType) {
 
                     //Add URL to input:
                     $('#tr_content').val( ( current_value.length > 0 ? current_value + ' ' : '' ) + data.new__url );
+
+                    //Update count:
+                    tr_content_word_count();
                 }
 
                 //Unlock form:
