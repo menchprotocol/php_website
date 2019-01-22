@@ -468,7 +468,7 @@ function fn___en_new_url_from_attachment(droppedFiles, uploadType) {
         ajaxData.append('upload_type', uploadType);
 
         $.ajax({
-            url: '/intents/fn___en_new_url_from_attachment',
+            url: '/entities/fn___en_new_url_from_attachment',
             type: 'post',
             data: ajaxData,
             dataType: 'json',
