@@ -174,6 +174,13 @@
                                 ?>
                             </select>
 
+                            <div class="notify_en_remove hidden">
+                                <div class="alert alert-warning" style="margin:5px 0px; padding:7px;">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    Saving will archive entity
+                                </div>
+                            </div>
+
                         </div>
 
                     </div>
@@ -229,10 +236,10 @@
                                         ?>
                                     </select>
 
-                                    <div class="notify_en_remove hidden">
+                                    <div class="notify_en_unlink hidden">
                                         <div class="alert alert-warning" style="margin:5px 0px; padding:7px;">
                                             <i class="fas fa-exclamation-triangle"></i>
-                                            Saving will archive entity
+                                            Saving will unlink entity
                                         </div>
                                     </div>
 

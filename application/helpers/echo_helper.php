@@ -51,19 +51,19 @@ function fn___echo_url_type($url, $en_type_id)
 
     } elseif ($en_type_id == 4257 /* Embed Widget URL? */) {
 
-        return fn___echo_url_embed($url, $url);
+        return  fn___echo_url_embed($url, $url);
 
     } elseif ($en_type_id == 4260 /* Image URL */) {
 
-        return '<img src="' . $url . '" style="max-width:100%" />';
+        return '<img src="' . $url . '" style="max-width:240px" />';
 
     } elseif ($en_type_id == 4259 /* Audio URL */) {
 
-        return '<audio controls><source src="' . $url . '" type="audio/mpeg"></audio>';
+        return  '<audio controls><source src="' . $url . '" type="audio/mpeg"></audio>' ;
 
     } elseif ($en_type_id == 4258 /* Video URL */) {
 
-        return '<video width="100%" onclick="this.play()" controls><source src="' . $url . '" type="video/mp4"></video>';
+        return  '<video width="100%" onclick="this.play()" controls><source src="' . $url . '" type="video/mp4"></video>' ;
 
     } elseif ($en_type_id == 4261 /* File URL */) {
 
@@ -71,17 +71,10 @@ function fn___echo_url_type($url, $en_type_id)
 
     } else {
 
-        //Unknown URL type! Log error and return false:
-        $CI =& get_instance();
-        $CI->Database_model->fn___tr_create(array(
-            'tr_content' => 'fn___echo_url_type() encountered an unknown URL entity type ID [' . $en_type_id . '] with URL value [' . $url . ']',
-            'tr_en_type_id' => 4246, //Platform Error
-        ));
-
+        //Unknown, return null:
         return false;
 
     }
-
 }
 
 
@@ -396,6 +389,23 @@ function fn___echo_number($number, $micro = true, $fb_messenger_format = false)
     }
 }
 
+function fn___echo_tr_content($tr_content, $tr_en_type_id){
+
+    $CI =& get_instance();
+    if (in_array($tr_en_type_id, $CI->config->item('en_ids_4537'))) {
+
+        return fn___echo_url_type($tr_content, $tr_en_type_id);
+
+    } elseif(strlen($tr_content) > 0) {
+
+        return fn___echo_link($tr_content);
+
+    } else {
+
+        return null;
+
+    }
+}
 
 function fn___echo_tr_row($tr)
 {
@@ -462,16 +472,8 @@ function fn___echo_tr_row($tr)
     //What type of main content do we have, if any?
     $main_content = null;
 
-    if (in_array($tr['tr_en_type_id'], $CI->config->item('en_ids_4537'))) {
-
-        $main_content = fn___echo_url_type($tr['tr_content'], $tr['tr_en_type_id']);
-
-    } elseif (strlen($tr['tr_content']) > 0) {
-
-        $main_content = fn___echo_link($tr['tr_content']);
-
-    }
-
+    //Fetch content for this link:
+    $main_content = fn___echo_tr_content($tr['tr_content'], $tr['tr_en_type_id']);
 
     $ui .= '<b>' . $tr['en_name'] . '</b>';
     $ui .= ' <span data-toggle="tooltip" data-placement="right" title="' . $tr['tr_timestamp'] . ' Transaction #' . $tr['tr_id'] . '" style="font-size:0.8em;">' . fn___echo_time_difference(strtotime($tr['tr_timestamp'])) . ' ago</span> ';
@@ -1128,7 +1130,7 @@ function fn___echo_last_updated($obj_type, $tr){
     }
 
     //Return updated line:
-    return $core_objects[$obj_type].' updated <b data-toggle="tooltip" title="Transaction #'.$tr['tr_id'].' updated on '.fn___echo_time_date($tr['tr_timestamp']).' PST" data-placement="top">'.fn___echo_time_difference(strtotime($tr['tr_timestamp'])).' ago</b> <span style="display: inline-block">by '.( $tr['tr_en_credit_id']>0 ? ( isset($tr['en_name']) ? '<a href="/entities/'.$tr['en_id'].'" style="font-weight: bold;">'.$tr['en_icon'].' '.$tr['en_name'].'</a>' : 'Un-fetched' ) : 'System' ).'</span>.';
+    return $core_objects[$obj_type].' updated <b data-toggle="tooltip" title="Transaction #'.$tr['tr_id'].' updated on '.fn___echo_time_date($tr['tr_timestamp']).' PST" data-placement="top">'.fn___echo_time_difference(strtotime($tr['tr_timestamp'])).' ago</b> <span style="display: inline-block">by '.( $tr['tr_en_credit_id']>0 ? ( isset($tr['en_name']) ? '<a href="/entities/'.$tr['en_id'].'" style="font-weight: bold;"><span class="en_icon_child_'.$tr['en_id'].'">'.$tr['en_icon'].'</span> '.$tr['en_name'].'</a>' : 'Un-fetched' ) : 'System' ).'</span>.';
 
 }
 
@@ -1484,7 +1486,7 @@ function fn___echo_en($en, $level, $is_parent = false)
     $ui = null;
 
 
-    $ui .= '<div entity-id="' . $en['en_id'] . '" entity-status="' . $en['en_status'] . '" tr-id="'.$tr_id.'" tr-status="'.( $tr_id > 0 ? $en['tr_status'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '" class="list-group-item en-item en___' . $en['en_id'] . ' ' . ($level == 1 ? 'top_entity' : 'tr_' . $en['tr_id']) . '">';
+    $ui .= '<div entity-id="' . $en['en_id'] . '" entity-status="' . $en['en_status'] . '" tr-id="'.$tr_id.'" tr-status="'.( $tr_id > 0 ? $en['tr_status'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '" class="list-group-item en-item en___' . $en['en_id'] . ' ' . ($level == 1 ? 'top_entity' : 'tr_' . $en['tr_id']) . ( $is_parent && $level == 2 ? ' redirect_go_'.$en['tr_en_child_id'] : '') . '">';
 
 
     //Right content:
@@ -1643,26 +1645,11 @@ function fn___echo_en($en, $level, $is_parent = false)
     if ($tr_id > 0) {
 
         //Is this Entity transaction an Embeddable URL type or not?
-        if($en['tr_en_type_id'] == 4256){
-
-            //It Is URL:
-            $ui .= ' <span class="tr_content tr_content_' . $tr_id . '"><a href="'.$en['tr_content'].'" target="_blank">'.fn___echo_url_clean($en['tr_content']).'</a></span>';
-
-        } elseif (in_array($en['tr_en_type_id'], $CI->config->item('en_ids_4537'))) {
-
-            //Yes, this is
-            $ui .= '<div style="margin-top:7px;">' . fn___echo_url_type($en['tr_content'], $en['tr_en_type_id']) . '</div>';
-
-        } elseif (strlen($en['tr_content']) > 0) {
-
-            //Other text:
-            $ui .= ' <span class="tr_content tr_content_' . $tr_id . '">' . $en['tr_content'] . '</span>';
-
-        }
+        $ui .= ' <span class="tr_content tr_content_' . $tr_id . '" style="min-width:240px; line-height: 140%; display:inline-block;">';
+        $ui .= fn___echo_tr_content($en['tr_content'] , $en['tr_en_type_id']);
+        $ui .= '</span>';
 
     }
-
-
 
 
 

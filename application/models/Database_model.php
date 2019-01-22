@@ -217,19 +217,17 @@ class Database_model extends CI_Model
 
 
         //Do we need to adjust coins?
-        /*
         $award_coins = $this->Database_model->fn___tr_fetch(array(
-            'tr_en_type_id' => 4319, //Number Link
-            'tr_en_parent_id' => 4374, //Transaction Coins
+            'tr_en_type_id' => 4319, //Number
+            'tr_en_parent_id' => 4374, //Mench Coins
             'tr_en_child_id' => $insert_columns['tr_en_type_id'], //This type of transaction
             'tr_status >=' => 2, //Must be published+
             'en_status >=' => 2, //Must be published+
         ), array('en_child'), 1);
         if (count($award_coins) > 0) {
             //Yes, we have to issue coins:
-            $insert_columns['tr_coins'] = doubleval($award_coins[0]['tr_content']);
+            $insert_columns['tr_coins'] = floatval($award_coins[0]['tr_content']);
         }
-        */
 
         //Lets log:
         $this->db->insert('table_ledger', $insert_columns);
@@ -607,7 +605,7 @@ class Database_model extends CI_Model
                     //Value has changed, log transaction:
                     $this->Database_model->fn___tr_create(array(
                         'tr_en_credit_id' => ($tr_en_credit_id > 0 ? $tr_en_credit_id : $id),
-                        'tr_en_type_id' => 4253, //Entity Attribute Modified
+                        'tr_en_type_id' => 4263, //Entity Attribute Modified
                         'tr_en_child_id' => $id,
                         'tr_content' => 'Entity ' . ucwords(str_replace('_', ' ', str_replace('en_', '', $key))) . ' changed from [' . $before_data[0][$key] . '] to [' . $value . ']',
                         'tr_metadata' => array(

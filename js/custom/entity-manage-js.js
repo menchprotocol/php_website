@@ -1,4 +1,4 @@
-function u_load_child_search() {
+function en_load_child_search() {
 
     $("#new-children .new-input").on('autocomplete:selected', function (event, suggestion, dataset) {
 
@@ -51,6 +51,27 @@ var $input = $('.drag-box').find('input[type="file"]'),
 
 $(document).ready(function () {
 
+
+
+    //Lookout for intent link related changes:
+    $('#tr_status').change(function () {
+        if (parseInt($('#tr_status').find(":selected").val()) < 0) {
+            //About to delete? Notify them:
+            $('.notify_en_unlink').removeClass('hidden');
+        } else {
+            $('.notify_en_unlink').addClass('hidden');
+        }
+    });
+
+    $('#en_status').change(function () {
+        if (parseInt($('#en_status').find(":selected").val()) < 0) {
+            //About to delete? Notify them:
+            $('.notify_en_remove').removeClass('hidden');
+        } else {
+            $('.notify_en_remove').addClass('hidden');
+        }
+    });
+
     if (is_compact) {
 
         //Adjust columns:
@@ -95,7 +116,7 @@ $(document).ready(function () {
 
 
     //Loadup various search bars:
-    u_load_child_search();
+    en_load_child_search();
 
 
     $("#new-parent .new-input").on('autocomplete:selected', function (event, suggestion, dataset) {
@@ -164,10 +185,10 @@ $(document).ready(function () {
 });
 
 //Adds OR links authors and content for entities
-function tr_add(en_new_id, assign_en_parent_id=0, is_parent) {
+function tr_add(en_existing_id, extra_en_parent_id=0, is_parent) {
 
-    //if en_new_id>0 it means we're linking to an existing entity, in which case en_new_name should be null
-    //If en_new_id=0 it means we are creating a new entity and then linking it, in which case en_new_name is required
+    //if en_existing_id>0 it means we're linking to an existing entity, in which case en_new_name should be null
+    //If en_existing_id=0 it means we are creating a new entity and then linking it, in which case en_new_name is required
 
     if (is_parent) {
         var input = $('#new-parent .new-input');
@@ -183,7 +204,7 @@ function tr_add(en_new_id, assign_en_parent_id=0, is_parent) {
 
 
     var en_new_name = null;
-    if (en_new_id == 0) {
+    if (en_existing_id == 0) {
         en_new_name = input.val();
         if (en_new_name.length < 1) {
             alert('ERROR: Missing entity name or URL, try again');
@@ -203,10 +224,10 @@ function tr_add(en_new_id, assign_en_parent_id=0, is_parent) {
     $.post("/entities/ens_link", {
 
         en_id: en_focus_id,
-        en_new_id: en_new_id,
+        en_existing_id: en_existing_id,
         en_new_name: en_new_name,
         is_parent: (is_parent ? 1 : 0),
-        assign_en_parent_id: assign_en_parent_id,
+        extra_en_parent_id: extra_en_parent_id,
 
     }, function (data) {
 
@@ -299,7 +320,7 @@ function fn___en_load_next_page(page, load_new_filter = 0) {
         if (load_new_filter) {
             $('#list-children').html(data + '<div id="new-children" class="list-group-item list_input grey-input">' + append_div + '</div>').hide().fadeIn();
             //Reset search engine:
-            u_load_child_search();
+            en_load_child_search();
         } else {
             //Update UI to confirm with user:
             $(data).insertBefore('#new-children');
@@ -338,6 +359,7 @@ function fn___update_link_type() {
 }
 
 
+
 function en_modify_load(en_id, tr_id) {
 
     //Make sure inputs are valid:
@@ -349,6 +371,9 @@ function en_modify_load(en_id, tr_id) {
     //Update variables:
     $('#modifybox').attr('entity-link-id', tr_id);
     $('#modifybox').attr('entity-id', en_id);
+
+    //Cannot be archived OR unlinked as this would not load, so remove them:
+    $('.notify_en_remove, .notify_en_unlink').addClass('hidden');
 
 
     var en_full_name = $(".en_name_" + en_id + ":first").text();
@@ -534,9 +559,6 @@ function en_modify_save() {
         en_icon: $('#en_icon').val(),
     };
 
-    //Take a snapshot of the status:
-    var original_en_status = parseInt($('.en___' + modify_data['en_id']).attr('entity-status'));
-
     //Show spinner:
     $('.save_entity_changes').html('<span><i class="fas fa-spinner fa-spin"></i></span>').hide().fadeIn();
 
@@ -545,81 +567,103 @@ function en_modify_save() {
 
         if (data.status) {
 
-            //Update variables:
-            $(".en_name_" + modify_data['en_id']).text(modify_data['en_name']);
-            $(".en_icon_val_" + modify_data['en_id']).html(modify_data['en_icon']);
+            if(data.remove_from_ui){
 
+                //need to remove this entity:
+                //Intent has been either removed OR unlinked:
+                if (modify_data['en_id'] == en_focus_id) {
 
-            //Always update 2x Entity icons:
-            $('.en_icon_ui_' + modify_data['en_id']).html('<span data-toggle="tooltip" data-placement="right" title="Entity Icon">' + modify_data['en_icon'] + '</span>');
-            $('.en_status_' + modify_data['en_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + object_js_statuses['en_status'][modify_data['en_status']]["s_name"] + ': ' + object_js_statuses['en_status'][modify_data['en_status']]["s_desc"] + '">' + object_js_statuses['en_status'][modify_data['en_status']]["s_icon"] + '</span>');
-
-            //Update other instances of the icon:
-            var icon_is_set = ( modify_data['en_icon'].length > 0 ? 1 : 0 );
-            $('.en_icon_' + en_id).attr('en-is-set' , icon_is_set );
-
-            if(!icon_is_set){
-                //Set entity default icon:
-                modify_data['en_icon'] = '<i class="fas fa-at grey-at"></i>';
-            }
-            $('.icon-demo, .en_icon_child_' + modify_data['en_id']).html(modify_data['en_icon']);
-
-            //Did we have notes to update?
-            if (modify_data['tr_id'] > 0) {
-
-                //Yes, update the notes:
-                $(".tr_content_" + modify_data['tr_id']).html(data.tr_content);
-                $(".tr_content_val_" + modify_data['tr_id']).text(modify_data['tr_content']);
-
-                //Update 2x icons:
-                $('.tr_type_' + modify_data['tr_id']).html('<span class="tr_type_val" data-toggle="tooltip" data-placement="right" title="' + entity_links[data.js_tr_en_type_id]["m_name"] + ': ' + entity_links[data.js_tr_en_type_id]["m_desc"] + '">' + entity_links[data.js_tr_en_type_id]["m_icon"] + '</span>');
-
-                $('.tr_status_' + modify_data['tr_id']).html('<span class="tr_status_val" data-toggle="tooltip" data-placement="right" title="' + object_js_statuses['tr_status'][modify_data['tr_status']]["s_name"] + ': ' + object_js_statuses['tr_status'][modify_data['tr_status']]["s_desc"] + '">' + object_js_statuses['tr_status'][modify_data['tr_status']]["s_icon"] + '</span>');
-
-                //Update transaction time:
-                $('.tr-last-updated').html(data.tr___last_updated).hide().fadeIn(); //Load Last Updated box
-
-                //has status updated? If so update the UI:
-                if (original_en_status != modify_data['en_status']) {
-
-                    //Update status icon:
-
-
-                    //Adjust counters for the filtering system as that also will change:
-                    $('.count-u-status-' + modify_data['en_status']).text((parseInt($('.count-u-status-' + modify_data['en_status']).text()) + 1));
-                    $('.count-u-status-' + original_en_status).text((parseInt($('.count-u-status-' + original_en_status).text()) - 1));
-                    //TODO maybe the new counter element does not exist and we need to create it! Handle this case later...
-
-                    if (en_focus_filter >= 0 && !(modify_data['en_status'] == en_focus_filter)) {
-                        //We have the filter on and it does not match the new status, so hide this:
-                        setTimeout(function () {
-                            $('.en___' + modify_data['en_id']).fadeOut();
-                        }, 377);
+                    //move up 1 level as this was the focus intent:
+                    if($('.redirect_go_' + modify_data['en_id']).length){
+                        window.location = "/entities/" + $('.redirect_go_' + modify_data['en_id'] + ':first').attr('entity-id');
                     } else {
-                        //Update status:
-                        $('.en___' + modify_data['en_id']).attr('entity-status', modify_data['en_status']);
+                        window.location = "/entities/";
                     }
+
+                } else {
+
+                    //Remove Hash:
+                    window.location.hash = '#';
+
+                    //Remove from UI:
+                    $('.en___' + modify_data['en_id']).html('<span style="color:#2f2739;"><i class="fas fa-trash-alt"></i> Removed</span>').fadeOut();
+
+                    //Disappear in a while:
+                    setTimeout(function () {
+
+                        //Hide the editor & saving results:
+                        $('.en___' + modify_data['en_id']).remove();
+
+                        //Hide editing box:
+                        $('#modifybox').addClass('hidden');
+
+                    }, 377);
 
                 }
 
-
-            }
-
-            if (modify_data['en_icon'].length > 0) {
-                $('.en_icon_ui_' + modify_data['en_id']).html(modify_data['en_icon']);
-                $('.en_icon_child_' + modify_data['en_id']).html(modify_data['en_icon']);
             } else {
-                //hide that section
-                $('.en_icon_ui_' + modify_data['en_id']).html('<i class="fas fa-at grey-at"></i>');
-                $('.en_icon_child_' + modify_data['en_id']).html('');
+
+                //Reflect changed:
+                //Update variables:
+                $(".en_name_" + modify_data['en_id']).text(modify_data['en_name']);
+                $(".en_icon_val_" + modify_data['en_id']).html(modify_data['en_icon']);
+
+
+                //Always update 2x Entity icons:
+                $('.en_icon_ui_' + modify_data['en_id']).html('<span data-toggle="tooltip" data-placement="right" title="Entity Icon">' + modify_data['en_icon'] + '</span>');
+                $('.en_status_' + modify_data['en_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + object_js_statuses['en_status'][modify_data['en_status']]["s_name"] + ': ' + object_js_statuses['en_status'][modify_data['en_status']]["s_desc"] + '">' + object_js_statuses['en_status'][modify_data['en_status']]["s_icon"] + '</span>');
+
+
+                //Update other instances of the icon:
+                var icon_is_set = ( modify_data['en_icon'].length > 0 ? 1 : 0 );
+                $('.en_icon_' + modify_data['en_id']).attr('en-is-set' , icon_is_set );
+
+                if(!icon_is_set){
+                    //Set entity default icon:
+                    modify_data['en_icon'] = '<i class="fas fa-at grey-at"></i>';
+                    $('.en_icon_child_' + modify_data['en_id']).addClass('hidden');
+                } else {
+                    $('.en_icon_child_' + modify_data['en_id']).removeClass('hidden').html(modify_data['en_icon']);
+                }
+                $('.icon-demo').html(modify_data['en_icon']);
+
+
+
+                //Did we have notes to update?
+                if (modify_data['tr_id'] > 0 && data.tr___last_updated != null) {
+
+                    //Yes, update the notes:
+                    $(".tr_content_" + modify_data['tr_id']).html(data.tr_content);
+                    $(".tr_content_val_" + modify_data['tr_id']).text(modify_data['tr_content']);
+
+
+                    //Update 2x icons:
+                    $('.tr_type_' + modify_data['tr_id']).html('<span class="tr_type_val" data-toggle="tooltip" data-placement="right" title="' + entity_links[data.js_tr_en_type_id]["m_name"] + ': ' + entity_links[data.js_tr_en_type_id]["m_desc"] + '">' + entity_links[data.js_tr_en_type_id]["m_icon"] + '</span>');
+
+                    //Update status icon:
+                    $('.tr_status_' + modify_data['tr_id']).html('<span class="tr_status_val" data-toggle="tooltip" data-placement="right" title="' + object_js_statuses['tr_status'][modify_data['tr_status']]["s_name"] + ': ' + object_js_statuses['tr_status'][modify_data['tr_status']]["s_desc"] + '">' + object_js_statuses['tr_status'][modify_data['tr_status']]["s_icon"] + '</span>');
+
+                    //Update transaction time:
+                    $('.tr-last-updated').html(data.tr___last_updated).hide().fadeIn(); //Load Last Updated box
+
+                }
+
+                if (modify_data['en_icon'].length > 0) {
+                    $('.en_icon_ui_' + modify_data['en_id']).html(modify_data['en_icon']);
+                    $('.en_icon_child_' + modify_data['en_id']).html(modify_data['en_icon']);
+                } else {
+                    //hide that section
+                    $('.en_icon_ui_' + modify_data['en_id']).html('<i class="fas fa-at grey-at"></i>');
+                    $('.en_icon_child_' + modify_data['en_id']).html('');
+                }
+
+
+                //Update entity timestamp:
+                $('.save_entity_changes').html(data.en___last_updated);
+
+                //Reload Tooltip again:
+                $('[data-toggle="tooltip"]').tooltip();
             }
-
-
-            //Reload Tooltip again:
-            $('[data-toggle="tooltip"]').tooltip();
-
-            //Update UI to confirm with user:
-            $('.save_entity_changes').html(data.message).hide().fadeIn();
 
         } else {
             //Ooops there was an error!

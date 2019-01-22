@@ -438,4 +438,34 @@ class Migrate extends CI_Controller
         fn___echo_json($stats);
     }
 
+    function pay(){
+
+        //Issue coins for each transaction type:
+        $all_engs = $this->Database_model->fn___tr_fetch(array(), array('en_type'), 0, 0, array('trs_count' => 'DESC'), 'COUNT(tr_en_type_id) as trs_count, en_name, tr_en_type_id', 'tr_en_type_id, en_name');
+
+        //return fn___echo_json($all_engs);
+
+        //Give option to select:
+        foreach ($all_engs as $tr) {
+
+            //DOes it have a rate?
+            $rate_trs = $this->Database_model->fn___tr_fetch(array(
+                'tr_status >=' => 2, //Must be published+
+                'en_status >=' => 2, //Must be published+
+                'tr_en_type_id' => 4319, //Number
+                'tr_en_parent_id' => 4374, //Mench Coins
+                'tr_en_child_id' => $tr['tr_en_type_id'],
+            ), array('en_child'), 1);
+
+            if(count($rate_trs) > 0){
+                //Issue coins at this rate:
+                $this->db->query("UPDATE table_ledger SET tr_coins = '".$rate_trs[0]['tr_content']."' WHERE tr_en_type_id = " . $tr['tr_en_type_id']);
+            }
+
+        }
+
+        echo 'done';
+
+    }
+
 }

@@ -671,8 +671,9 @@ class Intents extends CI_Controller
                     ));
                 }
 
-                //Also update the timestamp:
+                //Also update the timestamp & new miner:
                 $tr_update['tr_timestamp'] = date("Y-m-d H:i:s");
+                $tr_update['tr_en_credit_id'] = $udata['en_id'];
 
                 //Update transactions:
                 $this->Database_model->fn___tr_update($tr_id, $tr_update, $udata['en_id']);

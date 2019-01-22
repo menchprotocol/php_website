@@ -167,14 +167,14 @@ function fn___detect_tr_en_type_id($string)
     if (!$string || strlen($string) == 0) {
         //Naked:
         return 4230;
-    } elseif (is_int($string) || is_double($string)) {
+    } elseif (strlen(intval($string))==strlen($string) || floatval($string)==$string) {
         //Number:
         return 4319;
     } elseif (filter_var($string, FILTER_VALIDATE_URL)) {
         //It's a URL, see what type:
         $curl = fn___curl_html($string, true);
         return $curl['tr_en_type_id'];
-    } elseif (fn___isDate($string)) {
+    } elseif ( strlen($string) > 9 && (fn___isDate($string) || strtotime($string) > 0)) {
         //Date/time:
         return 4318;
     } else {

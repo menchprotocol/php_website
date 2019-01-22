@@ -807,7 +807,7 @@ input::-webkit-inner-spin-button {
 }
 
 .url_truncate {
-    max-width: 63%;
+    max-width:100%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

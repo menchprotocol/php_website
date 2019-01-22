@@ -215,7 +215,7 @@ class Entities extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Parent Entity',
             ));
-        } elseif (!isset($_POST['assign_en_parent_id'])) {
+        } elseif (!isset($_POST['extra_en_parent_id'])) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Parent Entity',
@@ -225,7 +225,7 @@ class Entities extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Entity Link Direction',
             ));
-        } elseif (!isset($_POST['en_new_id']) || !isset($_POST['en_new_name']) || (intval($_POST['en_new_id']) < 1 && strlen($_POST['en_new_name']) < 1)) {
+        } elseif (!isset($_POST['en_existing_id']) || !isset($_POST['en_new_name']) || (intval($_POST['en_existing_id']) < 1 && strlen($_POST['en_new_name']) < 1)) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Either New Entity ID or Name is required',
@@ -246,29 +246,30 @@ class Entities extends CI_Controller
 
         //Set some variables:
         $_POST['is_parent'] = intval($_POST['is_parent']);
-        $_POST['en_new_id'] = intval($_POST['en_new_id']);
+        $_POST['en_existing_id'] = intval($_POST['en_existing_id']);
         $linking_to_existing_u = false;
         $is_url_input = false;
+        $ur1 = array();
 
         //Are we linking to an existing entity?
-        if (intval($_POST['en_new_id']) > 0) {
+        if (intval($_POST['en_existing_id']) > 0) {
 
-            //We're linking to an existing entity:
-            $linking_to_existing_u = true;
-
-            //Validate this existing entity
+            //Validate this existing entity:
             $ens = $this->Database_model->fn___en_fetch(array(
-                'en_id' => $_POST['en_new_id'],
-                'en_status >=' => 1, //Active only
+                'en_id' => $_POST['en_existing_id'],
+                'en_status >=' => 0, //New+
             ));
+
             if (count($ens) < 1) {
                 return fn___echo_json(array(
                     'status' => 0,
                     'message' => 'Invalid active entity',
                 ));
-            } else {
-                $entity_new = $ens[0];
             }
+
+            //All good, assign:
+            $entity_new = $ens[0];
+            $linking_to_existing_u = true;
 
         } else {
 
@@ -286,17 +287,20 @@ class Entities extends CI_Controller
             }
 
             //Do we need to add this new entity to a secondary parent?
-            if (intval($_POST['assign_en_parent_id']) > 0) {
+            if (intval($_POST['extra_en_parent_id']) > 0) {
 
                 // Link entity to a parent:
                 $ur1 = $this->Database_model->fn___tr_create(array(
+                    'tr_en_type_id' => 4230, //Naked at start
                     'tr_en_child_id' => $entity_new['en_id'],
-                    'tr_en_parent_id' => $_POST['assign_en_parent_id'],
+                    'tr_en_parent_id' => $_POST['extra_en_parent_id'],
                 ));
 
             }
 
         }
+
+
 
         //We need to check to ensure this is not a duplicate link if linking to an existing entity:
         $ur2 = array();
@@ -313,9 +317,11 @@ class Entities extends CI_Controller
             }
 
             //Let's make sure this is not the same as the secondary category:
-            if (!($_POST['assign_en_parent_id'] == $tr_en_parent_id)) {
+            if (!($_POST['extra_en_parent_id'] == $tr_en_parent_id)) {
+
                 // Link to new OR existing entity:
                 $ur2 = $this->Database_model->fn___tr_create(array(
+                    'tr_en_type_id' => 4230, //Naked at start
                     'tr_en_child_id' => $tr_en_child_id,
                     'tr_en_parent_id' => $tr_en_parent_id,
                 ));
@@ -326,12 +332,16 @@ class Entities extends CI_Controller
             }
         }
 
+        //Fetch latest version:
+        $ens_latest = $this->Database_model->fn___en_fetch(array(
+            'en_id' => $entity_new['en_id'],
+        ));
 
         //Return newly added or linked entity:
         return fn___echo_json(array(
             'status' => 1,
-            'en_new_status' => $entity_new['en_status'],
-            'en_new_echo' => fn___echo_en(array_merge($entity_new, $ur2), 2, $_POST['is_parent']),
+            'en_new_status' => $ens_latest[0]['en_status'],
+            'en_new_echo' => fn___echo_en(array_merge($ens_latest[0], $ur2), 2, $_POST['is_parent']),
         ));
     }
 
@@ -460,19 +470,20 @@ class Entities extends CI_Controller
             ));
         }
 
+        $tr_has_updated = false;
         $remove_from_ui = 0;
         $js_tr_en_type_id = 0; //Detect link type based on content
 
         //Prepare data to be updated:
-        $u_update = array(
-            'en_status' => intval($_POST['en_status']),
+        $en_update = array(
             'en_name' => trim($_POST['en_name']),
             'en_icon' => trim($_POST['en_icon']),
+            'en_status' => intval($_POST['en_status']),
         );
 
 
         //Is this being removed?
-        if($u_update['en_status'] < 0 && !($u_update['en_status']==$ens[0]['en_status'])){
+        if($en_update['en_status'] < 0 && !($en_update['en_status']==$ens[0]['en_status'])){
 
             $remove_from_ui = 1;
 
@@ -487,6 +498,7 @@ class Entities extends CI_Controller
             //Yes, first validate entity link:
             $en_trs = $this->Database_model->fn___tr_fetch(array(
                 'tr_id' => $_POST['tr_id'],
+                'tr_status >=' => 0, //New+
             ));
 
             if (count($en_trs) < 1) {
@@ -509,19 +521,29 @@ class Entities extends CI_Controller
             //Has the link value changes?
             if (!($en_trs[0]['tr_content'] == $_POST['tr_content']) || !($en_trs[0]['tr_status'] == $_POST['tr_status'])) {
 
+                if($_POST['tr_status'] < 0){
+                    $remove_from_ui = 1;
+                }
+
+                $tr_has_updated = true;
+
                 //Something has changed, log this:
                 $this->Database_model->fn___tr_update($_POST['tr_id'], array(
                     'tr_content' => $tr_content,
                     'tr_en_type_id' => $js_tr_en_type_id,
                     'tr_status' => intval($_POST['tr_status']),
+                    //Auto append timestamp and most recent miner:
+                    'tr_en_credit_id' => $udata['en_id'],
+                    'tr_timestamp' => date("Y-m-d H:i:s"),
                 ), $udata['en_id']);
+
 
             }
 
         }
 
         //Now update the DB:
-        $this->Database_model->fn___en_update(intval($_POST['en_id']), $u_update, true, $udata['en_id']);
+        $this->Database_model->fn___en_update(intval($_POST['en_id']), $en_update, true, $udata['en_id']);
         
 
         
@@ -535,14 +557,46 @@ class Entities extends CI_Controller
             }
         }
 
-        //Show success:
-        return fn___echo_json(array(
+
+        //Fetch last entity update transaction:
+        $updated_trs = $this->Database_model->fn___tr_fetch(array(
+            'tr_status >=' => 0, //New+
+            'tr_en_type_id IN (4251, 4263)' => null, //Entity Created/Updated
+            'tr_en_child_id' => $_POST['en_id'],
+        ), array('en_credit'));
+        if(count($updated_trs) < 1){
+            //Should never happen
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Entity Last Updated Data',
+            ));
+        }
+
+        //Start return array:
+        $return_array = array(
             'status' => 1,
+            'en___last_updated' => fn___echo_last_updated('en',$updated_trs[0]),
             'remove_from_ui' => $remove_from_ui,
-            'js_tr_en_type_id' => $js_tr_en_type_id,
-            'message' => '<span><i class="fas fa-check"></i> Saved</span>',
-            'tr_content' => fn___echo_link($_POST['tr_content']),
-        ));
+            'js_tr_en_type_id' => intval($js_tr_en_type_id),
+        );
+
+        if(intval($_POST['tr_id'])>0){
+
+            //Fetch entity link:
+            $trs = $this->Database_model->fn___tr_fetch(array(
+                'tr_id' => $_POST['tr_id'],
+            ), array('en_credit'));
+
+            //Prep last updated:
+            $return_array['tr_content'] = fn___echo_tr_content($tr_content, $js_tr_en_type_id);
+
+            $return_array['tr___last_updated'] = ( $tr_has_updated ? fn___echo_last_updated('tr',$trs[0]) : null );
+
+        }
+
+
+        //Show success:
+        return fn___echo_json($return_array);
 
     }
 
