@@ -40,6 +40,11 @@ function u_load_child_search() {
     });
 }
 
+var $input = $('.drag-box').find('input[type="file"]'),
+    $label = $('.drag-box').find('label'),
+    showFiles = function (files) {
+        $label.text(files.length > 1 ? ($input.attr('data-multiple-caption') || '').replace('{count}', files.length) : files[0].name);
+    };
 
 $(document).ready(function () {
 
@@ -128,13 +133,6 @@ $(document).ready(function () {
     $('.drag-box').find('input[type="file"]').change(function () {
         fn___en_new_url_from_attachment(droppedFiles, 'file');
     });
-
-
-    var $input = $('.drag-box').find('input[type="file"]'),
-        $label = $('.drag-box').find('label'),
-        showFiles = function (files) {
-            $label.text(files.length > 1 ? ($input.attr('data-multiple-caption') || '').replace('{count}', files.length) : files[0].name);
-        };
 
     //Should we auto start?
     if (isAdvancedUpload) {
