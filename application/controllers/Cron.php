@@ -66,6 +66,15 @@ class Cron extends CI_Controller
             'tr_en_parent_id' => 4527,
         ), array('en_child'), 0);
 
+        //Name cleanup:
+        $name_cleanup = array(
+            4331 => ' Entity Link',
+            4537 => ' Entity Link',
+            4538 => ' Entity Link',
+            4486 => ' Intent Link',
+            4485 => ' Intent Message',
+        );
+
         foreach($config_ens as $en){
 
             //Now fetch all its children:
@@ -85,6 +94,10 @@ class Cron extends CI_Controller
             echo '$config[\'en_ids_'.$en['tr_en_child_id'].'\'] = array('.join(', ',$child_ids).');<br />';
             echo '$config[\'en_all_'.$en['tr_en_child_id'].'\'] = array(<br />';
             foreach($children as $child){
+
+                if(array_key_exists( $en['tr_en_child_id'] , $name_cleanup)){
+                    $child['en_name'] = str_replace( $name_cleanup[$en['tr_en_child_id']] , '', $child['en_name']);
+                }
 
                 echo '&nbsp;&nbsp;&nbsp;&nbsp; '.$child['en_id'].' => array(<br />';
 

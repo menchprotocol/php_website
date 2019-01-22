@@ -4,6 +4,12 @@ var algolia_loaded = false;
 //Define tip style:
 var tips_button = '<span class="badge tip-badge"><i class="fas fa-info-circle"></i></span>';
 
+//For the drag and drop file uploader:
+var isAdvancedUpload = function () {
+    var div = document.createElement('div');
+    return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window;
+}();
+
 function fn___in_matrix_tips(in_id) {
 
     //See if this tip needs to be loaded:

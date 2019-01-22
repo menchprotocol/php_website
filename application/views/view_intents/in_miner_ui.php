@@ -203,8 +203,7 @@ if (isset($orphan_ins)) {
                                         <?php
                                         //List all the input options and allow user to pick between them:
                                         foreach ($this->config->item('en_all_4331') as $en_id => $m) {
-                                            $clean_name = str_replace(' Entity Link','',$m['m_name']);
-                                            echo '<label style="font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" class="in_input_requirements" id="require__' . $en_id . '" req-en-id="' . $en_id . '" /><span class="underdot" data-toggle="tooltip" title="Accepts ' . $clean_name . ' to be marked as complete" data-placement="right">' . $m['m_icon'] . ' ' . $clean_name . '</span></label><br />';
+                                            echo '<label style="font-size: 0.9em !important; margin-left:8px;"><input type="checkbox" class="in_input_requirements" id="require__' . $en_id . '" req-en-id="' . $en_id . '" /><span class="underdot" data-toggle="tooltip" title="Accepts ' . $m['m_name'] . ' to be marked as complete" data-placement="right">' . $m['m_icon'] . ' ' . $m['m_name'] . '</span></label><br />';
                                         }
                                         ?>
                                     </div>
@@ -328,7 +327,7 @@ if (isset($orphan_ins)) {
                                         echo '<div class="radio" style="display:inline-block; border-bottom:1px dotted #999; margin-top: 0 !important;" data-toggle="tooltip" title="' . $m['m_desc'] . '" data-placement="top">
                                         <label style="display:inline-block;">
                                             <input type="radio" id="tr_en_type_id_' . $en_id . '" name="tr_en_type_id" value="' . $en_id . '" />
-                                            '.$m['m_icon'].' ' . str_replace(' Intent Link','',$m['m_name']) . '
+                                            '.$m['m_icon'].' ' . $m['m_name'] . '
                                         </label>
                                     </div>';
                                     }

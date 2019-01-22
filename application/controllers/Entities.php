@@ -72,8 +72,71 @@ class Entities extends CI_Controller
         return fn___echo_json(array(
             'status' => 1,
             'html_ui' => '<a href="/entities/'.$en_id.'" style="font-weight: bold;" data-toggle="tooltip" data-placement="top" title="'.$entity_links[$en_id]['m_desc'].'">'.$entity_links[$en_id]['m_icon'].' '.$entity_links[$en_id]['m_name'].'</a>',
+            'en_link_preview' => fn___echo_url_type($_POST['tr_content'] , $en_id),
         ));
     }
+
+
+    function fn___en_new_url_from_attachment()
+    {
+
+        //Authenticate Miner:
+        $udata = fn___en_auth(array(1308));
+        if (!$udata) {
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Session. Refresh to Continue',
+            ));
+        } elseif (!isset($_POST['upload_type']) || !in_array($_POST['upload_type'], array('file', 'drop'))) {
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Unknown upload type.',
+            ));
+        } elseif (!isset($_FILES[$_POST['upload_type']]['tmp_name']) || strlen($_FILES[$_POST['upload_type']]['tmp_name']) == 0 || intval($_FILES[$_POST['upload_type']]['size']) == 0) {
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Unknown error while trying to save file.',
+            ));
+        } elseif ($_FILES[$_POST['upload_type']]['size'] > ($this->config->item('file_size_max') * 1024 * 1024)) {
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'File is larger than ' . $this->config->item('file_size_max') . ' MB.',
+            ));
+        }
+
+
+
+        //Attempt to save file locally:
+        $file_parts = explode('.', $_FILES[$_POST['upload_type']]["name"]);
+        $temp_local = "application/cache/temp_files/" . md5($file_parts[0] . $_FILES[$_POST['upload_type']]["type"] . $_FILES[$_POST['upload_type']]["size"]) . '.' . $file_parts[(count($file_parts) - 1)];
+        move_uploaded_file($_FILES[$_POST['upload_type']]['tmp_name'], $temp_local);
+
+
+        //Attempt to store in Mench Cloud on Amazon S3:
+        if (isset($_FILES[$_POST['upload_type']]['type']) && strlen($_FILES[$_POST['upload_type']]['type']) > 0) {
+            $mime = $_FILES[$_POST['upload_type']]['type'];
+        } else {
+            $mime = mime_content_type($temp_local);
+        }
+
+        $new_file_url = trim(fn___upload_to_cdn($temp_local, $_FILES[$_POST['upload_type']], true));
+
+        //What happened?
+        if (!$new_file_url) {
+            //Oops something went wrong:
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Failed to save file to Mench cloud',
+            ));
+        } else {
+            return fn___echo_json(array(
+                'status' => 1,
+                'new__url' => $new_file_url,
+            ));
+        }
+    }
+
+
 
     function fn___load_en_ledger($en_id)
     {
@@ -274,7 +337,86 @@ class Entities extends CI_Controller
 
 
 
-    function u_save_settings()
+
+    function fn___en_load_data()
+    {
+
+        /*
+         *
+         * An AJAX function that is triggered every time a Miner
+         * selects to modify an entity.
+         *
+         * It returns the last edited time for both the entity
+         * and the entity link (if tr_id > 0)
+         *
+         * */
+
+        $udata = fn___en_auth(array(1308));
+        if (!$udata) {
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Session. Refresh.',
+            ));
+        } elseif (!isset($_POST['en_id']) || intval($_POST['en_id']) < 1) {
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Entity ID',
+            ));
+        } elseif (!isset($_POST['tr_id'])) {
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Intent Link ID',
+            ));
+        }
+
+        //Fetch last entity update transaction:
+        $updated_trs = $this->Database_model->fn___tr_fetch(array(
+            'tr_status >=' => 0, //New+
+            'tr_en_type_id IN (4251, 4263)' => null, //Entity Created/Updated
+            'tr_en_child_id' => $_POST['en_id'],
+        ), array('en_credit'));
+        if(count($updated_trs) < 1){
+            //Should never happen
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Entity Last Updated Data',
+            ));
+        }
+
+        //Prep last updated:
+        $return_array = array(
+            'status' => 1,
+            'en___last_updated' => fn___echo_last_updated('en',$updated_trs[0]),
+        );
+
+        if(intval($_POST['tr_id'])>0){
+
+            //Fetch intent link:
+            $trs = $this->Database_model->fn___tr_fetch(array(
+                'tr_id' => $_POST['tr_id'],
+                'tr_status >=' => 0, //New+
+            ), array('en_credit'));
+
+            if(count($trs) < 1){
+                return fn___echo_json(array(
+                    'status' => 0,
+                    'message' => 'Invalid Entity Link ID',
+                ));
+            }
+
+            //Prep last updated:
+            $return_array['tr___last_updated'] = fn___echo_last_updated('tr',$trs[0]);
+
+        }
+
+        //Return results:
+        return fn___echo_json($return_array);
+
+    }
+
+
+
+    function en_modify_save()
     {
 
         //Auth user and check required variables:
@@ -282,7 +424,7 @@ class Entities extends CI_Controller
         $tr_content_max = $this->config->item('tr_content_max');
 
         //Fetch current data:
-        $u_current = $this->Database_model->fn___en_fetch(array(
+        $ens = $this->Database_model->fn___en_fetch(array(
             'en_id' => intval($_POST['en_id']),
         ));
 
@@ -291,7 +433,7 @@ class Entities extends CI_Controller
                 'status' => 0,
                 'message' => 'Session Expired',
             ));
-        } elseif (!isset($_POST['en_id']) || intval($_POST['en_id']) < 1 || !(count($u_current) == 1)) {
+        } elseif (!isset($_POST['en_id']) || intval($_POST['en_id']) < 1 || !(count($ens) == 1)) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid ID',
@@ -306,7 +448,7 @@ class Entities extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing status',
             ));
-        } elseif (!isset($_POST['tr_id']) || !isset($_POST['tr_content'])) {
+        } elseif (!isset($_POST['tr_id']) || !isset($_POST['tr_content']) || !isset($_POST['tr_status'])) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing entity link data',
@@ -318,6 +460,8 @@ class Entities extends CI_Controller
             ));
         }
 
+        $remove_from_ui = 0;
+        $js_tr_en_type_id = 0; //Detect link type based on content
 
         //Prepare data to be updated:
         $u_update = array(
@@ -325,6 +469,17 @@ class Entities extends CI_Controller
             'en_name' => trim($_POST['en_name']),
             'en_icon' => trim($_POST['en_icon']),
         );
+
+
+        //Is this being removed?
+        if($u_update['en_status'] < 0 && !($u_update['en_status']==$ens[0]['en_status'])){
+
+            $remove_from_ui = 1;
+
+            //Also remove link (if any):
+            $_POST['tr_status'] = -1;
+        }
+
 
         //DO we have a link to update?
         if (intval($_POST['tr_id']) > 0) {
@@ -341,13 +496,24 @@ class Entities extends CI_Controller
                 ));
             }
 
+            if($en_trs[0]['tr_content'] == $_POST['tr_content']){
+                //Nothing has changed:
+                $js_tr_en_type_id = $en_trs[0]['tr_en_type_id'];
+                $tr_content = $en_trs[0]['tr_content'];
+            } else {
+                $tr_content = $_POST['tr_content'];
+                $js_tr_en_type_id = fn___detect_tr_en_type_id($_POST['tr_content']);
+            }
+
+
             //Has the link value changes?
-            if (!($en_trs[0]['tr_content'] == $_POST['tr_content'])) {
+            if (!($en_trs[0]['tr_content'] == $_POST['tr_content']) || !($en_trs[0]['tr_status'] == $_POST['tr_status'])) {
 
                 //Something has changed, log this:
                 $this->Database_model->fn___tr_update($_POST['tr_id'], array(
-                    'tr_content' => $_POST['tr_content'],
-                    'tr_en_type_id' => fn___detect_tr_en_type_id($_POST['tr_content']),
+                    'tr_content' => $tr_content,
+                    'tr_en_type_id' => $js_tr_en_type_id,
+                    'tr_status' => intval($_POST['tr_status']),
                 ), $udata['en_id']);
 
             }
@@ -356,7 +522,9 @@ class Entities extends CI_Controller
 
         //Now update the DB:
         $this->Database_model->fn___en_update(intval($_POST['en_id']), $u_update, true, $udata['en_id']);
+        
 
+        
         //Reset user session data if this data belongs to the logged-in user:
         if ($_POST['en_id'] == $udata['en_id']) {
             $ens = $this->Database_model->fn___en_fetch(array(
@@ -370,8 +538,9 @@ class Entities extends CI_Controller
         //Show success:
         return fn___echo_json(array(
             'status' => 1,
+            'remove_from_ui' => $remove_from_ui,
+            'js_tr_en_type_id' => $js_tr_en_type_id,
             'message' => '<span><i class="fas fa-check"></i> Saved</span>',
-            'status_u_ui' => fn___echo_status('en_status', $_POST['en_status'], true, 'bottom'),
             'tr_content' => fn___echo_link($_POST['tr_content']),
         ));
 

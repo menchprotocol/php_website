@@ -32,7 +32,7 @@ $messages = $this->Database_model->fn___tr_fetch(array(
     <?php
     foreach ($en_all_4485 as $tr_en_type_id => $m) {
         echo '<li role="presentation" class="nav_' . $tr_en_type_id . ' active" data-toggle="tooltip" title="' . $m['m_desc'] . '" data-placement="bottom">';
-        echo '<a href="#loadmessages-' . $in_id . '-' . $tr_en_type_id . '"> ' . $m['m_icon'] . ' ' . str_replace(' Intent Message','',$m['m_name']) . ' </a>';
+        echo '<a href="#loadmessages-' . $in_id . '-' . $tr_en_type_id . '"> ' . $m['m_icon'] . ' ' . $m['m_name'] . ' </a>';
         echo '</li>';
     }
     ?>
@@ -90,8 +90,7 @@ $messages = $this->Database_model->fn___tr_fetch(array(
     echo '<a href="javascript:fn___add_first_name();" class="textarea_buttons remove_loading" style="float:right;" data-toggle="tooltip" title="Replaced with master\'s First Name for a more personal message." data-placement="left"><i class="fas fa-fingerprint"></i> /firstname</a>';
 
     //Choose a file:
-    $file_size_max = $this->config->item('file_size_max');
-    echo '<div style="float:right; display:inline-block; margin-right:8px;" class="remove_loading"><input class="box__file inputfile" type="file" name="file" id="file" /><label class="textarea_buttons" for="file" data-toggle="tooltip" title="Upload Video, Audio, Images or PDFs up to ' . $file_size_max . ' MB." data-placement="top"><i class="fas fa-image"></i> Upload File</label></div>';
+    echo '<div style="float:right; display:inline-block; margin-right:8px;" class="remove_loading"><input class="box__file inputfile" type="file" name="file" id="file" /><label class="textarea_buttons" for="file" data-toggle="tooltip" title="Upload Video, Audio, Images or PDFs up to ' . $this->config->item('file_size_max') . ' MB" data-placement="top"><i class="fal fa-cloud-upload"></i> Upload</label></div>';
     echo '</div>';
 
 

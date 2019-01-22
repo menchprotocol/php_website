@@ -20,7 +20,7 @@ function u_load_child_search() {
         templates: {
             suggestion: function (suggestion) {
                 //If clicked, would trigger the autocomplete:selected above which will trigger the tr_add() function
-                return echo_js_suggestion('en',suggestion);
+                return echo_js_suggestion('en', suggestion);
             },
             header: function (data) {
                 if (!data.isEmpty) {
@@ -75,7 +75,7 @@ $(document).ready(function () {
             if (hash_parts[0] == 'loadmessages') {
                 fn___load_en_messages(hash_parts[1]);
             } else if (hash_parts[0] == 'loadmodify') {
-                en_load_modify(hash_parts[1], hash_parts[2]);
+                en_modify_load(hash_parts[1], hash_parts[2]);
             } else if (hash_parts[0] == 'status') {
                 //Update status:
                 u_load_filter_status(hash_parts[1]);
@@ -107,7 +107,7 @@ $(document).ready(function () {
         templates: {
             suggestion: function (suggestion) {
                 //If clicked, would trigger the autocomplete:selected above which will trigger the tr_add() function
-                return echo_js_suggestion('en',suggestion);
+                return echo_js_suggestion('en', suggestion);
             },
             header: function (data) {
                 if (!data.isEmpty) {
@@ -119,6 +119,39 @@ $(document).ready(function () {
             },
         }
     }]);
+
+
+
+
+
+    //Watchout for file uplods:
+    $('.drag-box').find('input[type="file"]').change(function () {
+        fn___en_new_url_from_attachment(droppedFiles, 'file');
+    });
+
+
+    //Should we auto start?
+    if (isAdvancedUpload) {
+
+        $('.drag-box').addClass('has-advanced-upload');
+        var droppedFiles = false;
+
+        $('.drag-box').on('drag dragstart dragend dragover dragenter dragleave drop', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        })
+            .on('dragover dragenter', function () {
+                $('.en-has-tr').addClass('is-working');
+            })
+            .on('dragleave dragend drop', function () {
+                $('.en-has-tr').removeClass('is-working');
+            })
+            .on('drop', function (e) {
+                droppedFiles = e.originalEvent.dataTransfer.files;
+                e.preventDefault();
+                fn___en_new_url_from_attachment(droppedFiles, 'drop');
+            });
+    }
 
 
 });
@@ -272,9 +305,7 @@ function fn___en_load_next_page(page, load_new_filter = 0) {
 }
 
 
-
-function fn___update_link_type()
-{
+function fn___update_link_type() {
     /*
      * Updates the type of link based on the link content
      *
@@ -284,9 +315,15 @@ function fn___update_link_type()
 
 
     //Fetch Intent Data to load modify widget:
-    $.post("/entities/fn___update_link_type", {tr_content:$('#tr_content').val() }, function (data) {
+    $.post("/entities/fn___update_link_type", {tr_content: $('#tr_content').val()}, function (data) {
         //All good, let's load the data into the Modify Widget...
-        $('#en_link_type_id').html(( data.status ? data.html_ui : 'Error: ' + data.message ));
+        $('#en_link_type_id').html((data.status ? data.html_ui : 'Error: ' + data.message));
+
+        if(data.status && data.en_link_preview.length > 0){
+            $('#en_link_preview').html(data.en_link_preview);
+        } else {
+            $('#en_link_preview').html('');
+        }
 
         //Reload Tooltip again:
         $('[data-toggle="tooltip"]').tooltip();
@@ -294,7 +331,7 @@ function fn___update_link_type()
 }
 
 
-function en_load_modify(en_id, tr_id) {
+function en_modify_load(en_id, tr_id) {
 
     //Make sure inputs are valid:
     if (!$('.en___' + en_id).length) {
@@ -307,15 +344,17 @@ function en_load_modify(en_id, tr_id) {
     $('#modifybox').attr('entity-id', en_id);
 
 
-    $('#en_name').val($(".en_name_" + en_id + ":first").text());
+    var en_full_name = $(".en_name_" + en_id + ":first").text();
+    $('#en_name').val(en_full_name);
+    $('.edit-header').html('<i class="fas fa-cog"></i> ' + en_full_name);
     $('#en_status').val($(".en___" + en_id + ":first").attr('entity-status'));
     $('#tr_status').val($(".en___" + en_id + ":first").attr('tr-status'));
 
-    var has_icon_set = parseInt($('.en_icon_'+en_id).attr('en-is-set'));
+    var has_icon_set = parseInt($('.en_icon_' + en_id).attr('en-is-set'));
 
-    if(has_icon_set){
-        $('.icon-demo').html($('.en_icon_'+en_id).html());
-        $('#en_icon').val($('.en_icon_'+en_id).html());
+    if (has_icon_set) {
+        $('.icon-demo').html($('.en_icon_' + en_id).html());
+        $('#en_icon').val($('.en_icon_' + en_id).html());
     } else {
         //Clear out input:
         $('.icon-demo').html('<i class="fas fa-at grey-at"></i>');
@@ -345,6 +384,24 @@ function en_load_modify(en_id, tr_id) {
 
     }
 
+    //Fetch last update times:
+    $.post("/entities/fn___en_load_data", {en_id: en_id, tr_id: tr_id}, function (data) {
+        if (!data.status) {
+
+            //Opppsi, show the error:
+            alert('Error: ' + data.message);
+
+        } else {
+
+            $('.save_entity_changes').html(data.en___last_updated);
+
+            if (tr_id > 0) {
+                $('.tr-last-updated').html(data.tr___last_updated);
+            }
+
+        }
+    });
+
     //Make the frame visible:
     $('.fixed-box').addClass('hidden');
     $("#modifybox").removeClass('hidden').hide().fadeIn();
@@ -357,8 +414,100 @@ function en_load_modify(en_id, tr_id) {
     }
 }
 
+function fn___entity_link_form_lock(){
+    $('#tr_content').prop("disabled", true).css('background-color','#CCC');
 
-function u_save_modify() {
+    $('.btn-save').addClass('grey').attr('href', '#').html('<i class="fas fa-spinner fa-spin"></i> Uploading');
+
+}
+
+function fn___entity_link_form_unlock(result){
+    
+    //What was the result?
+    if (result.status) {
+
+        $('#tr_content').prop("disabled", false).css('background-color','#FFF');
+
+        $('.btn-save').removeClass('grey').attr('href', 'javascript:en_modify_save();').html('Save');
+
+        //Tooltips:
+        $('[data-toggle="tooltip"]').tooltip();
+
+    } else {
+
+        alert('ERROR: ' + result.message);
+
+    }
+
+}
+
+
+function fn___en_new_url_from_attachment(droppedFiles, uploadType) {
+
+    //Prevent multiple concurrent uploads:
+    if ($('.drag-box').hasClass('is-uploading')) {
+        return false;
+    }
+
+    if (isAdvancedUpload) {
+
+        //Lock message:
+        fn___entity_link_form_lock();
+
+        var ajaxData = [];
+
+        if (droppedFiles) {
+            $.each(droppedFiles, function (i, file) {
+                var thename = $input.attr('name');
+                if (typeof thename == typeof undefined || thename == false) {
+                    var thename = 'drop';
+                }
+                ajaxData.append(uploadType, file);
+            });
+        }
+
+        ajaxData.append('upload_type', uploadType);
+
+        $.ajax({
+            url: '/intents/fn___en_new_url_from_attachment',
+            type: 'POST',
+            data: ajaxData,
+            dataType: 'json',
+            cache: false,
+            contentType: false,
+            processData: false,
+            complete: function () {
+                $('.drag-box').removeClass('is-uploading');
+            },
+            success: function (data) {
+
+                if(data.status){
+
+                    //Is there a current value?
+                    var current_value = $('#tr_content').val();
+
+                    //Add URL to input:
+                    $('#tr_content').val( ( current_value.length > 0 ? current_value + ' ' : '' ) + data.new__url );
+                }
+
+                //Unlock form:
+                fn___entity_link_form_unlock(data);
+
+            },
+            error: function (data) {
+                var result = [];
+                result.status = 0;
+                result.message = data.responseText;
+                fn___entity_link_form_unlock(result);
+            }
+        });
+    } else {
+        // ajax for legacy browsers
+    }
+}
+
+
+function en_modify_save() {
 
     //Validate that we have all we need:
     if ($('#modifybox').hasClass('hidden') || !parseInt($('#modifybox').attr('entity-id'))) {
@@ -370,6 +519,7 @@ function u_save_modify() {
     var modify_data = {
         tr_id: parseInt($('#modifybox').attr('entity-link-id')),
         tr_content: $('#tr_content').val(),
+        tr_status: $('#tr_status').val(),
         en_id: parseInt($('#modifybox').attr('entity-id')),
         en_name: $('#en_name').val(),
         en_status: $('#en_status').val(), //The new status (might not have changed too)
@@ -383,7 +533,7 @@ function u_save_modify() {
     $('.save_entity_changes').html('<span><i class="fas fa-spinner fa-spin"></i></span>').hide().fadeIn();
 
 
-    $.post("/entities/u_save_settings", modify_data, function (data) {
+    $.post("/entities/en_modify_save", modify_data, function (data) {
 
         if (data.status) {
 
@@ -391,11 +541,60 @@ function u_save_modify() {
             $(".en_name_" + modify_data['en_id']).text(modify_data['en_name']);
             $(".en_icon_val_" + modify_data['en_id']).html(modify_data['en_icon']);
 
+
+            //Always update 2x Entity icons:
+            $('.en_icon_ui_' + modify_data['en_id']).html('<span data-toggle="tooltip" data-placement="right" title="Entity Icon">' + modify_data['en_icon'] + '</span>');
+            $('.en_status_' + modify_data['en_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + object_js_statuses['en_status'][modify_data['en_status']]["s_name"] + ': ' + object_js_statuses['en_status'][modify_data['en_status']]["s_desc"] + '">' + object_js_statuses['en_status'][modify_data['en_status']]["s_icon"] + '</span>');
+
+            //Update other instances of the icon:
+            var icon_is_set = ( modify_data['en_icon'].length > 0 ? 1 : 0 );
+            $('.en_icon_' + en_id).attr('en-is-set' , icon_is_set );
+
+            if(!icon_is_set){
+                //Set entity default icon:
+                modify_data['en_icon'] = '<i class="fas fa-at grey-at"></i>';
+            }
+            $('.icon-demo, .en_icon_child_' + modify_data['en_id']).html(modify_data['en_icon']);
+
             //Did we have notes to update?
             if (modify_data['tr_id'] > 0) {
+
                 //Yes, update the notes:
                 $(".tr_content_" + modify_data['tr_id']).html(data.tr_content);
                 $(".tr_content_val_" + modify_data['tr_id']).text(modify_data['tr_content']);
+
+                //Update 2x icons:
+                $('.tr_type_' + modify_data['tr_id']).html('<span class="tr_type_val" data-toggle="tooltip" data-placement="right" title="' + entity_links[data.js_tr_en_type_id]["m_name"] + ': ' + entity_links[data.js_tr_en_type_id]["m_desc"] + '">' + entity_links[data.js_tr_en_type_id]["m_icon"] + '</span>');
+
+                $('.tr_status_' + modify_data['tr_id']).html('<span class="tr_status_val" data-toggle="tooltip" data-placement="right" title="' + object_js_statuses['tr_status'][modify_data['tr_status']]["s_name"] + ': ' + object_js_statuses['tr_status'][modify_data['tr_status']]["s_desc"] + '">' + object_js_statuses['tr_status'][modify_data['tr_status']]["s_icon"] + '</span>');
+
+                //Update transaction time:
+                $('.tr-last-updated').html(data.tr___last_updated).hide().fadeIn(); //Load Last Updated box
+
+                //has status updated? If so update the UI:
+                if (original_en_status != modify_data['en_status']) {
+
+                    //Update status icon:
+
+
+                    //Adjust counters for the filtering system as that also will change:
+                    $('.count-u-status-' + modify_data['en_status']).text((parseInt($('.count-u-status-' + modify_data['en_status']).text()) + 1));
+                    $('.count-u-status-' + original_en_status).text((parseInt($('.count-u-status-' + original_en_status).text()) - 1));
+                    //TODO maybe the new counter element does not exist and we need to create it! Handle this case later...
+
+                    if (en_focus_filter >= 0 && !(modify_data['en_status'] == en_focus_filter)) {
+                        //We have the filter on and it does not match the new status, so hide this:
+                        setTimeout(function () {
+                            $('.en___' + modify_data['en_id']).fadeOut();
+                        }, 377);
+                    } else {
+                        //Update status:
+                        $('.en___' + modify_data['en_id']).attr('entity-status', modify_data['en_status']);
+                    }
+
+                }
+
+
             }
 
             if (modify_data['en_icon'].length > 0) {
@@ -407,28 +606,6 @@ function u_save_modify() {
                 $('.en_icon_child_' + modify_data['en_id']).html('');
             }
 
-            //has status updated? If so update the UI:
-            if (original_en_status != modify_data['en_status']) {
-
-                //Update status:
-                $('.en_status_' + modify_data['en_id']).html(data.status_u_ui);
-
-                //Adjust counters for the filtering system as that also will change:
-                $('.count-u-status-' + modify_data['en_status']).text((parseInt($('.count-u-status-' + modify_data['en_status']).text()) + 1));
-                $('.count-u-status-' + original_en_status).text((parseInt($('.count-u-status-' + original_en_status).text()) - 1));
-                //TODO maybe the new counter element does not exist and we need to create it! Handle this case later...
-
-                if (en_focus_filter >= 0 && !(modify_data['en_status'] == en_focus_filter)) {
-                    //We have the filter on and it does not match the new status, so hide this:
-                    setTimeout(function () {
-                        $('.en___' + modify_data['en_id']).fadeOut();
-                    }, 377);
-                } else {
-                    //Update status:
-                    $('.en___' + modify_data['en_id']).attr('entity-status', modify_data['en_status']);
-                }
-
-            }
 
             //Reload Tooltip again:
             $('[data-toggle="tooltip"]').tooltip();

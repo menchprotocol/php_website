@@ -37,11 +37,6 @@ function fn___changeMessageEditing(tr_id) {
     }
 }
 
-var isAdvancedUpload = function () {
-    var div = document.createElement('div');
-    return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window;
-}();
-
 var $input = $('.box' + in_id).find('input[type="file"]'),
     $label = $('.box' + in_id).find('label'),
     showFiles = function (files) {
@@ -120,7 +115,7 @@ $(document).ready(function () {
 
     fn___initiate_search();
 
-    //Load Nice sort for iPhone X
+    //Load Nice sort for messages body
     new SimpleBar(document.getElementById('intent_messages' + in_id), {
         // option1: value1,
         // option2: value2
@@ -143,7 +138,7 @@ $(document).ready(function () {
         }
     }
 
-    //Function to control clicks on iPhone Message type header:
+    //Function to control clicks on Message type header:
     fn___message_load_type(focus_tr_en_type_id);
 
 

@@ -518,7 +518,7 @@ class Intents extends CI_Controller
         $in_metadata = unserialize($ins[0]['in_metadata']);
 
         //Determines if Intent has been removed OR unlinked:
-        $remove_in_from_ui = 0; //Assume not
+        $remove_from_ui = 0; //Assume not
 
         //This determines if there are any recursive updates needed on the tree:
         $in_metadata_modify = array();
@@ -560,7 +560,7 @@ class Intents extends CI_Controller
 
                     //Has intent been removed?
                     if($value < 0){
-                        $remove_in_from_ui = 1; //Intent has been removed
+                        $remove_from_ui = 1; //Intent has been removed
 
                         //Also make sure to unlink this intent:
                         if($tr_id > 0){
@@ -647,7 +647,7 @@ class Intents extends CI_Controller
                 } else {
 
                     if($key=='tr_status' && $value < 1){
-                        $remove_in_from_ui = 1;
+                        $remove_from_ui = 1;
                     }
 
                 }
@@ -685,7 +685,7 @@ class Intents extends CI_Controller
 
 
         //Fetch latest intent update:
-        $in_updated_trs = $this->Database_model->fn___tr_fetch(array(
+        $updated_trs = $this->Database_model->fn___tr_fetch(array(
             'tr_status >=' => 0, //New+
             'tr_en_type_id IN (4250, 4264)' => null, //Intent Created/Updated
             'tr_in_child_id' => $_POST['in_id'],
@@ -694,10 +694,10 @@ class Intents extends CI_Controller
 
         $return_data = array(
             'status' => 1,
-            'remove_in_from_ui' => $remove_in_from_ui,
+            'remove_from_ui' => $remove_from_ui,
             'status_update_children' => $status_update_children,
             'in__tree_in_active_count' => -( isset($in_metadata['in__tree_in_active_count']) ? $in_metadata['in__tree_in_active_count'] : 0 ),
-            'in___last_updated' => fn___echo_last_updated('in', $in_updated_trs[0]),
+            'in___last_updated' => fn___echo_last_updated('in', $updated_trs[0]),
         );
 
 
@@ -1056,12 +1056,12 @@ class Intents extends CI_Controller
         $ins[0]['in_metadata'] = ( strlen($ins[0]['in_metadata']) > 0 ? unserialize($ins[0]['in_metadata']) : array());
 
         //Fetch last intent update transaction:
-        $in_updated_trs = $this->Database_model->fn___tr_fetch(array(
+        $updated_trs = $this->Database_model->fn___tr_fetch(array(
             'tr_status >=' => 0, //New+
             'tr_en_type_id IN (4250, 4264)' => null, //Intent Created/Updated
             'tr_in_child_id' => $_POST['in_id'],
         ), array('en_credit'));
-        if(count($in_updated_trs) < 1){
+        if(count($updated_trs) < 1){
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Intent Last Updated Data',
@@ -1069,7 +1069,7 @@ class Intents extends CI_Controller
         }
 
         //Prep last updated:
-        $ins[0]['in___last_updated'] = fn___echo_last_updated('in',$in_updated_trs[0]);
+        $ins[0]['in___last_updated'] = fn___echo_last_updated('in',$updated_trs[0]);
 
 
         if(intval($_POST['tr_id'])>0){
@@ -1077,7 +1077,6 @@ class Intents extends CI_Controller
             //Fetch intent link:
             $trs = $this->Database_model->fn___tr_fetch(array(
                 'tr_id' => $_POST['tr_id'],
-                'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
                 'tr_status >=' => 0, //New+
             ), array('en_credit'));
 

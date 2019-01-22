@@ -4,10 +4,10 @@
     var en_focus_filter = -1; //No filter, show all
     var en_focus_id = <?= $entity['en_id'] ?>;
     var en_focus_name = '<?= str_replace('\'', '’', $entity['en_name']) ?>';
+    var entity_links = <?= json_encode(($this->config->item('en_all_4537') + $this->config->item('en_all_4538'))) ?>;
 </script>
 <script src="/js/custom/entity-manage-js.js?v=v<?= $this->config->item('app_version') ?>"
         type="text/javascript"></script>
-
 
 <div class="row">
     <div class="col-xs-7 cols">
@@ -121,7 +121,7 @@
 
         <div id="modifybox" class="fixed-box hidden" entity-id="0" entity-link-id="0">
 
-            <h5 class="badge badge-h"><i class="fas fa-cog"></i> Modify</h5>
+            <h5 class="badge badge-h edit-header"><i class="fas fa-cog"></i> Modify</h5>
             <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;">
                 <a href="javascript:void(0)" onclick="$('#modifybox').addClass('hidden')"><i
                             class="fas fa-times-circle"></i></a>
@@ -200,16 +200,24 @@
 
                                 <div class="en-has-tr">
                                     <div style="margin-bottom: 15px !important;">
-                                    <span class="white-wrapper">
-                                        <textarea class="form-control text-edit border" id="tr_content"
-                                                  onkeyup="tr_content_word_count()"
-                                                  maxlength="<?= $this->config->item('tr_content_max') ?>" data-lpignore="true"
-                                                  style="height:126px; min-height:126px;">
 
-                                        </textarea>
-                                    </span>
-                                        <span style="margin:0; padding: 0; font-size:0.8em; line-height: 110%;">Transaction Type: <span id="en_link_type_id"></span>.</span>
+                                        <form class="drag-box" method="post" enctype="multipart/form-data">
+
+                                        <span class="white-wrapper">
+                                            <textarea class="form-control text-edit border" id="tr_content"
+                                                      onkeyup="tr_content_word_count()"
+                                                      maxlength="<?= $this->config->item('tr_content_max') ?>" data-lpignore="true"
+                                                      placeholder="Write Message, Drop a File or Paste URL"
+                                                      style="height:126px; min-height:126px;">
+                                            </textarea>
+                                        </span>
+
+                                        <span style="margin:0; padding: 0; font-size:0.8em; line-height: 110%;"><input class="box__file inputfile" type="file" name="file" id="file" /><label class="textarea_buttons" for="file" data-toggle="tooltip" title="Upload Video, Audio, Images or PDFs up to <?= $this->config->item('file_size_max') ?> MB" data-placement="top"><i class="fal fa-cloud-upload"></i> Upload</label> | Transaction Type: <span id="en_link_type_id"></span></span>
+                                        <p id="en_link_preview"></p>
+
                                     </div>
+
+                                    </form>
 
                                     <select class="form-control border" id="tr_status" data-toggle="tooltip" title="Transaction Status" data-placement="top">
                                         <?php
@@ -228,7 +236,7 @@
                                         </div>
                                     </div>
 
-                                    <span class="tr-last-updated">Transaction updated <b>15 min ago</b> <span style="display: inline-block">by <a href="/entities/2" style="font-weight: bold;"><img src="https://s3foundation.s3-us-west-2.amazonaws.com/4791be062df2e29227bf12d2171af4e7.jpg" class="profile-icon"> Miguel Hernandez</a></span>.</span>
+                                    <span class="tr-last-updated"></span>
                                 </div>
 
                             </div>
@@ -243,10 +251,8 @@
 
                 <table class="save-btn-box">
                     <tr>
-                        <td class="save-result-td"><span class="save_entity_changes">
-                                        Entity updated <b>15 min ago</b> <span style="display: inline-block">by <a href="/entities/2" style="font-weight: bold;"><img src="https://s3foundation.s3-us-west-2.amazonaws.com/4791be062df2e29227bf12d2171af4e7.jpg" class="profile-icon"> Miguel Hernandez</a></span>.
-                                    </span></td>
-                        <td class="save-td"><a href="javascript:u_save_modify();" class="btn btn-secondary">Save</a></td>
+                        <td class="save-result-td"><span class="save_entity_changes"></span></td>
+                        <td class="save-td"><a href="javascript:en_modify_save();" class="btn btn-secondary btn-save">Save</a></td>
                     </tr>
                 </table>
 

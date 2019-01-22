@@ -681,7 +681,7 @@ function fn___in_modify_save() {
         } else {
 
             //Has the intent/intent-link been archived? Either way, we need to hide this row:
-            if (data.remove_in_from_ui) {
+            if (data.remove_from_ui) {
 
                 //Intent has been either removed OR unlinked:
                 if (modify_data['level'] == 1) {
@@ -726,7 +726,7 @@ function fn___in_modify_save() {
                 //Did the Transaction update?
                 if (modify_data['tr_id'] > 0) {
 
-                    $('.in_tr_type_' + modify_data['tr_id']).html('<span class="in_tr_type_val" data-toggle="tooltip" data-placement="right" title="'+ en_all_4486[modify_data['tr_en_type_id']]["m_name"] + ': '+ en_all_4486[modify_data['tr_en_type_id']]["m_desc"] + '">'+ en_all_4486[modify_data['tr_en_type_id']]["m_icon"] +'</span>');
+                    $('.tr_type_' + modify_data['tr_id']).html('<span class="tr_type_val" data-toggle="tooltip" data-placement="right" title="'+ entity_links[modify_data['tr_en_type_id']]["m_name"] + ': '+ entity_links[modify_data['tr_en_type_id']]["m_desc"] + '">'+ entity_links[modify_data['tr_en_type_id']]["m_icon"] +'</span>');
 
                     $('.tr_status_' + modify_data['tr_id']).html('<span class="tr_status_val" data-toggle="tooltip" data-placement="right" title="'+ object_js_statuses['tr_status'][modify_data['tr_status']]["s_name"] + ': '+ object_js_statuses['tr_status'][modify_data['tr_status']]["s_desc"] + '">'+ object_js_statuses['tr_status'][modify_data['tr_status']]["s_icon"] +'</span>');
 

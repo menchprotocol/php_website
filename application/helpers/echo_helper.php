@@ -1349,7 +1349,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         $ui .= '<span class="double-icon" style="width:42px;">';
 
         //Show larger icon for transaction type (auto detected based on transaction content):
-        $ui .= '<span class="icon-main in_tr_type_' . $tr_id . '"><span class="in_tr_type_val" data-toggle="tooltip" data-placement="right" title="' . $en_all_4486[$in['tr_en_type_id']]['m_name'] . ': ' . $en_all_4486[$in['tr_en_type_id']]['m_desc'] . '">' . $en_all_4486[$in['tr_en_type_id']]['m_icon'] . '</span></span> ';
+        $ui .= '<span class="icon-main tr_type_' . $tr_id . '"><span class="tr_type_val" data-toggle="tooltip" data-placement="right" title="' . $en_all_4486[$in['tr_en_type_id']]['m_name'] . ': ' . $en_all_4486[$in['tr_en_type_id']]['m_desc'] . '">' . $en_all_4486[$in['tr_en_type_id']]['m_icon'] . '</span></span> ';
 
         //Show smaller transaction status icon:
         $ui .= '<span class="icon-sub tr_status_' . $tr_id . '"><span class="in_status_val" data-toggle="tooltip" data-placement="right" title="'.$status_index['tr_status'][$in['tr_status']]['s_name'].': '.$status_index['tr_status'][$in['tr_status']]['s_desc'].'">' . $status_index['tr_status'][$in['tr_status']]['s_icon'] . '</span></span> ';
@@ -1556,7 +1556,7 @@ function fn___echo_en($en, $level, $is_parent = false)
 
 
     //Show modification button along with Trust Score
-    $ui .= '<a href="#loadmodify-' . $en['en_id'] . '-' . $tr_id . '" onclick="en_load_modify(' . $en['en_id'] . ',' . $tr_id . ')" class="badge badge-secondary white-secondary" style="margin:-2px -6px 0 2px; width:40px;"><span class="btn-counter" data-toggle="tooltip" data-placement="left" title="Entity Trust Score is ' . number_format($en['en_trust_score'], 0) . '">' . fn___echo_number($en['en_trust_score']) . '</span><i class="fas fa-cog" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i></a> &nbsp;';
+    $ui .= '<a href="#loadmodify-' . $en['en_id'] . '-' . $tr_id . '" onclick="en_modify_load(' . $en['en_id'] . ',' . $tr_id . ')" class="badge badge-secondary white-secondary" style="margin:-2px -6px 0 2px; width:40px;"><span class="btn-counter" data-toggle="tooltip" data-placement="left" title="Entity Trust Score is ' . number_format($en['en_trust_score'], 0) . '">' . fn___echo_number($en['en_trust_score']) . '</span><i class="fas fa-cog" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i></a> &nbsp;';
 
 
     //Have we counted the Entity Children?
@@ -1595,10 +1595,10 @@ function fn___echo_en($en, $level, $is_parent = false)
     $ui .= '<span class="double-icon" style="margin-right:7px;">';
 
     //Show larger custom entity icon:
-    $ui .= '<span class="icon-main"><span class="en_icon_ui en_icon_ui_' . $en['en_id'] . '" data-toggle="tooltip" data-placement="right" title="Entity Icon">' . fn___echo_en_icon($en) . '</span></span>';
+    $ui .= '<span class="icon-main en_icon_ui en_icon_ui_' . $en['en_id'] . '"><span data-toggle="tooltip" data-placement="right" title="Entity Icon">' . fn___echo_en_icon($en) . '</span></span>';
 
     //Show smaller entity status:
-    $ui .= '<span class="icon-sub"><span class="en_status_' . $en['en_id'] . '" data-toggle="tooltip" data-placement="right" title="Entity Status: '.$status_index['en_status'][$en['en_status']]['s_name'].': '.$status_index['en_status'][$en['en_status']]['s_desc'].'">' . $status_index['en_status'][$en['en_status']]['s_icon'] . '</span></span> ';
+    $ui .= '<span class="icon-sub en_status_' . $en['en_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$status_index['en_status'][$en['en_status']]['s_name'].': '.$status_index['en_status'][$en['en_status']]['s_desc'].'">' . $status_index['en_status'][$en['en_status']]['s_icon'] . '</span></span> ';
 
     $ui .= '</span>';
 
@@ -1615,7 +1615,7 @@ function fn___echo_en($en, $level, $is_parent = false)
         $ui .= '<span class="double-icon" style="margin-right:7px;">';
 
         //Show larger icon for transaction type (auto detected based on transaction content):
-        $ui .= '<span class="icon-main"><span class="tr_type_' . $tr_id . '" data-toggle="tooltip" data-placement="right" title="Ledger Transaction Type: '.$entity_links[$en['tr_en_type_id']]['m_name'].': '.$entity_links[$en['tr_en_type_id']]['m_desc'].'">' . $entity_links[$en['tr_en_type_id']]['m_icon'] . '</span></span> ';
+        $ui .= '<span class="icon-main tr_type_' . $tr_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$entity_links[$en['tr_en_type_id']]['m_name'].': '.$entity_links[$en['tr_en_type_id']]['m_desc'].'">' . $entity_links[$en['tr_en_type_id']]['m_icon'] . '</span></span> ';
 
         //Show smaller transaction status icon:
         $ui .= '<span class="icon-sub tr_status_' . $tr_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$status_index['tr_status'][$en['tr_status']]['s_name'].': '.$status_index['tr_status'][$en['tr_status']]['s_desc'].']">' . $status_index['tr_status'][$en['tr_status']]['s_icon'] . '</span></span> ';
