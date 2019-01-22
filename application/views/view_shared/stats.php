@@ -159,7 +159,8 @@ echo '<table class="table table-condensed table-striped stats-table" style="max-
 
 //Object Header:
 echo '<tr style="font-weight: bold;">';
-echo '<td colspan="2" style="text-align: left;">Miner</td>';
+echo '<td style="text-align: left;">Rank</td>';
+echo '<td style="text-align: left;">Miner</td>';
 echo '<td style="text-align: right;">Count</td>';
 echo '<td style="text-align: right;">Rate Avg</td>';
 echo '<td style="text-align: right;">Coins <i class="fal fa-coins"></i></td>';
