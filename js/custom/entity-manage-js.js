@@ -40,6 +40,9 @@ function u_load_child_search() {
     });
 }
 
+
+//Define file upload variables:
+var upload_control = $(".inputfile");
 var $input = $('.drag-box').find('input[type="file"]'),
     $label = $('.drag-box').find('label'),
     showFiles = function (files) {
@@ -439,6 +442,9 @@ function fn___entity_link_form_unlock(result){
 
     //Tooltips:
     $('[data-toggle="tooltip"]').tooltip();
+
+    //Replace the upload form to reset:
+    upload_control.replaceWith( upload_control = upload_control.clone( true ) );
 }
 
 
