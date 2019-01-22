@@ -86,23 +86,8 @@ foreach ($tr_filters as $key => $value) {
         $select_ui = '';
         foreach ($all_engs as $tr) {
 
-            //DOes it have a rate?
-            $rate_trs = $this->Database_model->fn___tr_fetch(array(
-                'tr_status >=' => 2, //Must be published+
-                'en_status >=' => 2, //Must be published+
-                //'tr_en_type_id' => 4319, //Number
-                'tr_en_parent_id' => 4374, //Mench Coins
-                'tr_en_child_id' => $tr['tr_en_type_id'],
-            ), array('en_child'), 1);
-
-            //How many total issued?
-            $coins_paid_trs = $this->Database_model->fn___tr_fetch(array(
-                'tr_en_type_id' => $tr['tr_en_type_id'], //Number
-            ), array(), 0, 0, array(), 'SUM(tr_coins) as coins_sum, tr_en_type_id', 'tr_en_type_id');
-
-
             //Echo drop down:
-            $select_ui .= '<option value="' . $tr['tr_en_type_id'] . '" ' . ((isset($_GET['tr_en_type_id']) && $_GET['tr_en_type_id'] == $tr['tr_en_type_id']) ? 'selected="selected"' : '') . '>' . $tr['tr_en_type_id'] . '/' . $tr['en_name'] . ' ('  . fn___echo_number($tr['trs_count']) . ( count($rate_trs) > 0 ? ' x'.$rate_trs[0]['tr_content'] : '' ) . ( isset($coins_paid_trs[0]['coins_sum']) && $coins_paid_trs[0]['coins_sum'] > 0 ? ' $'.$coins_paid_trs[0]['coins_sum'] : '' ) . ')</option>';
+            $select_ui .= '<option value="' . $tr['tr_en_type_id'] . '" ' . ((isset($_GET['tr_en_type_id']) && $_GET['tr_en_type_id'] == $tr['tr_en_type_id']) ? 'selected="selected"' : '') . '>' . $tr['en_name'] . ' ('  . fn___echo_number($tr['trs_count']) . ')</option>';
             $all_transaction_count += $tr['trs_count'];
         }
 

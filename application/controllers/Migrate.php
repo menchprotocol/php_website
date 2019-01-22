@@ -459,7 +459,7 @@ class Migrate extends CI_Controller
 
             if(count($rate_trs) > 0){
                 //Issue coins at this rate:
-                $this->db->query("UPDATE table_ledger SET tr_coins = '".$rate_trs[0]['tr_content']."' WHERE tr_en_type_id = " . $tr['tr_en_type_id']);
+                $this->db->query("UPDATE table_ledger SET tr_coins = '".$rate_trs[0]['tr_content']."' WHERE tr_en_credit_id > 0 AND tr_en_type_id = " . $tr['tr_en_type_id']);
             }
 
         }

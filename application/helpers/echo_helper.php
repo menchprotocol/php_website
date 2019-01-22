@@ -461,11 +461,16 @@ function fn___echo_tr_row($tr)
         // Link to Action Plan's main intent:
         //$ui .= '<a href="/intents/' . $tr['in_id'] . '" class="badge badge-primary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="' . $tr['in_outcome'] . '"><i class="fas fa-hashtag"></i></a>';
 
+
     }
+
 
     if (strlen($tr['tr_metadata']) > 0) {
         $ui .= '<a href="/ledger/fn___tr_json/' . $tr['tr_id'] . '" class="badge badge-primary grey" target="_blank" data-toggle="tooltip" title="See Transaction Details in a new window" data-placement="left" style="width:40px;"><i class="fas fa-search-plus"></i></a>';
     }
+
+    $ui .= '<span class="badge badge-primary transparent" style="width:40px; margin-right:0; margin-left:0;"><span class="btn-counter">' . $tr['tr_coins'] . '</span><i class="fal fa-coins"></i></span>';
+
 
     $ui .= '</span>';
 

@@ -81,6 +81,131 @@ foreach (fn___echo_status() as $object_id => $statuses) {
     echo '</div>';
 
 }
-
 echo '</div>';
+
+
+
+//Second row...
+echo '<h5 class="badge badge-h" style="display:inline-block;"><i class="fal fa-coins"></i> Coins Issued</h5>';
+
+
+echo '<div class="row">';
+
+
+//Count coins per Transaction
+echo '<div class="col-sm-6">';
+echo '<table class="table table-condensed table-striped stats-table" style="max-width:100%;">';
+
+
+//Object Header:
+echo '<tr style="font-weight: bold;">';
+echo '<td style="text-align: left;">Transaction Types</td>';
+echo '<td style="text-align: right;">Count</td>';
+echo '<td style="text-align: right;">Rate Now</td>';
+echo '<td style="text-align: right;">Coins <i class="fal fa-coins"></i></td>';
+echo '</tr>';
+
+//Object Stats grouped by Status:
+$all_transaction_count = 0;
+$all_coin_payouts = 0;
+$all_engs = $this->Database_model->fn___tr_fetch(array('tr_en_credit_id >' => 0), array('en_type'), 0, 0, array('coins_sum' => 'DESC'), 'COUNT(tr_en_type_id) as trs_count, SUM(tr_coins) as coins_sum, en_name, en_icon, tr_en_type_id', 'tr_en_type_id, en_name, en_icon');
+foreach ($all_engs as $tr) {
+
+    //DOes it have a rate?
+    $rate_trs = $this->Database_model->fn___tr_fetch(array(
+        'tr_status >=' => 2, //Must be published+
+        'en_status >=' => 2, //Must be published+
+        //'tr_en_type_id' => 4319, //Number
+        'tr_en_parent_id' => 4374, //Mench Coins
+        'tr_en_child_id' => $tr['tr_en_type_id'],
+    ), array('en_child'), 1);
+
+    //Echo stats:
+    echo '<tr>';
+    echo '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;">'.( strlen($tr['en_icon']) > 0 ? $tr['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$tr['tr_en_type_id'].'">'.$tr['en_name'].'</a></td>';
+    echo '<td style="text-align: right;">'.number_format($tr['trs_count'],0).'</td>';
+    echo '<td style="text-align: right;">'.( count($rate_trs) > 0 ? 'x'.number_format($rate_trs[0]['tr_content'],0) : '-' ).'</td>';
+    echo '<td style="text-align: right;">'.number_format($tr['coins_sum'], 0).'</td>';
+    echo '</tr>';
+
+    $all_transaction_count += $tr['trs_count'];
+    $all_coin_payouts += $tr['coins_sum'];
+
+}
+
+echo '<tr style="font-weight: bold;">';
+echo '<td style="text-align: right;">Totals:&nbsp;</td>';
+echo '<td style="text-align: right;">'.number_format($all_transaction_count,0).'</td>';
+echo '<td style="text-align: right;">x'.round($all_coin_payouts/$all_transaction_count).'</td>';
+echo '<td style="text-align: right;">'.number_format($all_coin_payouts,0).'</td>';
+echo '</tr>';
+
+
+//End Section:
+echo '</table>';
+echo '</div>';
+
+
+
+
+
+
+
+
+//Count coins per Miner
+echo '<div class="col-sm-6">';
+echo '<table class="table table-condensed table-striped stats-table" style="max-width:100%;">';
+
+
+//Object Header:
+echo '<tr style="font-weight: bold;">';
+echo '<td colspan="2" style="text-align: left;">Miner</td>';
+echo '<td style="text-align: right;">Count</td>';
+echo '<td style="text-align: right;">Rate Avg</td>';
+echo '<td style="text-align: right;">Coins <i class="fal fa-coins"></i></td>';
+echo '</tr>';
+
+//Object Stats grouped by Status:
+$all_transaction_count = 0;
+$all_coin_payouts = 0;
+$all_engs = $this->Database_model->fn___tr_fetch(array('tr_en_credit_id >' => 0), array('en_credit'), 25, 0, array('coins_sum' => 'DESC'), 'COUNT(tr_en_credit_id) as trs_count, SUM(tr_coins) as coins_sum, en_name, en_icon, tr_en_credit_id', 'tr_en_credit_id, en_name, en_icon');
+foreach ($all_engs as $count=>$tr) {
+
+    //Echo stats:
+    echo '<tr>';
+    echo '<td style="text-align: center;">#'.($count+1).'</td>';
+    echo '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;">'.( strlen($tr['en_icon']) > 0 ? $tr['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$tr['tr_en_credit_id'].'">'.$tr['en_name'].'</a></td>';
+    echo '<td style="text-align: right;">'.number_format($tr['trs_count'],0).'</td>';
+    echo '<td style="text-align: right;">x'.round(($tr['coins_sum']/$tr['trs_count']),0).'</td>';
+    echo '<td style="text-align: right;">'.number_format($tr['coins_sum'], 0).'</td>';
+    echo '</tr>';
+
+    $all_transaction_count += $tr['trs_count'];
+    $all_coin_payouts += $tr['coins_sum'];
+
+}
+
+echo '<tr style="font-weight: bold;">';
+echo '<td colspan="2" style="text-align: right;">Top '.($count+1).' Totals:&nbsp;</td>';
+echo '<td style="text-align: right;">'.number_format($all_transaction_count,0).'</td>';
+echo '<td style="text-align: right;">x'.round($all_coin_payouts/$all_transaction_count).'</td>';
+echo '<td style="text-align: right;">'.number_format($all_coin_payouts,0).'</td>';
+echo '</tr>';
+
+
+//End Section:
+echo '</table>';
+echo '</div>';
+
+
+echo '</div>'; //End second row
+
+
+
+//Give some space for the chat button not to overlap:
+echo '<div class="row"><div class="col-sm-6" style="padding-bottom: 40px;">&nbsp;</div></div>';
+
+
+
+
 ?>
