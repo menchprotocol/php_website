@@ -130,6 +130,12 @@ $(document).ready(function () {
     });
 
 
+    var $input = $('.drag-box').find('input[type="file"]'),
+        $label = $('.drag-box').find('label'),
+        showFiles = function (files) {
+            $label.text(files.length > 1 ? ($input.attr('data-multiple-caption') || '').replace('{count}', files.length) : files[0].name);
+        };
+
     //Should we auto start?
     if (isAdvancedUpload) {
 
