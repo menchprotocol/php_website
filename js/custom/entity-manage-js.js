@@ -422,7 +422,7 @@ function fn___entity_link_form_lock(){
 }
 
 function fn___entity_link_form_unlock(result){
-    
+
     //What was the result?
     if (result.status) {
 
@@ -454,8 +454,7 @@ function fn___en_new_url_from_attachment(droppedFiles, uploadType) {
         //Lock message:
         fn___entity_link_form_lock();
 
-        var ajaxData = [];
-
+        var ajaxData = new FormData($('.drag-box').get(0));
         if (droppedFiles) {
             $.each(droppedFiles, function (i, file) {
                 var thename = $input.attr('name');
@@ -470,7 +469,7 @@ function fn___en_new_url_from_attachment(droppedFiles, uploadType) {
 
         $.ajax({
             url: '/intents/fn___en_new_url_from_attachment',
-            type: 'POST',
+            type: 'post',
             data: ajaxData,
             dataType: 'json',
             cache: false,
