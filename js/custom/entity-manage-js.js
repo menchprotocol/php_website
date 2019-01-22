@@ -428,21 +428,17 @@ function fn___entity_link_form_lock(){
 function fn___entity_link_form_unlock(result){
 
     //What was the result?
-    if (result.status) {
-
-        $('#tr_content').prop("disabled", false).css('background-color','#FFF');
-
-        $('.btn-save').removeClass('grey').attr('href', 'javascript:en_modify_save();').html('Save');
-
-        //Tooltips:
-        $('[data-toggle="tooltip"]').tooltip();
-
-    } else {
-
+    if (!result.status) {
         alert('ERROR: ' + result.message);
-
     }
 
+    //Unlock either way:
+    $('#tr_content').prop("disabled", false).css('background-color','#FFF');
+
+    $('.btn-save').removeClass('grey').attr('href', 'javascript:en_modify_save();').html('Save');
+
+    //Tooltips:
+    $('[data-toggle="tooltip"]').tooltip();
 }
 
 
