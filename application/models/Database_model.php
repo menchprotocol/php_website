@@ -226,7 +226,7 @@ class Database_model extends CI_Model
         ), array('en_child'), 1);
         if (count($award_coins) > 0) {
             //Yes, we have to issue coins:
-            $insert_columns['tr_coins'] = floatval($award_coins[0]['tr_content']);
+            $insert_columns['tr_coins'] = $award_coins[0]['tr_content'];
         }
 
         //Lets log:
