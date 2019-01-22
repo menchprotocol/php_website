@@ -167,7 +167,7 @@ function fn___detect_tr_en_type_id($string)
     if (!$string || strlen($string) == 0) {
         //Naked:
         return 4230;
-    } elseif (strlen(intval($string))==strlen($string) || floatval($string)==$string) {
+    } elseif (strlen(intval($string))==strlen($string)) {
         //Number:
         return 4319;
     } elseif (filter_var($string, FILTER_VALIDATE_URL)) {
