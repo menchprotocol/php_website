@@ -646,7 +646,7 @@ class Intents extends CI_Controller
 
                 } else {
 
-                    if($key=='tr_status' && $value < 1){
+                    if($key=='tr_status' && $value < 0){
                         $remove_from_ui = 1;
                     }
 

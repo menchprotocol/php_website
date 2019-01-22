@@ -703,7 +703,7 @@ class Entities extends CI_Controller
         } elseif ($login_passwords[0]['tr_status'] < 2) {
             //They do not have a password assigned yet!
             return fn___redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Password is not activated.</div>');
-        } elseif (!($login_passwords[0]['tr_content'] == hash('sha256', $this->config->item('password_salt') . $_POST['input_password']))) {
+        } elseif (!(strtolower($login_passwords[0]['tr_content']) == strtolower(hash('sha256', $this->config->item('password_salt') . $_POST['input_password'])))) {
             //Bad password
             return fn___redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Incorrect password for [' . $_POST['input_email'] . ']</div>');
         }
