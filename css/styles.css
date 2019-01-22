@@ -2035,7 +2035,7 @@ select.form-control {
     width: 16px !important;
     height: 16px !important;
     border-radius: 50% !important;
-    border:1px solid #2b2b2b !important;
+    border:0 solid #2b2b2b !important;
     left:10px !important;
     top:-16px !important;
     position: absolute !important;
