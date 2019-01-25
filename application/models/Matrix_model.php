@@ -598,6 +598,7 @@ class Matrix_model extends CI_Model
         //Get core data:
         $metadata_this = array(
             'in_flat_tree' => array(),
+            'in_flat_unique_published_tree' => array(),
             'in_links_flat_tree' => array(),
             'actionplan_ins_flat' => array(),
         );
@@ -628,6 +629,10 @@ class Matrix_model extends CI_Model
 
         //Add the link relations before we start recursion so we can have the Tree in up-custom order:
         array_push($metadata_this['in_flat_tree'], intval($in_id));
+
+        if($ins[0]['in_status'] >= 2 && !in_array($in_id , $metadata_this['in_flat_unique_published_tree'])){
+            array_push($metadata_this['in_flat_unique_published_tree'], intval($in_id));
+        }
         if (isset($ins[0]['tr_id'])) {
             array_push($metadata_this['in_links_flat_tree'], intval($ins[0]['tr_id']));
             array_push($metadata_this['actionplan_ins_flat'], intval($ins[0]['tr_id']));
@@ -658,6 +663,7 @@ class Matrix_model extends CI_Model
                 //Addup values:
                 array_push($metadata_this['in_links_flat_tree'], $recursion['in_links_flat_tree']);
                 array_push($metadata_this['actionplan_ins_flat'], $recursion['actionplan_ins_flat']);
+                array_push($metadata_this['in_flat_unique_published_tree'], $recursion['in_flat_unique_published_tree']);
                 array_push($metadata_this['in_flat_tree'], $recursion['in_flat_tree']);
             }
         }
@@ -668,6 +674,13 @@ class Matrix_model extends CI_Model
             $result[] = $v;
         });
         $metadata_this['in_flat_tree'] = $result;
+
+        //Flatten intent unique ID array:
+        $result = array();
+        array_walk_recursive($metadata_this['in_flat_unique_published_tree'], function ($v, $k) use (&$result) {
+            $result[] = $v;
+        });
+        $metadata_this['in_flat_unique_published_tree'] = $result;
 
         $result = array();
         array_walk_recursive($metadata_this['in_links_flat_tree'], function ($v, $k) use (&$result) {
@@ -786,10 +799,12 @@ class Matrix_model extends CI_Model
             '___messages_count' => 0, //A count of all messages for this intent only
             'in_tree' => array(), //Fetches the intent tree with its full 2-dimensional & hierarchical beauty
             'in_flat_tree' => array(), //Puts all the tree's intent IDs in a flat array, useful for quick processing
+            'in_flat_unique_published_tree' => array(), //Unique IDs
             'in_links_flat_tree' => array(), //Puts all the tree's intent transaction (intent link) IDs in a flat array, useful for quick processing
 
             //Fetched for Published+ Intents:
             '___tree_published_count' => 0, //A count of all published (in_status >= 2) intents within the tree
+            '___tree_published_unique_count' => 0, //A count of all published (in_status >= 2) UNIQUE intents
             '___messages_tree_count' => 0, //A count of all messages for all tree intents that are published
             '___tree_min_seconds' => 0, //The minimum number of seconds required to complete tree
             '___tree_max_seconds' => 0, //The maximum number of seconds required to complete tree
@@ -854,6 +869,10 @@ class Matrix_model extends CI_Model
 
         //Always add intent to the flat intent tree which is part of the metadata:
         array_push($metadata_this['in_flat_tree'], intval($in_id));
+
+        if($ins[0]['in_status'] >= 2 && !in_array($in_id , $metadata_this['in_flat_unique_published_tree'])){
+            array_push($metadata_this['in_flat_unique_published_tree'], intval($in_id));
+        }
 
 
         //Add the link relations before we start recursion so we can have the Tree in up-custom order:
@@ -952,6 +971,7 @@ class Matrix_model extends CI_Model
                     $metadata_this['___tree_active_count'] += $recursion['___tree_active_count'];
                     array_push($metadata_this['in_links_flat_tree'], $recursion['in_links_flat_tree']);
                     array_push($metadata_this['in_flat_tree'], $recursion['in_flat_tree']);
+                    array_push($metadata_this['in_flat_unique_published_tree'], $recursion['in_flat_unique_published_tree']);
                     array_push($metadata_this['in_tree'], $recursion['in_tree']);
 
                     //Is this published?
@@ -1225,6 +1245,7 @@ class Matrix_model extends CI_Model
 
                     'in__tree_in_active_count' => $this_in['___tree_active_count'],
                     'in__tree_in_published_count' => $this_in['___tree_published_count'],
+                    'in__flat_unique_published_count' => count($metadata_this['in_flat_unique_published_tree']),
                     'in__message_count' => $this_in['___messages_count'],
                     'in__message_tree_count' => $this_in['___messages_tree_count'],
                     'in__tree_experts' => $this_in['___tree_experts'],
@@ -1244,6 +1265,15 @@ class Matrix_model extends CI_Model
             $result[] = $v;
         });
         $metadata_this['in_flat_tree'] = $result;
+
+
+        $result = array();
+        array_walk_recursive($metadata_this['in_flat_unique_published_tree'], function ($v, $k) use (&$result) {
+            $result[] = $v;
+        });
+        $metadata_this['in_flat_unique_published_tree'] = $result;
+
+
 
         $result = array();
         array_walk_recursive($metadata_this['in_links_flat_tree'], function ($v, $k) use (&$result) {

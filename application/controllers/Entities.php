@@ -31,6 +31,14 @@ class Entities extends CI_Controller
             return fn___redirect_message('/entities', '<div class="alert alert-danger" role="alert">Invalid Entity ID</div>');
         }
 
+        if(isset($_GET['action_type']) && isset($_GET['action_type']) && array_key_exists($_GET['action_type'], $this->config->item('en_mass_actions'))){
+
+            //Process request:
+
+
+            $this->session->set_flashdata('hm', '<div class="alert alert-success" role="alert">Successfully added </div>');
+        }
+
         //Load views:
         $this->load->view('view_shared/matrix_header', array(
             'title' => $ens[0]['en_name'].' | Entities',

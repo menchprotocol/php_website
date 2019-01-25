@@ -747,7 +747,7 @@ function fn___echo_in_overview($in, $fb_messenger_format = 0, $expand_mode = fal
             <div class="panel-heading" role="tab" id="heading' . $id . '">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $id . '">
-                    <i class="fas" style="transform:none !important;">💡</i> ' . $metadata['in__tree_in_published_count'] . ' Key Ideas<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                    <i class="fas" style="transform:none !important;">💡</i> ' . $metadata['in__flat_unique_published_count'] . ' Key Ideas<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                 </a>
             </h4>
         </div>
@@ -1331,17 +1331,6 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
 
 
-    //Always Show Intent Icon (AND or OR)
-    $ui .= '<span class="double-icon" style="margin-right:5px;">';
-
-    //Show larger intent icon (AND or OR):
-    $ui .= '<span class="icon-main in_is_any_' . $in['in_id'] . '"><span class="in_is_any_val" data-toggle="tooltip" data-placement="right" title="'.$status_index['in_is_any'][$in['in_is_any']]['s_name'].': '.$status_index['in_is_any'][$in['in_is_any']]['s_desc'].'">' . $status_index['in_is_any'][$in['in_is_any']]['s_icon'] . '</span></span> ';
-
-    //Show smaller intent status:
-    $ui .= '<span class="icon-sub in_status_' . $in['in_id'] . '"><span class="in_status_val" data-toggle="tooltip" data-placement="right" title="'.$status_index['in_status'][$in['in_status']]['s_name'].': '.$status_index['in_status'][$in['in_status']]['s_desc'].'">' . $status_index['in_status'][$in['in_status']]['s_icon'] . '</span></span> ';
-
-    $ui .= '</span>';
-
 
 
 
@@ -1363,7 +1352,27 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
         $ui .= '</span>';
 
+    } else {
+
+        //Show Blank box:
+        $ui .= '<span class="double-icon" style="margin-right:7px;"><span class="icon-main"><i class="fas fa-map-pin" data-toggle="tooltip" data-placement="right" title="You are Here"></i></span><span class="icon-sub">&nbsp;</span></span>';
+
     }
+
+
+
+
+    //Always Show Intent Icon (AND or OR)
+    $ui .= '<span class="double-icon" style="margin-right:5px;">';
+
+    //Show larger intent icon (AND or OR):
+    $ui .= '<span class="icon-main in_is_any_' . $in['in_id'] . '"><span class="in_is_any_val" data-toggle="tooltip" data-placement="right" title="'.$status_index['in_is_any'][$in['in_is_any']]['s_name'].': '.$status_index['in_is_any'][$in['in_is_any']]['s_desc'].'">' . $status_index['in_is_any'][$in['in_is_any']]['s_icon'] . '</span></span> ';
+
+    //Show smaller intent status:
+    $ui .= '<span class="icon-sub in_status_' . $in['in_id'] . '"><span class="in_status_val" data-toggle="tooltip" data-placement="right" title="'.$status_index['in_status'][$in['in_status']]['s_name'].': '.$status_index['in_status'][$in['in_status']]['s_desc'].'">' . $status_index['in_status'][$in['in_status']]['s_icon'] . '</span></span> ';
+
+    $ui .= '</span>';
+
 
 
 
@@ -1398,7 +1407,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
         //Is this the focused item in the parent sibling dropdown?
         if($is_child_focused){
-            $ui .= '<span class="badge badge-primary" style="font-size: 0.8em;"><i class="fas fa-map-pin"></i> We\'re Here</span> ';
+            $ui .= '<span class="badge badge-primary" style="font-size: 0.8em;"><i class="fas fa-map-pin"></i> You\'re Here</span> ';
         }
 
         $ui .= '<span id="title_' . $tr_id . '" class="tree_title in_outcome_' . $in['in_id'] . (strlen($in['in_alternatives']) > 0 ? ' has-desc ' : '') . '" data-toggle="tooltip" data-placement="right" title="' . $in['in_alternatives'] . '">' . $in['in_outcome'] . '</span> ';
@@ -1598,19 +1607,6 @@ function fn___echo_en($en, $level, $is_parent = false)
 
 
 
-    //Always Show Entity Icons
-    $ui .= '<span class="double-icon" style="margin-right:7px;">';
-
-    //Show larger custom entity icon:
-    $ui .= '<span class="icon-main en_icon_ui en_icon_ui_' . $en['en_id'] . '"><span data-toggle="tooltip" data-placement="right" title="Entity Icon">' . fn___echo_en_icon($en) . '</span></span>';
-
-    //Show smaller entity status:
-    $ui .= '<span class="icon-sub en_status_' . $en['en_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$status_index['en_status'][$en['en_status']]['s_name'].': '.$status_index['en_status'][$en['en_status']]['s_desc'].'">' . $status_index['en_status'][$en['en_status']]['s_icon'] . '</span></span> ';
-
-    $ui .= '</span>';
-
-
-
 
     //Hidden fields to store dynamic value for on-demand JS modifications:
     //Show Transaction Status if Available:
@@ -1625,10 +1621,30 @@ function fn___echo_en($en, $level, $is_parent = false)
         $ui .= '<span class="icon-main tr_type_' . $tr_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$entity_links[$en['tr_en_type_id']]['m_name'].': '.$entity_links[$en['tr_en_type_id']]['m_desc'].'">' . $entity_links[$en['tr_en_type_id']]['m_icon'] . '</span></span> ';
 
         //Show smaller transaction status icon:
-        $ui .= '<span class="icon-sub tr_status_' . $tr_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$status_index['tr_status'][$en['tr_status']]['s_name'].': '.$status_index['tr_status'][$en['tr_status']]['s_desc'].']">' . $status_index['tr_status'][$en['tr_status']]['s_icon'] . '</span></span> ';
+        $ui .= '<span class="icon-sub tr_status_' . $tr_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$status_index['tr_status'][$en['tr_status']]['s_name'].': '.$status_index['tr_status'][$en['tr_status']]['s_desc'].']">' . $status_index['tr_status'][$en['tr_status']]['s_icon'] . '</span></span>';
 
         $ui .= '</span>';
+    } else {
+
+        //Show Blank box:
+        $ui .= '<span class="double-icon" style="margin-right:7px;"><span class="icon-main"><i class="fas fa-map-pin" data-toggle="tooltip" data-placement="right" title="You are Here"></i></span><span class="icon-sub">&nbsp;</span></span>';
+
     }
+
+
+
+
+
+    //Always Show Entity Icons
+    $ui .= '<span class="double-icon" style="margin-right:7px;">';
+
+    //Show larger custom entity icon:
+    $ui .= '<span class="icon-main en_icon_ui en_icon_ui_' . $en['en_id'] . '"><span data-toggle="tooltip" data-placement="right" title="Entity Icon">' . fn___echo_en_icon($en) . '</span></span>';
+
+    //Show smaller entity status:
+    $ui .= '<span class="icon-sub en_status_' . $en['en_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$status_index['en_status'][$en['en_status']]['s_name'].': '.$status_index['en_status'][$en['en_status']]['s_desc'].'">' . $status_index['en_status'][$en['en_status']]['s_icon'] . '</span></span>';
+
+    $ui .= '</span>';
 
 
 
@@ -1649,9 +1665,11 @@ function fn___echo_en($en, $level, $is_parent = false)
     //Does this entity also include a transaction?
     if ($tr_id > 0) {
 
+        $tr_content = fn___echo_tr_content($en['tr_content'] , $en['tr_en_type_id']);
+
         //Is this Entity transaction an Embeddable URL type or not?
-        $ui .= ' <span class="tr_content tr_content_' . $tr_id . '" style="min-width:240px; line-height: 140%; display:inline-block;">';
-        $ui .= fn___echo_tr_content($en['tr_content'] , $en['tr_en_type_id']);
+        $ui .= ' <span class="tr_content tr_content_' . $tr_id . '" style="'.( strlen($tr_content) > 0 ? 'min-width:240px;' : '').' line-height: 140%; display:inline-block;">';
+        $ui .= $tr_content;
         $ui .= '</span>';
 
     }

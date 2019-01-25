@@ -159,7 +159,7 @@ $(document).ready(function () {
             },
             templates: {
                 suggestion: function (suggestion) {
-                    return echo_js_suggestion('in',suggestion);
+                    return echo_js_suggestion('in',suggestion, 1);
                 },
             }
         },
@@ -180,7 +180,7 @@ $(document).ready(function () {
             },
             templates: {
                 suggestion: function (suggestion) {
-                    return echo_js_suggestion('en',suggestion);
+                    return echo_js_suggestion('en',suggestion, 1);
                 },
             }
         }

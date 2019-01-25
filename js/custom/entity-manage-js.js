@@ -20,7 +20,7 @@ function en_load_child_search() {
         templates: {
             suggestion: function (suggestion) {
                 //If clicked, would trigger the autocomplete:selected above which will trigger the tr_add() function
-                return echo_js_suggestion('en', suggestion);
+                return echo_js_suggestion('en', suggestion, 0);
             },
             header: function (data) {
                 if (!data.isEmpty) {
@@ -136,7 +136,7 @@ $(document).ready(function () {
         templates: {
             suggestion: function (suggestion) {
                 //If clicked, would trigger the autocomplete:selected above which will trigger the tr_add() function
-                return echo_js_suggestion('en', suggestion);
+                return echo_js_suggestion('en', suggestion, 0);
             },
             header: function (data) {
                 if (!data.isEmpty) {

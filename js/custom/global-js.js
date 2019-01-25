@@ -14,12 +14,12 @@ ga('create', 'UA-92774608-1', 'auto');
 ga('send', 'pageview');
 
 
-function echo_js_suggestion(obj_type, suggestion){
+function echo_js_suggestion(obj_type, suggestion, is_top){
     if(obj_type == 'in'){
         var fancy_hours = fancy_time(suggestion);
-        return '<span class="double-icon-search"><span class="icon-main">' + object_js_statuses['in_is_any'][suggestion.in_is_any]["s_icon"] + '</span><span class="icon-sub">' + object_js_statuses['in_status'][suggestion.in_status]["s_icon"] + '</span></span> ' + suggestion._highlightResult.in_outcome.value + (fancy_hours ? '<span class="search-info">' + ' <i class="fal fa-clock"></i>' + fancy_hours + '</span>' : '');
+        return '<span class="double-icon-search is-top-'+is_top+'"><span class="icon-main">' + object_js_statuses['in_is_any'][suggestion.in_is_any]["s_icon"] + '</span><span class="icon-sub">' + object_js_statuses['in_status'][suggestion.in_status]["s_icon"] + '</span></span> ' + suggestion._highlightResult.in_outcome.value + (fancy_hours ? '<span class="search-info">' + ' <i class="fal fa-clock"></i>' + fancy_hours + '</span>' : '');
     } else if (obj_type == 'en') {
-        return '<span class="double-icon-search"><span class="icon-main">' + ( suggestion.en_icon ? suggestion.en_icon : '<i class="fas fa-at grey-at"></i>' ) + '</span><span class="icon-sub">' + object_js_statuses['en_status'][suggestion.en_status]["s_icon"] + '</span></span> ' + suggestion._highlightResult.en_name.value;
+        return '<span class="double-icon-search is-top-'+is_top+'"><span class="icon-main">' + ( suggestion.en_icon ? suggestion.en_icon : '<i class="fas fa-at grey-at"></i>' ) + '</span><span class="icon-sub">' + object_js_statuses['en_status'][suggestion.en_status]["s_icon"] + '</span></span> ' + suggestion._highlightResult.en_name.value;
     }
 }
 

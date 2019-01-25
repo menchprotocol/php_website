@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  *
  * Global variables used throughout the platform.
- * use-case format: $this->config->item('core_objects')
+ * use-case format: $this->config->item('en_mass_actions')
  *
  */
 
@@ -55,6 +55,20 @@ $config['message_commands']         = array( //The list of commands supported wi
                                         '/slice', //slice a part of a YouTube video like this: /slice:180:202 (22 seconds starting from minute 3:00
                                         '/link', //Button link like this: /link:Open Mench:https://mench.com
                                     );
+
+$config['en_convert_4537']          = array( //Used for saving media to Facebook Servers to speed-up delivery over Messenger
+    4258 => 'video',
+    4259 => 'audio',
+    4260 => 'image',
+    4261 => 'file',
+);
+
+$config['en_mass_actions']          = array( //Various mass actions to be taken on Entity children
+    'prefix_add'    => 'Add Prefix to all Children',
+    'prefix_trim'   => 'Trim Prefix from all Children',
+    'postfix_add'   => 'Add Postfix to all Children',
+    'postfix_trim'  => 'Trim Postfix from all Children',
+);
 
 //Third-Party Settings:
 $config['fb_max_message']           = 2000; //The maximum length of a Message accepted via Messenger API

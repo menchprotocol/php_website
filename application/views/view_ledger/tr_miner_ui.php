@@ -190,24 +190,27 @@ echo '<h5 class="badge badge-h"><i class="fas fa-filter"></i> Filters</h5>';
 echo '<form action="" method="GET">';
 
 if(count($advanced_filters) > 0){
-
-    //Draw advance filters:
-    foreach ($advanced_filters as $key => $value) {
-        echo '<div class="advance-filter hidden"><input type="text" name="' . $key . '" placeholder="' . $value . '" data-toggle="tooltip" data-placement="right" title="' . $value . '" value="' . ((isset($_GET[$key])) ? $_GET[$key] : '') . '" class="form-control border"></div>';
-    }
-
     //button to show:
     echo '<a href="javascript:void();" onclick="$(\'.advance-filter\').removeClass(\'hidden\');$(this).hide();"><i class="fal fa-plus-circle"></i> Advance Filters</a>';
 }
+
+//Draw advance filters:
+echo '<table class="table table-condensed advance-filter hidden"><tr>';
+foreach ($advanced_filters as $key => $value) {
+    echo '<td><input type="text" name="' . $key . '" placeholder="' . $value . '" data-toggle="tooltip" data-placement="top" title="' . $value . '" value="' . ((isset($_GET[$key])) ? $_GET[$key] : '') . '" class="form-control border"></td>';
+}
+echo '</tr></table>';
+
 
 echo '<table class="table table-condensed"><tr>';
 
 //Give Date Limiters:
 echo '<td><div style="padding-right:5px;">';
+
 echo '<input type="date" class="form-control border" name="start_range" data-toggle="tooltip" data-placement="top" title="Transaction start range (Including this date)" value="'.( isset($_GET['start_range']) ? $_GET['start_range'] : '' ).'">';
 echo '</div></td>';
 
-echo '<td><div style="padding-right:5px;">';
+echo '<td valign="top"><div style="padding-right:5px;">';
 echo '<input type="date" class="form-control border" name="end_range" data-toggle="tooltip" data-placement="top" title="Transaction end range (Including this date)" value="'.( isset($_GET['end_range']) ? $_GET['end_range'] : '' ).'">';
 echo '</div></td>';
 

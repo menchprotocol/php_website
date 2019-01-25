@@ -14,7 +14,7 @@
 
         <?php
         //Parents
-        echo '<h5><span class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-parent-count">' . count($entity['en__parents']) . '</span> Parent' . fn___echo__s(count($entity['en__parents'])) . '</span></h5>';
+        echo '<h5><span class="badge badge-h"><span class="li-parent-count">' . count($entity['en__parents']) . '</span> Parent' . fn___echo__s(count($entity['en__parents'])) . ' <i class="fas fa-sign-in-alt"></i></span></h5>';
         echo '<div id="list-parent" class="list-group  grey-list">';
         foreach ($entity['en__parents'] as $en) {
             echo fn___echo_en($en, 2, true);
@@ -46,8 +46,15 @@
 
         //Children:
         echo '<div class="indent2"><table width="100%" style="margin-top:10px;"><tr>';
-        echo '<td style="width: 100px;"><h5 class="badge badge-h"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-children-count">' . $entity['en__child_count'] . '</span> Children</h5></td>';
-        
+        echo '<td style="width:140px;">';
+
+
+            echo '<h5 class="badge badge-h inline-block"><span class="li-children-count inline-block">' . $entity['en__child_count'] . '</span> Children <i class="fas fa-sign-out-alt rotate90"></i></h5>';
+
+            echo '<a href="javascript:void(0);" onclick="$(\'.mass_modify\').toggle()" style="text-decoration: none; margin-left: 5px;"  data-toggle="tooltip" data-placement="right" title="Mass modify children"><i class="fal fa-ellipsis-v" style="font-size: 1.2em; color: #2b2b2b;"></i></a>';
+
+            echo '</td>';
+
         //Count orphans IF we are in the top parent root:
         if ($this->config->item('en_start_here_id') == $entity['en_id']) {
             $orphans_count = count($this->Database_model->fn___en_fetch(array(
@@ -90,6 +97,25 @@
 
         echo '</div></td>';
         echo '</tr></table></div>';
+
+
+        echo '<form class="mass_modify" method="GET" action="" style="display:none; width: 100% !important;">';
+
+            echo '<select class="form-control border inline-block" name="action_type">';
+
+                foreach ($this->config->item('en_mass_actions') as $at_id => $at_name) {
+                    if($status_id < 3){ //No need to verify entity links!
+                        echo '<option value="' . $at_id . '">' .$at_name . '</option>';
+                    }
+                }
+            echo '</select>';
+
+            echo '<input type="text" name="modify_text" placeholder="String" style="max-width:240px;" class="form-control border inline-block">';
+
+            echo '<input type="submit" value="Apply" class="btn btn-secondary inline-block">';
+
+        echo '</form>';
+
 
 
         echo '<div id="list-children" class="list-group grey-list indent2">';

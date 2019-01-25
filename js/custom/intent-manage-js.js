@@ -145,7 +145,7 @@ $(document).ready(function () {
         },
         templates: {
             suggestion: function (suggestion) {
-                return echo_js_suggestion('in',suggestion);
+                return echo_js_suggestion('in',suggestion, 0);
             },
             header: function (data) {
                 if (!data.isEmpty) {
@@ -242,7 +242,7 @@ function fn___in_load_search_level3(focus_element) {
         },
         templates: {
             suggestion: function (suggestion) {
-                return echo_js_suggestion('in',suggestion);
+                return echo_js_suggestion('in',suggestion, 0);
             },
             header: function (data) {
                 if (!data.isEmpty) {
