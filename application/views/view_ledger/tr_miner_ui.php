@@ -1,17 +1,117 @@
 <?php
 
-$tr_filters = array(
+$primary_filters = array(
     'tr_en_id' => 'Entity IDs',
     'tr_in_id' => 'Intent IDs',
     'tr_id' => 'Transaction IDs',
     'tr_en_type_id' => 'Link Types',
 );
 
+$advanced_filters = array(
+    'tr_en_credit_id' => 'Entity Credit IDs',
+    'tr_en_parent_id' => 'Entity Parent IDs',
+    'tr_en_child_id' => 'Entity Child IDs',
+    'tr_in_parent_id' => 'Intent Parent IDs',
+    'tr_in_child_id' => 'Intent Child IDs',
+    'tr_tr_parent_id' => 'Transaction Parent IDs',
+    'in_status' => 'Intent Statuses',
+    'en_status' => 'Entity Statuses',
+    'tr_status' => 'Transaction Statuses',
+);
+
 //Construct filters based on GET variables:
 $filters = array();
-foreach ($tr_filters as $key => $value) {
+$join_by = array('en_type');
+
+foreach (array_merge($primary_filters, $advanced_filters) as $key => $value) {
     if (isset($_GET[$key])) {
-        if ($key == 'tr_en_id') {
+
+        if ($key == 'in_status') {
+
+            if(isset($_GET['tr_en_type_id']) && $_GET['tr_en_type_id']==4250){ //Intent created
+                //Filter intent status based on
+                array_push($join_by, 'in_child');
+
+                if (substr_count($_GET[$key], ',') > 0) {
+                    //This is multiple IDs:
+                    $filters['( in_status IN (' . $_GET[$key] . '))'] = null;
+                } else {
+                    $filters['in_status'] = intval($_GET[$key]);
+                }
+            } else {
+                unset($_GET[$key]);
+            }
+
+        } elseif ($key == 'en_status') {
+
+            if(isset($_GET['tr_en_type_id']) && $_GET['tr_en_type_id']==4251){ //Entity Created
+
+                //Filter intent status based on
+                $join_by = array('en_child');
+
+                if (substr_count($_GET[$key], ',') > 0) {
+                    //This is multiple IDs:
+                    $filters['( en_status IN (' . $_GET[$key] . '))'] = null;
+                } else {
+                    $filters['en_status'] = intval($_GET[$key]);
+                }
+            } else {
+                unset($_GET[$key]);
+            }
+
+        } elseif ($key == 'tr_status') {
+
+
+            if (substr_count($_GET[$key], ',') > 0) {
+                //This is multiple IDs:
+                $filters['( tr_status IN (' . $_GET[$key] . '))'] = null;
+            } else {
+                $filters['tr_status'] = intval($_GET[$key]);
+            }
+
+        } elseif ($key == 'tr_en_credit_id') {
+            if (substr_count($_GET[$key], ',') > 0) {
+                //This is multiple IDs:
+                $filters['( tr_en_credit_id IN (' . $_GET[$key] . '))'] = null;
+            } elseif (intval($_GET[$key]) > 0) {
+                $filters['tr_en_credit_id'] = $_GET[$key];
+            }
+        } elseif ($key == 'tr_en_parent_id') {
+            if (substr_count($_GET[$key], ',') > 0) {
+                //This is multiple IDs:
+                $filters['( tr_en_parent_id IN (' . $_GET[$key] . '))'] = null;
+            } elseif (intval($_GET[$key]) > 0) {
+                $filters['tr_en_parent_id'] = $_GET[$key];
+            }
+        } elseif ($key == 'tr_en_child_id') {
+            if (substr_count($_GET[$key], ',') > 0) {
+                //This is multiple IDs:
+                $filters['( tr_en_child_id IN (' . $_GET[$key] . '))'] = null;
+            } elseif (intval($_GET[$key]) > 0) {
+                $filters['tr_en_child_id'] = $_GET[$key];
+            }
+        } elseif ($key == 'tr_in_parent_id') {
+            if (substr_count($_GET[$key], ',') > 0) {
+                //This is multiple IDs:
+                $filters['( tr_in_parent_id IN (' . $_GET[$key] . '))'] = null;
+            } elseif (intval($_GET[$key]) > 0) {
+                $filters['tr_in_parent_id'] = $_GET[$key];
+            }
+        } elseif ($key == 'tr_in_child_id') {
+            if (substr_count($_GET[$key], ',') > 0) {
+                //This is multiple IDs:
+                $filters['( tr_in_child_id IN (' . $_GET[$key] . '))'] = null;
+            } elseif (intval($_GET[$key]) > 0) {
+                $filters['tr_in_child_id'] = $_GET[$key];
+            }
+        } elseif ($key == 'tr_tr_parent_id') {
+            if (substr_count($_GET[$key], ',') > 0) {
+                //This is multiple IDs:
+                $filters['( tr_tr_parent_id IN (' . $_GET[$key] . '))'] = null;
+            } elseif (intval($_GET[$key]) > 0) {
+                $filters['tr_tr_parent_id'] = $_GET[$key];
+            }
+        } elseif ($key == 'tr_en_id') {
             //We need to look for both parent/child
             if (substr_count($_GET[$key], ',') > 0) {
                 //This is multiple IDs:
@@ -35,8 +135,6 @@ foreach ($tr_filters as $key => $value) {
             } elseif (intval($_GET[$key]) > 0) {
                 $filters['( tr_id = ' . $_GET[$key] . ' OR tr_tr_parent_id = ' . $_GET[$key] . ')'] = null;
             }
-        } elseif ($key == 'tr_en_type_id' && $_GET[$key] > 0) {
-            $filters[$key] = intval($_GET[$key]);
         }
     }
 }
@@ -49,8 +147,36 @@ if(isset($_GET['end_range']) && fn___isDate($_GET['end_range'])){
     $filters['tr_timestamp <='] = $_GET['end_range'].' 23:59:59';
 }
 
+
+//Fetch unique transaction types recorded so far:
+$ini_filter = $filters;
+unset($ini_filter['in_status']);
+unset($ini_filter['en_status']);
+$all_engs = $this->Database_model->fn___tr_fetch($ini_filter, array('en_type'), 0, 0, array('trs_count' => 'DESC'), 'COUNT(tr_en_type_id) as trs_count, SUM(tr_coins) as coins_sum, en_name, tr_en_type_id', 'tr_en_type_id, en_name');
+
+//Makre sure its a valid type considering other filters:
+if(isset($_GET['tr_en_type_id'])){
+
+    $found = false;
+    foreach ($all_engs as $tr) {
+        if($_GET['tr_en_type_id'] == $tr['tr_en_type_id']){
+            $found = true;
+            break;
+        }
+    }
+
+    if(!$found){
+        unset($_GET['tr_en_type_id']);
+    } else {
+        //Assign filter:
+        $filters['tr_en_type_id'] = intval($_GET['tr_en_type_id']);
+    }
+
+}
+
 //Fetch transactions:
-$trs = $this->Database_model->fn___tr_fetch($filters, array('en_type'), (fn___is_dev() ? 30 : 100));
+$trs = $this->Database_model->fn___tr_fetch($filters, $join_by, (fn___is_dev() ? 50 : 200));
+$trs_count = $this->Database_model->fn___tr_fetch($filters, $join_by, 0, 0, array(), 'COUNT(tr_id) as trs_count, SUM(tr_coins) as coins_sum');
 
 
 
@@ -62,6 +188,18 @@ echo '<h5 class="badge badge-h"><i class="fas fa-filter"></i> Filters</h5>';
 
 
 echo '<form action="" method="GET">';
+
+if(count($advanced_filters) > 0){
+
+    //Draw advance filters:
+    foreach ($advanced_filters as $key => $value) {
+        echo '<div class="advance-filter hidden"><input type="text" name="' . $key . '" placeholder="' . $value . '" data-toggle="tooltip" data-placement="right" title="' . $value . '" value="' . ((isset($_GET[$key])) ? $_GET[$key] : '') . '" class="form-control border"></div>';
+    }
+
+    //button to show:
+    echo '<a href="javascript:void();" onclick="$(\'.advance-filter\').removeClass(\'hidden\');$(this).hide();"><i class="fal fa-plus-circle"></i> Advance Filters</a>';
+}
+
 echo '<table class="table table-condensed"><tr>';
 
 //Give Date Limiters:
@@ -74,26 +212,24 @@ echo '<input type="date" class="form-control border" name="end_range" data-toggl
 echo '</div></td>';
 
 $all_transaction_count = 0;
-foreach ($tr_filters as $key => $value) {
+$all_coins = 0;
+foreach ($primary_filters as $key => $value) {
     echo '<td><div style="padding-right:5px;">';
     if ($key == 'tr_en_type_id') {
-
-        //Fetch unique transaction types recorded so far:
-        unset($filters['tr_en_type_id']); //So we show all transaction types
-        $all_engs = $this->Database_model->fn___tr_fetch($filters, array('en_type'), 0, 0, array('trs_count' => 'DESC'), 'COUNT(tr_en_type_id) as trs_count, en_name, tr_en_type_id', 'tr_en_type_id, en_name');
 
         //Give option to select:
         $select_ui = '';
         foreach ($all_engs as $tr) {
 
             //Echo drop down:
-            $select_ui .= '<option value="' . $tr['tr_en_type_id'] . '" ' . ((isset($_GET['tr_en_type_id']) && $_GET['tr_en_type_id'] == $tr['tr_en_type_id']) ? 'selected="selected"' : '') . '>' . $tr['en_name'] . ' ('  . fn___echo_number($tr['trs_count']) . ')</option>';
+            $select_ui .= '<option value="' . $tr['tr_en_type_id'] . '" ' . ((isset($_GET['tr_en_type_id']) && $_GET['tr_en_type_id'] == $tr['tr_en_type_id']) ? 'selected="selected"' : '') . '>' . $tr['en_name'] . ' ('  . fn___echo_number($tr['trs_count']) . ( $tr['coins_sum'] > 0 ? ', '.fn___echo_number($tr['coins_sum']).' Coins' : '' ) . ')</option>';
             $all_transaction_count += $tr['trs_count'];
+            $all_coins += $tr['coins_sum'];
         }
 
         //Echo Transaction filters:
         echo '<select class="form-control border" name="tr_en_type_id" class="border" data-toggle="tooltip" data-placement="top" title="Transaction Types" style="width:160px;">';
-        echo '<option value="0">All Transaction Types ('  . fn___echo_number($all_transaction_count) . ')</option>';
+        echo '<option value="0">All Transaction Types ('  . fn___echo_number($all_transaction_count) . ( $all_coins > 0 ? ', '.number_format($all_coins, 0).' Coins' : '' ) . ')</option>';
         echo $select_ui;
         echo '</select>';
 
@@ -112,7 +248,7 @@ echo '<div class="row">';
     echo '<div class="col-md-7">';
 
         //Display Transactions:
-        echo '<h5 class="badge badge-h"><i class="fas fa-atlas"></i> '.count($trs).'/'.fn___echo_number($all_transaction_count).' Transactions</h5>';
+        echo '<h5 class="badge badge-h"><i class="fas fa-atlas"></i> '.count($trs).'/'.number_format($trs_count[0]['trs_count'] , 0).' Transactions'.( $trs_count[0]['coins_sum'] > 0 ? ' issued '.number_format($trs_count[0]['coins_sum'] , 0).' Coins' : '') .'</h5>';
         if(count($trs)>0){
             echo '<div class="list-group list-grey">';
             foreach ($trs as $tr) {

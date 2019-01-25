@@ -13,13 +13,13 @@
                        title="Connect to Mench Personal Assistant on Messenger" data-placement="top"><i
                                 class="fab fa-facebook-messenger"></i></a>
 
-                    <a href="https://github.com/askmench" target="_blank"
-                       class="social-link" data-toggle="tooltip" title="Develop Mench on GitHub"
-                       data-placement="top"><i class="fab fa-github"></i></a>
-
                     <a href="https://angel.co/askmench/jobs" target="_blank"
                        class="social-link" data-toggle="tooltip" title="See Openings on Angel List"
                        data-placement="top"><i class="fab fa-angellist"></i></a>
+
+                    <a href="https://github.com/askmench" target="_blank"
+                       class="social-link" data-toggle="tooltip" title="Contribute to Mench on GitHub"
+                       data-placement="top"><i class="fab fa-github"></i></a>
 
                     <a href="https://www.youtube.com/channel/UCOH64HiAIfJlz73tTSI8n-g" target="_blank"
                        class="social-link" data-toggle="tooltip" title="Subscribe on YouTube"
@@ -43,7 +43,7 @@
                     <a href="mailto:support@mench.com" class="social-link" data-toggle="tooltip"
                        title="Send us an email" data-placement="top"><i class="fas fa-envelope"></i></a>
 
-                    <a href="/8263?expand_mode=1" class="social-link" data-toggle="tooltip"
+                    <a href="/8263?expand_mode=1&hide_subscribe=1" class="social-link" data-toggle="tooltip"
                        title="Understand Mench's Terms of Service" data-placement="top"><i
                                 class="fas fa-balance-scale"></i></a>
 

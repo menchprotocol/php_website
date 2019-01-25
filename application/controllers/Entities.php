@@ -696,13 +696,16 @@ class Entities extends CI_Controller
         $login_passwords = $this->Database_model->fn___tr_fetch(array(
             'tr_en_parent_id' => 3286, //Mench Login Password
             'tr_en_child_id' => $ens[0]['en_id'],
+        ), array(), 1 /* get the top status */, 0, array(
+            //Order by highest status:
+            'tr_status' => 'DESC',
         ));
         if (count($login_passwords) == 0) {
             //They do not have a password assigned yet!
             return fn___redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: An active login password has not been assigned to your account yet. You can assign a new password using the Forgot Password Button.</div>');
         } elseif ($login_passwords[0]['tr_status'] < 2) {
             //They do not have a password assigned yet!
-            return fn___redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Password is not activated.</div>');
+            return fn___redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Password is not activated with status ['.$login_passwords[0]['tr_status'].'].</div>');
         } elseif (!(strtolower($login_passwords[0]['tr_content']) == strtolower(hash('sha256', $this->config->item('password_salt') . $_POST['input_password'])))) {
             //Bad password
             return fn___redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Incorrect password for [' . $_POST['input_email'] . ']</div>');

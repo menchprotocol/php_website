@@ -582,16 +582,6 @@ class Matrix_model extends CI_Model
                 $this->Matrix_model->fn___actionplan_update($k['tr_id'], -1); //skip
             }
 
-            //There is a chance that the Action Plan might be now completed due to this skipping, lets check:
-            /*
-            $trs = $this->Database_model->fn___tr_fetch(array(
-                'tr_id' => $tr_id,
-            ), array('w','cr','cr_c_parent'));
-            if(count($trs)>0){
-                $this->Matrix_model->in_actionplan_complete_up($trs[0],$trs[0],-1);
-            }
-            */
-
         }
 
         //Returned intents:

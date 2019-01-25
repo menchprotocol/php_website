@@ -14,11 +14,25 @@ class Stats extends CI_Controller
     function index()
     {
         //Display statuses for intents, entities and ledger transactions:
-        $this->load->view('view_shared/matrix_header', array(
-            'title' => 'Stats',
-        ));
-        $this->load->view('view_shared/stats');
-        $this->load->view('view_shared/matrix_footer');
+        $udata = fn___en_auth(); //Just be logged in to browse
+
+        if($udata){
+
+            //Miner logged in stats
+            $this->load->view('view_shared/matrix_header', array(
+                'title' => 'Platform Stats',
+            ));
+            $this->load->view('view_shared/stats');
+            $this->load->view('view_shared/matrix_footer');
+        } else {
+
+            //Public facing stats:
+            $this->load->view('view_shared/public_header', array(
+                'title' => 'Platform Stats',
+            ));
+            $this->load->view('view_shared/stats');
+            $this->load->view('view_shared/public_footer');
+        }
     }
 
     function ses()

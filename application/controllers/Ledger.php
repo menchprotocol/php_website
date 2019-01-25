@@ -22,6 +22,8 @@ class Ledger extends CI_Controller
          *
          * */
 
+        $udata = fn___en_auth(null, true); //Just be logged in to browse
+
         $this->load->view('view_shared/matrix_header', array(
             'title' => 'Ledger Transactions',
         ));

@@ -41,10 +41,13 @@
             <input type="submit" class="btn btn-primary pass btn-raised btn-round" value="Login">
             <a class="btn btn-primary pass btn-raised btn-round" style="display: none;"
                href="javascript:password_initiate_reset();">Request Password Reset</a>
-            <span class="pass" style="width:294px; display:inline-block; font-size:0.9em; text-align: right;"><a
-                        href="javascript:void(0)" onclick="$('.pass').toggle()">Forgot Password</a></span>
+            <span class="pass und" style="width:294px; display:inline-block; font-size:0.9em; text-align: right;"><a
+                        href="javascript:void(0)" onclick="$('.pass').toggle()"><span class="underdot">Forgot Password</span></a></span>
             <span class="pass" style="font-size:0.9em; display: none;">or <a href="javascript:void(0)"
-                                                                             onclick="$('.pass').toggle()">Cancel</a></span>
+                                                                             onclick="$('.pass').toggle()"><span class="underdot">Cancel</span></a></span>
+
+            <div>No account? <a href="https://m.me/askmench?ref=<?= $this->config->item('in_tactic_id') ?>" class="underdot"><i class="fab fa-facebook-messenger"></i> Join Mench on Messenger <i class="fas fa-angle-right"></i></a></div>
+
         </div>
     </form>
 

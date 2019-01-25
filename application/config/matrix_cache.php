@@ -54,7 +54,7 @@ $config['en_ids_4534'] = array(4341, 4535, 4536);
 $config['en_all_4534'] = array(
     4341 => array(
         'm_icon' => '<i class="fas fa-atlas"></i>',
-        'm_name' => 'Ledger',
+        'm_name' => 'Ledger Transactions',
         'm_desc' => '',
     ),
     4535 => array(

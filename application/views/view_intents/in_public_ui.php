@@ -1,8 +1,9 @@
 <?php
-//Prepare variables:
+//Prepare some handy variables:
 $metadata = unserialize($in['in_metadata']);
 $expand_mode = ( isset($_GET['expand_mode']) && intval($_GET['expand_mode']) );
 $is_primary_in = ( $in['in_id'] == $this->config->item('in_tactic_id') );
+$hide_subscribe = ( isset($_GET['hide_subscribe']) && intval($_GET['hide_subscribe']) );
 ?>
 <style>
     .body-container .msg, .body-container li, p, .body-container a {
@@ -76,8 +77,11 @@ $is_primary_in = ( $in['in_id'] == $this->config->item('in_tactic_id') );
     }
     ?>
 
+
+
     <br/>
 
+    <?php if (!$hide_subscribe) { ?>
     <h3 style="margin-top:0px !important;">Overview:</h3>
     <div style="margin:12px 0 0 5px;">
         <?= fn___echo_in_overview           ($in, false, $expand_mode) ?>
@@ -86,11 +90,16 @@ $is_primary_in = ( $in['in_id'] == $this->config->item('in_tactic_id') );
         <?= fn___echo_in_time_estimate      ($in, false, $expand_mode) ?>
         <?= fn___echo_in_cost_range         ($in, false, $expand_mode) ?>
     </div>
+    <?php } ?>
+
 
 
     <?php if (count($in['in__children']) > 0) { ?>
 
+        <?php if (!$hide_subscribe) { ?>
         <h3>Action Plan:</h3>
+        <?php } ?>
+
         <div class="list-group actionplan_list" style="margin:12px 0 0 5px;">
             <?php
             $in_level2_counter = 0;
@@ -105,7 +114,7 @@ $is_primary_in = ( $in['in_id'] == $this->config->item('in_tactic_id') );
             <div class="panel-heading" role="tab" id="heading' . $in_level2_counter . '">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open' . $in_level2_counter . '" href="#collapse' . $in_level2_counter . '" aria-expanded="'.( $expand_mode ? 'true' : 'false' ).'" aria-controls="collapse' . $in_level2_counter . '">
-                       ' . ($in['in_is_any'] ? 'Option' : 'Step') . ' ' . ($in_level2_counter + 1) . ': <span id="title-' . $in_level2['in_id'] . '">' . $in_level2['in_outcome'] . '</span><i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                       ' . ($in['in_is_any'] ? 'Option '.($in_level2_counter + 1).':' : '#'.($in_level2_counter + 1)) . ' <span id="title-' . $in_level2['in_id'] . '">' . $in_level2['in_outcome'] . '</span><i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                     </a>
                 </h4>
             </div>
@@ -167,6 +176,8 @@ $is_primary_in = ( $in['in_id'] == $this->config->item('in_tactic_id') );
     <?php } ?>
 
 
+    <?php if(!$hide_subscribe){ ?>
+
     <p style="padding:5px 0 0 0;">Ready to <?= $in['in_outcome'] ?>?</p>
 
     <!-- Call to Actions -->
@@ -177,6 +188,9 @@ $is_primary_in = ( $in['in_id'] == $this->config->item('in_tactic_id') );
                                                                          onclick="$('.learn_more_toggle').toggle();"
                                                                          style="display: inline-block; padding:12px 16px;">Learn More <i
                     class="fas fa-info-circle"></i></a></span>
+
+    <?php } ?>
+
 
 </div>
 
@@ -299,7 +313,7 @@ $featured_cs = $ins = $this->Database_model->fn___in_fetch(array(
     'in_status' => 3, //Featured Intents
     'in_id !=' => $in['in_id'],
 ));
-if (count($featured_cs) > 0) {
+if (count($featured_cs) > 0 && !$hide_subscribe) {
     echo '<div>';
     echo '<h3>Featured Intentions:</h3>';
     echo '<div class="list-group actionplan_list">';

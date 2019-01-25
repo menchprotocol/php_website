@@ -343,10 +343,14 @@ a.badge-primary:hover {
 
 .app-version{
     position: fixed;
-    right:35px;
-    bottom:0;
+    right:32px;
+    bottom:4px;
     z-index: 9999;
     font-size: 0.8em;
+    background-color: #fff !important;
+    border-radius: 5px;
+    padding: 2px !important;
+    line-height: 100% !important;
 }
 
 .obj-id {
@@ -865,6 +869,10 @@ input::-webkit-inner-spin-button {
 .price > h4 > span {
     font-size: 0.6em;
 }
+
+
+.advance-filter{ max-width:200px; margin-bottom: 3px; }
+
 
 .yellow {
     color: rgba(254, 221, 22, 0.91) !important;

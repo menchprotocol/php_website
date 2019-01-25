@@ -232,7 +232,7 @@ function fn___en_auth($en_permission_group = null, $force_redirect = 0)
         return false;
     } else {
         //Block access:
-        return fn___redirect_message((isset($udata['en__parents'][0]) && fn___filter_array($udata['en__parents'], 'en_id', 1308) ? '/intents/' . $CI->config->item('in_tactic_id') : '/login?url=' . urlencode($_SERVER['REQUEST_URI'])), '<div class="alert alert-danger maxout" role="alert">' . (isset($udata['en_id']) ? 'Access not authorized.' : 'Session Expired. Login to continue.') . '</div>');
+        return fn___redirect_message((isset($udata['en__parents'][0]) && fn___filter_array($udata['en__parents'], 'en_id', 1308) ? '/intents/' . $CI->config->item('in_tactic_id') : '/login?url=' . urlencode($_SERVER['REQUEST_URI'])), '<div class="alert alert-danger maxout" role="alert">' . (isset($udata['en_id']) ? 'Access not authorized.' : 'Login to continue.') . '</div>');
     }
 
 }
