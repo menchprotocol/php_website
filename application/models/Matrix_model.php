@@ -1198,6 +1198,32 @@ class Matrix_model extends CI_Model
         array_push($metadata_this['in_tree'], $this_in);
 
 
+
+        //Flatten intent ID array:
+        $result = array();
+        array_walk_recursive($metadata_this['in_flat_tree'], function ($v, $k) use (&$result) {
+            $result[] = $v;
+        });
+        $metadata_this['in_flat_tree'] = $result;
+
+
+        $result = array();
+        array_walk_recursive($metadata_this['in_flat_unique_published_tree'], function ($v, $k) use (&$result) {
+            $result[] = $v;
+        });
+        $metadata_this['in_flat_unique_published_tree'] = $result;
+
+
+
+        $result = array();
+        array_walk_recursive($metadata_this['in_links_flat_tree'], function ($v, $k) use (&$result) {
+            $result[] = $v;
+        });
+        $metadata_this['in_links_flat_tree'] = $result;
+
+
+
+
         if ($update_db_table) {
 
             //Assign aggregates:
@@ -1258,28 +1284,6 @@ class Matrix_model extends CI_Model
             }
         }
 
-
-        //Flatten intent ID array:
-        $result = array();
-        array_walk_recursive($metadata_this['in_flat_tree'], function ($v, $k) use (&$result) {
-            $result[] = $v;
-        });
-        $metadata_this['in_flat_tree'] = $result;
-
-
-        $result = array();
-        array_walk_recursive($metadata_this['in_flat_unique_published_tree'], function ($v, $k) use (&$result) {
-            $result[] = $v;
-        });
-        $metadata_this['in_flat_unique_published_tree'] = $result;
-
-
-
-        $result = array();
-        array_walk_recursive($metadata_this['in_links_flat_tree'], function ($v, $k) use (&$result) {
-            $result[] = $v;
-        });
-        $metadata_this['in_links_flat_tree'] = $result;
 
 
         //Return data:
