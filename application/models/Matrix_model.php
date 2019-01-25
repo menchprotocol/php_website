@@ -630,7 +630,7 @@ class Matrix_model extends CI_Model
         //Add the link relations before we start recursion so we can have the Tree in up-custom order:
         array_push($metadata_this['in_flat_tree'], intval($in_id));
 
-        if($ins[0]['in_status'] >= 2 && !in_array($in_id , $metadata_this['in_flat_unique_published_tree'])){
+        if($ins[0]['in_status'] >= 2 && !in_array(intval($in_id) , $metadata_this['in_flat_unique_published_tree'])){
             array_push($metadata_this['in_flat_unique_published_tree'], intval($in_id));
         }
         if (isset($ins[0]['tr_id'])) {
@@ -870,7 +870,7 @@ class Matrix_model extends CI_Model
         //Always add intent to the flat intent tree which is part of the metadata:
         array_push($metadata_this['in_flat_tree'], intval($in_id));
 
-        if($ins[0]['in_status'] >= 2 && !in_array($in_id , $metadata_this['in_flat_unique_published_tree'])){
+        if($this_in['in_status'] >= 2 && !in_array(intval($in_id) , $metadata_this['in_flat_unique_published_tree'])){
             array_push($metadata_this['in_flat_unique_published_tree'], intval($in_id));
         }
 
@@ -1271,7 +1271,7 @@ class Matrix_model extends CI_Model
 
                     'in__tree_in_active_count' => $this_in['___tree_active_count'],
                     'in__tree_in_published_count' => $this_in['___tree_published_count'],
-                    'in__flat_unique_published_count' => count($metadata_this['in_flat_unique_published_tree']),
+                    'in__flat_unique_published_count' => count(array_unique($metadata_this['in_flat_unique_published_tree'])),
                     'in__message_count' => $this_in['___messages_count'],
                     'in__message_tree_count' => $this_in['___messages_tree_count'],
                     'in__tree_experts' => $this_in['___tree_experts'],

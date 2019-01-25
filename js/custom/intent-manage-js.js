@@ -56,12 +56,12 @@ $(document).ready(function () {
     //Watch the expand/close all buttons:
     $('#expand_intents .expand_all').click(function (e) {
         $(".list-is-children .is_level2_sortable").each(function () {
-            ms_toggle($(this).attr('in-tr-id'), 1);
+            fn___ms_toggle($(this).attr('in-tr-id'), 1);
         });
     });
     $('#expand_intents .close_all').click(function (e) {
         $(".list-is-children .is_level2_sortable").each(function () {
-            ms_toggle($(this).attr('in-tr-id'), 0);
+            fn___ms_toggle($(this).attr('in-tr-id'), 0);
         });
     });
 

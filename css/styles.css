@@ -2049,16 +2049,13 @@ select.form-control {
     position: absolute !important;
 }
 
-.is-top-1 .icon-main img {
-    left:8px !important;
-}
 
 .double-icon-search .icon-sub {
     font-size:11px;
     position: absolute;
     top:-5px !important;
     left:12px !important;
-    z-index: 1111;
+    z-index: 11;
 }
 
 
@@ -2581,6 +2578,7 @@ a.badge:focus, a.badge:hover {
     border-top: none;
     font-size: 0.7em;
     font-weight: normal;
+    z-index: 9999999 !important;
 }
 
 .add_intent, .algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
