@@ -603,7 +603,7 @@ function fn___echo_in_referenced_content($in, $fb_messenger_format = false, $exp
             }
 
             //Show category:
-            $cat_contribution = count($referenced_ens) . ' ' . $en_all_3000[$type_id]['m_name'] . fn___echo__s(count($referenced_ens));
+            $cat_contribution = count($referenced_ens) . ' ' . $en_all_3000[$type_id]['m_name'];
             if ($fb_messenger_format) {
 
                 $text_overview .= ' ' . $cat_contribution;
@@ -628,7 +628,7 @@ function fn___echo_in_referenced_content($in, $fb_messenger_format = false, $exp
 
                     if ($is_miner) {
                         //Show link to matrix:
-                        $text_overview .= '<a href="/entities/' . $en['en_id'] . '">';
+                        $text_overview .= '<a href="/entities/' . $en['en_id'] . '" class="underdot">';
                     }
 
                     $text_overview .= $en['en_name'];
@@ -736,7 +736,7 @@ function fn___echo_in_overview($in, $fb_messenger_format = 0, $expand_mode = fal
         return false;
     }
 
-    $pitch = 'Action Plan contains ' . $metadata['in__tree_in_published_count'] . ' key ideas that will help you ' . $in['in_outcome'] . '.';
+    $pitch = 'Action Plan contains ' . $metadata['in__flat_unique_published_count'] . ' key ideas that will help you ' . $in['in_outcome'] . '.';
 
     if ($fb_messenger_format) {
         return '🚩 ' . $pitch . "\n";
@@ -886,7 +886,7 @@ function fn___echo_in_experts($in, $fb_messenger_format = 0, $expand_mode = fals
             </div>
             <div id="collapse' . $id . '" class="panel-collapse collapse ' . ($expand_mode ? 'in' : 'out') . '" role="tabpanel" aria-labelledby="heading' . $id . '">
                 <div class="panel-body" style="padding:5px 0 0 5px; font-size:1.1em;">
-                    ' . $pitch . ' <span style="font-size: 1em !important;">They are not affiliated with Mench, yet their work has been referenced by Mench Miners.</span>
+                    ' . $pitch . '
                 </div>
             </div>
         </div></div>';
@@ -920,9 +920,12 @@ function fn___echo_time_range($in, $micro = false)
 
     //Construct the UI:
     if ($metadata['in__tree_max_seconds'] == $metadata['in__tree_min_seconds']) {
+
         //Exactly the same, show a single value:
         return fn___echo_time_hours($metadata['in__tree_max_seconds'], $micro);
+
     } elseif ($metadata['in__tree_min_seconds'] < 3600) {
+
         if ($metadata['in__tree_min_seconds'] < 7200 && $metadata['in__tree_max_seconds'] < 10800 && ($metadata['in__tree_max_seconds'] - $metadata['in__tree_min_seconds']) > 1800) {
             $is_minutes = true;
         } elseif ($metadata['in__tree_min_seconds'] < 36000) {
@@ -932,15 +935,20 @@ function fn___echo_time_range($in, $micro = false)
             //Number too large to matter, just treat as one:
             return fn___echo_time_hours($metadata['in__tree_max_seconds'], $micro);
         }
+
     } else {
         $is_minutes = false;
         $hours_decimal = 0;
     }
 
     //Generate hours range:
-    $ui_time = ($is_minutes ? round($metadata['in__tree_min_seconds'] / 60) : round(($metadata['in__tree_min_seconds'] / 3600), $hours_decimal));
-    $ui_time .= '-';
-    $ui_time .= ($is_minutes ? round($metadata['in__tree_max_seconds'] / 60) : round(($metadata['in__tree_max_seconds'] / 3600), $hours_decimal));
+    $the_min = ($is_minutes ? round($metadata['in__tree_min_seconds'] / 60) : round(($metadata['in__tree_min_seconds'] / 3600), $hours_decimal));
+    $the_max = ($is_minutes ? round($metadata['in__tree_max_seconds'] / 60) : round(($metadata['in__tree_max_seconds'] / 3600), $hours_decimal));
+    $ui_time = $the_min;
+    if($the_min != $the_max){
+        $ui_time .= '-';
+        $ui_time .= $the_max;
+    }
     $ui_time .= ($is_minutes ? ($micro ? 'm' : ' Minutes') : ($micro ? 'h' : ' Hours'));
 
     //Generate UI to return:

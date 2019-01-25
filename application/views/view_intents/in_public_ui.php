@@ -114,18 +114,19 @@ $hide_subscribe = ( isset($_GET['hide_subscribe']) && intval($_GET['hide_subscri
             <div class="panel-heading" role="tab" id="heading' . $in_level2_counter . '">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open' . $in_level2_counter . '" href="#collapse' . $in_level2_counter . '" aria-expanded="'.( $expand_mode ? 'true' : 'false' ).'" aria-controls="collapse' . $in_level2_counter . '">
-                       ' . ($in['in_is_any'] ? 'Option '.($in_level2_counter + 1).':' : '#'.($in_level2_counter + 1)) . ' <span id="title-' . $in_level2['in_id'] . '">' . $in_level2['in_outcome'] . '</span><i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                       ' . ($in['in_is_any'] ? 'Option '.($in_level2_counter + 1).':' : '#'.($in_level2_counter + 1)) . ' <span id="title-' . $in_level2['in_id'] . '">' . $in_level2['in_outcome'] . '</span>';
+
+                    //Show time if we have it:
+                    if (isset($metadata['in__tree_max_seconds']) && $metadata['in__tree_max_seconds'] > 0) {
+                        echo ' <span style="font-size: 0.9em; font-weight: 300;"><i class="fal fa-clock"></i> '. fn___echo_time_range($in_level2, true).'</span>';
+                    }
+
+                    echo '<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                     </a>
                 </h4>
             </div>
             <div id="collapse' . $in_level2_counter . '" class="panel-collapse collapse '.( $expand_mode ? 'in' : 'out' ).'" role="tabpanel" aria-labelledby="heading' . $in_level2_counter . '">
                 <div class="panel-body" style="padding:5px 0 0 5px;">';
-
-
-                //Show time if we have it:
-                if (isset($metadata['in__tree_max_seconds']) && $metadata['in__tree_max_seconds'] > 0) {
-                    echo '<div style="margin:0 0 5px; padding-top:5px; font-size:1.1em;">It is estimated to take ' . fn___echo_time_range($in_level2) . ' to complete this part.</div>';
-                }
 
 
                 //Fetch & Display On-Start Messages for this intent:
@@ -148,7 +149,15 @@ $hide_subscribe = ( isset($_GET['hide_subscribe']) && intval($_GET['hide_subscri
                             continue;
                         }
 
-                        echo '<li>Part ' . ($in_level2_counter + 1) . '.' . ($in_level3_counter + 1) . '. ' . $in_level3['in_outcome'] . '</li>';
+                        echo '<li>#' . ($in_level2_counter + 1) . '.' . ($in_level3_counter + 1) . ' ' . $in_level3['in_outcome'];
+
+                        //Show time if we have it:
+                        $metadata3 = unserialize($in_level3['in_metadata']);
+                        if (isset($metadata3['in__tree_max_seconds']) && $metadata3['in__tree_max_seconds'] > 0) {
+                            echo ' <span style="font-size: 0.9em; font-weight: 300;"><i class="fal fa-clock"></i> '. fn___echo_time_range($in_level3, true).'</span>';
+                        }
+
+                        echo '</li>';
 
                         //Increase counter:
                         $in_level3_counter++;
