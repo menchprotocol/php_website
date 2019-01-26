@@ -47,6 +47,9 @@
                        title="Understand Mench's Terms of Service" data-placement="top"><i
                                 class="fas fa-balance-scale"></i></a>
 
+                    <a href="/stats" class="social-link" data-toggle="tooltip"
+                       title="View Platform Stats" data-placement="top"><i class="fas fa-chart-bar"></i> Stats</a>
+
                 </li>
 
                 <li class="legal-name"><i>v<?= $this->config->item('app_version') ?></i></li>

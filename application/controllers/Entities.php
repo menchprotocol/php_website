@@ -434,7 +434,7 @@ class Entities extends CI_Controller
 
 
 
-    function en_modify_save()
+    function fn___en_modify_save()
     {
 
         //Auth user and check required variables:

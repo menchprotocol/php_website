@@ -104,7 +104,7 @@ $(document).ready(function () {
             if (hash_parts[0] == 'loadmessages') {
                 fn___load_en_messages(hash_parts[1]);
             } else if (hash_parts[0] == 'loadmodify') {
-                en_modify_load(hash_parts[1], hash_parts[2]);
+                fn___en_modify_load(hash_parts[1], hash_parts[2]);
             } else if (hash_parts[0] == 'status') {
                 //Update status:
                 u_load_filter_status(hash_parts[1]);
@@ -360,7 +360,7 @@ function fn___update_link_type() {
 
 
 
-function en_modify_load(en_id, tr_id) {
+function fn___en_modify_load(en_id, tr_id) {
 
     //Make sure inputs are valid:
     if (!$('.en___' + en_id).length) {
@@ -463,7 +463,7 @@ function fn___entity_link_form_unlock(result){
     //Unlock either way:
     $('#tr_content').prop("disabled", false).css('background-color','#FFF');
 
-    $('.btn-save').removeClass('grey').attr('href', 'javascript:en_modify_save();').html('Save');
+    $('.btn-save').removeClass('grey').attr('href', 'javascript:fn___en_modify_save();').html('Save');
 
     //Tooltips:
     $('[data-toggle="tooltip"]').tooltip();
@@ -540,7 +540,7 @@ function fn___en_new_url_from_attachment(droppedFiles, uploadType) {
 }
 
 
-function en_modify_save() {
+function fn___en_modify_save() {
 
     //Validate that we have all we need:
     if ($('#modifybox').hasClass('hidden') || !parseInt($('#modifybox').attr('entity-id'))) {
@@ -563,7 +563,7 @@ function en_modify_save() {
     $('.save_entity_changes').html('<span><i class="fas fa-spinner fa-spin"></i></span>').hide().fadeIn();
 
 
-    $.post("/entities/en_modify_save", modify_data, function (data) {
+    $.post("/entities/fn___en_modify_save", modify_data, function (data) {
 
         if (data.status) {
 
@@ -586,13 +586,13 @@ function en_modify_save() {
                     window.location.hash = '#';
 
                     //Remove from UI:
-                    $('.en___' + modify_data['en_id']).html('<span style="color:#2f2739;"><i class="fas fa-trash-alt"></i> Removed</span>').fadeOut();
+                    $('.tr_' + modify_data['tr_id']).html('<span style="color:#2f2739;"><i class="fas fa-trash-alt"></i> Removed</span>').fadeOut();
 
                     //Disappear in a while:
                     setTimeout(function () {
 
                         //Hide the editor & saving results:
-                        $('.en___' + modify_data['en_id']).remove();
+                        $('.tr_' + modify_data['tr_id']).remove();
 
                         //Hide editing box:
                         $('#modifybox').addClass('hidden');

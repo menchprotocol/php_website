@@ -51,7 +51,7 @@
 
             echo '<h5 class="badge badge-h inline-block"><span class="li-children-count inline-block">' . $entity['en__child_count'] . '</span> Children <i class="fas fa-sign-out-alt rotate90"></i></h5>';
 
-            echo '<a href="javascript:void(0);" onclick="$(\'.mass_modify\').toggle()" style="text-decoration: none; margin-left: 5px;"  data-toggle="tooltip" data-placement="right" title="Mass modify children"><i class="fal fa-ellipsis-v" style="font-size: 1.2em; color: #2b2b2b;"></i></a>';
+            echo '<a href="javascript:void(0);" onclick="$(\'.mass_modify\').toggle()" style="text-decoration: none; margin-left: 5px;"  data-toggle="tooltip" data-placement="right" title="Mass actions on children"><i class="fal fa-ellipsis-v" style="font-size: 1.2em; color: #2b2b2b;"></i></a>';
 
             echo '</td>';
 
@@ -112,6 +112,8 @@
 
             echo '<input type="text" name="modify_text" placeholder="String" style="max-width:240px;" class="form-control border inline-block">';
 
+            echo '<input type="text" name="modify_text" placeholder="Changelog" style="max-width:240px;" class="form-control border inline-block">';
+
             echo '<input type="submit" value="Apply" class="btn btn-secondary inline-block">';
 
         echo '</form>';
@@ -131,7 +133,6 @@
         //Input to add new parents:
         echo '<div id="new-children" class="list-group-item list_input grey-input">
         <div class="input-group">
-            <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search bottom-add" data-lpignore="true" placeholder="Add ' . stripslashes($entity['en_name']) . '"></div>
             <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search bottom-add" data-lpignore="true" placeholder="Add ' . stripslashes($entity['en_name']) . '"></div>
             <span class="input-group-addon">
                 <a class="badge badge-secondary new-btn" href="javascript:tr_add(0,' . $entity['en_id'] . ', 0);">ADD</a>
@@ -286,7 +287,7 @@
                 <table class="save-btn-box">
                     <tr>
                         <td class="save-result-td"><span class="save_entity_changes"></span></td>
-                        <td class="save-td"><a href="javascript:en_modify_save();" class="btn btn-secondary btn-save">Save</a></td>
+                        <td class="save-td"><a href="javascript:fn___en_modify_save();" class="btn btn-secondary btn-save">Save</a></td>
                     </tr>
                 </table>
 

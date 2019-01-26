@@ -2544,6 +2544,22 @@ a.badge:focus, a.badge:hover {
     margin-right: 5px;
 }
 
+.large-stat {
+    padding:0;
+    font-weight:300;
+    font-size: 1.6em;
+    line-height:160%;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 30px;
+}
+
+.large-stat>span{
+    font-size: 2em;
+    display: block;
+    margin-left: -3px;
+}
+
 /* Search CSS */
 .add_intent {
     display: block;

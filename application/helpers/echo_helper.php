@@ -1496,6 +1496,91 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
 }
 
+function fn___echo_leaderboard($days_ago = null, $top = 25){
+
+    $filters = array(
+        'tr_en_credit_id >' => 0,
+        'tr_coins !=' => 0,
+    );
+
+    if(!is_null($days_ago)){
+        //From beginning of the day:
+        $filters['tr_timestamp >='] = date("Y-m-d" , (time() - ($days_ago * 24 * 3600))).' 00:00:00';
+        $table_name = $days_ago.'-Day';
+    } else {
+        $table_name = 'All Time';
+    }
+
+    $CI =& get_instance();
+
+
+    //Count coins per Miner
+    //Object Stats grouped by Status:
+    $all_engs = $CI->Database_model->fn___tr_fetch($filters, array('en_credit'), $top, 0, array('coins_sum' => 'DESC'), 'COUNT(tr_en_credit_id) as trs_count, SUM(tr_coins) as coins_sum, en_name, en_icon, tr_en_credit_id', 'tr_en_credit_id, en_name, en_icon');
+
+    $all_transaction_count = 0;
+    $all_coin_payouts = 0;
+    $table_body = '';
+    $top_miner = '';
+
+    foreach ($all_engs as $count=>$tr) {
+
+        if($count == 0){
+            $top_miner = fn___one_two_explode('', ' ', $tr['en_name']);
+        }
+
+        //Echo stats:
+        $table_body .= '<tr>';
+        $table_body .= '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center; '.( $count > 2 ? 'font-size:0.8em;' : '' ).'">'.fn___echo_rank($count+1).'</span><span style="width: 29px; display: inline-block; text-align: center;">'.( strlen($tr['en_icon']) > 0 ? $tr['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$tr['tr_en_credit_id'].'">'.$tr['en_name'].'</a></td>';
+        $table_body .= '<td style="text-align: right;"><a href="/ledger?tr_en_credit_id='.$tr['tr_en_credit_id'].'"  data-toggle="tooltip" title="Awarded for '.number_format($tr['trs_count'],0).' transactions averaging '.round(($tr['coins_sum']/$tr['trs_count']),0).' coins/transaction" data-placement="top">'.number_format($tr['coins_sum'], 0).'</a></td>';
+        $table_body .= '</tr>';
+
+        $all_transaction_count += $tr['trs_count'];
+        $all_coin_payouts += $tr['coins_sum'];
+
+    }
+
+
+    $ui = '';
+
+    $ui .= '<a href="javascript:void(0);" onclick="$(\'.leaderboard'.$days_ago.'\').toggleClass(\'hidden\');" class="large-stat"><span>'. $top_miner . '</span> Top '.$table_name.' Miner <i class="fal fa-plus-circle"></i></a>';
+
+    $ui .= '<table class="table table-condensed table-striped stats-table leaderboard'.$days_ago.' hidden" style="max-width:100%;">';
+
+
+//Object Header:
+    $ui .= '<tr style="font-weight: bold;">';
+    $ui .= '<td style="text-align: left;">'.$table_name.' Miners</td>';
+    $ui .= '<td style="text-align: right;"><i class="fal fa-coins"></i> Coins</td>';
+    $ui .= '</tr>';
+
+    $ui .= $table_body;
+
+    $ui .= '<tr style="font-weight: bold;">';
+    $ui .= '<td style="text-align: right;">Top '.($count+1).' Totals:&nbsp;</td>';
+    $ui .= '<td style="text-align: right;"><span data-toggle="tooltip" title="Awarded for '.number_format($tr['trs_count'],0).' Transactions averaging '.round(($all_coin_payouts/$all_transaction_count),1).' coins per transaction" data-placement="top">'.number_format($all_coin_payouts,0).'</span></td>';
+    $ui .= '</tr>';
+
+
+    //End Section:
+    $ui .= '</table>';
+
+    return $ui;
+
+}
+
+
+function fn___echo_rank($integer){
+    if($integer==1){
+        return '🏅';
+    } elseif($integer==2){
+        return '🥈';
+    } elseif($integer==3){
+        return '🥉';
+    } else {
+        return fn___echo_number_ordinal($integer);
+    }
+}
 
 
 function fn___echo_en($en, $level, $is_parent = false)
@@ -1580,7 +1665,7 @@ function fn___echo_en($en, $level, $is_parent = false)
 
 
     //Show modification button along with Trust Score
-    $ui .= '<a href="#loadmodify-' . $en['en_id'] . '-' . $tr_id . '" onclick="en_modify_load(' . $en['en_id'] . ',' . $tr_id . ')" class="badge badge-secondary white-secondary" style="margin:-2px -6px 0 2px; width:40px;"><span class="btn-counter" data-toggle="tooltip" data-placement="left" title="Entity Trust Score is ' . number_format($en['en_trust_score'], 0) . '">' . fn___echo_number($en['en_trust_score']) . '</span><i class="fas fa-cog" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i></a> &nbsp;';
+    $ui .= '<a href="#loadmodify-' . $en['en_id'] . '-' . $tr_id . '" onclick="fn___en_modify_load(' . $en['en_id'] . ',' . $tr_id . ')" class="badge badge-secondary white-secondary" style="margin:-2px -6px 0 2px; width:40px;"><span class="btn-counter" data-toggle="tooltip" data-placement="left" title="Entity Trust Score is ' . number_format($en['en_trust_score'], 0) . '">' . fn___echo_number($en['en_trust_score']) . '</span><i class="fas fa-cog" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i></a> &nbsp;';
 
 
     //Have we counted the Entity Children?
