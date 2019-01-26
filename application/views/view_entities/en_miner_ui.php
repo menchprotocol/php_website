@@ -46,7 +46,7 @@
 
         //Children:
         echo '<div class="indent2"><table width="100%" style="margin-top:10px;"><tr>';
-        echo '<td style="width:140px;">';
+        echo '<td style="width:170px;">';
 
 
             echo '<h5 class="badge badge-h inline-block"><span class="li-children-count inline-block">' . $entity['en__child_count'] . '</span> Children <i class="fas fa-sign-out-alt rotate90"></i></h5>';
@@ -131,6 +131,7 @@
         //Input to add new parents:
         echo '<div id="new-children" class="list-group-item list_input grey-input">
         <div class="input-group">
+            <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search bottom-add" data-lpignore="true" placeholder="Add ' . stripslashes($entity['en_name']) . '"></div>
             <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search bottom-add" data-lpignore="true" placeholder="Add ' . stripslashes($entity['en_name']) . '"></div>
             <span class="input-group-addon">
                 <a class="badge badge-secondary new-btn" href="javascript:tr_add(0,' . $entity['en_id'] . ', 0);">ADD</a>

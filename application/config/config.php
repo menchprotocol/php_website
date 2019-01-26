@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  *
  * Global variables used throughout the platform.
- * use-case format: $this->config->item('en_mass_actions')
+ * use-case format: $this->config->item('in_miner_start_id')
  *
  */
 
@@ -26,6 +26,7 @@ $config['in_strategy_name']         = 'advance your tech career'; //The broader,
 $config['in_strategy_id']           = 7240; //advance your tech career
 $config['in_tactic_id']             = 6903; //The shorter, more immediate focus recommended to Students & Miners as the starting point
 $config['in_webhook_prefix']        = 'https://'; //The prefix for completion Webhook URL
+$config['in_miner_start_id']        = 7435; //The ID that gets Miner's started
 
 
 //Entities:
@@ -64,10 +65,12 @@ $config['en_convert_4537']          = array( //Used for saving media to Facebook
 );
 
 $config['en_mass_actions']          = array( //Various mass actions to be taken on Entity children
-    'prefix_add'    => 'Add Prefix to all Children',
-    'prefix_trim'   => 'Trim Prefix from all Children',
-    'postfix_add'   => 'Add Postfix to all Children',
-    'postfix_trim'  => 'Trim Postfix from all Children',
+    'prefix_add'    => 'Add prefix to all children',
+    'prefix_trim'   => 'Trim prefix from all children',
+    'postfix_add'   => 'Add postfix to all children',
+    'postfix_trim'  => 'Trim postfix from all children',
+    'replace_name'  => 'Apply as name for all children',
+    'replace_icon'  => 'Apply as icon for all children',
 );
 
 //Third-Party Settings:

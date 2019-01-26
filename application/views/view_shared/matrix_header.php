@@ -110,7 +110,7 @@ $uri_segment_1 = $this->uri->segment(1);
                             </li>
                             <li class="extra-toggle entity-inactive" style="display: none;">
                                 <a href="/entities/<?= $udata['en_id'] ?>">
-                                    <i class="fas fa-at"></i><?= $udata['en_id'] . ' '. fn___one_two_explode('', ' ', $udata['en_name']) ?>
+                                    <i class="fas fa-user-circle"></i> <?= fn___one_two_explode('', ' ', $udata['en_name']) ?>
                                 </a>
                             </li>
                             <li class="extra-toggle" style="display: none;">

@@ -46,7 +46,9 @@
             <span class="pass" style="font-size:0.9em; display: none;">or <a href="javascript:void(0)"
                                                                              onclick="$('.pass').toggle()"><span class="underdot">Cancel</span></a></span>
 
-            <div>No account? <a href="https://m.me/askmench?ref=<?= $this->config->item('in_tactic_id') ?>" class="underdot"><i class="fab fa-facebook-messenger"></i> Join Mench on Messenger <i class="fas fa-angle-right"></i></a></div>
+            <div>No account?</div>
+            <div><a href="https://m.me/askmench?ref=<?= $this->config->item('in_tactic_id') ?>" class="underdot"><i class="fab fa-facebook-messenger"></i> Join Mench as a Student <i class="fas fa-angle-right"></i></a></div>
+            <div><a href="https://m.me/askmench?ref=<?= $this->config->item('in_miner_start_id') ?>" class="underdot"><i class="fab fa-facebook-messenger"></i> Join Mench as a Miner/Contributor <i class="fas fa-angle-right"></i></a></div>
 
         </div>
     </form>

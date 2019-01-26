@@ -66,6 +66,10 @@ foreach (fn___echo_status() as $object_id => $statuses) {
             }
         }
 
+        if($count < 1){
+            continue;
+        }
+
         //Display this status count:
         $this_ui .= '<tr class="obj-'.$object_id.'" style="display:none;">';
         $this_ui .= '<td style="text-align: left;">'.fn___echo_status($object_id, $status_num, false, 'top').'</td>';
