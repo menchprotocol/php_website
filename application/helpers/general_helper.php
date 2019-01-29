@@ -462,6 +462,7 @@ function fn___curl_html($url, $return_breakdown = false)
 
         return array(
             //used all the time, also when updating en entity:
+            'status' => 1,
             'tr_en_type_id' => $tr_en_type_id,
             'page_title' => $title,
         );
