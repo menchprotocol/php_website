@@ -27,7 +27,7 @@ class Ledger extends CI_Controller
         $this->load->view('view_shared/matrix_header', array(
             'title' => 'Ledger Transactions',
         ));
-        $this->load->view('view_ledger/tr_miner_ui');
+        $this->load->view('view_ledger/ledger_ui');
         $this->load->view('view_shared/matrix_footer');
 
     }

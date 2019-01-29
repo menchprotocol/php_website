@@ -223,12 +223,12 @@ class Matrix_model extends CI_Model
             //Not removed?
             if ($dup_urls[0]['tr_status'] < 0) {
 
-                $status_index = $this->config->item('object_statuses');
+                $object_statuses = $this->config->item('object_statuses');
 
                 //This URL was removed, which is an issue:
                 return array(
                     'status' => 0,
-                    'message' => 'This URL has had been added before but then removed with status [' . $status_index['en_status'][$dup_urls[0]['en_status']]['s_name'] . ']',
+                    'message' => 'This URL has had been added before but then removed with status [' . $object_statuses['en_status'][$dup_urls[0]['en_status']]['s_name'] . ']',
                 );
 
             } else {

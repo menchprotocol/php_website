@@ -1,9 +1,9 @@
 <?php
 
 $primary_filters = array(
-    'tr_en_id' => 'Entity IDs',
-    'tr_in_id' => 'Intent IDs',
-    'tr_id' => 'Transaction IDs',
+    'tr_en_id' => 'Any Entity IDs',
+    'tr_in_id' => 'Any Intent IDs',
+    'tr_ids' => 'Any Transaction IDs',
     'tr_en_type_id' => 'Link Types',
 );
 
@@ -14,6 +14,9 @@ $advanced_filters = array(
     'tr_in_parent_id' => 'Intent Parent IDs',
     'tr_in_child_id' => 'Intent Child IDs',
     'tr_tr_parent_id' => 'Transaction Parent IDs',
+    'tr_id' => 'Transaction IDs',
+    'tr_coins_min' => 'Minimum Coins',
+    'tr_coins_max' => 'Maximum Coins',
     'in_status' => 'Intent Statuses',
     'en_status' => 'Entity Statuses',
     'tr_status' => 'Transaction Statuses',
@@ -24,7 +27,7 @@ $filters = array();
 $join_by = array('en_type');
 
 foreach (array_merge($primary_filters, $advanced_filters) as $key => $value) {
-    if (isset($_GET[$key])) {
+    if (isset($_GET[$key]) && strlen($_GET[$key]) > 0) {
 
         if ($key == 'in_status') {
 
@@ -76,6 +79,15 @@ foreach (array_merge($primary_filters, $advanced_filters) as $key => $value) {
             } elseif (intval($_GET[$key]) > 0) {
                 $filters['tr_en_credit_id'] = $_GET[$key];
             }
+
+        } elseif ($key == 'tr_coins_min' && doubleval($_GET[$key]) > 0) {
+
+            $filters['tr_coins >='] = doubleval($_GET[$key]);
+
+        } elseif ($key == 'tr_coins_max' && doubleval($_GET[$key]) > 0) {
+
+            $filters['tr_coins <='] = doubleval($_GET[$key]);
+
         } elseif ($key == 'tr_en_parent_id') {
             if (substr_count($_GET[$key], ',') > 0) {
                 //This is multiple IDs:
@@ -111,6 +123,13 @@ foreach (array_merge($primary_filters, $advanced_filters) as $key => $value) {
             } elseif (intval($_GET[$key]) > 0) {
                 $filters['tr_tr_parent_id'] = $_GET[$key];
             }
+        } elseif ($key == 'tr_id') {
+            if (substr_count($_GET[$key], ',') > 0) {
+                //This is multiple IDs:
+                $filters['( tr_id IN (' . $_GET[$key] . '))'] = null;
+            } elseif (intval($_GET[$key]) > 0) {
+                $filters['tr_id'] = $_GET[$key];
+            }
         } elseif ($key == 'tr_en_id') {
             //We need to look for both parent/child
             if (substr_count($_GET[$key], ',') > 0) {
@@ -127,7 +146,7 @@ foreach (array_merge($primary_filters, $advanced_filters) as $key => $value) {
             } elseif (intval($_GET[$key]) > 0) {
                 $filters['( tr_in_child_id = ' . $_GET[$key] . ' OR tr_in_parent_id = ' . $_GET[$key] . ')'] = null;
             }
-        } elseif ($key == 'tr_id') {
+        } elseif ($key == 'tr_ids') {
             //We need to look for both parent/child
             if (substr_count($_GET[$key], ',') > 0) {
                 //This is multiple IDs:
@@ -251,7 +270,8 @@ echo '<div class="row">';
     echo '<div class="col-md-7">';
 
         //Display Transactions:
-        echo '<h5 class="badge badge-h"><i class="fas fa-atlas"></i> '.count($trs).'/'.number_format($trs_count[0]['trs_count'] , 0).' Transactions'.( $trs_count[0]['coins_sum'] > 0 ? ' issued '.number_format($trs_count[0]['coins_sum'] , 0).' Coins' : '') .'</h5>';
+        echo '<h3 style="margin-bottom:7px;"><i class="fas fa-atlas"></i> '.count($trs).' of '.number_format($trs_count[0]['trs_count'] , 0).' Transactions'.( $trs_count[0]['coins_sum'] > 0 ? ' = '.number_format($trs_count[0]['coins_sum'] , 0).' Coins' : '') .':</h3>';
+
         if(count($trs)>0){
             echo '<div class="list-group list-grey">';
             foreach ($trs as $tr) {

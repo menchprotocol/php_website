@@ -82,14 +82,14 @@
         if (count($child_en_filters) > 0 && $child_en_filters[0]['totals'] < $entity['en__child_count']) {
 
             //Load status definitions:
-            $status_index = $this->config->item('object_statuses');
+            $object_statuses = $this->config->item('object_statuses');
 
             //Show fixed All button:
             echo '<a href="#" onclick="u_load_filter_status(-1)" class="btn btn-default btn-secondary u-status-filter u-status--1" data-toggle="tooltip" data-placement="top" title="View all entities"><i class="fas fa-at"></i><span class="hide-small"> All</span> [<span class="li-children-count">' . $entity['en__child_count'] . '</span>]</a>';
 
             //Show each specific filter based on DB counts:
             foreach ($child_en_filters as $c_c) {
-                $st = $status_index['en_status'][$c_c['en_status']];
+                $st = $object_statuses['en_status'][$c_c['en_status']];
                 echo '<a href="#status-' . $c_c['en_status'] . '" onclick="u_load_filter_status(' . $c_c['en_status'] . ')" class="btn btn-default u-status-filter u-status-' . $c_c['en_status'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['s_desc'] . '">' . $st['s_icon'] . '<span class="hide-small"> ' . $st['s_name'] . '</span> [<span class="count-u-status-' . $c_c['en_status'] . '">' . $c_c['totals'] . '</span>]</a>';
             }
 

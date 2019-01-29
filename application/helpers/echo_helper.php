@@ -413,20 +413,15 @@ function fn___echo_tr_row($tr)
     $CI =& get_instance();
 
     //Display the item
-    $ui = '<div class="list-group-item">';
+    $ui = '<div class="list-group-item" style="padding:12px 6px 6px 0px; min-height:84px;">';
 
     //Right content:
     $ui .= '<span class="pull-right">';
 
-    //Show transaction status
-    $ui .= ' <span>' . fn___echo_status('tr_status', $tr['tr_status'], true, 'left') . '</span> ';
 
     //Lets go through all references to see what is there:
     foreach ($CI->config->item('ledger_filters') as $tr_field => $obj_type) {
-        if (intval($tr[$tr_field]) > 0) {
-            //Yes we have a value here:
-            $ui .= fn___echo_tr_column($obj_type, $tr[$tr_field], $tr_field, false);
-        }
+        $ui .= fn___echo_tr_column($obj_type, $tr[$tr_field], $tr_field, false);
     }
 
     if ($tr['tr_en_type_id'] == 4235) {
@@ -457,31 +452,42 @@ function fn___echo_tr_row($tr)
 
         }
 
-
-        // Link to Action Plan's main intent:
-        //$ui .= '<a href="/intents/' . $tr['in_id'] . '" class="badge badge-primary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="' . $tr['in_outcome'] . '"><i class="fas fa-hashtag"></i></a>';
-
-
     }
 
 
-    if (strlen($tr['tr_metadata']) > 0) {
-        $ui .= '<a href="/ledger/fn___tr_json/' . $tr['tr_id'] . '" class="badge badge-primary grey" target="_blank" data-toggle="tooltip" title="See Transaction Details in a new window" data-placement="left" style="width:40px;"><i class="fas fa-search-plus"></i></a>';
-    }
 
-    $ui .= '<span class="badge badge-primary transparent" style="width:40px; margin-right:0; margin-left:0;"><span class="btn-counter">' . $tr['tr_coins'] . '</span><i class="fal fa-coins"></i></span>';
 
 
     $ui .= '</span>';
 
     //What type of main content do we have, if any?
     $main_content = null;
+    $object_statuses = $CI->config->item('object_statuses');
+
 
     //Fetch content for this link:
     $main_content = fn___echo_tr_content($tr['tr_content'], $tr['tr_en_type_id']);
 
+    $ui .= '<span class="badge badge-primary transparent" style="width:40px; margin:0;" data-toggle="tooltip" data-placement="top" title="Mench Coins"><span class="btn-counter">' . $tr['tr_coins'] . '</span><i class="fal fa-coins"></i></span>';
+
+
     $ui .= '<b>' . $tr['en_name'] . '</b>';
-    $ui .= ' <span data-toggle="tooltip" data-placement="right" title="' . $tr['tr_timestamp'] . ' Transaction #' . $tr['tr_id'] . '" style="font-size:0.8em;">' . fn___echo_time_difference(strtotime($tr['tr_timestamp'])) . ' ago</span> ';
+    $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Transaction ID" style="font-size:0.8em;"><i class="fas fa-atlas"></i> '.$tr['tr_id'].'</span>';
+    $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Transaction Last Modified: ' . $tr['tr_timestamp'] . '" style="font-size:0.8em;"><i class="fal fa-clock"></i> ' . fn___echo_time_difference(strtotime($tr['tr_timestamp'])) . ' ago</span>';
+    $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Transaction Status: '.$object_statuses['tr_status'][$tr['tr_status']]['s_desc'].'" style="font-size:0.8em;">'.$object_statuses['tr_status'][$tr['tr_status']]['s_icon'].' '.$object_statuses['tr_status'][$tr['tr_status']]['s_name'].'</span>';
+
+
+    if($tr['tr_order'] != 0){
+        $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Transaction Relative Order" style="font-size:0.8em;"><i class="fas fa-sort-numeric-down"></i> '.$tr['tr_order'].'</span>';
+    } else {
+        $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Not Ordered" style="font-size:0.8em;"><i class="fas fa-sort-numeric-down" style="color: #AAA;"></i></span>';
+    }
+
+    if(strlen($tr['tr_metadata']) > 0){
+        $ui .= ' &nbsp;<a href="/ledger/fn___tr_json/' . $tr['tr_id'] . '" target="_blank" data-toggle="tooltip" data-placement="top" title="Open Transaction Metadata in New Window" style="font-size:0.8em;"><i class="fas fa-search-plus"></i> <b>Metadata</b></a>';
+    } else {
+        $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="No Metadata" style="font-size:0.8em;"><i class="fal fa-search-minus" style="color: #AAA;"></i></span>';
+    }
 
     //Do we have a message?
     $ui .= '<div class="e-msg ' . ($main_content ? '' : 'hidden') . '">';
@@ -564,10 +570,10 @@ function fn___echo_in_referenced_content($in, $fb_messenger_format = false, $exp
 {
 
     /*
-     * 
+     *
      * An intent function to display the cached referenced content
      * that is stored in the metadata field.
-     * 
+     *
      * */
 
     //Do we have anything to return?
@@ -677,10 +683,10 @@ function fn___echo_in_cost_range($in, $fb_messenger_format = 0, $expand_mode = f
 {
 
     /*
-     * 
-     * An intent function to display the cached cost of the 
+     *
+     * An intent function to display the cached cost of the
      * intent tree that is stored in the metadata field.
-     * 
+     *
      * */
 
     //Do we have anything to return?
@@ -724,10 +730,10 @@ function fn___echo_in_overview($in, $fb_messenger_format = 0, $expand_mode = fal
 {
 
     /*
-     * 
+     *
      * An intent function to display the total tree intents
      * stored in the metadata field.
-     * 
+     *
      * */
 
     //Do we have anything to return?
@@ -800,10 +806,10 @@ function fn___echo_in_experts($in, $fb_messenger_format = 0, $expand_mode = fals
 {
 
     /*
-     * 
-     * An intent function to display referenced experts for 
+     *
+     * An intent function to display referenced experts for
      * the entire intent tree stored in the metadata field.
-     * 
+     *
      * */
 
     //Do we have anything to return?
@@ -968,12 +974,23 @@ function fn___echo_tr_column($obj_type, $id, $tr_field, $fb_messenger_format = f
 
     $CI =& get_instance();
     $id = intval($id);
-    if ($id < 1 || !array_key_exists($obj_type, $CI->config->item('core_objects'))) {
+    $object_statuses = $CI->config->item('object_statuses');
+    if (!array_key_exists($obj_type, $CI->config->item('core_objects'))) {
         return false;
     }
 
 
     if ($obj_type == 'in') {
+
+        $is_parent = ( $tr_field == 'tr_in_parent_id' );
+
+        if((is_null($id) || $id==0)){
+            if($fb_messenger_format){
+                return false;
+            } else {
+                return '<span class="badge badge-primary grey '.( $is_parent ? '' : 'tuc-right-under' ).'" style="width:40px;" data-toggle="tooltip" data-placement="top" title="No '.( $is_parent ? 'Parent' : 'Child' ).' Intent"><i class="fas fa-hashtag"></i></span> ';
+            }
+        }
 
         //Fetch Intent:
         $ins = $CI->Database_model->fn___in_fetch(array(
@@ -989,10 +1006,49 @@ function fn___echo_tr_column($obj_type, $id, $tr_field, $fb_messenger_format = f
             return $ins[0]['in_outcome'] . ' [https://mench.com/intents/' . $ins[0]['in_id'] . ']';
         } else {
             //HTML view:
-            return '<a href="/intents/' . $ins[0]['in_id'] . '" target="_parent" class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="' . stripslashes($ins[0]['in_outcome']) . '"><i class="' . ($tr_field == 'tr_in_parent_id' ? 'fas fa-sign-in-alt' : 'fas fa-sign-out-alt rotate90') . '"></i></a> ';
+            return '<a href="/intents/' . $ins[0]['in_id'] . '" target="_parent" class="badge badge-primary '.( $is_parent ? '' : 'tuc-right-under' ).'" style="width:40px;" data-toggle="tooltip" data-placement="top" title="' . stripslashes($ins[0]['in_outcome']) . '">'.$object_statuses['in_is_any'][$ins[0]['in_is_any']]['s_icon'].'</a> ';
         }
 
     } elseif ($obj_type == 'en') {
+
+        $tuc_right_under = null;
+
+        //4 different entity types could pass from here:
+        if($tr_field == 'tr_en_credit_id'){
+
+            $name = 'Creditor Entity';
+            $tuc_right_under = 'tuc-right-under';
+
+        } elseif($tr_field == 'tr_en_parent_id'){
+
+            $name = 'Parent Entity';
+
+
+        } elseif($tr_field == 'tr_en_child_id'){
+
+            $name = 'Child Entity';
+            $tuc_right_under = 'tuc-right-under';
+
+
+        } elseif($tr_field == 'tr_en_type_id'){
+
+            $name = 'Transaction Type Entity';
+
+
+        } else {
+            //Should not happen:
+            return false;
+        }
+
+
+
+        if((is_null($id) || $id==0)){
+            if($fb_messenger_format){
+                return false;
+            } else {
+                return '<span class="badge badge-primary grey '.$tuc_right_under.'" style="width:40px;" data-toggle="tooltip" data-placement="top" title="No '.$name.'"><i class="fas fa-at"></i></span> ';
+            }
+        }
 
         $ens = $CI->Database_model->fn___en_fetch(array(
             'en_id' => $id,
@@ -1007,25 +1063,25 @@ function fn___echo_tr_column($obj_type, $id, $tr_field, $fb_messenger_format = f
             return $ens[0]['en_name'] . ' [https://mench.com/entities/' . $id . ']';
         } else {
             //HTML Format:
-            return '<a href="/entities/' . $id . '" target="_parent" class="badge badge-secondary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="' . stripslashes($ens[0]['en_name']) . '">' . fn___echo_en_icon($ens[0]) . '</a> ';
+            return '<a href="/entities/' . $id . '" target="_parent" class="badge badge-secondary '.$tuc_right_under.'" style="width:40px;" data-toggle="tooltip" data-placement="top" title="' . $name . ': ' . stripslashes($ens[0]['en_name']) . '">' . fn___echo_en_icon($ens[0]) . '</a> ';
         }
 
     } elseif ($obj_type == 'tr') {
 
-        $trs = $CI->Database_model->fn___tr_fetch(array(
-            'tr_id' => $id,
-        ), array('en_type'));
-        if (count($trs) < 1) {
-            //Should not happen:
-            return false;
+        if((is_null($id) || $id==0)){
+            if($fb_messenger_format){
+                return false;
+            } else {
+                return '<span class="badge badge-primary grey tuc-midway" style="width:40px;" data-toggle="tooltip" data-placement="top" title="No Parent Transaction"><i class="fas fa-atlas"></i></span> ';
+            }
         }
 
         if ($fb_messenger_format) {
             //Plain view:
-            return $trs[0]['en_name'] . ' [https://mench.com/ledger/' . $trs[0]['tr_id'] . ']';
+            return 'Transaction '.$id.' [https://mench.com/ledger?tr_id=' . $id . ']';
         } else {
             //HTML View:
-            return '<a href="/ledger/' . $trs[0]['tr_id'] . '" target="_parent" class="badge badge-primary" style="width:40px;" data-toggle="tooltip" data-placement="left" title="Transaction type ' . $trs[0]['en_name'] . ' #' . $trs[0]['tr_id'] . '"><i class="fas fa-atlas"></i></a> ';
+            return '<a href="/ledger?tr_id=' . $id . '" target="_parent" class="badge badge-primary white tuc-midway" style="width:40px;" data-toggle="tooltip" data-placement="top" title="Parent Transaction '.$id.'"><i class="fas fa-atlas"></i></a> ';
         }
 
     }
@@ -1092,13 +1148,13 @@ function fn___echo_status($obj_type = null, $status = null, $micro_status = fals
      * */
 
     $CI =& get_instance();
-    $status_index = $CI->config->item('object_statuses');
+    $object_statuses = $CI->config->item('object_statuses');
 
     //Return results:
     if (is_null($obj_type)) {
 
         //Everything
-        return $status_index;
+        return $object_statuses;
 
     } elseif (is_null($status)) {
 
@@ -1106,7 +1162,7 @@ function fn___echo_status($obj_type = null, $status = null, $micro_status = fals
         if (is_array($obj_type) && count($obj_type) > 0) {
             return $obj_type;
         } else {
-            return (isset($status_index[$obj_type]) ? $status_index[$obj_type] : false);
+            return (isset($object_statuses[$obj_type]) ? $object_statuses[$obj_type] : false);
         }
 
     } else {
@@ -1115,7 +1171,7 @@ function fn___echo_status($obj_type = null, $status = null, $micro_status = fals
         if (is_array($obj_type) && count($obj_type) > 0) {
             $result = $obj_type[$status];
         } else {
-            $result = $status_index[$obj_type][$status];
+            $result = $object_statuses[$obj_type][$status];
         }
 
         if (!$result) {
@@ -1186,7 +1242,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
     $CI =& get_instance();
     $udata = $CI->session->userdata('user');
-    $status_index = $CI->config->item('object_statuses');
+    $object_statuses = $CI->config->item('object_statuses');
     $tr_id = (isset($in['tr_id']) ? $in['tr_id'] : 0);
     $is_child_focused = ($level == 3 && $is_parent && $CI->uri->segment(2)==$in['in_id']);
 
@@ -1317,7 +1373,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
 
     //Intent Link to Travel Down/UP the Tree:
-    $ui .= '&nbsp;<a href="' . ($level == 1 || $is_child_focused ? 'javascript:alert(\'You are already here!\')' : '/intents/' . $in['in_id']) . '" class="tree-badge-' . $in['in_id'] . ' badge badge-primary ' . ( $level == 1 || $is_child_focused ? 'grey' : '') . '" style="display:inline-block; margin-right:-1px; width:40px; border:2px solid #fedd16 !important;">' . (isset($in_metadata['in__tree_in_active_count']) ? '<span class="btn-counter children-counter-' . $in['in_id'] . ' ' . ($is_parent && $level == 2 ? 'inb-counter' : '') . '">' . $in_metadata['in__tree_in_active_count'] . '</span>' : '') . '<i class="fas fa-angle-right"></i></a> ';
+    $ui .= '&nbsp;<a href="' . ($level == 1 || $is_child_focused ? 'javascript:alert(\'You are already here!\')' : '/intents/' . $in['in_id']) . '" class="tree-badge-' . $in['in_id'] . ' badge badge-primary ' . ( $level == 1 || $is_child_focused ? 'transparent' : '') . '" style="display:inline-block; margin-right:-1px; width:40px; border:2px solid ' . ( $level == 1 || $is_child_focused ? 'transparent' : '#fedd16') . ' !important;">' . (isset($in_metadata['in__tree_in_active_count']) ? '<span class="btn-counter children-counter-' . $in['in_id'] . ' ' . ($is_parent && $level == 2 ? 'inb-counter' : '') . '">' . $in_metadata['in__tree_in_active_count'] . '</span>' : '') . '<i class="fas fa-angle-right"></i></a> ';
 
     $ui .= '</span> '; //End of right column
 
@@ -1356,7 +1412,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         $ui .= '<span class="icon-main tr_type_' . $tr_id . '"><span class="tr_type_val" data-toggle="tooltip" data-placement="right" title="' . $en_all_4486[$in['tr_en_type_id']]['m_name'] . ': ' . $en_all_4486[$in['tr_en_type_id']]['m_desc'] . '">' . $en_all_4486[$in['tr_en_type_id']]['m_icon'] . '</span></span> ';
 
         //Show smaller transaction status icon:
-        $ui .= '<span class="icon-sub tr_status_' . $tr_id . '"><span class="in_status_val" data-toggle="tooltip" data-placement="right" title="'.$status_index['tr_status'][$in['tr_status']]['s_name'].': '.$status_index['tr_status'][$in['tr_status']]['s_desc'].'">' . $status_index['tr_status'][$in['tr_status']]['s_icon'] . '</span></span> ';
+        $ui .= '<span class="icon-sub tr_status_' . $tr_id . '"><span class="in_status_val" data-toggle="tooltip" data-placement="right" title="'.$object_statuses['tr_status'][$in['tr_status']]['s_name'].': '.$object_statuses['tr_status'][$in['tr_status']]['s_desc'].'">' . $object_statuses['tr_status'][$in['tr_status']]['s_icon'] . '</span></span> ';
 
         $ui .= '</span>';
 
@@ -1374,10 +1430,10 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     $ui .= '<span class="double-icon" style="margin-right:5px;">';
 
     //Show larger intent icon (AND or OR):
-    $ui .= '<span class="icon-main in_is_any_' . $in['in_id'] . '"><span class="in_is_any_val" data-toggle="tooltip" data-placement="right" title="'.$status_index['in_is_any'][$in['in_is_any']]['s_name'].': '.$status_index['in_is_any'][$in['in_is_any']]['s_desc'].'">' . $status_index['in_is_any'][$in['in_is_any']]['s_icon'] . '</span></span> ';
+    $ui .= '<span class="icon-main in_is_any_' . $in['in_id'] . '"><span class="in_is_any_val" data-toggle="tooltip" data-placement="right" title="'.$object_statuses['in_is_any'][$in['in_is_any']]['s_name'].': '.$object_statuses['in_is_any'][$in['in_is_any']]['s_desc'].'">' . $object_statuses['in_is_any'][$in['in_is_any']]['s_icon'] . '</span></span> ';
 
     //Show smaller intent status:
-    $ui .= '<span class="icon-sub in_status_' . $in['in_id'] . '"><span class="in_status_val" data-toggle="tooltip" data-placement="right" title="'.$status_index['in_status'][$in['in_status']]['s_name'].': '.$status_index['in_status'][$in['in_status']]['s_desc'].'">' . $status_index['in_status'][$in['in_status']]['s_icon'] . '</span></span> ';
+    $ui .= '<span class="icon-sub in_status_' . $in['in_id'] . '"><span class="in_status_val" data-toggle="tooltip" data-placement="right" title="'.$object_statuses['in_status'][$in['in_status']]['s_name'].': '.$object_statuses['in_status'][$in['in_status']]['s_desc'].'">' . $object_statuses['in_status'][$in['in_status']]['s_icon'] . '</span></span> ';
 
     $ui .= '</span>';
 
@@ -1588,7 +1644,7 @@ function fn___echo_en($en, $level, $is_parent = false)
 
     $CI =& get_instance();
     $udata = $CI->session->userdata('user');
-    $status_index = $CI->config->item('object_statuses');
+    $object_statuses = $CI->config->item('object_statuses');
     $tr_id = (isset($en['tr_id']) ? $en['tr_id'] : 0);
     $ui = null;
 
@@ -1645,7 +1701,7 @@ function fn___echo_en($en, $level, $is_parent = false)
         'tr_en_parent_id' => $en['en_id'], //Entity Referenced in message content
     ), array(), 0, 0, array(), 'COUNT(tr_id) AS total_messages');
 
-    $ui .= '<' . ($messages[0]['total_messages'] > 0 ? 'a href="#loadmessages-' . $en['en_id'] . '" onclick="fn___load_en_messages(' . $en['en_id'] . ')" class="badge badge-secondary white-secondary"' : 'span class="badge badge-secondary white-secondary"') . ' style="width:40px; margin-left:5px;"><span class="btn-counter">' . $messages[0]['total_messages'] . '</span><i class="fas fa-comment-dots"></i></' . ($messages[0]['total_messages'] > 0 ? 'a' : 'span') . '>';
+    $ui .= '<' . ($messages[0]['total_messages'] > 0 ? 'a href="#loadmessages-' . $en['en_id'] . '" onclick="fn___load_en_messages(' . $en['en_id'] . ')" class="badge badge-secondary white-secondary"' : 'a href="#" onclick="alert(\'No intent messages found that reference this entity\')" class="badge badge-secondary transparent"') . ' style="width:40px; margin-left:5px;"><span class="btn-counter">' . $messages[0]['total_messages'] . '</span><i class="fas fa-comment-dots"></i></a>';
 
 
 
@@ -1685,7 +1741,7 @@ function fn___echo_en($en, $level, $is_parent = false)
             $en['en__child_count'] = intval($child_trs[0]['en__child_count']);
         }
     }
-    $ui .= '<a class="badge badge-secondary '. ( $level == 1 ? 'grey' : '') .'" href="'.($level == 1 ? 'javascript:alert(\'You are already here!\')' : '/entities/' . $en['en_id']). '" style="display:inline-block; margin-right:6px; width:40px; margin-left:1px; border:2px solid #0084ff !important;">' . ($en['en__child_count'] > 0 ? '<span class="btn-counter ' . ($level == 1 ? 'li-children-count' : '') . '" title="' . number_format($en['en__child_count'], 0) . ' Entities">' . fn___echo_number($en['en__child_count']) . '</span>' : '') . '<i class="fas fa-angle-right"></i></a>';
+    $ui .= '<a class="badge badge-secondary '. ( $level == 1 ? 'transparent' : '') .'" href="'.($level == 1 ? 'javascript:alert(\'You are already here!\')' : '/entities/' . $en['en_id']). '" style="display:inline-block; margin-right:6px; width:40px; margin-left:1px; border:2px solid '. ( $level == 1 ? 'transparent' : '#0084ff') .' !important;">' . ($en['en__child_count'] > 0 ? '<span class="btn-counter ' . ($level == 1 ? 'li-children-count' : '') . '" title="' . number_format($en['en__child_count'], 0) . ' Entities">' . fn___echo_number($en['en__child_count']) . '</span>' : '') . '<i class="fas fa-angle-right"></i></a>';
 
     $ui .= '</span>';
 
@@ -1714,7 +1770,7 @@ function fn___echo_en($en, $level, $is_parent = false)
         $ui .= '<span class="icon-main tr_type_' . $tr_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$entity_links[$en['tr_en_type_id']]['m_name'].': '.$entity_links[$en['tr_en_type_id']]['m_desc'].'">' . $entity_links[$en['tr_en_type_id']]['m_icon'] . '</span></span> ';
 
         //Show smaller transaction status icon:
-        $ui .= '<span class="icon-sub tr_status_' . $tr_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$status_index['tr_status'][$en['tr_status']]['s_name'].': '.$status_index['tr_status'][$en['tr_status']]['s_desc'].']">' . $status_index['tr_status'][$en['tr_status']]['s_icon'] . '</span></span>';
+        $ui .= '<span class="icon-sub tr_status_' . $tr_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$object_statuses['tr_status'][$en['tr_status']]['s_name'].': '.$object_statuses['tr_status'][$en['tr_status']]['s_desc'].']">' . $object_statuses['tr_status'][$en['tr_status']]['s_icon'] . '</span></span>';
 
         $ui .= '</span>';
     } else {
@@ -1735,7 +1791,7 @@ function fn___echo_en($en, $level, $is_parent = false)
     $ui .= '<span class="icon-main en_icon_ui en_icon_ui_' . $en['en_id'] . '"><span data-toggle="tooltip" data-placement="right" title="Entity Icon">' . fn___echo_en_icon($en) . '</span></span>';
 
     //Show smaller entity status:
-    $ui .= '<span class="icon-sub en_status_' . $en['en_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$status_index['en_status'][$en['en_status']]['s_name'].': '.$status_index['en_status'][$en['en_status']]['s_desc'].'">' . $status_index['en_status'][$en['en_status']]['s_icon'] . '</span></span>';
+    $ui .= '<span class="icon-sub en_status_' . $en['en_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$object_statuses['en_status'][$en['en_status']]['s_name'].': '.$object_statuses['en_status'][$en['en_status']]['s_desc'].'">' . $object_statuses['en_status'][$en['en_status']]['s_icon'] . '</span></span>';
 
     $ui .= '</span>';
 

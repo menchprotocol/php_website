@@ -6,7 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * So we don't have to make DB calls to figure them out every time!
  * This is the cron function that creates this: fn___matrix_cache()
  * See here for all entities cached: https://mench.com/entities/4527
- * use-case format: $this->config->item('en_all_4534')
+ * use-case format: $this->config->item('en_all_3000')
  *
  * ATTENTION: Also search for "en_ids_" and "en_all_" when trying to manage these throughout the code base
  *
@@ -299,7 +299,7 @@ $config['en_all_3000'] = array(
     ),
     2999 => array(
         'm_icon' => '<i class="fas fa-microphone"></i>',
-        'm_name' => 'Podcast',
+        'm_name' => 'Podcasts',
         'm_desc' => '',
     ),
     3005 => array(

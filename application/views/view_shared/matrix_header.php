@@ -90,14 +90,19 @@ $uri_segment_1 = $this->uri->segment(1);
                                     <i class="fas fa-at"></i> Entities
                                 </a>
                             </li>
+
                             <li class="<?= ($uri_segment_1 == 'ledger' ? 'ledger-active' : 'ledger-inactive') ?>">
                                 <a href="/ledger">
                                     <i class="fas fa-atlas"></i> Ledger
                                 </a>
                             </li>
 
+                            <li class="entity-inactive" data-toggle="tooltip" data-placement="left" title="New Source Entity Wizard">
+                                <a href="javascript:void(0);" onclick="url_modal('/entities/add_source')"><i class="fas fa-plus"></i></a>
+                            </li>
+
                             <!-- Extra, Hidden Menu Options: -->
-                            <li class="extra-toggle">
+                            <li class="extra-toggle" data-toggle="tooltip" data-placement="left" title="Expand menu">
                                 <a href="javascript:void(0);" onclick="$('.extra-toggle').toggle();">&nbsp;
                                     <i class="fas fa-ellipsis-h"></i> &nbsp;
                                 </a>

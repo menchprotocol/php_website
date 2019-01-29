@@ -39,12 +39,7 @@ $(document).ready(function(){
 
     $.material.init();
 
-    md.initSidebarsCheck();
-
     window_width = $(window).width();
-
-    // check if there is an image set for the sidebar's background
-    md.checkSidebarImage();
 
     //  Activate the tooltips
     $('[rel="tooltip"]').tooltip();
@@ -60,8 +55,6 @@ $(document).ready(function(){
 
 // activate collapse right menu when the windows is resized
 $(window).resize(function(){
-    md.initSidebarsCheck();
-
     // reset the seq for charts drawing animations
     seq = seq2 = 0;
 
@@ -72,27 +65,6 @@ md = {
         navbar_menu_visible: 0,
         active_collapse: true,
         disabled_collapse_init: 0,
-    },
-
-    checkSidebarImage: function(){
-        $sidebar = $('.sidebar');
-        image_src = $sidebar.data('image');
-
-        if(image_src !== undefined){
-            sidebar_container = '<div class="sidebar-background" style="background-image: url(' + image_src + ') "/>'
-            $sidebar.append(sidebar_container);
-        }
-    },
-
-    initSidebarsCheck: function(){
-        if($(window).width() <= 991){
-            if($sidebar.length != 0){
-                md.initRightMenu();
-            } else {
-                md.initBootstrapNavbarMenu();
-            }
-        }
-
     },
 
     checkScrollForTransparentNavbar: debounce(function() {

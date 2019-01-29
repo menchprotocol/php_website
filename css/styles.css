@@ -214,7 +214,7 @@ body.grey-bg {
     color: #0084ff !important;
 }
 
-.badge-secondary .fas {
+.badge-secondary i {
     color: #FFF !important;
 }
 
@@ -2554,6 +2554,16 @@ a.badge:focus, a.badge:hover {
     margin-top: 30px;
 }
 
+.right-textarea{
+    min-height: 88px;
+    margin-bottom:-7px !important;
+}
+
+.author-addon{
+    margin:5px 0 0 7px;
+    max-width:295px;
+}
+
 .large-stat>span{
     font-size: 2em;
     display: block;
@@ -3424,9 +3434,7 @@ h4 .tip-badge {
     display: inline-block !important;
 }
 
-.hidden {
-    display: none !important;
-}
+
 
 .navbar-main > .active > a, .navbar-main > .active > a:hover, .navbar-main > .active > a:focus {
     color: #2f2739 !important;
@@ -3531,11 +3539,38 @@ h4 .tip-badge {
     border: 1px solid #FFF !important;
 }
 
+.badge .en-icon img {
+    width: 24px !important;
+    margin: -13px 0 -8px -2px !important;;
+    height: 24px !important;;
+    border-radius: 50% !important;;
+}
+
+.badge-secondary i {
+    color: #FFF;
+}
+
+.transparent i {
+    color: #2b2b2b !important;
+}
+
 .e-msg {
     background-color: #FFF;
     padding: 10px;
     border-radius: 5px;
-    margin: 12px 0 0;
+    margin:3px 187px 5px 10px;
+}
+
+.tuc-right-under{
+    margin-bottom: -69px;
+    margin-right: -43px;
+}
+.tuc-under{
+    margin-bottom: -69px;
+}
+
+.tuc-midway{
+    margin-bottom: -36px;
 }
 
 .badge-h {
@@ -3630,4 +3665,8 @@ h4 .tip-badge {
 
 .inline-block{
     display: inline-block !important;
+}
+
+.hidden {
+    display: none !important;
 }

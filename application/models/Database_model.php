@@ -303,7 +303,7 @@ class Database_model extends CI_Model
                         }
 
                         //Append ID:
-                        $html_message .= '<div>Transaction ID: <a href="https://mench.com/ledger/fn___tr_json/' . $trs[0]['tr_id'] . '">#' . $trs[0]['tr_id'] . '</a></div>';
+                        $html_message .= '<div>Transaction: <a href="https://mench.com/ledger/fn___tr_json/' . $trs[0]['tr_id'] . '">#' . $trs[0]['tr_id'] . '</a></div>';
 
                         //Send Email:
                         $this->Chat_model->fn___dispatch_email($subscription['admin_emails'], $subscription['admin_en_ids'], $subject, $html_message);
@@ -729,7 +729,7 @@ class Database_model extends CI_Model
 
                     //Value has changed, log transaction:
                     $this->Database_model->fn___tr_create(array(
-                        'tr_tr_parent_id' => $id, //Parent Transaction ID
+                        'tr_tr_parent_id' => $id, //Parent Transaction
                         'tr_en_credit_id' => $tr_en_credit_id,
                         'tr_en_type_id' => 4242, //Transaction Attribute Modified
                         'tr_content' => 'Transaction ' . ucwords(str_replace('_', ' ', str_replace('tr_', '', $key))) . ' changed from [' . $before_data[0][$key] . '] to [' . $value . ']',

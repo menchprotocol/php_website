@@ -12,6 +12,22 @@ class Entities extends CI_Controller
     }
 
 
+    function add_source(){
+        //Authenticate Miner, redirect if failed:
+        $udata = fn___en_auth(array(1308), true);
+
+        //Always skip header:
+        $_GET['skip_header'] = 1;
+
+        //Show frame to be loaded in modal:
+        $this->load->view('view_shared/matrix_header', array(
+            'title' => 'New Source Entity Wizard',
+        ));
+        $this->load->view('view_entities/add_source_frame');
+        $this->load->view('view_shared/matrix_footer');
+    }
+
+
     //Lists entities
     function en_miner_ui($en_id)
     {
