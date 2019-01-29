@@ -204,7 +204,7 @@ class Matrix_model extends CI_Model
         if (!filter_var($input_url, FILTER_VALIDATE_URL)) {
             return array(
                 'status' => 0,
-                'message' => 'Invalid URL',
+                'message' => 'Enter Valid URL',
             );
         }
 
@@ -249,44 +249,14 @@ class Matrix_model extends CI_Model
         //Call URL to validate it further:
         $curl = fn___curl_html($input_url, true);
 
-        if (!$curl) {
-            return array(
-                'status' => 0,
-                'message' => 'Invalid URL',
-            );
+        if (!$curl['status']) {
+            //Oooopsi, we had some error:
+            return $curl;
         }
-
-        //We need to create a new entity and add this URL to it...
-        //Was fn___curl_html() able to fetch the URL's <title> tag?
-        if (strlen($curl['page_title']) > 0) {
-
-            //Make sure this is not a duplicate name:
-            $dup_name_us = $this->Database_model->fn___en_fetch(array(
-                'en_status >=' => 0, //New+
-                'en_name' => $curl['page_title'],
-            ));
-
-            if (count($dup_name_us) > 0) {
-                //Yes, we did find a duplicate name! Append a unique identifier:
-                $en_name = $curl['page_title'] . ' ' . substr(md5($input_url), 0, 8);
-            } else {
-                //No duplicate detected, we can use page title as is:
-                $en_name = $curl['page_title'];
-            }
-
-        } else {
-
-            //fn___curl_html() did not find a <title> tag:
-            //Use URL Type as its name:
-            $en_all_4537 = $this->config->item('en_all_4537');
-            $en_name = $en_all_4537[$curl['tr_en_type_id']]['m_name'] . ' ' . substr(md5($input_url), 0, 8); //Append a unique identifier
-
-        }
-
 
         //Create a new entity:
         $en = $this->Database_model->fn___en_create(array(
-            'en_name' => $en_name,
+            'en_name' => $curl['page_title'],
             'en_status' => 2, //Published
         ), true, $tr_en_credit_id);
 

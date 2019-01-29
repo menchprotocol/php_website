@@ -36,21 +36,6 @@ $(document).ready(function () {
     }
 
 
-    //Do we need to auto load anything?
-    if (window.location.hash) {
-        var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
-        var hash_parts = hash.split("-");
-        if (hash_parts.length >= 2) {
-            //Fetch level if available:
-            if (hash_parts[0] == 'loadmessages') {
-                fn___in_messages_load(hash_parts[1]);
-            } else if (hash_parts[0] == 'loadmodify') {
-                fn___in_modify_load(hash_parts[1], hash_parts[2]);
-            } else if (hash_parts[0] == 'leadledger') {
-                fn___in_tr_load(hash_parts[1],hash_parts[2],hash_parts[3]);
-            }
-        }
-    }
 
 
     //Watch the expand/close all buttons:
@@ -130,7 +115,7 @@ $(document).ready(function () {
     }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
 
         source: function (q, cb) {
-            algolia_c_index.search(q, {
+            algolia_in_index.search(q, {
                 hitsPerPage: 7,
             }, function (error, content) {
                 if (error) {
@@ -165,6 +150,27 @@ $(document).ready(function () {
 
     //Load level 3 sorting for this new level 2 intent:
     fn___in_load_search_level3(".intentadder-level-3");
+
+
+
+
+
+    //Do we need to auto load anything?
+    if (window.location.hash) {
+        var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
+        var hash_parts = hash.split("-");
+        if (hash_parts.length >= 2) {
+            //Fetch level if available:
+            if (hash_parts[0] == 'loadmessages') {
+                fn___in_messages_load(hash_parts[1]);
+            } else if (hash_parts[0] == 'loadmodify') {
+                fn___in_modify_load(hash_parts[1], hash_parts[2]);
+            } else if (hash_parts[0] == 'browseledger') {
+                fn___in_tr_load(hash_parts[1],hash_parts[2],hash_parts[3]);
+            }
+        }
+    }
+
 
 });
 
@@ -227,7 +233,7 @@ function fn___in_load_search_level3(focus_element) {
     }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
 
         source: function (q, cb) {
-            algolia_c_index.search(q, {
+            algolia_in_index.search(q, {
                 hitsPerPage: 7,
             }, function (error, content) {
                 if (error) {
@@ -411,13 +417,13 @@ function fn___in_sort_load(in_id, level) {
 
 function fn___in_messages_load(in_id) {
     //Start loading:
-    $('.fixed-box, .ajax-frame').addClass('hidden');
-    $('#load_w_frame, .frame-loader').removeClass('hidden').hide().fadeIn();
+    $('.fixed-box').addClass('hidden');
+    $('.frame-loader').addClass('hidden');
+    $('#load_tr_frame, .frame-loader').removeClass('hidden').hide().fadeIn();
     //Set title:
-    $('#w_title').html('<i class="fas fa-comment-dots"></i> ' + $('.in_outcome_' + in_id + ':first').text());
+    $('#tr_title').html('<i class="fas fa-comment-dots"></i> ' + $('.in_outcome_' + in_id + ':first').text());
 
     //Load content via a URL:
-    $('.frame-loader').addClass('hidden');
     $('.ajax-frame').attr('src', '/intents/fn___in_messages_load/' + in_id).removeClass('hidden').css('margin-top', '0');
 
     //Tooltips:
@@ -426,12 +432,13 @@ function fn___in_messages_load(in_id) {
 
 
 function fn___in_tr_load(in_id, tr_id, tr_en_type_id) {
+
     //Start loading:
     $('.fixed-box, .ajax-frame').addClass('hidden');
-    $('#load_w_frame, .frame-loader').removeClass('hidden').hide().fadeIn();
+    $('#load_tr_frame, .frame-loader').removeClass('hidden').hide().fadeIn();
 
     //Set title:
-    $('#w_title').html('<i class="fas fa-atlas"></i> ' + $('.in_outcome_' + in_id + ':first').text());
+    $('#tr_title').html('<i class="fas fa-atlas"></i>' + $('.in_outcome_' + in_id + ':first').text());
 
     //Load content via a URL:
     $('.frame-loader').addClass('hidden');
@@ -726,7 +733,7 @@ function fn___in_modify_save() {
                 //Did the Transaction update?
                 if (modify_data['tr_id'] > 0) {
 
-                    $('.in_tr_type_' + modify_data['tr_id']).html('<span class="in_tr_type_val" data-toggle="tooltip" data-placement="right" title="'+ en_all_4486[modify_data['tr_en_type_id']]["m_name"] + ': '+ en_all_4486[modify_data['tr_en_type_id']]["m_desc"] + '">'+ en_all_4486[modify_data['tr_en_type_id']]["m_icon"] +'</span>');
+                    $('.tr_type_' + modify_data['tr_id']).html('<span class="tr_type_val" data-toggle="tooltip" data-placement="right" title="'+ en_all_4486[modify_data['tr_en_type_id']]["m_name"] + ': '+ en_all_4486[modify_data['tr_en_type_id']]["m_desc"] + '">'+ en_all_4486[modify_data['tr_en_type_id']]["m_icon"] +'</span>');
 
                     $('.tr_status_' + modify_data['tr_id']).html('<span class="tr_status_val" data-toggle="tooltip" data-placement="right" title="'+ object_js_statuses['tr_status'][modify_data['tr_status']]["s_name"] + ': '+ object_js_statuses['tr_status'][modify_data['tr_status']]["s_desc"] + '">'+ object_js_statuses['tr_status'][modify_data['tr_status']]["s_icon"] +'</span>');
 

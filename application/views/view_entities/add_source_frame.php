@@ -14,25 +14,28 @@
         </h4>
     </div>
     <span class="white-wrapper">
-        <input type="url" id="source_url" value="" placeholder="https://www.youtube.com/watch?v=ebEairg3G3w" class="form-control border">
+        <input type="text" onkeyup="fn___en_source_paste_url()" id="source_url" value="" placeholder="https://www.youtube.com/watch?v=ebEairg3G3w" class="form-control border">
     </span>
 
+    <br />
+    <div class="url-error"></div>
+    <div class="url-parsed hidden">
+        <div class="title" style="margin-top:15px;"><h4><i class="fas fa-sign-in"></i> Entity Parents</h4></div>
+        <?php
 
-    <div class="title" style="margin-top:15px;"><h4><i class="fas fa-sign-in"></i> Entity Parents</h4></div>
-    <?php
-
-    //The Parent Entity based on domain:
-    echo '<span class="checkbox" style="margin: 0;">
+        //The Parent Entity based on domain:
+        echo '<span class="checkbox" style="margin: 0;">
             <label style="display:inline-block !important; font-size: 0.9em !important; margin-left:8px;">
                 <input type="checkbox" checked="checked" disabled name="source_type" value="domain_url" />
-                    <span class="entity-domain"><i class="fas fa-at grey-at"></i> samplewebsite.com</span>
+                <input type="hidden" id="entity_domain_id" value="" />
+                    <span class="entity_domain_ui"></span>
                     [<span class="underdot" data-toggle="tooltip" data-placement="top" title="Parent auto created based on URL domain">Domain Entity</span>]
             </label>
         </span>';
 
 
-    foreach($this->config->item('en_all_3000') as $en_id => $en ){
-        echo '<span class="checkbox" style="margin: 0;">
+        foreach($this->config->item('en_all_3000') as $en_id => $en ){
+            echo '<span class="checkbox" style="margin: 0;">
             <label style="display:inline-block !important; font-size: 0.9em !important; margin-left:8px;">
                 <input type="checkbox" name="source_type" value="'.$en_id.'" />
                 <span '.( strlen($en['m_desc']) > 0 ? ' class="underdot" data-toggle="tooltip" data-placement="right" title="'.$en['m_desc'].'" ' : '' ).'>
@@ -40,14 +43,14 @@
                 </span>
             </label>
         </span>';
-    }
-    ?>
+        }
+        ?>
 
-    <?php foreach (array(1,2,3) as $num){ ?>
-    <span class="white-wrapper author-addon">
-        <input type="text" onkeyup="search_author(<?= $num ?>)" id="author_<?= $num ?>" value="" placeholder="Search/create author entities..." class="form-control border">
+        <?php foreach (array(1,2,3) as $num){ ?>
+            <span class="white-wrapper author-addon">
+        <input type="text" onkeyup="search_author(<?= $num ?>)" id="author_<?= $num ?>" value="" author-box="<?= $num ?>" placeholder="Search/create author entities..." class="form-control border en-search algolia_search">
     </span>
-    <span class="inline-block author_is_expert_<?= $num ?> hidden">
+            <span class="inline-block author_is_expert_<?= $num ?> hidden">
         <span class="white-wrapper">
             <select class="form-control border" id="entity_parent_id_<?= $num ?>" style="display:inline-block !important;">
                 <option value="1278">Add as People</option>
@@ -55,34 +58,35 @@
             </select>
         </span>
     </span>
-    <div class="form-group explain_expert_<?= $num ?> label-floating is-empty hidden" style="margin:3px 0 7px 22px;">
-        <div class="input-group border" style="background-color: #FFF; margin-bottom: 3px;">
-            <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;">URL:</span>
-            <input style="padding-left:3px;" type="url" id="ref_url_<?= $num ?>" class="form-control">
-        </div>
-        <div class="form-group label-floating is-empty">
-            <div class="input-group border">
+            <div class="form-group explain_expert_<?= $num ?> label-floating is-empty hidden" style="margin:3px 0 7px 22px;">
+                <div class="input-group border" style="background-color: #FFF; margin-bottom: 3px;">
+                    <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;">URL:</span>
+                    <input style="padding-left:3px;" type="url" id="ref_url_<?= $num ?>" class="form-control">
+                </div>
+                <div class="form-group label-floating is-empty">
+                    <div class="input-group border">
                                 <span class="input-group-addon addon-lean addon-grey"
                                       style="color:#2f2739; font-weight: 300;">Is Expert?</span>
-                <span class="white-wrapper">
+                        <span class="white-wrapper">
                     <textarea class="form-control right-textarea" id="why_expert_<?= $num ?>"></textarea>
                 </span>
+                    </div>
+                </div>
             </div>
+        <?php } ?>
+
+
+        <div class="title" style="margin-top:30px;"><h4><i class="fas fa-fingerprint"></i> Entity Name
+            </h4></div>
+        <span class="white-wrapper" style="margin-bottom: 3px;">
+            <input type="text" id="en_name" class="form-control border en-verify algolia_search">
+        </span>
+
+
+
+        <div style="padding:20px 0;">
+            <a href="javascript:fn___en_add_source();" class="btn btn-secondary btn-save">Create Entity</a>
         </div>
-    </div>
-    <?php } ?>
-
-
-    <div class="title" style="margin-top:30px;"><h4><i class="fas fa-fingerprint"></i> Entity Name
-        </h4></div>
-    <span class="white-wrapper" style="margin-bottom: 3px;">
-        <input type="text" id="en_name" class="form-control border">
-    </span>
-
-
-
-    <div style="padding:20px 0;">
-        <a href="javascript:fn___en_add_source();" class="btn btn-secondary btn-save">Create Entity</a>
     </div>
 
 </div>

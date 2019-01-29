@@ -173,7 +173,12 @@ function fn___detect_tr_en_type_id($string)
     } elseif (filter_var($string, FILTER_VALIDATE_URL)) {
         //It's a URL, see what type:
         $curl = fn___curl_html($string, true);
-        return $curl['tr_en_type_id'];
+        if (!$curl['status']) {
+            //Oooopsi, we had some error:
+            return 0;
+        } else {
+            return $curl['tr_en_type_id'];
+        }
     } elseif ( strlen($string) > 9 && (fn___isDate($string) || strtotime($string) > 0)) {
         //Date/time:
         return 4318;
@@ -336,7 +341,10 @@ function fn___curl_html($url, $return_breakdown = false)
 
     //Validate URL:
     if (!filter_var($url, FILTER_VALIDATE_URL)) {
-        return false;
+        return array(
+            'status' => 0,
+            'message' => 'Enter Valid URL',
+        );
     }
 
     $ch = curl_init($url);
@@ -358,6 +366,24 @@ function fn___curl_html($url, $return_breakdown = false)
     $response = curl_exec($ch);
 
     if ($return_breakdown) {
+
+        $CI =& get_instance();
+
+
+        //Check to see if duplicate URL:
+        $dup_url_trs = $CI->Database_model->fn___tr_fetch(array(
+            'tr_status >=' => 0, //New+
+            'tr_en_type_id IN (' . join(',', $CI->config->item('en_ids_4537')) . ')' => null, //Any URL type
+            'tr_content' => $url,
+        ), array('en_child'));
+        if(count($dup_url_trs) > 0){
+            //Yes, this URL already exists!
+            return array(
+                'status' => 0,
+                'message' => 'URL already added for entity ['.$dup_url_trs[0]['en_name'].']',
+            );
+        }
+
 
         $body_html = substr($response, curl_getinfo($ch, CURLINFO_HEADER_SIZE));
         $content_type = fn___one_two_explode('', ';', curl_getinfo($ch, CURLINFO_CONTENT_TYPE));
@@ -405,11 +431,39 @@ function fn___curl_html($url, $return_breakdown = false)
                 }
             }
         }
+        $title = trim($title);
+        if(strlen($title) > 0){
+
+            //Make sure this is not a duplicate name:
+            $dup_name_us = $CI->Database_model->fn___en_fetch(array(
+                'en_status >=' => 0, //New+
+                'en_name' => $title,
+            ));
+
+            if (count($dup_name_us) > 0) {
+                //Yes, we did find a duplicate name! Append a unique identifier:
+                $title = $title . ' ' . substr(md5($url), 0, 8);
+            }
+
+        } else {
+
+            //did not find a <title> tag:
+            //Use URL Type as its name:
+            $en_all_4537 = $CI->config->item('en_all_4537');
+            $title = $en_all_4537[$tr_en_type_id]['m_name'] . ' ' . substr(md5($url), 0, 8); //Append a unique identifier
+
+        }
+
+
+        //Detect domain parent:
+
+
+
 
         return array(
             //used all the time, also when updating en entity:
             'tr_en_type_id' => $tr_en_type_id,
-            'page_title' => trim($title),
+            'page_title' => $title,
         );
 
     } else {

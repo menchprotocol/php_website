@@ -28,6 +28,46 @@ class Entities extends CI_Controller
     }
 
 
+    function fn___en_source_paste_url(){
+
+        /*
+         *
+         * Validates the input URL to be added as a new source entity
+         *
+         * */
+
+        $udata = fn___en_auth(array(1308));
+        if (!$udata) {
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Session. Refresh to Continue',
+            ));
+        } elseif (!isset($_POST['input_url']) || !filter_var($_POST['input_url'], FILTER_VALIDATE_URL)) {
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Enter Valid URL',
+            ));
+        }
+
+        //All seems good, fetch URL:
+        $curl = fn___curl_html($_POST['input_url'], true);
+
+        if (!$curl['status']) {
+            //Oooopsi, we had some error:
+            return fn___echo_json($curl);
+        }
+
+        //Return results:
+        return fn___echo_json(array(
+            'status' => 1,
+            'entity_domain_ui' => '<i class="fas fa-at grey-at"></i> ' . $_POST['input_url'],
+            'entity_domain_id' => 2345,
+            'page_title' => $curl['page_title'],
+        ));
+
+    }
+
+
     //Lists entities
     function en_miner_ui($en_id)
     {

@@ -21,6 +21,73 @@ class Cron extends CI_Controller
     //30 4 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron fn___update_algolia u 0
     //30 3 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron e_score_recursive
 
+    function urls(){
+        //Migrate from URL to People/ORG
+
+        $current_urls = $this->Database_model->fn___tr_fetch(array(
+            'tr_status >=' => 0,
+            'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null,
+            'tr_en_parent_id' => 1326,
+        ), array('en_child'), 99999);
+
+        $counter = 0;
+        foreach ($current_urls as $i=>$tr){
+
+            $all_good = false;
+
+            //Do we have people/org as parent?
+            $blank_trs = $this->Database_model->fn___tr_fetch(array(
+                'tr_status >=' => 0,
+                //'tr_en_type_id' => 4230, //Raw
+                'tr_en_parent_id IN (1278, 2750)' => null, //Org or people
+                'tr_en_child_id' => $tr['tr_en_child_id'],
+            ));
+
+            if(count($blank_trs) == 0){
+
+                //See if any of the parents are organizations:
+                foreach($this->Database_model->fn___tr_fetch(array(
+                    'tr_status >=' => 0,
+                    'tr_en_type_id IN (' . join(',', array_merge($this->config->item('en_ids_4537'), $this->config->item('en_ids_4538'))) . ')' => null, //Entity Link Connectors
+                    'tr_en_child_id' => $tr['tr_en_child_id'],
+                )) as $parent_en){
+
+                    //Is this item an org?
+                    $parent_orgs = $this->Database_model->fn___tr_fetch(array(
+                        'tr_status >=' => 0,
+                        'tr_en_parent_id' => 2750, //Org
+                        'tr_en_child_id' => $parent_en['tr_en_parent_id'],
+                    ));
+
+                    if(count($parent_orgs) > 0){
+                        $all_good = true;
+                        break;
+                    }
+
+                }
+
+            } else {
+
+                $all_good = true;
+
+            }
+
+
+            if(!$all_good){
+                $counter++;
+                echo $counter.') <a href="/entities/'.$tr['en_id'].'">'.$tr['en_name'].'</a><br />';
+            }
+
+            /*
+            $this->Database_model->fn___tr_update($tr['tr_id'], array(
+                'tr_status' => -1,
+            ), 1); */
+        }
+
+        //echo fn___echo_json($current_urls);
+
+    }
+
     function test($fb_messenger_format = 0){
 
         $quick_replies = array();

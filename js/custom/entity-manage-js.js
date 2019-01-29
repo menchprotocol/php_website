@@ -7,7 +7,7 @@ function en_load_child_search() {
     }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
 
         source: function (q, cb) {
-            algolia_u_index.search(q, {
+            algolia_en_index.search(q, {
                 hitsPerPage: 7,
             }, function (error, content) {
                 if (error) {
@@ -95,26 +95,6 @@ $(document).ready(function () {
     }
 
 
-    //Do we need to auto load anything?
-    if (window.location.hash) {
-        var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
-        var hash_parts = hash.split("-");
-        if (hash_parts.length >= 2) {
-            //Fetch level if available:
-            if (hash_parts[0] == 'loadmessages') {
-                fn___load_en_messages(hash_parts[1]);
-            } else if (hash_parts[0] == 'loadmodify') {
-                fn___en_modify_load(hash_parts[1], hash_parts[2]);
-            } else if (hash_parts[0] == 'status') {
-                //Update status:
-                u_load_filter_status(hash_parts[1]);
-            } else if (hash_parts[0] == 'wtrs') {
-                fn___load_en_ledger(hash_parts[1]);
-            }
-        }
-    }
-
-
     //Loadup various search bars:
     en_load_child_search();
 
@@ -123,7 +103,7 @@ $(document).ready(function () {
         tr_add(suggestion.en_id, 0, 1);
     }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
         source: function (q, cb) {
-            algolia_u_index.search(q, {
+            algolia_en_index.search(q, {
                 hitsPerPage: 7,
             }, function (error, content) {
                 if (error) {
@@ -180,6 +160,28 @@ $(document).ready(function () {
                 fn___en_new_url_from_attachment(droppedFiles, 'drop');
             });
     }
+
+
+
+    //Do we need to auto load anything?
+    if (window.location.hash) {
+        var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
+        var hash_parts = hash.split("-");
+        if (hash_parts.length >= 2) {
+            //Fetch level if available:
+            if (hash_parts[0] == 'loadmessages') {
+                fn___load_en_messages(hash_parts[1]);
+            } else if (hash_parts[0] == 'loadmodify') {
+                fn___en_modify_load(hash_parts[1], hash_parts[2]);
+            } else if (hash_parts[0] == 'status') {
+                //Update status:
+                u_load_filter_status(hash_parts[1]);
+            } else if (hash_parts[0] == 'browseledger') {
+                fn___load_en_ledger(hash_parts[1]);
+            }
+        }
+    }
+
 
 
 });

@@ -114,8 +114,8 @@ function fn___load_js_algolia() {
         if (!algolia_loaded) {
             algolia_loaded = true;
             client = algoliasearch('49OCX1ZXLJ', 'ca3cf5f541daee514976bc49f8399716');
-            algolia_u_index = client.initIndex('alg_entities');
-            algolia_c_index = client.initIndex('alg_intents');
+            algolia_en_index = client.initIndex('alg_entities');
+            algolia_in_index = client.initIndex('alg_intents');
         }
     });
 }
@@ -144,7 +144,7 @@ $(document).ready(function () {
     }).autocomplete({hint: false, minLength: 3, autoselect: true, keyboardShortcuts: ['s']}, [
         {
             source: function (q, cb) {
-                algolia_c_index.search(q, {
+                algolia_in_index.search(q, {
                     hitsPerPage: 7,
                 }, function (error, content) {
                     if (error) {
@@ -165,7 +165,7 @@ $(document).ready(function () {
         },
         {
             source: function (q, cb) {
-                algolia_u_index.search(q, {
+                algolia_en_index.search(q, {
                     hitsPerPage: 7,
                 }, function (error, content) {
                     if (error) {
@@ -217,7 +217,7 @@ function fn___load_en_ledger(en_id, tr_id=0) {
     tr_id = parseInt(tr_id);
     en_id = parseInt(en_id);
     var frame_title = frame_loader(tr_id, en_id, true);
-    $('#w_title').html('<i class="fas fa-atlas"></i> ' + frame_title);
+    $('#tr_title').html('<i class="fas fa-atlas"></i> ' + frame_title);
 
     //Load content via a URL:
     $('.frame-loader').addClass('hidden');

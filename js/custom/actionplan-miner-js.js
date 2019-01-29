@@ -36,7 +36,7 @@ $(document).ready(function () {
             //Fetch level if available:
             if (hash_parts[0] == 'wactionplan') {
                 load_w_actionplan(hash_parts[1], hash_parts[2]);
-            } else if (hash_parts[0] == 'wtrs') {
+            } else if (hash_parts[0] == 'browseledger') {
                 fn___load_en_ledger(hash_parts[1], hash_parts[2]);
             }
         }
@@ -49,7 +49,7 @@ function frame_loader(tr_id, en_id, hide_intent=false) {
 
     //Start loading:
     $('.fixed-box, .ajax-frame').addClass('hidden');
-    $('#load_w_frame, .frame-loader').removeClass('hidden');
+    $('#load_tr_frame, .frame-loader').removeClass('hidden');
 
     //Construct title:
     var w_entity = null;
@@ -75,7 +75,7 @@ function load_w_actionplan(tr_id, en_id) {
     tr_id = parseInt(tr_id);
     en_id = parseInt(en_id);
     var frame_title = frame_loader(tr_id, en_id);
-    $('#w_title').html('<i class="fas fa-flag"></i> ' + frame_title);
+    $('#tr_title').html('<i class="fas fa-flag"></i> ' + frame_title);
 
     //Add via Ajax:
     $.post("/ledger/load_w_actionplan", {tr_id: tr_id}, function (data) {

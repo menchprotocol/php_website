@@ -118,7 +118,7 @@ body.grey-bg {
 }
 
 .badge-primary, .badge-secondary {
-    font-size: 1em;
+    font-size: 19px !important;
     padding-top: 6px;
     padding-left: 8px;
     padding-bottom: 5px;
@@ -2047,6 +2047,10 @@ select.form-control {
     left:0;
     top:-18px !important;
     position: absolute !important;
+}
+
+.is-top-1 .icon-main img {
+    left:8px !important;
 }
 
 

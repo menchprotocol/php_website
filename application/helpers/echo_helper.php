@@ -430,7 +430,7 @@ function fn___echo_tr_row($tr)
         $count_en_trs = $CI->Database_model->fn___tr_fetch(array(
             'tr_en_credit_id' => $tr['tr_en_parent_id'],
         ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
-        $ui .= '<a href="#enactionplans-' . $tr['tr_en_parent_id'] . '-' . $tr['tr_id'] . '" onclick="fn___load_en_ledger(' . $tr['tr_en_parent_id'] . ',' . $tr['tr_id'] . ')" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="' . $count_en_trs[0]['totals'] . ' Total Transactions credited to this Student"><span class="btn-counter">' . fn___echo_number($count_en_trs[0]['totals']) . '</span><i class="fas fa-atlas"></i></a>';
+        $ui .= '<a href="#browseledger-' . $tr['tr_en_parent_id'] . '-' . $tr['tr_id'] . '" onclick="fn___load_en_ledger(' . $tr['tr_en_parent_id'] . ',' . $tr['tr_id'] . ')" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="' . $count_en_trs[0]['totals'] . ' Total Transactions credited to this Student"><span class="btn-counter">' . fn___echo_number($count_en_trs[0]['totals']) . '</span><i class="fas fa-atlas"></i></a>';
 
 
         //Number of intents in Student Action Plan & Its completion Percentage:
@@ -1341,7 +1341,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
 
         //Show link to load these intents in Student Action Plans:
-        $ui .= '<a href="#leadledger-' . $in['in_id'] . '-' . $tr_id . '-4559" onclick="fn___in_tr_load(' . $in['in_id'] . ', '. $tr_id .', 4559)" class="badge badge-primary" style="width:40px; margin-right:2px;" data-toggle="tooltip" title="' . $count_in_actionplans_complete[0]['totals'] . '/' . $count_in_actionplans[0]['totals'] . ' completed (or skipped) across all Action Plans" data-placement="top"><span class="btn-counter">' . round($count_in_actionplans_complete[0]['totals'] / $count_in_actionplans[0]['totals'] * 100) . '%</span><i class="fas fa-flag" style="font-size:0.85em;"></i></a>';
+        $ui .= '<a href="#browseledger-' . $in['in_id'] . '-' . $tr_id . '-4559" onclick="fn___in_tr_load(' . $in['in_id'] . ', '. $tr_id .', 4559)" class="badge badge-primary" style="width:40px; margin-right:2px;" data-toggle="tooltip" title="' . $count_in_actionplans_complete[0]['totals'] . '/' . $count_in_actionplans[0]['totals'] . ' completed (or skipped) across all Action Plans" data-placement="top"><span class="btn-counter">' . round($count_in_actionplans_complete[0]['totals'] / $count_in_actionplans[0]['totals'] * 100) . '%</span><i class="fas fa-flag" style="font-size:0.85em;"></i></a>';
 
     }
 
@@ -1364,7 +1364,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
     if ($count_in_trs[0]['totals'] > 0) {
         //Show link to load these transactions:
-        $ui .= '<a href="#leadledger-' . $in['in_id'] . '-' . $tr_id . '-0" onclick="fn___in_tr_load(' . $in['in_id'] . ', ' . $tr_id . ', 0)" class="badge badge-primary white-primary" style="width:40px; margin-right:0px;" data-toggle="tooltip" data-placement="top" title="' . number_format($count_in_trs[0]['totals'], 0) . ' Transactions"><span class="btn-counter">' . fn___echo_number($count_in_trs[0]['totals']) . '</span><i class="fas fa-atlas"></i></a>';
+        $ui .= '<a href="#browseledger-' . $in['in_id'] . '-' . $tr_id . '-0" onclick="fn___in_tr_load(' . $in['in_id'] . ', ' . $tr_id . ', 0)" class="badge badge-primary white-primary" style="width:40px; margin-right:0px;" data-toggle="tooltip" data-placement="top" title="' . number_format($count_in_trs[0]['totals'], 0) . ' Transactions"><span class="btn-counter">' . fn___echo_number($count_in_trs[0]['totals']) . '</span><i class="fas fa-atlas"></i></a>';
     }
 
 
@@ -1560,8 +1560,9 @@ function fn___echo_leaderboard($days_ago = null, $top = 25){
     );
 
     if(!is_null($days_ago)){
+        $start_date = date("Y-m-d" , (time() - ($days_ago * 24 * 3600)));
         //From beginning of the day:
-        $filters['tr_timestamp >='] = date("Y-m-d" , (time() - ($days_ago * 24 * 3600))).' 00:00:00';
+        $filters['tr_timestamp >='] = $start_date.' 00:00:00';
         $table_name = $days_ago.'-Day';
     } else {
         $table_name = 'All Time';
@@ -1588,7 +1589,7 @@ function fn___echo_leaderboard($days_ago = null, $top = 25){
         //Echo stats:
         $table_body .= '<tr>';
         $table_body .= '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center; '.( $count > 2 ? 'font-size:0.8em;' : '' ).'">'.fn___echo_rank($count+1).'</span><span style="width: 29px; display: inline-block; text-align: center;">'.( strlen($tr['en_icon']) > 0 ? $tr['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$tr['tr_en_credit_id'].'">'.$tr['en_name'].'</a></td>';
-        $table_body .= '<td style="text-align: right;"><a href="/ledger?tr_en_credit_id='.$tr['tr_en_credit_id'].'"  data-toggle="tooltip" title="Awarded for '.number_format($tr['trs_count'],0).' transactions averaging '.round(($tr['coins_sum']/$tr['trs_count']),0).' coins/transaction" data-placement="top">'.number_format($tr['coins_sum'], 0).'</a></td>';
+        $table_body .= '<td style="text-align: right;"><a href="/ledger?tr_en_credit_id='.$tr['tr_en_credit_id'].( is_null($days_ago) ? '' : '&start_range='.$start_date ).'"  data-toggle="tooltip" title="Awarded for '.number_format($tr['trs_count'],0).' transactions averaging '.round(($tr['coins_sum']/$tr['trs_count']),0).' coins/transaction" data-placement="top">'.number_format($tr['coins_sum'], 0).'</a></td>';
         $table_body .= '</tr>';
 
         $all_transaction_count += $tr['trs_count'];
@@ -1714,7 +1715,7 @@ function fn___echo_en($en, $level, $is_parent = false)
     ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
     if ($count_in_trs[0]['totals'] > 0) {
         //Show the transaction button:
-        $ui .= '<a href="#enactionplans-' . $en['en_id'] . '" onclick="fn___load_en_ledger(' . $en['en_id'] . ')" class="badge badge-secondary white-secondary" style="width:40px; margin-left:2px;" data-toggle="tooltip" data-placement="top" title="' . number_format($count_in_trs[0]['totals'], 0) . ' Transactions"><span class="btn-counter">' . fn___echo_number($count_in_trs[0]['totals']) . '</span><i class="fas fa-atlas"></i></a>';
+        $ui .= '<a href="#browseledger-' . $en['en_id'] . '" onclick="fn___load_en_ledger(' . $en['en_id'] . ')" class="badge badge-secondary white-secondary" style="width:40px; margin-left:2px;" data-toggle="tooltip" data-placement="top" title="' . number_format($count_in_trs[0]['totals'], 0) . ' Transactions"><span class="btn-counter">' . fn___echo_number($count_in_trs[0]['totals']) . '</span><i class="fas fa-atlas"></i></a>';
     }
 
 
