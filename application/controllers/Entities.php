@@ -130,13 +130,17 @@ class Entities extends CI_Controller
         $entity_links = $this->config->item('en_all_4537') + $this->config->item('en_all_4538');
 
         //See what this is:
-        $en_id = fn___detect_tr_en_type_id($_POST['tr_content']);
+        $tr_en_type_id = fn___detect_tr_en_type_id($_POST['tr_content']);
 
+        if(!$tr_en_type_id['status']){
+            //return error:
+            return fn___echo_json($tr_en_type_id);
+        }
 
         return fn___echo_json(array(
             'status' => 1,
-            'html_ui' => '<a href="/entities/'.$en_id.'" style="font-weight: bold;" data-toggle="tooltip" data-placement="top" title="'.$entity_links[$en_id]['m_desc'].'">'.$entity_links[$en_id]['m_icon'].' '.$entity_links[$en_id]['m_name'].'</a>',
-            'en_link_preview' => fn___echo_url_type($_POST['tr_content'] , $en_id),
+            'html_ui' => '<a href="/entities/'.$tr_en_type_id['tr_en_type_id'].'" style="font-weight: bold;" data-toggle="tooltip" data-placement="top" title="'.$entity_links[$tr_en_type_id['tr_en_type_id']]['m_desc'].'">'.$entity_links[$tr_en_type_id['tr_en_type_id']]['m_icon'].' '.$entity_links[$tr_en_type_id['tr_en_type_id']]['m_name'].'</a>',
+            'en_link_preview' => fn___echo_url_type($_POST['tr_content'] , $tr_en_type_id['tr_en_type_id']),
         ));
     }
 
@@ -578,7 +582,11 @@ class Entities extends CI_Controller
                 $tr_content = $en_trs[0]['tr_content'];
             } else {
                 $tr_content = $_POST['tr_content'];
-                $js_tr_en_type_id = fn___detect_tr_en_type_id($_POST['tr_content']);
+                $tr_en_type_id = fn___detect_tr_en_type_id($_POST['tr_content']);
+                if(!$tr_en_type_id['status']){
+                    return fn___echo_json($tr_en_type_id);
+                }
+                $js_tr_en_type_id = $tr_en_type_id['tr_en_type_id'];
             }
 
 
@@ -928,10 +936,15 @@ class Entities extends CI_Controller
 
             if (count($login_passwords) > 0) {
 
+                $tr_en_type_id = fn___detect_tr_en_type_id($new_password);
+                if(!$tr_en_type_id['status']){
+                    echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: '.$tr_en_type_id['message'].'</div>';
+                }
+
                 //Update existing password:
                 $this->Database_model->fn___tr_update($login_passwords[0]['tr_id'], array(
                     'tr_content' => $new_password,
-                    'tr_en_type_id' => fn___detect_tr_en_type_id($new_password),
+                    'tr_en_type_id' => $tr_en_type_id['tr_en_type_id'],
                 ), $login_passwords[0]['tr_en_child_id']);
 
             } else {

@@ -166,25 +166,33 @@ function fn___detect_tr_en_type_id($string)
 
     if (!$string || strlen($string) == 0) {
         //Naked:
-        return 4230;
+        return array(
+            'status' => 1,
+            'tr_en_type_id' => 4230,
+        );
     } elseif (strlen(intval($string))==strlen($string)) {
         //Number:
-        return 4319;
+        return array(
+            'status' => 1,
+            'tr_en_type_id' => 4319,
+        );
     } elseif (filter_var($string, FILTER_VALIDATE_URL)) {
-        //It's a URL, see what type:
-        $curl = fn___curl_html($string, true);
-        if (!$curl['status']) {
-            //Oooopsi, we had some error:
-            return 0;
-        } else {
-            return $curl['tr_en_type_id'];
-        }
+
+        //It's a URL, see what type (this could fail if duplicate, etc...):
+        return fn___curl_html($string, true);
+
     } elseif ( strlen($string) > 9 && (fn___isDate($string) || strtotime($string) > 0)) {
         //Date/time:
-        return 4318;
+        return array(
+            'status' => 1,
+            'tr_en_type_id' => 4318,
+        );
     } else {
         //Regular text link:
-        return 4255;
+        return array(
+            'status' => 1,
+            'tr_en_type_id' => 4255,
+        );
     }
 }
 

@@ -339,10 +339,17 @@ class Cron extends CI_Controller
         //Go through and upload to CDN:
         foreach ($tr_pending as $u) {
 
+            $tr_en_type_id = fn___detect_tr_en_type_id($new_file_url);
+            if(!$tr_en_type_id['status']){
+                //Opppsi, there was some error:
+                //TODO Log error
+                continue;
+            }
+
             //Update transaction data:
             $this->Database_model->fn___tr_update($trp['tr_id'], array(
                 'tr_content' => $new_file_url,
-                'tr_en_type_id' => fn___detect_tr_en_type_id($new_file_url),
+                'tr_en_type_id' => $tr_en_type_id['tr_en_type_id'],
                 'tr_status' => 2, //Publish
             ));
 

@@ -315,10 +315,17 @@ class Master extends CI_Controller
 
         //Has anything changed?
         if ($notes_changed) {
+
+
+            $tr_en_type_id = fn___detect_tr_en_type_id($_POST['tr_content']);
+            if(!$tr_en_type_id['status']){
+                return fn___redirect_message('/master/actionplan', '<div class="alert alert-danger" role="alert">Error: '.$tr_en_type_id['message'].'</div>');
+            }
+
             //Updates k notes:
             $this->Database_model->fn___tr_update($trs[0]['tr_id'], array(
                 'tr_content' => trim($_POST['tr_content']),
-                'tr_en_type_id' => fn___detect_tr_en_type_id($_POST['tr_content']),
+                'tr_en_type_id' => $tr_en_type_id['tr_en_type_id'],
             ), (isset($udata['en_id']) ? $udata['en_id'] : $trs[0]['k_children_en_id']));
         }
 
