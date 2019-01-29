@@ -110,7 +110,7 @@ echo '<div class="col-md-4">';
 $all_engs = $this->Database_model->fn___tr_fetch(array(
     'tr_en_credit_id >' => 0,
     'tr_coins !=' => 0,
-), array('en_type'), 0, 0, array('coins_sum' => 'DESC'), 'COUNT(tr_en_type_id) as trs_count, SUM(tr_coins) as coins_sum, en_name, en_icon, tr_en_type_id', 'tr_en_type_id, en_name, en_icon');
+), array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(tr_en_type_id) as trs_count, SUM(tr_coins) as coins_sum, en_name, en_icon, tr_en_type_id', 'tr_en_type_id, en_name, en_icon');
 
 $all_transaction_count = 0;
 $all_coin_payouts = 0;

@@ -66,10 +66,10 @@ $config['en_convert_4537']          = array( //Used for saving media to Facebook
 
 $config['en_mass_actions']          = array( //Various mass actions to be taken on Entity children
     'prefix_add'    => 'Add prefix to all children',
-    'prefix_trim'   => 'Trim prefix from all children',
+    'prefix_trim'   => 'Remove prefix from all children',
     'postfix_add'   => 'Add postfix to all children',
-    'postfix_trim'  => 'Trim postfix from all children',
-    'replace_name'  => 'Apply as name for all children',
+    'postfix_trim'  => 'Remove postfix from all children',
+    'replace_match'  => 'Replace matching strings',
     'replace_icon'  => 'Apply as icon for all children',
 );
 

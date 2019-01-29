@@ -87,8 +87,8 @@ class Cron extends CI_Controller
             foreach($children as $child){
 
                 //Do we have an omit command?
-                if(substr_count($en['tr_content'], '/omit ') == 1){
-                    $child['en_name'] = trim(str_replace( str_replace('/omit ','',$en['tr_content']) , '', $child['en_name']));
+                if(substr_count($en['tr_content'], '/trimcache ') == 1){
+                    $child['en_name'] = trim(str_replace( str_replace('/trimcache ','',$en['tr_content']) , '', $child['en_name']));
                 }
 
                 echo '&nbsp;&nbsp;&nbsp;&nbsp; '.$child['en_id'].' => array(<br />';

@@ -50,15 +50,15 @@
     <span class="inline-block author_is_expert_<?= $num ?> hidden">
         <span class="white-wrapper">
             <select class="form-control border" id="entity_parent_id_<?= $num ?>" style="display:inline-block !important;">
-                <option value="1278">People</option>
-                <option value="2750">Organizations</option>
+                <option value="1278">Add as People</option>
+                <option value="2750">Add as Organizations</option>
             </select>
         </span>
     </span>
     <div class="form-group explain_expert_<?= $num ?> label-floating is-empty hidden" style="margin:3px 0 7px 22px;">
         <div class="input-group border" style="background-color: #FFF; margin-bottom: 3px;">
             <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;">URL:</span>
-            <input style="padding-left:3px;" type="url" id="ref_url_<?= $num ?>" placeholder="URL referencing this entity" class="form-control">
+            <input style="padding-left:3px;" type="url" id="ref_url_<?= $num ?>" class="form-control">
         </div>
         <div class="form-group label-floating is-empty">
             <div class="input-group border">

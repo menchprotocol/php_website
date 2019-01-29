@@ -21,7 +21,9 @@ function search_author(author_box){
 
         $('.author_is_expert_' + author_box).removeClass('hidden');
         $('.explain_expert_' + author_box).removeClass('hidden');
-        $('#why_expert_' + author_box).attr('placeholder', 'Explain why '+( current_val.length > 0 ? current_val : 'this entity' )+' is an expert by listing their accomplishments...');
+
+        $('#ref_url_' + author_box).attr('placeholder', 'URL referencing the bio of '+( current_val.length > 0 ? current_val : 'this entity' )+'...');
+        $('#why_expert_' + author_box).attr('placeholder', 'If so, list accomplishments supporting the expertise of '+( current_val.length > 0 ? current_val : 'this entity' )+'...');
 
     } else{
 
