@@ -38,7 +38,7 @@ class Cron extends CI_Controller
             //Do we have people/org as parent?
             $blank_trs = $this->Database_model->fn___tr_fetch(array(
                 'tr_status >=' => 0,
-                //'tr_en_type_id' => 4230, //Raw
+                'tr_en_type_id' => 4230,
                 'tr_en_parent_id IN (1278, 2750)' => null, //Org or people
                 'tr_en_child_id' => $tr['tr_en_child_id'],
             ));
