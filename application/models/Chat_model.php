@@ -78,7 +78,7 @@ class Chat_model extends CI_Model
          *                          - $tr_append['tr_timestamp']: Auto generated to current timestamp
          *                          - $tr_append['tr_status']: Will always equal 2 as a completed message
          *                          - $tr_append['tr_en_type_id']: Auto calculated based on message content (or error)
-         *                          - $tr_append['tr_en_credit_id']: Mench will always get credit, so this is set to zero
+         *                          - $tr_append['tr_en_miner_id']: Mench will always get credit to miner, so this is set to zero
          *                          - $tr_append['tr_en_parent_id']: This is auto set with an entity reference within $input_message
          *                          - $tr_append['tr_en_child_id']: This will be equal to $recipient_en['en_id']
          *
@@ -1180,7 +1180,7 @@ class Chat_model extends CI_Model
 
                         //Log error transaction so we can look into it:
                         $this->Database_model->fn___tr_create(array(
-                            'tr_en_credit_id' => 1, //Shervin Enayati - 13 Dec 2018
+                            'tr_en_miner_id' => 1, //Shervin Enayati - 13 Dec 2018
                             'tr_content' => 'fn___compose_validate_message() encountered intent with too many children to be listed as OR Intent options! Trim and iterate that intent tree.',
                             'tr_en_type_id' => 4246, //Platform Error
                             'tr_tr_parent_id' => $actionplan_tr_id, //The action plan
@@ -1452,7 +1452,7 @@ class Chat_model extends CI_Model
                 foreach ($actionplans as $tr) {
                     $this->Database_model->fn___tr_update($tr['tr_id'], array(
                         'tr_status' => -1, //Removed
-                    ), $en['en_id']); //Give credit to them
+                    ), $en['en_id']); //Give credit to miner
                 }
 
                 //Update Student communication level to Unsubscribe:
@@ -1480,7 +1480,7 @@ class Chat_model extends CI_Model
                     //Update status for this single Action Plan:
                     $this->Database_model->fn___tr_update($actionplans[0]['tr_id'], array(
                         'tr_status' => -1, //Removed
-                    ), $en['en_id']); //Give credit to them
+                    ), $en['en_id']); //Give credit to miner
 
                     //Show success message to user:
                     $this->Chat_model->fn___dispatch_message(
@@ -1504,7 +1504,7 @@ class Chat_model extends CI_Model
 
                     //Log error transaction:
                     $this->Database_model->fn___tr_create(array(
-                        'tr_en_credit_id' => $en['en_id'],
+                        'tr_en_miner_id' => $en['en_id'],
                         'tr_en_parent_id' => $en['en_id'],
                         'tr_content' => 'Failed to skip an intent from the master Action Plan',
                         'tr_en_type_id' => 4246, //Platform Error
@@ -1844,7 +1844,7 @@ class Chat_model extends CI_Model
 
                 //Log transaction for skip request:
                 $new_tr = $this->Database_model->fn___tr_create(array(
-                    'tr_en_credit_id' => $en['en_id'],
+                    'tr_en_miner_id' => $en['en_id'],
                     'tr_en_parent_id' => $en['en_id'],
                     'tr_en_type_id' => 4284, //Skip Intent
                     'tr_tr_parent_id' => $tr_id, //The parent transaction that points to this intent in the Students Action Plan
@@ -2252,7 +2252,7 @@ class Chat_model extends CI_Model
                     'input_data' => $master_command,
                     'output' => $search_results,
                 ),
-                'tr_en_credit_id' => $en['en_id'], //user who searched
+                'tr_en_miner_id' => $en['en_id'], //user who searched
                 'tr_en_type_id' => 4275, //Search for New Intent Action Plan
             ));
 
@@ -2315,7 +2315,7 @@ class Chat_model extends CI_Model
             $admin_conversations = $this->Database_model->fn___tr_fetch(array(
                 'tr_timestamp >=' => date("Y-m-d H:i:s", (time() - (1800))), //Messages sent from us less than 30 minutes ago
                 'tr_en_type_id' => 4280, //Messages sent from us
-                'tr_en_credit_id' => 4148, //We log Facebook Inbox UI messages sent with this entity ID
+                'tr_en_miner_id' => 4148, //We log Facebook Inbox UI messages sent with this entity ID
             ), array(), 1);
             if (count($admin_conversations) > 0) {
                 //Yes, this user is talking to an admin so do not interrupt their conversation:
@@ -2329,7 +2329,7 @@ class Chat_model extends CI_Model
 
             //Log transaction:
             $this->Database_model->fn___tr_create(array(
-                'tr_en_credit_id' => $en['en_id'], //User who initiated this message
+                'tr_en_miner_id' => $en['en_id'], //User who initiated this message
                 'tr_content' => $fb_received_message,
                 'tr_en_type_id' => 4287, //Log Unrecognizable Message Received
             ));

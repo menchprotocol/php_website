@@ -27,7 +27,7 @@ class Database_model extends CI_Model
     }
 
 
-    function fn___en_create($insert_columns, $external_sync = false, $tr_en_credit_id = 0)
+    function fn___en_create($insert_columns, $external_sync = false, $tr_en_miner_id = 0)
     {
 
         //What is required to create a new intent?
@@ -60,7 +60,7 @@ class Database_model extends CI_Model
 
                 //Log transaction new entity:
                 $this->Database_model->fn___tr_create(array(
-                    'tr_en_credit_id' => ($tr_en_credit_id > 0 ? $tr_en_credit_id : $insert_columns['en_id']),
+                    'tr_en_miner_id' => ($tr_en_miner_id > 0 ? $tr_en_miner_id : $insert_columns['en_id']),
                     'tr_en_child_id' => $insert_columns['en_id'],
                     'tr_en_type_id' => 4251, //New Entity Created
                 ));
@@ -86,7 +86,7 @@ class Database_model extends CI_Model
 
             //Ooopsi, something went wrong!
             $this->Database_model->fn___tr_create(array(
-                'tr_en_parent_id' => $tr_en_credit_id,
+                'tr_en_parent_id' => $tr_en_miner_id,
                 'tr_content' => 'fn___en_create() failed to create a new entity',
                 'tr_en_type_id' => 4246, //Platform Error
                 'tr_metadata' => $insert_columns,
@@ -96,7 +96,7 @@ class Database_model extends CI_Model
         }
     }
 
-    function fn___in_create($insert_columns, $external_sync = false, $tr_en_credit_id = 0)
+    function fn___in_create($insert_columns, $external_sync = false, $tr_en_miner_id = 0)
     {
 
         //What is required to create a new intent?
@@ -124,7 +124,7 @@ class Database_model extends CI_Model
 
                 //Log transaction new entity:
                 $this->Database_model->fn___tr_create(array(
-                    'tr_en_credit_id' => $tr_en_credit_id,
+                    'tr_en_miner_id' => $tr_en_miner_id,
                     'tr_in_child_id' => $insert_columns['in_id'],
                     'tr_en_type_id' => 4250, //New Intent Created
                 ));
@@ -150,7 +150,7 @@ class Database_model extends CI_Model
 
             //Ooopsi, something went wrong!
             $this->Database_model->fn___tr_create(array(
-                'tr_en_parent_id' => $tr_en_credit_id,
+                'tr_en_parent_id' => $tr_en_miner_id,
                 'tr_content' => 'fn___in_create() failed to create a new intent',
                 'tr_en_type_id' => 4246, //Platform Error
                 'tr_metadata' => $insert_columns,
@@ -180,14 +180,14 @@ class Database_model extends CI_Model
         }
 
         //Try to auto detect user:
-        if (!isset($insert_columns['tr_en_credit_id']) || is_null($insert_columns['tr_en_credit_id'])) {
+        if (!isset($insert_columns['tr_en_miner_id']) || is_null($insert_columns['tr_en_miner_id'])) {
             //Attempt to fetch creator ID from session:
             $entity_data = $this->session->userdata('user');
             if (isset($entity_data['en_id']) && intval($entity_data['en_id']) > 0) {
-                $insert_columns['tr_en_credit_id'] = $entity_data['en_id'];
+                $insert_columns['tr_en_miner_id'] = $entity_data['en_id'];
             } else {
-                //Do not issue credit to anyone:
-                $insert_columns['tr_en_credit_id'] = 0;
+                //Do not issue credit to any miner:
+                $insert_columns['tr_en_miner_id'] = 0;
             }
         }
 
@@ -267,7 +267,7 @@ class Database_model extends CI_Model
             foreach ($this->config->item('notify_admins') as $subscription) {
 
                 //Do not notify about own actions:
-                if (in_array($insert_columns['tr_en_credit_id'], $subscription['admin_en_ids'])) {
+                if (in_array($insert_columns['tr_en_miner_id'], $subscription['admin_en_ids'])) {
                     continue;
                 }
 
@@ -518,8 +518,8 @@ class Database_model extends CI_Model
             $this->db->join('table_entities', 'tr_en_child_id=en_id','left');
         } elseif (in_array('en_type', $join_objects)) {
             $this->db->join('table_entities', 'tr_en_type_id=en_id','left');
-        } elseif (in_array('en_credit', $join_objects)) {
-            $this->db->join('table_entities', 'tr_en_credit_id=en_id','left');
+        } elseif (in_array('en_miner', $join_objects)) {
+            $this->db->join('table_entities', 'tr_en_miner_id=en_id','left');
         }
 
         foreach ($match_columns as $key => $value) {
@@ -546,13 +546,13 @@ class Database_model extends CI_Model
     }
 
 
-    function fn___en_update($id, $update_columns, $external_sync = false, $tr_en_credit_id = 0)
+    function fn___en_update($id, $update_columns, $external_sync = false, $tr_en_miner_id = 0)
     {
 
         /*
          *
          * $external_sync helps log a transaction for the new entity that is about to
-         * be created but we yet dont have its entity ID to use in $tr_en_credit_id!
+         * be created but we yet dont have its entity ID to use in $tr_en_miner_id!
          *
          * */
 
@@ -589,7 +589,7 @@ class Database_model extends CI_Model
 
                     //Value has changed, log transaction:
                     $this->Database_model->fn___tr_create(array(
-                        'tr_en_credit_id' => ($tr_en_credit_id > 0 ? $tr_en_credit_id : $id),
+                        'tr_en_miner_id' => ($tr_en_miner_id > 0 ? $tr_en_miner_id : $id),
                         'tr_en_type_id' => 4263, //Entity Attribute Modified
                         'tr_en_child_id' => $id,
                         'tr_content' => 'Entity ' . ucwords(str_replace('_', ' ', str_replace('en_', '', $key))) . ' changed from [' . $before_data[0][$key] . '] to [' . $value . ']',
@@ -613,14 +613,14 @@ class Database_model extends CI_Model
         return $affected_rows;
     }
 
-    function fn___in_update($id, $update_columns, $external_sync = false, $tr_en_credit_id = 0)
+    function fn___in_update($id, $update_columns, $external_sync = false, $tr_en_miner_id = 0)
     {
 
         if (count($update_columns) == 0) {
             return false;
         }
 
-        if ($tr_en_credit_id > 0) {
+        if ($tr_en_miner_id > 0) {
             //Fetch current intent filed values so we can compare later on after we've updated it:
             $before_data = $this->Database_model->fn___in_fetch(array('in_id' => $id));
 
@@ -641,7 +641,7 @@ class Database_model extends CI_Model
         //Do we need to do any additional work?
         if ($affected_rows && $external_sync) {
 
-            //Note that unlike entity modification, we require a creditor entity ID to log the modification transaction:
+            //Note that unlike entity modification, we require a miner entity ID to log the modification transaction:
             //Log modification transaction for every field changed:
             foreach ($update_columns as $key => $value) {
 
@@ -650,7 +650,7 @@ class Database_model extends CI_Model
 
                     //Value has changed, log transaction:
                     $this->Database_model->fn___tr_create(array(
-                        'tr_en_credit_id' => $tr_en_credit_id,
+                        'tr_en_miner_id' => $tr_en_miner_id,
                         'tr_en_type_id' => 4264, //Intent Attribute Modified
                         'tr_in_child_id' => $id,
                         'tr_content' => 'Intent ' . ucwords(str_replace('_', ' ', str_replace('in_', '', $key))) . ' changed from [' . $before_data[0][$key] . '] to [' . $value . ']',
@@ -674,14 +674,14 @@ class Database_model extends CI_Model
         return $affected_rows;
     }
 
-    function fn___tr_update($id, $update_columns, $tr_en_credit_id = 0)
+    function fn___tr_update($id, $update_columns, $tr_en_miner_id = 0)
     {
 
         if (count($update_columns) == 0) {
             return false;
         }
 
-        if ($tr_en_credit_id > 0) {
+        if ($tr_en_miner_id > 0) {
             //Fetch transaction before updating:
             $before_data = $this->Database_model->fn___tr_fetch(array(
                 'tr_id' => $id,
@@ -704,7 +704,7 @@ class Database_model extends CI_Model
         $affected_rows = $this->db->affected_rows();
 
         //Log changes if successful:
-        if ($affected_rows && $tr_en_credit_id) {
+        if ($affected_rows && $tr_en_miner_id) {
 
             //Log modification transaction for every field changed:
             foreach ($update_columns as $key => $value) {
@@ -715,7 +715,7 @@ class Database_model extends CI_Model
                     //Value has changed, log transaction:
                     $this->Database_model->fn___tr_create(array(
                         'tr_tr_parent_id' => $id, //Parent Transaction
-                        'tr_en_credit_id' => $tr_en_credit_id,
+                        'tr_en_miner_id' => $tr_en_miner_id,
                         'tr_en_type_id' => 4242, //Transaction Attribute Modified
                         'tr_content' => 'Transaction ' . ucwords(str_replace('_', ' ', str_replace('tr_', '', $key))) . ' changed from [' . $before_data[0][$key] . '] to [' . $value . ']',
                         'tr_metadata' => array(

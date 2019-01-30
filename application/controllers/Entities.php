@@ -531,7 +531,7 @@ class Entities extends CI_Controller
             'tr_status >=' => 0, //New+
             'tr_en_type_id IN (4251, 4263)' => null, //Entity Created/Updated
             'tr_en_child_id' => $_POST['en_id'],
-        ), array('en_credit'));
+        ), array('en_miner'));
         if (count($updated_trs) < 1) {
             //Should never happen
             return fn___echo_json(array(
@@ -552,7 +552,7 @@ class Entities extends CI_Controller
             $trs = $this->Database_model->fn___tr_fetch(array(
                 'tr_id' => $_POST['tr_id'],
                 'tr_status >=' => 0, //New+
-            ), array('en_credit'));
+            ), array('en_miner'));
 
             if (count($trs) < 1) {
                 return fn___echo_json(array(
@@ -690,7 +690,7 @@ class Entities extends CI_Controller
                     'tr_en_type_id' => $js_tr_en_type_id,
                     'tr_status' => intval($_POST['tr_status']),
                     //Auto append timestamp and most recent miner:
-                    'tr_en_credit_id' => $udata['en_id'],
+                    'tr_en_miner_id' => $udata['en_id'],
                     'tr_timestamp' => date("Y-m-d H:i:s"),
                 ), $udata['en_id']);
 
@@ -719,7 +719,7 @@ class Entities extends CI_Controller
             'tr_status >=' => 0, //New+
             'tr_en_type_id IN (4251, 4263)' => null, //Entity Created/Updated
             'tr_en_child_id' => $_POST['en_id'],
-        ), array('en_credit'));
+        ), array('en_miner'));
         if (count($updated_trs) < 1) {
             //Should never happen
             return fn___echo_json(array(
@@ -741,7 +741,7 @@ class Entities extends CI_Controller
             //Fetch entity link:
             $trs = $this->Database_model->fn___tr_fetch(array(
                 'tr_id' => $_POST['tr_id'],
-            ), array('en_credit'));
+            ), array('en_miner'));
 
             //Prep last updated:
             $return_array['tr_content'] = fn___echo_tr_content($tr_content, $js_tr_en_type_id);
@@ -922,7 +922,7 @@ class Entities extends CI_Controller
 
         //Log Sign In Transaction
         $this->Database_model->fn___tr_create(array(
-            'tr_en_credit_id' => $ens[0]['en_id'],
+            'tr_en_miner_id' => $ens[0]['en_id'],
             'tr_metadata' => $ens[0],
             'tr_en_type_id' => ($is_miner ? 4269 /* Miner Sign in */ : 4563 /* Student Sign in */),
         ));

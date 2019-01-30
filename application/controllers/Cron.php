@@ -117,6 +117,39 @@ class Cron extends CI_Controller
 
     }
 
+
+    function pay(){
+
+        exit; //Maybe use to update all rates if needed?
+
+        //Issue coins for each transaction type:
+        $all_engs = $this->Database_model->fn___tr_fetch(array(), array('en_type'), 0, 0, array('trs_count' => 'DESC'), 'COUNT(tr_en_type_id) as trs_count, en_name, tr_en_type_id', 'tr_en_type_id, en_name');
+
+        //return fn___echo_json($all_engs);
+
+        //Give option to select:
+        foreach ($all_engs as $tr) {
+
+            //DOes it have a rate?
+            $rate_trs = $this->Database_model->fn___tr_fetch(array(
+                'tr_status >=' => 2, //Must be published+
+                'en_status >=' => 2, //Must be published+
+                'tr_en_type_id' => 4319, //Number
+                'tr_en_parent_id' => 4374, //Mench Coins
+                'tr_en_child_id' => $tr['tr_en_type_id'],
+            ), array('en_child'), 1);
+
+            if(count($rate_trs) > 0){
+                //Issue coins at this rate:
+                $this->db->query("UPDATE table_ledger SET tr_coins = '".$rate_trs[0]['tr_content']."' WHERE tr_en_miner_id > 0 AND tr_en_type_id = " . $tr['tr_en_type_id']);
+            }
+
+        }
+
+        echo 'done';
+
+    }
+
     function fn___matrix_cache(){
 
         /*
@@ -258,17 +291,13 @@ class Cron extends CI_Controller
             'u__childrens' => 0, //Child entities are just containers, no score on the link
 
             'tr_en_child_id' => 1, //Transaction initiator
-            'tr_en_credit_id' => 1, //Transaction recipient
+            'tr_en_miner_id' => 1, //Transaction recipient
 
             'tr_en_parent_id' => 13, //Action Plan Items
         );
 
         //Fetch child entities:
-        $ens = $this->Old_model->ur_child_fetch(array(
-            'tr_en_parent_id' => (count($u) > 0 ? $u['en_id'] : $this->config->item('en_start_here_id')),
-            'tr_status >=' => 0, //Pending or Active
-            'en_status >=' => 0, //Pending or Active
-        ));
+        $ens = array();
 
         //Recursively loops through child entities:
         $score = 0;
@@ -287,8 +316,8 @@ class Cron extends CI_Controller
                     'tr_en_child_id' => $u['en_id'],
                 ), array(), 5000)) * $score_weights['tr_en_child_id'];
             $score += count($this->Database_model->fn___tr_fetch(array(
-                    'tr_en_credit_id' => $u['en_id'],
-                ), array(), 5000)) * $score_weights['tr_en_credit_id'];
+                    'tr_en_miner_id' => $u['en_id'],
+                ), array(), 5000)) * $score_weights['tr_en_miner_id'];
             $score += count($this->Database_model->w_fetch(array(
                     'tr_en_parent_id' => $u['en_id'],
                 ))) * $score_weights['tr_en_parent_id'];

@@ -484,7 +484,7 @@ class Intents extends CI_Controller
                 if(!in_array($en_id, $already_selected)){
                     //Need to create a new row for this:
                     $this->Database_model->fn___tr_create(array(
-                        'tr_en_credit_id' => $udata['en_id'],
+                        'tr_en_miner_id' => $udata['en_id'],
                         'tr_en_type_id' => 4331,
                         'tr_en_parent_id' => $en_id,
                         'tr_in_child_id' => intval($_POST['in_id']),
@@ -687,7 +687,7 @@ class Intents extends CI_Controller
 
                 //Also update the timestamp & new miner:
                 $tr_update['tr_timestamp'] = date("Y-m-d H:i:s");
-                $tr_update['tr_en_credit_id'] = $udata['en_id'];
+                $tr_update['tr_en_miner_id'] = $udata['en_id'];
 
                 //Update transactions:
                 $this->Database_model->fn___tr_update($tr_id, $tr_update, $udata['en_id']);
@@ -704,7 +704,7 @@ class Intents extends CI_Controller
             'tr_status >=' => 0, //New+
             'tr_en_type_id IN (4250, 4264)' => null, //Intent Created/Updated
             'tr_in_child_id' => $_POST['in_id'],
-        ), array('en_credit'));
+        ), array('en_miner'));
 
 
         $return_data = array(
@@ -722,7 +722,7 @@ class Intents extends CI_Controller
             //Fetch last intent link transaction:
             $trs = $this->Database_model->fn___tr_fetch(array(
                 'tr_id' => $tr_id,
-            ), array('en_credit'));
+            ), array('en_miner'));
 
             $return_data['tr___last_updated'] = fn___echo_last_updated('tr',$trs[0]);
 
@@ -987,7 +987,7 @@ class Intents extends CI_Controller
 
         //Create message:
         $tr = $this->Database_model->fn___tr_create(array(
-            'tr_en_credit_id' => $udata['en_id'],
+            'tr_en_miner_id' => $udata['en_id'],
             'tr_en_type_id' => $_POST['focus_tr_en_type_id'],
             'tr_en_parent_id' => $created_url['en_from_url']['en_id'],
             'tr_in_child_id' => intval($_POST['in_id']),
@@ -1075,7 +1075,7 @@ class Intents extends CI_Controller
             'tr_status >=' => 0, //New+
             'tr_en_type_id IN (4250, 4264)' => null, //Intent Created/Updated
             'tr_in_child_id' => $_POST['in_id'],
-        ), array('en_credit'));
+        ), array('en_miner'));
         if(count($updated_trs) < 1){
             return fn___echo_json(array(
                 'status' => 0,
@@ -1093,7 +1093,7 @@ class Intents extends CI_Controller
             $trs = $this->Database_model->fn___tr_fetch(array(
                 'tr_id' => $_POST['tr_id'],
                 'tr_status >=' => 0, //New+
-            ), array('en_credit'));
+            ), array('en_miner'));
 
             if(count($trs) < 1){
                 return fn___echo_json(array(

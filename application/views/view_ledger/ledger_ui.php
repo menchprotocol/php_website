@@ -8,7 +8,7 @@ $primary_filters = array(
 );
 
 $advanced_filters = array(
-    'tr_en_credit_id' => 'Entity Credit IDs',
+    'tr_en_miner_id' => 'Entity Miner IDs',
     'tr_en_parent_id' => 'Entity Parent IDs',
     'tr_en_child_id' => 'Entity Child IDs',
     'tr_in_parent_id' => 'Intent Parent IDs',
@@ -72,12 +72,12 @@ foreach (array_merge($primary_filters, $advanced_filters) as $key => $value) {
                 $filters['tr_status'] = intval($_GET[$key]);
             }
 
-        } elseif ($key == 'tr_en_credit_id') {
+        } elseif ($key == 'tr_en_miner_id') {
             if (substr_count($_GET[$key], ',') > 0) {
                 //This is multiple IDs:
-                $filters['( tr_en_credit_id IN (' . $_GET[$key] . '))'] = null;
+                $filters['( tr_en_miner_id IN (' . $_GET[$key] . '))'] = null;
             } elseif (intval($_GET[$key]) > 0) {
-                $filters['tr_en_credit_id'] = $_GET[$key];
+                $filters['tr_en_miner_id'] = $_GET[$key];
             }
 
         } elseif ($key == 'tr_coins_min' && doubleval($_GET[$key]) > 0) {
@@ -134,9 +134,9 @@ foreach (array_merge($primary_filters, $advanced_filters) as $key => $value) {
             //We need to look for both parent/child
             if (substr_count($_GET[$key], ',') > 0) {
                 //This is multiple IDs:
-                $filters['( tr_en_child_id IN (' . $_GET[$key] . ') OR tr_en_parent_id IN (' . $_GET[$key] . ') OR tr_en_credit_id IN (' . $_GET[$key] . '))'] = null;
+                $filters['( tr_en_child_id IN (' . $_GET[$key] . ') OR tr_en_parent_id IN (' . $_GET[$key] . ') OR tr_en_miner_id IN (' . $_GET[$key] . '))'] = null;
             } elseif (intval($_GET[$key]) > 0) {
-                $filters['( tr_en_child_id = ' . $_GET[$key] . ' OR tr_en_parent_id = ' . $_GET[$key] . ' OR tr_en_credit_id = ' . $_GET[$key] . ')'] = null;
+                $filters['( tr_en_child_id = ' . $_GET[$key] . ' OR tr_en_parent_id = ' . $_GET[$key] . ' OR tr_en_miner_id = ' . $_GET[$key] . ')'] = null;
             }
         } elseif ($key == 'tr_in_id') {
             //We need to look for both parent/child

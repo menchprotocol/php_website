@@ -96,7 +96,7 @@ class FacebookWebhook extends CI_Controller
                         $this->Database_model->fn___tr_create(array(
                             'tr_metadata' => $json_data,
                             'tr_en_type_id' => $tr_en_type_id,
-                            'tr_en_credit_id' => $en['en_id'],
+                            'tr_en_miner_id' => $en['en_id'],
                             'tr_en_parent_id' => $en['en_id'],
                             'tr_timestamp' => fn___echo_time_milliseconds($im['timestamp']), //The Facebook time
                         ));
@@ -154,7 +154,7 @@ class FacebookWebhook extends CI_Controller
                         'tr_en_type_id' => $tr_en_type_id,
                         'tr_metadata' => $json_data,
                         'tr_content' => $quick_reply_payload,
-                        'tr_en_credit_id' => $en['en_id'],
+                        'tr_en_miner_id' => $en['en_id'],
                         'tr_en_parent_id' => $en['en_id'],
                         'tr_timestamp' => fn___echo_time_milliseconds($im['timestamp']), //The Facebook time
                     ));
@@ -196,7 +196,7 @@ class FacebookWebhook extends CI_Controller
                     $this->Database_model->fn___tr_create(array(
                         'tr_metadata' => $json_data,
                         'tr_en_type_id' => 4266, //Messenger Optin
-                        'tr_en_credit_id' => $en['en_id'],
+                        'tr_en_miner_id' => $en['en_id'],
                         'tr_en_parent_id' => $en['en_id'],
                         'tr_timestamp' => fn___echo_time_milliseconds($im['timestamp']), //The Facebook time
                     ));
@@ -210,7 +210,7 @@ class FacebookWebhook extends CI_Controller
                     $this->Database_model->fn___tr_create(array(
                         'tr_metadata' => $json_data,
                         'tr_en_type_id' => 4577, //Message Request Accepted
-                        'tr_en_credit_id' => $en['en_id'],
+                        'tr_en_miner_id' => $en['en_id'],
                         'tr_en_parent_id' => $en['en_id'],
                         'tr_timestamp' => fn___echo_time_milliseconds($im['timestamp']), //The Facebook time
                     ));
@@ -240,7 +240,7 @@ class FacebookWebhook extends CI_Controller
                     $tr_en_parent_id = ($sent_by_mench ? 4148 /* Mench Admins via Facebook Inbox UI */ : $en['en_id']);
                     
                     $tr_data = array(
-                        'tr_en_credit_id' => $tr_en_parent_id,
+                        'tr_en_miner_id' => $tr_en_parent_id,
                         'tr_en_parent_id' => $tr_en_parent_id,
                         'tr_en_child_id' => ($sent_by_mench ? $en['en_id'] : 0),
                         'tr_timestamp' => ($sent_by_mench ? null : fn___echo_time_milliseconds($im['timestamp']) ), //Facebook time if received from Student

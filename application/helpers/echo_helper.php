@@ -423,7 +423,7 @@ function fn___echo_tr_row($tr)
 
         //Count Total Transactions made by Action Plan Student:
         $count_en_trs = $CI->Database_model->fn___tr_fetch(array(
-            'tr_en_credit_id' => $tr['tr_en_parent_id'],
+            'tr_en_miner_id' => $tr['tr_en_parent_id'],
         ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
         $ui .= '<a href="#browseledger-' . $tr['tr_en_parent_id'] . '-' . $tr['tr_id'] . '" onclick="fn___load_en_ledger(' . $tr['tr_en_parent_id'] . ',' . $tr['tr_id'] . ')" class="badge badge-secondary" style="width:40px; margin-right:2px;" data-toggle="tooltip" data-placement="left" title="' . $count_en_trs[0]['totals'] . ' Total Transactions credited to this Student"><span class="btn-counter">' . fn___echo_number($count_en_trs[0]['totals']) . '</span><i class="fas fa-atlas"></i></a>';
 
@@ -957,6 +957,7 @@ function fn___echo_time_range($in, $micro = false)
 }
 
 
+
 function fn___echo_tr_column($obj_type, $id, $tr_field, $fb_messenger_format = false)
 {
 
@@ -1009,9 +1010,9 @@ function fn___echo_tr_column($obj_type, $id, $tr_field, $fb_messenger_format = f
         $tuc_right_under = null;
 
         //4 different entity types could pass from here:
-        if($tr_field == 'tr_en_credit_id'){
+        if($tr_field == 'tr_en_miner_id'){
 
-            $name = 'Creditor Entity';
+            $name = 'Miner Entity';
             $tuc_right_under = 'tuc-right-under';
 
         } elseif($tr_field == 'tr_en_parent_id'){
@@ -1194,7 +1195,7 @@ function fn___echo_last_updated($obj_type, $tr){
     }
 
     //Return updated line:
-    return $core_objects[$obj_type].' updated <b data-toggle="tooltip" title="Transaction #'.$tr['tr_id'].' updated on '.fn___echo_time_date($tr['tr_timestamp']).' PST" data-placement="top">'.fn___echo_time_difference(strtotime($tr['tr_timestamp'])).' ago</b> <span style="display: inline-block">by '.( $tr['tr_en_credit_id']>0 ? ( isset($tr['en_name']) ? '<a href="/entities/'.$tr['en_id'].'" style="font-weight: bold;"><span class="en_icon_child_'.$tr['en_id'].'">'.$tr['en_icon'].'</span> '.$tr['en_name'].'</a>' : 'Un-fetched' ) : 'System' ).'</span>.';
+    return $core_objects[$obj_type].' updated <b data-toggle="tooltip" title="Transaction #'.$tr['tr_id'].' updated on '.fn___echo_time_date($tr['tr_timestamp']).' PST" data-placement="top">'.fn___echo_time_difference(strtotime($tr['tr_timestamp'])).' ago</b> <span style="display: inline-block">by '.( $tr['tr_en_miner_id']>0 ? ( isset($tr['en_name']) ? '<a href="/entities/'.$tr['en_id'].'" style="font-weight: bold;"><span class="en_icon_child_'.$tr['en_id'].'">'.$tr['en_icon'].'</span> '.$tr['en_name'].'</a>' : 'Un-fetched' ) : 'System' ).'</span>.';
 
 }
 
@@ -1550,7 +1551,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 function fn___echo_leaderboard($days_ago = null, $top = 25){
 
     $filters = array(
-        'tr_en_credit_id >' => 0,
+        'tr_en_miner_id >' => 0,
         'tr_coins !=' => 0,
     );
 
@@ -1568,7 +1569,7 @@ function fn___echo_leaderboard($days_ago = null, $top = 25){
 
     //Count coins per Miner
     //Object Stats grouped by Status:
-    $all_engs = $CI->Database_model->fn___tr_fetch($filters, array('en_credit'), $top, 0, array('coins_sum' => 'DESC'), 'COUNT(tr_en_credit_id) as trs_count, SUM(tr_coins) as coins_sum, en_name, en_icon, tr_en_credit_id', 'tr_en_credit_id, en_name, en_icon');
+    $all_engs = $CI->Database_model->fn___tr_fetch($filters, array('en_miner'), $top, 0, array('coins_sum' => 'DESC'), 'COUNT(tr_en_miner_id) as trs_count, SUM(tr_coins) as coins_sum, en_name, en_icon, tr_en_miner_id', 'tr_en_miner_id, en_name, en_icon');
 
     $all_transaction_count = 0;
     $all_coin_payouts = 0;
@@ -1583,8 +1584,8 @@ function fn___echo_leaderboard($days_ago = null, $top = 25){
 
         //Echo stats:
         $table_body .= '<tr>';
-        $table_body .= '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center; '.( $count > 2 ? 'font-size:0.8em;' : '' ).'">'.fn___echo_rank($count+1).'</span><span style="width: 29px; display: inline-block; text-align: center;">'.( strlen($tr['en_icon']) > 0 ? $tr['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$tr['tr_en_credit_id'].'">'.$tr['en_name'].'</a></td>';
-        $table_body .= '<td style="text-align: right;"><a href="/ledger?tr_en_credit_id='.$tr['tr_en_credit_id'].( is_null($days_ago) ? '' : '&start_range='.$start_date ).'"  data-toggle="tooltip" title="Awarded for '.number_format($tr['trs_count'],0).' transactions averaging '.round(($tr['coins_sum']/$tr['trs_count']),0).' coins/transaction" data-placement="top">'.number_format($tr['coins_sum'], 0).'</a></td>';
+        $table_body .= '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center; '.( $count > 2 ? 'font-size:0.8em;' : '' ).'">'.fn___echo_rank($count+1).'</span><span style="width: 29px; display: inline-block; text-align: center;">'.( strlen($tr['en_icon']) > 0 ? $tr['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$tr['tr_en_miner_id'].'">'.$tr['en_name'].'</a></td>';
+        $table_body .= '<td style="text-align: right;"><a href="/ledger?tr_en_miner_id='.$tr['tr_en_miner_id'].( is_null($days_ago) ? '' : '&start_range='.$start_date ).'"  data-toggle="tooltip" title="Awarded for '.number_format($tr['trs_count'],0).' transactions averaging '.round(($tr['coins_sum']/$tr['trs_count']),0).' coins/transaction" data-placement="top">'.number_format($tr['coins_sum'], 0).'</a></td>';
         $table_body .= '</tr>';
 
         $all_transaction_count += $tr['trs_count'];
@@ -1595,7 +1596,7 @@ function fn___echo_leaderboard($days_ago = null, $top = 25){
 
     $ui = '';
 
-    $ui .= '<a href="javascript:void(0);" onclick="$(\'.leaderboard'.$days_ago.'\').toggleClass(\'hidden\');" class="large-stat"><span>'. $top_miner . '</span> Top '.$table_name.' Miner <i class="fal fa-plus-circle"></i></a>';
+    $ui .= '<a href="javascript:void(0);" onclick="$(\'.leaderboard'.$days_ago.'\').toggleClass(\'hidden\');" class="large-stat"><span>🏅'. $top_miner . '</span>1,233 all-time miners <i class="fal fa-plus-circle"></i></a>';
 
     $ui .= '<table class="table table-condensed table-striped stats-table leaderboard'.$days_ago.' hidden" style="max-width:100%;">';
 
@@ -1706,7 +1707,7 @@ function fn___echo_en($en, $level, $is_parent = false)
 
     //Count & Display all Entity transaction:
     $count_in_trs = $CI->Database_model->fn___tr_fetch(array(
-        '(tr_en_parent_id=' . $en['en_id'] . ' OR  tr_en_child_id=' . $en['en_id'] . ' OR  tr_en_credit_id=' . $en['en_id'] . ($tr_id > 0 ? ' OR tr_tr_parent_id=' . $tr_id : '') . ')' => null,
+        '(tr_en_parent_id=' . $en['en_id'] . ' OR  tr_en_child_id=' . $en['en_id'] . ' OR  tr_en_miner_id=' . $en['en_id'] . ($tr_id > 0 ? ' OR tr_tr_parent_id=' . $tr_id : '') . ')' => null,
     ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
     if ($count_in_trs[0]['totals'] > 0) {
         //Show the transaction button:

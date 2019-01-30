@@ -108,7 +108,7 @@ echo '<div class="col-md-4">';
 
 //Count variables:
 $all_engs = $this->Database_model->fn___tr_fetch(array(
-    'tr_en_credit_id >' => 0,
+    'tr_en_miner_id >' => 0,
     'tr_coins !=' => 0,
 ), array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(tr_en_type_id) as trs_count, SUM(tr_coins) as coins_sum, en_name, en_icon, tr_en_type_id', 'tr_en_type_id, en_name, en_icon');
 
@@ -150,7 +150,7 @@ echo '<table class="table table-condensed table-striped stats-table coins-issued
 echo '<tr style="font-weight: bold;">';
 echo '<td style="text-align: left;">Transaction Types</td>';
 echo '<td style="text-align: right;">Rate</td>';
-echo '<td style="text-align: right;">Coins</td>';
+echo '<td style="text-align: right;"><i class="fal fa-plus-circle"></i> Coins</td>';
 echo '</tr>';
 
 echo $table_body;

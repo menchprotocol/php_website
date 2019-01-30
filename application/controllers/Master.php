@@ -125,7 +125,7 @@ class Master extends CI_Controller
             //Log action plan view transaction:
             $this->Database_model->fn___tr_create(array(
                 'tr_en_type_id' => 4283,
-                'tr_en_credit_id' => $trs[0]['tr_en_parent_id'],
+                'tr_en_miner_id' => $trs[0]['tr_en_parent_id'],
                 'tr_en_parent_id' => $trs[0]['tr_en_parent_id'],
                 'tr_tr_parent_id' => $actionplan_tr_id,
                 'tr_in_child_id' => $in_id,
@@ -180,7 +180,7 @@ class Master extends CI_Controller
 
                     //Ooops, we had issues finding th is intent! Should not happen, report:
                     $this->Database_model->fn___tr_create(array(
-                        'tr_en_credit_id' => $trs[0]['en_id'],
+                        'tr_en_miner_id' => $trs[0]['en_id'],
                         'tr_metadata' => $trs,
                         'tr_content' => 'Unable to load a specific intent for the master Action Plan! Should not happen...',
                         'tr_en_type_id' => 4246, //Platform Error

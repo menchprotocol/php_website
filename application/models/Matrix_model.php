@@ -121,7 +121,7 @@ class Matrix_model extends CI_Model
     }
 
 
-    function fn___en_radio_set($en_parent_bucket_id, $set_en_child_id = 0, $en_master_id, $tr_en_credit_id = 0)
+    function fn___en_radio_set($en_parent_bucket_id, $set_en_child_id = 0, $en_master_id, $tr_en_miner_id = 0)
     {
 
         /*
@@ -174,7 +174,7 @@ class Matrix_model extends CI_Model
         if (!$already_assigned) {
             //Let's go ahead and add desired entity as parent:
             $this->Database_model->fn___tr_create(array(
-                'tr_en_credit_id' => $tr_en_credit_id,
+                'tr_en_miner_id' => $tr_en_miner_id,
                 'tr_en_child_id' => $en_master_id,
                 'tr_en_parent_id' => $set_en_child_id,
                 'tr_en_type_id' => 4230, //Naked link
@@ -186,7 +186,7 @@ class Matrix_model extends CI_Model
 
 
 
-    function fn___en_url_add($input_url, $tr_en_credit_id = 0)
+    function fn___en_url_add($input_url, $tr_en_miner_id = 0)
     {
 
         /*
@@ -258,7 +258,7 @@ class Matrix_model extends CI_Model
         $en = $this->Database_model->fn___en_create(array(
             'en_name' => $curl['page_title'],
             'en_status' => 2, //Published
-        ), true, $tr_en_credit_id);
+        ), true, $tr_en_miner_id);
 
 
         /*
@@ -292,7 +292,7 @@ class Matrix_model extends CI_Model
 
         //Place this new entity in the default URL bucket:
         $entity_tr = $this->Database_model->fn___tr_create(array(
-            'tr_en_credit_id' => $tr_en_credit_id,
+            'tr_en_miner_id' => $tr_en_miner_id,
             'tr_en_type_id' => $curl['tr_en_type_id'],
             'tr_en_parent_id' => $tr_en_parent_id,
             'tr_en_child_id' => $en['en_id'],
@@ -858,7 +858,7 @@ class Matrix_model extends CI_Model
                 $this->Database_model->fn___tr_create(array(
                     'tr_status' => 0, //New
                     'tr_en_type_id' => 4559, //Action Plan Intent
-                    'tr_en_credit_id' => $actionplan['tr_en_parent_id'], //Credit goes to Student
+                    'tr_en_miner_id' => $actionplan['tr_en_parent_id'], //Miner credit, in this case the student
                     'tr_en_parent_id' => $actionplan['tr_en_parent_id'], //Belongs to this Student
                     'tr_in_parent_id' => $this_in['tr_in_parent_id'],
                     'tr_in_child_id' => $this_in['tr_in_child_id'],
@@ -1057,7 +1057,7 @@ class Matrix_model extends CI_Model
                 'tr_status >=' => 0, //New+
                 'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent messages
                 'tr_in_child_id' => $this_in['in_id'],
-            ), array('en_credit'), 0, 0, array('tr_order' => 'ASC'));
+            ), array('en_miner'), 0, 0, array('tr_order' => 'ASC'));
 
             $this_in['___messages_count'] = count($in__messages);
             $metadata_this['___messages_tree_count'] += $this_in['___messages_count'];
@@ -1070,19 +1070,19 @@ class Matrix_model extends CI_Model
                 foreach ($in__messages as $tr) {
 
                     //Who are the Miners of this message?
-                    if (!in_array($tr['tr_en_credit_id'], $parent_ids)) {
-                        array_push($parent_ids, $tr['tr_en_credit_id']);
+                    if (!in_array($tr['tr_en_miner_id'], $parent_ids)) {
+                        array_push($parent_ids, $tr['tr_en_miner_id']);
                     }
 
                     //Check the Miners of this message in the miner array:
-                    if (!isset($this_in['___tree_miners'][$tr['tr_en_credit_id']])) {
+                    if (!isset($this_in['___tree_miners'][$tr['tr_en_miner_id']])) {
                         //Add the entire message which would also hold the miner details:
-                        $this_in['___tree_miners'][$tr['tr_en_credit_id']] = $tr;
+                        $this_in['___tree_miners'][$tr['tr_en_miner_id']] = $tr;
                     }
                     //How about the parent of this one?
-                    if (!isset($metadata_this['___tree_miners'][$tr['tr_en_credit_id']])) {
+                    if (!isset($metadata_this['___tree_miners'][$tr['tr_en_miner_id']])) {
                         //Yes, add them to the list:
-                        $metadata_this['___tree_miners'][$tr['tr_en_credit_id']] = $tr;
+                        $metadata_this['___tree_miners'][$tr['tr_en_miner_id']] = $tr;
                     }
 
 
@@ -1605,7 +1605,7 @@ class Matrix_model extends CI_Model
                     //Create new transaction:
                     $this->Database_model->fn___tr_create(array(
                         'tr_en_type_id' => 4230, //Naked link
-                        'tr_en_credit_id' => $en['en_id'], //Student gets credit as they added themselves
+                        'tr_en_miner_id' => $en['en_id'], //Student gets credit as miner
                         'tr_en_parent_id' => $tr_en_parent_id,
                         'tr_en_child_id' => $en['en_id'],
                     ));
@@ -1617,7 +1617,7 @@ class Matrix_model extends CI_Model
             $this->Database_model->fn___tr_create(array(
                 'tr_status' => 0, //New
                 'tr_en_type_id' => 4299, //Save URL to Mench Cloud
-                'tr_en_credit_id' => $en['en_id'], //The Student who added this
+                'tr_en_miner_id' => $en['en_id'], //The Student who added this
                 'tr_en_parent_id' => 4260, //Indicates URL file Type (Image)
                 'tr_content' => $fb_profile['profile_pic'], //Image to be saved
             ));
@@ -1630,7 +1630,7 @@ class Matrix_model extends CI_Model
         //Log new Student transaction:
         $this->Database_model->fn___tr_create(array(
             'tr_en_type_id' => 4265, //New Student Joined
-            'tr_en_credit_id' => $en['en_id'],
+            'tr_en_miner_id' => $en['en_id'],
             'tr_en_child_id' => $en['en_id'],
             'tr_metadata' => $en,
         ));
@@ -1638,7 +1638,7 @@ class Matrix_model extends CI_Model
         //Add default Notification Level:
         $this->Database_model->fn___tr_create(array(
             'tr_en_type_id' => 4230, //Naked link
-            'tr_en_credit_id' => $en['en_id'],
+            'tr_en_miner_id' => $en['en_id'],
             'tr_en_parent_id' => 4456, //Receive Regular Notifications (Student can change later on...)
             'tr_en_child_id' => $en['en_id'],
         ));
@@ -1646,7 +1646,7 @@ class Matrix_model extends CI_Model
         //Add them to Students group:
         $this->Database_model->fn___tr_create(array(
             'tr_en_type_id' => 4230, //Naked link
-            'tr_en_credit_id' => $en['en_id'],
+            'tr_en_miner_id' => $en['en_id'],
             'tr_en_parent_id' => 4430, //Mench Student
             'tr_en_child_id' => $en['en_id'],
         ));
@@ -1654,7 +1654,7 @@ class Matrix_model extends CI_Model
         //Add them to People group:
         $this->Database_model->fn___tr_create(array(
             'tr_en_type_id' => 4230, //Naked link
-            'tr_en_credit_id' => $en['en_id'],
+            'tr_en_miner_id' => $en['en_id'],
             'tr_en_parent_id' => 1278, //People
             'tr_en_child_id' => $en['en_id'],
         ));
@@ -1665,7 +1665,7 @@ class Matrix_model extends CI_Model
     }
 
 
-    function fn___in_link_or_create($in_parent_id, $in_outcome, $in_link_child_id, $next_level, $tr_en_credit_id)
+    function fn___in_link_or_create($in_parent_id, $in_outcome, $in_link_child_id, $next_level, $tr_en_miner_id)
     {
 
         /*
@@ -1772,7 +1772,7 @@ class Matrix_model extends CI_Model
                 'in_status' => 1, //Working On
                 'in_outcome' => trim($in_outcome),
                 'in_metadata' => $in_metadata_modify,
-            ), true, $tr_en_credit_id);
+            ), true, $tr_en_miner_id);
 
             //Sync the metadata of this new intent:
             $this->Matrix_model->fn___in_recursive_fetch($child_in['in_id'], true, true);
@@ -1782,7 +1782,7 @@ class Matrix_model extends CI_Model
 
         //Create Intent Link:
         $relation = $this->Database_model->fn___tr_create(array(
-            'tr_en_credit_id' => $tr_en_credit_id,
+            'tr_en_miner_id' => $tr_en_miner_id,
             'tr_en_type_id' => 4228,
             'tr_in_parent_id' => $in_parent_id,
             'tr_in_child_id' => $child_in['in_id'],
