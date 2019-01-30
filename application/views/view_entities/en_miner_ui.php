@@ -112,8 +112,6 @@
 
             echo '<input type="text" name="modify_text" placeholder="String" style="max-width:240px;" class="form-control border inline-block">';
 
-            echo '<input type="text" name="change_log" placeholder="Changelog" style="max-width:240px;" class="form-control border inline-block">';
-
             echo '<input type="submit" value="Apply" class="btn btn-secondary inline-block">';
 
         echo '</form>';

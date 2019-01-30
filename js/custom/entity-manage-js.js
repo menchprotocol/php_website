@@ -345,7 +345,10 @@ function fn___update_link_type() {
 
 
     //Fetch Intent Data to load modify widget:
-    $.post("/entities/fn___update_link_type", {tr_content: $('#tr_content').val()}, function (data) {
+    $.post("/entities/fn___update_link_type", {
+        tr_content: $('#tr_content').val(),
+        en_id: en_focus_id,
+    }, function (data) {
         //All good, let's load the data into the Modify Widget...
         $('#en_link_type_id').html((data.status ? data.html_ui : 'Error: ' + data.message));
 
@@ -384,9 +387,9 @@ function fn___en_modify_load(en_id, tr_id) {
     $('#en_status').val($(".en___" + en_id + ":first").attr('entity-status'));
     $('#tr_status').val($(".en___" + en_id + ":first").attr('tr-status'));
 
-    var has_icon_set = parseInt($('.en_icon_' + en_id).attr('en-is-set'));
 
-    if (has_icon_set) {
+    console.log(parseInt($('.en_icon_' + en_id).attr('en-is-set')));
+    if (parseInt($('.en_icon_' + en_id).attr('en-is-set')) > 0) {
         $('.icon-demo').html($('.en_icon_' + en_id).html());
         $('#en_icon').val($('.en_icon_' + en_id).html());
     } else {
@@ -608,12 +611,10 @@ function fn___en_modify_save() {
                 //Reflect changed:
                 //Update variables:
                 $(".en_name_" + modify_data['en_id']).text(modify_data['en_name']);
-                $(".en_icon_val_" + modify_data['en_id']).html(modify_data['en_icon']);
-                $('.en_icon_' + modify_data['en_id']).html(modify_data['en_icon']);
 
 
                 //Always update 2x Entity icons:
-                $('.en_icon_ui_' + modify_data['en_id']).html('<span data-toggle="tooltip" data-placement="right" title="Entity Icon">' + modify_data['en_icon'] + '</span>');
+                $('.en_icon_ui_' + modify_data['en_id']).html(modify_data['en_icon']);
                 $('.en_status_' + modify_data['en_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + object_js_statuses['en_status'][modify_data['en_status']]["s_name"] + ': ' + object_js_statuses['en_status'][modify_data['en_status']]["s_desc"] + '">' + object_js_statuses['en_status'][modify_data['en_status']]["s_icon"] + '</span>');
 
 

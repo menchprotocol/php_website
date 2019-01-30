@@ -261,16 +261,11 @@ function fn___echo_in_message_manage($tr)
 function fn___echo_en_icon($en)
 {
     //A simple function to display the Entity Icon OR the default icon if not available:
-    $return = '<span class="en-icon en_icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'">';
     if (strlen($en['en_icon']) > 0) {
-        $return .= $en['en_icon'];
+        return $en['en_icon'];
     } else {
-        $return .= '<i class="fas fa-at grey-at"></i>';
+        return '<i class="fas fa-at grey-at"></i>';
     }
-    $return .= '</span>';
-
-    return $return;
-
 }
 
 function fn___echo_link($text)
@@ -1789,7 +1784,7 @@ function fn___echo_en($en, $level, $is_parent = false)
     $ui .= '<span class="double-icon" style="margin-right:7px;">';
 
     //Show larger custom entity icon:
-    $ui .= '<span class="icon-main en_icon_ui en_icon_ui_' . $en['en_id'] . '"><span data-toggle="tooltip" data-placement="right" title="Entity Icon">' . fn___echo_en_icon($en) . '</span></span>';
+    $ui .= '<span class="icon-main en_icon_ui en_icon_ui_' . $en['en_id'] . ' en-icon en_icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'" data-toggle="tooltip" data-placement="right" title="Entity Icon">' . fn___echo_en_icon($en) . '</span>';
 
     //Show smaller entity status:
     $ui .= '<span class="icon-sub en_status_' . $en['en_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$object_statuses['en_status'][$en['en_status']]['s_name'].': '.$object_statuses['en_status'][$en['en_status']]['s_desc'].'">' . $object_statuses['en_status'][$en['en_status']]['s_icon'] . '</span></span>';

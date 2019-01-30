@@ -377,22 +377,6 @@ function fn___curl_html($url, $return_breakdown = false)
 
         $CI =& get_instance();
 
-
-        //Check to see if duplicate URL:
-        $dup_url_trs = $CI->Database_model->fn___tr_fetch(array(
-            'tr_status >=' => 0, //New+
-            'tr_en_type_id IN (' . join(',', $CI->config->item('en_ids_4537')) . ')' => null, //Any URL type
-            'tr_content' => $url,
-        ), array('en_child'));
-        if(count($dup_url_trs) > 0){
-            //Yes, this URL already exists!
-            return array(
-                'status' => 0,
-                'message' => 'URL already added for entity ['.$dup_url_trs[0]['en_name'].']',
-            );
-        }
-
-
         $body_html = substr($response, curl_getinfo($ch, CURLINFO_HEADER_SIZE));
         $content_type = fn___one_two_explode('', ';', curl_getinfo($ch, CURLINFO_CONTENT_TYPE));
         $embed_code = fn___echo_url_embed($url, $url, true);
@@ -464,15 +448,29 @@ function fn___curl_html($url, $return_breakdown = false)
 
 
         //Detect domain parent:
+        $parse = parse_url($url);
+        $domain_url = $parse['scheme'].'://'.$parse['host'];
+
+        //Do we have this URL as part of any people/group entity?
+
+        //Check to see if duplicate URL:
+        $dup_url_trs = $CI->Database_model->fn___tr_fetch(array(
+            'tr_status >=' => 0, //New+
+            'tr_en_type_id IN (' . join(',', $CI->config->item('en_ids_4537')) . ')' => null, //Any URL type
+            'tr_content' => $url,
+        ), array('en_child'));
 
 
-
-
+        //Return results:
         return array(
             //used all the time, also when updating en entity:
-            'status' => 1,
+            'status'  => (count($dup_url_trs) > 0 ? 0 : 1),
+            'dup_en'  => (count($dup_url_trs) > 0 ? $dup_url_trs[0] : array()),
+            'message' => (count($dup_url_trs) > 0 ? 'URL already added for entity ['.$dup_url_trs[0]['en_name'].']' : 'Success'),
             'tr_en_type_id' => $tr_en_type_id,
             'page_title' => $title,
+            'domain_url' => $domain_url,
+            'domain_en' => $url_domain,
         );
 
     } else {

@@ -203,7 +203,7 @@ class Entities extends CI_Controller
     function fn___update_link_type()
     {
 
-        if (!isset($_POST['tr_content'])) {
+        if (!isset($_POST['tr_content']) || !isset($_POST['en_id'])) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing input',
@@ -216,7 +216,7 @@ class Entities extends CI_Controller
         //See what this is:
         $tr_en_type_id = fn___detect_tr_en_type_id($_POST['tr_content']);
 
-        if (!$tr_en_type_id['status']) {
+        if (!$tr_en_type_id['status'] && ( !isset($tr_en_type_id['dup_en']['en_id']) || !($tr_en_type_id['dup_en']['en_id']==$_POST['en_id']) )) {
             //return error:
             return fn___echo_json($tr_en_type_id);
         }
