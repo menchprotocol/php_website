@@ -1656,7 +1656,7 @@ function fn___echo_en($en, $level, $is_parent = false)
     if (!isset($en['en__parents'])) {
         //Fetch parents at this point:
         $en['en__parents'] = $CI->Database_model->fn___tr_fetch(array(
-            'tr_en_parent_id >' => 0, //Also has a parent assigned of any transaction type
+            'tr_en_type_id IN (' . join(',', array_merge($CI->config->item('en_ids_4537'), $CI->config->item('en_ids_4538'))) . ')' => null, //Entity Link Connectors
             'tr_en_child_id' => $en['en_id'], //This child entity
             'tr_status >=' => 0, //New+
             'en_status >=' => 0, //New+
@@ -1728,7 +1728,7 @@ function fn___echo_en($en, $level, $is_parent = false)
         //Do a child count:
         $child_trs = $CI->Database_model->fn___tr_fetch(array(
             'tr_en_parent_id' => $en['en_id'],
-            'tr_en_child_id >' => 0, //Any type of children is accepted
+            'tr_en_type_id IN (' . join(',', array_merge($CI->config->item('en_ids_4537'), $CI->config->item('en_ids_4538'))) . ')' => null, //Entity Link Connectors
             'tr_status >=' => 0, //New+
             'en_status >=' => 0, //New+
         ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as en__child_count');

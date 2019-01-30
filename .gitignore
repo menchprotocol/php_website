@@ -1,6 +1,7 @@
 .DS_Store
 
 application/config/database.php
+application/config/credentials.php
 
 application/cache/*
 !application/cache/index.html

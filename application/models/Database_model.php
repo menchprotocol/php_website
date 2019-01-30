@@ -412,21 +412,6 @@ class Database_model extends CI_Model
                     'en_status >=' => 0, //New+
                 ), array('en_parent'), 0, 0, array('en_trust_score' => 'DESC'));
 
-                //Do we also want the parents of parnets? This can be helpful in some cases...
-                if (in_array('en__grandparents', $join_objects)) {
-
-                    foreach ($res[$key]['en__parents'] as $key => $value) {
-
-                        //Append grandparents:
-                        $res[$key]['en__parents'][$key]['en__grandparents'] = $this->Database_model->fn___tr_fetch(array(
-                            'tr_en_type_id IN (' . join(',', array_merge($this->config->item('en_ids_4537'), $this->config->item('en_ids_4538'))) . ')' => null, //Entity Link Connectors
-                            'tr_en_child_id' => $value['en_id'], //This child entity
-                            'tr_status >=' => 0, //New+
-                            'en_status >=' => 0, //New+
-                        ), array('en_parent'), 0, 0, array('en_trust_score' => 'DESC'));
-
-                    }
-                }
             }
         }
 
