@@ -97,7 +97,7 @@ class Master extends CI_Controller
         if ($actionplan_tr_id > 0 && $in_id > 0) {
             //Yes! It seems to be a desktop login:
             $filters['tr_type_en_id'] = 4559; //Action Plan Intent
-            $filters['tr_tr_parent_id'] = $actionplan_tr_id;
+            $filters['tr_tr_id'] = $actionplan_tr_id;
             $filters['tr_in_child_id'] = $in_id;
         } elseif (!$empty_session) {
             //Yes! It seems to be a desktop login (versus Facebook Messenger)
@@ -118,7 +118,7 @@ class Master extends CI_Controller
 
             //Determine Action Plan IDs if not provided:
             if(!$actionplan_tr_id || !$in_id){
-                $actionplan_tr_id = ( $trs[0]['tr_tr_parent_id'] == 0 ? $trs[0]['tr_id'] : $trs[0]['tr_tr_parent_id'] );
+                $actionplan_tr_id = ( $trs[0]['tr_tr_id'] == 0 ? $trs[0]['tr_id'] : $trs[0]['tr_tr_id'] );
                 $in_id = $trs[0]['tr_in_child_id'];
             }
 
@@ -127,7 +127,7 @@ class Master extends CI_Controller
                 'tr_type_en_id' => 4283,
                 'tr_miner_en_id' => $trs[0]['tr_en_parent_id'],
                 'tr_en_parent_id' => $trs[0]['tr_en_parent_id'],
-                'tr_tr_parent_id' => $actionplan_tr_id,
+                'tr_tr_id' => $actionplan_tr_id,
                 'tr_in_child_id' => $in_id,
             ));
 
@@ -158,14 +158,14 @@ class Master extends CI_Controller
                 //Now we need to load the action plan:
                 $actionplan_parents = $this->Database_model->fn___tr_fetch(array(
                     'tr_type_en_id' => 4559, //Action Plan Intents
-                    'tr_tr_parent_id' => $actionplan_tr_id,
+                    'tr_tr_id' => $actionplan_tr_id,
                     'in_status >=' => 2, //Published+ Intents
                     'tr_in_child_id' => $in_id,
                 ), array('in_parent'));
 
                 $actionplan_children = $this->Database_model->fn___tr_fetch(array(
                     'tr_type_en_id' => 4559, //Action Plan Intents
-                    'tr_tr_parent_id' => $actionplan_tr_id,
+                    'tr_tr_id' => $actionplan_tr_id,
                     'in_status >=' => 2, //Published+ Intents
                     'tr_in_parent_id' => $in_id,
                 ), array('in_child'));
@@ -184,7 +184,7 @@ class Master extends CI_Controller
                         'tr_metadata' => $trs,
                         'tr_content' => 'Unable to load a specific intent for the master Action Plan! Should not happen...',
                         'tr_type_en_id' => 4246, //Platform Error
-                        'tr_tr_parent_id' => $actionplan_tr_id,
+                        'tr_tr_id' => $actionplan_tr_id,
                         'tr_in_child_id' => $in_id,
                     ));
 
@@ -219,7 +219,7 @@ class Master extends CI_Controller
         //Find the next item to navigate them to:
         $next_ins = $this->Matrix_model->fn___actionplan_next_in($tr_id);
         if ($next_ins) {
-            return fn___redirect_message('/master/actionplan/' . $next_ins[0]['tr_tr_parent_id'] . '/' . $next_ins[0]['in_id'], $message);
+            return fn___redirect_message('/master/actionplan/' . $next_ins[0]['tr_tr_id'] . '/' . $next_ins[0]['in_id'], $message);
         } else {
             return fn___redirect_message('/master/actionplan', $message);
         }
@@ -254,7 +254,7 @@ class Master extends CI_Controller
         if (!(count($trs) == 1)) {
             return fn___redirect_message('/master/actionplan', '<div class="alert alert-danger" role="alert">Error: Invalid submission ID.</div>');
         }
-        $k_url = '/master/actionplan/' . $trs[0]['tr_tr_parent_id'] . '/' . $trs[0]['in_id'];
+        $k_url = '/master/actionplan/' . $trs[0]['tr_tr_id'] . '/' . $trs[0]['in_id'];
 
 
         //Fetch completion requirements:
@@ -341,7 +341,7 @@ class Master extends CI_Controller
             $next_ins = $this->Matrix_model->fn___actionplan_next_in($trs[0]['tr_id']);
             if ($next_ins) {
                 //Override original item:
-                $k_url = '/master/actionplan/' . $next_ins[0]['tr_tr_parent_id'] . '/' . $next_ins[0]['in_id'];
+                $k_url = '/master/actionplan/' . $next_ins[0]['tr_tr_id'] . '/' . $next_ins[0]['in_id'];
             }
         }
 

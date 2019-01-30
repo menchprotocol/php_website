@@ -70,7 +70,7 @@ class Chat_model extends CI_Model
          *
          *                          - $tr_append['tr_in_parent_id']
          *                          - $tr_append['tr_in_child_id']
-         *                          - $tr_append['tr_tr_parent_id']
+         *                          - $tr_append['tr_tr_id']
          *
          *                          Following fields are not allowed, because:
          *
@@ -89,7 +89,7 @@ class Chat_model extends CI_Model
         $is_miner = fn___en_auth(array(1308));
 
         //Prepare data to be appended to success/fail transaction:
-        $allowed_tr_append = array('tr_in_parent_id', 'tr_in_child_id', 'tr_tr_parent_id');
+        $allowed_tr_append = array('tr_in_parent_id', 'tr_in_child_id', 'tr_tr_id');
         $filtered_tr_append = array();
         foreach ($tr_append as $key => $value) {
             if (in_array($key, $allowed_tr_append)) {
@@ -1015,7 +1015,7 @@ class Chat_model extends CI_Model
                     array(
                         'tr_in_parent_id' => $actionplans[0]['in_id'], //Action Plan Intent
                         'tr_in_child_id' => $in_id, //Focus Intent
-                        'tr_tr_parent_id' => $random_pick['tr_id'], //This message
+                        'tr_tr_id' => $random_pick['tr_id'], //This message
                     )
                 );
             }
@@ -1038,7 +1038,7 @@ class Chat_model extends CI_Model
                     array(
                         'tr_in_parent_id' => $actionplans[0]['in_id'], //Action Plan Intent
                         'tr_in_child_id' => $in_id, //Focus Intent
-                        'tr_tr_parent_id' => $message_tr['tr_id'], //This message
+                        'tr_tr_id' => $message_tr['tr_id'], //This message
                     )
                 );
             }
@@ -1112,7 +1112,7 @@ class Chat_model extends CI_Model
         $actionplan_child_ins = $this->Database_model->fn___tr_fetch(array(
             'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
             'tr_type_en_id' => 4559, //Action Plan Intents
-            'tr_tr_parent_id' => $actionplan_tr_id,
+            'tr_tr_id' => $actionplan_tr_id,
             'tr_in_parent_id' => $in_id,
         ), array('in_child'));
 
@@ -1183,7 +1183,7 @@ class Chat_model extends CI_Model
                             'tr_miner_en_id' => 1, //Shervin Enayati - 13 Dec 2018
                             'tr_content' => 'fn___compose_validate_message() encountered intent with too many children to be listed as OR Intent options! Trim and iterate that intent tree.',
                             'tr_type_en_id' => 4246, //Platform Error
-                            'tr_tr_parent_id' => $actionplan_tr_id, //The action plan
+                            'tr_tr_id' => $actionplan_tr_id, //The action plan
                             'tr_in_parent_id' => $in_id,
                             'tr_in_child_id' => $or_child_in['in_id'],
                         ));
@@ -1241,7 +1241,7 @@ class Chat_model extends CI_Model
 
                 //Give option to skip:
                 $actionplan_parents = $this->Database_model->fn___tr_fetch(array(
-                    'tr_tr_parent_id' => $actionplan_tr_id,
+                    'tr_tr_id' => $actionplan_tr_id,
                     'tr_type_en_id' => 4559, //Action Plan Intents
                     'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
                     'tr_in_child_id' => $in_id,
@@ -1635,7 +1635,7 @@ class Chat_model extends CI_Model
 
                     //Let Student know that they have already subscribed to this intention:
                     $this->Chat_model->fn___dispatch_message(
-                        'The intention to ' . $ins[0]['in_outcome'] . ' has already been added to your Action Plan. We have been working on it together since ' . fn___echo_time_date($actionplans[0]['tr_timestamp'], true) . '. /link:See in 🚩Action Plan:https://mench.com/master/actionplan/' . ( $actionplans[0]['tr_type_en_id']==4235 ? $actionplans[0]['tr_id'] : $actionplans[0]['tr_tr_parent_id'] ) . '/' . $actionplans[0]['tr_in_child_id'],
+                        'The intention to ' . $ins[0]['in_outcome'] . ' has already been added to your Action Plan. We have been working on it together since ' . fn___echo_time_date($actionplans[0]['tr_timestamp'], true) . '. /link:See in 🚩Action Plan:https://mench.com/master/actionplan/' . ( $actionplans[0]['tr_type_en_id']==4235 ? $actionplans[0]['tr_id'] : $actionplans[0]['tr_tr_id'] ) . '/' . $actionplans[0]['tr_in_child_id'],
                         $en,
                         true,
                         array(),
@@ -1662,7 +1662,7 @@ class Chat_model extends CI_Model
                             true,
                             array(),
                             array(
-                                'tr_tr_parent_id' => $tr['tr_id'],
+                                'tr_tr_id' => $tr['tr_id'],
                                 'tr_in_child_id' => $ins[0]['in_id'],
                             )
                         );
@@ -1743,7 +1743,7 @@ class Chat_model extends CI_Model
                         array(),
                         array(
                             'tr_in_child_id' => $ins[0]['in_id'],
-                            'tr_tr_parent_id' => $actionplan['tr_id'],
+                            'tr_tr_id' => $actionplan['tr_id'],
                         )
                     );
 
@@ -1787,7 +1787,7 @@ class Chat_model extends CI_Model
                 $this->Database_model->fn___tr_create(array(
                     'tr_content' => 'fn___digest_received_quick_reply() failed to fetch proper data for a skip request with reference value [' . $quick_reply_payload . ']',
                     'tr_type_en_id' => 4246, //Platform Error
-                    'tr_tr_parent_id' => $tr_id,
+                    'tr_tr_id' => $tr_id,
                     'tr_en_parent_id' => $en['en_id'], //Belongs to this Student
                 ));
 
@@ -1803,7 +1803,7 @@ class Chat_model extends CI_Model
             }
 
             //Set Action Plan ID:
-            $actionplan_tr_id = $actionplans[0]['tr_tr_parent_id'];
+            $actionplan_tr_id = $actionplans[0]['tr_tr_id'];
 
 
             //Was this initiating?
@@ -1822,7 +1822,7 @@ class Chat_model extends CI_Model
                     $this->Database_model->fn___tr_create(array(
                         'tr_content' => 'fn___digest_received_quick_reply() did not find anything to skip for [' . $quick_reply_payload . ']',
                         'tr_type_en_id' => 4246, //Platform Error
-                        'tr_tr_parent_id' => $tr_id,
+                        'tr_tr_id' => $tr_id,
                         'tr_en_parent_id' => $en['en_id'], //Belongs to this Student
                     ));
 
@@ -1833,7 +1833,7 @@ class Chat_model extends CI_Model
                         true,
                         array(),
                         array(
-                            'tr_tr_parent_id' => $tr_id,
+                            'tr_tr_id' => $tr_id,
                         )
                     );
 
@@ -1847,7 +1847,7 @@ class Chat_model extends CI_Model
                     'tr_miner_en_id' => $en['en_id'],
                     'tr_en_parent_id' => $en['en_id'],
                     'tr_type_en_id' => 4284, //Skip Intent
-                    'tr_tr_parent_id' => $tr_id, //The parent transaction that points to this intent in the Students Action Plan
+                    'tr_tr_id' => $tr_id, //The parent transaction that points to this intent in the Students Action Plan
                     'tr_status' => 1, //Working on... not yet decided to skip or not as they need to see the consequences before making an informed decision. Will be updated to -1 or 2 based on their response...
                     'tr_metadata' => array(
                         'would_be_skipped' => $would_be_skipped,
@@ -1891,7 +1891,7 @@ class Chat_model extends CI_Model
                         ),
                     ),
                     array(
-                        'tr_tr_parent_id' => $tr_id,
+                        'tr_tr_id' => $tr_id,
                     )
                 );
 
@@ -1909,7 +1909,7 @@ class Chat_model extends CI_Model
                     $this->Matrix_model->k_skip_recursive_down($tr_id);
 
                     //Confirm the skip:
-                    $message = 'Confirmed, I marked this section as skipped. You can always re-visit these key ideas in your Action Plan and complete them at any time. /link:See in 🚩Action Plan:https://mench.com/master/actionplan/' . $actionplans[0]['tr_tr_parent_id'] . '/' . $actionplans[0]['tr_in_child_id'];
+                    $message = 'Confirmed, I marked this section as skipped. You can always re-visit these key ideas in your Action Plan and complete them at any time. /link:See in 🚩Action Plan:https://mench.com/master/actionplan/' . $actionplans[0]['tr_tr_id'] . '/' . $actionplans[0]['tr_in_child_id'];
 
                 }
 
@@ -1920,7 +1920,7 @@ class Chat_model extends CI_Model
                     true,
                     array(),
                     array(
-                        'tr_tr_parent_id' => $tr_id,
+                        'tr_tr_id' => $tr_id,
                     )
                 );
 
@@ -1960,7 +1960,7 @@ class Chat_model extends CI_Model
                 $this->Database_model->fn___tr_create(array(
                     'tr_content' => 'fn___digest_received_quick_reply() failed to fetch proper data for intent completion request with reference value [' . $quick_reply_payload . ']',
                     'tr_type_en_id' => 4246, //Platform Error
-                    'tr_tr_parent_id' => $tr_id,
+                    'tr_tr_id' => $tr_id,
                     'tr_en_parent_id' => $en['en_id'], //Belongs to this Student
                 ));
 
@@ -1975,7 +1975,7 @@ class Chat_model extends CI_Model
             }
 
             //Set Action Plan ID:
-            $actionplan_tr_id = $actionplans[0]['tr_tr_parent_id'];
+            $actionplan_tr_id = $actionplans[0]['tr_tr_id'];
 
             //Mark this intent as complete:
             $this->Matrix_model->in_actionplan_complete_up($actionplans[0], $actionplans[0]);
@@ -2016,7 +2016,7 @@ class Chat_model extends CI_Model
                     'tr_content' => 'fn___digest_received_quick_reply() failed to save OR answer with reference value [' . $quick_reply_payload . ']',
                     'tr_type_en_id' => 4246, //Platform Error
                     'tr_metadata' => $en,
-                    'tr_tr_parent_id' => $actionplan_tr_id,
+                    'tr_tr_id' => $actionplan_tr_id,
                     'tr_in_child_id' => $in_id,
                 ));
 

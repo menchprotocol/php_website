@@ -13,7 +13,7 @@ $advanced_filters = array(
     'tr_en_child_id' => 'Entity Child IDs',
     'tr_in_parent_id' => 'Intent Parent IDs',
     'tr_in_child_id' => 'Intent Child IDs',
-    'tr_tr_parent_id' => 'Transaction Parent IDs',
+    'tr_tr_id' => 'Transaction Parent IDs',
     'tr_id' => 'Transaction IDs',
     'tr_coins_min' => 'Minimum Coins',
     'tr_coins_max' => 'Maximum Coins',
@@ -116,12 +116,12 @@ foreach (array_merge($primary_filters, $advanced_filters) as $key => $value) {
             } elseif (intval($_GET[$key]) > 0) {
                 $filters['tr_in_child_id'] = $_GET[$key];
             }
-        } elseif ($key == 'tr_tr_parent_id') {
+        } elseif ($key == 'tr_tr_id') {
             if (substr_count($_GET[$key], ',') > 0) {
                 //This is multiple IDs:
-                $filters['( tr_tr_parent_id IN (' . $_GET[$key] . '))'] = null;
+                $filters['( tr_tr_id IN (' . $_GET[$key] . '))'] = null;
             } elseif (intval($_GET[$key]) > 0) {
-                $filters['tr_tr_parent_id'] = $_GET[$key];
+                $filters['tr_tr_id'] = $_GET[$key];
             }
         } elseif ($key == 'tr_id') {
             if (substr_count($_GET[$key], ',') > 0) {
@@ -150,9 +150,9 @@ foreach (array_merge($primary_filters, $advanced_filters) as $key => $value) {
             //We need to look for both parent/child
             if (substr_count($_GET[$key], ',') > 0) {
                 //This is multiple IDs:
-                $filters['( tr_id IN (' . $_GET[$key] . ') OR tr_tr_parent_id IN (' . $_GET[$key] . '))'] = null;
+                $filters['( tr_id IN (' . $_GET[$key] . ') OR tr_tr_id IN (' . $_GET[$key] . '))'] = null;
             } elseif (intval($_GET[$key]) > 0) {
-                $filters['( tr_id = ' . $_GET[$key] . ' OR tr_tr_parent_id = ' . $_GET[$key] . ')'] = null;
+                $filters['( tr_id = ' . $_GET[$key] . ' OR tr_tr_id = ' . $_GET[$key] . ')'] = null;
             }
         }
     }

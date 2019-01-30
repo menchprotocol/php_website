@@ -161,7 +161,7 @@ $config['ledger_filters']           = array(
                                         'tr_en_parent_id' => 'en',
                                         'tr_in_child_id'  => 'in',
                                         'tr_in_parent_id' => 'in',
-                                        'tr_tr_parent_id' => 'tr',
+                                        'tr_tr_id' => 'tr',
                                     );
 
 

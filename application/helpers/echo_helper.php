@@ -431,14 +431,14 @@ function fn___echo_tr_row($tr)
         //Number of intents in Student Action Plan & Its completion Percentage:
         $count_in_actionplans = $CI->Database_model->fn___tr_fetch(array(
             'tr_type_en_id' => 4559, //Action Plan Intents
-            'tr_tr_parent_id' => $tr['tr_id'],
+            'tr_tr_id' => $tr['tr_id'],
         ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
         if ($count_in_actionplans[0]['totals'] > 0) {
 
             //Yes, this intent has been added to some Action Plans, let's see what % is completed so far:
             $count_in_actionplans_complete = $CI->Database_model->fn___tr_fetch(array(
                 'tr_type_en_id' => 4559, //Action Plan Intents
-                'tr_tr_parent_id' => $tr['tr_id'],
+                'tr_tr_id' => $tr['tr_id'],
                 'tr_status NOT IN (' . join(',', $CI->config->item('tr_status_incomplete')) . ')' => null, //completed
             ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
 
@@ -498,7 +498,7 @@ function fn___echo_tr_row($tr)
 function echo_k($k, $is_parent, $in_is_any_tr_in_parent_id = 0)
 {
 
-    $ui = '<a href="' . ($in_is_any_tr_in_parent_id ? '/master/choose_any_path/' . $k['tr_id'] . '/' . $in_is_any_tr_in_parent_id . '/' . $k['in_id'] . '/' . md5($k['tr_id'] . 'kjaghksjha*(^' . $k['in_id'] . $in_is_any_tr_in_parent_id) : '/master/actionplan/' . $k['tr_tr_parent_id'] . '/' . $k['in_id']) . '" class="list-group-item">';
+    $ui = '<a href="' . ($in_is_any_tr_in_parent_id ? '/master/choose_any_path/' . $k['tr_id'] . '/' . $in_is_any_tr_in_parent_id . '/' . $k['in_id'] . '/' . md5($k['tr_id'] . 'kjaghksjha*(^' . $k['in_id'] . $in_is_any_tr_in_parent_id) : '/master/actionplan/' . $k['tr_tr_id'] . '/' . $k['in_id']) . '" class="list-group-item">';
 
     //Different pointer position based on direction:
     if ($is_parent) {
@@ -1356,7 +1356,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
     //Intent Transactions:
     $count_in_trs = $CI->Database_model->fn___tr_fetch(array(
-        '(tr_in_parent_id=' . $in['in_id'] . ' OR tr_in_child_id=' . $in['in_id'] . ($tr_id > 0 ? ' OR tr_tr_parent_id=' . $tr_id : '') . ')' => null,
+        '(tr_in_parent_id=' . $in['in_id'] . ' OR tr_in_child_id=' . $in['in_id'] . ($tr_id > 0 ? ' OR tr_tr_id=' . $tr_id : '') . ')' => null,
     ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
     if ($count_in_trs[0]['totals'] > 0) {
         //Show link to load these transactions:
@@ -1707,7 +1707,7 @@ function fn___echo_en($en, $level, $is_parent = false)
 
     //Count & Display all Entity transaction:
     $count_in_trs = $CI->Database_model->fn___tr_fetch(array(
-        '(tr_en_parent_id=' . $en['en_id'] . ' OR  tr_en_child_id=' . $en['en_id'] . ' OR  tr_miner_en_id=' . $en['en_id'] . ($tr_id > 0 ? ' OR tr_tr_parent_id=' . $tr_id : '') . ')' => null,
+        '(tr_en_parent_id=' . $en['en_id'] . ' OR  tr_en_child_id=' . $en['en_id'] . ' OR  tr_miner_en_id=' . $en['en_id'] . ($tr_id > 0 ? ' OR tr_tr_id=' . $tr_id : '') . ')' => null,
     ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
     if ($count_in_trs[0]['totals'] > 0) {
         //Show the transaction button:

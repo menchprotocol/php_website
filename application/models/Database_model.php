@@ -209,7 +209,7 @@ class Database_model extends CI_Model
         }
 
         //Set some zero defaults if not set:
-        foreach (array('tr_in_child_id', 'tr_in_parent_id', 'tr_en_child_id', 'tr_en_parent_id', 'tr_tr_parent_id') as $dz) {
+        foreach (array('tr_in_child_id', 'tr_in_parent_id', 'tr_en_child_id', 'tr_en_parent_id', 'tr_tr_id') as $dz) {
             if (!isset($insert_columns[$dz])) {
                 $insert_columns[$dz] = 0;
             }
@@ -714,7 +714,7 @@ class Database_model extends CI_Model
 
                     //Value has changed, log transaction:
                     $this->Database_model->fn___tr_create(array(
-                        'tr_tr_parent_id' => $id, //Parent Transaction
+                        'tr_tr_id' => $id, //Parent Transaction
                         'tr_miner_en_id' => $tr_miner_en_id,
                         'tr_type_en_id' => 4242, //Transaction Attribute Modified
                         'tr_content' => 'Transaction ' . ucwords(str_replace('_', ' ', str_replace('tr_', '', $key))) . ' changed from [' . $before_data[0][$key] . '] to [' . $value . ']',

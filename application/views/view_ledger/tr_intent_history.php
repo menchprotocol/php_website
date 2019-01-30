@@ -1,7 +1,7 @@
 <?php
 
 $filters = array(
-    '(tr_in_parent_id=' . $in_id . ' OR tr_in_child_id=' . $in_id . ($tr_id > 0 ? ' OR tr_tr_parent_id=' . $tr_id : '') . ')' => null,
+    '(tr_in_parent_id=' . $in_id . ' OR tr_in_child_id=' . $in_id . ($tr_id > 0 ? ' OR tr_tr_id=' . $tr_id : '') . ')' => null,
 );
 
 //Do we have further limitations on the filter?

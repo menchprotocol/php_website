@@ -30,7 +30,7 @@ class Matrix_model extends CI_Model
 
         //Let's first check if we have an OR Intent that is working On, which means it's children have not been answered!
         $first_pending_or_intent = $this->Database_model->fn___tr_fetch(array(
-            'tr_tr_parent_id' => $actionplan_tr_id, //This action Plan
+            'tr_tr_id' => $actionplan_tr_id, //This action Plan
             'in_status >=' => 2, //Published+
             'in_is_any' => 1, //OR Branch
             'tr_status' => 1, //Working On, which means OR branch has not been answered yet
@@ -43,7 +43,7 @@ class Matrix_model extends CI_Model
 
         //Now check the next AND intent that has not been started:
         $next_new_intent = $this->Database_model->fn___tr_fetch(array(
-            'tr_tr_parent_id' => $actionplan_tr_id, //This action Plan
+            'tr_tr_id' => $actionplan_tr_id, //This action Plan
             'in_status >=' => 2, //Published+
             'tr_status' => 0, //New (not started yet) for either AND/OR branches
         ), array('in_child'), 1, 0, array('tr_order' => 'ASC'));
@@ -58,7 +58,7 @@ class Matrix_model extends CI_Model
         //Because if we don't have any of the previous ones,
         //how can we have this? 🤔 But let's keep it for now...
         $next_working_on_intent = $this->Database_model->fn___tr_fetch(array(
-            'tr_tr_parent_id' => $actionplan_tr_id, //This action Plan
+            'tr_tr_id' => $actionplan_tr_id, //This action Plan
             'in_status >=' => 2, //Published+
             'in_is_any' => 0, //AND Branch
             'tr_status' => 1, //Working On
@@ -91,7 +91,7 @@ class Matrix_model extends CI_Model
                 array(),
                 array(
                     'tr_in_child_id' => $actionplans[0]['tr_in_child_id'],
-                    'tr_tr_parent_id' => $actionplans[0]['tr_id'],
+                    'tr_tr_id' => $actionplans[0]['tr_id'],
                 )
             );
 
@@ -102,7 +102,7 @@ class Matrix_model extends CI_Model
                 array(),
                 array(
                     'tr_in_child_id' => $actionplans[0]['tr_in_child_id'],
-                    'tr_tr_parent_id' => $actionplans[0]['tr_id'],
+                    'tr_tr_id' => $actionplans[0]['tr_id'],
                 )
             );
 
@@ -178,7 +178,7 @@ class Matrix_model extends CI_Model
                 'tr_en_child_id' => $en_master_id,
                 'tr_en_parent_id' => $set_en_child_id,
                 'tr_type_en_id' => 4230, //Naked link
-                'tr_tr_parent_id' => $updated_tr_id,
+                'tr_tr_id' => $updated_tr_id,
             ));
         }
 
@@ -467,7 +467,7 @@ class Matrix_model extends CI_Model
                     true,
                     array(),
                     array(
-                        'tr_tr_parent_id' => $actionplan_ins[0]['tr_tr_parent_id'],
+                        'tr_tr_id' => $actionplan_ins[0]['tr_tr_id'],
                     )
                 );
             }
@@ -585,7 +585,7 @@ class Matrix_model extends CI_Model
 
             //Recursive item:
             $ins = $this->Database_model->fn___tr_fetch(array(
-                'tr_tr_parent_id' => $tr_id,
+                'tr_tr_id' => $tr_id,
                 'tr_id' => $parent_in['tr_id'],
             ), array(($direction_is_downward ? 'in_child' : 'in_parent')));
 
@@ -611,7 +611,7 @@ class Matrix_model extends CI_Model
 
         //A recursive function to fetch all Tree for a given intent, either upwards or downwards
         $next_level_ins = $this->Database_model->fn___tr_fetch(array(
-            'tr_tr_parent_id' => $tr_id,
+            'tr_tr_id' => $tr_id,
             'in_status >=' => 2, //Published+
             ($direction_is_downward ? 'tr_in_parent_id' : 'tr_in_child_id') => $in_id,
         ), array(($direction_is_downward ? 'in_child' : 'in_parent')));
@@ -692,7 +692,7 @@ class Matrix_model extends CI_Model
          * */
 
         $chosen_path = $this->Database_model->fn___tr_fetch(array(
-            'tr_tr_parent_id' => $actionplan_tr_id,
+            'tr_tr_id' => $actionplan_tr_id,
             'tr_in_parent_id' => $in_parent_id,
             'tr_in_child_id' => $in_answer_id,
         ), array('in_parent'));
@@ -704,7 +704,7 @@ class Matrix_model extends CI_Model
             $this->Database_model->fn___tr_create(array(
                 'tr_content' => 'Unable to locate OR selection for this Action Plan',
                 'tr_type_en_id' => 4246, //Platform Error
-                'tr_tr_parent_id' => $actionplan_tr_id,
+                'tr_tr_id' => $actionplan_tr_id,
                 'tr_in_parent_id' => $in_parent_id,
                 'tr_in_child_id' => $in_answer_id,
             ));
@@ -863,7 +863,7 @@ class Matrix_model extends CI_Model
                     'tr_in_parent_id' => $this_in['tr_in_parent_id'],
                     'tr_in_child_id' => $this_in['tr_in_child_id'],
                     'tr_order' => $this_in['tr_order'],
-                    'tr_tr_parent_id' => $actionplan['tr_id'], //Indicates the parent Action Plan Transaction ID
+                    'tr_tr_id' => $actionplan['tr_id'], //Indicates the parent Action Plan Transaction ID
                 ));
 
             }
@@ -1398,7 +1398,7 @@ class Matrix_model extends CI_Model
 
         //Check if parent of this item is not started, because if not, we need to mark that as Working On:
         $parent_ks = $this->Database_model->fn___tr_fetch(array(
-            'tr_tr_parent_id' => $w['tr_id'],
+            'tr_tr_id' => $w['tr_id'],
             'tr_status' => 0, //skip intents that are not stared or working on...
             'tr_in_child_id' => $cr['tr_in_parent_id'],
         ), array('cr'));
@@ -1418,7 +1418,7 @@ class Matrix_model extends CI_Model
 
             //First search for other options that need to be skipped because of this selection:
             $none_chosen_paths = $this->Database_model->fn___tr_fetch(array(
-                'tr_tr_parent_id' => $w['tr_id'],
+                'tr_tr_id' => $w['tr_id'],
                 'tr_in_parent_id' => $cr['tr_in_parent_id'], //Fetch children of parent intent which are the siblings of current intent
                 'tr_in_child_id !=' => $cr['tr_in_child_id'], //NOT The answer (we need its siblings)
                 'in_status >=' => 2,
@@ -1474,7 +1474,7 @@ class Matrix_model extends CI_Model
                 //Fetch details to see whatssup:
                 $parent_ks = $this->Database_model->fn___tr_fetch(array(
                     'tr_id' => $parent_tr_id,
-                    'tr_tr_parent_id' => $w['tr_id'],
+                    'tr_tr_id' => $w['tr_id'],
                     'in_status >=' => 2,
                     'tr_status <' => 2, //Not completed in any way
                 ), array('cr', 'cr_c_child'));
@@ -1490,7 +1490,7 @@ class Matrix_model extends CI_Model
                     if (intval($parent_ks[0]['in_is_any'])) {
                         //We need a single immediate child to be complete:
                         $complete_child_cs = $this->Database_model->fn___tr_fetch(array(
-                            'tr_tr_parent_id' => $w['tr_id'],
+                            'tr_tr_id' => $w['tr_id'],
                             'tr_status NOT IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //complete
                             'tr_in_parent_id' => $parent_ks[0]['tr_in_child_id'],
                         ), array('cr'));
@@ -1500,7 +1500,7 @@ class Matrix_model extends CI_Model
                     } else {
                         //We need all immediate children to be complete (i.e. No incomplete)
                         $incomplete_child_cs = $this->Database_model->fn___tr_fetch(array(
-                            'tr_tr_parent_id' => $w['tr_id'],
+                            'tr_tr_id' => $w['tr_id'],
                             'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
                             'tr_in_parent_id' => $parent_ks[0]['tr_in_child_id'],
                         ), array('cr'));
