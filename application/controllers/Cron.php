@@ -74,7 +74,7 @@ class Cron extends CI_Controller
             }
 
 
-            if(!$all_good){
+            if($all_good){
                 $counter++;
                 echo $counter.') <a href="/entities/'.$tr['en_id'].'">'.$tr['en_name'].'</a><br />';
             }
