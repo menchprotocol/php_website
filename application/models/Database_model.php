@@ -739,6 +739,11 @@ class Database_model extends CI_Model
                             'before' => $before_data[0][$key],
                             'after' => $value,
                         ),
+                        //Copy old values for parent/child intent/entity links:
+                        'tr_en_parent_id' => $before_data[0]['tr_en_parent_id'],
+                        'tr_en_child_id'  => $before_data[0]['tr_en_child_id'],
+                        'tr_in_parent_id' => $before_data[0]['tr_in_parent_id'],
+                        'tr_in_child_id'  => $before_data[0]['tr_in_child_id'],
                     ));
 
                 }

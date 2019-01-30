@@ -54,7 +54,7 @@
         <span class="white-wrapper">
             <select class="form-control border" id="entity_parent_id_<?= $num ?>" style="display:inline-block !important;">
                 <option value="1278">Add as People</option>
-                <option value="2750">Add as Organizations</option>
+                <option value="2750">Add as Groups</option>
             </select>
         </span>
     </span>

@@ -609,6 +609,7 @@ function fn___en_modify_save() {
                 //Update variables:
                 $(".en_name_" + modify_data['en_id']).text(modify_data['en_name']);
                 $(".en_icon_val_" + modify_data['en_id']).html(modify_data['en_icon']);
+                $('.en_icon_' + modify_data['en_id']).html(modify_data['en_icon']);
 
 
                 //Always update 2x Entity icons:

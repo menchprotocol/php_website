@@ -537,9 +537,6 @@ class Intents extends CI_Controller
 
             } else {
 
-                //This field has been updated, update one field at a time:
-                $this->Database_model->fn___in_update($_POST['in_id'], array( $key => $_POST[$key] ), true, $udata['en_id']);
-
                 //Does it required a recursive tree update?
                 if ($key == 'in_seconds') {
 
@@ -560,12 +557,25 @@ class Intents extends CI_Controller
 
                     //Has intent been removed?
                     if($value < 0){
-                        $remove_from_ui = 1; //Intent has been removed
 
-                        //Also make sure to unlink this intent:
-                        if($tr_id > 0){
-                            $_POST['tr_status'] = -1;
+                        //Intent has been removed:
+                        $remove_from_ui = 1;
+
+                        //Also remove all children/parent links:
+                        foreach($this->Database_model->fn___tr_fetch(array(
+                            'tr_status >=' => 0, //New+
+                            'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
+                            '(tr_in_child_id = '.$_POST['in_id'].' OR tr_in_parent_id = '.$_POST['in_id'].')' => null,
+                        )) as $unlink_tr){
+
+                            $this->Database_model->fn___tr_update($unlink_tr['tr_id'], array(
+                                'tr_status' => -1, //Unlink
+                            ), $udata['en_id']);
+
                         }
+
+                        //Treat as if no link (Since it was removed):
+                        $tr_id = 0;
                     }
 
                     if(intval($_POST['apply_recursively'])){
@@ -587,6 +597,10 @@ class Intents extends CI_Controller
                         }
                     }
                 }
+
+                //This field has been updated, update one field at a time:
+                $this->Database_model->fn___in_update($_POST['in_id'], array( $key => $_POST[$key] ), true, $udata['en_id']);
+
             }
         }
 

@@ -15,7 +15,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 
 //UI Display:
-$config['app_version']              = '0.711'; //Cache buster in URLs for static js/css files
+$config['app_version']              = '0.712'; //Cache buster in URLs for static js/css files
 $config['en_per_page']              = 50; //Limits the maximum entities loaded per page
 
 
@@ -65,12 +65,13 @@ $config['en_convert_4537']          = array( //Used for saving media to Facebook
 );
 
 $config['en_mass_actions']          = array( //Various mass actions to be taken on Entity children
-    'prefix_add'    => 'Add prefix to all children',
-    'prefix_trim'   => 'Remove prefix from all children',
-    'postfix_add'   => 'Add postfix to all children',
-    'postfix_trim'  => 'Remove postfix from all children',
+
+    'prefix_add'    => 'Add string as prefix',
+    'postfix_add'   => 'Add string as postfix',
     'replace_match'  => 'Replace matching strings',
-    'replace_icon'  => 'Apply as icon for all children',
+    'replace_icon'  => 'Update icons',
+
+    //Logic for all items above must be added to Entities/en_miner_ui section
 );
 
 //Third-Party Settings:

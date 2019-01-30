@@ -1032,7 +1032,7 @@ function fn___echo_tr_column($obj_type, $id, $tr_field, $fb_messenger_format = f
 
         } elseif($tr_field == 'tr_en_type_id'){
 
-            $name = 'Transaction Type Entity';
+            $name = 'Transaction Type';
 
 
         } else {

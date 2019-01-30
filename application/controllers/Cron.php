@@ -45,7 +45,7 @@ class Cron extends CI_Controller
 
             if(count($blank_trs) == 0){
 
-                //See if any of the parents are organizations:
+                //See if any of the parents are Groups:
                 foreach($this->Database_model->fn___tr_fetch(array(
                     'tr_status >=' => 0,
                     'tr_en_type_id IN (' . join(',', array_merge($this->config->item('en_ids_4537'), $this->config->item('en_ids_4538'))) . ')' => null, //Entity Link Connectors

@@ -18,33 +18,33 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $config['en_ids_4331'] = array(4255, 4256, 4258, 4259, 4260, 4261);
 $config['en_all_4331'] = array(
     4255 => array(
-        'm_icon' => '<i class="fal fa-file-alt"></i>',
-        'm_name' => 'Text Link',
+        'm_icon' => '<i class="fal fa-align-left"></i>',
+        'm_name' => 'Text',
         'm_desc' => '',
     ),
     4256 => array(
         'm_icon' => '<i class="fal fa-browser"></i>',
-        'm_name' => 'URL Link',
+        'm_name' => 'URL',
         'm_desc' => '',
     ),
     4258 => array(
         'm_icon' => '<i class="fal fa-video"></i>',
-        'm_name' => 'Video Link',
+        'm_name' => 'Video',
         'm_desc' => '',
     ),
     4259 => array(
         'm_icon' => '<i class="fal fa-volume-up"></i>',
-        'm_name' => 'Audio Link',
+        'm_name' => 'Audio',
         'm_desc' => '',
     ),
     4260 => array(
         'm_icon' => '<i class="fal fa-image"></i>',
-        'm_name' => 'Image Link',
+        'm_name' => 'Image',
         'm_desc' => '',
     ),
     4261 => array(
         'm_icon' => '<i class="fal fa-file-pdf"></i>',
-        'm_name' => 'File Link',
+        'm_name' => 'File',
         'm_desc' => '',
     ),
 );
@@ -124,12 +124,12 @@ $config['en_ids_4486'] = array(4228, 4229);
 $config['en_all_4486'] = array(
     4228 => array(
         'm_icon' => '<i class="fal fa-link"></i>',
-        'm_name' => 'Fixed Link',
+        'm_name' => 'Fixed',
         'm_desc' => 'Intent link published and added to user Action Plans up-front',
     ),
     4229 => array(
         'm_icon' => '<i class="fas fa-question-circle fa-spin"></i>',
-        'm_name' => 'Conditional Link',
+        'm_name' => 'Conditional',
         'm_desc' => 'Intent added to Action Plans after parent intent is complete AND the user\'s % score falls within the defined min/max range',
     ),
 );
@@ -194,22 +194,22 @@ $config['en_ids_4538'] = array(4230, 4255, 4318, 4319);
 $config['en_all_4538'] = array(
     4230 => array(
         'm_icon' => '<i class="fal fa-link"></i>',
-        'm_name' => 'Raw Link',
+        'm_name' => 'Raw',
         'm_desc' => 'Entity is linked to another entity with no link notes.',
     ),
     4255 => array(
-        'm_icon' => '<i class="fal fa-file-alt"></i>',
-        'm_name' => 'Text Link',
+        'm_icon' => '<i class="fal fa-align-left"></i>',
+        'm_name' => 'Text',
         'm_desc' => 'Link note contains a text snippet.',
     ),
     4318 => array(
         'm_icon' => '<i class="fal fa-clock"></i>',
-        'm_name' => 'Time Link',
+        'm_name' => 'Time',
         'm_desc' => '',
     ),
     4319 => array(
         'm_icon' => '<i class="fal fa-sort-numeric-down"></i>',
-        'm_name' => 'Integer Link',
+        'm_name' => 'Integer',
         'm_desc' => '',
     ),
 );
@@ -219,32 +219,32 @@ $config['en_ids_4537'] = array(4256, 4257, 4258, 4259, 4260, 4261);
 $config['en_all_4537'] = array(
     4256 => array(
         'm_icon' => '<i class="fal fa-browser"></i>',
-        'm_name' => 'URL Link',
+        'm_name' => 'URL',
         'm_desc' => 'Link note contains a generic URL only.',
     ),
     4257 => array(
         'm_icon' => '<i class="fal fa-play-circle"></i>',
-        'm_name' => 'Embed Link',
+        'm_name' => 'Embed',
         'm_desc' => 'Link note contain a recognizable URL that offers an embed widget for a more engaging play-back experience.',
     ),
     4258 => array(
         'm_icon' => '<i class="fal fa-video"></i>',
-        'm_name' => 'Video Link',
+        'm_name' => 'Video',
         'm_desc' => 'Link notes contain a URL to a raw video file.',
     ),
     4259 => array(
         'm_icon' => '<i class="fal fa-volume-up"></i>',
-        'm_name' => 'Audio Link',
+        'm_name' => 'Audio',
         'm_desc' => 'Link notes contain a URL to a raw audio file.',
     ),
     4260 => array(
         'm_icon' => '<i class="fal fa-image"></i>',
-        'm_name' => 'Image Link',
+        'm_name' => 'Image',
         'm_desc' => 'Link notes contain a URL to a raw image file.',
     ),
     4261 => array(
         'm_icon' => '<i class="fal fa-file-pdf"></i>',
-        'm_name' => 'File Link',
+        'm_name' => 'File',
         'm_desc' => 'Link notes contain a URL to a raw file.',
     ),
 );

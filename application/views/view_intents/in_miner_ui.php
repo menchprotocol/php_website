@@ -82,6 +82,7 @@ if (isset($orphan_ins)) {
             }
 
             //Enable Miner to add child intents:
+            //Enable Miner to add child intents:
             echo '<div class="list-group-item list_input grey-block">
                 <div class="input-group">
                     <div class="form-group is-empty" style="margin: 0; padding: 0;">
@@ -226,7 +227,7 @@ if (isset($orphan_ins)) {
                             <div class="notify_in_remove hidden">
                                 <div class="alert alert-warning" style="margin:5px 0px; padding:7px;">
                                     <i class="fas fa-exclamation-triangle"></i>
-                                    Saving will remove intent
+                                    Saving will remove intent and unlink from all parents/children
                                 </div>
                             </div>
 
