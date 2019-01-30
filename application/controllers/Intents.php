@@ -399,7 +399,7 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Intent Not Found',
             ));
-        } elseif($tr_id > 0 && intval($_POST['tr_en_type_id']) == 4229){
+        } elseif($tr_id > 0 && intval($_POST['tr_type_en_id']) == 4229){
             //Conditional links, we require range values:
             if(strlen($_POST['tr__conditional_score_min']) < 1 || !is_numeric($_POST['tr__conditional_score_min'])){
                 return fn___echo_json(array(
@@ -429,7 +429,7 @@ class Intents extends CI_Controller
         //Fetch current ANY Conditional input limiters:
         $completion_requirements_modified = 0;
         $completion_requirements = $this->Database_model->fn___tr_fetch(array(
-            'tr_en_type_id' => 4331, //Intent Completion Requirements
+            'tr_type_en_id' => 4331, //Intent Completion Requirements
             'tr_in_child_id' => $_POST['in_id'], //For this intent
             'tr_status >=' => 0, //New+
             'tr_en_parent_id IN (' . join(',', $this->config->item('en_ids_4331')) . ')' => null, //Technically not needed, but here for extra clarity
@@ -484,8 +484,8 @@ class Intents extends CI_Controller
                 if(!in_array($en_id, $already_selected)){
                     //Need to create a new row for this:
                     $this->Database_model->fn___tr_create(array(
-                        'tr_en_miner_id' => $udata['en_id'],
-                        'tr_en_type_id' => 4331,
+                        'tr_miner_en_id' => $udata['en_id'],
+                        'tr_type_en_id' => 4331,
                         'tr_en_parent_id' => $en_id,
                         'tr_in_child_id' => intval($_POST['in_id']),
                     ));
@@ -564,7 +564,7 @@ class Intents extends CI_Controller
                         //Also remove all children/parent links:
                         foreach($this->Database_model->fn___tr_fetch(array(
                             'tr_status >=' => 0, //New+
-                            'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
+                            'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
                             '(tr_in_child_id = '.$_POST['in_id'].' OR tr_in_parent_id = '.$_POST['in_id'].')' => null,
                         )) as $unlink_tr){
 
@@ -634,7 +634,7 @@ class Intents extends CI_Controller
 
             //Prep link Metadata to see if the conditional score variables have changed:
             $tr_update = array(
-                'tr_en_type_id'     => intval($_POST['tr_en_type_id']),
+                'tr_type_en_id'     => intval($_POST['tr_type_en_id']),
                 'tr_status'         => intval($_POST['tr_status']),
             );
 
@@ -642,7 +642,7 @@ class Intents extends CI_Controller
             $tr_metadata = ( strlen($trs[0]['tr_metadata']) > 0 ? unserialize($trs[0]['tr_metadata']) : array() );
 
             //Check to see if anything changed in the transaction?
-            $transaction_meta_updated = ($tr_update['tr_en_type_id'] == 4229 && (
+            $transaction_meta_updated = ($tr_update['tr_type_en_id'] == 4229 && (
                     !isset($tr_metadata['tr__conditional_score_min']) ||
                     !isset($tr_metadata['tr__conditional_score_max']) ||
                     !(doubleval($tr_metadata['tr__conditional_score_max'])==doubleval($_POST['tr__conditional_score_max'])) ||
@@ -687,7 +687,7 @@ class Intents extends CI_Controller
 
                 //Also update the timestamp & new miner:
                 $tr_update['tr_timestamp'] = date("Y-m-d H:i:s");
-                $tr_update['tr_en_miner_id'] = $udata['en_id'];
+                $tr_update['tr_miner_en_id'] = $udata['en_id'];
 
                 //Update transactions:
                 $this->Database_model->fn___tr_update($tr_id, $tr_update, $udata['en_id']);
@@ -702,7 +702,7 @@ class Intents extends CI_Controller
         //Fetch latest intent update:
         $updated_trs = $this->Database_model->fn___tr_fetch(array(
             'tr_status >=' => 0, //New+
-            'tr_en_type_id IN (4250, 4264)' => null, //Intent Created/Updated
+            'tr_type_en_id IN (4250, 4264)' => null, //Intent Created/Updated
             'tr_in_child_id' => $_POST['in_id'],
         ), array('en_miner'));
 
@@ -770,7 +770,7 @@ class Intents extends CI_Controller
                 //Fetch for the record:
                 $children_before = $this->Database_model->fn___tr_fetch(array(
                     'tr_in_parent_id' => intval($_POST['in_id']),
-                    'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
+                    'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
                     'tr_status >=' => 0,
                     'in_status >=' => 0,
                 ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
@@ -785,7 +785,7 @@ class Intents extends CI_Controller
                 //Fetch again for the record:
                 $children_after = $this->Database_model->fn___tr_fetch(array(
                     'tr_in_parent_id' => intval($_POST['in_id']),
-                    'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
+                    'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
                     'tr_status >=' => 0,
                     'in_status >=' => 0,
                 ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
@@ -826,7 +826,7 @@ class Intents extends CI_Controller
         //Fetch On-Start Messages for this intent:
         $on_start_messages = $this->Database_model->fn___tr_fetch(array(
             'tr_status >=' => 2, //Published+
-            'tr_en_type_id' => 4231, //On-Start Messages
+            'tr_type_en_id' => 4231, //On-Start Messages
             'tr_in_child_id' => $_POST['in_id'],
         ), array(), 0, 0, array('tr_order' => 'ASC'));
 
@@ -854,7 +854,7 @@ class Intents extends CI_Controller
     }
 
 
-    function fn___in_tr_load($in_id, $tr_id=0, $tr_en_type_id=0)
+    function fn___in_tr_load($in_id, $tr_id=0, $tr_type_en_id=0)
     {
 
         //Auth user and check required variables:
@@ -873,7 +873,7 @@ class Intents extends CI_Controller
         $this->load->view('view_ledger/tr_intent_history', array(
             'in_id' => $in_id,
             'tr_id' => $tr_id,
-            'tr_en_type_id' => $tr_en_type_id,
+            'tr_type_en_id' => $tr_type_en_id,
         ));
         $this->load->view('view_shared/messenger_footer');
     }
@@ -916,7 +916,7 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Session. Refresh to Continue',
             ));
-        } elseif (!isset($_POST['in_id']) || !isset($_POST['focus_tr_en_type_id'])) {
+        } elseif (!isset($_POST['in_id']) || !isset($_POST['focus_tr_type_en_id'])) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing intent data.',
@@ -987,13 +987,13 @@ class Intents extends CI_Controller
 
         //Create message:
         $tr = $this->Database_model->fn___tr_create(array(
-            'tr_en_miner_id' => $udata['en_id'],
-            'tr_en_type_id' => $_POST['focus_tr_en_type_id'],
+            'tr_miner_en_id' => $udata['en_id'],
+            'tr_type_en_id' => $_POST['focus_tr_type_en_id'],
             'tr_en_parent_id' => $created_url['en_from_url']['en_id'],
             'tr_in_child_id' => intval($_POST['in_id']),
             'tr_content' => '@' . $created_url['en_from_url']['en_id'], //Just place the entity reference as the entire message
             'tr_order' => 1 + $this->Database_model->fn___tr_max_order(array(
-                'tr_en_type_id' => $_POST['focus_tr_en_type_id'],
+                'tr_type_en_id' => $_POST['focus_tr_type_en_id'],
                 'tr_in_child_id' => $_POST['in_id'],
             )),
         ));
@@ -1073,7 +1073,7 @@ class Intents extends CI_Controller
         //Fetch last intent update transaction:
         $updated_trs = $this->Database_model->fn___tr_fetch(array(
             'tr_status >=' => 0, //New+
-            'tr_en_type_id IN (4250, 4264)' => null, //Intent Created/Updated
+            'tr_type_en_id IN (4250, 4264)' => null, //Intent Created/Updated
             'tr_in_child_id' => $_POST['in_id'],
         ), array('en_miner'));
         if(count($updated_trs) < 1){
@@ -1113,7 +1113,7 @@ class Intents extends CI_Controller
 
         //Fetch intent completion requirements (if any):
         $completion_requirements = $this->Database_model->fn___tr_fetch(array(
-            'tr_en_type_id' => 4331, //Intent Completion Requirements
+            'tr_type_en_id' => 4331, //Intent Completion Requirements
             'tr_in_child_id' => $_POST['in_id'], //For this intent
             'tr_status >=' => 0, //New+
             'tr_en_parent_id IN (' . join(',', $this->config->item('en_ids_4331')) . ')' => null, //Technically not needed, but here for extra clarity
@@ -1206,12 +1206,12 @@ class Intents extends CI_Controller
         );
 
 
-        if (!($_POST['initial_tr_en_type_id'] == $_POST['focus_tr_en_type_id'])) {
+        if (!($_POST['initial_tr_type_en_id'] == $_POST['focus_tr_type_en_id'])) {
             //Change the status:
-            $to_update['tr_en_type_id'] = $_POST['focus_tr_en_type_id'];
+            $to_update['tr_type_en_id'] = $_POST['focus_tr_type_en_id'];
             //Put it at the end of the new list:
             $to_update['tr_order'] = 1 + $this->Database_model->fn___tr_max_order(array(
-                'tr_en_type_id' => $_POST['focus_tr_en_type_id'],
+                'tr_type_en_id' => $_POST['focus_tr_type_en_id'],
                 'tr_in_child_id' => intval($_POST['in_id']),
             ));
         }
@@ -1230,7 +1230,7 @@ class Intents extends CI_Controller
         return fn___echo_json(array(
             'status' => 1,
             'message' => $this->Chat_model->fn___dispatch_message($msg_validation['input_message'], $udata, false),
-            'tr_en_type_id' => $en_all_4485[$new_messages[0]['tr_en_type_id']]['m_icon'].' '.$en_all_4485[$new_messages[0]['tr_en_type_id']]['m_name'],
+            'tr_type_en_id' => $en_all_4485[$new_messages[0]['tr_type_en_id']]['m_icon'].' '.$en_all_4485[$new_messages[0]['tr_type_en_id']]['m_name'],
             'success_icon' => '<span><i class="fas fa-check"></i> Saved</span>',
         ));
     }

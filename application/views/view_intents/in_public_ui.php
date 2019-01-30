@@ -70,7 +70,7 @@ $hide_subscribe = ( isset($_GET['hide_subscribe']) && intval($_GET['hide_subscri
     //Fetch & Display On-Start Messages for this intent:
     foreach ($this->Database_model->fn___tr_fetch(array(
         'tr_status >=' => 2, //Published+
-        'tr_en_type_id' => 4231, //On-Start Messages
+        'tr_type_en_id' => 4231, //On-Start Messages
         'tr_in_child_id' => $in['in_id'],
     ), array(), 0, 0, array('tr_order' => 'ASC')) as $tr) {
         echo $this->Chat_model->fn___dispatch_message($tr['tr_content']);
@@ -106,7 +106,7 @@ $hide_subscribe = ( isset($_GET['hide_subscribe']) && intval($_GET['hide_subscri
             foreach ($in['in__children'] as $in_level2) {
 
                 //Do not show if conditional:
-                if($in_level2['tr_en_type_id'] == 4229){
+                if($in_level2['tr_type_en_id'] == 4229){
                     continue;
                 }
 
@@ -132,7 +132,7 @@ $hide_subscribe = ( isset($_GET['hide_subscribe']) && intval($_GET['hide_subscri
                 //Fetch & Display On-Start Messages for this intent:
                 foreach ($this->Database_model->fn___tr_fetch(array(
                     'tr_status >=' => 2, //Published+
-                    'tr_en_type_id' => 4231, //On-Start Messages
+                    'tr_type_en_id' => 4231, //On-Start Messages
                     'tr_in_child_id' => $in_level2['in_id'],
                 ), array(), 0, 0, array('tr_order' => 'ASC')) as $tr) {
                     echo $this->Chat_model->fn___dispatch_message($tr['tr_content']);
@@ -145,7 +145,7 @@ $hide_subscribe = ( isset($_GET['hide_subscribe']) && intval($_GET['hide_subscri
                     foreach ($in_level2['in__grandchildren'] as $in_level3) {
 
                         //Do not show if conditional:
-                        if($in_level3['tr_en_type_id'] == 4229){
+                        if($in_level3['tr_type_en_id'] == 4229){
                             continue;
                         }
 

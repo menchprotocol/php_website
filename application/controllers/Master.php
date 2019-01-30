@@ -96,12 +96,12 @@ class Master extends CI_Controller
         //Do we have a use session?
         if ($actionplan_tr_id > 0 && $in_id > 0) {
             //Yes! It seems to be a desktop login:
-            $filters['tr_en_type_id'] = 4559; //Action Plan Intent
+            $filters['tr_type_en_id'] = 4559; //Action Plan Intent
             $filters['tr_tr_parent_id'] = $actionplan_tr_id;
             $filters['tr_in_child_id'] = $in_id;
         } elseif (!$empty_session) {
             //Yes! It seems to be a desktop login (versus Facebook Messenger)
-            $filters['tr_en_type_id'] = 4235; //Action Plan
+            $filters['tr_type_en_id'] = 4235; //Action Plan
             $filters['tr_en_parent_id'] = $udata['en_id'];
             $filters['tr_status >='] = 0;
         }
@@ -124,8 +124,8 @@ class Master extends CI_Controller
 
             //Log action plan view transaction:
             $this->Database_model->fn___tr_create(array(
-                'tr_en_type_id' => 4283,
-                'tr_en_miner_id' => $trs[0]['tr_en_parent_id'],
+                'tr_type_en_id' => 4283,
+                'tr_miner_en_id' => $trs[0]['tr_en_parent_id'],
                 'tr_en_parent_id' => $trs[0]['tr_en_parent_id'],
                 'tr_tr_parent_id' => $actionplan_tr_id,
                 'tr_in_child_id' => $in_id,
@@ -157,14 +157,14 @@ class Master extends CI_Controller
                 //We have a single Action Plan Intent to load:
                 //Now we need to load the action plan:
                 $actionplan_parents = $this->Database_model->fn___tr_fetch(array(
-                    'tr_en_type_id' => 4559, //Action Plan Intents
+                    'tr_type_en_id' => 4559, //Action Plan Intents
                     'tr_tr_parent_id' => $actionplan_tr_id,
                     'in_status >=' => 2, //Published+ Intents
                     'tr_in_child_id' => $in_id,
                 ), array('in_parent'));
 
                 $actionplan_children = $this->Database_model->fn___tr_fetch(array(
-                    'tr_en_type_id' => 4559, //Action Plan Intents
+                    'tr_type_en_id' => 4559, //Action Plan Intents
                     'tr_tr_parent_id' => $actionplan_tr_id,
                     'in_status >=' => 2, //Published+ Intents
                     'tr_in_parent_id' => $in_id,
@@ -180,10 +180,10 @@ class Master extends CI_Controller
 
                     //Ooops, we had issues finding th is intent! Should not happen, report:
                     $this->Database_model->fn___tr_create(array(
-                        'tr_en_miner_id' => $trs[0]['en_id'],
+                        'tr_miner_en_id' => $trs[0]['en_id'],
                         'tr_metadata' => $trs,
                         'tr_content' => 'Unable to load a specific intent for the master Action Plan! Should not happen...',
-                        'tr_en_type_id' => 4246, //Platform Error
+                        'tr_type_en_id' => 4246, //Platform Error
                         'tr_tr_parent_id' => $actionplan_tr_id,
                         'tr_in_child_id' => $in_id,
                     ));
@@ -259,7 +259,7 @@ class Master extends CI_Controller
 
         //Fetch completion requirements:
         $completion_requirements = $this->Database_model->fn___tr_fetch(array(
-            'tr_en_type_id' => 4331, //Intent Completion Requirements
+            'tr_type_en_id' => 4331, //Intent Completion Requirements
             'tr_in_child_id' => $trs[0]['tr_in_child_id'], //For this intent
             'tr_status >=' => 2, //Published+
             'tr_en_parent_id IN (' . join(',', $this->config->item('en_ids_4331')) . ')' => null, //Technically not needed, but here for extra clarity
@@ -317,15 +317,15 @@ class Master extends CI_Controller
         if ($notes_changed) {
 
 
-            $tr_en_type_id = fn___detect_tr_en_type_id($_POST['tr_content']);
-            if(!$tr_en_type_id['status']){
-                return fn___redirect_message('/master/actionplan', '<div class="alert alert-danger" role="alert">Error: '.$tr_en_type_id['message'].'</div>');
+            $tr_type_en_id = fn___detect_tr_type_en_id($_POST['tr_content']);
+            if(!$tr_type_en_id['status']){
+                return fn___redirect_message('/master/actionplan', '<div class="alert alert-danger" role="alert">Error: '.$tr_type_en_id['message'].'</div>');
             }
 
             //Updates k notes:
             $this->Database_model->fn___tr_update($trs[0]['tr_id'], array(
                 'tr_content' => trim($_POST['tr_content']),
-                'tr_en_type_id' => $tr_en_type_id['tr_en_type_id'],
+                'tr_type_en_id' => $tr_type_en_id['tr_type_en_id'],
             ), (isset($udata['en_id']) ? $udata['en_id'] : $trs[0]['k_children_en_id']));
         }
 

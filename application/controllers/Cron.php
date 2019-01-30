@@ -26,7 +26,7 @@ class Cron extends CI_Controller
 
         $current_urls = $this->Database_model->fn___tr_fetch(array(
             'tr_status >=' => 0,
-            'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null,
+            'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null,
             'tr_en_parent_id' => 1326,
         ), array('en_child'), 99999);
 
@@ -38,7 +38,7 @@ class Cron extends CI_Controller
             //Do we have people/org as parent?
             $blank_trs = $this->Database_model->fn___tr_fetch(array(
                 'tr_status >=' => 0,
-                'tr_en_type_id' => 4230,
+                'tr_type_en_id' => 4230,
                 'tr_en_parent_id IN (1278, 2750)' => null, //Org or people
                 'tr_en_child_id' => $tr['tr_en_child_id'],
             ));
@@ -48,14 +48,14 @@ class Cron extends CI_Controller
                 //See if any of the parents are Groups:
                 foreach($this->Database_model->fn___tr_fetch(array(
                     'tr_status >=' => 0,
-                    'tr_en_type_id IN (' . join(',', array_merge($this->config->item('en_ids_4537'), $this->config->item('en_ids_4538'))) . ')' => null, //Entity Link Connectors
+                    'tr_type_en_id IN (' . join(',', array_merge($this->config->item('en_ids_4537'), $this->config->item('en_ids_4538'))) . ')' => null, //Entity Link Connectors
                     'tr_en_child_id' => $tr['tr_en_child_id'],
                 )) as $parent_en){
 
                     //Is this item an org?
                     $parent_orgs = $this->Database_model->fn___tr_fetch(array(
                         'tr_status >=' => 0,
-                        'tr_en_type_id' => 4230, //Raw
+                        'tr_type_en_id' => 4230, //Raw
                         'tr_en_parent_id IN (1278, 2750)' => null, //Org or people
                         'tr_en_child_id' => $parent_en['tr_en_parent_id'],
                     ));
@@ -123,7 +123,7 @@ class Cron extends CI_Controller
         exit; //Maybe use to update all rates if needed?
 
         //Issue coins for each transaction type:
-        $all_engs = $this->Database_model->fn___tr_fetch(array(), array('en_type'), 0, 0, array('trs_count' => 'DESC'), 'COUNT(tr_en_type_id) as trs_count, en_name, tr_en_type_id', 'tr_en_type_id, en_name');
+        $all_engs = $this->Database_model->fn___tr_fetch(array(), array('en_type'), 0, 0, array('trs_count' => 'DESC'), 'COUNT(tr_type_en_id) as trs_count, en_name, tr_type_en_id', 'tr_type_en_id, en_name');
 
         //return fn___echo_json($all_engs);
 
@@ -134,14 +134,14 @@ class Cron extends CI_Controller
             $rate_trs = $this->Database_model->fn___tr_fetch(array(
                 'tr_status >=' => 2, //Must be published+
                 'en_status >=' => 2, //Must be published+
-                'tr_en_type_id' => 4319, //Number
+                'tr_type_en_id' => 4319, //Number
                 'tr_en_parent_id' => 4374, //Mench Coins
-                'tr_en_child_id' => $tr['tr_en_type_id'],
+                'tr_en_child_id' => $tr['tr_type_en_id'],
             ), array('en_child'), 1);
 
             if(count($rate_trs) > 0){
                 //Issue coins at this rate:
-                $this->db->query("UPDATE table_ledger SET tr_coins = '".$rate_trs[0]['tr_content']."' WHERE tr_en_miner_id > 0 AND tr_en_type_id = " . $tr['tr_en_type_id']);
+                $this->db->query("UPDATE table_ledger SET tr_coins = '".$rate_trs[0]['tr_content']."' WHERE tr_miner_en_id > 0 AND tr_type_en_id = " . $tr['tr_type_en_id']);
             }
 
         }
@@ -291,7 +291,7 @@ class Cron extends CI_Controller
             'u__childrens' => 0, //Child entities are just containers, no score on the link
 
             'tr_en_child_id' => 1, //Transaction initiator
-            'tr_en_miner_id' => 1, //Transaction recipient
+            'tr_miner_en_id' => 1, //Transaction recipient
 
             'tr_en_parent_id' => 13, //Action Plan Items
         );
@@ -316,8 +316,8 @@ class Cron extends CI_Controller
                     'tr_en_child_id' => $u['en_id'],
                 ), array(), 5000)) * $score_weights['tr_en_child_id'];
             $score += count($this->Database_model->fn___tr_fetch(array(
-                    'tr_en_miner_id' => $u['en_id'],
-                ), array(), 5000)) * $score_weights['tr_en_miner_id'];
+                    'tr_miner_en_id' => $u['en_id'],
+                ), array(), 5000)) * $score_weights['tr_miner_en_id'];
             $score += count($this->Database_model->w_fetch(array(
                     'tr_en_parent_id' => $u['en_id'],
                 ))) * $score_weights['tr_en_parent_id'];
@@ -353,7 +353,7 @@ class Cron extends CI_Controller
 
         $tr_pending = $this->Database_model->fn___tr_fetch(array(
             'tr_status' => 0, //Pending
-            'tr_en_type_id' => 4299, //Save media file to Mench cloud
+            'tr_type_en_id' => 4299, //Save media file to Mench cloud
         ), array(), $max_per_batch);
 
 
@@ -369,8 +369,8 @@ class Cron extends CI_Controller
         //Go through and upload to CDN:
         foreach ($tr_pending as $u) {
 
-            $tr_en_type_id = fn___detect_tr_en_type_id($new_file_url);
-            if(!$tr_en_type_id['status']){
+            $tr_type_en_id = fn___detect_tr_type_en_id($new_file_url);
+            if(!$tr_type_en_id['status']){
                 //Opppsi, there was some error:
                 //TODO Log error
                 continue;
@@ -379,7 +379,7 @@ class Cron extends CI_Controller
             //Update transaction data:
             $this->Database_model->fn___tr_update($trp['tr_id'], array(
                 'tr_content' => $new_file_url,
-                'tr_en_type_id' => $tr_en_type_id['tr_en_type_id'],
+                'tr_type_en_id' => $tr_type_en_id['tr_type_en_id'],
                 'tr_status' => 2, //Publish
             ));
 
@@ -435,7 +435,7 @@ class Cron extends CI_Controller
 
         //Let's fetch all Media files without a Facebook attachment ID:
         $pending_urls = $this->Database_model->fn___tr_fetch(array(
-            'tr_en_type_id IN (' . join(',',array_keys($en_convert_4537)) . ')' => null,
+            'tr_type_en_id IN (' . join(',',array_keys($en_convert_4537)) . ')' => null,
             'tr_metadata' => null, //Missing Facebook Attachment ID
         ), array(), $max_per_batch, 0 , array('tr_id' => 'ASC')); //Sort by oldest added first
 
@@ -444,7 +444,7 @@ class Cron extends CI_Controller
             $payload = array(
                 'message' => array(
                     'attachment' => array(
-                        'type' => $en_convert_4537[$tr['tr_en_type_id']],
+                        'type' => $en_convert_4537[$tr['tr_type_en_id']],
                         'payload' => array(
                             'is_reusable' => true,
                             'url' => $tr['tr_content'], //The URL to the media file
@@ -475,7 +475,7 @@ class Cron extends CI_Controller
 
                 //Log error:
                 $this->Database_model->fn___tr_create(array(
-                    'tr_en_type_id' => 4246, //Platform Error
+                    'tr_type_en_id' => 4246, //Platform Error
                     'tr_content' => 'fn___facebook_attachment_sync() Failed to sync attachment using Facebook API',
                     'tr_metadata' => array(
                         'payload' => $payload,

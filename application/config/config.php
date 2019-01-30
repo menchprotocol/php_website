@@ -155,8 +155,8 @@ $config['eng_converter']            = array(
 
 //Ledger filters:
 $config['ledger_filters']           = array(
-                                        'tr_en_miner_id' => 'en',
-                                        'tr_en_type_id' => 'en',
+                                        'tr_miner_en_id' => 'en',
+                                        'tr_type_en_id' => 'en',
                                         'tr_en_child_id'  => 'en',
                                         'tr_en_parent_id' => 'en',
                                         'tr_in_child_id'  => 'in',

@@ -5,8 +5,8 @@ $filters = array(
 );
 
 //Do we have further limitations on the filter?
-if($tr_en_type_id > 0){
-    $filters['tr_en_type_id'] = $tr_en_type_id;
+if($tr_type_en_id > 0){
+    $filters['tr_type_en_id'] = $tr_type_en_id;
 }
 
 //Fetch objects

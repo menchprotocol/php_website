@@ -57,18 +57,18 @@ $input.on('change', function (e) {
 });
 
 
-function fn___message_load_type(tr_en_type_id) {
+function fn___message_load_type(tr_type_en_id) {
 
     //Change Nav header:
     $('.iphone-nav-tabs li').removeClass('active');
-    $('.nav_' + tr_en_type_id).addClass('active');
+    $('.nav_' + tr_type_en_id).addClass('active');
 
     //Change the global message type variable:
-    focus_tr_en_type_id = tr_en_type_id;
+    focus_tr_type_en_id = tr_type_en_id;
 
     //Adjust UI for Messages:
     $('.all_msg').addClass('hidden');
-    $('.msg_en_type_' + tr_en_type_id).removeClass('hidden');
+    $('.msg_en_type_' + tr_type_en_id).removeClass('hidden');
 
     //Load sorting:
     fn___message_tr_order_load();
@@ -134,12 +134,12 @@ $(document).ready(function () {
         var hash_parts = hash.split("-");
         if (hash_parts.length == 3) {
             //Seems right, lets assign:
-            focus_tr_en_type_id = hash_parts[2];
+            focus_tr_type_en_id = hash_parts[2];
         }
     }
 
     //Function to control clicks on Message type header:
-    fn___message_load_type(focus_tr_en_type_id);
+    fn___message_load_type(focus_tr_type_en_id);
 
 
     $('.iphone-nav-tabs a').click(function (e) {
@@ -182,13 +182,13 @@ $(document).ready(function () {
 });
 
 
-function fn___message_tr_order_apply(tr_en_type_id) {
+function fn___message_tr_order_apply(tr_type_en_id) {
 
     var new_tr_orders = [];
     var sort_rank = 0;
     var this_tr_id = 0;
 
-    $("#message-sorting>div.msg_en_type_" + tr_en_type_id).each(function () {
+    $("#message-sorting>div.msg_en_type_" + tr_type_en_id).each(function () {
         this_tr_id = parseInt($(this).attr('tr-id'));
         if (this_tr_id > 0) {
             sort_rank++;
@@ -217,7 +217,7 @@ function fn___message_tr_order_load() {
         draggable: ".is_level2_sortable", // Specifies which items inside the element should be sortable
         onUpdate: function (evt/**Event*/) {
             //Apply new sort:
-            fn___message_tr_order_apply(focus_tr_en_type_id);
+            fn___message_tr_order_apply(focus_tr_type_en_id);
         },
         //The next two functions resolve a Bug with sorting iframes like YouTube embeds while also making the UI more informative
         onChoose: function (evt/**Event*/) {
@@ -277,7 +277,7 @@ function fn___message_remove(tr_id) {
                         $("#ul-nav-" + tr_id).remove();
 
                         //Adjust sort for this message type:
-                        fn___message_tr_order_apply(focus_tr_en_type_id);
+                        fn___message_tr_order_apply(focus_tr_type_en_id);
 
                     }, 377);
                 }, 377);
@@ -287,7 +287,7 @@ function fn___message_remove(tr_id) {
     }
 }
 
-function fn___message_modify_start(tr_id, initial_tr_en_type_id) {
+function fn___message_modify_start(tr_id, initial_tr_type_en_id) {
 
     //Start editing:
     $("#ul-nav-" + tr_id).addClass('in-editing');
@@ -306,7 +306,7 @@ function fn___message_modify_start(tr_id, initial_tr_en_type_id) {
     $(document).keyup(function (e) {
         //Watch for action keys:
         if (e.ctrlKey && e.keyCode === 13) {
-            fn___in_message_modify(tr_id, initial_tr_en_type_id);
+            fn___in_message_modify(tr_id, initial_tr_type_en_id);
         } else if (e.keyCode === 27) {
             fn___message_modify_cancel(tr_id);
         }
@@ -321,7 +321,7 @@ function fn___message_modify_cancel(tr_id, success=0) {
     $("#ul-nav-" + tr_id + ">div").css('width', 'inherit');
 }
 
-function fn___in_message_modify(tr_id, initial_tr_en_type_id) {
+function fn___in_message_modify(tr_id, initial_tr_type_en_id) {
 
     //Show loader:
     $("#ul-nav-" + tr_id + " .edit-updates").html('<div><i class="fas fa-spinner fa-spin"></i></div>');
@@ -330,15 +330,15 @@ function fn___in_message_modify(tr_id, initial_tr_en_type_id) {
     fn___message_modify_cancel(tr_id, 1);
 
     //Detect new status, and a potential change:
-    var new_tr_en_type_id = $("#en_all_4485_" + tr_id).val();
+    var new_tr_type_en_id = $("#en_all_4485_" + tr_id).val();
 
     //Update message:
     $.post("/intents/fn___in_message_modify", {
 
         tr_id: tr_id,
         tr_content: $("#ul-nav-" + tr_id + " textarea").val(),
-        initial_tr_en_type_id: initial_tr_en_type_id,
-        focus_tr_en_type_id: new_tr_en_type_id,
+        initial_tr_type_en_id: initial_tr_type_en_id,
+        focus_tr_type_en_id: new_tr_type_en_id,
         in_id: in_id,
 
     }, function (data) {
@@ -349,31 +349,31 @@ function fn___in_message_modify(tr_id, initial_tr_en_type_id) {
             $("#ul-nav-" + tr_id + " .text_message").html(data.message);
 
             //Did the status change?
-            if (!(new_tr_en_type_id == initial_tr_en_type_id)) {
+            if (!(new_tr_type_en_id == initial_tr_type_en_id)) {
 
                 //Update new status:
-                $("#ul-nav-" + tr_id + " .message_status").html(data.tr_en_type_id);
+                $("#ul-nav-" + tr_id + " .message_status").html(data.tr_type_en_id);
 
                 //Switch message over to its section and inform the user:
-                $("#ul-nav-" + tr_id).removeClass('msg_en_type_' + initial_tr_en_type_id).addClass('msg_en_type_' + new_tr_en_type_id)
+                $("#ul-nav-" + tr_id).removeClass('msg_en_type_' + initial_tr_type_en_id).addClass('msg_en_type_' + new_tr_type_en_id)
 
                 //Note that we don't need to sort the new list as the new item would be added to its end
 
                 //Remove possible "No message" info box:
-                if ($('.no-messages' + in_id + '_' + new_tr_en_type_id).length) {
-                    $('.no-messages' + in_id + '_' + new_tr_en_type_id).hide();
+                if ($('.no-messages' + in_id + '_' + new_tr_type_en_id).length) {
+                    $('.no-messages' + in_id + '_' + new_tr_type_en_id).hide();
                 }
 
                 setTimeout(function () {
 
                     //Now move over to the new status tab:
-                    fn___message_load_type(new_tr_en_type_id);
+                    fn___message_load_type(new_tr_type_en_id);
 
                     //Move item to last:
                     $("#message-sorting").append($("#ul-nav-" + tr_id));
 
                     //Also sort original list as 1 message has been removed from it:
-                    fn___message_tr_order_apply(initial_tr_en_type_id);
+                    fn___message_tr_order_apply(initial_tr_type_en_id);
 
                 }, 500);
 
@@ -401,9 +401,9 @@ function fn___in_message_modify(tr_id, initial_tr_en_type_id) {
 var button_value = null;
 
 function fn___message_form_lock() {
-    button_value = $('#add_message_' + focus_tr_en_type_id + '_' + in_id).html();
-    $('#add_message_' + focus_tr_en_type_id + '_' + in_id).html('<span><i class="fas fa-spinner fa-spin"></i></span>');
-    $('#add_message_' + focus_tr_en_type_id + '_' + in_id).attr('href', '#');
+    button_value = $('#add_message_' + focus_tr_type_en_id + '_' + in_id).html();
+    $('#add_message_' + focus_tr_type_en_id + '_' + in_id).html('<span><i class="fas fa-spinner fa-spin"></i></span>');
+    $('#add_message_' + focus_tr_type_en_id + '_' + in_id).attr('href', '#');
 
     $('.add-msg' + in_id).addClass('is-working');
     $('#tr_content' + in_id).prop("disabled", true);
@@ -417,12 +417,12 @@ function fn___message_form_unlock(result) {
     $('.add-msg' + in_id).removeClass('is-working');
     $('.remove_loading').fadeIn();
 
-    $('#add_message_' + focus_tr_en_type_id + '_' + in_id).html(button_value);
-    $('#add_message_' + focus_tr_en_type_id + '_' + in_id).attr('href', 'javascript:fn___message_create();');
+    $('#add_message_' + focus_tr_type_en_id + '_' + in_id).html(button_value);
+    $('#add_message_' + focus_tr_type_en_id + '_' + in_id).attr('href', 'javascript:fn___message_create();');
 
     //Remove possible "No message" info box:
-    if ($('.no-messages' + in_id + '_' + focus_tr_en_type_id).length) {
-        $('.no-messages' + in_id + '_' + focus_tr_en_type_id).hide();
+    if ($('.no-messages' + in_id + '_' + focus_tr_type_en_id).length) {
+        $('.no-messages' + in_id + '_' + focus_tr_type_en_id).hide();
     }
 
     //Reset Focus:
@@ -435,7 +435,7 @@ function fn___message_form_unlock(result) {
         $("#message-sorting").append(result.message);
 
         //Resort/Re-adjust:
-        fn___message_load_type(focus_tr_en_type_id);
+        fn___message_load_type(focus_tr_type_en_id);
 
         //Tooltips:
         $('[data-toggle="tooltip"]').tooltip();
@@ -476,7 +476,7 @@ function fn___in_new_message_from_attachment(droppedFiles, uploadType) {
         }
 
         ajaxData.append('upload_type', uploadType);
-        ajaxData.append('focus_tr_en_type_id', focus_tr_en_type_id);
+        ajaxData.append('focus_tr_type_en_id', focus_tr_type_en_id);
         ajaxData.append('in_id', in_id);
 
         $.ajax({
@@ -524,7 +524,7 @@ function fn___message_create() {
 
         in_id: in_id, //Synonymous
         tr_content: $('#tr_content' + in_id).val(),
-        focus_tr_en_type_id: focus_tr_en_type_id,
+        focus_tr_type_en_id: focus_tr_type_en_id,
 
     }, function (data) {
 

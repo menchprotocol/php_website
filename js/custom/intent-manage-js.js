@@ -68,7 +68,7 @@ $(document).ready(function () {
     });
 
     //Lookout for intent link related changes:
-    $('input[type=radio][name=tr_en_type_id], #tr_status').change(function () {
+    $('input[type=radio][name=tr_type_en_id], #tr_status').change(function () {
         fn___in_adjust_link_ui();
     });
 
@@ -209,7 +209,7 @@ function fn___in_adjust_link_ui() {
         }
 
         //What's the intent link type?
-        if ($('#tr_en_type_id_4229').is(':checked')) {
+        if ($('#tr_type_en_id_4229').is(':checked')) {
             //Conditional link is checked:
             $('.score_range_box').removeClass('hidden');
         } else {
@@ -431,7 +431,7 @@ function fn___in_messages_load(in_id) {
 }
 
 
-function fn___in_tr_load(in_id, tr_id, tr_en_type_id) {
+function fn___in_tr_load(in_id, tr_id, tr_type_en_id) {
 
     //Start loading:
     $('.fixed-box, .ajax-frame').addClass('hidden');
@@ -442,7 +442,7 @@ function fn___in_tr_load(in_id, tr_id, tr_en_type_id) {
 
     //Load content via a URL:
     $('.frame-loader').addClass('hidden');
-    $('.ajax-frame').attr('src', '/intents/fn___in_tr_load/' + in_id + '/' + tr_id + '/' + tr_en_type_id).removeClass('hidden').css('margin-top', '0');
+    $('.ajax-frame').attr('src', '/intents/fn___in_tr_load/' + in_id + '/' + tr_id + '/' + tr_type_en_id).removeClass('hidden').css('margin-top', '0');
 
     //Tooltips:
     $('[data-toggle="tooltip"]').tooltip();
@@ -587,12 +587,12 @@ function fn___in_modify_load(in_id, tr_id) {
                 $('#tr__conditional_score_max').val(data.tr.tr_metadata.tr__conditional_score_max);
 
                 //Is this a conditional link? If so, load the min/max range:
-                if (data.tr.tr_en_type_id == 4229) {
+                if (data.tr.tr_type_en_id == 4229) {
                     //Yes, load the data (which must be there):
-                    $('#tr_en_type_id_4229').prop("checked", true);
+                    $('#tr_type_en_id_4229').prop("checked", true);
                 } else {
                     //Fixed link:
-                    $('#tr_en_type_id_4228').prop("checked", true);
+                    $('#tr_type_en_id_4228').prop("checked", true);
                 }
 
                 $('.tr-last-updated').html(data.tr.tr___last_updated); //Load Last Updated box
@@ -664,9 +664,9 @@ function fn___in_modify_save() {
         var original_in_tr_type = parseInt($('.in__tr_' + modify_data['tr_id']).attr('in-tr-type'));
 
         modify_data['tr_status'] = parseInt($('#tr_status').val());
-        modify_data['tr_en_type_id'] = parseInt($('input[name=tr_en_type_id]:checked').val());
+        modify_data['tr_type_en_id'] = parseInt($('input[name=tr_type_en_id]:checked').val());
 
-        if(modify_data['tr_en_type_id'] == 4229){ //Conditional Intent Link
+        if(modify_data['tr_type_en_id'] == 4229){ //Conditional Intent Link
             //Fetch condition range:
             modify_data['tr__conditional_score_min'] = $('#tr__conditional_score_min').val();
             modify_data['tr__conditional_score_max'] = $('#tr__conditional_score_max').val();
@@ -733,7 +733,7 @@ function fn___in_modify_save() {
                 //Did the Transaction update?
                 if (modify_data['tr_id'] > 0) {
 
-                    $('.tr_type_' + modify_data['tr_id']).html('<span class="tr_type_val" data-toggle="tooltip" data-placement="right" title="'+ en_all_4486[modify_data['tr_en_type_id']]["m_name"] + ': '+ en_all_4486[modify_data['tr_en_type_id']]["m_desc"] + '">'+ en_all_4486[modify_data['tr_en_type_id']]["m_icon"] +'</span>');
+                    $('.tr_type_' + modify_data['tr_id']).html('<span class="tr_type_val" data-toggle="tooltip" data-placement="right" title="'+ en_all_4486[modify_data['tr_type_en_id']]["m_name"] + ': '+ en_all_4486[modify_data['tr_type_en_id']]["m_desc"] + '">'+ en_all_4486[modify_data['tr_type_en_id']]["m_icon"] +'</span>');
 
                     $('.tr_status_' + modify_data['tr_id']).html('<span class="tr_status_val" data-toggle="tooltip" data-placement="right" title="'+ object_js_statuses['tr_status'][modify_data['tr_status']]["s_name"] + ': '+ object_js_statuses['tr_status'][modify_data['tr_status']]["s_desc"] + '">'+ object_js_statuses['tr_status'][modify_data['tr_status']]["s_icon"] +'</span>');
 

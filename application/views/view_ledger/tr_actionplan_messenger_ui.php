@@ -3,7 +3,7 @@
 //Prepare some variables to better understand our situation here:
 $on_start_messages = $this->Database_model->fn___tr_fetch(array(
     'tr_status >=' => 2, //Published+
-    'tr_en_type_id' => 4231, //On-Start Messages
+    'tr_type_en_id' => 4231, //On-Start Messages
     'tr_in_child_id' => $value['in_id'],
 ), array(), 0, 0, array('tr_order' => 'ASC'));
 

@@ -327,7 +327,7 @@ if (isset($orphan_ins)) {
                                     foreach ($this->config->item('en_all_4486') as $en_id => $m) {
                                         echo '<div class="radio" style="display:inline-block; border-bottom:1px dotted #999; margin-top: 0 !important;" data-toggle="tooltip" title="' . $m['m_desc'] . '" data-placement="top">
                                         <label style="display:inline-block;">
-                                            <input type="radio" id="tr_en_type_id_' . $en_id . '" name="tr_en_type_id" value="' . $en_id . '" />
+                                            <input type="radio" id="tr_type_en_id_' . $en_id . '" name="tr_type_en_id" value="' . $en_id . '" />
                                             '.$m['m_icon'].' ' . $m['m_name'] . '
                                         </label>
                                     </div>';

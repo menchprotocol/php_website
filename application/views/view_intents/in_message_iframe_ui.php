@@ -9,7 +9,7 @@ $en_all_4485 = $this->config->item('en_all_4485');
 //Fetch all messages:
 $messages = $this->Database_model->fn___tr_fetch(array(
     'tr_status >=' => 0, //New+
-    'tr_en_type_id IN (' . join(',', $en_ids_4485) . ')' => null, //All Intent messages
+    'tr_type_en_id IN (' . join(',', $en_ids_4485) . ')' => null, //All Intent messages
     'tr_in_child_id' => $in_id,
 ), array(), 0, 0, array('tr_order' => 'ASC'));
 
@@ -21,7 +21,7 @@ $messages = $this->Database_model->fn___tr_fetch(array(
     var in_id = <?= $in_id ?>;
     var tr_content_max = <?= $tr_content_max ?>;
     var message_count = <?= count($messages) ?>;
-    var focus_tr_en_type_id = <?= $en_ids_4485[0] ?>; //The message type that is the focus on-start.
+    var focus_tr_type_en_id = <?= $en_ids_4485[0] ?>; //The message type that is the focus on-start.
 </script>
 <script src="/js/custom/messaging-js.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
 
@@ -30,9 +30,9 @@ $messages = $this->Database_model->fn___tr_fetch(array(
 <!-- Message types navigation menu -->
 <ul class="nav nav-tabs iphone-nav-tabs">
     <?php
-    foreach ($en_all_4485 as $tr_en_type_id => $m) {
-        echo '<li role="presentation" class="nav_' . $tr_en_type_id . ' active" data-toggle="tooltip" title="' . $m['m_desc'] . '" data-placement="bottom">';
-        echo '<a href="#loadmessages-' . $in_id . '-' . $tr_en_type_id . '"> ' . $m['m_icon'] . ' ' . $m['m_name'] . ' </a>';
+    foreach ($en_all_4485 as $tr_type_en_id => $m) {
+        echo '<li role="presentation" class="nav_' . $tr_type_en_id . ' active" data-toggle="tooltip" title="' . $m['m_desc'] . '" data-placement="bottom">';
+        echo '<a href="#loadmessages-' . $in_id . '-' . $tr_type_en_id . '"> ' . $m['m_icon'] . ' ' . $m['m_name'] . ' </a>';
         echo '</li>';
     }
     ?>
@@ -53,19 +53,19 @@ $messages = $this->Database_model->fn___tr_fetch(array(
         )));
 
         //Increase counter:
-        if (isset($counters[$tr['tr_en_type_id']])) {
-            $counters[$tr['tr_en_type_id']]++;
+        if (isset($counters[$tr['tr_type_en_id']])) {
+            $counters[$tr['tr_type_en_id']]++;
         } else {
-            $counters[$tr['tr_en_type_id']] = 1;
+            $counters[$tr['tr_type_en_id']] = 1;
         }
 
     }
     echo '</div>';
 
     //Show no-Message notifications for each message type:
-    foreach ($en_all_4485 as $tr_en_type_id => $m) {
-        if (!isset($counters[$tr_en_type_id])) {
-            echo '<div class="ix-tip no-messages' . $in_id . '_' . $tr_en_type_id . ' all_msg msg_en_type_' . $tr_en_type_id . '"><i class="fas fa-exclamation-triangle"></i> No ' . $m['m_icon'] . ' ' . $m['m_name'] . ' added yet</div>';
+    foreach ($en_all_4485 as $tr_type_en_id => $m) {
+        if (!isset($counters[$tr_type_en_id])) {
+            echo '<div class="ix-tip no-messages' . $in_id . '_' . $tr_type_en_id . ' all_msg msg_en_type_' . $tr_type_en_id . '"><i class="fas fa-exclamation-triangle"></i> No ' . $m['m_icon'] . ' ' . $m['m_name'] . ' added yet</div>';
         }
     }
 
@@ -95,8 +95,8 @@ $messages = $this->Database_model->fn___tr_fetch(array(
 
 
     //Fetch for all message types:
-    foreach ($en_all_4485 as $tr_en_type_id => $m) {
-        echo '<div class="iphone-add-btn all_msg msg_en_type_' . $tr_en_type_id . '"><a href="javascript:fn___message_create();" id="add_message_' . $tr_en_type_id . '_' . $in_id . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="right" class="btn btn-primary">ADD ' . $m['m_icon'] . ' ' . $m['m_name'] . '</a></div>';
+    foreach ($en_all_4485 as $tr_type_en_id => $m) {
+        echo '<div class="iphone-add-btn all_msg msg_en_type_' . $tr_type_en_id . '"><a href="javascript:fn___message_create();" id="add_message_' . $tr_type_en_id . '_' . $in_id . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="right" class="btn btn-primary">ADD ' . $m['m_icon'] . ' ' . $m['m_name'] . '</a></div>';
     }
 
     echo '</form>';

@@ -47,7 +47,7 @@ function fn___detect_missing_columns($insert_columns, $required_columns)
                     'insert_columns' => $insert_columns,
                     'required_columns' => $required_columns,
                 ),
-                'tr_en_type_id' => 4246, //Platform Error
+                'tr_type_en_id' => 4246, //Platform Error
             ));
 
             return true; //We have an issue
@@ -154,7 +154,7 @@ function fn___isDate($string)
     }
 }
 
-function fn___detect_tr_en_type_id($string)
+function fn___detect_tr_type_en_id($string)
 {
 
     /*
@@ -168,13 +168,13 @@ function fn___detect_tr_en_type_id($string)
         //Naked:
         return array(
             'status' => 1,
-            'tr_en_type_id' => 4230,
+            'tr_type_en_id' => 4230,
         );
     } elseif (strlen(intval($string))==strlen($string)) {
         //Number:
         return array(
             'status' => 1,
-            'tr_en_type_id' => 4319,
+            'tr_type_en_id' => 4319,
         );
     } elseif (filter_var($string, FILTER_VALIDATE_URL)) {
 
@@ -185,13 +185,13 @@ function fn___detect_tr_en_type_id($string)
         //Date/time:
         return array(
             'status' => 1,
-            'tr_en_type_id' => 4318,
+            'tr_type_en_id' => 4318,
         );
     } else {
         //Regular text link:
         return array(
             'status' => 1,
-            'tr_en_type_id' => 4255,
+            'tr_type_en_id' => 4255,
         );
     }
 }
@@ -325,7 +325,7 @@ function fn___upload_to_cdn($file_url, $json_data, $is_local = false)
         } else {
 
             $CI->Database_model->fn___tr_create(array(
-                'tr_en_type_id' => 4246, //Platform Error
+                'tr_type_en_id' => 4246, //Platform Error
                 'tr_content' => 'fn___upload_to_cdn() Unable to upload file [' . $file_url . '] to Mench cloud.',
                 'tr_metadata' => $json_data,
             ));
@@ -389,22 +389,22 @@ function fn___curl_html($url, $return_breakdown = false)
 
         if (substr_count($content_type, 'application/') == 1) {
             //File URL
-            $tr_en_type_id = 4261;
+            $tr_type_en_id = 4261;
         } elseif (substr_count($content_type, 'image/') == 1) {
             //Image URL
-            $tr_en_type_id = 4260;
+            $tr_type_en_id = 4260;
         } elseif (substr_count($content_type, 'audio/') == 1) {
             //Audio URL
-            $tr_en_type_id = 4259;
+            $tr_type_en_id = 4259;
         } elseif (substr_count($content_type, 'video/') == 1) {
             //Video URL
-            $tr_en_type_id = 4258;
+            $tr_type_en_id = 4258;
         } elseif ($embed_code['status']) {
             //Embeddable URL:
-            $tr_en_type_id = 4257;
+            $tr_type_en_id = 4257;
         } else {
             //Generic URL:
-            $tr_en_type_id = 4256;
+            $tr_type_en_id = 4256;
         }
 
 
@@ -442,7 +442,7 @@ function fn___curl_html($url, $return_breakdown = false)
             //did not find a <title> tag:
             //Use URL Type as its name:
             $en_all_4537 = $CI->config->item('en_all_4537');
-            $title = $en_all_4537[$tr_en_type_id]['m_name'] . ' ' . substr(md5($url), 0, 8); //Append a unique identifier
+            $title = $en_all_4537[$tr_type_en_id]['m_name'] . ' ' . substr(md5($url), 0, 8); //Append a unique identifier
 
         }
 
@@ -456,7 +456,7 @@ function fn___curl_html($url, $return_breakdown = false)
         //Check to see if duplicate URL:
         $dup_url_trs = $CI->Database_model->fn___tr_fetch(array(
             'tr_status >=' => 0, //New+
-            'tr_en_type_id IN (' . join(',', $CI->config->item('en_ids_4537')) . ')' => null, //Any URL type
+            'tr_type_en_id IN (' . join(',', $CI->config->item('en_ids_4537')) . ')' => null, //Any URL type
             'tr_content' => $url,
         ), array('en_child'));
 
@@ -467,7 +467,7 @@ function fn___curl_html($url, $return_breakdown = false)
             'status'  => (count($dup_url_trs) > 0 ? 0 : 1),
             'dup_en'  => (count($dup_url_trs) > 0 ? $dup_url_trs[0] : array()),
             'message' => (count($dup_url_trs) > 0 ? 'URL already added for entity ['.$dup_url_trs[0]['en_name'].']' : 'Success'),
-            'tr_en_type_id' => $tr_en_type_id,
+            'tr_type_en_id' => $tr_type_en_id,
             'page_title' => $title,
             'domain_url' => $domain_url,
             'domain_en' => $url_domain,

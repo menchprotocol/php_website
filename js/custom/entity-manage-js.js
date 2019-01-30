@@ -642,7 +642,7 @@ function fn___en_modify_save() {
 
 
                     //Update 2x icons:
-                    $('.tr_type_' + modify_data['tr_id']).html('<span class="tr_type_val" data-toggle="tooltip" data-placement="right" title="' + entity_links[data.js_tr_en_type_id]["m_name"] + ': ' + entity_links[data.js_tr_en_type_id]["m_desc"] + '">' + entity_links[data.js_tr_en_type_id]["m_icon"] + '</span>');
+                    $('.tr_type_' + modify_data['tr_id']).html('<span class="tr_type_val" data-toggle="tooltip" data-placement="right" title="' + entity_links[data.js_tr_type_en_id]["m_name"] + ': ' + entity_links[data.js_tr_type_en_id]["m_desc"] + '">' + entity_links[data.js_tr_type_en_id]["m_icon"] + '</span>');
 
                     //Update status icon:
                     $('.tr_status_' + modify_data['tr_id']).html('<span class="tr_status_val" data-toggle="tooltip" data-placement="right" title="' + object_js_statuses['tr_status'][modify_data['tr_status']]["s_name"] + ': ' + object_js_statuses['tr_status'][modify_data['tr_status']]["s_desc"] + '">' + object_js_statuses['tr_status'][modify_data['tr_status']]["s_icon"] + '</span>');

@@ -27,7 +27,7 @@ class Database_model extends CI_Model
     }
 
 
-    function fn___en_create($insert_columns, $external_sync = false, $tr_en_miner_id = 0)
+    function fn___en_create($insert_columns, $external_sync = false, $tr_miner_en_id = 0)
     {
 
         //What is required to create a new intent?
@@ -60,9 +60,9 @@ class Database_model extends CI_Model
 
                 //Log transaction new entity:
                 $this->Database_model->fn___tr_create(array(
-                    'tr_en_miner_id' => ($tr_en_miner_id > 0 ? $tr_en_miner_id : $insert_columns['en_id']),
+                    'tr_miner_en_id' => ($tr_miner_en_id > 0 ? $tr_miner_en_id : $insert_columns['en_id']),
                     'tr_en_child_id' => $insert_columns['en_id'],
-                    'tr_en_type_id' => 4251, //New Entity Created
+                    'tr_type_en_id' => 4251, //New Entity Created
                 ));
 
                 //Update Algolia:
@@ -86,9 +86,9 @@ class Database_model extends CI_Model
 
             //Ooopsi, something went wrong!
             $this->Database_model->fn___tr_create(array(
-                'tr_en_parent_id' => $tr_en_miner_id,
+                'tr_en_parent_id' => $tr_miner_en_id,
                 'tr_content' => 'fn___en_create() failed to create a new entity',
-                'tr_en_type_id' => 4246, //Platform Error
+                'tr_type_en_id' => 4246, //Platform Error
                 'tr_metadata' => $insert_columns,
             ));
             return false;
@@ -96,7 +96,7 @@ class Database_model extends CI_Model
         }
     }
 
-    function fn___in_create($insert_columns, $external_sync = false, $tr_en_miner_id = 0)
+    function fn___in_create($insert_columns, $external_sync = false, $tr_miner_en_id = 0)
     {
 
         //What is required to create a new intent?
@@ -124,9 +124,9 @@ class Database_model extends CI_Model
 
                 //Log transaction new entity:
                 $this->Database_model->fn___tr_create(array(
-                    'tr_en_miner_id' => $tr_en_miner_id,
+                    'tr_miner_en_id' => $tr_miner_en_id,
                     'tr_in_child_id' => $insert_columns['in_id'],
-                    'tr_en_type_id' => 4250, //New Intent Created
+                    'tr_type_en_id' => 4250, //New Intent Created
                 ));
 
                 //Update Algolia:
@@ -150,9 +150,9 @@ class Database_model extends CI_Model
 
             //Ooopsi, something went wrong!
             $this->Database_model->fn___tr_create(array(
-                'tr_en_parent_id' => $tr_en_miner_id,
+                'tr_en_parent_id' => $tr_miner_en_id,
                 'tr_content' => 'fn___in_create() failed to create a new intent',
-                'tr_en_type_id' => 4246, //Platform Error
+                'tr_type_en_id' => 4246, //Platform Error
                 'tr_metadata' => $insert_columns,
             ));
             return false;
@@ -163,7 +163,7 @@ class Database_model extends CI_Model
     function fn___tr_create($insert_columns, $external_sync = false)
     {
 
-        if (fn___detect_missing_columns($insert_columns, array('tr_en_type_id'))) {
+        if (fn___detect_missing_columns($insert_columns, array('tr_type_en_id'))) {
             return false;
         }
 
@@ -180,14 +180,14 @@ class Database_model extends CI_Model
         }
 
         //Try to auto detect user:
-        if (!isset($insert_columns['tr_en_miner_id']) || is_null($insert_columns['tr_en_miner_id'])) {
+        if (!isset($insert_columns['tr_miner_en_id']) || is_null($insert_columns['tr_miner_en_id'])) {
             //Attempt to fetch creator ID from session:
             $entity_data = $this->session->userdata('user');
             if (isset($entity_data['en_id']) && intval($entity_data['en_id']) > 0) {
-                $insert_columns['tr_en_miner_id'] = $entity_data['en_id'];
+                $insert_columns['tr_miner_en_id'] = $entity_data['en_id'];
             } else {
                 //Do not issue credit to any miner:
-                $insert_columns['tr_en_miner_id'] = 0;
+                $insert_columns['tr_miner_en_id'] = 0;
             }
         }
 
@@ -218,9 +218,9 @@ class Database_model extends CI_Model
 
         //Do we need to adjust coins?
         $award_coins = $this->Database_model->fn___tr_fetch(array(
-            'tr_en_type_id' => 4319, //Number
+            'tr_type_en_id' => 4319, //Number
             'tr_en_parent_id' => 4374, //Mench Coins
-            'tr_en_child_id' => $insert_columns['tr_en_type_id'], //This type of transaction
+            'tr_en_child_id' => $insert_columns['tr_type_en_id'], //This type of transaction
             'tr_status >=' => 2, //Must be published+
             'en_status >=' => 2, //Must be published+
         ), array('en_child'), 1);
@@ -267,12 +267,12 @@ class Database_model extends CI_Model
             foreach ($this->config->item('notify_admins') as $subscription) {
 
                 //Do not notify about own actions:
-                if (in_array($insert_columns['tr_en_miner_id'], $subscription['admin_en_ids'])) {
+                if (in_array($insert_columns['tr_miner_en_id'], $subscription['admin_en_ids'])) {
                     continue;
                 }
 
                 //Does this transaction Match?
-                if (in_array($insert_columns['tr_en_type_id'], $subscription['admin_notify'])) {
+                if (in_array($insert_columns['tr_type_en_id'], $subscription['admin_notify'])) {
 
                     //Just do this one:
                     if (!isset($trs[0])) {
@@ -359,7 +359,7 @@ class Database_model extends CI_Model
                 //Do a child count:
                 $child_trs = $this->Database_model->fn___tr_fetch(array(
                     'tr_en_parent_id' => $val['en_id'],
-                    'tr_en_type_id IN (' . join(',', array_merge($this->config->item('en_ids_4537'), $this->config->item('en_ids_4538'))) . ')' => null, //Entity Link Connectors
+                    'tr_type_en_id IN (' . join(',', array_merge($this->config->item('en_ids_4537'), $this->config->item('en_ids_4538'))) . ')' => null, //Entity Link Connectors
                     'tr_status >=' => 0, //New+
                     'en_status >=' => 0, //New+
                 ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as en__child_count');
@@ -375,7 +375,7 @@ class Database_model extends CI_Model
 
                 $res[$key]['en__children'] = $this->Database_model->fn___tr_fetch(array(
                     'tr_en_parent_id' => $val['en_id'],
-                    'tr_en_type_id IN (' . join(',', array_merge($this->config->item('en_ids_4537'), $this->config->item('en_ids_4538'))) . ')' => null, //Entity Link Connectors
+                    'tr_type_en_id IN (' . join(',', array_merge($this->config->item('en_ids_4537'), $this->config->item('en_ids_4538'))) . ')' => null, //Entity Link Connectors
                     'tr_status >=' => 0, //New+
                     'en_status >=' => 0, //New+
                 ), array('en_child'), $this->config->item('en_per_page'), 0, array('en_trust_score' => 'DESC'));
@@ -390,7 +390,7 @@ class Database_model extends CI_Model
                 //Search & Append this Student's Action Plans:
                 $res[$key]['en__actionplans'] = $this->Database_model->fn___tr_fetch(array(
                     'tr_en_parent_id' => $val['en_id'],
-                    'tr_en_type_id' => 4235, //Action Plan
+                    'tr_type_en_id' => 4235, //Action Plan
                     'tr_status >=' => 0, //New+
                 ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
 
@@ -406,7 +406,7 @@ class Database_model extends CI_Model
 
                 //Fetch parents by default:
                 $res[$key]['en__parents'] = $this->Database_model->fn___tr_fetch(array(
-                    'tr_en_type_id IN (' . join(',', array_merge($this->config->item('en_ids_4537'), $this->config->item('en_ids_4538'))) . ')' => null, //Entity Link Connectors
+                    'tr_type_en_id IN (' . join(',', array_merge($this->config->item('en_ids_4537'), $this->config->item('en_ids_4538'))) . ')' => null, //Entity Link Connectors
                     'tr_en_child_id' => $val['en_id'], //This child entity
                     'tr_status >=' => 0, //New+
                     'en_status >=' => 0, //New+
@@ -449,7 +449,7 @@ class Database_model extends CI_Model
             if (in_array('in__messages', $join_objects)) {
                 $ins[$key]['in__messages'] = $this->Database_model->fn___tr_fetch(array(
                     'tr_status >=' => 0, //New+
-                    'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent messages
+                    'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent messages
                     'tr_in_child_id' => $value['in_id'],
                 ), array(), 0, 0, array('tr_order' => 'ASC'));
             }
@@ -460,7 +460,7 @@ class Database_model extends CI_Model
                 $ins[$key]['in__parents'] = $this->Database_model->fn___tr_fetch(array(
                     'tr_status >=' => 0, //New+
                     'in_status >=' => 0, //New+
-                    'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
+                    'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
                     'tr_in_child_id' => $value['in_id'],
                 ), array('in_parent')); //Note that parents do not need any sorting, since we only sort child intents
 
@@ -473,7 +473,7 @@ class Database_model extends CI_Model
                 $ins[$key]['in__children'] = $this->Database_model->fn___tr_fetch(array(
                     'tr_status >=' => 0, //New+
                     'in_status >=' => 0, //New+
-                    'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
+                    'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
                     'tr_in_parent_id' => $value['in_id'],
                 ), array('in_child'), 0, 0, array('tr_order' => 'ASC')); //Child intents must be ordered
 
@@ -485,7 +485,7 @@ class Database_model extends CI_Model
                         $ins[$key]['in__children'][$key2]['in__grandchildren'] = $this->Database_model->fn___tr_fetch(array(
                             'tr_status >=' => 0, //New+
                             'in_status >=' => 0, //New+
-                            'tr_en_type_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
+                            'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
                             'tr_in_parent_id' => $value2['in_id'],
                         ), array('in_child'), 0, 0, array('tr_order' => 'ASC')); //Child intents must be ordered
 
@@ -517,9 +517,9 @@ class Database_model extends CI_Model
         } elseif (in_array('en_child', $join_objects)) {
             $this->db->join('table_entities', 'tr_en_child_id=en_id','left');
         } elseif (in_array('en_type', $join_objects)) {
-            $this->db->join('table_entities', 'tr_en_type_id=en_id','left');
+            $this->db->join('table_entities', 'tr_type_en_id=en_id','left');
         } elseif (in_array('en_miner', $join_objects)) {
-            $this->db->join('table_entities', 'tr_en_miner_id=en_id','left');
+            $this->db->join('table_entities', 'tr_miner_en_id=en_id','left');
         }
 
         foreach ($match_columns as $key => $value) {
@@ -546,13 +546,13 @@ class Database_model extends CI_Model
     }
 
 
-    function fn___en_update($id, $update_columns, $external_sync = false, $tr_en_miner_id = 0)
+    function fn___en_update($id, $update_columns, $external_sync = false, $tr_miner_en_id = 0)
     {
 
         /*
          *
          * $external_sync helps log a transaction for the new entity that is about to
-         * be created but we yet dont have its entity ID to use in $tr_en_miner_id!
+         * be created but we yet dont have its entity ID to use in $tr_miner_en_id!
          *
          * */
 
@@ -589,8 +589,8 @@ class Database_model extends CI_Model
 
                     //Value has changed, log transaction:
                     $this->Database_model->fn___tr_create(array(
-                        'tr_en_miner_id' => ($tr_en_miner_id > 0 ? $tr_en_miner_id : $id),
-                        'tr_en_type_id' => 4263, //Entity Attribute Modified
+                        'tr_miner_en_id' => ($tr_miner_en_id > 0 ? $tr_miner_en_id : $id),
+                        'tr_type_en_id' => 4263, //Entity Attribute Modified
                         'tr_en_child_id' => $id,
                         'tr_content' => 'Entity ' . ucwords(str_replace('_', ' ', str_replace('en_', '', $key))) . ' changed from [' . $before_data[0][$key] . '] to [' . $value . ']',
                         'tr_metadata' => array(
@@ -613,14 +613,14 @@ class Database_model extends CI_Model
         return $affected_rows;
     }
 
-    function fn___in_update($id, $update_columns, $external_sync = false, $tr_en_miner_id = 0)
+    function fn___in_update($id, $update_columns, $external_sync = false, $tr_miner_en_id = 0)
     {
 
         if (count($update_columns) == 0) {
             return false;
         }
 
-        if ($tr_en_miner_id > 0) {
+        if ($tr_miner_en_id > 0) {
             //Fetch current intent filed values so we can compare later on after we've updated it:
             $before_data = $this->Database_model->fn___in_fetch(array('in_id' => $id));
 
@@ -650,8 +650,8 @@ class Database_model extends CI_Model
 
                     //Value has changed, log transaction:
                     $this->Database_model->fn___tr_create(array(
-                        'tr_en_miner_id' => $tr_en_miner_id,
-                        'tr_en_type_id' => 4264, //Intent Attribute Modified
+                        'tr_miner_en_id' => $tr_miner_en_id,
+                        'tr_type_en_id' => 4264, //Intent Attribute Modified
                         'tr_in_child_id' => $id,
                         'tr_content' => 'Intent ' . ucwords(str_replace('_', ' ', str_replace('in_', '', $key))) . ' changed from [' . $before_data[0][$key] . '] to [' . $value . ']',
                         'tr_metadata' => array(
@@ -674,14 +674,14 @@ class Database_model extends CI_Model
         return $affected_rows;
     }
 
-    function fn___tr_update($id, $update_columns, $tr_en_miner_id = 0)
+    function fn___tr_update($id, $update_columns, $tr_miner_en_id = 0)
     {
 
         if (count($update_columns) == 0) {
             return false;
         }
 
-        if ($tr_en_miner_id > 0) {
+        if ($tr_miner_en_id > 0) {
             //Fetch transaction before updating:
             $before_data = $this->Database_model->fn___tr_fetch(array(
                 'tr_id' => $id,
@@ -704,19 +704,19 @@ class Database_model extends CI_Model
         $affected_rows = $this->db->affected_rows();
 
         //Log changes if successful:
-        if ($affected_rows && $tr_en_miner_id) {
+        if ($affected_rows && $tr_miner_en_id) {
 
             //Log modification transaction for every field changed:
             foreach ($update_columns as $key => $value) {
 
                 //Has this value changed compared to what we initially had in DB?
-                if ( !($before_data[0][$key] == $value) && in_array($key, array('tr_status', 'tr_content', 'tr_order', 'tr_en_parent_id', 'tr_en_child_id', 'tr_in_parent_id', 'tr_in_child_id', 'tr_metadata', 'tr_en_type_id'))) {
+                if ( !($before_data[0][$key] == $value) && in_array($key, array('tr_status', 'tr_content', 'tr_order', 'tr_en_parent_id', 'tr_en_child_id', 'tr_in_parent_id', 'tr_in_child_id', 'tr_metadata', 'tr_type_en_id'))) {
 
                     //Value has changed, log transaction:
                     $this->Database_model->fn___tr_create(array(
                         'tr_tr_parent_id' => $id, //Parent Transaction
-                        'tr_en_miner_id' => $tr_en_miner_id,
-                        'tr_en_type_id' => 4242, //Transaction Attribute Modified
+                        'tr_miner_en_id' => $tr_miner_en_id,
+                        'tr_type_en_id' => 4242, //Transaction Attribute Modified
                         'tr_content' => 'Transaction ' . ucwords(str_replace('_', ' ', str_replace('tr_', '', $key))) . ' changed from [' . $before_data[0][$key] . '] to [' . $value . ']',
                         'tr_metadata' => array(
                             'tr_id' => $id,

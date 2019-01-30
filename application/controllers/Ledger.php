@@ -105,7 +105,7 @@ class Ledger extends CI_Controller
          *
          * */
 
-        if ($_POST['tr_status_new'] < 0 && in_array($trs[0]['tr_en_type_id'], $this->config->item('en_ids_4485'))) {
+        if ($_POST['tr_status_new'] < 0 && in_array($trs[0]['tr_type_en_id'], $this->config->item('en_ids_4485'))) {
 
             //Intent message being deleted..
 
@@ -124,7 +124,7 @@ class Ledger extends CI_Controller
                 'in__message_tree_count' => -1,
             ));
 
-        } elseif($_POST['tr_status_new'] < 0 && in_array($trs[0]['tr_en_type_id'], $this->config->item('en_ids_4486'))) {
+        } elseif($_POST['tr_status_new'] < 0 && in_array($trs[0]['tr_type_en_id'], $this->config->item('en_ids_4486'))) {
 
             //Intent link being deleted...
 
@@ -251,7 +251,7 @@ class Ledger extends CI_Controller
                 'message' => 'Invalid Intent ID',
             ));
 
-        } elseif (!isset($_POST['focus_tr_en_type_id']) || intval($_POST['focus_tr_en_type_id']) < 1) {
+        } elseif (!isset($_POST['focus_tr_type_en_id']) || intval($_POST['focus_tr_type_en_id']) < 1) {
 
             return fn___echo_json(array(
                 'status' => 0,
@@ -284,16 +284,16 @@ class Ledger extends CI_Controller
 
         //Create Message Transaction:
         $tr = $this->Database_model->fn___tr_create(array(
-            'tr_en_miner_id' => $udata['en_id'],
+            'tr_miner_en_id' => $udata['en_id'],
             'tr_in_child_id' => intval($_POST['in_id']),
             'tr_order' => 1 + $this->Database_model->fn___tr_max_order(array(
                     'tr_status >=' => 0, //New+
-                    'tr_en_type_id' => intval($_POST['focus_tr_en_type_id']),
+                    'tr_type_en_id' => intval($_POST['focus_tr_type_en_id']),
                     'tr_in_child_id' => intval($_POST['in_id']),
                 )),
             //Referencing attributes:
             'tr_content' => $msg_validation['input_message'],
-            'tr_en_type_id' => intval($_POST['focus_tr_en_type_id']),
+            'tr_type_en_id' => intval($_POST['focus_tr_type_en_id']),
             'tr_en_parent_id' => $msg_validation['tr_en_parent_id'],
         ), true);
 

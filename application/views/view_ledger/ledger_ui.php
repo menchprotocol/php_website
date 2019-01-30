@@ -4,11 +4,11 @@ $primary_filters = array(
     'tr_en_id' => 'Any Entity IDs',
     'tr_in_id' => 'Any Intent IDs',
     'tr_ids' => 'Any Transaction IDs',
-    'tr_en_type_id' => 'Link Types',
+    'tr_type_en_id' => 'Link Types',
 );
 
 $advanced_filters = array(
-    'tr_en_miner_id' => 'Entity Miner IDs',
+    'tr_miner_en_id' => 'Entity Miner IDs',
     'tr_en_parent_id' => 'Entity Parent IDs',
     'tr_en_child_id' => 'Entity Child IDs',
     'tr_in_parent_id' => 'Intent Parent IDs',
@@ -31,7 +31,7 @@ foreach (array_merge($primary_filters, $advanced_filters) as $key => $value) {
 
         if ($key == 'in_status') {
 
-            if(isset($_GET['tr_en_type_id']) && $_GET['tr_en_type_id']==4250){ //Intent created
+            if(isset($_GET['tr_type_en_id']) && $_GET['tr_type_en_id']==4250){ //Intent created
                 //Filter intent status based on
                 array_push($join_by, 'in_child');
 
@@ -47,7 +47,7 @@ foreach (array_merge($primary_filters, $advanced_filters) as $key => $value) {
 
         } elseif ($key == 'en_status') {
 
-            if(isset($_GET['tr_en_type_id']) && $_GET['tr_en_type_id']==4251){ //Entity Created
+            if(isset($_GET['tr_type_en_id']) && $_GET['tr_type_en_id']==4251){ //Entity Created
 
                 //Filter intent status based on
                 $join_by = array('en_child');
@@ -72,12 +72,12 @@ foreach (array_merge($primary_filters, $advanced_filters) as $key => $value) {
                 $filters['tr_status'] = intval($_GET[$key]);
             }
 
-        } elseif ($key == 'tr_en_miner_id') {
+        } elseif ($key == 'tr_miner_en_id') {
             if (substr_count($_GET[$key], ',') > 0) {
                 //This is multiple IDs:
-                $filters['( tr_en_miner_id IN (' . $_GET[$key] . '))'] = null;
+                $filters['( tr_miner_en_id IN (' . $_GET[$key] . '))'] = null;
             } elseif (intval($_GET[$key]) > 0) {
-                $filters['tr_en_miner_id'] = $_GET[$key];
+                $filters['tr_miner_en_id'] = $_GET[$key];
             }
 
         } elseif ($key == 'tr_coins_min' && doubleval($_GET[$key]) > 0) {
@@ -134,9 +134,9 @@ foreach (array_merge($primary_filters, $advanced_filters) as $key => $value) {
             //We need to look for both parent/child
             if (substr_count($_GET[$key], ',') > 0) {
                 //This is multiple IDs:
-                $filters['( tr_en_child_id IN (' . $_GET[$key] . ') OR tr_en_parent_id IN (' . $_GET[$key] . ') OR tr_en_miner_id IN (' . $_GET[$key] . '))'] = null;
+                $filters['( tr_en_child_id IN (' . $_GET[$key] . ') OR tr_en_parent_id IN (' . $_GET[$key] . ') OR tr_miner_en_id IN (' . $_GET[$key] . '))'] = null;
             } elseif (intval($_GET[$key]) > 0) {
-                $filters['( tr_en_child_id = ' . $_GET[$key] . ' OR tr_en_parent_id = ' . $_GET[$key] . ' OR tr_en_miner_id = ' . $_GET[$key] . ')'] = null;
+                $filters['( tr_en_child_id = ' . $_GET[$key] . ' OR tr_en_parent_id = ' . $_GET[$key] . ' OR tr_miner_en_id = ' . $_GET[$key] . ')'] = null;
             }
         } elseif ($key == 'tr_in_id') {
             //We need to look for both parent/child
@@ -171,24 +171,24 @@ if(isset($_GET['end_range']) && fn___isDate($_GET['end_range'])){
 $ini_filter = $filters;
 unset($ini_filter['in_status']);
 unset($ini_filter['en_status']);
-$all_engs = $this->Database_model->fn___tr_fetch($ini_filter, array('en_type'), 0, 0, array('trs_count' => 'DESC'), 'COUNT(tr_en_type_id) as trs_count, SUM(tr_coins) as coins_sum, en_name, tr_en_type_id', 'tr_en_type_id, en_name');
+$all_engs = $this->Database_model->fn___tr_fetch($ini_filter, array('en_type'), 0, 0, array('trs_count' => 'DESC'), 'COUNT(tr_type_en_id) as trs_count, SUM(tr_coins) as coins_sum, en_name, tr_type_en_id', 'tr_type_en_id, en_name');
 
 //Makre sure its a valid type considering other filters:
-if(isset($_GET['tr_en_type_id'])){
+if(isset($_GET['tr_type_en_id'])){
 
     $found = false;
     foreach ($all_engs as $tr) {
-        if($_GET['tr_en_type_id'] == $tr['tr_en_type_id']){
+        if($_GET['tr_type_en_id'] == $tr['tr_type_en_id']){
             $found = true;
             break;
         }
     }
 
     if(!$found){
-        unset($_GET['tr_en_type_id']);
+        unset($_GET['tr_type_en_id']);
     } else {
         //Assign filter:
-        $filters['tr_en_type_id'] = intval($_GET['tr_en_type_id']);
+        $filters['tr_type_en_id'] = intval($_GET['tr_type_en_id']);
     }
 
 }
@@ -237,20 +237,20 @@ $all_transaction_count = 0;
 $all_coins = 0;
 foreach ($primary_filters as $key => $value) {
     echo '<td><div style="padding-right:5px;">';
-    if ($key == 'tr_en_type_id') {
+    if ($key == 'tr_type_en_id') {
 
         //Give option to select:
         $select_ui = '';
         foreach ($all_engs as $tr) {
 
             //Echo drop down:
-            $select_ui .= '<option value="' . $tr['tr_en_type_id'] . '" ' . ((isset($_GET['tr_en_type_id']) && $_GET['tr_en_type_id'] == $tr['tr_en_type_id']) ? 'selected="selected"' : '') . '>' . $tr['en_name'] . ' ('  . fn___echo_number($tr['trs_count']) . ( $tr['coins_sum'] > 0 ? ', '.fn___echo_number($tr['coins_sum']).' Coins' : '' ) . ')</option>';
+            $select_ui .= '<option value="' . $tr['tr_type_en_id'] . '" ' . ((isset($_GET['tr_type_en_id']) && $_GET['tr_type_en_id'] == $tr['tr_type_en_id']) ? 'selected="selected"' : '') . '>' . $tr['en_name'] . ' ('  . fn___echo_number($tr['trs_count']) . ( $tr['coins_sum'] > 0 ? ', '.fn___echo_number($tr['coins_sum']).' Coins' : '' ) . ')</option>';
             $all_transaction_count += $tr['trs_count'];
             $all_coins += $tr['coins_sum'];
         }
 
         //Echo Transaction filters:
-        echo '<select class="form-control border" name="tr_en_type_id" class="border" data-toggle="tooltip" data-placement="top" title="Transaction Types" style="width:160px;">';
+        echo '<select class="form-control border" name="tr_type_en_id" class="border" data-toggle="tooltip" data-placement="top" title="Transaction Types" style="width:160px;">';
         echo '<option value="0">All Transaction Types ('  . fn___echo_number($all_transaction_count) . ( $all_coins > 0 ? ', '.number_format($all_coins, 0).' Coins' : '' ) . ')</option>';
         echo $select_ui;
         echo '</select>';

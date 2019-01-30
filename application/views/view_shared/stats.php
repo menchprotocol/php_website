@@ -68,7 +68,7 @@ foreach (fn___echo_status() as $object_id => $statuses) {
         //Display this status count:
         $this_ui .= '<tr class="obj-'.$object_id.'" style="display:none;">';
         $this_ui .= '<td style="text-align: left;">'.fn___echo_status($object_id, $status_num, false, 'top').'</td>';
-        $this_ui .= '<td style="text-align: right;">'.( $count > 0 ? '<a href="/ledger?'.$object_id.'='.$status_num.'&tr_en_type_id='.$created_en_type_id.'"  data-toggle="tooltip" title="View Transactions" data-placement="top">'.number_format($count,0).'</a>' : $count ).'</td>';
+        $this_ui .= '<td style="text-align: right;">'.( $count > 0 ? '<a href="/ledger?'.$object_id.'='.$status_num.'&tr_type_en_id='.$created_en_type_id.'"  data-toggle="tooltip" title="View Transactions" data-placement="top">'.number_format($count,0).'</a>' : $count ).'</td>';
         $this_ui .= '</tr>';
 
 
@@ -108,9 +108,9 @@ echo '<div class="col-md-4">';
 
 //Count variables:
 $all_engs = $this->Database_model->fn___tr_fetch(array(
-    'tr_en_miner_id >' => 0,
+    'tr_miner_en_id >' => 0,
     'tr_coins !=' => 0,
-), array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(tr_en_type_id) as trs_count, SUM(tr_coins) as coins_sum, en_name, en_icon, tr_en_type_id', 'tr_en_type_id, en_name, en_icon');
+), array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(tr_type_en_id) as trs_count, SUM(tr_coins) as coins_sum, en_name, en_icon, tr_type_en_id', 'tr_type_en_id, en_name, en_icon');
 
 $all_transaction_count = 0;
 $all_coin_payouts = 0;
@@ -121,16 +121,16 @@ foreach ($all_engs as $tr) {
     $rate_trs = $this->Database_model->fn___tr_fetch(array(
         'tr_status >=' => 2, //Must be published+
         'en_status >=' => 2, //Must be published+
-        //'tr_en_type_id' => 4319, //Number
+        //'tr_type_en_id' => 4319, //Number
         'tr_en_parent_id' => 4374, //Mench Coins
-        'tr_en_child_id' => $tr['tr_en_type_id'],
+        'tr_en_child_id' => $tr['tr_type_en_id'],
     ), array('en_child'), 1);
 
     //Echo stats:
     $table_body .= '<tr>';
-    $table_body .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;">'.( strlen($tr['en_icon']) > 0 ? $tr['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$tr['tr_en_type_id'].'">'.$tr['en_name'].'</a></td>';
+    $table_body .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;">'.( strlen($tr['en_icon']) > 0 ? $tr['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$tr['tr_type_en_id'].'">'.$tr['en_name'].'</a></td>';
     $table_body .= '<td style="text-align: right;">'.( count($rate_trs) > 0 ? number_format($rate_trs[0]['tr_content'],0) : '-' ).'</td>';
-    $table_body .= '<td style="text-align: right;"><a href="/ledger?tr_en_type_id='.$tr['tr_en_type_id'].'"  data-toggle="tooltip" title="View '.number_format($tr['trs_count'],0).' Transactions" data-placement="top">'.number_format($tr['coins_sum'], 0).'</a></td>';
+    $table_body .= '<td style="text-align: right;"><a href="/ledger?tr_type_en_id='.$tr['tr_type_en_id'].'"  data-toggle="tooltip" title="View '.number_format($tr['trs_count'],0).' Transactions" data-placement="top">'.number_format($tr['coins_sum'], 0).'</a></td>';
     $table_body .= '</tr>';
 
     $all_transaction_count += $tr['trs_count'];
