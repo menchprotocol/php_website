@@ -470,7 +470,7 @@ function fn___curl_html($url, $return_breakdown = false)
             'tr_type_en_id' => $tr_type_en_id,
             'page_title' => $title,
             'domain_url' => $domain_url,
-            'domain_en' => $url_domain,
+            'domain_en' => $domain_url,
         );
 
     } else {
