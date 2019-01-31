@@ -419,7 +419,7 @@ function fn___in_messages_load(in_id) {
     //Start loading:
     $('.fixed-box').addClass('hidden');
     $('.frame-loader').addClass('hidden');
-    $('#load_tr_frame, .frame-loader').removeClass('hidden').hide().fadeIn();
+    $('#load_tr_frame').removeClass('hidden').hide().fadeIn();
     //Set title:
     $('#tr_title').html('<i class="fas fa-comment-dots"></i> ' + $('.in_outcome_' + in_id + ':first').text());
 
