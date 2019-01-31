@@ -189,16 +189,6 @@ $config['en_all_4486'] = array(
     ),
 );
 
-//Intent Settings:
-$config['en_ids_4487'] = array(4331);
-$config['en_all_4487'] = array(
-    4331 => array(
-        'm_icon' => '<i class="fal fa-shield-check"></i>',
-        'm_name' => 'Intent Completion Requirements',
-        'm_desc' => 'If applied as the parent of a child intent, would limit the type of responses users can submit for that intent when marking it as complete. Multiple links will enable multiple response types to be accepted, which the user will be informed by Mench.',
-    ),
-);
-
 //URL-based entity links:
 $config['en_ids_4537'] = array(4256, 4257, 4258, 4259, 4260, 4261);
 $config['en_all_4537'] = array(

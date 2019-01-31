@@ -1600,14 +1600,14 @@ function fn___echo_leaderboard($days_ago = null, $top = 25){
 
     $ui = '';
 
-    $ui .= '<a href="javascript:void(0);" onclick="$(\'.leaderboard'.$days_ago.'\').toggleClass(\'hidden\');" class="large-stat"><span>🏅'. $top_miner . '+'.number_format( ($total_counts[0]['total_count']-1),0).'</span>'.$table_name.' miner'.fn___echo__s($total_counts[0]['total_count']).' <i class="leaderboard'.$days_ago.' fal fa-plus-circle"></i><i class="leaderboard'.$days_ago.' fal fa-minus-circle hidden"></i></a>';
+    $ui .= '<a href="javascript:void(0);" onclick="$(\'.leaderboard'.$days_ago.'\').toggleClass(\'hidden\');" class="large-stat"><span>🏅'. $top_miner . '</span><b>+'.number_format( ($total_counts[0]['total_count']-1),0).'</b> '.$table_name.' miner'.fn___echo__s($total_counts[0]['total_count']).' <i class="leaderboard'.$days_ago.' fal fa-plus-circle"></i><i class="leaderboard'.$days_ago.' fal fa-minus-circle hidden"></i></a>';
 
     $ui .= '<table class="table table-condensed table-striped stats-table leaderboard'.$days_ago.' hidden" style="max-width:100%;">';
 
 
 //Object Header:
     $ui .= '<tr style="font-weight: bold;">';
-    $ui .= '<td style="text-align: left;">'.( $total_counts[0]['total_count'] > $top ? $top.'/' : '').number_format( $total_counts[0]['total_count'],0).' '.$table_name.' miners:</td>';
+    $ui .= '<td style="text-align: left;">'.number_format( $total_counts[0]['total_count'],0).' '.$table_name.' miners:</td>';
     $ui .= '<td style="text-align: right;"><i class="fal fa-coins"></i> Coins</td>';
     $ui .= '</tr>';
 

@@ -174,7 +174,7 @@ foreach ($ie_ens[0]['en__children'] as $source_en) {
 $all_source_progress = number_format(($all_mined_source_count_weigh/$all_source_count_weight*100), 1).'%';
 
 //Echo title:
-echo '<a href="javascript:void(0);" onclick="$(\'.sources-mined\').toggleClass(\'hidden\');" class="large-stat"><span>'.fn___echo_en_icon($ie_ens[0]).' '. $all_source_progress . '</span>Of '.number_format($all_source_count , 0).' '.strtolower($ie_ens[0]['en_name']).' mined <i class="sources-mined fal fa-plus-circle"></i><i class="sources-mined fal fa-minus-circle hidden"></i></a>';
+echo '<a href="javascript:void(0);" onclick="$(\'.sources-mined\').toggleClass(\'hidden\');" class="large-stat"><span>'.fn___echo_en_icon($ie_ens[0]).' '. $all_source_progress . '</span>Of '.number_format($all_source_count , 0).' sources mined <i class="sources-mined fal fa-plus-circle"></i><i class="sources-mined fal fa-minus-circle hidden"></i></a>';
 
 
 //Echo table:
