@@ -1968,6 +1968,7 @@ select.form-control {
     padding: 6px 7px 5px;
     margin-bottom: -4px;
 }
+
 .stats-table td {
     padding: 5px !important;
 }
@@ -1978,6 +1979,11 @@ select.form-control {
 .stats-table, .stats-table tr {
     width: 100%;
     text-align: left;
+}
+
+.mini-stats-table{
+    width:240px;
+    margin: 0 auto;
 }
 
 .double-icon {
@@ -2027,6 +2033,9 @@ select.form-control {
 }
 
 
+.fa-clipboard-check{
+    font-size: 1.1em !important;
+}
 
 .double-icon-search .icon-main {
     font-size:16px;
@@ -2522,6 +2531,16 @@ a.badge:focus, a.badge:hover {
     z-index: 9999999;
 }
 
+.stat-row {
+    margin-top:50px;
+    border-top:1px solid #bbb;
+    padding-top: 40px;
+}
+
+.top-space{
+    margin-top: 25px;
+}
+
 .btn-tight {
     padding-left: 8px;
     padding-right: 8px;
@@ -2543,20 +2562,18 @@ a.badge:focus, a.badge:hover {
     display: inline-block;
 }
 
-.list-group-item .fa-clipboard-check {
-    font-size: 0.9em;
-    margin-right: 5px;
-}
-
 .large-stat {
     padding:0;
     font-weight:300;
     font-size: 1.6em;
     line-height:160%;
     text-decoration: none;
-    display: inline-block;
+    display:block;
     margin-top: 30px;
+    text-align: center;
 }
+
+
 
 .right-textarea{
     min-height: 88px;

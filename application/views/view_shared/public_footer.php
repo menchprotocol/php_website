@@ -10,7 +10,7 @@
 
                     <a href="https://m.me/askmench?ref=<?= $this->config->item('in_tactic_id') ?>"
                        class="social-link" data-toggle="tooltip"
-                       title="Looking to <?= $this->config->item('in_strategy_name') ?>? Let's chat on Messenger" data-placement="top"><i
+                       title="Want to <?= $this->config->item('in_strategy_name') ?>? Let's chat on Messenger" data-placement="top"><i
                                 class="fab fa-facebook-messenger"></i></a>
 
                     <a href="/stats" class="social-link" data-toggle="tooltip"
@@ -44,7 +44,7 @@
                                 class="fab fa-instagram"></i></a>
 
                     <a href="/8263?expand_mode=1&hide_subscribe=1" class="social-link" data-toggle="tooltip"
-                       title="Read our terms of service and privacy policy" data-placement="top"><i
+                       title="Read terms of service and privacy policy" data-placement="top"><i
                                 class="fas fa-balance-scale"></i></a>
 
                 </li>

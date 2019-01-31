@@ -26,7 +26,7 @@ class Cron extends CI_Controller
 
         $current_urls = $this->Database_model->fn___tr_fetch(array(
             'tr_status >=' => 0,
-            'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null,
+            'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null, //Entity URL Links
             'tr_en_parent_id' => 1326,
         ), array('en_child'), 99999);
 
@@ -48,7 +48,7 @@ class Cron extends CI_Controller
                 //See if any of the parents are Groups:
                 foreach($this->Database_model->fn___tr_fetch(array(
                     'tr_status >=' => 0,
-                    'tr_type_en_id IN (' . join(',', array_merge($this->config->item('en_ids_4537'), $this->config->item('en_ids_4538'))) . ')' => null, //Entity Link Connectors
+                    'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
                     'tr_en_child_id' => $tr['tr_en_child_id'],
                 )) as $parent_en){
 
@@ -163,7 +163,7 @@ class Cron extends CI_Controller
         //First first all entities that have Cache in PHP Config @4527 as their parent:
         $config_ens = $this->Database_model->fn___tr_fetch(array(
             'tr_status >=' => 0,
-            'tr_en_child_id >' => 0,
+            'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
             'tr_en_parent_id' => 4527,
         ), array('en_child'), 0);
 
@@ -188,8 +188,8 @@ class Cron extends CI_Controller
             foreach($children as $child){
 
                 //Do we have an omit command?
-                if(substr_count($en['tr_content'], '/trimcache ') == 1){
-                    $child['en_name'] = trim(str_replace( str_replace('/trimcache ','',$en['tr_content']) , '', $child['en_name']));
+                if(substr_count($en['tr_content'], '&trimcache=') == 1){
+                    $child['en_name'] = trim(str_replace( str_replace('&trimcache=','',$en['tr_content']) , '', $child['en_name']));
                 }
 
                 echo '&nbsp;&nbsp;&nbsp;&nbsp; '.$child['en_id'].' => array(<br />';

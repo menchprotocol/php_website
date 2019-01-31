@@ -38,9 +38,7 @@
             echo '<span class="checkbox" style="margin: 0;">
             <label style="display:inline-block !important; font-size: 0.9em !important; margin-left:8px;">
                 <input type="checkbox" name="source_type" value="'.$en_id.'" />
-                <span '.( strlen($en['m_desc']) > 0 ? ' class="underdot" data-toggle="tooltip" data-placement="right" title="'.$en['m_desc'].'" ' : '' ).'>
-                    '.$en['m_icon'].' '.$en['m_name'].'
-                </span>
+                <span>'.$en['m_icon'].' '.$en['m_name'].'</span>
             </label>
         </span>';
         }

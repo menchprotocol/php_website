@@ -4,7 +4,7 @@
     var en_focus_filter = -1; //No filter, show all
     var en_focus_id = <?= $entity['en_id'] ?>;
     var en_focus_name = '<?= str_replace('\'', '’', $entity['en_name']) ?>';
-    var entity_links = <?= json_encode(($this->config->item('en_all_4537') + $this->config->item('en_all_4538'))) ?>;
+    var entity_links = <?= json_encode($this->config->item('en_all_4592')) ?>;
 </script>
 <script src="/js/custom/entity-manage-js.js?v=v<?= $this->config->item('app_version') ?>"
         type="text/javascript"></script>
@@ -72,7 +72,7 @@
         //Fetch current count for each status from DB:
         $child_en_filters = $this->Database_model->fn___tr_fetch(array(
             'tr_en_parent_id' => $entity['en_id'],
-            'tr_en_child_id >' => 0, //Any type of children is accepted
+            'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
             'tr_status >=' => 0, //New+
             'en_status >=' => 0, //New+
         ), array('en_child'), 0, 0, array('en_status' => 'ASC'), 'COUNT(en_id) as totals, en_status', 'en_status');
@@ -216,7 +216,7 @@
 
                             <div class="title">
                                 <h4>
-                                    <i class="fas fa-atlas"></i> Link Transaction
+                                    <i class="fas fa-atlas"></i> Ledger Transaction
                                     <span class="en-has-tr">
                                         [<span style="margin:0 0 10px 0; font-size:0.8em;">
                                         <span id="chartr_contentNum">0</span>/<?= $this->config->item('tr_content_max') ?>

@@ -187,8 +187,11 @@ class Database_model extends CI_Model
                 $insert_columns['tr_miner_en_id'] = $entity_data['en_id'];
             } else {
                 //Do not issue credit to any miner:
-                $insert_columns['tr_miner_en_id'] = 0;
+                $insert_columns['tr_miner_en_id'] = $this->config->item('en_platform_miner_id');
             }
+        } elseif($insert_columns['tr_miner_en_id'] == 0){
+            //Shortcut for developers who don't know the default mench ID
+            $insert_columns['tr_miner_en_id'] = $this->config->item('en_platform_miner_id');
         }
 
         //Set some defaults:
@@ -353,20 +356,8 @@ class Database_model extends CI_Model
             //This will Count ALL the children:
             if (in_array('en__child_count', $join_objects)) {
 
-                //Assume none:
-                $res[$key]['en__child_count'] = 0;
-
-                //Do a child count:
-                $child_trs = $this->Database_model->fn___tr_fetch(array(
-                    'tr_en_parent_id' => $val['en_id'],
-                    'tr_type_en_id IN (' . join(',', array_merge($this->config->item('en_ids_4537'), $this->config->item('en_ids_4538'))) . ')' => null, //Entity Link Connectors
-                    'tr_status >=' => 0, //New+
-                    'en_status >=' => 0, //New+
-                ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as en__child_count');
-
-                if (count($child_trs) > 0) {
-                    $res[$key]['en__child_count'] = intval($child_trs[0]['en__child_count']);
-                }
+                //ACount children:
+                $res[$key]['en__child_count'] = $this->Matrix_model->fn___en_child_count($val['en_id']);
 
             }
 
@@ -375,7 +366,7 @@ class Database_model extends CI_Model
 
                 $res[$key]['en__children'] = $this->Database_model->fn___tr_fetch(array(
                     'tr_en_parent_id' => $val['en_id'],
-                    'tr_type_en_id IN (' . join(',', array_merge($this->config->item('en_ids_4537'), $this->config->item('en_ids_4538'))) . ')' => null, //Entity Link Connectors
+                    'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
                     'tr_status >=' => 0, //New+
                     'en_status >=' => 0, //New+
                 ), array('en_child'), $this->config->item('en_per_page'), 0, array('en_trust_score' => 'DESC'));
@@ -406,7 +397,7 @@ class Database_model extends CI_Model
 
                 //Fetch parents by default:
                 $res[$key]['en__parents'] = $this->Database_model->fn___tr_fetch(array(
-                    'tr_type_en_id IN (' . join(',', array_merge($this->config->item('en_ids_4537'), $this->config->item('en_ids_4538'))) . ')' => null, //Entity Link Connectors
+                    'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
                     'tr_en_child_id' => $val['en_id'], //This child entity
                     'tr_status >=' => 0, //New+
                     'en_status >=' => 0, //New+

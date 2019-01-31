@@ -186,6 +186,26 @@ class Matrix_model extends CI_Model
 
 
 
+    function fn___en_child_count($en_id, $min_en_status = 0){
+
+        //Count the active children of entity:
+        $en__child_count = 0;
+
+        //Do a child count:
+        $child_trs = $this->Database_model->fn___tr_fetch(array(
+            'tr_en_parent_id' => $en_id,
+            'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            'tr_status >=' => 0, //New+
+            'en_status >=' => $min_en_status,
+        ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as en__child_count');
+
+        if (count($child_trs) > 0) {
+            $en__child_count = intval($child_trs[0]['en__child_count']);
+        }
+
+        return $en__child_count;
+    }
+
     function fn___en_url_add($input_url, $tr_miner_en_id = 0)
     {
 
@@ -1368,7 +1388,7 @@ class Matrix_model extends CI_Model
         //Search and see if we can find $value in the transaction content:
         $matching_entities = $this->Database_model->fn___tr_fetch(array(
             'tr_en_parent_id' => $en_parent_id,
-            'tr_en_child_id > ' => 0,
+            'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
             'tr_content' => $value,
             'tr_status >=' => 0, //Pending or Active
         ), array(), 0);
@@ -1769,7 +1789,7 @@ class Matrix_model extends CI_Model
 
             //Create child intent:
             $child_in = $this->Database_model->fn___in_create(array(
-                'in_status' => 1, //Working On
+                'in_status' => 0, //New
                 'in_outcome' => trim($in_outcome),
                 'in_metadata' => $in_metadata_modify,
             ), true, $tr_miner_en_id);

@@ -657,7 +657,7 @@ function fn___in_modify_save() {
         });
     }
 
-    //Do we have the intent link Transaction?
+    //Do we have the intent Ledger Transaction?
     if (modify_data['tr_id'] > 0) {
 
         //TODO implement:

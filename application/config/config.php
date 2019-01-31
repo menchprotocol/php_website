@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  *
  * Global variables used throughout the platform.
- * use-case format: $this->config->item('in_miner_start_id')
+ * use-case format: $this->config->item('en_platform_miner_id')
  *
  */
 
@@ -25,13 +25,14 @@ $config['in_mission_id']            = 7766; //expand human potential
 $config['in_strategy_name']         = 'advance your tech career'; //The broader, more long-term strategic focus of Mench
 $config['in_strategy_id']           = 7240; //advance your tech career
 $config['in_tactic_id']             = 6903; //The shorter, more immediate focus recommended to Students & Miners as the starting point
-$config['in_webhook_prefix']        = 'https://'; //The prefix for completion Webhook URL
+$config['in_webhook_prefix']        = 'https://'; //The prefix for Webhook URL
 $config['in_miner_start_id']        = 7435; //The ID that gets Miner's started
 
 
 //Entities:
 $config['en_start_here_id']         = 3463; //The default matrix entity that is loaded when Entities is clicked
 $config['en_default_parent_id']     = 1326; //The entity that would be the parent to all new URLs added via Messages
+$config['en_platform_miner_id']     = 2738; //Mench. This is the entity that would get all the credit for generic platform transactions
 
 
 //App Functionality:
@@ -68,8 +69,9 @@ $config['en_mass_actions']          = array( //Various mass actions to be taken 
 
     'prefix_add'    => 'Add string as prefix',
     'postfix_add'   => 'Add string as postfix',
-    'replace_match'  => 'Replace matching strings',
-    'replace_icon'  => 'Update icons',
+    'replace_match'  => 'Replace entity matching strings',
+    'replace_tr_match'  => 'Replace transaction matching strings',
+    'replace_icon'  => 'Update all entity icons',
 
     //Logic for all items above must be added to Entities/en_miner_ui section
 );
@@ -99,57 +101,6 @@ $config['notify_admins']            = array(
                                                 4269, //Miner login
                                             ),
                                         ),
-                                    );
-
-$config['eng_converter']            = array(
-                                        //Mining Links
-                                        20 => 4250, //Log intent creation
-                                        6971 => 4251, //Log entity creation
-                                        21 => 4252, //Log intent archived
-                                        50 => 4254, //Log intent migration
-                                        19 => 4264, //Log intent modification
-                                        //0 => 4253, //Entity Archived (Did not have this!)
-
-                                        36 => 4242, //Log intent message update
-                                        7727 => 4242, //Log entity link note modification
-
-                                        12 => 4263, //Log entity modification
-                                        7001 => 4299, //Log pending image upload sync to cloud
-
-                                        89 => 4241, //Log intent unlinked
-                                        7292 => 4241, //Log entity unlinked
-                                        35 => 4241, //Log intent message archived
-                                        6912 => 4241, //Log entity URL archived
-
-                                        39 => 4262, //Log intent message sorting
-                                        22 => 4262, //Log intent children sorted
-
-
-                                        //Growth links
-                                        27 => 4265, //Log user joined
-                                        5 => 4266, //Log Messenger optin
-                                        4 => 4267, //Log Messenger referral
-                                        3 => 4268, //Log Messenger postback
-                                        10 => 4269, //Log user sign in
-                                        59 => 4271, //Log user password reset
-
-
-                                        //Personal Assistant links
-                                        40 => 4273, //Log console tip read
-                                        7703 => 4275, //Log subscription intent search
-                                        28 => 4276, //Log user email sent
-                                        6 => 4277, //Log message received
-                                        1 => 4278, //Log message read
-                                        2 => 4279, //Log message delivered
-                                        7 => 4280, //Log message sent
-                                        55 => 4282, //Log my account access
-                                        32 => 4283, //Log action plan access
-                                        33 => 4242, //Log Action Plan completion [Link updated]
-                                        7718 => 4287, //Log unrecognized message
-
-                                        //Platform Operations Links:
-                                        8 => 4246, //Platform Error
-                                        72 => 4248, //Log user review
                                     );
 
 
@@ -189,8 +140,8 @@ $config['object_statuses']          = array(
                                                 's_icon' => '<i class="fal fa-check-square"></i>',
                                             ),
                                             3 => array(
-                                                's_name' => 'Verified',
-                                                's_desc' => 'Intent recommended to Students',
+                                                's_name' => 'Featured',
+                                                's_desc' => 'Intent recommended to students',
                                                 's_icon' => '<i class="fas fa-badge-check"></i>',
                                             ),
                                         ),

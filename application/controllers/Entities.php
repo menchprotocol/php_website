@@ -87,7 +87,7 @@ class Entities extends CI_Controller
             //Fetch children:
             $children = $this->Database_model->fn___tr_fetch(array(
                 'tr_en_parent_id' => $en_id,
-                'tr_type_en_id IN (' . join(',', array_merge($this->config->item('en_ids_4537'), $this->config->item('en_ids_4538'))) . ')' => null, //Entity Link Connectors
+                'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
                 'tr_status >=' => 0, //New+
                 'en_status >=' => 0, //New+
             ), array('en_child'), 0);
@@ -133,17 +133,33 @@ class Entities extends CI_Controller
 
                         $applied_success++;
 
-                    } elseif ($_POST['action_type'] == 'replace_match' && substr_count($_POST['modify_text'], ',') == 1) {
+                    } elseif ($_POST['action_type'] == 'replace_match' && substr_count($_POST['modify_text'], '>>') == 1) {
 
                         //Validate input:
-                        $parts = explode(',', $_POST['modify_text']);
+                        $parts = explode('>>', $_POST['modify_text']);
 
-                        if (count($parts) == 2 && strlen($parts[0]) > 0 && substr_count($en['en_name'], $parts[0]) > 0) {
+                        if (count($parts) == 2 && strlen($parts[0])>0 && substr_count($en['en_name'], $parts[0]) > 0) {
 
                             //Update with new icon:
                             $this->Database_model->fn___en_update($en['en_id'], array(
                                 'en_name' => str_replace($parts[0], $parts[1], $en['en_name']),
                             ), true, $udata['en_id']);
+
+                            $applied_success++;
+
+                        }
+
+                    } elseif ($_POST['action_type'] == 'replace_tr_match' && substr_count($_POST['modify_text'], '>>') == 1) {
+
+                        //Validate input:
+                        $parts = explode('>>', $_POST['modify_text']);
+
+                        if (count($parts) == 2 && strlen($parts[0])>0 && substr_count($en['tr_content'], $parts[0]) > 0) {
+
+                            //Update with new icon:
+                            $this->Database_model->fn___tr_update($en['tr_id'], array(
+                                'tr_content' => str_replace($parts[0], $parts[1], $en['tr_content']),
+                            ), $udata['en_id']);
 
                             $applied_success++;
 
@@ -211,7 +227,7 @@ class Entities extends CI_Controller
         }
 
         //Will Contain every possible Entity Link Connector:
-        $entity_links = $this->config->item('en_all_4537') + $this->config->item('en_all_4538');
+        $entity_links = $this->config->item('en_all_4592');
 
         //See what this is:
         $tr_type_en_id = fn___detect_tr_type_en_id($_POST['tr_content']);
@@ -636,7 +652,7 @@ class Entities extends CI_Controller
             //Also remove all children/parent links:
             foreach($this->Database_model->fn___tr_fetch(array(
                 'tr_status >=' => 0, //New+
-                'tr_type_en_id IN (' . join(',', array_merge($this->config->item('en_ids_4537'), $this->config->item('en_ids_4538'))) . ')' => null, //Entity Link Connectors
+                'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
                 '(tr_en_child_id = '.$_POST['en_id'].' OR tr_en_parent_id = '.$_POST['en_id'].')' => null,
             )) as $unlink_tr){
 
@@ -646,7 +662,13 @@ class Entities extends CI_Controller
 
             }
 
-        } elseif (intval($_POST['tr_id']) > 0) { //DO we have a link to update?
+            //Remove the link:
+            $_POST['tr_id'] = 0;
+
+        }
+
+
+        if (intval($_POST['tr_id']) > 0) { //DO we have a link to update?
 
             //Yes, first validate entity link:
             $en_trs = $this->Database_model->fn___tr_fetch(array(
@@ -924,7 +946,7 @@ class Entities extends CI_Controller
         $this->Database_model->fn___tr_create(array(
             'tr_miner_en_id' => $ens[0]['en_id'],
             'tr_metadata' => $ens[0],
-            'tr_type_en_id' => ($is_miner ? 4269 /* Miner Sign in */ : 4563 /* Student Sign in */),
+            'tr_type_en_id' => 4269, //Logged into the matrix
         ));
 
 

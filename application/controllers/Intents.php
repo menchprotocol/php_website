@@ -719,7 +719,7 @@ class Intents extends CI_Controller
         //Did we have an intent link update? If so, update the last updated UI:
         if($transaction_was_updated){
 
-            //Fetch last intent link transaction:
+            //Fetch last intent Ledger Transaction:
             $trs = $this->Database_model->fn___tr_fetch(array(
                 'tr_id' => $tr_id,
             ), array('en_miner'));

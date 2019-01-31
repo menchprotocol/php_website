@@ -276,8 +276,8 @@ if (isset($orphan_ins)) {
 
                         <div class="title" style="margin-top:15px;">
                             <h4>
-                                <i class="fal fa-weight"></i>
-                                Completion Points
+                                <i class="fal fa-tachometer-fast"></i>
+                                Assessment Points
                             </h4>
                         </div>
                         <div class="inline-box">
@@ -293,7 +293,7 @@ if (isset($orphan_ins)) {
 
 
 
-                        <div class="title" style="margin-top: 15px;"><h4><i class="fal fa-cloud-upload"></i> Completion Webhook</h4></div>
+                        <div class="title" style="margin-top: 15px;"><h4><i class="fal fa-cloud-upload"></i> Webhook</h4></div>
                         <div class="inline-box">
                             <div class="form-group label-floating is-empty">
                                 <div class="input-group border">
@@ -310,7 +310,7 @@ if (isset($orphan_ins)) {
                         <div class="title" style="margin-top: 15px;">
                             <h4>
                                 <i class="fas fa-atlas"></i>
-                                Link Transaction
+                                Ledger Transaction
                             </h4>
                         </div>
 

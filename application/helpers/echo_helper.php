@@ -389,6 +389,7 @@ function fn___echo_tr_content($tr_content, $tr_type_en_id){
     $CI =& get_instance();
     if (in_array($tr_type_en_id, $CI->config->item('en_ids_4537'))) {
 
+        //Entity URL Links
         return fn___echo_url_type($tr_content, $tr_type_en_id);
 
     } elseif(strlen($tr_content) > 0) {
@@ -1317,7 +1318,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
 
     //Intenet Points Icon indicator:
-    $ui .= '<span class="badge badge-primary transparent ui_in_points_frame_' . $in['in_id'] . '" style="width:40px; margin-right:2px; margin-left:3px;" data-toggle="tooltip" data-placement="top" title="Completion points"><span class="btn-counter ui_in_points_' . $in['in_id'] . '">' . $in['in_points'] . '</span><i class="fal fa-weight"></i></span>';
+    $ui .= '<span class="badge badge-primary transparent ui_in_points_frame_' . $in['in_id'] . '" style="width:40px; margin-right:2px; margin-left:3px;" data-toggle="tooltip" data-placement="top" title="Assessment points"><span class="btn-counter ui_in_points_' . $in['in_id'] . '">' . $in['in_points'] . '</span><i class="fal fa-tachometer-fast"></i></span>';
 
 
 
@@ -1415,7 +1416,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     } else {
 
         //Show Blank box:
-        $ui .= '<span class="double-icon" style="margin-right:7px;"><span class="icon-main"><i class="fas fa-map-pin" data-toggle="tooltip" data-placement="right" title="You are Here"></i></span><span class="icon-sub">&nbsp;</span></span>';
+        $ui .= '<span class="double-icon" style="margin:0 7px;"><span class="icon-main"><i class="fas fa-map-pin" data-toggle="tooltip" data-placement="right" title="You are Here"></i></span><span class="icon-sub">&nbsp;</span></span>';
 
     }
 
@@ -1559,15 +1560,18 @@ function fn___echo_leaderboard($days_ago = null, $top = 25){
         $start_date = date("Y-m-d" , (time() - ($days_ago * 24 * 3600)));
         //From beginning of the day:
         $filters['tr_timestamp >='] = $start_date.' 00:00:00';
-        $table_name = $days_ago.'-Day';
+        $table_name = 'Last-'.$days_ago.'-day';
     } else {
-        $table_name = 'All Time';
+        $table_name = 'All-time';
     }
 
     $CI =& get_instance();
 
 
-    //Count coins per Miner
+    //Count totals:
+    $total_counts = $CI->Database_model->fn___tr_fetch($filters, array(), 1, 0, array(), 'COUNT(DISTINCT tr_miner_en_id) as total_count');
+
+
     //Object Stats grouped by Status:
     $all_engs = $CI->Database_model->fn___tr_fetch($filters, array('en_miner'), $top, 0, array('coins_sum' => 'DESC'), 'COUNT(tr_miner_en_id) as trs_count, SUM(tr_coins) as coins_sum, en_name, en_icon, tr_miner_en_id', 'tr_miner_en_id, en_name, en_icon');
 
@@ -1585,7 +1589,7 @@ function fn___echo_leaderboard($days_ago = null, $top = 25){
         //Echo stats:
         $table_body .= '<tr>';
         $table_body .= '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center; '.( $count > 2 ? 'font-size:0.8em;' : '' ).'">'.fn___echo_rank($count+1).'</span><span style="width: 29px; display: inline-block; text-align: center;">'.( strlen($tr['en_icon']) > 0 ? $tr['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$tr['tr_miner_en_id'].'">'.$tr['en_name'].'</a></td>';
-        $table_body .= '<td style="text-align: right;"><a href="/ledger?tr_miner_en_id='.$tr['tr_miner_en_id'].( is_null($days_ago) ? '' : '&start_range='.$start_date ).'"  data-toggle="tooltip" title="Awarded for '.number_format($tr['trs_count'],0).' transactions averaging '.round(($tr['coins_sum']/$tr['trs_count']),0).' coins/transaction" data-placement="top">'.number_format($tr['coins_sum'], 0).'</a></td>';
+        $table_body .= '<td style="text-align: right;"><a href="/ledger?tr_miner_en_id='.$tr['tr_miner_en_id'].( is_null($days_ago) ? '' : '&start_range='.$start_date ).'"  data-toggle="tooltip" title="Mined with '.number_format($tr['trs_count'],0).' transactions averaging '.round(($tr['coins_sum']/$tr['trs_count']),1).' coins/transaction" data-placement="top">'.number_format($tr['coins_sum'], 0).'</a></td>';
         $table_body .= '</tr>';
 
         $all_transaction_count += $tr['trs_count'];
@@ -1596,22 +1600,22 @@ function fn___echo_leaderboard($days_ago = null, $top = 25){
 
     $ui = '';
 
-    $ui .= '<a href="javascript:void(0);" onclick="$(\'.leaderboard'.$days_ago.'\').toggleClass(\'hidden\');" class="large-stat"><span>🏅'. $top_miner . '</span>1,233 all-time miners <i class="fal fa-plus-circle"></i></a>';
+    $ui .= '<a href="javascript:void(0);" onclick="$(\'.leaderboard'.$days_ago.'\').toggleClass(\'hidden\');" class="large-stat"><span>🏅'. $top_miner . '+'.number_format( ($total_counts[0]['total_count']-1),0).'</span>'.$table_name.' miner'.fn___echo__s($total_counts[0]['total_count']).' <i class="leaderboard'.$days_ago.' fal fa-plus-circle"></i><i class="leaderboard'.$days_ago.' fal fa-minus-circle hidden"></i></a>';
 
     $ui .= '<table class="table table-condensed table-striped stats-table leaderboard'.$days_ago.' hidden" style="max-width:100%;">';
 
 
 //Object Header:
     $ui .= '<tr style="font-weight: bold;">';
-    $ui .= '<td style="text-align: left;">'.$table_name.' Miners</td>';
+    $ui .= '<td style="text-align: left;">'.( $total_counts[0]['total_count'] > $top ? $top.'/' : '').number_format( $total_counts[0]['total_count'],0).' '.$table_name.' miners:</td>';
     $ui .= '<td style="text-align: right;"><i class="fal fa-coins"></i> Coins</td>';
     $ui .= '</tr>';
 
     $ui .= $table_body;
 
     $ui .= '<tr style="font-weight: bold;">';
-    $ui .= '<td style="text-align: right;">Top '.($count+1).' Totals:&nbsp;</td>';
-    $ui .= '<td style="text-align: right;"><span data-toggle="tooltip" title="Awarded for '.number_format($tr['trs_count'],0).' Transactions averaging '.round(($all_coin_payouts/$all_transaction_count),1).' coins per transaction" data-placement="top">'.number_format($all_coin_payouts,0).'</span></td>';
+    $ui .= '<td style="text-align: right;">Total '.strtolower($table_name).' coins:&nbsp;</td>';
+    $ui .= '<td style="text-align: right;"><span data-toggle="tooltip" title="Mined with '.number_format($tr['trs_count'],0).' Transactions averaging '.round($all_coin_payouts/$all_transaction_count,1).' coins per transaction" data-placement="top">'.number_format($all_coin_payouts,0).'</span></td>';
     $ui .= '</tr>';
 
 
@@ -1652,12 +1656,11 @@ function fn___echo_en($en, $level, $is_parent = false)
     //Right content:
     $ui .= '<span class="pull-right">';
 
-
     //Do we have entity parents loaded in our data-set?
     if (!isset($en['en__parents'])) {
         //Fetch parents at this point:
         $en['en__parents'] = $CI->Database_model->fn___tr_fetch(array(
-            'tr_type_en_id IN (' . join(',', array_merge($CI->config->item('en_ids_4537'), $CI->config->item('en_ids_4538'))) . ')' => null, //Entity Link Connectors
+            'tr_type_en_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
             'tr_en_child_id' => $en['en_id'], //This child entity
             'tr_status >=' => 0, //New+
             'en_status >=' => 0, //New+
@@ -1729,7 +1732,7 @@ function fn___echo_en($en, $level, $is_parent = false)
         //Do a child count:
         $child_trs = $CI->Database_model->fn___tr_fetch(array(
             'tr_en_parent_id' => $en['en_id'],
-            'tr_type_en_id IN (' . join(',', array_merge($CI->config->item('en_ids_4537'), $CI->config->item('en_ids_4538'))) . ')' => null, //Entity Link Connectors
+            'tr_type_en_id IN (' . join(',', $CI->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
             'tr_status >=' => 0, //New+
             'en_status >=' => 0, //New+
         ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as en__child_count');
@@ -1758,7 +1761,7 @@ function fn___echo_en($en, $level, $is_parent = false)
     //Show Transaction Status if Available:
     if ($tr_id > 0) {
         //Show Link Type:
-        $entity_links = $CI->config->item('en_all_4537') + $CI->config->item('en_all_4538'); //Will Contain every possible Entity Link Connector!
+        $entity_links = $CI->config->item('en_all_4592'); //Will Contain every possible Entity Link Connector!
 
         //Show Transaction link icons:
         $ui .= '<span class="double-icon" style="margin-right:7px;">';

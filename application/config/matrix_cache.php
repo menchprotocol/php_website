@@ -14,6 +14,61 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
 
+//All entity links:
+$config['en_ids_4592'] = array(4230, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4318, 4319);
+$config['en_all_4592'] = array(
+    4230 => array(
+        'm_icon' => '<i class="fal fa-link"></i>',
+        'm_name' => 'Raw',
+        'm_desc' => '',
+    ),
+    4255 => array(
+        'm_icon' => '<i class="fal fa-align-left"></i>',
+        'm_name' => 'Text',
+        'm_desc' => '',
+    ),
+    4256 => array(
+        'm_icon' => '<i class="fal fa-browser"></i>',
+        'm_name' => 'URL',
+        'm_desc' => '',
+    ),
+    4257 => array(
+        'm_icon' => '<i class="fal fa-play-circle"></i>',
+        'm_name' => 'Embed',
+        'm_desc' => '',
+    ),
+    4258 => array(
+        'm_icon' => '<i class="fal fa-video"></i>',
+        'm_name' => 'Video',
+        'm_desc' => '',
+    ),
+    4259 => array(
+        'm_icon' => '<i class="fal fa-volume-up"></i>',
+        'm_name' => 'Audio',
+        'm_desc' => '',
+    ),
+    4260 => array(
+        'm_icon' => '<i class="fal fa-image"></i>',
+        'm_name' => 'Image',
+        'm_desc' => '',
+    ),
+    4261 => array(
+        'm_icon' => '<i class="fal fa-file-pdf"></i>',
+        'm_name' => 'File',
+        'm_desc' => '',
+    ),
+    4318 => array(
+        'm_icon' => '<i class="fal fa-clock"></i>',
+        'm_name' => 'Time',
+        'm_desc' => '',
+    ),
+    4319 => array(
+        'm_icon' => '<i class="fal fa-sort-numeric-down"></i>',
+        'm_name' => 'Integer',
+        'm_desc' => '',
+    ),
+);
+
 //Intent Completion Requirements:
 $config['en_ids_4331'] = array(4255, 4256, 4258, 4259, 4260, 4261);
 $config['en_all_4331'] = array(
@@ -123,13 +178,13 @@ $config['en_all_4485'] = array(
 $config['en_ids_4486'] = array(4228, 4229);
 $config['en_all_4486'] = array(
     4228 => array(
-        'm_icon' => '<i class="fal fa-link"></i>',
-        'm_name' => 'Fixed',
+        'm_icon' => '<i class="fal fa-clipboard-check"></i>',
+        'm_name' => 'Pre-Assessment',
         'm_desc' => 'Intent link published and added to user Action Plans up-front',
     ),
     4229 => array(
-        'm_icon' => '<i class="fas fa-question-circle fa-spin"></i>',
-        'm_name' => 'Conditional',
+        'm_icon' => '<i class="fal fa-question-circle fa-spin"></i>',
+        'm_name' => 'Post-Assessment',
         'm_desc' => 'Intent added to Action Plans after parent intent is complete AND the user\'s % score falls within the defined min/max range',
     ),
 );
@@ -144,77 +199,7 @@ $config['en_all_4487'] = array(
     ),
 );
 
-//Student Received Message Transactions:
-$config['en_ids_4277'] = array(4248, 4460, 4547, 4548, 4549, 4550, 4551, 4557);
-$config['en_all_4277'] = array(
-    4248 => array(
-        'm_icon' => '<i class="fas fa-star-half-alt"></i>',
-        'm_name' => 'Net Promoter Score Received',
-        'm_desc' => 'Logged when masters submit their Net Promoter Score rating of Mench that shares how likely are they to share Mench with a friend from a scale of 1-10.',
-    ),
-    4460 => array(
-        'm_icon' => '',
-        'm_name' => 'Quick Reply Answer Received',
-        'm_desc' => 'When Master chooses their answer to an OR branch',
-    ),
-    4547 => array(
-        'm_icon' => '',
-        'm_name' => 'Text Message Received',
-        'm_desc' => '',
-    ),
-    4548 => array(
-        'm_icon' => '',
-        'm_name' => 'Video Message Received',
-        'm_desc' => '',
-    ),
-    4549 => array(
-        'm_icon' => '',
-        'm_name' => 'Audio Message Received',
-        'm_desc' => '',
-    ),
-    4550 => array(
-        'm_icon' => '',
-        'm_name' => 'Image Message Received',
-        'm_desc' => '',
-    ),
-    4551 => array(
-        'm_icon' => '',
-        'm_name' => 'File Message Received',
-        'm_desc' => '',
-    ),
-    4557 => array(
-        'm_icon' => '',
-        'm_name' => 'Location Message Received',
-        'm_desc' => '',
-    ),
-);
-
-//Non-URL Entity Links:
-$config['en_ids_4538'] = array(4230, 4255, 4318, 4319);
-$config['en_all_4538'] = array(
-    4230 => array(
-        'm_icon' => '<i class="fal fa-link"></i>',
-        'm_name' => 'Raw',
-        'm_desc' => 'Entity is linked to another entity with no link notes.',
-    ),
-    4255 => array(
-        'm_icon' => '<i class="fal fa-align-left"></i>',
-        'm_name' => 'Text',
-        'm_desc' => 'Link note contains a text snippet.',
-    ),
-    4318 => array(
-        'm_icon' => '<i class="fal fa-clock"></i>',
-        'm_name' => 'Time',
-        'm_desc' => '',
-    ),
-    4319 => array(
-        'm_icon' => '<i class="fal fa-sort-numeric-down"></i>',
-        'm_name' => 'Integer',
-        'm_desc' => '',
-    ),
-);
-
-//URL Entity Links:
+//URL-based entity links:
 $config['en_ids_4537'] = array(4256, 4257, 4258, 4259, 4260, 4261);
 $config['en_all_4537'] = array(
     4256 => array(
@@ -249,42 +234,7 @@ $config['en_all_4537'] = array(
     ),
 );
 
-//Student Sent Message Transactions:
-$config['en_ids_4280'] = array(4276, 4552, 4553, 4554, 4555, 4556);
-$config['en_all_4280'] = array(
-    4276 => array(
-        'm_icon' => '',
-        'm_name' => 'Email Message Sent',
-        'm_desc' => '',
-    ),
-    4552 => array(
-        'm_icon' => '',
-        'm_name' => 'Text Message Sent',
-        'm_desc' => '',
-    ),
-    4553 => array(
-        'm_icon' => '',
-        'm_name' => 'Video Message Sent',
-        'm_desc' => '',
-    ),
-    4554 => array(
-        'm_icon' => '',
-        'm_name' => 'Audio Message Sent',
-        'm_desc' => '',
-    ),
-    4555 => array(
-        'm_icon' => '',
-        'm_name' => 'Image Message Sent',
-        'm_desc' => '',
-    ),
-    4556 => array(
-        'm_icon' => '',
-        'm_name' => 'File Message Sent',
-        'm_desc' => '',
-    ),
-);
-
-//Content Reference Types:
+//Sources:
 $config['en_ids_3000'] = array(2997, 2998, 2999, 3005, 3147, 3192, 4446);
 $config['en_all_3000'] = array(
     2997 => array(
