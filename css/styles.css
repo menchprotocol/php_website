@@ -2537,8 +2537,8 @@ a.badge:focus, a.badge:hover {
     padding-top: 40px;
 }
 
-.top-space{
-    margin-top: 25px;
+.bottom-space{
+    margin-bottom: 30px;
 }
 
 .btn-tight {

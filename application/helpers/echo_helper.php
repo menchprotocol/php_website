@@ -407,6 +407,7 @@ function fn___echo_tr_row($tr)
 {
 
     $CI =& get_instance();
+    $en_all_4594 = $CI->config->item('en_all_4594');
 
     //Display the item
     $ui = '<div class="list-group-item" style="padding:12px 6px 6px 0px; min-height:84px;">';
@@ -467,7 +468,7 @@ function fn___echo_tr_row($tr)
     $ui .= '<span class="badge badge-primary transparent" style="width:40px; margin:0;" data-toggle="tooltip" data-placement="top" title="Mench Coins"><span class="btn-counter">' . $tr['tr_coins'] . '</span><i class="fal fa-coins"></i></span>';
 
 
-    $ui .= '<b>' . $tr['en_name'] . '</b>';
+    $ui .= '<b>'. $en_all_4594[$tr['tr_type_en_id']]['m_name'] . '</b>';
     $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Transaction ID" style="font-size:0.8em;"><i class="fas fa-atlas"></i> '.$tr['tr_id'].'</span>';
     $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Transaction Last Modified: ' . $tr['tr_timestamp'] . '" style="font-size:0.8em;"><i class="fal fa-clock"></i> ' . fn___echo_time_difference(strtotime($tr['tr_timestamp'])) . ' ago</span>';
     $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Transaction Status: '.$object_statuses['tr_status'][$tr['tr_status']]['s_desc'].'" style="font-size:0.8em;">'.$object_statuses['tr_status'][$tr['tr_status']]['s_icon'].' '.$object_statuses['tr_status'][$tr['tr_status']]['s_name'].'</span>';
@@ -1600,23 +1601,18 @@ function fn___echo_leaderboard($days_ago = null, $top = 25){
 
     $ui = '';
 
-    $ui .= '<a href="javascript:void(0);" onclick="$(\'.leaderboard'.$days_ago.'\').toggleClass(\'hidden\');" class="large-stat"><span>🏅'. $top_miner . '</span><b>+'.number_format( ($total_counts[0]['total_count']-1),0).'</b> '.$table_name.' miner'.fn___echo__s($total_counts[0]['total_count']).' <i class="leaderboard'.$days_ago.' fal fa-plus-circle"></i><i class="leaderboard'.$days_ago.' fal fa-minus-circle hidden"></i></a>';
+    $ui .= '<a href="javascript:void(0);" onclick="$(\'.leaderboard'.$days_ago.'\').toggleClass(\'hidden\');" class="large-stat"><span>🏅'. $top_miner . '</span>+'.number_format( ($total_counts[0]['total_count']-1),0).' '.$table_name.' miner'.fn___echo__s($total_counts[0]['total_count']).' <i class="leaderboard'.$days_ago.' fal fa-plus-circle"></i><i class="leaderboard'.$days_ago.' fal fa-minus-circle hidden"></i></a>';
 
     $ui .= '<table class="table table-condensed table-striped stats-table leaderboard'.$days_ago.' hidden" style="max-width:100%;">';
 
 
 //Object Header:
     $ui .= '<tr style="font-weight: bold;">';
-    $ui .= '<td style="text-align: left;">'.number_format( $total_counts[0]['total_count'],0).' '.$table_name.' miners:</td>';
+    $ui .= '<td style="text-align: left;">'.$table_name.' miners:</td>';
     $ui .= '<td style="text-align: right;"><i class="fal fa-coins"></i> Coins</td>';
     $ui .= '</tr>';
 
     $ui .= $table_body;
-
-    $ui .= '<tr style="font-weight: bold;">';
-    $ui .= '<td style="text-align: right;">Total '.strtolower($table_name).' coins:&nbsp;</td>';
-    $ui .= '<td style="text-align: right;"><span data-toggle="tooltip" title="Mined with '.number_format($tr['trs_count'],0).' Transactions averaging '.round($all_coin_payouts/$all_transaction_count,1).' coins per transaction" data-placement="top">'.number_format($all_coin_payouts,0).'</span></td>';
-    $ui .= '</tr>';
 
 
     //End Section:
@@ -1701,7 +1697,7 @@ function fn___echo_en($en, $level, $is_parent = false)
         'tr_en_parent_id' => $en['en_id'], //Entity Referenced in message content
     ), array(), 0, 0, array(), 'COUNT(tr_id) AS total_messages');
 
-    $ui .= '<' . ($messages[0]['total_messages'] > 0 ? 'a href="#loadmessages-' . $en['en_id'] . '" onclick="fn___load_en_messages(' . $en['en_id'] . ')" class="badge badge-secondary white-secondary"' : 'a href="#" onclick="alert(\'No intent messages found that reference this entity\')" class="badge badge-secondary transparent"') . ' style="width:40px; margin-left:5px;"><span class="btn-counter">' . $messages[0]['total_messages'] . '</span><i class="fas fa-comment-dots"></i></a>';
+    $ui .= '<' . ($messages[0]['total_messages'] > 0 ? 'a href="#loadmessages-' . $en['en_id'] . '" onclick="fn___load_en_messages(' . $en['en_id'] . ')" class="badge badge-secondary white-secondary"' : 'a href="#" onclick="alert(\'No intent messages found that reference this entity\')" class="badge badge-secondary white-secondary"') . ' style="width:40px; margin-left:5px;"><span class="btn-counter">' . $messages[0]['total_messages'] . '</span><i class="fas fa-comment-dots"></i></a>';
 
 
 
@@ -1721,7 +1717,7 @@ function fn___echo_en($en, $level, $is_parent = false)
 
 
     //Show modification button along with Trust Score
-    $ui .= '<a href="#loadmodify-' . $en['en_id'] . '-' . $tr_id . '" onclick="fn___en_modify_load(' . $en['en_id'] . ',' . $tr_id . ')" class="badge badge-secondary white-secondary" style="margin:-2px -6px 0 2px; width:40px;"><span class="btn-counter" data-toggle="tooltip" data-placement="left" title="Entity Trust Score is ' . number_format($en['en_trust_score'], 0) . '">' . fn___echo_number($en['en_trust_score']) . '</span><i class="fas fa-cog" style="font-size:0.9em; width:28px; padding-right:3px; text-align:center;"></i></a> &nbsp;';
+    $ui .= '<a href="#loadmodify-' . $en['en_id'] . '-' . $tr_id . '" onclick="fn___en_modify_load(' . $en['en_id'] . ',' . $tr_id . ')" class="badge badge-secondary white-secondary" style="margin:-2px -6px 0 2px; width:40px;"><span class="btn-counter" data-toggle="tooltip" data-placement="left" title="Entity Trust Score is ' . number_format($en['en_trust_score'], 0) . '">' . fn___echo_number($en['en_trust_score']) . '</span><i class="fas fa-cog" style="width:28px; padding-right:7px; text-align:center;"></i></a> &nbsp;';
 
 
     //Have we counted the Entity Children?

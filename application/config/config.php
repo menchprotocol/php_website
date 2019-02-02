@@ -73,6 +73,15 @@ $config['en_mass_actions']          = array( //Various mass actions to be taken 
     'replace_tr_match'  => 'Replace transaction matching strings',
     'replace_icon'  => 'Update all entity icons',
 
+    /*
+    'set_statuses'  => 'Set all child statuses',
+    'replace_statuses'  => 'Replace matching child statuses',
+    'add_en_as_parent'  => 'Add entity as parent for all children', //@123 Transaction Content here...
+    'copy_children_to'  => 'Copy children to another entity',
+    'copy_children_from'  => 'Copy children from another entity',
+    'move_children_to'  => 'Move children to another entity',
+    'move_children_from'  => 'Move children from another entity',
+    */
     //Logic for all items above must be added to Entities/en_miner_ui section
 );
 
@@ -118,6 +127,33 @@ $config['ledger_filters']           = array(
 
 //3x Table Statuses:
 $config['object_statuses']          = array(
+                                        'tr_status' => array(
+                                            -1 => array(
+                                                's_name' => 'Removed',
+                                                's_desc' => 'Transaction removed by Student or Miner',
+                                                's_icon' => '<i class="fal fa-minus-square"></i>',
+                                            ),
+                                            0 => array( //Considered incomplete, see tr_status_incomplete for more details
+                                                's_name' => 'New',
+                                                's_desc' => 'Newly added transaction pending review by Miner',
+                                                's_icon' => '<i class="fal fa-square"></i>',
+                                            ),
+                                            1 => array( //Considered incomplete, see tr_status_incomplete for more details
+                                                's_name' => 'Working On',
+                                                's_desc' => 'Transaction is being worked on but is not yet completed',
+                                                's_icon' => '<i class="fas fa-spinner fa-spin"></i>',
+                                            ),
+                                            2 => array(
+                                                's_name' => 'Published',
+                                                's_desc' => 'Transaction is completed and ready for updates to be synced',
+                                                's_icon' => '<i class="fal fa-check-square"></i>',
+                                            ),
+                                            3 => array(
+                                                's_name' => 'Verified',
+                                                's_desc' => 'Transaction has been reviewed and verified by a Miner',
+                                                's_icon' => '<i class="fas fa-badge-check"></i>',
+                                            ),
+                                        ),
                                         'in_status' => array(
                                             -1 => array(
                                                 's_name' => 'Removed',
@@ -169,33 +205,6 @@ $config['object_statuses']          = array(
                                             3 => array(
                                                 's_name' => 'Verified',
                                                 's_desc' => 'Entity references a human which has been claimed by that person',
-                                                's_icon' => '<i class="fas fa-badge-check"></i>',
-                                            ),
-                                        ),
-                                        'tr_status' => array(
-                                            -1 => array(
-                                                's_name' => 'Removed',
-                                                's_desc' => 'Transaction removed by Student or Miner',
-                                                's_icon' => '<i class="fal fa-minus-square"></i>',
-                                            ),
-                                            0 => array( //Considered incomplete, see tr_status_incomplete for more details
-                                                's_name' => 'New',
-                                                's_desc' => 'Newly added transaction pending review by Miner',
-                                                's_icon' => '<i class="fal fa-square"></i>',
-                                            ),
-                                            1 => array( //Considered incomplete, see tr_status_incomplete for more details
-                                                's_name' => 'Working On',
-                                                's_desc' => 'Transaction is being worked on but is not yet completed',
-                                                's_icon' => '<i class="fas fa-spinner fa-spin"></i>',
-                                            ),
-                                            2 => array(
-                                                's_name' => 'Published',
-                                                's_desc' => 'Transaction is completed and ready for updates to be synced',
-                                                's_icon' => '<i class="fal fa-check-square"></i>',
-                                            ),
-                                            3 => array(
-                                                's_name' => 'Verified',
-                                                's_desc' => 'Transaction has been reviewed and verified by a Miner',
                                                 's_icon' => '<i class="fas fa-badge-check"></i>',
                                             ),
                                         ),

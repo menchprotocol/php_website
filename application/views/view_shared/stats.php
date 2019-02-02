@@ -41,7 +41,7 @@ foreach (fn___echo_status() as $object_id => $statuses) {
 
         $obj_en_id = 4341; //Ledger
         $created_en_type_id = 0; //No particular filters needed
-        $spacing = 'col-md-offset-4 top-space';
+        $spacing = 'col-md-offset-4 bottom-space';
         $objects_count = $this->Database_model->fn___tr_fetch(array(), array(), 0, 0, array(), 'tr_status, COUNT(tr_id) as totals', 'tr_status');
 
     } else {
@@ -85,7 +85,7 @@ foreach (fn___echo_status() as $object_id => $statuses) {
     //Start section:
     echo '<div class="'.$spacing.' col-md-4">';
 
-    echo '<a href="javascript:void(0);" onclick="$(\'.obj-'.$object_id.'\').toggleClass(\'hidden\');" class="large-stat"><span>'.$en_all_4534[$obj_en_id]['m_icon']. ' '. number_format($this_totals) . '</span>'.$en_all_4534[$obj_en_id]['m_name'].' <i class="obj-'.$object_id.' fal fa-plus-circle"></i><i class="obj-'.$object_id.' fal fa-minus-circle hidden"></i></a>';
+    echo '<a href="javascript:void(0);" onclick="$(\'.obj-'.$object_id.'\').toggleClass(\'hidden\');" class="large-stat"><span>'.$en_all_4534[$obj_en_id]['m_icon']. ' <span class="obj-'.$object_id.'">'. fn___echo_number($this_totals) . '</span><span class="obj-'.$object_id.' hidden">'. number_format($this_totals) . '</span></span>'.$en_all_4534[$obj_en_id]['m_name'].' <i class="obj-'.$object_id.' fal fa-plus-circle"></i><i class="obj-'.$object_id.' fal fa-minus-circle hidden"></i></a>';
 
     echo '<table class="table table-condensed table-striped stats-table mini-stats-table obj-'.$object_id.' hidden">';
 
@@ -116,7 +116,24 @@ echo '</div>';
 
 
 
+//echo member stats:
+/*
+echo '<div class="row stat-row">';
 
+    echo '<div class="col-md-4">';
+
+    echo '</div>';
+
+    echo '<div class="col-md-4">';
+
+    echo '</div>';
+
+    echo '<div class="col-md-4">';
+
+    echo '</div>';
+
+echo '</div>';
+*/
 
 
 
@@ -171,10 +188,10 @@ foreach ($ie_ens[0]['en__children'] as $source_en) {
 }
 
 //Calculate the weighted mined sources:
-$all_source_progress = number_format(($all_mined_source_count_weigh/$all_source_count_weight*100), 1).'%';
+$all_source_progress = number_format(($all_mined_source_count_weigh/$all_source_count_weight*100), 1);
 
 //Echo title:
-echo '<a href="javascript:void(0);" onclick="$(\'.sources-mined\').toggleClass(\'hidden\');" class="large-stat"><span>'.fn___echo_en_icon($ie_ens[0]).' '. $all_source_progress . '</span>Of '.number_format($all_source_count , 0).' sources mined <i class="sources-mined fal fa-plus-circle"></i><i class="sources-mined fal fa-minus-circle hidden"></i></a>';
+echo '<a href="javascript:void(0);" onclick="$(\'.sources-mined\').toggleClass(\'hidden\');" class="large-stat"><span>'.fn___echo_en_icon($ie_ens[0]).' <span class="sources-mined">'. round($all_source_progress, 0) . '</span><span class="sources-mined hidden">'. $all_source_progress . '</span>%</span>Of '.number_format($all_source_count , 0).' sources mined <i class="sources-mined fal fa-plus-circle"></i><i class="sources-mined fal fa-minus-circle hidden"></i></a>';
 
 
 //Echo table:
@@ -182,7 +199,7 @@ echo '<table class="table table-condensed table-striped stats-table sources-mine
 
 //Object Header:
 echo '<tr style="font-weight: bold;">';
-echo '<td style="text-align: left;">'.$expert_source_types.' Types of '.strtolower($ie_ens[0]['en_name']).':</td>';
+echo '<td style="text-align: left;">'.strtolower($ie_ens[0]['en_name']).':</td>';
 echo '<td style="text-align: right;">Count</td>';
 echo '<td style="text-align: right;">Mined</td>';
 echo '</tr>';
@@ -190,9 +207,9 @@ echo '</tr>';
 echo $table_body;
 
 echo '<tr style="font-weight: bold;">';
-echo '<td style="text-align: right;">Total '.strtolower($ie_ens[0]['en_name']).':&nbsp;</td>';
+echo '<td style="text-align: right;">Totals:&nbsp;</td>';
 echo '<td style="text-align: right;">'.number_format($all_source_count, 0).'</td>';
-echo '<td style="text-align: right;">'.$all_source_progress.'</td>';
+echo '<td style="text-align: right;">'.$all_source_progress.'%</td>';
 echo '</tr>';
 
 
@@ -244,7 +261,7 @@ foreach ($all_engs as $tr) {
 }
 
 //Echo title:
-echo '<a href="javascript:void(0);" onclick="$(\'.coins-issued\').toggleClass(\'hidden\');" class="large-stat"><span><i class="fal fa-coins"></i> '. number_format($all_coin_payouts) . '</span> Mench coins issued to date <i class="coins-issued fal fa-plus-circle"></i><i class="coins-issued fal fa-minus-circle hidden"></i></a>';
+echo '<a href="javascript:void(0);" onclick="$(\'.coins-issued\').toggleClass(\'hidden\');" class="large-stat"><span><i class="fal fa-coins"></i> <span class="coins-issued">'. fn___echo_number($all_coin_payouts) . '</span><span class="coins-issued hidden">'. number_format($all_coin_payouts) . '</span></span> Mench coins issued to date <i class="coins-issued fal fa-plus-circle"></i><i class="coins-issued fal fa-minus-circle hidden"></i></a>';
 
 
 //Echo table:
@@ -253,7 +270,7 @@ echo '<table class="table table-condensed table-striped stats-table coins-issued
 
 //Object Header:
 echo '<tr style="font-weight: bold;">';
-echo '<td style="text-align: left;">'.count($all_engs).' Types of ledger transaction:</td>';
+echo '<td style="text-align: left;">Ledger transactions:</td>';
 echo '<td style="text-align: right;">Rate</td>';
 echo '<td style="text-align: right;"><i class="fal fa-coins"></i> Coins</td>';
 echo '</tr>';
@@ -261,7 +278,7 @@ echo '</tr>';
 echo $table_body;
 
 echo '<tr style="font-weight: bold;">';
-echo '<td colspan="2" style="text-align: right;">Total coins issued:&nbsp;</td>';
+echo '<td colspan="2" style="text-align: right;">Totals:&nbsp;</td>';
 echo '<td style="text-align: right;"><span data-toggle="tooltip" title="'.number_format($all_transaction_count,0).' Transactions" data-placement="top">'.number_format($all_coin_payouts,0).'</td>';
 echo '</tr>';
 

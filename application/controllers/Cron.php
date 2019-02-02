@@ -174,6 +174,7 @@ class Cron extends CI_Controller
                 'tr_status >=' => 2,
                 'en_status >=' => 2,
                 'tr_en_parent_id' => $en['tr_en_child_id'],
+                'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
             ), array('en_child'), 0, 0, array('en_id' => 'ASC'));
 
 

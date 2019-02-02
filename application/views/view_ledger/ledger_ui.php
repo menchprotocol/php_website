@@ -24,7 +24,7 @@ $advanced_filters = array(
 
 //Construct filters based on GET variables:
 $filters = array();
-$join_by = array('en_type');
+$join_by = array();
 
 foreach (array_merge($primary_filters, $advanced_filters) as $key => $value) {
     if (isset($_GET[$key]) && strlen($_GET[$key]) > 0) {
@@ -33,7 +33,8 @@ foreach (array_merge($primary_filters, $advanced_filters) as $key => $value) {
 
             if(isset($_GET['tr_type_en_id']) && $_GET['tr_type_en_id']==4250){ //Intent created
                 //Filter intent status based on
-                array_push($join_by, 'in_child');
+                $join_by = array('in_child');
+
 
                 if (substr_count($_GET[$key], ',') > 0) {
                     //This is multiple IDs:
@@ -171,7 +172,7 @@ if(isset($_GET['end_range']) && fn___isDate($_GET['end_range'])){
 $ini_filter = $filters;
 unset($ini_filter['in_status']);
 unset($ini_filter['en_status']);
-$all_engs = $this->Database_model->fn___tr_fetch($ini_filter, array('en_type'), 0, 0, array('trs_count' => 'DESC'), 'COUNT(tr_type_en_id) as trs_count, SUM(tr_coins) as coins_sum, en_name, tr_type_en_id', 'tr_type_en_id, en_name');
+$all_engs = $this->Database_model->fn___tr_fetch($ini_filter, array('en_type'), 0, 0, array('en_name' => 'DESC'), 'COUNT(tr_type_en_id) as trs_count, SUM(tr_coins) as coins_sum, en_name, tr_type_en_id', 'tr_type_en_id, en_name');
 
 //Makre sure its a valid type considering other filters:
 if(isset($_GET['tr_type_en_id'])){
