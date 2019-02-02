@@ -146,7 +146,7 @@ $config['object_statuses']          = array(
                                             2 => array(
                                                 's_name' => 'Published',
                                                 's_desc' => 'Transaction is completed and ready for updates to be synced',
-                                                's_icon' => '<i class="fal fa-check-square"></i>',
+                                                's_icon' => '<i class="fas fa-check-square"></i>',
                                             ),
                                             3 => array(
                                                 's_name' => 'Verified',
@@ -173,7 +173,7 @@ $config['object_statuses']          = array(
                                             2 => array(
                                                 's_name' => 'Published',
                                                 's_desc' => 'Intent is published live and ready to be distributed to Students',
-                                                's_icon' => '<i class="fal fa-check-square"></i>',
+                                                's_icon' => '<i class="fas fa-check-square"></i>',
                                             ),
                                             3 => array(
                                                 's_name' => 'Featured',
@@ -200,7 +200,7 @@ $config['object_statuses']          = array(
                                             2 => array(
                                                 's_name' => 'Published',
                                                 's_desc' => 'Entity is published live and ready to be distributed to Students',
-                                                's_icon' => '<i class="fal fa-check-square"></i>',
+                                                's_icon' => '<i class="fas fa-check-square"></i>',
                                             ),
                                             3 => array(
                                                 's_name' => 'Verified',

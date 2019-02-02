@@ -336,6 +336,7 @@ class Entities extends CI_Controller
         $udata = fn___en_auth(array(1308));
         $filters = array(
             'tr_en_parent_id' => $parent_en_id,
+            'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
             'en_status' . ($en_focus_filter < 0 ? ' >=' : '') => ($en_focus_filter < 0 ? 0 /* New+ */ : intval($en_focus_filter)), //Pending or Active
             'tr_status >=' => 0, //New+
         );

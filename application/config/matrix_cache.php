@@ -57,7 +57,7 @@ $config['en_all_4594'] = array(
         'm_desc' => 'Created when the Master adds an intent tree to their Action Plan. We will create 1 link for each intent link to create a cache of the intent tree at that point in time.',
     ),
     4242 => array(
-        'm_icon' => '<i class="fal fa-plus-hexagon"></i>',
+        'm_icon' => '<i class="fal fa-sync"></i>',
         'm_name' => 'Iterated Transaction',
         'm_desc' => 'Logged for each transaction column that is updated consciously by the user',
     ),
@@ -117,12 +117,12 @@ $config['en_all_4594'] = array(
         'm_desc' => '',
     ),
     4263 => array(
-        'm_icon' => '<i class="fal fa-plus-hexagon"></i>',
+        'm_icon' => '<i class="fal fa-sync"></i>',
         'm_name' => 'Iterated Entity',
         'm_desc' => 'When a Miner modified an entity attribute like Name, Icon or Status.',
     ),
     4264 => array(
-        'm_icon' => '<i class="fal fa-plus-hexagon"></i>',
+        'm_icon' => '<i class="fal fa-sync"></i>',
         'm_name' => 'Iterated Intent',
         'm_desc' => 'When an intent field is updated',
     ),
@@ -417,22 +417,22 @@ $config['en_all_4534'] = array(
 $config['en_ids_4454'] = array(4455, 4456, 4457, 4458);
 $config['en_all_4454'] = array(
     4455 => array(
-        'm_icon' => '<i class="fas fa-minus-circle"></i>',
+        'm_icon' => '<i class="fas fa-ban"></i>',
         'm_name' => 'Unsubscribed from Mench',
         'm_desc' => 'User was connected but requested to be unsubscribed, so we can no longer reach-out to them',
     ),
     4456 => array(
-        'm_icon' => '<i class="fas fa-bell"></i>',
+        'm_icon' => '<i class="fal fa-volume-up"></i>',
         'm_name' => 'Receive Regular Notifications',
         'm_desc' => 'User is connected and will be notified by sound & vibration for new Mench messages',
     ),
     4457 => array(
-        'm_icon' => '<i class="fal fa-bell"></i>',
+        'm_icon' => '<i class="fal fa-volume-down"></i>',
         'm_name' => 'Receive Silent Push Notifications',
         'm_desc' => 'User is connected and will be notified by on-screen notification only for new Mench messages',
     ),
     4458 => array(
-        'm_icon' => '<i class="fas fa-bell-slash"></i>',
+        'm_icon' => '<i class="fal fa-volume-mute"></i>',
         'm_name' => 'Do Not Receive Push Notifications',
         'm_desc' => 'User is connected but will not be notified for new Mench messages except the red icon indicator on the Messenger app which would indicate the total number of new messages they have',
     ),
