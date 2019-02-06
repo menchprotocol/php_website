@@ -14,7 +14,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
 //Transaction Types Full List:
-$config['en_ids_4594'] = array(4228, 4229, 4230, 4231, 4232, 4233, 4234, 4235, 4242, 4246, 4248, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4265, 4266, 4267, 4268, 4269, 4272, 4275, 4278, 4279, 4281, 4282, 4283, 4284, 4287, 4299, 4318, 4319, 4331, 4452, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4567, 4568, 4570, 4577);
+$config['en_ids_4594'] = array(4228, 4229, 4230, 4231, 4232, 4233, 4234, 4235, 4242, 4246, 4248, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4265, 4266, 4267, 4268, 4269, 4272, 4275, 4278, 4279, 4281, 4282, 4283, 4284, 4287, 4299, 4318, 4319, 4331, 4452, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4567, 4568, 4570, 4577, 4601);
 $config['en_all_4594'] = array(
     4228 => array(
         'm_icon' => '<i class="fal fa-clipboard-check"></i>',
@@ -38,7 +38,7 @@ $config['en_all_4594'] = array(
     ),
     4232 => array(
         'm_icon' => '<i class="fal fa-comment-lines"></i>',
-        'm_name' => 'Intent Message Learn More',
+        'm_name' => 'Intent Message Learn Why',
         'm_desc' => '',
     ),
     4233 => array(
@@ -48,7 +48,7 @@ $config['en_all_4594'] = array(
     ),
     4234 => array(
         'm_icon' => '<i class="fal fa-random"></i>',
-        'm_name' => 'Intent Message Rotating',
+        'm_name' => 'Intent Message Random1',
         'm_desc' => '',
     ),
     4235 => array(
@@ -306,6 +306,11 @@ $config['en_all_4594'] = array(
         'm_name' => 'Message Request Accepted',
         'm_desc' => '',
     ),
+    4601 => array(
+        'm_icon' => '<i class="fal fa-search"></i>',
+        'm_name' => 'Intent Message Triggers',
+        'm_desc' => '',
+    ),
 );
 
 //All Entity Links:
@@ -444,7 +449,7 @@ $config['en_all_4454'] = array(
 );
 
 //Intent Messages:
-$config['en_ids_4485'] = array(4231, 4232, 4233, 4234);
+$config['en_ids_4485'] = array(4231, 4232, 4233, 4234, 4601);
 $config['en_all_4485'] = array(
     4231 => array(
         'm_icon' => '<i class="fal fa-bolt"></i>',
@@ -453,7 +458,7 @@ $config['en_all_4485'] = array(
     ),
     4232 => array(
         'm_icon' => '<i class="fal fa-comment-lines"></i>',
-        'm_name' => 'Learn More',
+        'm_name' => 'Learn Why',
         'm_desc' => 'Authored by Miners and ordered, [Learn More] messages offer Masters a Quick Reply options to get more perspectives on the intention with an additional message batch. If Masters choose to move on without learning more, Mench will communicate the message batch at a later time to deliver the extra perspective on the intention. This is known as "dripping content" that helps re-enforce their learnings and act as a effective reminder of the best-practice, and perhaps a a new twist on how to execute towards it. Learn-More messages will always be delivered, the Master chooses the timing of it.',
     ),
     4233 => array(
@@ -463,8 +468,13 @@ $config['en_all_4485'] = array(
     ),
     4234 => array(
         'm_icon' => '<i class="fal fa-random"></i>',
-        'm_name' => 'Rotating',
+        'm_name' => 'Random1',
         'm_desc' => 'Triggered in various spots of the code base that powers the logic of Mench personal assistant. Search for the compose_messages() function which is part of the Comm Model.',
+    ),
+    4601 => array(
+        'm_icon' => '<i class="fal fa-search"></i>',
+        'm_name' => 'Triggers',
+        'm_desc' => 'Statements that would trigger the intent when mentioned by students.',
     ),
 );
 

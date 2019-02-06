@@ -15,7 +15,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 
 //UI Display:
-$config['app_version']              = '0.716'; //Cache buster in URLs for static js/css files
+$config['app_version']              = '0.717'; //Cache buster in URLs for static js/css files
 $config['en_per_page']              = 50; //Limits the maximum entities loaded per page
 
 
@@ -23,7 +23,6 @@ $config['en_per_page']              = 50; //Limits the maximum entities loaded p
 $config['in_mission_name']          = 'expand human potential'; //is the top level intent that will always contain every other intention we cover
 $config['in_mission_id']            = 7766; //expand human potential
 $config['in_strategy_name']         = 'advance your tech career'; //The broader, more long-term strategic focus of Mench
-$config['in_strategy_id']           = 7240; //advance your tech career
 $config['in_tactic_id']             = 6903; //The shorter, more immediate focus recommended to Students & Miners as the starting point
 $config['in_webhook_prefix']        = 'https://'; //The prefix for Webhook URL
 $config['in_miner_start_id']        = 7435; //The ID that gets Miner's started

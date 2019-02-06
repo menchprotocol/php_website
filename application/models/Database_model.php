@@ -884,7 +884,6 @@ class Database_model extends CI_Model
                 $alg_obj['in_id'] = intval($db_obj['in_id']);
                 $alg_obj['in_status'] = intval($db_obj['in_status']);
                 $alg_obj['in_outcome'] = $db_obj['in_outcome'];
-                $alg_obj['in_alternatives'] = $db_obj['in_alternatives'];
                 $alg_obj['in_is_any'] = intval($db_obj['in_is_any']);
 
                 //Append some of the intent Metadata for better contextual searching:

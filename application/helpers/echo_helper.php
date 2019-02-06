@@ -210,7 +210,7 @@ function fn___echo_in_message_manage($tr)
 
     //Build the HTML UI:
     $ui = '';
-    $ui .= '<div class="list-group-item is-msg is_level2_sortable all_msg msg_en_type_' . $tr['tr_type_en_id'] . '" id="ul-nav-' . $tr['tr_id'] . '" tr-id="' . $tr['tr_id'] . '">';
+    $ui .= '<div class="list-group-item is-msg is_level2_sortable enable-sorting all_msg msg_en_type_' . $tr['tr_type_en_id'] . '" id="ul-nav-' . $tr['tr_id'] . '" tr-id="' . $tr['tr_id'] . '">';
     $ui .= '<div style="overflow:visible !important;">';
 
     //Type & Delivery Method:
@@ -231,7 +231,6 @@ function fn___echo_in_message_manage($tr)
     $ui .= '<li class="edit-off message_status" style="margin: 0 1px 0 -1px;"><span title="' . $en_all_4485[$tr['tr_type_en_id']]['m_name'] . ': ' . stripslashes($en_all_4485[$tr['tr_type_en_id']]['m_desc']) . '" data-toggle="tooltip" data-placement="top">' . $en_all_4485[$tr['tr_type_en_id']]['m_icon'] . '</span></li>';
     $ui .= '<li class="edit-on hidden"><span id="charNumEditing' . $tr['tr_id'] . '">0</span>/' . $CI->config->item('tr_content_max') . '</li>';
 
-    $ui .= '<li class="edit-off" style="margin: 0 0 0 8px;"><span class="on-hover"><i class="fas double-sort fa-sort sort_message" tr-id="' . $tr['tr_id'] . '" style="color:#2f2739;"></i></span></li>';
     $ui .= '<li class="edit-off" style="margin-right: 10px; margin-left: 6px;"><span class="on-hover"><a href="javascript:fn___message_remove(' . $tr['tr_id'] . ');"><i class="fas fa-trash-alt" style="margin:0 7px 0 5px;"></i></a></span></li>';
     $ui .= '<li class="edit-off" style="margin-left:-4px;"><span class="on-hover"><a href="javascript:fn___message_modify_start(' . $tr['tr_id'] . ',' . $tr['tr_type_en_id'] . ');"><i class="fas fa-pen-square"></i></a></span></li>';
     //Right side reverse:
@@ -1254,9 +1253,11 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
     } else {
 
-        $ui = '<div in-tr-id="' . $tr_id . '" in-tr-type="' . $in['tr_type_en_id'] . '" intent-id="' . $in['in_id'] . '" parent-intent-id="' . $in_parent_id . '" intent-level="' . $level . '" class="list-group-item ' . ($level == 3 ? 'is_level3_sortable' : 'is_level2_sortable') . ' intent_line_' . $in['in_id'] . ' in__tr_'.$tr_id.'">';
+        $ui = '<div in-tr-id="' . $tr_id . '" in-tr-type="' . $in['tr_type_en_id'] . '" intent-id="' . $in['in_id'] . '" parent-intent-id="' . $in_parent_id . '" intent-level="' . $level . '" class="list-group-item ' . ($level == 3 || ($level == 2 && !$is_parent) ? ' enable-sorting ' : '') . ($level == 3 ? 'is_level3_sortable' : 'is_level2_sortable') . ' intent_line_' . $in['in_id'] . ' in__tr_'.$tr_id.'">';
 
     }
+
+
 
 
     /*
@@ -1310,7 +1311,6 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         //Show Landing Page URL:
         $ui .= ' <a href="/' . $in['in_id'] . '" data-toggle="tooltip" title="Open Landing Page with Intent tree overview & Messenger Action Plan button" data-placement="top"><i class="fas fa-shopping-cart"></i></a>';
 
-        $ui .= ' <span class="obj-id underdot" data-toggle="tooltip" data-placement="top" title="Intent #' . $in['in_id'] . '">#' . $in['in_id'] . '</span>';
     }
 
 
@@ -1438,21 +1438,6 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
 
 
-    //We have numbering:
-    if($level == 3 || ($level == 2 && !$is_parent)){
-        //Always Show Entity Icons
-        $ui .= '<span class="double-icon double-sort" style="width: 42px;">';
-
-        //Show larger intent icon (AND or OR):
-        $ui .= '<span class="icon-main"><span class="inline-level inline-level-' . $level . '" style="'.( $level == 2 ? 'font-weight:900;' : '' ).'">#' . $in['tr_order'] . '</span></span> ';
-
-        //Show smaller intent status:
-        $ui .= '<span class="icon-sub"><i class="fas fa-sort"></i></span> ';
-
-        $ui .= '</span>';
-    }
-
-
 
     //Intent UI based on level:
     if ($level == 1) {
@@ -1463,7 +1448,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
     } elseif ($level == 2) {
 
-        $ui .= '<a href="javascript:fn___ms_toggle(' . $tr_id . ', -1);"><span id="title_' . $tr_id . '" style="font-weight: 500;" class="cdr_crnt tree_title in_outcome_' . $in['in_id'] . (strlen($in['in_alternatives']) > 0 ? ' has-desc ' : '') . '" data-toggle="tooltip" data-placement="right" title="' . $in['in_alternatives'] . '">' . $in['in_outcome'] . '</span> <i id="handle-' . $tr_id . '" class="fal fa-plus-square" ' . ($is_parent ? 'data-toggle="tooltip" data-placement="right" title="View Siblings for this Intent"' : '') . '></i></a>';
+        $ui .= '<a href="javascript:fn___ms_toggle(' . $tr_id . ', -1);">&nbsp;<i id="handle-' . $tr_id . '" class="fal fa-plus-square" ' . ($is_parent ? 'data-toggle="tooltip" data-placement="right" title="View Siblings for this Intent"' : '') . '></i> <span id="title_' . $tr_id . '" style="font-weight: 500;" class="cdr_crnt tree_title in_outcome_' . $in['in_id'] . '">' . $in['in_outcome'] . '</span></a>';
 
     } elseif ($level == 3) {
 
@@ -1472,7 +1457,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
             $ui .= '<span class="badge badge-primary" style="font-size: 0.8em;"><i class="fas fa-map-pin"></i> You\'re Here</span> ';
         }
 
-        $ui .= '<span id="title_' . $tr_id . '" class="tree_title in_outcome_' . $in['in_id'] . (strlen($in['in_alternatives']) > 0 ? ' has-desc ' : '') . '" data-toggle="tooltip" data-placement="right" title="' . $in['in_alternatives'] . '">' . $in['in_outcome'] . '</span> ';
+        $ui .= '<span id="title_' . $tr_id . '" class="tree_title in_outcome_' . $in['in_id'] . '" style="padding-left:24px;">' . $in['in_outcome'] . '</span> ';
 
     }
 
@@ -1490,14 +1475,6 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
 
     $ui .= '</span>';
-
-
-    if ($level == 1) {
-
-        //Expand alternative outcomes for Level 1 intent:
-        $ui .= '<div class="in_alternatives_' . $in['in_id'] . '" style="margin-top:2px;">' . nl2br($in['in_alternatives']) . '</div>';
-
-    }
 
     /*
      *
@@ -1533,7 +1510,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
             <div class="input-group">
                 <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="fn___in_link_or_create(' . $in['in_id'] . ',3);" intent-id="' . $in['in_id'] . '"><input type="text" class="form-control autosearch intentadder-level-3 intentadder-id-'.$in['in_id'].' algolia_search bottom-add" maxlength="' . $CI->config->item('in_outcome_max') . '" id="addintent-cr-' . $tr_id . '" intent-id="' . $in['in_id'] . '" placeholder="Add #Intent"></form></div>
                 <span class="input-group-addon" style="padding-right:8px;">
-                    <span data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" onclick="fn___in_link_or_create(' . $in['in_id'] . ',3);" class="badge badge-primary pull-right" intent-id="' . $in['in_id'] . '" style="cursor:pointer; margin: 13px -6px 1px 13px;">
+                    <span data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" onclick="fn___in_link_or_create(' . $in['in_id'] . ',3);" class="badge badge-primary pull-right" intent-id="' . $in['in_id'] . '" style="cursor:pointer; margin: 1px -10px 0px 3px;">
                         <div><i class="fas fa-plus"></i></div>
                     </span>
                 </span>
@@ -1548,6 +1525,18 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     $ui .= '</div>';
     return $ui;
 
+}
+
+
+function echo_fav_icon($domain_url){
+    //Does this domain have a Favicon?
+    $fav_icon = $domain_url . '/favicon.ico';
+    $curl = fn___curl_html($fav_icon, true);
+    if ($curl['status'] && $curl['tr_type_en_id']==4260 /* Image */) {
+        return '<img src="'.$fav_icon.'" class="profile-icon-mini" />';
+    } else {
+        return null;
+    }
 }
 
 function fn___echo_leaderboard($days_ago = null, $top = 25){
@@ -1680,9 +1669,6 @@ function fn___echo_en($en, $level, $is_parent = false)
 
         //Google search:
         $ui .= ' &nbsp;<a href="https://www.google.com/search?q=' . urlencode($en['en_name']) . '" target="_blank" data-toggle="tooltip" title="Search on Google" data-placement="top"><i class="fab fa-google"></i></a>';
-
-        //Also show Entity ID:
-        $ui .= ' &nbsp;<span class="obj-id underdot" data-toggle="tooltip" data-placement="top" title="Entity ID">@' . $en['en_id'] . '</span>';
 
     }
 

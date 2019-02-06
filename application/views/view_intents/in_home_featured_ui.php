@@ -4,7 +4,7 @@
     <h3>How can I help you today?</h3>
     <div class="list-group actionplan_list" style="margin-top: 10px;">
         <?php
-        foreach ($featured_cs as $featured_c) {
+        foreach ($featured_ins as $featured_c) {
             echo fn___echo_in_featured($featured_c);
         }
         ?>

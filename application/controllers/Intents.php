@@ -32,19 +32,19 @@ class Intents extends CI_Controller
         } else {
 
             //How many featured intents do we have?
-            $featured_cs = $ins = $this->Database_model->fn___in_fetch(array(
+            $featured_ins = $ins = $this->Database_model->fn___in_fetch(array(
                 'in_status' => 3, //Featured Intents
             ));
 
-            if (count($featured_cs) == 0) {
+            if (count($featured_ins) == 0) {
 
                 //Go to default landing page:
                 return fn___redirect_message('/' . $this->config->item('in_tactic_id'));
 
-            } elseif (count($featured_cs) == 1) {
+            } elseif (count($featured_ins) == 1) {
 
                 //TO to single feature:
-                return fn___redirect_message('/' . $featured_cs[0]['in_id']);
+                return fn___redirect_message('/' . $featured_ins[0]['in_id']);
 
             } else {
 
@@ -54,7 +54,7 @@ class Intents extends CI_Controller
                     'title' => 'Advance Your Tech Career',
                 ));
                 $this->load->view('view_intents/in_home_featured_ui', array(
-                    'featured_cs' => $featured_cs,
+                    'featured_ins' => $featured_ins,
                 ));
                 $this->load->view('view_shared/public_footer');
 
@@ -379,11 +379,6 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Points',
             ));
-        } elseif (!isset($_POST['in_alternatives'])) {
-            return fn___echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Trigger Statements',
-            ));
         } elseif (intval($_POST['in_usd']) < 0 || intval($_POST['in_usd']) > 300) {
             return fn___echo_json(array(
                 'status' => 0,
@@ -506,7 +501,6 @@ class Intents extends CI_Controller
         $in_update = array(
             'in_status' => intval($_POST['in_status']),
             'in_outcome' => trim($_POST['in_outcome']),
-            'in_alternatives' => trim($_POST['in_alternatives']),
             'in_seconds' => intval($_POST['in_seconds']),
             'in_usd' => doubleval($_POST['in_usd']),
             'in_points' => intval($_POST['in_points']),

@@ -193,10 +193,10 @@ $hide_subscribe = ( isset($_GET['hide_subscribe']) && intval($_GET['hide_subscri
     <a class="btn btn-primary" href="https://m.me/askmench?ref=<?= $in['in_id'] ?>"
        style="display: inline-block; padding: 12px 36px;">Get Started [Free] <i class="fas fa-angle-right"></i></a>
 
-    <span class="learn_more_toggle" style="display: inline-block;">or <a class="btn btn-primary grey" href="#learnMore"
-                                                                         onclick="$('.learn_more_toggle').toggle();"
-                                                                         style="display: inline-block; padding:12px 16px;">Learn More <i
-                    class="fas fa-info-circle"></i></a></span>
+    <div>
+        <i class="fal fa-plus-circle learn_more_toggle"></i><i class="fal fa-minus-circle learn_more_toggle hidden"></i> <a href="#learnMore" onclick="$('.learn_more_toggle').toggleClass('hidden');" style="text-decoration:underline; display: inline-block;">Learn more</a>
+        about Mench or
+        <a href="/<?= $this->config->item('in_miner_start_id') ?>" style="text-decoration:underline;  display: inline-block;">contribute &raquo;</a></div>
 
     <?php } ?>
 
@@ -205,7 +205,7 @@ $hide_subscribe = ( isset($_GET['hide_subscribe']) && intval($_GET['hide_subscri
 
 
 <a name="learnMore"></a>
-<div style="display: none;" class="learn_more_toggle">
+<div class="learn_more_toggle hidden inline-box">
 
     <h3 style="margin-top:20px !important;">Advance Your Tech Career:</h3>
     <div style="margin:12px 0 0 5px;">
@@ -318,15 +318,15 @@ $hide_subscribe = ( isset($_GET['hide_subscribe']) && intval($_GET['hide_subscri
 
 <?php
 //Display other featured intents:
-$featured_cs = $ins = $this->Database_model->fn___in_fetch(array(
+$featured_ins = $ins = $this->Database_model->fn___in_fetch(array(
     'in_status' => 3, //Featured Intents
     'in_id !=' => $in['in_id'],
 ));
-if (count($featured_cs) > 0 && !$hide_subscribe) {
+if (count($featured_ins) > 0 && !$hide_subscribe) {
     echo '<div>';
     echo '<h3>Featured Intentions:</h3>';
     echo '<div class="list-group actionplan_list">';
-    foreach ($featured_cs as $featured_c) {
+    foreach ($featured_ins as $featured_c) {
         echo fn___echo_in_featured($featured_c);
     }
     echo '</div>';

@@ -22,7 +22,7 @@ class Entities extends CI_Controller
 
         //Show frame to be loaded in modal:
         $this->load->view('view_shared/matrix_header', array(
-            'title' => 'New Source Entity Wizard',
+            'title' => 'Add Source Wizard',
         ));
         $this->load->view('view_entities/add_source_frame');
         $this->load->view('view_shared/matrix_footer');
@@ -60,12 +60,135 @@ class Entities extends CI_Controller
         }
 
         //Return results:
+        $fav_icon = echo_fav_icon($curl['domain_url']);
+
         return fn___echo_json(array(
             'status' => 1,
-            'entity_domain_ui' => '<i class="fas fa-at grey-at"></i> ' . $_POST['input_url'],
-            'entity_domain_id' => 2345,
+            'entity_domain_ui' => ( $fav_icon ? $fav_icon : '<i class="fas fa-at grey-at"></i>' ) . ' ' . $curl['domain_host'],
             'page_title' => $curl['page_title'],
+            'curl' => $curl, //for debugging if needed
         ));
+
+    }
+
+
+    function fn___add_source_wizard(){
+
+        /*
+         *
+         * Will create the new entities and transactions necessary to create a new source
+         *
+         * */
+
+        $udata = fn___en_auth(array(1308));
+        if (!$udata) {
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Session. Refresh to Continue',
+            ));
+        } elseif (!isset($_POST['input_url']) || !filter_var($_POST['input_url'], FILTER_VALIDATE_URL)) {
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Enter Valid URL',
+            ));
+        }
+
+        //See if we can find the domain, if the domain is different from the input URL:
+        $dup_domain_trs = array();
+        if ($url == $domain_url && count($dup_url_trs) > 0) {
+
+            //We already have the parent:
+            $dup_domain_trs = $dup_url_trs[0];
+
+        } else {
+            //See if we can find the domain URL:
+            $dup_domain_trs = $CI->Database_model->fn___tr_fetch(array(
+                'tr_status >=' => 0, //New+
+                'tr_type_en_id' => 4256, //Generic URL: Domain name should be stored only as a Generic URL
+                'tr_content' => $domain_url,
+            ), array('en_child'));
+        }
+
+
+        if (count($dup_domain_trs) > 0) {
+
+            //Found it through domain search:
+            $return_data['domain_en_existed'] = 1;
+            $return_data['domain__en'] = $dup_domain_trs[0];
+
+        } else {
+
+            //Now let's try detecting the domain using the pattern matching entity logic:
+            foreach ($CI->Database_model->fn___tr_fetch(array(
+                'tr_type_en_id' => 4255, //Text Link that contains the pattern match
+                'tr_en_parent_id' => 3307, //Entity URL Pattern Match
+                'tr_status >=' => 2, //Published+
+                'en_status >=' => 2, //Published+
+            ), array('en_child')) as $match) {
+                if (substr_count($url, $match['tr_content']) > 0) {
+                    //yes we found a pattern match:
+                    $dup_domain_trs = $match;
+                    break;
+                }
+            }
+
+            //Did we find it?
+            if (count($dup_domain_trs) > 0) {
+
+                //Found it through pattern matching:
+                $return_data['domain_en_existed'] = 1;
+                $return_data['domain__en'] = $dup_domain_trs[0];
+
+            } else {
+
+                //We tried but could not find this domain in the matrix...
+
+                //Load the current user as we're about to mine data:
+                $udata = $CI->session->userdata('user');
+
+                if (!isset($udata['en_id'])) {
+                    //Ooopsi, we need the miner to be logged in to do this:
+                    return array(
+                        'status' => 0,
+                        'message' => 'Session expired, login to continue.',
+                    );
+                }
+
+                //Cleanup entity name:
+                $en_name_parts = explode('.', str_replace('www.', '', $parse['host']));
+
+
+                //Add domain entity:
+                $domain__en = $CI->Database_model->fn___en_create(array(
+                    'en_name' => ucwords($en_name_parts[0]),
+                    'en_icon' => echo_fav_icon($domain_url),
+                    'en_status' => 0, //Require someone to check this
+                ), true, $udata['en_id']);
+                if (!isset($domain__en['en_id'])) {
+                    return array(
+                        'status' => 0,
+                        'message' => 'Failed to create domain entity',
+                    );
+                }
+
+                //Add transaction:
+                $domain_tr = $CI->Database_model->fn___tr_create(array(
+                    'tr_status' => 0, //Require someone to check this
+                    'tr_miner_en_id' => $udata['en_id'],
+                    'tr_type_en_id' => 4256, //Generic URL
+                    'tr_en_parent_id' => 2750, //Assume group for now
+                    'tr_en_child_id' => $domain__en['en_id'],
+                    'tr_content' => $domain_url,
+                ), true);
+
+                //Now report back the new data:
+                $return_data['domain_en_existed'] = 0;
+                $return_data['domain__en'] = $domain__en;
+
+            }
+        }
+
+
 
     }
 

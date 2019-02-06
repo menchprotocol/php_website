@@ -6,7 +6,7 @@
 
 <div style="padding:0 10px;">
 
-    <h3 style="margin: 0; padding:10px 0 0 0;">New Source Entity Wizard</h3>
+    <h3 style="margin: 0; padding:10px 0 0 0;">Add Source Wizard</h3>
 
     <div class="title" style="margin-bottom:0; padding-bottom:0;">
         <h4>
@@ -27,7 +27,6 @@
         echo '<span class="checkbox" style="margin: 0;">
             <label style="display:inline-block !important; font-size: 0.9em !important; margin-left:8px;">
                 <input type="checkbox" checked="checked" disabled name="source_type" value="domain_url" />
-                <input type="hidden" id="entity_domain_id" value="" />
                     <span class="entity_domain_ui"></span>
                     [<span class="underdot" data-toggle="tooltip" data-placement="top" title="Parent auto created based on URL domain">Domain Entity</span>]
             </label>

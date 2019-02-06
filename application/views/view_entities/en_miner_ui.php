@@ -13,6 +13,19 @@
     <div class="col-xs-7 cols">
 
         <?php
+
+
+
+        //Focused/current entity:
+        echo '<h5 class="badge badge-h indent1">Entity @'.$entity['en_id'].'</h5>';
+        echo '<div id="entity-box" class="list-group indent1">';
+        echo fn___echo_en($entity, 1);
+        echo '</div>';
+
+
+
+
+
         //Parents
         echo '<h5><span class="badge badge-h"><span class="li-parent-count">' . count($entity['en__parents']) . '</span> Parent' . fn___echo__s(count($entity['en__parents'])) . ' <i class="fas fa-sign-in-alt"></i></span></h5>';
         echo '<div id="list-parent" class="list-group  grey-list">';
@@ -24,7 +37,7 @@
                 <div class="input-group">
                     <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search" data-lpignore="true" placeholder="Add Entity..."></div>
                     <span class="input-group-addon">
-                        <a class="badge badge-secondary new-btn" href="javascript:void(0);" onclick="alert(\'Note: Either choose an option from the suggestion menu to continue\')">ADD</a>
+                        <a class="badge badge-secondary new-btn" href="javascript:void(0);" onclick="alert(\'Note: Either choose an option from the suggestion menu to continue\')"><i class="fas fa-plus"></i></a>
                     </span>
                 </div>
             </div>';
@@ -35,11 +48,6 @@
 
 
 
-        //Focused/current entity:
-        echo '<h5 class="badge badge-h indent1"><i class="fas fa-at"></i> Entity</h5>';
-        echo '<div id="entity-box" class="list-group indent1">';
-        echo fn___echo_en($entity, 1);
-        echo '</div>';
 
 
 
@@ -133,7 +141,7 @@
         <div class="input-group">
             <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search bottom-add" data-lpignore="true" placeholder="Add ' . stripslashes($entity['en_name']) . '"></div>
             <span class="input-group-addon">
-                <a class="badge badge-secondary new-btn" href="javascript:tr_add(0,' . $entity['en_id'] . ', 0);">ADD</a>
+                <a class="badge badge-secondary new-btn" href="javascript:tr_add(0,' . $entity['en_id'] . ', 0);"><i class="fas fa-plus"></i></a>
             </span>
         </div>
     </div>';

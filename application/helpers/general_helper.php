@@ -59,7 +59,6 @@ function fn___detect_missing_columns($insert_columns, $required_columns)
 }
 
 
-
 function fn___fetch_file_ext($url)
 {
     //A function that attempts to fetch the file extension of an input URL:
@@ -128,7 +127,7 @@ function fn___extract_message_references($tr_content)
         } else {
             //Check maybe it's a command?
             $command = fn___includes_any($part, $CI->config->item('message_commands'));
-            if($command){
+            if ($command) {
                 //Yes!
                 array_push($msg_references['ref_commands'], $command);
             }
@@ -136,7 +135,6 @@ function fn___extract_message_references($tr_content)
     }
     return $msg_references;
 }
-
 
 
 function fn___isDate($string)
@@ -164,13 +162,13 @@ function fn___detect_tr_type_en_id($string)
 
     $string = trim($string);
 
-    if (!$string || strlen($string) == 0) {
+    if (is_null($string) || strlen($string) == 0) {
         //Naked:
         return array(
             'status' => 1,
             'tr_type_en_id' => 4230,
         );
-    } elseif (strlen(intval($string))==strlen($string)) {
+    } elseif (strlen(intval($string)) == strlen($string) && (intval($string) > 0 || $string == '0')) {
         //Number:
         return array(
             'status' => 1,
@@ -181,7 +179,7 @@ function fn___detect_tr_type_en_id($string)
         //It's a URL, see what type (this could fail if duplicate, etc...):
         return fn___curl_html($string, true);
 
-    } elseif ( strlen($string) > 9 && (fn___isDate($string) || strtotime($string) > 0)) {
+    } elseif (strlen($string) > 9 && (fn___isDate($string) || strtotime($string) > 0)) {
         //Date/time:
         return array(
             'status' => 1,
@@ -340,6 +338,44 @@ function fn___upload_to_cdn($file_url, $json_data, $is_local = false)
 }
 
 
+function detect_download_file_url($url, $mime_code) {
+
+    $mime_types = array(
+        //Web sources:
+        'swf' => 'application/x-shockwave-flash',
+
+        //archives
+        'zip' => 'application/zip',
+        'rar' => 'application/x-rar-compressed',
+        'exe' => 'application/x-msdownload',
+        'msi' => 'application/x-msdownload',
+        'cab' => 'application/vnd.ms-cab-compressed',
+
+        // adobe
+        'pdf' => 'application/pdf',
+        'ai'  => 'application/postscript',
+        'eps' => 'application/postscript',
+        'ps'  => 'application/postscript',
+
+        // ms office
+        'doc' => 'application/msword',
+        'rtf' => 'application/rtf',
+        'xls' => 'application/vnd.ms-excel',
+        'ppt' => 'application/vnd.ms-powerpoint',
+
+        // open office
+        'odt' => 'application/vnd.oasis.opendocument.text',
+        'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
+    );
+
+    $parts = explode('.', $url);
+    $ext = strtolower(array_pop($parts));
+
+    //Return if we found this file type:
+    return (array_key_exists($ext, $mime_types) || in_array($mime_code, $mime_types));
+
+}
+
 function fn___curl_html($url, $return_breakdown = false)
 {
 
@@ -351,8 +387,18 @@ function fn___curl_html($url, $return_breakdown = false)
     if (!filter_var($url, FILTER_VALIDATE_URL)) {
         return array(
             'status' => 0,
-            'message' => 'Enter Valid URL',
+            'message' => 'Enter a valid URL',
         );
+    }
+
+
+    //Detect domain parent:
+    $parse = parse_url($url);
+    $domain_url = $parse['scheme'] . '://' . $parse['host'];
+    if ($domain_url . '/' == $url) {
+        //Clean the URL by trimming trailing slashes after domain names to better find matching URLs.
+        //TODO improve the logic behind this entire system to better detect duplicate URLs...
+        $url = $domain_url;
     }
 
     $ch = curl_init($url);
@@ -380,6 +426,7 @@ function fn___curl_html($url, $return_breakdown = false)
         $body_html = substr($response, curl_getinfo($ch, CURLINFO_HEADER_SIZE));
         $content_type = fn___one_two_explode('', ';', curl_getinfo($ch, CURLINFO_CONTENT_TYPE));
         $embed_code = fn___echo_url_embed($url, $url, true);
+        $en_all_4537 = $CI->config->item('en_all_4537');
 
         // Now see if this is a specific file type:
         // Audio File URL: https://s3foundation.s3-us-west-2.amazonaws.com/672b41ff20fece4b3e7ae2cf4b58389f.mp3
@@ -387,10 +434,7 @@ function fn___curl_html($url, $return_breakdown = false)
         // Image File URL: https://s3foundation.s3-us-west-2.amazonaws.com/d673c17d7164817025a000416da3be3f.png
         // Downloadable File URL: https://s3foundation.s3-us-west-2.amazonaws.com/611695da5d0d199e2d95dd2eabe484cf.zip
 
-        if (substr_count($content_type, 'application/') == 1) {
-            //File URL
-            $tr_type_en_id = 4261;
-        } elseif (substr_count($content_type, 'image/') == 1) {
+        if (substr_count($content_type, 'image/') == 1) {
             //Image URL
             $tr_type_en_id = 4260;
         } elseif (substr_count($content_type, 'audio/') == 1) {
@@ -402,6 +446,9 @@ function fn___curl_html($url, $return_breakdown = false)
         } elseif ($embed_code['status']) {
             //Embeddable URL:
             $tr_type_en_id = 4257;
+        } elseif (detect_download_file_url($url, $content_type)) {
+            //File URL
+            $tr_type_en_id = 4261;
         } else {
             //Generic URL:
             $tr_type_en_id = 4256;
@@ -424,7 +471,7 @@ function fn___curl_html($url, $return_breakdown = false)
             }
         }
         $title = trim($title);
-        if(strlen($title) > 0){
+        if (strlen($title) > 0) {
 
             //Make sure this is not a duplicate name:
             $dup_name_us = $CI->Database_model->fn___en_fetch(array(
@@ -441,19 +488,11 @@ function fn___curl_html($url, $return_breakdown = false)
 
             //did not find a <title> tag:
             //Use URL Type as its name:
-            $en_all_4537 = $CI->config->item('en_all_4537');
             $title = $en_all_4537[$tr_type_en_id]['m_name'] . ' ' . substr(md5($url), 0, 8); //Append a unique identifier
 
         }
 
-
-        //Detect domain parent:
-        $parse = parse_url($url);
-        $domain_url = $parse['scheme'].'://'.$parse['host'];
-
-        //Do we have this URL as part of any people/group entity?
-
-        //Check to see if duplicate URL:
+        //First check to see if duplicate URL:
         $dup_url_trs = $CI->Database_model->fn___tr_fetch(array(
             'tr_status >=' => 0, //New+
             'tr_type_en_id IN (' . join(',', $CI->config->item('en_ids_4537')) . ')' => null, //Entity URL Links
@@ -461,17 +500,23 @@ function fn___curl_html($url, $return_breakdown = false)
         ), array('en_child'));
 
 
-        //Return results:
-        return array(
+        //Prep return data:
+        $return_data = array(
             //used all the time, also when updating en entity:
-            'status'  => (count($dup_url_trs) > 0 ? 0 : 1),
-            'dup_en'  => (count($dup_url_trs) > 0 ? $dup_url_trs[0] : array()),
-            'message' => (count($dup_url_trs) > 0 ? 'URL already added for entity ['.$dup_url_trs[0]['en_name'].']' : 'Success'),
-            'tr_type_en_id' => $tr_type_en_id,
-            'page_title' => $title,
+            'cleaned_url' => $url,
+            'CURLINFO_CONTENT_TYPE' => curl_getinfo($ch, CURLINFO_CONTENT_TYPE),
             'domain_url' => $domain_url,
-            'domain_en' => $domain_url,
+            'domain_host' => $parse['host'],
+            'tr_type_en_id' => $tr_type_en_id,
+            'tr_type_en' => $en_all_4537[$tr_type_en_id],
+            'status' => (count($dup_url_trs) > 0 ? 0 : 1),
+            'dup_en' => (count($dup_url_trs) > 0 ? $dup_url_trs[0] : array()),
+            'message' => (count($dup_url_trs) > 0 ? 'URL already added for entity <a href="/entities/' . $dup_url_trs[0]['en_id'] . '"><b>' . $dup_url_trs[0]['en_name'] . '</b></a>' : 'Success'),
+            'page_title' => $title,
         );
+
+        //Return results:
+        return $return_data;
 
     } else {
         //Simply return the response:

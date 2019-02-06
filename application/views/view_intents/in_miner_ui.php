@@ -17,8 +17,21 @@ if (isset($orphan_ins)) {
         type="text/javascript"></script>
 
 
+
+
+
 <div class="row">
-    <div class="col-xs-7 cols">
+    <div class="col-md-6 cols">
+
+        <?php
+        echo '<h5 class="badge badge-h indent1">Intent #'.$in['in_id'].'</h5>';
+        echo '<div class="list-group indent1">';
+        echo fn___echo_in($in, 1);
+        echo '</div>';
+        ?>
+
+
+
         <?php
         //Are we showing Orphans?
         if (isset($orphan_ins)) {
@@ -31,6 +44,22 @@ if (isset($orphan_ins)) {
             echo '</div>';
 
         } else {
+
+            //Count orphans only IF we are in the top parent root:
+            if ($this->config->item('in_tactic_id') == $in['in_id']) {
+                $orphans_count = count($this->Database_model->fn___in_fetch(array(
+                    ' NOT EXISTS (SELECT 1 FROM table_ledger WHERE in_id=tr_in_child_id AND tr_status>=0) ' => null,
+                )));
+                if ($orphans_count > 0) {
+                    echo '<span style="padding-left:8px; display: inline-block;"><a href="/intents/fn___in_orphans">' . $orphans_count . ' Orphans &raquo;</a></span>';
+                }
+            }
+
+
+
+
+
+
 
             //Start with parents:
             echo '<h5 class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-parent-count parent-counter-' . $in['in_id'] . '">' . count($in['in__parents']) . '</span> Parent' . fn___echo__s(count($in['in__parents'])) . '</h5>';
@@ -45,45 +74,31 @@ if (isset($orphan_ins)) {
                 echo '<div class="alert alert-info" role="alert" style="margin-top: 0;"><i class="fas fa-exclamation-triangle"></i> No parent intents linked yet</div>';
             }
 
+        }
+        ?>
 
-            echo '<h5 class="badge badge-h indent1"><i class="fas fa-hashtag"></i> Intent</h5>';
-            echo '<div class="list-group indent1">';
-            echo fn___echo_in($in, 1);
-            echo '</div>';
+        <?php
+        //Expand/Contract buttons
+        echo '<div class="indent2">';
+        echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-children-count children-counter-' . $in['in_id'] . '">' . (isset($metadata['in__tree_in_active_count']) ? $metadata['in__tree_in_active_count'] : '') . '</span> Children</h5>';
 
-
-            //Expand/Contract buttons
-            echo '<div class="indent2">';
-            echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-children-count children-counter-' . $in['in_id'] . '">' . (isset($metadata['in__tree_in_active_count']) ? $metadata['in__tree_in_active_count'] : '') . '</span> Children</h5>';
-
-            echo '<div id="expand_intents" style="padding-left:8px; display: inline-block;">';
-            echo '<i class="fas fa-plus-square expand_all" style="font-size: 1.2em;"></i> &nbsp;';
-            echo '<i class="fas fa-minus-square close_all" style="font-size: 1.2em;"></i>';
-            echo '</div>';
+        echo '<div id="expand_intents" style="padding-left:8px; display: inline-block;">';
+        echo '<i class="fas fa-plus-square expand_all" style="font-size: 1.2em;"></i> &nbsp;';
+        echo '<i class="fas fa-minus-square close_all" style="font-size: 1.2em;"></i>';
+        echo '</div>';
 
 
-            //Count orphans only IF we are in the top parent root:
-            if ($this->config->item('in_tactic_id') == $in['in_id']) {
-                $orphans_count = count($this->Database_model->fn___in_fetch(array(
-                    ' NOT EXISTS (SELECT 1 FROM table_ledger WHERE in_id=tr_in_child_id AND tr_status>=0) ' => null,
-                )));
-                if ($orphans_count > 0) {
-                    echo '<span style="padding-left:8px; display: inline-block;"><a href="/intents/fn___in_orphans">' . $orphans_count . ' Orphans &raquo;</a></span>';
-                }
-            }
+        echo '</div>';
 
-            echo '</div>';
+        echo '<div id="in_children_errors indent2"></div>'; //Show potential errors detected in the Action Plan via our JS functions...
 
-            echo '<div id="in_children_errors indent2"></div>'; //Show potential errors detected in the Action Plan via our JS functions...
+        echo '<div id="list-in-' . $in['in_id'] . '" class="list-group list-is-children list-level-2 indent2">';
+        foreach ($in['in__children'] as $child_in) {
+            echo fn___echo_in($child_in, 2, $in['in_id']);
+        }
 
-            echo '<div id="list-in-' . $in['in_id'] . '" class="list-group list-is-children list-level-2 indent2">';
-            foreach ($in['in__children'] as $child_in) {
-                echo fn___echo_in($child_in, 2, $in['in_id']);
-            }
-
-            //Enable Miner to add child intents:
-            //Enable Miner to add child intents:
-            echo '<div class="list-group-item list_input grey-block">
+        //Enable Miner to add child intents:
+        echo '<div class="list-group-item list_input grey-block">
                 <div class="input-group">
                     <div class="form-group is-empty" style="margin: 0; padding: 0;">
                         <input type="text"
@@ -96,22 +111,22 @@ if (isset($orphan_ins)) {
                     <span class="input-group-addon" style="padding-right:8px;">
                         <span id="add_in_btn" data-toggle="tooltip" title="or press ENTER ;)"
                               data-placement="top" class="badge badge-primary pull-right"
-                              style="cursor:pointer; margin: 1px 3px 0 6px;">
+                              style="cursor:pointer; margin: 1px 2px 0 6px;">
                             <div><i class="fas fa-plus"></i></div>
                         </span>
                     </span>
                 </div>
             </div>';
 
-            echo '</div>';
-
-        }
+        echo '</div>';
         ?>
 
     </div>
 
 
-    <div class="col-xs-5 cols">
+    <div class="col-md-6 cols">
+
+
 
 
         <div id="modifybox" class="fixed-box hidden" intent-id="0" intent-tr-id="0" level="0">
@@ -154,34 +169,10 @@ if (isset($orphan_ins)) {
 
 
 
-                        <div class="title" style="margin-top:15px;"><h4><i class="fal fa-bullseye-arrow"></i> Alternative Outcomes</h4></div>
-                        <div class="inline-box">
-                            <div class="form-group label-floating is-empty" style="height: 40px !important;">
-                                <div class="input-group border">
-                                <span class="input-group-addon addon-lean addon-grey"
-                                      style="color:#2f2739; font-weight: 300;">To</span>
-                                    <textarea class="form-control text-edit" id="in_alternatives"
-                                              placeholder="Other ways of mentioning the primary outcome..." style="height:94px !important; min-height:auto !important;margin-bottom: -9px !important;"></textarea>
-                                </div>
-                            </div>
-                        </div>
-
-
-
-
                         <div class="title" style="margin-top:15px;"><h4><i
                                         class="fas fa-hashtag"></i> Intent Settings</h4></div>
 
                         <div class="inline-box" style="margin-bottom: 15px;">
-                            <span class="checkbox inline-block hidden">
-                                <label style="display:inline-block !important; font-size: 0.9em !important; margin-left:8px;">
-                                    <input type="checkbox" id="apply_recursively"/>
-                                    <span class="underdot" data-toggle="tooltip" data-placement="top"
-                                          title="Applies the new status recursively down to all children/grandchildren that have the same starting status. Page will refresh after saving.">
-                                        Apply Recursively
-                                    </span>
-                                </label>
-                            </span>
 
                             <div class="form-group label-floating is-empty" style="margin-bottom: 0; padding-bottom: 0; display:block !important;">
                                 <?php
@@ -216,13 +207,21 @@ if (isset($orphan_ins)) {
                             </div>
 
 
-                            <select class="form-control border" id="in_status" data-toggle="tooltip" title="Intent Status" data-placement="top" style="display: inline-block !important;">
+                            <select class="form-control border" id="in_status" original-status="" data-toggle="tooltip" title="Intent Status" data-placement="top" style="display: inline-block !important;">
                                 <?php
                                 foreach (fn___echo_status('in_status') as $status_id => $status) {
                                     echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
                                 }
                                 ?>
                             </select>
+                            <span class="checkbox apply-recursive inline-block hidden">
+                                <label style="display:inline-block !important; font-size: 0.9em !important; margin-left:8px;">
+                                    <input type="checkbox" id="apply_recursively"/>
+                                    <span class="underdot" data-toggle="tooltip" data-placement="top"
+                                          title="If chcecked will also apply the new status recursively down (children, grandchildren, etc...) that have the same original status">Recursive
+                                    </span>
+                                </label>
+                            </span>
 
                             <div class="notify_in_remove hidden">
                                 <div class="alert alert-warning" style="margin:5px 0px; padding:7px;">
@@ -232,6 +231,24 @@ if (isset($orphan_ins)) {
                             </div>
 
                         </div>
+
+
+
+
+
+                        <div class="title" style="margin-top: 15px;"><h4><i class="fal fa-cloud-upload"></i> Webhook</h4></div>
+                        <div class="inline-box" style="margin-bottom: 15px;">
+                            <div class="form-group label-floating is-empty">
+                                <div class="input-group border">
+                                    <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;"><?= $this->config->item('in_webhook_prefix') ?></span>
+                                    <input style="padding-left:0;" type="text" id="in_webhook" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
 
                     </div>
 
@@ -291,17 +308,6 @@ if (isset($orphan_ins)) {
                         </div>
 
 
-
-
-                        <div class="title" style="margin-top: 15px;"><h4><i class="fal fa-cloud-upload"></i> Webhook</h4></div>
-                        <div class="inline-box">
-                            <div class="form-group label-floating is-empty">
-                                <div class="input-group border">
-                                    <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;"><?= $this->config->item('in_webhook_prefix') ?></span>
-                                    <input style="padding-left:0;" type="text" id="in_webhook" class="form-control">
-                                </div>
-                            </div>
-                        </div>
 
 
 

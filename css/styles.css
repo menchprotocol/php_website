@@ -1299,7 +1299,7 @@ h5, .h5 {
 }
 
 .grey-input .badge-primary, .grey-input .badge-secondary {
-    margin: 0 -7px -2px 0 !important;
+    margin: 0 -8px -2px 0 !important;
     font-size: 0.9em !important;
     line-height: 130%;
 }
@@ -2541,6 +2541,9 @@ a.badge:focus, a.badge:hover {
     margin-bottom: 30px;
 }
 
+.input-group-addon .fa-plus {font-size: 19px; width: 24px; text-align: center; margin-left: 3px;}
+
+
 .btn-tight {
     padding-left: 8px;
     padding-right: 8px;
@@ -3623,6 +3626,24 @@ h4 .tip-badge {
 
 .redalert *, .redalert {
     color: #FF0000 !important;
+}
+
+.edit-box {
+    display: block;
+    position: absolute;
+    width: 280px;
+    height: 200px;
+    background-color: #EFEFEF;
+    z-index: 99999;
+    border-radius: 5px;
+    border: 1px solid #CCC;
+}
+
+.profile-icon-mini {
+    width: 16px;
+    height: 16px;
+    margin: -2px 0 0 0;
+    border-radius: 50%;
 }
 
 .profile-icon {

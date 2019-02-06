@@ -111,13 +111,15 @@ function fn___en_source_paste_url() {
 
             } else {
 
+                //For debugging when needed:
+                console.log(data);
+
                 //All good, show content:
                 $('.url-error').html('');
                 $('.url-parsed').removeClass('hidden');
 
                 //Update input fields:
                 $('.entity_domain_ui').html(data.entity_domain_ui);
-                $('#entity_domain_id').val(data.entity_domain_id);
                 $('#en_name').val(data.page_title);
 
             }

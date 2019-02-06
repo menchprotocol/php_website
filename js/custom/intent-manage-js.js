@@ -1,3 +1,7 @@
+
+
+
+
 //This also has an equal PHP function fn___echo_time_hours() which we want to make sure has more/less the same logic:
 function fn___echo_js_hours(in_seconds) {
     in_seconds = parseInt(in_seconds);
@@ -56,6 +60,16 @@ $(document).ready(function () {
 
     //Watch for intent status change:
     $("#in_status").change(function () {
+
+        //Should we show the recursive button? Only if the status changes from the original one...
+        if( parseInt($('#in_status').attr('original-status'))==parseInt(this.value)){
+            $('.apply-recursive').addClass('hidden');
+            $('#apply_recursively').prop('checked', false);
+        } else {
+            $('.apply-recursive').removeClass('hidden');
+        }
+
+        //Should we show intent archiving warning?
         if(parseInt(this.value) < 0){
             $('.notify_in_remove').removeClass('hidden');
         } else {
@@ -295,9 +309,6 @@ function fn___in_sort_save(in_id, level) {
 
             //Store in DB:
             new_tr_orders[sort_rank] = tr_id;
-
-            //Update sort handler:
-            $(".intent_line_" + in_id + " .inline-level-" + level).html('#' + sort_rank);
         }
     });
 
@@ -350,7 +361,7 @@ function fn___in_sort_load(in_id, level) {
     var settings = {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
         draggable: s_draggable, // Specifies which items inside the element should be sortable
-        handle: ".double-sort", // Restricts sort start click/touch to the specified element
+        handle: ".enable-sorting", // Restricts sort start click/touch to the specified element
         onUpdate: function (evt/**Event*/) {
             fn___in_sort_save(in_id, level);
         }
@@ -538,6 +549,9 @@ function fn___in_modify_load(in_id, tr_id) {
     $('.fixed-box, .ajax-frame').addClass('hidden');
     $("#modifybox").removeClass('hidden').hide().fadeIn();
     $('#modifybox').attr('intent-tr-id', 0).attr('intent-id', 0).attr('level', 0);
+    $('.apply-recursive').addClass('hidden');
+    $('#apply_recursively').prop('checked', false);
+
 
     //Set title:
     $('.edit-header').html('<i class="fas fa-cog"></i> ' + $('.in_outcome_' + in_id + ':first').text());
@@ -561,16 +575,15 @@ function fn___in_modify_load(in_id, tr_id) {
 
             //Load inputs:
             $('#in_outcome').val(data.in.in_outcome);
-            $('#in_alternatives').val(data.in.in_alternatives);
             $('#in_is_any_' + data.in.in_is_any).prop("checked", true);
-            $('.in_input_requirements').removeAttr('checked'); //Uncheck all
+            $('.in_input_requirements').prop('checked', false); //Uncheck all
             if (data.in_req_ens.length > 0) { //Check current ones:
                 for (var i = 0; i < data.in_req_ens.length; i++) {
                     $('#require__' + data.in_req_ens[i]).attr('checked', 'checked');
                 }
             }
             $('#in_status').val(data.in.in_status);
-            $('#apply_recursively').removeAttr('checked'); //Always remove
+            $('#in_status').attr('original-status', data.in.in_status); //Set the status before it gets changed by miners
             $('#in_usd').val(data.in.in_usd);
             $('#in_seconds').val(data.in.in_seconds);
             $('#in_webhook').val(data.in.in_webhook);
@@ -641,7 +654,6 @@ function fn___in_modify_save() {
         in_is_any: parseInt($('input[name=in_is_any]:checked').val()),
         apply_recursively: (document.getElementById('apply_recursively').checked ? 1 : 0),
         in_points: parseInt($('#in_points').val()),
-        in_alternatives: $('#in_alternatives').val().replace(/\"/g, ""), //Remove double quotes
         in_webhook: $('#in_webhook').val(),
         input_requirements: [], //Remove double quotes
         tr__conditional_score_min: null, //Default
@@ -776,24 +788,6 @@ function fn___in_modify_save() {
                     }
 
                     $('.input_requirements_' + modify_data['in_id']).html(input_requirements_icons);
-                }
-
-
-                //Update trigger statements:
-                if ($('.in_alternatives_' + modify_data['in_id']).length) {
-
-                    //This is the top intent that's loaded, update expanded trigger UI:
-                    $(".in_alternatives_" + modify_data['in_id']).html(nl2br(modify_data['in_alternatives']));
-
-                } else {
-
-                    //This is a level 2+ intent, let's update the tooltip UI:
-                    if (modify_data['in_alternatives'].length > 0) {
-                        $(".in_outcome_" + modify_data['in_id']).addClass('has-desc').attr('data-toggle', 'tooltip').attr('data-original-title', modify_data['in_alternatives']);
-                    } else {
-                        $(".in_outcome_" + modify_data['in_id']).removeClass('has-desc').attr('data-toggle', '').attr('data-original-title', '');
-                    }
-
                 }
 
 

@@ -84,6 +84,10 @@ jQuery.fn.extend({
     }
 });
 
+function load_edit(handler){
+    var position = $(handler).offset();
+    $('.edit-box').css('top', position.top).css('left', position.left).removeClass('hidden');
+}
 
 function fn___ms_toggle(tr_id, new_state) {
 

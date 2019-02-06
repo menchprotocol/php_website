@@ -296,12 +296,12 @@ class Matrix_model extends CI_Model
         $tr_en_parent_id = $this->config->item('en_default_parent_id');
 
         //Now see if we can find a better match:
-        $matching_patterns = $this->Database_model->fn___tr_fetch(array(
+        foreach ($this->Database_model->fn___tr_fetch(array(
             'tr_type_en_id' => 4255, //Text Link that contains the pattern match
             'tr_en_parent_id' => 3307, //Entity URL Pattern Match
             'tr_status >=' => 2, //Published+
-        ));
-        foreach ($matching_patterns as $match) {
+            'en_status >=' => 2, //Published+
+        ), array('en_child')) as $match) {
             if (substr_count($input_url, $match['tr_content']) > 0) {
                 //yes we found a pattern match:
                 $tr_en_parent_id = $match['tr_en_child_id'];

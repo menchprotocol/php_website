@@ -39,6 +39,9 @@ $uri_segment_1 = $this->uri->segment(1);
 
 <body id="matrix_body" class="<?= (isset($_GET['skip_header']) ? 'grey-bg' : '') ?>">
 
+    <!-- Managed by JS to edit various fields -->
+    <div class="edit-box hidden"></div>
+
     <?php
     if (!isset($_GET['skip_header'])) {
         //Include the chat plugin:
@@ -97,7 +100,7 @@ $uri_segment_1 = $this->uri->segment(1);
                                 </a>
                             </li>
 
-                            <li class="entity-inactive" data-toggle="tooltip" data-placement="left" title="New Source Entity Wizard">
+                            <li class="entity-inactive" data-toggle="tooltip" data-placement="left" title="Add Source Wizard">
                                 <a href="javascript:void(0);" onclick="url_modal('/entities/add_source')"><i class="fas fa-plus"></i></a>
                             </li>
 
