@@ -318,7 +318,7 @@ if (isset($orphan_ins)) {
                                 <div class="score_points hidden">
                                     <select class="form-control border" id="tr__assessment_points" data-toggle="tooltip" title="Intent Completion Points" data-placement="top" style="margin-bottom:12px;">
                                         <?php
-                                        foreach (array(-89, -55, -34, -21, -13, -8, -5, -3, -2, -1, 0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610) as $point) {
+                                        foreach (array(-233, -144, -89, -55, -34, -21, -13, -8, -5, -3, -2, -1, 0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233) as $point) {
                                             echo '<option value="' . $point . '">' . ( $point>=0 ? 'Award ' : 'Subtract ' ) . ($point == 0 ? 'No Points' : abs($point) . ' Point' . fn___echo__s($point)) . '</option>';
                                         }
                                         ?>
