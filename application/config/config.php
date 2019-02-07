@@ -142,7 +142,7 @@ $config['object_statuses']          = array(
                                             ),
                                             2 => array(
                                                 's_name' => 'Published',
-                                                's_desc' => 'Transaction is complete',
+                                                's_desc' => 'Transaction is complete, ready and live',
                                                 's_icon' => '<i class="fas fa-check-square"></i>',
                                             ),
                                             3 => array(
@@ -169,13 +169,13 @@ $config['object_statuses']          = array(
                                             ),
                                             2 => array(
                                                 's_name' => 'Published',
-                                                's_desc' => 'Intent is published on mench.com and Mench personal assistant',
+                                                's_desc' => 'Intent is live on mench.com and Mench personal assistant',
                                                 's_icon' => '<i class="fas fa-check-square"></i>',
                                             ),
                                             3 => array(
                                                 's_name' => 'Featured',
                                                 's_desc' => 'Intent is recommended by mench.com and Mench personal assistant',
-                                                's_icon' => '<i class="fas fa-badge-check"></i>',
+                                                's_icon' => '<i class="fas fa-badge-check yellow"></i>',
                                             ),
                                         ),
                                         'en_status' => array(
@@ -196,13 +196,13 @@ $config['object_statuses']          = array(
                                             ),
                                             2 => array(
                                                 's_name' => 'Published',
-                                                's_desc' => 'Entity is published on mench.com and Mench personal assistant',
+                                                's_desc' => 'Entity is live on mench.com and Mench personal assistant',
                                                 's_icon' => '<i class="fas fa-check-square"></i>',
                                             ),
                                             3 => array(
                                                 's_name' => 'Verified',
                                                 's_desc' => 'Entity is a reference to a real person as verified by Mench',
-                                                's_icon' => '<i class="fas fa-badge-check"></i>',
+                                                's_icon' => '<i class="fas fa-badge-check blue"></i>',
                                             ),
                                         ),
                                         'in_is_any' => array(

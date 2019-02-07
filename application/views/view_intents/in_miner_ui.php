@@ -271,7 +271,7 @@ if (isset($orphan_ins)) {
                         <div class="title" style="margin-top: 15px;">
                             <h4>
                                 <i class="fas fa-atlas"></i>
-                                Ledger Transaction
+                                Intent Transaction
                             </h4>
                         </div>
 
