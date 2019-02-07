@@ -1263,10 +1263,12 @@ h5, .h5 {
 .tooltip, .tooltip * {
     font-size: 12px;
     margin: 0;
+    overflow: hidden;
 }
 
 .tooltip-inner {
     line-height: 120%;
+    overflow: hidden;
 }
 
 .container-fluid .alert {
