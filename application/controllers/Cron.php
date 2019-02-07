@@ -142,7 +142,7 @@ class Cron extends CI_Controller
 
             if(count($rate_trs) > 0){
                 //Issue coins at this rate:
-                $this->db->query("UPDATE table_ledger SET tr_coins = '".$rate_trs[0]['tr_content']."' WHERE tr_miner_en_id > 0 AND tr_type_en_id = " . $tr['tr_type_en_id']);
+                $this->db->query("UPDATE table_ledger SET tr_coins = '".$rate_trs[0]['tr_content']."' WHERE tr_type_en_id = " . $tr['tr_type_en_id']);
             }
 
         }
@@ -176,7 +176,7 @@ class Cron extends CI_Controller
                 'en_status >=' => 2,
                 'tr_en_parent_id' => $en['tr_en_child_id'],
                 'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-            ), array('en_child'), 0, 0, array('en_id' => 'ASC'));
+            ), array('en_child'), 0, 0, array('tr_order' => 'ASC', 'en_id' => 'ASC'));
 
 
             $child_ids = array();
@@ -201,7 +201,7 @@ class Cron extends CI_Controller
                     'en_status >=' => 2,
                     'tr_en_child_id' => $child['en_id'],
                     'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-                ), array('en_parent'), 0, 0, array('en_id' => 'ASC'));
+                ), array('en_parent'), 0);
                 foreach($child_parents as $cp_en){
                     array_push($child_parent_ids, $cp_en['en_id']);
                 }

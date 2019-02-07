@@ -1003,7 +1003,7 @@ function fn___echo_tr_column($obj_type, $id, $tr_field, $fb_messenger_format = f
             return $ins[0]['in_outcome'] . ' [https://mench.com/intents/' . $ins[0]['in_id'] . ']';
         } else {
             //HTML view:
-            return '<a href="/intents/' . $ins[0]['in_id'] . '" target="_parent" class="badge badge-primary '.( $is_parent ? '' : 'tuc-right-under' ).'" style="width:40px;" data-toggle="tooltip" data-placement="top" title="' . stripslashes($ins[0]['in_outcome']) . '">'.$object_statuses['in_is_any'][$ins[0]['in_is_any']]['s_icon'].'</a> ';
+            return '<a href="/intents/' . $ins[0]['in_id'] . '" target="_parent" class="badge badge-primary '.( $is_parent ? '' : 'tuc-right-under' ).'" style="width:40px;" data-toggle="tooltip" data-placement="top" title="'.( $is_parent ? 'Parent' : 'Child' ).' Intent: ' . stripslashes($ins[0]['in_outcome']) . '">'.$object_statuses['in_is_any'][$ins[0]['in_is_any']]['s_icon'].'</a> ';
         }
 
     } elseif ($obj_type == 'en') {
@@ -1069,7 +1069,7 @@ function fn___echo_tr_column($obj_type, $id, $tr_field, $fb_messenger_format = f
             if($fb_messenger_format){
                 return false;
             } else {
-                return '<span class="badge badge-primary grey tuc-midway" style="width:40px;" data-toggle="tooltip" data-placement="top" title="No Parent Transaction"><i class="fas fa-atlas"></i></span> ';
+                return '<span class="badge badge-primary grey tuc-midway" style="width:40px;" data-toggle="tooltip" data-placement="top" title="No Transaction Reference"><i class="fas fa-atlas"></i></span> ';
             }
         }
 
@@ -1078,7 +1078,7 @@ function fn___echo_tr_column($obj_type, $id, $tr_field, $fb_messenger_format = f
             return 'Transaction '.$id.' [https://mench.com/ledger?tr_id=' . $id . ']';
         } else {
             //HTML View:
-            return '<a href="/ledger?tr_id=' . $id . '" target="_parent" class="badge badge-primary white tuc-midway" style="width:40px;" data-toggle="tooltip" data-placement="top" title="Parent Transaction '.$id.'"><i class="fas fa-atlas"></i></a> ';
+            return '<a href="/ledger?tr_id=' . $id . '" target="_parent" class="badge badge-primary white tuc-midway" style="width:40px;" data-toggle="tooltip" data-placement="top" title="Referencing Transaction '.$id.'"><i class="fas fa-atlas"></i></a> ';
         }
 
     }
@@ -1239,7 +1239,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         $tr_id = 0;
         $tr_metadata = array();
 
-        $ui = '<div class="list-group-item">';
+        $ui = '<div class="list-group-item top_intent">';
 
     } else {
 
@@ -1287,13 +1287,13 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         $ui .= '<span class="double-icon" style="margin-left:5px;">';
 
         //Show larger icon for transaction type (auto detected based on transaction content):
-        $ui .= '<span class="icon-main tr_type_' . $tr_id . '"><span class="tr_type_val" data-toggle="tooltip" data-placement="right" title="' . $en_all_4486[$in['tr_type_en_id']]['m_name'] . ': ' . $en_all_4486[$in['tr_type_en_id']]['m_desc'] . '">' . $en_all_4486[$in['tr_type_en_id']]['m_icon'] . '</span></span> ';
+        $ui .= '<span class="icon-main tr_type_' . $tr_id . '"><span class="tr_type_val" data-toggle="tooltip" data-placement="right" title="' . $en_all_4486[$in['tr_type_en_id']]['m_name'] . ': ' . $en_all_4486[$in['tr_type_en_id']]['m_desc'] . '">' . $en_all_4486[$in['tr_type_en_id']]['m_icon'] . '</span></span>';
 
         //Show smaller transaction status icon:
-        $ui .= '<span class="icon-sub tr_status_' . $tr_id . '"><span class="in_status_val" data-toggle="tooltip" data-placement="right" title="'.$object_statuses['tr_status'][$in['tr_status']]['s_name'].': '.$object_statuses['tr_status'][$in['tr_status']]['s_desc'].'">' . $object_statuses['tr_status'][$in['tr_status']]['s_icon'] . '</span></span> ';
+        $ui .= '<span class="icon-sub tr_status_' . $tr_id . '"><span class="in_status_val" data-toggle="tooltip" data-placement="right" title="'.$object_statuses['tr_status'][$in['tr_status']]['s_name'].': '.$object_statuses['tr_status'][$in['tr_status']]['s_desc'].'">' . $object_statuses['tr_status'][$in['tr_status']]['s_icon'] . '</span></span>';
 
         //Show assessment score based on Intent Link Type:
-        $ui .= '<span class="icon-3rd in_assessment_' . $tr_id . '" data-toggle="tooltip" data-placement="right" title="Assessment Score">'. ( $in['tr_type_en_id'] == 4228 ? ( !isset($tr_metadata['tr__assessment_points']) || $tr_metadata['tr__assessment_points'] == 0 ? '' : $tr_metadata['tr__assessment_points'] ) : $tr_metadata['tr__conditional_score_min'] . ( $tr_metadata['tr__conditional_score_min']==$tr_metadata['tr__conditional_score_max'] ? '' : '-'.$tr_metadata['tr__conditional_score_max'] ).'%' ) .'</span> ';
+        $ui .= '<span class="icon-3rd in_assessment_' . $tr_id . '" data-toggle="tooltip" data-placement="right" title="Assessment Score">'. ( $in['tr_type_en_id'] == 4228 ? ( !isset($tr_metadata['tr__assessment_points']) || $tr_metadata['tr__assessment_points'] == 0 ? '' : ( $tr_metadata['tr__assessment_points'] > 0 ? '+' : '' ) . $tr_metadata['tr__assessment_points'] ) : $tr_metadata['tr__conditional_score_min'] . ( $tr_metadata['tr__conditional_score_min']==$tr_metadata['tr__conditional_score_max'] ? '' : '-'.$tr_metadata['tr__conditional_score_max'] ).'%' ) .'</span>';
 
         $ui .= '</span>';
 
@@ -1306,12 +1306,12 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     $ui .= '<span class="double-icon" style="margin-right:5px;">';
 
     //Show larger intent icon (AND or OR):
-    $ui .= '<span class="icon-main in_is_any_' . $in['in_id'] . '"><span class="in_is_any_val" data-toggle="tooltip" data-placement="right" title="'.$object_statuses['in_is_any'][$in['in_is_any']]['s_name'].': '.$object_statuses['in_is_any'][$in['in_is_any']]['s_desc'].'">' . $object_statuses['in_is_any'][$in['in_is_any']]['s_icon'] . '</span></span> ';
+    $ui .= '<span class="icon-main in_is_any_' . $in['in_id'] . '"><span class="in_is_any_val" data-toggle="tooltip" data-placement="right" title="'.$object_statuses['in_is_any'][$in['in_is_any']]['s_name'].': '.$object_statuses['in_is_any'][$in['in_is_any']]['s_desc'].'">' . $object_statuses['in_is_any'][$in['in_is_any']]['s_icon'] . '</span></span>';
 
     //Show smaller intent status:
-    $ui .= '<span class="icon-sub in_status_' . $in['in_id'] . '"><span class="in_status_val" data-toggle="tooltip" data-placement="right" title="'.$object_statuses['in_status'][$in['in_status']]['s_name'].': '.$object_statuses['in_status'][$in['in_status']]['s_desc'].'">' . $object_statuses['in_status'][$in['in_status']]['s_icon'] . '</span></span> ';
+    $ui .= '<span class="icon-sub in_status_' . $in['in_id'] . '"><span class="in_status_val" data-toggle="tooltip" data-placement="right" title="'.$object_statuses['in_status'][$in['in_status']]['s_name'].': '.$object_statuses['in_status'][$in['in_status']]['s_desc'].'">' . $object_statuses['in_status'][$in['in_status']]['s_icon'] . '</span></span>';
 
-    $ui .= '<span class="icon-3rd in_completion_' . $in['in_id'] . '" data-toggle="tooltip" data-placement="right" title="Completion Requirement">'.( $in['in_completion_en_id'] > 0 ? $en_all_4331[$in['in_completion_en_id']]['m_name']  : '' ).'</span> ';
+    $ui .= '<span class="icon-3rd in_completion_' . $in['in_id'] . '" data-toggle="tooltip" data-placement="right" title="Completion Requirement">'.( $in['in_completion_en_id'] > 0 ? $en_all_4331[$in['in_completion_en_id']]['m_name']  : '' ).'</span>';
 
     $ui .= '</span>';
 
@@ -1322,13 +1322,13 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     //Intent UI based on level:
     if ($level == 1) {
 
-        $ui .= '<span><b id="in_level1_outcome" style="font-size: 1.3em;">';
+        $ui .= '<span><b id="in_level1_outcome" style="font-size: 1.4em; padding-left: 5px;">';
         $ui .= '<span class="in_outcome_' . $in['in_id'] . '">' . $in['in_outcome'] . '</span>';
         $ui .= '</b></span>';
 
     } elseif ($level == 2) {
 
-        $ui .= '<a href="javascript:fn___ms_toggle(' . $tr_id . ', -1);">&nbsp;<i id="handle-' . $tr_id . '" class="fal fa-plus-circle" ' . ($is_parent ? 'data-toggle="tooltip" data-placement="right" title="View Siblings for this Intent"' : '') . '></i> <span id="title_' . $tr_id . '" style="font-weight: 500;" class="cdr_crnt tree_title in_outcome_' . $in['in_id'] . '">' . $in['in_outcome'] . '</span></a>';
+        $ui .= '<a href="javascript:fn___ms_toggle(' . $tr_id . ', -1);">&nbsp;<i id="handle-' . $tr_id . '" class="fal fa-plus-circle" ' . ($is_parent ? 'data-toggle="tooltip" data-placement="right" title="View Intent Siblings"' : '') . '></i> <span id="title_' . $tr_id . '" style="font-weight: 500;" class="cdr_crnt tree_title in_outcome_' . $in['in_id'] . '">' . $in['in_outcome'] . '</span></a>';
 
     } elseif ($level == 3) {
 
@@ -1357,17 +1357,6 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
      * */
 
     $ui .= '<span class="pull-right" style="' . ($level < 3 ? 'margin-right: 8px;' : '') . ' padding-top:2px;">';
-
-
-
-    if ($level == 1) {
-
-        //Give option to update the cache:
-        $ui .= '<a class="badge badge-primary transparent" href="/cron/fn___in_metadata_update/' . $in['in_id'] . '/1?redirect=/' . $in['in_id'] . '" onclick="fn___turn_off()" data-toggle="tooltip" title="Updates intent tree cache" data-placement="top"><i class="fal fa-sync-alt"></i></a>';
-
-    }
-
-
 
 
 
@@ -1420,7 +1409,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
 
     //Intent modify:
-    $ui .= '<a class="badge badge-primary white-primary" onclick="fn___in_modify_load(' . $in['in_id'] . ',' . $tr_id . ')" style="margin:-2px -8px 0 2px; width:40px;" href="#loadmodify-' . $in['in_id'] . '-' . $tr_id . '" data-toggle="tooltip" title="Modify Intent" data-placement="top"><i class="fas fa-cog"></i></a> &nbsp;';
+    $ui .= '<a class="badge badge-primary white-primary" onclick="fn___in_modify_load(' . $in['in_id'] . ',' . $tr_id . ')" style="margin:-2px -8px 0 2px; width:40px;" href="#loadmodify-' . $in['in_id'] . '-' . $tr_id . '" data-toggle="tooltip" title="Modify Intent'.( $level>1 ? ' and Transaction' : '' ).'" data-placement="top"><i class="fas fa-cog"></i></a> &nbsp;';
 
 
 
@@ -1479,7 +1468,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
             <div class="input-group">
                 <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="fn___in_link_or_create(' . $in['in_id'] . ',3);" intent-id="' . $in['in_id'] . '"><input type="text" class="form-control autosearch intentadder-level-3 intentadder-id-'.$in['in_id'].' algolia_search bottom-add" maxlength="' . $CI->config->item('in_outcome_max') . '" id="addintent-cr-' . $tr_id . '" intent-id="' . $in['in_id'] . '" placeholder="Add #Intent"></form></div>
                 <span class="input-group-addon" style="padding-right:8px;">
-                    <span data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" onclick="fn___in_link_or_create(' . $in['in_id'] . ',3);" class="badge badge-primary pull-right" intent-id="' . $in['in_id'] . '" style="cursor:pointer; margin: 1px -10px 0px 3px;">
+                    <span data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" onclick="fn___in_link_or_create(' . $in['in_id'] . ',3);" class="badge badge-primary pull-right new-btn" intent-id="' . $in['in_id'] . '" style="cursor:pointer; margin: 0 -9px -3px 6px !important;">
                         <div><i class="fas fa-plus"></i></div>
                     </span>
                 </span>
@@ -1511,7 +1500,6 @@ function echo_fav_icon($domain_url){
 function fn___echo_leaderboard($days_ago = null, $top = 25){
 
     $filters = array(
-        'tr_miner_en_id >' => 0,
         'tr_coins !=' => 0,
     );
 
@@ -1756,7 +1744,7 @@ function fn___echo_en($en, $level, $is_parent = false)
 
 
     //Show modification button along with Trust Score
-    $ui .= '<a href="#loadmodify-' . $en['en_id'] . '-' . $tr_id . '" onclick="fn___en_modify_load(' . $en['en_id'] . ',' . $tr_id . ')" class="badge badge-secondary white-secondary" style="margin:-2px -6px 0 2px; width:40px;" data-toggle="tooltip" data-placement="top" title="Modify Entity"><i class="fas fa-cog" style="width:28px; padding-right:7px; text-align:center;"></i></a> &nbsp;';
+    $ui .= '<a href="#loadmodify-' . $en['en_id'] . '-' . $tr_id . '" onclick="fn___en_modify_load(' . $en['en_id'] . ',' . $tr_id . ')" class="badge badge-secondary white-secondary" style="margin:-2px -6px 0 2px; width:40px;" data-toggle="tooltip" data-placement="top" title="Modify Entity'.( $level>1 ? ' and Transaction' : '' ).'"><i class="fas fa-cog" style="width:28px; padding-right:7px; text-align:center;"></i></a> &nbsp;';
 
 
     //Have we counted the Entity Children?

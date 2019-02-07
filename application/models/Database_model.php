@@ -705,7 +705,7 @@ class Database_model extends CI_Model
 
                     //Value has changed, log transaction:
                     $this->Database_model->fn___tr_create(array(
-                        'tr_tr_id' => $id, //Parent Transaction
+                        'tr_tr_id' => $id, //Transaction Reference
                         'tr_miner_en_id' => $tr_miner_en_id,
                         'tr_type_en_id' => 4242, //Transaction Attribute Modified
                         'tr_content' => 'Transaction ' . ucwords(str_replace('_', ' ', str_replace('tr_', '', $key))) . ' changed from [' . $before_data[0][$key] . '] to [' . $value . ']',

@@ -1847,7 +1847,7 @@ class Chat_model extends CI_Model
                     'tr_miner_en_id' => $en['en_id'],
                     'tr_en_parent_id' => $en['en_id'],
                     'tr_type_en_id' => 4284, //Skip Intent
-                    'tr_tr_id' => $tr_id, //The parent transaction that points to this intent in the Students Action Plan
+                    'tr_tr_id' => $tr_id, //The Transaction Reference that points to this intent in the Students Action Plan
                     'tr_status' => 1, //Working on... not yet decided to skip or not as they need to see the consequences before making an informed decision. Will be updated to -1 or 2 based on their response...
                     'tr_metadata' => array(
                         'would_be_skipped' => $would_be_skipped,

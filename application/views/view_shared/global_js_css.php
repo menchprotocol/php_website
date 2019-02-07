@@ -1,10 +1,10 @@
 <!-- START GLOBAL STATIC RESOURCES -->
 <link rel="stylesheet" type="text/css"
       href="//fonts.googleapis.com/css?family=Lato|Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons|Titillium+Web:700"/>
-<link href="/css/lib/fa/fontawesome.css?v=5.6.3" rel="stylesheet"/>
-<link href="/css/lib/fa/brands.css?v=5.6.3" rel="stylesheet"/>
-<link href="/css/lib/fa/solid.css?v=5.6.3" rel="stylesheet"/>
-<link href="/css/lib/fa/light.css?v=5.6.3" rel="stylesheet"/>
+<link href="/css/lib/fa/fontawesome.css?v=5.7.1" rel="stylesheet"/>
+<link href="/css/lib/fa/brands.css?v=5.7.1" rel="stylesheet"/>
+<link href="/css/lib/fa/solid.css?v=5.7.1" rel="stylesheet"/>
+<link href="/css/lib/fa/light.css?v=5.7.1" rel="stylesheet"/>
 
 <!-- CSS -->
 <link href="/css/lib/bootstrap.min.css" rel="stylesheet"/>

@@ -16,18 +16,8 @@
 
 
 
-        //Focused/current entity:
-        echo '<h5 class="badge badge-h indent1">Entity @'.$entity['en_id'].'</h5>';
-        echo '<div id="entity-box" class="list-group indent1">';
-        echo fn___echo_en($entity, 1);
-        echo '</div>';
-
-
-
-
-
         //Parents
-        echo '<h5><span class="badge badge-h"><span class="li-parent-count">' . count($entity['en__parents']) . '</span> Parent' . fn___echo__s(count($entity['en__parents'])) . ' <i class="fas fa-sign-in-alt"></i></span></h5>';
+        echo '<h5><span class="badge badge-h"><span class="li-parent-count">' . count($entity['en__parents']) . '</span> Parent' . fn___echo__s(count($entity['en__parents'])) . '</span></h5>';
         echo '<div id="list-parent" class="list-group  grey-list">';
         foreach ($entity['en__parents'] as $en) {
             echo fn___echo_en($en, 2, true);
@@ -37,7 +27,8 @@
                 <div class="input-group">
                     <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search" data-lpignore="true" placeholder="Add Entity..."></div>
                     <span class="input-group-addon">
-                        <a class="badge badge-secondary new-btn" href="javascript:void(0);" onclick="alert(\'Note: Either choose an option from the suggestion menu to continue\')"><i class="fas fa-plus"></i></a>
+                        <a class="badge badge-secondary new-btn" data-toggle="tooltip" title="or press ENTER ;)"
+                              data-placement="top" href="javascript:void(0);" onclick="alert(\'Note: Either choose an option from the suggestion menu to continue\')"><i class="fas fa-plus"></i></a>
                     </span>
                 </div>
             </div>';
@@ -49,6 +40,14 @@
 
 
 
+        //Focused/current entity:
+        echo '<h5 class="badge badge-h indent1">Entity @'.$entity['en_id'].'</h5>';
+        echo '<div id="entity-box" class="list-group indent1">';
+        echo fn___echo_en($entity, 1);
+        echo '</div>';
+
+
+
 
 
 
@@ -57,9 +56,9 @@
         echo '<td style="width:170px;">';
 
 
-            echo '<h5 class="badge badge-h inline-block"><span class="li-children-count inline-block">' . $entity['en__child_count'] . '</span> Children <i class="fas fa-sign-out-alt rotate90"></i></h5>';
+            echo '<h5 class="badge badge-h inline-block"><span class="li-children-count inline-block">' . $entity['en__child_count'] . '</span> Children</h5>';
 
-            echo '<a href="javascript:void(0);" onclick="$(\'.mass_modify\').toggle()" style="text-decoration: none; margin-left: 5px;"  data-toggle="tooltip" data-placement="right" title="Mass actions applied to all child entities"><i class="fal fa-list-alt" style="font-size: 1.2em; color: #2b2b2b;"></i></a>';
+            echo '<a href="javascript:void(0);" onclick="$(\'.mass_modify\').toggle()" style="text-decoration: none; margin-left: 5px;"  data-toggle="tooltip" data-placement="right" title="Mass modify child entities"><i class="fal fa-list-alt" style="font-size: 1.2em; color: #2b2b2b;"></i></a>';
 
             echo '</td>';
 
@@ -141,7 +140,8 @@
         <div class="input-group">
             <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search bottom-add" data-lpignore="true" placeholder="Add ' . stripslashes($entity['en_name']) . ' Entity"></div>
             <span class="input-group-addon">
-                <a class="badge badge-secondary new-btn" href="javascript:tr_add(0,' . $entity['en_id'] . ', 0);"><i class="fas fa-plus"></i></a>
+                <a class="badge badge-secondary new-btn" data-toggle="tooltip" title="or press ENTER ;)"
+                              data-placement="top" href="javascript:tr_add(0,' . $entity['en_id'] . ', 0);"><i class="fas fa-plus"></i></a>
             </span>
         </div>
     </div>';

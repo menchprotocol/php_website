@@ -22,16 +22,6 @@ if (isset($orphan_ins)) {
 
 <div class="row">
     <div class="col-xs-7 cols">
-
-        <?php
-        echo '<h5 class="badge badge-h indent1">Intent #'.$in['in_id'].'</h5>';
-        echo '<div class="list-group indent1">';
-        echo fn___echo_in($in, 1);
-        echo '</div>';
-        ?>
-
-
-
         <?php
         //Are we showing Orphans?
         if (isset($orphan_ins)) {
@@ -62,7 +52,7 @@ if (isset($orphan_ins)) {
 
 
             //Start with parents:
-            echo '<h5 class="badge badge-h"><i class="fas fa-sign-in-alt"></i> <span class="li-parent-count parent-counter-' . $in['in_id'] . '">' . count($in['in__parents']) . '</span> Parent' . fn___echo__s(count($in['in__parents'])) . '</h5>';
+            echo '<h5 class="badge badge-h"><span class="li-parent-count parent-counter-' . $in['in_id'] . '">' . count($in['in__parents']) . '</span> Parent' . fn___echo__s(count($in['in__parents'])) . '</h5>';
 
             if (count($in['in__parents']) > 0) {
                 echo '<div class="list-group list-level-2">';
@@ -74,13 +64,24 @@ if (isset($orphan_ins)) {
                 echo '<div class="alert alert-info" role="alert" style="margin-top: 0;"><i class="fas fa-exclamation-triangle"></i> No parent intents linked yet</div>';
             }
 
-        }
-        ?>
 
-        <?php
+
+
+        }
+
+        //The intent it-self:
+        echo '<h5 class="badge badge-h indent1" style="display: inline-block;">Intent #'.$in['in_id'].'</h5>';
+        echo '<a class="secret" href="/cron/fn___in_metadata_update/' . $in['in_id'] . '/1?redirect=/' . $in['in_id'] . '" style="margin-left: 5px;" onclick="fn___turn_off()"><i class="fal fa-sync-alt" data-toggle="tooltip" title="Updates intent tree cache" data-placement="top"></i></a>';
+
+        echo '<div class="list-group indent1">';
+        echo fn___echo_in($in, 1);
+        echo '</div>';
+
+
+
         //Expand/Contract buttons
         echo '<div class="indent2">';
-        echo '<h5 class="badge badge-h" style="display: inline-block;"><i class="fas fa-sign-out-alt rotate90"></i> <span class="li-children-count children-counter-' . $in['in_id'] . '">' . (isset($metadata['in__tree_in_active_count']) ? $metadata['in__tree_in_active_count'] : '') . '</span> Children</h5>';
+        echo '<h5 class="badge badge-h" style="display: inline-block;"><span class="li-children-count children-counter-' . $in['in_id'] . '">' . (isset($metadata['in__tree_in_active_count']) ? $metadata['in__tree_in_active_count'] : '') . '</span> Children</h5>';
 
         echo '<div id="expand_intents" style="padding-left:8px; display: inline-block;">';
         echo '<i class="fas fa-plus-circle expand_all" style="font-size: 1.2em;"></i> &nbsp;';
@@ -110,8 +111,8 @@ if (isset($orphan_ins)) {
                     </div>
                     <span class="input-group-addon" style="padding-right:8px;">
                         <span id="add_in_btn" data-toggle="tooltip" title="or press ENTER ;)"
-                              data-placement="top" class="badge badge-primary pull-right"
-                              style="cursor:pointer; margin: 1px 2px 0 6px;">
+                              data-placement="top" class="badge badge-primary pull-right new-btn"
+                              style="cursor:pointer; margin: 1px 2px 0 6px !important;">
                             <div><i class="fas fa-plus"></i></div>
                         </span>
                     </span>
@@ -177,8 +178,8 @@ if (isset($orphan_ins)) {
                             <div class="form-group label-floating is-empty" style="margin-bottom: 0; padding-bottom: 0; display:block !important;">
                                 <?php
                                 foreach (fn___echo_status('in_is_any') as $in_val => $intent_type) {
-                                    echo '<div class="radio" style="display:block; margin-top: 0 !important;">
-                                        <label class="underdot" data-toggle="tooltip" title="' . $intent_type['s_desc'] . '" data-placement="right">
+                                    echo '<div class="radio" style="display:block; margin-top: 0 !important; width:150px;" data-toggle="tooltip" title="' . $intent_type['s_desc'] . '" data-placement="top">
+                                        <label class="underdot">
                                             <input type="radio" id="in_is_any_' . $in_val . '" name="in_is_any" value="' . $in_val . '" />
                                             ' . $intent_type['s_icon'] . ' ' . $intent_type['s_name'] . '
                                         </label>
@@ -188,7 +189,7 @@ if (isset($orphan_ins)) {
                             </div>
 
 
-                            <select class="form-control border" id="in_completion_en_id" style="margin-bottom: 12px;">
+                            <select class="form-control border" id="in_completion_en_id" data-toggle="tooltip" title="Intent Completion Requirements" data-placement="top" style="margin-bottom: 12px;">
                                 <option value="0">No Response Required</option>
                                 <?php
                                 foreach ($this->config->item('en_all_4331') as $en_id => $m) {
@@ -198,7 +199,7 @@ if (isset($orphan_ins)) {
                             </select>
 
 
-                            <select class="form-control border" id="in_status" original-status="" data-toggle="tooltip" title="Intent Status" data-placement="bottom" style="display: inline-block !important;">
+                            <select class="form-control border" id="in_status" original-status="" data-toggle="tooltip" title="Intent Status" data-placement="top" style="display: inline-block !important;">
                                 <?php
                                 foreach (fn___echo_status('in_status') as $status_id => $status) {
                                     echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
@@ -208,7 +209,7 @@ if (isset($orphan_ins)) {
                             <span class="checkbox apply-recursive inline-block hidden">
                                 <label style="display:inline-block !important; font-size: 0.9em !important; margin-left:5px;">
                                     <input type="checkbox" id="apply_recursively"/>
-                                    <span class="underdot" data-toggle="tooltip" data-placement="right"
+                                    <span class="underdot" data-toggle="tooltip" data-placement="top"
                                           title="If chcecked will also apply the new status recursively down (children, grandchildren, etc...) that have the same original status">Recursive
                                     </span>
                                 </label>
@@ -286,8 +287,8 @@ if (isset($orphan_ins)) {
 
                                     <?php
                                     foreach ($this->config->item('en_all_4486') as $en_id => $m) {
-                                        echo '<div class="radio" style="display:block; margin-top: 0 !important;">
-                                            <label class="underdot" data-toggle="tooltip" title="' . $m['m_desc'] . '" data-placement="right">
+                                        echo '<div class="radio" style="display:block; margin-top: 0 !important; width:190px;" data-toggle="tooltip" title="' . $m['m_desc'] . '" data-placement="top">
+                                            <label class="underdot">
                                                 <input type="radio" id="tr_type_en_id_' . $en_id . '" name="tr_type_en_id" value="' . $en_id . '" />
                                                 '.$m['m_icon'].' ' . $m['m_name'] . '
                                             </label>
@@ -315,7 +316,7 @@ if (isset($orphan_ins)) {
                                 </div>
 
                                 <div class="score_points hidden">
-                                    <select class="form-control border" id="tr__assessment_points" style="margin-bottom:12px;">
+                                    <select class="form-control border" id="tr__assessment_points" data-toggle="tooltip" title="Intent Completion Points" data-placement="top" style="margin-bottom:12px;">
                                         <?php
                                         foreach (array(-89, -55, -34, -21, -13, -8, -5, -3, -2, -1, 0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610) as $point) {
                                             echo '<option value="' . $point . '">' . ( $point>=0 ? 'Award ' : 'Subtract ' ) . ($point == 0 ? 'No Points' : abs($point) . ' Point' . fn___echo__s($point)) . '</option>';
@@ -324,7 +325,7 @@ if (isset($orphan_ins)) {
                                     </select>
                                 </div>
 
-                                <select class="form-control border" data-toggle="tooltip" title="Transaction Status" data-placement="right" id="tr_status" style="display: inline-block !important;">
+                                <select class="form-control border" data-toggle="tooltip" title="Transaction Status" data-placement="top" id="tr_status" style="display: inline-block !important;">
                                     <?php
                                     foreach (fn___echo_status('tr_status') as $status_id => $status) {
                                         if($status_id < 3){ //No need to verify intent links!

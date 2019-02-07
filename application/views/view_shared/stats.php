@@ -228,7 +228,6 @@ echo '<div class="col-md-6">';
 
 //Count variables:
 $all_engs = $this->Database_model->fn___tr_fetch(array(
-    'tr_miner_en_id >' => 0,
     'tr_coins !=' => 0,
 ), array('en_type'), 0, 0, array('en_name' => 'DESC'), 'COUNT(tr_type_en_id) as trs_count, SUM(tr_coins) as coins_sum, en_name, en_icon, tr_type_en_id', 'tr_type_en_id, en_name, en_icon');
 
