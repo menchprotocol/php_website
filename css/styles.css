@@ -1709,14 +1709,6 @@ h5, .h5 {
     text-decoration: none;
 }
 
-.tr-last-updated {
-    margin:5px 0 10px 0;
-    padding: 0;
-    font-size:0.8em;
-    display: block;
-    line-height: 140%;
-}
-
 .link-view {
     font-size: 0.7em;
     color: #d6ba14 !important;
@@ -2015,6 +2007,21 @@ select.form-control {
     z-index: 999;
 }
 
+.double-icon .icon-3rd {
+    font-size: 0.5em;
+    font-weight: bold;
+    line-height: 110%;
+    width: 44px;
+    position: absolute;
+    bottom: -8px;
+    left:-7px;
+    z-index: 999;
+    height: 11px;
+    overflow: hidden;
+    text-align: center;
+}
+
+
 .input-group .input-group-addon {
     font-size: 0.9em;
 }
@@ -2084,12 +2091,6 @@ select.form-control {
     background-color: #FFFFFF;
     display: inline-block;
     width: 100%;
-}
-.or-settings{
-    font-size: 0.9em;
-    line-height: 120%;
-    max-width: 190px;
-    margin-bottom: 15px;
 }
 
 .en-no-tr, .in-no-tr{
@@ -2728,12 +2729,11 @@ a.badge:focus, a.badge:hover {
 }
 
 .iphone-nav-tabs {
-    padding-bottom: 1px;
-    padding-left: 8px;
+    padding:0 0 5px 5px;
 }
 
 .iphone-nav-tabs > li {
-    margin-right: 2px;
+    margin:5px 5px 0 0;
 }
 
 .iphone-nav-tabs > li:last-of-type {
@@ -2746,11 +2746,11 @@ a.badge:focus, a.badge:hover {
 
 .iphone-nav-tabs a {
     font-size: 0.9em !important;
-    padding: 5px 7px 5px 3px !important;
+    padding: 5px 8px !important;
 }
 
 .iphone-nav-tabs > li > a:hover, .iphone-nav-tabs > li > a:hover > .status-label, .iphone-nav-tabs > li > a:hover .fas {
-    border-radius: 0 !important;
+    border-radius: 3px !important;
     background-color: #2f2739 !important;
     color: #FFFFFF !important;
 }
@@ -2760,9 +2760,9 @@ a.badge:focus, a.badge:hover {
 }
 
 .iphone-nav-tabs > li.active > a, .iphone-nav-tabs > li.active > a:hover, .iphone-nav-tabs > li.active > a:focus {
+    border-radius: 3px !important;
     background-color: #2f2739;
     transition: none;
-    border-radius: 0 !important;
 }
 
 .iphone-nav-tabs > li.active > a, .iphone-nav-tabs > li.active > a:hover, .iphone-nav-tabs > li.active > a:focus, .iphone-nav-tabs > li.active > a > .status-label, .iphone-nav-tabs > li.active > a .fas {
@@ -3583,6 +3583,7 @@ h4 .tip-badge {
     padding: 10px;
     border-radius: 5px;
     margin:3px 187px 5px 10px;
+    overflow: hidden;
 }
 
 .tuc-right-under{
@@ -3711,4 +3712,11 @@ h4 .tip-badge {
 
 .hidden {
     display: none !important;
+}
+
+.modal .modal-dialog {
+    margin-top: 50px;
+    width:auto;
+    max-width: 900px;
+    margin: 30px auto;
 }

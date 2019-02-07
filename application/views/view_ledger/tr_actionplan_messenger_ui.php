@@ -9,7 +9,7 @@ $on_start_messages = $this->Database_model->fn___tr_fetch(array(
 
 
 //Fetch completion requirements for this intent:
-$message_in_requirements = $this->Matrix_model->fn___in_completion_requirements($value['in_id']);
+$message_in_requirements = $this->Matrix_model->fn___in_req_completion($value['in_completion_en_id']);
 
 
 $has_children = (count($actionplan_children) > 0);
@@ -20,7 +20,7 @@ $list_children = (count($actionplan_parents) == 0 || !($actionplan_parents[0]['t
 
 if (count($actionplan_parents) == 1) {
     //Inform the user of any completion requirements:
-    $message_in_requirements = $this->Matrix_model->fn___in_completion_requirements($in['in_id']);
+    $message_in_requirements = $this->Matrix_model->fn___in_req_completion($in['in_completion_en_id']);
 
     //Submission button visible after first button was clicked:
     $is_incomplete = ($actionplan_parents[0]['tr_status'] < 1 || ($actionplan_parents[0]['tr_status'] == 1 && count($actionplan_children) == 0));

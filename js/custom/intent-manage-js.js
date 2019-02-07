@@ -4,6 +4,7 @@
 
 //This also has an equal PHP function fn___echo_time_hours() which we want to make sure has more/less the same logic:
 function fn___echo_js_hours(in_seconds) {
+
     in_seconds = parseInt(in_seconds);
     if (in_seconds < 1) {
         return '0';
@@ -14,6 +15,10 @@ function fn___echo_js_hours(in_seconds) {
         //Show in rounded hours:
         return Math.round((in_seconds / 3600)) + "h";
     }
+}
+
+function in_cost_overview(seconds, in_id){
+    return fn___echo_js_hours(seconds) + ( parseFloat($('.t_estimate_' + in_id + ':first').attr('intent-usd')) > 0 ? '$' : '' );
 }
 
 $(document).ready(function () {
@@ -77,13 +82,14 @@ $(document).ready(function () {
         }
     });
 
-    $('input[type=radio][name=in_is_any]').change(function () {
-        fn___in_adjust_isany_ui();
-    });
-
     //Lookout for intent link related changes:
     $('input[type=radio][name=tr_type_en_id], #tr_status').change(function () {
         fn___in_adjust_link_ui();
+    });
+
+    //Look for AND/OR changes:
+    $('input[type=radio][name=in_is_any]').change(function () {
+        fn___in_adjust_isany_ui();
     });
 
 
@@ -98,7 +104,7 @@ $(document).ready(function () {
             fn___in_sort_load(in_id, 3);
 
             //Load time:
-            $('.t_estimate_' + in_id).text(fn___echo_js_hours($('.t_estimate_' + in_id + ':first').attr('tree-max-seconds')));
+            $('.t_estimate_' + in_id).text(in_cost_overview($('.t_estimate_' + in_id + ':first').attr('tree-max-seconds'), in_id));
 
         });
 
@@ -108,7 +114,7 @@ $(document).ready(function () {
                 var in_id = $(this).attr('intent-id');
                 if (in_id) {
                     //Load time:
-                    $('.t_estimate_' + in_id).text(fn___echo_js_hours($('.t_estimate_' + in_id + ':first').attr('tree-max-seconds')));
+                    $('.t_estimate_' + in_id).text(in_cost_overview($('.t_estimate_' + in_id + ':first').attr('tree-max-seconds'), in_id));
                 }
             });
         }
@@ -175,8 +181,8 @@ $(document).ready(function () {
         var hash_parts = hash.split("-");
         if (hash_parts.length >= 2) {
             //Fetch level if available:
-            if (hash_parts[0] == 'loadmessages') {
-                fn___in_messages_load(hash_parts[1]);
+            if (hash_parts[0] == 'loadintentmetadata') {
+                fn___in_metadata_load(hash_parts[1]);
             } else if (hash_parts[0] == 'loadmodify') {
                 fn___in_modify_load(hash_parts[1], hash_parts[2]);
             } else if (hash_parts[0] == 'browseledger') {
@@ -189,16 +195,15 @@ $(document).ready(function () {
 });
 
 
+
+
 function fn___in_adjust_isany_ui() {
     if ($('#in_is_any_0').is(':checked')) {
         //Unlock settings:
-        $('.and-settings').removeClass('hidden');
-        $('.or-settings').addClass('hidden');
+        $('#in_completion_en_id').prop('disabled', false);
     } else {
         //Any is selected, lock the completion settings as its not allowed for ANY Branches:
-        $('.in_input_requirements').prop('checked', false);
-        $('.and-settings').addClass('hidden');
-        $('.or-settings').removeClass('hidden');
+        $('#in_completion_en_id').val('0').prop('disabled', 'disabled');
     }
 }
 
@@ -226,9 +231,11 @@ function fn___in_adjust_link_ui() {
         if ($('#tr_type_en_id_4229').is(':checked')) {
             //Conditional link is checked:
             $('.score_range_box').removeClass('hidden');
+            $('.score_points').addClass('hidden');
         } else {
             //Any is selected, lock the completion settings as its not allowed for ANY Branches:
             $('.score_range_box').addClass('hidden');
+            $('.score_points').removeClass('hidden');
         }
 
     } else {
@@ -426,16 +433,16 @@ function fn___in_sort_load(in_id, level) {
 }
 
 
-function fn___in_messages_load(in_id) {
+function fn___in_metadata_load(in_id) {
     //Start loading:
     $('.fixed-box').addClass('hidden');
     $('.frame-loader').addClass('hidden');
     $('#load_tr_frame').removeClass('hidden').hide().fadeIn();
     //Set title:
-    $('#tr_title').html('<i class="fas fa-comment-dots"></i> ' + $('.in_outcome_' + in_id + ':first').text());
+    $('#tr_title').html('<i class="fal fa-layer-group"></i> ' + $('.in_outcome_' + in_id + ':first').text());
 
     //Load content via a URL:
-    $('.ajax-frame').attr('src', '/intents/fn___in_messages_load/' + in_id).removeClass('hidden').css('margin-top', '0');
+    $('.ajax-frame').attr('src', '/intents/fn___in_metadata_load/' + in_id).removeClass('hidden').css('margin-top', '0');
 
     //Tooltips:
     $('[data-toggle="tooltip"]').tooltip();
@@ -459,27 +466,23 @@ function fn___in_tr_load(in_id, tr_id, tr_type_en_id) {
     $('[data-toggle="tooltip"]').tooltip();
 }
 
-function fn___adjust_js_ui(in_id, level, new_hours, intent_deficit_count=0, apply_to_tree=0, skip_intent_adjustments=0) {
+function fn___adjust_js_ui(in_id, level, new_hours, intent_deficit_count=0, apply_to_tree=0, skip_intent_adjustments=0, usd_cost=0) {
 
     intent_deficit_count = parseInt(intent_deficit_count);
     var in_seconds = parseFloat($('.t_estimate_' + in_id + ':first').attr('intent-seconds'));
     var in__tree_seconds = parseFloat($('.t_estimate_' + in_id + ':first').attr('tree-max-seconds'));
     var in_deficit_seconds = new_hours - (skip_intent_adjustments ? 0 : (apply_to_tree ? in__tree_seconds : in_seconds));
 
-    if (in_deficit_seconds == 0 && intent_deficit_count == 0) {
-        //Nothing changed, so we need to do nothing either!
-        return false;
-    }
-
     //Adjust same level hours:
     if (!skip_intent_adjustments) {
         var in_new__tree_seconds = in__tree_seconds + in_deficit_seconds;
         $('.t_estimate_' + in_id)
             .attr('tree-max-seconds', in_new__tree_seconds)
-            .text(fn___echo_js_hours(in_new__tree_seconds));
+            .attr('intent-usd', usd_cost)
+            .text(in_cost_overview(in_new__tree_seconds, in_id));
 
         if (!apply_to_tree) {
-            $('.t_estimate_' + in_id).attr('intent-seconds', new_hours).text(fn___echo_js_hours(in_new__tree_seconds));
+            $('.t_estimate_' + in_id).attr('intent-seconds', new_hours).text(in_cost_overview(in_new__tree_seconds, in_id));
         }
     }
 
@@ -503,12 +506,11 @@ function fn___adjust_js_ui(in_id, level, new_hours, intent_deficit_count=0, appl
             $('.children-counter-' + in_parent_id).text(parseInt($('.children-counter-' + in_parent_id + ':first').text()) + intent_deficit_count);
         }
 
-        if (!(in_deficit_seconds == 0)) {
-            //Update Hours (Either level 1 or 2):
-            $('.t_estimate_' + in_parent_id)
-                .attr('tree-max-seconds', in_new_parent__tree_seconds)
-                .text(fn___echo_js_hours(in_new_parent__tree_seconds));
-        }
+        //Update Hours (Either level 1 or 2):
+        $('.t_estimate_' + in_parent_id)
+            .attr('tree-max-seconds', in_new_parent__tree_seconds)
+            .text(fn___echo_js_hours(in_new_parent__tree_seconds));
+
 
         if (level == 3) {
             //Adjust top level intent as well:
@@ -520,12 +522,10 @@ function fn___adjust_js_ui(in_id, level, new_hours, intent_deficit_count=0, appl
                 $('.children-counter-' + in_tactic_id).text(parseInt($('.children-counter-' + in_tactic_id + ':first').text()) + intent_deficit_count);
             }
 
-            if (!(in_deficit_seconds == 0)) {
-                //Update Hours:
-                $('.t_estimate_' + in_tactic_id)
-                    .attr('tree-max-seconds', in_new__tree_seconds)
-                    .text(fn___echo_js_hours(in_new__tree_seconds));
-            }
+            //Update Hours:
+            $('.t_estimate_' + in_tactic_id)
+                .attr('tree-max-seconds', in_new__tree_seconds)
+                .text(fn___echo_js_hours(in_new__tree_seconds));
         }
     }
 }
@@ -576,20 +576,10 @@ function fn___in_modify_load(in_id, tr_id) {
             //Load inputs:
             $('#in_outcome').val(data.in.in_outcome);
             $('#in_is_any_' + data.in.in_is_any).prop("checked", true);
-            $('.in_input_requirements').prop('checked', false); //Uncheck all
-            if (data.in_req_ens.length > 0) { //Check current ones:
-                for (var i = 0; i < data.in_req_ens.length; i++) {
-                    $('#require__' + data.in_req_ens[i]).attr('checked', 'checked');
-                }
-            }
-            $('#in_status').val(data.in.in_status);
-            $('#in_status').attr('original-status', data.in.in_status); //Set the status before it gets changed by miners
+            $('#in_status').val(data.in.in_status).attr('original-status', data.in.in_status); //Set the status before it gets changed by miners
             $('#in_usd').val(data.in.in_usd);
             $('#in_seconds').val(data.in.in_seconds);
-            $('#in_webhook').val(data.in.in_webhook);
-            $('#in_points').val(data.in.in_points);
-            $('#in_points').val(data.in.in_points);
-            $('.save_intent_changes').html(data.in.in___last_updated); //Load Last Updated box
+            $('#in_completion_en_id').val(data.in.in_completion_en_id);
 
             //Load intent link data if available:
             if (tr_id > 0) {
@@ -598,6 +588,7 @@ function fn___in_modify_load(in_id, tr_id) {
                 $("#tr_status").val(data.tr.tr_status);
                 $('#tr__conditional_score_min').val(data.tr.tr_metadata.tr__conditional_score_min);
                 $('#tr__conditional_score_max').val(data.tr.tr_metadata.tr__conditional_score_max);
+                $('#tr__assessment_points').val(data.tr.tr_metadata.tr__assessment_points);
 
                 //Is this a conditional link? If so, load the min/max range:
                 if (data.tr.tr_type_en_id == 4229) {
@@ -607,8 +598,6 @@ function fn___in_modify_load(in_id, tr_id) {
                     //Fixed link:
                     $('#tr_type_en_id_4228').prop("checked", true);
                 }
-
-                $('.tr-last-updated').html(data.tr.tr___last_updated); //Load Last Updated box
             }
 
             //Make the frame visible:
@@ -650,24 +639,14 @@ function fn___in_modify_save() {
         in_outcome: $('#in_outcome').val(),
         in_status: parseInt($('#in_status').val()),
         in_seconds: parseInt($('#in_seconds').val()),
+        in_completion_en_id: parseInt($('#in_completion_en_id').val()),
         in_usd: parseFloat($('#in_usd').val()),
         in_is_any: parseInt($('input[name=in_is_any]:checked').val()),
         apply_recursively: (document.getElementById('apply_recursively').checked ? 1 : 0),
-        in_points: parseInt($('#in_points').val()),
-        in_webhook: $('#in_webhook').val(),
-        input_requirements: [], //Remove double quotes
         tr__conditional_score_min: null, //Default
         tr__conditional_score_max: null, //Default
+        tr__assessment_points: null, //Default
     };
-
-    //Append requirements
-    if ( !modify_data['in_is_any'] ) {
-        $('.in_input_requirements').each(function (i, obj) {
-            if (obj.checked) {
-                modify_data['input_requirements'].push(parseInt($(this).attr('req-en-id')));
-            }
-        });
-    }
 
     //Do we have the intent Ledger Transaction?
     if (modify_data['tr_id'] > 0) {
@@ -679,9 +658,12 @@ function fn___in_modify_save() {
         modify_data['tr_type_en_id'] = parseInt($('input[name=tr_type_en_id]:checked').val());
 
         if(modify_data['tr_type_en_id'] == 4229){ //Conditional Intent Link
-            //Fetch condition range:
+            //Post-assessment condition range:
             modify_data['tr__conditional_score_min'] = $('#tr__conditional_score_min').val();
             modify_data['tr__conditional_score_max'] = $('#tr__conditional_score_max').val();
+        } else if(modify_data['tr_type_en_id'] == 4228){
+            //Pre-Assessment score:
+            modify_data['tr__assessment_points'] = $('#tr__assessment_points').val();
         }
     }
 
@@ -713,7 +695,7 @@ function fn___in_modify_save() {
                     //Remove Hash:
                     window.location.hash = '#';
 
-                    //Adjust hours:
+                    //Adjust completion cost:
                     fn___adjust_js_ui(modify_data['in_id'], modify_data['level'], 0, data.in__tree_in_active_count, 1);
 
                     //Remove from UI:
@@ -749,9 +731,9 @@ function fn___in_modify_save() {
 
                     $('.tr_status_' + modify_data['tr_id']).html('<span class="tr_status_val" data-toggle="tooltip" data-placement="right" title="'+ object_js_statuses['tr_status'][modify_data['tr_status']]["s_name"] + ': '+ object_js_statuses['tr_status'][modify_data['tr_status']]["s_desc"] + '">'+ object_js_statuses['tr_status'][modify_data['tr_status']]["s_icon"] +'</span>');
 
+                    //Update Assessment
+                    $(".in_assessment_" + modify_data['tr_id']).html(( modify_data['tr_type_en_id']==4228 ? ( modify_data['tr__assessment_points'] != 0 ? modify_data['tr__assessment_points'] : '' ) : modify_data['tr__conditional_score_min'] + ( modify_data['tr__conditional_score_min']==modify_data['tr__conditional_score_max'] ? '' : '-' + modify_data['tr__conditional_score_max'] ) + '%' ));
 
-                    //Update transaction time:
-                    $('.tr-last-updated').html(data.tr___last_updated).hide().fadeIn(); //Load Last Updated box
                 }
 
 
@@ -762,43 +744,20 @@ function fn___in_modify_save() {
                 $('.edit-header').html('<i class="fas fa-cog"></i> ' + modify_data['in_outcome']);
 
 
-                //Always update 2x Intent icons:
+                //Always update 3x Intent icons:
                 $('.in_is_any_' + modify_data['in_id']).html('<span class="in_is_any_val" data-toggle="tooltip" data-placement="right" title="'+ object_js_statuses['in_is_any'][modify_data['in_is_any']]["s_name"] + ': '+ object_js_statuses['in_is_any'][modify_data['in_is_any']]["s_desc"] + '">'+ object_js_statuses['in_is_any'][modify_data['in_is_any']]["s_icon"] +'</span>');
 
                 $('.in_status_' + modify_data['in_id']).html('<span class="in_status_val" data-toggle="tooltip" data-placement="right" title="'+ object_js_statuses['in_status'][modify_data['in_status']]["s_name"] + ': '+ object_js_statuses['in_status'][modify_data['in_status']]["s_desc"] + '">'+ object_js_statuses['in_status'][modify_data['in_status']]["s_icon"] +'</span>');
 
+                $('.in_completion_' + modify_data['in_id']).html(( modify_data['in_completion_en_id'] > 0 ? en_all_4331[modify_data['in_completion_en_id']]["m_name"] : '' ));
+
 
 
                 //Update UI to confirm with user:
-                $('.save_intent_changes').html(data.in___last_updated).hide().fadeIn();
+                $('.save_intent_changes').html(data.message).hide().fadeIn();
 
-                //Update range:
-                $('.range_is_' + modify_data['in_id']).html(( modify_data['tr__conditional_score_min'] == null ? '' : modify_data['tr__conditional_score_min'] + '-' + modify_data['tr__conditional_score_max'] + '%' ));
-
-
-                if(!modify_data['input_requirements'].length){
-                    $('.input_requirements_' + modify_data['in_id']).html('');
-                } else {
-                    //Generate Icons:
-                    var input_requirements_icons = '';
-
-                    for (var i = 0; i < modify_data['input_requirements'].length; i++) {
-                        //Append this icon:
-                        input_requirements_icons += ' <span data-toggle="tooltip" data-placement="top" title="Accepts '+ en_all_4331[modify_data['input_requirements'][i]]["m_name"] + ' to be marked as complete">'+ en_all_4331[modify_data['input_requirements'][i]]["m_icon"] +'</span>';
-                    }
-
-                    $('.input_requirements_' + modify_data['in_id']).html(input_requirements_icons);
-                }
-
-
-                //Update other UI elements:
-                $(".ui_in_points_" + modify_data['in_id']).html(modify_data['in_points']);
-                $(".ui_in_usd_" + modify_data['in_id']).html((modify_data['in_usd'] > 0 ? '<i class="fal fa-usd-circle" data-toggle="tooltip" title="$'+ modify_data['in_usd'] +' USD in product purchase recommendations" data-placement="top"></i>' : ''));
-                $(".in_setwebhook_" + modify_data['in_id']).html((modify_data['in_webhook'].length > 0 ? '<i class="fal fa-cloud-upload" data-toggle="tooltip" title="'+ modify_data['in_webhook'] +'" data-placement="top"></i>' : ''));
-
-
-                //Adjust hours if needed:
-                fn___adjust_js_ui(modify_data['in_id'], modify_data['level'], modify_data['in_seconds']);
+                //Adjust completion cost:
+                fn___adjust_js_ui(modify_data['in_id'], modify_data['level'], modify_data['in_seconds'], 0, 0, 0, modify_data['in_usd']); //intent-usd
 
             }
 
@@ -810,8 +769,10 @@ function fn___in_modify_save() {
                 if (modify_data['apply_recursively'] && data.status_update_children > 0) {
                     //Refresh page soon to show new status for children:
                     window.location = "/intents/" + in_focus_id;
+                } else {
+                    $('.save_intent_changes').html(' ');
                 }
-            }, 610);
+            }, 1210);
 
         }
     });

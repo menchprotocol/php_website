@@ -15,7 +15,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 
 //UI Display:
-$config['app_version']              = '0.717'; //Cache buster in URLs for static js/css files
+$config['app_version']              = '0.721'; //Cache buster in URLs for static js/css files
 $config['en_per_page']              = 50; //Limits the maximum entities loaded per page
 
 
@@ -24,7 +24,6 @@ $config['in_mission_name']          = 'expand human potential'; //is the top lev
 $config['in_mission_id']            = 7766; //expand human potential
 $config['in_strategy_name']         = 'advance your tech career'; //The broader, more long-term strategic focus of Mench
 $config['in_tactic_id']             = 6903; //The shorter, more immediate focus recommended to Students & Miners as the starting point
-$config['in_webhook_prefix']        = 'https://'; //The prefix for Webhook URL
 $config['in_miner_start_id']        = 7435; //The ID that gets Miner's started
 
 
@@ -46,7 +45,6 @@ $config['core_objects']             = array( //The 3 primary objects in the app
 
 
 //App Inputs:
-$config['in_points_options']        = array(-89, -55, -34, -21, -13, -8, -5, -3, -2, -1, 0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610);
 $config['in_seconds_max']           = 28800; //The maximum seconds allowed per intent. If larger, the miner is asked to break it down into smaller intents
 $config['in_outcome_max']           = 89; //Max number of characters allowed in the title of intents
 $config['en_name_max']              = 250; //Max number of characters allowed in the title of intents
@@ -130,7 +128,7 @@ $config['object_statuses']          = array(
                                             -1 => array(
                                                 's_name' => 'Removed',
                                                 's_desc' => 'Transaction removed by Student or Miner',
-                                                's_icon' => '<i class="fal fa-minus-square"></i>',
+                                                's_icon' => '<i class="fal fa-minus-circle"></i>',
                                             ),
                                             0 => array( //Considered incomplete, see tr_status_incomplete for more details
                                                 's_name' => 'New',
@@ -157,7 +155,7 @@ $config['object_statuses']          = array(
                                             -1 => array(
                                                 's_name' => 'Removed',
                                                 's_desc' => 'Intent removed by Miner',
-                                                's_icon' => '<i class="fal fa-minus-square"></i>',
+                                                's_icon' => '<i class="fal fa-minus-circle"></i>',
                                             ),
                                             0 => array(
                                                 's_name' => 'New',
@@ -184,7 +182,7 @@ $config['object_statuses']          = array(
                                             -1 => array(
                                                 's_name' => 'Removed',
                                                 's_desc' => 'Entity removed by Miner',
-                                                's_icon' => '<i class="fal fa-minus-square"></i>',
+                                                's_icon' => '<i class="fal fa-minus-circle"></i>',
                                             ),
                                             0 => array(
                                                 's_name' => 'New',
@@ -211,7 +209,7 @@ $config['object_statuses']          = array(
                                             0 => array(
                                                 's_name' => 'AND',
                                                 's_desc' => 'Intent is complete when all children are marked as complete',
-                                                's_icon' => '<i class="fas fa-sitemap"></i>',
+                                                's_icon' => '<i class="fal fa-sitemap"></i>',
                                             ),
                                             1 => array(
                                                 's_name' => 'OR',

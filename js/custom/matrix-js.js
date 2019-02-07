@@ -99,11 +99,11 @@ function fn___ms_toggle(tr_id, new_state) {
     if (new_state) {
         //open:
         $('.cr-class-' + tr_id).removeClass('hidden');
-        $('#handle-' + tr_id).removeClass('fa-plus-square').addClass('fa-minus-square');
+        $('#handle-' + tr_id).removeClass('fa-plus-circle').addClass('fa-minus-circle');
     } else {
         //Close:
         $('.cr-class-' + tr_id).addClass('hidden');
-        $('#handle-' + tr_id).removeClass('fa-minus-square').addClass('fa-plus-square');
+        $('#handle-' + tr_id).removeClass('fa-minus-circle').addClass('fa-plus-circle');
     }
 }
 

@@ -634,84 +634,6 @@ class Entities extends CI_Controller
         ));
     }
 
-
-    function fn___en_load_data()
-    {
-
-        /*
-         *
-         * An AJAX function that is triggered every time a Miner
-         * selects to modify an entity.
-         *
-         * It returns the last edited time for both the entity
-         * and the entity link (if tr_id > 0)
-         *
-         * */
-
-        $udata = fn___en_auth(array(1308));
-        if (!$udata) {
-            return fn___echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid Session. Refresh.',
-            ));
-        } elseif (!isset($_POST['en_id']) || intval($_POST['en_id']) < 1) {
-            return fn___echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Entity ID',
-            ));
-        } elseif (!isset($_POST['tr_id'])) {
-            return fn___echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Intent Link ID',
-            ));
-        }
-
-        //Fetch last entity update transaction:
-        $updated_trs = $this->Database_model->fn___tr_fetch(array(
-            'tr_status >=' => 0, //New+
-            'tr_type_en_id IN (4251, 4263)' => null, //Entity Created/Updated
-            'tr_en_child_id' => $_POST['en_id'],
-        ), array('en_miner'));
-        if (count($updated_trs) < 1) {
-            //Should never happen
-            return fn___echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Entity Last Updated Data',
-            ));
-        }
-
-        //Prep last updated:
-        $return_array = array(
-            'status' => 1,
-            'en___last_updated' => fn___echo_last_updated('en', $updated_trs[0]),
-        );
-
-        if (intval($_POST['tr_id']) > 0) {
-
-            //Fetch intent link:
-            $trs = $this->Database_model->fn___tr_fetch(array(
-                'tr_id' => $_POST['tr_id'],
-                'tr_status >=' => 0, //New+
-            ), array('en_miner'));
-
-            if (count($trs) < 1) {
-                return fn___echo_json(array(
-                    'status' => 0,
-                    'message' => 'Invalid Entity Link ID',
-                ));
-            }
-
-            //Prep last updated:
-            $return_array['tr___last_updated'] = fn___echo_last_updated('tr', $trs[0]);
-
-        }
-
-        //Return results:
-        return fn___echo_json($return_array);
-
-    }
-
-
     function fn___en_modify_save()
     {
 
@@ -877,7 +799,7 @@ class Entities extends CI_Controller
         //Start return array:
         $return_array = array(
             'status' => 1,
-            'en___last_updated' => fn___echo_last_updated('en', $updated_trs[0]),
+            'message' => '<i class="fas fa-check"></i> Saved',
             'remove_from_ui' => $remove_from_ui,
             'js_tr_type_en_id' => intval($js_tr_type_en_id),
         );
@@ -892,8 +814,6 @@ class Entities extends CI_Controller
             //Prep last updated:
             $return_array['tr_content'] = fn___echo_tr_content($tr_content, $js_tr_type_en_id);
 
-            $return_array['tr___last_updated'] = ($tr_has_updated ? fn___echo_last_updated('tr', $trs[0]) : null);
-
         }
 
 
@@ -903,23 +823,29 @@ class Entities extends CI_Controller
     }
 
 
-    function fn___load_en_messages()
+    function fn___load_en_metadata($en_id)
     {
 
         $udata = fn___en_auth();
         if (!$udata) {
             //Display error:
             die('<span style="color:#FF0000;">Error: Invalid Session. Login again to continue.</span>');
-        } elseif (!isset($_POST['en_id']) || intval($_POST['en_id']) < 1) {
-            die('<span style="color:#FF0000;">Error: Invalid entity id.</span>');
         }
 
         $messages = $this->Database_model->fn___tr_fetch(array(
             'tr_status >=' => 0, //New+
             'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent messages
-            'tr_en_parent_id' => $_POST['en_id'],
+            'tr_en_parent_id' => $en_id,
         ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
 
+
+        //Always skip header:
+        $_GET['skip_header'] = 1;
+
+        //Show frame to be loaded in modal:
+        $this->load->view('view_shared/matrix_header', array(
+            'title' => 'Managed Intent Metadata',
+        ));
         echo '<div id="list-messages" class="list-group  grey-list">';
         foreach ($messages as $tr) {
 
@@ -928,7 +854,7 @@ class Entities extends CI_Controller
             echo '<span class="pull-right" style="margin:6px 10px 0 0;">';
             echo '<span data-toggle="tooltip" title="This is the ' . fn___echo_number_ordinal($tr['tr_order']) . ' message for this intent" data-placement="left" class="underdot" style="padding-bottom:4px;">' . fn___echo_number_ordinal($tr['tr_order']) . '</span> ';
             echo '<span>' . fn___echo_status('tr_status', $tr['tr_status'], 1, 'left') . '</span> ';
-            echo '<a href="/intents/' . $tr['tr_in_child_id'] . '#loadmessages-' . $tr['tr_in_child_id'] . '"><span class="badge badge-primary" style="display:inline-block; margin-left:3px; width:40px;"><i class="fas fa-sign-out-alt rotate90"></i></span></a>';
+            echo '<a href="/intents/' . $tr['tr_in_child_id'] . '" target="_parent"><span class="badge badge-primary" style="display:inline-block; margin-left:3px; width:40px;"><i class="fas fa-sign-out-alt rotate90"></i></span></a>';
             echo '</span>';
 
             echo '<h4><i class="fas fa-hashtag" style="font-size:1em;"></i> ' . $tr['in_outcome'] . '</h4>';
@@ -942,6 +868,7 @@ class Entities extends CI_Controller
 
         }
         echo '</div>';
+        $this->load->view('view_shared/matrix_footer');
     }
 
 

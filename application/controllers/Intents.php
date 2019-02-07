@@ -305,10 +305,6 @@ class Intents extends CI_Controller
             'in_status >=' => 0, //New+
         ));
 
-        if(!isset($_POST['input_requirements'])){
-            $_POST['input_requirements'] = array();
-        }
-
         if (!$udata) {
             return fn___echo_json(array(
                 'status' => 0,
@@ -319,25 +315,20 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Intent ID',
             ));
-        } elseif (!isset($_POST['in_webhook'])) {
-            return fn___echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Input Webhook variable',
-            ));
         } elseif (intval($_POST['level'])==1 && intval($_POST['tr_id'])>0) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Level 1 intent should not have a transaction',
             ));
-        } elseif ( strlen($_POST['in_webhook']) > 0 && !filter_var($this->config->item('in_webhook_prefix').$_POST['in_webhook'], FILTER_VALIDATE_URL)) {
-            return fn___echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid Input Webhook URL',
-            ));
         } elseif (!isset($_POST['tr__conditional_score_min']) || !isset($_POST['tr__conditional_score_max'])) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Score Min/Max Variables',
+            ));
+        } elseif (!isset($_POST['tr__assessment_points'])) {
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Missing assessment points',
             ));
         } elseif (!isset($_POST['level']) || intval($_POST['level']) < 1 || intval($_POST['level']) > 3) {
             return fn___echo_json(array(
@@ -364,6 +355,11 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Recursive setting',
             ));
+        } elseif (!isset($_POST['in_completion_en_id'])) {
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Completion Entity ID',
+            ));
         } elseif (!isset($_POST['in_usd']) || doubleval($_POST['in_usd']) < 0) {
             return fn___echo_json(array(
                 'status' => 0,
@@ -374,12 +370,7 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Intent Status',
             ));
-        } elseif (!isset($_POST['in_points'])) {
-            return fn___echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Points',
-            ));
-        } elseif (intval($_POST['in_usd']) < 0 || intval($_POST['in_usd']) > 300) {
+        } elseif (intval($_POST['in_usd']) < 0 || doubleval($_POST['in_usd']) > 300) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Cost estimate must be $0-5000 USD',
@@ -419,93 +410,14 @@ class Intents extends CI_Controller
 
 
 
-
-
-        //Fetch current ANY Conditional input limiters:
-        $completion_requirements_modified = 0;
-        $completion_requirements = $this->Database_model->fn___tr_fetch(array(
-            'tr_type_en_id' => 4331, //Intent Completion Requirements
-            'tr_in_child_id' => $_POST['in_id'], //For this intent
-            'tr_status >=' => 0, //New+
-            'tr_en_parent_id IN (' . join(',', $this->config->item('en_ids_4331')) . ')' => null, //Technically not needed, but here for extra clarity
-        ));
-
-        //Save additional settings:
-        if(intval($_POST['in_is_any'])){
-
-            //Intent type is ANY AND intent has input requirements, which now need to be removed:
-            foreach ($completion_requirements as $tr) {
-                //Remove this link:
-                $this->Database_model->fn___tr_update($tr['tr_id'], array(
-                    'tr_status' => -1, //Removed
-                ), $udata['en_id']);
-                $completion_requirements_modified++;
-            }
-
-        } else {
-
-            //Loop through current input limiters and see if we need to modify:
-            $already_selected = array(); //Will build this with selected type IDs
-
-            foreach ($completion_requirements as $tr) {
-
-                //See if any of the existing links have been removed:
-                if(!in_array($tr['tr_en_parent_id'], $_POST['input_requirements']) || !in_array($tr['tr_en_parent_id'], $this->config->item('en_ids_4331'))){
-
-                    //Yes its removed OR it does not exist in the input array:
-                    $this->Database_model->fn___tr_update($tr['tr_id'], array(
-                        'tr_status' => -1, //Removed
-                    ), $udata['en_id']);
-
-                    $completion_requirements_modified++;
-
-                } else {
-                    //Push into array:
-                    array_push($already_selected , $tr['tr_en_parent_id']);
-                }
-            }
-
-            //Now see if any of the selected ones is missing and needed to be inserted:
-            foreach ($_POST['input_requirements'] as $en_id) {
-
-                //Double check:
-                if(!in_array($en_id, $this->config->item('en_ids_4331'))){
-                    return fn___echo_json(array(
-                        'status' => 0,
-                        'message' => 'Invalid Input Requirement',
-                    ));
-                }
-
-                if(!in_array($en_id, $already_selected)){
-                    //Need to create a new row for this:
-                    $this->Database_model->fn___tr_create(array(
-                        'tr_miner_en_id' => $udata['en_id'],
-                        'tr_type_en_id' => 4331,
-                        'tr_en_parent_id' => $en_id,
-                        'tr_in_child_id' => intval($_POST['in_id']),
-                    ));
-                    $completion_requirements_modified++;
-                }
-            }
-        }
-
-
-
-
-
-
-
-
-
         //Prep new variables:
         $in_update = array(
             'in_status' => intval($_POST['in_status']),
             'in_outcome' => trim($_POST['in_outcome']),
             'in_seconds' => intval($_POST['in_seconds']),
+            'in_completion_en_id' => intval($_POST['in_completion_en_id']),
             'in_usd' => doubleval($_POST['in_usd']),
-            'in_points' => intval($_POST['in_points']),
             'in_is_any' => intval($_POST['in_is_any']),
-            'in_webhook' => trim($_POST['in_webhook']),
         );
 
         //Prep current intent metadata:
@@ -541,11 +453,6 @@ class Intents extends CI_Controller
 
                     $in_metadata_modify['in__tree_min_cost'] = intval($_POST[$key]) - ( isset($in_metadata['in__tree_min_cost']) ? intval($in_metadata['in__tree_min_cost']) : 0 );
                     $in_metadata_modify['in__tree_max_cost'] = intval($_POST[$key]) - ( isset($in_metadata['in__tree_max_cost']) ? intval($in_metadata['in__tree_max_cost']) : 0 );
-
-                } elseif ($key == 'in_points') {
-
-                    $in_metadata_modify['in__tree_min_points'] = intval($_POST[$key]) - ( isset($in_metadata['in__tree_min_points']) ? intval($in_metadata['in__tree_min_points']) : 0 );
-                    $in_metadata_modify['in__tree_max_points'] = intval($_POST[$key]) - ( isset($in_metadata['in__tree_max_points']) ? intval($in_metadata['in__tree_max_points']) : 0 );
 
                 } elseif ($key == 'in_status') {
 
@@ -636,12 +543,16 @@ class Intents extends CI_Controller
             $tr_metadata = ( strlen($trs[0]['tr_metadata']) > 0 ? unserialize($trs[0]['tr_metadata']) : array() );
 
             //Check to see if anything changed in the transaction?
-            $transaction_meta_updated = ($tr_update['tr_type_en_id'] == 4229 && (
-                    !isset($tr_metadata['tr__conditional_score_min']) ||
-                    !isset($tr_metadata['tr__conditional_score_max']) ||
-                    !(doubleval($tr_metadata['tr__conditional_score_max'])==doubleval($_POST['tr__conditional_score_max'])) ||
-                    !(doubleval($tr_metadata['tr__conditional_score_min'])==doubleval($_POST['tr__conditional_score_min']))
-                ));
+            $transaction_meta_updated = ( (($tr_update['tr_type_en_id'] == 4228 && (
+                        !isset($tr_metadata['tr__assessment_points']) ||
+                        !(intval($tr_metadata['tr__assessment_points'])==intval($_POST['tr__assessment_points']))
+                    ))) || (($tr_update['tr_type_en_id'] == 4229 && (
+                        !isset($tr_metadata['tr__conditional_score_min']) ||
+                        !isset($tr_metadata['tr__conditional_score_max']) ||
+                        !(doubleval($tr_metadata['tr__conditional_score_max'])==doubleval($_POST['tr__conditional_score_max'])) ||
+                        !(doubleval($tr_metadata['tr__conditional_score_min'])==doubleval($_POST['tr__conditional_score_min']))
+                    ))));
+
 
 
             foreach ($tr_update as $key => $value) {
@@ -676,6 +587,7 @@ class Intents extends CI_Controller
                     $tr_update['tr_metadata'] = array_merge( $tr_metadata, array(
                         'tr__conditional_score_min' => doubleval($_POST['tr__conditional_score_min']),
                         'tr__conditional_score_max' => doubleval($_POST['tr__conditional_score_max']),
+                        'tr__assessment_points' => intval($_POST['tr__assessment_points']),
                     ));
                 }
 
@@ -691,22 +603,12 @@ class Intents extends CI_Controller
 
 
 
-
-
-        //Fetch latest intent update:
-        $updated_trs = $this->Database_model->fn___tr_fetch(array(
-            'tr_status >=' => 0, //New+
-            'tr_type_en_id IN (4250, 4264)' => null, //Intent Created/Updated
-            'tr_in_child_id' => $_POST['in_id'],
-        ), array('en_miner'));
-
-
         $return_data = array(
             'status' => 1,
+            'message' => '<i class="fas fa-check"></i> Saved',
             'remove_from_ui' => $remove_from_ui,
             'status_update_children' => $status_update_children,
             'in__tree_in_active_count' => -( isset($in_metadata['in__tree_in_active_count']) ? $in_metadata['in__tree_in_active_count'] : 0 ),
-            'in___last_updated' => fn___echo_last_updated('in', $updated_trs[0]),
         );
 
 
@@ -717,8 +619,6 @@ class Intents extends CI_Controller
             $trs = $this->Database_model->fn___tr_fetch(array(
                 'tr_id' => $tr_id,
             ), array('en_miner'));
-
-            $return_data['tr___last_updated'] = fn___echo_last_updated('tr',$trs[0]);
 
         }
 
@@ -874,7 +774,7 @@ class Intents extends CI_Controller
 
 
 
-    function fn___in_messages_load($in_id)
+    function fn___in_metadata_load($in_id)
     {
 
         //Authenticate as a Miner:
@@ -893,7 +793,7 @@ class Intents extends CI_Controller
         $this->load->view('view_shared/matrix_header', array(
             'title' => 'Intent #' . $in_id . ' Messages',
         ));
-        $this->load->view('view_intents/in_message_iframe_ui', array(
+        $this->load->view('view_intents/in_metadata_ui', array(
             'in_id' => $in_id,
         ));
         $this->load->view('view_shared/matrix_footer');
@@ -996,7 +896,7 @@ class Intents extends CI_Controller
         //Update intent count & tree:
         //Do a relative adjustment for this intent's metadata
         $this->Matrix_model->fn___metadata_update('in', $ins[0], array(
-            'in__message_count' => 1, //Add 1 to existing value
+            'in__metadata_count' => 1, //Add 1 to existing value
         ), false);
 
         $this->Matrix_model->fn___metadata_tree_update('in', $ins[0]['in_id'], array(
@@ -1077,9 +977,6 @@ class Intents extends CI_Controller
             ));
         }
 
-        //Prep last updated:
-        $ins[0]['in___last_updated'] = fn___echo_last_updated('in',$updated_trs[0]);
-
 
         if(intval($_POST['tr_id'])>0){
 
@@ -1099,32 +996,22 @@ class Intents extends CI_Controller
             //Prep metadata:
             $trs[0]['tr_metadata'] = ( strlen($trs[0]['tr_metadata']) > 0 ? unserialize($trs[0]['tr_metadata']) : array());
 
-            //Prep last updated:
-            $trs[0]['tr___last_updated'] = fn___echo_last_updated('tr',$trs[0]);
+            //Make sure points are set:
+            if(!isset($trs[0]['tr_metadata']['tr__assessment_points'])){
+                $trs[0]['tr_metadata']['tr__assessment_points'] = 0;
+            }
 
         }
 
 
-        //Fetch intent completion requirements (if any):
-        $completion_requirements = $this->Database_model->fn___tr_fetch(array(
-            'tr_type_en_id' => 4331, //Intent Completion Requirements
-            'tr_in_child_id' => $_POST['in_id'], //For this intent
-            'tr_status >=' => 0, //New+
-            'tr_en_parent_id IN (' . join(',', $this->config->item('en_ids_4331')) . ')' => null, //Technically not needed, but here for extra clarity
-        ));
 
-        $in_req_ens = array();
-        foreach($completion_requirements as $tr){
-            array_push($in_req_ens, intval($tr['tr_en_parent_id']));
-        }
 
         //Adjust formats:
-        $ins[0]['in_usd'] = number_format($ins[0]['in_usd'], 2);
+        $ins[0]['in_usd'] = number_format(doubleval($ins[0]['in_usd']), 2);
 
         //Return results:
         return fn___echo_json(array(
             'status' => 1,
-            'in_req_ens' => $in_req_ens,
             'in' => $ins[0],
             'tr' => ( isset($trs[0]) ? $trs[0] : array() ),
         ));

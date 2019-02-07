@@ -111,7 +111,7 @@ function fn___initiate_search() {
 
 $(document).ready(function () {
 
-    $(".messages-counter-" + in_id, window.parent.document).text(message_count);
+    $(".messages-counter-" + in_id, window.parent.document).text(metadata_count);
 
     fn___initiate_search();
 
@@ -263,8 +263,8 @@ function fn___message_remove(tr_id) {
                 $("#ul-nav-" + tr_id).html('<div>' + data.message + '</div>');
 
                 //Adjust counter by one:
-                message_count--;
-                $(".messages-counter-" + in_id, window.parent.document).text(message_count);
+                metadata_count--;
+                $(".messages-counter-" + in_id, window.parent.document).text(metadata_count);
 
                 //Disapper in a while:
                 setTimeout(function ()
@@ -494,8 +494,8 @@ function fn___in_new_message_from_attachment(droppedFiles, uploadType) {
                 fn___message_form_unlock(data);
 
                 //Adjust Action Plan counter by one:
-                message_count++;
-                $(".messages-counter-" + in_id, window.parent.document).text(message_count);
+                metadata_count++;
+                $(".messages-counter-" + in_id, window.parent.document).text(metadata_count);
             },
             error: function (data) {
                 var result = [];
@@ -532,8 +532,8 @@ function fn___message_create() {
         if (data.status) {
 
             //Adjust counter by one:
-            message_count++;
-            $(".messages-counter-" + in_id, window.parent.document).text(message_count);
+            metadata_count++;
+            $(".messages-counter-" + in_id, window.parent.document).text(metadata_count);
 
             //Reset input field:
             $("#tr_content" + in_id).val("");

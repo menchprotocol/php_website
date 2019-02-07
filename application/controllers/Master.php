@@ -258,14 +258,9 @@ class Master extends CI_Controller
 
 
         //Fetch completion requirements:
-        $completion_requirements = $this->Database_model->fn___tr_fetch(array(
-            'tr_type_en_id' => 4331, //Intent Completion Requirements
-            'tr_in_child_id' => $trs[0]['tr_in_child_id'], //For this intent
-            'tr_status >=' => 2, //Published+
-            'tr_en_parent_id IN (' . join(',', $this->config->item('en_ids_4331')) . ')' => null, //Technically not needed, but here for extra clarity
-        ));
+        $in_completion_en_id = 0; //TODO Update
 
-        if(count($completion_requirements)>0){
+        if($in_completion_en_id>0){
 
             //Yes, it does have requirements! let's check them one by one:
 
@@ -281,22 +276,18 @@ class Master extends CI_Controller
             $did_meet_requirements = false; //Assume false unless proven otherwise
 
             //Check to see if Student meets ANY of the requirements:
-            foreach($completion_requirements as $tr){
+            //Check requirements:
+            if($tr['tr_en_parent_id']==4255 && strlen($_POST['tr_content']) > 0){
+                $did_meet_requirements = true;
+            } elseif($tr['tr_en_parent_id']==4256 && count($msg_references['ref_urls']) > 0){
+                $did_meet_requirements = true;
+            }
 
-                //Check requirements:
-                if($tr['tr_en_parent_id']==4255 && strlen($_POST['tr_content']) > 0){
-                    $did_meet_requirements = true;
-                } elseif($tr['tr_en_parent_id']==4256 && count($msg_references['ref_urls']) > 0){
-                    $did_meet_requirements = true;
-                }
-
-                if($did_meet_requirements){
-                    //We only need to meet a single requirement:
-                    break;
-                } else {
-                    //Add this to list of what is needed to mark as complete so we can inform Student:
-                    array_push($requirement_notes, $en_all_4331[$tr['tr_en_parent_id']]['m_name']);
-                }
+            if($did_meet_requirements){
+                //We only need to meet a single requirement:
+            } else {
+                //Add this to list of what is needed to mark as complete so we can inform Student:
+                array_push($requirement_notes, $en_all_4331[$tr['tr_en_parent_id']]['m_name']);
             }
 
             if(!$did_meet_requirements){

@@ -116,7 +116,7 @@ class Ledger extends CI_Controller
 
             //Do a relative adjustment for this intent's metadata
             $this->Matrix_model->fn___metadata_update('in', $ins[0], array(
-                'in__message_count' => -1, //Remove 1 from existing value
+                'in__metadata_count' => -1, //Remove 1 from existing value
             ), false);
 
             //Update intent tree:
@@ -299,7 +299,7 @@ class Ledger extends CI_Controller
 
         //Do a relative adjustment for this intent's metadata
         $this->Matrix_model->fn___metadata_update('in', $ins[0], array(
-            'in__message_count' => 1, //Add 1 to existing value
+            'in__metadata_count' => 1, //Add 1 to existing value
         ), false);
 
         //Update tree as well:

@@ -194,11 +194,24 @@ class Cron extends CI_Controller
                     $child['en_name'] = trim(str_replace( str_replace('&trimcache=','',$en['tr_content']) , '', $child['en_name']));
                 }
 
+                //Fetch all parents for this child:
+                $child_parent_ids = array(); //To be populated soon
+                $child_parents = $this->Database_model->fn___tr_fetch(array(
+                    'tr_status >=' => 2,
+                    'en_status >=' => 2,
+                    'tr_en_child_id' => $child['en_id'],
+                    'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                ), array('en_parent'), 0, 0, array('en_id' => 'ASC'));
+                foreach($child_parents as $cp_en){
+                    array_push($child_parent_ids, $cp_en['en_id']);
+                }
+
                 echo '&nbsp;&nbsp;&nbsp;&nbsp; '.$child['en_id'].' => array(<br />';
 
                 echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_icon\' => \''.htmlentities($child['en_icon']).'\',<br />';
                 echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_name\' => \''.$child['en_name'].'\',<br />';
                 echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_desc\' => \''.str_replace('\'','\\\'',$child['tr_content']).'\',<br />';
+                echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_parents\' => array('.join(', ',$child_parent_ids).'),<br />';
 
                 echo '&nbsp;&nbsp;&nbsp;&nbsp; ),<br />';
 

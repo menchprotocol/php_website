@@ -1066,7 +1066,7 @@ class Chat_model extends CI_Model
 
 
         //Check the required notes as we'll use this later:
-        $message_in_requirements = $this->Matrix_model->fn___in_completion_requirements($ins[0]['in_id'], $actionplan_tr_id);
+        $message_in_requirements = $this->Matrix_model->fn___in_req_completion($ins[0]['in_completion_en_id'],$ins[0]['id_id'], $actionplan_tr_id);
 
         //Do we have a Action Plan, if so, we need to add a next step message:
         if ($message_in_requirements) {

@@ -139,7 +139,7 @@
         //Input to add new parents:
         echo '<div id="new-children" class="list-group-item list_input grey-input">
         <div class="input-group">
-            <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search bottom-add" data-lpignore="true" placeholder="Add ' . stripslashes($entity['en_name']) . '"></div>
+            <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search bottom-add" data-lpignore="true" placeholder="Add ' . stripslashes($entity['en_name']) . ' Entity"></div>
             <span class="input-group-addon">
                 <a class="badge badge-secondary new-btn" href="javascript:tr_add(0,' . $entity['en_id'] . ', 0);"><i class="fas fa-plus"></i></a>
             </span>
@@ -277,7 +277,6 @@
                                         </div>
                                     </div>
 
-                                    <span class="tr-last-updated"></span>
                                 </div>
 
                             </div>
@@ -306,7 +305,7 @@
 
             <h5 class="badge badge-h" data-toggle="tooltip"
                 title="Message management can only be done using Intents. Entity messages are listed below for view-only"
-                data-placement="bottom"><i class="fas fa-comment-dots"></i> Entity Messages <i class="fas fa-lock"></i>
+                data-placement="bottom"><i class="fal fa-layer-group"></i> Entity References <i class="fas fa-lock"></i>
             </h5>
             <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;">
                 <a href="javascript:void(0)" onclick="$('#message-frame').addClass('hidden');$('#loaded-messages').html('');">

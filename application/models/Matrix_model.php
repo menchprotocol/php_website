@@ -330,7 +330,7 @@ class Matrix_model extends CI_Model
     }
 
 
-    function fn___in_completion_requirements($in_id, $actionplan_tr_id = 0)
+    function fn___in_req_completion($in_completion_en_id, $in_id = 0, $actionplan_tr_id = 0)
     {
 
         /*
@@ -345,16 +345,8 @@ class Matrix_model extends CI_Model
          *
          * */
 
-        //Fetch all possible Intent Completion Requirements for this intent to see what is required:
-        $response_options = $this->Database_model->fn___tr_fetch(array(
-            'tr_status >=' => 2, //Published
-            'tr_type_en_id' => 4331, //Intent Completion Requirements
-            'tr_en_child_id IN (' . join(',', $this->config->item('en_ids_4331')) . ')' => null, //Technically not needed, but here for extra clarity
-            'tr_in_child_id' => $in_id, //For this intent
-        ));
-
-        if (count($response_options) < 1) {
-            //Did not find any requirements:
+        if ($in_completion_en_id <= 0) {
+            //Does not have any requirements:
             return null;
         }
 
@@ -363,37 +355,11 @@ class Matrix_model extends CI_Model
         //Fetch latest cache tree:
         $en_all_4331 = $this->config->item('en_all_4331'); //Intent Completion Requirements
 
-        //How many do we have?
-        if (count($response_options) == 1) {
-
-            //Single option:
-            $message = 'Marking as complete requires ' . $en_all_4331[$response_options[0]['tr_en_child_id']]['m_name'];
-
-        } else {
-
-            //Multiple options:
-            $message = 'Marking as complete requires either: ';
-
-            //Loop through all options:
-            foreach ($response_options as $count => $en) {
-
-                //Prefix:
-                if (($count + 1) == count($response_options)) {
-                    //This is the last item:
-                    $message .= ' or ';
-                } elseif ($count > 0) {
-                    $message .= ', ';
-                }
-
-                //What is required:
-                $message .= $en_all_4331[$en['tr_en_child_id']]['m_name'];
-
-            }
-
-        }
+        //Single option:
+        $message = 'Marking as complete requires ' . $en_all_4331[$in_completion_en_id]['m_name'];
 
         //Give clear directions to complete if Action Plan ID is provided...
-        if($actionplan_tr_id > 0){
+        if($actionplan_tr_id > 0 && $in_id > 0){
             $message .= ', which you can submit using your Action Plan. /link:See in 🚩Action Plan:https://mench.com/master/actionplan/' . $actionplan_tr_id . '/' . $in_id;
         }
 
@@ -733,7 +699,10 @@ class Matrix_model extends CI_Model
         }
 
         //Inform the user of any completion requirements:
-        $message_in_requirements = $this->Matrix_model->fn___in_completion_requirements($in_answer_id, $actionplan_tr_id);
+        $answer_ins = $this->Database_model->fn___in_fetch(array(
+            'in_id' => $in_answer_id,
+        ));
+        $message_in_requirements = $this->Matrix_model->fn___in_req_completion($answer_ins[0]['in_completion_en_id'], $in_answer_id, $actionplan_tr_id);
 
         //Now mark intent as complete (and this will SKIP all siblings) and move on:
         $this->Matrix_model->in_actionplan_complete_up($chosen_path[0], $chosen_path[0], ( $message_in_requirements ? 1 /* Working On */ : null ));
@@ -786,7 +755,7 @@ class Matrix_model extends CI_Model
 
             //Fetch for New+ intents:
             '___tree_active_count' => 0, //A count of all active (in_status >= 0) intents within the tree
-            '___messages_count' => 0, //A count of all messages for this intent only
+            '___metadatas_count' => 0, //A count of all messages for this intent only
             'in_tree' => array(), //Fetches the intent tree with its full 2-dimensional & hierarchical beauty
             'in_flat_tree' => array(), //Puts all the tree's intent IDs in a flat array, useful for quick processing
             'in_flat_unique_published_tree' => array(), //Unique IDs
@@ -795,7 +764,7 @@ class Matrix_model extends CI_Model
             //Fetched for Published+ Intents:
             '___tree_published_count' => 0, //A count of all published (in_status >= 2) intents within the tree
             '___tree_published_unique_count' => 0, //A count of all published (in_status >= 2) UNIQUE intents
-            '___messages_tree_count' => 0, //A count of all messages for all tree intents that are published
+            '___metadata_tree_count' => 0, //A count of all messages for all tree intents that are published
             '___tree_min_seconds' => 0, //The minimum number of seconds required to complete tree
             '___tree_max_seconds' => 0, //The maximum number of seconds required to complete tree
             '___tree_min_cost' => 0, //The minimum cost of third-party product purchases recommended to complete tree
@@ -999,7 +968,7 @@ class Matrix_model extends CI_Model
                     if ($update_db_table) {
 
                         //Update DB requested:
-                        $metadata_this['___messages_tree_count'] += $recursion['___messages_tree_count'];
+                        $metadata_this['___metadata_tree_count'] += $recursion['___metadata_tree_count'];
                         $metadata_this['metadatas_updated'] += $recursion['metadatas_updated'];
 
                         //Addup unique experts:
@@ -1055,8 +1024,8 @@ class Matrix_model extends CI_Model
 
         $metadata_this['___tree_min_seconds'] += intval($this_in['in_seconds']);
         $metadata_this['___tree_max_seconds'] += intval($this_in['in_seconds']);
-        $metadata_this['___tree_min_cost'] += number_format($this_in['in_usd'], 2);
-        $metadata_this['___tree_max_cost'] += number_format($this_in['in_usd'], 2);
+        $metadata_this['___tree_min_cost'] += number_format(doubleval($this_in['in_usd']), 2);
+        $metadata_this['___tree_max_cost'] += number_format(doubleval($this_in['in_usd']), 2);
 
         //Set the data for this intent:
         $this_in['___tree_min_seconds'] = $metadata_this['___tree_min_seconds'];
@@ -1079,9 +1048,9 @@ class Matrix_model extends CI_Model
                 'tr_in_child_id' => $this_in['in_id'],
             ), array('en_miner'), 0, 0, array('tr_order' => 'ASC'));
 
-            $this_in['___messages_count'] = count($in__messages);
-            $metadata_this['___messages_tree_count'] += $this_in['___messages_count'];
-            $this_in['___messages_tree_count'] = $metadata_this['___messages_tree_count'];
+            $this_in['___metadatas_count'] = count($in__messages);
+            $metadata_this['___metadata_tree_count'] += $this_in['___metadatas_count'];
+            $this_in['___metadata_tree_count'] = $metadata_this['___metadata_tree_count'];
 
 
             $parent_ids = array();
@@ -1246,8 +1215,8 @@ class Matrix_model extends CI_Model
                 ((!@$metadata['in__tree_contents'] && count($this_in['___tree_contents']) < 1) || (serialize($this_in['___tree_contents']) == @$metadata['in__tree_contents'])) &&
                 $this_in['___tree_active_count'] == @$metadata['in__tree_in_active_count'] &&
                 $this_in['___tree_published_count'] == @$metadata['in__tree_in_published_count'] &&
-                $this_in['___messages_count'] == @$metadata['in__message_count'] &&
-                $this_in['___messages_tree_count'] == @$metadata['in__message_tree_count']
+                $this_in['___metadatas_count'] == @$metadata['in__metadata_count'] &&
+                $this_in['___metadata_tree_count'] == @$metadata['in__message_tree_count']
             )) {
 
                 //Something was not up to date, let's update:
@@ -1262,8 +1231,8 @@ class Matrix_model extends CI_Model
                     'in__tree_in_active_count' => $this_in['___tree_active_count'],
                     'in__tree_in_published_count' => $this_in['___tree_published_count'],
                     'in__flat_unique_published_count' => count(array_unique($metadata_this['in_flat_unique_published_tree'])),
-                    'in__message_count' => $this_in['___messages_count'],
-                    'in__message_tree_count' => $this_in['___messages_tree_count'],
+                    'in__metadata_count' => $this_in['___metadatas_count'],
+                    'in__message_tree_count' => $this_in['___metadata_tree_count'],
                     'in__tree_experts' => $this_in['___tree_experts'],
                     'in__tree_miners' => $this_in['___tree_miners'],
                     'in__tree_contents' => $this_in['___tree_contents'],

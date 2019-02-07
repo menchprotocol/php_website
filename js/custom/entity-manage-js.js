@@ -169,8 +169,8 @@ $(document).ready(function () {
         var hash_parts = hash.split("-");
         if (hash_parts.length >= 2) {
             //Fetch level if available:
-            if (hash_parts[0] == 'loadmessages') {
-                fn___load_en_messages(hash_parts[1]);
+            if (hash_parts[0] == 'loadentitymetadata') {
+                fn___load_en_metadata( hash_parts[1]);
             } else if (hash_parts[0] == 'loadmodify') {
                 fn___en_modify_load(hash_parts[1], hash_parts[2]);
             } else if (hash_parts[0] == 'status') {
@@ -420,24 +420,6 @@ function fn___en_modify_load(en_id, tr_id) {
 
     }
 
-    //Fetch last update times:
-    $.post("/entities/fn___en_load_data", {en_id: en_id, tr_id: tr_id}, function (data) {
-        if (!data.status) {
-
-            //Opppsi, show the error:
-            alert('Error: ' + data.message);
-
-        } else {
-
-            $('.save_entity_changes').html(data.en___last_updated);
-
-            if (tr_id > 0) {
-                $('.tr-last-updated').html(data.tr___last_updated);
-            }
-
-        }
-    });
-
     //Make the frame visible:
     $('.fixed-box').addClass('hidden');
     $("#modifybox").removeClass('hidden').hide().fadeIn();
@@ -633,7 +615,7 @@ function fn___en_modify_save() {
 
 
                 //Did we have notes to update?
-                if (modify_data['tr_id'] > 0 && data.tr___last_updated != null) {
+                if (modify_data['tr_id'] > 0) {
 
                     //Yes, update the notes:
                     $(".tr_content_" + modify_data['tr_id']).html(data.tr_content);
@@ -645,9 +627,6 @@ function fn___en_modify_save() {
 
                     //Update status icon:
                     $('.tr_status_' + modify_data['tr_id']).html('<span class="tr_status_val" data-toggle="tooltip" data-placement="right" title="' + object_js_statuses['tr_status'][modify_data['tr_status']]["s_name"] + ': ' + object_js_statuses['tr_status'][modify_data['tr_status']]["s_desc"] + '">' + object_js_statuses['tr_status'][modify_data['tr_status']]["s_icon"] + '</span>');
-
-                    //Update transaction time:
-                    $('.tr-last-updated').html(data.tr___last_updated).hide().fadeIn(); //Load Last Updated box
 
                 }
 
@@ -662,7 +641,7 @@ function fn___en_modify_save() {
 
 
                 //Update entity timestamp:
-                $('.save_entity_changes').html(data.en___last_updated);
+                $('.save_entity_changes').html(data.message);
 
                 //Reload Tooltip again:
                 $('[data-toggle="tooltip"]').tooltip();
@@ -678,7 +657,8 @@ function fn___en_modify_save() {
 }
 
 
-function fn___load_en_messages(en_id) {
+
+function fn___load_en_metadata(en_id) {
 
     //Make the frame visible:
     $('.fixed-box').addClass('hidden');
@@ -698,7 +678,7 @@ function fn___load_en_messages(en_id) {
     }
 
     //Load the frame:
-    $.post("/entities/fn___load_en_messages", {en_id: en_id}, function (data) {
+    $.post("/entities/fn___load_en_metadata/"+en_id, {}, function (data) {
         //Empty Inputs Fields if success:
         handler.html(data);
 

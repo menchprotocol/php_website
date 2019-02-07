@@ -25,7 +25,7 @@
 
         //The Parent Entity based on domain:
         echo '<span class="checkbox" style="margin: 0;">
-            <label style="display:inline-block !important; font-size: 0.9em !important; margin-left:8px;">
+            <label style="display:inline-block !important; font-size: 0.8em !important; margin-left:5px;">
                 <input type="checkbox" checked="checked" disabled name="source_type" value="domain_url" />
                     <span class="entity_domain_ui"></span>
                     [<span class="underdot" data-toggle="tooltip" data-placement="top" title="Parent auto created based on URL domain">Domain Entity</span>]
@@ -35,7 +35,7 @@
 
         foreach($this->config->item('en_all_3000') as $en_id => $en ){
             echo '<span class="checkbox" style="margin: 0;">
-            <label style="display:inline-block !important; font-size: 0.9em !important; margin-left:8px;">
+            <label style="display:inline-block !important; font-size: 0.8em !important; margin-left:5px;">
                 <input type="checkbox" name="source_type" value="'.$en_id.'" />
                 <span>'.$en['m_icon'].' '.$en['m_name'].'</span>
             </label>
