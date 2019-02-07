@@ -127,93 +127,93 @@ $config['object_statuses']          = array(
                                         'tr_status' => array(
                                             -1 => array(
                                                 's_name' => 'Removed',
-                                                's_desc' => 'Transaction removed by Student or Miner',
-                                                's_icon' => '<i class="fal fa-minus-circle"></i>',
+                                                's_desc' => 'Transaction is in-active',
+                                                's_icon' => '<i class="fal fa-minus-square"></i>',
                                             ),
                                             0 => array( //Considered incomplete, see tr_status_incomplete for more details
                                                 's_name' => 'New',
-                                                's_desc' => 'Newly added transaction pending review by Miner',
+                                                's_desc' => 'Transaction is newly added and pending review',
                                                 's_icon' => '<i class="fal fa-square"></i>',
                                             ),
                                             1 => array( //Considered incomplete, see tr_status_incomplete for more details
                                                 's_name' => 'Working On',
-                                                's_desc' => 'Transaction is being worked on but is not yet completed',
+                                                's_desc' => 'Transaction is being worked-on so it can be published',
                                                 's_icon' => '<i class="fas fa-spinner fa-spin"></i>',
                                             ),
                                             2 => array(
                                                 's_name' => 'Published',
-                                                's_desc' => 'Transaction is completed and ready for updates to be synced',
+                                                's_desc' => 'Transaction is complete',
                                                 's_icon' => '<i class="fas fa-check-square"></i>',
                                             ),
                                             3 => array(
                                                 's_name' => 'Verified',
-                                                's_desc' => 'Transaction has been reviewed and verified by a Miner',
+                                                's_desc' => 'Transaction is double-checked and verified',
                                                 's_icon' => '<i class="fas fa-badge-check"></i>',
                                             ),
                                         ),
                                         'in_status' => array(
                                             -1 => array(
-                                                's_name' => 'Removed',
-                                                's_desc' => 'Intent removed by Miner',
-                                                's_icon' => '<i class="fal fa-minus-circle"></i>',
+                                                's_name' => 'Archived',
+                                                's_desc' => 'Intent is in-active',
+                                                's_icon' => '<i class="fal fa-minus-square"></i>',
                                             ),
                                             0 => array(
                                                 's_name' => 'New',
-                                                's_desc' => 'Intent is newly added and is pending review by a Miner',
+                                                's_desc' => 'Intent is newly added and pending review',
                                                 's_icon' => '<i class="fal fa-square"></i>',
                                             ),
                                             1 => array(
                                                 's_name' => 'Working On',
-                                                's_desc' => 'Intent is being mined by Miners and not yet ready to be published live',
+                                                's_desc' => 'Intent is being worked-on so it can be published',
                                                 's_icon' => '<i class="fas fa-spinner fa-spin"></i>',
                                             ),
                                             2 => array(
                                                 's_name' => 'Published',
-                                                's_desc' => 'Intent is published live and ready to be distributed to Students',
+                                                's_desc' => 'Intent is published on mench.com and Mench personal assistant',
                                                 's_icon' => '<i class="fas fa-check-square"></i>',
                                             ),
                                             3 => array(
                                                 's_name' => 'Featured',
-                                                's_desc' => 'Intent recommended to students',
+                                                's_desc' => 'Intent is recommended by mench.com and Mench personal assistant',
                                                 's_icon' => '<i class="fas fa-badge-check"></i>',
                                             ),
                                         ),
                                         'en_status' => array(
                                             -1 => array(
-                                                's_name' => 'Removed',
-                                                's_desc' => 'Entity removed by Miner',
-                                                's_icon' => '<i class="fal fa-minus-circle"></i>',
+                                                's_name' => 'Archived',
+                                                's_desc' => 'Entity is in-active',
+                                                's_icon' => '<i class="fal fa-minus-square"></i>',
                                             ),
                                             0 => array(
                                                 's_name' => 'New',
-                                                's_desc' => 'Entity is newly added and is pending review by a Miner',
+                                                's_desc' => 'Entity is newly added and pending review',
                                                 's_icon' => '<i class="fal fa-square"></i>',
                                             ),
                                             1 => array(
                                                 's_name' => 'Working On',
-                                                's_desc' => 'Entity is being mined by Miners and not yet ready to be published live',
+                                                's_desc' => 'Entity is being worked-on so it can be published',
                                                 's_icon' => '<i class="fas fa-spinner fa-spin"></i>'
                                             ),
                                             2 => array(
                                                 's_name' => 'Published',
-                                                's_desc' => 'Entity is published live and ready to be distributed to Students',
+                                                's_desc' => 'Entity is published on mench.com and Mench personal assistant',
                                                 's_icon' => '<i class="fas fa-check-square"></i>',
                                             ),
                                             3 => array(
                                                 's_name' => 'Verified',
-                                                's_desc' => 'Entity references a human which has been claimed by that person',
+                                                's_desc' => 'Entity is a reference to a real person as verified by Mench',
                                                 's_icon' => '<i class="fas fa-badge-check"></i>',
                                             ),
                                         ),
                                         'in_is_any' => array(
                                             0 => array(
                                                 's_name' => 'AND',
-                                                's_desc' => 'Intent is complete when all children are marked as complete',
+                                                's_desc' => 'AND Intents are completed when ALL their children are complete',
                                                 's_icon' => '<i class="fal fa-sitemap"></i>',
                                             ),
                                             1 => array(
                                                 's_name' => 'OR',
-                                                's_desc' => 'Intent is complete when a single child is marked as complete',
+                                                's_desc' => 'OR Intents are completed when ANY of their children are complete',
                                                 's_icon' => '<i class="fal fa-code-merge"></i>',
                                             ),
                                         ),

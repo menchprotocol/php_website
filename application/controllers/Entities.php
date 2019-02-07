@@ -844,7 +844,7 @@ class Entities extends CI_Controller
 
         //Show frame to be loaded in modal:
         $this->load->view('view_shared/matrix_header', array(
-            'title' => 'Managed Intent Metadata',
+            'title' => 'Managed Intent Messages',
         ));
         echo '<div id="list-messages" class="list-group  grey-list">';
         foreach ($messages as $tr) {

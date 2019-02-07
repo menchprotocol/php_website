@@ -537,7 +537,7 @@ $config['en_all_4454'] = array(
     ),
 );
 
-//Intent Metadata:
+//Intent Messages:
 $config['en_ids_4485'] = array(4231, 4234, 4232, 4233, 4601, 4602);
 $config['en_all_4485'] = array(
     4231 => array(

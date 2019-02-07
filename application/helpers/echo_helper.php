@@ -204,7 +204,7 @@ function fn___echo_in_message_manage($tr)
     $CI =& get_instance();
     $udata = $CI->session->userdata('user');
 
-    //Fetch all possible Intent metadata types to enable the Miner to change message type:
+    //Fetch all possible Intent Messages types to enable the Miner to change message type:
     $en_all_4485 = $CI->config->item('en_all_4485');
 
 
@@ -1387,13 +1387,13 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
 
 
-    //Intent Metadata:
+    //Intent Messages:
     $count_in_metadata = $CI->Database_model->fn___tr_fetch(array(
         'tr_status >=' => 0, //New+
         'tr_type_en_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //All Intent messages
         'tr_in_child_id' => $in['in_id'],
     ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
-    $ui .= '<a href="#loadintentmetadata-' . $in['in_id'] . '" onclick="fn___in_metadata_load('.$in['in_id'].')" class="msg-badge-' . $in['in_id'] . ' badge badge-primary white-primary" style="width:40px; margin-right:2px;" data-toggle="tooltip" title="Intent Metadata" data-placement="top"><span class="btn-counter messages-counter-' . $in['in_id'] . '">' . $count_in_metadata[0]['totals'] . '</span><i class="fal fa-layer-group"></i></a>';
+    $ui .= '<a href="#loadintentmetadata-' . $in['in_id'] . '" onclick="fn___in_metadata_load('.$in['in_id'].')" class="msg-badge-' . $in['in_id'] . ' badge badge-primary white-primary" style="width:40px; margin-right:2px;" data-toggle="tooltip" title="Intent Messages" data-placement="top"><span class="btn-counter messages-counter-' . $in['in_id'] . '">' . $count_in_metadata[0]['totals'] . '</span><i class="fal fa-layer-group"></i></a>';
 
 
 
@@ -1727,7 +1727,7 @@ function fn___echo_en($en, $level, $is_parent = false)
     ), array(), 0, 0, array(), 'COUNT(tr_id) AS total_messages');
 
     $ui .= '<' . ($messages[0]['total_messages'] > 0 ? 'a href="#loadentitymetadata-' . $en['en_id'] . '" onclick="fn___load_en_metadata('.$en['en_id'].')"
- class="badge badge-secondary white-secondary"' : 'a href="#" onclick="alert(\'No intent messages found that reference this entity\')" class="badge badge-secondary white-secondary"') . ' style="width:40px; margin-left:5px;" data-toggle="tooltip" data-placement="top" title="Entity References within Intent Metadata"><span class="btn-counter">' . $messages[0]['total_messages'] . '</span><i class="fal fa-layer-group"></i></a>';
+ class="badge badge-secondary white-secondary"' : 'a href="#" onclick="alert(\'No intent messages found that reference this entity\')" class="badge badge-secondary white-secondary"') . ' style="width:40px; margin-left:5px;" data-toggle="tooltip" data-placement="top" title="Entity References within Intent Messages"><span class="btn-counter">' . $messages[0]['total_messages'] . '</span><i class="fal fa-layer-group"></i></a>';
 
 
 
