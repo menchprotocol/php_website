@@ -847,13 +847,14 @@ class Intents extends CI_Controller
         //See if this message type has specific input requirements:
         $valid_file_types = array(4258, 4259, 4260, 4261); //This must be a valid file type:  Video, Image, Audio or File
         $en_all_4485 = $this->config->item('en_all_4485');
+        $en_all_4331 = $this->config->item('en_all_4331');
         $completion_requirements = array_intersect($en_all_4485[$_POST['focus_tr_type_en_id']]['m_parents'], $this->config->item('en_ids_4331'));
         if(count($completion_requirements) == 1 && !in_array($completion_requirements[0], $valid_file_types)){
 
-            return array(
+            return fn___echo_json(array(
                 'status' => 0,
-                'message' => 'This message type does not support file uploads',
-            );
+                'message' => $en_all_4485[$_POST['focus_tr_type_en_id']]['m_name'].' require a ['.$en_all_4331[$completion_requirements[0]]['m_name'].'] message',
+            ));
             //TODO: Maybe validate each file type specifically?
             //Note: This logic also exists in fn___dispatch_validate_message() function in Chat Model
 
