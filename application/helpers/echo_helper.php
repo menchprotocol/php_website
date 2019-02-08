@@ -207,10 +207,9 @@ function fn___echo_in_message_manage($tr)
     //Fetch all possible Intent Messages types to enable the Miner to change message type:
     $en_all_4485 = $CI->config->item('en_all_4485');
 
-
     //Build the HTML UI:
     $ui = '';
-    $ui .= '<div class="list-group-item is-msg is_level2_sortable '.( !in_array($tr['tr_type_en_id'], array(4234, 4601)) ? 'enable-sorting' : '' ).' all_msg msg_en_type_' . $tr['tr_type_en_id'] . '" id="ul-nav-' . $tr['tr_id'] . '" tr-id="' . $tr['tr_id'] . '">';
+    $ui .= '<div class="list-group-item is-msg is_level2_sortable '.( in_array(4603, $en_all_4485[$tr['tr_type_en_id']]['m_parents']) ? 'enable-sorting' : '' ).' all_msg msg_en_type_' . $tr['tr_type_en_id'] . '" id="ul-nav-' . $tr['tr_id'] . '" tr-id="' . $tr['tr_id'] . '">';
     $ui .= '<div style="overflow:visible !important;">';
 
     //Type & Delivery Method:

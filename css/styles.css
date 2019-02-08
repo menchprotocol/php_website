@@ -1260,6 +1260,13 @@ h5, .h5 {
     width: 95%;
 }
 
+.sorting-enabled{
+    color:#999;
+    font-size: 0.8em;
+    font-weight: normal;
+    padding:0 0 10px 5px;
+}
+
 .tooltip, .tooltip * {
     font-size: 12px;
     margin: 0;

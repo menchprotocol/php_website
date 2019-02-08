@@ -793,7 +793,7 @@ class Intents extends CI_Controller
         $this->load->view('view_shared/matrix_header', array(
             'title' => 'Intent #' . $in_id . ' Messages',
         ));
-        $this->load->view('view_intents/in_metadata_ui', array(
+        $this->load->view('view_intents/in_messages_ui', array(
             'in_id' => $in_id,
         ));
         $this->load->view('view_shared/matrix_footer');
@@ -842,6 +842,21 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Intent ID',
             ));
+        }
+
+        //See if this message type has specific input requirements:
+        $valid_file_types = array(4258, 4259, 4260, 4261); //This must be a valid file type:  Video, Image, Audio or File
+        $en_all_4485 = $this->config->item('en_all_4485');
+        $completion_requirements = array_intersect($en_all_4485[$_POST['focus_tr_type_en_id']]['m_parents'], $this->config->item('en_ids_4331'));
+        if(count($completion_requirements) == 1 && !in_array($completion_requirements[0], $valid_file_types)){
+
+            return array(
+                'status' => 0,
+                'message' => 'This message type does not support file uploads',
+            );
+            //TODO: Maybe validate each file type specifically?
+            //Note: This logic also exists in fn___dispatch_validate_message() function in Chat Model
+
         }
 
 

@@ -538,9 +538,7 @@ function fn___message_create() {
             //Reset input field:
             $("#tr_content" + in_id).val("");
             fn___count_message();
-        } else {
-            //Show error:
-            alert('ERROR: ' + data.message);
+
         }
 
         //Unlock field:

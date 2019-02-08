@@ -62,17 +62,33 @@ foreach ($metadatas as $tr) {
 
     <?php
 
-    //Count each message type:
-    echo '<div id="message-sorting" class="list-group list-messages">';
-    echo $metadata_body_ui;
-    echo '</div>';
-
     //Show no-Message notifications for each message type:
     foreach ($en_all_4485 as $tr_type_en_id => $m) {
+
+        //Does it support sorting?
+        if(in_array(4603, $en_all_4485[$tr_type_en_id]['m_parents'])){
+            echo '<div class="all_msg msg_en_type_' . $tr_type_en_id . ' sorting-enabled"><i class="fas fa-exchange rotate90"></i> Sorting Enabled</div>';
+        }
+
+
+        //See if this message type has specific input requirements:
+        $en_all_4485 = $this->config->item('en_all_4485');
+        $completion_requirements = array_intersect($en_all_4485[$tr_type_en_id]['m_parents'], $this->config->item('en_ids_4331'));
+        if(count($completion_requirements) == 1){
+            $en_all_4331 = $this->config->item('en_all_4331');
+            echo '<div class="all_msg msg_en_type_' . $tr_type_en_id . ' sorting-enabled">'.$en_all_4331[$completion_requirements[0]]['m_icon'].' '.$en_all_4331[$completion_requirements[0]]['m_name'].' message is required.</div>';
+        }
+
+
         if (!isset($counters[$tr_type_en_id])) {
             echo '<div class="ix-tip no-messages' . $in_id . '_' . $tr_type_en_id . ' all_msg msg_en_type_' . $tr_type_en_id . '"><i class="fas fa-exclamation-triangle"></i> No ' . $m['m_icon'] . ' ' . $m['m_name'] . ' added yet</div>';
         }
     }
+
+    //Count each message type:
+    echo '<div id="message-sorting" class="list-group list-messages">';
+    echo $metadata_body_ui;
+    echo '</div>';
 
     ?>
 </div>

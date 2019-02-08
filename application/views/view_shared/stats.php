@@ -66,7 +66,7 @@ foreach (fn___echo_status() as $object_id => $statuses) {
         }
 
         if($count < 1){
-            continue;
+            //continue;
         }
 
         //Display this status count:

@@ -574,7 +574,7 @@ $config['en_all_4485'] = array(
         'm_icon' => '<i class="fal fa-cloud-upload"></i>',
         'm_name' => 'Webhooks',
         'm_desc' => 'URLs that are called once the student completes the intent tree to process additional logic.',
-        'm_parents' => array(4603, 4256, 4374, 4485, 4594),
+        'm_parents' => array(4256, 4374, 4485, 4594),
     ),
 );
 

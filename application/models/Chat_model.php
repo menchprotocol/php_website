@@ -176,7 +176,7 @@ class Chat_model extends CI_Model
     }
 
 
-    function fn___dispatch_validate_message($input_message, $recipient_en = array(), $fb_messenger_format = false, $quick_replies = array())
+    function fn___dispatch_validate_message($input_message, $recipient_en = array(), $fb_messenger_format = false, $quick_replies = array(), $message_type_en_id = 0)
     {
 
         /*
@@ -219,7 +219,50 @@ class Chat_model extends CI_Model
                 'status' => 0,
                 'message' => 'Quick Replies are only supported for messages Formatted for Facebook Messenger',
             );
+        } elseif ($message_type_en_id > 0 && !in_array($message_type_en_id, $this->config->item('en_ids_4485'))) {
+            return array(
+                'status' => 0,
+                'message' => 'Invalid Message type ID',
+            );
         }
+
+        //Are we validating this text for a specific message type?
+        if($message_type_en_id > 0){
+
+            //See if this message type has specific input requirements:
+            $en_all_4485 = $this->config->item('en_all_4485');
+            $en_all_4331 = $this->config->item('en_all_4331');
+            $en_all_4592 = $this->config->item('en_all_4592');
+
+            //Find the intersection of this message type and intent completion requirements:
+            $completion_requirements = array_intersect($en_all_4485[$message_type_en_id]['m_parents'], $this->config->item('en_ids_4331'));
+
+            //See what this is:
+            $tr_type_en_id = fn___detect_tr_type_en_id($_POST['tr_content']);
+
+            if (!$tr_type_en_id['status']) {
+
+                //return error:
+                return fn___echo_json($tr_type_en_id);
+
+            } elseif(count($completion_requirements) > 1){
+
+                return array(
+                    'status' => 0,
+                    'message' => 'Admin Configuration Error: Message type ['.$en_all_4485[$message_type_en_id]['m_name'].'] has multiple completion requirements ['.join(', ',$completion_requirements).'].',
+                );
+
+            } elseif(count($completion_requirements) == 1 && !($completion_requirements[0]==$tr_type_en_id['tr_type_en_id'])){
+
+                return array(
+                    'status' => 0,
+                    'message' => $en_all_4485[$message_type_en_id]['m_name'].' require a ['.$en_all_4331[$completion_requirements[0]]['m_name'].'] message. You entered a ['.$en_all_4592[$tr_type_en_id['tr_type_en_id']]['m_name'].'] message.',
+                );
+
+            }
+        }
+
+
 
 
         /*
