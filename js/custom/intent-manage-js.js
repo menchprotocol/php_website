@@ -21,6 +21,8 @@ function in_cost_overview(seconds, in_id){
     return fn___echo_js_hours(seconds) + ( parseFloat($('.t_estimate_' + in_id + ':first').attr('intent-usd')) > 0 ? '$' : '' );
 }
 
+
+
 $(document).ready(function () {
 
     if (is_compact) {
@@ -43,6 +45,20 @@ $(document).ready(function () {
             }, 34));
         });
     }
+
+
+    $('.is_level2_sortable').on('click', function(e) {
+        if (e.target !== this){
+            if(jQuery.inArray("click_expand", e.target.classList) == -1){
+                return;
+            }
+        }
+        //Still here? Expand children:
+        fn___ms_toggle(parseInt($(this).attr('in-tr-id')), -1);
+    });
+
+
+
 
 
 
@@ -120,11 +136,6 @@ $(document).ready(function () {
         }
     }
 
-
-    $("#add_in_btn").click(function () {
-        //miner clicked on the add new intent button at level 2:
-        fn___in_link_or_create(in_focus_id, 2);
-    });
 
 
     //Load Algolia:

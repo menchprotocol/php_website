@@ -24,13 +24,7 @@
         }
         //Input to add new parents:
         echo '<div id="new-parent" class="list-group-item list_input grey-input">
-                <div class="input-group">
                     <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search" data-lpignore="true" placeholder="Add Entity..."></div>
-                    <span class="input-group-addon ">
-                        <a class="badge badge-secondary new-btn hidden" data-toggle="tooltip" title="or press ENTER ;)"
-                              data-placement="top" href="javascript:void(0);" onclick="alert(\'Note: Either choose an option from the suggestion menu to continue\')"><i class="fas fa-plus"></i></a>
-                    </span>
-                </div>
             </div>';
 
         echo '</div>';
@@ -137,13 +131,7 @@
 
         //Input to add new parents:
         echo '<div id="new-children" class="list-group-item list_input grey-input">
-        <div class="input-group">
             <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search bottom-add" data-lpignore="true" placeholder="Add ' . stripslashes($entity['en_name']) . ' Entity"></div>
-            <span class="input-group-addon ">
-                <a class="badge badge-secondary new-btn hidden" data-toggle="tooltip" title="or press ENTER ;)"
-                              data-placement="top" href="javascript:tr_add(0,' . $entity['en_id'] . ', 0);"><i class="fas fa-plus"></i></a>
-            </span>
-        </div>
     </div>';
         echo '</div>';
 
@@ -209,9 +197,9 @@
                             </select>
 
                             <div class="notify_en_remove hidden">
-                                <div class="alert alert-warning" style="margin:5px 0px; padding:7px;">
+                                <div class="alert alert-danger" style="margin:5px 0px; padding:7px;">
                                     <i class="fas fa-exclamation-triangle"></i>
-                                    Saving will remove entity and unlink from all parents/children
+                                    Saving will archive entity and unlink all parents and children
                                 </div>
                             </div>
 

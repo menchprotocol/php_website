@@ -194,12 +194,10 @@ function tr_add(en_existing_id, extra_en_parent_id=0, is_parent) {
 
     if (is_parent) {
         var input = $('#new-parent .new-input');
-        var btn = $('#new-parent .new-btn');
         var list_id = 'list-parent';
         var counter_class = '.li-parent-count';
     } else {
         var input = $('#new-children .new-input');
-        var btn = $('#new-children .new-btn');
         var list_id = 'list-children';
         var counter_class = '.li-children-count';
     }
@@ -216,12 +214,6 @@ function tr_add(en_existing_id, extra_en_parent_id=0, is_parent) {
     }
 
 
-    //Adjust UI to indicating loading...
-    var current_href = btn.attr('href');
-    input.prop('disabled', true); //Empty input
-    btn.attr('href', 'javascript:void(0);').html('<i class="fas fa-spinner fa-spin"></i>');
-
-
     //Add via Ajax:
     $.post("/entities/ens_link", {
 
@@ -235,7 +227,6 @@ function tr_add(en_existing_id, extra_en_parent_id=0, is_parent) {
 
         //Release lock:
         input.prop('disabled', false);
-        btn.attr('href', current_href).html('ADD');
 
         if (data.status) {
 

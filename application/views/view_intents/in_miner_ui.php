@@ -100,7 +100,6 @@ if (isset($orphan_ins)) {
 
         //Enable Miner to add child intents:
         echo '<div class="list-group-item list_input grey-block">
-                <div class="input-group">
                     <div class="form-group is-empty" style="margin: 0; padding: 0;">
                         <input type="text"
                                class="form-control intentadder-level-2 algolia_search bottom-add"
@@ -109,14 +108,7 @@ if (isset($orphan_ins)) {
                                id="addintent-c-' . $in['in_id'] . '"
                                placeholder="Add #Intent">
                     </div>
-                    <span class="input-group-addon " style="padding-right:8px;">
-                        <span id="add_in_btn" data-toggle="tooltip" title="or press ENTER ;)"
-                              data-placement="top" class="badge badge-primary pull-right new-btn hidden"
-                              style="cursor:pointer; margin: 1px 2px 0 6px !important;">
-                            <div><i class="fas fa-plus"></i></div>
-                        </span>
-                    </span>
-                </div>
+                   
             </div>';
 
         echo '</div>';
@@ -216,9 +208,9 @@ if (isset($orphan_ins)) {
                             </span>
 
                             <div class="notify_in_remove hidden">
-                                <div class="alert alert-warning" style="margin:5px 0px; padding:7px;">
+                                <div class="alert alert-danger" style="margin:5px 0px; padding:7px;">
                                     <i class="fas fa-exclamation-triangle"></i>
-                                    Saving will remove intent and unlink from all parents/children
+                                    Saving will archive intent and unlink all parents and children
                                 </div>
                             </div>
 

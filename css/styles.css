@@ -549,15 +549,26 @@ input::-webkit-inner-spin-button {
 .list-level-2 > .is_level2_sortable, #temp2, #list-children > .list-group-item, .list-grey > .list-group-item {
     margin-bottom: 3px;
     border: 0;
-    border-bottom: 1px solid #CCC;
     background-color: #EFEFEF;
+    border-radius: 3px !important;
 }
 
-.is_level2_sortable:hover, .is_level3_sortable:hover, .en-item:hover {
+.is_level2_sortable:hover, .en-item:hover, .list_input:hover {
     background-color: #E5E5E5 !important;
+    border-color: transparent !important;
 }
-.is_level3_sortable:hover{
+.is_level2_sortable:hover{
+    cursor: pointer;
+}
+.top_entity:hover {
+    background-color: #FFF !important;
+    border:1px solid #CCC !important;
+}
+
+.is_level3_sortable:hover, .new-in3-input:hover{
+    background-color: #EFEFEF !important;
     border:1px solid #E5E5E5 !important;
+    cursor: default !important;
 }
 
 .en-item{
@@ -1755,6 +1766,11 @@ input.form-control, textarea.form-control, select {
 }
 
 .list-group-item {
+    border:0;
+    border-radius: 3px;
+}
+
+.top_entity, .top_intent {
     border: 1px solid #ccc;
 }
 
@@ -3617,7 +3633,7 @@ h4 .tip-badge {
     background-color: #FFF;
     padding: 10px;
     border-radius: 5px;
-    margin:3px 187px 5px 10px;
+    margin:2px 5px 5px 10px;
     overflow: hidden;
 }
 
@@ -3752,7 +3768,7 @@ h4 .tip-badge {
 .modal .modal-dialog {
     margin-top: 50px;
     width:auto;
-    max-width: 900px;
+    max-width:680px;
     margin: 30px auto;
 }
 
@@ -3769,10 +3785,3 @@ h4 .tip-badge {
     padding-top: 13px;
 }
 
-
-.new-btn{
-    border: 0 !important;
-    padding-left: 5px;
-    margin-right: -7px !important;
-    width: 40px;
-}

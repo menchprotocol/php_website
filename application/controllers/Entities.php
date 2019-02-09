@@ -996,6 +996,7 @@ class Entities extends CI_Controller
         //Log Sign In Transaction
         $this->Database_model->fn___tr_create(array(
             'tr_miner_en_id' => $ens[0]['en_id'],
+            'tr_en_parent_id' => $ens[0]['en_id'], //Initiator
             'tr_metadata' => $ens[0],
             'tr_type_en_id' => 4269, //Logged into the matrix
         ));
