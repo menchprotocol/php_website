@@ -547,11 +547,21 @@ input::-webkit-inner-spin-button {
 }
 
 .list-level-2 > .is_level2_sortable, #temp2, #list-children > .list-group-item, .list-grey > .list-group-item {
-    margin-bottom: 0px;
+    margin-bottom: 3px;
     border: 0;
     border-bottom: 1px solid #CCC;
     background-color: #EFEFEF;
 }
+
+.is_level2_sortable:hover, .is_level3_sortable:hover, .en-item:hover {
+    background-color: #E5E5E5 !important;
+}
+
+.en-item{
+    margin-bottom: 3px;
+}
+
+
 
 .step-group {
     margin: 10px 0 0 -8px;
@@ -876,7 +886,7 @@ input::-webkit-inner-spin-button {
 
 
 .yellow {
-    color: rgba(254, 221, 22, 0.91) !important;
+    color:#fedd16 !important;
 }
 
 .list-group-item .title-main {
