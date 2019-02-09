@@ -1246,7 +1246,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         $tr_id = $in['tr_id'];
         $tr_metadata = unserialize($in['tr_metadata']);
 
-        $ui = '<div in-tr-id="' . $tr_id . '" in-tr-type="' . $in['tr_type_en_id'] . '" intent-id="' . $in['in_id'] . '" parent-intent-id="' . $in_parent_id . '" intent-level="' . $level . '" class="list-group-item ' . ($level == 3 || ($level == 2 && !$is_parent) ? ' enable-sorting ' : '') . ($level == 3 ? 'is_level3_sortable' : 'is_level2_sortable') . ' intent_line_' . $in['in_id'] . ' in__tr_'.$tr_id.'">';
+        $ui = '<div in-tr-id="' . $tr_id . '" in-tr-type="' . $in['tr_type_en_id'] . '" intent-id="' . $in['in_id'] . '" parent-intent-id="' . $in_parent_id . '" intent-level="' . $level . '" class="list-group-item ' . ($level == 3 || ($level == 2 && !$is_parent) ? ' enable-sorting ' : '') . ($level == 3 ? 'is_level3_sortable' : 'is_level2_sortable') . ' intent_line_' . $in['in_id'] . ( $is_parent ? ' parent-intent ' : '' ) . ' in__tr_'.$tr_id.'">';
 
     }
 
@@ -1420,7 +1420,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
     } else {
 
-        $ui .= '&nbsp;<a href="/intents/' . $in['in_id'] . '" class="tree-badge-' . $in['in_id'] . ' badge badge-primary" style="display:inline-block; margin-right:-1px; width:40px; border:2px solid #fedd16 !important;" data-toggle="tooltip" title="Navigate to this intent" data-placement="top">' . (isset($in_metadata['in__tree_in_active_count']) ? '<span class="btn-counter children-counter-' . $in['in_id'] . ' ' . ($is_parent && $level == 2 ? 'inb-counter' : '') . '">' . $in_metadata['in__tree_in_active_count'] . '</span>' : '') . '<i class="fas fa-angle-right"></i></a>';
+        $ui .= '&nbsp;<a href="/intents/' . $in['in_id'] . '" class="tree-badge-' . $in['in_id'] . ' badge badge-primary" style="display:inline-block; margin-right:-1px; width:40px; border:2px solid #fedd16 !important;" data-toggle="tooltip" title="Navigate to this intent" data-placement="top">' . (isset($in_metadata['in__tree_in_active_count']) ? '<span class="btn-counter children-counter-' . $in['in_id'] . ' ' . ($is_parent && $level == 2 ? 'inb-counter' : '') . '">' . $in_metadata['in__tree_in_active_count'] . '</span>' : '') . '<i class="'.( $is_parent ? 'fas fa-angle-up' : 'fas fa-angle-down' ).'"></i></a>';
 
     }
 
@@ -1591,7 +1591,7 @@ function fn___echo_en($en, $level, $is_parent = false)
     $ui = null;
 
 
-    $ui .= '<div entity-id="' . $en['en_id'] . '" entity-status="' . $en['en_status'] . '" tr-id="'.$tr_id.'" tr-status="'.( $tr_id > 0 ? $en['tr_status'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '" class="list-group-item en-item en___' . $en['en_id'] . ' ' . ($level == 1 ? 'top_entity' : 'tr_' . $en['tr_id']) . ( $is_parent && $level == 2 ? ' redirect_go_'.$en['tr_en_child_id'] : '') . '">';
+    $ui .= '<div entity-id="' . $en['en_id'] . '" entity-status="' . $en['en_status'] . '" tr-id="'.$tr_id.'" tr-status="'.( $tr_id > 0 ? $en['tr_status'] : 0 ).'" is-parent="' . ($is_parent ? 1 : 0) . '" class="list-group-item en-item en___' . $en['en_id'] . ' ' . ($level == 1 ? 'top_entity' : 'tr_' . $en['tr_id']) . ( $is_parent && $level == 2 ? ' redirect_go_'.$en['tr_en_child_id'] : '') . ( $is_parent ? ' parent-entity ' : '' ) . '">';
 
 
 
@@ -1767,7 +1767,7 @@ function fn___echo_en($en, $level, $is_parent = false)
     if($level == 1){
         $ui .= '<span class="badge badge-secondary transparent" style="display:inline-block; margin-right:6px; width:40px; margin-left:1px; border:2px solid transparent !important;">&nbsp;</span>';
     } else {
-        $ui .= '<a class="badge badge-secondary" href="/entities/' . $en['en_id']. '" style="display:inline-block; margin-right:6px; width:40px; margin-left:1px; border:2px solid #0084ff !important;" data-toggle="tooltip" data-placement="top" title="Navigate to this Entity">' . ($en['en__child_count'] > 0 ? '<span class="btn-counter" title="' . number_format($en['en__child_count'], 0) . ' Entities">' . fn___echo_number($en['en__child_count']) . '</span>' : '') . '<i class="fas fa-angle-right"></i></a>';
+        $ui .= '<a class="badge badge-secondary" href="/entities/' . $en['en_id']. '" style="display:inline-block; margin-right:6px; width:40px; margin-left:1px; border:2px solid #0084ff !important;" data-toggle="tooltip" data-placement="top" title="Navigate to this Entity">' . ($en['en__child_count'] > 0 ? '<span class="btn-counter" title="' . number_format($en['en__child_count'], 0) . ' Entities">' . fn___echo_number($en['en__child_count']) . '</span>' : '') . '<i class="'.( $is_parent ? 'fas fa-angle-up' : 'fas fa-angle-down' ).'"></i></a>';
     }
 
     $ui .= '</span>';
