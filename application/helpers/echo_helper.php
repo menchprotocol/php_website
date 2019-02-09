@@ -1466,8 +1466,8 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         $ui .= '<div class="list-group-item list_input new-in3-input">
             <div class="input-group">
                 <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="fn___in_link_or_create(' . $in['in_id'] . ',3);" intent-id="' . $in['in_id'] . '"><input type="text" class="form-control autosearch intentadder-level-3 intentadder-id-'.$in['in_id'].' algolia_search bottom-add" maxlength="' . $CI->config->item('in_outcome_max') . '" id="addintent-cr-' . $tr_id . '" intent-id="' . $in['in_id'] . '" placeholder="Add #Intent"></form></div>
-                <span class="input-group-addon" style="padding-right:8px;">
-                    <span data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" onclick="fn___in_link_or_create(' . $in['in_id'] . ',3);" class="badge badge-primary pull-right new-btn" intent-id="' . $in['in_id'] . '" style="cursor:pointer; margin: 0 -9px -3px 6px !important;">
+                <span class="input-group-addon " style="padding-right:8px;">
+                    <span data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" onclick="fn___in_link_or_create(' . $in['in_id'] . ',3);" class="badge badge-primary pull-right new-btn hidden" intent-id="' . $in['in_id'] . '" style="cursor:pointer; margin: 0 -9px -3px 6px !important;">
                         <div><i class="fas fa-plus"></i></div>
                     </span>
                 </span>

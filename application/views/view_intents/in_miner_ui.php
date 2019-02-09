@@ -109,9 +109,9 @@ if (isset($orphan_ins)) {
                                id="addintent-c-' . $in['in_id'] . '"
                                placeholder="Add #Intent">
                     </div>
-                    <span class="input-group-addon" style="padding-right:8px;">
+                    <span class="input-group-addon " style="padding-right:8px;">
                         <span id="add_in_btn" data-toggle="tooltip" title="or press ENTER ;)"
-                              data-placement="top" class="badge badge-primary pull-right new-btn"
+                              data-placement="top" class="badge badge-primary pull-right new-btn hidden"
                               style="cursor:pointer; margin: 1px 2px 0 6px !important;">
                             <div><i class="fas fa-plus"></i></div>
                         </span>
