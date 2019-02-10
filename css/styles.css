@@ -541,6 +541,10 @@ input::-webkit-inner-spin-button {
     border-top-right-radius: 0;
 }
 
+.is_level3_sortable{
+    margin-bottom: 1px;
+}
+
 #list-checklist > .list-group-item:last-child {
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;

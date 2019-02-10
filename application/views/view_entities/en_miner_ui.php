@@ -24,7 +24,7 @@
         }
         //Input to add new parents:
         echo '<div id="new-parent" class="list-group-item list_input grey-input">
-                    <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search" data-lpignore="true" placeholder="Add Entity..."></div>
+                    <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search" data-lpignore="true" placeholder="Add @Entity"></div>
             </div>';
 
         echo '</div>';
@@ -100,7 +100,7 @@
         echo '</tr></table></div>';
 
 
-        echo '<form class="mass_modify" method="POST" action="" style="display:none; width: 100% !important;">';
+        echo '<form class="mass_modify indent2" method="POST" action="" style="display:none; width: 100% !important;">';
 
             echo '<select class="form-control border inline-block" name="action_type">';
 
@@ -131,7 +131,7 @@
 
         //Input to add new parents:
         echo '<div id="new-children" class="list-group-item list_input grey-input">
-            <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search bottom-add" data-lpignore="true" placeholder="Add ' . stripslashes($entity['en_name']) . ' Entity"></div>
+            <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search bottom-add" data-lpignore="true" placeholder="Add @Entity"></div>
     </div>';
         echo '</div>';
 
