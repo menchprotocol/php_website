@@ -2071,10 +2071,10 @@ select.form-control {
     font-size: 0.5em;
     font-weight: bold;
     line-height: 110%;
-    width: 44px;
+    width: 46px;
     position: absolute;
     bottom: -8px;
-    left:-7px;
+    left:-8px;
     z-index: 999;
     height: 11px;
     overflow: hidden;

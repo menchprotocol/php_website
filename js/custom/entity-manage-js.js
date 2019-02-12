@@ -377,6 +377,7 @@ function fn___en_modify_load(en_id, tr_id) {
     $('.edit-header').html('<i class="fas fa-cog"></i> ' + en_full_name);
     $('#en_status').val($(".en___" + en_id + ":first").attr('entity-status'));
     $('#tr_status').val($(".en___" + en_id + ":first").attr('tr-status'));
+    $('.save_entity_changes').html('');
 
 
     if (parseInt($('.en_icon_' + en_id).attr('en-is-set')) > 0) {

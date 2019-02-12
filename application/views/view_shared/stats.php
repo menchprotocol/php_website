@@ -163,7 +163,7 @@ foreach ($ie_ens[0]['en__children'] as $source_en) {
 
     //Count any/all sources (complete or incomplete):
     $source_count = $this->Matrix_model->fn___en_child_count($source_en['en_id']);
-    $weight = ( substr_count($source_en['tr_content'], '&weight=')==1 ? intval(fn___one_two_explode('&weight=','',$source_en['tr_content'])) : 0 );
+    $weight = ( substr_count($source_en['tr_content'], '&var_weight=')==1 ? intval(fn___one_two_explode('&var_weight=','',$source_en['tr_content'])) : 0 );
     $all_source_count += $source_count;
     $all_source_count_weight += ($source_count * $weight);
     if($source_count < 1 || $weight < 1){
