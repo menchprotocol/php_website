@@ -82,7 +82,7 @@ function fn___en_source_paste_url() {
 
                 //Update input fields:
                 $('.entity_domain_ui').html(data.entity_domain_ui);
-                $('#en_name').val(data.page_title);
+                $('#en_url_name').val(data.page_title);
 
             }
         });
