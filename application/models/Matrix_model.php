@@ -383,13 +383,12 @@ class Matrix_model extends CI_Model
         }
 
 
-        //Did we find it?
         //Now let's try detecting the domain using the pattern matching entity logic:
         foreach ($this->Database_model->fn___tr_fetch(array(
             'tr_type_en_id' => 4255, //Text Link that contains the pattern match
             'tr_en_parent_id' => 3307, //Entity URL Pattern Match
-            'tr_status >=' => 2, //Published+
-            'en_status >=' => 2, //Published+
+            'tr_status >=' => 0, //New+
+            'en_status >=' => 0, //New+
         ), array('en_child')) as $match) {
             if (substr_count($domain_url, $match['tr_content']) > 0) {
                 //yes we found a pattern match:
