@@ -1123,7 +1123,7 @@ class Entities extends CI_Controller
                 //Does the domain include the author's first/last name?
                 $author_name_parts = explode(' ', $_POST['author_' . $x]);
                 foreach($author_name_parts as $author_name_part){
-                    if(substr_count($author_url_curl['domain_url'], strtolower($author_name_part)) > 0){
+                    if(substr_count($author_url_curl['domain_url'], strtolower($author_name_part)) > 0 || substr_count($author_url_curl['page_title'], strtolower($author_name_part)) > 0){
                         //Yes, the domain seems to be for the author... include it in the people/group transaction:
                         $author_group_tr['tr_type_en_id'] = $author_url_curl['tr_type_en_id']; //Overrides Naked
                         $author_group_tr['tr_content'] = $author_url_curl['domain_url']; //A domain that seems to belong to the author
