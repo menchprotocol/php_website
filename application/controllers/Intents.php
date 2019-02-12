@@ -299,12 +299,13 @@ class Intents extends CI_Controller
         //Authenticate Miner:
         $udata = fn___en_auth(array(1308));
         $tr_id = intval($_POST['tr_id']);
+        $tr_in_link_id = 0; //If >0 means linked intent is being updated...
 
         //Validate intent:
         $ins = $this->Database_model->fn___in_fetch(array(
             'in_id' => intval($_POST['in_id']),
             'in_status >=' => 0, //New+
-        ));
+        ), array('in__parents'));
 
         if (!$udata) {
             return fn___echo_json(array(
@@ -426,6 +427,7 @@ class Intents extends CI_Controller
 
         //Determines if Intent has been removed OR unlinked:
         $remove_from_ui = 0; //Assume not
+        $remove_redirect_url = null;
 
         //This determines if there are any recursive updates needed on the tree:
         $in_metadata_modify = array();
@@ -462,6 +464,16 @@ class Intents extends CI_Controller
 
                         //Intent has been removed:
                         $remove_from_ui = 1;
+                        //Did we remove the main intent?
+                        if($_POST['level']==1){
+                            //Yes, redirect to a parent intent if we have any:
+                            if(count($ins[0]['in__parents']) > 0){
+                                $remove_redirect_url = '/intents/' . $ins[0]['in__parents'][0]['in_id'];
+                            } else {
+                                //No parents, redirect to default intent:
+                                $remove_redirect_url = '/intents/' . $this->config->item('in_tactic_id');
+                            }
+                        }
 
                         //Also remove all children/parent links:
                         foreach($this->Database_model->fn___tr_fetch(array(
@@ -521,10 +533,10 @@ class Intents extends CI_Controller
         //Does this request has an intent transaction?
         if($tr_id > 0){
 
-
             //Validate Transaction and inputs:
             $trs = $this->Database_model->fn___tr_fetch(array(
                 'tr_id' => $tr_id,
+                'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
                 'tr_status >=' => 0, //New+
             ));
             if(count($trs) < 1){
@@ -539,6 +551,51 @@ class Intents extends CI_Controller
                 'tr_type_en_id'     => intval($_POST['tr_type_en_id']),
                 'tr_status'         => intval($_POST['tr_status']),
             );
+
+            if(strlen($_POST['tr_in_link_update']) > 0){
+
+                //Validate the input for updating linked intent:
+                if(substr($_POST['tr_in_link_update'], 0, 1)=='#'){
+                    $parts = explode(' ', $_POST['tr_in_link_update']);
+                    $tr_in_link_id = intval(str_replace('#', '', $parts[0]));
+                }
+
+                //Did we find it?
+                if($tr_in_link_id==0){
+                    return fn___echo_json(array(
+                        'status' => 0,
+                        'message' => 'Invalid format for new linked intent.',
+                    ));
+                } elseif($tr_in_link_id==$trs[0]['tr_in_parent_id'] || $tr_in_link_id==$trs[0]['tr_in_child_id']){
+                    return fn___echo_json(array(
+                        'status' => 0,
+                        'message' => 'Intent already linked here',
+                    ));
+                }
+
+                //Validate intent:
+                $linked_ins = $this->Database_model->fn___in_fetch(array(
+                    'in_id' => $tr_in_link_id,
+                    'in_status >=' => 0, //New+
+                ));
+                if(count($linked_ins)==0){
+                    return fn___echo_json(array(
+                        'status' => 0,
+                        'message' => 'Newly linked intent not found',
+                    ));
+                }
+
+                //All good, make the move:
+                $tr_update[( $_POST['is_parent'] ? 'tr_in_child_id' : 'tr_in_parent_id')] = $tr_in_link_id;
+                $tr_update['tr_order'] = 9999; //Place at the bottom of this new list
+                $remove_from_ui = 1;
+                //Did we move it on another intent on the same page? If so reload to show accurate info:
+                if(in_array($tr_in_link_id, $_POST['tr_in_focus_ids'])){
+                    //Yes, refresh the page:
+                    $remove_redirect_url = '/intents/' . $_POST['tr_in_focus_ids'][0]; //First item is the main intent
+                }
+
+            }
 
             //Prep variables:
             $tr_metadata = ( strlen($trs[0]['tr_metadata']) > 0 ? unserialize($trs[0]['tr_metadata']) : array() );
@@ -608,6 +665,7 @@ class Intents extends CI_Controller
             'status' => 1,
             'message' => '<i class="fas fa-check"></i> Saved',
             'remove_from_ui' => $remove_from_ui,
+            'remove_redirect_url' => $remove_redirect_url,
             'status_update_children' => $status_update_children,
             'in__tree_in_active_count' => -( isset($in_metadata['in__tree_in_active_count']) ? $in_metadata['in__tree_in_active_count'] : 0 ),
         );
@@ -775,7 +833,7 @@ class Intents extends CI_Controller
 
 
 
-    function fn___in_metadata_load($in_id)
+    function fn___in_messages_load($in_id)
     {
 
         //Authenticate as a Miner:
@@ -981,27 +1039,15 @@ class Intents extends CI_Controller
         //Prep metadata:
         $ins[0]['in_metadata'] = ( strlen($ins[0]['in_metadata']) > 0 ? unserialize($ins[0]['in_metadata']) : array());
 
-        //Fetch last intent update transaction:
-        $updated_trs = $this->Database_model->fn___tr_fetch(array(
-            'tr_status >=' => 0, //New+
-            'tr_type_en_id IN (4250, 4264)' => null, //Intent Created/Updated
-            'tr_in_child_id' => $_POST['in_id'],
-        ), array('en_miner'));
-        if(count($updated_trs) < 1){
-            return fn___echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Intent Last Updated Data',
-            ));
-        }
-
 
         if(intval($_POST['tr_id'])>0){
 
             //Fetch intent link:
             $trs = $this->Database_model->fn___tr_fetch(array(
                 'tr_id' => $_POST['tr_id'],
+                'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
                 'tr_status >=' => 0, //New+
-            ), array('en_miner'));
+            ), array(( $_POST['is_parent'] ? 'in_child' : 'in_parent' )));
 
             if(count($trs) < 1){
                 return fn___echo_json(array(
@@ -1010,7 +1056,7 @@ class Intents extends CI_Controller
                 ));
             }
 
-            //Prep metadata:
+            //Add link connector:
             $trs[0]['tr_metadata'] = ( strlen($trs[0]['tr_metadata']) > 0 ? unserialize($trs[0]['tr_metadata']) : array());
 
             //Make sure points are set:

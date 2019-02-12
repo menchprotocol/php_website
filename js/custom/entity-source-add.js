@@ -47,44 +47,6 @@ $(document).ready(function() {
 
 
 
-    //Load search:
-    $(".en-verify").on('autocomplete:selected', function (event, suggestion, dataset) {
-
-        //Open in new window to review/verify:
-        window.open('/entities/' + suggestion.en_id , '_blank');
-
-    }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
-
-        source: function (q, cb) {
-            algolia_en_index.search(q, {
-                hitsPerPage: 7,
-            }, function (error, content) {
-                if (error) {
-                    cb([]);
-                    return;
-                }
-                cb(content.hits, content);
-            });
-        },
-        displayKey: function (suggestion) {
-            return ''
-        },
-        templates: {
-            suggestion: function (suggestion) {
-                return '<i class="fal fa-external-link-alt"></i> ' + echo_js_suggestion('en',suggestion, 0);
-            },
-            header: function (data) {
-                if (!data.isEmpty) {
-                    return '';
-                }
-            },
-            empty: function (data) {
-                return '';
-            },
-        }
-
-    }]);
-
 
 });
 
@@ -130,6 +92,57 @@ function fn___en_source_paste_url() {
         $('.url-error').html('Paste a URL to get started...');
         $('.url-parsed').addClass('hidden');
     }
+
+}
+
+
+function fn___en_add_source(){
+
+    //Set title:
+    $('.add_source_body').addClass('hidden');
+    $('.add_source_result').html('<span><i class="fas fa-spinner fa-spin"></i></span> Processing...');
+
+    var source_parent_ens = $(".source_parent_ens:checkbox:checked").map(function(){
+        return $(this).val();
+    }).get();
+
+    //Fetch Intent Data to load modify widget:
+    $.post("/entities/fn___en_add_source", {
+
+        source_url: $('#source_url').val(),
+        source_parent_ens: source_parent_ens,
+        en_name: $('#en_url_name').val(),
+
+        author_1             : $('#author_1').val(),
+        entity_parent_id_1   : $('#entity_parent_id_1').val(),
+        ref_url_1            : $('#ref_url_1').val(),
+        why_expert_1         : $('#why_expert_1').val(),
+
+        author_2             : $('#author_2').val(),
+        entity_parent_id_2   : $('#entity_parent_id_2').val(),
+        ref_url_2            : $('#ref_url_2').val(),
+        why_expert_2         : $('#why_expert_2').val(),
+
+        author_3             : $('#author_3').val(),
+        entity_parent_id_3   : $('#entity_parent_id_3').val(),
+        ref_url_3            : $('#ref_url_3').val(),
+        why_expert_3         : $('#why_expert_3').val(),
+
+    }, function (data) {
+
+        if (!data.status) {
+
+            //Opppsi, show the error:
+            $('.add_source_result').html('<span style="color:#FF0000;">Error: '+ data.message +'</span>');
+            $('.add_source_body').removeClass('hidden');
+
+        } else {
+
+            //All good, go to newly added source:
+            window.top.location.href = '/entities/' + data.new_source_id;
+
+        }
+    });
 
 }
 

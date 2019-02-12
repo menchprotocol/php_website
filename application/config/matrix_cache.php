@@ -31,7 +31,7 @@ $config['en_all_4594'] = array(
     ),
     4230 => array(
         'm_icon' => '<i class="fal fa-link"></i>',
-        'm_name' => 'Linked Entities Raw',
+        'm_name' => 'Linked Entities',
         'm_desc' => '',
         'm_parents' => array(4594, 4592, 4374),
     ),
@@ -43,7 +43,7 @@ $config['en_all_4594'] = array(
     ),
     4232 => array(
         'm_icon' => '<i class="fal fa-comment-lines"></i>',
-        'm_name' => 'Intent Learn Why Messages',
+        'm_name' => 'Intent Learn More Messages',
         'm_desc' => '',
         'm_parents' => array(4603, 4594, 4485, 4374),
     ),
@@ -55,7 +55,7 @@ $config['en_all_4594'] = array(
     ),
     4234 => array(
         'm_icon' => '<i class="fal fa-random"></i>',
-        'm_name' => 'Intent On-Start Random Blurb',
+        'm_name' => 'Intent Random Blurb',
         'm_desc' => '',
         'm_parents' => array(4594, 4485, 4374),
     ),
@@ -174,8 +174,8 @@ $config['en_all_4594'] = array(
         'm_parents' => array(4594),
     ),
     4269 => array(
-        'm_icon' => '',
-        'm_name' => 'Logged into the matrix',
+        'm_icon' => '<i class="fal fa-sign-in"></i>',
+        'm_name' => 'Matrix login',
         'm_desc' => '',
         'm_parents' => array(4594),
     ),
@@ -384,7 +384,7 @@ $config['en_ids_4592'] = array(4230, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4
 $config['en_all_4592'] = array(
     4230 => array(
         'm_icon' => '<i class="fal fa-link"></i>',
-        'm_name' => 'Raw',
+        'm_name' => '',
         'm_desc' => '',
         'm_parents' => array(4594, 4592, 4374),
     ),
@@ -548,13 +548,13 @@ $config['en_all_4485'] = array(
     ),
     4234 => array(
         'm_icon' => '<i class="fal fa-random"></i>',
-        'm_name' => 'On-Start Random Blurb',
+        'm_name' => 'Random Blurb',
         'm_desc' => 'Triggered in various spots of the code base that powers the logic of Mench personal assistant. Search for the compose_messages() function which is part of the Comm Model.',
         'm_parents' => array(4594, 4485, 4374),
     ),
     4232 => array(
         'm_icon' => '<i class="fal fa-comment-lines"></i>',
-        'm_name' => 'Learn Why Messages',
+        'm_name' => 'Learn More Messages',
         'm_desc' => 'Authored by Miners and ordered, [Learn More] messages offer Masters a Quick Reply options to get more perspectives on the intention with an additional message batch. If Masters choose to move on without learning more, Mench will communicate the message batch at a later time to deliver the extra perspective on the intention. This is known as "dripping content" that helps re-enforce their learnings and act as a effective reminder of the best-practice, and perhaps a a new twist on how to execute towards it. Learn-More messages will always be delivered, the Master chooses the timing of it.',
         'm_parents' => array(4603, 4594, 4485, 4374),
     ),
@@ -574,7 +574,7 @@ $config['en_all_4485'] = array(
         'm_icon' => '<i class="fal fa-cloud-upload"></i>',
         'm_name' => 'Webhooks',
         'm_desc' => 'URLs that are called once the student completes the intent tree to process additional logic.',
-        'm_parents' => array(4256, 4374, 4485, 4594),
+        'm_parents' => array(4603, 4256, 4374, 4485, 4594),
     ),
 );
 

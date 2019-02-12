@@ -1269,7 +1269,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         $tr_id = $in['tr_id'];
         $tr_metadata = unserialize($in['tr_metadata']);
 
-        $ui = '<div in-tr-id="' . $tr_id . '" in-tr-type="' . $in['tr_type_en_id'] . '" intent-id="' . $in['in_id'] . '" parent-intent-id="' . $in_parent_id . '" intent-level="' . $level . '" class="list-group-item ' . ($level == 3 || ($level == 2 && !$is_parent) ? ' enable-sorting ' : '') . ($level == 3 ? 'is_level3_sortable' : 'is_level2_sortable') . ' intent_line_' . $in['in_id'] . ( $is_parent ? ' parent-intent ' : '' ) . ' in__tr_'.$tr_id.'">';
+        $ui = '<div in-tr-id="' . $tr_id . '" in-tr-type="' . $in['tr_type_en_id'] . '" intent-id="' . $in['in_id'] . '" parent-intent-id="' . $in_parent_id . '" intent-level="' . $level . '" class="list-group-item ' . ($level == 3 || ($level == 2 && !$is_parent) ? ' enable-sorting ' : '') . ($level == 3 ? 'is_level3_sortable' : 'is_level2_sortable level2_in') . ' intent_line_' . $in['in_id'] . ( $is_parent && $level!=3 ? ' parent-intent ' : '' ) . ' in__tr_'.$tr_id.'">';
 
     }
 
@@ -1415,7 +1415,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         'tr_type_en_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //All Intent messages
         'tr_in_child_id' => $in['in_id'],
     ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
-    $ui .= '<a href="#loadintentmetadata-' . $in['in_id'] . '" onclick="fn___in_metadata_load('.$in['in_id'].')" class="msg-badge-' . $in['in_id'] . ' badge badge-primary white-primary is_not_bg" style="width:40px; margin-right:2px;" data-toggle="tooltip" title="Intent Messages" data-placement="top"><span class="btn-counter messages-counter-' . $in['in_id'] . '">' . $count_in_metadata[0]['totals'] . '</span><i class="fal fa-layer-group"></i></a>';
+    $ui .= '<a href="#loadintentmetadata-' . $in['in_id'] . '" onclick="fn___in_messages_load('.$in['in_id'].')" class="msg-badge-' . $in['in_id'] . ' badge badge-primary white-primary is_not_bg" style="width:40px; margin-right:2px;" data-toggle="tooltip" title="Intent Messages" data-placement="top"><span class="btn-counter messages-counter-' . $in['in_id'] . '">' . $count_in_metadata[0]['totals'] . '</span><i class="fal fa-layer-group"></i></a>';
 
 
 

@@ -44,6 +44,7 @@ $(document).ready(function () {
                 $("#modifybox").css('top', (top_position - 0)); //PX also set in style.css for initial load
             }, 34));
         });
+
     }
 
 
@@ -56,10 +57,6 @@ $(document).ready(function () {
         //Still here? Expand children:
         fn___ms_toggle(parseInt($(this).attr('in-tr-id')), -1);
     });
-
-
-
-
 
 
 
@@ -179,6 +176,46 @@ $(document).ready(function () {
         }
     });
 
+
+
+
+
+
+    //Load Algolia for link replacement search
+    $("#tr_in_link_update").on('autocomplete:selected', function (event, suggestion, dataset) {
+
+        $(this).val('#'+suggestion.in_id+' '+suggestion.in_outcome);
+
+    }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
+
+        source: function (q, cb) {
+            algolia_in_index.search(q, {
+                hitsPerPage: 7,
+            }, function (error, content) {
+                if (error) {
+                    cb([]);
+                    return;
+                }
+                cb(content.hits, content);
+            });
+        },
+        displayKey: function (suggestion) {
+            return '#'+suggestion.in_id+' '+suggestion.in_outcome;
+        },
+        templates: {
+            suggestion: function (suggestion) {
+                return echo_js_suggestion('in',suggestion, 0);
+            },
+            header: function (data) {
+            },
+            empty: function (data) {
+                return 'No intents found';
+            },
+        }
+    }]);
+
+
+
     //Load level 3 sorting for this new level 2 intent:
     fn___in_load_search_level3(".intentadder-level-3");
 
@@ -193,7 +230,7 @@ $(document).ready(function () {
         if (hash_parts.length >= 2) {
             //Fetch level if available:
             if (hash_parts[0] == 'loadintentmetadata') {
-                fn___in_metadata_load(hash_parts[1]);
+                fn___in_messages_load(hash_parts[1]);
             } else if (hash_parts[0] == 'loadmodify') {
                 fn___in_modify_load(hash_parts[1], hash_parts[2]);
             } else if (hash_parts[0] == 'browseledger') {
@@ -392,6 +429,7 @@ function fn___in_sort_load(in_id, level) {
         settings['group'] = "steplists";
         settings['ghostClass'] = "drop-step-here";
         settings['onAdd'] = function (evt) {
+
             //Define variables:
             var inputs = {
                 tr_id: parseInt(evt.item.attributes['in-tr-id'].nodeValue),
@@ -444,7 +482,7 @@ function fn___in_sort_load(in_id, level) {
 }
 
 
-function fn___in_metadata_load(in_id) {
+function fn___in_messages_load(in_id) {
     //Start loading:
     $('.fixed-box').addClass('hidden');
     $('.frame-loader').addClass('hidden');
@@ -453,7 +491,7 @@ function fn___in_metadata_load(in_id) {
     $('#tr_title').html('<i class="fal fa-layer-group"></i> ' + $('.in_outcome_' + in_id + ':first').text());
 
     //Load content via a URL:
-    $('.ajax-frame').attr('src', '/intents/fn___in_metadata_load/' + in_id).removeClass('hidden').css('margin-top', '0');
+    $('.ajax-frame').attr('src', '/intents/fn___in_messages_load/' + in_id).removeClass('hidden').css('margin-top', '0');
 
     //Tooltips:
     $('[data-toggle="tooltip"]').tooltip();
@@ -568,7 +606,11 @@ function fn___in_modify_load(in_id, tr_id) {
     $('.edit-header').html('<i class="fas fa-cog"></i> ' + $('.in_outcome_' + in_id + ':first').text());
 
     //Fetch Intent Data to load modify widget:
-    $.post("/intents/fn___in_load_data", {in_id: in_id, tr_id: tr_id}, function (data) {
+    $.post("/intents/fn___in_load_data", {
+        in_id: in_id,
+        tr_id: tr_id,
+        is_parent: ( $('.intent_line_' + in_id).hasClass('parent-intent') ? 1 : 0 ),
+    }, function (data) {
         if (!data.status) {
 
             //Opppsi, show the error:
@@ -591,6 +633,7 @@ function fn___in_modify_load(in_id, tr_id) {
             $('#in_usd').val(data.in.in_usd);
             $('#in_seconds').val(data.in.in_seconds);
             $('#in_completion_en_id').val(data.in.in_completion_en_id);
+            $('.tr_in_link_title').text('');
 
             //Load intent link data if available:
             if (tr_id > 0) {
@@ -600,6 +643,12 @@ function fn___in_modify_load(in_id, tr_id) {
                 $('#tr__conditional_score_min').val(data.tr.tr_metadata.tr__conditional_score_min);
                 $('#tr__conditional_score_max').val(data.tr.tr_metadata.tr__conditional_score_max);
                 $('#tr__assessment_points').val(data.tr.tr_metadata.tr__assessment_points);
+
+                //Link editing adjustments:
+                $('#tr_in_link_update').val('');
+                $('.edit-link').addClass('hidden');
+                $('.link-in-outcome').text(data.tr.in_outcome);
+                $('.tr_in_link_title').text(( $('.intent_line_' + in_id).hasClass('parent-intent') ? 'Child' : 'Parent' ));
 
                 //Is this a conditional link? If so, load the min/max range:
                 if (data.tr.tr_type_en_id == 4229) {
@@ -642,10 +691,16 @@ function fn___in_modify_save() {
         return false;
     }
 
+    //Prepare top-level intents (in case we move an intent here):
+    var tr_in_focus_ids = [ in_focus_id ];
+    $(".level2_in").each(function () {
+        tr_in_focus_ids.push(parseInt($(this).attr('intent-id')));
+    });
+
     //Prepare data to be modified for this intent:
+    var in_id = parseInt($('#modifybox').attr('intent-id'));
     var modify_data = {
-        in_id: parseInt($('#modifybox').attr('intent-id')),
-        tr_id: parseInt($('#modifybox').attr('intent-tr-id')), //Will be zero for Level 1 intent!
+        in_id: in_id,
         level: parseInt($('#modifybox').attr('level')),
         in_outcome: $('#in_outcome').val(),
         in_status: parseInt($('#in_status').val()),
@@ -654,19 +709,23 @@ function fn___in_modify_save() {
         in_usd: parseFloat($('#in_usd').val()),
         in_is_any: parseInt($('input[name=in_is_any]:checked').val()),
         apply_recursively: (document.getElementById('apply_recursively').checked ? 1 : 0),
-        tr__conditional_score_min: null, //Default
-        tr__conditional_score_max: null, //Default
-        tr__assessment_points: null, //Default
+        is_parent: ( $('.intent_line_' + in_id).hasClass('parent-intent') ? 1 : 0 ),
+        //Transaction variables:
+        tr_id: parseInt($('#modifybox').attr('intent-tr-id')), //Will be zero for Level 1 intent!
+        tr_in_focus_ids: tr_in_focus_ids,
+        tr_type_en_id: null,
+        tr_in_link_update: null,
+        tr__conditional_score_min: null,
+        tr__conditional_score_max: null,
+        tr__assessment_points: null,
     };
 
     //Do we have the intent Ledger Transaction?
     if (modify_data['tr_id'] > 0) {
 
-        //TODO implement:
-        var original_in_tr_type = parseInt($('.in__tr_' + modify_data['tr_id']).attr('in-tr-type'));
-
         modify_data['tr_status'] = parseInt($('#tr_status').val());
         modify_data['tr_type_en_id'] = parseInt($('input[name=tr_type_en_id]:checked').val());
+        modify_data['tr_in_link_update'] = $('#tr_in_link_update').val();
 
         if(modify_data['tr_type_en_id'] == 4229){ //Conditional Intent Link
             //Post-assessment condition range:
@@ -696,10 +755,10 @@ function fn___in_modify_save() {
             if (data.remove_from_ui) {
 
                 //Intent has been either removed OR unlinked:
-                if (modify_data['level'] == 1) {
+                if (data.remove_redirect_url) {
 
                     //move up 1 level as this was the focus intent:
-                    window.location = "/intents/" + ($('.intent_line_' + modify_data['in_id']).attr('parent-intent-id'));
+                    window.location = data.remove_redirect_url;
 
                 } else {
 

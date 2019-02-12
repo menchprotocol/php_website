@@ -212,7 +212,7 @@
 
                             <div class="title">
                                 <h4>
-                                    <i class="fas fa-atlas"></i> Entity Transaction
+                                    <i class="fas fa-atlas"></i> Linked Entity
                                     <span class="en-has-tr">
                                         [<span style="margin:0 0 10px 0; font-size:0.8em;">
                                         <span id="chartr_contentNum">0</span>/<?= $this->config->item('tr_content_max') ?>

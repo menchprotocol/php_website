@@ -492,7 +492,7 @@ function fn___curl_html($url, $return_breakdown = false)
 
         }
 
-        //First check to see if duplicate URL:
+        //Check to see if duplicate URL:
         $dup_url_trs = $CI->Database_model->fn___tr_fetch(array(
             'tr_status >=' => 0, //New+
             'tr_type_en_id IN (' . join(',', $CI->config->item('en_ids_4537')) . ')' => null, //Entity URL Links

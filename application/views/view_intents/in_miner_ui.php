@@ -263,7 +263,7 @@ if (isset($orphan_ins)) {
                         <div class="title" style="margin-top: 15px;">
                             <h4>
                                 <i class="fas fa-atlas"></i>
-                                Intent Transaction
+                                Linked <span class="tr_in_link_title"></span> Intent
                             </h4>
                         </div>
 
@@ -275,6 +275,18 @@ if (isset($orphan_ins)) {
                             </div>
 
                             <div class="in-has-tr">
+
+
+                                <div style="font-size: 0.8em; margin: -5px 0 10px 0;"><i class="fas fa-hashtag"></i> <a href="javascript:void(0);" onclick="$('.edit-link').toggleClass('hidden')" class="link-in-outcome underdot" data-toggle="tooltip" title="Intent link. Click to modify." data-placement="top" style="line-height:110% !important;"></a></div>
+
+
+                                <div class="form-group inline-box label-floating is-empty edit-link hidden" style="margin-bottom: 10px;">
+                                    <div style="font-size: 0.8em;">Update <span class="tr_in_link_title"></span> Intent:</div>
+                                    <input style="padding-left:3px;" type="text" class="form-control algolia_search border" id="tr_in_link_update" placeholder="Search intents..." />
+                                </div>
+
+
+
                                 <div class="form-group label-floating is-empty">
 
                                     <?php
@@ -292,7 +304,7 @@ if (isset($orphan_ins)) {
 
                                 <div class="score_range_box hidden">
                                     <div class="form-group label-floating is-empty"
-                                         style="max-width:230px; margin:1px 0 10px;">
+                                         style="max-width:230px; margin:1px 0 10px;" data-toggle="tooltip" title="Min/Max assessment score between 0-100%" data-placement="top">
                                         <div class="input-group border">
                                             <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;">IF Scores </span>
                                             <input style="padding-left:0; padding-right:0; text-align:right;" type="text"
@@ -308,14 +320,15 @@ if (isset($orphan_ins)) {
                                 </div>
 
                                 <div class="score_points hidden">
-                                    <select class="form-control border" id="tr__assessment_points" data-toggle="tooltip" title="Intent Completion Points" data-placement="top" style="margin-bottom:12px;">
+                                    <select class="form-control border" id="tr__assessment_points" data-toggle="tooltip" title="Points adjusted when student completes intent" data-placement="top" style="margin-bottom:12px;">
                                         <?php
                                         foreach (array(-233, -144, -89, -55, -34, -21, -13, -8, -5, -3, -2, -1, 0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233) as $point) {
                                             echo '<option value="' . $point . '">' . ( $point>=0 ? 'Award ' : 'Subtract ' ) . ($point == 0 ? 'No Points' : abs($point) . ' Point' . fn___echo__s($point)) . '</option>';
-                                        }
+                                        }//bottom-add
                                         ?>
                                     </select>
                                 </div>
+
 
                                 <select class="form-control border" data-toggle="tooltip" title="Transaction Status" data-placement="top" id="tr_status" style="display: inline-block !important;">
                                     <?php

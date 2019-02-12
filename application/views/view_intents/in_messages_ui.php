@@ -50,7 +50,7 @@ foreach ($metadatas as $tr) {
 <ul class="nav nav-tabs iphone-nav-tabs">
     <?php
     foreach ($en_all_4485 as $tr_type_en_id => $m) {
-        echo '<li role="presentation" class="nav_' . $tr_type_en_id . ' active" data-toggle="tooltip" title="' . $m['m_desc'] . '" data-placement="bottom">';
+        echo '<li role="presentation" class="nav_' . $tr_type_en_id . ' active">';
         echo '<a href="#loadintentmetadata-' . $in_id . '-'.$tr_type_en_id.'"> ' . $m['m_icon'] . ' ' . $m['m_name'] . ' [<span class="mtd_count_'.$in_id.'_'.$tr_type_en_id.'">'.( isset($counters[$tr_type_en_id]) ? $counters[$tr_type_en_id] : 0 ).'</span>] </a>';
         echo '</li>';
     }
@@ -65,19 +65,34 @@ foreach ($metadatas as $tr) {
     //Show no-Message notifications for each message type:
     foreach ($en_all_4485 as $tr_type_en_id => $m) {
 
+
+        echo '<div class="all_msg msg_en_type_' . $tr_type_en_id . ' sorting-enabled">';
+
+
+        //Learn more option:
+        echo '<i class="fas fa-info-circle"></i> <span data-toggle="tooltip" title="'.$m['m_desc'].'" data-placement="bottom" class="underdot">Usage notes</span>. ';
+
+
         //Does it support sorting?
         if(in_array(4603, $en_all_4485[$tr_type_en_id]['m_parents'])){
-            echo '<div class="all_msg msg_en_type_' . $tr_type_en_id . ' sorting-enabled"><i class="fas fa-exchange rotate90"></i> Sorting Enabled</div>';
+            echo '<i class="fas fa-exchange rotate90"></i> Sorting enabled. ';
+        } else {
+            echo '&nbsp;<i class="fas fa-lock"></i> Sorting disabled. ';
         }
-
 
         //See if this message type has specific input requirements:
         $en_all_4485 = $this->config->item('en_all_4485');
         $completion_requirements = array_intersect($en_all_4485[$tr_type_en_id]['m_parents'], $this->config->item('en_ids_4331'));
         if(count($completion_requirements) == 1){
+            $en_id = array_shift($completion_requirements);
             $en_all_4331 = $this->config->item('en_all_4331');
-            echo '<div class="all_msg msg_en_type_' . $tr_type_en_id . ' sorting-enabled">'.$en_all_4331[$completion_requirements[0]]['m_icon'].' '.$en_all_4331[$completion_requirements[0]]['m_name'].' message is required.</div>';
+            echo 'Requires &nbsp;'.$en_all_4331[$en_id]['m_icon'].' '.$en_all_4331[$en_id]['m_name'].' messages.';
+        } else {
+            //No Requirements:
+            echo 'Supports <a href="/entities/4331" data-toggle="tooltip" title="View all intent message formats" data-placement="bottom" class="underdot">all message formats</a>.';
         }
+
+        echo '</div>';
 
 
         if (!isset($counters[$tr_type_en_id])) {

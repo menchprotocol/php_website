@@ -557,17 +557,22 @@ input::-webkit-inner-spin-button {
     border-radius: 3px !important;
 }
 
-.is_level2_sortable:hover, .en-item:hover, .list_input:hover {
+.is_level2_sortable:hover, .en-item:hover, .list_input:hover, .list-messages > div > div:hover {
     background-color: #E5E5E5 !important;
     border-color: transparent !important;
 }
-.is_level2_sortable:hover{
-    cursor: pointer;
+.is_level2_sortable:hover {
+    cursor: pointer !important;
+}
+.is-msg:hover{
+    background-color:transparent !important;
+    cursor: default !important;
 }
 .top_entity:hover {
     background-color: #FFF !important;
     border:1px solid #CCC !important;
 }
+
 
 .is_level3_sortable:hover, .new-in3-input:hover{
     background-color: #EFEFEF !important;
@@ -1543,11 +1548,11 @@ h5, .h5 {
     line-height: 110%;
     font-size: 16px;
     font-weight: 500;
-    margin: 0 0 12px;
+    margin: 10px 0 20px;
     text-align: left;
     background-color: #FFF;
     color: #999;
-    padding: 6px 5px;
+    padding: 15px 11px;
     border-radius: 5px;
     border-bottom-right-radius: 1.3em;
     border-top-right-radius: 1.3em;
@@ -2641,7 +2646,7 @@ a.badge:focus, a.badge:hover {
 
 .author-addon{
     margin:5px 0 0 7px;
-    max-width:295px;
+    max-width:330px;
 }
 
 .large-stat>span{

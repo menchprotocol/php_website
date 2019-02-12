@@ -252,12 +252,15 @@ class Chat_model extends CI_Model
                     'message' => 'Admin Configuration Error: Message type ['.$en_all_4485[$message_type_en_id]['m_name'].'] has multiple completion requirements ['.join(', ',$completion_requirements).'].',
                 );
 
-            } elseif(count($completion_requirements) == 1 && !($completion_requirements[0]==$tr_type_en_id['tr_type_en_id'])){
+            } elseif(count($completion_requirements) == 1){
 
-                return array(
-                    'status' => 0,
-                    'message' => $en_all_4485[$message_type_en_id]['m_name'].' require a ['.$en_all_4331[$completion_requirements[0]]['m_name'].'] message. You entered a ['.$en_all_4592[$tr_type_en_id['tr_type_en_id']]['m_name'].'] message.',
-                );
+                $en_id = array_shift($completion_requirements);
+                if(!($en_id==$tr_type_en_id['tr_type_en_id'])){
+                    return array(
+                        'status' => 0,
+                        'message' => $en_all_4485[$message_type_en_id]['m_name'].' require a ['.$en_all_4331[$en_id]['m_name'].'] message. You entered a ['.$en_all_4592[$tr_type_en_id['tr_type_en_id']]['m_name'].'] message.',
+                    );
+                }
 
             }
         }

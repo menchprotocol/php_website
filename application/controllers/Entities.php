@@ -72,126 +72,6 @@ class Entities extends CI_Controller
     }
 
 
-    function fn___add_source_wizard(){
-
-        /*
-         *
-         * Will create the new entities and transactions necessary to create a new source
-         *
-         * */
-
-        $udata = fn___en_auth(array(1308));
-        if (!$udata) {
-            return fn___echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid Session. Refresh to Continue',
-            ));
-        } elseif (!isset($_POST['input_url']) || !filter_var($_POST['input_url'], FILTER_VALIDATE_URL)) {
-            return fn___echo_json(array(
-                'status' => 0,
-                'message' => 'Enter Valid URL',
-            ));
-        }
-
-        //See if we can find the domain, if the domain is different from the input URL:
-        $dup_domain_trs = array();
-        if ($url == $domain_url && count($dup_url_trs) > 0) {
-
-            //We already have the parent:
-            $dup_domain_trs = $dup_url_trs[0];
-
-        } else {
-            //See if we can find the domain URL:
-            $dup_domain_trs = $CI->Database_model->fn___tr_fetch(array(
-                'tr_status >=' => 0, //New+
-                'tr_type_en_id' => 4256, //Generic URL: Domain name should be stored only as a Generic URL
-                'tr_content' => $domain_url,
-            ), array('en_child'));
-        }
-
-
-        if (count($dup_domain_trs) > 0) {
-
-            //Found it through domain search:
-            $return_data['domain_en_existed'] = 1;
-            $return_data['domain__en'] = $dup_domain_trs[0];
-
-        } else {
-
-            //Now let's try detecting the domain using the pattern matching entity logic:
-            foreach ($CI->Database_model->fn___tr_fetch(array(
-                'tr_type_en_id' => 4255, //Text Link that contains the pattern match
-                'tr_en_parent_id' => 3307, //Entity URL Pattern Match
-                'tr_status >=' => 2, //Published+
-                'en_status >=' => 2, //Published+
-            ), array('en_child')) as $match) {
-                if (substr_count($url, $match['tr_content']) > 0) {
-                    //yes we found a pattern match:
-                    $dup_domain_trs = $match;
-                    break;
-                }
-            }
-
-            //Did we find it?
-            if (count($dup_domain_trs) > 0) {
-
-                //Found it through pattern matching:
-                $return_data['domain_en_existed'] = 1;
-                $return_data['domain__en'] = $dup_domain_trs[0];
-
-            } else {
-
-                //We tried but could not find this domain in the matrix...
-
-                //Load the current user as we're about to mine data:
-                $udata = $CI->session->userdata('user');
-
-                if (!isset($udata['en_id'])) {
-                    //Ooopsi, we need the miner to be logged in to do this:
-                    return array(
-                        'status' => 0,
-                        'message' => 'Session expired, login to continue.',
-                    );
-                }
-
-                //Cleanup entity name:
-                $en_name_parts = explode('.', str_replace('www.', '', $parse['host']));
-
-
-                //Add domain entity:
-                $domain__en = $CI->Database_model->fn___en_create(array(
-                    'en_name' => ucwords($en_name_parts[0]),
-                    'en_icon' => echo_fav_icon($domain_url),
-                    'en_status' => 0, //Require someone to check this
-                ), true, $udata['en_id']);
-                if (!isset($domain__en['en_id'])) {
-                    return array(
-                        'status' => 0,
-                        'message' => 'Failed to create domain entity',
-                    );
-                }
-
-                //Add transaction:
-                $domain_tr = $CI->Database_model->fn___tr_create(array(
-                    'tr_status' => 0, //Require someone to check this
-                    'tr_miner_en_id' => $udata['en_id'],
-                    'tr_type_en_id' => 4256, //Generic URL
-                    'tr_en_parent_id' => 2750, //Assume group for now
-                    'tr_en_child_id' => $domain__en['en_id'],
-                    'tr_content' => $domain_url,
-                ), true);
-
-                //Now report back the new data:
-                $return_data['domain_en_existed'] = 0;
-                $return_data['domain__en'] = $domain__en;
-
-            }
-        }
-
-
-
-    }
-
 
     //Lists entities
     function en_miner_ui($en_id)
@@ -1121,4 +1001,161 @@ class Entities extends CI_Controller
     }
 
 
+
+    function fn___en_add_source(){
+
+        //Auth user and check required variables:
+        $udata = fn___en_auth(array(1308));
+        $tr_content_max = $this->config->item('tr_content_max');
+
+        if (!$udata) {
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Session Expired',
+            ));
+        } elseif (!isset($_POST['source_url']) || !filter_var($_POST['source_url'], FILTER_VALIDATE_URL)) {
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid URL',
+            ));
+        } elseif (!isset($_POST['source_parent_ens']) || count($_POST['source_parent_ens']) < 1) {
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Select at-least 1 parent type',
+            ));
+        } elseif (!isset($_POST['en_name']) || strlen($_POST['en_name']) < 1) {
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Missing entity name',
+            ));
+        }
+
+        //Validate the URL:
+        $curl = fn___curl_html($_POST['source_url'], true);
+        if (!$curl['status']) {
+            //Oooopsi, we had some error:
+            return fn___echo_json($curl);
+        } elseif($curl['domain_url']==$_POST['source_url']){
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'A source URL cannot reference the root domain',
+            ));
+        }
+
+
+        //Do we have this domain entity already?
+        $domain_ens = $this->Database_model->fn___tr_fetch(array(
+            'tr_status >=' => 0, //New+
+            'tr_type_en_id' => 4256, //Generic URL: Domain name should be stored only as a Generic URL
+            'tr_content' => $curl['domain_url'],
+        ), array('en_child'));
+
+
+        //Did we find it?
+        if(count($domain_ens) == 0){
+            //Now let's try detecting the domain using the pattern matching entity logic:
+            foreach ($this->Database_model->fn___tr_fetch(array(
+                'tr_type_en_id' => 4255, //Text Link that contains the pattern match
+                'tr_en_parent_id' => 3307, //Entity URL Pattern Match
+                'tr_status >=' => 2, //Published+
+                'en_status >=' => 2, //Published+
+            ), array('en_child')) as $match) {
+                if (substr_count($_POST['source_url'], $match['tr_content']) > 0) {
+                    //yes we found a pattern match:
+                    $domain_ens[0] = $match;
+                    break;
+                }
+            }
+        }
+
+        //Did we find it now?
+        if(count($domain_ens)==0){
+
+            //Create domain entity:
+            $domain_ens[0] = $this->Database_model->fn___en_create(array(
+                'en_name' => trim(str_replace('www.', '', $curl['domain_host'])),
+                'en_icon' => echo_fav_icon($curl['domain_url']),
+                'en_status' => 0, //New (to be checked)
+            ), true, $udata['en_id']);
+            if (!isset($domain_ens[0]['en_id'])) {
+                return fn___echo_json(array(
+                    'status' => 0,
+                    'message' => 'Failed to create domain entity',
+                ));
+            }
+
+            //Create domain link:
+            $domain_tr = $this->Database_model->fn___tr_create(array(
+                'tr_status' => 0, //Require someone to check this
+                'tr_miner_en_id' => $udata['en_id'],
+                'tr_type_en_id' => 4256, //Generic URL
+                'tr_en_parent_id' => 2750, //Assume group for now
+                'tr_en_child_id' => $domain_ens[0]['en_id'],
+                'tr_content' => $curl['domain_url'],
+            ), true);
+
+        }
+
+
+        //Create source entity:
+        $new_source = $this->Database_model->fn___en_create(array(
+            'en_name' => trim($_POST['en_name']),
+            'en_status' => 0, //New (to be checked)
+        ), true, $udata['en_id']);
+
+
+        //Link to domain parent:
+        $source_domain_tr = $this->Database_model->fn___tr_create(array(
+            'tr_status' => 0, //Require someone to check this
+            'tr_miner_en_id' => $udata['en_id'],
+            'tr_content' => $curl['cleaned_url'],
+            'tr_type_en_id' => $curl['tr_type_en_id'],
+            'tr_en_parent_id' => $domain_ens[0]['en_id'],
+            'tr_en_child_id' => $new_source['en_id'],
+        ), true);
+
+
+        //Link to other selected parents:
+        foreach($_POST['source_parent_ens'] as $parent_en_id){
+            if(intval($parent_en_id) > 0){
+                //Link to parent
+                $source_domain_tr = $this->Database_model->fn___tr_create(array(
+                    'tr_status' => 0, //Require someone to check this
+                    'tr_miner_en_id' => $udata['en_id'],
+                    'tr_type_en_id' => 4230, //Naked at start
+                    'tr_en_parent_id' => intval($parent_en_id),
+                    'tr_en_child_id' => $new_source['en_id'],
+                ), true);
+            }
+        }
+
+        //Success:
+        return fn___echo_json(array(
+            'status' => 1,
+            'new_source_id' => $new_source['en_id'],
+        ));
+
+    }
+
+
 }
+
+/*
+ *
+
+        author_1             : $('#author_1').val(),
+        entity_parent_id_1   : $('#entity_parent_id_1').val(),
+        ref_url_1            : $('#ref_url_1').val(),
+        why_expert_1         : $('#why_expert_1').val(),
+
+        author_2             : $('#author_2').val(),
+        entity_parent_id_2   : $('#entity_parent_id_2').val(),
+        ref_url_2            : $('#ref_url_2').val(),
+        why_expert_2         : $('#why_expert_2').val(),
+
+        author_3             : $('#author_3').val(),
+        entity_parent_id_3   : $('#entity_parent_id_3').val(),
+        ref_url_3            : $('#ref_url_3').val(),
+        why_expert_3         : $('#why_expert_3').val(),
+
+ * */

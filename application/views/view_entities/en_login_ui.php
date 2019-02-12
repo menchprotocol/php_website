@@ -24,7 +24,7 @@
 				<i class="material-icons">email</i>
 			</span>
             <div class="form-group is-empty"><input type="email" id="input_email" name="input_email" required="required"
-                                                    class="form-control" placeholder="Email"><span
+                                                    class="form-control border" placeholder="Email"><span
                         class="material-input"></span></div>
         </div>
 
@@ -33,7 +33,7 @@
 				<i class="material-icons">lock_outline</i>
 			</span>
             <div class="form-group is-empty"><input type="password" name="input_password" required="required"
-                                                    placeholder="Password" class="form-control"><span
+                                                    placeholder="Password" class="form-control border"><span
                         class="material-input"></span></div>
         </div>
 

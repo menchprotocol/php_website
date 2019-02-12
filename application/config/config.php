@@ -15,7 +15,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 
 //UI Display:
-$config['app_version']              = '0.724'; //Cache buster in URLs for static js/css files
+$config['app_version']              = '0.725'; //Cache buster in URLs for static js/css files
 $config['en_per_page']              = 50; //Limits the maximum entities loaded per page
 
 
@@ -175,7 +175,7 @@ $config['object_statuses']          = array(
                                             3 => array(
                                                 's_name' => 'Featured',
                                                 's_desc' => 'Intent is recommended by mench.com and Mench personal assistant',
-                                                's_icon' => '<i class="fal fa-badge-check"></i>',
+                                                's_icon' => '<i class="fas fa-star yellow"></i>',
                                             ),
                                         ),
                                         'en_status' => array(
