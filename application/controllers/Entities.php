@@ -1005,7 +1005,6 @@ class Entities extends CI_Controller
 
         //Auth user and check required variables:
         $udata = fn___en_auth(array(1308));
-        $tr_content_max = $this->config->item('tr_content_max');
 
         if (!$udata) {
             return fn___echo_json(array(
@@ -1082,6 +1081,11 @@ class Entities extends CI_Controller
                     return fn___echo_json(array(
                         'status' => 0,
                         'message' => 'Author #' . $x . ' is missing a valid URL',
+                    ));
+                } elseif(strlen($_POST['why_expert_' . $x]) > $this->config->item('tr_content_max')){
+                    return fn___echo_json(array(
+                        'status' => 0,
+                        'message' => 'Author #' . $x . ' expert description is more than '.$this->config->item('tr_content_max').' characters',
                     ));
                 }
 
