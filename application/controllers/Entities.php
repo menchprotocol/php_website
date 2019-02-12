@@ -1107,28 +1107,44 @@ class Entities extends CI_Controller
                     ));
                 }
 
-                //Link author to People or Groups:
-                $this->Database_model->fn___tr_create(array(
+                //Prepare data to link author to People/Groups
+                $author_group_tr = array(
                     'tr_status' => 2, //Published
                     'tr_miner_en_id' => $udata['en_id'],
                     'tr_type_en_id' => 4230, //Naked
                     'tr_en_parent_id' => $_POST['entity_parent_id_' . $x], //People or Groups
                     'tr_en_child_id' => $author_en['en_id'],
-                ), true);
+                );
 
-                //Add domain entity:
-                $domain_author_en = $this->Matrix_model->fn___en_add_domain($author_url_curl['domain_url'], $author_url_curl['domain_host'], $udata['en_id']);
+                //Does the domain include the author's first/last name?
+                $author_name_parts = explode(' ', $_POST['author_' . $x]);
+                foreach($author_name_parts as $author_name_part){
+                    if(substr_count($author_url_curl['domain_url'], strtolower($author_name_part)) > 0){
+                        //Yes, the domain seems to be for the author... include it in the people/group transaction:
+                        $author_group_tr['tr_type_en_id'] = $author_url_curl['tr_type_en_id']; //Overrides Naked
+                        $author_group_tr['tr_content'] = $author_url_curl['domain_url']; //A domain that seems to belong to the author
+                        break;
+                    }
+                }
 
-                //Link author to domain and save URL:
-                $this->Database_model->fn___tr_create(array(
-                    'tr_status' => 2, //Published
-                    'tr_miner_en_id' => $udata['en_id'],
-                    'tr_content' => $author_url_curl['cleaned_url'],
-                    'tr_type_en_id' => $author_url_curl['tr_type_en_id'],
-                    'tr_en_parent_id' => $domain_author_en['en_id'],
-                    'tr_en_child_id' => $author_en['en_id'],
-                ), true);
+                //Did we determine that the URL is for the author itself?
+                if(!isset($author_group_tr['tr_content'])){
+                    //Nope, just add domain entity:
+                    $domain_author_en = $this->Matrix_model->fn___en_add_domain($author_url_curl['domain_url'], $author_url_curl['domain_host'], $udata['en_id']);
 
+                    //Link author to domain and save URL:
+                    $this->Database_model->fn___tr_create(array(
+                        'tr_status' => 2, //Published
+                        'tr_miner_en_id' => $udata['en_id'],
+                        'tr_content' => $author_url_curl['cleaned_url'],
+                        'tr_type_en_id' => $author_url_curl['tr_type_en_id'],
+                        'tr_en_parent_id' => $domain_author_en['en_id'],
+                        'tr_en_child_id' => $author_en['en_id'],
+                    ), true);
+                }
+
+                //Save Transaction to link author to People or Groups:
+                $this->Database_model->fn___tr_create($author_group_tr, true);
 
 
                 //Link author to expert?
