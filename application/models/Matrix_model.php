@@ -369,6 +369,58 @@ class Matrix_model extends CI_Model
     }
 
 
+    function fn___en_add_domain($domain_url, $domain_host, $miner_en_id){
+
+
+        //Do we have this domain entity already?
+        $domain_ens = $this->Database_model->fn___tr_fetch(array(
+            'tr_status >=' => 0, //New+
+            'tr_type_en_id' => 4256, //Generic URL: Domain name should be stored only as a Generic URL
+            'tr_content' => $domain_url,
+        ), array('en_child'));
+        if(count($domain_ens) > 0){
+            return $domain_ens[0];
+        }
+
+
+        //Did we find it?
+        //Now let's try detecting the domain using the pattern matching entity logic:
+        foreach ($this->Database_model->fn___tr_fetch(array(
+            'tr_type_en_id' => 4255, //Text Link that contains the pattern match
+            'tr_en_parent_id' => 3307, //Entity URL Pattern Match
+            'tr_status >=' => 2, //Published+
+            'en_status >=' => 2, //Published+
+        ), array('en_child')) as $match) {
+            if (substr_count($domain_url, $match['tr_content']) > 0) {
+                //yes we found a pattern match:
+                return $match;
+            }
+        }
+
+
+        //Create domain entity:
+        $domain_en = $this->Database_model->fn___en_create(array(
+            'en_name' => trim(str_replace('www.', '', $domain_host)),
+            'en_icon' => echo_fav_icon($domain_url),
+            'en_status' => 2, //Published
+        ), true, $miner_en_id);
+
+        //Create domain link:
+        $this->Database_model->fn___tr_create(array(
+            'tr_status' => 2, //Published
+            'tr_miner_en_id' => $miner_en_id,
+            'tr_type_en_id' => 4256, //Generic URL
+            'tr_en_parent_id' => 2750, //Assume group
+            'tr_en_child_id' => $domain_en['en_id'],
+            'tr_content' => $domain_url,
+        ), true);
+
+        //Return domain entity:
+        return $domain_en;
+
+    }
+
+
     function fn___en_master_messenger_authenticate($psid)
     {
 

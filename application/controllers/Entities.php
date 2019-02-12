@@ -64,13 +64,12 @@ class Entities extends CI_Controller
 
         return fn___echo_json(array(
             'status' => 1,
-            'entity_domain_ui' => ( $fav_icon ? $fav_icon : '<i class="fas fa-at grey-at"></i>' ) . ' ' . $curl['domain_host'],
+            'entity_domain_ui' => ($fav_icon ? $fav_icon : '<i class="fas fa-at grey-at"></i>') . ' ' . $curl['domain_host'],
             'page_title' => $curl['page_title'],
             'curl' => $curl, //for debugging if needed
         ));
 
     }
-
 
 
     //Lists entities
@@ -141,7 +140,7 @@ class Entities extends CI_Controller
                         //Validate input:
                         $parts = explode('>>', $_POST['modify_text']);
 
-                        if (count($parts) == 2 && strlen($parts[0])>0 && substr_count($en['en_name'], $parts[0]) > 0) {
+                        if (count($parts) == 2 && strlen($parts[0]) > 0 && substr_count($en['en_name'], $parts[0]) > 0) {
 
                             //Update with new icon:
                             $this->Database_model->fn___en_update($en['en_id'], array(
@@ -157,7 +156,7 @@ class Entities extends CI_Controller
                         //Validate input:
                         $parts = explode('>>', $_POST['modify_text']);
 
-                        if (count($parts) == 2 && strlen($parts[0])>0 && substr_count($en['tr_content'], $parts[0]) > 0) {
+                        if (count($parts) == 2 && strlen($parts[0]) > 0 && substr_count($en['tr_content'], $parts[0]) > 0) {
 
                             //Update with new icon:
                             $this->Database_model->fn___tr_update($en['tr_id'], array(
@@ -235,7 +234,7 @@ class Entities extends CI_Controller
         //See what this is:
         $tr_type_en_id = fn___detect_tr_type_en_id($_POST['tr_content']);
 
-        if (!$tr_type_en_id['status'] && ( !isset($tr_type_en_id['dup_en']['en_id']) || !($tr_type_en_id['dup_en']['en_id']==$_POST['en_id']) )) {
+        if (!$tr_type_en_id['status'] && (!isset($tr_type_en_id['dup_en']['en_id']) || !($tr_type_en_id['dup_en']['en_id'] == $_POST['en_id']))) {
             //return error:
             return fn___echo_json($tr_type_en_id);
         }
@@ -576,11 +575,11 @@ class Entities extends CI_Controller
             $remove_from_ui = 1;
 
             //Also remove all children/parent links:
-            foreach($this->Database_model->fn___tr_fetch(array(
+            foreach ($this->Database_model->fn___tr_fetch(array(
                 'tr_status >=' => 0, //New+
                 'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-                '(tr_en_child_id = '.$_POST['en_id'].' OR tr_en_parent_id = '.$_POST['en_id'].')' => null,
-            )) as $unlink_tr){
+                '(tr_en_child_id = ' . $_POST['en_id'] . ' OR tr_en_parent_id = ' . $_POST['en_id'] . ')' => null,
+            )) as $unlink_tr) {
 
                 $this->Database_model->fn___tr_update($unlink_tr['tr_id'], array(
                     'tr_status' => -1, //Unlink
@@ -1001,8 +1000,8 @@ class Entities extends CI_Controller
     }
 
 
-
-    function fn___en_add_source(){
+    function fn___en_add_source()
+    {
 
         //Auth user and check required variables:
         $udata = fn___en_auth(array(1308));
@@ -1035,7 +1034,7 @@ class Entities extends CI_Controller
         if (!$curl['status']) {
             //Oooopsi, we had some error:
             return fn___echo_json($curl);
-        } elseif($curl['domain_url']==$_POST['source_url']){
+        } elseif ($curl['domain_url'] == $_POST['source_url']) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'A source URL cannot reference the root domain',
@@ -1043,119 +1042,186 @@ class Entities extends CI_Controller
         }
 
 
-        //Do we have this domain entity already?
-        $domain_ens = $this->Database_model->fn___tr_fetch(array(
-            'tr_status >=' => 0, //New+
-            'tr_type_en_id' => 4256, //Generic URL: Domain name should be stored only as a Generic URL
-            'tr_content' => $curl['domain_url'],
-        ), array('en_child'));
+        //Validate referenced authors:
+        $referenced_authors = array(); //To be populated with author entities
+        for ($x = 1; $x <= 3; $x++) {
 
-
-        //Did we find it?
-        if(count($domain_ens) == 0){
-            //Now let's try detecting the domain using the pattern matching entity logic:
-            foreach ($this->Database_model->fn___tr_fetch(array(
-                'tr_type_en_id' => 4255, //Text Link that contains the pattern match
-                'tr_en_parent_id' => 3307, //Entity URL Pattern Match
-                'tr_status >=' => 2, //Published+
-                'en_status >=' => 2, //Published+
-            ), array('en_child')) as $match) {
-                if (substr_count($_POST['source_url'], $match['tr_content']) > 0) {
-                    //yes we found a pattern match:
-                    $domain_ens[0] = $match;
-                    break;
-                }
+            //Do we have an author?
+            if (strlen($_POST['author_' . $x]) < 1) {
+                continue;
             }
-        }
 
-        //Did we find it now?
-        if(count($domain_ens)==0){
+            //Is this referencing an existing entity or is it a new entity?
+            $tr_en_link_id = 0; //Assume it's a new entity...
+            if (substr($_POST['author_' . $x], 0, 1) == '@') {
+                $parts = explode(' ', $_POST['author_' . $x]);
+                $tr_en_link_id = intval(str_replace('@', '', $parts[0]));
+            }
 
-            //Create domain entity:
-            $domain_ens[0] = $this->Database_model->fn___en_create(array(
-                'en_name' => trim(str_replace('www.', '', $curl['domain_host'])),
-                'en_icon' => echo_fav_icon($curl['domain_url']),
-                'en_status' => 0, //New (to be checked)
-            ), true, $udata['en_id']);
-            if (!isset($domain_ens[0]['en_id'])) {
-                return fn___echo_json(array(
-                    'status' => 0,
-                    'message' => 'Failed to create domain entity',
+            if ($tr_en_link_id > 0) {
+
+                //Validate existing entity reference:
+                $referenced_ens = $this->Database_model->fn___en_fetch(array(
+                    'en_status >=' => 0, //New+
+                    'en_id' => $tr_en_link_id,
                 ));
+                if (count($referenced_ens) < 1) {
+                    return fn___echo_json(array(
+                        'status' => 0,
+                        'message' => 'Author #' . $x . ' entity ID @' . $tr_en_link_id . ' is invalid',
+                    ));
+                }
+
+                //Add author to parent source array:
+                array_push($referenced_authors, $tr_en_link_id);
+
+            } else {
+
+                //Attempt to create this author:
+                if (!filter_var($_POST['ref_url_' . $x], FILTER_VALIDATE_URL)) {
+                    return fn___echo_json(array(
+                        'status' => 0,
+                        'message' => 'Author #' . $x . ' is missing a valid URL',
+                    ));
+                }
+
+                //Check URL to make sure it's unique:
+                $author_url_curl = fn___curl_html($_POST['ref_url_' . $x], true);
+                if (!$author_url_curl['status']) {
+                    //Oooopsi, we had some error:
+                    return fn___echo_json(array(
+                        'status' => 0,
+                        'message' => 'Author #' . $x . ' URL error: ' . $author_url_curl['message'],
+                    ));
+                }
+
+                //Add author:
+                $author_en = $this->Database_model->fn___en_create(array(
+                    'en_name' => trim($_POST['author_' . $x]),
+                    'en_status' => 2, //Published
+                ), true, $udata['en_id']);
+                if (!isset($author_en['en_id'])) {
+                    return fn___echo_json(array(
+                        'status' => 0,
+                        'message' => 'Failed to add author #' . $x,
+                    ));
+                }
+
+                //Link author to People or Groups:
+                $this->Database_model->fn___tr_create(array(
+                    'tr_status' => 2, //Published
+                    'tr_miner_en_id' => $udata['en_id'],
+                    'tr_type_en_id' => 4230, //Naked
+                    'tr_en_parent_id' => $_POST['entity_parent_id_' . $x], //People or Groups
+                    'tr_en_child_id' => $author_en['en_id'],
+                ), true);
+
+                //Add domain entity:
+                $domain_author_en = $this->Matrix_model->fn___en_add_domain($author_url_curl['domain_url'], $author_url_curl['domain_host'], $udata['en_id']);
+
+                //Link author to domain and save URL:
+                $this->Database_model->fn___tr_create(array(
+                    'tr_status' => 2, //Published
+                    'tr_miner_en_id' => $udata['en_id'],
+                    'tr_content' => $author_url_curl['cleaned_url'],
+                    'tr_type_en_id' => $author_url_curl['tr_type_en_id'],
+                    'tr_en_parent_id' => $domain_author_en['en_id'],
+                    'tr_en_child_id' => $author_en['en_id'],
+                ), true);
+
+
+
+                //Link author to expert?
+                if(strlen($_POST['why_expert_' . $x]) > 0){
+
+                    //Yes, do it:
+                    $tr_type_en_id = fn___detect_tr_type_en_id($_POST['why_expert_' . $x]);
+                    if (!$tr_type_en_id['status']) {
+                        return fn___echo_json(array(
+                            'status' => 0,
+                            'message' => 'Author #' . $x . ' expert notes error: ' . $tr_type_en_id['message'],
+                        ));
+                    } elseif( $tr_type_en_id['tr_type_en_id'] != 4255){
+                        return fn___echo_json(array(
+                            'status' => 0,
+                            'message' => 'Author #' . $x . ' expert notes must be text only',
+                        ));
+                    }
+
+                    //Add author to industry experts:
+                    $this->Database_model->fn___tr_create(array(
+                        'tr_status' => 2, //Published
+                        'tr_miner_en_id' => $udata['en_id'],
+                        'tr_content' => $_POST['why_expert_' . $x],
+                        'tr_type_en_id' => $tr_type_en_id['tr_type_en_id'],
+                        'tr_en_parent_id' => 3084, //Industry Experts
+                        'tr_en_child_id' => $author_en['en_id'],
+                    ), true);
+
+                }
+
+                //Add author to parent source array:
+                array_push($referenced_authors, $author_en['en_id']);
+
             }
-
-            //Create domain link:
-            $domain_tr = $this->Database_model->fn___tr_create(array(
-                'tr_status' => 0, //Require someone to check this
-                'tr_miner_en_id' => $udata['en_id'],
-                'tr_type_en_id' => 4256, //Generic URL
-                'tr_en_parent_id' => 2750, //Assume group for now
-                'tr_en_child_id' => $domain_ens[0]['en_id'],
-                'tr_content' => $curl['domain_url'],
-            ), true);
-
         }
+
+
+        //Add domain entity:
+        $domain_en = $this->Matrix_model->fn___en_add_domain($curl['domain_url'], $curl['domain_host'], $udata['en_id']);
 
 
         //Create source entity:
         $new_source = $this->Database_model->fn___en_create(array(
             'en_name' => trim($_POST['en_name']),
-            'en_status' => 0, //New (to be checked)
+            'en_status' => 0, //New
         ), true, $udata['en_id']);
 
 
         //Link to domain parent:
-        $source_domain_tr = $this->Database_model->fn___tr_create(array(
-            'tr_status' => 0, //Require someone to check this
+        $this->Database_model->fn___tr_create(array(
+            'tr_status' => 2, //Published
             'tr_miner_en_id' => $udata['en_id'],
             'tr_content' => $curl['cleaned_url'],
             'tr_type_en_id' => $curl['tr_type_en_id'],
-            'tr_en_parent_id' => $domain_ens[0]['en_id'],
+            'tr_en_parent_id' => $domain_en['en_id'],
             'tr_en_child_id' => $new_source['en_id'],
         ), true);
 
 
-        //Link to other selected parents:
-        foreach($_POST['source_parent_ens'] as $parent_en_id){
-            if(intval($parent_en_id) > 0){
+        //Add source-type parents:
+        foreach ($_POST['source_parent_ens'] as $parent_en_id) {
+            if (intval($parent_en_id) > 0) {
                 //Link to parent
-                $source_domain_tr = $this->Database_model->fn___tr_create(array(
-                    'tr_status' => 0, //Require someone to check this
+                $this->Database_model->fn___tr_create(array(
+                    'tr_status' => 2, //Published
                     'tr_miner_en_id' => $udata['en_id'],
-                    'tr_type_en_id' => 4230, //Naked at start
+                    'tr_type_en_id' => 4230, //Naked
                     'tr_en_parent_id' => intval($parent_en_id),
                     'tr_en_child_id' => $new_source['en_id'],
                 ), true);
             }
         }
 
+        //Add author parents:
+        foreach ($referenced_authors as $parent_en_id) {
+            $this->Database_model->fn___tr_create(array(
+                'tr_status' => 2, //Published
+                'tr_miner_en_id' => $udata['en_id'],
+                'tr_type_en_id' => 4230, //Naked
+                'tr_en_parent_id' => $parent_en_id,
+                'tr_en_child_id' => $new_source['en_id'],
+            ), true);
+        }
+
+
         //Success:
         return fn___echo_json(array(
             'status' => 1,
-            'new_source_id' => $new_source['en_id'],
+            'new_source_id' => $new_source['en_id'], //Redirects to this entity...
         ));
 
     }
 
 
 }
-
-/*
- *
-
-        author_1             : $('#author_1').val(),
-        entity_parent_id_1   : $('#entity_parent_id_1').val(),
-        ref_url_1            : $('#ref_url_1').val(),
-        why_expert_1         : $('#why_expert_1').val(),
-
-        author_2             : $('#author_2').val(),
-        entity_parent_id_2   : $('#entity_parent_id_2').val(),
-        ref_url_2            : $('#ref_url_2').val(),
-        why_expert_2         : $('#why_expert_2').val(),
-
-        author_3             : $('#author_3').val(),
-        entity_parent_id_3   : $('#entity_parent_id_3').val(),
-        ref_url_3            : $('#ref_url_3').val(),
-        why_expert_3         : $('#why_expert_3').val(),
-
- * */
