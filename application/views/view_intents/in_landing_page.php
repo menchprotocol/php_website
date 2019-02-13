@@ -40,7 +40,7 @@ $hide_subscribe = ( isset($_GET['hide_subscribe']) && intval($_GET['hide_subscri
 </script>
 
 
-<div id="in_public_ui">
+<div id="in_landing_page">
 
     <?php
     if (!$is_primary_in && count($in['in__parents']) > 0) {

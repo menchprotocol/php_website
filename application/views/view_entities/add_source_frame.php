@@ -4,9 +4,9 @@
         type="text/javascript"></script>
 
 
-<div style="padding:0 10px;">
+<div style="padding:0 10px; max-width: 560px; margin: 0 auto;">
 
-    <h3 style="margin: 0; padding:10px 0 0 0;">Add Source Wizard</h3>
+    <h1 style="margin: 0; padding:10px 0 0 0;">Add Source Wizard</h1>
 
     <div class="add_source_result"></div>
     <div class="add_source_body">
@@ -27,7 +27,7 @@
         //The Parent Entity based on domain:
         echo '<span class="checkbox" style="margin: 0;">
             <label style="display:inline-block !important; font-size: 0.8em !important; margin-left:5px;">
-                <input type="checkbox" checked="checked" disabled value="domain_url" />
+                <input type="checkbox" checked="checked" disabled value="basedomain" />
                     <span class="entity_domain_ui"></span>
                     [<span class="underdot" data-toggle="tooltip" data-placement="top" title="Parent auto created based on URL domain">Domain Entity</span>]
             </label>

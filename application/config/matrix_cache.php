@@ -12,6 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
+//Generated 2019-02-13 04:07:39 PST
 
 //Account Types:
 $config['en_ids_4600'] = array(1278, 2750);
@@ -47,31 +48,31 @@ $config['en_all_4594'] = array(
     ),
     4230 => array(
         'm_icon' => '<i class="fal fa-link"></i>',
-        'm_name' => 'Linked Entities',
+        'm_name' => 'Linked Entities Empty',
         'm_desc' => '',
         'm_parents' => array(4594, 4592, 4374),
     ),
     4231 => array(
         'm_icon' => '<i class="fal fa-bolt"></i>',
-        'm_name' => 'Intent On-Start Messages',
+        'm_name' => 'Intent Messages On-Start',
         'm_desc' => '',
-        'm_parents' => array(4603, 4594, 4485, 4374),
+        'm_parents' => array(4742, 4603, 4594, 4485, 4374),
     ),
     4232 => array(
         'm_icon' => '<i class="fal fa-comment-lines"></i>',
-        'm_name' => 'Intent Learn More Messages',
+        'm_name' => 'Intent Messages Learn More',
         'm_desc' => '',
-        'm_parents' => array(4603, 4594, 4485, 4374),
+        'm_parents' => array(4742, 4603, 4594, 4485, 4374),
     ),
     4233 => array(
         'm_icon' => '<i class="fal fa-calendar-check"></i>',
-        'm_name' => 'Intent On-Complete Messages',
+        'm_name' => 'Intent Messages On-Complete',
         'm_desc' => '',
-        'm_parents' => array(4603, 4594, 4485, 4374),
+        'm_parents' => array(4742, 4603, 4594, 4485, 4374),
     ),
     4234 => array(
         'm_icon' => '<i class="fal fa-random"></i>',
-        'm_name' => 'Intent Random Blurb',
+        'm_name' => 'Intent Messages Random1',
         'm_desc' => '',
         'm_parents' => array(4594, 4485, 4374),
     ),
@@ -376,14 +377,14 @@ $config['en_all_4594'] = array(
         'm_parents' => array(4594),
     ),
     4601 => array(
-        'm_icon' => '<i class="fal fa-search"></i>',
-        'm_name' => 'Intent Trigger Statements',
+        'm_icon' => '<i class="fal fa-comment-check"></i>',
+        'm_name' => 'Intent Messages Triggers',
         'm_desc' => '',
         'm_parents' => array(4255, 4594, 4374, 4485),
     ),
     4602 => array(
         'm_icon' => '<i class="fal fa-cloud-upload"></i>',
-        'm_name' => 'Intent Webhooks',
+        'm_name' => 'Intent Messages Webhooks',
         'm_desc' => '',
         'm_parents' => array(4603, 4256, 4374, 4485, 4594),
     ),
@@ -394,7 +395,7 @@ $config['en_ids_4592'] = array(4230, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4
 $config['en_all_4592'] = array(
     4230 => array(
         'm_icon' => '<i class="fal fa-link"></i>',
-        'm_name' => '',
+        'm_name' => 'Empty',
         'm_desc' => '',
         'm_parents' => array(4594, 4592, 4374),
     ),
@@ -547,43 +548,43 @@ $config['en_all_4454'] = array(
     ),
 );
 
-//Intent Messages Transactions:
+//Intent Messages:
 $config['en_ids_4485'] = array(4231, 4234, 4232, 4233, 4601, 4602);
 $config['en_all_4485'] = array(
     4231 => array(
         'm_icon' => '<i class="fal fa-bolt"></i>',
-        'm_name' => 'On-Start Messages',
-        'm_desc' => 'Mench dispatches these messages, in order, when the Master reaches the intent that this message is assigned to. Miners write or upload media to create these messages, and their goal is/should-be to give an introduction of the intention, why its important and the latest overview of how Mench will empower the Master to accomplish the intent. On-start messaged are listed on the intent landing pages e.g. https://mench.com/6903 while also being dispatched when a Master is considering to add a new intent to their Action Plan. These on-start messages give them an overview of what to expect with this intent.',
-        'm_parents' => array(4603, 4594, 4485, 4374),
+        'm_name' => 'On-Start',
+        'm_desc' => 'All delivered in-order when student initially starts this intent. Goal is to give key insights that make students more effective in accomplishing the Intent\'s outcome.',
+        'm_parents' => array(4742, 4603, 4594, 4485, 4374),
     ),
     4234 => array(
         'm_icon' => '<i class="fal fa-random"></i>',
-        'm_name' => 'Random Blurb',
-        'm_desc' => 'Triggered in various spots of the code base that powers the logic of Mench personal assistant. Search for the compose_messages() function which is part of the Comm Model.',
+        'm_name' => 'Random1',
+        'm_desc' => 'One message randomly selected right after on-start messages. Goal is to make Mench feel more authentic by mixing things up. Also called in the code-base using compose_message().',
         'm_parents' => array(4594, 4485, 4374),
     ),
     4232 => array(
         'm_icon' => '<i class="fal fa-comment-lines"></i>',
-        'm_name' => 'Learn More Messages',
-        'm_desc' => 'Authored by Miners and ordered, [Learn More] messages offer Masters a Quick Reply options to get more perspectives on the intention with an additional message batch. If Masters choose to move on without learning more, Mench will communicate the message batch at a later time to deliver the extra perspective on the intention. This is known as "dripping content" that helps re-enforce their learnings and act as a effective reminder of the best-practice, and perhaps a a new twist on how to execute towards it. Learn-More messages will always be delivered, the Master chooses the timing of it.',
-        'm_parents' => array(4603, 4594, 4485, 4374),
+        'm_name' => 'Learn More',
+        'm_desc' => 'Delivered in-order and one-by-one (drip-format) either during or after the intent completion. Goal is to re-iterate key insights to help students retain learnings over time.',
+        'm_parents' => array(4742, 4603, 4594, 4485, 4374),
     ),
     4233 => array(
         'm_icon' => '<i class="fal fa-calendar-check"></i>',
-        'm_name' => 'On-Complete Messages',
-        'm_desc' => 'Authored by Miners, these messages are dispatched in-order as a batch of knowledge as soon as the Intent is marked as complete by the Master. On-complete messages can re-iterate key insights to help Masters retain their learnings.',
-        'm_parents' => array(4603, 4594, 4485, 4374),
+        'm_name' => 'On-Complete',
+        'm_desc' => 'All delivered in-order as soon as the student marks the intent as complete. Goal is to re-iterate key insights to help students retain learnings.',
+        'm_parents' => array(4742, 4603, 4594, 4485, 4374),
     ),
     4601 => array(
-        'm_icon' => '<i class="fal fa-search"></i>',
-        'm_name' => 'Trigger Statements',
-        'm_desc' => 'Statements that would trigger the intent when mentioned by students.',
+        'm_icon' => '<i class="fal fa-comment-check"></i>',
+        'm_name' => 'Triggers',
+        'm_desc' => 'Never delivered to students, instead, it maps alternative ways an intent could be referenced to better understand student commands.',
         'm_parents' => array(4255, 4594, 4374, 4485),
     ),
     4602 => array(
         'm_icon' => '<i class="fal fa-cloud-upload"></i>',
         'm_name' => 'Webhooks',
-        'm_desc' => 'URLs that are called once the student completes the intent tree to process additional logic.',
+        'm_desc' => 'All URLs called along with POST variables that pass intent and completion details. Goal is to enable additional workflows like issuing a completion certificate.',
         'm_parents' => array(4603, 4256, 4374, 4485, 4594),
     ),
 );
@@ -650,38 +651,38 @@ $config['en_all_4537'] = array(
 $config['en_ids_3000'] = array(2997, 2998, 2999, 3005, 3147, 4446);
 $config['en_all_3000'] = array(
     2997 => array(
-        'm_icon' => '<i class="fas fa-newspaper"></i>',
-        'm_name' => 'Articles',
+        'm_icon' => '<i class="fal fa-newspaper"></i>',
+        'm_name' => 'Expert Articles',
         'm_desc' => '&var_weight=2',
         'm_parents' => array(3000),
     ),
     2998 => array(
-        'm_icon' => '<i class="fab fa-youtube"></i>',
-        'm_name' => 'Videos',
+        'm_icon' => '<i class="fal fa-film"></i>',
+        'm_name' => 'Expert Videos',
         'm_desc' => '&var_weight=5',
         'm_parents' => array(3000),
     ),
     2999 => array(
-        'm_icon' => '<i class="fas fa-microphone"></i>',
-        'm_name' => 'Podcasts',
+        'm_icon' => '<i class="fal fa-microphone"></i>',
+        'm_name' => 'Expert Podcasts',
         'm_desc' => '&var_weight=7',
         'm_parents' => array(3000),
     ),
     3005 => array(
-        'm_icon' => '<i class="fas fa-book"></i>',
-        'm_name' => 'Books',
+        'm_icon' => '<i class="fal fa-book"></i>',
+        'm_name' => 'Expert Books',
         'm_desc' => '&var_weight=100',
         'm_parents' => array(3000),
     ),
     3147 => array(
-        'm_icon' => '<i class="fas fa-presentation"></i>',
-        'm_name' => 'Online Courses',
+        'm_icon' => '<i class="fal fa-presentation"></i>',
+        'm_name' => 'Expert Courses',
         'm_desc' => '&var_weight=50',
         'm_parents' => array(3000),
     ),
     4446 => array(
-        'm_icon' => '<i class="fas fa-tachometer"></i>',
-        'm_name' => 'Assessments',
+        'm_icon' => '<i class="fal fa-tachometer"></i>',
+        'm_name' => 'Expert Assessments',
         'm_desc' => '&var_weight=10',
         'm_parents' => array(3000),
     ),

@@ -24,11 +24,11 @@ function en_load_child_search() {
             },
             header: function (data) {
                 if (!data.isEmpty) {
-                    return '<a href="javascript:tr_add(0,' + en_focus_id + ',0)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + en_focus_name + ']</a>';
+                    return '<a href="javascript:tr_add(0,' + en_focus_id + ',0)" class="suggestion"><span><i class="fal fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + en_focus_name + ']</a>';
                 }
             },
             empty: function (data) {
-                return '<a href="javascript:tr_add(0,' + en_focus_id + ',0)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create</span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + en_focus_name + ']</a>';
+                return '<a href="javascript:tr_add(0,' + en_focus_id + ',0)" class="suggestion"><span><i class="fal fa-plus-circle"></i> Create</span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + en_focus_name + ']</a>';
             },
         }
     }]).keypress(function (e) {
@@ -120,11 +120,11 @@ $(document).ready(function () {
             },
             header: function (data) {
                 if (!data.isEmpty) {
-                    return '<a href="javascript:tr_add(0,' + en_focus_id + ',1)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + en_focus_name + ']</a>';
+                    return '<a href="javascript:tr_add(0,' + en_focus_id + ',1)" class="suggestion"><span><i class="fal fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + en_focus_name + ']</a>';
                 }
             },
             empty: function (data) {
-                return '<a href="javascript:tr_add(0,' + en_focus_id + ',1)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + en_focus_name + ']</a>';
+                return '<a href="javascript:tr_add(0,' + en_focus_id + ',1)" class="suggestion"><span><i class="fal fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + en_focus_name + ']</a>';
             },
         }
     }]);
@@ -169,15 +169,13 @@ $(document).ready(function () {
         var hash_parts = hash.split("-");
         if (hash_parts.length >= 2) {
             //Fetch level if available:
-            if (hash_parts[0] == 'loadentitymetadata') {
-                fn___load_en_metadata( hash_parts[1]);
+            if (hash_parts[0] == 'entitymessages') {
+                fn___load_en_messages( hash_parts[1]);
             } else if (hash_parts[0] == 'loadmodify') {
                 fn___en_modify_load(hash_parts[1], hash_parts[2]);
             } else if (hash_parts[0] == 'status') {
                 //Update status:
                 u_load_filter_status(hash_parts[1]);
-            } else if (hash_parts[0] == 'browseledger') {
-                fn___load_en_ledger(hash_parts[1]);
             }
         }
     }
@@ -538,7 +536,7 @@ function fn___en_modify_save() {
     };
 
     //Show spinner:
-    $('.save_entity_changes').html('<span><i class="fas fa-spinner fa-spin"></i></span>').hide().fadeIn();
+    $('.save_entity_changes').html('<span><i class="fas fa-spinner fa-spin"></i></span> Saving...').hide().fadeIn();
 
 
     $.post("/entities/fn___en_modify_save", modify_data, function (data) {
@@ -611,7 +609,12 @@ function fn___en_modify_save() {
 
                     //Yes, update the notes:
                     $(".tr_content_" + modify_data['tr_id']).html(data.tr_content);
-                    $(".tr_content_val_" + modify_data['tr_id']).text(modify_data['tr_content']);
+                    $(".tr_content_val_" + modify_data['tr_id']).text(data.tr_content_final);
+
+                    //Did the content get modified? (Likely for a domain URL):
+                    if(!(data.tr_content_final==modify_data['tr_content'])){
+                        $("#tr_content").val(data.tr_content_final).hide().fadeIn('slow');
+                    }
 
 
                     //Update 2x icons:
@@ -650,7 +653,7 @@ function fn___en_modify_save() {
 
 
 
-function fn___load_en_metadata(en_id) {
+function fn___load_en_messages(en_id) {
 
     //Make the frame visible:
     $('.fixed-box').addClass('hidden');
@@ -670,7 +673,7 @@ function fn___load_en_metadata(en_id) {
     }
 
     //Load the frame:
-    $.post("/entities/fn___load_en_metadata/"+en_id, {}, function (data) {
+    $.post("/entities/fn___load_en_messages/"+en_id, {}, function (data) {
         //Empty Inputs Fields if success:
         handler.html(data);
 

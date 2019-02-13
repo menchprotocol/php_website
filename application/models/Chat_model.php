@@ -238,12 +238,12 @@ class Chat_model extends CI_Model
             $completion_requirements = array_intersect($en_all_4485[$message_type_en_id]['m_parents'], $this->config->item('en_ids_4331'));
 
             //See what this is:
-            $tr_type_en_id = fn___detect_tr_type_en_id($_POST['tr_content']);
+            $detected_tr_type = fn___detect_tr_type_en_id($_POST['tr_content']);
 
-            if (!$tr_type_en_id['status']) {
+            if (!$detected_tr_type['status']) {
 
                 //return error:
-                return fn___echo_json($tr_type_en_id);
+                return fn___echo_json($detected_tr_type);
 
             } elseif(count($completion_requirements) > 1){
 
@@ -255,10 +255,10 @@ class Chat_model extends CI_Model
             } elseif(count($completion_requirements) == 1){
 
                 $en_id = array_shift($completion_requirements);
-                if(!($en_id==$tr_type_en_id['tr_type_en_id'])){
+                if(!($en_id==$detected_tr_type['tr_type_en_id'])){
                     return array(
                         'status' => 0,
-                        'message' => $en_all_4485[$message_type_en_id]['m_name'].' require a ['.$en_all_4331[$en_id]['m_name'].'] message. You entered a ['.$en_all_4592[$tr_type_en_id['tr_type_en_id']]['m_name'].'] message.',
+                        'message' => $en_all_4485[$message_type_en_id]['m_name'].' require a ['.$en_all_4331[$en_id]['m_name'].'] message. You entered a ['.$en_all_4592[$detected_tr_type['tr_type_en_id']]['m_name'].'] message.',
                     );
                 }
 
@@ -584,7 +584,7 @@ class Chat_model extends CI_Model
 
                 if (array_key_exists($parent_en['tr_type_en_id'], $en_convert_4537)) {
 
-                    //Raw media file: Audio, Video, Image OR File...
+                    //Empty media file: Audio, Video, Image OR File...
 
                     //Search for Facebook Attachment ID IF $fb_messenger_format = TRUE
                     $fb_att_id = 0;
@@ -703,11 +703,8 @@ class Chat_model extends CI_Model
                  * include a link to the Entity for quick access
                  * to more information about that entity:=.
                  *
-                 * Note that url_modal() is available in the Footer
-                 * and is available on all pages.
-                 *
                  * */
-                $output_body_message = str_replace('@' . $msg_references['ref_entities'][0], ' <a href="javascript:void(0);" onclick="url_modal(\'/entities/' . $ens[0]['en_id'] . '?skip_header=1\')">' . $ens[0]['en_name'] . '</a>', $output_body_message);
+                $output_body_message = str_replace('@' . $msg_references['ref_entities'][0], ' <a href="/entities/' . $ens[0]['en_id'] . '" target="_parent">' . $ens[0]['en_name'] . '</a>', $output_body_message);
 
             } else {
 

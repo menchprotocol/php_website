@@ -126,7 +126,7 @@ class Intents extends CI_Controller
     }
 
 
-    function fn___in_public_ui($in_id)
+    function fn___in_landing_page($in_id)
     {
 
         /*
@@ -153,7 +153,7 @@ class Intents extends CI_Controller
             'title' => $ins[0]['in_outcome'],
             'in' => $ins[0],
         ));
-        $this->load->view('view_intents/in_public_ui', array( 'in' => $ins[0] ));
+        $this->load->view('view_intents/in_landing_page', array( 'in' => $ins[0] ));
         $this->load->view('view_shared/public_footer');
 
     }
@@ -810,32 +810,6 @@ class Intents extends CI_Controller
     }
 
 
-    function fn___in_tr_load($in_id, $tr_id=0, $tr_type_en_id=0)
-    {
-
-        //Auth user and check required variables:
-        $udata = fn___en_auth(array(1308)); //miners
-
-        if (!$udata) {
-            die('<div class="alert alert-danger" role="alert">Session Expired</div>');
-        } elseif (intval($in_id) < 1) {
-            die('<div class="alert alert-danger" role="alert">Missing Intent ID</div>');
-        }
-
-        //Load view for this iFrame:
-        $this->load->view('view_shared/messenger_header', array(
-            'title' => 'User Transactions',
-        ));
-        $this->load->view('view_ledger/tr_intent_history', array(
-            'in_id' => $in_id,
-            'tr_id' => $tr_id,
-            'tr_type_en_id' => $tr_type_en_id,
-        ));
-        $this->load->view('view_shared/messenger_footer');
-    }
-
-
-
     function fn___in_messages_load($in_id)
     {
 
@@ -849,7 +823,7 @@ class Intents extends CI_Controller
         }
 
         //Don't show the heading here as we're loading inside an iframe:
-        $_GET['skip_header'] = true;
+        $_GET['skip_header'] = 1;
 
         //Load view:
         $this->load->view('view_shared/matrix_header', array(
@@ -1177,7 +1151,7 @@ class Intents extends CI_Controller
         return fn___echo_json(array(
             'status' => 1,
             'message' => $this->Chat_model->fn___dispatch_message($msg_validation['input_message'], $udata, false),
-            'tr_type_en_id' => $en_all_4485[$new_messages[0]['tr_type_en_id']]['m_icon'].' '.$en_all_4485[$new_messages[0]['tr_type_en_id']]['m_name'],
+            'tr_type_en_id' => $en_all_4485[$new_messages[0]['tr_type_en_id']]['m_icon'],
             'success_icon' => '<span><i class="fas fa-check"></i> Saved</span>',
         ));
     }

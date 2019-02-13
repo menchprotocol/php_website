@@ -177,7 +177,7 @@ class Matrix_model extends CI_Model
                 'tr_miner_en_id' => $tr_miner_en_id,
                 'tr_en_child_id' => $en_master_id,
                 'tr_en_parent_id' => $set_en_child_id,
-                'tr_type_en_id' => 4230, //Naked link
+                'tr_type_en_id' => 4230, //Empty link
                 'tr_tr_id' => $updated_tr_id,
             ));
         }
@@ -369,14 +369,14 @@ class Matrix_model extends CI_Model
     }
 
 
-    function fn___en_add_domain($domain_url, $domain_host, $miner_en_id){
+    function fn___en_add_domain($basedomain, $domain_name, $miner_en_id){
 
 
         //Do we have this domain entity already?
         $domain_ens = $this->Database_model->fn___tr_fetch(array(
             'tr_status >=' => 0, //New+
             'tr_type_en_id' => 4256, //Generic URL: Domain name should be stored only as a Generic URL
-            'tr_content' => $domain_url,
+            'tr_content' => $basedomain,
         ), array('en_child'));
         if(count($domain_ens) > 0){
             return $domain_ens[0];
@@ -390,7 +390,7 @@ class Matrix_model extends CI_Model
             'tr_status >=' => 0, //New+
             'en_status >=' => 0, //New+
         ), array('en_child')) as $match) {
-            if (substr_count($domain_url, $match['tr_content']) > 0) {
+            if (substr_count($basedomain, $match['tr_content']) > 0) {
                 //yes we found a pattern match:
                 return $match;
             }
@@ -399,8 +399,8 @@ class Matrix_model extends CI_Model
 
         //Create domain entity:
         $domain_en = $this->Database_model->fn___en_create(array(
-            'en_name' => trim(str_replace('www.', '', $domain_host)),
-            'en_icon' => echo_fav_icon($domain_url),
+            'en_name' => $domain_name,
+            'en_icon' => echo_fav_icon($basedomain),
             'en_status' => 2, //Published
         ), true, $miner_en_id);
 
@@ -411,7 +411,7 @@ class Matrix_model extends CI_Model
             'tr_type_en_id' => 4256, //Generic URL
             'tr_en_parent_id' => 2750, //Assume group
             'tr_en_child_id' => $domain_en['en_id'],
-            'tr_content' => $domain_url,
+            'tr_content' => $basedomain,
         ), true);
 
         //Return domain entity:
@@ -1644,7 +1644,7 @@ class Matrix_model extends CI_Model
 
                     //Create new transaction:
                     $this->Database_model->fn___tr_create(array(
-                        'tr_type_en_id' => 4230, //Naked link
+                        'tr_type_en_id' => 4230, //Empty link
                         'tr_miner_en_id' => $en['en_id'], //Student gets credit as miner
                         'tr_en_parent_id' => $tr_en_parent_id,
                         'tr_en_child_id' => $en['en_id'],
@@ -1677,7 +1677,7 @@ class Matrix_model extends CI_Model
 
         //Add default Notification Level:
         $this->Database_model->fn___tr_create(array(
-            'tr_type_en_id' => 4230, //Naked link
+            'tr_type_en_id' => 4230, //Empty link
             'tr_miner_en_id' => $en['en_id'],
             'tr_en_parent_id' => 4456, //Receive Regular Notifications (Student can change later on...)
             'tr_en_child_id' => $en['en_id'],
@@ -1685,7 +1685,7 @@ class Matrix_model extends CI_Model
 
         //Add them to Students group:
         $this->Database_model->fn___tr_create(array(
-            'tr_type_en_id' => 4230, //Naked link
+            'tr_type_en_id' => 4230, //Empty link
             'tr_miner_en_id' => $en['en_id'],
             'tr_en_parent_id' => 4430, //Mench Student
             'tr_en_child_id' => $en['en_id'],
@@ -1693,7 +1693,7 @@ class Matrix_model extends CI_Model
 
         //Add them to People entity:
         $this->Database_model->fn___tr_create(array(
-            'tr_type_en_id' => 4230, //Naked link
+            'tr_type_en_id' => 4230, //Empty link
             'tr_miner_en_id' => $en['en_id'],
             'tr_en_parent_id' => 1278, //People
             'tr_en_child_id' => $en['en_id'],

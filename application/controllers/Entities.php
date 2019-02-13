@@ -17,9 +17,6 @@ class Entities extends CI_Controller
         //Authenticate Miner, redirect if failed:
         $udata = fn___en_auth(array(1308), true);
 
-        //Always skip header:
-        $_GET['skip_header'] = 1;
-
         //Show frame to be loaded in modal:
         $this->load->view('view_shared/matrix_header', array(
             'title' => 'Add Source Wizard',
@@ -60,11 +57,11 @@ class Entities extends CI_Controller
         }
 
         //Return results:
-        $fav_icon = echo_fav_icon($curl['domain_url']);
+        $fav_icon = echo_fav_icon($curl['basedomain']);
 
         return fn___echo_json(array(
             'status' => 1,
-            'entity_domain_ui' => ($fav_icon ? $fav_icon : '<i class="fas fa-at grey-at"></i>') . ' ' . $curl['domain_host'],
+            'entity_domain_ui' => ($fav_icon ? $fav_icon : '<i class="fas fa-at grey-at"></i>') . ' ' . $curl['domainname'],
             'page_title' => $curl['page_title'],
             'curl' => $curl, //for debugging if needed
         ));
@@ -232,17 +229,17 @@ class Entities extends CI_Controller
         $entity_links = $this->config->item('en_all_4592');
 
         //See what this is:
-        $tr_type_en_id = fn___detect_tr_type_en_id($_POST['tr_content']);
+        $detected_tr_type = fn___detect_tr_type_en_id($_POST['tr_content']);
 
-        if (!$tr_type_en_id['status'] && (!isset($tr_type_en_id['dup_en']['en_id']) || !($tr_type_en_id['dup_en']['en_id'] == $_POST['en_id']))) {
+        if (!$detected_tr_type['status'] && (!isset($detected_tr_type['dup_en']['en_id']) || !($detected_tr_type['dup_en']['en_id'] == $_POST['en_id']))) {
             //return error:
-            return fn___echo_json($tr_type_en_id);
+            return fn___echo_json($detected_tr_type);
         }
 
         return fn___echo_json(array(
             'status' => 1,
-            'html_ui' => '<a href="/entities/' . $tr_type_en_id['tr_type_en_id'] . '" style="font-weight: bold;" data-toggle="tooltip" data-placement="top" title="' . $entity_links[$tr_type_en_id['tr_type_en_id']]['m_desc'] . '">' . $entity_links[$tr_type_en_id['tr_type_en_id']]['m_icon'] . ' ' . $entity_links[$tr_type_en_id['tr_type_en_id']]['m_name'] . '</a>',
-            'en_link_preview' => fn___echo_url_type($_POST['tr_content'], $tr_type_en_id['tr_type_en_id']),
+            'html_ui' => '<a href="/entities/' . $detected_tr_type['tr_type_en_id'] . '" style="font-weight: bold;" data-toggle="tooltip" data-placement="top" title="' . $entity_links[$detected_tr_type['tr_type_en_id']]['m_desc'] . '">' . $entity_links[$detected_tr_type['tr_type_en_id']]['m_icon'] . ' ' . $entity_links[$detected_tr_type['tr_type_en_id']]['m_name'] . '</a>',
+            'en_link_preview' => fn___echo_url_type($_POST['tr_content'], $detected_tr_type['tr_type_en_id']),
         ));
     }
 
@@ -305,28 +302,6 @@ class Entities extends CI_Controller
         }
     }
 
-
-    function fn___load_en_ledger($en_id)
-    {
-
-        //Auth user and check required variables:
-        $udata = fn___en_auth(array(1308)); //miners
-
-        if (!$udata) {
-            die('<div class="alert alert-danger" role="alert">Session Expired</div>');
-        } elseif (intval($en_id) < 1) {
-            die('<div class="alert alert-danger" role="alert">Missing User ID</div>');
-        }
-
-        //Load view for this iFrame:
-        $this->load->view('view_shared/messenger_header', array(
-            'title' => 'User Transactions',
-        ));
-        $this->load->view('view_ledger/tr_entity_history', array(
-            'en_id' => $en_id,
-        ));
-        $this->load->view('view_shared/messenger_footer');
-    }
 
     function fn___en_load_next_page()
     {
@@ -460,7 +435,7 @@ class Entities extends CI_Controller
 
                 // Link entity to a parent:
                 $ur1 = $this->Database_model->fn___tr_create(array(
-                    'tr_type_en_id' => 4230, //Naked at start
+                    'tr_type_en_id' => 4230, //Empty at start
                     'tr_en_child_id' => $entity_new['en_id'],
                     'tr_en_parent_id' => $_POST['extra_en_parent_id'],
                 ));
@@ -489,7 +464,7 @@ class Entities extends CI_Controller
 
                 // Link to new OR existing entity:
                 $ur2 = $this->Database_model->fn___tr_create(array(
-                    'tr_type_en_id' => 4230, //Naked at start
+                    'tr_type_en_id' => 4230, //Empty at start
                     'tr_en_child_id' => $tr_en_child_id,
                     'tr_en_parent_id' => $tr_en_parent_id,
                 ));
@@ -609,20 +584,77 @@ class Entities extends CI_Controller
             }
 
             if ($en_trs[0]['tr_content'] == $_POST['tr_content']) {
-                //Nothing has changed:
+
+                //Transaction content has not changed:
                 $js_tr_type_en_id = $en_trs[0]['tr_type_en_id'];
                 $tr_content = $en_trs[0]['tr_content'];
+
             } else {
-                $tr_content = $_POST['tr_content'];
-                $tr_type_en_id = fn___detect_tr_type_en_id($_POST['tr_content']);
-                if (!$tr_type_en_id['status']) {
-                    return fn___echo_json($tr_type_en_id);
+
+                //Transaction content has changed:
+                $detected_tr_type = fn___detect_tr_type_en_id($_POST['tr_content']);
+
+                if (!$detected_tr_type['status']) {
+
+                    return fn___echo_json($detected_tr_type);
+
+                } elseif(in_array($detected_tr_type['tr_type_en_id'], $this->config->item('en_ids_4537'))){
+
+                    //This is a URL, validate modification:
+
+                    if($detected_tr_type['isroot']){
+
+                        if($en_trs[0]['tr_en_parent_id']==1326){
+
+                            //Override with the clean domain for consistency:
+                            $_POST['tr_content'] = $detected_tr_type['basedomain'];
+
+                        } else {
+
+                            //Domains can only be added to the domain entity:
+                            return fn___echo_json(array(
+                                'status' => 0,
+                                'message' => 'Domain URLs must link to <b>@1326 Domains</b> as their parent entity',
+                            ));
+
+                        }
+
+                    } else {
+
+                        if($en_trs[0]['tr_en_parent_id']==1326){
+
+                            return fn___echo_json(array(
+                                'status' => 0,
+                                'message' => 'Only domain URLs can be linked to Domain entity.',
+                            ));
+
+                        } elseif($detected_tr_type['domain_entity']){
+                            //We do have the domain mapped! Is this connected to the domain entity as its parent?
+                            if($detected_tr_type['domain_entity']['en_id']!=$en_trs[0]['tr_en_parent_id']){
+                                return fn___echo_json(array(
+                                    'status' => 0,
+                                    'message' => 'Must link to <b>@'.$detected_tr_type['domain_entity']['en_id'].' '.$detected_tr_type['domain_entity']['en_name'].'</b> as their parent entity',
+                                ));
+                            }
+                        } else {
+                            //We don't have the domain mapped, this is for sure not allowed:
+                            return fn___echo_json(array(
+                                'status' => 0,
+                                'message' => 'Requires a new parent entity for <b>'.$detected_tr_type['domain_ext'].'</b>. Add by pasting URL into the [Add @Entity] input field.',
+                            ));
+                        }
+
+                    }
+
                 }
-                $js_tr_type_en_id = $tr_type_en_id['tr_type_en_id'];
+
+                //Update variables:
+                $tr_content = $_POST['tr_content'];
+                $js_tr_type_en_id = $detected_tr_type['tr_type_en_id'];
             }
 
 
-            //Has the link value changes?
+            //Has the link content changes?
             if (!($en_trs[0]['tr_content'] == $_POST['tr_content']) || !($en_trs[0]['tr_status'] == $_POST['tr_status'])) {
 
                 if ($_POST['tr_status'] < 0) {
@@ -692,9 +724,9 @@ class Entities extends CI_Controller
 
             //Prep last updated:
             $return_array['tr_content'] = fn___echo_tr_content($tr_content, $js_tr_type_en_id);
+            $return_array['tr_content_final'] = $tr_content; //In case content was updated
 
         }
-
 
         //Show success:
         return fn___echo_json($return_array);
@@ -702,7 +734,7 @@ class Entities extends CI_Controller
     }
 
 
-    function fn___load_en_metadata($en_id)
+    function fn___load_en_messages($en_id)
     {
 
         $udata = fn___en_auth();
@@ -973,15 +1005,15 @@ class Entities extends CI_Controller
 
             if (count($login_passwords) > 0) {
 
-                $tr_type_en_id = fn___detect_tr_type_en_id($new_password);
-                if (!$tr_type_en_id['status']) {
-                    echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: ' . $tr_type_en_id['message'] . '</div>';
+                $detected_tr_type = fn___detect_tr_type_en_id($new_password);
+                if (!$detected_tr_type['status']) {
+                    echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: ' . $detected_tr_type['message'] . '</div>';
                 }
 
                 //Update existing password:
                 $this->Database_model->fn___tr_update($login_passwords[0]['tr_id'], array(
                     'tr_content' => $new_password,
-                    'tr_type_en_id' => $tr_type_en_id['tr_type_en_id'],
+                    'tr_type_en_id' => $detected_tr_type['tr_type_en_id'],
                 ), $login_passwords[0]['tr_en_child_id']);
 
             } else {
@@ -1033,7 +1065,7 @@ class Entities extends CI_Controller
         if (!$curl['status']) {
             //Oooopsi, we had some error:
             return fn___echo_json($curl);
-        } elseif ($curl['domain_url'] == $_POST['source_url']) {
+        } elseif ($curl['basedomain'] == $_POST['source_url']) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'A source URL cannot reference the root domain',
@@ -1115,7 +1147,7 @@ class Entities extends CI_Controller
                 $author_group_tr = array(
                     'tr_status' => 2, //Published
                     'tr_miner_en_id' => $udata['en_id'],
-                    'tr_type_en_id' => 4230, //Naked
+                    'tr_type_en_id' => 4230, //Empty
                     'tr_en_parent_id' => $_POST['entity_parent_id_' . $x], //People or Groups
                     'tr_en_child_id' => $author_en['en_id'],
                 );
@@ -1123,10 +1155,10 @@ class Entities extends CI_Controller
                 //Does the domain include the author's first/last name?
                 $author_name_parts = explode(' ', $_POST['author_' . $x]);
                 foreach($author_name_parts as $author_name_part){
-                    if(substr_count($author_url_curl['domain_url'], strtolower($author_name_part)) > 0 || substr_count($author_url_curl['page_title'], strtolower($author_name_part)) > 0){
+                    if(substr_count($author_url_curl['basedomain'], strtolower($author_name_part)) > 0 || substr_count($author_url_curl['page_title'], strtolower($author_name_part)) > 0){
                         //Yes, the domain seems to be for the author... include it in the people/group transaction:
-                        $author_group_tr['tr_type_en_id'] = $author_url_curl['tr_type_en_id']; //Overrides Naked
-                        $author_group_tr['tr_content'] = $author_url_curl['domain_url']; //A domain that seems to belong to the author
+                        $author_group_tr['tr_type_en_id'] = $author_url_curl['tr_type_en_id']; //Overrides Empty
+                        $author_group_tr['tr_content'] = $author_url_curl['basedomain']; //A domain that seems to belong to the author
                         break;
                     }
                 }
@@ -1134,7 +1166,7 @@ class Entities extends CI_Controller
                 //Did we determine that the URL is for the author itself?
                 if(!isset($author_group_tr['tr_content'])){
                     //Nope, just add domain entity:
-                    $domain_author_en = $this->Matrix_model->fn___en_add_domain($author_url_curl['domain_url'], $author_url_curl['domain_host'], $udata['en_id']);
+                    $domain_author_en = $this->Matrix_model->fn___en_add_domain($author_url_curl['basedomain'], $author_url_curl['domainname'], $udata['en_id']);
 
                     //Link author to domain and save URL:
                     $this->Database_model->fn___tr_create(array(
@@ -1155,13 +1187,13 @@ class Entities extends CI_Controller
                 if(strlen($_POST['why_expert_' . $x]) > 0){
 
                     //Yes, do it:
-                    $tr_type_en_id = fn___detect_tr_type_en_id($_POST['why_expert_' . $x]);
-                    if (!$tr_type_en_id['status']) {
+                    $detected_tr_type = fn___detect_tr_type_en_id($_POST['why_expert_' . $x]);
+                    if (!$detected_tr_type['status']) {
                         return fn___echo_json(array(
                             'status' => 0,
-                            'message' => 'Author #' . $x . ' expert notes error: ' . $tr_type_en_id['message'],
+                            'message' => 'Author #' . $x . ' expert notes error: ' . $detected_tr_type['message'],
                         ));
-                    } elseif( $tr_type_en_id['tr_type_en_id'] != 4255){
+                    } elseif( $detected_tr_type['tr_type_en_id'] != 4255){
                         return fn___echo_json(array(
                             'status' => 0,
                             'message' => 'Author #' . $x . ' expert notes must be text only',
@@ -1173,7 +1205,7 @@ class Entities extends CI_Controller
                         'tr_status' => 2, //Published
                         'tr_miner_en_id' => $udata['en_id'],
                         'tr_content' => $_POST['why_expert_' . $x],
-                        'tr_type_en_id' => $tr_type_en_id['tr_type_en_id'],
+                        'tr_type_en_id' => $detected_tr_type['tr_type_en_id'],
                         'tr_en_parent_id' => 3084, //Industry Experts
                         'tr_en_child_id' => $author_en['en_id'],
                     ), true);
@@ -1188,7 +1220,7 @@ class Entities extends CI_Controller
 
 
         //Add domain entity:
-        $domain_en = $this->Matrix_model->fn___en_add_domain($curl['domain_url'], $curl['domain_host'], $udata['en_id']);
+        $domain_en = $this->Matrix_model->fn___en_add_domain($curl['basedomain'], $curl['domainname'], $udata['en_id']);
 
 
         //Create source entity:
@@ -1216,7 +1248,7 @@ class Entities extends CI_Controller
                 $this->Database_model->fn___tr_create(array(
                     'tr_status' => 2, //Published
                     'tr_miner_en_id' => $udata['en_id'],
-                    'tr_type_en_id' => 4230, //Naked
+                    'tr_type_en_id' => 4230, //Empty
                     'tr_en_parent_id' => intval($parent_en_id),
                     'tr_en_child_id' => $new_source['en_id'],
                 ), true);
@@ -1228,7 +1260,7 @@ class Entities extends CI_Controller
             $this->Database_model->fn___tr_create(array(
                 'tr_status' => 2, //Published
                 'tr_miner_en_id' => $udata['en_id'],
-                'tr_type_en_id' => 4230, //Naked
+                'tr_type_en_id' => 4230, //Empty
                 'tr_en_parent_id' => $parent_en_id,
                 'tr_en_child_id' => $new_source['en_id'],
             ), true);

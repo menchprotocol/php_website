@@ -163,16 +163,14 @@ function fn___detect_tr_type_en_id($string)
     $string = trim($string);
 
     if (is_null($string) || strlen($string) == 0) {
-        //Naked:
         return array(
             'status' => 1,
-            'tr_type_en_id' => 4230,
+            'tr_type_en_id' => 4230, //Empty
         );
     } elseif (strlen(intval($string)) == strlen($string) && (intval($string) > 0 || $string == '0')) {
-        //Number:
         return array(
             'status' => 1,
-            'tr_type_en_id' => 4319,
+            'tr_type_en_id' => 4319, //Number
         );
     } elseif (filter_var($string, FILTER_VALIDATE_URL)) {
 
@@ -385,13 +383,13 @@ function base_domain($full_url){
 
 
     //Parse domain:
-    $parse = parse_url($full_url);
-    $domain_parts = explode('.', $parse['host']);
+    $analyze = parse_url($full_url);
+    $domain_parts = explode('.', $analyze['host']);
 
     //Remove the TLD:
     $tld = null;
     foreach ($second_level_tlds as $second_level_tld){
-        if(substr_count($parse['host'], $second_level_tld)==1){
+        if(substr_count($analyze['host'], $second_level_tld)==1){
             $tld = $second_level_tld;
             break;
         }
@@ -402,13 +400,15 @@ function base_domain($full_url){
         $tld = '.'.end($domain_parts);
     }
 
-    $no_tld_domain = str_replace($tld, '', $parse['host']);
+    $no_tld_domain = str_replace($tld, '', $analyze['host']);
     $no_tld_domain_parts = explode('.', $no_tld_domain);
 
     //Return results:
     return array(
-        'isroot' => ( !isset($parse['query']) && ( !isset($parse['path']) || $parse['path']=='/' ) ? 1 : 0 ),
-        'basedomain' => end($no_tld_domain_parts).$tld,
+        'isroot' => ( !isset($analyze['query']) && ( !isset($analyze['path']) || $analyze['path']=='/' ) ? 1 : 0 ),
+        'basedomain' => 'http://'.end($no_tld_domain_parts).$tld,
+        'domain_ext' => end($no_tld_domain_parts).$tld,
+        'domainname' => end($no_tld_domain_parts),
     );
 
 }
@@ -430,13 +430,12 @@ function fn___curl_html($url, $return_breakdown = false)
 
 
     //Detect domain parent:
-    $parse = parse_url($url);
-    $domain_url = $parse['scheme'] . '://' . $parse['host'];
-    if ($domain_url . '/' == $url) {
-        //Clean the URL by trimming trailing slashes after domain names to better find matching URLs.
-        //TODO improve the logic behind this entire system to better detect duplicate URLs...
-        $url = $domain_url;
+    $url_parse = base_domain($url);
+    if($url_parse['isroot']){
+        //Since this is the root, update to the clean URL:
+        $url = $url_parse['basedomain'];
     }
+
 
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.1) Gecko/20061204 Firefox/2.0.0.1");
@@ -471,7 +470,10 @@ function fn___curl_html($url, $return_breakdown = false)
         // Image File URL: https://s3foundation.s3-us-west-2.amazonaws.com/d673c17d7164817025a000416da3be3f.png
         // Downloadable File URL: https://s3foundation.s3-us-west-2.amazonaws.com/611695da5d0d199e2d95dd2eabe484cf.zip
 
-        if (substr_count($content_type, 'image/') == 1) {
+        if($url_parse['isroot']){
+            //Root domain is always a generic URL:
+            $tr_type_en_id = 4256;
+        } elseif (substr_count($content_type, 'image/') == 1) {
             //Image URL
             $tr_type_en_id = 4260;
         } elseif (substr_count($content_type, 'audio/') == 1) {
@@ -536,21 +538,27 @@ function fn___curl_html($url, $return_breakdown = false)
             'tr_content' => $url,
         ), array('en_child'));
 
+        //Check to see if we have domain linked already:
+        $domain_entities = $CI->Database_model->fn___tr_fetch(array(
+            'tr_status >=' => 0, //New+
+            'tr_type_en_id' => 4256, //Generic URL
+            'tr_en_parent_id' => 1326, //Domain Entity
+            'tr_content' => $url_parse['basedomain'],
+        ), array('en_child'));
 
         //Prep return data:
-        $return_data = array(
+        $return_data = array_merge(array(
             //used all the time, also when updating en entity:
+            'status' => (count($dup_url_trs) > 0 ? 0 : 1),
+            'message' => (count($dup_url_trs) > 0 ? 'URL has been already linked to <b>@' . $dup_url_trs[0]['en_id'] . ' ' . $dup_url_trs[0]['en_name'] . '</b>' : 'Success'),
+            //Additional data:
+            'domain_entity' => ( count($domain_entities) > 0 ? $domain_entities[0] : false ),
             'cleaned_url' => $url,
-            'CURLINFO_CONTENT_TYPE' => curl_getinfo($ch, CURLINFO_CONTENT_TYPE),
-            'domain_url' => $domain_url,
-            'domain_host' => $parse['host'],
             'tr_type_en_id' => $tr_type_en_id,
             'tr_type_en' => $en_all_4537[$tr_type_en_id],
-            'status' => (count($dup_url_trs) > 0 ? 0 : 1),
-            'dup_en' => (count($dup_url_trs) > 0 ? $dup_url_trs[0] : array()),
-            'message' => (count($dup_url_trs) > 0 ? 'URL already added for entity <a href="/entities/' . $dup_url_trs[0]['en_id'] . '"><b>' . $dup_url_trs[0]['en_name'] . '</b></a>' : 'Success'),
+            'dup_en' => ( count($dup_url_trs) > 0 ? $dup_url_trs[0] : array() ),
             'page_title' => $title,
-        );
+        ), $url_parse);
 
         //Return results:
         return $return_data;

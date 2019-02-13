@@ -36,8 +36,6 @@ $(document).ready(function () {
             //Fetch level if available:
             if (hash_parts[0] == 'wactionplan') {
                 load_w_actionplan(hash_parts[1], hash_parts[2]);
-            } else if (hash_parts[0] == 'browseledger') {
-                fn___load_en_ledger(hash_parts[1], hash_parts[2]);
             }
         }
     }

@@ -162,11 +162,11 @@ $(document).ready(function () {
             },
             header: function (data) {
                 if (!data.isEmpty) {
-                    return '<a href="javascript:fn___in_link_or_create(\'' + $(".intentadder-level-2").attr('intent-id') + '\',2)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-hashtag"></i> ' + data.query + '</a>';
+                    return '<a href="javascript:fn___in_link_or_create(\'' + $(".intentadder-level-2").attr('intent-id') + '\',2)" class="suggestion"><span><i class="fal fa-plus-circle"></i> Create </span> <i class="fas fa-hashtag"></i> ' + data.query + '</a>';
                 }
             },
             empty: function (data) {
-                return '<a href="javascript:fn___in_link_or_create(\'' + $(".intentadder-level-2").attr('intent-id') + '\',2)" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create </span> <i class="fas fa-hashtag"></i> ' + data.query + '</a>';
+                return '<a href="javascript:fn___in_link_or_create(\'' + $(".intentadder-level-2").attr('intent-id') + '\',2)" class="suggestion"><span><i class="fal fa-plus-circle"></i> Create </span> <i class="fas fa-hashtag"></i> ' + data.query + '</a>';
             },
         }
     }]).keypress(function (e) {
@@ -229,12 +229,10 @@ $(document).ready(function () {
         var hash_parts = hash.split("-");
         if (hash_parts.length >= 2) {
             //Fetch level if available:
-            if (hash_parts[0] == 'loadintentmetadata') {
+            if (hash_parts[0] == 'intentmessages') {
                 fn___in_messages_load(hash_parts[1]);
             } else if (hash_parts[0] == 'loadmodify') {
                 fn___in_modify_load(hash_parts[1], hash_parts[2]);
-            } else if (hash_parts[0] == 'browseledger') {
-                fn___in_tr_load(hash_parts[1],hash_parts[2],hash_parts[3]);
             }
         }
     }
@@ -321,7 +319,7 @@ function fn___in_load_search_level3(focus_element) {
             },
             header: function (data) {
                 if (!data.isEmpty) {
-                    return '<a href="javascript:fn___in_link_or_create(\'' + $(focus_element).attr('intent-id') + '\',3)" class="suggestion"><span><i class="fas fa-plus-circle"></i></span> ' + data.query + '</a>';
+                    return '<a href="javascript:fn___in_link_or_create(\'' + $(focus_element).attr('intent-id') + '\',3)" class="suggestion"><span><i class="fal fa-plus-circle"></i></span> ' + data.query + '</a>';
                 }
             },
         }
@@ -492,24 +490,6 @@ function fn___in_messages_load(in_id) {
 
     //Load content via a URL:
     $('.ajax-frame').attr('src', '/intents/fn___in_messages_load/' + in_id).removeClass('hidden').css('margin-top', '0');
-
-    //Tooltips:
-    $('[data-toggle="tooltip"]').tooltip();
-}
-
-
-function fn___in_tr_load(in_id, tr_id, tr_type_en_id) {
-
-    //Start loading:
-    $('.fixed-box, .ajax-frame').addClass('hidden');
-    $('#load_tr_frame, .frame-loader').removeClass('hidden').hide().fadeIn();
-
-    //Set title:
-    $('#tr_title').html('<i class="fas fa-atlas"></i>' + $('.in_outcome_' + in_id + ':first').text());
-
-    //Load content via a URL:
-    $('.frame-loader').addClass('hidden');
-    $('.ajax-frame').attr('src', '/intents/fn___in_tr_load/' + in_id + '/' + tr_id + '/' + tr_type_en_id).removeClass('hidden').css('margin-top', '0');
 
     //Tooltips:
     $('[data-toggle="tooltip"]').tooltip();

@@ -226,7 +226,7 @@ if (isset($orphan_ins)) {
 
                         <div class="title">
                             <h4>
-                                <i class="fal fa-money-bill-wave"></i>
+                                <i class="fas fa-search-dollar"></i>
                                 Completion Cost
                             </h4>
                         </div>

@@ -74,18 +74,7 @@ function is_mobile() {
 }
 
 
-function url_modal(url) {
-    $('#loadUrlModal .modal-body').html('<iframe src="' + url + '"></iframe>');
-    $("#loadUrlModal").modal();
-}
-
-
 $(document).ready(function () {
-
-    //URL Modal:
-    $('#loadUrlModal').on('hidden.bs.modal', function () {
-        $('#loadUrlModal .modal-body').html('&nbsp;');
-    });
 
     //Navbar landing page?
     if (!$(".navbar").hasClass("no-adj")) {

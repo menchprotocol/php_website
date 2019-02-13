@@ -215,23 +215,6 @@ $(document).ready(function () {
 
 });
 
-
-function fn___load_en_ledger(en_id, tr_id=0) {
-
-    tr_id = parseInt(tr_id);
-    en_id = parseInt(en_id);
-    var frame_title = frame_loader(tr_id, en_id, true);
-    $('#tr_title').html('<i class="fas fa-atlas"></i> ' + frame_title);
-
-    //Load content via a URL:
-    $('.frame-loader').addClass('hidden');
-    $('.ajax-frame').attr('src', '/entities/fn___load_en_ledger/' + en_id).removeClass('hidden').css('margin-top', '0');
-
-    //Tooltips:
-    $('[data-toggle="tooltip"]').tooltip();
-}
-
-
 function fn___adjust_hash(hash) {
     if (hash.length > 0 && $('#tab' + hash).length && !$('#tab' + hash).hasClass("hidden")) {
         //Adjust Header:

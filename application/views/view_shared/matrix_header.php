@@ -101,7 +101,7 @@ $uri_segment_1 = $this->uri->segment(1);
                             </li>
 
                             <li class="entity-inactive" data-toggle="tooltip" data-placement="left" title="Add Source Wizard">
-                                <a href="javascript:void(0);" onclick="url_modal('/entities/add_source')"><i class="fas fa-plus"></i></a>
+                                <a href="/entities/add_source"><i class="fas fa-plus"></i><span class="extra-toggle" style="display: none;"> Source</span></a>
                             </li>
 
                             <!-- Extra, Hidden Menu Options: -->

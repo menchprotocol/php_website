@@ -51,7 +51,7 @@ foreach ($metadatas as $tr) {
     <?php
     foreach ($en_all_4485 as $tr_type_en_id => $m) {
         echo '<li role="presentation" class="nav_' . $tr_type_en_id . ' active">';
-        echo '<a href="#loadintentmetadata-' . $in_id . '-'.$tr_type_en_id.'"> ' . $m['m_icon'] . ' ' . $m['m_name'] . ' [<span class="mtd_count_'.$in_id.'_'.$tr_type_en_id.'">'.( isset($counters[$tr_type_en_id]) ? $counters[$tr_type_en_id] : 0 ).'</span>] </a>';
+        echo '<a href="#intentmessages-' . $in_id . '-'.$tr_type_en_id.'"> ' . $m['m_icon'] . ' ' . $m['m_name'] . ' [<span class="mtd_count_'.$in_id.'_'.$tr_type_en_id.'">'.( isset($counters[$tr_type_en_id]) ? $counters[$tr_type_en_id] : 0 ).'</span>] </a>';
         echo '</li>';
     }
     ?>
@@ -89,14 +89,14 @@ foreach ($metadatas as $tr) {
             echo 'Requires &nbsp;'.$en_all_4331[$en_id]['m_icon'].' '.$en_all_4331[$en_id]['m_name'].' messages.';
         } else {
             //No Requirements:
-            echo 'Supports <a href="/entities/4331" data-toggle="tooltip" title="View all intent message formats" data-placement="bottom" class="underdot">all message formats</a>.';
+            echo 'Supports <a href="/entities/4331" data-toggle="tooltip" title="View all intent message formats" data-placement="bottom" class="underdot" target="_parent">all message formats</a>.';
         }
 
         echo '</div>';
 
 
         if (!isset($counters[$tr_type_en_id])) {
-            echo '<div class="ix-tip no-messages' . $in_id . '_' . $tr_type_en_id . ' all_msg msg_en_type_' . $tr_type_en_id . '"><i class="fas fa-exclamation-triangle"></i> No ' . $m['m_icon'] . ' ' . $m['m_name'] . ' added yet</div>';
+            echo '<div class="ix-tip no-messages' . $in_id . '_' . $tr_type_en_id . ' all_msg msg_en_type_' . $tr_type_en_id . '"><i class="fas fa-exclamation-triangle"></i> No ' . $m['m_icon'] . ' ' . $m['m_name'] . ' messages added yet</div>';
         }
     }
 
@@ -132,7 +132,7 @@ foreach ($metadatas as $tr) {
 
     //Fetch for all message types:
     foreach ($en_all_4485 as $tr_type_en_id => $m) {
-        echo '<div class="iphone-add-btn all_msg msg_en_type_' . $tr_type_en_id . '"><a href="javascript:fn___message_create();" id="add_message_' . $tr_type_en_id . '_' . $in_id . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="right" class="btn btn-primary">ADD ' . $m['m_icon'] . ' ' . $m['m_name'] . '</a></div>';
+        echo '<div class="iphone-add-btn all_msg msg_en_type_' . $tr_type_en_id . '"><a href="javascript:fn___message_create();" id="add_message_' . $tr_type_en_id . '_' . $in_id . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="right" class="btn btn-primary">ADD ' . $m['m_icon'] . ' ' . $m['m_name'] . ' Message</a></div>';
     }
 
     echo '</form>';
