@@ -456,6 +456,16 @@ function fn___en_new_url_from_attachment(droppedFiles, uploadType) {
         return false;
     }
 
+    var current_value = $('#tr_content').val();
+    if(current_value.length > 0){
+        //There is something in the input field, notify the user:
+        var r = confirm("Current transaction content [" + current_value + "] will be removed. Continue?");
+        if (r == false) {
+            return false;
+        }
+    }
+
+
     if (isAdvancedUpload) {
 
         //Lock message:
@@ -489,11 +499,8 @@ function fn___en_new_url_from_attachment(droppedFiles, uploadType) {
 
                 if(data.status){
 
-                    //Is there a current value?
-                    var current_value = $('#tr_content').val();
-
                     //Add URL to input:
-                    $('#tr_content').val( ( current_value.length > 0 ? current_value + ' ' : '' ) + data.new__url );
+                    $('#tr_content').val( data.new__url );
 
                     //Update count:
                     tr_content_word_count();

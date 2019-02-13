@@ -1,9 +1,9 @@
 <?php
 
 $primary_filters = array(
-    'tr_en_id' => 'Any Entity IDs',
-    'tr_in_id' => 'Any Intent IDs',
-    'tr_ids' => 'Any Transaction IDs',
+    'any_en_id' => 'Any Entity IDs',
+    'any_in_id' => 'Any Intent IDs',
+    'any_tr_id' => 'Any Transaction IDs',
     'tr_type_en_id' => 'Link Types',
 );
 
@@ -25,6 +25,10 @@ $advanced_filters = array(
 //Construct filters based on GET variables:
 $filters = array();
 $join_by = array();
+
+//We have a special OR filter when combined with any_en_id & any_in_id
+$any_in_en_set = ( ( isset($_GET['any_en_id']) && $_GET['any_en_id'] > 0 ) || ( isset($_GET['any_in_id']) && $_GET['any_in_id'] > 0 ) );
+$parent_tr_filter = ( isset($_GET['tr_tr_id']) && $_GET['tr_tr_id'] > 0 ? ' OR tr_tr_id = '.$_GET['tr_tr_id'].' ' : false );
 
 foreach (array_merge($primary_filters, $advanced_filters) as $key => $value) {
     if (isset($_GET[$key]) && strlen($_GET[$key]) > 0) {
@@ -117,7 +121,7 @@ foreach (array_merge($primary_filters, $advanced_filters) as $key => $value) {
             } elseif (intval($_GET[$key]) > 0) {
                 $filters['tr_in_child_id'] = $_GET[$key];
             }
-        } elseif ($key == 'tr_tr_id') {
+        } elseif ($key == 'tr_tr_id' && !$any_in_en_set) {
             if (substr_count($_GET[$key], ',') > 0) {
                 //This is multiple IDs:
                 $filters['( tr_tr_id IN (' . $_GET[$key] . '))'] = null;
@@ -131,23 +135,24 @@ foreach (array_merge($primary_filters, $advanced_filters) as $key => $value) {
             } elseif (intval($_GET[$key]) > 0) {
                 $filters['tr_id'] = $_GET[$key];
             }
-        } elseif ($key == 'tr_en_id') {
+        } elseif ($key == 'any_en_id') {
+
             //We need to look for both parent/child
             if (substr_count($_GET[$key], ',') > 0) {
                 //This is multiple IDs:
-                $filters['( tr_en_child_id IN (' . $_GET[$key] . ') OR tr_en_parent_id IN (' . $_GET[$key] . ') OR tr_miner_en_id IN (' . $_GET[$key] . '))'] = null;
+                $filters['( tr_en_child_id IN (' . $_GET[$key] . ') OR tr_en_parent_id IN (' . $_GET[$key] . ') OR tr_miner_en_id IN (' . $_GET[$key] . ') ' . $parent_tr_filter . ' )'] = null;
             } elseif (intval($_GET[$key]) > 0) {
-                $filters['( tr_en_child_id = ' . $_GET[$key] . ' OR tr_en_parent_id = ' . $_GET[$key] . ' OR tr_miner_en_id = ' . $_GET[$key] . ')'] = null;
+                $filters['( tr_en_child_id = ' . $_GET[$key] . ' OR tr_en_parent_id = ' . $_GET[$key] . ' OR tr_miner_en_id = ' . $_GET[$key] . $parent_tr_filter . ' )'] = null;
             }
-        } elseif ($key == 'tr_in_id') {
+        } elseif ($key == 'any_in_id') {
             //We need to look for both parent/child
             if (substr_count($_GET[$key], ',') > 0) {
                 //This is multiple IDs:
-                $filters['( tr_in_child_id IN (' . $_GET[$key] . ') OR tr_in_parent_id IN (' . $_GET[$key] . '))'] = null;
+                $filters['( tr_in_child_id IN (' . $_GET[$key] . ') OR tr_in_parent_id IN (' . $_GET[$key] . ') ' . $parent_tr_filter . ' )'] = null;
             } elseif (intval($_GET[$key]) > 0) {
-                $filters['( tr_in_child_id = ' . $_GET[$key] . ' OR tr_in_parent_id = ' . $_GET[$key] . ')'] = null;
+                $filters['( tr_in_child_id = ' . $_GET[$key] . ' OR tr_in_parent_id = ' . $_GET[$key] . $parent_tr_filter . ')'] = null;
             }
-        } elseif ($key == 'tr_ids') {
+        } elseif ($key == 'any_tr_id') {
             //We need to look for both parent/child
             if (substr_count($_GET[$key], ',') > 0) {
                 //This is multiple IDs:

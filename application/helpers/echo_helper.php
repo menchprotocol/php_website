@@ -438,8 +438,9 @@ function fn___echo_tr_row($tr)
         }
     }
 
-    if ($tr['tr_type_en_id'] == 4235) {
+    if ($tr['tr_type_en_id'] == 4235 && 0) {
 
+        //TODO reactivate later
         //Count Total Transactions made by Action Plan Student:
         $count_en_trs = $CI->Database_model->fn___tr_fetch(array(
             'tr_miner_en_id' => $tr['tr_en_parent_id'],
@@ -1446,7 +1447,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
     if ($count_in_trs[0]['totals'] > 0) {
         //Show link to load these transactions:
-        $ui .= '<a href="/ledger?cc=' . $in['in_id'] . '-' . $tr_id . '-0" class="badge badge-primary is_not_bg" style="width:40px; margin:-3px 0px 0 4px; border:2px solid #fedd16 !important;" data-toggle="tooltip" data-placement="top" title="Go to Ledger Transactions"><span class="btn-counter">' . fn___echo_number($count_in_trs[0]['totals']) . '</span><i class="fas fa-atlas"></i></a>';
+        $ui .= '<a href="/ledger?any_in_id=' . $in['in_id'] . '&tr_tr_id=' . $tr_id . '" class="badge badge-primary is_not_bg" style="width:40px; margin:-3px 0px 0 4px; border:2px solid #fedd16 !important;" data-toggle="tooltip" data-placement="top" title="Go to Ledger Transactions"><span class="btn-counter">' . fn___echo_number($count_in_trs[0]['totals']) . '</span><i class="fas fa-atlas"></i></a>';
     }
 
 
@@ -1766,7 +1767,7 @@ function fn___echo_en($en, $level, $is_parent = false)
     ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
     if ($count_in_trs[0]['totals'] > 0) {
         //Show the transaction button:
-        $ui .= '<a href="/ledger?cc=' . $en['en_id'] . '" class="badge badge-secondary" style="width:40px; margin:-3px 2px 0 2px; border:2px solid #0084ff !important;" data-toggle="tooltip" data-placement="top" title="Go to Ledger Transactions"><span class="btn-counter">' . fn___echo_number($count_in_trs[0]['totals']) . '</span><i class="fas fa-atlas"></i></a>';
+        $ui .= '<a href="/ledger?any_in_id=' . $en['en_id'] . '&tr_tr_id=' . $tr_id . '" class="badge badge-secondary" style="width:40px; margin:-3px 2px 0 2px; border:2px solid #0084ff !important;" data-toggle="tooltip" data-placement="top" title="Go to Ledger Transactions"><span class="btn-counter">' . fn___echo_number($count_in_trs[0]['totals']) . '</span><i class="fas fa-atlas"></i></a>';
     }
 
 
