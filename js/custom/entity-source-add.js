@@ -139,7 +139,7 @@ function fn___en_add_source(){
         } else {
 
             //All good, go to newly added source:
-            window.top.location.href = '/entities/' + data.new_source_id;
+            window.location = '/entities/' + data.new_source_id;
 
         }
     });
