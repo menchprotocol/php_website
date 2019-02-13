@@ -1691,7 +1691,7 @@ class Matrix_model extends CI_Model
             'tr_en_child_id' => $en['en_id'],
         ));
 
-        //Add them to People group:
+        //Add them to People entity:
         $this->Database_model->fn___tr_create(array(
             'tr_type_en_id' => 4230, //Naked link
             'tr_miner_en_id' => $en['en_id'],

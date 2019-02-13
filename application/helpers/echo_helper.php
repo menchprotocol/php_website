@@ -1720,13 +1720,6 @@ function fn___echo_en($en, $level, $is_parent = false)
         $ui .= ' &nbsp;<img src="/img/bp_128.png" style="width:20px; margin:-4px 0 0 -2px;" data-toggle="tooltip" data-placement="top" title="Connected to Mench on Messenger">';
     }
 
-    if ($level == 1) {
-
-        //Google search:
-        $ui .= ' &nbsp;<a href="https://www.google.com/search?q=' . urlencode($en['en_name']) . '" target="_blank" data-toggle="tooltip" title="Search on Google" data-placement="top"><i class="fab fa-google"></i></a>';
-
-    }
-
 
 
     //Show trust score:
@@ -1781,7 +1774,9 @@ function fn___echo_en($en, $level, $is_parent = false)
     }
 
     if($level == 1){
-        $ui .= '<span class="badge badge-secondary transparent" style="display:inline-block; margin-right:6px; width:40px; margin-left:1px; border:2px solid transparent !important;">&nbsp;</span>';
+
+        $ui .= '<a class="badge badge-secondary" href="https://www.google.com/search?q=' . urlencode($en['en_name']) . '" target="_blank" style="display:inline-block; margin-right:6px; width:40px; margin-left:1px; border:2px solid #0084ff !important;" data-toggle="tooltip" data-placement="top" title="Search on Google (New Window)"><i class="fas fa-search"></i></a>';
+
     } else {
         $ui .= '<a class="badge badge-secondary" href="/entities/' . $en['en_id']. '" style="display:inline-block; margin-right:6px; width:40px; margin-left:1px; border:2px solid #0084ff !important;" data-toggle="tooltip" data-placement="top" title="Navigate to this Entity">' . ($en['en__child_count'] > 0 ? '<span class="btn-counter" title="' . number_format($en['en__child_count'], 0) . ' Entities">' . fn___echo_number($en['en__child_count']) . '</span>' : '') . '<i class="'.( $is_parent ? 'fas fa-angle-up' : 'fas fa-angle-down' ).'"></i></a>';
     }

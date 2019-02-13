@@ -34,11 +34,11 @@
         </span>';
 
 
-        foreach($this->config->item('en_all_3000') as $en_id => $en ){
+        foreach($this->config->item('en_all_3000') as $en_id => $m ){
             echo '<span class="checkbox" style="margin: 0;">
             <label style="display:inline-block !important; font-size: 0.8em !important; margin-left:5px;">
                 <input type="checkbox" class="source_parent_ens" value="'.$en_id.'" />
-                <span>'.$en['m_icon'].' '.$en['m_name'].'</span>
+                <span>'.$m['m_icon'].' '.$m['m_name'].'</span>
             </label>
         </span>';
         }
@@ -52,8 +52,12 @@
             <span class="inline-block author_is_expert_<?= $num ?> hidden">
         <span class="white-wrapper">
             <select class="form-control border" id="entity_parent_id_<?= $num ?>" style="display:inline-block !important;">
-                <option value="1278">Add as People</option>
-                <option value="2750">Add as Groups</option>
+                <?php
+                //Show account types:
+                foreach ($this->config->item('en_all_4600') as $en_id => $m) {
+                    echo '<option value="'.$en_id.'">Add as ' . $m['m_name'] . '</option>';
+                }
+                ?>
             </select>
         </span>
     </span>
