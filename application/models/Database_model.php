@@ -838,8 +838,6 @@ class Database_model extends CI_Model
                 $metadata = unserialize($db_obj[$obj_type . '_metadata']);
                 if (isset($metadata[$obj_type . '_algolia_id']) && intval($metadata[$obj_type . '_algolia_id']) > 0) {
 
-                    die('YESSS: '.$metadata[$obj_type . '_algolia_id']);
-
                     //Yes, we have the Algolia ID! Now let's see what to do:
                     if (!$focus_obj_id) {
                         //Also clear all metadata algolia ID's that have been cached:
@@ -847,13 +845,12 @@ class Database_model extends CI_Model
                             $obj_type . '_algolia_id' => null, //Since this object has been removed!
                         ));
                     } else {
-                        //This is a focused request and we have metadata that might include the Algolia ID:
-                        $alg_obj['objectID'] = $metadata[$obj_type . '_algolia_id'];
+                        //Update existing algolia record
+                        $alg_obj['objectID'] = intval($metadata[$obj_type . '_algolia_id']);
                     }
                 }
             }
 
-            die('nooo');
 
             //Now build the index depending on the object type:
             if ($obj_type == 'en') {
