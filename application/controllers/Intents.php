@@ -89,7 +89,7 @@ class Intents extends CI_Controller
 
         //Make sure we found it:
         if ( count($ins) < 1) {
-            return fn___redirect_message('/intents/' . $this->config->item('in_tactic_id'), '<div class="alert alert-danger" role="alert">Intent ID [' . $in_id . '] not found</div>');
+            return fn___redirect_message('/intents/' . $this->config->item('in_tactic_id'), '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' not found</div>');
         }
 
         //Load views:
@@ -143,13 +143,16 @@ class Intents extends CI_Controller
 
         //Make sure we found it:
         if ( count($ins) < 1) {
-            return fn___redirect_message('/' . $this->config->item('in_tactic_id'), '<div class="alert alert-danger" role="alert">Intent ID [' . $in_id . '] not found</div>');
+            return fn___redirect_message('/' . $this->config->item('in_tactic_id'), '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' not found</div>');
         } elseif ( $ins[0]['in_status'] < 2) {
-            return fn___redirect_message('/' . $this->config->item('in_tactic_id'), '<div class="alert alert-danger" role="alert">Intent ID [' . $in_id . '] is not published yet</div>');
+            return fn___redirect_message('/' . $this->config->item('in_tactic_id'), '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' is not published yet</div>');
         }
 
         //Load home page:
-        $this->load->view('view_shared/public_header', array( 'title' => $ins[0]['in_outcome'] ));
+        $this->load->view('view_shared/public_header', array(
+            'title' => $ins[0]['in_outcome'],
+            'in' => $ins[0],
+        ));
         $this->load->view('view_intents/in_public_ui', array( 'in' => $ins[0] ));
         $this->load->view('view_shared/public_footer');
 

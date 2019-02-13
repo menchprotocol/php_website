@@ -987,7 +987,7 @@ class Chat_model extends CI_Model
         if (count($ins) < 1) {
             return array(
                 'status' => 0,
-                'message' => 'Invalid Intent ID [' . $in_id . ']',
+                'message' => 'Invalid Intent #' . $in_id,
             );
         }
 
