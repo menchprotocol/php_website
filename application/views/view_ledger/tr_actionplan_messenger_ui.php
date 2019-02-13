@@ -82,7 +82,7 @@ if (count($actionplan_parents) == 0) {
     if ($actionplan_parents[0]['tr_timestamp']) {
         echo ' &nbsp;&nbsp;<i class="fas fa-calendar-check"></i> ' . fn___echo_time_difference($actionplan_parents[0]['tr_timestamp']) . ' ago';
     } else {
-        echo ' &nbsp;&nbsp;<i class="fas fa-clock"></i> ' . fn___echo_time_hours($in['in_seconds']) . ' to complete';
+        echo ' &nbsp;&nbsp;<i class="fal fa-clock"></i> ' . fn___echo_time_hours($in['in_seconds']) . ' to complete';
     }
 
     if (strlen($actionplan_parents[0]['tr_content']) > 0) {

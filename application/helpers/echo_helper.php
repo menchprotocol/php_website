@@ -1219,7 +1219,7 @@ function fn___echo_in_featured($in)
 
     $ui .= $in['in_outcome'];
     $ui .= '<span style="font-size:0.8em; font-weight:300; margin-left:5px; display:inline-block;">';
-    $ui .= '<span><i class="fas fa-clock"></i>' . fn___echo_time_range($in) . '</span>';
+    $ui .= '<span><i class="fal fa-clock"></i>' . fn___echo_time_range($in) . '</span>';
     $ui .= '</span>';
     $ui .= '</a>';
     return $ui;
