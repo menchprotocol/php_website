@@ -785,20 +785,27 @@ class Database_model extends CI_Model
 
         if (fn___is_dev()) {
             //Do a call on live as this does not work on local due to security limitations:
-            return json_decode(fn___curl_html("https://mench.com/cron/fn___update_algolia/" . $obj_type . "/" . $focus_obj_id));
+            return json_decode(fn___curl_html($this->config->item('algolia_remote') . "/cron/fn___update_algolia/" . $obj_type . "/" . $focus_obj_id));
         }
 
         //Load algolia
         $search_index = fn___load_php_algolia($alg_indexes[$obj_type]);
 
-        //Boost processing power:
-        fn___boost_power();
 
         //Prepare query limits:
         if ($focus_obj_id) {
+
             $limits[$obj_type . '_id'] = $focus_obj_id;
+
         } else {
+
             $limits[$obj_type . '_status >='] = 0; //New+ to be indexed in Search
+
+            //We need to update the entire index, so clear it first:
+            $search_index->clearIndex();
+
+            //Boost processing power:
+            fn___boost_power();
         }
 
         //Fetch item(s) for updates including their parents:
@@ -816,12 +823,6 @@ class Database_model extends CI_Model
             );
         }
 
-        //Is this a Mass Update? If so, we need to do some adjustments:
-        if (!$focus_obj_id) {
-            //Yes it is! We need to update the entire index, so clear it first:
-            $search_index->clearIndex();
-        }
-
         //Build the index:
         $alg_objects = array();
         foreach ($db_objects as $db_obj) {
@@ -835,7 +836,9 @@ class Database_model extends CI_Model
 
                 //We have a metadata, so we might have the Algolia ID stored as well:
                 $metadata = unserialize($db_obj[$obj_type . '_metadata']);
-                if (isset($metadata[$obj_type . '_algolia_id']) && $metadata[$obj_type . '_algolia_id'] > 0) {
+                if (isset($metadata[$obj_type . '_algolia_id']) && intval($metadata[$obj_type . '_algolia_id']) > 0) {
+
+                    die('YESSS: '.$metadata[$obj_type . '_algolia_id']);
 
                     //Yes, we have the Algolia ID! Now let's see what to do:
                     if (!$focus_obj_id) {
@@ -849,6 +852,8 @@ class Database_model extends CI_Model
                     }
                 }
             }
+
+            die('nooo');
 
             //Now build the index depending on the object type:
             if ($obj_type == 'en') {

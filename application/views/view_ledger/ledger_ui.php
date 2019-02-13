@@ -276,11 +276,10 @@ echo '<div class="row">';
     echo '<div class="col-md-7">';
 
         //Display Transactions:
-        echo '<h3 style="margin-bottom:7px;"><i class="fas fa-atlas"></i> '.count($trs).' Recent transactions</h3>';
+        echo '<h3 style="margin-bottom:7px;"><i class="fas fa-atlas"></i> '.count($trs) . ( $trs_count[0]['trs_count'] > count($trs) ? ' of '. number_format($trs_count[0]['trs_count'] , 0) : '' ) .' Transactions:</h3>';
 
-        echo '<div style="margin: -10px 0 6px 38px; color:#999;">';
-            echo '<span data-toggle="tooltip" data-placement="top" title="Ledger transaction ID" style="min-width:80px; display: inline-block;">'.number_format($trs_count[0]['trs_count'] , 0).' Total Transactions</span>';
-            echo ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Ledger transaction ID" style="min-width:80px; display: inline-block;"><i class="fal fa-coins"></i> '.number_format($trs_count[0]['coins_sum'], 0).' Coins</span>';
+        echo '<div style="margin: -10px 0 6px 36px; color:#999;">';
+            echo ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Ledger transaction ID" style="min-width:80px; display: inline-block;"><i class="fal fa-coins"></i> '.number_format($trs_count[0]['coins_sum'], 0).' Coins Awarded</span>';
         echo '</div>';
 
 

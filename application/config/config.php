@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  *
  * Global variables used throughout the platform.
- * use-case format: $this->config->item('en_platform_miner_id')
+ * use-case format: $this->config->item('algolia_remote')
  *
  */
 
@@ -35,6 +35,8 @@ $config['en_platform_miner_id']     = 2738; //Mench. This is the entity that wou
 
 //App Functionality:
 $config['enable_algolia']           = true; //Currently reached our monthly free quota
+//TODO Update to mench.com when triple is ready:
+$config['algolia_remote']           = 'https://mench.co'; //The domain that will be called to sync updates when editing on local
 $config['file_size_max']            = 25; //Server setting is 32MB. see here: mench.com/ses
 $config['tr_status_incomplete']     = array(0, 1); //Transactions with these tr_status values are considered in-complete
 $config['core_objects']             = array( //The 3 primary objects in the app
