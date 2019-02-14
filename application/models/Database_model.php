@@ -59,13 +59,16 @@ class Database_model extends CI_Model
             if ($external_sync) {
 
                 //Update Algolia:
-                $this->Database_model->fn___update_algolia('en', $insert_columns['en_id']);
+                $algolia_sync = $this->Database_model->fn___update_algolia('en', $insert_columns['en_id']);
 
                 //Log transaction new entity:
                 $this->Database_model->fn___tr_create(array(
                     'tr_miner_en_id' => ($tr_miner_en_id > 0 ? $tr_miner_en_id : $insert_columns['en_id']),
                     'tr_en_child_id' => $insert_columns['en_id'],
                     'tr_type_en_id' => 4251, //New Entity Created
+                    'tr_metadata' => array(
+                        'algolia_sync' => $algolia_sync,
+                    ),
                 ));
 
                 //Fetch to return the complete entity data:
@@ -123,13 +126,16 @@ class Database_model extends CI_Model
             if ($external_sync) {
 
                 //Update Algolia:
-                $this->Database_model->fn___update_algolia('in', $insert_columns['in_id']);
+                $algolia_sync = $this->Database_model->fn___update_algolia('in', $insert_columns['in_id']);
 
                 //Log transaction new entity:
                 $this->Database_model->fn___tr_create(array(
                     'tr_miner_en_id' => $tr_miner_en_id,
                     'tr_in_child_id' => $insert_columns['in_id'],
                     'tr_type_en_id' => 4250, //New Intent Created
+                    'tr_metadata' => array(
+                        'algolia_sync' => $algolia_sync,
+                    ),
                 ));
 
                 //Fetch to return the complete entity data:
@@ -248,19 +254,19 @@ class Database_model extends CI_Model
         if ($external_sync) {
 
             if ($insert_columns['tr_en_parent_id'] > 0) {
-                $this->Database_model->fn___update_algolia('en', $insert_columns['tr_en_parent_id']);
+                $algolia_sync = $this->Database_model->fn___update_algolia('en', $insert_columns['tr_en_parent_id']);
             }
 
             if ($insert_columns['tr_en_child_id'] > 0) {
-                $this->Database_model->fn___update_algolia('en', $insert_columns['tr_en_child_id']);
+                $algolia_sync = $this->Database_model->fn___update_algolia('en', $insert_columns['tr_en_child_id']);
             }
 
             if ($insert_columns['tr_in_parent_id'] > 0) {
-                $this->Database_model->fn___update_algolia('in', $insert_columns['tr_in_parent_id']);
+                $algolia_sync = $this->Database_model->fn___update_algolia('in', $insert_columns['tr_in_parent_id']);
             }
 
             if ($insert_columns['tr_in_child_id'] > 0) {
-                $this->Database_model->fn___update_algolia('in', $insert_columns['tr_in_child_id']);
+                $algolia_sync = $this->Database_model->fn___update_algolia('in', $insert_columns['tr_in_child_id']);
             }
 
 
@@ -553,29 +559,23 @@ class Database_model extends CI_Model
             return false;
         }
 
-        //Has a metadata update been requested?
-        $has_metadata = ( isset($update_columns['en_metadata']) && is_array($update_columns['en_metadata']) && count($update_columns['en_metadata']) > 0 );
-
-
         //We need to fetch existing data in two scenarios:
-        if ($external_sync || $has_metadata) {
+        if ($external_sync) {
             //Fetch current entity filed values so we can compare later on after we've updated it:
             $before_data = $this->Database_model->fn___en_fetch(array('en_id' => $id));
 
             //Make sure this was a valid id:
             if (!(count($before_data) == 1)) {
-
                 return false;
-
-            } elseif($has_metadata){
-
-                //Update Metadata:
-                $this->Matrix_model->fn___metadata_update('en', $before_data[0], $update_columns['en_metadata'], false);
-
-                unset($update_columns['en_metadata']);
-
             }
         }
+
+
+        //Cleanup metadata if needed:
+        if(isset($update_columns['en_metadata'])){
+            $update_columns['en_metadata'] = serialize($update_columns['en_metadata']);
+        }
+
 
         //Update:
         $this->db->where('en_id', $id);
@@ -610,7 +610,7 @@ class Database_model extends CI_Model
             }
 
             //Sync algolia:
-            $this->Database_model->fn___update_algolia('en', $id);
+            $algolia_sync = $this->Database_model->fn___update_algolia('en', $id);
 
         }
 
@@ -624,29 +624,20 @@ class Database_model extends CI_Model
             return false;
         }
 
-        //Has a metadata update been requested?
-        $has_metadata = ( isset($update_columns['in_metadata']) && is_array($update_columns['in_metadata']) && count($update_columns['in_metadata']) > 0 );
-
-
-        if ($tr_miner_en_id > 0 || $has_metadata) {
-
+        if ($tr_miner_en_id > 0) {
             //Fetch current intent filed values so we can compare later on after we've updated it:
             $before_data = $this->Database_model->fn___in_fetch(array('in_id' => $id));
 
             //Make sure this was a valid id:
             if (!(count($before_data) == 1)) {
-
                 return false;
-
-            } elseif($has_metadata){
-
-                //Update Metadata:
-                $this->Matrix_model->fn___metadata_update('in', $before_data[0], $update_columns['in_metadata'], false);
-
-                unset($update_columns['in_metadata']);
             }
         }
 
+        //Cleanup metadata if needed:
+        if(isset($update_columns['in_metadata'])){
+            $update_columns['in_metadata'] = serialize($update_columns['in_metadata']);
+        }
 
         //Update:
         $this->db->where('in_id', $id);

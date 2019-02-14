@@ -36,7 +36,7 @@ if (isset($orphan_ins)) {
         } else {
 
             //Count orphans only IF we are in the top parent root:
-            if ($this->config->item('in_tactic_id') == $in['in_id']) {
+            if ($this->config->item('in_tactic_id') == $in['in_id'] && 0) {
                 $orphans_count = count($this->Database_model->fn___in_fetch(array(
                     ' NOT EXISTS (SELECT 1 FROM table_ledger WHERE in_id=tr_in_child_id AND tr_status>=0) ' => null,
                 )));
@@ -44,9 +44,6 @@ if (isset($orphan_ins)) {
                     echo '<span style="padding-left:8px; display: inline-block;"><a href="/intents/fn___in_orphans">' . $orphans_count . ' Orphans &raquo;</a></span>';
                 }
             }
-
-
-
 
 
 
