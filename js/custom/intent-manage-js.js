@@ -233,6 +233,8 @@ $(document).ready(function () {
                 fn___in_messages_load(hash_parts[1]);
             } else if (hash_parts[0] == 'loadmodify') {
                 fn___in_modify_load(hash_parts[1], hash_parts[2]);
+            } else if (hash_parts[0] == 'loadinactionplans') {
+                fn___in_action_plans(hash_parts[1]);
             }
         }
     }
@@ -241,6 +243,12 @@ $(document).ready(function () {
 });
 
 
+function fn___in_action_plans(in_id){
+    if(parseInt($('.action_plans_in_'+in_id).attr('ap-count')) < 1){
+        alert('Intent not added to any Action Plans yet');
+        return false;
+    }
+}
 
 
 function fn___in_adjust_isany_ui() {
@@ -486,7 +494,7 @@ function fn___in_messages_load(in_id) {
     $('.frame-loader').addClass('hidden');
     $('#load_tr_frame').removeClass('hidden').hide().fadeIn();
     //Set title:
-    $('#tr_title').html('<i class="fal fa-layer-group"></i> ' + $('.in_outcome_' + in_id + ':first').text());
+    $('#tr_title').html('<i class="fas fa-layer-group"></i> ' + $('.in_outcome_' + in_id + ':first').text());
 
     //Load content via a URL:
     $('.ajax-frame').attr('src', '/intents/fn___in_messages_load/' + in_id).removeClass('hidden').css('margin-top', '0');

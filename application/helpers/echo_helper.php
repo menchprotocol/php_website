@@ -1391,12 +1391,9 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
      *
      * */
 
-    $ui .= '<span class="pull-right" style="' . ($level < 3 ? 'margin-right: 8px;' : '') . ' padding-top:2px;">';
+    $ui .= '<span class="pull-right" style="' . ($level < 3 ? 'margin-right: 8px;' : '') . ' padding-top:2px; display:inline-block;">';
 
 
-
-    //Intent cost:
-    $ui .= '<span class="badge badge-primary transparent" style="margin-right:5px;" data-toggle="tooltip" data-placement="top" title="Intent Completion Cost">' . '<span class="btn-counter slim-time t_estimate_' . $in['in_id'] . '" intent-usd="'.$in['in_usd'].'" tree-max-seconds="' . (isset($in_metadata['in__tree_max_seconds']) ? $in_metadata['in__tree_max_seconds'] : 0) . '" intent-seconds="' . $in['in_seconds'] . '"></span><i class="fas fa-search-dollar"></i></span>';
 
 
 
@@ -1424,6 +1421,11 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     }
 
 
+    //Action Plan:
+    //TODO Count transactions and Implement later...
+    $ui .= '<a href="#loadinactionplans-' . $in['in_id'] . '" onclick="fn___in_action_plans(' . $in['in_id'] . ')" class="badge badge-primary white-primary action_plans_in_'.$in['in_id'].'" ap-count="'.(0).'" style="margin:-2px -5px 0 5px; width:40px;" data-toggle="tooltip" data-placement="top" title="Intent Action Plans"><span class="btn-counter">'.fn___echo_number(0).'</span><i class="fas fa-flag" style="width:28px; padding-right:7px; text-align:center;"></i></a> &nbsp;';
+
+
 
 
     //Intent Messages:
@@ -1432,12 +1434,12 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         'tr_type_en_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //All Intent messages
         'tr_in_child_id' => $in['in_id'],
     ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
-    $ui .= '<a href="#intentmessages-' . $in['in_id'] . '" onclick="fn___in_messages_load('.$in['in_id'].')" class="msg-badge-' . $in['in_id'] . ' badge badge-primary white-primary is_not_bg" style="width:40px; margin-right:2px;" data-toggle="tooltip" title="Intent Messages" data-placement="top"><span class="btn-counter messages-counter-' . $in['in_id'] . '">' . $count_in_metadata[0]['totals'] . '</span><i class="fal fa-layer-group"></i></a>';
+    $ui .= '<a href="#intentmessages-' . $in['in_id'] . '" onclick="fn___in_messages_load('.$in['in_id'].')" class="msg-badge-' . $in['in_id'] . ' badge badge-primary white-primary is_not_bg" style="width:40px; margin-right:2px;" data-toggle="tooltip" title="Intent Messages" data-placement="top"><span class="btn-counter messages-counter-' . $in['in_id'] . '">' . $count_in_metadata[0]['totals'] . '</span><i class="fas fa-layer-group"></i></a>';
 
 
 
     //Intent modify:
-    $ui .= '<a class="badge badge-primary white-primary is_not_bg" onclick="fn___in_modify_load(' . $in['in_id'] . ',' . $tr_id . ')" style="margin:-2px -8px 0 2px; width:40px;" href="#loadmodify-' . $in['in_id'] . '-' . $tr_id . '" data-toggle="tooltip" title="Modify Intent'.( $level>1 ? ' and Transaction' : '' ).'" data-placement="top"><i class="fas fa-cog"></i></a> &nbsp;';
+    $ui .= '<a class="badge badge-primary white-primary is_not_bg" onclick="fn___in_modify_load(' . $in['in_id'] . ',' . $tr_id . ')" style="margin:-2px -7px 0 0; width:40px;" href="#loadmodify-' . $in['in_id'] . '-' . $tr_id . '" data-toggle="tooltip" title="Intent completion cost. Click to modify intent'.( $level>1 ? ' and transaction' : '' ).'" data-placement="top"><span class="btn-counter slim-time t_estimate_' . $in['in_id'] . '" intent-usd="'.$in['in_usd'].'" tree-max-seconds="' . (isset($in_metadata['in__tree_max_seconds']) ? $in_metadata['in__tree_max_seconds'] : 0) . '" intent-seconds="' . $in['in_seconds'] . '"></span><i class="fas fa-cog"></i></a> &nbsp;';
 
 
 
@@ -1456,7 +1458,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     if ($level == 1 || $is_child_focused) {
 
         //Show Landing Page URL:
-        $ui .= '&nbsp;<a href="/' . $in['in_id'] . '" target="_blank" class="badge badge-primary is_not_bg is_hard_link" style="display:inline-block; margin-right:-1px; width:40px; border:2px solid #fedd16 !important;" data-toggle="tooltip" title="Go to Intent Landing Page (New Window)" data-placement="top">' . '<i class="fas fa-shopping-cart"></i></a>';
+        $ui .= '&nbsp;<a href="/' . $in['in_id'] . '" target="_blank" class="badge badge-primary is_not_bg is_hard_link" style="display:inline-block; margin-right:-1px; width:40px; border:2px solid #fedd16 !important;" data-toggle="tooltip" title="Landing Page (New Window)" data-placement="top"><span class="btn-counter"><i class="fas fa-external-link"></i></span><i class="fas fa-shopping-cart"></i></a>';
 
     } else {
 
@@ -1687,8 +1689,13 @@ function fn___echo_en($en, $level, $is_parent = false)
     }
 
 
-    //Entity Icon/Name:
+    //Entity Name:
     $ui .= '<span class="en_name en_name_' . $en['en_id'] . '">' . $en['en_name'] . '</span>';
+
+    //Is this entity a student that's connected to Mench personal assistant on Facebook Messenger?
+    if ($en['en_psid'] > 0) {
+        $ui .= '<i class="fab fa-facebook-messenger blue" style="'. ( $level==1 ? 'font-size:1.3em; margin-left:5px;' : 'font-size:1em;  margin-left:3px;' ) .'" data-toggle="tooltip" data-placement="top" title="Connected to Mench on Messenger"></i>';
+    }
 
     $ui .= '</span>';
 
@@ -1726,21 +1733,19 @@ function fn___echo_en($en, $level, $is_parent = false)
 
     //Loop through parents and only show those that have en_icon set:
     foreach ($en['en__parents'] as $en_parent) {
-        if (strlen($en_parent['en_icon']) > 0) {
-            $ui .= ' &nbsp;<a href="/entities/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['tr_content']) > 0 ? ' = ' . $en_parent['tr_content'] : '') . '" data-placement="top" class="en_icon_child_' . $en_parent['en_id'] . '">' . $en_parent['en_icon'] . '</a>';
-        }
-    }
-
-
-    //Does entity have a Messenger PSID?
-    if ($en['en_psid'] > 0) {
-        $ui .= ' &nbsp;<img src="/img/bp_128.png" style="width:20px; margin:-4px 0 0 -2px;" data-toggle="tooltip" data-placement="top" title="Connected to Mench on Messenger">';
+        $ui .= ' &nbsp;<a href="/entities/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['tr_content']) > 0 ? ' = ' . $en_parent['tr_content'] : '') . '" data-placement="top" class="en_icon_child_' . $en_parent['en_id'] . '">' . (strlen($en_parent['en_icon']) > 0 ? $en_parent['en_icon'] : '<i class="fas fa-at grey-at"></i>' ) . '</a>';
     }
 
 
 
-    //Show trust score:
-    $ui .= '<span class="badge badge-primary transparent" data-toggle="tooltip" data-placement="top" title="Entity Trust Score">' . '<span class="btn-counter">'.fn___echo_number($en['en_trust_score']).'</span><i class="fal fa-shield-check"></i></span>';
+
+    $ui .= '<span style="display: inline-block; float: right;">'; //Start of 5x Action Buttons
+
+
+
+    //Action Plan:
+    //TODO Count transactions and Implement later...
+    $ui .= '<a href="#loadenactionplans-' . $en['en_id'] . '" onclick="fn___en_action_plans(' . $en['en_id'] . ')" class="badge badge-secondary white-secondary action_plans_en_'.$en['en_id'].'" ap-count="'.(0).'" style="margin:-2px -10px 0 5px;; width:40px;" data-toggle="tooltip" data-placement="top" title="Entity Action Plans"><span class="btn-counter">'.fn___echo_number(0).'</span><i class="fas fa-flag" style="width:28px; padding-right:7px; text-align:center;"></i></a> &nbsp;';
 
 
 
@@ -1752,12 +1757,12 @@ function fn___echo_en($en, $level, $is_parent = false)
     ), array(), 0, 0, array(), 'COUNT(tr_id) AS total_messages');
 
     $ui .= '<' . ($messages[0]['total_messages'] > 0 ? 'a href="#entitymessages-' . $en['en_id'] . '" onclick="fn___load_en_messages('.$en['en_id'].')"
- class="badge badge-secondary white-secondary"' : 'a href="#" onclick="alert(\'No intent messages found that reference this entity\')" class="badge badge-secondary white-secondary"') . ' style="width:40px; margin-left:5px;" data-toggle="tooltip" data-placement="top" title="Entity References within Intent Messages"><span class="btn-counter">' . $messages[0]['total_messages'] . '</span><i class="fal fa-layer-group"></i></a>';
+ class="badge badge-secondary white-secondary"' : 'a href="#" onclick="alert(\'No intent messages found that reference this entity\')" class="badge badge-secondary white-secondary"') . ' style="width:40px; margin-left:5px;" data-toggle="tooltip" data-placement="top" title="Entity References within Intent Messages"><span class="btn-counter">' . $messages[0]['total_messages'] . '</span><i class="fas fa-layer-group"></i></a>';
 
 
 
     //Modify Entity:
-    $ui .= '<a href="#loadmodify-' . $en['en_id'] . '-' . $tr_id . '" onclick="fn___en_modify_load(' . $en['en_id'] . ',' . $tr_id . ')" class="badge badge-secondary white-secondary" style="margin:-2px -6px 0 2px; width:40px;" data-toggle="tooltip" data-placement="top" title="Modify Entity'.( $level>1 ? ' and Transaction' : '' ).'"><i class="fas fa-cog" style="width:28px; padding-right:7px; text-align:center;"></i></a> &nbsp;';
+    $ui .= '<a href="#loadmodify-' . $en['en_id'] . '-' . $tr_id . '" onclick="fn___en_modify_load(' . $en['en_id'] . ',' . $tr_id . ')" class="badge badge-secondary white-secondary" style="margin:-2px -6px 0 2px; width:40px;" data-toggle="tooltip" data-placement="top" title="Entity trust score. Click to modify entity'.( $level>1 ? ' and Transaction' : '' ).'"><span class="btn-counter">'.fn___echo_number($en['en_trust_score']).'</span><i class="fas fa-cog" style="width:28px; padding-right:7px; text-align:center;"></i></a> &nbsp;';
 
 
 
@@ -1795,12 +1800,14 @@ function fn___echo_en($en, $level, $is_parent = false)
 
     if($level == 1){
 
-        $ui .= '<a class="badge badge-secondary" href="https://www.google.com/search?q=' . urlencode($en['en_name']) . '" target="_blank" style="display:inline-block; margin-right:6px; width:40px; margin-left:1px; border:2px solid #0084ff !important;" data-toggle="tooltip" data-placement="top" title="Go to Google Search (New Window)"><i class="fas fa-search"></i></a>';
+        $ui .= '<a class="badge badge-secondary" href="https://www.google.com/search?q=' . urlencode($en['en_name']) . '" target="_blank" style="display:inline-block; margin-right:6px; width:40px; margin-left:1px; border:2px solid #0084ff !important;" data-toggle="tooltip" data-placement="top" title="Google Search (New Window)"><span class="btn-counter"><i class="fas fa-external-link"></i></span><i class="fas fa-search"></i></a>';
 
     } else {
 
         $ui .= '<a class="badge badge-secondary" href="/entities/' . $en['en_id']. '" style="display:inline-block; margin-right:6px; width:40px; margin-left:1px; border:2px solid #0084ff !important;" data-toggle="tooltip" data-placement="top" title="Go to this Entity">' . ($en['en__child_count'] > 0 ? '<span class="btn-counter" title="' . number_format($en['en__child_count'], 0) . ' Entities">' . fn___echo_number($en['en__child_count']) . '</span>' : '') . '<i class="'.( $is_parent ? 'fas fa-angle-up' : 'fas fa-angle-down' ).'"></i></a>';
     }
+
+    $ui .= '</span>'; //End of 5x Action Buttons
 
     $ui .= '</span>';
 

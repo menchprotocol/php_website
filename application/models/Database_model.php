@@ -225,17 +225,11 @@ class Database_model extends CI_Model
         }
 
 
-        //Do we need to adjust coins?
-        $award_coins = $this->Database_model->fn___tr_fetch(array(
-            'tr_type_en_id' => 4319, //Number
-            'tr_en_parent_id' => 4374, //Mench Coins
-            'tr_en_child_id' => $insert_columns['tr_type_en_id'], //This type of transaction
-            'tr_status >=' => 2, //Must be published+
-            'en_status >=' => 2, //Must be published+
-        ), array('en_child'), 1);
-        if (count($award_coins) > 0) {
-            //Yes, we have to issue coins:
-            $insert_columns['tr_coins'] = $award_coins[0]['tr_content'];
+        //Does this transaction type award coins?
+        if(in_array($insert_columns['tr_type_en_id'], $this->config->item('en_ids_4374'))){
+            //Yes, issue coins:
+            $en_all_4374 = $this->config->item('en_all_4374');
+            $insert_columns['tr_coins'] = doubleval($en_all_4374[$insert_columns['tr_type_en_id']]['m_desc']);
         }
 
         //Lets log:
@@ -875,6 +869,7 @@ class Database_model extends CI_Model
                 $alg_obj['en_status'] = intval($db_obj['en_status']);
                 $alg_obj['en_icon'] = $db_obj['en_icon'];
                 $alg_obj['en_name'] = $db_obj['en_name'];
+                $alg_obj['en_psid'] = $db_obj['en_psid'];
                 $alg_obj['en_trust_score'] = intval($db_obj['en_trust_score']);
 
                 //Add parent data:

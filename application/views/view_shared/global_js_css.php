@@ -4,6 +4,7 @@
 <link href="/css/lib/fa/fontawesome.css?v=5.7.1" rel="stylesheet"/>
 <link href="/css/lib/fa/brands.css?v=5.7.1" rel="stylesheet"/>
 <link href="/css/lib/fa/solid.css?v=5.7.1" rel="stylesheet"/>
+<link href="/css/lib/fa/regular.css?v=5.7.1" rel="stylesheet"/>
 <link href="/css/lib/fa/light.css?v=5.7.1" rel="stylesheet"/>
 
 <!-- CSS -->

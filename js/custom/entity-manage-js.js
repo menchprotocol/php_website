@@ -173,6 +173,8 @@ $(document).ready(function () {
                 fn___load_en_messages( hash_parts[1]);
             } else if (hash_parts[0] == 'loadmodify') {
                 fn___en_modify_load(hash_parts[1], hash_parts[2]);
+            } else if (hash_parts[0] == 'loadenactionplans') {
+                fn___en_action_plans(hash_parts[1]);
             } else if (hash_parts[0] == 'status') {
                 //Update status:
                 u_load_filter_status(hash_parts[1]);
@@ -183,6 +185,17 @@ $(document).ready(function () {
 
 
 });
+
+
+function fn___en_action_plans(en_id){
+
+    if(parseInt($('.action_plans_en_'+en_id).attr('ap-count')) < 1){
+        alert('Entity not added any intents to their Action Plan yet');
+        return false;
+    }
+
+}
+
 
 //Adds OR links authors and content for entities
 function tr_add(en_existing_id, extra_en_parent_id=0, is_parent) {

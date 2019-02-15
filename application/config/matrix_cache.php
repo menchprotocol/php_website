@@ -6,13 +6,174 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * So we don't have to make DB calls to figure them out every time!
  * This is the cron function that creates this: fn___matrix_cache()
  * See here for all entities cached: https://mench.com/entities/4527
- * use-case format: $this->config->item('en_all_4600')
+ * use-case format: $this->config->item('en_all_4374')
  *
  * ATTENTION: Also search for "en_ids_" and "en_all_" when trying to manage these throughout the code base
  *
  */
 
-//Generated 2019-02-13 04:07:39 PST
+//Generated 2019-02-14 02:28:28 PST
+
+//Transaction Type Coin Rates:
+$config['en_ids_4374'] = array(4228, 4229, 4230, 4231, 4232, 4233, 4234, 4235, 4242, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4318, 4319, 4331, 4460, 4601, 4602);
+$config['en_all_4374'] = array(
+    4228 => array(
+        'm_icon' => '<i class="fal fa-clipboard-check"></i>',
+        'm_name' => 'Linked Intents Pre-Assessment',
+        'm_desc' => '100',
+        'm_parents' => array(4594, 4486, 4374),
+    ),
+    4229 => array(
+        'm_icon' => '<i class="fal fa-question-circle fa-spin"></i>',
+        'm_name' => 'Linked Intents Post-Assessment',
+        'm_desc' => '100',
+        'm_parents' => array(4594, 4486, 4374),
+    ),
+    4230 => array(
+        'm_icon' => '<i class="fal fa-link"></i>',
+        'm_name' => 'Empty Linked Entities',
+        'm_desc' => '20',
+        'm_parents' => array(4594, 4592, 4374),
+    ),
+    4231 => array(
+        'm_icon' => '<i class="fal fa-bolt"></i>',
+        'm_name' => 'Intent Messages On-Start',
+        'm_desc' => '100',
+        'm_parents' => array(4742, 4603, 4594, 4485, 4374),
+    ),
+    4232 => array(
+        'm_icon' => '<i class="fal fa-comment-lines"></i>',
+        'm_name' => 'Intent Messages Learn More',
+        'm_desc' => '100',
+        'm_parents' => array(4742, 4603, 4594, 4485, 4374),
+    ),
+    4233 => array(
+        'm_icon' => '<i class="fal fa-calendar-check"></i>',
+        'm_name' => 'Intent Messages On-Complete',
+        'm_desc' => '100',
+        'm_parents' => array(4742, 4603, 4594, 4485, 4374),
+    ),
+    4234 => array(
+        'm_icon' => '<i class="fal fa-random"></i>',
+        'm_name' => 'Intent Messages Random1',
+        'm_desc' => '100',
+        'm_parents' => array(4594, 4485, 4374),
+    ),
+    4235 => array(
+        'm_icon' => '<i class="fas fa-flag"></i>',
+        'm_name' => 'Action Plan',
+        'm_desc' => '1',
+        'm_parents' => array(4594, 4560, 4463, 4374),
+    ),
+    4242 => array(
+        'm_icon' => '<i class="fal fa-sync"></i>',
+        'm_name' => 'Iterated Transaction',
+        'm_desc' => '20',
+        'm_parents' => array(4594, 4374),
+    ),
+    4250 => array(
+        'm_icon' => '<i class="fal fa-hashtag"></i>',
+        'm_name' => 'New Intent',
+        'm_desc' => '200',
+        'm_parents' => array(4594, 4374),
+    ),
+    4251 => array(
+        'm_icon' => '<i class="fal fa-at"></i>',
+        'm_name' => 'New Entity',
+        'm_desc' => '50',
+        'm_parents' => array(4594, 4374),
+    ),
+    4255 => array(
+        'm_icon' => '<i class="fal fa-align-left"></i>',
+        'm_name' => 'Text Linked Entities',
+        'm_desc' => '30',
+        'm_parents' => array(4594, 4592, 4374, 4331),
+    ),
+    4256 => array(
+        'm_icon' => '<i class="fal fa-browser"></i>',
+        'm_name' => 'URL Linked Entities',
+        'm_desc' => '50',
+        'm_parents' => array(4594, 4592, 4537, 4374, 4331),
+    ),
+    4257 => array(
+        'm_icon' => '<i class="fal fa-play-circle"></i>',
+        'm_name' => 'Embed Linked Entities',
+        'm_desc' => '70',
+        'm_parents' => array(4594, 4592, 4537, 4506, 4428, 4374),
+    ),
+    4258 => array(
+        'm_icon' => '<i class="fal fa-video"></i>',
+        'm_name' => 'Video Linked Entities',
+        'm_desc' => '90',
+        'm_parents' => array(4594, 4592, 4537, 4374, 4331),
+    ),
+    4259 => array(
+        'm_icon' => '<i class="fal fa-volume-up"></i>',
+        'm_name' => 'Audio Linked Entities',
+        'm_desc' => '50',
+        'm_parents' => array(4594, 4592, 4537, 4374, 4331),
+    ),
+    4260 => array(
+        'm_icon' => '<i class="fal fa-image"></i>',
+        'm_name' => 'Image Linked Entities',
+        'm_desc' => '50',
+        'm_parents' => array(4594, 4592, 4537, 4374, 4331),
+    ),
+    4261 => array(
+        'm_icon' => '<i class="fal fa-file-pdf"></i>',
+        'm_name' => 'File Linked Entities',
+        'm_desc' => '50',
+        'm_parents' => array(4594, 4592, 4537, 4374, 4331),
+    ),
+    4263 => array(
+        'm_icon' => '<i class="fal fa-sync"></i>',
+        'm_name' => 'Iterated Entity',
+        'm_desc' => '20',
+        'm_parents' => array(4594, 4374),
+    ),
+    4264 => array(
+        'm_icon' => '<i class="fal fa-sync"></i>',
+        'm_name' => 'Iterated Intent',
+        'm_desc' => '40',
+        'm_parents' => array(4594, 4374),
+    ),
+    4318 => array(
+        'm_icon' => '<i class="fal fa-clock"></i>',
+        'm_name' => 'Time Linked Entities',
+        'm_desc' => '20',
+        'm_parents' => array(4594, 4592, 4374),
+    ),
+    4319 => array(
+        'm_icon' => '<i class="fal fa-sort-numeric-down"></i>',
+        'm_name' => 'Integer Linked Entities',
+        'm_desc' => '20',
+        'm_parents' => array(4594, 4592, 4374),
+    ),
+    4331 => array(
+        'm_icon' => '<i class="fal fa-tasks"></i>',
+        'm_name' => 'Intent Message Formats',
+        'm_desc' => '20',
+        'm_parents' => array(4594, 4527, 4374),
+    ),
+    4460 => array(
+        'm_icon' => '<i class="fal fa-ballot-check"></i>',
+        'm_name' => 'Quick Reply Answer Received',
+        'm_desc' => '3',
+        'm_parents' => array(4594, 4428, 4374, 4277),
+    ),
+    4601 => array(
+        'm_icon' => '<i class="fal fa-comment-check"></i>',
+        'm_name' => 'Intent Messages Triggers',
+        'm_desc' => '50',
+        'm_parents' => array(4255, 4594, 4374, 4485),
+    ),
+    4602 => array(
+        'm_icon' => '<i class="fal fa-cloud-upload"></i>',
+        'm_name' => 'Intent Messages Webhooks',
+        'm_desc' => '100',
+        'm_parents' => array(4603, 4256, 4374, 4485, 4594),
+    ),
+);
 
 //Account Types:
 $config['en_ids_4600'] = array(1278, 2750);
@@ -31,7 +192,7 @@ $config['en_all_4600'] = array(
     ),
 );
 
-//Transaction Types Full List:
+//Transaction Type Full List:
 $config['en_ids_4594'] = array(4228, 4229, 4230, 4231, 4232, 4233, 4234, 4235, 4242, 4246, 4248, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4265, 4266, 4267, 4268, 4269, 4272, 4275, 4278, 4279, 4282, 4283, 4284, 4287, 4299, 4318, 4319, 4331, 4452, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4567, 4568, 4570, 4577, 4601, 4602);
 $config['en_all_4594'] = array(
     4228 => array(
@@ -48,7 +209,7 @@ $config['en_all_4594'] = array(
     ),
     4230 => array(
         'm_icon' => '<i class="fal fa-link"></i>',
-        'm_name' => 'Linked Entities Empty',
+        'm_name' => 'Empty Linked Entities',
         'm_desc' => '',
         'm_parents' => array(4594, 4592, 4374),
     ),
@@ -98,7 +259,7 @@ $config['en_all_4594'] = array(
         'm_icon' => '<i class="fas fa-star-half-alt"></i>',
         'm_name' => 'Net Promoter Score Received',
         'm_desc' => '',
-        'm_parents' => array(4594, 4428, 4277),
+        'm_parents' => array(4755, 4594, 4428, 4277),
     ),
     4250 => array(
         'm_icon' => '<i class="fal fa-hashtag"></i>',
@@ -114,43 +275,43 @@ $config['en_all_4594'] = array(
     ),
     4255 => array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
-        'm_name' => 'Linked Entities Text',
+        'm_name' => 'Text Linked Entities',
         'm_desc' => '',
         'm_parents' => array(4594, 4592, 4374, 4331),
     ),
     4256 => array(
         'm_icon' => '<i class="fal fa-browser"></i>',
-        'm_name' => 'Linked Entities URL',
+        'm_name' => 'URL Linked Entities',
         'm_desc' => '',
         'm_parents' => array(4594, 4592, 4537, 4374, 4331),
     ),
     4257 => array(
         'm_icon' => '<i class="fal fa-play-circle"></i>',
-        'm_name' => 'Linked Entities Embed',
+        'm_name' => 'Embed Linked Entities',
         'm_desc' => '',
         'm_parents' => array(4594, 4592, 4537, 4506, 4428, 4374),
     ),
     4258 => array(
         'm_icon' => '<i class="fal fa-video"></i>',
-        'm_name' => 'Linked Entities Video',
+        'm_name' => 'Video Linked Entities',
         'm_desc' => '',
         'm_parents' => array(4594, 4592, 4537, 4374, 4331),
     ),
     4259 => array(
         'm_icon' => '<i class="fal fa-volume-up"></i>',
-        'm_name' => 'Linked Entities Audio',
+        'm_name' => 'Audio Linked Entities',
         'm_desc' => '',
         'm_parents' => array(4594, 4592, 4537, 4374, 4331),
     ),
     4260 => array(
         'm_icon' => '<i class="fal fa-image"></i>',
-        'm_name' => 'Linked Entities Image',
+        'm_name' => 'Image Linked Entities',
         'm_desc' => '',
         'm_parents' => array(4594, 4592, 4537, 4374, 4331),
     ),
     4261 => array(
         'm_icon' => '<i class="fal fa-file-pdf"></i>',
-        'm_name' => 'Linked Entities File',
+        'm_name' => 'File Linked Entities',
         'm_desc' => '',
         'm_parents' => array(4594, 4592, 4537, 4374, 4331),
     ),
@@ -206,7 +367,7 @@ $config['en_all_4594'] = array(
         'm_icon' => '<i class="fas fa-search"></i>',
         'm_name' => 'Action Plan Searched',
         'm_desc' => 'When the Master invokes the [Lets] command and searches for a new intention that they would like to add to their Action Plan.',
-        'm_parents' => array(4594, 4560),
+        'm_parents' => array(4755, 4594, 4560),
     ),
     4278 => array(
         'm_icon' => '<i class="fas fa-check-double"></i>',
@@ -252,13 +413,13 @@ $config['en_all_4594'] = array(
     ),
     4318 => array(
         'm_icon' => '<i class="fal fa-clock"></i>',
-        'm_name' => 'Linked Entities Time',
+        'm_name' => 'Time Linked Entities',
         'm_desc' => '',
         'm_parents' => array(4594, 4592, 4374),
     ),
     4319 => array(
         'm_icon' => '<i class="fal fa-sort-numeric-down"></i>',
-        'm_name' => 'Linked Entities Integer',
+        'm_name' => 'Integer Linked Entities',
         'm_desc' => '',
         'm_parents' => array(4594, 4592, 4374),
     ),
@@ -284,67 +445,67 @@ $config['en_all_4594'] = array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
         'm_name' => 'Text Message Received',
         'm_desc' => '',
-        'm_parents' => array(4594, 4277),
+        'm_parents' => array(4755, 4594, 4277),
     ),
     4548 => array(
         'm_icon' => '<i class="fal fa-video"></i>',
         'm_name' => 'Video Message Received',
         'm_desc' => '',
-        'm_parents' => array(4594, 4277),
+        'm_parents' => array(4755, 4594, 4277),
     ),
     4549 => array(
         'm_icon' => '<i class="fal fa-volume-up"></i>',
         'm_name' => 'Audio Message Received',
         'm_desc' => '',
-        'm_parents' => array(4594, 4277),
+        'm_parents' => array(4755, 4594, 4277),
     ),
     4550 => array(
         'm_icon' => '<i class="fal fa-image"></i>',
         'm_name' => 'Image Message Received',
         'm_desc' => '',
-        'm_parents' => array(4594, 4277),
+        'm_parents' => array(4755, 4594, 4277),
     ),
     4551 => array(
         'm_icon' => '<i class="fal fa-file-pdf"></i>',
         'm_name' => 'File Message Received',
         'm_desc' => '',
-        'm_parents' => array(4594, 4277),
+        'm_parents' => array(4755, 4594, 4277),
     ),
     4552 => array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
         'm_name' => 'Text Message Sent',
         'm_desc' => '',
-        'm_parents' => array(4594, 4280),
+        'm_parents' => array(4755, 4594, 4280),
     ),
     4553 => array(
         'm_icon' => '<i class="fal fa-video"></i>',
         'm_name' => 'Video Message Sent',
         'm_desc' => '',
-        'm_parents' => array(4594, 4280),
+        'm_parents' => array(4755, 4594, 4280),
     ),
     4554 => array(
         'm_icon' => '<i class="fal fa-volume-up"></i>',
         'm_name' => 'Audio Message Sent',
         'm_desc' => '',
-        'm_parents' => array(4594, 4280),
+        'm_parents' => array(4755, 4594, 4280),
     ),
     4555 => array(
         'm_icon' => '<i class="fal fa-image"></i>',
         'm_name' => 'Image Message Sent',
         'm_desc' => '',
-        'm_parents' => array(4594, 4280),
+        'm_parents' => array(4755, 4594, 4280),
     ),
     4556 => array(
         'm_icon' => '<i class="fal fa-file-pdf"></i>',
         'm_name' => 'File Message Sent',
         'm_desc' => '',
-        'm_parents' => array(4594, 4280),
+        'm_parents' => array(4755, 4594, 4280),
     ),
     4557 => array(
         'm_icon' => '<i class="fal fa-location-circle"></i>',
         'm_name' => 'Location Message Received',
         'm_desc' => '',
-        'm_parents' => array(4594, 4277),
+        'm_parents' => array(4755, 4594, 4277),
     ),
     4559 => array(
         'm_icon' => '<i class="fal fa-square"></i>',
@@ -356,19 +517,19 @@ $config['en_all_4594'] = array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
         'm_name' => 'Action Plan Intent Completed',
         'm_desc' => 'When Master marks an Action Plan Intent as Complete.',
-        'm_parents' => array(4594, 4560),
+        'm_parents' => array(4755, 4594, 4560),
     ),
     4568 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
         'm_name' => 'Action Plan Completed',
         'm_desc' => 'When the entire Action Plan tree is marked as Complete.',
-        'm_parents' => array(4594, 4560),
+        'm_parents' => array(4755, 4594, 4560),
     ),
     4570 => array(
         'm_icon' => '<i class="fab fa-html5"></i>',
         'm_name' => 'HTML Message Sent',
         'm_desc' => '',
-        'm_parents' => array(4594, 4280),
+        'm_parents' => array(4755, 4594, 4280),
     ),
     4577 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',

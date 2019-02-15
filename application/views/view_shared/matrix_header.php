@@ -101,29 +101,22 @@ $uri_segment_1 = $this->uri->segment(1);
                             </li>
 
                             <li class="entity-inactive" data-toggle="tooltip" data-placement="left" title="Add Source Wizard">
-                                <a href="/entities/add_source"><i class="fas fa-plus"></i><span class="extra-toggle" style="display: none;"> Source</span></a>
+                                <a href="/entities/add_source"><i class="fas fa-plus"></i></a>
                             </li>
 
-                            <!-- Extra, Hidden Menu Options: -->
-                            <li class="extra-toggle" data-toggle="tooltip" data-placement="left" title="Expand menu">
-                                <a href="javascript:void(0);" onclick="$('.extra-toggle').toggle();">&nbsp;
-                                    <i class="fas fa-ellipsis-h"></i> &nbsp;
-                                </a>
-                            </li>
-
-                            <li class="extra-toggle" style="display: none;">
+                            <li data-toggle="tooltip" data-placement="left" title="Platform Stats">
                                 <a href="/stats">
-                                    <i class="fas fa-chart-bar"></i> Stats
+                                    <i class="fas fa-chart-bar"></i>
                                 </a>
                             </li>
-                            <li class="extra-toggle entity-inactive" style="display: none;">
+                            <li class="entity-inactive" data-toggle="tooltip" data-placement="left" title="My Entity">
                                 <a href="/entities/<?= $udata['en_id'] ?>">
-                                    <i class="fas fa-user-circle"></i> <?= fn___one_two_explode('', ' ', $udata['en_name']) ?>
+                                    <i class="fas fa-user-circle"></i>
                                 </a>
                             </li>
-                            <li class="extra-toggle" style="display: none;">
+                            <li data-toggle="tooltip" data-placement="left" title="Logout">
                                 <a href="/logout">
-                                    <i class="fas fa-power-off"></i> Logout
+                                    <i class="fas fa-power-off"></i>
                                 </a>
                             </li>
 

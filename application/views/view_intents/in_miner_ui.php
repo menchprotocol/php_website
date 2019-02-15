@@ -21,7 +21,7 @@ if (isset($orphan_ins)) {
 
 
 <div class="row">
-    <div class="col-xs-7 cols">
+    <div class="col-xs-8 cols">
         <?php
         //Are we showing Orphans?
         if (isset($orphan_ins)) {
@@ -114,7 +114,7 @@ if (isset($orphan_ins)) {
     </div>
 
 
-    <div class="col-xs-5 cols">
+    <div class="col-xs-4 cols">
 
 
 
@@ -140,7 +140,7 @@ if (isset($orphan_ins)) {
                     <div class="col-md-6 inlineform">
 
 
-                        <div class="title"><h4><i class="fal fa-bullseye-arrow"></i> Intent Outcome [<span
+                        <div class="title"><h4><i class="fal fa-bullseye-arrow"></i> Outcome [<span
                                         style="margin:0 0 10px 0; font-size:0.8em;"><span
                                             id="charNameNum">0</span>/<?= $this->config->item('in_outcome_max') ?></span>]
                                 </h4></div>

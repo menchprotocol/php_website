@@ -250,14 +250,14 @@ foreach ($primary_filters as $key => $value) {
         foreach ($all_engs as $tr) {
 
             //Echo drop down:
-            $select_ui .= '<option value="' . $tr['tr_type_en_id'] . '" ' . ((isset($_GET['tr_type_en_id']) && $_GET['tr_type_en_id'] == $tr['tr_type_en_id']) ? 'selected="selected"' : '') . '>' . $tr['en_name'] . ' ('  . fn___echo_number($tr['trs_count']) . ( $tr['coins_sum'] > 0 ? ', '.fn___echo_number($tr['coins_sum']).' Coins' : '' ) . ')</option>';
+            $select_ui .= '<option value="' . $tr['tr_type_en_id'] . '" ' . ((isset($_GET['tr_type_en_id']) && $_GET['tr_type_en_id'] == $tr['tr_type_en_id']) ? 'selected="selected"' : '') . '>' . $tr['en_name'] . ' ('  . fn___echo_number($tr['trs_count']) . 'T' . ' = '.fn___echo_number($tr['coins_sum']).'C' . ')</option>';
             $all_transaction_count += $tr['trs_count'];
             $all_coins += $tr['coins_sum'];
         }
 
         //Echo Transaction filters:
         echo '<select class="form-control border" name="tr_type_en_id" class="border" data-toggle="tooltip" data-placement="top" title="Transaction Types" style="width:160px;">';
-        echo '<option value="0">All Transaction Types ('  . fn___echo_number($all_transaction_count) . ( $all_coins > 0 ? ', '.number_format($all_coins, 0).' Coins' : '' ) . ')</option>';
+        echo '<option value="0">All Transaction Types ('  . fn___echo_number($all_transaction_count) . 'T' . ' = '.fn___echo_number($all_coins).'C' . ')</option>';
         echo $select_ui;
         echo '</select>';
 
