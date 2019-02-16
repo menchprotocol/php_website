@@ -723,7 +723,7 @@ class Entities extends CI_Controller
             ), array('en_miner'));
 
             //Prep last updated:
-            $return_array['tr_content'] = fn___echo_tr_content($tr_content, $js_tr_type_en_id);
+            $return_array['tr_content'] = fn___echo_tr_urls($tr_content, $js_tr_type_en_id);
             $return_array['tr_content_final'] = $tr_content; //In case content was updated
 
         }
@@ -757,26 +757,9 @@ class Entities extends CI_Controller
         $this->load->view('view_shared/matrix_header', array(
             'title' => 'Managed Intent Messages',
         ));
-        echo '<div id="list-messages" class="list-group  grey-list">';
+        echo '<div id="list-messages" class="list-group grey-list">';
         foreach ($messages as $tr) {
-
-            echo '<div class="entities-msg">';
-
-            echo '<span class="pull-right" style="margin:6px 10px 0 0;">';
-            echo '<span data-toggle="tooltip" title="This is the ' . fn___echo_number_ordinal($tr['tr_order']) . ' message for this intent" data-placement="left" class="underdot" style="padding-bottom:4px;">' . fn___echo_number_ordinal($tr['tr_order']) . '</span> ';
-            echo '<span>' . fn___echo_status('tr_status', $tr['tr_status'], 1, 'left') . '</span> ';
-            echo '<a href="/intents/' . $tr['tr_in_child_id'] . '" target="_parent"><span class="badge badge-primary" style="display:inline-block; margin-left:3px; width:40px;"><i class="fas fa-sign-out-alt rotate90"></i></span></a>';
-            echo '</span>';
-
-            echo '<h4><i class="fas fa-hashtag" style="font-size:1em;"></i> ' . $tr['in_outcome'] . '</h4>';
-
-            echo '<div>';
-            echo $this->Chat_model->fn___dispatch_message($tr['tr_content'], $udata, false);
-            echo '</div>';
-
-            echo '</div>';
-
-
+            echo fn___echo_en_messages($tr);
         }
         echo '</div>';
         $this->load->view('view_shared/matrix_footer');

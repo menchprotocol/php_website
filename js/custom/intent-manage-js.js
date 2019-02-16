@@ -494,7 +494,7 @@ function fn___in_messages_load(in_id) {
     $('.frame-loader').addClass('hidden');
     $('#load_tr_frame').removeClass('hidden').hide().fadeIn();
     //Set title:
-    $('#tr_title').html('<i class="fas fa-layer-group"></i> ' + $('.in_outcome_' + in_id + ':first').text());
+    $('#tr_title').html('<i class="fas fa-comment-plus"></i> ' + $('.in_outcome_' + in_id + ':first').text());
 
     //Load content via a URL:
     $('.ajax-frame').attr('src', '/intents/fn___in_messages_load/' + in_id).removeClass('hidden').css('margin-top', '0');

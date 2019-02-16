@@ -4,9 +4,10 @@
         type="text/javascript"></script>
 
 
-<div style="padding:0 10px; max-width: 560px; margin: 0 auto;">
+<h1 class="middle-h">Add Source Wizard</h1>
 
-    <h1 style="margin: 0; padding:10px 0 0 0;">Add Source Wizard</h1>
+
+<div style="padding:0 10px; max-width: 560px; margin: 0 auto;">
 
     <div class="add_source_result"></div>
     <div class="add_source_body">

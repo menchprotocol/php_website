@@ -869,7 +869,6 @@ class Database_model extends CI_Model
                 $alg_obj['en_status'] = intval($db_obj['en_status']);
                 $alg_obj['en_icon'] = $db_obj['en_icon'];
                 $alg_obj['en_name'] = $db_obj['en_name'];
-                $alg_obj['en_psid'] = $db_obj['en_psid'];
                 $alg_obj['en_trust_score'] = intval($db_obj['en_trust_score']);
 
                 //Add parent data:

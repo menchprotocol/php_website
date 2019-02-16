@@ -19,7 +19,7 @@ function echo_js_suggestion(obj_type, suggestion, is_top){
         var fancy_hours = fancy_time(suggestion);
         return '<span class="double-icon-search is-top-'+is_top+'"><span class="icon-main">' + object_js_statuses['in_is_any'][suggestion.in_is_any]["s_icon"] + '</span><span class="icon-sub">' + object_js_statuses['in_status'][suggestion.in_status]["s_icon"] + '</span></span> ' + suggestion._highlightResult.in_outcome.value + (fancy_hours ? '<span class="search-info">' + ' <i class="fal fa-clock"></i>' + fancy_hours + '</span>' : '');
     } else if (obj_type == 'en') {
-        return '<span class="double-icon-search is-top-'+is_top+'"><span class="icon-main">' + ( suggestion.en_icon ? suggestion.en_icon : '<i class="fas fa-at grey-at"></i>' ) + '</span><span class="icon-sub">' + object_js_statuses['en_status'][suggestion.en_status]["s_icon"] + '</span></span> ' + suggestion._highlightResult.en_name.value + ( parseInt(suggestion.en_psid) > 0 ? ' <i class="fab fa-facebook-messenger blue"></i>' : '' );
+        return '<span class="double-icon-search is-top-'+is_top+'"><span class="icon-main">' + ( suggestion.en_icon ? suggestion.en_icon : '<i class="fas fa-at grey-at"></i>' ) + '</span><span class="icon-sub">' + object_js_statuses['en_status'][suggestion.en_status]["s_icon"] + '</span> ' + '</span> ' + suggestion._highlightResult.en_name.value;
     }
 }
 

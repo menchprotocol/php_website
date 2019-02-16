@@ -2,6 +2,7 @@
 //Attempt to fetch session variables:
 $udata = $this->session->userdata('user');
 $uri_segment_1 = $this->uri->segment(1);
+$uri_segment_2 = $this->uri->segment(2);
 ?><!doctype html>
 <html lang="en">
 <head>
@@ -83,37 +84,40 @@ $uri_segment_1 = $this->uri->segment(1);
                     <div class="collapse navbar-collapse">
                         <ul class="nav navbar-nav navbar-main navbar-right">
 
-                            <li class="<?= ($uri_segment_1 == 'intents' ? 'intent-active' : 'intent-inactive') ?>">
-                                <a href="/intents/<?= $this->config->item('in_tactic_id') ?>">
-                                    <i class="fas fa-hashtag"></i> Intents
-                                </a>
-                            </li>
-                            <li class="<?= ($uri_segment_1 == 'entities' ? 'entity-active' : 'entity-inactive') ?>">
-                                <a href="/entities/<?= $this->config->item('en_start_here_id') ?>">
-                                    <i class="fas fa-at"></i> Entities
-                                </a>
-                            </li>
-
                             <li class="<?= ($uri_segment_1 == 'ledger' ? 'ledger-active' : 'ledger-inactive') ?>">
                                 <a href="/ledger">
                                     <i class="fas fa-atlas"></i> Ledger
                                 </a>
                             </li>
 
-                            <li class="entity-inactive" data-toggle="tooltip" data-placement="left" title="Add Source Wizard">
-                                <a href="/entities/add_source"><i class="fas fa-plus"></i></a>
-                            </li>
-
-                            <li data-toggle="tooltip" data-placement="left" title="Platform Stats">
-                                <a href="/stats">
-                                    <i class="fas fa-chart-bar"></i>
+                            <li class="<?= ($uri_segment_1 == 'intents' ? 'intent-active' : 'intent-inactive') ?>">
+                                <a href="/intents/<?= $this->config->item('in_tactic_id') ?>">
+                                    <i class="fas fa-hashtag"></i> Intents
                                 </a>
                             </li>
-                            <li class="entity-inactive" data-toggle="tooltip" data-placement="left" title="My Entity">
+
+                            <li class="<?= ($uri_segment_1 == 'entities' ? 'entity-active' : 'entity-inactive') ?>">
+                                <a href="/entities/<?= $this->config->item('en_start_here_id') ?>">
+                                    <i class="fas fa-at"></i> Entities
+                                </a>
+                            </li>
+
+                            <li class="<?= ($uri_segment_1 == 'entities' && $uri_segment_2 == $udata['en_id'] ? 'entity-active' : 'entity-inactive') ?>" data-toggle="tooltip" data-placement="left" title="My Entity">
                                 <a href="/entities/<?= $udata['en_id'] ?>">
                                     <i class="fas fa-user-circle"></i>
                                 </a>
                             </li>
+
+                            <li class="<?= ($uri_segment_1 == 'add_source' ? 'entity-active' : 'entity-inactive' ) ?>" data-toggle="tooltip" data-placement="left" title="Add Source Wizard">
+                                <a href="/add_source"><i class="fas fa-plus"></i></a>
+                            </li>
+
+                            <li class="<?= ($uri_segment_1 == 'stats' ? 'ledger-active' : 'ledger-inactive') ?>" data-toggle="tooltip" data-placement="left" title="Platform Stats">
+                                <a href="/stats">
+                                    <i class="fas fa-chart-bar"></i>
+                                </a>
+                            </li>
+
                             <li data-toggle="tooltip" data-placement="left" title="Logout">
                                 <a href="/logout">
                                     <i class="fas fa-power-off"></i>

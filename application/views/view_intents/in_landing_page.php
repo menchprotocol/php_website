@@ -105,16 +105,11 @@ $hide_subscribe = ( isset($_GET['hide_subscribe']) && intval($_GET['hide_subscri
             $in_level2_counter = 0;
             foreach ($in['in__children'] as $in_level2) {
 
-                //Do not show if conditional:
-                if($in_level2['tr_type_en_id'] == 4229){
-                    continue;
-                }
-
                 echo '<div class="panel-group" id="open' . $in_level2_counter . '" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
             <div class="panel-heading" role="tab" id="heading' . $in_level2_counter . '">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open' . $in_level2_counter . '" href="#collapse' . $in_level2_counter . '" aria-expanded="'.( $expand_mode ? 'true' : 'false' ).'" aria-controls="collapse' . $in_level2_counter . '">
-                       ' . ($in['in_is_any'] ? 'Option '.($in_level2_counter + 1).':' : '#'.($in_level2_counter + 1)) . ' <span id="title-' . $in_level2['in_id'] . '">' . $in_level2['in_outcome'] . '</span>';
+                       ' . ( ( isset($_GET['hide_subscribe']) && intval($_GET['hide_subscribe']) ? '#'.($in_level2_counter+1)  : ( $in_level2['tr_type_en_id'] == 4229 ? 'We Might' : ($in['in_is_any'] ? 'You May' : 'We Will') ) ) ) . ' <span id="title-' . $in_level2['in_id'] . '">' . $in_level2['in_outcome'] . '</span>';
 
                     //Show time if we have it:
                     if (isset($metadata['in__tree_max_seconds']) && $metadata['in__tree_max_seconds'] > 0) {
@@ -144,12 +139,7 @@ $hide_subscribe = ( isset($_GET['hide_subscribe']) && intval($_GET['hide_subscri
                     echo '<ul style="list-style:none; margin-left:-30px; font-size:1em;">';
                     foreach ($in_level2['in__grandchildren'] as $in_level3) {
 
-                        //Do not show if conditional:
-                        if($in_level3['tr_type_en_id'] == 4229){
-                            continue;
-                        }
-
-                        echo '<li>#' . ($in_level2_counter + 1) . '.' . ($in_level3_counter + 1) . ' ' . $in_level3['in_outcome'];
+                        echo '<li>' . ( isset($_GET['hide_subscribe']) && intval($_GET['hide_subscribe']) ? '#'.($in_level3_counter+1) : ($in_level3['tr_type_en_id'] == 4229 ? 'We Might' : ($in_level2['in_is_any'] ? 'You May' : 'We Will') ) ) . ' ' . $in_level3['in_outcome'];
 
                         //Show time if we have it:
                         $metadata3 = unserialize($in_level3['in_metadata']);

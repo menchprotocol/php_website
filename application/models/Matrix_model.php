@@ -213,11 +213,8 @@ class Matrix_model extends CI_Model
          *
          * The function that would add/validate new URLs
          * which would also check for duplicates, etc...
-         * And create a new entity.
-         *
-         * Note that this function is mainly used in intent message
-         * related functions as that's when we need to turn URLs into
-         * entities to be stored properly on the matrix
+         * And create new entities (if needed) for the URL
+         * and for it's domain.
          *
          * */
 
@@ -229,39 +226,35 @@ class Matrix_model extends CI_Model
         }
 
 
+        //Detect domain parent:
+        $url_parse = base_domain($input_url);
+
+        if($url_parse['isroot']){
+            //Since this is the root, update to the clean URL:
+            $input_url = $url_parse['basedomain'];
+        } else {
+            //Simple cleanup:
+            $input_url = trim($input_url);
+            //TODO Maybe we can improve on our process to standardize URLs?
+        }
+
         //Check if this URL has already been added:
-        //TODO This part can be improved to better detect duplicate URLs as it current does an exact matching, which is OK but not the best...
-        $input_url = trim($input_url);
         $dup_urls = $this->Database_model->fn___tr_fetch(array(
             'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null, //Entity URL Links
+            'tr_status >' => 0,
             'tr_content' => $input_url, //Exact Match!
         ), array('en_child'));
 
         if (count($dup_urls) > 0) {
 
-            //Yes, we already have this URL added to an entity, return the entity:
-            //Not removed?
-            if ($dup_urls[0]['tr_status'] < 0) {
+            //Return the object as this is expected:
+            return array(
+                'status' => 1,
+                'is_existing' => 1,
+                'message' => 'Entity already existed',
+                'en_from_url' => $dup_urls[0],
+            );
 
-                $object_statuses = $this->config->item('object_statuses');
-
-                //This URL was removed, which is an issue:
-                return array(
-                    'status' => 0,
-                    'message' => 'This URL has had been added before but then removed with status [' . $object_statuses['en_status'][$dup_urls[0]['en_status']]['s_name'] . ']',
-                );
-
-            } else {
-
-                //Return the object as this is expected:
-                return array(
-                    'status' => 1,
-                    'is_existing' => 1,
-                    'message' => 'Entity already existed',
-                    'en_from_url' => $dup_urls[0],
-                );
-
-            }
         }
 
 

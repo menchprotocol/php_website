@@ -73,7 +73,7 @@ function load_w_actionplan(tr_id, en_id) {
     tr_id = parseInt(tr_id);
     en_id = parseInt(en_id);
     var frame_title = frame_loader(tr_id, en_id);
-    $('#tr_title').html('<i class="fas fa-flag"></i> ' + frame_title);
+    $('#tr_title').html('<i class="far fa-flag"></i> ' + frame_title);
 
     //Add via Ajax:
     $.post("/ledger/load_w_actionplan", {tr_id: tr_id}, function (data) {

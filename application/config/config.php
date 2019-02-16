@@ -171,7 +171,7 @@ $config['object_statuses']          = array(
                                             ),
                                             2 => array(
                                                 's_name' => 'Published',
-                                                's_desc' => 'Intent is live on mench.com and Mench personal assistant',
+                                                's_desc' => 'Intent is live and publicly accessible',
                                                 's_icon' => '<i class="fas fa-check-square"></i>',
                                             ),
                                             3 => array(
@@ -198,12 +198,12 @@ $config['object_statuses']          = array(
                                             ),
                                             2 => array(
                                                 's_name' => 'Published',
-                                                's_desc' => 'Entity is live on mench.com and Mench personal assistant',
+                                                's_desc' => 'Entity is live and publicly accessible',
                                                 's_icon' => '<i class="fas fa-check-square"></i>',
                                             ),
                                             3 => array(
                                                 's_name' => 'Verified',
-                                                's_desc' => 'Entity is a reference to a real person as verified by Mench',
+                                                's_desc' => 'Entity is a real person connected to Mench personal assistant',
                                                 's_icon' => '<i class="fas fa-badge-check blue"></i>',
                                             ),
                                         ),

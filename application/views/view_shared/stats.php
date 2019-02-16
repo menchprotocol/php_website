@@ -3,8 +3,7 @@
 <?php
 
 //Display filters:
-echo '<h1 style="display:block; text-align: center !important; margin-top: 40px;">Platform Stats</h1>';
-echo '<p style="text-align: center !important; font-size: 1.3em;">Key metrics that offer a broad overview of the Mench platform.</p>';
+echo '<h1 class="middle-h">Platform Stats</h1>';
 
 //Load core Mench Objects:
 $en_all_4534 = $this->config->item('en_all_4534');

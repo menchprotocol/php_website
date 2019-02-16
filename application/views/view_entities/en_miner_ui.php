@@ -294,7 +294,7 @@
 
             <h5 class="badge badge-h" data-toggle="tooltip"
                 title="Message management can only be done using Intents. Entity messages are listed below for view-only"
-                data-placement="bottom"><i class="fas fa-layer-group"></i> Entity References <i class="fas fa-lock"></i>
+                data-placement="bottom"><i class="fas fa-comment-plus"></i> Entity References <i class="fas fa-lock"></i>
             </h5>
             <div style="text-align:right; font-size: 22px; margin:-32px 3px -20px 0;">
                 <a href="javascript:void(0)" onclick="$('#message-frame').addClass('hidden');$('#loaded-messages').html('');">

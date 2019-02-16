@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-02-14 02:28:28 PST
+//Generated 2019-02-14 16:45:21 PST
 
 //Transaction Type Coin Rates:
 $config['en_ids_4374'] = array(4228, 4229, 4230, 4231, 4232, 4233, 4234, 4235, 4242, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4318, 4319, 4331, 4460, 4601, 4602);
@@ -37,30 +37,30 @@ $config['en_all_4374'] = array(
     ),
     4231 => array(
         'm_icon' => '<i class="fal fa-bolt"></i>',
-        'm_name' => 'Intent Messages On-Start',
+        'm_name' => 'On-Start Intent Messages',
         'm_desc' => '100',
         'm_parents' => array(4742, 4603, 4594, 4485, 4374),
     ),
     4232 => array(
         'm_icon' => '<i class="fal fa-comment-lines"></i>',
-        'm_name' => 'Intent Messages Learn More',
+        'm_name' => 'Learn More Intent Messages',
         'm_desc' => '100',
         'm_parents' => array(4742, 4603, 4594, 4485, 4374),
     ),
     4233 => array(
         'm_icon' => '<i class="fal fa-calendar-check"></i>',
-        'm_name' => 'Intent Messages On-Complete',
+        'm_name' => 'On-Complete Intent Messages',
         'm_desc' => '100',
         'm_parents' => array(4742, 4603, 4594, 4485, 4374),
     ),
     4234 => array(
         'm_icon' => '<i class="fal fa-random"></i>',
-        'm_name' => 'Intent Messages Random1',
+        'm_name' => 'Random1 Intent Messages',
         'm_desc' => '100',
         'm_parents' => array(4594, 4485, 4374),
     ),
     4235 => array(
-        'm_icon' => '<i class="fas fa-flag"></i>',
+        'm_icon' => '<i class="far fa-flag"></i>',
         'm_name' => 'Action Plan',
         'm_desc' => '1',
         'm_parents' => array(4594, 4560, 4463, 4374),
@@ -163,15 +163,15 @@ $config['en_all_4374'] = array(
     ),
     4601 => array(
         'm_icon' => '<i class="fal fa-comment-check"></i>',
-        'm_name' => 'Intent Messages Triggers',
+        'm_name' => 'Triggers Intent Messages',
         'm_desc' => '50',
         'm_parents' => array(4255, 4594, 4374, 4485),
     ),
     4602 => array(
         'm_icon' => '<i class="fal fa-cloud-upload"></i>',
-        'm_name' => 'Intent Messages Webhooks',
+        'm_name' => 'Webhooks Intent Messages',
         'm_desc' => '100',
-        'm_parents' => array(4603, 4256, 4374, 4485, 4594),
+        'm_parents' => array(4256, 4374, 4485, 4594),
     ),
 );
 
@@ -215,30 +215,30 @@ $config['en_all_4594'] = array(
     ),
     4231 => array(
         'm_icon' => '<i class="fal fa-bolt"></i>',
-        'm_name' => 'Intent Messages On-Start',
+        'm_name' => 'On-Start Intent Messages',
         'm_desc' => '',
         'm_parents' => array(4742, 4603, 4594, 4485, 4374),
     ),
     4232 => array(
         'm_icon' => '<i class="fal fa-comment-lines"></i>',
-        'm_name' => 'Intent Messages Learn More',
+        'm_name' => 'Learn More Intent Messages',
         'm_desc' => '',
         'm_parents' => array(4742, 4603, 4594, 4485, 4374),
     ),
     4233 => array(
         'm_icon' => '<i class="fal fa-calendar-check"></i>',
-        'm_name' => 'Intent Messages On-Complete',
+        'm_name' => 'On-Complete Intent Messages',
         'm_desc' => '',
         'm_parents' => array(4742, 4603, 4594, 4485, 4374),
     ),
     4234 => array(
         'm_icon' => '<i class="fal fa-random"></i>',
-        'm_name' => 'Intent Messages Random1',
+        'm_name' => 'Random1 Intent Messages',
         'm_desc' => '',
         'm_parents' => array(4594, 4485, 4374),
     ),
     4235 => array(
-        'm_icon' => '<i class="fas fa-flag"></i>',
+        'm_icon' => '<i class="far fa-flag"></i>',
         'm_name' => 'Action Plan',
         'm_desc' => 'Created when the Master adds an intent tree to their Action Plan. We will create 1 link for each intent link to create a cache of the intent tree at that point in time.',
         'm_parents' => array(4594, 4560, 4463, 4374),
@@ -539,15 +539,15 @@ $config['en_all_4594'] = array(
     ),
     4601 => array(
         'm_icon' => '<i class="fal fa-comment-check"></i>',
-        'm_name' => 'Intent Messages Triggers',
+        'm_name' => 'Triggers Intent Messages',
         'm_desc' => '',
         'm_parents' => array(4255, 4594, 4374, 4485),
     ),
     4602 => array(
         'm_icon' => '<i class="fal fa-cloud-upload"></i>',
-        'm_name' => 'Intent Messages Webhooks',
+        'm_name' => 'Webhooks Intent Messages',
         'm_desc' => '',
-        'm_parents' => array(4603, 4256, 4374, 4485, 4594),
+        'm_parents' => array(4256, 4374, 4485, 4594),
     ),
 );
 
@@ -746,7 +746,7 @@ $config['en_all_4485'] = array(
         'm_icon' => '<i class="fal fa-cloud-upload"></i>',
         'm_name' => 'Webhooks',
         'm_desc' => 'All URLs called along with POST variables that pass intent and completion details. Goal is to enable additional workflows like issuing a completion certificate.',
-        'm_parents' => array(4603, 4256, 4374, 4485, 4594),
+        'm_parents' => array(4256, 4374, 4485, 4594),
     ),
 );
 

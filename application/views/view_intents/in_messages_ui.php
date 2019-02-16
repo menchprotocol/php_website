@@ -70,14 +70,19 @@ foreach ($metadatas as $tr) {
 
 
         //Learn more option:
-        echo '<i class="fas fa-info-circle"></i> <span data-toggle="tooltip" title="'.$m['m_desc'].'" data-placement="bottom" class="underdot">Usage notes</span>. ';
+        echo '<i class="fas fa-info-circle"></i> <span data-toggle="tooltip" title="'.$m['m_desc'].'" data-placement="bottom" class="underdot">Usage notes</span> &nbsp;';
 
 
         //Does it support sorting?
         if(in_array(4603, $en_all_4485[$tr_type_en_id]['m_parents'])){
-            echo '<i class="fas fa-exchange rotate90"></i> Sorting enabled. ';
+            echo '<i class="fas fa-exchange rotate90"></i> Sortable &nbsp;';
         } else {
-            echo '&nbsp;<i class="fas fa-lock"></i> Sorting disabled. ';
+            echo '<i class="fas fa-lock"></i> Sorting disabled &nbsp;';
+        }
+
+        //Does it support sorting?
+        if(in_array(4742, $en_all_4485[$tr_type_en_id]['m_parents'])){
+            echo '<i class="fas fa-exchange"></i> Interchangeable &nbsp;';
         }
 
         //See if this message type has specific input requirements:
@@ -86,10 +91,10 @@ foreach ($metadatas as $tr) {
         if(count($completion_requirements) == 1){
             $en_id = array_shift($completion_requirements);
             $en_all_4331 = $this->config->item('en_all_4331');
-            echo 'Requires &nbsp;'.$en_all_4331[$en_id]['m_icon'].' '.$en_all_4331[$en_id]['m_name'].' messages.';
+            echo '<i class="fas fa-asterisk"></i> Requires '.$en_all_4331[$en_id]['m_name'].' messages';
         } else {
             //No Requirements:
-            echo 'Supports <a href="/entities/4331" data-toggle="tooltip" title="View all intent message formats" data-placement="bottom" class="underdot" target="_parent">all message formats</a>.';
+            echo '<i class="fas fa-asterisk"></i> Supports <a href="/entities/4331" data-toggle="tooltip" title="View all intent message formats" data-placement="bottom" class="underdot" target="_parent">all message formats</a>';
         }
 
         echo '</div>';

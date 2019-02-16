@@ -1442,7 +1442,14 @@ h5, .h5 {
 .msg-nav {
     list-style-type: none;
     margin: 0;
-    padding: 5px 0 0 0;
+    padding:7px 0 0 0;
+}
+
+.button-max{
+    max-width:220px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .msg-nav > li {
@@ -1461,7 +1468,7 @@ h5, .h5 {
 
 .msg-nav > li .btn {
     margin: -10px 0px 0 0 !important;
-    padding: 5px 8px;
+    padding: 0px 4px;
 }
 
 .msg-nav li > .dropup {
@@ -2066,6 +2073,38 @@ select.form-control {
     z-index: 999;
 }
 
+.double-icon .fa-facebook-messenger, .double-icon-search .fa-facebook-messenger {
+    font-size:1.05em;
+}
+
+
+.double-icon .icon-second-sub {
+    font-size:0.7em;
+    margin-top: -5px;
+    position: absolute;
+    top:-12px;
+    left:2px;
+    z-index: 999;
+}
+
+
+.double-icon-search .icon-sub {
+    font-size:11px;
+    position: absolute;
+    top:-5px !important;
+    left:10px !important;
+    z-index: 11;
+}
+
+
+.double-icon-search .icon-second-sub {
+    font-size:11px;
+    position: absolute;
+    top:-5px !important;
+    left:-3px !important;
+    z-index: 11;
+}
+
 
 .double-icon .icon-3rd {
     font-size: 0.5em;
@@ -2096,6 +2135,7 @@ select.form-control {
     top:0px;
     margin-right: 2px;
     margin-bottom: -5px;
+    margin-left:5px;
     text-align: center;
 }
 
@@ -2130,13 +2170,8 @@ select.form-control {
 }
 
 
-.double-icon-search .icon-sub {
-    font-size:11px;
-    position: absolute;
-    top:-5px !important;
-    left:12px !important;
-    z-index: 11;
-}
+
+
 
 
 .table-striped>tbody>tr:nth-of-type(odd) {
@@ -2592,9 +2627,12 @@ a.badge:focus, a.badge:hover {
     z-index: 9999999;
 }
 
+.middle-h {
+    display:block; text-align: center !important; margin-top: 40px;
+}
+
 .stat-row {
-    margin-top:50px;
-    border-top:1px solid #bbb;
+    margin-top:30px;
     padding-top: 40px;
 }
 
@@ -3734,7 +3772,7 @@ h4 .tip-badge {
 
 
 .white-primary{
-    background-color: transparent;
+    background-color: transparent !important;
     cursor: pointer !important;
     color: #2b2b2b !important;
     border:2px solid #fedd16 !important;

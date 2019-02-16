@@ -383,6 +383,7 @@ function base_domain($full_url){
 
 
     //Parse domain:
+    $full_url = str_replace('www.' , '', $full_url);
     $analyze = parse_url($full_url);
     $domain_parts = explode('.', $analyze['host']);
 
@@ -402,11 +403,13 @@ function base_domain($full_url){
 
     $no_tld_domain = str_replace($tld, '', $analyze['host']);
     $no_tld_domain_parts = explode('.', $no_tld_domain);
+    $domain_subdomain = trim(str_replace('.'.end($no_tld_domain_parts), '', $no_tld_domain));
 
     //Return results:
     return array(
-        'isroot' => ( !isset($analyze['query']) && ( !isset($analyze['path']) || $analyze['path']=='/' ) ? 1 : 0 ),
+        'isroot' => ( !$domain_subdomain && !isset($analyze['query']) && ( !isset($analyze['path']) || $analyze['path']=='/' ) ? 1 : 0 ),
         'basedomain' => 'http://'.end($no_tld_domain_parts).$tld,
+        'domain_subdomain' => $domain_subdomain,
         'domain_ext' => end($no_tld_domain_parts).$tld,
         'domainname' => end($no_tld_domain_parts),
     );

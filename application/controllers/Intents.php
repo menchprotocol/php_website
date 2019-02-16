@@ -794,6 +794,7 @@ class Intents extends CI_Controller
         }
 
         $_GET['log_miner_messages'] = 1; //Will log miner messages which normally do not get logged (so we prevent intent message editing logs)
+
         $tip_messages = null;
         foreach ($on_start_messages as $tr) {
             //What type of message is this?

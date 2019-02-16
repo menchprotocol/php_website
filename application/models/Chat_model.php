@@ -86,7 +86,6 @@ class Chat_model extends CI_Model
 
         //Validate message:
         $msg_validation = $this->Chat_model->fn___dispatch_validate_message($input_message, $recipient_en, $fb_messenger_format, $quick_replies);
-        $is_miner = fn___en_auth(array(1308));
 
         //Prepare data to be appended to success/fail transaction:
         $allowed_tr_append = array('tr_in_parent_id', 'tr_in_child_id', 'tr_tr_id');
@@ -154,7 +153,7 @@ class Chat_model extends CI_Model
             }
 
             //Log successful Transaction for message delivery (Unless Miners viewing HTML):
-            if(!($is_miner && !$fb_messenger_format) || isset($_GET['log_miner_messages'])){
+            if($fb_messenger_format || isset($_GET['log_miner_messages'])){
                 $this->Database_model->fn___tr_create(array_merge(array(
                     'tr_content' => $msg_validation['input_message'],
                     'tr_type_en_id' => $output_message['message_type'],
@@ -543,9 +542,6 @@ class Chat_model extends CI_Model
         //This must eventually turn TRUE if the /slice command is used:
         $found_slicable_url = false;
 
-        //The HTML Format (IF $fb_messenger_format = FALSE) would slightly change if a logged-in Miner is detected:
-        $is_miner = fn___en_auth(array(1308));
-
         //We assume this message has text, unless its only content is an entity reference like "@123"
         $has_text = true;
 
@@ -582,7 +578,12 @@ class Chat_model extends CI_Model
             //Determine what type of Media this reference has:
             foreach ($ens[0]['en__parents'] as $parent_en) {
 
-                if (array_key_exists($parent_en['tr_type_en_id'], $en_convert_4537)) {
+                //Entity and it's link must be both published to show live:
+                if($parent_en['tr_status'] < 2 || $parent_en['en_status'] < 2){
+                    continue;
+                }
+
+                if ($fb_messenger_format && array_key_exists($parent_en['tr_type_en_id'], $en_convert_4537)) {
 
                     //Empty media file: Audio, Video, Image OR File...
 
@@ -597,23 +598,18 @@ class Chat_model extends CI_Model
                         }
                     }
 
+                    //Push raw file to Media Array:
+                    array_push($fb_media_attachments, array(
+                        'tr_type_en_id' => $master_media_sent_conv[$parent_en['tr_type_en_id']],
+                        'tr_content' => ($fb_att_id > 0 ? null : $parent_en['tr_content']),
+                        'fb_att_id' => $fb_att_id,
+                        'fb_att_type' => $en_convert_4537[$parent_en['tr_type_en_id']],
+                    ));
 
-                    if ($fb_messenger_format) {
+                } elseif (!$fb_messenger_format && in_array($parent_en['tr_type_en_id'], $this->config->item('en_ids_4537'))) {
 
-                        //Push raw file to Media Array:
-                        array_push($fb_media_attachments, array(
-                            'tr_type_en_id' => $master_media_sent_conv[$parent_en['tr_type_en_id']],
-                            'tr_content' => ($fb_att_id > 0 ? null : $parent_en['tr_content']),
-                            'fb_att_id' => $fb_att_id,
-                            'fb_att_type' => $en_convert_4537[$parent_en['tr_type_en_id']],
-                        ));
-
-                    } else {
-
-                        //HTML Format, append content to current output message:
-                        $output_body_message .= '<div style="margin-top:7px;">' . fn___echo_url_type($parent_en['tr_content'], $parent_en['tr_type_en_id']) . '</div>';
-
-                    }
+                    //HTML Format, append content to current output message:
+                    $output_body_message .= '<div style="margin-top:7px;">' . fn___echo_url_type($parent_en['tr_content'], $parent_en['tr_type_en_id']) . '</div>';
 
                 } elseif ($parent_en['tr_type_en_id'] == 4256) {
 
@@ -681,10 +677,10 @@ class Chat_model extends CI_Model
 
                     }
 
-                } elseif (strlen($parent_en['tr_content']) > 0) {
+                } elseif (strlen($parent_en['tr_content']) > 0 && !$fb_messenger_format) {
 
                     //This is a regular link with some contextual information.
-                    //TODO Consider showing this information somehow...
+                    //$output_body_message .= fn___echo_tr_urls($parent_en['tr_content'] , $parent_en['tr_type_en_id']);
 
                 }
 
@@ -695,7 +691,7 @@ class Chat_model extends CI_Model
             $has_text = !(trim($output_body_message) == '@' . $msg_references['ref_entities'][0]);
 
             //Adjust
-            if ($is_miner && !$fb_messenger_format) {
+            if (!$fb_messenger_format) {
 
                 /*
                  *
@@ -704,7 +700,7 @@ class Chat_model extends CI_Model
                  * to more information about that entity:=.
                  *
                  * */
-                $output_body_message = str_replace('@' . $msg_references['ref_entities'][0], ' <a href="/entities/' . $ens[0]['en_id'] . '" target="_parent">' . $ens[0]['en_name'] . '</a>', $output_body_message);
+                $output_body_message = str_replace('@' . $msg_references['ref_entities'][0], '<a href="/entities/' . $ens[0]['en_id'] . '" target="_parent">' . $ens[0]['en_name'] . '</a>', $output_body_message);
 
             } else {
 
