@@ -820,7 +820,7 @@ input::-webkit-inner-spin-button {
     display: block;
     position: absolute;
     top: -7px;
-    right: 2px;
+    right:-3px;
     color: #FFF;
     background-color: #2f2739;
     padding: 1px 2px;
