@@ -212,7 +212,7 @@ class Intents extends CI_Controller
         if (!$udata) {
             return fn___echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Session. Login again to Continue.',
+                'message' => 'Invalid Session. Sign In again to Continue.',
             ));
         } elseif (!isset($_POST['tr_id']) || intval($_POST['tr_id']) < 1) {
             return fn___echo_json(array(
@@ -698,7 +698,7 @@ class Intents extends CI_Controller
         if (!$udata) {
             fn___echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Session. Login again to Continue.',
+                'message' => 'Invalid Session. Sign In again to Continue.',
             ));
         } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
             fn___echo_json(array(
@@ -818,7 +818,7 @@ class Intents extends CI_Controller
         $udata = fn___en_auth(array(1308));
         if (!$udata) {
             //Display error:
-            die('<span style="color:#FF0000;">Error: Invalid Session. Login again to continue.</span>');
+            die('<span style="color:#FF0000;">Error: Invalid Session. Sign In again to continue.</span>');
         } elseif (intval($in_id) < 1) {
             die('<span style="color:#FF0000;">Error: Invalid Intent id.</span>');
         }

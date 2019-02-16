@@ -24,6 +24,10 @@
                        class="social-link" data-toggle="tooltip" title="Mench is open-source. contribute on GitHub"
                        data-placement="top"><i class="fab fa-github"></i></a>
 
+                    <a href="https://askmench.slack.com" target="_blank"
+                       class="social-link" data-toggle="tooltip" title="Chat with us on Slack"
+                       data-placement="top"><i class="fab fa-slack"></i></a>
+
                     <a href="https://www.youtube.com/channel/UCOH64HiAIfJlz73tTSI8n-g" target="_blank"
                        class="social-link" data-toggle="tooltip" title="Subscribe on YouTube"
                        data-placement="top"><i class="fab fa-youtube"></i></a>

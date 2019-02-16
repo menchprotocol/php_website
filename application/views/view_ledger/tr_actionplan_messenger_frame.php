@@ -59,7 +59,7 @@ if ((isset($udata['en__actionplans']) && count($udata['en__actionplans'])) || (i
                 function error(err) {
 
                     //Give them instructions on how to access via mench.co:
-                    $("#page_content").html('<div class="alert alert-info" role="alert" style="line-height:110%;"><i class="fas fa-exclamation-triangle"></i> To access your Action Plan you need to <a href="https://mench.com/login?url=<?= urlencode($_SERVER['REQUEST_URI']) ?>" style="font-weight:bold;">Login</a>. Use [Forgot Password] if you never logged in before.</div>');
+                    $("#page_content").html('<div class="alert alert-info" role="alert" style="line-height:110%;"><i class="fas fa-exclamation-triangle"></i> To access your Action Plan you need to <a href="https://mench.com/login?url=<?= urlencode($_SERVER['REQUEST_URI']) ?>" style="font-weight:bold;">Sign In</a>. Use [Forgot Password] if you never logged in before.</div>');
 
                 }
             );

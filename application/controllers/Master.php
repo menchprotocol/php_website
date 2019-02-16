@@ -31,7 +31,7 @@ class Master extends CI_Controller
         if (!$udata) {
             return fn___echo_json(array(
                 'status' => 0,
-                'message' => 'Session Expired. Login and Try again.',
+                'message' => 'Session Expired. Sign In and Try again.',
             ));
         } elseif (count($current_us) == 0) {
             return fn___echo_json(array(

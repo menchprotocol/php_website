@@ -450,7 +450,7 @@ function fn___echo_tr_row($tr)
     ));
 
     //Display the item
-    $ui = '<div class="list-group-item" style="padding:12px 6px 6px 0px; min-height:84px;">';
+    $ui = '<div class="list-group-item tr-box">';
 
     //Right content:
     $ui .= '<span class="pull-right">';
@@ -523,7 +523,7 @@ function fn___echo_tr_row($tr)
     $ui .= '<span data-toggle="tooltip" data-placement="top" title="Ledger transaction ID" style="min-width:80px; display: inline-block;"><i class="fas fa-atlas"></i> '.$tr['tr_id'].'</span>';
     $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Mench coins awarded to miner: '.$miner_ens[0]['en_name'].'" style="min-width:47px; display: inline-block;"><i class="fal fa-coins"></i> <b>'. $tr['tr_coins'] .'</b></span>';
     $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="'.$object_statuses['tr_status'][$tr['tr_status']]['s_desc'].'" style="min-width:82px; display: inline-block;">'.$object_statuses['tr_status'][$tr['tr_status']]['s_icon'].' '.$object_statuses['tr_status'][$tr['tr_status']]['s_name'].'</span>';
-    $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Transaction last modified (PST): ' . $tr['tr_timestamp'] . '" style="min-width:120px; display: inline-block;"><i class="fal fa-clock"></i> ' . fn___echo_time_difference(strtotime($tr['tr_timestamp'])) . ' ago</span>';
+    $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Transaction last modified: ' . $tr['tr_timestamp'] . ' PST" style="min-width:120px; display: inline-block;"><i class="fal fa-clock"></i> ' . fn___echo_time_difference(strtotime($tr['tr_timestamp'])) . ' ago</span>';
 
 
     if($tr['tr_order'] != 0){

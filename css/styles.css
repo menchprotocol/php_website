@@ -3811,3 +3811,9 @@ h4 .tip-badge {
     padding-top: 13px;
 }
 
+
+.tr-box{
+    padding: 12px 6px 6px 0px;
+    min-height: 84px;
+    margin: 20px 0 !important;
+}

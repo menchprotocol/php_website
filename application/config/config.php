@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  *
  * Global variables used throughout the platform.
- * use-case format: $this->config->item('algolia_remote')
+ * use-case format: $this->config->item('in_strategy_name')
  *
  */
 
@@ -15,7 +15,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 
 //UI Display:
-$config['app_version']              = '0.736'; //Cache buster in URLs for static js/css files
+$config['app_version']              = '0.737'; //Cache buster in URLs for static js/css files
 $config['en_per_page']              = 50; //Limits the maximum entities loaded per page
 
 
@@ -106,7 +106,7 @@ $config['notify_admins']            = array(
                                             'admin_en_ids' => array(1),
                                             'admin_notify' => array(
                                                 4246, //Platform Error
-                                                4269, //Miner login
+                                                4269, //Miner Sign In
                                             ),
                                         ),
                                     );
@@ -134,7 +134,7 @@ $config['object_statuses']          = array(
                                             ),
                                             0 => array( //Considered incomplete, see tr_status_incomplete for more details
                                                 's_name' => 'New',
-                                                's_desc' => 'Transaction is newly added and pending review',
+                                                's_desc' => 'Transaction is newly added and pending to be mined',
                                                 's_icon' => '<i class="fal fa-square"></i>',
                                             ),
                                             1 => array( //Considered incomplete, see tr_status_incomplete for more details
@@ -161,7 +161,7 @@ $config['object_statuses']          = array(
                                             ),
                                             0 => array(
                                                 's_name' => 'New',
-                                                's_desc' => 'Intent is newly added and pending review',
+                                                's_desc' => 'Intent is newly added and pending to be mined',
                                                 's_icon' => '<i class="fal fa-square"></i>',
                                             ),
                                             1 => array(
@@ -188,7 +188,7 @@ $config['object_statuses']          = array(
                                             ),
                                             0 => array(
                                                 's_name' => 'New',
-                                                's_desc' => 'Entity is newly added and pending review',
+                                                's_desc' => 'Entity is newly added and pending to be mined',
                                                 's_icon' => '<i class="fal fa-square"></i>',
                                             ),
                                             1 => array(

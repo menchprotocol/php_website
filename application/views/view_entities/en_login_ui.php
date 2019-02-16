@@ -1,4 +1,4 @@
-<h1>Login</h1>
+<h1>Sign In</h1>
 <br/>
 
 <div class="login-content">
@@ -38,7 +38,7 @@
         </div>
 
         <div id="loginb" class="submit-btn pass_success">
-            <input type="submit" class="btn btn-primary pass btn-raised btn-round" value="Login">
+            <input type="submit" class="btn btn-primary pass btn-raised btn-round" value="Sign In">
             <a class="btn btn-primary pass btn-raised btn-round" style="display: none;"
                href="javascript:password_initiate_reset();">Request Password Reset</a>
             <span class="pass und" style="width:294px; display:inline-block; font-size:0.9em; text-align: right;"><a
@@ -46,9 +46,32 @@
             <span class="pass" style="font-size:0.9em; display: none;">or <a href="javascript:void(0)"
                                                                              onclick="$('.pass').toggle()"><span class="underdot">Cancel</span></a></span>
 
-            <div>No account?</div>
-            <div><a href="https://m.me/askmench?ref=<?= $this->config->item('in_tactic_id') ?>" class="underdot"><i class="fab fa-facebook-messenger"></i> Join Mench as a Student <i class="fas fa-angle-right"></i></a></div>
-            <div><a href="https://m.me/askmench?ref=<?= $this->config->item('in_miner_start_id') ?>" class="underdot"><i class="fab fa-facebook-messenger"></i> Join Mench as a Miner/Contributor <i class="fas fa-angle-right"></i></a></div>
+            <div style="margin: 15px 0 7px;">No Mench account yet?</div>
+
+            <?php
+            $student_ins = $this->Database_model->fn___in_fetch(array(
+                'in_id' => $this->config->item('in_tactic_id'),
+                'in_status >=' => 2, //Published+
+            ));
+            if(count($student_ins) > 0){
+                ?>
+                <div><a href="https://m.me/askmench?ref=<?= $student_ins[0]['in_id'] ?>" class="underdot"><i class="fab fa-facebook-messenger"></i> Join to <?= $student_ins[0]['in_outcome'] ?> <i class="fas fa-angle-right"></i></a></div>
+                <?php
+            }
+            ?>
+
+
+            <?php
+            $miner_ins = $this->Database_model->fn___in_fetch(array(
+                'in_id' => $this->config->item('in_miner_start_id'),
+                'in_status >=' => 2, //Published+
+            ));
+            if(count($miner_ins) > 0){
+                ?>
+                <div><a href="https://m.me/askmench?ref=<?= $miner_ins[0]['in_id'] ?>" class="underdot"><i class="fab fa-facebook-messenger"></i> Join to <?= $miner_ins[0]['in_outcome'] ?> <i class="fas fa-angle-right"></i></a></div>
+                <?php
+            }
+            ?>
 
         </div>
     </form>

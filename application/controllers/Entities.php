@@ -740,7 +740,7 @@ class Entities extends CI_Controller
         $udata = fn___en_auth();
         if (!$udata) {
             //Display error:
-            die('<span style="color:#FF0000;">Error: Invalid Session. Login again to continue.</span>');
+            die('<span style="color:#FF0000;">Error: Invalid Session. Sign In again to continue.</span>');
         }
 
         $messages = $this->Database_model->fn___tr_fetch(array(
@@ -776,7 +776,7 @@ class Entities extends CI_Controller
         }
 
         $this->load->view('view_shared/public_header', array(
-            'title' => 'Login',
+            'title' => 'Sign In',
         ));
         $this->load->view('view_entities/en_login_ui');
         $this->load->view('view_shared/public_footer');
@@ -785,7 +785,7 @@ class Entities extends CI_Controller
     function en_login_process()
     {
 
-        //Setting for admin logins:
+        //Setting for admin Sign Ins:
 
         if (!isset($_POST['input_email']) || !filter_var($_POST['input_email'], FILTER_VALIDATE_EMAIL)) {
             return fn___redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Enter valid email to continue.</div>');
@@ -817,7 +817,7 @@ class Entities extends CI_Controller
 
         //Authenticate their password:
         $login_passwords = $this->Database_model->fn___tr_fetch(array(
-            'tr_en_parent_id' => 3286, //Mench Login Password
+            'tr_en_parent_id' => 3286, //Mench Sign In Password
             'tr_en_child_id' => $ens[0]['en_id'],
         ), array(), 1 /* get the top status */, 0, array(
             //Order by highest status:
@@ -857,7 +857,7 @@ class Entities extends CI_Controller
         $is_master = false;
 
 
-        //Are they miner? Give them login access:
+        //Are they miner? Give them Sign In access:
         if (fn___filter_array($ens[0]['en__parents'], 'en_id', 1308)) {
             //They have admin rights:
             $session_data['user'] = $ens[0];
@@ -876,7 +876,7 @@ class Entities extends CI_Controller
 
             } else {
 
-                return fn___redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Login Denied. The Matrix v' . $this->config->item('app_version') . ' supports <a href="https://www.google.com/chrome/browser/" target="_blank"><u>Google Chrome</u></a> only.</div>');
+                return fn___redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: Sign In Denied. The Matrix v' . $this->config->item('app_version') . ' supports <a href="https://www.google.com/chrome/browser/" target="_blank"><u>Google Chrome</u></a> only.</div>');
 
             }
 
@@ -980,7 +980,7 @@ class Entities extends CI_Controller
             //Fetch their passwords to authenticate login:
             $login_passwords = $this->Database_model->fn___tr_fetch(array(
                 'tr_status >=' => 2, //Must be published or verified
-                'tr_en_parent_id' => 3286, //Mench Login Password
+                'tr_en_parent_id' => 3286, //Mench Sign In Password
                 'tr_en_child_id' => $_POST['en_id'], //For this user
             ));
 

@@ -54,7 +54,7 @@ $url_part_1 = $this->uri->segment(1);
                 } else {
                     if (!($url_part_1 == 'login')) {
                         //This is the login page, show the Launch Button:
-                        echo '<li><a href="/login'. ( isset($in['in_id']) ? '?url=%2Fintents%2F'.$in['in_id'] : '' ) .'"><i class="fas fa-sign-in"></i> Login</a></li>';
+                        echo '<li><a href="/login'. ( isset($in['in_id']) ? '?url=%2Fintents%2F'.$in['in_id'] : '' ) .'"><i class="fas fa-sign-in"></i> Sign In</a></li>';
                     }
                 }
                 ?>

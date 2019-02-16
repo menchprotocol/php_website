@@ -52,7 +52,7 @@ class Ledger extends CI_Controller
 
             return fn___echo_json(array(
                 'status' => 0,
-                'message' => 'Session Expired. Login and try again',
+                'message' => 'Session Expired. Sign In and try again',
             ));
 
         } elseif (!isset($_POST['tr_id']) || intval($_POST['tr_id']) < 1) {
@@ -176,7 +176,7 @@ class Ledger extends CI_Controller
 
             return fn___echo_json(array(
                 'status' => 0,
-                'message' => 'Session Expired. Login and try again',
+                'message' => 'Session Expired. Sign In and try again',
             ));
 
         } elseif (!isset($_POST['new_tr_orders']) || !is_array($_POST['new_tr_orders']) || count($_POST['new_tr_orders']) < 1) {
@@ -241,7 +241,7 @@ class Ledger extends CI_Controller
 
             return fn___echo_json(array(
                 'status' => 0,
-                'message' => 'Session Expired. Login and Try again.',
+                'message' => 'Session Expired. Sign In and Try again.',
             ));
 
         } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
