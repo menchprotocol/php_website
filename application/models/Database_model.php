@@ -877,9 +877,9 @@ class Database_model extends CI_Model
 
                         //We have a metadata, so we might have the Algolia ID stored. Let's check:
                         $metadata = unserialize($db_row[$loop_obj . '_metadata']);
-                        if (isset($metadata[$loop_obj . '_algolia_id']) && intval($metadata[$loop_obj . '_algolia_id']) > 0) {
+                        if (isset($metadata[$loop_obj . '__algolia_id']) && intval($metadata[$loop_obj . '__algolia_id']) > 0) {
                             //We found it! Let's just update existing algolia record
-                            $export_row['objectID'] = intval($metadata[$loop_obj . '_algolia_id']);
+                            $export_row['objectID'] = intval($metadata[$loop_obj . '__algolia_id']);
                         }
 
                     }
@@ -888,7 +888,7 @@ class Database_model extends CI_Model
 
                     //Clear possible metadata algolia ID's that have been cached:
                     $this->Matrix_model->fn___metadata_update($loop_obj, $db_row, array(
-                        $loop_obj . '_algolia_id' => null, //Since all objects have been mass removed!
+                        $loop_obj . '__algolia_id' => null, //Since all objects have been mass removed!
                     ));
 
                 }
@@ -964,7 +964,7 @@ class Database_model extends CI_Model
                         if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs']) > 0) {
                             foreach ($algolia_results['objectIDs'] as $key => $algolia_id) {
                                 $this->Matrix_model->fn___metadata_update($loop_obj, $db_rows[0], array(
-                                    $loop_obj . '_algolia_id' => $algolia_id, //The newly created algolia object
+                                    $loop_obj . '__algolia_id' => $algolia_id, //The newly created algolia object
                                 ));
                             }
                         }
@@ -984,7 +984,7 @@ class Database_model extends CI_Model
 
                         //also set its algolia_id to 0 locally:
                         $this->Matrix_model->fn___metadata_update($loop_obj, $db_rows[0], array(
-                            $loop_obj . '_algolia_id' => null, //Since this item has been removed!
+                            $loop_obj . '__algolia_id' => null, //Since this item has been removed!
                         ));
 
                         $synced_count += count($algolia_results['objectIDs']);
@@ -996,6 +996,8 @@ class Database_model extends CI_Model
                 }
 
             } else {
+
+
 
                 /*
                  *
@@ -1015,7 +1017,12 @@ class Database_model extends CI_Model
 
                     foreach ($algolia_results['objectIDs'] as $key => $algolia_id) {
                         $this->Matrix_model->fn___metadata_update($loop_obj, $db_rows[$key], array(
-                            $loop_obj . '_algolia_id' => $algolia_id,
+                            $loop_obj . '__algolia_id' => $algolia_id,
+                        ));
+
+                        //TODO Remove:
+                        $this->Matrix_model->fn___metadata_update($loop_obj, $db_rows[$key], array(
+                            $loop_obj . '_algolia_id' => null,
                         ));
                     }
 
