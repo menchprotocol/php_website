@@ -1016,6 +1016,7 @@ class Database_model extends CI_Model
                 if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs']) > 0) {
 
                     foreach ($algolia_results['objectIDs'] as $key => $algolia_id) {
+
                         $this->Matrix_model->fn___metadata_update($loop_obj, $db_rows[$key], array(
                             $loop_obj . '__algolia_id' => $algolia_id,
                         ));
@@ -1024,6 +1025,13 @@ class Database_model extends CI_Model
                         $this->Matrix_model->fn___metadata_update($loop_obj, $db_rows[$key], array(
                             $loop_obj . '_algolia_id' => null,
                         ));
+
+                        //Return results:
+                        return array(
+                            'loop_obj' => $loop_obj,
+                            'algolia_id' => $algolia_id,
+                            'db' => $db_rows[$key],
+                        );
                     }
 
                 }
