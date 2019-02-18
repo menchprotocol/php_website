@@ -827,7 +827,7 @@ class Database_model extends CI_Model
         foreach($fetch_objects as $loop_obj){
 
             //Fetch item(s) for updates including their parents:
-            if ($input_obj_type == 'in') {
+            if ($loop_obj == 'in') {
 
                 if($input_obj_id){
                     $limits['in_id'] = $input_obj_id;
@@ -837,7 +837,7 @@ class Database_model extends CI_Model
 
                 $db_rows = $this->Database_model->fn___in_fetch($limits, array('in__parents', 'in__messages'));
 
-            } elseif ($input_obj_type == 'en') {
+            } elseif ($loop_obj == 'en') {
 
                 if($input_obj_id){
                     $limits['en_id'] = $input_obj_id;
