@@ -39,7 +39,7 @@
             echo '<span class="checkbox" style="margin: 0;">
             <label style="display:inline-block !important; font-size: 0.8em !important; margin-left:5px;">
                 <input type="checkbox" class="source_parent_ens" value="'.$en_id.'" />
-                <span>'.$m['m_icon'].' '.$m['m_name'].'</span>
+                <span><span class="en_icon_mini_ui">'.$m['m_icon'].'</span> '.$m['m_name'].'</span>
             </label>
         </span>';
         }

@@ -759,7 +759,7 @@ class Database_model extends CI_Model
     }
 
 
-    function fn___update_algolia($obj_type, $focus_obj_id = 0)
+    function fn___update_algolia($input_obj_type = null, $input_obj_id = 0)
     {
 
         /*
@@ -768,258 +768,264 @@ class Database_model extends CI_Model
          *
          * */
 
+        $valid_objects = array('en','in');
+
         if (!$this->config->item('enable_algolia')) {
             //Algolia is disabled, so avoid syncing:
             return array(
                 'status' => 0,
-                'message' => 'Algolia disabled via config.php',
+                'message' => 'Algolia disabled',
+            );
+        } elseif($input_obj_type && !in_array($input_obj_type , $valid_objects)){
+            return array(
+                'status' => 0,
+                'message' => 'Object type is invalid',
+            );
+        } elseif(($input_obj_type && !$input_obj_id) || ($input_obj_id && !$input_obj_type)){
+            return array(
+                'status' => 0,
+                'message' => 'Must define both object type and ID',
             );
         }
 
         //Define the support objects indexed on algolia:
-        $focus_obj_id = intval($focus_obj_id);
+        $object_statuses = $this->config->item('object_statuses'); //Needed for intent Icon
+        $input_obj_id = intval($input_obj_id);
+        $limits = array();
 
-        //Names of Algolia indexes for each data type:
-        $alg_indexes = array(
-            'in' => 'alg_intents',
-            'en' => 'alg_entities',
-        );
-
-        if (!array_key_exists($obj_type, $alg_indexes)) {
-            return array(
-                'status' => 0,
-                'message' => 'Invalid object [' . $obj_type . ']',
-            );
-        }
 
         if (fn___is_dev()) {
             //Do a call on live as this does not work on local due to security limitations:
-            return json_decode(fn___curl_html($this->config->item('algolia_remote') . "/cron/fn___update_algolia/" . $obj_type . "/" . $focus_obj_id));
+            return json_decode(fn___curl_html($this->config->item('algolia_remote') . "/cron/fn___update_algolia/" . ( $input_obj_type ? $input_obj_type . '/' . $input_obj_id : '' )));
         }
 
-        //Load algolia
-        $search_index = fn___load_php_algolia($alg_indexes[$obj_type]);
+        //Load Algolia Index
+        $search_index = fn___load_php_algolia('alg_index');
 
 
-        //Prepare query limits:
-        if ($focus_obj_id) {
+        //Which objects are we fetching?
+        if ($input_obj_type) {
 
-            $limits[$obj_type . '_id'] = $focus_obj_id;
+            //We'll only fetch a specific type:
+            $fetch_objects = array($input_obj_type);
 
         } else {
 
-            $limits[$obj_type . '_status >='] = 0; //New+ to be indexed in Search
+            //Do both intents and entities:
+            $fetch_objects = $valid_objects;
 
-            //We need to update the entire index, so clear it first:
+            //We need to update the entire index, so let's truncate it first:
             $search_index->clearIndex();
 
             //Boost processing power:
             fn___boost_power();
+
         }
 
-        //Fetch item(s) for updates including their parents:
-        if ($obj_type == 'in') {
-            $db_objects = $this->Database_model->fn___in_fetch($limits, array('in__parents', 'in__messages'));
-        } elseif ($obj_type == 'en') {
-            $db_objects = $this->Database_model->fn___en_fetch($limits, array('en__parents'));
-        }
 
-        //Go through selection and update:
-        if (count($db_objects) == 0) {
-            return array(
-                'status' => 0,
-                'message' => 'No items found for [' . $obj_type . ']',
-            );
-        }
+        $synced_count = 0;
+        foreach($fetch_objects as $loop_obj){
 
-        //Build the index:
-        $alg_objects = array();
-        foreach ($db_objects as $db_obj) {
+            //Fetch item(s) for updates including their parents:
+            if ($input_obj_type == 'in') {
 
-            //Prepare variables:
-            unset($alg_obj);
-            $alg_obj = array();
-            $metadata = null;
-
-            if (strlen($db_obj[$obj_type . '_metadata']) > 0) {
-
-                //We have a metadata, so we might have the Algolia ID stored as well:
-                $metadata = unserialize($db_obj[$obj_type . '_metadata']);
-                if (isset($metadata[$obj_type . '_algolia_id']) && intval($metadata[$obj_type . '_algolia_id']) > 0) {
-
-                    //Yes, we have the Algolia ID! Now let's see what to do:
-                    if (!$focus_obj_id) {
-                        //Also clear all metadata algolia ID's that have been cached:
-                        $this->Matrix_model->fn___metadata_update($obj_type, $db_obj, array(
-                            $obj_type . '_algolia_id' => null, //Since this object has been removed!
-                        ));
-                    } else {
-                        //Update existing algolia record
-                        $alg_obj['objectID'] = intval($metadata[$obj_type . '_algolia_id']);
-                    }
+                if($input_obj_id){
+                    $limits['in_id'] = $input_obj_id;
+                } else {
+                    $limits['in_status >='] = 0; //New+
                 }
+
+                $db_rows = $this->Database_model->fn___in_fetch($limits, array('in__parents', 'in__messages'));
+
+            } elseif ($input_obj_type == 'en') {
+
+                if($input_obj_id){
+                    $limits['en_id'] = $input_obj_id;
+                } else {
+                    $limits['en_status >='] = 0; //New+
+                }
+
+                $db_rows = $this->Database_model->fn___en_fetch($limits, array('en__parents'));
+
             }
 
 
-            //Now build the index depending on the object type:
-            if ($obj_type == 'en') {
-
-                //Add basic entity details:
-                $alg_obj['en_id'] = intval($db_obj['en_id']);
-                $alg_obj['en_status'] = intval($db_obj['en_status']);
-                $alg_obj['en_icon'] = $db_obj['en_icon'];
-                $alg_obj['en_name'] = $db_obj['en_name'];
-                $alg_obj['en_trust_score'] = intval($db_obj['en_trust_score']);
-
-                //Add parent data:
-                $alg_obj['en_parent_content'] = '';
-                $alg_obj['_tags'] = array();
-                foreach ($db_obj['en__parents'] as $tr) {
-
-                    //Save the ID of parent for search filtering options if needed:
-                    array_push($alg_obj['_tags'], 'en' . $tr['en_id']);
-
-                    //Also index the content value if any:
-                    if (strlen($tr['tr_content']) > 0) {
-                        $alg_obj['en_parent_content'] .= $tr['tr_content'] . ' ';
-                    }
-
-                }
-
-                //Clean keywords
-                $alg_obj['en_parent_content'] = trim(strip_tags($alg_obj['en_parent_content']));
-
-            } elseif ($obj_type == 'in') {
-
-                //Add basic intent details:
-                $alg_obj['in_id'] = intval($db_obj['in_id']);
-                $alg_obj['in_status'] = intval($db_obj['in_status']);
-                $alg_obj['in_outcome'] = $db_obj['in_outcome'];
-                $alg_obj['in_is_any'] = intval($db_obj['in_is_any']);
-
-                //Append some of the intent Metadata for better contextual searching:
-                $alg_obj['in__tree_max_secs'] = ($metadata && isset($metadata['in__tree_max_seconds']) ? intval($metadata['in__tree_max_seconds']) : 0);
-                $alg_obj['in__tree_min_secs'] = ($metadata && isset($metadata['in__tree_min_secs']) ? intval($metadata['in__tree_min_secs']) : 0);
-                $alg_obj['in__tree_in_active_count'] = ($metadata && isset($metadata['in__tree_in_active_count']) ? intval($metadata['in__tree_in_active_count']) : 0);
-                $alg_obj['in__message_tree_count'] = ($metadata && isset($metadata['in__message_tree_count']) ? intval($metadata['in__message_tree_count']) : 0);
-
-                //Append parent intents IDs:
-                $alg_obj['_tags'] = array();
-                foreach ($db_obj['in__parents'] as $tr) {
-                    //Save the ID of parent for search filtering options if needed:
-                    array_push($alg_obj['_tags'], 'in' . $tr['in_id']);
-                }
-
-                //Append intent messages:
-                $alg_obj['in_messages'] = '';
-                foreach ($db_obj['in__messages'] as $tr) {
-                    //Include Messages as well which will be configured with a lower search weight relative to the intent outcome:
-                    $alg_obj['in_messages'] .= ' ' . $tr['tr_content'];
-                }
-
+            //Did we find anything?
+            if (count($db_rows) == 0) {
+                continue;
             }
 
-            //Add to main array
-            array_push($alg_objects, $alg_obj);
-
-        }
 
 
-        //Now let's see what to do with the index (Update, Create or delete)
-        if ($focus_obj_id) {
+            //Build the index:
+            $alg_array = array();
+            foreach ($db_rows as $db_row) {
 
-            //We should have fetched a single item only, meaning $alg_objects[0] is what we are focused on...
+                //Prepare variables:
+                unset($export_row);
+                $export_row = array();
 
-            //What's the status? Is it active or should it be removed?
-            if ($db_objects[0][$obj_type . '_status'] >= 0) {
 
-                if (isset($alg_objects[0]['objectID'])) {
+                //Attempt to fetch Algolia object ID from object Metadata:
+                if($input_obj_type){
 
-                    //Update existing index:
-                    $algolia_results = $search_index->saveObjects($alg_objects);
+                    if (strlen($db_row[$input_obj_type . '_metadata']) > 0) {
+
+                        //We have a metadata, so we might have the Algolia ID stored. Let's check:
+                        $metadata = unserialize($db_row[$input_obj_type . '_metadata']);
+                        if (isset($metadata[$input_obj_type . '_algolia_id']) && intval($metadata[$input_obj_type . '_algolia_id']) > 0) {
+                            //We found it! Let's just update existing algolia record
+                            $export_row['objectID'] = intval($metadata[$input_obj_type . '_algolia_id']);
+                        }
+
+                    }
 
                 } else {
 
-                    //We do not have an index to an Algolia object locally, so create a new index:
-                    $algolia_results = $search_index->addObjects($alg_objects);
-
-
-                    //Now update local database with the new objectIDs:
-                    if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs']) > 0) {
-                        foreach ($algolia_results['objectIDs'] as $key => $algolia_id) {
-                            $this->Matrix_model->fn___metadata_update($obj_type, $db_objects[0], array(
-                                $obj_type . '_algolia_id' => $algolia_id, //The newly created algolia object
-                            ));
-                        }
-                    }
+                    //Clear possible metadata algolia ID's that have been cached:
+                    $this->Matrix_model->fn___metadata_update($loop_obj, $db_row, array(
+                        $loop_obj . '_algolia_id' => null, //Since all objects have been mass removed!
+                    ));
 
                 }
 
-                //Return results:
-                return array(
-                    'status' => 1,
-                    'message' => 'Object Added',
-                    'algolia_results' => $algolia_results,
-                );
+
+
+                //Now build object-specific index:
+                if ($loop_obj == 'en') {
+
+                    $export_row['alg_obj_is_in'] = 0;
+                    $export_row['alg_obj_id'] = intval($db_row['en_id']);
+                    $export_row['alg_obj_status'] = intval($db_row['en_status']);
+                    $export_row['alg_obj_icon'] = ( strlen($db_row['en_icon']) > 0 ? $db_row['en_icon'] : '<i class="fas fa-at grey-at"></i>' );
+                    $export_row['alg_obj_name'] = $db_row['en_name'];
+                    $export_row['alg_obj_postfix'] = ''; //Entities have no post-fix at this time
+
+                    //Add keywords:
+                    $export_row['alg_obj_keywords'] = '';
+                    foreach ($db_row['en__parents'] as $tr) {
+                        if (strlen($tr['tr_content']) > 0) {
+                            $export_row['alg_obj_keywords'] .= $tr['tr_content'] . ' ';
+                        }
+                    }
+                    $export_row['alg_obj_keywords'] = trim(strip_tags($export_row['alg_obj_keywords']));
+
+                } elseif ($loop_obj == 'in') {
+
+                    $export_row['alg_obj_is_in'] = 1;
+                    $export_row['alg_obj_id'] = intval($db_row['in_id']);
+                    $export_row['alg_obj_status'] = intval($db_row['in_status']);
+                    $export_row['alg_obj_icon'] = $object_statuses['in_is_any'][$db_row['in_is_any']]['s_icon']; //Entity type icon
+                    $export_row['alg_obj_name'] = $db_row['in_outcome'];
+                    $export_row['alg_obj_postfix'] = '<span class="alg-postfix"><i class="fal fa-clock"></i>' . fn___echo_time_range($db_row) . '</span>';
+
+                    //Add keywords:
+                    $export_row['alg_obj_keywords'] = '';
+                    foreach ($db_row['in__messages'] as $tr) {
+                        $export_row['alg_obj_keywords'] .= $tr['tr_content'] . ' ';
+                    }
+                    $export_row['alg_obj_keywords'] = trim(strip_tags($export_row['alg_obj_keywords']));
+
+                }
+
+                //Add to main array
+                array_push($alg_array, $export_row);
+
+            }
+
+
+
+            //Now let's see what to do with the index (Update, Create or delete)
+            if ($input_obj_type) {
+
+                //We should have fetched a single item only, meaning $alg_array[0] is what we are focused on...
+
+                //What's the status? Is it active or should it be removed?
+                if ($db_rows[0][$input_obj_type . '_status'] >= 0) {
+
+                    if (isset($alg_array[0]['objectID'])) {
+
+                        //Update existing index:
+                        $algolia_results = $search_index->saveObjects($alg_array);
+
+                    } else {
+
+                        //We do not have an index to an Algolia object locally, so create a new index:
+                        $algolia_results = $search_index->addObjects($alg_array);
+
+                        //Now update local database with the new objectIDs:
+                        if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs']) > 0) {
+                            foreach ($algolia_results['objectIDs'] as $key => $algolia_id) {
+                                $this->Matrix_model->fn___metadata_update($input_obj_type, $db_rows[0], array(
+                                    $input_obj_type . '_algolia_id' => $algolia_id, //The newly created algolia object
+                                ));
+                            }
+                        }
+
+                    }
+
+                    $synced_count += count($algolia_results['objectIDs']);
+
+                } else {
+
+                    if (isset($alg_array[0]['objectID'])) {
+
+                        //Object is removed locally but still indexed remotely on Algolia, so let's remove it from Algolia:
+
+                        //Remove from algolia:
+                        $algolia_results = $search_index->deleteObject($alg_array[0]['objectID']);
+
+                        //also set its algolia_id to 0 locally:
+                        $this->Matrix_model->fn___metadata_update($input_obj_type, $db_rows[0], array(
+                            $input_obj_type . '_algolia_id' => null, //Since this item has been removed!
+                        ));
+
+                        $synced_count += count($algolia_results['objectIDs']);
+
+                    } else {
+                        //Nothing to do here since we don't have the Algolia object locally!
+                    }
+
+                }
 
             } else {
 
-                if (isset($alg_objects[0]['objectID'])) {
+                /*
+                 *
+                 * This is a mass update request.
+                 *
+                 * All remote objects have already been removed from the Algolia
+                 * index & metadata algolia_ids have all been set to zero!
+                 *
+                 * We're ready to create new items and update local
+                 *
+                 * */
 
-                    //Object is removed locally but still indexed remotely on Algolia, so let's remove it from Algolia:
+                $algolia_results = $search_index->addObjects($alg_array);
 
-                    //Remove from algolia:
-                    $algolia_results = $search_index->deleteObject($alg_objects[0]['objectID']);
+                //Now update database with the objectIDs:
+                if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs']) > 0) {
 
-                    //also set its algolia_id to 0 locally:
-                    $this->Matrix_model->fn___metadata_update($obj_type, $db_objects[0], array(
-                        $obj_type . '_algolia_id' => null, //Since this item has been removed!
-                    ));
+                    foreach ($algolia_results['objectIDs'] as $key => $algolia_id) {
+                        $this->Matrix_model->fn___metadata_update($input_obj_type, $db_rows[$key], array(
+                            $input_obj_type . '_algolia_id' => $algolia_id,
+                        ));
+                    }
 
-                } else {
-                    //Nothing to do here since we don't have the Algolia object locally!
                 }
 
-                //Return results:
-                return array(
-                    'status' => 1,
-                    'message' => 'Object Removed',
-                    'algolia_results' => $algolia_results,
-                );
+                $synced_count += count($algolia_results['objectIDs']);
 
-            }
-
-        } else {
-
-            /*
-             *
-             * This is a mass update request.
-             *
-             * All remote objects have already been removed from the Algolia
-             * index & metadata algolia_ids have all been set to zero!
-             *
-             * We're ready to create new items and update local
-             *
-             * */
-
-            $algolia_results = $search_index->addObjects($alg_objects);
-
-            //Now update database with the objectIDs:
-            if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs']) > 0) {
-                foreach ($algolia_results['objectIDs'] as $key => $algolia_id) {
-                    $this->Matrix_model->fn___metadata_update($obj_type, $db_objects[$key] /* Not sure if this works! TODO Test this to ensure, or else use $alg_objects[$key][$obj_type . '_id'] to re-fetch data */, array(
-                        $obj_type . '_algolia_id' => $algolia_id,
-                    ));
-                }
             }
 
         }
 
+
+
         //Return results:
         return array(
-            'status' => (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs']) > 0 ? 1 : 0),
-            'message' => (isset($algolia_results['objectIDs']) ? count($algolia_results['objectIDs']) : 0) . ' objects updated on Algolia',
-            'algolia_results' => $algolia_results,
+            'status' => ( $synced_count > 0 ? 1 : 0),
+            'message' => $synced_count . ' objects sync with Algolia',
         );
 
     }

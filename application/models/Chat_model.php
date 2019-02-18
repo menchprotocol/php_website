@@ -545,6 +545,9 @@ class Chat_model extends CI_Model
         //We assume this message has text, unless its only content is an entity reference like "@123"
         $has_text = true;
 
+        //Where is this request being made from? Public landing pages will have some restrictions on what they displat:
+        $is_landing_page = is_numeric($this->uri->segment(1));
+
         if (count($msg_references['ref_entities']) > 0) {
 
             //We have a reference within this message, let's fetch it to better understand it:
@@ -576,114 +579,110 @@ class Chat_model extends CI_Model
 
 
             //Determine what type of Media this reference has:
-            foreach ($ens[0]['en__parents'] as $parent_en) {
+            if(!$is_landing_page) {
+                foreach ($ens[0]['en__parents'] as $parent_en) {
 
-                //Entity and it's link must be both published to show live:
-                if($parent_en['tr_status'] < 2 || $parent_en['en_status'] < 2){
-                    continue;
-                }
+                    //Entity and it's link must be both published to show live:
+                    if ($parent_en['tr_status'] < 2 || $parent_en['en_status'] < 2) {
+                        continue;
+                    }
 
-                if ($fb_messenger_format && array_key_exists($parent_en['tr_type_en_id'], $en_convert_4537)) {
 
-                    //Empty media file: Audio, Video, Image OR File...
 
-                    //Search for Facebook Attachment ID IF $fb_messenger_format = TRUE
-                    $fb_att_id = 0;
-                    if ($fb_messenger_format && strlen($parent_en['tr_metadata']) > 0) {
-                        //We might have a Facebook Attachment ID saved in Metadata, check to see:
-                        $metadata = unserialize($parent_en['tr_metadata']);
-                        if (isset($metadata['fb_att_id']) && intval($metadata['fb_att_id']) > 0) {
-                            //Yes we do, use this for faster media attachments:
-                            $fb_att_id = intval($metadata['fb_att_id']);
+                    if (in_array($parent_en['tr_type_en_id'], $this->config->item('en_ids_4537'))) {
+
+                        //Any Type of URL: Generic, Embed, Video, Audio, Image & File
+
+                        if ($parent_en['tr_type_en_id'] == 4257) {
+
+                            //Embed URL
+                            //Do we have a Slice command AND is this Embed URL Slice-able?
+                            if (in_array('/slice', $msg_references['ref_commands']) && fn___includes_any($parent_en['tr_content'], $sliceable_urls)) {
+
+                                //We've found a slice-able URL:
+                                $found_slicable_url = true;
+
+                                if ($fb_messenger_format) {
+                                    //Show custom Start/End URL:
+                                    $tr_content = 'https://www.youtube.com/embed/' . fn___echo_youtube_id($parent_en['tr_content']) . '?start=' . $slice_times[0] . '&end=' . $slice_times[1] . '&autoplay=1';
+                                } else {
+                                    //Show HTML Embed Code for slice-able:
+                                    $tr_content = '<div style="margin-top:7px;">' . fn___echo_url_embed($parent_en['tr_content'], $parent_en['tr_content'], false, $slice_times[0], $slice_times[1]) . '</div>';
+                                }
+
+                            } else {
+
+                                if ($fb_messenger_format) {
+                                    //Show custom Start/End URL:
+                                    $tr_content = $parent_en['tr_content'];
+                                } else {
+                                    //Show HTML Embed Code:
+                                    $tr_content = '<div style="margin-top:7px;">' . fn___echo_url_embed($parent_en['tr_content']) . '</div>';
+                                }
+
+                            }
+
+
+                            if ($fb_messenger_format) {
+
+                                //Generic URL:
+                                array_push($fb_media_attachments, array(
+                                    'tr_type_en_id' => 4552, //Text Message Sent
+                                    'tr_content' => $tr_content,
+                                    'fb_att_id' => 0,
+                                    'fb_att_type' => null,
+                                ));
+
+                            } else {
+
+                                //HTML Format, append content to current output message:
+                                $output_body_message .= $tr_content;
+
+                            }
+
+                        } elseif ($fb_messenger_format && array_key_exists($parent_en['tr_type_en_id'], $en_convert_4537)) {
+
+                            //Empty media file: Audio, Video, Image OR File...
+
+                            //Search for Facebook Attachment ID IF $fb_messenger_format = TRUE
+                            $fb_att_id = 0;
+                            if ($fb_messenger_format && strlen($parent_en['tr_metadata']) > 0) {
+                                //We might have a Facebook Attachment ID saved in Metadata, check to see:
+                                $metadata = unserialize($parent_en['tr_metadata']);
+                                if (isset($metadata['fb_att_id']) && intval($metadata['fb_att_id']) > 0) {
+                                    //Yes we do, use this for faster media attachments:
+                                    $fb_att_id = intval($metadata['fb_att_id']);
+                                }
+                            }
+
+                            //Push raw file to Media Array:
+                            array_push($fb_media_attachments, array(
+                                'tr_type_en_id' => $master_media_sent_conv[$parent_en['tr_type_en_id']],
+                                'tr_content' => ($fb_att_id > 0 ? null : $parent_en['tr_content']),
+                                'fb_att_id' => $fb_att_id,
+                                'fb_att_type' => $en_convert_4537[$parent_en['tr_type_en_id']],
+                            ));
+
+                        } elseif($fb_messenger_format && $parent_en['tr_type_en_id'] == 4256){
+
+                            //Generic URL:
+                            array_push($fb_media_attachments, array(
+                                'tr_type_en_id' => 4552, //Text Message Sent
+                                'tr_content' => $parent_en['tr_content'],
+                                'fb_att_id' => 0,
+                                'fb_att_type' => null,
+                            ));
+
+                        } elseif(!$fb_messenger_format){
+
+                            //HTML Format, append content to current output message:
+                            $output_body_message .= '<div style="margin-top:7px;">' . fn___echo_url_type($parent_en['tr_content'], $parent_en['tr_type_en_id']) . '</div>';
+
                         }
-                    }
-
-                    //Push raw file to Media Array:
-                    array_push($fb_media_attachments, array(
-                        'tr_type_en_id' => $master_media_sent_conv[$parent_en['tr_type_en_id']],
-                        'tr_content' => ($fb_att_id > 0 ? null : $parent_en['tr_content']),
-                        'fb_att_id' => $fb_att_id,
-                        'fb_att_type' => $en_convert_4537[$parent_en['tr_type_en_id']],
-                    ));
-
-                } elseif (!$fb_messenger_format && in_array($parent_en['tr_type_en_id'], $this->config->item('en_ids_4537'))) {
-
-                    //HTML Format, append content to current output message:
-                    $output_body_message .= '<div style="margin-top:7px;">' . fn___echo_url_type($parent_en['tr_content'], $parent_en['tr_type_en_id']) . '</div>';
-
-                } elseif ($parent_en['tr_type_en_id'] == 4256) {
-
-                    if ($fb_messenger_format) {
-
-                        //Generic URL:
-                        array_push($fb_media_attachments, array(
-                            'tr_type_en_id' => 4552, //Text Message Sent
-                            'tr_content' => $parent_en['tr_content'],
-                            'fb_att_id' => 0,
-                            'fb_att_type' => null,
-                        ));
-
-                    } else {
-
-                        //HTML Format, append content to current output message:
-                        $output_body_message .= '<div style="margin-top:7px;">' . fn___echo_url_type($parent_en['tr_content'], $parent_en['tr_type_en_id']) . '</div>';
 
                     }
-
-                } elseif ($parent_en['tr_type_en_id'] == 4257) {
-
-                    //Embed URL
-                    //Do we have a Slice command AND is this Embed URL Slice-able?
-                    if (in_array('/slice', $msg_references['ref_commands']) && fn___includes_any($parent_en['tr_content'], $sliceable_urls)) {
-
-                        //We've found a slice-able URL:
-                        $found_slicable_url = true;
-
-                        if ($fb_messenger_format) {
-                            //Show custom Start/End URL:
-                            $tr_content = 'https://www.youtube.com/embed/' . fn___echo_youtube_id($parent_en['tr_content']) . '?start=' . $slice_times[0] . '&end=' . $slice_times[1] . '&autoplay=1';
-                        } else {
-                            //Show HTML Embed Code for slice-able:
-                            $tr_content = '<div style="margin-top:7px;">' . fn___echo_url_embed($parent_en['tr_content'], $parent_en['tr_content'], false, $slice_times[0], $slice_times[1]) . '</div>';
-                        }
-
-                    } else {
-
-                        if ($fb_messenger_format) {
-                            //Show custom Start/End URL:
-                            $tr_content = $parent_en['tr_content'];
-                        } else {
-                            //Show HTML Embed Code:
-                            $tr_content = '<div style="margin-top:7px;">' . fn___echo_url_embed($parent_en['tr_content']) . '</div>';
-                        }
-
-                    }
-
-
-                    if ($fb_messenger_format) {
-
-                        //Generic URL:
-                        array_push($fb_media_attachments, array(
-                            'tr_type_en_id' => 4552, //Text Message Sent
-                            'tr_content' => $tr_content,
-                            'fb_att_id' => 0,
-                            'fb_att_type' => null,
-                        ));
-
-                    } else {
-
-                        //HTML Format, append content to current output message:
-                        $output_body_message .= $tr_content;
-
-                    }
-
-                } elseif (strlen($parent_en['tr_content']) > 0 && !$fb_messenger_format) {
-
-                    //This is a regular link with some contextual information.
-                    //$output_body_message .= fn___echo_tr_urls($parent_en['tr_content'] , $parent_en['tr_type_en_id']);
 
                 }
-
             }
 
 
@@ -691,11 +690,11 @@ class Chat_model extends CI_Model
             $has_text = !(trim($output_body_message) == '@' . $msg_references['ref_entities'][0]);
 
             //Adjust
-            if (!$fb_messenger_format) {
+            if (!$fb_messenger_format && !$is_landing_page) {
 
                 /*
                  *
-                 * HTML Message format for Miners, which we can
+                 * HTML Message format, which will
                  * include a link to the Entity for quick access
                  * to more information about that entity:=.
                  *

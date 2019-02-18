@@ -61,7 +61,7 @@ class Entities extends CI_Controller
 
         return fn___echo_json(array(
             'status' => 1,
-            'entity_domain_ui' => ($fav_icon ? $fav_icon : '<i class="fas fa-at grey-at"></i>') . ' ' . $curl['domainname'],
+            'entity_domain_ui' => '<span class="en_icon_mini_ui">'.($fav_icon ? $fav_icon : '<i class="fas fa-at grey-at"></i>') . '</span> ' . $curl['domainname'],
             'page_title' => $curl['page_title'],
             'curl' => $curl, //for debugging if needed
         ));

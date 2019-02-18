@@ -74,7 +74,7 @@ $uri_segment_2 = $this->uri->segment(2);
                                     </td>
                                     <td>
                                         <input type="text" class="algolia_search" id="matrix_search" data-lpignore="true"
-                                               placeholder="Search Entities/Intents">
+                                               placeholder="Search Intents & Entities">
                                     </td>
                                 </tr>
                             </table>

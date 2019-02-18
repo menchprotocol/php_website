@@ -12,7 +12,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-02-14 16:45:21 PST
+
+//Generated 2019-02-18 12:09:10 PST
 
 //Transaction Type Coin Rates:
 $config['en_ids_4374'] = array(4228, 4229, 4230, 4231, 4232, 4233, 4234, 4235, 4242, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4318, 4319, 4331, 4460, 4601, 4602);
@@ -60,7 +61,7 @@ $config['en_all_4374'] = array(
         'm_parents' => array(4594, 4485, 4374),
     ),
     4235 => array(
-        'm_icon' => '<i class="far fa-flag"></i>',
+        'm_icon' => '<i class="fas fa-flag"></i>',
         'm_name' => 'Action Plan',
         'm_desc' => '1',
         'm_parents' => array(4594, 4560, 4463, 4374),
@@ -186,7 +187,7 @@ $config['en_all_4600'] = array(
     ),
     2750 => array(
         'm_icon' => '<i class="fal fa-building"></i>',
-        'm_name' => 'Groups',
+        'm_name' => 'Organizations',
         'm_desc' => '',
         'm_parents' => array(4600, 3463),
     ),
@@ -238,7 +239,7 @@ $config['en_all_4594'] = array(
         'm_parents' => array(4594, 4485, 4374),
     ),
     4235 => array(
-        'm_icon' => '<i class="far fa-flag"></i>',
+        'm_icon' => '<i class="fas fa-flag"></i>',
         'm_name' => 'Action Plan',
         'm_desc' => 'Created when the Master adds an intent tree to their Action Plan. We will create 1 link for each intent link to create a cache of the intent tree at that point in time.',
         'm_parents' => array(4594, 4560, 4463, 4374),
@@ -709,7 +710,7 @@ $config['en_all_4454'] = array(
     ),
 );
 
-//Intent Messages:
+//Intent Messages Widget:
 $config['en_ids_4485'] = array(4231, 4234, 4232, 4233, 4601, 4602);
 $config['en_all_4485'] = array(
     4231 => array(
@@ -809,7 +810,7 @@ $config['en_all_4537'] = array(
 );
 
 //Expert Sources:
-$config['en_ids_3000'] = array(2997, 2998, 2999, 3005, 3147, 4446);
+$config['en_ids_3000'] = array(2997, 2998, 2999, 3005, 3147, 3192, 4446, 4763);
 $config['en_all_3000'] = array(
     2997 => array(
         'm_icon' => '<i class="fal fa-newspaper"></i>',
@@ -841,10 +842,22 @@ $config['en_all_3000'] = array(
         'm_desc' => '&var_weight=50',
         'm_parents' => array(3000),
     ),
+    3192 => array(
+        'm_icon' => '<i class="fal fa-compact-disc"></i>',
+        'm_name' => 'Expert Software',
+        'm_desc' => '&var_weight=1',
+        'm_parents' => array(3000),
+    ),
     4446 => array(
         'm_icon' => '<i class="fal fa-tachometer"></i>',
         'm_name' => 'Expert Assessments',
         'm_desc' => '&var_weight=10',
         'm_parents' => array(3000),
+    ),
+    4763 => array(
+        'm_icon' => '<i class="fal fa-bullhorn"></i>',
+        'm_name' => 'Expert Marketing Channels',
+        'm_desc' => '&var_weight=1',
+        'm_parents' => array(4255, 3000),
     ),
 );

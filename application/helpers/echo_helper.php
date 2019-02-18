@@ -354,39 +354,39 @@ function fn___echo_number($number, $micro = true, $fb_messenger_format = false)
             );
         }
 
-    } elseif ($number >= 1000) {
+    } elseif ($number >= 950) {
 
         $original_format = number_format($number); //Add commas
 
-        if ($number >= 1000000000) {
+        if ($number >= 950000000) {
             $formatting = array(
                 'multiplier' => (1 / 1000000000),
                 'decimals' => 1,
                 'micro_1' => 'B',
                 'micro_0' => ' Billion',
             );
-        } elseif ($number >= 10000000) {
+        } elseif ($number >= 9500000) {
             $formatting = array(
                 'multiplier' => (1 / 1000000),
                 'decimals' => 0,
                 'micro_1' => 'M',
                 'micro_0' => ' Million',
             );
-        } elseif ($number >= 1000000) {
+        } elseif ($number >= 950000) {
             $formatting = array(
                 'multiplier' => (1 / 1000000),
                 'decimals' => 1,
                 'micro_1' => 'M',
                 'micro_0' => ' Million',
             );
-        } elseif ($number >= 10000) {
+        } elseif ($number >= 9500) {
             $formatting = array(
                 'multiplier' => (1 / 1000),
                 'decimals' => 0,
                 'micro_1' => 'k',
                 'micro_0' => ' Thousand',
             );
-        } elseif ($number >= 1000) {
+        } elseif ($number >= 950) {
             $formatting = array(
                 'multiplier' => (1 / 1000),
                 'decimals' => 1,
@@ -847,7 +847,7 @@ function fn___echo_in_time_estimate($in, $fb_messenger_format = 0, $expand_mode 
             <div class="panel-heading" role="tab" id="heading' . $id . '">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $id . '">
-                        <i class="fas" style="transform:none !important;">⏰</i> ' . ucwords(fn___echo_time_range($in)) . '<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                        <i class="fas" style="transform:none !important;">⏰</i> ' . ucwords(fn___echo_time_range($in)) . ' to Complete<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                     </a>
                 </h4>
             </div>
@@ -980,7 +980,7 @@ function fn___echo_en_messages($tr){
     $ui .= '<li class="pull-right edit-off"><a class="btn btn-primary button-max" style="border:2px solid #fedd16 !important;" href="/intents/' . $tr['tr_in_child_id'] . '" target="_parent" title="Message Intent: '.$tr['in_outcome'].'" data-toggle="tooltip" data-placement="top">'.$object_statuses['in_is_any'][$tr['in_is_any']]['s_icon'].' '.$tr['in_outcome'].'</a></li>';
 
     //Order:
-    $ui .= '<li class="pull-right edit-off message_status" style="margin: 0 3px 0 0;"><span title="Message order relative to siblings" data-toggle="tooltip" data-placement="top"><i class="fas fa-exchange rotate90"></i>' . fn___echo_number_ordinal($tr['tr_order']) . '</span></li>';
+    $ui .= '<li class="pull-right edit-off message_status" style="margin: 0 3px 0 0;"><span title="Message order relative to siblings" data-toggle="tooltip" data-placement="top"><i class="fas fa-exchange rotate90"></i>' . fn___echo_ordinal_number($tr['tr_order']) . '</span></li>';
 
     $ui .= '<li style="clear: both;">&nbsp;</li>';
 
@@ -1672,7 +1672,7 @@ function fn___echo_rank($integer){
     } elseif($integer==3){
         return '🥉';
     } else {
-        return fn___echo_number_ordinal($integer);
+        return fn___echo_ordinal_number($integer);
     }
 }
 
@@ -1883,7 +1883,7 @@ function fn___echo_json($array)
 }
 
 
-function fn___echo_number_ordinal($number)
+function fn___echo_ordinal_number($number)
 {
     $ends = array('th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th');
     if (($number % 100) >= 11 && ($number % 100) <= 13) {

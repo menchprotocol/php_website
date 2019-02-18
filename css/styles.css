@@ -334,12 +334,22 @@ a.badge-primary:hover {
     font-weight:500;
 }
 
+.alg-postfix{
+    color: #999;
+    padding-left:3px;
+}
+
 .en_icon_ui{
     width:30px;
     display: inline-block;
     text-align: center;
 }
 
+.en_icon_mini_ui{
+    width:18px;
+    display: inline-block;
+    text-align: center;
+}
 
 
 .app-version{
@@ -814,6 +824,8 @@ input::-webkit-inner-spin-button {
     width: 20px;
     text-align: center;
 }
+
+
 
 .btn-counter {
     font-size: 0.7em;
