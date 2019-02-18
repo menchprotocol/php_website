@@ -826,6 +826,10 @@ class Database_model extends CI_Model
         $synced_count = 0;
         foreach($fetch_objects as $loop_obj){
 
+            //Remove any limits:
+            $db_rows = array();
+            unset($limits);
+
             //Fetch item(s) for updates including their parents:
             if ($loop_obj == 'in') {
 
