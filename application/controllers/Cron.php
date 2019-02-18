@@ -238,7 +238,7 @@ class Cron extends CI_Controller
 
 
     //I cannot update algolia from my local server so if fn___is_dev() is true I will call mench.com/cron/fn___update_algolia to sync my local change using a live end-point:
-    function fn___update_algolia($obj, $obj_id = 0)
+    function fn___update_algolia($obj = null, $obj_id = 0)
     {
         fn___echo_json($this->Database_model->fn___update_algolia($obj, $obj_id));
     }
