@@ -553,20 +553,8 @@ class Database_model extends CI_Model
             return false;
         }
 
-        //We need to fetch existing data in two scenarios:
-        if ($external_sync) {
-            //Fetch current entity filed values so we can compare later on after we've updated it:
-            $before_data = $this->Database_model->fn___en_fetch(array('en_id' => $id));
-
-            //Make sure this was a valid id:
-            if (!(count($before_data) == 1)) {
-                return false;
-            }
-        }
-
-
         //Cleanup metadata if needed:
-        if(isset($update_columns['en_metadata'])){
+        if(isset($update_columns['en_metadata']) && is_array($update_columns['en_metadata'])){
             $update_columns['en_metadata'] = serialize($update_columns['en_metadata']);
         }
 
@@ -578,6 +566,9 @@ class Database_model extends CI_Model
 
         //Do we need to do any additional work?
         if ($affected_rows && $external_sync) {
+
+            //Fetch current entity filed values so we can compare later on after we've updated it:
+            $before_data = $this->Database_model->fn___en_fetch(array('en_id' => $id));
 
             //Log modification transaction for every field changed:
             foreach ($update_columns as $key => $value) {
@@ -618,18 +609,8 @@ class Database_model extends CI_Model
             return false;
         }
 
-        if ($tr_miner_en_id > 0) {
-            //Fetch current intent filed values so we can compare later on after we've updated it:
-            $before_data = $this->Database_model->fn___in_fetch(array('in_id' => $id));
-
-            //Make sure this was a valid id:
-            if (!(count($before_data) == 1)) {
-                return false;
-            }
-        }
-
         //Cleanup metadata if needed:
-        if(isset($update_columns['in_metadata'])){
+        if(isset($update_columns['in_metadata']) && is_array($update_columns['in_metadata'])) {
             $update_columns['in_metadata'] = serialize($update_columns['in_metadata']);
         }
 
@@ -640,6 +621,9 @@ class Database_model extends CI_Model
 
         //Do we need to do any additional work?
         if ($affected_rows && $external_sync) {
+
+            //Fetch current intent filed values so we can compare later on after we've updated it:
+            $before_data = $this->Database_model->fn___in_fetch(array('in_id' => $id));
 
             //Note that unlike entity modification, we require a miner entity ID to log the modification transaction:
             //Log modification transaction for every field changed:
@@ -681,18 +665,6 @@ class Database_model extends CI_Model
             return false;
         }
 
-        if ($tr_miner_en_id > 0) {
-            //Fetch transaction before updating:
-            $before_data = $this->Database_model->fn___tr_fetch(array(
-                'tr_id' => $id,
-            ));
-
-            //Make sure this was a valid id:
-            if (!(count($before_data) == 1)) {
-                return false;
-            }
-        }
-
         //Update metadata if needed:
         if(isset($update_columns['tr_metadata']) && is_array($update_columns['tr_metadata'])){
             $update_columns['tr_metadata'] = serialize($update_columns['tr_metadata']);
@@ -705,6 +677,11 @@ class Database_model extends CI_Model
 
         //Log changes if successful:
         if ($affected_rows && $tr_miner_en_id) {
+
+            //Fetch transaction before updating:
+            $before_data = $this->Database_model->fn___tr_fetch(array(
+                'tr_id' => $id,
+            ));
 
             //Log modification transaction for every field changed:
             foreach ($update_columns as $key => $value) {
@@ -1017,7 +994,7 @@ class Database_model extends CI_Model
 
                     foreach ($algolia_results['objectIDs'] as $key => $algolia_id) {
 
-                        $this->Matrix_model->fn___metadata_update($loop_obj, $db_rows[$key], array(
+                        $affected_rows = $this->Matrix_model->fn___metadata_update($loop_obj, $db_rows[$key], array(
                             $loop_obj . '__algolia_id' => $algolia_id,
                         ));
 
@@ -1031,6 +1008,7 @@ class Database_model extends CI_Model
                             'loop_obj' => $loop_obj,
                             'algolia_id' => $algolia_id,
                             'db' => $db_rows[$key],
+                            'affected_rows' => $affected_rows,
                         );
                     }
 
