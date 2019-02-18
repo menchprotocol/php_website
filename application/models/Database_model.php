@@ -839,7 +839,7 @@ class Database_model extends CI_Model
                     $limits['in_status >='] = 0; //New+
                 }
 
-                $db_rows = $this->Database_model->fn___in_fetch($limits, array('in__parents', 'in__messages'));
+                $db_rows = $this->Database_model->fn___in_fetch($limits, array('in__parents', 'in__messages'), 1);
 
             } elseif ($loop_obj == 'en') {
 
@@ -849,7 +849,7 @@ class Database_model extends CI_Model
                     $limits['en_status >='] = 0; //New+
                 }
 
-                $db_rows = $this->Database_model->fn___en_fetch($limits, array('en__parents'));
+                $db_rows = $this->Database_model->fn___en_fetch($limits, array('en__parents'), 1);
 
             }
 
@@ -873,13 +873,13 @@ class Database_model extends CI_Model
                 //Attempt to fetch Algolia object ID from object Metadata:
                 if($input_obj_type){
 
-                    if (strlen($db_row[$input_obj_type . '_metadata']) > 0) {
+                    if (strlen($db_row[$loop_obj . '_metadata']) > 0) {
 
                         //We have a metadata, so we might have the Algolia ID stored. Let's check:
-                        $metadata = unserialize($db_row[$input_obj_type . '_metadata']);
-                        if (isset($metadata[$input_obj_type . '_algolia_id']) && intval($metadata[$input_obj_type . '_algolia_id']) > 0) {
+                        $metadata = unserialize($db_row[$loop_obj . '_metadata']);
+                        if (isset($metadata[$loop_obj . '_algolia_id']) && intval($metadata[$loop_obj . '_algolia_id']) > 0) {
                             //We found it! Let's just update existing algolia record
-                            $export_row['objectID'] = intval($metadata[$input_obj_type . '_algolia_id']);
+                            $export_row['objectID'] = intval($metadata[$loop_obj . '_algolia_id']);
                         }
 
                     }
@@ -916,12 +916,15 @@ class Database_model extends CI_Model
 
                 } elseif ($loop_obj == 'in') {
 
+                    //See if this tree has a time-range:
+                    $time_range = fn___echo_time_range($db_row, true, true);
+
                     $export_row['alg_obj_is_in'] = 1;
                     $export_row['alg_obj_id'] = intval($db_row['in_id']);
                     $export_row['alg_obj_status'] = intval($db_row['in_status']);
                     $export_row['alg_obj_icon'] = $object_statuses['in_is_any'][$db_row['in_is_any']]['s_icon']; //Entity type icon
                     $export_row['alg_obj_name'] = $db_row['in_outcome'];
-                    $export_row['alg_obj_postfix'] = '<span class="alg-postfix"><i class="fal fa-clock"></i>' . fn___echo_time_range($db_row) . '</span>';
+                    $export_row['alg_obj_postfix'] =  ( $time_range ? '<span class="alg-postfix"><i class="fal fa-clock"></i> ' . $time_range . '</span>' : '');
 
                     //Add keywords:
                     $export_row['alg_obj_keywords'] = '';
@@ -945,7 +948,7 @@ class Database_model extends CI_Model
                 //We should have fetched a single item only, meaning $alg_array[0] is what we are focused on...
 
                 //What's the status? Is it active or should it be removed?
-                if ($db_rows[0][$input_obj_type . '_status'] >= 0) {
+                if ($db_rows[0][$loop_obj . '_status'] >= 0) {
 
                     if (isset($alg_array[0]['objectID'])) {
 
@@ -960,8 +963,8 @@ class Database_model extends CI_Model
                         //Now update local database with the new objectIDs:
                         if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs']) > 0) {
                             foreach ($algolia_results['objectIDs'] as $key => $algolia_id) {
-                                $this->Matrix_model->fn___metadata_update($input_obj_type, $db_rows[0], array(
-                                    $input_obj_type . '_algolia_id' => $algolia_id, //The newly created algolia object
+                                $this->Matrix_model->fn___metadata_update($loop_obj, $db_rows[0], array(
+                                    $loop_obj . '_algolia_id' => $algolia_id, //The newly created algolia object
                                 ));
                             }
                         }
@@ -980,8 +983,8 @@ class Database_model extends CI_Model
                         $algolia_results = $search_index->deleteObject($alg_array[0]['objectID']);
 
                         //also set its algolia_id to 0 locally:
-                        $this->Matrix_model->fn___metadata_update($input_obj_type, $db_rows[0], array(
-                            $input_obj_type . '_algolia_id' => null, //Since this item has been removed!
+                        $this->Matrix_model->fn___metadata_update($loop_obj, $db_rows[0], array(
+                            $loop_obj . '_algolia_id' => null, //Since this item has been removed!
                         ));
 
                         $synced_count += count($algolia_results['objectIDs']);
@@ -1011,8 +1014,8 @@ class Database_model extends CI_Model
                 if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs']) > 0) {
 
                     foreach ($algolia_results['objectIDs'] as $key => $algolia_id) {
-                        $this->Matrix_model->fn___metadata_update($input_obj_type, $db_rows[$key], array(
-                            $input_obj_type . '_algolia_id' => $algolia_id,
+                        $this->Matrix_model->fn___metadata_update($loop_obj, $db_rows[$key], array(
+                            $loop_obj . '_algolia_id' => $algolia_id,
                         ));
                     }
 

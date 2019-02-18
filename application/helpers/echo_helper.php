@@ -994,7 +994,7 @@ function fn___echo_en_messages($tr){
     return $ui;
 }
 
-function fn___echo_time_range($in, $micro = false)
+function fn___echo_time_range($in, $micro = false, $hide_zero = false)
 {
 
     //Make sure we have metadata passed on via $in as sometimes it might miss it (Like when passed on via Algolia results...)
@@ -1015,6 +1015,8 @@ function fn___echo_time_range($in, $micro = false)
     $metadata = unserialize($in['in_metadata']);
 
     if (!isset($metadata['in__tree_max_seconds']) || !isset($metadata['in__tree_min_seconds'])) {
+        return false;
+    } elseif($hide_zero && $metadata['in__tree_max_seconds'] < 1){
         return false;
     }
 
