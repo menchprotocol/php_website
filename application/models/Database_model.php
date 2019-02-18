@@ -839,7 +839,7 @@ class Database_model extends CI_Model
                     $limits['in_status >='] = 0; //New+
                 }
 
-                $db_rows = $this->Database_model->fn___in_fetch($limits, array('in__parents', 'in__messages'), 1);
+                $db_rows = $this->Database_model->fn___in_fetch($limits, array('in__messages'), 1);
 
             } elseif ($loop_obj == 'en') {
 
@@ -855,7 +855,7 @@ class Database_model extends CI_Model
 
 
             //Did we find anything?
-            if (count($db_rows) == 0) {
+            if (count($db_rows) < 1) {
                 continue;
             }
 
@@ -1033,6 +1033,7 @@ class Database_model extends CI_Model
         return array(
             'status' => ( $synced_count > 0 ? 1 : 0),
             'message' => $synced_count . ' objects sync with Algolia',
+            'res' => $algolia_results,
         );
 
     }
