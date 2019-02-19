@@ -939,13 +939,11 @@ class Database_model extends CI_Model
                     $algolia_results = $search_index->addObjects($all_export_rows);
 
                     //Now update local database with the new objectIDs:
-                    if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs']) == count($all_db_rows) ) {
-                        $key = 0;
-                        foreach ($algolia_results['objectIDs'] as $algolia_id) {
+                    if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs']) == 1 ) {
+                        foreach ($algolia_results['objectIDs'] as $key => $algolia_id) {
                             $this->Matrix_model->fn___metadata_update($input_obj_type, $all_db_rows[$key], array(
                                 $input_obj_type . '__algolia_id' => $algolia_id, //The newly created algolia object
                             ));
-                            $key++;
                         }
                     }
 
@@ -995,12 +993,11 @@ class Database_model extends CI_Model
             //Now update database with the objectIDs:
             if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs']) == count($all_db_rows) ) {
 
-                $key = 0;
-                foreach ($algolia_results['objectIDs'] as $algolia_id) {
+                foreach ($algolia_results['objectIDs'] as $key => $algolia_id) {
 
                     $this_obj = ( isset($all_db_rows[$key]['in_id']) ? 'in' : 'en');
 
-                    $affected_rows = $this->Matrix_model->fn___metadata_update($this_obj, $all_db_rows[$key], array(
+                    $ee = $this->Matrix_model->fn___metadata_update($this_obj, $all_db_rows[$key], array(
                         $this_obj . '__algolia_id' => $algolia_id,
                     ));
 
@@ -1009,7 +1006,13 @@ class Database_model extends CI_Model
                         $this_obj . '_algolia_id' => null,
                     ));
 
-                    $key++;
+                    if($this_obj=='in'){
+                        return array(
+                            'ee' => $ee,
+                            'db' => $all_db_rows[$key],
+                            'algolia_id' => $algolia_id,
+                        );
+                    }
                 }
 
             }
