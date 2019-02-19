@@ -644,7 +644,7 @@ class Intents extends CI_Controller
             //Did anything change?
             if( $transaction_was_updated ){
 
-                if($transaction_meta_updated){
+                if($transaction_meta_updated && (!isset($tr_update['tr_status']) || $tr_update['tr_status'] >= 0)){
                     $tr_update['tr_metadata'] = array_merge( $tr_metadata, array(
                         'tr__conditional_score_min' => doubleval($_POST['tr__conditional_score_min']),
                         'tr__conditional_score_max' => doubleval($_POST['tr__conditional_score_max']),
