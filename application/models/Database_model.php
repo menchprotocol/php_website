@@ -179,10 +179,15 @@ class Database_model extends CI_Model
         }
 
         //Clean metadata is provided:
-        if (isset($insert_columns['tr_metadata'])) {
+        if (isset($insert_columns['tr_metadata']) && is_array($insert_columns['tr_metadata'])) {
             $insert_columns['tr_metadata'] = serialize($insert_columns['tr_metadata']);
         } else {
             $insert_columns['tr_metadata'] = null;
+        }
+
+        //Cleanup possible miner ID:
+        if(is_numeric($insert_columns['tr_miner_en_id'])){
+            $insert_columns['tr_miner_en_id'] = intval($insert_columns['tr_miner_en_id']);
         }
 
         //Try to auto detect user:
@@ -214,7 +219,7 @@ class Database_model extends CI_Model
         }
 
         if (!isset($insert_columns['tr_status'])|| is_null($insert_columns['tr_status'])) {
-            $insert_columns['tr_status'] = 2; //Auto Published
+            $insert_columns['tr_status'] = 2; //Published
         }
 
         //Set some zero defaults if not set:
@@ -240,6 +245,16 @@ class Database_model extends CI_Model
 
         //All good huh?
         if ($insert_columns['tr_id'] < 1) {
+
+            //This should not happen:
+            $this->Database_model->fn___tr_create(array(
+                'tr_type_en_id' => 4246, //Platform Error
+                'tr_content' => 'fn___tr_create() Failed to create',
+                'tr_metadata' => array(
+                    'input' => $insert_columns,
+                ),
+            ));
+
             return false;
         }
 
@@ -684,6 +699,17 @@ class Database_model extends CI_Model
 
     function fn___tr_update($id, $update_columns, $tr_miner_en_id = 0)
     {
+
+        //This should not happen:
+        $this->Database_model->fn___tr_create(array(
+            'tr_miner_en_id' => $tr_miner_en_id,
+            'tr_tr_id' => $id, //Transaction Reference
+            'tr_type_en_id' => 4246, //Platform Error
+            'tr_content' => 'Testing...',
+            'tr_metadata' => array(
+                'input' => $update_columns,
+            ),
+        ));
 
         if (count($update_columns) == 0) {
             return false;
