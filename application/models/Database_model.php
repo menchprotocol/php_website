@@ -800,7 +800,8 @@ class Database_model extends CI_Model
         }
 
 
-        $combined_objects = array();
+        $all_export_rows = array();
+        $all_db_rows = array();
         $synced_count = 0;
         foreach($fetch_objects as $loop_obj){
 
@@ -839,7 +840,6 @@ class Database_model extends CI_Model
 
 
             //Build the index:
-            $alg_array = array();
             foreach ($db_rows[$loop_obj] as $db_row) {
 
                 //Prepare variables:
@@ -913,109 +913,110 @@ class Database_model extends CI_Model
                 }
 
                 //Add to main array
-                array_push($alg_array, $export_row);
+                array_push($all_export_rows, $export_row);
+                array_push($all_db_rows, $db_row);
 
             }
+        }
 
 
+        //Now let's see what to do with the index (Update, Create or delete)
+        if ($input_obj_type) {
 
-            //Now let's see what to do with the index (Update, Create or delete)
-            if ($input_obj_type) {
+            //We should have fetched a single item only, meaning $all_export_rows[0] is what we are focused on...
 
-                //We should have fetched a single item only, meaning $alg_array[0] is what we are focused on...
+            //What's the status? Is it active or should it be removed?
+            if ($all_db_rows[0][$input_obj_type . '_status'] >= 0) {
 
-                //What's the status? Is it active or should it be removed?
-                if ($db_rows[$loop_obj][0][$loop_obj . '_status'] >= 0) {
+                if (isset($all_export_rows[0]['objectID'])) {
 
-                    if (isset($alg_array[0]['objectID'])) {
-
-                        //Update existing index:
-                        $algolia_results = $search_index->saveObjects($alg_array);
-
-                    } else {
-
-                        //We do not have an index to an Algolia object locally, so create a new index:
-                        $algolia_results = $search_index->addObjects($alg_array);
-
-                        //Now update local database with the new objectIDs:
-                        if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs']) == count($db_rows[$loop_obj]) ) {
-                            $key = 0;
-                            foreach ($algolia_results['objectIDs'] as $algolia_id) {
-                                $this->Matrix_model->fn___metadata_update($loop_obj, $db_rows[$loop_obj][$key], array(
-                                    $loop_obj . '__algolia_id' => $algolia_id, //The newly created algolia object
-                                ));
-                                $key++;
-                            }
-                        }
-
-                    }
-
-                    $synced_count += count($algolia_results['objectIDs']);
+                    //Update existing index:
+                    $algolia_results = $search_index->saveObjects($all_export_rows);
 
                 } else {
 
-                    if (isset($alg_array[0]['objectID'])) {
+                    //We do not have an index to an Algolia object locally, so create a new index:
+                    $algolia_results = $search_index->addObjects($all_export_rows);
 
-                        //Object is removed locally but still indexed remotely on Algolia, so let's remove it from Algolia:
-
-                        //Remove from algolia:
-                        $algolia_results = $search_index->deleteObject($alg_array[$loop_obj][0]['objectID']);
-
-                        //also set its algolia_id to 0 locally:
-                        $this->Matrix_model->fn___metadata_update($loop_obj, $db_rows[$loop_obj][0], array(
-                            $loop_obj . '__algolia_id' => null, //Since this item has been removed!
-                        ));
-
-                        $synced_count += count($algolia_results['objectIDs']);
-
-                    } else {
-                        //Nothing to do here since we don't have the Algolia object locally!
-                    }
-
-                }
-
-            } else {
-
-
-
-                /*
-                 *
-                 * This is a mass update request.
-                 *
-                 * All remote objects have already been removed from the Algolia
-                 * index & metadata algolia_ids have all been set to zero!
-                 *
-                 * We're ready to create new items and update local
-                 *
-                 * */
-
-                $algolia_results = $search_index->addObjects($alg_array);
-
-                //Now update database with the objectIDs:
-                if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs']) ) {
-
-                    $key = 0;
-                    foreach ($algolia_results['objectIDs'] as $algolia_id) {
-
-                        $affected_rows = $this->Matrix_model->fn___metadata_update($loop_obj, $db_rows[$loop_obj][$key], array(
-                            $loop_obj . '__algolia_id' => $algolia_id,
-                        ));
-
-                        //TODO Remove:
-                        $this->Matrix_model->fn___metadata_update($loop_obj, $db_rows[$loop_obj][$key], array(
-                            $loop_obj . '_algolia_id' => null,
-                        ));
-
-                        $key++;
+                    //Now update local database with the new objectIDs:
+                    if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs']) == count($all_db_rows) ) {
+                        $key = 0;
+                        foreach ($algolia_results['objectIDs'] as $algolia_id) {
+                            $this->Matrix_model->fn___metadata_update($input_obj_type, $all_db_rows[$key], array(
+                                $input_obj_type . '__algolia_id' => $algolia_id, //The newly created algolia object
+                            ));
+                            $key++;
+                        }
                     }
 
                 }
 
                 $synced_count += count($algolia_results['objectIDs']);
 
+            } else {
+
+                if (isset($all_export_rows[0]['objectID'])) {
+
+                    //Object is removed locally but still indexed remotely on Algolia, so let's remove it from Algolia:
+
+                    //Remove from algolia:
+                    $algolia_results = $search_index->deleteObject($all_export_rows[$input_obj_type][0]['objectID']);
+
+                    //also set its algolia_id to 0 locally:
+                    $this->Matrix_model->fn___metadata_update($input_obj_type, $all_db_rows[0], array(
+                        $input_obj_type . '__algolia_id' => null, //Since this item has been removed!
+                    ));
+
+                    $synced_count += count($algolia_results['objectIDs']);
+
+                } else {
+                    //Nothing to do here since we don't have the Algolia object locally!
+                }
+
             }
 
+        } else {
+
+
+
+            /*
+             *
+             * This is a mass update request.
+             *
+             * All remote objects have already been removed from the Algolia
+             * index & metadata algolia_ids have all been set to zero!
+             *
+             * We're ready to create new items and update local
+             *
+             * */
+
+            $algolia_results = $search_index->addObjects($all_export_rows);
+
+            //Now update database with the objectIDs:
+            if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs']) == count($all_db_rows) ) {
+
+                $key = 0;
+                foreach ($algolia_results['objectIDs'] as $algolia_id) {
+
+                    $affected_rows = $this->Matrix_model->fn___metadata_update($loop_obj, $all_db_rows[$key], array(
+                        $loop_obj . '__algolia_id' => $algolia_id,
+                    ));
+
+                    //TODO Remove:
+                    $this->Matrix_model->fn___metadata_update($loop_obj, $all_db_rows[$key], array(
+                        $loop_obj . '_algolia_id' => null,
+                    ));
+
+                    $key++;
+                }
+
+            }
+
+            $synced_count += count($algolia_results['objectIDs']);
+
         }
+        
+        
 
 
 
