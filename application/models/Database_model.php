@@ -832,11 +832,6 @@ class Database_model extends CI_Model
             }
 
 
-            //Did we find anything?
-            if (count($db_rows['en']) < 1 && count($db_rows['in']) < 1) {
-                continue;
-            }
-
 
 
             //Build the index:
@@ -917,6 +912,11 @@ class Database_model extends CI_Model
                 array_push($all_db_rows, $db_row);
 
             }
+        }
+
+        //Did we find anything?
+        if(count($all_db_rows) < 1){
+            return false;
         }
 
 
