@@ -565,7 +565,7 @@ class Database_model extends CI_Model
         $affected_rows = $this->db->affected_rows();
 
         //Do we need to do any additional work?
-        if ($affected_rows && $external_sync) {
+        if ($affected_rows > 0 && $external_sync) {
 
             //Fetch current entity filed values so we can compare later on after we've updated it:
             $before_data = $this->Database_model->fn___en_fetch(array('en_id' => $id));
@@ -597,6 +597,18 @@ class Database_model extends CI_Model
             //Sync algolia:
             $algolia_sync = $this->Database_model->fn___update_algolia('en', $id);
 
+        } elseif($affected_rows < 1){
+
+            //This should not happen:
+            $this->Database_model->fn___tr_create(array(
+                'tr_en_child_id' => $id,
+                'tr_type_en_id' => 4246, //Platform Error
+                'tr_content' => 'fn___en_update() Failed to update',
+                'tr_metadata' => array(
+                    'input' => $update_columns,
+                ),
+            ));
+
         }
 
         return $affected_rows;
@@ -620,7 +632,7 @@ class Database_model extends CI_Model
         $affected_rows = $this->db->affected_rows();
 
         //Do we need to do any additional work?
-        if ($affected_rows && $external_sync) {
+        if ($affected_rows > 0 && $external_sync) {
 
             //Fetch current intent filed values so we can compare later on after we've updated it:
             $before_data = $this->Database_model->fn___in_fetch(array('in_id' => $id));
@@ -653,6 +665,18 @@ class Database_model extends CI_Model
             //Sync algolia:
             $this->Database_model->fn___update_algolia('in', $id);
 
+        } elseif($affected_rows < 1){
+
+            //This should not happen:
+            $this->Database_model->fn___tr_create(array(
+                'tr_in_child_id' => $id,
+                'tr_type_en_id' => 4246, //Platform Error
+                'tr_content' => 'fn___in_update() Failed to update',
+                'tr_metadata' => array(
+                    'input' => $update_columns,
+                ),
+            ));
+
         }
 
         return $affected_rows;
@@ -676,7 +700,7 @@ class Database_model extends CI_Model
         $affected_rows = $this->db->affected_rows();
 
         //Log changes if successful:
-        if ($affected_rows && $tr_miner_en_id) {
+        if ($affected_rows > 0 && $tr_miner_en_id > 0) {
 
             //Fetch transaction before updating:
             $before_data = $this->Database_model->fn___tr_fetch(array(
@@ -710,6 +734,18 @@ class Database_model extends CI_Model
 
                 }
             }
+        } elseif($affected_rows < 1){
+
+            //This should not happen:
+            $this->Database_model->fn___tr_create(array(
+                'tr_tr_id' => $id, //Transaction Reference
+                'tr_type_en_id' => 4246, //Platform Error
+                'tr_content' => 'fn___tr_update() Failed to update',
+                'tr_metadata' => array(
+                    'input' => $update_columns,
+                ),
+            ));
+
         }
 
         return $affected_rows;
