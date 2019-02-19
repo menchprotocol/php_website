@@ -1025,6 +1025,7 @@ class Database_model extends CI_Model
             'status' => ( $synced_count > 0 ? 1 : 0),
             'message' => $synced_count . ' objects sync with Algolia',
             'res' => $algolia_results,
+            'all_db_rows' => $all_db_rows,
         );
 
     }
