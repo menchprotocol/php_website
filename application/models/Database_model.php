@@ -1016,7 +1016,7 @@ class Database_model extends CI_Model
                     //Object is removed locally but still indexed remotely on Algolia, so let's remove it from Algolia:
 
                     //Remove from algolia:
-                    $algolia_results = $search_index->deleteObject($all_export_rows[$input_obj_type][0]['objectID']);
+                    $algolia_results = $search_index->deleteObject($all_export_rows[0]['objectID']);
 
                     //also set its algolia_id to 0 locally:
                     $this->Matrix_model->fn___metadata_update($input_obj_type, $all_db_rows[0][$input_obj_type.'_id'], array(
