@@ -1001,7 +1001,7 @@ class Database_model extends CI_Model
                         $this_obj . '__algolia_id' => $algolia_id,
                     ));
 
-                    $this->Matrix_model->fn___metadata_update($this_obj, $all_db_rows[$key], array(
+                    $EE2 = $this->Matrix_model->fn___metadata_update($this_obj, $all_db_rows[$key], array(
                         $this_obj . '___algolia_id' => 'Yesss',
                     ));
 
@@ -1013,6 +1013,7 @@ class Database_model extends CI_Model
                     if($this_obj=='in'){
                         return array(
                             'ee' => $ee,
+                            'EE2' => $EE2,
                             'db' => $all_db_rows[$key],
                             'algolia_id' => $algolia_id,
                         );
