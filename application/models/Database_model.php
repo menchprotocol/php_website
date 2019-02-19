@@ -186,7 +186,7 @@ class Database_model extends CI_Model
         }
 
         //Cleanup possible miner ID:
-        if(is_numeric($insert_columns['tr_miner_en_id'])){
+        if(isset($insert_columns['tr_miner_en_id']) && is_numeric($insert_columns['tr_miner_en_id'])){
             $insert_columns['tr_miner_en_id'] = intval($insert_columns['tr_miner_en_id']);
         }
 
