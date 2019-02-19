@@ -998,7 +998,7 @@ class Database_model extends CI_Model
                     $this_obj = ( isset($all_db_rows[$key]['in_id']) ? 'in' : 'en');
 
                     $ee = $this->Matrix_model->fn___metadata_update($this_obj, $all_db_rows[$key], array(
-                        $this_obj . '__algolia_id' => $algolia_id,
+                        $this_obj . '__algolia_id' => intval($algolia_id),
                     ));
 
                     $EE2 = $this->Matrix_model->fn___metadata_update($this_obj, $all_db_rows[$key], array(
