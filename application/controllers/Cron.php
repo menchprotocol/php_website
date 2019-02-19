@@ -460,7 +460,7 @@ class Cron extends CI_Controller
             if ($result['status'] && isset($result['tr_metadata']['result']['attachment_id'])) {
 
                 //Save Facebook Attachment ID to DB:
-                $db_result = $this->Matrix_model->fn___metadata_update('tr', $tr, array(
+                $db_result = $this->Matrix_model->fn___metadata_update('tr', $tr['tr_id'], array(
                     'fb_att_id' => intval($result['tr_metadata']['result']['attachment_id']),
                 ));
 
@@ -484,7 +484,7 @@ class Cron extends CI_Controller
                 ));
 
                 //Also disable future attempts for this transaction:
-                $db_result = $this->Matrix_model->fn___metadata_update('tr', $tr, array(
+                $db_result = $this->Matrix_model->fn___metadata_update('tr', $tr['tr_id'], array(
                     'fb_att_id_failed' => true,
                 ));
 

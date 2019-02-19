@@ -550,7 +550,7 @@ class Matrix_model extends CI_Model
         $affected_rows = 0;
         foreach ($objects as $obj) {
             //Make a relative adjustment compared to what is currently there:
-            $affected_rows += $this->Matrix_model->fn___metadata_update($obj_type, $obj, $metadata_new, false);
+            $affected_rows += $this->Matrix_model->fn___metadata_update($obj_type, $obj[$obj_type.'_id'], $metadata_new, false);
         }
 
         //Return total affected rows:
@@ -1264,7 +1264,7 @@ class Matrix_model extends CI_Model
             )) {
 
                 //Something was not up to date, let's update:
-                if ($this->Matrix_model->fn___metadata_update('in', $this_in, array(
+                if ($this->Matrix_model->fn___metadata_update('in', $this_in['in_id'], array(
 
                     'in__tree_min_seconds' => intval($this_in['___tree_min_seconds']),
                     'in__tree_max_seconds' => intval($this_in['___tree_max_seconds']),
@@ -1294,7 +1294,7 @@ class Matrix_model extends CI_Model
     }
 
 
-    function fn___metadata_update($obj_type, $obj, $new_fields, $absolute_adjustment = true)
+    function fn___metadata_update($obj_type, $obj_id, $new_fields, $absolute_adjustment = true)
     {
 
         /*
@@ -1317,18 +1317,40 @@ class Matrix_model extends CI_Model
          *
          * */
 
-        if (!array_key_exists($obj_type, $this->config->item('core_objects')) || !isset($obj[$obj_type . '_id']) || count($new_fields) < 1) {
+        if (!array_key_exists($obj_type, $this->config->item('core_objects')) || $obj_id<1 || count($new_fields) < 1) {
             return false;
         }
 
-        //Do we have a metadata?
-        if(!isset($obj[$obj_type . '_metadata'])){
-            $obj[$obj_type . '_metadata'] = null;
+        //Fetch metadata for this object:
+        if ($obj_type == 'in') {
+
+            $db_objects = $this->Database_model->fn___in_fetch(array(
+                $obj_type.'_id' => $obj_id,
+            ));
+
+        } elseif ($obj_type == 'en') {
+
+            $db_objects = $this->Database_model->fn___en_fetch(array(
+                $obj_type.'_id' => $obj_id,
+            ));
+
+        } elseif ($obj_type == 'tr') {
+
+            $db_objects = $this->Database_model->fn___tr_fetch(array(
+                $obj_type.'_id' => $obj_id,
+            ));
+
         }
 
-        //Prepare metadata:
-        if(strlen($obj[$obj_type . '_metadata']) > 0){
-            $metadata = unserialize($obj[$obj_type . '_metadata']);
+        if(count($db_objects) < 1){
+            return false;
+        }
+
+
+
+        //Prepare newly fetched metadata:
+        if(strlen($db_objects[0][$obj_type . '_metadata']) > 0){
+            $metadata = unserialize($db_objects[0][$obj_type . '_metadata']);
         } else {
             $metadata = array();
         }
@@ -1336,19 +1358,23 @@ class Matrix_model extends CI_Model
         //Go through all the new fields and see if they differ from current metadata fields:
         foreach ($new_fields as $metadata_key => $metadata_value) {
             if (!$absolute_adjustment) {
+
                 //We need to do a relative adjustment:
                 $metadata[$metadata_key] = (isset($metadata[$metadata_key]) ? $metadata[$metadata_key] : 0) + $metadata_value;
+
             } else {
 
                 //We are doing an absolute adjustment if needed:
-                if (is_null($metadata_value)) {
+                if (is_null($metadata_value) && isset($metadata[$metadata_key])) {
+
                     //User asked to remove this value:
-                    if(isset($metadata[$metadata_key])){
-                        unset($metadata[$metadata_key]);
-                    }
-                } elseif (!isset($metadata[$metadata_key]) || $metadata[$metadata_key] !== $metadata_value) {
+                    unset($metadata[$metadata_key]);
+
+                } elseif (!is_null($metadata_value) && (!isset($metadata[$metadata_key]) || !($metadata[$metadata_key] === $metadata_value))) {
+
                     //Value has changed, adjust:
                     $metadata[$metadata_key] = $metadata_value;
+
                 }
             }
         }
@@ -1356,32 +1382,26 @@ class Matrix_model extends CI_Model
         //Now update DB without logging any transactions as this is considered a back-end update:
         if ($obj_type == 'in') {
 
-            $affected_rows = $this->Database_model->fn___in_update($obj['in_id'], array(
+            $affected_rows = $this->Database_model->fn___in_update($obj_id, array(
                 'in_metadata' => $metadata,
             ));
 
         } elseif ($obj_type == 'en') {
 
-            $affected_rows = $this->Database_model->fn___en_update($obj['en_id'], array(
+            $affected_rows = $this->Database_model->fn___en_update($obj_id, array(
                 'en_metadata' => $metadata,
             ));
 
         } elseif ($obj_type == 'tr') {
 
-            $affected_rows = $this->Database_model->fn___tr_update($obj['tr_id'], array(
+            $affected_rows = $this->Database_model->fn___tr_update($obj_id, array(
                 'tr_metadata' => $metadata,
             ));
 
         }
 
         //Should be all good:
-        return array(
-            'affected_rows' => $affected_rows,
-            'new_fields' => $new_fields,
-            'metadata' => $metadata,
-            'obj_type' => $obj_type,
-            'obj' => $obj,
-        );
+        return $affected_rows;
 
     }
 

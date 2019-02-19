@@ -115,7 +115,7 @@ class Ledger extends CI_Controller
             ));
 
             //Do a relative adjustment for this intent's metadata
-            $this->Matrix_model->fn___metadata_update('in', $ins[0], array(
+            $this->Matrix_model->fn___metadata_update('in', $ins[0]['in_id'], array(
                 'in__metadata_count' => -1, //Remove 1 from existing value
             ), false);
 
@@ -298,7 +298,7 @@ class Ledger extends CI_Controller
         ), true);
 
         //Do a relative adjustment for this intent's metadata
-        $this->Matrix_model->fn___metadata_update('in', $ins[0], array(
+        $this->Matrix_model->fn___metadata_update('in', $ins[0]['in_id'], array(
             'in__metadata_count' => 1, //Add 1 to existing value
         ), false);
 
