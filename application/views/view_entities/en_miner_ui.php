@@ -157,13 +157,14 @@
 
                         <div class="title" style="margin-bottom:0; padding-bottom:0;">
                             <h4>
-                                <i class="fal fa-fingerprint"></i> Entity Name
-                                [<span style="margin:0 0 10px 0; font-size:0.8em;">
-                            <span id="charNameNum">0</span>/<?= $this->config->item('en_name_max') ?>
-                        </span>]
+                                <i class="fas fa-at"></i> Entity Settings
                             </h4>
                         </div>
-                        <div class="inline-box">
+                        <div class="inline-box" style="margin-bottom: 15px;">
+
+                            <span class="mini-header">Entity Name: [<span style="margin:0 0 10px 0;">
+                            <span id="charNameNum">0</span>/<?= $this->config->item('en_name_max') ?>
+                        </span>]</span>
                             <span class="white-wrapper">
                                 <textarea class="form-control text-edit border" id="en_name"
                                   onkeyup="en_name_word_count()"
@@ -171,13 +172,10 @@
                                   style="height:66px; min-height:66px;">
                                 </textarea>
                             </span>
-                        </div>
 
-                        <div class="title" style="margin-top:15px;"><h4><i class="fas fa-at"></i> Entity Settings
-                            </h4></div>
-                        <div class="inline-box" style="margin-bottom: 15px;">
 
                             <!-- Entity Icon -->
+                            <span class="mini-header">Entity Icon:</span>
                             <div class="form-group label-floating is-empty"
                                  style="margin:1px 0 10px;">
                                 <div class="input-group border" data-toggle="tooltip" title="Entity Icon" data-placement="top">
@@ -189,6 +187,7 @@
                             </div>
 
                             <!-- Entity Status -->
+                            <span class="mini-header">Entity Status:</span>
                             <select class="form-control border" id="en_status" data-toggle="tooltip" title="Entity Status" data-placement="top">
                                 <?php
                                 foreach (fn___echo_status('en_status') as $status_id => $status) {
@@ -213,12 +212,7 @@
 
                             <div class="title">
                                 <h4>
-                                    <i class="fas fa-atlas"></i> Linked Entity
-                                    <span class="en-has-tr">
-                                        [<span style="margin:0 0 10px 0; font-size:0.8em;">
-                                        <span id="chartr_contentNum">0</span>/<?= $this->config->item('tr_content_max') ?>
-                                    </span>]
-                                    </span>
+                                    <i class="fas fa-atlas"></i> Transaction Settings
                                 </h4>
                             </div>
 
@@ -229,26 +223,33 @@
                                 </div>
 
                                 <div class="en-has-tr">
-                                    <div style="margin-bottom: 15px !important;">
 
-                                        <form class="drag-box" method="post" enctype="multipart/form-data">
+                                    <form class="drag-box" method="post" enctype="multipart/form-data">
 
+                                        <span class="mini-header">Link Content: [<span style="margin:0 0 10px 0;">
+                                    <span id="chartr_contentNum">0</span>/<?= $this->config->item('tr_content_max') ?>
+                                </span>]</span>
                                         <span class="white-wrapper">
-                                            <textarea class="form-control text-edit border" id="tr_content"
-                                                      onkeyup="tr_content_word_count()"
-                                                      maxlength="<?= $this->config->item('tr_content_max') ?>" data-lpignore="true"
-                                                      placeholder="Write Message, Drop a File or Paste URL"
-                                                      style="height:126px; min-height:126px;">
-                                            </textarea>
-                                        </span>
+                                        <textarea class="form-control text-edit border" id="tr_content"
+                                                  onkeyup="tr_content_word_count()"
+                                                  maxlength="<?= $this->config->item('tr_content_max') ?>" data-lpignore="true"
+                                                  placeholder="Write Message, Drop a File or Paste URL"
+                                                  style="height:126px; min-height:126px;">
+                                        </textarea>
+                                    </span>
 
-                                        <span style="margin:0; padding: 0; font-size:0.8em; line-height: 110%;"><input class="box__file inputfile" type="file" name="file" id="file" /><label class="textarea_buttons" for="file" data-toggle="tooltip" title="Upload Video, Audio, Images or PDFs up to <?= $this->config->item('file_size_max') ?> MB" data-placement="top"><i class="fal fa-cloud-upload"></i> Upload</label> | Transaction Type: <span id="en_link_type_id"></span></span>
-                                        <p id="en_link_preview"></p>
+                                    <span style="padding: 0; font-size: 0.8em; line-height: 100%; display: block; margin: -8px 0 0 0px; float: right;"><input class="box__file inputfile" type="file" name="file" id="file" /><label class="textarea_buttons" for="file" data-toggle="tooltip" title="Upload Video, Audio, Images or PDFs up to <?= $this->config->item('file_size_max') ?> MB" data-placement="top"><i class="fal fa-cloud-upload"></i> Upload</label></span>
 
-                                    </div>
 
                                     </form>
 
+
+                                    <span class="mini-header">Link Type:</span>
+                                    <span id="en_link_type_id"></span>
+                                    <p id="en_link_preview"></p>
+
+
+                                    <span class="mini-header">Transaction Status:</span>
                                     <select class="form-control border" id="tr_status" data-toggle="tooltip" title="Transaction Status" data-placement="top">
                                         <?php
                                         foreach (fn___echo_status('tr_status') as $status_id => $status) {

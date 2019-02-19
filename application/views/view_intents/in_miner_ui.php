@@ -140,44 +140,43 @@ if (isset($orphan_ins)) {
                     <div class="col-md-6 inlineform">
 
 
-                        <div class="title"><h4><i class="fal fa-bullseye-arrow"></i> Outcome [<span
-                                        style="margin:0 0 10px 0; font-size:0.8em;"><span
-                                            id="charNameNum">0</span>/<?= $this->config->item('in_outcome_max') ?></span>]
-                                </h4></div>
+                        <div class="title"><h4><i
+                                        class="fas fa-hashtag"></i> Intent Settings
+                            </h4></div>
 
-                        <div class="inline-box">
+
+                        <div class="inline-box" style="margin-bottom: 15px;">
+
+                            <span class="mini-header">Primary Outcome: [<span
+                                        style="margin:0 0 10px 0;"><span
+                                            id="charNameNum">0</span>/<?= $this->config->item('in_outcome_max') ?></span>]</span>
                             <div class="form-group label-floating is-empty" style="height: 40px !important;">
                                 <div class="input-group border">
                                 <span class="input-group-addon addon-lean addon-grey"
                                       style="color:#2f2739; font-weight: 300;">To</span>
-                                    <textarea class="form-control text-edit msg" id="in_outcome" onkeyup="fn___in_outcome_counter()"
-                                              maxlength="<?= $this->config->item('in_outcome_max') ?>" style="height:58px !important; min-height: auto !important;margin-bottom: -9px !important;"></textarea>
+                                    <textarea class="form-control text-edit msg main-box" id="in_outcome" onkeyup="fn___in_outcome_counter()"
+                                              maxlength="<?= $this->config->item('in_outcome_max') ?>"></textarea>
                                 </div>
                             </div>
-                        </div>
 
 
 
-
-                        <div class="title" style="margin-top: 15px;"><h4><i
-                                        class="fas fa-hashtag"></i> Intent Settings</h4></div>
-
-                        <div class="inline-box" style="margin-bottom: 15px;">
-
+                            <span class="mini-header">Intent Type:</span>
                             <div class="form-group label-floating is-empty" style="margin-bottom: 0; padding-bottom: 0; display:block !important;">
                                 <?php
                                 foreach (fn___echo_status('in_is_any') as $in_val => $intent_type) {
-                                    echo '<div class="radio" style="display:block; margin-top: 0 !important; width:150px;" data-toggle="tooltip" title="' . $intent_type['s_desc'] . '" data-placement="top">
-                                        <label class="underdot">
+                                    echo '<span class="radio" style="display:inline-block; margin-top: 0 !important;" data-toggle="tooltip" title="' . $intent_type['s_desc'] . '" data-placement="top">
+                                        <label class="underdot" style="display:inline-block;">
                                             <input type="radio" id="in_is_any_' . $in_val . '" name="in_is_any" value="' . $in_val . '" />
                                             ' . $intent_type['s_icon'] . ' ' . $intent_type['s_name'] . '
                                         </label>
-                                    </div>';
+                                    </span>';
                                 }
                                 ?>
                             </div>
 
 
+                            <span class="mini-header">Completion Response:</span>
                             <select class="form-control border" id="in_completion_en_id" data-toggle="tooltip" title="Intent Completion Requirements" data-placement="top" style="margin-bottom: 12px;">
                                 <option value="0">No Response Required</option>
                                 <?php
@@ -188,6 +187,33 @@ if (isset($orphan_ins)) {
                             </select>
 
 
+
+                            <span class="mini-header">Completion Cost:</span>
+                            <div class="form-group label-floating is-empty">
+                                <div class="input-group border" style="width: 155px;">
+                                    <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;"><i
+                                                class="fal fa-clock"></i></span>
+                                    <input style="padding-left:3px;" type="number" step="1" min="0"
+                                           max="<?= $this->config->item('in_seconds_max') ?>" id="in_seconds" value=""
+                                           class="form-control">
+                                    <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;">Seconds</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group label-floating is-empty">
+                                <div class="input-group border" style="margin-top:1px; width: 155px;">
+                                    <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;"><i
+                                                class="fal fa-usd-circle"></i></span>
+                                    <input style="padding-left:3px;" type="number" step="0.01" min="0" max="5000"
+                                           id="in_usd" value="" class="form-control">
+                                    <span class="input-group-addon addon-lean addon-grey"
+                                          style="color:#2f2739; font-weight: 300;">USD</span>
+                                </div>
+                            </div>
+
+
+
+                            <span class="mini-header">Intent Status:</span>
                             <select class="form-control border" id="in_status" original-status="" data-toggle="tooltip" title="Intent Status" data-placement="top" style="display: inline-block !important;">
                                 <?php
                                 foreach (fn___echo_status('in_status') as $status_id => $status) {
@@ -211,56 +237,18 @@ if (isset($orphan_ins)) {
                                 </div>
                             </div>
 
+
+
+
                         </div>
-
-
-
 
                     </div>
 
                     <div class="col-md-6">
 
-
                         <div class="title">
                             <h4>
-                                <i class="fas fa-search-dollar"></i>
-                                Completion Cost
-                            </h4>
-                        </div>
-
-                        <div class="inline-box" style="max-width:170px;">
-
-                            <div class="form-group label-floating is-empty">
-                                <div class="input-group border">
-                                    <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;"><i
-                                                class="fal fa-clock"></i></span>
-                                    <input style="padding-left:3px;" type="number" step="1" min="0"
-                                           max="<?= $this->config->item('in_seconds_max') ?>" id="in_seconds" value=""
-                                           class="form-control">
-                                    <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;">Seconds</span>
-                                </div>
-                            </div>
-
-                            <div class="form-group label-floating is-empty">
-                                <div class="input-group border" style="margin-top: 2px;">
-                                    <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;"><i
-                                                class="fal fa-usd-circle"></i></span>
-                                    <input style="padding-left:3px;" type="number" step="0.01" min="0" max="5000"
-                                           id="in_usd" value="" class="form-control">
-                                    <span class="input-group-addon addon-lean addon-grey"
-                                          style="color:#2f2739; font-weight: 300;">USD</span>
-                                </div>
-                            </div>
-
-                        </div>
-
-
-
-
-                        <div class="title" style="margin-top: 15px;">
-                            <h4>
-                                <i class="fas fa-atlas"></i>
-                                Linked <span class="tr_in_link_title"></span> Intent
+                                <i class="fas fa-atlas"></i> Transaction Settings
                             </h4>
                         </div>
 
@@ -274,16 +262,12 @@ if (isset($orphan_ins)) {
                             <div class="in-has-tr">
 
 
-                                <div style="font-size: 0.8em; margin: -5px 0 10px 0;"><i class="fas fa-hashtag"></i> <a href="javascript:void(0);" onclick="$('.edit-link').toggleClass('hidden')" class="link-in-outcome underdot" data-toggle="tooltip" title="Intent link. Click to modify." data-placement="top" style="line-height:110% !important;"></a></div>
-
-
-                                <div class="form-group inline-box label-floating is-empty edit-link hidden" style="margin-bottom: 10px;">
-                                    <div style="font-size: 0.8em;">Update <span class="tr_in_link_title"></span> Intent:</div>
-                                    <input style="padding-left:3px;" type="text" class="form-control algolia_search border" id="tr_in_link_update" placeholder="Search intents..." />
-                                </div>
+                                <span class="mini-header"><span class="tr_in_link_title"></span> Linked Intent:</span>
+                                <input style="padding-left:3px;" type="text" class="form-control algolia_search border" id="tr_in_link_update" value="" placeholder="Search replacement intent..." />
 
 
 
+                                <span class="mini-header">Link Type:</span>
                                 <div class="form-group label-floating is-empty">
 
                                     <?php
@@ -300,6 +284,7 @@ if (isset($orphan_ins)) {
                                 </div>
 
                                 <div class="score_range_box hidden">
+                                    <span class="mini-header">Assessment Score:</span>
                                     <div class="form-group label-floating is-empty"
                                          style="max-width:230px; margin:1px 0 10px;" data-toggle="tooltip" title="Min/Max assessment score between 0-100%" data-placement="top">
                                         <div class="input-group border">
@@ -317,6 +302,7 @@ if (isset($orphan_ins)) {
                                 </div>
 
                                 <div class="score_points hidden">
+                                    <span class="mini-header">Completion Points:</span>
                                     <select class="form-control border" id="tr__assessment_points" data-toggle="tooltip" title="Points adjusted when student completes intent" data-placement="top" style="margin-bottom:12px;">
                                         <?php
                                         foreach (array(-233, -144, -89, -55, -34, -21, -13, -8, -5, -3, -2, -1, 0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233) as $point) {
@@ -327,6 +313,7 @@ if (isset($orphan_ins)) {
                                 </div>
 
 
+                                <span class="mini-header">Transaction Status:</span>
                                 <select class="form-control border" data-toggle="tooltip" title="Transaction Status" data-placement="top" id="tr_status" style="display: inline-block !important;">
                                     <?php
                                     foreach (fn___echo_status('tr_status') as $status_id => $status) {

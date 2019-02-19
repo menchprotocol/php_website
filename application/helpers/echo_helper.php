@@ -1460,6 +1460,28 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
 
 
+    //Do we have entity parents loaded in our data-set?
+    if (!isset($in['in__parents'])) {
+        //Fetch parents at this point:
+        $in['in__parents'] = $CI->Database_model->fn___tr_fetch(array(
+            'tr_status >=' => 0, //New+
+            'in_status >=' => 0, //New+
+            'tr_type_en_id IN (' . join(',', $CI->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
+            'tr_in_child_id' => $in['in_id'],
+        ), array('in_parent')); //Note that parents do not need any sorting, since we only sort child intents
+
+    }
+
+    //Loop through parents and only show those that have en_icon set:
+    foreach ($in['in__parents'] as $in_parent) {
+        $ui .= ' &nbsp;<a href="/intents/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . $in_parent['in_outcome'] . '" data-placement="top" class="in_icon_child_' . $in_parent['in_id'] . '">' . $object_statuses['in_is_any'][$in_parent['in_is_any']]['s_icon'] . '</a>';
+    }
+
+
+
+
+    $ui .= '<span style="display: inline-block; float: right;">'; //Start of 5x Action Buttons
+
 
 
     //Action Plan Stats:
@@ -1531,8 +1553,9 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
 
 
+    $ui .= '</span>'; //End of 5x Action Buttons
 
-    $ui .= '</span> '; //End of right column
+    $ui .= '</span>'; //End of right column
 
 
     //To clear right float:

@@ -541,7 +541,7 @@ class Intents extends CI_Controller
                 'tr_id' => $tr_id,
                 'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
                 'tr_status >=' => 0, //New+
-            ));
+            ), array(( $_POST['is_parent'] ? 'in_child' : 'in_parent')));
             if(count($trs) < 1){
                 return fn___echo_json(array(
                     'status' => 0,
@@ -555,21 +555,18 @@ class Intents extends CI_Controller
                 'tr_status'         => intval($_POST['tr_status']),
             );
 
-            if(strlen($_POST['tr_in_link_update']) > 0){
 
-                //Validate the input for updating linked intent:
-                if(substr($_POST['tr_in_link_update'], 0, 1)=='#'){
-                    $parts = explode(' ', $_POST['tr_in_link_update']);
-                    $tr_in_link_id = intval(str_replace('#', '', $parts[0]));
-                }
+
+
+            //Validate the input for updating linked intent:
+            if(substr($_POST['tr_in_link_update'], 0, 1)=='#'){
+                $parts = explode(' ', $_POST['tr_in_link_update']);
+                $tr_in_link_id = intval(str_replace('#', '', $parts[0]));
+            }
+            if($tr_in_link_id > 0){
 
                 //Did we find it?
-                if($tr_in_link_id==0){
-                    return fn___echo_json(array(
-                        'status' => 0,
-                        'message' => 'Invalid format for new linked intent.',
-                    ));
-                } elseif($tr_in_link_id==$trs[0]['tr_in_parent_id'] || $tr_in_link_id==$trs[0]['tr_in_child_id']){
+                if($tr_in_link_id==$trs[0]['tr_in_parent_id'] || $tr_in_link_id==$trs[0]['tr_in_child_id']){
                     return fn___echo_json(array(
                         'status' => 0,
                         'message' => 'Intent already linked here',
@@ -597,8 +594,14 @@ class Intents extends CI_Controller
                     //Yes, refresh the page:
                     $remove_redirect_url = '/intents/' . $_POST['tr_in_focus_ids'][0]; //First item is the main intent
                 }
-
+            } elseif(strlen($_POST['tr_in_link_update']) > 0 && !($_POST['tr_in_link_update']==$trs[0]['in_outcome'])){
+                //The value changed in an unknown way...
+                return fn___echo_json(array(
+                    'status' => 0,
+                    'message' => 'Unknown '.( $_POST['is_parent'] ? 'child' : 'parent').' intent. Leave as-is or select intent from search suggestions.',
+                ));
             }
+
 
             //Prep variables:
             $tr_metadata = ( strlen($trs[0]['tr_metadata']) > 0 ? unserialize($trs[0]['tr_metadata']) : array() );

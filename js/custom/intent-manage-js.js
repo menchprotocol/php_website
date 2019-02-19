@@ -591,6 +591,7 @@ function fn___in_modify_load(in_id, tr_id) {
     $('#modifybox').attr('intent-tr-id', 0).attr('intent-id', 0).attr('level', 0);
     $('.apply-recursive').addClass('hidden');
     $('#apply_recursively').prop('checked', false);
+    $('.save_intent_changes').html(' ');
 
 
     //Set title:
@@ -636,9 +637,7 @@ function fn___in_modify_load(in_id, tr_id) {
                 $('#tr__assessment_points').val(data.tr.tr_metadata.tr__assessment_points);
 
                 //Link editing adjustments:
-                $('#tr_in_link_update').val('');
-                $('.edit-link').addClass('hidden');
-                $('.link-in-outcome').text(data.tr.in_outcome);
+                $('#tr_in_link_update').val(data.tr.in_outcome);
                 $('.tr_in_link_title').text(( $('.intent_line_' + in_id).hasClass('parent-intent') ? 'Child' : 'Parent' ));
 
                 //Is this a conditional link? If so, load the min/max range:
@@ -807,6 +806,10 @@ function fn___in_modify_save() {
 
                 //Always update 3x Intent icons:
                 $('.in_is_any_' + modify_data['in_id']).html('<span class="in_is_any_val" data-toggle="tooltip" data-placement="right" title="'+ object_js_statuses['in_is_any'][modify_data['in_is_any']]["s_name"] + ': '+ object_js_statuses['in_is_any'][modify_data['in_is_any']]["s_desc"] + '">'+ object_js_statuses['in_is_any'][modify_data['in_is_any']]["s_icon"] +'</span>');
+
+                //Also update possible child icons:
+                $('.in_icon_child_' + modify_data['in_id']).html(object_js_statuses['in_is_any'][modify_data['in_is_any']]["s_icon"]).attr('data-original-title', modify_data['in_outcome']);
+
 
                 $('.in_status_' + modify_data['in_id']).html('<span class="in_status_val" data-toggle="tooltip" data-placement="right" title="'+ object_js_statuses['in_status'][modify_data['in_status']]["s_name"] + ': '+ object_js_statuses['in_status'][modify_data['in_status']]["s_desc"] + '">'+ object_js_statuses['in_status'][modify_data['in_status']]["s_icon"] +'</span>');
 

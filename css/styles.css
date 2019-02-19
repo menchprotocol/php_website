@@ -3148,7 +3148,7 @@ h4 .tip-badge {
 }
 
 .inline-box {
-    padding: 8px 0px 8px 12px;
+    padding: 1px 0px 8px 12px;
     margin-left: 5px;
     border-left: 3px solid #2f2739;
 }
@@ -3806,6 +3806,25 @@ h4 .tip-badge {
     margin: 30px auto;
 }
 
+.main-box{
+    height: 58px !important;
+    min-height: auto !important;
+    margin-bottom: -9px !important;
+    font-size: 0.9em !important;
+    font-weight: 500 !important;
+    color: #555;
+}
+
+.mini-header{
+    font-size: 0.7em;
+    font-weight: 300;
+    color: #000;
+    text-transform: uppercase;
+    line-height: 100%;
+    padding: 0;
+    margin:12px 0 2px 0;
+    display: block;
+}
 
 .secret i {
     color:transparent !important;
