@@ -998,13 +998,15 @@ class Database_model extends CI_Model
                 $key = 0;
                 foreach ($algolia_results['objectIDs'] as $algolia_id) {
 
-                    $affected_rows = $this->Matrix_model->fn___metadata_update($loop_obj, $all_db_rows[$key], array(
-                        $loop_obj . '__algolia_id' => $algolia_id,
+                    $this_obj = ( isset($all_db_rows[$key]['in_id']) ? 'in' : 'en');
+
+                    $affected_rows = $this->Matrix_model->fn___metadata_update($this_obj, $all_db_rows[$key], array(
+                        $this_obj . '__algolia_id' => $algolia_id,
                     ));
 
                     //TODO Remove:
-                    $this->Matrix_model->fn___metadata_update($loop_obj, $all_db_rows[$key], array(
-                        $loop_obj . '_algolia_id' => null,
+                    $this->Matrix_model->fn___metadata_update($this_obj, $all_db_rows[$key], array(
+                        $this_obj . '_algolia_id' => null,
                     ));
 
                     $key++;
