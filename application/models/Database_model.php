@@ -817,7 +817,7 @@ class Database_model extends CI_Model
                     $limits['in_status >='] = 0; //New+
                 }
 
-                $db_rows['in'] = $this->Database_model->fn___in_fetch($limits, array('in__messages'), 1);
+                $db_rows['in'] = $this->Database_model->fn___in_fetch($limits, array('in__messages'));
 
             } elseif ($loop_obj == 'en') {
 
@@ -827,7 +827,7 @@ class Database_model extends CI_Model
                     $limits['en_status >='] = 0; //New+
                 }
 
-                $db_rows['en'] = $this->Database_model->fn___en_fetch($limits, array('en__parents'), 1);
+                $db_rows['en'] = $this->Database_model->fn___en_fetch($limits, array('en__parents'));
 
             }
 
@@ -997,15 +997,14 @@ class Database_model extends CI_Model
 
                     $this_obj = ( isset($all_db_rows[$key]['in_id']) ? 'in' : 'en');
 
-                    $ee = $this->Matrix_model->fn___metadata_update($this_obj, $all_db_rows[$key][$this_obj.'_id'], array(
+                    $this->Matrix_model->fn___metadata_update($this_obj, $all_db_rows[$key][$this_obj.'_id'], array(
                         $this_obj . '__algolia_id' => intval($algolia_id),
                     ));
 
-                    $EE2 = $this->Matrix_model->fn___metadata_update($this_obj, $all_db_rows[$key][$this_obj.'_id'], array(
-                        $this_obj . '___algolia_id' => 'Yesss',
-                    ));
-
                     //TODO Remove:
+                    $this->Matrix_model->fn___metadata_update($this_obj, $all_db_rows[$key][$this_obj.'_id'], array(
+                        $this_obj . '___algolia_id' => null,
+                    ));
                     $this->Matrix_model->fn___metadata_update($this_obj, $all_db_rows[$key][$this_obj.'_id'], array(
                         $this_obj . '_algolia_id' => null,
                     ));
@@ -1025,8 +1024,6 @@ class Database_model extends CI_Model
         return array(
             'status' => ( $synced_count > 0 ? 1 : 0),
             'message' => $synced_count . ' objects sync with Algolia',
-            'res' => $algolia_results,
-            'all_db_rows' => $all_db_rows,
         );
 
     }
