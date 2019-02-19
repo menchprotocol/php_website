@@ -1375,7 +1375,12 @@ class Matrix_model extends CI_Model
         }
 
         //Should be all good:
-        return $affected_rows;
+        return array(
+            'affected_rows' => $affected_rows,
+            'metadata' => $metadata,
+            'obj_type' => $obj_type,
+            'obj' => $obj,
+        );
 
     }
 
