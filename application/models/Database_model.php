@@ -1001,6 +1001,10 @@ class Database_model extends CI_Model
                         $this_obj . '__algolia_id' => $algolia_id,
                     ));
 
+                    $this->Matrix_model->fn___metadata_update($this_obj, $all_db_rows[$key], array(
+                        $this_obj . '___algolia_id' => 'Yesss',
+                    ));
+
                     //TODO Remove:
                     $this->Matrix_model->fn___metadata_update($this_obj, $all_db_rows[$key], array(
                         $this_obj . '_algolia_id' => null,
