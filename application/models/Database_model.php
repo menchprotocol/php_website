@@ -800,11 +800,11 @@ class Database_model extends CI_Model
         }
 
 
+        $combined_objects = array();
         $synced_count = 0;
         foreach($fetch_objects as $loop_obj){
 
             //Remove any limits:
-            $db_rows = array();
             unset($limits);
 
             //Fetch item(s) for updates including their parents:
@@ -816,7 +816,7 @@ class Database_model extends CI_Model
                     $limits['in_status >='] = 0; //New+
                 }
 
-                $db_rows = $this->Database_model->fn___in_fetch($limits, array('in__messages'), 1);
+                $db_rows['in'] = $this->Database_model->fn___in_fetch($limits, array('in__messages'), 1);
 
             } elseif ($loop_obj == 'en') {
 
@@ -826,13 +826,13 @@ class Database_model extends CI_Model
                     $limits['en_status >='] = 0; //New+
                 }
 
-                $db_rows = $this->Database_model->fn___en_fetch($limits, array('en__parents'), 1);
+                $db_rows['en'] = $this->Database_model->fn___en_fetch($limits, array('en__parents'), 1);
 
             }
 
 
             //Did we find anything?
-            if (count($db_rows) < 1) {
+            if (count($db_rows['en']) < 1 && count($db_rows['in']) < 1) {
                 continue;
             }
 
@@ -840,7 +840,7 @@ class Database_model extends CI_Model
 
             //Build the index:
             $alg_array = array();
-            foreach ($db_rows as $db_row) {
+            foreach ($db_rows[$loop_obj] as $db_row) {
 
                 //Prepare variables:
                 unset($export_row);
@@ -925,7 +925,7 @@ class Database_model extends CI_Model
                 //We should have fetched a single item only, meaning $alg_array[0] is what we are focused on...
 
                 //What's the status? Is it active or should it be removed?
-                if ($db_rows[0][$loop_obj . '_status'] >= 0) {
+                if ($db_rows[$loop_obj][0][$loop_obj . '_status'] >= 0) {
 
                     if (isset($alg_array[0]['objectID'])) {
 
@@ -938,11 +938,13 @@ class Database_model extends CI_Model
                         $algolia_results = $search_index->addObjects($alg_array);
 
                         //Now update local database with the new objectIDs:
-                        if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs']) > 0) {
-                            foreach ($algolia_results['objectIDs'] as $key => $algolia_id) {
-                                $this->Matrix_model->fn___metadata_update($loop_obj, $db_rows[0], array(
+                        if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs']) == count($db_rows[$loop_obj]) ) {
+                            $key = 0;
+                            foreach ($algolia_results['objectIDs'] as $algolia_id) {
+                                $this->Matrix_model->fn___metadata_update($loop_obj, $db_rows[$loop_obj][$key], array(
                                     $loop_obj . '__algolia_id' => $algolia_id, //The newly created algolia object
                                 ));
+                                $key++;
                             }
                         }
 
@@ -957,10 +959,10 @@ class Database_model extends CI_Model
                         //Object is removed locally but still indexed remotely on Algolia, so let's remove it from Algolia:
 
                         //Remove from algolia:
-                        $algolia_results = $search_index->deleteObject($alg_array[0]['objectID']);
+                        $algolia_results = $search_index->deleteObject($alg_array[$loop_obj][0]['objectID']);
 
                         //also set its algolia_id to 0 locally:
-                        $this->Matrix_model->fn___metadata_update($loop_obj, $db_rows[0], array(
+                        $this->Matrix_model->fn___metadata_update($loop_obj, $db_rows[$loop_obj][0], array(
                             $loop_obj . '__algolia_id' => null, //Since this item has been removed!
                         ));
 
@@ -990,26 +992,21 @@ class Database_model extends CI_Model
                 $algolia_results = $search_index->addObjects($alg_array);
 
                 //Now update database with the objectIDs:
-                if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs']) > 0) {
+                if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs']) ) {
 
-                    foreach ($algolia_results['objectIDs'] as $key => $algolia_id) {
+                    $key = 0;
+                    foreach ($algolia_results['objectIDs'] as $algolia_id) {
 
-                        $affected_rows = $this->Matrix_model->fn___metadata_update($loop_obj, $db_rows[$key], array(
+                        $affected_rows = $this->Matrix_model->fn___metadata_update($loop_obj, $db_rows[$loop_obj][$key], array(
                             $loop_obj . '__algolia_id' => $algolia_id,
                         ));
 
                         //TODO Remove:
-                        $this->Matrix_model->fn___metadata_update($loop_obj, $db_rows[$key], array(
+                        $this->Matrix_model->fn___metadata_update($loop_obj, $db_rows[$loop_obj][$key], array(
                             $loop_obj . '_algolia_id' => null,
                         ));
 
-                        //Return results:
-                        return array(
-                            'loop_obj' => $loop_obj,
-                            'algolia_id' => $algolia_id,
-                            'db' => $db_rows[$key],
-                            'affected_rows' => $affected_rows,
-                        );
+                        $key++;
                     }
 
                 }
