@@ -1007,7 +1007,7 @@ class Database_model extends CI_Model
 
                 }
 
-                $synced_count += count($algolia_results['objectIDs']);
+                $synced_count += 1;
 
             } else {
 
@@ -1023,7 +1023,7 @@ class Database_model extends CI_Model
                         $input_obj_type . '__algolia_id' => null, //Since this item has been removed!
                     ));
 
-                    $synced_count += count($algolia_results['objectIDs']);
+                    $synced_count += 1;
 
                 } else {
                     //Nothing to do here since we don't have the Algolia object locally!
