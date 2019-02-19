@@ -896,7 +896,7 @@ class Database_model extends CI_Model
                     $export_row['alg_obj_status'] = intval($db_row['in_status']);
                     $export_row['alg_obj_icon'] = $object_statuses['in_is_any'][$db_row['in_is_any']]['s_icon']; //Entity type icon
                     $export_row['alg_obj_name'] = $db_row['in_outcome'];
-                    $export_row['alg_obj_postfix'] =  ( $time_range ? '<span class="alg-postfix"><i class="fal fa-clock"></i> ' . $time_range . '</span>' : '');
+                    $export_row['alg_obj_postfix'] =  ( $time_range ? '<span class="alg-postfix"><i class="fal fa-clock"></i>' . $time_range . '</span>' : '');
 
                     //Add keywords:
                     $export_row['alg_obj_keywords'] = '';
@@ -999,14 +999,6 @@ class Database_model extends CI_Model
 
                     $this->Matrix_model->fn___metadata_update($this_obj, $all_db_rows[$key][$this_obj.'_id'], array(
                         $this_obj . '__algolia_id' => intval($algolia_id),
-                    ));
-
-                    //TODO Remove:
-                    $this->Matrix_model->fn___metadata_update($this_obj, $all_db_rows[$key][$this_obj.'_id'], array(
-                        $this_obj . '___algolia_id' => null,
-                    ));
-                    $this->Matrix_model->fn___metadata_update($this_obj, $all_db_rows[$key][$this_obj.'_id'], array(
-                        $this_obj . '_algolia_id' => null,
                     ));
                 }
 

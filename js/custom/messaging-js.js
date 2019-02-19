@@ -85,8 +85,9 @@ function fn___initiate_search() {
         {
             match: /(^|\s)@(\w*(?:\s*\w*))$/,
             search: function (query, callback) {
-                algolia_en_index.search(query, {
-                    hitsPerPage: 5
+                algolia_index.search(query, {
+                    hitsPerPage: 5,
+                    filters: 'alg_obj_is_in=0',
                 })
                     .then(function searchSuccess(content) {
                         if (content.query === query) {

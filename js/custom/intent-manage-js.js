@@ -138,12 +138,13 @@ $(document).ready(function () {
     //Load Algolia:
     $(".intentadder-level-2").on('autocomplete:selected', function (event, suggestion, dataset) {
 
-        fn___in_link_or_create($(this).attr('intent-id'), 2, suggestion.in_id);
+        fn___in_link_or_create($(this).attr('intent-id'), 2, suggestion.alg_obj_id);
 
     }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
 
         source: function (q, cb) {
-            algolia_in_index.search(q, {
+            algolia_index.search(q, {
+                filters: 'alg_obj_is_in=1',
                 hitsPerPage: 7,
             }, function (error, content) {
                 if (error) {
@@ -158,7 +159,7 @@ $(document).ready(function () {
         },
         templates: {
             suggestion: function (suggestion) {
-                return echo_js_suggestion('in',suggestion, 0);
+                return echo_js_suggestion(suggestion, 0);
             },
             header: function (data) {
                 if (!data.isEmpty) {
@@ -184,12 +185,13 @@ $(document).ready(function () {
     //Load Algolia for link replacement search
     $("#tr_in_link_update").on('autocomplete:selected', function (event, suggestion, dataset) {
 
-        $(this).val('#'+suggestion.in_id+' '+suggestion.in_outcome);
+        $(this).val('#'+suggestion.alg_obj_id+' '+suggestion.alg_obj_name);
 
     }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
 
         source: function (q, cb) {
-            algolia_in_index.search(q, {
+            algolia_index.search(q, {
+                filters: 'alg_obj_is_in=1',
                 hitsPerPage: 7,
             }, function (error, content) {
                 if (error) {
@@ -200,11 +202,11 @@ $(document).ready(function () {
             });
         },
         displayKey: function (suggestion) {
-            return '#'+suggestion.in_id+' '+suggestion.in_outcome;
+            return '#'+suggestion.alg_obj_id+' '+suggestion.alg_obj_name;
         },
         templates: {
             suggestion: function (suggestion) {
-                return echo_js_suggestion('in',suggestion, 0);
+                return echo_js_suggestion(suggestion, 0);
             },
             header: function (data) {
             },
@@ -303,12 +305,13 @@ function fn___in_load_search_level3(focus_element) {
 
     $(focus_element).on('autocomplete:selected', function (event, suggestion, dataset) {
 
-        fn___in_link_or_create($(this).attr('intent-id'), 3, suggestion.in_id);
+        fn___in_link_or_create($(this).attr('intent-id'), 3, suggestion.alg_obj_id);
 
     }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
 
         source: function (q, cb) {
-            algolia_in_index.search(q, {
+            algolia_index.search(q, {
+                filters: 'alg_obj_is_in=1',
                 hitsPerPage: 7,
             }, function (error, content) {
                 if (error) {
@@ -323,7 +326,7 @@ function fn___in_load_search_level3(focus_element) {
         },
         templates: {
             suggestion: function (suggestion) {
-                return echo_js_suggestion('in',suggestion, 0);
+                return echo_js_suggestion(suggestion, 0);
             },
             header: function (data) {
                 if (!data.isEmpty) {

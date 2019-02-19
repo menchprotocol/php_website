@@ -2,12 +2,13 @@ function en_load_child_search() {
 
     $("#new-children .new-input").on('autocomplete:selected', function (event, suggestion, dataset) {
 
-        tr_add(suggestion.en_id, 0, 0);
+        tr_add(suggestion.alg_obj_id, 0, 0);
 
     }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
 
         source: function (q, cb) {
-            algolia_en_index.search(q, {
+            algolia_index.search(q, {
+                filters: 'alg_obj_is_in=0',
                 hitsPerPage: 7,
             }, function (error, content) {
                 if (error) {
@@ -20,7 +21,7 @@ function en_load_child_search() {
         templates: {
             suggestion: function (suggestion) {
                 //If clicked, would trigger the autocomplete:selected above which will trigger the tr_add() function
-                return echo_js_suggestion('en', suggestion, 0);
+                return echo_js_suggestion(suggestion, 0);
             },
             header: function (data) {
                 if (!data.isEmpty) {
@@ -100,10 +101,11 @@ $(document).ready(function () {
 
 
     $("#new-parent .new-input").on('autocomplete:selected', function (event, suggestion, dataset) {
-        tr_add(suggestion.en_id, 0, 1);
+        tr_add(suggestion.alg_obj_id, 0, 1);
     }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
         source: function (q, cb) {
-            algolia_en_index.search(q, {
+            algolia_index.search(q, {
+                filters: 'alg_obj_is_in=0',
                 hitsPerPage: 7,
             }, function (error, content) {
                 if (error) {
@@ -116,7 +118,7 @@ $(document).ready(function () {
         templates: {
             suggestion: function (suggestion) {
                 //If clicked, would trigger the autocomplete:selected above which will trigger the tr_add() function
-                return echo_js_suggestion('en', suggestion, 0);
+                return echo_js_suggestion(suggestion, 0);
             },
             header: function (data) {
                 if (!data.isEmpty) {

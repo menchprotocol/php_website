@@ -334,10 +334,6 @@ a.badge-primary:hover {
     font-weight:500;
 }
 
-.alg-postfix{
-    color: #999;
-    padding-left:3px;
-}
 
 .en_icon_ui{
     width:30px;
@@ -3828,4 +3824,12 @@ h4 .tip-badge {
     padding: 12px 6px 6px 0px;
     min-height: 84px;
     margin: 20px 0 !important;
+}
+
+
+.alg-postfix {
+    color: #999 !important;
+    margin-left:5px;
+    font-size:0.8em !important;
+    display:inline-block;
 }

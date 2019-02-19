@@ -14,23 +14,14 @@ ga('create', 'UA-92774608-1', 'auto');
 ga('send', 'pageview');
 
 
-function echo_js_suggestion(obj_type, suggestion, is_top){
-    if(obj_type == 'in'){
-        var fancy_hours = fancy_time(suggestion);
-        return '<span class="double-icon-search is-top-'+is_top+'"><span class="icon-main">' + object_js_statuses['in_is_any'][suggestion.in_is_any]["s_icon"] + '</span><span class="icon-sub">' + object_js_statuses['in_status'][suggestion.in_status]["s_icon"] + '</span></span> ' + suggestion._highlightResult.in_outcome.value + (fancy_hours ? '<span class="search-info">' + ' <i class="fal fa-clock"></i>' + fancy_hours + '</span>' : '');
-    } else if (obj_type == 'en') {
-        return '<span class="double-icon-search is-top-'+is_top+'"><span class="icon-main">' + ( suggestion.en_icon ? suggestion.en_icon : '<i class="fas fa-at grey-at"></i>' ) + '</span><span class="icon-sub">' + object_js_statuses['en_status'][suggestion.en_status]["s_icon"] + '</span> ' + '</span> ' + suggestion._highlightResult.en_name.value;
-    }
+function echo_js_suggestion(alg_obj, is_top){
+
+    //Determine object type:
+    var obj_type = ( parseInt(alg_obj.alg_obj_is_in)==1 ? 'in' : 'en' );
+
+    return '<span class="double-icon-search is-top-'+is_top+'"><span class="icon-main">' + alg_obj.alg_obj_icon + '</span><span class="icon-sub">' + object_js_statuses[obj_type + '_status'][alg_obj.alg_obj_status]["s_icon"] + '</span></span> ' + alg_obj._highlightResult.alg_obj_name.value + alg_obj.alg_obj_postfix;
 }
 
-function fancy_time(alg_obj) {
-    var minutes = Math.round(parseInt(alg_obj.in__tree_max_secs) / 60);
-    if (minutes < 1) {
-        return false;
-    }
-    var hours = Math.round(parseInt(alg_obj.in__tree_max_secs) / 3600);
-    return (minutes < 60 ? minutes + 'm' : hours + 'h');
-}
 
 function fn___turn_off() {
     $('.dash').html('<span><i class="fas fa-spinner fa-spin"></i></span> Processing...');

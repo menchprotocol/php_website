@@ -118,8 +118,7 @@ function fn___load_js_algolia() {
         if (!algolia_loaded) {
             algolia_loaded = true;
             client = algoliasearch('49OCX1ZXLJ', 'ca3cf5f541daee514976bc49f8399716');
-            algolia_en_index = client.initIndex('alg_entities');
-            algolia_in_index = client.initIndex('alg_intents');
+            algolia_index = client.initIndex('alg_index');
         }
     });
 }
@@ -139,17 +138,19 @@ $(document).ready(function () {
 
     $("#matrix_search").on('autocomplete:selected', function (event, suggestion, dataset) {
 
-        if (dataset == 1) {
-            window.location = "/intents/" + suggestion.in_id;
-        } else if (dataset == 2) {
-            window.location = "/entities/" + suggestion.en_id;
+        if (parseInt(suggestion.alg_obj_is_in)==1) {
+            window.location = "/intents/" + suggestion.alg_obj_id;
+        } else {
+            window.location = "/entities/" + suggestion.alg_obj_id;
         }
 
     }).autocomplete({hint: false, minLength: 3, autoselect: true, keyboardShortcuts: ['s']}, [
         {
             source: function (q, cb) {
-                algolia_in_index.search(q, {
-                    hitsPerPage: 7,
+
+                //Append filters:
+                algolia_index.search(q, {
+                    hitsPerPage: 14,
                 }, function (error, content) {
                     if (error) {
                         cb([]);
@@ -163,28 +164,7 @@ $(document).ready(function () {
             },
             templates: {
                 suggestion: function (suggestion) {
-                    return echo_js_suggestion('in',suggestion, 1);
-                },
-            }
-        },
-        {
-            source: function (q, cb) {
-                algolia_en_index.search(q, {
-                    hitsPerPage: 7,
-                }, function (error, content) {
-                    if (error) {
-                        cb([]);
-                        return;
-                    }
-                    cb(content.hits, content);
-                });
-            },
-            displayKey: function (suggestion) {
-                return ""
-            },
-            templates: {
-                suggestion: function (suggestion) {
-                    return echo_js_suggestion('en',suggestion, 1);
+                    return echo_js_suggestion(suggestion, 1);
                 },
             }
         }

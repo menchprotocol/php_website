@@ -8,7 +8,7 @@ $(document).ready(function() {
     $(".en-search").on('autocomplete:selected', function (event, suggestion, dataset) {
 
         //Update to selected value:
-        $(this).val('@' + suggestion.en_id + ' ' + suggestion.en_name );
+        $(this).val('@' + suggestion.alg_obj_id + ' ' + suggestion.alg_obj_name );
 
         //Update the author metadata:
         search_author($(this).attr('author-box'));
@@ -16,7 +16,8 @@ $(document).ready(function() {
     }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
 
         source: function (q, cb) {
-            algolia_en_index.search(q, {
+            algolia_index.search(q, {
+                filters: 'alg_obj_is_in=0',
                 hitsPerPage: 7,
             }, function (error, content) {
                 if (error) {
@@ -27,11 +28,11 @@ $(document).ready(function() {
             });
         },
         displayKey: function (suggestion) {
-            return '@' + suggestion.en_id + ' ' + suggestion.en_name
+            return '@' + suggestion.alg_obj_id + ' ' + suggestion.alg_obj_name
         },
         templates: {
             suggestion: function (suggestion) {
-                return '<i class="fal fa-link"></i> ' + echo_js_suggestion('en',suggestion, 0);
+                return echo_js_suggestion(suggestion, 0);
             },
             header: function (data) {
                 if (!data.isEmpty) {
