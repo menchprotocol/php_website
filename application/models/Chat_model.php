@@ -408,7 +408,7 @@ class Chat_model extends CI_Model
         if (count($msg_references['ref_urls']) > 0) {
 
             //No entity linked, but we have a URL that we should turn into an entity:
-            $created_url = $this->Matrix_model->fn___en_url_add($msg_references['ref_urls'][0]);
+            $created_url = $this->Matrix_model->fn___en_add_url($msg_references['ref_urls'][0]);
 
             //Did we have an error?
             if (!$created_url['status']) {

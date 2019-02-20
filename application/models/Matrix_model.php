@@ -206,7 +206,7 @@ class Matrix_model extends CI_Model
         return $en__child_count;
     }
 
-    function fn___en_url_add($input_url, $tr_miner_en_id = 0)
+    function fn___en_add_url($input_url, $tr_miner_en_id = 0)
     {
 
         /*
@@ -288,20 +288,6 @@ class Matrix_model extends CI_Model
         //Set default parent to start:
         $tr_en_parent_id = $this->config->item('en_default_parent_id');
 
-        //Now see if we can find a better match:
-        foreach ($this->Database_model->fn___tr_fetch(array(
-            'tr_type_en_id' => 4255, //Text Link that contains the pattern match
-            'tr_en_parent_id' => 3307, //Entity URL Pattern Match
-            'tr_status >=' => 2, //Published+
-            'en_status >=' => 2, //Published+
-        ), array('en_child')) as $match) {
-            if (substr_count($input_url, $match['tr_content']) > 0) {
-                //yes we found a pattern match:
-                $tr_en_parent_id = $match['tr_en_child_id'];
-                break;
-            }
-        }
-
 
         //Place this new entity in the default URL bucket:
         $entity_tr = $this->Database_model->fn___tr_create(array(
@@ -375,19 +361,6 @@ class Matrix_model extends CI_Model
             return $domain_ens[0];
         }
 
-
-        //Now let's try detecting the domain using the pattern matching entity logic:
-        foreach ($this->Database_model->fn___tr_fetch(array(
-            'tr_type_en_id' => 4255, //Text Link that contains the pattern match
-            'tr_en_parent_id' => 3307, //Entity URL Pattern Match
-            'tr_status >=' => 0, //New+
-            'en_status >=' => 0, //New+
-        ), array('en_child')) as $match) {
-            if (substr_count($basedomain, $match['tr_content']) > 0) {
-                //yes we found a pattern match:
-                return $match;
-            }
-        }
 
 
         //Create domain entity:

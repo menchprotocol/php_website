@@ -12,8 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-
-//Generated 2019-02-18 12:09:10 PST
+//Generated 2019-02-20 12:18:21 PST
 
 //Transaction Type Coin Rates:
 $config['en_ids_4374'] = array(4228, 4229, 4230, 4231, 4232, 4233, 4234, 4235, 4242, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4318, 4319, 4331, 4460, 4601, 4602);
@@ -32,31 +31,31 @@ $config['en_all_4374'] = array(
     ),
     4230 => array(
         'm_icon' => '<i class="fal fa-link"></i>',
-        'm_name' => 'Empty Linked Entities',
+        'm_name' => 'Linked Entities Empty',
         'm_desc' => '20',
         'm_parents' => array(4594, 4592, 4374),
     ),
     4231 => array(
         'm_icon' => '<i class="fal fa-bolt"></i>',
-        'm_name' => 'On-Start Intent Messages',
+        'm_name' => 'Intent Messages On-Start',
         'm_desc' => '100',
         'm_parents' => array(4742, 4603, 4594, 4485, 4374),
     ),
     4232 => array(
         'm_icon' => '<i class="fal fa-comment-lines"></i>',
-        'm_name' => 'Learn More Intent Messages',
+        'm_name' => 'Intent Messages Learn More',
         'm_desc' => '100',
         'm_parents' => array(4742, 4603, 4594, 4485, 4374),
     ),
     4233 => array(
         'm_icon' => '<i class="fal fa-calendar-check"></i>',
-        'm_name' => 'On-Complete Intent Messages',
+        'm_name' => 'Intent Messages On-Complete',
         'm_desc' => '100',
         'm_parents' => array(4742, 4603, 4594, 4485, 4374),
     ),
     4234 => array(
         'm_icon' => '<i class="fal fa-random"></i>',
-        'm_name' => 'Random1 Intent Messages',
+        'm_name' => 'Intent Messages Random1',
         'm_desc' => '100',
         'm_parents' => array(4594, 4485, 4374),
     ),
@@ -86,43 +85,43 @@ $config['en_all_4374'] = array(
     ),
     4255 => array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
-        'm_name' => 'Text Linked Entities',
+        'm_name' => 'Linked Entities Text',
         'm_desc' => '30',
         'm_parents' => array(4594, 4592, 4374, 4331),
     ),
     4256 => array(
         'm_icon' => '<i class="fal fa-browser"></i>',
-        'm_name' => 'URL Linked Entities',
+        'm_name' => 'Linked Entities URL',
         'm_desc' => '50',
         'm_parents' => array(4594, 4592, 4537, 4374, 4331),
     ),
     4257 => array(
         'm_icon' => '<i class="fal fa-play-circle"></i>',
-        'm_name' => 'Embed Linked Entities',
+        'm_name' => 'Linked Entities Embed',
         'm_desc' => '70',
         'm_parents' => array(4594, 4592, 4537, 4506, 4428, 4374),
     ),
     4258 => array(
         'm_icon' => '<i class="fal fa-video"></i>',
-        'm_name' => 'Video Linked Entities',
+        'm_name' => 'Linked Entities Video',
         'm_desc' => '90',
         'm_parents' => array(4594, 4592, 4537, 4374, 4331),
     ),
     4259 => array(
         'm_icon' => '<i class="fal fa-volume-up"></i>',
-        'm_name' => 'Audio Linked Entities',
+        'm_name' => 'Linked Entities Audio',
         'm_desc' => '50',
         'm_parents' => array(4594, 4592, 4537, 4374, 4331),
     ),
     4260 => array(
         'm_icon' => '<i class="fal fa-image"></i>',
-        'm_name' => 'Image Linked Entities',
+        'm_name' => 'Linked Entities Image',
         'm_desc' => '50',
         'm_parents' => array(4594, 4592, 4537, 4374, 4331),
     ),
     4261 => array(
         'm_icon' => '<i class="fal fa-file-pdf"></i>',
-        'm_name' => 'File Linked Entities',
+        'm_name' => 'Linked Entities File',
         'm_desc' => '50',
         'm_parents' => array(4594, 4592, 4537, 4374, 4331),
     ),
@@ -140,13 +139,13 @@ $config['en_all_4374'] = array(
     ),
     4318 => array(
         'm_icon' => '<i class="fal fa-clock"></i>',
-        'm_name' => 'Time Linked Entities',
+        'm_name' => 'Linked Entities Time',
         'm_desc' => '20',
         'm_parents' => array(4594, 4592, 4374),
     ),
     4319 => array(
         'm_icon' => '<i class="fal fa-sort-numeric-down"></i>',
-        'm_name' => 'Integer Linked Entities',
+        'm_name' => 'Linked Entities Integer',
         'm_desc' => '20',
         'm_parents' => array(4594, 4592, 4374),
     ),
@@ -164,13 +163,13 @@ $config['en_all_4374'] = array(
     ),
     4601 => array(
         'm_icon' => '<i class="fal fa-comment-check"></i>',
-        'm_name' => 'Triggers Intent Messages',
+        'm_name' => 'Intent Messages Triggers',
         'm_desc' => '50',
         'm_parents' => array(4255, 4594, 4374, 4485),
     ),
     4602 => array(
         'm_icon' => '<i class="fal fa-cloud-upload"></i>',
-        'm_name' => 'Webhooks Intent Messages',
+        'm_name' => 'Intent Messages Webhooks',
         'm_desc' => '100',
         'm_parents' => array(4256, 4374, 4485, 4594),
     ),
@@ -210,31 +209,31 @@ $config['en_all_4594'] = array(
     ),
     4230 => array(
         'm_icon' => '<i class="fal fa-link"></i>',
-        'm_name' => 'Empty Linked Entities',
+        'm_name' => 'Linked Entities Empty',
         'm_desc' => '',
         'm_parents' => array(4594, 4592, 4374),
     ),
     4231 => array(
         'm_icon' => '<i class="fal fa-bolt"></i>',
-        'm_name' => 'On-Start Intent Messages',
+        'm_name' => 'Intent Messages On-Start',
         'm_desc' => '',
         'm_parents' => array(4742, 4603, 4594, 4485, 4374),
     ),
     4232 => array(
         'm_icon' => '<i class="fal fa-comment-lines"></i>',
-        'm_name' => 'Learn More Intent Messages',
+        'm_name' => 'Intent Messages Learn More',
         'm_desc' => '',
         'm_parents' => array(4742, 4603, 4594, 4485, 4374),
     ),
     4233 => array(
         'm_icon' => '<i class="fal fa-calendar-check"></i>',
-        'm_name' => 'On-Complete Intent Messages',
+        'm_name' => 'Intent Messages On-Complete',
         'm_desc' => '',
         'm_parents' => array(4742, 4603, 4594, 4485, 4374),
     ),
     4234 => array(
         'm_icon' => '<i class="fal fa-random"></i>',
-        'm_name' => 'Random1 Intent Messages',
+        'm_name' => 'Intent Messages Random1',
         'm_desc' => '',
         'm_parents' => array(4594, 4485, 4374),
     ),
@@ -276,43 +275,43 @@ $config['en_all_4594'] = array(
     ),
     4255 => array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
-        'm_name' => 'Text Linked Entities',
+        'm_name' => 'Linked Entities Text',
         'm_desc' => '',
         'm_parents' => array(4594, 4592, 4374, 4331),
     ),
     4256 => array(
         'm_icon' => '<i class="fal fa-browser"></i>',
-        'm_name' => 'URL Linked Entities',
+        'm_name' => 'Linked Entities URL',
         'm_desc' => '',
         'm_parents' => array(4594, 4592, 4537, 4374, 4331),
     ),
     4257 => array(
         'm_icon' => '<i class="fal fa-play-circle"></i>',
-        'm_name' => 'Embed Linked Entities',
+        'm_name' => 'Linked Entities Embed',
         'm_desc' => '',
         'm_parents' => array(4594, 4592, 4537, 4506, 4428, 4374),
     ),
     4258 => array(
         'm_icon' => '<i class="fal fa-video"></i>',
-        'm_name' => 'Video Linked Entities',
+        'm_name' => 'Linked Entities Video',
         'm_desc' => '',
         'm_parents' => array(4594, 4592, 4537, 4374, 4331),
     ),
     4259 => array(
         'm_icon' => '<i class="fal fa-volume-up"></i>',
-        'm_name' => 'Audio Linked Entities',
+        'm_name' => 'Linked Entities Audio',
         'm_desc' => '',
         'm_parents' => array(4594, 4592, 4537, 4374, 4331),
     ),
     4260 => array(
         'm_icon' => '<i class="fal fa-image"></i>',
-        'm_name' => 'Image Linked Entities',
+        'm_name' => 'Linked Entities Image',
         'm_desc' => '',
         'm_parents' => array(4594, 4592, 4537, 4374, 4331),
     ),
     4261 => array(
         'm_icon' => '<i class="fal fa-file-pdf"></i>',
-        'm_name' => 'File Linked Entities',
+        'm_name' => 'Linked Entities File',
         'm_desc' => '',
         'm_parents' => array(4594, 4592, 4537, 4374, 4331),
     ),
@@ -414,13 +413,13 @@ $config['en_all_4594'] = array(
     ),
     4318 => array(
         'm_icon' => '<i class="fal fa-clock"></i>',
-        'm_name' => 'Time Linked Entities',
+        'm_name' => 'Linked Entities Time',
         'm_desc' => '',
         'm_parents' => array(4594, 4592, 4374),
     ),
     4319 => array(
         'm_icon' => '<i class="fal fa-sort-numeric-down"></i>',
-        'm_name' => 'Integer Linked Entities',
+        'm_name' => 'Linked Entities Integer',
         'm_desc' => '',
         'm_parents' => array(4594, 4592, 4374),
     ),
@@ -540,13 +539,13 @@ $config['en_all_4594'] = array(
     ),
     4601 => array(
         'm_icon' => '<i class="fal fa-comment-check"></i>',
-        'm_name' => 'Triggers Intent Messages',
+        'm_name' => 'Intent Messages Triggers',
         'm_desc' => '',
         'm_parents' => array(4255, 4594, 4374, 4485),
     ),
     4602 => array(
         'm_icon' => '<i class="fal fa-cloud-upload"></i>',
-        'm_name' => 'Webhooks Intent Messages',
+        'm_name' => 'Intent Messages Webhooks',
         'm_desc' => '',
         'm_parents' => array(4256, 4374, 4485, 4594),
     ),

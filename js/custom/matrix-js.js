@@ -151,6 +151,7 @@ $(document).ready(function () {
                 //Append filters:
                 algolia_index.search(q, {
                     hitsPerPage: 14,
+                    filters: 'alg_obj_is_in ' + ( $("#matrix_search").val().charAt(0)=='#' ? '=1' : ( $("#matrix_search").val().charAt(0)=='@' ? '=0' : '>=0' ) ),
                 }, function (error, content) {
                     if (error) {
                         cb([]);

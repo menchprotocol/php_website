@@ -926,7 +926,7 @@ class Intents extends CI_Controller
         }
 
         //Now save URL as a new entity:
-        $created_url = $this->Matrix_model->fn___en_url_add($new_file_url);
+        $created_url = $this->Matrix_model->fn___en_add_url($new_file_url);
 
         //Did we have an error?
         if (!$created_url['status']) {
