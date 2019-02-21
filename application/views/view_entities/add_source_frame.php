@@ -28,7 +28,7 @@
         //The Parent Entity based on domain:
         echo '<span class="checkbox" style="margin: 0;">
             <label style="display:inline-block !important; font-size: 0.8em !important; margin-left:5px;">
-                <input type="checkbox" checked="checked" disabled value="basedomain" />
+                <input type="checkbox" checked="checked" disabled value="url_clean_domain" />
                     <span class="entity_domain_ui"></span>
                     [<span class="underdot" data-toggle="tooltip" data-placement="top" title="Parent auto created based on URL domain">Domain Entity</span>]
             </label>
@@ -82,7 +82,7 @@
 
         <div class="title" style="margin-top:30px;"><h4>Entity Name</h4></div>
         <span class="white-wrapper" style="margin-bottom: 3px;">
-            <input type="text" id="en_url_name" class="form-control border">
+            <input type="text" id="en_name_url" class="form-control border">
         </span>
 
 

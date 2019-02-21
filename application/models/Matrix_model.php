@@ -185,6 +185,220 @@ class Matrix_model extends CI_Model
     }
 
 
+    function fn___digest_url($url, $add_child_en_id = 0, $tr_miner_en_id = 0)
+    {
+
+        /*
+         *
+         * Analyzes a URL to see if it and its domain exists.
+         * It would add the URL if all following variables are passed:
+         *
+         * - $add_child_en_id:      Entity to add the URL to
+         * - $tr_miner_en_id:  Give transaction credits to
+         *
+         * */
+
+        $add_url = ($add_child_en_id > 0 || $tr_miner_en_id > 0);
+
+        //Validate URL:
+        if (!filter_var($url, FILTER_VALIDATE_URL)) {
+            return array(
+                'status' => 0,
+                'message' => 'URL is not a valid URL',
+            );
+        } elseif ($add_url && ($add_child_en_id < 1 || $tr_miner_en_id < 1)) {
+            return array(
+                'status' => 0,
+                'message' => 'You must define both miner and child entity to add this URL',
+            );
+        }
+
+        //Make CURL call:
+        $response = fn___curl_call($url);
+
+
+        //We need more details on this URL...
+        $en_all_4537 = $this->config->item('en_all_4537');
+
+
+        //Analyze URL domain:
+        $domain_analysis = fn___analyze_domain($url);
+        if($domain_analysis['url_is_root']){
+            //Since this is the root, update to the clean URL:
+            $url = $domain_analysis['url_clean_domain'];
+        }
+
+        //Extract mode details:
+        $body_html = substr($response, curl_getinfo($ch, CURLINFO_HEADER_SIZE));
+        $content_type = fn___one_two_explode('', ';', curl_getinfo($ch, CURLINFO_CONTENT_TYPE));
+        $embed_code = fn___echo_url_embed($url, $url, true);
+
+        // Now see if this is a specific file type:
+        // Audio File URL: https://s3foundation.s3-us-west-2.amazonaws.com/672b41ff20fece4b3e7ae2cf4b58389f.mp3
+        // Video File URL: https://s3foundation.s3-us-west-2.amazonaws.com/8c5a1cc4e8558f422a4003d126502db9.mp4
+        // Image File URL: https://s3foundation.s3-us-west-2.amazonaws.com/d673c17d7164817025a000416da3be3f.png
+        // Downloadable File URL: https://s3foundation.s3-us-west-2.amazonaws.com/611695da5d0d199e2d95dd2eabe484cf.zip
+
+        if($domain_analysis['url_is_root']){
+            //Root domain is always a generic URL:
+            $tr_type_en_id = 4256;
+        } elseif ($embed_code['status']) {
+            //Embeddable URL:
+            $tr_type_en_id = 4257;
+        } elseif (substr_count($content_type, 'image/') == 1) {
+            //Image URL
+            $tr_type_en_id = 4260;
+        } elseif (substr_count($content_type, 'audio/') == 1) {
+            //Audio URL
+            $tr_type_en_id = 4259;
+        } elseif (substr_count($content_type, 'video/') == 1) {
+            //Video URL
+            $tr_type_en_id = 4258;
+        } elseif (detect_download_file_url($url, $content_type)) {
+            //File URL
+            $tr_type_en_id = 4261;
+        } else {
+            //Generic URL:
+            $tr_type_en_id = 4256;
+        }
+
+
+        //Cleanup Page Title:
+        $page_title = fn___one_two_explode('>', '', fn___one_two_explode('<title', '</title', $body_html));
+        $url_identified = substr(md5($url), 0, 8);
+        $title_exclusions = array('-', '|');
+        foreach ($title_exclusions as $keyword) {
+            if (substr_count($page_title, $keyword) > 0) {
+                $parts = explode($keyword, $page_title);
+                $last_peace = $parts[(count($parts) - 1)];
+
+                //Should we remove the last part if not too long?
+                if (substr($last_peace, 0, 1) == ' ' && strlen($last_peace) < 16) {
+                    $page_title = str_replace($keyword . $last_peace, '', $page_title);
+                    break; //Only a single extension, so break the loop
+                }
+            }
+        }
+        $page_title = trim($page_title);
+        if (strlen($page_title) > 0) {
+
+            //Make sure this is not a duplicate name:
+            $dup_name_us = $this->Database_model->fn___en_fetch(array(
+                'en_status >=' => 0, //New+
+                'en_name' => $page_title,
+            ));
+
+            if (count($dup_name_us) > 0) {
+                //Yes, we did find a duplicate name! Append a unique identifier:
+                $page_title = $page_title . ' ' . $url_identified;
+            }
+
+        } else {
+
+            //did not find a <title> tag, so let's use URL Type & identifier as its name:
+            $page_title = $en_all_4537[$tr_type_en_id]['m_name'] . ' ' . $url_identified;
+
+        }
+
+        //We'll check to see if URL already existed:
+        $url_already_existed = 0;
+
+
+
+        //Check to see if we have domain linked already:
+        $domain_entities = $this->Database_model->fn___tr_fetch(array(
+            'tr_status >=' => 0, //New+
+            'tr_type_en_id' => 4256, //Generic URL (Domain home pages should always be generic, see above for logic)
+            'tr_en_parent_id' => 1326, //Domain Entity
+            'tr_content' => $domain_analysis['url_clean_domain'],
+        ), array('en_child'));
+
+
+        //Do we need to create an entity for this domain?
+        if(count($domain_entities)==0 && $add_url){
+
+            //Yes, let's add a new entity:
+            $domain_en = $this->Database_model->fn___en_create(array(
+                'en_status' => 0, //New domain entity
+                'en_name' => $domain_analysis['url_domain_name'],
+                'en_icon' => echo_fav_icon($domain_analysis['url_clean_domain']),
+            ), true, $tr_miner_en_id);
+
+            //And link entity to the domains entity:
+            $domain_entities[0] = array_merge($domain_en , $this->Database_model->fn___tr_create(array(
+                'tr_miner_en_id' => $tr_miner_en_id,
+                'tr_status' => 2, //Published link to Domains
+                'tr_type_en_id' => 4256, //Generic URL
+                'tr_en_parent_id' => 1326, //Domain Entity
+                'tr_en_child_id' => $domain_en['en_id'],
+                'tr_content' => $domain_analysis['url_clean_domain'],
+            )));
+
+        } elseif($domain_analysis['url_is_root'] && count($domain_entities) > 0){
+
+            $url_already_existed = 1;
+
+        }
+
+
+        //Was this not a root domain? If so, also check to see if URL exists:
+        $url_ens = array();
+
+        if(!$domain_analysis['url_is_root']){
+
+            //Check to see if URL already exists:
+            $url_ens = $this->Database_model->fn___tr_fetch(array(
+                'tr_status >=' => 0, //New+
+                'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null, //Entity URL Links
+                'tr_content' => $url,
+            ), array('en_child'));
+
+
+            //Do we need to create an entity for this URL?
+            if(count($url_ens)==0 && $add_url){
+
+                //Link this URL as the parent domain:
+                $url_ens[0] = $this->Database_model->fn___tr_create(array(
+                    'tr_miner_en_id' => $tr_miner_en_id,
+                    'tr_status' => 2, //Published link to Domains
+                    'tr_type_en_id' => 4256, //Generic URL
+                    'tr_en_parent_id' => $domain_en['en_id'],
+                    'tr_en_child_id' => $add_child_en_id,
+                    'tr_content' => $domain_analysis['url_clean_domain'],
+                ));
+
+            } elseif(count($url_ens) > 0){
+
+                $url_already_existed = 1;
+
+            }
+
+        }
+
+
+
+
+
+
+
+        //Return results:
+        return array_merge(array(
+            //used all the time, also when updating en entity:
+            'status' => ( $url_already_existed && !$add_url ? 0 : 1),
+            'message' => ( $url_already_existed && !$add_url ? 'URL already linked to <b>@' . $url_ens[0]['en_id'] . ' ' . $url_ens[0]['en_name'] . '</b>' : 'Success'),
+            //Additional data:
+            'url_already_existed' => $url_already_existed,
+            'cleaned_url' => $url,
+            'tr_type_en_id' => $tr_type_en_id,
+            'page_title' => $page_title,
+            'en_domain' => ( count($domain_entities) > 0 ? $domain_entities[0] : false ),
+            'en_url' => ( count($url_ens) > 0 ? $url_ens[0] : false ),
+        ), $domain_analysis);
+
+    }
+
+
+
 
     function fn___en_child_count($en_id, $min_en_status = 0){
 
@@ -213,8 +427,7 @@ class Matrix_model extends CI_Model
          *
          * The function that would add/validate new URLs
          * which would also check for duplicates, etc...
-         * And create new entities (if needed) for the URL
-         * and for it's domain.
+         * And create new domain entities if needed.
          *
          * */
 
@@ -227,32 +440,29 @@ class Matrix_model extends CI_Model
 
 
         //Detect domain parent:
-        $url_parse = base_domain($input_url);
+        $domain_analysis = fn___analyze_domain($input_url);
 
-        if($url_parse['isroot']){
+        if($domain_analysis['url_is_root']){
             //Since this is the root, update to the clean URL:
-            $input_url = $url_parse['basedomain'];
+            $input_url = $domain_analysis['url_clean_domain'];
         } else {
             //Simple cleanup:
             $input_url = trim($input_url);
-            //TODO Maybe we can improve on our process to standardize URLs?
         }
 
         //Check if this URL has already been added:
         $dup_urls = $this->Database_model->fn___tr_fetch(array(
             'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null, //Entity URL Links
-            'tr_status >' => 0,
+            'tr_status >=' => 0, //New+
             'tr_content' => $input_url, //Exact Match!
         ), array('en_child'));
-
         if (count($dup_urls) > 0) {
 
-            //Return the object as this is expected:
+            //Yes, this URL has already been added to the ledger:
             return array(
                 'status' => 1,
-                'is_existing' => 1,
-                'message' => 'Entity already existed',
-                'en_from_url' => $dup_urls[0],
+                'message' => 'URL already added to the ledger',
+                'en_url' => $dup_urls[0],
             );
 
         }
@@ -260,12 +470,13 @@ class Matrix_model extends CI_Model
 
         //This is a new URL that has never been added before...
         //Call URL to validate it further:
-        $curl = fn___curl_html($input_url, true);
+        $curl = $this->Matrix_model->fn___digest_url($input_url);
 
         if (!$curl['status']) {
             //Oooopsi, we had some error:
             return $curl;
         }
+
 
         //Create a new entity:
         $en = $this->Database_model->fn___en_create(array(
@@ -301,9 +512,8 @@ class Matrix_model extends CI_Model
         //Return entity object:
         return array(
             'status' => 1,
-            'is_existing' => 0,
             'message' => 'New Entity created from URL',
-            'en_from_url' => array_merge($en, $entity_tr),
+            'en_url' => array_merge($en, $entity_tr),
         );
 
     }
@@ -348,14 +558,14 @@ class Matrix_model extends CI_Model
     }
 
 
-    function fn___en_add_domain($basedomain, $domain_name, $miner_en_id){
+    function fn___en_add_domain($url_clean_domain, $domain_name, $miner_en_id){
 
 
         //Do we have this domain entity already?
         $domain_ens = $this->Database_model->fn___tr_fetch(array(
             'tr_status >=' => 0, //New+
             'tr_type_en_id' => 4256, //Generic URL: Domain name should be stored only as a Generic URL
-            'tr_content' => $basedomain,
+            'tr_content' => $url_clean_domain,
         ), array('en_child'));
         if(count($domain_ens) > 0){
             return $domain_ens[0];
@@ -366,7 +576,7 @@ class Matrix_model extends CI_Model
         //Create domain entity:
         $domain_en = $this->Database_model->fn___en_create(array(
             'en_name' => $domain_name,
-            'en_icon' => echo_fav_icon($basedomain),
+            'en_icon' => echo_fav_icon($url_clean_domain),
             'en_status' => 2, //Published
         ), true, $miner_en_id);
 
@@ -377,7 +587,7 @@ class Matrix_model extends CI_Model
             'tr_type_en_id' => 4256, //Generic URL
             'tr_en_parent_id' => 2750, //Assume group
             'tr_en_child_id' => $domain_en['en_id'],
-            'tr_content' => $basedomain,
+            'tr_content' => $url_clean_domain,
         ), true);
 
         //Return domain entity:

@@ -175,7 +175,8 @@ function fn___detect_tr_type_en_id($string)
     } elseif (filter_var($string, FILTER_VALIDATE_URL)) {
 
         //It's a URL, see what type (this could fail if duplicate, etc...):
-        return fn___curl_html($string, true);
+        $CI =& get_instance();
+        return $CI->Matrix_model->fn___digest_url($string);
 
     } elseif (strlen($string) > 9 && (fn___isDate($string) || strtotime($string) > 0)) {
         //Date/time:
@@ -215,23 +216,23 @@ function fn___en_auth($en_permission_group = null, $force_redirect = 0)
 
     //Authenticates logged-in users with their session information
     $CI =& get_instance();
-    $udata = $CI->session->userdata('user');
+    $session_en = $CI->session->userdata('user');
 
     //Let's start checking various ways we can give user access:
-    if (!$en_permission_group && is_array($udata) && count($udata) > 0) {
+    if (!$en_permission_group && is_array($session_en) && count($session_en) > 0) {
 
         //No minimum level required, grant access IF user is logged in:
-        return $udata;
+        return $session_en;
 
-    } elseif (isset($udata['en__parents']) && fn___filter_array($udata['en__parents'], 'en_id', 1308)) {
+    } elseif (isset($session_en['en__parents']) && fn___filter_array($session_en['en__parents'], 'en_id', 1308)) {
 
         //Always grant access to miners:
-        return $udata;
+        return $session_en;
 
-    } elseif (isset($udata['en_id']) && fn___filter_array($udata['en__parents'], 'en_id', $en_permission_group)) {
+    } elseif (isset($session_en['en_id']) && fn___filter_array($session_en['en__parents'], 'en_id', $en_permission_group)) {
 
         //They are part of one of the levels assigned to them:
-        return $udata;
+        return $session_en;
 
     }
 
@@ -241,7 +242,7 @@ function fn___en_auth($en_permission_group = null, $force_redirect = 0)
         return false;
     } else {
         //Block access:
-        return fn___redirect_message((isset($udata['en__parents'][0]) && fn___filter_array($udata['en__parents'], 'en_id', 1308) ? '/intents/' . $CI->config->item('in_tactic_id') : '/login?url=' . urlencode($_SERVER['REQUEST_URI'])), '<div class="alert alert-danger maxout" role="alert">' . (isset($udata['en_id']) ? 'Access not authorized.' : 'Sign In to access the matrix.') . '</div>');
+        return fn___redirect_message((isset($session_en['en__parents'][0]) && fn___filter_array($session_en['en__parents'], 'en_id', 1308) ? '/intents/' . $CI->config->item('in_tactic_id') : '/login?url=' . urlencode($_SERVER['REQUEST_URI'])), '<div class="alert alert-danger maxout" role="alert">' . (isset($session_en['en_id']) ? 'Access not authorized.' : 'Sign In to access the matrix.') . '</div>');
     }
 
 }
@@ -374,7 +375,7 @@ function detect_download_file_url($url, $mime_code) {
 
 }
 
-function base_domain($full_url){
+function fn___analyze_domain($full_url){
 
     //Detects the base domain of a URL, and also if the URL is the base domain...
 
@@ -403,43 +404,22 @@ function base_domain($full_url){
 
     $no_tld_domain = str_replace($tld, '', $analyze['host']);
     $no_tld_domain_parts = explode('.', $no_tld_domain);
-    $domain_subdomain = trim(str_replace('.'.end($no_tld_domain_parts), '', $no_tld_domain));
+    $url_subdomain = trim(str_replace('.'.end($no_tld_domain_parts), '', $no_tld_domain));
 
     //Return results:
     return array(
-        'isroot' => ( !$domain_subdomain && !isset($analyze['query']) && ( !isset($analyze['path']) || $analyze['path']=='/' ) ? 1 : 0 ),
-        'basedomain' => 'http://'.end($no_tld_domain_parts).$tld,
-        'domain_subdomain' => $domain_subdomain,
-        'domain_ext' => end($no_tld_domain_parts).$tld,
-        'domainname' => end($no_tld_domain_parts),
+        'url_is_root' => ( !$url_subdomain && !isset($analyze['query']) && ( !isset($analyze['path']) || $analyze['path']=='/' ) ? 1 : 0 ),
+        'url_domain_name' => end($no_tld_domain_parts),
+        'url_clean_domain' => 'http://'.end($no_tld_domain_parts).$tld,
+        'url_subdomain' => $url_subdomain,
+        'url_tld' => end($no_tld_domain_parts).$tld,
     );
 
 }
 
-function fn___curl_html($url, $return_breakdown = false)
-{
+function fn___curl_call($url){
 
-    /*
-     * A CURL function to fetch more details on $url
-     * */
-
-    //Validate URL:
-    if (!filter_var($url, FILTER_VALIDATE_URL)) {
-        return array(
-            'status' => 0,
-            'message' => 'Enter a valid URL',
-        );
-    }
-
-
-    //Detect domain parent:
-    $url_parse = base_domain($url);
-    if($url_parse['isroot']){
-        //Since this is the root, update to the clean URL:
-        $url = $url_parse['basedomain'];
-    }
-
-
+    //Make CURL call:
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.1) Gecko/20061204 Firefox/2.0.0.1");
     curl_setopt($ch, CURLOPT_REFERER, "https://mench.com");
@@ -452,124 +432,13 @@ function fn___curl_html($url, $return_breakdown = false)
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 8); //If site takes longer than this to connect, we have an issue!
 
     if (fn___is_dev()) {
-        //SSL does not work on my local PC.
+        //SSL does not work on my (Shervin) local dev env.
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
     }
-    $response = curl_exec($ch);
 
-    if ($return_breakdown) {
+    return curl_exec($ch);
 
-        $CI =& get_instance();
-
-        $body_html = substr($response, curl_getinfo($ch, CURLINFO_HEADER_SIZE));
-        $content_type = fn___one_two_explode('', ';', curl_getinfo($ch, CURLINFO_CONTENT_TYPE));
-        $embed_code = fn___echo_url_embed($url, $url, true);
-        $en_all_4537 = $CI->config->item('en_all_4537');
-
-        // Now see if this is a specific file type:
-        // Audio File URL: https://s3foundation.s3-us-west-2.amazonaws.com/672b41ff20fece4b3e7ae2cf4b58389f.mp3
-        // Video File URL: https://s3foundation.s3-us-west-2.amazonaws.com/8c5a1cc4e8558f422a4003d126502db9.mp4
-        // Image File URL: https://s3foundation.s3-us-west-2.amazonaws.com/d673c17d7164817025a000416da3be3f.png
-        // Downloadable File URL: https://s3foundation.s3-us-west-2.amazonaws.com/611695da5d0d199e2d95dd2eabe484cf.zip
-
-        if($url_parse['isroot']){
-            //Root domain is always a generic URL:
-            $tr_type_en_id = 4256;
-        } elseif (substr_count($content_type, 'image/') == 1) {
-            //Image URL
-            $tr_type_en_id = 4260;
-        } elseif (substr_count($content_type, 'audio/') == 1) {
-            //Audio URL
-            $tr_type_en_id = 4259;
-        } elseif (substr_count($content_type, 'video/') == 1) {
-            //Video URL
-            $tr_type_en_id = 4258;
-        } elseif ($embed_code['status']) {
-            //Embeddable URL:
-            $tr_type_en_id = 4257;
-        } elseif (detect_download_file_url($url, $content_type)) {
-            //File URL
-            $tr_type_en_id = 4261;
-        } else {
-            //Generic URL:
-            $tr_type_en_id = 4256;
-        }
-
-
-        //Cleanup Page Title:
-        $title = fn___one_two_explode('>', '', fn___one_two_explode('<title', '</title', $body_html));
-        $common_end_exploders = array('-', '|');
-        foreach ($common_end_exploders as $keyword) {
-            if (substr_count($title, $keyword) > 0) {
-                $parts = explode($keyword, $title);
-                $last_peace = $parts[(count($parts) - 1)];
-
-                //Should we remove the last part if not too long?
-                if (substr($last_peace, 0, 1) == ' ' && strlen($last_peace) < 16) {
-                    $title = str_replace($keyword . $last_peace, '', $title);
-                    break; //Only a single extension, so break the loop
-                }
-            }
-        }
-        $title = trim($title);
-        if (strlen($title) > 0) {
-
-            //Make sure this is not a duplicate name:
-            $dup_name_us = $CI->Database_model->fn___en_fetch(array(
-                'en_status >=' => 0, //New+
-                'en_name' => $title,
-            ));
-
-            if (count($dup_name_us) > 0) {
-                //Yes, we did find a duplicate name! Append a unique identifier:
-                $title = $title . ' ' . substr(md5($url), 0, 8);
-            }
-
-        } else {
-
-            //did not find a <title> tag:
-            //Use URL Type as its name:
-            $title = $en_all_4537[$tr_type_en_id]['m_name'] . ' ' . substr(md5($url), 0, 8); //Append a unique identifier
-
-        }
-
-        //Check to see if duplicate URL:
-        $dup_url_trs = $CI->Database_model->fn___tr_fetch(array(
-            'tr_status >=' => 0, //New+
-            'tr_type_en_id IN (' . join(',', $CI->config->item('en_ids_4537')) . ')' => null, //Entity URL Links
-            'tr_content' => $url,
-        ), array('en_child'));
-
-        //Check to see if we have domain linked already:
-        $domain_entities = $CI->Database_model->fn___tr_fetch(array(
-            'tr_status >=' => 0, //New+
-            'tr_type_en_id' => 4256, //Generic URL
-            'tr_en_parent_id' => 1326, //Domain Entity
-            'tr_content' => $url_parse['basedomain'],
-        ), array('en_child'));
-
-        //Prep return data:
-        $return_data = array_merge(array(
-            //used all the time, also when updating en entity:
-            'status' => (count($dup_url_trs) > 0 ? 0 : 1),
-            'message' => (count($dup_url_trs) > 0 ? 'URL has been already linked to <b>@' . $dup_url_trs[0]['en_id'] . ' ' . $dup_url_trs[0]['en_name'] . '</b>' : 'Success'),
-            //Additional data:
-            'domain_entity' => ( count($domain_entities) > 0 ? $domain_entities[0] : false ),
-            'cleaned_url' => $url,
-            'tr_type_en_id' => $tr_type_en_id,
-            'tr_type_en' => $en_all_4537[$tr_type_en_id],
-            'dup_en' => ( count($dup_url_trs) > 0 ? $dup_url_trs[0] : array() ),
-            'page_title' => $title,
-        ), $url_parse);
-
-        //Return results:
-        return $return_data;
-
-    } else {
-        //Simply return the response:
-        return $response;
-    }
 }
 
 function fn___boost_power()

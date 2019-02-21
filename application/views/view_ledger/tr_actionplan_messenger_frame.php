@@ -1,10 +1,10 @@
 <?php
 
 //Do they have a local session? (i.e. Browser login):
-$udata = $this->session->userdata('user');
+$session_en = $this->session->userdata('user');
 $fb_settings = $this->config->item('fb_settings');
 
-if ((isset($udata['en__actionplans']) && count($udata['en__actionplans'])) || (isset($udata['en__parents']) && count($udata['en__parents']) > 0 && fn___filter_array($udata['en__parents'], 'en_id', 1308))) {
+if ((isset($session_en['en__actionplans']) && count($session_en['en__actionplans'])) || (isset($session_en['en__parents']) && count($session_en['en__parents']) > 0 && fn___filter_array($session_en['en__parents'], 'en_id', 1308))) {
 
     //User is accessing the Action Plan from their browser
 
@@ -16,7 +16,7 @@ if ((isset($udata['en__actionplans']) && count($udata['en__actionplans'])) || (i
     //Fetch page instantly as we know who this is:
     ?>
     <script>
-        $.post("/master/fn___display_actionplan/0/<?= ( isset($actionplan_tr_id) ? $actionplan_tr_id : $udata['en__actionplans'][0]['tr_id']) ?>/<?= (isset($in_id) ? intval($in_id) : $udata['en__actionplans'][0]['tr_in_child_id']) ?>", {}, function (data) {
+        $.post("/master/fn___display_actionplan/0/<?= ( isset($actionplan_tr_id) ? $actionplan_tr_id : $session_en['en__actionplans'][0]['tr_id']) ?>/<?= (isset($in_id) ? intval($in_id) : $session_en['en__actionplans'][0]['tr_in_child_id']) ?>", {}, function (data) {
             $("#page_content").html(data);
 
             //Load tooldip:

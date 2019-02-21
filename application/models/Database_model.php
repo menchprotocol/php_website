@@ -831,7 +831,7 @@ class Database_model extends CI_Model
 
         if (fn___is_dev()) {
             //Do a call on live as this does not work on local due to security limitations:
-            return json_decode(fn___curl_html($this->config->item('algolia_remote') . "/cron/fn___update_algolia/" . ( $input_obj_type ? $input_obj_type . '/' . $input_obj_id : '' )));
+            return json_decode(fn___curl_call($this->config->item('algolia_remote') . "/cron/fn___update_algolia/" . ( $input_obj_type ? $input_obj_type . '/' . $input_obj_id : '' )));
         }
 
         //Load Algolia Index

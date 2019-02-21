@@ -23,12 +23,12 @@ class Master extends CI_Controller
     function fb_profile($en_id)
     {
 
-        $udata = fn___en_auth(array(1308));
+        $session_en = fn___en_auth(array(1308));
         $current_us = $this->Database_model->fn___en_fetch(array(
             'en_id' => $en_id,
         ));
 
-        if (!$udata) {
+        if (!$session_en) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Session Expired. Sign In and Try again.',
@@ -74,9 +74,9 @@ class Master extends CI_Controller
     {
 
         //Get session data in case user is doing a browser login:
-        $udata = $this->session->userdata('user');
-        $empty_session = (!isset($udata['en__actionplans']) || count($udata['en__actionplans']) < 1);
-        $is_miner = fn___filter_array($udata['en__parents'], 'en_id', 1308);
+        $session_en = $this->session->userdata('user');
+        $empty_session = (!isset($session_en['en__actionplans']) || count($session_en['en__actionplans']) < 1);
+        $is_miner = fn___filter_array($session_en['en__parents'], 'en_id', 1308);
 
         //Authenticate user:
         if (!$psid && $empty_session && !$is_miner) {
@@ -87,7 +87,7 @@ class Master extends CI_Controller
 
         if($empty_session && $psid > 0){
             //Authenticate this user:
-            $udata = $this->Matrix_model->fn___en_master_messenger_authenticate($psid);
+            $session_en = $this->Matrix_model->fn___en_master_messenger_authenticate($psid);
         }
 
         //Set Action Plan filters:
@@ -102,7 +102,7 @@ class Master extends CI_Controller
         } elseif (!$empty_session) {
             //Yes! It seems to be a desktop login (versus Facebook Messenger)
             $filters['tr_type_en_id'] = 4235; //Action Plan
-            $filters['tr_en_parent_id'] = $udata['en_id'];
+            $filters['tr_en_parent_id'] = $session_en['en_id'];
             $filters['tr_status >='] = 0;
         }
 
@@ -246,7 +246,7 @@ class Master extends CI_Controller
         }
 
         //Fetch master name and details:
-        $udata = $this->session->userdata('user');
+        $session_en = $this->session->userdata('user');
         $trs = $this->Database_model->fn___tr_fetch(array(
             'tr_id' => $_POST['tr_id'],
         ), array('w', 'cr', 'cr_c_child'));
@@ -317,7 +317,7 @@ class Master extends CI_Controller
             $this->Database_model->fn___tr_update($trs[0]['tr_id'], array(
                 'tr_content' => trim($_POST['tr_content']),
                 'tr_type_en_id' => $detected_tr_type['tr_type_en_id'],
-            ), (isset($udata['en_id']) ? $udata['en_id'] : $trs[0]['k_children_en_id']));
+            ), (isset($session_en['en_id']) ? $session_en['en_id'] : $trs[0]['k_children_en_id']));
         }
 
         if ($status_changed) {

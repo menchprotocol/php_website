@@ -1,7 +1,7 @@
 <?php
 
 //Fetch Messages based on in_id:
-$udata = $this->session->userdata('user');
+$session_en = $this->session->userdata('user');
 $tr_content_max = $this->config->item('tr_content_max');
 $en_ids_4485 = $this->config->item('en_ids_4485');
 $en_all_4485 = $this->config->item('en_all_4485');
@@ -20,7 +20,7 @@ $metadata_body_ui = '';
 foreach ($metadatas as $tr) {
 
     $metadata_body_ui .= fn___echo_in_message_manage(array_merge($tr, array(
-        'tr_en_child_id' => $udata['en_id'],
+        'tr_en_child_id' => $session_en['en_id'],
     )));
 
     //Increase counter:

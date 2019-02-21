@@ -74,16 +74,13 @@ function fn___en_source_paste_url() {
 
             } else {
 
-                //For debugging when needed:
-                console.log(data);
-
                 //All good, show content:
                 $('.url-error').html('');
                 $('.url-parsed').removeClass('hidden');
 
                 //Update input fields:
                 $('.entity_domain_ui').html(data.entity_domain_ui);
-                $('#en_url_name').val(data.page_title);
+                $('#en_name_url').val(data.page_title);
 
             }
         });
@@ -112,7 +109,7 @@ function fn___en_add_source(){
 
         source_url: $('#source_url').val(),
         source_parent_ens: source_parent_ens,
-        en_name: $('#en_url_name').val(),
+        en_name: $('#en_name_url').val(),
 
         author_1             : $('#author_1').val(),
         entity_parent_id_1   : $('#entity_parent_id_1').val(),

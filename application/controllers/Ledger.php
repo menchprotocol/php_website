@@ -22,7 +22,7 @@ class Ledger extends CI_Controller
          *
          * */
 
-        $udata = fn___en_auth(null, true); //Just be logged in to browse
+        $session_en = fn___en_auth(null, true); //Just be logged in to browse
 
         $this->load->view('view_shared/matrix_header', array(
             'title' => 'Ledger Transactions',
@@ -46,9 +46,9 @@ class Ledger extends CI_Controller
          * */
 
         //Authenticate Miner:
-        $udata = fn___en_auth(array(1308));
+        $session_en = fn___en_auth(array(1308));
 
-        if (!$udata) {
+        if (!$session_en) {
 
             return fn___echo_json(array(
                 'status' => 0,
@@ -153,7 +153,7 @@ class Ledger extends CI_Controller
          * */
         $this->Database_model->fn___tr_update($trs[0]['tr_id'], array(
             'tr_status' => intval($_POST['tr_status_new']),
-        ), $udata['en_id']);
+        ), $session_en['en_id']);
 
 
 
@@ -171,8 +171,8 @@ class Ledger extends CI_Controller
     {
 
         //Authenticate Miner:
-        $udata = fn___en_auth(array(1308));
-        if (!$udata) {
+        $session_en = fn___en_auth(array(1308));
+        if (!$session_en) {
 
             return fn___echo_json(array(
                 'status' => 0,
@@ -197,7 +197,7 @@ class Ledger extends CI_Controller
                 //Log update and give credit to the session Miner:
                 $this->Database_model->fn___tr_update($tr_id, array(
                     'tr_order' => intval($tr_order),
-                ), $udata['en_id']);
+                ), $session_en['en_id']);
             }
         }
 
@@ -212,7 +212,7 @@ class Ledger extends CI_Controller
     function fn___tr_json($tr_id)
     {
         //Authenticate miner access:
-        $udata = fn___en_auth(array(1308), true);
+        $session_en = fn___en_auth(array(1308), true);
 
         //Fetch transaction metadata and display it:
         $trs = $this->Database_model->fn___tr_fetch(array(
@@ -235,9 +235,9 @@ class Ledger extends CI_Controller
     {
 
         //Authenticate Miner:
-        $udata = fn___en_auth(array(1308));
+        $session_en = fn___en_auth(array(1308));
 
-        if (!$udata) {
+        if (!$session_en) {
 
             return fn___echo_json(array(
                 'status' => 0,
@@ -284,7 +284,7 @@ class Ledger extends CI_Controller
 
         //Create Message Transaction:
         $tr = $this->Database_model->fn___tr_create(array(
-            'tr_miner_en_id' => $udata['en_id'],
+            'tr_miner_en_id' => $session_en['en_id'],
             'tr_in_child_id' => intval($_POST['in_id']),
             'tr_order' => 1 + $this->Database_model->fn___tr_max_order(array(
                     'tr_status >=' => 0, //New+
@@ -311,7 +311,7 @@ class Ledger extends CI_Controller
         return fn___echo_json(array(
             'status' => 1,
             'message' => fn___echo_in_message_manage(array_merge($tr, array(
-                'tr_en_child_id' => $udata['en_id'],
+                'tr_en_child_id' => $session_en['en_id'],
             ))),
         ));
     }
@@ -322,9 +322,9 @@ class Ledger extends CI_Controller
     {
 
         //Auth user and check required variables:
-        $udata = fn___en_auth(array(1308)); //miners
+        $session_en = fn___en_auth(array(1308)); //miners
 
-        if (!$udata) {
+        if (!$session_en) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Session Expired',

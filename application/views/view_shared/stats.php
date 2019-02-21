@@ -9,9 +9,9 @@ echo '<h1 class="middle-h">Platform Stats</h1>';
 $en_all_4534 = $this->config->item('en_all_4534');
 
 //Just be logged in to browse:
-$udata = fn___en_auth();
+$session_en = fn___en_auth();
 
-if(!$udata){
+if(!$session_en){
     echo '<style> .main-raised { max-width:1240px !important; } </style>';
 
 }

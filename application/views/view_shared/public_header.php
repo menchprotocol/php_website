@@ -1,6 +1,6 @@
 <?php
 //Attempt to fetch session variables:
-$udata = $this->session->userdata('user');
+$session_en = $this->session->userdata('user');
 $url_part_1 = $this->uri->segment(1);
 ?><!doctype html>
 <html lang="en">
@@ -45,9 +45,9 @@ $url_part_1 = $this->uri->segment(1);
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
                 <?php
-                if (isset($udata['en_id'])) {
+                if (isset($session_en['en_id'])) {
                     echo '<li id="isloggedin"><a href="/intents/' . (isset($in['in_id']) ? $in['in_id'] : $this->config->item('in_tactic_id')) . '">The Matrix <i class="fas fa-chevron-circle-right"></i></a></li>';
-                } elseif (isset($udata['en__actionplans']) && count($udata['en__actionplans']) > 0) {
+                } elseif (isset($session_en['en__actionplans']) && count($session_en['en__actionplans']) > 0) {
 
                     echo '<li id="isloggedin"><a href="/master/actionplan">Action Plan <i class="fas fa-chevron-circle-right"></i></a></li>';
 

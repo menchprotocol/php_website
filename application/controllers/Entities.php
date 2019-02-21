@@ -15,7 +15,7 @@ class Entities extends CI_Controller
     function add_source()
     {
         //Authenticate Miner, redirect if failed:
-        $udata = fn___en_auth(array(1308), true);
+        $session_en = fn___en_auth(array(1308), true);
 
         //Show frame to be loaded in modal:
         $this->load->view('view_shared/matrix_header', array(
@@ -35,8 +35,8 @@ class Entities extends CI_Controller
          *
          * */
 
-        $udata = fn___en_auth(array(1308));
-        if (!$udata) {
+        $session_en = fn___en_auth(array(1308));
+        if (!$session_en) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Session. Refresh to Continue',
@@ -49,7 +49,7 @@ class Entities extends CI_Controller
         }
 
         //All seems good, fetch URL:
-        $curl = fn___curl_html($_POST['input_url'], true);
+        $curl = $this->Matrix_model->fn___digest_url($_POST['input_url']);
 
         if (!$curl['status']) {
             //Oooopsi, we had some error:
@@ -57,11 +57,11 @@ class Entities extends CI_Controller
         }
 
         //Return results:
-        $fav_icon = echo_fav_icon($curl['basedomain']);
+        $fav_icon = echo_fav_icon($curl['url_clean_domain']);
 
         return fn___echo_json(array(
             'status' => 1,
-            'entity_domain_ui' => '<span class="en_icon_mini_ui">'.($fav_icon ? $fav_icon : '<i class="fas fa-at grey-at"></i>') . '</span> ' . $curl['domainname'],
+            'entity_domain_ui' => '<span class="en_icon_mini_ui">'.($fav_icon ? $fav_icon : '<i class="fas fa-at grey-at"></i>') . '</span> ' . $curl['url_domain_name'],
             'page_title' => $curl['page_title'],
             'curl' => $curl, //for debugging if needed
         ));
@@ -78,7 +78,7 @@ class Entities extends CI_Controller
             $en_id = $this->config->item('en_start_here_id');
         }
 
-        $udata = fn___en_auth(null, true); //Just be logged in to browse
+        $session_en = fn___en_auth(null, true); //Just be logged in to browse
 
         //Do we have any mass actions?
         if (isset($_POST['action_type'])) {
@@ -111,7 +111,7 @@ class Entities extends CI_Controller
                         //Update with new icon:
                         $this->Database_model->fn___en_update($en['en_id'], array(
                             'en_icon' => trim($_POST['modify_text']),
-                        ), true, $udata['en_id']);
+                        ), true, $session_en['en_id']);
 
                         $applied_success++;
                     } elseif ($_POST['action_type'] == 'prefix_add') {
@@ -119,7 +119,7 @@ class Entities extends CI_Controller
                         //Update with new icon:
                         $this->Database_model->fn___en_update($en['en_id'], array(
                             'en_name' => $_POST['modify_text'] . $en['en_name'],
-                        ), true, $udata['en_id']);
+                        ), true, $session_en['en_id']);
 
                         $applied_success++;
 
@@ -128,7 +128,7 @@ class Entities extends CI_Controller
                         //Update with new icon:
                         $this->Database_model->fn___en_update($en['en_id'], array(
                             'en_name' => $en['en_name'] . $_POST['modify_text'],
-                        ), true, $udata['en_id']);
+                        ), true, $session_en['en_id']);
 
                         $applied_success++;
 
@@ -142,7 +142,7 @@ class Entities extends CI_Controller
                             //Update with new icon:
                             $this->Database_model->fn___en_update($en['en_id'], array(
                                 'en_name' => str_replace($parts[0], $parts[1], $en['en_name']),
-                            ), true, $udata['en_id']);
+                            ), true, $session_en['en_id']);
 
                             $applied_success++;
 
@@ -158,7 +158,7 @@ class Entities extends CI_Controller
                             //Update with new icon:
                             $this->Database_model->fn___tr_update($en['tr_id'], array(
                                 'tr_content' => str_replace($parts[0], $parts[1], $en['tr_content']),
-                            ), $udata['en_id']);
+                            ), $session_en['en_id']);
 
                             $applied_success++;
 
@@ -231,7 +231,7 @@ class Entities extends CI_Controller
         //See what this is:
         $detected_tr_type = fn___detect_tr_type_en_id($_POST['tr_content']);
 
-        if (!$detected_tr_type['status'] && (!isset($detected_tr_type['dup_en']['en_id']) || !($detected_tr_type['dup_en']['en_id'] == $_POST['en_id']))) {
+        if (!$detected_tr_type['status'] && (!isset($detected_tr_type['en_url']['en_id']) || !($detected_tr_type['en_url']['en_id'] == $_POST['en_id']))) {
             //return error:
             return fn___echo_json($detected_tr_type);
         }
@@ -248,8 +248,8 @@ class Entities extends CI_Controller
     {
 
         //Authenticate Miner:
-        $udata = fn___en_auth(array(1308));
-        if (!$udata) {
+        $session_en = fn___en_auth(array(1308));
+        if (!$session_en) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Session. Refresh to Continue',
@@ -310,7 +310,7 @@ class Entities extends CI_Controller
         $parent_en_id = intval($_POST['parent_en_id']);
         $en_focus_filter = intval($_POST['en_focus_filter']);
         $page = intval($_POST['page']);
-        $udata = fn___en_auth(array(1308));
+        $session_en = fn___en_auth(array(1308));
         $filters = array(
             'tr_en_parent_id' => $parent_en_id,
             'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
@@ -318,7 +318,7 @@ class Entities extends CI_Controller
             'tr_status >=' => 0, //New+
         );
 
-        if (!$udata) {
+        if (!$session_en) {
             echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle" style="margin:0 8px 0 2px;"></i> Session expired. Refresh the page and try again.</div>';
             return false;
         }
@@ -347,9 +347,9 @@ class Entities extends CI_Controller
         //Responsible to link parent/children entities to each other via a JS function on en_miner_ui.php
 
         //Auth user and check required variables:
-        $udata = fn___en_auth(array(1308));
+        $session_en = fn___en_auth(array(1308));
 
-        if (!$udata) {
+        if (!$session_en) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Session. Refresh the page and try again.',
@@ -421,7 +421,7 @@ class Entities extends CI_Controller
             $entity_new = $this->Database_model->fn___en_create(array(
                 'en_name' => trim($_POST['en_new_name']),
                 'en_status' => 2, //Published
-            ), true, $udata['en_id']);
+            ), true, $session_en['en_id']);
 
             if (!isset($entity_new['en_id']) || $entity_new['en_id'] < 1) {
                 return fn___echo_json(array(
@@ -492,7 +492,7 @@ class Entities extends CI_Controller
     {
 
         //Auth user and check required variables:
-        $udata = fn___en_auth(array(1308));
+        $session_en = fn___en_auth(array(1308));
         $tr_content_max = $this->config->item('tr_content_max');
 
         //Fetch current data:
@@ -500,7 +500,7 @@ class Entities extends CI_Controller
             'en_id' => intval($_POST['en_id']),
         ));
 
-        if (!$udata) {
+        if (!$session_en) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Session Expired',
@@ -558,7 +558,7 @@ class Entities extends CI_Controller
 
                 $this->Database_model->fn___tr_update($unlink_tr['tr_id'], array(
                     'tr_status' => -1, //Unlink
-                ), $udata['en_id']);
+                ), $session_en['en_id']);
 
             }
 
@@ -602,12 +602,12 @@ class Entities extends CI_Controller
 
                     //This is a URL, validate modification:
 
-                    if($detected_tr_type['isroot']){
+                    if($detected_tr_type['url_is_root']){
 
                         if($en_trs[0]['tr_en_parent_id']==1326){
 
                             //Override with the clean domain for consistency:
-                            $_POST['tr_content'] = $detected_tr_type['basedomain'];
+                            $_POST['tr_content'] = $detected_tr_type['url_clean_domain'];
 
                         } else {
 
@@ -628,19 +628,19 @@ class Entities extends CI_Controller
                                 'message' => 'Only domain URLs can be linked to Domain entity.',
                             ));
 
-                        } elseif($detected_tr_type['domain_entity']){
+                        } elseif($detected_tr_type['en_domain']){
                             //We do have the domain mapped! Is this connected to the domain entity as its parent?
-                            if($detected_tr_type['domain_entity']['en_id']!=$en_trs[0]['tr_en_parent_id']){
+                            if($detected_tr_type['en_domain']['en_id']!=$en_trs[0]['tr_en_parent_id']){
                                 return fn___echo_json(array(
                                     'status' => 0,
-                                    'message' => 'Must link to <b>@'.$detected_tr_type['domain_entity']['en_id'].' '.$detected_tr_type['domain_entity']['en_name'].'</b> as their parent entity',
+                                    'message' => 'Must link to <b>@'.$detected_tr_type['en_domain']['en_id'].' '.$detected_tr_type['en_domain']['en_name'].'</b> as their parent entity',
                                 ));
                             }
                         } else {
                             //We don't have the domain mapped, this is for sure not allowed:
                             return fn___echo_json(array(
                                 'status' => 0,
-                                'message' => 'Requires a new parent entity for <b>'.$detected_tr_type['domain_ext'].'</b>. Add by pasting URL into the [Add @Entity] input field.',
+                                'message' => 'Requires a new parent entity for <b>'.$detected_tr_type['url_tld'].'</b>. Add by pasting URL into the [Add @Entity] input field.',
                             ));
                         }
 
@@ -669,9 +669,9 @@ class Entities extends CI_Controller
                     'tr_type_en_id' => $js_tr_type_en_id,
                     'tr_status' => intval($_POST['tr_status']),
                     //Auto append timestamp and most recent miner:
-                    'tr_miner_en_id' => $udata['en_id'],
+                    'tr_miner_en_id' => $session_en['en_id'],
                     'tr_timestamp' => date("Y-m-d H:i:s"),
-                ), $udata['en_id']);
+                ), $session_en['en_id']);
 
 
             }
@@ -679,11 +679,11 @@ class Entities extends CI_Controller
         }
 
         //Now update the DB:
-        $this->Database_model->fn___en_update(intval($_POST['en_id']), $en_update, true, $udata['en_id']);
+        $this->Database_model->fn___en_update(intval($_POST['en_id']), $en_update, true, $session_en['en_id']);
 
 
         //Reset user session data if this data belongs to the logged-in user:
-        if ($_POST['en_id'] == $udata['en_id']) {
+        if ($_POST['en_id'] == $session_en['en_id']) {
             $ens = $this->Database_model->fn___en_fetch(array(
                 'en_id' => intval($_POST['en_id']),
             ));
@@ -737,8 +737,8 @@ class Entities extends CI_Controller
     function fn___load_en_messages($en_id)
     {
 
-        $udata = fn___en_auth();
-        if (!$udata) {
+        $session_en = fn___en_auth();
+        if (!$session_en) {
             //Display error:
             die('<span style="color:#FF0000;">Error: Invalid Session. Sign In again to continue.</span>');
         }
@@ -769,8 +769,8 @@ class Entities extends CI_Controller
     function en_login_ui()
     {
         //Check to see if they are already logged in?
-        $udata = $this->session->userdata('user');
-        if (isset($udata['en__parents'][0]) && fn___filter_array($udata['en__parents'], 'en_id', 1308)) {
+        $session_en = $this->session->userdata('user');
+        if (isset($session_en['en__parents'][0]) && fn___filter_array($session_en['en__parents'], 'en_id', 1308)) {
             //Lead miner and above, go to console:
             return fn___redirect_message('/intents/' . $this->config->item('in_tactic_id'));
         }
@@ -1019,9 +1019,9 @@ class Entities extends CI_Controller
     {
 
         //Auth user and check required variables:
-        $udata = fn___en_auth(array(1308));
+        $session_en = fn___en_auth(array(1308));
 
-        if (!$udata) {
+        if (!$session_en) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Session Expired',
@@ -1044,11 +1044,11 @@ class Entities extends CI_Controller
         }
 
         //Validate the URL:
-        $curl = fn___curl_html($_POST['source_url'], true);
+        $curl = $this->Matrix_model->fn___digest_url($_POST['source_url']);
         if (!$curl['status']) {
             //Oooopsi, we had some error:
             return fn___echo_json($curl);
-        } elseif ($curl['basedomain'] == $_POST['source_url']) {
+        } elseif ($curl['url_clean_domain'] == $_POST['source_url']) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'A source URL cannot reference the root domain',
@@ -1105,7 +1105,7 @@ class Entities extends CI_Controller
                 }
 
                 //Check URL to make sure it's unique:
-                $author_url_curl = fn___curl_html($_POST['ref_url_' . $x], true);
+                $author_url_curl = $this->Matrix_model->fn___digest_url($_POST['ref_url_' . $x]);
                 if (!$author_url_curl['status']) {
                     //Oooopsi, we had some error:
                     return fn___echo_json(array(
@@ -1118,7 +1118,7 @@ class Entities extends CI_Controller
                 $author_en = $this->Database_model->fn___en_create(array(
                     'en_name' => trim($_POST['author_' . $x]),
                     'en_status' => 2, //Published
-                ), true, $udata['en_id']);
+                ), true, $session_en['en_id']);
                 if (!isset($author_en['en_id'])) {
                     return fn___echo_json(array(
                         'status' => 0,
@@ -1129,7 +1129,7 @@ class Entities extends CI_Controller
                 //Prepare data to link author to People/Groups
                 $author_group_tr = array(
                     'tr_status' => 2, //Published
-                    'tr_miner_en_id' => $udata['en_id'],
+                    'tr_miner_en_id' => $session_en['en_id'],
                     'tr_type_en_id' => 4230, //Empty
                     'tr_en_parent_id' => $_POST['entity_parent_id_' . $x], //People or Groups
                     'tr_en_child_id' => $author_en['en_id'],
@@ -1138,10 +1138,10 @@ class Entities extends CI_Controller
                 //Does the domain include the author's first/last name?
                 $author_name_parts = explode(' ', $_POST['author_' . $x]);
                 foreach($author_name_parts as $author_name_part){
-                    if(substr_count($author_url_curl['basedomain'], strtolower($author_name_part)) > 0 || substr_count($author_url_curl['page_title'], strtolower($author_name_part)) > 0){
+                    if(substr_count($author_url_curl['url_clean_domain'], strtolower($author_name_part)) > 0 || substr_count($author_url_curl['page_title'], strtolower($author_name_part)) > 0){
                         //Yes, the domain seems to be for the author... include it in the people/group transaction:
                         $author_group_tr['tr_type_en_id'] = $author_url_curl['tr_type_en_id']; //Overrides Empty
-                        $author_group_tr['tr_content'] = $author_url_curl['basedomain']; //A domain that seems to belong to the author
+                        $author_group_tr['tr_content'] = $author_url_curl['url_clean_domain']; //A domain that seems to belong to the author
                         break;
                     }
                 }
@@ -1149,12 +1149,12 @@ class Entities extends CI_Controller
                 //Did we determine that the URL is for the author itself?
                 if(!isset($author_group_tr['tr_content'])){
                     //Nope, just add domain entity:
-                    $domain_author_en = $this->Matrix_model->fn___en_add_domain($author_url_curl['basedomain'], $author_url_curl['domainname'], $udata['en_id']);
+                    $domain_author_en = $this->Matrix_model->fn___en_add_domain($author_url_curl['url_clean_domain'], $author_url_curl['url_domain_name'], $session_en['en_id']);
 
                     //Link author to domain and save URL:
                     $this->Database_model->fn___tr_create(array(
                         'tr_status' => 2, //Published
-                        'tr_miner_en_id' => $udata['en_id'],
+                        'tr_miner_en_id' => $session_en['en_id'],
                         'tr_content' => $author_url_curl['cleaned_url'],
                         'tr_type_en_id' => $author_url_curl['tr_type_en_id'],
                         'tr_en_parent_id' => $domain_author_en['en_id'],
@@ -1186,7 +1186,7 @@ class Entities extends CI_Controller
                     //Add author to industry experts:
                     $this->Database_model->fn___tr_create(array(
                         'tr_status' => 2, //Published
-                        'tr_miner_en_id' => $udata['en_id'],
+                        'tr_miner_en_id' => $session_en['en_id'],
                         'tr_content' => $_POST['why_expert_' . $x],
                         'tr_type_en_id' => $detected_tr_type['tr_type_en_id'],
                         'tr_en_parent_id' => 3084, //Industry Experts
@@ -1203,20 +1203,20 @@ class Entities extends CI_Controller
 
 
         //Add domain entity:
-        $domain_en = $this->Matrix_model->fn___en_add_domain($curl['basedomain'], $curl['domainname'], $udata['en_id']);
+        $domain_en = $this->Matrix_model->fn___en_add_domain($curl['url_clean_domain'], $curl['url_domain_name'], $session_en['en_id']);
 
 
         //Create source entity:
         $new_source = $this->Database_model->fn___en_create(array(
             'en_name' => trim($_POST['en_name']),
             'en_status' => 0, //New
-        ), true, $udata['en_id']);
+        ), true, $session_en['en_id']);
 
 
         //Link to domain parent:
         $this->Database_model->fn___tr_create(array(
             'tr_status' => 2, //Published
-            'tr_miner_en_id' => $udata['en_id'],
+            'tr_miner_en_id' => $session_en['en_id'],
             'tr_content' => $curl['cleaned_url'],
             'tr_type_en_id' => $curl['tr_type_en_id'],
             'tr_en_parent_id' => $domain_en['en_id'],
@@ -1230,7 +1230,7 @@ class Entities extends CI_Controller
                 //Link to parent
                 $this->Database_model->fn___tr_create(array(
                     'tr_status' => 2, //Published
-                    'tr_miner_en_id' => $udata['en_id'],
+                    'tr_miner_en_id' => $session_en['en_id'],
                     'tr_type_en_id' => 4230, //Empty
                     'tr_en_parent_id' => intval($parent_en_id),
                     'tr_en_child_id' => $new_source['en_id'],
@@ -1242,7 +1242,7 @@ class Entities extends CI_Controller
         foreach ($referenced_authors as $parent_en_id) {
             $this->Database_model->fn___tr_create(array(
                 'tr_status' => 2, //Published
-                'tr_miner_en_id' => $udata['en_id'],
+                'tr_miner_en_id' => $session_en['en_id'],
                 'tr_type_en_id' => 4230, //Empty
                 'tr_en_parent_id' => $parent_en_id,
                 'tr_en_child_id' => $new_source['en_id'],

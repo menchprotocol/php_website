@@ -14,9 +14,9 @@ class Stats extends CI_Controller
     function index()
     {
         //Display statuses for intents, entities and ledger transactions:
-        $udata = fn___en_auth(); //Just be logged in to browse
+        $session_en = fn___en_auth(); //Just be logged in to browse
 
-        if($udata){
+        if($session_en){
 
             //Miner logged in stats
             $this->load->view('view_shared/matrix_header', array(

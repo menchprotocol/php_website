@@ -17,9 +17,9 @@ class Intents extends CI_Controller
     function index()
     {
 
-        $udata = $this->session->userdata('user');
+        $session_en = $this->session->userdata('user');
 
-        if (isset($udata['en__parents'][0]) && fn___filter_array($udata['en__parents'], 'en_id', 1308)) {
+        if (isset($session_en['en__parents'][0]) && fn___filter_array($session_en['en__parents'], 'en_id', 1308)) {
 
             //Lead miner and above, go to matrix:
             fn___redirect_message('/intents/' . $this->config->item('in_tactic_id'));
@@ -79,7 +79,7 @@ class Intents extends CI_Controller
         }
 
         //Authenticate Miner, redirect if failed:
-        $udata = fn___en_auth(array(1308), true);
+        $session_en = fn___en_auth(array(1308), true);
 
         //Fetch intent with 2 levels of children:
         $ins = $this->Database_model->fn___in_fetch(array(
@@ -111,7 +111,7 @@ class Intents extends CI_Controller
          * */
 
         //Authenticate Miner, redirect if failed:
-        $udata = fn___en_auth(array(1308), true);
+        $session_en = fn___en_auth(array(1308), true);
 
         //Load views:
         $this->load->view('view_shared/matrix_header', array( 'title' => 'Orphan Intents' ));
@@ -171,8 +171,8 @@ class Intents extends CI_Controller
          * */
 
         //Authenticate Miner:
-        $udata = fn___en_auth(array(1308));
-        if (!$udata) {
+        $session_en = fn___en_auth(array(1308));
+        if (!$session_en) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Session. Refresh the Page to Continue',
@@ -195,7 +195,7 @@ class Intents extends CI_Controller
         }
 
         //All seems good, go ahead and try creating the intent:
-        return fn___echo_json($this->Matrix_model->fn___in_link_or_create($_POST['in_parent_id'], $_POST['in_outcome'], $_POST['in_link_child_id'], $_POST['next_level'], $udata['en_id']));
+        return fn___echo_json($this->Matrix_model->fn___in_link_or_create($_POST['in_parent_id'], $_POST['in_outcome'], $_POST['in_link_child_id'], $_POST['next_level'], $session_en['en_id']));
 
     }
 
@@ -208,8 +208,8 @@ class Intents extends CI_Controller
     {
 
         //Authenticate Miner:
-        $udata = fn___en_auth(array(1308));
-        if (!$udata) {
+        $session_en = fn___en_auth(array(1308));
+        if (!$session_en) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Session. Sign In again to Continue.',
@@ -275,7 +275,7 @@ class Intents extends CI_Controller
         //Make the move:
         $this->Database_model->fn___tr_update(intval($_POST['tr_id']), array(
             'tr_in_parent_id' => $to_in[0]['in_id'],
-        ), $udata['en_id']);
+        ), $session_en['en_id']);
 
 
         //Adjust tree metadata on both branches that have been affected:
@@ -300,7 +300,7 @@ class Intents extends CI_Controller
     {
 
         //Authenticate Miner:
-        $udata = fn___en_auth(array(1308));
+        $session_en = fn___en_auth(array(1308));
         $tr_id = intval($_POST['tr_id']);
         $tr_in_link_id = 0; //If >0 means linked intent is being updated...
 
@@ -310,7 +310,7 @@ class Intents extends CI_Controller
             'in_status >=' => 0, //New+
         ), array('in__parents'));
 
-        if (!$udata) {
+        if (!$session_en) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Session Expired',
@@ -487,7 +487,7 @@ class Intents extends CI_Controller
 
                             $this->Database_model->fn___tr_update($unlink_tr['tr_id'], array(
                                 'tr_status' => -1, //Unlink
-                            ), $udata['en_id']);
+                            ), $session_en['en_id']);
 
                         }
 
@@ -510,13 +510,13 @@ class Intents extends CI_Controller
                             //Update this intent as the status did match:
                             $status_update_children += $this->Database_model->fn___in_update($child_in['in_id'], array(
                                 'in_status' => $in_update['in_status']
-                            ), true, $udata['en_id']);
+                            ), true, $session_en['en_id']);
                         }
                     }
                 }
 
                 //This field has been updated, update one field at a time:
-                $this->Database_model->fn___in_update($_POST['in_id'], array( $key => $_POST[$key] ), true, $udata['en_id']);
+                $this->Database_model->fn___in_update($_POST['in_id'], array( $key => $_POST[$key] ), true, $session_en['en_id']);
 
             }
         }
@@ -657,10 +657,10 @@ class Intents extends CI_Controller
 
                 //Also update the timestamp & new miner:
                 $tr_update['tr_timestamp'] = date("Y-m-d H:i:s");
-                $tr_update['tr_miner_en_id'] = $udata['en_id'];
+                $tr_update['tr_miner_en_id'] = $session_en['en_id'];
 
                 //Update transactions:
-                $this->Database_model->fn___tr_update($tr_id, $tr_update, $udata['en_id']);
+                $this->Database_model->fn___tr_update($tr_id, $tr_update, $session_en['en_id']);
             }
 
         }
@@ -697,8 +697,8 @@ class Intents extends CI_Controller
     {
 
         //Authenticate Miner:
-        $udata = fn___en_auth(array(1308));
-        if (!$udata) {
+        $session_en = fn___en_auth(array(1308));
+        if (!$session_en) {
             fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Session. Sign In again to Continue.',
@@ -738,7 +738,7 @@ class Intents extends CI_Controller
                 foreach ($_POST['new_tr_orders'] as $rank => $tr_id) {
                     $this->Database_model->fn___tr_update(intval($tr_id), array(
                         'tr_order' => intval($rank),
-                    ), $udata['en_id']);
+                    ), $session_en['en_id']);
                 }
 
                 //Fetch again for the record:
@@ -769,8 +769,8 @@ class Intents extends CI_Controller
          * */
 
         //Validate Miner:
-        $udata = fn___en_auth(array(1308));
-        if (!$udata) {
+        $session_en = fn___en_auth(array(1308));
+        if (!$session_en) {
             return fn___echo_json(array(
                 'success' => 0,
                 'message' => 'Session Expired',
@@ -801,7 +801,7 @@ class Intents extends CI_Controller
         $tip_messages = null;
         foreach ($on_start_messages as $tr) {
             //What type of message is this?
-            $tip_messages .= $this->Chat_model->fn___dispatch_message($tr['tr_content'], $udata, false, array(), array(
+            $tip_messages .= $this->Chat_model->fn___dispatch_message($tr['tr_content'], $session_en, false, array(), array(
                 'tr_in_parent_id' => $_POST['in_id'],
             ));
         }
@@ -818,8 +818,8 @@ class Intents extends CI_Controller
     {
 
         //Authenticate as a Miner:
-        $udata = fn___en_auth(array(1308));
-        if (!$udata) {
+        $session_en = fn___en_auth(array(1308));
+        if (!$session_en) {
             //Display error:
             die('<span style="color:#FF0000;">Error: Invalid Session. Sign In again to continue.</span>');
         } elseif (intval($in_id) < 1) {
@@ -844,32 +844,42 @@ class Intents extends CI_Controller
     {
 
         //Authenticate Miner:
-        $udata = fn___en_auth(array(1308));
-        if (!$udata) {
+        $session_en = fn___en_auth(array(1308));
+        if (!$session_en) {
+
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Session. Refresh to Continue',
             ));
+
         } elseif (!isset($_POST['in_id']) || !isset($_POST['focus_tr_type_en_id'])) {
+
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing intent data.',
             ));
+
         } elseif (!isset($_POST['upload_type']) || !in_array($_POST['upload_type'], array('file', 'drop'))) {
+
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Unknown upload type.',
             ));
+
         } elseif (!isset($_FILES[$_POST['upload_type']]['tmp_name']) || strlen($_FILES[$_POST['upload_type']]['tmp_name']) == 0 || intval($_FILES[$_POST['upload_type']]['size']) == 0) {
+
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Unknown error while trying to save file.',
             ));
+
         } elseif ($_FILES[$_POST['upload_type']]['size'] > ($this->config->item('file_size_max') * 1024 * 1024)) {
+
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'File is larger than ' . $this->config->item('file_size_max') . ' MB.',
             ));
+
         }
 
         //Validate Intent:
@@ -926,22 +936,25 @@ class Intents extends CI_Controller
         }
 
         //Now save URL as a new entity:
-        $created_url = $this->Matrix_model->fn___en_add_url($new_file_url);
+        $new_url_en = $this->Matrix_model->fn___en_add_url($new_file_url, $session_en['en_id']);
+
+        //Add URL and connect it to the Mench CDN entity:
+        $new_url_en = $this->Matrix_model->fn___digest_url($new_file_url, 4396 /* Mench CDN Entity */, $session_en['en_id']);
 
         //Did we have an error?
-        if (!$created_url['status']) {
+        if (!$new_url_en['status']) {
             //Oops something went wrong, return error:
-            return $created_url;
+            return $new_url_en;
         }
 
 
         //Create message:
         $tr = $this->Database_model->fn___tr_create(array(
-            'tr_miner_en_id' => $udata['en_id'],
+            'tr_miner_en_id' => $session_en['en_id'],
             'tr_type_en_id' => $_POST['focus_tr_type_en_id'],
-            'tr_en_parent_id' => $created_url['en_from_url']['en_id'],
+            'tr_en_parent_id' => $new_url_en['en_url']['en_id'],
             'tr_in_child_id' => intval($_POST['in_id']),
-            'tr_content' => '@' . $created_url['en_from_url']['en_id'], //Just place the entity reference as the entire message
+            'tr_content' => '@' . $new_url_en['en_url']['en_id'], //Just place the entity reference as the entire message
             'tr_order' => 1 + $this->Database_model->fn___tr_max_order(array(
                 'tr_type_en_id' => $_POST['focus_tr_type_en_id'],
                 'tr_in_child_id' => $_POST['in_id'],
@@ -969,7 +982,7 @@ class Intents extends CI_Controller
         fn___echo_json(array(
             'status' => 1,
             'message' => fn___echo_in_message_manage(array_merge($new_messages[0], array(
-                'tr_en_child_id' => $udata['en_id'],
+                'tr_en_child_id' => $session_en['en_id'],
             ))),
         ));
     }
@@ -987,8 +1000,8 @@ class Intents extends CI_Controller
          *
          * */
 
-        $udata = fn___en_auth(array(1308));
-        if (!$udata) {
+        $session_en = fn___en_auth(array(1308));
+        if (!$session_en) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Session. Refresh.',
@@ -1067,8 +1080,8 @@ class Intents extends CI_Controller
     {
 
         //Authenticate Miner:
-        $udata = fn___en_auth(array(1308));
-        if (!$udata) {
+        $session_en = fn___en_auth(array(1308));
+        if (!$session_en) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Session. Refresh.',
@@ -1142,7 +1155,7 @@ class Intents extends CI_Controller
         }
 
         //Now update the DB:
-        $this->Database_model->fn___tr_update(intval($_POST['tr_id']), $to_update, $udata['en_id']);
+        $this->Database_model->fn___tr_update(intval($_POST['tr_id']), $to_update, $session_en['en_id']);
 
         //Re-fetch the message for display purposes:
         $new_messages = $this->Database_model->fn___tr_fetch(array(
@@ -1154,7 +1167,7 @@ class Intents extends CI_Controller
         //Print the challenge:
         return fn___echo_json(array(
             'status' => 1,
-            'message' => $this->Chat_model->fn___dispatch_message($msg_validation['input_message'], $udata, false),
+            'message' => $this->Chat_model->fn___dispatch_message($msg_validation['input_message'], $session_en, false),
             'tr_type_en_id' => $en_all_4485[$new_messages[0]['tr_type_en_id']]['m_icon'],
             'success_icon' => '<span><i class="fas fa-check"></i> Saved</span>',
         ));

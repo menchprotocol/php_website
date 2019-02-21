@@ -202,7 +202,7 @@ function fn___echo_in_message_manage($tr)
      * */
 
     $CI =& get_instance();
-    $udata = $CI->session->userdata('user');
+    $session_en = $CI->session->userdata('user');
 
     //Fetch all possible Intent Messages types to enable the Miner to change message type:
     $en_all_4485 = $CI->config->item('en_all_4485');
@@ -217,7 +217,7 @@ function fn___echo_in_message_manage($tr)
     $ui .= '<div class="edit-off text_message" id="msgbody_' . $tr['tr_id'] . '" style="margin:2px 0 0 0;">';
 
     //Now get the message snippet:
-    $ui .= $CI->Chat_model->fn___dispatch_message($tr['tr_content'], $udata);
+    $ui .= $CI->Chat_model->fn___dispatch_message($tr['tr_content'], $session_en);
 
     $ui .= '</div>';
 
@@ -959,13 +959,13 @@ function fn___echo_en_messages($tr){
 
 
     $CI =& get_instance();
-    $udata = $CI->session->userdata('user');
+    $session_en = $CI->session->userdata('user');
     $object_statuses = $CI->config->item('object_statuses');
 
     $ui = '<div class="entities-msg">';
 
     $ui .= '<div>';
-    $ui .= $CI->Chat_model->fn___dispatch_message($tr['tr_content'], $udata, false);
+    $ui .= $CI->Chat_model->fn___dispatch_message($tr['tr_content'], $session_en, false);
 
     //Editing menu:
     $ui .= '<ul class="msg-nav">';
@@ -1324,7 +1324,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
      * */
 
     $CI =& get_instance();
-    $udata = $CI->session->userdata('user');
+    $session_en = $CI->session->userdata('user');
     $object_statuses = $CI->config->item('object_statuses');
     $en_all_4331 = $CI->config->item('en_all_4331');
     $is_child_focused = ($level == 3 && $is_parent && $CI->uri->segment(2)==$in['in_id']);
@@ -1606,10 +1606,11 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 }
 
 
-function echo_fav_icon($basedomain){
+function echo_fav_icon($url_clean_domain){
     //Does this domain have a Favicon?
-    $fav_icon = $basedomain . '/favicon.ico';
-    $curl = fn___curl_html($fav_icon, true);
+    $fav_icon = $url_clean_domain . '/favicon.ico';
+    $CI =& get_instance();
+    $curl = $CI->Matrix_model->fn___digest_url($fav_icon);
     if ($curl['status'] && $curl['tr_type_en_id']==4260 /* Image */) {
         return '<img src="'.$fav_icon.'" class="profile-icon-mini" />';
     } else {
@@ -1706,7 +1707,7 @@ function fn___echo_en($en, $level, $is_parent = false)
 {
 
     $CI =& get_instance();
-    $udata = $CI->session->userdata('user');
+    $session_en = $CI->session->userdata('user');
     $object_statuses = $CI->config->item('object_statuses');
     $tr_id = (isset($en['tr_id']) ? $en['tr_id'] : 0);
     $ui = null;

@@ -408,15 +408,15 @@ class Chat_model extends CI_Model
         if (count($msg_references['ref_urls']) > 0) {
 
             //No entity linked, but we have a URL that we should turn into an entity:
-            $created_url = $this->Matrix_model->fn___en_add_url($msg_references['ref_urls'][0]);
+            $new_url_en = $this->Matrix_model->fn___en_add_url($msg_references['ref_urls'][0]);
 
             //Did we have an error?
-            if (!$created_url['status']) {
-                return $created_url;
+            if (!$new_url_en['status']) {
+                return $new_url_en;
             }
 
             //Transform this URL into an entity:
-            $msg_references['ref_entities'][0] = $created_url['en_from_url']['en_id'];
+            $msg_references['ref_entities'][0] = $new_url_en['en_url']['en_id'];
 
             //Replace the URL with this new @entity in message.
             //This is the only valid modification we can do to $input_message before storing it in the DB:

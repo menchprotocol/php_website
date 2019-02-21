@@ -47,7 +47,7 @@ class Cron extends CI_Controller
         foreach ($current_urls as $i=>$tr){
 
             //Detect domain parent:
-            $url_parse = base_domain($tr['tr_content']);
+            $domain_analysis = fn___analyze_domain($tr['tr_content']);
 
             //Fetch parent:
             $parent_ens = $this->Database_model->fn___en_fetch(array(
@@ -58,10 +58,10 @@ class Cron extends CI_Controller
 
 
             //Object Header:
-            echo '<tr style="background-color: '.( $url_parse['isroot'] && $tr['tr_en_parent_id']!=1326 ? '#FF0000' : '#FFFFFF' ).';">';
+            echo '<tr style="background-color: '.( $domain_analysis['url_is_root'] && $tr['tr_en_parent_id']!=1326 ? '#FF0000' : '#FFFFFF' ).';">';
             echo '<td style="text-align: left;">'.($i+1).'</td>';
-            echo '<td style="text-align: left;">'.$url_parse['basedomain'].'</td>';
-            echo '<td style="text-align: left;">'.( $url_parse['isroot'] ? ' 1' : '' ).'</td>';
+            echo '<td style="text-align: left;">'.$domain_analysis['url_clean_domain'].'</td>';
+            echo '<td style="text-align: left;">'.( $domain_analysis['url_is_root'] ? ' 1' : '' ).'</td>';
             echo '<td style="text-align: left;"><a href="'.$tr['tr_content'].'" target="_blank">'.$tr['tr_content'].'</a></td>';
             echo '<td style="text-align: left;"><a href="/entities/'.$tr['en_id'].'" target="_blank">'.$tr['en_name'].'</a></td>';
             echo '<td style="text-align: left;"><a href="/entities/'.$parent_ens[0]['en_id'].'" target="_blank">'.$parent_ens[0]['en_name'].'</a></td>';

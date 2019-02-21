@@ -1,6 +1,6 @@
 <?php
 //Attempt to fetch session variables:
-$udata = $this->session->userdata('user');
+$session_en = $this->session->userdata('user');
 $uri_segment_1 = $this->uri->segment(1);
 $uri_segment_2 = $this->uri->segment(2);
 ?><!doctype html>
@@ -102,8 +102,8 @@ $uri_segment_2 = $this->uri->segment(2);
                                 </a>
                             </li>
 
-                            <li class="<?= ($uri_segment_1 == 'entities' && $uri_segment_2 == $udata['en_id'] ? 'entity-active' : 'entity-inactive') ?>" data-toggle="tooltip" data-placement="left" title="My Entity">
-                                <a href="/entities/<?= $udata['en_id'] ?>">
+                            <li class="<?= ($uri_segment_1 == 'entities' && $uri_segment_2 == $session_en['en_id'] ? 'entity-active' : 'entity-inactive') ?>" data-toggle="tooltip" data-placement="left" title="My Entity">
+                                <a href="/entities/<?= $session_en['en_id'] ?>">
                                     <i class="fas fa-user-circle"></i>
                                 </a>
                             </li>
