@@ -478,7 +478,7 @@ class Matrix_model extends CI_Model
 
             $domain_analysis, //Make domain analysis data available as well...
 
-            $curl, //Also curl data available
+            //$curl, //Also curl data available
 
             array(
                 'status' => ($url_already_existed && !$tr_miner_en_id ? 0 : 1),
