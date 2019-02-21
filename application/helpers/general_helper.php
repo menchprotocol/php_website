@@ -161,17 +161,29 @@ function fn___detect_tr_type_en_id($string)
      * */
 
     $string = trim($string);
+    $CI =& get_instance();
 
-    if (is_null($string) || strlen($string) == 0) {
+    if(strlen($string) > $CI->config->item('tr_content_max')){
+
+        return array(
+            'status' => 0,
+            'message' => 'String is ['.(strlen($string) - $CI->config->item('tr_content_max')).'] characters longer than what is allowed.',
+        );
+
+    } elseif (is_null($string) || strlen($string) == 0) {
+
         return array(
             'status' => 1,
             'tr_type_en_id' => 4230, //Empty
         );
+
     } elseif (strlen(intval($string)) == strlen($string) && (intval($string) > 0 || $string == '0')) {
+
         return array(
             'status' => 1,
             'tr_type_en_id' => 4319, //Number
         );
+
     } elseif (filter_var($string, FILTER_VALIDATE_URL)) {
 
         //It's a URL, see what type (this could fail if duplicate, etc...):
@@ -179,17 +191,21 @@ function fn___detect_tr_type_en_id($string)
         return $CI->Matrix_model->fn___digest_url($string);
 
     } elseif (strlen($string) > 9 && (fn___isDate($string) || strtotime($string) > 0)) {
+
         //Date/time:
         return array(
             'status' => 1,
             'tr_type_en_id' => 4318,
         );
+
     } else {
+
         //Regular text link:
         return array(
             'status' => 1,
             'tr_type_en_id' => 4255,
         );
+
     }
 }
 
@@ -404,7 +420,7 @@ function fn___analyze_domain($full_url){
 
     $no_tld_domain = str_replace($tld, '', $analyze['host']);
     $no_tld_domain_parts = explode('.', $no_tld_domain);
-    $url_subdomain = trim(str_replace('.'.end($no_tld_domain_parts), '', $no_tld_domain));
+    $url_subdomain = trim(rtrim(str_replace(end($no_tld_domain_parts), '', $no_tld_domain), '.'));
 
     //Return results:
     return array(
@@ -437,8 +453,15 @@ function fn___curl_call($url){
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
     }
 
-    return curl_exec($ch);
+    //Make the call:
+    $response = curl_exec($ch);
 
+    //Return all elements:
+    return array(
+        'response'      => $response,
+        'body_html'     => substr($response, curl_getinfo($ch, CURLINFO_HEADER_SIZE)),
+        'content_type'  => fn___one_two_explode('', ';', curl_getinfo($ch, CURLINFO_CONTENT_TYPE)),
+    );
 }
 
 function fn___boost_power()

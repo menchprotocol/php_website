@@ -12,7 +12,7 @@ class Entities extends CI_Controller
     }
 
 
-    function add_source()
+    function fn___add_source_wizard()
     {
         //Authenticate Miner, redirect if failed:
         $session_en = fn___en_auth(array(1308), true);
@@ -40,30 +40,28 @@ class Entities extends CI_Controller
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Session. Refresh to Continue',
-            ));
-        } elseif (!isset($_POST['input_url']) || !filter_var($_POST['input_url'], FILTER_VALIDATE_URL)) {
-            return fn___echo_json(array(
-                'status' => 0,
-                'message' => 'Enter Valid URL',
+                'digested_url' => array(),
             ));
         }
 
         //All seems good, fetch URL:
-        $curl = $this->Matrix_model->fn___digest_url($_POST['input_url']);
+        $digested_url = $this->Matrix_model->fn___digest_url($_POST['input_url']);
 
-        if (!$curl['status']) {
+        if (!$digested_url['status']) {
             //Oooopsi, we had some error:
-            return fn___echo_json($curl);
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => $digested_url['message'],
+                'digested_url' => $digested_url, //for debugging
+            ));
         }
 
         //Return results:
-        $fav_icon = echo_fav_icon($curl['url_clean_domain']);
-
         return fn___echo_json(array(
             'status' => 1,
-            'entity_domain_ui' => '<span class="en_icon_mini_ui">'.($fav_icon ? $fav_icon : '<i class="fas fa-at grey-at"></i>') . '</span> ' . $curl['url_domain_name'],
-            'page_title' => $curl['page_title'],
-            'curl' => $curl, //for debugging if needed
+            'entity_domain_ui' => '<span class="en_icon_mini_ui">'. echo_fav_icon($digested_url['url_clean_domain'], true) . '</span> ' . $digested_url['url_domain_name'],
+            'page_title' => $digested_url['page_title'],
+            'digested_url' => $digested_url, //for debugging
         ));
 
     }
@@ -226,7 +224,7 @@ class Entities extends CI_Controller
         }
 
         //Will Contain every possible Entity Link Connector:
-        $entity_links = $this->config->item('en_all_4592');
+        $en_all_4592 = $this->config->item('en_all_4592');
 
         //See what this is:
         $detected_tr_type = fn___detect_tr_type_en_id($_POST['tr_content']);
@@ -238,7 +236,7 @@ class Entities extends CI_Controller
 
         return fn___echo_json(array(
             'status' => 1,
-            'html_ui' => '<a href="/entities/' . $detected_tr_type['tr_type_en_id'] . '" style="font-weight: bold;" data-toggle="tooltip" data-placement="top" title="' . $entity_links[$detected_tr_type['tr_type_en_id']]['m_desc'] . '">' . $entity_links[$detected_tr_type['tr_type_en_id']]['m_icon'] . ' ' . $entity_links[$detected_tr_type['tr_type_en_id']]['m_name'] . '</a>',
+            'html_ui' => '<a href="/entities/' . $detected_tr_type['tr_type_en_id'] . '" style="font-weight: bold;" data-toggle="tooltip" data-placement="top" title="' . $en_all_4592[$detected_tr_type['tr_type_en_id']]['m_desc'] . '">' . $en_all_4592[$detected_tr_type['tr_type_en_id']]['m_icon'] . ' ' . $en_all_4592[$detected_tr_type['tr_type_en_id']]['m_name'] . '</a>',
             'en_link_preview' => fn___echo_url_type($_POST['tr_content'], $detected_tr_type['tr_type_en_id']),
         ));
     }
@@ -1021,6 +1019,9 @@ class Entities extends CI_Controller
         //Auth user and check required variables:
         $session_en = fn___en_auth(array(1308));
 
+        //Analyze domain:
+        $domain_analysis = fn___analyze_domain($_POST['source_url']);
+
         if (!$session_en) {
             return fn___echo_json(array(
                 'status' => 0,
@@ -1041,14 +1042,7 @@ class Entities extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing entity name',
             ));
-        }
-
-        //Validate the URL:
-        $curl = $this->Matrix_model->fn___digest_url($_POST['source_url']);
-        if (!$curl['status']) {
-            //Oooopsi, we had some error:
-            return fn___echo_json($curl);
-        } elseif ($curl['url_clean_domain'] == $_POST['source_url']) {
+        } elseif($domain_analysis['url_is_root']){
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'A source URL cannot reference the root domain',
@@ -1056,8 +1050,19 @@ class Entities extends CI_Controller
         }
 
 
-        //Validate referenced authors:
-        $referenced_authors = array(); //To be populated with author entities
+        //Populate all parent entities for this source:
+        $parent_ens = array();
+
+
+        //Start with selected source-types:
+        foreach ($_POST['source_parent_ens'] as $parent_en_id) {
+            if (intval($parent_en_id) > 0) {
+                array_push($parent_ens, intval($parent_en_id));
+            }
+        }
+
+
+        //Now parse referenced authors:
         for ($x = 1; $x <= 3; $x++) {
 
             //Do we have an author?
@@ -1067,6 +1072,7 @@ class Entities extends CI_Controller
 
             //Is this referencing an existing entity or is it a new entity?
             $tr_en_link_id = 0; //Assume it's a new entity...
+
             if (substr($_POST['author_' . $x], 0, 1) == '@') {
                 $parts = explode(' ', $_POST['author_' . $x]);
                 $tr_en_link_id = intval(str_replace('@', '', $parts[0]));
@@ -1087,165 +1093,104 @@ class Entities extends CI_Controller
                 }
 
                 //Add author to parent source array:
-                array_push($referenced_authors, $tr_en_link_id);
+                array_push($parent_ens, $tr_en_link_id);
 
             } else {
 
-                //Attempt to create this author:
-                if (!filter_var($_POST['ref_url_' . $x], FILTER_VALIDATE_URL)) {
+                //Seems to be a new author entity...
+
+                //First analyze URL:
+                $digest_author_url = $this->Matrix_model->fn___digest_url($_POST['ref_url_' . $x]);
+
+                //Validate author inputs before creating anything:
+                if (!$digest_author_url['status']) {
+
+                    //Oooopsi, show errors:
                     return fn___echo_json(array(
                         'status' => 0,
-                        'message' => 'Author #' . $x . ' is missing a valid URL',
+                        'message' => 'Author #' . $x . ' URL error: ' . $digest_author_url['message'],
                     ));
-                } elseif(strlen($_POST['why_expert_' . $x]) > $this->config->item('tr_content_max')){
-                    return fn___echo_json(array(
-                        'status' => 0,
-                        'message' => 'Author #' . $x . ' expert description is more than '.$this->config->item('tr_content_max').' characters',
-                    ));
+
+                } elseif(strlen($_POST['why_expert_' . $x]) > 0) {
+
+                    //Also validate Expert explanation:
+                    $author_type_requirement = 4255; //Must be text only...
+                    $en_all_4592 = $this->config->item('en_all_4592');
+                    $detected_tr_type = fn___detect_tr_type_en_id($_POST['why_expert_' . $x]);
+
+                    if (!$detected_tr_type['status']) {
+
+                        return fn___echo_json(array(
+                            'status' => 0,
+                            'message' => 'Author #' . $x . ' error: ' . $detected_tr_type['message'],
+                        ));
+
+                    } elseif ($detected_tr_type['tr_type_en_id'] != $author_type_requirement) {
+
+                        return fn___echo_json(array(
+                            'status' => 0,
+                            'message' => 'Author #' . $x . ' expert notes must be ['.$en_all_4592[$author_type_requirement]['m_name'].'] only',
+                        ));
+
+                    }
+
                 }
 
-                //Check URL to make sure it's unique:
-                $author_url_curl = $this->Matrix_model->fn___digest_url($_POST['ref_url_' . $x]);
-                if (!$author_url_curl['status']) {
-                    //Oooopsi, we had some error:
-                    return fn___echo_json(array(
-                        'status' => 0,
-                        'message' => 'Author #' . $x . ' URL error: ' . $author_url_curl['message'],
-                    ));
-                }
+                //All good...
 
                 //Add author:
                 $author_en = $this->Database_model->fn___en_create(array(
                     'en_name' => trim($_POST['author_' . $x]),
-                    'en_status' => 2, //Published
+                    'en_status' => 0, //New
                 ), true, $session_en['en_id']);
-                if (!isset($author_en['en_id'])) {
-                    return fn___echo_json(array(
-                        'status' => 0,
-                        'message' => 'Failed to add author #' . $x,
-                    ));
-                }
 
-                //Prepare data to link author to People/Groups
-                $author_group_tr = array(
-                    'tr_status' => 2, //Published
-                    'tr_miner_en_id' => $session_en['en_id'],
-                    'tr_type_en_id' => 4230, //Empty
-                    'tr_en_parent_id' => $_POST['entity_parent_id_' . $x], //People or Groups
-                    'tr_en_child_id' => $author_en['en_id'],
-                );
-
-                //Does the domain include the author's first/last name?
-                $author_name_parts = explode(' ', $_POST['author_' . $x]);
-                foreach($author_name_parts as $author_name_part){
-                    if(substr_count($author_url_curl['url_clean_domain'], strtolower($author_name_part)) > 0 || substr_count($author_url_curl['page_title'], strtolower($author_name_part)) > 0){
-                        //Yes, the domain seems to be for the author... include it in the people/group transaction:
-                        $author_group_tr['tr_type_en_id'] = $author_url_curl['tr_type_en_id']; //Overrides Empty
-                        $author_group_tr['tr_content'] = $author_url_curl['url_clean_domain']; //A domain that seems to belong to the author
-                        break;
-                    }
-                }
-
-                //Did we determine that the URL is for the author itself?
-                if(!isset($author_group_tr['tr_content'])){
-                    //Nope, just add domain entity:
-                    $domain_author_en = $this->Matrix_model->fn___en_add_domain($author_url_curl['url_clean_domain'], $author_url_curl['url_domain_name'], $session_en['en_id']);
-
-                    //Link author to domain and save URL:
-                    $this->Database_model->fn___tr_create(array(
-                        'tr_status' => 2, //Published
-                        'tr_miner_en_id' => $session_en['en_id'],
-                        'tr_content' => $author_url_curl['cleaned_url'],
-                        'tr_type_en_id' => $author_url_curl['tr_type_en_id'],
-                        'tr_en_parent_id' => $domain_author_en['en_id'],
-                        'tr_en_child_id' => $author_en['en_id'],
-                    ), true);
-                }
-
-                //Save Transaction to link author to People or Groups:
-                $this->Database_model->fn___tr_create($author_group_tr, true);
-
-
-                //Link author to expert?
-                if(strlen($_POST['why_expert_' . $x]) > 0){
-
-                    //Yes, do it:
-                    $detected_tr_type = fn___detect_tr_type_en_id($_POST['why_expert_' . $x]);
-                    if (!$detected_tr_type['status']) {
-                        return fn___echo_json(array(
-                            'status' => 0,
-                            'message' => 'Author #' . $x . ' expert notes error: ' . $detected_tr_type['message'],
-                        ));
-                    } elseif( $detected_tr_type['tr_type_en_id'] != 4255){
-                        return fn___echo_json(array(
-                            'status' => 0,
-                            'message' => 'Author #' . $x . ' expert notes must be text only',
-                        ));
-                    }
-
-                    //Add author to industry experts:
-                    $this->Database_model->fn___tr_create(array(
-                        'tr_status' => 2, //Published
-                        'tr_miner_en_id' => $session_en['en_id'],
-                        'tr_content' => $_POST['why_expert_' . $x],
-                        'tr_type_en_id' => $detected_tr_type['tr_type_en_id'],
-                        'tr_en_parent_id' => 3084, //Industry Experts
-                        'tr_en_child_id' => $author_en['en_id'],
-                    ), true);
-
-                }
-
-                //Add author to parent source array:
-                array_push($referenced_authors, $author_en['en_id']);
-
-            }
-        }
-
-
-        //Add domain entity:
-        $domain_en = $this->Matrix_model->fn___en_add_domain($curl['url_clean_domain'], $curl['url_domain_name'], $session_en['en_id']);
-
-
-        //Create source entity:
-        $new_source = $this->Database_model->fn___en_create(array(
-            'en_name' => trim($_POST['en_name']),
-            'en_status' => 0, //New
-        ), true, $session_en['en_id']);
-
-
-        //Link to domain parent:
-        $this->Database_model->fn___tr_create(array(
-            'tr_status' => 2, //Published
-            'tr_miner_en_id' => $session_en['en_id'],
-            'tr_content' => $curl['cleaned_url'],
-            'tr_type_en_id' => $curl['tr_type_en_id'],
-            'tr_en_parent_id' => $domain_en['en_id'],
-            'tr_en_child_id' => $new_source['en_id'],
-        ), true);
-
-
-        //Add source-type parents:
-        foreach ($_POST['source_parent_ens'] as $parent_en_id) {
-            if (intval($parent_en_id) > 0) {
-                //Link to parent
+                //Add author to People or Organizations entity:
                 $this->Database_model->fn___tr_create(array(
                     'tr_status' => 2, //Published
                     'tr_miner_en_id' => $session_en['en_id'],
                     'tr_type_en_id' => 4230, //Empty
-                    'tr_en_parent_id' => intval($parent_en_id),
-                    'tr_en_child_id' => $new_source['en_id'],
+                    'tr_en_parent_id' => $_POST['entity_parent_id_' . $x], //People or Organizations
+                    'tr_en_child_id' => $author_en['en_id'],
                 ), true);
+
+                //Add author URL:
+                $this->Matrix_model->fn___digest_url($_POST['ref_url_' . $x], $session_en['en_id'], $author_en['en_id']);
+
+                //Should we also link author to to Industry Experts entity?
+                if(strlen($_POST['why_expert_' . $x]) > 0){
+                    //Add author to industry experts:
+                    $this->Database_model->fn___tr_create(array(
+                        'tr_status' => 2, //Published
+                        'tr_miner_en_id' => $session_en['en_id'],
+                        'tr_content' => trim($_POST['why_expert_' . $x]),
+                        'tr_type_en_id' => $author_type_requirement,
+                        'tr_en_parent_id' => 3084, //Industry Experts
+                        'tr_en_child_id' => $author_en['en_id'],
+                    ), true);
+                }
+
+                //Add author to parent source array:
+                array_push($parent_ens, $author_en['en_id']);
+
             }
         }
 
-        //Add author parents:
-        foreach ($referenced_authors as $parent_en_id) {
+
+        //Save URL & domain:
+        $digested_url = $this->Matrix_model->fn___digest_url($_POST['source_url'], $session_en['en_id'], 0, $_POST['en_name']);
+        if(!$digested_url['status']){
+            return fn___echo_json($digested_url);
+        }
+
+
+        //Link content to all parent entities:
+        foreach ($parent_ens as $parent_en_id) {
             $this->Database_model->fn___tr_create(array(
                 'tr_status' => 2, //Published
                 'tr_miner_en_id' => $session_en['en_id'],
                 'tr_type_en_id' => 4230, //Empty
                 'tr_en_parent_id' => $parent_en_id,
-                'tr_en_child_id' => $new_source['en_id'],
+                'tr_en_child_id' => $digested_url['en_url']['en_id'],
             ), true);
         }
 
@@ -1253,7 +1198,7 @@ class Entities extends CI_Controller
         //Success:
         return fn___echo_json(array(
             'status' => 1,
-            'new_source_id' => $new_source['en_id'], //Redirects to this entity...
+            'new_source_id' => $digested_url['en_url']['en_id'], //Redirects to this entity...
         ));
 
     }

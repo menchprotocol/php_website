@@ -407,16 +407,26 @@ class Chat_model extends CI_Model
          * */
         if (count($msg_references['ref_urls']) > 0) {
 
+            //Fetch session user:
+            $session_en = $this->session->userdata('user');
+
+            if(!isset($session_en['en_id'])){
+                return array(
+                    'status' => 0,
+                    'message' => 'Miner must be logged in to convert URL to entity',
+                );
+            }
+
             //No entity linked, but we have a URL that we should turn into an entity:
-            $new_url_en = $this->Matrix_model->fn___en_add_url($msg_references['ref_urls'][0]);
+            $digested_url = $this->Matrix_model->fn___digest_url($msg_references['ref_urls'][0], $session_en['en_id']);
 
             //Did we have an error?
-            if (!$new_url_en['status']) {
-                return $new_url_en;
+            if (!$digested_url['status']) {
+                return $digested_url;
             }
 
             //Transform this URL into an entity:
-            $msg_references['ref_entities'][0] = $new_url_en['en_url']['en_id'];
+            $msg_references['ref_entities'][0] = $digested_url['en_url']['en_id'];
 
             //Replace the URL with this new @entity in message.
             //This is the only valid modification we can do to $input_message before storing it in the DB:

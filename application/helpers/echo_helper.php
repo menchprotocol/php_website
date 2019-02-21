@@ -1606,15 +1606,15 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 }
 
 
-function echo_fav_icon($url_clean_domain){
+function echo_fav_icon($url_clean_domain, $return_icon = false){
     //Does this domain have a Favicon?
     $fav_icon = $url_clean_domain . '/favicon.ico';
     $CI =& get_instance();
-    $curl = $CI->Matrix_model->fn___digest_url($fav_icon);
-    if ($curl['status'] && $curl['tr_type_en_id']==4260 /* Image */) {
+    $digested_url = $CI->Matrix_model->fn___digest_url($fav_icon);
+    if ($digested_url['status'] && $digested_url['tr_type_en_id']==4260 /* Image */) {
         return '<img src="'.$fav_icon.'" class="profile-icon-mini" />';
     } else {
-        return null;
+        return ( $return_icon ? '<i class="fas fa-at grey-at"></i>' : null );
     }
 }
 
@@ -1731,13 +1731,13 @@ function fn___echo_en($en, $level, $is_parent = false)
     if ($tr_id > 0) {
 
         //Show Link Type:
-        $entity_links = $CI->config->item('en_all_4592'); //Will Contain every possible Entity Link Connector!
+        $en_all_4592 = $CI->config->item('en_all_4592'); //Will Contain every possible Entity Link Connector!
 
         //Show Transaction link icons:
         $ui .= '<span class="double-icon" style="margin-right:7px;">';
 
         //Show larger icon for transaction type (auto detected based on transaction content):
-        $ui .= '<span class="icon-main tr_type_' . $tr_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$entity_links[$en['tr_type_en_id']]['m_name'].' Entity Link">' . $entity_links[$en['tr_type_en_id']]['m_icon'] . '</span></span> ';
+        $ui .= '<span class="icon-main tr_type_' . $tr_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4592[$en['tr_type_en_id']]['m_name'].' Entity Link">' . $en_all_4592[$en['tr_type_en_id']]['m_icon'] . '</span></span> ';
 
         //Show smaller transaction status icon:
         $ui .= '<span class="icon-sub tr_status_' . $tr_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$object_statuses['tr_status'][$en['tr_status']]['s_name'].': '.$object_statuses['tr_status'][$en['tr_status']]['s_desc'].'">' . $object_statuses['tr_status'][$en['tr_status']]['s_icon'] . '</span></span>';

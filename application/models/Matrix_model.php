@@ -86,7 +86,7 @@ class Matrix_model extends CI_Model
             //Inform user that they are now complete with all tasks:
             $this->Chat_model->fn___dispatch_message(
                 'Congratulations for completing your Action Plan 🎉 Over time I will keep sharing new key ideas (based on my new training data) that will help you to ' . $actionplans[0]['in_outcome'] . ' 🙌 You can, at any time, stop updates on your Action Plans by saying "unsubscribe".',
-                array( 'en_id' => $actionplans[0]['tr_en_parent_id'] ),
+                array('en_id' => $actionplans[0]['tr_en_parent_id']),
                 true,
                 array(),
                 array(
@@ -97,7 +97,7 @@ class Matrix_model extends CI_Model
 
             $this->Chat_model->fn___dispatch_message(
                 'How else can I help you ' . $this->config->item('in_strategy_name') . '?',
-                array( 'en_id' => $actionplans[0]['tr_en_parent_id'] ),
+                array('en_id' => $actionplans[0]['tr_en_parent_id']),
                 true,
                 array(),
                 array(
@@ -185,20 +185,21 @@ class Matrix_model extends CI_Model
     }
 
 
-    function fn___digest_url($url, $add_child_en_id = 0, $tr_miner_en_id = 0)
+    function fn___digest_url($url, $tr_miner_en_id = 0, $add_to_parent_en_id = 0, $page_title = null)
     {
 
         /*
          *
          * Analyzes a URL to see if it and its domain exists.
-         * It would add the URL if all following variables are passed:
+         * Input legend:
          *
-         * - $add_child_en_id:      Entity to add the URL to
-         * - $tr_miner_en_id:  Give transaction credits to
+         * - $url:                  Input URL
+         * - $tr_miner_en_id:       Will save URL if miner is present
+         * - $add_to_parent_en_id:  Will also add URL to this parent if present
+         * - $page_title:           If present it would override the entity name
          *
          * */
 
-        $add_url = ($add_child_en_id > 0 || $tr_miner_en_id > 0);
 
         //Validate URL:
         if (!filter_var($url, FILTER_VALIDATE_URL)) {
@@ -206,107 +207,151 @@ class Matrix_model extends CI_Model
                 'status' => 0,
                 'message' => 'URL is not a valid URL',
             );
-        } elseif ($add_url && ($add_child_en_id < 1 || $tr_miner_en_id < 1)) {
+        } elseif ($add_to_parent_en_id > 0 && $tr_miner_en_id < 1) {
             return array(
                 'status' => 0,
-                'message' => 'You must define both miner and child entity to add this URL',
+                'message' => 'Miner is required to add parent URL',
             );
         }
 
+
+
+
+
         //Make CURL call:
-        $response = fn___curl_call($url);
+        $curl = fn___curl_call($url);
 
-
-        //We need more details on this URL...
-        $en_all_4537 = $this->config->item('en_all_4537');
-
-
-        //Analyze URL domain:
+        //Analyze domain:
         $domain_analysis = fn___analyze_domain($url);
-        if($domain_analysis['url_is_root']){
-            //Since this is the root, update to the clean URL:
-            $url = $domain_analysis['url_clean_domain'];
-        }
 
-        //Extract mode details:
-        $body_html = substr($response, curl_getinfo($ch, CURLINFO_HEADER_SIZE));
-        $content_type = fn___one_two_explode('', ';', curl_getinfo($ch, CURLINFO_CONTENT_TYPE));
-        $embed_code = fn___echo_url_embed($url, $url, true);
-
-        // Now see if this is a specific file type:
-        // Audio File URL: https://s3foundation.s3-us-west-2.amazonaws.com/672b41ff20fece4b3e7ae2cf4b58389f.mp3
-        // Video File URL: https://s3foundation.s3-us-west-2.amazonaws.com/8c5a1cc4e8558f422a4003d126502db9.mp4
-        // Image File URL: https://s3foundation.s3-us-west-2.amazonaws.com/d673c17d7164817025a000416da3be3f.png
-        // Downloadable File URL: https://s3foundation.s3-us-west-2.amazonaws.com/611695da5d0d199e2d95dd2eabe484cf.zip
-
-        if($domain_analysis['url_is_root']){
-            //Root domain is always a generic URL:
-            $tr_type_en_id = 4256;
-        } elseif ($embed_code['status']) {
-            //Embeddable URL:
-            $tr_type_en_id = 4257;
-        } elseif (substr_count($content_type, 'image/') == 1) {
-            //Image URL
-            $tr_type_en_id = 4260;
-        } elseif (substr_count($content_type, 'audio/') == 1) {
-            //Audio URL
-            $tr_type_en_id = 4259;
-        } elseif (substr_count($content_type, 'video/') == 1) {
-            //Video URL
-            $tr_type_en_id = 4258;
-        } elseif (detect_download_file_url($url, $content_type)) {
-            //File URL
-            $tr_type_en_id = 4261;
-        } else {
-            //Generic URL:
-            $tr_type_en_id = 4256;
-        }
-
-
-        //Cleanup Page Title:
-        $page_title = fn___one_two_explode('>', '', fn___one_two_explode('<title', '</title', $body_html));
-        $url_identified = substr(md5($url), 0, 8);
-        $title_exclusions = array('-', '|');
-        foreach ($title_exclusions as $keyword) {
-            if (substr_count($page_title, $keyword) > 0) {
-                $parts = explode($keyword, $page_title);
-                $last_peace = $parts[(count($parts) - 1)];
-
-                //Should we remove the last part if not too long?
-                if (substr($last_peace, 0, 1) == ' ' && strlen($last_peace) < 16) {
-                    $page_title = str_replace($keyword . $last_peace, '', $page_title);
-                    break; //Only a single extension, so break the loop
-                }
-            }
-        }
-        $page_title = trim($page_title);
-        if (strlen($page_title) > 0) {
-
-            //Make sure this is not a duplicate name:
-            $dup_name_us = $this->Database_model->fn___en_fetch(array(
-                'en_status >=' => 0, //New+
-                'en_name' => $page_title,
-            ));
-
-            if (count($dup_name_us) > 0) {
-                //Yes, we did find a duplicate name! Append a unique identifier:
-                $page_title = $page_title . ' ' . $url_identified;
-            }
-
-        } else {
-
-            //did not find a <title> tag, so let's use URL Type & identifier as its name:
-            $page_title = $en_all_4537[$tr_type_en_id]['m_name'] . ' ' . $url_identified;
-
-        }
+        //Initially assume Generic URL unless we can prove otherwise:
+        $tr_type_en_id = 4256; //Generic URL
 
         //We'll check to see if URL already existed:
         $url_already_existed = 0;
 
 
 
+
+
+
+
+        //Now let's analyze further based on type:
+        if ($domain_analysis['url_is_root']) {
+
+            //Since this is the root, update to the clean URL:
+            $url = $domain_analysis['url_clean_domain'];
+
+        } else {
+
+            /*
+             * URL Can only be non-generic if it's not the domain URL...
+             *
+             * Examples:
+             *
+             * Embed URL:      https://www.youtube.com/watch?v=-dVwv4wPA88
+             * Audio URL:      https://s3foundation.s3-us-west-2.amazonaws.com/672b41ff20fece4b3e7ae2cf4b58389f.mp3
+             * Video URL:      https://s3foundation.s3-us-west-2.amazonaws.com/8c5a1cc4e8558f422a4003d126502db9.mp4
+             * Image URL:      https://s3foundation.s3-us-west-2.amazonaws.com/d673c17d7164817025a000416da3be3f.png
+             * File URL:       https://s3foundation.s3-us-west-2.amazonaws.com/611695da5d0d199e2d95dd2eabe484cf.zip
+             *
+             * */
+
+            //Is this an embed URL?
+            $embed_code = fn___echo_url_embed($url, $url, true);
+
+            if ($embed_code['status']) {
+
+                //URL Was detected as an embed URL:
+                $tr_type_en_id = 4257;
+
+            } elseif (substr_count($curl['content_type'], 'image/') == 1) {
+
+                //Image URL
+                $tr_type_en_id = 4260;
+
+            } elseif (substr_count($curl['content_type'], 'audio/') == 1) {
+
+                //Audio URL
+                $tr_type_en_id = 4259;
+
+            } elseif (substr_count($curl['content_type'], 'video/') == 1) {
+
+                //Video URL
+                $tr_type_en_id = 4258;
+
+            } elseif (detect_download_file_url($url, $curl['content_type'])) {
+
+                //File URL
+                $tr_type_en_id = 4261;
+
+            }
+        }
+
+
+
+
+
+
+
+
+        //Fetch page title if entity name not provided:
+        if(!$page_title){
+
+            $page_title = fn___one_two_explode('>', '', fn___one_two_explode('<title', '</title', $curl['body_html']));
+            $url_identified = substr(md5($url), 0, 8);
+            $title_exclusions = array('-', '|');
+            foreach ($title_exclusions as $keyword) {
+                if (substr_count($page_title, $keyword) > 0) {
+                    $parts = explode($keyword, $page_title);
+                    $last_peace = $parts[(count($parts) - 1)];
+
+                    //Should we remove the last part if not too long?
+                    if (substr($last_peace, 0, 1) == ' ' && strlen($last_peace) < 16) {
+                        $page_title = str_replace($keyword . $last_peace, '', $page_title);
+                        break; //Only a single extension, so break the loop
+                    }
+                }
+            }
+
+            $page_title = trim($page_title);
+            if (strlen($page_title) > 0) {
+
+                //Make sure this is not a duplicate name:
+                $dup_name_us = $this->Database_model->fn___en_fetch(array(
+                    'en_status >=' => 0, //New+
+                    'en_name' => $page_title,
+                ));
+
+                if (count($dup_name_us) > 0) {
+                    //Yes, we did find a duplicate name! Append a unique identifier:
+                    $page_title = $page_title . ' ' . $url_identified;
+                }
+
+            } else {
+
+                //did not find a <title> tag, so let's use URL Type & identifier as its name:
+                $en_all_4537 = $this->config->item('en_all_4537');
+                $page_title = $en_all_4537[$tr_type_en_id]['m_name'] . ' ' . $url_identified;
+
+            }
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
         //Check to see if we have domain linked already:
-        $domain_entities = $this->Database_model->fn___tr_fetch(array(
+        $domain_links = $this->Database_model->fn___tr_fetch(array(
+            'en_status >=' => 0, //New+
             'tr_status >=' => 0, //New+
             'tr_type_en_id' => 4256, //Generic URL (Domain home pages should always be generic, see above for logic)
             'tr_en_parent_id' => 1326, //Domain Entity
@@ -315,39 +360,58 @@ class Matrix_model extends CI_Model
 
 
         //Do we need to create an entity for this domain?
-        if(count($domain_entities)==0 && $add_url){
+        if (count($domain_links) > 0) {
+
+            $en_domain = $domain_links[0];
+
+            if($domain_analysis['url_is_root']){
+                $url_already_existed = 1;
+            }
+
+        } elseif ($tr_miner_en_id) {
 
             //Yes, let's add a new entity:
-            $domain_en = $this->Database_model->fn___en_create(array(
+            $en_domain = $this->Database_model->fn___en_create(array(
                 'en_status' => 0, //New domain entity
                 'en_name' => $domain_analysis['url_domain_name'],
                 'en_icon' => echo_fav_icon($domain_analysis['url_clean_domain']),
             ), true, $tr_miner_en_id);
 
             //And link entity to the domains entity:
-            $domain_entities[0] = array_merge($domain_en , $this->Database_model->fn___tr_create(array(
+            $this->Database_model->fn___tr_create(array(
                 'tr_miner_en_id' => $tr_miner_en_id,
-                'tr_status' => 2, //Published link to Domains
-                'tr_type_en_id' => 4256, //Generic URL
+                'tr_status' => 2, //Published
+                'tr_type_en_id' => 4256, //Generic URL (Domains are always generic)
                 'tr_en_parent_id' => 1326, //Domain Entity
-                'tr_en_child_id' => $domain_en['en_id'],
+                'tr_en_child_id' => $en_domain['en_id'],
                 'tr_content' => $domain_analysis['url_clean_domain'],
-            )));
+            ));
 
-        } elseif($domain_analysis['url_is_root'] && count($domain_entities) > 0){
+        } else {
 
-            $url_already_existed = 1;
+            //Have an empty placeholder:
+            $en_domain = array();
 
         }
 
 
-        //Was this not a root domain? If so, also check to see if URL exists:
-        $url_ens = array();
 
-        if(!$domain_analysis['url_is_root']){
+
+
+
+
+
+        //Was this not a root domain? If so, also check to see if URL exists:
+        if ($domain_analysis['url_is_root']) {
+
+            //URL is the domain in this case:
+            $en_url = $en_domain;
+
+        } else {
 
             //Check to see if URL already exists:
-            $url_ens = $this->Database_model->fn___tr_fetch(array(
+            $url_links = $this->Database_model->fn___tr_fetch(array(
+                'en_status >=' => 0, //New+
                 'tr_status >=' => 0, //New+
                 'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null, //Entity URL Links
                 'tr_content' => $url,
@@ -355,21 +419,29 @@ class Matrix_model extends CI_Model
 
 
             //Do we need to create an entity for this URL?
-            if(count($url_ens)==0 && $add_url){
+            if (count($url_links) > 0) {
 
-                //Link this URL as the parent domain:
-                $url_ens[0] = $this->Database_model->fn___tr_create(array(
-                    'tr_miner_en_id' => $tr_miner_en_id,
-                    'tr_status' => 2, //Published link to Domains
-                    'tr_type_en_id' => 4256, //Generic URL
-                    'tr_en_parent_id' => $domain_en['en_id'],
-                    'tr_en_child_id' => $add_child_en_id,
-                    'tr_content' => $domain_analysis['url_clean_domain'],
-                ));
-
-            } elseif(count($url_ens) > 0){
-
+                $en_url = $url_links[0];
                 $url_already_existed = 1;
+
+            } elseif ($tr_miner_en_id) {
+
+                //Create a new entity for this URL:
+                $en_url = $this->Database_model->fn___en_create(array(
+                    'en_status' => 0, //New URL entity
+                    'en_name' => $page_title,
+                    'en_icon' => null, //No icon for this URL
+                ), true, $tr_miner_en_id);
+
+                //Always link URL to its parent domain:
+                $this->Database_model->fn___tr_create(array(
+                    'tr_miner_en_id' => $tr_miner_en_id,
+                    'tr_status' => 2, //Published
+                    'tr_type_en_id' => $tr_type_en_id,
+                    'tr_en_parent_id' => $en_domain['en_id'],
+                    'tr_en_child_id' => $en_url['en_id'],
+                    'tr_content' => $url,
+                ));
 
             }
 
@@ -381,26 +453,47 @@ class Matrix_model extends CI_Model
 
 
 
-        //Return results:
-        return array_merge(array(
-            //used all the time, also when updating en entity:
-            'status' => ( $url_already_existed && !$add_url ? 0 : 1),
-            'message' => ( $url_already_existed && !$add_url ? 'URL already linked to <b>@' . $url_ens[0]['en_id'] . ' ' . $url_ens[0]['en_name'] . '</b>' : 'Success'),
-            //Additional data:
-            'url_already_existed' => $url_already_existed,
-            'cleaned_url' => $url,
-            'tr_type_en_id' => $tr_type_en_id,
-            'page_title' => $page_title,
-            'en_domain' => ( count($domain_entities) > 0 ? $domain_entities[0] : false ),
-            'en_url' => ( count($url_ens) > 0 ? $url_ens[0] : false ),
-        ), $domain_analysis);
+        //Have we been asked to also add URL to another parent?
+        if (!$url_already_existed && $add_to_parent_en_id) {
+            //Link URL to its parent domain:
+            $this->Database_model->fn___tr_create(array(
+                'tr_miner_en_id' => $tr_miner_en_id,
+                'tr_status' => 2, //Published
+                'tr_type_en_id' => 4230, //Empty
+                'tr_en_parent_id' => $add_to_parent_en_id,
+                'tr_en_child_id' => $en_url['en_id'],
+            ));
+        }
 
+
+
+
+
+
+
+
+
+        //Return results:
+        return array_merge(
+
+            $domain_analysis, //Make domain analysis data available as well...
+
+            array(
+                'status' => ($url_already_existed && !$tr_miner_en_id ? 0 : 1),
+                'message' => ($url_already_existed && !$tr_miner_en_id ? 'URL already linked to <b>@' . $en_url['en_id'] . ' ' . $en_url['en_name'] . '</b>' : 'Success'),
+                'url_already_existed' => $url_already_existed,
+                'cleaned_url' => $url,
+                'tr_type_en_id' => $tr_type_en_id,
+                'page_title' => $page_title,
+                'en_domain' => ( isset($en_domain['en_id']) ? $en_domain : false),
+                'en_url' => ( isset($en_url['en_id']) ? $en_url : false),
+            )
+        );
     }
 
 
-
-
-    function fn___en_child_count($en_id, $min_en_status = 0){
+    function fn___en_child_count($en_id, $min_en_status = 0)
+    {
 
         //Count the active children of entity:
         $en__child_count = 0;
@@ -418,104 +511,6 @@ class Matrix_model extends CI_Model
         }
 
         return $en__child_count;
-    }
-
-    function fn___en_add_url($input_url, $tr_miner_en_id = 0)
-    {
-
-        /*
-         *
-         * The function that would add/validate new URLs
-         * which would also check for duplicates, etc...
-         * And create new domain entities if needed.
-         *
-         * */
-
-        if (!filter_var($input_url, FILTER_VALIDATE_URL)) {
-            return array(
-                'status' => 0,
-                'message' => 'Enter Valid URL',
-            );
-        }
-
-
-        //Detect domain parent:
-        $domain_analysis = fn___analyze_domain($input_url);
-
-        if($domain_analysis['url_is_root']){
-            //Since this is the root, update to the clean URL:
-            $input_url = $domain_analysis['url_clean_domain'];
-        } else {
-            //Simple cleanup:
-            $input_url = trim($input_url);
-        }
-
-        //Check if this URL has already been added:
-        $dup_urls = $this->Database_model->fn___tr_fetch(array(
-            'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null, //Entity URL Links
-            'tr_status >=' => 0, //New+
-            'tr_content' => $input_url, //Exact Match!
-        ), array('en_child'));
-        if (count($dup_urls) > 0) {
-
-            //Yes, this URL has already been added to the ledger:
-            return array(
-                'status' => 1,
-                'message' => 'URL already added to the ledger',
-                'en_url' => $dup_urls[0],
-            );
-
-        }
-
-
-        //This is a new URL that has never been added before...
-        //Call URL to validate it further:
-        $curl = $this->Matrix_model->fn___digest_url($input_url);
-
-        if (!$curl['status']) {
-            //Oooopsi, we had some error:
-            return $curl;
-        }
-
-
-        //Create a new entity:
-        $en = $this->Database_model->fn___en_create(array(
-            'en_name' => $curl['page_title'],
-            'en_status' => 2, //Published
-        ), true, $tr_miner_en_id);
-
-
-        /*
-         *
-         * Now we need to place this new entity under the right parent entity.
-         *
-         * See if we can pattern match the URL to a more relevant parent
-         * We will start assuming that the parent should be the
-         * en_default_parent_id defined in config unless we can match
-         * the URL to another entity pattern
-         *
-         * */
-
-        //Set default parent to start:
-        $tr_en_parent_id = $this->config->item('en_default_parent_id');
-
-
-        //Place this new entity in the default URL bucket:
-        $entity_tr = $this->Database_model->fn___tr_create(array(
-            'tr_miner_en_id' => $tr_miner_en_id,
-            'tr_type_en_id' => $curl['tr_type_en_id'],
-            'tr_en_parent_id' => $tr_en_parent_id,
-            'tr_en_child_id' => $en['en_id'],
-            'tr_content' => $input_url,
-        ));
-
-        //Return entity object:
-        return array(
-            'status' => 1,
-            'message' => 'New Entity created from URL',
-            'en_url' => array_merge($en, $entity_tr),
-        );
-
     }
 
 
@@ -548,50 +543,12 @@ class Matrix_model extends CI_Model
         $message = 'Marking as complete requires ' . $en_all_4331[$in_completion_en_id]['m_name'];
 
         //Give clear directions to complete if Action Plan ID is provided...
-        if($actionplan_tr_id > 0 && $in_id > 0){
+        if ($actionplan_tr_id > 0 && $in_id > 0) {
             $message .= ', which you can submit using your Action Plan. /link:See in 🚩Action Plan:https://mench.com/master/actionplan/' . $actionplan_tr_id . '/' . $in_id;
         }
 
         //Return Student-friendly message for completion requirements:
         return $message;
-
-    }
-
-
-    function fn___en_add_domain($url_clean_domain, $domain_name, $miner_en_id){
-
-
-        //Do we have this domain entity already?
-        $domain_ens = $this->Database_model->fn___tr_fetch(array(
-            'tr_status >=' => 0, //New+
-            'tr_type_en_id' => 4256, //Generic URL: Domain name should be stored only as a Generic URL
-            'tr_content' => $url_clean_domain,
-        ), array('en_child'));
-        if(count($domain_ens) > 0){
-            return $domain_ens[0];
-        }
-
-
-
-        //Create domain entity:
-        $domain_en = $this->Database_model->fn___en_create(array(
-            'en_name' => $domain_name,
-            'en_icon' => echo_fav_icon($url_clean_domain),
-            'en_status' => 2, //Published
-        ), true, $miner_en_id);
-
-        //Create domain link:
-        $this->Database_model->fn___tr_create(array(
-            'tr_status' => 2, //Published
-            'tr_miner_en_id' => $miner_en_id,
-            'tr_type_en_id' => 4256, //Generic URL
-            'tr_en_parent_id' => 2750, //Assume group
-            'tr_en_child_id' => $domain_en['en_id'],
-            'tr_content' => $url_clean_domain,
-        ), true);
-
-        //Return domain entity:
-        return $domain_en;
 
     }
 
@@ -652,7 +609,7 @@ class Matrix_model extends CI_Model
         $actionplan_ins = $this->Database_model->fn___tr_fetch(array(
             'tr_id' => $tr_id,
         ), array('in_child', 'en_parent'));
-        if(count($actionplan_ins) < 1){
+        if (count($actionplan_ins) < 1) {
             return false;
         }
 
@@ -689,9 +646,6 @@ class Matrix_model extends CI_Model
             //TODO implement drip?
         }
     }
-
-
-
 
 
     function fn___metadata_tree_update($obj_type, $focus_obj_id, $metadata_new = array(), $direction_is_downward = 0)
@@ -733,16 +687,13 @@ class Matrix_model extends CI_Model
         $affected_rows = 0;
         foreach ($objects as $obj) {
             //Make a relative adjustment compared to what is currently there:
-            $affected_rows += $this->Matrix_model->fn___metadata_update($obj_type, $obj[$obj_type.'_id'], $metadata_new, false);
+            $affected_rows += $this->Matrix_model->fn___metadata_update($obj_type, $obj[$obj_type . '_id'], $metadata_new, false);
         }
 
         //Return total affected rows:
         return $affected_rows;
 
     }
-
-
-
 
 
     function k_skip_recursive_down($tr_id, $update_db = true)
@@ -771,8 +722,6 @@ class Matrix_model extends CI_Model
         return $skippable_ks;
 
     }
-
-
 
 
     function k_recursive_fetch($tr_id, $in_id, $direction_is_downward, $parent_in = array(), $metadata_aggregate = null)
@@ -813,7 +762,7 @@ class Matrix_model extends CI_Model
         //Add the link relations before we start recursion so we can have the Tree in up-custom order:
         array_push($metadata_this['in_flat_tree'], intval($in_id));
 
-        if($ins[0]['in_status'] >= 2 && !in_array(intval($in_id) , $metadata_this['in_flat_unique_published_tree'])){
+        if ($ins[0]['in_status'] >= 2 && !in_array(intval($in_id), $metadata_this['in_flat_unique_published_tree'])) {
             array_push($metadata_this['in_flat_unique_published_tree'], intval($in_id));
         }
         if (isset($ins[0]['tr_id'])) {
@@ -882,7 +831,6 @@ class Matrix_model extends CI_Model
     }
 
 
-
     function fn___actionplan_choose_or($actionplan_tr_id, $in_parent_id, $in_answer_id)
     {
 
@@ -932,7 +880,7 @@ class Matrix_model extends CI_Model
         $message_in_requirements = $this->Matrix_model->fn___in_req_completion($answer_ins[0]['in_completion_en_id'], $in_answer_id, $actionplan_tr_id);
 
         //Now mark intent as complete (and this will SKIP all siblings) and move on:
-        $this->Matrix_model->in_actionplan_complete_up($chosen_path[0], $chosen_path[0], ( $message_in_requirements ? 1 /* Working On */ : null ));
+        $this->Matrix_model->in_actionplan_complete_up($chosen_path[0], $chosen_path[0], ($message_in_requirements ? 1 /* Working On */ : null));
 
         //Successful:
         return true;
@@ -967,12 +915,12 @@ class Matrix_model extends CI_Model
          *
          * */
 
-        
+
         //Do basic input validation:
-        if($in_id < 1){
+        if ($in_id < 1) {
             //Invalid Intent ID:
             return false;
-        } elseif(count($actionplan) > 0 && !$direction_is_downward){
+        } elseif (count($actionplan) > 0 && !$direction_is_downward) {
             //Caching Action Plan intents only words in the downward direction:
             return false;
         }
@@ -1056,7 +1004,7 @@ class Matrix_model extends CI_Model
         //Always add intent to the flat intent tree which is part of the metadata:
         array_push($metadata_this['in_flat_tree'], intval($in_id));
 
-        if($this_in['in_status'] >= 2 && !in_array(intval($in_id) , $metadata_this['in_flat_unique_published_tree'])){
+        if ($this_in['in_status'] >= 2 && !in_array(intval($in_id), $metadata_this['in_flat_unique_published_tree'])) {
             array_push($metadata_this['in_flat_unique_published_tree'], intval($in_id));
         }
 
@@ -1161,7 +1109,7 @@ class Matrix_model extends CI_Model
                     array_push($metadata_this['in_tree'], $recursion['in_tree']);
 
                     //Is this published?
-                    if($next_in['in_status'] < 2){
+                    if ($next_in['in_status'] < 2) {
                         continue;
                     }
 
@@ -1243,7 +1191,7 @@ class Matrix_model extends CI_Model
 
 
         //Is this a published intent?
-        if($this_in['in_status'] >= 2){
+        if ($this_in['in_status'] >= 2) {
             $metadata_this['___tree_published_count']++;
         }
 
@@ -1282,7 +1230,7 @@ class Matrix_model extends CI_Model
 
             $parent_ids = array();
 
-            if($this_in['in_status'] >= 2){
+            if ($this_in['in_status'] >= 2) {
                 foreach ($in__messages as $tr) {
 
                     //Who are the Miners of this message?
@@ -1320,7 +1268,7 @@ class Matrix_model extends CI_Model
                             foreach ($ens[0]['en__parents'] as $en) {
 
                                 //We only accept published parent entities:
-                                if($en['en_status'] < 2){
+                                if ($en['en_status'] < 2) {
                                     //Not yet ready:
                                     continue;
                                 }
@@ -1384,7 +1332,6 @@ class Matrix_model extends CI_Model
         array_push($metadata_this['in_tree'], $this_in);
 
 
-
         //Flatten intent ID array:
         $result = array();
         array_walk_recursive($metadata_this['in_flat_tree'], function ($v, $k) use (&$result) {
@@ -1400,14 +1347,11 @@ class Matrix_model extends CI_Model
         $metadata_this['in_flat_unique_published_tree'] = $result;
 
 
-
         $result = array();
         array_walk_recursive($metadata_this['in_links_flat_tree'], function ($v, $k) use (&$result) {
             $result[] = $v;
         });
         $metadata_this['in_links_flat_tree'] = $result;
-
-
 
 
         if ($update_db_table) {
@@ -1471,7 +1415,6 @@ class Matrix_model extends CI_Model
         }
 
 
-
         //Return data:
         return $metadata_this;
     }
@@ -1500,7 +1443,7 @@ class Matrix_model extends CI_Model
          *
          * */
 
-        if (!array_key_exists($obj_type, $this->config->item('core_objects')) || $obj_id<1 || count($new_fields) < 1) {
+        if (!array_key_exists($obj_type, $this->config->item('core_objects')) || $obj_id < 1 || count($new_fields) < 1) {
             return false;
         }
 
@@ -1508,31 +1451,30 @@ class Matrix_model extends CI_Model
         if ($obj_type == 'in') {
 
             $db_objects = $this->Database_model->fn___in_fetch(array(
-                $obj_type.'_id' => $obj_id,
+                $obj_type . '_id' => $obj_id,
             ));
 
         } elseif ($obj_type == 'en') {
 
             $db_objects = $this->Database_model->fn___en_fetch(array(
-                $obj_type.'_id' => $obj_id,
+                $obj_type . '_id' => $obj_id,
             ));
 
         } elseif ($obj_type == 'tr') {
 
             $db_objects = $this->Database_model->fn___tr_fetch(array(
-                $obj_type.'_id' => $obj_id,
+                $obj_type . '_id' => $obj_id,
             ));
 
         }
 
-        if(count($db_objects) < 1){
+        if (count($db_objects) < 1) {
             return false;
         }
 
 
-
         //Prepare newly fetched metadata:
-        if(strlen($db_objects[0][$obj_type . '_metadata']) > 0){
+        if (strlen($db_objects[0][$obj_type . '_metadata']) > 0) {
             $metadata = unserialize($db_objects[0][$obj_type . '_metadata']);
         } else {
             $metadata = array();
@@ -1835,11 +1777,11 @@ class Matrix_model extends CI_Model
 
             //Try to match Facebook profile data to internal entities and create links for the ones we find:
             foreach (array(
-                 $this->Matrix_model->fn___en_search_match(3289, $fb_profile['timezone']), //Timezone
-                 $this->Matrix_model->fn___en_search_match(3290, strtolower(substr($fb_profile['gender'], 0, 1))), //Gender either m/f
-                 $this->Matrix_model->fn___en_search_match(3287, strtolower($locale[0])), //Language
-                 $this->Matrix_model->fn___en_search_match(3089, strtolower($locale[1])), //Country
-             ) as $tr_en_parent_id) {
+                         $this->Matrix_model->fn___en_search_match(3289, $fb_profile['timezone']), //Timezone
+                         $this->Matrix_model->fn___en_search_match(3290, strtolower(substr($fb_profile['gender'], 0, 1))), //Gender either m/f
+                         $this->Matrix_model->fn___en_search_match(3287, strtolower($locale[0])), //Language
+                         $this->Matrix_model->fn___en_search_match(3089, strtolower($locale[1])), //Country
+                     ) as $tr_en_parent_id) {
 
                 //Did we find a relation? Create the transaction:
                 if ($tr_en_parent_id > 0) {
@@ -1922,7 +1864,7 @@ class Matrix_model extends CI_Model
          * p.s. Inputs have already been validated via intents/fn___in_link_or_create() function
          *
          * */
-        
+
         //Validate Original intent:
         $parent_ins = $this->Database_model->fn___in_fetch(array(
             'in_id' => intval($in_parent_id),
@@ -1995,9 +1937,9 @@ class Matrix_model extends CI_Model
             $metadata = unserialize($child_in['in_metadata']);
             //Fetch and adjust the intent tree based on these values:
             $in_metadata_modify = array(
-                'in__tree_in_active_count' => ( isset($metadata['in__tree_in_active_count']) ? intval($metadata['in__tree_in_active_count']) : 0 ),
-                'in__tree_max_seconds' => ( isset($metadata['in__tree_max_seconds']) ? intval($metadata['in__tree_max_seconds']) : 0 ),
-                'in__message_tree_count' => ( isset($metadata['in__message_tree_count']) ? intval($metadata['in__message_tree_count']) : 0 ),
+                'in__tree_in_active_count' => (isset($metadata['in__tree_in_active_count']) ? intval($metadata['in__tree_in_active_count']) : 0),
+                'in__tree_max_seconds' => (isset($metadata['in__tree_max_seconds']) ? intval($metadata['in__tree_max_seconds']) : 0),
+                'in__message_tree_count' => (isset($metadata['in__message_tree_count']) ? intval($metadata['in__message_tree_count']) : 0),
             );
 
         } else {
@@ -2018,7 +1960,7 @@ class Matrix_model extends CI_Model
 
             //Sync the metadata of this new intent:
             $this->Matrix_model->fn___in_recursive_fetch($child_in['in_id'], true, true);
-            
+
         }
 
 
@@ -2029,10 +1971,10 @@ class Matrix_model extends CI_Model
             'tr_in_parent_id' => $in_parent_id,
             'tr_in_child_id' => $child_in['in_id'],
             'tr_order' => 1 + $this->Database_model->fn___tr_max_order(array(
-                'tr_status >=' => 0,
-                'tr_type_en_id' => 4228,
-                'tr_in_parent_id' => $in_parent_id,
-            )),
+                    'tr_status >=' => 0,
+                    'tr_type_en_id' => 4228,
+                    'tr_in_parent_id' => $in_parent_id,
+                )),
         ), true);
 
 
@@ -2056,7 +1998,7 @@ class Matrix_model extends CI_Model
             'in_child_id' => $child_in['in_id'],
             'in_child_html' => fn___echo_in($new_ins[0], $next_level, $in_parent_id),
             //Also append some tree data for UI modifications via JS functions:
-            'in__tree_max_seconds' => ( isset($in_metadata_modify['in__tree_max_seconds']) ? intval($in_metadata_modify['in__tree_max_seconds']) : 0 ), //Seconds added because of this
+            'in__tree_max_seconds' => (isset($in_metadata_modify['in__tree_max_seconds']) ? intval($in_metadata_modify['in__tree_max_seconds']) : 0), //Seconds added because of this
             'in__tree_in_active_count' => intval($in_metadata_modify['in__tree_in_active_count']), //We must have this (Either if we're linking OR creating) to show new intents in the tree
         );
 

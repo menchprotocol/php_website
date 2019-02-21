@@ -16,7 +16,7 @@
         <h4>Source URL:</h4>
     </div>
     <span class="white-wrapper">
-        <input type="text" onkeyup="fn___en_source_paste_url()" id="source_url" value="" placeholder="https://www.youtube.com/watch?v=ebEairg3G3w" class="form-control border">
+        <input type="text" id="source_url" value="" placeholder="https://www.youtube.com/watch?v=ebEairg3G3w" class="form-control border">
     </span>
 
     <br />

@@ -2,8 +2,6 @@
 
 $(document).ready(function() {
 
-    fn___en_source_paste_url();
-
     //Load search:
     $(".en-search").on('autocomplete:selected', function (event, suggestion, dataset) {
 
@@ -17,7 +15,7 @@ $(document).ready(function() {
 
         source: function (q, cb) {
             algolia_index.search(q, {
-                filters: 'alg_obj_is_in=0',
+                filters: 'alg_obj_is_in=0 AND _tags:tag_en_1278', //Only search people entities
                 hitsPerPage: 7,
             }, function (error, content) {
                 if (error) {
@@ -48,6 +46,26 @@ $(document).ready(function() {
 
 
 
+    // Get the input box
+    var textInput = document.getElementById('source_url');
+
+    // Init a timeout variable to be used below
+    var timeout = null;
+
+    // Listen for keystroke events
+    textInput.onkeyup = function (e) {
+
+        // Clear the timeout if it has already been set.
+        // This will prevent the previous task from executing
+        // if it has been less than <MILLISECONDS>
+        clearTimeout(timeout);
+
+        // Make a new timeout set to go off in 800ms
+        timeout = setTimeout(function () {
+            fn___en_source_paste_url();
+        }, 377);
+    };
+
 
 });
 
@@ -65,6 +83,10 @@ function fn___en_source_paste_url() {
 
         //Send for processing to see if all good:
         $.post("/entities/fn___en_source_paste_url", { input_url:input_url }, function (data) {
+
+            //For admin debugging and URL analysis:
+            console.log("Admin URL Analysis:");
+            console.log(data.digested_url);
 
             //Update sorts in both lists:
             if (!data.status) {

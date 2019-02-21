@@ -4,7 +4,7 @@
     var en_focus_filter = -1; //No filter, show all
     var en_focus_id = <?= $entity['en_id'] ?>;
     var en_focus_name = '<?= str_replace('\'', '’', $entity['en_name']) ?>';
-    var entity_links = <?= json_encode($this->config->item('en_all_4592')) ?>;
+    var en_all_4592 = <?= json_encode($this->config->item('en_all_4592')) ?>;
 </script>
 <script src="/js/custom/entity-manage-js.js?v=v<?= $this->config->item('app_version') ?>"
         type="text/javascript"></script>
@@ -13,7 +13,6 @@
     <div class="col-xs-8 cols">
 
         <?php
-
 
 
         //Parents
@@ -28,7 +27,6 @@
             </div>';
 
         echo '</div>';
-
 
 
 

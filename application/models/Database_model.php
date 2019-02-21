@@ -875,7 +875,7 @@ class Database_model extends CI_Model
                     $limits['in_status >='] = 0; //New+
                 }
 
-                $db_rows['in'] = $this->Database_model->fn___in_fetch($limits, array('in__messages'));
+                $db_rows['in'] = $this->Database_model->fn___in_fetch($limits, array('in__parents','in__messages'));
 
             } elseif ($loop_obj == 'en') {
 
@@ -923,7 +923,8 @@ class Database_model extends CI_Model
 
                 }
 
-
+                //To hold parent intents/entities:
+                $export_row['_tags'] = array();
 
                 //Now build object-specific index:
                 if ($loop_obj == 'en') {
@@ -938,6 +939,11 @@ class Database_model extends CI_Model
                     //Add keywords:
                     $export_row['alg_obj_keywords'] = '';
                     foreach ($db_row['en__parents'] as $tr) {
+
+                        //Always add to tags:
+                        array_push($export_row['_tags'], 'tag_en_' . $tr['en_id']);
+
+                        //Add content to keywords if any:
                         if (strlen($tr['tr_content']) > 0) {
                             $export_row['alg_obj_keywords'] .= $tr['tr_content'] . ' ';
                         }
@@ -955,6 +961,12 @@ class Database_model extends CI_Model
                     $export_row['alg_obj_icon'] = $object_statuses['in_is_any'][$db_row['in_is_any']]['s_icon']; //Entity type icon
                     $export_row['alg_obj_name'] = $db_row['in_outcome'];
                     $export_row['alg_obj_postfix'] =  ( $time_range ? '<span class="alg-postfix"><i class="fal fa-clock"></i>' . $time_range . '</span>' : '');
+
+                    //Add tags:
+                    foreach ($db_row['in__parents'] as $tr) {
+                        //Always add to tags:
+                        array_push($export_row['_tags'], 'tag_in_' . $tr['in_id']);
+                    }
 
                     //Add keywords:
                     $export_row['alg_obj_keywords'] = '';

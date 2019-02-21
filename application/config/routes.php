@@ -9,7 +9,6 @@ $route['default_controller']    = "intents";
 //Miner Intents/Entities:
 $route['entities/(:num)']       = "entities/en_miner_ui/$1";
 $route['entities']              = "entities/en_miner_ui/0";
-$route['add_source']            = "entities/add_source";
 $route['intents/(:num)']        = "intents/fn___in_miner_ui/$1";
 $route['intents']               = "intents/fn___in_miner_ui/0";
 

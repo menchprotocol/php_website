@@ -109,7 +109,7 @@ $uri_segment_2 = $this->uri->segment(2);
                             </li>
 
                             <li class="<?= ($uri_segment_1 == 'add_source' ? 'entity-active' : 'entity-inactive' ) ?>" data-toggle="tooltip" data-placement="left" title="Add Source Wizard">
-                                <a href="/add_source"><i class="fas fa-plus"></i></a>
+                                <a href="/entities/fn___add_source_wizard"><i class="fas fa-plus"></i></a>
                             </li>
 
                             <li class="<?= ($uri_segment_1 == 'stats' ? 'ledger-active' : 'ledger-inactive') ?>" data-toggle="tooltip" data-placement="left" title="Platform Stats">
