@@ -50,9 +50,14 @@ var $input = $('.drag-box').find('input[type="file"]'),
         $label.text(files.length > 1 ? ($input.attr('data-multiple-caption') || '').replace('{count}', files.length) : files[0].name);
     };
 
+
+
+
+
+
+
+
 $(document).ready(function () {
-
-
 
     //Lookout for intent link related changes:
     $('#tr_status').change(function () {
@@ -186,6 +191,33 @@ $(document).ready(function () {
 
 
 
+
+    //Watchout for content change
+    var textInput = document.getElementById('tr_content');
+
+    //Init a timeout variable to be used below
+    var timeout = null;
+
+    //Listen for keystroke events
+    textInput.onkeyup = function (e) {
+
+        //Instantly update count:
+        tr_content_word_count();
+
+        // Clear the timeout if it has already been set.
+        // This will prevent the previous task from executing
+        // if it has been less than <MILLISECONDS>
+        clearTimeout(timeout);
+
+        // Make a new timeout set to go off in 800ms
+        timeout = setTimeout(function () {
+            //update type:
+            fn___update_link_type();
+        }, 377);
+    };
+
+
+
 });
 
 
@@ -289,10 +321,6 @@ function en_name_word_count() {
 }
 
 function tr_content_word_count() {
-
-    //Also update type:
-    fn___update_link_type();
-
     var len = $('#tr_content').val().length;
     if (len > tr_content_max) {
         $('#chartr_contentNum').addClass('overload').text(len);
@@ -416,6 +444,8 @@ function fn___en_modify_load(en_id, tr_id) {
 
         //Update count:
         tr_content_word_count();
+        //Also update type:
+        fn___update_link_type();
 
     } else {
 
@@ -519,6 +549,8 @@ function fn___en_new_url_from_attachment(droppedFiles, uploadType) {
 
                     //Update count:
                     tr_content_word_count();
+                    //Also update type:
+                    fn___update_link_type();
                 }
 
                 //Unlock form:

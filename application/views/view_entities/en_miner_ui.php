@@ -229,7 +229,6 @@
                                 </span>]</span>
                                         <span class="white-wrapper">
                                         <textarea class="form-control text-edit border" id="tr_content"
-                                                  onkeyup="tr_content_word_count()"
                                                   maxlength="<?= $this->config->item('tr_content_max') ?>" data-lpignore="true"
                                                   placeholder="Write Message, Drop a File or Paste URL"
                                                   style="height:126px; min-height:126px;">

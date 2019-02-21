@@ -15,7 +15,7 @@ $(document).ready(function() {
 
         source: function (q, cb) {
             algolia_index.search(q, {
-                filters: 'alg_obj_is_in=0 AND _tags:tag_en_1278', //Only search people entities
+                filters: 'alg_obj_is_in=0 AND (_tags:tag_en_1278 OR _tags:tag_en_2750)', //Only search people or organizations
                 hitsPerPage: 7,
             }, function (error, content) {
                 if (error) {
@@ -46,7 +46,7 @@ $(document).ready(function() {
 
 
 
-    // Get the input box
+    //Watchout for source URL change
     var textInput = document.getElementById('source_url');
 
     // Init a timeout variable to be used below
@@ -103,6 +103,9 @@ function fn___en_source_paste_url() {
                 //Update input fields:
                 $('.entity_domain_ui').html(data.entity_domain_ui);
                 $('#en_name_url').val(data.page_title);
+
+                //Load tooldip:
+                $('[data-toggle="tooltip"]').tooltip();
 
             }
         });
