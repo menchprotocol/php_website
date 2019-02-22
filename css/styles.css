@@ -321,7 +321,11 @@ a.badge-primary:hover {
     font-family: "Roboto Slab", "Times New Roman", serif;
 }
 
-
+#en_link_preview{
+    display: inline-block;
+    overflow: hidden;
+    max-width: 99%;
+}
 
 .top_entity .en_name {
     font-size: 1.4em;
