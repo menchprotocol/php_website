@@ -103,7 +103,7 @@ function fn___add_source_paste_url() {
 
                 if(data.js_digested_url.cleaned_url != input_url){
                     //URL has been cleaned, show the new version as well:
-                    $('#cleaned_url').html('<i class="fas fa-exchange rotate90"></i> <span data-toggle="tooltip" title="Mench found a cleaner version of this URL that would be used instead of the URL you provided" data-placement="top" class="underdot">Canonical URL</span>: <a href=' + data.js_digested_url.cleaned_url + '" target="_blank" class="url_truncate" style="max-width:420px; text-decoration:underline;">' + data.js_digested_url.cleaned_url + '</a>');
+                    $('#cleaned_url').html('<i class="fas fa-exchange"></i> <span data-toggle="tooltip" title="Mench found a cleaner version of this URL that would be used instead of the URL you provided" data-placement="top" class="underdot">Canonical URL</span>: <a href=' + data.js_digested_url.cleaned_url + '" target="_blank" class="url_truncate" style="max-width:430px; text-decoration:underline;">' + data.js_digested_url.cleaned_url + '</a>');
                 }
 
                 //Load tooldip:
