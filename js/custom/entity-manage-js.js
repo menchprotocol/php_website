@@ -2,7 +2,7 @@ function en_load_child_search() {
 
     $("#new-children .new-input").on('autocomplete:selected', function (event, suggestion, dataset) {
 
-        tr_add(suggestion.alg_obj_id, 0, 0);
+        fn___add_or_link_entities(suggestion.alg_obj_id, 0);
 
     }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
 
@@ -20,22 +20,22 @@ function en_load_child_search() {
         },
         templates: {
             suggestion: function (suggestion) {
-                //If clicked, would trigger the autocomplete:selected above which will trigger the tr_add() function
+                //If clicked, would trigger the autocomplete:selected above which will trigger the fn___add_or_link_entities() function
                 return echo_js_suggestion(suggestion, 0);
             },
             header: function (data) {
                 if (!data.isEmpty) {
-                    return '<a href="javascript:tr_add(0,' + en_focus_id + ',0)" class="suggestion"><span><i class="fal fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + en_focus_name + ']</a>';
+                    return '<a href="javascript:fn___add_or_link_entities(0,0)" class="suggestion"><span><i class="fal fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + en_focus_name + ']</a>';
                 }
             },
             empty: function (data) {
-                return '<a href="javascript:tr_add(0,' + en_focus_id + ',0)" class="suggestion"><span><i class="fal fa-plus-circle"></i> Create</span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + en_focus_name + ']</a>';
+                return '<a href="javascript:fn___add_or_link_entities(0,0)" class="suggestion"><span><i class="fal fa-plus-circle"></i> Create</span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + en_focus_name + ']</a>';
             },
         }
     }]).keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            tr_add(0, en_focus_id);
+            fn___add_or_link_entities(0);
             return true;
         }
     });
@@ -106,7 +106,7 @@ $(document).ready(function () {
 
 
     $("#new-parent .new-input").on('autocomplete:selected', function (event, suggestion, dataset) {
-        tr_add(suggestion.alg_obj_id, 0, 1);
+        fn___add_or_link_entities(suggestion.alg_obj_id, 1);
     }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
         source: function (q, cb) {
             algolia_index.search(q, {
@@ -122,16 +122,16 @@ $(document).ready(function () {
         },
         templates: {
             suggestion: function (suggestion) {
-                //If clicked, would trigger the autocomplete:selected above which will trigger the tr_add() function
+                //If clicked, would trigger the autocomplete:selected above which will trigger the fn___add_or_link_entities() function
                 return echo_js_suggestion(suggestion, 0);
             },
             header: function (data) {
                 if (!data.isEmpty) {
-                    return '<a href="javascript:tr_add(0,' + en_focus_id + ',1)" class="suggestion"><span><i class="fal fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + en_focus_name + ']</a>';
+                    return '<a href="javascript:fn___add_or_link_entities(0,1)" class="suggestion"><span><i class="fal fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + en_focus_name + ']</a>';
                 }
             },
             empty: function (data) {
-                return '<a href="javascript:tr_add(0,' + en_focus_id + ',1)" class="suggestion"><span><i class="fal fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + en_focus_name + ']</a>';
+                return '<a href="javascript:fn___add_or_link_entities(0,1)" class="suggestion"><span><i class="fal fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + en_focus_name + ']</a>';
             },
         }
     }]);
@@ -231,11 +231,11 @@ function fn___en_action_plans(en_id){
 }
 
 
-//Adds OR links authors and content for entities
-function tr_add(en_existing_id, extra_en_parent_id=0, is_parent) {
+//Adds OR links entities to entities
+function fn___add_or_link_entities(en_existing_id, is_parent) {
 
-    //if en_existing_id>0 it means we're linking to an existing entity, in which case en_new_name should be null
-    //If en_existing_id=0 it means we are creating a new entity and then linking it, in which case en_new_name is required
+    //if en_existing_id>0 it means we're linking to an existing entity, in which case en_new_string should be null
+    //If en_existing_id=0 it means we are creating a new entity and then linking it, in which case en_new_string is required
 
     if (is_parent) {
         var input = $('#new-parent .new-input');
@@ -248,10 +248,10 @@ function tr_add(en_existing_id, extra_en_parent_id=0, is_parent) {
     }
 
 
-    var en_new_name = null;
+    var en_new_string = null;
     if (en_existing_id == 0) {
-        en_new_name = input.val();
-        if (en_new_name.length < 1) {
+        en_new_string = input.val();
+        if (en_new_string.length < 1) {
             alert('ERROR: Missing entity name or URL, try again');
             input.focus();
             return false;
@@ -260,13 +260,12 @@ function tr_add(en_existing_id, extra_en_parent_id=0, is_parent) {
 
 
     //Add via Ajax:
-    $.post("/entities/ens_link", {
+    $.post("/entities/fn___add_or_link_entities", {
 
         en_id: en_focus_id,
         en_existing_id: en_existing_id,
-        en_new_name: en_new_name,
+        en_new_string: en_new_string,
         is_parent: (is_parent ? 1 : 0),
-        extra_en_parent_id: extra_en_parent_id,
 
     }, function (data) {
 

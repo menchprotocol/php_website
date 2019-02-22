@@ -26,7 +26,7 @@ class Entities extends CI_Controller
     }
 
 
-    function fn___en_source_paste_url()
+    function fn___add_source_paste_url()
     {
 
         /*
@@ -349,7 +349,7 @@ class Entities extends CI_Controller
     }
 
 
-    function ens_link()
+    function fn___add_or_link_entities()
     {
 
         //Responsible to link parent/children entities to each other via a JS function on en_miner_ui.php
@@ -367,17 +367,12 @@ class Entities extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Parent Entity',
             ));
-        } elseif (!isset($_POST['extra_en_parent_id'])) {
-            return fn___echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Parent Entity',
-            ));
         } elseif (!isset($_POST['is_parent'])) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Entity Link Direction',
             ));
-        } elseif (!isset($_POST['en_existing_id']) || !isset($_POST['en_new_name']) || (intval($_POST['en_existing_id']) < 1 && strlen($_POST['en_new_name']) < 1)) {
+        } elseif (!isset($_POST['en_existing_id']) || !isset($_POST['en_new_string']) || (intval($_POST['en_existing_id']) < 1 && strlen($_POST['en_new_string']) < 1)) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Either New Entity ID or Name is required',
@@ -425,29 +420,31 @@ class Entities extends CI_Controller
 
         } else {
 
-            //We should add a new entity:
-            $entity_new = $this->Database_model->fn___en_create(array(
-                'en_name' => trim($_POST['en_new_name']),
-                'en_status' => 2, //Published
-            ), true, $session_en['en_id']);
+            //Is this a URL?
+            if(filter_var($_POST['en_new_string'], FILTER_VALIDATE_URL)){
 
-            if (!isset($entity_new['en_id']) || $entity_new['en_id'] < 1) {
-                return fn___echo_json(array(
-                    'status' => 0,
-                    'message' => 'Failed to create new entity for [' . $_POST['en_new_name'] . ']',
-                ));
-            }
+                //Let's first find/add the domain:
+                $digested_domain = $this->Matrix_model->fn___digest_domain($_POST['en_new_string'], $session_en['en_id']);
 
-            //Do we need to add this new entity to a secondary parent?
-            if (intval($_POST['extra_en_parent_id']) > 0) {
+                //Link to this entity:
+                $entity_new = $digested_domain['en_domain'];
 
-                // Link entity to a parent:
-                $ur1 = $this->Database_model->fn___tr_create(array(
-                    'tr_type_en_id' => 4230, //Empty at start
-                    'tr_en_child_id' => $entity_new['en_id'],
-                    'tr_en_parent_id' => $_POST['extra_en_parent_id'],
-                ));
+                //Also digest URL to see what type it is:
+                $digested_url = $this->Matrix_model->fn___digest_url($_POST['en_new_string']);
 
+            } else {
+                //It's a regular entity name:
+                $entity_new = $this->Database_model->fn___en_create(array(
+                    'en_name' => trim($_POST['en_new_string']),
+                    'en_status' => 2, //Published
+                ), true, $session_en['en_id']);
+
+                if (!isset($entity_new['en_id']) || $entity_new['en_id'] < 1) {
+                    return fn___echo_json(array(
+                        'status' => 0,
+                        'message' => 'Failed to create new entity for [' . $_POST['en_new_string'] . ']',
+                    ));
+                }
             }
 
         }
@@ -460,27 +457,38 @@ class Entities extends CI_Controller
 
             //Add links only if not already added by the URL function:
             if ($_POST['is_parent']) {
+
                 $tr_en_child_id = $current_us[0]['en_id'];
                 $tr_en_parent_id = $entity_new['en_id'];
+
             } else {
+
                 $tr_en_child_id = $entity_new['en_id'];
                 $tr_en_parent_id = $current_us[0]['en_id'];
+
             }
 
-            //Let's make sure this is not the same as the secondary category:
-            if (!($_POST['extra_en_parent_id'] == $tr_en_parent_id)) {
 
-                // Link to new OR existing entity:
-                $ur2 = $this->Database_model->fn___tr_create(array(
-                    'tr_type_en_id' => 4230, //Empty at start
-                    'tr_en_child_id' => $tr_en_child_id,
-                    'tr_en_parent_id' => $tr_en_parent_id,
-                ));
+            if(isset($digested_domain['en_domain'])){
+
+                $tr_type_en_id = $digested_url['tr_type_en_id'];
+                $tr_content = $digested_url['cleaned_url'];
 
             } else {
-                //This has already been added:
-                $ur2 = $ur1;
+
+                $tr_type_en_id = 4230; //Empty
+                $tr_content = null;
+
             }
+
+            // Link to new OR existing entity:
+            $ur2 = $this->Database_model->fn___tr_create(array(
+                'tr_miner_en_id' => $session_en['en_id'],
+                'tr_type_en_id' => $tr_type_en_id,
+                'tr_content' => $tr_content,
+                'tr_en_child_id' => $tr_en_child_id,
+                'tr_en_parent_id' => $tr_en_parent_id,
+            ));
         }
 
         //Fetch latest version:

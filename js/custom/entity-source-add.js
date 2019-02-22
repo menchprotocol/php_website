@@ -62,7 +62,7 @@ $(document).ready(function() {
 
         // Make a new timeout set to go off in 800ms
         timeout = setTimeout(function () {
-            fn___en_source_paste_url();
+            fn___add_source_paste_url();
         }, 377);
     };
 
@@ -71,7 +71,7 @@ $(document).ready(function() {
 
 
 
-function fn___en_source_paste_url() {
+function fn___add_source_paste_url() {
 
     var input_url = $('#source_url').val();
 
@@ -82,7 +82,7 @@ function fn___en_source_paste_url() {
         $('.url-parsed').addClass('hidden');
 
         //Send for processing to see if all good:
-        $.post("/entities/fn___en_source_paste_url", { input_url:input_url }, function (data) {
+        $.post("/entities/fn___add_source_paste_url", { input_url:input_url }, function (data) {
 
             //For admin debugging and URL analysis:
             console.log("Admin URL Analysis:");

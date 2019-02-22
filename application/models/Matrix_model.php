@@ -185,6 +185,77 @@ class Matrix_model extends CI_Model
     }
 
 
+    function fn___digest_domain($url, $tr_miner_en_id)
+    {
+        /*
+         *
+         * Either finds/returns existing domains or adds it
+         * to the Domains entity if $tr_miner_en_id > 0
+         *
+         * */
+
+        if (!filter_var($url, FILTER_VALIDATE_URL)) {
+            return array(
+                'status' => 0,
+                'message' => 'URL is not a valid URL',
+            );
+        }
+
+
+        //Analyze domain:
+        $domain_analysis = fn___analyze_domain($url);
+        $domain_already_existed = 0; //Assume false
+        $en_domain = false; //Have an empty placeholder:
+
+
+        //Check to see if we have domain linked already:
+        $domain_links = $this->Database_model->fn___tr_fetch(array(
+            'en_status >=' => 0, //New+
+            'tr_status >=' => 0, //New+
+            'tr_type_en_id' => 4256, //Generic URL (Domain home pages should always be generic, see above for logic)
+            'tr_en_parent_id' => 1326, //Domain Entity
+            'tr_content' => $domain_analysis['url_clean_domain'],
+        ), array('en_child'));
+
+
+        //Do we need to create an entity for this domain?
+        if (count($domain_links) > 0) {
+
+            $domain_already_existed = 1;
+            $en_domain = $domain_links[0];
+
+        } elseif ($tr_miner_en_id) {
+
+            //Yes, let's add a new entity:
+            $en_domain = $this->Database_model->fn___en_create(array(
+                'en_status' => 0, //New domain entity
+                'en_name' => $domain_analysis['url_domain_name'],
+                'en_icon' => echo_fav_icon($domain_analysis['url_clean_domain']),
+            ), true, $tr_miner_en_id);
+
+            //And link entity to the domains entity:
+            $this->Database_model->fn___tr_create(array(
+                'tr_miner_en_id' => $tr_miner_en_id,
+                'tr_status' => 2, //Published
+                'tr_type_en_id' => 4256, //Generic URL (Domains are always generic)
+                'tr_en_parent_id' => 1326, //Domain Entity
+                'tr_en_child_id' => $en_domain['en_id'],
+                'tr_content' => $domain_analysis['url_clean_domain'],
+            ));
+
+        }
+
+
+        //Return data:
+        return array(
+            'status' => 1,
+            'message' => 'Success',
+            'domain_already_existed' => $domain_already_existed,
+            'en_domain' => $en_domain,
+        );
+
+    }
+
     function fn___digest_url($url, $tr_miner_en_id = 0, $add_to_parent_en_id = 0, $add_to_child_en_id = 0, $page_title = null)
     {
 
@@ -216,9 +287,6 @@ class Matrix_model extends CI_Model
         }
 
 
-
-
-
         //Make CURL call:
         $curl = fn___curl_call($url);
 
@@ -231,10 +299,8 @@ class Matrix_model extends CI_Model
         //We'll check to see if URL already existed:
         $url_already_existed = 0;
 
-
-
-
-
+        //Start with null and see if we can find/add:
+        $en_url = null;
 
 
         //Now let's analyze further based on type:
@@ -290,14 +356,8 @@ class Matrix_model extends CI_Model
         }
 
 
-
-
-
-
-
-
         //Fetch page title if entity name not provided:
-        if(!$page_title){
+        if (!$page_title) {
 
             $page_title = fn___one_two_explode('>', '', fn___one_two_explode('<title', '</title', $curl['body_html']));
             $url_identified = substr(md5($url), 0, 8);
@@ -340,66 +400,16 @@ class Matrix_model extends CI_Model
         }
 
 
+        //Fetch/Create domain entity:
+        $digested_domain = $this->Matrix_model->fn___digest_domain($url, $tr_miner_en_id);
 
+        //Assign domain entity:
+        $en_domain = $digested_domain['en_domain'];
 
-
-
-
-
-
-
-
-
-        //Check to see if we have domain linked already:
-        $domain_links = $this->Database_model->fn___tr_fetch(array(
-            'en_status >=' => 0, //New+
-            'tr_status >=' => 0, //New+
-            'tr_type_en_id' => 4256, //Generic URL (Domain home pages should always be generic, see above for logic)
-            'tr_en_parent_id' => 1326, //Domain Entity
-            'tr_content' => $domain_analysis['url_clean_domain'],
-        ), array('en_child'));
-
-
-        //Do we need to create an entity for this domain?
-        if (count($domain_links) > 0) {
-
-            $en_domain = $domain_links[0];
-
-            if($domain_analysis['url_is_root']){
-                $url_already_existed = 1;
-            }
-
-        } elseif ($tr_miner_en_id) {
-
-            //Yes, let's add a new entity:
-            $en_domain = $this->Database_model->fn___en_create(array(
-                'en_status' => 0, //New domain entity
-                'en_name' => $domain_analysis['url_domain_name'],
-                'en_icon' => echo_fav_icon($domain_analysis['url_clean_domain']),
-            ), true, $tr_miner_en_id);
-
-            //And link entity to the domains entity:
-            $this->Database_model->fn___tr_create(array(
-                'tr_miner_en_id' => $tr_miner_en_id,
-                'tr_status' => 2, //Published
-                'tr_type_en_id' => 4256, //Generic URL (Domains are always generic)
-                'tr_en_parent_id' => 1326, //Domain Entity
-                'tr_en_child_id' => $en_domain['en_id'],
-                'tr_content' => $domain_analysis['url_clean_domain'],
-            ));
-
-        } else {
-
-            //Have an empty placeholder:
-            $en_domain = array();
-
+        //IF the URL exists since the domain existed and the URL is the domain!
+        if ($digested_domain['domain_already_existed'] && $domain_analysis['url_is_root']) {
+            $url_already_existed = 1;
         }
-
-
-
-
-
-
 
 
         //Was this not a root domain? If so, also check to see if URL exists:
@@ -449,11 +459,6 @@ class Matrix_model extends CI_Model
         }
 
 
-
-
-
-
-
         //Have we been asked to also add URL to another parent or child?
         if (!$url_already_existed && $add_to_parent_en_id) {
             //Link URL to its parent domain:
@@ -478,13 +483,6 @@ class Matrix_model extends CI_Model
         }
 
 
-
-
-
-
-
-
-
         //Return results:
         return array_merge(
 
@@ -499,8 +497,8 @@ class Matrix_model extends CI_Model
                 'cleaned_url' => $url,
                 'tr_type_en_id' => $tr_type_en_id,
                 'page_title' => $page_title,
-                'en_domain' => ( isset($en_domain['en_id']) ? $en_domain : false),
-                'en_url' => ( isset($en_url['en_id']) ? $en_url : false),
+                'en_domain' => $en_domain,
+                'en_url' => $en_url,
             )
         );
     }
