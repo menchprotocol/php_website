@@ -29,7 +29,7 @@ class Cron extends CI_Controller
             $data = fn___curl_call(urldecode($_GET['url']));
             //$data = $this->Matrix_model->fn___digest_url(urldecode($_GET['url']));
             //fn___echo_json($data);
-            echo $data['body_html'];
+            echo htmlentities($data['body_html']);
 
         } else {
             echo '<form action="" method="GET">';
