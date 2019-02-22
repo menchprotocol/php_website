@@ -84,10 +84,6 @@ function fn___add_source_paste_url() {
         //Send for processing to see if all good:
         $.post("/entities/fn___add_source_paste_url", { input_url:input_url }, function (data) {
 
-            //For admin debugging and URL analysis:
-            console.log("Admin URL Analysis:");
-            console.log(data.digested_url);
-
             //Update sorts in both lists:
             if (!data.status) {
 

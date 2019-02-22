@@ -499,10 +499,6 @@ class Matrix_model extends CI_Model
             )
         );
 
-        if(isset($_GET['debugging'])){
-            $return_data = array_merge($return_data, $curl);
-        }
-
         //Return results:
         return $return_data;
     }

@@ -52,7 +52,6 @@ class Entities extends CI_Controller
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => $digested_url['message'],
-                'digested_url' => $digested_url, //for debugging
             ));
         }
 
@@ -61,7 +60,6 @@ class Entities extends CI_Controller
             'status' => 1,
             'entity_domain_ui' => '<span class="en_icon_mini_ui">'. echo_fav_icon($digested_url['url_clean_domain'], true) . '</span> '.( isset($digested_url['en_domain']['en_name']) ? $digested_url['en_domain']['en_name'].' <a href="/entities/'.$digested_url['en_domain']['en_id'].'" class="underdot" data-toggle="tooltip" title="Click to open domain entity in a new windows" data-placement="top" target="_blank">@'.$digested_url['en_domain']['en_id'].'</a>' : $digested_url['url_domain_name'].' [<span class="underdot" data-toggle="tooltip" title="Domain entity not yet added" data-placement="top">New</span>]' ),
             'page_title' => $digested_url['page_title'],
-            'digested_url' => $digested_url, //for debugging
         ));
 
     }
