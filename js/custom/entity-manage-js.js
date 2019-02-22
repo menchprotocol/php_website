@@ -379,7 +379,7 @@ function fn___update_link_type() {
     //Fetch Intent Data to load modify widget:
     $.post("/entities/fn___update_link_type", {
         tr_content: $('#tr_content').val(),
-        en_id: en_focus_id,
+        tr_id: parseInt($('#modifybox').attr('entity-link-id')),
     }, function (data) {
         //All good, let's load the data into the Modify Widget...
         $('#en_link_type_id').html((data.status ? data.html_ui : 'Error: ' + data.message));

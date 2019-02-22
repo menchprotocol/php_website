@@ -556,12 +556,14 @@ input::-webkit-inner-spin-button {
     border-bottom-right-radius: 3px;
 }
 
-.list-level-2 > .is_level2_sortable, #temp2, #list-children > .list-group-item, .list-grey > .list-group-item {
+.list-level-2 > .is_level2_sortable, #temp2, #list-children > .list-group-item, .list-grey .list-group-item {
     margin-bottom: 3px;
     border: 0;
     background-color: #EFEFEF;
     border-radius: 3px !important;
 }
+
+
 
 .is_level2_sortable:hover, .en-item:hover, .list_input:hover, .list-messages > div > div:hover {
     background-color: #E5E5E5 !important;
@@ -3851,4 +3853,8 @@ h4 .tip-badge {
     margin-left:5px;
     font-size:0.8em !important;
     display:inline-block;
+}
+
+.tr-child{
+    margin:0 0 0 30px;
 }

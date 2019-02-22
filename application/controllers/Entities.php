@@ -216,10 +216,10 @@ class Entities extends CI_Controller
     function fn___update_link_type()
     {
 
-        if (!isset($_POST['tr_content']) || !isset($_POST['en_id'])) {
+        if (!isset($_POST['tr_content']) || !isset($_POST['tr_id'])) {
             return fn___echo_json(array(
                 'status' => 0,
-                'message' => 'Missing input',
+                'message' => 'Missing inputs',
             ));
         }
 
@@ -229,9 +229,19 @@ class Entities extends CI_Controller
         //See what this is:
         $detected_tr_type = fn___detect_tr_type_en_id($_POST['tr_content']);
 
-        if (!$detected_tr_type['status'] && (!isset($detected_tr_type['en_url']['en_id']) || !($detected_tr_type['en_url']['en_id'] == $_POST['en_id']))) {
-            //return error:
-            return fn___echo_json($detected_tr_type);
+        if (!$detected_tr_type['status'] && isset($detected_tr_type['url_already_existed']) && $detected_tr_type['url_already_existed']) {
+
+            //See if this is duplicate to either link:
+            $en_trs = $this->Database_model->fn___tr_fetch(array(
+                'tr_id' => $_POST['tr_id'],
+                'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null, //Entity URL Links
+            ));
+
+            //Are they both different?
+            if(count($en_trs)<1 || ($en_trs[0]['tr_en_parent_id']!=$detected_tr_type['en_url']['en_id'] && $en_trs[0]['tr_en_child_id']!=$detected_tr_type['en_url']['en_id'])){
+                //return error:
+                return fn___echo_json($detected_tr_type);
+            }
         }
 
         return fn___echo_json(array(
