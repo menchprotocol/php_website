@@ -437,11 +437,11 @@ function fn___curl_call($url){
 
     //Make CURL call:
     $ch = curl_init($url);
-    //curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.1) Gecko/20061204 Firefox/2.0.0.1");
+    curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.1) Gecko/20061204 Firefox/2.0.0.1");
     //curl_setopt($ch, CURLOPT_REFERER, "https://mench.com");
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
-    //curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
-    //curl_setopt($ch, CURLOPT_POST, FALSE);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+    curl_setopt($ch, CURLOPT_POST, FALSE);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
     //curl_setopt($ch, CURLOPT_VERBOSE, 1);
     curl_setopt($ch, CURLOPT_HEADER, 1);
