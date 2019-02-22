@@ -483,16 +483,13 @@ class Matrix_model extends CI_Model
         }
 
 
-        //Return results:
-        return array_merge(
+        $return_data = array_merge(
 
             $domain_analysis, //Make domain analysis data available as well...
 
-            //$curl, //Also curl data available
-
             array(
                 'status' => ($url_already_existed && !$tr_miner_en_id ? 0 : 1),
-                'message' => ($url_already_existed && !$tr_miner_en_id ? 'URL already linked to <b>@' . $en_url['en_id'] . ' ' . $en_url['en_name'] . '</b>' : 'Success'),
+                'message' => ($url_already_existed && !$tr_miner_en_id ? 'URL is already linked to @' . $en_url['en_id'] . ' ' . $en_url['en_name'] : 'Success'),
                 'url_already_existed' => $url_already_existed,
                 'cleaned_url' => $url,
                 'tr_type_en_id' => $tr_type_en_id,
@@ -501,6 +498,13 @@ class Matrix_model extends CI_Model
                 'en_url' => $en_url,
             )
         );
+
+        if(isset($_GET['debugging'])){
+            $return_data = array_merge($return_data, $curl);
+        }
+
+        //Return results:
+        return $return_data;
     }
 
 

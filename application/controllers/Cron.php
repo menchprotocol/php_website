@@ -22,6 +22,24 @@ class Cron extends CI_Controller
     //30 3 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron e_score_recursive
 
 
+    function ping(){
+        if(isset($_GET['url'])){
+
+            $_GET['debugging'] = 1;
+            $data = fn___curl_call(urldecode($_GET['url']));
+            //$data = $this->Matrix_model->fn___digest_url(urldecode($_GET['url']));
+            //fn___echo_json($data);
+            echo $data['body_html'];
+
+        } else {
+            echo '<form action="" method="GET">';
+            echo '<input type="url" required name="url" placeholder="Enter URL to ping">';
+            echo '<input type="submit" value="Ping">';
+            echo '</form>';
+        }
+    }
+
+
     function urls(){
 
         //Migrate from URL to People/ORG
