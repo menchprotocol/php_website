@@ -58,7 +58,7 @@ class Entities extends CI_Controller
         //Return results:
         return fn___echo_json(array(
             'status' => 1,
-            'entity_domain_ui' => '<span class="en_icon_mini_ui">'. echo_fav_icon($digested_url['url_clean_domain'], true) . '</span> '.( isset($digested_url['en_domain']['en_name']) ? $digested_url['en_domain']['en_name'].' <a href="/entities/'.$digested_url['en_domain']['en_id'].'" class="underdot" data-toggle="tooltip" title="Click to open domain entity in a new windows" data-placement="top" target="_blank">@'.$digested_url['en_domain']['en_id'].'</a>' : $digested_url['url_domain_name'].' [<span class="underdot" data-toggle="tooltip" title="Domain entity not yet added" data-placement="top">New</span>]' ),
+            'entity_domain_ui' => '<span class="en_icon_mini_ui">'. ( isset($digested_url['en_domain']['en_icon']) && strlen($digested_url['en_domain']['en_icon']) > 0 ? $digested_url['en_domain']['en_icon'] : echo_fav_icon($digested_url['url_clean_domain'], true) ). '</span> '.( isset($digested_url['en_domain']['en_name']) ? $digested_url['en_domain']['en_name'].' <a href="/entities/'.$digested_url['en_domain']['en_id'].'" class="underdot" data-toggle="tooltip" title="Click to open domain entity in a new windows" data-placement="top" target="_blank">@'.$digested_url['en_domain']['en_id'].'</a>' : $digested_url['url_domain_name'].' [<span class="underdot" data-toggle="tooltip" title="Domain entity not yet added" data-placement="top">New</span>]' ),
             'js_digested_url' => $digested_url,
         ));
 
