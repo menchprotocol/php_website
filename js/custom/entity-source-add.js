@@ -103,7 +103,7 @@ function fn___add_source_paste_url() {
 
                 if(data.js_digested_url.cleaned_url != input_url){
                     //URL has been cleaned, show the new version as well:
-                    $('#cleaned_url').html('Canonical URL: <a href=' + data.js_digested_url.cleaned_url + '" target="_blank">' + data.js_digested_url.cleaned_url + '</a>');
+                    $('#cleaned_url').html('Canonical URL: <a href=' + data.js_digested_url.cleaned_url + '" target="_blank" class="url_truncate">' + data.js_digested_url.cleaned_url + '</a>');
                 }
 
                 //Load tooldip:

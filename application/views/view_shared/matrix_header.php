@@ -108,7 +108,7 @@ $uri_segment_2 = $this->uri->segment(2);
                                 </a>
                             </li>
 
-                            <li class="<?= ($uri_segment_1 == 'add_source' ? 'entity-active' : 'entity-inactive' ) ?>" data-toggle="tooltip" data-placement="left" title="Add Source Wizard">
+                            <li class="<?= ($uri_segment_2 == 'fn___add_source_wizard' ? 'entity-active' : 'entity-inactive' ) ?>" data-toggle="tooltip" data-placement="left" title="Add Source Wizard">
                                 <a href="/entities/fn___add_source_wizard"><i class="fas fa-plus"></i></a>
                             </li>
 

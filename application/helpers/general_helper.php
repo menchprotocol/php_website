@@ -406,7 +406,7 @@ function fn___analyze_domain($full_url){
     $analyze = parse_url($full_url);
     $domain_parts = explode('.', $analyze['host']);
 
-    if(strlen($analyze['path']) > 0){
+    if(isset($analyze['path']) && strlen($analyze['path']) > 0){
         $path_parts = explode('.', $analyze['path']);
         if(count($path_parts) >= 2){
             $possible_extension = array_values(array_slice($path_parts, -1))[0];
