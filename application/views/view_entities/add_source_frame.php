@@ -23,12 +23,12 @@
     <div class="url-error"></div>
     <div class="url-parsed hidden">
 
+        <div id="cleaned_url" style="font-size:0.8em;"></div>
+
         <div class="title" style="margin-top:17px;"><h4>Entity Name</h4></div>
         <span class="white-wrapper" style="margin-bottom: 3px;">
             <input type="text" id="en_name_url" class="form-control border">
         </span>
-
-        <div id="cleaned_url"></div>
 
         <div class="title" style="margin-top:15px;"><h4>Entity Parents:</h4></div>
         <?php
