@@ -185,7 +185,7 @@ class Matrix_model extends CI_Model
     }
 
 
-    function fn___digest_url($url, $tr_miner_en_id = 0, $add_to_parent_en_id = 0, $page_title = null)
+    function fn___digest_url($url, $tr_miner_en_id = 0, $add_to_parent_en_id = 0, $add_to_child_en_id = 0, $page_title = null)
     {
 
         /*
@@ -196,6 +196,7 @@ class Matrix_model extends CI_Model
          * - $url:                  Input URL
          * - $tr_miner_en_id:       Will save URL if miner is present
          * - $add_to_parent_en_id:  Will also add URL to this parent if present
+         * - $add_to_child_en_id:   Will also add URL to this child if present
          * - $page_title:           If present it would override the entity name
          *
          * */
@@ -207,7 +208,7 @@ class Matrix_model extends CI_Model
                 'status' => 0,
                 'message' => 'URL is not a valid URL',
             );
-        } elseif ($add_to_parent_en_id > 0 && $tr_miner_en_id < 1) {
+        } elseif (($add_to_parent_en_id > 0 || $add_to_child_en_id > 0) && $tr_miner_en_id < 1) {
             return array(
                 'status' => 0,
                 'message' => 'Miner is required to add parent URL',
@@ -453,7 +454,7 @@ class Matrix_model extends CI_Model
 
 
 
-        //Have we been asked to also add URL to another parent?
+        //Have we been asked to also add URL to another parent or child?
         if (!$url_already_existed && $add_to_parent_en_id) {
             //Link URL to its parent domain:
             $this->Database_model->fn___tr_create(array(
@@ -462,6 +463,17 @@ class Matrix_model extends CI_Model
                 'tr_type_en_id' => 4230, //Empty
                 'tr_en_parent_id' => $add_to_parent_en_id,
                 'tr_en_child_id' => $en_url['en_id'],
+            ));
+        }
+
+        if (!$url_already_existed && $add_to_child_en_id) {
+            //Link URL to its parent domain:
+            $this->Database_model->fn___tr_create(array(
+                'tr_miner_en_id' => $tr_miner_en_id,
+                'tr_status' => 2, //Published
+                'tr_type_en_id' => 4230, //Empty
+                'tr_en_child_id' => $add_to_child_en_id,
+                'tr_en_parent_id' => $en_url['en_id'],
             ));
         }
 

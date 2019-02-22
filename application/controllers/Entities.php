@@ -1023,7 +1023,7 @@ class Entities extends CI_Controller
     }
 
 
-    function fn___en_add_source()
+    function fn___add_source_process()
     {
 
         //Auth user and check required variables:
@@ -1164,7 +1164,7 @@ class Entities extends CI_Controller
                 ), true);
 
                 //Add author URL:
-                $this->Matrix_model->fn___digest_url($_POST['ref_url_' . $x], $session_en['en_id'], $author_en['en_id']);
+                $this->Matrix_model->fn___digest_url($_POST['ref_url_' . $x], $session_en['en_id'], 0, $author_en['en_id'], $_POST['author_' . $x]);
 
                 //Should we also link author to to Industry Experts entity?
                 if(strlen($_POST['why_expert_' . $x]) > 0){
@@ -1187,7 +1187,7 @@ class Entities extends CI_Controller
 
 
         //Save URL & domain:
-        $digested_url = $this->Matrix_model->fn___digest_url($_POST['source_url'], $session_en['en_id'], 0, $_POST['en_name']);
+        $digested_url = $this->Matrix_model->fn___digest_url($_POST['source_url'], $session_en['en_id'], 0, 0, $_POST['en_name']);
         if(!$digested_url['status']){
             return fn___echo_json($digested_url);
         }

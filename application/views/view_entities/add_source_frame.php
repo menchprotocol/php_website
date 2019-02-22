@@ -22,6 +22,13 @@
     <br />
     <div class="url-error"></div>
     <div class="url-parsed hidden">
+
+        <div class="title" style="margin-top:17px;"><h4>Entity Name</h4></div>
+        <span class="white-wrapper" style="margin-bottom: 3px;">
+            <input type="text" id="en_name_url" class="form-control border">
+        </span>
+
+
         <div class="title" style="margin-top:15px;"><h4>Entity Parents:</h4></div>
         <?php
 
@@ -80,15 +87,10 @@
         <?php } ?>
 
 
-        <div class="title" style="margin-top:30px;"><h4>Entity Name</h4></div>
-        <span class="white-wrapper" style="margin-bottom: 3px;">
-            <input type="text" id="en_name_url" class="form-control border">
-        </span>
-
 
 
         <div style="padding:20px 0;">
-            <a href="javascript:fn___en_add_source();" class="btn btn-secondary btn-save">Add Source</a>
+            <a href="javascript:fn___add_source_process();" class="btn btn-secondary btn-save">Add Source</a>
         </div>
     </div>
     </div>

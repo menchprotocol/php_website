@@ -1634,7 +1634,7 @@ function echo_fav_icon($url_clean_domain, $return_icon = false){
     $fav_icon = $url_clean_domain . '/favicon.ico';
     $CI =& get_instance();
     $digested_url = $CI->Matrix_model->fn___digest_url($fav_icon);
-    if ($digested_url['status'] && $digested_url['tr_type_en_id']==4260 /* Image */) {
+    if (isset($digested_url['tr_type_en_id']) && $digested_url['tr_type_en_id']==4260 /* Image */) {
         return '<img src="'.$fav_icon.'" class="profile-icon-mini" />';
     } else {
         return ( $return_icon ? '<i class="fas fa-at grey-at"></i>' : null );

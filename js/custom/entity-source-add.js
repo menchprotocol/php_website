@@ -119,7 +119,7 @@ function fn___en_source_paste_url() {
 }
 
 
-function fn___en_add_source(){
+function fn___add_source_process(){
 
     //Set title:
     $('.add_source_body').addClass('hidden');
@@ -130,7 +130,7 @@ function fn___en_add_source(){
     }).get();
 
     //Fetch Intent Data to load modify widget:
-    $.post("/entities/fn___en_add_source", {
+    $.post("/entities/fn___add_source_process", {
 
         source_url: $('#source_url').val(),
         source_parent_ens: source_parent_ens,
