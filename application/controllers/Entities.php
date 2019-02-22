@@ -423,14 +423,17 @@ class Entities extends CI_Controller
             //Is this a URL?
             if(filter_var($_POST['en_new_string'], FILTER_VALIDATE_URL)){
 
+                //Digest URL to see what type it is and if we have any errors:
+                $digested_url = $this->Matrix_model->fn___digest_url($_POST['en_new_string']);
+                if(!$digested_url['status']){
+                    return fn___echo_json($digested_url);
+                }
+
                 //Let's first find/add the domain:
                 $digested_domain = $this->Matrix_model->fn___digest_domain($_POST['en_new_string'], $session_en['en_id']);
 
                 //Link to this entity:
                 $entity_new = $digested_domain['en_domain'];
-
-                //Also digest URL to see what type it is:
-                $digested_url = $this->Matrix_model->fn___digest_url($_POST['en_new_string']);
 
             } else {
                 //It's a regular entity name:

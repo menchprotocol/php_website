@@ -33,11 +33,13 @@ function en_load_child_search() {
             },
         }
     }]).keypress(function (e) {
+
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
             fn___add_or_link_entities(0);
             return true;
         }
+
     });
 }
 
@@ -106,8 +108,11 @@ $(document).ready(function () {
 
 
     $("#new-parent .new-input").on('autocomplete:selected', function (event, suggestion, dataset) {
+
         fn___add_or_link_entities(suggestion.alg_obj_id, 1);
+
     }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
+
         source: function (q, cb) {
             algolia_index.search(q, {
                 filters: 'alg_obj_is_in=0',
@@ -134,8 +139,16 @@ $(document).ready(function () {
                 return '<a href="javascript:fn___add_or_link_entities(0,1)" class="suggestion"><span><i class="fal fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + en_focus_name + ']</a>';
             },
         }
-    }]);
 
+    }]).keypress(function (e) {
+
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if ((code == 13) || (e.ctrlKey && code == 13)) {
+            fn___add_or_link_entities(0, 1);
+            return true;
+        }
+
+    });
 
 
 
