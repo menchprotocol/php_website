@@ -28,6 +28,7 @@
             <input type="text" id="en_name_url" class="form-control border">
         </span>
 
+        <div id="cleaned_url"></div>
 
         <div class="title" style="margin-top:15px;"><h4>Entity Parents:</h4></div>
         <?php

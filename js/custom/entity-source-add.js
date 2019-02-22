@@ -74,6 +74,7 @@ $(document).ready(function() {
 function fn___add_source_paste_url() {
 
     var input_url = $('#source_url').val();
+    $('#cleaned_url').html('');
 
     if(input_url.length > 0){
 
@@ -98,7 +99,12 @@ function fn___add_source_paste_url() {
 
                 //Update input fields:
                 $('.entity_domain_ui').html(data.entity_domain_ui);
-                $('#en_name_url').val(data.page_title);
+                $('#en_name_url').val(data.js_digested_url.page_title);
+
+                if(data.js_digested_url.cleaned_url != input_url){
+                    //URL has been cleaned, show the new version as well:
+                    $('#cleaned_url').html('Cleaned URL: ' + data.js_digested_url.cleaned_url);
+                }
 
                 //Load tooldip:
                 $('[data-toggle="tooltip"]').tooltip();
