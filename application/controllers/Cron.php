@@ -30,7 +30,6 @@ class Cron extends CI_Controller
             echo finfo_file(finfo_open(FILEINFO_MIME_TYPE), urldecode($_GET['url'])) . "<hr />";
             echo file_get_contents(urldecode($_GET['url'])) . "<hr />";
 
-            //echo fn___curl_call(urldecode($_GET['url']));
             //$data = $this->Matrix_model->fn___digest_url(urldecode($_GET['url']));
 
         } else {

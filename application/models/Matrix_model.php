@@ -286,10 +286,6 @@ class Matrix_model extends CI_Model
             );
         }
 
-
-        //Make CURL call:
-        $curl = fn___curl_call($url);
-
         //Analyze domain:
         $domain_analysis = fn___analyze_domain($url);
 
@@ -301,7 +297,6 @@ class Matrix_model extends CI_Model
 
         //Start with null and see if we can find/add:
         $en_url = null;
-
 
         //Now let's analyze further based on type:
         if ($domain_analysis['url_is_root']) {
@@ -332,50 +327,80 @@ class Matrix_model extends CI_Model
                 //URL Was detected as an embed URL:
                 $tr_type_en_id = 4257;
 
-            } elseif (substr_count($curl['content_type'], 'image/') == 1) {
+            } elseif (exif_imagetype($url)) {
 
                 //Image URL
                 $tr_type_en_id = 4260;
 
-            } elseif (substr_count($curl['content_type'], 'audio/') == 1) {
+            } elseif ($domain_analysis['url_file_extension']) {
 
-                //Audio URL
-                $tr_type_en_id = 4259;
+                //URL ends with a file extension, try to detect file type based on that extension:
 
-            } elseif (substr_count($curl['content_type'], 'video/') == 1) {
-
-                //Video URL
-                $tr_type_en_id = 4258;
-
-            } elseif (detect_download_file_url($url, $curl['content_type'])) {
-
-                //File URL
-                $tr_type_en_id = 4261;
+                if(in_array($domain_analysis['url_file_extension'], array('pcm','wav','aiff','mp3','aac','ogg','wma','flac','alac'))){
+                    //Audio URL
+                    $tr_type_en_id = 4259;
+                } elseif(in_array($domain_analysis['url_file_extension'], array('mp4','avi','mov','flv','f4v','f4p','f4a','f4b','wmv','webm','mkv','vob','ogv','ogg','3gp'))){
+                    //Video URL
+                    $tr_type_en_id = 4258;
+                } elseif(in_array($domain_analysis['url_file_extension'], array('pdc','doc','docx','tex','txt','7z','rar','zip','csv','sql','tar','xml','exe'))){
+                    //File URL
+                    $tr_type_en_id = 4261;
+                }
 
             }
+
+        }
+
+        //Only fetch URL content if not a direct file type:
+        $url_content = null;
+        if(!array_key_exists($tr_type_en_id, $this->config->item('en_convert_4537'))){
+
+            //Make CURL call:
+            $url_content = file_get_contents($url);
+
+            //See if we have a canonical metadata on page?
+            if(substr_count($url_content,'rel="canonical"') > 0){
+                //We seem to have it:
+                $page_parts = explode('rel="canonical"',$url_content,2);
+                $canonical_url = fn___one_two_explode('href="', '"', $page_parts[1]);
+                if(filter_var($canonical_url, FILTER_VALIDATE_URL)){
+                    //Replace this with the input URL:
+                    $url = $canonical_url;
+                }
+
+            }
+
         }
 
 
         //Fetch page title if entity name not provided:
         if (!$page_title) {
 
-            $page_title = fn___one_two_explode('>', '', fn___one_two_explode('<title', '</title', $curl['body_html']));
+            //Define unique URL identifier string:
             $url_identified = substr(md5($url), 0, 8);
-            $title_exclusions = array('-', '|');
-            foreach ($title_exclusions as $keyword) {
-                if (substr_count($page_title, $keyword) > 0) {
-                    $parts = explode($keyword, $page_title);
-                    $last_peace = $parts[(count($parts) - 1)];
 
-                    //Should we remove the last part if not too long?
-                    if (substr($last_peace, 0, 1) == ' ' && strlen($last_peace) < 16) {
-                        $page_title = str_replace($keyword . $last_peace, '', $page_title);
-                        break; //Only a single extension, so break the loop
+
+            //Attempt to fetch from page if we have content:
+            if($url_content){
+                $page_title = fn___one_two_explode('>', '', fn___one_two_explode('<title', '</title', $url_content));
+                $title_exclusions = array('-', '|');
+                foreach ($title_exclusions as $keyword) {
+                    if (substr_count($page_title, $keyword) > 0) {
+                        $parts = explode($keyword, $page_title);
+                        $last_peace = $parts[(count($parts) - 1)];
+
+                        //Should we remove the last part if not too long?
+                        if (substr($last_peace, 0, 1) == ' ' && strlen($last_peace) < 16) {
+                            $page_title = str_replace($keyword . $last_peace, '', $page_title);
+                            break; //Only a single extension, so break the loop
+                        }
                     }
                 }
             }
 
+            //Trip title:
             $page_title = trim($page_title);
+
             if (strlen($page_title) > 0) {
 
                 //Make sure this is not a duplicate name:
