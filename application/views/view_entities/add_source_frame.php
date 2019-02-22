@@ -23,7 +23,7 @@
     <div class="url-error"></div>
     <div class="url-parsed hidden">
 
-        <div id="cleaned_url" style="font-size:0.7em; line-height: 110%;"></div>
+        <div id="cleaned_url" style="font-size:0.7em;"></div>
 
         <div class="title" style="margin-top:17px;"><h4>Entity Name</h4></div>
         <span class="white-wrapper" style="margin-bottom: 3px;">
