@@ -25,9 +25,8 @@ class Cron extends CI_Controller
     function ping(){
         if(isset($_GET['url'])){
 
-            $data = fn___curl_call(urldecode($_GET['url']));
+            echo fn___curl_call(urldecode($_GET['url']));
             //$data = $this->Matrix_model->fn___digest_url(urldecode($_GET['url']));
-            echo htmlentities($data['response']);
 
         } else {
             echo '<form action="" method="GET">';
