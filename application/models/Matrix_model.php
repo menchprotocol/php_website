@@ -333,7 +333,7 @@ class Matrix_model extends CI_Model
                 if(in_array($domain_analysis['url_file_extension'], array('jpeg','jpg','png','gif','tiff','bmp','img','svg'))){
                     //Image URL
                     $tr_type_en_id = 4260;
-                } elseif(in_array($domain_analysis['url_file_extension'], array('pcm','wav','aiff','mp3','aac','ogg','wma','flac','alac','m4a','3gp','gsm','m4b','m4p'))){
+                } elseif(in_array($domain_analysis['url_file_extension'], array('pcm','wav','aiff','mp3','aac','ogg','wma','flac','alac','m4a','m4b','m4p'))){
                     //Audio URL
                     $tr_type_en_id = 4259;
                 } elseif(in_array($domain_analysis['url_file_extension'], array('mp4','avi','mov','flv','f4v','f4p','f4a','f4b','wmv','webm','mkv','vob','ogv','ogg','3gp'))){
