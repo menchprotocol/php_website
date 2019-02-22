@@ -407,10 +407,13 @@ function fn___analyze_domain($full_url){
     $domain_parts = explode('.', $analyze['host']);
 
     if(strlen($analyze['path']) > 0){
-        $possible_extension = end(explode('.', $analyze['path']));
-        if(strlen($possible_extension) >= 2 && strlen($possible_extension) <= 4){
-            //Yes, this seems like an extension:
-            $url_file_extension = strtolower($possible_extension);
+        $path_parts = explode('.', $analyze['path']);
+        if(count($path_parts) >= 2){
+            $possible_extension = array_values(array_slice($path_parts, -1))[0];
+            if(strlen($possible_extension) >= 2 && strlen($possible_extension) <= 4){
+                //Yes, this seems like an extension:
+                $url_file_extension = strtolower($possible_extension);
+            }
         }
     }
 
