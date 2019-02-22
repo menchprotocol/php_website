@@ -353,7 +353,7 @@ class Matrix_model extends CI_Model
         if(!array_key_exists($tr_type_en_id, $this->config->item('en_convert_4537'))){
 
             //Make CURL call:
-            $url_content = file_get_contents($url);
+            $url_content = @file_get_contents($url);
 
             //See if we have a canonical metadata on page?
             if(substr_count($url_content,'rel="canonical"') > 0){
