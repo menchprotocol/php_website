@@ -327,16 +327,13 @@ class Matrix_model extends CI_Model
                 //URL Was detected as an embed URL:
                 $tr_type_en_id = 4257;
 
-            } elseif (exif_imagetype($url)) {
-
-                //Image URL
-                $tr_type_en_id = 4260;
-
             } elseif ($domain_analysis['url_file_extension']) {
 
                 //URL ends with a file extension, try to detect file type based on that extension:
-
-                if(in_array($domain_analysis['url_file_extension'], array('pcm','wav','aiff','mp3','aac','ogg','wma','flac','alac'))){
+                if(in_array($domain_analysis['url_file_extension'], array('jpeg','jpg','png','gif','tiff','bmp','img','svg'))){
+                    //Image URL
+                    $tr_type_en_id = 4260;
+                } elseif(in_array($domain_analysis['url_file_extension'], array('pcm','wav','aiff','mp3','aac','ogg','wma','flac','alac'))){
                     //Audio URL
                     $tr_type_en_id = 4259;
                 } elseif(in_array($domain_analysis['url_file_extension'], array('mp4','avi','mov','flv','f4v','f4p','f4a','f4b','wmv','webm','mkv','vob','ogv','ogg','3gp'))){
