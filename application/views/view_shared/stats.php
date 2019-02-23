@@ -144,7 +144,7 @@ echo '<div class="row stat-row">';
 
 
 //Count coins per Transaction
-echo '<div class="col-md-6">';
+echo '<div class="col-md-4">';
 
 //Fetch entity and it's children:
 $ie_ens = $this->Database_model->fn___en_fetch(array(
@@ -223,7 +223,7 @@ echo '</div>';
 
 
 //Count coins per Transaction
-echo '<div class="col-md-6">';
+echo '<div class="col-md-4">';
 
 //Count variables:
 $all_engs = $this->Database_model->fn___tr_fetch(array(
@@ -259,7 +259,7 @@ foreach ($all_engs as $tr) {
 }
 
 //Echo title:
-echo '<a href="javascript:void(0);" onclick="$(\'.coins-issued\').toggleClass(\'hidden\');" class="large-stat"><span><i class="fal fa-coins"></i> <span class="coins-issued">'. fn___echo_number($all_coin_payouts) . '</span><span class="coins-issued hidden">'. number_format($all_coin_payouts) . '</span></span> Mench coins issued to date <i class="coins-issued fal fa-plus-circle"></i><i class="coins-issued fal fa-minus-circle hidden"></i></a>';
+echo '<a href="javascript:void(0);" onclick="$(\'.coins-issued\').toggleClass(\'hidden\');" class="large-stat"><span><i class="fal fa-coins"></i> <span class="coins-issued">'. fn___echo_number($all_coin_payouts) . '</span><span class="coins-issued hidden">'. number_format($all_coin_payouts) . '</span></span> Coins issued to date <i class="coins-issued fal fa-plus-circle"></i><i class="coins-issued fal fa-minus-circle hidden"></i></a>';
 
 
 //Echo table:
@@ -288,23 +288,14 @@ echo '</div>';
 
 
 
+echo '<div class="col-md-4">' . fn___echo_leaderboard(null) . '</div>';
+//echo '<div class="col-md-6">' . fn___echo_leaderboard(7) . '</div>';
 
 
 
 
 
 echo '</div>';
-
-
-
-
-
-echo '<div class="row stat-row">';
-echo '<div class="col-md-6">' . fn___echo_leaderboard(null) . '</div>';
-echo '<div class="col-md-6">' . fn___echo_leaderboard(7) . '</div>';
-echo '</div>';
-
-
 
 
 

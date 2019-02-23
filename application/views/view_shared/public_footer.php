@@ -13,8 +13,10 @@
                        title="Want to <?= $this->config->item('in_strategy_name') ?>? Let's chat on Messenger" data-placement="top"><i
                                 class="fab fa-facebook-messenger"></i></a>
 
+                    <!--
                     <a href="/stats" class="social-link" data-toggle="tooltip"
                        title="View platform stats" data-placement="top"><i class="fas fa-chart-bar"></i></a>
+                    -->
 
                     <a href="https://angel.co/askmench/jobs" target="_blank"
                        class="social-link" data-toggle="tooltip" title="See openings on Angel List"

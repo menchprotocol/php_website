@@ -44,9 +44,17 @@ $url_part_1 = $this->uri->segment(1);
 
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
+
+                <li><a href="/"><i class="fas fa-hashtag"></i> Intents</a></li>
+                <li><a href="/ledger"><i class="fas fa-atlas"></i> Ledger</a></li>
+                <li><a href="/stats"><i class="fas fa-chart-bar"></i> Stats</a></li>
+                <li><a href="/7436?expand_mode=1"><i class="fas fa-lightbulb"></i> About Us</a></li>
+
                 <?php
                 if (isset($session_en['en_id'])) {
+
                     echo '<li id="isloggedin"><a href="/intents/' . (isset($in['in_id']) ? $in['in_id'] : $this->config->item('in_tactic_id')) . '">The Matrix <i class="fas fa-chevron-circle-right"></i></a></li>';
+
                 } elseif (isset($session_en['en__actionplans']) && count($session_en['en__actionplans']) > 0) {
 
                     echo '<li id="isloggedin"><a href="/master/actionplan">Action Plan <i class="fas fa-chevron-circle-right"></i></a></li>';
