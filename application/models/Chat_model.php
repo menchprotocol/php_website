@@ -1316,20 +1316,24 @@ class Chat_model extends CI_Model
          * as we're not delivering them now.
          *
          * */
-        $messages_learn_more = $this->Database_model->fn___tr_fetch(array(
-            'tr_status >=' => 2, //Published+
-            'tr_type_en_id' => 4232, //Learn More Messages
-            'tr_in_child_id' => $in_id,
-        ), array(), 1, 0, array('tr_order' => 'ASC'));
+        if(0){
+            //TODO Implement LEARNMORE_
+            $messages_learn_more = $this->Database_model->fn___tr_fetch(array(
+                'tr_status >=' => 2, //Published+
+                'tr_type_en_id' => 4232, //Learn More Messages
+                'tr_in_child_id' => $in_id,
+            ), array(), 1, 0, array('tr_order' => 'ASC'));
 
-        if (count($messages_learn_more) > 0) {
-            //Yes! Give as last option:
-            array_push($quick_replies, array(
-                'content_type' => 'text',
-                'title' => 'Learn More',
-                'payload' => 'LEARNMORE_' . $actionplan_tr_id . '_' . $tr['tr_id'] . '_' . $ins[0]['in_id'], //TODO Implement LEARNMORE_
-            ));
+            if (count($messages_learn_more) > 0) {
+                //Yes! Give as last option:
+                array_push($quick_replies, array(
+                    'content_type' => 'text',
+                    'title' => 'Learn More',
+                    'payload' => 'LEARNMORE_' . $actionplan_tr_id . '_' . $ins[0]['in_id'],
+                ));
+            }
         }
+
 
 
         //Dispatch instructional message:
