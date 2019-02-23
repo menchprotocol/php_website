@@ -47,9 +47,6 @@ $uri_segment_2 = $this->uri->segment(2);
     if (!isset($_GET['skip_header'])) {
         //Include the chat plugin:
         $this->load->view('view_shared/messenger_web_chat');
-
-        //Include the App version:
-        echo '<div class="app-version">v'.$this->config->item('app_version').'</div>';
     }
     ?>
 

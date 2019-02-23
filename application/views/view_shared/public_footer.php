@@ -54,9 +54,6 @@
                                 class="fas fa-balance-scale"></i></a>
 
                 </li>
-
-                <li class="legal-name"><i>v<?= $this->config->item('app_version') ?></i></li>
-
             </ul>
         </nav>
     </div>
