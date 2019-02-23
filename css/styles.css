@@ -170,7 +170,7 @@ body.grey-bg {
 
 .panel-primary > .panel-heading {
     background-color: #fff;
-    border-color: #fedd16;
+    border-color: #fff;
 }
 
 .panel-primary > .panel-heading + .panel-collapse > .panel-body {
@@ -502,6 +502,13 @@ input::-webkit-inner-spin-button {
     padding-top: 5px;
 }
 
+.landing-page .main {
+    max-width: 100% !important;
+}
+
+.landing-page .container {
+    width: 100% !important;
+}
 
 .product-splash .alert {
     margin-top: 30px;
@@ -2651,7 +2658,7 @@ a.badge:focus, a.badge:hover {
 }
 
 .bottom-space{
-    margin-bottom: 50px;
+    margin-bottom: 55px;
 }
 
 .input-group-addon .fa-plus {font-size: 19px; width: 24px; text-align: center; margin-left: 3px;}

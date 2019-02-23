@@ -60,10 +60,7 @@ $url_part_1 = $this->uri->segment(1);
                     echo '<li id="isloggedin"><a href="/master/actionplan">Action Plan <i class="fas fa-chevron-circle-right"></i></a></li>';
 
                 } else {
-                    if (!($url_part_1 == 'login')) {
-                        //This is the login page, show the Launch Button:
-                        echo '<li><a href="/login'. ( isset($in['in_id']) ? '?url=%2Fintents%2F'.$in['in_id'] : '' ) .'"><i class="fas fa-sign-in"></i> Sign In</a></li>';
-                    }
+                    echo '<li><a href="/login'. ( isset($in['in_id']) ? '?url=%2Fintents%2F'.$in['in_id'] : '' ) .'"><i class="fas fa-sign-in"></i> Sign In</a></li>';
                 }
                 ?>
             </ul>
