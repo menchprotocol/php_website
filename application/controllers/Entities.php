@@ -40,26 +40,26 @@ class Entities extends CI_Controller
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Session. Refresh to Continue',
-                'digested_url' => array(),
+                'url_entity' => array(),
             ));
         }
 
         //All seems good, fetch URL:
-        $digested_url = $this->Matrix_model->fn___digest_url($_POST['input_url']);
+        $url_entity = $this->Matrix_model->fn___sync_url($_POST['input_url']);
 
-        if (!$digested_url['status']) {
+        if (!$url_entity['status']) {
             //Oooopsi, we had some error:
             return fn___echo_json(array(
                 'status' => 0,
-                'message' => $digested_url['message'],
+                'message' => $url_entity['message'],
             ));
         }
 
         //Return results:
         return fn___echo_json(array(
             'status' => 1,
-            'entity_domain_ui' => '<span class="en_icon_mini_ui">'. ( isset($digested_url['en_domain']['en_icon']) && strlen($digested_url['en_domain']['en_icon']) > 0 ? $digested_url['en_domain']['en_icon'] : echo_fav_icon($digested_url['url_clean_domain'], true) ). '</span> '.( isset($digested_url['en_domain']['en_name']) ? $digested_url['en_domain']['en_name'].' <a href="/entities/'.$digested_url['en_domain']['en_id'].'" class="underdot" data-toggle="tooltip" title="Click to open domain entity in a new windows" data-placement="top" target="_blank">@'.$digested_url['en_domain']['en_id'].'</a>' : $digested_url['url_domain_name'].' [<span class="underdot" data-toggle="tooltip" title="Domain entity not yet added" data-placement="top">New</span>]' ),
-            'js_digested_url' => $digested_url,
+            'entity_domain_ui' => '<span class="en_icon_mini_ui">'. ( isset($url_entity['en_domain']['en_icon']) && strlen($url_entity['en_domain']['en_icon']) > 0 ? $url_entity['en_domain']['en_icon'] : echo_fav_icon($url_entity['url_clean_domain'], true) ). '</span> '.( isset($url_entity['en_domain']['en_name']) ? $url_entity['en_domain']['en_name'].' <a href="/entities/'.$url_entity['en_domain']['en_id'].'" class="underdot" data-toggle="tooltip" title="Click to open domain entity in a new windows" data-placement="top" target="_blank">@'.$url_entity['en_domain']['en_id'].'</a>' : $url_entity['url_domain_name'].' [<span class="underdot" data-toggle="tooltip" title="Domain entity not yet added" data-placement="top">New</span>]' ),
+            'js_url_entity' => $url_entity,
         ));
 
     }
@@ -422,16 +422,16 @@ class Entities extends CI_Controller
             if(filter_var($_POST['en_new_string'], FILTER_VALIDATE_URL)){
 
                 //Digest URL to see what type it is and if we have any errors:
-                $digested_url = $this->Matrix_model->fn___digest_url($_POST['en_new_string']);
-                if(!$digested_url['status']){
-                    return fn___echo_json($digested_url);
+                $url_entity = $this->Matrix_model->fn___sync_url($_POST['en_new_string']);
+                if(!$url_entity['status']){
+                    return fn___echo_json($url_entity);
                 }
 
                 //Let's first find/add the domain:
-                $digested_domain = $this->Matrix_model->fn___digest_domain($_POST['en_new_string'], $session_en['en_id']);
+                $domain_entity = $this->Matrix_model->fn___sync_domain($_POST['en_new_string'], $session_en['en_id']);
 
                 //Link to this entity:
-                $entity_new = $digested_domain['en_domain'];
+                $entity_new = $domain_entity['en_domain'];
 
             } else {
                 //It's a regular entity name:
@@ -470,10 +470,10 @@ class Entities extends CI_Controller
             }
 
 
-            if(isset($digested_domain['en_domain'])){
+            if(isset($domain_entity['en_domain'])){
 
-                $tr_type_en_id = $digested_url['tr_type_en_id'];
-                $tr_content = $digested_url['cleaned_url'];
+                $tr_type_en_id = $url_entity['tr_type_en_id'];
+                $tr_content = $url_entity['cleaned_url'];
 
             } else {
 
@@ -1119,15 +1119,15 @@ class Entities extends CI_Controller
                 //Seems to be a new author entity...
 
                 //First analyze URL:
-                $digest_author_url = $this->Matrix_model->fn___digest_url($_POST['ref_url_' . $x]);
+                $author_url_entity = $this->Matrix_model->fn___sync_url($_POST['ref_url_' . $x]);
 
                 //Validate author inputs before creating anything:
-                if (!$digest_author_url['status']) {
+                if (!$author_url_entity['status']) {
 
                     //Oooopsi, show errors:
                     return fn___echo_json(array(
                         'status' => 0,
-                        'message' => 'Author #' . $x . ' URL error: ' . $digest_author_url['message'],
+                        'message' => 'Author #' . $x . ' URL error: ' . $author_url_entity['message'],
                     ));
 
                 } elseif(strlen($_POST['why_expert_' . $x]) > 0) {
@@ -1173,7 +1173,7 @@ class Entities extends CI_Controller
                 ), true);
 
                 //Add author URL:
-                $this->Matrix_model->fn___digest_url($_POST['ref_url_' . $x], $session_en['en_id'], 0, $author_en['en_id'], $_POST['author_' . $x]);
+                $this->Matrix_model->fn___sync_url($_POST['ref_url_' . $x], $session_en['en_id'], 0, $author_en['en_id'], $_POST['author_' . $x]);
 
                 //Should we also link author to to Industry Experts entity?
                 if(strlen($_POST['why_expert_' . $x]) > 0){
@@ -1196,9 +1196,9 @@ class Entities extends CI_Controller
 
 
         //Save URL & domain:
-        $digested_url = $this->Matrix_model->fn___digest_url($_POST['source_url'], $session_en['en_id'], 0, 0, $_POST['en_name']);
-        if(!$digested_url['status']){
-            return fn___echo_json($digested_url);
+        $url_entity = $this->Matrix_model->fn___sync_url($_POST['source_url'], $session_en['en_id'], 0, 0, $_POST['en_name']);
+        if(!$url_entity['status']){
+            return fn___echo_json($url_entity);
         }
 
 
@@ -1209,7 +1209,7 @@ class Entities extends CI_Controller
                 'tr_miner_en_id' => $session_en['en_id'],
                 'tr_type_en_id' => 4230, //Empty
                 'tr_en_parent_id' => $parent_en_id,
-                'tr_en_child_id' => $digested_url['en_url']['en_id'],
+                'tr_en_child_id' => $url_entity['en_url']['en_id'],
             ), true);
         }
 
@@ -1217,7 +1217,7 @@ class Entities extends CI_Controller
         //Success:
         return fn___echo_json(array(
             'status' => 1,
-            'new_source_id' => $digested_url['en_url']['en_id'], //Redirects to this entity...
+            'new_source_id' => $url_entity['en_url']['en_id'], //Redirects to this entity...
         ));
 
     }

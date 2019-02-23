@@ -30,7 +30,7 @@ class Cron extends CI_Controller
         $current_urls = $this->Database_model->fn___tr_fetch(array(
             'tr_status >=' => 0,
             'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null, //Entity URL Links
-        ), array('en_child'), 99999, 0, array('tr_content' => 'ASC'));
+        ), array('en_child'), 20, 0, array('tr_content' => 'ASC'));
 
         //Echo table:
         echo '<table class="table table-condensed table-striped stats-table sources-mined hidden" style="max-width:100%;">';
@@ -38,11 +38,11 @@ class Cron extends CI_Controller
         //Object Header:
         echo '<tr style="font-weight: bold;">';
         echo '<td style="text-align: left;"></td>';
-        echo '<td style="text-align: left;">Domain</td>';
+        echo '<td style="text-align: left;">Parent</td>';
         echo '<td style="text-align: left;"></td>';
         echo '<td style="text-align: left;">Current URL</td>';
+        echo '<td style="text-align: left;"></td>';
         echo '<td style="text-align: left;">Child</td>';
-        echo '<td style="text-align: left;">Parent</td>';
         echo '</tr>';
 
 
@@ -54,19 +54,50 @@ class Cron extends CI_Controller
             //Fetch parent:
             $parent_ens = $this->Database_model->fn___en_fetch(array(
                 'en_id' => $tr['tr_en_parent_id'],
-            ));
+            ), array('en__parents'));
+
+            //See if we have a parent error:
+            $parent_error = ($domain_analysis['url_is_root'] && $tr['tr_en_parent_id']!=1326);
+
+            $domain_unsync = ($domain_analysis['url_is_root'] && !($domain_analysis['url_clean_domain']==$tr['tr_content']));
+
+            //If not a domain, it's parent should be connected to domains:
+            if(!$domain_analysis['url_is_root']){
+                $grandpa_error = true; //Assume we have an issue unless proven otherwise...
+                foreach($parent_ens[0]['en__parents'] as $grandpa_en){
+                    if($grandpa_en['en_id']==1326){
+                        //This is connected to domains, see if the value is the domain:
+                        $gp_domain_analysis = fn___analyze_domain($grandpa_en['tr_content']);
+                        if($gp_domain_analysis['url_is_root']){
+                            $grandpa_error = false;
+                        }
+                    }
+                }
+
+                $domain_entity = $this->Matrix_model->fn___sync_domain($tr['tr_content']);
+
+            } else {
+                $grandpa_error = false;
+            }
+
+            //Fix root:
+            if($domain_unsync){
+                $this->Database_model->fn___tr_update($tr['tr_id'], array(
+                    'tr_content' => $domain_analysis['url_clean_domain'],
+                ), 1);
+            }
+
 
             //Check to see all good:
 
-
             //Object Header:
-            echo '<tr style="background-color: '.( $domain_analysis['url_is_root'] && $tr['tr_en_parent_id']!=1326 ? '#FF0000' : '#FFFFFF' ).';">';
-            echo '<td style="text-align: left;">'.($i+1).'</td>';
-            echo '<td style="text-align: left;">'.$domain_analysis['url_clean_domain'].'</td>';
-            echo '<td style="text-align: left;">'.( $domain_analysis['url_is_root'] ? ' 1' : '' ).'</td>';
-            echo '<td style="text-align: left;"><a href="'.$tr['tr_content'].'" target="_blank">'.$tr['tr_content'].'</a></td>';
-            echo '<td style="text-align: left;"><a href="/entities/'.$tr['en_id'].'" target="_blank">'.$tr['en_name'].'</a></td>';
-            echo '<td style="text-align: left;"><a href="/entities/'.$parent_ens[0]['en_id'].'" target="_blank">'.$parent_ens[0]['en_name'].'</a></td>';
+            echo '<tr>';
+            echo '<td style="text-align: left; border-top: 1px solid #CCC;">'.($i+1).'</td>';
+            echo '<td style="text-align: left; border-top: 1px solid #CCC;"><a href="/entities/'.$parent_ens[0]['en_id'].'" target="_blank" '.( $parent_error || $grandpa_error ? 'style="font-weight:bold; color:#FF0000; "' : '').'>'.$parent_ens[0]['en_name'].'</a></td>';
+            echo '<td style="text-align: left; border-top: 1px solid #CCC;">'.( $domain_analysis['url_is_root'] ? ' <b style="color:#0000FF; ">*</b>' : '' ).'</td>';
+            echo '<td style="text-align: left; border-top: 1px solid #CCC;"><a href="'.$tr['tr_content'].'" target="_blank">'.$tr['tr_content'].'</a><div>'.$domain_analysis['url_clean_domain'].( $domain_unsync ? ' SYNC TO: '.$domain_analysis['url_clean_domain'] : '').'</div></td>';
+            echo '<td style="text-align: left; border-top: 1px solid #CCC;">'.( !$domain_analysis['url_is_root'] ? ( isset($domain_entity['en_domain']['en_id']) ? '@'.$domain_entity['en_domain']['en_id'].' '.$domain_entity['en_domain']['en_name']  : 'MISSING!!!' ) : ''  ).'</td>';
+            echo '<td style="text-align: left; border-top: 1px solid #CCC;"><a href="/entities/'.$tr['en_id'].'" target="_blank">'.$tr['en_name'].'</a></td>';
             echo '</tr>';
 
         }

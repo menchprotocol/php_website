@@ -152,6 +152,19 @@ function fn___isDate($string)
     }
 }
 
+function bigintval($value) {
+    $value = trim($value);
+    if (ctype_digit($value)) {
+        return $value;
+    }
+    $value = preg_replace("/[^0-9](.*)$/", '', $value);
+    if (ctype_digit($value)) {
+        return $value;
+    }
+    return 0;
+}
+
+
 function fn___detect_tr_type_en_id($string)
 {
 
@@ -177,7 +190,7 @@ function fn___detect_tr_type_en_id($string)
             'tr_type_en_id' => 4230, //Empty
         );
 
-    } elseif (strlen(intval($string)) == strlen($string) && (intval($string) > 0 || $string == '0')) {
+    } elseif ((strlen(bigintval($string)) == strlen($string) || (in_array(substr($string , 0, 1), array('+','-')) && strlen(bigintval(substr($string , 1))) == strlen(substr($string , 1)))) && (intval($string) != 0 || $string == '0')) {
 
         return array(
             'status' => 1,
@@ -188,7 +201,7 @@ function fn___detect_tr_type_en_id($string)
 
         //It's a URL, see what type (this could fail if duplicate, etc...):
         $CI =& get_instance();
-        return $CI->Matrix_model->fn___digest_url($string);
+        return $CI->Matrix_model->fn___sync_url($string);
 
     } elseif (strlen($string) > 9 && (fn___isDate($string) || strtotime($string) > 0)) {
 

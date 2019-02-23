@@ -185,7 +185,7 @@ class Matrix_model extends CI_Model
     }
 
 
-    function fn___digest_domain($url, $tr_miner_en_id)
+    function fn___sync_domain($url, $tr_miner_en_id = 0)
     {
         /*
          *
@@ -256,7 +256,7 @@ class Matrix_model extends CI_Model
 
     }
 
-    function fn___digest_url($url, $tr_miner_en_id = 0, $add_to_parent_en_id = 0, $add_to_child_en_id = 0, $page_title = null)
+    function fn___sync_url($url, $tr_miner_en_id = 0, $add_to_parent_en_id = 0, $add_to_child_en_id = 0, $page_title = null)
     {
 
         /*
@@ -265,10 +265,10 @@ class Matrix_model extends CI_Model
          * Input legend:
          *
          * - $url:                  Input URL
-         * - $tr_miner_en_id:       Will save URL if miner is present
-         * - $add_to_parent_en_id:  Will also add URL to this parent if present
-         * - $add_to_child_en_id:   Will also add URL to this child if present
-         * - $page_title:           If present it would override the entity name
+         * - $tr_miner_en_id:       IF > 0 will save URL (if not already there) and give credit to this entity as the miner
+         * - $add_to_parent_en_id:  IF > 0 Will also add URL to this parent if present
+         * - $add_to_child_en_id:   IF > 0 Will also add URL to this child if present
+         * - $page_title:           If set it would override the entity title that is auto generated (Used in Add Source Wizard to enable miners to edit auto generated title)
          *
          * */
 
@@ -423,13 +423,13 @@ class Matrix_model extends CI_Model
 
 
         //Fetch/Create domain entity:
-        $digested_domain = $this->Matrix_model->fn___digest_domain($url, $tr_miner_en_id);
+        $domain_entity = $this->Matrix_model->fn___sync_domain($url, $tr_miner_en_id);
 
         //Assign domain entity:
-        $en_domain = $digested_domain['en_domain'];
+        $en_domain = $domain_entity['en_domain'];
 
         //IF the URL exists since the domain existed and the URL is the domain!
-        if ($digested_domain['domain_already_existed'] && $domain_analysis['url_is_root']) {
+        if ($domain_entity['domain_already_existed'] && $domain_analysis['url_is_root']) {
             $url_already_existed = 1;
         }
 

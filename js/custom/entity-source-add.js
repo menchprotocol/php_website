@@ -99,11 +99,11 @@ function fn___add_source_paste_url() {
 
                 //Update input fields:
                 $('.entity_domain_ui').html(data.entity_domain_ui);
-                $('#en_name_url').val(data.js_digested_url.page_title);
+                $('#en_name_url').val(data.js_url_entity.page_title);
 
-                if(data.js_digested_url.cleaned_url != input_url){
+                if(data.js_url_entity.cleaned_url != input_url){
                     //URL has been cleaned, show the new version as well:
-                    $('#cleaned_url').html('<i class="fas fa-exchange"></i> <span data-toggle="tooltip" title="Mench found a cleaner version of this URL that would be used instead of the URL you provided" data-placement="top" class="underdot">Canonical URL</span>: <a data-toggle="tooltip" title="' + data.js_digested_url.cleaned_url + '" data-placement="top" href="' + data.js_digested_url.cleaned_url + '" target="_blank" class="url_truncate" style="max-width:430px; text-decoration:underline;">' + data.js_digested_url.cleaned_url + '</a>');
+                    $('#cleaned_url').html('<i class="fas fa-exchange"></i> <span data-toggle="tooltip" title="Mench found a cleaner version of this URL that would be used instead of the URL you provided" data-placement="top" class="underdot">Canonical URL</span>: <a data-toggle="tooltip" title="' + data.js_url_entity.cleaned_url + '" data-placement="top" href="' + data.js_url_entity.cleaned_url + '" target="_blank" class="url_truncate" style="max-width:437px; text-decoration:underline;">' + data.js_url_entity.cleaned_url + '</a>');
                 }
 
                 //Load tooldip:

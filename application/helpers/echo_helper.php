@@ -1633,8 +1633,8 @@ function echo_fav_icon($url_clean_domain, $return_icon = false){
     //Does this domain have a Favicon?
     $fav_icon = $url_clean_domain . '/favicon.ico';
     $CI =& get_instance();
-    $digested_url = $CI->Matrix_model->fn___digest_url($fav_icon);
-    if (isset($digested_url['tr_type_en_id']) && $digested_url['tr_type_en_id']==4260 /* Image */) {
+    $url_entity = $CI->Matrix_model->fn___sync_url($fav_icon);
+    if (isset($url_entity['tr_type_en_id']) && $url_entity['tr_type_en_id']==4260 /* Image */) {
         return '<img src="'.$fav_icon.'" class="profile-icon-mini" />';
     } else {
         return ( $return_icon ? '<i class="fas fa-at grey-at"></i>' : null );

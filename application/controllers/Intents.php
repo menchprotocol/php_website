@@ -937,12 +937,12 @@ class Intents extends CI_Controller
 
 
         //Save URL and connect it to the Mench CDN entity:
-        $digested_url = $this->Matrix_model->fn___digest_url($new_file_url, $session_en['en_id'], 4396 /* Mench CDN Entity */);
+        $url_entity = $this->Matrix_model->fn___sync_url($new_file_url, $session_en['en_id'], 4396 /* Mench CDN Entity */);
 
         //Did we have an error?
-        if (!$digested_url['status']) {
+        if (!$url_entity['status']) {
             //Oops something went wrong, return error:
-            return $digested_url;
+            return $url_entity;
         }
 
 
@@ -950,9 +950,9 @@ class Intents extends CI_Controller
         $tr = $this->Database_model->fn___tr_create(array(
             'tr_miner_en_id' => $session_en['en_id'],
             'tr_type_en_id' => $_POST['focus_tr_type_en_id'],
-            'tr_en_parent_id' => $digested_url['en_url']['en_id'],
+            'tr_en_parent_id' => $url_entity['en_url']['en_id'],
             'tr_in_child_id' => intval($_POST['in_id']),
-            'tr_content' => '@' . $digested_url['en_url']['en_id'], //Just place the entity reference as the entire message
+            'tr_content' => '@' . $url_entity['en_url']['en_id'], //Just place the entity reference as the entire message
             'tr_order' => 1 + $this->Database_model->fn___tr_max_order(array(
                 'tr_type_en_id' => $_POST['focus_tr_type_en_id'],
                 'tr_in_child_id' => $_POST['in_id'],
