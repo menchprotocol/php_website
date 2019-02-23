@@ -1,7 +1,7 @@
 </div>
 </div>
 
-<footer class="footer" style="margin:0 0 30px 0;">
+<footer class="footer" style="margin:0 0 50px 0;">
     <div class="container">
         <nav>
             <ul class="footer-a">
