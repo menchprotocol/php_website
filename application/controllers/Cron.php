@@ -57,12 +57,13 @@ class Cron extends CI_Controller
             ), array('en__parents'));
 
             //See if we have a parent error:
-            $parent_error = ($domain_analysis['url_is_root'] && $tr['tr_en_parent_id']!=1326);
+            $domain_not_domain = ($domain_analysis['url_is_root'] && $tr['tr_en_parent_id']!=1326);
 
             $domain_unsync = ($domain_analysis['url_is_root'] && !($domain_analysis['url_clean_domain']==$tr['tr_content']));
 
             //If not a domain, it's parent should be connected to domains:
             if(!$domain_analysis['url_is_root']){
+                
                 $grandpa_error = true; //Assume we have an issue unless proven otherwise...
                 foreach($parent_ens[0]['en__parents'] as $grandpa_en){
                     if($grandpa_en['en_id']==1326){
@@ -74,10 +75,33 @@ class Cron extends CI_Controller
                     }
                 }
 
-                $domain_entity = $this->Matrix_model->fn___sync_domain($tr['tr_content']);
+                $domain_entity = $this->Matrix_model->fn___sync_domain($tr['tr_content'], 1);
+
+
+                if(0 && $grandpa_error && isset($domain_entity['en_domain']['en_id'])){
+
+                    //Link to domain entity:
+                    $this->Database_model->fn___tr_create(array(
+                        'tr_status' => 2,
+                        'tr_miner_en_id' => 1,
+                        'tr_type_en_id' => $tr['tr_type_en_id'],
+                        'tr_en_parent_id' => $domain_entity['en_domain']['en_id'],
+                        'tr_en_child_id' => $tr['en_id'],
+                        'tr_content' => $tr['tr_content'],
+                    ));
+
+                    //Remove domain link:
+                    $this->Database_model->fn___tr_update($tr['tr_id'], array(
+                        'tr_content' => null,
+                        'tr_type_en_id' => 4230, //Empty
+                    ), 1);
+
+                }
 
             } else {
+                
                 $grandpa_error = false;
+                
             }
 
             //Fix root:
@@ -88,12 +112,32 @@ class Cron extends CI_Controller
             }
 
 
+            if($domain_not_domain){
+
+                //move domain to domain entity:
+                $this->Database_model->fn___tr_create(array(
+                    'tr_status' => 2,
+                    'tr_miner_en_id' => 1,
+                    'tr_type_en_id' => 4256, //Generic URL (Domain home pages should always be generic, see above for logic)
+                    'tr_en_parent_id' => 1326, //Domain Entity
+                    'tr_en_child_id' => $tr['en_id'],
+                    'tr_content' => $tr['tr_content'],
+                ));
+
+                //Move URL to domain:
+                $this->Database_model->fn___tr_update($tr['tr_id'], array(
+                    'tr_content' => null,
+                    'tr_type_en_id' => 4230, //Empty
+                ));
+            }
+
+
             //Check to see all good:
 
             //Object Header:
             echo '<tr>';
             echo '<td style="text-align: left; border-top: 1px solid #CCC;">'.($i+1).'</td>';
-            echo '<td style="text-align: left; border-top: 1px solid #CCC;"><a href="/entities/'.$parent_ens[0]['en_id'].'" target="_blank" '.( $parent_error || $grandpa_error ? 'style="font-weight:bold; color:#FF0000; "' : '').'>'.$parent_ens[0]['en_name'].'</a></td>';
+            echo '<td style="text-align: left; border-top: 1px solid #CCC;"><a href="/entities/'.$parent_ens[0]['en_id'].'" target="_blank" '.( $domain_not_domain || $grandpa_error ? 'style="font-weight:bold; color:#FF0000; "' : '').'>'.$parent_ens[0]['en_name'].'</a></td>';
             echo '<td style="text-align: left; border-top: 1px solid #CCC;">'.( $domain_analysis['url_is_root'] ? ' <b style="color:#0000FF; ">*</b>' : '' ).'</td>';
             echo '<td style="text-align: left; border-top: 1px solid #CCC;"><a href="'.$tr['tr_content'].'" target="_blank">'.$tr['tr_content'].'</a><div>'.$domain_analysis['url_clean_domain'].( $domain_unsync ? ' SYNC TO: '.$domain_analysis['url_clean_domain'] : '').'</div></td>';
             echo '<td style="text-align: left; border-top: 1px solid #CCC;">'.( !$domain_analysis['url_is_root'] ? ( isset($domain_entity['en_domain']['en_id']) ? '@'.$domain_entity['en_domain']['en_id'].' '.$domain_entity['en_domain']['en_name']  : 'MISSING!!!' ) : ''  ).'</td>';
