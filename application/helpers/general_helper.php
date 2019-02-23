@@ -287,9 +287,11 @@ function fn___redirect_message($url, $message = null)
 
     if (!$message) {
         //Do a permanent redirect if message not available:
-        return header("Location: " . $url, true, 301);
+        header("Location: " . $url, true, 301);
+        exit;
     } else {
-        return header("Location: " . $url, true);
+        header("Location: " . $url, true);
+        exit;
     }
 }
 
