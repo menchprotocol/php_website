@@ -152,7 +152,7 @@ $hide_subscribe = (isset($_GET['hide_subscribe']) && intval($_GET['hide_subscrib
                                 continue; //Do not show conditional post-assessment intents
                             }
 
-                            echo '<li>#' . ($in_level3_counter + 1) . ' ' . $in_level3['in_outcome'];
+                            echo '<li>#' . ($in_level2_counter + 1) . '.' . ($in_level3_counter + 1) . ' ' . $in_level3['in_outcome'];
 
                             //Show time if we have it:
                             $in_level3_metadata = unserialize($in_level3['in_metadata']);
