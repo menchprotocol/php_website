@@ -244,7 +244,7 @@ $(document).ready(function () {
         timeout = setTimeout(function () {
             //update type:
             fn___update_link_type();
-        }, 377);
+        }, 610);
     };
 
 
@@ -665,7 +665,7 @@ function fn___en_modify_save() {
                         //Hide editing box:
                         $('#modifybox').addClass('hidden');
 
-                    }, 377);
+                    }, 610);
 
                 }
 

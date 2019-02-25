@@ -304,8 +304,8 @@ function fn___message_remove(tr_id) {
                         //Adjust sort for this message type:
                         fn___message_tr_order_apply(focus_tr_type_en_id);
 
-                    }, 377);
-                }, 377);
+                    }, 610);
+                }, 610);
 
             }
         });

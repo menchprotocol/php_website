@@ -739,7 +739,7 @@ function fn___in_modify_save() {
                         //Resort all Tasks to illustrate changes on UI:
                         fn___in_sort_save(parseInt($('.intent_line_' + modify_data['in_id']).attr('parent-intent-id')), modify_data['level']);
 
-                    }, 377);
+                    }, 610);
 
                 }
 

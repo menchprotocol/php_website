@@ -71,7 +71,7 @@ $(document).ready(function() {
         // Make a new timeout set to go off in 800ms
         timeout = setTimeout(function () {
             fn___add_source_paste_url();
-        }, 377);
+        }, 610);
     };
 
 
@@ -153,16 +153,20 @@ function fn___add_source_process(){
         en_desc: $('#en_desc').val(),
 
         author_1             : $('#author_1').val(),
+        auth_role_1          : $('#auth_role_1').val(),
         entity_parent_id_1   : $('#entity_parent_id_1').val(),
         ref_url_1            : $('#ref_url_1').val(),
         why_expert_1         : $('#why_expert_1').val(),
 
+
         author_2             : $('#author_2').val(),
+        auth_role_2          : $('#auth_role_2').val(),
         entity_parent_id_2   : $('#entity_parent_id_2').val(),
         ref_url_2            : $('#ref_url_2').val(),
         why_expert_2         : $('#why_expert_2').val(),
 
         author_3             : $('#author_3').val(),
+        auth_role_3          : $('#auth_role_3').val(),
         entity_parent_id_3   : $('#entity_parent_id_3').val(),
         ref_url_3            : $('#ref_url_3').val(),
         why_expert_3         : $('#why_expert_3').val(),
