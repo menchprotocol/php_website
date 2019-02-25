@@ -58,7 +58,7 @@ class Entities extends CI_Controller
         //Return results:
         return fn___echo_json(array(
             'status' => 1,
-            'entity_domain_ui' => '<span class="en_icon_mini_ui">'. ( isset($url_entity['en_domain']['en_icon']) && strlen($url_entity['en_domain']['en_icon']) > 0 ? $url_entity['en_domain']['en_icon'] : echo_fav_icon($url_entity['url_clean_domain'], true) ). '</span> '.( isset($url_entity['en_domain']['en_name']) ? $url_entity['en_domain']['en_name'].' <a href="/entities/'.$url_entity['en_domain']['en_id'].'" class="underdot" data-toggle="tooltip" title="Click to open domain entity in a new windows" data-placement="top" target="_blank">@'.$url_entity['en_domain']['en_id'].'</a>' : $url_entity['url_domain_name'].' [<span class="underdot" data-toggle="tooltip" title="Domain entity not yet added" data-placement="top">New</span>]' ),
+            'entity_domain_ui' => '<span class="en_icon_mini_ui">' . (isset($url_entity['en_domain']['en_icon']) && strlen($url_entity['en_domain']['en_icon']) > 0 ? $url_entity['en_domain']['en_icon'] : echo_fav_icon($url_entity['url_clean_domain'], true)) . '</span> ' . (isset($url_entity['en_domain']['en_name']) ? $url_entity['en_domain']['en_name'] . ' <a href="/entities/' . $url_entity['en_domain']['en_id'] . '" class="underdot" data-toggle="tooltip" title="Click to open domain entity in a new windows" data-placement="top" target="_blank">@' . $url_entity['en_domain']['en_id'] . '</a>' : $url_entity['url_domain_name'] . ' [<span class="underdot" data-toggle="tooltip" title="Domain entity not yet added" data-placement="top">New</span>]'),
             'js_url_entity' => $url_entity,
         ));
 
@@ -236,7 +236,7 @@ class Entities extends CI_Controller
             ));
 
             //Are they both different?
-            if(count($en_trs)<1 || ($en_trs[0]['tr_en_parent_id']!=$detected_tr_type['en_url']['en_id'] && $en_trs[0]['tr_en_child_id']!=$detected_tr_type['en_url']['en_id'])){
+            if (count($en_trs) < 1 || ($en_trs[0]['tr_en_parent_id'] != $detected_tr_type['en_url']['en_id'] && $en_trs[0]['tr_en_child_id'] != $detected_tr_type['en_url']['en_id'])) {
                 //return error:
                 return fn___echo_json($detected_tr_type);
             }
@@ -419,11 +419,11 @@ class Entities extends CI_Controller
         } else {
 
             //Is this a URL?
-            if(filter_var($_POST['en_new_string'], FILTER_VALIDATE_URL)){
+            if (filter_var($_POST['en_new_string'], FILTER_VALIDATE_URL)) {
 
                 //Digest URL to see what type it is and if we have any errors:
                 $url_entity = $this->Matrix_model->fn___sync_url($_POST['en_new_string']);
-                if(!$url_entity['status']){
+                if (!$url_entity['status']) {
                     return fn___echo_json($url_entity);
                 }
 
@@ -470,7 +470,7 @@ class Entities extends CI_Controller
             }
 
 
-            if(isset($domain_entity['en_domain'])){
+            if (isset($domain_entity['en_domain'])) {
 
                 $tr_type_en_id = $url_entity['tr_type_en_id'];
                 $tr_content = $url_entity['cleaned_url'];
@@ -505,7 +505,8 @@ class Entities extends CI_Controller
         ));
     }
 
-    function fn___en_count_links(){
+    function fn___en_count_links()
+    {
 
         if (!isset($_POST['en_id']) || intval($_POST['en_id']) < 1) {
             return fn___echo_json(array(
@@ -535,6 +536,7 @@ class Entities extends CI_Controller
         //Auth user and check required variables:
         $session_en = fn___en_auth(array(1308));
         $tr_content_max = $this->config->item('tr_content_max');
+        $success_message = 'Saved'; //Default, might change based on what we do...
 
         //Fetch current data:
         $ens = $this->Database_model->fn___en_fetch(array(
@@ -550,6 +552,11 @@ class Entities extends CI_Controller
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid ID',
+            ));
+        } elseif (!isset($_POST['en_focus_id']) || intval($_POST['en_focus_id']) < 1) {
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Focus ID',
             ));
         } elseif (!isset($_POST['en_name']) || strlen($_POST['en_name']) < 1) {
             return fn___echo_json(array(
@@ -593,25 +600,25 @@ class Entities extends CI_Controller
             $merged_ens = array();
 
             //See if we have merger entity:
-            if(strlen($_POST['en_merge']) > 0){
+            if (strlen($_POST['en_merge']) > 0) {
 
                 //Yes, validate this entity:
 
                 //Validate the input for updating linked intent:
                 $merger_en_id = 0;
-                if(substr($_POST['en_merge'], 0, 1)=='@'){
+                if (substr($_POST['en_merge'], 0, 1) == '@') {
                     $parts = explode(' ', $_POST['en_merge']);
                     $merger_en_id = intval(str_replace('@', '', $parts[0]));
                 }
 
-                if($merger_en_id < 1){
+                if ($merger_en_id < 1) {
 
                     return fn___echo_json(array(
                         'status' => 0,
-                        'message' => 'Unrecognized merger entity ['.$_POST['en_merge'].']',
+                        'message' => 'Unrecognized merger entity [' . $_POST['en_merge'] . ']',
                     ));
 
-                } elseif( $merger_en_id == $_POST['en_id'] ){
+                } elseif ($merger_en_id == $_POST['en_id']) {
 
                     return fn___echo_json(array(
                         'status' => 0,
@@ -625,10 +632,10 @@ class Entities extends CI_Controller
                         'en_id' => $merger_en_id,
                         'en_status >=' => 0, //New+
                     ));
-                    if(count($merged_ens)==0){
+                    if (count($merged_ens) == 0) {
                         return fn___echo_json(array(
                             'status' => 0,
-                            'message' => 'Could not find entity @'.$merger_en_id,
+                            'message' => 'Could not find entity @' . $merger_en_id,
                         ));
                     }
 
@@ -637,7 +644,7 @@ class Entities extends CI_Controller
             }
 
 
-            $remove_from_ui = 1; //Removing entity
+            $remove_from_ui = ($_POST['en_id'] == $_POST['en_focus_id'] ? 1 : 0); //Removing entity
             $_POST['tr_id'] = 0; //Do not consider the link as the entity is being archived
             $all_en_links = $this->Database_model->fn___tr_fetch(array(
                 'tr_status >=' => 0, //New+
@@ -647,22 +654,21 @@ class Entities extends CI_Controller
 
 
             //Take action dependent on merger status:
-            if(count($merged_ens) > 0){
+            if (count($merged_ens) > 0) {
 
                 //Move all links here:
                 foreach ($all_en_links as $merge_tr) {
 
                     $this->Database_model->fn___tr_update($merge_tr['tr_id'], array(
-                        ( $merge_tr['tr_en_child_id']==$_POST['en_id'] ? 'tr_en_child_id' : 'tr_en_parent_id' ) => $merged_ens[0]['en_id'],
+                        ($merge_tr['tr_en_child_id'] == $_POST['en_id'] ? 'tr_en_child_id' : 'tr_en_parent_id') => $merged_ens[0]['en_id'],
                     ), $session_en['en_id']);
 
                 }
 
                 //Entity is being archived and merged into another entity:
-                $remove_redirect_url = '/entities/'.$merged_ens[0]['en_id'];
+                $remove_redirect_url = '/entities/' . $merged_ens[0]['en_id'];
 
-                //Display proper message:
-                $this->session->set_flashdata('flash_message', '<div class="alert alert-success" role="alert">Entity removed and merged its '.count($all_en_links).' links here.</div>');
+                $success_message = 'Entity removed and merged its ' . count($all_en_links) . ' links here';
 
             } else {
 
@@ -676,10 +682,10 @@ class Entities extends CI_Controller
                 }
 
                 //Fetch parents to redirect to:
-                $remove_redirect_url = '/entities' . ( isset($ens[0]['en__parents'][0]['en_id']) ? '/'.$ens[0]['en__parents'][0]['en_id'] : '' );
+                $remove_redirect_url = '/entities' . (isset($ens[0]['en__parents'][0]['en_id']) ? '/' . $ens[0]['en__parents'][0]['en_id'] : '');
 
                 //Display proper message:
-                $this->session->set_flashdata('flash_message', '<div class="alert alert-success" role="alert">Entity and its '.count($all_en_links).' links removed successfully.</div>');
+                $success_message = 'Entity and its ' . count($all_en_links) . ' links removed successfully';
 
             }
 
@@ -716,13 +722,13 @@ class Entities extends CI_Controller
 
                     return fn___echo_json($detected_tr_type);
 
-                } elseif(in_array($detected_tr_type['tr_type_en_id'], $this->config->item('en_ids_4537'))){
+                } elseif (in_array($detected_tr_type['tr_type_en_id'], $this->config->item('en_ids_4537'))) {
 
                     //This is a URL, validate modification:
 
-                    if($detected_tr_type['url_is_root']){
+                    if ($detected_tr_type['url_is_root']) {
 
-                        if($en_trs[0]['tr_en_parent_id']==1326){
+                        if ($en_trs[0]['tr_en_parent_id'] == 1326) {
 
                             //Override with the clean domain for consistency:
                             $_POST['tr_content'] = $detected_tr_type['url_clean_domain'];
@@ -739,26 +745,26 @@ class Entities extends CI_Controller
 
                     } else {
 
-                        if($en_trs[0]['tr_en_parent_id']==1326){
+                        if ($en_trs[0]['tr_en_parent_id'] == 1326) {
 
                             return fn___echo_json(array(
                                 'status' => 0,
                                 'message' => 'Only domain URLs can be linked to Domain entity.',
                             ));
 
-                        } elseif($detected_tr_type['en_domain']){
+                        } elseif ($detected_tr_type['en_domain']) {
                             //We do have the domain mapped! Is this connected to the domain entity as its parent?
-                            if($detected_tr_type['en_domain']['en_id']!=$en_trs[0]['tr_en_parent_id']){
+                            if ($detected_tr_type['en_domain']['en_id'] != $en_trs[0]['tr_en_parent_id']) {
                                 return fn___echo_json(array(
                                     'status' => 0,
-                                    'message' => 'Must link to <b>@'.$detected_tr_type['en_domain']['en_id'].' '.$detected_tr_type['en_domain']['en_name'].'</b> as their parent entity',
+                                    'message' => 'Must link to <b>@' . $detected_tr_type['en_domain']['en_id'] . ' ' . $detected_tr_type['en_domain']['en_name'] . '</b> as their parent entity',
                                 ));
                             }
                         } else {
                             //We don't have the domain mapped, this is for sure not allowed:
                             return fn___echo_json(array(
                                 'status' => 0,
-                                'message' => 'Requires a new parent entity for <b>'.$detected_tr_type['url_tld'].'</b>. Add by pasting URL into the [Add @Entity] input field.',
+                                'message' => 'Requires a new parent entity for <b>' . $detected_tr_type['url_tld'] . '</b>. Add by pasting URL into the [Add @Entity] input field.',
                             ));
                         }
 
@@ -825,10 +831,16 @@ class Entities extends CI_Controller
             ));
         }
 
+
+        if ($remove_from_ui) {
+            //Page will be refresh, set flash message to be shown after restart:
+            $this->session->set_flashdata('flash_message', '<div class="alert alert-success" role="alert">' . $success_message . '</div>');
+        }
+
         //Start return array:
         $return_array = array(
             'status' => 1,
-            'message' => '<i class="fas fa-check"></i> Saved',
+            'message' => '<i class="fas fa-check"></i> ' . $success_message,
             'remove_from_ui' => $remove_from_ui,
             'remove_redirect_url' => $remove_redirect_url,
             'js_tr_type_en_id' => intval($js_tr_type_en_id),
@@ -1173,7 +1185,7 @@ class Entities extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing entity name',
             ));
-        } elseif($domain_analysis['url_is_root']){
+        } elseif ($domain_analysis['url_is_root']) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'A source URL cannot reference the root domain',
@@ -1182,7 +1194,7 @@ class Entities extends CI_Controller
 
 
         //Validate Parent descriptions:
-        foreach($_POST['source_parent_ens'] as $this_parent_en){
+        foreach ($_POST['source_parent_ens'] as $this_parent_en) {
 
             $detected_tr_type = fn___detect_tr_type_en_id($this_parent_en['this_parent_en_desc']);
 
@@ -1190,14 +1202,14 @@ class Entities extends CI_Controller
 
                 return fn___echo_json(array(
                     'status' => 0,
-                    'message' =>  $en_all_3000[$this_parent_en['this_parent_en_id']]['m_name']. ' description error: ' . $detected_tr_type['message'],
+                    'message' => $en_all_3000[$this_parent_en['this_parent_en_id']]['m_name'] . ' description error: ' . $detected_tr_type['message'],
                 ));
 
             } elseif (!in_array($detected_tr_type['tr_type_en_id'], $author_type_requirement)) {
 
                 return fn___echo_json(array(
                     'status' => 0,
-                    'message' => 'Invalid '.$en_all_3000[$this_parent_en['this_parent_en_id']]['m_name']. ' description type.',
+                    'message' => 'Invalid ' . $en_all_3000[$this_parent_en['this_parent_en_id']]['m_name'] . ' description type.',
                 ));
 
             }
@@ -1238,7 +1250,6 @@ class Entities extends CI_Controller
                 ));
 
             }
-
 
 
             //Is this referencing an existing entity or is it a new entity?
@@ -1286,7 +1297,7 @@ class Entities extends CI_Controller
                         'message' => 'Author #' . $x . ' URL error: ' . $author_url_entity['message'],
                     ));
 
-                } elseif(strlen($_POST['why_expert_' . $x]) > 0) {
+                } elseif (strlen($_POST['why_expert_' . $x]) > 0) {
 
                     //Also validate Expert explanation:
                     $detected_tr_type = fn___detect_tr_type_en_id($_POST['why_expert_' . $x]);
@@ -1330,7 +1341,7 @@ class Entities extends CI_Controller
                 $this->Matrix_model->fn___sync_url($_POST['ref_url_' . $x], $session_en['en_id'], 0, $author_en['en_id'], $_POST['author_' . $x]);
 
                 //Should we also link author to to Industry Experts entity?
-                if(strlen($_POST['why_expert_' . $x]) > 0){
+                if (strlen($_POST['why_expert_' . $x]) > 0) {
                     //Add author to industry experts:
                     $this->Database_model->fn___tr_create(array(
                         'tr_status' => 2, //Published
@@ -1355,7 +1366,7 @@ class Entities extends CI_Controller
 
         //Save URL & domain:
         $url_entity = $this->Matrix_model->fn___sync_url($_POST['source_url'], $session_en['en_id'], 0, 0, $_POST['en_name']);
-        if(!$url_entity['status']){
+        if (!$url_entity['status']) {
             return fn___echo_json($url_entity);
         }
 
@@ -1364,12 +1375,12 @@ class Entities extends CI_Controller
         foreach ($parent_ens as $this_parent_en) {
             //Insert new relation:
             $this->Database_model->fn___tr_create(array(
-                'tr_status'         => 2, //Published
-                'tr_miner_en_id'    => $session_en['en_id'],
-                'tr_en_child_id'    => $url_entity['en_url']['en_id'],
-                'tr_en_parent_id'   => $this_parent_en['this_parent_en_id'],
-                'tr_type_en_id'     => $this_parent_en['this_parent_en_type'],
-                'tr_content'        => $this_parent_en['this_parent_en_desc'],
+                'tr_status' => 2, //Published
+                'tr_miner_en_id' => $session_en['en_id'],
+                'tr_en_child_id' => $url_entity['en_url']['en_id'],
+                'tr_en_parent_id' => $this_parent_en['this_parent_en_id'],
+                'tr_type_en_id' => $this_parent_en['this_parent_en_type'],
+                'tr_content' => $this_parent_en['this_parent_en_desc'],
             ), true);
         }
 

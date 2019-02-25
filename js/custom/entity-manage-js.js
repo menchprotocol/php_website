@@ -619,14 +619,16 @@ function fn___en_modify_save() {
 
     //Prepare data to be modified for this intent:
     var modify_data = {
-        tr_id: parseInt($('#modifybox').attr('entity-link-id')),
-        tr_content: $('#tr_content').val(),
-        tr_status: $('#tr_status').val(),
+        en_focus_id: en_focus_id, //Determines if we need to change location upon removing...
         en_id: parseInt($('#modifybox').attr('entity-id')),
         en_name: $('#en_name').val(),
         en_icon: $('#en_icon').val(),
         en_status: $('#en_status').val(), //The new status (might not have changed too)
         en_merge: $('#en_merge').val(),
+        //Transaction data:
+        tr_id: parseInt($('#modifybox').attr('entity-link-id')),
+        tr_content: $('#tr_content').val(),
+        tr_status: $('#tr_status').val(),
     };
 
     //Show spinner:
