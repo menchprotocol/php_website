@@ -1364,12 +1364,12 @@ class Entities extends CI_Controller
         foreach ($parent_ens as $this_parent_en) {
             //Insert new relation:
             $this->Database_model->fn___tr_create(array(
-                'tr_status' => 2, //Published
-                'tr_miner_en_id' => $session_en['en_id'],
-                'tr_type_en_id' => $this_parent_en['tr_type_en_id'],
-                'tr_en_parent_id' => $this_parent_en['this_parent_en_id'],
-                'tr_content' => $this_parent_en['this_parent_en_desc'],
-                'tr_en_child_id' => $url_entity['en_url']['en_id'],
+                'tr_status'         => 2, //Published
+                'tr_miner_en_id'    => $session_en['en_id'],
+                'tr_en_child_id'    => $url_entity['en_url']['en_id'],
+                'tr_en_parent_id'   => $this_parent_en['this_parent_en_id'],
+                'tr_type_en_id'     => $this_parent_en['this_parent_en_type'],
+                'tr_content'        => $this_parent_en['this_parent_en_desc'],
             ), true);
         }
 
