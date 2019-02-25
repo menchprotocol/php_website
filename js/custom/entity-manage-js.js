@@ -612,14 +612,15 @@ function fn___en_modify_save() {
 
     //Are we about to archive an entity with a lot of links?
     var link_count= parseInt($('#en_link_count').val());
-    var confirm_string = "remove " + link_count;
+    var action_verb = ( $('#en_merge').val().length > 0 ? 'merge' : 'remove' );
+    var confirm_string = action_verb + " " + link_count;
     if(link_count >= 7){
         //Yes, confirm before doing so:
-        var confirm_removal = prompt("You are about to archive this entity and remove all its "+link_count+" links. Type \""+confirm_string+"\" to confirm and remove entity with all its links.", "");
+        var confirm_removal = prompt("You are about to archive this entity and "+action_verb+" all its "+link_count+" links. Type \""+confirm_string+"\" to confirm and "+action_verb+" entity with all its links.", "");
 
         if (!(confirm_removal == confirm_string)) {
             //Abandon process:
-            alert('Entity will not be removed.');
+            alert('Entity will not be '+action_verb+'d.');
             return false;
         }
     }
