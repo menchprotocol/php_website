@@ -1140,6 +1140,16 @@ class Entities extends CI_Controller
         //Auth user and check required variables:
         $session_en = fn___en_auth(array(1308));
 
+        //Description type requirement:
+        $author_type_requirement = array(4230, 4255); //Empty or Text string
+
+        //Parent sources to be added:
+        $parent_ens = array();
+
+        //Load some config variables:
+        $en_all_3000 = $this->config->item('en_all_3000');
+        $en_all_4592 = $this->config->item('en_all_4592');
+
         //Analyze domain:
         $domain_analysis = fn___analyze_domain($_POST['source_url']);
 
@@ -1171,8 +1181,35 @@ class Entities extends CI_Controller
         }
 
 
-        //Start with selected source-types:
-        $parent_ens = $_POST['source_parent_ens'];
+        //Validate Parent descriptions:
+        foreach($_POST['source_parent_ens'] as $this_parent_en){
+
+            $detected_tr_type = fn___detect_tr_type_en_id($this_parent_en['this_parent_en_desc']);
+
+            if (!$detected_tr_type['status']) {
+
+                return fn___echo_json(array(
+                    'status' => 0,
+                    'message' =>  $en_all_3000[$this_parent_en['this_parent_en_id']]['m_name']. ' description error: ' . $detected_tr_type['message'],
+                ));
+
+            } elseif (!in_array($detected_tr_type['tr_type_en_id'], $author_type_requirement)) {
+
+                return fn___echo_json(array(
+                    'status' => 0,
+                    'message' => 'Invalid '.$en_all_3000[$this_parent_en['this_parent_en_id']]['m_name']. ' description type.',
+                ));
+
+            }
+
+            //Add expert source type to parent source array:
+            array_push($parent_ens, array(
+                'this_parent_en_id' => $this_parent_en['this_parent_en_id'],
+                'this_parent_en_type' => $detected_tr_type['tr_type_en_id'],
+                'this_parent_en_desc' => trim($this_parent_en['this_parent_en_desc']),
+            ));
+
+        }
 
 
         //Now parse referenced authors:
@@ -1182,6 +1219,27 @@ class Entities extends CI_Controller
             if (strlen($_POST['author_' . $x]) < 1) {
                 continue;
             }
+
+            //Validate role information:
+            $detected_role_tr_type = fn___detect_tr_type_en_id($_POST['en_role_' . $x]);
+
+            if (!$detected_role_tr_type['status']) {
+
+                return fn___echo_json(array(
+                    'status' => 0,
+                    'message' => 'Author #' . $x . ' role error: ' . $detected_role_tr_type['message'],
+                ));
+
+            } elseif (!in_array($detected_role_tr_type['tr_type_en_id'], $author_type_requirement)) {
+
+                return fn___echo_json(array(
+                    'status' => 0,
+                    'message' => 'Invalid author #' . $x . ' role content type.',
+                ));
+
+            }
+
+
 
             //Is this referencing an existing entity or is it a new entity?
             $tr_en_link_id = 0; //Assume it's a new entity...
@@ -1208,7 +1266,8 @@ class Entities extends CI_Controller
                 //Add author to parent source array:
                 array_push($parent_ens, array(
                     'this_parent_en_id' => $tr_en_link_id,
-                    'this_parent_en_desc' => trim($_POST['en_desc_' . $x]),
+                    'this_parent_en_type' => $detected_role_tr_type['tr_type_en_id'],
+                    'this_parent_en_desc' => trim($_POST['en_role_' . $x]),
                 ));
 
             } else {
@@ -1230,8 +1289,6 @@ class Entities extends CI_Controller
                 } elseif(strlen($_POST['why_expert_' . $x]) > 0) {
 
                     //Also validate Expert explanation:
-                    $author_type_requirement = 4255; //Must be text only...
-                    $en_all_4592 = $this->config->item('en_all_4592');
                     $detected_tr_type = fn___detect_tr_type_en_id($_POST['why_expert_' . $x]);
 
                     if (!$detected_tr_type['status']) {
@@ -1241,11 +1298,11 @@ class Entities extends CI_Controller
                             'message' => 'Author #' . $x . ' error: ' . $detected_tr_type['message'],
                         ));
 
-                    } elseif ($detected_tr_type['tr_type_en_id'] != $author_type_requirement) {
+                    } elseif (!in_array($detected_tr_type['tr_type_en_id'], $author_type_requirement)) {
 
                         return fn___echo_json(array(
                             'status' => 0,
-                            'message' => 'Author #' . $x . ' expert notes must be ['.$en_all_4592[$author_type_requirement]['m_name'].'] only',
+                            'message' => 'Invalid author #' . $x . ' expert note content type.',
                         ));
 
                     }
@@ -1279,14 +1336,18 @@ class Entities extends CI_Controller
                         'tr_status' => 2, //Published
                         'tr_miner_en_id' => $session_en['en_id'],
                         'tr_content' => trim($_POST['why_expert_' . $x]),
-                        'tr_type_en_id' => $author_type_requirement,
+                        'tr_type_en_id' => $detected_tr_type['tr_type_en_id'],
                         'tr_en_parent_id' => 3084, //Industry Experts
                         'tr_en_child_id' => $author_en['en_id'],
                     ), true);
                 }
 
                 //Add author to parent source array:
-                array_push($parent_ens, $author_en['en_id']);
+                array_push($parent_ens, array(
+                    'this_parent_en_id' => $author_en['en_id'],
+                    'this_parent_en_type' => $detected_role_tr_type['tr_type_en_id'],
+                    'this_parent_en_desc' => trim($_POST['en_role_' . $x]),
+                ));
 
             }
         }
@@ -1301,17 +1362,13 @@ class Entities extends CI_Controller
 
         //Link content to all parent entities:
         foreach ($parent_ens as $this_parent_en) {
-
-            //Determine content type:
-            $detected_tr_type = fn___detect_tr_type_en_id(trim($this_parent_en['this_parent_en_desc']));
-
             //Insert new relation:
             $this->Database_model->fn___tr_create(array(
                 'tr_status' => 2, //Published
                 'tr_miner_en_id' => $session_en['en_id'],
-                'tr_content' => trim($this_parent_en['this_parent_en_desc']),
-                'tr_type_en_id' => $detected_tr_type['tr_type_en_id'],
+                'tr_type_en_id' => $this_parent_en['tr_type_en_id'],
                 'tr_en_parent_id' => $this_parent_en['this_parent_en_id'],
+                'tr_content' => $this_parent_en['this_parent_en_desc'],
                 'tr_en_child_id' => $url_entity['en_url']['en_id'],
             ), true);
         }
