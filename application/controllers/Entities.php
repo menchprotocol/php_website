@@ -1221,7 +1221,7 @@ class Entities extends CI_Controller
             }
 
             //Validate role information:
-            $detected_role_tr_type = fn___detect_tr_type_en_id($_POST['en_role_' . $x]);
+            $detected_role_tr_type = fn___detect_tr_type_en_id($_POST['auth_role_' . $x]);
 
             if (!$detected_role_tr_type['status']) {
 
@@ -1267,7 +1267,7 @@ class Entities extends CI_Controller
                 array_push($parent_ens, array(
                     'this_parent_en_id' => $tr_en_link_id,
                     'this_parent_en_type' => $detected_role_tr_type['tr_type_en_id'],
-                    'this_parent_en_desc' => trim($_POST['en_role_' . $x]),
+                    'this_parent_en_desc' => trim($_POST['auth_role_' . $x]),
                 ));
 
             } else {
@@ -1346,7 +1346,7 @@ class Entities extends CI_Controller
                 array_push($parent_ens, array(
                     'this_parent_en_id' => $author_en['en_id'],
                     'this_parent_en_type' => $detected_role_tr_type['tr_type_en_id'],
-                    'this_parent_en_desc' => trim($_POST['en_role_' . $x]),
+                    'this_parent_en_desc' => trim($_POST['auth_role_' . $x]),
                 ));
 
             }
