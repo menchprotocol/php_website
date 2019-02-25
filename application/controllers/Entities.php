@@ -678,7 +678,7 @@ class Entities extends CI_Controller
 
                 }
 
-                if($_POST['en_id'] == $_POST['en_focus_id']){
+                if($_POST['en_id'] == $_POST['en_focus_id'] || $merged_ens[0]['en_id'] == $_POST['en_focus_id']){
                     //Entity is being archived and merged into another entity:
                     $remove_redirect_url = '/entities/' . $merged_ens[0]['en_id'];
                 }
