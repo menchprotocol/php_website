@@ -72,11 +72,29 @@ $(document).ready(function () {
     });
 
     $('#en_status').change(function () {
+
         if (parseInt($('#en_status').find(":selected").val()) < 0) {
-            //About to delete? Notify them:
+
+            //Notify admin:
             $('.notify_en_remove').removeClass('hidden');
+            $('.entity_remove_stats').html('<i class="fas fa-spinner fa-spin"></i>');
+
+            //About to delete... Fetch total links:
+            $.post("/entities/fn___en_count_links", { en_id: parseInt($('#modifybox').attr('entity-id')) }, function (data) {
+
+                if(data.status){
+                    $('.entity_remove_stats').html('<b>'+data.en_link_count+'</b>');
+                    $('#en_link_count').val(data.en_link_count); //This would require a confirmation upon saving...
+                }
+
+            });
+
         } else {
+
             $('.notify_en_remove').addClass('hidden');
+            $('.entity_remove_stats').html('');
+            $('#en_link_count').val('0');
+
         }
     });
 
@@ -431,6 +449,8 @@ function fn___en_modify_load(en_id, tr_id) {
     $('#en_status').val($(".en___" + en_id + ":first").attr('entity-status'));
     $('#tr_status').val($(".en___" + en_id + ":first").attr('tr-status'));
     $('.save_entity_changes').html('');
+    $('.entity_remove_stats').html('');
+    $('#en_link_count').val('0');
 
 
     if (parseInt($('.en_icon_' + en_id).attr('en-is-set')) > 0) {
@@ -590,6 +610,20 @@ function fn___en_modify_save() {
         return false;
     }
 
+    //Are we about to archive an entity with a lot of links?
+    var link_count= parseInt($('#en_link_count').val());
+    var confirm_string = "remove " + link_count;
+    if(link_count >= 7){
+        //Yes, confirm before doing so:
+        var confirm_removal = prompt("You are about to archive this entity and remove all its "+link_count+" links. Type \""+confirm_string+"\" to confirm and remove entity with all its links.", "");
+
+        if (!(confirm_removal == confirm_string)) {
+            //Abandon process:
+            alert('Entity will not be removed.');
+            return false;
+        }
+    }
+
     //Prepare data to be modified for this intent:
     var modify_data = {
         tr_id: parseInt($('#modifybox').attr('entity-link-id')),
@@ -597,8 +631,9 @@ function fn___en_modify_save() {
         tr_status: $('#tr_status').val(),
         en_id: parseInt($('#modifybox').attr('entity-id')),
         en_name: $('#en_name').val(),
-        en_status: $('#en_status').val(), //The new status (might not have changed too)
         en_icon: $('#en_icon').val(),
+        en_status: $('#en_status').val(), //The new status (might not have changed too)
+        en_merge: $('#en_merge').val(),
     };
 
     //Show spinner:
@@ -613,14 +648,10 @@ function fn___en_modify_save() {
 
                 //need to remove this entity:
                 //Intent has been either removed OR unlinked:
-                if (modify_data['en_id'] == en_focus_id) {
+                if (data.remove_redirect_url) {
 
                     //move up 1 level as this was the focus intent:
-                    if($('.redirect_go_' + modify_data['en_id']).length){
-                        window.location = "/entities/" + $('.redirect_go_' + modify_data['en_id'] + ':first').attr('entity-id');
-                    } else {
-                        window.location = "/entities/";
-                    }
+                    window.location = data.remove_redirect_url;
 
                 } else {
 

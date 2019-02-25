@@ -282,7 +282,7 @@ function fn___redirect_message($url, $message = null)
     //Do we have a Message?
     if ($message) {
         $CI =& get_instance();
-        $CI->session->set_flashdata('hm', $message);
+        $CI->session->set_flashdata('flash_message', $message);
     }
 
     if (!$message) {

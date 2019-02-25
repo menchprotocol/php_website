@@ -136,7 +136,7 @@ $uri_segment_2 = $this->uri->segment(2);
                     if (isset($message)) {
                         echo $message;
                     }
-                    $hm = $this->session->flashdata('hm');
+                    $hm = $this->session->flashdata('flash_message');
                     if ($hm) {
                         echo $hm;
                     }

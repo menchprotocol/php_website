@@ -30,7 +30,7 @@ class Cron extends CI_Controller
         $current_urls = $this->Database_model->fn___tr_fetch(array(
             'tr_status >=' => 0,
             'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null, //Entity URL Links
-        ), array('en_child'), 20, 0, array('tr_content' => 'ASC'));
+        ), array('en_child'), 999999, 0, array('tr_content' => 'ASC'));
 
         //Echo table:
         echo '<table class="table table-condensed table-striped stats-table sources-mined hidden" style="max-width:100%;">';
@@ -47,6 +47,8 @@ class Cron extends CI_Controller
 
 
         foreach ($current_urls as $i=>$tr){
+
+            $ff = null;
 
             //Detect domain parent:
             $domain_analysis = fn___analyze_domain($tr['tr_content']);
@@ -78,7 +80,13 @@ class Cron extends CI_Controller
                 $domain_entity = $this->Matrix_model->fn___sync_domain($tr['tr_content'], 1);
 
 
-                if(0 && $grandpa_error && isset($domain_entity['en_domain']['en_id'])){
+                if($grandpa_error && isset($domain_entity['en_domain']['en_id'])){
+
+                    //Remove domain link:
+                    $this->Database_model->fn___tr_update($tr['tr_id'], array(
+                        'tr_content' => null,
+                        'tr_type_en_id' => 4230, //Empty
+                    ), 1);
 
                     //Link to domain entity:
                     $this->Database_model->fn___tr_create(array(
@@ -90,11 +98,7 @@ class Cron extends CI_Controller
                         'tr_content' => $tr['tr_content'],
                     ));
 
-                    //Remove domain link:
-                    $this->Database_model->fn___tr_update($tr['tr_id'], array(
-                        'tr_content' => null,
-                        'tr_type_en_id' => 4230, //Empty
-                    ), 1);
+                    $ff = 'DONEDONEDONE';
 
                 }
 
@@ -140,7 +144,7 @@ class Cron extends CI_Controller
             echo '<td style="text-align: left; border-top: 1px solid #CCC;"><a href="/entities/'.$parent_ens[0]['en_id'].'" target="_blank" '.( $domain_not_domain || $grandpa_error ? 'style="font-weight:bold; color:#FF0000; "' : '').'>'.$parent_ens[0]['en_name'].'</a></td>';
             echo '<td style="text-align: left; border-top: 1px solid #CCC;">'.( $domain_analysis['url_is_root'] ? ' <b style="color:#0000FF; ">*</b>' : '' ).'</td>';
             echo '<td style="text-align: left; border-top: 1px solid #CCC;"><a href="'.$tr['tr_content'].'" target="_blank">'.$tr['tr_content'].'</a><div>'.$domain_analysis['url_clean_domain'].( $domain_unsync ? ' SYNC TO: '.$domain_analysis['url_clean_domain'] : '').'</div></td>';
-            echo '<td style="text-align: left; border-top: 1px solid #CCC;">'.( !$domain_analysis['url_is_root'] ? ( isset($domain_entity['en_domain']['en_id']) ? '@'.$domain_entity['en_domain']['en_id'].' '.$domain_entity['en_domain']['en_name']  : 'MISSING!!!' ) : ''  ).'</td>';
+            echo '<td style="text-align: left; border-top: 1px solid #CCC;">'.( !$domain_analysis['url_is_root'] ? ( isset($domain_entity['en_domain']['en_id']) ? '@'.$domain_entity['en_domain']['en_id'].' '.$domain_entity['en_domain']['en_name']  : 'MISSING!!!' ) : ''  ).$ff.'</td>';
             echo '<td style="text-align: left; border-top: 1px solid #CCC;"><a href="/entities/'.$tr['en_id'].'" target="_blank">'.$tr['en_name'].'</a></td>';
             echo '</tr>';
 

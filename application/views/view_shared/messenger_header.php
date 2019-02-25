@@ -21,7 +21,7 @@
 if (isset($hm) && $hm) {
     echo $hm;
 } else {
-    $hm = $this->session->flashdata('hm');
+    $hm = $this->session->flashdata('flash_message');
     if ($hm) {
         echo $hm;
     }

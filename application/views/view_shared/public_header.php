@@ -74,7 +74,7 @@ $url_part_1 = $this->uri->segment(1);
 
 <?php
 //Show possible flash message:
-$hm = $this->session->flashdata('hm');
+$hm = $this->session->flashdata('flash_message');
 if ($hm) {
     echo $hm;
 }

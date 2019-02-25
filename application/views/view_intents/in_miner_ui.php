@@ -262,12 +262,13 @@ if (isset($orphan_ins)) {
                             <div class="in-has-tr">
 
 
-                                <span class="mini-header"><span class="tr_in_link_title"></span> Linked Intent:</span>
-                                <input style="padding-left:3px;" type="text" class="form-control algolia_search border" id="tr_in_link_update" value="" placeholder="Search replacement intent..." />
+                                <div class="modify_parent_in hidden">
+                                    <span class="mini-header"><span class="tr_in_link_title"></span> Linked Intent:</span>
+                                    <input style="padding-left:3px;" type="text" class="form-control algolia_search border in_quick_search" id="tr_in_link_update" value="" placeholder="Search replacement intent..." />
+                                </div>
 
 
-
-                                <span class="mini-header">Link Type:</span>
+                                <span class="mini-header">Link Type: [<a href="javscript:void(0);" onclick="$('.modify_parent_in').toggleClass('hidden')" data-toggle="tooltip" title="Modify Linked Intent" data-placement="top"><u>EDIT</u></a>]</span>
                                 <div class="form-group label-floating is-empty">
 
                                     <?php

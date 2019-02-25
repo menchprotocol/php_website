@@ -296,7 +296,7 @@ class Intents extends CI_Controller
         ));
     }
 
-    function fn___in_save_settings()
+    function fn___in_modify_save()
     {
 
         //Authenticate Miner:

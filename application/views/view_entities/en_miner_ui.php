@@ -194,11 +194,20 @@
                                 ?>
                             </select>
 
+
+
                             <div class="notify_en_remove hidden">
+
                                 <div class="alert alert-danger" style="margin:5px 0px; padding:7px;">
                                     <i class="fas fa-exclamation-triangle"></i>
-                                    Saving will archive entity and unlink all parents and children
+                                    Saving will archive entity and remove <span class="entity_remove_stats" style="display:inline-block; padding: 0;"></span> parent/child links.
                                 </div>
+
+                                <input type="hidden" id="en_link_count" value="0" />
+
+                                <span class="mini-header"><span class="tr_in_link_title"></span> Merge Links Into:</span>
+                                <input style="padding-left:3px;" type="text" class="form-control algolia_search border en_quick_search" id="en_merge" value="" placeholder="Search entity to merge..." />
+
                             </div>
 
                         </div>

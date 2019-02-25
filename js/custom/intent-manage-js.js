@@ -182,42 +182,6 @@ $(document).ready(function () {
 
 
 
-    //Load Algolia for link replacement search
-    $("#tr_in_link_update").on('autocomplete:selected', function (event, suggestion, dataset) {
-
-        $(this).val('#'+suggestion.alg_obj_id+' '+suggestion.alg_obj_name);
-
-    }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
-
-        source: function (q, cb) {
-            algolia_index.search(q, {
-                filters: 'alg_obj_is_in=1',
-                hitsPerPage: 7,
-            }, function (error, content) {
-                if (error) {
-                    cb([]);
-                    return;
-                }
-                cb(content.hits, content);
-            });
-        },
-        displayKey: function (suggestion) {
-            return '#'+suggestion.alg_obj_id+' '+suggestion.alg_obj_name;
-        },
-        templates: {
-            suggestion: function (suggestion) {
-                return echo_js_suggestion(suggestion, 0);
-            },
-            header: function (data) {
-            },
-            empty: function (data) {
-                return 'No intents found';
-            },
-        }
-    }]);
-
-
-
     //Load level 3 sorting for this new level 2 intent:
     fn___in_load_search_level3(".intentadder-level-3");
 
@@ -593,6 +557,8 @@ function fn___in_modify_load(in_id, tr_id) {
     $('#apply_recursively').prop('checked', false);
     $('.save_intent_changes').html(' ');
 
+    //Reset parent editing button:
+    $('.modify_parent_in').addClass('hidden');
 
     //Set title:
     $('.edit-header').html('<i class="fas fa-cog"></i> ' + $('.in_outcome_' + in_id + ':first').text());
@@ -732,7 +698,7 @@ function fn___in_modify_save() {
 
 
     //Save the rest of the content:
-    $.post("/intents/fn___in_save_settings", modify_data, function (data) {
+    $.post("/intents/fn___in_modify_save", modify_data, function (data) {
 
         if (!data.status) {
 

@@ -88,11 +88,11 @@ class Entities extends CI_Controller
             ), array('en_child'), 0);
 
             if (!isset($_POST['modify_text'])) {
-                $this->session->set_flashdata('hm', '<div class="alert alert-danger" role="alert">Missing string</div>');
+                $this->session->set_flashdata('flash_message', '<div class="alert alert-danger" role="alert">Missing string</div>');
             } elseif (!array_key_exists($_POST['action_type'], $this->config->item('en_mass_actions'))) {
-                $this->session->set_flashdata('hm', '<div class="alert alert-danger" role="alert">Unknown action type</div>');
+                $this->session->set_flashdata('flash_message', '<div class="alert alert-danger" role="alert">Unknown action type</div>');
             } elseif (count($children) < 1) {
-                $this->session->set_flashdata('hm', '<div class="alert alert-danger" role="alert">No child entities found</div>');
+                $this->session->set_flashdata('flash_message', '<div class="alert alert-danger" role="alert">No child entities found</div>');
             } else {
 
                 $applied_success = 0;
@@ -172,9 +172,9 @@ class Entities extends CI_Controller
                 );
 
                 if ($applied_success > 0) {
-                    $this->session->set_flashdata('hm', '<div class="alert alert-success" role="alert">Successfully updated ' . $applied_success . '/' . count($children) . ' entities</div>');
+                    $this->session->set_flashdata('flash_message', '<div class="alert alert-success" role="alert">Successfully updated ' . $applied_success . '/' . count($children) . ' entities</div>');
                 } else {
-                    $this->session->set_flashdata('hm', '<div class="alert alert-warning" role="alert">Nothing was updated</div>');
+                    $this->session->set_flashdata('flash_message', '<div class="alert alert-warning" role="alert">Nothing was updated</div>');
                 }
 
             }
@@ -505,6 +505,30 @@ class Entities extends CI_Controller
         ));
     }
 
+    function fn___en_count_links(){
+
+        if (!isset($_POST['en_id']) || intval($_POST['en_id']) < 1) {
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Entity ID',
+            ));
+        }
+
+        //Simply counts the links for a given entity:
+        $all_en_links = $this->Database_model->fn___tr_fetch(array(
+            'tr_status >=' => 0, //New+
+            'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            '(tr_en_child_id = ' . $_POST['en_id'] . ' OR tr_en_parent_id = ' . $_POST['en_id'] . ')' => null,
+        ), array(), 999999);
+
+        return fn___echo_json(array(
+            'status' => 1,
+            'message' => 'Success',
+            'en_link_count' => count($all_en_links),
+        ));
+
+    }
+
     function fn___en_modify_save()
     {
 
@@ -515,7 +539,7 @@ class Entities extends CI_Controller
         //Fetch current data:
         $ens = $this->Database_model->fn___en_fetch(array(
             'en_id' => intval($_POST['en_id']),
-        ));
+        ), array('en__parents'));
 
         if (!$session_en) {
             return fn___echo_json(array(
@@ -551,6 +575,7 @@ class Entities extends CI_Controller
 
         $tr_has_updated = false;
         $remove_from_ui = 0;
+        $remove_redirect_url = null;
         $js_tr_type_en_id = 0; //Detect link type based on content
 
         //Prepare data to be updated:
@@ -564,23 +589,99 @@ class Entities extends CI_Controller
         //Is this being removed?
         if ($en_update['en_status'] < 0 && !($en_update['en_status'] == $ens[0]['en_status'])) {
 
-            $remove_from_ui = 1;
+            //Assume no merge:
+            $merged_ens = array();
 
-            //Also remove all children/parent links:
-            foreach ($this->Database_model->fn___tr_fetch(array(
-                'tr_status >=' => 0, //New+
-                'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-                '(tr_en_child_id = ' . $_POST['en_id'] . ' OR tr_en_parent_id = ' . $_POST['en_id'] . ')' => null,
-            )) as $unlink_tr) {
+            //See if we have merger entity:
+            if(strlen($_POST['en_merge']) > 0){
 
-                $this->Database_model->fn___tr_update($unlink_tr['tr_id'], array(
-                    'tr_status' => -1, //Unlink
-                ), $session_en['en_id']);
+                //Yes, validate this entity:
+
+                //Validate the input for updating linked intent:
+                $merger_en_id = 0;
+                if(substr($_POST['en_merge'], 0, 1)=='@'){
+                    $parts = explode(' ', $_POST['en_merge']);
+                    $merger_en_id = intval(str_replace('@', '', $parts[0]));
+                }
+
+                if($merger_en_id < 1){
+
+                    return fn___echo_json(array(
+                        'status' => 0,
+                        'message' => 'Unrecognized merger entity ['.$_POST['en_merge'].']',
+                    ));
+
+                } elseif( $merger_en_id == $_POST['en_id'] ){
+
+                    return fn___echo_json(array(
+                        'status' => 0,
+                        'message' => 'Cannot merge entity into itself',
+                    ));
+
+                } else {
+
+                    //Validate entity:
+                    $merged_ens = $this->Database_model->fn___en_fetch(array(
+                        'en_id' => $merger_en_id,
+                        'en_status >=' => 0, //New+
+                    ));
+                    if(count($merged_ens)==0){
+                        return fn___echo_json(array(
+                            'status' => 0,
+                            'message' => 'Could not find entity @'.$merger_en_id,
+                        ));
+                    }
+
+                }
 
             }
 
-            //Remove the link:
-            $_POST['tr_id'] = 0;
+
+            $remove_from_ui = 1; //Removing entity
+            $_POST['tr_id'] = 0; //Do not consider the link as the entity is being archived
+            $all_en_links = $this->Database_model->fn___tr_fetch(array(
+                'tr_status >=' => 0, //New+
+                'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                '(tr_en_child_id = ' . $_POST['en_id'] . ' OR tr_en_parent_id = ' . $_POST['en_id'] . ')' => null,
+            ), array(), 999999);
+
+
+            //Take action dependent on merger status:
+            if(count($merged_ens) > 0){
+
+                //Move all links here:
+                foreach ($all_en_links as $merge_tr) {
+
+                    $this->Database_model->fn___tr_update($merge_tr['tr_id'], array(
+                        ( $merge_tr['tr_en_child_id']==$_POST['en_id'] ? 'tr_en_child_id' : 'tr_en_parent_id' ) => $merged_ens[0]['en_id'],
+                    ), $session_en['en_id']);
+
+                }
+
+                //Entity is being archived and merged into another entity:
+                $remove_redirect_url = '/entities/'.$merged_ens[0]['en_id'];
+
+                //Display proper message:
+                $this->session->set_flashdata('flash_message', '<div class="alert alert-success" role="alert">Entity removed and merged its '.count($all_en_links).' links here.</div>');
+
+            } else {
+
+                //Entity being archived, remove all links:
+                foreach ($all_en_links as $unlink_tr) {
+
+                    $this->Database_model->fn___tr_update($unlink_tr['tr_id'], array(
+                        'tr_status' => -1, //Unlink
+                    ), $session_en['en_id']);
+
+                }
+
+                //Fetch parents to redirect to:
+                $remove_redirect_url = '/entities' . ( isset($ens[0]['en__parents'][0]['en_id']) ? '/'.$ens[0]['en__parents'][0]['en_id'] : '' );
+
+                //Display proper message:
+                $this->session->set_flashdata('flash_message', '<div class="alert alert-success" role="alert">Entity and its '.count($all_en_links).' links removed successfully.</div>');
+
+            }
 
         }
 
@@ -729,6 +830,7 @@ class Entities extends CI_Controller
             'status' => 1,
             'message' => '<i class="fas fa-check"></i> Saved',
             'remove_from_ui' => $remove_from_ui,
+            'remove_redirect_url' => $remove_redirect_url,
             'js_tr_type_en_id' => intval($js_tr_type_en_id),
         );
 
