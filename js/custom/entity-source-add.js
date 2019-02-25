@@ -199,6 +199,9 @@ function search_author(author_box){
 
     if(current_val.length > 0 && current_val.indexOf('@') == -1 ) {
 
+        //Populate Google Search Link:
+        $('#google_' + author_box).attr('href','https://www.google.com/search?q='+current_val);
+
         $('.author_is_expert_' + author_box).removeClass('hidden');
         $('.explain_expert_' + author_box).removeClass('hidden');
 

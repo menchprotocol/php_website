@@ -71,7 +71,7 @@
             </span>
 
 
-            <div class="form-group explain_expert_<?= $num ?> label-floating is-empty hidden" style="margin:3px 0 7px 22px;">
+            <div class="form-group explain_expert_<?= $num ?> label-floating is-empty hidden inline-box" style="margin:0px 19px 10px 10px;">
 
                 <div class="white-wrapper">
                     <select class="form-control border" id="entity_parent_id_<?= $num ?>" style="display:inline-block !important; margin-bottom: 3px;">
@@ -82,6 +82,7 @@
                         }
                         ?>
                     </select>
+                    <a href="#" id="google_<?= $num ?>" style="font-size:0.8em; margin-left: 5px;" target="_blank">Search Google <i class="fas fa-external-link"></i></a>
                 </div>
 
                 <div class="input-group border" style="background-color: #FFF; margin-bottom: 3px;">
