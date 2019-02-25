@@ -180,7 +180,7 @@ function fn___detect_tr_type_en_id($string)
 
         return array(
             'status' => 0,
-            'message' => 'String is ['.(strlen($string) - $CI->config->item('tr_content_max')).'] characters longer than what is allowed.',
+            'message' => 'String is ['.(strlen($string) - $CI->config->item('tr_content_max')).'] characters longer than the allowed length of '.$CI->config->item('tr_content_max').' characters.',
         );
 
     } elseif (is_null($string) || strlen($string) == 0) {

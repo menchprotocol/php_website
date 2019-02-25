@@ -51,7 +51,9 @@
                 <input type="checkbox" class="source_parent_ens" value="'.$en_id.'" />
                 <span><span class="en_icon_mini_ui">'.$m['m_icon'].'</span> '.$m['m_name'].'</span>
             </label>
-            <textarea id="en_desc_'.$en_id.'" class="form-control border hidden" style="height:78px; max-width: 500px; margin: 2px 0 2px 30px;" placeholder="'.str_replace('Expert ','', rtrim($m['m_name'], 's')).' overview..."></textarea>
+            
+            <textarea id="en_desc_'.$en_id.'" id-postfix="'.$en_id.'" class="form-control border hidden characterLimiter textarea_'.$en_id.'" style="height:78px; max-width: 500px; margin: 2px 0 2px 30px;" placeholder="'.str_replace('Expert ','', rtrim($m['m_name'], 's')).' overview..."></textarea>
+            <div id="en_cntr_'.$en_id.'" class="below-counter hidden">[<span id="char_count_'.$en_id.'">0</span>/'.$this->config->item('tr_content_max').']</div>
         </span>';
         }
         ?>
@@ -65,7 +67,7 @@
             </span>
 
             <span class="inline-block en_role_<?= $num ?> hidden">
-                <input style="padding-left:3px;" type="text" id="auth_role_<?= $num ?>" class="form-control border" data-toggle="tooltip" data-placement="top" title="Define the role of this person/organization" placeholder="Role..." value="Author" />
+                <input style="padding-left:3px;" type="text" id="auth_role_<?= $num ?>" class="form-control border" data-toggle="tooltip" data-placement="top" title="Define the role of this person/organization" placeholder="Role..." maxlength="<?= $this->config->item('tr_content_max') ?>" value="Author" />
             </span>
 
 
@@ -81,19 +83,25 @@
                         ?>
                     </select>
                 </div>
+
                 <div class="input-group border" style="background-color: #FFF; margin-bottom: 3px;">
                     <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;">URL:</span>
                     <input style="padding-left:3px;" type="url" id="ref_url_<?= $num ?>" class="form-control">
                 </div>
+
                 <div class="form-group label-floating is-empty">
                     <div class="input-group border">
-                                <span class="input-group-addon addon-lean addon-grey"
-                                      style="color:#2f2739; font-weight: 300;">Is Expert?<div style="font-size: 0.8em; margin-top: 10px;">If so,<br />explain why...</div></span>
+                        <span class="input-group-addon addon-lean addon-grey"
+                                      style="color:#2f2739; font-weight: 300;">Is Expert?<div style="font-size: 0.8em; margin-top: 10px;">If so,<br />explain why...</div>
+                        </span>
                         <span class="white-wrapper">
-                    <textarea class="form-control right-textarea" id="why_expert_<?= $num ?>"></textarea>
-                </span>
+                            <textarea class="form-control right-textarea characterLimiter textarea_<?= $num ?>" id-postfix="<?= $num ?>" id="why_expert_<?= $num ?>"></textarea>
+                        </span>
                     </div>
                 </div>
+
+                <div class="below-counter">[<span id="char_count_<?= $num ?>">0</span>/<?= $this->config->item('tr_content_max') ?>]</div>
+
             </div>
         <?php } ?>
 

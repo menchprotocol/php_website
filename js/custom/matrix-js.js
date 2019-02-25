@@ -123,6 +123,16 @@ function fn___load_js_algolia() {
     });
 }
 
+
+function tr_content_word_count(el_textarea, el_counter) {
+    var len = $(el_textarea).val().length;
+    if (len > tr_content_max) {
+        $(el_counter).addClass('overload').text(len);
+    } else {
+        $(el_counter).removeClass('overload').text(len);
+    }
+}
+
 function fn___add_raw(){
 
     //Lock search bar:

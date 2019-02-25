@@ -36,13 +36,20 @@ $(document).ready(function() {
 
     }]);
 
+    //Watch for counter changes:
+    $( ".characterLimiter" ).keyup(function() {
+        tr_content_word_count('.textarea_'+$(this).attr('id-postfix'),'#char_count_'+$(this).attr('id-postfix'));
+    });
+
 
     //Show/Hide parent descriptions when checked:
     $('.source_parent_ens').change(function() {
         if($(this).is(":checked")) {
             $('#en_desc_' + $(this).val()).removeClass('hidden');
+            $('#en_cntr_' + $(this).val()).removeClass('hidden');
         } else {
             $('#en_desc_' + $(this).val()).addClass('hidden');
+            $('#en_cntr_' + $(this).val()).addClass('hidden');
         }
     });
 
@@ -203,8 +210,6 @@ function search_author(author_box){
         //Hhide all options
         $('.author_is_expert_' + author_box).addClass('hidden');
         $('.explain_expert_' + author_box).addClass('hidden');
-        $('#why_expert_' + author_box).val('');
-        $('#ref_url_' + author_box).val('');
     }
 
 

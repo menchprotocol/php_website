@@ -1344,6 +1344,14 @@ h5, .h5 {
     float: none;
 }
 
+.below-counter{
+    max-width: 530px;
+    text-align: right;
+    font-size: 0.7em;
+    text-align: right;
+    line-height: 100%;
+}
+
 .suggestion {
     font-size: 18px;
     display: block;

@@ -233,7 +233,7 @@ $(document).ready(function () {
     textInput.onkeyup = function (e) {
 
         //Instantly update count:
-        tr_content_word_count();
+        tr_content_word_count('#tr_content','#chartr_contentNum');
 
         // Clear the timeout if it has already been set.
         // This will prevent the previous task from executing
@@ -350,14 +350,6 @@ function en_name_word_count() {
     }
 }
 
-function tr_content_word_count() {
-    var len = $('#tr_content').val().length;
-    if (len > tr_content_max) {
-        $('#chartr_contentNum').addClass('overload').text(len);
-    } else {
-        $('#chartr_contentNum').removeClass('overload').text(len);
-    }
-}
 
 
 function fn___en_load_next_page(page, load_new_filter = 0) {
@@ -475,7 +467,7 @@ function fn___en_modify_load(en_id, tr_id) {
         $('#tr_content').val($(".tr_content_val_" + tr_id + ":first").text());
 
         //Update count:
-        tr_content_word_count();
+        tr_content_word_count('#tr_content','#chartr_contentNum');
         //Also update type:
         fn___update_link_type();
 
@@ -580,7 +572,7 @@ function fn___en_new_url_from_attachment(droppedFiles, uploadType) {
                     $('#tr_content').val( data.new__url );
 
                     //Update count:
-                    tr_content_word_count();
+                    tr_content_word_count('#tr_content','#chartr_contentNum');
                     //Also update type:
                     fn___update_link_type();
                 }
