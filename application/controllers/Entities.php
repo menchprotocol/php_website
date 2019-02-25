@@ -659,9 +659,22 @@ class Entities extends CI_Controller
                 //Move all links here:
                 foreach ($all_en_links as $merge_tr) {
 
-                    $this->Database_model->fn___tr_update($merge_tr['tr_id'], array(
-                        ($merge_tr['tr_en_child_id'] == $_POST['en_id'] ? 'tr_en_child_id' : 'tr_en_parent_id') => $merged_ens[0]['en_id'],
-                    ), $session_en['en_id']);
+                    //Check to make sure old links do not relate to new merging entity...
+                    if(($merge_tr['tr_en_parent_id']==$merged_ens[0]['en_id']) || ($merge_tr['tr_en_child_id']==$merged_ens[0]['en_id'])){
+
+                        //They seem to be related and happens when merging related entities into each other, in this case let's imply unlink:
+                        $this->Database_model->fn___tr_update($merge_tr['tr_id'], array(
+                            'tr_status' => -1,
+                        ), $session_en['en_id']);
+
+                    } else {
+
+                        //Not related, merge over:
+                        $this->Database_model->fn___tr_update($merge_tr['tr_id'], array(
+                            ($merge_tr['tr_en_child_id'] == $_POST['en_id'] ? 'tr_en_child_id' : 'tr_en_parent_id') => $merged_ens[0]['en_id'],
+                        ), $session_en['en_id']);
+
+                    }
 
                 }
 
