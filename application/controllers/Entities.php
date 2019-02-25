@@ -644,7 +644,7 @@ class Entities extends CI_Controller
             }
 
 
-            $remove_from_ui = ($_POST['en_id'] == $_POST['en_focus_id'] ? 1 : 0); //Removing entity
+            $remove_from_ui = 1; //Removing entity
             $_POST['tr_id'] = 0; //Do not consider the link as the entity is being archived
             $all_en_links = $this->Database_model->fn___tr_fetch(array(
                 'tr_status >=' => 0, //New+
@@ -665,8 +665,10 @@ class Entities extends CI_Controller
 
                 }
 
-                //Entity is being archived and merged into another entity:
-                $remove_redirect_url = '/entities/' . $merged_ens[0]['en_id'];
+                if($_POST['en_id'] == $_POST['en_focus_id']){
+                    //Entity is being archived and merged into another entity:
+                    $remove_redirect_url = '/entities/' . $merged_ens[0]['en_id'];
+                }
 
                 $success_message = 'Entity removed and merged its ' . count($all_en_links) . ' links here';
 
@@ -681,8 +683,10 @@ class Entities extends CI_Controller
 
                 }
 
-                //Fetch parents to redirect to:
-                $remove_redirect_url = '/entities' . (isset($ens[0]['en__parents'][0]['en_id']) ? '/' . $ens[0]['en__parents'][0]['en_id'] : '');
+                if($_POST['en_id'] == $_POST['en_focus_id']){
+                    //Fetch parents to redirect to:
+                    $remove_redirect_url = '/entities' . (isset($ens[0]['en__parents'][0]['en_id']) ? '/' . $ens[0]['en__parents'][0]['en_id'] : '');
+                }
 
                 //Display proper message:
                 $success_message = 'Entity and its ' . count($all_en_links) . ' links removed successfully';
@@ -832,7 +836,7 @@ class Entities extends CI_Controller
         }
 
 
-        if ($remove_from_ui) {
+        if ($remove_redirect_url) {
             //Page will be refresh, set flash message to be shown after restart:
             $this->session->set_flashdata('flash_message', '<div class="alert alert-success" role="alert">' . $success_message . '</div>');
         }
