@@ -871,7 +871,7 @@ input::-webkit-inner-spin-button {
     overflow: hidden;
     text-overflow: ellipsis;
     display: inline-block;
-    margin: 0 4px -7px 0;
+    margin: 0 0 -7px 0;
     font-size: 1em;
     text-decoration: underline;
 }
@@ -1345,7 +1345,7 @@ h5, .h5 {
 }
 
 .suggestion {
-    font-size: 1.4em;
+    font-size: 18px;
     display: block;
     padding: 2px 4px;
 }

@@ -84,7 +84,6 @@ class Intents extends CI_Controller
         //Fetch intent with 2 levels of children:
         $ins = $this->Database_model->fn___in_fetch(array(
             'in_id' => $in_id,
-            'in_status >=' => 0, //New+ (Since Miners are moderating it)
         ), array('in__parents','in__grandchildren'));
 
         //Make sure we found it:
@@ -182,6 +181,11 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Parent Intent ID',
             ));
+        } elseif (!isset($_POST['is_parent']) || !in_array(intval($_POST['is_parent']), array(0,1))) {
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Is Parent setting',
+            ));
         } elseif (!isset($_POST['next_level']) || !in_array(intval($_POST['next_level']), array(2,3))) {
             return fn___echo_json(array(
                 'status' => 0,
@@ -195,7 +199,7 @@ class Intents extends CI_Controller
         }
 
         //All seems good, go ahead and try creating the intent:
-        return fn___echo_json($this->Matrix_model->fn___in_link_or_create($_POST['in_parent_id'], $_POST['in_outcome'], $_POST['in_link_child_id'], $_POST['next_level'], $session_en['en_id']));
+        return fn___echo_json($this->Matrix_model->fn___in_link_or_create($_POST['in_parent_id'], intval($_POST['is_parent']), $_POST['in_outcome'], $_POST['in_link_child_id'], $_POST['next_level'], $session_en['en_id']));
 
     }
 
@@ -240,11 +244,9 @@ class Intents extends CI_Controller
         //Fetch all three intents to ensure they are all valid and use them for transaction logging:
         $this_in = $this->Database_model->fn___in_fetch(array(
             'in_id' => intval($_POST['in_id']),
-            'in_status >=' => 0, //New+
         ));
         $from_in = $this->Database_model->fn___in_fetch(array(
             'in_id' => intval($_POST['from_in_id']),
-            'in_status >=' => 0, //New+
         ));
         $to_in = $this->Database_model->fn___in_fetch(array(
             'in_id' => intval($_POST['to_in_id']),
@@ -307,7 +309,6 @@ class Intents extends CI_Controller
         //Validate intent:
         $ins = $this->Database_model->fn___in_fetch(array(
             'in_id' => intval($_POST['in_id']),
-            'in_status >=' => 0, //New+
         ), array('in__parents'));
 
         if (!$session_en) {
@@ -576,7 +577,6 @@ class Intents extends CI_Controller
                 //Validate intent:
                 $linked_ins = $this->Database_model->fn___in_fetch(array(
                     'in_id' => $tr_in_link_id,
-                    'in_status >=' => 0, //New+
                 ));
                 if(count($linked_ins)==0){
                     return fn___echo_json(array(
@@ -731,7 +731,6 @@ class Intents extends CI_Controller
                     'tr_in_parent_id' => intval($_POST['in_id']),
                     'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
                     'tr_status >=' => 0,
-                    'in_status >=' => 0,
                 ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
 
                 //Update them all:
@@ -746,7 +745,6 @@ class Intents extends CI_Controller
                     'tr_in_parent_id' => intval($_POST['in_id']),
                     'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
                     'tr_status >=' => 0,
-                    'in_status >=' => 0,
                 ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
 
                 //Display message:
@@ -885,7 +883,6 @@ class Intents extends CI_Controller
         //Validate Intent:
         $ins = $this->Database_model->fn___in_fetch(array(
             'in_id' => $_POST['in_id'],
-            'in_status >=' => 0,
         ));
         if(count($ins)<1){
             return fn___echo_json(array(
@@ -1019,7 +1016,6 @@ class Intents extends CI_Controller
         //Fetch Intent:
         $ins = $this->Database_model->fn___in_fetch(array(
             'in_id' => $_POST['in_id'],
-            'in_status >=' => 0, //New+
         ));
         if(count($ins) < 1){
             return fn___echo_json(array(
@@ -1104,7 +1100,6 @@ class Intents extends CI_Controller
         //Validate Intent:
         $ins = $this->Database_model->fn___in_fetch(array(
             'in_id' => $_POST['in_id'],
-            'in_status >=' => 0, //New+
         ));
         if (count($ins) < 1) {
             return fn___echo_json(array(

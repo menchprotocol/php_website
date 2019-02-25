@@ -1883,7 +1883,7 @@ class Matrix_model extends CI_Model
     }
 
 
-    function fn___in_link_or_create($in_parent_id, $in_outcome, $in_link_child_id, $next_level, $tr_miner_en_id)
+    function fn___in_link_or_create($in_parent_id, $is_parent, $in_outcome, $in_link_child_id, $next_level, $tr_miner_en_id)
     {
 
         /*
@@ -1902,7 +1902,7 @@ class Matrix_model extends CI_Model
         //Validate Original intent:
         $parent_ins = $this->Database_model->fn___in_fetch(array(
             'in_id' => intval($in_parent_id),
-        ), array('in__children')); //We'd need either Children (If adding in Level 2) or nothing (If adding in Level 3), so 'in__children' would be enough
+        ));
 
         if (count($parent_ins) < 1) {
             return array(
@@ -1919,7 +1919,7 @@ class Matrix_model extends CI_Model
             $ins = $this->Database_model->fn___in_fetch(array(
                 'in_id' => $in_link_child_id,
                 'in_status >=' => 0,
-            ), ($next_level == 2 ? array('in__children') : array()));
+            ));
 
             if (count($ins) < 1) {
                 return array(
@@ -1942,8 +1942,8 @@ class Matrix_model extends CI_Model
 
             //Make sure this is not a duplicate intent for its parent:
             $dup_links = $this->Database_model->fn___tr_fetch(array(
-                'tr_in_parent_id' => $in_parent_id,
-                'tr_in_child_id' => $in_link_child_id,
+                ( $is_parent ? 'tr_in_child_id' : 'tr_in_parent_id' ) => $in_parent_id,
+                ( $is_parent ? 'tr_in_parent_id' : 'tr_in_child_id' ) => $in_link_child_id,
                 'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
                 'tr_status >=' => 0, //New+
             ));
@@ -1962,7 +1962,7 @@ class Matrix_model extends CI_Model
                 //Make sure none of the parents are the same:
                 return array(
                     'status' => 0,
-                    'message' => 'You cannot add "' . $child_in['in_outcome'] . '" as its own child.',
+                    'message' => 'You cannot add "' . $child_in['in_outcome'] . '" as its own '.( $is_parent ? 'parent' : 'child' ).'.',
                 );
 
             }
@@ -2002,12 +2002,12 @@ class Matrix_model extends CI_Model
         $relation = $this->Database_model->fn___tr_create(array(
             'tr_miner_en_id' => $tr_miner_en_id,
             'tr_type_en_id' => 4228,
-            'tr_in_parent_id' => $in_parent_id,
-            'tr_in_child_id' => $child_in['in_id'],
+            ( $is_parent ? 'tr_in_child_id' : 'tr_in_parent_id' ) => $in_parent_id,
+            ( $is_parent ? 'tr_in_parent_id' : 'tr_in_child_id' ) => $child_in['in_id'],
             'tr_order' => 1 + $this->Database_model->fn___tr_max_order(array(
                     'tr_status >=' => 0,
-                    'tr_type_en_id' => 4228,
-                    'tr_in_parent_id' => $in_parent_id,
+                    'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
+                    'tr_in_parent_id' => ( $is_parent ? $child_in['in_id'] : $in_parent_id ),
                 )),
         ), true);
 
@@ -2018,22 +2018,22 @@ class Matrix_model extends CI_Model
 
         //Fetch and return full data to be properly shown on the UI using the fn___echo_in() function
         $new_ins = $this->Database_model->fn___tr_fetch(array(
-            'tr_in_parent_id' => $in_parent_id,
-            'tr_in_child_id' => $child_in['in_id'],
+            ( $is_parent ? 'tr_in_child_id' : 'tr_in_parent_id' ) => $in_parent_id,
+            ( $is_parent ? 'tr_in_parent_id' : 'tr_in_child_id' ) => $child_in['in_id'],
             'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
             'tr_status >=' => 0,
             'in_status >=' => 0,
-        ), array('in_child'), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
+        ), array(($is_parent ? 'in_parent' : 'in_child')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
 
 
         //Return result:
         return array(
             'status' => 1,
             'in_child_id' => $child_in['in_id'],
-            'in_child_html' => fn___echo_in($new_ins[0], $next_level, $in_parent_id),
+            'in_child_html' => fn___echo_in($new_ins[0], $next_level, $in_parent_id, $is_parent),
             //Also append some tree data for UI modifications via JS functions:
-            'in__tree_max_seconds' => (isset($in_metadata_modify['in__tree_max_seconds']) ? intval($in_metadata_modify['in__tree_max_seconds']) : 0), //Seconds added because of this
-            'in__tree_in_active_count' => intval($in_metadata_modify['in__tree_in_active_count']), //We must have this (Either if we're linking OR creating) to show new intents in the tree
+            'in__tree_max_seconds' => (isset($in_metadata_modify['in__tree_max_seconds']) && !$is_parent ? intval($in_metadata_modify['in__tree_max_seconds']) : 0), //Seconds added because of this
+            'in__tree_in_active_count' => ( $is_parent ? 0 : intval($in_metadata_modify['in__tree_in_active_count']) ), //We must have this (Either if we're linking OR creating) to show new intents in the tree
         );
 
     }

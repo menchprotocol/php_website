@@ -51,16 +51,28 @@ if (isset($orphan_ins)) {
             //Start with parents:
             echo '<h5 class="badge badge-h"><span class="li-parent-count parent-counter-' . $in['in_id'] . '">' . count($in['in__parents']) . '</span> Parent' . fn___echo__s(count($in['in__parents'])) . '</h5>';
 
-            if (count($in['in__parents']) > 0) {
-                echo '<div class="list-group list-level-2">';
-                foreach ($in['in__parents'] as $parent_in) {
-                    echo fn___echo_in($parent_in, 2, 0, true);
-                }
-                echo '</div>';
-            } else {
-                echo '<div class="alert alert-info" role="alert" style="margin-top: 0;"><i class="fas fa-exclamation-triangle"></i> No parent intents linked yet</div>';
+            echo '<div id="list-in-' . $in['in_id'] . '-1" class="list-group list-level-2">';
+
+            foreach ($in['in__parents'] as $parent_in) {
+                echo fn___echo_in($parent_in, 2, 0, true);
             }
 
+            //Enable Miner to add child intents:
+            echo '<div class="list-group-item list_input grey-block">
+                    <div class="form-group is-empty" style="margin: 0; padding: 0;">
+                        <input type="text"
+                               class="form-control intentadder-level-2 algolia_search bottom-add"
+                               maxlength="' . $this->config->item('in_outcome_max') . '"
+                               intent-id="' . $in['in_id'] . '"
+                               is-parent="1"
+                               id="addintent-c-' . $in['in_id'] . '-1"
+                               placeholder="Add #Intent">
+                    </div>
+                   
+            </div>';
+
+
+            echo '</div>';
 
 
 
@@ -90,7 +102,7 @@ if (isset($orphan_ins)) {
 
         echo '<div id="in_children_errors indent2"></div>'; //Show potential errors detected in the Action Plan via our JS functions...
 
-        echo '<div id="list-in-' . $in['in_id'] . '" class="list-group list-is-children list-level-2 indent2">';
+        echo '<div id="list-in-' . $in['in_id'] . '-0" class="list-group list-is-children list-level-2 indent2">';
         foreach ($in['in__children'] as $child_in) {
             echo fn___echo_in($child_in, 2, $in['in_id']);
         }
@@ -102,7 +114,8 @@ if (isset($orphan_ins)) {
                                class="form-control intentadder-level-2 algolia_search bottom-add"
                                maxlength="' . $this->config->item('in_outcome_max') . '"
                                intent-id="' . $in['in_id'] . '"
-                               id="addintent-c-' . $in['in_id'] . '"
+                               is-parent="0"
+                               id="addintent-c-' . $in['in_id'] . '-0"
                                placeholder="Add #Intent">
                     </div>
                    

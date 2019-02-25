@@ -29,7 +29,7 @@ function en_load_child_search() {
                 }
             },
             empty: function (data) {
-                return '<a href="javascript:fn___add_or_link_entities(0,0)" class="suggestion"><span><i class="fal fa-plus-circle"></i> Create</span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + en_focus_name + ']</a>';
+                //return '<a href="javascript:fn___add_or_link_entities(0,0)" class="suggestion"><span><i class="fal fa-plus-circle"></i> Create</span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + en_focus_name + ']</a>';
             },
         }
     }]).keypress(function (e) {
@@ -154,7 +154,7 @@ $(document).ready(function () {
                 }
             },
             empty: function (data) {
-                return '<a href="javascript:fn___add_or_link_entities(0,1)" class="suggestion"><span><i class="fal fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + en_focus_name + ']</a>';
+                //return '<a href="javascript:fn___add_or_link_entities(0,1)" class="suggestion"><span><i class="fal fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + en_focus_name + ']</a>';
             },
         }
 

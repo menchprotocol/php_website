@@ -123,6 +123,29 @@ function fn___load_js_algolia() {
     });
 }
 
+function fn___add_raw(){
+
+    //Lock search bar:
+    $('#matrix_search').prop("disabled", true);
+
+    //Attemps to create a new intent OR entity based on the value in the search box
+    $.post("/ledger/fn___add_raw", { raw_string: $("#matrix_search").val() }, function (data) {
+
+        if(!data.status){
+
+            //We had some error:
+            $('#matrix_search').prop("disabled", false);
+            alert('ERROR: ' + data.message);
+
+        } else {
+
+            //All good, redirect to newly added intent/entity:
+            window.location = data.new_item_url;
+
+        }
+    });
+}
+
 //Function to load all help messages throughout the matrix:
 $(document).ready(function () {
 
@@ -167,6 +190,20 @@ $(document).ready(function () {
                 suggestion: function (suggestion) {
                     return echo_js_suggestion(suggestion, 1);
                 },
+                header: function (data) {
+                    if($("#matrix_search").val().charAt(0)=='#' || $("#matrix_search").val().charAt(0)=='@'){
+                        return '<a href="javascript:fn___add_raw()" class="suggestion"><i class="fal fa-plus-circle" style="margin: 0 5px;"></i> Create ' + data.query + '</a>';
+                    }
+                },
+                empty: function (data) {
+                    if($("#matrix_search").val().charAt(0)=='#'){
+                        return 'No intents found';
+                    } else if($("#matrix_search").val().charAt(0)=='@'){
+                        return 'No entities found';
+                    } else {
+                        return 'No intents/entities found';
+                    }
+                },
             }
         }
     ]);
@@ -201,8 +238,6 @@ $(document).ready(function () {
             suggestion: function (suggestion) {
                 return echo_js_suggestion(suggestion, 0);
             },
-            header: function (data) {
-            },
             empty: function (data) {
                 return 'No intents found';
             },
@@ -234,8 +269,6 @@ $(document).ready(function () {
         templates: {
             suggestion: function (suggestion) {
                 return echo_js_suggestion(suggestion, 0);
-            },
-            header: function (data) {
             },
             empty: function (data) {
                 return 'No entities found';

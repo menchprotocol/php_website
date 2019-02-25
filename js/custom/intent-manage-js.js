@@ -138,7 +138,7 @@ $(document).ready(function () {
     //Load Algolia:
     $(".intentadder-level-2").on('autocomplete:selected', function (event, suggestion, dataset) {
 
-        fn___in_link_or_create($(this).attr('intent-id'), 2, suggestion.alg_obj_id);
+        fn___in_link_or_create($(this).attr('intent-id'), $(this).attr('is-parent'), 2, suggestion.alg_obj_id);
 
     }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
 
@@ -163,17 +163,14 @@ $(document).ready(function () {
             },
             header: function (data) {
                 if (!data.isEmpty) {
-                    return '<a href="javascript:fn___in_link_or_create(\'' + $(".intentadder-level-2").attr('intent-id') + '\',2)" class="suggestion"><span><i class="fal fa-plus-circle"></i> Create </span> <i class="fas fa-hashtag"></i> ' + data.query + '</a>';
+                    return '<a href="javascript:fn___in_link_or_create(' + parseInt($(this).attr('intent-id')) + ', ' + parseInt($(this).attr('is-parent')) + ', 2)" class="suggestion"><span><i class="fal fa-plus-circle"></i> Create </span> <i class="fas fa-hashtag"></i> ' + data.query + '</a>';
                 }
-            },
-            empty: function (data) {
-                return '<a href="javascript:fn___in_link_or_create(\'' + $(".intentadder-level-2").attr('intent-id') + '\',2)" class="suggestion"><span><i class="fal fa-plus-circle"></i> Create </span> <i class="fas fa-hashtag"></i> ' + data.query + '</a>';
             },
         }
     }]).keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            return fn___in_link_or_create($(this).attr('intent-id'), 2);
+            return fn___in_link_or_create($(this).attr('intent-id'), $(this).attr('is-parent'), 2);
         }
     });
 
@@ -269,7 +266,7 @@ function fn___in_load_search_level3(focus_element) {
 
     $(focus_element).on('autocomplete:selected', function (event, suggestion, dataset) {
 
-        fn___in_link_or_create($(this).attr('intent-id'), 3, suggestion.alg_obj_id);
+        fn___in_link_or_create($(this).attr('intent-id'), 0, 3, suggestion.alg_obj_id);
 
     }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
 
@@ -294,14 +291,14 @@ function fn___in_load_search_level3(focus_element) {
             },
             header: function (data) {
                 if (!data.isEmpty) {
-                    return '<a href="javascript:fn___in_link_or_create(\'' + $(focus_element).attr('intent-id') + '\',3)" class="suggestion"><span><i class="fal fa-plus-circle"></i></span> ' + data.query + '</a>';
+                    return '<a href="javascript:fn___in_link_or_create(' + parseInt($(focus_element).attr('intent-id')) + ',0,3)" class="suggestion"><span><i class="fal fa-plus-circle"></i></span> ' + data.query + '</a>';
                 }
             },
         }
     }]).keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            return fn___in_link_or_create($(this).attr('intent-id'), 3);
+            return fn___in_link_or_create($(this).attr('intent-id'), 0, 3);
         }
     });
 
@@ -311,7 +308,7 @@ function fn___in_load_search_level3(focus_element) {
 function fn___in_sort_save(in_id, level) {
 
     if (level == 2) {
-        var s_element = "list-in-" + in_focus_id;
+        var s_element = "list-in-" + in_focus_id + '-0';
         var s_draggable = ".is_level2_sortable";
     } else if (level == 3) {
         var s_element = "list-cr-" + $('.intent_line_' + in_id).attr('in-tr-id');
@@ -359,7 +356,7 @@ function fn___in_sort_load(in_id, level) {
 
     if (level == 2) {
         var element_key = null;
-        var s_element = "list-in-" + in_focus_id;
+        var s_element = "list-in-" + in_focus_id + '-0';
         var s_draggable = ".is_level2_sortable";
     } else if (level == 3) {
         var element_key = '.intent_line_' + in_id;
@@ -810,7 +807,7 @@ function fn___in_modify_save() {
 }
 
 
-function fn___in_link_or_create(in_parent_id, next_level, in_link_child_id=0) {
+function fn___in_link_or_create(in_parent_id, is_parent, next_level, in_link_child_id=0) {
 
     /*
      *
@@ -822,14 +819,14 @@ function fn___in_link_or_create(in_parent_id, next_level, in_link_child_id=0) {
 
     if (next_level == 2) {
         var sort_handler = ".is_level2_sortable";
-        var sort_list_id = "list-in-" + in_focus_id;
-        var input_field = $('#addintent-c-' + in_parent_id);
+        var sort_list_id = "list-in-" + in_focus_id + '-' + is_parent;
+        var input_field = $('#addintent-c-' + in_parent_id + '-' + is_parent);
     } else if (next_level == 3) {
         var sort_handler = ".is_level3_sortable";
         var sort_list_id = "list-cr-" + $('.intent_line_' + in_parent_id).attr('in-tr-id');
         var input_field = $('#addintent-cr-' + $('.intent_line_' + in_parent_id).attr('in-tr-id'));
     } else {
-        //Ooooopsi, this should not happen:
+        //This should not happen:
         alert('Invalid next_level value [' + next_level + ']');
         return false;
     }
@@ -850,6 +847,7 @@ function fn___in_link_or_create(in_parent_id, next_level, in_link_child_id=0) {
     //Update backend:
     $.post("/intents/fn___in_link_or_create", {
         in_parent_id: in_parent_id,
+        is_parent:is_parent,
         in_outcome: intent_name,
         next_level: next_level,
         in_link_child_id: in_link_child_id
@@ -868,8 +866,10 @@ function fn___in_link_or_create(in_parent_id, next_level, in_link_child_id=0) {
 
             if (next_level == 2) {
 
-                //Adjust the Task count:
-                fn___in_sort_save(0, 2);
+                if(!is_parent){
+                    //Adjust the Task count:
+                    fn___in_sort_save(0, 2);
+                }
 
                 //Reload sorting to enable sorting for the newly added intent:
                 fn___in_sort_load(data.in_child_id, 3);
@@ -877,7 +877,7 @@ function fn___in_link_or_create(in_parent_id, next_level, in_link_child_id=0) {
                 //Load search again:
                 fn___in_load_search_level3(".intentadder-id-"+data.in_child_id);
 
-            } else {
+            } else if(!is_parent) {
 
                 //Adjust Intent Level 3 sorting:
                 fn___in_sort_save(in_parent_id, next_level);

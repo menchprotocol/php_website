@@ -32,18 +32,19 @@ $(document).ready(function() {
             suggestion: function (suggestion) {
                 return echo_js_suggestion(suggestion, 0);
             },
-            header: function (data) {
-                if (!data.isEmpty) {
-                    return '';
-                }
-            },
-            empty: function (data) {
-                return '';
-            },
         }
 
     }]);
 
+
+    //Show/Hide parent descriptions when checked:
+    $('.source_parent_ens').change(function() {
+        if($(this).is(":checked")) {
+            $('#en_desc_' + $(this).val()).removeClass('hidden');
+        } else {
+            $('#en_desc_' + $(this).val()).addClass('hidden');
+        }
+    });
 
 
     //Watchout for source URL change
@@ -103,7 +104,7 @@ function fn___add_source_paste_url() {
 
                 if(data.js_url_entity.cleaned_url != input_url){
                     //URL has been cleaned, show the new version as well:
-                    $('#cleaned_url').html('<i class="fas fa-exchange"></i> <span data-toggle="tooltip" title="Mench found a cleaner version of this URL that would be used instead of the URL you provided" data-placement="top" class="underdot">Canonical URL</span>: <a data-toggle="tooltip" title="' + data.js_url_entity.cleaned_url + '" data-placement="top" href="' + data.js_url_entity.cleaned_url + '" target="_blank" class="url_truncate" style="max-width:437px; text-decoration:underline;">' + data.js_url_entity.cleaned_url + '</a>');
+                    $('#cleaned_url').html('<i class="fas fa-exchange"></i> <a data-toggle="tooltip" title="Found Canonical URL: ' + data.js_url_entity.cleaned_url + '" data-placement="top" href="' + data.js_url_entity.cleaned_url + '" target="_blank" class="url_truncate" style="max-width:520px; text-decoration:underline;">' + data.js_url_entity.cleaned_url + '</a>');
                 }
 
                 //Load tooldip:
@@ -123,13 +124,18 @@ function fn___add_source_paste_url() {
 
 function fn___add_source_process(){
 
+    //Compile parent entities and their descriptions:
+    var source_parent_ens = $(".source_parent_ens:checkbox:checked").map(function(){
+        //Return a multi-dimensional array:
+        return {
+            'this_parent_en_id': $(this).val(),
+            'this_parent_en_desc': $('#en_desc_' + $(this).val()).val(),
+        };
+    }).get();
+
     //Set title:
     $('.add_source_body').addClass('hidden');
     $('.add_source_result').html('<span><i class="fas fa-spinner fa-spin"></i></span> Processing...');
-
-    var source_parent_ens = $(".source_parent_ens:checkbox:checked").map(function(){
-        return $(this).val();
-    }).get();
 
     //Fetch Intent Data to load modify widget:
     $.post("/entities/fn___add_source_process", {
@@ -137,6 +143,7 @@ function fn___add_source_process(){
         source_url: $('#source_url').val(),
         source_parent_ens: source_parent_ens,
         en_name: $('#en_name_url').val(),
+        en_desc: $('#en_desc').val(),
 
         author_1             : $('#author_1').val(),
         entity_parent_id_1   : $('#entity_parent_id_1').val(),
@@ -189,7 +196,7 @@ function search_author(author_box){
         $('.explain_expert_' + author_box).removeClass('hidden');
 
         $('#ref_url_' + author_box).attr('placeholder', 'URL referencing the bio of '+( current_val.length > 0 ? current_val : 'this entity' )+'...');
-        $('#why_expert_' + author_box).attr('placeholder', 'If so, list accomplishments supporting the expertise of '+( current_val.length > 0 ? current_val : 'this entity' )+'...');
+        $('#why_expert_' + author_box).attr('placeholder', 'List accomplishments that validate the expertise of '+( current_val.length > 0 ? current_val : 'this entity' )+'...');
 
     } else{
 
@@ -199,5 +206,20 @@ function search_author(author_box){
         $('#why_expert_' + author_box).val('');
         $('#ref_url_' + author_box).val('');
     }
+
+
+    //Role box:
+    if(current_val.length > 0 ) {
+
+        $('.en_role_' + author_box).removeClass('hidden');
+
+    } else{
+
+        $('.en_role_' + author_box).addClass('hidden');
+
+    }
+
+
+
 
 }

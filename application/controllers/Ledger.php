@@ -35,6 +35,81 @@ class Ledger extends CI_Controller
     }
 
 
+    function fn___add_raw(){
+
+        //Authenticate Miner:
+        $session_en = fn___en_auth(array(1308));
+
+        if (!$session_en) {
+
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Session Expired. Sign In and try again',
+            ));
+
+        } elseif (!isset($_POST['raw_string'])) {
+
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Transaction ID',
+            ));
+
+        }
+
+        //See if intent or entity:
+        if(substr($_POST['raw_string'], 0, 1)=='#'){
+
+            $in_outcome = trim(substr($_POST['raw_string'], 1));
+            if(strlen($in_outcome)<2){
+                return fn___echo_json(array(
+                    'status' => 0,
+                    'message' => 'Intent outcome must be at-least 2 characters long.',
+                ));
+            }
+
+            //Create Intent:
+            $new_in = $this->Database_model->fn___in_create(array(
+                'in_status' => 0, //New
+                'in_outcome' => $in_outcome,
+            ), true, $session_en['en_id']);
+
+            //Go to new URL:
+            return fn___echo_json(array(
+                'status' => 1,
+                'new_item_url' => '/intents/' . $new_in['in_id'],
+            ));
+
+        } elseif(substr($_POST['raw_string'], 0, 1)=='@'){
+
+            $en_name = trim(substr($_POST['raw_string'], 1));
+            if(strlen($en_name)<2){
+                return fn___echo_json(array(
+                    'status' => 0,
+                    'message' => 'Entity name must be at-least 2 characters long.',
+                ));
+            }
+
+            //Create entity:
+            $new_en = $this->Database_model->fn___en_create(array(
+                'en_status' => 0, //New
+                'en_name' => $en_name,
+            ), true, $session_en['en_id']);
+
+            //Go to new URL:
+            return fn___echo_json(array(
+                'status' => 1,
+                'new_item_url' => '/entities/' . $new_en['en_id'],
+            ));
+
+        } else {
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid string. Must start with either # or @.',
+            ));
+        }
+    }
+
+
     function fn___tr_status_update()
     {
 

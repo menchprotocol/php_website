@@ -1171,16 +1171,8 @@ class Entities extends CI_Controller
         }
 
 
-        //Populate all parent entities for this source:
-        $parent_ens = array();
-
-
         //Start with selected source-types:
-        foreach ($_POST['source_parent_ens'] as $parent_en_id) {
-            if (intval($parent_en_id) > 0) {
-                array_push($parent_ens, intval($parent_en_id));
-            }
-        }
+        $parent_ens = $_POST['source_parent_ens'];
 
 
         //Now parse referenced authors:
@@ -1214,7 +1206,10 @@ class Entities extends CI_Controller
                 }
 
                 //Add author to parent source array:
-                array_push($parent_ens, $tr_en_link_id);
+                array_push($parent_ens, array(
+                    'this_parent_en_id' => $tr_en_link_id,
+                    'this_parent_en_desc' => trim($_POST['en_desc_' . $x]),
+                ));
 
             } else {
 
@@ -1305,12 +1300,18 @@ class Entities extends CI_Controller
 
 
         //Link content to all parent entities:
-        foreach ($parent_ens as $parent_en_id) {
+        foreach ($parent_ens as $this_parent_en) {
+
+            //Determine content type:
+            $detected_tr_type = fn___detect_tr_type_en_id(trim($this_parent_en['this_parent_en_desc']));
+
+            //Insert new relation:
             $this->Database_model->fn___tr_create(array(
                 'tr_status' => 2, //Published
                 'tr_miner_en_id' => $session_en['en_id'],
-                'tr_type_en_id' => 4230, //Empty
-                'tr_en_parent_id' => $parent_en_id,
+                'tr_content' => trim($this_parent_en['this_parent_en_desc']),
+                'tr_type_en_id' => $detected_tr_type['tr_type_en_id'],
+                'tr_en_parent_id' => $this_parent_en['this_parent_en_id'],
                 'tr_en_child_id' => $url_entity['en_url']['en_id'],
             ), true);
         }
