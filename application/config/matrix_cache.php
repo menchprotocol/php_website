@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-02-23 00:27:46 PST
+//Generated 2019-02-25 18:59:34 PST
 
 //Only Moderators can Modify:
 $config['en_ids_4426'] = array(1280, 1308, 3286, 3288, 4374, 4426, 4430, 4433, 4755);
@@ -987,7 +987,7 @@ $config['en_all_4537'] = array(
 );
 
 //Expert Sources:
-$config['en_ids_3000'] = array(2997, 2998, 2999, 3005, 3147, 3192, 4446, 4763);
+$config['en_ids_3000'] = array(2997, 2998, 2999, 3005, 3147, 3192, 4446, 4763, 4883);
 $config['en_all_3000'] = array(
     2997 => array(
         'm_icon' => '<i class="fal fa-newspaper"></i>',
@@ -1011,7 +1011,7 @@ $config['en_all_3000'] = array(
         'm_icon' => '<i class="fal fa-book"></i>',
         'm_name' => 'Expert Books',
         'm_desc' => '&var_weight=100',
-        'm_parents' => array(3000),
+        'm_parents' => array(4255, 3000),
     ),
     3147 => array(
         'm_icon' => '<i class="fal fa-presentation"></i>',
@@ -1036,5 +1036,11 @@ $config['en_all_3000'] = array(
         'm_name' => 'Expert Marketing Channels',
         'm_desc' => '&var_weight=1',
         'm_parents' => array(4255, 3000),
+    ),
+    4883 => array(
+        'm_icon' => '<i class="fal fa-concierge-bell"></i>',
+        'm_name' => 'Expert Services',
+        'm_desc' => '&var_weight=1',
+        'm_parents' => array(3000),
     ),
 );
