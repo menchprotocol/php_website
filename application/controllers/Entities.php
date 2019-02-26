@@ -1244,28 +1244,28 @@ class Entities extends CI_Controller
 
 
         //Now parse referenced authors:
-        for ($x = 1; $x <= 3; $x++) {
+        for ($author_num = 1; $author_num <= 5; $author_num++) {
 
             //Do we have an author?
-            if (strlen($_POST['author_' . $x]) < 1) {
+            if (strlen($_POST['author_' . $author_num]) < 1) {
                 continue;
             }
 
             //Validate role information:
-            $detected_role_tr_type = fn___detect_tr_type_en_id($_POST['auth_role_' . $x]);
+            $detected_role_tr_type = fn___detect_tr_type_en_id($_POST['auth_role_' . $author_num]);
 
             if (!$detected_role_tr_type['status']) {
 
                 return fn___echo_json(array(
                     'status' => 0,
-                    'message' => 'Author #' . $x . ' role error: ' . $detected_role_tr_type['message'],
+                    'message' => 'Author #' . $author_num . ' role error: ' . $detected_role_tr_type['message'],
                 ));
 
             } elseif (!in_array($detected_role_tr_type['tr_type_en_id'], $author_type_requirement)) {
 
                 return fn___echo_json(array(
                     'status' => 0,
-                    'message' => 'Invalid author #' . $x . ' role content type.',
+                    'message' => 'Invalid author #' . $author_num . ' role content type.',
                 ));
 
             }
@@ -1274,8 +1274,8 @@ class Entities extends CI_Controller
             //Is this referencing an existing entity or is it a new entity?
             $tr_en_link_id = 0; //Assume it's a new entity...
 
-            if (substr($_POST['author_' . $x], 0, 1) == '@') {
-                $parts = explode(' ', $_POST['author_' . $x]);
+            if (substr($_POST['author_' . $author_num], 0, 1) == '@') {
+                $parts = explode(' ', $_POST['author_' . $author_num]);
                 $tr_en_link_id = intval(str_replace('@', '', $parts[0]));
             }
 
@@ -1289,7 +1289,7 @@ class Entities extends CI_Controller
                 if (count($referenced_ens) < 1) {
                     return fn___echo_json(array(
                         'status' => 0,
-                        'message' => 'Author #' . $x . ' entity ID @' . $tr_en_link_id . ' is invalid',
+                        'message' => 'Author #' . $author_num . ' entity ID @' . $tr_en_link_id . ' is invalid',
                     ));
                 }
 
@@ -1297,7 +1297,7 @@ class Entities extends CI_Controller
                 array_push($parent_ens, array(
                     'this_parent_en_id' => $tr_en_link_id,
                     'this_parent_en_type' => $detected_role_tr_type['tr_type_en_id'],
-                    'this_parent_en_desc' => trim($_POST['auth_role_' . $x]),
+                    'this_parent_en_desc' => trim($_POST['auth_role_' . $author_num]),
                 ));
 
             } else {
@@ -1305,7 +1305,7 @@ class Entities extends CI_Controller
                 //Seems to be a new author entity...
 
                 //First analyze URL:
-                $author_url_entity = $this->Matrix_model->fn___sync_url($_POST['ref_url_' . $x]);
+                $author_url_entity = $this->Matrix_model->fn___sync_url($_POST['ref_url_' . $author_num]);
 
                 //Validate author inputs before creating anything:
                 if (!$author_url_entity['status']) {
@@ -1313,26 +1313,26 @@ class Entities extends CI_Controller
                     //Oooopsi, show errors:
                     return fn___echo_json(array(
                         'status' => 0,
-                        'message' => 'Author #' . $x . ' URL error: ' . $author_url_entity['message'],
+                        'message' => 'Author #' . $author_num . ' URL error: ' . $author_url_entity['message'],
                     ));
 
-                } elseif (strlen($_POST['why_expert_' . $x]) > 0) {
+                } elseif (strlen($_POST['why_expert_' . $author_num]) > 0) {
 
                     //Also validate Expert explanation:
-                    $detected_tr_type = fn___detect_tr_type_en_id($_POST['why_expert_' . $x]);
+                    $detected_tr_type = fn___detect_tr_type_en_id($_POST['why_expert_' . $author_num]);
 
                     if (!$detected_tr_type['status']) {
 
                         return fn___echo_json(array(
                             'status' => 0,
-                            'message' => 'Author #' . $x . ' error: ' . $detected_tr_type['message'],
+                            'message' => 'Author #' . $author_num . ' error: ' . $detected_tr_type['message'],
                         ));
 
                     } elseif (!in_array($detected_tr_type['tr_type_en_id'], $author_type_requirement)) {
 
                         return fn___echo_json(array(
                             'status' => 0,
-                            'message' => 'Invalid author #' . $x . ' expert note content type.',
+                            'message' => 'Invalid author #' . $author_num . ' expert note content type.',
                         ));
 
                     }
@@ -1340,7 +1340,7 @@ class Entities extends CI_Controller
                 }
 
                 //Add author with its URL:
-                $sync_author = $this->Matrix_model->fn___sync_url($_POST['ref_url_' . $x], $session_en['en_id'], 0, 0, $_POST['author_' . $x]);
+                $sync_author = $this->Matrix_model->fn___sync_url($_POST['ref_url_' . $author_num], $session_en['en_id'], 0, 0, $_POST['author_' . $author_num]);
 
 
                 //Add author to People or Organizations entity:
@@ -1348,18 +1348,18 @@ class Entities extends CI_Controller
                     'tr_status' => 2, //Published
                     'tr_miner_en_id' => $session_en['en_id'],
                     'tr_type_en_id' => 4230, //Empty
-                    'tr_en_parent_id' => $_POST['entity_parent_id_' . $x], //People or Organizations
+                    'tr_en_parent_id' => $_POST['entity_parent_id_' . $author_num], //People or Organizations
                     'tr_en_child_id' => $sync_author['en_url']['en_id'],
                 ), true);
 
 
                 //Should we also link author to to Industry Experts entity?
-                if (strlen($_POST['why_expert_' . $x]) > 0) {
+                if (strlen($_POST['why_expert_' . $author_num]) > 0) {
                     //Add author to industry experts:
                     $this->Database_model->fn___tr_create(array(
                         'tr_status' => 2, //Published
                         'tr_miner_en_id' => $session_en['en_id'],
-                        'tr_content' => trim($_POST['why_expert_' . $x]),
+                        'tr_content' => trim($_POST['why_expert_' . $author_num]),
                         'tr_type_en_id' => $detected_tr_type['tr_type_en_id'],
                         'tr_en_parent_id' => 3084, //Industry Experts
                         'tr_en_child_id' => $sync_author['en_url']['en_id'],
@@ -1370,7 +1370,7 @@ class Entities extends CI_Controller
                 array_push($parent_ens, array(
                     'this_parent_en_id' => $sync_author['en_url']['en_id'],
                     'this_parent_en_type' => $detected_role_tr_type['tr_type_en_id'],
-                    'this_parent_en_desc' => trim($_POST['auth_role_' . $x]),
+                    'this_parent_en_desc' => trim($_POST['auth_role_' . $author_num]),
                 ));
 
             }

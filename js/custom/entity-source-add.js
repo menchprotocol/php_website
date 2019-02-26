@@ -171,6 +171,18 @@ function fn___add_source_process(){
         ref_url_3            : $('#ref_url_3').val(),
         why_expert_3         : $('#why_expert_3').val(),
 
+        author_4             : $('#author_4').val(),
+        auth_role_4          : $('#auth_role_4').val(),
+        entity_parent_id_4   : $('#entity_parent_id_4').val(),
+        ref_url_4            : $('#ref_url_4').val(),
+        why_expert_4         : $('#why_expert_4').val(),
+
+        author_5             : $('#author_5').val(),
+        auth_role_5          : $('#auth_role_5').val(),
+        entity_parent_id_5   : $('#entity_parent_id_5').val(),
+        ref_url_5            : $('#ref_url_5').val(),
+        why_expert_5         : $('#why_expert_5').val(),
+
     }, function (data) {
 
         if (!data.status) {

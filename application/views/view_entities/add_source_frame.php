@@ -59,22 +59,22 @@
         ?>
 
 
-        <?php foreach (array(1,2,3) as $num){ ?>
+        <?php for($author_num = 1; $author_num <= 5; $author_num++){ ?>
 
 
             <span class="white-wrapper author-addon">
-                <input type="text" onkeyup="search_author(<?= $num ?>)" id="author_<?= $num ?>" value="" author-box="<?= $num ?>" data-toggle="tooltip" data-placement="top" title="Add people or organizations that contributed to this source" placeholder="Search/create author entities..." class="form-control border en-search algolia_search">
+                <input type="text" onkeyup="search_author(<?= $author_num ?>)" id="author_<?= $author_num ?>" value="" author-box="<?= $author_num ?>" data-toggle="tooltip" data-placement="top" title="Add people or organizations that contributed to this source" placeholder="Search/create author entities..." class="form-control border en-search algolia_search">
             </span>
 
-            <span class="inline-block en_role_<?= $num ?> hidden">
-                <input style="padding-left:3px;" type="text" id="auth_role_<?= $num ?>" class="form-control border" data-toggle="tooltip" data-placement="top" title="Define the role of this person/organization" placeholder="Role..." maxlength="<?= $this->config->item('tr_content_max') ?>" value="Author" />
+            <span class="inline-block en_role_<?= $author_num ?> hidden">
+                <input style="padding-left:3px;" type="text" id="auth_role_<?= $author_num ?>" class="form-control border" data-toggle="tooltip" data-placement="top" title="Define the role of this person/organization" placeholder="Role..." maxlength="<?= $this->config->item('tr_content_max') ?>" value="Author" />
             </span>
 
 
-            <div class="form-group explain_expert_<?= $num ?> label-floating is-empty hidden inline-box" style="margin:0px 19px 10px 10px;">
+            <div class="form-group explain_expert_<?= $author_num ?> label-floating is-empty hidden inline-box" style="margin:0px 19px 10px 10px;">
 
                 <div class="white-wrapper">
-                    <select class="form-control border" id="entity_parent_id_<?= $num ?>" style="display:inline-block !important; margin-bottom: 3px;">
+                    <select class="form-control border" id="entity_parent_id_<?= $author_num ?>" style="display:inline-block !important; margin-bottom: 3px;">
                         <?php
                         //Show account types:
                         foreach ($this->config->item('en_all_4600') as $en_id => $m) {
@@ -82,12 +82,12 @@
                         }
                         ?>
                     </select>
-                    <a href="#" id="google_<?= $num ?>" style="font-size:0.8em; margin-left: 5px;" target="_blank">Search Google <i class="fas fa-external-link"></i></a>
+                    <a href="#" id="google_<?= $author_num ?>" style="font-size:0.8em; margin-left: 5px;" target="_blank">Search Google <i class="fas fa-external-link"></i></a>
                 </div>
 
                 <div class="input-group border" style="background-color: #FFF; margin-bottom: 3px;">
                     <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;">URL:</span>
-                    <input style="padding-left:3px;" type="url" id="ref_url_<?= $num ?>" class="form-control">
+                    <input style="padding-left:3px;" type="url" id="ref_url_<?= $author_num ?>" class="form-control">
                 </div>
 
                 <div class="form-group label-floating is-empty">
@@ -96,12 +96,12 @@
                                       style="color:#2f2739; font-weight: 300;">Is Expert?<div style="font-size: 0.8em; margin-top: 10px;">If so,<br />explain why...</div>
                         </span>
                         <span class="white-wrapper">
-                            <textarea class="form-control right-textarea characterLimiter textarea_<?= $num ?>" id-postfix="<?= $num ?>" id="why_expert_<?= $num ?>"></textarea>
+                            <textarea class="form-control right-textarea characterLimiter textarea_<?= $author_num ?>" id-postfix="<?= $author_num ?>" id="why_expert_<?= $author_num ?>"></textarea>
                         </span>
                     </div>
                 </div>
 
-                <div class="below-counter">[<span id="char_count_<?= $num ?>">0</span>/<?= $this->config->item('tr_content_max') ?>]</div>
+                <div class="below-counter">[<span id="char_count_<?= $author_num ?>">0</span>/<?= $this->config->item('tr_content_max') ?>]</div>
 
             </div>
         <?php } ?>
