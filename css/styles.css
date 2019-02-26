@@ -1345,7 +1345,7 @@ h5, .h5 {
 }
 
 .below-counter{
-    max-width: 530px;
+    max-width: 520px;
     text-align: right;
     font-size: 0.7em;
     text-align: right;
@@ -2794,7 +2794,7 @@ a.badge:focus, a.badge:hover {
 }
 
 .login-content .submit-btn {
-    margin-left: 40px;
+    margin: 5px 0 0 27px;
 }
 
 .login-content .extra-info {

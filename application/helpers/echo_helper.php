@@ -1566,7 +1566,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     if ($level <= 1 || $is_child_focused) {
 
         //Show Landing Page URL:
-        $ui .= '&nbsp;<a href="/' . $in['in_id'] . '" target="_blank" class="badge badge-primary is_not_bg is_hard_link" style="display:inline-block; margin-right:-1px; width:40px; border:2px solid #fedd16 !important;" data-toggle="tooltip" title="Landing Page (New Window)" data-placement="top"><span class="btn-counter"><i class="fas fa-external-link"></i></span><i class="fas fa-shopping-cart"></i></a>';
+        $ui .= '&nbsp;<a href="/' . $in['in_id'] . '" target="_blank" class="badge badge-primary is_not_bg is_hard_link" style="display:inline-block; margin-right:-1px; width:40px; border:2px solid #fedd16 !important;" data-toggle="tooltip" title="Landing Page (New Window)" data-placement="top"><i class="fas fa-angle-right"></i></a>';
 
     } else {
 

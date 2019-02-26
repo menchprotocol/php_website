@@ -187,7 +187,11 @@ foreach ($ie_ens[0]['en__children'] as $source_en) {
 }
 
 //Calculate the weighted mined sources:
-$all_source_progress = number_format(($all_mined_source_count_weigh/$all_source_count_weight*100), 1);
+if($all_source_count_weight > 0){
+    $all_source_progress = number_format(($all_mined_source_count_weigh/$all_source_count_weight*100), 1);
+} else {
+    $all_source_progress = 0;
+}
 
 //Echo title:
 echo '<a href="javascript:void(0);" onclick="$(\'.sources-mined\').toggleClass(\'hidden\');" class="large-stat"><span>'.fn___echo_en_icon($ie_ens[0]).' <span class="sources-mined">'. round($all_source_progress, 0) . '</span><span class="sources-mined hidden">'. $all_source_progress . '</span>%</span>Of '.number_format($all_source_count , 0).' sources mined <i class="sources-mined fal fa-plus-circle"></i><i class="sources-mined fal fa-minus-circle hidden"></i></a>';

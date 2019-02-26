@@ -52,7 +52,7 @@
                 <span><span class="en_icon_mini_ui">'.$m['m_icon'].'</span> '.$m['m_name'].'</span>
             </label>
             
-            <textarea id="en_desc_'.$en_id.'" id-postfix="'.$en_id.'" class="form-control border hidden characterLimiter textarea_'.$en_id.'" style="height:78px; max-width: 500px; margin: 2px 0 2px 30px;" placeholder="'.str_replace('Expert ','', rtrim($m['m_name'], 's')).' overview..."></textarea>
+            <textarea id="en_desc_'.$en_id.'" id-postfix="'.$en_id.'" class="form-control border hidden characterLimiter textarea_'.$en_id.'" style="height:78px; max-width: 490px; margin: 2px 0 2px 30px;" placeholder="'.str_replace('Expert ','', rtrim($m['m_name'], 's')).' overview..."></textarea>
             <div id="en_cntr_'.$en_id.'" class="below-counter hidden">[<span id="char_count_'.$en_id.'">0</span>/'.$this->config->item('tr_content_max').']</div>
         </span>';
         }

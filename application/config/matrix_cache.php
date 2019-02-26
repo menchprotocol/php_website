@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-02-25 18:59:34 PST
+//Generated 2019-02-26 15:16:16 PST
 
 //Only Moderators can Modify:
 $config['en_ids_4426'] = array(1280, 1308, 3286, 3288, 4374, 4426, 4430, 4433, 4755);
@@ -193,7 +193,7 @@ $config['en_all_4755'] = array(
 );
 
 //Transaction Type Coin Rates:
-$config['en_ids_4374'] = array(4228, 4229, 4230, 4231, 4232, 4233, 4234, 4235, 4242, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4318, 4319, 4331, 4460, 4601, 4602);
+$config['en_ids_4374'] = array(4228, 4229, 4230, 4231, 4232, 4233, 4234, 4235, 4242, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4318, 4319, 4331, 4460, 4601, 4602, 4983);
 $config['en_all_4374'] = array(
     4228 => array(
         'm_icon' => '<i class="fal fa-clipboard-check"></i>',
@@ -217,25 +217,25 @@ $config['en_all_4374'] = array(
         'm_icon' => '<i class="fal fa-bolt"></i>',
         'm_name' => 'Intent Messages On-Start',
         'm_desc' => '100',
-        'm_parents' => array(4742, 4603, 4594, 4485, 4374),
+        'm_parents' => array(4986, 4742, 4603, 4594, 4485, 4374),
     ),
     4232 => array(
         'm_icon' => '<i class="fal fa-comment-lines"></i>',
         'm_name' => 'Intent Messages Learn More',
         'm_desc' => '100',
-        'm_parents' => array(4742, 4603, 4594, 4485, 4374),
+        'm_parents' => array(4986, 4742, 4603, 4594, 4485, 4374),
     ),
     4233 => array(
         'm_icon' => '<i class="fal fa-calendar-check"></i>',
         'm_name' => 'Intent Messages On-Complete',
         'm_desc' => '100',
-        'm_parents' => array(4742, 4603, 4594, 4485, 4374),
+        'm_parents' => array(4986, 4742, 4603, 4594, 4485, 4374),
     ),
     4234 => array(
         'm_icon' => '<i class="fal fa-random"></i>',
         'm_name' => 'Intent Messages Random1',
         'm_desc' => '100',
-        'm_parents' => array(4594, 4485, 4374),
+        'm_parents' => array(4986, 4594, 4485, 4374),
     ),
     4235 => array(
         'm_icon' => '<i class="fas fa-flag"></i>',
@@ -349,7 +349,13 @@ $config['en_all_4374'] = array(
         'm_icon' => '<i class="fal fa-cloud-upload"></i>',
         'm_name' => 'Intent Messages Webhooks',
         'm_desc' => '100',
-        'm_parents' => array(4256, 4374, 4485, 4594),
+        'm_parents' => array(4986, 4256, 4374, 4485, 4594),
+    ),
+    4983 => array(
+        'm_icon' => '<i class="fal fa-box-ballot"></i>',
+        'm_name' => 'Intent Messages Votes',
+        'm_desc' => '100',
+        'm_parents' => array(4986, 4985, 4374, 4594, 4485),
     ),
 );
 
@@ -371,7 +377,7 @@ $config['en_all_4600'] = array(
 );
 
 //Transaction Type Full List:
-$config['en_ids_4594'] = array(4228, 4229, 4230, 4231, 4232, 4233, 4234, 4235, 4242, 4246, 4248, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4265, 4266, 4267, 4268, 4269, 4272, 4275, 4278, 4279, 4282, 4283, 4284, 4287, 4299, 4318, 4319, 4331, 4452, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4567, 4568, 4570, 4577, 4601, 4602);
+$config['en_ids_4594'] = array(4228, 4229, 4230, 4231, 4232, 4233, 4234, 4235, 4242, 4246, 4248, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4265, 4266, 4267, 4268, 4269, 4272, 4275, 4278, 4279, 4282, 4283, 4284, 4287, 4299, 4318, 4319, 4331, 4452, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4567, 4568, 4570, 4577, 4601, 4602, 4983);
 $config['en_all_4594'] = array(
     4228 => array(
         'm_icon' => '<i class="fal fa-clipboard-check"></i>',
@@ -395,25 +401,25 @@ $config['en_all_4594'] = array(
         'm_icon' => '<i class="fal fa-bolt"></i>',
         'm_name' => 'Intent Messages On-Start',
         'm_desc' => '',
-        'm_parents' => array(4742, 4603, 4594, 4485, 4374),
+        'm_parents' => array(4986, 4742, 4603, 4594, 4485, 4374),
     ),
     4232 => array(
         'm_icon' => '<i class="fal fa-comment-lines"></i>',
         'm_name' => 'Intent Messages Learn More',
         'm_desc' => '',
-        'm_parents' => array(4742, 4603, 4594, 4485, 4374),
+        'm_parents' => array(4986, 4742, 4603, 4594, 4485, 4374),
     ),
     4233 => array(
         'm_icon' => '<i class="fal fa-calendar-check"></i>',
         'm_name' => 'Intent Messages On-Complete',
         'm_desc' => '',
-        'm_parents' => array(4742, 4603, 4594, 4485, 4374),
+        'm_parents' => array(4986, 4742, 4603, 4594, 4485, 4374),
     ),
     4234 => array(
         'm_icon' => '<i class="fal fa-random"></i>',
         'm_name' => 'Intent Messages Random1',
         'm_desc' => '',
-        'm_parents' => array(4594, 4485, 4374),
+        'm_parents' => array(4986, 4594, 4485, 4374),
     ),
     4235 => array(
         'm_icon' => '<i class="fas fa-flag"></i>',
@@ -725,7 +731,13 @@ $config['en_all_4594'] = array(
         'm_icon' => '<i class="fal fa-cloud-upload"></i>',
         'm_name' => 'Intent Messages Webhooks',
         'm_desc' => '',
-        'm_parents' => array(4256, 4374, 4485, 4594),
+        'm_parents' => array(4986, 4256, 4374, 4485, 4594),
+    ),
+    4983 => array(
+        'm_icon' => '<i class="fal fa-box-ballot"></i>',
+        'm_name' => 'Intent Messages Votes',
+        'm_desc' => '',
+        'm_parents' => array(4986, 4985, 4374, 4594, 4485),
     ),
 );
 
@@ -888,31 +900,37 @@ $config['en_all_4454'] = array(
 );
 
 //Intent Messages:
-$config['en_ids_4485'] = array(4231, 4234, 4232, 4233, 4601, 4602);
+$config['en_ids_4485'] = array(4983, 4231, 4234, 4232, 4233, 4601, 4602);
 $config['en_all_4485'] = array(
+    4983 => array(
+        'm_icon' => '<i class="fal fa-box-ballot"></i>',
+        'm_name' => 'Votes',
+        'm_desc' => 'Everyone can vote on the effectiveness of links connecting two intents. People can submit their own up/down vote, and miners could mine votes form expert contents.',
+        'm_parents' => array(4986, 4985, 4374, 4594, 4485),
+    ),
     4231 => array(
         'm_icon' => '<i class="fal fa-bolt"></i>',
         'm_name' => 'On-Start',
         'm_desc' => 'All delivered in-order when student initially starts this intent. Goal is to give key insights that make students more effective in accomplishing the Intent\'s outcome.',
-        'm_parents' => array(4742, 4603, 4594, 4485, 4374),
+        'm_parents' => array(4986, 4742, 4603, 4594, 4485, 4374),
     ),
     4234 => array(
         'm_icon' => '<i class="fal fa-random"></i>',
         'm_name' => 'Random1',
         'm_desc' => 'One message randomly selected right after on-start messages. Goal is to make Mench feel more authentic by mixing things up. Also called in the code-base using compose_message().',
-        'm_parents' => array(4594, 4485, 4374),
+        'm_parents' => array(4986, 4594, 4485, 4374),
     ),
     4232 => array(
         'm_icon' => '<i class="fal fa-comment-lines"></i>',
         'm_name' => 'Learn More',
         'm_desc' => 'Delivered in-order and one-by-one (drip-format) either during or after the intent completion. Goal is to re-iterate key insights to help students retain learnings over time.',
-        'm_parents' => array(4742, 4603, 4594, 4485, 4374),
+        'm_parents' => array(4986, 4742, 4603, 4594, 4485, 4374),
     ),
     4233 => array(
         'm_icon' => '<i class="fal fa-calendar-check"></i>',
         'm_name' => 'On-Complete',
         'm_desc' => 'All delivered in-order as soon as the student marks the intent as complete. Goal is to re-iterate key insights to help students retain learnings.',
-        'm_parents' => array(4742, 4603, 4594, 4485, 4374),
+        'm_parents' => array(4986, 4742, 4603, 4594, 4485, 4374),
     ),
     4601 => array(
         'm_icon' => '<i class="fal fa-comment-check"></i>',
@@ -924,7 +942,7 @@ $config['en_all_4485'] = array(
         'm_icon' => '<i class="fal fa-cloud-upload"></i>',
         'm_name' => 'Webhooks',
         'm_desc' => 'All URLs called along with POST variables that pass intent and completion details. Goal is to enable additional workflows like issuing a completion certificate.',
-        'm_parents' => array(4256, 4374, 4485, 4594),
+        'm_parents' => array(4986, 4256, 4374, 4485, 4594),
     ),
 );
 
@@ -1005,7 +1023,7 @@ $config['en_all_3000'] = array(
         'm_icon' => '<i class="fal fa-microphone"></i>',
         'm_name' => 'Expert Podcasts',
         'm_desc' => '&var_weight=7',
-        'm_parents' => array(3000),
+        'm_parents' => array(4255, 3000),
     ),
     3005 => array(
         'm_icon' => '<i class="fal fa-book"></i>',
@@ -1017,13 +1035,13 @@ $config['en_all_3000'] = array(
         'm_icon' => '<i class="fal fa-presentation"></i>',
         'm_name' => 'Expert Courses',
         'm_desc' => '&var_weight=50',
-        'm_parents' => array(3000),
+        'm_parents' => array(4255, 3000),
     ),
     3192 => array(
         'm_icon' => '<i class="fal fa-compact-disc"></i>',
         'm_name' => 'Expert Software',
         'm_desc' => '&var_weight=1',
-        'm_parents' => array(3000),
+        'm_parents' => array(4255, 3000),
     ),
     4446 => array(
         'm_icon' => '<i class="fal fa-tachometer"></i>',
@@ -1041,6 +1059,6 @@ $config['en_all_3000'] = array(
         'm_icon' => '<i class="fal fa-concierge-bell"></i>',
         'm_name' => 'Expert Services',
         'm_desc' => '&var_weight=1',
-        'm_parents' => array(3000),
+        'm_parents' => array(4255, 3000),
     ),
 );
