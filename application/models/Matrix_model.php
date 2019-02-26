@@ -426,28 +426,7 @@ class Matrix_model extends CI_Model
 
 
         //Fetch/Create domain entity:
-        $domain_entity = $this->Matrix_model->fn___sync_domain($url, $tr_miner_en_id, ( $name_was_passed ? $page_title : null ));
-
-        //Keep en eye out for the domain in case it seems like it belongs to the entity:
-        $domain_belongs_to_entity = false;
-
-        //IF the URL exists since the domain existed and the URL is the domain!
-        if ($domain_entity['domain_already_existed'] && $domain_analysis['url_is_root']) {
-
-            $url_already_existed = 1;
-
-        } elseif($name_was_passed && !$domain_entity['domain_already_existed'] && $domain_analysis['url_is_root']){
-
-            //A new domain was added for what possibly could be the domain of the entity it self! Let's do a simple check:
-            $title_parts = explode(' ', $page_title);
-            foreach($title_parts as $title_part){
-                if(strlen($title_part) >= 3 && substr_count($domain_entity['url_domain_name'] , $title_part) > 0){
-                    $domain_belongs_to_entity = true;
-                    break;
-                }
-            }
-
-        }
+        $domain_entity = $this->Matrix_model->fn___sync_domain($url, $tr_miner_en_id, ( $domain_analysis['url_is_root'] && $name_was_passed ? $page_title : null ));
 
 
         //Was this not a root domain? If so, also check to see if URL exists:
@@ -455,6 +434,11 @@ class Matrix_model extends CI_Model
 
             //URL is the domain in this case:
             $en_url = $domain_entity['en_domain'];
+
+            //IF the URL exists since the domain existed and the URL is the domain!
+            if ($domain_entity['domain_already_existed']) {
+                $url_already_existed = 1;
+            }
 
         } else {
 
