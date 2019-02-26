@@ -3760,6 +3760,14 @@ h4 .tip-badge {
     border-radius: 50%;
 }
 
+.icon-main img {
+    width: 24px;
+    height: 24px;
+    margin: -5px 0 0 0;
+    border-radius: 50%;
+}
+
+
 .profile-icon2 {
     width: 26px;
     height: 26px;

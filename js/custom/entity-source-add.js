@@ -142,7 +142,7 @@ function fn___add_source_process(){
 
     //Set title:
     $('.add_source_body').addClass('hidden');
-    $('.add_source_result').html('<span><i class="fas fa-spinner fa-spin"></i></span> Processing...');
+    $('.add_source_result').html('<div class="center"><span><i class="fas fa-spinner fa-spin"></i></span> Processing...</div>');
 
     //Fetch Intent Data to load modify widget:
     $.post("/entities/fn___add_source_process", {

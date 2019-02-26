@@ -185,7 +185,7 @@ class Matrix_model extends CI_Model
     }
 
 
-    function fn___sync_domain($url, $tr_miner_en_id = 0)
+    function fn___sync_domain($url, $tr_miner_en_id = 0, $page_title = null)
     {
         /*
          *
@@ -229,7 +229,7 @@ class Matrix_model extends CI_Model
             //Yes, let's add a new entity:
             $en_domain = $this->Database_model->fn___en_create(array(
                 'en_status' => 0, //New domain entity
-                'en_name' => $domain_analysis['url_domain_name'],
+                'en_name' => ( $page_title ? $page_title : $domain_analysis['url_domain_name'] ),
                 'en_icon' => echo_fav_icon($domain_analysis['url_clean_domain']),
             ), true, $tr_miner_en_id);
 
@@ -247,12 +247,12 @@ class Matrix_model extends CI_Model
 
 
         //Return data:
-        return array(
+        return array_merge( $domain_analysis , array(
             'status' => 1,
             'message' => 'Success',
             'domain_already_existed' => $domain_already_existed,
             'en_domain' => $en_domain,
-        );
+        ));
 
     }
 
@@ -285,6 +285,9 @@ class Matrix_model extends CI_Model
                 'message' => 'Miner is required to add parent URL',
             );
         }
+
+        //Remember if entity name was passed:
+        $name_was_passed = ( $page_title ? true : false );
 
         //Analyze domain:
         $domain_analysis = fn___analyze_domain($url);
@@ -371,7 +374,7 @@ class Matrix_model extends CI_Model
 
 
         //Fetch page title if entity name not provided:
-        if (!$page_title) {
+        if (!$name_was_passed) {
 
             //Define unique URL identifier string:
             $url_identified = substr(md5($url), 0, 8);
@@ -423,14 +426,27 @@ class Matrix_model extends CI_Model
 
 
         //Fetch/Create domain entity:
-        $domain_entity = $this->Matrix_model->fn___sync_domain($url, $tr_miner_en_id);
+        $domain_entity = $this->Matrix_model->fn___sync_domain($url, $tr_miner_en_id, ( $name_was_passed ? $page_title : null ));
 
-        //Assign domain entity:
-        $en_domain = $domain_entity['en_domain'];
+        //Keep en eye out for the domain in case it seems like it belongs to the entity:
+        $domain_belongs_to_entity = false;
 
         //IF the URL exists since the domain existed and the URL is the domain!
         if ($domain_entity['domain_already_existed'] && $domain_analysis['url_is_root']) {
+
             $url_already_existed = 1;
+
+        } elseif($name_was_passed && !$domain_entity['domain_already_existed'] && $domain_analysis['url_is_root']){
+
+            //A new domain was added for what possibly could be the domain of the entity it self! Let's do a simple check:
+            $title_parts = explode(' ', $page_title);
+            foreach($title_parts as $title_part){
+                if(strlen($title_part) >= 3 && substr_count($domain_entity['url_domain_name'] , $title_part) > 0){
+                    $domain_belongs_to_entity = true;
+                    break;
+                }
+            }
+
         }
 
 
@@ -438,7 +454,7 @@ class Matrix_model extends CI_Model
         if ($domain_analysis['url_is_root']) {
 
             //URL is the domain in this case:
-            $en_url = $en_domain;
+            $en_url = $domain_entity['en_domain'];
 
         } else {
 
@@ -471,7 +487,7 @@ class Matrix_model extends CI_Model
                     'tr_miner_en_id' => $tr_miner_en_id,
                     'tr_status' => 2, //Published
                     'tr_type_en_id' => $tr_type_en_id,
-                    'tr_en_parent_id' => $en_domain['en_id'],
+                    'tr_en_parent_id' => $domain_entity['en_domain']['en_id'],
                     'tr_en_child_id' => $en_url['en_id'],
                     'tr_content' => $url,
                 ));
@@ -516,7 +532,7 @@ class Matrix_model extends CI_Model
                 'cleaned_url' => $url,
                 'tr_type_en_id' => $tr_type_en_id,
                 'page_title' => $page_title,
-                'en_domain' => $en_domain,
+                'en_domain' => $domain_entity['en_domain'],
                 'en_url' => $en_url,
             )
         );
