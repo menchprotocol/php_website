@@ -434,6 +434,7 @@ class Entities extends CI_Controller
                 $entity_new = $domain_entity['en_domain'];
 
             } else {
+
                 //It's a regular entity name:
                 $entity_new = $this->Database_model->fn___en_create(array(
                     'en_name' => trim($_POST['en_new_string']),
@@ -446,6 +447,7 @@ class Entities extends CI_Controller
                         'message' => 'Failed to create new entity for [' . $_POST['en_new_string'] . ']',
                     ));
                 }
+
             }
 
         }
@@ -1337,13 +1339,9 @@ class Entities extends CI_Controller
 
                 }
 
-                //All good...
+                //Add author with its URL:
+                $sync_author = $this->Matrix_model->fn___sync_url($_POST['ref_url_' . $x], $session_en['en_id'], 0, 0, $_POST['author_' . $x]);
 
-                //Add author:
-                $author_en = $this->Database_model->fn___en_create(array(
-                    'en_name' => trim($_POST['author_' . $x]),
-                    'en_status' => 0, //New
-                ), true, $session_en['en_id']);
 
                 //Add author to People or Organizations entity:
                 $this->Database_model->fn___tr_create(array(
@@ -1351,11 +1349,9 @@ class Entities extends CI_Controller
                     'tr_miner_en_id' => $session_en['en_id'],
                     'tr_type_en_id' => 4230, //Empty
                     'tr_en_parent_id' => $_POST['entity_parent_id_' . $x], //People or Organizations
-                    'tr_en_child_id' => $author_en['en_id'],
+                    'tr_en_child_id' => $sync_author['en_url']['en_id'],
                 ), true);
 
-                //Add author URL:
-                $this->Matrix_model->fn___sync_url($_POST['ref_url_' . $x], $session_en['en_id'], 0, $author_en['en_id'], $_POST['author_' . $x]);
 
                 //Should we also link author to to Industry Experts entity?
                 if (strlen($_POST['why_expert_' . $x]) > 0) {
@@ -1366,13 +1362,13 @@ class Entities extends CI_Controller
                         'tr_content' => trim($_POST['why_expert_' . $x]),
                         'tr_type_en_id' => $detected_tr_type['tr_type_en_id'],
                         'tr_en_parent_id' => 3084, //Industry Experts
-                        'tr_en_child_id' => $author_en['en_id'],
+                        'tr_en_child_id' => $sync_author['en_url']['en_id'],
                     ), true);
                 }
 
                 //Add author to parent source array:
                 array_push($parent_ens, array(
-                    'this_parent_en_id' => $author_en['en_id'],
+                    'this_parent_en_id' => $sync_author['en_url']['en_id'],
                     'this_parent_en_type' => $detected_role_tr_type['tr_type_en_id'],
                     'this_parent_en_desc' => trim($_POST['auth_role_' . $x]),
                 ));
