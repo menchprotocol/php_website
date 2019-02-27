@@ -41,6 +41,7 @@ foreach ($metadatas as $tr) {
     var tr_content_max = <?= $tr_content_max ?>;
     var metadata_count = <?= count($metadatas) ?>;
     var focus_tr_type_en_id = <?= $en_ids_4485[0] ?>; //The message type that is the focus on-start.
+    var entity_ref_filters = '(_tags:tag_en_parent_1278 OR _tags:tag_en_parent_<?= join(' OR _tags:tag_en_parent_',$this->config->item('en_ids_3000')) ?>)'; //Entity references can only be to people, organizations or expert sources
 </script>
 <script src="/js/custom/messaging-js.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
 
@@ -110,7 +111,7 @@ foreach ($metadatas as $tr) {
 
 
         if (!isset($counters[$tr_type_en_id])) {
-            echo '<div class="ix-tip no-messages' . $in_id . '_' . $tr_type_en_id . ' all_msg msg_en_type_' . $tr_type_en_id . '"><i class="fas fa-exclamation-triangle"></i> No ' . $m['m_icon'] . ' ' . $m['m_name'] . ' messages added yet</div>';
+            echo '<div class="ix-tip no-messages' . $in_id . '_' . $tr_type_en_id . ' all_msg msg_en_type_' . $tr_type_en_id . '"><i class="fas fa-exclamation-triangle"></i> No ' . strtolower($m['m_name']) . ' added yet</div>';
         }
     }
 
@@ -146,7 +147,7 @@ foreach ($metadatas as $tr) {
 
     //Fetch for all message types:
     foreach ($en_all_4485 as $tr_type_en_id => $m) {
-        echo '<div class="iphone-add-btn all_msg msg_en_type_' . $tr_type_en_id . '"><a href="javascript:fn___message_create();" id="add_message_' . $tr_type_en_id . '_' . $in_id . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="right" class="btn btn-primary">ADD ' . $m['m_icon'] . ' ' . $m['m_name'] . ' Message</a></div>';
+        echo '<div class="iphone-add-btn all_msg msg_en_type_' . $tr_type_en_id . '"><a href="javascript:fn___message_create();" id="add_message_' . $tr_type_en_id . '_' . $in_id . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="right" class="btn btn-primary">ADD '.$m['m_icon'].' ' . rtrim($m['m_name'], 's') . '</a></div>';
     }
 
     echo '</form>';
