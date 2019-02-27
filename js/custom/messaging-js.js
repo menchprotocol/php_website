@@ -87,7 +87,7 @@ function fn___initiate_search() {
             search: function (query, callback) {
                 algolia_index.search(query, {
                     hitsPerPage: 5,
-                    filters: 'alg_obj_is_in=0 AND '+entity_ref_filters,
+                    filters: 'alg_obj_is_in=0',
                 })
                     .then(function searchSuccess(content) {
                         if (content.query === query) {

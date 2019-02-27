@@ -41,7 +41,6 @@ foreach ($metadatas as $tr) {
     var tr_content_max = <?= $tr_content_max ?>;
     var metadata_count = <?= count($metadatas) ?>;
     var focus_tr_type_en_id = <?= $en_ids_4485[0] ?>; //The message type that is the focus on-start.
-    var entity_ref_filters = '(_tags:tag_en_parent_1278 OR _tags:tag_en_parent_<?= join(' OR _tags:tag_en_parent_',$this->config->item('en_ids_3000')) ?>)'; //Entity references can only be to people, organizations or expert sources
 </script>
 <script src="/js/custom/messaging-js.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
 
