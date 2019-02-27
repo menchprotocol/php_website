@@ -89,11 +89,10 @@ $hide_subscribe = (isset($_GET['hide_subscribe']) && intval($_GET['hide_subscrib
 
             <h3 style="margin-top:0px !important;">Overview:</h3>
             <div style="margin:12px 0 0 5px;" class="maxout">
-                <?= fn___echo_in_overview($in, false, $expand_mode) ?>
-                <?= fn___echo_in_referenced_content($in, false, $expand_mode) ?>
-                <?= fn___echo_in_experts($in, false, $expand_mode) ?>
-                <?= fn___echo_in_time_estimate($in, false, $expand_mode) ?>
-                <?= fn___echo_in_cost_range($in, false, $expand_mode) ?>
+                <?= fn___echo_tree_intents($in, false, $expand_mode) ?>
+                <?= fn___echo_tree_sources($in, false, $expand_mode) ?>
+                <?= fn___echo_tree_experts($in, false, $expand_mode) ?>
+                <?= fn___echo_tree_cost($in, false, $expand_mode) ?>
             </div>
         <?php } ?>
 

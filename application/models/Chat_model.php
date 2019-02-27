@@ -1723,11 +1723,10 @@ class Chat_model extends CI_Model
                     //Send message for final confirmation with the overview of how long/difficult it would be to accomplish this intention:
                     $this->Chat_model->fn___dispatch_message(
                         'Here is an overview:' . "\n\n" .
-                        fn___echo_in_overview($ins[0], true) .
-                        fn___echo_in_referenced_content($ins[0], true) .
-                        fn___echo_in_experts($ins[0], true) .
-                        fn___echo_in_time_estimate($ins[0], true) .
-                        fn___echo_in_cost_range($ins[0], true) .
+                        fn___echo_tree_intents($ins[0], true) .
+                        fn___echo_tree_sources($ins[0], true) .
+                        fn___echo_tree_experts($ins[0], true) .
+                        fn___echo_tree_cost($ins[0], true) .
                         "\n" . 'Are you ready to ' . $ins[0]['in_outcome'] . '?',
                         $en,
                         true,

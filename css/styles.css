@@ -2025,7 +2025,7 @@ select.form-control {
 }
 
 .parent-intent, .parent-entity {
-    padding-left: 38px;
+    padding-left: 39px;
 }
 
 .indent1 {
@@ -3884,4 +3884,44 @@ h4 .tip-badge {
 
 .tr-child{
     margin:0 0 0 30px;
+}
+
+.voting-icons{
+    position: relative;
+    display: inline-block;
+    height: 45px;
+    width: 32px;
+    top: -5px;
+    margin-right: 0px;
+    margin-left: -5px;
+    text-align: center;
+    overflow: hidden;
+    margin-bottom: -21px;
+}
+
+.icon-up{
+    position: absolute;
+    top: -5px;
+    left: 9px;
+    font-size: 1.3em;
+}
+
+.icon-down{
+    position: absolute;
+    bottom: -5px;
+    left: 9px;
+    font-size: 1.3em;
+}
+
+.text-middle{
+    position: absolute;
+    top: 13px;
+    left: 0px;
+    font-size: 0.9em;
+    width: 32px;
+    height: 18px;
+    line-height: 110%;
+    padding: 0;
+    text-align: center;
+    overflow: hidden;
 }

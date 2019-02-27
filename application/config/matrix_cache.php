@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-02-26 15:16:16 PST
+//Generated 2019-02-27 08:47:17 PST
 
 //Only Moderators can Modify:
 $config['en_ids_4426'] = array(1280, 1308, 3286, 3288, 4374, 4426, 4430, 4433, 4755);
@@ -215,25 +215,25 @@ $config['en_all_4374'] = array(
     ),
     4231 => array(
         'm_icon' => '<i class="fal fa-bolt"></i>',
-        'm_name' => 'Intent Messages On-Start',
+        'm_name' => 'Intent Messages Essential Tips',
         'm_desc' => '100',
         'm_parents' => array(4986, 4742, 4603, 4594, 4485, 4374),
     ),
     4232 => array(
-        'm_icon' => '<i class="fal fa-comment-lines"></i>',
-        'm_name' => 'Intent Messages Learn More',
+        'm_icon' => '<i class="fal fa-plus-hexagon"></i>',
+        'm_name' => 'Intent Messages Bonus Tips',
         'm_desc' => '100',
         'm_parents' => array(4986, 4742, 4603, 4594, 4485, 4374),
     ),
     4233 => array(
         'm_icon' => '<i class="fal fa-calendar-check"></i>',
-        'm_name' => 'Intent Messages On-Complete',
+        'm_name' => 'Intent Messages Parting Tips',
         'm_desc' => '100',
         'm_parents' => array(4986, 4742, 4603, 4594, 4485, 4374),
     ),
     4234 => array(
         'm_icon' => '<i class="fal fa-random"></i>',
-        'm_name' => 'Intent Messages Random1',
+        'm_name' => 'Intent Messages Random Blurb',
         'm_desc' => '100',
         'm_parents' => array(4986, 4594, 4485, 4374),
     ),
@@ -399,25 +399,25 @@ $config['en_all_4594'] = array(
     ),
     4231 => array(
         'm_icon' => '<i class="fal fa-bolt"></i>',
-        'm_name' => 'Intent Messages On-Start',
+        'm_name' => 'Intent Messages Essential Tips',
         'm_desc' => '',
         'm_parents' => array(4986, 4742, 4603, 4594, 4485, 4374),
     ),
     4232 => array(
-        'm_icon' => '<i class="fal fa-comment-lines"></i>',
-        'm_name' => 'Intent Messages Learn More',
+        'm_icon' => '<i class="fal fa-plus-hexagon"></i>',
+        'm_name' => 'Intent Messages Bonus Tips',
         'm_desc' => '',
         'm_parents' => array(4986, 4742, 4603, 4594, 4485, 4374),
     ),
     4233 => array(
         'm_icon' => '<i class="fal fa-calendar-check"></i>',
-        'm_name' => 'Intent Messages On-Complete',
+        'm_name' => 'Intent Messages Parting Tips',
         'm_desc' => '',
         'm_parents' => array(4986, 4742, 4603, 4594, 4485, 4374),
     ),
     4234 => array(
         'm_icon' => '<i class="fal fa-random"></i>',
-        'm_name' => 'Intent Messages Random1',
+        'm_name' => 'Intent Messages Random Blurb',
         'm_desc' => '',
         'm_parents' => array(4986, 4594, 4485, 4374),
     ),
@@ -900,7 +900,7 @@ $config['en_all_4454'] = array(
 );
 
 //Intent Messages:
-$config['en_ids_4485'] = array(4983, 4231, 4234, 4232, 4233, 4601, 4602);
+$config['en_ids_4485'] = array(4983, 4231, 4232, 4233, 4601, 4602, 4234);
 $config['en_all_4485'] = array(
     4983 => array(
         'm_icon' => '<i class="fal fa-box-ballot"></i>',
@@ -910,25 +910,19 @@ $config['en_all_4485'] = array(
     ),
     4231 => array(
         'm_icon' => '<i class="fal fa-bolt"></i>',
-        'm_name' => 'On-Start',
+        'm_name' => 'Essential Tips',
         'm_desc' => 'All delivered in-order when student initially starts this intent. Goal is to give key insights that make students more effective in accomplishing the Intent\'s outcome.',
         'm_parents' => array(4986, 4742, 4603, 4594, 4485, 4374),
     ),
-    4234 => array(
-        'm_icon' => '<i class="fal fa-random"></i>',
-        'm_name' => 'Random1',
-        'm_desc' => 'One message randomly selected right after on-start messages. Goal is to make Mench feel more authentic by mixing things up. Also called in the code-base using compose_message().',
-        'm_parents' => array(4986, 4594, 4485, 4374),
-    ),
     4232 => array(
-        'm_icon' => '<i class="fal fa-comment-lines"></i>',
-        'm_name' => 'Learn More',
+        'm_icon' => '<i class="fal fa-plus-hexagon"></i>',
+        'm_name' => 'Bonus Tips',
         'm_desc' => 'Delivered in-order and one-by-one (drip-format) either during or after the intent completion. Goal is to re-iterate key insights to help students retain learnings over time.',
         'm_parents' => array(4986, 4742, 4603, 4594, 4485, 4374),
     ),
     4233 => array(
         'm_icon' => '<i class="fal fa-calendar-check"></i>',
-        'm_name' => 'On-Complete',
+        'm_name' => 'Parting Tips',
         'm_desc' => 'All delivered in-order as soon as the student marks the intent as complete. Goal is to re-iterate key insights to help students retain learnings.',
         'm_parents' => array(4986, 4742, 4603, 4594, 4485, 4374),
     ),
@@ -943,6 +937,12 @@ $config['en_all_4485'] = array(
         'm_name' => 'Webhooks',
         'm_desc' => 'All URLs called along with POST variables that pass intent and completion details. Goal is to enable additional workflows like issuing a completion certificate.',
         'm_parents' => array(4986, 4256, 4374, 4485, 4594),
+    ),
+    4234 => array(
+        'm_icon' => '<i class="fal fa-random"></i>',
+        'm_name' => 'Random Blurb',
+        'm_desc' => 'One message randomly selected right after on-start messages. Goal is to make Mench feel more authentic by mixing things up. Also called in the code-base using compose_message().',
+        'm_parents' => array(4986, 4594, 4485, 4374),
     ),
 );
 

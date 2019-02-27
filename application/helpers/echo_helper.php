@@ -645,7 +645,7 @@ function fn___echo_time_hours($seconds, $micro = false)
 }
 
 
-function fn___echo_in_referenced_content($in, $fb_messenger_format = false, $expand_mode = false)
+function fn___echo_tree_sources($in, $fb_messenger_format = false, $expand_mode = false)
 {
 
     /*
@@ -758,54 +758,7 @@ function fn___echo_in_referenced_content($in, $fb_messenger_format = false, $exp
 }
 
 
-function fn___echo_in_cost_range($in, $fb_messenger_format = 0, $expand_mode = false)
-{
-
-    /*
-     *
-     * An intent function to display the cached cost of the
-     * intent tree that is stored in the metadata field.
-     *
-     * */
-
-    //Do we have anything to return?
-    $metadata = unserialize($in['in_metadata']);
-    if (!isset($metadata['in__tree_max_cost']) || $metadata['in__tree_max_cost'] <= 0) {
-        return false;
-    }
-
-    //Construct UI:
-    if (round($metadata['in__tree_max_cost']) == round($metadata['in__tree_min_cost']) || $metadata['in__tree_min_cost'] == 0) {
-        //Single price:
-        $price_range = '$' . round($metadata['in__tree_max_cost']) . ' USD';
-    } else {
-        //Price range:
-        $price_range = 'between $' . round($metadata['in__tree_min_cost']) . ' to $' . round($metadata['in__tree_max_cost']) . ' USD';
-    }
-
-
-    $pitch = 'Action Plan recommends ' . $price_range . ' in third-party product purchases.';
-    if ($fb_messenger_format) {
-        return '💸 ' . $pitch . "\n";
-    } else {
-        //HTML format
-        $id = 'CostForcast';
-        return '<div class="panel-group" id="open' . $id . '" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
-            <div class="panel-heading" role="tab" id="heading' . $id . '">
-                <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $id . '">
-                        <i class="fas" style="transform:none !important;">💸</i> ' . ucwords($price_range) . '<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
-                    </a>
-                </h4>
-            </div>
-            <div id="collapse' . $id . '" class="panel-collapse collapse ' . ($expand_mode ? 'in' : 'out') . '" role="tabpanel" aria-labelledby="heading' . $id . '">
-                <div class="panel-body" style="padding:5px 0 0 5px; font-size:1.1em;">' . $pitch . '</div>
-            </div>
-        </div></div>';
-    }
-}
-
-function fn___echo_in_overview($in, $fb_messenger_format = 0, $expand_mode = false)
+function fn___echo_tree_intents($in, $fb_messenger_format = 0, $expand_mode = false)
 {
 
     /*
@@ -844,7 +797,7 @@ function fn___echo_in_overview($in, $fb_messenger_format = 0, $expand_mode = fal
 
 }
 
-function fn___echo_in_time_estimate($in, $fb_messenger_format = 0, $expand_mode = false)
+function fn___echo_tree_cost($in, $fb_messenger_format = 0, $expand_mode = false)
 {
 
     /*
@@ -856,11 +809,38 @@ function fn___echo_in_time_estimate($in, $fb_messenger_format = 0, $expand_mode 
 
     //Do we have anything to return?
     $metadata = unserialize($in['in_metadata']);
-    if (!isset($metadata['in__tree_max_seconds']) || $metadata['in__tree_max_seconds'] == 0) {
+    $has_time_estimate = ( isset($metadata['in__tree_max_seconds']) && !($metadata['in__tree_max_seconds'] == 0) );
+    $has_cost_estimate = ( isset($metadata['in__tree_max_cost']) && !($metadata['in__tree_max_cost'] == 0) );
+    if (!$has_cost_estimate && !$has_time_estimate) {
         return false;
     }
 
-    $pitch = 'Action Plan estimates ' . strtolower(fn___echo_time_range($in)) . ' to ' . $in['in_outcome'] . '.';
+
+    if($has_cost_estimate){
+        //Construct UI:
+        if (round($metadata['in__tree_max_cost']) == round($metadata['in__tree_min_cost']) || $metadata['in__tree_min_cost'] == 0) {
+            //Single price:
+            $price_range = '$' . round($metadata['in__tree_max_cost']) . ' USD';
+        } else {
+            //Price range:
+            $price_range = '$' . round($metadata['in__tree_min_cost']) . ' - $' . round($metadata['in__tree_max_cost']) . ' USD';
+        }
+    }
+
+
+    //For HTML version only:
+    $title = '';
+    $title .= ( $has_time_estimate ? fn___echo_time_range($in).' ' : '' );
+    $title .= ( $has_cost_estimate ? ( $has_time_estimate ? 'and ' : '' ) . $price_range : '' );
+    $title .= ' to Complete';
+
+    //As messenger default format and HTML extra notes:
+    $pitch  = 'Action Plan is estimated to';
+    $pitch .= ( $has_time_estimate ? ' take '.strtolower(fn___echo_time_range($in)).' ' : '' );
+    $pitch .= ( $has_cost_estimate ? ( $has_time_estimate ? ' and ' : '' ) . 'cost '. $price_range : '' );
+    $pitch .= ' to ' . $in['in_outcome'] . '.';
+
+
     if ($fb_messenger_format) {
         return '⏰ ' . $pitch . "\n";
     } else {
@@ -870,7 +850,7 @@ function fn___echo_in_time_estimate($in, $fb_messenger_format = 0, $expand_mode 
             <div class="panel-heading" role="tab" id="heading' . $id . '">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $id . '">
-                        <i class="fas" style="transform:none !important;">⏰</i> ' . ucwords(fn___echo_time_range($in)) . ' to Complete<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                        <i class="fas" style="transform:none !important;">⏰</i> ' . $title . '<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                     </a>
                 </h4>
             </div>
@@ -881,7 +861,7 @@ function fn___echo_in_time_estimate($in, $fb_messenger_format = 0, $expand_mode 
     }
 }
 
-function fn___echo_in_experts($in, $fb_messenger_format = 0, $expand_mode = false)
+function fn___echo_tree_experts($in, $fb_messenger_format = 0, $expand_mode = false)
 {
 
     /*
@@ -1066,15 +1046,20 @@ function fn___echo_time_range($in, $micro = false, $hide_zero = false)
         $hours_decimal = 0;
     }
 
+    $min_minutes = round($metadata['in__tree_min_seconds'] / 60);
+    $min_hours = round(($metadata['in__tree_min_seconds'] / 3600), $hours_decimal);
+    $max_minutes = round($metadata['in__tree_max_seconds'] / 60);
+    $max_hours = round(($metadata['in__tree_max_seconds'] / 3600), $hours_decimal);
+
     //Generate hours range:
-    $the_min = ($is_minutes ? round($metadata['in__tree_min_seconds'] / 60) : round(($metadata['in__tree_min_seconds'] / 3600), $hours_decimal));
-    $the_max = ($is_minutes ? round($metadata['in__tree_max_seconds'] / 60) : round(($metadata['in__tree_max_seconds'] / 3600), $hours_decimal));
+    $the_min = ($is_minutes ? $min_minutes : $min_hours );
+    $the_max = ($is_minutes ? $max_minutes : $max_hours );
     $ui_time = $the_min;
     if($the_min != $the_max){
         $ui_time .= '-';
         $ui_time .= $the_max;
     }
-    $ui_time .= ($is_minutes ? ($micro ? 'm' : ' Minutes') : ($micro ? 'h' : ' Hours'));
+    $ui_time .= ($is_minutes ? ($micro ? 'm' : ' Minute'.fn___echo__s($max_minutes)) : ($micro ? 'h' : ' Hour'.fn___echo__s($max_hours)));
 
     //Generate UI to return:
     return $ui_time;
@@ -1399,15 +1384,25 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     if ($level <= 1) {
 
         //Show Blank box:
-        $ui .= '<span class="double-icon" style="margin:0 3px;"><span class="icon-main"><i class="fas fa-map-pin" data-toggle="tooltip" data-placement="right" title="You are Here"></i></span><span class="icon-sub">&nbsp;</span></span>';
+        $ui .= '<span class="double-icon" style="margin:0 20px 0 6px;"><span class="icon-main"><i class="fas fa-map-pin" data-toggle="tooltip" data-placement="right" title="You are Here"></i></span><span class="icon-sub">&nbsp;</span></span>';
 
     } else {
+
+
+        //Show up/down votes for this link:
+        $ui .= '<span class="voting-icons" data-toggle="tooltip" data-placement="right" title="Intent Link Votes">';
+            $ui .= '<span class="icon-up tr_voteup_' . $tr_id . '"><i class="fas fa-angle-up"></i></span>';
+            $ui .= '<span class="text-middle tr_votecount_' . $tr_id . '">'.fn___echo_number(rand(-4,8)).'</span>';
+            $ui .= '<span class="icon-down tr_votedown_' . $tr_id . '"><i class="fas fa-angle-down"></i></span>';
+        $ui .= '</span>';
+
+
 
         //Fetch intent link types:
         $en_all_4486 = $CI->config->item('en_all_4486');
 
         //Show Transaction link icons:
-        $ui .= '<span class="double-icon" style="margin-left:5px;">';
+        $ui .= '<span class="double-icon" style="margin:0 3px 0 -3px;">';
 
         //Show larger icon for transaction type (auto detected based on transaction content):
         $ui .= '<span class="icon-main tr_type_' . $tr_id . '"><span class="tr_type_val" data-toggle="tooltip" data-placement="right" title="' . $en_all_4486[$in['tr_type_en_id']]['m_name'] . ': ' . $en_all_4486[$in['tr_type_en_id']]['m_desc'] . '">' . $en_all_4486[$in['tr_type_en_id']]['m_icon'] . '</span></span>';

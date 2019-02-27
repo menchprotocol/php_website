@@ -386,9 +386,7 @@ class Database_model extends CI_Model
                     'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
                     'tr_status >=' => 0, //New+
                     'en_status >=' => 0, //New+
-                ), array('en_child'), $this->config->item('en_per_page'), 0, array('en_trust_score' => 'DESC'));
-
-                //TODO maybe consider en__grandchildren someday and add to UI?
+                ), array('en_child'), $this->config->item('en_per_page'), 0, array('tr_order' => 'ASC', 'en_trust_score' => 'DESC'));
 
             }
 

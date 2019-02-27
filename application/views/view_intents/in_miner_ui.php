@@ -21,7 +21,7 @@ if (isset($orphan_ins)) {
 
 
 <div class="row">
-    <div class="col-xs-8 cols">
+    <div class="col-xs-7 cols">
         <?php
         //Are we showing Orphans?
         if (isset($orphan_ins)) {
@@ -127,7 +127,7 @@ if (isset($orphan_ins)) {
     </div>
 
 
-    <div class="col-xs-4 cols">
+    <div class="col-xs-5 cols">
 
 
 

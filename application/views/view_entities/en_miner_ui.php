@@ -10,7 +10,7 @@
         type="text/javascript"></script>
 
 <div class="row">
-    <div class="col-xs-8 cols">
+    <div class="col-xs-7 cols">
 
         <?php
 
@@ -137,7 +137,7 @@
         ?>
     </div>
 
-    <div class="col-xs-4 cols">
+    <div class="col-xs-5 cols">
 
 
         <div id="modifybox" class="fixed-box hidden" entity-id="0" entity-link-id="0">

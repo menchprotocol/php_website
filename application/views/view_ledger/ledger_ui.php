@@ -277,7 +277,7 @@ echo '</form>';
 
 
 echo '<div class="row">';
-    echo '<div class="col-md-8">';
+    echo '<div class="col-md-7">';
 
         //Display Transactions:
         echo '<h3 style="margin-bottom:7px;"><i class="fas fa-atlas"></i> '.count($trs) . ( $trs_count[0]['trs_count'] > count($trs) ? ' of '. number_format($trs_count[0]['trs_count'] , 0) : '' ) .' Transactions:</h3>';
@@ -301,7 +301,7 @@ echo '<div class="row">';
 
     echo '</div>';
 
-    echo '<div class="col-md-4">';
+    echo '<div class="col-md-5">';
         //TODO Maybe eventually merge intent/entity modification widgets and also place here?
     echo '</div>';
 echo '</div>';
