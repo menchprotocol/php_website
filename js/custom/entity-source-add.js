@@ -15,7 +15,7 @@ $(document).ready(function() {
 
         source: function (q, cb) {
             algolia_index.search(q, {
-                filters: 'alg_obj_is_in=0 AND (_tags:tag_en_1278 OR _tags:tag_en_2750)', //Only search people or organizations
+                filters: 'alg_obj_is_in=0 AND (_tags:tag_en_parent_1278 OR _tags:tag_en_parent_2750)', //Only search people or organizations
                 hitsPerPage: 7,
             }, function (error, content) {
                 if (error) {

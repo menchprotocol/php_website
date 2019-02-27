@@ -78,7 +78,7 @@ foreach ($metadatas as $tr) {
             echo '<i class="fas fa-exchange rotate90"></i> <span data-toggle="tooltip" class="underdot" title="Messages are delivered in order so you can can sort them as needed" data-placement="bottom">Sortable</span> &nbsp;';
         }
 
-        //Does it support sorting?
+        //Does it support switching?
         if(in_array(4742, $en_all_4485[$tr_type_en_id]['m_parents'])){
             echo '<i class="fas fa-exchange"></i> <span data-toggle="tooltip" class="underdot" title="You can change message type with other messages that are also switchable" data-placement="bottom">Switchable</span> &nbsp;';
         }

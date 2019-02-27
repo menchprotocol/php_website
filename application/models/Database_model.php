@@ -873,7 +873,7 @@ class Database_model extends CI_Model
                     $limits['in_status >='] = 0; //New+
                 }
 
-                $db_rows['in'] = $this->Database_model->fn___in_fetch($limits, array('in__parents','in__messages'));
+                $db_rows['in'] = $this->Database_model->fn___in_fetch($limits, array('in__parents','in__children','in__messages'));
 
             } elseif ($loop_obj == 'en') {
 
@@ -939,7 +939,7 @@ class Database_model extends CI_Model
                     foreach ($db_row['en__parents'] as $tr) {
 
                         //Always add to tags:
-                        array_push($export_row['_tags'], 'tag_en_' . $tr['en_id']);
+                        array_push($export_row['_tags'], 'tag_en_parent_' . $tr['en_id']);
 
                         //Add content to keywords if any:
                         if (strlen($tr['tr_content']) > 0) {
@@ -960,10 +960,14 @@ class Database_model extends CI_Model
                     $export_row['alg_obj_name'] = $db_row['in_outcome'];
                     $export_row['alg_obj_postfix'] =  ( $time_range ? '<span class="alg-postfix"><i class="fal fa-clock"></i>' . $time_range . '</span>' : '');
 
-                    //Add tags:
+                    //Add parent/child tags:
                     foreach ($db_row['in__parents'] as $tr) {
                         //Always add to tags:
-                        array_push($export_row['_tags'], 'tag_in_' . $tr['in_id']);
+                        array_push($export_row['_tags'], 'tag_in_parent_' . $tr['in_id']);
+                    }
+                    foreach ($db_row['in__children'] as $tr) {
+                        //Always add to tags:
+                        array_push($export_row['_tags'], 'tag_in_child_' . $tr['in_id']);
                     }
 
                     //Add keywords:
