@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-02-27 09:12:57 PST
+//Generated 2019-02-27 10:23:25 PST
 
 //Only Moderators can Modify:
 $config['en_ids_4426'] = array(1280, 1308, 3286, 3288, 4374, 4426, 4430, 4433, 4755);
@@ -196,7 +196,7 @@ $config['en_all_4755'] = array(
 $config['en_ids_4374'] = array(4228, 4229, 4230, 4231, 4232, 4233, 4234, 4235, 4242, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4318, 4319, 4331, 4460, 4601, 4602, 4983);
 $config['en_all_4374'] = array(
     4228 => array(
-        'm_icon' => '<i class="fal fa-clipboard-check"></i>',
+        'm_icon' => '<i class="fal fa-check-circle"></i>',
         'm_name' => 'Linked Intents Pre-Assessment',
         'm_desc' => '100',
         'm_parents' => array(4594, 4486, 4374),
@@ -215,25 +215,25 @@ $config['en_all_4374'] = array(
     ),
     4231 => array(
         'm_icon' => '<i class="fal fa-bolt"></i>',
-        'm_name' => 'Intent Messages Essential Tips',
+        'm_name' => 'Intent Message Essential Tips',
         'm_desc' => '100',
         'm_parents' => array(4986, 4742, 4603, 4594, 4485, 4374),
     ),
     4232 => array(
-        'm_icon' => '<i class="fal fa-plus-hexagon"></i>',
-        'm_name' => 'Intent Messages Bonus Tips',
+        'm_icon' => '<i class="fal fa-medal"></i>',
+        'm_name' => 'Intent Message Bonus Tips',
         'm_desc' => '100',
         'm_parents' => array(4986, 4742, 4603, 4594, 4485, 4374),
     ),
     4233 => array(
-        'm_icon' => '<i class="fal fa-calendar-check"></i>',
-        'm_name' => 'Intent Messages Parting Tips',
+        'm_icon' => '<i class="fal fa-clipboard-check"></i>',
+        'm_name' => 'Intent Message Parting Tips',
         'm_desc' => '100',
         'm_parents' => array(4986, 4742, 4603, 4594, 4485, 4374),
     ),
     4234 => array(
         'm_icon' => '<i class="fal fa-random"></i>',
-        'm_name' => 'Intent Messages Random Blurb',
+        'm_name' => 'Intent Message Random Blurb',
         'm_desc' => '100',
         'm_parents' => array(4986, 4594, 4485, 4374),
     ),
@@ -340,20 +340,20 @@ $config['en_all_4374'] = array(
         'm_parents' => array(4594, 4428, 4374, 4277),
     ),
     4601 => array(
-        'm_icon' => '<i class="fal fa-comment-check"></i>',
-        'm_name' => 'Intent Messages Triggers',
+        'm_icon' => '<i class="fal fa-ear"></i>',
+        'm_name' => 'Intent Message Triggers',
         'm_desc' => '50',
         'm_parents' => array(4255, 4594, 4374, 4485),
     ),
     4602 => array(
         'm_icon' => '<i class="fal fa-cloud-upload"></i>',
-        'm_name' => 'Intent Messages Webhooks',
+        'm_name' => 'Intent Message Webhooks',
         'm_desc' => '100',
         'm_parents' => array(4986, 4256, 4374, 4485, 4594),
     ),
     4983 => array(
         'm_icon' => '<i class="fal fa-box-ballot"></i>',
-        'm_name' => 'Intent Messages Votes',
+        'm_name' => 'Intent Message Votes',
         'm_desc' => '100',
         'm_parents' => array(4986, 4985, 4374, 4594, 4485),
     ),
@@ -380,7 +380,7 @@ $config['en_all_4600'] = array(
 $config['en_ids_4594'] = array(4228, 4229, 4230, 4231, 4232, 4233, 4234, 4235, 4242, 4246, 4248, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4265, 4266, 4267, 4268, 4269, 4272, 4275, 4278, 4279, 4282, 4283, 4284, 4287, 4299, 4318, 4319, 4331, 4452, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4567, 4568, 4570, 4577, 4601, 4602, 4983);
 $config['en_all_4594'] = array(
     4228 => array(
-        'm_icon' => '<i class="fal fa-clipboard-check"></i>',
+        'm_icon' => '<i class="fal fa-check-circle"></i>',
         'm_name' => 'Linked Intents Pre-Assessment',
         'm_desc' => '',
         'm_parents' => array(4594, 4486, 4374),
@@ -399,25 +399,25 @@ $config['en_all_4594'] = array(
     ),
     4231 => array(
         'm_icon' => '<i class="fal fa-bolt"></i>',
-        'm_name' => 'Intent Messages Essential Tips',
+        'm_name' => 'Intent Message Essential Tips',
         'm_desc' => '',
         'm_parents' => array(4986, 4742, 4603, 4594, 4485, 4374),
     ),
     4232 => array(
-        'm_icon' => '<i class="fal fa-plus-hexagon"></i>',
-        'm_name' => 'Intent Messages Bonus Tips',
+        'm_icon' => '<i class="fal fa-medal"></i>',
+        'm_name' => 'Intent Message Bonus Tips',
         'm_desc' => '',
         'm_parents' => array(4986, 4742, 4603, 4594, 4485, 4374),
     ),
     4233 => array(
-        'm_icon' => '<i class="fal fa-calendar-check"></i>',
-        'm_name' => 'Intent Messages Parting Tips',
+        'm_icon' => '<i class="fal fa-clipboard-check"></i>',
+        'm_name' => 'Intent Message Parting Tips',
         'm_desc' => '',
         'm_parents' => array(4986, 4742, 4603, 4594, 4485, 4374),
     ),
     4234 => array(
         'm_icon' => '<i class="fal fa-random"></i>',
-        'm_name' => 'Intent Messages Random Blurb',
+        'm_name' => 'Intent Message Random Blurb',
         'm_desc' => '',
         'm_parents' => array(4986, 4594, 4485, 4374),
     ),
@@ -722,20 +722,20 @@ $config['en_all_4594'] = array(
         'm_parents' => array(4594),
     ),
     4601 => array(
-        'm_icon' => '<i class="fal fa-comment-check"></i>',
-        'm_name' => 'Intent Messages Triggers',
+        'm_icon' => '<i class="fal fa-ear"></i>',
+        'm_name' => 'Intent Message Triggers',
         'm_desc' => '',
         'm_parents' => array(4255, 4594, 4374, 4485),
     ),
     4602 => array(
         'm_icon' => '<i class="fal fa-cloud-upload"></i>',
-        'm_name' => 'Intent Messages Webhooks',
+        'm_name' => 'Intent Message Webhooks',
         'm_desc' => '',
         'm_parents' => array(4986, 4256, 4374, 4485, 4594),
     ),
     4983 => array(
         'm_icon' => '<i class="fal fa-box-ballot"></i>',
-        'm_name' => 'Intent Messages Votes',
+        'm_name' => 'Intent Message Votes',
         'm_desc' => '',
         'm_parents' => array(4986, 4985, 4374, 4594, 4485),
     ),
@@ -915,19 +915,19 @@ $config['en_all_4485'] = array(
         'm_parents' => array(4986, 4742, 4603, 4594, 4485, 4374),
     ),
     4232 => array(
-        'm_icon' => '<i class="fal fa-plus-hexagon"></i>',
+        'm_icon' => '<i class="fal fa-medal"></i>',
         'm_name' => 'Bonus Tips',
         'm_desc' => 'Delivered in-order and one-by-one (drip-format) either during or after the intent completion. Goal is to re-iterate key insights to help students retain learnings over time.',
         'm_parents' => array(4986, 4742, 4603, 4594, 4485, 4374),
     ),
     4233 => array(
-        'm_icon' => '<i class="fal fa-calendar-check"></i>',
+        'm_icon' => '<i class="fal fa-clipboard-check"></i>',
         'm_name' => 'Parting Tips',
         'm_desc' => 'All delivered in-order as soon as the student marks the intent as complete. Goal is to re-iterate key insights to help students retain learnings.',
         'm_parents' => array(4986, 4742, 4603, 4594, 4485, 4374),
     ),
     4601 => array(
-        'm_icon' => '<i class="fal fa-comment-check"></i>',
+        'm_icon' => '<i class="fal fa-ear"></i>',
         'm_name' => 'Triggers',
         'm_desc' => 'Never delivered to students, instead, it maps alternative ways an intent could be referenced to better understand student commands.',
         'm_parents' => array(4255, 4594, 4374, 4485),
@@ -950,7 +950,7 @@ $config['en_all_4485'] = array(
 $config['en_ids_4486'] = array(4228, 4229);
 $config['en_all_4486'] = array(
     4228 => array(
-        'm_icon' => '<i class="fal fa-clipboard-check"></i>',
+        'm_icon' => '<i class="fal fa-check-circle"></i>',
         'm_name' => 'Pre-Assessment',
         'm_desc' => 'Intent link published and added to user Action Plans up-front',
         'm_parents' => array(4594, 4486, 4374),
