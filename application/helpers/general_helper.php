@@ -115,6 +115,7 @@ function fn___extract_message_references($tr_content)
     $msg_references = array(
         'ref_urls' => array(),
         'ref_entities' => array(),
+        'ref_intents' => array(),
         'ref_commands' => array(),
     );
 
@@ -124,6 +125,8 @@ function fn___extract_message_references($tr_content)
             array_push($msg_references['ref_urls'], $part);
         } elseif (substr($part, 0, 1) == '@' && is_numeric(substr($part, 1))) {
             array_push($msg_references['ref_entities'], intval(substr($part, 1)));
+        } elseif (substr($part, 0, 1) == '#' && is_numeric(substr($part, 1))) {
+            array_push($msg_references['ref_intents'], intval(substr($part, 1)));
         } else {
             //Check maybe it's a command?
             $command = fn___includes_any($part, $CI->config->item('message_commands'));

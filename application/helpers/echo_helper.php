@@ -250,7 +250,7 @@ function fn___echo_in_message_manage($tr)
     $ui .= '<li class="pull-right edit-off" style="margin-left:0;"><span class="on-hover"><a class="btn btn-primary white-primary" href="javascript:fn___message_modify_start(' . $tr['tr_id'] . ',' . $tr['tr_type_en_id'] . ');" title="Modify Message" data-toggle="tooltip" data-placement="top" style="border:2px solid #fedd16 !important; margin-left: 8px !important; margin-right: -6px !important;"><i class="fas fa-pen-square"></i></a></span></li>';
 
     //Type:
-    $ui .= '<li class="pull-right edit-off message_status" style="margin: 0 1px 0 -1px;"><span title="' . $en_all_4485[$tr['tr_type_en_id']]['m_name'] . ' Message" data-toggle="tooltip" data-placement="top">' . $en_all_4485[$tr['tr_type_en_id']]['m_icon'] . '</span></li>';
+    $ui .= '<li class="pull-right edit-off message_status" style="margin: 0 1px 0 -1px;"><span title="' . rtrim($en_all_4485[$tr['tr_type_en_id']]['m_name'], 's') . '" data-toggle="tooltip" data-placement="top">' . $en_all_4485[$tr['tr_type_en_id']]['m_icon'] . '</span></li>';
 
 
 

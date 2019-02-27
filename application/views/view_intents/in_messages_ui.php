@@ -85,12 +85,12 @@ foreach ($metadatas as $tr) {
 
         //Does it support entity referencing?
         if(in_array(4986, $en_all_4485[$tr_type_en_id]['m_parents'])){
-            echo '<i class="fas fa-at"></i> <span data-toggle="tooltip" class="underdot" title="You can reference entities using the @ sign" data-placement="bottom">Supports Entities</span> &nbsp;';
+            echo '<i class="fas fa-at"></i> <span data-toggle="tooltip" class="underdot" title="You can reference up to 1 entity using the @ sign" data-placement="bottom">Supports @Entity</span> &nbsp;';
         }
 
         //Does it require intent voting?
         if(in_array(4985, $en_all_4485[$tr_type_en_id]['m_parents'])){
-            echo '<i class="fas fa-box-ballot"></i> <span data-toggle="tooltip" class="underdot" title="You must reference an entity using @ and then reference a parent intent using # to cast a vote" data-placement="bottom">Requires Voting</span> &nbsp;';
+            echo '<i class="fas fa-hashtag"></i> <span data-toggle="tooltip" class="underdot" title="You can reference up to 1 parent intent using the # sign" data-placement="bottom">Supports #Intent</span> &nbsp;';
         }
 
 

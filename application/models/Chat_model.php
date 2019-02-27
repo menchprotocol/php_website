@@ -262,6 +262,10 @@ class Chat_model extends CI_Model
                 }
 
             }
+
+            //Now check the entity/intent referencing
+
+
         }
 
 
