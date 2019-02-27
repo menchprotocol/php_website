@@ -263,12 +263,12 @@ function fn___echo_in_message_manage($tr)
 
 
     //Show drop down for message type adjustment:
-    if(in_array( 4742 /* Intent Message Interchangeable  */, $en_all_4485[$tr['tr_type_en_id']]['m_parents'])){
+    if(in_array( 4742 /* Intent Message Switchable  */, $en_all_4485[$tr['tr_type_en_id']]['m_parents'])){
 
         $ui .= '<li class="pull-right edit-on hidden">';
         $ui .= '<select id="en_all_4485_' . $tr['tr_id'] . '" title="Change message type" data-toggle="tooltip" data-placement="top">';
         foreach ($en_all_4485 as $tr_type_en_id => $m) {
-            if(in_array( 4742 /* Intent Message Interchangeable  */, $m['m_parents'])){
+            if(in_array( 4742 /* Intent Message Switchable  */, $m['m_parents'])){
                 $ui .= '<option value="' . $tr_type_en_id . '" '.( $tr_type_en_id==$tr['tr_type_en_id'] ? 'selected="selected"' : '' ).'>' . $m['m_name'] . '</option>';
             }
         }

@@ -75,15 +75,24 @@ foreach ($metadatas as $tr) {
 
         //Does it support sorting?
         if(in_array(4603, $en_all_4485[$tr_type_en_id]['m_parents'])){
-            echo '<i class="fas fa-exchange rotate90"></i> Sortable &nbsp;';
-        } else {
-            echo '<i class="fas fa-lock"></i> Sorting disabled &nbsp;';
+            echo '<i class="fas fa-exchange rotate90"></i> <span data-toggle="tooltip" class="underdot" title="Messages are delivered in order so you can can sort them as needed" data-placement="bottom">Sortable</span> &nbsp;';
         }
 
         //Does it support sorting?
         if(in_array(4742, $en_all_4485[$tr_type_en_id]['m_parents'])){
-            echo '<i class="fas fa-exchange"></i> Interchangeable &nbsp;';
+            echo '<i class="fas fa-exchange"></i> <span data-toggle="tooltip" class="underdot" title="You can change message type with other messages that are also switchable" data-placement="bottom">Switchable</span> &nbsp;';
         }
+
+        //Does it support entity referencing?
+        if(in_array(4986, $en_all_4485[$tr_type_en_id]['m_parents'])){
+            echo '<i class="fas fa-at"></i> <span data-toggle="tooltip" class="underdot" title="You can reference entities using the @ sign" data-placement="bottom">Supports Entities</span> &nbsp;';
+        }
+
+        //Does it require intent voting?
+        if(in_array(4985, $en_all_4485[$tr_type_en_id]['m_parents'])){
+            echo '<i class="fas fa-box-ballot"></i> <span data-toggle="tooltip" class="underdot" title="You must reference an entity using @ and then reference a parent intent using # to cast a vote" data-placement="bottom">Requires Voting</span> &nbsp;';
+        }
+
 
         //See if this message type has specific input requirements:
         $en_all_4485 = $this->config->item('en_all_4485');
@@ -91,10 +100,10 @@ foreach ($metadatas as $tr) {
         if(count($completion_requirements) == 1){
             $en_id = array_shift($completion_requirements);
             $en_all_4331 = $this->config->item('en_all_4331');
-            echo '<i class="fas fa-asterisk"></i> Requires '.$en_all_4331[$en_id]['m_name'].' messages';
+            echo '<i class="fas fa-asterisk"></i> <span data-toggle="tooltip" title="You can only add '.$en_all_4331[$en_id]['m_name'].' messages" data-placement="bottom" class="underdot">Requires '.$en_all_4331[$en_id]['m_name'].'</span>';
         } else {
             //No Requirements:
-            echo '<i class="fas fa-asterisk"></i> Supports <a href="/entities/4331" data-toggle="tooltip" title="View all intent message formats" data-placement="bottom" class="underdot" target="_parent">all message formats</a>';
+            echo '<i class="fas fa-asterisk"></i> <span data-toggle="tooltip" title="You can add any message type including text, URLs, videos, audios, etc..." data-placement="bottom" class="underdot">Supports all formats</span>';
         }
 
         echo '</div>';
