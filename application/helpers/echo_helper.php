@@ -1384,19 +1384,9 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     if ($level <= 1) {
 
         //Show Blank box:
-        $ui .= '<span class="double-icon" style="margin:0 20px 0 6px;"><span class="icon-main"><i class="fas fa-map-pin" data-toggle="tooltip" data-placement="right" title="You are Here"></i></span><span class="icon-sub">&nbsp;</span></span>';
+        $ui .= '<span class="double-icon" style="margin: 0 2px 0 -4px;"><span class="icon-main"><i class="fas fa-map-pin" data-toggle="tooltip" data-placement="right" title="You are Here"></i></span><span class="icon-top-right">&nbsp;</span></span>';
 
     } else {
-
-
-        //Show up/down votes for this link:
-        $ui .= '<span class="voting-icons" data-toggle="tooltip" data-placement="right" title="Intent Link Votes">';
-            $ui .= '<span class="icon-up tr_voteup_' . $tr_id . '"><i class="fas fa-angle-up"></i></span>';
-            $ui .= '<span class="text-middle tr_votecount_' . $tr_id . '">'.fn___echo_number(rand(-4,8)).'</span>';
-            $ui .= '<span class="icon-down tr_votedown_' . $tr_id . '"><i class="fas fa-angle-down"></i></span>';
-        $ui .= '</span>';
-
-
 
         //Fetch intent link types:
         $en_all_4486 = $CI->config->item('en_all_4486');
@@ -1405,10 +1395,20 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         $ui .= '<span class="double-icon" style="margin:0 3px 0 -3px;">';
 
         //Show larger icon for transaction type (auto detected based on transaction content):
-        $ui .= '<span class="icon-main tr_type_' . $tr_id . '"><span class="tr_type_val" data-toggle="tooltip" data-placement="right" title="' . $en_all_4486[$in['tr_type_en_id']]['m_name'] . ': ' . $en_all_4486[$in['tr_type_en_id']]['m_desc'] . '">' . $en_all_4486[$in['tr_type_en_id']]['m_icon'] . '</span></span>';
+        $ui .= '<span class="icon-main tr_type_' . $tr_id . '"><span data-toggle="tooltip" data-placement="right" title="' . $en_all_4486[$in['tr_type_en_id']]['m_name'] . ': ' . $en_all_4486[$in['tr_type_en_id']]['m_desc'] . '">' . $en_all_4486[$in['tr_type_en_id']]['m_icon'] . '</span></span>';
 
         //Show smaller transaction status icon:
-        $ui .= '<span class="icon-sub tr_status_' . $tr_id . '"><span class="in_status_val" data-toggle="tooltip" data-placement="right" title="'.$object_statuses['tr_status'][$in['tr_status']]['s_name'].': '.$object_statuses['tr_status'][$in['tr_status']]['s_desc'].'">' . $object_statuses['tr_status'][$in['tr_status']]['s_icon'] . '</span></span>';
+        $ui .= '<span class="icon-top-right tr_status_' . $tr_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$object_statuses['tr_status'][$in['tr_status']]['s_name'].': '.$object_statuses['tr_status'][$in['tr_status']]['s_desc'].'">' . $object_statuses['tr_status'][$in['tr_status']]['s_icon'] . '</span></span>';
+
+        //Count and show total up-votes for this intent correlation (not necessarily this exact transaction, but the parent/child intent relation)
+        $tr_upvotes = $CI->Database_model->fn___tr_fetch(array(
+            'tr_in_parent_id' => $in['tr_in_parent_id'],
+            'tr_in_child_id' => $in['tr_in_child_id'],
+            'tr_type_en_id' => 4983, //Up-votes
+            'tr_status >=' => 0, //New+
+        ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
+
+        $ui .= '<span class="icon-top-left tr_upvotes_' . $tr_id . '" data-toggle="tooltip" data-placement="right" title="Up-Votes">' . ( $tr_upvotes[0]['totals'] > 0 ? $tr_upvotes[0]['totals'] : '' ) . '</span>';
 
         //Show assessment score based on Intent Link Type:
         $ui .= '<span class="icon-3rd in_assessment_' . $tr_id . '" data-toggle="tooltip" data-placement="right" title="Assessment Score">'. ( $in['tr_type_en_id'] == 4228 ? ( !isset($tr_metadata['tr__assessment_points']) || $tr_metadata['tr__assessment_points'] == 0 ? '' : ( $tr_metadata['tr__assessment_points'] > 0 ? '+' : '' ) . $tr_metadata['tr__assessment_points'] ) : $tr_metadata['tr__conditional_score_min'] . ( $tr_metadata['tr__conditional_score_min']==$tr_metadata['tr__conditional_score_max'] ? '' : '-'.$tr_metadata['tr__conditional_score_max'] ).'%' ) .'</span>';
@@ -1427,7 +1427,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     $ui .= '<span class="icon-main in_is_any_' . $in['in_id'] . '"><span class="in_is_any_val" data-toggle="tooltip" data-placement="right" title="'.$object_statuses['in_is_any'][$in['in_is_any']]['s_name'].': '.$object_statuses['in_is_any'][$in['in_is_any']]['s_desc'].'">' . $object_statuses['in_is_any'][$in['in_is_any']]['s_icon'] . '</span></span>';
 
     //Show smaller intent status:
-    $ui .= '<span class="icon-sub in_status_' . $in['in_id'] . '"><span class="in_status_val" data-toggle="tooltip" data-placement="right" title="'.$object_statuses['in_status'][$in['in_status']]['s_name'].': '.$object_statuses['in_status'][$in['in_status']]['s_desc'].'">' . $object_statuses['in_status'][$in['in_status']]['s_icon'] . '</span></span>';
+    $ui .= '<span class="icon-top-right in_status_' . $in['in_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$object_statuses['in_status'][$in['in_status']]['s_name'].': '.$object_statuses['in_status'][$in['in_status']]['s_desc'].'">' . $object_statuses['in_status'][$in['in_status']]['s_icon'] . '</span></span>';
 
     $ui .= '<span class="icon-3rd in_completion_' . $in['in_id'] . '" data-toggle="tooltip" data-placement="right" title="Completion Requirement">'.( $in['in_completion_en_id'] > 0 ? $en_all_4331[$in['in_completion_en_id']]['m_name']  : '' ).'</span>';
 
@@ -1758,14 +1758,14 @@ function fn___echo_en($en, $level, $is_parent = false)
         $ui .= '<span class="icon-main tr_type_' . $tr_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4592[$en['tr_type_en_id']]['m_name'].' Entity Link">' . $en_all_4592[$en['tr_type_en_id']]['m_icon'] . '</span></span> ';
 
         //Show smaller transaction status icon:
-        $ui .= '<span class="icon-sub tr_status_' . $tr_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$object_statuses['tr_status'][$en['tr_status']]['s_name'].': '.$object_statuses['tr_status'][$en['tr_status']]['s_desc'].'">' . $object_statuses['tr_status'][$en['tr_status']]['s_icon'] . '</span></span>';
+        $ui .= '<span class="icon-top-right tr_status_' . $tr_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$object_statuses['tr_status'][$en['tr_status']]['s_name'].': '.$object_statuses['tr_status'][$en['tr_status']]['s_desc'].'">' . $object_statuses['tr_status'][$en['tr_status']]['s_icon'] . '</span></span>';
 
         $ui .= '</span>';
 
     } elseif( $level > 0 ) {
 
         //Show Blank box:
-        $ui .= '<span class="double-icon" style="margin:0 3px;"><span class="icon-main"><i class="fas fa-map-pin" data-toggle="tooltip" data-placement="right" title="You are Here"></i></span><span class="icon-sub">&nbsp;</span></span>';
+        $ui .= '<span class="double-icon" style="margin:0 3px;"><span class="icon-main"><i class="fas fa-map-pin" data-toggle="tooltip" data-placement="right" title="You are Here"></i></span><span class="icon-top-right">&nbsp;</span></span>';
 
     }
 
@@ -1780,7 +1780,7 @@ function fn___echo_en($en, $level, $is_parent = false)
     $ui .= '<span class="icon-main en_icon_ui en_icon_ui_' . $en['en_id'] . ' en-icon en_icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'" data-toggle="tooltip" data-placement="right" title="Entity Icon">' . fn___echo_en_icon($en) . '</span>';
 
     //Show smaller entity status:
-    $ui .= '<span class="icon-sub en_status_' . $en['en_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$object_statuses['en_status'][$en['en_status']]['s_name'].': '.$object_statuses['en_status'][$en['en_status']]['s_desc'].'">' . $object_statuses['en_status'][$en['en_status']]['s_icon'] . '</span></span>';
+    $ui .= '<span class="icon-top-right en_status_' . $en['en_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$object_statuses['en_status'][$en['en_status']]['s_name'].': '.$object_statuses['en_status'][$en['en_status']]['s_desc'].'">' . $object_statuses['en_status'][$en['en_status']]['s_icon'] . '</span></span>';
 
     $ui .= '</span>';
 

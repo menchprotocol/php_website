@@ -175,7 +175,7 @@ class Chat_model extends CI_Model
     }
 
 
-    function fn___dispatch_validate_message($input_message, $recipient_en = array(), $fb_messenger_format = false, $quick_replies = array(), $message_type_en_id = 0)
+    function fn___dispatch_validate_message($input_message, $recipient_en = array(), $fb_messenger_format = false, $quick_replies = array(), $message_type_en_id = 0, $message_in_id = 0)
     {
 
         /*
@@ -225,7 +225,65 @@ class Chat_model extends CI_Model
             );
         }
 
-        //Are we validating this text for a specific message type?
+
+        /*
+         *
+         * Let's do a generic message reference validation
+         * that does not consider $message_type_en_id if passed
+         *
+         * */
+        $msg_references = fn___extract_message_references($input_message);
+
+        if (count($msg_references['ref_urls']) > 1) {
+
+            return array(
+                'status' => 0,
+                'message' => 'You can reference a maximum of 1 URL per message',
+            );
+
+        } elseif (count($msg_references['ref_entities']) > 1) {
+
+            return array(
+                'status' => 0,
+                'message' => 'Message can include a maximum of 1 entity reference',
+            );
+
+        } elseif (count($msg_references['ref_intents']) > 1) {
+
+            return array(
+                'status' => 0,
+                'message' => 'Message can include a maximum of 1 intent reference',
+            );
+
+        } elseif (count($msg_references['ref_intents']) > 0 && count($msg_references['ref_entities']) != 1)  {
+
+            return array(
+                'status' => 0,
+                'message' => 'Intent referencing requires an entity reference',
+            );
+
+        } elseif (count($msg_references['ref_entities']) > 0 && count($msg_references['ref_urls']) > 0) {
+
+            return array(
+                'status' => 0,
+                'message' => 'You can either reference 1 entity OR 1 URL (As the URL will be transformed into an entity)',
+            );
+
+        } elseif (count($msg_references['ref_commands']) > 0 && count($msg_references['ref_commands']) !== count(array_unique($msg_references['ref_commands']))) {
+
+            return array(
+                'status' => 0,
+                'message' => 'Each /command can only be used once per message',
+            );
+
+        }
+
+
+        /*
+         *
+         * $message_type_en_id Validation
+         *
+         * */
         if($message_type_en_id > 0){
 
             //See if this message type has specific input requirements:
@@ -263,50 +321,48 @@ class Chat_model extends CI_Model
 
             }
 
-            //Now check the entity/intent referencing
 
+            //Now check for intent referencing settings:
+            if(in_array(4985 , $en_all_4485[$message_type_en_id]['m_parents'])){
 
-        }
+                //Is it missing its required intent reference?
+                if(count($msg_references['ref_intents']) < 1){
+                    return array(
+                        'status' => 0,
+                        'message' => $en_all_4485[$message_type_en_id]['m_name'].' require an intent reference.',
+                    );
+                } elseif($message_in_id < 1){
+                    return array(
+                        'status' => 0,
+                        'message' => 'Message validator function missing required message intent ID.',
+                    );
+                }
 
+            } elseif(!in_array(4985 , $en_all_4485[$message_type_en_id]['m_parents']) && count($msg_references['ref_intents']) > 0){
 
+                return array(
+                    'status' => 0,
+                    'message' => $en_all_4485[$message_type_en_id]['m_name'].' do not support intent referencing.',
+                );
 
+            }
 
-        /*
-         *
-         * Analyze & Validate message references
-         *
-         * */
-        $msg_references = fn___extract_message_references($input_message);
+            //Now check for entity referencing settings:
+            if(!in_array(4986 , $en_all_4485[$message_type_en_id]['m_parents']) && count($msg_references['ref_entities']) > 0){
 
-        if (count($msg_references['ref_urls']) > 1) {
+                return array(
+                    'status' => 0,
+                    'message' => $en_all_4485[$message_type_en_id]['m_name'].' do not support entity referencing.',
+                );
 
-            return array(
-                'status' => 0,
-                'message' => 'You can reference a maximum of 1 URL per message',
-            );
-
-        } elseif (count($msg_references['ref_entities']) > 1) {
-
-            return array(
-                'status' => 0,
-                'message' => 'Message can include a maximum of 1 entity reference',
-            );
-
-        } elseif (count($msg_references['ref_entities']) > 0 && count($msg_references['ref_urls']) > 0) {
-
-            return array(
-                'status' => 0,
-                'message' => 'You can either reference 1 entity OR 1 URL (As the URL will be transformed into an entity)',
-            );
-
-        } elseif (count($msg_references['ref_commands']) > 0 && count($msg_references['ref_commands']) !== count(array_unique($msg_references['ref_commands']))) {
-
-            return array(
-                'status' => 0,
-                'message' => 'Each /command can only be used once per message',
-            );
+            }
 
         }
+
+
+
+
+
 
 
         /*

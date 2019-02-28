@@ -750,7 +750,7 @@ function fn___in_modify_save() {
                 //Did the Transaction update?
                 if (modify_data['tr_id'] > 0) {
 
-                    $('.tr_type_' + modify_data['tr_id']).html('<span class="tr_type_val" data-toggle="tooltip" data-placement="right" title="'+ en_all_4486[modify_data['tr_type_en_id']]["m_name"] + ': '+ en_all_4486[modify_data['tr_type_en_id']]["m_desc"] + '">'+ en_all_4486[modify_data['tr_type_en_id']]["m_icon"] +'</span>');
+                    $('.tr_type_' + modify_data['tr_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ en_all_4486[modify_data['tr_type_en_id']]["m_name"] + ': '+ en_all_4486[modify_data['tr_type_en_id']]["m_desc"] + '">'+ en_all_4486[modify_data['tr_type_en_id']]["m_icon"] +'</span>');
 
                     $('.tr_status_' + modify_data['tr_id']).html('<span class="tr_status_val" data-toggle="tooltip" data-placement="right" title="'+ object_js_statuses['tr_status'][modify_data['tr_status']]["s_name"] + ': '+ object_js_statuses['tr_status'][modify_data['tr_status']]["s_desc"] + '">'+ object_js_statuses['tr_status'][modify_data['tr_status']]["s_icon"] +'</span>');
 
@@ -774,7 +774,7 @@ function fn___in_modify_save() {
                 $('.in_icon_child_' + modify_data['in_id']).html(object_js_statuses['in_is_any'][modify_data['in_is_any']]["s_icon"]).attr('data-original-title', modify_data['in_outcome']);
 
 
-                $('.in_status_' + modify_data['in_id']).html('<span class="in_status_val" data-toggle="tooltip" data-placement="right" title="'+ object_js_statuses['in_status'][modify_data['in_status']]["s_name"] + ': '+ object_js_statuses['in_status'][modify_data['in_status']]["s_desc"] + '">'+ object_js_statuses['in_status'][modify_data['in_status']]["s_icon"] +'</span>');
+                $('.in_status_' + modify_data['in_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ object_js_statuses['in_status'][modify_data['in_status']]["s_name"] + ': '+ object_js_statuses['in_status'][modify_data['in_status']]["s_desc"] + '">'+ object_js_statuses['in_status'][modify_data['in_status']]["s_icon"] +'</span>');
 
                 $('.in_completion_' + modify_data['in_id']).html(( modify_data['in_completion_en_id'] > 0 ? en_all_4331[modify_data['in_completion_en_id']]["m_name"] : '' ));
 

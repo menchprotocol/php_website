@@ -2093,13 +2093,26 @@ select.form-control {
 }
 
 
-.double-icon .icon-sub {
+.double-icon .icon-top-right {
     font-size:0.7em;
     margin-top: -5px;
     position: absolute;
     top:-12px;
     right:1px;
     z-index: 999;
+}
+
+.double-icon .icon-top-left {
+    font-size:0.6em;
+    font-weight: bold;
+    position: absolute;
+    top:-9px;
+    left:1px;
+    z-index: 999;
+    width: 16px;
+    text-align: center;
+    line-height: 100%;
+    overflow: hidden;
 }
 
 .double-icon .fa-facebook-messenger, .double-icon-search .fa-facebook-messenger {
@@ -2117,7 +2130,7 @@ select.form-control {
 }
 
 
-.double-icon-search .icon-sub {
+.double-icon-search .icon-top-right {
     font-size:11px;
     position: absolute;
     top:-5px !important;

@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-02-27 10:23:25 PST
+//Generated 2019-02-28 12:41:42 PST
 
 //Only Moderators can Modify:
 $config['en_ids_4426'] = array(1280, 1308, 3286, 3288, 4374, 4426, 4430, 4433, 4755);
@@ -352,8 +352,8 @@ $config['en_all_4374'] = array(
         'm_parents' => array(4986, 4256, 4374, 4485, 4594),
     ),
     4983 => array(
-        'm_icon' => '<i class="fal fa-box-ballot"></i>',
-        'm_name' => 'Intent Message Votes',
+        'm_icon' => '<i class="fal fa-thumbs-up"></i>',
+        'm_name' => 'Intent Message Up-Votes',
         'm_desc' => '100',
         'm_parents' => array(4986, 4985, 4374, 4594, 4485),
     ),
@@ -734,8 +734,8 @@ $config['en_all_4594'] = array(
         'm_parents' => array(4986, 4256, 4374, 4485, 4594),
     ),
     4983 => array(
-        'm_icon' => '<i class="fal fa-box-ballot"></i>',
-        'm_name' => 'Intent Message Votes',
+        'm_icon' => '<i class="fal fa-thumbs-up"></i>',
+        'm_name' => 'Intent Message Up-Votes',
         'm_desc' => '',
         'm_parents' => array(4986, 4985, 4374, 4594, 4485),
     ),
@@ -903,9 +903,9 @@ $config['en_all_4454'] = array(
 $config['en_ids_4485'] = array(4983, 4231, 4232, 4233, 4601, 4602, 4234);
 $config['en_all_4485'] = array(
     4983 => array(
-        'm_icon' => '<i class="fal fa-box-ballot"></i>',
-        'm_name' => 'Votes',
-        'm_desc' => 'Everyone can vote on the effectiveness of links connecting two intents. People can submit their own up/down vote, and miners could mine votes form expert contents.',
+        'm_icon' => '<i class="fal fa-thumbs-up"></i>',
+        'm_name' => 'Up-Votes',
+        'm_desc' => 'Miners can spot intent relations in expert sources and submit up-votes for the correlations they find. Each miner may also submit their own up-vote.',
         'm_parents' => array(4986, 4985, 4374, 4594, 4485),
     ),
     4231 => array(
