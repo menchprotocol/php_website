@@ -1408,7 +1408,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
             'tr_status >=' => 0, //New+
         ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
 
-        $ui .= '<span class="icon-top-left tr_upvotes_' . $tr_id . '" data-toggle="tooltip" data-placement="right" title="Up-Votes">' . ( $tr_upvotes[0]['totals'] > 0 ? $tr_upvotes[0]['totals'] : '' ) . '</span>';
+        $ui .= '<span class="icon-top-left in_upvotes_' . $in['tr_in_child_id'] . '_'.$in['tr_in_parent_id'].'" data-toggle="tooltip" data-placement="right" title="Up-Votes">' . ( $tr_upvotes[0]['totals'] > 0 ? $tr_upvotes[0]['totals'] : '' ) . '</span>';
 
         //Show assessment score based on Intent Link Type:
         $ui .= '<span class="icon-3rd in_assessment_' . $tr_id . '" data-toggle="tooltip" data-placement="right" title="Assessment Score">'. ( $in['tr_type_en_id'] == 4228 ? ( !isset($tr_metadata['tr__assessment_points']) || $tr_metadata['tr__assessment_points'] == 0 ? '' : ( $tr_metadata['tr__assessment_points'] > 0 ? '+' : '' ) . $tr_metadata['tr__assessment_points'] ) : $tr_metadata['tr__conditional_score_min'] . ( $tr_metadata['tr__conditional_score_min']==$tr_metadata['tr__conditional_score_max'] ? '' : '-'.$tr_metadata['tr__conditional_score_max'] ).'%' ) .'</span>';
