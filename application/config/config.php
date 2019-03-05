@@ -116,11 +116,11 @@ $config['notify_admins']            = array(
 $config['ledger_filters']           = array(
                                         'tr_miner_en_id' => 'en',
                                         'tr_type_en_id' => 'en',
+                                        'tr_tr_id' => 'tr',
                                         'tr_en_parent_id' => 'en',
                                         'tr_en_child_id'  => 'en',
                                         'tr_in_parent_id' => 'in',
                                         'tr_in_child_id'  => 'in',
-                                        'tr_tr_id' => 'tr',
                                     );
 
 
