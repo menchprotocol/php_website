@@ -21,7 +21,17 @@ function in_cost_overview(seconds, in_id){
     return fn___echo_js_hours(seconds) + ( parseFloat($('.t_estimate_' + in_id + ':first').attr('intent-usd')) > 0 ? '$' : '' );
 }
 
-
+function activate_expansion(){
+    $('.is_level2_sortable').on('click', function(e) {
+        if (e.target !== this){
+            if(jQuery.inArray("click_expand", e.target.classList) == -1){
+                return;
+            }
+        }
+        //Still here? Expand children:
+        fn___ms_toggle(parseInt($(this).attr('in-tr-id')), -1);
+    });
+}
 
 $(document).ready(function () {
 
@@ -48,16 +58,9 @@ $(document).ready(function () {
     }
 
 
-    $('.is_level2_sortable').on('click', function(e) {
-        if (e.target !== this){
-            if(jQuery.inArray("click_expand", e.target.classList) == -1){
-                return;
-            }
-        }
-        //Still here? Expand children:
-        fn___ms_toggle(parseInt($(this).attr('in-tr-id')), -1);
-    });
 
+    //Activate expansion:
+    activate_expansion();
 
 
     //Watch the expand/close all buttons:
@@ -883,6 +886,9 @@ function fn___in_link_or_create(in_parent_id, is_parent, next_level, in_link_chi
                 fn___in_sort_save(in_parent_id, next_level);
 
             }
+
+            //Activate expansion:
+            activate_expansion();
 
             //Tooltips:
             $('[data-toggle="tooltip"]').tooltip();

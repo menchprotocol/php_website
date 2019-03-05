@@ -71,7 +71,7 @@ $uri_segment_2 = $this->uri->segment(2);
                                     </td>
                                     <td>
                                         <input type="text" class="algolia_search" id="matrix_search" data-lpignore="true"
-                                               placeholder="Search Intents & Entities">
+                                               placeholder="Search/Add: Intents/Entities/URLs">
                                     </td>
                                 </tr>
                             </table>
@@ -102,16 +102,6 @@ $uri_segment_2 = $this->uri->segment(2);
                             <li class="<?= ($uri_segment_1 == 'entities' && $uri_segment_2 == $session_en['en_id'] ? 'entity-active' : 'entity-inactive') ?>" data-toggle="tooltip" data-placement="left" title="My Entity">
                                 <a href="/entities/<?= $session_en['en_id'] ?>">
                                     <i class="fas fa-user-circle"></i>
-                                </a>
-                            </li>
-
-                            <li class="<?= ($uri_segment_2 == 'fn___add_source_wizard' ? 'entity-active' : 'entity-inactive' ) ?>" data-toggle="tooltip" data-placement="left" title="Add Source Wizard">
-                                <a href="/entities/fn___add_source_wizard"><i class="fas fa-plus"></i></a>
-                            </li>
-
-                            <li class="<?= ($uri_segment_1 == 'stats' ? 'ledger-active' : 'ledger-inactive') ?>" data-toggle="tooltip" data-placement="left" title="Platform Stats">
-                                <a href="/stats">
-                                    <i class="fas fa-chart-bar"></i>
                                 </a>
                             </li>
 

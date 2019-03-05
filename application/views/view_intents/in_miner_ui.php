@@ -19,7 +19,6 @@ if (isset($orphan_ins)) {
 
 
 
-
 <div class="row">
     <div class="col-xs-7 cols">
         <?php

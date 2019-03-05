@@ -1783,9 +1783,8 @@ class Chat_model extends CI_Model
                     //Send message for final confirmation with the overview of how long/difficult it would be to accomplish this intention:
                     $this->Chat_model->fn___dispatch_message(
                         'Here is an overview:' . "\n\n" .
-                        fn___echo_tree_intents($ins[0], true) .
+                        fn___echo_tree_tasks($ins[0], true) .
                         fn___echo_tree_sources($ins[0], true) .
-                        fn___echo_tree_experts($ins[0], true) .
                         fn___echo_tree_cost($ins[0], true) .
                         "\n" . 'Are you ready to ' . $ins[0]['in_outcome'] . '?',
                         $en,
@@ -1982,7 +1981,7 @@ class Chat_model extends CI_Model
                 }
 
                 //Recommend against it:
-                $message .= "\n\n" . 'I would not recommend skipping unless you feel comfortable learning these key ideas on your own.';
+                $message .= "\n\n" . 'I would not recommend skipping unless you feel comfortable completing these tasks on your own.';
 
                 //Send them the message:
                 $this->Chat_model->fn___dispatch_message(
@@ -2020,7 +2019,7 @@ class Chat_model extends CI_Model
                     $this->Matrix_model->k_skip_recursive_down($tr_id);
 
                     //Confirm the skip:
-                    $message = 'Confirmed, I marked this section as skipped. You can always re-visit these key ideas in your Action Plan and complete them at any time. /link:See in 🚩Action Plan:https://mench.com/master/actionplan/' . $actionplans[0]['tr_tr_id'] . '/' . $actionplans[0]['tr_in_child_id'];
+                    $message = 'Confirmed, I marked this section as skipped. You can always re-visit these tasks in your Action Plan and complete them at any time. /link:See in 🚩Action Plan:https://mench.com/master/actionplan/' . $actionplans[0]['tr_tr_id'] . '/' . $actionplans[0]['tr_in_child_id'];
 
                 }
 

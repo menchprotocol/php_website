@@ -85,7 +85,7 @@ class Matrix_model extends CI_Model
 
             //Inform user that they are now complete with all tasks:
             $this->Chat_model->fn___dispatch_message(
-                'Congratulations for completing your Action Plan 🎉 Over time I will keep sharing new key ideas (based on my new training data) that will help you to ' . $actionplans[0]['in_outcome'] . ' 🙌 You can, at any time, stop updates on your Action Plans by saying "unsubscribe".',
+                'Congratulations for completing your Action Plan 🎉 Over time I will keep sharing new tasks that will help you to ' . $actionplans[0]['in_outcome'] . ' 🙌 You can, at any time, stop updates on your Action Plans by saying "unsubscribe".',
                 array('en_id' => $actionplans[0]['tr_en_parent_id']),
                 true,
                 array(),

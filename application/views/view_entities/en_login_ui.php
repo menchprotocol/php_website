@@ -46,32 +46,7 @@
             <span class="pass" style="font-size:0.9em; display: none;">or <a href="javascript:void(0)"
                                                                              onclick="$('.pass').toggle()"><span class="underdot">Cancel</span></a></span>
 
-            <div style="margin: 15px 0 7px;">No Mench account yet?</div>
-
-            <?php
-            $student_ins = $this->Database_model->fn___in_fetch(array(
-                'in_id' => $this->config->item('in_tactic_id'),
-                'in_status >=' => 2, //Published+
-            ));
-            if(count($student_ins) > 0){
-                ?>
-                <div><a href="https://m.me/askmench?ref=<?= $student_ins[0]['in_id'] ?>" class="underdot"><i class="fab fa-facebook-messenger"></i> Join to <?= $student_ins[0]['in_outcome'] ?> <i class="fas fa-angle-right"></i></a></div>
-                <?php
-            }
-            ?>
-
-
-            <?php
-            $miner_ins = $this->Database_model->fn___in_fetch(array(
-                'in_id' => $this->config->item('in_miner_start_id'),
-                'in_status >=' => 2, //Published+
-            ));
-            if(count($miner_ins) > 0){
-                ?>
-                <div><a href="https://m.me/askmench?ref=<?= $miner_ins[0]['in_id'] ?>" class="underdot"><i class="fab fa-facebook-messenger"></i> Join to <?= $miner_ins[0]['in_outcome'] ?> <i class="fas fa-angle-right"></i></a></div>
-                <?php
-            }
-            ?>
+            <div style="margin: 15px 0 7px;">No Mench account yet? <a href="https://m.me/askmench?ref=8407" class="underdot">Sign Up</a>.</div>
 
         </div>
     </form>

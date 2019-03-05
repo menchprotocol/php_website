@@ -46,9 +46,7 @@ $url_part_1 = $this->uri->segment(1);
             <ul class="nav navbar-nav navbar-right">
 
                 <li><a href="/"><i class="fas fa-hashtag"></i> Intents</a></li>
-                <li><a href="/ledger"><i class="fas fa-atlas"></i> Ledger</a></li>
-                <li><a href="/stats"><i class="fas fa-chart-bar"></i> Stats</a></li>
-                <li><a href="/7436?expand_mode=1"><i class="fas fa-lightbulb"></i> About Us</a></li>
+                <li><a href="/7436"><i class="fas fa-info-circle"></i> About Us</a></li>
 
                 <?php
                 if (isset($session_en['en_id'])) {
@@ -61,6 +59,7 @@ $url_part_1 = $this->uri->segment(1);
 
                 } else {
                     echo '<li><a href="/login'. ( isset($in['in_id']) ? '?url=%2Fintents%2F'.$in['in_id'] : '' ) .'"><i class="fas fa-sign-in"></i> Sign In</a></li>';
+                    //echo '<li><a href="https://m.me/askmench?ref=8407"><i class="fas fa-user-plus"></i> Sign Up</a></li>';
                 }
                 ?>
             </ul>

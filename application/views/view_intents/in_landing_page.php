@@ -43,25 +43,6 @@ $hide_subscribe = (isset($_GET['hide_subscribe']) && intval($_GET['hide_subscrib
     <div id="in_landing_page">
 
         <?php
-        if (!$is_primary_in && count($in['in__parents']) > 0) {
-
-            //Fetch Parent Intents:
-            $parent_ins = null;
-
-            //Show all parent intents for this intent:
-            foreach ($in['in__parents'] as $in_parent) {
-                if ($in_parent['in_status'] >= 2) {
-                    $parent_ins .= '<a class="list-group-item" href="/' . $in_parent['in_id'] . '"><span class="badge badge-primary"><i class="fas fa-angle-left"></i></span> ' . $in_parent['in_outcome'] . '</a>';
-                }
-            }
-
-            if ($parent_ins) {
-                //Display generated parents:
-                echo '<div class="list-group" style="margin-top: 10px;">';
-                echo $parent_ins;
-                echo '</div>';
-            }
-        }
 
         //Intent Title:
         echo '<h1 style="margin-bottom:30px;" id="title-parent">' . $in['in_outcome'] . '</h1>';
@@ -89,10 +70,9 @@ $hide_subscribe = (isset($_GET['hide_subscribe']) && intval($_GET['hide_subscrib
 
             <h3 style="margin-top:0px !important;">Overview:</h3>
             <div style="margin:12px 0 0 5px;" class="maxout">
-                <?= fn___echo_tree_intents($in, false, $expand_mode) ?>
-                <?= fn___echo_tree_sources($in, false, $expand_mode) ?>
-                <?= fn___echo_tree_experts($in, false, $expand_mode) ?>
-                <?= fn___echo_tree_cost($in, false, $expand_mode) ?>
+                <?= fn___echo_tree_tasks($in, false) ?>
+                <?= fn___echo_tree_sources($in, false) ?>
+                <?= fn___echo_tree_cost($in, false) ?>
             </div>
         <?php } ?>
 
@@ -116,7 +96,7 @@ $hide_subscribe = (isset($_GET['hide_subscribe']) && intval($_GET['hide_subscrib
                     echo '<div class="panel-group" id="open' . $in_level2_counter . '" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
             <div class="panel-heading" role="tab" id="heading' . $in_level2_counter . '">
                 <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" data-parent="#open' . $in_level2_counter . '" href="#collapse' . $in_level2_counter . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $in_level2_counter . '">#' . ($in_level2_counter + 1) . ' <span id="title-' . $in_level2['in_id'] . '">' . $in_level2['in_outcome'] . '</span>';
+                    <a role="button" data-toggle="collapse" data-parent="#open' . $in_level2_counter . '" href="#collapse' . $in_level2_counter . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $in_level2_counter . '">'.($in['in_is_any'] ? 'Option ' : 'Task '). ($in_level2_counter + 1) . ': <span id="title-' . $in_level2['in_id'] . '">' . $in_level2['in_outcome'] . '</span>';
 
                     //Show time if we have it:
                     $in_level2_metadata = unserialize($in_level2['in_metadata']);
@@ -151,7 +131,7 @@ $hide_subscribe = (isset($_GET['hide_subscribe']) && intval($_GET['hide_subscrib
                                 continue; //Do not show conditional post-assessment intents
                             }
 
-                            echo '<li>#' . ($in_level2_counter + 1) . '.' . ($in_level3_counter + 1) . ' ' . $in_level3['in_outcome'];
+                            echo '<li>'.($in_level2['in_is_any'] ? 'Option ' : 'Task ') . ($in_level2_counter + 1) . '.' . ($in_level3_counter + 1) . ': ' . $in_level3['in_outcome'];
 
                             //Show time if we have it:
                             $in_level3_metadata = unserialize($in_level3['in_metadata']);
@@ -168,7 +148,7 @@ $hide_subscribe = (isset($_GET['hide_subscribe']) && intval($_GET['hide_subscrib
 
                         //Since it has children, lets also give the option to navigate downwards ONLY IF...
                         if ($in_level2['in_status'] >= 2 && !$expand_mode) {
-                            echo '<div>You can choose to <a href="/' . $in_level2['in_id'] . '" ' . ($is_primary_in ? 'onclick="confirm_child_go(' . $in_level2['in_id'] . ')"' : '') . ' class="alink-' . $in_level2['in_id'] . '" style="text-decoration:underline;">subscribe to this part only</a>.</div>';
+                            echo '<div>You can choose to <a href="/' . $in_level2['in_id'] . '" ' . ($is_primary_in ? 'onclick="confirm_child_go(' . $in_level2['in_id'] . ')"' : '') . ' class="alink-' . $in_level2['in_id'] . '" style="text-decoration:underline;">subscribe to this task only</a>.</div>';
                         }
 
                     }
@@ -199,7 +179,7 @@ $hide_subscribe = (isset($_GET['hide_subscribe']) && intval($_GET['hide_subscrib
                 <?php if ($in['in_id']==7436) { ?>
                     You may also
                 <?php } else { ?>
-                <a href="/7436?expand_mode=1" style="text-decoration:underline; display: inline-block;">Learn more</a> about Mench
+                <a href="/7436" style="text-decoration:underline; display: inline-block;">Learn more</a> about Mench
                  or
                 <?php } ?>
                 <a href="/<?= $this->config->item('in_miner_start_id') ?>"
@@ -211,6 +191,7 @@ $hide_subscribe = (isset($_GET['hide_subscribe']) && intval($_GET['hide_subscrib
     </div>
 
 <?php
+
 //Display other featured intents:
 $featured_ins = $ins = $this->Database_model->fn___in_fetch(array(
     'in_status' => 3, //Featured Intents
@@ -220,10 +201,17 @@ if (count($featured_ins) > 0 && !$hide_subscribe) {
     echo '<div>';
     echo '<h3>Featured Intentions:</h3>';
     echo '<div class="list-group actionplan_list maxout">';
+    foreach ($in['in__parents'] as $in_parent) {
+        if ($in_parent['in_status'] >= 2) {
+            echo fn___echo_in_featured($in_parent);
+        }
+    }
     foreach ($featured_ins as $featured_c) {
         echo fn___echo_in_featured($featured_c);
     }
     echo '</div>';
     echo '</div>';
 }
+
+
 ?>

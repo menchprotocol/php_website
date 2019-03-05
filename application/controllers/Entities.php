@@ -11,6 +11,10 @@ class Entities extends CI_Controller
         $this->output->enable_profiler(FALSE);
     }
 
+    function session()
+    {
+        fn___echo_json($this->session->all_userdata());
+    }
 
     function fn___add_source_wizard()
     {

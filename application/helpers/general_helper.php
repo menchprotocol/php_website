@@ -234,7 +234,7 @@ function fn___filter_array($array, $match_key, $match_value)
         return false;
     }
     foreach ($array as $key => $value) {
-        if (isset($value[$match_key]) && $value[$match_key] == $match_value) {
+        if (isset($value[$match_key]) && ( is_array($match_value) ? in_array($value[$match_key], $match_value) : $value[$match_key]==$match_value )) {
             return $array[$key];
         }
     }
@@ -254,11 +254,6 @@ function fn___en_auth($en_permission_group = null, $force_redirect = 0)
     if (!$en_permission_group && is_array($session_en) && count($session_en) > 0) {
 
         //No minimum level required, grant access IF user is logged in:
-        return $session_en;
-
-    } elseif (isset($session_en['en__parents']) && fn___filter_array($session_en['en__parents'], 'en_id', 1308)) {
-
-        //Always grant access to miners:
         return $session_en;
 
     } elseif (isset($session_en['en_id']) && fn___filter_array($session_en['en__parents'], 'en_id', $en_permission_group)) {

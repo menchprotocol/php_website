@@ -328,15 +328,14 @@ class Database_model extends CI_Model
                         //Send Email:
                         $this->Chat_model->fn___dispatch_email($subscription['admin_emails'], $subscription['admin_en_ids'], $subject, $html_message);
 
-
                     }
                 }
             }
         }
 
-
         //Return:
         return $insert_columns;
+
     }
 
 

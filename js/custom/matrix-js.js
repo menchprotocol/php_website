@@ -10,6 +10,17 @@ var isAdvancedUpload = function () {
     return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window;
 }();
 
+
+function fn___validURL(str) {
+    var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+        '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+        '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+        '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+    return !!pattern.test(str);
+}
+
 function fn___in_matrix_tips(in_id) {
 
     //See if this tip needs to be loaded:
@@ -169,6 +180,8 @@ $(document).ready(function () {
         }
     });
 
+
+
     $("#matrix_search").on('autocomplete:selected', function (event, suggestion, dataset) {
 
         if (parseInt(suggestion.alg_obj_is_in)==1) {
@@ -206,12 +219,18 @@ $(document).ready(function () {
                     }
                 },
                 empty: function (data) {
-                    if($("#matrix_search").val().charAt(0)=='#'){
-                        return 'No intents found';
+
+                    if(fn___validURL(data.query)){
+                        //Miner pasted a URL into the search bar, take them to the Add Source Wizard:
+                        return '<a href="/entities/fn___add_source_wizard?url='+ encodeURI(data.query) +'" class="suggestion"><i class="fal fa-plus-circle" style="margin: 0 5px;"></i> Add Source Wizard</a>'
+                            + '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> URL not found</div>';
+
+                    } else if($("#matrix_search").val().charAt(0)=='#'){
+                        return '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> No intents found</div>';
                     } else if($("#matrix_search").val().charAt(0)=='@'){
-                        return 'No entities found';
+                        return '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> No entities found</div>';
                     } else {
-                        return 'No intents/entities found';
+                        return '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> No intents/entities found</div>';
                     }
                 },
             }

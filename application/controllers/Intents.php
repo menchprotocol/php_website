@@ -461,6 +461,26 @@ class Intents extends CI_Controller
                     $in_metadata_modify['in__tree_min_cost'] = intval($_POST[$key]) - ( isset($in_metadata['in__tree_min_cost']) ? intval($in_metadata['in__tree_min_cost']) : 0 );
                     $in_metadata_modify['in__tree_max_cost'] = intval($_POST[$key]) - ( isset($in_metadata['in__tree_max_cost']) ? intval($in_metadata['in__tree_max_cost']) : 0 );
 
+                } elseif ($key == 'in_outcome') {
+
+                    //Check to make sure it's not a duplicate outcome:
+                    $duplicate_outcome_ins = $this->Database_model->fn___in_fetch(array(
+                        'in_id !=' => $ins[0]['in_id'],
+                        'in_status >=' => 0,
+                        'LOWER(in_outcome)' => strtolower($value),
+                    ));
+
+                    if(count($duplicate_outcome_ins) > 0){
+                        //This is a duplicate, disallow:
+                        return fn___echo_json(array(
+                            'status' => 0,
+                            'message' => 'Outcome ['.$value.'] already taken by intent #'.$duplicate_outcome_ins[0]['in_id'],
+                        ));
+                    } else {
+                        //Cleanup outcome before saving:
+                        $_POST[$key] = trim($_POST[$key]);
+                    }
+
                 } elseif ($key == 'in_status') {
 
                     //Has intent been removed?

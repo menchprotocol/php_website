@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class FacebookWebhook extends CI_Controller
+class Messenger extends CI_Controller
 {
 
     function __construct()
@@ -13,7 +13,7 @@ class FacebookWebhook extends CI_Controller
     }
 
 
-    function index()
+    function webhook()
     {
 
         /*

@@ -54,6 +54,10 @@ $(document).ready(function() {
     });
 
 
+    if($('#source_url').val().length > 0){
+        fn___add_source_paste_url();
+    }
+
     //Watchout for source URL change
     var textInput = document.getElementById('source_url');
 

@@ -22,6 +22,10 @@ class Cron extends CI_Controller
     //30 3 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron e_score_recursive
 
 
+    function info()
+    {
+        echo phpinfo();
+    }
 
 
     function urls(){

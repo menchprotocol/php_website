@@ -13,7 +13,6 @@
 ga('create', 'UA-92774608-1', 'auto');
 ga('send', 'pageview');
 
-
 function echo_js_suggestion(alg_obj, is_top){
 
     //Determine object type:

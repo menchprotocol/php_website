@@ -15,24 +15,38 @@ class Ledger extends CI_Controller
 
     function index()
     {
-
         /*
          *
          * List all Transactions on reverse chronological order
+         * and Display statuses for intents, entities and
+         * ledger transactions.
          *
          * */
 
-        $session_en = fn___en_auth(null, true); //Just be logged in to browse
+        $session_en = fn___en_auth(); //Just be logged in to browse
 
+        if($session_en){
 
-        $this->load->view('view_shared/matrix_header', array(
-            'title' => 'Ledger Transactions',
-        ));
-        $this->load->view('view_ledger/ledger_ui');
-        $this->load->view('view_shared/matrix_footer');
+            //Miner logged in stats
+            $this->load->view('view_shared/matrix_header', array(
+                'title' => 'Mench Ledger',
+            ));
+            $this->load->view('view_ledger/ledger_ui');
+            $this->load->view('view_shared/matrix_footer');
 
+        } else {
 
+            //Public facing stats:
+            $this->load->view('view_shared/public_header', array(
+                'title' => 'Mench Ledger',
+            ));
+            $this->load->view('view_ledger/ledger_ui');
+            $this->load->view('view_shared/public_footer');
+        }
     }
+
+
+
 
 
     function fn___add_raw(){
@@ -288,23 +302,32 @@ class Ledger extends CI_Controller
 
     function fn___tr_json($tr_id)
     {
-        //Authenticate miner access:
-        $session_en = fn___en_auth(array(1308), true);
 
         //Fetch transaction metadata and display it:
         $trs = $this->Database_model->fn___tr_fetch(array(
             'tr_id' => $tr_id,
         ));
 
-        //Did we find it?
-        if (count($trs) == 1) {
+        if (count($trs) < 1) {
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Transaction ID',
+            ));
+        } elseif(in_array($trs[0]['tr_type_en_id'] , $this->config->item('en_ids_4755')) /* Transaction Type is locked */ && !fn___en_auth(array(1281)) /* Viewer NOT a moderator */){
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Transaction content visible to moderators only',
+            ));
+        } elseif(!fn___en_auth(array(1308)) /* Viewer NOT a miner */) {
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Transaction metadata visible to miners only',
+            ));
+        } else {
             //unserialize metadata first:
             $trs[0]['tr_metadata'] = unserialize($trs[0]['tr_metadata']);
             //Print on scree:
             fn___echo_json($trs[0]);
-        } else {
-            //Ooops
-            fn___echo_json(array('error' => 'Not Found'));
         }
     }
 

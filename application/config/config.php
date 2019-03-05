@@ -15,7 +15,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 
 //UI Display:
-$config['app_version']              = '0.7617'; //Cache buster in URLs for static js/css files
+$config['app_version']              = '0.762'; //Cache buster in URLs for static js/css files
 $config['en_per_page']              = 50; //Limits the maximum entities loaded per page
 
 
@@ -116,10 +116,10 @@ $config['notify_admins']            = array(
 $config['ledger_filters']           = array(
                                         'tr_miner_en_id' => 'en',
                                         'tr_type_en_id' => 'en',
-                                        'tr_en_child_id'  => 'en',
                                         'tr_en_parent_id' => 'en',
-                                        'tr_in_child_id'  => 'in',
+                                        'tr_en_child_id'  => 'en',
                                         'tr_in_parent_id' => 'in',
+                                        'tr_in_child_id'  => 'in',
                                         'tr_tr_id' => 'tr',
                                     );
 

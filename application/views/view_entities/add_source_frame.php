@@ -1,6 +1,6 @@
 
 
-<script src="/js/custom/entity-source-add.js?v=v<?= $this->config->item('app_version').time() ?>"
+<script src="/js/custom/add-source-wizard.js?v=v<?= $this->config->item('app_version').time() ?>"
         type="text/javascript"></script>
 
 
@@ -16,7 +16,7 @@
         <h4>Source URL:</h4>
     </div>
     <span class="white-wrapper">
-        <input type="text" id="source_url" value="" placeholder="https://www.youtube.com/watch?v=ebEairg3G3w" class="form-control border">
+        <input type="text" id="source_url" value="<?= ( isset($_GET['url']) ? urldecode($_GET['url']) : '' ) ?>" placeholder="https://www.youtube.com/watch?v=ebEairg3G3w" class="form-control border">
     </span>
 
     <br />
