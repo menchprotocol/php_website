@@ -16,7 +16,7 @@ if ((isset($session_en['en__actionplans']) && count($session_en['en__actionplans
     //Fetch page instantly as we know who this is:
     ?>
     <script>
-        $.post("/master/fn___display_actionplan/0/<?= ( isset($actionplan_tr_id) ? $actionplan_tr_id : $session_en['en__actionplans'][0]['tr_id']) ?>/<?= (isset($in_id) ? intval($in_id) : $session_en['en__actionplans'][0]['tr_child_intent']) ?>", {}, function (data) {
+        $.post("/master/fn___display_actionplan/0/<?= ( isset($actionplan_tr_id) ? $actionplan_tr_id : $session_en['en__actionplans'][0]['tr_id']) ?>/<?= (isset($in_id) ? intval($in_id) : $session_en['en__actionplans'][0]['tr_child_intent_id']) ?>", {}, function (data) {
             $("#page_content").html(data);
 
             //Load tooldip:

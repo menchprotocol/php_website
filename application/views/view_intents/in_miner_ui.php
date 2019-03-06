@@ -37,7 +37,7 @@ if (isset($orphan_ins)) {
             //Count orphans only IF we are in the top parent root:
             if ($this->config->item('in_tactic_id') == $in['in_id'] && 0) {
                 $orphans_count = count($this->Database_model->fn___in_fetch(array(
-                    ' NOT EXISTS (SELECT 1 FROM table_ledger WHERE in_id=tr_child_intent AND tr_status>=0) ' => null,
+                    ' NOT EXISTS (SELECT 1 FROM table_ledger WHERE in_id=tr_child_intent_id AND tr_status>=0) ' => null,
                 )));
                 if ($orphans_count > 0) {
                     echo '<span style="padding-left:8px; display: inline-block;"><a href="/intents/fn___in_orphans">' . $orphans_count . ' Orphans &raquo;</a></span>';
@@ -189,7 +189,7 @@ if (isset($orphan_ins)) {
 
 
                             <span class="mini-header">Completion Response:</span>
-                            <select class="form-control border" id="in_requirement_entity" data-toggle="tooltip" title="Intent Completion Requirements" data-placement="top" style="margin-bottom: 12px;">
+                            <select class="form-control border" id="in_requirement_entity_id" data-toggle="tooltip" title="Intent Completion Requirements" data-placement="top" style="margin-bottom: 12px;">
                                 <option value="0">No Response Required</option>
                                 <?php
                                 foreach ($this->config->item('en_all_4331') as $en_id => $m) {
@@ -287,7 +287,7 @@ if (isset($orphan_ins)) {
                                     foreach ($this->config->item('en_all_4486') as $en_id => $m) {
                                         echo '<div class="radio" style="display:block; margin-top: 0 !important; width:190px;" data-toggle="tooltip" title="' . $m['m_desc'] . '" data-placement="top">
                                             <label class="underdot">
-                                                <input type="radio" id="tr_type_entity_' . $en_id . '" name="tr_type_entity" value="' . $en_id . '" />
+                                                <input type="radio" id="tr_type_entity_id_' . $en_id . '" name="tr_type_entity_id" value="' . $en_id . '" />
                                                 '.$m['m_icon'].' ' . $m['m_name'] . '
                                             </label>
                                         </div>';

@@ -99,7 +99,7 @@ $(document).ready(function () {
     });
 
     //Lookout for intent link related changes:
-    $('input[type=radio][name=tr_type_entity], #tr_status').change(function () {
+    $('input[type=radio][name=tr_type_entity_id], #tr_status').change(function () {
         fn___in_adjust_link_ui();
     });
 
@@ -220,10 +220,10 @@ function fn___in_action_plans(in_id){
 function fn___in_adjust_isany_ui() {
     if ($('#in_type_0').is(':checked')) {
         //Unlock settings:
-        $('#in_requirement_entity').prop('disabled', false);
+        $('#in_requirement_entity_id').prop('disabled', false);
     } else {
         //Any is selected, lock the completion settings as its not allowed for ANY Branches:
-        $('#in_requirement_entity').val('0').prop('disabled', 'disabled');
+        $('#in_requirement_entity_id').val('0').prop('disabled', 'disabled');
     }
 }
 
@@ -248,7 +248,7 @@ function fn___in_adjust_link_ui() {
         }
 
         //What's the intent link type?
-        if ($('#tr_type_entity_4229').is(':checked')) {
+        if ($('#tr_type_entity_id_4229').is(':checked')) {
             //Conditional link is checked:
             $('.score_range_box').removeClass('hidden');
             $('.score_points').addClass('hidden');
@@ -590,7 +590,7 @@ function fn___in_modify_load(in_id, tr_id) {
             $('#in_status').val(data.in.in_status).attr('original-status', data.in.in_status); //Set the status before it gets changed by miners
             $('#in_dollar_cost').val(data.in.in_dollar_cost);
             $('#in_seconds_cost').val(data.in.in_seconds_cost);
-            $('#in_requirement_entity').val(data.in.in_requirement_entity);
+            $('#in_requirement_entity_id').val(data.in.in_requirement_entity_id);
             $('.tr_in_link_title').text('');
 
             //Load intent link data if available:
@@ -607,12 +607,12 @@ function fn___in_modify_load(in_id, tr_id) {
                 $('.tr_in_link_title').text(( $('.intent_line_' + in_id).hasClass('parent-intent') ? 'Child' : 'Parent' ));
 
                 //Is this a conditional link? If so, load the min/max range:
-                if (data.tr.tr_type_entity == 4229) {
+                if (data.tr.tr_type_entity_id == 4229) {
                     //Yes, load the data (which must be there):
-                    $('#tr_type_entity_4229').prop("checked", true);
+                    $('#tr_type_entity_id_4229').prop("checked", true);
                 } else {
                     //Fixed link:
-                    $('#tr_type_entity_4228').prop("checked", true);
+                    $('#tr_type_entity_id_4228').prop("checked", true);
                 }
             }
 
@@ -661,7 +661,7 @@ function fn___in_modify_save() {
         in_outcome: $('#in_outcome').val(),
         in_status: parseInt($('#in_status').val()),
         in_seconds_cost: parseInt($('#in_seconds_cost').val()),
-        in_requirement_entity: parseInt($('#in_requirement_entity').val()),
+        in_requirement_entity_id: parseInt($('#in_requirement_entity_id').val()),
         in_dollar_cost: parseFloat($('#in_dollar_cost').val()),
         in_type: parseInt($('input[name=in_type]:checked').val()),
         apply_recursively: (document.getElementById('apply_recursively').checked ? 1 : 0),
@@ -669,7 +669,7 @@ function fn___in_modify_save() {
         //Transaction variables:
         tr_id: parseInt($('#modifybox').attr('intent-tr-id')), //Will be zero for Level 1 intent!
         tr_in_focus_ids: tr_in_focus_ids,
-        tr_type_entity: null,
+        tr_type_entity_id: null,
         tr_in_link_update: null,
         tr__conditional_score_min: null,
         tr__conditional_score_max: null,
@@ -680,14 +680,14 @@ function fn___in_modify_save() {
     if (modify_data['tr_id'] > 0) {
 
         modify_data['tr_status'] = parseInt($('#tr_status').val());
-        modify_data['tr_type_entity'] = parseInt($('input[name=tr_type_entity]:checked').val());
+        modify_data['tr_type_entity_id'] = parseInt($('input[name=tr_type_entity_id]:checked').val());
         modify_data['tr_in_link_update'] = $('#tr_in_link_update').val();
 
-        if(modify_data['tr_type_entity'] == 4229){ //Conditional Intent Link
+        if(modify_data['tr_type_entity_id'] == 4229){ //Conditional Intent Link
             //Post-assessment condition range:
             modify_data['tr__conditional_score_min'] = $('#tr__conditional_score_min').val();
             modify_data['tr__conditional_score_max'] = $('#tr__conditional_score_max').val();
-        } else if(modify_data['tr_type_entity'] == 4228){
+        } else if(modify_data['tr_type_entity_id'] == 4228){
             //Pre-Assessment score:
             modify_data['tr__assessment_points'] = $('#tr__assessment_points').val();
         }
@@ -753,12 +753,12 @@ function fn___in_modify_save() {
                 //Did the Transaction update?
                 if (modify_data['tr_id'] > 0) {
 
-                    $('.tr_type_' + modify_data['tr_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ en_all_4486[modify_data['tr_type_entity']]["m_name"] + ': '+ en_all_4486[modify_data['tr_type_entity']]["m_desc"] + '">'+ en_all_4486[modify_data['tr_type_entity']]["m_icon"] +'</span>');
+                    $('.tr_type_' + modify_data['tr_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ en_all_4486[modify_data['tr_type_entity_id']]["m_name"] + ': '+ en_all_4486[modify_data['tr_type_entity_id']]["m_desc"] + '">'+ en_all_4486[modify_data['tr_type_entity_id']]["m_icon"] +'</span>');
 
                     $('.tr_status_' + modify_data['tr_id']).html('<span class="tr_status_val" data-toggle="tooltip" data-placement="right" title="'+ object_js_statuses['tr_status'][modify_data['tr_status']]["s_name"] + ': '+ object_js_statuses['tr_status'][modify_data['tr_status']]["s_desc"] + '">'+ object_js_statuses['tr_status'][modify_data['tr_status']]["s_icon"] +'</span>');
 
                     //Update Assessment
-                    $(".in_assessment_" + modify_data['tr_id']).html(( modify_data['tr_type_entity']==4228 ? ( modify_data['tr__assessment_points'] != 0 ? ( modify_data['tr__assessment_points'] > 0 ? '+' : '' ) + modify_data['tr__assessment_points'] : '' ) : modify_data['tr__conditional_score_min'] + ( modify_data['tr__conditional_score_min']==modify_data['tr__conditional_score_max'] ? '' : '-' + modify_data['tr__conditional_score_max'] ) + '%' ));
+                    $(".in_assessment_" + modify_data['tr_id']).html(( modify_data['tr_type_entity_id']==4228 ? ( modify_data['tr__assessment_points'] != 0 ? ( modify_data['tr__assessment_points'] > 0 ? '+' : '' ) + modify_data['tr__assessment_points'] : '' ) : modify_data['tr__conditional_score_min'] + ( modify_data['tr__conditional_score_min']==modify_data['tr__conditional_score_max'] ? '' : '-' + modify_data['tr__conditional_score_max'] ) + '%' ));
 
                 }
 
@@ -779,7 +779,7 @@ function fn___in_modify_save() {
 
                 $('.in_status_' + modify_data['in_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ object_js_statuses['in_status'][modify_data['in_status']]["s_name"] + ': '+ object_js_statuses['in_status'][modify_data['in_status']]["s_desc"] + '">'+ object_js_statuses['in_status'][modify_data['in_status']]["s_icon"] +'</span>');
 
-                $('.in_completion_' + modify_data['in_id']).html(( modify_data['in_requirement_entity'] > 0 ? en_all_4331[modify_data['in_requirement_entity']]["m_name"] : '' ));
+                $('.in_completion_' + modify_data['in_id']).html(( modify_data['in_requirement_entity_id'] > 0 ? en_all_4331[modify_data['in_requirement_entity_id']]["m_name"] : '' ));
 
 
 

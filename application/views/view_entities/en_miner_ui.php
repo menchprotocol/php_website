@@ -57,7 +57,7 @@
         //Count orphans IF we are in the top parent root:
         if ($this->config->item('en_start_here_id') == $entity['en_id'] && 0) {
             $orphans_count = count($this->Database_model->fn___en_fetch(array(
-                ' NOT EXISTS (SELECT 1 FROM table_ledger WHERE en_id=tr_child_entity AND tr_status>=0) ' => null,
+                ' NOT EXISTS (SELECT 1 FROM table_ledger WHERE en_id=tr_child_entity_id AND tr_status>=0) ' => null,
             ), array('skip_en__parents')));
 
             if ($orphans_count > 0) {
@@ -71,8 +71,8 @@
 
         //Fetch current count for each status from DB:
         $child_en_filters = $this->Database_model->fn___tr_fetch(array(
-            'tr_parent_entity' => $entity['en_id'],
-            'tr_type_entity IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            'tr_parent_entity_id' => $entity['en_id'],
+            'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
             'tr_status >=' => 0, //New+
             'en_status >=' => 0, //New+
         ), array('en_child'), 0, 0, array('en_status' => 'ASC'), 'COUNT(en_id) as totals, en_status', 'en_status');

@@ -9,8 +9,8 @@ $en_all_4485 = $this->config->item('en_all_4485');
 //Fetch all messages:
 $metadatas = $this->Database_model->fn___tr_fetch(array(
     'tr_status >=' => 0, //New+
-    'tr_type_entity IN (' . join(',', $en_ids_4485) . ')' => null, //All Intent messages
-    'tr_child_intent' => $in_id,
+    'tr_type_entity_id IN (' . join(',', $en_ids_4485) . ')' => null, //All Intent messages
+    'tr_child_intent_id' => $in_id,
 ), array(), 0, 0, array('tr_order' => 'ASC'));
 
 
@@ -20,14 +20,14 @@ $metadata_body_ui = '';
 foreach ($metadatas as $tr) {
 
     $metadata_body_ui .= fn___echo_in_message_manage(array_merge($tr, array(
-        'tr_child_entity' => $session_en['en_id'],
+        'tr_child_entity_id' => $session_en['en_id'],
     )));
 
     //Increase counter:
-    if (isset($counters[$tr['tr_type_entity']])) {
-        $counters[$tr['tr_type_entity']]++;
+    if (isset($counters[$tr['tr_type_entity_id']])) {
+        $counters[$tr['tr_type_entity_id']]++;
     } else {
-        $counters[$tr['tr_type_entity']] = 1;
+        $counters[$tr['tr_type_entity_id']] = 1;
     }
 
 }
@@ -40,7 +40,7 @@ foreach ($metadatas as $tr) {
     var in_id = <?= $in_id ?>;
     var tr_content_max = <?= $tr_content_max ?>;
     var metadata_count = <?= count($metadatas) ?>;
-    var focus_tr_type_entity = <?= $en_ids_4485[0] ?>; //The message type that is the focus on-start.
+    var focus_tr_type_entity_id = <?= $en_ids_4485[0] ?>; //The message type that is the focus on-start.
 </script>
 <script src="/js/custom/messaging-js.js?v=v<?= $this->config->item('app_version') ?>" type="text/javascript"></script>
 
@@ -49,9 +49,9 @@ foreach ($metadatas as $tr) {
 <!-- Message types navigation menu -->
 <ul class="nav nav-tabs iphone-nav-tabs">
     <?php
-    foreach ($en_all_4485 as $tr_type_entity => $m) {
-        echo '<li role="presentation" class="nav_' . $tr_type_entity . ' active">';
-        echo '<a href="#intentmessages-' . $in_id . '-'.$tr_type_entity.'"> ' . $m['m_icon'] . ' ' . $m['m_name'] . ' [<span class="mtd_count_'.$in_id.'_'.$tr_type_entity.'">'.( isset($counters[$tr_type_entity]) ? $counters[$tr_type_entity] : 0 ).'</span>] </a>';
+    foreach ($en_all_4485 as $tr_type_entity_id => $m) {
+        echo '<li role="presentation" class="nav_' . $tr_type_entity_id . ' active">';
+        echo '<a href="#intentmessages-' . $in_id . '-'.$tr_type_entity_id.'"> ' . $m['m_icon'] . ' ' . $m['m_name'] . ' [<span class="mtd_count_'.$in_id.'_'.$tr_type_entity_id.'">'.( isset($counters[$tr_type_entity_id]) ? $counters[$tr_type_entity_id] : 0 ).'</span>] </a>';
         echo '</li>';
     }
     ?>
@@ -63,10 +63,10 @@ foreach ($metadatas as $tr) {
     <?php
 
     //Show no-Message notifications for each message type:
-    foreach ($en_all_4485 as $tr_type_entity => $m) {
+    foreach ($en_all_4485 as $tr_type_entity_id => $m) {
 
 
-        echo '<div class="all_msg msg_en_type_' . $tr_type_entity . ' sorting-enabled">';
+        echo '<div class="all_msg msg_en_type_' . $tr_type_entity_id . ' sorting-enabled">';
 
 
         //Learn more option:
@@ -74,29 +74,29 @@ foreach ($metadatas as $tr) {
 
 
         //Does it support sorting?
-        if(in_array(4603, $en_all_4485[$tr_type_entity]['m_parents'])){
+        if(in_array(4603, $en_all_4485[$tr_type_entity_id]['m_parents'])){
             echo '<i class="fas fa-exchange rotate90"></i> <span data-toggle="tooltip" class="underdot" title="Messages are delivered in order so you can can sort them as needed" data-placement="bottom">Sortable</span> &nbsp;';
         }
 
         //Does it support switching?
-        if(in_array(4742, $en_all_4485[$tr_type_entity]['m_parents'])){
+        if(in_array(4742, $en_all_4485[$tr_type_entity_id]['m_parents'])){
             echo '<i class="fas fa-exchange"></i> <span data-toggle="tooltip" class="underdot" title="You can change message type with other messages that are also switchable" data-placement="bottom">Switchable</span> &nbsp;';
         }
 
         //Does it support entity referencing?
-        if(in_array(4986, $en_all_4485[$tr_type_entity]['m_parents'])){
+        if(in_array(4986, $en_all_4485[$tr_type_entity_id]['m_parents'])){
             echo '<i class="fas fa-at"></i> <span data-toggle="tooltip" class="underdot" title="You can reference up to 1 entity using the @ sign" data-placement="bottom">Entity Reference</span> &nbsp;';
         }
 
         //Does it require intent voting?
-        if(in_array(4985, $en_all_4485[$tr_type_entity]['m_parents'])){
+        if(in_array(4985, $en_all_4485[$tr_type_entity_id]['m_parents'])){
             echo '<i class="fas fa-hashtag"></i> <span data-toggle="tooltip" class="underdot" title="You can reference up to 1 parent intent using the # sign" data-placement="bottom">Intent Reference</span> &nbsp;';
         }
 
 
         //See if this message type has specific input requirements:
         $en_all_4485 = $this->config->item('en_all_4485');
-        $completion_requirements = array_intersect($en_all_4485[$tr_type_entity]['m_parents'], $this->config->item('en_ids_4331'));
+        $completion_requirements = array_intersect($en_all_4485[$tr_type_entity_id]['m_parents'], $this->config->item('en_ids_4331'));
         if(count($completion_requirements) == 1){
             $en_id = array_shift($completion_requirements);
             $en_all_4331 = $this->config->item('en_all_4331');
@@ -109,8 +109,8 @@ foreach ($metadatas as $tr) {
         echo '</div>';
 
 
-        if (!isset($counters[$tr_type_entity])) {
-            echo '<div class="ix-tip no-messages' . $in_id . '_' . $tr_type_entity . ' all_msg msg_en_type_' . $tr_type_entity . '"><i class="fas fa-exclamation-triangle"></i> No ' . strtolower($m['m_name']) . ' added yet</div>';
+        if (!isset($counters[$tr_type_entity_id])) {
+            echo '<div class="ix-tip no-messages' . $in_id . '_' . $tr_type_entity_id . ' all_msg msg_en_type_' . $tr_type_entity_id . '"><i class="fas fa-exclamation-triangle"></i> No ' . strtolower($m['m_name']) . ' added yet</div>';
         }
     }
 
@@ -145,8 +145,8 @@ foreach ($metadatas as $tr) {
 
 
     //Fetch for all message types:
-    foreach ($en_all_4485 as $tr_type_entity => $m) {
-        echo '<div class="iphone-add-btn all_msg msg_en_type_' . $tr_type_entity . '"><a href="javascript:fn___message_create();" id="add_message_' . $tr_type_entity . '_' . $in_id . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="right" class="btn btn-primary">ADD '.$m['m_icon'].' ' . rtrim($m['m_name'], 's') . '</a></div>';
+    foreach ($en_all_4485 as $tr_type_entity_id => $m) {
+        echo '<div class="iphone-add-btn all_msg msg_en_type_' . $tr_type_entity_id . '"><a href="javascript:fn___message_create();" id="add_message_' . $tr_type_entity_id . '_' . $in_id . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="right" class="btn btn-primary">ADD '.$m['m_icon'].' ' . rtrim($m['m_name'], 's') . '</a></div>';
     }
 
     echo '</form>';

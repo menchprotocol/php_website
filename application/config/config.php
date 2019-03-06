@@ -114,13 +114,13 @@ $config['notify_admins']            = array(
 
 //Ledger filters:
 $config['ledger_filters']           = array(
-                                        'tr_miner_entity' => 'en',
-                                        'tr_type_entity' => 'en',
-                                        'tr_parent_transaction' => 'tr',
-                                        'tr_parent_entity' => 'en',
-                                        'tr_child_entity'  => 'en',
-                                        'tr_parent_intent' => 'in',
-                                        'tr_child_intent'  => 'in',
+                                        'tr_miner_entity_id' => 'en',
+                                        'tr_type_entity_id' => 'en',
+                                        'tr_parent_transaction_id' => 'tr',
+                                        'tr_parent_entity_id' => 'en',
+                                        'tr_child_entity_id'  => 'en',
+                                        'tr_parent_intent_id' => 'in',
+                                        'tr_child_intent_id'  => 'in',
                                     );
 
 

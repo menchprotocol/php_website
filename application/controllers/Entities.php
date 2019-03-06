@@ -85,8 +85,8 @@ class Entities extends CI_Controller
 
             //Fetch children:
             $children = $this->Database_model->fn___tr_fetch(array(
-                'tr_parent_entity' => $en_id,
-                'tr_type_entity IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                'tr_parent_entity_id' => $en_id,
+                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
                 'tr_status >=' => 0, //New+
                 'en_status >=' => 0, //New+
             ), array('en_child'), 0);
@@ -229,18 +229,18 @@ class Entities extends CI_Controller
         $en_all_4592 = $this->config->item('en_all_4592');
 
         //See what this is:
-        $detected_tr_type = fn___detect_tr_type_entity($_POST['tr_content']);
+        $detected_tr_type = fn___detect_tr_type_entity_id($_POST['tr_content']);
 
         if (!$detected_tr_type['status'] && isset($detected_tr_type['url_already_existed']) && $detected_tr_type['url_already_existed']) {
 
             //See if this is duplicate to either link:
             $en_trs = $this->Database_model->fn___tr_fetch(array(
                 'tr_id' => $_POST['tr_id'],
-                'tr_type_entity IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null, //Entity URL Links
+                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null, //Entity URL Links
             ));
 
             //Are they both different?
-            if (count($en_trs) < 1 || ($en_trs[0]['tr_parent_entity'] != $detected_tr_type['en_url']['en_id'] && $en_trs[0]['tr_child_entity'] != $detected_tr_type['en_url']['en_id'])) {
+            if (count($en_trs) < 1 || ($en_trs[0]['tr_parent_entity_id'] != $detected_tr_type['en_url']['en_id'] && $en_trs[0]['tr_child_entity_id'] != $detected_tr_type['en_url']['en_id'])) {
                 //return error:
                 return fn___echo_json($detected_tr_type);
             }
@@ -248,8 +248,8 @@ class Entities extends CI_Controller
 
         return fn___echo_json(array(
             'status' => 1,
-            'html_ui' => '<a href="/entities/' . $detected_tr_type['tr_type_entity'] . '" style="font-weight: bold;" data-toggle="tooltip" data-placement="top" title="' . $en_all_4592[$detected_tr_type['tr_type_entity']]['m_desc'] . '">' . $en_all_4592[$detected_tr_type['tr_type_entity']]['m_icon'] . ' ' . $en_all_4592[$detected_tr_type['tr_type_entity']]['m_name'] . '</a>',
-            'en_link_preview' => fn___echo_url_type($_POST['tr_content'], $detected_tr_type['tr_type_entity']),
+            'html_ui' => '<a href="/entities/' . $detected_tr_type['tr_type_entity_id'] . '" style="font-weight: bold;" data-toggle="tooltip" data-placement="top" title="' . $en_all_4592[$detected_tr_type['tr_type_entity_id']]['m_desc'] . '">' . $en_all_4592[$detected_tr_type['tr_type_entity_id']]['m_icon'] . ' ' . $en_all_4592[$detected_tr_type['tr_type_entity_id']]['m_name'] . '</a>',
+            'en_link_preview' => fn___echo_url_type($_POST['tr_content'], $detected_tr_type['tr_type_entity_id']),
         ));
     }
 
@@ -322,8 +322,8 @@ class Entities extends CI_Controller
         $page = intval($_POST['page']);
         $session_en = fn___en_auth(array(1308));
         $filters = array(
-            'tr_parent_entity' => $parent_en_id,
-            'tr_type_entity IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            'tr_parent_entity_id' => $parent_en_id,
+            'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
             'en_status' . ($en_focus_filter < 0 ? ' >=' : '') => ($en_focus_filter < 0 ? 0 /* New+ */ : intval($en_focus_filter)), //Pending or Active
             'tr_status >=' => 0, //New+
         );
@@ -465,36 +465,36 @@ class Entities extends CI_Controller
             //Add links only if not already added by the URL function:
             if ($_POST['is_parent']) {
 
-                $tr_child_entity = $current_us[0]['en_id'];
-                $tr_parent_entity = $entity_new['en_id'];
+                $tr_child_entity_id = $current_us[0]['en_id'];
+                $tr_parent_entity_id = $entity_new['en_id'];
 
             } else {
 
-                $tr_child_entity = $entity_new['en_id'];
-                $tr_parent_entity = $current_us[0]['en_id'];
+                $tr_child_entity_id = $entity_new['en_id'];
+                $tr_parent_entity_id = $current_us[0]['en_id'];
 
             }
 
 
             if (isset($domain_entity['en_domain'])) {
 
-                $tr_type_entity = $url_entity['tr_type_entity'];
+                $tr_type_entity_id = $url_entity['tr_type_entity_id'];
                 $tr_content = $url_entity['cleaned_url'];
 
             } else {
 
-                $tr_type_entity = 4230; //Empty
+                $tr_type_entity_id = 4230; //Empty
                 $tr_content = null;
 
             }
 
             // Link to new OR existing entity:
             $ur2 = $this->Database_model->fn___tr_create(array(
-                'tr_miner_entity' => $session_en['en_id'],
-                'tr_type_entity' => $tr_type_entity,
+                'tr_miner_entity_id' => $session_en['en_id'],
+                'tr_type_entity_id' => $tr_type_entity_id,
                 'tr_content' => $tr_content,
-                'tr_child_entity' => $tr_child_entity,
-                'tr_parent_entity' => $tr_parent_entity,
+                'tr_child_entity_id' => $tr_child_entity_id,
+                'tr_parent_entity_id' => $tr_parent_entity_id,
             ));
         }
 
@@ -524,8 +524,8 @@ class Entities extends CI_Controller
         //Simply counts the links for a given entity:
         $all_en_links = $this->Database_model->fn___tr_fetch(array(
             'tr_status >=' => 0, //New+
-            'tr_type_entity IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-            '(tr_child_entity = ' . $_POST['en_id'] . ' OR tr_parent_entity = ' . $_POST['en_id'] . ')' => null,
+            'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            '(tr_child_entity_id = ' . $_POST['en_id'] . ' OR tr_parent_entity_id = ' . $_POST['en_id'] . ')' => null,
         ), array(), 999999);
 
         return fn___echo_json(array(
@@ -589,7 +589,7 @@ class Entities extends CI_Controller
         $tr_has_updated = false;
         $remove_from_ui = 0;
         $remove_redirect_url = null;
-        $js_tr_type_entity = 0; //Detect link type based on content
+        $js_tr_type_entity_id = 0; //Detect link type based on content
 
         //Prepare data to be updated:
         $en_update = array(
@@ -654,8 +654,8 @@ class Entities extends CI_Controller
             $_POST['tr_id'] = 0; //Do not consider the link as the entity is being archived
             $all_en_links = $this->Database_model->fn___tr_fetch(array(
                 'tr_status >=' => 0, //New+
-                'tr_type_entity IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-                '(tr_child_entity = ' . $_POST['en_id'] . ' OR tr_parent_entity = ' . $_POST['en_id'] . ')' => null,
+                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                '(tr_child_entity_id = ' . $_POST['en_id'] . ' OR tr_parent_entity_id = ' . $_POST['en_id'] . ')' => null,
             ), array(), 999999);
 
 
@@ -666,7 +666,7 @@ class Entities extends CI_Controller
                 foreach ($all_en_links as $merge_tr) {
 
                     //Check to make sure old links do not relate to new merging entity...
-                    if(($merge_tr['tr_parent_entity']==$merged_ens[0]['en_id']) || ($merge_tr['tr_child_entity']==$merged_ens[0]['en_id'])){
+                    if(($merge_tr['tr_parent_entity_id']==$merged_ens[0]['en_id']) || ($merge_tr['tr_child_entity_id']==$merged_ens[0]['en_id'])){
 
                         //They seem to be related and happens when merging related entities into each other, in this case let's imply unlink:
                         $this->Database_model->fn___tr_update($merge_tr['tr_id'], array(
@@ -677,7 +677,7 @@ class Entities extends CI_Controller
 
                         //Not related, merge over:
                         $this->Database_model->fn___tr_update($merge_tr['tr_id'], array(
-                            ($merge_tr['tr_child_entity'] == $_POST['en_id'] ? 'tr_child_entity' : 'tr_parent_entity') => $merged_ens[0]['en_id'],
+                            ($merge_tr['tr_child_entity_id'] == $_POST['en_id'] ? 'tr_child_entity_id' : 'tr_parent_entity_id') => $merged_ens[0]['en_id'],
                         ), $session_en['en_id']);
 
                     }
@@ -733,25 +733,25 @@ class Entities extends CI_Controller
             if ($en_trs[0]['tr_content'] == $_POST['tr_content']) {
 
                 //Transaction content has not changed:
-                $js_tr_type_entity = $en_trs[0]['tr_type_entity'];
+                $js_tr_type_entity_id = $en_trs[0]['tr_type_entity_id'];
                 $tr_content = $en_trs[0]['tr_content'];
 
             } else {
 
                 //Transaction content has changed:
-                $detected_tr_type = fn___detect_tr_type_entity($_POST['tr_content']);
+                $detected_tr_type = fn___detect_tr_type_entity_id($_POST['tr_content']);
 
                 if (!$detected_tr_type['status']) {
 
                     return fn___echo_json($detected_tr_type);
 
-                } elseif (in_array($detected_tr_type['tr_type_entity'], $this->config->item('en_ids_4537'))) {
+                } elseif (in_array($detected_tr_type['tr_type_entity_id'], $this->config->item('en_ids_4537'))) {
 
                     //This is a URL, validate modification:
 
                     if ($detected_tr_type['url_is_root']) {
 
-                        if ($en_trs[0]['tr_parent_entity'] == 1326) {
+                        if ($en_trs[0]['tr_parent_entity_id'] == 1326) {
 
                             //Override with the clean domain for consistency:
                             $_POST['tr_content'] = $detected_tr_type['url_clean_domain'];
@@ -768,7 +768,7 @@ class Entities extends CI_Controller
 
                     } else {
 
-                        if ($en_trs[0]['tr_parent_entity'] == 1326) {
+                        if ($en_trs[0]['tr_parent_entity_id'] == 1326) {
 
                             return fn___echo_json(array(
                                 'status' => 0,
@@ -777,7 +777,7 @@ class Entities extends CI_Controller
 
                         } elseif ($detected_tr_type['en_domain']) {
                             //We do have the domain mapped! Is this connected to the domain entity as its parent?
-                            if ($detected_tr_type['en_domain']['en_id'] != $en_trs[0]['tr_parent_entity']) {
+                            if ($detected_tr_type['en_domain']['en_id'] != $en_trs[0]['tr_parent_entity_id']) {
                                 return fn___echo_json(array(
                                     'status' => 0,
                                     'message' => 'Must link to <b>@' . $detected_tr_type['en_domain']['en_id'] . ' ' . $detected_tr_type['en_domain']['en_name'] . '</b> as their parent entity',
@@ -797,7 +797,7 @@ class Entities extends CI_Controller
 
                 //Update variables:
                 $tr_content = $_POST['tr_content'];
-                $js_tr_type_entity = $detected_tr_type['tr_type_entity'];
+                $js_tr_type_entity_id = $detected_tr_type['tr_type_entity_id'];
             }
 
 
@@ -813,10 +813,10 @@ class Entities extends CI_Controller
                 //Something has changed, log this:
                 $this->Database_model->fn___tr_update($_POST['tr_id'], array(
                     'tr_content' => $tr_content,
-                    'tr_type_entity' => $js_tr_type_entity,
+                    'tr_type_entity_id' => $js_tr_type_entity_id,
                     'tr_status' => intval($_POST['tr_status']),
                     //Auto append timestamp and most recent miner:
-                    'tr_miner_entity' => $session_en['en_id'],
+                    'tr_miner_entity_id' => $session_en['en_id'],
                     'tr_timestamp' => date("Y-m-d H:i:s"),
                 ), $session_en['en_id']);
 
@@ -843,8 +843,8 @@ class Entities extends CI_Controller
         //Fetch last entity update transaction:
         $updated_trs = $this->Database_model->fn___tr_fetch(array(
             'tr_status >=' => 0, //New+
-            'tr_type_entity IN (4251, 4263)' => null, //Entity Created/Updated
-            'tr_child_entity' => $_POST['en_id'],
+            'tr_type_entity_id IN (4251, 4263)' => null, //Entity Created/Updated
+            'tr_child_entity_id' => $_POST['en_id'],
         ), array('en_miner'));
         if (count($updated_trs) < 1) {
             //Should never happen
@@ -866,7 +866,7 @@ class Entities extends CI_Controller
             'message' => '<i class="fas fa-check"></i> ' . $success_message,
             'remove_from_ui' => $remove_from_ui,
             'remove_redirect_url' => $remove_redirect_url,
-            'js_tr_type_entity' => intval($js_tr_type_entity),
+            'js_tr_type_entity_id' => intval($js_tr_type_entity_id),
         );
 
         if (intval($_POST['tr_id']) > 0) {
@@ -877,7 +877,7 @@ class Entities extends CI_Controller
             ), array('en_miner'));
 
             //Prep last updated:
-            $return_array['tr_content'] = fn___echo_tr_urls($tr_content, $js_tr_type_entity);
+            $return_array['tr_content'] = fn___echo_tr_urls($tr_content, $js_tr_type_entity_id);
             $return_array['tr_content_final'] = $tr_content; //In case content was updated
 
         }
@@ -899,8 +899,8 @@ class Entities extends CI_Controller
 
         $messages = $this->Database_model->fn___tr_fetch(array(
             'tr_status >=' => 0, //New+
-            'tr_type_entity IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent messages
-            'tr_parent_entity' => $en_id,
+            'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent messages
+            'tr_parent_entity_id' => $en_id,
         ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
 
 
@@ -949,7 +949,7 @@ class Entities extends CI_Controller
 
         //Validate user email:
         $trs = $this->Database_model->fn___tr_fetch(array(
-            'tr_parent_entity' => 3288, //Primary email
+            'tr_parent_entity_id' => 3288, //Primary email
             'LOWER(tr_content)' => strtolower($_POST['input_email']),
         ));
 
@@ -960,7 +960,7 @@ class Entities extends CI_Controller
 
         //Fetch full entity data with their active Action Plans:
         $ens = $this->Database_model->fn___en_fetch(array(
-            'en_id' => $trs[0]['tr_child_entity'],
+            'en_id' => $trs[0]['tr_child_entity_id'],
         ), array('en__actionplans'));
 
         if ($ens[0]['en_status'] < 0 || $trs[0]['tr_status'] < 0) {
@@ -971,8 +971,8 @@ class Entities extends CI_Controller
 
         //Authenticate their password:
         $login_passwords = $this->Database_model->fn___tr_fetch(array(
-            'tr_parent_entity' => 3286, //Mench Sign In Password
-            'tr_child_entity' => $ens[0]['en_id'],
+            'tr_parent_entity_id' => 3286, //Mench Sign In Password
+            'tr_child_entity_id' => $ens[0]['en_id'],
         ), array(), 1 /* get the top status */, 0, array(
             //Order by highest status:
             'tr_status' => 'DESC',
@@ -997,8 +997,8 @@ class Entities extends CI_Controller
 
         //Make sure Student is not unsubscribed:
         if (count($this->Database_model->fn___tr_fetch(array(
-                'tr_child_entity' => $ens[0]['en_id'],
-                'tr_parent_entity' => 4455, //Unsubscribed
+                'tr_child_entity_id' => $ens[0]['en_id'],
+                'tr_parent_entity_id' => 4455, //Unsubscribed
                 'tr_status >=' => 0,
             ))) > 0) {
             return fn___redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: You cannot login to the Matrix because you are unsubscribed from Mench. You can re-active your account by sending a message to Mench on Messenger.</div>');
@@ -1043,10 +1043,10 @@ class Entities extends CI_Controller
 
         //Log Sign In Transaction
         $this->Database_model->fn___tr_create(array(
-            'tr_miner_entity' => $ens[0]['en_id'],
-            'tr_parent_entity' => $ens[0]['en_id'], //Initiator
+            'tr_miner_entity_id' => $ens[0]['en_id'],
+            'tr_parent_entity_id' => $ens[0]['en_id'], //Initiator
             'tr_metadata' => $ens[0],
-            'tr_type_entity' => 4269, //Logged into the matrix
+            'tr_type_entity_id' => 4269, //Logged into the matrix
         ));
 
 
@@ -1134,15 +1134,15 @@ class Entities extends CI_Controller
             //Fetch their passwords to authenticate login:
             $login_passwords = $this->Database_model->fn___tr_fetch(array(
                 'tr_status >=' => 2, //Must be published or verified
-                'tr_parent_entity' => 3286, //Mench Sign In Password
-                'tr_child_entity' => $_POST['en_id'], //For this user
+                'tr_parent_entity_id' => 3286, //Mench Sign In Password
+                'tr_child_entity_id' => $_POST['en_id'], //For this user
             ));
 
             $new_password = hash('sha256', $this->config->item('password_salt') . $_POST['new_pass']);
 
             if (count($login_passwords) > 0) {
 
-                $detected_tr_type = fn___detect_tr_type_entity($new_password);
+                $detected_tr_type = fn___detect_tr_type_entity_id($new_password);
                 if (!$detected_tr_type['status']) {
                     echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: ' . $detected_tr_type['message'] . '</div>';
                 }
@@ -1150,8 +1150,8 @@ class Entities extends CI_Controller
                 //Update existing password:
                 $this->Database_model->fn___tr_update($login_passwords[0]['tr_id'], array(
                     'tr_content' => $new_password,
-                    'tr_type_entity' => $detected_tr_type['tr_type_entity'],
-                ), $login_passwords[0]['tr_child_entity']);
+                    'tr_type_entity_id' => $detected_tr_type['tr_type_entity_id'],
+                ), $login_passwords[0]['tr_child_entity_id']);
 
             } else {
                 //Create new password link:
@@ -1219,7 +1219,7 @@ class Entities extends CI_Controller
         //Validate Parent descriptions:
         foreach ($_POST['source_parent_ens'] as $this_parent_en) {
 
-            $detected_tr_type = fn___detect_tr_type_entity($this_parent_en['this_parent_en_desc']);
+            $detected_tr_type = fn___detect_tr_type_entity_id($this_parent_en['this_parent_en_desc']);
 
             if (!$detected_tr_type['status']) {
 
@@ -1228,7 +1228,7 @@ class Entities extends CI_Controller
                     'message' => $en_all_3000[$this_parent_en['this_parent_en_id']]['m_name'] . ' description error: ' . $detected_tr_type['message'],
                 ));
 
-            } elseif (!in_array($detected_tr_type['tr_type_entity'], $author_type_requirement)) {
+            } elseif (!in_array($detected_tr_type['tr_type_entity_id'], $author_type_requirement)) {
 
                 return fn___echo_json(array(
                     'status' => 0,
@@ -1240,7 +1240,7 @@ class Entities extends CI_Controller
             //Add expert source type to parent source array:
             array_push($parent_ens, array(
                 'this_parent_en_id' => $this_parent_en['this_parent_en_id'],
-                'this_parent_en_type' => $detected_tr_type['tr_type_entity'],
+                'this_parent_en_type' => $detected_tr_type['tr_type_entity_id'],
                 'this_parent_en_desc' => trim($this_parent_en['this_parent_en_desc']),
             ));
 
@@ -1256,7 +1256,7 @@ class Entities extends CI_Controller
             }
 
             //Validate role information:
-            $detected_role_tr_type = fn___detect_tr_type_entity($_POST['auth_role_' . $author_num]);
+            $detected_role_tr_type = fn___detect_tr_type_entity_id($_POST['auth_role_' . $author_num]);
 
             if (!$detected_role_tr_type['status']) {
 
@@ -1265,7 +1265,7 @@ class Entities extends CI_Controller
                     'message' => 'Author #' . $author_num . ' role error: ' . $detected_role_tr_type['message'],
                 ));
 
-            } elseif (!in_array($detected_role_tr_type['tr_type_entity'], $author_type_requirement)) {
+            } elseif (!in_array($detected_role_tr_type['tr_type_entity_id'], $author_type_requirement)) {
 
                 return fn___echo_json(array(
                     'status' => 0,
@@ -1300,7 +1300,7 @@ class Entities extends CI_Controller
                 //Add author to parent source array:
                 array_push($parent_ens, array(
                     'this_parent_en_id' => $tr_en_link_id,
-                    'this_parent_en_type' => $detected_role_tr_type['tr_type_entity'],
+                    'this_parent_en_type' => $detected_role_tr_type['tr_type_entity_id'],
                     'this_parent_en_desc' => trim($_POST['auth_role_' . $author_num]),
                 ));
 
@@ -1323,7 +1323,7 @@ class Entities extends CI_Controller
                 } elseif (strlen($_POST['why_expert_' . $author_num]) > 0) {
 
                     //Also validate Expert explanation:
-                    $detected_tr_type = fn___detect_tr_type_entity($_POST['why_expert_' . $author_num]);
+                    $detected_tr_type = fn___detect_tr_type_entity_id($_POST['why_expert_' . $author_num]);
 
                     if (!$detected_tr_type['status']) {
 
@@ -1332,7 +1332,7 @@ class Entities extends CI_Controller
                             'message' => 'Author #' . $author_num . ' error: ' . $detected_tr_type['message'],
                         ));
 
-                    } elseif (!in_array($detected_tr_type['tr_type_entity'], $author_type_requirement)) {
+                    } elseif (!in_array($detected_tr_type['tr_type_entity_id'], $author_type_requirement)) {
 
                         return fn___echo_json(array(
                             'status' => 0,
@@ -1350,10 +1350,10 @@ class Entities extends CI_Controller
                 //Add author to People or Organizations entity:
                 $this->Database_model->fn___tr_create(array(
                     'tr_status' => 2, //Published
-                    'tr_miner_entity' => $session_en['en_id'],
-                    'tr_type_entity' => 4230, //Empty
-                    'tr_parent_entity' => $_POST['entity_parent_id_' . $author_num], //People or Organizations
-                    'tr_child_entity' => $sync_author['en_url']['en_id'],
+                    'tr_miner_entity_id' => $session_en['en_id'],
+                    'tr_type_entity_id' => 4230, //Empty
+                    'tr_parent_entity_id' => $_POST['entity_parent_id_' . $author_num], //People or Organizations
+                    'tr_child_entity_id' => $sync_author['en_url']['en_id'],
                 ), true);
 
 
@@ -1362,18 +1362,18 @@ class Entities extends CI_Controller
                     //Add author to industry experts:
                     $this->Database_model->fn___tr_create(array(
                         'tr_status' => 2, //Published
-                        'tr_miner_entity' => $session_en['en_id'],
+                        'tr_miner_entity_id' => $session_en['en_id'],
                         'tr_content' => trim($_POST['why_expert_' . $author_num]),
-                        'tr_type_entity' => $detected_tr_type['tr_type_entity'],
-                        'tr_parent_entity' => 3084, //Industry Experts
-                        'tr_child_entity' => $sync_author['en_url']['en_id'],
+                        'tr_type_entity_id' => $detected_tr_type['tr_type_entity_id'],
+                        'tr_parent_entity_id' => 3084, //Industry Experts
+                        'tr_child_entity_id' => $sync_author['en_url']['en_id'],
                     ), true);
                 }
 
                 //Add author to parent source array:
                 array_push($parent_ens, array(
                     'this_parent_en_id' => $sync_author['en_url']['en_id'],
-                    'this_parent_en_type' => $detected_role_tr_type['tr_type_entity'],
+                    'this_parent_en_type' => $detected_role_tr_type['tr_type_entity_id'],
                     'this_parent_en_desc' => trim($_POST['auth_role_' . $author_num]),
                 ));
 
@@ -1393,10 +1393,10 @@ class Entities extends CI_Controller
             //Insert new relation:
             $this->Database_model->fn___tr_create(array(
                 'tr_status' => 2, //Published
-                'tr_miner_entity' => $session_en['en_id'],
-                'tr_child_entity' => $url_entity['en_url']['en_id'],
-                'tr_parent_entity' => $this_parent_en['this_parent_en_id'],
-                'tr_type_entity' => $this_parent_en['this_parent_en_type'],
+                'tr_miner_entity_id' => $session_en['en_id'],
+                'tr_child_entity_id' => $url_entity['en_url']['en_id'],
+                'tr_parent_entity_id' => $this_parent_en['this_parent_en_id'],
+                'tr_type_entity_id' => $this_parent_en['this_parent_en_type'],
                 'tr_content' => $this_parent_en['this_parent_en_desc'],
             ), true);
         }
