@@ -930,7 +930,7 @@ class Intents extends CI_Controller
 
             return fn___echo_json(array(
                 'status' => 0,
-                'message' => $en_all_4485[$_POST['focus_tr_type_entity_id']]['m_name'].' require a ['.$en_all_4331[$completion_requirements[0]]['m_name'].'] message',
+                'message' => $en_all_4485[$_POST['focus_tr_type_entity_id']]['m_name'].' requires a ['.$en_all_4331[$completion_requirements[0]]['m_name'].'] message',
             ));
             //TODO: Maybe validate each file type specifically?
             //Note: This logic also exists in fn___dispatch_validate_message() function in Chat Model
@@ -1151,7 +1151,7 @@ class Intents extends CI_Controller
         }
 
         //Make sure message is all good:
-        $msg_validation = $this->Chat_model->fn___dispatch_validate_message($_POST['tr_content']);
+        $msg_validation = $this->Chat_model->fn___dispatch_validate_message($_POST['tr_content'], array(), false, array(), 0, $_POST['in_id']);
 
         if (!$msg_validation['status']) {
             //There was some sort of an error:
@@ -1164,6 +1164,7 @@ class Intents extends CI_Controller
         $to_update = array(
             'tr_content' => $msg_validation['input_message'],
             'tr_parent_entity_id' => $msg_validation['tr_parent_entity_id'],
+            'tr_parent_intent_id' => $msg_validation['tr_parent_intent_id'],
         );
 
 
@@ -1190,7 +1191,7 @@ class Intents extends CI_Controller
         //Print the challenge:
         return fn___echo_json(array(
             'status' => 1,
-            'message' => $this->Chat_model->fn___dispatch_message($msg_validation['input_message'], $session_en, false),
+            'message' => $this->Chat_model->fn___dispatch_message($msg_validation['input_message'], $session_en, false, array(), array(), $_POST['in_id']),
             'tr_type_entity_id' => $en_all_4485[$new_messages[0]['tr_type_entity_id']]['m_icon'],
             'success_icon' => '<span><i class="fas fa-check"></i> Saved</span>',
         ));

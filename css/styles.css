@@ -1067,6 +1067,18 @@ p a, td a {
     border-radius: 5px;
 }
 
+.entity-appendix {
+    padding-top:5px; padding-bottom:5px; font-size: 0.9em;
+}
+
+.entity-appendix, .entity-appendix a {
+    color:#999;
+}
+
+.entity-appendix b {
+    color:#222; font-size: 1.1em;
+}
+
 .panel-body img {
     max-width: 100% !important;
 }

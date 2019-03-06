@@ -217,7 +217,7 @@ function fn___echo_in_message_manage($tr)
     $ui .= '<div class="edit-off text_message" id="msgbody_' . $tr['tr_id'] . '" style="margin:2px 0 0 0;">';
 
     //Now get the message snippet:
-    $ui .= $CI->Chat_model->fn___dispatch_message($tr['tr_content'], $session_en);
+    $ui .= $CI->Chat_model->fn___dispatch_message($tr['tr_content'], $session_en, false, array(), array(), $tr['tr_child_intent_id']);
 
     $ui .= '</div>';
 

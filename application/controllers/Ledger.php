@@ -385,16 +385,17 @@ class Ledger extends CI_Controller
         //Create Message Transaction:
         $tr = $this->Database_model->fn___tr_create(array(
             'tr_miner_entity_id' => $session_en['en_id'],
-            'tr_child_intent_id' => intval($_POST['in_id']),
             'tr_order' => 1 + $this->Database_model->fn___tr_max_order(array(
                     'tr_status >=' => 0, //New+
                     'tr_type_entity_id' => intval($_POST['focus_tr_type_entity_id']),
                     'tr_child_intent_id' => intval($_POST['in_id']),
                 )),
             //Referencing attributes:
-            'tr_content' => $msg_validation['input_message'],
             'tr_type_entity_id' => intval($_POST['focus_tr_type_entity_id']),
             'tr_parent_entity_id' => $msg_validation['tr_parent_entity_id'],
+            'tr_parent_intent_id' => $msg_validation['tr_parent_intent_id'],
+            'tr_child_intent_id' => intval($_POST['in_id']),
+            'tr_content' => $msg_validation['input_message'],
         ), true);
 
         //Do a relative adjustment for this intent's metadata

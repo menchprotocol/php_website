@@ -206,11 +206,6 @@ if(!$has_filters){
 
     echo $table_body;
 
-    echo '<tr style="font-weight: bold;">';
-    echo '<td colspan="2" style="text-align: right;">Totals:&nbsp;</td>';
-    echo '<td style="text-align: right;"><span data-toggle="tooltip" title="'.number_format($all_transaction_count,0).' Transactions" data-placement="top">'.number_format($all_coin_payouts,0).'</td>';
-    echo '</tr>';
-
 
     //End Section:
     echo '</table>';
