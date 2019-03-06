@@ -34,7 +34,7 @@ class Intents extends CI_Controller
             //How many featured intents do we have?
             $featured_ins = $ins = $this->Database_model->fn___in_fetch(array(
                 'in_status' => 3, //Featured Intents
-            ));
+            ), array(), 0, 0, array('in_id' => 'ASC')); //This sorting is a hack for now to have Intent #6903 at the top (lol)
 
             if (count($featured_ins) == 0) {
 

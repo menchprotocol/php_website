@@ -62,18 +62,18 @@ $hide_subscribe = (isset($_GET['hide_subscribe']) && intval($_GET['hide_subscrib
         <br/>
 
         <?php if (!$hide_subscribe) { ?>
-            <!-- Call to Actions -->
-            <a class="btn btn-primary" href="https://m.me/askmench?ref=<?= $in['in_id'] ?>"
-               style="display: inline-block; padding: 12px 36px;">Get Started [Free] <i class="fas fa-angle-right"></i></a>
-            <br/>
-            <br/>
-
             <h3 style="margin-top:0px !important;">Overview:</h3>
             <div style="margin:12px 0 0 5px;" class="maxout">
                 <?= fn___echo_tree_tasks($in, false) ?>
                 <?= fn___echo_tree_sources($in, false) ?>
                 <?= fn___echo_tree_cost($in, false) ?>
             </div>
+
+            <!-- Call to Actions -->
+            <br/>
+            <a class="btn btn-primary" href="https://m.me/askmench?ref=<?= $in['in_id'] ?>"
+               style="display: inline-block; padding: 12px 36px;">Get Started [Free] <i class="fas fa-angle-right"></i></a>
+            <br/>
         <?php } ?>
 
 
@@ -96,7 +96,7 @@ $hide_subscribe = (isset($_GET['hide_subscribe']) && intval($_GET['hide_subscrib
                     echo '<div class="panel-group" id="open' . $in_level2_counter . '" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
             <div class="panel-heading" role="tab" id="heading' . $in_level2_counter . '">
                 <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" data-parent="#open' . $in_level2_counter . '" href="#collapse' . $in_level2_counter . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $in_level2_counter . '">'.($in['in_type'] ? 'Option ' : 'Task '). ($in_level2_counter + 1) . ': <span id="title-' . $in_level2['in_id'] . '">' . $in_level2['in_outcome'] . '</span>';
+                    <a role="button" data-toggle="collapse" data-parent="#open' . $in_level2_counter . '" href="#collapse' . $in_level2_counter . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $in_level2_counter . '">' . ($in['in_type'] ? 'Option ' : 'Task ') . ($in_level2_counter + 1) . ': <span id="title-' . $in_level2['in_id'] . '">' . $in_level2['in_outcome'] . '</span>';
 
                     //Show time if we have it:
                     $in_level2_metadata = unserialize($in_level2['in_metadata']);
@@ -131,7 +131,7 @@ $hide_subscribe = (isset($_GET['hide_subscribe']) && intval($_GET['hide_subscrib
                                 continue; //Do not show conditional post-assessment intents
                             }
 
-                            echo '<li>'.($in_level2['in_type'] ? 'Option ' : 'Task ') . ($in_level2_counter + 1) . '.' . ($in_level3_counter + 1) . ': ' . $in_level3['in_outcome'];
+                            echo '<li>' . ($in_level2['in_type'] ? 'Option ' : 'Task ') . ($in_level2_counter + 1) . '.' . ($in_level3_counter + 1) . ': ' . $in_level3['in_outcome'];
 
                             //Show time if we have it:
                             $in_level3_metadata = unserialize($in_level3['in_metadata']);
@@ -163,44 +163,38 @@ $hide_subscribe = (isset($_GET['hide_subscribe']) && intval($_GET['hide_subscrib
                 }
                 ?>
             </div>
-            <br/>
-        <?php } ?>
-
-
-        <?php if (!$hide_subscribe) { ?>
-
-            <p style="padding:5px 0 0 0;">Ready to <?= $in['in_outcome'] ?>?</p>
-
-            <!-- Call to Actions -->
-            <a class="btn btn-primary" href="https://m.me/askmench?ref=<?= $in['in_id'] ?>"
-               style="display: inline-block; padding: 12px 36px;">Get Started [Free] <i class="fas fa-angle-right"></i></a>
-
         <?php } ?>
 
     </div>
 
-<?php
 
-//Display other featured intents:
+
+<?php
+$exclude_array = array($in['in_id']);
+$parent_ui = null;
+foreach ($in['in__parents'] as $in_parent) {
+    if ($in_parent['in_status'] >= 2) {
+        $parent_ui .= fn___echo_in_featured($in_parent);
+        array_push($exclude_array, $in_parent['in_id']);
+    }
+}
+
+//Fetch other featured intents:
 $featured_ins = $ins = $this->Database_model->fn___in_fetch(array(
     'in_status' => 3, //Featured Intents
-    'in_id !=' => $in['in_id'],
+    'in_id NOT IN (' . join(',', $exclude_array) . ')' => null,
 ));
-if (count($featured_ins) > 0 && !$hide_subscribe) {
+
+if ((count($featured_ins) > 0 || $parent_ui)) {
     echo '<div>';
-    echo '<h3>Featured Intentions:</h3>';
+    echo '<h3>More Intentions:</h3>';
     echo '<div class="list-group actionplan_list maxout">';
-    foreach ($in['in__parents'] as $in_parent) {
-        if ($in_parent['in_status'] >= 2) {
-            echo fn___echo_in_featured($in_parent);
-        }
-    }
+    echo $parent_ui;
     foreach ($featured_ins as $featured_c) {
         echo fn___echo_in_featured($featured_c);
     }
     echo '</div>';
     echo '</div>';
 }
-
 
 ?>
