@@ -764,7 +764,7 @@ function fn___echo_tree_sources($in, $fb_messenger_format = false, $expand_mode 
 
 
     if ($fb_messenger_format) {
-        return '📚 ' . $pitch . "\n";
+        return '⭐ ' . $pitch . "\n";
     } else {
         //HTML format
         $id = 'IndustryExperts';
@@ -772,12 +772,12 @@ function fn___echo_tree_sources($in, $fb_messenger_format = false, $expand_mode 
             <div class="panel-heading" role="tab" id="heading' . $id . '">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $id . '">
-                        <i class="fas" style="transform:none !important;">📚</i> ' . $pitch_title . '<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                        <i class="fas" style="transform:none !important;">⭐</i> ' . $pitch_title . '<i class="fal fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                     </a>
                 </h4>
             </div>
             <div id="collapse' . $id . '" class="panel-collapse collapse ' . ($expand_mode ? 'in' : 'out') . '" role="tabpanel" aria-labelledby="heading' . $id . '">
-                <div class="panel-body" style="padding:5px 0 0 5px; font-size:1.1em;">
+                <div class="panel-body" style="padding:5px 0 0 38px; font-size:1.1em;">
                     ' . $pitch . '
                 </div>
             </div>
@@ -813,12 +813,12 @@ function fn___echo_tree_tasks($in, $fb_messenger_format = 0, $expand_mode = fals
             <div class="panel-heading" role="tab" id="heading' . $id . '">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $id . '">
-                    <i class="fas" style="transform:none !important;">✅</i> ' . $metadata['in__flat_unique_published_count'] . ' Tasks<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                    <i class="fas" style="transform:none !important;">✅</i> ' . $metadata['in__flat_unique_published_count'] . ' Tasks<i class="fal fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                 </a>
             </h4>
         </div>
         <div id="collapse' . $id . '" class="panel-collapse collapse ' . ($expand_mode ? 'in' : 'out') . '" role="tabpanel" aria-labelledby="heading' . $id . '">
-            <div class="panel-body" style="padding:5px 0 0 5px; font-size:1.1em;">' . $pitch . '</div>
+            <div class="panel-body" style="padding:5px 0 0 38px; font-size:1.1em;">' . $pitch . '</div>
         </div>
     </div></div>';
     }
@@ -878,12 +878,12 @@ function fn___echo_tree_cost($in, $fb_messenger_format = 0, $expand_mode = false
             <div class="panel-heading" role="tab" id="heading' . $id . '">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $id . '">
-                        <i class="fas" style="transform:none !important;">⏰</i> ' . $title . '<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                        <i class="fas" style="transform:none !important;">⏰</i> ' . $title . '<i class="fal fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                     </a>
                 </h4>
             </div>
             <div id="collapse' . $id . '" class="panel-collapse collapse ' . ($expand_mode ? 'in' : 'out') . '" role="tabpanel" aria-labelledby="heading' . $id . '">
-                <div class="panel-body" style="padding:5px 0 0 5px; font-size:1.1em;">' . $pitch . '</div>
+                <div class="panel-body" style="padding:5px 0 0 38px; font-size:1.1em;">' . $pitch . '</div>
             </div>
         </div></div>';
     }

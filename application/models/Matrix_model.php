@@ -2025,14 +2025,16 @@ class Matrix_model extends CI_Model
             ));
 
             if(count($tr_miner_upvotes) == 0){
-                //Add new up-vote:
+                //Add new up-vote
+                //No need to sync external sources via fn___tr_create()
                 $up_vote = $this->Database_model->fn___tr_create(array(
                     'tr_miner_entity_id' => $tr_miner_entity_id,
                     'tr_parent_entity_id' => $tr_miner_entity_id,
                     'tr_type_entity_id' => 4983, //Up-votes
+                    'tr_content' => '@'.$tr_miner_entity_id.' #'.( $is_parent ? $child_in['in_id'] : $in_parent_id ), //Message content
                     ( $is_parent ? 'tr_child_intent_id' : 'tr_parent_intent_id' ) => $in_parent_id,
                     ( $is_parent ? 'tr_parent_intent_id' : 'tr_child_intent_id' ) => $child_in['in_id'],
-                ), true);
+                ));
             }
 
         }

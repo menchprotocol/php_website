@@ -70,7 +70,7 @@ foreach ($metadatas as $tr) {
 
 
         //Learn more option:
-        echo '<i class="fas fa-info-circle"></i> <span data-toggle="tooltip" title="'.$m['m_desc'].'" data-placement="bottom" class="underdot">Usage notes</span> &nbsp;';
+        echo '<i class="fal fa-info-circle"></i> <span data-toggle="tooltip" title="'.$m['m_desc'].'" data-placement="bottom" class="underdot">Usage notes</span> &nbsp;';
 
 
         //Does it support sorting?

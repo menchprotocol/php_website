@@ -45,8 +45,7 @@ $url_part_1 = $this->uri->segment(1);
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
 
-                <li><a href="/"><i class="fas fa-hashtag"></i> Intents</a></li>
-                <li><a href="/7436"><i class="fas fa-info-circle"></i> About Us</a></li>
+                <li><a href="/7436"><i class="fal fa-info-circle"></i> About Us</a></li>
 
                 <?php
                 if (isset($session_en['en_id'])) {

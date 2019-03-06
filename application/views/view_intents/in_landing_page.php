@@ -84,7 +84,7 @@ $hide_subscribe = (isset($_GET['hide_subscribe']) && intval($_GET['hide_subscrib
                 <h3>Action Plan:</h3>
             <?php } ?>
 
-            <div class="list-group actionplan_list" style="margin:12px 0 0 5px;">
+            <div class="list-group grey_list actionplan_list" style="margin:12px 0 0 5px;">
                 <?php
                 $in_level2_counter = 0;
                 foreach ($in['in__children'] as $in_level2) {
@@ -104,7 +104,7 @@ $hide_subscribe = (isset($_GET['hide_subscribe']) && intval($_GET['hide_subscrib
                         echo ' <span style="font-size: 0.9em; font-weight: 300;"><i class="fal fa-clock"></i> ' . fn___echo_time_range($in_level2, true) . '</span>';
                     }
 
-                    echo '<i class="fas fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                    echo '<i class="fal fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                     </a>
                 </h4>
             </div>
@@ -124,7 +124,7 @@ $hide_subscribe = (isset($_GET['hide_subscribe']) && intval($_GET['hide_subscrib
                     if (count($in_level2['in__grandchildren']) > 0) {
 
                         $in_level3_counter = 0;
-                        echo '<ul style="list-style:none; margin-left:-30px; font-size:1em;">';
+                        echo '<ul style="list-style:none; margin-left:-10px; font-size:1em;">';
                         foreach ($in_level2['in__grandchildren'] as $in_level3) {
 
                             if ($in_level3['tr_type_entity_id'] == 4229) {
@@ -148,7 +148,7 @@ $hide_subscribe = (isset($_GET['hide_subscribe']) && intval($_GET['hide_subscrib
 
                         //Since it has children, lets also give the option to navigate downwards ONLY IF...
                         if ($in_level2['in_status'] >= 2 && !$expand_mode) {
-                            echo '<div>You can choose to <a href="/' . $in_level2['in_id'] . '" ' . ($is_primary_in ? 'onclick="confirm_child_go(' . $in_level2['in_id'] . ')"' : '') . ' class="alink-' . $in_level2['in_id'] . '" style="text-decoration:underline;">subscribe to this task only</a>.</div>';
+                            echo '<div>You can view <a href="/' . $in_level2['in_id'] . '" ' . ($is_primary_in ? 'onclick="confirm_child_go(' . $in_level2['in_id'] . ')"' : '') . ' class="alink-' . $in_level2['in_id'] . '" style="text-decoration:underline;">this task</a> only.</div>';
                         }
 
                     }
@@ -188,7 +188,7 @@ $featured_ins = $ins = $this->Database_model->fn___in_fetch(array(
 if ((count($featured_ins) > 0 || $parent_ui)) {
     echo '<div>';
     echo '<h3>More Intentions:</h3>';
-    echo '<div class="list-group actionplan_list maxout">';
+    echo '<div class="list-group grey_list actionplan_list maxout">';
     echo $parent_ui;
     foreach ($featured_ins as $featured_c) {
         echo fn___echo_in_featured($featured_c);

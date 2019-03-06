@@ -2,7 +2,7 @@
 var algolia_loaded = false;
 
 //Define tip style:
-var tips_button = '<span class="badge tip-badge"><i class="fas fa-info-circle"></i></span>';
+var tips_button = '<span class="badge tip-badge"><i class="fal fa-info-circle"></i></span>';
 
 //For the drag and drop file uploader:
 var isAdvancedUpload = function () {
