@@ -91,6 +91,17 @@ class Intents extends CI_Controller
             return fn___redirect_message('/intents/' . $this->config->item('in_tactic_id'), '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' not found</div>');
         }
 
+        //Update session count and log transaction:
+        $new_order = ( $this->session->userdata('miner_session_count') + 1 );
+        $this->session->set_userdata('miner_session_count', $new_order);
+        $this->Database_model->fn___tr_create(array(
+            'tr_miner_entity_id' => $session_en['en_id'],
+            'tr_type_entity_id' => 4993, //Miner Opened Intent
+            'tr_parent_entity_id' => $session_en['en_id'],
+            'tr_child_intent_id' => $in_id,
+            'tr_order' => $new_order,
+        ));
+
         //Load views:
         $this->load->view('view_shared/matrix_header', array( 'title' => $ins[0]['in_outcome'].' | Intents' ));
         $this->load->view('view_intents/in_miner_ui', array( 'in' => $ins[0] ));

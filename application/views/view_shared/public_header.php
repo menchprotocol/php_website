@@ -54,7 +54,7 @@ $url_part_1 = $this->uri->segment(1);
 
                 } elseif (isset($session_en['en__actionplans']) && count($session_en['en__actionplans']) > 0) {
 
-                    echo '<li id="isloggedin"><a href="/master/actionplan">Action Plan <i class="fas fa-chevron-circle-right"></i></a></li>';
+                    echo '<li id="isloggedin"><a href="/my/actionplan">Action Plan <i class="fas fa-chevron-circle-right"></i></a></li>';
 
                 } else {
                     echo '<li><a href="/login'. ( isset($in['in_id']) ? '?url=%2Fintents%2F'.$in['in_id'] : '' ) .'"><i class="fas fa-sign-in"></i> Sign In</a></li>';

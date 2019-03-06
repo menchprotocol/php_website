@@ -249,6 +249,8 @@ function fn___echo_in_message_manage($tr)
     //Modify:
     $ui .= '<li class="pull-right edit-off" style="margin-left:0;"><span class="on-hover"><a class="btn btn-primary white-primary" href="javascript:fn___message_modify_start(' . $tr['tr_id'] . ',' . $tr['tr_type_entity_id'] . ');" title="Modify Message" data-toggle="tooltip" data-placement="top" style="border:2px solid #fedd16 !important; margin-left: 8px !important; margin-right: -6px !important;"><i class="fas fa-pen-square"></i></a></span></li>';
 
+    //Is this a video message?
+
     //Type:
     $ui .= '<li class="pull-right edit-off message_status" style="margin: 0 1px 0 -1px;"><span title="' . rtrim($en_all_4485[$tr['tr_type_entity_id']]['m_name'], 's') . '" data-toggle="tooltip" data-placement="top">' . $en_all_4485[$tr['tr_type_entity_id']]['m_icon'] . '</span></li>';
 
@@ -540,7 +542,7 @@ function fn___echo_tr_row($tr, $is_inner = false)
 function echo_k($k, $is_parent, $in_type_tr_parent_intent_id = 0)
 {
 
-    $ui = '<a href="' . ($in_type_tr_parent_intent_id ? '/master/choose_any_path/' . $k['tr_id'] . '/' . $in_type_tr_parent_intent_id . '/' . $k['in_id'] . '/' . md5($k['tr_id'] . 'kjaghksjha*(^' . $k['in_id'] . $in_type_tr_parent_intent_id) : '/master/actionplan/' . $k['tr_parent_transaction_id'] . '/' . $k['in_id']) . '" class="list-group-item">';
+    $ui = '<a href="' . ($in_type_tr_parent_intent_id ? '/my/choose_any_path/' . $k['tr_id'] . '/' . $in_type_tr_parent_intent_id . '/' . $k['in_id'] . '/' . md5($k['tr_id'] . 'kjaghksjha*(^' . $k['in_id'] . $in_type_tr_parent_intent_id) : '/my/actionplan/' . $k['tr_parent_transaction_id'] . '/' . $k['in_id']) . '" class="list-group-item">';
 
     //Different pointer position based on direction:
     if ($is_parent) {
@@ -1428,7 +1430,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     if(0){
         //TODO activate later...
         $count_in_actionplans = $CI->Database_model->fn___tr_fetch(array(
-            'tr_type_entity_id' => 4559, //Action Plan Intents
+            'tr_type_entity_id' => 4559, //Action Plan Task
             'tr_child_intent_id' => $in['in_id'], //For this Intent
         ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
 
@@ -1436,7 +1438,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
             //Yes, this intent has been added to some Action Plans, let's see what % is completed so far:
             $count_in_actionplans_complete = $CI->Database_model->fn___tr_fetch(array(
-                'tr_type_entity_id' => 4559, //Action Plan Intents
+                'tr_type_entity_id' => 4559, //Action Plan Task
                 'tr_child_intent_id' => $in['in_id'], //For this Intent
                 'tr_status NOT IN (' . join(',', $CI->config->item('tr_status_incomplete')) . ')' => null, //completed
             ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
@@ -1612,7 +1614,7 @@ function fn___echo_leaderboard($days_ago = null, $top = 25){
 
     $ui = '';
 
-    $ui .= '<a href="javascript:void(0);" onclick="$(\'.leaderboard'.$days_ago.'\').toggleClass(\'hidden\');" class="large-stat"><span><i class="fal fa-medal"></i>'. $top_miner . '</span>Top Miner <i class="leaderboard'.$days_ago.' fal fa-plus-circle"></i><i class="leaderboard'.$days_ago.' fal fa-minus-circle hidden"></i></a>';
+    $ui .= '<a href="javascript:void(0);" onclick="$(\'.leaderboard'.$days_ago.'\').toggleClass(\'hidden\');" class="large-stat"><span><i class="fal fa-medal"></i> '. $top_miner . '</span>Top Miner <i class="leaderboard'.$days_ago.' fal fa-plus-circle"></i><i class="leaderboard'.$days_ago.' fal fa-minus-circle hidden"></i></a>';
 
     $ui .= '<table class="table table-condensed table-striped stats-table leaderboard'.$days_ago.' hidden" style="max-width:100%;">';
 

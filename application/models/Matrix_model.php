@@ -121,14 +121,14 @@ class Matrix_model extends CI_Model
     }
 
 
-    function fn___en_radio_set($en_parent_bucket_id, $set_en_child_id = 0, $en_master_id, $tr_miner_entity_id = 0)
+    function fn___en_radio_set($en_parent_bucket_id, $set_en_child_id = 0, $en_student_id, $tr_miner_entity_id = 0)
     {
 
         /*
          * Treats an entity child group as a drop down menu where:
          *
          *  $en_parent_bucket_id is the parent of the drop down
-         *  $en_master_id is the master entity ID that one of the children of $en_parent_bucket_id should be assigned (like a drop down)
+         *  $en_student_id is the master entity ID that one of the children of $en_parent_bucket_id should be assigned (like a drop down)
          *  $set_en_child_id is the new value to be assigned, which could also be null (meaning just remove all current values)
          *
          * This function is helpful to manage things like Student communication levels
@@ -150,7 +150,7 @@ class Matrix_model extends CI_Model
         $already_assigned = ($set_en_child_id < 1);
         $updated_tr_id = 0;
         foreach ($this->Database_model->fn___tr_fetch(array(
-            'tr_child_entity_id' => $en_master_id,
+            'tr_child_entity_id' => $en_student_id,
             'tr_parent_entity_id IN (' . join(',', $children) . ')' => null, //Current children
             'tr_status >=' => 0,
         ), array(), 200) as $tr) {
@@ -175,7 +175,7 @@ class Matrix_model extends CI_Model
             //Let's go ahead and add desired entity as parent:
             $this->Database_model->fn___tr_create(array(
                 'tr_miner_entity_id' => $tr_miner_entity_id,
-                'tr_child_entity_id' => $en_master_id,
+                'tr_child_entity_id' => $en_student_id,
                 'tr_parent_entity_id' => $set_en_child_id,
                 'tr_type_entity_id' => 4230, //Empty link
                 'tr_parent_transaction_id' => $updated_tr_id,
@@ -578,7 +578,7 @@ class Matrix_model extends CI_Model
 
         //Give clear directions to complete if Action Plan ID is provided...
         if ($actionplan_tr_id > 0 && $in_id > 0) {
-            $message .= ', which you can submit using your Action Plan. /link:See in 🚩Action Plan:https://mench.com/master/actionplan/' . $actionplan_tr_id . '/' . $in_id;
+            $message .= ', which you can submit using your Action Plan. /link:See in 🚩Action Plan:https://mench.com/my/actionplan/' . $actionplan_tr_id . '/' . $in_id;
         }
 
         //Return Student-friendly message for completion requirements:
@@ -587,7 +587,7 @@ class Matrix_model extends CI_Model
     }
 
 
-    function fn___en_master_messenger_authenticate($psid)
+    function fn___en_student_messenger_authenticate($psid)
     {
 
         /*
@@ -602,7 +602,7 @@ class Matrix_model extends CI_Model
         if ($psid < 1) {
             //Ooops, this should never happen:
             $this->Database_model->fn___tr_create(array(
-                'tr_content' => 'fn___en_master_messenger_authenticate() got called without a valid Facebook $psid variable',
+                'tr_content' => 'fn___en_student_messenger_authenticate() got called without a valid Facebook $psid variable',
                 'tr_type_entity_id' => 4246, //Platform Error
             ));
             return false;
@@ -1055,7 +1055,7 @@ class Matrix_model extends CI_Model
                 //Yes we are, create a cache of this Intent link to be added to their Action Plan:
                 $this->Database_model->fn___tr_create(array(
                     'tr_status' => 0, //New
-                    'tr_type_entity_id' => 4559, //Action Plan Intent
+                    'tr_type_entity_id' => 4559, //Action Plan Task
                     'tr_miner_entity_id' => $actionplan['tr_parent_entity_id'], //Miner credit, in this case the student
                     'tr_parent_entity_id' => $actionplan['tr_parent_entity_id'], //Belongs to this Student
                     'tr_parent_intent_id' => $this_in['tr_parent_intent_id'],
@@ -1789,7 +1789,7 @@ class Matrix_model extends CI_Model
 
             //Inform the master:
             $this->Chat_model->fn___dispatch_message(
-                'Hi stranger! Let\'s get started by completing your profile information by opening the My Account tab in the menu below. /link:Open 👤My Account:https://mench.com/master/account',
+                'Hi stranger! Let\'s get started by completing your profile information by opening the My Account tab in the menu below. /link:Open 👤My Account:https://mench.com/my/account',
                 $en,
                 true
             );

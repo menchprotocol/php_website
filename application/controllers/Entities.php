@@ -80,6 +80,16 @@ class Entities extends CI_Controller
 
         $session_en = fn___en_auth(null, true); //Just be logged in to browse
 
+        //Fetch data:
+        $ens = $this->Database_model->fn___en_fetch(array(
+            'en_id' => $en_id,
+        ), array('en__child_count', 'en__children', 'en__actionplans'));
+
+        if (count($ens) < 1) {
+            return fn___redirect_message('/entities', '<div class="alert alert-danger" role="alert">Invalid Entity ID</div>');
+        }
+
+
         //Do we have any mass actions?
         if (isset($_POST['action_type'])) {
 
@@ -91,6 +101,7 @@ class Entities extends CI_Controller
                 'en_status >=' => 0, //New+
             ), array('en_child'), 0);
 
+            //Validate inputs:
             if (!isset($_POST['modify_text'])) {
                 $this->session->set_flashdata('flash_message', '<div class="alert alert-danger" role="alert">Missing string</div>');
             } elseif (!array_key_exists($_POST['action_type'], $this->config->item('en_mass_actions'))) {
@@ -168,29 +179,41 @@ class Entities extends CI_Controller
 
                 }
 
-
-                $config['en_mass_actions'] = array( //Various mass actions to be taken on Entity children
-                    '' => 'Add string as prefix',
-                    '' => 'Add string as postfix',
-                    '' => 'Replace matching strings',
-                );
-
+                //How did the mass update go?
                 if ($applied_success > 0) {
                     $this->session->set_flashdata('flash_message', '<div class="alert alert-success" role="alert">Successfully updated ' . $applied_success . '/' . count($children) . ' entities</div>');
                 } else {
                     $this->session->set_flashdata('flash_message', '<div class="alert alert-warning" role="alert">Nothing was updated</div>');
                 }
-
             }
-        }
 
-        //Fetch data:
-        $ens = $this->Database_model->fn___en_fetch(array(
-            'en_id' => $en_id,
-        ), array('en__child_count', 'en__children', 'en__actionplans'));
+            //Log mass entity edit transaction:
+            $this->Database_model->fn___tr_create(array(
+                'tr_miner_entity_id' => $session_en['en_id'],
+                'tr_type_entity_id' => 4997, //Miner Mass Updated Entities
+                'tr_parent_entity_id' => $session_en['en_id'],
+                'tr_child_entity_id' => $en_id,
+                'tr_metadata' => array(
+                    'payload' => $_POST,
+                    'entities_total' => count($children),
+                    'entities_updated' => $applied_success,
+                ),
+            ));
 
-        if (count($ens) < 1) {
-            return fn___redirect_message('/entities', '<div class="alert alert-danger" role="alert">Invalid Entity ID</div>');
+        } else {
+
+            //No mass action, just viewing...
+            //Update session count and log transaction:
+            $new_order = ( $this->session->userdata('miner_session_count') + 1 );
+            $this->session->set_userdata('miner_session_count', $new_order);
+            $this->Database_model->fn___tr_create(array(
+                'tr_miner_entity_id' => $session_en['en_id'],
+                'tr_type_entity_id' => 4994, //Miner Opened Entity
+                'tr_parent_entity_id' => $session_en['en_id'],
+                'tr_child_entity_id' => $en_id,
+                'tr_order' => $new_order,
+            ));
+
         }
 
         //Load views:
@@ -1046,13 +1069,14 @@ class Entities extends CI_Controller
         $session_data = array();
         $is_chrome = (strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome') !== false || strpos($_SERVER['HTTP_USER_AGENT'], 'CriOS') !== false);
         $is_miner = false;
-        $is_master = false;
+        $is_student = false;
 
 
         //Are they miner? Give them Sign In access:
         if (fn___filter_array($ens[0]['en__parents'], 'en_id', 1308)) {
             //They have admin rights:
             $session_data['user'] = $ens[0];
+            $session_data['miner_session_count'] = 1;
             $is_miner = true;
         }
 
@@ -1060,7 +1084,7 @@ class Entities extends CI_Controller
         //Applicable for miners only:
         if (!$is_chrome) {
 
-            if ($is_master) {
+            if ($is_student) {
 
                 //Remove miner privileges as they cannot use the matrix with non-chrome Browser:
                 $is_miner = false;
@@ -1072,33 +1096,47 @@ class Entities extends CI_Controller
 
             }
 
-        } elseif (!$is_miner && !$is_master) {
+        } elseif (!$is_miner && !$is_student) {
 
             //We assume this is a master request:
             return fn___redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: You have not added any intentions to your Action Plan yet.</div>');
 
         }
 
-        //Log Sign In Transaction
-        $this->Database_model->fn___tr_create(array(
-            'tr_miner_entity_id' => $ens[0]['en_id'],
-            'tr_parent_entity_id' => $ens[0]['en_id'], //Initiator
-            'tr_metadata' => $ens[0],
-            'tr_type_entity_id' => 4269, //Logged into the matrix
-        ));
-
-
-        //All good to go!
-        //Load session and redirect:
-        $this->session->set_userdata($session_data);
 
         //Append user IP and agent information
         if (isset($_POST['input_password'])) {
             unset($_POST['input_password']); //Sensitive information to be removed and NOT logged
         }
+
+        //Log additional information:
         $ens[0]['login_ip'] = $_SERVER['REMOTE_ADDR'];
         $ens[0]['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
         $ens[0]['input_post_data'] = $_POST;
+
+
+        //Log Sign In Transaction:
+        if($is_miner){
+            $this->Database_model->fn___tr_create(array(
+                'tr_miner_entity_id' => $ens[0]['en_id'],
+                'tr_parent_entity_id' => $ens[0]['en_id'],
+                'tr_metadata' => $ens[0],
+                'tr_type_entity_id' => 4269, //Miner Matrix Login
+                'tr_order' => $session_data['miner_session_count'], //First Action
+            ));
+        } else {
+            $this->Database_model->fn___tr_create(array(
+                'tr_miner_entity_id' => $ens[0]['en_id'],
+                'tr_parent_entity_id' => $ens[0]['en_id'],
+                'tr_metadata' => $ens[0],
+                'tr_type_entity_id' => 4996, //Action Plan Web Login
+            ));
+        }
+
+
+        //All good to go!
+        //Load session and redirect:
+        $this->session->set_userdata($session_data);
 
 
         if (isset($_POST['url']) && strlen($_POST['url']) > 0) {
@@ -1110,7 +1148,7 @@ class Entities extends CI_Controller
                 header('Location: /intents/' . $this->config->item('in_tactic_id'));
             } else {
                 //Student default:
-                header('Location: /master/actionplan');
+                header('Location: /my/actionplan');
             }
         }
     }

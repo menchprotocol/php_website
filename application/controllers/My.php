@@ -1,10 +1,10 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Master extends CI_Controller
+class My extends CI_Controller
 {
 
-    //This controller is usually accessed via the /master/ URL prefix via the Messenger Bot
+    //This controller is usually accessed via the /my/ URL prefix via the Messenger Bot
 
     function __construct()
     {
@@ -87,7 +87,7 @@ class Master extends CI_Controller
 
         if($empty_session && $psid > 0){
             //Authenticate this user:
-            $session_en = $this->Matrix_model->fn___en_master_messenger_authenticate($psid);
+            $session_en = $this->Matrix_model->fn___en_student_messenger_authenticate($psid);
         }
 
         //Set Action Plan filters:
@@ -96,7 +96,7 @@ class Master extends CI_Controller
         //Do we have a use session?
         if ($actionplan_tr_id > 0 && $in_id > 0) {
             //Yes! It seems to be a desktop login:
-            $filters['tr_type_entity_id'] = 4559; //Action Plan Intent
+            $filters['tr_type_entity_id'] = 4559; //Action Plan Task
             $filters['tr_parent_transaction_id'] = $actionplan_tr_id;
             $filters['tr_child_intent_id'] = $in_id;
         } elseif (!$empty_session) {
@@ -140,7 +140,7 @@ class Master extends CI_Controller
                     //Prepare metadata:
                     $metadata = unserialize($tr['in_metadata']);
                     //Display row:
-                    echo '<a href="/master/actionplan/' . $tr['tr_id'] . '/' . $tr['tr_child_intent_id'] . '" class="list-group-item">';
+                    echo '<a href="/my/actionplan/' . $tr['tr_id'] . '/' . $tr['tr_child_intent_id'] . '" class="list-group-item">';
                     echo '<span class="pull-right">';
                     echo '<span class="badge badge-primary"><i class="fas fa-angle-right"></i></span>';
                     echo '</span>';
@@ -157,14 +157,14 @@ class Master extends CI_Controller
                 //We have a single Action Plan Intent to load:
                 //Now we need to load the action plan:
                 $actionplan_parents = $this->Database_model->fn___tr_fetch(array(
-                    'tr_type_entity_id' => 4559, //Action Plan Intents
+                    'tr_type_entity_id' => 4559, //Action Plan Task
                     'tr_parent_transaction_id' => $actionplan_tr_id,
                     'in_status >=' => 2, //Published+ Intents
                     'tr_child_intent_id' => $in_id,
                 ), array('in_parent'));
 
                 $actionplan_children = $this->Database_model->fn___tr_fetch(array(
-                    'tr_type_entity_id' => 4559, //Action Plan Intents
+                    'tr_type_entity_id' => 4559, //Action Plan Task
                     'tr_parent_transaction_id' => $actionplan_tr_id,
                     'in_status >=' => 2, //Published+ Intents
                     'tr_parent_intent_id' => $in_id,
@@ -219,9 +219,9 @@ class Master extends CI_Controller
         //Find the next item to navigate them to:
         $next_ins = $this->Matrix_model->fn___actionplan_next_in($tr_id);
         if ($next_ins) {
-            return fn___redirect_message('/master/actionplan/' . $next_ins[0]['tr_parent_transaction_id'] . '/' . $next_ins[0]['in_id'], $message);
+            return fn___redirect_message('/my/actionplan/' . $next_ins[0]['tr_parent_transaction_id'] . '/' . $next_ins[0]['in_id'], $message);
         } else {
-            return fn___redirect_message('/master/actionplan', $message);
+            return fn___redirect_message('/my/actionplan', $message);
         }
     }
 
@@ -229,10 +229,10 @@ class Master extends CI_Controller
     {
         if (md5($actionplan_tr_id . 'kjaghksjha*(^' . $in_id . $tr_parent_intent_id) == $w_key) {
             if ($this->Matrix_model->fn___actionplan_choose_or($actionplan_tr_id, $tr_parent_intent_id, $in_id)) {
-                return fn___redirect_message('/master/actionplan/' . $actionplan_tr_id . '/' . $in_id, '<div class="alert alert-success" role="alert">Your answer was saved.</div>');
+                return fn___redirect_message('/my/actionplan/' . $actionplan_tr_id . '/' . $in_id, '<div class="alert alert-success" role="alert">Your answer was saved.</div>');
             } else {
                 //We had some sort of an error:
-                return fn___redirect_message('/master/actionplan/' . $actionplan_tr_id . '/' . $tr_parent_intent_id, '<div class="alert alert-danger" role="alert">There was an error saving your answer.</div>');
+                return fn___redirect_message('/my/actionplan/' . $actionplan_tr_id . '/' . $tr_parent_intent_id, '<div class="alert alert-danger" role="alert">There was an error saving your answer.</div>');
             }
         }
     }
@@ -242,7 +242,7 @@ class Master extends CI_Controller
 
         //Validate integrity of request:
         if (!isset($_POST['tr_id']) || intval($_POST['tr_id']) < 1 || !isset($_POST['tr_content'])) {
-            return fn___redirect_message('/master/actionplan', '<div class="alert alert-danger" role="alert">Error: Missing Core Data.</div>');
+            return fn___redirect_message('/my/actionplan', '<div class="alert alert-danger" role="alert">Error: Missing Core Data.</div>');
         }
 
         //Fetch master name and details:
@@ -252,9 +252,9 @@ class Master extends CI_Controller
         ), array('w', 'cr', 'cr_c_child'));
 
         if (!(count($trs) == 1)) {
-            return fn___redirect_message('/master/actionplan', '<div class="alert alert-danger" role="alert">Error: Invalid submission ID.</div>');
+            return fn___redirect_message('/my/actionplan', '<div class="alert alert-danger" role="alert">Error: Invalid submission ID.</div>');
         }
-        $k_url = '/master/actionplan/' . $trs[0]['tr_parent_transaction_id'] . '/' . $trs[0]['in_id'];
+        $k_url = '/my/actionplan/' . $trs[0]['tr_parent_transaction_id'] . '/' . $trs[0]['in_id'];
 
 
         //Fetch completion requirements:
@@ -310,7 +310,7 @@ class Master extends CI_Controller
 
             $detected_tr_type = fn___detect_tr_type_entity_id($_POST['tr_content']);
             if(!$detected_tr_type['status']){
-                return fn___redirect_message('/master/actionplan', '<div class="alert alert-danger" role="alert">Error: '.$detected_tr_type['message'].'</div>');
+                return fn___redirect_message('/my/actionplan', '<div class="alert alert-danger" role="alert">Error: '.$detected_tr_type['message'].'</div>');
             }
 
             //Updates k notes:
@@ -332,7 +332,7 @@ class Master extends CI_Controller
             $next_ins = $this->Matrix_model->fn___actionplan_next_in($trs[0]['tr_id']);
             if ($next_ins) {
                 //Override original item:
-                $k_url = '/master/actionplan/' . $next_ins[0]['tr_parent_transaction_id'] . '/' . $next_ins[0]['in_id'];
+                $k_url = '/my/actionplan/' . $next_ins[0]['tr_parent_transaction_id'] . '/' . $next_ins[0]['in_id'];
             }
         }
 

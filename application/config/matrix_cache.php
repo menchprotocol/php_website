@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-03-06 00:20:20 PST
+//Generated 2019-03-06 10:59:05 PST
 
 //Entity Message Reference Appendix:
 $config['en_ids_4990'] = array(1326, 2997, 2998, 2999, 3005, 3084, 3147, 3192, 4257, 4258, 4259, 4260, 4446, 4763, 4883);
@@ -232,14 +232,14 @@ $config['en_all_4755'] = array(
         'm_parents' => array(4755, 4594, 4277),
     ),
     4567 => array(
-        'm_icon' => '<i class="fas fa-check-square"></i>',
-        'm_name' => 'Action Plan Intent Completed',
+        'm_icon' => '<i class="fal fa-check-square"></i>',
+        'm_name' => 'Action Plan Task Completed',
         'm_desc' => '',
         'm_parents' => array(4755, 4594, 4560),
     ),
     4568 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
-        'm_name' => 'Action Plan Completed',
+        'm_name' => 'Action Plan Intent Completed',
         'm_desc' => '',
         'm_parents' => array(4755, 4594, 4560),
     ),
@@ -298,7 +298,7 @@ $config['en_all_4374'] = array(
     ),
     4235 => array(
         'm_icon' => '<i class="fas fa-flag"></i>',
-        'm_name' => 'Action Plan',
+        'm_name' => 'Action Plan Intent',
         'm_desc' => '1',
         'm_parents' => array(4594, 4560, 4463, 4374),
     ),
@@ -436,7 +436,7 @@ $config['en_all_4600'] = array(
 );
 
 //Transaction Type Full List:
-$config['en_ids_4594'] = array(4228, 4229, 4230, 4231, 4232, 4233, 4234, 4235, 4242, 4246, 4248, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4265, 4266, 4267, 4268, 4269, 4272, 4275, 4278, 4279, 4282, 4283, 4284, 4287, 4299, 4318, 4319, 4331, 4452, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4567, 4568, 4570, 4577, 4601, 4602, 4983);
+$config['en_ids_4594'] = array(4228, 4229, 4230, 4231, 4232, 4233, 4234, 4235, 4242, 4246, 4248, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4265, 4266, 4267, 4268, 4269, 4272, 4275, 4278, 4279, 4282, 4283, 4284, 4287, 4299, 4318, 4319, 4331, 4452, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4567, 4568, 4570, 4577, 4601, 4602, 4983, 4993, 4994, 4995, 4996, 4997);
 $config['en_all_4594'] = array(
     4228 => array(
         'm_icon' => '<i class="fal fa-check-circle"></i>',
@@ -482,7 +482,7 @@ $config['en_all_4594'] = array(
     ),
     4235 => array(
         'm_icon' => '<i class="fas fa-flag"></i>',
-        'm_name' => 'Action Plan',
+        'm_name' => 'Action Plan Intent',
         'm_desc' => 'Created when the Master adds an intent tree to their Action Plan. We will create 1 link for each intent link to create a cache of the intent tree at that point in time.',
         'm_parents' => array(4594, 4560, 4463, 4374),
     ),
@@ -595,10 +595,10 @@ $config['en_all_4594'] = array(
         'm_parents' => array(4594),
     ),
     4269 => array(
-        'm_icon' => '<i class="fal fa-sign-in"></i>',
-        'm_name' => 'Matrix login',
+        'm_icon' => '<i class="fas fa-sign-in"></i>',
+        'm_name' => 'Miner Matrix Login',
         'm_desc' => '',
-        'm_parents' => array(4594),
+        'm_parents' => array(4992, 4594),
     ),
     4272 => array(
         'm_icon' => '<i class="fas fa-question-circle"></i>',
@@ -638,7 +638,7 @@ $config['en_all_4594'] = array(
     ),
     4284 => array(
         'm_icon' => '<i class="fal fa-fast-forward"></i>',
-        'm_name' => 'Action Plan Intent Skipped',
+        'm_name' => 'Action Plan Skipped',
         'm_desc' => 'Transaction logged every time the Master decides to skip an Action Plan.',
         'm_parents' => array(4594, 4560),
     ),
@@ -752,19 +752,19 @@ $config['en_all_4594'] = array(
     ),
     4559 => array(
         'm_icon' => '<i class="fal fa-square"></i>',
-        'm_name' => 'Action Plan Intent',
+        'm_name' => 'Action Plan Task',
         'm_desc' => 'Every Action Plan has a number of intentions that define what the Masters needs to complete in order to accomplish the intention of the Action Plan',
         'm_parents' => array(4594, 4560),
     ),
     4567 => array(
-        'm_icon' => '<i class="fas fa-check-square"></i>',
-        'm_name' => 'Action Plan Intent Completed',
+        'm_icon' => '<i class="fal fa-check-square"></i>',
+        'm_name' => 'Action Plan Task Completed',
         'm_desc' => 'When Master marks an Action Plan Intent as Complete.',
         'm_parents' => array(4755, 4594, 4560),
     ),
     4568 => array(
         'm_icon' => '<i class="fas fa-check-square"></i>',
-        'm_name' => 'Action Plan Completed',
+        'm_name' => 'Action Plan Intent Completed',
         'm_desc' => 'When the entire Action Plan tree is marked as Complete.',
         'm_parents' => array(4755, 4594, 4560),
     ),
@@ -797,6 +797,36 @@ $config['en_all_4594'] = array(
         'm_name' => 'Intent Message Up-Votes',
         'm_desc' => '',
         'm_parents' => array(4463, 4986, 4985, 4374, 4594, 4485),
+    ),
+    4993 => array(
+        'm_icon' => '<i class="fas fa-hashtag"></i>',
+        'm_name' => 'Miner Opened Intent',
+        'm_desc' => '',
+        'm_parents' => array(4594, 4992),
+    ),
+    4994 => array(
+        'm_icon' => '<i class="fas fa-at"></i>',
+        'm_name' => 'Miner Opened Entity',
+        'm_desc' => '',
+        'm_parents' => array(4594, 4992),
+    ),
+    4995 => array(
+        'm_icon' => '<i class="fas fa-atlas"></i>',
+        'm_name' => 'Miner Opened Ledger',
+        'm_desc' => '',
+        'm_parents' => array(4594, 4992),
+    ),
+    4996 => array(
+        'm_icon' => '<i class="fas fa-sign-in"></i>',
+        'm_name' => 'Action Plan Web Login',
+        'm_desc' => '',
+        'm_parents' => array(4594, 4560),
+    ),
+    4997 => array(
+        'm_icon' => '<i class="fal fa-list-alt"></i>',
+        'm_name' => 'Miner Mass Updated Entities',
+        'm_desc' => '',
+        'm_parents' => array(4594, 4992),
     ),
 );
 

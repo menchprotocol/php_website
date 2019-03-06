@@ -16,7 +16,7 @@ if ((isset($session_en['en__actionplans']) && count($session_en['en__actionplans
     //Fetch page instantly as we know who this is:
     ?>
     <script>
-        $.post("/master/fn___display_actionplan/0/<?= ( isset($actionplan_tr_id) ? $actionplan_tr_id : $session_en['en__actionplans'][0]['tr_id']) ?>/<?= (isset($in_id) ? intval($in_id) : $session_en['en__actionplans'][0]['tr_child_intent_id']) ?>", {}, function (data) {
+        $.post("/my/fn___display_actionplan/0/<?= ( isset($actionplan_tr_id) ? $actionplan_tr_id : $session_en['en__actionplans'][0]['tr_id']) ?>/<?= (isset($in_id) ? intval($in_id) : $session_en['en__actionplans'][0]['tr_child_intent_id']) ?>", {}, function (data) {
             $("#page_content").html(data);
 
             //Load tooldip:
@@ -51,7 +51,7 @@ if ((isset($session_en['en__actionplans']) && count($session_en['en__actionplans
                     var psid = thread_context.psid;
                     var signed_request = thread_context.signed_request;
                     //Fetch Page:
-                    $.post("/master/fn___display_actionplan/" + psid + "/<?= (isset($actionplan_tr_id) ? intval($actionplan_tr_id) : 0) ?>/<?= (isset($in_id) ? intval($in_id) : 0) ?>?sr=" + signed_request, {}, function (data) {
+                    $.post("/my/fn___display_actionplan/" + psid + "/<?= (isset($actionplan_tr_id) ? intval($actionplan_tr_id) : 0) ?>/<?= (isset($in_id) ? intval($in_id) : 0) ?>?sr=" + signed_request, {}, function (data) {
                         //Update UI to confirm with user:
                         $("#page_content").html(data);
                     });

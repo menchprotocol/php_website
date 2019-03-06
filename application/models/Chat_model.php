@@ -1275,7 +1275,7 @@ class Chat_model extends CI_Model
         //Lets fetch incomplete children of $in_id within Action Plan $actionplan_tr_id
         $actionplan_child_ins = $this->Database_model->fn___tr_fetch(array(
             'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
-            'tr_type_entity_id' => 4559, //Action Plan Intents
+            'tr_type_entity_id' => 4559, //Action Plan Task
             'tr_parent_transaction_id' => $actionplan_tr_id,
             'tr_parent_intent_id' => $in_id,
         ), array('in_child'));
@@ -1406,7 +1406,7 @@ class Chat_model extends CI_Model
                 //Give option to skip:
                 $actionplan_parents = $this->Database_model->fn___tr_fetch(array(
                     'tr_parent_transaction_id' => $actionplan_tr_id,
-                    'tr_type_entity_id' => 4559, //Action Plan Intents
+                    'tr_type_entity_id' => 4559, //Action Plan Task
                     'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
                     'tr_child_intent_id' => $in_id,
                 ));
@@ -1803,7 +1803,7 @@ class Chat_model extends CI_Model
 
                     //Let Student know that they have already subscribed to this intention:
                     $this->Chat_model->fn___dispatch_message(
-                        'The intention to ' . $ins[0]['in_outcome'] . ' has already been added to your Action Plan. We have been working on it together since ' . fn___echo_time_date($actionplans[0]['tr_timestamp'], true) . '. /link:See in 🚩Action Plan:https://mench.com/master/actionplan/' . ( $actionplans[0]['tr_type_entity_id']==4235 ? $actionplans[0]['tr_id'] : $actionplans[0]['tr_parent_transaction_id'] ) . '/' . $actionplans[0]['tr_child_intent_id'],
+                        'The intention to ' . $ins[0]['in_outcome'] . ' has already been added to your Action Plan. We have been working on it together since ' . fn___echo_time_date($actionplans[0]['tr_timestamp'], true) . '. /link:See in 🚩Action Plan:https://mench.com/my/actionplan/' . ( $actionplans[0]['tr_type_entity_id']==4235 ? $actionplans[0]['tr_id'] : $actionplans[0]['tr_parent_transaction_id'] ) . '/' . $actionplans[0]['tr_child_intent_id'],
                         $en,
                         true,
                         array(),
@@ -1903,7 +1903,7 @@ class Chat_model extends CI_Model
 
                     //Confirm with them that we're now ready:
                     $this->Chat_model->fn___dispatch_message(
-                        'Success! I added the intention to ' . $ins[0]['in_outcome'] . ' to your Action Plan 🙌 /link:Open 🚩Action Plan:https://mench.com/master/actionplan/' . $actionplan['tr_id'] . '/' . $ins[0]['in_id'],
+                        'Success! I added the intention to ' . $ins[0]['in_outcome'] . ' to your Action Plan 🙌 /link:Open 🚩Action Plan:https://mench.com/my/actionplan/' . $actionplan['tr_id'] . '/' . $ins[0]['in_id'],
                         $en,
                         true,
                         array(),
@@ -1933,7 +1933,7 @@ class Chat_model extends CI_Model
             //Extract variables from REF:
             $input_parts = explode('_', fn___one_two_explode('SKIP-ACTIONPLAN_', '', $quick_reply_payload));
             $tr_status = intval($input_parts[0]); //It would be $tr_status=1 initial (working on) and then would change to either -1 IF skip was cancelled or 2 IF skip was confirmed.
-            $tr_id = intval($input_parts[1]); //Action Plan Intent Transaction ID
+            $tr_id = intval($input_parts[1]); //Action Plan Task Transaction ID
             $skip_tr_id = intval($input_parts[2]); //Would initially be zero and would then be set to a Transaction ID when Student confirms/cancels skipping
 
 
@@ -1941,7 +1941,7 @@ class Chat_model extends CI_Model
                 //Fetch Action Plan Intent:
                 $actionplans = $this->Database_model->fn___tr_fetch(array(
                     'tr_id' => $tr_id,
-                    'tr_type_entity_id' => 4559, //Action Plan Intents
+                    'tr_type_entity_id' => 4559, //Action Plan Task
                     'tr_parent_entity_id' => $en['en_id'], //Belongs to this Student
                 ), array('in_child'));
             }
@@ -2075,7 +2075,7 @@ class Chat_model extends CI_Model
                     $this->Matrix_model->k_skip_recursive_down($tr_id);
 
                     //Confirm the skip:
-                    $message = 'Confirmed, I marked this section as skipped. You can always re-visit these tasks in your Action Plan and complete them at any time. /link:See in 🚩Action Plan:https://mench.com/master/actionplan/' . $actionplans[0]['tr_parent_transaction_id'] . '/' . $actionplans[0]['tr_child_intent_id'];
+                    $message = 'Confirmed, I marked this section as skipped. You can always re-visit these tasks in your Action Plan and complete them at any time. /link:See in 🚩Action Plan:https://mench.com/my/actionplan/' . $actionplans[0]['tr_parent_transaction_id'] . '/' . $actionplans[0]['tr_child_intent_id'];
 
                 }
 
@@ -2114,7 +2114,7 @@ class Chat_model extends CI_Model
                 //Fetch Action Plan Intent with its Student:
                 $actionplans = $this->Database_model->fn___tr_fetch(array(
                     'tr_id' => $tr_id,
-                    'tr_type_entity_id' => 4559, //Action Plan Intents
+                    'tr_type_entity_id' => 4559, //Action Plan Task
                     'tr_parent_entity_id' => $en['en_id'], //Belongs to this Student
                 ), array('in_child', 'en_parent'));
             }

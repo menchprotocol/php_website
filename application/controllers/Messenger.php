@@ -82,7 +82,7 @@ class Messenger extends CI_Controller
                     $tr_type_entity_id = ( isset($im['delivery']) ? 4279 /* Message Delivered */ : 4278 /* Message Read */ );
 
                     //Authenticate Student:
-                    $en = $this->Matrix_model->fn___en_master_messenger_authenticate($im['sender']['id']);
+                    $en = $this->Matrix_model->fn___en_student_messenger_authenticate($im['sender']['id']);
 
                     //Log Transaction Only IF last delivery transaction was 3+ minutes ago (Since Facebook sends many of these):
                     $last_trs_logged = $this->Database_model->fn___tr_fetch(array(
@@ -116,7 +116,7 @@ class Messenger extends CI_Controller
                     $tr_type_entity_id = ( isset($im['delivery']) ? 4267 /* Messenger Referral */ : 4268 /* Messenger Postback */ );
 
                     //Authenticate Student:
-                    $en = $this->Matrix_model->fn___en_master_messenger_authenticate($im['sender']['id']);
+                    $en = $this->Matrix_model->fn___en_student_messenger_authenticate($im['sender']['id']);
 
                     //Extract more insights:
                     if (isset($im['postback'])) {
@@ -190,7 +190,7 @@ class Messenger extends CI_Controller
 
                 } elseif (isset($im['optin'])) {
 
-                    $en = $this->Matrix_model->fn___en_master_messenger_authenticate($im['sender']['id']);
+                    $en = $this->Matrix_model->fn___en_student_messenger_authenticate($im['sender']['id']);
 
                     //Log transaction:
                     $this->Database_model->fn___tr_create(array(
@@ -204,7 +204,7 @@ class Messenger extends CI_Controller
                 } elseif (isset($im['message_request']) && $im['message_request'] == 'accept') {
 
                     //This is when we message them and they accept to chat because they had Removed Messenger or something...
-                    $en = $this->Matrix_model->fn___en_master_messenger_authenticate($im['sender']['id']);
+                    $en = $this->Matrix_model->fn___en_student_messenger_authenticate($im['sender']['id']);
 
                     //Log transaction:
                     $this->Database_model->fn___tr_create(array(
@@ -236,7 +236,7 @@ class Messenger extends CI_Controller
                     //Set variables:
                     unset($tr_data); //Reset everything in case its set from the previous loop!
                     $sent_by_mench = (isset($im['message']['is_echo'])); //Indicates the message sent from the page itself
-                    $en = $this->Matrix_model->fn___en_master_messenger_authenticate(($sent_by_mench ? $im['recipient']['id'] : $im['sender']['id']));
+                    $en = $this->Matrix_model->fn___en_student_messenger_authenticate(($sent_by_mench ? $im['recipient']['id'] : $im['sender']['id']));
                     $tr_parent_entity_id = ($sent_by_mench ? 4148 /* Mench Admins via Facebook Inbox UI */ : $en['en_id']);
                     
                     $tr_data = array(
@@ -462,7 +462,7 @@ class Messenger extends CI_Controller
                         array(
                             'title' => '🚩 Action Plan',
                             'type' => 'web_url',
-                            'url' => 'https://mench.com/master/actionplan',
+                            'url' => 'https://mench.com/my/actionplan',
                             'webview_height_ratio' => 'tall',
                             'webview_share_button' => 'hide',
                             'messenger_extensions' => true,

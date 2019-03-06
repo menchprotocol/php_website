@@ -38,7 +38,7 @@ if ($actionplan['tr_status'] == 1) {
             //$next_button = '<span style="font-size: 0.7em; padding-left:5px; display:inline-block;"><i class="fas fa-shield-check"></i> This is the next-in-line intent</span>';
             $next_button = null;
         } else {
-            $next_button = '<a href="/master/actionplan/' . $next_ins[0]['tr_parent_transaction_id'] . '/' . $next_ins[0]['in_id'] . '" class="btn ' . (count($actionplan_parents) == 1 && !$show_written_input && !$is_incomplete ? 'btn-md btn-primary' : 'btn-xs btn-black') . '" data-toggle="tooltip" data-placement="top" title="Next intent-in-line is to ' . $next_ins[0]['in_outcome'] . '">Next-in-line <i class="fas fa-angle-right"></i></a>';
+            $next_button = '<a href="/my/actionplan/' . $next_ins[0]['tr_parent_transaction_id'] . '/' . $next_ins[0]['in_id'] . '" class="btn ' . (count($actionplan_parents) == 1 && !$show_written_input && !$is_incomplete ? 'btn-md btn-primary' : 'btn-xs btn-black') . '" data-toggle="tooltip" data-placement="top" title="Next intent-in-line is to ' . $next_ins[0]['in_outcome'] . '">Next-in-line <i class="fas fa-angle-right"></i></a>';
         }
     }
 }
@@ -124,7 +124,7 @@ if (count($actionplan_parents) == 1 && ($message_in_requirements || (!intval($in
     }
 
     echo '<div class="left-grey">';
-    echo '<form method="POST" action="/master/update_k_save">';
+    echo '<form method="POST" action="/my/update_k_save">';
 
     echo '<input type="hidden" name="tr_id"  value="' . $actionplan_parents[0]['tr_id'] . '" />';
 
