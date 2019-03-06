@@ -6,13 +6,54 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * So we don't have to make DB calls to figure them out every time!
  * This is the cron function that creates this: fn___matrix_cache()
  * See here for all entities cached: https://mench.com/entities/4527
- * use-case format: $this->config->item('en_all_4374')
+ * use-case format: $this->config->item('en_ids_4997')
  *
  * ATTENTION: Also search for "en_ids_" and "en_all_" when trying to manage these throughout the code base
  *
  */
 
-//Generated 2019-03-06 11:14:18 PST
+//Generated 2019-03-06 11:39:18 PST
+
+//Miner Mass Updated Entities:
+$config['en_ids_4997'] = array(4998, 4999, 5000, 5001, 5002, 5003);
+$config['en_all_4997'] = array(
+    4998 => array(
+        'm_icon' => '<i class="fal fa-list-alt"></i>',
+        'm_name' => 'Add Prefix String',
+        'm_desc' => 'STRING...',
+        'm_parents' => array(4997),
+    ),
+    4999 => array(
+        'm_icon' => '<i class="fal fa-list-alt"></i>',
+        'm_name' => 'Add Postfix String',
+        'm_desc' => 'STRING...',
+        'm_parents' => array(4997),
+    ),
+    5000 => array(
+        'm_icon' => '<i class="fal fa-list-alt"></i>',
+        'm_name' => 'Replace Entity Matching String',
+        'm_desc' => 'SEARCH>>REPLACE',
+        'm_parents' => array(4997),
+    ),
+    5001 => array(
+        'm_icon' => '<i class="fal fa-list-alt"></i>',
+        'm_name' => 'Replace Transaction Matching String',
+        'm_desc' => 'SEARCH>>REPLACE',
+        'm_parents' => array(4997),
+    ),
+    5002 => array(
+        'm_icon' => '<i class="fal fa-list-alt"></i>',
+        'm_name' => 'Update Entity Icons',
+        'm_desc' => 'STRING...',
+        'm_parents' => array(4997),
+    ),
+    5003 => array(
+        'm_icon' => '<i class="fal fa-list-alt"></i>',
+        'm_name' => 'Update Matching Status',
+        'm_desc' => 'SEARCH_STATUS(Or *)>>REPLACE_STATUS',
+        'm_parents' => array(4997),
+    ),
+);
 
 //Entity Message Reference Appendix:
 $config['en_ids_4990'] = array(1326, 2997, 2998, 2999, 3005, 3084, 3147, 3192, 4257, 4258, 4259, 4260, 4446, 4763, 4883);
@@ -820,7 +861,7 @@ $config['en_all_4594'] = array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
         'm_name' => 'Miner Mass Updated Entities',
         'm_desc' => '',
-        'm_parents' => array(4594, 4992),
+        'm_parents' => array(4527, 4594, 4992),
     ),
 );
 

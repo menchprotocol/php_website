@@ -91,7 +91,10 @@ class Entities extends CI_Controller
 
 
         //Do we have any mass actions?
-        if (isset($_POST['action_type'])) {
+        if (isset($_POST['mass_action_en_id']) && in_array($_POST['mass_action_en_id'], $this->config->item('en_ids_4997'))) {
+
+            fn___echo_json($_POST);
+            return false;
 
             //Fetch children:
             $children = $this->Database_model->fn___tr_fetch(array(
@@ -104,7 +107,7 @@ class Entities extends CI_Controller
             //Validate inputs:
             if (!isset($_POST['modify_text'])) {
                 $this->session->set_flashdata('flash_message', '<div class="alert alert-danger" role="alert">Missing string</div>');
-            } elseif (!array_key_exists($_POST['action_type'], $this->config->item('en_mass_actions'))) {
+            } elseif (!array_key_exists($_POST['mass_action_en_id'], $this->config->item('en_mass_actions'))) {
                 $this->session->set_flashdata('flash_message', '<div class="alert alert-danger" role="alert">Unknown action type</div>');
             } elseif (count($children) < 1) {
                 $this->session->set_flashdata('flash_message', '<div class="alert alert-danger" role="alert">No child entities found</div>');
@@ -118,14 +121,14 @@ class Entities extends CI_Controller
                     //Logic here must match items in en_mass_actions config variable
 
                     //What is the action?
-                    if ($_POST['action_type'] == 'replace_icon' && !($en['en_icon'] == trim($_POST['modify_text']))) {
+                    if ($_POST['mass_action_en_id'] == 'replace_icon' && !($en['en_icon'] == trim($_POST['modify_text']))) {
                         //Update with new icon:
                         $this->Database_model->fn___en_update($en['en_id'], array(
                             'en_icon' => trim($_POST['modify_text']),
                         ), true, $session_en['en_id']);
 
                         $applied_success++;
-                    } elseif ($_POST['action_type'] == 'prefix_add') {
+                    } elseif ($_POST['mass_action_en_id'] == 'prefix_add') {
 
                         //Update with new icon:
                         $this->Database_model->fn___en_update($en['en_id'], array(
@@ -134,7 +137,7 @@ class Entities extends CI_Controller
 
                         $applied_success++;
 
-                    } elseif ($_POST['action_type'] == 'postfix_add') {
+                    } elseif ($_POST['mass_action_en_id'] == 'postfix_add') {
 
                         //Update with new icon:
                         $this->Database_model->fn___en_update($en['en_id'], array(
@@ -143,7 +146,7 @@ class Entities extends CI_Controller
 
                         $applied_success++;
 
-                    } elseif ($_POST['action_type'] == 'replace_match' && substr_count($_POST['modify_text'], '>>') == 1) {
+                    } elseif ($_POST['mass_action_en_id'] == 'replace_match' && substr_count($_POST['modify_text'], '>>') == 1) {
 
                         //Validate input:
                         $parts = explode('>>', $_POST['modify_text']);
@@ -159,7 +162,7 @@ class Entities extends CI_Controller
 
                         }
 
-                    } elseif ($_POST['action_type'] == 'replace_tr_match' && substr_count($_POST['modify_text'], '>>') == 1) {
+                    } elseif ($_POST['mass_action_en_id'] == 'replace_tr_match' && substr_count($_POST['modify_text'], '>>') == 1) {
 
                         //Validate input:
                         $parts = explode('>>', $_POST['modify_text']);

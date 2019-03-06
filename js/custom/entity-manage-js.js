@@ -56,7 +56,10 @@ var $input = $('.drag-box').find('input[type="file"]'),
 
 
 
-
+function mass_action_ui(){
+    $('.mass_action_item').addClass('hidden');
+    $('#mass_id_' + $('#set_mass_action').val() ).removeClass('hidden');
+}
 
 
 $(document).ready(function () {
@@ -69,6 +72,10 @@ $(document).ready(function () {
         } else {
             $('.notify_en_unlink').addClass('hidden');
         }
+    });
+
+    $('#set_mass_action').change(function () {
+        mass_action_ui();
     });
 
     $('#en_status').change(function () {

@@ -50,7 +50,7 @@
 
             echo '<h5 class="badge badge-h inline-block"><span class="li-children-count inline-block">' . $entity['en__child_count'] . '</span> Children</h5>';
 
-            echo '<a href="javascript:void(0);" onclick="$(\'.mass_modify\').toggle()" style="text-decoration: none; margin-left: 5px;"  data-toggle="tooltip" data-placement="right" title="Mass modify child entities"><i class="fal fa-list-alt" style="font-size: 1.2em; color: #2b2b2b;"></i></a>';
+            echo '<a href="javascript:void(0);" onclick="$(\'.mass_modify\').toggle();mass_action_ui();" style="text-decoration: none; margin-left: 5px;"  data-toggle="tooltip" data-placement="right" title="Mass modify child entities"><i class="fal fa-list-alt" style="font-size: 1.2em; color: #2b2b2b;"></i></a>';
 
             echo '</td>';
 
@@ -101,16 +101,20 @@
 
         echo '<form class="mass_modify indent2" method="POST" action="" style="display:none; width: 100% !important;">';
 
-            echo '<select class="form-control border inline-block" name="action_type">';
 
-                foreach ($this->config->item('en_mass_actions') as $at_id => $at_name) {
-                    if($status_id < 3){ //No need to verify entity links!
-                        echo '<option value="' . $at_id . '">' .$at_name . '</option>';
-                    }
-                }
+            $dropdown_options = '';
+            $input_options = '';
+            foreach ($this->config->item('en_all_4997') as $mass_action_en_id => $mass_action_en) {
+                $dropdown_options .= '<option value="' . $mass_action_en_id . '">' .$mass_action_en['m_name'] . '</option>';
+                //modify_text
+                $input_options .= '<span id="mass_id_'.$mass_action_en_id.'" class="inline-block hidden mass_action_item"><input type="text" name="mass_value_'.$mass_action_en_id.'" placeholder="'.$mass_action_en['m_desc'].'" class="form-control border"></span>';
+            }
+
+            echo '<select class="form-control border inline-block" name="mass_action_en_id" id="set_mass_action">';
+            echo $dropdown_options;
             echo '</select>';
 
-            echo '<input type="text" name="modify_text" placeholder="String" style="max-width:240px;" class="form-control border inline-block">';
+            echo $input_options;
 
             echo '<input type="submit" value="Apply" class="btn btn-secondary inline-block">';
 
