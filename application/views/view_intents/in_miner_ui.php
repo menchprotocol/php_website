@@ -176,7 +176,7 @@ if (isset($orphan_ins)) {
                             <span class="mini-header">Intent Type:</span>
                             <div class="form-group label-floating is-empty" style="margin-bottom: 0; padding-bottom: 0; display:block !important;">
                                 <?php
-                                foreach (fn___echo_status('in_type') as $in_val => $intent_type) {
+                                foreach (fn___echo_fixed_fields('in_type') as $in_val => $intent_type) {
                                     echo '<span class="radio" style="display:inline-block; margin-top: 0 !important;" data-toggle="tooltip" title="' . $intent_type['s_desc'] . '" data-placement="top">
                                         <label class="underdot" style="display:inline-block;">
                                             <input type="radio" id="in_type_' . $in_val . '" name="in_type" value="' . $in_val . '" />
@@ -228,7 +228,7 @@ if (isset($orphan_ins)) {
                             <span class="mini-header">Intent Status:</span>
                             <select class="form-control border" id="in_status" original-status="" data-toggle="tooltip" title="Intent Status" data-placement="top" style="display: inline-block !important;">
                                 <?php
-                                foreach (fn___echo_status('in_status') as $status_id => $status) {
+                                foreach (fn___echo_fixed_fields('in_status') as $status_id => $status) {
                                     echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
                                 }
                                 ?>
@@ -329,7 +329,7 @@ if (isset($orphan_ins)) {
                                 <span class="mini-header">Transaction Status:</span>
                                 <select class="form-control border" data-toggle="tooltip" title="Transaction Status" data-placement="top" id="tr_status" style="display: inline-block !important;">
                                     <?php
-                                    foreach (fn___echo_status('tr_status') as $status_id => $status) {
+                                    foreach (fn___echo_fixed_fields('tr_status') as $status_id => $status) {
                                         if($status_id < 3){ //No need to verify intent links!
                                             echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
                                         }

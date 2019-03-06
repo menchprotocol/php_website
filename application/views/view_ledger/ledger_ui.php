@@ -50,7 +50,7 @@ if(!$has_filters){
 
 
     echo '<div class="row stat-row">';
-    foreach (fn___echo_status() as $object_id => $statuses) {
+    foreach (fn___echo_fixed_fields() as $object_id => $statuses) {
 
 
         //Define object type and run count query:
@@ -102,7 +102,7 @@ if(!$has_filters){
 
             //Display this status count:
             $this_ui .= '<tr>';
-            $this_ui .= '<td style="text-align: left;">'.fn___echo_status($object_id, $status_num, false, 'top').'</td>';
+            $this_ui .= '<td style="text-align: left;">'.fn___echo_fixed_fields($object_id, $status_num, false, 'top').'</td>';
             $this_ui .= '<td style="text-align: right;">'.( $count > 0 ? '<a href="/ledger?'.$object_id.'='.$status_num.'&tr_type_entity_id='.$created_en_type_id.'"  data-toggle="tooltip" title="View Transactions" data-placement="top">'.number_format($count,0).'</a>' : $count ).'</td>';
             $this_ui .= '</tr>';
 

@@ -144,7 +144,7 @@ class Master extends CI_Controller
                     echo '<span class="pull-right">';
                     echo '<span class="badge badge-primary"><i class="fas fa-angle-right"></i></span>';
                     echo '</span>';
-                    echo fn___echo_status('tr_status', $tr['tr_status'], 1, 'right');
+                    echo fn___echo_fixed_fields('tr_status', $tr['tr_status'], 1, 'right');
                     echo ' ' . $tr['in_outcome'];
                     echo ' ' . $metadata['in__tree_in_active_count'];
                     echo ' &nbsp;<i class="fal fa-clock"></i> ' . fn___echo_time_range($tr, true);

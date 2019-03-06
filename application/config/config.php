@@ -20,21 +20,19 @@ $config['en_per_page']              = 50; //Limits the maximum entities loaded p
 
 
 //Intents:
-$config['in_mission_name']          = 'expand human potential'; //is the top level intent that will always contain every other intention we cover
 $config['in_mission_id']            = 7766; //expand human potential
 $config['in_strategy_name']         = 'advance your tech career'; //The broader, more long-term strategic focus of Mench
 $config['in_tactic_id']             = 6903; //The shorter, more immediate focus recommended to Students & Miners as the starting point
-$config['in_miner_start_id']        = 7435; //The ID that gets Miner's started
 
 
 //Entities:
 $config['en_start_here_id']         = 3463; //The default matrix entity that is loaded when Entities is clicked
-$config['en_default_parent_id']     = 1326; //The entity that would be the parent to all new URLs added via Messages
 $config['en_platform_miner_id']     = 2738; //Mench. This is the entity that would get all the credit for generic platform transactions
 
 
 //App Functionality:
 $config['enable_algolia']           = true; //Currently reached our monthly free quota
+
 //TODO Update to mench.com when triple is ready:
 $config['algolia_remote']           = 'https://mench.co'; //The domain that will be called to sync updates when editing on local
 $config['file_size_max']            = 25; //Server setting is 32MB. see here: mench.com/ses
@@ -47,7 +45,7 @@ $config['core_objects']             = array( //The 3 primary objects in the app
 
 
 //App Inputs:
-$config['in_seconds_cost_max']           = 28800; //The maximum seconds allowed per intent. If larger, the miner is asked to break it down into smaller intents
+$config['in_seconds_cost_max']      = 28800; //The maximum seconds allowed per intent. If larger, the miner is asked to break it down into smaller intents
 $config['in_outcome_max']           = 89; //Max number of characters allowed in the title of intents
 $config['en_name_max']              = 250; //Max number of characters allowed in the title of intents
 $config['tr_content_max']           = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
@@ -113,7 +111,7 @@ $config['notify_admins']            = array(
 
 
 //Ledger filters:
-$config['ledger_filters']           = array(
+$config['transaction_links']        = array(
                                         'tr_miner_entity_id' => 'en',
                                         'tr_type_entity_id' => 'en',
                                         'tr_parent_transaction_id' => 'tr',
@@ -125,7 +123,7 @@ $config['ledger_filters']           = array(
 
 
 //3x Table Status:
-$config['object_statuses']          = array(
+$config['fixed_fields']             = array(
                                         'tr_status' => array(
                                             -1 => array(
                                                 's_name' => 'Removed',

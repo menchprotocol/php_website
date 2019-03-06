@@ -315,7 +315,7 @@ class Database_model extends CI_Model
                         }
 
                         //Lets go through all references to see what is there:
-                        foreach ($this->config->item('ledger_filters') as $tr_field => $obj_type) {
+                        foreach ($this->config->item('transaction_links') as $tr_field => $obj_type) {
                             if (intval($trs[0][$tr_field]) > 0) {
                                 //Yes we have a value here:
                                 $html_message .= '<div>' . ucwrods(str_replace('tr', 'Transaction', str_replace('en', 'Entity', str_replace('in', 'Intent', str_replace('_', ' ', str_replace('tr_', '', $tr_field)))))) . ': ' . fn___echo_tr_column($obj_type, $trs[0][$tr_field], $tr_field, true) . '</div>';
@@ -584,7 +584,7 @@ class Database_model extends CI_Model
         //Do we need to do any additional work?
         if ($affected_rows > 0 && $external_sync) {
 
-            $object_statuses = $this->config->item('object_statuses');
+            $fixed_fields = $this->config->item('fixed_fields');
 
             //Log modification transaction for every field changed:
             foreach ($update_columns as $key => $value) {
@@ -597,7 +597,7 @@ class Database_model extends CI_Model
                         'tr_miner_entity_id' => ($tr_miner_entity_id > 0 ? $tr_miner_entity_id : $id),
                         'tr_type_entity_id' => 4263, //Entity Attribute Modified
                         'tr_child_entity_id' => $id,
-                        'tr_content' => 'Entity ' . ucwords(str_replace('_', ' ', str_replace('en_', '', $key))) . ' changed from "' . ( $key=='en_status' ? $object_statuses['en_status'][$before_data[0][$key]]['s_name'] : $before_data[0][$key] ) . '" to "' . ( $key=='en_status' ? $object_statuses['en_status'][$value]['s_name'] : $value ) . '"',
+                        'tr_content' => 'Entity ' . ucwords(str_replace('_', ' ', str_replace('en_', '', $key))) . ' changed from "' . ( $key=='en_status' ? $fixed_fields['en_status'][$before_data[0][$key]]['s_name'] : $before_data[0][$key] ) . '" to "' . ( $key=='en_status' ? $fixed_fields['en_status'][$value]['s_name'] : $value ) . '"',
                         'tr_metadata' => array(
                             'en_id' => $id,
                             'field' => $key,
@@ -656,7 +656,7 @@ class Database_model extends CI_Model
         //Do we need to do any additional work?
         if ($affected_rows > 0 && $external_sync) {
 
-            $object_statuses = $this->config->item('object_statuses');
+            $fixed_fields = $this->config->item('fixed_fields');
 
             //Note that unlike entity modification, we require a miner entity ID to log the modification transaction:
             //Log modification transaction for every field changed:
@@ -670,7 +670,7 @@ class Database_model extends CI_Model
                         'tr_miner_entity_id' => $tr_miner_entity_id,
                         'tr_type_entity_id' => 4264, //Intent Attribute Modified
                         'tr_child_intent_id' => $id,
-                        'tr_content' => 'Intent ' . ucwords(str_replace('_', ' ', str_replace('in_', '', $key))) . ' changed from "' . ( in_array($key , array('in_type','in_status')) ? $object_statuses[$key][$before_data[0][$key]]['s_name']  : $before_data[0][$key] ) . '" to "' . ( in_array($key , array('in_type','in_status')) ? $object_statuses[$key][$value]['s_name'] : $value ) . '"',
+                        'tr_content' => 'Intent ' . ucwords(str_replace('_', ' ', str_replace('in_', '', $key))) . ' changed from "' . ( in_array($key , array('in_type','in_status')) ? $fixed_fields[$key][$before_data[0][$key]]['s_name']  : $before_data[0][$key] ) . '" to "' . ( in_array($key , array('in_type','in_status')) ? $fixed_fields[$key][$value]['s_name'] : $value ) . '"',
                         'tr_metadata' => array(
                             'in_id' => $id,
                             'field' => $key,
@@ -731,7 +731,7 @@ class Database_model extends CI_Model
         //Log changes if successful:
         if ($affected_rows > 0 && $tr_miner_entity_id > 0) {
 
-            $object_statuses = $this->config->item('object_statuses');
+            $fixed_fields = $this->config->item('fixed_fields');
 
             //Log modification transaction for every field changed:
             foreach ($update_columns as $key => $value) {
@@ -744,7 +744,7 @@ class Database_model extends CI_Model
                         'tr_parent_transaction_id' => $id, //Transaction Reference
                         'tr_miner_entity_id' => $tr_miner_entity_id,
                         'tr_type_entity_id' => 4242, //Transaction Attribute Modified
-                        'tr_content' => 'Transaction ' . ucwords(str_replace('_', ' ', str_replace('tr_', '', $key))) . ' changed from "' . ( $key=='tr_status' ? $object_statuses['tr_status'][$before_data[0][$key]]['s_name']  : $before_data[0][$key] ) . '" to "' . ( $key=='tr_status' ? $object_statuses['tr_status'][$value]['s_name']  : $value ) . '"',
+                        'tr_content' => 'Transaction ' . ucwords(str_replace('_', ' ', str_replace('tr_', '', $key))) . ' changed from "' . ( $key=='tr_status' ? $fixed_fields['tr_status'][$before_data[0][$key]]['s_name']  : $before_data[0][$key] ) . '" to "' . ( $key=='tr_status' ? $fixed_fields['tr_status'][$value]['s_name']  : $value ) . '"',
                         'tr_metadata' => array(
                             'tr_id' => $id,
                             'field' => $key,
@@ -828,7 +828,7 @@ class Database_model extends CI_Model
         }
 
         //Define the support objects indexed on algolia:
-        $object_statuses = $this->config->item('object_statuses'); //Needed for intent Icon
+        $fixed_fields = $this->config->item('fixed_fields'); //Needed for intent Icon
         $input_obj_id = intval($input_obj_id);
         $limits = array();
 
@@ -962,7 +962,7 @@ class Database_model extends CI_Model
                     $export_row['alg_obj_is_in'] = 1;
                     $export_row['alg_obj_id'] = intval($db_row['in_id']);
                     $export_row['alg_obj_status'] = intval($db_row['in_status']);
-                    $export_row['alg_obj_icon'] = $object_statuses['in_type'][$db_row['in_type']]['s_icon']; //Entity type icon
+                    $export_row['alg_obj_icon'] = $fixed_fields['in_type'][$db_row['in_type']]['s_icon']; //Entity type icon
                     $export_row['alg_obj_name'] = $db_row['in_outcome'];
                     $export_row['alg_obj_postfix'] =  ( $time_range ? '<span class="alg-postfix"><i class="fal fa-clock"></i>' . $time_range . '</span>' : '');
 

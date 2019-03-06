@@ -457,7 +457,7 @@ function fn___echo_tr_row($tr, $is_inner = false)
 
 
     //What type of main content do we have, if any?
-    $object_statuses = $CI->config->item('object_statuses');
+    $fixed_fields = $CI->config->item('fixed_fields');
 
 
     //First row of transaction data: Type and Miner
@@ -472,7 +472,7 @@ function fn___echo_tr_row($tr, $is_inner = false)
     $ui .= '<div style="padding:7px 0 9px 13px; font-size:0.8em;">';
     $ui .= '<span data-toggle="tooltip" data-placement="top" title="Ledger Transaction ID" style="min-width:80px; display: inline-block;"><i class="fas fa-atlas"></i> '.$tr['tr_id'].'</span>';
     $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Mined Coins" style="min-width:47px; display: inline-block;"><i class="fal fa-coins"></i> <b>'. $tr['tr_coins'] .'</b></span>';
-    $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="'.$object_statuses['tr_status'][$tr['tr_status']]['s_desc'].'" style="min-width:82px; display: inline-block;">'.$object_statuses['tr_status'][$tr['tr_status']]['s_icon'].' '.$object_statuses['tr_status'][$tr['tr_status']]['s_name'].'</span>';
+    $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="'.$fixed_fields['tr_status'][$tr['tr_status']]['s_desc'].'" style="min-width:82px; display: inline-block;">'.$fixed_fields['tr_status'][$tr['tr_status']]['s_icon'].' '.$fixed_fields['tr_status'][$tr['tr_status']]['s_name'].'</span>';
     $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Ledger Transaction Time: ' . $tr['tr_timestamp'] . ' PST" style="min-width:120px; display: inline-block;"><i class="fal fa-clock"></i> ' . fn___echo_time_difference(strtotime($tr['tr_timestamp'])) . ' ago</span>';
 
 
@@ -512,7 +512,7 @@ function fn___echo_tr_row($tr, $is_inner = false)
 
     //Lets go through all references to see what is there:
     if(!$is_inner){
-        foreach ($CI->config->item('ledger_filters') as $tr_field => $obj_type) {
+        foreach ($CI->config->item('transaction_links') as $tr_field => $obj_type) {
             if(!in_array($tr_field, array('tr_miner_entity_id','tr_type_entity_id')) && $tr[$tr_field] > 0){
                 $ui .= '<div class="tr-child">';
                 if($obj_type=='en'){
@@ -558,7 +558,7 @@ function echo_k($k, $is_parent, $in_type_tr_parent_intent_id = 0)
             $ui .= '<span class="status-label" style="padding-bottom:1px;"><i class="fal fa-circle"></i> </span>';
         } else {
             //Proper status:
-            $ui .= fn___echo_status('tr_status', $k['tr_status'], 1, 'right');
+            $ui .= fn___echo_fixed_fields('tr_status', $k['tr_status'], 1, 'right');
         }
     }
 
@@ -894,7 +894,7 @@ function fn___echo_en_messages($tr){
 
     $CI =& get_instance();
     $session_en = $CI->session->userdata('user');
-    $object_statuses = $CI->config->item('object_statuses');
+    $fixed_fields = $CI->config->item('fixed_fields');
 
     $ui = '<div class="entities-msg">';
 
@@ -911,7 +911,7 @@ function fn___echo_en_messages($tr){
     $ui .= '<li class="pull-right edit-off"><a class="btn btn-primary" style="border:2px solid #fedd16 !important;" href="/ledger?any_tr_id=' . $tr['tr_id'] . '" target="_parent" title="Go to Ledger Transactions" data-toggle="tooltip" data-placement="top"><i class="fas fa-atlas"></i> '.fn___echo_number($count_msg_trs[0]['totals']).'</a></li>';
 
     //Referenced Intent:
-    $ui .= '<li class="pull-right edit-off"><a class="btn btn-primary button-max" style="border:2px solid #fedd16 !important;" href="/intents/' . $tr['tr_child_intent_id'] . '" target="_parent" title="Message Intent: '.$tr['in_outcome'].'" data-toggle="tooltip" data-placement="top">'.$object_statuses['in_type'][$tr['in_type']]['s_icon'].' '.$tr['in_outcome'].'</a></li>';
+    $ui .= '<li class="pull-right edit-off"><a class="btn btn-primary button-max" style="border:2px solid #fedd16 !important;" href="/intents/' . $tr['tr_child_intent_id'] . '" target="_parent" title="Message Intent: '.$tr['in_outcome'].'" data-toggle="tooltip" data-placement="top">'.$fixed_fields['in_type'][$tr['in_type']]['s_icon'].' '.$tr['in_outcome'].'</a></li>';
 
     //Order:
     $ui .= '<li class="pull-right edit-off message_status" style="margin: 0 3px 0 0;"><span title="Message order relative to siblings" data-toggle="tooltip" data-placement="top"><i class="fas fa-exchange rotate90"></i>' . fn___echo_ordinal_number($tr['tr_order']) . '</span></li>';
@@ -1011,7 +1011,7 @@ function fn___echo_tr_column($obj_type, $id, $tr_field, $fb_messenger_format = f
 
     $CI =& get_instance();
     $id = intval($id);
-    $object_statuses = $CI->config->item('object_statuses');
+    $fixed_fields = $CI->config->item('fixed_fields');
     if (!array_key_exists($obj_type, $CI->config->item('core_objects'))) {
         return false;
     }
@@ -1043,7 +1043,7 @@ function fn___echo_tr_column($obj_type, $id, $tr_field, $fb_messenger_format = f
             return $ins[0]['in_outcome'] . ' [https://mench.com/intents/' . $ins[0]['in_id'] . ']';
         } else {
             //HTML view:
-            return '<a href="/intents/' . $ins[0]['in_id'] . '" target="_parent" class="badge badge-primary '.( $is_parent ? '' : 'tuc-left-under' ).'" style="width:40px;" data-toggle="tooltip" data-placement="top" title="'.( $is_parent ? 'Parent' : 'Child' ).' Intent: ' . stripslashes($ins[0]['in_outcome']) . '">'.$object_statuses['in_type'][$ins[0]['in_type']]['s_icon'].'</a> ';
+            return '<a href="/intents/' . $ins[0]['in_id'] . '" target="_parent" class="badge badge-primary '.( $is_parent ? '' : 'tuc-left-under' ).'" style="width:40px;" data-toggle="tooltip" data-placement="top" title="'.( $is_parent ? 'Parent' : 'Child' ).' Intent: ' . stripslashes($ins[0]['in_outcome']) . '">'.$fixed_fields['in_type'][$ins[0]['in_type']]['s_icon'].'</a> ';
         }
 
     } elseif ($obj_type == 'en') {
@@ -1162,24 +1162,24 @@ function fn___echo_time_date($t, $date_only = false)
 }
 
 
-function fn___echo_status($obj_type = null, $status = null, $micro_status = false, $data_placement = 'bottom')
+function fn___echo_fixed_fields($obj_type = null, $status = null, $micro_status = false, $data_placement = 'bottom')
 {
 
     /*
      *
      * Displays Object Status for Intents, Entities and Transactions
-     * based on the variables defines in object_statuses
+     * based on the variables defines in fixed_fields
      *
      * */
 
     $CI =& get_instance();
-    $object_statuses = $CI->config->item('object_statuses');
+    $fixed_fields = $CI->config->item('fixed_fields');
 
     //Return results:
     if (is_null($obj_type)) {
 
         //Everything
-        return $object_statuses;
+        return $fixed_fields;
 
     } elseif (is_null($status)) {
 
@@ -1187,7 +1187,7 @@ function fn___echo_status($obj_type = null, $status = null, $micro_status = fals
         if (is_array($obj_type) && count($obj_type) > 0) {
             return $obj_type;
         } else {
-            return (isset($object_statuses[$obj_type]) ? $object_statuses[$obj_type] : false);
+            return (isset($fixed_fields[$obj_type]) ? $fixed_fields[$obj_type] : false);
         }
 
     } else {
@@ -1196,7 +1196,7 @@ function fn___echo_status($obj_type = null, $status = null, $micro_status = fals
         if (is_array($obj_type) && count($obj_type) > 0) {
             $result = $obj_type[$status];
         } else {
-            $result = $object_statuses[$obj_type][$status];
+            $result = $fixed_fields[$obj_type][$status];
         }
 
         if (!$result) {
@@ -1253,7 +1253,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
     $CI =& get_instance();
     $session_en = $CI->session->userdata('user');
-    $object_statuses = $CI->config->item('object_statuses');
+    $fixed_fields = $CI->config->item('fixed_fields');
     $en_all_4331 = $CI->config->item('en_all_4331');
     $is_child_focused = ($level == 3 && $is_parent && $CI->uri->segment(2)==$in['in_id']);
 
@@ -1318,7 +1318,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         $ui .= '<span class="icon-main tr_type_' . $tr_id . '"><span data-toggle="tooltip" data-placement="right" title="' . $en_all_4486[$in['tr_type_entity_id']]['m_name'] . ': ' . $en_all_4486[$in['tr_type_entity_id']]['m_desc'] . '">' . $en_all_4486[$in['tr_type_entity_id']]['m_icon'] . '</span></span>';
 
         //Show smaller transaction status icon:
-        $ui .= '<span class="icon-top-right tr_status_' . $tr_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$object_statuses['tr_status'][$in['tr_status']]['s_name'].': '.$object_statuses['tr_status'][$in['tr_status']]['s_desc'].'">' . $object_statuses['tr_status'][$in['tr_status']]['s_icon'] . '</span></span>';
+        $ui .= '<span class="icon-top-right tr_status_' . $tr_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$fixed_fields['tr_status'][$in['tr_status']]['s_name'].': '.$fixed_fields['tr_status'][$in['tr_status']]['s_desc'].'">' . $fixed_fields['tr_status'][$in['tr_status']]['s_icon'] . '</span></span>';
 
         //Count and show total up-votes for this intent correlation (not necessarily this exact transaction, but the parent/child intent relation)
         $tr_upvotes = $CI->Database_model->fn___tr_fetch(array(
@@ -1344,10 +1344,10 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     $ui .= '<span class="double-icon" style="margin-right:5px;">';
 
     //Show larger intent icon (AND or OR):
-    $ui .= '<span class="icon-main in_type_' . $in['in_id'] . '"><span class="in_type_val" data-toggle="tooltip" data-placement="right" title="'.$object_statuses['in_type'][$in['in_type']]['s_name'].': '.$object_statuses['in_type'][$in['in_type']]['s_desc'].'">' . $object_statuses['in_type'][$in['in_type']]['s_icon'] . '</span></span>';
+    $ui .= '<span class="icon-main in_type_' . $in['in_id'] . '"><span class="in_type_val" data-toggle="tooltip" data-placement="right" title="'.$fixed_fields['in_type'][$in['in_type']]['s_name'].': '.$fixed_fields['in_type'][$in['in_type']]['s_desc'].'">' . $fixed_fields['in_type'][$in['in_type']]['s_icon'] . '</span></span>';
 
     //Show smaller intent status:
-    $ui .= '<span class="icon-top-right in_status_' . $in['in_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$object_statuses['in_status'][$in['in_status']]['s_name'].': '.$object_statuses['in_status'][$in['in_status']]['s_desc'].'">' . $object_statuses['in_status'][$in['in_status']]['s_icon'] . '</span></span>';
+    $ui .= '<span class="icon-top-right in_status_' . $in['in_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$fixed_fields['in_status'][$in['in_status']]['s_name'].': '.$fixed_fields['in_status'][$in['in_status']]['s_desc'].'">' . $fixed_fields['in_status'][$in['in_status']]['s_icon'] . '</span></span>';
 
     $ui .= '<span class="icon-3rd in_completion_' . $in['in_id'] . '" data-toggle="tooltip" data-placement="right" title="Completion Requirement">'.( $in['in_requirement_entity_id'] > 0 ? $en_all_4331[$in['in_requirement_entity_id']]['m_name']  : '' ).'</span>';
 
@@ -1412,7 +1412,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
     //Loop through parents and only show those that have en_icon set:
     foreach ($in['in__parents'] as $in_parent) {
-        $ui .= ' &nbsp;<a href="/intents/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . $in_parent['in_outcome'] . '" data-placement="top" class="in_icon_child_' . $in_parent['in_id'] . '">' . $object_statuses['in_type'][$in_parent['in_type']]['s_icon'] . '</a>';
+        $ui .= ' &nbsp;<a href="/intents/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . $in_parent['in_outcome'] . '" data-placement="top" class="in_icon_child_' . $in_parent['in_id'] . '">' . $fixed_fields['in_type'][$in_parent['in_type']]['s_icon'] . '</a>';
     }
 
 
@@ -1610,14 +1610,14 @@ function fn___echo_leaderboard($days_ago = null, $top = 25){
 
     $ui = '';
 
-    $ui .= '<a href="javascript:void(0);" onclick="$(\'.leaderboard'.$days_ago.'\').toggleClass(\'hidden\');" class="large-stat"><span><i class="fal fa-medal"></i>'. $top_miner . '</span>Top Intelligence Miner <i class="leaderboard'.$days_ago.' fal fa-plus-circle"></i><i class="leaderboard'.$days_ago.' fal fa-minus-circle hidden"></i></a>';
+    $ui .= '<a href="javascript:void(0);" onclick="$(\'.leaderboard'.$days_ago.'\').toggleClass(\'hidden\');" class="large-stat"><span><i class="fal fa-medal"></i>'. $top_miner . '</span>Top Miner <i class="leaderboard'.$days_ago.' fal fa-plus-circle"></i><i class="leaderboard'.$days_ago.' fal fa-minus-circle hidden"></i></a>';
 
     $ui .= '<table class="table table-condensed table-striped stats-table leaderboard'.$days_ago.' hidden" style="max-width:100%;">';
 
 
     //Object Header:
     $ui .= '<tr style="font-weight: bold;">';
-    $ui .= '<td style="text-align: left;">Top Intelligence Miners:</td>';
+    $ui .= '<td style="text-align: left;">Top Miners:</td>';
     $ui .= '<td style="text-align: right;"><i class="fal fa-coins"></i> Coins</td>';
     $ui .= '</tr>';
 
@@ -1653,7 +1653,7 @@ function fn___echo_en($en, $level, $is_parent = false)
 
     $CI =& get_instance();
     $session_en = $CI->session->userdata('user');
-    $object_statuses = $CI->config->item('object_statuses');
+    $fixed_fields = $CI->config->item('fixed_fields');
     $tr_id = (isset($en['tr_id']) ? $en['tr_id'] : 0);
     $ui = null;
 
@@ -1685,7 +1685,7 @@ function fn___echo_en($en, $level, $is_parent = false)
         $ui .= '<span class="icon-main tr_type_' . $tr_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4592[$en['tr_type_entity_id']]['m_name'].' Entity Link">' . $en_all_4592[$en['tr_type_entity_id']]['m_icon'] . '</span></span> ';
 
         //Show smaller transaction status icon:
-        $ui .= '<span class="icon-top-right tr_status_' . $tr_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$object_statuses['tr_status'][$en['tr_status']]['s_name'].': '.$object_statuses['tr_status'][$en['tr_status']]['s_desc'].'">' . $object_statuses['tr_status'][$en['tr_status']]['s_icon'] . '</span></span>';
+        $ui .= '<span class="icon-top-right tr_status_' . $tr_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$fixed_fields['tr_status'][$en['tr_status']]['s_name'].': '.$fixed_fields['tr_status'][$en['tr_status']]['s_desc'].'">' . $fixed_fields['tr_status'][$en['tr_status']]['s_icon'] . '</span></span>';
 
         $ui .= '</span>';
 
@@ -1707,7 +1707,7 @@ function fn___echo_en($en, $level, $is_parent = false)
     $ui .= '<span class="icon-main en_icon_ui en_icon_ui_' . $en['en_id'] . ' en-icon en_icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'" data-toggle="tooltip" data-placement="right" title="Entity Icon">' . fn___echo_en_icon($en) . '</span>';
 
     //Show smaller entity status:
-    $ui .= '<span class="icon-top-right en_status_' . $en['en_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$object_statuses['en_status'][$en['en_status']]['s_name'].': '.$object_statuses['en_status'][$en['en_status']]['s_desc'].'">' . $object_statuses['en_status'][$en['en_status']]['s_icon'] . '</span></span>';
+    $ui .= '<span class="icon-top-right en_status_' . $en['en_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$fixed_fields['en_status'][$en['en_status']]['s_name'].': '.$fixed_fields['en_status'][$en['en_status']]['s_desc'].'">' . $fixed_fields['en_status'][$en['en_status']]['s_icon'] . '</span></span>';
 
     $ui .= '</span>';
 

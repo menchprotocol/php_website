@@ -29,7 +29,7 @@
     <?php
     //Translate key variables into JS variables to have them available throughout all JS functions:
     echo ' var is_compact = (is_mobile() || $(window).width() < 767); '; //Manages UI view based on browse width (For example removed fixed right column for mobile)
-    echo ' var object_js_statuses = ' . json_encode($this->config->item('object_statuses')) . '; ';
+    echo ' var object_js_statuses = ' . json_encode($this->config->item('fixed_fields')) . '; ';
     echo ' var in_outcome_max = ' . $this->config->item('in_outcome_max') . '; ';
     echo ' var tr_content_max = ' . $this->config->item('tr_content_max') . '; ';
     echo ' var en_name_max = ' . $this->config->item('en_name_max') . '; ';
