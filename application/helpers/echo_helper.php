@@ -473,7 +473,7 @@ function fn___echo_tr_row($tr, $is_inner = false)
     $ui .= '<span data-toggle="tooltip" data-placement="top" title="Ledger Transaction ID" style="min-width:80px; display: inline-block;"><i class="fas fa-atlas"></i> '.$tr['tr_id'].'</span>';
     $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Mined Coins" style="min-width:47px; display: inline-block;"><i class="fal fa-coins"></i> <b>'. $tr['tr_coins'] .'</b></span>';
     $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="'.$object_statuses['tr_status'][$tr['tr_status']]['s_desc'].'" style="min-width:82px; display: inline-block;">'.$object_statuses['tr_status'][$tr['tr_status']]['s_icon'].' '.$object_statuses['tr_status'][$tr['tr_status']]['s_name'].'</span>';
-    $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Ledger Transaction Added: ' . $tr['tr_timestamp'] . ' PST" style="min-width:120px; display: inline-block;"><i class="fal fa-clock"></i> ' . fn___echo_time_difference(strtotime($tr['tr_timestamp'])) . ' ago</span>';
+    $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Ledger Transaction Time: ' . $tr['tr_timestamp'] . ' PST" style="min-width:120px; display: inline-block;"><i class="fal fa-clock"></i> ' . fn___echo_time_difference(strtotime($tr['tr_timestamp'])) . ' ago</span>';
 
 
     if($tr['tr_order'] != 0){
@@ -802,7 +802,7 @@ function fn___echo_tree_tasks($in, $fb_messenger_format = 0, $expand_mode = fals
         return false;
     }
 
-    $pitch = 'Action Plan contains ' . $metadata['in__flat_unique_published_count'] . ' tasks that will collectively help you ' . $in['in_outcome'] . '.';
+    $pitch = 'Action Plan contains ' . $metadata['in__flat_unique_published_count'] . ' tasks to ' . $in['in_outcome'] . '.';
 
     if ($fb_messenger_format) {
         return '🚩 ' . $pitch . "\n";
@@ -863,9 +863,9 @@ function fn___echo_tree_cost($in, $fb_messenger_format = 0, $expand_mode = false
     $title .= ' to Complete';
 
     //As messenger default format and HTML extra notes:
-    $pitch  = 'Action Plan is estimated to';
-    $pitch .= ( $has_time_estimate ? ' take '.strtolower(fn___echo_time_range($in)).' ' : '' );
-    $pitch .= ( $has_cost_estimate ? ( $has_time_estimate ? ' and ' : '' ) . 'cost '. $price_range : '' );
+    $pitch  = 'Action Plan estimates ';
+    $pitch .= ( $has_time_estimate ? strtolower(fn___echo_time_range($in)).' ' : '' );
+    $pitch .= ( $has_cost_estimate ? ( $has_time_estimate ? ' and ' : '' ) . $price_range : '' );
     $pitch .= ' to ' . $in['in_outcome'] . '.';
 
 
@@ -964,6 +964,7 @@ function fn___echo_time_range($in, $micro = false, $hide_zero = false)
 
         if ($metadata['in__tree_min_seconds_cost'] < 7200 && $metadata['in__tree_max_seconds'] < 10800 && ($metadata['in__tree_max_seconds'] - $metadata['in__tree_min_seconds_cost']) > 1800) {
             $is_minutes = true;
+            $hours_decimal = 0;
         } elseif ($metadata['in__tree_min_seconds_cost'] < 36000) {
             $is_minutes = false;
             $hours_decimal = 1;
@@ -1222,9 +1223,9 @@ function fn___echo_in_featured($in)
     $ui .= '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-right"></i></span>';
     $ui .= '</span>';
 
-    $ui .= $in['in_outcome'];
+    $ui .= '<span style="color:#222; font-weight:500; font-size:1.1em;">'.$in['in_outcome'].'</span>';
     $ui .= '<span style="font-size:0.8em; font-weight:300; margin-left:5px; display:inline-block;">';
-    $ui .= '<span><i class="fal fa-clock"></i>' . fn___echo_time_range($in) . '</span>';
+    $ui .= '<span><i class="fal fa-clock"></i> ' . fn___echo_time_range($in) . '</span>';
     $ui .= '</span>';
     $ui .= '</a>';
     return $ui;
@@ -1447,8 +1448,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
     //Action Plan:
     //TODO Count transactions and Implement later...
-    $ui .= '<a href="#loadinactionplans-' . $in['in_id'] . '" onclick="fn___in_action_plans(' . $in['in_id'] . ')" class="badge badge-primary white-primary action_plans_in_'.$in['in_id'].'" ap-count="'.(0).'" style="margin:-2px -5px 0 5px; width:40px;" data-toggle="tooltip" data-placement="top" title="Intent Action Plans"><span class="btn-counter">'.fn___echo_number(0).'</span><i class="far fa-flag" style="width:28px; padding-right:7px; text-align:center;"></i></a> &nbsp;';
-
+    $ui .= '<a href="#loadinactionplans-' . $in['in_id'] . '" onclick="'.( $level==0 ? 'alert(\'Cannot manage here. Go to the intent to manage.\')' : 'fn___in_action_plans(' . $in['in_id'] . ')' ).'" class="badge badge-primary white-primary action_plans_in_'.$in['in_id'].'" ap-count="'.(0).'" style="margin:-2px -5px 0 5px; width:40px;" data-toggle="tooltip" data-placement="top" title="Intent Action Plans"><span class="btn-counter">'.fn___echo_number(0).'</span><i class="far fa-flag" style="width:28px; padding-right:7px; text-align:center;"></i></a> &nbsp;';
 
 
 
@@ -1458,13 +1458,13 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         'tr_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //All Intent messages
         'tr_child_intent_id' => $in['in_id'],
     ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
-    $ui .= '<a href="#intentmessages-' . $in['in_id'] . '" onclick="fn___in_messages_load('.$in['in_id'].')" class="msg-badge-' . $in['in_id'] . ' badge badge-primary white-primary is_not_bg" style="width:40px; margin-right:2px;" data-toggle="tooltip" title="Intent Messages" data-placement="top"><span class="btn-counter messages-counter-' . $in['in_id'] . '">' . $count_in_metadata[0]['totals'] . '</span><i class="fas fa-comment-plus"></i></a>';
+    $ui .= '<a href="#intentmessages-' . $in['in_id'] . '" onclick="'.( $level==0 ? 'alert(\'Cannot manage here. Go to the intent to manage.\')' : 'fn___in_messages_load('.$in['in_id'].')' ).'" class="msg-badge-' . $in['in_id'] . ' badge badge-primary white-primary is_not_bg" style="width:40px; margin-right:2px;" data-toggle="tooltip" title="Intent Messages" data-placement="top"><span class="btn-counter messages-counter-' . $in['in_id'] . '">' . $count_in_metadata[0]['totals'] . '</span><i class="fas fa-comment-plus"></i></a>';
 
 
 
     //Intent modify:
     $in__tree_max_seconds = (isset($in_metadata['in__tree_max_seconds']) ? $in_metadata['in__tree_max_seconds'] : 0);
-    $ui .= '<a class="badge badge-primary white-primary is_not_bg" onclick="fn___in_modify_load(' . $in['in_id'] . ',' . $tr_id . ')" style="margin:-2px -7px 0 0; width:40px;" href="#loadmodify-' . $in['in_id'] . '-' . $tr_id . '" data-toggle="tooltip" title="Intent completion cost. Click to modify intent'.( $level>1 ? ' and transaction' : '' ).'" data-placement="top"><span class="btn-counter slim-time t_estimate_' . $in['in_id'] . '" intent-usd="'.$in['in_dollar_cost'].'" tree-max-seconds="' . $in__tree_max_seconds . '" intent-seconds="' . $in['in_seconds_cost'] . '">'.( $in__tree_max_seconds > 0 ? fn___echo_time_hours($in__tree_max_seconds , true) : 0 ).'</span><i class="fas fa-cog"></i></a> &nbsp;';
+    $ui .= '<a class="badge badge-primary white-primary is_not_bg" onclick="'.( $level==0 ? 'alert(\'Cannot manage here. Go to the intent to manage.\')' : 'fn___in_modify_load(' . $in['in_id'] . ',' . $tr_id . ')' ).'" style="margin:-2px -7px 0 0; width:40px;" href="#loadmodify-' . $in['in_id'] . '-' . $tr_id . '" data-toggle="tooltip" title="Intent completion cost. Click to modify intent'.( $level>1 ? ' and transaction' : '' ).'" data-placement="top"><span class="btn-counter slim-time t_estimate_' . $in['in_id'] . '" intent-usd="'.$in['in_dollar_cost'].'" tree-max-seconds="' . $in__tree_max_seconds . '" intent-seconds="' . $in['in_seconds_cost'] . '">'.( $in__tree_max_seconds > 0 ? fn___echo_time_hours($in__tree_max_seconds , true) : 0 ).'</span><i class="fas fa-cog"></i></a> &nbsp;';
 
 
     //Intent Transactions:
@@ -1610,14 +1610,14 @@ function fn___echo_leaderboard($days_ago = null, $top = 25){
 
     $ui = '';
 
-    $ui .= '<a href="javascript:void(0);" onclick="$(\'.leaderboard'.$days_ago.'\').toggleClass(\'hidden\');" class="large-stat"><span><i class="fal fa-medal"></i>'. $top_miner . '</span>Top Miner <i class="leaderboard'.$days_ago.' fal fa-plus-circle"></i><i class="leaderboard'.$days_ago.' fal fa-minus-circle hidden"></i></a>';
+    $ui .= '<a href="javascript:void(0);" onclick="$(\'.leaderboard'.$days_ago.'\').toggleClass(\'hidden\');" class="large-stat"><span><i class="fal fa-medal"></i>'. $top_miner . '</span>Top Intelligence Miner <i class="leaderboard'.$days_ago.' fal fa-plus-circle"></i><i class="leaderboard'.$days_ago.' fal fa-minus-circle hidden"></i></a>';
 
     $ui .= '<table class="table table-condensed table-striped stats-table leaderboard'.$days_ago.' hidden" style="max-width:100%;">';
 
 
     //Object Header:
     $ui .= '<tr style="font-weight: bold;">';
-    $ui .= '<td style="text-align: left;">Top Miners:</td>';
+    $ui .= '<td style="text-align: left;">Top Intelligence Miners:</td>';
     $ui .= '<td style="text-align: right;"><i class="fal fa-coins"></i> Coins</td>';
     $ui .= '</tr>';
 
@@ -1769,7 +1769,7 @@ function fn___echo_en($en, $level, $is_parent = false)
 
     //Action Plan:
     //TODO Count transactions and Implement later...
-    $ui .= '<a href="#loadenactionplans-' . $en['en_id'] . '" onclick="'.( $level==0 ? 'alert(\'Cannot manage here. Go to the entity node to manage.\')' : 'fn___en_action_plans(' . $en['en_id'] . ')' ).'" class="badge badge-secondary white-secondary action_plans_en_'.$en['en_id'].'" ap-count="'.(0).'" style="margin:-2px -10px 0 5px;; width:40px;" data-toggle="tooltip" data-placement="top" title="Entity Action Plans"><span class="btn-counter">'.fn___echo_number(0).'</span><i class="far fa-flag" style="width:28px; padding-right:7px; text-align:center;"></i></a> &nbsp;';
+    $ui .= '<a href="#loadenactionplans-' . $en['en_id'] . '" onclick="'.( $level==0 ? 'alert(\'Cannot manage here. Go to the entity to manage.\')' : 'fn___en_action_plans(' . $en['en_id'] . ')' ).'" class="badge badge-secondary white-secondary action_plans_en_'.$en['en_id'].'" ap-count="'.(0).'" style="margin:-2px -10px 0 5px;; width:40px;" data-toggle="tooltip" data-placement="top" title="Entity Action Plans"><span class="btn-counter">'.fn___echo_number(0).'</span><i class="far fa-flag" style="width:28px; padding-right:7px; text-align:center;"></i></a> &nbsp;';
 
 
 
@@ -1780,12 +1780,12 @@ function fn___echo_en($en, $level, $is_parent = false)
         'tr_parent_entity_id' => $en['en_id'], //Entity Referenced in message content
     ), array(), 0, 0, array(), 'COUNT(tr_id) AS total_messages');
 
-    $ui .= '<a class="badge badge-secondary white-secondary" href="#entitymessages-' . $en['en_id'] . '" onclick="' . ( $messages[0]['total_messages'] == 0 ? 'alert(\'No intent messages found that reference this entity\')' : ( $level==0 ? 'alert(\'Cannot manage here. Go to the entity node to manage.\')' : 'fn___load_en_messages('.$en['en_id'].')' ) ) . '" style="width:40px; margin-left:5px;" data-toggle="tooltip" data-placement="top" title="Entity References within Intent Messages"><span class="btn-counter">' . $messages[0]['total_messages'] . '</span><i class="fas fa-comment-plus"></i></a>';
+    $ui .= '<a class="badge badge-secondary white-secondary" href="#entitymessages-' . $en['en_id'] . '" onclick="' . ( $messages[0]['total_messages'] == 0 ? 'alert(\'No intent messages found that reference this entity\')' : ( $level==0 ? 'alert(\'Cannot manage here. Go to the entity to manage.\')' : 'fn___load_en_messages('.$en['en_id'].')' ) ) . '" style="width:40px; margin-left:5px;" data-toggle="tooltip" data-placement="top" title="Entity References within Intent Messages"><span class="btn-counter">' . $messages[0]['total_messages'] . '</span><i class="fas fa-comment-plus"></i></a>';
 
 
 
     //Modify Entity:
-    $ui .= '<a href="#loadmodify-' . $en['en_id'] . '-' . $tr_id . '" onclick="'.( $level==0 ? 'alert(\'Cannot manage here. Go to the entity node to manage.\')' : 'fn___en_modify_load(' . $en['en_id'] . ',' . $tr_id . ')' ).'" class="badge badge-secondary white-secondary" style="margin:-2px -6px 0 2px; width:40px;" data-toggle="tooltip" data-placement="top" title="Entity trust score. Click to modify entity'.( $level>1 ? ' and transaction' : '' ).'"><span class="btn-counter">'.fn___echo_number($en['en_trust_score']).'</span><i class="fas fa-cog" style="width:28px; padding-right:7px; text-align:center;"></i></a> &nbsp;';
+    $ui .= '<a href="#loadmodify-' . $en['en_id'] . '-' . $tr_id . '" onclick="'.( $level==0 ? 'alert(\'Cannot manage here. Go to the entity to manage.\')' : 'fn___en_modify_load(' . $en['en_id'] . ',' . $tr_id . ')' ).'" class="badge badge-secondary white-secondary" style="margin:-2px -6px 0 2px; width:40px;" data-toggle="tooltip" data-placement="top" title="Entity trust score. Click to modify entity'.( $level>1 ? ' and transaction' : '' ).'"><span class="btn-counter">'.fn___echo_number($en['en_trust_score']).'</span><i class="fas fa-cog" style="width:28px; padding-right:7px; text-align:center;"></i></a> &nbsp;';
 
 
 

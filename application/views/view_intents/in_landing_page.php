@@ -175,18 +175,7 @@ $hide_subscribe = (isset($_GET['hide_subscribe']) && intval($_GET['hide_subscrib
             <a class="btn btn-primary" href="https://m.me/askmench?ref=<?= $in['in_id'] ?>"
                style="display: inline-block; padding: 12px 36px;">Get Started [Free] <i class="fas fa-angle-right"></i></a>
 
-            <div>
-                <?php if ($in['in_id']==7436) { ?>
-                    You may also
-                <?php } else { ?>
-                <a href="/7436" style="text-decoration:underline; display: inline-block;">Learn more</a> about Mench
-                 or
-                <?php } ?>
-                <a href="/<?= $this->config->item('in_miner_start_id') ?>"
-                   style="text-decoration:underline;  display: inline-block;">contribute</a>.</div>
-
         <?php } ?>
-
 
     </div>
 
