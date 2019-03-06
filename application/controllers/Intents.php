@@ -488,6 +488,7 @@ class Intents extends CI_Controller
 
                         //Intent has been removed:
                         $remove_from_ui = 1;
+
                         //Did we remove the main intent?
                         if($_POST['level']==1){
                             //Yes, redirect to a parent intent if we have any:
@@ -499,17 +500,26 @@ class Intents extends CI_Controller
                             }
                         }
 
-                        //Also remove all children/parent links:
-                        foreach($this->Database_model->fn___tr_fetch(array(
-                            'tr_status >=' => 0, //New+
-                            'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
-                            '(tr_child_intent_id = '.$_POST['in_id'].' OR tr_parent_intent_id = '.$_POST['in_id'].')' => null,
-                        )) as $unlink_tr){
-
+                        //Remove intent relations:
+                        $unlink_trs = array_merge(
+                            //Remove all links:
+                            $this->Database_model->fn___tr_fetch(array(
+                                'tr_status >=' => 0, //New+
+                                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
+                                '(tr_child_intent_id = '.$_POST['in_id'].' OR tr_parent_intent_id = '.$_POST['in_id'].')' => null,
+                            ), array(), 0),
+                            //Remove all messages:
+                            $this->Database_model->fn___tr_fetch(array(
+                                'tr_status >=' => 0, //New+
+                                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent messages
+                                'tr_child_intent_id' => $_POST['in_id'],
+                            ), array(), 0)
+                        );
+                        foreach($unlink_trs as $unlink_tr){
+                            //Remove this link:
                             $this->Database_model->fn___tr_update($unlink_tr['tr_id'], array(
                                 'tr_status' => -1, //Unlink
                             ), $session_en['en_id']);
-
                         }
 
                         //Treat as if no link (Since it was removed):
