@@ -104,7 +104,7 @@ $(document).ready(function () {
     });
 
     //Look for AND/OR changes:
-    $('input[type=radio][name=in_is_any]').change(function () {
+    $('input[type=radio][name=in_type]').change(function () {
         fn___in_adjust_isany_ui();
     });
 
@@ -218,7 +218,7 @@ function fn___in_action_plans(in_id){
 
 
 function fn___in_adjust_isany_ui() {
-    if ($('#in_is_any_0').is(':checked')) {
+    if ($('#in_type_0').is(':checked')) {
         //Unlock settings:
         $('#in_requirement_entity').prop('disabled', false);
     } else {
@@ -586,7 +586,7 @@ function fn___in_modify_load(in_id, tr_id) {
 
             //Load inputs:
             $('#in_outcome').val(data.in.in_outcome);
-            $('#in_is_any_' + data.in.in_is_any).prop("checked", true);
+            $('#in_type_' + data.in.in_type).prop("checked", true);
             $('#in_status').val(data.in.in_status).attr('original-status', data.in.in_status); //Set the status before it gets changed by miners
             $('#in_dollar_cost').val(data.in.in_dollar_cost);
             $('#in_seconds_cost').val(data.in.in_seconds_cost);
@@ -663,7 +663,7 @@ function fn___in_modify_save() {
         in_seconds_cost: parseInt($('#in_seconds_cost').val()),
         in_requirement_entity: parseInt($('#in_requirement_entity').val()),
         in_dollar_cost: parseFloat($('#in_dollar_cost').val()),
-        in_is_any: parseInt($('input[name=in_is_any]:checked').val()),
+        in_type: parseInt($('input[name=in_type]:checked').val()),
         apply_recursively: (document.getElementById('apply_recursively').checked ? 1 : 0),
         is_parent: ( $('.intent_line_' + in_id).hasClass('parent-intent') ? 1 : 0 ),
         //Transaction variables:
@@ -771,10 +771,10 @@ function fn___in_modify_save() {
 
 
                 //Always update 3x Intent icons:
-                $('.in_is_any_' + modify_data['in_id']).html('<span class="in_is_any_val" data-toggle="tooltip" data-placement="right" title="'+ object_js_statuses['in_is_any'][modify_data['in_is_any']]["s_name"] + ': '+ object_js_statuses['in_is_any'][modify_data['in_is_any']]["s_desc"] + '">'+ object_js_statuses['in_is_any'][modify_data['in_is_any']]["s_icon"] +'</span>');
+                $('.in_type_' + modify_data['in_id']).html('<span class="in_type_val" data-toggle="tooltip" data-placement="right" title="'+ object_js_statuses['in_type'][modify_data['in_type']]["s_name"] + ': '+ object_js_statuses['in_type'][modify_data['in_type']]["s_desc"] + '">'+ object_js_statuses['in_type'][modify_data['in_type']]["s_icon"] +'</span>');
 
                 //Also update possible child icons:
-                $('.in_icon_child_' + modify_data['in_id']).html(object_js_statuses['in_is_any'][modify_data['in_is_any']]["s_icon"]).attr('data-original-title', modify_data['in_outcome']);
+                $('.in_icon_child_' + modify_data['in_id']).html(object_js_statuses['in_type'][modify_data['in_type']]["s_icon"]).attr('data-original-title', modify_data['in_outcome']);
 
 
                 $('.in_status_' + modify_data['in_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ object_js_statuses['in_status'][modify_data['in_status']]["s_name"] + ': '+ object_js_statuses['in_status'][modify_data['in_status']]["s_desc"] + '">'+ object_js_statuses['in_status'][modify_data['in_status']]["s_icon"] +'</span>');

@@ -1278,7 +1278,7 @@ class Chat_model extends CI_Model
 
             //We have multiple immediate children that need to be marked as complete...
             //Let's see if the intent is ALL or ANY to know how to present these children:
-            if (intval($ins[0]['in_is_any'])) {
+            if (intval($ins[0]['in_type'])) {
 
                 //Note that ANY nodes cannot require a written response or a URL
                 //User needs to choose one of the following:

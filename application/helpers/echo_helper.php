@@ -537,10 +537,10 @@ function fn___echo_tr_row($tr, $is_inner = false)
     return $ui;
 }
 
-function echo_k($k, $is_parent, $in_is_any_tr_parent_intent = 0)
+function echo_k($k, $is_parent, $in_type_tr_parent_intent = 0)
 {
 
-    $ui = '<a href="' . ($in_is_any_tr_parent_intent ? '/master/choose_any_path/' . $k['tr_id'] . '/' . $in_is_any_tr_parent_intent . '/' . $k['in_id'] . '/' . md5($k['tr_id'] . 'kjaghksjha*(^' . $k['in_id'] . $in_is_any_tr_parent_intent) : '/master/actionplan/' . $k['tr_parent_transaction'] . '/' . $k['in_id']) . '" class="list-group-item">';
+    $ui = '<a href="' . ($in_type_tr_parent_intent ? '/master/choose_any_path/' . $k['tr_id'] . '/' . $in_type_tr_parent_intent . '/' . $k['in_id'] . '/' . md5($k['tr_id'] . 'kjaghksjha*(^' . $k['in_id'] . $in_type_tr_parent_intent) : '/master/actionplan/' . $k['tr_parent_transaction'] . '/' . $k['in_id']) . '" class="list-group-item">';
 
     //Different pointer position based on direction:
     if ($is_parent) {
@@ -549,11 +549,11 @@ function echo_k($k, $is_parent, $in_is_any_tr_parent_intent = 0)
         $ui .= '</span>';
     } else {
         $ui .= '<span class="pull-right">';
-        $ui .= '<span class="badge badge-primary fr-bgd">' . ($in_is_any_tr_parent_intent ? 'Select <i class="fas fa-check-circle"></i>' : '<i class="fas fa-angle-right"></i>') . '</span>';
+        $ui .= '<span class="badge badge-primary fr-bgd">' . ($in_type_tr_parent_intent ? 'Select <i class="fas fa-check-circle"></i>' : '<i class="fas fa-angle-right"></i>') . '</span>';
         $ui .= '</span>';
 
         //For children show icon:
-        if ($in_is_any_tr_parent_intent) {
+        if ($in_type_tr_parent_intent) {
             //Radio button to indicate a single selection:
             $ui .= '<span class="status-label" style="padding-bottom:1px;"><i class="fal fa-circle"></i> </span>';
         } else {
@@ -911,7 +911,7 @@ function fn___echo_en_messages($tr){
     $ui .= '<li class="pull-right edit-off"><a class="btn btn-primary" style="border:2px solid #fedd16 !important;" href="/ledger?any_tr_id=' . $tr['tr_id'] . '" target="_parent" title="Go to Ledger Transactions" data-toggle="tooltip" data-placement="top"><i class="fas fa-atlas"></i> '.fn___echo_number($count_msg_trs[0]['totals']).'</a></li>';
 
     //Referenced Intent:
-    $ui .= '<li class="pull-right edit-off"><a class="btn btn-primary button-max" style="border:2px solid #fedd16 !important;" href="/intents/' . $tr['tr_child_intent'] . '" target="_parent" title="Message Intent: '.$tr['in_outcome'].'" data-toggle="tooltip" data-placement="top">'.$object_statuses['in_is_any'][$tr['in_is_any']]['s_icon'].' '.$tr['in_outcome'].'</a></li>';
+    $ui .= '<li class="pull-right edit-off"><a class="btn btn-primary button-max" style="border:2px solid #fedd16 !important;" href="/intents/' . $tr['tr_child_intent'] . '" target="_parent" title="Message Intent: '.$tr['in_outcome'].'" data-toggle="tooltip" data-placement="top">'.$object_statuses['in_type'][$tr['in_type']]['s_icon'].' '.$tr['in_outcome'].'</a></li>';
 
     //Order:
     $ui .= '<li class="pull-right edit-off message_status" style="margin: 0 3px 0 0;"><span title="Message order relative to siblings" data-toggle="tooltip" data-placement="top"><i class="fas fa-exchange rotate90"></i>' . fn___echo_ordinal_number($tr['tr_order']) . '</span></li>';
@@ -1042,7 +1042,7 @@ function fn___echo_tr_column($obj_type, $id, $tr_field, $fb_messenger_format = f
             return $ins[0]['in_outcome'] . ' [https://mench.com/intents/' . $ins[0]['in_id'] . ']';
         } else {
             //HTML view:
-            return '<a href="/intents/' . $ins[0]['in_id'] . '" target="_parent" class="badge badge-primary '.( $is_parent ? '' : 'tuc-left-under' ).'" style="width:40px;" data-toggle="tooltip" data-placement="top" title="'.( $is_parent ? 'Parent' : 'Child' ).' Intent: ' . stripslashes($ins[0]['in_outcome']) . '">'.$object_statuses['in_is_any'][$ins[0]['in_is_any']]['s_icon'].'</a> ';
+            return '<a href="/intents/' . $ins[0]['in_id'] . '" target="_parent" class="badge badge-primary '.( $is_parent ? '' : 'tuc-left-under' ).'" style="width:40px;" data-toggle="tooltip" data-placement="top" title="'.( $is_parent ? 'Parent' : 'Child' ).' Intent: ' . stripslashes($ins[0]['in_outcome']) . '">'.$object_statuses['in_type'][$ins[0]['in_type']]['s_icon'].'</a> ';
         }
 
     } elseif ($obj_type == 'en') {
@@ -1343,7 +1343,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     $ui .= '<span class="double-icon" style="margin-right:5px;">';
 
     //Show larger intent icon (AND or OR):
-    $ui .= '<span class="icon-main in_is_any_' . $in['in_id'] . '"><span class="in_is_any_val" data-toggle="tooltip" data-placement="right" title="'.$object_statuses['in_is_any'][$in['in_is_any']]['s_name'].': '.$object_statuses['in_is_any'][$in['in_is_any']]['s_desc'].'">' . $object_statuses['in_is_any'][$in['in_is_any']]['s_icon'] . '</span></span>';
+    $ui .= '<span class="icon-main in_type_' . $in['in_id'] . '"><span class="in_type_val" data-toggle="tooltip" data-placement="right" title="'.$object_statuses['in_type'][$in['in_type']]['s_name'].': '.$object_statuses['in_type'][$in['in_type']]['s_desc'].'">' . $object_statuses['in_type'][$in['in_type']]['s_icon'] . '</span></span>';
 
     //Show smaller intent status:
     $ui .= '<span class="icon-top-right in_status_' . $in['in_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$object_statuses['in_status'][$in['in_status']]['s_name'].': '.$object_statuses['in_status'][$in['in_status']]['s_desc'].'">' . $object_statuses['in_status'][$in['in_status']]['s_icon'] . '</span></span>';
@@ -1411,7 +1411,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
     //Loop through parents and only show those that have en_icon set:
     foreach ($in['in__parents'] as $in_parent) {
-        $ui .= ' &nbsp;<a href="/intents/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . $in_parent['in_outcome'] . '" data-placement="top" class="in_icon_child_' . $in_parent['in_id'] . '">' . $object_statuses['in_is_any'][$in_parent['in_is_any']]['s_icon'] . '</a>';
+        $ui .= ' &nbsp;<a href="/intents/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . $in_parent['in_outcome'] . '" data-placement="top" class="in_icon_child_' . $in_parent['in_id'] . '">' . $object_statuses['in_type'][$in_parent['in_type']]['s_icon'] . '</a>';
     }
 
 

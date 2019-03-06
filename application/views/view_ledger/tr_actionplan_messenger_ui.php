@@ -15,7 +15,7 @@ $message_in_requirements = $this->Matrix_model->fn___in_req_completion($value['i
 $has_children = (count($actionplan_children) > 0);
 //We want to show the child intents in specific conditions to ensure a step-by-step navigation by the user through the browser Action Plan
 //(Note that the conversational UI already has this step-by-step navigation in mind, but the user has more flexibility in the Browser side)
-$list_children = (count($actionplan_parents) == 0 || !($actionplan_parents[0]['tr_status'] == 0) || intval($in['in_is_any']) || !$message_in_requirements || count($on_start_messages) == 0);
+$list_children = (count($actionplan_parents) == 0 || !($actionplan_parents[0]['tr_status'] == 0) || intval($in['in_type']) || !$message_in_requirements || count($on_start_messages) == 0);
 
 
 if (count($actionplan_parents) == 1) {
@@ -116,7 +116,7 @@ if (count($on_start_messages) > 0) {
 
 
 //Show completion options below messages:
-if (count($actionplan_parents) == 1 && ($message_in_requirements || (!intval($in['in_is_any']) && !$has_children))) {
+if (count($actionplan_parents) == 1 && ($message_in_requirements || (!intval($in['in_type']) && !$has_children))) {
 
     if (!$show_written_input && !$is_incomplete && strlen($actionplan_parents[0]['tr_content']) > 0 /* For now only allow is complete */) {
         //Show button to make text visible:
@@ -154,10 +154,10 @@ if (count($actionplan_parents) == 1 && ($message_in_requirements || (!intval($in
 
 if ($has_children && $list_children) {
     echo '<div class="left-grey">';
-    echo '<h5 class="badge badge-hy">' . ($in['in_is_any'] ? '<i class="fas fa-code-merge"></i> Choose One' : '<i class="fas fa-sitemap"></i> Complete All') . ':</h5>';
+    echo '<h5 class="badge badge-hy">' . ($in['in_type'] ? '<i class="fas fa-code-merge"></i> Choose One' : '<i class="fas fa-sitemap"></i> Complete All') . ':</h5>';
     echo '<div class="list-group">';
     foreach ($actionplan_children as $k) {
-        echo echo_k($k, 0, ($in['in_is_any'] && $k['tr_status'] == 0 ? $in['in_id'] : 0));
+        echo echo_k($k, 0, ($in['in_type'] && $k['tr_status'] == 0 ? $in['in_id'] : 0));
     }
     echo '</div>';
     echo '</div>';

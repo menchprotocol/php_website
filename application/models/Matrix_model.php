@@ -32,7 +32,7 @@ class Matrix_model extends CI_Model
         $first_pending_or_intent = $this->Database_model->fn___tr_fetch(array(
             'tr_parent_transaction' => $actionplan_tr_id, //This action Plan
             'in_status >=' => 2, //Published+
-            'in_is_any' => 1, //OR Branch
+            'in_type' => 1, //OR Branch
             'tr_status' => 1, //Working On, which means OR branch has not been answered yet
         ), array('in_child'), 1, 0, array('tr_order' => 'ASC'));
 
@@ -60,7 +60,7 @@ class Matrix_model extends CI_Model
         $next_working_on_intent = $this->Database_model->fn___tr_fetch(array(
             'tr_parent_transaction' => $actionplan_tr_id, //This action Plan
             'in_status >=' => 2, //Published+
-            'in_is_any' => 0, //AND Branch
+            'in_type' => 0, //AND Branch
             'tr_status' => 1, //Working On
         ), array('in_child'), 1, 0, array('tr_order' => 'ASC'));
 
@@ -1069,7 +1069,7 @@ class Matrix_model extends CI_Model
         }
 
         //Terminate at OR branches for Action Plan caching
-        if (count($actionplan) > 0 && intval($this_in['in_is_any'])) {
+        if (count($actionplan) > 0 && intval($this_in['in_type'])) {
             /*
              *
              * We do this as we don't know which OR path will be
@@ -1151,7 +1151,7 @@ class Matrix_model extends CI_Model
                     $metadata_this['___tree_published_count'] += $recursion['___tree_published_count'];
 
                     //Do calculations based on intent type (AND or OR)
-                    if ($this_in['in_is_any']) {
+                    if ($this_in['in_type']) {
                         //OR Branch, figure out the logic:
                         if ($recursion['___tree_min_seconds_cost'] < $resource_estimates['in___tree_min_seconds_cost'] || is_null($resource_estimates['in___tree_min_seconds_cost'])) {
                             $resource_estimates['in___tree_min_seconds_cost'] = $recursion['___tree_min_seconds_cost'];
@@ -1630,7 +1630,7 @@ class Matrix_model extends CI_Model
         $down_is_complete = true;
         $total_skipped = 0;
         //Is this an OR branch? Because if it is, we need to skip its siblings:
-        if (intval($cr['in_is_any'])) {
+        if (intval($cr['in_type'])) {
             //Skip all eligible siblings, if any:
             //$cr['tr_child_intent'] is the chosen path that we're trying to find its siblings for the parent $cr['tr_parent_intent']
 
@@ -1705,7 +1705,7 @@ class Matrix_model extends CI_Model
 
                     //Any intents would always be complete since we already marked one of its children as complete!
                     //If it's an ALL intent, we need to check to make sure all children are complete:
-                    if (intval($parent_ks[0]['in_is_any'])) {
+                    if (intval($parent_ks[0]['in_type'])) {
                         //We need a single immediate child to be complete:
                         $complete_child_cs = $this->Database_model->fn___tr_fetch(array(
                             'tr_parent_transaction' => $w['tr_id'],

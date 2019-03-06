@@ -381,7 +381,7 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Cost estimate must be $0-5000 USD',
             ));
-        } elseif (!isset($_POST['in_is_any'])) {
+        } elseif (!isset($_POST['in_type'])) {
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Completion Settings',
@@ -423,7 +423,7 @@ class Intents extends CI_Controller
             'in_seconds_cost' => intval($_POST['in_seconds_cost']),
             'in_requirement_entity' => intval($_POST['in_requirement_entity']),
             'in_dollar_cost' => doubleval($_POST['in_dollar_cost']),
-            'in_is_any' => intval($_POST['in_is_any']),
+            'in_type' => intval($_POST['in_type']),
         );
 
         //Prep current intent metadata:

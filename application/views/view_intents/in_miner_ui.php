@@ -176,10 +176,10 @@ if (isset($orphan_ins)) {
                             <span class="mini-header">Intent Type:</span>
                             <div class="form-group label-floating is-empty" style="margin-bottom: 0; padding-bottom: 0; display:block !important;">
                                 <?php
-                                foreach (fn___echo_status('in_is_any') as $in_val => $intent_type) {
+                                foreach (fn___echo_status('in_type') as $in_val => $intent_type) {
                                     echo '<span class="radio" style="display:inline-block; margin-top: 0 !important;" data-toggle="tooltip" title="' . $intent_type['s_desc'] . '" data-placement="top">
                                         <label class="underdot" style="display:inline-block;">
-                                            <input type="radio" id="in_is_any_' . $in_val . '" name="in_is_any" value="' . $in_val . '" />
+                                            <input type="radio" id="in_type_' . $in_val . '" name="in_type" value="' . $in_val . '" />
                                             ' . $intent_type['s_icon'] . ' ' . $intent_type['s_name'] . '
                                         </label>
                                     </span>';

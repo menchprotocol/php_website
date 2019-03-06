@@ -207,7 +207,7 @@ $config['object_statuses']          = array(
                                                 's_icon' => '<i class="fas fa-badge-check blue"></i>',
                                             ),
                                         ),
-                                        'in_is_any' => array(
+                                        'in_type' => array(
                                             0 => array(
                                                 's_name' => 'AND',
                                                 's_desc' => 'AND Intents are completed when ALL their children are complete',

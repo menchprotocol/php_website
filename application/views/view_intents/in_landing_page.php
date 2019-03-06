@@ -96,7 +96,7 @@ $hide_subscribe = (isset($_GET['hide_subscribe']) && intval($_GET['hide_subscrib
                     echo '<div class="panel-group" id="open' . $in_level2_counter . '" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
             <div class="panel-heading" role="tab" id="heading' . $in_level2_counter . '">
                 <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" data-parent="#open' . $in_level2_counter . '" href="#collapse' . $in_level2_counter . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $in_level2_counter . '">'.($in['in_is_any'] ? 'Option ' : 'Task '). ($in_level2_counter + 1) . ': <span id="title-' . $in_level2['in_id'] . '">' . $in_level2['in_outcome'] . '</span>';
+                    <a role="button" data-toggle="collapse" data-parent="#open' . $in_level2_counter . '" href="#collapse' . $in_level2_counter . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $in_level2_counter . '">'.($in['in_type'] ? 'Option ' : 'Task '). ($in_level2_counter + 1) . ': <span id="title-' . $in_level2['in_id'] . '">' . $in_level2['in_outcome'] . '</span>';
 
                     //Show time if we have it:
                     $in_level2_metadata = unserialize($in_level2['in_metadata']);
@@ -131,7 +131,7 @@ $hide_subscribe = (isset($_GET['hide_subscribe']) && intval($_GET['hide_subscrib
                                 continue; //Do not show conditional post-assessment intents
                             }
 
-                            echo '<li>'.($in_level2['in_is_any'] ? 'Option ' : 'Task ') . ($in_level2_counter + 1) . '.' . ($in_level3_counter + 1) . ': ' . $in_level3['in_outcome'];
+                            echo '<li>'.($in_level2['in_type'] ? 'Option ' : 'Task ') . ($in_level2_counter + 1) . '.' . ($in_level3_counter + 1) . ': ' . $in_level3['in_outcome'];
 
                             //Show time if we have it:
                             $in_level3_metadata = unserialize($in_level3['in_metadata']);

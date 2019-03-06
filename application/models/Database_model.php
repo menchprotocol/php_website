@@ -670,7 +670,7 @@ class Database_model extends CI_Model
                         'tr_miner_entity' => $tr_miner_entity,
                         'tr_type_entity' => 4264, //Intent Attribute Modified
                         'tr_child_intent' => $id,
-                        'tr_content' => 'Intent ' . ucwords(str_replace('_', ' ', str_replace('in_', '', $key))) . ' changed from "' . ( in_array($key , array('in_is_any','in_status')) ? $object_statuses[$key][$before_data[0][$key]]['s_name']  : $before_data[0][$key] ) . '" to "' . ( in_array($key , array('in_is_any','in_status')) ? $object_statuses[$key][$value]['s_name'] : $value ) . '"',
+                        'tr_content' => 'Intent ' . ucwords(str_replace('_', ' ', str_replace('in_', '', $key))) . ' changed from "' . ( in_array($key , array('in_type','in_status')) ? $object_statuses[$key][$before_data[0][$key]]['s_name']  : $before_data[0][$key] ) . '" to "' . ( in_array($key , array('in_type','in_status')) ? $object_statuses[$key][$value]['s_name'] : $value ) . '"',
                         'tr_metadata' => array(
                             'in_id' => $id,
                             'field' => $key,
@@ -962,7 +962,7 @@ class Database_model extends CI_Model
                     $export_row['alg_obj_is_in'] = 1;
                     $export_row['alg_obj_id'] = intval($db_row['in_id']);
                     $export_row['alg_obj_status'] = intval($db_row['in_status']);
-                    $export_row['alg_obj_icon'] = $object_statuses['in_is_any'][$db_row['in_is_any']]['s_icon']; //Entity type icon
+                    $export_row['alg_obj_icon'] = $object_statuses['in_type'][$db_row['in_type']]['s_icon']; //Entity type icon
                     $export_row['alg_obj_name'] = $db_row['in_outcome'];
                     $export_row['alg_obj_postfix'] =  ( $time_range ? '<span class="alg-postfix"><i class="fal fa-clock"></i>' . $time_range . '</span>' : '');
 
