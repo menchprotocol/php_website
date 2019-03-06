@@ -27,25 +27,6 @@ class Ledger extends CI_Controller
 
         if($session_en){
 
-            //Compile applied filters:
-            $tr_metadata = array();
-            foreach($_GET as $key => $value){
-                if(strlen($value) > 0){
-                    $tr_metadata[$key] = $value;
-                }
-            }
-
-            //Update session count and log transaction:
-            $new_order = ( $this->session->userdata('miner_session_count') + 1 );
-            $this->session->set_userdata('miner_session_count', $new_order);
-            $this->Database_model->fn___tr_create(array(
-                'tr_miner_entity_id' => $session_en['en_id'],
-                'tr_type_entity_id' => 4995, //Miner Opened Ledger
-                'tr_parent_entity_id' => $session_en['en_id'],
-                'tr_order' => $new_order,
-                'tr_metadata' => ( count($tr_metadata) > 0 ? $tr_metadata : null ),
-            ));
-
             //Miner logged in stats
             $this->load->view('view_shared/matrix_header', array(
                 'title' => 'Mench Ledger',

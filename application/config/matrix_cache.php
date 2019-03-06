@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-03-06 10:59:05 PST
+//Generated 2019-03-06 11:14:18 PST
 
 //Entity Message Reference Appendix:
 $config['en_ids_4990'] = array(1326, 2997, 2998, 2999, 3005, 3084, 3147, 3192, 4257, 4258, 4259, 4260, 4446, 4763, 4883);
@@ -436,7 +436,7 @@ $config['en_all_4600'] = array(
 );
 
 //Transaction Type Full List:
-$config['en_ids_4594'] = array(4228, 4229, 4230, 4231, 4232, 4233, 4234, 4235, 4242, 4246, 4248, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4265, 4266, 4267, 4268, 4269, 4272, 4275, 4278, 4279, 4282, 4283, 4284, 4287, 4299, 4318, 4319, 4331, 4452, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4567, 4568, 4570, 4577, 4601, 4602, 4983, 4993, 4994, 4995, 4996, 4997);
+$config['en_ids_4594'] = array(4228, 4229, 4230, 4231, 4232, 4233, 4234, 4235, 4242, 4246, 4248, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4265, 4266, 4267, 4268, 4269, 4272, 4275, 4278, 4279, 4282, 4283, 4284, 4287, 4299, 4318, 4319, 4331, 4452, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4567, 4568, 4570, 4577, 4601, 4602, 4983, 4993, 4994, 4996, 4997);
 $config['en_all_4594'] = array(
     4228 => array(
         'm_icon' => '<i class="fal fa-check-circle"></i>',
@@ -800,19 +800,13 @@ $config['en_all_4594'] = array(
     ),
     4993 => array(
         'm_icon' => '<i class="fas fa-hashtag"></i>',
-        'm_name' => 'Miner Opened Intent',
+        'm_name' => 'Miner Viewed Intent',
         'm_desc' => '',
         'm_parents' => array(4594, 4992),
     ),
     4994 => array(
         'm_icon' => '<i class="fas fa-at"></i>',
-        'm_name' => 'Miner Opened Entity',
-        'm_desc' => '',
-        'm_parents' => array(4594, 4992),
-    ),
-    4995 => array(
-        'm_icon' => '<i class="fas fa-atlas"></i>',
-        'm_name' => 'Miner Opened Ledger',
+        'm_name' => 'Miner Viewed Entity',
         'm_desc' => '',
         'm_parents' => array(4594, 4992),
     ),

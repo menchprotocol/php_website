@@ -69,16 +69,6 @@ $config['en_mass_actions']          = array( //Various mass actions to be taken 
     'replace_match'  => 'Replace entity matching strings',
     'replace_tr_match'  => 'Replace transaction matching strings',
     'replace_icon'  => 'Update all entity icons',
-
-    /*
-    'set_statuses'  => 'Set all child statuses',
-    'replace_statuses'  => 'Replace matching child statuses',
-    'add_en_as_parent'  => 'Add entity as parent for all children', //@123 Transaction Content here...
-    'copy_children_to'  => 'Copy children to another entity',
-    'copy_children_from'  => 'Copy children from another entity',
-    'move_children_to'  => 'Move children to another entity',
-    'move_children_from'  => 'Move children from another entity',
-    */
     //Logic for all items above must be added to Entities/en_miner_ui section
 );
 
