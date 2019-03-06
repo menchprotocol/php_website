@@ -47,7 +47,7 @@ $config['core_objects']             = array( //The 3 primary objects in the app
 
 
 //App Inputs:
-$config['in_seconds_max']           = 28800; //The maximum seconds allowed per intent. If larger, the miner is asked to break it down into smaller intents
+$config['in_seconds_cost_max']           = 28800; //The maximum seconds allowed per intent. If larger, the miner is asked to break it down into smaller intents
 $config['in_outcome_max']           = 89; //Max number of characters allowed in the title of intents
 $config['en_name_max']              = 250; //Max number of characters allowed in the title of intents
 $config['tr_content_max']           = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
@@ -114,17 +114,17 @@ $config['notify_admins']            = array(
 
 //Ledger filters:
 $config['ledger_filters']           = array(
-                                        'tr_miner_en_id' => 'en',
-                                        'tr_type_en_id' => 'en',
-                                        'tr_tr_id' => 'tr',
-                                        'tr_en_parent_id' => 'en',
-                                        'tr_en_child_id'  => 'en',
-                                        'tr_in_parent_id' => 'in',
-                                        'tr_in_child_id'  => 'in',
+                                        'tr_miner_entity' => 'en',
+                                        'tr_type_entity' => 'en',
+                                        'tr_parent_transaction' => 'tr',
+                                        'tr_parent_entity' => 'en',
+                                        'tr_child_entity'  => 'en',
+                                        'tr_parent_intent' => 'in',
+                                        'tr_child_intent'  => 'in',
                                     );
 
 
-//3x Table Statuses:
+//3x Table Status:
 $config['object_statuses']          = array(
                                         'tr_status' => array(
                                             -1 => array(

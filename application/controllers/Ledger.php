@@ -196,13 +196,13 @@ class Ledger extends CI_Controller
          *
          * */
 
-        if ($_POST['tr_status_new'] < 0 && in_array($trs[0]['tr_type_en_id'], $this->config->item('en_ids_4485'))) {
+        if ($_POST['tr_status_new'] < 0 && in_array($trs[0]['tr_type_entity'], $this->config->item('en_ids_4485'))) {
 
             //Intent message being deleted..
 
             //Fetch child intent:
             $ins = $this->Database_model->fn___in_fetch(array(
-                'in_id' => $trs[0]['tr_in_child_id'],
+                'in_id' => $trs[0]['tr_child_intent'],
             ));
 
             //Do a relative adjustment for this intent's metadata
@@ -215,20 +215,20 @@ class Ledger extends CI_Controller
                 'in__message_tree_count' => -1,
             ));
 
-        } elseif($_POST['tr_status_new'] < 0 && in_array($trs[0]['tr_type_en_id'], $this->config->item('en_ids_4486'))) {
+        } elseif($_POST['tr_status_new'] < 0 && in_array($trs[0]['tr_type_entity'], $this->config->item('en_ids_4486'))) {
 
             //Intent link being deleted...
 
             //Fetch child intent metadata:
             $ins = $this->Database_model->fn___in_fetch(array(
-                'in_id' => $trs[0]['tr_in_child_id'],
+                'in_id' => $trs[0]['tr_child_intent'],
             ));
 
             //Prep metadata:
             $metadata = unserialize($trs[0]['in_metadata']);
 
             //Update parent intent tree (and upwards) to reduce totals based on child intent metadata:
-            $this->Matrix_model->fn___metadata_tree_update('in', $trs[0]['tr_in_parent_id'], array(
+            $this->Matrix_model->fn___metadata_tree_update('in', $trs[0]['tr_parent_intent'], array(
                 'in__tree_in_active_count' => -( isset($metadata['in__tree_in_active_count']) ? $metadata['in__tree_in_active_count'] :0 ),
                 'in__tree_max_seconds' => -( isset($metadata['in__tree_max_seconds']) ? $metadata['in__tree_max_seconds'] :0 ),
                 'in__message_tree_count' => -( isset($metadata['in__message_tree_count']) ? $metadata['in__message_tree_count'] :0 ),
@@ -313,7 +313,7 @@ class Ledger extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Transaction ID',
             ));
-        } elseif(in_array($trs[0]['tr_type_en_id'] , $this->config->item('en_ids_4755')) /* Transaction Type is locked */ && !fn___en_auth(array(1281)) /* Viewer NOT a moderator */){
+        } elseif(in_array($trs[0]['tr_type_entity'] , $this->config->item('en_ids_4755')) /* Transaction Type is locked */ && !fn___en_auth(array(1281)) /* Viewer NOT a moderator */){
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Transaction content visible to moderators only',
@@ -351,7 +351,7 @@ class Ledger extends CI_Controller
                 'message' => 'Invalid Intent ID',
             ));
 
-        } elseif (!isset($_POST['focus_tr_type_en_id']) || intval($_POST['focus_tr_type_en_id']) < 1) {
+        } elseif (!isset($_POST['focus_tr_type_entity']) || intval($_POST['focus_tr_type_entity']) < 1) {
 
             return fn___echo_json(array(
                 'status' => 0,
@@ -375,7 +375,7 @@ class Ledger extends CI_Controller
         }
 
         //Make sure message is all good:
-        $msg_validation = $this->Chat_model->fn___dispatch_validate_message($_POST['tr_content'], array(), false, array(), $_POST['focus_tr_type_en_id'], $_POST['in_id']);
+        $msg_validation = $this->Chat_model->fn___dispatch_validate_message($_POST['tr_content'], array(), false, array(), $_POST['focus_tr_type_entity'], $_POST['in_id']);
 
         if (!$msg_validation['status']) {
             //There was some sort of an error:
@@ -384,17 +384,17 @@ class Ledger extends CI_Controller
 
         //Create Message Transaction:
         $tr = $this->Database_model->fn___tr_create(array(
-            'tr_miner_en_id' => $session_en['en_id'],
-            'tr_in_child_id' => intval($_POST['in_id']),
+            'tr_miner_entity' => $session_en['en_id'],
+            'tr_child_intent' => intval($_POST['in_id']),
             'tr_order' => 1 + $this->Database_model->fn___tr_max_order(array(
                     'tr_status >=' => 0, //New+
-                    'tr_type_en_id' => intval($_POST['focus_tr_type_en_id']),
-                    'tr_in_child_id' => intval($_POST['in_id']),
+                    'tr_type_entity' => intval($_POST['focus_tr_type_entity']),
+                    'tr_child_intent' => intval($_POST['in_id']),
                 )),
             //Referencing attributes:
             'tr_content' => $msg_validation['input_message'],
-            'tr_type_en_id' => intval($_POST['focus_tr_type_en_id']),
-            'tr_en_parent_id' => $msg_validation['tr_en_parent_id'],
+            'tr_type_entity' => intval($_POST['focus_tr_type_entity']),
+            'tr_parent_entity' => $msg_validation['tr_parent_entity'],
         ), true);
 
         //Do a relative adjustment for this intent's metadata
@@ -411,7 +411,7 @@ class Ledger extends CI_Controller
         return fn___echo_json(array(
             'status' => 1,
             'message' => fn___echo_in_message_manage(array_merge($tr, array(
-                'tr_en_child_id' => $session_en['en_id'],
+                'tr_child_entity' => $session_en['en_id'],
             ))),
         ));
     }
@@ -451,7 +451,7 @@ class Ledger extends CI_Controller
         //Load Action Plan iFrame:
         return fn___echo_json(array(
             'status' => 1,
-            'url' => '/master/actionplan/' . $w['tr_id'] . '/' . $w['tr_in_child_id'],
+            'url' => '/master/actionplan/' . $w['tr_id'] . '/' . $w['tr_child_intent'],
         ));
 
     }

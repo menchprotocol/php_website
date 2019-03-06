@@ -44,14 +44,14 @@ class Messenger extends CI_Controller
             $this->Database_model->fn___tr_create(array(
                 'tr_content' => 'facebook_webhook() Function missing either [object] or [entry] variable.',
                 'tr_metadata' => $json_data,
-                'tr_type_en_id' => 4246, //Platform Error
+                'tr_type_entity' => 4246, //Platform Error
             ));
             return false;
         } elseif (!$json_data['object'] == 'page') {
             $this->Database_model->fn___tr_create(array(
                 'tr_content' => 'facebook_webhook() Function call object value is not equal to [page], which is what was expected.',
                 'tr_metadata' => $json_data,
-                'tr_type_en_id' => 4246, //Platform Error
+                'tr_type_entity' => 4246, //Platform Error
             ));
             return false;
         }
@@ -68,7 +68,7 @@ class Messenger extends CI_Controller
                 $this->Database_model->fn___tr_create(array(
                     'tr_content' => 'facebook_webhook() call missing messaging Array().',
                     'tr_metadata' => $json_data,
-                    'tr_type_en_id' => 4246, //Platform Error
+                    'tr_type_entity' => 4246, //Platform Error
                 ));
                 continue;
             }
@@ -79,15 +79,15 @@ class Messenger extends CI_Controller
                 if (isset($im['read']) || isset($im['delivery'])) {
 
                     //Message read OR delivered
-                    $tr_type_en_id = ( isset($im['delivery']) ? 4279 /* Message Delivered */ : 4278 /* Message Read */ );
+                    $tr_type_entity = ( isset($im['delivery']) ? 4279 /* Message Delivered */ : 4278 /* Message Read */ );
 
                     //Authenticate Student:
                     $en = $this->Matrix_model->fn___en_master_messenger_authenticate($im['sender']['id']);
 
                     //Log Transaction Only IF last delivery transaction was 3+ minutes ago (Since Facebook sends many of these):
                     $last_trs_logged = $this->Database_model->fn___tr_fetch(array(
-                        'tr_type_en_id' => $tr_type_en_id,
-                        'tr_en_parent_id' => $en['en_id'],
+                        'tr_type_entity' => $tr_type_entity,
+                        'tr_parent_entity' => $en['en_id'],
                         'tr_timestamp >=' => date("Y-m-d H:i:s", (time() - (180))), //Transactions logged less than 3 minutes ago
                     ), array(), 1);
 
@@ -95,9 +95,9 @@ class Messenger extends CI_Controller
                         //We had no recent transactions of this kind, so go ahead and log:
                         $this->Database_model->fn___tr_create(array(
                             'tr_metadata' => $json_data,
-                            'tr_type_en_id' => $tr_type_en_id,
-                            'tr_miner_en_id' => $en['en_id'],
-                            'tr_en_parent_id' => $en['en_id'],
+                            'tr_type_entity' => $tr_type_entity,
+                            'tr_miner_entity' => $en['en_id'],
+                            'tr_parent_entity' => $en['en_id'],
                             'tr_timestamp' => fn___echo_time_milliseconds($im['timestamp']), //The Facebook time
                         ));
                     }
@@ -113,7 +113,7 @@ class Messenger extends CI_Controller
                      * */
 
                     //Messenger Referral OR Postback
-                    $tr_type_en_id = ( isset($im['delivery']) ? 4267 /* Messenger Referral */ : 4268 /* Messenger Postback */ );
+                    $tr_type_entity = ( isset($im['delivery']) ? 4267 /* Messenger Referral */ : 4268 /* Messenger Postback */ );
 
                     //Authenticate Student:
                     $en = $this->Matrix_model->fn___en_master_messenger_authenticate($im['sender']['id']);
@@ -151,11 +151,11 @@ class Messenger extends CI_Controller
 
                     //Log primary transaction:
                     $this->Database_model->fn___tr_create(array(
-                        'tr_type_en_id' => $tr_type_en_id,
+                        'tr_type_entity' => $tr_type_entity,
                         'tr_metadata' => $json_data,
                         'tr_content' => $quick_reply_payload,
-                        'tr_miner_en_id' => $en['en_id'],
-                        'tr_en_parent_id' => $en['en_id'],
+                        'tr_miner_entity' => $en['en_id'],
+                        'tr_parent_entity' => $en['en_id'],
                         'tr_timestamp' => fn___echo_time_milliseconds($im['timestamp']), //The Facebook time
                     ));
 
@@ -195,9 +195,9 @@ class Messenger extends CI_Controller
                     //Log transaction:
                     $this->Database_model->fn___tr_create(array(
                         'tr_metadata' => $json_data,
-                        'tr_type_en_id' => 4266, //Messenger Optin
-                        'tr_miner_en_id' => $en['en_id'],
-                        'tr_en_parent_id' => $en['en_id'],
+                        'tr_type_entity' => 4266, //Messenger Optin
+                        'tr_miner_entity' => $en['en_id'],
+                        'tr_parent_entity' => $en['en_id'],
                         'tr_timestamp' => fn___echo_time_milliseconds($im['timestamp']), //The Facebook time
                     ));
 
@@ -209,9 +209,9 @@ class Messenger extends CI_Controller
                     //Log transaction:
                     $this->Database_model->fn___tr_create(array(
                         'tr_metadata' => $json_data,
-                        'tr_type_en_id' => 4577, //Message Request Accepted
-                        'tr_miner_en_id' => $en['en_id'],
-                        'tr_en_parent_id' => $en['en_id'],
+                        'tr_type_entity' => 4577, //Message Request Accepted
+                        'tr_miner_entity' => $en['en_id'],
+                        'tr_parent_entity' => $en['en_id'],
                         'tr_timestamp' => fn___echo_time_milliseconds($im['timestamp']), //The Facebook time
                     ));
 
@@ -237,12 +237,12 @@ class Messenger extends CI_Controller
                     unset($tr_data); //Reset everything in case its set from the previous loop!
                     $sent_by_mench = (isset($im['message']['is_echo'])); //Indicates the message sent from the page itself
                     $en = $this->Matrix_model->fn___en_master_messenger_authenticate(($sent_by_mench ? $im['recipient']['id'] : $im['sender']['id']));
-                    $tr_en_parent_id = ($sent_by_mench ? 4148 /* Mench Admins via Facebook Inbox UI */ : $en['en_id']);
+                    $tr_parent_entity = ($sent_by_mench ? 4148 /* Mench Admins via Facebook Inbox UI */ : $en['en_id']);
                     
                     $tr_data = array(
-                        'tr_miner_en_id' => $tr_en_parent_id,
-                        'tr_en_parent_id' => $tr_en_parent_id,
-                        'tr_en_child_id' => ($sent_by_mench ? $en['en_id'] : 0),
+                        'tr_miner_entity' => $tr_parent_entity,
+                        'tr_parent_entity' => $tr_parent_entity,
+                        'tr_child_entity' => ($sent_by_mench ? $en['en_id'] : 0),
                         'tr_timestamp' => ($sent_by_mench ? null : fn___echo_time_milliseconds($im['timestamp']) ), //Facebook time if received from Student
                         'tr_metadata' => $json_data, //Entire JSON object received by Facebook API
                     );
@@ -264,7 +264,7 @@ class Messenger extends CI_Controller
                     if(isset($im['message']['quick_reply']['payload'])){
 
                         //Quick Reply Answer Received (Cannot be sent as we never send quick replies)
-                        $tr_data['tr_type_en_id'] = 4460;
+                        $tr_data['tr_type_entity'] = 4460;
                         $tr_data['tr_content'] = $im['message']['text']; //Quick reply always has a text
 
                         //Digest the Quick Reply payload:
@@ -279,12 +279,12 @@ class Messenger extends CI_Controller
                         if ($sent_by_mench) {
 
                             //Text Message Sent By Mench Admin via Facebook Inbox UI
-                            $tr_data['tr_type_en_id'] = 4552; //Text Message Sent
+                            $tr_data['tr_type_entity'] = 4552; //Text Message Sent
 
                         } else {
 
                             //Text Message Received:
-                            $tr_data['tr_type_en_id'] = 4547;
+                            $tr_data['tr_type_entity'] = 4547;
 
                             //Digest message & try to make sense of it:
                             $this->Chat_model->fn___digest_received_message($en, $im['message']['text']);
@@ -333,14 +333,14 @@ class Messenger extends CI_Controller
                                  *
                                  * */
 
-                                $tr_data['tr_type_en_id'] = $att_media_types[$att['type']][( $sent_by_mench ? 'sent' : 'received' )];
+                                $tr_data['tr_type_entity'] = $att_media_types[$att['type']][( $sent_by_mench ? 'sent' : 'received' )];
                                 $tr_data['tr_content'] = $att['payload']['url']; //Media Attachment Temporary Facebook URL
                                 $tr_data['tr_status'] = 0; //Working On, since URL needs to be uploaded to Mench CDN via Cron Job
 
                             } elseif ($att['type'] == 'location') {
 
                                 //Location Message Received:
-                                $tr_data['tr_type_en_id'] = 4557;
+                                $tr_data['tr_type_entity'] = 4557;
 
                                 /*
                                  *
@@ -395,7 +395,7 @@ class Messenger extends CI_Controller
 
 
                     //So did we recognized the
-                    if(isset($tr_data['tr_type_en_id'])){
+                    if(isset($tr_data['tr_type_entity'])){
 
                         //We're all good, log this message:
                         $this->Database_model->fn___tr_create($tr_data);
@@ -404,10 +404,10 @@ class Messenger extends CI_Controller
 
                         //Ooooopsi, this seems to be an unknown message type:
                         $this->Database_model->fn___tr_create(array(
-                            'tr_type_en_id' => 4246, //Platform Error
+                            'tr_type_entity' => 4246, //Platform Error
                             'tr_content' => 'facebook_webhook() Received unknown message type! Analyze metadata for more details',
                             'tr_metadata' => $json_data,
-                            'tr_en_parent_id' => $en['en_id'],
+                            'tr_parent_entity' => $en['en_id'],
                         ));
 
                     }
@@ -418,7 +418,7 @@ class Messenger extends CI_Controller
                     $this->Database_model->fn___tr_create(array(
                         'tr_content' => 'facebook_webhook() received unrecognized webhook call',
                         'tr_metadata' => $json_data,
-                        'tr_type_en_id' => 4246, //Platform Error
+                        'tr_type_entity' => 4246, //Platform Error
                     ));
 
                 }

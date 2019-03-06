@@ -33,7 +33,7 @@ class Cron extends CI_Controller
         //Migrate from URL to People/ORG
         $current_urls = $this->Database_model->fn___tr_fetch(array(
             'tr_status >=' => 0,
-            'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null, //Entity URL Links
+            'tr_type_entity IN (' . join(',', $this->config->item('en_ids_4537')) . ')' => null, //Entity URL Links
         ), array('en_child'), 999999, 0, array('tr_content' => 'ASC'));
 
         //Echo table:
@@ -59,11 +59,11 @@ class Cron extends CI_Controller
 
             //Fetch parent:
             $parent_ens = $this->Database_model->fn___en_fetch(array(
-                'en_id' => $tr['tr_en_parent_id'],
+                'en_id' => $tr['tr_parent_entity'],
             ), array('en__parents'));
 
             //See if we have a parent error:
-            $domain_not_domain = ($domain_analysis['url_is_root'] && $tr['tr_en_parent_id']!=1326);
+            $domain_not_domain = ($domain_analysis['url_is_root'] && $tr['tr_parent_entity']!=1326);
 
             $domain_unsync = ($domain_analysis['url_is_root'] && !($domain_analysis['url_clean_domain']==$tr['tr_content']));
 
@@ -89,16 +89,16 @@ class Cron extends CI_Controller
                     //Remove domain link:
                     $this->Database_model->fn___tr_update($tr['tr_id'], array(
                         'tr_content' => null,
-                        'tr_type_en_id' => 4230, //Empty
+                        'tr_type_entity' => 4230, //Empty
                     ), 1);
 
                     //Link to domain entity:
                     $this->Database_model->fn___tr_create(array(
                         'tr_status' => 2,
-                        'tr_miner_en_id' => 1,
-                        'tr_type_en_id' => $tr['tr_type_en_id'],
-                        'tr_en_parent_id' => $domain_entity['en_domain']['en_id'],
-                        'tr_en_child_id' => $tr['en_id'],
+                        'tr_miner_entity' => 1,
+                        'tr_type_entity' => $tr['tr_type_entity'],
+                        'tr_parent_entity' => $domain_entity['en_domain']['en_id'],
+                        'tr_child_entity' => $tr['en_id'],
                         'tr_content' => $tr['tr_content'],
                     ));
 
@@ -125,17 +125,17 @@ class Cron extends CI_Controller
                 //move domain to domain entity:
                 $this->Database_model->fn___tr_create(array(
                     'tr_status' => 2,
-                    'tr_miner_en_id' => 1,
-                    'tr_type_en_id' => 4256, //Generic URL (Domain home pages should always be generic, see above for logic)
-                    'tr_en_parent_id' => 1326, //Domain Entity
-                    'tr_en_child_id' => $tr['en_id'],
+                    'tr_miner_entity' => 1,
+                    'tr_type_entity' => 4256, //Generic URL (Domain home pages should always be generic, see above for logic)
+                    'tr_parent_entity' => 1326, //Domain Entity
+                    'tr_child_entity' => $tr['en_id'],
                     'tr_content' => $tr['tr_content'],
                 ));
 
                 //Move URL to domain:
                 $this->Database_model->fn___tr_update($tr['tr_id'], array(
                     'tr_content' => null,
-                    'tr_type_en_id' => 4230, //Empty
+                    'tr_type_entity' => 4230, //Empty
                 ));
             }
 
@@ -192,7 +192,7 @@ class Cron extends CI_Controller
         exit; //Maybe use to update all rates if needed?
 
         //Issue coins for each transaction type:
-        $all_engs = $this->Database_model->fn___tr_fetch(array(), array('en_type'), 0, 0, array('trs_count' => 'DESC'), 'COUNT(tr_type_en_id) as trs_count, en_name, tr_type_en_id', 'tr_type_en_id, en_name');
+        $all_engs = $this->Database_model->fn___tr_fetch(array(), array('en_type'), 0, 0, array('trs_count' => 'DESC'), 'COUNT(tr_type_entity) as trs_count, en_name, tr_type_entity', 'tr_type_entity, en_name');
 
         //return fn___echo_json($all_engs);
 
@@ -203,14 +203,14 @@ class Cron extends CI_Controller
             $rate_trs = $this->Database_model->fn___tr_fetch(array(
                 'tr_status >=' => 2, //Must be published+
                 'en_status >=' => 2, //Must be published+
-                'tr_type_en_id' => 4319, //Number
-                'tr_en_parent_id' => 4374, //Mench Coins
-                'tr_en_child_id' => $tr['tr_type_en_id'],
+                'tr_type_entity' => 4319, //Number
+                'tr_parent_entity' => 4374, //Mench Coins
+                'tr_child_entity' => $tr['tr_type_entity'],
             ), array('en_child'), 1);
 
             if(count($rate_trs) > 0){
                 //Issue coins at this rate:
-                $this->db->query("UPDATE table_ledger SET tr_coins = '".$rate_trs[0]['tr_content']."' WHERE tr_type_en_id = " . $tr['tr_type_en_id']);
+                $this->db->query("UPDATE table_ledger SET tr_coins = '".$rate_trs[0]['tr_content']."' WHERE tr_type_entity = " . $tr['tr_type_entity']);
             }
 
         }
@@ -232,8 +232,8 @@ class Cron extends CI_Controller
         //First first all entities that have Cache in PHP Config @4527 as their parent:
         $config_ens = $this->Database_model->fn___tr_fetch(array(
             'tr_status >=' => 0,
-            'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-            'tr_en_parent_id' => 4527,
+            'tr_type_entity IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            'tr_parent_entity' => 4527,
         ), array('en_child'), 0);
 
         echo '//Generated '.date("Y-m-d H:i:s").' PST<br />';
@@ -244,8 +244,8 @@ class Cron extends CI_Controller
             $children = $this->Database_model->fn___tr_fetch(array(
                 'tr_status >=' => 2,
                 'en_status >=' => 2,
-                'tr_en_parent_id' => $en['tr_en_child_id'],
-                'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                'tr_parent_entity' => $en['tr_child_entity'],
+                'tr_type_entity IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
             ), array('en_child'), 0, 0, array('tr_order' => 'ASC', 'en_id' => 'ASC'));
 
 
@@ -255,8 +255,8 @@ class Cron extends CI_Controller
             }
 
             echo '<br />//'.$en['en_name'].':<br />';
-            echo '$config[\'en_ids_'.$en['tr_en_child_id'].'\'] = array('.join(', ',$child_ids).');<br />';
-            echo '$config[\'en_all_'.$en['tr_en_child_id'].'\'] = array(<br />';
+            echo '$config[\'en_ids_'.$en['tr_child_entity'].'\'] = array('.join(', ',$child_ids).');<br />';
+            echo '$config[\'en_all_'.$en['tr_child_entity'].'\'] = array(<br />';
             foreach($children as $child){
 
                 //Do we have an omit command?
@@ -269,8 +269,8 @@ class Cron extends CI_Controller
                 $child_parents = $this->Database_model->fn___tr_fetch(array(
                     'tr_status >=' => 2,
                     'en_status >=' => 2,
-                    'tr_en_child_id' => $child['en_id'],
-                    'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                    'tr_child_entity' => $child['en_id'],
+                    'tr_type_entity IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
                 ), array('en_parent'), 0);
                 foreach($child_parents as $cp_en){
                     array_push($child_parent_ids, $cp_en['en_id']);
@@ -375,10 +375,10 @@ class Cron extends CI_Controller
         $score_weights = array(
             'u__childrens' => 0, //Child entities are just containers, no score on the link
 
-            'tr_en_child_id' => 1, //Transaction initiator
-            'tr_miner_en_id' => 1, //Transaction recipient
+            'tr_child_entity' => 1, //Transaction initiator
+            'tr_miner_entity' => 1, //Transaction recipient
 
-            'tr_en_parent_id' => 13, //Action Plan Items
+            'tr_parent_entity' => 13, //Action Plan Items
         );
 
         //Fetch child entities:
@@ -398,14 +398,14 @@ class Cron extends CI_Controller
             $score += count($ens) * $score_weights['u__childrens'];
 
             $score += count($this->Database_model->fn___tr_fetch(array(
-                    'tr_en_child_id' => $u['en_id'],
-                ), array(), 5000)) * $score_weights['tr_en_child_id'];
+                    'tr_child_entity' => $u['en_id'],
+                ), array(), 5000)) * $score_weights['tr_child_entity'];
             $score += count($this->Database_model->fn___tr_fetch(array(
-                    'tr_miner_en_id' => $u['en_id'],
-                ), array(), 5000)) * $score_weights['tr_miner_en_id'];
+                    'tr_miner_entity' => $u['en_id'],
+                ), array(), 5000)) * $score_weights['tr_miner_entity'];
             $score += count($this->Database_model->w_fetch(array(
-                    'tr_en_parent_id' => $u['en_id'],
-                ))) * $score_weights['tr_en_parent_id'];
+                    'tr_parent_entity' => $u['en_id'],
+                ))) * $score_weights['tr_parent_entity'];
 
             //Update the score:
             $this->Database_model->fn___en_update($u['en_id'], array(
@@ -438,7 +438,7 @@ class Cron extends CI_Controller
 
         $tr_pending = $this->Database_model->fn___tr_fetch(array(
             'tr_status' => 0, //Pending
-            'tr_type_en_id' => 4299, //Save media file to Mench cloud
+            'tr_type_entity' => 4299, //Save media file to Mench cloud
         ), array(), $max_per_batch);
 
 
@@ -454,7 +454,7 @@ class Cron extends CI_Controller
         //Go through and upload to CDN:
         foreach ($tr_pending as $u) {
 
-            $detected_tr_type = fn___detect_tr_type_en_id($new_file_url);
+            $detected_tr_type = fn___detect_tr_type_entity($new_file_url);
             if(!$detected_tr_type['status']){
                 //Opppsi, there was some error:
                 //TODO Log error
@@ -464,7 +464,7 @@ class Cron extends CI_Controller
             //Update transaction data:
             $this->Database_model->fn___tr_update($trp['tr_id'], array(
                 'tr_content' => $new_file_url,
-                'tr_type_en_id' => $detected_tr_type['tr_type_en_id'],
+                'tr_type_entity' => $detected_tr_type['tr_type_entity'],
                 'tr_status' => 2, //Publish
             ));
 
@@ -520,7 +520,7 @@ class Cron extends CI_Controller
 
         //Let's fetch all Media files without a Facebook attachment ID:
         $pending_urls = $this->Database_model->fn___tr_fetch(array(
-            'tr_type_en_id IN (' . join(',',array_keys($en_convert_4537)) . ')' => null,
+            'tr_type_entity IN (' . join(',',array_keys($en_convert_4537)) . ')' => null,
             'tr_metadata' => null, //Missing Facebook Attachment ID
         ), array(), $max_per_batch, 0 , array('tr_id' => 'ASC')); //Sort by oldest added first
 
@@ -529,7 +529,7 @@ class Cron extends CI_Controller
             $payload = array(
                 'message' => array(
                     'attachment' => array(
-                        'type' => $en_convert_4537[$tr['tr_type_en_id']],
+                        'type' => $en_convert_4537[$tr['tr_type_entity']],
                         'payload' => array(
                             'is_reusable' => true,
                             'url' => $tr['tr_content'], //The URL to the media file
@@ -560,7 +560,7 @@ class Cron extends CI_Controller
 
                 //Log error:
                 $this->Database_model->fn___tr_create(array(
-                    'tr_type_en_id' => 4246, //Platform Error
+                    'tr_type_entity' => 4246, //Platform Error
                     'tr_content' => 'fn___facebook_attachment_sync() Failed to sync attachment using Facebook API',
                     'tr_metadata' => array(
                         'payload' => $payload,

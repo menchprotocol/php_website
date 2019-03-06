@@ -47,7 +47,7 @@ function fn___detect_missing_columns($insert_columns, $required_columns)
                     'insert_columns' => $insert_columns,
                     'required_columns' => $required_columns,
                 ),
-                'tr_type_en_id' => 4246, //Platform Error
+                'tr_type_entity' => 4246, //Platform Error
             ));
 
             return true; //We have an issue
@@ -168,7 +168,7 @@ function bigintval($value) {
 }
 
 
-function fn___detect_tr_type_en_id($string)
+function fn___detect_tr_type_entity($string)
 {
 
     /*
@@ -190,14 +190,14 @@ function fn___detect_tr_type_en_id($string)
 
         return array(
             'status' => 1,
-            'tr_type_en_id' => 4230, //Empty
+            'tr_type_entity' => 4230, //Empty
         );
 
     } elseif ((strlen(bigintval($string)) == strlen($string) || (in_array(substr($string , 0, 1), array('+','-')) && strlen(bigintval(substr($string , 1))) == strlen(substr($string , 1)))) && (intval($string) != 0 || $string == '0')) {
 
         return array(
             'status' => 1,
-            'tr_type_en_id' => 4319, //Number
+            'tr_type_entity' => 4319, //Number
         );
 
     } elseif (filter_var($string, FILTER_VALIDATE_URL)) {
@@ -211,7 +211,7 @@ function fn___detect_tr_type_en_id($string)
         //Date/time:
         return array(
             'status' => 1,
-            'tr_type_en_id' => 4318,
+            'tr_type_entity' => 4318,
         );
 
     } else {
@@ -219,7 +219,7 @@ function fn___detect_tr_type_en_id($string)
         //Regular text link:
         return array(
             'status' => 1,
-            'tr_type_en_id' => 4255,
+            'tr_type_entity' => 4255,
         );
 
     }
@@ -351,7 +351,7 @@ function fn___upload_to_cdn($file_url, $json_data, $is_local = false)
         } else {
 
             $CI->Database_model->fn___tr_create(array(
-                'tr_type_en_id' => 4246, //Platform Error
+                'tr_type_entity' => 4246, //Platform Error
                 'tr_content' => 'fn___upload_to_cdn() Unable to upload file [' . $file_url . '] to Mench cloud.',
                 'tr_metadata' => $json_data,
             ));

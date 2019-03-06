@@ -8,9 +8,9 @@
         $(".filter-statuses").addClass('hidden');
 
         //Show only if creating new in/en Transaction type:
-        if($("#tr_type_en_id").val()==4250){
+        if($("#tr_type_entity").val()==4250){
             $(".filter-in-status").removeClass('hidden');
-        } else if($("#tr_type_en_id").val()==4251){
+        } else if($("#tr_type_entity").val()==4251){
             $(".filter-en-status").removeClass('hidden');
         }
     }
@@ -20,7 +20,7 @@
         check_in_en_status();
 
         //Watch for intent status change:
-        $("#tr_type_en_id").change(function () {
+        $("#tr_type_entity").change(function () {
             check_in_en_status();
         });
 
@@ -103,7 +103,7 @@ if(!$has_filters){
             //Display this status count:
             $this_ui .= '<tr>';
             $this_ui .= '<td style="text-align: left;">'.fn___echo_status($object_id, $status_num, false, 'top').'</td>';
-            $this_ui .= '<td style="text-align: right;">'.( $count > 0 ? '<a href="/ledger?'.$object_id.'='.$status_num.'&tr_type_en_id='.$created_en_type_id.'"  data-toggle="tooltip" title="View Transactions" data-placement="top">'.number_format($count,0).'</a>' : $count ).'</td>';
+            $this_ui .= '<td style="text-align: right;">'.( $count > 0 ? '<a href="/ledger?'.$object_id.'='.$status_num.'&tr_type_entity='.$created_en_type_id.'"  data-toggle="tooltip" title="View Transactions" data-placement="top">'.number_format($count,0).'</a>' : $count ).'</td>';
             $this_ui .= '</tr>';
 
 
@@ -122,7 +122,7 @@ if(!$has_filters){
 
         //Object Header:
         echo '<tr style="font-weight: bold;">';
-        echo '<td style="text-align: left;">Status</td>';
+        echo '<td style="text-align: left;">Status:</td>';
         echo '<td style="text-align: right;">Count</td>';
         echo '</tr>';
 
@@ -159,7 +159,7 @@ if(!$has_filters){
 //Count variables:
     $all_engs = $this->Database_model->fn___tr_fetch(array(
         'tr_coins !=' => 0,
-    ), array('en_type'), 0, 0, array('en_name' => 'DESC'), 'COUNT(tr_type_en_id) as trs_count, SUM(tr_coins) as coins_sum, en_name, en_icon, tr_type_en_id', 'tr_type_en_id, en_name, en_icon');
+    ), array('en_type'), 0, 0, array('en_name' => 'DESC'), 'COUNT(tr_type_entity) as trs_count, SUM(tr_coins) as coins_sum, en_name, en_icon, tr_type_entity', 'tr_type_entity, en_name, en_icon');
 
     $all_transaction_count = 0;
     $all_coin_payouts = 0;
@@ -170,18 +170,18 @@ if(!$has_filters){
         $rate_trs = $this->Database_model->fn___tr_fetch(array(
             'tr_status >=' => 2, //Must be published+
             'en_status >=' => 2, //Must be published+
-            'tr_en_parent_id' => 4374, //Mench Coins
-            'tr_type_en_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-            'tr_en_child_id' => $tr['tr_type_en_id'],
+            'tr_parent_entity' => 4374, //Mench Coins
+            'tr_type_entity IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            'tr_child_entity' => $tr['tr_type_entity'],
         ), array('en_child'), 1);
 
 
 
         //Echo stats:
         $table_body .= '<tr>';
-        $table_body .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;">'.( strlen($tr['en_icon']) > 0 ? $tr['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$tr['tr_type_en_id'].'">'.$tr['en_name'].'</a></td>';
-        $table_body .= '<td style="text-align: right;"><span class="underdot" data-toggle="tooltip" title="Each '.$tr['en_name'].' transaction currently issues '.$rate_trs[0]['tr_content'].' coins. Transaction rates may fluctuate." data-placement="top">'.( count($rate_trs) > 0 ? number_format($rate_trs[0]['tr_content'],0) : 'Not Set' ).'</span></td>';
-        $table_body .= '<td style="text-align: right;"><a href="/ledger?tr_type_en_id='.$tr['tr_type_en_id'].'"  data-toggle="tooltip" title="View all '.number_format($tr['trs_count'],0).' transactions on the ledger" data-placement="top">'.number_format($tr['coins_sum'], 0).'</a></td>';
+        $table_body .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;">'.( strlen($tr['en_icon']) > 0 ? $tr['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$tr['tr_type_entity'].'">'.$tr['en_name'].'</a></td>';
+        $table_body .= '<td style="text-align: right;"><span class="underdot" data-toggle="tooltip" title="Each '.$tr['en_name'].' transaction currently issues '.$rate_trs[0]['tr_content'].' coins. Transaction rates may fluctuate to balance supply/demand" data-placement="top">'.( count($rate_trs) > 0 ? number_format($rate_trs[0]['tr_content'],0) : 'Not Set' ).'</span></td>';
+        $table_body .= '<td style="text-align: right;"><a href="/ledger?tr_type_entity='.$tr['tr_type_entity'].'"  data-toggle="tooltip" title="View all '.number_format($tr['trs_count'],0).' transactions on the ledger" data-placement="top">'.number_format($tr['coins_sum'], 0).'</a></td>';
         $table_body .= '</tr>';
 
         $all_transaction_count += $tr['trs_count'];
@@ -199,7 +199,7 @@ if(!$has_filters){
 
 //Object Header:
     echo '<tr style="font-weight: bold;">';
-    echo '<td style="text-align: left;">Ledger transactions:</td>';
+    echo '<td style="text-align: left;">Ledger Transactions Types:</td>';
     echo '<td style="text-align: right;">Rate</td>';
     echo '<td style="text-align: right;"><i class="fal fa-coins"></i> Coins</td>';
     echo '</tr>';
@@ -329,12 +329,12 @@ $join_by = array();
 
 //We have a special OR filter when combined with any_en_id & any_in_id
 $any_in_en_set = ( ( isset($_GET['any_en_id']) && $_GET['any_en_id'] > 0 ) || ( isset($_GET['any_in_id']) && $_GET['any_in_id'] > 0 ) );
-$parent_tr_filter = ( isset($_GET['tr_tr_id']) && $_GET['tr_tr_id'] > 0 ? ' OR tr_tr_id = '.$_GET['tr_tr_id'].' ' : false );
+$parent_tr_filter = ( isset($_GET['tr_parent_transaction']) && $_GET['tr_parent_transaction'] > 0 ? ' OR tr_parent_transaction = '.$_GET['tr_parent_transaction'].' ' : false );
 
 
 //Apply filters:
 if(isset($_GET['in_status']) && strlen($_GET['in_status']) > 0){
-    if(isset($_GET['tr_type_en_id']) && $_GET['tr_type_en_id']==4250){ //Intent created
+    if(isset($_GET['tr_type_entity']) && $_GET['tr_type_entity']==4250){ //Intent created
         //Filter intent status based on
         $join_by = array('in_child');
 
@@ -350,7 +350,7 @@ if(isset($_GET['in_status']) && strlen($_GET['in_status']) > 0){
 }
 
 if(isset($_GET['en_status']) && strlen($_GET['en_status']) > 0){
-    if(isset($_GET['tr_type_en_id']) && $_GET['tr_type_en_id']==4251){ //Entity Created
+    if(isset($_GET['tr_type_entity']) && $_GET['tr_type_entity']==4251){ //Entity Created
 
         //Filter intent status based on
         $join_by = array('en_child');
@@ -375,58 +375,58 @@ if(isset($_GET['tr_status']) && strlen($_GET['tr_status']) > 0){
     }
 }
 
-if(isset($_GET['tr_miner_en_id']) && strlen($_GET['tr_miner_en_id']) > 0){
-    if (substr_count($_GET['tr_miner_en_id'], ',') > 0) {
+if(isset($_GET['tr_miner_entity']) && strlen($_GET['tr_miner_entity']) > 0){
+    if (substr_count($_GET['tr_miner_entity'], ',') > 0) {
         //This is multiple IDs:
-        $filters['( tr_miner_en_id IN (' . $_GET['tr_miner_en_id'] . '))'] = null;
-    } elseif (intval($_GET['tr_miner_en_id']) > 0) {
-        $filters['tr_miner_en_id'] = $_GET['tr_miner_en_id'];
+        $filters['( tr_miner_entity IN (' . $_GET['tr_miner_entity'] . '))'] = null;
+    } elseif (intval($_GET['tr_miner_entity']) > 0) {
+        $filters['tr_miner_entity'] = $_GET['tr_miner_entity'];
     }
 }
 
 
-if(isset($_GET['tr_en_parent_id']) && strlen($_GET['tr_en_parent_id']) > 0){
-    if (substr_count($_GET['tr_en_parent_id'], ',') > 0) {
+if(isset($_GET['tr_parent_entity']) && strlen($_GET['tr_parent_entity']) > 0){
+    if (substr_count($_GET['tr_parent_entity'], ',') > 0) {
         //This is multiple IDs:
-        $filters['( tr_en_parent_id IN (' . $_GET['tr_en_parent_id'] . '))'] = null;
-    } elseif (intval($_GET['tr_en_parent_id']) > 0) {
-        $filters['tr_en_parent_id'] = $_GET['tr_en_parent_id'];
+        $filters['( tr_parent_entity IN (' . $_GET['tr_parent_entity'] . '))'] = null;
+    } elseif (intval($_GET['tr_parent_entity']) > 0) {
+        $filters['tr_parent_entity'] = $_GET['tr_parent_entity'];
     }
 }
 
-if(isset($_GET['tr_en_child_id']) && strlen($_GET['tr_en_child_id']) > 0){
-    if (substr_count($_GET['tr_en_child_id'], ',') > 0) {
+if(isset($_GET['tr_child_entity']) && strlen($_GET['tr_child_entity']) > 0){
+    if (substr_count($_GET['tr_child_entity'], ',') > 0) {
         //This is multiple IDs:
-        $filters['( tr_en_child_id IN (' . $_GET['tr_en_child_id'] . '))'] = null;
-    } elseif (intval($_GET['tr_en_child_id']) > 0) {
-        $filters['tr_en_child_id'] = $_GET['tr_en_child_id'];
+        $filters['( tr_child_entity IN (' . $_GET['tr_child_entity'] . '))'] = null;
+    } elseif (intval($_GET['tr_child_entity']) > 0) {
+        $filters['tr_child_entity'] = $_GET['tr_child_entity'];
     }
 }
 
-if(isset($_GET['tr_in_parent_id']) && strlen($_GET['tr_in_parent_id']) > 0){
-    if (substr_count($_GET['tr_in_parent_id'], ',') > 0) {
+if(isset($_GET['tr_parent_intent']) && strlen($_GET['tr_parent_intent']) > 0){
+    if (substr_count($_GET['tr_parent_intent'], ',') > 0) {
         //This is multiple IDs:
-        $filters['( tr_in_parent_id IN (' . $_GET['tr_in_parent_id'] . '))'] = null;
-    } elseif (intval($_GET['tr_in_parent_id']) > 0) {
-        $filters['tr_in_parent_id'] = $_GET['tr_in_parent_id'];
+        $filters['( tr_parent_intent IN (' . $_GET['tr_parent_intent'] . '))'] = null;
+    } elseif (intval($_GET['tr_parent_intent']) > 0) {
+        $filters['tr_parent_intent'] = $_GET['tr_parent_intent'];
     }
 }
 
-if(isset($_GET['tr_in_child_id']) && strlen($_GET['tr_in_child_id']) > 0){
-    if (substr_count($_GET['tr_in_child_id'], ',') > 0) {
+if(isset($_GET['tr_child_intent']) && strlen($_GET['tr_child_intent']) > 0){
+    if (substr_count($_GET['tr_child_intent'], ',') > 0) {
         //This is multiple IDs:
-        $filters['( tr_in_child_id IN (' . $_GET['tr_in_child_id'] . '))'] = null;
-    } elseif (intval($_GET['tr_in_child_id']) > 0) {
-        $filters['tr_in_child_id'] = $_GET['tr_in_child_id'];
+        $filters['( tr_child_intent IN (' . $_GET['tr_child_intent'] . '))'] = null;
+    } elseif (intval($_GET['tr_child_intent']) > 0) {
+        $filters['tr_child_intent'] = $_GET['tr_child_intent'];
     }
 }
 
-if(isset($_GET['tr_tr_id']) && strlen($_GET['tr_tr_id']) > 0 && !$any_in_en_set){
-    if (substr_count($_GET['tr_tr_id'], ',') > 0) {
+if(isset($_GET['tr_parent_transaction']) && strlen($_GET['tr_parent_transaction']) > 0 && !$any_in_en_set){
+    if (substr_count($_GET['tr_parent_transaction'], ',') > 0) {
         //This is multiple IDs:
-        $filters['( tr_tr_id IN (' . $_GET['tr_tr_id'] . '))'] = null;
-    } elseif (intval($_GET['tr_tr_id']) > 0) {
-        $filters['tr_tr_id'] = $_GET['tr_tr_id'];
+        $filters['( tr_parent_transaction IN (' . $_GET['tr_parent_transaction'] . '))'] = null;
+    } elseif (intval($_GET['tr_parent_transaction']) > 0) {
+        $filters['tr_parent_transaction'] = $_GET['tr_parent_transaction'];
     }
 }
 
@@ -443,9 +443,9 @@ if(isset($_GET['any_en_id']) && strlen($_GET['any_en_id']) > 0){
     //We need to look for both parent/child
     if (substr_count($_GET['any_en_id'], ',') > 0) {
         //This is multiple IDs:
-        $filters['( tr_en_child_id IN (' . $_GET['any_en_id'] . ') OR tr_en_parent_id IN (' . $_GET['any_en_id'] . ') OR tr_miner_en_id IN (' . $_GET['any_en_id'] . ') ' . $parent_tr_filter . ' )'] = null;
+        $filters['( tr_child_entity IN (' . $_GET['any_en_id'] . ') OR tr_parent_entity IN (' . $_GET['any_en_id'] . ') OR tr_miner_entity IN (' . $_GET['any_en_id'] . ') ' . $parent_tr_filter . ' )'] = null;
     } elseif (intval($_GET['any_en_id']) > 0) {
-        $filters['( tr_en_child_id = ' . $_GET['any_en_id'] . ' OR tr_en_parent_id = ' . $_GET['any_en_id'] . ' OR tr_miner_en_id = ' . $_GET['any_en_id'] . $parent_tr_filter . ' )'] = null;
+        $filters['( tr_child_entity = ' . $_GET['any_en_id'] . ' OR tr_parent_entity = ' . $_GET['any_en_id'] . ' OR tr_miner_entity = ' . $_GET['any_en_id'] . $parent_tr_filter . ' )'] = null;
     }
 }
 
@@ -453,9 +453,9 @@ if(isset($_GET['any_in_id']) && strlen($_GET['any_in_id']) > 0){
     //We need to look for both parent/child
     if (substr_count($_GET['any_in_id'], ',') > 0) {
         //This is multiple IDs:
-        $filters['( tr_in_child_id IN (' . $_GET['any_in_id'] . ') OR tr_in_parent_id IN (' . $_GET['any_in_id'] . ') ' . $parent_tr_filter . ' )'] = null;
+        $filters['( tr_child_intent IN (' . $_GET['any_in_id'] . ') OR tr_parent_intent IN (' . $_GET['any_in_id'] . ') ' . $parent_tr_filter . ' )'] = null;
     } elseif (intval($_GET['any_in_id']) > 0) {
-        $filters['( tr_in_child_id = ' . $_GET['any_in_id'] . ' OR tr_in_parent_id = ' . $_GET['any_in_id'] . $parent_tr_filter . ')'] = null;
+        $filters['( tr_child_intent = ' . $_GET['any_in_id'] . ' OR tr_parent_intent = ' . $_GET['any_in_id'] . $parent_tr_filter . ')'] = null;
     }
 }
 
@@ -463,9 +463,9 @@ if(isset($_GET['any_tr_id']) && strlen($_GET['any_tr_id']) > 0){
     //We need to look for both parent/child
     if (substr_count($_GET['any_tr_id'], ',') > 0) {
         //This is multiple IDs:
-        $filters['( tr_id IN (' . $_GET['any_tr_id'] . ') OR tr_tr_id IN (' . $_GET['any_tr_id'] . '))'] = null;
+        $filters['( tr_id IN (' . $_GET['any_tr_id'] . ') OR tr_parent_transaction IN (' . $_GET['any_tr_id'] . '))'] = null;
     } elseif (intval($_GET['any_tr_id']) > 0) {
-        $filters['( tr_id = ' . $_GET['any_tr_id'] . ' OR tr_tr_id = ' . $_GET['any_tr_id'] . ')'] = null;
+        $filters['( tr_id = ' . $_GET['any_tr_id'] . ' OR tr_parent_transaction = ' . $_GET['any_tr_id'] . ')'] = null;
     }
 }
 
@@ -491,27 +491,27 @@ foreach($filters as $key => $value){
         $ini_filter[$key] = $value;
     }
 }
-$all_engs = $this->Database_model->fn___tr_fetch($ini_filter, array('en_type'), 0, 0, array('en_name' => 'DESC'), 'COUNT(tr_type_en_id) as trs_count, SUM(tr_coins) as coins_sum, en_name, tr_type_en_id', 'tr_type_en_id, en_name');
+$all_engs = $this->Database_model->fn___tr_fetch($ini_filter, array('en_type'), 0, 0, array('en_name' => 'DESC'), 'COUNT(tr_type_entity) as trs_count, SUM(tr_coins) as coins_sum, en_name, tr_type_entity', 'tr_type_entity, en_name');
 
 
 
 
 //Make sure its a valid type considering other filters:
-if(isset($_GET['tr_type_en_id'])){
+if(isset($_GET['tr_type_entity'])){
 
     $found = false;
     foreach ($all_engs as $tr) {
-        if($_GET['tr_type_en_id'] == $tr['tr_type_en_id']){
+        if($_GET['tr_type_entity'] == $tr['tr_type_entity']){
             $found = true;
             break;
         }
     }
 
     if(!$found){
-        unset($_GET['tr_type_en_id']);
+        unset($_GET['tr_type_entity']);
     } else {
         //Assign filter:
-        $filters['tr_type_en_id'] = intval($_GET['tr_type_en_id']);
+        $filters['tr_type_entity'] = intval($_GET['tr_type_entity']);
     }
 
 }
@@ -555,7 +555,7 @@ echo '<table class="table table-condensed maxout"><tr>';
     $select_ui = '';
     foreach ($all_engs as $tr) {
         //Echo drop down:
-        $select_ui .= '<option value="' . $tr['tr_type_en_id'] . '" ' . ((isset($_GET['tr_type_en_id']) && $_GET['tr_type_en_id'] == $tr['tr_type_en_id']) ? 'selected="selected"' : '') . '>' . $tr['en_name'] . ' ('  . fn___echo_number($tr['trs_count']) . 'T' . ' = '.fn___echo_number($tr['coins_sum']).'C' . ')</option>';
+        $select_ui .= '<option value="' . $tr['tr_type_entity'] . '" ' . ((isset($_GET['tr_type_entity']) && $_GET['tr_type_entity'] == $tr['tr_type_entity']) ? 'selected="selected"' : '') . '>' . $tr['en_name'] . ' ('  . fn___echo_number($tr['trs_count']) . 'T' . ' = '.fn___echo_number($tr['coins_sum']).'C' . ')</option>';
         $all_transaction_count += $tr['trs_count'];
         $all_coins += $tr['coins_sum'];
     }
@@ -563,7 +563,7 @@ echo '<table class="table table-condensed maxout"><tr>';
     echo '<td>';
     echo '<div>';
     echo '<span class="mini-header">Transaction Type:</span>';
-    echo '<select class="form-control border" name="tr_type_en_id" id="tr_type_en_id" class="border" style="width: 100% !important;">';
+    echo '<select class="form-control border" name="tr_type_entity" id="tr_type_entity" class="border" style="width: 100% !important;">';
     echo '<option value="0">All ('  . fn___echo_number($all_transaction_count) . 'T' . ' = '.fn___echo_number($all_coins).'C' . ')</option>';
     echo $select_ui;
     echo '</select>';
@@ -571,9 +571,9 @@ echo '<table class="table table-condensed maxout"><tr>';
 
     //Optional Intent/Entity status filter ONLY IF Transaction Type = Create New Intent/Entity
 
-    echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">Intent Statuses:</span><input type="text" name="in_status" value="' . ((isset($_GET['in_status'])) ? $_GET['in_status'] : '') . '" class="form-control border"></div>';
+    echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">Intent Status:</span><input type="text" name="in_status" value="' . ((isset($_GET['in_status'])) ? $_GET['in_status'] : '') . '" class="form-control border"></div>';
 
-    echo '<div class="filter-statuses filter-en-status hidden"><span class="mini-header">Entity Statuses:</span><input type="text" name="en_status" value="' . ((isset($_GET['en_status'])) ? $_GET['en_status'] : '') . '" class="form-control border"></div>';
+    echo '<div class="filter-statuses filter-en-status hidden"><span class="mini-header">Entity Status:</span><input type="text" name="en_status" value="' . ((isset($_GET['en_status'])) ? $_GET['en_status'] : '') . '" class="form-control border"></div>';
 
 echo '</td>';
 
@@ -593,9 +593,9 @@ echo '<span class="mini-header">Any Intent IDs:</span>';
 echo '<input type="text" name="any_in_id" value="' . ((isset($_GET['any_in_id'])) ? $_GET['any_in_id'] : '') . '" class="form-control border">';
 echo '</div></td>';
 
-echo '<td><span class="mini-header">Intent Parent IDs:</span><input type="text" name="tr_in_parent_id" value="' . ((isset($_GET['tr_in_parent_id'])) ? $_GET['tr_in_parent_id'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">Intent Parent IDs:</span><input type="text" name="tr_parent_intent" value="' . ((isset($_GET['tr_parent_intent'])) ? $_GET['tr_parent_intent'] : '') . '" class="form-control border"></td>';
 
-echo '<td><span class="mini-header">Intent Child IDs:</span><input type="text" name="tr_in_child_id" value="' . ((isset($_GET['tr_in_child_id'])) ? $_GET['tr_in_child_id'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">Intent Child IDs:</span><input type="text" name="tr_child_intent" value="' . ((isset($_GET['tr_child_intent'])) ? $_GET['tr_child_intent'] : '') . '" class="form-control border"></td>';
 
 echo '</tr></table>';
 
@@ -613,11 +613,11 @@ echo '<table class="table table-condensed maxout"><tr>';
     echo '<input type="text" name="any_en_id" value="' . ((isset($_GET['any_en_id'])) ? $_GET['any_en_id'] : '') . '" class="form-control border">';
     echo '</div></td>';
 
-    echo '<td><span class="mini-header">Entity Miner IDs:</span><input type="text" name="tr_miner_en_id" value="' . ((isset($_GET['tr_miner_en_id'])) ? $_GET['tr_miner_en_id'] : '') . '" class="form-control border"></td>';
+    echo '<td><span class="mini-header">Entity Miner IDs:</span><input type="text" name="tr_miner_entity" value="' . ((isset($_GET['tr_miner_entity'])) ? $_GET['tr_miner_entity'] : '') . '" class="form-control border"></td>';
 
-    echo '<td><span class="mini-header">Entity Parent IDs:</span><input type="text" name="tr_en_parent_id" value="' . ((isset($_GET['tr_en_parent_id'])) ? $_GET['tr_en_parent_id'] : '') . '" class="form-control border"></td>';
+    echo '<td><span class="mini-header">Entity Parent IDs:</span><input type="text" name="tr_parent_entity" value="' . ((isset($_GET['tr_parent_entity'])) ? $_GET['tr_parent_entity'] : '') . '" class="form-control border"></td>';
 
-    echo '<td><span class="mini-header">Entity Child IDs:</span><input type="text" name="tr_en_child_id" value="' . ((isset($_GET['tr_en_child_id'])) ? $_GET['tr_en_child_id'] : '') . '" class="form-control border"></td>';
+    echo '<td><span class="mini-header">Entity Child IDs:</span><input type="text" name="tr_child_entity" value="' . ((isset($_GET['tr_child_entity'])) ? $_GET['tr_child_entity'] : '') . '" class="form-control border"></td>';
 
 echo '</tr></table>';
 
@@ -635,9 +635,9 @@ echo '</div></td>';
 
 echo '<td><span class="mini-header">Trans. IDs:</span><input type="text" name="tr_id" value="' . ((isset($_GET['tr_id'])) ? $_GET['tr_id'] : '') . '" class="form-control border"></td>';
 
-echo '<td><span class="mini-header">Parent Trans. IDs:</span><input type="text" name="tr_tr_id" value="' . ((isset($_GET['tr_tr_id'])) ? $_GET['tr_tr_id'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">Parent Trans. IDs:</span><input type="text" name="tr_parent_transaction" value="' . ((isset($_GET['tr_parent_transaction'])) ? $_GET['tr_parent_transaction'] : '') . '" class="form-control border"></td>';
 
-echo '<td><span class="mini-header">Trans. Statuses:</span><input type="text" name="tr_status" value="' . ((isset($_GET['tr_status'])) ? $_GET['tr_status'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">Trans. Status:</span><input type="text" name="tr_status" value="' . ((isset($_GET['tr_status'])) ? $_GET['tr_status'] : '') . '" class="form-control border"></td>';
 
 echo '</tr></table>';
 

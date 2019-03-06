@@ -3,13 +3,13 @@
 //Prepare some variables to better understand our situation here:
 $on_start_messages = $this->Database_model->fn___tr_fetch(array(
     'tr_status >=' => 2, //Published+
-    'tr_type_en_id' => 4231, //On-Start Messages
-    'tr_in_child_id' => $value['in_id'],
+    'tr_type_entity' => 4231, //On-Start Messages
+    'tr_child_intent' => $value['in_id'],
 ), array(), 0, 0, array('tr_order' => 'ASC'));
 
 
 //Fetch completion requirements for this intent:
-$message_in_requirements = $this->Matrix_model->fn___in_req_completion($value['in_completion_en_id']);
+$message_in_requirements = $this->Matrix_model->fn___in_req_completion($value['in_requirement_entity']);
 
 
 $has_children = (count($actionplan_children) > 0);
@@ -20,7 +20,7 @@ $list_children = (count($actionplan_parents) == 0 || !($actionplan_parents[0]['t
 
 if (count($actionplan_parents) == 1) {
     //Inform the user of any completion requirements:
-    $message_in_requirements = $this->Matrix_model->fn___in_req_completion($in['in_completion_en_id']);
+    $message_in_requirements = $this->Matrix_model->fn___in_req_completion($in['in_requirement_entity']);
 
     //Submission button visible after first button was clicked:
     $is_incomplete = ($actionplan_parents[0]['tr_status'] < 1 || ($actionplan_parents[0]['tr_status'] == 1 && count($actionplan_children) == 0));
@@ -38,7 +38,7 @@ if ($actionplan['tr_status'] == 1) {
             //$next_button = '<span style="font-size: 0.7em; padding-left:5px; display:inline-block;"><i class="fas fa-shield-check"></i> This is the next-in-line intent</span>';
             $next_button = null;
         } else {
-            $next_button = '<a href="/master/actionplan/' . $next_ins[0]['tr_tr_id'] . '/' . $next_ins[0]['in_id'] . '" class="btn ' . (count($actionplan_parents) == 1 && !$show_written_input && !$is_incomplete ? 'btn-md btn-primary' : 'btn-xs btn-black') . '" data-toggle="tooltip" data-placement="top" title="Next intent-in-line is to ' . $next_ins[0]['in_outcome'] . '">Next-in-line <i class="fas fa-angle-right"></i></a>';
+            $next_button = '<a href="/master/actionplan/' . $next_ins[0]['tr_parent_transaction'] . '/' . $next_ins[0]['in_id'] . '" class="btn ' . (count($actionplan_parents) == 1 && !$show_written_input && !$is_incomplete ? 'btn-md btn-primary' : 'btn-xs btn-black') . '" data-toggle="tooltip" data-placement="top" title="Next intent-in-line is to ' . $next_ins[0]['in_outcome'] . '">Next-in-line <i class="fas fa-angle-right"></i></a>';
         }
     }
 }
@@ -46,7 +46,7 @@ if ($actionplan['tr_status'] == 1) {
 //Include JS file:
 echo '<script src="/js/custom/actionplan-master-js.js?v=v' . $this->config->item('app_version') . '" type="text/javascript"></script>';
 
-//Fetch parent tree all the way to the top of Action Plan tr_in_child_id
+//Fetch parent tree all the way to the top of Action Plan tr_child_intent
 echo '<div class="list-group" style="margin-top: 10px;">';
 foreach ($actionplan_parents as $k) {
     echo echo_k($k, 1);
@@ -82,7 +82,7 @@ if (count($actionplan_parents) == 0) {
     if ($actionplan_parents[0]['tr_timestamp']) {
         echo ' &nbsp;&nbsp;<i class="fas fa-calendar-check"></i> ' . fn___echo_time_difference($actionplan_parents[0]['tr_timestamp']) . ' ago';
     } else {
-        echo ' &nbsp;&nbsp;<i class="fal fa-clock"></i> ' . fn___echo_time_hours($in['in_seconds']) . ' to complete';
+        echo ' &nbsp;&nbsp;<i class="fal fa-clock"></i> ' . fn___echo_time_hours($in['in_seconds_cost']) . ' to complete';
     }
 
     if (strlen($actionplan_parents[0]['tr_content']) > 0) {
