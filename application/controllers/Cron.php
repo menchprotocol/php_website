@@ -22,6 +22,25 @@ class Cron extends CI_Controller
     //30 3 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron e_score_recursive
 
 
+    function add_upvotes(){
+        //Add upvotes for all links:
+        $in_links = $this->Database_model->fn___tr_fetch(array(
+            'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
+            'tr_status >=' => 0, //New+
+        ), array(), 0);
+
+        foreach($in_links as $in_link){
+            $this->Database_model->fn___tr_create(array(
+                'tr_miner_entity_id' => $in_link['tr_miner_entity_id'],
+                'tr_parent_entity_id' => $in_link['tr_miner_entity_id'],
+                'tr_type_entity_id' => 4983, //Up-votes
+                'tr_content' => '@'.$in_link['tr_miner_entity_id'].' #'.$in_link['tr_parent_intent_id'], //Message content
+                'tr_parent_intent_id' => $in_link['tr_parent_intent_id'],
+                'tr_child_intent_id' => $in_link['tr_child_intent_id'],
+            ));
+        }
+    }
+
     function info()
     {
         echo phpinfo();
