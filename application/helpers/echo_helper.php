@@ -798,9 +798,11 @@ function fn___echo_tree_tasks($in, $fb_messenger_format = 0, $expand_mode = fals
 
     //Do we have anything to return?
     $metadata = unserialize($in['in_metadata']);
-    if (!isset($metadata['in__tree_in_published_count']) || $metadata['in__tree_in_published_count'] < 1) {
+    if (!isset($metadata['in__flat_unique_published_count']) || $metadata['in__flat_unique_published_count'] < 2) {
         return false;
     }
+
+    $metadata['in__flat_unique_published_count']--;
 
     $pitch = 'Action Plan contains ' . $metadata['in__flat_unique_published_count'] . ' tasks to ' . $in['in_outcome'] . '.';
 
