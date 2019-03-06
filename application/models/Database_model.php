@@ -584,6 +584,8 @@ class Database_model extends CI_Model
         //Do we need to do any additional work?
         if ($affected_rows > 0 && $external_sync) {
 
+            $object_statuses = $this->config->item('object_statuses');
+
             //Log modification transaction for every field changed:
             foreach ($update_columns as $key => $value) {
 
@@ -595,7 +597,7 @@ class Database_model extends CI_Model
                         'tr_miner_entity' => ($tr_miner_entity > 0 ? $tr_miner_entity : $id),
                         'tr_type_entity' => 4263, //Entity Attribute Modified
                         'tr_child_entity' => $id,
-                        'tr_content' => 'Entity ' . ucwords(str_replace('_', ' ', str_replace('en_', '', $key))) . ' changed from [' . $before_data[0][$key] . '] to [' . $value . ']',
+                        'tr_content' => 'Entity ' . ucwords(str_replace('_', ' ', str_replace('en_', '', $key))) . ' changed from "' . ( $key=='en_status' ? $object_statuses['en_status'][$before_data[0][$key]]['s_name'] : $before_data[0][$key] ) . '" to "' . ( $key=='en_status' ? $object_statuses['en_status'][$value]['s_name'] : $value ) . '"',
                         'tr_metadata' => array(
                             'en_id' => $id,
                             'field' => $key,
@@ -603,6 +605,7 @@ class Database_model extends CI_Model
                             'after' => $value,
                         ),
                     ));
+
 
                 }
 
@@ -653,6 +656,8 @@ class Database_model extends CI_Model
         //Do we need to do any additional work?
         if ($affected_rows > 0 && $external_sync) {
 
+            $object_statuses = $this->config->item('object_statuses');
+
             //Note that unlike entity modification, we require a miner entity ID to log the modification transaction:
             //Log modification transaction for every field changed:
             foreach ($update_columns as $key => $value) {
@@ -665,7 +670,7 @@ class Database_model extends CI_Model
                         'tr_miner_entity' => $tr_miner_entity,
                         'tr_type_entity' => 4264, //Intent Attribute Modified
                         'tr_child_intent' => $id,
-                        'tr_content' => 'Intent ' . ucwords(str_replace('_', ' ', str_replace('in_', '', $key))) . ' changed from [' . $before_data[0][$key] . '] to [' . $value . ']',
+                        'tr_content' => 'Intent ' . ucwords(str_replace('_', ' ', str_replace('in_', '', $key))) . ' changed from "' . ( in_array($key , array('in_is_any','in_status')) ? $object_statuses[$key][$before_data[0][$key]]['s_name']  : $before_data[0][$key] ) . '" to "' . ( in_array($key , array('in_is_any','in_status')) ? $object_statuses[$key][$value]['s_name'] : $value ) . '"',
                         'tr_metadata' => array(
                             'in_id' => $id,
                             'field' => $key,
@@ -726,6 +731,8 @@ class Database_model extends CI_Model
         //Log changes if successful:
         if ($affected_rows > 0 && $tr_miner_entity > 0) {
 
+            $object_statuses = $this->config->item('object_statuses');
+
             //Log modification transaction for every field changed:
             foreach ($update_columns as $key => $value) {
 
@@ -737,7 +744,7 @@ class Database_model extends CI_Model
                         'tr_parent_transaction' => $id, //Transaction Reference
                         'tr_miner_entity' => $tr_miner_entity,
                         'tr_type_entity' => 4242, //Transaction Attribute Modified
-                        'tr_content' => 'Transaction ' . ucwords(str_replace('_', ' ', str_replace('tr_', '', $key))) . ' changed from [' . $before_data[0][$key] . '] to [' . $value . ']',
+                        'tr_content' => 'Transaction ' . ucwords(str_replace('_', ' ', str_replace('tr_', '', $key))) . ' changed from "' . ( $key=='tr_status' ? $object_statuses['tr_status'][$before_data[0][$key]]['s_name']  : $before_data[0][$key] ) . '" to "' . ( $key=='tr_status' ? $object_statuses['tr_status'][$value]['s_name']  : $value ) . '"',
                         'tr_metadata' => array(
                             'tr_id' => $id,
                             'field' => $key,
