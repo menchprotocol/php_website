@@ -134,6 +134,12 @@ function fn___load_js_algolia() {
     });
 }
 
+function toggle_advance(){
+    $('.advance-icon').toggleClass('fal').toggleClass('fas');
+    $('.advance-ui').toggleClass('hidden');
+    document.getElementById('ajax_frame').contentWindow.toggle_advance();
+}
+
 
 function tr_content_word_count(el_textarea, el_counter) {
     var len = $(el_textarea).val().length;

@@ -188,41 +188,6 @@ if (isset($orphan_ins)) {
                             </div>
 
 
-                            <span class="mini-header">Completion Response:</span>
-                            <select class="form-control border" id="in_requirement_entity_id" data-toggle="tooltip" title="Intent Completion Requirements" data-placement="top" style="margin-bottom: 12px;">
-                                <option value="0">No Response Required</option>
-                                <?php
-                                foreach ($this->config->item('en_all_4331') as $en_id => $m) {
-                                    echo '<option value="' . $en_id . '">Require ' . $m['m_name'] . ' Response</option>';
-                                }
-                                ?>
-                            </select>
-
-
-
-                            <span class="mini-header">Completion Cost:</span>
-                            <div class="form-group label-floating is-empty">
-                                <div class="input-group border" style="width: 155px;">
-                                    <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;"><i
-                                                class="fal fa-clock"></i></span>
-                                    <input style="padding-left:3px;" type="number" step="1" min="0"
-                                           max="<?= $this->config->item('in_seconds_cost_max') ?>" id="in_seconds_cost" value=""
-                                           class="form-control">
-                                    <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;">Seconds</span>
-                                </div>
-                            </div>
-
-                            <div class="form-group label-floating is-empty">
-                                <div class="input-group border" style="margin-top:1px; width: 155px;">
-                                    <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;"><i
-                                                class="fal fa-usd-circle"></i></span>
-                                    <input style="padding-left:3px;" type="number" step="0.01" min="0" max="5000"
-                                           id="in_dollar_cost" value="" class="form-control">
-                                    <span class="input-group-addon addon-lean addon-grey"
-                                          style="color:#2f2739; font-weight: 300;">USD</span>
-                                </div>
-                            </div>
-
 
 
                             <span class="mini-header">Intent Status:</span>
@@ -250,6 +215,47 @@ if (isset($orphan_ins)) {
                             </div>
 
 
+
+
+
+                            <div class="advance-ui hidden">
+
+                                <span class="mini-header">Completion Response:</span>
+                                <select class="form-control border" id="in_requirement_entity_id" data-toggle="tooltip" title="Intent Completion Requirements" data-placement="top" style="margin-bottom: 12px;">
+                                    <option value="0">No Response Required</option>
+                                    <?php
+                                    foreach ($this->config->item('en_all_4331') as $en_id => $m) {
+                                        echo '<option value="' . $en_id . '">Require ' . $m['m_name'] . ' Response</option>';
+                                    }
+                                    ?>
+                                </select>
+
+
+                                <span class="mini-header">Completion Cost:</span>
+                                <div class="form-group label-floating is-empty">
+                                    <div class="input-group border" style="width: 155px;">
+                                        <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;"><i
+                                                    class="fal fa-clock"></i></span>
+                                        <input style="padding-left:3px;" type="number" step="1" min="0"
+                                               max="<?= $this->config->item('in_seconds_cost_max') ?>" id="in_seconds_cost" value=""
+                                               class="form-control">
+                                        <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;">Seconds</span>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group label-floating is-empty">
+                                    <div class="input-group border" style="margin-top:1px; width: 155px;">
+                                        <span class="input-group-addon addon-lean addon-grey" style="color:#2f2739; font-weight: 300;"><i
+                                                    class="fal fa-usd-circle"></i></span>
+                                        <input style="padding-left:3px;" type="number" step="0.01" min="0" max="5000"
+                                               id="in_dollar_cost" value="" class="form-control">
+                                        <span class="input-group-addon addon-lean addon-grey"
+                                              style="color:#2f2739; font-weight: 300;">USD</span>
+                                    </div>
+                                </div>
+
+                            </div>
 
 
                         </div>
@@ -280,7 +286,7 @@ if (isset($orphan_ins)) {
                                 </div>
 
 
-                                <span class="mini-header">Link Type: [<a href="javscript:void(0);" onclick="$('.modify_parent_in').toggleClass('hidden')" data-toggle="tooltip" title="Modify Linked Intent" data-placement="top"><u>EDIT</u></a>]</span>
+                                <span class="mini-header">Link Type: <span class="advance-ui hidden">[<a href="javscript:void(0);" onclick="$('.modify_parent_in').toggleClass('hidden')" data-toggle="tooltip" title="Modify Linked Intent" data-placement="top"><u>EDIT</u></a>]</span></span>
                                 <div class="form-group label-floating is-empty">
 
                                     <?php

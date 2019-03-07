@@ -450,11 +450,11 @@ class Database_model extends CI_Model
 
         foreach ($ins as $key => $value) {
 
-            //Should we append intent messages?
+            //Should we append Intent Notes?
             if (in_array('in__messages', $join_objects)) {
                 $ins[$key]['in__messages'] = $this->Database_model->fn___tr_fetch(array(
                     'tr_status >=' => 0, //New+
-                    'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent messages
+                    'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
                     'tr_child_intent_id' => $value['in_id'],
                 ), array(), 0, 0, array('tr_order' => 'ASC'));
             }

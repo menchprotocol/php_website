@@ -12,7 +12,66 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-03-06 11:39:18 PST
+//Generated 2019-03-07 00:52:34 PST
+
+//Advance Options:
+$config['en_ids_5005'] = array(4232, 4233, 4234, 4602, 4604, 4741, 4759, 4997, 5006);
+$config['en_all_5005'] = array(
+    4232 => array(
+        'm_icon' => '<i class="fal fa-medal"></i>',
+        'm_name' => 'Intent Note Bonus Tips',
+        'm_desc' => '',
+        'm_parents' => array(5005, 4986, 4742, 4603, 4594, 4485, 4374),
+    ),
+    4233 => array(
+        'm_icon' => '<i class="fal fa-clipboard-check"></i>',
+        'm_name' => 'Intent Note Parting Tips',
+        'm_desc' => '',
+        'm_parents' => array(5005, 4986, 4742, 4603, 4594, 4485, 4374),
+    ),
+    4234 => array(
+        'm_icon' => '<i class="fal fa-random"></i>',
+        'm_name' => 'Intent Note Random Intro',
+        'm_desc' => '',
+        'm_parents' => array(5005, 4986, 4594, 4485, 4374),
+    ),
+    4602 => array(
+        'm_icon' => '<i class="fal fa-cloud-upload"></i>',
+        'm_name' => 'Intent Note Webhooks',
+        'm_desc' => '',
+        'm_parents' => array(5005, 4986, 4256, 4374, 4485, 4594),
+    ),
+    4604 => array(
+        'm_icon' => '<i class="fal fa-comment-check"></i>',
+        'm_name' => 'Intent Completion Requirement',
+        'm_desc' => '',
+        'm_parents' => array(5005, 4535),
+    ),
+    4741 => array(
+        'm_icon' => '<i class="fas fa-search-dollar"></i>',
+        'm_name' => 'Intent Completion Cost',
+        'm_desc' => '',
+        'm_parents' => array(5005, 4535),
+    ),
+    4759 => array(
+        'm_icon' => '<i class="fas fa-flag"></i>',
+        'm_name' => 'Intent Action Plans Widget',
+        'm_desc' => '',
+        'm_parents' => array(5005, 4535),
+    ),
+    4997 => array(
+        'm_icon' => '<i class="fal fa-list-alt"></i>',
+        'm_name' => 'Miner Mass Updated Entities',
+        'm_desc' => '',
+        'm_parents' => array(5005, 4527, 4594, 4992),
+    ),
+    5006 => array(
+        'm_icon' => '<i class="fas fa-atlas"></i>',
+        'm_name' => 'Intent Ledger History',
+        'm_desc' => '',
+        'm_parents' => array(4535, 5005),
+    ),
+);
 
 //Miner Mass Updated Entities:
 $config['en_ids_4997'] = array(4998, 4999, 5000, 5001, 5002, 5003);
@@ -314,28 +373,28 @@ $config['en_all_4374'] = array(
         'm_parents' => array(4594, 4592, 4374),
     ),
     4231 => array(
-        'm_icon' => '<i class="fal fa-bolt"></i>',
-        'm_name' => 'Intent Message Essential Tips',
+        'm_icon' => '<i class="fal fa-comment"></i>',
+        'm_name' => 'Intent Note Messages',
         'm_desc' => '100',
         'm_parents' => array(4986, 4742, 4603, 4594, 4485, 4374),
     ),
     4232 => array(
         'm_icon' => '<i class="fal fa-medal"></i>',
-        'm_name' => 'Intent Message Bonus Tips',
+        'm_name' => 'Intent Note Bonus Tips',
         'm_desc' => '100',
-        'm_parents' => array(4986, 4742, 4603, 4594, 4485, 4374),
+        'm_parents' => array(5005, 4986, 4742, 4603, 4594, 4485, 4374),
     ),
     4233 => array(
         'm_icon' => '<i class="fal fa-clipboard-check"></i>',
-        'm_name' => 'Intent Message Parting Tips',
+        'm_name' => 'Intent Note Parting Tips',
         'm_desc' => '100',
-        'm_parents' => array(4986, 4742, 4603, 4594, 4485, 4374),
+        'm_parents' => array(5005, 4986, 4742, 4603, 4594, 4485, 4374),
     ),
     4234 => array(
         'm_icon' => '<i class="fal fa-random"></i>',
-        'm_name' => 'Intent Message Random Intro',
+        'm_name' => 'Intent Note Random Intro',
         'm_desc' => '100',
-        'm_parents' => array(4986, 4594, 4485, 4374),
+        'm_parents' => array(5005, 4986, 4594, 4485, 4374),
     ),
     4235 => array(
         'm_icon' => '<i class="fas fa-flag"></i>',
@@ -440,20 +499,20 @@ $config['en_all_4374'] = array(
         'm_parents' => array(4594, 4428, 4374, 4277),
     ),
     4601 => array(
-        'm_icon' => '<i class="fal fa-ear"></i>',
-        'm_name' => 'Intent Message Triggers',
+        'm_icon' => '<i class="fal fa-tags"></i>',
+        'm_name' => 'Intent Note Keywords',
         'm_desc' => '50',
         'm_parents' => array(4255, 4594, 4374, 4485),
     ),
     4602 => array(
         'm_icon' => '<i class="fal fa-cloud-upload"></i>',
-        'm_name' => 'Intent Message Webhooks',
+        'm_name' => 'Intent Note Webhooks',
         'm_desc' => '100',
-        'm_parents' => array(4986, 4256, 4374, 4485, 4594),
+        'm_parents' => array(5005, 4986, 4256, 4374, 4485, 4594),
     ),
     4983 => array(
         'm_icon' => '<i class="fal fa-thumbs-up"></i>',
-        'm_name' => 'Intent Message Up-Votes',
+        'm_name' => 'Intent Note Up-Votes',
         'm_desc' => '100',
         'm_parents' => array(4463, 4986, 4985, 4374, 4594, 4485),
     ),
@@ -498,28 +557,28 @@ $config['en_all_4594'] = array(
         'm_parents' => array(4594, 4592, 4374),
     ),
     4231 => array(
-        'm_icon' => '<i class="fal fa-bolt"></i>',
-        'm_name' => 'Intent Message Essential Tips',
+        'm_icon' => '<i class="fal fa-comment"></i>',
+        'm_name' => 'Intent Note Messages',
         'm_desc' => '',
         'm_parents' => array(4986, 4742, 4603, 4594, 4485, 4374),
     ),
     4232 => array(
         'm_icon' => '<i class="fal fa-medal"></i>',
-        'm_name' => 'Intent Message Bonus Tips',
+        'm_name' => 'Intent Note Bonus Tips',
         'm_desc' => '',
-        'm_parents' => array(4986, 4742, 4603, 4594, 4485, 4374),
+        'm_parents' => array(5005, 4986, 4742, 4603, 4594, 4485, 4374),
     ),
     4233 => array(
         'm_icon' => '<i class="fal fa-clipboard-check"></i>',
-        'm_name' => 'Intent Message Parting Tips',
+        'm_name' => 'Intent Note Parting Tips',
         'm_desc' => '',
-        'm_parents' => array(4986, 4742, 4603, 4594, 4485, 4374),
+        'm_parents' => array(5005, 4986, 4742, 4603, 4594, 4485, 4374),
     ),
     4234 => array(
         'm_icon' => '<i class="fal fa-random"></i>',
-        'm_name' => 'Intent Message Random Intro',
+        'm_name' => 'Intent Note Random Intro',
         'm_desc' => '',
-        'm_parents' => array(4986, 4594, 4485, 4374),
+        'm_parents' => array(5005, 4986, 4594, 4485, 4374),
     ),
     4235 => array(
         'm_icon' => '<i class="fas fa-flag"></i>',
@@ -822,20 +881,20 @@ $config['en_all_4594'] = array(
         'm_parents' => array(4594),
     ),
     4601 => array(
-        'm_icon' => '<i class="fal fa-ear"></i>',
-        'm_name' => 'Intent Message Triggers',
+        'm_icon' => '<i class="fal fa-tags"></i>',
+        'm_name' => 'Intent Note Keywords',
         'm_desc' => '',
         'm_parents' => array(4255, 4594, 4374, 4485),
     ),
     4602 => array(
         'm_icon' => '<i class="fal fa-cloud-upload"></i>',
-        'm_name' => 'Intent Message Webhooks',
+        'm_name' => 'Intent Note Webhooks',
         'm_desc' => '',
-        'm_parents' => array(4986, 4256, 4374, 4485, 4594),
+        'm_parents' => array(5005, 4986, 4256, 4374, 4485, 4594),
     ),
     4983 => array(
         'm_icon' => '<i class="fal fa-thumbs-up"></i>',
-        'm_name' => 'Intent Message Up-Votes',
+        'm_name' => 'Intent Note Up-Votes',
         'm_desc' => '',
         'm_parents' => array(4463, 4986, 4985, 4374, 4594, 4485),
     ),
@@ -861,7 +920,7 @@ $config['en_all_4594'] = array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
         'm_name' => 'Miner Mass Updated Entities',
         'm_desc' => '',
-        'm_parents' => array(4527, 4594, 4992),
+        'm_parents' => array(5005, 4527, 4594, 4992),
     ),
 );
 
@@ -1023,8 +1082,8 @@ $config['en_all_4454'] = array(
     ),
 );
 
-//Intent Messages:
-$config['en_ids_4485'] = array(4983, 4231, 4232, 4233, 4601, 4602, 4234);
+//Intent Notes:
+$config['en_ids_4485'] = array(4983, 4231, 4601, 4232, 4233, 4602, 4234);
 $config['en_all_4485'] = array(
     4983 => array(
         'm_icon' => '<i class="fal fa-thumbs-up"></i>',
@@ -1033,40 +1092,40 @@ $config['en_all_4485'] = array(
         'm_parents' => array(4463, 4986, 4985, 4374, 4594, 4485),
     ),
     4231 => array(
-        'm_icon' => '<i class="fal fa-bolt"></i>',
-        'm_name' => 'Essential Tips',
+        'm_icon' => '<i class="fal fa-comment"></i>',
+        'm_name' => 'Messages',
         'm_desc' => 'Delivered in-order when student initially starts this intent. Goal is to give key insights that streamline the execution of the intention.',
         'm_parents' => array(4986, 4742, 4603, 4594, 4485, 4374),
+    ),
+    4601 => array(
+        'm_icon' => '<i class="fal fa-tags"></i>',
+        'm_name' => 'Keywords',
+        'm_desc' => 'Never delivered to students, instead, it maps alternative ways an intent could be named so we can better understand student commands.',
+        'm_parents' => array(4255, 4594, 4374, 4485),
     ),
     4232 => array(
         'm_icon' => '<i class="fal fa-medal"></i>',
         'm_name' => 'Bonus Tips',
         'm_desc' => 'Delivered in-order and one-by-one (drip-format) either during or after the intent completion. Goal is to re-iterate key insights to help students retain learnings over time.',
-        'm_parents' => array(4986, 4742, 4603, 4594, 4485, 4374),
+        'm_parents' => array(5005, 4986, 4742, 4603, 4594, 4485, 4374),
     ),
     4233 => array(
         'm_icon' => '<i class="fal fa-clipboard-check"></i>',
         'm_name' => 'Parting Tips',
         'm_desc' => 'All delivered in-order as soon as the student marks the intent as complete. Goal is to re-iterate key insights to help students retain learnings.',
-        'm_parents' => array(4986, 4742, 4603, 4594, 4485, 4374),
-    ),
-    4601 => array(
-        'm_icon' => '<i class="fal fa-ear"></i>',
-        'm_name' => 'Triggers',
-        'm_desc' => 'Never delivered to students, instead, it maps alternative ways an intent could be named so we can better understand student commands.',
-        'm_parents' => array(4255, 4594, 4374, 4485),
+        'm_parents' => array(5005, 4986, 4742, 4603, 4594, 4485, 4374),
     ),
     4602 => array(
         'm_icon' => '<i class="fal fa-cloud-upload"></i>',
         'm_name' => 'Webhooks',
         'm_desc' => 'All URLs called along with POST variables that pass intent and completion details. Goal is to enable additional workflows like issuing a completion certificate.',
-        'm_parents' => array(4986, 4256, 4374, 4485, 4594),
+        'm_parents' => array(5005, 4986, 4256, 4374, 4485, 4594),
     ),
     4234 => array(
         'm_icon' => '<i class="fal fa-random"></i>',
         'm_name' => 'Random Intro',
         'm_desc' => 'One message randomly selected right after on-start messages. Goal is to make Mench feel more authentic by mixing things up. Also called in the code-base using compose_message().',
-        'm_parents' => array(4986, 4594, 4485, 4374),
+        'm_parents' => array(5005, 4986, 4594, 4485, 4374),
     ),
 );
 

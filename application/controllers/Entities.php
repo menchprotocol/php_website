@@ -628,11 +628,11 @@ class Entities extends CI_Controller
         //Is this being removed?
         if ($en_update['en_status'] < 0 && !($en_update['en_status'] == $ens[0]['en_status'])) {
 
-            //Count entity references in Intent Messages:
+            //Count entity references in Intent Notes:
             $messages = $this->Database_model->fn___tr_fetch(array(
                 'tr_status >=' => 0, //New+
                 'in_status >=' => 0, //New+
-                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent messages
+                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
                 'tr_parent_entity_id' => $_POST['en_id'],
             ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
 
@@ -691,7 +691,7 @@ class Entities extends CI_Controller
                 //Cannot delete this entity until intent references are removed:
                 return fn___echo_json(array(
                     'status' => 0,
-                    'message' => 'Cannot archive entity until all '.count($messages).' intent message references are remove:'.$error_ui,
+                    'message' => 'Cannot archive entity until all '.count($messages).' Intent Note references are remove:'.$error_ui,
                 ));
 
             }
@@ -701,7 +701,7 @@ class Entities extends CI_Controller
             $_POST['tr_id'] = 0; //Do not consider the link as the entity is being archived
             $to_be_merged_trs = array_merge(
 
-                //Intent Messages:
+                //Intent Notes:
                 $messages,
 
                 //Entity Links:
@@ -717,7 +717,7 @@ class Entities extends CI_Controller
             //Take action dependent on merger status:
             if (count($merged_ens) > 0) {
 
-                //Move all links & intent messages here:
+                //Move all links & Intent Notes here:
                 foreach ($to_be_merged_trs as $to_be_merged_tr) {
 
                     //Check to make sure old links do not relate to new merging entity...
@@ -736,7 +736,7 @@ class Entities extends CI_Controller
                             $target_field => $merged_ens[0]['en_id'],
                         );
 
-                        //Also update possible entity references within intent messages content:
+                        //Also update possible entity references within Intent Notes content:
                         if(substr_count($to_be_merged_tr['tr_content'], '@'.$to_be_merged_tr[$target_field]) == 1){
                             $updating_fields['tr_content'] = str_replace('@'.$to_be_merged_tr[$target_field],'@'.$merged_ens[0]['en_id'], $to_be_merged_tr['tr_content']);
                         }
@@ -963,7 +963,7 @@ class Entities extends CI_Controller
 
         $messages = $this->Database_model->fn___tr_fetch(array(
             'tr_status >=' => 0, //New+
-            'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent messages
+            'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
             'tr_parent_entity_id' => $en_id,
         ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
 
@@ -973,7 +973,7 @@ class Entities extends CI_Controller
 
         //Show frame to be loaded in modal:
         $this->load->view('view_shared/matrix_header', array(
-            'title' => 'Managed Intent Messages',
+            'title' => 'Managed Intent Notes',
         ));
         echo '<div id="list-messages" class="list-group grey-list">';
         foreach ($messages as $tr) {

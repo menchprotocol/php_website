@@ -105,6 +105,12 @@ $uri_segment_2 = $this->uri->segment(2);
                                 </a>
                             </li>
 
+                            <li class="ledger-inactive" data-toggle="tooltip" data-placement="left" title="Toggle Advance Options">
+                                <a href="javascript:void(0)" onclick="toggle_advance()">
+                                    <i class="fal fa-expand-arrows advance-icon"></i>
+                                </a>
+                            </li>
+
                             <li data-toggle="tooltip" data-placement="left" title="Logout">
                                 <a href="/logout">
                                     <i class="fas fa-power-off"></i>

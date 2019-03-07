@@ -180,7 +180,7 @@ class Chat_model extends CI_Model
 
         /*
          *
-         * This function is used to validate intent messages.
+         * This function is used to validate Intent Notes.
          *
          * See fn___dispatch_message() for more information on input variables.
          *
@@ -1151,8 +1151,8 @@ class Chat_model extends CI_Model
 
         /*
          *
-         * Share intent messages if not the top-level Action Plan Intent.
-         * In that case the intent messages have already been distributed
+         * Share Intent Notes if not the top-level Action Plan Intent.
+         * In that case the Intent Notes have already been distributed
          * and we only need to give Students the next steps.
          *
          * */

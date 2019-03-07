@@ -522,7 +522,7 @@ class Intents extends CI_Controller
                             //Remove all messages:
                             $this->Database_model->fn___tr_fetch(array(
                                 'tr_status >=' => 0, //New+
-                                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent messages
+                                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
                                 'tr_child_intent_id' => $_POST['in_id'],
                             ), array(), 0)
                         );
@@ -835,7 +835,7 @@ class Intents extends CI_Controller
             ));
         }
 
-        $_GET['log_miner_messages'] = 1; //Will log miner messages which normally do not get logged (so we prevent intent message editing logs)
+        $_GET['log_miner_messages'] = 1; //Will log miner messages which normally do not get logged (so we prevent Intent Note editing logs)
 
         $tip_messages = null;
         foreach ($on_start_messages as $tr) {

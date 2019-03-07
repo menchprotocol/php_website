@@ -1,7 +1,7 @@
 
 /*
 *
-* Javascript function to manage intent messages
+* Javascript function to manage Intent Notes
 *
 * */
 

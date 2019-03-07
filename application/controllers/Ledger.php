@@ -199,7 +199,7 @@ class Ledger extends CI_Controller
 
         if ($_POST['tr_status_new'] < 0 && in_array($trs[0]['tr_type_entity_id'], $this->config->item('en_ids_4485'))) {
 
-            //Intent message being deleted..
+            //Intent Note being deleted..
 
             //Fetch child intent:
             $ins = $this->Database_model->fn___in_fetch(array(

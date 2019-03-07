@@ -979,7 +979,7 @@ class Matrix_model extends CI_Model
             '___tree_min_cost' => 0, //The minimum cost of third-party product purchases recommended to complete tree
             '___tree_max_cost' => 0, //The maximum cost of third-party product purchases recommended to complete tree
             '___tree_experts' => array(), //Expert references across all contributions
-            '___tree_miners' => array(), //miner references considering intent messages
+            '___tree_miners' => array(), //miner references considering Intent Notes
             '___tree_contents' => array(), //Content types entity references on messages
             'metadatas_updated' => 0, //Keeps count of database metadata fields that were not in sync with the latest version of the cahced data
         );
@@ -1250,10 +1250,10 @@ class Matrix_model extends CI_Model
             $this_in['___tree_miners'] = array();
             $this_in['___tree_contents'] = array();
 
-            //Fetch intent messages to see who is involved:
+            //Fetch Intent Notes to see who is involved:
             $in__messages = $this->Database_model->fn___tr_fetch(array(
                 'tr_status >=' => 0, //New+
-                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent messages
+                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
                 'tr_child_intent_id' => $this_in['in_id'],
             ), array('en_miner'), 0, 0, array('tr_order' => 'ASC'));
 
