@@ -515,8 +515,11 @@ if(isset($_GET['tr_type_entity_id'])){
 
 
 //Fetch transactions:
-$trs = $this->Database_model->fn___tr_fetch($filters, $join_by, (fn___is_dev() ? 50 : 200));
 $trs_count = $this->Database_model->fn___tr_fetch($filters, $join_by, 0, 0, array(), 'COUNT(tr_id) as trs_count, SUM(tr_coins) as coins_sum');
+if(count($_GET) < 1){
+    $filters['tr_coins >'] = 0;
+}
+$trs = $this->Database_model->fn___tr_fetch($filters, $join_by, (fn___is_dev() ? 50 : 200));
 
 
 
