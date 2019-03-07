@@ -312,7 +312,7 @@ function fn___add_or_link_entities(en_existing_id, is_parent) {
 
         if (data.status) {
 
-            //Empty input to make it ready for next URL:
+            //Raw input to make it ready for next URL:
             input.focus();
 
             //Add new object to list:
@@ -773,7 +773,7 @@ function fn___load_en_messages(en_id) {
 
     //Load the frame:
     $.post("/entities/fn___load_en_messages/"+en_id, {}, function (data) {
-        //Empty Inputs Fields if success:
+        //Raw Inputs Fields if success:
         handler.html(data);
 
         //Show inner tooltips:

@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-03-07 00:52:34 PST
+//Generated 2019-03-07 11:13:43 PST
 
 //Advance Options:
 $config['en_ids_5005'] = array(4232, 4233, 4234, 4602, 4604, 4741, 4759, 4997, 5006);
@@ -356,19 +356,19 @@ $config['en_ids_4374'] = array(4228, 4229, 4230, 4231, 4232, 4233, 4234, 4235, 4
 $config['en_all_4374'] = array(
     4228 => array(
         'm_icon' => '<i class="fal fa-check-circle"></i>',
-        'm_name' => 'Linked Intents Pre-Assessment',
+        'm_name' => 'Linked Intents Fixed',
         'm_desc' => '100',
         'm_parents' => array(4594, 4486, 4374),
     ),
     4229 => array(
         'm_icon' => '<i class="fal fa-question-circle fa-spin"></i>',
-        'm_name' => 'Linked Intents Post-Assessment',
+        'm_name' => 'Linked Intents Conditional',
         'm_desc' => '100',
         'm_parents' => array(4594, 4486, 4374),
     ),
     4230 => array(
         'm_icon' => '<i class="fal fa-link"></i>',
-        'm_name' => 'Linked Entities Empty',
+        'm_name' => 'Linked Entities Raw',
         'm_desc' => '20',
         'm_parents' => array(4594, 4592, 4374),
     ),
@@ -540,19 +540,19 @@ $config['en_ids_4594'] = array(4228, 4229, 4230, 4231, 4232, 4233, 4234, 4235, 4
 $config['en_all_4594'] = array(
     4228 => array(
         'm_icon' => '<i class="fal fa-check-circle"></i>',
-        'm_name' => 'Linked Intents Pre-Assessment',
+        'm_name' => 'Linked Intents Fixed',
         'm_desc' => '',
         'm_parents' => array(4594, 4486, 4374),
     ),
     4229 => array(
         'm_icon' => '<i class="fal fa-question-circle fa-spin"></i>',
-        'm_name' => 'Linked Intents Post-Assessment',
+        'm_name' => 'Linked Intents Conditional',
         'm_desc' => '',
         'm_parents' => array(4594, 4486, 4374),
     ),
     4230 => array(
         'm_icon' => '<i class="fal fa-link"></i>',
-        'm_name' => 'Linked Entities Empty',
+        'm_name' => 'Linked Entities Raw',
         'm_desc' => '',
         'm_parents' => array(4594, 4592, 4374),
     ),
@@ -929,7 +929,7 @@ $config['en_ids_4592'] = array(4230, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4
 $config['en_all_4592'] = array(
     4230 => array(
         'm_icon' => '<i class="fal fa-link"></i>',
-        'm_name' => 'Empty',
+        'm_name' => 'Raw',
         'm_desc' => '',
         'm_parents' => array(4594, 4592, 4374),
     ),
@@ -1134,13 +1134,13 @@ $config['en_ids_4486'] = array(4228, 4229);
 $config['en_all_4486'] = array(
     4228 => array(
         'm_icon' => '<i class="fal fa-check-circle"></i>',
-        'm_name' => 'Pre-Assessment',
+        'm_name' => 'Fixed',
         'm_desc' => 'Intent link published and added to user Action Plans up-front',
         'm_parents' => array(4594, 4486, 4374),
     ),
     4229 => array(
         'm_icon' => '<i class="fal fa-question-circle fa-spin"></i>',
-        'm_name' => 'Post-Assessment',
+        'm_name' => 'Conditional',
         'm_desc' => 'Intent added to Action Plans after parent intent is complete AND the user\'s % score falls within the defined min/max range',
         'm_parents' => array(4594, 4486, 4374),
     ),

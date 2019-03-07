@@ -509,7 +509,7 @@ class Entities extends CI_Controller
 
             } else {
 
-                $tr_type_entity_id = 4230; //Empty
+                $tr_type_entity_id = 4230; //Raw
                 $tr_content = null;
 
             }
@@ -1255,7 +1255,7 @@ class Entities extends CI_Controller
         $session_en = fn___en_auth(array(1308));
 
         //Description type requirement:
-        $author_type_requirement = array(4230, 4255); //Empty or Text string
+        $author_type_requirement = array(4230, 4255); //Raw or Text string
 
         //Parent sources to be added:
         $parent_ens = array();
@@ -1430,7 +1430,7 @@ class Entities extends CI_Controller
                 $this->Database_model->fn___tr_create(array(
                     'tr_status' => 2, //Published
                     'tr_miner_entity_id' => $session_en['en_id'],
-                    'tr_type_entity_id' => 4230, //Empty
+                    'tr_type_entity_id' => 4230, //Raw
                     'tr_parent_entity_id' => $_POST['entity_parent_id_' . $author_num], //People or Organizations
                     'tr_child_entity_id' => $sync_author['en_url']['en_id'],
                 ), true);

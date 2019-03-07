@@ -714,7 +714,7 @@ class Chat_model extends CI_Model
 
                     } elseif ($fb_messenger_format && array_key_exists($parent_en['tr_type_entity_id'], $en_convert_4537)) {
 
-                        //Empty media file: Audio, Video, Image OR File...
+                        //Raw media file: Audio, Video, Image OR File...
 
                         //Search for Facebook Attachment ID IF $fb_messenger_format = TRUE
                         $fb_att_id = 0;
@@ -831,7 +831,7 @@ class Chat_model extends CI_Model
 
             //Add Intent up-vote to beginning:
             $output_body_message = '<div style="margin-bottom:5px; border-bottom: 1px solid #E5E5E5; padding-bottom:10px;">IF you <a href="/intents/' . $upvote_child_ins[0]['in_id'] . '" target="_parent">' . $upvote_child_ins[0]['in_outcome'] . '</a> THEN you will <a href="/intents/' . $upvote_parent_ins[0]['in_id'] . '" target="_parent">' . $upvote_parent_ins[0]['in_outcome'] . '</a></div>' . $output_body_message;
-            
+
         }
 
 

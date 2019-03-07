@@ -190,7 +190,7 @@ function fn___detect_tr_type_entity_id($string)
 
         return array(
             'status' => 1,
-            'tr_type_entity_id' => 4230, //Empty
+            'tr_type_entity_id' => 4230, //Raw
         );
 
     } elseif ((strlen(bigintval($string)) == strlen($string) || (in_array(substr($string , 0, 1), array('+','-')) && strlen(bigintval(substr($string , 1))) == strlen(substr($string , 1)))) && (intval($string) != 0 || $string == '0')) {

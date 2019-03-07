@@ -553,7 +553,7 @@ function fn___message_create() {
 
     }, function (data) {
 
-        //Empty Inputs Fields if success:
+        //Raw Inputs Fields if success:
         if (data.status) {
 
             //Adjust counter by one:

@@ -89,7 +89,7 @@ class Cron extends CI_Controller
                     //Remove domain link:
                     $this->Database_model->fn___tr_update($tr['tr_id'], array(
                         'tr_content' => null,
-                        'tr_type_entity_id' => 4230, //Empty
+                        'tr_type_entity_id' => 4230, //Raw
                     ), 1);
 
                     //Link to domain entity:
@@ -135,7 +135,7 @@ class Cron extends CI_Controller
                 //Move URL to domain:
                 $this->Database_model->fn___tr_update($tr['tr_id'], array(
                     'tr_content' => null,
-                    'tr_type_entity_id' => 4230, //Empty
+                    'tr_type_entity_id' => 4230, //Raw
                 ));
             }
 

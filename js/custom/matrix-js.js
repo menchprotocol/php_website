@@ -57,7 +57,7 @@ function fn___add_to_list(sort_list_id, sort_handler, html_content) {
         //yes we do! add this:
         $("#" + sort_list_id + " " + sort_handler + ":last").after(html_content);
     } else {
-        //Empty list, add before input filed:
+        //Raw list, add before input filed:
         $("#" + sort_list_id).prepend(html_content);
     }
 }

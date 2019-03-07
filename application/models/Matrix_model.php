@@ -177,7 +177,7 @@ class Matrix_model extends CI_Model
                 'tr_miner_entity_id' => $tr_miner_entity_id,
                 'tr_child_entity_id' => $en_student_id,
                 'tr_parent_entity_id' => $set_en_child_id,
-                'tr_type_entity_id' => 4230, //Empty link
+                'tr_type_entity_id' => 4230, //Raw link
                 'tr_parent_transaction_id' => $updated_tr_id,
             ));
         }
@@ -487,7 +487,7 @@ class Matrix_model extends CI_Model
             $this->Database_model->fn___tr_create(array(
                 'tr_miner_entity_id' => $tr_miner_entity_id,
                 'tr_status' => 2, //Published
-                'tr_type_entity_id' => 4230, //Empty
+                'tr_type_entity_id' => 4230, //Raw
                 'tr_parent_entity_id' => $add_to_parent_en_id,
                 'tr_child_entity_id' => $en_url['en_id'],
             ));
@@ -498,7 +498,7 @@ class Matrix_model extends CI_Model
             $this->Database_model->fn___tr_create(array(
                 'tr_miner_entity_id' => $tr_miner_entity_id,
                 'tr_status' => 2, //Published
-                'tr_type_entity_id' => 4230, //Empty
+                'tr_type_entity_id' => 4230, //Raw
                 'tr_child_entity_id' => $add_to_child_en_id,
                 'tr_parent_entity_id' => $en_url['en_id'],
             ));
@@ -1822,7 +1822,7 @@ class Matrix_model extends CI_Model
 
                     //Create new transaction:
                     $this->Database_model->fn___tr_create(array(
-                        'tr_type_entity_id' => 4230, //Empty link
+                        'tr_type_entity_id' => 4230, //Raw link
                         'tr_miner_entity_id' => $en['en_id'], //Student gets credit as miner
                         'tr_parent_entity_id' => $tr_parent_entity_id,
                         'tr_child_entity_id' => $en['en_id'],
@@ -1855,7 +1855,7 @@ class Matrix_model extends CI_Model
 
         //Add default Notification Level:
         $this->Database_model->fn___tr_create(array(
-            'tr_type_entity_id' => 4230, //Empty link
+            'tr_type_entity_id' => 4230, //Raw link
             'tr_miner_entity_id' => $en['en_id'],
             'tr_parent_entity_id' => 4456, //Receive Regular Notifications (Student can change later on...)
             'tr_child_entity_id' => $en['en_id'],
@@ -1863,7 +1863,7 @@ class Matrix_model extends CI_Model
 
         //Add them to Students group:
         $this->Database_model->fn___tr_create(array(
-            'tr_type_entity_id' => 4230, //Empty link
+            'tr_type_entity_id' => 4230, //Raw link
             'tr_miner_entity_id' => $en['en_id'],
             'tr_parent_entity_id' => 4430, //Mench Student
             'tr_child_entity_id' => $en['en_id'],
@@ -1871,7 +1871,7 @@ class Matrix_model extends CI_Model
 
         //Add them to People entity:
         $this->Database_model->fn___tr_create(array(
-            'tr_type_entity_id' => 4230, //Empty link
+            'tr_type_entity_id' => 4230, //Raw link
             'tr_miner_entity_id' => $en['en_id'],
             'tr_parent_entity_id' => 1278, //People
             'tr_child_entity_id' => $en['en_id'],

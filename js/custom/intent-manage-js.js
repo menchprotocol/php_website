@@ -684,11 +684,11 @@ function fn___in_modify_save() {
         modify_data['tr_in_link_update'] = $('#tr_in_link_update').val();
 
         if(modify_data['tr_type_entity_id'] == 4229){ //Conditional Intent Link
-            //Post-assessment condition range:
+            //Condition score range:
             modify_data['tr__conditional_score_min'] = $('#tr__conditional_score_min').val();
             modify_data['tr__conditional_score_max'] = $('#tr__conditional_score_max').val();
         } else if(modify_data['tr_type_entity_id'] == 4228){
-            //Pre-Assessment score:
+            //Fixed link awarded points:
             modify_data['tr__assessment_points'] = $('#tr__assessment_points').val();
         }
     }
