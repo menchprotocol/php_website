@@ -70,7 +70,7 @@ foreach ($metadatas as $tr) {
 
 
         //Learn more option:
-        echo '<i class="fal fa-info-circle"></i> <span data-toggle="tooltip" title="'.$m['m_desc'].'" data-placement="bottom" class="underdot">Usage notes</span> &nbsp;';
+        echo '<i class="fal fa-info-circle"></i> <span data-toggle="tooltip" title="'.$m['m_desc'].'" data-placement="bottom" class="underdot">Usage Notes</span> &nbsp;';
 
 
         //Does it support sorting?
@@ -137,10 +137,10 @@ foreach ($metadatas as $tr) {
     echo '<span id="charNum' . $in_id . '">0</span>/' . $tr_content_max;
 
     ///firstname
-    echo '<a href="javascript:fn___add_first_name();" class="textarea_buttons ' . fn___echo_advance() . ' remove_loading" style="float:right;" data-toggle="tooltip" title="Replaced with master\'s First Name for a more personal message." data-placement="left"><i class="fas fa-fingerprint"></i> /firstname</a>';
+    echo '<a href="javascript:fn___add_first_name();" class="textarea_buttons ' . fn___echo_advance() . ' remove_loading" style="float:right; margin-left:8px;" data-toggle="tooltip" title="Replaced with master\'s First Name for a more personal message." data-placement="left"><i class="fas fa-fingerprint"></i> /firstname</a>';
 
     //Choose a file:
-    echo '<div style="float:right; display:inline-block; margin-right:8px;" class="remove_loading"><input class="box__file inputfile" type="file" name="file" id="file" /><label class="textarea_buttons" for="file" data-toggle="tooltip" title="Upload Video, Audio, Images or PDFs up to ' . $this->config->item('file_size_max') . ' MB" data-placement="top"><i class="fal fa-cloud-upload"></i> Upload</label></div>';
+    echo '<div style="float:right; display:inline-block;" class="remove_loading"><input class="box__file inputfile" type="file" name="file" id="file" /><label class="textarea_buttons" for="file" data-toggle="tooltip" title="Upload Video, Audio, Images or PDFs up to ' . $this->config->item('file_size_max') . ' MB" data-placement="top"><i class="fal fa-cloud-upload"></i> Upload</label></div>';
     echo '</div>';
 
 

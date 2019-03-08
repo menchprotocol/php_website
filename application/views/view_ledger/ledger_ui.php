@@ -269,7 +269,7 @@ if(!$has_filters){
     }
 
     //Echo title:
-    echo '<a href="javascript:void(0);" onclick="$(\'.sources-mined\').toggleClass(\'hidden\');" class="large-stat"><span>'.fn___echo_en_icon($ie_ens[0]).' <span class="sources-mined">'. fn___echo_number($all_source_count) . '</span><span class="sources-mined hidden">'. number_format($all_source_count , 0) . '</span></span>'.$ie_ens[0]['en_name'].' <i class="sources-mined fal fa-plus-circle"></i><i class="sources-mined fal fa-minus-circle hidden"></i></a>';
+    echo '<a href="javascript:void(0);" onclick="$(\'.sources-mined\').toggleClass(\'hidden\');" class="large-stat"><span>'.fn___echo_icon($ie_ens[0]).' <span class="sources-mined">'. fn___echo_number($all_source_count) . '</span><span class="sources-mined hidden">'. number_format($all_source_count , 0) . '</span></span>'.$ie_ens[0]['en_name'].' <i class="sources-mined fal fa-plus-circle"></i><i class="sources-mined fal fa-minus-circle hidden"></i></a>';
 
 
     //Echo table:

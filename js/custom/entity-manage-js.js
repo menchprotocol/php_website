@@ -438,7 +438,7 @@ function fn___en_modify_load(en_id, tr_id) {
     $('#modifybox').attr('entity-link-id', tr_id);
     $('#modifybox').attr('entity-id', en_id);
 
-    //Cannot be archived OR unlinked as this would not load, so remove them:
+    //Cannot be removed OR unlinked as this would not load, so remove them:
     $('.notify_en_remove, .notify_en_unlink').addClass('hidden');
 
 
@@ -452,9 +452,9 @@ function fn___en_modify_load(en_id, tr_id) {
     $('#en_link_count').val('0');
 
 
-    if (parseInt($('.en_icon_' + en_id).attr('en-is-set')) > 0) {
-        $('.icon-demo').html($('.en_icon_' + en_id).html());
-        $('#en_icon').val($('.en_icon_' + en_id).html());
+    if (parseInt($('.en__icon_' + en_id).attr('en-is-set')) > 0) {
+        $('.icon-demo').html($('.en__icon_' + en_id).html());
+        $('#en_icon').val($('.en__icon_' + en_id).html());
     } else {
         //Clear out input:
         $('.icon-demo').html('<i class="fas fa-at grey-at"></i>');
@@ -609,13 +609,13 @@ function fn___en_modify_save() {
         return false;
     }
 
-    //Are we about to archive an entity with a lot of links?
+    //Are we about to remove an entity with a lot of links?
     var link_count= parseInt($('#en_link_count').val());
     var action_verb = ( $('#en_merge').val().length > 0 ? 'merge' : 'remove' );
     var confirm_string = action_verb + " " + link_count;
     if(link_count >= 5){
         //Yes, confirm before doing so:
-        var confirm_removal = prompt("You are about to archive this entity and "+action_verb+" all its "+link_count+" links. Type \""+confirm_string+"\" to confirm and "+action_verb+" entity with all its links.", "");
+        var confirm_removal = prompt("You are about to remove this entity and "+action_verb+" all its "+link_count+" links. Type \""+confirm_string+"\" to confirm and "+action_verb+" entity with all its links.", "");
 
         if (!(confirm_removal == confirm_string)) {
             //Abandon process:
@@ -684,20 +684,20 @@ function fn___en_modify_save() {
 
 
                 //Always update 2x Entity icons:
-                $('.en_icon_ui_' + modify_data['en_id']).html(modify_data['en_icon']);
+                $('.en_ui_icon_' + modify_data['en_id']).html(modify_data['en_icon']);
                 $('.en_status_' + modify_data['en_id']).html('<span data-toggle="tooltip" data-placement="right" title="' + object_js_statuses['en_status'][modify_data['en_status']]["s_name"] + ': ' + object_js_statuses['en_status'][modify_data['en_status']]["s_desc"] + '">' + object_js_statuses['en_status'][modify_data['en_status']]["s_icon"] + '</span>');
 
 
                 //Update other instances of the icon:
                 var icon_is_set = ( modify_data['en_icon'].length > 0 ? 1 : 0 );
-                $('.en_icon_' + modify_data['en_id']).attr('en-is-set' , icon_is_set );
+                $('.en__icon_' + modify_data['en_id']).attr('en-is-set' , icon_is_set );
 
                 if(!icon_is_set){
                     //Set entity default icon:
                     modify_data['en_icon'] = '<i class="fas fa-at grey-at"></i>';
-                    $('.en_icon_child_' + modify_data['en_id']).addClass('hidden');
+                    $('.en_child_icon_' + modify_data['en_id']).addClass('hidden');
                 } else {
-                    $('.en_icon_child_' + modify_data['en_id']).removeClass('hidden').html(modify_data['en_icon']);
+                    $('.en_child_icon_' + modify_data['en_id']).removeClass('hidden').html(modify_data['en_icon']);
                 }
                 $('.icon-demo').html(modify_data['en_icon']);
 
@@ -725,12 +725,12 @@ function fn___en_modify_save() {
                 }
 
                 if (modify_data['en_icon'].length > 0) {
-                    $('.en_icon_ui_' + modify_data['en_id']).html(modify_data['en_icon']);
-                    $('.en_icon_child_' + modify_data['en_id']).html(modify_data['en_icon']);
+                    $('.en_ui_icon_' + modify_data['en_id']).html(modify_data['en_icon']);
+                    $('.en_child_icon_' + modify_data['en_id']).html(modify_data['en_icon']);
                 } else {
                     //hide that section
-                    $('.en_icon_ui_' + modify_data['en_id']).html('<i class="fas fa-at grey-at"></i>');
-                    $('.en_icon_child_' + modify_data['en_id']).html('');
+                    $('.en_ui_icon_' + modify_data['en_id']).html('<i class="fas fa-at grey-at"></i>');
+                    $('.en_child_icon_' + modify_data['en_id']).html('');
                 }
 
 

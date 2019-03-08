@@ -62,7 +62,7 @@ class Entities extends CI_Controller
         //Return results:
         return fn___echo_json(array(
             'status' => 1,
-            'entity_domain_ui' => '<span class="en_icon_mini_ui">' . (isset($url_entity['en_domain']['en_icon']) && strlen($url_entity['en_domain']['en_icon']) > 0 ? $url_entity['en_domain']['en_icon'] : echo_fav_icon($url_entity['url_clean_domain'], true)) . '</span> ' . (isset($url_entity['en_domain']['en_name']) ? $url_entity['en_domain']['en_name'] . ' <a href="/entities/' . $url_entity['en_domain']['en_id'] . '" class="underdot" data-toggle="tooltip" title="Click to open domain entity in a new windows" data-placement="top" target="_blank">@' . $url_entity['en_domain']['en_id'] . '</a>' : $url_entity['url_domain_name'] . ' [<span class="underdot" data-toggle="tooltip" title="Domain entity not yet added" data-placement="top">New</span>]'),
+            'entity_domain_ui' => '<span class="en_mini_ui_icon">' . (isset($url_entity['en_domain']['en_icon']) && strlen($url_entity['en_domain']['en_icon']) > 0 ? $url_entity['en_domain']['en_icon'] : echo_fav_icon($url_entity['url_clean_domain'], true)) . '</span> ' . (isset($url_entity['en_domain']['en_name']) ? $url_entity['en_domain']['en_name'] . ' <a href="/entities/' . $url_entity['en_domain']['en_id'] . '" class="underdot" data-toggle="tooltip" title="Click to open domain entity in a new windows" data-placement="top" target="_blank">@' . $url_entity['en_domain']['en_id'] . '</a>' : $url_entity['url_domain_name'] . ' [<span class="underdot" data-toggle="tooltip" title="Domain entity not yet added" data-placement="top">New</span>]'),
             'js_url_entity' => $url_entity,
         ));
 
@@ -194,7 +194,6 @@ class Entities extends CI_Controller
             $this->Database_model->fn___tr_create(array(
                 'tr_miner_entity_id' => $session_en['en_id'],
                 'tr_type_entity_id' => 4997, //Miner Mass Updated Entities
-                'tr_parent_entity_id' => $session_en['en_id'],
                 'tr_child_entity_id' => $en_id,
                 'tr_metadata' => array(
                     'payload' => $_POST,
@@ -212,7 +211,6 @@ class Entities extends CI_Controller
             $this->Database_model->fn___tr_create(array(
                 'tr_miner_entity_id' => $session_en['en_id'],
                 'tr_type_entity_id' => 4994, //Miner Opened Entity
-                'tr_parent_entity_id' => $session_en['en_id'],
                 'tr_child_entity_id' => $en_id,
                 'tr_order' => $new_order,
             ));
@@ -624,6 +622,19 @@ class Entities extends CI_Controller
             'en_status' => intval($_POST['en_status']),
         );
 
+        //Check to make sure name is not duplicate:
+        $duplicate_name_ens = $this->Database_model->fn___in_fetch(array(
+            'en_id !=' => $_POST['en_id'],
+            'en_status >=' => 0,
+            'LOWER(en_name)' => strtolower($en_update['en_name']),
+        ));
+        if(count($duplicate_name_ens) > 0){
+            //This is a duplicate, disallow:
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Name ['.$en_update['en_name'].'] already in use by entity @'.$duplicate_name_ens[0]['en_id'],
+            ));
+        }
 
         //Is this being removed?
         if ($en_update['en_status'] < 0 && !($en_update['en_status'] == $ens[0]['en_status'])) {
@@ -691,14 +702,14 @@ class Entities extends CI_Controller
                 //Cannot delete this entity until intent references are removed:
                 return fn___echo_json(array(
                     'status' => 0,
-                    'message' => 'Cannot archive entity until all '.count($messages).' Intent Note references are remove:'.$error_ui,
+                    'message' => 'Cannot remove entity until all '.count($messages).' Intent Note references are remove:'.$error_ui,
                 ));
 
             }
 
 
             $remove_from_ui = 1; //Removing entity
-            $_POST['tr_id'] = 0; //Do not consider the link as the entity is being archived
+            $_POST['tr_id'] = 0; //Do not consider the link as the entity is being Removed
             $to_be_merged_trs = array_merge(
 
                 //Intent Notes:
@@ -749,7 +760,7 @@ class Entities extends CI_Controller
                 }
 
                 if($_POST['en_id'] == $_POST['en_focus_id'] || $merged_ens[0]['en_id'] == $_POST['en_focus_id']){
-                    //Entity is being archived and merged into another entity:
+                    //Entity is being Removed and merged into another entity:
                     $remove_redirect_url = '/entities/' . $merged_ens[0]['en_id'];
                 }
 
@@ -757,7 +768,7 @@ class Entities extends CI_Controller
 
             } else {
 
-                //Entity being archived, remove all links:
+                //Entity being Removed, remove all links:
                 foreach ($to_be_merged_trs as $unlink_tr) {
 
                     $this->Database_model->fn___tr_update($unlink_tr['tr_id'], array(
@@ -1158,10 +1169,39 @@ class Entities extends CI_Controller
     }
 
     function fn___toggle_advance(){
+
         //Toggles the advance session variable for the miner on/off for logged-in miners:
-        if(fn___en_auth()){
+        $session_en = fn___en_auth(array(1308));
+
+        if($session_en){
+
+            //Figure out new toggle state:
             $toggled_setting = ( $this->session->userdata('advance_view_enabled')==1 ? 0 : 1 );
+
+            //Set session variable:
             $this->session->set_userdata('advance_view_enabled', $toggled_setting);
+
+            //Log Transaction:
+            $this->Database_model->fn___tr_create(array(
+                'tr_miner_entity_id' => $session_en['en_id'],
+                'tr_type_entity_id' => 5007, //Toggled Advance Mode
+                'tr_content' => 'Toggled '.( $toggled_setting ? 'ON' : 'OFF' ),
+            ));
+
+            //Return to JS function:
+            return fn___echo_json(array(
+                'status' => 1,
+                'message' => 'Success',
+            ));
+
+        } else {
+
+            //Show error:
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Session expired. Login and try again.',
+            ));
+
         }
     }
 

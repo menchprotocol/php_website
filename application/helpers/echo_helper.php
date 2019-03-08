@@ -301,7 +301,7 @@ function fn___echo_in_message_manage($tr)
 }
 
 
-function fn___echo_en_icon($en)
+function fn___echo_icon($en)
 {
     //A simple function to display the Entity Icon OR the default icon if not available:
     if (strlen($en['en_icon']) > 0) {
@@ -468,12 +468,16 @@ function fn___echo_tr_row($tr, $is_inner = false)
     $fixed_fields = $CI->config->item('fixed_fields');
 
 
-    //First row of transaction data: Type and Miner
-    $ui .= '<a href="/entities/'.$tr['tr_type_entity_id'].'" data-toggle="tooltip" data-placement="top" title="View transaction type entity"><b style="padding-left: 10px;">'. ( strlen($en_all_4594[$tr['tr_type_entity_id']]['m_icon']) > 0 ? $en_all_4594[$tr['tr_type_entity_id']]['m_icon'] . ' ' : '' ) . $en_all_4594[$tr['tr_type_entity_id']]['m_name'] . '</b></a>';
-    $ui .= ' mined by ';
-    //Miner:
-    $ui .= ( strlen($miner_ens[0]['en_icon']) > 0 ? $miner_ens[0]['en_icon'] . ' ' : '' );
-    $ui .= '<a href="/entities/'.$miner_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="View miner profile">' . $miner_ens[0]['en_name'] . '</a>';
+    $ui .= '<div style="padding: 0 10px;">';
+
+        //Miner:
+        $ui .= ( strlen($miner_ens[0]['en_icon']) > 0 ? $miner_ens[0]['en_icon'] . ' ' : '' );
+        $ui .= '<a href="/entities/'.$miner_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="View miner profile"><b>' . $miner_ens[0]['en_name'] . '</b></a>';
+
+        //Transaction Type:
+        $ui .= '<a href="/entities/'.$tr['tr_type_entity_id'].'" data-toggle="tooltip" data-placement="top" title="View transaction type entity"><b style="padding-left:5px;">'. ( strlen($en_all_4594[$tr['tr_type_entity_id']]['m_icon']) > 0 ? $en_all_4594[$tr['tr_type_entity_id']]['m_icon'] . ' ' : '' ) . $en_all_4594[$tr['tr_type_entity_id']]['m_name'] . '</b></a>';
+
+    $ui .= '</div>';
 
 
     //2nd Row of data:
@@ -909,26 +913,28 @@ function fn___echo_en_messages($tr){
     $ui = '<div class="entities-msg">';
 
     $ui .= '<div>';
-    $ui .= $CI->Chat_model->fn___dispatch_message($tr['tr_content'], $session_en, false);
 
     //Editing menu:
-    $ui .= '<ul class="msg-nav">';
+    $ui .= '<ul class="msg-nav" style="margin-bottom: 15px;">';
+
+
+    //Referenced Intent:
+    $ui .= '<li class="edit-off"><a class="btn btn-primary button-max" style="border:2px solid #fedd16 !important;" href="/intents/' . $tr['tr_child_intent_id'] . '" target="_parent" title="Message Intent: '.$tr['in_outcome'].'" data-toggle="tooltip" data-placement="top">'.$fixed_fields['in_type'][$tr['in_type']]['s_icon'].' '.$tr['in_outcome'].'</a></li>';
 
     //Transactions:
     $count_msg_trs = $CI->Database_model->fn___tr_fetch(array(
         '( tr_id = ' . $tr['tr_id'] . ' OR tr_parent_transaction_id = ' . $tr['tr_id'] . ')' => null,
     ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
-    $ui .= '<li class="pull-right edit-off"><a class="btn btn-primary" style="border:2px solid #fedd16 !important;" href="/ledger?any_tr_id=' . $tr['tr_id'] . '" target="_parent" title="Go to Ledger Transactions" data-toggle="tooltip" data-placement="top"><i class="fas fa-atlas"></i> '.fn___echo_number($count_msg_trs[0]['totals']).'</a></li>';
-
-    //Referenced Intent:
-    $ui .= '<li class="pull-right edit-off"><a class="btn btn-primary button-max" style="border:2px solid #fedd16 !important;" href="/intents/' . $tr['tr_child_intent_id'] . '" target="_parent" title="Message Intent: '.$tr['in_outcome'].'" data-toggle="tooltip" data-placement="top">'.$fixed_fields['in_type'][$tr['in_type']]['s_icon'].' '.$tr['in_outcome'].'</a></li>';
+    $ui .= '<li class="edit-off ' . fn___echo_advance() . '"><a class="btn btn-primary" style="border:2px solid #fedd16 !important;" href="/ledger?any_tr_id=' . $tr['tr_id'] . '" target="_parent" title="Go to Ledger Transactions" data-toggle="tooltip" data-placement="top"><i class="fas fa-atlas"></i> '.fn___echo_number($count_msg_trs[0]['totals']).'</a></li>';
 
     //Order:
-    $ui .= '<li class="pull-right edit-off message_status" style="margin: 0 3px 0 0;"><span title="Message order relative to siblings" data-toggle="tooltip" data-placement="top"><i class="fas fa-exchange rotate90"></i>' . fn___echo_ordinal_number($tr['tr_order']) . '</span></li>';
+    $ui .= '<li class="edit-off message_status ' . fn___echo_advance() . '" style="margin: 0 3px 0 0;"><span title="Message order relative to siblings" data-toggle="tooltip" data-placement="top"><i class="fas fa-sort"></i>' . fn___echo_ordinal_number($tr['tr_order']) . '</span></li>';
 
     $ui .= '<li style="clear: both;">&nbsp;</li>';
 
     $ui .= '</ul>';
+
+    $ui .= $CI->Chat_model->fn___dispatch_message($tr['tr_content'], $session_en, false);
 
 
     $ui .= '</div>';
@@ -1098,7 +1104,7 @@ function fn___echo_tr_column($obj_type, $id, $tr_field, $fb_messenger_format = f
             return $ens[0]['en_name'] . ' [https://mench.com/entities/' . $id . ']';
         } else {
             //HTML Format:
-            return '<a href="/entities/' . $id . '" target="_parent" class="badge badge-secondary '.$tuc_right_under.'" style="width:40px;" data-toggle="tooltip" data-placement="top" title="' . $name . ': ' . stripslashes($ens[0]['en_name']) . '">' . fn___echo_en_icon($ens[0]) . '</a> ';
+            return '<a href="/entities/' . $id . '" target="_parent" class="badge badge-secondary '.$tuc_right_under.'" style="width:40px;" data-toggle="tooltip" data-placement="top" title="' . $name . ': ' . stripslashes($ens[0]['en_name']) . '">' . fn___echo_icon($ens[0]) . '</a> ';
         }
 
     } elseif ($obj_type == 'tr') {
@@ -1420,7 +1426,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
     }
 
-    //Loop through parents and only show those that have en_icon set:
+    //Loop through parents:
     $ui .= '<span class="' . fn___echo_advance() . '">';
     foreach ($in['in__parents'] as $in_parent) {
         $ui .= ' &nbsp;<a href="/intents/' . $in_parent['in_id'] . '" data-toggle="tooltip" title="' . $in_parent['in_outcome'] . '" data-placement="top" class="in_icon_child_' . $in_parent['in_id'] . '">' . $fixed_fields['in_type'][$in_parent['in_type']]['s_icon'] . '</a>';
@@ -1716,7 +1722,7 @@ function fn___echo_en($en, $level, $is_parent = false)
     $ui .= '<span class="double-icon" style="margin-right:7px;">';
 
     //Show larger custom entity icon:
-    $ui .= '<span class="icon-main en_icon_ui en_icon_ui_' . $en['en_id'] . ' en-icon en_icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'" data-toggle="tooltip" data-placement="right" title="Entity Icon">' . fn___echo_en_icon($en) . '</span>';
+    $ui .= '<span class="icon-main en_ui_icon en_ui_icon_' . $en['en_id'] . ' en-icon en__icon_'.$en['en_id'].'" en-is-set="'.( strlen($en['en_icon']) > 0 ? 1 : 0 ).'" data-toggle="tooltip" data-placement="right" title="Entity Icon">' . fn___echo_icon($en) . '</span>';
 
     //Show smaller entity status:
     $ui .= '<span class="icon-top-right en_status_' . $en['en_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$fixed_fields['en_status'][$en['en_status']]['s_name'].': '.$fixed_fields['en_status'][$en['en_status']]['s_desc'].'">' . $fixed_fields['en_status'][$en['en_status']]['s_icon'] . '</span></span>';
@@ -1770,7 +1776,7 @@ function fn___echo_en($en, $level, $is_parent = false)
     //Loop through parents and only show those that have en_icon set:
     $ui .= '<span class="' . fn___echo_advance() . '">';
     foreach ($en['en__parents'] as $en_parent) {
-        $ui .= ' &nbsp;<a href="/entities/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['tr_content']) > 0 ? ' = ' . $en_parent['tr_content'] : '') . '" data-placement="top" class="en_icon_child_' . $en_parent['en_id'] . '">' . (strlen($en_parent['en_icon']) > 0 ? $en_parent['en_icon'] : '<i class="fas fa-at grey-at"></i>' ) . '</a>';
+        $ui .= ' &nbsp;<a href="/entities/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['tr_content']) > 0 ? ' = ' . $en_parent['tr_content'] : '') . '" data-placement="top" class="en_child_icon_' . $en_parent['en_id'] . '">' . (strlen($en_parent['en_icon']) > 0 ? $en_parent['en_icon'] : '<i class="fas fa-at grey-at"></i>' ) . '</a>';
     }
     $ui .= '</span>';
 

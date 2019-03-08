@@ -144,7 +144,7 @@ $config['fixed_fields']             = array(
                                         ),
                                         'in_status' => array(
                                             -1 => array(
-                                                's_name' => 'Archived',
+                                                's_name' => 'Removed',
                                                 's_desc' => 'Intent is in-active',
                                                 's_icon' => '<i class="fal fa-minus-square"></i>',
                                             ),
@@ -166,12 +166,12 @@ $config['fixed_fields']             = array(
                                             3 => array(
                                                 's_name' => 'Featured',
                                                 's_desc' => 'Intent is recommended by mench.com and Mench personal assistant',
-                                                's_icon' => '<i class="fas fa-star yellow"></i>',
+                                                's_icon' => '<i class="fas fa-badge-check"></i>',
                                             ),
                                         ),
                                         'en_status' => array(
                                             -1 => array(
-                                                's_name' => 'Archived',
+                                                's_name' => 'Removed',
                                                 's_desc' => 'Entity is in-active',
                                                 's_icon' => '<i class="fal fa-minus-square"></i>',
                                             ),
@@ -201,11 +201,13 @@ $config['fixed_fields']             = array(
                                                 's_name' => 'AND',
                                                 's_desc' => 'AND Intents are completed when ALL their children are complete',
                                                 's_icon' => '<i class="fal fa-sitemap"></i>',
+                                                's_reserved_icon' => 'fa-sitemap', //Entitie Icons cannot include this string
                                             ),
                                             1 => array(
                                                 's_name' => 'OR',
                                                 's_desc' => 'OR Intents are completed when ANY of their children are complete',
                                                 's_icon' => '<i class="fal fa-code-merge"></i>',
+                                                's_reserved_icon' => 'fa-code-merge', //Entitie Icons cannot include this string
                                             ),
                                         ),
 

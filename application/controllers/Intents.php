@@ -97,7 +97,6 @@ class Intents extends CI_Controller
         $this->Database_model->fn___tr_create(array(
             'tr_miner_entity_id' => $session_en['en_id'],
             'tr_type_entity_id' => 4993, //Miner Opened Intent
-            'tr_parent_entity_id' => $session_en['en_id'],
             'tr_child_intent_id' => $in_id,
             'tr_order' => $new_order,
         ));
@@ -474,6 +473,17 @@ class Intents extends CI_Controller
 
                 } elseif ($key == 'in_outcome') {
 
+                    $in_verb_entity_id = starting_verb_id($value);
+
+                    //Check to make sure starts with a verb:
+                    if(!$in_verb_entity_id){
+                        //Not a acceptable starting word:
+                        return fn___echo_json(array(
+                            'status' => 0,
+                            'message' => 'Intent outcomes must start with a supporting verb (See list at @5008)',
+                        ));
+                    }
+
                     //Check to make sure it's not a duplicate outcome:
                     $duplicate_outcome_ins = $this->Database_model->fn___in_fetch(array(
                         'in_id !=' => $ins[0]['in_id'],
@@ -485,7 +495,7 @@ class Intents extends CI_Controller
                         //This is a duplicate, disallow:
                         return fn___echo_json(array(
                             'status' => 0,
-                            'message' => 'Outcome ['.$value.'] already taken by intent #'.$duplicate_outcome_ins[0]['in_id'],
+                            'message' => 'Outcome ['.$value.'] already in use by intent #'.$duplicate_outcome_ins[0]['in_id'],
                         ));
                     } else {
                         //Cleanup outcome before saving:

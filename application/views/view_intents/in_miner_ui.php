@@ -210,7 +210,7 @@ if (isset($orphan_ins)) {
                             <div class="notify_in_remove hidden">
                                 <div class="alert alert-danger" style="margin:5px 0px; padding:7px;">
                                     <i class="fas fa-exclamation-triangle"></i>
-                                    Saving will archive intent and unlink all parents and children
+                                    Saving will remove intent and unlink all parents and children
                                 </div>
                             </div>
 

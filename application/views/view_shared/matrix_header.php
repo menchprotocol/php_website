@@ -105,7 +105,7 @@ $uri_segment_2 = $this->uri->segment(2);
                                 </a>
                             </li>
 
-                            <li class="ledger-inactive" data-toggle="tooltip" data-placement="left" title="Toggle Advance Options">
+                            <li class="ledger-inactive" data-toggle="tooltip" data-placement="left" title="Toggle Advance Mode">
                                 <a href="javascript:void(0)" onclick="fn___toggle_advance(0)">
                                     <i class="<?= ( $this->session->userdata('advance_view_enabled')==1 ? 'fas fa-expand-arrows' : 'fal fa-expand-arrows ' ) ?> advance-icon"></i>
                                 </a>

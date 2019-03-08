@@ -707,7 +707,7 @@ function fn___in_modify_save() {
 
         } else {
 
-            //Has the intent/intent-link been archived? Either way, we need to hide this row:
+            //Has the intent/intent-link been removed? Either way, we need to hide this row:
             if (data.remove_from_ui) {
 
                 //Intent has been either removed OR unlinked:

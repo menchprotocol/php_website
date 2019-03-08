@@ -12,9 +12,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-03-07 11:13:43 PST
+//Generated 2019-03-08 12:58:20 PST
 
-//Advance Options:
+//Advance Mode:
 $config['en_ids_5005'] = array(4232, 4233, 4234, 4602, 4604, 4741, 4759, 4997, 5006);
 $config['en_all_5005'] = array(
     4232 => array(
@@ -61,7 +61,7 @@ $config['en_all_5005'] = array(
     ),
     4997 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Miner Mass Updated Entities',
+        'm_name' => 'Mass Updated Entities',
         'm_desc' => '',
         'm_parents' => array(5005, 4527, 4594, 4992),
     ),
@@ -73,7 +73,7 @@ $config['en_all_5005'] = array(
     ),
 );
 
-//Miner Mass Updated Entities:
+//Mass Updated Entities:
 $config['en_ids_4997'] = array(4998, 4999, 5000, 5001, 5002, 5003);
 $config['en_all_4997'] = array(
     4998 => array(
@@ -409,14 +409,14 @@ $config['en_all_4374'] = array(
         'm_parents' => array(4594, 4374),
     ),
     4250 => array(
-        'm_icon' => '<i class="fal fa-hashtag"></i>',
-        'm_name' => 'New Intent',
+        'm_icon' => '',
+        'm_name' => 'Created Intent',
         'm_desc' => '200',
         'm_parents' => array(4594, 4374),
     ),
     4251 => array(
-        'm_icon' => '<i class="fal fa-at"></i>',
-        'm_name' => 'New Entity',
+        'm_icon' => '',
+        'm_name' => 'Created Entity',
         'm_desc' => '50',
         'm_parents' => array(4594, 4374),
     ),
@@ -536,7 +536,7 @@ $config['en_all_4600'] = array(
 );
 
 //Transaction Type Full List:
-$config['en_ids_4594'] = array(4228, 4229, 4230, 4231, 4232, 4233, 4234, 4235, 4242, 4246, 4248, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4265, 4266, 4267, 4268, 4269, 4272, 4275, 4278, 4279, 4282, 4283, 4284, 4287, 4299, 4318, 4319, 4331, 4452, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4567, 4568, 4570, 4577, 4601, 4602, 4983, 4993, 4994, 4996, 4997);
+$config['en_ids_4594'] = array(4228, 4229, 4230, 4231, 4232, 4233, 4234, 4235, 4242, 4246, 4248, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4265, 4266, 4267, 4268, 4269, 4272, 4275, 4278, 4279, 4282, 4283, 4284, 4287, 4299, 4318, 4319, 4331, 4452, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4567, 4568, 4570, 4577, 4601, 4602, 4983, 4993, 4994, 4996, 4997, 5007);
 $config['en_all_4594'] = array(
     4228 => array(
         'm_icon' => '<i class="fal fa-check-circle"></i>',
@@ -605,14 +605,14 @@ $config['en_all_4594'] = array(
         'm_parents' => array(4755, 4594, 4428, 4277),
     ),
     4250 => array(
-        'm_icon' => '<i class="fal fa-hashtag"></i>',
-        'm_name' => 'New Intent',
+        'm_icon' => '',
+        'm_name' => 'Created Intent',
         'm_desc' => '',
         'm_parents' => array(4594, 4374),
     ),
     4251 => array(
-        'm_icon' => '<i class="fal fa-at"></i>',
-        'm_name' => 'New Entity',
+        'm_icon' => '',
+        'm_name' => 'Created Entity',
         'm_desc' => 'Logged when a new entity is created.',
         'm_parents' => array(4594, 4374),
     ),
@@ -696,7 +696,7 @@ $config['en_all_4594'] = array(
     ),
     4269 => array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
-        'm_name' => 'Miner Matrix Login',
+        'm_name' => 'Logged Into Matrix',
         'm_desc' => '',
         'm_parents' => array(4992, 4594),
     ),
@@ -773,8 +773,8 @@ $config['en_all_4594'] = array(
         'm_parents' => array(4594, 4527, 4374),
     ),
     4452 => array(
-        'm_icon' => '<i class="fab fa-git"></i>',
-        'm_name' => 'Developer Code Github Push',
+        'm_icon' => '',
+        'm_name' => 'Pushed Code to Github',
         'm_desc' => '',
         'm_parents' => array(4594, 4428),
     ),
@@ -900,13 +900,13 @@ $config['en_all_4594'] = array(
     ),
     4993 => array(
         'm_icon' => '<i class="fas fa-hashtag"></i>',
-        'm_name' => 'Miner Viewed Intent',
+        'm_name' => 'Viewed Intent',
         'm_desc' => '',
         'm_parents' => array(4594, 4992),
     ),
     4994 => array(
         'm_icon' => '<i class="fas fa-at"></i>',
-        'm_name' => 'Miner Viewed Entity',
+        'm_name' => 'Viewed Entity',
         'm_desc' => '',
         'm_parents' => array(4594, 4992),
     ),
@@ -918,9 +918,15 @@ $config['en_all_4594'] = array(
     ),
     4997 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Miner Mass Updated Entities',
+        'm_name' => 'Mass Updated Entities',
         'm_desc' => '',
         'm_parents' => array(5005, 4527, 4594, 4992),
+    ),
+    5007 => array(
+        'm_icon' => '<i class="fal fa-expand-arrows"></i>',
+        'm_name' => 'Toggled Advance Mode',
+        'm_desc' => '',
+        'm_parents' => array(4594, 4992),
     ),
 );
 

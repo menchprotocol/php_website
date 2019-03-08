@@ -1909,6 +1909,11 @@ class Matrix_model extends CI_Model
                 'status' => 0,
                 'message' => 'Invalid Intent ID',
             );
+        } elseif ($parent_ins[0]['in_status'] < 0) {
+            return array(
+                'status' => 0,
+                'message' => 'Cannot link to removed intents',
+            );
         }
 
         if (intval($in_link_child_id) > 0) {
@@ -1918,13 +1923,17 @@ class Matrix_model extends CI_Model
             //Fetch more details on the child intent we're about to link:
             $ins = $this->Database_model->fn___in_fetch(array(
                 'in_id' => $in_link_child_id,
-                'in_status >=' => 0,
             ));
 
             if (count($ins) < 1) {
                 return array(
                     'status' => 0,
                     'message' => 'Invalid Linked Intent ID',
+                );
+            } elseif ($ins[0]['in_status'] < 0) {
+                return array(
+                    'status' => 0,
+                    'message' => 'Cannot link to removed intents',
                 );
             }
 

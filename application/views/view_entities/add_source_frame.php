@@ -49,7 +49,7 @@
             echo '<span class="checkbox" style="margin: 0;">
             <label style="display:inline-block !important; font-size: 0.8em !important; margin-left:5px;">
                 <input type="checkbox" class="source_parent_ens" value="'.$en_id.'" />
-                <span><span class="en_icon_mini_ui">'.$m['m_icon'].'</span> '.$m['m_name'].'</span>
+                <span><span class="en_mini_ui_icon">'.$m['m_icon'].'</span> '.$m['m_name'].'</span>
             </label>
             
             <textarea id="en_desc_'.$en_id.'" id-postfix="'.$en_id.'" class="form-control border hidden characterLimiter textarea_'.$en_id.'" style="height:78px; max-width: 490px; margin: 2px 0 2px 30px;" placeholder="'.str_replace('Expert ','', rtrim($m['m_name'], 's')).' overview..."></textarea>

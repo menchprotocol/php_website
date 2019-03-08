@@ -204,7 +204,7 @@
 
                                 <div class="alert alert-danger" style="margin:5px 0px; padding:7px;">
                                     <i class="fas fa-exclamation-triangle"></i>
-                                    Saving will archive entity and remove <span class="entity_remove_stats" style="display:inline-block; padding: 0;"></span> parent/child links.
+                                    Saving will remove entity and remove <span class="entity_remove_stats" style="display:inline-block; padding: 0;"></span> parent/child links.
                                 </div>
 
                                 <input type="hidden" id="en_link_count" value="0" />

@@ -339,13 +339,13 @@ a.badge-primary:hover {
 }
 
 
-.en_icon_ui{
+.en_ui_icon{
     width:30px;
     display: inline-block;
     text-align: center;
 }
 
-.en_icon_mini_ui{
+.en_mini_ui_icon{
     width:18px;
     display: inline-block;
     text-align: center;
@@ -1505,7 +1505,6 @@ h5, .h5 {
 }
 
 .button-max{
-    max-width:220px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
