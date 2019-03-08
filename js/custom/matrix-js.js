@@ -134,10 +134,24 @@ function fn___load_js_algolia() {
     });
 }
 
-function toggle_advance(){
-    $('.advance-icon').toggleClass('fal').toggleClass('fas');
+function fn___toggle_advance(basic_toggle){
+
+    //Make instant UI changes:
     $('.advance-ui').toggleClass('hidden');
-    document.getElementById('ajax_frame').contentWindow.toggle_advance();
+
+    if(!basic_toggle){
+
+        //If an iframe is loaded, also apply logic to iframe UI:
+        if($('#ajax_frame').attr('src').length > 0){
+            document.getElementById('ajax_frame').contentWindow.fn___toggle_advance(1);
+        }
+
+        //Change menu icon:
+        $('.advance-icon').toggleClass('fal').toggleClass('fas');
+
+        //Save session variable to save the state of advance setting:
+        $.post("/entities/fn___toggle_advance", {}, function (data) {});
+    }
 }
 
 

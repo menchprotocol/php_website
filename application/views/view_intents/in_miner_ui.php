@@ -218,7 +218,7 @@ if (isset($orphan_ins)) {
 
 
 
-                            <div class="advance-ui hidden">
+                            <div class="<?= fn___echo_advance() ?>">
 
                                 <span class="mini-header">Completion Response:</span>
                                 <select class="form-control border" id="in_requirement_entity_id" data-toggle="tooltip" title="Intent Completion Requirements" data-placement="top" style="margin-bottom: 12px;">
@@ -286,17 +286,17 @@ if (isset($orphan_ins)) {
                                 </div>
 
 
-                                <span class="mini-header">Link Type: <span class="advance-ui hidden">[<a href="javscript:void(0);" onclick="$('.modify_parent_in').toggleClass('hidden')" data-toggle="tooltip" title="Modify Linked Intent" data-placement="top"><u>EDIT</u></a>]</span></span>
+                                <span class="mini-header">Link Type: <span class="<?= fn___echo_advance() ?>">[<a href="javscript:void(0);" onclick="$('.modify_parent_in').toggleClass('hidden')" data-toggle="tooltip" title="Modify Linked Intent" data-placement="top"><u>EDIT</u></a>]</span></span>
                                 <div class="form-group label-floating is-empty">
 
                                     <?php
                                     foreach ($this->config->item('en_all_4486') as $en_id => $m) {
-                                        echo '<div class="radio" style="display:block; margin-top: 0 !important; width:190px;" data-toggle="tooltip" title="' . $m['m_desc'] . '" data-placement="top">
+                                        echo '<span class="radio" style="display:inline-block; margin-top: 0 !important;" data-toggle="tooltip" title="' . $m['m_desc'] . '" data-placement="top">
                                             <label class="underdot">
                                                 <input type="radio" id="tr_type_entity_id_' . $en_id . '" name="tr_type_entity_id" value="' . $en_id . '" />
                                                 '.$m['m_icon'].' ' . $m['m_name'] . '
                                             </label>
-                                        </div>';
+                                        </span>';
                                     }
                                     ?>
 

@@ -1079,7 +1079,8 @@ class Entities extends CI_Controller
         if (fn___filter_array($ens[0]['en__parents'], 'en_id', 1308)) {
             //They have admin rights:
             $session_data['user'] = $ens[0];
-            $session_data['miner_session_count'] = 1;
+            $session_data['miner_session_count'] = 0;
+            $session_data['advance_view_enabled'] = 0;
             $is_miner = true;
         }
 
@@ -1153,6 +1154,14 @@ class Entities extends CI_Controller
                 //Student default:
                 header('Location: /my/actionplan');
             }
+        }
+    }
+
+    function fn___toggle_advance(){
+        //Toggles the advance session variable for the miner on/off for logged-in miners:
+        if(fn___en_auth()){
+            $toggled_setting = ( $this->session->userdata('advance_view_enabled')==1 ? 0 : 1 );
+            $this->session->set_userdata('advance_view_enabled', $toggled_setting);
         }
     }
 

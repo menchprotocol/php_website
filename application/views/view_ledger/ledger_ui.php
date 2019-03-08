@@ -526,11 +526,11 @@ $trs = $this->Database_model->fn___tr_fetch($filters, $join_by, (fn___is_dev() ?
 
 
 //button to show:
-echo '<a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="advance-ui hidden">'.( $has_filters ? '<i class="fal fa-minus-circle show-filter"></i><i class="fal fa-plus-circle show-filter hidden"></i>' : '<i class="fal fa-plus-circle show-filter"></i><i class="fal fa-minus-circle show-filter hidden"></i>').' Toggle Filters</a>';
+echo '<a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="' . fn___echo_advance() . '">'.( $has_filters ? '<i class="fal fa-minus-circle show-filter"></i><i class="fal fa-plus-circle show-filter hidden"></i>' : '<i class="fal fa-plus-circle show-filter"></i><i class="fal fa-minus-circle show-filter hidden"></i>').' Toggle Filters</a>';
 
 
 
-echo '<div class="advance-ui hidden">';
+echo '<div class="' . fn___echo_advance() . '">';
 echo '<div class="inline-box show-filter '.( $has_filters ? '' : 'hidden' ).'">';
 
 echo '<form action="" method="GET">';

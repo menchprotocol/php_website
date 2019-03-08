@@ -50,7 +50,7 @@
 
             echo '<h5 class="badge badge-h inline-block"><span class="li-children-count inline-block">' . $entity['en__child_count'] . '</span> Children</h5>';
 
-            echo '<a href="javascript:void(0);" onclick="$(\'.mass_modify\').toggle();mass_action_ui();" style="text-decoration: none; margin-left: 5px;"  data-toggle="tooltip" data-placement="right" title="Mass modify child entities" class="advance-ui hidden"><i class="fal fa-list-alt" style="font-size: 1.2em; color: #2b2b2b;"></i></a>';
+            echo '<a href="javascript:void(0);" onclick="$(\'.mass_modify\').toggle();mass_action_ui();" style="text-decoration: none; margin-left: 5px;"  data-toggle="tooltip" data-placement="right" title="Mass modify child entities" class="' . fn___echo_advance() . '"><i class="fal fa-list-alt" style="font-size: 1.2em; color: #2b2b2b;"></i></a>';
 
             echo '</td>';
 
@@ -67,7 +67,7 @@
             }
         }
 
-        echo '<td style="text-align: right;"><div class="btn-group btn-group-sm advance-ui hidden" style="margin-top:-5px;" role="group">';
+        echo '<td style="text-align: right;"><div class="btn-group btn-group-sm ' . fn___echo_advance() . '" style="margin-top:-5px;" role="group">';
 
         //Fetch current count for each status from DB:
         $child_en_filters = $this->Database_model->fn___tr_fetch(array(

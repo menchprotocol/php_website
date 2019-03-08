@@ -29,4 +29,4 @@ $fb_settings = $this->config->item('fb_settings');
      logged_out_greeting="Hi 👋 How can we help you?" greeting_dialog_display="hide" theme_color="#2f2739"
      page_id="<?= $fb_settings['page_id'] ?>"></div>
 
-<div class="app-version hide-mini advance-ui hidden">v<?= $this->config->item('app_version') ?></div>
+<div class="app-version hide-mini <?= fn___echo_advance() ?>">v<?= $this->config->item('app_version') ?></div>
