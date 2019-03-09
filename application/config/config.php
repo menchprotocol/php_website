@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  *
  * Global variables used throughout the platform.
- * use-case format: $this->config->item('image_extensions')
+ * use-case format: $this->config->item('in_outcome_max')
  *
  */
 

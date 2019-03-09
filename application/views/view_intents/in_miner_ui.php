@@ -158,16 +158,11 @@ if (isset($orphan_ins)) {
 
                         <div class="inline-box" style="margin-bottom: 15px;">
 
-                            <span class="mini-header">Primary Outcome: [<span
+                            <span class="mini-header">Outcome: [<span
                                         style="margin:0 0 10px 0;"><span
-                                            id="charNameNum">0</span>/<?= $this->config->item('in_outcome_max') ?></span>]</span>
+                                            id="charNameNum">0</span>/<?= $this->config->item('in_outcome_max') ?></span>][<a href="/entities/5008" data-toggle="tooltip" title="See (and manage) list of supporting verbs that intent outcomes can start with" data-placement="right" target="_blank"><b>Verbs</b></a>]</span>
                             <div class="form-group label-floating is-empty" style="height: 40px !important;">
-                                <div class="input-group border">
-                                <span class="input-group-addon addon-lean addon-grey"
-                                      style="color:#2f2739; font-weight: 300;">To</span>
-                                    <textarea class="form-control text-edit msg main-box" id="in_outcome" onkeyup="fn___in_outcome_counter()"
-                                              maxlength="<?= $this->config->item('in_outcome_max') ?>"></textarea>
-                                </div>
+                                <textarea class="form-control text-edit msg main-box border" id="in_outcome" onkeyup="fn___in_outcome_counter()"></textarea>
                             </div>
 
 

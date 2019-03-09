@@ -206,6 +206,11 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing either Intent Outcome OR Child Intent ID',
             ));
+        } elseif (strlen($_POST['in_outcome']) > $this->config->item('in_outcome_max')) {
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Intent outcome cannot be longer than '.$this->config->item('in_outcome_max').' characters',
+            ));
         }
 
         //All seems good, go ahead and try creating the intent:
@@ -355,6 +360,11 @@ class Intents extends CI_Controller
             return fn___echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Outcome',
+            ));
+        } elseif (strlen($_POST['in_outcome']) > $this->config->item('in_outcome_max')) {
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Intent outcome cannot be longer than '.$this->config->item('in_outcome_max').' characters',
             ));
         } elseif (!isset($_POST['in_seconds_cost']) || intval($_POST['in_seconds_cost']) < 0) {
             return fn___echo_json(array(
