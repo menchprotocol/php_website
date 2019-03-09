@@ -61,7 +61,6 @@ if (isset($orphan_ins)) {
                     <div class="form-group is-empty" style="margin: 0; padding: 0;">
                         <input type="text"
                                class="form-control intentadder-level-2 algolia_search bottom-add"
-                               maxlength="' . $this->config->item('in_outcome_max') . '"
                                intent-id="' . $in['in_id'] . '"
                                is-parent="1"
                                id="addintent-c-' . $in['in_id'] . '-1"

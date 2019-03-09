@@ -169,8 +169,7 @@
                         </span>]</span>
                             <span class="white-wrapper">
                                 <textarea class="form-control text-edit border" id="en_name"
-                                  onkeyup="en_name_word_count()"
-                                  maxlength="<?= $this->config->item('en_name_max') ?>" data-lpignore="true"
+                                  onkeyup="en_name_word_count()" data-lpignore="true"
                                   style="height:66px; min-height:66px;">
                                 </textarea>
                             </span>
