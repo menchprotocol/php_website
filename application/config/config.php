@@ -33,7 +33,7 @@ $config['en_platform_miner_id']     = 2738; //Mench. This is the entity that wou
 $config['enable_algolia']           = true; //Currently reached our monthly free quota
 
 //URL detection based on ending file extensions:
-$config['image_extensions']         = array('jpeg','jpg','png','gif','tiff','bmp','img','svg');
+$config['image_extensions']         = array('jpeg','jpg','png','gif','tiff','bmp','img','svg','ico');
 $config['audio_extensions']         = array('pcm','wav','aiff','mp3','aac','ogg','wma','flac','alac','m4a','m4b','m4p');
 $config['video_extensions']         = array('mp4','m4v','m4p','avi','mov','flv','f4v','f4p','f4a','f4b','wmv','webm','mkv','vob','ogv','ogg','3gp','mpg','mpeg','m2v');
 $config['file_extensions']          = array('pdc','doc','docx','tex','txt','7z','rar','zip','csv','sql','tar','xml','exe');
