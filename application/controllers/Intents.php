@@ -521,27 +521,8 @@ class Intents extends CI_Controller
                             }
                         }
 
-                        //Remove intent relations:
-                        $unlink_trs = array_merge(
-                            //Remove all links:
-                            $this->Database_model->fn___tr_fetch(array(
-                                'tr_status >=' => 0, //New+
-                                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
-                                '(tr_child_intent_id = '.$_POST['in_id'].' OR tr_parent_intent_id = '.$_POST['in_id'].')' => null,
-                            ), array(), 0),
-                            //Remove all messages:
-                            $this->Database_model->fn___tr_fetch(array(
-                                'tr_status >=' => 0, //New+
-                                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
-                                'tr_child_intent_id' => $_POST['in_id'],
-                            ), array(), 0)
-                        );
-                        foreach($unlink_trs as $unlink_tr){
-                            //Remove this link:
-                            $this->Database_model->fn___tr_update($unlink_tr['tr_id'], array(
-                                'tr_status' => -1, //Unlink
-                            ), $session_en['en_id']);
-                        }
+                        //Unlink intent links:
+                        $links_removed = $this->Matrix_model->unlink_intent($_POST['in_id'] , $session_en['en_id']);
 
                         //Treat as if no link (Since it was removed):
                         $tr_id = 0;

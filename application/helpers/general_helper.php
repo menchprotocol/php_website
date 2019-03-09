@@ -240,21 +240,35 @@ function is_valid_icon($string, $only_return_requirements = false){
     $CI =& get_instance();
 
     if($only_return_requirements){
-        //This is a text description of what this function is checking for:
-        return 'If set, must be a single emoji OR &lt;img src=&quot;URL&quot;&gt; where URL ends with .'.join(' .', $CI->config->item('image_extensions')).' OR &lt;i class=&quot;CODE&quot;&gt;&lt;/i&gt; where CODE is a font-awesome icon.';
-    }
 
-    if(strlen($string)==0){
+        //This is a text description of what this function is checking for:
+        return 'If set, must be a single emoji OR &lt;img src=&quot;URL&quot;&gt; where URL ends with .'.join(' .', $CI->config->item('image_extensions')).' OR &lt;i class=&quot;CODE&quot;&gt;&lt;/i&gt; where CODE is a font-awesome icon (excluding AND/OR intent icons).';
+
+    } elseif(strlen($string)==0){
+
         //No icon is valid:
         return true;
+
     }
 
+
+    //Make sure no reserved strings are used:
+    $fixed_fields = $CI->config->item('fixed_fields');
+    foreach($fixed_fields['in_type'] as $in_type){
+        if(substr_count($string , $in_type['s_reserved_icon']) > 0){
+            return false;
+        }
+    }
+
+
+    //Check if this is an HTML image tag:
     $is_img = (substr($string, 0, 10) == '<img src="' && substr($string, -2) == '">');
     if($is_img){
         //See if URL is valid:
         $url_entity = $CI->Matrix_model->fn___sync_url(fn___one_two_explode('<img src="','">',$string));
         $is_img = (isset($url_entity['tr_type_entity_id']) && $url_entity['tr_type_entity_id']==4260 /* Image */);
     }
+
 
     //See if this is an image URL:
     if ($is_img) {
@@ -283,12 +297,19 @@ function starting_verb_id($string){
 
     //Must be at-least two parts:
     if(count($letters) >= 2){
-        foreach($CI->config->item('en_all_5008') as $verb_en_id => $verb_en){
-            if(strtolower($letters[0])==strtolower($verb_en['m_name'])){
-                //Found it:
-                return $verb_en_id;
-            }
+
+        //Do a DB call to see if this verb is supported:
+        $found_verbs = $CI->Database_model->fn___tr_fetch(array(
+            'tr_status >=' => 2,
+            'en_status >=' => 2,
+            'tr_parent_entity_id' => 5008, //Intent Supported Verbs
+            'LOWER(en_name)' => strtolower($letters[0]),
+        ), array('en_child'), 1);
+
+        if(count($found_verbs) > 0){
+            return $found_verbs[0]['en_id'];
         }
+
     }
 
     //Still here? Did not find it:

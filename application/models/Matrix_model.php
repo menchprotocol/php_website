@@ -185,6 +185,32 @@ class Matrix_model extends CI_Model
     }
 
 
+    function unlink_intent($in_id, $tr_miner_entity_id = 0){
+
+        //Remove intent relations:
+        $unlink_trs = array_merge(
+            $this->Database_model->fn___tr_fetch(array( //Intent Links
+                'tr_status >=' => 0, //New+
+                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
+                '(tr_child_intent_id = '.$in_id.' OR tr_parent_intent_id = '.$in_id.')' => null,
+            ), array(), 0),
+            $this->Database_model->fn___tr_fetch(array( //Intent Notes
+                'tr_status >=' => 0, //New+
+                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
+                '(tr_child_intent_id = '.$in_id.' OR tr_parent_intent_id = '.$in_id.')' => null,
+            ), array(), 0)
+        );
+
+        foreach($unlink_trs as $unlink_tr){
+            //Remove this link:
+            $this->Database_model->fn___tr_update($unlink_tr['tr_id'], array(
+                'tr_status' => -1, //Unlink
+            ), $tr_miner_entity_id);
+        }
+
+        return count($unlink_trs);
+    }
+
     function fn___sync_domain($url, $tr_miner_entity_id = 0, $page_title = null)
     {
         /*
@@ -230,7 +256,7 @@ class Matrix_model extends CI_Model
             $en_domain = $this->Database_model->fn___en_create(array(
                 'en_status' => 0, //New domain entity
                 'en_name' => ( $page_title ? $page_title : $domain_analysis['url_domain_name'] ),
-                'en_icon' => echo_fav_icon($domain_analysis['url_clean_domain']),
+                'en_icon' => fn___detect_fav_icon($domain_analysis['url_clean_domain']),
             ), true, $tr_miner_entity_id);
 
             //And link entity to the domains entity:
@@ -1988,6 +2014,20 @@ class Matrix_model extends CI_Model
         } else {
 
             //We are NOT linking to an existing intent, but instead, we're creating a new intent:
+
+            //Check to make sure it's not a duplicate outcome:
+            $duplicate_outcome_ins = $this->Database_model->fn___in_fetch(array(
+                'in_status >=' => 0,
+                'LOWER(in_outcome)' => strtolower(trim($in_outcome)),
+            ));
+
+            if(count($duplicate_outcome_ins) > 0){
+                //This is a duplicate, disallow:
+                return array(
+                    'status' => 0,
+                    'message' => 'Outcome ['.$in_outcome.'] already in use by intent #'.$duplicate_outcome_ins[0]['in_id'],
+                );
+            }
 
             //Prepare recursive update:
             $in_metadata_modify = array(

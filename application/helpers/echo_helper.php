@@ -1569,13 +1569,12 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 }
 
 
-function echo_fav_icon($url_clean_domain, $return_icon = false){
+function fn___detect_fav_icon($url_clean_domain, $return_icon = false){
     //Does this domain have a Favicon?
     $fav_icon = $url_clean_domain . '/favicon.ico';
-    $CI =& get_instance();
-    $url_entity = $CI->Matrix_model->fn___sync_url($fav_icon);
-    if (isset($url_entity['tr_type_entity_id']) && $url_entity['tr_type_entity_id']==4260 /* Image */) {
-        return '<img src="'.$fav_icon.'" class="profile-icon-mini" />';
+    $is_valid_icon = @file_get_contents($fav_icon);
+    if ($is_valid_icon) {
+        return '<img src="'.$fav_icon.'">';
     } else {
         return ( $return_icon ? '<i class="fas fa-at grey-at"></i>' : null );
     }

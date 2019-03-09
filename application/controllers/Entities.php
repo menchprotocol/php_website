@@ -62,7 +62,7 @@ class Entities extends CI_Controller
         //Return results:
         return fn___echo_json(array(
             'status' => 1,
-            'entity_domain_ui' => '<span class="en_mini_ui_icon">' . (isset($url_entity['en_domain']['en_icon']) && strlen($url_entity['en_domain']['en_icon']) > 0 ? $url_entity['en_domain']['en_icon'] : echo_fav_icon($url_entity['url_clean_domain'], true)) . '</span> ' . (isset($url_entity['en_domain']['en_name']) ? $url_entity['en_domain']['en_name'] . ' <a href="/entities/' . $url_entity['en_domain']['en_id'] . '" class="underdot" data-toggle="tooltip" title="Click to open domain entity in a new windows" data-placement="top" target="_blank">@' . $url_entity['en_domain']['en_id'] . '</a>' : $url_entity['url_domain_name'] . ' [<span class="underdot" data-toggle="tooltip" title="Domain entity not yet added" data-placement="top">New</span>]'),
+            'entity_domain_ui' => '<span class="en_mini_ui_icon">' . (isset($url_entity['en_domain']['en_icon']) && strlen($url_entity['en_domain']['en_icon']) > 0 ? $url_entity['en_domain']['en_icon'] : fn___detect_fav_icon($url_entity['url_clean_domain'], true)) . '</span> ' . (isset($url_entity['en_domain']['en_name']) ? $url_entity['en_domain']['en_name'] . ' <a href="/entities/' . $url_entity['en_domain']['en_id'] . '" class="underdot" data-toggle="tooltip" title="Click to open domain entity in a new windows" data-placement="top" target="_blank">@' . $url_entity['en_domain']['en_id'] . '</a>' : $url_entity['url_domain_name'] . ' [<span class="underdot" data-toggle="tooltip" title="Domain entity not yet added" data-placement="top">New</span>]'),
             'js_url_entity' => $url_entity,
         ));
 
@@ -412,7 +412,7 @@ class Entities extends CI_Controller
         if (count($current_us) < 1) {
             return fn___echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid current entity ID',
+                'message' => 'Invalid parent entity ID',
             ));
         }
 
@@ -462,6 +462,19 @@ class Entities extends CI_Controller
                 $entity_new = $domain_entity['en_domain'];
 
             } else {
+
+                //Check to make sure name is not duplicate:
+                $duplicate_name_ens = $this->Database_model->fn___en_fetch(array(
+                    'en_status >=' => 0,
+                    'LOWER(en_name)' => strtolower(trim($_POST['en_new_string'])),
+                ));
+                if(count($duplicate_name_ens) > 0){
+                    //This is a duplicate, disallow:
+                    return fn___echo_json(array(
+                        'status' => 0,
+                        'message' => 'Name ['.$_POST['en_new_string'].'] already in use by entity @'.$duplicate_name_ens[0]['en_id'],
+                    ));
+                }
 
                 //It's a regular entity name:
                 $entity_new = $this->Database_model->fn___en_create(array(

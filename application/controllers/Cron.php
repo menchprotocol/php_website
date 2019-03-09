@@ -22,40 +22,27 @@ class Cron extends CI_Controller
     //30 3 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron e_score_recursive
 
 
-    function name_updates($limit){
+    function name_updates($limit, $remove = 0){
 
         //Intent verb start
-        //Entity icon intent reserved
-        //Entity icon new 3x formula
+        foreach($this->Database_model->fn___in_fetch(array('in_status >' => 0), array(), $limit) as $in){
+            if(!starting_verb_id($in['in_outcome'])){
 
-        foreach($this->Database_model->fn___en_fetch(array('LENGTH(en_icon) >' => 0), array(), $limit) as $en){
-            if(!is_valid_icon($en['en_icon'])){
+                echo '<a href="/intents/'.$in['in_id'].'">'.$in['in_outcome'].'</a>';
 
-                //Try to fix:
-                $fixed = false;
-                if(substr($en['en_icon'], 0, 4) == '<img'){
+                if($remove){
 
-                    $src = fn___one_two_explode('src="','"',$en['en_icon']);
-                    $url_entity = $this->Matrix_model->fn___sync_url($src);
-                    if((isset($url_entity['tr_type_entity_id']) && $url_entity['tr_type_entity_id']==4260 /* Image */)){
-                        $fixed = true;
-                        $this->Database_model->fn___en_update($en['en_id'], array(
-                            'en_icon' => '<img src="'.$src.'">',
-                        ));
-                    }
+                    $this->Database_model->fn___in_update($in['in_id'], array(
+                        'in_status' => -1
+                    ), true, 1);
+
+                    $links_removed = $this->Matrix_model->unlink_intent($in['in_id'] , 1);
+
+                    echo ' Intent and its '.$links_removed.' links REMOVED';
 
                 }
 
-                if(!$fixed){
-                    //Remove icon:
-                    $fixed = true;
-                    $this->Database_model->fn___en_update($en['en_id'], array(
-                        'en_icon' => null,
-                    ));
-                }
-
-                echo '<a href="/entities/'.$en['en_id'].'">'.htmlentities($en['en_icon']).'</a> '.( $fixed ? ' FIXED' : '' ).' <br />';
-
+                echo '<br />';
             }
         }
 
