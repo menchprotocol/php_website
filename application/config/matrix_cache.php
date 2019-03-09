@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-03-08 20:11:20 PST
+//Generated 2019-03-08 21:42:09 PST
 
 //Advance Mode:
 $config['en_ids_5005'] = array(4232, 4233, 4234, 4602, 4604, 4741, 4759, 4997, 5006);
@@ -355,7 +355,7 @@ $config['en_all_4374'] = array(
         'm_parents' => array(4594, 4486, 4374),
     ),
     4229 => array(
-        'm_icon' => '',
+        'm_icon' => '<i class="fal fa-spin fa-question-circle"></i>',
         'm_name' => 'Linked Intents Conditional',
         'm_desc' => '100',
         'm_parents' => array(4594, 4486, 4374),
@@ -539,7 +539,7 @@ $config['en_all_4594'] = array(
         'm_parents' => array(4594, 4486, 4374),
     ),
     4229 => array(
-        'm_icon' => '',
+        'm_icon' => '<i class="fal fa-spin fa-question-circle"></i>',
         'm_name' => 'Linked Intents Conditional',
         'm_desc' => '',
         'm_parents' => array(4594, 4486, 4374),
@@ -1139,7 +1139,7 @@ $config['en_all_4486'] = array(
         'm_parents' => array(4594, 4486, 4374),
     ),
     4229 => array(
-        'm_icon' => '',
+        'm_icon' => '<i class="fal fa-spin fa-question-circle"></i>',
         'm_name' => 'Conditional',
         'm_desc' => 'Intent added to Action Plans after parent intent is complete AND the user\'s % score falls within the defined min/max range',
         'm_parents' => array(4594, 4486, 4374),
