@@ -118,6 +118,7 @@ if(!$has_filters){
 
         echo '<a href="javascript:void(0);" onclick="$(\'.obj-'.$object_id.'\').toggleClass(\'hidden\');" class="large-stat"><span>'.$en_all_4534[$obj_en_id]['m_icon']. ' <span class="obj-'.$object_id.'">'. fn___echo_number($this_totals) . '</span><span class="obj-'.$object_id.' hidden">'. number_format($this_totals) . '</span></span>'.$en_all_4534[$obj_en_id]['m_name'].' <i class="obj-'.$object_id.' fal fa-plus-circle"></i><i class="obj-'.$object_id.' fal fa-minus-circle hidden"></i></a>';
 
+
         echo '<table class="table table-condensed table-striped stats-table mini-stats-table obj-'.$object_id.' hidden">';
 
         //Object Header:
@@ -132,11 +133,49 @@ if(!$has_filters){
 
         //End Section:
         echo '</table>';
+
+        if($object_id=='in_status'){
+
+            //Count intent verbs and their appearance:
+            $verb_counts = $this->Database_model->fn___in_fetch(array(
+                'in_status >=' => 0, //New+
+            ), array('in_verb_entity_id'), 0, 0, array('totals' => 'DESC'), 'COUNT(in_id) as totals, in_verb_entity_id, en_name', 'in_verb_entity_id, en_name');
+
+
+            echo '<table class="table table-condensed table-striped stats-table mini-stats-table obj-'.$object_id.' hidden" style="margin-top:20px;">';
+
+            //Object Header:
+            echo '<tr style="font-weight: bold;">';
+            echo '<td style="text-align: left;">Verb:</td>';
+            echo '<td style="text-align: right;">Count</td>';
+            echo '</tr>';
+
+
+            $totals = 0;
+            foreach($verb_counts as $verb){
+                echo '<tr>';
+                echo '<td style="text-align: left;">'.$verb['en_name'].'</td>';
+                echo '<td style="text-align: right;"><a href="/ledger?tr_type_entity_id=4250&in_verb_entity_id='.$verb['in_verb_entity_id'].'"  data-toggle="tooltip" title="View Intents starting with this verb" data-placement="top">'.number_format($verb['totals'],0).'</a></td>';
+                echo '</tr>';
+                $totals  += $verb['totals'];
+            }
+
+            echo '<tr style="font-weight: bold;">';
+            echo '<td style="text-align: left;">Totals:</td>';
+            echo '<td style="text-align: right;">'.number_format($totals,0).'</td>';
+            echo '</tr>';
+
+            //End Section:
+            echo '</table>';
+
+        }
+
         echo '</div>';
 
     }
 
     echo '</div>';
+
 
 
 
@@ -344,6 +383,21 @@ if(isset($_GET['in_status']) && strlen($_GET['in_status']) > 0){
     }
 }
 
+if(isset($_GET['in_verb_entity_id']) && strlen($_GET['in_verb_entity_id']) > 0){
+    if(isset($_GET['tr_type_entity_id']) && $_GET['tr_type_entity_id']==4250){ //Intent created
+        //Filter intent status based on
+        $join_by = array('in_child');
+        if (substr_count($_GET['in_verb_entity_id'], ',') > 0) {
+            //This is multiple IDs:
+            $filters['( in_verb_entity_id IN (' . $_GET['in_verb_entity_id'] . '))'] = null;
+        } else {
+            $filters['in_verb_entity_id'] = intval($_GET['in_verb_entity_id']);
+        }
+    } else {
+        unset($_GET['in_verb_entity_id']);
+    }
+}
+
 if(isset($_GET['en_status']) && strlen($_GET['en_status']) > 0){
     if(isset($_GET['tr_type_entity_id']) && $_GET['tr_type_entity_id']==4251){ //Entity Created
 
@@ -482,7 +536,7 @@ if(isset($_GET['end_range']) && fn___isDate($_GET['end_range'])){
 //Fetch unique transaction types recorded so far:
 $ini_filter = array();
 foreach($filters as $key => $value){
-    if(!fn___includes_any($key, array('in_status', 'en_status'))){
+    if(!fn___includes_any($key, array('in_status', 'in_verb_entity_id', 'en_status'))){
         $ini_filter[$key] = $value;
     }
 }
@@ -572,6 +626,7 @@ echo '<table class="table table-condensed maxout"><tr>';
     //Optional Intent/Entity status filter ONLY IF Transaction Type = Create New Intent/Entity
 
     echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">Intent Status:</span><input type="text" name="in_status" value="' . ((isset($_GET['in_status'])) ? $_GET['in_status'] : '') . '" class="form-control border"></div>';
+    echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">Intent Verb Entity IDS:</span><input type="text" name="in_verb_entity_id" value="' . ((isset($_GET['in_verb_entity_id'])) ? $_GET['in_verb_entity_id'] : '') . '" class="form-control border"></div>';
 
     echo '<div class="filter-statuses filter-en-status hidden"><span class="mini-header">Entity Status:</span><input type="text" name="en_status" value="' . ((isset($_GET['en_status'])) ? $_GET['en_status'] : '') . '" class="form-control border"></div>';
 

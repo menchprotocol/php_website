@@ -180,7 +180,7 @@ foreach ($in['in__parents'] as $in_parent) {
 }
 
 //Fetch other featured intents:
-$featured_ins = $ins = $this->Database_model->fn___in_fetch(array(
+$featured_ins = $this->Database_model->fn___in_fetch(array(
     'in_status' => 3, //Featured Intents
     'in_id NOT IN (' . join(',', $exclude_array) . ')' => null,
 ));

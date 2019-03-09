@@ -430,6 +430,10 @@ class Database_model extends CI_Model
         $this->db->select($select);
         $this->db->from('table_intents');
 
+        if (in_array('in_verb_entity_id', $join_objects)) {
+            $this->db->join('table_entities', 'in_verb_entity_id=en_id', 'left');
+        }
+
         foreach ($match_columns as $key => $value) {
             $this->db->where($key, $value);
         }
