@@ -26,7 +26,10 @@ class Cron extends CI_Controller
 
         //Intent verb start
         foreach($this->Database_model->fn___in_fetch(array('in_status >' => 0), array(), $limit) as $in){
-            if(!starting_verb_id($in['in_outcome'])){
+
+            $in_verb_entity_id = starting_verb_id($in['in_outcome']);
+
+            if(!$in_verb_entity_id){
 
                 echo '<a href="/intents/'.$in['in_id'].'">'.$in['in_outcome'].'</a>';
 
@@ -43,6 +46,10 @@ class Cron extends CI_Controller
                 }
 
                 echo '<br />';
+            } else {
+                $this->Database_model->fn___in_update($in['in_id'], array(
+                    'in_verb_entity_id' => $in_verb_entity_id
+                ), true, 1);
             }
         }
 
