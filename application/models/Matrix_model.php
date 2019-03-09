@@ -333,16 +333,16 @@ class Matrix_model extends CI_Model
             } elseif ($domain_analysis['url_file_extension']) {
 
                 //URL ends with a file extension, try to detect file type based on that extension:
-                if(in_array($domain_analysis['url_file_extension'], array('jpeg','jpg','png','gif','tiff','bmp','img','svg'))){
+                if(in_array($domain_analysis['url_file_extension'], $this->config->item('image_extensions'))){
                     //Image URL
                     $tr_type_entity_id = 4260;
-                } elseif(in_array($domain_analysis['url_file_extension'], array('pcm','wav','aiff','mp3','aac','ogg','wma','flac','alac','m4a','m4b','m4p'))){
+                } elseif(in_array($domain_analysis['url_file_extension'], $this->config->item('audio_extensions'))){
                     //Audio URL
                     $tr_type_entity_id = 4259;
-                } elseif(in_array($domain_analysis['url_file_extension'], array('mp4','m4v','m4p','avi','mov','flv','f4v','f4p','f4a','f4b','wmv','webm','mkv','vob','ogv','ogg','3gp','mpg','mpeg','m2v'))){
+                } elseif(in_array($domain_analysis['url_file_extension'], $this->config->item('video_extensions'))){
                     //Video URL
                     $tr_type_entity_id = 4258;
-                } elseif(in_array($domain_analysis['url_file_extension'], array('pdc','doc','docx','tex','txt','7z','rar','zip','csv','sql','tar','xml','exe'))){
+                } elseif(in_array($domain_analysis['url_file_extension'], $this->config->item('file_extensions'))){
                     //File URL
                     $tr_type_entity_id = 4261;
                 }

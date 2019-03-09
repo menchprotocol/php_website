@@ -177,7 +177,7 @@
 
 
                             <!-- Entity Icon -->
-                            <span class="mini-header">Entity Icon:</span>
+                            <span class="mini-header">Entity Icon: <a href="https://fontawesome.com/icons" target="_blank" data-toggle="tooltip" title="<?= is_valid_icon(null, true) ?> Click to see Font-Awesome Icons in a new window." data-placement="top"><i class="fal fa-info-circle"></i></a></span>
                             <div class="form-group label-floating is-empty"
                                  style="margin:1px 0 10px;">
                                 <div class="input-group border" data-toggle="tooltip" title="Entity Icon" data-placement="top">

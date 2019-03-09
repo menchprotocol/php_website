@@ -1800,7 +1800,9 @@ function fn___echo_en($en, $level, $is_parent = false)
         'tr_parent_entity_id' => $en['en_id'], //Entity Referenced in message content
     ), array(), 0, 0, array(), 'COUNT(tr_id) AS total_messages');
 
-    $ui .= '<a class="badge badge-secondary white-secondary '.( $level==0 ? '' . fn___echo_advance() . '' : '' ).'" href="#entitymessages-' . $en['en_id'] . '" onclick="' . ( $messages[0]['total_messages'] == 0 ? 'alert(\'No Intent Notes found that reference this entity\')' : ( $level==0 ? 'alert(\'Cannot manage here. Go to the entity to manage.\')' : 'fn___load_en_messages('.$en['en_id'].')' ) ) . '" style="width:40px; margin-left:5px;" data-toggle="tooltip" data-placement="top" title="Entity References within Intent Notes"><span class="btn-counter">' . $messages[0]['total_messages'] . '</span><i class="fas fa-comment-plus"></i></a>';
+    //Only show in non-advance mode if we have messages:
+    $ui .= '<a class="badge badge-secondary white-secondary '.( $level==0 || $messages[0]['total_messages'] == 0 ? fn___echo_advance() : '' ) . '" href="#entitymessages-' . $en['en_id'] . '" onclick="' . ( $messages[0]['total_messages'] == 0 ? 'alert(\'No Intent Notes found that reference this entity\')' : ( $level==0 ? 'alert(\'Cannot manage here. Go to the entity to manage.\')' : 'fn___load_en_messages('.$en['en_id'].')' ) ) . '" style="width:40px; margin-left:5px;" data-toggle="tooltip" data-placement="top" title="Entity References within Intent Notes"><span class="btn-counter">' . $messages[0]['total_messages'] . '</span><i class="fas fa-comment-plus"></i></a>';
+
 
 
 

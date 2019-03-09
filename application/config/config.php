@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  *
  * Global variables used throughout the platform.
- * use-case format: $this->config->item('in_strategy_name')
+ * use-case format: $this->config->item('image_extensions')
  *
  */
 
@@ -16,8 +16,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //UI Display:
 $config['app_version']              = '0.7691'; //Cache buster in URLs for static js/css files
-$config['en_per_page']              = 50; //Limits the maximum entities loaded per page
-
+$config['en_per_page']              = 100; //Limits the maximum entities loaded per page
 
 //Intents:
 $config['in_mission_id']            = 7766; //expand human potential
@@ -32,6 +31,12 @@ $config['en_platform_miner_id']     = 2738; //Mench. This is the entity that wou
 
 //App Functionality:
 $config['enable_algolia']           = true; //Currently reached our monthly free quota
+
+//URL detection based on ending file extensions:
+$config['image_extensions']         = array('jpeg','jpg','png','gif','tiff','bmp','img','svg');
+$config['audio_extensions']         = array('pcm','wav','aiff','mp3','aac','ogg','wma','flac','alac','m4a','m4b','m4p');
+$config['video_extensions']         = array('mp4','m4v','m4p','avi','mov','flv','f4v','f4p','f4a','f4b','wmv','webm','mkv','vob','ogv','ogg','3gp','mpg','mpeg','m2v');
+$config['file_extensions']          = array('pdc','doc','docx','tex','txt','7z','rar','zip','csv','sql','tar','xml','exe');
 
 //TODO Update to mench.com when triple is ready:
 $config['algolia_remote']           = 'https://mench.co'; //The domain that will be called to sync updates when editing on local

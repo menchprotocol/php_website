@@ -424,7 +424,8 @@ class Intents extends CI_Controller
 
 
 
-
+        //calculate Verb ID:
+        $_POST['in_verb_entity_id'] = starting_verb_id($_POST['in_outcome']);
 
         //Prep new variables:
         $in_update = array(
@@ -432,6 +433,7 @@ class Intents extends CI_Controller
             'in_outcome' => trim($_POST['in_outcome']),
             'in_seconds_cost' => intval($_POST['in_seconds_cost']),
             'in_requirement_entity_id' => intval($_POST['in_requirement_entity_id']),
+            'in_verb_entity_id' => $_POST['in_verb_entity_id'],
             'in_dollar_cost' => doubleval($_POST['in_dollar_cost']),
             'in_type' => intval($_POST['in_type']),
         );
@@ -473,10 +475,8 @@ class Intents extends CI_Controller
 
                 } elseif ($key == 'in_outcome') {
 
-                    $in_verb_entity_id = starting_verb_id($value);
-
                     //Check to make sure starts with a verb:
-                    if(!$in_verb_entity_id){
+                    if($in_update['in_verb_entity_id'] < 1){
                         //Not a acceptable starting word:
                         return fn___echo_json(array(
                             'status' => 0,

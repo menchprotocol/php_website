@@ -608,6 +608,12 @@ class Entities extends CI_Controller
                 'status' => 0,
                 'message' => 'Name is longer than the allowed ' . $this->config->item('en_name_max') . ' characters. Shorten and try again.',
             ));
+        } elseif(!isset($_POST['en_icon']) || !is_valid_icon($_POST['en_icon'])){
+            //Check if valid icon:
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid icon: '. is_valid_icon(null, true),
+            ));
         }
 
         $tr_has_updated = false;
@@ -623,7 +629,7 @@ class Entities extends CI_Controller
         );
 
         //Check to make sure name is not duplicate:
-        $duplicate_name_ens = $this->Database_model->fn___in_fetch(array(
+        $duplicate_name_ens = $this->Database_model->fn___en_fetch(array(
             'en_id !=' => $_POST['en_id'],
             'en_status >=' => 0,
             'LOWER(en_name)' => strtolower($en_update['en_name']),
@@ -635,6 +641,7 @@ class Entities extends CI_Controller
                 'message' => 'Name ['.$en_update['en_name'].'] already in use by entity @'.$duplicate_name_ens[0]['en_id'],
             ));
         }
+
 
         //Is this being removed?
         if ($en_update['en_status'] < 0 && !($en_update['en_status'] == $ens[0]['en_status'])) {
