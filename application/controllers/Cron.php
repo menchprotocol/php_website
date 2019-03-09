@@ -46,6 +46,14 @@ class Cron extends CI_Controller
 
                 }
 
+                if(!$fixed){
+                    //Remove icon:
+                    $fixed = true;
+                    $this->Database_model->fn___en_update($en['en_id'], array(
+                        'en_icon' => null,
+                    ));
+                }
+
                 echo '<a href="/entities/'.$en['en_id'].'">'.htmlentities($en['en_icon']).'</a> '.( $fixed ? ' FIXED' : '' ).' <br />';
 
             }
