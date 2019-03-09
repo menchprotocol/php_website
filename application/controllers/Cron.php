@@ -22,10 +22,10 @@ class Cron extends CI_Controller
     //30 3 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron e_score_recursive
 
 
-    function name_updates($limit, $remove = 0){
+    function name_updates($limit, $adjust = 0){
 
         //Intent verb start
-        foreach($this->Database_model->fn___in_fetch(array('in_status >' => 0), array(), $limit) as $in){
+        foreach($this->Database_model->fn___in_fetch(array('in_status >=' => 0), array(), $limit) as $in){
 
             $in_verb_entity_id = starting_verb_id($in['in_outcome']);
 
@@ -33,7 +33,7 @@ class Cron extends CI_Controller
 
                 echo '<a href="/intents/'.$in['in_id'].'">'.$in['in_outcome'].'</a>';
 
-                if($remove){
+                if($adjust){
 
                     $this->Database_model->fn___in_update($in['in_id'], array(
                         'in_status' => -1
@@ -46,7 +46,7 @@ class Cron extends CI_Controller
                 }
 
                 echo '<br />';
-            } else {
+            } elseif($adjust) {
                 $this->Database_model->fn___in_update($in['in_id'], array(
                     'in_verb_entity_id' => $in_verb_entity_id
                 ), true, 1);
