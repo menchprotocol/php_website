@@ -105,9 +105,29 @@
             $dropdown_options = '';
             $input_options = '';
             foreach ($this->config->item('en_all_4997') as $mass_action_en_id => $mass_action_en) {
+
                 $dropdown_options .= '<option value="' . $mass_action_en_id . '">' .$mass_action_en['m_name'] . '</option>';
+
+                if(in_array($mass_action_en_id, array(5000, 5001))){
+
+                    //String Find>>Replace
+
+                } elseif($mass_action_en_id == 5003){
+
+                    //Entity Status Find>>Replace
+
+                } elseif($mass_action_en_id == 5865){
+
+                    //Transaction Status Find>>Replace
+
+                } else {
+
+                    //String command:
+                    $input_options .= '<span id="mass_id_'.$mass_action_en_id.'" class="inline-block hidden mass_action_item"><input type="text" name="mass_value1_'.$mass_action_en_id.'" placeholder="String..." class="form-control border"></span>';
+                }
                 //modify_text
-                $input_options .= '<span id="mass_id_'.$mass_action_en_id.'" class="inline-block hidden mass_action_item"><input type="text" name="mass_value_'.$mass_action_en_id.'" placeholder="'.$mass_action_en['m_desc'].'" class="form-control border"></span>';
+
+
             }
 
             echo '<select class="form-control border inline-block" name="mass_action_en_id" id="set_mass_action">';

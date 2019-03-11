@@ -263,18 +263,26 @@ function is_valid_icon($string, $only_return_requirements = false){
 
     //See if this is an image URL:
     if ($is_img) {
+
         //Image URLs are valid:
         return true;
+
     } elseif(substr($string, 0, 12) == '<i class="fa' && substr_count($string , ' fa-')>=1 && substr_count($string , ' fa-')<=2 && substr($string, -6) == '"></i>'){
+
         //FontAwesome icons are supported https://fontawesome.com/icons
         return true;
+
     } elseif(is_emojis_only($string)){
+
         //Image URLs are valid:
         //TODO Prevent the submission of multiple emojis as I did not know how to check for that...
         return true;
+
     } else {
+
         //Not valid:
         return false;
+
     }
 
 }

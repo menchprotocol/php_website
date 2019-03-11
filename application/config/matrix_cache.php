@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-03-08 21:42:09 PST
+//Generated 2019-03-11 12:02:22 PST
 
 //Advance Mode:
 $config['en_ids_5005'] = array(4232, 4233, 4234, 4602, 4604, 4741, 4759, 4997, 5006);
@@ -74,35 +74,41 @@ $config['en_all_5005'] = array(
 );
 
 //Mass Updated Entities:
-$config['en_ids_4997'] = array(4998, 4999, 5000, 5001, 5003);
+$config['en_ids_4997'] = array(4998, 4999, 5000, 5001, 5003, 5865);
 $config['en_all_4997'] = array(
     4998 => array(
-        'm_icon' => '<i class="fal fa-list-alt"></i>',
+        'm_icon' => '',
         'm_name' => 'Add Prefix String',
         'm_desc' => 'string',
         'm_parents' => array(4997),
     ),
     4999 => array(
-        'm_icon' => '<i class="fal fa-list-alt"></i>',
+        'm_icon' => '',
         'm_name' => 'Add Postfix String',
         'm_desc' => 'string',
         'm_parents' => array(4997),
     ),
     5000 => array(
-        'm_icon' => '<i class="fal fa-list-alt"></i>',
+        'm_icon' => '',
         'm_name' => 'Replace Entity Matching String',
         'm_desc' => 'find>>replace',
         'm_parents' => array(4997),
     ),
     5001 => array(
-        'm_icon' => '<i class="fal fa-list-alt"></i>',
+        'm_icon' => '',
         'm_name' => 'Replace Transaction Matching String',
         'm_desc' => 'find>>replace',
         'm_parents' => array(4997),
     ),
     5003 => array(
-        'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Update Matching Status',
+        'm_icon' => '',
+        'm_name' => 'Update Matching Entity Status',
+        'm_desc' => '1>>3 or *>>2',
+        'm_parents' => array(4997),
+    ),
+    5865 => array(
+        'm_icon' => '',
+        'm_name' => 'Update Matching Transaction Status',
         'm_desc' => '1>>3 or *>>2',
         'm_parents' => array(4997),
     ),

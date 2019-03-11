@@ -552,8 +552,12 @@ class Matrix_model extends CI_Model
     }
 
 
-    function fn___en_mass_update($en_id, $action_en_id, $action_command)
+    function fn___en_mass_update($en_id, $action_en_id, $action_command1, $action_command2)
     {
+
+        //Fetch statuses:
+        $fixed_fields = $this->config->item('fixed_fields');
+        $en_all_4997 = $this->config->item('en_all_4997');
 
         if(!in_array($action_en_id, $this->config->item('en_ids_4997'))) {
 
@@ -562,45 +566,35 @@ class Matrix_model extends CI_Model
                 'message' => 'Unknown mass action',
             );
 
-        } elseif(strlen(trim($action_command)) < 1){
+        } elseif(strlen(trim($action_command1)) < 1){
 
             return array(
                 'status' => 0,
                 'message' => 'Missing mass action command',
             );
 
-        } elseif(in_array($action_en_id, array(5000, 5001, 5003))){
+        } elseif(in_array($action_en_id, array(5000, 5001, 5003, 5865)) && strlen(trim($action_command2)) < 1) {
 
-            //Require find>>replace structure:
-            if(substr_count($action_command , '>>')!=1){
-                return array(
-                    'status' => 0,
-                    'message' => 'Mass action command must contain ">>" with a ',
-                );
-            }
+            //Require 2nd command as well:
+            return array(
+                'status' => 0,
+                'message' => 'Missing second mass action command',
+            );
 
-            //Should give us the two parts:
-            $fixed_fields = $this->config->item('fixed_fields');
-            $command_parts = explode('>>', $action_command);
-            if(strlen($command_parts[0])<1){
-                return array(
-                    'status' => 0,
-                    'message' => 'Missing first part of find>>replace command',
-                );
-            } elseif(strlen($command_parts[1])<1){
-                return array(
-                    'status' => 0,
-                    'message' => 'Missing second part of find>>replace command',
-                );
-            } elseif($action_en_id==5003 && !in_array($command_parts[0], $fixed_fields['en_status'])){
+        } elseif($action_en_id==5003 && !(($action_command1=='*' || in_array($action_command1, $fixed_fields['en_status'])) && (in_array($action_command2, $fixed_fields['en_status'])))){
 
-            }
+            return array(
+                'status' => 0,
+                'message' => 'Invalid command for '.$en_all_4997[$action_en_id]['m_name'],
+            );
 
-        } else {
-            //Require a replacement >>
-            if(substr_count()){
+        } elseif($action_en_id==5865 && !(($action_command1=='*' || in_array($action_command1, $fixed_fields['tr_status'])) && (in_array($action_command2, $fixed_fields['tr_status'])))){
 
-            }
+            return array(
+                'status' => 0,
+                'message' => 'Invalid command for '.$en_all_4997[$action_en_id]['m_name'],
+            );
+
         }
 
 
