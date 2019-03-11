@@ -1761,7 +1761,7 @@ function fn___echo_en($en, $level, $is_parent = false)
     //Right content:
     $ui .= '<span class="pull-right" style="padding-top:2px;">';
 
-    //Do we have entity parents loaded in our data-set?
+    //Do we have entity parents loaded in our data-set? If not, load it:
     if (!isset($en['en__parents'])) {
         //Fetch parents at this point:
         $en['en__parents'] = $CI->Database_model->fn___tr_fetch(array(
@@ -1775,7 +1775,7 @@ function fn___echo_en($en, $level, $is_parent = false)
     //Loop through parents and only show those that have en_icon set:
     $ui .= '<span class="' . fn___echo_advance() . '">';
     foreach ($en['en__parents'] as $en_parent) {
-        $ui .= ' &nbsp;<a href="/entities/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['tr_content']) > 0 ? ' = ' . $en_parent['tr_content'] : '') . '" data-placement="top" class="en_child_icon_' . $en_parent['en_id'] . '">' . (strlen($en_parent['en_icon']) > 0 ? $en_parent['en_icon'] : '<i class="fas fa-at grey-at"></i>' ) . '</a>';
+        $ui .= ' &nbsp;<a href="/entities/' . $en_parent['en_id'] . '" data-toggle="tooltip" title="' . $en_parent['en_name'] . (strlen($en_parent['tr_content']) > 0 ? ' = ' . $en_parent['tr_content'] : '') . '" data-placement="top" class="parent-icon en_child_icon_' . $en_parent['en_id'] . '">' . (strlen($en_parent['en_icon']) > 0 ? $en_parent['en_icon'] : '<i class="fas fa-at grey-at"></i>' ) . '</a>';
     }
     $ui .= '</span>';
 

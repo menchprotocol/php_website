@@ -78,134 +78,32 @@ class Entities extends CI_Controller
             $en_id = $this->config->item('en_start_here_id');
         }
 
-        $session_en = fn___en_auth(null, true); //Just be logged in to browse
+        $session_en = fn___en_auth(array(1308), true); //Just be logged in to browse
 
-        //Fetch data:
+        //Validate entity ID and fetch data:
         $ens = $this->Database_model->fn___en_fetch(array(
             'en_id' => $en_id,
         ), array('en__child_count', 'en__children', 'en__actionplans'));
-
         if (count($ens) < 1) {
             return fn___redirect_message('/entities', '<div class="alert alert-danger" role="alert">Invalid Entity ID</div>');
         }
 
 
-        //Do we have any mass actions?
-        if (isset($_POST['mass_action_en_id']) && in_array($_POST['mass_action_en_id'], $this->config->item('en_ids_4997'))) {
+        //Do we have any mass action to process here?
+        if (isset($_POST['mass_action_en_id']) && isset($_POST['mass_value_'.$_POST['mass_action_en_id']])) {
 
-            fn___echo_json($_POST);
-            return false;
+            //Process mass action:
+            $process_mass_action = $this->Matrix_model->fn___en_mass_update($en_id, intval($_POST['mass_action_en_id']), $_POST['mass_value_'.$_POST['mass_action_en_id']]);
 
-            //Fetch children:
-            $children = $this->Database_model->fn___tr_fetch(array(
-                'tr_parent_entity_id' => $en_id,
-                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-                'tr_status >=' => 0, //New+
-                'en_status >=' => 0, //New+
-            ), array('en_child'), 0);
-
-            //Validate inputs:
-            if (!isset($_POST['modify_text'])) {
-                $this->session->set_flashdata('flash_message', '<div class="alert alert-danger" role="alert">Missing string</div>');
-            } elseif (!array_key_exists($_POST['mass_action_en_id'], $this->config->item('en_mass_actions'))) {
-                $this->session->set_flashdata('flash_message', '<div class="alert alert-danger" role="alert">Unknown action type</div>');
-            } elseif (count($children) < 1) {
-                $this->session->set_flashdata('flash_message', '<div class="alert alert-danger" role="alert">No child entities found</div>');
-            } else {
-
-                $applied_success = 0;
-
-                //Process request:
-                foreach ($children as $en) {
-
-                    //Logic here must match items in en_mass_actions config variable
-
-                    //What is the action?
-                    if ($_POST['mass_action_en_id'] == 'replace_icon' && !($en['en_icon'] == trim($_POST['modify_text']))) {
-                        //Update with new icon:
-                        $this->Database_model->fn___en_update($en['en_id'], array(
-                            'en_icon' => trim($_POST['modify_text']),
-                        ), true, $session_en['en_id']);
-
-                        $applied_success++;
-                    } elseif ($_POST['mass_action_en_id'] == 'prefix_add') {
-
-                        //Update with new icon:
-                        $this->Database_model->fn___en_update($en['en_id'], array(
-                            'en_name' => $_POST['modify_text'] . $en['en_name'],
-                        ), true, $session_en['en_id']);
-
-                        $applied_success++;
-
-                    } elseif ($_POST['mass_action_en_id'] == 'postfix_add') {
-
-                        //Update with new icon:
-                        $this->Database_model->fn___en_update($en['en_id'], array(
-                            'en_name' => $en['en_name'] . $_POST['modify_text'],
-                        ), true, $session_en['en_id']);
-
-                        $applied_success++;
-
-                    } elseif ($_POST['mass_action_en_id'] == 'replace_match' && substr_count($_POST['modify_text'], '>>') == 1) {
-
-                        //Validate input:
-                        $parts = explode('>>', $_POST['modify_text']);
-
-                        if (count($parts) == 2 && strlen($parts[0]) > 0 && substr_count($en['en_name'], $parts[0]) > 0) {
-
-                            //Update with new icon:
-                            $this->Database_model->fn___en_update($en['en_id'], array(
-                                'en_name' => str_replace($parts[0], $parts[1], $en['en_name']),
-                            ), true, $session_en['en_id']);
-
-                            $applied_success++;
-
-                        }
-
-                    } elseif ($_POST['mass_action_en_id'] == 'replace_tr_match' && substr_count($_POST['modify_text'], '>>') == 1) {
-
-                        //Validate input:
-                        $parts = explode('>>', $_POST['modify_text']);
-
-                        if (count($parts) == 2 && strlen($parts[0]) > 0 && substr_count($en['tr_content'], $parts[0]) > 0) {
-
-                            //Update with new icon:
-                            $this->Database_model->fn___tr_update($en['tr_id'], array(
-                                'tr_content' => str_replace($parts[0], $parts[1], $en['tr_content']),
-                            ), $session_en['en_id']);
-
-                            $applied_success++;
-
-                        }
-
-                    }
-
-                }
-
-                //How did the mass update go?
-                if ($applied_success > 0) {
-                    $this->session->set_flashdata('flash_message', '<div class="alert alert-success" role="alert">Successfully updated ' . $applied_success . '/' . count($children) . ' entities</div>');
-                } else {
-                    $this->session->set_flashdata('flash_message', '<div class="alert alert-warning" role="alert">Nothing was updated</div>');
-                }
-            }
-
-            //Log mass entity edit transaction:
-            $this->Database_model->fn___tr_create(array(
-                'tr_miner_entity_id' => $session_en['en_id'],
-                'tr_type_entity_id' => 4997, //Miner Mass Updated Entities
-                'tr_child_entity_id' => $en_id,
-                'tr_metadata' => array(
-                    'payload' => $_POST,
-                    'entities_total' => count($children),
-                    'entities_updated' => $applied_success,
-                ),
-            ));
+            //Pass-on results to UI:
+            $message = '<div class="alert '.( $process_mass_action['status'] ? 'alert-sucess' : 'alert-danger' ).'" role="alert">'.$process_mass_action['message'].'</div>';
 
         } else {
 
             //No mass action, just viewing...
             //Update session count and log transaction:
+            $message = null; //No mass-action message to be appended...
+
             $new_order = ( $this->session->userdata('miner_session_count') + 1 );
             $this->session->set_userdata('miner_session_count', $new_order);
             $this->Database_model->fn___tr_create(array(
@@ -220,11 +118,13 @@ class Entities extends CI_Controller
         //Load views:
         $this->load->view('view_shared/matrix_header', array(
             'title' => $ens[0]['en_name'] . ' | Entities',
+            'message' => $message, //Possible mass-action message for UI:
         ));
         $this->load->view('view_entities/en_miner_ui', array(
             'entity' => $ens[0],
         ));
         $this->load->view('view_shared/matrix_footer');
+
     }
 
 

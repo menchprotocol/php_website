@@ -15,7 +15,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 
 //UI Display:
-$config['app_version']              = '0.7691'; //Cache buster in URLs for static js/css files
+$config['app_version']              = '0.7692'; //Cache buster in URLs for static js/css files
 $config['en_per_page']              = 100; //Limits the maximum entities loaded per page
 
 //Intents:
@@ -206,13 +206,11 @@ $config['fixed_fields']             = array(
                                                 's_name' => 'AND',
                                                 's_desc' => 'AND Intents are completed when ALL their children are complete',
                                                 's_icon' => '<i class="fal fa-sitemap"></i>',
-                                                's_reserved_icon' => 'fa-sitemap', //Entitie Icons cannot include this string
                                             ),
                                             1 => array(
                                                 's_name' => 'OR',
                                                 's_desc' => 'OR Intents are completed when ANY of their children are complete',
                                                 's_icon' => '<i class="fal fa-code-merge"></i>',
-                                                's_reserved_icon' => 'fa-code-merge', //Entitie Icons cannot include this string
                                             ),
                                         ),
 
