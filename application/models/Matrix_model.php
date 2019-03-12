@@ -83,9 +83,9 @@ class Matrix_model extends CI_Model
 
         if (count($actionplans) > 0 && in_array($actionplans[0]['tr_status'], $this->config->item('tr_status_incomplete'))) {
 
-            //Inform user that they are now complete with all tasks:
+            //Inform user that they are now complete with all steps:
             $this->Chat_model->fn___dispatch_message(
-                'Congratulations for completing your Action Plan 🎉 Over time I will keep sharing new tasks that will help you to ' . $actionplans[0]['in_outcome'] . ' 🙌 You can, at any time, stop updates on your Action Plans by saying "unsubscribe".',
+                'Congratulations for completing your Action Plan 🎉 Over time I will keep sharing new steps that will help you to ' . $actionplans[0]['in_outcome'] . ' 🙌 You can, at any time, stop updates on your Action Plans by saying "unsubscribe".',
                 array('en_id' => $actionplans[0]['tr_parent_entity_id']),
                 true,
                 array(),
@@ -1213,7 +1213,7 @@ class Matrix_model extends CI_Model
                 //Yes we are, create a cache of this Intent link to be added to their Action Plan:
                 $this->Database_model->fn___tr_create(array(
                     'tr_status' => 0, //New
-                    'tr_type_entity_id' => 4559, //Action Plan Task
+                    'tr_type_entity_id' => 4559, //Action Plan Step
                     'tr_miner_entity_id' => $actionplan['tr_parent_entity_id'], //Miner credit, in this case the student
                     'tr_parent_entity_id' => $actionplan['tr_parent_entity_id'], //Belongs to this Student
                     'tr_parent_intent_id' => $this_in['tr_parent_intent_id'],

@@ -739,7 +739,7 @@ function fn___in_modify_save() {
                         //Hide editing box:
                         $('#modifybox').addClass('hidden');
 
-                        //Resort all Tasks to illustrate changes on UI:
+                        //Resort all Steps to illustrate changes on UI:
                         fn___in_sort_save(parseInt($('.intent_line_' + modify_data['in_id']).attr('parent-intent-id')), modify_data['level']);
 
                     }, 610);
@@ -870,7 +870,7 @@ function fn___in_link_or_create(in_parent_id, is_parent, next_level, in_link_chi
             if (next_level == 2) {
 
                 if(!is_parent){
-                    //Adjust the Task count:
+                    //Adjust the Step count:
                     fn___in_sort_save(0, 2);
                 }
 
