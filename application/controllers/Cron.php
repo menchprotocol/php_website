@@ -22,6 +22,48 @@ class Cron extends CI_Controller
     //30 3 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron e_score_recursive
 
 
+    function clear_removed(){
+
+        //A function to delete removed intents, entities and transactions:
+        $stats = array(
+            'deleted_ins' => 0,
+            'deleted_ens' => 0,
+            'deleted_trs' => 0,
+        );
+
+        //Removed intents:
+        foreach($this->Database_model->fn___in_fetch(array(
+            'in_status' => -1, //Removed
+        )) as $in){
+
+            //Remove intent transactions:
+            $this->db->query("DELETE from table_ledger WHERE (tr_parent_intent_id=".$in['in_id']." OR tr_child_intent_id=".$in['in_id'].")");
+            $stats['deleted_trs'] += $this->db->affected_rows();
+
+            //Remove intent:
+            $this->db->query("DELETE from table_intents WHERE in_id=".$in['in_id']);
+            $stats['deleted_ins'] += $this->db->affected_rows();
+
+        }
+
+        //Removed entities:
+        foreach($this->Database_model->fn___en_fetch(array(
+            'en_status' => -1, //Removed
+        )) as $en){
+
+            //Remove entity transactions:
+            $this->db->query("DELETE from table_ledger WHERE (tr_parent_entity_id=".$en['en_id']." OR tr_child_entity_id=".$en['en_id'].")");
+            $stats['deleted_trs'] += $this->db->affected_rows();
+
+            //Remove entity:
+            $this->db->query("DELETE from table_entities WHERE en_id=".$en['en_id']);
+            $stats['deleted_ens'] += $this->db->affected_rows();
+
+        }
+
+        fn___echo_json($stats);
+    }
+
     function name_updates($limit, $adjust = 0){
 
         //Intent verb start
