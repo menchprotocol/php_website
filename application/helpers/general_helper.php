@@ -242,7 +242,7 @@ function is_valid_icon($string, $only_return_requirements = false){
     if($only_return_requirements){
 
         //This is a text description of what this function is checking for:
-        return 'If set, must be a single emoji OR &lt;img src=&quot;URL&quot;&gt; where URL ends with .'.join(' .', $CI->config->item('image_extensions')).' OR &lt;i class=&quot;CODE&quot;&gt;&lt;/i&gt; where CODE is a font-awesome icon.';
+        return 'If set, must be a single emoji OR &lt;img src=&quot;URL&quot;&gt; where URL is an image OR &lt;i class=&quot;CODE&quot;&gt;&lt;/i&gt; where CODE is a font-awesome icon.';
 
     } elseif(strlen($string)==0){
 
@@ -253,13 +253,7 @@ function is_valid_icon($string, $only_return_requirements = false){
 
 
     //Check if this is an HTML image tag:
-    $is_img = (substr($string, 0, 10) == '<img src="' && substr($string, -2) == '">');
-    if($is_img){
-        //See if URL is valid:
-        $url_entity = $CI->Matrix_model->fn___sync_url(fn___one_two_explode('<img src="','">',$string));
-        $is_img = (isset($url_entity['tr_type_entity_id']) && $url_entity['tr_type_entity_id']==4260 /* Image */);
-    }
-
+    $is_img = (substr($string, 0, 10) == '<img src="' && substr($string, -2) == '">' && filter_var(fn___one_two_explode('<img src="','">',$string), FILTER_VALIDATE_URL));
 
     //See if this is an image URL:
     if ($is_img) {
