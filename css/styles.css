@@ -1459,7 +1459,7 @@ h5, .h5 {
     padding: 0;
 }
 
-#c_tasks_list h4 > a {
+#c_steps_list h4 > a {
     color: #2f2739;
     padding-left: 5px;
 }
@@ -2977,7 +2977,7 @@ a .badge {
     cursor: pointer;
 }
 
-.us_task_list {
+.us_step_list {
     border-left: 1px solid #2f2739;
     padding-left: 8px;
     text-align: left;

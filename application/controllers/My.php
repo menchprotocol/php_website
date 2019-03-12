@@ -96,7 +96,7 @@ class My extends CI_Controller
         //Do we have a use session?
         if ($actionplan_tr_id > 0 && $in_id > 0) {
             //Yes! It seems to be a desktop login:
-            $filters['tr_type_entity_id'] = 4559; //Action Plan Task
+            $filters['tr_type_entity_id'] = 4559; //Action Plan Step
             $filters['tr_parent_transaction_id'] = $actionplan_tr_id;
             $filters['tr_child_intent_id'] = $in_id;
         } elseif (!$empty_session) {
@@ -157,14 +157,14 @@ class My extends CI_Controller
                 //We have a single Action Plan Intent to load:
                 //Now we need to load the action plan:
                 $actionplan_parents = $this->Database_model->fn___tr_fetch(array(
-                    'tr_type_entity_id' => 4559, //Action Plan Task
+                    'tr_type_entity_id' => 4559, //Action Plan Step
                     'tr_parent_transaction_id' => $actionplan_tr_id,
                     'in_status >=' => 2, //Published+ Intents
                     'tr_child_intent_id' => $in_id,
                 ), array('in_parent'));
 
                 $actionplan_children = $this->Database_model->fn___tr_fetch(array(
-                    'tr_type_entity_id' => 4559, //Action Plan Task
+                    'tr_type_entity_id' => 4559, //Action Plan Step
                     'tr_parent_transaction_id' => $actionplan_tr_id,
                     'in_status >=' => 2, //Published+ Intents
                     'tr_parent_intent_id' => $in_id,

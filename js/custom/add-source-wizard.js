@@ -45,11 +45,9 @@ $(document).ready(function() {
     //Show/Hide parent descriptions when checked:
     $('.source_parent_ens').change(function() {
         if($(this).is(":checked")) {
-            $('#en_desc_' + $(this).val()).removeClass('hidden');
-            $('#en_cntr_' + $(this).val()).removeClass('hidden');
+            $('.extra_info_' + $(this).val()).removeClass('hidden');
         } else {
-            $('#en_desc_' + $(this).val()).addClass('hidden');
-            $('#en_cntr_' + $(this).val()).addClass('hidden');
+            $('.extra_info_' + $(this).val()).addClass('hidden');
         }
     });
 
@@ -68,7 +66,7 @@ $(document).ready(function() {
     textInput.onkeyup = function (e) {
 
         // Clear the timeout if it has already been set.
-        // This will prevent the previous task from executing
+        // This will prevent the previous step from executing
         // if it has been less than <MILLISECONDS>
         clearTimeout(timeout);
 

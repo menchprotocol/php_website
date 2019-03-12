@@ -798,7 +798,7 @@ function fn___echo_tree_sources($in, $fb_messenger_format = false, $expand_mode 
 }
 
 
-function fn___echo_tree_tasks($in, $fb_messenger_format = 0, $expand_mode = false)
+function fn___echo_tree_steps($in, $fb_messenger_format = 0, $expand_mode = false)
 {
 
     /*
@@ -816,7 +816,7 @@ function fn___echo_tree_tasks($in, $fb_messenger_format = 0, $expand_mode = fals
 
     $metadata['in__flat_unique_published_count']--;
 
-    $pitch = 'Action Plan contains ' . $metadata['in__flat_unique_published_count'] . ' tasks to ' . $in['in_outcome'] . '.';
+    $pitch = 'Action Plan contains ' . $metadata['in__flat_unique_published_count'] . ' steps to ' . $in['in_outcome'] . '.';
 
     if ($fb_messenger_format) {
         return '🚩 ' . $pitch . "\n";
@@ -827,7 +827,7 @@ function fn___echo_tree_tasks($in, $fb_messenger_format = 0, $expand_mode = fals
             <div class="panel-heading" role="tab" id="heading' . $id . '">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $id . '">
-                    <i class="fas" style="transform:none !important;">✅</i> ' . $metadata['in__flat_unique_published_count'] . ' Tasks<i class="fal fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
+                    <i class="fas" style="transform:none !important;">✅</i> ' . $metadata['in__flat_unique_published_count'] . ' Steps<i class="fal fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
                 </a>
             </h4>
         </div>
@@ -1444,7 +1444,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     if(0){
         //TODO activate later...
         $count_in_actionplans = $CI->Database_model->fn___tr_fetch(array(
-            'tr_type_entity_id' => 4559, //Action Plan Task
+            'tr_type_entity_id' => 4559, //Action Plan Step
             'tr_child_intent_id' => $in['in_id'], //For this Intent
         ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
 
@@ -1452,7 +1452,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
             //Yes, this intent has been added to some Action Plans, let's see what % is completed so far:
             $count_in_actionplans_complete = $CI->Database_model->fn___tr_fetch(array(
-                'tr_type_entity_id' => 4559, //Action Plan Task
+                'tr_type_entity_id' => 4559, //Action Plan Step
                 'tr_child_intent_id' => $in['in_id'], //For this Intent
                 'tr_status NOT IN (' . join(',', $CI->config->item('tr_status_incomplete')) . ')' => null, //completed
             ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');

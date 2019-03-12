@@ -186,6 +186,7 @@ class Chat_model extends CI_Model
          *
          * */
 
+        $is_being_modified = ( $message_type_en_id > 0 ); //IF $message_type_en_id > 0 means we're adding/editing and need to do extra checks
 
         //Start with basic input validation:
         if (strlen($input_message) < 1) {
@@ -806,25 +807,68 @@ class Chat_model extends CI_Model
                 'in_id' => $message_in_id,
                 'in_status >=' => 0, //New+
             ));
-
-            $upvote_parent_ins = $this->Database_model->fn___in_fetch(array(
-                'in_id' => $msg_references['ref_intents'][0], //Note: We will only have a single reference per message
-                'in_status >=' => 0, //New+
-            ));
-
             if (count($upvote_child_ins) < 1) {
                 return array(
                     'status' => 0,
                     'message' => 'The referenced child intent #' . $message_in_id . ' not found',
                 );
-            } elseif (count($upvote_parent_ins) < 1) {
+            }
+
+
+            $upvote_parent_ins = $this->Database_model->fn___in_fetch(array(
+                'in_id' => $msg_references['ref_intents'][0], //Note: We will only have a single reference per message
+                'in_status >=' => 0, //New+
+            ));
+            if (count($upvote_parent_ins) < 1) {
                 return array(
                     'status' => 0,
                     'message' => 'The referenced parent intent #' . $msg_references['ref_intents'][0] . ' not found',
                 );
             }
 
-            //Note that currently intent references are not displayed on the landing page (Only Essential Tips are) OR messenger format
+
+            //Check up-voting restrictions:
+            if($is_being_modified){
+
+                //Entity reference must be either the miner themselves or an expert source:
+                $session_en = fn___en_auth(array(1308)); //Is miners
+                if($msg_references['ref_entities'][0] != $session_en['en_id']){
+
+                    //Reference is not the logged-in miner, let's check to make sure it's an expert source:
+                    $is_expert_sources = $this->Database_model->fn___tr_fetch(array(
+                        'tr_status >=' => 0,
+                        'tr_child_entity_id' => $msg_references['ref_entities'][0],
+                        'tr_parent_entity_id IN ('.join(',' , $this->config->item('en_ids_3000')).')' => null, //Intent Supported Verbs
+                        'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                    ));
+
+                    if(count($is_expert_sources) < 1){
+                        return array(
+                            'status' => 0,
+                            'message' => 'Voter entity must be either you OR an expert source entity belonging to @3000',
+                        );
+                    }
+                }
+
+                //Each entity can vote only once per intent correlation:
+                $duplicate_votes = $this->Database_model->fn___tr_fetch(array(
+                    'tr_status >=' => 0,
+                    'tr_parent_entity_id' => $msg_references['ref_entities'][0],
+                    'tr_parent_intent_id' => $msg_references['ref_intents'][0],
+                    'tr_child_intent_id' => $message_in_id,
+                    'tr_type_entity_id' => 4983, //Up-votes
+                ));
+                if(count($duplicate_votes) > 0){
+                    return array(
+                        'status' => 0,
+                        'message' => 'This entity has already up-voted this intent correlation and cannot cast a second identical vote.',
+                    );
+                }
+
+            }
+
+
+            //Note that currently intent references are not displayed on the landing page (Only Messages are) OR messenger format
 
             //Remove intent reference from anywhere in the message:
             $output_body_message = trim(str_replace('#' . $upvote_parent_ins[0]['in_id'], '', $output_body_message));
@@ -1275,7 +1319,7 @@ class Chat_model extends CI_Model
         //Lets fetch incomplete children of $in_id within Action Plan $actionplan_tr_id
         $actionplan_child_ins = $this->Database_model->fn___tr_fetch(array(
             'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
-            'tr_type_entity_id' => 4559, //Action Plan Task
+            'tr_type_entity_id' => 4559, //Action Plan Step
             'tr_parent_transaction_id' => $actionplan_tr_id,
             'tr_parent_intent_id' => $in_id,
         ), array('in_child'));
@@ -1406,7 +1450,7 @@ class Chat_model extends CI_Model
                 //Give option to skip:
                 $actionplan_parents = $this->Database_model->fn___tr_fetch(array(
                     'tr_parent_transaction_id' => $actionplan_tr_id,
-                    'tr_type_entity_id' => 4559, //Action Plan Task
+                    'tr_type_entity_id' => 4559, //Action Plan Step
                     'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
                     'tr_child_intent_id' => $in_id,
                 ));
@@ -1839,7 +1883,7 @@ class Chat_model extends CI_Model
                     //Send message for final confirmation with the overview of how long/difficult it would be to accomplish this intention:
                     $this->Chat_model->fn___dispatch_message(
                         'Here is an overview:' . "\n\n" .
-                        fn___echo_tree_tasks($ins[0], true) .
+                        fn___echo_tree_steps($ins[0], true) .
                         fn___echo_tree_sources($ins[0], true) .
                         fn___echo_tree_cost($ins[0], true) .
                         "\n" . 'Are you ready to ' . $ins[0]['in_outcome'] . '?',
@@ -1933,7 +1977,7 @@ class Chat_model extends CI_Model
             //Extract variables from REF:
             $input_parts = explode('_', fn___one_two_explode('SKIP-ACTIONPLAN_', '', $quick_reply_payload));
             $tr_status = intval($input_parts[0]); //It would be $tr_status=1 initial (working on) and then would change to either -1 IF skip was cancelled or 2 IF skip was confirmed.
-            $tr_id = intval($input_parts[1]); //Action Plan Task Transaction ID
+            $tr_id = intval($input_parts[1]); //Action Plan Step Transaction ID
             $skip_tr_id = intval($input_parts[2]); //Would initially be zero and would then be set to a Transaction ID when Student confirms/cancels skipping
 
 
@@ -1941,7 +1985,7 @@ class Chat_model extends CI_Model
                 //Fetch Action Plan Intent:
                 $actionplans = $this->Database_model->fn___tr_fetch(array(
                     'tr_id' => $tr_id,
-                    'tr_type_entity_id' => 4559, //Action Plan Task
+                    'tr_type_entity_id' => 4559, //Action Plan Step
                     'tr_parent_entity_id' => $en['en_id'], //Belongs to this Student
                 ), array('in_child'));
             }
@@ -2037,7 +2081,7 @@ class Chat_model extends CI_Model
                 }
 
                 //Recommend against it:
-                $message .= "\n\n" . 'I would not recommend skipping unless you feel comfortable completing these tasks on your own.';
+                $message .= "\n\n" . 'I would not recommend skipping unless you feel comfortable completing these steps on your own.';
 
                 //Send them the message:
                 $this->Chat_model->fn___dispatch_message(
@@ -2075,7 +2119,7 @@ class Chat_model extends CI_Model
                     $this->Matrix_model->k_skip_recursive_down($tr_id);
 
                     //Confirm the skip:
-                    $message = 'Confirmed, I marked this section as skipped. You can always re-visit these tasks in your Action Plan and complete them at any time. /link:See in 🚩Action Plan:https://mench.com/my/actionplan/' . $actionplans[0]['tr_parent_transaction_id'] . '/' . $actionplans[0]['tr_child_intent_id'];
+                    $message = 'Confirmed, I marked this section as skipped. You can always re-visit these steps in your Action Plan and complete them at any time. /link:See in 🚩Action Plan:https://mench.com/my/actionplan/' . $actionplans[0]['tr_parent_transaction_id'] . '/' . $actionplans[0]['tr_child_intent_id'];
 
                 }
 
@@ -2114,7 +2158,7 @@ class Chat_model extends CI_Model
                 //Fetch Action Plan Intent with its Student:
                 $actionplans = $this->Database_model->fn___tr_fetch(array(
                     'tr_id' => $tr_id,
-                    'tr_type_entity_id' => 4559, //Action Plan Task
+                    'tr_type_entity_id' => 4559, //Action Plan Step
                     'tr_parent_entity_id' => $en['en_id'], //Belongs to this Student
                 ), array('in_child', 'en_parent'));
             }

@@ -243,7 +243,7 @@ $(document).ready(function () {
         tr_content_word_count('#tr_content','#chartr_contentNum');
 
         // Clear the timeout if it has already been set.
-        // This will prevent the previous task from executing
+        // This will prevent the previous step from executing
         // if it has been less than <MILLISECONDS>
         clearTimeout(timeout);
 

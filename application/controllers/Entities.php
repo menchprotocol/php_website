@@ -62,7 +62,7 @@ class Entities extends CI_Controller
         //Return results:
         return fn___echo_json(array(
             'status' => 1,
-            'entity_domain_ui' => '<span class="en_mini_ui_icon">' . (isset($url_entity['en_domain']['en_icon']) && strlen($url_entity['en_domain']['en_icon']) > 0 ? $url_entity['en_domain']['en_icon'] : fn___detect_fav_icon($url_entity['url_clean_domain'], true)) . '</span> ' . (isset($url_entity['en_domain']['en_name']) ? $url_entity['en_domain']['en_name'] . ' <a href="/entities/' . $url_entity['en_domain']['en_id'] . '" class="underdot" data-toggle="tooltip" title="Click to open domain entity in a new windows" data-placement="top" target="_blank">@' . $url_entity['en_domain']['en_id'] . '</a>' : $url_entity['url_domain_name'] . ' [<span class="underdot" data-toggle="tooltip" title="Domain entity not yet added" data-placement="top">New</span>]'),
+            'entity_domain_ui' => '<span class="en_mini_ui_icon parent-icon">' . (isset($url_entity['en_domain']['en_icon']) && strlen($url_entity['en_domain']['en_icon']) > 0 ? $url_entity['en_domain']['en_icon'] : fn___detect_fav_icon($url_entity['url_clean_domain'], true)) . '</span> ' . (isset($url_entity['en_domain']['en_name']) ? $url_entity['en_domain']['en_name'] . ' <a href="/entities/' . $url_entity['en_domain']['en_id'] . '" class="underdot" data-toggle="tooltip" title="Click to open domain entity in a new windows" data-placement="top" target="_blank">@' . $url_entity['en_domain']['en_id'] . '</a>' : $url_entity['url_domain_name'] . ' [<span class="underdot" data-toggle="tooltip" title="Domain entity not yet added" data-placement="top">New</span>]'),
             'js_url_entity' => $url_entity,
         ));
 
@@ -573,6 +573,51 @@ class Entities extends CI_Controller
         //Is this being removed?
         if ($en_update['en_status'] < 0 && !($en_update['en_status'] == $ens[0]['en_status'])) {
 
+
+            //Make sure entity is not referenced in key DB reference fields:
+            $en_miners = $this->Database_model->fn___tr_fetch(array(
+                'tr_miner_entity_id' => $_POST['en_id'],
+            ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
+            $en_transaction_types = $this->Database_model->fn___tr_fetch(array(
+                'tr_type_entity_id' => $_POST['en_id'],
+            ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
+            $en_verbs = $this->Database_model->fn___in_fetch(array(
+                'in_verb_entity_id' => $_POST['en_id'],
+            ), array(), 0, 0, array(), 'COUNT(in_id) as totals');
+            $en_requirements = $this->Database_model->fn___in_fetch(array(
+                'in_requirement_entity_id' => $_POST['en_id'],
+            ), array(), 0, 0, array(), 'COUNT(in_id) as totals');
+
+            if(count($en_miners) > 0 && $en_miners[0]['totals'] > 0){
+                //Cannot delete this entity until intent references are removed:
+                return fn___echo_json(array(
+                    'status' => 0,
+                    'message' => 'Cannot be removed because entity is a miner with '.fn___echo_number($en_miners[0]['totals']).' ledger transactions',
+                ));
+            } elseif(count($en_transaction_types) > 0 && $en_transaction_types[0]['totals'] > 0){
+                //Cannot delete this entity until intent references are removed:
+                return fn___echo_json(array(
+                    'status' => 0,
+                    'message' => 'Cannot be removed because entity is a transaction type with '.fn___echo_number($en_transaction_types[0]['totals']).' ledger transactions',
+                ));
+            } elseif(count($en_verbs) > 0 && $en_verbs[0]['totals'] > 0){
+                //Cannot delete this entity until intent references are removed:
+                return fn___echo_json(array(
+                    'status' => 0,
+                    'message' => 'Cannot be removed because entity is a verb for '.fn___echo_number($en_verbs[0]['totals']).' intents',
+                ));
+            } elseif(count($en_requirements) > 0 && $en_requirements[0]['totals'] > 0){
+                //Cannot delete this entity until intent references are removed:
+                return fn___echo_json(array(
+                    'status' => 0,
+                    'message' => 'Cannot be removed because entity is a submission requirement for '.fn___echo_number($en_requirements[0]['totals']).' intents',
+                ));
+            }
+
+
+
+
+
             //Count entity references in Intent Notes:
             $messages = $this->Database_model->fn___tr_fetch(array(
                 'tr_status >=' => 0, //New+
@@ -628,15 +673,10 @@ class Entities extends CI_Controller
 
             } elseif(count($messages) > 0){
 
-                $error_ui = '';
-                foreach($messages as $tr){
-                    $error_ui .= ' #'.$tr['in_id'];
-                }
-
                 //Cannot delete this entity until intent references are removed:
                 return fn___echo_json(array(
                     'status' => 0,
-                    'message' => 'Cannot remove entity until all '.count($messages).' Intent Note references are remove:'.$error_ui,
+                    'message' => 'You can remove entity after removing all its intent note references',
                 ));
 
             }
