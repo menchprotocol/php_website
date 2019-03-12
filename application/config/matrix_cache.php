@@ -12,7 +12,66 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-03-11 20:01:13 PST
+//Generated 2019-03-12 12:50:14 PST
+
+//Linked Entities Text:
+$config['en_ids_4255'] = array(2999, 3005, 3084, 3147, 3192, 3286, 4601, 4763, 4883);
+$config['en_all_4255'] = array(
+    2999 => array(
+        'm_icon' => '<i class="fal fa-microphone"></i>',
+        'm_name' => 'Expert Podcasts',
+        'm_desc' => 'Podcast summary',
+        'm_parents' => array(4990, 4255, 3000),
+    ),
+    3005 => array(
+        'm_icon' => '<i class="fal fa-book"></i>',
+        'm_name' => 'Expert Books',
+        'm_desc' => 'Book summary',
+        'm_parents' => array(4990, 4255, 3000),
+    ),
+    3084 => array(
+        'm_icon' => '⭐',
+        'm_name' => 'Industry Experts',
+        'm_desc' => 'List accomplishments supporting the expertise of this entity',
+        'm_parents' => array(4990, 4432, 4255, 4463),
+    ),
+    3147 => array(
+        'm_icon' => '<i class="fal fa-presentation"></i>',
+        'm_name' => 'Expert Courses',
+        'm_desc' => 'Course summary',
+        'm_parents' => array(4990, 4255, 3000),
+    ),
+    3192 => array(
+        'm_icon' => '<i class="fal fa-compact-disc"></i>',
+        'm_name' => 'Expert Software',
+        'm_desc' => 'Explain the process that this software automates and it\'s ideal target segment',
+        'm_parents' => array(4990, 4255, 3000),
+    ),
+    3286 => array(
+        'm_icon' => '<i class="fal fa-key"></i>',
+        'm_name' => 'Matrix Password',
+        'm_desc' => 'Enter SHA256 encoded password string combined with our SALT variables',
+        'm_parents' => array(4755, 4255, 4426, 3285),
+    ),
+    4601 => array(
+        'm_icon' => '<i class="fal fa-tags"></i>',
+        'm_name' => 'Intent Note Keywords',
+        'm_desc' => 'Trigger statements can only contain text to enable Mench to detect alternatives forms a person might reference an intent',
+        'm_parents' => array(4255, 4594, 4374, 4485),
+    ),
+    4763 => array(
+        'm_icon' => '<i class="fal fa-bullhorn"></i>',
+        'm_name' => 'Expert Marketing Channels',
+        'm_desc' => 'Describe marketplace community size and ideal target segments and key value propositions',
+        'm_parents' => array(4990, 4255, 3000),
+    ),
+    4883 => array(
+        'm_icon' => '<i class="fal fa-concierge-bell"></i>',
+        'm_name' => 'Expert Services',
+        'm_desc' => 'What services is offered and how much they cost',
+        'm_parents' => array(4990, 4255, 3000),
+    ),
+);
 
 //Advance Mode:
 $config['en_ids_5005'] = array(4232, 4233, 4234, 4602, 4604, 4741, 4759, 4997, 5006);
@@ -436,7 +495,7 @@ $config['en_all_4374'] = array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
         'm_name' => 'Linked Entities Text',
         'm_desc' => '30',
-        'm_parents' => array(4594, 4592, 4374, 4331),
+        'm_parents' => array(4527, 4594, 4592, 4374, 4331),
     ),
     4256 => array(
         'm_icon' => '<i class="fal fa-browser"></i>',
@@ -632,7 +691,7 @@ $config['en_all_4594'] = array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
         'm_name' => 'Linked Entities Text',
         'm_desc' => '',
-        'm_parents' => array(4594, 4592, 4374, 4331),
+        'm_parents' => array(4527, 4594, 4592, 4374, 4331),
     ),
     4256 => array(
         'm_icon' => '<i class="fal fa-browser"></i>',
@@ -991,7 +1050,7 @@ $config['en_all_4592'] = array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
         'm_name' => 'Text',
         'm_desc' => '',
-        'm_parents' => array(4594, 4592, 4374, 4331),
+        'm_parents' => array(4527, 4594, 4592, 4374, 4331),
     ),
     4256 => array(
         'm_icon' => '<i class="fal fa-browser"></i>',
@@ -1050,7 +1109,7 @@ $config['en_all_4331'] = array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
         'm_name' => 'Text',
         'm_desc' => '',
-        'm_parents' => array(4594, 4592, 4374, 4331),
+        'm_parents' => array(4527, 4594, 4592, 4374, 4331),
     ),
     4256 => array(
         'm_icon' => '<i class="fal fa-browser"></i>',
@@ -1242,7 +1301,7 @@ $config['en_all_4537'] = array(
 );
 
 //Expert Sources:
-$config['en_ids_3000'] = array(2997, 2998, 2999, 3005, 3147, 3192, 4446, 4763, 4883);
+$config['en_ids_3000'] = array(2997, 2998, 2999, 3005, 3147, 3192, 4446, 4763, 4883, 5948);
 $config['en_all_3000'] = array(
     2997 => array(
         'm_icon' => '<i class="fal fa-newspaper"></i>',
@@ -1297,5 +1356,11 @@ $config['en_all_3000'] = array(
         'm_name' => 'Expert Services',
         'm_desc' => '&var_weight=1',
         'm_parents' => array(4990, 4255, 3000),
+    ),
+    5948 => array(
+        'm_icon' => '<i class="fal fa-file-invoice"></i>',
+        'm_name' => 'Expert Templates',
+        'm_desc' => '&var_weight=1',
+        'm_parents' => array(3000),
     ),
 );
