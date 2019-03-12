@@ -1062,10 +1062,18 @@ class Entities extends CI_Controller
 
         //Are they miner? Give them Sign In access:
         if (fn___filter_array($ens[0]['en__parents'], 'en_id', 1308)) {
+
+            //Check their advance mode status:
+            $last_advance_settings = $this->Database_model->fn___tr_fetch(array(
+                'tr_miner_entity_id' => $ens[0]['en_id'],
+                'tr_type_entity_id' => 5007, //Toggled Advance Mode
+                'tr_status >=' => 0, //New+
+            ), array(), 1, 0, array('tr_id' => 'DESC'));
+
             //They have admin rights:
             $session_data['user'] = $ens[0];
             $session_data['miner_session_count'] = 0;
-            $session_data['advance_view_enabled'] = 0;
+            $session_data['advance_view_enabled'] = ( count($last_advance_settings) > 0 && substr_count($last_advance_settings[0]['tr_content'] , ' ON')==1 ? 1 : 0 );
             $is_miner = true;
         }
 
@@ -1159,7 +1167,7 @@ class Entities extends CI_Controller
             $this->Database_model->fn___tr_create(array(
                 'tr_miner_entity_id' => $session_en['en_id'],
                 'tr_type_entity_id' => 5007, //Toggled Advance Mode
-                'tr_content' => 'Toggled '.( $toggled_setting ? 'ON' : 'OFF' ),
+                'tr_content' => 'Toggled '.( $toggled_setting ? 'ON' : 'OFF' ), //To be used when miner logs in again
             ));
 
             //Return to JS function:
