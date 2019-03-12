@@ -7,8 +7,8 @@ $route['translate_uri_dashes']  = FALSE;
 $route['default_controller']    = "intents";
 
 //Miner Intents/Entities:
-$route['entities/(:num)']       = "entities/en_miner_ui/$1";
-$route['entities']              = "entities/en_miner_ui/0";
+$route['entities/(:num)']       = "entities/fn___en_miner_ui/$1";
+$route['entities']              = "entities/fn___en_miner_ui/0";
 $route['intents/(:num)']        = "intents/fn___in_miner_ui/$1";
 $route['intents']               = "intents/fn___in_miner_ui/0";
 
@@ -16,5 +16,5 @@ $route['intents']               = "intents/fn___in_miner_ui/0";
 $route['(:num)']                = "intents/fn___in_landing_page/$1";
 
 //Student/Miner login/logout:
-$route['login']                 = "entities/en_login_ui";
-$route['logout']                = "entities/logout";
+$route['login']                 = "entities/fn___en_login_ui";
+$route['logout']                = "entities/fn___logout";

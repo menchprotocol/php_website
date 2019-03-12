@@ -1615,7 +1615,7 @@ function fn___echo_leaderboard($days_ago = null, $top = 25){
 
         //Echo stats:
         $table_body .= '<tr>';
-        $table_body .= '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center; '.( $count > 2 ? 'font-size:0.8em;' : '' ).'">'.fn___echo_rank($count+1).'</span><span style="width: 29px; display: inline-block; text-align: center;">'.( strlen($tr['en_icon']) > 0 ? $tr['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$tr['tr_miner_entity_id'].'">'.$tr['en_name'].'</a></td>';
+        $table_body .= '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center; '.( $count > 2 ? 'font-size:0.8em;' : '' ).'">'.fn___echo_rank($count+1).'</span><span class="parent-icon" style="width: 29px; display: inline-block; text-align: center;">'.( strlen($tr['en_icon']) > 0 ? $tr['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$tr['tr_miner_entity_id'].'">'.$tr['en_name'].'</a></td>';
         $table_body .= '<td style="text-align: right;"><a href="/ledger?tr_miner_entity_id='.$tr['tr_miner_entity_id'].( is_null($days_ago) ? '' : '&start_range='.$start_date ).'"  data-toggle="tooltip" title="Mined with '.number_format($tr['trs_count'],0).' transactions averaging '.round(($tr['coins_sum']/$tr['trs_count']),1).' coins/transaction" data-placement="top">'.number_format($tr['coins_sum'], 0).'</a></td>';
         $table_body .= '</tr>';
 

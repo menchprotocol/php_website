@@ -74,7 +74,7 @@ $config['en_mass_actions']          = array( //Various mass actions to be taken 
     'replace_match'  => 'Replace entity matching strings',
     'replace_tr_match'  => 'Replace transaction matching strings',
     'replace_icon'  => 'Update all entity icons',
-    //Logic for all items above must be added to Entities/en_miner_ui section
+    //Logic for all items above must be added to Entities/fn___en_miner_ui section
 );
 
 

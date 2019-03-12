@@ -281,7 +281,7 @@
 
                                 <input type="hidden" id="en_link_count" value="0" />
 
-                                <span class="mini-header"><span class="tr_in_link_title"></span> Merge Links Into:</span>
+                                <span class="mini-header"><span class="tr_in_link_title"></span> Merge Entity Into:</span>
                                 <input style="padding-left:3px;" type="text" class="form-control algolia_search border en_quick_search" id="en_merge" value="" placeholder="Search entity to merge..." />
 
                             </div>

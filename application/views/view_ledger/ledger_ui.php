@@ -570,7 +570,7 @@ if(isset($_GET['tr_type_entity_id'])){
 
 //Fetch transactions:
 $trs_count = $this->Database_model->fn___tr_fetch($filters, $join_by, 0, 0, array(), 'COUNT(tr_id) as trs_count, SUM(tr_coins) as coins_sum');
-if(count($_GET) < 1){
+if(count($_GET) < 1 && !fn___en_auth(array(1308))){
     //This makes the public ledger focus on transactions with coins which is a nicer initial view into the ledger:
     $filters['tr_coins >'] = 0;
 }

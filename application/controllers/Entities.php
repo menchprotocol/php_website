@@ -70,7 +70,7 @@ class Entities extends CI_Controller
 
 
     //Lists entities
-    function en_miner_ui($en_id)
+    function fn___en_miner_ui($en_id)
     {
 
         if ($en_id == 0) {
@@ -128,7 +128,7 @@ class Entities extends CI_Controller
     }
 
 
-    function reset_pass()
+    function password_reset()
     {
         $data = array(
             'title' => 'Password Reset',
@@ -355,11 +355,20 @@ class Entities extends CI_Controller
                     return fn___echo_json($url_entity);
                 }
 
-                //Let's first find/add the domain:
-                $domain_entity = $this->Matrix_model->fn___sync_domain($_POST['en_new_string'], $session_en['en_id']);
+                //Is this a root domain? Add to domains if so:
+                if($url_entity['url_is_root']){
 
-                //Link to this entity:
-                $entity_new = $domain_entity['en_domain'];
+                    //Link to domains parent:
+                    $entity_new = array('en_id' => 1326);
+
+                } else {
+
+                    //Let's first find/add the domain:
+                    $domain_entity = $this->Matrix_model->fn___sync_domain($_POST['en_new_string'], $session_en['en_id']);
+
+                    //Link to this entity:
+                    $entity_new = $domain_entity['en_domain'];
+                }
 
             } else {
 
@@ -413,7 +422,12 @@ class Entities extends CI_Controller
             }
 
 
-            if (isset($domain_entity['en_domain'])) {
+            if (isset($url_entity['url_is_root']) && $url_entity['url_is_root']) {
+
+                $tr_type_entity_id = 4256; //Generic URL (Domains always are generic)
+                $tr_content = $url_entity['cleaned_url'];
+
+            } elseif (isset($domain_entity['en_domain'])) {
 
                 $tr_type_entity_id = $url_entity['tr_type_entity_id'];
                 $tr_content = $url_entity['cleaned_url'];
@@ -915,7 +929,7 @@ class Entities extends CI_Controller
     }
 
 
-    function en_login_ui()
+    function fn___en_login_ui()
     {
         //Check to see if they are already logged in?
         $session_en = $this->session->userdata('user');
@@ -931,7 +945,7 @@ class Entities extends CI_Controller
         $this->load->view('view_shared/public_footer');
     }
 
-    function en_login_process()
+    function fn___en_login_process()
     {
 
         //Setting for admin Sign Ins:
@@ -1125,7 +1139,7 @@ class Entities extends CI_Controller
         }
     }
 
-    function logout()
+    function fn___logout()
     {
         //Destroys Session
         $this->session->sess_destroy();
@@ -1154,7 +1168,7 @@ class Entities extends CI_Controller
 
             //Dispatch the password reset Intent:
             $this->Chat_model->fn___dispatch_message(
-                'Hi /firstname 👋​ You can reset your Mench password here: /link:🔑 Reset Password:https://mench.com/entities/reset_pass?en_id=' . $matching_users[0]['en_id'] . '&timestamp=' . $timestamp . '&p_hash=' . md5($matching_users[0]['en_id'] . $this->config->item('password_salt') . $timestamp) . ' (Link active for 24 hours)',
+                'Hi /firstname 👋​ You can reset your Mench password here: /link:🔑 Reset Password:https://mench.com/entities/password_reset?en_id=' . $matching_users[0]['en_id'] . '&timestamp=' . $timestamp . '&p_hash=' . md5($matching_users[0]['en_id'] . $this->config->item('password_salt') . $timestamp) . ' (Link active for 24 hours)',
                 $matching_users[0],
                 true
             );
@@ -1168,7 +1182,7 @@ class Entities extends CI_Controller
     }
 
 
-    function en_password_reset()
+    function password_process_reset()
     {
         //This function updates the user's new password as requested via a password reset:
         if (!isset($_POST['en_id']) || intval($_POST['en_id']) < 1 || !isset($_POST['timestamp']) || intval($_POST['timestamp']) < 1 || !isset($_POST['p_hash']) || strlen($_POST['p_hash']) < 10) {
