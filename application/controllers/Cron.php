@@ -24,6 +24,8 @@ class Cron extends CI_Controller
 
     function clear_removed(){
 
+        exit;
+
         //A function to delete removed intents, entities and transactions:
         $stats = array(
             'deleted_ins' => 0,
