@@ -552,7 +552,7 @@ class Matrix_model extends CI_Model
     }
 
 
-    function fn___en_mass_update($en_id, $action_en_id, $action_command1, $action_command2)
+    function fn___en_mass_update($en_id, $action_en_id, $action_command1, $action_command2, $tr_miner_entity_id)
     {
 
         //Fetch statuses:
@@ -566,39 +566,27 @@ class Matrix_model extends CI_Model
                 'message' => 'Unknown mass action',
             );
 
-        } elseif(strlen(trim($action_command1)) < 1){
+        } elseif($action_en_id != 5943 && strlen(trim($action_command1)) < 1){
 
             return array(
                 'status' => 0,
-                'message' => 'Missing mass action command',
+                'message' => 'Missing primary command',
             );
 
-        } elseif(in_array($action_en_id, array(5000, 5001, 5003, 5865)) && strlen(trim($action_command2)) < 1) {
-
-            //Require 2nd command as well:
-            return array(
-                'status' => 0,
-                'message' => 'Missing second mass action command',
-            );
-
-        } elseif($action_en_id==5003 && !(($action_command1=='*' || in_array($action_command1, $fixed_fields['en_status'])) && (in_array($action_command2, $fixed_fields['en_status'])))){
+        } elseif($action_en_id == 5943 && !is_valid_icon($action_command1)){
 
             return array(
                 'status' => 0,
-                'message' => 'Invalid command for '.$en_all_4997[$action_en_id]['m_name'],
-            );
-
-        } elseif($action_en_id==5865 && !(($action_command1=='*' || in_array($action_command1, $fixed_fields['tr_status'])) && (in_array($action_command2, $fixed_fields['tr_status'])))){
-
-            return array(
-                'status' => 0,
-                'message' => 'Invalid command for '.$en_all_4997[$action_en_id]['m_name'],
+                'message' => 'Invalid icon: '. is_valid_icon(null, true),
             );
 
         }
 
+        //Basic input validation done, let's continue...
 
-        //Fetch children:
+
+        //Fetch all children:
+        $applied_success = 0; //To be populated...
         $children = $this->Database_model->fn___tr_fetch(array(
             'tr_parent_entity_id' => $en_id,
             'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
@@ -606,104 +594,93 @@ class Matrix_model extends CI_Model
             'en_status >=' => 0, //New+
         ), array('en_child'), 0);
 
-        //Validate inputs:
-        if (!isset($_POST['modify_text'])) {
-            $this->session->set_flashdata('flash_message', '<div class="alert alert-danger" role="alert">Missing string</div>');
-        } elseif (!array_key_exists($_POST['mass_action_en_id'], $this->config->item('en_mass_actions'))) {
-            $this->session->set_flashdata('flash_message', '<div class="alert alert-danger" role="alert">Unknown action type</div>');
-        } elseif (count($children) < 1) {
-            $this->session->set_flashdata('flash_message', '<div class="alert alert-danger" role="alert">No child entities found</div>');
-        } else {
 
-            $applied_success = 0;
+        //Process request:
+        foreach ($children as $en) {
 
-            //Process request:
-            foreach ($children as $en) {
+            //Logic here must match items in en_mass_actions config variable
 
-                //Logic here must match items in en_mass_actions config variable
+            //Take command-specific action:
+            if ($action_en_id == 4998) { //Add Prefix String
 
-                //What is the action?
-                if ($_POST['mass_action_en_id'] == 'replace_icon' && !($en['en_icon'] == trim($_POST['modify_text']))) {
-                    //Update with new icon:
-                    $this->Database_model->fn___en_update($en['en_id'], array(
-                        'en_icon' => trim($_POST['modify_text']),
-                    ), true, $session_en['en_id']);
+                $this->Database_model->fn___en_update($en['en_id'], array(
+                    'en_name' => $action_command1 . $en['en_name'],
+                ), true, $tr_miner_entity_id);
 
-                    $applied_success++;
-                } elseif ($_POST['mass_action_en_id'] == 'prefix_add') {
+                $applied_success++;
 
-                    //Update with new icon:
-                    $this->Database_model->fn___en_update($en['en_id'], array(
-                        'en_name' => $_POST['modify_text'] . $en['en_name'],
-                    ), true, $session_en['en_id']);
+            } elseif ($action_en_id == 4999) { //Add Postfix String
 
-                    $applied_success++;
+                $this->Database_model->fn___en_update($en['en_id'], array(
+                    'en_name' => $en['en_name'] . $action_command1,
+                ), true, $tr_miner_entity_id);
 
-                } elseif ($_POST['mass_action_en_id'] == 'postfix_add') {
+                $applied_success++;
 
-                    //Update with new icon:
-                    $this->Database_model->fn___en_update($en['en_id'], array(
-                        'en_name' => $en['en_name'] . $_POST['modify_text'],
-                    ), true, $session_en['en_id']);
+            } elseif ($action_en_id == 5943) { //Entity Mass Update Entity Icon
 
-                    $applied_success++;
+                $this->Database_model->fn___en_update($en['en_id'], array(
+                    'en_icon' => $action_command1,
+                ), true, $tr_miner_entity_id);
 
-                } elseif ($_POST['mass_action_en_id'] == 'replace_match' && substr_count($_POST['modify_text'], '>>') == 1) {
+                $applied_success++;
 
-                    //Validate input:
-                    $parts = explode('>>', $_POST['modify_text']);
+            } elseif ($action_en_id == 5000 && substr_count($en['en_name'], $action_command1) > 0) { //Replace Entity Matching String
 
-                    if (count($parts) == 2 && strlen($parts[0]) > 0 && substr_count($en['en_name'], $parts[0]) > 0) {
+                //Make sure the SEARCH string exists:
+                $this->Database_model->fn___en_update($en['en_id'], array(
+                    'en_name' => str_replace($action_command1, $action_command2, $en['en_name']),
+                ), true, $tr_miner_entity_id);
 
-                        //Update with new icon:
-                        $this->Database_model->fn___en_update($en['en_id'], array(
-                            'en_name' => str_replace($parts[0], $parts[1], $en['en_name']),
-                        ), true, $session_en['en_id']);
+                $applied_success++;
 
-                        $applied_success++;
+            } elseif ($action_en_id == 5001 && substr_count($en['tr_content'], $action_command1) > 0) { //Replace Transaction Matching String
 
-                    }
+                $this->Database_model->fn___tr_update($en['tr_id'], array(
+                    'tr_content' => str_replace($action_command1, $action_command2, $en['tr_content']),
+                ), $tr_miner_entity_id);
 
-                } elseif ($_POST['mass_action_en_id'] == 'replace_tr_match' && substr_count($_POST['modify_text'], '>>') == 1) {
+                $applied_success++;
 
-                    //Validate input:
-                    $parts = explode('>>', $_POST['modify_text']);
+            } elseif ($action_en_id == 5003 && ($action_command1=='*' || $en['en_status']==$action_command1) && array_key_exists($action_command2, $fixed_fields['en_status'])) { //Update Matching Entity Status
 
-                    if (count($parts) == 2 && strlen($parts[0]) > 0 && substr_count($en['tr_content'], $parts[0]) > 0) {
+                $this->Database_model->fn___en_update($en['en_id'], array(
+                    'en_status' => $action_command2,
+                ), true, $tr_miner_entity_id);
 
-                        //Update with new icon:
-                        $this->Database_model->fn___tr_update($en['tr_id'], array(
-                            'tr_content' => str_replace($parts[0], $parts[1], $en['tr_content']),
-                        ), $session_en['en_id']);
+                $applied_success++;
 
-                        $applied_success++;
+            } elseif ($action_en_id == 5865 && ($action_command1=='*' || $en['tr_status']==$action_command1) && array_key_exists($action_command2, $fixed_fields['tr_status'])) { //Update Matching Transaction Status
 
-                    }
+                $this->Database_model->fn___tr_update($en['tr_id'], array(
+                    'tr_status' => $action_command2,
+                ), $tr_miner_entity_id);
 
-                }
+                $applied_success++;
 
-            }
-
-            //How did the mass update go?
-            if ($applied_success > 0) {
-                $this->session->set_flashdata('flash_message', '<div class="alert alert-success" role="alert">Successfully updated ' . $applied_success . '/' . count($children) . ' entities</div>');
-            } else {
-                $this->session->set_flashdata('flash_message', '<div class="alert alert-warning" role="alert">Nothing was updated</div>');
             }
         }
 
+
         //Log mass entity edit transaction:
         $this->Database_model->fn___tr_create(array(
-            'tr_miner_entity_id' => $session_en['en_id'],
-            'tr_type_entity_id' => 4997, //Miner Mass Updated Entities
+            'tr_miner_entity_id' => $tr_miner_entity_id,
+            'tr_type_entity_id' => $action_en_id,
             'tr_child_entity_id' => $en_id,
             'tr_metadata' => array(
                 'payload' => $_POST,
                 'entities_total' => count($children),
                 'entities_updated' => $applied_success,
+                'command1' => $action_command1,
+                'command2' => $action_command2,
             ),
         ));
 
+        //Return results:
+        return array(
+            'status' => 1,
+            'message' => $applied_success . '/' . count($children) . ' child entities updated',
+        );
 
     }
 

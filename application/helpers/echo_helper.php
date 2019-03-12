@@ -471,7 +471,7 @@ function fn___echo_tr_row($tr, $is_inner = false)
     $ui .= '<div style="padding: 0 10px;">';
 
         //Miner:
-        $ui .= ( strlen($miner_ens[0]['en_icon']) > 0 ? $miner_ens[0]['en_icon'] . ' ' : '' );
+        $ui .= '<span class="icon-main">'.( strlen($miner_ens[0]['en_icon']) > 0 ? $miner_ens[0]['en_icon'] . ' ' : '' ).'</span>';
         $ui .= '<a href="/entities/'.$miner_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="View miner profile"><b>' . $miner_ens[0]['en_name'] . '</b></a>';
 
         //Transaction Type:

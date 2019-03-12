@@ -80,23 +80,15 @@ class Entities extends CI_Controller
 
         $session_en = fn___en_auth(array(1308), true); //Just be logged in to browse
 
-        //Validate entity ID and fetch data:
-        $ens = $this->Database_model->fn___en_fetch(array(
-            'en_id' => $en_id,
-        ), array('en__child_count', 'en__children', 'en__actionplans'));
-        if (count($ens) < 1) {
-            return fn___redirect_message('/entities', '<div class="alert alert-danger" role="alert">Invalid Entity ID</div>');
-        }
-
 
         //Do we have any mass action to process here?
-        if (isset($_POST['mass_action_en_id']) && isset($_POST['mass_value1_'.$_POST['mass_action_en_id']]) && isset($_POST['mass_value2_'.$_POST['mass_action_en_id']])) {
+        if (fn___has_moderator_rights(4997) && isset($_POST['mass_action_en_id']) && isset($_POST['mass_value1_'.$_POST['mass_action_en_id']]) && isset($_POST['mass_value2_'.$_POST['mass_action_en_id']])) {
 
             //Process mass action:
-            $process_mass_action = $this->Matrix_model->fn___en_mass_update($en_id, intval($_POST['mass_action_en_id']), $_POST['mass_value1_'.$_POST['mass_action_en_id']], $_POST['mass_value2_'.$_POST['mass_action_en_id']]);
+            $process_mass_action = $this->Matrix_model->fn___en_mass_update($en_id, intval($_POST['mass_action_en_id']), $_POST['mass_value1_'.$_POST['mass_action_en_id']], $_POST['mass_value2_'.$_POST['mass_action_en_id']], $session_en['en_id']);
 
             //Pass-on results to UI:
-            $message = '<div class="alert '.( $process_mass_action['status'] ? 'alert-sucess' : 'alert-danger' ).'" role="alert">'.$process_mass_action['message'].'</div>';
+            $message = '<div class="alert '.( $process_mass_action['status'] ? 'alert-success' : 'alert-danger' ).'" role="alert">'.$process_mass_action['message'].'</div>';
 
         } else {
 
@@ -113,6 +105,14 @@ class Entities extends CI_Controller
                 'tr_order' => $new_order,
             ));
 
+        }
+
+        //Validate entity ID and fetch data:
+        $ens = $this->Database_model->fn___en_fetch(array(
+            'en_id' => $en_id,
+        ), array('en__child_count', 'en__children', 'en__actionplans'));
+        if (count($ens) < 1) {
+            return fn___redirect_message('/entities', '<div class="alert alert-danger" role="alert">Invalid Entity ID</div>');
         }
 
         //Load views:

@@ -50,7 +50,7 @@
 
             echo '<h5 class="badge badge-h inline-block"><span class="li-children-count inline-block">' . $entity['en__child_count'] . '</span> Children</h5>';
 
-            echo '<a href="javascript:void(0);" onclick="$(\'.mass_modify\').toggle();mass_action_ui();" style="text-decoration: none; margin-left: 5px;"  data-toggle="tooltip" data-placement="right" title="Mass modify child entities" class="' . fn___echo_advance() . '"><i class="fal fa-list-alt" style="font-size: 1.2em; color: #2b2b2b;"></i></a>';
+            echo '<span class="'.( !fn___has_moderator_rights(4997) ? 'hidden' : '' ).'"><a href="javascript:void(0);" onclick="$(\'.mass_modify\').toggleClass(\'hidden\');mass_action_ui();" style="text-decoration: none; margin-left: 5px;"  data-toggle="tooltip" data-placement="right" title="Entity Mass Updates applied to all child entities" class="' . fn___echo_advance() . '"><i class="fal fa-list-alt" style="font-size: 1.2em; color: #2b2b2b;"></i></a></span>';
 
             echo '</td>';
 
@@ -99,34 +99,86 @@
         echo '</tr></table></div>';
 
 
-        echo '<form class="mass_modify indent2" method="POST" action="" style="display:none; width: 100% !important;">';
+        echo '<form class="mass_modify indent2 hidden" method="POST" action="" style="width: 100% !important;">';
 
 
+            $fixed_fields = $this->config->item('fixed_fields');
             $dropdown_options = '';
             $input_options = '';
             foreach ($this->config->item('en_all_4997') as $mass_action_en_id => $mass_action_en) {
 
                 $dropdown_options .= '<option value="' . $mass_action_en_id . '">' .$mass_action_en['m_name'] . '</option>';
 
+
+                //Start with the input wrapper:
+                $input_options .= '<span id="mass_id_'.$mass_action_en_id.'" class="inline-block hidden mass_action_item">';
+
                 if(in_array($mass_action_en_id, array(5000, 5001))){
 
-                    //String Find>>Replace
+                    //String Find and Replace:
+
+                    //Find:
+                    $input_options .= '<input type="text" name="mass_value1_'.$mass_action_en_id.'" placeholder="Search" style="width: 145px;" class="form-control border">';
+
+                    //Replace:
+                    $input_options .= '<input type="text" name="mass_value2_'.$mass_action_en_id.'" placeholder="Replace" style="width: 145px;" class="form-control border">';
+
 
                 } elseif($mass_action_en_id == 5003){
 
-                    //Entity Status Find>>Replace
+                    //Entity Status update:
+
+                    //Find:
+                    $input_options .= '<select name="mass_value1_'.$mass_action_en_id.'" class="form-control border">';
+                    $input_options .= '<option value="">Set Condition...</option>';
+                    $input_options .= '<option value="*">Update All Statuses</option>';
+                    foreach($fixed_fields['en_status'] as $status_id => $status){
+                        $input_options .= '<option value="'.$status_id.'">Update All '.$status['s_name'].'</option>';
+                    }
+                    $input_options .= '</select>';
+
+                    //Replace:
+                    $input_options .= '<select name="mass_value2_'.$mass_action_en_id.'" class="form-control border">';
+                    $input_options .= '<option value="">Set New Status...</option>';
+                    foreach($fixed_fields['en_status'] as $status_id => $status){
+                        $input_options .= '<option value="'.$status_id.'">Set to '.$status['s_name'].'</option>';
+                    }
+                    $input_options .= '</select>';
+
 
                 } elseif($mass_action_en_id == 5865){
 
-                    //Transaction Status Find>>Replace
+                    //Transaction Status update:
+
+                    //Find:
+                    $input_options .= '<select name="mass_value1_'.$mass_action_en_id.'" class="form-control border">';
+                    $input_options .= '<option value="">Set Condition...</option>';
+                    $input_options .= '<option value="*">Update All Statuses</option>';
+                    foreach($fixed_fields['tr_status'] as $status_id => $status){
+                        $input_options .= '<option value="'.$status_id.'">Update All '.$status['s_name'].'</option>';
+                    }
+                    $input_options .= '</select>';
+
+                    //Replace:
+                    $input_options .= '<select name="mass_value2_'.$mass_action_en_id.'" class="form-control border">';
+                    $input_options .= '<option value="">Set New Status...</option>';
+                    foreach($fixed_fields['tr_status'] as $status_id => $status){
+                        $input_options .= '<option value="'.$status_id.'">Set to '.$status['s_name'].'</option>';
+                    }
+                    $input_options .= '</select>';
+
 
                 } else {
 
                     //String command:
-                    $input_options .= '<span id="mass_id_'.$mass_action_en_id.'" class="inline-block hidden mass_action_item"><input type="text" name="mass_value1_'.$mass_action_en_id.'" placeholder="String..." class="form-control border"></span>';
-                }
-                //modify_text
+                    $input_options .= '<input type="text" name="mass_value1_'.$mass_action_en_id.'" placeholder="String..." class="form-control border">';
 
+                    //We don't need the second value field here:
+                    $input_options .= '<input type="hidden" name="mass_value2_'.$mass_action_en_id.'" value="" />';
+
+                }
+
+                $input_options .= '</span>';
 
             }
 
@@ -139,6 +191,7 @@
             echo '<input type="submit" value="Apply" class="btn btn-secondary inline-block">';
 
         echo '</form>';
+
 
 
 

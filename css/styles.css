@@ -3810,6 +3810,13 @@ h4 .tip-badge {
     border-radius: 50%;
 }
 
+.icon-demo img {
+    width: 24px;
+    height: 24px;
+    margin: -3px 0;
+    border-radius: 50%;
+}
+
 
 .profile-icon2 {
     width: 26px;

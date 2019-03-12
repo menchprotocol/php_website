@@ -15,7 +15,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 
 //UI Display:
-$config['app_version']              = '0.7692'; //Cache buster in URLs for static js/css files
+$config['app_version']              = '0.7693'; //Cache buster in URLs for static js/css files
 $config['en_per_page']              = 100; //Limits the maximum entities loaded per page
 
 //Intents:

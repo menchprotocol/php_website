@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-03-11 12:02:22 PST
+//Generated 2019-03-11 20:01:13 PST
 
 //Advance Mode:
 $config['en_ids_5005'] = array(4232, 4233, 4234, 4602, 4604, 4741, 4759, 4997, 5006);
@@ -61,9 +61,9 @@ $config['en_all_5005'] = array(
     ),
     4997 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Mass Updated Entities',
+        'm_name' => 'Entity Mass Updates',
         'm_desc' => '',
-        'm_parents' => array(5005, 4527, 4594, 4992),
+        'm_parents' => array(4506, 4426, 5005, 4527, 4992),
     ),
     5006 => array(
         'm_icon' => '<i class="fas fa-atlas"></i>',
@@ -73,44 +73,50 @@ $config['en_all_5005'] = array(
     ),
 );
 
-//Mass Updated Entities:
-$config['en_ids_4997'] = array(4998, 4999, 5000, 5001, 5003, 5865);
+//Entity Mass Updates:
+$config['en_ids_4997'] = array(4998, 4999, 5000, 5001, 5003, 5865, 5943);
 $config['en_all_4997'] = array(
     4998 => array(
-        'm_icon' => '',
-        'm_name' => 'Add Prefix String',
-        'm_desc' => 'string',
-        'm_parents' => array(4997),
+        'm_icon' => '<i class="fal fa-list-alt"></i>',
+        'm_name' => 'Add Entity Name Prefix',
+        'm_desc' => '',
+        'm_parents' => array(4594, 4997),
     ),
     4999 => array(
-        'm_icon' => '',
-        'm_name' => 'Add Postfix String',
-        'm_desc' => 'string',
-        'm_parents' => array(4997),
+        'm_icon' => '<i class="fal fa-list-alt"></i>',
+        'm_name' => 'Add Entity Name Postfix',
+        'm_desc' => '',
+        'm_parents' => array(4594, 4997),
     ),
     5000 => array(
-        'm_icon' => '',
-        'm_name' => 'Replace Entity Matching String',
-        'm_desc' => 'find>>replace',
-        'm_parents' => array(4997),
+        'm_icon' => '<i class="fal fa-list-alt"></i>',
+        'm_name' => 'Update Entity Name',
+        'm_desc' => '',
+        'm_parents' => array(4594, 4997),
     ),
     5001 => array(
-        'm_icon' => '',
-        'm_name' => 'Replace Transaction Matching String',
-        'm_desc' => 'find>>replace',
-        'm_parents' => array(4997),
+        'm_icon' => '<i class="fal fa-list-alt"></i>',
+        'm_name' => 'Update Transaction Content',
+        'm_desc' => '',
+        'm_parents' => array(4594, 4997),
     ),
     5003 => array(
-        'm_icon' => '',
-        'm_name' => 'Update Matching Entity Status',
-        'm_desc' => '1>>3 or *>>2',
-        'm_parents' => array(4997),
+        'm_icon' => '<i class="fal fa-list-alt"></i>',
+        'm_name' => 'Update Entity Status',
+        'm_desc' => '',
+        'm_parents' => array(4594, 4997),
     ),
     5865 => array(
-        'm_icon' => '',
-        'm_name' => 'Update Matching Transaction Status',
-        'm_desc' => '1>>3 or *>>2',
-        'm_parents' => array(4997),
+        'm_icon' => '<i class="fal fa-list-alt"></i>',
+        'm_name' => 'Update Transaction Status',
+        'm_desc' => '',
+        'm_parents' => array(4594, 4997),
+    ),
+    5943 => array(
+        'm_icon' => '<i class="fal fa-list-alt"></i>',
+        'm_name' => 'Update Entity Icon',
+        'm_desc' => '',
+        'm_parents' => array(4594, 4997),
     ),
 );
 
@@ -210,7 +216,7 @@ $config['en_all_4990'] = array(
 );
 
 //Only Moderators can Modify:
-$config['en_ids_4426'] = array(1280, 1308, 3286, 3288, 4374, 4426, 4430, 4433, 4755);
+$config['en_ids_4426'] = array(1280, 1308, 3286, 3288, 4374, 4426, 4430, 4433, 4755, 4997);
 $config['en_all_4426'] = array(
     1280 => array(
         'm_icon' => '🤝',
@@ -265,6 +271,12 @@ $config['en_all_4426'] = array(
         'm_name' => 'Only Moderators can View',
         'm_desc' => '',
         'm_parents' => array(4426, 4527, 4757),
+    ),
+    4997 => array(
+        'm_icon' => '<i class="fal fa-list-alt"></i>',
+        'm_name' => 'Entity Mass Updates',
+        'm_desc' => '',
+        'm_parents' => array(4506, 4426, 5005, 4527, 4992),
     ),
 );
 
@@ -333,7 +345,7 @@ $config['en_all_4755'] = array(
     ),
     4567 => array(
         'm_icon' => '<i class="fal fa-check-square"></i>',
-        'm_name' => 'Action Plan Task Completed',
+        'm_name' => 'Action Plan Step Completed',
         'm_desc' => '',
         'm_parents' => array(4755, 4594, 4560),
     ),
@@ -409,13 +421,13 @@ $config['en_all_4374'] = array(
         'm_parents' => array(4594, 4374),
     ),
     4250 => array(
-        'm_icon' => '',
+        'm_icon' => '<i class="fas fa-hashtag"></i>',
         'm_name' => 'Created Intent',
         'm_desc' => '200',
         'm_parents' => array(4594, 4374),
     ),
     4251 => array(
-        'm_icon' => '',
+        'm_icon' => '<i class="fas fa-at"></i>',
         'm_name' => 'Created Entity',
         'm_desc' => '50',
         'm_parents' => array(4594, 4374),
@@ -536,7 +548,7 @@ $config['en_all_4600'] = array(
 );
 
 //Transaction Type Full List:
-$config['en_ids_4594'] = array(4228, 4229, 4230, 4231, 4232, 4233, 4234, 4235, 4242, 4246, 4248, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4265, 4266, 4267, 4268, 4269, 4272, 4275, 4278, 4279, 4282, 4283, 4284, 4287, 4299, 4318, 4319, 4331, 4452, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4567, 4568, 4570, 4577, 4601, 4602, 4983, 4993, 4994, 4996, 4997, 5007);
+$config['en_ids_4594'] = array(4228, 4229, 4230, 4231, 4232, 4233, 4234, 4235, 4242, 4246, 4248, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4265, 4266, 4267, 4268, 4269, 4272, 4275, 4278, 4279, 4282, 4283, 4284, 4287, 4299, 4318, 4319, 4331, 4452, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4567, 4568, 4570, 4577, 4601, 4602, 4983, 4993, 4994, 4996, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943);
 $config['en_all_4594'] = array(
     4228 => array(
         'm_icon' => '<i class="fal fa-check-circle"></i>',
@@ -605,13 +617,13 @@ $config['en_all_4594'] = array(
         'm_parents' => array(4755, 4594, 4428, 4277),
     ),
     4250 => array(
-        'm_icon' => '',
+        'm_icon' => '<i class="fas fa-hashtag"></i>',
         'm_name' => 'Created Intent',
         'm_desc' => '',
         'm_parents' => array(4594, 4374),
     ),
     4251 => array(
-        'm_icon' => '',
+        'm_icon' => '<i class="fas fa-at"></i>',
         'm_name' => 'Created Entity',
         'm_desc' => 'Logged when a new entity is created.',
         'm_parents' => array(4594, 4374),
@@ -773,7 +785,7 @@ $config['en_all_4594'] = array(
         'm_parents' => array(4594, 4527, 4374),
     ),
     4452 => array(
-        'm_icon' => '',
+        'm_icon' => '<i class="fab fa-git"></i>',
         'm_name' => 'Pushed Code to Github',
         'm_desc' => '',
         'm_parents' => array(4594, 4428),
@@ -852,13 +864,13 @@ $config['en_all_4594'] = array(
     ),
     4559 => array(
         'm_icon' => '<i class="fal fa-square"></i>',
-        'm_name' => 'Action Plan Task',
+        'm_name' => 'Action Plan Step',
         'm_desc' => 'Every Action Plan has a number of intentions that define what the Masters needs to complete in order to accomplish the intention of the Action Plan',
         'm_parents' => array(4594, 4560),
     ),
     4567 => array(
         'm_icon' => '<i class="fal fa-check-square"></i>',
-        'm_name' => 'Action Plan Task Completed',
+        'm_name' => 'Action Plan Step Completed',
         'm_desc' => 'When Master marks an Action Plan Intent as Complete.',
         'm_parents' => array(4755, 4594, 4560),
     ),
@@ -916,17 +928,53 @@ $config['en_all_4594'] = array(
         'm_desc' => '',
         'm_parents' => array(4594, 4560),
     ),
-    4997 => array(
+    4998 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Mass Updated Entities',
+        'm_name' => 'Entity Mass Add Entity Name Prefix',
         'm_desc' => '',
-        'm_parents' => array(5005, 4527, 4594, 4992),
+        'm_parents' => array(4594, 4997),
+    ),
+    4999 => array(
+        'm_icon' => '<i class="fal fa-list-alt"></i>',
+        'm_name' => 'Entity Mass Add Entity Name Postfix',
+        'm_desc' => '',
+        'm_parents' => array(4594, 4997),
+    ),
+    5000 => array(
+        'm_icon' => '<i class="fal fa-list-alt"></i>',
+        'm_name' => 'Entity Mass Update Entity Name',
+        'm_desc' => '',
+        'm_parents' => array(4594, 4997),
+    ),
+    5001 => array(
+        'm_icon' => '<i class="fal fa-list-alt"></i>',
+        'm_name' => 'Entity Mass Update Transaction Content',
+        'm_desc' => '',
+        'm_parents' => array(4594, 4997),
+    ),
+    5003 => array(
+        'm_icon' => '<i class="fal fa-list-alt"></i>',
+        'm_name' => 'Entity Mass Update Entity Status',
+        'm_desc' => '',
+        'm_parents' => array(4594, 4997),
     ),
     5007 => array(
         'm_icon' => '<i class="fal fa-expand-arrows"></i>',
         'm_name' => 'Toggled Advance Mode',
         'm_desc' => '',
         'm_parents' => array(4594, 4992),
+    ),
+    5865 => array(
+        'm_icon' => '<i class="fal fa-list-alt"></i>',
+        'm_name' => 'Entity Mass Update Transaction Status',
+        'm_desc' => '',
+        'm_parents' => array(4594, 4997),
+    ),
+    5943 => array(
+        'm_icon' => '<i class="fal fa-list-alt"></i>',
+        'm_name' => 'Entity Mass Update Entity Icon',
+        'm_desc' => '',
+        'm_parents' => array(4594, 4997),
     ),
 );
 

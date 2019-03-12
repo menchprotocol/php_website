@@ -331,6 +331,10 @@ function fn___filter_array($array, $match_key, $match_value)
     return false;
 }
 
+function fn___has_moderator_rights($section_en_id){
+    $CI =& get_instance();
+    return (!in_array($section_en_id , $CI->config->item('en_ids_4426')) || fn___en_auth(array(1281)));
+}
 
 function fn___en_auth($en_permission_group = null, $force_redirect = 0)
 {
