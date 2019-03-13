@@ -2147,12 +2147,21 @@ class Matrix_model extends CI_Model
 
             //We are NOT linking to an existing intent, but instead, we're creating a new intent:
 
+            //calculate Verb ID:
+            $in_verb_entity_id = starting_verb_id($in_outcome);
+            if(!$in_verb_entity_id){
+                //Not a acceptable starting verb:
+                return array(
+                    'status' => 0,
+                    'message' => 'Intent outcomes must start with a supporting verb (See list at @5008)',
+                );
+            }
+
             //Check to make sure it's not a duplicate outcome:
             $duplicate_outcome_ins = $this->Database_model->fn___in_fetch(array(
                 'in_status >=' => 0,
                 'LOWER(in_outcome)' => strtolower(trim($in_outcome)),
             ));
-
             if(count($duplicate_outcome_ins) > 0){
                 //This is a duplicate, disallow:
                 return array(
@@ -2170,6 +2179,7 @@ class Matrix_model extends CI_Model
             $child_in = $this->Database_model->fn___in_create(array(
                 'in_status' => 0, //New
                 'in_outcome' => trim($in_outcome),
+                'in_verb_entity_id' => $in_verb_entity_id,
                 'in_metadata' => $in_metadata_modify,
             ), true, $tr_miner_entity_id);
 

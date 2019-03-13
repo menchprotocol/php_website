@@ -22,14 +22,16 @@ function in_cost_overview(seconds, in_id){
 }
 
 function activate_expansion(){
-    $('.is_level2_sortable').on('click', function(e) {
-        if (e.target !== this){
-            if(jQuery.inArray("click_expand", e.target.classList) == -1){
-                return;
-            }
+    //Activate expansion for intent level 2 items that are not already expanded
+    $('.is_level2_sortable').each(function () {
+        if(!$(this).hasClass('is_expanded')){
+
+            $(this).addClass('is_expanded').on('click', function(e) {
+                //Expand children:
+                fn___ms_toggle(parseInt($(this).attr('in-tr-id')), -1);
+            });
+
         }
-        //Still here? Expand children:
-        fn___ms_toggle(parseInt($(this).attr('in-tr-id')), -1);
     });
 }
 
