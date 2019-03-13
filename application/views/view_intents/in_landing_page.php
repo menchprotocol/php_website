@@ -63,7 +63,7 @@ $hide_subscribe = (isset($_GET['hide_subscribe']) && intval($_GET['hide_subscrib
 
         <?php if (!$hide_subscribe) { ?>
             <h3 style="margin-top:0px !important;">Overview:</h3>
-            <div style="margin:12px 0 0 5px;" class="maxout">
+            <div style="margin:5px 0 0 5px;" class="maxout">
                 <?= fn___echo_tree_steps($in, false) ?>
                 <?= fn___echo_tree_sources($in, false) ?>
                 <?= fn___echo_tree_cost($in, false) ?>
@@ -84,7 +84,7 @@ $hide_subscribe = (isset($_GET['hide_subscribe']) && intval($_GET['hide_subscrib
                 <h3>Action Plan:</h3>
             <?php } ?>
 
-            <div class="list-group grey_list actionplan_list" style="margin:12px 0 0 5px;">
+            <div class="list-group grey_list actionplan_list" style="margin:5px 0 0 5px;">
                 <?php
                 $in_level2_counter = 0;
                 foreach ($in['in__children'] as $in_level2) {
@@ -96,20 +96,19 @@ $hide_subscribe = (isset($_GET['hide_subscribe']) && intval($_GET['hide_subscrib
                     echo '<div class="panel-group" id="open' . $in_level2_counter . '" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
             <div class="panel-heading" role="tab" id="heading' . $in_level2_counter . '">
                 <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" data-parent="#open' . $in_level2_counter . '" href="#collapse' . $in_level2_counter . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $in_level2_counter . '">' . ($in['in_type'] ? 'Option ' : 'Step ') . ($in_level2_counter + 1) . ': <span id="title-' . $in_level2['in_id'] . '">' . $in_level2['in_outcome'] . '</span>';
+                    <a role="button" data-toggle="collapse" data-parent="#open' . $in_level2_counter . '" href="#collapse' . $in_level2_counter . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $in_level2_counter . '">' . '<i class="fal fa-plus-circle" style="font-size: 1em !important; margin-left: 0; width: 21px;"></i>'. ($in['in_type'] ? 'Option ' : 'Step ') . ($in_level2_counter + 1) . ': <span id="title-' . $in_level2['in_id'] . '">' . $in_level2['in_outcome'] . '</span>';
 
                     //Show time if we have it:
                     $in_level2_metadata = unserialize($in_level2['in_metadata']);
                     if (isset($in_level2_metadata['in__tree_max_seconds']) && $in_level2_metadata['in__tree_max_seconds'] > 0) {
-                        echo ' <span style="font-size: 0.9em; font-weight: 300;"><i class="fal fa-clock"></i> ' . fn___echo_time_range($in_level2, true) . '</span>';
+                        echo ' <span style="font-size: 0.9em; font-weight: 300;"><i class="fal fa-clock" style="width:16px; text-transform: none !important;"></i>' . fn___echo_time_range($in_level2, true) . '</span>';
                     }
 
-                    echo '<i class="fal fa-info-circle" style="transform:none !important; font-size:0.85em !important;"></i>
-                    </a>
+                    echo '</a>
                 </h4>
             </div>
             <div id="collapse' . $in_level2_counter . '" class="panel-collapse collapse ' . ($expand_mode ? 'in' : 'out') . '" role="tabpanel" aria-labelledby="heading' . $in_level2_counter . '">
-                <div class="panel-body" style="padding:5px 0 0 5px;">';
+                <div class="panel-body" style="padding:5px 0 0 25px;">';
 
 
                     //Fetch & Display On-Start Messages for this intent:
@@ -124,7 +123,7 @@ $hide_subscribe = (isset($_GET['hide_subscribe']) && intval($_GET['hide_subscrib
                     if (count($in_level2['in__grandchildren']) > 0) {
 
                         $in_level3_counter = 0;
-                        echo '<ul style="list-style:none; margin-left:-10px; font-size:1em;">';
+                        echo '<ul style="list-style:none; margin:10px 0 10px -40px; font-size:1em;">';
                         foreach ($in_level2['in__grandchildren'] as $in_level3) {
 
                             if ($in_level3['tr_type_entity_id'] == 4229) {
@@ -187,7 +186,7 @@ $featured_ins = $this->Database_model->fn___in_fetch(array(
 
 if ((count($featured_ins) > 0 || $parent_ui)) {
     echo '<div>';
-    echo '<h3>More Intentions:</h3>';
+    echo '<h3 style="margin-bottom:5px;">More Intentions:</h3>';
     echo '<div class="list-group grey_list actionplan_list maxout">';
     echo $parent_ui;
     foreach ($featured_ins as $featured_c) {

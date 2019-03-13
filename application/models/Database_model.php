@@ -103,7 +103,7 @@ class Database_model extends CI_Model
     {
 
         //What is required to create a new intent?
-        if (fn___detect_missing_columns($insert_columns, array('in_status', 'in_outcome'))) {
+        if (fn___detect_missing_columns($insert_columns, array('in_status', 'in_outcome', 'in_verb_entity_id'))) {
             return false;
         }
 

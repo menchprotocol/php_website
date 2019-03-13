@@ -245,7 +245,7 @@ class My extends CI_Controller
             return fn___redirect_message('/my/actionplan', '<div class="alert alert-danger" role="alert">Error: Missing Core Data.</div>');
         }
 
-        //Fetch master name and details:
+        //Fetch student name and details:
         $session_en = $this->session->userdata('user');
         $trs = $this->Database_model->fn___tr_fetch(array(
             'tr_id' => $_POST['tr_id'],

@@ -2490,7 +2490,7 @@ class Chat_model extends CI_Model
                     'payload' => 'SUBSCRIBE-REJECT',
                 ));
 
-                //return what we found to the master to decide:
+                //return what we found to the student to decide:
                 $this->Chat_model->fn___dispatch_message(
                     $message,
                     $en,

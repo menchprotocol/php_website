@@ -1244,7 +1244,7 @@ function fn___echo_in_featured($in)
 
     $ui .= '<span style="color:#222; font-weight:500; font-size:1.1em;">'.$in['in_outcome'].'</span>';
     $ui .= '<span style="font-size:0.8em; font-weight:300; margin-left:5px; display:inline-block;">';
-    $ui .= '<span><i class="fal fa-clock"></i> ' . fn___echo_time_range($in) . '</span>';
+    $ui .= '<span><i class="fal fa-clock"></i>' . fn___echo_time_range($in) . '</span>';
     $ui .= '</span>';
     $ui .= '</a>';
     return $ui;
@@ -1485,7 +1485,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
     //Intent modify:
     $in__tree_max_seconds = (isset($in_metadata['in__tree_max_seconds']) ? $in_metadata['in__tree_max_seconds'] : 0);
-    $ui .= '<a class="badge badge-primary white-primary is_not_bg '.( $level==0 ? '' . fn___echo_advance() . '' : '' ).'" onclick="'.( $level==0 ? 'alert(\'Cannot manage here. Go to the intent to manage.\')' : 'fn___in_modify_load(' . $in['in_id'] . ',' . $tr_id . ')' ).'" style="margin:-2px -8px 0 0; width:40px;" href="#loadmodify-' . $in['in_id'] . '-' . $tr_id . '" data-toggle="tooltip" title="Intent completion cost. Click to modify intent'.( $level>1 ? ' and transaction' : '' ).'" data-placement="top"><span class="btn-counter slim-time ' . fn___echo_advance() . ' t_estimate_' . $in['in_id'] . '" intent-usd="'.$in['in_dollar_cost'].'" tree-max-seconds="' . $in__tree_max_seconds . '" intent-seconds="' . $in['in_seconds_cost'] . '">'.( $in__tree_max_seconds > 0 ? fn___echo_time_hours($in__tree_max_seconds , true) : 0 ).'</span><i class="fas fa-cog"></i></a> &nbsp;';
+    $ui .= '<a class="badge badge-primary white-primary is_not_bg '.( $level==0 ? '' . fn___echo_advance() . '' : '' ).'" onclick="'.( $level==0 ? 'alert(\'Cannot manage here. Go to the intent to manage.\')' : 'fn___in_modify_load(' . $in['in_id'] . ',' . $tr_id . ')' ).'" style="margin:-2px -8px 0 0; width:40px;" href="#loadmodify-' . $in['in_id'] . '-' . $tr_id . '" data-toggle="tooltip" title="Intent completion cost. Click to modify intent'.( $level>1 ? ' and transaction' : '' ).'" data-placement="top"><span class="btn-counter slim-time t_estimate_' . $in['in_id'] . '" intent-usd="'.$in['in_dollar_cost'].'" tree-max-seconds="' . $in__tree_max_seconds . '" intent-seconds="' . $in['in_seconds_cost'] . '">'.( $in__tree_max_seconds > 0 ? fn___echo_time_hours($in__tree_max_seconds , true) : 0 ).'</span><i class="fas fa-cog"></i></a> &nbsp;';
 
 
     //Intent Transactions:

@@ -83,38 +83,31 @@ class Ledger extends CI_Controller
             }
 
             //Create Intent:
-            $new_in = $this->Database_model->fn___in_create(array(
-                'in_status' => 0, //New
-                'in_outcome' => $in_outcome,
-            ), true, $session_en['en_id']);
-
-            //Go to new URL:
-            return fn___echo_json(array(
-                'status' => 1,
-                'new_item_url' => '/intents/' . $new_in['in_id'],
-            ));
-
-        } elseif(substr($_POST['raw_string'], 0, 1)=='@'){
-
-            $en_name = trim(substr($_POST['raw_string'], 1));
-            if(strlen($en_name)<2){
+            $added_in = $this->Matrix_model->fn___create_intent($in_outcome, $session_en['en_id']);
+            if(!$added_in['status']){
+                //We had an error, return it:
+                return fn___echo_json($added_in);
+            } else {
                 return fn___echo_json(array(
-                    'status' => 0,
-                    'message' => 'Entity name must be at-least 2 characters long.',
+                    'status' => 1,
+                    'new_item_url' => '/intents/' . $added_in['in']['in_id'],
                 ));
             }
 
-            //Create entity:
-            $new_en = $this->Database_model->fn___en_create(array(
-                'en_status' => 0, //New
-                'en_name' => $en_name,
-            ), true, $session_en['en_id']);
+        } elseif(substr($_POST['raw_string'], 0, 1)=='@'){
 
-            //Go to new URL:
-            return fn___echo_json(array(
-                'status' => 1,
-                'new_item_url' => '/entities/' . $new_en['en_id'],
-            ));
+            //Create entity:
+            $added_en = $this->Matrix_model->fn___create_entity(trim(substr($_POST['raw_string'], 1)), $session_en['en_id']);
+            if(!$added_en['status']){
+                //We had an error, return it:
+                return fn___echo_json($added_en);
+            } else {
+                //Assign new entity:
+                return fn___echo_json(array(
+                    'status' => 1,
+                    'new_item_url' => '/entities/' . $added_en['en']['en_id'],
+                ));
+            }
 
         } else {
             return fn___echo_json(array(

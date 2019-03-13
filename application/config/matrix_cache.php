@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-03-12 12:50:14 PST
+//Generated 2019-03-13 10:33:03 PST
 
 //Linked Entities Text:
 $config['en_ids_4255'] = array(2999, 3005, 3084, 3147, 3192, 3286, 4601, 4763, 4883);
@@ -180,13 +180,19 @@ $config['en_all_4997'] = array(
 );
 
 //Entity Message Reference Appendix:
-$config['en_ids_4990'] = array(1326, 2997, 2998, 2999, 3005, 3084, 3147, 3192, 4257, 4258, 4259, 4260, 4446, 4763, 4883);
+$config['en_ids_4990'] = array(1326, 2793, 2997, 2998, 2999, 3005, 3084, 3147, 3192, 3300, 3301, 3302, 3303, 3308, 3320, 4257, 4258, 4259, 4260, 4446, 4763, 4883);
 $config['en_all_4990'] = array(
     1326 => array(
         'm_icon' => '<i class="fal fa-bookmark"></i>',
         'm_name' => 'Domain',
         'm_desc' => '',
         'm_parents' => array(4990, 4256, 4506),
+    ),
+    2793 => array(
+        'm_icon' => '<i class="fab fa-facebook"></i>',
+        'm_name' => 'Facebook',
+        'm_desc' => '',
+        'm_parents' => array(4990, 1326, 1326, 2750),
     ),
     2997 => array(
         'm_icon' => '<i class="fal fa-newspaper"></i>',
@@ -229,6 +235,42 @@ $config['en_all_4990'] = array(
         'm_name' => 'Expert Software',
         'm_desc' => '',
         'm_parents' => array(4990, 4255, 3000),
+    ),
+    3300 => array(
+        'm_icon' => '<i class="fab fa-twitter"></i>',
+        'm_name' => 'Twitter',
+        'm_desc' => '',
+        'm_parents' => array(4990, 2750, 1326, 3304),
+    ),
+    3301 => array(
+        'm_icon' => '<i class="fab fa-instagram"></i>',
+        'm_name' => 'Instagram',
+        'm_desc' => '',
+        'm_parents' => array(4990, 1326, 2750),
+    ),
+    3302 => array(
+        'm_icon' => '<i class="fab fa-linkedin"></i>',
+        'm_name' => 'LinkedIn',
+        'm_desc' => '',
+        'm_parents' => array(4990, 1326, 4763, 2750),
+    ),
+    3303 => array(
+        'm_icon' => '<i class="fab fa-github"></i>',
+        'm_name' => 'Github',
+        'm_desc' => '',
+        'm_parents' => array(4990, 4763, 1326, 2750),
+    ),
+    3308 => array(
+        'm_icon' => '<i class="fab fa-youtube"></i>',
+        'm_name' => 'YouTube',
+        'm_desc' => '',
+        'm_parents' => array(4990, 4763, 4257, 2750, 1326),
+    ),
+    3320 => array(
+        'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
+        'm_name' => 'Facebook Messenger',
+        'm_desc' => '',
+        'm_parents' => array(4990, 1326, 1326, 2750, 2793),
     ),
     4257 => array(
         'm_icon' => '<i class="fal fa-play-circle"></i>',

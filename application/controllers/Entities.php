@@ -346,6 +346,8 @@ class Entities extends CI_Controller
 
         } else {
 
+            //We are creating a new entity OR adding a URL...
+
             //Is this a URL?
             if (filter_var($_POST['en_new_string'], FILTER_VALIDATE_URL)) {
 
@@ -372,30 +374,14 @@ class Entities extends CI_Controller
 
             } else {
 
-                //Check to make sure name is not duplicate:
-                $duplicate_name_ens = $this->Database_model->fn___en_fetch(array(
-                    'en_status >=' => 0,
-                    'LOWER(en_name)' => strtolower(trim($_POST['en_new_string'])),
-                ));
-                if(count($duplicate_name_ens) > 0){
-                    //This is a duplicate, disallow:
-                    return fn___echo_json(array(
-                        'status' => 0,
-                        'message' => 'Name ['.$_POST['en_new_string'].'] already in use by entity @'.$duplicate_name_ens[0]['en_id'],
-                    ));
-                }
-
-                //It's a regular entity name:
-                $entity_new = $this->Database_model->fn___en_create(array(
-                    'en_name' => trim($_POST['en_new_string']),
-                    'en_status' => 2, //Published
-                ), true, $session_en['en_id']);
-
-                if (!isset($entity_new['en_id']) || $entity_new['en_id'] < 1) {
-                    return fn___echo_json(array(
-                        'status' => 0,
-                        'message' => 'Failed to create new entity for [' . $_POST['en_new_string'] . ']',
-                    ));
+                //Create entity:
+                $added_en = $this->Matrix_model->fn___create_entity($_POST['en_new_string'], $session_en['en_id']);
+                if(!$added_en['status']){
+                    //We had an error, return it:
+                    return fn___echo_json($added_en);
+                } else {
+                    //Assign new entity:
+                    $entity_new = $added_en['en'];
                 }
 
             }
@@ -558,7 +544,6 @@ class Entities extends CI_Controller
         //Check to make sure name is not duplicate:
         $duplicate_name_ens = $this->Database_model->fn___en_fetch(array(
             'en_id !=' => $_POST['en_id'],
-            'en_status >=' => 0,
             'LOWER(en_name)' => strtolower($en_update['en_name']),
         ));
         if(count($duplicate_name_ens) > 0){
@@ -1095,7 +1080,7 @@ class Entities extends CI_Controller
 
         } elseif (!$is_miner && !$is_student) {
 
-            //We assume this is a master request:
+            //We assume this is a student request:
             return fn___redirect_message('/login', '<div class="alert alert-danger" role="alert">Error: You have not added any intentions to your Action Plan yet.</div>');
 
         }

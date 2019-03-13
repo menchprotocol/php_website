@@ -128,7 +128,7 @@ class Matrix_model extends CI_Model
          * Treats an entity child group as a drop down menu where:
          *
          *  $en_parent_bucket_id is the parent of the drop down
-         *  $en_student_id is the master entity ID that one of the children of $en_parent_bucket_id should be assigned (like a drop down)
+         *  $en_student_id is the student entity ID that one of the children of $en_parent_bucket_id should be assigned (like a drop down)
          *  $set_en_child_id is the new value to be assigned, which could also be null (meaning just remove all current values)
          *
          * This function is helpful to manage things like Student communication levels
@@ -253,11 +253,8 @@ class Matrix_model extends CI_Model
         } elseif ($tr_miner_entity_id) {
 
             //Yes, let's add a new entity:
-            $en_domain = $this->Database_model->fn___en_create(array(
-                'en_status' => 0, //New domain entity
-                'en_name' => ( $page_title ? $page_title : $domain_analysis['url_domain_name'] ),
-                'en_icon' => fn___detect_fav_icon($domain_analysis['url_clean_domain']),
-            ), true, $tr_miner_entity_id);
+            $added_en = $this->Matrix_model->fn___create_entity(( $page_title ? $page_title : $domain_analysis['url_domain_name'] ), $tr_miner_entity_id, true, 2, fn___detect_fav_icon($domain_analysis['url_clean_domain']));
+            $en_domain = $added_en['en'];
 
             //And link entity to the domains entity:
             $this->Database_model->fn___tr_create(array(
@@ -486,11 +483,8 @@ class Matrix_model extends CI_Model
             } elseif ($tr_miner_entity_id) {
 
                 //Create a new entity for this URL:
-                $en_url = $this->Database_model->fn___en_create(array(
-                    'en_status' => 0, //New URL entity
-                    'en_name' => $page_title,
-                    'en_icon' => null, //No icon for this URL
-                ), true, $tr_miner_entity_id);
+                $added_en = $this->Matrix_model->fn___create_entity($page_title, $tr_miner_entity_id, true);
+                $en_url = $added_en['en'];
 
                 //Always link URL to its parent domain:
                 $this->Database_model->fn___tr_create(array(
@@ -1902,6 +1896,98 @@ class Matrix_model extends CI_Model
     }
 
 
+    function fn___create_intent($in_outcome, $tr_miner_entity_id = 0, $in_status = 0){
+
+        //calculate Verb ID:
+        $in_verb_entity_id = starting_verb_id($in_outcome);
+        if(!$in_verb_entity_id){
+            //Not a acceptable starting verb:
+            return array(
+                'status' => 0,
+                'message' => 'Intent outcomes must start with a supporting verb (See list at @5008)',
+            );
+        }
+
+        //Check to make sure it's not a duplicate outcome:
+        $duplicate_outcome_ins = $this->Database_model->fn___in_fetch(array(
+            'LOWER(in_outcome)' => strtolower(trim($in_outcome)),
+        ));
+        if(count($duplicate_outcome_ins) > 0){
+            //This is a duplicate, disallow:
+            $fixed_fields = $this->config->item('fixed_fields');
+            return array(
+                'status' => 0,
+                'message' => 'Outcome ['.$in_outcome.'] already in use by intent #'.$duplicate_outcome_ins[0]['in_id'].' with status ['.$fixed_fields['in_status'][$duplicate_outcome_ins[0]['in_status']]['s_name'].']',
+            );
+        }
+
+        //Prepare recursive update:
+        $in_metadata_modify = array(
+            'in__tree_in_active_count' => 1, //We just added 1 new intent to this tree
+        );
+
+        //Create child intent:
+        $intent_new = $this->Database_model->fn___in_create(array(
+            'in_status' => $in_status,
+            'in_outcome' => trim($in_outcome),
+            'in_verb_entity_id' => $in_verb_entity_id,
+            'in_metadata' => $in_metadata_modify,
+        ), true, $tr_miner_entity_id);
+
+        //Sync the metadata of this new intent:
+        $this->Matrix_model->fn___in_recursive_fetch($intent_new['in_id'], true, true);
+
+        //Return success:
+        return array(
+            'status' => 1,
+            'in' => $intent_new,
+        );
+
+    }
+
+    function fn___create_entity($en_name, $tr_miner_entity_id = 0, $force_creation = false, $en_status = 2, $en_icon = null, $en_psid = null){
+
+        if(strlen($en_name)<2){
+            return array(
+                'status' => 0,
+                'message' => 'Entity name must be at-least 2 characters long',
+            );
+        }
+
+        //Check to make sure name is not duplicate:
+        $duplicate_name_ens = $this->Database_model->fn___en_fetch(array(
+            'LOWER(en_name)' => strtolower(trim($en_name)),
+        ));
+        if(count($duplicate_name_ens) > 0){
+            if($force_creation){
+                //We're forcing a creation so append a postfix to name to make it unique:
+                $en_name = $en_name.' '.rand(100000000, 999999999); //Slim possibility to be duplicate...
+            } else {
+                //No, return error:
+                $fixed_fields = $this->config->item('fixed_fields');
+                return array(
+                    'status' => 0,
+                    'message' => 'Entity name ['.$en_name.'] already in use by entity @'.$duplicate_name_ens[0]['en_id'].' with status ['.$fixed_fields['en_status'][$duplicate_name_ens[0]['en_status']]['s_name'].']',
+                );
+            }
+        }
+
+        //Create entity
+        $entity_new = $this->Database_model->fn___en_create(array(
+            'en_name' => trim($en_name),
+            'en_icon' => $en_icon,
+            'en_psid' => $en_psid,
+            'en_status' => $en_status,
+        ), true, $tr_miner_entity_id);
+
+        //Return success:
+        return array(
+            'status' => 1,
+            'en' => $entity_new,
+        );
+
+    }
+
     function fn___en_messenger_add($psid)
     {
 
@@ -1937,18 +2023,13 @@ class Matrix_model extends CI_Model
              *
              * */
 
+            //Create student entity:
+            $added_en = $this->Matrix_model->fn___create_entity('Student', 0, true, 3, null, $psid);
 
-            //We will create this master with a random & temporary name:
-            $en = $this->Database_model->fn___en_create(array(
-                'en_name' => 'Student ' . rand(100000000, 999999999),
-                'en_psid' => $psid,
-                'en_status' => 3, //Claimed
-            ), true);
-
-            //Inform the master:
+            //Inform student:
             $this->Chat_model->fn___dispatch_message(
                 'Hi stranger! Let\'s get started by completing your profile information by opening the My Account tab in the menu below. /link:Open 👤My Account:https://mench.com/my/account',
-                $en,
+                $added_en['en'],
                 true
             );
 
@@ -1957,12 +2038,8 @@ class Matrix_model extends CI_Model
             //We did find the profile, move ahead:
             $fb_profile = $graph_fetch['tr_metadata']['result'];
 
-            //Create Student with their Facebook Graph name:
-            $en = $this->Database_model->fn___en_create(array(
-                'en_name' => $fb_profile['first_name'] . ' ' . $fb_profile['last_name'],
-                'en_psid' => $psid,
-                'en_status' => 3, //Claimed
-            ), true);
+            //Create student entity with their Facebook Graph name:
+            $added_en = $this->Matrix_model->fn___create_entity($fb_profile['first_name'] . ' ' . $fb_profile['last_name'], 0, true, 3, null, $psid);
 
             //Split locale variable into language and country like "EN_GB" for English in England
             $locale = explode('_', $fb_profile['locale'], 2);
@@ -1981,9 +2058,9 @@ class Matrix_model extends CI_Model
                     //Create new transaction:
                     $this->Database_model->fn___tr_create(array(
                         'tr_type_entity_id' => 4230, //Raw link
-                        'tr_miner_entity_id' => $en['en_id'], //Student gets credit as miner
+                        'tr_miner_entity_id' => $added_en['en']['en_id'], //Student gets credit as miner
                         'tr_parent_entity_id' => $tr_parent_entity_id,
-                        'tr_child_entity_id' => $en['en_id'],
+                        'tr_child_entity_id' => $added_en['en']['en_id'],
                     ));
 
                 }
@@ -1992,51 +2069,51 @@ class Matrix_model extends CI_Model
             //Create transaction to save profile picture:
             $this->Database_model->fn___tr_create(array(
                 'tr_status' => 0, //New
-                'tr_type_entity_id' => 4299, //Save URL to Mench Cloud
-                'tr_miner_entity_id' => $en['en_id'], //The Student who added this
+                'tr_type_entity_id' => 4299, //Save URL to Mench CDN
+                'tr_miner_entity_id' => $added_en['en']['en_id'], //The Student who added this
                 'tr_parent_entity_id' => 4260, //Indicates URL file Type (Image)
-                'tr_content' => $fb_profile['profile_pic'], //Image to be saved
+                'tr_content' => $fb_profile['profile_pic'], //Image to be saved to Mench CDN
             ));
 
         }
 
-        //Note that new entity transaction is already logged via fn___en_create()
+        //Note that new entity transaction is already logged in the entity creation function
         //Now create more relevant transactions:
 
         //Log new Student transaction:
         $this->Database_model->fn___tr_create(array(
             'tr_type_entity_id' => 4265, //New Student Joined
-            'tr_miner_entity_id' => $en['en_id'],
-            'tr_child_entity_id' => $en['en_id'],
-            'tr_metadata' => $en,
+            'tr_miner_entity_id' => $added_en['en']['en_id'],
+            'tr_child_entity_id' => $added_en['en']['en_id'],
+            'tr_metadata' => $added_en['en'],
         ));
 
         //Add default Notification Level:
         $this->Database_model->fn___tr_create(array(
             'tr_type_entity_id' => 4230, //Raw link
-            'tr_miner_entity_id' => $en['en_id'],
+            'tr_miner_entity_id' => $added_en['en']['en_id'],
             'tr_parent_entity_id' => 4456, //Receive Regular Notifications (Student can change later on...)
-            'tr_child_entity_id' => $en['en_id'],
+            'tr_child_entity_id' => $added_en['en']['en_id'],
         ));
 
         //Add them to Students group:
         $this->Database_model->fn___tr_create(array(
             'tr_type_entity_id' => 4230, //Raw link
-            'tr_miner_entity_id' => $en['en_id'],
+            'tr_miner_entity_id' => $added_en['en']['en_id'],
             'tr_parent_entity_id' => 4430, //Mench Student
-            'tr_child_entity_id' => $en['en_id'],
+            'tr_child_entity_id' => $added_en['en']['en_id'],
         ));
 
         //Add them to People entity:
         $this->Database_model->fn___tr_create(array(
             'tr_type_entity_id' => 4230, //Raw link
-            'tr_miner_entity_id' => $en['en_id'],
+            'tr_miner_entity_id' => $added_en['en']['en_id'],
             'tr_parent_entity_id' => 1278, //People
-            'tr_child_entity_id' => $en['en_id'],
+            'tr_child_entity_id' => $added_en['en']['en_id'],
         ));
 
         //Return entity object:
-        return $en;
+        return $added_en['en'];
 
     }
 
@@ -2096,14 +2173,14 @@ class Matrix_model extends CI_Model
             }
 
             //All good so far, continue with linking:
-            $child_in = $ins[0];
+            $intent_new = $ins[0];
 
             //check all parents as this intent cannot be duplicated with any of its parents:
             $parent_tree = $this->Matrix_model->fn___in_recursive_fetch($in_parent_id);
-            if (in_array($child_in['in_id'], $parent_tree['in_flat_tree'])) {
+            if (in_array($intent_new['in_id'], $parent_tree['in_flat_tree'])) {
                 return array(
                     'status' => 0,
-                    'message' => 'You cannot link to "' . $child_in['in_outcome'] . '" as it already belongs to the parent/grandparent tree.',
+                    'message' => 'You cannot link to "' . $intent_new['in_outcome'] . '" as it already belongs to the parent/grandparent tree.',
                 );
             }
 
@@ -2121,7 +2198,7 @@ class Matrix_model extends CI_Model
                 //Ooopsi, this is a duplicate!
                 return array(
                     'status' => 0,
-                    'message' => '[' . $child_in['in_outcome'] . '] is already linked here.',
+                    'message' => '[' . $intent_new['in_outcome'] . '] is already linked here.',
                 );
 
             } elseif ($in_link_child_id == $in_parent_id) {
@@ -2129,13 +2206,13 @@ class Matrix_model extends CI_Model
                 //Make sure none of the parents are the same:
                 return array(
                     'status' => 0,
-                    'message' => 'You cannot add "' . $child_in['in_outcome'] . '" as its own '.( $is_parent ? 'parent' : 'child' ).'.',
+                    'message' => 'You cannot add "' . $intent_new['in_outcome'] . '" as its own '.( $is_parent ? 'parent' : 'child' ).'.',
                 );
 
             }
 
             //Prepare recursive update:
-            $metadata = unserialize($child_in['in_metadata']);
+            $metadata = unserialize($intent_new['in_metadata']);
             //Fetch and adjust the intent tree based on these values:
             $in_metadata_modify = array(
                 'in__tree_in_active_count' => (isset($metadata['in__tree_in_active_count']) ? intval($metadata['in__tree_in_active_count']) : 0),
@@ -2147,44 +2224,11 @@ class Matrix_model extends CI_Model
 
             //We are NOT linking to an existing intent, but instead, we're creating a new intent:
 
-            //calculate Verb ID:
-            $in_verb_entity_id = starting_verb_id($in_outcome);
-            if(!$in_verb_entity_id){
-                //Not a acceptable starting verb:
-                return array(
-                    'status' => 0,
-                    'message' => 'Intent outcomes must start with a supporting verb (See list at @5008)',
-                );
+            $added_in = $this->Matrix_model->fn___create_intent($in_outcome, $tr_miner_entity_id);
+            if(!$added_in['status']){
+                //We had an error, return it:
+                return $added_in;
             }
-
-            //Check to make sure it's not a duplicate outcome:
-            $duplicate_outcome_ins = $this->Database_model->fn___in_fetch(array(
-                'in_status >=' => 0,
-                'LOWER(in_outcome)' => strtolower(trim($in_outcome)),
-            ));
-            if(count($duplicate_outcome_ins) > 0){
-                //This is a duplicate, disallow:
-                return array(
-                    'status' => 0,
-                    'message' => 'Outcome ['.$in_outcome.'] already in use by intent #'.$duplicate_outcome_ins[0]['in_id'],
-                );
-            }
-
-            //Prepare recursive update:
-            $in_metadata_modify = array(
-                'in__tree_in_active_count' => 1, //We just added 1 new intent to this tree
-            );
-
-            //Create child intent:
-            $child_in = $this->Database_model->fn___in_create(array(
-                'in_status' => 0, //New
-                'in_outcome' => trim($in_outcome),
-                'in_verb_entity_id' => $in_verb_entity_id,
-                'in_metadata' => $in_metadata_modify,
-            ), true, $tr_miner_entity_id);
-
-            //Sync the metadata of this new intent:
-            $this->Matrix_model->fn___in_recursive_fetch($child_in['in_id'], true, true);
 
         }
 
@@ -2194,11 +2238,11 @@ class Matrix_model extends CI_Model
             'tr_miner_entity_id' => $tr_miner_entity_id,
             'tr_type_entity_id' => 4228,
             ( $is_parent ? 'tr_child_intent_id' : 'tr_parent_intent_id' ) => $in_parent_id,
-            ( $is_parent ? 'tr_parent_intent_id' : 'tr_child_intent_id' ) => $child_in['in_id'],
+            ( $is_parent ? 'tr_parent_intent_id' : 'tr_child_intent_id' ) => $intent_new['in_id'],
             'tr_order' => 1 + $this->Database_model->fn___tr_max_order(array(
                     'tr_status >=' => 0,
                     'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
-                    'tr_parent_intent_id' => ( $is_parent ? $child_in['in_id'] : $in_parent_id ),
+                    'tr_parent_intent_id' => ( $is_parent ? $intent_new['in_id'] : $in_parent_id ),
                 )),
         ), true);
 
@@ -2209,7 +2253,7 @@ class Matrix_model extends CI_Model
 
             $tr_miner_upvotes = $this->Database_model->fn___tr_fetch(array(
                 ( $is_parent ? 'tr_child_intent_id' : 'tr_parent_intent_id' ) => $in_parent_id,
-                ( $is_parent ? 'tr_parent_intent_id' : 'tr_child_intent_id' ) => $child_in['in_id'],
+                ( $is_parent ? 'tr_parent_intent_id' : 'tr_child_intent_id' ) => $intent_new['in_id'],
                 'tr_parent_entity_id' => $tr_miner_entity_id,
                 'tr_type_entity_id' => 4983, //Up-votes
                 'tr_status >=' => 0, //New+
@@ -2222,9 +2266,9 @@ class Matrix_model extends CI_Model
                     'tr_miner_entity_id' => $tr_miner_entity_id,
                     'tr_parent_entity_id' => $tr_miner_entity_id,
                     'tr_type_entity_id' => 4983, //Up-votes
-                    'tr_content' => '@'.$tr_miner_entity_id.' #'.( $is_parent ? $child_in['in_id'] : $in_parent_id ), //Message content
+                    'tr_content' => '@'.$tr_miner_entity_id.' #'.( $is_parent ? $intent_new['in_id'] : $in_parent_id ), //Message content
                     ( $is_parent ? 'tr_child_intent_id' : 'tr_parent_intent_id' ) => $in_parent_id,
-                    ( $is_parent ? 'tr_parent_intent_id' : 'tr_child_intent_id' ) => $child_in['in_id'],
+                    ( $is_parent ? 'tr_parent_intent_id' : 'tr_child_intent_id' ) => $intent_new['in_id'],
                 ));
             }
 
@@ -2239,7 +2283,7 @@ class Matrix_model extends CI_Model
         //Fetch and return full data to be properly shown on the UI using the fn___echo_in() function
         $new_ins = $this->Database_model->fn___tr_fetch(array(
             ( $is_parent ? 'tr_child_intent_id' : 'tr_parent_intent_id' ) => $in_parent_id,
-            ( $is_parent ? 'tr_parent_intent_id' : 'tr_child_intent_id' ) => $child_in['in_id'],
+            ( $is_parent ? 'tr_parent_intent_id' : 'tr_child_intent_id' ) => $intent_new['in_id'],
             'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
             'tr_status >=' => 0,
             'in_status >=' => 0,
@@ -2249,7 +2293,7 @@ class Matrix_model extends CI_Model
         //Return result:
         return array(
             'status' => 1,
-            'in_child_id' => $child_in['in_id'],
+            'in_child_id' => $intent_new['in_id'],
             'in_child_html' => fn___echo_in($new_ins[0], $next_level, $in_parent_id, $is_parent),
             //Also append some tree data for UI modifications via JS functions:
             'in__tree_max_seconds' => (isset($in_metadata_modify['in__tree_max_seconds']) && !$is_parent ? intval($in_metadata_modify['in__tree_max_seconds']) : 0), //Seconds added because of this

@@ -59,7 +59,7 @@ echo '<h3 class="master-h3 primary-title">' . $in['in_outcome'] . '</h3>';
 
 if (count($actionplan_parents) == 0) {
 
-    //Always hide messages on the Action Plan-level to have masters focus on Action Plan
+    //Always hide messages on the Action Plan-level to have students focus on Action Plan
     $hide_messages = true;
 
     //This must be top level Action Plan, show Action Plan data:

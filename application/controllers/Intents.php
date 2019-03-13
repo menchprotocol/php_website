@@ -51,7 +51,7 @@ class Intents extends CI_Controller
                 //We have more featured, list them so user can choose:
                 //Show index page:
                 $this->load->view('view_shared/public_header', array(
-                    'title' => 'Advance Your Tech Career',
+                    'title' => ucwords($this->config->item('in_strategy_name')),
                 ));
                 $this->load->view('view_intents/in_home_featured_ui', array(
                     'featured_ins' => $featured_ins,
@@ -497,7 +497,6 @@ class Intents extends CI_Controller
                     //Check to make sure it's not a duplicate outcome:
                     $duplicate_outcome_ins = $this->Database_model->fn___in_fetch(array(
                         'in_id !=' => $ins[0]['in_id'],
-                        'in_status >=' => 0,
                         'LOWER(in_outcome)' => strtolower($value),
                     ));
 

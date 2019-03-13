@@ -1386,6 +1386,7 @@ h5, .h5 {
     font-size: 18px;
     display: block;
     padding: 2px 4px;
+    line-height: 120% !important;
 }
 
 .icon-left {
@@ -2812,7 +2813,7 @@ a.badge:focus, a.badge:hover {
     border-top: 1px solid #EFEFEF !important;
     font-size: 18px !important;
     font-weight: 500 !important;
-    line-height: 120% !important;
+    line-height: 100% !important;
     font-family: "Lato", "Helvetica", "Arial", sans-serif !important;
     margin: 0 !important;
 }
@@ -2820,6 +2821,7 @@ a.badge:focus, a.badge:hover {
 .add_intent:hover, .algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
     background-color: #fedd16;
     text-decoration: none;
+    line-height: 120% !important;
 }
 
 .algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
