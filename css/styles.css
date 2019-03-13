@@ -1379,13 +1379,13 @@ h5, .h5 {
     text-align: right;
     font-size: 0.7em;
     text-align: right;
-    line-height: 100%;
+    line-height: 120%;
 }
 
 .suggestion {
     font-size: 18px;
     display: block;
-    padding: 2px 4px;
+    padding:6px 4px;
     line-height: 120% !important;
 }
 
@@ -2813,7 +2813,7 @@ a.badge:focus, a.badge:hover {
     border-top: 1px solid #EFEFEF !important;
     font-size: 18px !important;
     font-weight: 500 !important;
-    line-height: 100% !important;
+    line-height: 120% !important;
     font-family: "Lato", "Helvetica", "Arial", sans-serif !important;
     margin: 0 !important;
 }
