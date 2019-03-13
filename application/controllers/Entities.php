@@ -916,6 +916,9 @@ class Entities extends CI_Controller
 
         }
 
+        //Sync algolia:
+        $this->Database_model->fn___update_algolia('en', $_POST['en_id']);
+
         //Show success:
         return fn___echo_json($return_array);
 

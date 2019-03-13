@@ -710,7 +710,6 @@ class Database_model extends CI_Model
     function fn___tr_update($id, $update_columns, $tr_miner_entity_id = 0)
     {
 
-
         if (count($update_columns) == 0) {
             return false;
         }
@@ -764,6 +763,7 @@ class Database_model extends CI_Model
 
                 }
             }
+
         } elseif($affected_rows < 1){
 
             //This should not happen:

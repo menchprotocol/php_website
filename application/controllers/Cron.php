@@ -21,7 +21,6 @@ class Cron extends CI_Controller
     //30 4 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron fn___update_algolia u 0
     //30 3 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron e_score_recursive
 
-
     function clear_removed(){
 
         exit;

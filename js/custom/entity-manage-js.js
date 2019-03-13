@@ -613,7 +613,7 @@ function fn___en_modify_save() {
     var link_count= parseInt($('#en_link_count').val());
     var action_verb = ( $('#en_merge').val().length > 0 ? 'merge' : 'remove' );
     var confirm_string = action_verb + " " + link_count;
-    if(link_count >= 5){
+    if(link_count >= 3){
         //Yes, confirm before doing so:
         var confirm_removal = prompt("You are about to remove this entity and "+action_verb+" all its "+link_count+" links. Type \""+confirm_string+"\" to confirm and "+action_verb+" entity with all its links.", "");
 
