@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-03-11 21:58:56 PST
+//Generated 2019-03-12 12:50:14 PST
 
 //Linked Entities Text:
 $config['en_ids_4255'] = array(2999, 3005, 3084, 3147, 3192, 3286, 4601, 4763, 4883);
@@ -1301,7 +1301,7 @@ $config['en_all_4537'] = array(
 );
 
 //Expert Sources:
-$config['en_ids_3000'] = array(2997, 2998, 2999, 3005, 3147, 3192, 4446, 4763, 4883);
+$config['en_ids_3000'] = array(2997, 2998, 2999, 3005, 3147, 3192, 4446, 4763, 4883, 5948);
 $config['en_all_3000'] = array(
     2997 => array(
         'm_icon' => '<i class="fal fa-newspaper"></i>',
@@ -1356,5 +1356,11 @@ $config['en_all_3000'] = array(
         'm_name' => 'Expert Services',
         'm_desc' => '&var_weight=1',
         'm_parents' => array(4990, 4255, 3000),
+    ),
+    5948 => array(
+        'm_icon' => '<i class="fal fa-file-invoice"></i>',
+        'm_name' => 'Expert Templates',
+        'm_desc' => '&var_weight=1',
+        'm_parents' => array(3000),
     ),
 );
