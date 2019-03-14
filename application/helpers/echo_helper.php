@@ -461,7 +461,7 @@ function fn___echo_tr_row($tr, $is_inner = false)
         //We've probably have not yet updated php cache, set error:
         $en_all_4594[$tr['tr_type_entity_id']] = array(
             'm_icon' => '<i class="fal fa-exclamation-triangle redalert"></i>',
-            'm_name' => 'Missing Transaction in PHP Cache',
+            'm_name' => 'Transaction Type Not Synced in PHP Cache',
             'm_desc' => '',
             'm_parents' => array(),
         );
@@ -546,17 +546,19 @@ function fn___echo_tr_row($tr, $is_inner = false)
                     $ens = $CI->Database_model->fn___en_fetch(array('en_id' => $tr[$tr_field]));
                     if(count($ens) > 0){
                         $ui .= fn___echo_en($ens[0], 0);
-                    } else {
-                        $ui .= ' MISSING ENTITY '.$tr[$tr_field].' ID';
                     }
                 } elseif($obj_type=='in'){
                     //Fetch
                     $ins = $CI->Database_model->fn___in_fetch(array('in_id' => $tr[$tr_field]));
-                    $ui .= fn___echo_in($ins[0], 0);
+                    if(count($ins) > 0){
+                        $ui .= fn___echo_in($ins[0], 0);
+                    }
                 } elseif($obj_type=='tr'){
                     //Fetch
                     $trs = $CI->Database_model->fn___tr_fetch(array('tr_id' => $tr[$tr_field]));
-                    $ui .= fn___echo_tr_row($trs[0], true);
+                    if(count($trs) > 0){
+                        $ui .= fn___echo_tr_row($trs[0], true);
+                    }
                 }
                 $ui .= '</div>';
             }
