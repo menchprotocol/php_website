@@ -73,7 +73,7 @@
             </span>
 
             <span class="inline-block en_role_<?= $author_num ?> hidden">
-                <input style="padding-left:3px;" type="text" id="auth_role_<?= $author_num ?>" class="form-control border" data-toggle="tooltip" data-placement="top" title="Define the role of this person/organization" placeholder="Role..." maxlength="<?= $this->config->item('tr_content_max') ?>" value="Author" />
+                <input style="padding-left:3px;" type="text" id="auth_role_<?= $author_num ?>" class="form-control border" data-toggle="tooltip" data-placement="top" title="Define the role of this person/organization" placeholder="Role..." maxlength="<?= $this->config->item('tr_content_max') ?>" value="" />
             </span>
 
 
@@ -83,8 +83,9 @@
                     <select class="form-control border" id="entity_parent_id_<?= $author_num ?>" style="display:inline-block !important; margin-bottom: 3px;">
                         <?php
                         //Show account types:
+                        echo '<option value="">Add as...</option>';
                         foreach ($this->config->item('en_all_4600') as $en_id => $m) {
-                            echo '<option value="'.$en_id.'">Add as new ' . rtrim($m['m_name'], 's') . '</option>';
+                            echo '<option value="'.$en_id.'">' . rtrim($m['m_name'], 's') . '</option>';
                         }
                         ?>
                     </select>

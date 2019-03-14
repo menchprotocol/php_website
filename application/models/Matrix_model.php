@@ -223,7 +223,7 @@ class Matrix_model extends CI_Model
         if (!filter_var($url, FILTER_VALIDATE_URL)) {
             return array(
                 'status' => 0,
-                'message' => 'URL is not a valid URL',
+                'message' => 'Invalid URL',
             );
         }
 
@@ -300,7 +300,7 @@ class Matrix_model extends CI_Model
         if (!filter_var($url, FILTER_VALIDATE_URL)) {
             return array(
                 'status' => 0,
-                'message' => 'URL is not a valid URL',
+                'message' => 'Invalid URL',
             );
         } elseif (($add_to_parent_en_id > 0 || $add_to_child_en_id > 0) && $tr_miner_entity_id < 1) {
             return array(

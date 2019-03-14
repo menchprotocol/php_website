@@ -223,8 +223,8 @@ function search_author(author_box){
         $('.author_is_expert_' + author_box).removeClass('hidden');
         $('.explain_expert_' + author_box).removeClass('hidden');
 
-        $('#ref_url_' + author_box).attr('placeholder', 'URL referencing the bio of '+( current_val.length > 0 ? current_val : 'this entity' )+'...');
-        $('#why_expert_' + author_box).attr('placeholder', 'List accomplishments that validate the expertise of '+( current_val.length > 0 ? current_val : 'this entity' )+'...');
+        $('#ref_url_' + author_box).attr('placeholder', 'URL referencing '+( current_val.length > 0 ? current_val : 'this entity' )+'...');
+        $('#why_expert_' + author_box).attr('placeholder', 'List expertise/accomplishments of '+( current_val.length > 0 ? current_val : 'this entity' )+'...');
 
     } else{
 

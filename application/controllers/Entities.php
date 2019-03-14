@@ -1360,11 +1360,18 @@ class Entities extends CI_Controller
                     'message' => 'Author #' . $author_num . ' role error: ' . $detected_role_tr_type['message'],
                 ));
 
+            } elseif (!in_array($_POST['entity_parent_id_' . $author_num], $this->config->item('en_ids_4600'))) {
+
+                return fn___echo_json(array(
+                    'status' => 0,
+                    'message' => 'Author #' . $author_num . ' missing type',
+                ));
+
             } elseif (!in_array($detected_role_tr_type['tr_type_entity_id'], $author_type_requirement)) {
 
                 return fn___echo_json(array(
                     'status' => 0,
-                    'message' => 'Invalid author #' . $author_num . ' role content type.',
+                    'message' => 'Author #' . $author_num . ' has an invalid role',
                 ));
 
             }
