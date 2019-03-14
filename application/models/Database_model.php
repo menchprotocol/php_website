@@ -345,7 +345,7 @@ class Database_model extends CI_Model
                    if (intval($insert_columns[$tr_field]) > 0) {
 
                        //Generate a clean name for this transaction field:
-                       $clean_name = ucwords(str_replace('tr_', 'Transaction ', str_replace('_', ' ', $tr_field)));
+                       $clean_name = ucwords(str_replace('_', ' ', str_replace('_id', ' ID', str_replace('tr_', 'Transaction ', $tr_field))));
 
                        if ($obj_type == 'in') {
 
