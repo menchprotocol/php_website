@@ -51,7 +51,7 @@ foreach ($metadatas as $tr) {
     <?php
     foreach ($en_all_4485 as $tr_type_entity_id => $m) {
         echo '<li role="presentation" class="nav_' . $tr_type_entity_id . ' active '.( in_array(5005 , $m['m_parents']) ? ' ' . fn___echo_advance() . '' : '' ).'">';
-        echo '<a href="#intentmessages-' . $in_id . '-'.$tr_type_entity_id.'"> ' . $m['m_icon'] . ' ' . $m['m_name'] . ' [<span class="mtd_count_'.$in_id.'_'.$tr_type_entity_id.'">'.( isset($counters[$tr_type_entity_id]) ? $counters[$tr_type_entity_id] : 0 ).'</span>] </a>';
+        echo '<a href="#intentmessages-' . $in_id . '-'.$tr_type_entity_id.'"> ' . $m['m_icon'] . ' ' . $m['m_name'] . 's [<span class="mtd_count_'.$in_id.'_'.$tr_type_entity_id.'">'.( isset($counters[$tr_type_entity_id]) ? $counters[$tr_type_entity_id] : 0 ).'</span>] </a>';
         echo '</li>';
     }
     ?>
@@ -146,7 +146,7 @@ foreach ($metadatas as $tr) {
 
     //Fetch for all message types:
     foreach ($en_all_4485 as $tr_type_entity_id => $m) {
-        echo '<div class="iphone-add-btn all_msg msg_en_type_' . $tr_type_entity_id . '"><a href="javascript:fn___message_create();" id="add_message_' . $tr_type_entity_id . '_' . $in_id . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="right" class="btn btn-primary">ADD '.$m['m_icon'].' ' . rtrim($m['m_name'], 's') . '</a></div>';
+        echo '<div class="iphone-add-btn all_msg msg_en_type_' . $tr_type_entity_id . '"><a href="javascript:fn___message_create();" id="add_message_' . $tr_type_entity_id . '_' . $in_id . '" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="right" class="btn btn-primary">ADD '.$m['m_icon'].' ' . $m['m_name'] . '</a></div>';
     }
 
     echo '</form>';

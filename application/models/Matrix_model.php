@@ -2082,7 +2082,7 @@ class Matrix_model extends CI_Model
 
         //Log new Student transaction:
         $this->Database_model->fn___tr_create(array(
-            'tr_type_entity_id' => 4265, //New Student Joined
+            'tr_type_entity_id' => 4265, //Joined as Student
             'tr_miner_entity_id' => $added_en['en']['en_id'],
             'tr_child_entity_id' => $added_en['en']['en_id'],
             'tr_metadata' => $added_en['en'],
