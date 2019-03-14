@@ -456,6 +456,17 @@ function fn___echo_tr_row($tr, $is_inner = false)
 
     $CI =& get_instance();
     $en_all_4594 = $CI->config->item('en_all_4594');
+
+    if(!isset($en_all_4594[$tr['tr_type_entity_id']])){
+        //We've probably have not yet updated php cache, set error:
+        $en_all_4594[$tr['tr_type_entity_id']] = array(
+            'm_icon' => '<i class="fal fa-exclamation-triangle redalert"></i>',
+            'm_name' => 'Missing Transaction in PHP Cache',
+            'm_desc' => '',
+            'm_parents' => array(),
+        );
+    }
+
     $hide_tr_content = (in_array($tr['tr_type_entity_id'] , $CI->config->item('en_ids_4755')) /* Transaction Type is locked */ && !fn___en_auth(array(1281)) /* Viewer NOT a moderator */);
 
     //Fetch Miner Entity:
