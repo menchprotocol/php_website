@@ -318,10 +318,15 @@ class Ledger extends CI_Controller
                 'message' => 'Transaction metadata visible to miners only',
             ));
         } else {
-            //unserialize metadata first:
-            $trs[0]['tr_metadata'] = unserialize($trs[0]['tr_metadata']);
+
+            //unserialize metadata if needed:
+            if(strlen($trs[0]['tr_metadata']) > 0){
+                $trs[0]['tr_metadata'] = unserialize($trs[0]['tr_metadata']);
+            }
+
             //Print on scree:
             fn___echo_json($trs[0]);
+
         }
     }
 
