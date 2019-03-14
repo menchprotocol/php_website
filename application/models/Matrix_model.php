@@ -1915,11 +1915,11 @@ class Matrix_model extends CI_Model
         $in_verb_entity_id = starting_verb_id($in_outcome);
         if(!$in_verb_entity_id){
 
+            //Define starting verb variable:
+            $starting_verb = trim($outcome_words[0]);
+
             //Do we have a force create command in the outcome by a moderator?
             if(substr_count($in_outcome , '/force') > 0){
-
-                //Define starting verb variable:
-                $starting_verb = trim($outcome_words[0]);
 
                 //Run some checks on the intent outcome:
                 if(count($outcome_words) < 3) {
@@ -1943,7 +1943,7 @@ class Matrix_model extends CI_Model
                     //Not a acceptable starting verb:
                     return array(
                         'status' => 0,
-                        'message' => 'Starting verb contain A-Z only',
+                        'message' => 'Starting verb should only consist of letters A-Z',
                     );
 
                 } elseif(!(substr($in_outcome, -7) == ' /force')){
@@ -1968,7 +1968,7 @@ class Matrix_model extends CI_Model
                 $in_outcome = str_replace(' /force' , '', $in_outcome);
 
                 //Add and link verb:
-                $added_en = $this->Matrix_model->fn___en_verify_create($starting_verb, $tr_miner_entity_id, true);
+                $added_en = $this->Matrix_model->fn___en_verify_create(ucwords(strtolower($starting_verb)), $tr_miner_entity_id, true);
                 $this->Database_model->fn___tr_create(array(
                     'tr_miner_entity_id' => $tr_miner_entity_id,
                     'tr_status' => 2, //Published
@@ -1985,7 +1985,7 @@ class Matrix_model extends CI_Model
                 //Not a acceptable starting verb:
                 return array(
                     'status' => 0,
-                    'message' => 'Intent outcomes must start with a supporting verb. Manage supporting verbs via @5008 or use the /force command if you are a moderator.',
+                    'message' => '['.$starting_verb.'] is not a supported verb. Manage supported verbs via @5008 or use the /force command when creating a new intent as a moderator.',
                 );
 
             }

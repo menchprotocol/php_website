@@ -495,11 +495,17 @@ class Intents extends CI_Controller
 
                     //Check to make sure starts with a verb:
                     if($in_update['in_verb_entity_id'] < 1){
+
+                        //Define starting verb for error message:
+                        $outcome_words = explode(' ', $in_update['in_outcome']);
+                        $starting_verb = trim($outcome_words[0]);
+
                         //Not a acceptable starting word:
                         return fn___echo_json(array(
                             'status' => 0,
-                            'message' => 'Intent outcomes must start with a supporting verb. Manage supporting verbs via @5008 or use the /force command if you are a moderator.',
+                            'message' => '['.$starting_verb.'] is not a supported verb. Manage supported verbs via @5008 or use the /force command when creating a new intent as a moderator.',
                         ));
+
                     }
 
                     //Check to make sure it's not a duplicate outcome:
