@@ -1938,20 +1938,20 @@ class Matrix_model extends CI_Model
                         'message' => 'Starting verb must be at-least 3 characters long',
                     );
 
+                } elseif(!ctype_alpha($starting_verb)){
+
+                    //Not a acceptable starting verb:
+                    return array(
+                        'status' => 0,
+                        'message' => 'Starting verb contain A-Z only',
+                    );
+
                 } elseif(!(substr($in_outcome, -7) == ' /force')){
 
                     //not positioned correctly:
                     return array(
                         'status' => 0,
                         'message' => '/force command must be the last word of the outcome',
-                    );
-
-                } elseif(!preg_match('/[^A-Za-z]+/', $starting_verb)){
-
-                    //Not a acceptable starting verb:
-                    return array(
-                        'status' => 0,
-                        'message' => 'Starting verb contain A-Z only',
                     );
 
                 } elseif(!fn___en_auth(array(1281))){
