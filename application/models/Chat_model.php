@@ -194,10 +194,10 @@ class Chat_model extends CI_Model
                 'status' => 0,
                 'message' => 'Missing Message Content',
             );
-        } elseif (strlen($input_message) > $this->config->item('tr_content_max')) {
+        } elseif (strlen($input_message) > $this->config->item('tr_content_max_length')) {
             return array(
                 'status' => 0,
-                'message' => 'Message is longer than the allowed ' . $this->config->item('tr_content_max') . ' characters',
+                'message' => 'Message is longer than the allowed ' . $this->config->item('tr_content_max_length') . ' characters',
             );
         } elseif ($input_message != strip_tags($input_message)) {
             return array(

@@ -179,11 +179,11 @@ function fn___detect_tr_type_entity_id($string)
     $string = trim($string);
     $CI =& get_instance();
 
-    if(strlen($string) > $CI->config->item('tr_content_max')){
+    if(strlen($string) > $CI->config->item('tr_content_max_length')){
 
         return array(
             'status' => 0,
-            'message' => 'String is ['.(strlen($string) - $CI->config->item('tr_content_max')).'] characters longer than the allowed length of '.$CI->config->item('tr_content_max').' characters.',
+            'message' => 'String is ['.(strlen($string) - $CI->config->item('tr_content_max_length')).'] characters longer than the allowed length of '.$CI->config->item('tr_content_max_length').' characters.',
         );
 
     } elseif (is_null($string) || strlen($string) == 0) {

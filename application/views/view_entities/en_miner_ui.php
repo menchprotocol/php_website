@@ -310,11 +310,11 @@
                                     <form class="drag-box" method="post" enctype="multipart/form-data">
 
                                         <span class="mini-header">Link Content: [<span style="margin:0 0 10px 0;">
-                                    <span id="chartr_contentNum">0</span>/<?= $this->config->item('tr_content_max') ?>
+                                    <span id="chartr_contentNum">0</span>/<?= $this->config->item('tr_content_max_length') ?>
                                 </span>]</span>
                                         <span class="white-wrapper">
                                         <textarea class="form-control text-edit border" id="tr_content"
-                                                  maxlength="<?= $this->config->item('tr_content_max') ?>" data-lpignore="true"
+                                                  maxlength="<?= $this->config->item('tr_content_max_length') ?>" data-lpignore="true"
                                                   placeholder="Write Message, Drop a File or Paste URL"
                                                   style="height:126px; min-height:126px;">
                                         </textarea>

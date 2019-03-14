@@ -164,7 +164,7 @@ function fn___toggle_advance(basic_toggle){
 
 function tr_content_word_count(el_textarea, el_counter) {
     var len = $(el_textarea).val().length;
-    if (len > tr_content_max) {
+    if (len > tr_content_max_length) {
         $(el_counter).addClass('overload').text(len);
     } else {
         $(el_counter).removeClass('overload').text(len);

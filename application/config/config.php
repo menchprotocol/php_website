@@ -15,9 +15,8 @@ date_default_timezone_set('America/Los_Angeles');
 
 
 //App Functionality:
-$config['app_version']              = '0.773'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
+$config['app_version']              = '0.774'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
 $config['app_update_algolia']       = true; //May need to turn off if/when we reach free monthly quota of 50k calls
-$config['app_objects']              = array('in', 'en', 'tr'); //The 3 primary building blocks of Mench
 
 
 //Intents:
@@ -45,7 +44,7 @@ $config['en_mass_actions']          = array( //Various mass actions to be taken 
 
 
 //Ledger Transactions:
-$config['tr_content_max']           = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
+$config['tr_content_max_length']    = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
 $config['tr_status_incomplete']     = array(0, 1); //Transaction statuses that are considered in-complete to determine progress and more
 $config['tr_object_links']          = array( //Each transaction can have any of the following object links
                                         'tr_type_entity_id' => 'en',
@@ -55,7 +54,7 @@ $config['tr_object_links']          = array( //Each transaction can have any of 
                                         'tr_parent_intent_id' => 'in',
                                         'tr_child_intent_id'  => 'in',
                                         'tr_parent_transaction_id' => 'tr',
-);
+                                    );
 
 
 //Recognized file extensions:

@@ -478,7 +478,7 @@ class Entities extends CI_Controller
 
         //Auth user and check required variables:
         $session_en = fn___en_auth(array(1308));
-        $tr_content_max = $this->config->item('tr_content_max');
+        $tr_content_max_length = $this->config->item('tr_content_max_length');
         $success_message = 'Saved'; //Default, might change based on what we do...
 
         //Fetch current data:

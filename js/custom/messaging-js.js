@@ -16,7 +16,7 @@ function fn___add_first_name() {
 function fn___count_message() {
     //Update count:
     var len = $('#tr_content' + in_id).val().length;
-    if (len > tr_content_max) {
+    if (len > tr_content_max_length) {
         $('#charNum' + in_id).addClass('overload').text(len);
     } else {
         $('#charNum' + in_id).removeClass('overload').text(len);
@@ -30,7 +30,7 @@ function fn___changeMessageEditing(tr_id) {
     }
     //Update count:
     var len = $('#message_body_' + tr_id).val().length;
-    if (len > tr_content_max) {
+    if (len > tr_content_max_length) {
         $('#charNumEditing' + tr_id).addClass('overload').text(len);
     } else {
         $('#charNumEditing' + tr_id).removeClass('overload').text(len);

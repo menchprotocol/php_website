@@ -1629,7 +1629,7 @@ class Matrix_model extends CI_Model
          *
          * */
 
-        if (!in_array($obj_type, $this->config->item('app_objects')) || $obj_id < 1 || count($new_fields) < 1) {
+        if (!in_array($obj_type, array('in', 'en', 'tr')) || $obj_id < 1 || count($new_fields) < 1) {
             return false;
         }
 

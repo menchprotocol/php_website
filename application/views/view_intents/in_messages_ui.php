@@ -2,7 +2,7 @@
 
 //Fetch Messages based on in_id:
 $session_en = $this->session->userdata('user');
-$tr_content_max = $this->config->item('tr_content_max');
+$tr_content_max_length = $this->config->item('tr_content_max_length');
 $en_ids_4485 = $this->config->item('en_ids_4485');
 $en_all_4485 = $this->config->item('en_all_4485');
 
@@ -38,7 +38,7 @@ foreach ($metadatas as $tr) {
 <script>
     //pass core variables to JS:
     var in_id = <?= $in_id ?>;
-    var tr_content_max = <?= $tr_content_max ?>;
+    var tr_content_max_length = <?= $tr_content_max_length ?>;
     var metadata_count = <?= count($metadatas) ?>;
     var focus_tr_type_entity_id = <?= $en_ids_4485[0] ?>; //The message type that is the focus on-start.
 </script>
@@ -134,7 +134,7 @@ foreach ($metadatas as $tr) {
 
     echo '<div id="tr_content_counter" style="margin:0 0 1px 0; font-size:0.8em;">';
     //File counter:
-    echo '<span id="charNum' . $in_id . '">0</span>/' . $tr_content_max;
+    echo '<span id="charNum' . $in_id . '">0</span>/' . $tr_content_max_length;
 
     ///firstname
     echo '<a href="javascript:fn___add_first_name();" class="textarea_buttons ' . fn___echo_advance() . ' remove_loading" style="float:right; margin-left:8px;" data-toggle="tooltip" title="Replaced with master\'s First Name for a more personal message." data-placement="left"><i class="fas fa-fingerprint"></i> /firstname</a>';
