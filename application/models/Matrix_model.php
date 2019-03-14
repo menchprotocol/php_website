@@ -1898,74 +1898,75 @@ class Matrix_model extends CI_Model
 
     function fn___in_verify_create($in_outcome, $tr_miner_entity_id = 0, $in_status = 0){
 
+        //Assign verb variables:
         $outcome_words = explode(' ', $in_outcome);
+        $starting_verb = trim($outcome_words[0]);
+        $in_verb_entity_id = starting_verb_id($in_outcome);
+
         if(count($outcome_words) < 2){
+
             return array(
                 'status' => 0,
                 'message' => 'Outcome must have at-least two words',
             );
+
         } elseif(strlen($in_outcome) < 5){
+
             return array(
                 'status' => 0,
                 'message' => 'Outcome must be at-least 5 characters long',
             );
-        }
 
-        //calculate Verb ID:
-        $in_verb_entity_id = starting_verb_id($in_outcome);
-        if(!$in_verb_entity_id){
+        } elseif(strlen($starting_verb) < 3) {
 
-            //Define starting verb variable:
-            $starting_verb = trim($outcome_words[0]);
+            //Starting verb is too short:
+            return array(
+                'status' => 0,
+                'message' => 'Starting verb must be at-least 3 characters long',
+            );
 
-            //Do we have a force create command in the outcome by a moderator?
-            if(substr_count($in_outcome , '/force') > 0){
+        } elseif(!ctype_alpha($starting_verb)){
 
-                //Run some checks on the intent outcome:
-                if(count($outcome_words) < 3) {
+            //Not a acceptable starting verb:
+            return array(
+                'status' => 0,
+                'message' => 'Starting verb should only consist of letters A-Z',
+            );
 
-                    //The /force is a word, so starting verb is too short:
-                    return array(
-                        'status' => 0,
-                        'message' => 'Outcome must have at-least two words',
-                    );
+        } elseif(substr_count($in_outcome , '/force') > 0){
 
-                } elseif(strlen($starting_verb) < 3) {
+            //Run some checks on the intent outcome:
+            if(count($outcome_words) < 3) {
 
-                    //Starting verb is too short:
-                    return array(
-                        'status' => 0,
-                        'message' => 'Starting verb must be at-least 3 characters long',
-                    );
+                //The /force is a word, so starting verb is too short:
+                return array(
+                    'status' => 0,
+                    'message' => 'Outcome must have at-least two words',
+                );
 
-                } elseif(!ctype_alpha($starting_verb)){
+            } elseif(!(substr($in_outcome, -7) == ' /force')){
 
-                    //Not a acceptable starting verb:
-                    return array(
-                        'status' => 0,
-                        'message' => 'Starting verb should only consist of letters A-Z',
-                    );
+                //not positioned correctly:
+                return array(
+                    'status' => 0,
+                    'message' => '/force command must be the last word of the outcome',
+                );
 
-                } elseif(!(substr($in_outcome, -7) == ' /force')){
+            } elseif(!fn___en_auth(array(1281))){
 
-                    //not positioned correctly:
-                    return array(
-                        'status' => 0,
-                        'message' => '/force command must be the last word of the outcome',
-                    );
+                //Not a acceptable starting verb:
+                return array(
+                    'status' => 0,
+                    'message' => '/force command is only available to moderators',
+                );
 
-                } elseif(!fn___en_auth(array(1281))){
+            }
 
-                    //Not a acceptable starting verb:
-                    return array(
-                        'status' => 0,
-                        'message' => '/force command is only available to moderators',
-                    );
+            //Remove /force command from outcome:
+            $in_outcome = str_replace(' /force' , '', $in_outcome);
 
-                }
-
-                //Remove /force command from outcome:
-                $in_outcome = str_replace(' /force' , '', $in_outcome);
+            //Create the supporting verb if not already there:
+            if(!$in_verb_entity_id){
 
                 //Add and link verb:
                 $added_en = $this->Matrix_model->fn___en_verify_create(ucwords(strtolower($starting_verb)), $tr_miner_entity_id, true);
@@ -1979,17 +1980,18 @@ class Matrix_model extends CI_Model
 
                 //Assign new verb ID to this intent:
                 $in_verb_entity_id = $added_en['en']['en_id'];
-
-            } else {
-
-                //Not a acceptable starting verb:
-                return array(
-                    'status' => 0,
-                    'message' => '['.$starting_verb.'] is not a supported verb. Manage supported verbs via @5008 or use the /force command when creating a new intent as a moderator.',
-                );
-
             }
+
+        } elseif(!$in_verb_entity_id) {
+
+            //Not a acceptable starting verb:
+            return array(
+                'status' => 0,
+                'message' => '['.$starting_verb.'] is not a supported verb. Manage supported verbs via @5008 or use the /force command when creating a new intent as a moderator.',
+            );
+
         }
+
 
         //Check to make sure it's not a duplicate outcome:
         $duplicate_outcome_ins = $this->Database_model->fn___in_fetch(array(
