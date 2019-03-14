@@ -155,7 +155,7 @@ function fn___echo_url_embed($url, $full_message = null, $return_array = false, 
 
         }
 
-    } elseif (substr_count($url, 'vimeo.com/') == 1) {
+    } elseif (substr_count($url, 'vimeo.com/') == 1 && is_numeric(fn___one_two_explode('vimeo.com/','?',$url))) {
 
         //Seems to be Vimeo:
         $video_id = trim(fn___one_two_explode('vimeo.com/', '?', $url));
