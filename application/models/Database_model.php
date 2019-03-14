@@ -304,7 +304,7 @@ class Database_model extends CI_Model
             foreach(explode(',', fn___one_two_explode('&var_en_subscriber_ids=','', $en_all_5966[$insert_columns['tr_type_entity_id']]['m_desc'])) as $subscriber_en_id){
 
                 //Do not email the miner themselves, as already they know:
-                if($subscriber_en_id == $insert_columns['tr_miner_entity_id']){
+                if($subscriber_en_id != $insert_columns['tr_miner_entity_id']){
 
                     //Try fetching subscribers email:
                     foreach($this->Database_model->fn___tr_fetch(array(
@@ -376,7 +376,7 @@ class Database_model extends CI_Model
                 $html_message .= '<div>Ledger Transaction ID: <a href="https://mench.com/ledger?tr_id=' . $insert_columns['tr_id'] . '" target="_blank">' . $insert_columns['tr_id'] . '</a></div>';
 
                 //Inform how to change settings:
-                $html_message .= '<div style="color: #AAAAAA; font-size:0.8em; margin-top:20px;">Update subscription settings via <a href="https://mench.com/entities/5966" target="_blank">@5966</a></div>';
+                $html_message .= '<div style="color: #AAAAAA; font-size:0.9em; margin-top:20px;">Manage email notification via <a href="https://mench.com/entities/5966" target="_blank">@5966</a></div>';
 
                 //Send email:
                 $this->Chat_model->fn___dispatch_email($sub_emails, $sub_en_ids, $subject, $html_message);
