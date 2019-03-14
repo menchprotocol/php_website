@@ -253,7 +253,7 @@ class Matrix_model extends CI_Model
         } elseif ($tr_miner_entity_id) {
 
             //Yes, let's add a new entity:
-            $added_en = $this->Matrix_model->fn___create_entity(( $page_title ? $page_title : $domain_analysis['url_domain_name'] ), $tr_miner_entity_id, true, 2, fn___detect_fav_icon($domain_analysis['url_clean_domain']));
+            $added_en = $this->Matrix_model->fn___en_verify_create(( $page_title ? $page_title : $domain_analysis['url_domain_name'] ), $tr_miner_entity_id, true, 2, fn___detect_fav_icon($domain_analysis['url_clean_domain']));
             $en_domain = $added_en['en'];
 
             //And link entity to the domains entity:
@@ -483,7 +483,7 @@ class Matrix_model extends CI_Model
             } elseif ($tr_miner_entity_id) {
 
                 //Create a new entity for this URL:
-                $added_en = $this->Matrix_model->fn___create_entity($page_title, $tr_miner_entity_id, true);
+                $added_en = $this->Matrix_model->fn___en_verify_create($page_title, $tr_miner_entity_id, true);
                 $en_url = $added_en['en'];
 
                 //Always link URL to its parent domain:
@@ -1896,16 +1896,99 @@ class Matrix_model extends CI_Model
     }
 
 
-    function fn___create_intent($in_outcome, $tr_miner_entity_id = 0, $in_status = 0){
+    function fn___in_verify_create($in_outcome, $tr_miner_entity_id = 0, $in_status = 0){
+
+        $outcome_words = explode(' ', $in_outcome);
+        if(count($outcome_words) < 2){
+            return array(
+                'status' => 0,
+                'message' => 'Outcome must have at-least two words',
+            );
+        } elseif(strlen($in_outcome) < 5){
+            return array(
+                'status' => 0,
+                'message' => 'Outcome must be at-least 5 characters long',
+            );
+        }
 
         //calculate Verb ID:
         $in_verb_entity_id = starting_verb_id($in_outcome);
         if(!$in_verb_entity_id){
-            //Not a acceptable starting verb:
-            return array(
-                'status' => 0,
-                'message' => 'Intent outcomes must start with a supporting verb (See list at @5008)',
-            );
+
+            //Do we have a force create command in the outcome by a moderator?
+            if(substr_count('/force', $in_outcome) > 0){
+
+                //Define starting verb variable:
+                $starting_verb = trim($outcome_words[0]);
+
+                //Run some checks on the intent outcome:
+                if(count($outcome_words) < 3) {
+
+                    //The /force is a word, so starting verb is too short:
+                    return array(
+                        'status' => 0,
+                        'message' => 'Outcome must have at-least two words',
+                    );
+
+                } elseif(strlen($starting_verb) < 3) {
+
+                    //Starting verb is too short:
+                    return array(
+                        'status' => 0,
+                        'message' => 'Starting verb must be at-least 3 characters long',
+                    );
+
+                } elseif(!(substr($in_outcome, -7) == ' /force')){
+
+                    //not positioned correctly:
+                    return array(
+                        'status' => 0,
+                        'message' => '/force command must be the last word of the outcome',
+                    );
+
+                } elseif(!preg_match('/[^A-Za-z]/',$starting_verb)){
+
+                    //Not a acceptable starting verb:
+                    return array(
+                        'status' => 0,
+                        'message' => 'Starting verb contain A-Z only',
+                    );
+
+                } elseif(!fn___en_auth(array(1281))){
+
+                    //Not a acceptable starting verb:
+                    return array(
+                        'status' => 0,
+                        'message' => '/force command is only available to moderators',
+                    );
+
+                }
+
+                //Remove /force command from outcome:
+                $in_outcome = str_replace(' /force' , '', $in_outcome);
+
+                //Add and link verb:
+                $added_en = $this->Matrix_model->fn___en_verify_create($starting_verb, $tr_miner_entity_id, true);
+                $this->Database_model->fn___tr_create(array(
+                    'tr_miner_entity_id' => $tr_miner_entity_id,
+                    'tr_status' => 2, //Published
+                    'tr_type_entity_id' => 4230, //Raw
+                    'tr_parent_entity_id' => 5008, //Intent Supported Verbs
+                    'tr_child_entity_id' => $added_en['en']['en_id'],
+                ));
+
+                //Assign new verb ID to this intent:
+                $in_verb_entity_id = $added_en['en']['en_id'];
+
+            } else {
+
+                //Not a acceptable starting verb:
+                return array(
+                    'status' => 0,
+                    'message' => 'Intent outcomes must start with a supporting verb (See list at @5008)',
+                );
+
+            }
         }
 
         //Check to make sure it's not a duplicate outcome:
@@ -1946,7 +2029,7 @@ class Matrix_model extends CI_Model
 
     }
 
-    function fn___create_entity($en_name, $tr_miner_entity_id = 0, $force_creation = false, $en_status = 2, $en_icon = null, $en_psid = null){
+    function fn___en_verify_create($en_name, $tr_miner_entity_id = 0, $force_creation = false, $en_status = 2, $en_icon = null, $en_psid = null){
 
         if(strlen($en_name)<2){
             return array(
@@ -2025,7 +2108,7 @@ class Matrix_model extends CI_Model
              * */
 
             //Create student entity:
-            $added_en = $this->Matrix_model->fn___create_entity('Student', 0, true, 3, null, $psid);
+            $added_en = $this->Matrix_model->fn___en_verify_create('Student', 0, true, 3, null, $psid);
 
             //Inform student:
             $this->Chat_model->fn___dispatch_message(
@@ -2040,7 +2123,7 @@ class Matrix_model extends CI_Model
             $fb_profile = $graph_fetch['tr_metadata']['result'];
 
             //Create student entity with their Facebook Graph name:
-            $added_en = $this->Matrix_model->fn___create_entity($fb_profile['first_name'] . ' ' . $fb_profile['last_name'], 0, true, 3, null, $psid);
+            $added_en = $this->Matrix_model->fn___en_verify_create($fb_profile['first_name'] . ' ' . $fb_profile['last_name'], 0, true, 3, null, $psid);
 
             //Split locale variable into language and country like "EN_GB" for English in England
             $locale = explode('_', $fb_profile['locale'], 2);
@@ -2225,7 +2308,7 @@ class Matrix_model extends CI_Model
 
             //We are NOT linking to an existing intent, but instead, we're creating a new intent:
 
-            $added_in = $this->Matrix_model->fn___create_intent($in_outcome, $tr_miner_entity_id);
+            $added_in = $this->Matrix_model->fn___in_verify_create($in_outcome, $tr_miner_entity_id);
             if(!$added_in['status']){
                 //We had an error, return it:
                 return $added_in;

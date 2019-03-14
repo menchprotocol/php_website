@@ -83,7 +83,7 @@ class Ledger extends CI_Controller
             }
 
             //Create Intent:
-            $added_in = $this->Matrix_model->fn___create_intent($in_outcome, $session_en['en_id']);
+            $added_in = $this->Matrix_model->fn___in_verify_create($in_outcome, $session_en['en_id']);
             if(!$added_in['status']){
                 //We had an error, return it:
                 return fn___echo_json($added_in);
@@ -97,7 +97,7 @@ class Ledger extends CI_Controller
         } elseif(substr($_POST['raw_string'], 0, 1)=='@'){
 
             //Create entity:
-            $added_en = $this->Matrix_model->fn___create_entity(trim(substr($_POST['raw_string'], 1)), $session_en['en_id']);
+            $added_en = $this->Matrix_model->fn___en_verify_create(trim(substr($_POST['raw_string'], 1)), $session_en['en_id']);
             if(!$added_en['status']){
                 //We had an error, return it:
                 return fn___echo_json($added_en);

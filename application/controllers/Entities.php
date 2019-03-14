@@ -375,7 +375,7 @@ class Entities extends CI_Controller
             } else {
 
                 //Create entity:
-                $added_en = $this->Matrix_model->fn___create_entity($_POST['en_new_string'], $session_en['en_id']);
+                $added_en = $this->Matrix_model->fn___en_verify_create($_POST['en_new_string'], $session_en['en_id']);
                 if(!$added_en['status']){
                     //We had an error, return it:
                     return fn___echo_json($added_en);
