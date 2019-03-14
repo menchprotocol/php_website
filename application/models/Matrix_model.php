@@ -1946,7 +1946,7 @@ class Matrix_model extends CI_Model
                         'message' => '/force command must be the last word of the outcome',
                     );
 
-                } elseif(!preg_match('/[^A-Za-z]/',$starting_verb)){
+                } elseif(!preg_match('/[^A-Za-z]+/', $starting_verb)){
 
                     //Not a acceptable starting verb:
                     return array(
