@@ -498,7 +498,7 @@ class Intents extends CI_Controller
                         //Not a acceptable starting word:
                         return fn___echo_json(array(
                             'status' => 0,
-                            'message' => 'Intent outcomes must start with a supporting verb (See list at @5008)',
+                            'message' => 'Intent outcomes must start with a supporting verb. Manage supporting verbs via @5008 or use the /force command if you are a moderator.',
                         ));
                     }
 
