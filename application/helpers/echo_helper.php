@@ -539,12 +539,16 @@ function fn___echo_tr_row($tr, $is_inner = false)
     //Lets go through all references to see what is there:
     if(!$is_inner){
         foreach ($CI->config->item('tr_object_links') as $tr_field => $obj_type) {
-            if(!in_array($tr_field, array('tr_miner_entity_id','tr_type_entity_id')) && $tr[$tr_field] > 0){
+            if(!in_array($tr_field, array('tr_miner_entity_id','tr_type_entity_id')) && intval($tr[$tr_field]) > 0){
                 $ui .= '<div class="tr-child">';
                 if($obj_type=='en'){
                     //Fetch
                     $ens = $CI->Database_model->fn___en_fetch(array('en_id' => $tr[$tr_field]));
-                    $ui .= fn___echo_en($ens[0], 0);
+                    if(count($ens) > 0){
+                        $ui .= fn___echo_en($ens[0], 0);
+                    } else {
+                        $ui .= ' MISSING ENTITY '.$tr[$tr_field].' ID';
+                    }
                 } elseif($obj_type=='in'){
                     //Fetch
                     $ins = $CI->Database_model->fn___in_fetch(array('in_id' => $tr[$tr_field]));
