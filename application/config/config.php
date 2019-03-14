@@ -48,14 +48,14 @@ $config['en_mass_actions']          = array( //Various mass actions to be taken 
 $config['tr_content_max']           = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
 $config['tr_status_incomplete']     = array(0, 1); //Transaction statuses that are considered in-complete to determine progress and more
 $config['tr_object_links']          = array( //Each transaction can have any of the following object links
-                                        'tr_miner_entity_id' => 'en',
                                         'tr_type_entity_id' => 'en',
-                                        'tr_parent_transaction_id' => 'tr',
+                                        'tr_miner_entity_id' => 'en',
                                         'tr_parent_entity_id' => 'en',
                                         'tr_child_entity_id'  => 'en',
                                         'tr_parent_intent_id' => 'in',
                                         'tr_child_intent_id'  => 'in',
-                                    );
+                                        'tr_parent_transaction_id' => 'tr',
+);
 
 
 //Recognized file extensions:

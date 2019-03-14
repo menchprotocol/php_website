@@ -295,8 +295,7 @@ class Database_model extends CI_Model
 
 
         //See if this transaction type has any subscribers:
-        if(in_array($insert_columns['tr_type_entity_id'] , $this->config->item('en_ids_5966')) && !fn___is_dev()){
-
+        if(in_array($insert_columns['tr_type_entity_id'] , $this->config->item('en_ids_5966')) && $insert_columns['tr_type_entity_id']!=5967 /* Email Sent causes endless loop */ && !fn___is_dev()){
 
             //Try to fetch subscribers:
             $en_all_5966 = $this->config->item('en_all_5966'); //Include subscription details
@@ -306,21 +305,20 @@ class Database_model extends CI_Model
 
                 //Do not email the miner themselves, as already they know:
                 if($subscriber_en_id == $insert_columns['tr_miner_entity_id']){
-                    //continue;
-                }
 
-                //Try fetching their email:
-                foreach($this->Database_model->fn___tr_fetch(array(
-                    'tr_status >=' => 2, //Published+
-                    'en_status >=' => 2, //Published+
-                    'tr_type_entity_id' => 4255, //Linked Entities Text (Email is text)
-                    'tr_parent_entity_id' => 3288, //Email Address
-                    'tr_child_entity_id' => $subscriber_en_id,
-                ), array('en_child')) as $en_email){
-                    if(filter_var($en_email['tr_content'], FILTER_VALIDATE_EMAIL)){
-                        //All good, add to list:
-                        array_push($sub_en_ids , $en_email['en_id']);
-                        array_push($sub_emails , $en_email['tr_content']);
+                    //Try fetching subscribers email:
+                    foreach($this->Database_model->fn___tr_fetch(array(
+                        'tr_status >=' => 2, //Published+
+                        'en_status >=' => 2, //Published+
+                        'tr_type_entity_id' => 4255, //Linked Entities Text (Email is text)
+                        'tr_parent_entity_id' => 3288, //Email Address
+                        'tr_child_entity_id' => $subscriber_en_id,
+                    ), array('en_child')) as $en_email){
+                        if(filter_var($en_email['tr_content'], FILTER_VALIDATE_EMAIL)){
+                            //All good, add to list:
+                            array_push($sub_en_ids , $en_email['en_id']);
+                            array_push($sub_emails , $en_email['tr_content']);
+                        }
                     }
                 }
             }
@@ -328,6 +326,8 @@ class Database_model extends CI_Model
 
             //Did we find any subscribers?
             if(count($sub_en_ids) > 0){
+
+                //yes, start drafting email to be sent to them...
 
                 //Fetch miner details:
                 $miner_ens = $this->Database_model->fn___en_fetch(array(
@@ -345,7 +345,7 @@ class Database_model extends CI_Model
                    if (intval($insert_columns[$tr_field]) > 0) {
 
                        //Generate a clean name for this transaction field:
-                       $clean_name = ucwords(str_replace('_', ' ', str_replace('_id', ' ID', str_replace('tr_', 'Transaction ', $tr_field))));
+                       $clean_name = ucwords(str_replace('_', ' ', str_replace('_id', '', str_replace('tr_', 'Transaction ', $tr_field))));
 
                        if ($obj_type == 'in') {
 
@@ -366,7 +366,7 @@ class Database_model extends CI_Model
                        } elseif ($obj_type == 'tr') {
 
                            //Include transaction:
-                           $html_message .= '<div>' . $clean_name . ': <a href="https://mench.com/ledger?tr_id=' . $insert_columns[$tr_field] . '" target="_parent">'.$insert_columns[$tr_field].'</a></div>';
+                           $html_message .= '<div>' . $clean_name . ' ID: <a href="https://mench.com/ledger?tr_id=' . $insert_columns[$tr_field] . '" target="_parent">'.$insert_columns[$tr_field].'</a></div>';
 
                        }
                    }
@@ -374,6 +374,9 @@ class Database_model extends CI_Model
 
                 //Finally append transaction ID with link to ledger:
                 $html_message .= '<div>Ledger Transaction ID: <a href="https://mench.com/ledger?tr_id=' . $insert_columns['tr_id'] . '" target="_blank">' . $insert_columns['tr_id'] . '</a></div>';
+
+                //Inform how to change settings:
+                $html_message .= '<div style="color: #AAAAAA; font-size:0.8em; margin-top:20px;">Update subscription settings via <a href="https://mench.com/entities/5966" target="_blank">@5966</a></div>';
 
                 //Send email:
                 $this->Chat_model->fn___dispatch_email($sub_emails, $sub_en_ids, $subject, $html_message);
