@@ -1941,6 +1941,7 @@ class Matrix_model extends CI_Model
         return array(
             'status' => 1,
             'in' => $intent_new,
+            'in_metadata_modify' => $in_metadata_modify,
         );
 
     }
@@ -2229,7 +2230,9 @@ class Matrix_model extends CI_Model
                 //We had an error, return it:
                 return $added_in;
             } else {
+                //Passon variables:
                 $intent_new = $added_in['in'];
+                $in_metadata_modify = $added_in['in_metadata_modify'];
             }
 
         }
