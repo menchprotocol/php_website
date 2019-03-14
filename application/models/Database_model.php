@@ -303,6 +303,12 @@ class Database_model extends CI_Model
             $sub_emails = array();
             $sub_en_ids = array();
             foreach(explode(',', fn___one_two_explode('&var_en_subscriber_ids=','', $en_all_5966[$insert_columns['tr_type_entity_id']]['m_desc'])) as $subscriber_en_id){
+
+                //Do not email the miner themselves, as already they know:
+                if($subscriber_en_id == $insert_columns['tr_miner_entity_id']){
+                    //continue;
+                }
+
                 //Try fetching their email:
                 foreach($this->Database_model->fn___tr_fetch(array(
                     'tr_status >=' => 2, //Published+
@@ -338,7 +344,7 @@ class Database_model extends CI_Model
                 foreach ($this->config->item('tr_object_links') as $tr_field => $obj_type) {
                    if (intval($insert_columns[$tr_field]) > 0) {
                        //Include object link in body:
-                        $html_message .= '<div>' . ucwrods(str_replace('tr', 'Transaction', str_replace('en', 'Entity', str_replace('in', 'Intent', str_replace('_', ' ', str_replace('tr_', '', $tr_field)))))) . ': ' . fn___echo_tr_column($obj_type, $insert_columns[$tr_field], $tr_field) . '</div>';
+                        $html_message .= '<div>' . ucwords(str_replace('tr', 'Transaction', str_replace('en', 'Entity', str_replace('in', 'Intent', str_replace('_', ' ', str_replace('tr_', '', $tr_field)))))) . ': ' . fn___echo_tr_column($obj_type, $insert_columns[$tr_field], $tr_field) . '</div>';
                    }
                 }
 
