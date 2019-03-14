@@ -1916,7 +1916,7 @@ class Matrix_model extends CI_Model
         if(!$in_verb_entity_id){
 
             //Do we have a force create command in the outcome by a moderator?
-            if(substr_count('/force', $in_outcome) > 0){
+            if(substr_count($in_outcome , '/force') > 0){
 
                 //Define starting verb variable:
                 $starting_verb = trim($outcome_words[0]);
