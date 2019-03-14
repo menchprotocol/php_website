@@ -343,13 +343,37 @@ class Database_model extends CI_Model
                 //Append transaction object links:
                 foreach ($this->config->item('tr_object_links') as $tr_field => $obj_type) {
                    if (intval($insert_columns[$tr_field]) > 0) {
-                       //Include object link in body:
-                        $html_message .= '<div>' . ucwords(str_replace('tr', 'Transaction', str_replace('en', 'Entity', str_replace('in', 'Intent', str_replace('_', ' ', str_replace('tr_', '', $tr_field)))))) . ': ' . fn___echo_tr_column($obj_type, $insert_columns[$tr_field], $tr_field) . '</div>';
+
+                       //Generate a clean name for this transaction field:
+                       $clean_name = ucwords(str_replace('tr_', 'Transaction ', str_replace('_', ' ', $tr_field)));
+
+                       if ($obj_type == 'in') {
+
+                           //Fetch Intent:
+                           $ins = $this->Database_model->fn___in_fetch(array(
+                               'in_id' => $insert_columns[$tr_field],
+                           ));
+                           $html_message .= '<div>' . $clean_name . ': <a href="https://mench.com/intents/' . $ins[0]['in_id'] . '" target="_parent">#'.$ins[0]['in_id'].' '.$ins[0]['in_outcome'].'</a></div>';
+
+                       } elseif ($obj_type == 'en') {
+
+                           //Fetch entity:
+                           $ens = $this->Database_model->fn___en_fetch(array(
+                               'en_id' => $insert_columns[$tr_field],
+                           ));
+                           $html_message .= '<div>' . $clean_name . ': <a href="https://mench.com/entities/' . $ens[0]['en_id'] . '" target="_parent">@'.$ens[0]['en_id'].' '.$ens[0]['en_name'].'</a></div>';
+
+                       } elseif ($obj_type == 'tr') {
+
+                           //Include transaction:
+                           $html_message .= '<div>' . $clean_name . ': <a href="https://mench.com/ledger?tr_id=' . $insert_columns[$tr_field] . '" target="_parent">'.$insert_columns[$tr_field].'</a></div>';
+
+                       }
                    }
                 }
 
                 //Finally append transaction ID with link to ledger:
-                $html_message .= '<div>Ledger Transaction <a href="https://mench.com/ledger?any_tr_id=' . $insert_columns['tr_id'] . '" target="_blank">#' . $insert_columns['tr_id'] . '</a></div>';
+                $html_message .= '<div>Ledger Transaction ID: <a href="https://mench.com/ledger?tr_id=' . $insert_columns['tr_id'] . '" target="_blank">' . $insert_columns['tr_id'] . '</a></div>';
 
                 //Send email:
                 $this->Chat_model->fn___dispatch_email($sub_emails, $sub_en_ids, $subject, $html_message);
