@@ -6,13 +6,30 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * So we don't have to make DB calls to figure them out every time!
  * This is the cron function that creates this: fn___matrix_cache()
  * See here for all entities cached: https://mench.com/entities/4527
- * use-case format: $this->config->item('en_ids_4600')
+ * use-case format: $this->config->item('en_ids_3000')
  *
  * ATTENTION: Also search for "en_ids_" and "en_all_" when trying to manage these throughout the code base
  *
  */
 
-//Generated 2019-03-13 10:33:03 PST
+//Generated 2019-03-14 01:36:03 PST
+
+//Transaction Type Email Subscription:
+$config['en_ids_5966'] = array(4246, 4269);
+$config['en_all_5966'] = array(
+    4246 => array(
+        'm_icon' => '<i class="fal fa-bug"></i>',
+        'm_name' => 'Developer Bug Report',
+        'm_desc' => '&var_en_subscriber_ids=1',
+        'm_parents' => array(5966, 4594),
+    ),
+    4269 => array(
+        'm_icon' => '<i class="fas fa-sign-in"></i>',
+        'm_name' => 'Logged Into Matrix',
+        'm_desc' => '&var_en_subscriber_ids=1',
+        'm_parents' => array(5966, 4992, 4594),
+    ),
+);
 
 //Linked Entities Text:
 $config['en_ids_4255'] = array(2999, 3005, 3084, 3147, 3192, 3286, 4601, 4763, 4883);
@@ -268,7 +285,7 @@ $config['en_all_4990'] = array(
     ),
     3320 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
-        'm_name' => 'Facebook Messenger',
+        'm_name' => 'Messenger',
         'm_desc' => '',
         'm_parents' => array(4990, 1326, 1326, 2750, 2793),
     ),
@@ -649,7 +666,7 @@ $config['en_all_4600'] = array(
 );
 
 //Transaction Type Full List:
-$config['en_ids_4594'] = array(4228, 4229, 4230, 4231, 4232, 4233, 4234, 4235, 4242, 4246, 4248, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4265, 4266, 4267, 4268, 4269, 4272, 4275, 4278, 4279, 4282, 4283, 4284, 4287, 4299, 4318, 4319, 4331, 4452, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4567, 4568, 4570, 4577, 4601, 4602, 4983, 4993, 4994, 4996, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943);
+$config['en_ids_4594'] = array(4228, 4229, 4230, 4231, 4232, 4233, 4234, 4235, 4242, 4246, 4248, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4265, 4266, 4267, 4268, 4269, 4272, 4275, 4278, 4279, 4282, 4283, 4284, 4287, 4299, 4318, 4319, 4331, 4452, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4567, 4568, 4570, 4577, 4601, 4602, 4983, 4993, 4994, 4996, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943, 5967);
 $config['en_all_4594'] = array(
     4228 => array(
         'm_icon' => '<i class="fal fa-check-circle"></i>',
@@ -709,7 +726,7 @@ $config['en_all_4594'] = array(
         'm_icon' => '<i class="fal fa-bug"></i>',
         'm_name' => 'Developer Bug Report',
         'm_desc' => '',
-        'm_parents' => array(4594),
+        'm_parents' => array(5966, 4594),
     ),
     4248 => array(
         'm_icon' => '<i class="fas fa-star-half-alt"></i>',
@@ -811,7 +828,7 @@ $config['en_all_4594'] = array(
         'm_icon' => '<i class="fas fa-sign-in"></i>',
         'm_name' => 'Logged Into Matrix',
         'm_desc' => '',
-        'm_parents' => array(4992, 4594),
+        'm_parents' => array(5966, 4992, 4594),
     ),
     4272 => array(
         'm_icon' => '<i class="fas fa-question-circle"></i>',
@@ -1076,6 +1093,12 @@ $config['en_all_4594'] = array(
         'm_name' => 'Entity Mass Update Entity Icon',
         'm_desc' => '',
         'm_parents' => array(4594, 4997),
+    ),
+    5967 => array(
+        'm_icon' => '<i class="fal fa-envelope-open"></i>',
+        'm_name' => 'Email Sent',
+        'm_desc' => '',
+        'm_parents' => array(4594, 4280),
     ),
 );
 

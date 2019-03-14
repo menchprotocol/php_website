@@ -88,13 +88,13 @@ $uri_segment_2 = $this->uri->segment(2);
                             </li>
 
                             <li class="<?= ($uri_segment_1 == 'intents' ? 'intent-active' : 'intent-inactive') ?>">
-                                <a href="/intents/<?= $this->config->item('in_tactic_id') ?>">
+                                <a href="/intents/<?= $this->config->item('in_home_page') ?>">
                                     <i class="fas fa-hashtag"></i> Intents
                                 </a>
                             </li>
 
                             <li class="<?= ($uri_segment_1 == 'entities' ? 'entity-active' : 'entity-inactive') ?>">
-                                <a href="/entities/<?= $this->config->item('en_start_here_id') ?>">
+                                <a href="/entities/<?= $this->config->item('en_top_focus_id') ?>">
                                     <i class="fas fa-at"></i> Entities
                                 </a>
                             </li>

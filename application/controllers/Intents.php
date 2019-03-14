@@ -22,7 +22,7 @@ class Intents extends CI_Controller
         if (isset($session_en['en__parents'][0]) && fn___filter_array($session_en['en__parents'], 'en_id', 1308)) {
 
             //Lead miner and above, go to matrix:
-            fn___redirect_message('/intents/' . $this->config->item('in_tactic_id'));
+            fn___redirect_message('/intents/' . $this->config->item('in_home_page'));
 
         } elseif (0 && (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] == 'mench.co')) {
 
@@ -31,35 +31,75 @@ class Intents extends CI_Controller
 
         } else {
 
+            //Fetch home page intent:
+            $home_ins = $this->Database_model->fn___in_fetch(array(
+                'in_id' => $this->config->item('in_home_page'),
+                'in_status' => 3, //Featured Intents
+            ));
+
             //How many featured intents do we have?
-            $featured_ins = $ins = $this->Database_model->fn___in_fetch(array(
+            $featured_ins = $this->Database_model->fn___in_fetch(array(
+                'in_id !=' => $this->config->item('in_home_page'),
                 'in_status' => 3, //Featured Intents
             ), array(), 0, 0, array('in_id' => 'ASC')); //This sorting is a hack for now to have Intent #6903 at the top (lol)
 
-            if (count($featured_ins) == 0) {
+            if(count($home_ins)<1 && count($featured_ins) > 0){
 
-                //Go to default landing page:
-                return fn___redirect_message('/' . $this->config->item('in_tactic_id'));
+                //Go to the first featured intent:
+                fn___redirect_message('/'.$featured_ins[0]['in_id']);
 
-            } elseif (count($featured_ins) == 1) {
+            } elseif(count($home_ins) > 0){
 
-                //TO to single feature:
-                return fn___redirect_message('/' . $featured_ins[0]['in_id']);
-
-            } else {
-
-                //We have more featured, list them so user can choose:
                 //Show index page:
                 $this->load->view('view_shared/public_header', array(
-                    'title' => ucwords($this->config->item('in_strategy_name')),
+                    'title' => $home_ins[0]['in_outcome'],
                 ));
                 $this->load->view('view_intents/in_home_featured_ui', array(
+                    'in' => $home_ins[0],
                     'featured_ins' => $featured_ins,
                 ));
                 $this->load->view('view_shared/public_footer');
 
             }
         }
+    }
+
+
+    function fn___in_landing_page($in_id)
+    {
+
+        /*
+         *
+         * Loads public landing page that Students can use
+         * to review intents before adding to Action Plan
+         *
+         * */
+
+        if($in_id==$this->config->item('in_home_page')){
+            //Featured intent will always load on the home page:
+            return fn___redirect_message('/');
+        }
+
+        //Fetch data:
+        $ins = $this->Database_model->fn___in_fetch(array(
+            'in_id' => $in_id,
+        ));
+
+        //Make sure we found it:
+        if ( count($ins) < 1) {
+            return fn___redirect_message('/' . $this->config->item('in_home_page'), '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' not found</div>');
+        } elseif ( $ins[0]['in_status'] < 2) {
+            return fn___redirect_message('/' . $this->config->item('in_home_page'), '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' is not published yet</div>');
+        }
+
+        //Load home page:
+        $this->load->view('view_shared/public_header', array(
+            'title' => $ins[0]['in_outcome'],
+            'in' => $ins[0],
+        ));
+        $this->load->view('view_intents/in_landing_page', array( 'in' => $ins[0] ));
+        $this->load->view('view_shared/public_footer');
+
     }
 
 
@@ -75,7 +115,7 @@ class Intents extends CI_Controller
 
         if($in_id == 0){
             //Set to default:
-            $in_id = $this->config->item('in_tactic_id');
+            $in_id = $this->config->item('in_home_page');
         }
 
         //Authenticate Miner, redirect if failed:
@@ -88,7 +128,7 @@ class Intents extends CI_Controller
 
         //Make sure we found it:
         if ( count($ins) < 1) {
-            return fn___redirect_message('/intents/' . $this->config->item('in_tactic_id'), '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' not found</div>');
+            return fn___redirect_message('/intents/' . $this->config->item('in_home_page'), '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' not found</div>');
         }
 
         //Update session count and log transaction:
@@ -134,38 +174,6 @@ class Intents extends CI_Controller
 
     }
 
-
-    function fn___in_landing_page($in_id)
-    {
-
-        /*
-         *
-         * Loads public landing page that Students can use
-         * to review intents before adding to Action Plan
-         *
-         * */
-
-        //Fetch data:
-        $ins = $this->Database_model->fn___in_fetch(array(
-            'in_id' => $in_id,
-        ), array('in__parents', 'in__grandchildren'));
-
-        //Make sure we found it:
-        if ( count($ins) < 1) {
-            return fn___redirect_message('/' . $this->config->item('in_tactic_id'), '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' not found</div>');
-        } elseif ( $ins[0]['in_status'] < 2) {
-            return fn___redirect_message('/' . $this->config->item('in_tactic_id'), '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' is not published yet</div>');
-        }
-
-        //Load home page:
-        $this->load->view('view_shared/public_header', array(
-            'title' => $ins[0]['in_outcome'],
-            'in' => $ins[0],
-        ));
-        $this->load->view('view_intents/in_landing_page', array( 'in' => $ins[0] ));
-        $this->load->view('view_shared/public_footer');
-
-    }
 
 
     function fn___in_link_or_create()
@@ -526,7 +534,7 @@ class Intents extends CI_Controller
                                 $remove_redirect_url = '/intents/' . $ins[0]['in__parents'][0]['in_id'];
                             } else {
                                 //No parents, redirect to default intent:
-                                $remove_redirect_url = '/intents/' . $this->config->item('in_tactic_id');
+                                $remove_redirect_url = '/intents/' . $this->config->item('in_home_page');
                             }
                         }
 
@@ -821,17 +829,17 @@ class Intents extends CI_Controller
             ));
         }
 
-        //Fetch On-Start Messages for this intent:
+        //Fetch Intent Note Messages for this intent:
         $on_start_messages = $this->Database_model->fn___tr_fetch(array(
             'tr_status >=' => 2, //Published+
-            'tr_type_entity_id' => 4231, //On-Start Messages
+            'tr_type_entity_id' => 4231, //Intent Note Messages
             'tr_child_intent_id' => $_POST['in_id'],
         ), array(), 0, 0, array('tr_order' => 'ASC'));
 
         if (count($on_start_messages) < 1) {
             return fn___echo_json(array(
                 'status' => 0,
-                'message' => 'Intent Missing On-Start Messages',
+                'message' => 'Intent Missing Intent Note Messages',
             ));
         }
 
@@ -912,11 +920,11 @@ class Intents extends CI_Controller
                 'message' => 'Unknown error while trying to save file.',
             ));
 
-        } elseif ($_FILES[$_POST['upload_type']]['size'] > ($this->config->item('file_size_max') * 1024 * 1024)) {
+        } elseif ($_FILES[$_POST['upload_type']]['size'] > ($this->config->item('en_file_max_size') * 1024 * 1024)) {
 
             return fn___echo_json(array(
                 'status' => 0,
-                'message' => 'File is larger than ' . $this->config->item('file_size_max') . ' MB.',
+                'message' => 'File is larger than ' . $this->config->item('en_file_max_size') . ' MB.',
             ));
 
         }

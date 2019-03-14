@@ -96,7 +96,7 @@ class Matrix_model extends CI_Model
             );
 
             $this->Chat_model->fn___dispatch_message(
-                'How else can I help you ' . $this->config->item('in_strategy_name') . '?',
+                'How else can I help you with your tech career?',
                 array('en_id' => $actionplans[0]['tr_parent_entity_id']),
                 true,
                 array(),
@@ -376,7 +376,7 @@ class Matrix_model extends CI_Model
 
         //Only fetch URL content if not a direct file type:
         $url_content = null;
-        if(!array_key_exists($tr_type_entity_id, $this->config->item('en_convert_4537'))){
+        if(!array_key_exists($tr_type_entity_id, $this->config->item('fb_convert_4537'))){
 
             //Make CURL call:
             $url_content = @file_get_contents($url);
@@ -1629,7 +1629,7 @@ class Matrix_model extends CI_Model
          *
          * */
 
-        if (!array_key_exists($obj_type, $this->config->item('core_objects')) || $obj_id < 1 || count($new_fields) < 1) {
+        if (!in_array($obj_type, $this->config->item('app_objects')) || $obj_id < 1 || count($new_fields) < 1) {
             return false;
         }
 
@@ -2228,6 +2228,8 @@ class Matrix_model extends CI_Model
             if(!$added_in['status']){
                 //We had an error, return it:
                 return $added_in;
+            } else {
+                $intent_new = $added_in['in'];
             }
 
         }

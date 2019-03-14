@@ -745,9 +745,7 @@ input::-webkit-inner-spin-button {
     padding-top: 5px;
 }
 
-.maxout {
-    max-width: 665px !important;
-}
+
 
 .list-group-item {
     padding: 10px 10px;
@@ -1082,10 +1080,6 @@ p a, td a {
 
 .entity-appendix b {
     color:#222; font-size: 1.1em;
-}
-
-.panel-body img {
-    max-width: 100% !important;
 }
 
 .grey_list .list-group-item {
@@ -3998,4 +3992,64 @@ h4 .tip-badge {
 
 .not-found .fa-exclamation-triangle{
     margin: 0 4px 0 8px;
+}
+
+.home-page-intro .msg {
+    font-size: 1.825em !important;
+    line-height: 1.4em !important;
+    margin: 25px 0 0 !important;
+}
+
+.home-page-intro .msg a, .home-page-intro .msg b {
+    display: none;
+}
+
+.msg .entity-appendix {
+    max-width: 368px;
+}
+
+.maxout, .home-page-intro .msg .entity-appendix, .landing-page-intro .msg .entity-appendix {
+    max-width: 767px !important;
+}
+
+
+
+
+.landing-page-intro .msg, .landing-page-intro li, p, .landing-page-intro a {
+    font-size: 1.2em !important;
+}
+
+.landing-page-intro h4 {
+    font-size: 1.1em !important;
+}
+
+.landing-page-intro .msg {
+    margin-top: 10px !important;
+    font-weight: 300 !important;
+    line-height: 120% !important;
+}
+
+.landing-page-intro .msg a {
+    max-width: none;
+}
+
+
+.landing-page-intro .url_truncate {
+    font-size: 0.8em;
+    color:#2b2b2b;
+}
+
+.overview-pitch{
+    padding:5px 0 0 38px !important;
+    font-size:1.2em;
+}
+
+.panel-body img {
+    max-width: 100% !important;
+}
+
+.panel-body a {
+    font-size: 1em !important;
+    font-weight: 500 !important;
+    text-decoration: underline;
 }

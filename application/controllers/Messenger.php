@@ -132,7 +132,7 @@ class Messenger extends CI_Controller
 
                             //The very first payload, set defaults:
                             $array_ref = array(
-                                'ref' => $this->config->item('in_tactic_id'),
+                                'ref' => $this->config->item('in_home_page'),
                             );
 
                         } else {

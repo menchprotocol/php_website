@@ -350,7 +350,7 @@ function u_load_filter_status(new_val) {
 
 function en_name_word_count() {
     var len = $('#en_name').val().length;
-    if (len > en_name_max) {
+    if (len > en_name_max_length) {
         $('#charNameNum').addClass('overload').text(len);
     } else {
         $('#charNameNum').removeClass('overload').text(len);

@@ -527,7 +527,7 @@ function fn___echo_tr_row($tr, $is_inner = false)
 
     //Lets go through all references to see what is there:
     if(!$is_inner){
-        foreach ($CI->config->item('transaction_links') as $tr_field => $obj_type) {
+        foreach ($CI->config->item('tr_object_links') as $tr_field => $obj_type) {
             if(!in_array($tr_field, array('tr_miner_entity_id','tr_type_entity_id')) && $tr[$tr_field] > 0){
                 $ui .= '<div class="tr-child">';
                 if($obj_type=='en'){
@@ -792,8 +792,8 @@ function fn___echo_tree_sources($in, $fb_messenger_format = false, $expand_mode 
                 </h4>
             </div>
             <div id="collapse' . $id . '" class="panel-collapse collapse ' . ($expand_mode ? 'in' : 'out') . '" role="tabpanel" aria-labelledby="heading' . $id . '">
-                <div class="panel-body" style="padding:5px 0 0 38px; font-size:1.1em;">
-                    ' . $pitch . '
+                <div class="panel-body overview-pitch">
+                    ' . $pitch . '.
                 </div>
             </div>
         </div></div>';
@@ -819,7 +819,7 @@ function fn___echo_tree_steps($in, $fb_messenger_format = 0, $expand_mode = fals
 
     $metadata['in__flat_unique_published_count']--;
 
-    $pitch = 'Action Plan contains ' . $metadata['in__flat_unique_published_count'] . ' steps to ' . $in['in_outcome'] . '.';
+    $pitch = 'Action Plan contains ' . $metadata['in__flat_unique_published_count'] . ' steps to ' . $in['in_outcome'];
 
     if ($fb_messenger_format) {
         return '🚩 ' . $pitch . "\n";
@@ -835,7 +835,7 @@ function fn___echo_tree_steps($in, $fb_messenger_format = 0, $expand_mode = fals
             </h4>
         </div>
         <div id="collapse' . $id . '" class="panel-collapse collapse ' . ($expand_mode ? 'in' : 'out') . '" role="tabpanel" aria-labelledby="heading' . $id . '">
-            <div class="panel-body" style="padding:5px 0 0 38px; font-size:1.1em;">' . $pitch . '</div>
+            <div class="panel-body overview-pitch">' . $pitch . '.</div>
         </div>
     </div></div>';
     }
@@ -883,8 +883,7 @@ function fn___echo_tree_cost($in, $fb_messenger_format = 0, $expand_mode = false
     $pitch  = 'Action Plan estimates ';
     $pitch .= ( $has_time_estimate ? strtolower(fn___echo_time_range($in)).' ' : '' );
     $pitch .= ( $has_cost_estimate ? ( $has_time_estimate ? ' and ' : '' ) . $price_range : '' );
-    $pitch .= ' to ' . $in['in_outcome'] . '.';
-
+    $pitch .= ' to ' . $in['in_outcome'];
 
     if ($fb_messenger_format) {
         return '⏰ ' . $pitch . "\n";
@@ -900,7 +899,7 @@ function fn___echo_tree_cost($in, $fb_messenger_format = 0, $expand_mode = false
                 </h4>
             </div>
             <div id="collapse' . $id . '" class="panel-collapse collapse ' . ($expand_mode ? 'in' : 'out') . '" role="tabpanel" aria-labelledby="heading' . $id . '">
-                <div class="panel-body" style="padding:5px 0 0 38px; font-size:1.1em;">' . $pitch . '</div>
+                <div class="panel-body overview-pitch">' . $pitch . '.</div>
             </div>
         </div></div>';
     }
@@ -1031,7 +1030,7 @@ function fn___echo_tr_column($obj_type, $id, $tr_field, $fb_messenger_format = f
     $CI =& get_instance();
     $id = intval($id);
     $fixed_fields = $CI->config->item('fixed_fields');
-    if (!array_key_exists($obj_type, $CI->config->item('core_objects'))) {
+    if (!in_array($obj_type, $CI->config->item('app_objects'))) {
         return false;
     }
 
@@ -1242,7 +1241,7 @@ function fn___echo_in_featured($in)
     $ui .= '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-right"></i></span>';
     $ui .= '</span>';
 
-    $ui .= '<span style="color:#222; font-weight:500; font-size:1.1em;">'.$in['in_outcome'].'</span>';
+    $ui .= '<span style="color:#222; font-weight:500; font-size:1.2em;">'.$in['in_outcome'].'</span>';
     $ui .= '<span style="font-size:0.8em; font-weight:300; margin-left:5px; display:inline-block;">';
     $ui .= '<span><i class="fal fa-clock"></i>' . fn___echo_time_range($in) . '</span>';
     $ui .= '</span>';
@@ -1367,6 +1366,11 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
 
     //Show smaller intent status:
     $ui .= '<span class="icon-top-right in_status_' . $in['in_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$fixed_fields['in_status'][$in['in_status']]['s_name'].': '.$fixed_fields['in_status'][$in['in_status']]['s_desc'].'">' . $fixed_fields['in_status'][$in['in_status']]['s_icon'] . '</span></span>';
+
+    //Home page intent?
+    if($in['in_id']==$CI->config->item('in_home_page')){
+        $ui .= '<span class="icon-top-left" data-toggle="tooltip" data-placement="right" title="Home page intent (status locked)"><i class="fas fa-lock"></i></span>';
+    }
 
     $ui .= '<span class="icon-3rd ' . fn___echo_advance() . ' in_completion_' . $in['in_id'] . '" data-toggle="tooltip" data-placement="right" title="Completion Requirement">'.( $in['in_requirement_entity_id'] > 0 ? $en_all_4331[$in['in_requirement_entity_id']]['m_name']  : '' ).'</span>';
 
@@ -1509,7 +1513,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     } elseif ($level == 1 || $is_child_focused) {
 
         //Show Landing Page URL:
-        $ui .= '&nbsp;<a href="/' . $in['in_id'] . '" target="_blank" class="badge badge-primary is_not_bg is_hard_link" style="display:inline-block; margin-right:-2px; width:40px; border:2px solid #fedd16 !important;" data-toggle="tooltip" title="Landing Page (New Window)" data-placement="top">'.$tree_count.'<i class="fas fa-angle-right"></i></a>';
+        $ui .= '&nbsp;<a href="/' . $in['in_id'] . '" target="_blank" class="badge badge-primary is_not_bg is_hard_link" style="display:inline-block; margin-right:-2px; width:40px; border:2px solid #fedd16 !important;" data-toggle="tooltip" title="Landing Page (New Window)" data-placement="top">'.$tree_count.'<i class="fas fa-shopping-cart" style="margin-left: -3px;"></i></a>';
 
     } else {
 
@@ -1695,14 +1699,14 @@ function fn___echo_en($en, $level, $is_parent = false)
     //Show Transaction Status if Available:
     if ($tr_id > 0) {
 
-        //Show Link Type:
-        $en_all_4592 = $CI->config->item('en_all_4592'); //Will Contain every possible Entity Link Connector!
+        //Transaction Type Full List:
+        $en_all_4594 = $CI->config->item('en_all_4594');
 
         //Show Transaction link icons:
         $ui .= '<span class="double-icon" style="margin-right:7px;">';
 
         //Show larger icon for transaction type (auto detected based on transaction content):
-        $ui .= '<span class="icon-main tr_type_' . $tr_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4592[$en['tr_type_entity_id']]['m_name'].' Entity Link">' . $en_all_4592[$en['tr_type_entity_id']]['m_icon'] . '</span></span> ';
+        $ui .= '<span class="icon-main tr_type_' . $tr_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4594[$en['tr_type_entity_id']]['m_name'].'">' . $en_all_4594[$en['tr_type_entity_id']]['m_icon'] . '</span></span> ';
 
         //Show smaller transaction status icon:
         $ui .= '<span class="icon-top-right tr_status_' . $tr_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$fixed_fields['tr_status'][$en['tr_status']]['s_name'].': '.$fixed_fields['tr_status'][$en['tr_status']]['s_desc'].'">' . $fixed_fields['tr_status'][$en['tr_status']]['s_icon'] . '</span></span>';

@@ -27,6 +27,13 @@ function activate_expansion(){
         if(!$(this).hasClass('is_expanded')){
 
             $(this).addClass('is_expanded').on('click', function(e) {
+
+                if (e.target !== this){
+                    if(jQuery.inArray("click_expand", e.target.classList) == -1){
+                        return;
+                    }
+                }
+
                 //Expand children:
                 fn___ms_toggle(parseInt($(this).attr('in-tr-id')), -1);
             });
@@ -520,16 +527,16 @@ function fn___adjust_js_ui(in_id, level, new_hours, intent_deficit_count=0, appl
 
         if (level == 3) {
             //Adjust top level intent as well:
-            var in_tactic_id = parseInt($('.intent_line_' + in_parent_id).attr('parent-intent-id'));
-            var in_primary__tree_seconds = parseFloat($('.t_estimate_' + in_tactic_id + ':first').attr('tree-max-seconds'));
+            var in_home_page = parseInt($('.intent_line_' + in_parent_id).attr('parent-intent-id'));
+            var in_primary__tree_seconds = parseFloat($('.t_estimate_' + in_home_page + ':first').attr('tree-max-seconds'));
             var in_new__tree_seconds = in_primary__tree_seconds + in_deficit_seconds;
 
             if (!(intent_deficit_count == 0)) {
-                $('.children-counter-' + in_tactic_id).text(parseInt($('.children-counter-' + in_tactic_id + ':first').text()) + intent_deficit_count);
+                $('.children-counter-' + in_home_page).text(parseInt($('.children-counter-' + in_home_page + ':first').text()) + intent_deficit_count);
             }
 
             //Update Hours:
-            $('.t_estimate_' + in_tactic_id)
+            $('.t_estimate_' + in_home_page)
                 .attr('tree-max-seconds', in_new__tree_seconds)
                 .text(fn___echo_js_hours(in_new__tree_seconds));
         }
@@ -589,11 +596,11 @@ function fn___in_modify_load(in_id, tr_id) {
             //Load inputs:
             $('#in_outcome').val(data.in.in_outcome);
             $('#in_type_' + data.in.in_type).prop("checked", true);
-            $('#in_status').val(data.in.in_status).attr('original-status', data.in.in_status); //Set the status before it gets changed by miners
             $('#in_dollar_cost').val(data.in.in_dollar_cost);
             $('#in_seconds_cost').val(data.in.in_seconds_cost);
             $('#in_requirement_entity_id').val(data.in.in_requirement_entity_id);
             $('.tr_in_link_title').text('');
+            $('#in_status').val(data.in.in_status).attr('original-status', data.in.in_status).prop('disabled', (in_home_page==in_id)); //Set the status before it gets changed by miners
 
             //Load intent link data if available:
             if (tr_id > 0) {

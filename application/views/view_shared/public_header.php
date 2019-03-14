@@ -50,7 +50,7 @@ $url_part_1 = $this->uri->segment(1);
                 <?php
                 if (isset($session_en['en_id'])) {
 
-                    echo '<li id="isloggedin"><a href="/intents/' . (isset($in['in_id']) ? $in['in_id'] : $this->config->item('in_tactic_id')) . '">The Matrix <i class="fas fa-chevron-circle-right"></i></a></li>';
+                    echo '<li id="isloggedin"><a href="/intents/' . (isset($in['in_id']) ? $in['in_id'] : $this->config->item('in_home_page')) . '">The Matrix <i class="fas fa-chevron-circle-right"></i></a></li>';
 
                 } elseif (isset($session_en['en__actionplans']) && count($session_en['en__actionplans']) > 0) {
 
@@ -58,7 +58,6 @@ $url_part_1 = $this->uri->segment(1);
 
                 } else {
                     echo '<li><a href="/login'. ( isset($in['in_id']) ? '?url=%2Fintents%2F'.$in['in_id'] : '' ) .'"><i class="fas fa-sign-in"></i> Sign In</a></li>';
-                    //echo '<li><a href="https://m.me/askmench?ref=8407"><i class="fas fa-user-plus"></i> Sign Up</a></li>';
                 }
                 ?>
             </ul>

@@ -27,7 +27,7 @@ function fn___load_php_algolia($index_name)
 {
     //Loads up algolia search engine functions
     $CI =& get_instance();
-    if ($CI->config->item('enable_algolia')) {
+    if ($CI->config->item('app_update_algolia')) {
         require_once('application/libraries/algoliasearch.php');
         $client = new \AlgoliaSearch\Client("49OCX1ZXLJ", "84a8df1fecf21978299e31c5b535ebeb");
         return $client->initIndex($index_name);
@@ -129,7 +129,7 @@ function fn___extract_message_references($tr_content)
             array_push($msg_references['ref_intents'], intval(substr($part, 1)));
         } elseif(substr($part, 0, 1) == '/') {
             //Check maybe it's a command?
-            $command = fn___includes_any($part, $CI->config->item('message_commands'));
+            $command = fn___includes_any($part, $CI->config->item('in_message_commands'));
             if ($command) {
                 //Yes!
                 array_push($msg_references['ref_commands'], $command);
@@ -356,7 +356,7 @@ function fn___en_auth($en_permission_group = null, $force_redirect = 0)
         return false;
     } else {
         //Block access:
-        return fn___redirect_message((isset($session_en['en__parents'][0]) && fn___filter_array($session_en['en__parents'], 'en_id', 1308) ? '/intents/' . $CI->config->item('in_tactic_id') : '/login?url=' . urlencode($_SERVER['REQUEST_URI'])), '<div class="alert alert-danger maxout" role="alert">' . (isset($session_en['en_id']) ? 'Access not authorized.' : 'Sign In to access the matrix.') . '</div>');
+        return fn___redirect_message((isset($session_en['en__parents'][0]) && fn___filter_array($session_en['en__parents'], 'en_id', 1308) ? '/intents/' . $CI->config->item('in_home_page') : '/login?url=' . urlencode($_SERVER['REQUEST_URI'])), '<div class="alert alert-danger maxout" role="alert">' . (isset($session_en['en_id']) ? 'Access not authorized.' : 'Sign In to access the matrix.') . '</div>');
     }
 
 }

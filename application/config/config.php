@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  *
  * Global variables used throughout the platform.
- * use-case format: $this->config->item('in_outcome_max')
+ * Example: $this->config->item('in_home_page')
  *
  */
 
@@ -14,100 +14,40 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 date_default_timezone_set('America/Los_Angeles');
 
 
-//UI Display:
-$config['app_version']              = '0.771'; //Cache buster in URLs for static js/css files
-$config['en_per_page']              = 100; //Limits the maximum entities loaded per page
+//App Functionality:
+$config['app_version']              = '0.773'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
+$config['app_update_algolia']       = true; //May need to turn off if/when we reach free monthly quota of 50k calls
+$config['app_objects']              = array('in', 'en', 'tr'); //The 3 primary building blocks of Mench
+
 
 //Intents:
-$config['in_mission_id']            = 7766; //expand human potential
-$config['in_strategy_name']         = 'advance your tech career'; //The broader, more long-term strategic focus of Mench
-$config['in_tactic_id']             = 6903; //The shorter, more immediate focus recommended to Students & Miners as the starting point
+$config['in_mission_id']            = 7766; //highest-level intent which defines the mission of Mench
+$config['in_home_page']             = 6623; //featured on the home page
+$config['in_seconds_cost_max']      = 28800; //The maximum seconds allowed per intent. If larger, the miner is asked to break it down into smaller intents
+$config['in_outcome_max']           = 89; //Max number of characters allowed in the title of intents
+$config['in_message_commands']      = array('/firstname', '/slice', '/link'); //Commands supported within a message content
 
 
 //Entities:
-$config['en_start_here_id']         = 3463; //The default matrix entity that is loaded when Entities is clicked
-$config['en_platform_miner_id']     = 2738; //Mench. This is the entity that would get all the credit for generic platform transactions
-
-
-//App Functionality:
-$config['enable_algolia']           = true; //Currently reached our monthly free quota
-
-//URL detection based on ending file extensions:
-$config['image_extensions']         = array('jpeg','jpg','png','gif','tiff','bmp','img','svg','ico');
-$config['audio_extensions']         = array('pcm','wav','aiff','mp3','aac','ogg','wma','flac','alac','m4a','m4b','m4p');
-$config['video_extensions']         = array('mp4','m4v','m4p','avi','mov','flv','f4v','f4p','f4a','f4b','wmv','webm','mkv','vob','ogv','ogg','3gp','mpg','mpeg','m2v');
-$config['file_extensions']          = array('pdc','doc','docx','tex','txt','7z','rar','zip','csv','sql','tar','xml','exe');
-
-//TODO Update to mench.com when triple is ready:
-$config['algolia_remote']           = 'https://mench.co'; //The domain that will be called to sync updates when editing on local
-$config['file_size_max']            = 25; //Server setting is 32MB. see here: mench.com/ses
-$config['tr_status_incomplete']     = array(0, 1); //Transactions with these tr_status values are considered in-complete
-$config['core_objects']             = array( //The 3 primary objects in the app
-    'in' => 'Intent',
-    'en' => 'Entity',
-    'tr' => 'Transaction'
-);
-
-
-//App Inputs:
-$config['in_seconds_cost_max']      = 28800; //The maximum seconds allowed per intent. If larger, the miner is asked to break it down into smaller intents
-$config['in_outcome_max']           = 89; //Max number of characters allowed in the title of intents
-$config['en_name_max']              = 250; //Max number of characters allowed in the title of intents
-$config['tr_content_max']           = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
-$config['message_commands']         = array( //The list of commands supported within a message content
-                                        '/firstname', //replaced with first name
-                                        '/slice', //slice a part of a YouTube video like this: /slice:180:202 (22 seconds starting from minute 3:00
-                                        '/link', //Button link like this: /link:Open Mench:https://mench.com
-                                    );
-
-$config['en_convert_4537']          = array( //Used for saving media to Facebook Servers to speed-up delivery over Messenger
-    4258 => 'video',
-    4259 => 'audio',
-    4260 => 'image',
-    4261 => 'file',
-);
-
+$config['en_top_focus_id']          = 3463; //The default matrix entity that is loaded when Entities is clicked
+$config['en_default_miner_id']      = 2738; //Mench. This is the entity that would get all the credit for generic platform transactions
+$config['en_per_page']              = 100; //Limits the maximum entities loaded per page
+$config['en_name_max_length']       = 250; //Max number of characters allowed in the title of intents
+$config['en_file_max_size']         = 25; //Server setting is 32MB. see here: mench.com/ses
 $config['en_mass_actions']          = array( //Various mass actions to be taken on Entity children
-
-    'prefix_add'    => 'Add string as prefix',
-    'postfix_add'   => 'Add string as postfix',
-    'replace_match'  => 'Replace entity matching strings',
-    'replace_tr_match'  => 'Replace transaction matching strings',
-    'replace_icon'  => 'Update all entity icons',
-    //Logic for all items above must be added to Entities/fn___en_miner_ui section
-);
-
-
-//Third-Party Settings:
-$config['fb_max_message']           = 2000; //The maximum length of a Message accepted via Messenger API
-$config['en_convert_4454']          = array( //Facebook Messenger Notification Levels - This is a manual converter of our internal entities to Facebook API
-                                        4456 => 'REGULAR',
-                                        4457 => 'SILENT_PUSH',
-                                        4458 => 'NO_PUSH',
-                                        //@4455 => Unsubscribe NOT listed here since in that case all communication is blocked!
-                                    );
-$config['en_convert_4537']          = array( //Used for saving media to Facebook Servers to speed-up delivery over Messenger
-                                        4258 => 'video',
-                                        4259 => 'audio',
-                                        4260 => 'image',
-                                        4261 => 'file',
-                                    );
-
-//Admin notification via Email:
-$config['notify_admins']            = array(
-                                        array(
-                                            'admin_emails' => array('shervin@mench.com'),
-                                            'admin_en_ids' => array(1),
-                                            'admin_notify' => array(
-                                                4246, //Platform Error
-                                                4269, //Miner Sign In
-                                            ),
-                                        ),
+                                        //IMPORTANT: Mass action logic for each item must be coded in Entities/fn___en_miner_ui()
+                                        'prefix_add' => 'Add string as prefix',
+                                        'postfix_add' => 'Add string as postfix',
+                                        'replace_match' => 'Replace entity matching strings',
+                                        'replace_tr_match' => 'Replace transaction matching strings',
+                                        'replace_icon' => 'Update all entity icons',
                                     );
 
 
-//Ledger filters:
-$config['transaction_links']        = array(
+//Ledger Transactions:
+$config['tr_content_max']           = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
+$config['tr_status_incomplete']     = array(0, 1); //Transaction statuses that are considered in-complete to determine progress and more
+$config['tr_object_links']          = array( //Each transaction can have any of the following object links
                                         'tr_miner_entity_id' => 'en',
                                         'tr_type_entity_id' => 'en',
                                         'tr_parent_transaction_id' => 'tr',
@@ -115,6 +55,29 @@ $config['transaction_links']        = array(
                                         'tr_child_entity_id'  => 'en',
                                         'tr_parent_intent_id' => 'in',
                                         'tr_child_intent_id'  => 'in',
+                                    );
+
+
+//Recognized file extensions:
+$config['image_extensions']         = array('jpeg','jpg','png','gif','tiff','bmp','img','svg','ico');
+$config['audio_extensions']         = array('pcm','wav','aiff','mp3','aac','ogg','wma','flac','alac','m4a','m4b','m4p');
+$config['video_extensions']         = array('mp4','m4v','m4p','avi','mov','flv','f4v','f4p','f4a','f4b','wmv','webm','mkv','vob','ogv','ogg','3gp','mpg','mpeg','m2v');
+$config['file_extensions']          = array('pdc','doc','docx','tex','txt','7z','rar','zip','csv','sql','tar','xml','exe');
+
+
+//Facebook:
+$config['fb_max_message']           = 2000; //The maximum length of a Message accepted via Messenger API
+$config['fb_convert_4454']          = array( //Facebook Messenger Notification Levels - This is a manual converter of our internal entities to Facebook API
+                                        4456 => 'REGULAR',
+                                        4457 => 'SILENT_PUSH',
+                                        4458 => 'NO_PUSH',
+                                        //@4455 => Unsubscribe NOT listed here since in that case all communication is blocked!
+                                    );
+$config['fb_convert_4537']          = array( //Dedicated media formats supported by Facebook Messenger
+                                        4258 => 'video',
+                                        4259 => 'audio',
+                                        4260 => 'image',
+                                        4261 => 'file',
                                     );
 
 
@@ -240,7 +203,7 @@ $config['fixed_fields']             = array(
  | a PHP script and you can easily do that on your own.
  |
  */
-$config['base_url'] = '';
+$config['base_url'] = 'https://mench.com/';
 
 /*
 |--------------------------------------------------------------------------

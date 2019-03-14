@@ -415,7 +415,7 @@ class Chat_model extends CI_Model
         if ($fb_messenger_format) {
 
             //Translates our settings to Facebook Notification Settings:
-            $en_convert_4454 = $this->config->item('en_convert_4454');
+            $fb_convert_4454 = $this->config->item('fb_convert_4454');
 
             //Fetch recipient notification type:
             $trs_comm_level = $this->Database_model->fn___tr_fetch(array(
@@ -447,7 +447,7 @@ class Chat_model extends CI_Model
                     'message' => 'Student is unsubscribed',
                 );
 
-            } elseif (!array_key_exists($trs_comm_level[0]['tr_parent_entity_id'], $en_convert_4454)) {
+            } elseif (!array_key_exists($trs_comm_level[0]['tr_parent_entity_id'], $fb_convert_4454)) {
 
                 return array(
                     'status' => 0,
@@ -457,7 +457,7 @@ class Chat_model extends CI_Model
             }
 
             //All good, Set notification type:
-            $notification_type = $en_convert_4454[$trs_comm_level[0]['tr_parent_entity_id']];
+            $notification_type = $fb_convert_4454[$trs_comm_level[0]['tr_parent_entity_id']];
 
         }
 
@@ -637,7 +637,7 @@ class Chat_model extends CI_Model
             }
 
             //Direct Media URLs supported:
-            $en_convert_4537 = $this->config->item('en_convert_4537');
+            $fb_convert_4537 = $this->config->item('fb_convert_4537');
 
             //We send Media in their original format IF $fb_messenger_format = TRUE, which means we need to convert transaction types:
             if ($fb_messenger_format) {
@@ -713,7 +713,7 @@ class Chat_model extends CI_Model
 
                         }
 
-                    } elseif ($fb_messenger_format && array_key_exists($parent_en['tr_type_entity_id'], $en_convert_4537)) {
+                    } elseif ($fb_messenger_format && array_key_exists($parent_en['tr_type_entity_id'], $fb_convert_4537)) {
 
                         //Raw media file: Audio, Video, Image OR File...
 
@@ -733,7 +733,7 @@ class Chat_model extends CI_Model
                             'tr_type_entity_id' => $master_media_sent_conv[$parent_en['tr_type_entity_id']],
                             'tr_content' => ($fb_att_id > 0 ? null : $parent_en['tr_content']),
                             'fb_att_id' => $fb_att_id,
-                            'fb_att_type' => $en_convert_4537[$parent_en['tr_type_entity_id']],
+                            'fb_att_type' => $fb_convert_4537[$parent_en['tr_type_entity_id']],
                         ));
 
                     } elseif($fb_messenger_format && $parent_en['tr_type_entity_id'] == 4256){
@@ -785,7 +785,7 @@ class Chat_model extends CI_Model
                 if($is_landing_page){
 
                     //Do not include a link because we don't want to distract the student from the call to Action to get started...
-                    $output_body_message = str_replace('@' . $msg_references['ref_entities'][0], $ens[0]['en_name'].( $entity_appendix ? '<b>*</b>' : ''), $output_body_message);
+                    $output_body_message = str_replace('@' . $msg_references['ref_entities'][0], '<span class="entity-name">'.$ens[0]['en_name'].'</span>'.( $entity_appendix ? '<b>*</b>' : ''), $output_body_message);
 
                 } else {
                     $output_body_message = str_replace('@' . $msg_references['ref_entities'][0], '<a href="/entities/' . $ens[0]['en_id'] . '" target="_parent">' . $ens[0]['en_name'] . '</a>'.( $entity_appendix ? '<b>*</b>' : ''), $output_body_message);
@@ -1231,7 +1231,7 @@ class Chat_model extends CI_Model
             //These messages all need to be sent first:
             $messages_on_start = $this->Database_model->fn___tr_fetch(array(
                 'tr_status >=' => 2, //Published+
-                'tr_type_entity_id' => 4231, //On-Start Messages
+                'tr_type_entity_id' => 4231, //Intent Note Messages
                 'tr_child_intent_id' => $in_id,
             ), array(), 0, 0, array('tr_order' => 'ASC'));
 
@@ -1643,7 +1643,7 @@ class Chat_model extends CI_Model
 
                 //Student seems to have changed their mind, confirm with them:
                 $this->Chat_model->fn___dispatch_message(
-                    'Awesome, I am excited to continue helping you to ' . $this->config->item('in_strategy_name') . '.',
+                    'Awesome, I am excited to continue our work together.',
                     $en,
                     true
                 );
@@ -1758,7 +1758,7 @@ class Chat_model extends CI_Model
 
             //They rejected the offer... Acknowledge and give response:
             $this->Chat_model->fn___dispatch_message(
-                'Ok, so how can I help you ' . $this->config->item('in_strategy_name') . '?',
+                'Ok, so how can I help you with your tech career?',
                 $en,
                 true
             );
@@ -1860,10 +1860,10 @@ class Chat_model extends CI_Model
 
                     //Do final confirmation by giving Student more context on this intention before adding to their Action Plan...
 
-                    //Send all on-start messages for this intention so they can review it:
+                    //Send all Intent Note Messages for this intention so they can review it:
                     $messages_on_start = $this->Database_model->fn___tr_fetch(array(
                         'tr_status >=' => 2, //Published+
-                        'tr_type_entity_id' => 4231, //On-Start Messages
+                        'tr_type_entity_id' => 4231, //Intent Note Messages
                         'tr_child_intent_id' => $ins[0]['in_id'],
                     ), array(), 0, 0, array('tr_order' => 'ASC'));
 
@@ -2435,7 +2435,7 @@ class Chat_model extends CI_Model
             }
 
             //Do a search to see what we find...
-            if ($this->config->item('enable_algolia')) {
+            if ($this->config->item('app_update_algolia')) {
 
                 $search_index = fn___load_php_algolia('alg_intents');
                 $res = $search_index->search($master_command, [
@@ -2577,12 +2577,12 @@ class Chat_model extends CI_Model
                 $default_actionplans = $this->Database_model->fn___tr_fetch(array(
                     'tr_type_entity_id IN (4235,4559)' => null, //Action Plan or Action Plan Intents
                     'tr_parent_entity_id' => $en['en_id'], //Belongs to this Student
-                    'tr_child_intent_id' => $this->config->item('in_tactic_id'),
+                    'tr_child_intent_id' => $this->config->item('in_home_page'),
                 ));
                 if (count($default_actionplans) == 0) {
 
                     //They have never taken the default intent, recommend it to them:
-                    $this->Chat_model->fn___digest_received_quick_reply($en, $this->config->item('in_tactic_id'));
+                    $this->Chat_model->fn___digest_received_quick_reply($en, $this->config->item('in_home_page'));
 
                 }
 
@@ -2650,9 +2650,10 @@ class Chat_model extends CI_Model
 
         foreach($to_en_ids as $to_en_id){
             $this->Database_model->fn___tr_create(array(
-                'tr_type_entity_id' => 4276, //Email Message Sent
-                'tr_child_entity_id' => $to_en_id, //Email Recipient
-                'tr_content' => 'Email Sent: ' . $subject,
+                'tr_type_entity_id' => 5967, //Email Sent
+                'tr_miner_entity_id' => $to_en_id,
+                'tr_child_entity_id' => $to_en_id, //Email recipient
+                'tr_content' => '<b>SUBJECT: '.$subject.'</b><hr />' . $html_message,
                 'tr_metadata' => array(
                     'to_array' => $to_array,
                     'subject' => $subject,

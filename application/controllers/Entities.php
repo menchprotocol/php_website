@@ -75,7 +75,7 @@ class Entities extends CI_Controller
 
         if ($en_id == 0) {
             //Set to default:
-            $en_id = $this->config->item('en_start_here_id');
+            $en_id = $this->config->item('en_top_focus_id');
         }
 
         $session_en = fn___en_auth(array(1308), true); //Just be logged in to browse
@@ -198,10 +198,10 @@ class Entities extends CI_Controller
                 'status' => 0,
                 'message' => 'Unknown error while trying to save file.',
             ));
-        } elseif ($_FILES[$_POST['upload_type']]['size'] > ($this->config->item('file_size_max') * 1024 * 1024)) {
+        } elseif ($_FILES[$_POST['upload_type']]['size'] > ($this->config->item('en_file_max_size') * 1024 * 1024)) {
             return fn___echo_json(array(
                 'status' => 0,
-                'message' => 'File is larger than ' . $this->config->item('file_size_max') . ' MB.',
+                'message' => 'File is larger than ' . $this->config->item('en_file_max_size') . ' MB.',
             ));
         }
 
@@ -516,10 +516,10 @@ class Entities extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing entity link data',
             ));
-        } elseif (strlen($_POST['en_name']) > $this->config->item('en_name_max')) {
+        } elseif (strlen($_POST['en_name']) > $this->config->item('en_name_max_length')) {
             return fn___echo_json(array(
                 'status' => 0,
-                'message' => 'Name is longer than the allowed ' . $this->config->item('en_name_max') . ' characters. Shorten and try again.',
+                'message' => 'Name is longer than the allowed ' . $this->config->item('en_name_max_length') . ' characters. Shorten and try again.',
             ));
         } elseif(!isset($_POST['en_icon']) || !is_valid_icon($_POST['en_icon'])){
             //Check if valid icon:
@@ -960,7 +960,7 @@ class Entities extends CI_Controller
         $session_en = $this->session->userdata('user');
         if (isset($session_en['en__parents'][0]) && fn___filter_array($session_en['en__parents'], 'en_id', 1308)) {
             //Lead miner and above, go to console:
-            return fn___redirect_message('/intents/' . $this->config->item('in_tactic_id'));
+            return fn___redirect_message('/intents/' . $this->config->item('in_home_page'));
         }
 
         $this->load->view('view_shared/public_header', array(
@@ -1127,7 +1127,7 @@ class Entities extends CI_Controller
             //Default:
             if ($is_miner) {
                 //miner default:
-                header('Location: /intents/' . $this->config->item('in_tactic_id'));
+                header('Location: /intents/' . $this->config->item('in_home_page'));
             } else {
                 //Student default:
                 header('Location: /my/actionplan');
@@ -1228,7 +1228,7 @@ class Entities extends CI_Controller
 
             //Fetch their passwords to authenticate login:
             $login_passwords = $this->Database_model->fn___tr_fetch(array(
-                'tr_status >=' => 2, //Must be published or verified
+                'tr_status >=' => 2, //Published+
                 'tr_parent_entity_id' => 3286, //Mench Sign In Password
                 'tr_child_entity_id' => $_POST['en_id'], //For this user
             ));

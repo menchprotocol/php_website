@@ -46,7 +46,7 @@
             <span class="pass" style="font-size:0.9em; display: none;">or <a href="javascript:void(0)"
                                                                              onclick="$('.pass').toggle()"><span class="underdot">Cancel</span></a></span>
 
-            <div style="margin: 15px 0 7px;">No Mench account yet? <a href="https://m.me/askmench?ref=8407" class="underdot">Sign Up</a>.</div>
+            <div style="margin: 15px 0 7px;">No Mench account yet? <a href="https://m.me/askmench" class="underdot">Sign Up</a>.</div>
 
         </div>
     </form>

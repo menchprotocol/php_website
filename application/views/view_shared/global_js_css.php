@@ -32,7 +32,7 @@
     echo ' var object_js_statuses = ' . json_encode($this->config->item('fixed_fields')) . '; ';
     echo ' var in_outcome_max = ' . $this->config->item('in_outcome_max') . '; ';
     echo ' var tr_content_max = ' . $this->config->item('tr_content_max') . '; ';
-    echo ' var en_name_max = ' . $this->config->item('en_name_max') . '; ';
+    echo ' var en_name_max_length = ' . $this->config->item('en_name_max_length') . '; ';
     ?>
 </script>
 <!-- END GLOBAL STATIC RESOURCES -->

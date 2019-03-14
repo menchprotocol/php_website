@@ -10,6 +10,7 @@ if (isset($orphan_ins)) {
 <script>
     //Define some global variables:
     var in_focus_id = <?= $in['in_id'] ?>;
+    var in_home_page = <?= $this->config->item('in_home_page') ?>;
     var en_all_4486 = <?= json_encode($this->config->item('en_all_4486')) ?>;
     var en_all_4331 = <?= json_encode($this->config->item('en_all_4331')) ?>;
 </script>
@@ -35,7 +36,7 @@ if (isset($orphan_ins)) {
         } else {
 
             //Count orphans only IF we are in the top parent root:
-            if ($this->config->item('in_tactic_id') == $in['in_id'] && 0) {
+            if ($this->config->item('in_home_page') == $in['in_id'] && 0) {
                 $orphans_count = count($this->Database_model->fn___in_fetch(array(
                     ' NOT EXISTS (SELECT 1 FROM table_ledger WHERE in_id=tr_child_intent_id AND tr_status>=0) ' => null,
                 )));
@@ -162,7 +163,7 @@ if (isset($orphan_ins)) {
                                         style="margin:0 0 10px 0;"><span
                                             id="charNameNum">0</span>/<?= $this->config->item('in_outcome_max') ?></span>][<a href="/entities/5008" data-toggle="tooltip" title="See (and manage) list of supporting verbs that intent outcomes can start with" data-placement="right" target="_blank"><b>Verbs</b></a>]</span>
                             <div class="form-group label-floating is-empty" style="height: 40px !important;">
-                                <textarea class="form-control text-edit msg main-box border white-wrapper" id="in_outcome" onkeyup="fn___in_outcome_counter()"></textarea>
+                                <span class="white-wrapper"><textarea class="form-control text-edit msg main-box border" id="in_outcome" onkeyup="fn___in_outcome_counter()"></textarea></span>
                             </div>
 
 

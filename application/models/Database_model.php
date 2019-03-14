@@ -198,11 +198,11 @@ class Database_model extends CI_Model
                 $insert_columns['tr_miner_entity_id'] = $entity_data['en_id'];
             } else {
                 //Do not issue credit to any miner:
-                $insert_columns['tr_miner_entity_id'] = $this->config->item('en_platform_miner_id');
+                $insert_columns['tr_miner_entity_id'] = $this->config->item('en_default_miner_id');
             }
         } elseif($insert_columns['tr_miner_entity_id'] == 0){
             //Shortcut for developers who don't know the default mench ID
-            $insert_columns['tr_miner_entity_id'] = $this->config->item('en_platform_miner_id');
+            $insert_columns['tr_miner_entity_id'] = $this->config->item('en_default_miner_id');
         }
 
         //Set some defaults:
@@ -256,12 +256,25 @@ class Database_model extends CI_Model
             ));
 
             return false;
+
+        } elseif($insert_columns['tr_miner_entity_id'] < 1){
+
+            //This should not happen:
+            $this->Database_model->fn___tr_create(array(
+                'tr_type_entity_id' => 4246, //Platform Error
+                'tr_content' => 'fn___tr_create() missing miner',
+                'tr_metadata' => array(
+                    'input' => $insert_columns,
+                ),
+            ));
+
+            return false;
+
         }
 
 
         //Sync algolia?
         if ($external_sync) {
-
             if ($insert_columns['tr_parent_entity_id'] > 0) {
                 $algolia_sync = $this->Database_model->fn___update_algolia('en', $insert_columns['tr_parent_entity_id']);
             }
@@ -277,60 +290,66 @@ class Database_model extends CI_Model
             if ($insert_columns['tr_child_intent_id'] > 0) {
                 $algolia_sync = $this->Database_model->fn___update_algolia('in', $insert_columns['tr_child_intent_id']);
             }
-
-
-
         }
 
-        //Notify admins for certain subscriptions
-        if(0){
-            foreach ($this->config->item('notify_admins') as $subscription) {
 
-                //Do not notify about own actions:
-                if (in_array($insert_columns['tr_miner_entity_id'], $subscription['admin_en_ids'])) {
-                    continue;
-                }
 
-                //Does this transaction Match?
-                if (in_array($insert_columns['tr_type_entity_id'], $subscription['admin_notify'])) {
+        //See if this transaction type has any subscribers:
+        if(in_array($insert_columns['tr_type_entity_id'] , $this->config->item('en_ids_5966')) && !fn___is_dev()){
 
-                    //Just do this one:
-                    if (!isset($trs[0])) {
-                        //Fetch Transaction Data:
-                        $trs = $this->Database_model->fn___tr_fetch(array(
-                            'tr_id' => $insert_columns['tr_id']
-                        ));
-                    }
 
-                    //Did we find it? We should have:
-                    if (isset($trs[0])) {
-
-                        $subject = 'Notification: ' . trim(strip_tags($trs[0]['in_outcome'])) . ' - ' . (isset($trs[0]['en_name']) ? $trs[0]['en_name'] : 'System');
-
-                        //Compose email:
-                        $html_message = null; //Start
-
-                        if (strlen($trs[0]['tr_content']) > 0) {
-                            $html_message .= '<div>' . fn___echo_link(nl2br($trs[0]['tr_content'])) . '</div><br />';
-                        }
-
-                        //Lets go through all references to see what is there:
-                        foreach ($this->config->item('transaction_links') as $tr_field => $obj_type) {
-                            if (intval($trs[0][$tr_field]) > 0) {
-                                //Yes we have a value here:
-                                $html_message .= '<div>' . ucwrods(str_replace('tr', 'Transaction', str_replace('en', 'Entity', str_replace('in', 'Intent', str_replace('_', ' ', str_replace('tr_', '', $tr_field)))))) . ': ' . fn___echo_tr_column($obj_type, $trs[0][$tr_field], $tr_field, true) . '</div>';
-                            }
-                        }
-
-                        //Append ID:
-                        $html_message .= '<div>Transaction: <a href="https://mench.com/ledger/fn___tr_json/' . $trs[0]['tr_id'] . '">#' . $trs[0]['tr_id'] . '</a></div>';
-
-                        //Send Email:
-                        $this->Chat_model->fn___dispatch_email($subscription['admin_emails'], $subscription['admin_en_ids'], $subject, $html_message);
-
+            //Try to fetch subscribers:
+            $en_all_5966 = $this->config->item('en_all_5966'); //Include subscription details
+            $sub_emails = array();
+            $sub_en_ids = array();
+            foreach(explode(',', fn___one_two_explode('&var_en_subscriber_ids=','', $en_all_5966[$insert_columns['tr_type_entity_id']]['m_desc'])) as $subscriber_en_id){
+                //Try fetching their email:
+                foreach($this->Database_model->fn___tr_fetch(array(
+                    'tr_status >=' => 2, //Published+
+                    'en_status >=' => 2, //Published+
+                    'tr_type_entity_id' => 4255, //Linked Entities Text (Email is text)
+                    'tr_parent_entity_id' => 3288, //Email Address
+                    'tr_child_entity_id' => $subscriber_en_id,
+                ), array('en_child')) as $en_email){
+                    if(filter_var($en_email['tr_content'], FILTER_VALIDATE_EMAIL)){
+                        //All good, add to list:
+                        array_push($sub_en_ids , $en_email['en_id']);
+                        array_push($sub_emails , $en_email['tr_content']);
                     }
                 }
             }
+
+
+            //Did we find any subscribers?
+            if(count($sub_en_ids) > 0){
+
+                //Fetch miner details:
+                $miner_ens = $this->Database_model->fn___en_fetch(array(
+                    'en_id' => $insert_columns['tr_miner_entity_id'],
+                ));
+
+                //Email Subject:
+                $subject = 'Notification: '  . $miner_ens[0]['en_name'] . ' ' . $en_all_5966[$insert_columns['tr_type_entity_id']]['m_name'];
+
+                //Compose email body, start with transaction content:
+                $html_message = '<div>' . ( strlen($insert_columns['tr_content']) > 0 ? $this->Chat_model->fn___dispatch_message($insert_columns['tr_content']) : '<i>No transaction content</i>') . '</div><br />';
+
+                //Append transaction object links:
+                foreach ($this->config->item('tr_object_links') as $tr_field => $obj_type) {
+                   if (intval($insert_columns[$tr_field]) > 0) {
+                       //Include object link in body:
+                        $html_message .= '<div>' . ucwrods(str_replace('tr', 'Transaction', str_replace('en', 'Entity', str_replace('in', 'Intent', str_replace('_', ' ', str_replace('tr_', '', $tr_field)))))) . ': ' . fn___echo_tr_column($obj_type, $insert_columns[$tr_field], $tr_field) . '</div>';
+                   }
+                }
+
+                //Finally append transaction ID with link to ledger:
+                $html_message .= '<div>Ledger Transaction <a href="https://mench.com/ledger?any_tr_id=' . $insert_columns['tr_id'] . '" target="_blank">#' . $insert_columns['tr_id'] . '</a></div>';
+
+                //Send email:
+                $this->Chat_model->fn___dispatch_email($sub_emails, $sub_en_ids, $subject, $html_message);
+
+            }
+
         }
 
         //Return:
@@ -813,7 +832,7 @@ class Database_model extends CI_Model
 
         $valid_objects = array('en','in');
 
-        if (!$this->config->item('enable_algolia')) {
+        if (!$this->config->item('app_update_algolia')) {
             //Algolia is disabled, so avoid syncing:
             return array(
                 'status' => 0,
@@ -839,7 +858,7 @@ class Database_model extends CI_Model
 
         if (fn___is_dev()) {
             //Do a call on live as this does not work on local due to security limitations:
-            return json_decode(@file_get_contents($this->config->item('algolia_remote') . "/cron/fn___update_algolia/" . ( $input_obj_type ? $input_obj_type . '/' . $input_obj_id : '' )));
+            return json_decode(@file_get_contents("https://mench.co/cron/fn___update_algolia/" . ( $input_obj_type ? $input_obj_type . '/' . $input_obj_id : '' )));
         }
 
         //Load Algolia Index

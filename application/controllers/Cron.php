@@ -278,8 +278,8 @@ class Cron extends CI_Controller
 
             //DOes it have a rate?
             $rate_trs = $this->Database_model->fn___tr_fetch(array(
-                'tr_status >=' => 2, //Must be published+
-                'en_status >=' => 2, //Must be published+
+                'tr_status >=' => 2, //Published+
+                'en_status >=' => 2, //Published+
                 'tr_type_entity_id' => 4319, //Number
                 'tr_parent_entity_id' => 4374, //Mench Coins
                 'tr_child_entity_id' => $tr['tr_type_entity_id'],
@@ -591,13 +591,13 @@ class Cron extends CI_Controller
 
         $max_per_batch = 20; //Max number of syncs per cron run
         $success_count = 0; //Track success
-        $en_convert_4537 = $this->config->item('en_convert_4537'); //Supported Media Types
+        $fb_convert_4537 = $this->config->item('fb_convert_4537'); //Supported Media Types
         $tr_metadata = array();
 
 
         //Let's fetch all Media files without a Facebook attachment ID:
         $pending_urls = $this->Database_model->fn___tr_fetch(array(
-            'tr_type_entity_id IN (' . join(',',array_keys($en_convert_4537)) . ')' => null,
+            'tr_type_entity_id IN (' . join(',',array_keys($fb_convert_4537)) . ')' => null,
             'tr_metadata' => null, //Missing Facebook Attachment ID
         ), array(), $max_per_batch, 0 , array('tr_id' => 'ASC')); //Sort by oldest added first
 
@@ -606,7 +606,7 @@ class Cron extends CI_Controller
             $payload = array(
                 'message' => array(
                     'attachment' => array(
-                        'type' => $en_convert_4537[$tr['tr_type_entity_id']],
+                        'type' => $fb_convert_4537[$tr['tr_type_entity_id']],
                         'payload' => array(
                             'is_reusable' => true,
                             'url' => $tr['tr_content'], //The URL to the media file
