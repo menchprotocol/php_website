@@ -21,6 +21,53 @@ class Cron extends CI_Controller
     //30 4 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron fn___update_algolia u 0
     //30 3 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron e_score_recursive
 
+    function gephi(){
+        //Populates the nodes and edges table for Gephi https://gephi.org network visualizer:
+
+
+        //Load intent link types:
+        $en_all_4486 = $this->config->item('en_all_4486');
+
+        //Add intents:
+        foreach($this->Database_model->fn___in_fetch(array('in_status >=' => 0)) as $in){
+
+            //Prep metadata:
+            $in_metadata = ( strlen($in['in_metadata']) > 0 ? unserialize($in['in_metadata']) : array());
+
+            //Add nodes:
+            $this->db->insert('nodes', array(
+                'id' => $in['in_id'],
+                'label' => 'Intent: '.$in['in_outcome'],
+                'size' => ( isset($in_metadata['in__tree_max_seconds']) ? $in_metadata['in__tree_max_seconds'] : 0 ), //Max time
+            ));
+
+            //Fetch all intent children:
+            foreach($this->Database_model->fn___tr_fetch(array(
+                'tr_status >=' => 0, //New+
+                'in_status >=' => 0, //New+
+                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
+                'tr_parent_intent_id' => $in['in_id'],
+            ), array('in_child')) as $in_child){
+
+                //Count link up-votes for weight:
+                $tr_upvotes = $this->Database_model->fn___tr_fetch(array(
+                    'tr_parent_intent_id' => $in_child['tr_parent_intent_id'],
+                    'tr_child_intent_id' => $in_child['tr_child_intent_id'],
+                    'tr_type_entity_id' => 4983, //Up-votes
+                    'tr_status >=' => 0, //New+
+                ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
+
+                $this->db->insert('edges', array(
+                    'source' => $in_child['tr_parent_intent_id'],
+                    'target' => $in_child['tr_child_intent_id'],
+                    'label' => $en_all_4486[$in_child['tr_type_entity_id']]['m_name'], //TODO maybe give visibility to points/condition here?
+                    'weight' => ( count($tr_upvotes) > 0 ? $tr_upvotes[0]['totals'] : 0 ),
+                ));
+
+            }
+        }
+    }
+
     function clear_removed(){
 
         exit;
