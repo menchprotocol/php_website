@@ -60,7 +60,7 @@ class Cron extends CI_Controller
                 'in_status >=' => 0, //New+
                 'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
                 'tr_parent_intent_id' => $in['in_id'],
-            ), array('in_child')) as $in_child){
+            ), array('in_child'), 0, 0) as $in_child){
 
                 $this->db->insert('edges', array(
                     'source' => $in_child['tr_parent_intent_id'],
@@ -94,7 +94,7 @@ class Cron extends CI_Controller
                 'en_status >=' => 0, //New+
                 'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
                 'tr_parent_entity_id' => $en['en_id'],
-            ), array('en_child')) as $en_child){
+            ), array('en_child'), 0, 0) as $en_child){
 
                 $this->db->insert('edges', array(
                     'source' => $en_child['tr_parent_entity_id'],
