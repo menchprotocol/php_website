@@ -1101,7 +1101,6 @@ class Entities extends CI_Controller
         if($is_miner){
             $this->Database_model->fn___tr_create(array(
                 'tr_miner_entity_id' => $ens[0]['en_id'],
-                'tr_parent_entity_id' => $ens[0]['en_id'],
                 'tr_metadata' => $ens[0],
                 'tr_type_entity_id' => 4269, //Miner Matrix Login
                 'tr_order' => $session_data['miner_session_count'], //First Action
@@ -1109,7 +1108,6 @@ class Entities extends CI_Controller
         } else {
             $this->Database_model->fn___tr_create(array(
                 'tr_miner_entity_id' => $ens[0]['en_id'],
-                'tr_parent_entity_id' => $ens[0]['en_id'],
                 'tr_metadata' => $ens[0],
                 'tr_type_entity_id' => 4996, //Action Plan Web Login
             ));

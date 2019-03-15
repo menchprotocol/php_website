@@ -535,7 +535,7 @@ class Matrix_model extends CI_Model
                 'url_already_existed' => $url_already_existed,
                 'cleaned_url' => $url,
                 'tr_type_entity_id' => $tr_type_entity_id,
-                'page_title' => $page_title,
+                'page_title' => urldecode($page_title),
                 'en_domain' => $domain_entity['en_domain'],
                 'en_url' => $en_url,
             )
