@@ -113,7 +113,7 @@ class Cron extends CI_Controller
             'tr_status >=' => 0, //New+
             'in_status >=' => 0, //New+
             'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
-        ), array('in_child'));
+        ), array('in_child'), 0, 0);
         foreach($messages as $message) {
 
             //Add message node:
