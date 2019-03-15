@@ -21,6 +21,7 @@ function fn___validURL(str) {
     return !!pattern.test(str);
 }
 
+
 function fn___in_matrix_tips(in_id) {
 
     //See if this tip needs to be loaded:
@@ -296,38 +297,6 @@ $(document).ready(function () {
             },
             empty: function (data) {
                 return 'No intents found';
-            },
-        }
-
-    }]);
-
-    $(".en_quick_search").on('autocomplete:selected', function (event, suggestion, dataset) {
-
-        $(this).val('@'+suggestion.alg_obj_id+' '+suggestion.alg_obj_name);
-
-    }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
-
-        source: function (q, cb) {
-            algolia_index.search(q, {
-                filters: 'alg_obj_is_in=0',
-                hitsPerPage: 5,
-            }, function (error, content) {
-                if (error) {
-                    cb([]);
-                    return;
-                }
-                cb(content.hits, content);
-            });
-        },
-        displayKey: function (suggestion) {
-            return '@'+suggestion.alg_obj_id+' '+suggestion.alg_obj_name;
-        },
-        templates: {
-            suggestion: function (suggestion) {
-                return echo_js_suggestion(suggestion, 0);
-            },
-            empty: function (data) {
-                return 'No entities found';
             },
         }
 

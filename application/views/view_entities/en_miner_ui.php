@@ -99,37 +99,50 @@
         echo '</tr></table></div>';
 
 
-        echo '<form class="mass_modify indent2 hidden" method="POST" action="" style="width: 100% !important;">';
+        echo '<form class="mass_modify indent2 hidden" method="POST" action="" style="width: 100% !important;"><div class="inline-box">';
 
 
             $fixed_fields = $this->config->item('fixed_fields');
             $dropdown_options = '';
             $input_options = '';
-            foreach ($this->config->item('en_all_4997') as $mass_action_en_id => $mass_action_en) {
+            foreach ($this->config->item('en_all_4997') as $action_en_id => $mass_action_en) {
 
-                $dropdown_options .= '<option value="' . $mass_action_en_id . '">' .$mass_action_en['m_name'] . '</option>';
+                $dropdown_options .= '<option value="' . $action_en_id . '">' .$mass_action_en['m_name'] . '</option>';
 
 
                 //Start with the input wrapper:
-                $input_options .= '<span id="mass_id_'.$mass_action_en_id.'" class="inline-block hidden mass_action_item">';
+                $input_options .= '<span id="mass_id_'.$action_en_id.'" class="inline-block hidden mass_action_item">';
 
-                if(in_array($mass_action_en_id, array(5000, 5001))){
+                $input_options .= '<i class="fas fa-info-circle" data-toggle="tooltip" data-placement="right" title="'.$mass_action_en['m_desc'].'"></i> ';
+
+                if(in_array($action_en_id, array(5000, 5001))){
 
                     //String Find and Replace:
 
                     //Find:
-                    $input_options .= '<input type="text" name="mass_value1_'.$mass_action_en_id.'" placeholder="Search" style="width: 145px;" class="form-control border">';
+                    $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'" placeholder="Search" style="width: 145px;" class="form-control border">';
 
                     //Replace:
-                    $input_options .= '<input type="text" name="mass_value2_'.$mass_action_en_id.'" placeholder="Replace" style="width: 145px;" class="form-control border">';
+                    $input_options .= '<input type="text" name="mass_value2_'.$action_en_id.'" placeholder="Replace" style="width: 145px;" class="form-control border">';
 
 
-                } elseif($mass_action_en_id == 5003){
+                } elseif(in_array($action_en_id, array(5981, 5982))){
+
+                    //Entity search box:
+
+                    //String command:
+                    $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'" style="width:300px;" placeholder="Search entities..." class="form-control algolia_search en_quick_search border">';
+
+                    //We don't need the second value field here:
+                    $input_options .= '<input type="hidden" name="mass_value2_'.$action_en_id.'" value="" />';
+
+
+                } elseif($action_en_id == 5003){
 
                     //Entity Status update:
 
                     //Find:
-                    $input_options .= '<select name="mass_value1_'.$mass_action_en_id.'" class="form-control border">';
+                    $input_options .= '<select name="mass_value1_'.$action_en_id.'" class="form-control border">';
                     $input_options .= '<option value="">Set Condition...</option>';
                     $input_options .= '<option value="*">Update All Statuses</option>';
                     foreach($fixed_fields['en_status'] as $status_id => $status){
@@ -138,7 +151,7 @@
                     $input_options .= '</select>';
 
                     //Replace:
-                    $input_options .= '<select name="mass_value2_'.$mass_action_en_id.'" class="form-control border">';
+                    $input_options .= '<select name="mass_value2_'.$action_en_id.'" class="form-control border">';
                     $input_options .= '<option value="">Set New Status...</option>';
                     foreach($fixed_fields['en_status'] as $status_id => $status){
                         $input_options .= '<option value="'.$status_id.'">Set to '.$status['s_name'].'</option>';
@@ -146,12 +159,12 @@
                     $input_options .= '</select>';
 
 
-                } elseif($mass_action_en_id == 5865){
+                } elseif($action_en_id == 5865){
 
                     //Transaction Status update:
 
                     //Find:
-                    $input_options .= '<select name="mass_value1_'.$mass_action_en_id.'" class="form-control border">';
+                    $input_options .= '<select name="mass_value1_'.$action_en_id.'" class="form-control border">';
                     $input_options .= '<option value="">Set Condition...</option>';
                     $input_options .= '<option value="*">Update All Statuses</option>';
                     foreach($fixed_fields['tr_status'] as $status_id => $status){
@@ -160,7 +173,7 @@
                     $input_options .= '</select>';
 
                     //Replace:
-                    $input_options .= '<select name="mass_value2_'.$mass_action_en_id.'" class="form-control border">';
+                    $input_options .= '<select name="mass_value2_'.$action_en_id.'" class="form-control border">';
                     $input_options .= '<option value="">Set New Status...</option>';
                     foreach($fixed_fields['tr_status'] as $status_id => $status){
                         $input_options .= '<option value="'.$status_id.'">Set to '.$status['s_name'].'</option>';
@@ -171,10 +184,10 @@
                 } else {
 
                     //String command:
-                    $input_options .= '<input type="text" name="mass_value1_'.$mass_action_en_id.'" placeholder="String..." class="form-control border">';
+                    $input_options .= '<input type="text" name="mass_value1_'.$action_en_id.'" style="width:300px;" placeholder="String..." class="form-control border">';
 
                     //We don't need the second value field here:
-                    $input_options .= '<input type="hidden" name="mass_value2_'.$mass_action_en_id.'" value="" />';
+                    $input_options .= '<input type="hidden" name="mass_value2_'.$action_en_id.'" value="" />';
 
                 }
 
@@ -190,7 +203,7 @@
 
             echo '<input type="submit" value="Apply" class="btn btn-secondary inline-block">';
 
-        echo '</form>';
+        echo '</div></form>';
 
 
 
@@ -237,7 +250,32 @@
                         </div>
                         <div class="inline-box" style="margin-bottom: 15px;">
 
-                            <span class="mini-header">Entity Name: [<span style="margin:0 0 10px 0;">
+                            <!-- Entity Status -->
+                            <span class="mini-header">Entity Status:</span>
+                            <select class="form-control border" id="en_status" data-toggle="tooltip" title="Entity Status" data-placement="top">
+                                <?php
+                                foreach (fn___echo_fixed_fields('en_status') as $status_id => $status) {
+                                    echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
+                                }
+                                ?>
+                            </select>
+                            <div class="notify_en_remove hidden">
+
+                                <input type="hidden" id="en_link_count" value="0" />
+
+                                <span class="mini-header"><span class="tr_in_link_title"></span> Merge Entity Into:</span>
+                                <input style="padding-left:3px;" type="text" class="form-control algolia_search border en_quick_search" id="en_merge" value="" placeholder="Search entity to merge..." />
+
+                                <div class="alert alert-danger" style="margin:5px 0px; padding:7px;">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    Saving will remove entity and remove <span class="entity_remove_stats" style="display:inline-block; padding: 0;"></span> parent/child links.
+                                </div>
+
+                            </div>
+
+
+                            <!-- Entity Name -->
+                            <span class="mini-header" style="margin-top:20px;">Entity Name: [<span style="margin:0 0 10px 0;">
                             <span id="charNameNum">0</span>/<?= $this->config->item('en_name_max_length') ?>
                         </span>]</span>
                             <span class="white-wrapper">
@@ -258,32 +296,6 @@
                                            maxlength="<?= $this->config->item('en_name_max_length') ?>" data-lpignore="true" placeholder=""
                                            class="form-control">
                                 </div>
-                            </div>
-
-                            <!-- Entity Status -->
-                            <span class="mini-header">Entity Status:</span>
-                            <select class="form-control border" id="en_status" data-toggle="tooltip" title="Entity Status" data-placement="top">
-                                <?php
-                                foreach (fn___echo_fixed_fields('en_status') as $status_id => $status) {
-                                    echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
-                                }
-                                ?>
-                            </select>
-
-
-
-                            <div class="notify_en_remove hidden">
-
-                                <div class="alert alert-danger" style="margin:5px 0px; padding:7px;">
-                                    <i class="fas fa-exclamation-triangle"></i>
-                                    Saving will remove entity and remove <span class="entity_remove_stats" style="display:inline-block; padding: 0;"></span> parent/child links.
-                                </div>
-
-                                <input type="hidden" id="en_link_count" value="0" />
-
-                                <span class="mini-header"><span class="tr_in_link_title"></span> Merge Entity Into:</span>
-                                <input style="padding-left:3px;" type="text" class="form-control algolia_search border en_quick_search" id="en_merge" value="" placeholder="Search entity to merge..." />
-
                             </div>
 
                         </div>

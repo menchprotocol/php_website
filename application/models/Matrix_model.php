@@ -574,7 +574,16 @@ class Matrix_model extends CI_Model
                 'message' => 'Invalid icon: '. is_valid_icon(null, true),
             );
 
+        } elseif(in_array($action_en_id, array(5981, 5982)) && !(substr($action_command1, 0, 1) == '@' && is_numeric(fn___one_two_explode('@',' ',$action_command1)))){
+
+            return array(
+                'status' => 0,
+                'message' => 'Unknown searched entity. Format must be: @123 Entity Name',
+            );
+
         }
+
+
 
         //Basic input validation done, let's continue...
 
@@ -610,6 +619,46 @@ class Matrix_model extends CI_Model
                 ), true, $tr_miner_entity_id);
 
                 $applied_success++;
+
+            } elseif (in_array($action_en_id, array(5981, 5982))) { //Add/Remove parent entity
+
+                //What miner searched for:
+                $parent_en_id = intval(fn___one_two_explode('@',' ',$action_command1));
+
+                //See if child entity has searched parent entity:
+                $child_parent_ens = $this->Database_model->fn___tr_fetch(array(
+                    'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                    'tr_child_entity_id' => $en['en_id'], //This child entity
+                    'tr_parent_entity_id' => $parent_en_id,
+                    'tr_status >=' => 0, //New+
+                ));
+
+                if($action_en_id==5981 && count($child_parent_ens)==0){ //Parent Entity Addition
+
+                    //Does not exist, need to be added as parent:
+                    $this->Database_model->fn___tr_create(array(
+                        'tr_status' => 2,
+                        'tr_miner_entity_id' => $tr_miner_entity_id,
+                        'tr_type_entity_id' => 4230, //Raw
+                        'tr_child_entity_id' => $en['en_id'], //This child entity
+                        'tr_parent_entity_id' => $parent_en_id,
+                    ));
+
+                    $applied_success++;
+
+                } elseif($action_en_id==5982 && count($child_parent_ens) > 0){ //Parent Entity Removal
+
+                    //Already added as parent so it needs to be removed:
+                    foreach($child_parent_ens as $remove_tr){
+
+                        $this->Database_model->fn___tr_update($remove_tr['tr_id'], array(
+                            'tr_status' => -1, //Removed
+                        ), $tr_miner_entity_id);
+
+                        $applied_success++;
+                    }
+
+                }
 
             } elseif ($action_en_id == 5943) { //Entity Mass Update Entity Icon
 
@@ -673,7 +722,7 @@ class Matrix_model extends CI_Model
         //Return results:
         return array(
             'status' => 1,
-            'message' => $applied_success . '/' . count($children) . ' child entities updated',
+            'message' => $applied_success . '/' . count($children) . ' entities updated',
         );
 
     }

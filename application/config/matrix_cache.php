@@ -12,7 +12,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-03-14 02:52:33 PST
+//Generated 2019-03-14 21:37:36 PST
+
+//System Modification Lock:
+$config['en_ids_5969'] = array(3286);
+$config['en_all_5969'] = array(
+    3286 => array(
+        'm_icon' => '<i class="fal fa-key"></i>',
+        'm_name' => 'Matrix Password',
+        'm_desc' => 'Managed through the Forgot Password section in the Login page',
+        'm_parents' => array(5969, 4755, 4255, 3285),
+    ),
+);
 
 //Transaction Type Email Subscription:
 $config['en_ids_5966'] = array(4246, 4269);
@@ -68,7 +79,7 @@ $config['en_all_4255'] = array(
         'm_icon' => '<i class="fal fa-key"></i>',
         'm_name' => 'Matrix Password',
         'm_desc' => 'Enter SHA256 encoded password string combined with our SALT variables',
-        'm_parents' => array(4755, 4255, 4426, 3285),
+        'm_parents' => array(5969, 4755, 4255, 3285),
     ),
     4601 => array(
         'm_icon' => '<i class="fal fa-tags"></i>',
@@ -150,48 +161,60 @@ $config['en_all_5005'] = array(
 );
 
 //Entity Mass Updates:
-$config['en_ids_4997'] = array(4998, 4999, 5000, 5001, 5003, 5865, 5943);
+$config['en_ids_4997'] = array(4998, 4999, 5000, 5001, 5003, 5865, 5943, 5981, 5982);
 $config['en_all_4997'] = array(
     4998 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Name Prefix',
-        'm_desc' => '',
+        'm_name' => 'Entity Name Prefix',
+        'm_desc' => 'Adds string to the beginning of all child entities. Make sure to include a space for it to look good',
         'm_parents' => array(4594, 4997),
     ),
     4999 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Name Postfix',
-        'm_desc' => '',
+        'm_name' => 'Entity Name Postfix',
+        'm_desc' => 'Adds string to the end of all child entities',
         'm_parents' => array(4594, 4997),
     ),
     5000 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Name Replace',
-        'm_desc' => '',
+        'm_name' => 'Entity Name Replace',
+        'm_desc' => 'Search for occurance of string in child entity names and if found, updates it with a replacement string',
         'm_parents' => array(4594, 4997),
     ),
     5001 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Transaction Content',
-        'm_desc' => '',
+        'm_name' => 'Transaction Content Replace',
+        'm_desc' => 'Search for occurance of string in child entity transaction contents and if found, updates it with a replacement string',
         'm_parents' => array(4594, 4997),
     ),
     5003 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Status',
-        'm_desc' => '',
+        'm_name' => 'Entity Status Replace',
+        'm_desc' => 'Updates all child entity statuses that match the initial entity status condition',
         'm_parents' => array(4594, 4997),
     ),
     5865 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Transaction Status',
-        'm_desc' => '',
+        'm_name' => 'Transaction Status Replace',
+        'm_desc' => 'Updates all child entity transaction statuses that match the initial transaction status condition',
         'm_parents' => array(4594, 4997),
     ),
     5943 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Icon',
-        'm_desc' => '',
+        'm_name' => 'Entity Icon Update',
+        'm_desc' => 'Updates all child entity icons with string which needs to be a valid icon',
+        'm_parents' => array(4594, 4997),
+    ),
+    5981 => array(
+        'm_icon' => '<i class="fal fa-list-alt"></i>',
+        'm_name' => 'Parent Entity Addition',
+        'm_desc' => 'If not already done so, will add searched entity as the parent of all child entities',
+        'm_parents' => array(4594, 4997),
+    ),
+    5982 => array(
+        'm_icon' => '<i class="fal fa-list-alt"></i>',
+        'm_name' => 'Parent Entity Removal',
+        'm_desc' => 'If already added as the parent, this will remove searched entity as the parent of all child entities',
         'm_parents' => array(4594, 4997),
     ),
 );
@@ -334,7 +357,7 @@ $config['en_all_4990'] = array(
 );
 
 //Only Moderators can Modify:
-$config['en_ids_4426'] = array(1280, 1308, 3286, 3288, 4374, 4426, 4430, 4433, 4755, 4997);
+$config['en_ids_4426'] = array(1280, 1308, 3288, 4374, 4426, 4430, 4433, 4755, 4997, 5969);
 $config['en_all_4426'] = array(
     1280 => array(
         'm_icon' => '🤝',
@@ -347,12 +370,6 @@ $config['en_all_4426'] = array(
         'm_name' => 'Trained Miners',
         'm_desc' => 'Requires admin review and approval',
         'm_parents' => array(4463, 4432, 4426),
-    ),
-    3286 => array(
-        'm_icon' => '<i class="fal fa-key"></i>',
-        'm_name' => 'Matrix Password',
-        'm_desc' => 'Managed through the Forgot Password section in the Login page',
-        'm_parents' => array(4755, 4255, 4426, 3285),
     ),
     3288 => array(
         'm_icon' => '<i class="fal fa-envelope"></i>',
@@ -369,7 +386,7 @@ $config['en_all_4426'] = array(
     4426 => array(
         'm_icon' => '<i class="fas fa-lock"></i>',
         'm_name' => 'Only Moderators can Modify',
-        'm_desc' => 'First time i\'m seeing a full wrap!',
+        'm_desc' => '',
         'm_parents' => array(4426, 4527, 4757, 4428),
     ),
     4430 => array(
@@ -396,16 +413,22 @@ $config['en_all_4426'] = array(
         'm_desc' => '',
         'm_parents' => array(4506, 4426, 5005, 4527, 4992),
     ),
+    5969 => array(
+        'm_icon' => '<i class="fas fa-lock"></i>',
+        'm_name' => 'System Modification Lock',
+        'm_desc' => '',
+        'm_parents' => array(4426, 4527, 4757, 4428),
+    ),
 );
 
 //Only Moderators can View:
-$config['en_ids_4755'] = array(3286, 3288, 4248, 4275, 4547, 4548, 4549, 4550, 4551, 4557, 4567, 4568, 4783);
+$config['en_ids_4755'] = array(3286, 3288, 4248, 4275, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4567, 4568, 4570, 4783, 5967);
 $config['en_all_4755'] = array(
     3286 => array(
         'm_icon' => '<i class="fal fa-key"></i>',
         'm_name' => 'Matrix Password',
         'm_desc' => '',
-        'm_parents' => array(4755, 4255, 4426, 3285),
+        'm_parents' => array(5969, 4755, 4255, 3285),
     ),
     3288 => array(
         'm_icon' => '<i class="fal fa-envelope"></i>',
@@ -424,6 +447,12 @@ $config['en_all_4755'] = array(
         'm_name' => 'Searched Action Plan Intent',
         'm_desc' => '',
         'm_parents' => array(4755, 4594, 4560),
+    ),
+    4460 => array(
+        'm_icon' => '<i class="fal fa-ballot-check"></i>',
+        'm_name' => 'Sent Quick Reply Message',
+        'm_desc' => '',
+        'm_parents' => array(4755, 4594, 4428, 4374, 4277),
     ),
     4547 => array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
@@ -455,6 +484,36 @@ $config['en_all_4755'] = array(
         'm_desc' => '',
         'm_parents' => array(4755, 4594, 4277),
     ),
+    4552 => array(
+        'm_icon' => '<i class="fal fa-align-left"></i>',
+        'm_name' => 'Received Text Message',
+        'm_desc' => '',
+        'm_parents' => array(4755, 4594, 4280),
+    ),
+    4553 => array(
+        'm_icon' => '<i class="fal fa-video"></i>',
+        'm_name' => 'Received Video Message',
+        'm_desc' => '',
+        'm_parents' => array(4755, 4594, 4280),
+    ),
+    4554 => array(
+        'm_icon' => '<i class="fal fa-volume-up"></i>',
+        'm_name' => 'Received Audio Message',
+        'm_desc' => '',
+        'm_parents' => array(4755, 4594, 4280),
+    ),
+    4555 => array(
+        'm_icon' => '<i class="fal fa-image"></i>',
+        'm_name' => 'Received Image Message',
+        'm_desc' => '',
+        'm_parents' => array(4755, 4594, 4280),
+    ),
+    4556 => array(
+        'm_icon' => '<i class="fal fa-file-pdf"></i>',
+        'm_name' => 'Received File Message',
+        'm_desc' => '',
+        'm_parents' => array(4755, 4594, 4280),
+    ),
     4557 => array(
         'm_icon' => '<i class="fal fa-location-circle"></i>',
         'm_name' => 'Sent Location Message',
@@ -473,11 +532,23 @@ $config['en_all_4755'] = array(
         'm_desc' => '',
         'm_parents' => array(4755, 4594, 4560),
     ),
+    4570 => array(
+        'm_icon' => '<i class="fab fa-html5"></i>',
+        'm_name' => 'Received HTML Message',
+        'm_desc' => '',
+        'm_parents' => array(4755, 4594, 4280),
+    ),
     4783 => array(
         'm_icon' => '<i class="fal fa-phone"></i>',
         'm_name' => 'Phone Number',
         'm_desc' => '',
         'm_parents' => array(4755, 4319, 3285),
+    ),
+    5967 => array(
+        'm_icon' => '<i class="fal fa-envelope-open"></i>',
+        'm_name' => 'Received Email Message',
+        'm_desc' => '',
+        'm_parents' => array(4755, 4594, 4280),
     ),
 );
 
@@ -626,7 +697,7 @@ $config['en_all_4374'] = array(
         'm_icon' => '<i class="fal fa-ballot-check"></i>',
         'm_name' => 'Sent Quick Reply Message',
         'm_desc' => '3',
-        'm_parents' => array(4594, 4428, 4374, 4277),
+        'm_parents' => array(4755, 4594, 4428, 4374, 4277),
     ),
     4601 => array(
         'm_icon' => '<i class="fal fa-tags"></i>',
@@ -666,7 +737,7 @@ $config['en_all_4600'] = array(
 );
 
 //Transaction Type Full List:
-$config['en_ids_4594'] = array(4228, 4229, 4230, 4231, 4232, 4233, 4234, 4235, 4242, 4246, 4248, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4265, 4266, 4267, 4268, 4269, 4272, 4275, 4278, 4279, 4282, 4283, 4284, 4287, 4299, 4318, 4319, 4452, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4567, 4568, 4570, 4577, 4601, 4602, 4983, 4993, 4994, 4996, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943, 5967);
+$config['en_ids_4594'] = array(4228, 4229, 4230, 4231, 4232, 4233, 4234, 4235, 4242, 4246, 4248, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4265, 4266, 4267, 4268, 4269, 4272, 4275, 4278, 4279, 4282, 4283, 4284, 4287, 4299, 4318, 4319, 4452, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4567, 4568, 4570, 4577, 4601, 4602, 4983, 4993, 4994, 4996, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943, 5967, 5981, 5982);
 $config['en_all_4594'] = array(
     4228 => array(
         'm_icon' => '<i class="fal fa-check-circle"></i>',
@@ -906,7 +977,7 @@ $config['en_all_4594'] = array(
         'm_icon' => '<i class="fal fa-ballot-check"></i>',
         'm_name' => 'Sent Quick Reply Message',
         'm_desc' => '',
-        'm_parents' => array(4594, 4428, 4374, 4277),
+        'm_parents' => array(4755, 4594, 4428, 4374, 4277),
     ),
     4547 => array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
@@ -942,31 +1013,31 @@ $config['en_all_4594'] = array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
         'm_name' => 'Received Text Message',
         'm_desc' => '',
-        'm_parents' => array(4594, 4280),
+        'm_parents' => array(4755, 4594, 4280),
     ),
     4553 => array(
         'm_icon' => '<i class="fal fa-video"></i>',
         'm_name' => 'Received Video Message',
         'm_desc' => '',
-        'm_parents' => array(4594, 4280),
+        'm_parents' => array(4755, 4594, 4280),
     ),
     4554 => array(
         'm_icon' => '<i class="fal fa-volume-up"></i>',
         'm_name' => 'Received Audio Message',
         'm_desc' => '',
-        'm_parents' => array(4594, 4280),
+        'm_parents' => array(4755, 4594, 4280),
     ),
     4555 => array(
         'm_icon' => '<i class="fal fa-image"></i>',
         'm_name' => 'Received Image Message',
         'm_desc' => '',
-        'm_parents' => array(4594, 4280),
+        'm_parents' => array(4755, 4594, 4280),
     ),
     4556 => array(
         'm_icon' => '<i class="fal fa-file-pdf"></i>',
         'm_name' => 'Received File Message',
         'm_desc' => '',
-        'm_parents' => array(4594, 4280),
+        'm_parents' => array(4755, 4594, 4280),
     ),
     4557 => array(
         'm_icon' => '<i class="fal fa-location-circle"></i>',
@@ -996,7 +1067,7 @@ $config['en_all_4594'] = array(
         'm_icon' => '<i class="fab fa-html5"></i>',
         'm_name' => 'Received HTML Message',
         'm_desc' => '',
-        'm_parents' => array(4594, 4280),
+        'm_parents' => array(4755, 4594, 4280),
     ),
     4577 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
@@ -1060,13 +1131,13 @@ $config['en_all_4594'] = array(
     ),
     5001 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Updated Mass Entity Transaction Content',
+        'm_name' => 'Updated Mass Transaction Content Replace',
         'm_desc' => '',
         'm_parents' => array(4594, 4997),
     ),
     5003 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Updated Mass Entity Status',
+        'm_name' => 'Updated Mass Entity Status Replace',
         'm_desc' => '',
         'm_parents' => array(4594, 4997),
     ),
@@ -1078,13 +1149,13 @@ $config['en_all_4594'] = array(
     ),
     5865 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Updated Mass Entity Transaction Status',
+        'm_name' => 'Updated Mass Transaction Status Replace',
         'm_desc' => '',
         'm_parents' => array(4594, 4997),
     ),
     5943 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Updated Mass Entity Icon',
+        'm_name' => 'Updated Mass Entity Icon Update',
         'm_desc' => '',
         'm_parents' => array(4594, 4997),
     ),
@@ -1092,7 +1163,19 @@ $config['en_all_4594'] = array(
         'm_icon' => '<i class="fal fa-envelope-open"></i>',
         'm_name' => 'Received Email Message',
         'm_desc' => '',
-        'm_parents' => array(4594, 4280),
+        'm_parents' => array(4755, 4594, 4280),
+    ),
+    5981 => array(
+        'm_icon' => '<i class="fal fa-list-alt"></i>',
+        'm_name' => 'Updated Mass Parent Entity Addition',
+        'm_desc' => '',
+        'm_parents' => array(4594, 4997),
+    ),
+    5982 => array(
+        'm_icon' => '<i class="fal fa-list-alt"></i>',
+        'm_name' => 'Updated Mass Parent Entity Removal',
+        'm_desc' => '',
+        'm_parents' => array(4594, 4997),
     ),
 );
 

@@ -64,6 +64,40 @@ function mass_action_ui(){
 
 $(document).ready(function () {
 
+    //Load entity search for mass update function:
+    $('.en_quick_search').on('autocomplete:selected', function (event, suggestion, dataset) {
+
+        $(this).val('@' + suggestion.alg_obj_id + ' ' + suggestion.alg_obj_name);
+
+    }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
+
+        source: function (q, cb) {
+            algolia_index.search(q, {
+                filters: 'alg_obj_is_in=0', //Search entities
+                hitsPerPage: 5,
+            }, function (error, content) {
+                if (error) {
+                    cb([]);
+                    return;
+                }
+                cb(content.hits, content);
+            });
+        },
+        displayKey: function (suggestion) {
+            return '@' + suggestion.alg_obj_id + ' ' + suggestion.alg_obj_name;
+        },
+        templates: {
+            suggestion: function (suggestion) {
+                return echo_js_suggestion(suggestion, 0);
+            },
+            empty: function (data) {
+                return '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> No entities found</div>';
+            },
+        }
+    }]);
+
+
+
     //Lookout for intent link related changes:
     $('#tr_status').change(function () {
         if (parseInt($('#tr_status').find(":selected").val()) < 0) {

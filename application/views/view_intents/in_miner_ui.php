@@ -159,7 +159,35 @@ if (isset($orphan_ins)) {
 
                         <div class="inline-box" style="margin-bottom: 15px;">
 
-                            <span class="mini-header">Outcome: [<span
+
+                            <span class="mini-header">Intent Status:</span>
+                            <select class="form-control border" id="in_status" original-status="" data-toggle="tooltip" title="Intent Status" data-placement="top" style="display: inline-block !important;">
+                                <?php
+                                foreach (fn___echo_fixed_fields('in_status') as $status_id => $status) {
+                                    echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
+                                }
+                                ?>
+                            </select>
+                            <span class="checkbox apply-recursive inline-block hidden">
+                                <label style="display:inline-block !important; font-size: 0.9em !important; margin-left:5px;">
+                                    <input type="checkbox" id="apply_recursively"/>
+                                    <span class="underdot" data-toggle="tooltip" data-placement="top"
+                                          title="If chcecked will also apply the new status recursively down (children, grandchildren, etc...) that have the same original status">Recursive
+                                    </span>
+                                </label>
+                            </span>
+
+                            <div class="notify_in_remove hidden">
+                                <div class="alert alert-danger" style="margin:5px 0px; padding:7px;">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    Saving will remove intent and unlink all parents and children
+                                </div>
+                            </div>
+
+
+
+
+                            <span class="mini-header" style="margin-top: 20px;">Outcome: [<span
                                         style="margin:0 0 10px 0;"><span
                                             id="charNameNum">0</span>/<?= $this->config->item('in_outcome_max') ?></span>][<a href="/entities/5008" data-toggle="tooltip" title="See (and manage) list of supporting verbs that intent outcomes can start with" data-placement="right" target="_blank"><b>Verbs</b></a>]</span>
                             <div class="form-group label-floating is-empty" style="height: 40px !important;">
@@ -168,7 +196,7 @@ if (isset($orphan_ins)) {
 
 
 
-                            <span class="mini-header">Intent Type:</span>
+                            <span class="mini-header" style="margin-top: 20px;">Intent Type:</span>
                             <div class="form-group label-floating is-empty" style="margin-bottom: 0; padding-bottom: 0; display:block !important;">
                                 <?php
                                 foreach (fn___echo_fixed_fields('in_type') as $in_val => $intent_type) {
@@ -222,32 +250,6 @@ if (isset($orphan_ins)) {
                                            id="in_dollar_cost" value="" class="form-control">
                                     <span class="input-group-addon addon-lean addon-grey"
                                           style="color:#2f2739; font-weight: 300;">USD</span>
-                                </div>
-                            </div>
-
-
-
-                            <span class="mini-header">Intent Status:</span>
-                            <select class="form-control border" id="in_status" original-status="" data-toggle="tooltip" title="Intent Status" data-placement="top" style="display: inline-block !important;">
-                                <?php
-                                foreach (fn___echo_fixed_fields('in_status') as $status_id => $status) {
-                                    echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
-                                }
-                                ?>
-                            </select>
-                            <span class="checkbox apply-recursive inline-block hidden">
-                                <label style="display:inline-block !important; font-size: 0.9em !important; margin-left:5px;">
-                                    <input type="checkbox" id="apply_recursively"/>
-                                    <span class="underdot" data-toggle="tooltip" data-placement="top"
-                                          title="If chcecked will also apply the new status recursively down (children, grandchildren, etc...) that have the same original status">Recursive
-                                    </span>
-                                </label>
-                            </span>
-
-                            <div class="notify_in_remove hidden">
-                                <div class="alert alert-danger" style="margin:5px 0px; padding:7px;">
-                                    <i class="fas fa-exclamation-triangle"></i>
-                                    Saving will remove intent and unlink all parents and children
                                 </div>
                             </div>
 
