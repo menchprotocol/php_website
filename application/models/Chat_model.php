@@ -1544,7 +1544,7 @@ class Chat_model extends CI_Model
             $payload = array();
         }
 
-        $graph_url = 'https://graph.facebook.com/v2.6' . $graph_url;
+        $graph_url = 'https://graph.facebook.com/' . $fb_settings['default_graph_version'] . $graph_url;
         $counter = 0;
         foreach ($access_token_payload as $key => $val) {
             $graph_url = $graph_url . ($counter == 0 ? '?' : '&') . $key . '=' . $val;

@@ -41,11 +41,7 @@ class Messenger extends CI_Controller
 
         //Do some basic checks:
         if (!isset($json_data['object']) || !isset($json_data['entry'])) {
-            $this->Database_model->fn___tr_create(array(
-                'tr_content' => 'facebook_webhook() Function missing either [object] or [entry] variable.',
-                'tr_metadata' => $json_data,
-                'tr_type_entity_id' => 4246, //Platform Error
-            ));
+            //Likely loaded the URL in browser:
             return false;
         } elseif (!$json_data['object'] == 'page') {
             $this->Database_model->fn___tr_create(array(
@@ -97,7 +93,6 @@ class Messenger extends CI_Controller
                             'tr_metadata' => $json_data,
                             'tr_type_entity_id' => $tr_type_entity_id,
                             'tr_miner_entity_id' => $en['en_id'],
-                            'tr_parent_entity_id' => $en['en_id'],
                             'tr_timestamp' => fn___echo_time_milliseconds($im['timestamp']), //The Facebook time
                         ));
                     }
@@ -155,7 +150,6 @@ class Messenger extends CI_Controller
                         'tr_metadata' => $json_data,
                         'tr_content' => $quick_reply_payload,
                         'tr_miner_entity_id' => $en['en_id'],
-                        'tr_parent_entity_id' => $en['en_id'],
                         'tr_timestamp' => fn___echo_time_milliseconds($im['timestamp']), //The Facebook time
                     ));
 
@@ -197,7 +191,6 @@ class Messenger extends CI_Controller
                         'tr_metadata' => $json_data,
                         'tr_type_entity_id' => 4266, //Messenger Optin
                         'tr_miner_entity_id' => $en['en_id'],
-                        'tr_parent_entity_id' => $en['en_id'],
                         'tr_timestamp' => fn___echo_time_milliseconds($im['timestamp']), //The Facebook time
                     ));
 
@@ -211,7 +204,6 @@ class Messenger extends CI_Controller
                         'tr_metadata' => $json_data,
                         'tr_type_entity_id' => 4577, //Message Request Accepted
                         'tr_miner_entity_id' => $en['en_id'],
-                        'tr_parent_entity_id' => $en['en_id'],
                         'tr_timestamp' => fn___echo_time_milliseconds($im['timestamp']), //The Facebook time
                     ));
 
@@ -237,12 +229,9 @@ class Messenger extends CI_Controller
                     unset($tr_data); //Reset everything in case its set from the previous loop!
                     $sent_by_mench = (isset($im['message']['is_echo'])); //Indicates the message sent from the page itself
                     $en = $this->Matrix_model->fn___en_student_messenger_authenticate(($sent_by_mench ? $im['recipient']['id'] : $im['sender']['id']));
-                    $tr_parent_entity_id = ($sent_by_mench ? 4148 /* Mench Admins via Facebook Inbox UI */ : $en['en_id']);
-                    
+
                     $tr_data = array(
-                        'tr_miner_entity_id' => $tr_parent_entity_id,
-                        'tr_parent_entity_id' => $tr_parent_entity_id,
-                        'tr_child_entity_id' => ($sent_by_mench ? $en['en_id'] : 0),
+                        'tr_miner_entity_id' => $en['en_id'],
                         'tr_timestamp' => ($sent_by_mench ? null : fn___echo_time_milliseconds($im['timestamp']) ), //Facebook time if received from Student
                         'tr_metadata' => $json_data, //Entire JSON object received by Facebook API
                     );
@@ -283,8 +272,7 @@ class Messenger extends CI_Controller
 
                         } else {
 
-                            //Text Message Received:
-                            $tr_data['tr_type_entity_id'] = 4547;
+                            $tr_data['tr_type_entity_id'] = 4547; //Text Message Received
 
                             //Digest message & try to make sense of it:
                             $this->Chat_model->fn___digest_received_message($en, $im['message']['text']);

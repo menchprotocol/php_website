@@ -9,7 +9,7 @@ $fb_settings = $this->config->item('fb_settings');
             appId: '<?= $fb_settings['app_id'] ?>',
             autoLogAppEvents: true,
             xfbml: true,
-            version: 'v3.2' //Updated 2018-11-11
+            version: 'v3.2' //Updated 2019-03-14
         });
     };
 
