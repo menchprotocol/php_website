@@ -49,7 +49,7 @@ class Cron extends CI_Controller
                 'id' => $in['in_id'],
                 'label' => $in['in_outcome'],
                 //'size' => ( isset($in_metadata['in__tree_max_seconds']) ? round(($in_metadata['in__tree_max_seconds']/3600),0) : 0 ), //Max time
-                'size' => 5, //TODO maybe update later?
+                'size' => 1, //TODO maybe update later?
                 'node_type' => 1, //Intent
                 'node_status' => $in['in_status'],
             ));
@@ -83,7 +83,7 @@ class Cron extends CI_Controller
             $this->db->insert('nodes', array(
                 'id' => $en['en_id'],
                 'label' => $en['en_name'],
-                'size' => 2, //TODO maybe update later?
+                'size' => 1, //TODO maybe update later?
                 'node_type' => 2, //Entity
                 'node_status' => $en['en_status'],
             ));
