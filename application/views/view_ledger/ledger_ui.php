@@ -192,13 +192,13 @@ if(!$has_filters){
 
 
 
-//Count coins per Transaction
+    //Count coins per Transaction
     echo '<div class="col-md-4">';
 
-//Count variables:
+    //Count variables:
     $all_engs = $this->Database_model->fn___tr_fetch(array(
         'tr_coins !=' => 0,
-    ), array('en_type'), 0, 0, array('en_name' => 'DESC'), 'COUNT(tr_type_entity_id) as trs_count, SUM(tr_coins) as coins_sum, en_name, en_icon, tr_type_entity_id', 'tr_type_entity_id, en_name, en_icon');
+    ), array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(tr_type_entity_id) as trs_count, SUM(tr_coins) as coins_sum, en_name, en_icon, tr_type_entity_id', 'tr_type_entity_id, en_name, en_icon');
 
     $all_transaction_count = 0;
     $all_coin_payouts = 0;
@@ -540,7 +540,7 @@ foreach($filters as $key => $value){
         $ini_filter[$key] = $value;
     }
 }
-$all_engs = $this->Database_model->fn___tr_fetch($ini_filter, array('en_type'), 0, 0, array('en_name' => 'DESC'), 'COUNT(tr_type_entity_id) as trs_count, SUM(tr_coins) as coins_sum, en_name, tr_type_entity_id', 'tr_type_entity_id, en_name');
+$all_engs = $this->Database_model->fn___tr_fetch($ini_filter, array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(tr_type_entity_id) as trs_count, SUM(tr_coins) as coins_sum, en_name, tr_type_entity_id', 'tr_type_entity_id, en_name');
 
 
 

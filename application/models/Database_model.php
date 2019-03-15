@@ -854,7 +854,7 @@ class Database_model extends CI_Model
     }
 
 
-    function fn___update_algolia($input_obj_type = null, $input_obj_id = 0)
+    function fn___update_algolia($input_obj_type = null, $input_obj_id = 0, $return_row_only = false)
     {
 
         /*
@@ -889,13 +889,16 @@ class Database_model extends CI_Model
         $limits = array();
 
 
-        if (fn___is_dev()) {
-            //Do a call on live as this does not work on local due to security limitations:
-            return json_decode(@file_get_contents("https://mench.com/cron/fn___update_algolia/" . ( $input_obj_type ? $input_obj_type . '/' . $input_obj_id : '' )));
-        }
+        if (!$return_row_only) {
 
-        //Load Algolia Index
-        $search_index = fn___load_php_algolia('alg_index');
+            if(fn___is_dev()){
+                //Do a call on live as this does not work on local due to security limitations:
+                return json_decode(@file_get_contents("https://mench.com/cron/fn___update_algolia/" . ( $input_obj_type ? $input_obj_type . '/' . $input_obj_id : '' )));
+            }
+
+            //Load Algolia Index
+            $search_index = fn___load_php_algolia('alg_index');
+        }
 
 
         //Which objects are we fetching?
@@ -909,12 +912,13 @@ class Database_model extends CI_Model
             //Do both intents and entities:
             $fetch_objects = $valid_objects;
 
-            //We need to update the entire index, so let's truncate it first:
-            $search_index->clearIndex();
+            if (!$return_row_only) {
+                //We need to update the entire index, so let's truncate it first:
+                $search_index->clearIndex();
 
-            //Boost processing power:
-            fn___boost_power();
-
+                //Boost processing power:
+                fn___boost_power();
+            }
         }
 
 
@@ -1047,10 +1051,20 @@ class Database_model extends CI_Model
         }
 
         //Did we find anything?
-        if(count($all_db_rows) < 1){
-            return false;
-        }
+        if(count($all_export_rows) < 1){
 
+            return false;
+
+        } elseif($return_row_only){
+
+            if($input_obj_id > 0){
+                //We  have a specific item we're looking for...
+                return $all_export_rows[0];
+            } else {
+                return $all_export_rows;
+            }
+
+        }
 
         //Now let's see what to do with the index (Update, Create or delete)
         if ($input_obj_type) {

@@ -12,6 +12,10 @@ class Cron extends CI_Controller
     }
 
 
+    function ss(){
+        echo htmlentities(file_get_contents('https://www.codementor.io/blog/angularjs-interview-questions-answers-du1081n7p'));
+    }
+
     //Cache of cron jobs as of now [keep in sync when updating cron file]
     //* * * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron fn___facebook_attachment_sync
     //*/5 * * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron message_drip

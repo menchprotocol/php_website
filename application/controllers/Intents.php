@@ -514,6 +514,7 @@ class Intents extends CI_Controller
                     //Check to make sure it's not a duplicate outcome:
                     $duplicate_outcome_ins = $this->Database_model->fn___in_fetch(array(
                         'in_id !=' => $ins[0]['in_id'],
+                        'in_status >=' => 0, //New+
                         'LOWER(in_outcome)' => strtolower($value),
                     ));
 

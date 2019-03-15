@@ -544,6 +544,7 @@ class Entities extends CI_Controller
         //Check to make sure name is not duplicate:
         $duplicate_name_ens = $this->Database_model->fn___en_fetch(array(
             'en_id !=' => $_POST['en_id'],
+            'en_status >=' => 0,
             'LOWER(en_name)' => strtolower($en_update['en_name']),
         ));
         if(count($duplicate_name_ens) > 0){
@@ -1258,6 +1259,42 @@ class Entities extends CI_Controller
             //Show message:
             echo '<div class="alert alert-success">Passsword reset successful. You can <a href="/login"><u>login here</u></a>.</div>';
             echo '<script> $(document).ready(function() { $(".pass_success").hide(); }); </script>';
+        }
+    }
+
+
+    function fn___find_url(){
+
+        //Auth user and check required variables:
+        $session_en = fn___en_auth(array(1308));
+
+        if (!$session_en) {
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Session Expired',
+            ));
+        } elseif (!isset($_POST['search_url']) || !filter_var($_POST['search_url'], FILTER_VALIDATE_URL)) {
+            //This string was incorrectly detected as a URL by JS, return not found:
+            return fn___echo_json(array(
+                'status' => 1,
+                'url_already_existed' => 0,
+            ));
+        }
+
+        //Fetch URL:
+        $url_entity = $this->Matrix_model->fn___sync_url($_POST['search_url']);
+
+        if($url_entity['url_already_existed']){
+            return fn___echo_json(array(
+                'status' => 1,
+                'url_already_existed' => 1,
+                'algolia_object' => $this->Database_model->fn___update_algolia('en', $url_entity['en_url']['en_id'], 1),
+            ));
+        } else {
+            return fn___echo_json(array(
+                'status' => 1,
+                'url_already_existed' => 0,
+            ));
         }
     }
 

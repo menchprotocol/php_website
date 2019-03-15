@@ -2044,6 +2044,7 @@ class Matrix_model extends CI_Model
 
         //Check to make sure it's not a duplicate outcome:
         $duplicate_outcome_ins = $this->Database_model->fn___in_fetch(array(
+            'in_status >=' => 0, //New+
             'LOWER(in_outcome)' => strtolower(trim($in_outcome)),
         ));
         if(count($duplicate_outcome_ins) > 0){
@@ -2091,6 +2092,7 @@ class Matrix_model extends CI_Model
 
         //Check to make sure name is not duplicate:
         $duplicate_name_ens = $this->Database_model->fn___en_fetch(array(
+            'en_status >=' => 0,
             'LOWER(en_name)' => strtolower(trim($en_name)),
         ));
         if(count($duplicate_name_ens) > 0){

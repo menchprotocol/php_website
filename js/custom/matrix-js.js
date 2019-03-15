@@ -248,9 +248,20 @@ $(document).ready(function () {
                 },
                 empty: function (data) {
 
+
                     if(fn___validURL(data.query)){
-                        //Miner pasted a URL into the search bar, take them to the Add Source Wizard:
-                        return '<a href="/entities/fn___add_source_wizard?url='+ encodeURI(data.query) +'" class="suggestion"><i class="fal fa-plus-circle" style="margin: 0 5px;"></i> Add Source Wizard</a>'
+
+                        //Do a call to PHP to fetch canonical URL and see if that exists:
+                        $.post("/entities/fn___find_url", { search_url:data.query }, function (searchdata) {
+                            if(searchdata.status && searchdata.url_already_existed){
+                                //URL was detected via PHP, update the search results:
+                                $('.add-source-suggest').remove();
+                                $('.not-found').html('<a href="/entities/'+searchdata.algolia_object.alg_obj_id+'" class="suggestion">' + echo_js_suggestion(searchdata.algolia_object, 1)+'</a>');
+                            }
+                        });
+
+                        //We did not find the URL, offer them option to add it:
+                        return '<a href="/entities/fn___add_source_wizard?url='+ encodeURI(data.query) +'" class="suggestion add-source-suggest"><i class="fal fa-plus-circle" style="margin: 0 5px;"></i> Add Source Wizard</a>'
                             + '<div class="not-found"><i class="fas fa-exclamation-triangle"></i> URL not found</div>';
 
                     } else if($("#matrix_search").val().charAt(0)=='#'){

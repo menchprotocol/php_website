@@ -18,7 +18,7 @@ function echo_js_suggestion(alg_obj, is_top){
     //Determine object type:
     var obj_type = ( parseInt(alg_obj.alg_obj_is_in)==1 ? 'in' : 'en' );
 
-    return '<span class="double-icon-search is-top-'+is_top+'"><span class="icon-main">' + alg_obj.alg_obj_icon + '</span><span class="icon-top-right">' + object_js_statuses[obj_type + '_status'][alg_obj.alg_obj_status]["s_icon"] + '</span></span> ' + alg_obj._highlightResult.alg_obj_name.value + alg_obj.alg_obj_postfix;
+    return '<span class="double-icon-search is-top-'+is_top+'"><span class="icon-main">' + alg_obj.alg_obj_icon + '</span><span class="icon-top-right">' + object_js_statuses[obj_type + '_status'][alg_obj.alg_obj_status]["s_icon"] + '</span></span> ' + ( alg_obj._highlightResult && alg_obj._highlightResult.alg_obj_name.value ? alg_obj._highlightResult.alg_obj_name.value : alg_obj.alg_obj_name ) + alg_obj.alg_obj_postfix;
 }
 
 
