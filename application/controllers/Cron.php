@@ -112,7 +112,8 @@ class Cron extends CI_Controller
         $messages = $this->Database_model->fn___tr_fetch(array(
             'tr_status >=' => 0, //New+
             'in_status >=' => 0, //New+
-            'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
+            //'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
+            'tr_type_entity_id' => 4231, //Intent Messages only
         ), array('in_child'), 0, 0);
         foreach($messages as $message) {
 
