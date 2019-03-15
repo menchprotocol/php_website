@@ -1271,7 +1271,7 @@ class Entities extends CI_Controller
         $session_en = fn___en_auth(array(1308));
 
         //Description type requirement:
-        $author_type_requirement = array(4230, 4255); //Raw or Text string
+        $contributor_type_requirement = array(4230, 4255); //Raw or Text string
 
         //Parent sources to be added:
         $parent_ens = array();
@@ -1296,7 +1296,7 @@ class Entities extends CI_Controller
         } elseif (!isset($_POST['source_parent_ens']) || count($_POST['source_parent_ens']) < 1) {
             return fn___echo_json(array(
                 'status' => 0,
-                'message' => 'Select at-least 1 parent type',
+                'message' => 'Select at-least 1 source type',
             ));
         } elseif (!isset($_POST['en_name']) || strlen($_POST['en_name']) < 1) {
             return fn___echo_json(array(
@@ -1323,7 +1323,7 @@ class Entities extends CI_Controller
                     'message' => $en_all_3000[$this_parent_en['this_parent_en_id']]['m_name'] . ' description error: ' . $detected_tr_type['message'],
                 ));
 
-            } elseif (!in_array($detected_tr_type['tr_type_entity_id'], $author_type_requirement)) {
+            } elseif (!in_array($detected_tr_type['tr_type_entity_id'], $contributor_type_requirement)) {
 
                 return fn___echo_json(array(
                     'status' => 0,
@@ -1342,36 +1342,30 @@ class Entities extends CI_Controller
         }
 
 
-        //Now parse referenced authors:
-        for ($author_num = 1; $author_num <= 5; $author_num++) {
+        //Now parse referenced contributors:
+        $found_contributors = 0;
+        for ($contributor_num = 1; $contributor_num <= 5; $contributor_num++) {
 
-            //Do we have an author?
-            if (strlen($_POST['author_' . $author_num]) < 1) {
+            //Do we have an contributor?
+            if (strlen($_POST['contributor_' . $contributor_num]) < 1) {
                 continue;
             }
 
             //Validate role information:
-            $detected_role_tr_type = fn___detect_tr_type_entity_id($_POST['auth_role_' . $author_num]);
+            $detected_role_tr_type = fn___detect_tr_type_entity_id($_POST['auth_role_' . $contributor_num]);
 
             if (!$detected_role_tr_type['status']) {
 
                 return fn___echo_json(array(
                     'status' => 0,
-                    'message' => 'Author #' . $author_num . ' role error: ' . $detected_role_tr_type['message'],
+                    'message' => 'Contributor #' . $contributor_num . ' role error: ' . $detected_role_tr_type['message'],
                 ));
 
-            } elseif (!in_array($_POST['entity_parent_id_' . $author_num], $this->config->item('en_ids_4600'))) {
+            } elseif (!in_array($detected_role_tr_type['tr_type_entity_id'], $contributor_type_requirement)) {
 
                 return fn___echo_json(array(
                     'status' => 0,
-                    'message' => 'Author #' . $author_num . ' missing type',
-                ));
-
-            } elseif (!in_array($detected_role_tr_type['tr_type_entity_id'], $author_type_requirement)) {
-
-                return fn___echo_json(array(
-                    'status' => 0,
-                    'message' => 'Author #' . $author_num . ' has an invalid role',
+                    'message' => 'Contributor #' . $contributor_num . ' has an invalid role',
                 ));
 
             }
@@ -1380,8 +1374,8 @@ class Entities extends CI_Controller
             //Is this referencing an existing entity or is it a new entity?
             $tr_en_link_id = 0; //Assume it's a new entity...
 
-            if (substr($_POST['author_' . $author_num], 0, 1) == '@') {
-                $parts = explode(' ', $_POST['author_' . $author_num]);
+            if (substr($_POST['contributor_' . $contributor_num], 0, 1) == '@') {
+                $parts = explode(' ', $_POST['contributor_' . $contributor_num]);
                 $tr_en_link_id = intval(str_replace('@', '', $parts[0]));
             }
 
@@ -1395,91 +1389,126 @@ class Entities extends CI_Controller
                 if (count($referenced_ens) < 1) {
                     return fn___echo_json(array(
                         'status' => 0,
-                        'message' => 'Author #' . $author_num . ' entity ID @' . $tr_en_link_id . ' is invalid',
+                        'message' => 'Contributor #' . $contributor_num . ' entity ID @' . $tr_en_link_id . ' is invalid',
+                    ));
+                } elseif(count($this->Database_model->fn___tr_fetch(array( //Make sure this entity is linked to industry experts:
+                        'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                        'tr_parent_entity_id' => 3084, //Industry Experts
+                        'tr_child_entity_id' => $referenced_ens[0]['en_id'],
+                        'tr_status >=' => 0, //New+
+                    ))) == 0){
+                    return fn___echo_json(array(
+                        'status' => 0,
+                        'message' => 'Contributor #' . $contributor_num . ' is not linked to @3084 Industry Experts. If you believe '.$referenced_ens[0]['en_name'].' is an industry expert, first create a link to Industry Experts from <a href="/entities/'.$referenced_ens[0]['en_id'].'" target="_blank"><b>here<i class="fas fa-external-link"></i></b></a> and then try saving this source again.',
                     ));
                 }
 
-                //Add author to parent source array:
+                //Add contributor to parent source array:
                 array_push($parent_ens, array(
                     'this_parent_en_id' => $tr_en_link_id,
                     'this_parent_en_type' => $detected_role_tr_type['tr_type_entity_id'],
-                    'this_parent_en_desc' => trim($_POST['auth_role_' . $author_num]),
+                    'this_parent_en_desc' => trim($_POST['auth_role_' . $contributor_num]),
                 ));
 
             } else {
 
-                //Seems to be a new author entity...
+                //Seems to be a new contributor entity...
 
                 //First analyze URL:
-                $author_url_entity = $this->Matrix_model->fn___sync_url($_POST['ref_url_' . $author_num]);
+                $contributor_url_entity = $this->Matrix_model->fn___sync_url($_POST['ref_url_' . $contributor_num]);
 
-                //Validate author inputs before creating anything:
-                if (!$author_url_entity['status']) {
+                //Validate contributor inputs before creating anything:
+                if (!$contributor_url_entity['status']) {
 
                     //Oooopsi, show errors:
                     return fn___echo_json(array(
                         'status' => 0,
-                        'message' => 'Author #' . $author_num . ' URL error: ' . $author_url_entity['message'],
+                        'message' => 'Contributor #' . $contributor_num . ' URL error: ' . $contributor_url_entity['message'],
                     ));
 
-                } elseif (strlen($_POST['why_expert_' . $author_num]) > 0) {
+                } elseif (!in_array($_POST['entity_parent_id_' . $contributor_num], $this->config->item('en_ids_4600'))) {
 
-                    //Also validate Expert explanation:
-                    $detected_tr_type = fn___detect_tr_type_entity_id($_POST['why_expert_' . $author_num]);
+                    return fn___echo_json(array(
+                        'status' => 0,
+                        'message' => 'Contributor #' . $contributor_num . ' missing [Add as...] type',
+                    ));
 
-                    if (!$detected_tr_type['status']) {
 
-                        return fn___echo_json(array(
-                            'status' => 0,
-                            'message' => 'Author #' . $author_num . ' error: ' . $detected_tr_type['message'],
-                        ));
+                } elseif (strlen($_POST['why_expert_' . $contributor_num]) < 1) {
 
-                    } elseif (!in_array($detected_tr_type['tr_type_entity_id'], $author_type_requirement)) {
-
-                        return fn___echo_json(array(
-                            'status' => 0,
-                            'message' => 'Invalid author #' . $author_num . ' expert note content type.',
-                        ));
-
-                    }
+                    return fn___echo_json(array(
+                        'status' => 0,
+                        'message' => 'Contributor #' . $contributor_num . ' missing expert summary.',
+                    ));
 
                 }
 
-                //Add author with its URL:
-                $sync_author = $this->Matrix_model->fn___sync_url($_POST['ref_url_' . $author_num], $session_en['en_id'], 0, 0, $_POST['author_' . $author_num]);
+                //Validate Expert summary notes:
+                $detected_tr_type = fn___detect_tr_type_entity_id($_POST['why_expert_' . $contributor_num]);
+
+                if (!$detected_tr_type['status']) {
+
+                    return fn___echo_json(array(
+                        'status' => 0,
+                        'message' => 'Contributor #' . $contributor_num . ' error: ' . $detected_tr_type['message'],
+                    ));
+
+                } elseif (!in_array($detected_tr_type['tr_type_entity_id'], $contributor_type_requirement)) {
+
+                    return fn___echo_json(array(
+                        'status' => 0,
+                        'message' => 'Invalid Contributor #' . $contributor_num . ' expert note content type.',
+                    ));
+
+                }
+
+                //Add contributor with its URL:
+                $sync_contributor = $this->Matrix_model->fn___sync_url($_POST['ref_url_' . $contributor_num], $session_en['en_id'], 0, 0, $_POST['contributor_' . $contributor_num]);
 
 
-                //Add author to People or Organizations entity:
+                //Add contributor to People or Organizations entity:
                 $this->Database_model->fn___tr_create(array(
                     'tr_status' => 2, //Published
                     'tr_miner_entity_id' => $session_en['en_id'],
                     'tr_type_entity_id' => 4230, //Raw
-                    'tr_parent_entity_id' => $_POST['entity_parent_id_' . $author_num], //People or Organizations
-                    'tr_child_entity_id' => $sync_author['en_url']['en_id'],
+                    'tr_parent_entity_id' => $_POST['entity_parent_id_' . $contributor_num], //People or Organizations
+                    'tr_child_entity_id' => $sync_contributor['en_url']['en_id'],
                 ), true);
 
 
-                //Should we also link author to to Industry Experts entity?
-                if (strlen($_POST['why_expert_' . $author_num]) > 0) {
-                    //Add author to industry experts:
+                //Should we also link contributor to to Industry Experts entity?
+                if (strlen($_POST['why_expert_' . $contributor_num]) > 0) {
+                    //Add contributor to industry experts:
                     $this->Database_model->fn___tr_create(array(
                         'tr_status' => 2, //Published
                         'tr_miner_entity_id' => $session_en['en_id'],
-                        'tr_content' => trim($_POST['why_expert_' . $author_num]),
+                        'tr_content' => trim($_POST['why_expert_' . $contributor_num]),
                         'tr_type_entity_id' => $detected_tr_type['tr_type_entity_id'],
                         'tr_parent_entity_id' => 3084, //Industry Experts
-                        'tr_child_entity_id' => $sync_author['en_url']['en_id'],
+                        'tr_child_entity_id' => $sync_contributor['en_url']['en_id'],
                     ), true);
                 }
 
-                //Add author to parent source array:
+                //Add contributor to parent source array:
                 array_push($parent_ens, array(
-                    'this_parent_en_id' => $sync_author['en_url']['en_id'],
+                    'this_parent_en_id' => $sync_contributor['en_url']['en_id'],
                     'this_parent_en_type' => $detected_role_tr_type['tr_type_entity_id'],
-                    'this_parent_en_desc' => trim($_POST['auth_role_' . $author_num]),
+                    'this_parent_en_desc' => trim($_POST['auth_role_' . $contributor_num]),
                 ));
 
             }
+
+            //We found an contributor:
+            $found_contributors++;
+        }
+
+
+        //Did we have any expert contributors?
+        if($found_contributors < 1){
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Define at-least 1 expert contributor',
+            ));
         }
 
 

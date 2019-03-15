@@ -8,8 +8,8 @@ $(document).ready(function() {
         //Update to selected value:
         $(this).val('@' + suggestion.alg_obj_id + ' ' + suggestion.alg_obj_name );
 
-        //Update the author metadata:
-        search_author($(this).attr('author-box'));
+        //Update the contributor metadata:
+        search_contributor($(this).attr('contributor-box'));
 
     }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
 
@@ -154,32 +154,32 @@ function fn___add_source_process(){
         en_name: $('#en_name_url').val(),
         en_desc: $('#en_desc').val(),
 
-        author_1             : $('#author_1').val(),
+        contributor_1             : $('#contributor_1').val(),
         auth_role_1          : $('#auth_role_1').val(),
         entity_parent_id_1   : $('#entity_parent_id_1').val(),
         ref_url_1            : $('#ref_url_1').val(),
         why_expert_1         : $('#why_expert_1').val(),
 
 
-        author_2             : $('#author_2').val(),
+        contributor_2             : $('#contributor_2').val(),
         auth_role_2          : $('#auth_role_2').val(),
         entity_parent_id_2   : $('#entity_parent_id_2').val(),
         ref_url_2            : $('#ref_url_2').val(),
         why_expert_2         : $('#why_expert_2').val(),
 
-        author_3             : $('#author_3').val(),
+        contributor_3             : $('#contributor_3').val(),
         auth_role_3          : $('#auth_role_3').val(),
         entity_parent_id_3   : $('#entity_parent_id_3').val(),
         ref_url_3            : $('#ref_url_3').val(),
         why_expert_3         : $('#why_expert_3').val(),
 
-        author_4             : $('#author_4').val(),
+        contributor_4             : $('#contributor_4').val(),
         auth_role_4          : $('#auth_role_4').val(),
         entity_parent_id_4   : $('#entity_parent_id_4').val(),
         ref_url_4            : $('#ref_url_4').val(),
         why_expert_4         : $('#why_expert_4').val(),
 
-        author_5             : $('#author_5').val(),
+        contributor_5             : $('#contributor_5').val(),
         auth_role_5          : $('#auth_role_5').val(),
         entity_parent_id_5   : $('#entity_parent_id_5').val(),
         ref_url_5            : $('#ref_url_5').val(),
@@ -205,43 +205,43 @@ function fn___add_source_process(){
 
 
 
-function search_author(author_box){
+function search_contributor(contributor_box){
 
-    if(author_box < 1){
+    if(contributor_box < 1){
         //Invalid!
         return false;
     }
 
     //What's the current search value?
-    var current_val = $('#author_'+author_box).val();
+    var current_val = $('#contributor_'+contributor_box).val();
 
     if(current_val.length > 0 && current_val.indexOf('@') == -1 ) {
 
         //Populate Google Search Link:
-        $('#google_' + author_box).attr('href','https://www.google.com/search?q='+current_val);
+        $('#google_' + contributor_box).attr('href','https://www.google.com/search?q='+current_val);
 
-        $('.author_is_expert_' + author_box).removeClass('hidden');
-        $('.explain_expert_' + author_box).removeClass('hidden');
+        $('.contributor_is_expert_' + contributor_box).removeClass('hidden');
+        $('.explain_expert_' + contributor_box).removeClass('hidden');
 
-        $('#ref_url_' + author_box).attr('placeholder', 'URL referencing '+( current_val.length > 0 ? current_val : 'this entity' )+'...');
-        $('#why_expert_' + author_box).attr('placeholder', 'List expertise/accomplishments of '+( current_val.length > 0 ? current_val : 'this entity' )+'...');
+        $('#ref_url_' + contributor_box).attr('placeholder', 'URL referencing '+( current_val.length > 0 ? current_val : 'this entity' )+'...');
+        $('#why_expert_' + contributor_box).attr('placeholder', 'List expertise/accomplishments of '+( current_val.length > 0 ? current_val : 'this entity' )+'...');
 
     } else{
 
         //Hhide all options
-        $('.author_is_expert_' + author_box).addClass('hidden');
-        $('.explain_expert_' + author_box).addClass('hidden');
+        $('.contributor_is_expert_' + contributor_box).addClass('hidden');
+        $('.explain_expert_' + contributor_box).addClass('hidden');
     }
 
 
     //Role box:
     if(current_val.length > 0 ) {
 
-        $('.en_role_' + author_box).removeClass('hidden');
+        $('.en_role_' + contributor_box).removeClass('hidden');
 
     } else{
 
-        $('.en_role_' + author_box).addClass('hidden');
+        $('.en_role_' + contributor_box).addClass('hidden');
 
     }
 

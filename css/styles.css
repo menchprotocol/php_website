@@ -2752,7 +2752,7 @@ a.badge:focus, a.badge:hover {
     margin-bottom:-7px !important;
 }
 
-.author-addon{
+.contributor-addon{
     margin:5px 0 0 7px;
     max-width:330px;
 }
@@ -3783,6 +3783,11 @@ h4 .tip-badge {
     z-index: 99999;
     border-radius: 5px;
     border: 1px solid #CCC;
+}
+
+.edit-header {
+    max-width: 90%;
+    overflow: hidden;
 }
 
 .profile-icon-mini {
