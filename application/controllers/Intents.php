@@ -19,18 +19,18 @@ class Intents extends CI_Controller
 
         $session_en = $this->session->userdata('user');
 
-        if (isset($session_en['en__parents'][0]) && fn___filter_array($session_en['en__parents'], 'en_id', 1308)) {
-
-            //Lead miner and above, go to matrix:
-            fn___redirect_message('/intents/' . $this->config->item('in_home_page'));
-
-        } elseif ((isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] == 'mench.co')) {
+        if ((isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] == 'mench.co')) {
 
             //Go to mench.com for now:
             return fn___redirect_message('https://mench.com');
 
             //Show the Hiring Ad:
             //fn___redirect_message('/8327?expand_mode=1');
+
+        } elseif (isset($session_en['en__parents'][0]) && fn___filter_array($session_en['en__parents'], 'en_id', 1308)) {
+
+            //Lead miner and above, go to matrix:
+            fn___redirect_message('/intents/' . $this->config->item('in_home_page'));
 
         } else {
 
