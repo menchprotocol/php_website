@@ -24,10 +24,13 @@ class Intents extends CI_Controller
             //Lead miner and above, go to matrix:
             fn___redirect_message('/intents/' . $this->config->item('in_home_page'));
 
-        } elseif (0 && (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] == 'mench.co')) {
+        } elseif ((isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] == 'mench.co')) {
+
+            //Go to mench.com for now:
+            return fn___redirect_message('https://mench.com');
 
             //Show the Hiring Ad:
-            fn___redirect_message('/8327?expand_mode=1');
+            //fn___redirect_message('/8327?expand_mode=1');
 
         } else {
 
