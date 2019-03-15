@@ -20,16 +20,25 @@ class Cron extends CI_Controller
     //30 2 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron fn___update_algolia b 0
     //30 4 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron fn___update_algolia u 0
     //30 3 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron e_score_recursive
+    //30 3 * * * /usr/bin/php /home/ubuntu/mench-web-app/index.php cron gephi
 
     function gephi(){
-        //Populates the nodes and edges table for Gephi https://gephi.org network visualizer:
 
+        //Populates the nodes and edges table for Gephi https://gephi.org network visualizer
+
+        //Boost processing power:
+        fn___boost_power();
+
+        //Empty both tables:
+        $this->db->query("TRUNCATE TABLE public.edges CONTINUE IDENTITY RESTRICT;");
+        $this->db->query("TRUNCATE TABLE public.nodes CONTINUE IDENTITY RESTRICT;");
 
         //Load intent link types:
         $en_all_4486 = $this->config->item('en_all_4486');
 
         //Add intents:
-        foreach($this->Database_model->fn___in_fetch(array('in_status >=' => 0)) as $in){
+        $ins = $this->Database_model->fn___in_fetch(array('in_status >=' => 0));
+        foreach($ins as $in){
 
             //Prep metadata:
             $in_metadata = ( strlen($in['in_metadata']) > 0 ? unserialize($in['in_metadata']) : array());
@@ -37,8 +46,10 @@ class Cron extends CI_Controller
             //Add nodes:
             $this->db->insert('nodes', array(
                 'id' => $in['in_id'],
-                'label' => 'Intent: '.$in['in_outcome'],
-                'size' => ( isset($in_metadata['in__tree_max_seconds']) ? round(($in_metadata['in__tree_max_seconds']/3600),1) : 0 ), //Max time
+                'label' => $in['in_outcome'],
+                'size' => ( isset($in_metadata['in__tree_max_seconds']) ? round(($in_metadata['in__tree_max_seconds']/3600),0) : 0 ), //Max time
+                'is_intent' => 1,
+                'status' => $in['in_status'],
             ));
 
             //Fetch all intent children:
@@ -66,6 +77,8 @@ class Cron extends CI_Controller
 
             }
         }
+
+        echo count($ins).' intents synced.';
     }
 
     function clear_removed(){
