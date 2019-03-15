@@ -73,6 +73,7 @@ class Cron extends CI_Controller
                     'target' => $in_child['tr_child_intent_id'],
                     'label' => $en_all_4486[$in_child['tr_type_entity_id']]['m_name'], //TODO maybe give visibility to points/condition here?
                     'weight' => ( count($tr_upvotes) > 0 ? $tr_upvotes[0]['totals'] : 0 ),
+                    'link_type_en_id' => $in_child['tr_type_entity_id'],
                 ));
 
             }
