@@ -27,13 +27,12 @@
 
         <div class="title" style="margin-top:17px;"><h4>Entity Name:</h4></div>
         <span class="white-wrapper" style="margin-bottom: 3px;">
-            <input type="text" id="en_name_url" class="form-control border">
+            <textarea id="en_name_url" class="form-control border"style="height:66px; min-height:66px;"></textarea>
         </span>
 
 
 
-
-        <div class="title" style=" margin-top:15px;"><h4>Expert Contributors:</h4></div>
+        <div class="title" style=" margin-top:5px;"><h4>Expert Contributors:</h4></div>
         <?php for($contributor_num = 1; $contributor_num <= 5; $contributor_num++){ ?>
 
             <span class="white-wrapper contributor-addon">
