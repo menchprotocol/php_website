@@ -25,6 +25,7 @@ class Cron extends CI_Controller
     function gephi(){
 
         //Populates the nodes and edges table for Gephi https://gephi.org network visualizer
+        //TODO Fix issue that node IDs can be overlapping as data grows...
 
         //Boost processing power:
         fn___boost_power();
@@ -34,7 +35,7 @@ class Cron extends CI_Controller
         $this->db->query("TRUNCATE TABLE public.nodes CONTINUE IDENTITY RESTRICT;");
 
         //Load intent link types:
-        $en_all_4486 = $this->config->item('en_all_4486');
+        $en_all_4594 = $this->config->item('en_all_4594');
 
         //Add intents:
         $ins = $this->Database_model->fn___in_fetch(array('in_status >=' => 0));
@@ -43,16 +44,17 @@ class Cron extends CI_Controller
             //Prep metadata:
             $in_metadata = ( strlen($in['in_metadata']) > 0 ? unserialize($in['in_metadata']) : array());
 
-            //Add nodes:
+            //Add intent node:
             $this->db->insert('nodes', array(
                 'id' => $in['in_id'],
                 'label' => $in['in_outcome'],
-                'size' => ( isset($in_metadata['in__tree_max_seconds']) ? round(($in_metadata['in__tree_max_seconds']/3600),0) : 0 ), //Max time
-                'is_intent' => 1,
-                'status' => $in['in_status'],
+                //'size' => ( isset($in_metadata['in__tree_max_seconds']) ? round(($in_metadata['in__tree_max_seconds']/3600),0) : 0 ), //Max time
+                'size' => 5, //TODO maybe update later?
+                'node_type' => 1, //Intent
+                'node_status' => $in['in_status'],
             ));
 
-            //Fetch all intent children:
+            //Fetch children:
             foreach($this->Database_model->fn___tr_fetch(array(
                 'tr_status >=' => 0, //New+
                 'in_status >=' => 0, //New+
@@ -60,26 +62,100 @@ class Cron extends CI_Controller
                 'tr_parent_intent_id' => $in['in_id'],
             ), array('in_child')) as $in_child){
 
-                //Count link up-votes for weight:
-                $tr_upvotes = $this->Database_model->fn___tr_fetch(array(
-                    'tr_parent_intent_id' => $in_child['tr_parent_intent_id'],
-                    'tr_child_intent_id' => $in_child['tr_child_intent_id'],
-                    'tr_type_entity_id' => 4983, //Up-votes
-                    'tr_status >=' => 0, //New+
-                ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
-
                 $this->db->insert('edges', array(
                     'source' => $in_child['tr_parent_intent_id'],
                     'target' => $in_child['tr_child_intent_id'],
-                    'label' => $en_all_4486[$in_child['tr_type_entity_id']]['m_name'], //TODO maybe give visibility to points/condition here?
-                    'weight' => ( count($tr_upvotes) > 0 ? $tr_upvotes[0]['totals'] : 0 ),
-                    'link_type_en_id' => $in_child['tr_type_entity_id'],
+                    'label' => $en_all_4594[$in_child['tr_type_entity_id']]['m_name'], //TODO maybe give visibility to points/condition here?
+                    'weight' => 1, //TODO Maybe update later?
+                    'edge_type_en_id' => $in_child['tr_type_entity_id'],
+                    'edge_status' => $in_child['tr_status'],
                 ));
 
             }
         }
 
-        echo count($ins).' intents synced.';
+
+        //Add entities:
+        $ens = $this->Database_model->fn___en_fetch(array('en_status >=' => 0));
+        foreach($ens as $en){
+
+            //Add entity node:
+            $this->db->insert('nodes', array(
+                'id' => $en['en_id'],
+                'label' => $en['en_name'],
+                'size' => 2, //TODO maybe update later?
+                'node_type' => 2, //Entity
+                'node_status' => $en['en_status'],
+            ));
+
+            //Fetch children:
+            foreach($this->Database_model->fn___tr_fetch(array(
+                'tr_status >=' => 0, //New+
+                'en_status >=' => 0, //New+
+                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                'tr_parent_entity_id' => $en['en_id'],
+            ), array('en_child')) as $en_child){
+
+                $this->db->insert('edges', array(
+                    'source' => $en_child['tr_parent_entity_id'],
+                    'target' => $en_child['tr_child_entity_id'],
+                    'label' => $en_all_4594[$en_child['tr_type_entity_id']]['m_name'].': '.$en_child['tr_content'],
+                    'weight' => 1, //TODO Maybe update later?
+                    'edge_type_en_id' => $en_child['tr_type_entity_id'],
+                    'edge_status' => $en_child['tr_status'],
+                ));
+
+            }
+        }
+
+        //Add messages:
+        $messages = $this->Database_model->fn___tr_fetch(array(
+            'tr_status >=' => 0, //New+
+            'in_status >=' => 0, //New+
+            'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
+        ), array('in_child'));
+        foreach($messages as $message) {
+
+            //Add message node:
+            $this->db->insert('nodes', array(
+                'id' => $message['tr_id'],
+                'label' => $en_all_4594[$message['tr_type_entity_id']]['m_name'] . ': ' . $message['tr_content'],
+                'size' => 1, //TODO maybe update later?
+                'node_type' => $message['tr_type_entity_id'], //Message type
+                'node_status' => $message['tr_status'],
+            ));
+
+            //Add child intent link:
+            $this->db->insert('edges', array(
+                'source' => $message['tr_id'],
+                'target' => $message['tr_child_intent_id'],
+                'label' => 'Child Intent',
+                'weight' => 1, //TODO Maybe update later?
+            ));
+
+            //Add parent intent link?
+            if ($message['tr_parent_intent_id'] > 0) {
+                $this->db->insert('edges', array(
+                    'source' => $message['tr_parent_intent_id'],
+                    'target' => $message['tr_id'],
+                    'label' => 'Parent Intent',
+                    'weight' => 1, //TODO Maybe update later?
+                ));
+            }
+
+            //Add parent entity link?
+            if ($message['tr_parent_entity_id'] > 0) {
+                $this->db->insert('edges', array(
+                    'source' => $message['tr_parent_entity_id'],
+                    'target' => $message['tr_id'],
+                    'label' => 'Parent Entity',
+                    'weight' => 1, //TODO Maybe update later?
+                ));
+            }
+
+        }
+
+        echo count($ins).' intents & '.count($ens).' entities & '.count($messages).' messages synced.';
     }
 
     function clear_removed(){
