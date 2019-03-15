@@ -38,7 +38,7 @@ class Cron extends CI_Controller
             $this->db->insert('nodes', array(
                 'id' => $in['in_id'],
                 'label' => 'Intent: '.$in['in_outcome'],
-                'size' => ( isset($in_metadata['in__tree_max_seconds']) ? $in_metadata['in__tree_max_seconds'] : 0 ), //Max time
+                'size' => ( isset($in_metadata['in__tree_max_seconds']) ? round(($in_metadata['in__tree_max_seconds']/3600),1) : 0 ), //Max time
             ));
 
             //Fetch all intent children:
