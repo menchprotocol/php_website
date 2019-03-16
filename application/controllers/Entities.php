@@ -1577,4 +1577,66 @@ class Entities extends CI_Controller
     }
 
 
+
+
+    function cron__sync_en_trust_score($u = array())
+    {
+
+        /*
+         *
+         * Entities are measured through a custom algirithm that measure their "Trust Score"
+         * It's how we primarily assess the weight of each entity in our network.
+         * This function defines this algorithm.
+         *
+         *
+         * */
+
+        //Algorithm Weights:
+        $score_weights = array(
+            'u__childrens' => 0, //Child entities are just containers, no score on the link
+
+            'tr_child_entity_id' => 1, //Transaction initiator
+            'tr_miner_entity_id' => 1, //Transaction recipient
+
+            'tr_parent_entity_id' => 13, //Action Plan Items
+        );
+
+        //Fetch child entities:
+        $ens = array();
+
+        //Recursively loops through child entities:
+        $score = 0;
+        foreach ($ens as $$en) {
+            //Addup all child sores:
+            $score += $this->e_score_recursive($$en);
+        }
+
+        //Anything to update?
+        if (count($u) > 0) {
+
+            //Update this row:
+            $score += count($ens) * $score_weights['u__childrens'];
+
+            $score += count($this->Database_model->fn___tr_fetch(array(
+                    'tr_child_entity_id' => $u['en_id'],
+                ), array(), 5000)) * $score_weights['tr_child_entity_id'];
+            $score += count($this->Database_model->fn___tr_fetch(array(
+                    'tr_miner_entity_id' => $u['en_id'],
+                ), array(), 5000)) * $score_weights['tr_miner_entity_id'];
+            $score += count($this->Database_model->w_fetch(array(
+                    'tr_parent_entity_id' => $u['en_id'],
+                ))) * $score_weights['tr_parent_entity_id'];
+
+            //Update the score:
+            $this->Database_model->fn___en_update($u['en_id'], array(
+                'en_trust_score' => $score,
+            ));
+
+            //return the score:
+            return $score;
+
+        }
+    }
+
+
 }

@@ -1226,4 +1226,38 @@ class Intents extends CI_Controller
         ));
     }
 
+
+
+
+    function fn___cron__in_metadata_update($in_id = 0, $update_c_table = 1)
+    {
+
+        /*
+         *
+         * Updates the metadata cache data for intents starting at $in_id.
+         *
+         * If $in_id is not provided, it defaults to in_mission_id which
+         * is the highest level of intent in the Mench tree.
+         *
+         * */
+
+        if(!$in_id){
+            $in_id = $this->config->item('in_mission_id');
+        }
+        //Cron Settings: 31 * * * *
+        //Syncs intents with latest caching data:
+
+        $sync = $this->Matrix_model->fn___in_recursive_fetch($in_id, true, $update_c_table);
+        if (isset($_GET['redirect']) && strlen($_GET['redirect']) > 0) {
+            //Now redirect;
+            header('Location: ' . $_GET['redirect']);
+        } else {
+            //Remove the long "in_tree" variable which makes the page load slow:
+            unset($sync['in_tree']);
+
+            //Show json:
+            fn___echo_json($sync);
+        }
+    }
+
 }
