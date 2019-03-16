@@ -35,8 +35,8 @@ class Cron extends CI_Controller
         fn___boost_power();
 
         //Empty both tables:
-        $this->db->query("TRUNCATE TABLE public.edges CONTINUE IDENTITY RESTRICT;");
-        $this->db->query("TRUNCATE TABLE public.nodes CONTINUE IDENTITY RESTRICT;");
+        $this->db->query("TRUNCATE TABLE public.gephi_edges CONTINUE IDENTITY RESTRICT;");
+        $this->db->query("TRUNCATE TABLE public.gephi_nodes CONTINUE IDENTITY RESTRICT;");
 
         //Load intent link types:
         $en_all_4594 = $this->config->item('en_all_4594');
@@ -62,7 +62,7 @@ class Cron extends CI_Controller
             $in_metadata = ( strlen($in['in_metadata']) > 0 ? unserialize($in['in_metadata']) : array());
 
             //Add intent node:
-            $this->db->insert('nodes', array(
+            $this->db->insert('gephi_nodes', array(
                 'id' => $id_prefix['in'].$in['in_id'],
                 'label' => $in['in_outcome'],
                 //'size' => ( isset($in_metadata['in__tree_max_seconds']) ? round(($in_metadata['in__tree_max_seconds']/3600),0) : 0 ), //Max time
@@ -79,7 +79,7 @@ class Cron extends CI_Controller
                 'tr_parent_intent_id' => $in['in_id'],
             ), array('in_child'), 0, 0) as $in_child){
 
-                $this->db->insert('edges', array(
+                $this->db->insert('gephi_edges', array(
                     'source' => $id_prefix['in'].$in_child['tr_parent_intent_id'],
                     'target' => $id_prefix['in'].$in_child['tr_child_intent_id'],
                     'label' => $en_all_4594[$in_child['tr_type_entity_id']]['m_name'], //TODO maybe give visibility to points/condition here?
@@ -97,7 +97,7 @@ class Cron extends CI_Controller
         foreach($ens as $en){
 
             //Add entity node:
-            $this->db->insert('nodes', array(
+            $this->db->insert('gephi_nodes', array(
                 'id' => $id_prefix['en'].$en['en_id'],
                 'label' => $en['en_name'],
                 'size' => $node_size['en'],
@@ -113,7 +113,7 @@ class Cron extends CI_Controller
                 'tr_parent_entity_id' => $en['en_id'],
             ), array('en_child'), 0, 0) as $en_child){
 
-                $this->db->insert('edges', array(
+                $this->db->insert('gephi_edges', array(
                     'source' => $id_prefix['en'].$en_child['tr_parent_entity_id'],
                     'target' => $id_prefix['en'].$en_child['tr_child_entity_id'],
                     'label' => $en_all_4594[$en_child['tr_type_entity_id']]['m_name'].': '.$en_child['tr_content'],
@@ -135,7 +135,7 @@ class Cron extends CI_Controller
         foreach($messages as $message) {
 
             //Add message node:
-            $this->db->insert('nodes', array(
+            $this->db->insert('gephi_nodes', array(
                 'id' => $message['tr_id'],
                 'label' => $en_all_4594[$message['tr_type_entity_id']]['m_name'] . ': ' . $message['tr_content'],
                 'size' => $node_size['msg'],
@@ -144,7 +144,7 @@ class Cron extends CI_Controller
             ));
 
             //Add child intent link:
-            $this->db->insert('edges', array(
+            $this->db->insert('gephi_edges', array(
                 'source' => $message['tr_id'],
                 'target' => $id_prefix['in'].$message['tr_child_intent_id'],
                 'label' => 'Child Intent',
@@ -153,7 +153,7 @@ class Cron extends CI_Controller
 
             //Add parent intent link?
             if ($message['tr_parent_intent_id'] > 0) {
-                $this->db->insert('edges', array(
+                $this->db->insert('gephi_edges', array(
                     'source' => $id_prefix['in'].$message['tr_parent_intent_id'],
                     'target' => $message['tr_id'],
                     'label' => 'Parent Intent',
@@ -163,7 +163,7 @@ class Cron extends CI_Controller
 
             //Add parent entity link?
             if ($message['tr_parent_entity_id'] > 0) {
-                $this->db->insert('edges', array(
+                $this->db->insert('gephi_edges', array(
                     'source' => $id_prefix['en'].$message['tr_parent_entity_id'],
                     'target' => $message['tr_id'],
                     'label' => 'Parent Entity',

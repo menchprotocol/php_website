@@ -1966,12 +1966,12 @@ class Matrix_model extends CI_Model
                 'message' => 'Outcome must be at-least 5 characters long',
             );
 
-        } elseif(strlen($starting_verb) < 3) {
+        } elseif(strlen($starting_verb) < 2) {
 
             //Starting verb is too short:
             return array(
                 'status' => 0,
-                'message' => 'Starting verb must be at-least 3 characters long',
+                'message' => 'Starting verb must be at-least 2 characters long',
             );
 
         } elseif(!ctype_alpha($starting_verb)){

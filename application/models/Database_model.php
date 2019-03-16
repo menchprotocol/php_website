@@ -376,7 +376,7 @@ class Database_model extends CI_Model
                 $html_message .= '<div>Ledger Transaction ID: <a href="https://mench.com/ledger?tr_id=' . $insert_columns['tr_id'] . '" target="_blank">' . $insert_columns['tr_id'] . '</a></div>';
 
                 //Inform how to change settings:
-                $html_message .= '<div style="color: #AAAAAA; font-size:0.9em; margin-top:20px;">Manage email notification via <a href="https://mench.com/entities/5966" target="_blank">@5966</a></div>';
+                $html_message .= '<div style="color: #AAAAAA; font-size:0.9em; margin-top:20px;">Manage your email notifications via <a href="https://mench.com/entities/5966" target="_blank">@5966</a></div>';
 
                 //Send email:
                 $this->Chat_model->fn___dispatch_email($sub_emails, $sub_en_ids, $subject, $html_message);
