@@ -66,7 +66,7 @@ class Cron extends CI_Controller
                 'id' => $id_prefix['in'].$in['in_id'],
                 'label' => $in['in_outcome'],
                 //'size' => ( isset($in_metadata['in__tree_max_seconds']) ? round(($in_metadata['in__tree_max_seconds']/3600),0) : 0 ), //Max time
-                'size' => $node_size['in'],
+                'size' => ( $in['in_id']==$this->config->item('in_mission_id') ? 3 * $node_size['in'] : $node_size['in'] ),
                 'node_type' => 1, //Intent
                 'node_status' => $in['in_status'],
             ));
@@ -100,7 +100,7 @@ class Cron extends CI_Controller
             $this->db->insert('gephi_nodes', array(
                 'id' => $id_prefix['en'].$en['en_id'],
                 'label' => $en['en_name'],
-                'size' => $node_size['en'],
+                'size' => ( $in['en_id']==$this->config->item('en_top_focus_id') ? 3 * $node_size['en'] : $node_size['en'] ),
                 'node_type' => 2, //Entity
                 'node_status' => $en['en_status'],
             ));

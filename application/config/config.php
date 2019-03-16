@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  *
  * Global variables used throughout the platform.
- * Example: $this->config->item('in_home_page')
+ * Example: $this->config->item('in_mission_id')
  *
  */
 
@@ -15,7 +15,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 
 //App Functionality:
-$config['app_version']              = '0.7771'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
+$config['app_version']              = '0.7773'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
 $config['app_update_algolia']       = true; //May need to turn off if/when we reach free monthly quota of 50k calls
 $config['app_in_en_ratio']          = 10; // = Intent tree max seconds / Entity trust score
 
@@ -84,84 +84,84 @@ $config['fb_convert_4537']          = array( //Dedicated media formats supported
 //3x Table Status:
 $config['fixed_fields']             = array(
                                         'tr_status' => array(
-                                            -1 => array(
-                                                's_name' => 'Removed',
-                                                's_desc' => 'Transaction is in-active',
-                                                's_icon' => '<i class="fal fa-minus-square"></i>',
-                                            ),
-                                            0 => array( //Considered incomplete, see tr_status_incomplete for more details
-                                                's_name' => 'New',
-                                                's_desc' => 'Transaction is newly added and pending to be mined',
-                                                's_icon' => '<i class="fal fa-square"></i>',
-                                            ),
-                                            1 => array( //Considered incomplete, see tr_status_incomplete for more details
-                                                's_name' => 'Working On',
-                                                's_desc' => 'Transaction is being worked-on so it can be published',
-                                                's_icon' => '<i class="fas fa-spinner fa-spin"></i>',
+                                            3 => array(
+                                                's_name' => 'Verified',
+                                                's_desc' => 'Transaction is double-checked and verified',
+                                                's_icon' => '<i class="fas fa-check-double"></i>',
                                             ),
                                             2 => array(
                                                 's_name' => 'Published',
                                                 's_desc' => 'Transaction is complete, ready and live',
                                                 's_icon' => '<i class="fas fa-check-square"></i>',
                                             ),
-                                            3 => array(
-                                                's_name' => 'Verified',
-                                                's_desc' => 'Transaction is double-checked and verified',
-                                                's_icon' => '<i class="fas fa-check-double"></i>',
+                                            1 => array( //Considered incomplete, see tr_status_incomplete for more details
+                                                's_name' => 'Working On',
+                                                's_desc' => 'Transaction is being worked-on so it can be published',
+                                                's_icon' => '<i class="fas fa-spinner fa-spin"></i>',
+                                            ),
+                                            0 => array( //Considered incomplete, see tr_status_incomplete for more details
+                                                's_name' => 'New',
+                                                's_desc' => 'Transaction is newly added and pending to be mined',
+                                                's_icon' => '<i class="fal fa-square"></i>',
+                                            ),
+                                            -1 => array(
+                                                's_name' => 'Removed',
+                                                's_desc' => 'Transaction is in-active',
+                                                's_icon' => '<i class="fal fa-minus-square"></i>',
                                             ),
                                         ),
                                         'in_status' => array(
-                                            -1 => array(
-                                                's_name' => 'Removed',
-                                                's_desc' => 'Intent is in-active',
-                                                's_icon' => '<i class="fal fa-minus-square"></i>',
-                                            ),
-                                            0 => array(
-                                                's_name' => 'New',
-                                                's_desc' => 'Intent is newly added and pending to be mined',
-                                                's_icon' => '<i class="fal fa-square"></i>',
-                                            ),
-                                            1 => array(
-                                                's_name' => 'Working On',
-                                                's_desc' => 'Intent is being worked-on so it can be published',
-                                                's_icon' => '<i class="fas fa-spinner fa-spin"></i>',
+                                            3 => array(
+                                                's_name' => 'Featured',
+                                                's_desc' => 'Intent is recommended by mench.com and Mench personal assistant',
+                                                's_icon' => '<i class="fas fa-badge-check"></i>',
                                             ),
                                             2 => array(
                                                 's_name' => 'Published',
                                                 's_desc' => 'Intent is live and publicly accessible',
                                                 's_icon' => '<i class="fas fa-check-square"></i>',
                                             ),
-                                            3 => array(
-                                                's_name' => 'Featured',
-                                                's_desc' => 'Intent is recommended by mench.com and Mench personal assistant',
-                                                's_icon' => '<i class="fas fa-badge-check"></i>',
-                                            ),
-                                        ),
-                                        'en_status' => array(
-                                            -1 => array(
-                                                's_name' => 'Removed',
-                                                's_desc' => 'Entity is in-active',
-                                                's_icon' => '<i class="fal fa-minus-square"></i>',
+                                            1 => array(
+                                                's_name' => 'Working On',
+                                                's_desc' => 'Intent is being worked-on so it can be published',
+                                                's_icon' => '<i class="fas fa-spinner fa-spin"></i>',
                                             ),
                                             0 => array(
                                                 's_name' => 'New',
-                                                's_desc' => 'Entity is newly added and pending to be mined',
+                                                's_desc' => 'Intent is newly added and pending to be mined',
                                                 's_icon' => '<i class="fal fa-square"></i>',
                                             ),
-                                            1 => array(
-                                                's_name' => 'Working On',
-                                                's_desc' => 'Entity is being worked-on so it can be published',
-                                                's_icon' => '<i class="fas fa-spinner fa-spin"></i>'
+                                            -1 => array(
+                                                's_name' => 'Removed',
+                                                's_desc' => 'Intent is in-active',
+                                                's_icon' => '<i class="fal fa-minus-square"></i>',
+                                            ),
+                                        ),
+                                        'en_status' => array(
+                                            3 => array(
+                                                's_name' => 'Verified',
+                                                's_desc' => 'Entity is a real person connected to Mench personal assistant',
+                                                's_icon' => '<i class="fas fa-badge-check blue"></i>',
                                             ),
                                             2 => array(
                                                 's_name' => 'Published',
                                                 's_desc' => 'Entity is live and publicly accessible',
                                                 's_icon' => '<i class="fas fa-check-square"></i>',
                                             ),
-                                            3 => array(
-                                                's_name' => 'Verified',
-                                                's_desc' => 'Entity is a real person connected to Mench personal assistant',
-                                                's_icon' => '<i class="fas fa-badge-check blue"></i>',
+                                            1 => array(
+                                                's_name' => 'Working On',
+                                                's_desc' => 'Entity is being worked-on so it can be published',
+                                                's_icon' => '<i class="fas fa-spinner fa-spin"></i>'
+                                            ),
+                                            0 => array(
+                                                's_name' => 'New',
+                                                's_desc' => 'Entity is newly added and pending to be mined',
+                                                's_icon' => '<i class="fal fa-square"></i>',
+                                            ),
+                                            -1 => array(
+                                                's_name' => 'Removed',
+                                                's_desc' => 'Entity is in-active',
+                                                's_icon' => '<i class="fal fa-minus-square"></i>',
                                             ),
                                         ),
                                         'in_type' => array(

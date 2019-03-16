@@ -37,10 +37,10 @@ if(!$has_filters){
 
     echo '<h1>Ledger Stats</h1>';
 
-//Load core Mench Objects:
+    //Load core Mench Objects:
     $en_all_4534 = $this->config->item('en_all_4534');
 
-//Just be logged in to browse:
+    //Just be logged in to browse:
     $session_en = fn___en_auth();
 
     if(!$session_en){
@@ -101,14 +101,16 @@ if(!$has_filters){
             }
 
             //Display this status count:
-            $this_ui .= '<tr>';
+            $this_ui .= '<tr'.( $status_num < 0 ? ' class="is-removed" ' : '' ).'>';
             $this_ui .= '<td style="text-align: left;">'.fn___echo_fixed_fields($object_id, $status_num, false, 'top').'</td>';
             $this_ui .= '<td style="text-align: right;">'.( $count > 0 ? '<a href="/ledger?'.$object_id.'='.$status_num.'&tr_type_entity_id='.$created_en_type_id.'"  data-toggle="tooltip" title="View Transactions" data-placement="top">'.number_format($count,0).'</a>' : $count ).'</td>';
             $this_ui .= '</tr>';
 
+            if($status_num >= 0){
+                //Increase total counter:
+                $this_totals += $count;
+            }
 
-            //Increase total counter:
-            $this_totals += $count;
         }
 
 
