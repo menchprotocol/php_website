@@ -100,7 +100,7 @@ class Cron extends CI_Controller
             $this->db->insert('gephi_nodes', array(
                 'id' => $id_prefix['en'].$en['en_id'],
                 'label' => $en['en_name'],
-                'size' => ( $in['en_id']==$this->config->item('en_top_focus_id') ? 3 * $node_size['en'] : $node_size['en'] ),
+                'size' => ( $en['en_id']==$this->config->item('en_top_focus_id') ? 3 * $node_size['en'] : $node_size['en'] ),
                 'node_type' => 2, //Entity
                 'node_status' => $en['en_status'],
             ));
