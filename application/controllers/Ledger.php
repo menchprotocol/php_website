@@ -497,7 +497,7 @@ class Ledger extends CI_Controller
 
             $prev_title = null;
 
-            echo '<div><a href="/ledger/fn___moderat"> &laquo; Back to Moderation Tools</a></div>';
+            echo '<div><a href="/ledger/fn___moderate"> &laquo; Back to Moderation Tools</a></div>';
 
             foreach ($duplicates as $in) {
                 if ($prev_title != $in['in_outcome']) {
@@ -515,7 +515,7 @@ class Ledger extends CI_Controller
 
             $prev_title = null;
 
-            echo '<div><a href="/ledger/fn___moderat"> &laquo; Back to Moderation Tools</a></div>';
+            echo '<div><a href="/ledger/fn___moderate"> &laquo; Back to Moderation Tools</a></div>';
 
             foreach ($duplicates as $u) {
                 if ($prev_title != $u['en_name']) {
@@ -533,7 +533,7 @@ class Ledger extends CI_Controller
 
         } elseif($action=='php_info') {
 
-            echo '<div><a href="/ledger/fn___moderat"> &laquo; Back to Moderation Tools</a></div>';
+            echo '<div><a href="/ledger/fn___moderate"> &laquo; Back to Moderation Tools</a></div>';
             echo phpinfo();
 
         } elseif($action=='compose_test_message') {
@@ -549,6 +549,7 @@ class Ledger extends CI_Controller
                     ));
                 } else {
                     //HTML:
+                    echo '<div><a href="/ledger/fn___moderat/compose_test_message"> &laquo; Back to Message Compose</a></div>';
                     echo $p['output_messages'][0]['message_body'];
                 }
 
@@ -557,14 +558,16 @@ class Ledger extends CI_Controller
                 //UI to compose a test message:
                 echo '<form method="POST" action="">';
 
-                echo '<span class="mini-header">Message:</span>';
+                echo '<div><a href="/ledger/fn___moderate"> &laquo; Back to Moderation Tools</a></div>';
+
+                echo '<div class="mini-header">Message:</div>';
                 echo '<textarea name="test_message" style="width:400px; height: 200px;"></textarea><br />';
 
-                echo '<span class="mini-header">Recipient Entity ID:</span>';
+                echo '<div class="mini-header">Recipient Entity ID:</div>';
                 echo '<input type="number" name="recipient_en" value="1"><br />';
 
-                echo '<span class="mini-header">Format Is Messenger:</span>';
-                echo '<input type="number" name="fb_messenger_format" value="0"><br />';
+                echo '<div class="mini-header">Format Is Messenger:</div>';
+                echo '<input type="number" name="fb_messenger_format" value="0"><br /><br />';
 
 
                 echo '<input type="submit" value="Compose Test Message">';
