@@ -47,6 +47,13 @@ class Cron extends CI_Controller
             'en' => 200,
         );
 
+        //Size of nodes:
+        $node_size = array(
+            'in' => 3,
+            'en' => 2,
+            'msg' => 1,
+        );
+
         //Add intents:
         $ins = $this->Database_model->fn___in_fetch(array('in_status >=' => 0));
         foreach($ins as $in){
@@ -59,7 +66,7 @@ class Cron extends CI_Controller
                 'id' => $id_prefix['in'].$in['in_id'],
                 'label' => $in['in_outcome'],
                 //'size' => ( isset($in_metadata['in__tree_max_seconds']) ? round(($in_metadata['in__tree_max_seconds']/3600),0) : 0 ), //Max time
-                'size' => 1, //TODO maybe update later?
+                'size' => $node_size['in'],
                 'node_type' => 1, //Intent
                 'node_status' => $in['in_status'],
             ));
@@ -93,7 +100,7 @@ class Cron extends CI_Controller
             $this->db->insert('nodes', array(
                 'id' => $id_prefix['en'].$en['en_id'],
                 'label' => $en['en_name'],
-                'size' => 1, //TODO maybe update later?
+                'size' => $node_size['en'],
                 'node_type' => 2, //Entity
                 'node_status' => $en['en_status'],
             ));
@@ -131,7 +138,7 @@ class Cron extends CI_Controller
             $this->db->insert('nodes', array(
                 'id' => $message['tr_id'],
                 'label' => $en_all_4594[$message['tr_type_entity_id']]['m_name'] . ': ' . $message['tr_content'],
-                'size' => 1, //TODO maybe update later?
+                'size' => $node_size['msg'],
                 'node_type' => $message['tr_type_entity_id'], //Message type
                 'node_status' => $message['tr_status'],
             ));
