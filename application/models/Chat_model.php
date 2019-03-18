@@ -421,7 +421,7 @@ class Chat_model extends CI_Model
             $trs_comm_level = $this->Database_model->fn___tr_fetch(array(
                 'tr_parent_entity_id IN (' . join(',', $this->config->item('en_ids_4454')) . ')' => null,
                 'tr_child_entity_id' => $recipient_en['en_id'],
-                'tr_status >=' => 2,
+                'tr_status' => 2, //Published
             ));
 
             //Start validating communication settings we fetched to ensure everything is A-OK:
@@ -1204,7 +1204,7 @@ class Chat_model extends CI_Model
 
             //If we have rotating we'd need to pick one and send randomly:
             $messages_rotating = $this->Database_model->fn___tr_fetch(array(
-                'tr_status >=' => 2, //Published+
+                'tr_status' => 2, //Published
                 'tr_type_entity_id' => 4234, //Rotating
                 'tr_child_intent_id' => $in_id,
             ), array(), 0, 0, array('tr_order' => 'ASC'));
@@ -1230,7 +1230,7 @@ class Chat_model extends CI_Model
 
             //These messages all need to be sent first:
             $messages_on_start = $this->Database_model->fn___tr_fetch(array(
-                'tr_status >=' => 2, //Published+
+                'tr_status' => 2, //Published
                 'tr_type_entity_id' => 4231, //Intent Note Messages
                 'tr_child_intent_id' => $in_id,
             ), array(), 0, 0, array('tr_order' => 'ASC'));
@@ -1479,7 +1479,7 @@ class Chat_model extends CI_Model
         if(0){
             //TODO Implement LEARNMORE_
             $messages_learn_more = $this->Database_model->fn___tr_fetch(array(
-                'tr_status >=' => 2, //Published+
+                'tr_status' => 2, //Published
                 'tr_type_entity_id' => 4232, //Learn More Messages
                 'tr_child_intent_id' => $in_id,
             ), array(), 1, 0, array('tr_order' => 'ASC'));
@@ -1659,7 +1659,7 @@ class Chat_model extends CI_Model
                 $actionplans = $this->Database_model->fn___tr_fetch(array(
                     'tr_type_entity_id' => 4235, //Action Plans
                     'tr_parent_entity_id' => $en['en_id'], //Belongs to this Student
-                    'tr_status IN (0,1,2)' => null, //Actively working on (Status 2 is syncing updates, and they want out)
+                    'tr_status IN (0,1,2)' => null, //Actively drafting (Status 2 is syncing updates, and they want out)
                 ));
                 foreach ($actionplans as $tr) {
                     $this->Database_model->fn___tr_update($tr['tr_id'], array(
@@ -1830,7 +1830,7 @@ class Chat_model extends CI_Model
             //Initiating an intent Action Plan:
             $ins = $this->Database_model->fn___in_fetch(array(
                 'in_id' => $in_id,
-                'status >=' => 2, //Published+
+                'status >=' => 2, //Published
             ));
 
             if (count($ins) == 1) {
@@ -1862,7 +1862,7 @@ class Chat_model extends CI_Model
 
                     //Send all Intent Note Messages for this intention so they can review it:
                     $messages_on_start = $this->Database_model->fn___tr_fetch(array(
-                        'tr_status >=' => 2, //Published+
+                        'tr_status' => 2, //Published
                         'tr_type_entity_id' => 4231, //Intent Note Messages
                         'tr_child_intent_id' => $ins[0]['in_id'],
                     ), array(), 0, 0, array('tr_order' => 'ASC'));
@@ -1917,7 +1917,7 @@ class Chat_model extends CI_Model
             //Validate Intent ID:
             $ins = $this->Database_model->fn___in_fetch(array(
                 'in_id' => $in_id,
-                'in_status >=' => 2, //Published+
+                'in_status' => 2, //Published
             ));
 
             if (count($ins) == 1) {
@@ -1931,7 +1931,7 @@ class Chat_model extends CI_Model
 
                     'tr_child_intent_id' => $ins[0]['in_id'], //The Intent they are adding
 
-                    'tr_order' => 1 + $this->Database_model->fn___tr_max_order(array( //Place this intent at the end of all intents the Student is working on...
+                    'tr_order' => 1 + $this->Database_model->fn___tr_max_order(array( //Place this intent at the end of all intents the Student is drafting...
                         'tr_type_entity_id' => 4235, //Action Plan
                         'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
                         'tr_parent_entity_id' => $en['en_id'], //Belongs to this Student
@@ -1976,7 +1976,7 @@ class Chat_model extends CI_Model
 
             //Extract variables from REF:
             $input_parts = explode('_', fn___one_two_explode('SKIP-ACTIONPLAN_', '', $quick_reply_payload));
-            $tr_status = intval($input_parts[0]); //It would be $tr_status=1 initial (working on) and then would change to either -1 IF skip was cancelled or 2 IF skip was confirmed.
+            $tr_status = intval($input_parts[0]); //It would be $tr_status=1 initial (drafting) and then would change to either -1 IF skip was cancelled or 2 IF skip was confirmed.
             $tr_id = intval($input_parts[1]); //Action Plan Step Transaction ID
             $skip_tr_id = intval($input_parts[2]); //Would initially be zero and would then be set to a Transaction ID when Student confirms/cancels skipping
 
@@ -2058,7 +2058,7 @@ class Chat_model extends CI_Model
                     'tr_parent_entity_id' => $en['en_id'],
                     'tr_type_entity_id' => 4284, //Skip Intent
                     'tr_parent_transaction_id' => $tr_id, //The Transaction Reference that points to this intent in the Students Action Plan
-                    'tr_status' => 1, //Working on... not yet decided to skip or not as they need to see the consequences before making an informed decision. Will be updated to -1 or 2 based on their response...
+                    'tr_status' => 1, //drafting... not yet decided to skip or not as they need to see the consequences before making an informed decision. Will be updated to -1 or 2 based on their response...
                     'tr_metadata' => array(
                         'would_be_skipped' => $would_be_skipped,
                         'ref' => $quick_reply_payload,
@@ -2341,7 +2341,7 @@ class Chat_model extends CI_Model
             $actionplans = $this->Database_model->fn___tr_fetch(array(
                 'tr_type_entity_id' => 4235, //Intents added to the action plan
                 'tr_parent_entity_id' => $en['en_id'], //Belongs to this Student
-                'tr_status IN (0,1,2)' => null, //Actively working on
+                'tr_status IN (0,1,2)' => null, //Actively drafting
             ), array('in_child'), 10 /* Max quick replies allowed */, 0, array('tr_order' => 'ASC'));
 
 
@@ -2448,7 +2448,7 @@ class Chat_model extends CI_Model
 
                 //Do a regular internal search:
                 $search_results = $this->Database_model->fn___in_fetch(array(
-                    'in_status >=' => 2, //Search published intents
+                    'in_status' => 2, //Search published intents
                     'in_outcome LIKE \'%' . $master_command . '%\'' => null, //Basic string search
                 ), array(), $result_limit);
 
@@ -2545,7 +2545,7 @@ class Chat_model extends CI_Model
             ));
 
 
-            //Do they have an Action Plan that they are working on?
+            //Do they have an Action Plan that they are drafting?
             //If so, we can recommend the next step within that Action Plan...
             $actionplans = $this->Database_model->fn___tr_fetch(array(
                 'tr_type_entity_id' => 4235, //Action Plan
@@ -2555,7 +2555,7 @@ class Chat_model extends CI_Model
 
             if (count($actionplans) > 0) {
 
-                //They have an Action Plan that they are working on, Remind user of their next step:
+                //They have an Action Plan that they are drafting, Remind user of their next step:
                 $next_ins = $this->Matrix_model->fn___actionplan_next_in($actionplans[0]['tr_id']);
 
                 //Do we have a next step? (We should if Action Plan status is incomplete)

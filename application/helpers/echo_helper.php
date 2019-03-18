@@ -247,7 +247,7 @@ function fn___echo_in_message_manage($tr)
     $count_msg_trs = $CI->Database_model->fn___tr_fetch(array(
         '( tr_id = ' . $tr['tr_id'] . ' OR tr_parent_transaction_id = ' . $tr['tr_id'] . ')' => null,
     ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
-    $ui .= '<li class="pull-right edit-off ' . fn___echo_advance() . '"><a class="btn btn-primary" style="border:2px solid #fedd16 !important;" href="/ledger?any_tr_id=' . $tr['tr_id'] . '" target="_parent" title="Go to Ledger Transactions" data-toggle="tooltip" data-placement="top"><i class="fas fa-atlas"></i> '.fn___echo_number($count_msg_trs[0]['totals']).'</a></li>';
+    $ui .= '<li class="pull-right edit-off ' . fn___echo_advance() . '"><a class="btn btn-primary" style="border:2px solid #fedd16 !important;" href="/ledger?tr_id=' . $tr['tr_id'] . '" target="_parent" title="Go to Ledger Transactions" data-toggle="tooltip" data-placement="top"><i class="fas fa-atlas"></i> '.fn___echo_number($count_msg_trs[0]['totals']).'</a></li>';
 
     //Delete:
     $ui .= '<li class="pull-right edit-off" style="margin-right:5px; margin-left: 6px;"><span class="on-hover"><a class="btn btn-primary white-primary" href="javascript:fn___message_remove(' . $tr['tr_id'] . ');" title="Remove Message" data-toggle="tooltip" data-placement="top" style="border:2px solid #fedd16 !important;"><i class="fas fa-trash-alt"></i></a></span></li>';
@@ -467,7 +467,7 @@ function fn___echo_tr_row($tr, $is_inner = false)
         );
     }
 
-    $hide_tr_content = (in_array($tr['tr_type_entity_id'] , $CI->config->item('en_ids_4755')) /* Transaction Type is locked */ && !fn___en_auth(array(1281)) /* Viewer NOT a moderator */);
+    $hide_sensitive_details = (in_array($tr['tr_type_entity_id'] , $CI->config->item('en_ids_4755')) /* Transaction Type is locked */ && !fn___en_auth(array(1281)) /* Viewer NOT a moderator */);
 
     //Fetch Miner Entity:
     $miner_ens = $CI->Database_model->fn___en_fetch(array(
@@ -484,9 +484,18 @@ function fn___echo_tr_row($tr, $is_inner = false)
 
     $ui .= '<div style="padding: 0 10px;">';
 
-        //Miner:
-        $ui .= '<span class="icon-main">'.( strlen($miner_ens[0]['en_icon']) > 0 ? $miner_ens[0]['en_icon'] . ' ' : '' ).'</span>';
-        $ui .= '<a href="/entities/'.$miner_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="View miner profile"><b>' . $miner_ens[0]['en_name'] . '</b></a>';
+        if($hide_sensitive_details){
+
+            //Hide Miner:
+            $ui .= '<span class="icon-main"><i class="fal fa-eye-slash"></i></span>';
+            $ui .= '<b data-toggle="tooltip" data-placement="top" title="Sign in as a Mench moderator to unlock private information about this transaction">&nbsp;Private Entity</b>';
+
+        } else {
+
+            //Show Miner:
+            $ui .= '<span class="icon-main">'.( strlen($miner_ens[0]['en_icon']) > 0 ? $miner_ens[0]['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).' </span>';
+            $ui .= '<a href="/entities/'.$miner_ens[0]['en_id'].'" data-toggle="tooltip" data-placement="top" title="View miner profile"><b>' . $miner_ens[0]['en_name'] . '</b></a>';
+        }
 
         //Transaction Type:
         $ui .= '<a href="/entities/'.$tr['tr_type_entity_id'].'" data-toggle="tooltip" data-placement="top" title="View transaction type entity"><b style="padding-left:5px;">'. ( strlen($en_all_4594[$tr['tr_type_entity_id']]['m_icon']) > 0 ? $en_all_4594[$tr['tr_type_entity_id']]['m_icon'] . ' ' : '' ) . $en_all_4594[$tr['tr_type_entity_id']]['m_name'] . '</b></a>';
@@ -499,7 +508,7 @@ function fn___echo_tr_row($tr, $is_inner = false)
     $ui .= '<span data-toggle="tooltip" data-placement="top" title="Ledger Transaction ID" style="min-width:80px; display: inline-block;"><i class="fas fa-atlas"></i> '.$tr['tr_id'].'</span>';
     $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Mined Coins" style="min-width:47px; display: inline-block;"><i class="fal fa-coins"></i> <b>'. $tr['tr_coins'] .'</b></span>';
     $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="'.$fixed_fields['tr_status'][$tr['tr_status']]['s_desc'].'" style="min-width:82px; display: inline-block;">'.$fixed_fields['tr_status'][$tr['tr_status']]['s_icon'].' '.$fixed_fields['tr_status'][$tr['tr_status']]['s_name'].'</span>';
-    $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Ledger Transaction Time: ' . $tr['tr_timestamp'] . ' PST" style="min-width:120px; display: inline-block;"><i class="fal fa-clock"></i> ' . fn___echo_time_difference(strtotime($tr['tr_timestamp'])) . ' ago</span>';
+    $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Ledger Transaction Log Time: ' . $tr['tr_timestamp'] . ' PST" style="min-width:120px; display: inline-block;"><i class="fal fa-clock"></i> ' . fn___echo_time_difference(strtotime($tr['tr_timestamp'])) . ' ago</span>';
 
 
     if($tr['tr_order'] != 0){
@@ -509,14 +518,12 @@ function fn___echo_tr_row($tr, $is_inner = false)
     }
 
 
-    if(strlen($tr['tr_content']) < 1){
+    if(!$hide_sensitive_details && strlen($tr['tr_content']) < 1){
         $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Transaction has no content" class="' . fn___echo_advance() . '"><i class="fal fa-comment-slash" style="color: #AAA;"></i></span>';
-    } elseif($hide_tr_content){
-        $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="Transaction content visible to moderators only"><i class="fas fa-eye-slash" style="color: #AAA;"></i></span>';
     }
 
     //Is this a miner? Show them metadata status:
-    if(!$hide_tr_content && fn___en_auth(array(1308))){
+    if(!$hide_sensitive_details && fn___en_auth(array(1308))){
         if(strlen($tr['tr_metadata']) > 0){
             $ui .= ' &nbsp;<a href="/ledger/fn___tr_json/' . $tr['tr_id'] . '" target="_blank" data-toggle="tooltip" data-placement="top" title="Open transaction metadata json object (in new window)" style="min-width:26px; display: inline-block;" class="' . fn___echo_advance() . '"><i class="fas fa-search-plus"></i></a>';
         } else {
@@ -527,7 +534,7 @@ function fn___echo_tr_row($tr, $is_inner = false)
     $ui .= '</div>';
 
     //Do we have a content to show?
-    if(!$hide_tr_content){
+    if(!$hide_sensitive_details){
         $main_content = fn___echo_tr_urls($tr['tr_content'], $tr['tr_type_entity_id']);
         $ui .= '<div class="e-msg ' . ($main_content ? '' : 'hidden') . '">';
         $ui .= $main_content;
@@ -538,31 +545,46 @@ function fn___echo_tr_row($tr, $is_inner = false)
 
     //Lets go through all references to see what is there:
     if(!$is_inner){
+
+        //Show Transaction Links:
         foreach ($CI->config->item('tr_object_links') as $tr_field => $obj_type) {
-            if(!in_array($tr_field, array('tr_miner_entity_id','tr_type_entity_id')) && intval($tr[$tr_field]) > 0){
-                $ui .= '<div class="tr-child">';
-                if($obj_type=='en'){
-                    //Fetch
-                    $ens = $CI->Database_model->fn___en_fetch(array('en_id' => $tr[$tr_field]));
-                    if(count($ens) > 0){
-                        $ui .= fn___echo_en($ens[0], 0);
-                    }
-                } elseif($obj_type=='in'){
-                    //Fetch
-                    $ins = $CI->Database_model->fn___in_fetch(array('in_id' => $tr[$tr_field]));
-                    if(count($ins) > 0){
-                        $ui .= fn___echo_in($ins[0], 0);
-                    }
-                } elseif($obj_type=='tr'){
-                    //Fetch
-                    $trs = $CI->Database_model->fn___tr_fetch(array('tr_id' => $tr[$tr_field]));
-                    if(count($trs) > 0){
-                        $ui .= fn___echo_tr_row($trs[0], true);
-                    }
-                }
-                $ui .= '</div>';
+
+            if(!(!in_array($tr_field, array('tr_miner_entity_id','tr_type_entity_id')) && intval($tr[$tr_field]) > 0)){
+                //Don't show miner and type as they are already printed on the first line:
+                continue;
             }
+
+            $ui .= '<div class="tr-child">';
+            if($obj_type=='en'){
+                //Fetch
+                $ens = $CI->Database_model->fn___en_fetch(array('en_id' => $tr[$tr_field]));
+                if(count($ens) > 0){
+                    $ui .= fn___echo_en($ens[0], 0);
+                }
+            } elseif($obj_type=='in'){
+                //Fetch
+                $ins = $CI->Database_model->fn___in_fetch(array('in_id' => $tr[$tr_field]));
+                if(count($ins) > 0){
+                    $ui .= fn___echo_in($ins[0], 0);
+                }
+            } elseif($obj_type=='tr'){
+                //Fetch
+                $trs = $CI->Database_model->fn___tr_fetch(array('tr_id' => $tr[$tr_field]));
+                if(count($trs) > 0){
+                    $ui .= fn___echo_tr_row($trs[0], true);
+                }
+            }
+            $ui .= '</div>';
         }
+
+        //Now show all transactions for this transaction:
+        foreach ($CI->Database_model->fn___tr_fetch(array(
+            'tr_status >=' => 0, //New+
+            'tr_parent_transaction_id' => $tr['tr_id'],
+        ), array(), 0, 0, array('tr_id' => 'DESC')) as $tr_child) {
+            $ui .= '<div class="tr-child">' . fn___echo_tr_row($tr_child, true) . '</div>';
+        }
+
     }
 
 
@@ -839,11 +861,17 @@ function fn___echo_tree_steps($in, $fb_messenger_format = 0, $expand_mode = fals
     $pitch = 'Action Plan contains ' . $metadata['in__flat_unique_published_count'] . ' steps to ' . $in['in_outcome'];
 
     if ($fb_messenger_format) {
+
         return '🚩 ' . $pitch . "\n";
+
     } else {
+
         //HTML format
         $id = 'IntentOverview';
-        return '<div class="panel-group" id="open' . $id . '" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
+        $return_html = '';
+
+        //Section header:
+        $return_html .= '<div class="panel-group" id="open' . $id . '" role="tablist" aria-multiselectable="true"><div class="panel panel-primary">
             <div class="panel-heading" role="tab" id="heading' . $id . '">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#open' . $id . '" href="#collapse' . $id . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $id . '">
@@ -852,11 +880,121 @@ function fn___echo_tree_steps($in, $fb_messenger_format = 0, $expand_mode = fals
             </h4>
         </div>
         <div id="collapse' . $id . '" class="panel-collapse collapse ' . ($expand_mode ? 'in' : 'out') . '" role="tabpanel" aria-labelledby="heading' . $id . '">
-            <div class="panel-body overview-pitch">' . $pitch . '.</div>
-        </div>
-    </div></div>';
+            <div class="panel-body overview-pitch">';
+        $return_html .= $pitch.'.';
+
+        //Action Plan:
+        $return_html .= fn___echo_action_plan($in, false);
+
+        //Close the section:
+        $return_html .= '</div></div></div></div>';
+
+
+        return $return_html;
+
     }
 
+}
+
+function fn___echo_action_plan($in, $expand_mode){
+
+
+    $CI =& get_instance();
+    $children_ins = $CI->Database_model->fn___tr_fetch(array(
+        'tr_status' => 2, //Published
+        'in_status' => 2, //Published
+        'tr_type_entity_id' => 4228, //Fixed intent links only
+        'tr_parent_intent_id' => $in['in_id'],
+    ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
+
+    if(count($children_ins) < 1){
+        return null;
+    }
+
+
+    $return_html = '';
+    $return_html .= '<div class="list-group grey_list actionplan_list maxout" style="margin:5px 0 0 5px;">';
+
+    foreach ($children_ins as $in_level2_counter => $in_level2) {
+
+        //Level 3 intents:
+        $grandchildren_ins = $CI->Database_model->fn___tr_fetch(array(
+            'tr_status' => 2, //Published
+            'in_status' => 2, //Published
+            'tr_type_entity_id' => 4228, //Fixed intent links only
+            'tr_parent_intent_id' => $in_level2['in_id'],
+        ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
+
+        //Fetch messages:
+        $in_level2_messages = $CI->Database_model->fn___tr_fetch(array(
+            'tr_status' => 2, //Published
+            'tr_type_entity_id' => 4231, //Intent Note Messages
+            'tr_child_intent_id' => $in_level2['in_id'],
+        ), array(), 0, 0, array('tr_order' => 'ASC'));
+
+        //Skip if intent has no message and no level 3 children:
+        if(count($grandchildren_ins) == 0 && count($in_level2_messages) == 0){
+            continue;
+        }
+
+        //Level 2 title:
+        $return_html .= '<div class="panel-group" id="open' . $in_level2_counter . '" role="tablist" aria-multiselectable="true">';
+        $return_html .= '<div class="panel panel-primary">';
+        $return_html .= '<div class="panel-heading" role="tab" id="heading' . $in_level2_counter . '">';
+
+
+        $return_html .= '<h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#open' . $in_level2_counter . '" href="#collapse' . $in_level2_counter . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $in_level2_counter . '">' . '<i class="fal fa-plus-circle" style="font-size: 1em !important; margin-left: 0; width: 21px;"></i>'. ( $in['in_type'] ? 'Option #'. ($in_level2_counter + 1).': ' : '') . '<span id="title-' . $in_level2['in_id'] . '">' . $in_level2['in_outcome'] . '</span>';
+
+        $in_level2_metadata = unserialize($in_level2['in_metadata']);
+        if (isset($in_level2_metadata['in__tree_max_seconds']) && $in_level2_metadata['in__tree_max_seconds'] > 0) {
+            $return_html .= ' <span style="font-size: 0.9em; font-weight: 300;"><i class="fal fa-clock" style="width:16px; text-transform: none !important;"></i>' . fn___echo_time_range($in_level2, true) . '</span>';
+        }
+
+        $return_html .= '</a></h4>';
+        $return_html .= '</div>';
+
+
+        //Level 2 body:
+        $return_html .= '<div id="collapse' . $in_level2_counter . '" class="panel-collapse collapse ' . ($expand_mode ? 'in' : 'out') . '" role="tabpanel" aria-labelledby="heading' . $in_level2_counter . '">';
+        $return_html .= '<div class="panel-body" style="padding:5px 0 0 25px;">';
+
+        //Messages:
+        foreach ($in_level2_messages as $tr) {
+            $return_html .= $CI->Chat_model->fn___dispatch_message($tr['tr_content']);
+        }
+
+
+        if (count($grandchildren_ins) > 0) {
+
+            //List level 3:
+            $return_html .= '<ul style="list-style-type: circle; margin:10px 0 10px -15px; font-size:1em;">';
+            foreach ($grandchildren_ins as $in_level3_counter => $in_level3) {
+
+                $return_html .= '<li>' . ($in_level2['in_type'] ? 'Option #' . ($in_level3_counter + 1) . ': ' : '') . $in_level3['in_outcome'];
+                $in_level3_metadata = unserialize($in_level3['in_metadata']);
+                if (isset($in_level3_metadata['in__tree_max_seconds']) && $in_level3_metadata['in__tree_max_seconds'] > 0) {
+                    $return_html .= ' <span style="font-size: 0.9em; font-weight: 300;"><i class="fal fa-clock"></i> ' . fn___echo_time_range($in_level3, true) . '</span>';
+                }
+                $return_html .= '</li>';
+
+            }
+            $return_html .= '</ul>';
+
+            //Show call to action to go here only:
+            if (!$expand_mode) {
+                //Since it has children, lets also give the option to navigate downwards:
+                //TODO Maybe consider enabling later on, but for now I want to reduce clutter
+                //$return_html .= '<p>You can also view <a href="/' . $in_level2['in_id'] . '" ' . ( $in['in_id'] == $CI->config->item('in_home_page') ? 'onclick="confirm_child_go(' . $in_level2['in_id'] . ')"' : '') . ' class="this-step alink-' . $in_level2['in_id'] . '">this intention</a> only.</p>';
+            }
+
+        }
+
+        $return_html .= '</div></div></div></div>';
+
+    }
+    $return_html .= '</div>';
+
+    return $return_html;
 }
 
 function fn___echo_tree_cost($in, $fb_messenger_format = 0, $expand_mode = false)
@@ -944,7 +1082,7 @@ function fn___echo_en_messages($tr){
     $count_msg_trs = $CI->Database_model->fn___tr_fetch(array(
         '( tr_id = ' . $tr['tr_id'] . ' OR tr_parent_transaction_id = ' . $tr['tr_id'] . ')' => null,
     ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
-    $ui .= '<li class="edit-off ' . fn___echo_advance() . '"><a class="btn btn-primary" style="border:2px solid #fedd16 !important;" href="/ledger?any_tr_id=' . $tr['tr_id'] . '" target="_parent" title="Go to Ledger Transactions" data-toggle="tooltip" data-placement="top"><i class="fas fa-atlas"></i> '.fn___echo_number($count_msg_trs[0]['totals']).'</a></li>';
+    $ui .= '<li class="edit-off ' . fn___echo_advance() . '"><a class="btn btn-primary" style="border:2px solid #fedd16 !important;" href="/ledger?tr_id=' . $tr['tr_id'] . '" target="_parent" title="Go to Ledger Transactions" data-toggle="tooltip" data-placement="top"><i class="fas fa-atlas"></i> '.fn___echo_number($count_msg_trs[0]['totals']).'</a></li>';
 
     //Order:
     $ui .= '<li class="edit-off message_status ' . fn___echo_advance() . '" style="margin: 0 3px 0 0;"><span title="Message order relative to siblings" data-toggle="tooltip" data-placement="top"><i class="fas fa-sort"></i>' . fn___echo_ordinal_number($tr['tr_order']) . '</span></li>';

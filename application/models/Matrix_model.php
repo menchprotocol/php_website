@@ -28,12 +28,12 @@ class Matrix_model extends CI_Model
          *
          * */
 
-        //Let's first check if we have an OR Intent that is working On, which means it's children have not been answered!
+        //Let's first check if we have an OR Intent that is drafting, which means it's children have not been answered!
         $first_pending_or_intent = $this->Database_model->fn___tr_fetch(array(
             'tr_parent_transaction_id' => $actionplan_tr_id, //This action Plan
-            'in_status >=' => 2, //Published+
+            'in_status' => 2, //Published
             'in_type' => 1, //OR Branch
-            'tr_status' => 1, //Working On, which means OR branch has not been answered yet
+            'tr_status' => 1, //drafting, which means OR branch has not been answered yet
         ), array('in_child'), 1, 0, array('tr_order' => 'ASC'));
 
         if (count($first_pending_or_intent) > 0) {
@@ -44,7 +44,7 @@ class Matrix_model extends CI_Model
         //Now check the next AND intent that has not been started:
         $next_new_intent = $this->Database_model->fn___tr_fetch(array(
             'tr_parent_transaction_id' => $actionplan_tr_id, //This action Plan
-            'in_status >=' => 2, //Published+
+            'in_status' => 2, //Published
             'tr_status' => 0, //New (not started yet) for either AND/OR branches
         ), array('in_child'), 1, 0, array('tr_order' => 'ASC'));
 
@@ -53,15 +53,15 @@ class Matrix_model extends CI_Model
         }
 
 
-        //Now check the next AND intent that is working on:
+        //Now check the next AND intent that is drafting:
         //I don't think this situation should ever happen...
         //Because if we don't have any of the previous ones,
         //how can we have this? 🤔 But let's keep it for now...
         $next_working_on_intent = $this->Database_model->fn___tr_fetch(array(
             'tr_parent_transaction_id' => $actionplan_tr_id, //This action Plan
-            'in_status >=' => 2, //Published+
+            'in_status' => 2, //Published
             'in_type' => 0, //AND Branch
-            'tr_status' => 1, //Working On
+            'tr_status' => 1, //drafting
         ), array('in_child'), 1, 0, array('tr_order' => 'ASC'));
 
         if (count($next_working_on_intent) > 0) {
@@ -860,7 +860,7 @@ class Matrix_model extends CI_Model
 
             //Dispatch all on-complete messages if we have any:
             $on_complete_messages = $this->Database_model->fn___tr_fetch(array(
-                'tr_status >=' => 2, //Published+
+                'tr_status' => 2, //Published
                 'tr_type_entity_id' => 4233, //On-Complete Messages
                 'tr_child_intent_id' => $actionplan_ins[0]['tr_child_intent_id'],
             ), array('en_parent'), 0, 0, array('tr_order' => 'ASC'));
@@ -1009,7 +1009,7 @@ class Matrix_model extends CI_Model
         //A recursive function to fetch all Tree for a given intent, either upwards or downwards
         $next_level_ins = $this->Database_model->fn___tr_fetch(array(
             'tr_parent_transaction_id' => $tr_id,
-            'in_status >=' => 2, //Published+
+            'in_status' => 2, //Published
             ($direction_is_downward ? 'tr_parent_intent_id' : 'tr_child_intent_id') => $in_id,
         ), array(($direction_is_downward ? 'in_child' : 'in_parent')));
 
@@ -1115,7 +1115,7 @@ class Matrix_model extends CI_Model
         $message_in_requirements = $this->Matrix_model->fn___in_req_completion($answer_ins[0]['in_requirement_entity_id'], $in_answer_id, $actionplan_tr_id);
 
         //Now mark intent as complete (and this will SKIP all siblings) and move on:
-        $this->Matrix_model->in_actionplan_complete_up($chosen_path[0], $chosen_path[0], ($message_in_requirements ? 1 /* Working On */ : null));
+        $this->Matrix_model->in_actionplan_complete_up($chosen_path[0], $chosen_path[0], ($message_in_requirements ? 1 /* drafting */ : null));
 
         //Successful:
         return true;
@@ -1171,7 +1171,7 @@ class Matrix_model extends CI_Model
             'in_flat_unique_published_tree' => array(), //Unique IDs
             'in_links_flat_tree' => array(), //Puts all the tree's intent transaction (intent link) IDs in a flat array, useful for quick processing
 
-            //Fetched for Published+ Intents:
+            //Fetched for Published Intents:
             '___tree_published_count' => 0, //A count of all published (in_status >= 2) intents within the tree
             '___tree_published_unique_count' => 0, //A count of all published (in_status >= 2) UNIQUE intents
             '___metadata_tree_count' => 0, //A count of all messages for all tree intents that are published
@@ -1199,7 +1199,7 @@ class Matrix_model extends CI_Model
 
                 //Fetch children:
                 $ins = $this->Database_model->fn___tr_fetch(array(
-                    'tr_status >=' => 2, //Published+
+                    'tr_status' => 2, //Published
                     'in_status >=' => 0, //New+
                     'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
                     'tr_id' => $previous_in['tr_id'],
@@ -1209,7 +1209,7 @@ class Matrix_model extends CI_Model
 
                 //Fetch parents:
                 $ins = $this->Database_model->fn___tr_fetch(array(
-                    'tr_status >=' => 2, //Published+
+                    'tr_status' => 2, //Published
                     'in_status >=' => 0, //New+
                     'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
                     'tr_id' => $previous_in['tr_id'],
@@ -1289,7 +1289,7 @@ class Matrix_model extends CI_Model
             //Fetch children:
             $next_level_ins = $this->Database_model->fn___tr_fetch(array(
                 'tr_parent_intent_id' => $in_id,
-                'tr_status >=' => 2, //Published+
+                'tr_status' => 2, //Published
                 'in_status >=' => 0, //New+
                 'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
             ), array('in_child'), 0, 0, array('tr_order' => 'ASC')); //Child intents must be ordered
@@ -1299,7 +1299,7 @@ class Matrix_model extends CI_Model
             //Fetch parents:
             $next_level_ins = $this->Database_model->fn___tr_fetch(array(
                 'tr_child_intent_id' => $in_id,
-                'tr_status >=' => 2, //Published+
+                'tr_status' => 2, //Published
                 'in_status >=' => 0, //New+
                 'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
             ), array('in_parent')); //Note that parents do not need any sorting, since we only sort child intents
@@ -1538,7 +1538,7 @@ class Matrix_model extends CI_Model
                 $expert_ens = $this->Database_model->fn___tr_fetch(array(
                     'tr_parent_entity_id' => 3084, //Industry expert entity
                     'tr_child_entity_id IN (' . join(',', $parent_ids) . ')' => null,
-                    'tr_status >=' => 2, //Published+
+                    'tr_status' => 2, //Published
                 ), array('en_child'));
 
                 //Put unique IDs in array key for faster searching:
@@ -1815,14 +1815,14 @@ class Matrix_model extends CI_Model
     function in_actionplan_complete_up($cr, $w, $force_tr_status = null)
     {
 
-        //Check if parent of this item is not started, because if not, we need to mark that as Working On:
+        //Check if parent of this item is not started, because if not, we need to mark that as drafting:
         $parent_ks = $this->Database_model->fn___tr_fetch(array(
             'tr_parent_transaction_id' => $w['tr_id'],
-            'tr_status' => 0, //skip intents that are not stared or working on...
+            'tr_status' => 0, //skip intents that are not stared or drafting...
             'tr_child_intent_id' => $cr['tr_parent_intent_id'],
         ), array('cr'));
         if (count($parent_ks) == 1) {
-            //Update status (It might not work if it was working on AND new tr_status=1)
+            //Update status (It might not work if it was drafting AND new tr_status=1)
             $this->Matrix_model->fn___actionplan_update($parent_ks[0]['tr_id'], 1);
         }
 
@@ -1840,7 +1840,7 @@ class Matrix_model extends CI_Model
                 'tr_parent_transaction_id' => $w['tr_id'],
                 'tr_parent_intent_id' => $cr['tr_parent_intent_id'], //Fetch children of parent intent which are the siblings of current intent
                 'tr_child_intent_id !=' => $cr['tr_child_intent_id'], //NOT The answer (we need its siblings)
-                'in_status >=' => 2,
+                'in_status' => 2,
                 'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
             ), array('w', 'cr', 'cr_c_child'));
 
@@ -1854,7 +1854,7 @@ class Matrix_model extends CI_Model
 
         if (!$force_tr_status) {
             //Regardless of Branch type, we need all children to be complete if we are to mark this as complete...
-            //If not, we will mark is as working on...
+            //If not, we will mark is as drafting...
             //So lets fetch the down tree and see Whatssup:
             $dwn_tree = $this->Matrix_model->k_recursive_fetch($w['tr_id'], $cr['tr_child_intent_id'], true);
 
@@ -1894,7 +1894,7 @@ class Matrix_model extends CI_Model
                 $parent_ks = $this->Database_model->fn___tr_fetch(array(
                     'tr_id' => $parent_tr_id,
                     'tr_parent_transaction_id' => $w['tr_id'],
-                    'in_status >=' => 2,
+                    'in_status' => 2,
                     'tr_status <' => 2, //Not completed in any way
                 ), array('cr', 'cr_c_child'));
 
@@ -1936,13 +1936,14 @@ class Matrix_model extends CI_Model
                     } elseif ($parent_ks[0]['tr_status'] == 0) {
 
                         //Status is not started, let's set to started:
-                        $this->Matrix_model->fn___actionplan_update($parent_ks[0]['tr_id'], 1); //Working On
+                        $this->Matrix_model->fn___actionplan_update($parent_ks[0]['tr_id'], 1); //drafting
 
                     }
                 }
             }
         }
     }
+
 
 
     function fn___in_verify_create($in_outcome, $tr_miner_entity_id = 0, $in_status = 0){
@@ -2081,7 +2082,7 @@ class Matrix_model extends CI_Model
 
     }
 
-    function fn___en_verify_create($en_name, $tr_miner_entity_id = 0, $force_creation = false, $en_status = 2, $en_icon = null, $en_psid = null){
+    function fn___en_verify_create($en_name, $tr_miner_entity_id = 0, $force_creation = false, $en_status = 0, $en_icon = null, $en_psid = null){
 
         if(strlen($en_name)<2){
             return array(
@@ -2092,7 +2093,7 @@ class Matrix_model extends CI_Model
 
         //Check to make sure name is not duplicate:
         $duplicate_name_ens = $this->Database_model->fn___en_fetch(array(
-            'en_status >=' => 0,
+            'en_status >=' => 0, //New+
             'LOWER(en_name)' => strtolower(trim($en_name)),
         ));
         if(count($duplicate_name_ens) > 0){
@@ -2161,7 +2162,7 @@ class Matrix_model extends CI_Model
              * */
 
             //Create student entity:
-            $added_en = $this->Matrix_model->fn___en_verify_create('Student', 0, true, 3, null, $psid);
+            $added_en = $this->Matrix_model->fn___en_verify_create('Student', 0, true, 2, null, $psid);
 
             //Inform student:
             $this->Chat_model->fn___dispatch_message(
@@ -2176,7 +2177,7 @@ class Matrix_model extends CI_Model
             $fb_profile = $graph_fetch['tr_metadata']['result'];
 
             //Create student entity with their Facebook Graph name:
-            $added_en = $this->Matrix_model->fn___en_verify_create($fb_profile['first_name'] . ' ' . $fb_profile['last_name'], 0, true, 3, null, $psid);
+            $added_en = $this->Matrix_model->fn___en_verify_create($fb_profile['first_name'] . ' ' . $fb_profile['last_name'], 0, true, 2, null, $psid);
 
             //Split locale variable into language and country like "EN_GB" for English in England
             $locale = explode('_', $fb_profile['locale'], 2);

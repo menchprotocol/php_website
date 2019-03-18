@@ -8,18 +8,13 @@
 
                 <li class="social-li">
 
-
-                    <a href="/ledger"
-                       class="social-link" data-toggle="tooltip" title="Mench Ledger"
-                       data-placement="top"><i class="fas fa-atlas"></i></a>
+                    <a href="https://github.com/askmench" target="_blank"
+                       class="social-link" data-toggle="tooltip" title="Mench is open-source. contribute on GitHub"
+                       data-placement="top"><i class="fab fa-github"></i></a>
 
                     <a href="https://angel.co/askmench/jobs" target="_blank"
                        class="social-link" data-toggle="tooltip" title="See openings on Angel List"
                        data-placement="top"><i class="fab fa-angellist"></i></a>
-
-                    <a href="https://github.com/askmench" target="_blank"
-                       class="social-link" data-toggle="tooltip" title="Mench is open-source. contribute on GitHub"
-                       data-placement="top"><i class="fab fa-github"></i></a>
 
                     <a href="https://askmench.slack.com" target="_blank"
                        class="social-link" data-toggle="tooltip" title="Chat with us on Slack"
@@ -43,6 +38,10 @@
                     <a href="https://www.instagram.com/askmench/" target="_blank" class="social-link"
                        data-toggle="tooltip" title="Follow on Instagram" data-placement="top"><i
                                 class="fab fa-instagram"></i></a>
+
+                    <a href="/ledger"
+                       class="social-link" data-toggle="tooltip" title="Mench Ledger"
+                       data-placement="top"><i class="fas fa-atlas"></i></a>
 
                     <a href="/8263?expand_mode=1&hide_subscribe=1" class="social-link" data-toggle="tooltip"
                        title="Read terms of service and privacy policy" data-placement="top"><i

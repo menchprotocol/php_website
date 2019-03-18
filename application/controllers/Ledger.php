@@ -465,6 +465,8 @@ class Ledger extends CI_Controller
     function fn___moderate($action = null, $target_obj = null, $target_id = 0)
     {
 
+        $en_session = fn___en_auth(array(1281), true);
+
         //Define all moderation actions:
         $moderation_tools = array(
             'identical_intent_outcomes' => 'Identical Intent Outcomes',
@@ -483,6 +485,8 @@ class Ledger extends CI_Controller
                 //Show error:
                 echo '<div style="color: #FF0000;">Error: Unknown action!</div>';
             }
+
+            echo '<div><a href="/ledger"> &laquo; Back to Ledger</a></div>';
 
             echo '<h1>Moderation Tools:</h1>';
             foreach($moderation_tools as $tool_key => $tool_name){
@@ -598,8 +602,8 @@ class Ledger extends CI_Controller
 
                 //Now fetch all its children:
                 $children = $this->Database_model->fn___tr_fetch(array(
-                    'tr_status >=' => 2,
-                    'en_status >=' => 2,
+                    'tr_status' => 2, //Published
+                    'en_status' => 2, //Published
                     'tr_parent_entity_id' => $en['tr_child_entity_id'],
                     'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
                 ), array('en_child'), 0, 0, array('tr_order' => 'ASC', 'en_id' => 'ASC'));
@@ -623,8 +627,8 @@ class Ledger extends CI_Controller
                     //Fetch all parents for this child:
                     $child_parent_ids = array(); //To be populated soon
                     $child_parents = $this->Database_model->fn___tr_fetch(array(
-                        'tr_status >=' => 2,
-                        'en_status >=' => 2,
+                        'tr_status' => 2, //Published
+                        'en_status' => 2, //Published
                         'tr_child_entity_id' => $child['en_id'],
                         'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
                     ), array('en_parent'), 0);
@@ -664,8 +668,8 @@ class Ledger extends CI_Controller
 
             //DOes it have a rate?
             $rate_trs = $this->Database_model->fn___tr_fetch(array(
-                'tr_status >=' => 2, //Published+
-                'en_status >=' => 2, //Published+
+                'tr_status' => 2, //Published
+                'en_status' => 2, //Published
                 'tr_type_entity_id' => 4319, //Number
                 'tr_parent_entity_id' => 4374, //Mench Coins
                 'tr_child_entity_id' => $tr['tr_type_entity_id'],
@@ -712,7 +716,7 @@ class Ledger extends CI_Controller
         foreach ($tr_pending as $tr) {
             if ($tr['tr_id'] > 0 && $tr['tr_status'] == 0) {
                 $this->Database_model->fn___tr_update($tr['tr_id'], array(
-                    'tr_status' => 1, //Working on... (So other cron jobs do not pickup this item again)
+                    'tr_status' => 1, //drafting... (So other cron jobs do not pickup this item again)
                 ));
             }
         }
@@ -863,8 +867,13 @@ class Ledger extends CI_Controller
 
     function fn___cron__sync_ledger_to_gephi(){
 
-        //Populates the nodes and edges table for Gephi https://gephi.org network visualizer
-        //TODO Fix issue that node IDs can be overlapping as data grows...
+        /*
+         *
+         * Populates the nodes and edges table for
+         * Gephi https://gephi.org network visualizer
+         *
+         * */
+
 
         //Boost processing power:
         fn___boost_power();

@@ -209,8 +209,8 @@ if(!$has_filters){
 
         //DOes it have a rate?
         $rate_trs = $this->Database_model->fn___tr_fetch(array(
-            'tr_status >=' => 2, //Published+
-            'en_status >=' => 2, //Published+
+            'tr_status' => 2, //Published
+            'en_status' => 2, //Published
             'tr_parent_entity_id' => 4374, //Mench Coins
             'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
             'tr_child_entity_id' => $tr['tr_type_entity_id'],
@@ -572,9 +572,12 @@ if(isset($_GET['tr_type_entity_id'])){
 
 //Fetch transactions:
 $trs_count = $this->Database_model->fn___tr_fetch($filters, $join_by, 0, 0, array(), 'COUNT(tr_id) as trs_count, SUM(tr_coins) as coins_sum');
+$filter_note = '';
 if(count($_GET) < 1 && !fn___en_auth(array(1308))){
     //This makes the public ledger focus on transactions with coins which is a nicer initial view into the ledger:
     $filters['tr_coins >'] = 0;
+    //Also give warning about this applied filter on the UI:
+    $filter_note = 'Showing recent transaction with awarded coins.';
 }
 $trs = $this->Database_model->fn___tr_fetch($filters, $join_by, (fn___is_dev() ? 50 : 200));
 
@@ -582,13 +585,10 @@ $trs = $this->Database_model->fn___tr_fetch($filters, $join_by, (fn___is_dev() ?
 
 
 //button to show:
-echo '<a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="' . fn___echo_advance() . '">'.( $has_filters ? '<i class="fal fa-minus-circle show-filter"></i><i class="fal fa-plus-circle show-filter hidden"></i>' : '<i class="fal fa-plus-circle show-filter"></i><i class="fal fa-minus-circle show-filter hidden"></i>').' Toggle Filters</a>';
+echo '<div><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');">'.( $has_filters ? '<i class="fal fa-minus-circle show-filter"></i><i class="fal fa-plus-circle show-filter hidden"></i>' : '<i class="fal fa-plus-circle show-filter"></i><i class="fal fa-minus-circle show-filter hidden"></i>').' Toggle Filters</a>'.( fn___en_auth(array(1281)) ? ' | <a href="/ledger/fn___moderate"><i class="fal fa-cog"></i> Moderation Tools</a>' : '').'</div>';
 
 
-
-echo '<div class="' . fn___echo_advance() . '">';
 echo '<div class="inline-box show-filter '.( $has_filters ? '' : 'hidden' ).'">';
-
 echo '<form action="" method="GET">';
 
 
@@ -711,7 +711,6 @@ if($has_filters){
 
 echo '</form>';
 echo '</div>';
-echo '</div>';
 
 
 
@@ -719,6 +718,10 @@ echo '</div>';
 if($has_filters){
     //Display Transactions:
     echo '<p style="margin: 10px 0 0 0;">Showing '.count($trs) . ( $trs_count[0]['trs_count'] > count($trs) ? ' of '. number_format($trs_count[0]['trs_count'] , 0) : '' ) .' transactions with '.number_format($trs_count[0]['coins_sum'], 0).' awarded coins:</p>';
+}
+
+if($filter_note){
+    echo '<p style="margin: 10px 0 0 0;">'.$filter_note.'</p>';
 }
 
 

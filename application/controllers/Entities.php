@@ -544,7 +544,7 @@ class Entities extends CI_Controller
         //Check to make sure name is not duplicate:
         $duplicate_name_ens = $this->Database_model->fn___en_fetch(array(
             'en_id !=' => $_POST['en_id'],
-            'en_status >=' => 0,
+            'en_status >=' => 0, //New+
             'LOWER(en_name)' => strtolower($en_update['en_name']),
         ));
         if(count($duplicate_name_ens) > 0){
@@ -1227,7 +1227,7 @@ class Entities extends CI_Controller
 
             //Fetch their passwords to authenticate login:
             $login_passwords = $this->Database_model->fn___tr_fetch(array(
-                'tr_status >=' => 2, //Published+
+                'tr_status' => 2, //Published
                 'tr_parent_entity_id' => 3286, //Mench Sign In Password
                 'tr_child_entity_id' => $_POST['en_id'], //For this user
             ));

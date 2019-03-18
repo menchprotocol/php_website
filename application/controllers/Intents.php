@@ -37,19 +37,21 @@ class Intents extends CI_Controller
             //Fetch home page intent:
             $home_ins = $this->Database_model->fn___in_fetch(array(
                 'in_id' => $this->config->item('in_home_page'),
-                'in_status' => 3, //Featured Intents
+                'in_status' => 2, //Is fixed to published status with Javascript logic.
             ));
 
             //How many featured intents do we have?
-            $featured_ins = $this->Database_model->fn___in_fetch(array(
-                'in_id !=' => $this->config->item('in_home_page'),
-                'in_status' => 3, //Featured Intents
-            ), array(), 0, 0, array('in_id' => 'ASC')); //This sorting is a hack for now to have Intent #6903 at the top (lol)
+            $featured_ins = $this->Database_model->fn___tr_fetch(array(
+                'tr_status' => 2, //Published
+                'in_status' => 2, //Published
+                'tr_type_entity_id' => 4228, //Fixed Intent Links
+                'tr_parent_intent_id' => 8469, //Feature Mench Intentions
+            ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
 
             if(count($home_ins)<1 && count($featured_ins) > 0){
 
                 //Go to the first featured intent:
-                fn___redirect_message('/'.$featured_ins[0]['in_id']);
+                fn___redirect_message('/'.$featured_ins[0]['tr_child_intent_id']);
 
             } elseif(count($home_ins) > 0){
 
@@ -62,6 +64,10 @@ class Intents extends CI_Controller
                     'featured_ins' => $featured_ins,
                 ));
                 $this->load->view('view_shared/public_footer');
+
+            } else {
+
+                //Oooopsi, unable to load the home page intent
 
             }
         }
@@ -841,7 +847,7 @@ class Intents extends CI_Controller
 
         //Fetch Intent Note Messages for this intent:
         $on_start_messages = $this->Database_model->fn___tr_fetch(array(
-            'tr_status >=' => 2, //Published+
+            'tr_status' => 2, //Published
             'tr_type_entity_id' => 4231, //Intent Note Messages
             'tr_child_intent_id' => $_POST['in_id'],
         ), array(), 0, 0, array('tr_order' => 'ASC'));

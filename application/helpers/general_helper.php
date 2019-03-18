@@ -293,8 +293,8 @@ function starting_verb_id($string){
 
         //Do a DB call to see if this verb is supported:
         $found_verbs = $CI->Database_model->fn___tr_fetch(array(
-            'tr_status >=' => 2,
-            'en_status >=' => 2,
+            'tr_status' => 2, //Published
+            'en_status' => 2, //Published
             'tr_parent_entity_id' => 5008, //Intent Supported Verbs
             'LOWER(en_name)' => strtolower($letters[0]),
         ), array('en_child'), 1);
@@ -356,7 +356,7 @@ function fn___en_auth($en_permission_group = null, $force_redirect = 0)
         return false;
     } else {
         //Block access:
-        return fn___redirect_message((isset($session_en['en__parents'][0]) && fn___filter_array($session_en['en__parents'], 'en_id', 1308) ? '/intents/' . $CI->config->item('in_home_page') : '/login?url=' . urlencode($_SERVER['REQUEST_URI'])), '<div class="alert alert-danger maxout" role="alert">' . (isset($session_en['en_id']) ? 'Access not authorized.' : 'Sign In to access the matrix.') . '</div>');
+        return fn___redirect_message((isset($session_en['en__parents'][0]) && fn___filter_array($session_en['en__parents'], 'en_id', 1308) ? '/intents/' . $CI->config->item('in_home_page') : '/login?url=' . urlencode($_SERVER['REQUEST_URI'])), '<div class="alert alert-danger" role="alert">Error: ' . (isset($session_en['en_id']) ? 'Access not authorized.' : 'Sign In to access.') . '</div>');
     }
 
 }

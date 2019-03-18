@@ -323,7 +323,7 @@ class Messenger extends CI_Controller
 
                                 $tr_data['tr_type_entity_id'] = $att_media_types[$att['type']][( $sent_by_mench ? 'sent' : 'received' )];
                                 $tr_data['tr_content'] = $att['payload']['url']; //Media Attachment Temporary Facebook URL
-                                $tr_data['tr_status'] = 0; //Working On, since URL needs to be uploaded to Mench CDN via Cron Job
+                                $tr_data['tr_status'] = 0; //drafting, since URL needs to be uploaded to Mench CDN via Cron Job
 
                             } elseif ($att['type'] == 'location') {
 
@@ -607,20 +607,20 @@ class Messenger extends CI_Controller
                 $actionplan_parents = $this->Database_model->fn___tr_fetch(array(
                     'tr_type_entity_id' => 4559, //Action Plan Step
                     'tr_parent_transaction_id' => $actionplan_tr_id,
-                    'in_status >=' => 2, //Published+ Intents
+                    'in_status' => 2, //Published Intents
                     'tr_child_intent_id' => $in_id,
                 ), array('in_parent'));
 
                 $actionplan_children = $this->Database_model->fn___tr_fetch(array(
                     'tr_type_entity_id' => 4559, //Action Plan Step
                     'tr_parent_transaction_id' => $actionplan_tr_id,
-                    'in_status >=' => 2, //Published+ Intents
+                    'in_status' => 2, //Published Intents
                     'tr_parent_intent_id' => $in_id,
                 ), array('in_child'));
 
 
                 $ins = $this->Database_model->fn___in_fetch(array(
-                    'in_status >=' => 2,
+                    'in_status' => 2,
                     'in_id' => $in_id,
                 ));
 

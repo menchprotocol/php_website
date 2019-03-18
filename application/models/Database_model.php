@@ -308,8 +308,8 @@ class Database_model extends CI_Model
 
                     //Try fetching subscribers email:
                     foreach($this->Database_model->fn___tr_fetch(array(
-                        'tr_status >=' => 2, //Published+
-                        'en_status >=' => 2, //Published+
+                        'tr_status' => 2, //Published
+                        'en_status' => 2, //Published
                         'tr_type_entity_id' => 4255, //Linked Entities Text (Email is text)
                         'tr_parent_entity_id' => 3288, //Email Address
                         'tr_child_entity_id' => $subscriber_en_id,

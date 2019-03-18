@@ -84,18 +84,13 @@ $config['fb_convert_4537']          = array( //Dedicated media formats supported
 //3x Table Status:
 $config['fixed_fields']             = array(
                                         'tr_status' => array(
-                                            3 => array(
-                                                's_name' => 'Verified',
-                                                's_desc' => 'Transaction is double-checked and verified',
-                                                's_icon' => '<i class="fas fa-check-double"></i>',
-                                            ),
                                             2 => array(
                                                 's_name' => 'Published',
                                                 's_desc' => 'Transaction is complete, ready and live',
                                                 's_icon' => '<i class="fas fa-check-square"></i>',
                                             ),
                                             1 => array( //Considered incomplete, see tr_status_incomplete for more details
-                                                's_name' => 'Working On',
+                                                's_name' => 'Drafting',
                                                 's_desc' => 'Transaction is being worked-on so it can be published',
                                                 's_icon' => '<i class="fas fa-spinner fa-spin"></i>',
                                             ),
@@ -111,18 +106,13 @@ $config['fixed_fields']             = array(
                                             ),
                                         ),
                                         'in_status' => array(
-                                            3 => array(
-                                                's_name' => 'Featured',
-                                                's_desc' => 'Intent is recommended by mench.com and Mench personal assistant',
-                                                's_icon' => '<i class="fas fa-badge-check"></i>',
-                                            ),
                                             2 => array(
                                                 's_name' => 'Published',
                                                 's_desc' => 'Intent is live and publicly accessible',
                                                 's_icon' => '<i class="fas fa-check-square"></i>',
                                             ),
                                             1 => array(
-                                                's_name' => 'Working On',
+                                                's_name' => 'Drafting',
                                                 's_desc' => 'Intent is being worked-on so it can be published',
                                                 's_icon' => '<i class="fas fa-spinner fa-spin"></i>',
                                             ),
@@ -138,18 +128,13 @@ $config['fixed_fields']             = array(
                                             ),
                                         ),
                                         'en_status' => array(
-                                            3 => array(
-                                                's_name' => 'Verified',
-                                                's_desc' => 'Entity is a real person connected to Mench personal assistant',
-                                                's_icon' => '<i class="fas fa-badge-check blue"></i>',
-                                            ),
                                             2 => array(
                                                 's_name' => 'Published',
                                                 's_desc' => 'Entity is live and publicly accessible',
                                                 's_icon' => '<i class="fas fa-check-square"></i>',
                                             ),
                                             1 => array(
-                                                's_name' => 'Working On',
+                                                's_name' => 'Drafting',
                                                 's_desc' => 'Entity is being worked-on so it can be published',
                                                 's_icon' => '<i class="fas fa-spinner fa-spin"></i>'
                                             ),

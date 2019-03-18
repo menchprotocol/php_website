@@ -2,7 +2,7 @@
 
 //Prepare some variables to better understand our situation here:
 $on_start_messages = $this->Database_model->fn___tr_fetch(array(
-    'tr_status >=' => 2, //Published+
+    'tr_status' => 2, //Published
     'tr_type_entity_id' => 4231, //Intent Note Messages
     'tr_child_intent_id' => $value['in_id'],
 ), array(), 0, 0, array('tr_order' => 'ASC'));
