@@ -38,12 +38,18 @@ foreach ($this->Database_model->fn___tr_fetch(array(
 //Overview:
 if (!$hide_subscribe) {
 
-    echo '<h3 style="margin-bottom:5px; margin-top:0px !important;">Overview:</h3>';
-    echo '<div style="margin:5px 0 25px 5px;" class="maxout">';
-    echo fn___echo_tree_steps($in, false);
-    echo fn___echo_tree_sources($in, false);
-    echo fn___echo_tree_cost($in, false);
-    echo '</div>';
+    $step_info = fn___echo_tree_steps($in, false);
+    $source_info = fn___echo_tree_sources($in, false);
+    $cost_info = fn___echo_tree_cost($in, false);
+
+    if($step_info || $source_info || $cost_info){
+        echo '<h3 style="margin-bottom:5px; margin-top:0px !important;">Overview:</h3>';
+        echo '<div style="margin:5px 0 25px 5px;" class="maxout">';
+        echo $step_info;
+        echo $source_info;
+        echo $cost_info;
+        echo '</div>';
+    }
 
     //Call to action button:
     echo '<a class="btn btn-primary" href="https://m.me/askmench?ref='.$in['in_id'].'" style="display: inline-block; padding:12px 36px;">Get Started &nbsp;&nbsp;&nbsp; <i class="fas fa-angle-double-right"></i></a>';
@@ -53,9 +59,11 @@ echo '</div>';
 
 
 
-
 //Exclude certain intents form being displayed on this section:
-$exclude_array = array(8469, $in['in_id'], $this->config->item('in_home_page'));
+$exclude_array = $this->config->item('in_status_locked');
+
+//Also exclude this intent:
+array_push($exclude_array, $in['in_id']);
 
 echo '<h3 style="margin-bottom:5px; margin-top:22px;">Other Intentions:</h3>';
 echo '<div class="list-group grey_list actionplan_list maxout">';
@@ -79,7 +87,7 @@ foreach ($this->Database_model->fn___tr_fetch(array(
     'tr_status' => 2, //Published
     'in_status' => 2, //Published
     'tr_type_entity_id' => 4228, //Fixed intent links only
-    'tr_parent_intent_id' => 8469, //Feature Mench Intentions
+    'tr_parent_intent_id' => $this->config->item('in_featured'), //Feature Mench Intentions
     'in_id NOT IN (' . join(',', $exclude_array) . ')' => null,
 ), array('in_child'), 0, 0, array('tr_order' => 'ASC')) as $featured_intention) {
     echo fn___echo_in_featured($featured_intention);

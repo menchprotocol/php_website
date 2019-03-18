@@ -14,7 +14,6 @@
 
         <?php
 
-
         //Parents
         echo '<h5><span class="badge badge-h"><span class="li-parent-count">' . count($entity['en__parents']) . '</span> Parent' . fn___echo__s(count($entity['en__parents'])) . '</span></h5>';
         echo '<div id="list-parent" class="list-group  grey-list">';
@@ -54,18 +53,6 @@
 
             echo '</td>';
 
-        //Count orphans IF we are in the top parent root:
-        if ($this->config->item('en_top_focus_id') == $entity['en_id'] && 0) {
-            $orphans_count = count($this->Database_model->fn___en_fetch(array(
-                ' NOT EXISTS (SELECT 1 FROM table_ledger WHERE en_id=tr_child_entity_id AND tr_status>=0) ' => null,
-            ), array('skip_en__parents')));
-
-            if ($orphans_count > 0) {
-                echo '<td style="width:130px;">';
-                echo '<span style="padding-left:8px; display: inline-block;"><a href="/entities/fn___en_orphans">' . $orphans_count . ' Orphans &raquo;</a></span>';
-                echo '</td>';
-            }
-        }
 
         echo '<td style="text-align: right;"><div class="btn-group btn-group-sm ' . fn___echo_advance() . '" style="margin-top:-5px;" role="group">';
 

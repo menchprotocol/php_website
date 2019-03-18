@@ -527,16 +527,16 @@ function fn___adjust_js_ui(in_id, level, new_hours, intent_deficit_count=0, appl
 
         if (level == 3) {
             //Adjust top level intent as well:
-            var in_home_page = parseInt($('.intent_line_' + in_parent_id).attr('parent-intent-id'));
-            var in_primary__tree_seconds = parseFloat($('.t_estimate_' + in_home_page + ':first').attr('tree-max-seconds'));
+            var in_top_level = parseInt($('.intent_line_' + in_parent_id).attr('parent-intent-id'));
+            var in_primary__tree_seconds = parseFloat($('.t_estimate_' + in_top_level + ':first').attr('tree-max-seconds'));
             var in_new__tree_seconds = in_primary__tree_seconds + in_deficit_seconds;
 
             if (!(intent_deficit_count == 0)) {
-                $('.children-counter-' + in_home_page).text(parseInt($('.children-counter-' + in_home_page + ':first').text()) + intent_deficit_count);
+                $('.children-counter-' + in_top_level).text(parseInt($('.children-counter-' + in_top_level + ':first').text()) + intent_deficit_count);
             }
 
             //Update Hours:
-            $('.t_estimate_' + in_home_page)
+            $('.t_estimate_' + in_top_level)
                 .attr('tree-max-seconds', in_new__tree_seconds)
                 .text(fn___echo_js_hours(in_new__tree_seconds));
         }
@@ -600,7 +600,28 @@ function fn___in_modify_load(in_id, tr_id) {
             $('#in_seconds_cost').val(data.in.in_seconds_cost);
             $('#in_requirement_entity_id').val(data.in.in_requirement_entity_id);
             $('.tr_in_link_title').text('');
-            $('#in_status').val(data.in.in_status).attr('original-status', data.in.in_status).prop('disabled', (in_home_page==in_id)); //Set the status before it gets changed by miners
+
+            $('#in_status').val(data.in.in_status).attr('original-status', data.in.in_status); //Set the status before it gets changed by miners
+
+            //Status locked intent?
+            if(jQuery.inArray(in_id, in_status_locked) !== -1){
+
+                //Yes, lock status:
+                $('#in_status').prop('disabled', true);
+
+                //Show publish lock:
+                $('.in_status_lock').removeClass('hidden');
+
+
+            } else {
+
+                //Nope, unlock status:
+                $('#in_status').prop('disabled', false);
+
+                //Hide publish lock:
+                $('.in_status_lock').addClass('hidden');
+
+            }
 
             //Load intent link data if available:
             if (tr_id > 0) {

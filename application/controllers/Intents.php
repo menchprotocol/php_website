@@ -45,7 +45,7 @@ class Intents extends CI_Controller
                 'tr_status' => 2, //Published
                 'in_status' => 2, //Published
                 'tr_type_entity_id' => 4228, //Fixed Intent Links
-                'tr_parent_intent_id' => 8469, //Feature Mench Intentions
+                'tr_parent_intent_id' => $this->config->item('in_featured'), //Feature Mench Intentions
             ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
 
             if(count($home_ins)<1 && count($featured_ins) > 0){
@@ -153,32 +153,6 @@ class Intents extends CI_Controller
         //Load views:
         $this->load->view('view_shared/matrix_header', array( 'title' => $ins[0]['in_outcome'].' | Intents' ));
         $this->load->view('view_intents/in_miner_ui', array( 'in' => $ins[0] ));
-        $this->load->view('view_shared/matrix_footer');
-
-    }
-
-
-    function fn___in_orphans()
-    {
-
-        /*
-         *
-         * Lists all orphan intents (without a parent intent)
-         * so Miners can review and organize them accordingly.
-         *
-         * */
-
-        //Authenticate Miner, redirect if failed:
-        $session_en = fn___en_auth(array(1308), true);
-
-        //Load views:
-        $this->load->view('view_shared/matrix_header', array( 'title' => 'Orphan Intents' ));
-        $this->load->view('view_intents/in_miner_ui', array(
-            //Passing this will load the orphans instead of the regular intent tree view:
-            'orphan_ins' => $this->Database_model->fn___in_fetch(array(
-                'NOT EXISTS (SELECT 1 FROM table_ledger WHERE in_id=tr_child_intent_id AND tr_status>=0)' => null,
-            )),
-        ));
         $this->load->view('view_shared/matrix_footer');
 
     }

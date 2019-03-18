@@ -467,131 +467,46 @@ class Ledger extends CI_Controller
 
         $en_session = fn___en_auth(array(1281), true);
 
-        //Define all moderation actions:
+        //Define all moderation functions:
         $moderation_tools = array(
-            'identical_intent_outcomes' => 'Identical Intent Outcomes',
-            'identical_entity_names' => 'Identical Entity Names',
-            'sync_algolia' => 'Update Algolia Search Index',
-            'php_info' => 'Server PHP Info',
-            'compose_test_message' => 'Compose Test Message',
-            'matrix_cache' => 'Matrix PHP Cache',
+            //Miners:
+            '/ledger/fn___moderate/identical_intent_outcomes' => 'Identical Intent Outcomes',
+            '/ledger/fn___moderate/identical_entity_names' => 'Identical Entity Names',
+            '/ledger/fn___moderate/orphan_intents' => 'Orphan Intents',
+            '/ledger/fn___moderate/orphan_entities' => 'Orphan Entities',
+            '/ledger/fn___moderate/identical_entity_names' => 'Identical Entity Names',
+
+            //Developers:
+            '/ledger/fn___moderate/compose_test_message' => 'Compose Test Message',
+            '/ledger/fn___moderate/matrix_cache' => 'Matrix PHP Cache',
+            '/ledger/fn___moderate/php_info' => 'Server PHP Info',
+            '/ledger/fn___moderate/sync_algolia' => 'Update Algolia Search Index',
+            '/intents/fn___cron__in_metadata_update' => 'Update Intent Metadata',
         );
 
-        $invalid_action = ($action && !array_key_exists($action, $moderation_tools));
 
-        if($invalid_action || !$action){
+        if(!$action) {
 
-            if($invalid_action){
-                //Show error:
-                echo '<div style="color: #FF0000;">Error: Unknown action!</div>';
+            echo '<div style="margin-bottom: 10px;"><a href="/ledger">Ledger</a> &raquo;</div>';
+
+            echo '<h1>Moderation Tools</h1>';
+            foreach ($moderation_tools as $tool_key => $tool_name) {
+                echo '<div><a href="' . $tool_key . '">' . $tool_name . '</a></div>';
             }
 
-            echo '<div><a href="/ledger"> &laquo; Back to Ledger</a></div>';
-
-            echo '<h1>Moderation Tools:</h1>';
-            foreach($moderation_tools as $tool_key => $tool_name){
-                echo '<div><a href="/ledger/fn___moderate/'.$tool_key.'">'.$tool_name.'</a></div>';
-            }
-
-        } elseif($action=='identical_intent_outcomes') {
-
-            //Do a query to detect intents with the exact same title:
-            $q = $this->db->query('select in1.* from table_intents in1 where (select count(*) from table_intents in2 where in2.in_outcome = in1.in_outcome) > 1 ORDER BY in1.in_outcome ASC');
-            $duplicates = $q->result_array();
-
-            $prev_title = null;
-
-            echo '<div><a href="/ledger/fn___moderate"> &laquo; Back to Moderation Tools</a></div>';
-
-            foreach ($duplicates as $in) {
-                if ($prev_title != $in['in_outcome']) {
-                    echo '<hr />';
-                    $prev_title = $in['in_outcome'];
-                }
-
-                echo '<a href="/intents/' . $in['in_id'] . '">#' . $in['in_id'] . '</a> ' . $in['in_outcome'] . '<br />';
-            }
-
-        } elseif($action=='identical_entity_names') {
-
-            $q = $this->db->query('select en1.* from table_entities en1 where (select count(*) from table_entities en2 where en2.en_name = en1.en_name) > 1 ORDER BY en1.en_name ASC');
-            $duplicates = $q->result_array();
-
-            $prev_title = null;
-
-            echo '<div><a href="/ledger/fn___moderate"> &laquo; Back to Moderation Tools</a></div>';
-
-            foreach ($duplicates as $u) {
-                if ($prev_title != $u['en_name']) {
-                    echo '<hr />';
-                    $prev_title = $u['en_name'];
-                }
-
-                echo '<a href="/entities/' . $u['en_id'] . '">#' . $u['en_id'] . '</a> ' . $u['en_name'] . '<br />';
-            }
-
-        } elseif($action=='sync_algolia') {
-
-            //Call the update function and passon possible values:
-            fn___echo_json($this->Database_model->fn___update_algolia($target_obj, $target_id));
-
-        } elseif($action=='php_info') {
-
-            echo '<div><a href="/ledger/fn___moderate"> &laquo; Back to Moderation Tools</a></div>';
-            echo phpinfo();
-
-        } elseif($action=='compose_test_message') {
-
-            if(isset($_POST['test_message'])){
-
-                $p = $this->Chat_model->fn___dispatch_message($_POST['test_message'], ( intval($_POST['recipient_en']) ? array('en_id' => $_POST['recipient_en']) : array() ), $_POST['fb_messenger_format']);
-
-                if($_POST['fb_messenger_format'] || !$p['status']){
-                    fn___echo_json(array(
-                        'analyze' => fn___extract_message_references($_POST['test_message']),
-                        'results' => $p,
-                    ));
-                } else {
-                    //HTML:
-                    echo '<div><a href="/ledger/fn___moderat/compose_test_message"> &laquo; Back to Message Compose</a></div>';
-                    echo $p['output_messages'][0]['message_body'];
-                }
-
-            } else {
-
-                //UI to compose a test message:
-                echo '<form method="POST" action="">';
-
-                echo '<div><a href="/ledger/fn___moderate"> &laquo; Back to Moderation Tools</a></div>';
-
-                echo '<div class="mini-header">Message:</div>';
-                echo '<textarea name="test_message" style="width:400px; height: 200px;"></textarea><br />';
-
-                echo '<div class="mini-header">Recipient Entity ID:</div>';
-                echo '<input type="number" name="recipient_en" value="1"><br />';
-
-                echo '<div class="mini-header">Format Is Messenger:</div>';
-                echo '<input type="number" name="fb_messenger_format" value="0"><br /><br />';
-
-
-                echo '<input type="submit" value="Compose Test Message">';
-                echo '</form>';
-
-            }
-
-        } elseif($action=='matrix_cache') {
+        } elseif($action=='matrix_cache'){
 
             /*
-             *
-             * This function prepares a PHP-friendly text to be copied to matrix_cache.php
-             * (which is auto loaded) to provide a cache image of some entities in
-             * the tree for faster application processing.
-             *
-             * */
+                 *
+                 * This function prepares a PHP-friendly text to be copied to matrix_cache.php
+                 * (which is auto loaded) to provide a cache image of some entities in
+                 * the tree for faster application processing.
+                 *
+                 * */
 
             //First first all entities that have Cache in PHP Config @4527 as their parent:
             $config_ens = $this->Database_model->fn___tr_fetch(array(
-                'tr_status >=' => 0,
+                'tr_status' => 2,
                 'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
                 'tr_parent_entity_id' => 4527,
             ), array('en_child'), 0);
@@ -647,6 +562,131 @@ class Ledger extends CI_Controller
 
                 }
                 echo ');<br />';
+            }
+
+        } else{
+
+            //Show back button:
+            echo '<div style="margin-bottom: 10px;"><a href="/ledger">Ledger</a> &raquo; <a href="/ledger/fn___moderate">Moderator Tools</a> &raquo;</div>';
+
+            if($action=='orphan_intents') {
+
+                echo '<h1>Orphan Intents</h1>';
+
+                //Display orphan Intents:
+                foreach ( $this->Database_model->fn___in_fetch(array(
+                    ' NOT EXISTS (SELECT 1 FROM table_ledger WHERE in_id=tr_child_intent_id AND tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ') AND tr_status>=0) ' => null,
+                    'in_status >=' => 0,
+                    'in_id !=' => $this->config->item('in_mission_id'),
+                    'in_id NOT IN (' . join(',', $this->config->item('in_status_locked')) . ')' => null,
+                )) as $count => $orphan_in) {
+                    echo '<div>'.($count+1).') <a href="/intents/'.$orphan_in['in_id'].'">'.$orphan_in['in_outcome'].'</a> [Status: '.$orphan_in['in_status'].']</div>';
+                }
+
+            } elseif($action=='orphan_entities') {
+
+                echo '<h1>Orphan Entities</h1>';
+
+                foreach ( $this->Database_model->fn___en_fetch(array(
+                    ' NOT EXISTS (SELECT 1 FROM table_ledger WHERE en_id=tr_child_entity_id AND tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ') AND tr_status>=0) ' => null,
+                    'en_status >=' => 0,
+                    'en_id !=' => $this->config->item('en_top_focus_id'),
+                ), array('skip_en__parents')) as $count => $orphan_en) {
+                    echo '<div>'.($count+1).') <a href="/entities/'.$orphan_en['en_id'].'">'.$orphan_en['en_name'].'</a> [Status: '.$orphan_en['en_status'].']</div>';
+                }
+
+            } elseif($action=='identical_intent_outcomes') {
+
+                echo '<h1>Identical Intent Outcomes</h1>';
+
+                //Do a query to detect intents with the exact same title:
+                $q = $this->db->query('select in1.* from table_intents in1 where (select count(*) from table_intents in2 where in2.in_outcome = in1.in_outcome) > 1 ORDER BY in1.in_outcome ASC');
+                $duplicates = $q->result_array();
+
+                $prev_title = null;
+
+                foreach ($duplicates as $in) {
+                    if ($prev_title != $in['in_outcome']) {
+                        echo '<hr />';
+                        $prev_title = $in['in_outcome'];
+                    }
+
+                    echo '<div><a href="/intents/' . $in['in_id'] . '">#' . $in['in_id'] . '</a> ' . $in['in_outcome'] . ' [Status: '.$in['in_status'].']</div>';
+                }
+
+            } elseif($action=='identical_entity_names') {
+
+                echo '<h1>Identical Entity Names</h1>';
+
+                $q = $this->db->query('select en1.* from table_entities en1 where (select count(*) from table_entities en2 where en2.en_name = en1.en_name) > 1 ORDER BY en1.en_name ASC');
+                $duplicates = $q->result_array();
+
+                $prev_title = null;
+
+                foreach ($duplicates as $en) {
+
+                    if ($prev_title != $en['en_name']) {
+                        echo '<hr />';
+                        $prev_title = $en['en_name'];
+                    }
+
+                    echo '<a href="/entities/' . $en['en_id'] . '">#' . $en['en_id'] . '</a> ' . $en['en_name'] . ' [Status: '.$en['en_status'].']<br />';
+                }
+
+            } elseif($action=='sync_algolia') {
+
+                //Call the update function and passon possible values:
+                fn___echo_json($this->Database_model->fn___update_algolia($target_obj, $target_id));
+
+            } elseif($action=='php_info') {
+
+                echo phpinfo();
+
+            } elseif($action=='compose_test_message') {
+
+                echo '<h1>Test Compose Message</h1>';
+
+                if(isset($_POST['test_message'])){
+
+                    $p = $this->Chat_model->fn___dispatch_message($_POST['test_message'], ( intval($_POST['recipient_en']) ? array('en_id' => $_POST['recipient_en']) : array() ), $_POST['fb_messenger_format']);
+
+                    if($_POST['fb_messenger_format'] || !$p['status']){
+                        fn___echo_json(array(
+                            'analyze' => fn___extract_message_references($_POST['test_message']),
+                            'results' => $p,
+                        ));
+                    } else {
+                        //HTML:
+                        echo '<div><a href="/ledger/fn___moderat/compose_test_message"> &laquo; Back to Message Compose</a></div>';
+                        echo $p['output_messages'][0]['message_body'];
+                    }
+
+                } else {
+
+                    //UI to compose a test message:
+                    echo '<form method="POST" action="">';
+
+                    echo '<div class="mini-header">Message:</div>';
+                    echo '<textarea name="test_message" style="width:400px; height: 200px;"></textarea><br />';
+
+                    echo '<div class="mini-header">Recipient Entity ID:</div>';
+                    echo '<input type="number" name="recipient_en" value="1"><br />';
+
+                    echo '<div class="mini-header">Format Is Messenger:</div>';
+                    echo '<input type="number" name="fb_messenger_format" value="0"><br /><br />';
+
+
+                    echo '<input type="submit" value="Compose Test Message">';
+                    echo '</form>';
+
+                }
+
+            } else {
+
+                //Oooooopsi, unknown:
+                echo '<h1>Unknown Function</h1>';
+                echo 'Not sure how you landed here!';
+
             }
 
         }

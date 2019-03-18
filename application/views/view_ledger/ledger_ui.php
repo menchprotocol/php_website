@@ -35,7 +35,19 @@ $has_filters = ( count($_GET) > 0 );
 //Display stats if no filters have been applied:
 if(!$has_filters){
 
-    echo '<h1>Ledger Stats</h1>';
+    echo '<h1>Mench Ledger <a href="javascript:void(0);" onclick="$(\'.ledger_intro\').toggleClass(\'hidden\')"><i class="fal fa-info-circle"></i></a></h1>';
+
+    //Fetch & Display Intent Note Messages to explain the ledger:
+    echo '<div class="ledger_intro hidden">';
+    foreach ($this->Database_model->fn___tr_fetch(array(
+        'tr_status' => 2, //Published
+        'tr_type_entity_id' => 4231, //Intent Note Messages
+        'tr_child_intent_id' => $this->config->item('in_leger_intro'),
+    ), array(), 0, 0, array('tr_order' => 'ASC')) as $tr) {
+        echo $this->Chat_model->fn___dispatch_message($tr['tr_content']);
+    }
+    echo '<div style="margin-top:12px;"><a href="/'. $this->config->item('in_leger_intro') .'"><u>Lead More</u> &raquo;</a></div>';
+    echo '</div>';
 
     //Load core Mench Objects:
     $en_all_4534 = $this->config->item('en_all_4534');
@@ -50,8 +62,9 @@ if(!$has_filters){
 
 
     echo '<div class="row stat-row">';
-    foreach (fn___echo_fixed_fields() as $object_id => $statuses) {
 
+
+    foreach (fn___echo_fixed_fields() as $object_id => $statuses) {
 
         //Define object type and run count query:
         if($object_id=='in_status'){
@@ -116,24 +129,13 @@ if(!$has_filters){
 
 
         //Start section:
-        echo '<div class="col-md-4">'; //'.$spacing.'
+        echo '<div class="col-md-4">';
 
         echo '<a href="javascript:void(0);" onclick="$(\'.obj-'.$object_id.'\').toggleClass(\'hidden\');" class="large-stat"><span>'.$en_all_4534[$obj_en_id]['m_icon']. ' <span class="obj-'.$object_id.'">'. fn___echo_number($this_totals) . '</span><span class="obj-'.$object_id.' hidden">'. number_format($this_totals) . '</span></span>'.$en_all_4534[$obj_en_id]['m_name'].' <i class="obj-'.$object_id.' fal fa-plus-circle"></i><i class="obj-'.$object_id.' fal fa-minus-circle hidden"></i></a>';
 
 
         echo '<table class="table table-condensed table-striped stats-table mini-stats-table obj-'.$object_id.' hidden">';
-
-        //Object Header:
-        echo '<tr style="font-weight: bold;">';
-        echo '<td style="text-align: left;">Status:</td>';
-        echo '<td style="text-align: right;">Count</td>';
-        echo '</tr>';
-
-        //Object Total count:
         echo $this_ui;
-
-
-        //End Section:
         echo '</table>';
 
         if($object_id=='in_status'){
@@ -145,13 +147,6 @@ if(!$has_filters){
 
 
             echo '<table class="table table-condensed table-striped stats-table mini-stats-table obj-'.$object_id.' hidden" style="margin-top:20px;">';
-
-            //Object Header:
-            echo '<tr style="font-weight: bold;">';
-            echo '<td style="text-align: left;">Verb:</td>';
-            echo '<td style="text-align: right;">Count</td>';
-            echo '</tr>';
-
 
             $totals = 0;
             foreach($verb_counts as $verb){
@@ -354,7 +349,7 @@ if(!$has_filters){
 
 
 
-echo '<h1>Ledger Transactions</h1>';
+echo '<h1>Recent Transactions</h1>';
 
 
 
@@ -585,7 +580,7 @@ $trs = $this->Database_model->fn___tr_fetch($filters, $join_by, (fn___is_dev() ?
 
 
 //button to show:
-echo '<div><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');">'.( $has_filters ? '<i class="fal fa-minus-circle show-filter"></i><i class="fal fa-plus-circle show-filter hidden"></i>' : '<i class="fal fa-plus-circle show-filter"></i><i class="fal fa-minus-circle show-filter hidden"></i>').' Toggle Filters</a>'.( fn___en_auth(array(1281)) ? ' | <a href="/ledger/fn___moderate"><i class="fal fa-cog"></i> Moderation Tools</a>' : '').'</div>';
+echo '<div><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');">'.( $has_filters ? '<i class="fal fa-minus-circle show-filter"></i><i class="fal fa-plus-circle show-filter hidden"></i>' : '<i class="fal fa-plus-circle show-filter"></i><i class="fal fa-minus-circle show-filter hidden"></i>').' Toggle Filters</a>'.( fn___en_auth(array(1281)) ? ' | <a href="/ledger/fn___moderate"><i class="fal fa-cog"></i> <u>Moderation Tools</u> &raquo;</a>' : '').'</div>';
 
 
 echo '<div class="inline-box show-filter '.( $has_filters ? '' : 'hidden' ).'">';

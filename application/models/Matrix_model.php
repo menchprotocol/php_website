@@ -112,7 +112,7 @@ class Matrix_model extends CI_Model
             ), $actionplans[0]['tr_parent_entity_id']);
 
             //Inform Student on how to can command Mench:
-            $this->Chat_model->fn___compose_message(8332, array('en_id' => $actionplans[0]['tr_parent_entity_id']));
+            $this->Chat_model->fn___random_intro(8332, array('en_id' => $actionplans[0]['tr_parent_entity_id']));
 
         }
 

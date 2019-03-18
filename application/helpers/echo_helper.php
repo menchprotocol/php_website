@@ -1407,9 +1407,9 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     //Show smaller intent status:
     $ui .= '<span class="icon-top-right in_status_' . $in['in_id'] . '"><span data-toggle="tooltip" data-placement="right" title="'.$fixed_fields['in_status'][$in['in_status']]['s_name'].': '.$fixed_fields['in_status'][$in['in_status']]['s_desc'].'">' . $fixed_fields['in_status'][$in['in_status']]['s_icon'] . '</span></span>';
 
-    //Home page intent?
-    if($in['in_id']==$CI->config->item('in_home_page')){
-        $ui .= '<span class="icon-top-left" data-toggle="tooltip" data-placement="right" title="Home page intent (status locked)"><i class="fas fa-lock"></i></span>';
+    //Status locked intent?
+    if(in_array($in['in_id'],$CI->config->item('in_status_locked'))){
+        $ui .= '<span class="icon-top-left" data-toggle="tooltip" data-placement="right" title="Status locked by system"><i class="fas fa-lock"></i></span>';
     }
 
     $ui .= '<span class="icon-3rd ' . fn___echo_advance() . ' in_completion_' . $in['in_id'] . '" data-toggle="tooltip" data-placement="right" title="Completion Requirement">'.( $in['in_requirement_entity_id'] > 0 ? $en_all_4331[$in['in_requirement_entity_id']]['m_name']  : '' ).'</span>';

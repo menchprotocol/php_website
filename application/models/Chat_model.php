@@ -1062,6 +1062,40 @@ class Chat_model extends CI_Model
 
     }
 
+
+
+    function fn___random_intro($in_id, $recipient_en){
+
+        //If we have rotating we'd need to pick one and send randomly:
+        $messages_rotating = $this->Database_model->fn___tr_fetch(array(
+            'tr_status' => 2, //Published
+            'tr_type_entity_id' => 4234, //Rotating
+            'tr_child_intent_id' => $in_id,
+        ), array(), 0, 0, array('tr_order' => 'ASC'));
+
+        //Do we have any rotating messages?
+        if (count($messages_rotating) < 1) {
+            return false;
+        }
+
+        //yes, pick 1 random message:
+        $random_pick = $messages_rotating[rand(0, (count($messages_rotating) - 1))];
+
+        //Dispatch message:
+        return $this->Chat_model->fn___dispatch_message(
+            $random_pick['tr_content'],
+            $recipient_en,
+            true,
+            array(),
+            array(
+                'tr_child_intent_id' => $in_id, //Focus Intent
+                'tr_parent_transaction_id' => $random_pick['tr_id'], //This message
+            )
+        );
+
+    }
+
+
     function fn___compose_message($in_id, $recipient_en, $actionplan_tr_id = 0)
     {
 
@@ -1193,32 +1227,6 @@ class Chat_model extends CI_Model
          *
          * */
         if(!$is_top_level_actionplan){
-
-            //If we have rotating we'd need to pick one and send randomly:
-            $messages_rotating = $this->Database_model->fn___tr_fetch(array(
-                'tr_status' => 2, //Published
-                'tr_type_entity_id' => 4234, //Rotating
-                'tr_child_intent_id' => $in_id,
-            ), array(), 0, 0, array('tr_order' => 'ASC'));
-
-            //Do we have any rotating messages?
-            if (count($messages_rotating) > 0) {
-                //yes, pick 1 random message:
-                $random_pick = $messages_rotating[rand(0, (count($messages_rotating) - 1))];
-
-                //Dispatch message:
-                $this->Chat_model->fn___dispatch_message(
-                    $random_pick['tr_content'],
-                    $recipient_en,
-                    true,
-                    array(),
-                    array(
-                        'tr_parent_intent_id' => $actionplans[0]['in_id'], //Action Plan Intent
-                        'tr_child_intent_id' => $in_id, //Focus Intent
-                        'tr_parent_transaction_id' => $random_pick['tr_id'], //This message
-                    )
-                );
-            }
 
             //These messages all need to be sent first:
             $messages_on_start = $this->Database_model->fn___tr_fetch(array(
@@ -1641,7 +1649,7 @@ class Chat_model extends CI_Model
                 );
 
                 //Inform Student on how to can command Mench:
-                $this->Chat_model->fn___compose_message(8332, $en);
+                $this->Chat_model->fn___random_intro(8332, $en);
 
             } elseif ($action_unsubscribe == 'ALL') {
 
@@ -1694,7 +1702,7 @@ class Chat_model extends CI_Model
                     );
 
                     //Inform Student on how to can command Mench:
-                    $this->Chat_model->fn___compose_message(8332, $en);
+                    $this->Chat_model->fn___random_intro(8332, $en);
 
                 } else {
 
@@ -1734,7 +1742,7 @@ class Chat_model extends CI_Model
                 );
 
                 //Inform Student on how to can command Mench:
-                $this->Chat_model->fn___compose_message(8332, $en);
+                $this->Chat_model->fn___random_intro(8332, $en);
 
             } elseif ($quick_reply_payload == 'RESUBSCRIBE_NO') {
 
@@ -1756,7 +1764,7 @@ class Chat_model extends CI_Model
             );
 
             //Inform Student on how to can command Mench:
-            $this->Chat_model->fn___compose_message(8332, $en);
+            $this->Chat_model->fn___random_intro(8332, $en);
 
         } elseif (is_numeric($quick_reply_payload)) {
 
@@ -2201,7 +2209,7 @@ class Chat_model extends CI_Model
             if ($actionplan_tr_id > 0 && $tr_parent_intent_id > 0 && $in_id > 0 && $this->Matrix_model->fn___actionplan_choose_or($actionplan_tr_id, $tr_parent_intent_id, $in_id)) {
 
                 //Confirm answer received by acknowledging progress with Student:
-                $this->Chat_model->fn___compose_message(8333, $en);
+                $this->Chat_model->fn___random_intro(8333, $en);
 
                 //Find the next item to navigate them to:
                 $next_ins = $this->Matrix_model->fn___actionplan_next_in($actionplan_tr_id);
@@ -2526,7 +2534,7 @@ class Chat_model extends CI_Model
 
 
             //Inform Student of Mench's one-way communication limitation & that Mench did not understand their message:
-            $this->Chat_model->fn___compose_message(8334, $en);
+            $this->Chat_model->fn___random_intro(8334, $en);
 
 
             //Log transaction:

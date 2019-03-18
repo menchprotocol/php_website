@@ -1,16 +1,11 @@
 <?php
-if (isset($orphan_ins)) {
-    $in['in_id'] = 0;
-} else {
-    $metadata = unserialize($in['in_metadata']);
-}
-
+$metadata = unserialize($in['in_metadata']);
 ?>
 
 <script>
     //Define some global variables:
     var in_focus_id = <?= $in['in_id'] ?>;
-    var in_home_page = <?= $this->config->item('in_home_page') ?>;
+    var in_status_locked = <?= json_encode($this->config->item('in_status_locked')) ?>;
     var en_all_4486 = <?= json_encode($this->config->item('en_all_4486')) ?>;
     var en_all_4331 = <?= json_encode($this->config->item('en_all_4331')) ?>;
 </script>
@@ -22,43 +17,20 @@ if (isset($orphan_ins)) {
 
 <div class="row">
     <div class="col-xs-7 cols">
+
         <?php
-        //Are we showing Orphans?
-        if (isset($orphan_ins)) {
 
-            echo '<h5 class="badge badge-h"><i class="fas fa-unlink"></i> Orphan Intents</h5>';
-            echo '<div class="list-group">';
-            foreach ($orphan_ins as $oc) {
-                echo fn___echo_in($oc, 1);
-            }
-            echo '</div>';
+        //Parent intents:
+        echo '<h5 class="badge badge-h"><span class="li-parent-count parent-counter-' . $in['in_id'] . '">' . count($in['in__parents']) . '</span> Parent' . fn___echo__s(count($in['in__parents'])) . '</h5>';
+        echo '<div id="list-in-' . $in['in_id'] . '-1" class="list-group list-level-2">';
 
-        } else {
+        //List current parent intents:
+        foreach ($in['in__parents'] as $parent_in) {
+            echo fn___echo_in($parent_in, 2, 0, true);
+        }
 
-            //Count orphans only IF we are in the top parent root:
-            if ($this->config->item('in_home_page') == $in['in_id'] && 0) {
-                $orphans_count = count($this->Database_model->fn___in_fetch(array(
-                    ' NOT EXISTS (SELECT 1 FROM table_ledger WHERE in_id=tr_child_intent_id AND tr_status>=0) ' => null,
-                )));
-                if ($orphans_count > 0) {
-                    echo '<span style="padding-left:8px; display: inline-block;"><a href="/intents/fn___in_orphans">' . $orphans_count . ' Orphans &raquo;</a></span>';
-                }
-            }
-
-
-
-
-            //Start with parents:
-            echo '<h5 class="badge badge-h"><span class="li-parent-count parent-counter-' . $in['in_id'] . '">' . count($in['in__parents']) . '</span> Parent' . fn___echo__s(count($in['in__parents'])) . '</h5>';
-
-            echo '<div id="list-in-' . $in['in_id'] . '-1" class="list-group list-level-2">';
-
-            foreach ($in['in__parents'] as $parent_in) {
-                echo fn___echo_in($parent_in, 2, 0, true);
-            }
-
-            //Enable Miner to add child intents:
-            echo '<div class="list-group-item list_input grey-block">
+        //Add parent intent:
+        echo '<div class="list-group-item list_input grey-block">
                     <div class="form-group is-empty" style="margin: 0; padding: 0;">
                         <input type="text"
                                class="form-control intentadder-level-2 algolia_search bottom-add"
@@ -69,15 +41,14 @@ if (isset($orphan_ins)) {
                     </div>
                    
             </div>';
+        echo '</div>';
 
 
-            echo '</div>';
 
 
 
-        }
 
-        //The intent it-self:
+        //Focus intent:
         echo '<h5 class="badge badge-h indent1" style="display: inline-block;">Intent #'.$in['in_id'].'</h5>';
         echo '<a class="secret" href="/cron/fn___in_metadata_update/' . $in['in_id'] . '/1?redirect=/' . $in['in_id'] . '" style="margin-left: 5px;" onclick="fn___turn_off()"><i class="fal fa-sync-alt" data-toggle="tooltip" title="Updates intent tree cache" data-placement="top"></i></a>';
 
@@ -87,7 +58,7 @@ if (isset($orphan_ins)) {
 
 
 
-        //Expand/Contract buttons
+        //Expand/Contract All buttons:
         echo '<div class="indent2">';
         echo '<h5 class="badge badge-h" style="display: inline-block;"><span class="li-children-count children-counter-' . $in['in_id'] . '">' . (isset($metadata['in__tree_in_active_count']) ? intval($metadata['in__tree_in_active_count'])-1 : '') . '</span> Children</h5>';
 
@@ -99,14 +70,16 @@ if (isset($orphan_ins)) {
 
         echo '</div>';
 
-        echo '<div id="in_children_errors indent2"></div>'; //Show potential errors detected in the Action Plan via our JS functions...
+        //Show potential errors detected in the Action Plan via our JS functions:
+        echo '<div id="in_children_errors indent2"></div>';
 
+        //List child intents:
         echo '<div id="list-in-' . $in['in_id'] . '-0" class="list-group list-is-children list-level-2 indent2">';
         foreach ($in['in__children'] as $child_in) {
             echo fn___echo_in($child_in, 2, $in['in_id']);
         }
 
-        //Enable Miner to add child intents:
+        //Add child intent:
         echo '<div class="list-group-item list_input grey-block">
                     <div class="form-group is-empty" style="margin: 0; padding: 0;">
                         <input type="text"
@@ -119,7 +92,6 @@ if (isset($orphan_ins)) {
                     </div>
                    
             </div>';
-
         echo '</div>';
         ?>
 
@@ -127,9 +99,6 @@ if (isset($orphan_ins)) {
 
 
     <div class="col-xs-5 cols">
-
-
-
 
         <div id="modifybox" class="fixed-box hidden" intent-id="0" intent-tr-id="0" level="0">
 
@@ -167,7 +136,7 @@ if (isset($orphan_ins)) {
                                     echo '<option value="' . $status_id . '" title="' . $status['s_desc'] . '">' . $status['s_name'] . '</option>';
                                 }
                                 ?>
-                            </select>
+                            </select> <i class="fas fa-lock in_status_lock hidden" data-toggle="tooltip" title="Intent status locked by system" data-placement="top"></i>
                             <span class="checkbox apply-recursive inline-block hidden">
                                 <label style="display:inline-block !important; font-size: 0.9em !important; margin-left:5px;">
                                     <input type="checkbox" id="apply_recursively"/>
@@ -371,7 +340,6 @@ if (isset($orphan_ins)) {
         </div>
 
         <?php $this->load->view('view_ledger/tr_actionplan_right_column'); ?>
-
 
     </div>
 </div>
