@@ -99,14 +99,6 @@ class Chat_model extends CI_Model
 
         //Did we have ane error in message validation?
         if (!$msg_validation['status']) {
-
-            //Log Error Transaction:
-            $this->Database_model->fn___tr_create(array_merge(array(
-                'tr_type_entity_id' => 4246, //Platform Error
-                'tr_content' => 'fn___dispatch_validate_message() returned error [' . $msg_validation['message'] . '] for input message [' . $input_message . ']',
-                'tr_child_entity_id' => (isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0),
-            ), $filtered_tr_append));
-
             return false;
         }
 

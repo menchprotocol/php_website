@@ -296,7 +296,7 @@ if(!$has_filters){
         //Echo stats:
         $table_body .= '<tr>';
         $table_body .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;">'.( strlen($source_en['en_icon']) > 0 ? $source_en['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$source_en['en_id'].'">'.$source_en['en_name'].'</a></td>';
-        $table_body .= '<td style="text-align: right;"><span class="underdot" data-toggle="tooltip" title="Mench has identified '.$source_count.' notable industry expert '.strtolower($source_en['en_name']).' worth mining." data-placement="top">'.number_format($source_count, 0).'</span></td>';
+        $table_body .= '<td style="text-align: right;"><span class="underdot" data-toggle="tooltip" title="Mench has identified '.$source_count.' notable '.strtolower($source_en['en_name']).' to be mined" data-placement="top">'.number_format($source_count, 0).'</span></td>';
         $table_body .= '<td style="text-align: right;"><span data-toggle="tooltip" title="'.number_format($mined_source_count,0).'/'.number_format($source_count,0).' '.$source_en['en_name'].' have been fully mined" data-placement="top" class="underdot">'.number_format(($mined_source_count/$source_count*100), 1).'%</span></td>';
         $table_body .= '</tr>';
 
