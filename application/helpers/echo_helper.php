@@ -1412,7 +1412,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         $ui .= '<span class="icon-top-left" data-toggle="tooltip" data-placement="right" title="Status locked by system"><i class="fas fa-lock"></i></span>';
     }
 
-    $ui .= '<span class="icon-3rd ' . fn___echo_advance() . ' in_completion_' . $in['in_id'] . '" data-toggle="tooltip" data-placement="right" title="Completion Requirement">'.( $in['in_requirement_entity_id'] > 0 ? $en_all_4331[$in['in_requirement_entity_id']]['m_name']  : '' ).'</span>';
+    $ui .= '<span class="icon-3rd ' . fn___echo_advance() . ' in_completion_' . $in['in_id'] . '" data-toggle="tooltip" data-placement="right" title="Completion Requirement">'.( $in['in_requirement_entity_id'] == 6087 ? '' : $en_all_4331[$in['in_requirement_entity_id']]['m_name'] ).'</span>';
 
     $ui .= '</span>';
 

@@ -123,7 +123,7 @@ if(!$has_filters){
 
             //Display this status count:
             $this_ui .= '<tr'.( $status_num < 0 ? ' class="is-removed" ' : '' ).'>';
-            $this_ui .= '<td style="text-align: left;">'.fn___echo_fixed_fields($object_id, $status_num, false, 'top').'</td>';
+            $this_ui .= '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center;">'.$status['s_icon'].'</span><span class="underdot" data-toggle="tooltip" title="'.$status['s_desc'].'" data-placement="top">'.$status['s_name'].'</span></td>';
             $this_ui .= '<td style="text-align: right;">'.( $count > 0 ? '<a href="/ledger?'.$object_id.'='.$status_num.'&tr_type_entity_id='.$created_en_type_id.'"  data-toggle="tooltip" title="View Transactions" data-placement="top">'.number_format($count,0).'</a>' : $count ).' '.$en_all_4534[$obj_en_id]['m_icon'].'</td>';
             $this_ui .= '</tr>';
 
@@ -156,9 +156,9 @@ if(!$has_filters){
             //Report types:
             echo '<select id="in_group_by" class="form-control border stats-select">';
             echo '<option value="by_in_status">Group By: 4 Statuses</option>';
-            echo '<option value="by_in_verb">Group By: '.count($in_verbs).' Verbs</option>';
-            echo '<option value="by_in_types">Group By: 2 Types</option>';
-            echo '<option value="by_in_types">Group By: '.count($this->config->item('en_all_4331')).' Completion Methods</option>';
+            echo '<option value="by_in_verb">Group By: '.count($in_verbs).' Starting Verbs</option>';
+            echo '<option value="by_in_types">Group By: 2 Intent Types</option>';
+            echo '<option value="by_in_completion">Group By: '.count($this->config->item('en_all_4331')).' Completion Methods</option>';
             echo '</select>';
 
 
@@ -190,7 +190,25 @@ if(!$has_filters){
                 ), array(), 0, 0, array(), 'COUNT(in_id) as totals');
 
                 echo '<tr>';
-                echo '<td style="text-align: left;">'.fn___echo_fixed_fields('in_type', $in_type_id, false, 'top').'</td>';
+                echo '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center;">'.$in_type['s_icon'].'</span><span class="underdot" data-toggle="tooltip" title="'.$in_type['s_desc'].'" data-placement="top">'.$in_type['s_name'].'</span></td>';
+                echo '<td style="text-align: right;">'.number_format($in_types[0]['totals'],0).' <i class="fas fa-hashtag"></i></td>';
+                echo '</tr>';
+            }
+            echo '</table>';
+
+
+            //Intent Completion Methods:
+            echo '<table class="table table-condensed table-striped stats-table mini-stats-table in_group_by by_in_completion hidden">';
+            foreach($this->config->item('en_all_4331') as $completion_en_id => $completion_method){
+
+                //Count this method:
+                $in_types = $this->Database_model->fn___in_fetch(array(
+                    'in_status >=' => 0, //New+
+                    'in_requirement_entity_id' => $completion_en_id,
+                ), array(), 0, 0, array(), 'COUNT(in_id) as totals');
+
+                echo '<tr>';
+                echo '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center;">'.$completion_method['m_icon'].'</span>'.$completion_method['m_name'].' Required</td>';
                 echo '<td style="text-align: right;">'.number_format($in_types[0]['totals'],0).' <i class="fas fa-hashtag"></i></td>';
                 echo '</tr>';
             }

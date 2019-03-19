@@ -809,9 +809,7 @@ function fn___in_modify_save() {
 
                 $('.in_status_' + modify_data['in_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ object_js_statuses['in_status'][modify_data['in_status']]["s_name"] + ': '+ object_js_statuses['in_status'][modify_data['in_status']]["s_desc"] + '">'+ object_js_statuses['in_status'][modify_data['in_status']]["s_icon"] +'</span>');
 
-                $('.in_completion_' + modify_data['in_id']).html(( modify_data['in_requirement_entity_id'] > 0 ? en_all_4331[modify_data['in_requirement_entity_id']]["m_name"] : '' ));
-
-
+                $('.in_completion_' + modify_data['in_id']).html(( modify_data['in_requirement_entity_id'] == 6087 ? '' : en_all_4331[modify_data['in_requirement_entity_id']]["m_name"] ));
 
                 //Update UI to confirm with user:
                 $('.save_intent_changes').html(data.message).hide().fadeIn();
