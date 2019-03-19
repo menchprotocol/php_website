@@ -24,6 +24,28 @@
             check_in_en_status();
         });
 
+
+        $('#en_group_by').change(function () {
+            //Hide all tables:
+            $('.en_group_by').addClass('hidden');
+            //Except the one selected:
+            $('.' + $(this).val()).removeClass('hidden');
+        });
+
+        $('#in_group_by').change(function () {
+            //Hide all tables:
+            $('.in_group_by').addClass('hidden');
+            //Except the one selected:
+            $('.' + $(this).val()).removeClass('hidden');
+        });
+
+        $('#tr_group_by').change(function () {
+            //Hide all tables:
+            $('.tr_group_by').addClass('hidden');
+            //Except the one selected:
+            $('.' + $(this).val()).removeClass('hidden');
+        });
+
     });
 
 </script>
@@ -31,6 +53,7 @@
 <?php
 
 $has_filters = ( count($_GET) > 0 );
+$fixed_fields = $this->config->item('fixed_fields');
 
 //Display stats if no filters have been applied:
 if(!$has_filters){
@@ -52,16 +75,9 @@ if(!$has_filters){
     //Load core Mench Objects:
     $en_all_4534 = $this->config->item('en_all_4534');
 
-    //Just be logged in to browse:
-    $session_en = fn___en_auth();
 
-    if(!$session_en){
-        echo '<style> .main-raised { max-width:1240px !important; } </style>';
+    echo '<div class="row stat-row" style="margin-bottom:75px;">';
 
-    }
-
-
-    echo '<div class="row stat-row">';
 
 
     foreach (fn___echo_fixed_fields() as $object_id => $statuses) {
@@ -96,6 +112,8 @@ if(!$has_filters){
         }
 
 
+
+
         //Object Stats grouped by Status:
         $this_totals = 0;
         $this_ui = '';
@@ -109,14 +127,11 @@ if(!$has_filters){
                 }
             }
 
-            if($count < 1){
-                //continue;
-            }
 
             //Display this status count:
             $this_ui .= '<tr'.( $status_num < 0 ? ' class="is-removed" ' : '' ).'>';
             $this_ui .= '<td style="text-align: left;">'.fn___echo_fixed_fields($object_id, $status_num, false, 'top').'</td>';
-            $this_ui .= '<td style="text-align: right;">'.( $count > 0 ? '<a href="/ledger?'.$object_id.'='.$status_num.'&tr_type_entity_id='.$created_en_type_id.'"  data-toggle="tooltip" title="View Transactions" data-placement="top">'.number_format($count,0).'</a>' : $count ).'</td>';
+            $this_ui .= '<td style="text-align: right;">'.( $count > 0 ? '<a href="/ledger?'.$object_id.'='.$status_num.'&tr_type_entity_id='.$created_en_type_id.'"  data-toggle="tooltip" title="View Transactions" data-placement="top">'.number_format($count,0).'</a>' : $count ).' '.$en_all_4534[$obj_en_id]['m_icon'].'</td>';
             $this_ui .= '</tr>';
 
             if($status_num >= 0){
@@ -129,213 +144,298 @@ if(!$has_filters){
 
 
         //Start section:
-        echo '<div class="col-md-4">';
-
-        echo '<a href="javascript:void(0);" onclick="$(\'.obj-'.$object_id.'\').toggleClass(\'hidden\');" class="large-stat"><span>'.$en_all_4534[$obj_en_id]['m_icon']. ' <span class="obj-'.$object_id.'">'. fn___echo_number($this_totals) . '</span><span class="obj-'.$object_id.' hidden">'. number_format($this_totals) . '</span></span>'.$en_all_4534[$obj_en_id]['m_name'].' <i class="obj-'.$object_id.' fal fa-plus-circle"></i><i class="obj-'.$object_id.' fal fa-minus-circle hidden"></i></a>';
+        echo '<div class="col-lg-4">';
 
 
-        echo '<table class="table table-condensed table-striped stats-table mini-stats-table obj-'.$object_id.' hidden">';
-        echo $this_ui;
-        echo '</table>';
+        echo '<a href="javascript:void(0);" onclick="$(\'.obj-'.$object_id.'\').toggleClass(\'hidden\');" class="large-stat"><span><span class="obj-'.$object_id.'">'. fn___echo_number($this_totals) . '</span><span class="obj-'.$object_id.' hidden">'. number_format($this_totals) . '</span> '.$en_all_4534[$obj_en_id]['m_icon']. '</span>'.$en_all_4534[$obj_en_id]['m_name'].' <i class="obj-'.$object_id.' fal fa-plus-circle"></i><i class="obj-'.$object_id.' fal fa-minus-circle hidden"></i></a>';
+
+
+        echo '<div class="obj-'.$object_id.' hidden">';
+
 
         if($object_id=='in_status'){
 
-            //Count intent verbs and their appearance:
-            $verb_counts = $this->Database_model->fn___in_fetch(array(
+            //Fetch all needed data:
+            $in_verbs = $this->Database_model->fn___in_fetch(array(
                 'in_status >=' => 0, //New+
             ), array('in_verb_entity_id'), 0, 0, array('totals' => 'DESC'), 'COUNT(in_id) as totals, in_verb_entity_id, en_name', 'in_verb_entity_id, en_name');
 
+            //Report types:
+            echo '<select id="in_group_by" class="form-control border stats-select">';
+            echo '<option value="by_in_status">Group By: 4 Statuses</option>';
+            echo '<option value="by_in_verb">Group By: '.count($in_verbs).' Verbs</option>';
+            echo '<option value="by_in_types">Group By: 2 Types</option>';
+            echo '</select>';
 
-            echo '<table class="table table-condensed table-striped stats-table mini-stats-table obj-'.$object_id.' hidden" style="margin-top:20px;">';
 
-            $totals = 0;
-            foreach($verb_counts as $verb){
+            //Intent Statuses:
+            echo '<table class="table table-condensed table-striped stats-table mini-stats-table in_group_by by_in_status">';
+            echo $this_ui;
+            echo '</table>';
+
+
+            //Intent Verbs:
+            echo '<table class="table table-condensed table-striped stats-table mini-stats-table in_group_by by_in_verb hidden">';
+            foreach($in_verbs as $verb){
                 echo '<tr>';
                 echo '<td style="text-align: left;">'.$verb['en_name'].'</td>';
-                echo '<td style="text-align: right;"><a href="/ledger?tr_type_entity_id=4250&in_verb_entity_id='.$verb['in_verb_entity_id'].'"  data-toggle="tooltip" title="View Intents starting with this verb" data-placement="top">'.number_format($verb['totals'],0).'</a></td>';
+                echo '<td style="text-align: right;"><a href="/ledger?tr_type_entity_id=4250&in_verb_entity_id='.$verb['in_verb_entity_id'].'"  data-toggle="tooltip" title="View Intents starting with this verb" data-placement="top">'.number_format($verb['totals'],0).'</a> <i class="fas fa-hashtag"></i></td>';
                 echo '</tr>';
-                $totals  += $verb['totals'];
+            }
+            echo '</table>';
+
+
+            //Intent Types:
+            echo '<table class="table table-condensed table-striped stats-table mini-stats-table in_group_by by_in_types hidden">';
+            foreach($fixed_fields['in_type'] as $in_type_id => $in_type){
+
+                //Count this type:
+                $in_types = $this->Database_model->fn___in_fetch(array(
+                    'in_status >=' => 0, //New+
+                    'in_type' => $in_type_id,
+                ), array(), 0, 0, array(), 'COUNT(in_id) as totals');
+
+                echo '<tr>';
+                echo '<td style="text-align: left;">'.fn___echo_fixed_fields('in_type', $in_type_id, false, 'top').'</td>';
+                echo '<td style="text-align: right;">'.number_format($in_types[0]['totals'],0).' <i class="fas fa-hashtag"></i></td>';
+                echo '</tr>';
+            }
+            echo '</table>';
+
+
+        } elseif($object_id=='en_status'){
+
+
+            //Expert Sources:
+            $ie_ens = $this->Database_model->fn___en_fetch(array(
+                'en_id' => 3000, //Industry Expert Sources
+            ), array('en__children'), 0, 0, array('en_name' => 'ASC'));
+
+
+            $expert_source_types = 0;
+            $all_source_count = 0;
+            $all_source_count_weight = 0;
+            $all_mined_source_count = 0;
+            $all_mined_source_count_weigh = 0;
+            $expert_sources = '';
+
+            foreach ($ie_ens[0]['en__children'] as $source_en) {
+
+                //Count any/all sources (complete or incomplete):
+                $source_count = $this->Matrix_model->fn___en_child_count($source_en['en_id']);
+                $weight = ( substr_count($source_en['tr_content'], '&var_weight=')==1 ? intval(fn___one_two_explode('&var_weight=','',$source_en['tr_content'])) : 0 );
+                $all_source_count += $source_count;
+                $all_source_count_weight += ($source_count * $weight);
+                if($source_count < 1 || $weight < 1){
+                    continue;
+                }
+
+                $expert_source_types++;
+
+                //Count completed sources:
+                $mined_source_count = $this->Matrix_model->fn___en_child_count($source_en['en_id'], 2);
+                $all_mined_source_count += $mined_source_count;
+                $all_mined_source_count_weigh += ($mined_source_count * $weight);
+
+
+                //Echo stats:
+                $expert_sources .= '<tr>';
+                $expert_sources .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;">'.( strlen($source_en['en_icon']) > 0 ? $source_en['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span>'.$source_en['en_name'].'<span data-toggle="tooltip" title="'.number_format($mined_source_count,0).'/'.number_format($source_count,0).' '.$source_en['en_name'].' have been fully mined" data-placement="top" class="underdot" style="font-size:0.7em; margin-left:5px;">'.number_format(($mined_source_count/$source_count*100), 1).'%</span></td>';
+                $expert_sources .= '<td style="text-align: right;"><a href="/entities/'.$source_en['en_id'].'" data-toggle="tooltip" title="View all '.$source_count.' '.strtolower($source_en['en_name']).'" data-placement="top">'.number_format($source_count, 0).'</a> <i class="fas fa-at"></i></td>';
+                $expert_sources .= '</tr>';
+
+            }
+            $expert_sources .= '<tr style="font-weight: bold;">';
+            $expert_sources .= '<td style="text-align:left;"><span style="width: 26px; display: inline-block; text-align: center;"><i class="fas fa-asterisk"></i></span>All '.$ie_ens[0]['en_name'].'<span data-toggle="tooltip" title="'.number_format($all_mined_source_count_weigh,0).'/'.number_format($all_source_count_weight,0).' expert sources have been fully mined" data-placement="top" class="underdot" style="font-size:0.7em; margin-left:5px;">'.($all_source_count_weight > 0 ? number_format(($all_mined_source_count_weigh/$all_source_count_weight*100), 1) : 0).'%</span>&nbsp;</td>';
+            $expert_sources .= '<td style="text-align: right;"><a href="/entities/3000">'.number_format($all_source_count, 0).'</a> <i class="fas fa-at"></i></td>';
+            $expert_sources .= '</tr>';
+
+
+
+
+            $all_people = 0;
+            $people_group_ui = '';
+            foreach($this->config->item('en_all_4432') as $group_en_id=>$people_group){
+
+                //Do a child count:
+                $child_trs = $this->Database_model->fn___tr_fetch(array(
+                    'tr_parent_entity_id' => $group_en_id,
+                    'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                    'tr_status >=' => 0, //New+
+                    'en_status >=' => 0, //New+
+                ), array('en_child'), 0, 0, array(), 'COUNT(en_id) as en__child_count');
+
+                $all_people += $child_trs[0]['en__child_count'];
+
+                $people_group_ui .= '<tr>';
+                $people_group_ui .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;">'.$people_group['m_icon'].'</span>'.$people_group['m_name'].'</td>';
+                $people_group_ui .= '<td style="text-align: right;"><a href="/entities/'.$source_en['en_id'].'" data-toggle="tooltip" title="View all '.$child_trs[0]['en__child_count'].' members" data-placement="top">'.number_format($child_trs[0]['en__child_count'], 0).'</a> <i class="fas fa-at"></i></td>';
+                $people_group_ui .= '</tr>';
             }
 
-            echo '<tr style="font-weight: bold;">';
-            echo '<td style="text-align: left;">Totals:</td>';
-            echo '<td style="text-align: right;">'.number_format($totals,0).'</td>';
-            echo '</tr>';
+            $people_group_ui .= '<tr style="font-weight: bold;">';
+            $people_group_ui .= '<td style="text-align:left;"><span style="width: 26px; display: inline-block; text-align: center;"><i class="fas fa-asterisk"></i></span>All People</td>';
+            $people_group_ui .= '<td style="text-align: right;"><a href="/entities/4432">'.number_format($all_people, 0).'</a> <i class="fas fa-at"></i></td>';
+            $people_group_ui .= '</tr>';
 
-            //End Section:
+
+
+
+
+            //Report types:
+            echo '<select id="en_group_by" class="form-control border stats-select">';
+            echo '<option value="by_en_status">Group By: 4 Statuses</option>';
+            echo '<option value="by_en_people_groups">List Subset: '.fn___echo_number($all_people).' People</option>';
+            echo '<option value="by_en_experts">List Subset: '.fn___echo_number($all_source_count).' Sources</option>';
+            echo '</select>';
+
+
+            //Entity Status:
+            echo '<table class="table table-condensed table-striped stats-table mini-stats-table en_group_by by_en_status">';
+            echo $this_ui;
             echo '</table>';
+
+
+            //Expert Sources:
+            echo '<table class="table table-condensed table-striped stats-table en_group_by by_en_experts hidden">';
+            echo $expert_sources;
+            echo '</table>';
+
+
+            //Community members:
+            echo '<table class="table table-condensed table-striped stats-table en_group_by by_en_people_groups hidden">';
+            echo $people_group_ui;
+            echo '</table>';
+
+
+        } elseif($object_id=='tr_status'){
+
+
+            //Top Miners:
+            $top = 20;
+            $days_ago = null;
+            $top_coin_awarded = 0;
+            $top_miners = ''; //For the UI table
+            $filters = array(
+                'tr_coins !=' => 0,
+            );
+            if(!is_null($days_ago)){
+                $start_date = date("Y-m-d" , (time() - ($days_ago * 24 * 3600)));
+                $filters['tr_timestamp >='] = $start_date.' 00:00:00'; //From beginning of the day
+            }
+            foreach ($this->Database_model->fn___tr_fetch($filters, array('en_miner'), $top, 0, array('coins_sum' => 'DESC'), 'COUNT(tr_miner_entity_id) as trs_count, SUM(tr_coins) as coins_sum, en_name, en_icon, tr_miner_entity_id', 'tr_miner_entity_id, en_name, en_icon') as $count=>$tr) {
+                $top_miners .= '<tr>';
+                $top_miners .= '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center; '.( $count > 2 ? 'font-size:0.8em;' : '' ).'">'.fn___echo_rank($count+1).'</span><span class="parent-icon" style="width: 29px; display: inline-block; text-align: center;">'.( strlen($tr['en_icon']) > 0 ? $tr['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$tr['tr_miner_entity_id'].'">'.$tr['en_name'].'</a></td>';
+                $top_miners .= '<td style="text-align: right;"><a href="/ledger?tr_miner_entity_id='.$tr['tr_miner_entity_id'].( is_null($days_ago) ? '' : '&start_range='.$start_date ).'"  data-toggle="tooltip" title="Mined with '.number_format($tr['trs_count'],0).' transactions averaging '.round(($tr['coins_sum']/$tr['trs_count']),1).' coins/transaction" data-placement="top">'.number_format($tr['coins_sum'], 0).'</a> <i class="fal fa-coins"></i></td>';
+                $top_miners .= '</tr>';
+
+                $top_coin_awarded += $tr['coins_sum'];
+            }
+            $top_miners .= '<tr style="font-weight: bold;">';
+            $top_miners .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;"><i class="fas fa-asterisk"></i></span>Top '.$top.' Miners:</td>';
+            $top_miners .= '<td style="text-align: right;">'.number_format($top_coin_awarded, 0).' <i class="fal fa-coins"></i></td>';
+            $top_miners .= '</tr>';
+
+
+
+
+
+            //All Transaction Types:
+            $all_eng_types = $this->Database_model->fn___tr_fetch(array('tr_status >=' => 0), array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(tr_type_entity_id) as trs_count, en_name, en_icon, tr_type_entity_id', 'tr_type_entity_id, en_name, en_icon');
+
+            $all_transaction_count = 0;
+            $all_tr_types = '';
+            foreach ($all_eng_types as $tr) {
+
+                //Echo stats:
+                $all_tr_types .= '<tr>';
+                $all_tr_types .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;">'.( strlen($tr['en_icon']) > 0 ? $tr['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$tr['tr_type_entity_id'].'">'.$tr['en_name'].'</a></td>';
+                $all_tr_types .= '<td style="text-align: right;"><a href="/ledger?tr_type_entity_id='.$tr['tr_type_entity_id'].'"  data-toggle="tooltip" title="View all '.number_format($tr['trs_count'],0).' transactions" data-placement="top">'.number_format($tr['trs_count'], 0).'</a> <i class="fas fa-atlas"></i></td>';
+                $all_tr_types .= '</tr>';
+
+                $all_transaction_count += $tr['trs_count'];
+
+            }
+
+
+
+            //Coin Transaction Types:
+            $all_engs = $this->Database_model->fn___tr_fetch(array(
+                'tr_coins !=' => 0,
+            ), array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(tr_type_entity_id) as trs_count, SUM(tr_coins) as coins_sum, en_name, en_icon, tr_type_entity_id', 'tr_type_entity_id, en_name, en_icon');
+
+            $all_coin_payouts = 0;
+            $coin_tr_types = '';
+            foreach ($all_engs as $tr) {
+
+                //DOes it have a rate?
+                $rate_trs = $this->Database_model->fn___tr_fetch(array(
+                    'tr_status' => 2, //Published
+                    'en_status' => 2, //Published
+                    'tr_parent_entity_id' => 4374, //Mench Coins
+                    'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                    'tr_child_entity_id' => $tr['tr_type_entity_id'],
+                ), array('en_child'), 1);
+
+                //Echo stats:
+                $coin_tr_types .= '<tr>';
+                $coin_tr_types .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;">'.( strlen($tr['en_icon']) > 0 ? $tr['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$tr['tr_type_entity_id'].'">'.$tr['en_name'].'</a>'.( count($rate_trs) > 0 ? '<span class="underdot" data-toggle="tooltip" title="Each transaction currently issues '.$rate_trs[0]['tr_content'].' coins" data-placement="top" style="font-size:0.7em; margin-left:5px;">'.number_format($rate_trs[0]['tr_content'],0).'<i class="fal fa-coins" style="margin-left: 2px;"></i></span>' : '' ).'</td>';
+                $coin_tr_types .= '<td style="text-align: right;"><a href="/ledger?tr_type_entity_id='.$tr['tr_type_entity_id'].'"  data-toggle="tooltip" title="View all '.number_format($tr['trs_count'],0).' transactions" data-placement="top">'.number_format($tr['coins_sum'], 0).'</a> <i class="fal fa-coins"></i></td>';
+                $coin_tr_types .= '</tr>';
+
+                $all_coin_payouts += $tr['coins_sum'];
+
+            }
+
+            $coin_tr_types .= '<tr style="font-weight: bold;">';
+            $coin_tr_types .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;"><i class="fas fa-asterisk"></i></span>'.count($all_engs).' Transaction Types:</td>';
+            $coin_tr_types .= '<td style="text-align: right;">'.number_format($all_coin_payouts, 0).' <i class="fal fa-coins"></i></td>';
+            $coin_tr_types .= '</tr>';
+
+
+            //Report types:
+            echo '<select id="tr_group_by" class="form-control border stats-select">';
+            echo '<option value="by_tr_status">Group By: 4 Statuses</option>';
+            echo '<option value="by_tr_type">Group By: '.count($all_eng_types).' Transaction Types</option>';
+            echo '<option value="by_tr_coin_types">List Subset: '.fn___echo_number($all_coin_payouts).' Mench Coins</option>';
+            echo '<option value="by_tr_top_miners">List Subset: '.$top.' Top Miners</option>';
+            echo '</select>';
+
+            //Transaction Status:
+            echo '<table class="table table-condensed table-striped stats-table mini-stats-table tr_group_by by_tr_status">';
+            echo $this_ui;
+            echo '</table>';
+
+            //Transaction Types:
+            echo '<table class="table table-condensed table-striped stats-table mini-stats-table tr_group_by by_tr_type hidden">';
+            echo $all_tr_types;
+            echo '</table>';
+
+            //Coin Top Miners:
+            echo '<table class="table table-condensed table-striped stats-table tr_group_by by_tr_top_miners hidden">';
+            echo $top_miners;
+            echo '</table>';
+
+
+            //Coin Transaction Types
+            echo '<table class="table table-condensed table-striped stats-table tr_group_by by_tr_coin_types hidden">';
+            echo $coin_tr_types;
+            echo '</table>';
+
+
 
         }
 
+
+        echo '</div>';
         echo '</div>';
 
     }
 
-    echo '</div>';
-
-
-
-
-
-
-
-    echo '<div class="row stat-row">';
-
-
-
-
-
-
-
-
-
-    //Count coins per Transaction
-    echo '<div class="col-md-4">';
-
-    //Count variables:
-    $all_engs = $this->Database_model->fn___tr_fetch(array(
-        'tr_coins !=' => 0,
-    ), array('en_type'), 0, 0, array('en_name' => 'ASC'), 'COUNT(tr_type_entity_id) as trs_count, SUM(tr_coins) as coins_sum, en_name, en_icon, tr_type_entity_id', 'tr_type_entity_id, en_name, en_icon');
-
-    $all_transaction_count = 0;
-    $all_coin_payouts = 0;
-    $table_body = '';
-    foreach ($all_engs as $tr) {
-
-        //DOes it have a rate?
-        $rate_trs = $this->Database_model->fn___tr_fetch(array(
-            'tr_status' => 2, //Published
-            'en_status' => 2, //Published
-            'tr_parent_entity_id' => 4374, //Mench Coins
-            'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-            'tr_child_entity_id' => $tr['tr_type_entity_id'],
-        ), array('en_child'), 1);
-
-
-
-        //Echo stats:
-        $table_body .= '<tr>';
-        $table_body .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;">'.( strlen($tr['en_icon']) > 0 ? $tr['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$tr['tr_type_entity_id'].'">'.$tr['en_name'].'</a></td>';
-        $table_body .= '<td style="text-align: right;"><span class="underdot" data-toggle="tooltip" title="Each '.$tr['en_name'].' transaction currently issues '.$rate_trs[0]['tr_content'].' coins. Transaction rates may fluctuate to balance supply/demand" data-placement="top">'.( count($rate_trs) > 0 ? number_format($rate_trs[0]['tr_content'],0) : 'Not Set' ).'</span></td>';
-        $table_body .= '<td style="text-align: right;"><a href="/ledger?tr_type_entity_id='.$tr['tr_type_entity_id'].'"  data-toggle="tooltip" title="View all '.number_format($tr['trs_count'],0).' transactions on the ledger" data-placement="top">'.number_format($tr['coins_sum'], 0).'</a></td>';
-        $table_body .= '</tr>';
-
-        $all_transaction_count += $tr['trs_count'];
-        $all_coin_payouts += $tr['coins_sum'];
-
-    }
-
-//Echo title:
-    echo '<a href="javascript:void(0);" onclick="$(\'.coins-issued\').toggleClass(\'hidden\');" class="large-stat"><span><i class="fal fa-coins"></i> <span class="coins-issued">'. fn___echo_number($all_coin_payouts) . '</span><span class="coins-issued hidden">'. number_format($all_coin_payouts) . '</span></span> Coins Awarded <i class="coins-issued fal fa-plus-circle"></i><i class="coins-issued fal fa-minus-circle hidden"></i></a>';
-
-
-//Echo table:
-    echo '<table class="table table-condensed table-striped stats-table coins-issued hidden" style="max-width:100%;">';
-
-
-//Object Header:
-    echo '<tr style="font-weight: bold;">';
-    echo '<td style="text-align: left;">Ledger Transactions Types:</td>';
-    echo '<td style="text-align: right;">Rate</td>';
-    echo '<td style="text-align: right;"><i class="fal fa-coins"></i> Coins</td>';
-    echo '</tr>';
-
-    echo $table_body;
-
-
-    //End Section:
-    echo '</table>';
-    echo '</div>';
-
-
-
-
-    echo '<div class="col-md-4">' . fn___echo_leaderboard(null) . '</div>';
-
-
-
-    //Count coins per Transaction
-    echo '<div class="col-md-4">';
-
-    //Fetch entity and it's children:
-    $ie_ens = $this->Database_model->fn___en_fetch(array(
-        'en_id' => 3000, //Industry Expert Sources
-    ), array('en__children'), 0, 0, array('en_name' => 'ASC'));
-
-    $expert_source_types = 0;
-    $all_source_count = 0;
-    $all_source_count_weight = 0;
-    $all_mined_source_count = 0;
-    $all_mined_source_count_weigh = 0;
-    $table_body = '';
-
-    foreach ($ie_ens[0]['en__children'] as $source_en) {
-
-        //Count any/all sources (complete or incomplete):
-        $source_count = $this->Matrix_model->fn___en_child_count($source_en['en_id']);
-        $weight = ( substr_count($source_en['tr_content'], '&var_weight=')==1 ? intval(fn___one_two_explode('&var_weight=','',$source_en['tr_content'])) : 0 );
-        $all_source_count += $source_count;
-        $all_source_count_weight += ($source_count * $weight);
-        if($source_count < 1 || $weight < 1){
-            continue;
-        }
-
-        $expert_source_types++;
-
-        //Count completed sources:
-        $mined_source_count = $this->Matrix_model->fn___en_child_count($source_en['en_id'], 2);
-        $all_mined_source_count += $mined_source_count;
-        $all_mined_source_count_weigh += ($mined_source_count * $weight);
-
-
-        //Echo stats:
-        $table_body .= '<tr>';
-        $table_body .= '<td style="text-align: left;"><span style="width: 26px; display: inline-block; text-align: center;">'.( strlen($source_en['en_icon']) > 0 ? $source_en['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$source_en['en_id'].'">'.$source_en['en_name'].'</a></td>';
-        $table_body .= '<td style="text-align: right;"><span class="underdot" data-toggle="tooltip" title="Mench has identified '.$source_count.' notable '.strtolower($source_en['en_name']).' to be mined" data-placement="top">'.number_format($source_count, 0).'</span></td>';
-        $table_body .= '<td style="text-align: right;"><span data-toggle="tooltip" title="'.number_format($mined_source_count,0).'/'.number_format($source_count,0).' '.$source_en['en_name'].' have been fully mined" data-placement="top" class="underdot">'.number_format(($mined_source_count/$source_count*100), 1).'%</span></td>';
-        $table_body .= '</tr>';
-
-    }
-
-    //Calculate the weighted mined sources:
-    if($all_source_count_weight > 0){
-        $all_source_progress = number_format(($all_mined_source_count_weigh/$all_source_count_weight*100), 1);
-    } else {
-        $all_source_progress = 0;
-    }
-
-    //Echo title:
-    echo '<a href="javascript:void(0);" onclick="$(\'.sources-mined\').toggleClass(\'hidden\');" class="large-stat"><span>'.fn___echo_icon($ie_ens[0]).' <span class="sources-mined">'. fn___echo_number($all_source_count) . '</span><span class="sources-mined hidden">'. number_format($all_source_count , 0) . '</span></span>'.$ie_ens[0]['en_name'].' <i class="sources-mined fal fa-plus-circle"></i><i class="sources-mined fal fa-minus-circle hidden"></i></a>';
-
-
-    //Echo table:
-    echo '<table class="table table-condensed table-striped stats-table sources-mined hidden" style="max-width:100%;">';
-
-    //Object Header:
-    echo '<tr style="font-weight: bold;">';
-    echo '<td style="text-align: left;">'.$ie_ens[0]['en_name'].':</td>';
-    echo '<td style="text-align: right;">Count</td>';
-    echo '<td style="text-align: right;">Mined</td>';
-    echo '</tr>';
-
-    echo $table_body;
-
-    echo '<tr style="font-weight: bold;">';
-    echo '<td style="text-align: right;">Totals:&nbsp;</td>';
-    echo '<td style="text-align: right;">'.number_format($all_source_count, 0).'</td>';
-    echo '<td style="text-align: right;">'.$all_source_progress.'%</td>';
-    echo '</tr>';
-
-
-    //End Section:
-    echo '</table>';
-    echo '</div>';
 
 
 
     echo '</div>';
-
-    echo '<div class="row"><div class="col-sm-6" style="padding-bottom: 40px;">&nbsp;</div></div>';
 
 }
 
@@ -344,14 +444,7 @@ if(!$has_filters){
 
 
 
-
-
-
-
-
 echo '<h1>Recent Transactions</h1>';
-
-
 
 
 //Construct filters based on GET variables:

@@ -23,30 +23,21 @@ class Ledger extends CI_Controller
          *
          * */
 
+
         $session_en = fn___en_auth(array(1308)); //Just be logged in to browse
 
-        if($session_en){
+        //Load header:
+        $this->load->view(($session_en ? 'view_shared/matrix_header' : 'view_shared/public_header'), array(
+            'title' => 'Mench Ledger',
+        ));
 
-            //Miner logged in stats
-            $this->load->view('view_shared/matrix_header', array(
-                'title' => 'Mench Ledger',
-            ));
-            $this->load->view('view_ledger/ledger_ui');
-            $this->load->view('view_shared/matrix_footer');
+        //Load main:
+        $this->load->view('view_ledger/ledger_ui');
 
-        } else {
+        //Load footer:
+        $this->load->view(($session_en ? 'view_shared/matrix_footer' : 'view_shared/public_footer'));
 
-            //Public facing stats:
-            $this->load->view('view_shared/public_header', array(
-                'title' => 'Mench Ledger',
-            ));
-            $this->load->view('view_ledger/ledger_ui');
-            $this->load->view('view_shared/public_footer');
-
-        }
     }
-
-
 
 
 

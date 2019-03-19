@@ -622,9 +622,8 @@ input::-webkit-inner-spin-button {
 }
 
 .act-error {
-    color: #f55145;
-    font-weight: bold;
-    font-size: 0.9em;
+    color: #777;
+    font-size: 0.8em;
     margin: -7px 0 3px 0;
 }
 
@@ -2092,10 +2091,6 @@ select.form-control {
     text-align: left;
 }
 
-.mini-stats-table{
-    width:240px;
-    margin: 0 auto;
-}
 
 .double-icon {
     position: relative;
@@ -2798,6 +2793,10 @@ a.badge:focus, a.badge:hover {
     font-size: 0.7em;
     font-weight: normal;
     z-index: 9999999 !important;
+}
+
+.stats-select{
+    margin: 0 auto;
 }
 
 .add_intent, .algolia-autocomplete .aa-dropdown-menu .aa-suggestion {

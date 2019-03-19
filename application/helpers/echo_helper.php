@@ -247,7 +247,7 @@ function fn___echo_in_message_manage($tr)
     $count_msg_trs = $CI->Database_model->fn___tr_fetch(array(
         '( tr_id = ' . $tr['tr_id'] . ' OR tr_parent_transaction_id = ' . $tr['tr_id'] . ')' => null,
     ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
-    $ui .= '<li class="pull-right edit-off ' . fn___echo_advance() . '"><a class="btn btn-primary" style="border:2px solid #fedd16 !important;" href="/ledger?tr_id=' . $tr['tr_id'] . '" target="_parent" title="Go to Ledger Transactions" data-toggle="tooltip" data-placement="top"><i class="fas fa-atlas"></i> '.fn___echo_number($count_msg_trs[0]['totals']).'</a></li>';
+    $ui .= '<li class="pull-right edit-off ' . fn___echo_advance() . '"><a class="btn btn-primary" style="border:2px solid #fedd16 !important;" href="/ledger?tr_id=' . $tr['tr_id'] . '" target="_parent" title="Go to Transactions" data-toggle="tooltip" data-placement="top"><i class="fas fa-atlas"></i> '.fn___echo_number($count_msg_trs[0]['totals']).'</a></li>';
 
     //Delete:
     $ui .= '<li class="pull-right edit-off" style="margin-right:5px; margin-left: 6px;"><span class="on-hover"><a class="btn btn-primary white-primary" href="javascript:fn___message_remove(' . $tr['tr_id'] . ');" title="Remove Message" data-toggle="tooltip" data-placement="top" style="border:2px solid #fedd16 !important;"><i class="fas fa-trash-alt"></i></a></span></li>';
@@ -1082,7 +1082,7 @@ function fn___echo_en_messages($tr){
     $count_msg_trs = $CI->Database_model->fn___tr_fetch(array(
         '( tr_id = ' . $tr['tr_id'] . ' OR tr_parent_transaction_id = ' . $tr['tr_id'] . ')' => null,
     ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
-    $ui .= '<li class="edit-off ' . fn___echo_advance() . '"><a class="btn btn-primary" style="border:2px solid #fedd16 !important;" href="/ledger?tr_id=' . $tr['tr_id'] . '" target="_parent" title="Go to Ledger Transactions" data-toggle="tooltip" data-placement="top"><i class="fas fa-atlas"></i> '.fn___echo_number($count_msg_trs[0]['totals']).'</a></li>';
+    $ui .= '<li class="edit-off ' . fn___echo_advance() . '"><a class="btn btn-primary" style="border:2px solid #fedd16 !important;" href="/ledger?tr_id=' . $tr['tr_id'] . '" target="_parent" title="Go to Transactions" data-toggle="tooltip" data-placement="top"><i class="fas fa-atlas"></i> '.fn___echo_number($count_msg_trs[0]['totals']).'</a></li>';
 
     //Order:
     $ui .= '<li class="edit-off message_status ' . fn___echo_advance() . '" style="margin: 0 3px 0 0;"><span title="Message order relative to siblings" data-toggle="tooltip" data-placement="top"><i class="fas fa-sort"></i>' . fn___echo_ordinal_number($tr['tr_order']) . '</span></li>';
@@ -1537,7 +1537,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         '(tr_parent_intent_id=' . $in['in_id'] . ' OR tr_child_intent_id=' . $in['in_id'] . ($tr_id > 0 ? ' OR tr_parent_transaction_id=' . $tr_id : '') . ')' => null,
     ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
     //Show link to load these transactions:
-    $ui .= '<a href="/ledger?any_in_id=' . $in['in_id'] . '&tr_parent_transaction_id=' . $tr_id . '" class="badge badge-primary ' . fn___echo_advance() . ' is_not_bg" style="width:40px; margin:-3px 0px 0 4px; border:2px solid #fedd16 !important;" data-toggle="tooltip" data-placement="top" title="Go to Ledger Transactions"><span class="btn-counter">' . fn___echo_number($count_in_trs[0]['totals']) . '</span><i class="fas fa-atlas"></i></a>';
+    $ui .= '<a href="/ledger?any_in_id=' . $in['in_id'] . '&tr_parent_transaction_id=' . $tr_id . '" class="badge badge-primary ' . fn___echo_advance() . ' is_not_bg" style="width:40px; margin:-3px 0px 0 4px; border:2px solid #fedd16 !important;" data-toggle="tooltip" data-placement="top" title="Go to Transactions"><span class="btn-counter">' . fn___echo_number($count_in_trs[0]['totals']) . '</span><i class="fas fa-atlas"></i></a>';
 
     $tree_count = null;
     if(isset($in_metadata['in__tree_in_active_count'])){
@@ -1626,78 +1626,6 @@ function fn___detect_fav_icon($url_clean_domain, $return_icon = false){
         return ( $return_icon ? '<i class="fas fa-at grey-at"></i>' : null );
     }
 }
-
-function fn___echo_leaderboard($days_ago = null, $top = 25){
-
-    $filters = array(
-        'tr_coins !=' => 0,
-    );
-
-    if(!is_null($days_ago)){
-        $start_date = date("Y-m-d" , (time() - ($days_ago * 24 * 3600)));
-        //From beginning of the day:
-        $filters['tr_timestamp >='] = $start_date.' 00:00:00';
-    }
-
-    $CI =& get_instance();
-
-
-    //Count totals:
-    $total_counts = $CI->Database_model->fn___tr_fetch($filters, array(), 1, 0, array(), 'COUNT(DISTINCT tr_miner_entity_id) as total_count');
-
-
-    //Object Stats grouped by Status:
-    $all_engs = $CI->Database_model->fn___tr_fetch($filters, array('en_miner'), $top, 0, array('coins_sum' => 'DESC'), 'COUNT(tr_miner_entity_id) as trs_count, SUM(tr_coins) as coins_sum, en_name, en_icon, tr_miner_entity_id', 'tr_miner_entity_id, en_name, en_icon');
-
-    $all_transaction_count = 0;
-    $all_coin_payouts = 0;
-    $table_body = '';
-    $top_miner = '';
-
-    foreach ($all_engs as $count=>$tr) {
-
-        if($count == 0){
-            $top_miner = fn___one_two_explode('', ' ', $tr['en_name']);
-        }
-
-        //Echo stats:
-        $table_body .= '<tr>';
-        $table_body .= '<td style="text-align: left;"><span style="width:29px; display: inline-block; text-align: center; '.( $count > 2 ? 'font-size:0.8em;' : '' ).'">'.fn___echo_rank($count+1).'</span><span class="parent-icon" style="width: 29px; display: inline-block; text-align: center;">'.( strlen($tr['en_icon']) > 0 ? $tr['en_icon'] : '<i class="fas fa-at grey-at"></i>' ).'</span><a href="/entities/'.$tr['tr_miner_entity_id'].'">'.$tr['en_name'].'</a></td>';
-        $table_body .= '<td style="text-align: right;"><a href="/ledger?tr_miner_entity_id='.$tr['tr_miner_entity_id'].( is_null($days_ago) ? '' : '&start_range='.$start_date ).'"  data-toggle="tooltip" title="Mined with '.number_format($tr['trs_count'],0).' transactions averaging '.round(($tr['coins_sum']/$tr['trs_count']),1).' coins/transaction" data-placement="top">'.number_format($tr['coins_sum'], 0).'</a></td>';
-        $table_body .= '</tr>';
-
-        $all_transaction_count += $tr['trs_count'];
-        $all_coin_payouts += $tr['coins_sum'];
-
-    }
-
-
-    $ui = '';
-
-    $ui .= '<a href="javascript:void(0);" onclick="$(\'.leaderboard'.$days_ago.'\').toggleClass(\'hidden\');" class="large-stat"><span><i class="fal fa-medal"></i> '. $top_miner . '</span>Top Miner <i class="leaderboard'.$days_ago.' fal fa-plus-circle"></i><i class="leaderboard'.$days_ago.' fal fa-minus-circle hidden"></i></a>';
-
-    $ui .= '<table class="table table-condensed table-striped stats-table leaderboard'.$days_ago.' hidden" style="max-width:100%;">';
-
-
-    //Object Header:
-    $ui .= '<tr style="font-weight: bold;">';
-    $ui .= '<td style="text-align: left;">Top Miners:</td>';
-    $ui .= '<td style="text-align: right;"><i class="fal fa-coins"></i> Coins</td>';
-    $ui .= '</tr>';
-
-    $ui .= $table_body;
-
-
-    //$ui .= '<tr><td style="text-align: left; font-size:0.9em;" colspan="2">View all '.number_format( $total_counts[0]['total_count'],0).' miners</td></tr>';
-
-
-    //End Section:
-    $ui .= '</table>';
-
-    return $ui;
-
-}
-
 
 function fn___echo_rank($integer){
     if($integer==1){
@@ -1863,7 +1791,7 @@ function fn___echo_en($en, $level, $is_parent = false)
     ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
     if ($count_in_trs[0]['totals'] > 0) {
         //Show the transaction button:
-        $ui .= '<a href="/ledger?any_en_id=' . $en['en_id'] . '&tr_parent_transaction_id=' . $tr_id . '" class="badge badge-secondary ' . fn___echo_advance() . '" style="width:40px; margin:-3px 2px 0 2px; border:2px solid #0084ff !important;" data-toggle="tooltip" data-placement="top" title="Go to Ledger Transactions"><span class="btn-counter">' . fn___echo_number($count_in_trs[0]['totals']) . '</span><i class="fas fa-atlas"></i></a>';
+        $ui .= '<a href="/ledger?any_en_id=' . $en['en_id'] . '&tr_parent_transaction_id=' . $tr_id . '" class="badge badge-secondary ' . fn___echo_advance() . '" style="width:40px; margin:-3px 2px 0 2px; border:2px solid #0084ff !important;" data-toggle="tooltip" data-placement="top" title="Go to Transactions"><span class="btn-counter">' . fn___echo_number($count_in_trs[0]['totals']) . '</span><i class="fas fa-atlas"></i></a>';
     }
 
 

@@ -389,7 +389,7 @@ function fn___in_sort_load(in_id, level) {
 
         //Show specific error:
         if (element_key) {
-            $("<div class=\"act-error\"><i class=\"fas fa-exclamation-triangle\"></i> Error: Duplicate intent! Only keep 1 & refresh.</div>").prependTo(element_key);
+            $("<div class=\"act-error\"><i class=\"fas fa-exclamation-triangle\"></i> Note: Duplicate intent detected</div>").prependTo(element_key);
         }
 
         return false;

@@ -6,13 +6,48 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * So we don't have to make DB calls to figure them out every time!
  * This is the cron function that creates this: fn___matrix_cache()
  * See here for all entities cached: https://mench.com/entities/4527
- * use-case format: $this->config->item('en_ids_3000')
+ * use-case format: $this->config->item('en_all_4432')
  *
  * ATTENTION: Also search for "en_ids_" and "en_all_" when trying to manage these throughout the code base
  *
  */
 
-//Generated 2019-03-14 21:37:36 PST
+//Generated 2019-03-18 17:08:42 PST
+
+//User Groups:
+$config['en_ids_4432'] = array(1281, 1308, 3084, 4430, 4433);
+$config['en_all_4432'] = array(
+    1281 => array(
+        'm_icon' => '🛡️',
+        'm_name' => 'Mench Moderators',
+        'm_desc' => '',
+        'm_parents' => array(4757, 4463, 4432),
+    ),
+    1308 => array(
+        'm_icon' => '⛏️',
+        'm_name' => 'Mench Miners',
+        'm_desc' => '',
+        'm_parents' => array(4463, 4432, 4426),
+    ),
+    3084 => array(
+        'm_icon' => '⭐',
+        'm_name' => 'Industry Experts',
+        'm_desc' => '',
+        'm_parents' => array(4990, 4432, 4255, 4463),
+    ),
+    4430 => array(
+        'm_icon' => '🎓',
+        'm_name' => 'Mench Students',
+        'm_desc' => '',
+        'm_parents' => array(4426, 4463, 4432),
+    ),
+    4433 => array(
+        'm_icon' => '⌨️',
+        'm_name' => 'Mench Open-Source Developers',
+        'm_desc' => '',
+        'm_parents' => array(4463, 4432, 4426),
+    ),
+);
 
 //System Modification Lock:
 $config['en_ids_5969'] = array(3286);
@@ -220,7 +255,7 @@ $config['en_all_4997'] = array(
 );
 
 //Entity Message Reference Appendix:
-$config['en_ids_4990'] = array(1326, 2793, 2997, 2998, 2999, 3005, 3084, 3147, 3192, 3300, 3301, 3302, 3303, 3308, 3320, 4257, 4258, 4259, 4260, 4446, 4763, 4883);
+$config['en_ids_4990'] = array(1326, 2793, 2997, 2998, 2999, 3005, 3084, 3147, 3192, 3300, 3301, 3320, 4257, 4258, 4259, 4260, 4446, 4763, 4883, 5948);
 $config['en_all_4990'] = array(
     1326 => array(
         'm_icon' => '<i class="fal fa-bookmark"></i>',
@@ -288,24 +323,6 @@ $config['en_all_4990'] = array(
         'm_desc' => '',
         'm_parents' => array(4990, 1326, 2750),
     ),
-    3302 => array(
-        'm_icon' => '<i class="fab fa-linkedin"></i>',
-        'm_name' => 'LinkedIn',
-        'm_desc' => '',
-        'm_parents' => array(4990, 1326, 4763, 2750),
-    ),
-    3303 => array(
-        'm_icon' => '<i class="fab fa-github"></i>',
-        'm_name' => 'Github',
-        'm_desc' => '',
-        'm_parents' => array(4990, 4763, 1326, 2750),
-    ),
-    3308 => array(
-        'm_icon' => '<i class="fab fa-youtube"></i>',
-        'm_name' => 'YouTube',
-        'm_desc' => '',
-        'm_parents' => array(4990, 4763, 4257, 2750, 1326),
-    ),
     3320 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
         'm_name' => 'Messenger',
@@ -354,20 +371,20 @@ $config['en_all_4990'] = array(
         'm_desc' => '',
         'm_parents' => array(4990, 4255, 3000),
     ),
+    5948 => array(
+        'm_icon' => '<i class="fal fa-file-invoice"></i>',
+        'm_name' => 'Expert Templates',
+        'm_desc' => '',
+        'm_parents' => array(4990, 3000),
+    ),
 );
 
 //Only Moderators can Modify:
-$config['en_ids_4426'] = array(1280, 1308, 3288, 4374, 4426, 4430, 4433, 4755, 4997, 5969);
+$config['en_ids_4426'] = array(1308, 3288, 4374, 4426, 4430, 4433, 4755, 4997, 5969);
 $config['en_all_4426'] = array(
-    1280 => array(
-        'm_icon' => '🤝',
-        'm_name' => 'Mench Coaches',
-        'm_desc' => 'Requires admin review and approval',
-        'm_parents' => array(4463, 4432, 4426),
-    ),
     1308 => array(
         'm_icon' => '⛏️',
-        'm_name' => 'Trained Miners',
+        'm_name' => 'Mench Miners',
         'm_desc' => 'Requires admin review and approval',
         'm_parents' => array(4463, 4432, 4426),
     ),
@@ -397,7 +414,7 @@ $config['en_all_4426'] = array(
     ),
     4433 => array(
         'm_icon' => '⌨️',
-        'm_name' => 'Mench Developers',
+        'm_name' => 'Mench Open-Source Developers',
         'm_desc' => 'Requires admin review and approval',
         'm_parents' => array(4463, 4432, 4426),
     ),
@@ -726,13 +743,13 @@ $config['en_all_4600'] = array(
         'm_icon' => '👪',
         'm_name' => 'People',
         'm_desc' => '',
-        'm_parents' => array(4432, 4600),
+        'm_parents' => array(4600),
     ),
     2750 => array(
         'm_icon' => '🏢',
-        'm_name' => 'Organizations',
+        'm_name' => 'Organizations / Groups',
         'm_desc' => '',
-        'm_parents' => array(4432, 4600),
+        'm_parents' => array(4600),
     ),
 );
 
@@ -891,7 +908,7 @@ $config['en_all_4594'] = array(
     ),
     4268 => array(
         'm_icon' => '<i class="fab fa-facebook-messenger"></i>',
-        'm_name' => 'Initiated Messenger Postback',
+        'm_name' => 'Messenger Postback Initiated',
         'm_desc' => '',
         'm_parents' => array(4594),
     ),
@@ -1113,31 +1130,31 @@ $config['en_all_4594'] = array(
     ),
     4998 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Updated Mass Entity Name Prefix',
+        'm_name' => 'Mass Entity Name Prefix',
         'm_desc' => '',
         'm_parents' => array(4594, 4997),
     ),
     4999 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Updated Mass Entity Name Postfix',
+        'm_name' => 'Mass Entity Name Postfix',
         'm_desc' => '',
         'm_parents' => array(4594, 4997),
     ),
     5000 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Updated Mass Entity Name Replace',
+        'm_name' => 'Mass Entity Name Replace',
         'm_desc' => '',
         'm_parents' => array(4594, 4997),
     ),
     5001 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Updated Mass Transaction Content Replace',
+        'm_name' => 'Mass Transaction Content Replace',
         'm_desc' => '',
         'm_parents' => array(4594, 4997),
     ),
     5003 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Updated Mass Entity Status Replace',
+        'm_name' => 'Mass Entity Status Replace',
         'm_desc' => '',
         'm_parents' => array(4594, 4997),
     ),
@@ -1149,13 +1166,13 @@ $config['en_all_4594'] = array(
     ),
     5865 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Updated Mass Transaction Status Replace',
+        'm_name' => 'Mass Transaction Status Replace',
         'm_desc' => '',
         'm_parents' => array(4594, 4997),
     ),
     5943 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Updated Mass Entity Icon Update',
+        'm_name' => 'Mass Entity Icon Update',
         'm_desc' => '',
         'm_parents' => array(4594, 4997),
     ),
@@ -1167,13 +1184,13 @@ $config['en_all_4594'] = array(
     ),
     5981 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Updated Mass Parent Entity Addition',
+        'm_name' => 'Mass Parent Entity Addition',
         'm_desc' => '',
         'm_parents' => array(4594, 4997),
     ),
     5982 => array(
         'm_icon' => '<i class="fal fa-list-alt"></i>',
-        'm_name' => 'Updated Mass Parent Entity Removal',
+        'm_name' => 'Mass Parent Entity Removal',
         'm_desc' => '',
         'm_parents' => array(4594, 4997),
     ),
@@ -1503,6 +1520,6 @@ $config['en_all_3000'] = array(
         'm_icon' => '<i class="fal fa-file-invoice"></i>',
         'm_name' => 'Expert Templates',
         'm_desc' => '&var_weight=1',
-        'm_parents' => array(3000),
+        'm_parents' => array(4990, 3000),
     ),
 );

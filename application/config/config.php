@@ -15,21 +15,21 @@ date_default_timezone_set('America/Los_Angeles');
 
 
 //App Functionality:
-$config['app_version']              = '0.7774'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
+$config['app_version']              = '0.7776'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
 $config['app_update_algolia']       = true; //May need to turn off if/when we reach free monthly quota of 50k calls
 $config['app_in_en_ratio']          = 10; // = Intent tree max seconds / Entity trust score
 
 
 
 //Intents:
+$config['in_mission_id']            = 7766; //highest-level intent which defines the mission of Mench
 $config['in_home_page']             = 6623; //featured on the home page
 $config['in_leger_intro']           = 8438; //Understand the Mench Ledger
 $config['in_featured']              = 8469; //Child intents of this are featured on all intent pages
 $config['in_status_locked']        = array(6623, 8438, 8469, 7766); //Once set to published, their status will be locked by system
 
-$config['in_mission_id']            = 7766; //highest-level intent which defines the mission of Mench
 $config['in_seconds_cost_max']      = 28800; //The maximum seconds allowed per intent. If larger, the miner is asked to break it down into smaller intents
-$config['in_outcome_max']           = 89; //Max number of characters allowed in the title of intents
+$config['in_outcome_max']           = 89; //Max number of characters allowed for intent outcomes
 $config['in_message_commands']      = array('/firstname', '/slice', '/link'); //Commands supported within a message content
 
 
@@ -49,7 +49,7 @@ $config['en_mass_actions']          = array( //Various mass actions to be taken 
                                     );
 
 
-//Ledger Transactions:
+//Transactions:
 $config['tr_content_max_length']    = 610; //Max number of characters allowed in messages. Facebook's cap is 2000 characters/message
 $config['tr_status_incomplete']     = array(0, 1); //Transaction statuses that are considered in-complete to determine progress and more
 $config['tr_object_links']          = array( //Each transaction can have any of the following object links
