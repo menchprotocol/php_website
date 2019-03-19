@@ -181,15 +181,13 @@ $metadata = unserialize($in['in_metadata']);
 
 
 
-
                             <div class="<?= fn___echo_advance() ?>">
 
-                                <span class="mini-header">Completion Response:</span>
-                                <select class="form-control border" id="in_requirement_entity_id" data-toggle="tooltip" title="Intent Completion Requirements" data-placement="top" style="margin-bottom: 12px;">
-                                    <option value="0">No Response Required</option>
+                                <span class="mini-header">Completion Method:</span>
+                                <select class="form-control border" id="in_requirement_entity_id" data-toggle="tooltip" title="Defines what students need to do to mark this intent as complete" data-placement="top" style="margin-bottom: 12px;">
                                     <?php
                                     foreach ($this->config->item('en_all_4331') as $en_id => $m) {
-                                        echo '<option value="' . $en_id . '">Require ' . $m['m_name'] . ' Response</option>';
+                                        echo '<option value="' . $en_id . '">' . $m['m_name'] . ' Required</option>';
                                     }
                                     ?>
                                 </select>

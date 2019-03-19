@@ -58,9 +58,8 @@ $fixed_fields = $this->config->item('fixed_fields');
 //Display stats if no filters have been applied:
 if(!$has_filters){
 
-    echo '<h1>Mench Ledger <a href="javascript:void(0);" onclick="$(\'.ledger_intro\').toggleClass(\'hidden\')"><i class="fal fa-info-circle"></i></a></h1>';
-
     //Fetch & Display Intent Note Messages to explain the ledger:
+    echo '<h1>Mench Ledger <a href="javascript:void(0);" onclick="$(\'.ledger_intro\').toggleClass(\'hidden\')"><i class="fal fa-info-circle"></i></a></h1>';
     echo '<div class="ledger_intro hidden">';
     foreach ($this->Database_model->fn___tr_fetch(array(
         'tr_status' => 2, //Published
@@ -72,14 +71,10 @@ if(!$has_filters){
     echo '<div style="margin-top:12px;"><a href="/'. $this->config->item('in_leger_intro') .'"><u>Lead More</u> &raquo;</a></div>';
     echo '</div>';
 
+
     //Load core Mench Objects:
     $en_all_4534 = $this->config->item('en_all_4534');
-
-
     echo '<div class="row stat-row" style="margin-bottom:75px;">';
-
-
-
     foreach (fn___echo_fixed_fields() as $object_id => $statuses) {
 
         //Define object type and run count query:
@@ -110,8 +105,6 @@ if(!$has_filters){
             continue;
 
         }
-
-
 
 
         //Object Stats grouped by Status:
@@ -165,6 +158,7 @@ if(!$has_filters){
             echo '<option value="by_in_status">Group By: 4 Statuses</option>';
             echo '<option value="by_in_verb">Group By: '.count($in_verbs).' Verbs</option>';
             echo '<option value="by_in_types">Group By: 2 Types</option>';
+            echo '<option value="by_in_types">Group By: '.count($this->config->item('en_all_4331')).' Completion Methods</option>';
             echo '</select>';
 
 
@@ -286,7 +280,7 @@ if(!$has_filters){
             echo '<select id="en_group_by" class="form-control border stats-select">';
             echo '<option value="by_en_status">Group By: 4 Statuses</option>';
             echo '<option value="by_en_people_groups">List Subset: '.fn___echo_number($all_people).' People</option>';
-            echo '<option value="by_en_experts">List Subset: '.fn___echo_number($all_source_count).' Sources</option>';
+            echo '<option value="by_en_experts">List Subset: '.fn___echo_number($all_source_count).' Expert Sources</option>';
             echo '</select>';
 
 
@@ -431,11 +425,8 @@ if(!$has_filters){
         echo '</div>';
 
     }
-
-
-
-
     echo '</div>';
+
 
 }
 

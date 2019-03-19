@@ -764,7 +764,7 @@ class Matrix_model extends CI_Model
          *
          * */
 
-        if ($in_requirement_entity_id <= 0) {
+        if ($in_requirement_entity_id == 6087) {
             //Does not have any requirements:
             return null;
         }

@@ -6,13 +6,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * So we don't have to make DB calls to figure them out every time!
  * This is the cron function that creates this: fn___matrix_cache()
  * See here for all entities cached: https://mench.com/entities/4527
- * use-case format: $this->config->item('en_all_4432')
+ * use-case format: $this->config->item('en_ids_3000')
  *
  * ATTENTION: Also search for "en_ids_" and "en_all_" when trying to manage these throughout the code base
  *
  */
 
-//Generated 2019-03-18 17:08:42 PST
+//Generated 2019-03-18 19:04:55 PST
 
 //User Groups:
 $config['en_ids_4432'] = array(1281, 1308, 3084, 4430, 4433);
@@ -706,7 +706,7 @@ $config['en_all_4374'] = array(
     ),
     4331 => array(
         'm_icon' => '<i class="fal fa-comment-check"></i>',
-        'm_name' => 'Message Formats',
+        'm_name' => 'Intent Completion Methods',
         'm_desc' => '20',
         'm_parents' => array(4365, 4527, 4374),
     ),
@@ -1261,8 +1261,8 @@ $config['en_all_4592'] = array(
     ),
 );
 
-//Message Formats:
-$config['en_ids_4331'] = array(4255, 4256, 4258, 4259, 4260, 4261);
+//Intent Completion Methods:
+$config['en_ids_4331'] = array(4255, 4256, 4258, 4259, 4260, 4261, 6087);
 $config['en_all_4331'] = array(
     4255 => array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
@@ -1299,6 +1299,12 @@ $config['en_all_4331'] = array(
         'm_name' => 'File',
         'm_desc' => '',
         'm_parents' => array(4594, 4592, 4537, 4374, 4331),
+    ),
+    6087 => array(
+        'm_icon' => '<i class="fal fa-check"></i>',
+        'm_name' => 'No Response',
+        'm_desc' => 'Student does not need to submit anything to mark intent as complete.',
+        'm_parents' => array(4331),
     ),
 );
 

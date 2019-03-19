@@ -113,6 +113,10 @@ class Database_model extends CI_Model
             $insert_columns['in_metadata'] = null;
         }
 
+        if (!isset($insert_columns['in_requirement_entity_id'])) {
+            $insert_columns['in_requirement_entity_id'] = 6087; //No Response Required
+        }
+
         //Lets now add:
         $this->db->insert('table_intents', $insert_columns);
 
