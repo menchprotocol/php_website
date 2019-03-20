@@ -1945,26 +1945,36 @@ class Matrix_model extends CI_Model
     }
 
 
+    function in_force_verb_creation($in_outcome, $tr_miner_entity_id = 0){
 
-    function fn___in_verify_create($in_outcome, $tr_miner_entity_id = 0, $in_status = 0){
-
-        //Assign verb variables:
+        //Fetch related variables:
         $outcome_words = explode(' ', $in_outcome);
         $starting_verb = trim($outcome_words[0]);
         $in_verb_entity_id = starting_verb_id($in_outcome);
 
-        if(count($outcome_words) < 2){
+        //Run some checks on the intent outcome:
+        if(count($outcome_words) < 3) {
 
+            //The /force is a word, so starting verb is too short:
             return array(
                 'status' => 0,
                 'message' => 'Outcome must have at-least two words',
             );
 
-        } elseif(strlen($in_outcome) < 5){
+        } elseif(!(substr($in_outcome, -7) == ' /force')){
 
+            //not positioned correctly:
             return array(
                 'status' => 0,
-                'message' => 'Outcome must be at-least 5 characters long',
+                'message' => '/force command must be the last word of the outcome',
+            );
+
+        } elseif(!fn___en_auth(array(1281))){
+
+            //Not a acceptable starting verb:
+            return array(
+                'status' => 0,
+                'message' => '/force command is only available to moderators',
             );
 
         } elseif(strlen($starting_verb) < 2) {
@@ -1983,53 +1993,73 @@ class Matrix_model extends CI_Model
                 'message' => 'Starting verb should only consist of letters A-Z',
             );
 
+        }
+
+        //Create the supporting verb if not already there:
+        if(!$in_verb_entity_id){
+
+            //Add and link verb:
+            $added_en = $this->Matrix_model->fn___en_verify_create(ucwords(strtolower($starting_verb)), $tr_miner_entity_id, true);
+
+            //Link to supported verbs:
+            $this->Database_model->fn___tr_create(array(
+                'tr_miner_entity_id' => $tr_miner_entity_id,
+                'tr_status' => 2, //Published
+                'tr_type_entity_id' => 4230, //Raw
+                'tr_parent_entity_id' => 5008, //Intent Supported Verbs
+                'tr_child_entity_id' => $added_en['en']['en_id'],
+            ));
+
+            //Assign new verb ID to this intent:
+            $in_verb_entity_id = $added_en['en']['en_id'];
+        }
+
+
+        //All good, return results:
+        return array(
+            'status' => 1,
+            'in_cleaned_outcome' => str_replace(' /force' , '', $in_outcome),
+            'in_verb_entity_id' => $in_verb_entity_id,
+        );
+
+    }
+
+
+    function fn___in_verify_create($in_outcome, $tr_miner_entity_id = 0, $in_status = 0){
+
+        //Assign verb variables:
+        $in_verb_entity_id = starting_verb_id($in_outcome);
+
+        if(substr_count($in_outcome , ' ') < 1){
+
+            return array(
+                'status' => 0,
+                'message' => 'Outcome must have at-least two words',
+            );
+
+        } elseif(strlen($in_outcome) < 5){
+
+            return array(
+                'status' => 0,
+                'message' => 'Outcome must be at-least 5 characters long',
+            );
+
         } elseif(substr_count($in_outcome , '/force') > 0){
 
-            //Run some checks on the intent outcome:
-            if(count($outcome_words) < 3) {
+            //Force command detected, pass it on to the force function:
+            $force_outcome = $this->Matrix_model->in_force_verb_creation($in_outcome, $tr_miner_entity_id);
 
-                //The /force is a word, so starting verb is too short:
-                return array(
-                    'status' => 0,
-                    'message' => 'Outcome must have at-least two words',
-                );
-
-            } elseif(!(substr($in_outcome, -7) == ' /force')){
-
-                //not positioned correctly:
-                return array(
-                    'status' => 0,
-                    'message' => '/force command must be the last word of the outcome',
-                );
-
-            } elseif(!fn___en_auth(array(1281))){
-
-                //Not a acceptable starting verb:
-                return array(
-                    'status' => 0,
-                    'message' => '/force command is only available to moderators',
-                );
-
+            if(!$force_outcome['status']){
+                //We had some errors in outcome structure:
+                return $force_outcome['status'];
             }
 
-            //Remove /force command from outcome:
-            $in_outcome = str_replace(' /force' , '', $in_outcome);
+            //Update forced variables:
+            $in_outcome = $force_outcome['in_cleaned_outcome'];
 
-            //Create the supporting verb if not already there:
+            //Update supporting verb ID if it was not set:
             if(!$in_verb_entity_id){
-
-                //Add and link verb:
-                $added_en = $this->Matrix_model->fn___en_verify_create(ucwords(strtolower($starting_verb)), $tr_miner_entity_id, true);
-                $this->Database_model->fn___tr_create(array(
-                    'tr_miner_entity_id' => $tr_miner_entity_id,
-                    'tr_status' => 2, //Published
-                    'tr_type_entity_id' => 4230, //Raw
-                    'tr_parent_entity_id' => 5008, //Intent Supported Verbs
-                    'tr_child_entity_id' => $added_en['en']['en_id'],
-                ));
-
-                //Assign new verb ID to this intent:
-                $in_verb_entity_id = $added_en['en']['en_id'];
+                $in_verb_entity_id = $force_outcome['in_verb_entity_id'];
             }
 
         } elseif(!$in_verb_entity_id) {
@@ -2037,7 +2067,7 @@ class Matrix_model extends CI_Model
             //Not a acceptable starting verb:
             return array(
                 'status' => 0,
-                'message' => '['.$starting_verb.'] is not a supported verb. Manage supported verbs via @5008 or use the /force command when creating a new intent as a moderator.',
+                'message' => 'Starting verb is not yet supported. Manage supported verbs via entity @5008'.( fn___en_auth(array(1281)) ? ' or use the /force command to add this verb to the supported list.' : '' ),
             );
 
         }

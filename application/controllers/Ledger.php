@@ -453,10 +453,10 @@ class Ledger extends CI_Controller
     }
 
 
-    function fn___moderate($action = null, $target_obj = null, $target_id = 0)
+    function fn___moderate($action = null, $command1 = null, $command2 = null)
     {
 
-        $en_session = fn___en_auth(array(1281), true);
+        $session_en = fn___en_auth(array(1281), true);
 
         //Define all moderation functions:
         $moderation_tools = array(
@@ -571,7 +571,25 @@ class Ledger extends CI_Controller
                     'in_id !=' => $this->config->item('in_mission_id'),
                     'in_id NOT IN (' . join(',', $this->config->item('in_status_locked')) . ')' => null,
                 )) as $count => $orphan_in) {
-                    echo '<div>'.($count+1).') <a href="/intents/'.$orphan_in['in_id'].'">'.$orphan_in['in_outcome'].'</a> [Status: '.$orphan_in['in_status'].']</div>';
+
+                    //Show intent:
+                    echo '<div>'.($count+1).') <a href="/intents/'.$orphan_in['in_id'].'">'.$orphan_in['in_outcome'].'</a> [Status: '.$orphan_in['in_status'].']';
+
+                    //Do we need to remove?
+                    if($command1=='remove'){
+
+                        //Remove intent links:
+                        $links_removed = $this->Matrix_model->unlink_intent($orphan_in['in_id'] , $session_en['en_id']);
+
+                        //Remove intent:
+                        $this->Database_model->fn___in_update($orphan_in['in_id'], array( 'in_status' => -1 ), true, $session_en['en_id']);
+
+                        //Show confirmation:
+                        echo ' [Intent + '.$links_removed.' links Removed]';
+                    }
+
+                    //Done showing the intent:
+                    echo '</div>';
                 }
 
             } elseif($action=='orphan_entities') {
@@ -583,7 +601,24 @@ class Ledger extends CI_Controller
                     'en_status >=' => 0,
                     'en_id !=' => $this->config->item('en_top_focus_id'),
                 ), array('skip_en__parents')) as $count => $orphan_en) {
-                    echo '<div>'.($count+1).') <a href="/entities/'.$orphan_en['en_id'].'">'.$orphan_en['en_name'].'</a> [Status: '.$orphan_en['en_status'].']</div>';
+
+                    //SHow entity:
+                    echo '<div>'.($count+1).') <a href="/entities/'.$orphan_en['en_id'].'">'.$orphan_en['en_name'].'</a> [Status: '.$orphan_en['en_status'].']';
+
+                    //Do we need to remove?
+                    if($command1=='remove'){
+
+                        //Remove intent links:
+                        $links_removed = $this->Matrix_model->unlink_intent($orphan_in['in_id'] , $session_en['en_id']);
+
+                        //Remove intent:
+                        $this->Database_model->fn___in_update($orphan_in['in_id'], array( 'in_status' => -1 ), true, $session_en['en_id']);
+
+                        //Show confirmation:
+                        echo ' [Intent + '.$links_removed.' links Removed]';
+                    }
+
+                    echo '</div>';
                 }
 
             } elseif($action=='identical_intent_outcomes') {
@@ -627,7 +662,7 @@ class Ledger extends CI_Controller
             } elseif($action=='sync_algolia') {
 
                 //Call the update function and passon possible values:
-                fn___echo_json($this->Database_model->fn___update_algolia($target_obj, $target_id));
+                fn___echo_json($this->Database_model->fn___update_algolia($command1, $command2));
 
             } elseif($action=='php_info') {
 

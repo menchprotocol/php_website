@@ -479,14 +479,10 @@ class Intents extends CI_Controller
                     //Check to make sure starts with a verb:
                     if($in_update['in_verb_entity_id'] < 1){
 
-                        //Define starting verb for error message:
-                        $outcome_words = explode(' ', $in_update['in_outcome']);
-                        $starting_verb = trim($outcome_words[0]);
-
                         //Not a acceptable starting word:
                         return fn___echo_json(array(
                             'status' => 0,
-                            'message' => '['.$starting_verb.'] is not a supported verb. Manage supported verbs via @5008 or use the /force command when creating a new intent as a moderator.',
+                            'message' => 'Starting verb is not yet supported. Manage supported verbs via entity @5008'.( fn___en_auth(array(1281)) ? ' or use the /force command to add this verb to the supported list.' : '' ),
                         ));
 
                     }

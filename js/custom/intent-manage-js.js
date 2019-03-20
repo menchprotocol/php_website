@@ -232,7 +232,7 @@ function fn___in_adjust_isany_ui() {
         $('#in_requirement_entity_id').prop('disabled', false);
     } else {
         //Any is selected, lock the completion settings as its not allowed for ANY Branches:
-        $('#in_requirement_entity_id').val('0').prop('disabled', 'disabled');
+        $('#in_requirement_entity_id').val(6087).prop('disabled', 'disabled');
     }
 }
 

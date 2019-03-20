@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-03-18 19:04:55 PST
+//Generated 2019-03-19 17:24:21 PST
 
 //User Groups:
 $config['en_ids_4432'] = array(1281, 1308, 3084, 4430, 4433);
@@ -137,7 +137,7 @@ $config['en_all_4255'] = array(
 );
 
 //Advance Mode:
-$config['en_ids_5005'] = array(4232, 4233, 4234, 4602, 4604, 4741, 4759, 4997, 5006);
+$config['en_ids_5005'] = array(4232, 4233, 4234, 4602, 4604, 4741, 4759, 4997, 5006, 6093);
 $config['en_all_5005'] = array(
     4232 => array(
         'm_icon' => '<i class="fal fa-medal"></i>',
@@ -192,6 +192,12 @@ $config['en_all_5005'] = array(
         'm_name' => 'Intent Ledger History',
         'm_desc' => '',
         'm_parents' => array(4535, 5005),
+    ),
+    6093 => array(
+        'm_icon' => '<i class="fal fa-megaphone"></i>',
+        'm_name' => 'Noted Intent Changelog',
+        'm_desc' => '',
+        'm_parents' => array(4374, 4594, 4986, 5005, 4485),
     ),
 );
 
@@ -439,7 +445,7 @@ $config['en_all_4426'] = array(
 );
 
 //Only Moderators can View:
-$config['en_ids_4755'] = array(3286, 3288, 4248, 4275, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4567, 4568, 4570, 4783, 5967);
+$config['en_ids_4755'] = array(3286, 3288, 4248, 4275, 4278, 4279, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4567, 4568, 4570, 4783, 5967);
 $config['en_all_4755'] = array(
     3286 => array(
         'm_icon' => '<i class="fal fa-key"></i>',
@@ -464,6 +470,18 @@ $config['en_all_4755'] = array(
         'm_name' => 'Searched Action Plan Intent',
         'm_desc' => '',
         'm_parents' => array(4755, 4594, 4560),
+    ),
+    4278 => array(
+        'm_icon' => '<i class="fas fa-check-double"></i>',
+        'm_name' => 'Read Message',
+        'm_desc' => '',
+        'm_parents' => array(4755, 4594),
+    ),
+    4279 => array(
+        'm_icon' => '<i class="fas fa-check"></i>',
+        'm_name' => 'Received Message',
+        'm_desc' => '',
+        'm_parents' => array(4755, 4594),
     ),
     4460 => array(
         'm_icon' => '<i class="fal fa-ballot-check"></i>',
@@ -570,7 +588,7 @@ $config['en_all_4755'] = array(
 );
 
 //Transaction Type Coin Awards:
-$config['en_ids_4374'] = array(4228, 4229, 4230, 4231, 4232, 4233, 4234, 4235, 4242, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4318, 4319, 4331, 4460, 4601, 4602, 4983);
+$config['en_ids_4374'] = array(4228, 4229, 4230, 4231, 4232, 4233, 4234, 4235, 4242, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4318, 4319, 4331, 4460, 4601, 4602, 4983, 6093);
 $config['en_all_4374'] = array(
     4228 => array(
         'm_icon' => '<i class="fal fa-check-circle"></i>',
@@ -734,6 +752,12 @@ $config['en_all_4374'] = array(
         'm_desc' => '100',
         'm_parents' => array(4463, 4986, 4985, 4374, 4594, 4485),
     ),
+    6093 => array(
+        'm_icon' => '<i class="fal fa-megaphone"></i>',
+        'm_name' => 'Noted Intent Changelog',
+        'm_desc' => '100',
+        'm_parents' => array(4374, 4594, 4986, 5005, 4485),
+    ),
 );
 
 //Account Types:
@@ -754,7 +778,7 @@ $config['en_all_4600'] = array(
 );
 
 //Transaction Type Full List:
-$config['en_ids_4594'] = array(4228, 4229, 4230, 4231, 4232, 4233, 4234, 4235, 4242, 4246, 4248, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4265, 4266, 4267, 4268, 4269, 4272, 4275, 4278, 4279, 4282, 4283, 4284, 4287, 4299, 4318, 4319, 4452, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4567, 4568, 4570, 4577, 4601, 4602, 4983, 4993, 4994, 4996, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943, 5967, 5981, 5982);
+$config['en_ids_4594'] = array(4228, 4229, 4230, 4231, 4232, 4233, 4234, 4235, 4242, 4246, 4248, 4250, 4251, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4263, 4264, 4265, 4266, 4267, 4268, 4269, 4272, 4275, 4278, 4279, 4282, 4283, 4284, 4287, 4299, 4318, 4319, 4452, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4559, 4567, 4568, 4570, 4577, 4601, 4602, 4983, 4993, 4994, 4996, 4998, 4999, 5000, 5001, 5003, 5007, 5865, 5943, 5967, 5981, 5982, 6093);
 $config['en_all_4594'] = array(
     4228 => array(
         'm_icon' => '<i class="fal fa-check-circle"></i>',
@@ -934,13 +958,13 @@ $config['en_all_4594'] = array(
         'm_icon' => '<i class="fas fa-check-double"></i>',
         'm_name' => 'Read Message',
         'm_desc' => '',
-        'm_parents' => array(4594),
+        'm_parents' => array(4755, 4594),
     ),
     4279 => array(
         'm_icon' => '<i class="fas fa-check"></i>',
         'm_name' => 'Received Message',
         'm_desc' => '',
-        'm_parents' => array(4594),
+        'm_parents' => array(4755, 4594),
     ),
     4282 => array(
         'm_icon' => '<i class="fas fa-eye"></i>',
@@ -1194,6 +1218,12 @@ $config['en_all_4594'] = array(
         'm_desc' => '',
         'm_parents' => array(4594, 4997),
     ),
+    6093 => array(
+        'm_icon' => '<i class="fal fa-megaphone"></i>',
+        'm_name' => 'Noted Intent Changelog',
+        'm_desc' => '',
+        'm_parents' => array(4374, 4594, 4986, 5005, 4485),
+    ),
 );
 
 //Linked Entities Transactions:
@@ -1361,7 +1391,7 @@ $config['en_all_4454'] = array(
 );
 
 //Intent Notes:
-$config['en_ids_4485'] = array(4231, 4983, 4601, 4232, 4233, 4602, 4234);
+$config['en_ids_4485'] = array(4231, 4983, 4601, 4232, 4233, 4602, 4234, 6093);
 $config['en_all_4485'] = array(
     4231 => array(
         'm_icon' => '<i class="fal fa-comment"></i>',
@@ -1404,6 +1434,12 @@ $config['en_all_4485'] = array(
         'm_name' => 'Random Intro',
         'm_desc' => 'One message randomly selected right after on-start messages. Goal is to make Mench feel more authentic by mixing things up. Also called in the code-base using compose_message().',
         'm_parents' => array(5005, 4986, 4594, 4485, 4374),
+    ),
+    6093 => array(
+        'm_icon' => '<i class="fal fa-megaphone"></i>',
+        'm_name' => 'Changelog',
+        'm_desc' => 'Similar to Wikipedia\'s Talk pages, the Mench changelog helps miners track the history and evolution of a intent and explain/propose changes/improvements.',
+        'm_parents' => array(4374, 4594, 4986, 5005, 4485),
     ),
 );
 
