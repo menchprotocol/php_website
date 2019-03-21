@@ -84,6 +84,12 @@ $config['fb_convert_4537']          = array( //Dedicated media formats supported
                                         4260 => 'image',
                                         4261 => 'file',
                                     );
+$config['fb_convert_tr_status']     = array( //Converts transaction statuses to student-friendly terminology
+                                         2 => 'Completed',
+                                         1 => 'Working On',
+                                         0 => 'Not Started',
+                                        -1 => 'Skipped',
+                                    );
 
 
 //3x Table Status:
