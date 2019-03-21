@@ -1589,23 +1589,20 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
             }
         }
 
-        $ui .= '</div>';
-    }
 
-    $ui .= '</div>';
-
-
-    if ($level == 2) {
-
-        //Show input to add new level 3 intent:
         $ui .= '<div class="list-group-item list_input new-in3-input cr-class-' . $tr_id . ' hidden">
-                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="fn___in_link_or_create(' . $in['in_id'] . ',3);" intent-id="' . $in['in_id'] . '"><input type="text" class="form-control autosearch intentadder-id-'.$in['in_id'].' algolia_search bottom-add" maxlength="' . $CI->config->item('in_outcome_max') . '" id="addintent-cr-' . $tr_id . '" intent-id="' . $in['in_id'] . '" placeholder="Add #Intent"></form></div>
+                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="fn___in_link_or_create(' . $in['in_id'] . ',3);" intent-id="' . $in['in_id'] . '"><input type="text" class="form-control autosearch intentadder-id-'.$in['in_id'].' algolia_search" maxlength="' . $CI->config->item('in_outcome_max') . '" id="addintent-cr-' . $tr_id . '" intent-id="' . $in['in_id'] . '" placeholder="Add #Intent"></form></div>
         </div>';
+
+        $ui .= '<div class="in_search_pad in_pad_'.$in['in_id'].' hidden"><span>Search existing intents or create a new one...</span></div>';
 
         //Load JS search for this input:
         $ui .= '<script> $(document).ready(function () { fn___in_load_search(".intentadder-id-'.$in['in_id'].'", 0, 3); }); </script>';
 
+        $ui .= '</div>';
     }
+
+    $ui .= '</div>';
 
     return $ui;
 

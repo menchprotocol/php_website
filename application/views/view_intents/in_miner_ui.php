@@ -38,9 +38,11 @@ $metadata = unserialize($in['in_metadata']);
                                id="addintent-c-' . $in['in_id'] . '-1"
                                placeholder="Add #Intent">
                     </div>
-                   
+                   <div class="in_search_pad in_pad_top hidden"><span>Search existing intents or create a new one...</span></div>
             </div>';
         echo '</div>';
+
+
 
 
 
@@ -82,15 +84,16 @@ $metadata = unserialize($in['in_metadata']);
         echo '<div class="list-group-item list_input grey-block">
                     <div class="form-group is-empty" style="margin: 0; padding: 0;">
                         <input type="text"
-                               class="form-control intentadder-level-2-bottom algolia_search bottom-add"
+                               class="form-control intentadder-level-2-bottom algolia_search"
                                maxlength="' . $this->config->item('in_outcome_max') . '"
                                intent-id="' . $in['in_id'] . '"
                                id="addintent-c-' . $in['in_id'] . '-0"
                                placeholder="Add #Intent">
                     </div>
-                   
+                   <div class="in_search_pad in_pad_bottom hidden"><span>Search existing intents or create a new one...</span></div>
             </div>';
         echo '</div>';
+
         ?>
 
     </div>

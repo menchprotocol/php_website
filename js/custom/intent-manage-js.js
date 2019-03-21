@@ -68,12 +68,33 @@ $(document).ready(function () {
 
 
 
+
     //Activate expansion:
     activate_expansion();
 
     //Load top/bottom intent searches:
     fn___in_load_search(".intentadder-level-2-top",    1, 2);
     fn___in_load_search(".intentadder-level-2-bottom", 0, 2);
+
+
+    //Expand level 3 search results:
+    $('.new-in3-input .algolia_search').focus(function() {
+        $('.in_pad_' + $(this).attr('intent-id') ).removeClass('hidden');
+    }).focusout(function() {
+        $('.in_pad_' + $(this).attr('intent-id') ).addClass('hidden');
+    });
+
+    $('.intentadder-level-2-top').focus(function() {
+        $('.in_pad_top' ).removeClass('hidden');
+    }).focusout(function() {
+        $('.in_pad_top' ).addClass('hidden');
+    });
+
+    $('.intentadder-level-2-bottom').focus(function() {
+        $('.in_pad_bottom' ).removeClass('hidden');
+    }).focusout(function() {
+        $('.in_pad_bottom' ).addClass('hidden');
+    });
 
 
     //Watch the expand/close all buttons:

@@ -200,16 +200,6 @@ $(document).ready(function () {
 
     fn___load_js_algolia();
 
-    $(".bottom-add").focus(function () {
-        //Give more space at the bottom to see search results:
-        if (!$(".dash").hasClass('dash-expand')) {
-            $(".dash").addClass('dash-expand');
-            //$('.main-panel').animate({ scrollTop:9999 }, 150);
-        }
-    });
-
-
-
     $("#matrix_search").on('autocomplete:selected', function (event, suggestion, dataset) {
 
         if (parseInt(suggestion.alg_obj_is_in)==1) {

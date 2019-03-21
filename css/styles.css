@@ -69,10 +69,6 @@ body.grey-bg {
     padding-bottom: 5px !important;
 }
 
-.dash-expand {
-    margin-bottom: 340px !important;
-}
-
 .container-fluid {
     padding-right: 15px;
     padding-left: 15px;
@@ -576,7 +572,7 @@ input::-webkit-inner-spin-button {
 
 
 
-.is_level2_sortable:hover, .en-item:hover, .list_input:hover, .list-messages > div > div:hover {
+.is_level2_sortable:hover, .en-item:hover, .list-messages > div > div:hover {
     background-color: #E5E5E5 !important;
     border-color: transparent !important;
 }
@@ -1703,13 +1699,22 @@ h5, .h5 {
     font-weight: 300;
 }
 
-
-.step-group {
-    margin: 10px 0 40px -8px;
+.in_search_pad{
+    height: 295px;
 }
 
-.new-in3-input{
-    margin:-51px 11px 7px 3px;
+.in_search_pad span{
+    color: #999;
+    padding-top: 100px;
+    display: block;
+    text-align: center;
+    font-size: 1.2em;
+}
+
+
+
+.step-group {
+    margin: 10px 0 0px -8px;
 }
 
 .new-in3-input input[type=text]::placeholder {
@@ -2680,7 +2685,7 @@ a.badge:focus, a.badge:hover {
 }
 
 .is_level3_sortable .fa-sort {
-    margin: -10px -7px -10px -7px; /* TODO -margin: -10px -5px -10px -39px; But needs hover-only CSS logic */
+    margin: -10px -7px -10px -7px;
 }
 
 .btn-adj {
