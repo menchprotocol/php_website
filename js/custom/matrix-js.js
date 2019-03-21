@@ -172,13 +172,13 @@ function tr_content_word_count(el_textarea, el_counter) {
     }
 }
 
-function fn___add_raw(){
+function fn___add_in_en_top_search(){
 
     //Lock search bar:
     $('#matrix_search').prop("disabled", true);
 
     //Attemps to create a new intent OR entity based on the value in the search box
-    $.post("/ledger/fn___add_raw", { raw_string: $("#matrix_search").val() }, function (data) {
+    $.post("/ledger/fn___add_in_en_top_search", { raw_string: $("#matrix_search").val() }, function (data) {
 
         if(!data.status){
 
@@ -233,7 +233,7 @@ $(document).ready(function () {
                 },
                 header: function (data) {
                     if($("#matrix_search").val().charAt(0)=='#' || $("#matrix_search").val().charAt(0)=='@'){
-                        return '<a href="javascript:fn___add_raw()" class="suggestion"><i class="fal fa-plus-circle" style="margin: 0 5px;"></i> Create ' + data.query + '</a>';
+                        return '<a href="javascript:fn___add_in_en_top_search()" class="suggestion"><i class="fal fa-plus-circle" style="margin: 0 5px;"></i> Create ' + data.query + '</a>';
                     }
                 },
                 empty: function (data) {

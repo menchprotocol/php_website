@@ -1699,16 +1699,16 @@ h5, .h5 {
     font-weight: 300;
 }
 
-.in_search_pad{
+.algolia_search_pad{
     height: 295px;
 }
 
-.in_search_pad span{
+.algolia_search_pad span{
     color: #999;
     padding-top: 100px;
     display: block;
     text-align: center;
-    font-size: 1.2em;
+    font-size: 1.1em;
 }
 
 

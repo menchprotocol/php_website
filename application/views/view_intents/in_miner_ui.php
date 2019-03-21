@@ -38,7 +38,7 @@ $metadata = unserialize($in['in_metadata']);
                                id="addintent-c-' . $in['in_id'] . '-1"
                                placeholder="Add #Intent">
                     </div>
-                   <div class="in_search_pad in_pad_top hidden"><span>Search existing intents or create a new one...</span></div>
+                   <div class="algolia_search_pad in_pad_top hidden"><span>Search existing intents or create a new one...</span></div>
             </div>';
         echo '</div>';
 
@@ -90,7 +90,7 @@ $metadata = unserialize($in['in_metadata']);
                                id="addintent-c-' . $in['in_id'] . '-0"
                                placeholder="Add #Intent">
                     </div>
-                   <div class="in_search_pad in_pad_bottom hidden"><span>Search existing intents or create a new one...</span></div>
+                   <div class="algolia_search_pad in_pad_bottom hidden"><span>Search existing intents or create a new one...</span></div>
             </div>';
         echo '</div>';
 

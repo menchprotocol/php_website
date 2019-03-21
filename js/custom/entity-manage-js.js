@@ -1,8 +1,13 @@
-function en_load_child_search() {
+function fn___en_load_search(focus_element, is_en_parent) {
 
-    $("#new-children .new-input").on('autocomplete:selected', function (event, suggestion, dataset) {
 
-        fn___add_or_link_entities(suggestion.alg_obj_id, 0);
+    $(focus_element + ' .new-input').focus(function() {
+        $(focus_element + ' .algolia_search_pad' ).removeClass('hidden');
+    }).focusout(function() {
+        $(focus_element + ' .algolia_search_pad' ).addClass('hidden');
+    }).on('autocomplete:selected', function (event, suggestion, dataset) {
+
+        fn___add_or_link_entities(suggestion.alg_obj_id, is_en_parent);
 
     }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
 
@@ -25,18 +30,18 @@ function en_load_child_search() {
             },
             header: function (data) {
                 if (!data.isEmpty) {
-                    return '<a href="javascript:fn___add_or_link_entities(0,0)" class="suggestion"><span><i class="fal fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + en_focus_name + ']</a>';
+                    return '<a href="javascript:fn___add_or_link_entities(0,'+is_en_parent+')" class="suggestion"><span><i class="fal fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
                 }
             },
             empty: function (data) {
-                //return '<a href="javascript:fn___add_or_link_entities(0,0)" class="suggestion"><span><i class="fal fa-plus-circle"></i> Create</span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + en_focus_name + ']</a>';
+                return '<a href="javascript:fn___add_or_link_entities(0,'+is_en_parent+')" class="suggestion"><span><i class="fal fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
             },
         }
     }]).keypress(function (e) {
 
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            fn___add_or_link_entities(0);
+            fn___add_or_link_entities(0, is_en_parent);
             return true;
         }
 
@@ -163,53 +168,8 @@ $(document).ready(function () {
 
 
     //Loadup various search bars:
-    en_load_child_search();
-
-
-    $("#new-parent .new-input").on('autocomplete:selected', function (event, suggestion, dataset) {
-
-        fn___add_or_link_entities(suggestion.alg_obj_id, 1);
-
-    }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
-
-        source: function (q, cb) {
-            algolia_index.search(q, {
-                filters: 'alg_obj_is_in=0',
-                hitsPerPage: 7,
-            }, function (error, content) {
-                if (error) {
-                    cb([]);
-                    return;
-                }
-                cb(content.hits, content);
-            });
-        },
-        templates: {
-            suggestion: function (suggestion) {
-                //If clicked, would trigger the autocomplete:selected above which will trigger the fn___add_or_link_entities() function
-                return echo_js_suggestion(suggestion, 0);
-            },
-            header: function (data) {
-                if (!data.isEmpty) {
-                    return '<a href="javascript:fn___add_or_link_entities(0,1)" class="suggestion"><span><i class="fal fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + en_focus_name + ']</a>';
-                }
-            },
-            empty: function (data) {
-                //return '<a href="javascript:fn___add_or_link_entities(0,1)" class="suggestion"><span><i class="fal fa-plus-circle"></i> Create </span> <i class="fas fa-at"></i> ' + data.query + ' [as ' + en_focus_name + ']</a>';
-            },
-        }
-
-    }]).keypress(function (e) {
-
-        var code = (e.keyCode ? e.keyCode : e.which);
-        if ((code == 13) || (e.ctrlKey && code == 13)) {
-            fn___add_or_link_entities(0, 1);
-            return true;
-        }
-
-    });
-
-
+    fn___en_load_search("#new-parent", 1);
+    fn___en_load_search("#new-children", 0);
 
 
     //Watchout for file uplods:
@@ -417,7 +377,7 @@ function fn___en_load_next_page(page, load_new_filter = 0) {
         if (load_new_filter) {
             $('#list-children').html(data + '<div id="new-children" class="list-group-item list_input grey-input">' + append_div + '</div>').hide().fadeIn();
             //Reset search engine:
-            en_load_child_search();
+            fn___en_load_search("#new-children", 0);
         } else {
             //Update UI to confirm with user:
             $(data).insertBefore('#new-children');

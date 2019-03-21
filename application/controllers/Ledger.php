@@ -41,7 +41,7 @@ class Ledger extends CI_Controller
 
 
 
-    function fn___add_raw(){
+    function fn___add_in_en_top_search(){
 
         //Authenticate Miner:
         $session_en = fn___en_auth(array(1308));
@@ -320,94 +320,6 @@ class Ledger extends CI_Controller
 
         }
     }
-
-    function fn___add_message()
-    {
-
-        //Authenticate Miner:
-        $session_en = fn___en_auth(array(1308));
-
-        if (!$session_en) {
-
-            return fn___echo_json(array(
-                'status' => 0,
-                'message' => 'Session Expired. Sign In and Try again.',
-            ));
-
-        } elseif (!isset($_POST['in_id']) || intval($_POST['in_id']) < 1) {
-
-            return fn___echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid Intent ID',
-            ));
-
-        } elseif (!isset($_POST['focus_tr_type_entity_id']) || intval($_POST['focus_tr_type_entity_id']) < 1) {
-
-            return fn___echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Message Type',
-            ));
-
-        }
-
-
-
-        //Fetch/Validate the intent:
-        $ins = $this->Database_model->fn___in_fetch(array(
-            'in_id' => intval($_POST['in_id']),
-            'in_status >=' => 0, //New+
-        ));
-        if(count($ins)<1){
-            return fn___echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid Intent',
-            ));
-        }
-
-        //Make sure message is all good:
-        $msg_validation = $this->Chat_model->fn___dispatch_validate_message($_POST['tr_content'], array(), false, array(), $_POST['focus_tr_type_entity_id'], $_POST['in_id']);
-
-        if (!$msg_validation['status']) {
-            //There was some sort of an error:
-            return fn___echo_json($msg_validation);
-        }
-
-        //Create Message Transaction:
-        $tr = $this->Database_model->fn___tr_create(array(
-            'tr_miner_entity_id' => $session_en['en_id'],
-            'tr_order' => 1 + $this->Database_model->fn___tr_max_order(array(
-                    'tr_status >=' => 0, //New+
-                    'tr_type_entity_id' => intval($_POST['focus_tr_type_entity_id']),
-                    'tr_child_intent_id' => intval($_POST['in_id']),
-                )),
-            //Referencing attributes:
-            'tr_type_entity_id' => intval($_POST['focus_tr_type_entity_id']),
-            'tr_parent_entity_id' => $msg_validation['tr_parent_entity_id'],
-            'tr_parent_intent_id' => $msg_validation['tr_parent_intent_id'],
-            'tr_child_intent_id' => intval($_POST['in_id']),
-            'tr_content' => $msg_validation['input_message'],
-        ), true);
-
-        //Do a relative adjustment for this intent's metadata
-        $this->Matrix_model->fn___metadata_update('in', $ins[0]['in_id'], array(
-            'in__metadata_count' => 1, //Add 1 to existing value
-        ), false);
-
-        //Update tree as well:
-        $this->Matrix_model->fn___metadata_tree_update('in', $ins[0]['in_id'], array(
-            'in__message_tree_count' => 1,
-        ));
-
-        //Print the challenge:
-        return fn___echo_json(array(
-            'status' => 1,
-            'message' => fn___echo_in_message_manage(array_merge($tr, array(
-                'tr_child_entity_id' => $session_en['en_id'],
-            ))),
-        ));
-    }
-
-
 
     function load_w_actionplan()
     {
@@ -835,7 +747,6 @@ class Ledger extends CI_Controller
 
         fn___echo_json($tr_pending);
     }
-
 
 
 

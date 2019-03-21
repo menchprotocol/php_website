@@ -3,7 +3,6 @@
     //Set global variables:
     var en_focus_filter = -1; //No filter, show all
     var en_focus_id = <?= $entity['en_id'] ?>;
-    var en_focus_name = '<?= str_replace('\'', '’', $entity['en_name']) ?>';
     var en_all_4592 = <?= json_encode($this->config->item('en_all_4592')) ?>;
 </script>
 <script src="/js/custom/entity-manage-js.js?v=v<?= $this->config->item('app_version') ?>"
@@ -23,6 +22,7 @@
         //Input to add new parents:
         echo '<div id="new-parent" class="list-group-item list_input grey-input">
                     <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search" data-lpignore="true" placeholder="Add @Entity or Paste URL"></div>
+                    <div class="algolia_search_pad hidden"><span>Search existing entities, create a new entity or paste a URL...</span></div>
             </div>';
 
         echo '</div>';
@@ -208,6 +208,7 @@
         //Input to add new parents:
         echo '<div id="new-children" class="list-group-item list_input grey-input">
             <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search" data-lpignore="true" placeholder="Add @Entity or Paste URL"></div>
+            <div class="algolia_search_pad hidden"><span>Search existing entities, create a new entity or paste a URL...</span></div>
     </div>';
         echo '</div>';
 

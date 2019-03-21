@@ -239,30 +239,29 @@ function fn___echo_in_message_manage($tr)
 
 
 
-    //Counter:
-    $ui .= '<li class="edit-on hidden"><span id="charNumEditing' . $tr['tr_id'] . '">0</span>/' . $CI->config->item('tr_content_max_length') . '</li>';
-
-
-
-
 
     //Transactions:
     $count_msg_trs = $CI->Database_model->fn___tr_fetch(array(
         '( tr_id = ' . $tr['tr_id'] . ' OR tr_parent_transaction_id = ' . $tr['tr_id'] . ')' => null,
     ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
-    $ui .= '<li class="pull-right edit-off ' . fn___echo_advance() . '"><a class="btn btn-primary" style="border:2px solid #fedd16 !important;" href="/ledger?tr_id=' . $tr['tr_id'] . '" target="_parent" title="Go to Transactions" data-toggle="tooltip" data-placement="top"><i class="fas fa-atlas"></i> '.fn___echo_number($count_msg_trs[0]['totals']).'</a></li>';
+    $ui .= '<li class="edit-off ' . fn___echo_advance() . '" style="width:48px; display:inline-block;"><a class="btn btn-primary" style="border:2px solid #fedd16 !important;" href="/ledger?tr_id=' . $tr['tr_id'] . '" target="_parent" title="Go to Transactions" data-toggle="tooltip" data-placement="top"><i class="fas fa-atlas"></i> '.fn___echo_number($count_msg_trs[0]['totals']).'</a></li>';
 
     //Modify:
-    $ui .= '<li class="pull-right edit-off" style="margin-left:0;"><span class="on-hover"><a class="btn btn-primary white-primary" href="javascript:fn___message_modify_start(' . $tr['tr_id'] . ',' . $tr['tr_type_entity_id'] . ');" title="Modify Message" data-toggle="tooltip" data-placement="top" style="border:2px solid #fedd16 !important; margin-left: 8px !important; margin-right: -6px !important;"><i class="fas fa-pen-square"></i></a></span></li>';
+    $ui .= '<li class="edit-off" style="margin-left:0;"><span class="on-hover"><a class="btn btn-primary white-primary" href="javascript:fn___message_modify_start(' . $tr['tr_id'] . ',' . $tr['tr_type_entity_id'] . ');" title="Modify Message" data-toggle="tooltip" data-placement="top" style="border:2px solid #fedd16 !important; margin-right:4px !important;"><i class="fas fa-pen-square"></i></a></span></li>';
 
-    //Is this a video message?
 
     //Status:
-    $ui .= '<li class="pull-right edit-off message_status" style="margin: 0 1px 0 -1px;"><span title="' . $fixed_fields['tr_status'][$tr['tr_status']]['s_name'] . ': ' . $fixed_fields['tr_status'][$tr['tr_status']]['s_desc'] . '" data-toggle="tooltip" data-placement="top">' . $fixed_fields['tr_status'][$tr['tr_status']]['s_icon'] . '</span></li>';
+    $ui .= '<li class="edit-off message_status" style="margin:0 8px 0 0;"><span title="' . $fixed_fields['tr_status'][$tr['tr_status']]['s_name'] . ': ' . $fixed_fields['tr_status'][$tr['tr_status']]['s_desc'] . '" data-toggle="tooltip" data-placement="top">' . $fixed_fields['tr_status'][$tr['tr_status']]['s_icon'] . '</span></li>';
 
     //Sort:
-    $ui .= '<li class="pull-right edit-off"><span title="Drag up/down to sort" data-toggle="tooltip" data-placement="top"><i class="fas fa-sort '.( in_array(4603, $en_all_4485[$tr['tr_type_entity_id']]['m_parents']) ? 'message-sorting' : '' ).'"></i></span></li>';
+    $ui .= '<li class="edit-off"><span title="Drag up/down to sort" data-toggle="tooltip" data-placement="top"><i class="fas fa-sort '.( in_array(4603, $en_all_4485[$tr['tr_type_entity_id']]['m_parents']) ? 'message-sorting' : '' ).'"></i></span></li>';
 
+
+
+
+
+    //Counter:
+    $ui .= '<li class="edit-on hidden"><span id="charNumEditing' . $tr['tr_id'] . '">0</span>/' . $CI->config->item('tr_content_max_length') . '</li>';
 
     //Save Edit:
     $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-primary white-primary" title="Save changes" data-toggle="tooltip" data-placement="top" href="javascript:fn___in_message_modify(' . $tr['tr_id'] . ',' . $tr['tr_type_entity_id'] . ');"><i class="fas fa-check"></i> Save</a></li>';
@@ -270,20 +269,19 @@ function fn___echo_in_message_manage($tr)
     //Cancel Edit:
     $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-primary white-primary" title="Cancel editing" data-toggle="tooltip" data-placement="top" href="javascript:fn___message_modify_cancel(' . $tr['tr_id'] . ');"><i class="fas fa-times"></i></a></li>';
 
-
-
     //Show drop down for message transaction status:
     $ui .= '<li class="pull-right edit-on hidden"><span class="white-wrapper" style="margin:-12px 0 0 0;">';
-    $ui .= '<select id="message_tr_status_' . $tr['tr_id'] . '"  class="form-control border" title="Change message status" data-toggle="tooltip" data-placement="top">';
+    $ui .= '<select id="message_tr_status_' . $tr['tr_id'] . '"  class="form-control border" style="margin-bottom:0;" title="Change message status" data-toggle="tooltip" data-placement="top">';
     foreach($fixed_fields['tr_status'] as $status_id => $status){
         $ui .= '<option value="' . $status_id . '" '.( $status_id==$tr['tr_status'] ? 'selected="selected"' : '' ).'>' . $status['s_name'] . '</option>';
     }
     $ui .= '</select>';
     $ui .= '</span></li>';
 
-
-
+    //Update result:
     $ui .= '<li class="pull-right edit-updates"></li>'; //Show potential errors
+
+
 
     $ui .= '</ul>';
 
@@ -1594,7 +1592,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
                 <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="fn___in_link_or_create(' . $in['in_id'] . ',3);" intent-id="' . $in['in_id'] . '"><input type="text" class="form-control autosearch intentadder-id-'.$in['in_id'].' algolia_search" maxlength="' . $CI->config->item('in_outcome_max') . '" id="addintent-cr-' . $tr_id . '" intent-id="' . $in['in_id'] . '" placeholder="Add #Intent"></form></div>
         </div>';
 
-        $ui .= '<div class="in_search_pad in_pad_'.$in['in_id'].' hidden"><span>Search existing intents or create a new one...</span></div>';
+        $ui .= '<div class="algolia_search_pad in_pad_'.$in['in_id'].' hidden"><span>Search existing intents or create a new one...</span></div>';
 
         //Load JS search for this input:
         $ui .= '<script> $(document).ready(function () { fn___in_load_search(".intentadder-id-'.$in['in_id'].'", 0, 3); }); </script>';

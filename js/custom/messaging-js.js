@@ -504,7 +504,7 @@ function fn___message_create() {
     fn___message_form_lock();
 
     //Update backend:
-    $.post("/ledger/fn___add_message", {
+    $.post("/intents/fn___in_new_message_from_text", {
 
         in_id: in_id, //Synonymous
         tr_content: $('#tr_content' + in_id).val(),
