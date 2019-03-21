@@ -1378,7 +1378,7 @@ h5, .h5 {
 .suggestion {
     font-size: 18px;
     display: block;
-    padding:6px 4px;
+    padding:8px 4px 6px;
     line-height: 120% !important;
 }
 
@@ -4060,4 +4060,8 @@ h4 .tip-badge {
     font-size: 1em !important;
     font-weight: 500 !important;
     text-decoration: underline;
+}
+
+.add-plus{
+    margin: 0 4px 0 7px;
 }

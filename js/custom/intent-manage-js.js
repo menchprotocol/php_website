@@ -175,9 +175,13 @@ $(document).ready(function () {
             },
             header: function (data) {
                 if (!data.isEmpty) {
-                    return '<a href="javascript:fn___in_link_or_create(' + parseInt($(this).attr('intent-id')) + ', ' + parseInt($(this).attr('is-parent')) + ', 2)" class="suggestion"><span><i class="fal fa-plus-circle"></i> Create </span> <i class="fas fa-hashtag"></i> ' + data.query + '</a>';
+                    return '<a href="javascript:fn___in_link_or_create(' + parseInt($(this).attr('intent-id')) + ', ' + parseInt($(this).attr('is-parent')) + ', 2)" class="suggestion"><span><i class="fal fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
                 }
             },
+            empty: function (data) {
+                return '<a href="javascript:fn___in_link_or_create(' + parseInt($(this).attr('intent-id')) + ', ' + parseInt($(this).attr('is-parent')) + ', 2)" class="suggestion"><span><i class="fal fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
+            },
+
         }
     }]).keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
@@ -185,15 +189,6 @@ $(document).ready(function () {
             return fn___in_link_or_create($(this).attr('intent-id'), $(this).attr('is-parent'), 2);
         }
     });
-
-
-
-
-
-
-    //Load level 3 sorting for this new level 2 intent:
-    fn___in_load_search_level3(".intentadder-level-3");
-
 
 
 
@@ -303,8 +298,11 @@ function fn___in_load_search_level3(focus_element) {
             },
             header: function (data) {
                 if (!data.isEmpty) {
-                    return '<a href="javascript:fn___in_link_or_create(' + parseInt($(focus_element).attr('intent-id')) + ',0,3)" class="suggestion"><span><i class="fal fa-plus-circle"></i></span> ' + data.query + '</a>';
+                    return '<a href="javascript:fn___in_link_or_create(' + parseInt($(focus_element).attr('intent-id')) + ',0,3)" class="suggestion"><span><i class="fal fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
                 }
+            },
+            empty: function (data) {
+                return '<a href="javascript:fn___in_link_or_create(' + parseInt($(focus_element).attr('intent-id')) + ',0,3)" class="suggestion"><span><i class="fal fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
             },
         }
     }]).keypress(function (e) {
@@ -855,7 +853,7 @@ function fn___in_link_or_create(in_parent_id, is_parent, next_level, in_link_chi
     } else if (next_level == 3) {
         var sort_handler = ".is_level3_sortable";
         var sort_list_id = "list-cr-" + $('.intent_line_' + in_parent_id).attr('in-tr-id');
-        var input_field = $('#addintent-cr-' + $('.intent_line_' + in_parent_id).attr('in-tr-id'));
+        var input_field = $('.intentadder-id-' + in_parent_id);
     } else {
         //This should not happen:
         alert('Invalid next_level value [' + next_level + ']');
@@ -867,7 +865,7 @@ function fn___in_link_or_create(in_parent_id, is_parent, next_level, in_link_chi
 
     //We either need the intent name (to create a new intent) or the in_link_child_id>0 to create an intent link:
     if (!in_link_child_id && intent_name.length < 1) {
-        alert('Error: Missing Intent. Try Again...');
+        alert('Error: Missing Intent for level ['+next_level+']. Try Again...' + '.intentadder-id-' + in_parent_id);
         input_field.focus();
         return false;
     }

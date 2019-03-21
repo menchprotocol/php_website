@@ -78,11 +78,6 @@ foreach ($metadatas as $tr) {
             echo '<span class="' . fn___echo_advance() . '"><i class="fas fa-exchange rotate90"></i> <span data-toggle="tooltip" class="underdot" title="Messages are delivered in order so you can can sort them as needed" data-placement="bottom">Sortable</span> &nbsp;</span>';
         }
 
-        //Does it support switching?
-        if(in_array(4742, $en_all_4485[$tr_type_entity_id]['m_parents'])){
-            echo '<span class="' . fn___echo_advance() . '"><i class="fas fa-exchange"></i> <span data-toggle="tooltip" class="underdot" title="You can change message type with other messages that are also switchable" data-placement="bottom">Switchable</span> &nbsp;</span>';
-        }
-
         //Does it support entity referencing?
         if(in_array(4986, $en_all_4485[$tr_type_entity_id]['m_parents'])){
             echo '<span class="' . fn___echo_advance() . '"><i class="fas fa-at"></i> <span data-toggle="tooltip" class="underdot" title="You can reference up to 1 entity using the @ sign" data-placement="bottom">Entity Reference</span> &nbsp;</span>';

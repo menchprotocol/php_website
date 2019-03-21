@@ -928,20 +928,6 @@ class Intents extends CI_Controller
 
         //See if this message type has specific input requirements:
         $valid_file_types = array(4258, 4259, 4260, 4261); //This must be a valid file type:  Video, Image, Audio or File
-        $en_all_4485 = $this->config->item('en_all_4485');
-        $en_all_4331 = $this->config->item('en_all_4331');
-        $completion_requirements = array_intersect($en_all_4485[$_POST['focus_tr_type_entity_id']]['m_parents'], $this->config->item('en_ids_4331'));
-        if(count($completion_requirements) == 1 && !in_array($completion_requirements[0], $valid_file_types)){
-
-            return fn___echo_json(array(
-                'status' => 0,
-                'message' => $en_all_4485[$_POST['focus_tr_type_entity_id']]['m_name'].' requires a ['.$en_all_4331[$completion_requirements[0]]['m_name'].'] message',
-            ));
-            //TODO: Maybe validate each file type specifically?
-            //Note: This logic also exists in fn___dispatch_validate_message() function in Chat Model
-
-        }
-
 
         //Attempt to save file locally:
         $file_parts = explode('.', $_FILES[$_POST['upload_type']]["name"]);
@@ -1120,6 +1106,11 @@ class Intents extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Transaction ID',
             ));
+        } elseif (!isset($_POST['new_message_tr_status'])) {
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Message Status',
+            ));
         } elseif (!isset($_POST['tr_content'])) {
             return fn___echo_json(array(
                 'status' => 0,
@@ -1143,7 +1134,7 @@ class Intents extends CI_Controller
             ));
         }
 
-        //Fetch this specific Message:
+        //Validate Message:
         $messages = $this->Database_model->fn___tr_fetch(array(
             'tr_id' => intval($_POST['tr_id']),
             'tr_status >=' => 0,
@@ -1155,9 +1146,55 @@ class Intents extends CI_Controller
             ));
         }
 
-        //Make sure message is all good:
-        $msg_validation = $this->Chat_model->fn___dispatch_validate_message($_POST['tr_content'], array(), false, array(), $messages[0]['tr_type_entity_id'], $_POST['in_id']);
 
+        //Did the message status change?
+        if($messages[0]['tr_status'] != $_POST['new_message_tr_status']){
+
+            //Are we deleting this message?
+            if($_POST['new_message_tr_status'] == -1){
+
+                //yes, do so and return results:
+                $affected_rows = $this->Database_model->fn___tr_update(intval($_POST['tr_id']), array( 'tr_status' => $_POST['new_message_tr_status'] ), $session_en['en_id']);
+
+                //Return success:
+                if($affected_rows > 0){
+                    return fn___echo_json(array(
+                        'status' => 1,
+                        'message' => 'Successfully removed',
+                    ));
+                } else {
+                    return fn___echo_json(array(
+                        'status' => 0,
+                        'message' => 'Error trying to remove message',
+                    ));
+                }
+
+            } elseif($_POST['new_message_tr_status'] == 2){
+
+                //We're publishing, make sure potential entity references are also published:
+                $msg_references = fn___extract_message_references($_POST['tr_content']);
+
+                if (count($msg_references['ref_entities']) > 0) {
+
+                    //We do have an entity reference, what's its status?
+                    $ref_ens = $this->Database_model->fn___en_fetch(array(
+                        'en_id' => $msg_references['ref_entities'][0],
+                    ));
+
+                    if(count($ref_ens)>0 && $ref_ens[0]['en_status']<2){
+                        return fn___echo_json(array(
+                            'status' => 0,
+                            'message' => 'You cannot published this message because its referenced entity is not yet published',
+                        ));
+                    }
+                }
+            }
+        }
+
+
+
+        //Validate new message:
+        $msg_validation = $this->Chat_model->fn___dispatch_validate_message($_POST['tr_content'], array(), false, array(), $messages[0]['tr_type_entity_id'], $_POST['in_id']);
         if (!$msg_validation['status']) {
             //There was some sort of an error:
             return fn___echo_json($msg_validation);
@@ -1167,21 +1204,11 @@ class Intents extends CI_Controller
         //All good, lets move on:
         //Define what needs to be updated:
         $to_update = array(
+            'tr_status' => $_POST['new_message_tr_status'],
             'tr_content' => $msg_validation['input_message'],
             'tr_parent_entity_id' => $msg_validation['tr_parent_entity_id'],
             'tr_parent_intent_id' => $msg_validation['tr_parent_intent_id'],
         );
-
-
-        if (!($_POST['initial_tr_type_entity_id'] == $_POST['focus_tr_type_entity_id'])) {
-            //Change the status:
-            $to_update['tr_type_entity_id'] = $_POST['focus_tr_type_entity_id'];
-            //Put it at the end of the new list:
-            $to_update['tr_order'] = 1 + $this->Database_model->fn___tr_max_order(array(
-                'tr_type_entity_id' => $_POST['focus_tr_type_entity_id'],
-                'tr_child_intent_id' => intval($_POST['in_id']),
-            ));
-        }
 
         //Now update the DB:
         $this->Database_model->fn___tr_update(intval($_POST['tr_id']), $to_update, $session_en['en_id']);
@@ -1191,13 +1218,13 @@ class Intents extends CI_Controller
             'tr_id' => intval($_POST['tr_id']),
         ));
 
-        $en_all_4485 = $this->config->item('en_all_4485');
+        $fixed_fields = $this->config->item('fixed_fields');
 
         //Print the challenge:
         return fn___echo_json(array(
             'status' => 1,
             'message' => $this->Chat_model->fn___dispatch_message($msg_validation['input_message'], $session_en, false, array(), array(), $_POST['in_id']),
-            'tr_type_entity_id' => $en_all_4485[$new_messages[0]['tr_type_entity_id']]['m_icon'],
+            'message_new_status_icon' => '<span title="' . $fixed_fields['tr_status'][$to_update['tr_status']]['s_name'] . ': ' . $fixed_fields['tr_status'][$to_update['tr_status']]['s_desc'] . '" data-toggle="tooltip" data-placement="top">' . $fixed_fields['tr_status'][$to_update['tr_status']]['s_icon'] . '</span>', //This might have changed
             'success_icon' => '<span><i class="fas fa-check"></i> Saved</span>',
         ));
     }

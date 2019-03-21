@@ -342,7 +342,7 @@ class Database_model extends CI_Model
                 $subject = 'Notification: '  . $miner_ens[0]['en_name'] . ' ' . $en_all_5966[$insert_columns['tr_type_entity_id']]['m_name'];
 
                 //Compose email body, start with transaction content:
-                $html_message = '<div>' . ( strlen($insert_columns['tr_content']) > 0 ? $this->Chat_model->fn___dispatch_message($insert_columns['tr_content']) : '<i>No transaction content</i>') . '</div><br />';
+                $html_message = '<div>' . ( strlen($insert_columns['tr_content']) > 0 ? $insert_columns['tr_content'] : '<i>No transaction content</i>') . '</div><br />';
 
                 //Append transaction object links:
                 foreach ($this->config->item('tr_object_links') as $tr_field => $obj_type) {

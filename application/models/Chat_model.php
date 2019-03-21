@@ -99,6 +99,14 @@ class Chat_model extends CI_Model
 
         //Did we have ane error in message validation?
         if (!$msg_validation['status']) {
+
+            //Log Error Transaction:
+            $this->Database_model->fn___tr_create(array_merge(array(
+                'tr_type_entity_id' => 4246, //Platform Error
+                'tr_content' => 'fn___dispatch_validate_message() returned error [' . $msg_validation['message'] . '] for input message [' . $input_message . ']',
+                'tr_child_entity_id' => (isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0),
+            ), $filtered_tr_append));
+
             return false;
         }
 
@@ -649,10 +657,9 @@ class Chat_model extends CI_Model
             foreach ($ens[0]['en__parents'] as $parent_en) {
 
                 //Define what type of entity parent link content should be displayed up-front in Messages
-                if (!($parent_en['tr_status'] >= 2 && $parent_en['en_status'] >= 2 && (in_array($parent_en['tr_parent_entity_id'], $this->config->item('en_ids_4990')) || in_array($parent_en['tr_type_entity_id'], $this->config->item('en_ids_4990'))))) {
+                if (!in_array($parent_en['tr_parent_entity_id'], $this->config->item('en_ids_4990')) && !in_array($parent_en['tr_type_entity_id'], $this->config->item('en_ids_4990'))) {
                     continue;
                 }
-
 
                 if (in_array($parent_en['tr_type_entity_id'], $this->config->item('en_ids_4537'))) {
 
@@ -780,7 +787,9 @@ class Chat_model extends CI_Model
                     $output_body_message = str_replace('@' . $msg_references['ref_entities'][0], '<span class="entity-name">'.$ens[0]['en_name'].'</span>'.( $entity_appendix ? '<b>*</b>' : ''), $output_body_message);
 
                 } else {
-                    $output_body_message = str_replace('@' . $msg_references['ref_entities'][0], '<a href="/entities/' . $ens[0]['en_id'] . '" target="_parent">' . $ens[0]['en_name'] . '</a>'.( $entity_appendix ? '<b>*</b>' : ''), $output_body_message);
+                    //Show entity link with status:
+                    $fixed_fields = $this->config->item('fixed_fields');
+                    $output_body_message = str_replace('@' . $msg_references['ref_entities'][0], $fixed_fields['en_status'][$ens[0]['en_status']]['s_icon'].' <a href="/entities/' . $ens[0]['en_id'] . '" target="_parent">' . $ens[0]['en_name'] . '</a>'.( $entity_appendix ? '<b>*</b>' : ''), $output_body_message);
                 }
 
             } else {
@@ -875,7 +884,7 @@ class Chat_model extends CI_Model
         if (in_array('/slice', $msg_references['ref_commands']) && !$found_slicable_url) {
             return array(
                 'status' => 0,
-                'message' => 'The /slice command requires the message to reference an entity that links to ' . join(' or ', $sliceable_urls),
+                'message' => '/slice command requires the message to reference an entity that links to ' . join(' or ', $sliceable_urls),
             );
         }
 
@@ -1064,7 +1073,7 @@ class Chat_model extends CI_Model
 
 
 
-    function fn___random_intro($in_id, $recipient_en){
+    function fn___dispatch_random_intro($in_id, $recipient_en){
 
         //If we have rotating we'd need to pick one and send randomly:
         $messages_rotating = $this->Database_model->fn___tr_fetch(array(
@@ -1082,7 +1091,7 @@ class Chat_model extends CI_Model
         $random_pick = $messages_rotating[rand(0, (count($messages_rotating) - 1))];
 
         //Dispatch message:
-        return $this->Chat_model->fn___dispatch_message(
+        $this->Chat_model->fn___dispatch_message(
             $random_pick['tr_content'],
             $recipient_en,
             true,
@@ -1237,6 +1246,7 @@ class Chat_model extends CI_Model
 
             //Append only if this is an Action Plan Intent (Since we've already communicated them)
             foreach ($messages_on_start as $message_tr) {
+
                 //Dispatch message:
                 $this->Chat_model->fn___dispatch_message(
                     $message_tr['tr_content'],
@@ -1249,6 +1259,7 @@ class Chat_model extends CI_Model
                         'tr_parent_transaction_id' => $message_tr['tr_id'], //This message
                     )
                 );
+
             }
 
         }
@@ -1649,7 +1660,7 @@ class Chat_model extends CI_Model
                 );
 
                 //Inform Student on how to can command Mench:
-                $this->Chat_model->fn___random_intro(8332, $en);
+                $this->Chat_model->fn___dispatch_random_intro(8332, $en);
 
             } elseif ($action_unsubscribe == 'ALL') {
 
@@ -1702,7 +1713,7 @@ class Chat_model extends CI_Model
                     );
 
                     //Inform Student on how to can command Mench:
-                    $this->Chat_model->fn___random_intro(8332, $en);
+                    $this->Chat_model->fn___dispatch_random_intro(8332, $en);
 
                 } else {
 
@@ -1742,7 +1753,7 @@ class Chat_model extends CI_Model
                 );
 
                 //Inform Student on how to can command Mench:
-                $this->Chat_model->fn___random_intro(8332, $en);
+                $this->Chat_model->fn___dispatch_random_intro(8332, $en);
 
             } elseif ($quick_reply_payload == 'RESUBSCRIBE_NO') {
 
@@ -1764,7 +1775,7 @@ class Chat_model extends CI_Model
             );
 
             //Inform Student on how to can command Mench:
-            $this->Chat_model->fn___random_intro(8332, $en);
+            $this->Chat_model->fn___dispatch_random_intro(8332, $en);
 
         } elseif (is_numeric($quick_reply_payload)) {
 
@@ -2209,7 +2220,7 @@ class Chat_model extends CI_Model
             if ($actionplan_tr_id > 0 && $tr_parent_intent_id > 0 && $in_id > 0 && $this->Matrix_model->fn___actionplan_choose_or($actionplan_tr_id, $tr_parent_intent_id, $in_id)) {
 
                 //Confirm answer received by acknowledging progress with Student:
-                $this->Chat_model->fn___random_intro(8333, $en);
+                $this->Chat_model->fn___dispatch_random_intro(8333, $en);
 
                 //Find the next item to navigate them to:
                 $next_ins = $this->Matrix_model->fn___actionplan_next_in($actionplan_tr_id);
@@ -2534,7 +2545,7 @@ class Chat_model extends CI_Model
 
 
             //Inform Student of Mench's one-way communication limitation & that Mench did not understand their message:
-            $this->Chat_model->fn___random_intro(8334, $en);
+            $this->Chat_model->fn___dispatch_random_intro(8334, $en);
 
 
             //Log transaction:

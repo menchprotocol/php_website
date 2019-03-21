@@ -265,53 +265,6 @@ function fn___message_tr_order_load() {
 
 }
 
-
-function fn___message_remove(tr_id) {
-
-    //Double check:
-    var r = confirm("Remove message?");
-    if (r == true) {
-
-        $("#ul-nav-" + tr_id).html('<div><i class="fas fa-spinner fa-spin"></i> Removing...</div>');
-
-        //Remove message transaction:
-        $.post("/ledger/fn___tr_status_update", { tr_id:tr_id, tr_status_new:-1 }, function (data) {
-
-            //Update UI to confirm with user:
-            if (!data.status) {
-
-                //Show error:
-                alert('ERROR: ' + data.message + ' (Refresh page and try again');
-
-            } else {
-
-                $("#ul-nav-" + tr_id).html('<div>' + data.message + '</div>');
-
-                //Adjust counter by one:
-                metadata_count--;
-                $(".messages-counter-" + in_id, window.parent.document).text(metadata_count);
-
-                //Disapper in a while:
-                setTimeout(function ()
-                {
-                    $("#ul-nav-" + tr_id).fadeOut();
-
-                    setTimeout(function () {
-
-                        //Remove first:
-                        $("#ul-nav-" + tr_id).remove();
-
-                        //Adjust sort for this message type:
-                        fn___message_tr_order_apply(focus_tr_type_entity_id);
-
-                    }, 610);
-                }, 610);
-
-            }
-        });
-    }
-}
-
 function fn___message_modify_start(tr_id, initial_tr_type_entity_id) {
 
     //Start editing:
@@ -355,7 +308,7 @@ function fn___in_message_modify(tr_id, initial_tr_type_entity_id) {
     fn___message_modify_cancel(tr_id, 1);
 
     //Detect new status, and a potential change:
-    var new_tr_type_entity_id = $("#en_all_4485_" + tr_id).val();
+    var new_message_tr_status = $("#message_tr_status_" + tr_id).val();
 
     //Update message:
     $.post("/intents/fn___in_message_modify", {
@@ -363,49 +316,55 @@ function fn___in_message_modify(tr_id, initial_tr_type_entity_id) {
         tr_id: tr_id,
         tr_content: $("#ul-nav-" + tr_id + " textarea").val(),
         initial_tr_type_entity_id: initial_tr_type_entity_id,
-        focus_tr_type_entity_id: new_tr_type_entity_id,
+        new_message_tr_status: new_message_tr_status,
         in_id: in_id,
 
     }, function (data) {
 
         if (data.status) {
 
-            //All good, lets show new text:
-            $("#ul-nav-" + tr_id + " .text_message").html(data.message);
+            //Saving successful...
 
-            //Did the status change?
-            if (!(new_tr_type_entity_id == initial_tr_type_entity_id)) {
+            //Did we remove this message?
+            if(new_message_tr_status < 0){
 
-                //Update new status:
-                $("#ul-nav-" + tr_id + " .message_status").html(data.tr_type_entity_id);
+                //Yes, message was removed, adjust accordingly:
+                $("#ul-nav-" + tr_id).html('<div>' + data.message + '</div>');
 
-                //Switch message over to its section and inform the user:
-                $("#ul-nav-" + tr_id).removeClass('msg_en_type_' + initial_tr_type_entity_id).addClass('msg_en_type_' + new_tr_type_entity_id)
+                //Adjust counter by one:
+                metadata_count--;
+                $(".messages-counter-" + in_id, window.parent.document).text(metadata_count);
 
-                //Note that we don't need to sort the new list as the new item would be added to its end
+                //Disapper in a while:
+                setTimeout(function ()
+                {
+                    $("#ul-nav-" + tr_id).fadeOut();
 
-                //Remove possible "No message" info box:
-                if ($('.no-messages' + in_id + '_' + new_tr_type_entity_id).length) {
-                    $('.no-messages' + in_id + '_' + new_tr_type_entity_id).hide();
-                }
+                    setTimeout(function () {
 
-                setTimeout(function () {
+                        //Remove first:
+                        $("#ul-nav-" + tr_id).remove();
 
-                    //Now move over to the new status tab:
-                    fn___message_load_type(new_tr_type_entity_id);
+                        //Adjust sort for this message type:
+                        fn___message_tr_order_apply(focus_tr_type_entity_id);
 
-                    //Move item to last:
-                    $("#message-sorting").append($("#ul-nav-" + tr_id));
+                    }, 610);
+                }, 610);
 
-                    //Also sort original list as 1 message has been removed from it:
-                    fn___message_tr_order_apply(initial_tr_type_entity_id);
+            } else {
 
-                }, 500);
+                //Nope, message was just edited...
+
+                //Update text message:
+                $("#ul-nav-" + tr_id + " .text_message").html(data.message);
+
+                //Update message status:
+                $("#ul-nav-" + tr_id + " .message_status").html(data.message_new_status_icon);
+
+                //Show success here
+                $("#ul-nav-" + tr_id + " .edit-updates").html('<b>' + data.success_icon + '</b>');
 
             }
-
-            //Show success here
-            $("#ul-nav-" + tr_id + " .edit-updates").html('<b>' + data.success_icon + '</b>');
 
         } else {
             //Oops, some sort of an error, lets

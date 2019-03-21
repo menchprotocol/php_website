@@ -15,7 +15,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 
 //App Functionality:
-$config['app_version']              = '0.7778'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
+$config['app_version']              = '0.78'; //Cache buster for static JS/CSS files, so needs to be updated if you update static files
 $config['app_update_algolia']       = true; //May need to turn off if/when we reach free monthly quota of 50k calls
 $config['app_in_en_ratio']          = 10; // = Intent tree max seconds / Entity trust score
 
@@ -84,12 +84,6 @@ $config['fb_convert_4537']          = array( //Dedicated media formats supported
                                         4260 => 'image',
                                         4261 => 'file',
                                     );
-$config['fb_convert_tr_status']     = array( //Converts transaction statuses to student-friendly terminology
-                                         2 => 'Completed',
-                                         1 => 'Working On',
-                                         0 => 'Not Started',
-                                        -1 => 'Skipped',
-                                    );
 
 
 //3x Table Status:
@@ -100,12 +94,12 @@ $config['fixed_fields']             = array(
                                                 's_desc' => 'Transaction is complete, ready and live',
                                                 's_icon' => '<i class="fas fa-check-square"></i>',
                                             ),
-                                            1 => array( //Considered incomplete, see tr_status_incomplete for more details
+                                            1 => array(
                                                 's_name' => 'Drafting',
                                                 's_desc' => 'Transaction is being worked-on so it can be published',
                                                 's_icon' => '<i class="fas fa-spinner fa-spin"></i>',
                                             ),
-                                            0 => array( //Considered incomplete, see tr_status_incomplete for more details
+                                            0 => array(
                                                 's_name' => 'New',
                                                 's_desc' => 'Transaction is newly added and pending to be mined',
                                                 's_icon' => '<i class="fal fa-square"></i>',
@@ -113,6 +107,29 @@ $config['fixed_fields']             = array(
                                             -1 => array(
                                                 's_name' => 'Removed',
                                                 's_desc' => 'Transaction is in-active',
+                                                's_icon' => '<i class="fal fa-minus-square"></i>',
+                                            ),
+                                        ),
+                                        //The same as tr_status with terminology optimized for students
+                                        'tr_student_status' => array(
+                                            2 => array(
+                                                's_name' => 'Completed',
+                                                's_desc' => 'Step is marked as complete by student',
+                                                's_icon' => '<i class="fas fa-check-square"></i>',
+                                            ),
+                                            1 => array(
+                                                's_name' => 'Working On',
+                                                's_desc' => 'Started but not yet complete',
+                                                's_icon' => '<i class="fas fa-spinner fa-spin"></i>',
+                                            ),
+                                            0 => array(
+                                                's_name' => 'Not Started',
+                                                's_desc' => 'Pending completion',
+                                                's_icon' => '<i class="fal fa-square"></i>',
+                                            ),
+                                            -1 => array(
+                                                's_name' => 'Skipped',
+                                                's_desc' => 'Step was skipped by student',
                                                 's_icon' => '<i class="fal fa-minus-square"></i>',
                                             ),
                                         ),
