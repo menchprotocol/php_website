@@ -319,7 +319,7 @@
                                         </textarea>
                                     </span>
 
-                                    <span style="padding: 0; font-size: 0.8em; line-height: 100%; display: block; margin: -8px 0 0 0px; float: right;"><input class="box__file inputfile" type="file" name="file" id="file" /><label class="textarea_buttons" for="file" data-toggle="tooltip" title="Upload Video, Audio, Images or PDFs up to <?= $this->config->item('en_file_max_size') ?> MB" data-placement="top"><i class="fal fa-cloud-upload"></i> Upload</label></span>
+                                    <span style="padding: 0; font-size: 0.8em; line-height: 100%; display: block; margin: -8px 0 0 0px; float: right;"><input class="box__file inputfile" type="file" name="file" id="file" /><label class="textarea_buttons" for="file" data-toggle="tooltip" title="Upload files up to <?= $this->config->item('en_file_max_size') ?> MB" data-placement="top"><i class="fal fa-cloud-upload"></i> Upload</label></span>
 
 
                                     </form>

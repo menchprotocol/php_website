@@ -600,21 +600,10 @@ input::-webkit-inner-spin-button {
 }
 
 
-.is_level3_sortable:hover, .new-in3-input:hover{
-    background-color: #EFEFEF !important;
-    border:1px solid #E5E5E5 !important;
-    cursor: default !important;
-}
-
 .en-item{
     margin-bottom: 3px;
 }
 
-
-
-.step-group {
-    margin: 10px 0 0 -8px;
-}
 
 .left-grey {
     border-left: 5px solid #2f2739;
@@ -1682,7 +1671,7 @@ h5, .h5 {
 }
 
 .list_input {
-    padding: 0 7px;
+    padding: 4px 7px;
 }
 
 .load-grey {
@@ -1714,6 +1703,14 @@ h5, .h5 {
     font-weight: 300;
 }
 
+
+.step-group {
+    margin: 10px 0 40px -8px;
+}
+
+.new-in3-input{
+    margin:-51px 11px 7px 3px;
+}
 
 .new-in3-input input[type=text]::placeholder {
     font-size: 16px !important;
