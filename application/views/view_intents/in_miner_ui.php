@@ -33,9 +33,8 @@ $metadata = unserialize($in['in_metadata']);
         echo '<div class="list-group-item list_input grey-block">
                     <div class="form-group is-empty" style="margin: 0; padding: 0;">
                         <input type="text"
-                               class="form-control intentadder-level-2 algolia_search bottom-add"
+                               class="form-control intentadder-level-2-top algolia_search"
                                intent-id="' . $in['in_id'] . '"
-                               is-parent="1"
                                id="addintent-c-' . $in['in_id'] . '-1"
                                placeholder="Add #Intent">
                     </div>
@@ -83,10 +82,9 @@ $metadata = unserialize($in['in_metadata']);
         echo '<div class="list-group-item list_input grey-block">
                     <div class="form-group is-empty" style="margin: 0; padding: 0;">
                         <input type="text"
-                               class="form-control intentadder-level-2 algolia_search bottom-add"
+                               class="form-control intentadder-level-2-bottom algolia_search bottom-add"
                                maxlength="' . $this->config->item('in_outcome_max') . '"
                                intent-id="' . $in['in_id'] . '"
-                               is-parent="0"
                                id="addintent-c-' . $in['in_id'] . '-0"
                                placeholder="Add #Intent">
                     </div>
@@ -290,7 +288,7 @@ $metadata = unserialize($in['in_metadata']);
                                         <?php
                                         foreach (array(-233, -144, -89, -55, -34, -21, -13, -8, -5, -3, -2, -1, 0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233) as $point) {
                                             echo '<option value="' . $point . '">' . ( $point>=0 ? 'Award ' : 'Subtract ' ) . ($point == 0 ? 'No Points' : abs($point) . ' Point' . fn___echo__s($point)) . '</option>';
-                                        }//bottom-add
+                                        }
                                         ?>
                                     </select>
                                 </div>

@@ -1699,13 +1699,13 @@ h5, .h5 {
     border-right: 0 !important;
 }
 
-.intentadder-level-2 {
+.intentadder-level-2-bottom, .intentadder-level-2-top {
     height: 49px !important;
     font-weight: bold !important;
     font-size: 1em !important;
 }
 
-.intentadder-level-2::placeholder {
+.intentadder-level-2-bottom::placeholder, .intentadder-level-2-top::placeholder {
     font-size: 16px !important;
     font-family: Lato;
     line-height: 27px !important;

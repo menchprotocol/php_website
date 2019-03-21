@@ -71,6 +71,10 @@ $(document).ready(function () {
     //Activate expansion:
     activate_expansion();
 
+    //Load top/bottom intent searches:
+    fn___in_load_search(".intentadder-level-2-top",    1, 2);
+    fn___in_load_search(".intentadder-level-2-bottom", 0, 2);
+
 
     //Watch the expand/close all buttons:
     $('#expand_intents .expand_all').click(function (e) {
@@ -145,50 +149,6 @@ $(document).ready(function () {
         }
     }
 
-
-
-    //Load Algolia:
-    $(".intentadder-level-2").on('autocomplete:selected', function (event, suggestion, dataset) {
-
-        fn___in_link_or_create($(this).attr('intent-id'), $(this).attr('is-parent'), 2, suggestion.alg_obj_id);
-
-    }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
-
-        source: function (q, cb) {
-            algolia_index.search(q, {
-                filters: 'alg_obj_is_in=1',
-                hitsPerPage: 7,
-            }, function (error, content) {
-                if (error) {
-                    cb([]);
-                    return;
-                }
-                cb(content.hits, content);
-            });
-        },
-        displayKey: function (suggestion) {
-            return ""
-        },
-        templates: {
-            suggestion: function (suggestion) {
-                return echo_js_suggestion(suggestion, 0);
-            },
-            header: function (data) {
-                if (!data.isEmpty) {
-                    return '<a href="javascript:fn___in_link_or_create(' + parseInt($(this).attr('intent-id')) + ', ' + parseInt($(this).attr('is-parent')) + ', 2)" class="suggestion"><span><i class="fal fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
-                }
-            },
-            empty: function (data) {
-                return '<a href="javascript:fn___in_link_or_create(' + parseInt($(this).attr('intent-id')) + ', ' + parseInt($(this).attr('is-parent')) + ', 2)" class="suggestion"><span><i class="fal fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
-            },
-
-        }
-    }]).keypress(function (e) {
-        var code = (e.keyCode ? e.keyCode : e.which);
-        if ((code == 13) || (e.ctrlKey && code == 13)) {
-            return fn___in_link_or_create($(this).attr('intent-id'), $(this).attr('is-parent'), 2);
-        }
-    });
 
 
 
@@ -269,11 +229,12 @@ function fn___in_adjust_link_ui() {
     }
 }
 
-function fn___in_load_search_level3(focus_element) {
+
+function fn___in_load_search(focus_element, is_in_parent, next_in_level) {
 
     $(focus_element).on('autocomplete:selected', function (event, suggestion, dataset) {
 
-        fn___in_link_or_create($(this).attr('intent-id'), 0, 3, suggestion.alg_obj_id);
+        fn___in_link_or_create($(this).attr('intent-id'), is_in_parent, next_in_level, suggestion.alg_obj_id);
 
     }).autocomplete({hint: false, minLength: 3, keyboardShortcuts: ['a']}, [{
 
@@ -298,17 +259,17 @@ function fn___in_load_search_level3(focus_element) {
             },
             header: function (data) {
                 if (!data.isEmpty) {
-                    return '<a href="javascript:fn___in_link_or_create(' + parseInt($(focus_element).attr('intent-id')) + ',0,3)" class="suggestion"><span><i class="fal fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
+                    return '<a href="javascript:fn___in_link_or_create(' + parseInt($(focus_element).attr('intent-id')) + ','+is_in_parent+','+next_in_level+')" class="suggestion"><span><i class="fal fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
                 }
             },
             empty: function (data) {
-                return '<a href="javascript:fn___in_link_or_create(' + parseInt($(focus_element).attr('intent-id')) + ',0,3)" class="suggestion"><span><i class="fal fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
+                return '<a href="javascript:fn___in_link_or_create(' + parseInt($(focus_element).attr('intent-id')) + ','+is_in_parent+','+next_in_level+')" class="suggestion"><span><i class="fal fa-plus-circle add-plus"></i></span> <b>' + data.query + '</b></a>';
             },
         }
     }]).keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            return fn___in_link_or_create($(this).attr('intent-id'), 0, 3);
+            return fn___in_link_or_create($(this).attr('intent-id'), is_in_parent, next_in_level);
         }
     });
 
@@ -904,7 +865,7 @@ function fn___in_link_or_create(in_parent_id, is_parent, next_level, in_link_chi
                 fn___in_sort_load(data.in_child_id, 3);
 
                 //Load search again:
-                fn___in_load_search_level3(".intentadder-id-"+data.in_child_id);
+                fn___in_load_search(".intentadder-id-"+data.in_child_id, 0, 3);
 
             } else if(!is_parent) {
 

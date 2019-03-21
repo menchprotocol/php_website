@@ -1595,7 +1595,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         </div>';
 
         //Load JS search for this input:
-        $ui .= '<script> $(document).ready(function () { fn___in_load_search_level3(".intentadder-id-'.$in['in_id'].'"); }); </script>';
+        $ui .= '<script> $(document).ready(function () { fn___in_load_search(".intentadder-id-'.$in['in_id'].'", 0, 3); }); </script>';
 
 
         $ui .= '</div>';

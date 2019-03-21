@@ -207,7 +207,7 @@
 
         //Input to add new parents:
         echo '<div id="new-children" class="list-group-item list_input grey-input">
-            <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search bottom-add" data-lpignore="true" placeholder="Add @Entity or Paste URL"></div>
+            <div class="form-group is-empty"><input type="text" class="form-control new-input algolia_search" data-lpignore="true" placeholder="Add @Entity or Paste URL"></div>
     </div>';
         echo '</div>';
 
