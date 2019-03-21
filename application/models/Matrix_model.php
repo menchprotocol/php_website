@@ -2248,14 +2248,6 @@ class Matrix_model extends CI_Model
         //Note that new entity transaction is already logged in the entity creation function
         //Now create more relevant transactions:
 
-        //Log new Student transaction:
-        $this->Database_model->fn___tr_create(array(
-            'tr_type_entity_id' => 4265, //Joined as Student
-            'tr_miner_entity_id' => $added_en['en']['en_id'],
-            'tr_child_entity_id' => $added_en['en']['en_id'],
-            'tr_metadata' => $added_en['en'],
-        ));
-
         //Add default Notification Level:
         $this->Database_model->fn___tr_create(array(
             'tr_type_entity_id' => 4230, //Raw link
