@@ -235,10 +235,10 @@ class Database_model extends CI_Model
 
 
         //Does this transaction type award coins?
-        if(in_array($insert_columns['tr_type_entity_id'], $this->config->item('en_ids_4374'))){
+        if(in_array($insert_columns['tr_type_entity_id'], $this->config->item('en_ids_4595'))){
             //Yes, issue coins:
-            $en_all_4374 = $this->config->item('en_all_4374');
-            $insert_columns['tr_coins'] = doubleval($en_all_4374[$insert_columns['tr_type_entity_id']]['m_desc']);
+            $en_all_4595 = $this->config->item('en_all_4595');
+            $insert_columns['tr_coins'] = doubleval($en_all_4595[$insert_columns['tr_type_entity_id']]['m_desc']);
         }
 
         //Lets log:

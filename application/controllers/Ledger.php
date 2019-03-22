@@ -232,7 +232,7 @@ class Ledger extends CI_Controller
 
                 //Do we have an omit command?
                 if(substr_count($en['tr_content'], '&var_trimcache=') == 1){
-                    $child['en_name'] = trim(str_replace( str_replace('&var_trimcache=','',$en['tr_content']) , '', $child['en_name']));
+                    $child['en_name'] = trim(str_replace(fn___one_two_explode('&var_trimcache=','',$en['tr_content']) , '', $child['en_name']));
                 }
 
                 //Fetch all parents for this child:
@@ -307,7 +307,7 @@ class Ledger extends CI_Controller
                 'tr_status' => 2, //Published
                 'en_status' => 2, //Published
                 'tr_type_entity_id' => 4319, //Number
-                'tr_parent_entity_id' => 4374, //Mench Coins
+                'tr_parent_entity_id' => 4595, //Mench Coins
                 'tr_child_entity_id' => $tr['tr_type_entity_id'],
             ), array('en_child'), 1);
 
@@ -321,91 +321,6 @@ class Ledger extends CI_Controller
         echo 'done';
 
     }
-
-
-    function cron__process_4299()
-    {
-
-        /*
-         *
-         * Every time we receive a media file from Facebook
-         * we need to upload it to our own CDNs using the
-         * short-lived URL provided by Facebook so we can
-         * access it indefinitely without restriction.
-         * This process is managed by creating a @4299
-         * Transaction Type which this cron job grabs and
-         * uploads to Mench CDN.
-         *
-         * Runs every minute with the cron job.
-         *
-         * */
-
-        $tr_pending = $this->Database_model->fn___tr_fetch(array(
-            'tr_status' => 0, //Pending
-            'tr_type_entity_id' => 4299, //Requested Photo Storage
-        ), array('en_miner'), 20); //Max number of scans per run
-
-
-        //Quickly set transaction statuses to drafting so other Cron jobs don't pick them up:
-        foreach ($tr_pending as $tr) {
-            $this->Database_model->fn___tr_update($tr['tr_id'], array(
-                'tr_status' => 1, //Drafting
-            ));
-        }
-
-        //Now go through and upload to CDN:
-        foreach ($tr_pending as $tr) {
-
-            //Save photo to S3 if content is URL
-            $new_file_url = (filter_var($tr['tr_content'], FILTER_VALIDATE_URL) ? fn___upload_to_cdn($tr['tr_content'], $tr) : false);
-
-            if(!$new_file_url){
-
-                //Ooopsi, there was an error:
-                $this->Database_model->fn___tr_create(array(
-                    'tr_content' => 'cron__sync_file_to_cdn() failed to store file in CDN',
-                    'tr_type_entity_id' => 4246, //Platform Error
-                    'tr_parent_transaction_id' => $tr['tr_id'],
-                ));
-
-                //Archive this:
-                $this->Database_model->fn___tr_update($tr['tr_id'], array(
-                    'tr_status' => -1, //Removed
-                ));
-
-                continue;
-            }
-
-            //Update entity icon if not already set:
-            $tr_child_entity_id = 0;
-            if (strlen($tr['en_icon'])<1) {
-
-                //Update Cover ID:
-                $this->Database_model->fn___en_update($tr['en_id'], array(
-                    'en_icon' => '<img src="' . $new_file_url . '">',
-                ), true, $tr['en_id']);
-
-                //Link transaction to entity:
-                $tr_child_entity_id = $tr['en_id'];
-
-            }
-
-            //Update transaction:
-            $this->Database_model->fn___tr_update($tr['tr_id'], array(
-                'tr_status' => 2, //Publish
-                'tr_content' => null, //Remove URL from content to indicate its done
-                'tr_child_entity_id' => $tr_child_entity_id,
-                'tr_metadata' => array(
-                    'original_url' => $tr['tr_content'],
-                    'cdn_url' => $new_file_url,
-                ),
-            ));
-
-        }
-
-        fn___echo_json($tr_pending);
-    }
-
 
 
     function fn___cron__sync_file_to_messenger()
@@ -518,7 +433,7 @@ class Ledger extends CI_Controller
         $this->db->query("TRUNCATE TABLE public.gephi_nodes CONTINUE IDENTITY RESTRICT;");
 
         //Load intent link types:
-        $en_all_4594 = $this->config->item('en_all_4594');
+        $en_all_4593 = $this->config->item('en_all_4593');
 
         //To make sure intent/entity IDs are unique:
         $id_prefix = array(
@@ -561,7 +476,7 @@ class Ledger extends CI_Controller
                 $this->db->insert('gephi_edges', array(
                     'source' => $id_prefix['in'].$in_child['tr_parent_intent_id'],
                     'target' => $id_prefix['in'].$in_child['tr_child_intent_id'],
-                    'label' => $en_all_4594[$in_child['tr_type_entity_id']]['m_name'], //TODO maybe give visibility to points/condition here?
+                    'label' => $en_all_4593[$in_child['tr_type_entity_id']]['m_name'], //TODO maybe give visibility to points/condition here?
                     'weight' => 1, //TODO Maybe update later?
                     'edge_type_en_id' => $in_child['tr_type_entity_id'],
                     'edge_status' => $in_child['tr_status'],
@@ -595,7 +510,7 @@ class Ledger extends CI_Controller
                 $this->db->insert('gephi_edges', array(
                     'source' => $id_prefix['en'].$en_child['tr_parent_entity_id'],
                     'target' => $id_prefix['en'].$en_child['tr_child_entity_id'],
-                    'label' => $en_all_4594[$en_child['tr_type_entity_id']]['m_name'].': '.$en_child['tr_content'],
+                    'label' => $en_all_4593[$en_child['tr_type_entity_id']]['m_name'].': '.$en_child['tr_content'],
                     'weight' => 1, //TODO Maybe update later?
                     'edge_type_en_id' => $en_child['tr_type_entity_id'],
                     'edge_status' => $en_child['tr_status'],
@@ -616,7 +531,7 @@ class Ledger extends CI_Controller
             //Add message node:
             $this->db->insert('gephi_nodes', array(
                 'id' => $message['tr_id'],
-                'label' => $en_all_4594[$message['tr_type_entity_id']]['m_name'] . ': ' . $message['tr_content'],
+                'label' => $en_all_4593[$message['tr_type_entity_id']]['m_name'] . ': ' . $message['tr_content'],
                 'size' => $node_size['msg'],
                 'node_type' => $message['tr_type_entity_id'], //Message type
                 'node_status' => $message['tr_status'],

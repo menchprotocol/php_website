@@ -443,11 +443,11 @@ function fn___echo_tr_row($tr, $is_inner = false)
 {
 
     $CI =& get_instance();
-    $en_all_4594 = $CI->config->item('en_all_4594');
+    $en_all_4593 = $CI->config->item('en_all_4593');
 
-    if(!isset($en_all_4594[$tr['tr_type_entity_id']])){
+    if(!isset($en_all_4593[$tr['tr_type_entity_id']])){
         //We've probably have not yet updated php cache, set error:
-        $en_all_4594[$tr['tr_type_entity_id']] = array(
+        $en_all_4593[$tr['tr_type_entity_id']] = array(
             'm_icon' => '<i class="fal fa-exclamation-triangle redalert"></i>',
             'm_name' => 'Transaction Type Not Synced in PHP Cache',
             'm_desc' => '',
@@ -486,7 +486,7 @@ function fn___echo_tr_row($tr, $is_inner = false)
         }
 
         //Transaction Type:
-        $ui .= '<a href="/entities/'.$tr['tr_type_entity_id'].'" data-toggle="tooltip" data-placement="top" title="View transaction type entity"><b style="padding-left:5px;">'. ( strlen($en_all_4594[$tr['tr_type_entity_id']]['m_icon']) > 0 ? $en_all_4594[$tr['tr_type_entity_id']]['m_icon'] . ' ' : '' ) . $en_all_4594[$tr['tr_type_entity_id']]['m_name'] . '</b></a>';
+        $ui .= '<a href="/entities/'.$tr['tr_type_entity_id'].'" data-toggle="tooltip" data-placement="top" title="View transaction type entity"><b style="padding-left:5px;">'. ( strlen($en_all_4593[$tr['tr_type_entity_id']]['m_icon']) > 0 ? $en_all_4593[$tr['tr_type_entity_id']]['m_icon'] . ' ' : '' ) . $en_all_4593[$tr['tr_type_entity_id']]['m_name'] . '</b></a>';
 
     $ui .= '</div>';
 
@@ -1659,13 +1659,13 @@ function fn___echo_en($en, $level, $is_parent = false)
     if ($tr_id > 0) {
 
         //Transaction Type Full List:
-        $en_all_4594 = $CI->config->item('en_all_4594');
+        $en_all_4593 = $CI->config->item('en_all_4593');
 
         //Show Transaction link icons:
         $ui .= '<span class="double-icon" style="margin-right:7px;">';
 
         //Show larger icon for transaction type (auto detected based on transaction content):
-        $ui .= '<span class="icon-main tr_type_' . $tr_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4594[$en['tr_type_entity_id']]['m_name'].'">' . $en_all_4594[$en['tr_type_entity_id']]['m_icon'] . '</span></span> ';
+        $ui .= '<span class="icon-main tr_type_' . $tr_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$en_all_4593[$en['tr_type_entity_id']]['m_name'].'">' . $en_all_4593[$en['tr_type_entity_id']]['m_icon'] . '</span></span> ';
 
         //Show smaller transaction status icon:
         $ui .= '<span class="icon-top-right tr_status_' . $tr_id . '"><span data-toggle="tooltip" data-placement="right" title="'.$fixed_fields['tr_status'][$en['tr_status']]['s_name'].': '.$fixed_fields['tr_status'][$en['tr_status']]['s_desc'].'">' . $fixed_fields['tr_status'][$en['tr_status']]['s_icon'] . '</span></span>';

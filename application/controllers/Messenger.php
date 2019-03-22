@@ -304,6 +304,7 @@ class Messenger extends CI_Controller
                                 ),
                             );
 
+
                             if (array_key_exists($att['type'], $att_media_types)) {
 
                                 /*
@@ -786,6 +787,173 @@ class Messenger extends CI_Controller
 
         return fn___redirect_message($k_url, '<div class="alert alert-success" role="alert"><i class="fal fa-check-circle"></i> Successfully Saved</div>');
     }
+
+
+
+    function cron__store_media()
+    {
+
+        /*
+         *
+         * This cron job looks for all requests to sync Message attachments
+         * with Facebook, gets them done and marks the transaction as done
+         *
+         * */
+
+        $tr_pending = $this->Database_model->fn___tr_fetch(array(
+            'tr_status' => 0, //New
+            'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_6102')) . ')' => null, //Student Sent/Received Media Transactions
+        ), array(), 10); //Max number of scans per run
+
+
+        //Quickly set transaction statuses to drafting so other Cron jobs don't pick them up:
+        foreach ($tr_pending as $tr) {
+            $this->Database_model->fn___tr_update($tr['tr_id'], array(
+                'tr_status' => 1, //Drafting
+            ));
+        }
+
+
+
+        $counter = 0;
+        foreach($tr_pending as $tr){
+
+            //Prepare variables:
+            $json_data = unserialize($ep['ej_e_blob']);
+
+            //Loop through entries:
+            if(is_array($json_data) && isset($json_data['entry']) && count($json_data['entry'])>0){
+                foreach($json_data['entry'] as $entry) {
+                    //loop though the messages:
+                    foreach($entry['messaging'] as $im){
+                        //This should only be a message
+                        if(isset($im['message'])) {
+                            //This should be here
+                            if(isset($im['message']['attachments'])){
+                                //We should have attachments:
+                                foreach($im['message']['attachments'] as $att){
+                                    //This one too! It should be one of these:
+                                    if(in_array($att['type'],array('image','audio','video','file'))){
+
+                                        //Store to local DB:
+                                        $new_file_url = save_file($att['payload']['url'],$json_data);
+
+                                        //Update engagement data:
+                                        $this->Db_model->e_update( $ep['e_id'] , array(
+                                            'e_value' => ( strlen($ep['e_value'])>0 ? $ep['e_value']."\n\n" : '' ).'/attach '.$att['type'].':'.$new_file_url, //Makes the file preview available on the message
+                                            'e_status' => 2, //Mark as done
+                                        ));
+
+                                        //Increase counter:
+                                        $counter++;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                //This should not happen, report:
+                $this->Db_model->e_create(array(
+                    'e_parent_u_id' => 0, //System
+                    'e_value' => 'cron/bot_save_files() fetched ej_e_blob() that was missing its [entry] value',
+                    'e_json' => $json_data,
+                    'e_parent_c_id' => 8, //System Error
+                ));
+            }
+
+            if($counter>=$max_per_batch){
+                break; //done for now
+            }
+        }
+        //Echo message for cron job:
+        echo $counter.' Incoming Messenger file'.($counter==1?'':'s').' saved to Mench cloud.';
+
+    }
+
+    function cron__store_profile_photo()
+    {
+
+        /*
+         *
+         * Every time we receive a media file from Facebook
+         * we need to upload it to our own CDNs using the
+         * short-lived URL provided by Facebook so we can
+         * access it indefinitely without restriction.
+         * This process is managed by creating a @4299
+         * Transaction Type which this cron job grabs and
+         * uploads to Mench CDN.
+         *
+         * Runs every minute with the cron job.
+         *
+         * */
+
+        $tr_pending = $this->Database_model->fn___tr_fetch(array(
+            'tr_status' => 0, //New
+            'tr_type_entity_id' => 4299, //Requested Photo Storage
+        ), array('en_miner'), 20); //Max number of scans per run
+
+
+        //Quickly set transaction statuses to drafting so other Cron jobs don't pick them up:
+        foreach ($tr_pending as $tr) {
+            $this->Database_model->fn___tr_update($tr['tr_id'], array(
+                'tr_status' => 1, //Drafting
+            ));
+        }
+
+        //Now go through and upload to CDN:
+        foreach ($tr_pending as $tr) {
+
+            //Save photo to S3 if content is URL
+            $new_file_url = (filter_var($tr['tr_content'], FILTER_VALIDATE_URL) ? fn___upload_to_cdn($tr['tr_content'], $tr) : false);
+
+            if(!$new_file_url){
+
+                //Ooopsi, there was an error:
+                $this->Database_model->fn___tr_create(array(
+                    'tr_content' => 'cron__sync_file_to_cdn() failed to store file in CDN',
+                    'tr_type_entity_id' => 4246, //Platform Error
+                    'tr_parent_transaction_id' => $tr['tr_id'],
+                ));
+
+                //Archive this:
+                $this->Database_model->fn___tr_update($tr['tr_id'], array(
+                    'tr_status' => -1, //Removed
+                ));
+
+                continue;
+            }
+
+            //Update entity icon if not already set:
+            $tr_child_entity_id = 0;
+            if (strlen($tr['en_icon'])<1) {
+
+                //Update Cover ID:
+                $this->Database_model->fn___en_update($tr['en_id'], array(
+                    'en_icon' => '<img src="' . $new_file_url . '">',
+                ), true, $tr['en_id']);
+
+                //Link transaction to entity:
+                $tr_child_entity_id = $tr['en_id'];
+
+            }
+
+            //Update transaction:
+            $this->Database_model->fn___tr_update($tr['tr_id'], array(
+                'tr_status' => 2, //Publish
+                'tr_content' => null, //Remove URL from content to indicate its done
+                'tr_child_entity_id' => $tr_child_entity_id,
+                'tr_metadata' => array(
+                    'original_url' => $tr['tr_content'],
+                    'cdn_url' => $new_file_url,
+                ),
+            ));
+
+        }
+
+        fn___echo_json($tr_pending);
+    }
+
 
 
 }

@@ -381,10 +381,11 @@ if(!$has_filters){
             foreach ($all_engs as $tr) {
 
                 //DOes it have a rate?
+                //TODO use PHP cache version, dont make a call
                 $rate_trs = $this->Database_model->fn___tr_fetch(array(
                     'tr_status' => 2, //Published
                     'en_status' => 2, //Published
-                    'tr_parent_entity_id' => 4374, //Mench Coins
+                    'tr_parent_entity_id' => 4595, //Mench Coins
                     'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
                     'tr_child_entity_id' => $tr['tr_type_entity_id'],
                 ), array('en_child'), 1);
