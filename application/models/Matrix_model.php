@@ -184,6 +184,23 @@ class Matrix_model extends CI_Model
 
     }
 
+    function draft_trs($trs){
+        /*
+         *
+         * A function that simply updates the status
+         * of input transactions so other cron jobs
+         * do not pick them up and re-process them.
+         *
+         * */
+
+        foreach ($trs as $tr) {
+            if($tr['tr_status'] == 0){
+                $this->Database_model->fn___tr_update($tr['tr_id'], array(
+                    'tr_status' => 1, //Drafting
+                ));
+            }
+        }
+    }
 
     function unlink_entity($en_id, $tr_miner_entity_id = 0, $merger_en_id = 0){
 
