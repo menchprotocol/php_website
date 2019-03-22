@@ -914,7 +914,7 @@ class Messenger extends CI_Controller
         ), array(), 10); //Max number of scans per run
 
         //Set transaction statuses to drafting so other Cron jobs don't pick them up:
-        $this->matrix_model->draft_trs($tr_pending);
+        $this->Matrix_model->draft_trs($tr_pending);
 
         $counter = 0;
         foreach($tr_pending as $tr){
@@ -983,7 +983,7 @@ class Messenger extends CI_Controller
 
 
         //Set transaction statuses to drafting so other Cron jobs don't pick them up:
-        $this->matrix_model->draft_trs($tr_pending);
+        $this->Matrix_model->draft_trs($tr_pending);
 
         //Now go through and upload to CDN:
         foreach ($tr_pending as $tr) {
