@@ -668,14 +668,27 @@ if(isset($_GET['tr_type_entity_id'])){
 
 
 //Fetch transactions:
-$trs_count = $this->Database_model->fn___tr_fetch($filters, $join_by, 0, 0, array(), 'COUNT(tr_id) as trs_count, SUM(tr_coins) as coins_sum');
+
 $filter_note = '';
-if(count($_GET) < 1 && !fn___en_auth(array(1308))){
-    //This makes the public ledger focus on transactions with coins which is a nicer initial view into the ledger:
-    $filters['tr_coins >'] = 0;
-    //Also give warning about this applied filter on the UI:
-    $filter_note = 'Showing recent transaction with awarded coins.';
+if(!fn___en_auth(array(1281))){
+    //Not a moderator:
+
+    if(count($_GET) < 1){
+        //This makes the public ledger focus on transactions with coins which is a nicer initial view into the ledger:
+        $filters['tr_coins >'] = 0;
+        //Also give warning about this applied filter on the UI:
+        $filter_note = 'Showing recent transaction with awarded coins.';
+    } else {
+        //We do have some filters passed...
+        //Make sure not to show the invisible transaction types:
+        $filters['tr_type_entity_id NOT IN ('.join(',' , $this->config->item('en_ids_4755')).')'] = null;
+
+        //Also give warning about this applied filter on the UI:
+        $filter_note = 'Only showing publicly visible transaction.';
+    }
 }
+
+$trs_count = $this->Database_model->fn___tr_fetch($filters, $join_by, 0, 0, array(), 'COUNT(tr_id) as trs_count, SUM(tr_coins) as coins_sum');
 $trs = $this->Database_model->fn___tr_fetch($filters, $join_by, (fn___is_dev() ? 50 : 200));
 
 

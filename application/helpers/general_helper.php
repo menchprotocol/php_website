@@ -381,7 +381,7 @@ function fn___redirect_message($url, $message = null)
 }
 
 
-function fn___upload_to_cdn($file_url, $json_data, $is_local = false)
+function fn___upload_to_cdn($file_url, $tr_metadata = null, $is_local = false)
 {
 
     /*
@@ -440,7 +440,7 @@ function fn___upload_to_cdn($file_url, $json_data, $is_local = false)
             $CI->Database_model->fn___tr_create(array(
                 'tr_type_entity_id' => 4246, //Platform Error
                 'tr_content' => 'fn___upload_to_cdn() Unable to upload file [' . $file_url . '] to Mench cloud.',
-                'tr_metadata' => $json_data,
+                'tr_metadata' => $tr_metadata,
             ));
             return false;
 

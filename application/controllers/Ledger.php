@@ -665,7 +665,7 @@ class Ledger extends CI_Controller
     }
 
 
-    function fn___cron__sync_file_to_cdn()
+    function cron__sync_file_to_cdn()
     {
 
         /*
@@ -682,67 +682,67 @@ class Ledger extends CI_Controller
          *
          * */
 
-        $max_per_batch = 20; //Max number of scans per run
-
         $tr_pending = $this->Database_model->fn___tr_fetch(array(
             'tr_status' => 0, //Pending
-            'tr_type_entity_id' => 4299, //Save media file to Mench cloud
-        ), array(), $max_per_batch);
+            'tr_type_entity_id' => 4299, //Requested Photo Storage
+        ), array('en_miner'), 20); //Max number of scans per run
 
 
-        //Lock item so other Cron jobs don't pick this up:
+        //Quickly set transaction statuses to drafting so other Cron jobs don't pick them up:
         foreach ($tr_pending as $tr) {
-            if ($tr['tr_id'] > 0 && $tr['tr_status'] == 0) {
-                $this->Database_model->fn___tr_update($tr['tr_id'], array(
-                    'tr_status' => 1, //drafting... (So other cron jobs do not pickup this item again)
-                ));
-            }
+            $this->Database_model->fn___tr_update($tr['tr_id'], array(
+                'tr_status' => 1, //Drafting
+            ));
         }
 
-        //Go through and upload to CDN:
-        foreach ($tr_pending as $u) {
+        //Now go through and upload to CDN:
+        foreach ($tr_pending as $tr) {
 
-            $detected_tr_type = fn___detect_tr_type_entity_id($new_file_url);
-            if(!$detected_tr_type['status']){
-                //Opppsi, there was some error:
-                //TODO Log error
-                continue;
-            }
+            //Save photo to S3 if content is URL
+            $new_file_url = (filter_var($tr['tr_content'], FILTER_VALIDATE_URL) ? fn___upload_to_cdn($tr['tr_content'], $tr) : false);
 
-            //Update transaction data:
-            $this->Database_model->fn___tr_update($trp['tr_id'], array(
-                'tr_content' => $new_file_url,
-                'tr_type_entity_id' => $detected_tr_type['tr_type_entity_id'],
-                'tr_status' => 2, //Publish
-            ));
+            if(!$new_file_url){
 
-
-            //Save the file to S3
-            $new_file_url = fn___upload_to_cdn($u['tr_content'], $u);
-
-            if ($new_file_url) {
-
-                //Success! Is this an image to be added as the entity icon?
-                if (strlen($u['en_icon'])<1) {
-                    //Update Cover ID:
-                    $this->Database_model->fn___en_update($u['en_id'], array(
-                        'en_icon' => '<img class="profile-icon" src="' . $new_file_url . '" />',
-                    ), true);
-                }
-
-                //Update transaction:
-                $this->Database_model->fn___tr_update($u['tr_id'], array(
-                    'tr_status' => 2, //Publish
+                //Ooopsi, there was an error:
+                $this->Database_model->fn___tr_create(array(
+                    'tr_content' => 'cron__sync_file_to_cdn() failed to store file in CDN',
+                    'tr_type_entity_id' => 4246, //Platform Error
+                    'tr_parent_transaction_id' => $tr['tr_id'],
                 ));
 
-            } else {
-
-                //Error has already been logged in the CDN function, so just update transaction:
-                $this->Database_model->fn___tr_update($u['tr_id'], array(
+                //Archive this:
+                $this->Database_model->fn___tr_update($tr['tr_id'], array(
                     'tr_status' => -1, //Removed
                 ));
 
+                continue;
             }
+
+            //Update entity icon if not already set:
+            $tr_child_entity_id = 0;
+            if (strlen($tr['en_icon'])<1) {
+
+                //Update Cover ID:
+                $this->Database_model->fn___en_update($tr['en_id'], array(
+                    'en_icon' => '<img src="' . $new_file_url . '">',
+                ), true, $tr['en_id']);
+
+                //Link transaction to entity:
+                $tr_child_entity_id = $tr['en_id'];
+
+            }
+
+            //Update transaction:
+            $this->Database_model->fn___tr_update($tr['tr_id'], array(
+                'tr_status' => 2, //Publish
+                'tr_content' => null, //Remove URL from content to indicate its done
+                'tr_child_entity_id' => $tr_child_entity_id,
+                'tr_metadata' => array(
+                    'original_url' => $tr['tr_content'],
+                    'cdn_url' => $new_file_url,
+                ),
+            ));
+
         }
 
         fn___echo_json($tr_pending);

@@ -33,20 +33,20 @@ class Messenger extends CI_Controller
         }
 
         //Fetch input data:
-        $json_data = json_decode(file_get_contents('php://input'), true);
+        $tr_metadata = json_decode(file_get_contents('php://input'), true);
 
         //This is for local testing only:
-        //$json_data = fn___objectToArray(json_decode('{"object":"page","entry":[{"id":"381488558920384","time":1505007977668,"messaging":[{"sender":{"id":"1443101719058431"},"recipient":{"id":"381488558920384"},"timestamp":1505007977521,"message":{"mid":"mid.$cAAFa9hmVoehkmryMMVeaXdGIY9x5","seq":19898,"text":"Yes"}}]}]}'));
+        //$tr_metadata = fn___objectToArray(json_decode('{"object":"page","entry":[{"id":"381488558920384","time":1505007977668,"messaging":[{"sender":{"id":"1443101719058431"},"recipient":{"id":"381488558920384"},"timestamp":1505007977521,"message":{"mid":"mid.$cAAFa9hmVoehkmryMMVeaXdGIY9x5","seq":19898,"text":"Yes"}}]}]}'));
 
 
         //Do some basic checks:
-        if (!isset($json_data['object']) || !isset($json_data['entry'])) {
+        if (!isset($tr_metadata['object']) || !isset($tr_metadata['entry'])) {
             //Likely loaded the URL in browser:
             return false;
-        } elseif (!$json_data['object'] == 'page') {
+        } elseif (!$tr_metadata['object'] == 'page') {
             $this->Database_model->fn___tr_create(array(
                 'tr_content' => 'facebook_webhook() Function call object value is not equal to [page], which is what was expected.',
-                'tr_metadata' => $json_data,
+                'tr_metadata' => $tr_metadata,
                 'tr_type_entity_id' => 4246, //Platform Error
             ));
             return false;
@@ -54,7 +54,7 @@ class Messenger extends CI_Controller
 
 
         //Loop through entries:
-        foreach ($json_data['entry'] as $entry) {
+        foreach ($tr_metadata['entry'] as $entry) {
 
             //check the page ID:
             if (!isset($entry['id']) || !($entry['id'] == $fb_settings['page_id'])) {
@@ -63,7 +63,7 @@ class Messenger extends CI_Controller
             } elseif (!isset($entry['messaging'])) {
                 $this->Database_model->fn___tr_create(array(
                     'tr_content' => 'facebook_webhook() call missing messaging Array().',
-                    'tr_metadata' => $json_data,
+                    'tr_metadata' => $tr_metadata,
                     'tr_type_entity_id' => 4246, //Platform Error
                 ));
                 continue;
@@ -90,7 +90,7 @@ class Messenger extends CI_Controller
                     if(count($last_trs_logged) == 0){
                         //We had no recent transactions of this kind, so go ahead and log:
                         $this->Database_model->fn___tr_create(array(
-                            'tr_metadata' => $json_data,
+                            'tr_metadata' => $tr_metadata,
                             'tr_type_entity_id' => $tr_type_entity_id,
                             'tr_miner_entity_id' => $en['en_id'],
                             'tr_timestamp' => fn___echo_time_milliseconds($im['timestamp']), //The Facebook time
@@ -147,7 +147,7 @@ class Messenger extends CI_Controller
                     //Log primary transaction:
                     $this->Database_model->fn___tr_create(array(
                         'tr_type_entity_id' => $tr_type_entity_id,
-                        'tr_metadata' => $json_data,
+                        'tr_metadata' => $tr_metadata,
                         'tr_content' => $quick_reply_payload,
                         'tr_miner_entity_id' => $en['en_id'],
                         'tr_timestamp' => fn___echo_time_milliseconds($im['timestamp']), //The Facebook time
@@ -188,7 +188,7 @@ class Messenger extends CI_Controller
 
                     //Log transaction:
                     $this->Database_model->fn___tr_create(array(
-                        'tr_metadata' => $json_data,
+                        'tr_metadata' => $tr_metadata,
                         'tr_type_entity_id' => 4266, //Messenger Optin
                         'tr_miner_entity_id' => $en['en_id'],
                         'tr_timestamp' => fn___echo_time_milliseconds($im['timestamp']), //The Facebook time
@@ -201,7 +201,7 @@ class Messenger extends CI_Controller
 
                     //Log transaction:
                     $this->Database_model->fn___tr_create(array(
-                        'tr_metadata' => $json_data,
+                        'tr_metadata' => $tr_metadata,
                         'tr_type_entity_id' => 4577, //Message Request Accepted
                         'tr_miner_entity_id' => $en['en_id'],
                         'tr_timestamp' => fn___echo_time_milliseconds($im['timestamp']), //The Facebook time
@@ -233,7 +233,7 @@ class Messenger extends CI_Controller
                     $tr_data = array(
                         'tr_miner_entity_id' => $en['en_id'],
                         'tr_timestamp' => ($sent_by_mench ? null : fn___echo_time_milliseconds($im['timestamp']) ), //Facebook time if received from Student
-                        'tr_metadata' => $json_data, //Entire JSON object received by Facebook API
+                        'tr_metadata' => $tr_metadata, //Entire JSON object received by Facebook API
                     );
 
                     /*
@@ -394,7 +394,7 @@ class Messenger extends CI_Controller
                         $this->Database_model->fn___tr_create(array(
                             'tr_type_entity_id' => 4246, //Platform Error
                             'tr_content' => 'facebook_webhook() Received unknown message type! Analyze metadata for more details',
-                            'tr_metadata' => $json_data,
+                            'tr_metadata' => $tr_metadata,
                             'tr_parent_entity_id' => $en['en_id'],
                         ));
 
@@ -405,7 +405,7 @@ class Messenger extends CI_Controller
                     //This should really not happen!
                     $this->Database_model->fn___tr_create(array(
                         'tr_content' => 'facebook_webhook() received unrecognized webhook call',
-                        'tr_metadata' => $json_data,
+                        'tr_metadata' => $tr_metadata,
                         'tr_type_entity_id' => 4246, //Platform Error
                     ));
 

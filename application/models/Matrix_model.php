@@ -2237,9 +2237,8 @@ class Matrix_model extends CI_Model
             //Create transaction to save profile picture:
             $this->Database_model->fn___tr_create(array(
                 'tr_status' => 0, //New
-                'tr_type_entity_id' => 4299, //Save URL to Mench CDN
+                'tr_type_entity_id' => 4299, //Requested Photo Storage
                 'tr_miner_entity_id' => $added_en['en']['en_id'], //The Student who added this
-                'tr_parent_entity_id' => 4260, //Indicates URL file Type (Image)
                 'tr_content' => $fb_profile['profile_pic'], //Image to be saved to Mench CDN
             ));
 
