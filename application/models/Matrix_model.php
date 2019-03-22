@@ -2245,13 +2245,13 @@ class Matrix_model extends CI_Model
             return false;
         }
 
-
         //Call facebook messenger API and get user graph profile:
         $graph_fetch = $this->Chat_model->fn___facebook_graph('GET', '/' . $psid, array());
+        $fetched_fb_info = ($graph_fetch['status'] && isset($graph_fetch['tr_metadata']['result']['first_name']) && strlen($graph_fetch['tr_metadata']['result']['first_name']) > 0);
 
 
         //Did we find the profile from FB?
-        if (!$graph_fetch['status'] || !isset($graph_fetch['tr_metadata']['result']['first_name']) || strlen($graph_fetch['tr_metadata']['result']['first_name']) < 1) {
+        if (!$fetched_fb_info) {
 
             /*
              *
@@ -2262,14 +2262,7 @@ class Matrix_model extends CI_Model
              * */
 
             //Create student entity:
-            $added_en = $this->Matrix_model->fn___en_verify_create('Student', 0, true, 2, null, $psid);
-
-            //Inform student:
-            $this->Chat_model->fn___dispatch_message(
-                'Hi stranger! Let\'s get started by completing your profile information by opening the My Account tab in the menu below. /link:Open 👤My Account:https://mench.com/my/account',
-                $added_en['en'],
-                true
-            );
+            $added_en = $this->Matrix_model->fn___en_verify_create('Student '.rand(100000000, 999999999), 0, true, 2, null, $psid);
 
         } else {
 
@@ -2314,6 +2307,7 @@ class Matrix_model extends CI_Model
 
         }
 
+
         //Note that new entity transaction is already logged in the entity creation function
         //Now create more relevant transactions:
 
@@ -2340,6 +2334,16 @@ class Matrix_model extends CI_Model
             'tr_parent_entity_id' => 1278, //People
             'tr_child_entity_id' => $added_en['en']['en_id'],
         ));
+
+
+        if(!$fetched_fb_info){
+            //Let them know to complete their profile:
+            $this->Chat_model->fn___dispatch_message(
+                'Hi stranger! Let\'s get started by completing your profile information by opening the My Account tab in the menu below. /link:Open 👤My Account:https://mench.com/my/account',
+                $added_en['en'],
+                true
+            );
+        }
 
         //Return entity object:
         return $added_en['en'];
