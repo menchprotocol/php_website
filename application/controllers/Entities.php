@@ -1511,16 +1511,16 @@ class Entities extends CI_Controller
 
 
 
-    function cron__update_trust_score($en_id = 0)
+    function cron__update_trust_score()
     {
+
+        exit; //TBD
 
         /*
          *
          * Entities are measured through a custom algorithm that measure their "Trust Score"
          * It's how we primarily assess the weight of each entity in our network.
          * This function defines this algorithm.
-         *
-         * IF $en_id=0 means we would update the trust score for all entities.
          *
          * */
 
@@ -1539,9 +1539,9 @@ class Entities extends CI_Controller
 
         //Recursively loops through child entities:
         $score = 0;
-        foreach ($ens as $$en) {
+        foreach ($ens as $en) {
             //Addup all child sores:
-            $score += $this->e_score_recursive($$en);
+            $score += $this->e_score_recursive($en);
         }
 
         //Anything to update?

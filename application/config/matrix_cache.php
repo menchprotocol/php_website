@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-03-21 20:53:38 PST
+//Generated 2019-03-22 15:35:12 PST
 
 //Student Sent Message Transactions:
 $config['en_ids_4277'] = array(4248, 4460, 4547, 4548, 4549, 4550, 4551, 4557);
@@ -1401,61 +1401,61 @@ $config['en_ids_4592'] = array(4230, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4
 $config['en_all_4592'] = array(
     4230 => array(
         'm_icon' => '<i class="fal fa-link rotate90"></i>',
-        'm_name' => 'Linked Entities Raw',
+        'm_name' => 'Raw',
         'm_desc' => '',
         'm_parents' => array(4593, 4592, 4595),
     ),
     4255 => array(
         'm_icon' => '<i class="fal fa-align-left"></i>',
-        'm_name' => 'Linked Entities Text',
+        'm_name' => 'Text',
         'm_desc' => '',
         'm_parents' => array(4527, 4593, 4592, 4595, 4331),
     ),
     4256 => array(
         'm_icon' => '<i class="fal fa-browser"></i>',
-        'm_name' => 'Linked Entities URL',
+        'm_name' => 'URL',
         'm_desc' => '',
         'm_parents' => array(4593, 4592, 4537, 4595, 4331),
     ),
     4257 => array(
         'm_icon' => '<i class="fal fa-play-circle"></i>',
-        'm_name' => 'Linked Entities Embed',
+        'm_name' => 'Embed',
         'm_desc' => '',
         'm_parents' => array(4990, 4593, 4592, 4537, 4506, 4595),
     ),
     4258 => array(
         'm_icon' => '<i class="fal fa-video"></i>',
-        'm_name' => 'Linked Entities Video',
+        'm_name' => 'Video',
         'm_desc' => '',
         'm_parents' => array(4990, 4593, 4592, 4537, 4595, 4331),
     ),
     4259 => array(
         'm_icon' => '<i class="fal fa-volume-up"></i>',
-        'm_name' => 'Linked Entities Audio',
+        'm_name' => 'Audio',
         'm_desc' => '',
         'm_parents' => array(4990, 4593, 4592, 4537, 4595, 4331),
     ),
     4260 => array(
         'm_icon' => '<i class="fal fa-image"></i>',
-        'm_name' => 'Linked Entities Image',
+        'm_name' => 'Image',
         'm_desc' => '',
         'm_parents' => array(4990, 4593, 4592, 4537, 4595, 4331),
     ),
     4261 => array(
         'm_icon' => '<i class="fal fa-file-pdf"></i>',
-        'm_name' => 'Linked Entities File',
+        'm_name' => 'File',
         'm_desc' => '',
         'm_parents' => array(4593, 4592, 4537, 4595, 4331),
     ),
     4318 => array(
         'm_icon' => '<i class="fal fa-clock"></i>',
-        'm_name' => 'Linked Entities Time',
+        'm_name' => 'Time',
         'm_desc' => '',
         'm_parents' => array(4593, 4592, 4595),
     ),
     4319 => array(
         'm_icon' => '<i class="fal fa-sort-numeric-down"></i>',
-        'm_name' => 'Linked Entities Integer',
+        'm_name' => 'Integer',
         'm_desc' => '',
         'm_parents' => array(4593, 4592, 4595),
     ),
@@ -1565,49 +1565,49 @@ $config['en_ids_4485'] = array(4231, 4983, 4601, 4232, 4233, 4602, 4234, 6093);
 $config['en_all_4485'] = array(
     4231 => array(
         'm_icon' => '<i class="fal fa-comment"></i>',
-        'm_name' => 'Noted Intent Message',
+        'm_name' => 'Message',
         'm_desc' => 'Delivered in-order when student initially starts this intent. Goal is to give key insights that streamline the execution of the intention.',
         'm_parents' => array(4986, 4603, 4593, 4485, 4595),
     ),
     4983 => array(
         'm_icon' => '<i class="fal fa-thumbs-up"></i>',
-        'm_name' => 'Noted Intent Up-Vote',
+        'm_name' => 'Up-Vote',
         'm_desc' => 'Tracks intent correlations mined from expert sources and miner perspectives. Up-votes give crediblity to intent correlations. Never communicated with Students and only used for weighting purposes, like how Google uses link correlations for its pagerank algorithm.',
         'm_parents' => array(4463, 4986, 4985, 4595, 4593, 4485),
     ),
     4601 => array(
         'm_icon' => '<i class="fal fa-tags"></i>',
-        'm_name' => 'Noted Intent Keyword',
+        'm_name' => 'Keyword',
         'm_desc' => 'Never delivered to students, instead, it maps alternative ways an intent could be named so we can better understand student commands.',
         'm_parents' => array(4255, 4593, 4595, 4485),
     ),
     4232 => array(
         'm_icon' => '<i class="fal fa-medal"></i>',
-        'm_name' => 'Noted Intent Bonus Tip',
+        'm_name' => 'Bonus Tip',
         'm_desc' => 'Delivered in-order and one-by-one (drip-format) either during or after the intent completion. Goal is to re-iterate key insights to help students retain learnings over time.',
         'm_parents' => array(5005, 4986, 4603, 4593, 4485, 4595),
     ),
     4233 => array(
         'm_icon' => '<i class="fal fa-clipboard-check"></i>',
-        'm_name' => 'Noted Intent Parting Tip',
+        'm_name' => 'Parting Tip',
         'm_desc' => 'All delivered in-order as soon as the student marks the intent as complete. Goal is to re-iterate key insights to help students retain learnings.',
         'm_parents' => array(5005, 4986, 4603, 4593, 4485, 4595),
     ),
     4602 => array(
         'm_icon' => '<i class="fal fa-cloud-upload"></i>',
-        'm_name' => 'Noted Intent Webhook',
+        'm_name' => 'Webhook',
         'm_desc' => 'All URLs called along with POST variables that pass intent and completion details. Goal is to enable additional workflows like issuing a completion certificate.',
         'm_parents' => array(5005, 4986, 4256, 4595, 4485, 4593),
     ),
     4234 => array(
         'm_icon' => '<i class="fal fa-random"></i>',
-        'm_name' => 'Noted Intent Random Intro',
+        'm_name' => 'Random Intro',
         'm_desc' => 'One message randomly selected right after on-start messages. Goal is to make Mench feel more authentic by mixing things up. Also called in the code-base using compose_message().',
         'm_parents' => array(5005, 4986, 4593, 4485, 4595),
     ),
     6093 => array(
         'm_icon' => '<i class="fal fa-megaphone"></i>',
-        'm_name' => 'Noted Intent Changelog',
+        'm_name' => 'Changelog',
         'm_desc' => 'Similar to Wikipedia\'s Talk pages, the Mench changelog helps miners track the history and evolution of a intent and explain/propose changes/improvements.',
         'm_parents' => array(4595, 4593, 4986, 5005, 4485),
     ),
@@ -1618,13 +1618,13 @@ $config['en_ids_4486'] = array(4228, 4229);
 $config['en_all_4486'] = array(
     4228 => array(
         'm_icon' => '<i class="fal fa-check-circle"></i>',
-        'm_name' => 'Linked Intents Fixed',
+        'm_name' => 'Fixed',
         'm_desc' => 'Intent link published and added to user Action Plans up-front',
         'm_parents' => array(4593, 4486, 4595),
     ),
     4229 => array(
         'm_icon' => '<i class="fal fa-spin fa-question-circle"></i>',
-        'm_name' => 'Linked Intents Conditional',
+        'm_name' => 'Conditional',
         'm_desc' => 'Intent added to Action Plans after parent intent is complete AND the user\'s % score falls within the defined min/max range',
         'm_parents' => array(4593, 4486, 4595),
     ),
@@ -1635,37 +1635,37 @@ $config['en_ids_4537'] = array(4256, 4257, 4258, 4259, 4260, 4261);
 $config['en_all_4537'] = array(
     4256 => array(
         'm_icon' => '<i class="fal fa-browser"></i>',
-        'm_name' => 'Linked Entities URL',
+        'm_name' => 'URL',
         'm_desc' => 'Link note contains a generic URL only.',
         'm_parents' => array(4593, 4592, 4537, 4595, 4331),
     ),
     4257 => array(
         'm_icon' => '<i class="fal fa-play-circle"></i>',
-        'm_name' => 'Linked Entities Embed',
+        'm_name' => 'Embed',
         'm_desc' => 'Link note contain a recognizable URL that offers an embed widget for a more engaging play-back experience.',
         'm_parents' => array(4990, 4593, 4592, 4537, 4506, 4595),
     ),
     4258 => array(
         'm_icon' => '<i class="fal fa-video"></i>',
-        'm_name' => 'Linked Entities Video',
+        'm_name' => 'Video',
         'm_desc' => 'Link notes contain a URL to a raw video file.',
         'm_parents' => array(4990, 4593, 4592, 4537, 4595, 4331),
     ),
     4259 => array(
         'm_icon' => '<i class="fal fa-volume-up"></i>',
-        'm_name' => 'Linked Entities Audio',
+        'm_name' => 'Audio',
         'm_desc' => 'Link notes contain a URL to a raw audio file.',
         'm_parents' => array(4990, 4593, 4592, 4537, 4595, 4331),
     ),
     4260 => array(
         'm_icon' => '<i class="fal fa-image"></i>',
-        'm_name' => 'Linked Entities Image',
+        'm_name' => 'Image',
         'm_desc' => 'Link notes contain a URL to a raw image file.',
         'm_parents' => array(4990, 4593, 4592, 4537, 4595, 4331),
     ),
     4261 => array(
         'm_icon' => '<i class="fal fa-file-pdf"></i>',
-        'm_name' => 'Linked Entities File',
+        'm_name' => 'File',
         'm_desc' => 'Link notes contain a URL to a raw file.',
         'm_parents' => array(4593, 4592, 4537, 4595, 4331),
     ),
