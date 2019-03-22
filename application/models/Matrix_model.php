@@ -185,10 +185,60 @@ class Matrix_model extends CI_Model
     }
 
 
+    function unlink_entity($en_id, $tr_miner_entity_id = 0, $merger_en_id = 0){
+
+        //Fetch all entity links:
+        $adjusted_count = 0;
+        foreach(array_merge(
+                //Entity references within intent notes:
+                $this->Database_model->fn___tr_fetch(array(
+                    'tr_status >=' => 0, //New+
+                    'in_status >=' => 0, //New+
+                    'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
+                    'tr_parent_entity_id' => $en_id,
+                ), array('in_child'), 0, 0, array('tr_order' => 'ASC')),
+                //Entity links:
+                $this->Database_model->fn___tr_fetch(array(
+                    'tr_status >=' => 0, //New+
+                    'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                    '(tr_child_entity_id = ' . $en_id . ' OR tr_parent_entity_id = ' . $en_id . ')' => null,
+                ), array(), 0)
+            ) as $adjust_tr){
+
+            //Merge only if merger ID provided and link not related to original link:
+            if($merger_en_id > 0 && $adjust_tr['tr_parent_entity_id']!=$merger_en_id && $adjust_tr['tr_child_entity_id']!=$merger_en_id){
+
+                //Update core field:
+                $target_field = ($adjust_tr['tr_child_entity_id'] == $en_id ? 'tr_child_entity_id' : 'tr_parent_entity_id');
+                $updating_fields = array(
+                    $target_field => $merger_en_id,
+                );
+
+                //Also update possible entity references within Intent Notes content:
+                if(substr_count($adjust_tr['tr_content'], '@'.$adjust_tr[$target_field]) == 1){
+                    $updating_fields['tr_content'] = str_replace('@'.$adjust_tr[$target_field],'@'.$merger_en_id, $adjust_tr['tr_content']);
+                }
+
+                //Update Transaction:
+                $adjusted_count += $this->Database_model->fn___tr_update($adjust_tr['tr_id'], $updating_fields, $tr_miner_entity_id);
+
+            } else {
+
+                //Remove this link:
+                $adjusted_count += $this->Database_model->fn___tr_update($adjust_tr['tr_id'], array(
+                    'tr_status' => -1, //Unlink
+                ), $tr_miner_entity_id);
+
+            }
+        }
+
+        return $adjusted_count;
+    }
+
     function unlink_intent($in_id, $tr_miner_entity_id = 0){
 
         //Remove intent relations:
-        $unlink_trs = array_merge(
+        $adjust_trs = array_merge(
             $this->Database_model->fn___tr_fetch(array( //Intent Links
                 'tr_status >=' => 0, //New+
                 'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
@@ -201,14 +251,14 @@ class Matrix_model extends CI_Model
             ), array(), 0)
         );
 
-        foreach($unlink_trs as $unlink_tr){
+        foreach($adjust_trs as $adjust_tr){
             //Remove this link:
-            $this->Database_model->fn___tr_update($unlink_tr['tr_id'], array(
+            $this->Database_model->fn___tr_update($adjust_tr['tr_id'], array(
                 'tr_status' => -1, //Unlink
             ), $tr_miner_entity_id);
         }
 
-        return count($unlink_trs);
+        return count($adjust_trs);
     }
 
     function fn___sync_domain($url, $tr_miner_entity_id = 0, $page_title = null)

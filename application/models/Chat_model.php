@@ -2534,9 +2534,9 @@ class Chat_model extends CI_Model
 
             //First, let's check to see if a Mench admin has not started a manual conversation with them via Facebook Inbox Chat:
             $admin_conversations = $this->Database_model->fn___tr_fetch(array(
+                'tr_miner_entity_id' => $en['en_id'],
+                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4280')) . ')' => null, //Student/Miner Received Message Transactions
                 'tr_timestamp >=' => date("Y-m-d H:i:s", (time() - (1800))), //Messages sent from us less than 30 minutes ago
-                'tr_type_entity_id' => 4280, //Messages sent from us
-                'tr_miner_entity_id' => 4148, //We log Facebook Inbox UI messages sent with this entity ID
             ), array(), 1);
             if (count($admin_conversations) > 0) {
                 //Yes, this user is talking to an admin so do not interrupt their conversation:

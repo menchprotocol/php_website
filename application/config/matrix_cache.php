@@ -4,15 +4,61 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  * Keep a cache of certain parts of the Intent tree for faster processing
  * So we don't have to make DB calls to figure them out every time!
- * This is the cron function that creates this: fn___matrix_cache()
  * See here for all entities cached: https://mench.com/entities/4527
- * use-case format: $this->config->item('en_ids_4755')
+ * use-case format: $this->config->item('en_ids_3000')
  *
  * ATTENTION: Also search for "en_ids_" and "en_all_" when trying to manage these throughout the code base
  *
  */
 
-//Generated 2019-03-21 16:56:18 PST
+//Generated 2019-03-21 19:51:45 PST
+
+//Miner Received Message Transactions:
+$config['en_ids_4280'] = array(4552, 4553, 4554, 4555, 4556, 4570, 5967);
+$config['en_all_4280'] = array(
+    4552 => array(
+        'm_icon' => '<i class="fal fa-align-left"></i>',
+        'm_name' => 'Received Text Message',
+        'm_desc' => '',
+        'm_parents' => array(4755, 4594, 4280),
+    ),
+    4553 => array(
+        'm_icon' => '<i class="fal fa-video"></i>',
+        'm_name' => 'Received Video Message',
+        'm_desc' => '',
+        'm_parents' => array(4755, 4594, 4280),
+    ),
+    4554 => array(
+        'm_icon' => '<i class="fal fa-volume-up"></i>',
+        'm_name' => 'Received Audio Message',
+        'm_desc' => '',
+        'm_parents' => array(4755, 4594, 4280),
+    ),
+    4555 => array(
+        'm_icon' => '<i class="fal fa-image"></i>',
+        'm_name' => 'Received Image Message',
+        'm_desc' => '',
+        'm_parents' => array(4755, 4594, 4280),
+    ),
+    4556 => array(
+        'm_icon' => '<i class="fal fa-file-pdf"></i>',
+        'm_name' => 'Received File Message',
+        'm_desc' => '',
+        'm_parents' => array(4755, 4594, 4280),
+    ),
+    4570 => array(
+        'm_icon' => '<i class="fab fa-html5"></i>',
+        'm_name' => 'Received HTML Message',
+        'm_desc' => '',
+        'm_parents' => array(4755, 4594, 4280),
+    ),
+    5967 => array(
+        'm_icon' => '<i class="fal fa-envelope-open"></i>',
+        'm_name' => 'Received Email Message',
+        'm_desc' => '',
+        'm_parents' => array(4755, 4594, 4280),
+    ),
+);
 
 //User Groups:
 $config['en_ids_4432'] = array(1281, 1308, 3084, 4430, 4433);
@@ -426,7 +472,7 @@ $config['en_all_4426'] = array(
     ),
     4755 => array(
         'm_icon' => '<i class="fas fa-eye-slash"></i>',
-        'm_name' => 'Only Moderators can View',
+        'm_name' => 'Transaction Viewable by Moderators Only',
         'm_desc' => '',
         'm_parents' => array(4426, 4527, 4757),
     ),
@@ -444,7 +490,7 @@ $config['en_all_4426'] = array(
     ),
 );
 
-//Only Moderators can View:
+//Transaction Viewable by Moderators Only:
 $config['en_ids_4755'] = array(3286, 3288, 4248, 4266, 4267, 4268, 4275, 4278, 4279, 4299, 4460, 4547, 4548, 4549, 4550, 4551, 4552, 4553, 4554, 4555, 4556, 4557, 4567, 4568, 4570, 4783, 5967);
 $config['en_all_4755'] = array(
     3286 => array(
@@ -503,7 +549,7 @@ $config['en_all_4755'] = array(
     ),
     4299 => array(
         'm_icon' => '<i class="fal fa-cloud-upload"></i>',
-        'm_name' => 'Requested File Storage',
+        'm_name' => 'Requested Photo Storage',
         'm_desc' => '',
         'm_parents' => array(4755, 4594),
     ),
@@ -1010,7 +1056,7 @@ $config['en_all_4594'] = array(
     ),
     4299 => array(
         'm_icon' => '<i class="fal fa-cloud-upload"></i>',
-        'm_name' => 'Requested File Storage',
+        'm_name' => 'Requested Photo Storage',
         'm_desc' => '',
         'm_parents' => array(4755, 4594),
     ),

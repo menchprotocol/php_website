@@ -11,7 +11,7 @@ class Entities extends CI_Controller
         $this->output->enable_profiler(FALSE);
     }
 
-    function session()
+    function dev_session()
     {
         fn___echo_json($this->session->all_userdata());
     }
@@ -643,7 +643,7 @@ class Entities extends CI_Controller
 
                 } else {
 
-                    //Validate entity:
+                    //Finally validate merger entity:
                     $merged_ens = $this->Database_model->fn___en_fetch(array(
                         'en_id' => $merger_en_id,
                         'en_status >=' => 0, //New+
@@ -667,75 +667,23 @@ class Entities extends CI_Controller
 
             }
 
-
-            $remove_from_ui = 1; //Removing entity
+            //Remove/merge entity links:
             $_POST['tr_id'] = 0; //Do not consider the link as the entity is being Removed
-            $to_be_merged_trs = array_merge(
+            $remove_from_ui = 1; //Removing entity
+            $merger_en_id = (count($merged_ens) > 0 ? $merged_ens[0]['en_id'] : 0);
+            $links_adjusted = $this->Matrix_model->unlink_entity($_POST['en_id'], $session_en['en_id'], $merger_en_id);
 
-                //Intent Notes:
-                $messages,
-
-                //Entity Links:
-                $this->Database_model->fn___tr_fetch(array(
-                    'tr_status >=' => 0, //New+
-                    'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
-                    '(tr_child_entity_id = ' . $_POST['en_id'] . ' OR tr_parent_entity_id = ' . $_POST['en_id'] . ')' => null,
-                ), array(), 0)
-
-            );
-
-
-            //Take action dependent on merger status:
-            if (count($merged_ens) > 0) {
-
-                //Move all links & Intent Notes here:
-                foreach ($to_be_merged_trs as $to_be_merged_tr) {
-
-                    //Check to make sure old links do not relate to new merging entity...
-                    if(($to_be_merged_tr['tr_parent_entity_id']==$merged_ens[0]['en_id']) || ($to_be_merged_tr['tr_child_entity_id']==$merged_ens[0]['en_id'])){
-
-                        //They seem to be related and happens when merging related entities into each other, in this case let's imply unlink:
-                        $this->Database_model->fn___tr_update($to_be_merged_tr['tr_id'], array(
-                            'tr_status' => -1,
-                        ), $session_en['en_id']);
-
-                    } else {
-
-                        //Update core field:
-                        $target_field = ($to_be_merged_tr['tr_child_entity_id'] == $_POST['en_id'] ? 'tr_child_entity_id' : 'tr_parent_entity_id');
-                        $updating_fields = array(
-                            $target_field => $merged_ens[0]['en_id'],
-                        );
-
-                        //Also update possible entity references within Intent Notes content:
-                        if(substr_count($to_be_merged_tr['tr_content'], '@'.$to_be_merged_tr[$target_field]) == 1){
-                            $updating_fields['tr_content'] = str_replace('@'.$to_be_merged_tr[$target_field],'@'.$merged_ens[0]['en_id'], $to_be_merged_tr['tr_content']);
-                        }
-
-                        //Update Transaction:
-                        $this->Database_model->fn___tr_update($to_be_merged_tr['tr_id'], $updating_fields, $session_en['en_id']);
-
-                    }
-
-                }
+            //Show appropriate message based on action:
+            if ($merger_en_id > 0) {
 
                 if($_POST['en_id'] == $_POST['en_focus_id'] || $merged_ens[0]['en_id'] == $_POST['en_focus_id']){
                     //Entity is being Removed and merged into another entity:
                     $remove_redirect_url = '/entities/' . $merged_ens[0]['en_id'];
                 }
 
-                $success_message = 'Entity removed and merged its ' . count($to_be_merged_trs) . ' links here';
+                $success_message = 'Entity removed and merged its ' . $links_adjusted . ' links here';
 
             } else {
-
-                //Entity being Removed, remove all links:
-                foreach ($to_be_merged_trs as $unlink_tr) {
-
-                    $this->Database_model->fn___tr_update($unlink_tr['tr_id'], array(
-                        'tr_status' => -1, //Unlink
-                    ), $session_en['en_id']);
-
-                }
 
                 if($_POST['en_id'] == $_POST['en_focus_id']){
                     //Fetch parents to redirect to:
@@ -743,7 +691,7 @@ class Entities extends CI_Controller
                 }
 
                 //Display proper message:
-                $success_message = 'Entity and its ' . count($to_be_merged_trs) . ' links removed successfully';
+                $success_message = 'Entity and its ' . $links_adjusted . ' links removed successfully';
 
             }
 
@@ -855,7 +803,6 @@ class Entities extends CI_Controller
                     'tr_timestamp' => date("Y-m-d H:i:s"),
                 ), $session_en['en_id']);
 
-
             }
 
         }
@@ -872,21 +819,6 @@ class Entities extends CI_Controller
             if (isset($ens[0])) {
                 $this->session->set_userdata(array('user' => $ens[0]));
             }
-        }
-
-
-        //Fetch last entity update transaction:
-        $updated_trs = $this->Database_model->fn___tr_fetch(array(
-            'tr_status >=' => 0, //New+
-            'tr_type_entity_id IN (4251, 4263)' => null, //Entity Created/Updated
-            'tr_child_entity_id' => $_POST['en_id'],
-        ), array('en_miner'));
-        if (count($updated_trs) < 1) {
-            //Should never happen
-            return fn___echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Entity Last Updated Data',
-            ));
         }
 
 

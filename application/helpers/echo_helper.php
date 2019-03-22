@@ -513,7 +513,7 @@ function fn___echo_tr_row($tr, $is_inner = false)
     //Is this a miner? Show them metadata status:
     if(!$hide_sensitive_details && fn___en_auth(array(1308))){
         if(strlen($tr['tr_metadata']) > 0){
-            $ui .= ' &nbsp;<a href="/ledger/fn___tr_json/' . $tr['tr_id'] . '" target="_blank" data-toggle="tooltip" data-placement="top" title="Open transaction metadata json object (in new window)" style="min-width:26px; display: inline-block;" class="' . fn___echo_advance() . '"><i class="fas fa-search-plus"></i></a>';
+            $ui .= ' &nbsp;<a href="/ledger/fn___view_transaction_json/' . $tr['tr_id'] . '" target="_blank" data-toggle="tooltip" data-placement="top" title="Open transaction metadata json object (in new window)" style="min-width:26px; display: inline-block;" class="' . fn___echo_advance() . '"><i class="fas fa-search-plus"></i></a>';
         } else {
             $ui .= ' &nbsp;<span data-toggle="tooltip" data-placement="top" title="No Metadata" style="min-width:26px; display: inline-block;" class="' . fn___echo_advance() . '"><i class="fal fa-search-minus" style="color: #AAA;"></i></span>';
         }
@@ -1510,7 +1510,7 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
         'tr_type_entity_id IN (' . join(',', $CI->config->item('en_ids_4485')) . ')' => null, //All Intent Notes
         'tr_child_intent_id' => $in['in_id'],
     ), array(), 0, 0, array(), 'COUNT(tr_id) as totals');
-    $ui .= '<a href="#intentmessages-' . $in['in_id'] . '" onclick="'.( $level==0 ? 'alert(\'Cannot manage here. Go to the intent to manage.\')' : 'fn___in_messages_load('.$in['in_id'].')' ).'" class="msg-badge-' . $in['in_id'] . ' badge badge-primary white-primary is_not_bg '.( $level==0 ? '' . fn___echo_advance() . '' : '' ).'" style="width:40px; margin-right:2px; margin-left:5px;" data-toggle="tooltip" title="Intent Notes" data-placement="top"><span class="btn-counter messages-counter-' . $in['in_id'] . '">' . $count_in_metadata[0]['totals'] . '</span><i class="fas fa-comment-plus"></i></a>';
+    $ui .= '<a href="#intentmessages-' . $in['in_id'] . '" onclick="'.( $level==0 ? 'alert(\'Cannot manage here. Go to the intent to manage.\')' : 'fn___in_messages_iframe('.$in['in_id'].')' ).'" class="msg-badge-' . $in['in_id'] . ' badge badge-primary white-primary is_not_bg '.( $level==0 ? '' . fn___echo_advance() . '' : '' ).'" style="width:40px; margin-right:2px; margin-left:5px;" data-toggle="tooltip" title="Intent Notes" data-placement="top"><span class="btn-counter messages-counter-' . $in['in_id'] . '">' . $count_in_metadata[0]['totals'] . '</span><i class="fas fa-comment-plus"></i></a>';
 
 
 

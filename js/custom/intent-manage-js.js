@@ -181,7 +181,7 @@ $(document).ready(function () {
         if (hash_parts.length >= 2) {
             //Fetch level if available:
             if (hash_parts[0] == 'intentmessages') {
-                fn___in_messages_load(hash_parts[1]);
+                fn___in_messages_iframe(hash_parts[1]);
             } else if (hash_parts[0] == 'loadmodify') {
                 fn___in_modify_load(hash_parts[1], hash_parts[2]);
             } else if (hash_parts[0] == 'loadinactionplans') {
@@ -444,7 +444,7 @@ function fn___in_sort_load(in_id, level) {
 }
 
 
-function fn___in_messages_load(in_id) {
+function fn___in_messages_iframe(in_id) {
     //Start loading:
     $('.fixed-box').addClass('hidden');
     $('.frame-loader').addClass('hidden');
@@ -453,7 +453,7 @@ function fn___in_messages_load(in_id) {
     $('#tr_title').html('<i class="fas fa-comment-plus"></i> ' + $('.in_outcome_' + in_id + ':first').text());
 
     //Load content via a URL:
-    $('.ajax-frame').attr('src', '/intents/fn___in_messages_load/' + in_id).removeClass('hidden').css('margin-top', '0');
+    $('.ajax-frame').attr('src', '/intents/fn___in_messages_iframe/' + in_id).removeClass('hidden').css('margin-top', '0');
 
     //Tooltips:
     $('[data-toggle="tooltip"]').tooltip();

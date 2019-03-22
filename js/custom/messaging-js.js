@@ -222,7 +222,7 @@ function fn___message_tr_order_apply(tr_type_entity_id) {
     });
 
     //Update backend:
-    $.post("/ledger/fn___tr_order_update", {new_tr_orders: new_tr_orders}, function (data) {
+    $.post("/intents/fn___in_message_sort", {new_tr_orders: new_tr_orders}, function (data) {
         //Only show message if there was an error:
         if (!data.status) {
             //Show error:

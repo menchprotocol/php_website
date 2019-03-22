@@ -527,6 +527,16 @@ class Intents extends CI_Controller
                         //Unlink intent links:
                         $links_removed = $this->Matrix_model->unlink_intent($_POST['in_id'] , $session_en['en_id']);
 
+                        //Prep metadata:
+                        $metadata = unserialize($ins[0]['in_metadata']);
+
+                        //Update parent intent tree (and upwards) to reduce totals based on child intent metadata:
+                        $this->Matrix_model->fn___metadata_tree_update('in', $ins[0]['in_id'], array(
+                            'in__tree_in_active_count' => -( isset($metadata['in__tree_in_active_count']) ? $metadata['in__tree_in_active_count'] : 0 ),
+                            'in__tree_max_seconds' => -( isset($metadata['in__tree_max_seconds']) ? $metadata['in__tree_max_seconds'] : 0 ),
+                            'in__message_tree_count' => -( isset($metadata['in__message_tree_count']) ? $metadata['in__message_tree_count'] : 0 ),
+                        ));
+
                         //Treat as if no link (Since it was removed):
                         $tr_id = 0;
                     }
@@ -847,7 +857,7 @@ class Intents extends CI_Controller
     }
 
 
-    function fn___in_messages_load($in_id)
+    function fn___in_messages_iframe($in_id)
     {
 
         //Authenticate as a Miner:
@@ -1180,6 +1190,48 @@ class Intents extends CI_Controller
     }
 
 
+
+    function fn___in_message_sort()
+    {
+
+        //Authenticate Miner:
+        $session_en = fn___en_auth(array(1308));
+        if (!$session_en) {
+
+            return fn___echo_json(array(
+                'status' => 0,
+                'message' => 'Session Expired. Sign In and try again',
+            ));
+
+        } elseif (!isset($_POST['new_tr_orders']) || !is_array($_POST['new_tr_orders']) || count($_POST['new_tr_orders']) < 1) {
+
+            //Do not treat this case as error as it could happen in moving Messages between types:
+            return fn___echo_json(array(
+                'status' => 1,
+                'message' => 'There was nothing to sort',
+            ));
+
+        }
+
+        //Update all transaction orders:
+        $sort_count = 0;
+        foreach ($_POST['new_tr_orders'] as $tr_order => $tr_id) {
+            if (intval($tr_id) > 0) {
+                $sort_count++;
+                //Log update and give credit to the session Miner:
+                $this->Database_model->fn___tr_update($tr_id, array(
+                    'tr_order' => intval($tr_order),
+                ), $session_en['en_id']);
+            }
+        }
+
+        //Return success:
+        return fn___echo_json(array(
+            'status' => 1,
+            'message' => $sort_count . ' Sorted', //Does not matter as its currently not displayed in UI
+        ));
+    }
+
     function fn___in_message_modify()
     {
 
@@ -1247,6 +1299,17 @@ class Intents extends CI_Controller
 
                 //Return success:
                 if($affected_rows > 0){
+
+                    //Do a relative adjustment for this intent's metadata
+                    $this->Matrix_model->fn___metadata_update('in', $ins[0]['in_id'], array(
+                        'in__metadata_count' => -1, //Remove 1 from existing value
+                    ), false);
+
+                    //Update intent tree:
+                    $this->Matrix_model->fn___metadata_tree_update('in', $ins[0]['in_id'], array(
+                        'in__message_tree_count' => -1,
+                    ));
+
                     return fn___echo_json(array(
                         'status' => 1,
                         'message' => 'Successfully removed',
@@ -1321,7 +1384,7 @@ class Intents extends CI_Controller
 
 
 
-    function fn___cron__in_metadata_update($in_id = 0, $update_c_table = 1)
+    function cron__in_metadata_update($in_id = 0, $update_c_table = 1)
     {
 
         /*
