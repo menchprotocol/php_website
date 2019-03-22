@@ -1511,24 +1511,25 @@ class Entities extends CI_Controller
 
 
 
-    function cron__sync_en_trust_score($u = array())
+    function cron__update_trust_score($en_id = 0)
     {
 
         /*
          *
-         * Entities are measured through a custom algirithm that measure their "Trust Score"
+         * Entities are measured through a custom algorithm that measure their "Trust Score"
          * It's how we primarily assess the weight of each entity in our network.
          * This function defines this algorithm.
          *
+         * IF $en_id=0 means we would update the trust score for all entities.
          *
          * */
 
         //Algorithm Weights:
         $score_weights = array(
-            'u__childrens' => 0, //Child entities are just containers, no score on the link
+            'en__childrens' => 0, //Child entities are just containers, no score on the link
 
-            'tr_child_entity_id' => 1, //Transaction initiator
             'tr_miner_entity_id' => 1, //Transaction recipient
+            'tr_child_entity_id' => 1, //Transaction initiator
 
             'tr_parent_entity_id' => 13, //Action Plan Items
         );
@@ -1547,7 +1548,7 @@ class Entities extends CI_Controller
         if (count($u) > 0) {
 
             //Update this row:
-            $score += count($ens) * $score_weights['u__childrens'];
+            $score += count($ens) * $score_weights['en__childrens'];
 
             $score += count($this->Database_model->fn___tr_fetch(array(
                     'tr_child_entity_id' => $u['en_id'],

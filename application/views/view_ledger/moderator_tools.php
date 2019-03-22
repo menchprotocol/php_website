@@ -13,7 +13,7 @@ $moderation_tools = array(
 );
 
 $cron_jobs = array(
-    '/intents/cron__in_metadata_update' => 'Sync Intents Metadata',
+    '/intents/cron__update_metadata' => 'Sync Intents Metadata',
     '/ledger/cron__sync_algolia' => 'Sync Algolia Index [Limited transactions!]',
     '/ledger/cron__sync_gephi' => 'Sync Gephi Graph Index',
 );

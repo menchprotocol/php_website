@@ -911,7 +911,7 @@ class Messenger extends CI_Controller
         $tr_pending = $this->Database_model->fn___tr_fetch(array(
             'tr_status' => 0, //New
             'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_6102')) . ')' => null, //Student Sent/Received Media Transactions
-        ), array(), 10); //Max number of scans per run
+        ), array(), 20);
 
         //Set transaction statuses to drafting so other Cron jobs don't pick them up:
         $this->Matrix_model->draft_trs($tr_pending);
@@ -928,11 +928,6 @@ class Messenger extends CI_Controller
                 $this->Database_model->fn___tr_update($tr['tr_id'], array(
                     'tr_content' => $new_file_url,
                     'tr_status' => 2,
-                ));
-
-                //Store original URL:
-                $this->Matrix_model->fn___metadata_update('tr', $tr['tr_id'], array(
-                    'original_media_url' => $tr['tr_content'],
                 ));
 
                 //Increase counter:
@@ -995,20 +990,15 @@ class Messenger extends CI_Controller
 
                 //Ooopsi, there was an error:
                 $this->Database_model->fn___tr_create(array(
-                    'tr_content' => 'cron__sync_file_to_cdn() failed to store file in CDN',
+                    'tr_content' => 'cron__save_profile_photo() failed to store file in CDN',
                     'tr_type_entity_id' => 4246, //Platform Error
                     'tr_parent_transaction_id' => $tr['tr_id'],
-                ));
-
-                //Archive this:
-                $this->Database_model->fn___tr_update($tr['tr_id'], array(
-                    'tr_status' => -1, //Removed
                 ));
 
                 continue;
             }
 
-            //Update entity icon if not already set:
+            //Update entity icon only if not already set:
             $tr_child_entity_id = 0;
             if (strlen($tr['en_icon'])<1) {
 
@@ -1037,7 +1027,5 @@ class Messenger extends CI_Controller
 
         fn___echo_json($tr_pending);
     }
-
-
 
 }

@@ -1384,7 +1384,7 @@ class Intents extends CI_Controller
 
 
 
-    function cron__in_metadata_update($in_id = 0, $update_c_table = 1)
+    function cron__update_metadata($in_id = 0, $update_db = 1)
     {
 
         /*
@@ -1402,7 +1402,7 @@ class Intents extends CI_Controller
         //Cron Settings: 31 * * * *
         //Syncs intents with latest caching data:
 
-        $sync = $this->Matrix_model->fn___in_recursive_fetch($in_id, true, $update_c_table);
+        $sync = $this->Matrix_model->fn___in_recursive_fetch($in_id, true, $update_db);
         if (isset($_GET['redirect']) && strlen($_GET['redirect']) > 0) {
             //Now redirect;
             header('Location: ' . $_GET['redirect']);
