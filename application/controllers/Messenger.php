@@ -812,6 +812,7 @@ class Messenger extends CI_Controller
         $tr_pending = $this->Database_model->fn___tr_fetch(array(
             'tr_type_entity_id IN (' . join(',',array_keys($fb_convert_4537)) . ')' => null,
             'tr_metadata' => null, //Missing Facebook Attachment ID [NOTE: Must make sure tr_metadata is not used for anything else for these transaction types]
+            'tr_status' => 2, //Publish
         ), array(), 1, 0 , array('tr_id' => 'ASC')); //Sort by oldest added first
 
 
@@ -856,7 +857,7 @@ class Messenger extends CI_Controller
                 $this->Database_model->fn___tr_create(array(
                     'tr_type_entity_id' => 4246, //Platform Error
                     'tr_parent_transaction_id' => $tr['tr_id'],
-                    'tr_content' => 'fn___facebook_attachment_sync() Failed to sync attachment using Facebook API',
+                    'tr_content' => 'fn___facebook_attachment_sync() Failed to sync attachment using Facebook API: '.( isset($result['tr_metadata']['result']['error']['message']) ? $result['tr_metadata']['result']['error']['message'] : 'Unknown Error' ),
                     'tr_metadata' => array(
                         'payload' => $payload,
                         'result' => $result,
