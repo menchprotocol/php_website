@@ -324,7 +324,7 @@ class Messenger extends CI_Controller
 
                                 $tr_data['tr_type_entity_id'] = $att_media_types[$att['type']][( $sent_by_mench ? 'sent' : 'received' )];
                                 $tr_data['tr_content'] = $att['payload']['url']; //Media Attachment Temporary Facebook URL
-                                $tr_data['tr_status'] = 0; //drafting, since URL needs to be uploaded to Mench CDN via Cron Job
+                                $tr_data['tr_status'] = 0; //drafting, since URL needs to be uploaded to Mench CDN via cron__save_chat_media()
 
                             } elseif ($att['type'] == 'location') {
 
@@ -791,7 +791,7 @@ class Messenger extends CI_Controller
 
 
 
-    function cron__cache_media()
+    function cron__sync_attachments()
     {
 
         /*
@@ -811,10 +811,17 @@ class Messenger extends CI_Controller
         //Let's fetch all Media files without a Facebook attachment ID:
         $tr_pending = $this->Database_model->fn___tr_fetch(array(
             'tr_type_entity_id IN (' . join(',',array_keys($fb_convert_4537)) . ')' => null,
-            'tr_metadata' => null, //Missing Facebook Attachment ID [NOTE: Must make sure tr_metadata is not used for anything else for these transaction types]
             'tr_status' => 2, //Publish
-        ), array(), 1, 0 , array('tr_id' => 'ASC')); //Sort by oldest added first
+            'tr_metadata' => null, //Missing Facebook Attachment ID [NOTE: Must make sure tr_metadata is not used for anything else for these transaction types]
+        ), array(), 10, 0 , array('tr_id' => 'ASC')); //Sort by oldest added first
 
+
+        //Put something in the tr_metadata so other cron jobs do not pick  up on it:
+        foreach ($tr_pending as $tr) {
+            $this->Matrix_model->fn___metadata_update('tr', $tr['tr_id'], array(
+                'fb_att_id' => 0,
+            ));
+        }
 
         foreach ($tr_pending as $tr) {
 
@@ -857,16 +864,12 @@ class Messenger extends CI_Controller
                 $this->Database_model->fn___tr_create(array(
                     'tr_type_entity_id' => 4246, //Platform Error
                     'tr_parent_transaction_id' => $tr['tr_id'],
-                    'tr_content' => 'fn___facebook_attachment_sync() Failed to sync attachment using Facebook API: '.( isset($result['tr_metadata']['result']['error']['message']) ? $result['tr_metadata']['result']['error']['message'] : 'Unknown Error' ),
+                    'tr_content' => 'cron__sync_attachments() Failed to sync attachment to Facebook API: '.( isset($result['tr_metadata']['result']['error']['message']) ? $result['tr_metadata']['result']['error']['message'] : 'Unknown Error' ),
                     'tr_metadata' => array(
                         'payload' => $payload,
                         'result' => $result,
+                        'tr' => $tr,
                     ),
-                ));
-
-                //Also try to disable future attempts for this transaction by adding something to the tr_metadata field:
-                $this->Matrix_model->fn___metadata_update('tr', $tr['tr_id'], array(
-                    'fb_att_id' => 0,
                 ));
 
             }
@@ -895,9 +898,12 @@ class Messenger extends CI_Controller
 
         /*
          *
-         * Stores media received from students AND media sent
-         * from us via the Facebook Chat Inbox in Mench CDN.
-         * It would not store media that is sent from intent
+         * Stores these media in Mench CDN:
+         *
+         * 1) Media received from students
+         * 2) Media sent from Mench Admins via Facebook Chat Inbox
+         *
+         * Note: It would not store media that is sent from intent
          * notes since those are already stored.
          *
          * */
@@ -910,56 +916,46 @@ class Messenger extends CI_Controller
         //Set transaction statuses to drafting so other Cron jobs don't pick them up:
         $this->matrix_model->draft_trs($tr_pending);
 
-
         $counter = 0;
         foreach($tr_pending as $tr){
 
-            //Prepare variables:
-            $json_data = unserialize($ep['ej_e_blob']);
+            //Store to CDN:
+            $new_file_url = fn___upload_to_cdn($tr['tr_content'], $tr);
 
-            //Loop through entries:
-            if(is_array($json_data) && isset($json_data['entry']) && count($json_data['entry'])>0){
-                foreach($json_data['entry'] as $entry) {
-                    //loop though the messages:
-                    foreach($entry['messaging'] as $im){
-                        //This should only be a message
-                        if(isset($im['message'])) {
-                            //This should be here
-                            if(isset($im['message']['attachments'])){
-                                //We should have attachments:
-                                foreach($im['message']['attachments'] as $att){
-                                    //This one too! It should be one of these:
-                                    if(in_array($att['type'],array('image','audio','video','file'))){
+            if($new_file_url && filter_var($new_file_url, FILTER_VALIDATE_URL)){
 
-                                        //Store to local DB:
-                                        $new_file_url = save_file($att['payload']['url'],$json_data);
-
-                                        //Update engagement data:
-                                        $this->Db_model->e_update( $ep['e_id'] , array(
-                                            'e_value' => ( strlen($ep['e_value'])>0 ? $ep['e_value']."\n\n" : '' ).'/attach '.$att['type'].':'.$new_file_url, //Makes the file preview available on the message
-                                            'e_status' => 2, //Mark as done
-                                        ));
-
-                                        //Increase counter:
-                                        $counter++;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            } else {
-                //This should not happen, report:
-                $this->Db_model->e_create(array(
-                    'e_parent_u_id' => 0, //System
-                    'e_value' => 'cron/bot_save_files() fetched ej_e_blob() that was missing its [entry] value',
-                    'e_json' => $json_data,
-                    'e_parent_c_id' => 8, //System Error
+                //Update transaction:
+                $this->Database_model->fn___tr_update($tr['tr_id'], array(
+                    'tr_content' => $new_file_url,
+                    'tr_status' => 2,
                 ));
+
+                //Store original URL:
+                $this->Matrix_model->fn___metadata_update('tr', $tr['tr_id'], array(
+                    'original_media_url' => $tr['tr_content'],
+                ));
+
+                //Increase counter:
+                $counter++;
+
+            } else {
+
+                //Log error:
+                $this->Database_model->fn___tr_create(array(
+                    'tr_type_entity_id' => 4246, //Platform Error
+                    'tr_parent_transaction_id' => $tr['tr_id'],
+                    'tr_content' => 'cron__save_chat_media() Failed to save media from Messenger',
+                    'tr_metadata' => array(
+                        'new_file_url' => $new_file_url,
+                        'tr' => $tr,
+                    ),
+                ));
+
             }
         }
+
         //Echo message for cron job:
-        echo $counter.' Incoming Messenger file'.($counter==1?'':'s').' saved to Mench cloud.';
+        echo $counter.' message media files saved to Mench CDN';
 
     }
 
