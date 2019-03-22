@@ -85,7 +85,7 @@ class Messenger extends CI_Controller
                     //Log Transaction Only IF last delivery transaction was 3+ minutes ago (Since Facebook sends many of these):
                     $last_trs_logged = $this->Database_model->fn___tr_fetch(array(
                         'tr_type_entity_id' => $tr_type_entity_id,
-                        'tr_parent_entity_id' => $en['en_id'],
+                        'tr_miner_entity_id' => $en['en_id'],
                         'tr_timestamp >=' => date("Y-m-d H:i:s", (time() - (180))), //Transactions logged less than 3 minutes ago
                     ), array(), 1);
 
