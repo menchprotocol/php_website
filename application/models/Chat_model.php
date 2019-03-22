@@ -103,6 +103,7 @@ class Chat_model extends CI_Model
             //Log Error Transaction:
             $this->Database_model->fn___tr_create(array_merge(array(
                 'tr_type_entity_id' => 4246, //Platform Error
+                'tr_miner_entity_id' => 1, //Shervin/Developer
                 'tr_content' => 'fn___dispatch_validate_message() returned error [' . $msg_validation['message'] . '] for input message [' . $input_message . ']',
                 'tr_child_entity_id' => (isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0),
             ), $filtered_tr_append));
@@ -128,6 +129,7 @@ class Chat_model extends CI_Model
                     //Ooopsi, we did! Log error Transcation:
                     $this->Database_model->fn___tr_create(array_merge(array(
                         'tr_type_entity_id' => 4246, //Platform Error
+                        'tr_miner_entity_id' => 1, //Shervin/Developer
                         'tr_content' => 'fn___dispatch_message() failed to send message via Facebook Graph API. See Metadata log for more details.',
                         'tr_child_entity_id' => (isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0),
                         'tr_metadata' => array(
@@ -153,11 +155,11 @@ class Chat_model extends CI_Model
             }
 
             //Log successful Transaction for message delivery (Unless Miners viewing HTML):
-            if($fb_messenger_format || isset($_GET['log_miner_messages'])){
+            if(isset($recipient_en['en_id']) && ($fb_messenger_format || isset($_GET['log_miner_messages']))){
                 $this->Database_model->fn___tr_create(array_merge(array(
                     'tr_content' => $msg_validation['input_message'],
                     'tr_type_entity_id' => $output_message['message_type'],
-                    'tr_child_entity_id' => (isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0),
+                    'tr_miner_entity_id' => $recipient_en['en_id'],
                     'tr_parent_entity_id' => $msg_validation['tr_parent_entity_id'], //Might be set if message had a referenced entity
                     'tr_metadata' => array(
                         'input_message' => $input_message,
@@ -1122,6 +1124,7 @@ class Chat_model extends CI_Model
             //Oooopsi, we had an error, log it:
             $this->Database_model->fn___tr_create(array(
                 'tr_type_entity_id' => 4246, //Platform Error
+                'tr_miner_entity_id' => 1, //Shervin/Developer
                 'tr_content' => 'fn___compose_validate_message() returned error [' . $msg_validation['message'] . '] for intent #' . $in_id . ' and Action Plan ['.$actionplan_tr_id.']',
                 'tr_child_entity_id' => (isset($recipient_en['en_id']) ? $recipient_en['en_id'] : 0),
                 'tr_child_intent_id' => $in_id,
@@ -1198,7 +1201,7 @@ class Chat_model extends CI_Model
 
             $actionplans = $this->Database_model->fn___tr_fetch(array(
                 'tr_id' => $actionplan_tr_id,
-                'tr_parent_entity_id' => $recipient_en['en_id'],
+                'tr_miner_entity_id' => $recipient_en['en_id'],
                 'tr_type_entity_id' => 4235, //Action Plan
                 'tr_status >=' => 0, //New+
             ), array('in_child'));
@@ -1399,7 +1402,7 @@ class Chat_model extends CI_Model
 
                         //Log error transaction so we can look into it:
                         $this->Database_model->fn___tr_create(array(
-                            'tr_miner_entity_id' => 1, //Shervin Enayati - 13 Dec 2018
+                            'tr_miner_entity_id' => 1, //Shervin/Developer
                             'tr_content' => 'fn___compose_validate_message() encountered intent with too many children to be listed as OR Intent options! Trim and iterate that intent tree.',
                             'tr_type_entity_id' => 4246, //Platform Error
                             'tr_parent_transaction_id' => $actionplan_tr_id, //The action plan
@@ -1596,6 +1599,7 @@ class Chat_model extends CI_Model
             $this->Database_model->fn___tr_create(array(
                 'tr_content' => $message_error,
                 'tr_type_entity_id' => 4246, //Platform Error
+                'tr_miner_entity_id' => 1, //Shervin/Developer
                 'tr_metadata' => $tr_metadata,
             ));
 
@@ -1669,7 +1673,7 @@ class Chat_model extends CI_Model
                 //Remove all Action Plans:
                 $actionplans = $this->Database_model->fn___tr_fetch(array(
                     'tr_type_entity_id' => 4235, //Action Plans
-                    'tr_parent_entity_id' => $en['en_id'], //Belongs to this Student
+                    'tr_miner_entity_id' => $en['en_id'], //Belongs to this Student
                     'tr_status IN (0,1,2)' => null, //Actively drafting (Status 2 is syncing updates, and they want out)
                 ));
                 foreach ($actionplans as $tr) {
@@ -1693,7 +1697,7 @@ class Chat_model extends CI_Model
                 //User wants to Remove a specific Action Plan, validate it:
                 $actionplans = $this->Database_model->fn___tr_fetch(array(
                     'tr_type_entity_id' => 4235, //Action Plan
-                    'tr_parent_entity_id' => $en['en_id'], //Belongs to this Student
+                    'tr_miner_entity_id' => $en['en_id'], //Belongs to this Student
                     'tr_child_intent_id' => intval($action_unsubscribe),
                 ), array('en_child'));
 
@@ -1728,7 +1732,6 @@ class Chat_model extends CI_Model
                     //Log error transaction:
                     $this->Database_model->fn___tr_create(array(
                         'tr_miner_entity_id' => $en['en_id'],
-                        'tr_parent_entity_id' => $en['en_id'],
                         'tr_content' => 'Failed to skip an intent from the master Action Plan',
                         'tr_type_entity_id' => 4246, //Platform Error
                         'tr_child_intent_id' => intval($action_unsubscribe),
@@ -1849,8 +1852,8 @@ class Chat_model extends CI_Model
                 //Intent seems good...
                 //See if this intent belong to ANY of this Student's Action Plans or Action Plan Intents:
                 $actionplans = $this->Database_model->fn___tr_fetch(array(
-                    'tr_type_entity_id IN (4235,4559)' => null, //Action Plans or Action Plan Intents
-                    'tr_parent_entity_id' => $en['en_id'], //Belongs to this Student
+                    'tr_type_entity_id IN ('.join(',',$this->config->item('en_ids_6107')).')' => null, //Student Action Plan
+                    'tr_miner_entity_id' => $en['en_id'], //Belongs to this Student
                     'tr_child_intent_id' => $ins[0]['in_id'],
                 ));
 
@@ -1938,14 +1941,14 @@ class Chat_model extends CI_Model
 
                     'tr_type_entity_id' => 4235, //Action Plan
                     'tr_status' => 0, //New
-                    'tr_parent_entity_id' => $en['en_id'], //Belongs to this Student
+                    'tr_miner_entity_id' => $en['en_id'], //Belongs to this Student
 
                     'tr_child_intent_id' => $ins[0]['in_id'], //The Intent they are adding
 
                     'tr_order' => 1 + $this->Database_model->fn___tr_max_order(array( //Place this intent at the end of all intents the Student is drafting...
                         'tr_type_entity_id' => 4235, //Action Plan
                         'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
-                        'tr_parent_entity_id' => $en['en_id'], //Belongs to this Student
+                        'tr_miner_entity_id' => $en['en_id'], //Belongs to this Student
                     )),
                 ));
 
@@ -1997,7 +2000,7 @@ class Chat_model extends CI_Model
                 $actionplans = $this->Database_model->fn___tr_fetch(array(
                     'tr_id' => $tr_id,
                     'tr_type_entity_id' => 4559, //Action Plan Step
-                    'tr_parent_entity_id' => $en['en_id'], //Belongs to this Student
+                    'tr_miner_entity_id' => $en['en_id'], //Belongs to this Student
                 ), array('in_child'));
             }
 
@@ -2008,6 +2011,7 @@ class Chat_model extends CI_Model
                 $this->Database_model->fn___tr_create(array(
                     'tr_content' => 'fn___digest_received_quick_reply() failed to fetch proper data for a skip request with reference value [' . $quick_reply_payload . ']',
                     'tr_type_entity_id' => 4246, //Platform Error
+                    'tr_miner_entity_id' => 1, //Shervin/Developer
                     'tr_parent_transaction_id' => $tr_id,
                     'tr_parent_entity_id' => $en['en_id'], //Belongs to this Student
                 ));
@@ -2044,7 +2048,7 @@ class Chat_model extends CI_Model
                         'tr_content' => 'fn___digest_received_quick_reply() did not find anything to skip for [' . $quick_reply_payload . ']',
                         'tr_type_entity_id' => 4246, //Platform Error
                         'tr_parent_transaction_id' => $tr_id,
-                        'tr_parent_entity_id' => $en['en_id'], //Belongs to this Student
+                        'tr_miner_entity_id' => $en['en_id'], //Belongs to this Student
                     ));
 
                     //Inform user:
@@ -2066,7 +2070,6 @@ class Chat_model extends CI_Model
                 //Log transaction for skip request:
                 $new_tr = $this->Database_model->fn___tr_create(array(
                     'tr_miner_entity_id' => $en['en_id'],
-                    'tr_parent_entity_id' => $en['en_id'],
                     'tr_type_entity_id' => 4284, //Skip Intent
                     'tr_parent_transaction_id' => $tr_id, //The Transaction Reference that points to this intent in the Students Action Plan
                     'tr_status' => 1, //drafting... not yet decided to skip or not as they need to see the consequences before making an informed decision. Will be updated to -1 or 2 based on their response...
@@ -2182,7 +2185,7 @@ class Chat_model extends CI_Model
                     'tr_content' => 'fn___digest_received_quick_reply() failed to fetch proper data for intent completion request with reference value [' . $quick_reply_payload . ']',
                     'tr_type_entity_id' => 4246, //Platform Error
                     'tr_parent_transaction_id' => $tr_id,
-                    'tr_parent_entity_id' => $en['en_id'], //Belongs to this Student
+                    'tr_miner_entity_id' => $en['en_id'], //Belongs to this Student
                 ));
 
                 //Inform Student:
@@ -2236,6 +2239,7 @@ class Chat_model extends CI_Model
                 $this->Database_model->fn___tr_create(array(
                     'tr_content' => 'fn___digest_received_quick_reply() failed to save OR answer with reference value [' . $quick_reply_payload . ']',
                     'tr_type_entity_id' => 4246, //Platform Error
+                    'tr_miner_entity_id' => 1, //Shervin/Developer
                     'tr_metadata' => $en,
                     'tr_parent_transaction_id' => $actionplan_tr_id,
                     'tr_child_intent_id' => $in_id,
@@ -2351,7 +2355,7 @@ class Chat_model extends CI_Model
             //List their Action Plans:
             $actionplans = $this->Database_model->fn___tr_fetch(array(
                 'tr_type_entity_id' => 4235, //Intents added to the action plan
-                'tr_parent_entity_id' => $en['en_id'], //Belongs to this Student
+                'tr_miner_entity_id' => $en['en_id'], //Belongs to this Student
                 'tr_status IN (0,1,2)' => null, //Actively drafting
             ), array('in_child'), 10 /* Max quick replies allowed */, 0, array('tr_order' => 'ASC'));
 
@@ -2560,7 +2564,7 @@ class Chat_model extends CI_Model
             //If so, we can recommend the next step within that Action Plan...
             $actionplans = $this->Database_model->fn___tr_fetch(array(
                 'tr_type_entity_id' => 4235, //Action Plan
-                'tr_parent_entity_id' => $en['en_id'], //Belongs to this Student
+                'tr_miner_entity_id' => $en['en_id'], //Belongs to this Student
                 'tr_status IN (' . join(',', $this->config->item('tr_status_incomplete')) . ')' => null, //incomplete
             ), array('in_child'), 1, 0, array('tr_order' => 'ASC'));
 
@@ -2585,9 +2589,10 @@ class Chat_model extends CI_Model
                  *
                  * */
 
+
                 $default_actionplans = $this->Database_model->fn___tr_fetch(array(
-                    'tr_type_entity_id IN (4235,4559)' => null, //Action Plan or Action Plan Intents
-                    'tr_parent_entity_id' => $en['en_id'], //Belongs to this Student
+                    'tr_type_entity_id IN ('.join(',',$this->config->item('en_ids_6107')).')' => null, //Student Action Plan
+                    'tr_miner_entity_id' => $en['en_id'], //Belongs to this Student
                     'tr_child_intent_id' => $this->config->item('in_home_page'),
                 ));
                 if (count($default_actionplans) == 0) {
@@ -2663,7 +2668,6 @@ class Chat_model extends CI_Model
             $this->Database_model->fn___tr_create(array(
                 'tr_type_entity_id' => 5967, //Email Sent
                 'tr_miner_entity_id' => $to_en_id,
-                'tr_child_entity_id' => $to_en_id, //Email recipient
                 'tr_content' => '<b>SUBJECT: '.$subject.'</b><hr />' . $html_message,
                 'tr_metadata' => array(
                     'to_array' => $to_array,

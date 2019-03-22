@@ -37,7 +37,6 @@ class Intents extends CI_Controller
             //Fetch home page intent:
             $home_ins = $this->Database_model->fn___in_fetch(array(
                 'in_id' => $this->config->item('in_home_page'),
-                'in_status' => 2, //Is fixed to published status with Javascript logic.
             ));
 
             //How many featured intents do we have?
@@ -96,9 +95,9 @@ class Intents extends CI_Controller
 
         //Make sure we found it:
         if ( count($ins) < 1) {
-            return fn___redirect_message('/' . $this->config->item('in_home_page'), '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' not found</div>');
+            return fn___redirect_message('/', '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' not found</div>');
         } elseif ( $ins[0]['in_status'] < 2) {
-            return fn___redirect_message('/' . $this->config->item('in_home_page'), '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' is not published yet</div>');
+            return fn___redirect_message('/', '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' is not published yet</div>');
         }
 
         //Load home page:

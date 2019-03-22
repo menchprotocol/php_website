@@ -24,7 +24,7 @@ $config['in_mission_id']            = 7766; //highest-level intent which defines
 $config['in_home_page']             = 6623; //featured on the home page
 $config['in_leger_intro']           = 8438; //Understand the Mench Ledger
 $config['in_featured']              = 8469; //Child intents of this are featured on all intent pages
-$config['in_status_locked']        = array(6623, 8438, 8469, 7766); //Once set to published, their status will be locked by system
+$config['in_status_locked']         = array(6623, 8438, 8469, 7766); //Once set to published, their status will be locked by system
 
 $config['in_seconds_cost_max']      = 28800; //The maximum seconds allowed per intent. If larger, the miner is asked to break it down into smaller intents
 $config['in_outcome_max']           = 89; //Max number of characters allowed for intent outcomes
@@ -33,7 +33,6 @@ $config['in_message_commands']      = array('/firstname', '/slice', '/link'); //
 
 //Entities:
 $config['en_top_focus_id']          = 3463; //The default matrix entity that is loaded when Entities is clicked
-$config['en_default_miner_id']      = 2738; //Mench. This is the entity that would get all the credit for generic platform transactions
 $config['en_per_page']              = 100; //Limits the maximum entities loaded per page
 $config['en_name_max_length']       = 250; //Max number of characters allowed in the title of intents
 $config['en_file_max_size']         = 25; //Server setting is 32MB. see here: mench.com/ses

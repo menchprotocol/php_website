@@ -872,6 +872,7 @@ class Matrix_model extends CI_Model
             $this->Database_model->fn___tr_create(array(
                 'tr_content' => 'fn___en_student_messenger_authenticate() got called without a valid Facebook $psid variable',
                 'tr_type_entity_id' => 4246, //Platform Error
+                'tr_miner_entity_id' => 1, //Shervin/Developer
             ));
             return false;
         }
@@ -1167,6 +1168,7 @@ class Matrix_model extends CI_Model
             $this->Database_model->fn___tr_create(array(
                 'tr_content' => 'Unable to locate OR selection for this Action Plan',
                 'tr_type_entity_id' => 4246, //Platform Error
+                'tr_miner_entity_id' => 1, //Shervin/Developer
                 'tr_parent_transaction_id' => $actionplan_tr_id,
                 'tr_parent_intent_id' => $in_parent_id,
                 'tr_child_intent_id' => $in_answer_id,
@@ -1324,8 +1326,7 @@ class Matrix_model extends CI_Model
                 $this->Database_model->fn___tr_create(array(
                     'tr_status' => 0, //New
                     'tr_type_entity_id' => 4559, //Action Plan Step
-                    'tr_miner_entity_id' => $actionplan['tr_parent_entity_id'], //Miner credit, in this case the student
-                    'tr_parent_entity_id' => $actionplan['tr_parent_entity_id'], //Belongs to this Student
+                    'tr_miner_entity_id' => $actionplan['tr_parent_entity_id'], //Action Plan owner
                     'tr_parent_intent_id' => $this_in['tr_parent_intent_id'],
                     'tr_child_intent_id' => $this_in['tr_child_intent_id'],
                     'tr_order' => $this_in['tr_order'],
@@ -1871,6 +1872,7 @@ class Matrix_model extends CI_Model
             $this->Database_model->fn___tr_create(array(
                 'tr_content' => 'fn___en_search_match() found [' . count($matching_entities) . '] results as the children of en_id=[' . $en_parent_id . '] that had the value of [' . $value . '].',
                 'tr_type_entity_id' => 4246, //Platform Error
+                'tr_miner_entity_id' => 1, //Shervin/Developer
                 'tr_child_entity_id' => $en_parent_id,
             ));
 
@@ -2238,6 +2240,7 @@ class Matrix_model extends CI_Model
             $this->Database_model->fn___tr_create(array(
                 'tr_content' => 'fn___en_messenger_add() got called without a valid Facebook $psid variable',
                 'tr_type_entity_id' => 4246, //Platform Error
+                'tr_miner_entity_id' => 1, //Shervin/Developer
             ));
             return false;
         }

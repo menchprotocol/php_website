@@ -92,6 +92,7 @@ class Database_model extends CI_Model
                 'tr_parent_entity_id' => $tr_miner_entity_id,
                 'tr_content' => 'fn___en_create() failed to create a new entity',
                 'tr_type_entity_id' => 4246, //Platform Error
+                'tr_miner_entity_id' => 1, //Shervin/Developer
                 'tr_metadata' => $insert_columns,
             ));
             return false;
@@ -163,6 +164,7 @@ class Database_model extends CI_Model
                 'tr_parent_entity_id' => $tr_miner_entity_id,
                 'tr_content' => 'fn___in_create() failed to create a new intent',
                 'tr_type_entity_id' => 4246, //Platform Error
+                'tr_miner_entity_id' => 1, //Shervin/Developer
                 'tr_metadata' => $insert_columns,
             ));
             return false;
@@ -173,7 +175,7 @@ class Database_model extends CI_Model
     function fn___tr_create($insert_columns, $external_sync = false)
     {
 
-        if (fn___detect_missing_columns($insert_columns, array('tr_type_entity_id'))) {
+        if (fn___detect_missing_columns($insert_columns, array('tr_type_entity_id', 'tr_miner_entity_id'))) {
             return false;
         }
 
@@ -187,26 +189,6 @@ class Database_model extends CI_Model
             $insert_columns['tr_metadata'] = serialize($insert_columns['tr_metadata']);
         } else {
             $insert_columns['tr_metadata'] = null;
-        }
-
-        //Cleanup possible miner ID:
-        if(isset($insert_columns['tr_miner_entity_id']) && is_numeric($insert_columns['tr_miner_entity_id'])){
-            $insert_columns['tr_miner_entity_id'] = intval($insert_columns['tr_miner_entity_id']);
-        }
-
-        //Try to auto detect user:
-        if (!isset($insert_columns['tr_miner_entity_id']) || is_null($insert_columns['tr_miner_entity_id'])) {
-            //Attempt to fetch creator ID from session:
-            $entity_data = $this->session->userdata('user');
-            if (isset($entity_data['en_id']) && intval($entity_data['en_id']) > 0) {
-                $insert_columns['tr_miner_entity_id'] = $entity_data['en_id'];
-            } else {
-                //Do not issue credit to any miner:
-                $insert_columns['tr_miner_entity_id'] = $this->config->item('en_default_miner_id');
-            }
-        } elseif($insert_columns['tr_miner_entity_id'] == 0){
-            //Shortcut for developers who don't know the default mench ID
-            $insert_columns['tr_miner_entity_id'] = $this->config->item('en_default_miner_id');
         }
 
         //Set some defaults:
@@ -253,6 +235,7 @@ class Database_model extends CI_Model
             //This should not happen:
             $this->Database_model->fn___tr_create(array(
                 'tr_type_entity_id' => 4246, //Platform Error
+                'tr_miner_entity_id' => 1, //Shervin/Developer
                 'tr_content' => 'fn___tr_create() Failed to create',
                 'tr_metadata' => array(
                     'input' => $insert_columns,
@@ -266,6 +249,7 @@ class Database_model extends CI_Model
             //This should not happen:
             $this->Database_model->fn___tr_create(array(
                 'tr_type_entity_id' => 4246, //Platform Error
+                'tr_miner_entity_id' => 1, //Shervin/Developer
                 'tr_content' => 'fn___tr_create() missing miner',
                 'tr_metadata' => array(
                     'input' => $insert_columns,
@@ -450,7 +434,7 @@ class Database_model extends CI_Model
 
                 //Search & Append this Student's Action Plans:
                 $res[$key]['en__actionplans'] = $this->Database_model->fn___tr_fetch(array(
-                    'tr_parent_entity_id' => $val['en_id'],
+                    'tr_miner_entity_id' => $val['en_id'],
                     'tr_type_entity_id' => 4235, //Action Plan
                     'tr_status >=' => 0, //New+
                 ), array('in_child'), 0, 0, array('tr_order' => 'ASC'));
@@ -680,6 +664,7 @@ class Database_model extends CI_Model
             $this->Database_model->fn___tr_create(array(
                 'tr_child_entity_id' => $id,
                 'tr_type_entity_id' => 4246, //Platform Error
+                'tr_miner_entity_id' => 1, //Shervin/Developer
                 'tr_content' => 'fn___en_update() Failed to update',
                 'tr_metadata' => array(
                     'input' => $update_columns,
@@ -752,6 +737,7 @@ class Database_model extends CI_Model
             $this->Database_model->fn___tr_create(array(
                 'tr_child_intent_id' => $id,
                 'tr_type_entity_id' => 4246, //Platform Error
+                'tr_miner_entity_id' => 1, //Shervin/Developer
                 'tr_content' => 'fn___in_update() Failed to update',
                 'tr_metadata' => array(
                     'input' => $update_columns,
@@ -826,6 +812,7 @@ class Database_model extends CI_Model
             $this->Database_model->fn___tr_create(array(
                 'tr_parent_transaction_id' => $id, //Transaction Reference
                 'tr_type_entity_id' => 4246, //Platform Error
+                'tr_miner_entity_id' => 1, //Shervin/Developer
                 'tr_content' => 'fn___tr_update() Failed to update',
                 'tr_metadata' => array(
                     'input' => $update_columns,

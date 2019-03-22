@@ -1,6 +1,7 @@
 <?php
 $session_en = $this->session->userdata('user');
 $fb_settings = $this->config->item('fb_settings');
+$url_part_1 = $this->uri->segment(1);
 ?>
 <script>
     //Facebook SDK for JavaScript:
@@ -9,7 +10,7 @@ $fb_settings = $this->config->item('fb_settings');
             appId: '<?= $fb_settings['app_id'] ?>',
             autoLogAppEvents: true,
             xfbml: true,
-            version: 'v3.2' //Updated 2019-03-14
+            version: '<?= $fb_settings['default_graph_version'] ?>'
         });
     };
 
@@ -25,7 +26,7 @@ $fb_settings = $this->config->item('fb_settings');
 </script>
 
 <div class="fb-customerchat" minimized="true"
-     ref="<?= $this->config->item('in_home_page') ?>" <?= ($session_en ? 'logged_in_greeting="' . fn___one_two_explode('', ' ', $session_en['en_name']) . ', how can I supercharge your tech career?"' : '') ?>
+     ref="<?= ( is_numeric($url_part_1) ? $url_part_1 : 0 ) ?>" <?= ($session_en ? 'logged_in_greeting="' . fn___one_two_explode('', ' ', $session_en['en_name']) . ', how can I supercharge your tech career?"' : '') ?>
      logged_out_greeting="Hi 👋 How can we help you?" greeting_dialog_display="hide" theme_color="#2f2739"
      page_id="<?= $fb_settings['page_id'] ?>"></div>
 

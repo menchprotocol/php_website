@@ -11,7 +11,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 
-//Generated 2019-03-22 15:35:12 PST
+//Generated 2019-03-22 15:52:25 PST
+
+//Student Action Plan:
+$config['en_ids_6107'] = array(4235, 4559);
+$config['en_all_6107'] = array(
+    4235 => array(
+        'm_icon' => '<i class="fas fa-flag"></i>',
+        'm_name' => 'Intent',
+        'm_desc' => '',
+        'm_parents' => array(4593, 4463, 4595),
+    ),
+    4559 => array(
+        'm_icon' => '<i class="fal fa-square"></i>',
+        'm_name' => 'Step',
+        'm_desc' => '',
+        'm_parents' => array(4593),
+    ),
+);
 
 //Student Sent Message Transactions:
 $config['en_ids_4277'] = array(4248, 4460, 4547, 4548, 4549, 4550, 4551, 4557);

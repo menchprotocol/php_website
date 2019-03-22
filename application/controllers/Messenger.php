@@ -48,6 +48,7 @@ class Messenger extends CI_Controller
                 'tr_content' => 'facebook_webhook() Function call object value is not equal to [page], which is what was expected.',
                 'tr_metadata' => $tr_metadata,
                 'tr_type_entity_id' => 4246, //Platform Error
+                'tr_miner_entity_id' => 1, //Shervin/Developer
             ));
             return false;
         }
@@ -65,6 +66,7 @@ class Messenger extends CI_Controller
                     'tr_content' => 'facebook_webhook() call missing messaging Array().',
                     'tr_metadata' => $tr_metadata,
                     'tr_type_entity_id' => 4246, //Platform Error
+                    'tr_miner_entity_id' => 1, //Shervin/Developer
                 ));
                 continue;
             }
@@ -384,7 +386,7 @@ class Messenger extends CI_Controller
 
 
                     //So did we recognized the
-                    if(isset($tr_data['tr_type_entity_id'])){
+                    if(isset($tr_data['tr_type_entity_id']) && isset($tr_data['tr_miner_entity_id'])){
 
                         //We're all good, log this message:
                         $this->Database_model->fn___tr_create($tr_data);
@@ -394,9 +396,9 @@ class Messenger extends CI_Controller
                         //Ooooopsi, this seems to be an unknown message type:
                         $this->Database_model->fn___tr_create(array(
                             'tr_type_entity_id' => 4246, //Platform Error
+                            'tr_miner_entity_id' => 1, //Shervin/Developer
                             'tr_content' => 'facebook_webhook() Received unknown message type! Analyze metadata for more details',
                             'tr_metadata' => $tr_metadata,
-                            'tr_parent_entity_id' => $en['en_id'],
                         ));
 
                     }
@@ -408,6 +410,7 @@ class Messenger extends CI_Controller
                         'tr_content' => 'facebook_webhook() received unrecognized webhook call',
                         'tr_metadata' => $tr_metadata,
                         'tr_type_entity_id' => 4246, //Platform Error
+                        'tr_miner_entity_id' => 1, //Shervin/Developer
                     ));
 
                 }
@@ -551,7 +554,7 @@ class Messenger extends CI_Controller
         } elseif (!$empty_session) {
             //Yes! It seems to be a desktop login (versus Facebook Messenger)
             $filters['tr_type_entity_id'] = 4235; //Action Plan
-            $filters['tr_parent_entity_id'] = $session_en['en_id'];
+            $filters['tr_miner_entity_id'] = $session_en['en_id'];
             $filters['tr_status >='] = 0;
         }
 
@@ -575,7 +578,6 @@ class Messenger extends CI_Controller
             $this->Database_model->fn___tr_create(array(
                 'tr_type_entity_id' => 4283,
                 'tr_miner_entity_id' => $trs[0]['tr_parent_entity_id'],
-                'tr_parent_entity_id' => $trs[0]['tr_parent_entity_id'],
                 'tr_parent_transaction_id' => $actionplan_tr_id,
                 'tr_child_intent_id' => $in_id,
             ));
@@ -863,6 +865,7 @@ class Messenger extends CI_Controller
                 //Log error:
                 $this->Database_model->fn___tr_create(array(
                     'tr_type_entity_id' => 4246, //Platform Error
+                    'tr_miner_entity_id' => 1, //Shervin/Developer
                     'tr_parent_transaction_id' => $tr['tr_id'],
                     'tr_content' => 'cron__sync_attachments() Failed to sync attachment to Facebook API: '.( isset($result['tr_metadata']['result']['error']['message']) ? $result['tr_metadata']['result']['error']['message'] : 'Unknown Error' ),
                     'tr_metadata' => array(
@@ -938,6 +941,7 @@ class Messenger extends CI_Controller
                 //Log error:
                 $this->Database_model->fn___tr_create(array(
                     'tr_type_entity_id' => 4246, //Platform Error
+                    'tr_miner_entity_id' => 1, //Shervin/Developer
                     'tr_parent_transaction_id' => $tr['tr_id'],
                     'tr_content' => 'cron__save_chat_media() Failed to save media from Messenger',
                     'tr_metadata' => array(
@@ -992,6 +996,7 @@ class Messenger extends CI_Controller
                 $this->Database_model->fn___tr_create(array(
                     'tr_content' => 'cron__save_profile_photo() failed to store file in CDN',
                     'tr_type_entity_id' => 4246, //Platform Error
+                    'tr_miner_entity_id' => 1, //Shervin/Developer
                     'tr_parent_transaction_id' => $tr['tr_id'],
                 ));
 

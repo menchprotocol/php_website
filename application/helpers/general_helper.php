@@ -48,6 +48,7 @@ function fn___detect_missing_columns($insert_columns, $required_columns)
                     'required_columns' => $required_columns,
                 ),
                 'tr_type_entity_id' => 4246, //Platform Error
+                'tr_miner_entity_id' => 1, //Shervin/Developer
             ));
 
             return true; //We have an issue
@@ -439,6 +440,7 @@ function fn___upload_to_cdn($file_url, $tr_metadata = null, $is_local = false)
 
             $CI->Database_model->fn___tr_create(array(
                 'tr_type_entity_id' => 4246, //Platform Error
+                'tr_miner_entity_id' => 1, //Shervin/Developer
                 'tr_content' => 'fn___upload_to_cdn() Unable to upload file [' . $file_url . '] to Mench cloud.',
                 'tr_metadata' => $tr_metadata,
             ));
