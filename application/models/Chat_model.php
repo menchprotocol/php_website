@@ -976,7 +976,7 @@ class Chat_model extends CI_Model
                             'id' => $recipient_en['en_psid'],
                         ),
                         'message' => array(
-                            'text' => 'Select an option to continue:', //Generic/fixed message
+                            //'text' => 'Select an option to continue:', //Generic/fixed message
                             'quick_replies' => $quick_replies,
                             'metadata' => 'system_logged', //Prevents duplicate Transaction logs
                         ),
@@ -1777,8 +1777,8 @@ class Chat_model extends CI_Model
                 true
             );
 
-            //Inform Student on how to can command Mench:
-            $this->Chat_model->fn___dispatch_random_intro(8332, $en);
+            //List featured intents and let them choose:
+            $this->Chat_model->fn___compose_message($this->config->item('in_featured'), $en);
 
         } elseif (is_numeric($quick_reply_payload)) {
 
