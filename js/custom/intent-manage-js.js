@@ -774,7 +774,7 @@ function fn___in_modify_save() {
 
 
                 //Update UI components:
-                $(".in_outcome_" + modify_data['in_id']).html(modify_data['in_outcome']);
+                $(".in_outcome_" + modify_data['in_id']).html(data.formatted_in_outcome);
 
                 //Set title:
                 $('.edit-header').html('<i class="fas fa-cog"></i> ' + modify_data['in_outcome']);

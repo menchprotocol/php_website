@@ -14,12 +14,10 @@ class Intents extends CI_Controller
 
     function titles(){
        foreach ($this->Database_model->fn___in_fetch(array(
-           'in_outcome LIKE \'% with %\'' => null,
-           'in_outcome LIKE \'% #%\'' => null,
-           'in_outcome NOT LIKE \'% :: %\'' => null,
+           'in_outcome LIKE \'% with :: %\'' => null,
        )) as $counter => $in){
            echo ($counter+1).') '.$in['in_outcome'].'<br />';
-           $this->Database_model->fn___in_update($in['in_id'], array( 'in_outcome' => str_replace(' with ',' with :: ',$in['in_outcome']) ), true, 1);
+           //$this->Database_model->fn___in_update($in['in_id'], array( 'in_outcome' => str_replace(' with ',' with :: ',$in['in_outcome']) ), true, 1);
        }
     }
 
@@ -725,6 +723,7 @@ class Intents extends CI_Controller
             'status' => 1,
             'message' => '<i class="fas fa-check"></i> Saved',
             'remove_from_ui' => $remove_from_ui,
+            'formatted_in_outcome' => echo_in_outcome($in_update['in_outcome']),
             'remove_redirect_url' => $remove_redirect_url,
             'status_update_children' => $status_update_children,
             'in__tree_in_active_count' => -( isset($in_metadata['in__tree_in_active_count']) ? $in_metadata['in__tree_in_active_count'] : 0 ),

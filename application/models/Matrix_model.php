@@ -1134,7 +1134,7 @@ class Matrix_model extends CI_Model
     }
 
 
-    function fn___actionplan_choose_or($actionplan_tr_id, $in_parent_id, $in_answer_id)
+    function fn___actionplan_choose_or($actionplan_tr_id, $origin_in_id, $in_answer_id)
     {
 
         /*
@@ -1148,7 +1148,7 @@ class Matrix_model extends CI_Model
          *
          * $actionplan_tr_id:   Action Plan ID
          *
-         * $in_parent_id:       The OR Intent that one of its children need
+         * $origin_in_id:       The OR Intent that one of its children need
          *                      to be selected by the Student
          *
          * $in_answer_id:       The selected child intent
@@ -1157,7 +1157,7 @@ class Matrix_model extends CI_Model
 
         $chosen_path = $this->Database_model->fn___tr_fetch(array(
             'tr_parent_transaction_id' => $actionplan_tr_id,
-            'tr_parent_intent_id' => $in_parent_id,
+            'tr_parent_intent_id' => $origin_in_id,
             'tr_child_intent_id' => $in_answer_id,
         ), array('in_parent'));
 
@@ -1170,7 +1170,7 @@ class Matrix_model extends CI_Model
                 'tr_type_entity_id' => 4246, //Platform Error
                 'tr_miner_entity_id' => 1, //Shervin/Developer
                 'tr_parent_transaction_id' => $actionplan_tr_id,
-                'tr_parent_intent_id' => $in_parent_id,
+                'tr_parent_intent_id' => $origin_in_id,
                 'tr_child_intent_id' => $in_answer_id,
             ));
 
@@ -2351,7 +2351,7 @@ class Matrix_model extends CI_Model
     }
 
 
-    function fn___in_link_or_create($in_parent_id, $is_parent, $in_outcome, $in_link_child_id, $next_level, $tr_miner_entity_id)
+    function fn___in_link_or_create($origin_in_id, $is_parent, $in_outcome, $link_in_id, $next_level, $tr_miner_entity_id)
     {
 
         /*
@@ -2359,9 +2359,9 @@ class Matrix_model extends CI_Model
          * The main intent creation function that would create
          * appropriate links and return the intent view.
          *
-         * Either creates an intent link between $in_parent_id & $in_link_child_id
-         * (IF $in_link_child_id>0) OR will create a new intent with outcome $in_outcome
-         * and link it to $in_parent_id (In this case $in_link_child_id will be 0)
+         * Either creates an intent link between $origin_in_id & $link_in_id
+         * (IF $link_in_id>0) OR will create a new intent with outcome $in_outcome
+         * and link it to $origin_in_id (In this case $link_in_id will be 0)
          *
          * p.s. Inputs have already been validated via intents/fn___in_link_or_create() function
          *
@@ -2369,13 +2369,18 @@ class Matrix_model extends CI_Model
 
         //Validate Original intent:
         $parent_ins = $this->Database_model->fn___in_fetch(array(
-            'in_id' => intval($in_parent_id),
+            'in_id' => intval($origin_in_id),
         ));
 
         if (count($parent_ins) < 1) {
             return array(
                 'status' => 0,
                 'message' => 'Invalid Intent ID',
+            );
+        } elseif (!in_array($next_level, array(2,3))) {
+            return array(
+                'status' => 0,
+                'message' => 'Intent level must be either 2 or 3.',
             );
         } elseif ($parent_ins[0]['in_status'] < 0) {
             return array(
@@ -2384,13 +2389,13 @@ class Matrix_model extends CI_Model
             );
         }
 
-        if (intval($in_link_child_id) > 0) {
+        if (intval($link_in_id) > 0) {
 
-            //We are linking to $in_link_child_id, We are NOT creating any new intents...
+            //We are linking to $link_in_id, We are NOT creating any new intents...
 
             //Fetch more details on the child intent we're about to link:
             $ins = $this->Database_model->fn___in_fetch(array(
-                'in_id' => $in_link_child_id,
+                'in_id' => $link_in_id,
             ));
 
             if (count($ins) < 1) {
@@ -2409,7 +2414,7 @@ class Matrix_model extends CI_Model
             $intent_new = $ins[0];
 
             //check all parents as this intent cannot be duplicated with any of its parents:
-            $parent_tree = $this->Matrix_model->fn___in_recursive_fetch($in_parent_id);
+            $parent_tree = $this->Matrix_model->fn___in_recursive_fetch($origin_in_id);
             if (in_array($intent_new['in_id'], $parent_tree['in_flat_tree'])) {
                 return array(
                     'status' => 0,
@@ -2419,8 +2424,8 @@ class Matrix_model extends CI_Model
 
             //Make sure this is not a duplicate intent for its parent:
             $dup_links = $this->Database_model->fn___tr_fetch(array(
-                ( $is_parent ? 'tr_child_intent_id' : 'tr_parent_intent_id' ) => $in_parent_id,
-                ( $is_parent ? 'tr_parent_intent_id' : 'tr_child_intent_id' ) => $in_link_child_id,
+                ( $is_parent ? 'tr_child_intent_id' : 'tr_parent_intent_id' ) => $origin_in_id,
+                ( $is_parent ? 'tr_parent_intent_id' : 'tr_child_intent_id' ) => $link_in_id,
                 'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
                 'tr_status >=' => 0, //New+
             ));
@@ -2434,7 +2439,7 @@ class Matrix_model extends CI_Model
                     'message' => '[' . $intent_new['in_outcome'] . '] is already linked here.',
                 );
 
-            } elseif ($in_link_child_id == $in_parent_id) {
+            } elseif ($link_in_id == $origin_in_id) {
 
                 //Make sure none of the parents are the same:
                 return array(
@@ -2457,6 +2462,23 @@ class Matrix_model extends CI_Model
 
             //We are NOT linking to an existing intent, but instead, we're creating a new intent:
 
+            //See if we have the double column shortcut:
+            if(substr($in_outcome, 0, 2) == '::'){
+
+                //Yes, validate this command:
+                if($is_parent){
+                    return array(
+                        'status' => 0,
+                        'message' => 'You can use the double column shortcut for child entities only.',
+                    );
+                }
+
+                //Apply shortcut and update the intent outcome:
+                $parent_in_outcome_words = explode(' ', $parent_ins[0]['in_outcome']);
+                $in_outcome = $parent_in_outcome_words[0].' #'.$parent_ins[0]['in_id'].' with :: '.trim(substr($in_outcome, 2));
+
+            }
+
             $added_in = $this->Matrix_model->fn___in_verify_create($in_outcome, $tr_miner_entity_id);
             if(!$added_in['status']){
                 //We had an error, return it:
@@ -2474,12 +2496,12 @@ class Matrix_model extends CI_Model
         $relation = $this->Database_model->fn___tr_create(array(
             'tr_miner_entity_id' => $tr_miner_entity_id,
             'tr_type_entity_id' => 4228,
-            ( $is_parent ? 'tr_child_intent_id' : 'tr_parent_intent_id' ) => $in_parent_id,
+            ( $is_parent ? 'tr_child_intent_id' : 'tr_parent_intent_id' ) => $origin_in_id,
             ( $is_parent ? 'tr_parent_intent_id' : 'tr_child_intent_id' ) => $intent_new['in_id'],
             'tr_order' => 1 + $this->Database_model->fn___tr_max_order(array(
                     'tr_status >=' => 0,
                     'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
-                    'tr_parent_intent_id' => ( $is_parent ? $intent_new['in_id'] : $in_parent_id ),
+                    'tr_parent_intent_id' => ( $is_parent ? $intent_new['in_id'] : $origin_in_id ),
                 )),
         ), true);
 
@@ -2489,7 +2511,7 @@ class Matrix_model extends CI_Model
         if($tr_miner_entity_id > 0){
 
             $tr_miner_upvotes = $this->Database_model->fn___tr_fetch(array(
-                ( $is_parent ? 'tr_child_intent_id' : 'tr_parent_intent_id' ) => $in_parent_id,
+                ( $is_parent ? 'tr_child_intent_id' : 'tr_parent_intent_id' ) => $origin_in_id,
                 ( $is_parent ? 'tr_parent_intent_id' : 'tr_child_intent_id' ) => $intent_new['in_id'],
                 'tr_parent_entity_id' => $tr_miner_entity_id,
                 'tr_type_entity_id' => 4983, //Up-votes
@@ -2503,8 +2525,8 @@ class Matrix_model extends CI_Model
                     'tr_miner_entity_id' => $tr_miner_entity_id,
                     'tr_parent_entity_id' => $tr_miner_entity_id,
                     'tr_type_entity_id' => 4983, //Up-votes
-                    'tr_content' => '@'.$tr_miner_entity_id.' #'.( $is_parent ? $intent_new['in_id'] : $in_parent_id ), //Message content
-                    ( $is_parent ? 'tr_child_intent_id' : 'tr_parent_intent_id' ) => $in_parent_id,
+                    'tr_content' => '@'.$tr_miner_entity_id.' #'.( $is_parent ? $intent_new['in_id'] : $origin_in_id ), //Message content
+                    ( $is_parent ? 'tr_child_intent_id' : 'tr_parent_intent_id' ) => $origin_in_id,
                     ( $is_parent ? 'tr_parent_intent_id' : 'tr_child_intent_id' ) => $intent_new['in_id'],
                 ));
             }
@@ -2514,12 +2536,12 @@ class Matrix_model extends CI_Model
 
 
         //Update Metadata for tree:
-        $this->Matrix_model->fn___metadata_tree_update('in', $in_parent_id, $in_metadata_modify);
+        $this->Matrix_model->fn___metadata_tree_update('in', $origin_in_id, $in_metadata_modify);
 
 
         //Fetch and return full data to be properly shown on the UI using the fn___echo_in() function
         $new_ins = $this->Database_model->fn___tr_fetch(array(
-            ( $is_parent ? 'tr_child_intent_id' : 'tr_parent_intent_id' ) => $in_parent_id,
+            ( $is_parent ? 'tr_child_intent_id' : 'tr_parent_intent_id' ) => $origin_in_id,
             ( $is_parent ? 'tr_parent_intent_id' : 'tr_child_intent_id' ) => $intent_new['in_id'],
             'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4486')) . ')' => null, //Intent Link Types
             'tr_status >=' => 0,
@@ -2531,7 +2553,7 @@ class Matrix_model extends CI_Model
         return array(
             'status' => 1,
             'in_child_id' => $intent_new['in_id'],
-            'in_child_html' => fn___echo_in($new_ins[0], $next_level, $in_parent_id, $is_parent),
+            'in_child_html' => fn___echo_in($new_ins[0], $next_level, $origin_in_id, $is_parent),
             //Also append some tree data for UI modifications via JS functions:
             'in__tree_max_seconds' => (isset($in_metadata_modify['in__tree_max_seconds']) && !$is_parent ? intval($in_metadata_modify['in__tree_max_seconds']) : 0), //Seconds added because of this
             'in__tree_in_active_count' => ( $is_parent ? 0 : intval($in_metadata_modify['in__tree_in_active_count']) ), //We must have this (Either if we're linking OR creating) to show new intents in the tree

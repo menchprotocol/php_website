@@ -195,6 +195,29 @@ function fn___echo_url_embed($url, $full_message = null, $return_array = false, 
     }
 }
 
+function echo_in_outcome($in_outcome, $hide = false){
+
+    /*
+     * This function applies the double column
+     * by either removing or greying out the
+     * outcome part before ::
+     *
+     * */
+
+    //See if outcome has a double column:
+    if(substr_count($in_outcome , '::') != 1){
+        return $in_outcome;
+    }
+
+    //We have it, let's apply it:
+    $in_outcome_parts = explode('::',$in_outcome,2);
+
+    if($hide){
+        return trim($in_outcome_parts[1]);
+    } else {
+        return '<span class="double-column-omit" data-toggle="tooltip" data-placement="top" title="Will not be shown to students">'.$in_outcome_parts[0].'::</span><b>'.$in_outcome_parts[1].'</b>';
+    }
+}
 
 function fn___echo_in_message_manage($tr)
 {
@@ -1411,16 +1434,16 @@ function fn___echo_in($in, $level, $in_parent_id = 0, $is_parent = false)
     if ($level <= 1) {
 
         $ui .= '<span><b id="in_level1_outcome" style="font-size: 1.4em; padding-left: 5px;">';
-        $ui .= '<span class="in_outcome_' . $in['in_id'] . '">' . $in['in_outcome'] . '</span>';
+        $ui .= '<span class="in_outcome_' . $in['in_id'] . '">' . echo_in_outcome($in['in_outcome']) . '</span>';
         $ui .= '</b></span>';
 
     } elseif ($level == 2) {
 
-        $ui .= '<span>&nbsp;<i id="handle-' . $tr_id . '" class="fal click_expand fa-plus-circle"></i> <span id="title_' . $tr_id . '" style="font-weight: 500;" class="cdr_crnt click_expand tree_title in_outcome_' . $in['in_id'] . '">' . $in['in_outcome'] . '</span></span>';
+        $ui .= '<span>&nbsp;<i id="handle-' . $tr_id . '" class="fal click_expand fa-plus-circle"></i> <span id="title_' . $tr_id . '" style="font-weight: 500;" class="cdr_crnt click_expand tree_title in_outcome_' . $in['in_id'] . '">' . echo_in_outcome($in['in_outcome']) . '</span></span>';
 
     } elseif ($level == 3) {
 
-        $ui .= '<span id="title_' . $tr_id . '" class="tree_title in_outcome_' . $in['in_id'] . '" style="padding-left:23px;">' . $in['in_outcome'] . '</span> ';
+        $ui .= '<span id="title_' . $tr_id . '" class="tree_title in_outcome_' . $in['in_id'] . '" style="padding-left:23px;">' .echo_in_outcome($in['in_outcome']) . '</span> ';
 
         //Is this the focused item in the parent sibling dropdown?
         if($is_child_focused){

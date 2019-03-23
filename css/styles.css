@@ -572,10 +572,16 @@ input::-webkit-inner-spin-button {
 
 
 
-.is_level2_sortable:hover, .en-item:hover, .list-messages > div > div:hover {
+.is_level2_sortable:hover, .is_level3_sortable:hover, .en-item:hover, .list-messages > div > div:hover {
     background-color: #E5E5E5 !important;
     border-color: transparent !important;
 }
+
+.is_level3_sortable:hover {
+    background-color: #F5F5F5 !important;
+    border-color: transparent !important;
+}
+
 .is_level2_sortable:hover {
     cursor: pointer !important;
 }
@@ -1711,7 +1717,9 @@ h5, .h5 {
     font-size: 1.1em;
 }
 
-
+.double-column-omit{
+    color: #AAA;
+}
 
 .step-group {
     margin: 10px 0 0px -8px;
