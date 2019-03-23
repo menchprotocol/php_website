@@ -215,7 +215,7 @@ function echo_in_outcome($in_outcome, $hide = false){
     if($hide){
         return trim($in_outcome_parts[1]);
     } else {
-        return '<span class="double-column-omit" data-toggle="tooltip" data-placement="top" title="Will not be shown to students">'.$in_outcome_parts[0].'::</span><b>'.$in_outcome_parts[1].'</b>';
+        return '<span class="double-column-omit" data-toggle="tooltip" data-placement="top" title="Not shown to students">'.$in_outcome_parts[0].'::</span><b>'.$in_outcome_parts[1].'</b>';
     }
 }
 
@@ -869,7 +869,7 @@ function fn___echo_tree_steps($in, $fb_messenger_format = 0, $expand_mode = fals
 
     $metadata['in__flat_unique_published_count']--;
 
-    $pitch = 'Action Plan contains ' . $metadata['in__flat_unique_published_count'] . ' steps to ' . $in['in_outcome'];
+    $pitch = 'Action Plan contains ' . $metadata['in__flat_unique_published_count'] . ' steps.';
 
     if ($fb_messenger_format) {
 
@@ -954,7 +954,7 @@ function fn___echo_action_plan($in, $expand_mode){
         $return_html .= '<div class="panel-heading" role="tab" id="heading' . $in_level2_counter . '">';
 
 
-        $return_html .= '<h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#open' . $in_level2_counter . '" href="#collapse' . $in_level2_counter . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $in_level2_counter . '">' . '<i class="fal fa-plus-circle" style="font-size: 1em !important; margin-left: 0; width: 21px;"></i>'. ( $in['in_type'] ? 'Option #'. ($in_level2_counter + 1).': ' : '') . '<span id="title-' . $in_level2['in_id'] . '">' . $in_level2['in_outcome'] . '</span>';
+        $return_html .= '<h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#open' . $in_level2_counter . '" href="#collapse' . $in_level2_counter . '" aria-expanded="' . ($expand_mode ? 'true' : 'false') . '" aria-controls="collapse' . $in_level2_counter . '">' . '<i class="fal fa-plus-circle" style="font-size: 1em !important; margin-left: 0; width: 21px;"></i>'. ( $in['in_type'] ? 'Option #'. ($in_level2_counter + 1).': ' : '') . '<span id="title-' . $in_level2['in_id'] . '">' . echo_in_outcome($in_level2['in_outcome'], true) . '</span>';
 
         $in_level2_metadata = unserialize($in_level2['in_metadata']);
         if (isset($in_level2_metadata['in__tree_max_seconds']) && $in_level2_metadata['in__tree_max_seconds'] > 0) {
@@ -981,7 +981,7 @@ function fn___echo_action_plan($in, $expand_mode){
             $return_html .= '<ul style="list-style-type: circle; margin:10px 0 10px -15px; font-size:1em;">';
             foreach ($grandchildren_ins as $in_level3_counter => $in_level3) {
 
-                $return_html .= '<li>' . ($in_level2['in_type'] ? 'Option #' . ($in_level3_counter + 1) . ': ' : '') . $in_level3['in_outcome'];
+                $return_html .= '<li>' . ($in_level2['in_type'] ? 'Option #' . ($in_level3_counter + 1) . ': ' : '') . echo_in_outcome($in_level3['in_outcome'], true);
                 $in_level3_metadata = unserialize($in_level3['in_metadata']);
                 if (isset($in_level3_metadata['in__tree_max_seconds']) && $in_level3_metadata['in__tree_max_seconds'] > 0) {
                     $return_html .= ' <span style="font-size: 0.9em; font-weight: 300;"><i class="fal fa-clock"></i> ' . fn___echo_time_range($in_level3, true) . '</span>';
@@ -990,13 +990,6 @@ function fn___echo_action_plan($in, $expand_mode){
 
             }
             $return_html .= '</ul>';
-
-            //Show call to action to go here only:
-            if (!$expand_mode) {
-                //Since it has children, lets also give the option to navigate downwards:
-                //TODO Maybe consider enabling later on, but for now I want to reduce clutter
-                //$return_html .= '<p>You can also view <a href="/' . $in_level2['in_id'] . '" ' . ( $in['in_id'] == $CI->config->item('in_home_page') ? 'onclick="confirm_child_go(' . $in_level2['in_id'] . ')"' : '') . ' class="this-step alink-' . $in_level2['in_id'] . '">this intention</a> only.</p>';
-            }
 
         }
 
@@ -1291,7 +1284,7 @@ function fn___echo_in_featured($in)
     $ui .= '<span class="badge badge-primary fr-bgd"><i class="fas fa-angle-right"></i></span>';
     $ui .= '</span>';
 
-    $ui .= '<span style="color:#222; font-weight:500; font-size:1.2em;">'.$in['in_outcome'].'</span>';
+    $ui .= '<span style="color:#222; font-weight:500; font-size:1.2em;">'.echo_in_outcome($in['in_outcome'], true).'</span>';
     $ui .= '<span style="font-size:0.8em; font-weight:300; margin-left:5px; display:inline-block;">';
     $ui .= '<span><i class="fal fa-clock"></i>' . fn___echo_time_range($in) . '</span>';
     $ui .= '</span>';

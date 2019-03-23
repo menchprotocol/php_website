@@ -22,7 +22,7 @@ function fn___validURL(str) {
 }
 
 
-function fn___in_matrix_tips(in_id) {
+function fn___in_help_messages(in_id) {
 
     //See if this tip needs to be loaded:
     if (!$("div#content_" + in_id).html().length) {
@@ -31,7 +31,7 @@ function fn___in_matrix_tips(in_id) {
         $("div#content_" + in_id).html('<i class="fas fa-spinner fa-spin"></i>');
 
         //Let's check to see if this user has already seen this:
-        $.post("/intents/fn___in_matrix_tips", {in_id: in_id}, function (data) {
+        $.post("/intents/fn___in_help_messages", {in_id: in_id}, function (data) {
             //Let's see what we got:
             if (data.status) {
                 //Load the content:
@@ -121,7 +121,7 @@ function fn___ms_toggle(tr_id, new_state) {
 
 function fn___load_help(in_id) {
     //Loads the help button:
-    $('#hb_' + in_id).html('<a class="tipbtn" href="javascript:fn___in_matrix_tips(' + in_id + ')">' + tips_button + '</a>');
+    $('#hb_' + in_id).html('<a class="tipbtn" href="javascript:fn___in_help_messages(' + in_id + ')">' + tips_button + '</a>');
 }
 
 function fn___load_js_algolia() {

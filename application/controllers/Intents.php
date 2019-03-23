@@ -38,7 +38,7 @@ class Intents extends CI_Controller
         } elseif (isset($session_en['en__parents'][0]) && fn___filter_array($session_en['en__parents'], 'en_id', 1308)) {
 
             //Lead miner and above, go to matrix:
-            fn___redirect_message('/intents/' . $this->config->item('in_home_page'));
+            fn___redirect_message('/intents/' . $this->config->item('in_miner_start'));
 
         } else {
 
@@ -64,7 +64,7 @@ class Intents extends CI_Controller
 
                 //Show index page:
                 $this->load->view('view_shared/public_header', array(
-                    'title' => $home_ins[0]['in_outcome'],
+                    'title' => echo_in_outcome($home_ins[0]['in_outcome'], true),
                 ));
                 $this->load->view('view_intents/in_home_featured_ui', array(
                     'in' => $home_ins[0],
@@ -90,11 +90,6 @@ class Intents extends CI_Controller
          * to review intents before adding to Action Plan
          *
          * */
-
-        if($in_id==$this->config->item('in_home_page')){
-            //Featured intent will always load on the home page:
-            return fn___redirect_message('/');
-        }
 
         //Fetch data:
         $ins = $this->Database_model->fn___in_fetch(array(
@@ -131,7 +126,7 @@ class Intents extends CI_Controller
 
         if($in_id == 0){
             //Set to default:
-            $in_id = $this->config->item('in_home_page');
+            $in_id = $this->config->item('in_miner_start');
         }
 
         //Authenticate Miner, redirect if failed:
@@ -144,7 +139,7 @@ class Intents extends CI_Controller
 
         //Make sure we found it:
         if ( count($ins) < 1) {
-            return fn___redirect_message('/intents/' . $this->config->item('in_home_page'), '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' not found</div>');
+            return fn___redirect_message('/intents/' . $this->config->item('in_miner_start'), '<div class="alert alert-danger" role="alert">Intent #' . $in_id . ' not found</div>');
         }
 
         //Update session count and log transaction:
@@ -527,7 +522,7 @@ class Intents extends CI_Controller
                                 $remove_redirect_url = '/intents/' . $ins[0]['in__parents'][0]['in_id'];
                             } else {
                                 //No parents, redirect to default intent:
-                                $remove_redirect_url = '/intents/' . $this->config->item('in_home_page');
+                                $remove_redirect_url = '/intents/' . $this->config->item('in_miner_start');
                             }
                         }
 
@@ -809,7 +804,7 @@ class Intents extends CI_Controller
         }
     }
 
-    function fn___in_matrix_tips()
+    function fn___in_help_messages()
     {
 
         /*

@@ -16,6 +16,77 @@ class Entities extends CI_Controller
         fn___echo_json($this->session->all_userdata());
     }
 
+
+    function dev_matrix_cache(){
+        /*
+         *
+         * This function prepares a PHP-friendly text to be copied to matrix_cache.php
+         * (which is auto loaded) to provide a cache image of some entities in
+         * the tree for faster application processing.
+         *
+         * */
+
+        //First first all entities that have Cache in PHP Config @4527 as their parent:
+        $config_ens = $this->Database_model->fn___tr_fetch(array(
+            'tr_status' => 2,
+            'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            'tr_parent_entity_id' => 4527,
+        ), array('en_child'), 0);
+
+        echo '//Generated '.date("Y-m-d H:i:s").' PST<br />';
+
+        foreach($config_ens as $en){
+
+            //Now fetch all its children:
+            $children = $this->Database_model->fn___tr_fetch(array(
+                'tr_status' => 2, //Published
+                'en_status' => 2, //Published
+                'tr_parent_entity_id' => $en['tr_child_entity_id'],
+                'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+            ), array('en_child'), 0, 0, array('tr_order' => 'ASC', 'en_id' => 'ASC'));
+
+
+            $child_ids = array();
+            foreach($children as $child){
+                array_push($child_ids , $child['en_id']);
+            }
+
+            echo '<br />//'.$en['en_name'].':<br />';
+            echo '$config[\'en_ids_'.$en['tr_child_entity_id'].'\'] = array('.join(', ',$child_ids).');<br />';
+            echo '$config[\'en_all_'.$en['tr_child_entity_id'].'\'] = array(<br />';
+            foreach($children as $child){
+
+                //Do we have an omit command?
+                if(substr_count($en['tr_content'], '&var_trimcache=') == 1){
+                    $child['en_name'] = trim(str_replace(fn___one_two_explode('&var_trimcache=','',$en['tr_content']) , '', $child['en_name']));
+                }
+
+                //Fetch all parents for this child:
+                $child_parent_ids = array(); //To be populated soon
+                $child_parents = $this->Database_model->fn___tr_fetch(array(
+                    'tr_status' => 2, //Published
+                    'en_status' => 2, //Published
+                    'tr_child_entity_id' => $child['en_id'],
+                    'tr_type_entity_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Entity Link Connectors
+                ), array('en_parent'), 0);
+                foreach($child_parents as $cp_en){
+                    array_push($child_parent_ids, $cp_en['en_id']);
+                }
+
+                echo '&nbsp;&nbsp;&nbsp;&nbsp; '.$child['en_id'].' => array(<br />';
+
+                echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_icon\' => \''.htmlentities($child['en_icon']).'\',<br />';
+                echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_name\' => \''.$child['en_name'].'\',<br />';
+                echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_desc\' => \''.str_replace('\'','\\\'',$child['tr_content']).'\',<br />';
+                echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\'m_parents\' => array('.join(', ',$child_parent_ids).'),<br />';
+
+                echo '&nbsp;&nbsp;&nbsp;&nbsp; ),<br />';
+
+            }
+            echo ');<br />';
+        }
+    }
+
     function fn___add_source_wizard()
     {
         //Authenticate Miner, redirect if failed:
@@ -893,7 +964,7 @@ class Entities extends CI_Controller
         $session_en = $this->session->userdata('user');
         if (isset($session_en['en__parents'][0]) && fn___filter_array($session_en['en__parents'], 'en_id', 1308)) {
             //Lead miner and above, go to console:
-            return fn___redirect_message('/intents/' . $this->config->item('in_home_page'));
+            return fn___redirect_message('/intents/' . $this->config->item('in_miner_start'));
         }
 
         $this->load->view('view_shared/public_header', array(
@@ -1058,7 +1129,7 @@ class Entities extends CI_Controller
             //Default:
             if ($is_miner) {
                 //miner default:
-                header('Location: /intents/' . $this->config->item('in_home_page'));
+                header('Location: /intents/' . $this->config->item('in_miner_start'));
             } else {
                 //Student default:
                 header('Location: /my/actionplan');

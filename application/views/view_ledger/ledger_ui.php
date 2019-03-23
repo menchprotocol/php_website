@@ -59,17 +59,8 @@ $fixed_fields = $this->config->item('fixed_fields');
 if(!$has_filters){
 
     //Fetch & Display Intent Note Messages to explain the ledger:
-    echo '<h1>Mench Ledger <a href="javascript:void(0);" onclick="$(\'.ledger_intro\').toggleClass(\'hidden\')"><i class="fal fa-info-circle"></i></a></h1>';
-    echo '<div class="ledger_intro hidden">';
-    foreach ($this->Database_model->fn___tr_fetch(array(
-        'tr_status' => 2, //Published
-        'tr_type_entity_id' => 4231, //Intent Note Messages
-        'tr_child_intent_id' => $this->config->item('in_leger_intro'),
-    ), array(), 0, 0, array('tr_order' => 'ASC')) as $tr) {
-        echo $this->Chat_model->fn___dispatch_message($tr['tr_content']);
-    }
-    echo '<div style="margin-top:12px;"><a href="/'. $this->config->item('in_leger_intro') .'"><u>Lead More</u> &raquo;</a></div>';
-    echo '</div>';
+    echo '<h1>Mench Ledger <span id="hb_8438" class="help_button bold-header" intent-id="8438"></span></h1>';
+    echo '<div class="help_body" id="content_8438"></div>';
 
 
     //Load core Mench Objects:

@@ -357,7 +357,7 @@ function fn___en_auth($en_permission_group = null, $force_redirect = 0)
         return false;
     } else {
         //Block access:
-        return fn___redirect_message((isset($session_en['en__parents'][0]) && fn___filter_array($session_en['en__parents'], 'en_id', 1308) ? '/intents/' . $CI->config->item('in_home_page') : '/login?url=' . urlencode($_SERVER['REQUEST_URI'])), '<div class="alert alert-danger" role="alert">Error: ' . (isset($session_en['en_id']) ? 'Access not authorized.' : 'Sign In to access.') . '</div>');
+        return fn___redirect_message((isset($session_en['en__parents'][0]) && fn___filter_array($session_en['en__parents'], 'en_id', 1308) ? '/intents/' . $CI->config->item('in_miner_start') : '/login?url=' . urlencode($_SERVER['REQUEST_URI'])), '<div class="alert alert-danger" role="alert">Error: ' . (isset($session_en['en_id']) ? 'Access not authorized.' : 'Sign In to access.') . '</div>');
     }
 
 }

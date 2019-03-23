@@ -127,14 +127,14 @@ class Messenger extends CI_Controller
 
                         } elseif ($payload == 'GET_STARTED') {
 
-                            //The very first payload, set defaults:
-                            $array_ref = array(
-                                'ref' => $this->config->item('in_home_page'),
-                            );
+                            //The very first payload, set to null:
+                            $array_ref = null;
 
                         } else {
-                            //Postback without referral!
+
+                            //Postback without referral, again set to null:
                             $array_ref = null;
+
                         }
 
                     } elseif (isset($im['referral'])) {

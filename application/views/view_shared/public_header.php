@@ -50,7 +50,7 @@ $url_part_1 = $this->uri->segment(1);
                 <?php
                 if (isset($session_en['en_id'])) {
 
-                    echo '<li id="isloggedin"><a href="/intents/' . (isset($in['in_id']) ? $in['in_id'] : $this->config->item('in_home_page')) . '">The Matrix <i class="fas fa-chevron-circle-right"></i></a></li>';
+                    echo '<li id="isloggedin"><a href="/intents/' . (isset($in['in_id']) ? $in['in_id'] : $this->config->item('in_miner_start')) . '">The Matrix <i class="fas fa-chevron-circle-right"></i></a></li>';
 
                 } elseif (isset($session_en['en__actionplans']) && count($session_en['en__actionplans']) > 0) {
 

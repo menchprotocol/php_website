@@ -88,7 +88,7 @@ $uri_segment_2 = $this->uri->segment(2);
                             </li>
 
                             <li class="<?= ($uri_segment_1 == 'intents' ? 'intent-active' : 'intent-inactive') ?>">
-                                <a href="/intents/<?= $this->config->item('in_home_page') ?>">
+                                <a href="/intents/<?= $this->config->item('in_miner_start') ?>">
                                     <i class="fas fa-hashtag"></i> Intents
                                 </a>
                             </li>

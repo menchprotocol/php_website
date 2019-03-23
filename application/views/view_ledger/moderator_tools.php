@@ -19,7 +19,7 @@ $cron_jobs = array(
 );
 
 $developer_tools = array(
-    '/ledger/dev_matrix_cache' => 'Matrix PHP Cache',
+    '/entities/dev_matrix_cache' => 'Matrix PHP Cache',
     '/entities/dev_session' => 'My Session Variables',
     '/ledger/dev_php_info' => 'Server PHP Info',
 );

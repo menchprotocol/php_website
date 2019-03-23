@@ -2584,12 +2584,14 @@ class Chat_model extends CI_Model
                  *
                  * Student has no action plan...
                  *
-                 * Suggest to subscribe to our default intent
-                 * only IF they have not done so already:
+                 * TODO: Give them list of featured intents
+                 * that they have not yet added to their
+                 * action plan to choose from.
                  *
                  * */
 
 
+                /*
                 $default_actionplans = $this->Database_model->fn___tr_fetch(array(
                     'tr_type_entity_id IN ('.join(',',$this->config->item('en_ids_6107')).')' => null, //Student Action Plan
                     'tr_miner_entity_id' => $en['en_id'], //Belongs to this Student
@@ -2601,7 +2603,7 @@ class Chat_model extends CI_Model
                     $this->Chat_model->fn___digest_received_quick_reply($en, $this->config->item('in_home_page'));
 
                 }
-
+                */
             }
         }
     }
