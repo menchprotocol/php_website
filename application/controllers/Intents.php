@@ -723,7 +723,7 @@ class Intents extends CI_Controller
             'status' => 1,
             'message' => '<i class="fas fa-check"></i> Saved',
             'remove_from_ui' => $remove_from_ui,
-            'formatted_in_outcome' => echo_in_outcome($in_update['in_outcome']),
+            'formatted_in_outcome' => ( isset($in_update['in_outcome']) ? echo_in_outcome($in_update['in_outcome']) : null ),
             'remove_redirect_url' => $remove_redirect_url,
             'status_update_children' => $status_update_children,
             'in__tree_in_active_count' => -( isset($in_metadata['in__tree_in_active_count']) ? $in_metadata['in__tree_in_active_count'] : 0 ),

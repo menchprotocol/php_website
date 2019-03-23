@@ -774,17 +774,26 @@ function fn___in_modify_save() {
 
 
                 //Update UI components:
-                $(".in_outcome_" + modify_data['in_id']).html(data.formatted_in_outcome);
 
-                //Set title:
-                $('.edit-header').html('<i class="fas fa-cog"></i> ' + modify_data['in_outcome']);
+                //Did the outcome change?
+                if(data.formatted_in_outcome){
+                    //yes, update it:
+                    $(".in_outcome_" + modify_data['in_id']).html(data.formatted_in_outcome);
+
+                    //Set title:
+                    $('.edit-header').html('<i class="fas fa-cog"></i> ' + modify_data['in_outcome']);
+
+                    //Also update possible child icons:
+                    $('.in_icon_child_' + modify_data['in_id']).attr('data-original-title', modify_data['in_outcome']);
+                }
+
 
 
                 //Always update 3x Intent icons:
                 $('.in_type_' + modify_data['in_id']).html('<span class="in_type_val" data-toggle="tooltip" data-placement="right" title="'+ object_js_statuses['in_type'][modify_data['in_type']]["s_name"] + ': '+ object_js_statuses['in_type'][modify_data['in_type']]["s_desc"] + '">'+ object_js_statuses['in_type'][modify_data['in_type']]["s_icon"] +'</span>');
 
                 //Also update possible child icons:
-                $('.in_icon_child_' + modify_data['in_id']).html(object_js_statuses['in_type'][modify_data['in_type']]["s_icon"]).attr('data-original-title', modify_data['in_outcome']);
+                $('.in_icon_child_' + modify_data['in_id']).html(object_js_statuses['in_type'][modify_data['in_type']]["s_icon"]);
 
 
                 $('.in_status_' + modify_data['in_id']).html('<span data-toggle="tooltip" data-placement="right" title="'+ object_js_statuses['in_status'][modify_data['in_status']]["s_name"] + ': '+ object_js_statuses['in_status'][modify_data['in_status']]["s_desc"] + '">'+ object_js_statuses['in_status'][modify_data['in_status']]["s_icon"] +'</span>');
