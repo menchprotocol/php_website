@@ -12,6 +12,16 @@ class Intents extends CI_Controller
     }
 
 
+    function titles(){
+       foreach ($this->Database_model->fn___in_fetch(array(
+           'in_outcome LIKE \'% with %\'' => null,
+           'in_outcome LIKE \'% #%\'' => null,
+           'in_outcome NOT LIKE \'% :: %\'' => null,
+       )) as $counter => $in){
+           echo ($counter+1).') '.$in['in_outcome'].'<br />';
+           $this->Database_model->fn___in_update($in['in_id'], array( 'in_outcome' => str_replace(' with ',' with :: ',$in['in_outcome']) ), true, 1);
+       }
+    }
 
     //Loaded as default function of the default controller:
     function index()
