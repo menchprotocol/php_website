@@ -253,7 +253,14 @@ function fn___in_adjust_link_ui() {
 
 function fn___in_load_search(focus_element, is_in_parent, next_in_level) {
 
-    $(focus_element).on('autocomplete:selected', function (event, suggestion, dataset) {
+    //Loads the intent search bar only once for the add intent inputs
+    if($(focus_element).hasClass('search-bar-loaded')){
+        //Already loaded:
+        return false;
+    }
+
+    //Not yet loaded, continue with loading it:
+    $(focus_element).addClass('search-bar-loaded').on('autocomplete:selected', function (event, suggestion, dataset) {
 
         fn___in_link_or_create($(this).attr('intent-id'), is_in_parent, next_in_level, suggestion.alg_obj_id);
 

@@ -111,8 +111,8 @@ class Matrix_model extends CI_Model
                 'tr_status' => 2, //Completed
             ), $actionplans[0]['tr_parent_entity_id']);
 
-            //Inform Student on how to can command Mench:
-            $this->Chat_model->fn___dispatch_random_intro(8332, array('en_id' => $actionplans[0]['tr_parent_entity_id']));
+            //List featured intents and let them choose:
+            $this->Chat_model->fn___compose_message($this->config->item('in_featured'), array('en_id' => $actionplans[0]['tr_parent_entity_id']));
 
         }
 
@@ -1077,18 +1077,18 @@ class Matrix_model extends CI_Model
 
 
         //A recursive function to fetch all Tree for a given intent, either upwards or downwards
-        $next_level_ins = $this->Database_model->fn___tr_fetch(array(
+        $fetch_tree_ins = $this->Database_model->fn___tr_fetch(array(
             'tr_parent_transaction_id' => $tr_id,
             'in_status' => 2, //Published
             ($direction_is_downward ? 'tr_parent_intent_id' : 'tr_child_intent_id') => $in_id,
         ), array(($direction_is_downward ? 'in_child' : 'in_parent')));
 
 
-        if (count($next_level_ins) > 0) {
-            foreach ($next_level_ins as $in) {
+        if (count($fetch_tree_ins) > 0) {
+            foreach ($fetch_tree_ins as $current_in) {
 
                 //Fetch children for this intent, if any:
-                $recursion = $this->Matrix_model->actionplan_fetch_recursive($tr_id, $in['in_id'], $direction_is_downward, $in, $metadata_this);
+                $recursion = $this->Matrix_model->actionplan_fetch_recursive($tr_id, $current_in['in_id'], $direction_is_downward, $current_in, $metadata_this);
 
                 //return $recursion;
 
@@ -1323,7 +1323,7 @@ class Matrix_model extends CI_Model
             //Add link to flat intent link tree:
             array_push($metadata_this['in_links_flat_tree'], intval($this_in['tr_id']));
 
-            //Are we caching an Action Plan?
+            //Are we adding steps to Action Plan?
             if (count($actionplan) > 0) {
 
                 //Yes we are, create a cache of this Intent link to be added to their Action Plan:
@@ -1360,7 +1360,7 @@ class Matrix_model extends CI_Model
         if ($direction_is_downward) {
 
             //Fetch children:
-            $next_level_ins = $this->Database_model->fn___tr_fetch(array(
+            $fetch_tree_ins = $this->Database_model->fn___tr_fetch(array(
                 'tr_parent_intent_id' => $in_id,
                 'tr_status' => 2, //Published
                 'in_status >=' => 0, //New+
@@ -1370,7 +1370,7 @@ class Matrix_model extends CI_Model
         } else {
 
             //Fetch parents:
-            $next_level_ins = $this->Database_model->fn___tr_fetch(array(
+            $fetch_tree_ins = $this->Database_model->fn___tr_fetch(array(
                 'tr_child_intent_id' => $in_id,
                 'tr_status' => 2, //Published
                 'in_status >=' => 0, //New+
@@ -1381,7 +1381,7 @@ class Matrix_model extends CI_Model
 
 
         //Do we have any next level intents (up or down)?
-        if (count($next_level_ins) > 0) {
+        if (count($fetch_tree_ins) > 0) {
 
             //$resource_estimates are determined based on the intent's AND/OR type:
             $resource_estimates = array(
@@ -1391,9 +1391,9 @@ class Matrix_model extends CI_Model
                 'in___tree_max_cost' => null,
             );
 
-            foreach ($next_level_ins as $next_in) {
+            foreach ($fetch_tree_ins as $current_in) {
 
-                if (in_array($next_in['in_id'], $metadata_aggregate['in_flat_tree'])) {
+                if (in_array($current_in['in_id'], $metadata_aggregate['in_flat_tree'])) {
 
                     //Duplicate intent detected within tree
                     //terminate function to prevent an infinite loop:
@@ -1401,13 +1401,14 @@ class Matrix_model extends CI_Model
 
                 } else {
 
-                    //Recursively fetch the next level (up or down):
-                    $recursion = $this->Matrix_model->fn___in_fetch_recursive($next_in['in_id'], $direction_is_downward, $update_metadata, $actionplan, $next_in, $metadata_this);
+                    //Recursively go the next level (either up or down):
+                    $recursion = $this->Matrix_model->fn___in_fetch_recursive($current_in['in_id'], $direction_is_downward, $update_metadata, $actionplan, $current_in, $metadata_this);
 
                     if (!$recursion) {
-                        //There was an infinity break
+                        //There was an infinity-loop break:
                         return false;
                     }
+
 
                     //Addup if any:
                     $metadata_this['___tree_active_count'] += $recursion['___tree_active_count'];
@@ -1416,8 +1417,9 @@ class Matrix_model extends CI_Model
                     array_push($metadata_this['in_flat_unique_published_tree'], $recursion['in_flat_unique_published_tree']);
                     array_push($metadata_this['in_tree'], $recursion['in_tree']);
 
-                    //Is this published?
-                    if ($next_in['in_status'] < 2) {
+
+                    //Abort if not yet published:
+                    if ($current_in['in_status'] < 2) {
                         continue;
                     }
 

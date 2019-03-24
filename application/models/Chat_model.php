@@ -1317,14 +1317,41 @@ class Chat_model extends CI_Model
                 'tr_parent_intent_id' => $ins[0]['in_id'],
             ), array('in_child'), 0, 0, array('tr_order' => 'ASC')); //Child intents must be ordered
 
+
+
+
+            if($actionplan_tr_id < 1){
+
+                /*
+                 *
+                 * If not part of an existing Action Plan, Make
+                 * sure that none of these OR options have been
+                 * previously added to this student's Action Plan
+                 * as we do not want to recommend them twice:
+                 *
+                 * */
+
+                foreach ($in__children as $key => $or_child_in) {
+                    //Remove if already added before:
+                    if(count($this->Database_model->fn___tr_fetch(array(
+                            'tr_type_entity_id IN ('.join(',',$this->config->item('en_ids_6107')).')' => null, //Student Action Plan
+                            'tr_miner_entity_id' => $recipient_en['en_id'], //Belongs to this Student
+                            'tr_child_intent_id' => $or_child_in['in_id'],
+                            'tr_status >=' => 0, //New+
+                        ))) > 0){
+                        unset($in__children[$key]);
+                    }
+                }
+            }
+
             if(count($in__children) > 0){
 
                 //Yes, this OR branch has children, give option to add to Action Plan:
                 $next_step_message = 'Select one of the following options to continue:';
 
-                foreach ($in__children as $counter => $or_child_in) {
+                foreach ($in__children as $key => $or_child_in) {
 
-                    if ($counter == 10) {
+                    if ($key == 10) {
 
                         //Log error transaction so we can look into it:
                         $this->Database_model->fn___tr_create(array(
@@ -1340,11 +1367,11 @@ class Chat_model extends CI_Model
                         break;
                     }
 
-                    $next_step_message .= "\n\n" . ($counter + 1) . '/ ' . fn___echo_in_outcome($or_child_in['in_outcome'], true);
+                    $next_step_message .= "\n\n" . ($key + 1) . '/ ' . fn___echo_in_outcome($or_child_in['in_outcome'], true);
                     array_push($quick_replies, array(
                         'content_type' => 'text',
-                        'title' => '/' . ($counter + 1),
-                        'payload' => 'CHOOSEOR_' . $actionplan_tr_id . '_' . $in_id . '_' . $or_child_in['in_id'],
+                        'title' => '/' . ($key + 1),
+                        'payload' => 'ADDORINTENT_' . $actionplan_tr_id . '_' . $in_id . '_' . $or_child_in['in_id'],
                     ));
 
                 }
@@ -1361,9 +1388,14 @@ class Chat_model extends CI_Model
                     )
                 );
 
-            } else {
+            } elseif($ins[0]['in_id']==$this->config->item('in_featured')) {
 
-                //We would deal with this situation below only IF $actionplan_tr_id > 0
+                //Student has already taken all featured intentions and there is nothing else to offer them:
+                $this->Chat_model->fn___dispatch_message(
+                    'You have already added all featured intentions to your Action Plan and I have nothing else to recommend to you at this time.',
+                    $recipient_en,
+                    true
+                );
 
             }
         }
@@ -1487,9 +1519,9 @@ class Chat_model extends CI_Model
             //User needs to complete all children, and we'd recommend the first item as their next step:
             $next_step_message .= 'Here are ' . count($actionplan_child_ins) . ' steps to ' . fn___echo_in_outcome($ins[0]['in_outcome'], true) . ':';
 
-            foreach ($actionplan_child_ins as $counter => $and_child_in) {
+            foreach ($actionplan_child_ins as $key => $and_child_in) {
 
-                if ($counter == 0) {
+                if ($key == 0) {
 
                     array_push($quick_replies, array(
                         'content_type' => 'text',
@@ -1504,12 +1536,12 @@ class Chat_model extends CI_Model
                 if (strlen($next_step_message) < ($this->config->item('fb_max_message') - 200 /* Cushion for appendix messages */)) {
 
                     //Add message:
-                    $next_step_message .= "\n\n" . 'Step ' . ($counter + 1) . ': ' . $and_child_in['in_outcome'];
+                    $next_step_message .= "\n\n" . 'Step ' . ($key + 1) . ': ' . $and_child_in['in_outcome'];
 
                 } else {
 
                     //We cannot add any more, indicate truncating:
-                    $remainder = count($actionplan_child_ins) - $counter;
+                    $remainder = count($actionplan_child_ins) - $key;
                     $next_step_message .= "\n\n" . 'And ' . $remainder . ' more step' . fn___echo__s($remainder) . '!';
                     break;
 
@@ -1723,8 +1755,8 @@ class Chat_model extends CI_Model
                     true
                 );
 
-                //Inform Student on how to can command Mench:
-                $this->Chat_model->fn___dispatch_random_intro(8332, $en);
+                //List featured intents and let them choose:
+                $this->Chat_model->fn___compose_message($this->config->item('in_featured'), $en);
 
             } elseif ($action_unsubscribe == 'ALL') {
 
@@ -1776,8 +1808,8 @@ class Chat_model extends CI_Model
                         true
                     );
 
-                    //Inform Student on how to can command Mench:
-                    $this->Chat_model->fn___dispatch_random_intro(8332, $en);
+                    //List featured intents and let them choose:
+                    $this->Chat_model->fn___compose_message($this->config->item('in_featured'), $en);
 
                 } else {
 
@@ -1815,8 +1847,8 @@ class Chat_model extends CI_Model
                     true
                 );
 
-                //Inform Student on how to can command Mench:
-                $this->Chat_model->fn___dispatch_random_intro(8332, $en);
+                //List featured intents and let them choose:
+                $this->Chat_model->fn___compose_message($this->config->item('in_featured'), $en);
 
             } elseif ($quick_reply_payload == 'RESUBSCRIBE_NO') {
 
@@ -2266,7 +2298,7 @@ class Chat_model extends CI_Model
                 $this->Chat_model->fn___compose_message($next_ins[0]['in_id'], $en, $actionplan_tr_id);
             }
 
-        } elseif (substr_count($quick_reply_payload, 'CHOOSEOR_') == 1) {
+        } elseif (substr_count($quick_reply_payload, 'ADDORINTENT_') == 1) {
 
             /*
              *
@@ -2278,7 +2310,7 @@ class Chat_model extends CI_Model
              * */
 
             //Student has responded to a multiple-choice OR tree
-            $input_parts = explode('_', fn___one_two_explode('CHOOSEOR_', '', $quick_reply_payload));
+            $input_parts = explode('_', fn___one_two_explode('ADDORINTENT_', '', $quick_reply_payload));
             $actionplan_tr_id = intval($input_parts[0]);
             $origin_in_id = intval($input_parts[1]);
             $in_answer_id = intval($input_parts[2]);
